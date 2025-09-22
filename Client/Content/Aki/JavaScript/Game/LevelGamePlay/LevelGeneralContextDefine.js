@@ -175,7 +175,7 @@ class TriggerContext extends GeneralContext {
     this.TriggerEntityId = 0;
     this.OtherEntityId = 0;
     this.TriggerType = 0;
-    this.IsClientPrePerform = false;
+    this.IsClientTrigger = false;
     this.Type = 5;
   }
   static Create(t = 0, e = 0, n, s, r) {
@@ -183,7 +183,7 @@ class TriggerContext extends GeneralContext {
     n.TriggerEntityId = t;
     n.OtherEntityId = e;
     n.TriggerType = s ?? 0;
-    n.IsClientPrePerform = r ?? false;
+    n.IsClientTrigger = r ?? false;
     return n;
   }
 }
@@ -191,10 +191,13 @@ exports.TriggerContext = TriggerContext;
 class GuaranteeContext extends GeneralContext {
   constructor() {
     super();
+    this.GuaranteeReason = 0;
     this.Type = 7;
   }
-  static Create(t) {
-    return GeneralContext.GetObj(7, t, GuaranteeContext);
+  static Create(t, e = 0) {
+    t = GeneralContext.GetObj(7, t, GuaranteeContext);
+    t.GuaranteeReason = e;
+    return t;
   }
 }
 exports.GuaranteeContext = GuaranteeContext;
@@ -303,15 +306,15 @@ exports.CombinationContext = CombinationContext;
 class CustomContext extends GeneralContext {
   constructor() {
     super();
-    this.xWu = undefined;
+    this.jWc = undefined;
     this.Type = 12;
-    this.xWu = {};
+    this.jWc = {};
   }
   SetValueRestricted(t, e) {
-    this.xWu[t] = e;
+    this.jWc[t] = e;
   }
   GetValueRestricted(t) {
-    var e = this.xWu;
+    var e = this.jWc;
     if (e && t in e) {
       return e[t];
     }

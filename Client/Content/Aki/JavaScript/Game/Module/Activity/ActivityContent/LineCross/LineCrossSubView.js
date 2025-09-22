@@ -14,7 +14,7 @@ const ActivitySubViewGeneralInfo_1 = require("../../View/SubView/ActivitySubView
 class LineCrossSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   constructor() {
     super(...arguments);
-    this.Ied = undefined;
+    this.kid = undefined;
     this.Q6a = undefined;
     this.DFe = e => {
       var i = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
@@ -30,7 +30,7 @@ class LineCrossSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       }
     };
     this.$R1 = () => {
-      var e = this.Ied.RedPointShowState;
+      var e = this.kid.RedPointShowState;
       this.Q6a?.SetFunctionRedDotVisible(e);
     };
   }
@@ -44,7 +44,7 @@ class LineCrossSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     await this.Q6a.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
-    this.Ied = this.ActivityBaseData;
+    this.kid = this.ActivityBaseData;
   }
   OnBeforeShow() {
     if (this.ActivityBaseData.GetUnFinishPreGuideQuestId() > 0) {
@@ -56,7 +56,7 @@ class LineCrossSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.$R1();
   }
   RefreshProgressText() {
-    var e = ModelManager_1.ModelManager.LineCrossModel.GetProgressByActivityId(this.Ied.Id, "LineCross_Finish_Progress_Activity");
+    var e = ModelManager_1.ModelManager.LineCrossModel.GetProgressByActivityId(this.kid.Id, "LineCross_Finish_Progress_Activity");
     this.GetText(1)?.SetText(e);
   }
 }

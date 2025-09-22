@@ -14,24 +14,24 @@ class MechanismEventCenter {
     e("SeqEventFireBullet", MechanismEventFireBullet_1.MechanismEventFireBullet);
   }
   static Clear() {
-    MechanismEventCenter.NFu.clear();
+    MechanismEventCenter.RNu.clear();
   }
   static GetEventClass(e) {
-    return MechanismEventCenter.NFu.get(e);
+    return MechanismEventCenter.RNu.get(e);
   }
   static GetEventIsServerAction(e) {
-    return MechanismEventCenter.mZu.get(e) ?? false;
+    return MechanismEventCenter.SYc.get(e) ?? false;
   }
   static DeleteEvent(e, t, n, s) {
-    return t === 3 && ((t = this.VFu.get(n)) ? t.delete(s) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "MechanismEventCenter.DeleteEvent,通过sequencePlayer获取EventStates失败", ["eventType", e], ["sequence", n.Sequence], ["sectionId", s]), false));
+    return t === 3 && ((t = this.wNu.get(n)) ? t.delete(s) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "MechanismEventCenter.DeleteEvent,通过sequencePlayer获取EventStates失败", ["eventType", e], ["sequence", n.Sequence], ["sectionId", s]), false));
   }
 }
-(exports.MechanismEventCenter = MechanismEventCenter).NFu = new Map();
-MechanismEventCenter.mZu = new Map();
-MechanismEventCenter.VFu = new WeakMap();
+(exports.MechanismEventCenter = MechanismEventCenter).RNu = new Map();
+MechanismEventCenter.SYc = new Map();
+MechanismEventCenter.wNu = new WeakMap();
 MechanismEventCenter.QLe = (e, t, n = false) => {
-  if (!MechanismEventCenter.NFu.has(e)) {
-    MechanismEventCenter.NFu.set(e, t);
+  if (!MechanismEventCenter.RNu.has(e)) {
+    MechanismEventCenter.RNu.set(e, t);
   }
-  MechanismEventCenter.mZu.set(e, n);
+  MechanismEventCenter.SYc.set(e, n);
 }; //# sourceMappingURL=MechanismEventCenter.js.map

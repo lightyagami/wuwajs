@@ -78,6 +78,7 @@ class ActivityDirectTrainProView extends UiViewBase_1.UiViewBase {
     this.uxt();
     this.D5e();
     this.R5e(true);
+    this.GetButton(8).GetRootComponent().SetUIActive(false);
   }
   OnBeforeShow() {
     this.s5e?.RefreshView();

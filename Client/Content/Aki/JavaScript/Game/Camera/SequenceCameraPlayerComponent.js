@@ -90,7 +90,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Fxr = false;
     this.Vxr = 0;
     this.hQa = true;
-    this.Cgd = false;
+    this.L6d = false;
     this.Hxr = true;
     this.Fse = undefined;
     this.jxr = undefined;
@@ -231,7 +231,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Lxr = undefined;
     this.Exr = 1;
     this.Sxr = 1;
-    this.Cgd = false;
+    this.L6d = false;
     this.Dxr = false;
     if (this.Rxr) {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(2);
@@ -287,7 +287,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.hQa = true;
     this.Exr = t.BlendInTime;
     this.Sxr = t.BlendOutTime;
-    this.Cgd = t.NeedWaitInPlot;
+    this.L6d = t.NeedWaitInPlot;
     this.nZo = t.CameraSequence;
     if (this.nZo) {
       this.ResetCameraRatioSetting();
@@ -461,7 +461,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     if (this.Tae?.IsValid()) {
       this.Tae.CharRenderingComponent?.OnFinalizedLevelSequence();
     }
-    this.Cgd = false;
+    this.L6d = false;
     this.Ixr = undefined;
     this.rRe = undefined;
     this.Txr = undefined;
@@ -607,7 +607,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     return t;
   }
   GetIfNeedWaitInPlot() {
-    return this.Cgd;
+    return this.L6d;
   }
 };
 SequenceCameraPlayerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(10)], SequenceCameraPlayerComponent);

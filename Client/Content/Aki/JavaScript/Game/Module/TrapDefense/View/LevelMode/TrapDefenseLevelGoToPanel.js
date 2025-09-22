@@ -40,38 +40,38 @@ class TrapDefenseLevelGoToPanel extends UiPanelBase_1.UiPanelBase {
     var i;
     if ((this.LevelData = e).IsUnlock) {
       this.GetItem(7)?.SetUIActive(e.IsUnlock);
-      this.ehd();
+      this.Vcd();
     } else {
       i = e.IsReachOpenTime();
       this.GetItem(1)?.SetUIActive(!i);
-      this.SYc(true);
+      this.MJc(true);
       if (i) {
         this.GetItem(7)?.SetUIActive(e.IsUnlockCondition);
         if (e.IsUnlockCondition) {
-          this.ehd();
+          this.Vcd();
         } else {
           this.UpdateLockConditionInfo();
         }
       } else {
-        this.SYc(false);
+        this.MJc(false);
         this.GetText(2)?.SetText(e.GetUnlockTimeFormat());
         this.GetItem(3)?.SetUIActive(false);
       }
     }
   }
-  ehd() {
-    this.SYc(true);
+  Vcd() {
+    this.MJc(true);
     this.GetItem(3)?.SetUIActive(false);
     this.GetItem(1)?.SetUIActive(false);
   }
-  SYc(e) {
+  MJc(e) {
     this.GetButton(0)?.SetSelfInteractive(e);
   }
   UpdateLockConditionInfo() {
     var [e, i, t, s] = this.LevelData.GetOpenConditionLockCondition();
     switch (e) {
       case LevelGeneralDefine_1.ELevelGeneralCondition.TrapDefensePassFullStar:
-        this.SYc(false);
+        this.MJc(false);
         this.GetItem(3)?.SetUIActive(false);
         this.GetItem(1)?.SetUIActive(true);
         this.GetText(2)?.ShowTextNew(t);
@@ -81,10 +81,10 @@ class TrapDefenseLevelGoToPanel extends UiPanelBase_1.UiPanelBase {
         this.GetItem(3)?.SetUIActive(true);
         this.GetItem(1)?.SetUIActive(false);
         this.GetText(5)?.SetText(a);
-        this.SYc(false);
+        this.MJc(false);
         break;
       case LevelGeneralDefine_1.ELevelGeneralCondition.TrapDefenseChallengeStar:
-        this.SYc(false);
+        this.MJc(false);
         this.GetItem(3)?.SetUIActive(true);
         this.GetItem(1)?.SetUIActive(false);
         a = Number(s.get("ChallengeId"));
@@ -93,7 +93,7 @@ class TrapDefenseLevelGoToPanel extends UiPanelBase_1.UiPanelBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t, a, i);
         break;
       default:
-        this.ehd();
+        this.Vcd();
     }
   }
 }

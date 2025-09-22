@@ -20,8 +20,8 @@ class BattlePassTaskTabItem extends UiPanelBase_1.UiPanelBase {
     this.SelectedCallBack = undefined;
     this.OnCanExecuteChange = undefined;
     this.Lke = () => this.OnCanExecuteChange?.(this.GridIndex) ?? true;
-    this.Bke = t => {
-      if (t === 1) {
+    this.Bke = e => {
+      if (e === 1) {
         this.SelectedCallBack?.(this.GridIndex);
       }
     };
@@ -33,56 +33,55 @@ class BattlePassTaskTabItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.GetExtendToggle(2).CanExecuteChange.Bind(this.Lke);
   }
-  SetForceSwitch(t, e = false) {
-    this.GetExtendToggle(2).SetToggleState(t, e);
-    this.GetExtendToggle(2).SetSelfInteractive(t === 0);
+  SetForceSwitch(e, t = false) {
+    this.GetExtendToggle(2).SetToggleState(e, t);
   }
-  SetSelectedCallBack(t) {
-    this.SelectedCallBack = t;
+  SetSelectedCallBack(e) {
+    this.SelectedCallBack = e;
   }
-  SetCanExecuteChange(t) {
-    this.OnCanExecuteChange = t;
+  SetCanExecuteChange(e) {
+    this.OnCanExecuteChange = e;
   }
-  Refresh(t, e, s) {
-    this.UpdateView(t);
+  Refresh(e, t, s) {
+    this.UpdateView(e);
   }
-  GetKey(t, e) {
-    return t;
+  GetKey(e, t) {
+    return e;
   }
   Clear() {
     this.UnBindRedDot();
   }
   OnSelected() {}
   OnDeselected() {}
-  UpdateView(t) {
-    var e = this.GetText(0);
+  UpdateView(e) {
+    var t = this.GetText(0);
     var s = ModelManager_1.ModelManager.BattlePassModel;
     let i = s.GetBattlePassEndTime();
-    switch (t) {
+    switch (e) {
       case 0:
         this.l4e = "BattlePassAlwaysTaskTab";
-        LguiUtil_1.LguiUtil.SetLocalTextNew(e, "Text_BattlePassAwalsTask_Text");
+        LguiUtil_1.LguiUtil.SetLocalTextNew(t, "Text_BattlePassAwalsTask_Text");
         break;
       case 1:
         i = Math.min(i, s.GetDayEndTime());
-        LguiUtil_1.LguiUtil.SetLocalText(e, "BattlePassDayTask");
+        LguiUtil_1.LguiUtil.SetLocalText(t, "BattlePassDayTask");
         this.l4e = "BattlePassDayTaskTab";
         break;
       case 2:
         i = Math.min(i, s.GetWeekEndTime());
-        LguiUtil_1.LguiUtil.SetLocalText(e, "BattlePassWeekTask");
+        LguiUtil_1.LguiUtil.SetLocalText(t, "BattlePassWeekTask");
         this.l4e = "BattlePassWeekTaskTab";
     }
-    var t = this.GetText(1);
+    var e = this.GetText(1);
     var a = TimeUtil_1.TimeUtil.CalculateHourGapBetweenNow(i, true);
     var l = Math.floor(a / TimeUtil_1.TimeUtil.OneDayHourCount);
     var a = Math.floor(a - l * TimeUtil_1.TimeUtil.OneDayHourCount);
     if (l > 0) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, "Text_BattlePassRefreshTime1_Text", l, a);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, "Text_BattlePassRefreshTime1_Text", l, a);
     } else if (a > 0) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, "Text_BattlePassRefreshTime2_Text", a);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, "Text_BattlePassRefreshTime2_Text", a);
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, "Text_BattlePassRefreshTime3_Text");
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, "Text_BattlePassRefreshTime3_Text");
     }
     this.K8e();
   }

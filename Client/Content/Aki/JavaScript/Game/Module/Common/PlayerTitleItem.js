@@ -20,6 +20,8 @@ class PlayerTitleItem extends UiPanelBase_1.UiPanelBase {
     this.Fac = undefined;
     this.L0 = false;
     this.qac = 0;
+    this.CallBack = () => {};
+    this.CanShowTip = true;
     this.eje = () => {
       var e;
       var t;
@@ -28,16 +30,19 @@ class PlayerTitleItem extends UiPanelBase_1.UiPanelBase {
         e = this.GetItem(11);
         t = ModelManager_1.ModelManager.PersonalModel.GetPlayerTitleInfoString(this.Fac.Id, this.qac);
         i = this.Fac.IconInTitleInfo;
-        UiManager_1.UiManager.OpenView("PlayerTitleInfoTip", {
-          ItemForLocation: e,
-          PlayerTitleInfoString: t,
-          PlayerTitleInfoIcon: i
-        }, () => {
-          var e = UiManager_1.UiManager.GetViewByName("PlayerTitleInfoTip");
-          if (e) {
-            e.BindCloseCallback(this.EUt);
-          }
-        });
+        if (this.CanShowTip) {
+          UiManager_1.UiManager.OpenView("PlayerTitleInfoTip", {
+            ItemForLocation: e,
+            PlayerTitleInfoString: t,
+            PlayerTitleInfoIcon: i
+          }, () => {
+            var e = UiManager_1.UiManager.GetViewByName("PlayerTitleInfoTip");
+            if (e) {
+              e.BindCloseCallback(this.EUt);
+            }
+          });
+        }
+        this.CallBack();
       }
     };
     this.EUt = () => {
@@ -162,13 +167,13 @@ class PlayerTitleInfoTip extends UiViewBase_1.UiViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UpdateNavigationListener, this.kMc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeModeFinish, this.kMc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToBattleView, this.kMc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResetToBattleView, this.kMc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddChatContent, this.$St);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UpdateNavigationListener, this.kMc);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.kMc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetToBattleView, this.kMc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResetToBattleView, this.kMc);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddChatContent, this.$St);
   }
   OnBeforeShow() {

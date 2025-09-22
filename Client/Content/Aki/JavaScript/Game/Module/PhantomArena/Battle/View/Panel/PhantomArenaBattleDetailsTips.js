@@ -38,7 +38,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
       this.HideEntry();
       this.TLt();
     };
-    this.dNu = () => {
+    this.d2u = () => {
       if (this.BtnBottomCb) {
         this.BtnBottomCb();
       }
@@ -46,7 +46,7 @@ class PhantomArenaBattleDetailsTips extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UILayoutBase], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[5, this.cgu], [6, this.dNu]];
+    this.BtnBindInfo = [[5, this.cgu], [6, this.d2u]];
   }
   async InitDetailsItem() {
     this.DetailItem = new CardDetailItem_1.CardDetailItem();

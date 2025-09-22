@@ -42,5 +42,5 @@ let RolePartyComponent = class RolePartyComponent extends EntityComponent_1.Enti
     return true;
   }
 };
-RolePartyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(272)], RolePartyComponent);
+RolePartyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(273)], RolePartyComponent);
 exports.RolePartyComponent = RolePartyComponent; //# sourceMappingURL=RolePartyComponent.js.map

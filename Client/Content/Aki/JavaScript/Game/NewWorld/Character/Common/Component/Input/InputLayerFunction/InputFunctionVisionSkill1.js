@@ -10,6 +10,7 @@ const Log_1 = require("../../../../../../../Core/Common/Log");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../../../../../Core/Utils/TraceElementCommon");
 const Global_1 = require("../../../../../../Global");
+const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const UiBlueprintFunctionLibrary_1 = require("../../../../../../Module/BpBridge/UiBlueprintFunctionLibrary");
@@ -22,6 +23,7 @@ const InputDefine_1 = require("./InputDefine");
 const InputFunctionCommon_1 = require("./InputFunctionCommon");
 const SOAR_HEIGHT_LIMIT = 650;
 const soarLandDetectOffset = new UE.VectorDouble(1100, 0, -500);
+const ROLE_ID_CALBRENA = 1208;
 const PROFILE_KEY = "SoarEnterDetect";
 const tmpVector = Vector_1.Vector.Create();
 function visionSkill1TraceDetectHasGround(e) {
@@ -78,7 +80,10 @@ function visionSkill1Function(e) {
           }
         }
         if (n === InputDefine_1.SKILL_ID_HOOK) {
-          if (o.HasTag(-1526637662)) {
+          t = r.CharacterActorComponent.CreatureData.GetPbDataId();
+          if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t) === ROLE_ID_CALBRENA && o.HasTag(-869438579)) {
+            n = InputDefine_1.SKILL_ID_FLYING_FEATHER;
+          } else if (o.HasTag(-1526637662)) {
             n = InputDefine_1.SKILL_ID_XA_KITE;
           } else if (o.HasTag(-1771378495)) {
             n = InputDefine_1.SKILL_ID_XA_MOVABLE;

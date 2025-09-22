@@ -97,6 +97,7 @@ class FriendData {
     this.CardShowList = [];
     this.Birthday = 0;
     this.IsBirthdayDisplay = false;
+    this.Deactivation = false;
     this.CardUnlockList = [];
     this.$xa = "";
     this.Xxa = "";
@@ -155,6 +156,7 @@ class FriendData {
     });
     this.Birthday = e.ZVn;
     this.IsBirthdayDisplay = e.ySs;
+    this.Deactivation = e.jSd;
     if (e.Jxa) {
       this.$xa = e.Jxa;
       this.Xxa = e.Qxa;
@@ -227,6 +229,9 @@ class FriendData {
   }
   set FriendRemark(t) {
     this.Y6t = t;
+  }
+  get IsDeactivation() {
+    return this.Deactivation;
   }
   GetSdkOnlineId() {
     return this.Xxa;

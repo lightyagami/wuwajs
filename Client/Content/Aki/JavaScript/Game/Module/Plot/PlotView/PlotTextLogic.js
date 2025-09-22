@@ -239,15 +239,14 @@ class PlotTextCommonLogic {
         AudioSystem_1.AudioSystem.PostEvent(i);
       } else if (t.Type === IAction_1.EPostAkEvent.Target) {
         t = t.EntityId;
-        if (!(e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t))) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", t]);
+        if (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)) {
+          if ((e = e.Entity.GetComponent(1)?.Owner)?.IsValid()) {
+            AudioSystem_1.AudioSystem.PostEvent(i, e);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", t]);
           }
-        }
-        if ((e = e.Entity.GetComponent(1)?.Owner)?.IsValid()) {
-          AudioSystem_1.AudioSystem.PostEvent(i, e);
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", t]);
+          Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", t]);
         }
       }
     }

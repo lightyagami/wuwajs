@@ -248,7 +248,7 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
   L1n() {
     var t = Protocol_1.Aki.Protocol.zls.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
-    Net_1.Net.Call(27145, t, t => {});
+    Net_1.Net.Call(25347, t, t => {});
   }
   g1n() {
     var t = this.Lo.Control;

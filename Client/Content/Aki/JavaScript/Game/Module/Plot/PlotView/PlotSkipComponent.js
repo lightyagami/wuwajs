@@ -28,11 +28,11 @@ class PlotSkipComponent {
         if (this.ro_) {
           this.ro_ = false;
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
-        }
-        if (UiManager_1.UiManager.IsViewOpen("SummaryPopView")) {
+          this.rsa?.();
+        } else if (UiManager_1.UiManager.IsViewOpen("SummaryPopView")) {
           UiManager_1.UiManager.CloseView("SummaryPopView");
+          this.rsa?.();
         }
-        this.rsa?.();
       }
     };
     this.rZi = () => {

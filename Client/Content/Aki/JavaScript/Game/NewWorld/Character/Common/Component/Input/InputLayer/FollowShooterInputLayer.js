@@ -60,7 +60,7 @@ class FollowShooterInputLayer extends InputLayer_1.InputLayer {
     this.nrl.clear();
   }
   GetLayerType() {
-    return 3;
+    return 4;
   }
   HandlePress(s, e) {
     if (this.srl(s, 1)) {

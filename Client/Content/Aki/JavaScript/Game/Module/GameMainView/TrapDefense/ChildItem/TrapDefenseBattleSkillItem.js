@@ -6,24 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 exports.TrapDefenseBattleSkillItem = undefined;
 const Info_1 = require("../../../../../Core/Common/Info");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
-const ModelManager_1 = require("../../../../Manager/ModelManager");
+const TDPlayerController_1 = require("../../../../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 const BattleSkillItem_1 = require("../../../BattleUi/Views/BattleSkillItem");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 class TrapDefenseBattleSkillItem extends BattleSkillItem_1.BattleSkillItem {
   constructor() {
     super(...arguments);
-    this.Zud = false;
+    this.FSd = false;
   }
   RefreshTrapDefenseSkillCoolDown() {
     var e;
-    var t = ModelManager_1.ModelManager.TowerDefensePlayerModel?.CurrentFollowerProxyId;
-    if (t && (e = ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.GetFollowerSkillRemainCD(t)) > 0) {
-      this.PlaySkillCd(e, ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.GetFollowerSkillCD(t));
+    var t = TDPlayerController_1.TowerDefensePlayerController.GetFollowerProxyId();
+    if (t && (e = TDPlayerController_1.TowerDefensePlayerController.GetFollowerSkillRemainCD(t)) > 0) {
+      this.PlaySkillCd(e, TDPlayerController_1.TowerDefensePlayerController.GetFollowerSkillCD(t));
     }
   }
   IsNeedLongPress() {
-    return !this.Zud && this.SkillButtonData.GetIsLongPressControlCamera();
+    return !this.FSd && this.SkillButtonData.GetIsLongPressControlCamera();
   }
   RefreshSkillName() {
     var e = this.SkillButtonData.GetSkillIconName();
@@ -35,7 +34,7 @@ class TrapDefenseBattleSkillItem extends BattleSkillItem_1.BattleSkillItem {
     }
   }
   SetIsBanLongPress(e) {
-    this.Zud = e;
+    this.FSd = e;
   }
 }
 exports.TrapDefenseBattleSkillItem = TrapDefenseBattleSkillItem;

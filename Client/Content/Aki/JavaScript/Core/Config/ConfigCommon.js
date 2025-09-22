@@ -47,7 +47,7 @@ class ConfigCommon {
     return ConfigCommon.N9;
   }
   static InitDataStatement(o, n, t) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.InitDataStatement(o, n, t);
     }
     ConfigCommon.O9.Start();
@@ -75,7 +75,7 @@ class ConfigCommon {
     return o;
   }
   static GetLangStatementId(o, n, t, C = "") {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.GetLangStatementId(o, n, t, C);
     }
     ConfigCommon.k9.Start();
@@ -108,7 +108,7 @@ class ConfigCommon {
     return m;
   }
   static CheckStatement(o, ...n) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.CheckStatement(o, ...n);
     }
     let t = true;
@@ -129,7 +129,7 @@ class ConfigCommon {
     return t;
   }
   static BindBigInt(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindBigInt(o, n, t, ...C);
     } else {
       ConfigCommon.V9.Start();
@@ -151,7 +151,7 @@ class ConfigCommon {
     }
   }
   static BindInt(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindInt(o, n, t, ...C);
     }
     ConfigCommon.H9.Start();
@@ -165,7 +165,7 @@ class ConfigCommon {
     return t;
   }
   static BindFloat(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat(o, n, t, ...C);
     }
     ConfigCommon.j9.Start();
@@ -179,7 +179,7 @@ class ConfigCommon {
     return t;
   }
   static BindFloat64(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat64(o, n, t, ...C);
     }
     ConfigCommon.mtl.Start();
@@ -193,7 +193,7 @@ class ConfigCommon {
     return t;
   }
   static BindBool(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindBool(o, n, t, ...C);
     }
     ConfigCommon.W9.Start();
@@ -207,7 +207,7 @@ class ConfigCommon {
     return t;
   }
   static BindString(o, n, t, ...C) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.BindString(o, n, t, ...C);
     }
     ConfigCommon.K9.Start();
@@ -221,7 +221,7 @@ class ConfigCommon {
     return t;
   }
   static ClearBind(o) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       CommonDbConnectManager_1.CommonDbConnectManager.ClearBind(o);
     } else {
       UE.KuroPrepareStatementLib.ClearBindings(o);
@@ -229,7 +229,7 @@ class ConfigCommon {
   }
   static Reset(o, ...n) {
     var t;
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.Reset(o, ...n);
     } else {
       if (!(t = UE.KuroPrepareStatementLib.Reset(o))) {
@@ -241,7 +241,7 @@ class ConfigCommon {
     }
   }
   static Step(o, n = false, ...t) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.Step(o, n, ...t);
     }
     var C = UE.KuroPrepareStatementLib.Step(o);
@@ -268,7 +268,7 @@ class ConfigCommon {
     return C;
   }
   static GetValue(o, n, ...t) {
-    if (ConfigCommon._fd) {
+    if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.GetValue(o, n, ...t);
     }
     ConfigCommon.Q9.Start();
@@ -283,7 +283,7 @@ class ConfigCommon {
     return [n, o];
   }
   static CloseAllConnection() {
-    (ConfigCommon._fd ? CommonDbConnectManager_1.CommonDbConnectManager : UE.KuroPrepareStatementLib).CloseAllConnection();
+    (ConfigCommon.mNd ? CommonDbConnectManager_1.CommonDbConnectManager : UE.KuroPrepareStatementLib).CloseAllConnection();
   }
 }
 (exports.ConfigCommon = ConfigCommon).N9 = undefined;
@@ -299,4 +299,4 @@ ConfigCommon.K9 = Stats_1.Stat.Create("ConfigCommon.BindString");
 ConfigCommon.mtl = Stats_1.Stat.Create("ConfigCommon.BindFloat64Stat");
 ConfigCommon.Q9 = Stats_1.Stat.Create("ConfigCommon.GetValue");
 ConfigCommon.AllConfigStatementStat = Stats_1.Stat.Create("ConfigCommon.AllConfig");
-ConfigCommon._fd = true; //# sourceMappingURL=ConfigCommon.js.map
+ConfigCommon.mNd = true; //# sourceMappingURL=ConfigCommon.js.map

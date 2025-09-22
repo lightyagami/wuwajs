@@ -134,10 +134,10 @@ class RogueBattleBuyRoleView extends UiViewBase_1.UiViewBase {
       this.GetItem(7).SetUIActive(false);
     });
     this.ZGe.SetFunction(this.vlo);
-    this.mjc();
+    this.s7u();
     await this.RefreshRoleList();
   }
-  mjc() {
+  s7u() {
     this.Mvu = false;
     this.lqe.SetCloseBtnActive(true);
     this.lqe.SetHelpBtnActive(true);

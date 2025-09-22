@@ -224,7 +224,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     i.jjn = this.Mql;
     e.Dql = i;
     e.Pql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.r4a.Id));
-    CombatMessage_1.CombatNet.Call(19439, this.Entity, e, t => {
+    CombatMessage_1.CombatNet.Call(15023, this.Entity, e, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (CharacterAttachComponent_1.Lql) {
           if (Log_1.Log.CheckDebug()) {
@@ -265,7 +265,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     var e = Protocol_1.Aki.Protocol.tfl.create();
     e.xql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
     e.wql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.r4a.Id));
-    CombatMessage_1.CombatNet.Call(25525, this.Entity, e, t => {
+    CombatMessage_1.CombatNet.Call(21854, this.Entity, e, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (CharacterAttachComponent_1.Lql && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 57, "[CharacterAttach]发起请求解体：解体失败", ["ErrorCode", t.Q4n], ["EntityId", this.Entity.Id], ["TargetEntityId", this.r4a?.Id]);

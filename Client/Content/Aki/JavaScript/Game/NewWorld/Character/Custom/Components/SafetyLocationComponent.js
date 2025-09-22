@@ -62,5 +62,5 @@ let SafetyLocationComponent = SafetyLocationComponent_1 = class SafetyLocationCo
     return true;
   }
 };
-SafetyLocationComponent = SafetyLocationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(251)], SafetyLocationComponent);
+SafetyLocationComponent = SafetyLocationComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(252)], SafetyLocationComponent);
 exports.SafetyLocationComponent = SafetyLocationComponent; //# sourceMappingURL=SafetyLocationComponent.js.map

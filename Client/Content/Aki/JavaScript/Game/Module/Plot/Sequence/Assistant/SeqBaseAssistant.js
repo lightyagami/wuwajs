@@ -33,6 +33,7 @@ class SeqBaseAssistant extends ControllerAssistantBase_1.ControllerAssistantBase
   }
   PreEachPlay() {}
   EachStop() {}
+  CmdShadowUpdate() {}
   AllStop(s) {}
   async AllStopPromise() {
     return this.Promise.Promise;

@@ -83,7 +83,7 @@ function createFishingBoatSprintCommand(n) {
   var e;
   var o = ModelManager_1.ModelManager.FishingModel.GetShipData().GetEntityHandle()?.Entity;
   if (o?.Valid) {
-    if ((e = o.GetComponent(277)) && e.CheckCanSprint()) {
+    if ((e = o.GetComponent(278)) && e.CheckCanSprint()) {
       return (0, InputFunctionCommon_1.createSkillCommand)(o, n);
     } else {
       return undefined;

@@ -159,7 +159,7 @@ class RacingBetsLegMatchData {
         var a = this.Uxc.MatchType === 1 ? "Camera_DangoFocus_" + (t + 1) : "Camera_DangoFocus_" + (t + 2);
         var h = this.Uxc.MatchType === 1 ? RacingBetsDefine_1.racingBetsDangoOddsOffsetList[t] : RacingBetsDefine_1.racingBetsDangoOddsOffsetList[t + 1];
         var i = {
-          UiModelUseWay: 14,
+          UiModelUseWay: 15,
           DangoId: i.s5n,
           Odds: i.YZ_,
           DangoPointCase: s,
@@ -283,7 +283,7 @@ class RacingBetsLegMatchData {
   GetChampionDangoActorData() {
     if (!(this.aTc.length <= 0)) {
       return {
-        UiModelUseWay: 13,
+        UiModelUseWay: 14,
         DangoId: this.aTc[0],
         Odds: 0,
         DangoPointCase: RacingBetsDefine_1.DANGO_PREVIEW_POINT_CASE_ONE_PLAYER,

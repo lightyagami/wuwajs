@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GuaranteeActionCenter = undefined;
 const GuaranteeActionBlackScreenFadeOut_1 = require("./GuaranteeActions/GuaranteeActionBlackScreenFadeOut");
+const GuaranteeActionDisableKey4Func_1 = require("./GuaranteeActions/GuaranteeActionDisableKey4Func");
 const GuaranteeActionDisableSplineMoveModel_1 = require("./GuaranteeActions/GuaranteeActionDisableSplineMoveModel");
 const GuaranteeActionEnablePlayerMoveControl_1 = require("./GuaranteeActions/GuaranteeActionEnablePlayerMoveControl");
 const GuaranteeActionExitOrbitalCamera_1 = require("./GuaranteeActions/GuaranteeActionExitOrbitalCamera");
@@ -23,6 +24,7 @@ class GuaranteeActionCenter {
     e("DisableSplineMoveModel", GuaranteeActionDisableSplineMoveModel_1.GuaranteeActionDisableSplineMoveModel);
     e("StopEffect", GuaranteeActionStopEffect_1.GuaranteeActionStopEffect, 2);
     e("Preload", GuaranteeActionPreload_1.GuaranteeActionPreload);
+    e("DisableKey4Func", GuaranteeActionDisableKey4Func_1.GuaranteeActionDisableKey4Func);
   }
   static GetGuaranteeAction(e) {
     e = GuaranteeActionCenter.iIe.get(e);

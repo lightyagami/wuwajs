@@ -11,6 +11,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const TowerDefenseEventController_1 = require("../../TowerDefenseEvent/TowerDefenseEventController");
 const GameMainViewProxy_1 = require("../GameMainViewProxy");
 const TrapDefenseBuildTipsPanel_1 = require("./ChildPanel/TrapDefenseBuildTipsPanel");
 const TrapDefenseCampsiteHpPanel_1 = require("./ChildPanel/TrapDefenseCampsiteHpPanel");
@@ -27,7 +28,7 @@ const TrapDefenseInterfaceLogic_1 = require("./TrapDefenseInterfaceLogic");
 class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
   constructor() {
     super(...arguments);
-    this.wYu = new TrapDefenseInterfaceLogic_1.TrapDefenseInterfaceLogic(this);
+    this.N6u = new TrapDefenseInterfaceLogic_1.TrapDefenseInterfaceLogic(this);
     this.MiniMap = undefined;
     this.MissionPanel = undefined;
     this.MachineSelectPanel = undefined;
@@ -39,15 +40,15 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
     this.MobileSkillPanel = undefined;
     this.DesktopSkillPanel = undefined;
     this.MachineTipsPanel = undefined;
-    this.LYu = 0;
+    this.fJu = 0;
     this.TouchUiEditGroup = 1;
-    this.AYu = e => {
+    this.uQc = e => {
       if (e === 1) {
-        this.DYu();
-        this.xYu();
+        this.VKu();
+        this.jKu();
       } else if (e === 2) {
         this.PreparationPanel.HideBattleChildViewPanel();
-        this.HJc();
+        this.Yed();
         ControllerHolder_1.ControllerHolder.TrapDefenseController.StartChallengeRoundTips();
       }
       if (e !== 2) {
@@ -56,23 +57,23 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
       this.MiniMap.OnTowerDefenseStepUpdate(e);
       this.MachineSelectPanel.OnTowerDefenseStepUpdate(e);
     };
-    this.UYu = e => {
+    this.GHu = e => {
       this.BuildTipsPanel.SetTipsType(e);
       this.MobileSkillPanel?.RefreshButtonByTipsType(e);
     };
-    this.$cd = e => {
+    this.wRd = e => {
       if (e !== undefined) {
         this.BuildTipsPanel.SetRecyclePrice(e);
         this.MobileSkillPanel?.SetRecyclePrice(e);
       }
     };
-    this.BYu = e => {
+    this.QHc = e => {
       this.ComboPanel.RefreshComboNum(e);
     };
-    this.kYu = () => {
+    this.GXc = () => {
       this.FunctionalPanel.UpdateBdSumState();
     };
-    this.iJc = e => {
+    this.aed = e => {
       this.MachineSelectPanel?.RefreshMachineCdState(e);
       this.MobileSkillPanel?.RefreshMachineCdState();
     };
@@ -81,42 +82,42 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
         this.MachineSelectPanel.SetMachineSelectCollapse(i);
       }
     };
-    this.bmd = () => {
+    this.Dqd = () => {
       this.MachineSelectPanel.RefreshSlotState();
     };
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.OYu(), this.lXu(), this.qYu(), this.GYu(), this.FYu(), this.NYu(), this.VYu(), this.jYu(), this.HYu(), this.$Yu(), this.Pad()]);
+    await Promise.all([this.V6u(), this.b6u(), this.j6u(), this.H6u(), this.$6u(), this.c7u(), this.Q6u(), this.Sju(), this.rXc(), this.oXc(), this.jud()]);
   }
   OnStart() {
-    this.LYu = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTrapDefenseWarningDistance();
+    this.fJu = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTrapDefenseWarningDistance();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseEventStepUpdate, this.AYu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseEventNotifyType, this.UYu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseRecycleRaycastNotify, this.$cd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseComboNumChange, this.BYu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate, this.kYu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapFollowerSkillCd, this.iJc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseEventStepUpdate, this.uQc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseEventNotifyType, this.GHu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TowerDefenseRecycleRaycastNotify, this.wRd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseComboNumChange, this.QHc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate, this.GXc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapFollowerSkillCd, this.aed);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotViewChange, this.wto);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate, this.bmd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate, this.Dqd);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseEventStepUpdate, this.AYu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseEventNotifyType, this.UYu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseRecycleRaycastNotify, this.$cd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseComboNumChange, this.BYu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate, this.kYu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapFollowerSkillCd, this.iJc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseEventStepUpdate, this.uQc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseEventNotifyType, this.GHu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TowerDefenseRecycleRaycastNotify, this.wRd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseComboNumChange, this.QHc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate, this.GXc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapFollowerSkillCd, this.aed);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotViewChange, this.wto);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate, this.bmd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate, this.Dqd);
   }
   OnBeforeShow(e) {
     if (e) {
-      e = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.ProcessStatus;
-      this.AYu(e);
+      e = TowerDefenseEventController_1.TowerDefenseEventController.ProcessStatus;
+      this.uQc(e);
       this.DesktopSkillPanel?.RefreshButtonByIsInBuild(false);
-      e = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.BuildTipsType;
+      e = TowerDefenseEventController_1.TowerDefenseEventController.BuildTipsType;
       this.MobileSkillPanel?.RefreshButtonByTipsType(e);
     }
   }
@@ -128,13 +129,13 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
   }
   OnTick(e) {
     var i = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.GetEntityPositions();
-    this.WYu(i);
+    this.gJu(i);
   }
-  WYu(e) {
+  gJu(e) {
     let i = false;
     if (e && e.length > 0) {
       for (const t of e) {
-        if (t.Distance <= this.LYu) {
+        if (t.Distance <= this.fJu) {
           i = true;
           break;
         }
@@ -154,52 +155,52 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
       this.MachineTipsPanel.RefreshMachineStateByRoulette(e);
     }
   }
-  async OYu() {
+  async V6u() {
     ModelManager_1.ModelManager.TrapDefenseModel?.MapData.InitMapData();
     this.MiniMap = await this.CreateChildPanel("DynActivityTowerMap", this.View.GetContentPanel(), TrapDefenseMiniMapPanel_1.TrapDefenseMiniMapPanel, true, true, 4);
   }
-  async lXu() {
+  async b6u() {
     this.MissionPanel = await this.CreateChildPanel("DynActivityTowerMission", this.View.GetContentPanel(), TrapDefenseMissionPanel_1.TrapDefenseMissionPanel, true, true, 5);
   }
-  async qYu() {
+  async j6u() {
     this.MachineSelectPanel = await this.CreateChildPanel("DynActivityTower", this.View.GetContentPanel(), TrapDefenseMachineSelectPanel_1.TrapDefenseMachineSelectPanel, true, true, 28);
-    this.MachineSelectPanel.SetInterface(this.wYu);
+    this.MachineSelectPanel.SetInterface(this.N6u);
   }
-  async GYu() {
+  async H6u() {
     this.PreparationPanel = await this.CreateChildPanel("DynActivityTowerEntrance", this.View.GetContentPanel(), TrapDefensePreparationPanel_1.TrapDefensePreparationPanel, false, false, 29);
   }
-  async FYu() {
+  async $6u() {
     this.FunctionalPanel = await this.CreateChildPanel("DynTowerTop", this.View.GetContentPanel(), TrapDefenseFunctionalPanel_1.TrapDefenseFunctionalPanel, true, false, 30);
   }
-  async NYu() {
+  async c7u() {
     this.CampsiteHpPanel = await this.CreateChildPanel("UiItem_TowerDefenseTips", this.View.GetContentPanel(), TrapDefenseCampsiteHpPanel_1.TrapDefenseCampsiteHpPanel, true, false, 31);
   }
-  async VYu() {
+  async Q6u() {
     this.BuildTipsPanel = await this.CreateChildPanel("DynActivityTowerOperate", this.View.GetContentPanel(), TrapDefenseBuildTipsPanel_1.TrapDefenseBuildTipsPanel, true, true, 32);
   }
-  async jYu() {
+  async Sju() {
     this.ComboPanel = await this.CreateChildPanel("UiItem_TowerDefenseCombo", this.View.GetContentPanel(), TrapDefenseComboPanel_1.TrapDefenseComboPanel, false, true, 33);
   }
-  async HYu() {
+  async rXc() {
     if (!!Info_1.Info.IsInTouch() && !this.MobileSkillPanel) {
-      await this.QYu();
+      await this.nXc();
     }
   }
-  async $Yu() {
+  async oXc() {
     if (!Info_1.Info.IsInTouch() && !this.DesktopSkillPanel) {
-      await this.KYu();
+      await this.sXc();
     }
   }
-  async QYu() {
+  async nXc() {
     this.MobileSkillPanel = await this.CreateChildPanel("DynTowerDefenseSkill", this.View.GetContentPanel(), TrapDefenseMobileSkillPanel_1.TrapDefenseMobileSkillPanel, true, true, 36);
   }
-  async KYu() {
+  async sXc() {
     this.DesktopSkillPanel = await this.CreateChildPanel("DynTowerDefenseSkill", this.View.GetContentPanel(), TrapDefenseDesktopSkillPanel_1.TrapDefenseDesktopSkillPanel, true, true, 35);
   }
-  async Pad() {
+  async jud() {
     this.MachineTipsPanel = await this.CreateChildPanel("UiItem_InsideIllustrationsPopup", this.View.GetContentPanel(), TrapDefenseMachineTipsPanel_1.TrapDefenseMachineTipsPanel, false, false, 34);
   }
-  DYu() {
+  VKu() {
     if (ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsShopOpen) {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenTrapDefenseShopOpenTips(() => {
         this.PreparationPanel.ShowBattleChildViewPanel();
@@ -208,7 +209,7 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
       this.PreparationPanel.ShowBattleChildViewPanel();
     }
   }
-  xYu() {
+  jKu() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
     if (e && !StringUtils_1.StringUtils.IsBlank(e.ReadStageEnhanceTips)) {
       this.FunctionalPanel.SetTips(e.ReadStageEnhanceTips);
@@ -219,7 +220,7 @@ class TrapDefenseMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenTrapDefenseBossComingTips();
     }
   }
-  HJc() {
+  Yed() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
     if (e && !StringUtils_1.StringUtils.IsBlank(e.ReadStageEnhanceTips)) {
       this.FunctionalPanel.HideTips();

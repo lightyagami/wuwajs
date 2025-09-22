@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WeaponLevelUpView = undefined;
 const UE = require("ue");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -13,6 +14,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const AttributeItem_1 = require("../../Common/AttributeItem");
@@ -25,8 +27,8 @@ const SelectableComponent_1 = require("../../Common/PropItem/SelectablePropItem/
 const SelectableExpData_1 = require("../../Common/PropItem/SelectablePropItem/SelectableExpData");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
-const ItemRewardController_1 = require("../../ItemReward/ItemRewardController");
-const RewardItemData_1 = require("../../ItemReward/RewardData/RewardItemData");
+const ItemHintDefines_1 = require("../../ItemHint/Data/ItemHintDefines");
+const ItemHintViewNew_1 = require("../../ItemHint/Views/ItemHintViewNew");
 const RoleLevelUpSuccessController_1 = require("../../RoleUi/RoleLevel/RoleLevelUpSuccessController");
 const AttrListScrollData_1 = require("../../RoleUi/View/ViewData/AttrListScrollData");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
@@ -58,7 +60,10 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       this.Cji.SetMaxState(this.WeaponInstance.IsLevelMax());
     };
     this.wOo = e => {
-      this.zuo = e;
+      this.zuo = e.sort((e, t) => {
+        e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e[0].ItemId);
+        return ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t[0].ItemId).QualityId - e.QualityId;
+      });
     };
     this.BOo = e => this.WeaponInstance.GetLevelExp(e);
     this.xji = e => {
@@ -73,89 +78,59 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       if (!this.POo || this.POo.length <= 0) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponSelectMaterialTipsText");
       } else if (this.Cji.GetEnoughMoney()) {
-        let e = false;
-        let t = false;
-        let i = false;
-        for (const a of this.POo) {
-          var s = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(a.IncId);
-          if (s && (!e && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighQuality(s) && (e = true), !t && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighLevel(s) && (t = true), !i) && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighResonanceLevel(s)) {
-            i = true;
-          }
-        }
-        let r = undefined;
-        var o;
-        var n = [];
-        if (e) {
-          o = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHighQuality");
-          n.push(o);
-        }
-        if (t) {
-          o = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHasLevelUp");
-          n.push(o);
-        }
-        if (i) {
-          o = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHasResonance");
-          n.push(o);
-        }
-        switch (n.length) {
-          case 1:
-            r = 3;
-            break;
-          case 2:
-            r = 2;
-            break;
-          case 3:
-            r = 1;
-        }
-        if (r) {
-          (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(r)).SetTextArgs(...n);
-          o.FunctionMap.set(2, () => {
-            this.qOo();
-          });
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
+        var t = () => {
+          var e = this.WeaponInstance.GetIncId();
+          WeaponController_1.WeaponController.SendPbWeaponLevelUpRequest(e, this.POo);
+        };
+        if (ModelManager_1.ModelManager.WeaponModel.LevelUpConfirmTipsNotShow) {
+          t();
         } else {
-          this.qOo();
+          var i = this.B_d();
+          var r = this.k_d();
+          var n = r.size > 0;
+          var s = i.length > 0;
+          let e = undefined;
+          if (n && s) {
+            e = this.P_d(i, r);
+          } else if (n) {
+            e = this.A_d(r);
+          } else if (s) {
+            e = this.D_d(i);
+          }
+          if (e !== undefined) {
+            e.FunctionMap.set(2, t);
+            e.HasToggle = true;
+            e.ToggleText = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_WeaponLevelUpTips_Text");
+            e.SetToggleFunction(e => {
+              ModelManager_1.ModelManager.WeaponModel.LevelUpConfirmTipsNotShow = e;
+            });
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+          } else {
+            t();
+          }
         }
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponNoEnoughMoneyText");
       }
     };
-    this.qOo = () => {
-      var e = () => {
-        var e = this.WeaponInstance.GetIncId();
-        WeaponController_1.WeaponController.SendPbWeaponLevelUpRequest(e, this.POo);
-      };
-      var t = this.vji.GetOverExp();
-      if (t > 0) {
-        var i;
-        var t = ModelManager_1.ModelManager.WeaponModel.GetCanChangeMaterialList(t);
-        if (t.size > 0) {
-          (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(24)).ItemIdMap = t;
-          i.FunctionMap.set(2, e);
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
-          return;
-        }
-      }
-      e();
-    };
     this.bji = (e, t) => {
       var i = new CommonItemSelectView_1.CommonItemSelectViewOpenViewData();
       var r = ModelManager_1.ModelManager.WeaponModel.GetWeaponExpItemList(this.WeaponInstance.GetIncId());
-      var s = new CommonIntensifyPropExpData_1.CommonIntensifyPropExpData();
-      s.CurrentExp = this.vji.GetCurrentExp();
-      s.CurrentLevel = this.vji.GetCurrentLevel();
-      s.CurrentMaxLevel = this.vji.GetCurrentMaxLevel();
-      s.MaxExpFunction = this.BOo;
-      s.GetItemExpFunction = this.xji;
-      var o = this.POo;
-      var n = new SelectableComponent_1.SelectableComponentData();
-      n.IsSingleSelected = false;
-      n.OnChangeSelectedFunction = this.AMt;
-      n.MaxSelectedGridNum = this.Cji.GetMaxCount();
+      var n = new CommonIntensifyPropExpData_1.CommonIntensifyPropExpData();
+      n.CurrentExp = this.vji.GetCurrentExp();
+      n.CurrentLevel = this.vji.GetCurrentLevel();
+      n.CurrentMaxLevel = this.vji.GetCurrentMaxLevel();
+      n.MaxExpFunction = this.BOo;
+      n.GetItemExpFunction = this.xji;
+      var s = this.POo;
+      var o = new SelectableComponent_1.SelectableComponentData();
+      o.IsSingleSelected = false;
+      o.OnChangeSelectedFunction = this.AMt;
+      o.MaxSelectedGridNum = this.Cji.GetMaxCount();
       i.ItemDataBaseList = r;
-      i.SelectedDataList = o ?? [];
-      i.ExpData = s;
-      i.SelectableComponentData = n;
+      i.SelectedDataList = s ?? [];
+      i.ExpData = n;
+      i.SelectableComponentData = o;
       i.UseWayId = 2;
       UiManager_1.UiManager.OpenView("CommonItemSelectViewRight", i);
     };
@@ -176,13 +151,13 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       var t;
       var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponExpItemListUseToAuto(this.WeaponInstance.GetIncId());
       var r = [];
-      var s = this.GOo(this.Mji);
-      for (const o of i) {
-        if (!(o.GetQuality() > s)) {
+      var n = this.GOo(this.Mji);
+      for (const s of i) {
+        if (!(s.GetQuality() > n)) {
           e = {
-            IncId: o.GetUniqueId(),
-            ItemId: o.GetConfigId(),
-            Count: o.GetCount(),
+            IncId: s.GetUniqueId(),
+            ItemId: s.GetConfigId(),
+            Count: s.GetCount(),
             SelectedCount: 0
           };
           r.push(e);
@@ -223,16 +198,8 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       this.NOo();
     };
     this.nco = () => {
-      if (this.zuo.length > 0) {
-        var e = [];
-        for (const r of this.zuo) {
-          var t = r[0];
-          var i = r[1];
-          var i = new RewardItemData_1.RewardItemData(t.ItemId, i, t.IncId);
-          e.push(i);
-        }
-        ItemRewardController_1.ItemRewardController.OpenCommonRewardView(1010, e);
-      }
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(8);
+      this.L_d();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeaponCanGoBreach);
     };
   }
@@ -261,6 +228,7 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
   OnBeforeDestroy() {
     this.dji.Destroy();
     this.Cji.Destroy();
+    this.L_d();
   }
   OnBeforeShow() {
     this.bOo();
@@ -336,6 +304,7 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
         TimerSystem_1.GameplayTimerSystem.Delay(() => {
           RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(e);
           UiLayer_1.UiLayer.SetShowMaskLayer("OpenLevelUpSuccessView", false);
+          this.O_d();
         }, t);
       }
     }
@@ -349,16 +318,16 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     var t = this.WeaponInstance.GetBreachLevel();
     var i = this.vji.GetCurrentLevel();
     var r = this.vji.GetArrivedLevel();
-    var s = [];
+    var n = [];
     for (const h of this.UOo) {
-      var o = h.CurveId;
-      var n = h.PropId.Value;
-      var a = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o, n, i, t);
+      var s = h.CurveId;
+      var o = h.PropId.Value;
+      var a = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(s, o, i, t);
       let e = 0;
       if (i < r) {
-        e = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o, n, r, t);
+        e = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(s, o, r, t);
       }
-      o = {
+      s = {
         Id: h.PropId.Id,
         IsRatio: h.PropId.IsRatio,
         CurValue: a,
@@ -366,19 +335,19 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
         ShowNext: e > a,
         NextValue: e
       };
-      s.push(o);
+      n.push(s);
     }
-    this.nvt.RefreshByData(s);
+    this.nvt.RefreshByData(n);
   }
   _co(e, t) {
     var i = [];
     var r = this.WeaponInstance.GetBreachLevel();
-    for (const n of this.UOo) {
-      var s = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(n.CurveId, n.PropId.Value, e, r);
-      var o = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(n.CurveId, n.PropId.Value, t, r);
-      if (s !== o) {
-        s = new AttrListScrollData_1.AttrListScrollData(n.PropId.Id, s, o, 0, n.PropId.IsRatio, 0);
-        i.push(RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.ConvertsAttrListScrollDataToAttributeInfo(s));
+    for (const o of this.UOo) {
+      var n = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o.CurveId, o.PropId.Value, e, r);
+      var s = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o.CurveId, o.PropId.Value, t, r);
+      if (n !== s) {
+        n = new AttrListScrollData_1.AttrListScrollData(o.PropId.Id, n, s, 0, o.PropId.IsRatio, 0);
+        i.push(RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.ConvertsAttrListScrollDataToAttributeInfo(n));
       }
     }
     return i;
@@ -402,6 +371,75 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
   FOo() {
     this.Aji();
     this.Cji.SetMaxState(this.WeaponInstance.IsLevelMax());
+  }
+  B_d() {
+    let e = false;
+    let t = false;
+    let i = false;
+    for (const o of this.POo) {
+      var r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(o.IncId);
+      if (r && (!e && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighQuality(r) && (e = true), !t && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighLevel(r) && (t = true), !i) && ModelManager_1.ModelManager.WeaponModel.IsWeaponHighResonanceLevel(r)) {
+        i = true;
+      }
+    }
+    var n;
+    var s = [];
+    if (e) {
+      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHighQuality");
+      s.push(n);
+    }
+    if (t) {
+      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHasLevelUp");
+      s.push(n);
+    }
+    if (i) {
+      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("WeaponHasResonance");
+      s.push(n);
+    }
+    return s;
+  }
+  k_d() {
+    let e = undefined;
+    var t = this.vji.GetOverExp();
+    return e = t > 0 ? ModelManager_1.ModelManager.WeaponModel.GetCanChangeMaterialList(t) : new Map();
+  }
+  D_d(e) {
+    let t = undefined;
+    switch (e.length) {
+      case 1:
+        t = 3;
+        break;
+      case 2:
+        t = 2;
+        break;
+      case 3:
+        t = 1;
+    }
+    var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(t);
+    i.SetTextArgs(...e);
+    return i;
+  }
+  A_d(e) {
+    var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(24);
+    t.ItemIdMap = e;
+    return t;
+  }
+  P_d(e, t) {
+    let i = undefined;
+    switch (e.length) {
+      case 1:
+        i = 357;
+        break;
+      case 2:
+        i = 358;
+        break;
+      case 3:
+        i = 359;
+    }
+    var r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(i);
+    r.SetTextArgs(...e);
+    r.ItemIdMap = t;
+    return r;
   }
   NOo() {
     var e = this.GOo(this.Mji);
@@ -444,6 +482,28 @@ class WeaponLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       e[0].ItemId = 0;
       e[1] = 0;
     });
+  }
+  L_d() {
+    if (UiManager_1.UiManager.IsViewOpen("ItemHintViewNew")) {
+      UiManager_1.UiManager.CloseView("ItemHintViewNew");
+    }
+  }
+  O_d() {
+    var e;
+    if (this.zuo.length > 0) {
+      (e = new ItemHintViewNew_1.ItemHintViewNewData()).CheckPriorNext = () => this.zuo.length > 0;
+      e.ShiftPriorItem = () => {
+        var e = this.zuo.shift();
+        var t = new ItemHintDefines_1.ItemRewardInfo();
+        t.ItemId = e[0].ItemId;
+        t.ItemCount = e[1];
+        var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e[0].ItemId);
+        t.Quality = e.QualityId;
+        return t;
+      };
+      e.TitleTextId = "Text_ItemReturnTitle_Text";
+      UiManager_1.UiManager.OpenView("ItemHintViewNew", e);
+    }
   }
 }
 exports.WeaponLevelUpView = WeaponLevelUpView;

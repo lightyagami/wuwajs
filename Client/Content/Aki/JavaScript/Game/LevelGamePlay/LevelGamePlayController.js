@@ -60,40 +60,40 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnInit() {
-    Net_1.Net.Register(27963, LevelGamePlayController._Ue);
-    Net_1.Net.Register(27397, LevelGamePlayController.uUe);
-    Net_1.Net.Register(16669, LevelGamePlayController.cUe);
-    Net_1.Net.Register(16457, LevelGamePlayController.dUe);
-    Net_1.Net.Register(15049, LevelGamePlayController.OnEnableNearbyTrackingNotify);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.bku);
+    Net_1.Net.Register(25479, LevelGamePlayController._Ue);
+    Net_1.Net.Register(22646, LevelGamePlayController.uUe);
+    Net_1.Net.Register(27564, LevelGamePlayController.cUe);
+    Net_1.Net.Register(27587, LevelGamePlayController.dUe);
+    Net_1.Net.Register(24823, LevelGamePlayController.OnEnableNearbyTrackingNotify);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.Rku);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
     this.fUe = new Map();
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(27963);
-    Net_1.Net.UnRegister(27397);
-    Net_1.Net.UnRegister(16669);
-    Net_1.Net.UnRegister(16457);
-    Net_1.Net.UnRegister(15049);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.bku);
+    Net_1.Net.UnRegister(25479);
+    Net_1.Net.UnRegister(22646);
+    Net_1.Net.UnRegister(27564);
+    Net_1.Net.UnRegister(27587);
+    Net_1.Net.UnRegister(24823);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.Rku);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
     return !(this.fUe = undefined);
   }
   static ThrowDamageChangeRequest(e, t) {
     var r = Protocol_1.Aki.Protocol.Dms.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     r.I5n = MathUtils_1.MathUtils.NumberToLong(t);
-    Net_1.Net.Call(27988, r, e => {
+    Net_1.Net.Call(20435, r, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageEntityNotExit:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageReqEntityIsAlreadyDead:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15449);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18452);
       }
     });
   }
@@ -101,13 +101,13 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     var r = Protocol_1.Aki.Protocol.Uds.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     r.vul = t;
-    Net_1.Net.Call(16834, r, e => {
+    Net_1.Net.Call(28817, r, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15449);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18452);
       }
     });
   }
@@ -118,16 +118,16 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     this.fUe.set(e, true);
     var t = Protocol_1.Aki.Protocol.wms.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    var t = await Net_1.Net.CallAsync(24733, t);
+    var t = await Net_1.Net.CallAsync(25189, t);
     this.fUe.delete(e);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22840), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17339), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
   }
   static ElevatorStateChangeRequest(e, t, r, o) {
     var a = Protocol_1.Aki.Protocol.WZn.create();
     a.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     a.L5n = t;
     a.Y4n = r;
-    Net_1.Net.Call(26845, a, e => {
+    Net_1.Net.Call(29036, a, e => {
       o();
       if (e) {
         switch (e.Q4n) {
@@ -135,7 +135,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrElevatorLocked:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17010);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15629);
         }
       }
     });
@@ -166,12 +166,12 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static EntityFollowTrackRequest(e, t) {
     var r = Protocol_1.Aki.Protocol.Nds.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(20150, r, t);
+    Net_1.Net.Call(26422, r, t);
   }
   static EntityBuffProducerRequest(e, t) {
     var r = Protocol_1.Aki.Protocol._es.create();
     r.D5n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(25249, r, t);
+    Net_1.Net.Call(16648, r, t);
   }
   static ShootTargetHitGearStateChangeRequest(e, t, r, o, a) {
     var l = Protocol_1.Aki.Protocol.Lms.create();
@@ -179,9 +179,9 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     l.yX_ = t;
     l.Mjn = r;
     if (o) {
-      l.uJc = o;
+      l.Ced = o;
     }
-    Net_1.Net.Call(26604, l, a);
+    Net_1.Net.Call(25084, l, a);
   }
   static OnEnableNearbyTrackingNotify(t) {
     for (const e of t.PSs) {
@@ -196,7 +196,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static EntityAdsorbRequest(e, t) {
     var r = Protocol_1.Aki.Protocol.Fes.create();
     r.F4n = e;
-    Net_1.Net.Call(20726, r, t);
+    Net_1.Net.Call(19951, r, t);
   }
   static RequestChairSit(e, t, r) {
     var o = Protocol_1.Aki.Protocol.rms.create();
@@ -207,7 +207,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
       o.R5n = CombatMessage_1.CombatNet.CreateCombatCommon(e);
     }
     o.x5n = r;
-    Net_1.Net.Call(27775, o, e => {
+    Net_1.Net.Call(24825, o, e => {
       Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(29)?.OnResponseSit(t, e.Q4n);
     });
   }
@@ -253,15 +253,15 @@ LevelGamePlayController.dUe = e => {
             Log_1.Log.Error("SceneItem", 79, "SetTargetFloorTeleport Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
           }
           break;
-        case Protocol_1.Aki.Protocol.Gmu.xtd:
-          o = e.Pmu.xtd;
+        case Protocol_1.Aki.Protocol.Gmu.Qrd:
+          o = e.Pmu.Qrd;
           if (!o) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("SceneItem", 79, "SetTargetFloorPathMove Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
             }
             return;
           }
-          r.SetTargetFloorPathMove(e.P5n, o.Btd, o.Utd);
+          r.SetTargetFloorPathMove(e.P5n, o.Xrd, o.Krd);
           break;
         default:
           Protocol_1.Aki.Protocol.Gmu.Proto_Default;
@@ -272,12 +272,12 @@ LevelGamePlayController.dUe = e => {
     Log_1.Log.Warn("SceneItem", 35, "OnElevatorMoveNotify No Entity", ["id", e.F4n]);
   }
 };
-LevelGamePlayController.bku = (e, t) => {
+LevelGamePlayController.Rku = (e, t) => {
   ModelManager_1.ModelManager.VisionCaptureModel?.AddVisionCapture(e, t);
 };
 LevelGamePlayController.aXt = e => {
   ModelManager_1.ModelManager.VisionCaptureModel?.RemoveVisionCapture(e);
 };
-LevelGamePlayController.Rku = (e, t) => {
+LevelGamePlayController.wku = (e, t) => {
   ModelManager_1.ModelManager.VisionCaptureModel?.AddVisionCaptureFinish(e, t);
 }; //# sourceMappingURL=LevelGamePlayController.js.map

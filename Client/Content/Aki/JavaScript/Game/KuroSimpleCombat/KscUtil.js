@@ -15,7 +15,7 @@ const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const KscLog_1 = require("./KscLog");
 class KscUtil {
   static SetKscWorldHandle(e) {
-    this.xfd = e;
+    this.t4d = e;
   }
   static GetDtRows(e) {
     var r = new Array();
@@ -48,8 +48,8 @@ class KscUtil {
   static AsyncLoadKscAsset(o) {
     ResourceSystem_1.ResourceSystem.LoadAsync(o.Path, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        if (o.KscWorldHandle !== this.xfd) {
-          var t = `[加载Ksc资产] 场景不一致, ${o.Path}, LoadHandle: ${o.KscWorldHandle}, CurHandle: ${this.xfd}`;
+        if (o.KscWorldHandle !== this.t4d) {
+          var t = `[加载Ksc资产] 场景不一致, ${o.Path}, LoadHandle: ${o.KscWorldHandle}, CurHandle: ${this.t4d}`;
           KscLog_1.KscLog.Info("Load", 69, o.Context, t);
           const s = e;
           o.NativeContainer?.Add(s, o.Id);
@@ -83,7 +83,7 @@ class KscUtil {
             Id: t,
             Path: s,
             NativeContainer: l,
-            KscWorldHandle: this.xfd
+            KscWorldHandle: this.t4d
           });
         }
       } else {
@@ -188,8 +188,10 @@ class KscUtil {
     r.set(104, e.IgnoreDamageResistanceElement4);
     r.set(105, e.IgnoreDamageResistanceElement5);
     r.set(106, e.IgnoreDamageResistanceElement6);
+    r.set(44, e.DamageAmplify1);
+    r.set(45, e.DamageAmplify2);
     return r;
   }
 }
-(exports.KscUtil = KscUtil).xfd = 0;
+(exports.KscUtil = KscUtil).t4d = 0;
 //# sourceMappingURL=KscUtil.js.map

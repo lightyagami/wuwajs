@@ -28,6 +28,8 @@ const MapMarkByRelativeId_1 = require("../../../Core/Define/ConfigQuery/MapMarkB
 const MapMarkRelativeSubTypeAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeAll");
 const MapMarkRelativeSubTypeByFunctionId_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeByFunctionId");
 const MapMarkRelativeSubTypeById_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeById");
+const MapPeriodicActivityAll_1 = require("../../../Core/Define/ConfigQuery/MapPeriodicActivityAll");
+const MapPeriodicActivityById_1 = require("../../../Core/Define/ConfigQuery/MapPeriodicActivityById");
 const MonsterDetectionAll_1 = require("../../../Core/Define/ConfigQuery/MonsterDetectionAll");
 const MultiMapAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAll");
 const MultiMapAreaConfigAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAreaConfigAll");
@@ -80,15 +82,15 @@ class MapConfig extends ConfigBase_1.ConfigBase {
     e = TaskMarkAll_1.configTaskMarkAll.GetConfigList();
     if (e) {
       this.aVa = new Map();
-      for (const a of e) {
-        this.aVa.set(a.QuestId, a);
+      for (const t of e) {
+        this.aVa.set(t.QuestId, t);
       }
     }
     e = MonsterDetectionAll_1.configMonsterDetectionAll.GetConfigList();
     if (e) {
       this.rO_ = new Map();
-      for (const t of e) {
-        this.rO_.set(t.MarkId, t);
+      for (const a of e) {
+        this.rO_.set(a.MarkId, a);
       }
     }
     e = MapMarkAll_1.configMapMarkAll.GetConfigList();
@@ -255,7 +257,7 @@ class MapConfig extends ConfigBase_1.ConfigBase {
     } else if (this.MSl.has(e)) {
       return this.MSl.get(e);
     } else {
-      MapLogger_1.MapLogger.ErrorOnce(e, 63, "查询标记配置失败->MapMark和DynamicMark配置都不存在相关配置", ["MarkId", e]);
+      MapLogger_1.MapLogger.Debug(63, "查询标记配置失败->MapMark和DynamicMark配置都不存在相关配置", ["MarkId", e]);
       return;
     }
   }
@@ -439,6 +441,12 @@ class MapConfig extends ConfigBase_1.ConfigBase {
   }
   GetMapMarkListByInstanceDungeonId(e) {
     return MapMarkByInstanceDungeonId_1.configMapMarkByInstanceDungeonId.GetConfigList(e);
+  }
+  GetMapPeriodicActivityConfig(e) {
+    return MapPeriodicActivityById_1.configMapPeriodicActivityById.GetConfig(e);
+  }
+  GetMapPeriodicActivityListConfigs() {
+    return MapPeriodicActivityAll_1.configMapPeriodicActivityAll.GetConfigList();
   }
 }
 (exports.MapConfig = MapConfig).EnableAsyncMiniMap = false;

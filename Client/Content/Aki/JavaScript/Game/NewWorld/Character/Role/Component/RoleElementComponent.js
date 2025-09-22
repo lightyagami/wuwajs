@@ -113,7 +113,7 @@ let RoleElementComponent = class RoleElementComponent extends EntityComponent_1.
   set kin(t) {
     if (this.kin !== t && this.n$t?.IsAutonomousProxy) {
       if (t) {
-        t = (0, RoleQteComponent_1.isMultiQte)();
+        t = (0, FormationDataController_1.isBattleMulti)();
         this.jAl = t ? CharacterBuffIds_1.buffId.ActivateMultiQte : CharacterBuffIds_1.buffId.ActivateQte;
         this.m1t.AddBuff(this.jAl, {
           InstigatorId: this.m1t.CreatureDataId,

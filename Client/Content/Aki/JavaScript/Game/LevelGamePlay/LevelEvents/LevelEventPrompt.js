@@ -13,6 +13,7 @@ const PublicUtil_1 = require("../../Common/PublicUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const ActivityControllerHolder_1 = require("../../Module/Activity/ActivityControllerHolder");
 const LguiUtil_1 = require("../../Module/Util/LguiUtil");
 const UiManager_1 = require("../../Ui/UiManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
@@ -145,6 +146,10 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
             e = o.TidMainText;
             i = o.TidSubText;
             break;
+          case IAction_1.ECommonTipType.PhotographicTip:
+            e = o.MainText;
+            ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController?.ShowFightPhotoTips(e);
+            return;
           default:
             return;
         }

@@ -64,6 +64,9 @@ class PassiveSkill {
   get SkillActionScript() {
     return this.skillactionscript();
   }
+  get ActionExecuteFlag() {
+    return this.actionexecuteflag();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -248,6 +251,14 @@ class PassiveSkill {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  actionexecuteflag() {
+    var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.PassiveSkill = PassiveSkill;

@@ -101,7 +101,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.UiNavigationModel.Tick(i);
   }
   static HotKeyCloseView() {
-    var i = this.GetCurrentNavigationActiveListenerByTag(HotKeyViewDefine_1.EXIT_TAG);
+    var i = this.GetCurrentNavigationActiveListenerByTag(HotKeyViewDefine_1.EXIT_TAG, true);
     if (Info_1.Info.IsInGamepad() && this.JumpNavigationGroup(6)) {
       UiNavigationLogic_1.UiNavigationLogic.ExecuteInterfaceMethod(i.GetNavigationComponent(), "InteractClickPrevGroup");
     } else if (i) {
@@ -119,7 +119,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     return !!e && e.SimulateClickButton(UiNavigationDefine_1.GAMEPAD_POINT_ID, i, t);
   }
   static Dje(i) {
-    if (!this.Mud()) {
+    if (!this.Zvd()) {
       if (this.SimulateClickItem(i.GetBehaviorComponent().RootUIComp, i.ClickPivot)) {
         UiNavigationLogic_1.UiNavigationLogic.ExecuteInterfaceMethod(i.GetNavigationComponent(), "InteractClickHandle");
         ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
@@ -169,6 +169,25 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     if (t) {
       t = t.GetCurrentScrollbar();
       this.ZBo(t, i);
+    }
+  }
+  static ScrollBarChangeScheduleByListener(i, t) {
+    i = i.GetBehaviorComponent();
+    if (i) {
+      this.ZBo(i, t);
+    }
+  }
+  static VerticalScrollBarChangeSchedule(i) {
+    var t = this.KBo();
+    if (t &&= t.GetCurrentScrollbar()) {
+      this.Vjd(t, i);
+    }
+  }
+  static HorizontalScrollBarChangeSchedule(i) {
+    var t = this.KBo();
+    if (t) {
+      t = t.GetCurrentScrollbar();
+      this.jjd(t, i);
     }
   }
   static BookMarkNavigation(a, i) {
@@ -323,7 +342,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       return UiNavigationNewController.UWs(i, t);
     }
   }
-  static Ddd(i, t) {
+  static mDd(i, t) {
     var e = UE.LGUIBPLibrary.GetComponentsInChildren(i, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
     var a = [];
     for (let i = e.Num() - 1; i >= 0; --i) {
@@ -339,7 +358,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     var n = i.ScrollView.DisplayItemArray;
     for (let i = 0, t = n.Num(); i < t; ++i) {
       var r = n.Get(i);
-      var o = UiNavigationNewController.Ddd(r, e);
+      var o = UiNavigationNewController.mDd(r, e);
       if (o.length !== 0) {
         for (let i = 0, t = o.length; i < t; ++i) {
           var s = o[i];
@@ -377,20 +396,20 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     return a;
   }
   static GetCanFocusInsideListener(i) {
-    var t = i.GetNavigationGroup().InsideGroupName;
-    var e = UE.LGUIBPLibrary.GetComponentsInChildren(i.InsideGroupActor, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
-    if (e) {
-      for (let i = e.Num() - 1; i >= 0; --i) {
-        var a = e.Get(i);
-        if (!StringUtils_1.StringUtils.IsEmpty(a.GroupName) && t === a.GroupName && a.IsCanFocus()) {
-          return a;
+    var e = i.GetNavigationGroup().InsideGroupNameSet;
+    var a = UE.LGUIBPLibrary.GetComponentsInChildrenWithHirerarchyIndex(i.InsideGroupActor, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
+    if (a) {
+      for (let i = 0, t = a.Num(); i < t; ++i) {
+        var n = a.Get(i);
+        if (!StringUtils_1.StringUtils.IsEmpty(n.GroupName) && e.has(n.GroupName) && n.IsCanFocus()) {
+          return n;
         }
       }
     }
   }
   static IsInFocusInsideListenerList(i, t) {
     var e;
-    return !StringUtils_1.StringUtils.IsEmpty(t.GroupName) && (e = i.GetNavigationGroup().InsideGroupName, !!(i = UE.LGUIBPLibrary.GetComponentsInChildren(i.InsideGroupActor, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true))) && e === t.GroupName && i.Contains(t);
+    return !StringUtils_1.StringUtils.IsEmpty(t.GroupName) && (e = i.GetNavigationGroup().InsideGroupNameSet, !!(i = UE.LGUIBPLibrary.GetComponentsInChildren(i.InsideGroupActor, UE.TsUiNavigationBehaviorListener_C.StaticClass(), true))) && !!e.has(t.GroupName) && i.Contains(t);
   }
   static JumpInsideNavigationGroup() {
     var i;
@@ -400,7 +419,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       if (i = this.GetCanFocusInsideListener(i)) {
         this.SwitchNavigationFocus(i);
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("UiNavigation", 10, "[JumpInsideNavigationGroup]查找不到内部有可导航对象", ["InsideGroupName", t.InsideGroupName]);
+        Log_1.Log.Error("UiNavigation", 10, "[JumpInsideNavigationGroup]查找不到内部有可导航对象", ["InsideGroupName", Array.from(t.InsideGroupNameSet)]);
       }
     }
   }
@@ -424,7 +443,7 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
   }
   static zBo(i, t) {
     var e;
-    return !this.Mud() && !!(e = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && e.SimulationPointerDownUp(UiNavigationDefine_1.GAMEPAD_POINT_ID, i.RootUIComp, t);
+    return !this.Zvd() && !!(e = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor) && e.SimulationPointerDownUp(UiNavigationDefine_1.GAMEPAD_POINT_ID, i.RootUIComp, t);
   }
   static SimulationPointDown(i) {
     i = this.GetCurrentNavigationActiveListenerByTag(i, true);
@@ -480,13 +499,23 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       i.SetVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
     }
   }
+  static Vjd(i, t) {
+    if (i) {
+      i.SetVerticalVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
+    }
+  }
+  static jjd(i, t) {
+    if (i) {
+      i.SetHorizontalVelocity(t * UiNavigationDefine_1.SCROLLBAR_INTERVAL);
+    }
+  }
   static sbo(i, t) {
     var e;
-    if (i && (e = i.Value, i.SetProgressIncrement(t, i.WholeNumbers), e === i.Value)) {
+    if (i && (e = i.Value, i.SetProgressIncrement(t, i.WholeNumbers, true), e === i.Value)) {
       if (t > 0 && e !== i.MaxValue) {
-        i.SetValue(e + 1);
+        i.SetValueWithAudio(e + 1);
       } else if (t < 0 && e !== i.MinValue) {
-        i.SetValue(e - 1);
+        i.SetValueWithAudio(e - 1);
       }
     }
   }
@@ -558,6 +587,30 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
           this.SwitchNavigationFocusWithDirtyCheck(e);
         } else {
           this.SwitchNavigationFocus(e);
+        }
+      }
+    }
+  }
+  static SetNavigationFocusForViewByRootItem(e, a, n = false) {
+    if (Info_1.Info.IsInGamepad() && e.IsValid()) {
+      var r = UE.LGUIBPLibrary.GetComponentsInChildren(e.GetOwner(), UE.TsUiNavigationBehaviorListener_C.StaticClass(), true);
+      if (r.Num() !== 0) {
+        for (let i = 0, t = r.Num(); i < t; ++i) {
+          var o = r.Get(i);
+          if (!StringUtils_1.StringUtils.IsBlank(o.GroupName) && o.GroupName === a) {
+            var s = o.GetNavigationGroup();
+            if (s && s.GroupType !== 2) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("UiNavigation", 10, "业务设置了导航对象", ["名字", e.displayName]);
+              }
+              if (n) {
+                this.SwitchNavigationFocusWithDirtyCheck(o);
+              } else {
+                this.SwitchNavigationFocus(o);
+              }
+              break;
+            }
+          }
         }
       }
     }
@@ -726,8 +779,22 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
     }
   }
-  static Mud() {
+  static Zvd() {
     return UiLayer_1.UiLayer.IsInMask() || !ModelManager_1.ModelManager.ReConnectModel.IsRpcEmpty();
+  }
+  static GetDynamicScrollListenerListByListener(i) {
+    var e = i.GetNavigationGroup();
+    if (!e) {
+      return [];
+    }
+    var a = i.ScrollView.DisplayItemArray;
+    var n = [];
+    for (let i = 0, t = a.Num(); i < t; ++i) {
+      var r = a.Get(i);
+      var r = UiNavigationNewController.mDd(r, e);
+      n.push(...r);
+    }
+    return n;
   }
 }
 exports.UiNavigationNewController = UiNavigationNewController;

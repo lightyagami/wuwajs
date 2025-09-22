@@ -75,6 +75,11 @@ let ExecutionComponent = class ExecutionComponent extends EntityComponent_1.Enti
     var o = t.GetMonsterComponent().FightConfigId;
     this.Ttn = MonsterBattleConfById_1.configMonsterBattleConfById.GetConfig(o);
     this.ytn = e.ListenForTagAddOrRemove(-121513115, this.Ltn);
+    this.ytn = e.ListenForTagAddOrRemove(-450292135, (e, t) => {
+      if (t) {
+        this.StartExecution();
+      }
+    });
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 4, "处决组件初始化完成", ["EntityId", this.Entity.Id], ["CreatureDataId", t.GetCreatureDataId()], ["PbDataId", t.GetPbDataId()], ["ExecutionId", this.Ttn.ExecutionId]);
     }

@@ -49,6 +49,69 @@ class TsBasePlayerController extends UE.BasePlayerController {
     this.TsKeyHandle = undefined;
     this.TsTouchHandle = undefined;
   }
+  OnCSharpReceiveSetupInputComponent() {
+    this.InitInputHandle();
+    this.AddInputBinding();
+    this.OnSetupInputComponent();
+  }
+  OnCSharpReceiveBeginPlay() {
+    super.ReceiveBeginPlay();
+    this.InitInputHandle();
+  }
+  OnCSharpReceiveTick(t) {
+    super.ReceiveTick(t);
+    this.PlayerInputHandle?.Tick(t);
+  }
+  OnCSharpReceivedPlayer() {
+    UE.KuroInputFunctionLibrary.ResetInputMode(this);
+  }
+  OnCSharpInputAction(t, i, e) {
+    this.OnInputAction(t, i, e);
+  }
+  OnCSharpInputAxis(t, i, e = false) {
+    this.OnInputAxis(t, i, e);
+  }
+  OnCSharpTouchBegin(t, i) {
+    if (this.TsTouchHandle) {
+      this.TsTouchHandle.OnTouchBegin(t, i);
+    }
+  }
+  OnCSharpTouchEnd(t, i) {
+    if (this.TsTouchHandle) {
+      this.TsTouchHandle.OnTouchBegin(t, i);
+    }
+  }
+  OnCSharpTouchMove(t, i) {
+    if (this.TsTouchHandle) {
+      this.TsTouchHandle.OnTouchBegin(t, i);
+    }
+  }
+  OnCSharpPressAnyKey(t) {
+    LogReportModel_1.LogReportModel.RecordOperateTime();
+    this.PlayerInputHandle.PressAnyKey(t);
+    ModelManager_1.ModelManager.PlatformModel.OnPressAnyKey(t);
+  }
+  OnCSharpReleaseAnyKey(t) {
+    this.PlayerInputHandle.ReleaseAnyKey(t);
+  }
+  OnCSharpOnSetupInputComponent() {
+    this.OnSetupInputComponent();
+  }
+  OnCSharpBindTouchHandle() {
+    this.BindTouchHandle();
+  }
+  OnCSharpRemoveActionHandle(t) {
+    this.RemoveActionHandle(t);
+  }
+  OnCSharpGetActionHandle(t) {
+    return this.GetActionHandle(t);
+  }
+  OnCSharpRemoveAxisHandle(t) {
+    this.RemoveAxisHandle(t);
+  }
+  OnCSharpGetAxisHandle(t) {
+    return this.GetAxisHandle(t);
+  }
   ReceiveSetupInputComponent() {
     this.InitInputHandle();
     this.AddInputBinding();

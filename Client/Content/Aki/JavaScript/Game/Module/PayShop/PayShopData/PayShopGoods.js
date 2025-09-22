@@ -109,18 +109,14 @@ class PayShopGoods {
   GetDiscountNew() {
     var t = this.GetGetPayGiftData();
     if (t) {
-      return t.PromotionShow / 100;
+      return t.GetDiscount() / 100;
     } else {
       return this.Pe.GetDiscountNew();
     }
   }
   HasDiscount() {
     var t = this.GetGetPayGiftData();
-    if (t) {
-      return t.PromotionShow !== 0;
-    } else {
-      return this.Pe.HasDiscount();
-    }
+    return (t || this.Pe).HasDiscount();
   }
   IsPermanentDiscount() {
     return this.Pe.EndPromotionTime === 0 && this.Pe.BeginPromotionTime === 0 || this.Pe.EndPromotionTime === 0 && TimeUtil_1.TimeUtil.GetServerTime() >= Number(this.Pe.BeginTime);

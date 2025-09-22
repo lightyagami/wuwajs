@@ -11,55 +11,66 @@ class AstrologyPointView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.$pt = undefined;
-    this.ood = undefined;
-    this.fWu = undefined;
-    this.rod = undefined;
-    this.gWu = 0;
+    this.Mod = undefined;
+    this.xzu = undefined;
+    this.Sod = undefined;
+    this.Dzu = 0;
     this.dce = false;
-    this.Nno = i => {
-      if (i === "Close") {
+    this.yWd = false;
+    this.Nno = t => {
+      if (t === "Close") {
         this.SetActive(false);
-      } else if (i === "Start2") {
-        this.fWu?.(this.gWu);
+      } else if (t === "Start2") {
+        this.Prr();
       }
     };
-    this.CWu = () => {
-      if (this.rod && this.rod()) {
-        this.ood?.();
+    this.Uzu = () => {
+      if (this.Sod && this.Sod()) {
+        this.Mod?.();
+        this.yWd = true;
         this.$pt.PlaySequencePurely("Start2");
       }
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.CWu]];
+    this.BtnBindInfo = [[0, this.Uzu]];
   }
   OnStart() {
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.$pt.BindOnEndSequenceEvent(this.Nno);
   }
+  OnBeforeHide() {
+    this.Prr();
+  }
   OnBeforeDestroy() {
-    this.ood = undefined;
-    this.fWu = undefined;
-    this.gWu = 0;
+    this.Mod = undefined;
+    this.xzu = undefined;
+    this.Dzu = 0;
     this.$pt?.Clear();
     this.$pt = undefined;
   }
-  Init(i, t, s) {
-    this.ood = i;
-    this.fWu = t;
-    this.rod = s;
+  Prr() {
+    if (this.yWd) {
+      this.yWd = false;
+      this.xzu?.(this.Dzu);
+    }
   }
-  BindPoint(i, t) {
-    this.gWu = i;
-    this.GetItem(1).SetUIActive(!t);
-    this.GetItem(2).SetUIActive(t);
+  Init(t, i, s) {
+    this.Mod = t;
+    this.xzu = i;
+    this.Sod = s;
   }
-  SetPointActive(i) {
-    if (i !== this.dce) {
-      this.dce = i;
+  BindPoint(t, i) {
+    this.Dzu = t;
+    this.GetItem(1).SetUIActive(!i);
+    this.GetItem(2).SetUIActive(i);
+  }
+  SetPointActive(t) {
+    if (t !== this.dce) {
+      this.dce = t;
       this.$pt.StopPrevSequence(false, true);
-      if (i) {
+      if (t) {
         this.SetActive(true);
         this.$pt.PlaySequencePurely("Start");
         this.$pt.PlaySequencePurely("Loop");

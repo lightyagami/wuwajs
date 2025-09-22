@@ -31,10 +31,7 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
     this.s7c = undefined;
     this.a7c = 1;
   }
-  Init() {
-    var i = ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.GetSimpleDamageView();
-    this.CreateByActor(i);
-  }
+  Init() {}
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UINiagara], [4, UE.UIItem]];
   }
@@ -43,11 +40,7 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
     this.GetText(2)?.SetUIActive(false);
     this.GetItem(4)?.SetAnchorOffsetY(-80);
   }
-  DestroyOverride() {
-    ControllerHolder_1.ControllerHolder.BattleUiControl.Pool.RecycleSimpleDamageView(this.RootActor);
-    return true;
-  }
-  InitializeData(a, s, i, r, h = false, n = false, o = false, l = "") {
+  InitializeData(a, s, i, r, h = false, n = false, o = false, _ = "") {
     if (r) {
       SimpleDamageView.MFt.Start();
       this.gFt = r;
@@ -64,21 +57,21 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
       s = MathUtils_1.MathUtils.RangeClamp(s, DamageUiManager_1.DamageUiManager.MinDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetDistance, DamageUiManager_1.DamageUiManager.MaxDamageOffsetScale, DamageUiManager_1.DamageUiManager.MinDamageOffsetScale);
       this.cFt = i * s;
       this.mFt = e * s;
-      s = !StringUtils_1.StringUtils.IsEmpty(l);
+      s = !StringUtils_1.StringUtils.IsEmpty(_);
       let t = undefined;
-      t = s ? (l = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(l), ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(l) ?? "") : n ? "+" + a : a.toString();
-      l = this.h7c();
-      if (l) {
+      t = s ? (_ = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(_), ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(_) ?? "") : n ? "+" + a : a.toString();
+      _ = this.h7c();
+      if (_) {
         n = this.gFt.GetSequencePath(o, h, s);
         this.a7c = SimpleDamageView.LFt.get(n) ?? 1;
         let i = r.GetTextColor();
         if (i = h ? r.GetCriticalTextColor() : i) {
-          this.s7c = DamageUiManager_1.DamageUiManager.PlayDamageNumBatch(t, l, i, this.a7c);
+          this.s7c = DamageUiManager_1.DamageUiManager.PlayDamageNumBatch(t, _, i, this.a7c);
         }
         if (this.s7c) {
           this.pFt = ANIM_TIME;
           if (h) {
-            this.RFt(l);
+            this.RFt(_);
             this.yFt(h);
             this.TFt();
             this.SetActive(true);
@@ -105,9 +98,7 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
         this.FUn = undefined;
       }
       this.pFt -= i;
-      if (this.pFt <= 0) {
-        DamageUiManager_1.DamageUiManager.RemoveSimpleDamageView(this);
-      } else {
+      if (!(this.pFt <= 0)) {
         this.RFt(this.h7c());
       }
     }
@@ -120,10 +111,7 @@ class SimpleDamageView extends UiPanelBase_1.UiPanelBase {
       return i;
     }
   }
-  TFt() {
-    var i = DamageUiManager_1.DamageUiManager.TotalDamageViewNum + DamageUiManager_1.DamageUiManager.TotalSimpleDamageViewNum - 1;
-    this.RootItem.SetHierarchyIndex(i);
-  }
+  TFt() {}
   UFt(i) {
     if (this._Ft === i) {
       if (!StringUtils_1.StringUtils.IsEmpty(i)) {

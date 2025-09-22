@@ -95,5 +95,5 @@ class DangoAbyssActorManager {
     }
   }
 }
-(exports.DangoAbyssActorManager = DangoAbyssActorManager).ls1 = 15;
+(exports.DangoAbyssActorManager = DangoAbyssActorManager).ls1 = 16;
 DangoAbyssActorManager.hs1 = new Map(); //# sourceMappingURL=DangoAbyssActorManager.js.map

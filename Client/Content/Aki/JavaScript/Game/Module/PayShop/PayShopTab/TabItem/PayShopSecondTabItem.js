@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PayShopSecondTabItem = undefined;
 const UE = require("ue");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 class PayShopSecondTabItem extends UiPanelBase_1.UiPanelBase {
   constructor(t) {
@@ -41,8 +41,8 @@ class PayShopSecondTabItem extends UiPanelBase_1.UiPanelBase {
   }
   SetName(t, e) {
     this.TabId = e;
-    t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(t, e);
-    this.GetText(0).ShowTextNew(t.Name);
+    t = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabDataByPayShopIdAndTabId(t, e);
+    this.GetText(0).SetText(t ? t.Name : "");
   }
   SetToggleFunction(t) {
     this.ToggleFunction = t;

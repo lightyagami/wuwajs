@@ -12,73 +12,73 @@ const ItemInspectEffectPlayPerform_1 = require("./ItemInspectEffectPlayPerform")
 const ItemInspectEffectTriggerDialogues_1 = require("./ItemInspectEffectTriggerDialogues");
 class ItemInspectEffectDefine {
   constructor() {
-    this.f$u = undefined;
-    this.g$u = false;
+    this.zWu = undefined;
+    this.nzu = false;
   }
   Init(e, t) {
-    this.f$u = e;
-    this.g$u = t;
+    this.zWu = e;
+    this.nzu = t;
   }
   GetEffect() {
-    return new this.f$u();
+    return new this.zWu();
   }
   IsRepeatable() {
-    return this.g$u;
+    return this.nzu;
   }
 }
 class ItemInspectEffectCenter {
   constructor() {
-    this.C$u = new Map();
-    this.p$u = new Set();
-    this.v$u = undefined;
-    this.Wmd = undefined;
-    this.S$u = (e, t) => {
+    this.JWu = new Map();
+    this.szu = new Set();
+    this.eQu = undefined;
+    this.AGd = undefined;
+    this.iQu = (e, t) => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 48, "物品检视效果执行完成", ["EffectType", t.GetEffectType()], ["Result", e]);
       }
-      this.p$u.delete(t);
+      this.szu.delete(t);
       this.kxe();
     };
   }
   Init() {
-    this.M$u(0, ItemInspectEffectModifyTipText_1.ItemInspectEffectModifyTipText, true);
-    this.M$u(1, ItemInspectEffectPlayPerform_1.ItemInspectEffectPlayPerform);
-    this.M$u(2, ItemInspectEffectTriggerDialogues_1.ItemInspectEffectTriggerDialogues, true);
+    this.oQu(0, ItemInspectEffectModifyTipText_1.ItemInspectEffectModifyTipText, true);
+    this.oQu(1, ItemInspectEffectPlayPerform_1.ItemInspectEffectPlayPerform);
+    this.oQu(2, ItemInspectEffectTriggerDialogues_1.ItemInspectEffectTriggerDialogues, true);
   }
-  M$u(e, t, i = false) {
+  oQu(e, t, i = false) {
     var s = new ItemInspectEffectDefine();
     s.Init(t, i);
-    this.C$u.set(e, s);
+    this.JWu.set(e, s);
   }
   ExecuteEffects(e, t, i, s) {
     this.ClearEffects();
     for (const f of e) {
-      var r = this.C$u.get(f.Type);
+      var r = this.JWu.get(f.Type);
       if (!!r && (!t || !!r.IsRepeatable())) {
         r = r.GetEffect();
-        this.p$u.add(r);
-        r.ExecuteEffect(f, this.S$u);
+        this.szu.add(r);
+        r.ExecuteEffect(f, this.iQu);
       }
     }
     if (i > 0) {
-      this.Wmd = TimerSystem_1.TimerSystem.Delay(() => {
-        this.Wmd = undefined;
+      this.AGd = TimerSystem_1.TimerSystem.Delay(() => {
+        this.AGd = undefined;
         this.kxe();
       }, i * MathUtils_1.MathUtils.SecondToMillisecond);
     }
-    this.v$u = s;
+    this.eQu = s;
     this.kxe();
   }
   ClearEffects() {
-    this.p$u.clear();
-    this.Wmd?.Remove();
-    this.Wmd = undefined;
-    this.v$u = undefined;
+    this.szu.clear();
+    this.AGd?.Remove();
+    this.AGd = undefined;
+    this.eQu = undefined;
   }
   kxe() {
-    if (this.p$u.size === 0 && !this.Wmd) {
-      this.v$u?.();
-      this.v$u = undefined;
+    if (this.szu.size === 0 && !this.AGd) {
+      this.eQu?.();
+      this.eQu = undefined;
     }
   }
 }

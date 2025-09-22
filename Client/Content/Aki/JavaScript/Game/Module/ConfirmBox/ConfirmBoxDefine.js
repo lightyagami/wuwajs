@@ -8,6 +8,7 @@ const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
 const UiPopViewData_1 = require("../../Ui/Define/UiPopViewData");
+const LguiUtil_1 = require("../Util/LguiUtil");
 exports.BUTTON_DELAYTIME = 1000;
 class ConfirmBoxDataNew extends UiPopViewData_1.UiPopViewData {
   constructor(t) {
@@ -28,6 +29,7 @@ class ConfirmBoxDataNew extends UiPopViewData_1.UiPopViewData {
     this.ToggleTextKey = "";
     this.Tip = undefined;
     this.TextArgs = undefined;
+    this.TableTxtArgNew = undefined;
     this.CanClickDuringTimer = true;
     this.IsEscViewTriggerCallBack = true;
     this.ShowPowerItem = false;
@@ -55,6 +57,9 @@ class ConfirmBoxDataNew extends UiPopViewData_1.UiPopViewData {
     } else {
       return "";
     }
+  }
+  SetTableTextArgNew(t, ...i) {
+    this.TableTxtArgNew = new LguiUtil_1.TableTextArgNew(t, ...i);
   }
   SetTextArgs(...t) {
     this.TextArgs = t;

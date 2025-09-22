@@ -333,6 +333,7 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     e.push(this.Cli.Init());
     this.Bth = new InstanceDungeonTimeAndCountItem_1.InstanceDungeonTimeAndCountItem();
     e.push(this.Bth.CreateThenShowByResourceIdAsync("UiItem_InstanceDungeon_TimeItem", this.GetItem(7)));
+    this.GetItem(7)?.SetUIActive(false);
     this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
     e.push(this.fea.CreateByResourceIdAsync("UIItem_CommonCurrencyItem", this.wth.GetCostContent()));
     this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem();

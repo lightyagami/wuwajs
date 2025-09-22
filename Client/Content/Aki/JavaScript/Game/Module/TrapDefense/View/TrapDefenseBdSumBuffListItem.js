@@ -22,13 +22,13 @@ class TrapDefenseBdSumBuffListItem extends GridProxyAbstract_1.GridProxyAbstract
     this.OnGetBdBuffConfig = undefined;
     this.CreateItemBdBuff = () => {
       var e = new TrapDefenseBdBuffItem_1.TrapDefenseBdBuffItem();
-      e.OnSelectBuffItemCallback = this.QHc;
+      e.OnSelectBuffItemCallback = this.k9u;
       e.OnIsShowBdBuffLockStateCallback = this.OnIsShowBdBuffLockStateCallback;
       e.OnIsNewTagStateCallback = this.OnIsNewTagStateCallback;
       e.OnGetBdBuffConfig = this.OnGetBdBuffConfig;
       return e;
     };
-    this.QHc = (e, t) => {
+    this.k9u = (e, t) => {
       this.IsFireForBuffClick = true;
       this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
       this.OnSelectBdBuffItemCallBack?.(e, t);

@@ -120,7 +120,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
     this.IsAutonomousProxy = this.j8 === ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     if (this.IsAutonomousProxy && (e = e?.GetPbEntityInitData())?.ComponentsData && (e = (0, IComponent_1.getComponent)(e.ComponentsData, "FollowShooterComponent"))) {
       this.LockableCategories = e.LockableCategories;
-      this.Bhh = InputController_1.InputController.CreateInputLayer(3);
+      this.Bhh = InputController_1.InputController.CreateInputLayer(4);
       this.LoadConfigPromise = new CustomPromise_1.CustomPromise();
       ResourceSystem_1.ResourceSystem.LoadAsync(e.Config, UE.BP_FollowShooterConfig_C, t => {
         if (t?.IsValid) {

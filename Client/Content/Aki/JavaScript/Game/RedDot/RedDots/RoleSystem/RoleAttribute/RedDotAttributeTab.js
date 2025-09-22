@@ -15,7 +15,7 @@ class RedDotAttributeTab extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.RoleLevelUp, EventDefine_1.EEventName.RedDotRefreshItemData, EventDefine_1.EEventName.RoleBreakUp, EventDefine_1.EEventName.CurWorldLevelChange, EventDefine_1.EEventName.ActiveRole, EventDefine_1.EEventName.RoleSkinRedDotRefresh];
   }
   OnCheck(e) {
-    return ModelManager_1.ModelManager.RoleModel.RedDotAttributeTabBreakUpCondition(e) || ModelManager_1.ModelManager.RoleSkinModel.HasRoleSkinRedDotByRoleId(e);
+    return ModelManager_1.ModelManager.RoleModel.RedDotAttributeTabBreakUpCondition(e) || ModelManager_1.ModelManager.RoleSkinModel.HasRoleSkinRedDotByRoleId(e) || ModelManager_1.ModelManager.CalabashSkinModel.CheckCalabashSkinHasRedDotByRoleId(e);
   }
 }
 exports.RedDotAttributeTab = RedDotAttributeTab;

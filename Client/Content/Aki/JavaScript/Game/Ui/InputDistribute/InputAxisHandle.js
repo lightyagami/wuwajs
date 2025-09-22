@@ -9,7 +9,7 @@ class InputAxisHandle extends InputDistributeHandle_1.InputDistributeHandle {
   constructor() {
     super(...arguments);
     this.qmr = 0;
-    this.ZQc = 0;
+    this.FZu = 0;
   }
   BindAxis(i) {
     this.Bind(i);
@@ -35,13 +35,13 @@ class InputAxisHandle extends InputDistributeHandle_1.InputDistributeHandle {
     this.qmr = i;
   }
   InputCacheAxisValueIgnoreLimit(i) {
-    this.ZQc = i;
+    this.FZu = i;
   }
   GetCacheAxisValue() {
     return this.qmr;
   }
   GetCacheAxisValueIgnoreLimit() {
-    return this.ZQc;
+    return this.FZu;
   }
 }
 exports.InputAxisHandle = InputAxisHandle;

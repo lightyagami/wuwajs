@@ -22,6 +22,9 @@ class MonsterHandBook {
   get Name() {
     return this.name();
   }
+  get Classification() {
+    return this.classification();
+  }
   get MeshId() {
     return this.meshid();
   }
@@ -92,8 +95,16 @@ class MonsterHandBook {
     }
     return s;
   }
-  meshid() {
+  classification() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 16;
+    }
+  }
+  meshid() {
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -101,14 +112,6 @@ class MonsterHandBook {
     }
   }
   descrtption(t) {
-    var s = this.J7.__offset(this.z7, 14);
-    var s = s ? this.J7.__string(this.z7 + s, t) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
-    }
-    return s;
-  }
-  handbookbp(t) {
     var s = this.J7.__offset(this.z7, 16);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -116,8 +119,16 @@ class MonsterHandBook {
     }
     return s;
   }
+  handbookbp(t) {
+    var s = this.J7.__offset(this.z7, 18);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
   monsterbodytype() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -125,7 +136,7 @@ class MonsterHandBook {
     }
   }
   handbookcamera(t) {
-    var s = this.J7.__offset(this.z7, 20);
+    var s = this.J7.__offset(this.z7, 22);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -136,7 +147,7 @@ class MonsterHandBook {
     return this.resistanceelement(t);
   }
   resistanceelement(t) {
-    var s = this.J7.__offset(this.z7, 22);
+    var s = this.J7.__offset(this.z7, 24);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -144,7 +155,7 @@ class MonsterHandBook {
     }
   }
   resistanceelementLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -152,7 +163,7 @@ class MonsterHandBook {
     }
   }
   resistanceelementArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -160,7 +171,7 @@ class MonsterHandBook {
     }
   }
   sortid() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -168,11 +179,11 @@ class MonsterHandBook {
     }
   }
   isskin() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   originalforminfoid() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -180,7 +191,7 @@ class MonsterHandBook {
     }
   }
   defaultunlock() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

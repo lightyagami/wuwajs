@@ -1042,7 +1042,7 @@ let SceneItemPortalComponent = SceneItemPortalComponent_1 = class SceneItemPorta
     if (t) {
       (e = Protocol_1.Aki.Protocol.Km_.create()).F4n = this.Wpo;
       e.P5n = Vector_1.Vector.Create(t);
-      Net_1.Net.Call(19791, e, t => {
+      Net_1.Net.Call(17381, e, t => {
         if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("SceneItem", 39, "PassPortalRequest返回错误", ["PortalEntityId", this.Wpo]);

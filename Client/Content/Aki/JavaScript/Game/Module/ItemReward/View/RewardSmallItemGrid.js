@@ -14,7 +14,7 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
   constructor() {
     super(...arguments);
     this.fGt = undefined;
-    this.W2u = e => {
+    this.xVu = e => {
       if (this.fGt && this.fGt.UniqueId === e) {
         this.c4e(this.fGt);
       }
@@ -25,11 +25,11 @@ class RewardSmallItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemG
   }
   OnAddEvents() {
     super.OnAddEvents();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.xVu);
   }
   OnRemoveEvents() {
     super.OnRemoveEvents();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.xVu);
   }
   OnRefresh(e, t, o) {
     this.c4e(e);

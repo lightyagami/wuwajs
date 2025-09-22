@@ -1,5 +1,6 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -22,54 +23,31 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ControllerWithAssistantBase_1 = require("../../Module/GeneralLogicTree/ControllerAssistant/ControllerWithAssistantBase");
 const GameModePromise_1 = require("../Define/GameModePromise");
+const LoadLevelDefine_1 = require("../Define/LoadLevelDefine");
 const AsyncTask_1 = require("../Task/AsyncTask");
 const TaskSystem_1 = require("../Task/TaskSystem");
 const WorldGlobal_1 = require("../WorldGlobal");
 const SubLevelVisibleAssistant_1 = require("./SubLevelAssistant/SubLevelVisibleAssistant");
-class SubLevelInfo {
-  constructor(e, o, r, l, t, a) {
-    this.UnloadLevels = undefined;
-    this.Levels = undefined;
-    this.ScreenEffect = 0;
-    this.Location = undefined;
-    this.Rotator = undefined;
-    this.Callback = undefined;
-    this.UnloadLevels = e;
-    this.Levels = o;
-    this.ScreenEffect = r;
-    this.Location = l ?? undefined;
-    this.Rotator = t ?? undefined;
-    this.Callback = a ?? undefined;
-  }
-  Clear() {
-    this.UnloadLevels = undefined;
-    this.Levels = undefined;
-    this.ScreenEffect = 0;
-    this.Location = undefined;
-    this.Rotator = undefined;
-    this.Callback = undefined;
-  }
-}
 class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAssistantBase {
   static OnInit() {
     var e = super.OnInit();
-    this.aWs = new Queue_1.Queue();
+    this.$Er = new Queue_1.Queue();
     return e;
   }
   static OnClear() {
     var e = super.OnClear();
-    this.aWs?.Clear();
-    this.aWs = undefined;
+    this.$Er?.Clear();
+    this.$Er = undefined;
     return e;
   }
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(20041, SubLevelController.b0r);
-    Net_1.Net.Register(22329, SubLevelController.q0r);
+    Net_1.Net.Register(28871, SubLevelController.b0r);
+    Net_1.Net.Register(26243, SubLevelController.q0r);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20041);
-    Net_1.Net.UnRegister(22329);
+    Net_1.Net.UnRegister(28871);
+    Net_1.Net.UnRegister(26243);
     super.OnUnRegisterNetEvent();
   }
   static RegisterAssistant() {
@@ -84,16 +62,16 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
       const n = new Array();
       const i = new Array();
       var l;
-      var t = new Set();
-      for (const s of e) {
-        t.add(s);
-        var a = ModelManager_1.ModelManager.SubLevelModel.GetSubLevel(s);
-        if (!a || a.IsVisible !== !r.includes(s)) {
-          i.push(s);
+      var a = new Set();
+      for (const L of e) {
+        a.add(L);
+        var t = ModelManager_1.ModelManager.SubLevelModel.GetSubLevel(L);
+        if (!t || t.IsVisible !== !r.includes(L)) {
+          i.push(L);
         }
       }
       for ([l] of o) {
-        if (!t.has(l)) {
+        if (!a.has(l)) {
           n.push(l);
         }
       }
@@ -120,121 +98,107 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
       }
     }
   }
-  static ChangeSubLevel(e, o, r, l, t, a, n) {
+  static ChangeSubLevel(e, o, r, l, a, t, n) {
     var i = new Map();
-    for (const L of o) {
-      var s = n?.indexOf(L) ?? -1;
-      i.set(L, s < 0);
+    for (const s of o) {
+      var L = n?.indexOf(s) ?? -1;
+      i.set(s, L < 0);
     }
-    this.Lfr(e, i, r, l, t, a);
-  }
-  static hWs(e) {
-    if (e) {
-      this.aWs?.Push(e);
-    }
-  }
-  static async Lfr(r, l, t, a, n, i) {
-    var s = ModelManager_1.ModelManager.GameModeModel;
-    var L = ModelManager_1.ModelManager.SubLevelLoadingModel;
-    if (s.WorldDone) {
-      if (L.LoadSubLeveling) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("GameMode", 3, "SubLevelController.当前正在加载子关卡，等所有子关卡加载完成才能继续加载新的子关卡。");
-        }
-        this.hWs(new SubLevelInfo(r, l, t, a, n, i));
-      } else {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:(开始)", ["卸载的子关卡", r?.join()], ["加载的子关卡", l?.keys()], ["位置", a], ["旋转", n]);
-        }
-        L.LoadSubLeveling = true;
-        L.LoadSubLevelPromise = new GameModePromise_1.GameModePromise();
-        if ((ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = t) !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(14, 3), Log_1.Log.CheckInfo())) {
-          Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(完成)");
-        }
-        let e = false;
-        for (var [_] of l) {
-          _ = ModelManager_1.ModelManager.SubLevelModel.GetPreloadOrLoadedSubLevel(_);
-          if (!_ || _.LoadState === 1) {
-            e = true;
-            break;
-          }
-        }
-        s = "SubLevelController.ChangeSubLevelInternal";
-        let o = false;
-        if (e && !ModelManager_1.ModelManager.LevelLoadingModel.CheckLoadingPerformsEmpty()) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, s);
-          o = true;
-        }
-        if (a) {
-          Global_1.Global.BaseCharacter?.KuroSetMovementMode({
-            Mode: 0,
-            Context: "[SubLevelController.ChangeSubLevelInternal]"
-          });
-        }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表卸载(开始)");
-        }
-        await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsUnLoad();
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表卸载(结束)");
-        }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表加载(开始)");
-        }
-        await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsLoad();
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表加载(结束)");
-        }
-        if (r?.length) {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:卸载子关卡列表(开始)");
-          }
-          for (const v of r) {
-            ModelManager_1.ModelManager.SubLevelModel.RemoveSubLevel(v);
-          }
-          await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsUnLoad();
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:卸载子关卡列表(完成)");
-          }
-        }
-        if (l?.size && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:加载子关卡列表(开始)"), await ControllerHolder_1.ControllerHolder.SubLevelController.LoadSubLevels(l), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSubLevelAdded), Log_1.Log.CheckInfo())) {
-          Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:加载子关卡列表(完成)");
-        }
-        await SubLevelController.Dfr(a, n);
-        if (o) {
-          ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, s);
-        }
-        if (t !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(14, 1), Log_1.Log.CheckInfo())) {
-          Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(完成)");
-        }
-        L.LoadSubLevelPromise.SetResult(true);
-        L.LoadSubLevelPromise = undefined;
-        L.LoadSubLeveling = false;
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:(完成)");
-        }
-        i?.(true);
-        this.lWs();
-      }
+    o = {
+      LevelsWithVisible: i,
+      UnloadLevels: e,
+      ScreenEffect: r,
+      Location: l,
+      Rotator: a,
+      FinishCallback: t
+    };
+    e = new LoadLevelDefine_1.SwitchSubLevelProcess(o);
+    if (this.$Er.Empty) {
+      this.$Er.Push(e);
+      this.e9d();
     } else {
+      this.$Er.Push(e);
+    }
+  }
+  static async Lfr(e, o, r, l, a) {
+    var t;
+    var n = ModelManager_1.ModelManager.GameModeModel;
+    var i = ModelManager_1.ModelManager.SubLevelLoadingModel;
+    if (!n.WorldDone) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("GameMode", 3, "SubLevelController.切换子关卡:WorldDone为false,切换子关卡失败。");
       }
-      i?.(false);
+      return false;
     }
-  }
-  static lWs() {
-    var e;
-    if (!!this.aWs && !(this.aWs.Size <= 0)) {
-      if (this.aWs.Size !== 0) {
-        if (e = this.aWs.Front) {
-          this.aWs.Pop();
-          this.Lfr(e.UnloadLevels, e.Levels, e.ScreenEffect, e.Location, e.Rotator, e.Callback);
-        } else {
-          this.aWs.Pop();
-        }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:(开始)", ["卸载的子关卡", e], ["加载的子关卡", o], ["位置", l], ["旋转", a]);
+    }
+    i.LoadSubLevelPromise = new GameModePromise_1.GameModePromise();
+    if ((ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = r) !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(14, 3), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(完成)");
+    }
+    let L = false;
+    for ([t] of o) {
+      var s = ModelManager_1.ModelManager.SubLevelModel.GetPreloadOrLoadedSubLevel(t);
+      if (!s || s.LoadState === 1) {
+        L = true;
+        break;
       }
     }
+    n = "SubLevelController.ChangeSubLevelInternal";
+    let _ = false;
+    if (L && !ModelManager_1.ModelManager.LevelLoadingModel.CheckLoadingPerformsEmpty()) {
+      ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, n);
+      _ = true;
+    }
+    if (l) {
+      Global_1.Global.BaseCharacter?.KuroSetMovementMode({
+        Mode: 0,
+        Context: "[SubLevelController.ChangeSubLevelInternal]"
+      });
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表卸载(开始)");
+    }
+    await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsUnLoad();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表卸载(结束)");
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表加载(开始)");
+    }
+    await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsLoad();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 29, "SubLevelController.切换子关卡:等待之前的子关卡列表加载(结束)");
+    }
+    if (e?.length) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:卸载子关卡列表(开始)");
+      }
+      for (const v of e) {
+        ModelManager_1.ModelManager.SubLevelModel.RemoveSubLevel(v);
+      }
+      await ControllerHolder_1.ControllerHolder.SubLevelController.WaitSubLevelsUnLoad();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:卸载子关卡列表(完成)");
+      }
+    }
+    if (o?.size && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:加载子关卡列表(开始)"), await ControllerHolder_1.ControllerHolder.SubLevelController.LoadSubLevels(o), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSubLevelAdded), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:加载子关卡列表(完成)");
+    }
+    await SubLevelController.Dfr(l, a);
+    if (_) {
+      ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, n);
+    }
+    if (r !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitCloseLoading(14, 1), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:关闭黑幕Loading界面(完成)");
+    }
+    i.LoadSubLevelPromise.SetResult(true);
+    i.LoadSubLevelPromise = undefined;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:(完成)");
+    }
+    return true;
   }
   static async Dfr(e, o) {
     if (!Global_1.Global.BaseCharacter) {
@@ -281,11 +245,11 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   static async yW_(e) {
     var o = ModelManager_1.ModelManager.SubLevelModel;
     var r = new Array();
-    for (const a of e) {
+    for (const t of e) {
       var l;
-      var t = o.AddPreloadSubLevel(a);
-      if (t && (t.LoadState = 1, r.push(t.LoadPromise.Promise), l = GlobalData_1.GlobalData.GameInstance.场景加载通知器.LoadStreamLevel(FNameUtil_1.FNameUtil.GetDynamicFName(a), t.LoadVisibleParam, false), t.LinkId = l, Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("World", 3, "SubLevelController.切换子关卡:加载子关卡(预加载)", ["Path", t.Path], ["LinkId", l]);
+      var a = o.AddPreloadSubLevel(t);
+      if (a && (a.LoadState = 1, r.push(a.LoadPromise.Promise), l = GlobalData_1.GlobalData.GameInstance.场景加载通知器.LoadStreamLevel(FNameUtil_1.FNameUtil.GetDynamicFName(t), a.LoadVisibleParam, false), a.LinkId = l, Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("World", 3, "SubLevelController.切换子关卡:加载子关卡(预加载)", ["Path", a.Path], ["LinkId", l]);
       }
     }
     await Promise.all(r);
@@ -294,15 +258,15 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   static async CheckLoadSubLevels(e) {
     var o = new Map();
     if (e.URs?.length) {
-      for (const t of e.URs) {
-        var r = e.j$_.indexOf(t);
-        o.set(t, r < 0);
+      for (const a of e.URs) {
+        var r = e.j$_.indexOf(a);
+        o.set(a, r < 0);
       }
     } else {
       var l = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.SubLevels;
       if (l) {
-        for (const a of l) {
-          o.set(a, true);
+        for (const t of l) {
+          o.set(t, true);
         }
       }
     }
@@ -336,19 +300,19 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     var o;
     var r;
     var l;
-    var t;
-    var a = new Array();
+    var a;
+    var t = new Array();
     for ([o, r] of e) {
       if (r) {
-        a.push(SubLevelController.LoadSubLevel(o, r));
+        t.push(SubLevelController.LoadSubLevel(o, r));
       }
     }
-    for ([l, t] of e) {
-      if (!t) {
-        a.push(SubLevelController.LoadSubLevel(l, t));
+    for ([l, a] of e) {
+      if (!a) {
+        t.push(SubLevelController.LoadSubLevel(l, a));
       }
     }
-    await Promise.all(a);
+    await Promise.all(t);
     return true;
   }
   static async WaitSubLevelsLoad() {
@@ -358,13 +322,13 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     if (o.size || e.size) {
       var r;
       var l;
-      var t = new Array();
+      var a = new Array();
       for ([, r] of e) {
         if (r.LoadState === 1) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 18, "SubLevelController.切换子关卡:等待之前的预加载的关卡", ["path", r.Path]);
           }
-          t.push(r.LoadPromise.Promise);
+          a.push(r.LoadPromise.Promise);
         }
       }
       for ([, l] of o) {
@@ -372,11 +336,11 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 18, "SubLevelController.切换子关卡:等待之前的加载的关卡", ["path", l.Path]);
           }
-          t.push(l.LoadPromise.Promise);
+          a.push(l.LoadPromise.Promise);
         }
       }
-      if (t.length) {
-        await Promise.all(t);
+      if (a.length) {
+        await Promise.all(a);
       }
     }
     return true;
@@ -397,30 +361,30 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static OnLoadSubLevel(e, o, r) {
     var l;
-    var t = ModelManager_1.ModelManager.SubLevelModel;
-    let a = undefined;
-    for ([, l] of t.GetAllPreloadSubLevels()) {
+    var a = ModelManager_1.ModelManager.SubLevelModel;
+    let t = undefined;
+    for ([, l] of a.GetAllPreloadSubLevels()) {
       if (l.LinkId === e) {
-        a = l;
+        t = l;
         break;
       }
     }
-    if (!a) {
-      for (var [, n] of t.GetAllSubLevels()) {
+    if (!t) {
+      for (var [, n] of a.GetAllSubLevels()) {
         if (n.LinkId === e) {
-          a = n;
+          t = n;
           break;
         }
       }
     }
-    if (!a && (a = t.GetUnloadSubLevel(o))) {
-      a.LoadPromise?.SetResult(true);
-      t = FNameUtil_1.FNameUtil.GetDynamicFName(a.Path);
-      a.UnLoadLinkId = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(t, true);
+    if (!t && (t = a.GetUnloadSubLevel(o))) {
+      t.LoadPromise?.SetResult(true);
+      a = FNameUtil_1.FNameUtil.GetDynamicFName(t.Path);
+      t.UnLoadLinkId = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(a, true);
       return;
     }
-    if (a) {
-      a.OnLevelLoad(r).then(() => {
+    if (t) {
+      t.OnLevelLoad(r).then(() => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 18, "SubLevelController:子关卡加载完成", ["Level", o], ["LinkId", e], ["LevelStreaming", r?.IsValid()]);
         }
@@ -442,25 +406,50 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
       Log_1.Log.Warn("GameMode", 3, "SubLevelController.切换子关卡:卸载的子关卡不存在", ["LinkId", e], ["Level", o]);
     }
   }
+  static e9d() {
+    var e;
+    if (this.$Er && !this.$Er.Empty) {
+      e = this.$Er.Front;
+      this.t9d(e);
+    }
+  }
+  static async t9d(e) {
+    let o = false;
+    switch (e.Type) {
+      case 0:
+        o = await this.Lfr(e.Params.UnloadLevels, e.Params.LevelsWithVisible, e.Params.ScreenEffect, e.Params.Location, e.Params.Rotator);
+        break;
+      case 1:
+        o = await this.cYt(0).SetSubLevelVisible(e.Params);
+    }
+    SubLevelController.mj1(o);
+  }
   static SetSubLevelVisible(e) {
-    this.cYt(0).SetSubLevelVisible(e);
+    e = new LoadLevelDefine_1.SetSubLevelVisibleProcess(e);
+    if (this.$Er.Empty) {
+      this.$Er.Push(e);
+      this.e9d();
+    } else {
+      this.$Er.Push(e);
+    }
   }
 }
-(exports.SubLevelController = SubLevelController).aWs = undefined;
+exports.SubLevelController = SubLevelController;
+(_a = SubLevelController).$Er = undefined;
 SubLevelController.b0r = e => {
   let o = undefined;
   let r = undefined;
   var l = ModelManager_1.ModelManager.AutoRunModel;
   if (e.$Ds && e.$Ds !== -1) {
-    var t = ModelManager_1.ModelManager.CreatureModel.GetEntityData(e.$Ds);
-    if (t) {
-      var a = t.Transform.Pos;
-      if (a) {
-        o = Vector_1.Vector.Create(a.X ?? 0, a.Y ?? 0, a.Z ?? 0);
+    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityData(e.$Ds);
+    if (a) {
+      var t = a.Transform.Pos;
+      if (t) {
+        o = Vector_1.Vector.Create(t.X ?? 0, t.Y ?? 0, t.Z ?? 0);
       }
-      var a = t.Transform.Rot;
-      if (a) {
-        r = Rotator_1.Rotator.Create(a.Y ?? 0, a.Z ?? 0, a.X ?? 0);
+      var t = a.Transform.Rot;
+      if (t) {
+        r = Rotator_1.Rotator.Create(t.Y ?? 0, t.Z ?? 0, t.X ?? 0);
       }
     } else {
       if (Log_1.Log.CheckError()) {
@@ -473,9 +462,9 @@ SubLevelController.b0r = e => {
   }
   if (l?.IsInAfterRunningState()) {
     if (l.ShouldTpAfterSkip) {
-      if (t = l.GetOverrideTpInfo() ?? l.GetGuaranteeTpInfo()) {
-        o = t.Location;
-        r = t.Rotator;
+      if (a = l.GetOverrideTpInfo() ?? l.GetGuaranteeTpInfo()) {
+        o = a.Location;
+        r = a.Rotator;
       }
     } else {
       o = undefined;
@@ -484,22 +473,22 @@ SubLevelController.b0r = e => {
   }
   const n = new Array();
   var i = new Array();
-  const s = new Array();
-  a = ModelManager_1.ModelManager.SubLevelModel.GetAllSubLevels();
-  if (a) {
-    for (var [L] of a) {
-      (e.FDs.includes(L) ? i : n).push(L);
+  const L = new Array();
+  t = ModelManager_1.ModelManager.SubLevelModel.GetAllSubLevels();
+  if (t) {
+    for (var [s] of t) {
+      (e.FDs.includes(s) ? i : n).push(s);
     }
   }
   for (const _ of e.FDs) {
     if (!i.includes(_)) {
-      s.push(_);
+      L.push(_);
     }
   }
-  SubLevelController.ChangeSubLevel(n, s, 0, o, r, e => {
+  SubLevelController.ChangeSubLevel(n, L, 0, o, r, e => {
     if (!e) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("InstanceDungeon", 39, "SubLevelController 加载子关卡失败", ["unloads", n], ["newLoads", s]);
+        Log_1.Log.Error("InstanceDungeon", 39, "SubLevelController 加载子关卡失败", ["unloads", n], ["newLoads", L]);
       }
     }
     if (ModelManager_1.ModelManager.AutoRunModel?.IsInAfterRunningState()) {
@@ -509,4 +498,8 @@ SubLevelController.b0r = e => {
 };
 SubLevelController.q0r = e => {
   SubLevelController.LoadOrUnloadSubLevel(e.HDs, e.H$_);
+};
+SubLevelController.mj1 = e => {
+  _a.$Er?.Pop()?.Params.FinishCallback?.(e);
+  _a.e9d();
 }; //# sourceMappingURL=SubLevelController.js.map

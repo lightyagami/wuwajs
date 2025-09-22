@@ -51,6 +51,9 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
       }
       this.EndOpenTimeInternal = MathUtils_1.MathUtils.LongToNumber(this.zl1.dps);
       this.EndShowTimeInternal = this.EndOpenTimeInternal;
+      if (this.EndOpenTimeInternal === 0) {
+        this.ForceClose();
+      }
       this.yfa = MathUtils_1.MathUtils.LongToNumber(this.zl1.yDs);
       this.tda.clear();
       this.zl1.E$s.forEach(e => {
@@ -68,7 +71,7 @@ class ActivityRegressData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetActivityState() {
-    if (this.IsUnLock() && this.CheckIfInOpenTime()) {
+    if (this.IsUnLock() && this.zl1 && MathUtils_1.MathUtils.LongToNumber(this.zl1.dps) !== 0 && this.CheckIfInOpenTime()) {
       return 1;
     } else {
       return 0;

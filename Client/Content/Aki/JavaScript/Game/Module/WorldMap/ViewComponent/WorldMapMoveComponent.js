@@ -325,16 +325,28 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     var e = Vector2D_1.Vector2D.Create(this.MapUiPosition);
     this.SetMapPosition(e.AdditionEqual(t), false, 2);
   }
+  Sld() {
+    var t = ModelManager_1.ModelManager.WorldMapModel;
+    var e = CommonParamById_1.configCommonParamById.GetFloatConfig("MapDragSpeedMultiplier") ?? 1;
+    var i = t.MapScaleMax - t.MapScaleMin;
+    if (i > 0) {
+      return (t.MapScale - t.MapScaleMin) * (1 - e) / i + e;
+    } else {
+      return 1;
+    }
+  }
   TickMoveDirty() {
     var t;
+    var e;
     if (this.e3o || this.t3o) {
       t = Vector2D_1.Vector2D.Create(this.MapUiPosition);
+      e = this.Sld();
       if (this.e3o) {
-        t.AdditionEqual(this.QFo);
+        t.AdditionEqual(this.QFo.MultiplyEqual(e));
         this.e3o = false;
       }
       if (this.t3o) {
-        t.AdditionEqual(this.XFo);
+        t.AdditionEqual(this.XFo.MultiplyEqual(e));
         this.t3o = false;
       }
       this.SetMapPosition(t, false, 2);

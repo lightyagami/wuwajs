@@ -91,6 +91,9 @@ class MenuData {
   get DisableFunction() {
     return this.rSl.DisableFunction;
   }
+  get BtnDisableTips() {
+    return this.rSl.BtnDisableTips;
+  }
   get ValueTipsMap() {
     return this.rSl.ValueTipsMap;
   }
@@ -103,9 +106,16 @@ class MenuData {
   get hHa() {
     return this.rSl.DetailText;
   }
+  get CustomTitleArgs() {}
   GetEnable() {
     if (this.FunctionId === GameSettingsDefine_1.EFunction.MobileGamepadMode) {
       return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MobileGamepadMode) === 1;
+    }
+    if (this.FunctionId === GameSettingsDefine_1.EFunction.Filter) {
+      return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 1;
+    }
+    if (this.FunctionId === GameSettingsDefine_1.EFunction.EyeProtection) {
+      return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 2;
     }
     for (var [e, t] of this.gac) {
       e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
@@ -113,6 +123,13 @@ class MenuData {
         return false;
       }
     }
+    return true;
+  }
+  get EnableRedDot() {
+    return false;
+  }
+  OnRefresh() {}
+  GetButtonEnable() {
     return true;
   }
   CacheDisableState(e, t) {

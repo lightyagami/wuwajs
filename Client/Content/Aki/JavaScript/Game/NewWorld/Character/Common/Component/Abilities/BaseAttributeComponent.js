@@ -471,21 +471,23 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
     }
     return e.join("|");
   }
-  GetLockDebugString() {
-    let i = "";
+  GetLockDebugString(i) {
+    let s = "";
     this.BoundsLockerMap.forEach((t, r) => {
       t.forEach((t, e) => {
-        if (t.LockLowerBounds) {
-          i += `属性:${r} 下限:${t.LowerPercent * 100}%+${t.LowerOffset} handle:${e}
+        if (!(i.length > 0) || !!i.some(t => String(r).startsWith(t))) {
+          if (t.LockLowerBounds) {
+            s += `属性:${r} 下限:${t.LowerPercent * 100}%+${t.LowerOffset} handle:${e}
 `;
-        }
-        if (t.LockUpperBounds) {
-          i += `属性:${r} 上限:${t.UpperPercent * 100}%+${t.UpperOffset} handle:${e}
+          }
+          if (t.LockUpperBounds) {
+            s += `属性:${r} 上限:${t.UpperPercent * 100}%+${t.UpperOffset} handle:${e}
 `;
+          }
         }
       });
     });
-    return i;
+    return s;
   }
 };
 BaseAttributeComponent.ModifierHandleGenerator = 100;

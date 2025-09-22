@@ -208,24 +208,24 @@ class BabelTowerController extends ActivityControllerBase_1.ActivityControllerBa
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21058, this.Gec);
-    Net_1.Net.Register(25702, this.Nec);
-    Net_1.Net.Register(26773, this.Vec);
-    Net_1.Net.Register(26106, this.jec);
-    Net_1.Net.Register(17642, this.Hec);
-    Net_1.Net.Register(20587, this.$ec);
-    Net_1.Net.Register(22805, this.p_c);
-    Net_1.Net.Register(24228, this.mbc);
+    Net_1.Net.Register(19793, this.Gec);
+    Net_1.Net.Register(29113, this.Nec);
+    Net_1.Net.Register(16460, this.Vec);
+    Net_1.Net.Register(17909, this.jec);
+    Net_1.Net.Register(15806, this.Hec);
+    Net_1.Net.Register(17296, this.$ec);
+    Net_1.Net.Register(20621, this.p_c);
+    Net_1.Net.Register(18194, this.mbc);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21058);
-    Net_1.Net.UnRegister(25702);
-    Net_1.Net.UnRegister(26773);
-    Net_1.Net.UnRegister(26106);
-    Net_1.Net.UnRegister(17642);
-    Net_1.Net.UnRegister(20587);
-    Net_1.Net.UnRegister(22805);
-    Net_1.Net.UnRegister(24228);
+    Net_1.Net.UnRegister(19793);
+    Net_1.Net.UnRegister(29113);
+    Net_1.Net.UnRegister(16460);
+    Net_1.Net.UnRegister(17909);
+    Net_1.Net.UnRegister(15806);
+    Net_1.Net.UnRegister(17296);
+    Net_1.Net.UnRegister(20621);
+    Net_1.Net.UnRegister(18194);
   }
   OnAddEvents() {}
   OnRemoveEvents() {}
@@ -233,34 +233,34 @@ class BabelTowerController extends ActivityControllerBase_1.ActivityControllerBa
     var r = Protocol_1.Aki.Protocol.BX_.create();
     r.eY_ = e;
     r.GX_ = t;
-    var e = await Net_1.Net.CallAsync(27751, r);
-    return !!e && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || !(ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21393), 1));
+    var e = await Net_1.Net.CallAsync(28440, r);
+    return !!e && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || !(ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27609), 1));
   }
   static BabelTowerTaskRewardRequest(e) {
     var t = Protocol_1.Aki.Protocol.TX_.create();
     t.gps = e;
-    Net_1.Net.Call(19410, t, e => {
+    Net_1.Net.Call(16673, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15157);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21953);
       }
     });
   }
   static BabelTowerDailyTaskRewardRequest(e) {
     var t = Protocol_1.Aki.Protocol.LX_.create();
     t.gps = e;
-    Net_1.Net.Call(21302, t, e => {
+    Net_1.Net.Call(26685, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22214);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18279);
       }
     });
   }
   static ResetBabelTowerLevelRequest(e) {
     var t = Protocol_1.Aki.Protocol.RX_.create();
     t.eY_ = e;
-    Net_1.Net.Call(21076, t, e => {
+    Net_1.Net.Call(26556, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17628);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25369);
         } else {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("BabelTowerResetLevelTips");
         }
@@ -269,9 +269,9 @@ class BabelTowerController extends ActivityControllerBase_1.ActivityControllerBa
   }
   static BabelTowerSettlementRequest() {
     var e = Protocol_1.Aki.Protocol.xX_.create();
-    Net_1.Net.Call(17110, e, e => {
+    Net_1.Net.Call(29565, e, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22980);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15691);
       }
     });
   }

@@ -38,6 +38,9 @@ class LivenessTask {
   get SortRank() {
     return this.sortrank();
   }
+  get AccessId() {
+    return this.accessid();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -118,6 +121,14 @@ class LivenessTask {
   }
   sortrank() {
     var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  accessid() {
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

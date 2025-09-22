@@ -115,7 +115,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
     if (!this.zOa && this.A6l === 0) {
       if (e instanceof SceneItemJigsawBaseComponent_1.SceneItemJigsawBaseComponent && (t = new Protocol_1.Aki.Protocol.Mv_(), e = e.Entity?.GetComponent(0)?.GetCreatureDataId())) {
         t.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(22993, t, e => {
+        Net_1.Net.Call(19087, t, e => {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Level", 36, "CloseInteractionView RenjuExitMatchedActionResponse", ["ErrorCode", e.G9n]);
           }

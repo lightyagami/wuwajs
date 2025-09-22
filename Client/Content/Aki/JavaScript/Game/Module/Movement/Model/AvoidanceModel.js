@@ -11,16 +11,16 @@ const GameUtils_1 = require("../../../GameUtils");
 class AvoidanceModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.Rnd = undefined;
-    this.wnd = undefined;
+    this.Hsd = undefined;
+    this.$sd = undefined;
     this.UseRVOAvoidance = false;
     this.SceneItemAvoidanceRadius = 200;
   }
   get ZeroTuple32() {
-    if (this.wnd === undefined) {
-      this.wnd = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, false);
+    if (this.$sd === undefined) {
+      this.$sd = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, false);
     }
-    return this.wnd;
+    return this.$sd;
   }
   GetSingleBitMask(e) {
     var t;
@@ -29,20 +29,20 @@ class AvoidanceModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("Movement", 72, `[AvoidanceModel.GetSingleBitMask] ${e}非法`);
       }
       return new UE.NavAvoidanceMask();
-    } else if (AvoidanceModel.Lnd) {
+    } else if (AvoidanceModel.Wsd) {
       this.ZeroTuple32[e] = true;
       t = new UE.NavAvoidanceMask(...this.ZeroTuple32);
       this.ZeroTuple32[e] = false;
       return t;
     } else {
-      if (this.Rnd === undefined) {
-        this.Rnd = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, undefined);
+      if (this.Hsd === undefined) {
+        this.Hsd = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, undefined);
       }
-      if (this.Rnd[e] === undefined) {
-        this.Rnd[e] = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, false);
-        this.Rnd[e][e] = true;
+      if (this.Hsd[e] === undefined) {
+        this.Hsd[e] = GameUtils_1.GameUtils.CreateFixedLengthTuple(32, false);
+        this.Hsd[e][e] = true;
       }
-      return new UE.NavAvoidanceMask(...this.Rnd[e]);
+      return new UE.NavAvoidanceMask(...this.Hsd[e]);
     }
   }
   get PlayerAvoidanceGroupMask() {
@@ -61,5 +61,5 @@ class AvoidanceModel extends ModelBase_1.ModelBase {
     return true;
   }
 }
-(exports.AvoidanceModel = AvoidanceModel).Lnd = true;
+(exports.AvoidanceModel = AvoidanceModel).Wsd = true;
 //# sourceMappingURL=AvoidanceModel.js.map

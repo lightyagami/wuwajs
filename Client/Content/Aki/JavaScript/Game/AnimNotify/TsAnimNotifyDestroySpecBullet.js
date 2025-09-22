@@ -12,6 +12,7 @@ class TsAnimNotifyDestroySpecBullet extends UE.KuroAnimNotify {
     super(...arguments);
     this.bulletName = undefined;
     this.是否召唤子子弹 = false;
+    this.立即销毁子弹特效 = false;
     this.角色拥有标签执行判定 = undefined;
   }
   Constructor() {}
@@ -25,18 +26,18 @@ class TsAnimNotifyDestroySpecBullet extends UE.KuroAnimNotify {
         }
       }
       t = ModelManager_1.ModelManager.BulletModel.GetBulletSetByAttacker(e.EntityId);
-      const o = [];
-      const s = this.bulletName.toString();
+      const s = [];
+      const o = this.bulletName.toString();
       t?.forEach(e => {
-        if (s === e.GetBulletInfo()?.BulletDataMain.BulletName) {
-          o.push(e.Id);
+        if (o === e.GetBulletInfo()?.BulletDataMain.BulletName) {
+          s.push(e.Id);
         }
       });
-      if (o.length === 0) {
+      if (s.length === 0) {
         return false;
       }
-      for (let e = o.length - 1; e >= 0; e--) {
-        ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(o[e], this.是否召唤子子弹);
+      for (let e = s.length - 1; e >= 0; e--) {
+        ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(s[e], this.是否召唤子子弹, 0, this.立即销毁子弹特效);
       }
     }
     return true;

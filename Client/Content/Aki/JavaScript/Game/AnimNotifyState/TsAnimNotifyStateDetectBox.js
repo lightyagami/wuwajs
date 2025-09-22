@@ -30,12 +30,15 @@ class TsAnimNotifyStateDetectBox extends UE.KuroAnimNotifyState {
     this.OffsetX = 10;
     this.OffsetY = 0;
     this.OffsetZ = 0;
-    this.objectTypes = undefined;
+    this.ObjectTypes = undefined;
     this.TagOnHit = undefined;
     this.SendGamePlayEvent = true;
     this.DebugDraw = false;
   }
   Constructor() {}
+  GetNotifyName() {
+    return "盒体检测碰撞";
+  }
   K2_NotifyBegin(e, t, i) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent) {
@@ -48,7 +51,7 @@ class TsAnimNotifyStateDetectBox extends UE.KuroAnimNotifyState {
       r = e.CharacterActorComponent;
       t.LastFramePosition.FromUeVector(r.ActorLocationProxy);
       t.BoxElement.WorldContextObject = e.GetWorld();
-      t.BoxElement.SetObjectTypesQuery((0, puerts_1.$ref)(this.objectTypes));
+      t.BoxElement.SetObjectTypesQuery((0, puerts_1.$ref)(this.ObjectTypes));
       t.BoxElement.SetBoxHalfSize(this.BoxHalfSizeX, this.BoxHalfSizeY, this.BoxHalfSizeZ);
       if (this.DebugDraw) {
         t.BoxElement.SetDrawDebugTrace(2);

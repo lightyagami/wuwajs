@@ -9,19 +9,19 @@ const LoopScrollMediumItemGrid_1 = require("../../../Common/MediumItemGrid/LoopS
 class TrapDefenseShopGoodsItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
-    this.bHc = undefined;
+    this.uXc = undefined;
     this.hJs = () => {
-      if (!!this.bHc && !this.IsSelected) {
-        ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectGoods(this.bHc);
+      if (!!this.uXc && !this.IsSelected) {
+        ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectGoods(this.uXc);
       }
     };
-    this.THc = e => {
+    this._Xc = e => {
       var t = this.GetItemGridExtendToggle();
-      if (e === this.bHc && t.GetToggleState() !== 1) {
+      if (e === this.uXc && t.GetToggleState() !== 1) {
         this.IsSelected = true;
         t.SetToggleState(1);
       }
-      if (e !== this.bHc && t.GetToggleState() !== 0) {
+      if (e !== this.uXc && t.GetToggleState() !== 0) {
         this.IsSelected = false;
         t.SetToggleStateForce(0);
       }
@@ -29,13 +29,13 @@ class TrapDefenseShopGoodsItem extends LoopScrollMediumItemGrid_1.LoopScrollMedi
   }
   OnStart() {
     this.BindOnExtendToggleClicked(this.hJs);
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.AddOnSelectGoodsDelegate(this.THc);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.AddOnSelectGoodsDelegate(this._Xc);
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.RemoveOnSelectGoodsDelegate(this.THc);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.RemoveOnSelectGoodsDelegate(this._Xc);
   }
   OnRefresh(e, t, s) {
-    this.bHc = e;
+    this.uXc = e;
     this.Apply(e.GetItemGridParam());
   }
   OnExtendToggleStateChanged(e) {
@@ -44,7 +44,7 @@ class TrapDefenseShopGoodsItem extends LoopScrollMediumItemGrid_1.LoopScrollMedi
       t.SetToggleStateForce(1);
     }
     if (e === 1 && !this.IsSelected) {
-      ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectGoods(this.bHc);
+      ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.SelectGoods(this.uXc);
     }
   }
 }

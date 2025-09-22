@@ -27,7 +27,7 @@ class LevelEventCollect extends LevelGeneralBase_1.LevelEventBase {
     var n;
     if (r) {
       if (n = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(r)) {
-        if (o?.IsClientPrePerform) {
+        if (o?.IsClientTrigger) {
           LevelGeneralCommons_1.LevelGeneralCommons.ChangeToDestroyState(ModelManager_1.ModelManager.CreatureModel.GetPbDataIdByEntity(n));
         }
         if ((n = n.Entity?.GetComponent(0)) && (n = n.GetPbEntityInitData()) && (n = (0, IComponent_1.getComponent)(n.ComponentsData, "InteractAudioComponent")) && n.InteractEventConfig && (n = n.InteractEventConfig.CollectAkEvent)) {

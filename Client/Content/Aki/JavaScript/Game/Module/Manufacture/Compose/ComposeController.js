@@ -64,14 +64,14 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29394, e => {
+    Net_1.Net.Register(22058, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10277_服务端主动推送合成数据更新");
       }
       ModelManager_1.ModelManager.ComposeModel.UpdateComposeDataList(e.nGs);
       ModelManager_1.ModelManager.ComposeModel.HideComposeDataList(e._Gs);
     });
-    Net_1.Net.Register(16074, e => {
+    Net_1.Net.Register(19597, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10280_服务端主动推送合成等级数据更新");
       }
@@ -80,8 +80,8 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29394);
-    Net_1.Net.UnRegister(16074);
+    Net_1.Net.UnRegister(22058);
+    Net_1.Net.UnRegister(19597);
   }
   static JIi(e) {
     ModelManager_1.ModelManager.ComposeModel.CreateComposeDataList(e.nGs);
@@ -94,14 +94,14 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Compose", 49, "10273_客户端请求合成系统相关数据(异步刷新)");
     }
     var e = new Protocol_1.Aki.Protocol.tCs();
-    var e = await Net_1.Net.CallAsync(18782, e);
+    var e = await Net_1.Net.CallAsync(18415, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 49, "10273_返回请求合成系统相关数据(异步刷新)");
     }
     if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
       ComposeController.JIi(e);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 29075, undefined, true, false);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25239, undefined, true, false);
       if (UiManager_1.UiManager.IsViewShow("ComposeCarryOnView")) {
         UiManager_1.UiManager.CloseView("ComposeCarryOnView");
       }
@@ -116,7 +116,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 49, "10275_请求合成道具");
     }
-    var t = await Net_1.Net.CallAsync(17657, Protocol_1.Aki.Protocol.rCs.create(a));
+    var t = await Net_1.Net.CallAsync(26287, Protocol_1.Aki.Protocol.rCs.create(a));
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 49, "10275_请求合成道具返回");
     }
@@ -164,7 +164,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList(r);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSuccess);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 16562);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 22717);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
     }
   }
@@ -178,7 +178,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 5, "请求置换");
     }
-    var o = await Net_1.Net.CallAsync(26099, Protocol_1.Aki.Protocol.Np_.create(a));
+    var o = await Net_1.Net.CallAsync(21049, Protocol_1.Aki.Protocol.Np_.create(a));
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 5, "请求置换返回");
     }
@@ -196,7 +196,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList([n]);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSuccess);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 16562);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 22717);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
     }
   }
@@ -209,7 +209,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     } else {
       e = new Protocol_1.Aki.Protocol.sCs();
       ComposeController.eTi = true;
-      Net_1.Net.Call(20046, Protocol_1.Aki.Protocol.sCs.create(e), e => {
+      Net_1.Net.Call(29931, Protocol_1.Aki.Protocol.sCs.create(e), e => {
         ComposeController.eTi = false;
         if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckDebug()) {
@@ -217,7 +217,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpgradeComposeLevel);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25584);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16501);
         }
       });
     }
@@ -225,7 +225,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
   static SendSynthesisFormulaUnlockRequest(t) {
     var e = new Protocol_1.Aki.Protocol.lCs();
     e.s5n = t;
-    Net_1.Net.Call(19837, Protocol_1.Aki.Protocol.lCs.create(e), e => {
+    Net_1.Net.Call(21918, Protocol_1.Aki.Protocol.lCs.create(e), e => {
       var o;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10281_制药配方解锁请求返回");
@@ -238,7 +238,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ComposeStudy", o);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateComposeFormula);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28536);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20332);
       }
     });
   }

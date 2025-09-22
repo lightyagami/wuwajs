@@ -49,15 +49,14 @@ class ResonanceChainBaseItem extends UiPanelBase_1.UiPanelBase {
     this.RoleId = e;
     this.Refresh();
   }
-  async Refresh() {
-    await this.LoadPromise;
-    this.RefreshToggleState(this.Wai);
+  Refresh() {
+    this.RefreshToggleState();
     this.Kbe();
     this.RefreshRedDot();
   }
-  async ShowItem() {
-    this.SetActive(true);
-    await this.bco();
+  ShowItem() {
+    this.SetUiActive(true);
+    this.bco();
   }
   GetUiItemForGuide() {
     return this.GetExtendToggle(1)?.GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
@@ -65,21 +64,19 @@ class ResonanceChainBaseItem extends UiPanelBase_1.UiPanelBase {
   BindToggleCallBack(e) {
     this.pqe = e;
   }
-  RefreshToggleState(e, t = false) {
-    this.SetSelectState(e);
-    e = this.Wai ? 1 : 0;
-    if (t) {
-      this.GetExtendToggle(1).SetToggleStateForce(e);
+  RefreshToggleState(e = false) {
+    var t = this.Wai ? 1 : 0;
+    if (e) {
+      this.GetExtendToggle(1).SetToggleStateForce(t);
     } else {
-      this.GetExtendToggle(1).SetToggleState(e);
+      this.GetExtendToggle(1).SetToggleState(t);
     }
   }
   SetSelectState(e) {
     this.Wai = e;
   }
-  async SetIconRotation(e) {
+  SetIconRotation(e) {
     this.wco = e;
-    await this.LoadPromise;
     this.qco();
   }
   qco() {
@@ -101,31 +98,26 @@ class ResonanceChainBaseItem extends UiPanelBase_1.UiPanelBase {
   GetRedDotItem() {
     return this.GetItem(3);
   }
-  async PlayActivateSequence(e) {
+  PlayActivateSequence(e) {
     this.OnActivateSequenceEndCallBack = e;
-    await this.LoadPromise;
     this.$pt.PlayLevelSequenceByName(this.ActivateSequenceName);
   }
-  async bco() {
-    await this.LoadPromise;
-    this.$pt.StopSequenceByKey("Start");
-    this.$pt.PlayLevelSequenceByName("Start");
+  bco() {
+    this.$pt.PlayOrReplaySequenceByName("Start");
   }
 }
 (exports.ResonanceChainBaseItem = ResonanceChainBaseItem).Gco = new UE.Rotator(0, 0, 0);
 class ResonanceChainActivatedItem extends ResonanceChainBaseItem {
-  constructor(e) {
-    super();
+  constructor() {
+    super(...arguments);
     this.ActivateSequenceName = "ClickIn";
-    this.LoadPromise = this.CreateByResourceIdAsync("UIItem_ResonanceChainActivatedItem", e);
   }
 }
 exports.ResonanceChainActivatedItem = ResonanceChainActivatedItem;
 class ResonanceChainLockedItem extends ResonanceChainBaseItem {
-  constructor(e) {
-    super();
+  constructor() {
+    super(...arguments);
     this.ActivateSequenceName = "Click";
-    this.LoadPromise = this.CreateByResourceIdAsync("UIItem_ResonanceChainLockedItem", e);
   }
   RefreshRedDot() {
     var e = ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceById(this.ResonanceId);

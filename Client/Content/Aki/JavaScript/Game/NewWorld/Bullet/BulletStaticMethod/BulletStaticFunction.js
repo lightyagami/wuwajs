@@ -271,7 +271,7 @@ class HitStaticFunction {
   }
   static PlayHitAudioByActor(t, e, i) {
     if (!!e && !StringUtils_1.StringUtils.IsBlank(e) && !ControllerHolder_1.ControllerHolder.EffectAudioController.CheckHitEffectCooldownTime(4, e)) {
-      ControllerHolder_1.ControllerHolder.EffectAudioController.AddPlayEffectAudio(e, t, 4, i === 0 ? 0 : 2);
+      ControllerHolder_1.ControllerHolder.EffectAudioController.AddPlayEffectAudio(e, t?.D_GetTransform(), 4, i === 0 ? 0 : 2, undefined, true);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Audio", 20, "播放子弹命中音效", ["Event", e]);
       }

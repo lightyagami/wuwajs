@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.PayShopModel = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
-const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
@@ -16,14 +15,19 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const PayShopGoods_1 = require("./PayShopData/PayShopGoods");
 const PayShopGoodsData_1 = require("./PayShopData/PayShopGoodsData");
+const PayShopInfoData_1 = require("./PayShopData/PayShopInfoData");
+const PayShopRecommendData_1 = require("./PayShopData/PayShopRecommendData");
+const PayShopTabData_1 = require("./PayShopData/PayShopTabData");
 const PayShopDefine_1 = require("./PayShopDefine");
 const DEFAULTTAB = 1;
 class PayShopModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
+    this.dxd = new Map();
     this.DFi = new Map();
-    this.RFi = new Map();
     this.uFi = new Map();
+    this.mxd = new Array();
+    this.fxd = new Map();
     this.UFi = "";
     this.AFi = 0;
     this.PFi = false;
@@ -32,7 +36,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
     this.A4a = (e, t) => e.GetItemData().Quality !== t.GetItemData().Quality ? t.GetItemData().Quality - e.GetItemData().Quality : e.GetGoodsData().GetSortValue() !== t.GetGoodsData().GetSortValue() ? e.GetGoodsData().GetSortValue() - t.GetGoodsData().GetSortValue() : e.GetGoodsId() - t.GetGoodsId();
     this.Qjs = (e, t) => {
       var o;
-      var r;
+      var a;
       if (e.IsSoldOut() !== t.IsSoldOut()) {
         if (e.IsSoldOut()) {
           return 1;
@@ -47,9 +51,9 @@ class PayShopModel extends ModelBase_1.ModelBase {
         }
       } else {
         o = e.GetItemData();
-        r = t.GetItemData();
-        if (o.Quality !== r.Quality) {
-          return r.Quality - o.Quality;
+        a = t.GetItemData();
+        if (o.Quality !== a.Quality) {
+          return a.Quality - o.Quality;
         } else if (e.GetGoodsData().GetSortValue() !== t.GetGoodsData().GetSortValue()) {
           return e.GetGoodsData().GetSortValue() - t.GetGoodsData().GetSortValue();
         } else {
@@ -59,7 +63,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
     };
     this.wFi = (e, t) => {
       var o;
-      var r;
+      var a;
       if (e.IsSoldOut() !== t.IsSoldOut()) {
         if (e.IsSoldOut()) {
           return 1;
@@ -76,9 +80,9 @@ class PayShopModel extends ModelBase_1.ModelBase {
         return e.GetGoodsData().GetSortValue() - t.GetGoodsData().GetSortValue();
       } else {
         o = e.GetItemData();
-        r = t.GetItemData();
-        if (o.Quality !== r.Quality) {
-          return r.Quality - o.Quality;
+        a = t.GetItemData();
+        if (o.Quality !== a.Quality) {
+          return a.Quality - o.Quality;
         } else {
           return e.GetGoodsId() - t.GetGoodsId();
         }
@@ -98,8 +102,8 @@ class PayShopModel extends ModelBase_1.ModelBase {
     var t;
     for (const o of this.GetPayShopIdList()) {
       if (o === e) {
-        t = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(o);
-        return ConfigManager_1.ConfigManager.DynamicTabConfig.GetTabViewConfById(t.DynamicTabId);
+        t = this.GetPayShopInfoDynamicTabId(o);
+        return ConfigManager_1.ConfigManager.DynamicTabConfig.GetTabViewConfById(t);
       }
     }
   }
@@ -109,6 +113,28 @@ class PayShopModel extends ModelBase_1.ModelBase {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshAllPayShop, Array.from(this.DFi.keys()));
   }
+  SetPayShopRecommendData(e) {
+    for (const a of e) {
+      var t = a.s5n;
+      var o = this.fxd.get(t);
+      if (o) {
+        o.Phrase(a);
+      } else {
+        (o = new PayShopRecommendData_1.PayShopRecommendData()).Phrase(a);
+        this.fxd.set(t, o);
+      }
+    }
+  }
+  SetPayShopTabData(e) {
+    if (e.length !== 0) {
+      this.mxd = [];
+      for (const o of e) {
+        var t = new PayShopTabData_1.PayShopTabData();
+        t.Phrase(o);
+        this.mxd.push(t);
+      }
+    }
+  }
   SetPayShopInfo(e) {
     this.BFi(e);
     this.AFi = e.s5n;
@@ -116,34 +142,41 @@ class PayShopModel extends ModelBase_1.ModelBase {
   SetPayShopGoodsList(e) {
     var t;
     var o;
-    var r = new Set();
-    for (const a of e) {
-      let e = this.uFi.get(a.s5n);
+    var a = new Set();
+    for (const r of e) {
+      let e = this.uFi.get(r.s5n);
       if (e) {
-        this.RefreshPayShopGoods(a);
+        this.RefreshPayShopGoods(r);
       } else {
-        t = a.tjn;
-        (o = this.DFi.get(t) ?? new Set()).add(a.s5n);
+        t = r.tjn;
+        (o = this.DFi.get(t) ?? new Set()).add(r.s5n);
         this.DFi.set(t, o);
-        e = this.qFi(a, t);
+        e = this.qFi(r, t);
       }
-      r.add(e.GetTabId());
+      a.add(e.GetTabId());
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoodsList, r);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoodsList, a);
+  }
+  GetPayShopInfoById(e) {
+    if (this.dxd.get(e)) {
+      return this.dxd.get(e);
+    }
   }
   BFi(e) {
     var t = e.s5n;
     var o = e.bMs;
-    var r = new Set();
-    for (const a of o) {
-      r.add(a.s5n);
-      this.qFi(a, t);
+    var a = new Set();
+    for (const r of o) {
+      a.add(r.s5n);
+      this.qFi(r, t);
     }
-    this.DFi.set(t, r);
-    this.RFi.set(t, MathUtils_1.MathUtils.LongToBigInt(e.Lxs));
+    this.DFi.set(t, a);
+    o = this.dxd.get(t) ?? new PayShopInfoData_1.PayShopInfoData();
+    o.Phrase(e);
+    this.dxd.set(t, o);
     this.PFi = true;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Shop", 10, "PayShop:Root 刷新商城数据", ["ShopId", t], ["goodsLength", r.size]);
+      Log_1.Log.Info("Shop", 10, "PayShop:Root 刷新商城数据", ["ShopId", t], ["goodsLength", a.size]);
     }
   }
   RefreshPayShopGoods(e) {
@@ -161,8 +194,8 @@ class PayShopModel extends ModelBase_1.ModelBase {
   }
   UnLockPayShopGoods(e) {
     var t = new Map();
-    for (const r of e) {
-      var o = this.uFi.get(r);
+    for (const a of e) {
+      var o = this.uFi.get(a);
       o.SetUnLock();
       let e = t.get(o.PayShopId);
       (e = e || new Set()).add(o.GetTabId());
@@ -176,15 +209,13 @@ class PayShopModel extends ModelBase_1.ModelBase {
       this.PFi = false;
       this.xFi = [];
       this.DFi.forEach((e, t) => {
-        if (ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(t).Enable) {
-          this.xFi.push(t);
-        }
+        this.xFi.push(t);
       });
       return this.xFi.sort((e, t) => {
-        var o = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(e);
-        var r = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(t);
-        if (o.Sort !== r.Sort) {
-          return o.Sort - r.Sort;
+        var o = this.GetPayShopInfoSort(e);
+        var a = this.GetPayShopInfoSort(t);
+        if (o !== a) {
+          return o - a;
         } else {
           return e - t;
         }
@@ -193,24 +224,24 @@ class PayShopModel extends ModelBase_1.ModelBase {
       return this.xFi;
     }
   }
-  GetPayShopTabIdList(a, e = true) {
+  GetPayShopTabIdList(r, e = true) {
     var t = new Set();
-    if (a === 1) {
-      for (const i of ConfigManager_1.ConfigManager.PayShopConfig.GetNeedShowRecommendData()) {
+    if (r === 1) {
+      for (const i of this.GetNeedShowRecommendData()) {
         if (!t.has(i.Id)) {
           t.add(i.Id);
         }
       }
     } else {
-      for (const s of this.DFi.get(a)) {
+      for (const s of this.DFi.get(r)) {
         var o = this.uFi.get(s);
-        var r = o.GetTabId();
-        if ((a !== 3 || !PayShopDefine_1.giftBagShopSpecialTabList.includes(r) || !!o.CheckGoodIfShow()) && !t.has(o.GetTabId())) {
+        var a = o.GetTabId();
+        if ((r !== 3 || !PayShopDefine_1.giftBagShopSpecialTabList.includes(a) || !!o.CheckGoodIfShow()) && !t.has(o.GetTabId())) {
           t.add(o.GetTabId());
         }
       }
     }
-    if (a === 3) {
+    if (r === 3) {
       for (const h of ModelManager_1.ModelManager.PayGiftModel.GetTabList()) {
         t.add(h);
       }
@@ -218,10 +249,12 @@ class PayShopModel extends ModelBase_1.ModelBase {
     var n = Array.from(t);
     if (e) {
       n.sort((e, t) => {
-        var o = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(a, e);
-        var r = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(a, t);
-        if (o.Sort !== r.Sort) {
-          return o.Sort - r.Sort;
+        var o = this.GetPayShopTabDataByPayShopIdAndTabId(r, e);
+        var a = this.GetPayShopTabDataByPayShopIdAndTabId(r, t);
+        var o = o ? o.Sort : 0;
+        var a = a ? a.Sort : 0;
+        if (o !== a) {
+          return o - a;
         } else {
           return e - t;
         }
@@ -235,18 +268,20 @@ class PayShopModel extends ModelBase_1.ModelBase {
       return 0;
     }
     let o = 0;
-    let r = 0;
-    for (const i of t) {
-      var a;
-      var n = this.uFi.get(i).GetTabId();
-      if (o === 0 && r === 0) {
-        o = n;
-        r = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(e, o).Sort;
+    let a = 0;
+    for (const s of t) {
+      var r;
+      var n;
+      var i = this.uFi.get(s).GetTabId();
+      if (o === 0 && a === 0) {
+        o = i;
+        r = this.GetPayShopTabDataByPayShopIdAndTabId(e, o);
+        a = r ? r.Sort : 0;
       } else {
-        a = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(e, n).Sort;
-        if (r > a || r === a && o > n) {
-          o = n;
-          r = a;
+        n = (r = this.GetPayShopTabDataByPayShopIdAndTabId(e, o)) ? r.Sort : 0;
+        if (a > n || a === n && o > i) {
+          o = i;
+          a = n;
         }
       }
     }
@@ -261,9 +296,9 @@ class PayShopModel extends ModelBase_1.ModelBase {
   NFi(e, t = 1) {
     var o = [];
     if (this.GFi(e, t)) {
-      for (const a of ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList()) {
-        if (a.GetGetPayGiftData().ShowInShop() && a.GetGetPayGiftData().CanShowInShopTab()) {
-          o.push(a);
+      for (const r of ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList()) {
+        if (r.GetGetPayGiftData().ShowInShop() && r.GetGetPayGiftData().CanShowInShopTab()) {
+          o.push(r);
         }
       }
     } else if (this.aUl(e)) {
@@ -276,17 +311,17 @@ class PayShopModel extends ModelBase_1.ModelBase {
     e = this.DFi.get(e);
     if (e) {
       for (const i of e) {
-        var r = this.uFi.get(i);
-        o.push(r);
+        var a = this.uFi.get(i);
+        o.push(a);
       }
     }
     return o;
   }
   GetGoodsInTab(e, t) {
     var o = [];
-    for (const a of this.DFi.get(e)) {
-      var r = this.uFi.get(a);
-      o.push(r);
+    for (const r of this.DFi.get(e)) {
+      var a = this.uFi.get(r);
+      o.push(a);
     }
     for (const n of o) {
       if (n.GetItemData().ItemId === t) {
@@ -300,36 +335,36 @@ class PayShopModel extends ModelBase_1.ModelBase {
     if (e === -1 || e === 0) {
       return [];
     }
-    var r = [];
-    for (const a of this.NFi(e, t)) {
-      if (a.GetTabId() === t && a.CheckGoodIfShow()) {
-        r.push(a);
+    var a = [];
+    for (const r of this.NFi(e, t)) {
+      if (r.GetTabId() === t && r.CheckGoodIfShow()) {
+        a.push(r);
       }
     }
     if (o) {
-      return this.R4a(e, r);
+      return this.R4a(e, a);
     } else {
-      return r;
+      return a;
     }
   }
   R4a(e, t) {
-    if (ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(e).SortRule === 1) {
+    if (this.GetPayShopInfoSortRule(e) === 1) {
       var o = [];
-      var r = [];
       var a = [];
+      var r = [];
       for (const n of t) {
-        (n.IsSoldOut() ? a : n.IfCanBuy() ? o : r).push(n);
+        (n.IsSoldOut() ? r : n.IfCanBuy() ? o : a).push(n);
       }
       o.sort(this.A4a);
-      r.sort(this.L4a);
-      a.sort(this.A4a);
-      return o.concat(r).concat(a);
+      a.sort(this.L4a);
+      r.sort(this.A4a);
+      return o.concat(a).concat(r);
     }
     e = this.$js(e);
     return t.sort(e);
   }
   $js(e) {
-    if (ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(e).SortRule !== 1) {
+    if (this.GetPayShopInfoSortRule(e) !== 1) {
       return this.wFi;
     } else {
       return this.Qjs;
@@ -340,7 +375,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   }
   GetPayShopCountDownData(e) {
     var t;
-    var e = this.RFi.get(e);
+    var e = this.GetPayShopUpdateTime(e);
     if (e !== undefined && !(e <= 0)) {
       e = Number(e);
       t = PayShopGoods_1.PayShopGoods.GetTimeTypeData(e);
@@ -356,9 +391,9 @@ class PayShopModel extends ModelBase_1.ModelBase {
     }
   }
   GetPayShopUpdateTime(e) {
-    e = this.RFi.get(e);
+    e = this.GetPayShopInfoById(e);
     if (e) {
-      return Number(e);
+      return Number(e.UpdateTime);
     } else {
       return 0;
     }
@@ -415,27 +450,27 @@ class PayShopModel extends ModelBase_1.ModelBase {
     return false;
   }
   Hzl(e, t = 1) {
-    return !!this.GetPayShopTabIdList(e, false).includes(t) && ConfigManager_1.ConfigManager.PayShopConfig.GetRecommendDataById(t).RecommendType === 1 && ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState();
+    return !!this.GetPayShopTabIdList(e, false).includes(t) && this.GetRecommendDataById(t).RecommendType === 1 && ModelManager_1.ModelManager.MonthCardModel.GetPayButtonRedDotState();
   }
   ReadShopItemCheckFlag(e, t = 1) {
     let o = [];
-    let r = false;
-    for (const a of o = this.GFi(e, t) ? ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList() : this.GetPayShopTabData(e, t, false)) {
-      if (!a.IsSoldOut() && !a.IsLocked() && !!a.IfCanBuy() && !ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, a.GetGoodsId())) {
-        ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, a.GetGoodsId());
-        r = true;
+    let a = false;
+    for (const r of o = this.GFi(e, t) ? ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList() : this.GetPayShopTabData(e, t, false)) {
+      if (!r.IsSoldOut() && !r.IsLocked() && !!r.IfCanBuy() && !ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, r.GetGoodsId())) {
+        ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, r.GetGoodsId());
+        a = true;
       }
     }
-    if (r) {
+    if (a) {
       ModelManager_1.ModelManager.NewFlagModel.SaveNewFlagConfig(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked);
     }
-    return r;
+    return a;
   }
   CheckShopItemCheckFlag(e, t = 1) {
     let o = [];
-    for (const r of o = this.GFi(e, t) ? ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList() : this.GetPayShopTabData(e, t, false)) {
-      if (!r.IsSoldOut() && !r.IsLocked() && r.IfCanBuy()) {
-        if (!ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, r.GetGoodsId())) {
+    for (const a of o = this.GFi(e, t) ? ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList() : this.GetPayShopTabData(e, t, false)) {
+      if (!a.IsSoldOut() && !a.IsLocked() && a.IfCanBuy()) {
+        if (!ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.PayShopTabItemChecked, a.GetGoodsId())) {
           return true;
         }
       }
@@ -445,10 +480,93 @@ class PayShopModel extends ModelBase_1.ModelBase {
   GetPayShopItemQualitySpriteByItemIdAndQuality(e, t) {
     return (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 13 ? ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(t) : ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(t)).PayShopQualitySprite;
   }
+  GetPayShopInfoTabViewType(e) {
+    e = this.GetPayShopInfoById(e);
+    if (e) {
+      return e.ShopTabViewType;
+    } else {
+      return 0;
+    }
+  }
+  GetPayShopInfoDynamicTabId(e) {
+    e = this.GetPayShopInfoById(e);
+    if (e) {
+      return e.DynamicTabId;
+    } else {
+      return 0;
+    }
+  }
+  GetPayShopInfoSortRule(e) {
+    e = this.GetPayShopInfoById(e);
+    if (e) {
+      return e.SortRule;
+    } else {
+      return 0;
+    }
+  }
+  GetPayShopInfoSort(e) {
+    e = this.GetPayShopInfoById(e);
+    if (e) {
+      return e.Sort;
+    } else {
+      return 0;
+    }
+  }
+  GetPayShopInfoMoney(e) {
+    e = this.GetPayShopInfoById(e);
+    if (e) {
+      return e.Money;
+    } else {
+      return [];
+    }
+  }
+  GetPayShopTableList(e) {
+    var t = new Array();
+    for (const a of this.mxd) {
+      if (a.ShopId === e) {
+        t.push(a);
+      }
+    }
+    var o = [];
+    t.sort((e, t) => e.Sort - t.Sort);
+    for (const r of t) {
+      if (r.Enable) {
+        o.push(r.TabId);
+      }
+    }
+    return o;
+  }
+  GetPayShopTabDataByPayShopIdAndTabId(e, t) {
+    for (const o of this.mxd) {
+      if (o.ShopId === e && o.TabId === t) {
+        return o;
+      }
+    }
+  }
+  GetRecommendData() {
+    var e;
+    var t = new Array();
+    for ([, e] of this.fxd) {
+      t.push(e);
+    }
+    return t;
+  }
+  GetNeedShowRecommendData() {
+    var e;
+    var t = new Array();
+    for ([, e] of this.fxd) {
+      if (e.Show) {
+        t.push(e);
+      }
+    }
+    return t;
+  }
+  GetRecommendDataById(e) {
+    return this.fxd.get(e);
+  }
   ClearData() {
     this.DFi.clear();
     this.uFi.clear();
-    this.RFi.clear();
   }
 }
 exports.PayShopModel = PayShopModel;

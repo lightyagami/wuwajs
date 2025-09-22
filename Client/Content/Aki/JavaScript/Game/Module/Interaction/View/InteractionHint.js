@@ -156,7 +156,7 @@ class InteractionHint extends UiPanelBase_1.UiPanelBase {
     this.J_i = t.GetComponent(119);
     this.z_i = t.GetComponent(118);
     this.wDe = t.GetComponent(0)?.GetPbDataId() ?? 0;
-    this.Mfu = t.GetComponent(296);
+    this.Mfu = t.GetComponent(297);
     if (this.z_i) {
       this.ETt = this.z_i.DropItemId;
       if (this.ETt) {

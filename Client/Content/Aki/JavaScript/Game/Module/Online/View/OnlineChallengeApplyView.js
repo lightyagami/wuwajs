@@ -168,18 +168,23 @@ class OnlineChallengeApplyView extends UiTickViewBase_1.UiTickViewBase {
     LguiUtil_1.LguiUtil.SetLocalText(e, "TeamLeaderInviteToInstance");
     var t = this.GetText(7);
     var e = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceId();
-    var e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e).MapName) ?? "";
-    t.SetText(e);
-    var t = ModelManager_1.ModelManager.OnlineModel.OwnerId;
-    var e = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(t);
-    if (e) {
+    var i = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
+    let n = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.MapName) ?? "";
+    i = i.SubTitle;
+    if (i?.size > 0) {
+      n += ModelManager_1.ModelManager.OnlineModel.GetMultiInstanceRecommendLevelText(e, i);
+    }
+    t.SetText(n);
+    e = ModelManager_1.ModelManager.OnlineModel.OwnerId;
+    i = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(e);
+    if (i) {
       this.XFt.SetText(TimeUtil_1.TimeUtil.GetCoolDown(this.SNi));
       this.pNi.SetFillAmount(this.SNi / this.yNi);
-      if (e = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(e.HeadId, false)) {
-        this.SetTextureByPath(e.GetRoleHeadIconCircle(), this.GetTexture(0));
+      if (t = ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(i.HeadId, false)) {
+        this.SetTextureByPath(t.GetRoleHeadIconCircle(), this.GetTexture(0));
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("MultiPlayerTeam", 5, "未找到发起邀请的玩家", ["playerId：", t]);
+      Log_1.Log.Error("MultiPlayerTeam", 5, "未找到发起邀请的玩家", ["playerId：", e]);
     }
     this.GetItem(16)?.SetUIActive(false);
     this.GetItem(15)?.SetUIActive(false);

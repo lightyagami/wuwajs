@@ -42,9 +42,9 @@ class TrapDefenseLevelData {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.LevelUnlockBuilding.set(t, this.Id);
     }
     this.IsEndless = this.Config.ModeType === 3;
-    this.HasShop = this.m_d();
+    this.HasShop = this.qfd();
   }
-  m_d() {
+  qfd() {
     for (const e of ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTrapDefenseWavesByLevelId(this.Id)) {
       if (e.ShopConfigId > 0) {
         return true;
@@ -66,8 +66,8 @@ class TrapDefenseLevelData {
     if (this.Config.OpenDay > 0) {
       this.UnlockTime = MathUtils_1.MathUtils.LongToNumber(e.yzs) * TimeUtil_1.TimeUtil.Millisecond;
     }
-    this.IsLeaved = e.W7u;
-    this.MaxFinishWaveTimes = e.oYc;
+    this.IsLeaved = e.vHc;
+    this.MaxFinishWaveTimes = e.nJc;
   }
   GetStarStateList() {
     const i = this.ReachTargetIndexList.length;
@@ -202,9 +202,9 @@ class TrapDefenseLevelData {
         return t.HaveBoss();
       }
     }
-    return this.Bcd(this.Config.MonsterWaveMainId, e);
+    return this.WTd(this.Config.MonsterWaveMainId, e);
   }
-  Bcd(e, t) {
+  WTd(e, t) {
     let i = 1;
     for (const a of ConfigManager_1.ConfigManager.TrapDefenseConfig.GetCsvMainConfigByMonsterWaveMainId(e)) {
       var r = Math.max(a.RepeatTimes, 1);

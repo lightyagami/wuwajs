@@ -440,10 +440,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Mts.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(18720, t, t => {
+        Net_1.Net.Call(19018, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 17079);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 28582);
           }
         });
       }
@@ -459,10 +459,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Dg_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(27055, t, t => {
+        Net_1.Net.Call(18596, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 21631);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 24433);
           }
         });
       }

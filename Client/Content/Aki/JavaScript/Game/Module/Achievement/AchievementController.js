@@ -33,16 +33,16 @@ class AchievementController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleViewActiveSequenceFinish, this.rbe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(17223, AchievementController.nbe);
-    Net_1.Net.Register(25752, AchievementController.sbe);
-    Net_1.Net.Register(21213, AchievementController.abe);
-    Net_1.Net.Register(23779, AchievementController.yth);
+    Net_1.Net.Register(21752, AchievementController.nbe);
+    Net_1.Net.Register(27478, AchievementController.sbe);
+    Net_1.Net.Register(15675, AchievementController.abe);
+    Net_1.Net.Register(19602, AchievementController.yth);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17223);
-    Net_1.Net.UnRegister(25752);
-    Net_1.Net.UnRegister(21213);
-    Net_1.Net.UnRegister(23779);
+    Net_1.Net.UnRegister(21752);
+    Net_1.Net.UnRegister(27478);
+    Net_1.Net.UnRegister(15675);
+    Net_1.Net.UnRegister(19602);
   }
   static OpenAchievementMainView() {
     UiManager_1.UiManager.OpenView("AchievementMainView");
@@ -62,9 +62,9 @@ class AchievementController extends ControllerBase_1.ControllerBase {
   }
   static async RequestUpdateAchievementInfo() {
     var e = new Protocol_1.Aki.Protocol.kg_();
-    var e = await Net_1.Net.CallAsync(28559, e);
+    var e = await Net_1.Net.CallAsync(27496, e);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25311);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27673);
     } else {
       ModelManager_1.ModelManager.AchievementModel.PhraseUpdateData(e);
     }
@@ -73,28 +73,28 @@ class AchievementController extends ControllerBase_1.ControllerBase {
     var r = new Protocol_1.Aki.Protocol.o$n();
     r.s5n = t;
     r.x6n = e;
-    Net_1.Net.Call(29048, r, e => {
+    Net_1.Net.Call(27480, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23419);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22535);
       }
     });
   }
   static RequestGetMultiAchievementReward(e, t) {
-    var r = new Protocol_1.Aki.Protocol.W5u();
-    r.j8u = e;
-    r.H8u = t;
-    Net_1.Net.Call(18262, r, e => {
+    var r = new Protocol_1.Aki.Protocol.a8u();
+    r.T8u = e;
+    r.b8u = t;
+    Net_1.Net.Call(23920, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16706);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15353);
       }
     });
   }
   static RequestAchievementFinish(e) {
     var t = new Protocol_1.Aki.Protocol.l$n();
     t.s5n = e;
-    Net_1.Net.Call(24499, t, e => {
+    Net_1.Net.Call(24149, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18471);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29619);
       }
     });
   }
@@ -124,7 +124,7 @@ exports.AchievementController = AchievementController;
 (_a = AchievementController).Wq_ = true;
 AchievementController.obe = async () => {
   var e = new Protocol_1.Aki.Protocol.i$n();
-  var e = await Net_1.Net.CallAsync(29346, e);
+  var e = await Net_1.Net.CallAsync(25289, e);
   ModelManager_1.ModelManager.AchievementModel.PhraseBaseData(e);
 };
 AchievementController.nbe = e => {

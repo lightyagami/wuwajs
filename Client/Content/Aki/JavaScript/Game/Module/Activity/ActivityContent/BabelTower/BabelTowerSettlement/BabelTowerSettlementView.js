@@ -19,6 +19,7 @@ const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiAsyncTask_1 = require("../../../../../Ui/Base/UiAsyncTask");
+const UiBehaviorGachaSequence_1 = require("../../../../../Ui/Base/UiBehaviorGachaSequence");
 const UiViewBase_1 = require("../../../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../../../Ui/UiManager");
 const ScreenShotManager_1 = require("../../../../ScreenShot/ScreenShotManager");
@@ -28,14 +29,13 @@ const BabelTowerController_1 = require("../BabelTowerController");
 const BabelTowerDefine_1 = require("../BabelTowerDefine");
 const BabelTowerSettlementDeTermLayoutItem_1 = require("./BabelTowerSettlementDeTermLayoutItem");
 const BabelTowerSettlementRoleItem_1 = require("./BabelTowerSettlementRoleItem");
-const UiBehaviorGachaSequence_1 = require("../../../../../Ui/Base/UiBehaviorGachaSequence");
 class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
     this.Roc = undefined;
     this.tFe = undefined;
-    this.eQu = undefined;
+    this.FQc = undefined;
     this.Qma = undefined;
     this.Hha = undefined;
     this.M_c = false;
@@ -85,8 +85,8 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[14, this.T_c], [17, this.xco], [19, this.HQ1], [20, this.$Q1]];
   }
   OnBeforeCreate() {
-    this.eQu = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
-    this.AddUiBehavior(this.eQu);
+    this.FQc = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
+    this.AddUiBehavior(this.FQc);
   }
   async OnBeforeStartAsync() {
     var e;
@@ -103,7 +103,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
       i.RootUIComp.SetUIActive(false);
       this.GetItem(12).SetUIActive(false);
       this.avc = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(this.Pe.TeamRoleIdList[0]);
-      await this.eQu.PreLoadLevelSequence(this.avc);
+      await this.FQc.PreLoadLevelSequence(this.avc);
       await this.RefreshAsync();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCommon", 43, "Data为空");
@@ -111,10 +111,10 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   }
   OnHandleLoadScene() {
     this.Qma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("SceneCamera1"), 0);
-    this.eQu.BindSceneSequenceCamera(this.Qma);
+    this.FQc.BindSceneSequenceCamera(this.Qma);
     this.Hha = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("UpdateInteractBP"), 0);
     this.Hha.SetTickableWhenPaused(true);
-    this.eQu.BindUpdateInteractBp(this.Hha);
+    this.FQc.BindUpdateInteractBp(this.Hha);
   }
   OnBeforeShow() {
     this.TryPlayRoleSequence();
@@ -261,7 +261,7 @@ class BabelTowerSettlementView extends UiViewBase_1.UiViewBase {
   TryPlayRoleSequence() {
     if (!this.M_c) {
       this.M_c = true;
-      this.eQu.PlayRoleSequence(this.avc);
+      this.FQc.PlayRoleSequence(this.avc);
     }
   }
 }

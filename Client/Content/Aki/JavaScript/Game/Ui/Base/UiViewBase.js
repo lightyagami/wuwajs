@@ -11,12 +11,14 @@ const Log_1 = require("../../../Core/Common/Log");
 const Queue_1 = require("../../../Core/Container/Queue");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const BlackScreenController_1 = require("../../Module/BlackScreen/BlackScreenController");
+const UiBehaviourHomeBtn_1 = require("../../Module/UiComponent/UiHomeButton/UiBehaviourHomeBtn");
 const UiSceneManager_1 = require("../../Module/UiComponent/UiSceneManager");
 const UiNavigationNewController_1 = require("../../Module/UiNavigation/New/UiNavigationNewController");
 const LguiUtil_1 = require("../../Module/Util/LguiUtil");
@@ -35,6 +37,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.ChildPopView = undefined;
     this.UiViewSequence = undefined;
     this.UiBlurBehaviour = undefined;
+    this.UiBehaviourHomeBtn = undefined;
     this.AudioEvent = undefined;
     this.Hur = true;
     this.LastHide = false;
@@ -84,7 +87,15 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     return true;
   }
   OnHandleLoadScene() {}
+  async HandlePostLoadSceneAsync(e) {
+    await this.OnHandlePostLoadSceneAsync(e);
+  }
+  async OnHandlePostLoadSceneAsync(e) {}
   OnHandleReleaseScene() {}
+  async HandlePreReleaseSceneAsync(e) {
+    await this.OnHandlePreReleaseSceneAsync(e);
+  }
+  async OnHandlePreReleaseSceneAsync(e) {}
   CloseMe(i) {
     this.CloseMeAsync().then(() => {
       i?.(true);
@@ -119,6 +130,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.Xur();
     this.$ur();
     this.Yur();
+    this.sjd();
   }
   Jur(e, i = undefined) {
     this.PlaySequence(e, i, (this.Info.Type & UiLayerType_1.BLOCKCLICK_TYPE) > 0);
@@ -145,6 +157,11 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
   }
   Yur() {
     var e = new UiBehaviorAudio_1.UiBehaviorAudio(this);
+    this.AddUiBehavior(e);
+  }
+  sjd() {
+    var e = new UiBehaviourHomeBtn_1.UiBehaviourHomeBtn();
+    (this.UiBehaviourHomeBtn = e).SetViewInfo(this);
     this.AddUiBehavior(e);
   }
   GetUiAudioComponent() {
@@ -215,13 +232,17 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeShowImplementImplement() {}
   async OnBeforeShowAsyncImplement() {
-    await Promise.all([this.OnBeforeShowAsyncImplementImplement(), this.LoadScene()]);
+    await Promise.all([this.l5d(), this.LoadScene()]);
     this.LoadScenePromise?.SetResult(undefined);
     if (this.SceneLoaded && !this.SkipRemoveBlackScreen) {
       BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", this.Info.Name);
     }
   }
   async OnBeforeShowAsyncImplementImplement() {}
+  async l5d() {
+    await this.OnBeforeShowAsyncImplementImplement();
+    this.AfterOnBeforeShowAsyncImplementImplement();
+  }
   OnBeforeShowImplement() {
     this.OnAddEventListener();
     this.OnBeforeShowImplementImplement();
@@ -233,7 +254,8 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
         Log_1.Log.Info("UiCore", 16, "播放界面动画Start(开始)", ["ViewName", this.Info.Name], ["SequenceName", this.UiViewSequence.StartSequenceName]);
       }
       if (!!this.Info.IsPermanent || !this.IsExistInLeaveLevel) {
-        await Promise.all([this.zur(this.UiViewSequence.StartSequenceName), this.OnPlayingStartSequenceAsync()]);
+        await Promise.all([this.zur(this.UiViewSequence.StartSequenceName), this.OnPlayingStartSequenceAsync(), this.y8d()]);
+        this.AfterOnPlayingStartSequenceAsync();
       }
       this.OnAfterPlayStartSequence();
       this.UiViewSequence?.PlaySequencePurely("AutoLoop");
@@ -298,7 +320,8 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       if (this.LastHide) {
         this.LastHide = false;
         this.OnBeforePlayCloseSequence();
-        await Promise.all([this.icr(), this.OnPlayingCloseSequenceAsync()]);
+        await Promise.all([this.icr(), this.OnPlayingCloseSequenceAsync(), this.S8d()]);
+        this.AfterOnPlayingCloseSequenceAsync();
       } else {
         await this.zur(this.UiViewSequence.HideSequenceName);
       }
@@ -399,8 +422,10 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       await UiSceneManager_1.UiSceneManager.LoadScene(this.Info.ScenePath, () => {
         this.OnHandleLoadScene();
       });
+      await this.HandlePostLoadSceneAsync(true);
     } else {
       this.SkipLoadScene = false;
+      await this.HandlePostLoadSceneAsync(false);
     }
   }
   async ReleaseScene() {
@@ -409,9 +434,11 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCore", 16, "开始释放UI场景", ["ViewName", this.Info.Name], ["ScenePath", this.Info.ScenePath]);
       }
+      await this.HandlePreReleaseSceneAsync(true);
       await UiSceneManager_1.UiSceneManager.ExitScene();
       this.OnHandleReleaseScene();
     } else {
+      await this.HandlePreReleaseSceneAsync(false);
       this.SkipReleaseScene = false;
     }
   }
@@ -447,6 +474,47 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
         Log_1.Log.Info("UiCore", 10, "[Clear] 完成销毁的界面", ["Name", this.constructor.name], ["ComponentId", this.ComponentId]);
       }
     });
+  }
+  async AfterOnCreateAsync() {
+    await super.AfterOnCreateAsync();
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsViewOnCreateAsync, this.Info.Name, this.GetViewId());
+  }
+  async AfterOnBeforeStartAsync() {
+    await super.AfterOnBeforeStartAsync();
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsBeforeStartAsync, this.Info.Name, this.GetViewId());
+  }
+  async AfterOnBeforeHideAsync() {
+    await super.AfterOnBeforeHideAsync();
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnBeforeHideAsync, this.Info.Name, this.GetViewId());
+  }
+  AfterOnPlayingStartSequenceAsync() {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnPlayingStartSequenceAsync, this.Info.Name, this.GetViewId());
+  }
+  AfterOnPlayingCloseSequenceAsync() {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnPlayingCloseSequenceAsync, this.Info.Name, this.GetViewId());
+  }
+  AfterOnBeforeShowAsyncImplementImplement() {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnBeforeShowAsyncImplementImplement, this.Info.Name, this.GetViewId());
+  }
+  l$d() {
+    this.CsUiLife.OnPlayingStartSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
+  }
+  async y8d() {
+    if (this.IsCsViewProxy) {
+      this.l$d();
+      await this.CsUiLife.OnPlayingStartSequenceAsyncPromise.Promise;
+      this.CsUiLife.OnPlayingStartSequenceAsyncPromise = undefined;
+    }
+  }
+  _$d() {
+    this.CsUiLife.OnPlayingCloseSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
+  }
+  async S8d() {
+    if (this.IsCsViewProxy) {
+      this._$d();
+      await this.CsUiLife.OnPlayingCloseSequenceAsyncPromise.Promise;
+      this.CsUiLife.OnPlayingCloseSequenceAsyncPromise = undefined;
+    }
   }
 }
 exports.UiViewBase = UiViewBase;

@@ -67,7 +67,7 @@ class ActivityFunPlayTabItem extends UiPanelBase_1.UiPanelBase {
   GFe() {
     var t;
     if (this.yuu) {
-      t = this.yuu.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayRewarded);
+      t = this.yuu.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayRewarded);
       this.GetSprite(3).SetUIActive(t);
       this.GetSprite(8).SetUIActive(t);
       this.GetSprite(2).SetUIActive(false);

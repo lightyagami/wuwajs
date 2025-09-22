@@ -293,7 +293,7 @@ let CharacterDriveVehicleComponent = class CharacterDriveVehicleComponent extend
           break;
         case "SceneItemAutoMoveVehicle":
         case "CoBathingEmptyVehicle":
-          var s = this.VehicleInfo.VehicleEntity.GetComponent(274);
+          var s = this.VehicleInfo.VehicleEntity.GetComponent(275);
           if (s && !(e = s?.SkeletonMeshComponent)) {
             const o = VehicleInfoDefines_1.VehicleInfoDefines.GetSeatSocketName(this.VehicleInfo.Seat);
             e = s?.GetStaticMeshVehicleSeats(o.toString());

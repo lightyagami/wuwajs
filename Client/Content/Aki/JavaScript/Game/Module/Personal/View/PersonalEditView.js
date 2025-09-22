@@ -7,6 +7,7 @@ exports.PersonalEditView = undefined;
 const UE = require("ue");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -29,15 +30,22 @@ class PersonalEditView extends UiViewBase_1.UiViewBase {
       t.SetToggleCallBack(this.TabItemToggleClick);
       return t;
     };
-    this.TabItemToggleClick = (t, e) => {
+    this.TabItemToggleClick = (t, i) => {
       this.B7t.SelectGridProxy(t);
-      this.ShowContent(e);
+      this.ShowContent(i);
     };
-    this.RefreshBtnConfirm = (t, e) => {
+    this.RefreshBtnConfirm = (t, i) => {
+      this.m8t.SetEnableClick(t);
       this.GetInteractionGroup(5).SetInteractable(t);
-      let i = "";
-      i = this.tVi === 2 ? e ? "Text_PhantomTakeOff_Text" : "ConfirmBox_173_ButtonText_1" : e ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1";
-      this.m8t.SetLocalTextNew(i);
+      let e = "";
+      e = this.tVi === 2 ? i ? "Text_PhantomTakeOff_Text" : "ConfirmBox_173_ButtonText_1" : i ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1";
+      this.m8t.SetLocalTextNew(e);
+    };
+    this.m2e = () => {
+      if (UiManager_1.UiManager.IsViewOpen("PersonalOptionView")) {
+        UiManager_1.UiManager.CloseView("PersonalOptionView");
+      }
+      UiManager_1.UiManager.CloseView("PersonalEditView");
     };
   }
   OnRegisterComponent() {
@@ -50,18 +58,21 @@ class PersonalEditView extends UiViewBase_1.UiViewBase {
     this.B7t = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.zac);
     var t = [];
     t.push(0);
-    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10061);
-    if (e) {
+    var i = ModelManager_1.ModelManager.FunctionModel.IsOpen(10061);
+    if (i) {
       t.push(1);
     }
-    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10082);
-    if (e) {
+    var i = ModelManager_1.ModelManager.FunctionModel.IsOpen(10082);
+    if (i) {
       t.push(2);
     }
     await this.B7t.RefreshByDataAsync(t);
-    var e = t.findIndex(t => t === this.tVi);
-    this.B7t.SelectGridProxy(e = e < 0 ? 0 : e);
+    var i = t.findIndex(t => t === this.tVi);
+    this.B7t.SelectGridProxy(i = i < 0 ? 0 : i);
     await this.ShowContent(this.tVi);
+  }
+  OnStart() {
+    this.ChildPopView?.PopItem.OverrideBackBtnCallBack(this.m2e);
   }
   async ShowContent(t) {
     this.tVi = t;

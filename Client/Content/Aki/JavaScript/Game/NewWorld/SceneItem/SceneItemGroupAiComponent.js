@@ -102,5 +102,5 @@ let SceneItemGroupAiComponent = class SceneItemGroupAiComponent extends EntityCo
     }
   }
 };
-SceneItemGroupAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(260)], SceneItemGroupAiComponent);
+SceneItemGroupAiComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(261)], SceneItemGroupAiComponent);
 exports.SceneItemGroupAiComponent = SceneItemGroupAiComponent; //# sourceMappingURL=SceneItemGroupAiComponent.js.map

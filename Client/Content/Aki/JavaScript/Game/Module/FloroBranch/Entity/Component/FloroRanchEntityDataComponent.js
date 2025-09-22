@@ -45,7 +45,7 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
     this.Income = 0;
     this.DailySaleData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(3);
     this.TipShowBuffList = [];
-    this.MKu = [];
+    this.$Hu = [];
     this.BuffMap = new Map();
     this.TagData = new FloroRanchTagData_1.FloroRanchTagData();
     this.Qnd = false;
@@ -62,12 +62,12 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
     this.TagData.SetTagId(this.TagId);
     this.BJ1(t.Uru);
     this.Count = t.D8n;
-    this.DailySaleData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.u7u)));
+    this.DailySaleData.SetAmount(Number(MathUtils_1.MathUtils.LongToBigInt(t.a7u)));
   }
   BJ1(t) {
     this.BuffMap.clear();
     this.TipShowBuffList.length = 0;
-    this.MKu.length = 0;
+    this.$Hu.length = 0;
     for (const i of t) {
       var o = new FloroRanchBuffData_1.FloroRanchBuffData();
       o.RefreshBuffData(i);
@@ -104,7 +104,7 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
         this.TipShowBuffList.splice(this.TipShowBuffList.indexOf(o), 1);
       }
       if (o.IsShowEffect) {
-        this.MKu.splice(this.MKu.indexOf(o), 1);
+        this.$Hu.splice(this.$Hu.indexOf(o), 1);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 58, "Buff is not exist!", ["Entity", this.Info()], ["BuffId", t.s5n], ["BuffInstanceId", t.Tru]);
@@ -123,12 +123,12 @@ let FloroRanchEntityDataComponent = class FloroRanchEntityDataComponent extends 
       this.TipShowBuffList.push(t);
     }
     if (t.IsShowEffect) {
-      this.MKu.push(t);
+      this.$Hu.push(t);
     }
   }
   GetMinRemindDayBuff() {
-    if (this.MKu.length !== 0) {
-      return this.MKu.reduce((t, o) => o.RemindDay < t.RemindDay ? o : t, this.MKu[0]);
+    if (this.$Hu.length !== 0) {
+      return this.$Hu.reduce((t, o) => o.RemindDay < t.RemindDay ? o : t, this.$Hu[0]);
     }
   }
   Info() {

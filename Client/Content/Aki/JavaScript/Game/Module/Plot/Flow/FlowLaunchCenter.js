@@ -67,7 +67,7 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
       return !!ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode() || o.PlotLevel !== "LevelC" && !o.IsWaitAnim || !(this.i$i > ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.WaitCalmTime ? this.i$i = 0 : (o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.CheckGetComponent(206))?.Valid ? o.HasTag(-1371021686) ? (this.i$i += e, 1) : this.i$i = 0 : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "开始剧情检查人物站立时拿不到BaseTagComponent"), this.i$i = 0));
     };
     this.eI1 = (e, o) => !o.CheckPreload || !ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.CheckIsLoading(o.FormatId);
-    this.Sld = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1"]);
+    this.bmd = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1"]);
   }
   OnDestroy() {}
   OnInit() {
@@ -166,15 +166,15 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
         Log_1.Log.Info("Plot", 26, "剧情开始时被跳过", ["IsInLogicTreeGmMode", ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()], ["IsMuteAllPlot", ModelManager_1.ModelManager.PlotModel.IsMuteAllPlot], ["IsBackground", e.IsBackground]);
       }
       const t = FlowData_1.FlowContext.Create();
-      t.Init(e.IsServerNotify, e.FlowListName, e.FlowIncId, e.FlowId, e.StateId, o, e.IsBreakdown, e.Context, e.IsAsync, e.UiParam, e.Pos, e.KeepMainRolePose, e.Seamless, e.EndSeamlessShowTalkId, e.PreloadSequenceUiData);
+      t.Init(e, o);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "剧情行为组开始", ["id", t.FormatId], ["num", e.StateActions.length]);
       }
-      if (this.Sld.has(t.FormatId)) {
+      if (this.bmd.has(t.FormatId)) {
         ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(true);
       }
       ControllerHolder_1.ControllerHolder.FlowController.ExecuteActions(e.StateActions, t, () => {
-        if (this.Sld.has(t.FormatId)) {
+        if (this.bmd.has(t.FormatId)) {
           ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(false);
         }
         ControllerHolder_1.ControllerHolder.PlotController.OnEndPlotNetwork();

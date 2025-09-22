@@ -42,8 +42,8 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     this.Scu = false;
     this.HD1 = undefined;
     this.Mcu = undefined;
-    this.RZu = false;
-    this.wZu = new Map();
+    this.L8u = false;
+    this.A8u = new Map();
     this.ChallengeId = 0;
     this.IsBattleLoading = false;
     this.CurrentLoading = 0;
@@ -133,7 +133,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   }
   ApplySpeedUp() {
     if (this.jhu) {
-      ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(this.Vhu[this.Nhu], 2);
+      ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(this.Vhu[this.Nhu], 3);
       this.ApplySpeedBuff(this.Vhu[this.Nhu]);
     }
   }
@@ -142,7 +142,7 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
   }
   SetNormalSpeed() {
     this.ApplySpeedBuff(1);
-    ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(1, 2);
+    ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(1, 3);
   }
   ApplySpeedBuff(t) {
     var t = 1 / t;
@@ -193,17 +193,17 @@ class PhantomArenaBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetPhantomTagMap() {
-    if (!this.RZu) {
+    if (!this.L8u) {
       var t;
-      this.RZu = true;
+      this.L8u = true;
       for (const e of ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleAllFactor()) {
         if (!e.IsBeforeBattle && !StringUtils_1.StringUtils.IsBlank(e.Tag)) {
           t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.Tag);
-          this.wZu.set(t, e.Id);
+          this.A8u.set(t, e.Id);
         }
       }
     }
-    return this.wZu;
+    return this.A8u;
   }
 }
 exports.PhantomArenaBattleModel = PhantomArenaBattleModel;

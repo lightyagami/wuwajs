@@ -16,12 +16,12 @@ class LineCrossClawItem extends UiPanelBase_1.UiPanelBase {
     let r = "";
     switch (e) {
       case 0:
-        this.fed();
+        this.Eid();
         i = "T_CrosslineCraw1";
         r = "T_CrosslineCraw";
         break;
       case 1:
-        this.ged();
+        this.Iid();
         i = "T_CrosslineCraw1";
         r = "T_CrosslineCraw";
         break;
@@ -31,7 +31,7 @@ class LineCrossClawItem extends UiPanelBase_1.UiPanelBase {
         r = "T_CrosslineCraw";
         break;
       default:
-        this.fed();
+        this.Eid();
         i = "T_CrosslineCraw1";
         r = "T_CrosslineCraw";
     }
@@ -44,7 +44,7 @@ class LineCrossClawItem extends UiPanelBase_1.UiPanelBase {
     this.SetTextureByPath(e, this.GetTexture(2));
     this.SetTextureByPath(s, this.GetTexture(3));
   }
-  fed() {
+  Eid() {
     this.GetTexture(0).SetColor(UE.Color.FromHex("764372"));
     this.GetTexture(1).SetColor(UE.Color.FromHex("444dba"));
     this.GetTexture(2).SetColor(UE.Color.FromHex("c594ff"));
@@ -54,7 +54,7 @@ class LineCrossClawItem extends UiPanelBase_1.UiPanelBase {
     this.GetSprite(4).SetUIActive(true);
     this.GetSprite(5).SetUIActive(true);
   }
-  ged() {
+  Iid() {
     this.GetTexture(0).SetColor(UE.Color.FromHex("764372"));
     this.GetTexture(1).SetColor(UE.Color.FromHex("6dac75"));
     this.GetTexture(2).SetColor(UE.Color.FromHex("b2ffbf"));

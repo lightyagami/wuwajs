@@ -7,13 +7,14 @@ exports.SubLevelVisibleAssistant = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../../Core/Common/Log");
-const Queue_1 = require("../../../../Core/Container/Queue");
+const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../../Core/Entity/EntitySystem");
 const Net_1 = require("../../../../Core/Net/Net");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const IAction_1 = require("../../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
@@ -28,51 +29,31 @@ const ALLINPUTTAG = "BlockAllInputTag";
 class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   constructor() {
     super(...arguments);
-    this.$Er = new Queue_1.Queue();
     this.lW_ = undefined;
     this.ap1 = undefined;
     this.cW_ = 0;
     this.xe = 0;
     this._Dt = 0;
     this.nx = undefined;
-    this.mj1 = () => {
-      this.$Er.Pop()?.FinishCallback();
-      this.m8();
-    };
   }
   OnDestroy() {
     this.gW_();
   }
-  SetSubLevelVisible(e) {
-    if (this.$Er.Empty) {
-      this.$Er.Push(e);
-      this.m8();
-    } else {
-      this.$Er.Push(e);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("GameMode", 18, "SubLevelController.SubLevelVisibleAssistant:添加Task", ["ActionId", e.ActionId], ["GroupId", e.GroupId]);
-      }
-    }
-  }
-  m8() {
-    var e;
-    if (!this.$Er.Empty) {
-      e = this.$Er.Front;
-      this.by1(e).then(this.mj1);
-    }
+  async SetSubLevelVisible(e) {
+    return this.by1(e);
   }
   async by1(e) {
     this.xe = e.ActionId;
     this._Dt = e.GroupId;
     this.nx = e.Context;
     this.qSr();
-    this.jp1();
+    this.ZHd(e.ActionParams);
     await this.dW_(e.ActionParams);
-    this.Hp1();
+    this.e$d(e.ActionParams);
     this.gW_();
     this.xe = 0;
     this._Dt = 0;
-    this.nx = undefined;
+    return !(this.nx = undefined);
   }
   qSr() {
     this.lW_ = new CustomPromise_1.CustomPromise();
@@ -98,6 +79,18 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     }
   }
+  ZHd(e) {
+    e = e.TransitionOption;
+    if (e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput) {
+      this.jp1();
+    }
+  }
+  e$d(e) {
+    e = e.TransitionOption;
+    if (e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput) {
+      this.Hp1();
+    }
+  }
   async dW_(t) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 开始", ["ActionId", this.xe], ["GroupId", this._Dt]);
@@ -110,7 +103,7 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       }
       if (s.SceneCaptureEffect && !StringUtils_1.StringUtils.IsBlank(s.SceneCaptureEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 开始播放SceneCaptureEffect特效", ["ActionId", this.xe], ["GroupId", this._Dt]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.Release"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.ImmediateCapture 5"), this.cW_ = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Global_1.Global.BaseCharacter?.D_GetTransform(), s.SceneCaptureEffect, "[LevelEventSetSubLevelsVisible]", undefined, 3, undefined, e => {
         this.lW_.SetResult(e);
-      }), (i = await this.lW_.Promise) !== 5 && Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 加载屏幕特效错误", ["loadResult", i], ["SceneCaptureEffectPath", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), Log_1.Log.CheckDebug())) {
+      }), EffectSystem_1.EffectSystem.GetEffectActor(this.cW_)?.K2_AttachToActor(Global_1.Global.BaseCharacter, undefined, 2, 2, 2, false), (i = await this.lW_.Promise) !== 5 && Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 加载屏幕特效错误", ["loadResult", i], ["SceneCaptureEffectPath", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible SceneCaptureEffect特效播放成功", ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
       let e = undefined;
@@ -121,6 +114,9 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
         this.ap1.SetResult();
       });
       await this.ap1.Promise;
+      if (s.DelayTime && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 39, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 等待指定时间后(再处理子关卡): 开始", ["ActionId", this.xe], ["GroupId", this._Dt], ["DelayTime", s.DelayTime]), (i = s.DelayTime * CommonDefine_1.MILLIONSECOND_PER_SECOND) >= TimerSystem_1.MIN_TIME && i <= TimerSystem_1.MAX_TIME ? await TimerSystem_1.GameplayTimerSystem.Wait(i) : Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 39, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 等待指定时间配置过长或过短，跳过等待", ["ActionId", this.xe], ["GroupId", this._Dt], ["DelayTime", s.DelayTime]), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 39, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 等待指定时间(再处理子关卡): 完成", ["ActionId", this.xe], ["GroupId", this._Dt], ["DelayTime", s.DelayTime]);
+      }
       await this.fW_(t);
       if (s.ScreenEffect && !StringUtils_1.StringUtils.IsBlank(s.ScreenEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect", ["ActionId", this.xe], ["GroupId", this._Dt]), await this.mW_(s.ScreenEffect), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect结束", ["ActionId", this.xe], ["GroupId", this._Dt]);
@@ -236,7 +232,7 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       $$_: e,
       j$_: t
     });
-    Net_1.Net.Call(27065, e, e => {});
+    Net_1.Net.Call(22492, e, e => {});
   }
 }
 exports.SubLevelVisibleAssistant = SubLevelVisibleAssistant;

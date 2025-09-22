@@ -240,16 +240,16 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   OnBuffStackIncreased(e, t, o, r, f, n, a, i, s, u, h, C, m, l = 0, B = 0) {
     if (e) {
       PlayerBuffComponent_1.G__.Start();
-      this.BroadcastBuffStackChanged(e, t, o, false, l, B, m, r);
       super.OnBuffStackIncreased(e, t, o, r, f, n, a, i, s, u, h, C, m, l, B);
+      this.BroadcastBuffStackChanged(e, t, o, false, l, B, m, r);
       PlayerBuffComponent_1.G__.Stop();
     }
   }
   OnBuffStackDecreased(e, t, o, r, f, n = 0) {
     if (e) {
       PlayerBuffComponent_1.F__.Start();
-      this.BroadcastBuffStackChanged(e, t, o, r, 0, n, f);
       super.OnBuffStackDecreased(e, t, o, r, f, n);
+      this.BroadcastBuffStackChanged(e, t, o, r, 0, n, f);
       PlayerBuffComponent_1.F__.Stop();
     }
   }
@@ -271,7 +271,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       r.n5n = e.Duration;
       r.Bjn = e.StackCount;
       r.WHn = e.IsActive();
-      CombatMessage_1.CombatNet.Send(17778, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), e.PreMessageId, e.MessageId, o);
+      CombatMessage_1.CombatNet.Send(16006, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), e.PreMessageId, e.MessageId, o);
     }
   }
   BroadcastActivateBuff(e, t) {
@@ -280,7 +280,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e)) {
       (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = e.Handle;
       o.qjn = t;
-      CombatMessage_1.CombatNet.Send(22908, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(17942, this.Entity, o);
     }
     PlayerBuffComponent_1.R__.Stop();
   }
@@ -293,7 +293,10 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       s.Rjn = i ?? 0;
       s.$L1 = f === 1;
       s.WL1 = n === 1;
-      CombatMessage_1.CombatNet.Send(29370, this.Entity, s, undefined);
+      if ((o = e.GetRemainDuration()) > 0) {
+        s.n5n = o;
+      }
+      CombatMessage_1.CombatNet.Send(25568, this.Entity, s, undefined);
     }
   }
   BroadcastRemoveBuff(e, t, o, r) {
@@ -304,7 +307,7 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
       (n = Protocol_1.Aki.Protocol.re_.create()).uVn = e.Handle;
       n.F4n = MathUtils_1.MathUtils.NumberToLong(f);
       n.Ojn = t;
-      CombatMessage_1.CombatNet.Send(25163, this.Entity, n, o, undefined, r);
+      CombatMessage_1.CombatNet.Send(19422, this.Entity, n, o, undefined, r);
     }
   }
   AddBuffOrder(e, t) {

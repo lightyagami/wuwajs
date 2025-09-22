@@ -52,7 +52,7 @@ class BattleUiRoleData {
     this.Trc = (t, i, s) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
     };
-    this.Mld = (t, i) => {
+    this.Rmd = (t, i) => {
       if (this.HasEnergyTag !== i) {
         this.HasEnergyTag = i;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
@@ -142,7 +142,7 @@ class BattleUiRoleData {
     }
     if (this.CreatureRoleId === 1608) {
       this.CheckEnergyTag = true;
-      this.d$e(414280119, this.Mld, true);
+      this.d$e(414280119, this.Rmd, true);
     }
     this.c$e();
   }

@@ -16,15 +16,16 @@ const Global_1 = require("../../../Global");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const GameModePromise_1 = require("../../../World/Define/GameModePromise");
 const WaitEntityTask_1 = require("../../../World/Define/WaitEntityTask");
+const CustomMovementDefine_1 = require("../../Character/Common/Component/Move/CustomMovementDefine");
 const VehicleInfoDefines_1 = require("../Common/VehicleInfoDefines");
 const WAIT_ENTITY_CREATE_TIMEOUT = 60000;
 const TRIAL_ROLE_ID = 10000;
 const CHECK_DRIVE_INFO_INTERVAL = 500;
 class VehicleController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(20941, this.VehicleUpdateNotify);
-    Net_1.Net.Register(27000, this.OnUpdateVehicleRideSharingNotify);
-    Net_1.Net.Register(23075, this.VehicleUpdateEntityNotify);
+    Net_1.Net.Register(26558, this.VehicleUpdateNotify);
+    Net_1.Net.Register(15667, this.OnUpdateVehicleRideSharingNotify);
+    Net_1.Net.Register(24306, this.VehicleUpdateEntityNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
@@ -39,9 +40,9 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnClear() {
-    Net_1.Net.UnRegister(20941);
-    Net_1.Net.UnRegister(27000);
-    Net_1.Net.UnRegister(23075);
+    Net_1.Net.UnRegister(26558);
+    Net_1.Net.UnRegister(15667);
+    Net_1.Net.UnRegister(24306);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.OnChangeRole);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.OnEnterVehicle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.OnLeaveVehicle);
@@ -53,12 +54,12 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.VehicleModel.UpdateEntityVehicleData(e);
     this.RegisterWaitEntityTask(e);
   }
-  static W5_(e, t, r, a = 0) {
+  static W5_(e, t, r, o = 0) {
     if (e?.IsInit && t?.IsInit && (t = t.GetComponent(234))) {
       if (r !== -1) {
         t.Enter(e, r);
       } else {
-        t.Leave(e, a);
+        t.Leave(e, o);
       }
     }
   }
@@ -66,13 +67,13 @@ class VehicleController extends ControllerBase_1.ControllerBase {
     var e;
     var t;
     var r;
-    var a;
-    var o = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var i = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(o);
-    if (i && (a = i.EntityCreatureId, e = i.VehicleCreatureId, t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity, r = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity, this.Q5_ && (this.Q5_.SetResult(true), this.Q5_ = undefined), t?.IsInit && r?.IsInit || (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 48, "角色或船未加载完成，进行等待", ["passengerCreatureId", a], ["vehicleCreatureId", e]), this.Q5_ = new GameModePromise_1.GameModePromise(), WaitEntityTask_1.WaitEntityTask.Create("VehicleController.UpdatePlayerVehiclePerform", [e, a], () => {
+    var o;
+    var a = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var i = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a);
+    if (i && (o = i.EntityCreatureId, e = i.VehicleCreatureId, t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)?.Entity, r = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity, this.Q5_ && (this.Q5_.SetResult(true), this.Q5_ = undefined), t?.IsInit && r?.IsInit || (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 48, "角色或船未加载完成，进行等待", ["passengerCreatureId", o], ["vehicleCreatureId", e]), this.Q5_ = new GameModePromise_1.GameModePromise(), WaitEntityTask_1.WaitEntityTask.Create("VehicleController.UpdatePlayerVehiclePerform", [e, o], () => {
       this.Q5_?.SetResult(true);
       this.Q5_ = undefined;
-    }, WAIT_ENTITY_CREATE_TIMEOUT)), await this.Q5_?.Promise, a === (a = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(o))?.EntityCreatureId) && e === a?.VehicleCreatureId) {
+    }, WAIT_ENTITY_CREATE_TIMEOUT)), await this.Q5_?.Promise, o === (o = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a))?.EntityCreatureId) && e === o?.VehicleCreatureId) {
       this.W5_(t, r, -1, 1);
       this.W5_(t, r, i.Seat, i.ExitType);
     }
@@ -99,30 +100,30 @@ class VehicleController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("Vehicle", 50, "OnVehicleActivate", ["VehicleCreatureId", r.GetCreatureDataId()]);
     }
     var r = ModelManager_1.ModelManager.VehicleModel.GetVehiclePlayerData(r.GetCreatureDataId());
-    for (const a of r) {
-      if (a.VehicleCreatureId && a.Seat >= 0) {
-        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a.EntityCreatureId)?.Entity;
-        this.W5_(t, e, a.Seat, a.ExitType);
+    for (const o of r) {
+      if (o.VehicleCreatureId && o.Seat >= 0) {
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o.EntityCreatureId)?.Entity;
+        this.W5_(t, e, o.Seat, o.ExitType);
       }
     }
   }
   static RegisterWaitEntityTask(r) {
     var e = ModelManager_1.ModelManager.VehicleModel.PassengerVehicleMap.get(r.EntityCreatureId);
     if (e?.Context?.Equals(r) && !e.WaitTask) {
-      const a = r.EntityCreatureId;
-      const o = r.VehicleCreatureId;
+      const o = r.EntityCreatureId;
+      const a = r.VehicleCreatureId;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 创建载具等待实体任务", ["EntityCreatureId", a], ["VehicleCreatureId", o], ["Seat", r.Seat]);
+        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 创建载具等待实体任务", ["EntityCreatureId", o], ["VehicleCreatureId", a], ["Seat", r.Seat]);
       }
-      e.WaitTask = WaitEntityTask_1.WaitEntityTask.Create("VehicleController.RegisterWaitEntityTask", [o, a], e => {
+      e.WaitTask = WaitEntityTask_1.WaitEntityTask.Create("VehicleController.RegisterWaitEntityTask", [a, o], e => {
         var t;
-        if (e && (e = ModelManager_1.ModelManager.VehicleModel.PassengerVehicleMap.get(a))?.Context?.Equals(r)) {
+        if (e && (e = ModelManager_1.ModelManager.VehicleModel.PassengerVehicleMap.get(o))?.Context?.Equals(r)) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Vehicle", 50, "[VehicleController] 开始执行载具等待实体任务", ["EntityCreatureId", a], ["VehicleCreatureId", o], ["Seat", r.Seat]);
+            Log_1.Log.Info("Vehicle", 50, "[VehicleController] 开始执行载具等待实体任务", ["EntityCreatureId", o], ["VehicleCreatureId", a], ["Seat", r.Seat]);
           }
           e.WaitTask = undefined;
-          e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity;
-          t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)?.Entity;
+          e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)?.Entity;
+          t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity;
           this.W5_(e, t, r.Seat, r.ExitType);
           ModelManager_1.ModelManager.VehicleModel.PostUpdateVehicleEntityData(r);
         }
@@ -254,17 +255,17 @@ VehicleController.Q5_ = undefined;
 VehicleController.VehicleUpdateNotify = e => {
   var t;
   var r;
-  var a = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(e.W5n)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
-  if (a) {
+  var o = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(e.W5n)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
+  if (o) {
     (t = new VehicleInfoDefines_1.ScenePlayerVehicleInfo()).PlayerId = e.W5n;
-    t.EntityCreatureId = a;
+    t.EntityCreatureId = o;
     t.VehicleCreatureId = MathUtils_1.MathUtils.LongToNumber(e.F4n);
     t.Seat = e.fhl;
     t.ExitType = _a.CJl(e.bI_);
     ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(t);
-    a = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.EntityCreatureId)?.Entity;
+    o = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.EntityCreatureId)?.Entity;
     r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.VehicleCreatureId)?.Entity;
-    _a.W5_(a, r, t.Seat, t.ExitType);
+    _a.W5_(o, r, t.Seat, t.ExitType);
   } else if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("Vehicle", 50, "[VehicleController] 服务器下发载具数据更新时无法获取对应PlayerId的CreatureId", ["PlayerId", e.W5n], ["VehicleId", MathUtils_1.MathUtils.LongToNumber(e.F4n)], ["Seat", e.fhl]);
   }
@@ -287,8 +288,8 @@ VehicleController.OnLeaveVehicle = e => {
 };
 VehicleController.OnChangeVehicleRideSharing = (t, r) => {
   var e;
-  var a = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(231)?.VehicleEntity;
-  if (a && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (a = a.GetComponent(234), (a = r !== -1 ? r : a.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = a, Net_1.Net.Call(24771, e, e => {
+  var o = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(231)?.VehicleEntity;
+  if (o && ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !ModelManager_1.ModelManager.VehicleModel.IsForbidRiderSharing && (o = o.GetComponent(234), (o = r !== -1 ? r : o.TryFindUsableSeat(false)) !== -1) && ((e = Protocol_1.Aki.Protocol.vp_.create()).Q6n = t, e.fhl = o, Net_1.Net.Call(24465, e, e => {
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Vehicle", 50, "共乘ChangeRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", t], ["Seat", r]);
     }
@@ -300,15 +301,15 @@ VehicleController.OnRemoveVehicleRideSharing = (e, t) => {
   var r = ModelManager_1.ModelManager.VehicleModel;
   if (r.IsReadyRiderSharing && r.RideSharingInfoMap.size) {
     r = r.RideSharingInfoMap.values().next().value;
-    const a = Protocol_1.Aki.Protocol.Sp_.create();
-    a.Q6n = e === -1 ? r.RoleId : e;
-    Net_1.Net.Call(23584, a, e => {
+    const o = Protocol_1.Aki.Protocol.Sp_.create();
+    o.Q6n = e === -1 ? r.RoleId : e;
+    Net_1.Net.Call(16139, o, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Vehicle", 50, "共乘RemoveRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", a.Q6n]);
+        Log_1.Log.Error("Vehicle", 50, "共乘RemoveRole请求失败", ["ErrorCode", e.Q4n], ["RoleId", o.Q6n]);
       }
     });
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Vehicle", 50, "发送共乘玩法Remove通知", ["RoleId", a.Q6n]);
+      Log_1.Log.Debug("Vehicle", 50, "发送共乘玩法Remove通知", ["RoleId", o.Q6n]);
     }
   }
 };
@@ -333,20 +334,29 @@ VehicleController.OnUpdateVehicleRideSharingNotify = e => {
 };
 VehicleController.OnChangeRole = (e, t) => {
   var r;
-  var a;
   var o;
-  var i = e.Entity.GetComponent(0);
-  var n = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(i.GetPlayerId());
-  if (n?.VehicleCreatureId && n.EntityCreatureId !== i.GetCreatureDataId()) {
-    r = n.DeepCopy();
-    a = n.DeepCopy();
-    o = _a.K6_(n.EntityCreatureId)?.Entity;
-    n = ModelManager_1.ModelManager.CreatureModel.GetEntity(n.VehicleCreatureId)?.Entity;
-    a.VehicleCreatureId = 0;
-    ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(a);
-    _a.W5_(o, n, -1, 1);
-    r.EntityCreatureId = i.GetCreatureDataId();
-    ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(r);
-    _a.W5_(e.Entity, n, r.Seat);
+  var a = e.Entity.GetComponent(0);
+  var i = ModelManager_1.ModelManager.VehicleModel.GetPlayerVehicleData(a.GetPlayerId());
+  if (i?.VehicleCreatureId) {
+    if (i.EntityCreatureId === a.GetCreatureDataId()) {
+      if (t === undefined && (e.Entity.GetComponent(3)?.Actor.KuroSetMovementMode({
+        Mode: 6,
+        CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE,
+        Context: "[VehicleController.OnChangeRole]"
+      }), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Vehicle", 50, "[VehicleController] 乘坐载具后角色上场，强制维持Ride移动状态", ["CreatureId", i.EntityCreatureId], ["PbDataId", a.GetPbDataId()]);
+      }
+    } else {
+      t = i.DeepCopy();
+      r = i.DeepCopy();
+      o = _a.K6_(i.EntityCreatureId)?.Entity;
+      i = ModelManager_1.ModelManager.CreatureModel.GetEntity(i.VehicleCreatureId)?.Entity;
+      r.VehicleCreatureId = 0;
+      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(r);
+      _a.W5_(o, i, -1, 1);
+      t.EntityCreatureId = a.GetCreatureDataId();
+      ModelManager_1.ModelManager.VehicleModel.UpdatePlayerVehicleData(t);
+      _a.W5_(e.Entity, i, t.Seat);
+    }
   }
 }; //# sourceMappingURL=VehicleController.js.map

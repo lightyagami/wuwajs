@@ -26,13 +26,16 @@ class WeeklyRogueScoreItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.rV_]];
   }
   OnBeforeShow() {
-    var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData;
-    var r = e.GetCycleConfig();
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "PrefabTextItem_1382682910_Text", e.Score.toString(), r.MaxScore);
+    this.RefreshScore();
     RedDotController_1.RedDotController.BindRedDot("WeeklyRogueScoreReward", this.GetItem(3));
   }
   OnBeforeHide() {
     RedDotController_1.RedDotController.UnBindGivenUi("WeeklyRogueScoreReward", this.GetItem(3));
+  }
+  RefreshScore() {
+    var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData;
+    var r = e.GetCycleConfig();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "PrefabTextItem_1382682910_Text", e.Score.toString(), r.MaxScore);
   }
 }
 exports.WeeklyRogueScoreItem = WeeklyRogueScoreItem;

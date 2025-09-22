@@ -45,7 +45,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     this.fZ = new Map();
     this.pQt = new Map();
     this.vQt = new Map();
-    this.XYu = new Map();
+    this.G7u = new Map();
     this.gKs = new Map();
     this.UiTrackTextInfo = new GeneralLogicTreeDefine_1.TreeTrackTextExpressionInfo();
     this.SilentAreaShowInfo = [];
@@ -109,7 +109,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
   Dispose() {
     this.EQt();
     this.vQt.clear();
-    this.XYu.clear();
+    this.G7u.clear();
     this.gKs.clear();
     this.GDa.splice(0, this.GDa.length);
     this.ODa.clear();
@@ -129,15 +129,15 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
     (i = i || this.SQt(t)).set(e.NodeId, e);
   }
   AddTreeVarUpdateDelegate(e, t) {
-    let i = this.XYu.get(e);
+    let i = this.G7u.get(e);
     if (!i) {
       i = new Set();
-      this.XYu.set(e, i);
+      this.G7u.set(e, i);
     }
     i.add(t);
   }
   RemoveTreeVarUpdateDelegate(e, t) {
-    e = this.XYu.get(e);
+    e = this.G7u.get(e);
     if (e) {
       e.delete(t);
     }
@@ -145,7 +145,7 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
   UpdateTreeVar(e, t) {
     var i = this.vQt.get(e);
     this.vQt.set(e, t);
-    var e = this.XYu.get(e);
+    var e = this.G7u.get(e);
     if (e) {
       for (const r of e) {
         r(i, t);
@@ -423,22 +423,24 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
   NDa(t, i) {
     return i !== 0 && this.GDa.some(e => i === 1 ? e.Name === t.Name : e.Name === t.Name && (0, IUtil_1.deepEquals)(e, t));
   }
-  PopGuaranteeActionInfo(t, i) {
-    for (let e = this.GDa.length - 1; e >= 0; e--) {
-      var r = this.GDa[e];
-      if (r.Name === i.Name && (0, IUtil_1.deepEquals)(r, i)) {
-        this.GDa.splice(e, 1);
-        for (var [, s] of this.ODa) {
-          s.delete(e);
+  PopGuaranteeActionInfo(t, i, r = 2) {
+    if (r !== 0) {
+      for (let e = this.GDa.length - 1; e >= 0; e--) {
+        var s = this.GDa[e];
+        if (s.Name === i.Name && (r !== 2 || (0, IUtil_1.deepEquals)(s, i))) {
+          this.GDa.splice(e, 1);
+          for (var [, o] of this.ODa) {
+            o.delete(e);
+          }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("GeneralLogicTree", 18, "GeneralLogicTree:移除保底行为：" + i.Name, ["触发行为", t], ["ActionInfo", i], ["treeConfigId", this.TreeConfigId]);
+          }
+          return s;
         }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GeneralLogicTree", 18, "GeneralLogicTree:移除保底行为：" + i.Name, ["触发行为", t], ["ActionInfo", i], ["treeConfigId", this.TreeConfigId]);
-        }
-        return r;
       }
     }
   }
-  qJc(e) {
+  Hed(e) {
     for (const i of e) {
       var t = GuaranteeActionCenter_1.GuaranteeActionCenter.GetGuaranteeAction(i.Name);
       if (t) {
@@ -452,13 +454,13 @@ class Blackboard extends BehaviorTreeTagComponent_1.BehaviorTreeTagContainer {
       if (t) {
         for (let e = this.GDa.length - 1; e >= 0; e--) {
           if (t.has(e)) {
-            this.qJc(this.GDa.splice(e, 1));
+            this.Hed(this.GDa.splice(e, 1));
             t.delete(e);
           }
         }
       }
     } else {
-      this.qJc(this.GDa.splice(0, this.GDa.length));
+      this.Hed(this.GDa.splice(0, this.GDa.length));
     }
   }
   GetGuaranteeActions() {

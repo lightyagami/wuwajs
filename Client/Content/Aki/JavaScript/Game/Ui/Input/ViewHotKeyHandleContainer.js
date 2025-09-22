@@ -7,13 +7,13 @@ exports.ViewHotKeyHandleContainer = undefined;
 class ViewHotKeyHandleContainer {
   constructor() {
     this.iIa = new Map();
-    this.Fzc = new Map();
-    this.Nzc = new Map();
+    this.HZc = new Map();
+    this.$Zc = new Map();
   }
   Add(t) {
     var s;
     var e = t.ViewName;
-    if (e && ((s = this.iIa.get(e)) ? s.push(t) : this.iIa.set(e, [t]), (s = this.Fzc.get(e)) && t.BindOpenViewCallback(s), s = this.Nzc.get(e))) {
+    if (e && ((s = this.iIa.get(e)) ? s.push(t) : this.iIa.set(e, [t]), (s = this.HZc.get(e)) && t.BindOpenViewCallback(s), s = this.$Zc.get(e))) {
       t.BindCloseViewCallback(s);
     }
   }
@@ -65,10 +65,10 @@ class ViewHotKeyHandleContainer {
     return false;
   }
   RegisterOpenViewFunc(t, s) {
-    this.Fzc.set(t, s);
+    this.HZc.set(t, s);
   }
   RegisterCloseViewFunc(t, s) {
-    this.Nzc.set(t, s);
+    this.$Zc.set(t, s);
   }
 }
 exports.ViewHotKeyHandleContainer = ViewHotKeyHandleContainer;

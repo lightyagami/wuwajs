@@ -32,7 +32,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
     this.itu = (e, t) => {
       return e.ElementId - t.ElementId;
     };
-    this.CNu = (e, t) => {
+    this.XOu = (e, t) => {
       e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(e);
       t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleBadgeById(t);
       return e.SortIndex - t.SortIndex;
@@ -589,7 +589,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
       t.set(r, a);
     }
     for (const [, e] of t) {
-      e.sort(this.CNu);
+      e.sort(this.XOu);
     }
     return t;
   }
@@ -979,11 +979,11 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   GetPhantomArenaActivityRedDot() {
     return this.GetMasterLevelRewardRedDot() || this.CheckTaskRedDot() || this.CheckShopRedDot() || this.GetRoleRewardRedDot() || this.GetCardRewardRedDot() || this.GetBadgeRewardRedDot() || this.GetGymRedDot();
   }
-  AZu() {
+  R8u() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityId);
   }
   GetPhantomArenaButtonRedDot() {
-    this.AZu();
+    this.R8u();
     return this.GetRoleRewardRedDot() || this.GetCardRewardRedDot() || this.GetBadgeRewardRedDot() || this.GetGymRedDot();
   }
   GetGymRedDot() {
@@ -1067,7 +1067,7 @@ class PhantomArenaModel extends ModelBase_1.ModelBase {
   CheckShopRedDot() {
     var e;
     var t;
-    return !!this.IsInLimitTime()[0] && !!(t = (e = this.GetPhantomArenaActivityData())?.GetShopId() ?? undefined) && !!e?.IsUnLock() && !(e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(t), t = this.GetCurUnlockShopData(e), this.GetCacheShopOpen(t.toString()));
+    return !!this.GetActivityUnlock() && !!this.IsInLimitTime()[0] && !!(t = (e = this.GetPhantomArenaActivityData())?.GetShopId() ?? undefined) && !!e?.IsUnLock() && !(e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabData(t), t = this.GetCurUnlockShopData(e), this.GetCacheShopOpen(t.toString()));
   }
   GetCurUnlockShopData(e) {
     var t = [];

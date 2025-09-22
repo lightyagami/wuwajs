@@ -25,7 +25,7 @@ const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const FlowController_1 = require("../Plot/Flow/FlowController");
 class TsInteractionUtils {
   static GetInteractionConfig(e) {
-    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(8, e);
+    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(9, e);
   }
   static HandleInteractionOptionFromVision(e, t, n) {
     var i;

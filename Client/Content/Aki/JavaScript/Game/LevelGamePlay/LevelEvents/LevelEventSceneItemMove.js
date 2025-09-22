@@ -30,15 +30,52 @@ class LevelEventSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
       this.FinishExecute(true);
     };
   }
-  ExecuteInGm(e, t) {
+  ExecuteInGm(e, t, i) {
     if (e) {
-      var i = e.EntityId;
-      if (ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i)?.Valid) {
-        this.ExecuteNew(e, t);
-        return;
+      var s = e;
+      var n = s.EntityId;
+      var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n);
+      if (n?.Valid) {
+        var o = n.Entity?.GetComponent(0);
+        if (!o?.IsPlayer()) {
+          o = n.Entity?.GetComponent(1);
+          if (o) {
+            var r = Vector_1.Vector.Create();
+            switch (s.MoveConfig.Type) {
+              case IAction_1.EMoveSceneItemType.MoveToPoint:
+                r.FromConfigVector(s.MoveConfig.Point);
+                break;
+              case IAction_1.EMoveSceneItemType.MoveToRelativePosition:
+                var a = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(s.EntityId)?.Transform;
+                if (!a) {
+                  if (Log_1.Log.CheckError()) {
+                    Log_1.Log.Error("Event", 39, "Entity找不到EntityData配置的Transform", ["PbDataId", s.EntityId]);
+                  }
+                  this.FinishExecute(false);
+                  return;
+                }
+                r.FromConfigVector(s.MoveConfig.Point);
+                MathUtils_1.MathUtils.CommonTempRotator.Set(a.Rot?.Y ?? 0, a.Rot?.Z ?? 0, a.Rot?.X ?? 0);
+                MathUtils_1.MathUtils.CommonTempRotator.Quaternion(MathUtils_1.MathUtils.CommonTempQuat);
+                MathUtils_1.MathUtils.CommonTempVector.Set(a.Pos.X ?? 0, a.Pos.Y ?? 0, a.Pos.Z ?? 0);
+                MathUtils_1.MathUtils.CommonTempQuat.RotateVector(r, r);
+                MathUtils_1.MathUtils.CommonTempVector.Addition(r, r);
+                break;
+              case IAction_1.EMoveSceneItemType.CycleMoveToPoints:
+                this.ExecuteNew(e, t);
+                return;
+            }
+            o.SetActorLocation(r.ToUeVector(), "LevelEventSceneItemMove:Gm推进", false);
+          }
+        }
       }
+      this.FinishExecute(true);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelEvent", 39, "[LevelEventCharacterMove] 参数不合法");
+      }
+      this.FinishExecute(false);
     }
-    this.FinishExecute(true);
   }
   ExecuteNew(e, t) {
     if (e) {

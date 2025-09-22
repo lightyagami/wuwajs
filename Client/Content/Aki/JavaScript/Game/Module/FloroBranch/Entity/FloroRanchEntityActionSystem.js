@@ -27,7 +27,7 @@ const FloroRanchDefine_1 = require("../FloroRanchDefine");
 class FloroRanchEntityActionSystem {
   static async DayStart(a) {
     var t;
-    if (this.lOu()) {
+    if (this.o3u()) {
       (t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetGamePlayView()).SetMaskPanelActive(true);
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.OnDayStart(a);
       this.vxu = new FloroRanchDayStartActionData_1.FloroRanchDayStartAction(a);
@@ -40,7 +40,7 @@ class FloroRanchEntityActionSystem {
   static async ExecuteActionList(a) {
     var t;
     var o;
-    if (this.lOu()) {
+    if (this.o3u()) {
       (t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetGamePlayView()).SetMaskPanelActive(true);
       o = new FloroRanchGroupActionData_1.FloroRanchGroupActionData();
       (this.vxu = o).InitActionData(a);
@@ -52,7 +52,7 @@ class FloroRanchEntityActionSystem {
   }
   static async ExecuteWageSettleAction(a) {
     var t;
-    if (this.lOu()) {
+    if (this.o3u()) {
       (t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetGamePlayView()).SetMaskPanelActive(true);
       this.vxu = new FloroRanchWageSettleAction_1.FloroRanchWageSettleAction(a);
       await this.vxu.ExecuteAction();
@@ -65,7 +65,7 @@ class FloroRanchEntityActionSystem {
       t.SetMaskPanelActive(false);
     }
   }
-  static lOu() {
+  static o3u() {
     return !this.vxu || (Log_1.Log.CheckError() && Log_1.Log.Error("FloroRanchGamePlay", 58, "FloroRanchEntityActionSystem ExecuteActionList 正在执行"), false);
   }
   static Pause() {
@@ -106,7 +106,7 @@ class FloroRanchEntityActionSystem {
         return new FloroRanchEatActionData_1.FloroRanchEatActionData(a);
       case Protocol_1.Aki.Protocol.kSu.Proto_ChangePoint:
         return new FloroRanchChangePointActionData_1.FloroRanchChangePointActionData(a);
-      case Protocol_1.Aki.Protocol.kSu.psd:
+      case Protocol_1.Aki.Protocol.kSu.Vrd:
         return new FloroRanchActionStopActionData_1.FloroRanchActionStopActionData(a);
       default:
         if (Log_1.Log.CheckError()) {

@@ -35,10 +35,10 @@ class CharBodyEffect extends CharRenderBase_1.CharRenderBase {
         EffectSystem_1.EffectSystem.RemoveFinishCallback(t, this.gfn);
       }
     };
-    this.OnSetActorEnable = (t, e) => {
+    this.OnSetActorVisible = (t, e) => {
       if (!this.Entity || t === this.Entity.Id) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Render", 25, "BodyEffect OnSetActorEnable", ["Actor", this.GetRenderingComponent()?.GetCachedOwnerName()], ["Entity", this.Entity], ["Enable", e]);
+          Log_1.Log.Debug("Render", 25, "BodyEffect OnSetActorVisible", ["Actor", this.GetRenderingComponent()?.GetCachedOwnerName()], ["Entity", this.Entity], ["visible", e]);
         }
         this.ehr(e);
       }
@@ -107,7 +107,7 @@ class CharBodyEffect extends CharRenderBase_1.CharRenderBase {
     if (t instanceof TsBaseCharacter_1.default && t.CharacterActorComponent?.Entity) {
       this.Entity = t.CharacterActorComponent.Entity;
       this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
-      EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.OnSetActorEnable);
+      EventSystem_1.EventSystem.AddWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s);
@@ -131,7 +131,7 @@ class CharBodyEffect extends CharRenderBase_1.CharRenderBase {
   LateUpdate() {}
   Destroy() {
     if (this.Entity) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.OnSetActorEnable);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.vJ, EventDefine_1.EEventName.OnSetActorHidden, this.OnSetActorVisible);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.yvi);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s);

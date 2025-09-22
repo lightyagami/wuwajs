@@ -29,15 +29,13 @@ class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
       r.TagContainer.AddExactTag(4, s);
     }
     e = e.GetComponent(234);
-    if (this.AddToDriver) {
-      for (const o of e.Drivers) {
-        r.AddTagForPassenger(o, 4, s);
-      }
+    if (this.AddToDriver && e.Driver) {
+      r.AddTagForPassenger(e.Driver, 4, s);
     }
     if (this.AddToPassengerExceptDriver) {
-      for (const f of e.PassengerInfoMap.values()) {
-        if (!f.IsDriver && f.PassengerEntity) {
-          r.AddTagForPassenger(f.PassengerEntity, 4, s);
+      for (const o of e.PassengerInfoMap.values()) {
+        if (!o.IsDriver && o.PassengerEntity) {
+          r.AddTagForPassenger(o.PassengerEntity, 4, s);
         }
       }
     }
@@ -58,15 +56,13 @@ class TsAnimNotifyStateVehicleAddTag extends UE.KuroAnimNotifyState {
       e?.GetComponent(206)?.TagContainer.RemoveExactTag(4, i);
     }
     e = e.GetComponent(234);
-    if (this.AddToDriver) {
-      for (const r of e.Drivers) {
-        s.RemoveTagForPassenger(r, 4, i);
-      }
+    if (this.AddToDriver && e.Driver) {
+      s.RemoveTagForPassenger(e.Driver, 4, i);
     }
     if (this.AddToPassengerExceptDriver) {
-      for (const o of e.PassengerInfoMap.values()) {
-        if (!o.IsDriver && o.PassengerEntity) {
-          s.RemoveTagForPassenger(o.PassengerEntity, 4, i);
+      for (const r of e.PassengerInfoMap.values()) {
+        if (!r.IsDriver && r.PassengerEntity) {
+          s.RemoveTagForPassenger(r.PassengerEntity, 4, i);
         }
       }
     }

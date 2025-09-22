@@ -369,12 +369,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
     if (t) {
       (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       e.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(23287, e);
+      Net_1.Net.Send(22129, e);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 23287,
+          msg_id: 22129,
           immediately: true,
           sub_count: e.WRs.length,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -401,12 +401,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
       var t = Protocol_1.Aki.Protocol.zus.create();
       t.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       t.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(24484, t);
+      Net_1.Net.Send(29546, t);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 24484,
+          msg_id: 29546,
           immediately: true,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
           ed: IS_WITH_EDITOR,

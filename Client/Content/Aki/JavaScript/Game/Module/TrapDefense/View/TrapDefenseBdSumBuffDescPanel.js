@@ -58,13 +58,13 @@ class TrapDefenseBdSumBuffDescPanel extends UiPanelBase_1.UiPanelBase {
     this.GetExtendToggle(11).CanExecuteChange.Unbind();
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(6));
   }
-  HHc(t, e) {
+  t8u(t, e) {
     this.BdBuffData = t;
-    this.$Hc();
-    this.WHc(e ?? t.BdBuffConfig);
+    this.i8u();
+    this.B9u(e ?? t.BdBuffConfig);
     this.UpdateBdIcon();
   }
-  WHc(t) {
+  B9u(t) {
     this.GetText(5).ShowTextNew(t.Name);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.Desc, ...t.DescArgs);
     this.SetTextureByPath(t.Icon, this.GetTexture(3));
@@ -76,35 +76,35 @@ class TrapDefenseBdSumBuffDescPanel extends UiPanelBase_1.UiPanelBase {
   UpdateDataShowMode(t) {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBdSum.IsInstance;
     var i = t.GetShowBdBuffConfig(e);
-    this.HHc(t, i);
+    this.t8u(t, i);
     this.SetSwitchStrengthenShowState(t.IsCanSwitchStrengthen(e));
     this.GetItem(4)?.SetUIActive(i.Level > 1);
     this.SetRecommendByType();
     this.SetStrengthenEffect();
   }
   UpdateDataSelectMode(t) {
-    this.HHc(t);
+    this.t8u(t);
     this.SetSwitchStrengthenShowState(false);
     this.GetItem(4)?.SetUIActive(false);
     this.SetStrengthenEffect();
     this.UpdateRecommendState();
   }
   UpdateDataGetMode(t) {
-    this.HHc(t);
+    this.t8u(t);
     this.SetSwitchStrengthenShowState(false);
     this.GetItem(4)?.SetUIActive(t.IsStrengthenFinish());
     this.SetRecommendByType();
     this.SetStrengthenEffect();
   }
   UpdateDataStrengthenModeBefore(t) {
-    this.HHc(t, t.GetStrengthenBeforeConfig());
+    this.t8u(t, t.GetStrengthenBeforeConfig());
     this.SetSwitchStrengthenShowState(false);
     this.GetItem(4)?.SetUIActive(false);
     this.SetRecommendByType();
     this.SetStrengthenEffect();
   }
   UpdateDataStrengthenModeAfter(t) {
-    this.HHc(t, t.GetStrengthenConfig());
+    this.t8u(t, t.GetStrengthenConfig());
     this.SetSwitchStrengthenShowState(false);
     this.GetItem(4)?.SetUIActive(true);
     this.SetRecommendByType();
@@ -123,7 +123,7 @@ class TrapDefenseBdSumBuffDescPanel extends UiPanelBase_1.UiPanelBase {
     var t = this.BdBuffData.GetBelongBdData().Config.Icon;
     this.SetTextureByPath(t, this.GetTexture(8));
   }
-  $Hc() {
+  i8u() {
     var t = this.GetTexture(1);
     var e = this.GetTexture(2);
     var i = this.BdBuffData.Config.Quality;
@@ -134,7 +134,7 @@ class TrapDefenseBdSumBuffDescPanel extends UiPanelBase_1.UiPanelBase {
   SetSelect(t) {
     this.GetExtendToggle(11)?.SetToggleStateForce(t ? 1 : 0, false);
   }
-  Nud(t) {
+  oSd(t) {
     switch (t) {
       case 5:
         return 14;
@@ -193,7 +193,7 @@ class TrapDefenseBdSumBuffDescPanel extends UiPanelBase_1.UiPanelBase {
   UpdateRecommendState() {
     var [t] = this.BdBuffData.GetBelongBdData().PreAddedBuffIsActiveNewQuality(1);
     var e = this.BdBuffData.Config.Quality;
-    var i = t ? this.Nud(e) : undefined;
+    var i = t ? this.oSd(e) : undefined;
     this.SetRecommendByType(i);
     this.SetRecommendQualityLight(t, e);
   }

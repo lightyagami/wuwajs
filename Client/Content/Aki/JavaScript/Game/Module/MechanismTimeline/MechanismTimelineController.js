@@ -15,48 +15,48 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 class MechanismTimelineController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     var e = super.OnInit();
-    UE.KuroMechanismTimelineSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance).BindMechanismEvent((0, puerts_1.toManualReleaseDelegate)(MechanismTimelineController.jFu));
+    UE.KuroMechanismTimelineSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance).BindMechanismEvent((0, puerts_1.toManualReleaseDelegate)(MechanismTimelineController.LNu));
     return e;
   }
   static OnClear() {
     var e = super.OnClear();
-    (0, puerts_1.releaseManualReleaseDelegate)(MechanismTimelineController.jFu);
+    (0, puerts_1.releaseManualReleaseDelegate)(MechanismTimelineController.LNu);
     return e;
   }
   static RequestSceneItemSequenceFrameStart(e, r, o, t) {
-    e = Protocol_1.Aki.Protocol.G8u.create({
+    e = Protocol_1.Aki.Protocol.UXc.create({
       ORs: e,
       F4n: r,
-      Pju: o,
-      Dju: t
+      kXc: o,
+      OXc: t
     });
-    Net_1.Net.Call(21231, e, e => {
+    Net_1.Net.Call(18967, e, e => {
       if (e && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 18, "MechanismTimelineController.RequestSceneItemSequenceFrameStart", ["ErrorCode", e.Cvs]);
       }
     });
   }
   static RequestSceneItemSequenceFrameEnd(e, r, o, t) {
-    e = Protocol_1.Aki.Protocol.d8u.create({
+    e = Protocol_1.Aki.Protocol.DXc.create({
       ORs: e,
       F4n: r,
-      Pju: o,
-      Dju: t
+      kXc: o,
+      OXc: t
     });
-    Net_1.Net.Call(23451, e, e => {
+    Net_1.Net.Call(23404, e, e => {
       if (e && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 18, "MechanismTimelineController.RequestSceneItemSequenceFrameEnd", ["ErrorCode", e.Cvs]);
       }
     });
   }
 }
-(exports.MechanismTimelineController = MechanismTimelineController).jFu = (e, r, o, t, n) => {
+(exports.MechanismTimelineController = MechanismTimelineController).LNu = (e, r, o, t, n) => {
   var a;
   var i = ModelManager_1.ModelManager.MechanismTimelineModel.GetContextByPlayer(t);
   if (i) {
     if (i.ContextType === 1) {
       if ((a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.PbDataId))?.IsInit) {
-        if (a = a.Entity?.GetComponent(300)) {
+        if (a = a.Entity?.GetComponent(301)) {
           a.ExecuteEvent(t, e.toString(), r.toString(), o, i);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 18, "MechanismTimelineController.OnTriggerMechanismEvent:找不到SceneItemEventListenerComponent组件", ["eventName", r], ["executeType", o], ["sectionId", n], ["pbDataId", i.PbDataId]);

@@ -25,6 +25,7 @@ const CommonTabData_1 = require("../Common/TabComponent/CommonTabData");
 const CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData");
 const TabComponentWithCaptionItem_1 = require("../Common/TabComponent/TabComponentWithCaptionItem");
 const CommonTabItem_1 = require("../Common/TabComponent/TabItem/CommonTabItem");
+const CommonTabItemBase_1 = require("../Common/TabComponent/TabItem/CommonTabItemBase");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const DynScrollView_1 = require("../Util/ScrollView/DynScrollView");
 const PcAndGamepadKeySettingPanel_1 = require("./KeySettingsView/PcAndGamepadKeySettingPanel");
@@ -221,6 +222,20 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.R6e = (e, t) => {
       return new CommonTabItem_1.CommonTabItem();
     };
+    this.U6d = () => {
+      var t = new Array();
+      for (let e = 0; e < this.Bwi.length; e++) {
+        var i = new CommonTabItemBase_1.CommonTabItemData();
+        i.Index = e;
+        i.Data = this.yqe(e);
+        var n = this.Bwi[e];
+        if (n === 5) {
+          i.RedDotName = "RedDotVersionCheck";
+        }
+        t.push(i);
+      }
+      return t;
+    };
     this.Kwi = t => {
       var t = this.Bwi[t];
       this.Gwi.MenuViewDataCurMainType = t;
@@ -374,7 +389,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Bwi = MenuController_1.MenuController.GetMainTypeList();
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.Kwi, this.yqe);
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(1), e, this.$Ge);
-    await this.Ivt.RefreshTabItemByLengthAsync(this.Bwi.length);
+    await this.Ivt.RefreshTabItemAsync(this.U6d());
   }
   Qwi() {
     this.Fwi();

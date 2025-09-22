@@ -170,8 +170,8 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     }
     return !(this.Lo = undefined);
   }
-  CreateTriggerContext(e, t, i) {
-    return LevelGeneralContextDefine_1.TriggerContext.Create(this.Entity.Id, e, undefined, t, i);
+  CreateTriggerContext(e, t) {
+    return LevelGeneralContextDefine_1.TriggerContext.Create(this.Entity.Id, e, undefined, t, true);
   }
   _11(e) {
     if (this.h11 === undefined) {
@@ -190,17 +190,18 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     }
   }
   jAa(e) {
-    return !!e?.Valid && !this._un?.IsLocked && (!this.Lo?.OnTriggerEnter?.Condition || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Lo.OnTriggerEnter.Condition, undefined, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
+    return !!e?.Valid && !this._un?.IsLocked && (!this.Lo?.OnTriggerEnter?.Condition || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Lo.OnTriggerEnter.Condition, undefined, this.CreateTriggerContext(e.Id, 1)));
   }
   WAa(e) {
-    return !!e?.Valid && !this._un?.IsLocked && (!(e = this.Lo?.OnTriggerExit?.Condition) || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e, undefined, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
+    var t;
+    return !!e?.Valid && !this._un?.IsLocked && (!(t = this.Lo?.OnTriggerExit?.Condition) || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, undefined, this.CreateTriggerContext(e.Id, 2)));
   }
   NAa(e) {
     if (e?.Valid && this.Utc(this.Lo?.OnTriggerEnter.OnlineDisableTip ?? false)) {
       if (this.jAa(e)) {
         if (e.Entity.GetComponent(0)?.GetCreatureDataId()) {
           if (this.Actions) {
-            LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.Actions, this.CreateTriggerContext(e.Id, 1, this.dwl));
+            LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.Actions, this.CreateTriggerContext(e.Id, 1));
             this.wS.delete(e.Id);
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("SceneItem", 31, "[ClientTriggerComponent] 没有配置触发行为");
@@ -218,7 +219,7 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     if (e?.Valid && (this.wS.delete(e.Id), this.Utc(this.Lo?.OnTriggerExit.OnlineDisableTip ?? false)) && this.WAa(e)) {
       if (e.Entity.GetComponent(0)?.GetCreatureDataId()) {
         if (this.ExitActions) {
-          LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.ExitActions, this.CreateTriggerContext(e.Id, 2, this.dwl));
+          LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.ExitActions, this.CreateTriggerContext(e.Id, 2));
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("SceneItem", 7, "[ClientTriggerComponent] 没有配置触发行为");
         }
@@ -251,5 +252,5 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     return LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.EIe.GetEntityOnlineInteractType(), e);
   }
 };
-ClientTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(252)], ClientTriggerComponent);
+ClientTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(253)], ClientTriggerComponent);
 exports.ClientTriggerComponent = ClientTriggerComponent; //# sourceMappingURL=ClientTriggerComponent.js.map

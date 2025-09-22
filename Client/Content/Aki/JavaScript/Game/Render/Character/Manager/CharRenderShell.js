@@ -29,14 +29,14 @@ class CharRenderShell {
     this.veh = false;
     this.hen = 0;
     this.sva = undefined;
-    this.pgd = e => {
+    this.O6d = e => {
       var t;
       var i;
       if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(56)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(43)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
       }
       if (this.hen === e) {
-        this.RenderingComponent?.ResetAllRenderingState();
+        this.RenderingComponent?.CleanOriginEffect();
       }
     };
     this.yW = undefined;
@@ -67,7 +67,7 @@ class CharRenderShell {
         this.A4i();
       }
     };
-    this.XQc = () => {
+    this.z6u = () => {
       if (this.RenderingComponent?.ShouldTickAfterGoDown()) {
         this.Mq_ = true;
       } else {
@@ -131,7 +131,7 @@ class CharRenderShell {
               if (h.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player) {
                 this.OtherRoleEntityId = i;
                 EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
-                EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.XQc);
+                EventSystem_1.EventSystem.AddWithTarget(h, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.z6u);
                 this.A4i();
                 return;
               }
@@ -141,7 +141,7 @@ class CharRenderShell {
       }
       e = this.RenderingComponent.GetCachedOwnerEntity();
       if (e?.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
       }
       this.sva = e?.GetComponent(187);
       this.A4i();
@@ -163,12 +163,12 @@ class CharRenderShell {
     if (this.j4_) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOtherChangeRole, this.rZe);
       if (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.OtherRoleEntityId)?.Entity) {
-        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.XQc);
+        EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnOtherRoleGoDownFinish, this.z6u);
       }
       this.OtherRoleEntityId = 0;
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.pgd)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.pgd);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.O6d)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
     }
   }
   A4i() {
@@ -246,7 +246,7 @@ class CharRenderShell {
     if ((!CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || s || this.Mq_ || this.sva?.IsInPlot || this.veh || this.i3a) && this.RenderingComponent) {
       if (this.Mq_ && !this.RenderingComponent.ShouldTickAfterGoDown()) {
         this.o3a();
-      } else if (!TickSystem_1.TickSystem.IsPaused || this.veh) {
+      } else if (!TickSystem_1.TickSystem.IsPaused || this.veh || ModelManager_1.ModelManager.RenderModuleModel?.ForceTickCharRenderShell) {
         RenderModuleConfig_1.RenderStats.StatCharRenderShellTick.Start();
         let e = i;
         if (this.r3a > 0) {

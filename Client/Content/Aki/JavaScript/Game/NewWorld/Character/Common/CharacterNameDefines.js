@@ -52,6 +52,7 @@ CharacterNameDefines.HIT_CASE_NAME = new UE.FName("HitCase");
 CharacterNameDefines.ANIM_INSTANCE_ROLE = new UE.FName("KuroAnimInstanceRole");
 CharacterNameDefines.ABP_BASEROLE = new UE.FName("ABP_BaseRole_C");
 CharacterNameDefines.ABP_BASEROLENPC = new UE.FName("ABP_BaseRoleNpc_C");
+CharacterNameDefines.ABP_CALBRENA_SPECIAL = new UE.FName("ABP_Calbrena_Special_C");
 CharacterNameDefines.ABP_MONSTERCOMMON = new UE.FName("ABP_MonsterCommon_C");
 CharacterNameDefines.ABP_BASEANIMAL = new UE.FName("ABP_BaseAnimal_C");
 CharacterNameDefines.ABP_BASERUNANIMAL = new UE.FName("ABP_BaseRunAnimal_C");

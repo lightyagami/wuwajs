@@ -26,7 +26,8 @@ class MingSuInstance {
     return this.DragonPoolLevel;
   }
   SetDragonPoolState(t) {
-    this.DragonPoolState = t;
+    var e = this.GetDragonPoolMaxLevel();
+    this.DragonPoolState = e <= t ? 2 : 1;
   }
   GetDragonPoolState() {
     return this.DragonPoolState;

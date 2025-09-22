@@ -25,14 +25,14 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ast = undefined;
     this.Pst = undefined;
     this.i0o = undefined;
-    this.m2u = undefined;
-    this.f2u = undefined;
-    this.g2u = undefined;
-    this.Ald = undefined;
-    this.Dld = false;
+    this.g4u = undefined;
+    this.C4u = undefined;
+    this.p4u = undefined;
+    this.kmd = undefined;
+    this.Omd = false;
     this.xst = "";
     this.fKl = 0;
-    this.C2u = false;
+    this.v4u = false;
     this.wst = 0;
     this.Bst = -0;
     this.bst = undefined;
@@ -52,9 +52,9 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ast = this.GetText(3);
     this.Pst = this.GetSprite(2);
     this.i0o = this.GetSprite(9);
-    this.m2u = this.GetSprite(12);
-    this.f2u = this.GetSprite(11);
-    this.Ald = this.GetItem(14);
+    this.g4u = this.GetSprite(12);
+    this.C4u = this.GetSprite(11);
+    this.kmd = this.GetItem(14);
     this.Est(5);
     this.Est(6);
     this.Est(7);
@@ -73,7 +73,7 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ost(i.Path, o, t === undefined);
     if (t) {
       this.SetNum(t.StackCount);
-      if (t.Duration <= 0 || this.Dld) {
+      if (t.Duration <= 0 || this.Omd) {
         this.Fst(1);
       } else {
         this.Fst(t.GetRemainDuration() / t.Duration);
@@ -117,24 +117,24 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
     this.Ast.SetText("");
     var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_IconpropertyEllipses_UI");
     this.Ost(i, -1, false);
-    this.g2u?.SetFillAmount(0);
+    this.p4u?.SetFillAmount(0);
   }
   Ost(i, t, s) {
     var h;
-    if (this.xst !== i || this.fKl !== t || this.C2u !== s) {
+    if (this.xst !== i || this.fKl !== t || this.v4u !== s) {
       this.xst = i;
       this.fKl = t;
-      this.C2u = s;
+      this.v4u = s;
       h = t === 3 || t === 4;
-      this.Dld = t === 2 || t === 4;
-      this.Ald.SetUIActive(h);
+      this.Omd = t === 2 || t === 4;
+      this.kmd.SetUIActive(h);
       this.Ust.SetUIActive(false);
       this.gKl.SetUIActive(false);
       if (t === 1) {
         this.i0o.SetUIActive(false);
         this.Pst.SetUIActive(false);
-        this.f2u.SetUIActive(false);
-        this.m2u.SetUIActive(false);
+        this.C4u.SetUIActive(false);
+        this.g4u.SetUIActive(false);
         this.SetTextureByPath(i, this.gKl, undefined, i => {
           if (i) {
             this.gKl?.SetUIActive(true);
@@ -144,14 +144,14 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
         t = h;
         this.i0o.SetUIActive(!s && !t);
         this.Pst.SetUIActive(!s);
-        this.f2u.SetUIActive(s && !t);
-        this.m2u.SetUIActive(s);
+        this.C4u.SetUIActive(s && !t);
+        this.g4u.SetUIActive(s);
         this.SetTextureByPath(i, this.Ust, undefined, i => {
           if (i) {
             this.Ust?.SetUIActive(true);
           }
         });
-        this.g2u = s ? this.m2u : this.Pst;
+        this.p4u = s ? this.g4u : this.Pst;
         this.Bst = -1;
       }
     }
@@ -171,7 +171,7 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
   Fst(i) {
     if (i !== this.Bst) {
       this.Bst = i;
-      this.g2u?.SetFillAmount(i);
+      this.p4u?.SetFillAmount(i);
       this.Hst(i <= FADE_ANIM_PERCENT);
     }
   }
@@ -187,10 +187,10 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
   }
   Vst(i) {
     if (i) {
-      this.g2u?.SetColor(UE.Color.FromHex(i));
+      this.p4u?.SetColor(UE.Color.FromHex(i));
     } else {
       this.qst ||= UE.Color.FromHex("FFFFFF7F");
-      this.g2u?.SetColor(this.qst);
+      this.p4u?.SetColor(this.qst);
     }
   }
   yga(i) {
@@ -204,7 +204,7 @@ class BuffItem extends UiPanelBase_1.UiPanelBase {
   }
   Tick(i) {
     if (this.bst) {
-      if (this.bst.Duration > 0 && !this.Dld) {
+      if (this.bst.Duration > 0 && !this.Omd) {
         this.Fst(this.bst.GetRemainDuration() / this.bst.Duration);
       }
       this.SetNum(this.bst.StackCount);

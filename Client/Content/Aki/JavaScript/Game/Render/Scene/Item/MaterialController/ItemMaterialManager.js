@@ -58,6 +58,12 @@ class ItemMaterialManager {
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RenderEffect", 32, "单体交互物材质控制器队列已经没有目标控制器，卸载失败", ["handle", o]);
       }
+      if (!this.DataMap?.IsValid()) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("RenderEffect", 32, "DataMap被UE清理");
+        }
+        return;
+      }
       if (this.DataMap?.Map?.Get(o)) {
         this.DataMap.Map.Remove(o);
       }
@@ -111,11 +117,18 @@ class ItemMaterialManager {
       this.WaitList.push(t);
     }
     this.AllActorControllerInfoMap;
-    if (this.DataMap?.Map) {
-      this.DataMap.Map.Empty();
+    if (this.DataMap?.IsValid()) {
+      if (this.DataMap?.Map) {
+        this.DataMap.Map.Empty();
+      }
+      this.IndexCount = -1;
+      return true;
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RenderEffect", 32, "DataMap被UE清理");
+      }
+      return false;
     }
-    this.IndexCount = -1;
-    return true;
   }
   static AddSimpleMaterialController(t, e, r) {
     if (!t?.IsValid()) {

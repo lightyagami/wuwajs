@@ -746,9 +746,9 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
   gs1(t) {
     var i;
     var e;
-    if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && (i = t.Attacker?.GetComponent(288)) && !MathUtils_1.MathUtils.IsNearlyEqual(i.SelfCenterTimeDilation, 1)) {
+    if (ModelManager_1.ModelManager.CharacterModel?.EnabledSelfCentered && (i = t.Attacker?.GetComponent(289)) && !MathUtils_1.MathUtils.IsNearlyEqual(i.SelfCenterTimeDilation, 1)) {
       if ((e = t.ReBulletData.TimeScale.TimeScaleEffectImmune * BattleUiDefine_1.SECOND_TO_MILLISECOND) > TimerSystem_1.MIN_TIME) {
-        this.Entity.GetComponent(288)?.SetBeHitTimeDilation(i.SelfCenterTimeDilation, e);
+        this.Entity.GetComponent(289)?.SetBeHitTimeDilation(i.SelfCenterTimeDilation, e);
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 20, "ProcessSelfCenter immuneTimeScaleDuration < MIN_TIME", ["Bullet", t.BulletRowName]);
       }
@@ -1437,7 +1437,7 @@ let CharacterHitComponent = CharacterHitComponent_1 = class CharacterHitComponen
       t.qpc = this.cVr;
       t.Gpc = this.BFa;
       (i = Protocol_1.Aki.Protocol.Opc.create()).Fpc = t;
-      CombatMessage_1.CombatNet.Send(29807, this.Entity, i);
+      CombatMessage_1.CombatNet.Send(25105, this.Entity, i);
     }
   }
   I6r() {

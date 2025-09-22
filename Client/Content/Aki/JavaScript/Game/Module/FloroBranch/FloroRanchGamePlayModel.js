@@ -39,7 +39,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.IsEndlessMode = false;
     this.CoinData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(1);
     this.DiamondData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(2);
-    this.dOu = 0;
+    this.ZOu = 0;
     this.ShowEntityDebugInfo = true;
     this.p_u = [];
     this.v_u = [];
@@ -65,7 +65,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.FloroRanchTimerSystem = new TimerSystem_1.TimerSystemInstance();
     this.TDe = undefined;
     this.s1t = 1;
-    this.TKu = false;
+    this.LQu = false;
     this.J_ = t => {
       if (!this.IsPause) {
         this.FloroRanchTimerSystem.Tick(t * this.s1t);
@@ -96,7 +96,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     } else {
       this.InitData(t.Zru);
       this.RefreshDailyTaskData(t.vlu);
-      this.mOu();
+      this.EVu();
       this.InitStateMachine();
       this.ChangeState(1);
     }
@@ -168,7 +168,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   }
   GameEnd() {
     if (this.C_u) {
-      this.fOu();
+      this.IVu();
       this.ExitAllEntity();
       this.ClearData();
       this.CloseAllRecordView();
@@ -192,8 +192,8 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.EnableToyCount = t.kCu;
     this.IsEndlessMode = t.ZUu;
     this.StageDayCount = t.uDu;
-    this.TotalDayCount = t.GBu;
-    this.RemindDay = t.FBu;
+    this.TotalDayCount = t.zOu;
+    this.RemindDay = t.BNu;
     this.ActionInfoList.length = 0;
   }
   InitEntityData(t) {
@@ -216,8 +216,8 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   OnDayStart(t) {
     this.CurStage = t.tDu;
     this.IsEndlessMode = t.j1u;
-    this.TotalDayCount = t.GBu;
-    this.RemindDay = t.FBu;
+    this.TotalDayCount = t.zOu;
+    this.RemindDay = t.BNu;
   }
   OnStageStart(t) {
     this.StageTarget = Number(MathUtils_1.MathUtils.LongToBigInt(t.j6n));
@@ -237,7 +237,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
       this.N9o.set(i.EntityId, i);
       this.CDu(i.EntityType, i);
       if (i.EntityType === 1) {
-        e = this.dOu + 1;
+        e = this.ZOu + 1;
         this.SetOwnCardEntityCount(e);
       }
       return i;
@@ -275,7 +275,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     if (i.IsValid) {
       i.Remove();
       if (this.pDu(t.EntityType, t) && t.EntityType === 1) {
-        i = this.dOu - 1;
+        i = this.ZOu - 1;
         this.SetOwnCardEntityCount(i);
       }
     } else if (Log_1.Log.CheckError()) {
@@ -311,7 +311,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     }
   }
   OnTributeResult(t) {
-    this.RemindDay = t.FBu;
+    this.RemindDay = t.BNu;
     this.CurStage = t.tDu;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchStageInfoRefresh);
     var i = Number(MathUtils_1.MathUtils.LongToBigInt(t.nlu));
@@ -362,10 +362,10 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.bAu.length = 0;
   }
   get OwnCardEntityCount() {
-    return this.dOu;
+    return this.ZOu;
   }
   SetOwnCardEntityCount(t) {
-    this.dOu = t;
+    this.ZOu = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnFloroRanchCardEntityCountChange);
   }
   ExitAllEntity() {
@@ -395,7 +395,7 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     this.bAu.length = 0;
     this.F7c = 0;
     this.sCu.length = 0;
-    this.dOu = 0;
+    this.ZOu = 0;
     this.NeedReStart = false;
     this.IsExit = false;
     this.ActionInfoList.length = 0;
@@ -611,18 +611,18 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
   CheckEntityTypeIsVisible(t) {
     return t === 1 || t === 2 || t === 0;
   }
-  mOu() {
+  EVu() {
     if (this.TDe) {
       this._1o();
     }
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(this.J_, TimerSystem_1.MIN_TIME);
     this.s1t = 1;
-    this.TKu = false;
+    this.LQu = false;
   }
-  fOu() {
+  IVu() {
     this._1o();
     this.s1t = 1;
-    this.TKu = false;
+    this.LQu = false;
     this.FloroRanchTimerSystem.Clear();
   }
   _1o() {
@@ -638,10 +638,10 @@ class FloroRanchGamePlayModel extends ModelBase_1.ModelBase {
     return this.s1t;
   }
   get IsSkip() {
-    return this.TKu;
+    return this.LQu;
   }
   set IsSkip(t) {
-    this.TKu = t;
+    this.LQu = t;
   }
   GetPopupRewardStayTime() {
     if (FloroRanchDefine_1.floroRanchSpeedTimeMap[this.s1t] === undefined) {

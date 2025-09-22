@@ -8,6 +8,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const KscUtil_1 = require("../../../KuroSimpleCombat/KscUtil");
+const TDPlayerController_1 = require("../../../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -50,12 +51,12 @@ class TrapDefenseBuildingTypeData {
   }
   AU(e) {
     if (this.IsInDungeon) {
-      return this.L9c();
+      return this.qYc();
     } else {
-      return this.A9c(e);
+      return this.GYc(e);
     }
   }
-  A9c(e) {
+  GYc(e) {
     var t;
     var i = new Set();
     for (const s of e) {
@@ -86,7 +87,7 @@ class TrapDefenseBuildingTypeData {
     this.SortList();
     return this.DataList.length > 0;
   }
-  L9c() {
+  qYc() {
     this.DataList = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetInBattleDataByType(this.PlacementType);
     return this.DataList.length > 0;
   }
@@ -119,51 +120,51 @@ class TrapDefenseBuildingDevelopItemData {
     this.IsInDungeon = false;
     this.vUt = -1;
     this.UQ = -1;
-    this.P9c = -1;
-    this.gud = 0;
-    this.D9c = [];
+    this.FYc = -1;
+    this.$vd = 0;
+    this.fXu = [];
     this.gQl = true;
-    this.x9c = false;
-    this.kYc = undefined;
-    this.OYc = undefined;
-    this.qYc = undefined;
-    this.GYc = undefined;
-    this.bZc = -1;
+    this.NYc = false;
+    this.OJc = undefined;
+    this.qJc = undefined;
+    this.GJc = undefined;
+    this.FJc = undefined;
+    this.Dtd = -1;
     this.Id = e;
     this.Type = t;
   }
   static Create(e, t) {
     e = new TrapDefenseBuildingDevelopItemData(e, t);
-    e.FYc();
+    e.NJc();
     return e;
   }
-  FYc() {
+  NJc() {
     if (this.IsBuilding) {
-      this.qYc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBuildingById(this.Id);
-      this.GYc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBuildingTypeById(this.qYc.BuildingType);
+      this.GJc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBuildingById(this.Id);
+      this.FJc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBuildingTypeById(this.GJc.BuildingType);
     } else {
-      this.kYc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(this.Id);
-      this.OYc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryTypeById(this.kYc.AuxiliaryType);
+      this.OJc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(this.Id);
+      this.qJc = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryTypeById(this.OJc.AuxiliaryType);
     }
   }
   GetIconPath() {
-    return (this.IsBuilding ? this.GYc : this.OYc).Icon;
+    return (this.IsBuilding ? this.FJc : this.qJc).Icon;
   }
   GetName() {
-    return (this.IsBuilding ? this.GYc : this.OYc).Name;
+    return (this.IsBuilding ? this.FJc : this.qJc).Name;
   }
   GetDesc() {
     if (this.IsBuilding) {
-      return [this.qYc.Desc, this.qYc.DescArgs];
+      return [this.GJc.Desc, this.GJc.DescArgs];
     } else {
-      return [this.kYc.Desc, this.kYc.DescArgs];
+      return [this.OJc.Desc, this.OJc.DescArgs];
     }
   }
   GetVideo() {
     if (this.IsBuilding) {
-      return [this.GYc.VideoName, this.GYc.VideoPath];
+      return [this.FJc.VideoName, this.FJc.VideoPath];
     } else {
-      return [this.OYc.VideoName, this.OYc.VideoPath];
+      return [this.qJc.VideoName, this.qJc.VideoPath];
     }
   }
   SetIsUnLock(e) {
@@ -174,20 +175,20 @@ class TrapDefenseBuildingDevelopItemData {
   }
   GetPlacementType() {
     if (this.IsBuilding) {
-      return this.GYc.PlacementType;
+      return this.FJc.PlacementType;
     } else {
       return 0;
     }
   }
   GetUpgradeCost() {
-    return (this.IsBuilding ? this.qYc : this.kYc).UpgradeCost;
+    return (this.IsBuilding ? this.GJc : this.OJc).UpgradeCost;
   }
   GetBuildingCost(e) {
     if (this.IsBuilding) {
-      if (e && this.bZc !== -1) {
-        return this.bZc;
+      if (e && this.Dtd !== -1) {
+        return this.Dtd;
       } else {
-        return this.qYc.ConstructDefaultCost;
+        return this.GJc.ConstructDefaultCost;
       }
     } else {
       return 0;
@@ -197,30 +198,30 @@ class TrapDefenseBuildingDevelopItemData {
     if (this.IsBuilding) {
       return 0;
     } else {
-      return ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.GetFollowerSkillCD(this.Id);
+      return TDPlayerController_1.TowerDefensePlayerController.GetFollowerSkillCD(this.Id);
     }
   }
   GetRemainCd() {
-    return !this.IsBuilding && this.kYc.CDSkill !== 0 && ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.GetFollowerSkillRemainCD(this.Id) || 0;
+    return !this.IsBuilding && this.OJc.CDSkill !== 0 && TDPlayerController_1.TowerDefensePlayerController.GetFollowerSkillRemainCD(this.Id) || 0;
   }
   GetIsMaxLevel(e) {
-    return (e ? this.P9c : this.GetMaxLevel()) === this.GetLevel();
+    return (e ? this.FYc : this.GetMaxLevel()) === this.GetLevel();
   }
   SetBuildingPrice(e, t) {
-    this.bZc = t;
+    this.Dtd = t;
   }
   SetCurMaxLevel(e) {
-    this.P9c = e;
+    this.FYc = e;
   }
   GetCurMaxLevel() {
-    return this.P9c;
+    return this.FYc;
   }
   GetMaxLevel() {
     if (!(this.UQ >= 0)) {
       if (this.IsBuilding) {
-        this.UQ = this.GYc.MaxLevel;
+        this.UQ = this.FJc.MaxLevel;
       } else {
-        this.UQ = this.OYc.MaxLevel;
+        this.UQ = this.qJc.MaxLevel;
       }
     }
     return this.UQ;
@@ -230,39 +231,39 @@ class TrapDefenseBuildingDevelopItemData {
   }
   GetHasBranch() {
     if (this.IsBuilding) {
-      var e = this.qYc;
-      const t = this.GYc;
+      var e = this.GJc;
+      const t = this.FJc;
       return e.Level === t.MaxLevel && t.BranchCount > 1;
     }
-    e = this.kYc;
-    const t = this.OYc;
+    e = this.OJc;
+    const t = this.qJc;
     return e.Level === t.MaxLevel && t.BranchCount > 1;
   }
   GetBranchCount() {
-    return (this.IsBuilding ? this.GYc : this.OYc).BranchCount;
+    return (this.IsBuilding ? this.FJc : this.qJc).BranchCount;
   }
   GetAttrItem() {
     var e;
-    if (!(this.D9c.length > 0)) {
+    if (!(this.fXu.length > 0)) {
       if (this.IsBuilding) {
         t = this.GetPlacementId();
-        t = ConfigManager_1.ConfigManager.TextConfig?.GetMultiTextByKey(t, t);
         e = placementAttrIcon.get(this.GetPlacementType());
-        this.D9c.push({
+        this.fXu.push({
           Name: "TowerDefense_BuildingAttr_Type",
           Icon: e,
-          Value: t ?? ""
+          Value: t,
+          MultiTxt: true
         });
         e = {
           Name: "TowerDefense_BuildingAttr_Cost",
           Icon: "/Game/Aki/UI/UIResources/Common/Image/IconAttribute/T_RogueSkill_Coin_UI.T_RogueSkill_Coin_UI",
           Value: "" + this.GetBuildingCost(false)
         };
-        this.D9c.push(e);
+        this.fXu.push(e);
       }
       if (this.IsBuilding) {
-        var t = this.qYc;
-        const u = this.GYc;
+        var t = this.GJc;
+        const u = this.FJc;
         var i = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetBuffData(u.TemplateId, t.SimpleCombatSubtypeIds[0]);
         if (i) {
           for (const _ of u.AttrShow) {
@@ -276,7 +277,7 @@ class TrapDefenseBuildingDevelopItemData {
                 Icon: r.Icon,
                 Value: e
               };
-              this.D9c.push(n);
+              this.fXu.push(n);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("TowerDefense", 77, "缺少属性字段配置", ["属性ID", _]);
             }
@@ -285,7 +286,7 @@ class TrapDefenseBuildingDevelopItemData {
           Log_1.Log.Error("TowerDefense", 77, "无法获得Buff模板", ["机关ID", this.Id], ["模板ID", u.TemplateId]);
         }
       } else {
-        const u = this.OYc;
+        const u = this.qJc;
         var o = KscUtil_1.KscUtil.GetFollowerAttrsByProxy(this.Id);
         if (o) {
           for (const g of u.AttrShow) {
@@ -300,7 +301,7 @@ class TrapDefenseBuildingDevelopItemData {
                   Icon: a.Icon,
                   Value: e
                 };
-                this.D9c.push(l);
+                this.fXu.push(l);
               } else if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("TowerDefense", 77, "属性值Map未找到键", ["AttrID", g]);
               }
@@ -313,16 +314,16 @@ class TrapDefenseBuildingDevelopItemData {
         }
       }
     }
-    return this.D9c;
+    return this.fXu;
   }
   GetBranch() {
-    return (this.IsBuilding ? this.qYc : this.kYc).Branch;
+    return (this.IsBuilding ? this.GJc : this.OJc).Branch;
   }
   GetBranchDesc() {
-    return (this.IsBuilding ? this.qYc : this.kYc).BranchDesc;
+    return (this.IsBuilding ? this.GJc : this.OJc).BranchDesc;
   }
   GetBranchDescArgs() {
-    return (this.IsBuilding ? this.qYc : this.kYc).BranchDescArgs;
+    return (this.IsBuilding ? this.GJc : this.OJc).BranchDescArgs;
   }
   CheckNeedRedDot() {
     return !!this.GetIsMaxLevel(false) && !(this.GetBranchCount() <= 1) && ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(this.Id).Branch === 0;
@@ -332,8 +333,8 @@ class TrapDefenseBuildingDevelopItemData {
   }
   UpdateId(e) {
     this.Id = e;
-    this.D9c.length = 0;
-    this.FYc();
+    this.fXu.length = 0;
+    this.NJc();
   }
   GetDataType() {
     var e;
@@ -344,7 +345,7 @@ class TrapDefenseBuildingDevelopItemData {
     return this.vUt;
   }
   GetSortId() {
-    return (this.IsBuilding ? this.GYc : this.OYc).SortId;
+    return (this.IsBuilding ? this.FJc : this.qJc).SortId;
   }
   GetPlacementId() {
     var e;
@@ -359,25 +360,25 @@ class TrapDefenseBuildingDevelopItemData {
     }
   }
   SetLockInBattle(e) {
-    this.x9c = e;
+    this.NYc = e;
   }
   GetLockInBattle() {
-    return this.x9c;
+    return this.NYc;
   }
   SetSellPrice(e) {
-    this.gud = e;
+    this.$vd = e;
   }
   GetSellPrice() {
-    return this.gud;
+    return this.$vd;
   }
 }
 exports.TrapDefenseBuildingDevelopItemData = TrapDefenseBuildingDevelopItemData;
 class TrapDefenseBuildingSlotData {
   constructor(e) {
     this.Xy = e;
-    this.U9c = undefined;
-    this.B9c = undefined;
-    this.k9c = false;
+    this.VYc = undefined;
+    this.jYc = undefined;
+    this.HYc = false;
   }
   static Create(e) {
     return new TrapDefenseBuildingSlotData(e);
@@ -386,25 +387,25 @@ class TrapDefenseBuildingSlotData {
     return this.Xy;
   }
   GetSlotData() {
-    return this.U9c;
+    return this.VYc;
   }
   InitSlotData(e) {
-    this.k9c = false;
-    this.B9c = undefined;
-    this.U9c = e;
+    this.HYc = false;
+    this.jYc = undefined;
+    this.VYc = e;
   }
   SetSlotData(e, t = false) {
-    if (this.O9c() || e !== undefined || t) {
-      return (e === undefined || !!t || !!this.fod(e)) && (e || this.U9c?.IsBuilding || t || ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckAuxiliarySlot(false) ? (this.B9c = e, this.k9c = true) : (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefense_Battle_AuxiliaryNeed"), false));
+    if (this.$Yc() || e !== undefined || t) {
+      return (e === undefined || !!t || !!this.ild(e)) && (e || this.VYc?.IsBuilding || t || ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckAuxiliarySlot(false) ? (this.jYc = e, this.HYc = true) : (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefense_Battle_AuxiliaryNeed"), false));
     } else {
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefense_Battle_SlotLock");
       return false;
     }
   }
-  fod(e) {
+  ild(e) {
     var t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.IsSlotData(e);
     if (t) {
-      t.SetSlotData(this.U9c, true);
+      t.SetSlotData(this.VYc, true);
     } else {
       t = !!this.GetSlotData() && !this.GetSlotData()?.IsBuilding;
       if (e.IsBuilding || t) {
@@ -420,21 +421,21 @@ class TrapDefenseBuildingSlotData {
     return true;
   }
   GetUploadData() {
-    if (this.k9c) {
-      return this.B9c;
+    if (this.HYc) {
+      return this.jYc;
     } else {
-      return this.U9c;
+      return this.VYc;
     }
   }
   ApplySlotData(e) {
-    if (this.k9c && e) {
-      this.U9c = this.B9c;
+    if (this.HYc && e) {
+      this.VYc = this.jYc;
     }
-    this.B9c = undefined;
-    this.k9c = false;
+    this.jYc = undefined;
+    this.HYc = false;
   }
-  O9c() {
-    return !this.U9c || !this.U9c.GetLockInBattle();
+  $Yc() {
+    return !this.VYc || !this.VYc.GetLockInBattle();
   }
 }
 exports.TrapDefenseBuildingSlotData = TrapDefenseBuildingSlotData;

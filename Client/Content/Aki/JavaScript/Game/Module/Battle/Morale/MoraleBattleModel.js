@@ -16,7 +16,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.NH1 = 0;
     this.vL1 = 0;
-    this.i2u = 0;
+    this.Squ = 0;
     this.yL1 = 1;
     this.C91 = 0;
     this.p91 = 0;
@@ -95,10 +95,10 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
   }
   GetMoraleMaxExp() {
-    if (this.i2u === 0) {
-      this.i2u = this.GetLevelExp(this.GetMoraleMaxLevel());
+    if (this.Squ === 0) {
+      this.Squ = this.GetLevelExp(this.GetMoraleMaxLevel());
     }
-    return this.i2u;
+    return this.Squ;
   }
   SetIsUnlockTempMoraleMaxLevel(t) {
     this.o2u = t;
@@ -222,7 +222,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
     if (h) {
       i = (h = this.yL1) + (e = this.C91) !== t.wR1 + t.PR1;
-      s = Math.min(this.i2u, t.AR1);
+      s = Math.min(this.Squ, t.AR1);
       if (this.vL1 !== s) {
         r = this.vL1;
         this.vL1 = s;
@@ -252,7 +252,7 @@ class MoraleBattleModel extends ModelBase_1.ModelBase {
     }
   }
   S91(t) {
-    this.vL1 = Math.min(this.i2u, t.AR1);
+    this.vL1 = Math.min(this.Squ, t.AR1);
     this.yL1 = t.wR1;
     this.KN1 = t.LR1;
     this.C91 = t.PR1;

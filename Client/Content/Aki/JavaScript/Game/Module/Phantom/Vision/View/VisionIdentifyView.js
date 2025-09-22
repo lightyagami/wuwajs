@@ -15,6 +15,7 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiComponentsAction_1 = require("../../../../Ui/Base/UiComponentsAction");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
+const UiInteractLogReport_1 = require("../../../../Ui/LogReport/UiInteractLogReport");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
 const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
 const MediumItemGrid_1 = require("../../../Common/MediumItemGrid/MediumItemGrid");
@@ -126,6 +127,9 @@ class VisionIdentifyView extends UiTabViewBase_1.UiTabViewBase {
     e = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetVisionIdentifyDelay();
     TimerSystem_1.GameplayTimerSystem.Delay(() => {
       var e = i.GetNewSubPropSuccessData(t);
+      e.ClickFunction = () => {
+        UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(6);
+      };
       RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(e);
       UiLayer_1.UiLayer.SetShowMaskLayer("PhantomLevelUp", false);
     }, e);

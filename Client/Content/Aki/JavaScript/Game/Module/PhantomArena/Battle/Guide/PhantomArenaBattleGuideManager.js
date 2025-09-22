@@ -12,7 +12,7 @@ class PhantomArenaBattleGuideManager {
     this.Proxy = t;
     this.E1u = undefined;
     this.I1u = undefined;
-    this.sNu = false;
+    this.wBu = false;
   }
   RegisterGuideInterface(t) {
     this.I1u = t;
@@ -20,13 +20,13 @@ class PhantomArenaBattleGuideManager {
   RegisterBehaviorTreeGuideData(t) {
     var i = t.EnableOperation.Type;
     this.E1u = PhantomArenaBattleGuideFactory_1.PhantomArenaBattleGuideFactory.GetGuideData(i, t);
-    this.sNu = !t.IsTheLast;
+    this.wBu = !t.IsTheLast;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("PhantomArena", 10, "行为引导操作限制", ["Type", i], ["HasNextGuide", this.sNu]);
+      Log_1.Log.Info("PhantomArena", 10, "行为引导操作限制", ["Type", i], ["HasNextGuide", this.wBu]);
     }
   }
   CheckCanExecuteAndShowFailTips(t, ...i) {
-    return !this.E1u && !this.sNu || (this.E1u || !this.sNu) && this.E1u.Type === t && !!this.E1u.CheckCanExecute(...i) || (this.ShowGuideTips(), false);
+    return !this.E1u && !this.wBu || (this.E1u || !this.wBu) && this.E1u.Type === t && !!this.E1u.CheckCanExecute(...i) || (this.ShowGuideTips(), false);
   }
   CheckInGuideAndShowTips() {
     return !!this.InGuiding && (this.ShowGuideTips(), true);
@@ -38,12 +38,12 @@ class PhantomArenaBattleGuideManager {
     }
   }
   get InGuiding() {
-    return this.E1u !== undefined || this.sNu;
+    return this.E1u !== undefined || this.wBu;
   }
   ShowGuideTips() {
     if (this.E1u) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(this.E1u.Tips);
-    } else if (this.sNu) {
+    } else if (this.wBu) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_BvBPlayerOperationForbidden_Text");
     }
   }

@@ -49,11 +49,11 @@ class AbilityUtils {
     }
   }
   static ModifyFuLuoLuoSpecialEnergy(t, e) {
-    t = t?.GetComponent(255)?.SpecialSkill;
+    t = t?.GetComponent(256)?.SpecialSkill;
     return !!t && t instanceof SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo && (e === 0 ? t.RemoveSpecialEnergy() : t.AddSpecialEnergy(e), true);
   }
   static GetFuLuoLuoSpecialEnergyType(t, e) {
-    t = t?.GetComponent(255)?.SpecialSkill;
+    t = t?.GetComponent(256)?.SpecialSkill;
     if (t && t instanceof SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo) {
       return t.GetSpecialEnergyType(e);
     } else {

@@ -138,13 +138,14 @@ class HighlightExploreSkillLogic {
   Izo(t) {
     this.vzo = true;
     var e = this.pzo ? 1 : 0;
-    if (!ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(this.wmo, e)) {
+    if (ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(this.wmo, e)) {
       if (this.wmo === 3001) {
         ControllerHolder_1.ControllerHolder.SpecialItemController.EquipSpecialItem(this.ETt, true, t, e);
       } else {
         RouletteController_1.RouletteController.ExploreSkillSetRequest(this.wmo);
       }
     }
+    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(this.wmo, e);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelEvent", 79, "开始监听高亮事件", ["Id", this.wmo]);
     }

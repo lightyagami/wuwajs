@@ -3,27 +3,43 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ActivitySwitchToggle = undefined;
+exports.ActivitySwitchToggleDynamicItem = exports.ActivitySwitchToggle = undefined;
 const UE = require("ue");
+const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+class CategoryToggleItem extends UiPanelBase_1.UiPanelBase {
+  constructor() {
+    super(...arguments);
+    this.OnToggleClickCallBack = undefined;
+    this.Bke = t => {
+      this.OnToggleClickCallBack?.(t);
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UISprite], [2, UE.UIItem]];
+    this.BtnBindInfo = [[0, this.Bke]];
+  }
+  SetIcon(t) {
+    this.SetSpriteByPath(t, this.GetSprite(1), false);
+  }
+  GetTabToggle() {
+    return this.GetExtendToggle(0);
+  }
+  SetRedDotState(t) {
+    this.GetItem(2)?.SetUIActive(t);
+  }
+}
 class ActivitySwitchToggle extends UiPanelBase_1.UiPanelBase {
-  constructor(t) {
-    super();
-    this.H5e = undefined;
+  constructor() {
+    super(...arguments);
+    this.Pe = undefined;
+    this.N8e = undefined;
+    this.Awd = undefined;
     this.Nel = new Map();
     this.Fel = 0;
-    this.j5e = undefined;
-    this.W5e = undefined;
-    this.K5e = 0;
-    this.Bke = t => {
-      if (this.j5e) {
-        this.j5e(this.K5e, t);
-      }
-    };
-    this.A5e = () => !this.W5e || this.W5e(this.K5e, this.H5e.GetToggleState());
     this.BNe = t => {
       var e;
       var i = this.Nel.get(t);
@@ -37,16 +53,17 @@ class ActivitySwitchToggle extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.K5e = t;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText], [2, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.Bke]];
+    this.ComponentRegisterInfos = [[1, UE.UIItem], [0, UE.UIItem]];
   }
-  OnStart() {
-    this.H5e = this.GetExtendToggle(0);
-    this.H5e.CanExecuteChange.Bind(this.A5e);
-    this.GetItem(2).SetUIActive(false);
+  async Init(t) {
+    this.Awd = new CategoryToggleItem();
+    this.Awd.OnToggleClickCallBack = this.Dwd.bind(this);
+    var e = [];
+    e.push(super.CreateThenShowByActorAsync(t.GetOwner(), undefined, true));
+    e.push(this.Awd.CreateByActorAsync(this.GetItem(0).GetOwner()));
+    await Promise.all(e);
   }
   OnBeforeShow() {
     this.KBl();
@@ -56,19 +73,46 @@ class ActivitySwitchToggle extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.BNe);
   }
   OnBeforeDestroy() {
+    this.Pe &&= undefined;
     this.Nel.clear();
   }
-  BindOnCanToggleExecuteChange(t) {
-    this.W5e = t;
+  Dwd(t) {
+    this.N8e?.(this.Pe, this.Awd.GetTabToggle(), t);
   }
-  BindOnToggleFunction(t) {
-    this.j5e = t;
+  ClearItem() {}
+  GetUsingItem(t) {
+    return (t.IsLineType ? this.GetItem(1) : this.GetRootItem()).GetOwner();
   }
-  SetToggleState(t, e = true) {
-    this.H5e.SetToggleStateForce(t ? 1 : 0, e);
+  Update(t, e) {
+    if ((this.Pe = t).IsLineType) {
+      this.mco();
+    } else {
+      this.jFi();
+      this.BindRedDotIds(t.Activities.map(t => t.Id));
+    }
   }
-  SetToggleTextId(t) {
-    this.GetText(1).ShowTextNew(t);
+  InitData(t) {
+    this.Pe = t;
+  }
+  SetOnToggleClicked(t) {
+    this.N8e = t;
+  }
+  mco() {
+    this.GetItem(1).SetUIActive(true);
+    this.Awd?.SetUiActive(false);
+  }
+  jFi() {
+    this.GetItem(1).SetUIActive(false);
+    this.Awd?.SetUiActive(true);
+    this.Awd?.SetIcon(this.Pe.IconPath);
+  }
+  OnSelected(t) {
+    this.Awd?.GetTabToggle().SetToggleStateForce(1, t);
+  }
+  KBl() {
+    for (const t of this.Nel.keys()) {
+      this.BNe(t);
+    }
   }
   Hel(t) {
     var e = this.Fel;
@@ -82,10 +126,7 @@ class ActivitySwitchToggle extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetRedDotState(t) {
-    this.GetItem(2).SetUIActive(t);
-  }
-  GetToggleRedDot() {
-    return this.GetItem(2);
+    this.Awd.SetRedDotState(t);
   }
   Vel(t) {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityRedDotState(t);
@@ -102,11 +143,33 @@ class ActivitySwitchToggle extends UiPanelBase_1.UiPanelBase {
     }
     this.SetRedDotState(this.Fel > 0);
   }
-  KBl() {
-    for (const t of this.Nel.keys()) {
-      this.BNe(t);
-    }
-  }
 }
 exports.ActivitySwitchToggle = ActivitySwitchToggle;
+class ActivitySwitchToggleDynamicItem extends UiPanelBase_1.UiPanelBase {
+  constructor() {
+    super(...arguments);
+    this.eqe = undefined;
+  }
+  async Init(t) {
+    await super.CreateByActorAsync(t.GetOwner(), undefined, true);
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[1, UE.UIItem], [0, UE.UIItem]];
+  }
+  GetItemSize(t) {
+    if (this.eqe === undefined) {
+      this.eqe = Vector2D_1.Vector2D.Create();
+    }
+    if (t.IsLineType) {
+      t = this.GetItem(1);
+      this.eqe.Set(t.GetWidth(), t.GetHeight());
+    } else {
+      t = this.GetRootItem();
+      this.eqe.Set(t.GetWidth(), t.GetHeight());
+    }
+    return this.eqe.ToUeVector2D(true);
+  }
+  ClearItem() {}
+}
+exports.ActivitySwitchToggleDynamicItem = ActivitySwitchToggleDynamicItem;
 //# sourceMappingURL=ActivitySwitchToggle.js.map

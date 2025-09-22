@@ -47,8 +47,10 @@ class SmallItemGridSkinComponent extends SmallItemGridComponent_1.SmallItemGridC
         return "T_IconFilterSkin2";
       }
     } else if (r === 14) {
-      r = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
-      return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(r.SkinType);
+      e = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
+      return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(e.SkinType);
+    } else if (r === 17) {
+      return "T_IconFilterSkin6";
     } else {
       return "";
     }

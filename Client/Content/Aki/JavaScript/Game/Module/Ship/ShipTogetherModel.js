@@ -46,7 +46,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     };
     this.Bnu = () => {
       var e = Protocol_1.Aki.Protocol.xZ1.create();
-      Net_1.Net.Call(22332, e, () => {});
+      Net_1.Net.Call(23797, e, () => {});
     };
   }
   get IsShipTogether() {
@@ -85,9 +85,10 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     }
   }
   TY1(e) {
-    if (!ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 1)) {
+    if (!ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 1)) {
       ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(1009, undefined, true);
     }
+    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 1);
     var t = e?.PassengerEntity;
     t?.GetComponent(206)?.AddTag(-1296410005);
     e?.VehicleEntity?.GetComponent(242)?.AddTagForPassenger(t, 1, 1937468570);
@@ -113,7 +114,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
   Dnu(e) {
     var t = Protocol_1.Aki.Protocol.AZ1.create();
     t.BZ1 = e ? Protocol_1.Aki.Protocol.kZ1.j4n : Protocol_1.Aki.Protocol.kZ1.Proto_Third;
-    Net_1.Net.Call(26751, t, () => {});
+    Net_1.Net.Call(24219, t, () => {});
   }
   $bl() {
     var e = ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.values().next().value;

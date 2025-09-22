@@ -1,15 +1,15 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, i, e, n) {
-  var o;
+var __decorate = this && this.__decorate || function (t, i, e, o) {
+  var n;
   var r = arguments.length;
-  var s = r < 3 ? i : n === null ? n = Object.getOwnPropertyDescriptor(i, e) : n;
+  var s = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, i, e, n);
+    s = Reflect.decorate(t, i, e, o);
   } else {
-    for (var l = t.length - 1; l >= 0; l--) {
-      if (o = t[l]) {
-        s = (r < 3 ? o(s) : r > 3 ? o(i, e, s) : o(i, e)) || s;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (n = t[a]) {
+        s = (r < 3 ? n(s) : r > 3 ? n(i, e, s) : n(i, e)) || s;
       }
     }
   }
@@ -27,10 +27,12 @@ const SummonCfgById_1 = require("../../../../../../Core/Define/ConfigQuery/Summo
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const InputController_1 = require("../../../../../Input/InputController");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
 const PhantomUtil_1 = require("../../../../../Module/Phantom/PhantomUtil");
 const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeamController");
 const BaseAbilityComponent_1 = require("../Abilities/BaseAbilityComponent");
@@ -91,8 +93,8 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     }
     var t = this.Entity.GetComponent(206);
     if (t) {
-      this.YTc = t.ListenForTagAnyCountChanged(visionTriggerTag, (t, i, e, n) => {
-        if (n < t) {
+      this.YTc = t.ListenForTagAnyCountChanged(visionTriggerTag, (t, i, e, o) => {
+        if (o < t) {
           SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, e);
         }
       });
@@ -133,8 +135,8 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     if (this.rXt) {
       this.uen(t);
       if (this.len !== e) {
-        for (const n of this.aen.values()) {
-          n.ChangeVision();
+        for (const o of this.aen.values()) {
+          o.ChangeVision();
         }
       }
     } else {
@@ -146,11 +148,11 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     this.hen = 0;
     if (t) {
       var i = this.Entity.GetComponent(208);
-      for (const n of t) {
-        var e = PhantomUtil_1.PhantomUtil.GetVisionData(n.r5n);
-        if (e && (e = e.类型, this.sen.set(e, n), [0, 1, 4].includes(e))) {
-          i?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(n.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(n.r5n));
-          this.hen = n.r5n;
+      for (const o of t) {
+        var e = PhantomUtil_1.PhantomUtil.GetVisionData(o.r5n);
+        if (e && (e = e.类型, this.sen.set(e, o), [0, 1, 4].includes(e))) {
+          i?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(o.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(o.r5n));
+          this.hen = o.r5n;
         }
       }
     }
@@ -198,6 +200,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     var i = this.aen.get(t)?.ActivateAbility() ?? false;
     if (i && [0, 1, 4].includes(t)) {
       SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, this.GetVisionId());
+      this.EQd(this.GetVisionId());
     }
     return i;
   }
@@ -212,7 +215,7 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
   }
   Fhh() {
     var t;
-    this.Bhh = InputController_1.InputController.CreateInputLayer(2);
+    this.Bhh = InputController_1.InputController.CreateInputLayer(3);
     if (this.Bhh && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity))) {
       this.Bhh.Init(t);
       InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
@@ -233,6 +236,18 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     }
     return false;
   }
+  EQd(t) {
+    var i = Protocol_1.Aki.Protocol.yQd.create();
+    i.SQd = t;
+    CombatMessage_1.CombatNet.Send(28941, this.Entity, i);
+  }
+  static VisionTriggerNotify(t, i) {
+    if (t) {
+      i = MathUtils_1.MathUtils.LongToNumber(i.SQd);
+      SceneTeamController_1.SceneTeamController.EmitEvent(t, EventDefine_1.EEventName.ActivateAbilityVision, i);
+    }
+  }
 };
+__decorate([CombatMessage_1.CombatNet.Listen("vQd", true)], CharacterVisionComponent, "VisionTriggerNotify", null);
 CharacterVisionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(43)], CharacterVisionComponent);
 exports.CharacterVisionComponent = CharacterVisionComponent; //# sourceMappingURL=CharacterVisionComponent.js.map

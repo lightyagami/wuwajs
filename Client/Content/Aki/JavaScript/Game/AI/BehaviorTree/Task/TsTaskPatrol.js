@@ -75,7 +75,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
       }, this.InitPatrolInfo(), this.PatrolLogic?.PatrolPoint)) {
         (s = Protocol_1.Aki.Protocol.Kes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e.CharActorComp.CreatureData.GetCreatureDataId());
         s.V4n = !this.PatrolLogic.StartWithInversePath;
-        Net_1.Net.Call(21065, s, () => {});
+        Net_1.Net.Call(21731, s, () => {});
         this.MoveToPatrolPoint();
         if (e.AiPatrol.StartWithInversePath !== undefined) {
           e.AiPatrol.StartWithInversePath = undefined;
@@ -196,7 +196,7 @@ class TsTaskPatrol extends TsTaskAbortImmediatelyBase_1.default {
     if (this.AIOwner instanceof TsAiController_1.default) {
       if (EntitySystem_1.EntitySystem.Get(this.Entity.Id)) {
         (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
-        Net_1.Net.Call(20200, t, () => {});
+        Net_1.Net.Call(16952, t, () => {});
       }
       if (this.MoveComp) {
         if (this.TsMoveOnePath) {

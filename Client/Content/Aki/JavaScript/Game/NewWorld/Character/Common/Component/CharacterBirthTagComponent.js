@@ -136,5 +136,5 @@ let CharacterBirthTagComponent = class CharacterBirthTagComponent extends Entity
     }
   }
 };
-CharacterBirthTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(256)], CharacterBirthTagComponent);
+CharacterBirthTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(257)], CharacterBirthTagComponent);
 exports.CharacterBirthTagComponent = CharacterBirthTagComponent; //# sourceMappingURL=CharacterBirthTagComponent.js.map

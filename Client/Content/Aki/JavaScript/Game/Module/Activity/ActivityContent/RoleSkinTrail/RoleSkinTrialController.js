@@ -24,7 +24,7 @@ class RoleSkinTrialController extends ActivityControllerBase_1.ActivityControlle
     super(...arguments);
     this.p7l = e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16913);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22421);
         e = {
           ButtonTextId: "ConfirmBox_250_ButtonText_0",
           DescriptionTextId: undefined,
@@ -52,10 +52,10 @@ class RoleSkinTrialController extends ActivityControllerBase_1.ActivityControlle
     return "UiItem_ActivityRoleSkinOntrial";
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16913, this.p7l);
+    Net_1.Net.Register(22421, this.p7l);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16913);
+    Net_1.Net.UnRegister(22421);
   }
   static CheckIfInRoleSkinTrialInstance() {
     var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
@@ -65,8 +65,8 @@ class RoleSkinTrialController extends ActivityControllerBase_1.ActivityControlle
   static RequestRoleSkinTrailInstanceReward(r, n) {
     var e = new Protocol_1.Aki.Protocol.bv_();
     e.v7l = n;
-    Net_1.Net.Call(27204, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17417), e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(r))) {
+    Net_1.Net.Call(17718, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26218), e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(r))) {
         e.FinishRewardById(n);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Activity", 27, "[角色皮肤试用活动]试用副本奖励领取成功", ["id", n]);
@@ -85,7 +85,7 @@ class RoleSkinTrialController extends ActivityControllerBase_1.ActivityControlle
   }
   static RequestRoleSkinTrialUiEndPush() {
     var e = Protocol_1.Aki.Protocol.Wp_.create();
-    Net_1.Net.Send(29539, e);
+    Net_1.Net.Send(28659, e);
   }
 }
 (exports.RoleSkinTrialController = RoleSkinTrialController).CurrentActivityId = 0;

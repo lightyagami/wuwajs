@@ -74,12 +74,12 @@ class CharacterModel extends ModelBase_1.ModelBase {
     this.V8c = 1;
     this.j8c = e => {
       if (this.ZLc !== 1) {
-        this.G3u();
+        this.w2u();
       }
     };
     this.dLe = () => {
       if (this.ZLc !== 1) {
-        this.G3u();
+        this.w2u();
       }
     };
     this.ddu = e => {
@@ -283,13 +283,13 @@ class CharacterModel extends ModelBase_1.ModelBase {
   SwitchSelfCenteredMode(e) {
     var t;
     var i = this.wuu(e);
-    return (this.SEu !== e || !MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, i)) && !(t = this.SEu, this.SEu = e, this.ZLc = i, this.V8c = 1 / i, UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, i), Time_1.Time.SetInverseSelfCenteredTimeDilation(this.V8c), Time_1.Time.SetFlowTimeDilation(this.V8c), ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(this.InverseSelfCenteredTimeDilation), UE.LGUIManagerActor.GetSequencerManager(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), UE.LTweenActor.GetLTweenInstance(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1) ? (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "none"), this.HTu(false), TimerSystem_1.TimerSystem.Next(() => {
+    return (this.SEu !== e || !MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, i)) && !(t = this.SEu, this.SEu = e, this.ZLc = i, this.V8c = 1 / i, UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, i), Time_1.Time.SetInverseSelfCenteredTimeDilation(this.V8c), Time_1.Time.SetFlowTimeDilation(this.V8c), ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(this.InverseSelfCenteredTimeDilation), UE.LGUIManagerActor.GetSequencerManager(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), UE.LTweenActor.GetLTweenInstance(GlobalData_1.GlobalData.World)?.SetGlobalPlayRate(this.InverseSelfCenteredTimeDilation), MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1) ? (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "none"), AudioSystem_1.AudioSystem.PostEvent("disable_monster_effect_2_5_time_slow"), this.HTu(false), TimerSystem_1.TimerSystem.Next(() => {
       if (MathUtils_1.MathUtils.IsNearlyEqual(this.ZLc, 1)) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS -1");
       } else {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200");
       }
-    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.G3u(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(16091, t), 0);
+    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), AudioSystem_1.AudioSystem.PostEvent("enable_monster_effect_2_5_time_slow"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.w2u(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(16353, t), 0);
   }
   yTu() {
     FormationAttributeController_1.FormationAttributeController.AddThresholdListener(12, this.grn, 0, 0, "Strength.RoleStrengthComponent");
@@ -304,10 +304,10 @@ class CharacterModel extends ModelBase_1.ModelBase {
       EffectSystem_1.EffectSystem.SetAdditionTimeScaleEnable(e, t);
     }
   }
-  G3u() {
+  w2u() {
     var e;
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (t?.Valid && (e = t.Entity.GetComponent(288))?.Valid) {
+      if (t?.Valid && (e = t.Entity.GetComponent(289))?.Valid) {
         e.SetSelfCenterTimeDilation(this.InverseSelfCenteredTimeDilation);
       }
     }

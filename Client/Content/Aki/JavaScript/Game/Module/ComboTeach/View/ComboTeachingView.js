@@ -34,7 +34,7 @@ class ComboTeachingView extends UiTickViewBase_1.UiTickViewBase {
     this.$It = false;
     this.NodeList = [];
     this.oH1 = false;
-    this.nKu = -1;
+    this.n7u = -1;
     this.OnPress = (e, t) => {
       var i = this.ELo.GetItemByShowIndex(ModelManager_1.ModelManager.ComboTeachingModel.CurrentNodeIndex);
       if (i) {
@@ -232,8 +232,8 @@ class ComboTeachingView extends UiTickViewBase_1.UiTickViewBase {
     t.guideID.forEach((e, t) => {
       GuideController_1.GuideController.TryStartGuide(e);
     });
-    if (e !== this.nKu) {
-      this.nKu = e;
+    if (e !== this.n7u) {
+      this.n7u = e;
       for (const n of this.NodeList) {
         if (n.SuccessHandle) {
           if (TimerSystem_1.TimerSystem.Has(n.SuccessHandle)) {

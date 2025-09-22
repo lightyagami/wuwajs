@@ -72,7 +72,7 @@ class TrapDefenseBdSumView extends UiViewBase_1.UiViewBase {
         t.UpdateBuffInfo();
       }
     };
-    this.KHc = (e, t) => {
+    this.o8u = (e, t) => {
       t.SetIsShowStrengthen(e);
       this.PanelBdBuffDesc.UpdateDataShowMode(t);
       if (this.ViewModel.IsShowBuffLockState(t)) {
@@ -107,7 +107,7 @@ class TrapDefenseBdSumView extends UiViewBase_1.UiViewBase {
     var t = this.GetItem(10);
     this.PanelBdBuffDesc = new TrapDefenseBdSumBuffDescPanel_1.TrapDefenseBdSumBuffDescPanel();
     await this.PanelBdBuffDesc.Init(t);
-    this.PanelBdBuffDesc.SwitchStrengthenCallback = this.KHc;
+    this.PanelBdBuffDesc.SwitchStrengthenCallback = this.o8u;
   }
   OnStart() {
     this.InitTab();

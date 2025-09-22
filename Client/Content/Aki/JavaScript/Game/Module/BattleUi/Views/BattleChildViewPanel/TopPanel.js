@@ -188,7 +188,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.dau?.SetOtherHide(!t);
       ModelManager_1.ModelManager.BattleUiModel?.EnvironmentKeyData?.SetEnvironmentKeyVisible(9, t);
     };
-    this.l2u = (t, e, i, s) => {
+    this.T5u = (t, e, i, s) => {
       var n;
       if (e.Parameters[0] === "1" && (n = Number(e.Parameters[1]), ModelManager_1.ModelManager.MoraleModel?.GamePlayFinishTeamBuffId === n)) {
         this.MJ1();
@@ -370,7 +370,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.wG_();
     this.MJ1();
     this.A_c();
-    this.EQu();
+    this.zXu();
     this.PF1();
     this.Q9a();
     this.v7a();
@@ -422,7 +422,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.l2u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.T5u);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityDirectTrainProSetActive, this.ik1);
   }
   RemoveEvents() {
@@ -442,7 +442,7 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.l2u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this.T5u);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityDirectTrainProSetActive, this.ik1);
   }
   ln_() {
@@ -533,17 +533,10 @@ class TopPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.w_c?.EndShow();
     }
   }
-  EQu() {
+  zXu() {
     var t = ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower();
     var e = ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle();
-    var i = !t || !e;
-    if (t && !e) {
-      this.Het.forEach(t => {
-        t.SetOtherHide(true);
-      });
-      this.jet.SetOtherHide(false);
-    }
-    this.Vet.SetShipTowerVisible(i);
+    this.Vet.SetShipTowerVisible(!t || !e);
   }
   PF1() {
     if (ModelManager_1.ModelManager.ResDownLoadModel.NeedShowBattleViewButton()) {

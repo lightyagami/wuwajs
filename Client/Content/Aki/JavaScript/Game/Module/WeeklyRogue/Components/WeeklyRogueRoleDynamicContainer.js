@@ -19,7 +19,7 @@ class WeeklyRogueRoleDynamicContainer extends UiPanelBase_1.UiPanelBase {
     this.tFe = undefined;
     this.Pe = undefined;
     this.m0o = [];
-    this.T3u = () => {
+    this.zGu = () => {
       var e = new WeeklyRogueRoleGridItem_1.WeeklyRogueRoleGridItem();
       e.BindOnExtendToggleStateChanged(this.ToggleFunction);
       e.BindOnCanExecuteChange(this.CanExecuteChangeFunction);
@@ -97,7 +97,7 @@ class WeeklyRogueRoleDynamicContainer extends UiPanelBase_1.UiPanelBase {
   }
   HLu(e) {
     this.GetItem(2).SetUIActive(false);
-    this.tFe ||= new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.T3u);
+    this.tFe ||= new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.zGu);
     const r = e.DataList;
     var e = () => {
       var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;

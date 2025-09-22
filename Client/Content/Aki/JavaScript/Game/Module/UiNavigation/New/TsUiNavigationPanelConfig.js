@@ -36,6 +36,8 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
     this.PanelHandle = undefined;
     this.ViewHandleCacheFunctionList = [];
     this.IncId = 0;
+    this.FindAction = undefined;
+    this.DynamicListenerIndexMap = new Map();
     this.HotKeyItemSet = undefined;
     this.CacheHotKeyStateMap = undefined;
     this.GamepadMouseActor = undefined;
@@ -48,6 +50,8 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
     this.PanelHandle = undefined;
     this.ViewHandleCacheFunctionList = [];
     this.IncId = 0;
+    this.FindAction = undefined;
+    this.DynamicListenerIndexMap = new Map();
     this.HotKeyItemSet = undefined;
     this.CacheHotKeyStateMap = undefined;
     this.GamepadMouseItemInternal = undefined;
@@ -55,6 +59,7 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
   AwakeBP() {
     if (GlobalData_1.GlobalData.GameInstance) {
       this.InitDefaultParam();
+      this.InitDynamicListenerIndexMap();
       this.InitPanelHandle();
     }
   }
@@ -105,6 +110,16 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
   }
   InitDefaultParam() {
     this.HotKeyItemSet = new Set();
+  }
+  InitDynamicListenerIndexMap() {
+    this.DynamicListenerIndexMap = new Map();
+    for (let i = 0, t = this.DynamicListenerConfigMap.Num(); i < t; ++i) {
+      var s = this.DynamicListenerConfigMap.GetKey(i);
+      var s = this.DynamicListenerConfigMap.Get(s);
+      if (s) {
+        this.DynamicListenerIndexMap.set(s.Index, s.NeedWaitRegister);
+      }
+    }
   }
   NavigationViewCreate() {
     this.IncId = ++UiNavigationUtil_1.UiNavigationUtil.IncId;
@@ -222,84 +237,118 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
   GetPanelHandle() {
     return this.PanelHandle;
   }
-  FindSuitableNavigation(i) {
-    var t = new FindNavigationResult_1.FindNavigationResult();
+  CommonFindNavigationLogic(i) {
     if (this.IsAllowNavigate()) {
       if (this.RootUIComp.IsUIActiveInHierarchy()) {
-        if (this.ViewHandle?.IsWaitToFindDynamicGrid) {
-          var s = this.ViewHandle.GetDynamicScrollViewNavigationContext();
-          if (!s.ScrollView.IsAllDisplayItemUpdateCompleted()) {
-            t.Result = 7;
-            this.PanelHandle.NotifyFindResult(t);
-            this.ViewHandle.NotifySuitableNavigation(t);
-            return;
-          }
-          var e = UiNavigationModeModule_1.UiNavigationModeModule.FindDynamicScrollViewNavigationComponent(s);
-          this.ViewHandle.ClearDynamicScrollViewNavigationContext();
-          if (e?.IsCanFocus()) {
-            t.Result = 1;
-            t.Listener = e;
-            this.PanelHandle.NotifyFindResult(t);
-            this.ViewHandle.NotifySuitableNavigation(t);
-            return;
-          }
-          if (s.LastListener?.IsCanFocus()) {
-            t.Result = 1;
-            t.Listener = s.LastListener;
-            this.PanelHandle.NotifyFindResult(t);
-            this.ViewHandle.NotifySuitableNavigation(t);
-            return;
-          }
-        }
-        for (const a of this.PanelHandle.GetSuitableNavigationListenerList(i)) {
-          if (!a) {
-            t.Result = 6;
-            break;
-          }
-          let i = a;
-          if (a.IsScrollOrLayoutActor()) {
-            if (!a.IsScrollOrLayoutActive()) {
-              continue;
+        if (this.FindAction) {
+          this.FindAction.FindNavigation(i);
+          if (i.IsFinishFind()) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("UiNavigation", 10, "结束导航行为", ["动作", this.FindAction.constructor.name]);
             }
-            if (a.IsInScrollOrLayoutAnimation()) {
-              t.Result = 4;
-              break;
-            }
-            if (a.HasDynamicScrollView()) {
-              if (!a.ScrollView.IsAllDisplayItemUpdateCompleted()) {
-                t.Result = 7;
-                break;
-              }
-            }
-            var o = this.PanelHandle.GetLoopOrLayoutListener(a);
-            if (!o) {
-              continue;
-            }
-            i = o;
-          } else if (a.GetNavigationGroup()?.SuitableListenerByNoDynamic && (o = this.PanelHandle.GetSuitableListenerWithoutLayout(a))) {
-            i = o;
+            this.FindAction = undefined;
           }
-          if (i.IsCanFocus()) {
-            if (!i.IsRegisterToPanelConfig()) {
-              t.Result = 5;
-              break;
+        } else {
+          if (this.ViewHandle?.IsWaitToFindDynamicGrid) {
+            var t = this.ViewHandle.GetDynamicScrollViewNavigationContext();
+            var s = t.ScrollView;
+            if (!s.IsAllDisplayItemUpdateCompleted()) {
+              i.Result = 7;
+              return;
             }
-            t.Result = 1;
-            t.Listener = i;
-            break;
+            var e = UiNavigationModeModule_1.UiNavigationModeModule.FindDynamicScrollViewNavigationComponent(t);
+            if (e?.IsCanFocus()) {
+              i.Result = 1;
+              i.Listener = e;
+              s.NavigateScrollToUIItem(e.RootUIComp, t.Reversed, t.WrapMode);
+              this.ViewHandle.ClearDynamicScrollViewNavigationContext();
+              return;
+            }
+            if (t.LastListener?.IsCanFocus()) {
+              i.Result = 1;
+              i.Listener = t.LastListener;
+              this.ViewHandle.ClearDynamicScrollViewNavigationContext();
+              return;
+            }
           }
-        }
-        if (t.Result === 0) {
-          t.Result = 2;
+          i.Result = 0;
         }
       } else {
-        t.Result = 2;
+        i.Result = 2;
       }
     } else {
-      t.Result = 2;
+      i.Result = 2;
     }
-    this.PanelHandle.NotifyFindResult(t);
-    this.ViewHandle.NotifySuitableNavigation(t);
+  }
+  CommonFindNavigationByListener(t, s, i) {
+    if (s) {
+      let i = s;
+      if (s.IsScrollOrLayoutActor()) {
+        if (!s.IsScrollOrLayoutActive()) {
+          t.Result = 0;
+          return;
+        }
+        if (s.IsInScrollOrLayoutAnimation()) {
+          t.Result = 4;
+          return;
+        }
+        if (s.HasDynamicScrollView()) {
+          if (!s.ScrollView.IsAllDisplayItemUpdateCompleted()) {
+            t.Result = 7;
+            return;
+          }
+        }
+        var e = this.PanelHandle.GetLoopOrLayoutListener(s);
+        if (!e) {
+          t.Result = 0;
+          return;
+        }
+        i = e;
+      } else if (s.GetNavigationGroup()?.SuitableListenerByNoDynamic && (e = this.PanelHandle.GetSuitableListenerWithoutLayout(s))) {
+        i = e;
+      }
+      if (i.IsCanFocus()) {
+        if (i.IsRegisterToPanelConfig()) {
+          t.Result = 1;
+          t.Listener = i;
+        } else {
+          t.Result = 5;
+        }
+      } else {
+        t.Result = 0;
+      }
+    } else {
+      t.Result = i ? 6 : 0;
+    }
+  }
+  FindSuitableNavigation(i) {
+    var s = new FindNavigationResult_1.FindNavigationResult();
+    this.CommonFindNavigationLogic(s);
+    if (s.Result !== 0) {
+      this.PanelHandle?.NotifyFindResult(s);
+      this.ViewHandle?.NotifySuitableNavigation(s);
+    } else {
+      var e = this.PanelHandle.GetSuitableNavigationListenerList(i);
+      for (let i = 0, t = e.length; i < t; ++i) {
+        var o = e[i];
+        var a = this.DynamicListenerIndexMap.get(i) ?? true;
+        this.CommonFindNavigationByListener(s, o, a);
+        if (s.Result !== 0) {
+          break;
+        }
+      }
+      if (s.Result === 0) {
+        s.Result = 2;
+      }
+      this.PanelHandle.NotifyFindResult(s);
+      this.ViewHandle.NotifySuitableNavigation(s);
+    }
+  }
+  SetFindNavigationAction(i) {
+    this.FindAction = i;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigation", 10, "新增导航行为", ["动作", i.constructor.name]);
+    }
   }
   CheckReFindCondition() {
     return !!this.ViewHandle && !(!this.IsInActive && this.Independent ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "[ReFindNavigation]独立界面刚刚隐藏,触发导航对象取消不做通知处理"), 1) : this.ViewHandle.HasNavigationButDisActive() ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiNavigation", 10, "[ReFindNavigation]界面已经处于HasNavigationButDisActive状态,触发导航对象取消不做通知处理"), 1) : !this.Independent && !this.ViewHandle.GetIsActive());

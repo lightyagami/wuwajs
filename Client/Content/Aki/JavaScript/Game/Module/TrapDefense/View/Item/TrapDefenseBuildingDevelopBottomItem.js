@@ -24,10 +24,10 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     this.MenuData = undefined;
     this.CurSelectedIndex = 0;
     this.HasInit = false;
-    this.uHc = () => {
+    this.ezc = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.EquipOrgan(this.CurSelectedIndex, this.MenuData);
     };
-    this.u_d = () => {
+    this.Afd = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.QuickEquipOrgan();
     };
     this.Kwi = e => {
@@ -39,7 +39,7 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
       if (t === this.MenuData) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.ggd(t));
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.r6d(t));
       }
       this.Layout.DeselectCurrentGridProxy();
       this.Layout?.SelectGridProxy(this.CurSelectedIndex);
@@ -51,11 +51,11 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
       e.CanExecuteChangeCb = this.Lke;
       return e;
     };
-    this.RZc = () => new TrapDefenseBuildingDevelopDragDataItem_1.TrapDefenseBuildingDevelopDragDataItem();
+    this.xtd = () => new TrapDefenseBuildingDevelopDragDataItem_1.TrapDefenseBuildingDevelopDragDataItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIText], [5, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.u_d], [5, this.uHc]];
+    this.BtnBindInfo = [[3, this.Afd], [5, this.ezc]];
   }
   async OnBeforeStartAsync() {
     var e;
@@ -76,7 +76,7 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     if ((this.MenuData = e) === this.DataList[this.CurSelectedIndex].GetSlotData()) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.ggd(e));
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.r6d(e));
     }
   }
   UpdateSlot() {
@@ -88,10 +88,10 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     if (this.DataList[this.CurSelectedIndex].GetSlotData() === this.MenuData) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "TowerDefense_Battle_Unload");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.ggd(this.MenuData));
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.r6d(this.MenuData));
     }
   }
-  ggd(e) {
+  r6d(e) {
     if (!e || e.IsBuilding) {
       return "TowerDefense_Battle_Equip";
     } else {
@@ -102,7 +102,7 @@ class TrapDefenseBuildingDevelopBottomItem extends UiPanelBase_1.UiPanelBase {
     var e = [];
     for (const s of this.Layout.GetLayoutItemList()) {
       var t = s.GetDataItem();
-      var i = new CommonDragLogic_1.CommonDragItemLogic(t.GetRootItem(), t.GetDragComp(), s.GridIndex, this.RZc);
+      var i = new CommonDragLogic_1.CommonDragItemLogic(t.GetRootItem(), t.GetDragComp(), s.GridIndex, this.xtd);
       t.SetDragLogic(i);
       e.push(i);
     }

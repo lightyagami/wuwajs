@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.GameplayCueBase = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
 class GameplayCueBase {
-  constructor(t, s, i, e, h, a, n, o) {
+  constructor(t, s, e, i, h, a, n, u) {
     this.CueConfig = t;
     this.EntityHandle = s;
-    this.ActorInternal = i;
-    this.CueComp = e;
+    this.ActorInternal = e;
+    this.CueComp = i;
     this.IsInstant = h;
     this.BeginCallback = a;
     this.EndCallback = n;
-    this.Instigator = o;
+    this.Instigator = u;
     this.BuffId = undefined;
     this.BuffHandleId = 0;
     this.CueHandleIds = new Set();
@@ -28,6 +28,7 @@ class GameplayCueBase {
   OnDisable() {}
   OnAdd(t, s) {}
   OnRemove(t) {}
+  OnChangeBuffHandle(t, s) {}
   OnChangeRole(t) {
     this.EntityHandle = t;
     this.ActorInternal = t.Entity.GetComponent(3).Actor;
@@ -78,6 +79,17 @@ class GameplayCueBase {
   Remove(t) {
     this.CueHandleIds.delete(t);
     this.OnRemove(t);
+  }
+  ChangeBuffHandle(t) {
+    var s;
+    if (this.BuffHandleId !== t) {
+      s = this.BuffHandleId;
+      this.BuffHandleId = t;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 85, "特效BuffHandle修改", ["CueType", this.CueConfig.CueType], ["CueId", this.CueConfig.Id], ["BuffId", this.BuffId], ["preHandle", s], ["BuffHandleID", this.BuffHandleId], ["EntityId", this.EntityHandle.Id], ["Name", this.ActorInternal.GetName()]);
+      }
+      this.OnChangeBuffHandle(s, t);
+    }
   }
   GetPath() {
     let t = undefined;

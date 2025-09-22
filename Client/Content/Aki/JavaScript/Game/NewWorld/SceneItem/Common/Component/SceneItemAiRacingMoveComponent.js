@@ -281,5 +281,5 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
 ` : t;
   }
 };
-SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(283)], SceneItemAiRacingMoveComponent);
+SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(284)], SceneItemAiRacingMoveComponent);
 exports.SceneItemAiRacingMoveComponent = SceneItemAiRacingMoveComponent; //# sourceMappingURL=SceneItemAiRacingMoveComponent.js.map

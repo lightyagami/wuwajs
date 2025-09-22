@@ -13,10 +13,14 @@ class BlackboardParam {
   constructor(t) {
     this.jEe = "";
     this.zpr = 0;
+    this.svr = undefined;
     this.Zpr = undefined;
+    this.avr = undefined;
     this.evr = false;
     this.tvr = 0;
+    this.hvr = undefined;
     this.ivr = "";
+    this.lvr = undefined;
     this.IGe = undefined;
     this.ovr = undefined;
     this.rvr = undefined;
@@ -41,11 +45,11 @@ class BlackboardParam {
           return e;
         case t.Proto_BlackboardParamType_LongArray:
           var a = r.pKn.gKn;
-          var o = new Array();
+          var s = new Array();
           for (const i of a) {
-            o.push(MathUtils_1.MathUtils.LongToBigInt(i));
+            s.push(MathUtils_1.MathUtils.LongToBigInt(i));
           }
-          e.SetLongValues(o);
+          e.SetLongValues(s);
           return e;
         case t.Proto_BlackboardParamType_Boolean:
           e.SetBooleanValue(r.vKn);
@@ -79,11 +83,11 @@ class BlackboardParam {
           return e;
         case t.Proto_BlackboardParamType_EntityArray:
           var a = r.pKn.gKn;
-          var s = new Array();
+          var o = new Array();
           for (const n of a) {
-            s.push(MathUtils_1.MathUtils.LongToBigInt(n));
+            o.push(MathUtils_1.MathUtils.LongToBigInt(n));
           }
-          e.SetLongValues(s);
+          e.SetLongValues(o);
           return e;
         default:
           return;
@@ -273,10 +277,10 @@ class BlackboardParam {
         {
           let r = "[";
           if (this.lvr !== undefined) {
-            var o = this.lvr.length;
-            for (let t = 0; t < o; t++) {
+            var s = this.lvr.length;
+            for (let t = 0; t < s; t++) {
               r += this.lvr[t];
-              if (t !== o - 1) {
+              if (t !== s - 1) {
                 r += ", ";
               }
             }
@@ -289,10 +293,10 @@ class BlackboardParam {
         {
           let r = "[";
           if (this.hvr !== undefined) {
-            var s = this.hvr.length;
-            for (let t = 0; t < s; t++) {
+            var o = this.hvr.length;
+            for (let t = 0; t < o; t++) {
               r += this.hvr[t];
-              if (t !== s - 1) {
+              if (t !== o - 1) {
                 r += ", ";
               }
             }
@@ -339,6 +343,22 @@ class BlackboardParam {
               var c = this.nvr[t];
               r += `Pitch:${c.Pitch} Roll:${c.Roll} Yaw:${c.Yaw}`;
               if (t !== l - 1) {
+                r += ", ";
+              }
+            }
+          }
+          return r += "]";
+        }
+      case t.Proto_BlackboardParamType_Entity:
+        return this.zpr.toString();
+      case t.Proto_BlackboardParamType_EntityArray:
+        {
+          let r = "[";
+          if (this.svr !== undefined) {
+            var u = this.svr.length;
+            for (let t = 0; t < u; t++) {
+              r += this.svr[t];
+              if (t !== u - 1) {
                 r += ", ";
               }
             }

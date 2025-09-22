@@ -20,11 +20,11 @@ const splineMoveStatusLogString = {
 const WAIT_ENTITY_TIMEOUT = 60000;
 class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(24863, this.OnMoveSplineStatusNotify);
+    Net_1.Net.Register(19352, this.OnMoveSplineStatusNotify);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24863);
+    Net_1.Net.UnRegister(19352);
     return true;
   }
   static RecvSyncSplineMoveStatus(e, o) {
@@ -69,12 +69,12 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
     l.wAc.AAc.Y = n.Y;
     l.wAc.AAc.Z = n.Z;
     if (r) {
-      l.wAc.cju = Protocol_1.Aki.Protocol.D2s.create();
-      l.wAc.cju.Roll = r.Roll;
-      l.wAc.cju.Pitch = r.Pitch;
-      l.wAc.cju.Yaw = r.Yaw;
+      l.wAc.hXu = Protocol_1.Aki.Protocol.D2s.create();
+      l.wAc.hXu.Roll = r.Roll;
+      l.wAc.hXu.Pitch = r.Pitch;
+      l.wAc.hXu.Yaw = r.Yaw;
     }
-    Net_1.Net.Call(25052, l, e => {
+    Net_1.Net.Call(28956, l, e => {
       if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 39, "[SyncSplineMoveController.SendSyncSceneItemSplineMoveRunning] 发送同步场景物件样条移动运行中信息: 失败", ["CreatureDataId", o], ["SplineId", t], ["ErrorCode", e?.Q4n]);
@@ -97,12 +97,12 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
     i.wAc.AAc.Y = n.Y;
     i.wAc.AAc.Z = n.Z;
     if (r) {
-      i.wAc.cju = Protocol_1.Aki.Protocol.D2s.create();
-      i.wAc.cju.Roll = r.Roll;
-      i.wAc.cju.Pitch = r.Pitch;
-      i.wAc.cju.Yaw = r.Yaw;
+      i.wAc.hXu = Protocol_1.Aki.Protocol.D2s.create();
+      i.wAc.hXu.Roll = r.Roll;
+      i.wAc.hXu.Pitch = r.Pitch;
+      i.wAc.hXu.Yaw = r.Yaw;
     }
-    Net_1.Net.Call(25052, i, e => {
+    Net_1.Net.Call(28956, i, e => {
       if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 39, "[SyncSplineMoveController.SendSyncSceneItemSplineMoveEnd] 发送同步场景物件样条移动中断/结束信息: 失败", ["CreatureDataId", o], ["SplineId", t], ["ErrorCode", e?.Q4n]);
@@ -128,7 +128,7 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
       (n = Protocol_1.Aki.Protocol.gAc.create()).F4n = MathUtils_1.MathUtils.NumberToLong(r);
       n.dTs = o;
       n.LAc = t;
-      Net_1.Net.Call(23759, n, () => {});
+      Net_1.Net.Call(23361, n, () => {});
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Movement", 50, "[SyncSplineMoveController.MoveSplineStatusNotify] 结束时无法获取对应实体CreatureData", ["EntityId", e.Id], ["SplineId", o], ["IsInterrupt", t]);
     }

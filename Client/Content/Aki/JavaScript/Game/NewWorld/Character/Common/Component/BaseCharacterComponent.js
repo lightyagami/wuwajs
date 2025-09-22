@@ -195,6 +195,7 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
             i.Mesh.SetAnimClass(e);
           }
         } else if (i instanceof TsBaseCharacter_1.default) {
+          i.Mesh.bUseAnimInstanceCachePool = this.UseAnimInstanceCachePool;
           ActorUtils_1.ActorUtils.LoadAndChangeMeshAnim(i.Mesh, a.网格体, a.动画蓝图);
         }
         if (GlobalData_1.GlobalData.IsPlayInEditor && (r = this.CreatureDataInternal.GetPbDataId())) {

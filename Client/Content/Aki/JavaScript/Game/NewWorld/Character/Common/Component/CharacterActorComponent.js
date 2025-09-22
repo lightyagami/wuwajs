@@ -800,8 +800,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
         this.FixBornLocation("实体初始化.地面修正");
         break;
       default:
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Entity", 18, "[CharacterActorComponent.FixBornLocationByMovementMode] 实体地面修正:当前处于不可修正的移动状态", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["MovementMode", this.Actor.CharacterMovement.MovementMode]);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Entity", 18, "[CharacterActorComponent.FixBornLocationByMovementMode] 实体地面修正:当前处于不可修正的移动状态", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["DefaultLandMovementMode", this.Actor.CharacterMovement.DefaultLandMovementMode]);
         }
     }
   }

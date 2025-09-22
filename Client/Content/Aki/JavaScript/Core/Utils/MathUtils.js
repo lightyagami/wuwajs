@@ -310,6 +310,12 @@ class MathUtils {
     t = Math.floor(t);
     return t /= a;
   }
+  static GetFloatPointCeil(t, a = 0) {
+    a = Math.pow(10, a);
+    t *= a;
+    t = Math.ceil(t);
+    return t /= a;
+  }
   static GetRoundToNDecimalPlaces(t, a) {
     a = Math.pow(10, a);
     return Math.round(t * a) / a;

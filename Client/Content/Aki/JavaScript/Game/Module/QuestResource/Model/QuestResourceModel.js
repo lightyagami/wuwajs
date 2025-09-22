@@ -262,9 +262,9 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("QuestResource", 38, "通知服务器登录任务下载完成", ["LoginQuests", this.Aa1]);
       }
-      Net_1.Net.Call(23114, e, e => {
+      Net_1.Net.Call(24485, e, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 22110);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 15581);
         }
       });
     }
@@ -434,7 +434,7 @@ class QuestResourceModel extends ModelBase_1.ModelBase {
       e = Protocol_1.Aki.Protocol.Y61.create({
         l31: s
       });
-      Net_1.Net.Call(17531, e, e => {
+      Net_1.Net.Call(29071, e, e => {
         if (e && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "计算出新状态后通知服务器任务资源状态改变", ["新状态", s]);
         }

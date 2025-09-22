@@ -60,7 +60,7 @@ class CameraCollision {
     this.jae = 0;
     this.Wae = 0;
     this._pa = 0;
-    this.Cku = true;
+    this.bqu = true;
     this.IsNpcDitherEnable = true;
     this.IsPlayerXRayEnable = true;
     this.Kae = new Set();
@@ -170,7 +170,7 @@ class CameraCollision {
   }
   CheckCollision(t, i, s) {
     this.Pae.DeepCopy(i);
-    if (this.Cku) {
+    if (this.bqu) {
       this.pae();
       this.Xae(t, i);
       this.$ae(t, i);
@@ -556,10 +556,10 @@ class CameraCollision {
     return !!t?.IsValid() && (t instanceof TsBaseCharacter_1.default || t instanceof TsBaseVehicle_1.default) && !!ModelManager_1.ModelManager.CharacterModel.GetHandle(t.GetEntityIdNoBlueprint())?.Valid;
   }
   SetCameraCollisionEnable(t) {
-    this.Cku = t;
+    this.bqu = t;
   }
   GetCameraCollisionEnable() {
-    return this.Cku;
+    return this.bqu;
   }
 }
 exports.CameraCollision = CameraCollision;

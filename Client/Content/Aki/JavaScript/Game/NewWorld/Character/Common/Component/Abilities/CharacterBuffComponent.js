@@ -172,8 +172,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
           this.BuffContainer.get(h)?.SetRemainDuration(s.QEs);
         }
       }
-      var t = e.Zzc;
-      var C = MathUtils_1.MathUtils.LongToBigInt(e.Znd);
+      var t = e.ned;
+      var C = MathUtils_1.MathUtils.LongToBigInt(e.Hrd);
       if (t) {
         for (const d of t) {
           var c = MathUtils_1.MathUtils.LongToNumber(d ?? -1);
@@ -255,7 +255,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
         this.RemoveBuffByTagLocal(r, f);
       } else {
         (t = Protocol_1.Aki.Protocol.Y3n.create()).bjn = [r];
-        CombatMessage_1.CombatNet.Call(15831, this.Entity, t, t => {
+        CombatMessage_1.CombatNet.Call(28967, this.Entity, t, t => {
           if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist) {
             var e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(r);
             for (const o of this.BuffContainer.values()) {
@@ -380,8 +380,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnBuffStackIncreased(t, e, o, r, f, i, a, s, n, u, h, C, c, _ = 0, B = 0) {
     if (t) {
       CharacterBuffComponent_1.L__.Start();
-      this.BroadcastBuffStackChanged(t, e, o, false, _, B, c, r);
       super.OnBuffStackIncreased(t, e, o, r, f, i, a, s, n, u, h, C, c, _, B);
+      this.BroadcastBuffStackChanged(t, e, o, false, _, B, c, r);
       if (this.HasBuffAuthority() && h) {
         this.ShareApplyBuffInner(t, i, a, t.MessageId, n, u);
       }
@@ -391,8 +391,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnBuffStackDecreased(t, e, o, r, f, i = 0) {
     if (t) {
       CharacterBuffComponent_1.A__.Start();
-      this.BroadcastBuffStackChanged(t, e, o, r, 0, i, f);
       super.OnBuffStackDecreased(t, e, o, r, f, i);
+      this.BroadcastBuffStackChanged(t, e, o, r, 0, i, f);
       CharacterBuffComponent_1.A__.Stop();
     }
   }
@@ -416,7 +416,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       r.n5n = t.GetRemainDuration();
       r.wjn = t.ServerId;
       r.Bjn = t.StackCount;
-      CombatMessage_1.CombatNet.Send(17778, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), t.PreMessageId, t.MessageId, o);
+      CombatMessage_1.CombatNet.Send(16006, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), t.PreMessageId, t.MessageId, o);
     }
   }
   BroadcastActivateBuff(t, e) {
@@ -425,7 +425,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
       (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = t.Handle;
       o.qjn = e;
-      CombatMessage_1.CombatNet.Send(22908, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(17942, this.Entity, o);
     }
     CharacterBuffComponent_1.R__.Stop();
   }
@@ -438,7 +438,10 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       n.Rjn = s ?? 0;
       n.$L1 = f === 1;
       n.WL1 = i === 1;
-      CombatMessage_1.CombatNet.Send(29370, this.Entity, n);
+      if ((o = t.GetRemainDuration()) > 0) {
+        n.n5n = o;
+      }
+      CombatMessage_1.CombatNet.Send(25568, this.Entity, n);
     }
   }
   BroadcastRemoveBuff(t, e, o, r) {
@@ -447,7 +450,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       (f = Protocol_1.Aki.Protocol.re_.create()).uVn = t.Handle;
       f.F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureDataId);
       f.Ojn = e;
-      CombatMessage_1.CombatNet.Send(25163, this.Entity, f, r, undefined, o);
+      CombatMessage_1.CombatNet.Send(19422, this.Entity, f, r, undefined, o);
     }
   }
   RemoveBuffOrder(e, o, r) {
@@ -456,7 +459,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       CharacterBuffController_1.default.GetBuffDefinition(e);
       (t = Protocol_1.Aki.Protocol.X3n.create()).s5n = MathUtils_1.MathUtils.NumberToLong(e);
       t.Bjn = o;
-      CombatMessage_1.CombatNet.Call(29323, this.Entity, t, t => {
+      CombatMessage_1.CombatNet.Call(20742, this.Entity, t, t => {
         if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && (t = this.GetBuffById(e))) {
           this.RemoveBuffInner(t.Handle, o, true, r, undefined, false);
         }
@@ -490,7 +493,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
           JG1: MathUtils_1.MathUtils.BigIntToLong(c)
         };
       }
-      CombatMessage_1.CombatNet.Call(17316, this.Entity, t, t => {
+      CombatMessage_1.CombatNet.Call(26170, this.Entity, t, t => {
         var e;
         if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist) {
           this.AddBuffInner(o, CharacterBuffController_1.default.GetBuffDefinition(o), r, f, i, a, s, undefined, n, undefined, u ?? 0, C, h, false, false, undefined, c);
@@ -504,7 +507,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   RefreshBuffDurationOrder(t, e) {
     var o = Protocol_1.Aki.Protocol.GG1.create();
     o.$As = t;
-    CombatMessage_1.CombatNet.Send(23237, this.Entity, o);
+    CombatMessage_1.CombatNet.Send(19601, this.Entity, o);
   }
   UpdateSysGrowBuff(t) {
     CharacterBuffComponent_1.Kbr.Start();
@@ -574,7 +577,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     if (this.HasBuffAuthority() && t !== ActiveBuffConfigs_1.INVALID_BUFF_HANDLE && o > NO_BROADCAST_CD_THRESHOLD) {
       (o = Protocol_1.Aki.Protocol.Ge_.create()).cVn = t;
       o.c5n = e;
-      CombatMessage_1.CombatNet.Send(28496, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(27277, this.Entity, o);
     }
   }
   GetDebugBuffString(t = "") {

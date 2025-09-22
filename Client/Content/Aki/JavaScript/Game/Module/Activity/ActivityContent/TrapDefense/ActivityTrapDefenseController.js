@@ -21,7 +21,7 @@ class ActivityTrapDefenseController extends ActivityControllerBase_1.ActivityCon
     this.Data = undefined;
     this.nye = () => {
       if (ModelManager_1.ModelManager.TrapDefenseModel.NeedOpenActivityMainView) {
-        this.z$c();
+        this.tHu();
       }
     };
   }
@@ -34,7 +34,7 @@ class ActivityTrapDefenseController extends ActivityControllerBase_1.ActivityCon
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
   }
-  z$c() {
+  tHu() {
     var e = new SplashScreenTask_1.SplashScreenTask(0, 1, () => {
       UiManager_1.UiManager.OpenView("TrapDefenseMainView");
     });
@@ -60,55 +60,55 @@ class ActivityTrapDefenseController extends ActivityControllerBase_1.ActivityCon
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(29390, e => {
+    Net_1.Net.Register(17306, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "b6u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "A9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoChallengeUpdateNotify(e);
     });
-    Net_1.Net.Register(21083, e => {
+    Net_1.Net.Register(15355, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "R6u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "P9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoRewardUpdateNotify(e);
     });
-    Net_1.Net.Register(26647, e => {
+    Net_1.Net.Register(28083, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "w6u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "D9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoSpecialRewardUpdateNotify(e);
     });
-    Net_1.Net.Register(28639, e => {
+    Net_1.Net.Register(16738, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "A6u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "U9c", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoTechUpdateNotify(e);
     });
-    Net_1.Net.Register(16506, e => {
+    Net_1.Net.Register(19798, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "R8u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "lHc", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdUpdateNotify(e);
     });
-    Net_1.Net.Register(24671, e => {
+    Net_1.Net.Register(17595, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "ycd", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "jEd", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoBdBuffUpdateNotify(e);
     });
-    Net_1.Net.Register(29763, e => {
+    Net_1.Net.Register(18702, e => {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("TowerDefenseEvent", 69, "q8u", ["", e]);
+        Log_1.Log.Debug("TowerDefenseEvent", 69, "yKc", ["", e]);
       }
       ModelManager_1.ModelManager.TrapDefenseModel?.ProtoTechPointUpdateNotify(e);
     });
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29390);
-    Net_1.Net.UnRegister(21083);
-    Net_1.Net.UnRegister(26647);
-    Net_1.Net.UnRegister(28639);
-    Net_1.Net.UnRegister(16506);
+    Net_1.Net.UnRegister(17306);
+    Net_1.Net.UnRegister(15355);
+    Net_1.Net.UnRegister(28083);
+    Net_1.Net.UnRegister(16738);
+    Net_1.Net.UnRegister(19798);
   }
   RefreshActivityRedDot() {
     var e = this.Data?.Id;

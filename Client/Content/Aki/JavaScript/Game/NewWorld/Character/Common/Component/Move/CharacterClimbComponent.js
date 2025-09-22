@@ -1097,6 +1097,9 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
   QYr() {
     return this.Xte.HasTag(388142570) && !this.Xte.HasTag(1098729489);
   }
+  SetLastSafeLocation(t) {
+    this.y5a.DeepCopy(t);
+  }
   foc() {
     var s = this.Entity.GetComponent(178).MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {

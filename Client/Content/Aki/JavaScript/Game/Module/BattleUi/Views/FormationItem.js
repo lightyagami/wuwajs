@@ -17,7 +17,6 @@ const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const CharacterBuffIds_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterBuffIds");
-const RoleQteComponent_1 = require("../../../NewWorld/Character/Role/Component/RoleQteComponent");
 const CooperationController_1 = require("../../Battle/Cooperation/CooperationController");
 const RoleDefine_1 = require("../../RoleUi/RoleDefine");
 const BattleUiDefine_1 = require("../BattleUiDefine");
@@ -28,6 +27,7 @@ const FormationOnlineItem_1 = require("./FormationOnlineItem");
 const FormationTrialItem_1 = require("./FormationTrialItem");
 const CombineKeyItem_1 = require("./KeyItem/CombineKeyItem");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
+const FormationDataController_1 = require("../../Abilities/FormationDataController");
 const REFRESH_COOLDOWN_INTERVAL = 100;
 const CURE_DELAY = 1000;
 const LOW_HP_PERCENT = 0.2;
@@ -83,7 +83,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
     };
     this.s$e = (t, i, e) => {
-      if (!(0, RoleQteComponent_1.isMultiQte)()) {
+      if (!(0, FormationDataController_1.isBattleMulti)()) {
         this.kat();
       }
     };
@@ -100,7 +100,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
     };
     this.RefreshQteActive = () => {
-      if ((0, RoleQteComponent_1.isMultiQte)()) {
+      if ((0, FormationDataController_1.isBattleMulti)()) {
         this.Hat();
       } else {
         this.kat();

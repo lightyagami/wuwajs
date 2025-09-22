@@ -167,7 +167,7 @@ let PawnAdsorbComponent = PawnAdsorbComponent_1 = class PawnAdsorbComponent exte
     i.g8n.Yaw = s.Yaw;
     i.J8n = Time_1.Time.NowSeconds;
     t.iVn.push(i);
-    CombatMessage_1.CombatNet.Send(23365, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(23962, this.Entity, t);
   }
   OnEnd() {
     this.kre();

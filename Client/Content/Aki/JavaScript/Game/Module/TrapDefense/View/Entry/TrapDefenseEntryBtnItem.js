@@ -46,12 +46,12 @@ class TrapDefenseEntryBtnItem extends UiPanelBase_1.UiPanelBase {
   }
   RefreshByMode() {
     if (this.Mode === 1) {
-      this.Ezc();
+      this.RZc();
     } else if (this.Mode === 2) {
-      this.Izc();
+      this.wZc();
     }
   }
-  Ezc() {
+  RZc() {
     var [e, t] = ModelManager_1.ModelManager.TrapDefenseModel.LevelModeData.GetModeStarProgress();
     this.GetArtText(3).SetText(e + "/" + t);
     var e = ModelManager_1.ModelManager.TrapDefenseModel.LevelModeData.GetNextChallengeData();
@@ -63,7 +63,7 @@ class TrapDefenseEntryBtnItem extends UiPanelBase_1.UiPanelBase {
       this.GetText(5).SetText("");
     }
   }
-  Izc() {
+  wZc() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.ModeIsOpen();
     this.GetText(2).SetUIActive(e);
     var [t, i] = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.GetModeStarProgress();

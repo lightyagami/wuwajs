@@ -1,21 +1,21 @@
 "use strict";
 
 var CharacterAnimationSyncComponent_1;
-var __decorate = this && this.__decorate || function (t, i, e, a) {
+var __decorate = this && this.__decorate || function (t, i, a, e) {
   var o;
   var n = arguments.length;
-  var s = n < 3 ? i : a === null ? a = Object.getOwnPropertyDescriptor(i, e) : a;
+  var s = n < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, a) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, i, e, a);
+    s = Reflect.decorate(t, i, a, e);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
       if (o = t[r]) {
-        s = (n < 3 ? o(s) : n > 3 ? o(i, e, s) : o(i, e)) || s;
+        s = (n < 3 ? o(s) : n > 3 ? o(i, a, s) : o(i, a)) || s;
       }
     }
   }
   if (n > 3 && s) {
-    Object.defineProperty(i, e, s);
+    Object.defineProperty(i, a, s);
   }
   return s;
 };
@@ -30,6 +30,7 @@ const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const StringBuilder_1 = require("../../../../../Core/Utils/StringBuilder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
@@ -49,7 +50,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     this.Lie = undefined;
     this.EIe = undefined;
     this.Q3r = new Array();
-    this.$3u = 0;
+    this.F4u = 0;
     this.qwr = undefined;
     this.hwl = undefined;
     this.X3r = t => {
@@ -58,11 +59,11 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     this.fwa = 0;
     this.pwa = 5;
     this.Y3r = (t, i) => {
-      var e;
+      var a;
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti && this.Hte.IsMoveAutonomousProxy) {
-        (e = Protocol_1.Aki.Protocol.Se_.create()).hWn = t;
-        e.lWn = i;
-        CombatMessage_1.CombatNet.Send(17751, this.Entity, e);
+        (a = Protocol_1.Aki.Protocol.Se_.create()).hWn = t;
+        a.lWn = i;
+        CombatMessage_1.CombatNet.Send(26084, this.Entity, a);
       }
     };
   }
@@ -91,8 +92,8 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     this.Hte = this.Entity.CheckGetComponent(1);
     this.Lie = this.Entity.GetComponent(206);
     this.EIe = this.Entity.GetComponent(0);
-    if (this.Entity.GetComponent(282)?.IsEnableMorph()) {
-      this.$3u = this.EIe?.GetModelConfig().ID ?? 0;
+    if (this.Entity.GetComponent(283)?.IsEnableMorph()) {
+      this.F4u = this.EIe?.GetModelConfig().ID ?? 0;
     }
     this.J3r();
     if (this.Lie) {
@@ -113,27 +114,27 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     if (this.mYs && UE.KismetSystemLibrary.IsValid(this.mYs)) {
       var t = this.Entity.GetComponent(0).ComponentDataMap.get("cys");
       var i = t?.cys.gIs;
-      var e = t?.cys.oWn;
-      var a = t?.cys?.YBu;
+      var a = t?.cys.oWn;
+      var e = t?.cys?.R4u;
       if (this.Hte.IsMoveAutonomousProxy) {
         this.mYs.SetStateMachineNetMode(false);
         this.AnimationStateInitPush();
       } else {
         this.mYs.SetStateMachineNetMode(true);
-        if (this.$3u && a !== this.$3u) {
-          CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化, ModelId不匹配", ["NotifyModelId", a], ["CheckModelId", this.$3u]);
+        if (this.F4u && e !== this.F4u) {
+          CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化, ModelId不匹配", ["NotifyModelId", e], ["CheckModelId", this.F4u]);
         } else if (i && i.length > 0) {
-          a = (0, puerts_1.$unref)(animationStateListRef);
-          WorldGlobal_1.WorldGlobal.ToUeInt32Array(i, a);
-          this.mYs.SetStateOrdersReceivePending(a);
+          e = (0, puerts_1.$unref)(animationStateListRef);
+          WorldGlobal_1.WorldGlobal.ToUeInt32Array(i, e);
+          this.mYs.SetStateOrdersReceivePending(e);
           CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化成功", ["v", CharacterAnimationSyncComponent_1.OrderToString(i)]);
         } else {
           CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化失败");
         }
-        if (e && e.length > 0) {
-          a = (0, puerts_1.$unref)(specialStateListRef);
-          WorldGlobal_1.WorldGlobal.ToUeInt32Array(e, a);
-          this._wl?.SetStateOrdersReceivePending(a);
+        if (a && a.length > 0) {
+          e = (0, puerts_1.$unref)(specialStateListRef);
+          WorldGlobal_1.WorldGlobal.ToUeInt32Array(a, e);
+          this._wl?.SetStateOrdersReceivePending(e);
         }
         i = t?.cys?.vIs;
         if (i && i.length > 0) {
@@ -143,10 +144,10 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
           CombatLog_1.CombatLog.Info("Animation", this.Entity, "AnimationTags", ["tags", i.join(",")]);
         }
       }
-      var e = t?.cys?.fIs;
+      var a = t?.cys?.fIs;
       var o = this.Entity.GetComponent(178);
-      if (o && e && e.length > 0) {
-        for (const s of e) {
+      if (o && a && a.length > 0) {
+        for (const s of a) {
           o.HideBone(FNameUtil_1.FNameUtil.GetDynamicFName(s.sWn), !s.aWn, false);
         }
       }
@@ -155,22 +156,22 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
   $3r() {
     var t;
     var i;
-    var e;
     var a;
+    var e;
     if (this.mYs && UE.KismetSystemLibrary.IsValid(this.mYs)) {
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
         if (this.Hte.IsMoveAutonomousProxy && (this.mYs.GetStateOrdersSendPending(animationStateListRef), t = (0, puerts_1.$unref)(animationStateListRef), this._wl?.GetStateOrdersSendPending(specialStateListRef), i = (0, puerts_1.$unref)(specialStateListRef), t.Num() > 0 || this._wl && i.Num() > 0)) {
-          e = [];
           a = [];
-          WorldGlobal_1.WorldGlobal.ToTsArray(t, e);
+          e = [];
+          WorldGlobal_1.WorldGlobal.ToTsArray(t, a);
           if (this._wl) {
-            WorldGlobal_1.WorldGlobal.ToTsArray(i, a);
+            WorldGlobal_1.WorldGlobal.ToTsArray(i, e);
           }
-          if (e.length > CharacterAnimationSyncComponent_1.z3r || a.length > CharacterAnimationSyncComponent_1.z3r) {
-            CombatLog_1.CombatLog.Error("Animation", this.Entity, "状态机增量变化数组超长", ["v", CharacterAnimationSyncComponent_1.OrderToString(e)], ["length", e.length]);
+          if (a.length > CharacterAnimationSyncComponent_1.z3r || e.length > CharacterAnimationSyncComponent_1.z3r) {
+            CombatLog_1.CombatLog.Error("Animation", this.Entity, "状态机增量变化数组超长", ["v", CharacterAnimationSyncComponent_1.OrderToString(a)], ["length", a.length]);
             this.AnimationStateInitPush();
           } else {
-            this.AnimationStateChangedPush(this.Entity, e, a);
+            this.AnimationStateChangedPush(this.Entity, a, e);
           }
         }
       } else if (Time_1.Time.NowSeconds > this.fwa + this.pwa) {
@@ -196,82 +197,104 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
   static AnimationGameplayTagNotify(t, i) {
     t?.GetComponent(50)?.AnimationGameplayTagHandle(i);
   }
-  AnimationStateChangedPush(t, i, e) {
-    var a;
+  AnimationStateChangedPush(t, i, a) {
+    var e;
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      (a = Protocol_1.Aki.Protocol.H3n.create()).rWn = i;
-      a.oWn = e;
-      a.YBu = this.$3u;
-      if (a.rWn.length > MAX_ANIM_STATE_CHANGE_COUNT || a.oWn.length > MAX_ANIM_STATE_CHANGE_COUNT) {
-        CombatLog_1.CombatLog.Error("Animation", t, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(a.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(a.oWn)]);
+      (e = Protocol_1.Aki.Protocol.de_.create()).rWn = i;
+      e.oWn = a;
+      e.R4u = this.F4u;
+      if (e.rWn.length > MAX_ANIM_STATE_CHANGE_COUNT || e.oWn.length > MAX_ANIM_STATE_CHANGE_COUNT) {
+        CombatLog_1.CombatLog.Error("Animation", t, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(e.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(e.oWn)]);
       }
-      CombatMessage_1.CombatNet.Call(23874, t, a, () => {});
+      CombatMessage_1.CombatNet.Send(29272, t, e);
     }
   }
   AnimationStateInitPush() {
     var t;
     var i;
-    var e;
     var a;
-    if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (this.mYs.GetOriginStates(animationStateListRef), a = (0, puerts_1.$unref)(animationStateListRef), this._wl?.GetOriginStates(specialStateListRef), t = (0, puerts_1.$unref)(specialStateListRef), a || t)) {
+    var e;
+    if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (this.mYs.GetOriginStates(animationStateListRef), e = (0, puerts_1.$unref)(animationStateListRef), this._wl?.GetOriginStates(specialStateListRef), t = (0, puerts_1.$unref)(specialStateListRef), e || t)) {
       i = [];
-      e = [];
-      WorldGlobal_1.WorldGlobal.ToTsArray(a, i);
-      WorldGlobal_1.WorldGlobal.ToTsArray(t, e);
-      (a = Protocol_1.Aki.Protocol.me_.create()).rWn = i;
-      a.oWn = e;
-      a.YBu = this.$3u;
-      if (a.rWn.length > MAX_ANIM_STATE_CHANGE_COUNT || a.oWn.length > MAX_ANIM_STATE_CHANGE_COUNT) {
-        CombatLog_1.CombatLog.Error("Animation", this.Entity, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(a.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(a.oWn)]);
+      a = [];
+      WorldGlobal_1.WorldGlobal.ToTsArray(e, i);
+      WorldGlobal_1.WorldGlobal.ToTsArray(t, a);
+      (e = Protocol_1.Aki.Protocol.me_.create()).rWn = i;
+      e.oWn = a;
+      e.R4u = this.F4u;
+      if (e.rWn.length > MAX_ANIM_STATE_CHANGE_COUNT || e.oWn.length > MAX_ANIM_STATE_CHANGE_COUNT) {
+        CombatLog_1.CombatLog.Error("Animation", this.Entity, "状态机增量变化数组超长", ["States", CharacterAnimationSyncComponent_1.OrderToString(e.rWn)], ["SpecialStates", CharacterAnimationSyncComponent_1.OrderToString(e.oWn)]);
       }
       CombatLog_1.CombatLog.Info("Animation", this.Entity, "动画状态机初始化请求", ["v", CharacterAnimationSyncComponent_1.OrderToString(i)]);
-      CombatMessage_1.CombatNet.Send(27828, this.Entity, a);
+      CombatMessage_1.CombatNet.Send(16688, this.Entity, e);
     }
   }
   static AnimationStateChangedNotify(t, i) {
-    var e = t?.GetComponent(1);
-    if (t && e && !e.IsMoveAutonomousProxy) {
-      if ((e = t.GetComponent(50)).$3u && i.YBu !== e.$3u) {
-        CombatLog_1.CombatLog.Info("Animation", t, "动画状态机修改通知, ModelId不匹配", ["NotifyModelId", i.YBu], ["CheckModelId", e.$3u]);
+    var a = t?.GetComponent(1);
+    if (t && a && !a.IsMoveAutonomousProxy) {
+      if ((a = t.GetComponent(50)).F4u && i.R4u !== a.F4u) {
+        CombatLog_1.CombatLog.Info("Animation", t, "动画状态机修改通知, ModelId不匹配", ["NotifyModelId", i.R4u], ["CheckModelId", a.F4u]);
       } else {
         WorldGlobal_1.WorldGlobal.ToUeInt32Array(i.rWn, animationStates);
         WorldGlobal_1.WorldGlobal.ToUeInt32Array(i.oWn, specialAnimationStates);
-        if (e) {
-          e.mYs?.SetStateOrdersReceivePending(animationStates);
-          e._wl?.SetStateOrdersReceivePending(specialAnimationStates);
+        if (a) {
+          a.mYs?.SetStateOrdersReceivePending(animationStates);
+          a._wl?.SetStateOrdersReceivePending(specialAnimationStates);
+        }
+      }
+    }
+  }
+  static PackAnimChangedNotify(t, i) {
+    for (const n of i.R3d) {
+      var a = MathUtils_1.MathUtils.LongToNumber(n.F4n);
+      var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
+      var e = a?.Entity?.GetComponent(1);
+      var o = a?.Entity?.GetComponent(50);
+      if (e && o && !e.IsMoveAutonomousProxy) {
+        for (const s of n.b3d) {
+          if (o.F4u && s.R4u !== o.F4u) {
+            CombatLog_1.CombatLog.Info("Animation", t, "动画状态机修改通知, ModelId不匹配", ["NotifyModelId", s.R4u], ["CheckModelId", o.F4u]);
+          } else {
+            WorldGlobal_1.WorldGlobal.ToUeInt32Array(s.rWn, animationStates);
+            WorldGlobal_1.WorldGlobal.ToUeInt32Array(s.oWn, specialAnimationStates);
+            if (o) {
+              o.mYs?.SetStateOrdersReceivePending(animationStates);
+              o._wl?.SetStateOrdersReceivePending(specialAnimationStates);
+            }
+          }
         }
       }
     }
   }
   static AnimationStateInitNotify(t, i) {
     CombatLog_1.CombatLog.Info("Animation", t, "动画状态机初始化通知", ["v", this.OrderToString(i.rWn)]);
-    var e = t.GetComponent(50);
-    if (e.$3u && i.YBu !== e.$3u) {
-      CombatLog_1.CombatLog.Info("Animation", t, "动画状态机初始化通知, ModelId不匹配", ["NotifyModelId", i.YBu], ["CheckModelId", e.$3u]);
+    var a = t.GetComponent(50);
+    if (a.F4u && i.R4u !== a.F4u) {
+      CombatLog_1.CombatLog.Info("Animation", t, "动画状态机初始化通知, ModelId不匹配", ["NotifyModelId", i.R4u], ["CheckModelId", a.F4u]);
     } else {
       t = UE.NewArray(UE.BuiltinInt);
       WorldGlobal_1.WorldGlobal.ToUeInt32Array(i.rWn, t);
-      e.mYs?.SetStateOrdersReceivePending(t);
-      if (e._wl) {
+      a.mYs?.SetStateOrdersReceivePending(t);
+      if (a._wl) {
         t = UE.NewArray(UE.BuiltinInt);
         WorldGlobal_1.WorldGlobal.ToUeInt32Array(i.oWn, t);
-        e._wl.SetStateOrdersReceivePending(t);
+        a._wl.SetStateOrdersReceivePending(t);
       }
     }
   }
   static OrderToString(t) {
     var i = new StringBuilder_1.StringBuilder();
-    let e = -1;
-    while (e + 5 <= t.length) {
-      var a = t[++e];
-      var o = t[++e];
-      var n = e + o;
-      for (i.Append("[" + a); e + 3 <= n;) {
-        var s = t[++e];
-        ++e;
-        var r = t[++e];
+    let a = -1;
+    while (a + 5 <= t.length) {
+      var e = t[++a];
+      var o = t[++a];
+      var n = a + o;
+      for (i.Append("[" + e); a + 3 <= n;) {
+        var s = t[++a];
+        ++a;
+        var r = t[++a];
         i.Append("=>" + s);
-        e += r;
+        a += r;
       }
       i.Append("]");
     }
@@ -281,7 +304,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
     var i = this.Entity.GetComponent(44)?.MainAnimInstance;
     if (i) {
       this.qwr = i;
-      this.$3u = t ? this.EIe?.GetModelConfig().ID ?? 0 : 0;
+      this.F4u = t ? this.EIe?.GetModelConfig().ID ?? 0 : 0;
       this.J3r();
     } else {
       this.qwr = undefined;
@@ -291,6 +314,7 @@ let CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = class 
 CharacterAnimationSyncComponent.z3r = 600;
 __decorate([CombatMessage_1.CombatNet.Listen("$Fn", true)], CharacterAnimationSyncComponent, "AnimationGameplayTagNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("NFn", true)], CharacterAnimationSyncComponent, "AnimationStateChangedNotify", null);
+__decorate([CombatMessage_1.CombatNet.Listen("T3d", true)], CharacterAnimationSyncComponent, "PackAnimChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("kFn", true)], CharacterAnimationSyncComponent, "AnimationStateInitNotify", null);
 CharacterAnimationSyncComponent = CharacterAnimationSyncComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(50)], CharacterAnimationSyncComponent);
 exports.CharacterAnimationSyncComponent = CharacterAnimationSyncComponent; //# sourceMappingURL=CharacterAnimationSyncComponent.js.map

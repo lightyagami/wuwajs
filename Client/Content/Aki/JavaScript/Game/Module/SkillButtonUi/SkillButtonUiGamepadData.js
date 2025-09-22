@@ -54,7 +54,7 @@ class SkillButtonUiGamepadData {
     this.Fyo = undefined;
     this.Vyo = undefined;
     this.Hyo = undefined;
-    this.Bfd = undefined;
+    this.l4d = undefined;
     this.jyo = false;
     this.IsShowCombineButton = false;
     this.VRn = false;
@@ -172,9 +172,9 @@ class SkillButtonUiGamepadData {
     if (this.Oyo === InputMappingsDefine_1.actionMappings.攻击) {
       s = [];
       InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.攀爬)?.GetKeyNameList(s);
-      this.Bfd = s;
+      this.l4d = s;
     } else {
-      this.Bfd = undefined;
+      this.l4d = undefined;
     }
     this.Gyo.clear();
     for (const g of initActionNames) {
@@ -527,8 +527,8 @@ class SkillButtonUiGamepadData {
             }
             t.SetCustomAction("Gamepad_RightThumbstick", InputMappingsDefine_1.actionMappings.攻击);
             t.SetActionEnable(InputMappingsDefine_1.actionMappings.攀爬, false);
-            if (this.Bfd) {
-              for (const e of this.Bfd) {
+            if (this.l4d) {
+              for (const e of this.l4d) {
                 if (e !== "Gamepad_RightTrigger") {
                   t.SetCustomAction(e, InputMappingsDefine_1.actionMappings.攀爬);
                 }
@@ -562,8 +562,8 @@ class SkillButtonUiGamepadData {
         for (const a of this.Hyo) {
           t.ResetAllCustomAction(a);
         }
-        if (this.Bfd) {
-          for (const h of this.Bfd) {
+        if (this.l4d) {
+          for (const h of this.l4d) {
             if (h !== "Gamepad_RightTrigger") {
               t.ResetAllCustomAction(h);
             }

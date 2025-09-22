@@ -76,8 +76,8 @@ class SceneCharacterTriggerEffect {
     if (this.IsEnabled && this.Owner) {
       this.CurrentVelocity = this.Owner.D_GetVelocity();
       this.VelocityHistory.AddVelocity(Vector_1.Vector.Create(this.CurrentVelocity.X, this.CurrentVelocity.Y, this.CurrentVelocity.Z));
-      this.YQc();
-      this.zQc();
+      this.wYc();
+      this.LYc();
       this.CacheData = this.Data;
     }
   }
@@ -92,7 +92,7 @@ class SceneCharacterTriggerEffect {
     }
     return this.VelocityHistory.GetMaxVelocityDirection(t) > 500;
   }
-  YQc() {
+  wYc() {
     if (this.IsReady && this.Data && this.CacheData) {
       if (this.Data.bHideOnBush) {
         if (EffectSystem_1.EffectSystem.IsValid(this.BushEffectHandle)) {
@@ -184,7 +184,7 @@ class SceneCharacterTriggerEffect {
       }
     }
   }
-  zQc() {
+  LYc() {
     if (this.IsReady && this.Data && this.CacheData && !this.Data.OverlapTriggerMesh && this.CacheData.OverlapTriggerMesh && this.CacheData.OverlapTriggerParam0.X === 2) {
       var h = new UE.VectorDouble(this.Owner.D_K2_GetActorLocation().X, this.Owner.D_K2_GetActorLocation().Y, this.Owner.D_K2_GetActorLocation().Z);
       this.EmptyUeTransform.SetLocation(h);

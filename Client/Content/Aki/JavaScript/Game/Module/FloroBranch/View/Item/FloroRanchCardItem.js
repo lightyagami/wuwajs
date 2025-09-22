@@ -34,11 +34,11 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.gke);
-    this.pqu();
+    this.b2u();
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   OnBeforeDestroy() {
-    this.vqu();
+    this.R2u();
   }
   Refresh(t, i, s) {
     this.GetItem(19).SetAlpha(0);
@@ -126,7 +126,7 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
   SetToggleState(t) {
     this.GetExtendToggle(0).SetToggleStateForce(t ? 1 : 0);
   }
-  pqu() {
+  b2u() {
     var t = this.OverrideTermViewType ?? 0;
     var t = {
       UiText: this.GetText(13),
@@ -139,7 +139,7 @@ class FloroRanchCardItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(t);
   }
-  vqu() {
+  R2u() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(13));
   }
   PlayAppearAnim() {

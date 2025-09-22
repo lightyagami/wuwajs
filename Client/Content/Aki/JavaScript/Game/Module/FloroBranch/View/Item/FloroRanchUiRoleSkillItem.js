@@ -13,10 +13,10 @@ const FloroRanchUiItemBase_1 = require("./FloroRanchUiItemBase");
 class FloroRanchUiRoleSkillItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   constructor() {
     super(...arguments);
-    this.eXu = undefined;
-    this.Lqu = e => {};
+    this.qKu = undefined;
+    this.vqu = e => {};
     this._Cu = () => {
-      this.Lqu?.(this.Entity);
+      this.vqu?.(this.Entity);
     };
   }
   OnRegisterComponent() {
@@ -67,7 +67,7 @@ class FloroRanchUiRoleSkillItem extends FloroRanchUiItemBase_1.FloroRanchUiItemB
     return this.GetItem(5).GetOwner().GetTransform();
   }
   BindClickSkillCallback(e) {
-    this.Lqu = e;
+    this.vqu = e;
   }
 }
 exports.FloroRanchUiRoleSkillItem = FloroRanchUiRoleSkillItem;

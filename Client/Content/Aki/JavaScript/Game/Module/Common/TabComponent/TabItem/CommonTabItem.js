@@ -55,6 +55,8 @@ class CommonTabItem extends CommonTabItemBase_1.CommonTabItemBase {
     if (t.RedDotName) {
       this.RedDotUid = t.RedDotUid;
       this.BindRedDot(t.RedDotName, t.RedDotUid);
+    } else {
+      this.GetItem(2)?.SetUIActive(false);
     }
   }
   OnSelected(t) {

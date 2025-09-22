@@ -69,6 +69,9 @@ class OnlineHallData {
   get PlayerOriginWorldLevel() {
     return this.kGi.uSs;
   }
+  get Deactivation() {
+    return this.kGi.jSd;
+  }
   get PlayerLastOfflineTime() {
     return MathUtils_1.MathUtils.LongToNumber(this.kGi.fSs);
   }
@@ -81,14 +84,14 @@ class OnlineHallData {
 }
 exports.OnlineHallData = OnlineHallData;
 class OnlineApplyData {
-  constructor(t, e, r, i, s, a) {
+  constructor(t, e, r, i, s, n) {
     this.PlayStationOnlineId = "";
     this.FGi = t;
     this.VGi = e;
     this.OGi = r;
     this.HGi = i;
     this.jGi = s;
-    this.PlayStationOnlineId = a;
+    this.PlayStationOnlineId = n;
   }
   get ApplyTimeLeftTime() {
     return Number(MathUtils_1.MathUtils.LongToBigInt(this.OGi)) - TimeUtil_1.TimeUtil.GetServerTime();
@@ -111,25 +114,27 @@ class OnlineApplyData {
 }
 exports.OnlineApplyData = OnlineApplyData;
 class OnlineTeamData {
-  constructor(t, e, r, i, s, a, n, h, l, o, u) {
+  constructor(t, e, r, i, s, n, a, h, l, o, u, g) {
     this.Jmc = 0;
     this.Zmc = 0;
     this.Ru1 = 0;
     this.CardUnlockList = [];
     this.WGi = 0;
+    this.$Md = 1;
     this.FGi = t;
     this.VGi = e;
     this.jGi = r;
     this.HGi = i;
     this.KGi = s;
-    this.PlayerNumber = a;
-    this.kGi = n;
+    this.PlayerNumber = n;
+    this.kGi = a;
     this.QGi = Protocol_1.Aki.Protocol.r7s.Proto_GREAT;
     this.Jmc = l;
     this.Zmc = o;
     this.Ru1 = u;
-    for (const g of n.SSs) {
-      this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(g, true, true));
+    this.$Md = g;
+    for (const d of a.SSs) {
+      this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(d, true, true));
     }
   }
   get PlayerId() {
@@ -164,6 +169,9 @@ class OnlineTeamData {
   }
   set Sex(t) {
     this.Ru1 = t;
+  }
+  get WorldLevel() {
+    return this.$Md;
   }
   SetPlayerTitleInfo(t) {
     if (t.length !== 0) {
@@ -224,10 +232,10 @@ class OnlineTeamData {
 }
 exports.OnlineTeamData = OnlineTeamData;
 class WorldTeamPlayerFightInfo {
-  constructor(t, e, r, i, s, a) {
+  constructor(t, e, r, i, s, n) {
     this.FGi = t;
     this.VGi = e;
-    this.XGi = a;
+    this.XGi = n;
     this.$Gi = r;
     this.dIl = s;
     this.bSl = i;

@@ -114,7 +114,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.f_t = Vector_1.Vector.Create();
     this.MoraleLevelItem = undefined;
     this.gka = new HeadStateViewNode();
-    this.wQu = undefined;
+    this.b9c = undefined;
     this.p_t = () => {
       if (this.J1t) {
         this.J1t(this.HeadStateData.GetEntity());
@@ -147,7 +147,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateView", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.LQu(e, i, s, h);
+    this.R9c(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -163,7 +163,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateViewAsync", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.LQu(e, i, s, h);
+    this.R9c(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -175,7 +175,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
       await this.CreateByPathAsync(s, t, true);
     }
   }
-  LQu(t, e, i, s) {
+  R9c(t, e, i, s) {
     var h = this.GetResourceId();
     if (!StringUtils_1.StringUtils.IsEmpty(h)) {
       this.Q1t = t;
@@ -208,7 +208,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] RecycleHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.wQu = t;
+    this.b9c = t;
     if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByRecycle", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
@@ -227,7 +227,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] DestroyHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.wQu = undefined;
+    this.b9c = undefined;
     if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByDestroy", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
@@ -262,9 +262,9 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
   }
   OnAfterHide() {
     if (!this.HeadStateData) {
-      if (this.wQu) {
-        this.wQu(this, this.HeadStateType);
-        this.wQu = undefined;
+      if (this.b9c) {
+        this.b9c(this, this.HeadStateType);
+        this.b9c = undefined;
       }
     }
   }

@@ -28,7 +28,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
     this.cBe = undefined;
   }
   GetLayerType() {
-    return 4;
+    return 5;
   }
   HandlePress(t, e) {
     switch (t) {

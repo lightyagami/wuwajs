@@ -43,7 +43,11 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
                         if (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel("SceneItemReferenceComponent_" + i) && Log_1.Log.CheckInfo()) {
                           Log_1.Log.Info("LevelEvent", 39, "[SetActorVisible] [疑难杂症] 行为开关Actor", ["RefEntityPbDataId", a.GetComponent(0)?.GetPbDataId()], ["TargetPath", c], ["ActorType", o.ActorType], ["Enable", o.Enable], ["ActionGuid", this.ActionGuid], ["Context", t]);
                         }
-                        L.SetActorEnableCollision(o.Enable);
+                        if (o.CollisionEnabled !== undefined) {
+                          L.SetActorEnableCollision(o.CollisionEnabled);
+                        } else {
+                          L.SetActorEnableCollision(o.Enable);
+                        }
                         switch (o.ActorType) {
                           case "MeshActor":
                             L.SetActorHiddenInGame(!o.Enable);
@@ -106,7 +110,7 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
                           case "Skybox":
                             ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_CloudFuBen_C", () => {
                               if (L instanceof UE.BP_CloudFuBen_C) {
-                                L.ChangeSky(o.Enable);
+                                L.SetActorHiddenInGame(!o.Enable);
                               }
                             });
                             break;

@@ -10,8 +10,11 @@ const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const IVar_1 = require("../../UniverseEditor/Interface/IVar");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
+const Global_1 = require("../Global");
 const ConfigManager_1 = require("../Manager/ConfigManager");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
+const CharacterUnifiedStateTypes_1 = require("../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
 const ActorUtils_1 = require("../Utils/ActorUtils");
 const OperationRestrictUtils_1 = require("./OperationRestrict/OperationRestrictUtils");
 class LevelGamePlayUtils {
@@ -50,6 +53,9 @@ class LevelGamePlayUtils {
     }
   }
   static ReleaseOperationRestriction() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelEvent", 39, "关卡事件-设置玩家操作限制: 全部解除");
+    }
     OperationRestrictUtils_1.OperationRestrictUtils.SetOperationRestrictEnableAll();
   }
   static LevelOperationRestriction(e) {
@@ -144,6 +150,14 @@ class LevelGamePlayUtils {
         a = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t.TriggerEntityId);
         if (a) {
           return a.Entity?.GetComponent(0)?.GetEntityVar(e);
+        }
+        break;
+      case 11:
+        for (const i of t.Contexts) {
+          var r = this.RRn(e, i);
+          if (r !== undefined) {
+            return r;
+          }
         }
         break;
       default:
@@ -284,62 +298,106 @@ class LevelGamePlayUtils {
     }
     return t;
   }
-  static GetCheckTargetConditionEntityHandles(t, a, r) {
-    const i = new Array();
-    function e() {
+  static GetCheckTargetConditionEntityHandles(e, t, a) {
+    switch (e.Type) {
+      case "OnlinePlayer":
+        return this.GetEntityHandlesByCheckOnlinePlayerConfig(e.OnlinePlayerConditionTargetOption, t, a);
+      case "TargetEntity":
+        var r = this.GetEntityHandleByCheckTargetEntityConfig(e.TargetEntity, t, a);
+        if (r) {
+          return [r];
+        }
+    }
+    return [];
+  }
+  static GetEntityHandlesByCheckOnlinePlayerConfig(e, t, a) {
+    const r = new Array();
+    function i() {
       var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (e?.Valid) {
-        i.push(e);
+        r.push(e);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 玩家实体无效", ["PlayerId", ModelManager_1.ModelManager.CreatureModel.GetPlayerId()]);
       }
     }
-    switch (t.Type) {
-      case "OnlinePlayer":
-        if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-          switch (t.OnlinePlayerConditionTargetOption.Type) {
-            case "Host":
-              if (ModelManager_1.ModelManager.CreatureModel.IsMyWorld()) {
-                e();
-              }
-              break;
-            case "Participator":
-              e();
+    if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+      switch (e.Type) {
+        case "Host":
+          if (ModelManager_1.ModelManager.CreatureModel.IsMyWorld()) {
+            i();
           }
-        } else {
-          e();
+          break;
+        case "Participator":
+          i();
+      }
+    } else {
+      i();
+    }
+    return r;
+  }
+  static GetEntityHandleByCheckTargetEntityConfig(e, t, a) {
+    let r = undefined;
+    switch (e.Type) {
+      case "Self":
+        r = LevelGamePlayUtils.GetEntityHandle(t, a);
+        break;
+      case "Target":
+        var i = e;
+        r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.EntityId);
+        break;
+      case "Triggered":
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体为触发者未实现", ["TargetEntity.Type", "Triggered"]);
         }
         break;
-      case "TargetEntity":
-        {
-          let e = undefined;
-          var n = t;
-          switch (n.TargetEntity.Type) {
-            case "Self":
-              e = LevelGamePlayUtils.GetEntityHandle(a, r);
-              break;
-            case "Target":
-              var o = n.TargetEntity;
-              e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.EntityId);
-              break;
-            case "Triggered":
-              if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体为触发者未实现", ["TargetEntity.Type", "Triggered"]);
-              }
-              break;
-            case "Player":
-              if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体为某个特定玩家未实现", ["TargetEntity.Type", "Player"]);
-              }
-          }
-          if (e?.Valid) {
-            i.push(e);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体无效", ["TargetEntity.Type", n.TargetEntity.Type]);
-          }
+      case "Player":
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体为某个特定玩家未实现", ["TargetEntity.Type", "Player"]);
         }
     }
-    return i;
+    if (!r?.Valid) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 72, "[GetCheckTargetConditionEntityHandles] 指定实体无效", ["TargetEntity.Type", e.Type]);
+      }
+    }
+    return r;
+  }
+  static TogglePlayerControl(e, t) {
+    var a = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
+    if (a?.Valid) {
+      var r = a.GetComponent(176);
+      var i = a.GetComponent(40);
+      var n = a.GetComponent(3);
+      var o = a.GetComponent(62);
+      var s = a.GetComponent(206);
+      var a = a.GetComponent(179);
+      var l = [-1697149502, -541178966, -542518289, -2140742267, -1013832153];
+      if (e) {
+        a?.StopMove(false);
+        a?.ResetMaxSpeed(r?.MoveState);
+        n?.ClearInput();
+        o?.ClearMoveVectorCache();
+        o?.SetActive(true);
+        for (const c of l) {
+          s?.RemoveTag(c);
+        }
+      } else {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, t);
+        if (r?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection) {
+          r?.ExitAimStatus();
+        }
+        if (i?.CurrentSkill) {
+          i.EndOwnerAndFollowSkills();
+        }
+        n?.ClearInput();
+        o?.ClearMoveVectorCache();
+        o?.SetActive(false);
+        for (const d of l) {
+          s?.AddTag(d);
+        }
+      }
+      ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
+    }
   }
 }
 (exports.LevelGamePlayUtils = LevelGamePlayUtils).SUe = new Map();

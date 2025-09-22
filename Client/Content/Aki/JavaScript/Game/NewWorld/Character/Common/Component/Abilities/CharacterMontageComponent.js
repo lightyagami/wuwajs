@@ -42,7 +42,7 @@ let CharacterMontageComponent = class CharacterMontageComponent extends BaseMont
   }
   AddMontage(e, t, o) {
     if (this.$Rc) {
-      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(282);
+      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(283);
       var r = this.MorphComponent;
       if (r?.IsMorphMontage(o)) {
         if (t) {

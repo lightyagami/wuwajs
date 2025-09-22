@@ -59,7 +59,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
         }
       }
     };
-    this.yjc = new Map();
+    this.zJu = new Map();
     this.CurrentEquipItemId = 0;
     this.XPn = new InputKeyDisplayData_1.InputKeyDisplayData();
     this.GetRouletteActionName = {
@@ -404,10 +404,10 @@ class RouletteModel extends ModelBase_1.ModelBase {
     return t;
   }
   SetOtherIdList(e, t) {
-    this.yjc.set(e, t);
+    this.zJu.set(e, t);
   }
   GetOtherIdList(e) {
-    return this.yjc.get(e) ?? [];
+    return this.zJu.get(e) ?? [];
   }
   CB_(e) {
     var t = this.rfo();

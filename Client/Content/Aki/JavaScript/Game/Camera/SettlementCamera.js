@@ -92,7 +92,7 @@ class SettlementCamera {
     this.Fse.bIgnoreSelf = true;
   }
   E5l(t) {
-    t = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(22, t);
+    t = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(23, t);
     if (t && t.CameraModifier) {
       this.Tme = t;
       this.Lme = t.CameraModifier;

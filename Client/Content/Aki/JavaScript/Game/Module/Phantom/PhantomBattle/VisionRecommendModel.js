@@ -183,7 +183,7 @@ class VisionRecommendModel extends ModelBase_1.ModelBase {
       }
     };
     this.CLu = (e, t) => t.GetConfigId() - e.GetConfigId();
-    this.eNu = (e, t, r) => {
+    this.VFu = (e, t, r) => {
       e = e.GetFetterGroupId();
       if (e === t) {
         return 2;
@@ -193,16 +193,16 @@ class VisionRecommendModel extends ModelBase_1.ModelBase {
         return 0;
       }
     };
-    this.tNu = (e, t, r, o, n, i) => {
-      e = this.eNu(e, o, i);
-      return this.eNu(t, o, i) - e;
+    this.jFu = (e, t, r, o, n, i) => {
+      e = this.VFu(e, o, i);
+      return this.VFu(t, o, i) - e;
     };
     this.UU1 = (e, t) => {
       e = e.GetCost();
       return t.GetCost() - e;
     };
     this.vLu = [this.Xwu, this.Ywu, this.zwu, this.Jwu, this.Zwu, this.jRt, this.CLu];
-    this.yLu = [this.tNu, this.UU1, this.Ywu, this.zwu, this.Jwu, this.Zwu, this.jRt, this.CLu];
+    this.yLu = [this.jFu, this.UU1, this.Ywu, this.zwu, this.Jwu, this.Zwu, this.jRt, this.CLu];
   }
   OnRoleRecommendData(e, t) {
     if (t && t.hL_) {

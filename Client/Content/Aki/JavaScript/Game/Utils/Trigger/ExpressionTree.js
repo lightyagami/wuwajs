@@ -11,11 +11,11 @@ const CharacterTagContainer_1 = require("../../NewWorld/Character/Common/Compone
 const ExpressionTreeModel_1 = require("./ExpressionTreeModel");
 class CustomVariable {
   constructor(t) {
-    this.eKc = new Map();
+    this.CXc = new Map();
     this.VariableMap = new Map();
-    this.tKc = [];
-    this.eKc = t;
-    this.tKc.length = 0;
+    this.pXc = [];
+    this.CXc = t;
+    this.pXc.length = 0;
     this.VariableMap.clear();
   }
   static Create(t, i) {
@@ -23,26 +23,26 @@ class CustomVariable {
     var e;
     var r = new CustomVariable(t);
     for ([s, e] of t) {
-      r.iKc(s, e);
+      r.vXc(s, e);
     }
-    if (r.tKc.length > 0) {
+    if (r.pXc.length > 0) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Event", 85, "解析表达式自定义变量异常", ["reason", i], ["ErrorInfo", r.tKc], ["CustomVariableStr", r.eKc]);
+        Log_1.Log.Error("Event", 85, "解析表达式自定义变量异常", ["reason", i], ["ErrorInfo", r.pXc], ["CustomVariableStr", r.CXc]);
       }
-      r.tKc.length = 0;
+      r.pXc.length = 0;
     }
     return r;
   }
-  iKc(t, i) {
+  vXc(t, i) {
     var s = i.replace(/\s+/g, "").split("#");
     if (s.length < 2) {
-      this.rKc(i + "解析自定义变量格式错误:字符串数量小于2");
+      this.yXc(i + "解析自定义变量格式错误:字符串数量小于2");
     } else {
       switch (s[0]) {
         case "Long":
           var e = Number(s[1]);
           if (isNaN(e)) {
-            this.rKc(i + "解析自定义变量格式错误: 数字不合法");
+            this.yXc(i + "解析自定义变量格式错误: 数字不合法");
           } else {
             this.VariableMap.set(t, {
               Type: 0,
@@ -55,7 +55,7 @@ class CustomVariable {
           for (let t = 1; t < s.length; t++) {
             var a = Number(s[t]);
             if (isNaN(a)) {
-              this.rKc(i + "解析自定义变量格式错误: 数组不合法");
+              this.yXc(i + "解析自定义变量格式错误: 数组不合法");
               return;
             }
             r.push(a);
@@ -68,7 +68,7 @@ class CustomVariable {
         case "Tag":
           e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(s[1]);
           if (!e) {
-            this.rKc(i + "解析自定义变量格式错误: Tag不合法");
+            this.yXc(i + "解析自定义变量格式错误: Tag不合法");
             return;
           }
           this.VariableMap.set(t, {
@@ -81,7 +81,7 @@ class CustomVariable {
           for (let t = 1; t < s.length; t++) {
             var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(s[t]);
             if (!o) {
-              this.rKc(i + "解析自定义变量格式错误: Tag不合法, 异常tagName" + s[t]);
+              this.yXc(i + "解析自定义变量格式错误: Tag不合法, 异常tagName" + s[t]);
               return;
             }
             h.AddExactTag(1, o);
@@ -105,18 +105,18 @@ class CustomVariable {
   GetVariable(t) {
     return this.VariableMap.get(t)?.Value;
   }
-  rKc(t) {
-    this.tKc.push(t);
+  yXc(t) {
+    this.pXc.push(t);
   }
 }
 const operatorMap = new Map([["OR", 0], ["AND", 1], ["NOT", 2], ["SequenceTrue", 3]]);
 class ExpressionTree {
   constructor() {
     this.Rgr = "";
-    this.oKc = undefined;
-    this.tKc = [];
+    this.SXc = undefined;
+    this.pXc = [];
     this.cC = 0;
-    this.nKc = undefined;
+    this.MXc = undefined;
     this.nx = undefined;
     this.lDt = undefined;
     this.cp = false;
@@ -124,12 +124,12 @@ class ExpressionTree {
   }
   ResetData() {
     this.Rgr = "";
-    this.oKc = undefined;
+    this.SXc = undefined;
     this.cC = 0;
     this.pLe = "";
-    this.tKc.length = 0;
+    this.pXc.length = 0;
     this.nx = undefined;
-    this.nKc = undefined;
+    this.MXc = undefined;
     this.cp = false;
   }
   Parse(t, i, s) {
@@ -137,12 +137,12 @@ class ExpressionTree {
     this.Rgr = i;
     this.pLe = t;
     if (s) {
-      this.oKc = CustomVariable.Create(s, t);
+      this.SXc = CustomVariable.Create(s, t);
     }
     let e = true;
     try {
-      this.nKc = this.sKc();
-      this.aKc();
+      this.MXc = this.EXc();
+      this.IXc();
       if (!this.YMa) {
         throw new Error("有未解析的字符,position" + this.cC);
       }
@@ -158,41 +158,41 @@ class ExpressionTree {
     }
     return e;
   }
-  sKc() {
-    this.aKc();
+  EXc() {
+    this.IXc();
     if (!this.YMa) {
       if (this.Rgr[this.cC] !== "(") {
-        this.hKc(`解析表达式格式错误:位置${this.cC}期望一个(`);
+        this.TXc(`解析表达式格式错误:位置${this.cC}期望一个(`);
       } else {
         this.cC++;
-        var t = this.lKc();
-        this.aKc();
+        var t = this.bXc();
+        this.IXc();
         if (this.Rgr[this.cC] === ")") {
           this.cC++;
           return t;
         }
-        this.hKc(`解析表达式格式错误:位置${this.cC}期望一个)`);
+        this.TXc(`解析表达式格式错误:位置${this.cC}期望一个)`);
       }
     }
   }
-  lKc() {
+  bXc() {
     var i = [];
     let s = undefined;
     let e = false;
     while (!this.YMa) {
-      this.aKc();
+      this.IXc();
       var r = this.Rgr[this.cC];
       let t = undefined;
       e = false;
       if (/\d/.test(r)) {
-        t = this._Kc();
+        t = this.RXc();
       } else if (/[a-zA-Z]/.test(r)) {
-        t = this.uKc();
+        t = this.wXc();
       } else {
         if (r !== "(") {
           break;
         }
-        t = this.sKc();
+        t = this.EXc();
         e = true;
       }
       if (!t) {
@@ -200,7 +200,7 @@ class ExpressionTree {
       }
       if (!e && t.NodeType <= 4) {
         if (s) {
-          this.hKc(`解析表达式格式错误:括号内有多个操作符 ${s.Value} 和 ${t.Value}`);
+          this.TXc(`解析表达式格式错误:括号内有多个操作符 ${s.Value} 和 ${t.Value}`);
         }
         s = t;
       } else {
@@ -211,9 +211,9 @@ class ExpressionTree {
       s.Children = i;
       return s;
     }
-    this.hKc("解析表达式格式错误:括号内没有操作符");
+    this.TXc("解析表达式格式错误:括号内没有操作符");
   }
-  _Kc() {
+  RXc() {
     var t = this.cC;
     for (; this.cC < this.Rgr.length && /\d/.test(this.Rgr[this.cC]);) {
       this.cC++;
@@ -228,7 +228,7 @@ class ExpressionTree {
       Value: Number(this.Rgr.substring(t, this.cC))
     };
   }
-  uKc() {
+  wXc() {
     var t = this.cC;
     for (; this.cC < this.Rgr.length && /[a-zA-Z0-9]/.test(this.Rgr[this.cC]);) {
       this.cC++;
@@ -241,15 +241,15 @@ class ExpressionTree {
     } : ExpressionTreeModel_1.builtinFuncMap.has(t) ? {
       NodeType: 4,
       Value: t
-    } : (this.oKc?.HasVariable(t), {
+    } : (this.SXc?.HasVariable(t), {
       NodeType: 6,
       Value: t
     });
     if (this.Rgr[this.cC] === ".") {
       this.cC++;
       t = [i];
-      if ((i = this.uKc()) === undefined || i.NodeType !== 4) {
-        this.hKc(`解析表达式格式错误:.号操作符后接符号不合法${i?.Value}节点类型${i?.NodeType}`);
+      if ((i = this.wXc()) === undefined || i.NodeType !== 4) {
+        this.TXc(`解析表达式格式错误:.号操作符后接符号不合法${i?.Value}节点类型${i?.NodeType}`);
       }
       i.NodeType = 5;
       i.Children = t;
@@ -259,7 +259,7 @@ class ExpressionTree {
   get YMa() {
     return this.cC >= this.Rgr.length;
   }
-  aKc() {
+  IXc() {
     while (this.cC < this.Rgr.length) {
       var t = this.Rgr[this.cC];
       if (!/[\s,]/.test(t)) {
@@ -268,7 +268,7 @@ class ExpressionTree {
       this.cC++;
     }
   }
-  hKc(t) {
+  TXc(t) {
     throw new Error(t);
   }
   Ygr(t) {
@@ -279,7 +279,7 @@ class ExpressionTree {
         return t.Value;
       case 6:
         var i = t.Value;
-        return this.oKc?.GetVariable(i) ?? this.lDt?.[i];
+        return this.SXc?.GetVariable(i) ?? this.lDt?.[i];
       case 1:
         for (const s of t.Children) {
           if (!this.Ygr(s)) {
@@ -310,7 +310,7 @@ class ExpressionTree {
   }
   Evaluate(t, i) {
     let s = undefined;
-    if (this.nKc) {
+    if (this.MXc) {
       if (this.cp) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Event", 85, "解析表达式重复进入", ["formula", this.Rgr], ["reason", this.pLe]);
@@ -320,7 +320,7 @@ class ExpressionTree {
         this.lDt = i;
         this.cp = true;
         try {
-          s = this.Ygr(this.nKc);
+          s = this.Ygr(this.MXc);
         } catch (t) {
           s = undefined;
           if (t instanceof Error) {

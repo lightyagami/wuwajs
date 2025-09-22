@@ -118,6 +118,9 @@ class KeyBaseComponent extends UiPanelBase_1.UiPanelBase {
     this.but(e);
     this.fwo(e === 0);
   }
+  SetLongPressItemAlpha(e) {
+    this.RootItem?.SetAlpha(e);
+  }
   but(e) {
     if (this.cwo) {
       this.cwo.SetProgressPercent(e);

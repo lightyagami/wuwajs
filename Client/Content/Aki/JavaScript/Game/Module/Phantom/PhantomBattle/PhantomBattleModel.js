@@ -54,6 +54,7 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
     this.CurrentEquipmentSelectIndex = 0;
     this.CurrentSelectUniqueId = 0;
     this.u6i = undefined;
+    this.LevelUpConfirmTipsNotShow = false;
     this.c6i = new UE.Vector();
     this.m6i = new UE.Vector();
     this.d6i = new UE.Rotator();
@@ -77,9 +78,6 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
       this._1l = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpMaterialPutInMode) ?? 0;
       this.u1l = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpMaterialUseType) ?? 0;
       this.YDu = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VisionLevelUpIdentify) ?? 0;
-    };
-    this.R6i = () => {
-      ControllerHolder_1.ControllerHolder.PhantomBattleController.TryShowReceiveItem();
     };
     this.SortAttrList = (t, e) => {
       var r = t.Priority !== 0;
@@ -287,6 +285,13 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
       s[t].BaseValue = 0;
       h.push(s[t]);
     }
+    var i = t.GetLevelUnlockSubPropSlotCount(r.Level);
+    var l = t.GetLevelUnlockSubPropSlotCount(t.GetPhantomLevel()) - i - h.length;
+    if (h.length > 0 || l > 0) {
+      a.push({
+        IsLine: true
+      });
+    }
     h.forEach(t => {
       t = RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.ConvertsAttrListScrollDataToAttributeInfo(t);
       t.ShowArrow = false;
@@ -296,8 +301,6 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
     if (h.length > 0) {
       n = "IdentifySuccess";
     }
-    var i = t.GetLevelUnlockSubPropSlotCount(r.Level);
-    var l = t.GetLevelUnlockSubPropSlotCount(t.GetPhantomLevel()) - i - h.length;
     if (l > 0) {
       for (let t = 0; t < l; t++) {
         var u = {
@@ -314,8 +317,7 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
       Title: n,
       LevelInfo: e,
       WiderScrollView: false,
-      AttributeInfo: a,
-      ClickFunction: this.R6i
+      AttributeInfo: a
     };
   }
   k6i(t, e) {
@@ -347,7 +349,10 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
       }, t[a]];
       e.push(r);
     }
-    this.g6i = e;
+    this.g6i = e.sort((t, e) => {
+      t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t[0].ItemId);
+      return ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e[0].ItemId).QualityId - t.QualityId;
+    });
     this.p6i = true;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomLevelUpReceiveItem, e);
   }
@@ -359,6 +364,9 @@ class PhantomBattleModel extends ModelBase_1.ModelBase {
   }
   GetTempSaveItemList() {
     return this.g6i;
+  }
+  ShiftTempSaveItemList() {
+    return this.g6i.shift();
   }
   ClearTempSaveItemList() {
     this.g6i = [];

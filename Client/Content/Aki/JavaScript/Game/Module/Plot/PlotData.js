@@ -36,9 +36,11 @@ class PlotInfo {
     this.Seamless = false;
     this.EndSeamlessShowTalkId = 0;
     this.PreloadSequenceUiData = new Array();
+    this.PromptStyle = undefined;
+    this.BlockAudio = undefined;
     this.tI1 = undefined;
   }
-  Init(t, i, s, o, e, h, r, l, n, d = {}, v = false, a = false, c, P = false) {
+  Init(t, i, s, o, e, h, r, l, n, d = {}, v = false, c = false, a, I = false) {
     this.FlowListName = s;
     this.FlowId = o;
     this.StateId = e;
@@ -47,62 +49,67 @@ class PlotInfo {
     this.IsServerNotify = t;
     this.Context = l;
     this.FlowIncId = i;
-    this.IsBackground = a;
+    this.IsBackground = c;
     this.IsBreakdown = false;
     this.IsAsync = n;
     this.UiParam = d;
     this.CanBeAbandoned = v;
-    this.Pos = c;
-    this.CheckPreload = P;
-    this.Seamless = P;
+    this.Pos = a;
+    this.CheckPreload = I;
+    this.Seamless = I;
     PlotInfo.AnalyzeLevel(this, h);
   }
   static AnalyzeLevel(i, s) {
     let t = "LevelC";
-    let o = false;
+    let o = undefined;
     let e = false;
-    let h = undefined;
-    let r = false;
-    var l;
+    let h = false;
+    let r = undefined;
+    let l = false;
     var n;
-    if (s.length > 0 && (l = s[0]).Name === "SetPlotMode" && (l = l.Params, t = l.Mode, o = l.WaitForPlayerMotionEnd ?? false, e = l.NoUiEnterAnimation ?? false, l.FastFadeIn && (h = l.FastFadeIn.ScreenType ?? IAction_1.EFadeInScreenShowType.Black), l.KeepMainRolePose)) {
-      r = true;
+    var d;
+    if (s.length > 0 && (n = s[0]).Name === "SetPlotMode" && (n = n.Params, t = n.Mode, o = n.PromptStyle, e = n.WaitForPlayerMotionEnd ?? false, h = n.NoUiEnterAnimation ?? false, n.FastFadeIn && (r = n.FastFadeIn.ScreenType ?? IAction_1.EFadeInScreenShowType.Black), n.KeepMainRolePose)) {
+      l = true;
     }
-    if (!h && s.length > 1 && (l = s[1]).Name === "FadeInScreen") {
-      l = l.Params;
-      h = l.ScreenType ?? IAction_1.EFadeInScreenShowType.Black;
+    if (!r && s.length > 1 && (n = s[1]).Name === "FadeInScreen") {
+      n = n.Params;
+      r = n.ScreenType ?? IAction_1.EFadeInScreenShowType.Black;
     }
     if (i.Seamless) {
       let t = "";
-      for (const d of s) {
-        if (d.Name === "SetPlotMode") {
-          n = d.Params;
-          t = n.Mode;
-        } else if (d.Name === "ShowTalk" && (t === "LevelB" || t === "LevelA")) {
-          i.EndSeamlessShowTalkId = d.ActionId;
-          i.PreloadSequenceUiData.push(d.Params.SequenceDataAsset);
+      for (const v of s) {
+        if (v.Name === "SetPlotMode") {
+          d = v.Params;
+          t = d.Mode;
+        } else if (v.Name === "ShowTalk" && (t === "LevelB" || t === "LevelA")) {
+          i.EndSeamlessShowTalkId = v.ActionId;
+          i.PreloadSequenceUiData.push(v.Params.SequenceDataAsset);
         }
       }
     }
     i.PlotLevel = t;
-    i.IsWaitAnim = o;
-    i.UiParam.DisableAnim = e;
-    i.FadeBegin = h;
-    i.KeepMainRolePose = r;
+    i.IsWaitAnim = e;
+    i.UiParam.DisableAnim = h;
+    i.FadeBegin = r;
+    i.KeepMainRolePose = l;
     if ((t === "LevelD" || t === "Prompt") && !i.UiParam.ViewName) {
       i.UiParam.ViewName = UiModel_1.UiModel.MainViewName;
     }
     if (t === "Prompt") {
-      this.pbn(s, i);
+      this.qqd(s, i);
+      i.PromptStyle = o?.Type ?? IAction_1.EPromptStyle.Default;
     }
   }
-  static pbn(t, i) {
+  static qqd(t, i) {
     var s;
     var o;
     var e = new Map();
     for (const h of t) {
       if (h.Name === "ShowTalk") {
         for (const r of h.Params.TalkItems) {
+          if (!i.BlockAudio && r.PlayVoice) {
+            i.BlockAudio = r.TidTalk;
+          }
           if (r.WhoId) {
             s = SpeakerById_1.configSpeakerById.GetConfig(r.WhoId);
             if (StringUtils_1.StringUtils.IsEmpty(s?.HeadRoundIconAsset)) {
@@ -137,6 +144,8 @@ class PlotInfo {
     this.Seamless = false;
     this.EndSeamlessShowTalkId = 0;
     this.PreloadSequenceUiData.length = 0;
+    this.PromptStyle = undefined;
+    this.BlockAudio = undefined;
   }
   static Create() {
     let t = PlotInfo.RUe.Get();

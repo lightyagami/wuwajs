@@ -28,7 +28,7 @@ class ThirdPartySdkManager {
         ThirdPartySdkManager.BBe = undefined;
       }
       ThirdPartySdkManager.InitDataTransferTimerForTpSafe();
-      Net_1.Net.Register(22515, ThirdPartySdkManager.bBe);
+      Net_1.Net.Register(19131, ThirdPartySdkManager.bBe);
     }
     if (Platform_1.Platform.IsAndroidPlatform()) {
       r = UE.KuroAudioStatics.IsAndroidApiUsingOpenSL();
@@ -75,7 +75,7 @@ class ThirdPartySdkManager {
     var e;
     if (Net_1.Net.IsServerConnected() && (r = cpp_1.FTpSafeProxy.GetAntiData()).byteLength > 0) {
       (e = Protocol_1.Aki.Protocol.e$n.create()).v6n = new Uint8Array(r);
-      Net_1.Net.Send(23429, e);
+      Net_1.Net.Send(19454, e);
     }
   }
   static GBe() {

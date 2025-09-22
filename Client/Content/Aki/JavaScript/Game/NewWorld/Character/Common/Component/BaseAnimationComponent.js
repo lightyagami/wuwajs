@@ -56,6 +56,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.SightTargetItemId = 0;
     this.SightTargetPoint = undefined;
     this.EnableSightDirectInternal = false;
+    this.DisableBlink = false;
     this.R2r = [...xAngleLimits];
     this.U2r = [...yAngleLimits];
     this.SightDirect = Vector_1.Vector.Create();

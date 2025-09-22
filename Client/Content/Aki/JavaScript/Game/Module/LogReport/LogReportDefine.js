@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ActivityPreheatLogData = exports.ActivityRegressLogData = exports.ActivityRecallLogData = exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = undefined;
-exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = undefined;
+exports.ActivityRegressLogData = exports.ActivityRecallLogData = exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.DefaultFilterLogEvent = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = undefined;
+exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogData = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = undefined;
 const UE = require("ue");
 const Json_1 = require("../../../Core/Common/Json");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
@@ -129,6 +129,7 @@ class RoleStateRecord extends PlayerCommonLogData {
     this.event_id = "102700";
     this.s_battle_id = "";
     this.i_role_id = 0;
+    this.i_role_type = 0;
     this.i_role_level = 0;
     this.i_role_quality = 0;
     this.i_role_reson = 0;
@@ -168,6 +169,8 @@ class RoleStateRecord extends PlayerCommonLogData {
     this.s_role_skill = undefined;
     this.s_phantom_battle_data = undefined;
     this.s_phantom_fetter_list = undefined;
+    this.i_main_page = 0;
+    this.i_sub_page = 0;
     this.i_role_id = t;
   }
 }
@@ -610,9 +613,19 @@ class SettingMenuLogEvent extends PlayerCommonLogData {
     this.i_advice_setting = 0;
     this.i_enemy_id = 0;
     this.i_filter_list = "";
+    this.i_image_mode = 0;
+    this.eyeprotect_mode = 0;
+    this.eyeprotect_list = "";
   }
 }
 exports.SettingMenuLogEvent = SettingMenuLogEvent;
+class DefaultFilterLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1805";
+  }
+}
+exports.DefaultFilterLogEvent = DefaultFilterLogEvent;
 class PlayFlowLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
@@ -1105,4 +1118,114 @@ class HoldHandSitDownLogEvent extends PlayerCommonLogData {
   }
 }
 exports.HoldHandSitDownLogEvent = HoldHandSitDownLogEvent;
+class AutoShowParallelDownloadConfirmBox extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1851";
+  }
+}
+exports.AutoShowParallelDownloadConfirmBox = AutoShowParallelDownloadConfirmBox;
+class ParallelDownloadConfirmBoxOperation extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1852";
+    this.i_type = 0;
+  }
+}
+exports.ParallelDownloadConfirmBoxOperation = ParallelDownloadConfirmBoxOperation;
+class UiInteractSpaceKeyLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1806";
+    this.i_type = 0;
+    this.i_status = 0;
+  }
+}
+exports.UiInteractSpaceKeyLogEvent = UiInteractSpaceKeyLogEvent;
+class UiInteractRouletteLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1808";
+    this.i_old_count = 0;
+    this.i_new_count = 0;
+    this.i_inst_id = 0;
+    this.i_cost_time = 0;
+    this.i_skill_id = 0;
+  }
+}
+exports.UiInteractRouletteLogEvent = UiInteractRouletteLogEvent;
+class UiInteractChatLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1809";
+    this.i_old_count = 0;
+    this.i_new_count = 0;
+    this.i_inst_id = 0;
+    this.i_cost_time = 0;
+    this.i_skill_id = 0;
+  }
+}
+exports.UiInteractChatLogEvent = UiInteractChatLogEvent;
+class RoleDevLogData extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1807";
+    this.i_role_id = 0;
+    this.i_role_type = 0;
+    this.i_main_page = 0;
+    this.i_sub_page = 0;
+  }
+}
+exports.RoleDevLogData = RoleDevLogData;
+class RoleSkillTreeLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1900";
+  }
+}
+exports.RoleSkillTreeLogEvent = RoleSkillTreeLogEvent;
+class RoleSkillInputLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1901";
+  }
+}
+exports.RoleSkillInputLogEvent = RoleSkillInputLogEvent;
+class FightPhotoTakePhotoLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1803";
+    this.inst_id = 0;
+    this.inst_diff = 0;
+    this.trace_id = "";
+    this.filter_id = 0;
+    this.photo_num = 0;
+    this.photo_status = 0;
+  }
+}
+exports.FightPhotoTakePhotoLogEvent = FightPhotoTakePhotoLogEvent;
+class FightPhotoTimeDilationLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1804";
+    this.inst_id = 0;
+    this.inst_diff = 0;
+    this.trace_id = "";
+  }
+}
+exports.FightPhotoTimeDilationLogEvent = FightPhotoTimeDilationLogEvent;
+class QuestViewEnterLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1910";
+  }
+}
+exports.QuestViewEnterLogEvent = QuestViewEnterLogEvent;
+class QuestTreeEnterLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1911";
+  }
+}
+exports.QuestTreeEnterLogEvent = QuestTreeEnterLogEvent;
 //# sourceMappingURL=LogReportDefine.js.map

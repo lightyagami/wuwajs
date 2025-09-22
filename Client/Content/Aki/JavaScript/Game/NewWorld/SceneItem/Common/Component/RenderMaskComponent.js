@@ -287,5 +287,5 @@ let RenderMaskComponent = RenderMaskComponent_1 = class RenderMaskComponent exte
     }
   }
 };
-RenderMaskComponent = RenderMaskComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(254)], RenderMaskComponent);
+RenderMaskComponent = RenderMaskComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], RenderMaskComponent);
 exports.RenderMaskComponent = RenderMaskComponent; //# sourceMappingURL=RenderMaskComponent.js.map

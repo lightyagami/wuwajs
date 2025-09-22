@@ -45,7 +45,7 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     } else if (FarmGoldController_1.FarmGoldController.CheckInFarmGold()) {
       await this.Z3l();
     } else if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower() && ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle()) {
-      await this.dzc();
+      await this.CZc();
     }
     for ([e, t] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreEnableMap()) {
       if (t) {
@@ -112,7 +112,7 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.dul.set("LinkScoreItem", e);
     await e.HideAsync();
   }
-  async dzc() {
+  async CZc() {
     var e = await this.NewDynamicChildViewByResourceId(this.RootItem, "UiItem_BurningTide", ShipTowerScoreItem_1.ShipTowerScoreItem);
     this.dul.set("ShipTowerScoreItem", e);
     await e.HideAsync();

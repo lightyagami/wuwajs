@@ -53,7 +53,7 @@ class PlayerInputHandle {
     this.gq1 = e => {
       this.mq1.EnableCustomInputData(e);
     };
-    this.j9u = e => {
+    this.N9u = e => {
       this.IsRecording = e;
     };
   }
@@ -66,7 +66,7 @@ class PlayerInputHandle {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MobileGamepadDisconnect, this.$Q_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisableCustomInputData, this.fq1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableCacheCustomInputData, this.gq1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableActionRecord, this.j9u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableActionRecord, this.N9u);
   }
   Clear() {
     this.eCe.Clear();
@@ -81,7 +81,7 @@ class PlayerInputHandle {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MobileGamepadDisconnect, this.$Q_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DisableCustomInputData, this.fq1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableCacheCustomInputData, this.gq1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableActionRecord, this.j9u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableActionRecord, this.N9u);
   }
   Tick(e) {
     this.tCe?.Tick(e);

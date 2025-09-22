@@ -89,7 +89,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
   }
   Vqo(t, e) {
     var i = new Set(e[0]);
-    var t = this.egd(t);
+    var t = this.uVd(t);
     if (t) {
       e = e[1];
       if (e === t[1]) {
@@ -114,15 +114,16 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     }
   }
   rNa(t, e) {
-    var i = [];
-    InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t).GetCurrentPlatformKeyNameList(i);
-    for (const r of i) {
-      if (e.has(r)) {
-        return r;
+    t = this.oNa(t);
+    if (t) {
+      for (const i of t) {
+        if (e.has(i)) {
+          return i;
+        }
       }
     }
   }
-  egd(t) {
+  uVd(t) {
     var e = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(t);
     if (e) {
       var i = [];
@@ -148,7 +149,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     }
   }
   CheckActionNameListInNavigation(t) {
-    var e = this.egd(t);
+    var e = this.uVd(t);
     if (e) {
       for (var [i, r] of this.Nqo) {
         if (t !== i) {

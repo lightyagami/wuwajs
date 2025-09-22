@@ -9,7 +9,6 @@ const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../Core/Net/Net");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const InstanceDungeonController_1 = require("../../../InstanceDungeon/InstanceDungeonController");
@@ -37,7 +36,7 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
     };
     this.z2e = e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15452);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17707);
         e = {
           ButtonTextId: "ConfirmBox_250_ButtonText_0",
           DescriptionTextId: undefined,
@@ -52,10 +51,10 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15452, this.z2e);
+    Net_1.Net.Register(17707, this.z2e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15452);
+    Net_1.Net.UnRegister(17707);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleSystemChangeRole, this.Y2e);
@@ -90,8 +89,8 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
   static RequestRoleInstanceReward(t) {
     var e = new Protocol_1.Aki.Protocol.xus();
     e.Q6n = t;
-    Net_1.Net.Call(21036, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25142), e = this.J2e())) {
+    Net_1.Net.Call(20643, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23740), e = this.J2e())) {
         e.SetRewardStateByRoleId(t, 2);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Activity", 37, "[角色试用活动]试用副本奖励领取成功", ["RoleId", t]);
@@ -110,11 +109,7 @@ class ActivityRoleTrialController extends ActivityControllerBase_1.ActivityContr
   }
   static PushRoleIntroductionViewDone() {
     var e = Protocol_1.Aki.Protocol.Wp_.create();
-    Net_1.Net.Send(16768, e);
-  }
-  static CheckInRoleTrail() {
-    var e;
-    return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), !(e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e))) && e.InstSubType === 40;
+    Net_1.Net.Send(17199, e);
   }
 }
 (exports.ActivityRoleTrialController = ActivityRoleTrialController).CurrentActivityId = 0;

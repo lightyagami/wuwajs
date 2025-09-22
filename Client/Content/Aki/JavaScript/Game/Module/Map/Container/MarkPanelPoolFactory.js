@@ -18,9 +18,6 @@ class MarkItemViewPoolFactory {
   static Get(t) {
     return this.J2t(t).Get();
   }
-  static Push(t, e) {
-    this.J2t(t).Push(e);
-  }
   static Recycle(t, e) {
     this.J2t(t).Recycle(e);
   }
@@ -45,13 +42,6 @@ class MarkItemViewPoolBase {
     if (this.Handles.length > 0) {
       return this.Handles.shift().Obj;
     }
-  }
-  Push(t) {
-    t = {
-      RecycleTimeStamp: Time_1.Time.ServerTimeStamp,
-      Obj: t
-    };
-    this.Handles.push(t);
   }
   Recycle(t) {
     t = {

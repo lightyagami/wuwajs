@@ -175,7 +175,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CanAutoPickUp(t) {
     var e;
-    return !!t?.Valid && !t.GetComponent(253)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(198))?.IsPawnInteractive() && (!!t.GetComponent(118)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
+    return !!t?.Valid && !t.GetComponent(254)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(198))?.IsPawnInteractive() && (!!t.GetComponent(118)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
   }
   GetOptionInstanceIdByIndex(t) {
     let e = t;

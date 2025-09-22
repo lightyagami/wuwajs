@@ -150,29 +150,38 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   }
   gqo(t = false) {
     var i;
-    var e = this.nqo.ApplicableType;
-    if (e === 0) {
+    var e;
+    var s = this.nqo.ApplicableType;
+    if (s === 0) {
       this.SetVisibleMode(64, true, true);
-    } else if (e === 1) {
+    } else if (s === 1) {
       this.SetVisibleMode(64, Info_1.Info.IsInKeyBoard(), t);
-    } else if (e === 2) {
+    } else if (s === 2) {
       this.SetVisibleMode(64, Info_1.Info.IsInGamepad(), t);
-    } else if (e === 3) {
-      i = Info_1.Info.IsInKeyBoard();
-      this.RootItem.SetAlpha(i ? 0 : 1);
+    } else if (s === 3) {
+      e = Info_1.Info.IsInKeyBoard();
+      this.RootItem.SetAlpha(e ? 0 : 1);
       this.SetVisibleMode(64, true, t);
       if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiNavigationHotKey", 10, "仅键鼠透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
       }
-    } else if (e === 4) {
-      i = Info_1.Info.IsInGamepad();
-      this.RootItem.SetAlpha(i ? 0 : 1);
+    } else if (s === 4) {
+      e = Info_1.Info.IsInGamepad();
+      this.RootItem.SetAlpha(e ? 0 : 1);
       this.SetVisibleMode(64, true, t);
       if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiNavigationHotKey", 10, "仅手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
       }
-    } else if (e === 5 && (i = Info_1.Info.IsInKeyBoard(), t = Info_1.Info.IsInGamepad(), this.RootItem.SetAlpha(i || t ? 0 : 1), this.SetVisibleMode(64, true, true), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog) && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiNavigationHotKey", 10, "键盘和手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
+    } else if (s === 5) {
+      e = Info_1.Info.IsInKeyBoard();
+      i = Info_1.Info.IsInGamepad();
+      this.RootItem.SetAlpha(e || i ? 0 : 1);
+      this.SetVisibleMode(64, true, true);
+      if (ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiNavigationHotKey", 10, "键盘和手柄透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
+      }
+    } else if (s === 6 && (e = Info_1.Info.IsInKeyBoard(), this.RootItem.SetAlpha(e ? 0 : 1), this.SetVisibleMode(64, e, t), ModelManager_1.ModelManager.UiNavigationModel.IsOpenLog) && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiNavigationHotKey", 87, "仅键鼠可用且透明,长按时不透明", ["配置id", this.HotKeyMapIndex], ["Tag", this.GetBindButtonTag()]);
     }
   }
   InitHotKeyLogicMode() {
@@ -183,6 +192,7 @@ class HotKeyComponent extends UiPanelBase_1.UiPanelBase {
   RegisterMe() {
     this.dde();
     this.gqo(true);
+    this.CurComponent?.RefreshPcAndGamepad();
     this.hqo();
   }
   UnRegisterMe() {

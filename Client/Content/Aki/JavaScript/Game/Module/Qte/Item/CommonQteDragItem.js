@@ -17,6 +17,7 @@ const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const CommonQteDragContext_1 = require("../CommonQte/CommonQteDragContext");
 const CommonQteItemBase_1 = require("./CommonQteItemBase");
+const GAMEPAD_ENHANCE_RATE = 1.43;
 class InputHandle {
   constructor() {
     this.Vector = Vector_1.Vector.Create();
@@ -26,19 +27,19 @@ class InputHandle {
 class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
   constructor() {
     super(...arguments);
-    this.YZu = undefined;
-    this.WZu = undefined;
+    this.PZu = undefined;
+    this.gQc = undefined;
     this.Qtt = undefined;
     this.fS1 = undefined;
     this.SPe = undefined;
     this.iIl = -1;
     this.NQa = false;
-    this.zZu = 0;
-    this.JZu = false;
+    this.DZu = 0;
+    this.xZu = false;
     this.fgt = 0;
     this.$G = new InputHandle();
-    this.Iod = false;
-    this.Tod = false;
+    this.Ead = false;
+    this.Iad = false;
     this.bzt = false;
     this.$xt = t => {
       if (t === "Start") {
@@ -49,52 +50,52 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
         this.Destroy();
       }
     };
-    this.X7c = (t, i) => {
+    this.BZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.$G.IsValid = true;
-        this.$G.Vector.X = i * this.zZu;
-        this.Iod = i !== 0;
-        this.bod(this.Iod || this.Tod);
+        this.$G.Vector.X = i * this.DZu * GAMEPAD_ENHANCE_RATE;
+        this.Ead = i !== 0;
+        this.Tad(this.Ead || this.Iad);
       }
     };
-    this.Y7c = (t, i) => {
+    this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.$G.IsValid = true;
-        this.$G.Vector.Y = -i * this.zZu;
-        this.Tod = i !== 0;
-        this.bod(this.Iod || this.Tod);
+        this.$G.Vector.Y = -i * this.DZu * GAMEPAD_ENHANCE_RATE;
+        this.Iad = i !== 0;
+        this.Tad(this.Ead || this.Iad);
       }
     };
-    this.z7c = undefined;
+    this.OZu = undefined;
     this.w8i = t => {
       if (this.IsValidInput() && this.NQa) {
-        this.z7c = t.GetLocalPointInPlane();
-        this.bod(true);
+        this.OZu = t.GetLocalPointInPlane();
+        this.Tad(true);
       }
     };
     this.B8i = t => {
       if (this.IsValidInput() && this.NQa) {
         if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1) {
-          this.z7c = undefined;
+          this.OZu = undefined;
           this.$G.IsValid = false;
         } else if (t = t.GetLocalPointInPlane()) {
-          this.$G.Vector.Y = t.Y - this.z7c.Y;
-          this.$G.Vector.X = t.X - this.z7c.X;
+          this.$G.Vector.Y = t.Y - this.OZu.Y;
+          this.$G.Vector.X = t.X - this.OZu.X;
         }
       }
     };
     this.b8i = t => {
       if (this.IsValidInput() && this.NQa) {
-        this.z7c = undefined;
+        this.OZu = undefined;
         this.$G.IsValid = false;
         this.$G.Vector.Reset();
-        this.bod(false);
+        this.Tad(false);
       }
     };
-    this.J7c = () => {
+    this.qZu = () => {
       this.$G.IsValid = true;
     };
-    this.Z7c = () => {
+    this.GZu = () => {
       this.$G.IsValid = false;
       this.$G.Vector.Reset();
     };
@@ -115,10 +116,10 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
   }
   OnStart() {
     super.OnStart();
-    this.YZu = this.GetButton(2).GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
-    this.WZu = this.GetSlider(5);
-    this.WZu?.SetValue(1);
-    this.WZu?.SetSelfInteractive(false);
+    this.PZu = this.GetButton(2).GetOwner().GetComponentByClass(UE.UIItem.StaticClass());
+    this.gQc = this.GetSlider(5);
+    this.gQc?.SetValue(1);
+    this.gQc?.SetSelfInteractive(false);
     this.GetItem(4)?.SetUIActive(false);
     this.GetText(3)?.SetUIActive(false);
     if (Info_1.Info.IsInTouch()) {
@@ -134,8 +135,8 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
     t.OnPointerDragCallBack.Bind(this.B8i);
     t.OnPointerEndDragCallBack.Bind(this.b8i);
     var t = this.GetButton(2);
-    t.OnPointDownCallBack.Bind(this.J7c);
-    t.OnPointUpCallBack.Bind(this.Z7c);
+    t.OnPointDownCallBack.Bind(this.qZu);
+    t.OnPointUpCallBack.Bind(this.GZu);
     this.SetUiActive(false);
   }
   OnBeforeDestroy() {
@@ -159,7 +160,7 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
       this.IsQteInteractive = false;
       if (i = t.GetUiConfig()) {
         this.IsQteInteractive = i.InteractiveTiming === 0;
-        this.zZu = i.SlideLength;
+        this.DZu = i.SlideLength;
         this.fgt = i.Direction;
       }
       i = i?.UIConfig.TextId;
@@ -219,15 +220,15 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
   HQa() {
     if (!this.NQa) {
       this.NQa = true;
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxisIgnoreLimit("UiTurn", this.X7c);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxisIgnoreLimit("UiLookUp", this.Y7c);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxisIgnoreLimit("UiTurn", this.BZu);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxisIgnoreLimit("UiLookUp", this.kZu);
     }
   }
   jQa() {
     if (this.NQa) {
       this.NQa = false;
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxisIgnoreLimit("UiTurn", this.X7c);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxisIgnoreLimit("UiLookUp", this.Y7c);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxisIgnoreLimit("UiTurn", this.BZu);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxisIgnoreLimit("UiLookUp", this.kZu);
     }
   }
   CommonQteEnd(t) {
@@ -245,7 +246,7 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
       this.ClearTickTimer();
     }
   }
-  bod(t) {
+  Tad(t) {
     if (t !== this.bzt) {
       if (this.bzt = t) {
         this.fS1?.Response();
@@ -267,29 +268,29 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
         } else {
           this.fS1.UpdateTime(t);
           if (!this.fS1.IsPermanent) {
-            this.WZu?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
+            this.gQc?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
           }
           if (this.$G.IsValid) {
-            this.JZu = false;
+            this.xZu = false;
             t = this.$G.Vector.Size2D();
             i = this.$G.Vector.HeadingAngle();
-            if (t < this.zZu) {
-              this.YZu.SetAnchorOffsetX(this.$G.Vector.X);
-              this.YZu.SetAnchorOffsetY(this.$G.Vector.Y);
+            if (t < this.DZu) {
+              this.PZu.SetAnchorOffsetX(this.$G.Vector.X);
+              this.PZu.SetAnchorOffsetY(this.$G.Vector.Y);
             } else {
-              s = this.zZu / t;
-              this.YZu.SetAnchorOffsetX(this.$G.Vector.X * s);
-              this.YZu.SetAnchorOffsetY(this.$G.Vector.Y * s);
+              s = this.DZu / t;
+              this.PZu.SetAnchorOffsetX(this.$G.Vector.X * s);
+              this.PZu.SetAnchorOffsetY(this.$G.Vector.Y * s);
             }
             this.fS1.SetDraggingInfo(t, i);
             if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
               this.Bfc();
             }
-          } else if (!this.JZu) {
+          } else if (!this.xZu) {
             this.$G.Vector.Reset();
-            this.JZu = true;
-            this.YZu.SetAnchorOffsetX(0);
-            this.YZu.SetAnchorOffsetY(0);
+            this.xZu = true;
+            this.PZu.SetAnchorOffsetX(0);
+            this.PZu.SetAnchorOffsetY(0);
           }
         }
       }

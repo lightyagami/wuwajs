@@ -15,14 +15,14 @@ const TowerDefenseHeadStateDynamicBatchView_1 = require("./TowerDefenseHeadState
 class TowerDefenseHeadStateManager {
   constructor() {
     this.rlt = new Map();
-    this.h9c = [];
-    this.l9c = [];
-    this._9c = [];
+    this.ZQu = [];
+    this.eKu = [];
+    this.tKu = [];
     this.tue = [];
-    this.u9c = undefined;
+    this.iKu = undefined;
     this.Hri = 0;
     this.Lin = 0;
-    this.c9c = undefined;
+    this.oYu = undefined;
   }
   Init() {
     this.Hri = CommonParamById_1.configCommonParamById.GetIntConfig("TowerDefenseHeadStateShowMaxDistance");
@@ -32,8 +32,8 @@ class TowerDefenseHeadStateManager {
     this.LoadDynamicBatchView();
   }
   LoadDynamicBatchView() {
-    this.c9c = new TowerDefenseHeadStateDynamicBatchView_1.TowerDefenseHeadStateDynamicBatchView();
-    this.c9c.CreateThenShowByResourceIdAsync("UiItem_TowerDefenseHPDynamicBatch", UiLayer_1.UiLayer.WorldSpaceUiRootItem, true);
+    this.oYu = new TowerDefenseHeadStateDynamicBatchView_1.TowerDefenseHeadStateDynamicBatchView();
+    this.oYu.CreateThenShowByResourceIdAsync("UiItem_TowerDefenseHPDynamicBatch", UiLayer_1.UiLayer.WorldSpaceUiRootItem, true);
   }
   AddEntity(e, t, i, s, o) {
     var r;
@@ -42,8 +42,8 @@ class TowerDefenseHeadStateManager {
       r.UpdatePosition(t);
       r.UpdateHp(s, i, o);
       this.rlt.set(e, r);
-      this.h9c.push(r);
-      this.l9c.push(r);
+      this.ZQu.push(r);
+      this.eKu.push(r);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseBattle", 17, "塔防怪物添加血条", ["entityId", e]);
       }
@@ -54,7 +54,7 @@ class TowerDefenseHeadStateManager {
     if (r) {
       r.UpdatePosition(t);
       if (r.UpdateHp(s, i, o)) {
-        this.l9c.push(r);
+        this.eKu.push(r);
       }
     } else {
       this.AddEntity(e, t, i, s, o);
@@ -62,19 +62,19 @@ class TowerDefenseHeadStateManager {
   }
   RemoveEntity(e) {
     var t = this.rlt.get(e);
-    if (t && (this.rlt.delete(e), this._9c.push(t), Log_1.Log.CheckDebug())) {
+    if (t && (this.rlt.delete(e), this.tKu.push(t), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("TowerDefenseBattle", 17, "塔防怪物移除血条", ["entityId", e]);
     }
   }
   Tick(e) {
-    for (const i of this.h9c) {
+    for (const i of this.ZQu) {
       i.ScaleCurve = this.GetScaleCurve();
     }
-    this.h9c.length = 0;
-    for (const s of this.l9c) {
+    this.ZQu.length = 0;
+    for (const s of this.eKu) {
       s.RefreshHpAndShield();
     }
-    this.l9c.length = 0;
+    this.eKu.length = 0;
     this.tue.length = 0;
     var t = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
     for (const o of this.rlt.values()) {
@@ -87,40 +87,40 @@ class TowerDefenseHeadStateManager {
         o.SetVisible(false);
       }
     }
-    for (const r of this._9c) {
+    for (const r of this.tKu) {
       r.Destroy();
     }
-    this._9c.length = 0;
-    if (this.c9c?.GetIsEnable() && (this.c9c.ClearDynamicBatchMesh(), this.tue.length > 0)) {
+    this.tKu.length = 0;
+    if (this.oYu?.GetIsEnable() && (this.oYu.ClearDynamicBatchMesh(), this.tue.length > 0)) {
       this.tue.sort((e, t) => t.DistanceSquared - e.DistanceSquared);
       for (let e = Math.max(this.tue.length - 15, 0); e < this.tue.length; e++) {
-        this.c9c.AddToDynamicBatchMesh(this.tue[e]);
+        this.oYu.AddToDynamicBatchMesh(this.tue[e]);
       }
       this.tue.length = 0;
     }
   }
   GetScaleCurve() {
     var e;
-    if (!this.u9c) {
+    if (!this.iKu) {
       e = CommonParamById_1.configCommonParamById.GetStringConfig("HeadStateScaleCurvePath");
-      this.u9c = ResourceSystem_1.ResourceSystem.Load(e, UE.CurveFloat);
+      this.iKu = ResourceSystem_1.ResourceSystem.Load(e, UE.CurveFloat);
     }
-    return this.u9c;
+    return this.iKu;
   }
   Clear() {
-    this.h9c.length = 0;
-    this.l9c.length = 0;
+    this.ZQu.length = 0;
+    this.eKu.length = 0;
     for (const e of this.rlt.values()) {
       e.Destroy();
     }
     this.rlt.clear();
-    for (const t of this._9c) {
+    for (const t of this.tKu) {
       t.Destroy();
     }
-    this._9c.length = 0;
-    this.u9c = undefined;
-    this.c9c?.Destroy();
-    this.c9c = undefined;
+    this.tKu.length = 0;
+    this.iKu = undefined;
+    this.oYu?.Destroy();
+    this.oYu = undefined;
   }
 }
 exports.TowerDefenseHeadStateManager = TowerDefenseHeadStateManager;

@@ -8,6 +8,7 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
+const PerformanceLimitByViewName_1 = require("../../Core/Define/ConfigQuery/PerformanceLimitByViewName");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const Platform_1 = require("../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../Common/Event/EventDefine");
@@ -79,7 +80,7 @@ class GameSettingsDeviceRender {
     this.DriverDate = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIDriverDate();
     this.IsAdreno = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileProfileName().includes("Adreno");
     this.HU1 = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceModel();
-    this.Lad = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceMake();
+    this.Nud = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceMake();
     this.CPUFrequency = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUFrequency();
     this.CPUCores = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUCores();
     this.CPUCoresIncludingHyperthreads = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUCoresIncludingHyperthreads();
@@ -89,9 +90,11 @@ class GameSettingsDeviceRender {
     if (UE.KuroFFXFSR3BlueprintLibrary.IsSupported() && (UE.KuroFFXFSR3BlueprintLibrary.DumpAMDGPUInfos(), UE.KuroFFXFSR3BlueprintLibrary.SupportFI())) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartLoadingState, GameSettingsDeviceRender.TempDisableFFXFIWhenLoading);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFinishLoadingState, GameSettingsDeviceRender.RecoverFFXFITempStateWhenLoading);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, GameSettingsDeviceRender.TempDisableFFXFIWhenSeqC);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, GameSettingsDeviceRender.RecoverFFXFITempStateFromSeqC);
     }
-    if (Info_1.Info.IsMobilePlatform() && !this.IsVulkanRHI() && this.Lad.includes("Xiaomi")) {
-      this.Aad = true;
+    if (Info_1.Info.IsMobilePlatform() && !this.IsVulkanRHI() && this.Nud.includes("Xiaomi")) {
+      this.Vud = true;
     }
     if (Platform_1.Platform.IsMobilePlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.UseClusteredDeferredShading -1");
@@ -346,22 +349,22 @@ class GameSettingsDeviceRender {
     return !!this.CPUBrand.includes("14900") || !!this.CPUBrand.includes("14790") || !!this.CPUBrand.includes("14700") || !!this.CPUBrand.includes("14650") || !!this.CPUBrand.includes("14600") || !!this.CPUBrand.includes("14500") || !!this.CPUBrand.includes("14490") || !!this.CPUBrand.includes("14450") || !!this.CPUBrand.includes("14400") || !!this.CPUBrand.includes("13980") || !!this.CPUBrand.includes("13950") || !!this.CPUBrand.includes("13905") || !!this.CPUBrand.includes("13900") || !!this.CPUBrand.includes("13800") || !!this.CPUBrand.includes("13790") || !!this.CPUBrand.includes("13705") || !!this.CPUBrand.includes("13700") || !!this.CPUBrand.includes("13650") || !!this.CPUBrand.includes("13620") || !!this.CPUBrand.includes("13600") || !!this.CPUBrand.includes("13500") || !!this.CPUBrand.includes("13490") || !!this.CPUBrand.includes("13450") || !!this.CPUBrand.includes("13400") || !!this.CPUBrand.includes("12950") || !!this.CPUBrand.includes("12900") || !!this.CPUBrand.includes("12850") || !!this.CPUBrand.includes("12800") || !!this.CPUBrand.includes("12700") || !!this.CPUBrand.includes("12650") || !!this.CPUBrand.includes("12600") || !!this.CPUBrand.includes("12500") || !!this.CPUBrand.includes("11980") || !!this.CPUBrand.includes("11950") || !!this.CPUBrand.includes("11900") || !!this.CPUBrand.includes("11850") || !!this.CPUBrand.includes("11800") || !!this.CPUBrand.includes("11700") || !!this.CPUBrand.includes("10980") || !!this.CPUBrand.includes("10940") || !!this.CPUBrand.includes("10920") || !!this.CPUBrand.includes("10900") || !!this.CPUBrand.includes("10885") || !!this.CPUBrand.includes("10875") || !!this.CPUBrand.includes("10870") || !!this.CPUBrand.includes("10850") || !!this.CPUBrand.includes("10700") || !!this.CPUBrand.includes("9980") || !!this.CPUBrand.includes("9940") || !!this.CPUBrand.includes("9920") || !!this.CPUBrand.includes("9900") || !!this.CPUBrand.includes("9880") || !!this.CPUBrand.includes("9820") || !!this.CPUBrand.includes("9800") || !!this.CPUBrand.includes("9-7900") || !!this.CPUBrand.includes("7-7820") || !!this.CPUBrand.includes("7-6900") || !!this.CPUBrand.includes("9-185") || !!this.CPUBrand.includes("7-165") || !!this.CPUBrand.includes("7-155") || !!this.CPUBrand.includes("5-135") || !!this.CPUBrand.includes("5-125") || !!this.CPUBrand.includes("9-3495") || !!this.CPUBrand.includes("9-3475") || !!this.CPUBrand.includes("7-3465") || !!this.CPUBrand.includes("7-3455") || !!this.CPUBrand.includes("7-3445") || !!this.CPUBrand.includes("5-3435") || !!this.CPUBrand.includes("5-3425") || !!this.CPUBrand.includes("7-1270") || !!this.CPUBrand.includes("7-1260") || !!this.CPUBrand.includes("5-1250") || !!this.CPUBrand.includes("5-1240") || !!this.CPUBrand.includes("9700") || !!this.CPUBrand.includes("9600") || !!this.CPUBrand.includes("8945") || !!this.CPUBrand.includes("8845") || !!this.CPUBrand.includes("8840") || !!this.CPUBrand.includes("8700") || !!this.CPUBrand.includes("7980") || !!this.CPUBrand.includes("7970") || !!this.CPUBrand.includes("7960") || !!this.CPUBrand.includes("7950") || !!this.CPUBrand.includes("7945") || !!this.CPUBrand.includes("7940") || !!this.CPUBrand.includes("7900") || !!this.CPUBrand.includes("7845") || !!this.CPUBrand.includes("7840") || !!this.CPUBrand.includes("7800") || !!this.CPUBrand.includes("7745") || !!this.CPUBrand.includes("7735") || !!this.CPUBrand.includes("7700") || !!this.CPUBrand.includes("6980") || !!this.CPUBrand.includes("6900") || !!this.CPUBrand.includes("6800") || !!this.CPUBrand.includes("5980") || !!this.CPUBrand.includes("5975") || !!this.CPUBrand.includes("5965") || !!this.CPUBrand.includes("5955") || !!this.CPUBrand.includes("5950") || !!this.CPUBrand.includes("5945") || !!this.CPUBrand.includes("5900") || !!this.CPUBrand.includes("5800") || !!this.CPUBrand.includes("5700") || !!this.CPUBrand.includes("4900") || !!this.CPUBrand.includes("4800") || !!this.CPUBrand.includes("4700") || !!this.CPUBrand.includes("3975") || !!this.CPUBrand.includes("3970") || !!this.CPUBrand.includes("3960") || !!this.CPUBrand.includes("3955") || !!this.CPUBrand.includes("3950") || !!this.CPUBrand.includes("3945") || !!this.CPUBrand.includes("3900") || !!this.CPUBrand.includes("3800") || !!this.CPUBrand.includes("3700") || !!this.CPUBrand.includes("2950") || !!this.CPUBrand.includes("2920") || !!this.CPUBrand.includes("2700") || !!this.CPUBrand.includes("1950") || !!this.CPUBrand.includes("1920") || !!this.CPUBrand.includes("1900") || !!this.CPUBrand.includes("1800") || !!this.CPUBrand.includes("1700") || !!this.CPUBrand.includes("Intel(R) Core(TM) i5-11600K") || !!this.CPUBrand.includes("Intel(R) Core(TM) i5-12490F") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 9 28") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 9 27") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 7 26") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 7 25") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 5 24") || !!this.CPUBrand.includes("Intel(R) Core(TM) Ultra 5 23") || !!this.CPUBrand.includes("AMD Ryzen 5 9") || !!this.CPUBrand.includes("AMD Ryzen 7 9") || !!this.CPUBrand.includes("AMD Ryzen 9 9") || !!this.CPUBrand.includes("AMD Ryzen 5 8600") || !!this.CPUBrand.includes("AMD Ryzen 7 7435H");
   }
   static IsFrameRate120DeviceForAllDevice() {
-    return Info_1.Info.IsPcOrGamepadPlatform() && GameSettingsDeviceRender.pku() || Info_1.Info.IsIosPlatform() && GameSettingsDeviceRender.vku() || Info_1.Info.IsMacPlatform() && GameSettingsDeviceRender.yku();
+    return Info_1.Info.IsPcOrGamepadPlatform() && GameSettingsDeviceRender.WOu() || Info_1.Info.IsIosPlatform() && GameSettingsDeviceRender.QOu() || Info_1.Info.IsMacPlatform() && GameSettingsDeviceRender.KOu();
   }
-  static vku() {
+  static QOu() {
     return Info_1.Info.PlatformType === 1 && this.DeviceScore > 500;
   }
-  static yku() {
+  static KOu() {
     return Info_1.Info.PlatformType === 4 && this.DeviceScore > 500;
   }
-  static R_d() {
+  static Zfd() {
     return !!this.CPUBrand.includes("AMD") && !!this.CPUBrand.includes("X3D");
   }
-  static pku() {
+  static WOu() {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "判断IsFrameRate120Device", ["this.CPUFrequency", this.CPUFrequency], ["this.CPUCoresIncludingHyperthreads", this.CPUCoresIncludingHyperthreads], ["this.AMDX3DCPU", this.R_d()], ["this.IsLaptopCPU", this.IsLaptopCPU()], ["this.Is120FrameGPU", this.Is120FrameGPU()]);
+      Log_1.Log.Info("Render", 68, "判断IsFrameRate120Device", ["this.CPUFrequency", this.CPUFrequency], ["this.CPUCoresIncludingHyperthreads", this.CPUCoresIncludingHyperthreads], ["this.AMDX3DCPU", this.Zfd()], ["this.IsLaptopCPU", this.IsLaptopCPU()], ["this.Is120FrameGPU", this.Is120FrameGPU()]);
     }
-    return (!!(this.CPUFrequency >= 3000) && !!(this.CPUCoresIncludingHyperthreads >= 16) || !!this.R_d() || !!this.IsLaptopCPU()) && !!this.Is120FrameGPU();
+    return (!!(this.CPUFrequency >= 3000) && !!(this.CPUCoresIncludingHyperthreads >= 16) || !!this.Zfd() || !!this.IsLaptopCPU()) && !!this.Is120FrameGPU();
   }
   static IsAndroidHighestResolutionDevice() {
     return this.DeviceType === 24;
@@ -376,18 +379,10 @@ class GameSettingsDeviceRender {
     return false;
   }
   static IsIRXActive() {
-    return Info_1.Info.PlatformType === 2 && UE.PWSDKInterfaceBP.GetDeviceIRXState() === 2;
+    return false;
   }
-  static TurnOffIRX() {
-    if (this.IsPWSDKDevice()) {
-      UE.PWSDKInterfaceBP.TurnOffSRAndFRC();
-    }
-  }
-  static TurnOnIRX() {
-    if (this.IsPWSDKDevice()) {
-      UE.PWSDKInterfaceBP.TurnOnSRAndFRC();
-    }
-  }
+  static TurnOffIRX() {}
+  static TurnOnIRX() {}
   static IsNvidiaDlessPluginLoaded() {
     return UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.NGX.Enable") === 1;
   }
@@ -431,7 +426,7 @@ class GameSettingsDeviceRender {
           Log_1.Log.Warn("Render", 64, "非AMD RX系列，或者型号解析不出来，不能开启光追");
         }
         return false;
-      } else if (MathUtils_1.MathUtils.InRangeArray(e, [6700, 6799]) || MathUtils_1.MathUtils.InRangeArray(e, [7600, 7699]) || MathUtils_1.MathUtils.InRangeArray(e, [9000, 9999])) {
+      } else if (MathUtils_1.MathUtils.InRangeArray(e, [6700, 6799]) || MathUtils_1.MathUtils.InRangeArray(e, [7600, 7699])) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Render", 64, "AMD RX 某些型号不支持光追");
         }
@@ -690,12 +685,12 @@ class GameSettingsDeviceRender {
         Log_1.Log.Info("Game", 47, "EnableDLSSG 0");
       }
     } else if (this.Xn_ && (this.ApplyFrameRate(0), this.IsRTX50() ? e === 1 ? UE.StreamlineLibraryDLSSG.SetDLSSGMode(17) : e === 2 ? UE.StreamlineLibraryDLSSG.SetDLSSGMode(23) : e === 3 && UE.StreamlineLibraryDLSSG.SetDLSSGMode(31) : UE.StreamlineLibraryDLSSG.SetDLSSGMode(251), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Game", 47, "EnableDLSSG", ["Mode", this._dd]);
+      Log_1.Log.Info("Game", 47, "EnableDLSSG", ["Mode", this.uLd]);
     }
   }
   static EnableDLSSG(e) {
     this.Xn_ = e !== 0;
-    if ((this._dd = e) === 0) {
+    if ((this.uLd = e) === 0) {
       UE.StreamlineLibraryReflex.SetReflexMode(0);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 47, "SetReflexMode 0");
@@ -716,7 +711,7 @@ class GameSettingsDeviceRender {
     }
   }
   static CancelTemporaryDisableDLSSG(e) {
-    if (GameSettingsDeviceRender.IsDlss3GpuDevice() && GameSettingsDeviceRender.IsNvidiaStreamlinePluginLoaded() && (this.cZ_.delete(e), this.cZ_.size === 0 && GameSettingsDeviceRender.IsEnableDLSSG() && GameSettingsDeviceRender.ApplyDLSSG(this._dd), Log_1.Log.CheckInfo())) {
+    if (GameSettingsDeviceRender.IsDlss3GpuDevice() && GameSettingsDeviceRender.IsNvidiaStreamlinePluginLoaded() && (this.cZ_.delete(e), this.cZ_.size === 0 && GameSettingsDeviceRender.IsEnableDLSSG() && GameSettingsDeviceRender.ApplyDLSSG(this.uLd), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Functional", 47, "recover DLSSG", ["key", e], ["num", this.cZ_.size]);
     }
   }
@@ -769,7 +764,7 @@ class GameSettingsDeviceRender {
         e = false;
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Render", 91, "ToggleFFXFIStateTemporarily", ["currMode", s], ["applyMode", t], ["result", e], ["bRecover", i], ["defaultState", a]);
+        Log_1.Log.Debug("Render", 91, "ToggleFFXFIStateTemporarily", ["currMode", GameSettingsUtils_2.EFFXFIApplyMode[s]], ["applyMode", GameSettingsUtils_2.EFFXFIApplyMode[t]], ["result", e], ["bRecover", i], ["defaultState", a]);
       }
     }
   }
@@ -783,45 +778,55 @@ class GameSettingsDeviceRender {
       GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_2.EFFXFIApplyMode.Loading, true);
     }
   }
+  static TempDisableFFXFIWhenSeqC() {
+    if (GameSettingsDeviceRender.IsFFXFISupported()) {
+      GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_2.EFFXFIApplyMode.SeqC, false);
+    }
+  }
+  static RecoverFFXFITempStateFromSeqC() {
+    if (GameSettingsDeviceRender.IsFFXFISupported()) {
+      GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_2.EFFXFIApplyMode.SeqC, true);
+    }
+  }
   static EnableXeSS(e) {
     if (e) {
-      this.igd += 1;
+      this.wVd += 1;
     } else {
-      --this.igd;
+      --this.wVd;
     }
-    if (this.igd > 0) {
+    if (this.wVd > 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeSS.Enabled 1");
     } else {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeSS.Enabled 0");
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 0, "EnableXeSS", ["XessEnabled", this.igd]);
+      Log_1.Log.Debug("Game", 0, "EnableXeSS", ["XessEnabled", this.wVd]);
     }
   }
   static EnableXeFG(e) {
     if (e) {
-      this.rgd += 1;
+      this.LVd += 1;
     } else {
-      --this.rgd;
+      --this.LVd;
     }
-    if (this.rgd > 0) {
+    if (this.LVd > 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeFG.Enabled 1");
     } else {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeFG.Enabled 0");
     }
-    GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.igd > 0 && this.rgd > 0);
+    GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.wVd > 0 && this.LVd > 0);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 0, "EnableXeFG", ["XefgEnabled", this.rgd]);
+      Log_1.Log.Debug("Game", 0, "EnableXeFG", ["XefgEnabled", this.LVd]);
     }
   }
   static TemporaryDisableXefg(e) {
-    if (GameSettingsDeviceRender.IsXess2Supported() && (this.ogd.size == 0 && this.EnableXeFG(false), this.ogd.set(e, 1), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Functional", 47, "disable XeFG temploary", ["key", e], ["num", this.ogd.size]);
+    if (GameSettingsDeviceRender.IsXess2Supported() && (this.PVd.size == 0 && this.EnableXeFG(false), this.PVd.set(e, 1), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Functional", 47, "disable XeFG temploary", ["key", e], ["num", this.PVd.size]);
     }
   }
   static CancelTemporaryDisableXefg(e) {
-    if (this.ogd.has(e) && GameSettingsDeviceRender.IsXess2Supported() && (this.ogd.delete(e), this.ogd.size == 0 && this.EnableXeFG(true), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Functional", 47, "enable XeFG temploary", ["key", e], ["num", this.ogd.size]);
+    if (this.PVd.has(e) && GameSettingsDeviceRender.IsXess2Supported() && (this.PVd.delete(e), this.PVd.size == 0 && this.EnableXeFG(true), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Functional", 47, "enable XeFG temploary", ["key", e], ["num", this.PVd.size]);
     }
   }
   static TemporaryDisableFrameGeneration(e) {
@@ -855,10 +860,10 @@ class GameSettingsDeviceRender {
   static ApplyFrameRate(e) {
     let t = 0;
     let i = 0;
-    if (e > 0 && (this.BNa = MathUtils_1.MathUtils.Clamp(e, 24, 120), this.IsIRXActive() && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IRX) === 1 && (this.BNa = 30), this.bNa = 1 / this.BNa, t = this.BNa, this.yve > 0 && (t = this.yve), i = t, Info_1.Info.IsMobilePlatform()) && (s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSupportedRefreshRates(), this.Nxu && (t *= 2), t < s.Get(0))) {
+    if (e > 0 && (this.BNa = MathUtils_1.MathUtils.Clamp(e, 24, 120), this.bNa = 1 / this.BNa, t = this.BNa, this.yve > 0 && (t = this.yve), i = t, Info_1.Info.IsMobilePlatform()) && (s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSupportedRefreshRates(), this.Nxu && (t *= 2), t < s.Get(0))) {
       t = s.Get(0);
     }
-    if (this.Aad) {
+    if (this.Vud) {
       t = 60;
     }
     var s = UE.GameUserSettings.GetGameUserSettings();
@@ -993,9 +998,12 @@ class GameSettingsDeviceRender {
     }
   }
   static ApplyPerformanceLimit(e) {
-    var t;
-    if (GameSettingsDeviceRenderDefine_1.performanceLimitConfigs.has(e) && (t = GameSettingsDeviceRenderDefine_1.performanceLimitConfigs.get(e))) {
-      this.PerformanceLimitRunning.set(e, t);
+    var t = PerformanceLimitByViewName_1.configPerformanceLimitByViewName.GetConfig(e);
+    if (t) {
+      this.PerformanceLimitRunning.set(e, {
+        FrameLimit: t.FrameLimit,
+        CacheWorldFrame: t.CacheWorldFrame
+      });
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Game", 47, "performanceControl:ApplyPerformanceLimit", ["source", e], ["frameLimit", t.FrameLimit], ["cacheWorldFrame", t.CacheWorldFrame]);
       }
@@ -1055,8 +1063,8 @@ GameSettingsDeviceRender.RNa = "";
 GameSettingsDeviceRender.UNa = "";
 GameSettingsDeviceRender.DeviceScore = 0;
 GameSettingsDeviceRender.LowMemoryDeviceMark = 0;
-GameSettingsDeviceRender.Lad = "";
-GameSettingsDeviceRender.Aad = false;
+GameSettingsDeviceRender.Nud = "";
+GameSettingsDeviceRender.Vud = false;
 GameSettingsDeviceRender.xNa = "";
 GameSettingsDeviceRender.PNa = 0;
 GameSettingsDeviceRender.DeviceType = 14;
@@ -1067,7 +1075,7 @@ GameSettingsDeviceRender.Vve = undefined;
 GameSettingsDeviceRender.yve = 0;
 GameSettingsDeviceRender.BNa = 0;
 GameSettingsDeviceRender.Xn_ = false;
-GameSettingsDeviceRender._dd = 0;
+GameSettingsDeviceRender.uLd = 0;
 GameSettingsDeviceRender.NQ1 = false;
 GameSettingsDeviceRender.Nxu = false;
 GameSettingsDeviceRender.bNa = -0;
@@ -1077,6 +1085,6 @@ GameSettingsDeviceRender.InCacheSceneColorMode = 0;
 GameSettingsDeviceRender.Gsc = new Map();
 GameSettingsDeviceRender.cZ_ = new Map();
 GameSettingsDeviceRender.VQ1 = new Map();
-GameSettingsDeviceRender.igd = 0;
-GameSettingsDeviceRender.rgd = 0;
-GameSettingsDeviceRender.ogd = new Map(); //# sourceMappingURL=GameSettingsDeviceRender.js.map
+GameSettingsDeviceRender.wVd = 0;
+GameSettingsDeviceRender.LVd = 0;
+GameSettingsDeviceRender.PVd = new Map(); //# sourceMappingURL=GameSettingsDeviceRender.js.map

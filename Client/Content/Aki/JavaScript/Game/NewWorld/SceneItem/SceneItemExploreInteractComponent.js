@@ -513,7 +513,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         var n = this.Bi_.HitResult.Actors.Get(t);
         if (n !== undefined) {
           let t = undefined;
-          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(267);
+          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(268);
           if (!t || !n) {
             return true;
           }
@@ -594,7 +594,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     n.Normalize();
     let o = MathUtils_1.MathUtils.MaxFloat;
     for (const _ of this.DKo) {
-      var r = _.Entity?.GetComponent(267);
+      var r = _.Entity?.GetComponent(268);
       if (r !== undefined && !r.EntityInSocket && r.TryMatch(this.AttachParent.Entity)) {
         var s = _.Entity?.GetComponent(203);
         if (s !== undefined) {

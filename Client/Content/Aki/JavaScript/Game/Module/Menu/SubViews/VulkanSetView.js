@@ -21,27 +21,27 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.NOe = -1;
-    this.vZu = -1;
-    this.yZu = undefined;
+    this.Q8u = -1;
+    this.K8u = undefined;
     this.bs_ = undefined;
-    this.SZu = undefined;
+    this.X8u = undefined;
     this.xqe = undefined;
-    this.MZu = () => {
+    this.Y8u = () => {
       var e = new SetItem();
-      e.CallbackClickItem = this.EZu;
+      e.CallbackClickItem = this.z8u;
       return e;
     };
-    this.EZu = e => {
-      this.vZu = e.Value;
+    this.z8u = e => {
+      this.Q8u = e.Value;
       this.xqe.SelectGridProxy(e.Index);
-      this.GetItem(4).SetUIActive(this.kmd());
+      this.GetItem(4).SetUIActive(this.Qqd());
     };
     this.rki = () => {
       this.CloseMe();
     };
     this.p5t = () => {
-      if (!(this.vZu < 0)) {
-        GameSettingsManager_1.GameSettingsManager.HandleValueChange(vulkanFunctionId, this.vZu, 1);
+      if (!(this.Q8u < 0)) {
+        GameSettingsManager_1.GameSettingsManager.HandleValueChange(vulkanFunctionId, this.Q8u, 1);
         this.CloseMe();
       }
     };
@@ -51,15 +51,15 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     var e = [];
-    this.yZu = new ButtonItem_1.ButtonItem();
-    e.push(this.yZu.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
-    this.yZu.SetFunction(this.rki);
+    this.K8u = new ButtonItem_1.ButtonItem();
+    e.push(this.K8u.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    this.K8u.SetFunction(this.rki);
     this.bs_ = new ButtonItem_1.ButtonItem();
     e.push(this.bs_.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.bs_.SetFunction(this.p5t);
-    this.SZu = new TipsItem();
-    e.push(this.SZu.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
-    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.MZu);
+    this.X8u = new TipsItem();
+    e.push(this.X8u.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
+    this.xqe = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.Y8u);
     var t = this.Fq();
     e.push(this.xqe.RefreshByDataAsync(t));
     await Promise.all(e);
@@ -76,7 +76,7 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
       r = n.indexOf(e);
     }
     this.NOe = r;
-    this.vZu = e;
+    this.Q8u = e;
     for (let e = 0; e < s.length; e++) {
       t.push({
         Index: e,
@@ -87,11 +87,11 @@ class VulkanSetView extends UiViewBase_1.UiViewBase {
     return t;
   }
   OnBeforeShow() {
-    this.GetItem(4).SetUIActive(this.kmd());
+    this.GetItem(4).SetUIActive(this.Qqd());
     this.xqe.SelectGridProxy(this.NOe);
   }
-  kmd() {
-    var e = mobileRhiNameList[this.vZu];
+  Qqd() {
+    var e = mobileRhiNameList[this.Q8u];
     var t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("GameSettings", 64, "当前选中的RHI是", ["chosen", e], ["using", t]);
@@ -105,7 +105,7 @@ class SetItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Pe = undefined;
     this.CallbackClickItem = undefined;
-    this.EZu = () => {
+    this.z8u = () => {
       if (this.Pe && this.CallbackClickItem) {
         this.CallbackClickItem(this.Pe);
       }
@@ -113,7 +113,7 @@ class SetItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
-    this.BtnBindInfo = [[0, this.EZu]];
+    this.BtnBindInfo = [[0, this.z8u]];
   }
   Refresh(e, t, i) {
     this.Pe = e;

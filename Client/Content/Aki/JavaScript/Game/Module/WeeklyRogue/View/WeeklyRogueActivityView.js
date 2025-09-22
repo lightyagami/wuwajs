@@ -29,7 +29,10 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
     this.eel = undefined;
     this.ZAt = undefined;
     this.j3 = undefined;
-    this.Y$c = 0;
+    this.eHu = 0;
+    this.h9d = () => {
+      this.eel?.RefreshScore();
+    };
     this.oEc = () => {
       var e = () => {
         this.CloseMe();
@@ -81,7 +84,7 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel?.ActivityDataNew;
     if (e) {
       this.ActivityBaseData = e;
-      this.Y$c = e.CycleId;
+      this.eHu = e.CycleId;
       this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
       this.eel = new WeekyRogueScoreItem_1.WeeklyRogueScoreItem();
       this.AddChild(this.eel);
@@ -109,12 +112,14 @@ class WeeklyRogueActivityView extends UiViewBase_1.UiViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.h9d);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot, this.h9d);
   }
   OnBeforeShow() {
-    if (this.Y$c !== this.ActivityBaseData.CycleId) {
+    if (this.eHu !== this.ActivityBaseData.CycleId) {
       this.oEc();
     }
     this.u3e();

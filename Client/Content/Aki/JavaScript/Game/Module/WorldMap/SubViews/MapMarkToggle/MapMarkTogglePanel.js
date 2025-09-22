@@ -5,16 +5,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MapMarkTogglePanel = undefined;
 const UE = require("ue");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const WorldMapSecondaryUi_1 = require("../../ViewComponent/WorldMapSecondaryUi");
 const MapMarkToggleItem_1 = require("../MapMarkToggle/MapMarkToggleItem");
+const MapMarkProgressItem_1 = require("./MapMarkProgressItem");
 class MapMarkTogglePanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
   constructor() {
     super(...arguments);
     this.zJa = undefined;
     this.bNl = undefined;
+    this.pld = undefined;
     this.qNl = () => {
       if (ModelManager_1.ModelManager.WorldMapModel.CustomMarksIsShow) {
         return 1;
@@ -31,18 +34,22 @@ class MapMarkTogglePanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
       }
     };
     this.ONl = e => ModelManager_1.ModelManager.WorldMapModel.SetCompletedPlayPointMarkShow(e === 1);
+    this.vld = e => {
+      ModelManager_1.ModelManager.WorldMapModel?.SetJoystickClickMultiplier(e);
+    };
   }
   GetResourceId() {
     return "UiView_MapPopupAssistant";
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem], [3, UE.UIVerticalLayout], [4, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.zJa.SetCloseCallBack(this.Close);
     this.bNl = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), () => new MapMarkToggleItem_1.MapMarkToggleItem());
-    await this.bNl.RefreshByDataAsync(this.NNl());
+    this.pld = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), () => new MapMarkProgressItem_1.MapMarkProgressItem());
+    await Promise.all([this.bNl.RefreshByDataAsync(this.NNl()), this.pld.RefreshByDataAsync(this.yld())]);
   }
   OnShowWorldMapSecondaryUi() {}
   OnCloseWorldMapSecondaryUi() {}
@@ -66,6 +73,15 @@ class MapMarkTogglePanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
       SetToggleStateCallback: this.ONl
     });
     return e;
+  }
+  yld() {
+    return [{
+      NameId: "GamePadMark_Text",
+      Progress: ModelManager_1.ModelManager.WorldMapModel.JoystickClickMultiplier,
+      ProgressMax: CommonParamById_1.configCommonParamById.GetFloatConfig("MapJoystickClickMaxMultiplier"),
+      ProgressMin: 0,
+      SetProgressCallback: this.vld
+    }];
   }
 }
 exports.MapMarkTogglePanel = MapMarkTogglePanel;

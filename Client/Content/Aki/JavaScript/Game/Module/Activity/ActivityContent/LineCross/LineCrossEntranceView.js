@@ -24,7 +24,7 @@ const LineCrossDetailViewModel_1 = require("./LineCrossDetailViewModel");
 class LineCrossEntranceView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Ied = undefined;
+    this.kid = undefined;
     this.lqe = undefined;
     this.ScrollView = undefined;
     this.Bqe = () => {
@@ -38,7 +38,7 @@ class LineCrossEntranceView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.Ied = this.OpenParam;
+    this.kid = this.OpenParam;
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetTitle(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("LineCrossTitle") ?? "");
     this.lqe.SetHelpBtnActive(true);
@@ -53,19 +53,19 @@ class LineCrossEntranceView extends UiViewBase_1.UiViewBase {
     this.bqe();
   }
   async bqe() {
-    var i = ModelManager_1.ModelManager.LineCrossModel.GetShowGroupList(this.Ied.Id);
+    var i = ModelManager_1.ModelManager.LineCrossModel.GetShowGroupList(this.kid.Id);
     var e = [];
     for (const o of i) {
       var t = new ItemData();
       t.GroupId = o;
-      t.Data = this.Ied;
+      t.Data = this.kid;
       e.push(t);
     }
     await this.ScrollView?.RefreshByDataAsync(e, true);
     var r = i.length;
     let s = 0;
     for (let e = 0; e < r; e++) {
-      if (!ModelManager_1.ModelManager.LineCrossModel.GetGroupRewardState(this.Ied.Id, i[e])) {
+      if (!ModelManager_1.ModelManager.LineCrossModel.GetGroupRewardState(this.kid.Id, i[e])) {
         s = e;
         break;
       }
@@ -78,7 +78,7 @@ class LineCrossEntranceView extends UiViewBase_1.UiViewBase {
     });
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Ied.Id);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.kid.Id);
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     if (e.length !== 0 && e[0] === "FirstLevel" && (e = this.ScrollView?.GetItemByIndex(0))) {
@@ -99,7 +99,7 @@ class LineCrossItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.CurrentData = undefined;
-    this.Ted = undefined;
+    this.Oid = undefined;
     this.YP = () => {
       var e = this.CurrentData.Data.Id;
       var i = this.CurrentData.GroupId;
@@ -118,8 +118,8 @@ class LineCrossItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[0, this.YP]];
   }
   async OnBeforeStartAsync() {
-    this.Ted = new LineCrossClawItem_1.LineCrossClawItem();
-    await this.Ted.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
+    this.Oid = new LineCrossClawItem_1.LineCrossClawItem();
+    await this.Oid.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
   }
   Refresh(e, i, t) {
     this.CurrentData = e;
@@ -127,32 +127,32 @@ class LineCrossItem extends GridProxyAbstract_1.GridProxyAbstract {
     var s = ModelManager_1.ModelManager.LineCrossModel.GetIfHiddenGroup(e.Data.Id, e.GroupId);
     switch (r) {
       case 0:
-        this.fed();
+        this.Eid();
         break;
       case 1:
-        this.ged();
+        this.Iid();
         break;
       case 2:
         this.Rxt();
         break;
       default:
-        this.fed();
+        this.Eid();
     }
     this.Wbe(e.GroupId);
     this.Qbe(r, e);
-    this.bed(t);
+    this.qid(t);
     this.v9i(r === 2);
     this.BNe(e.GroupId);
-    this.wed(s, r);
+    this.Gid(s, r);
   }
-  wed(e, i) {
-    this.Ted.Refresh(e, i);
+  Gid(e, i) {
+    this.Oid.Refresh(e, i);
   }
   BNe(e) {
     RedDotController_1.RedDotController.UnBindGivenUi("LineCrossGroupRedDot", this.GetItem(9), e);
     RedDotController_1.RedDotController.BindRedDot("LineCrossGroupRedDot", this.GetItem(9), undefined, e);
   }
-  bed(e) {
+  qid(e) {
     this.GetText(6).SetText((e + 1).toString());
   }
   v9i(e) {
@@ -179,13 +179,13 @@ class LineCrossItem extends GridProxyAbstract_1.GridProxyAbstract {
     e = ConfigManager_1.ConfigManager.LineCrossConfig.GetLineCrossGroupByGroupId(e).Name;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e);
   }
-  fed() {
+  Eid() {
     this.GetTexture(1).SetColor(UE.Color.FromHex("3c187d"));
     this.GetSprite(3).SetColor(UE.Color.FromHex("a591b7"));
     this.GetText(5).SetColor(UE.Color.FromHex("ffffff"));
     this.GetSprite(8).SetColor(UE.Color.FromHex("ffffff"));
   }
-  ged() {
+  Iid() {
     this.GetTexture(1).SetColor(UE.Color.FromHex("1a5e45"));
     this.GetSprite(3).SetColor(UE.Color.FromHex("84c991"));
     this.GetText(5).SetColor(UE.Color.FromHex("93de9e"));

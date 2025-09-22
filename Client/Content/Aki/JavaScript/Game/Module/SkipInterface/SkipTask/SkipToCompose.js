@@ -11,17 +11,27 @@ const UiManager_1 = require("../../../Ui/UiManager");
 const ComposeDefine_1 = require("../../Manufacture/Compose/ComposeDefine");
 const SkipTask_1 = require("./SkipTask");
 class SkipToCompose extends SkipTask_1.SkipTask {
-  OnRun(e, i, n, a) {
-    e = Number(e);
+  OnRun(e, n, i, a) {
+    var r;
+    var e = Number(e);
     if (UiManager_1.UiManager.IsViewShow("ComposeCarryOnView")) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSwitchType, e, a);
       if (UiManager_1.UiManager.IsViewShow("ItemTipsView")) {
         UiManager_1.UiManager.CloseView("ItemTipsView");
       }
     } else {
-      (a = new ComposeDefine_1.ComposeViewOpenData()).Type = e;
-      a.SelectData = ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem;
-      UiManager_1.UiManager.OpenView("ComposeCarryOnView", a);
+      (r = new ComposeDefine_1.ComposeViewOpenData()).Type = e;
+      if (ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem) {
+        r.SelectData = ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem;
+      } else {
+        r.SelectData = {
+          ItemId: a,
+          IncId: 0,
+          Count: 0,
+          SelectedCount: 0
+        };
+      }
+      UiManager_1.UiManager.OpenView("ComposeCarryOnView", r);
       ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem = undefined;
       if (UiManager_1.UiManager.IsViewShow("ItemTipsView")) {
         UiManager_1.UiManager.CloseView("ItemTipsView");

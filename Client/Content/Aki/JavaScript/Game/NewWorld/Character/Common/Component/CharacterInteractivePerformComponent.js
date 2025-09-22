@@ -136,7 +136,7 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
     }
   }
   CanResponseForHandInSeat() {
-    return !!this.Entity.GetComponent(29)?.IsSitDown && !!this.Entity.GetComponent(297)?.IsSitDownWithHoldingHands();
+    return !!this.Entity.GetComponent(29)?.IsSitDown && !!this.Entity.GetComponent(298)?.IsSitDownWithHoldingHands();
   }
   AddRequestSignal(t) {
     this.RequestCacheList.set(t.Signal, t);
@@ -223,5 +223,5 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
     }
   }
 };
-CharacterInteractivePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(299)], CharacterInteractivePerformComponent);
+CharacterInteractivePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(300)], CharacterInteractivePerformComponent);
 exports.CharacterInteractivePerformComponent = CharacterInteractivePerformComponent; //# sourceMappingURL=CharacterInteractivePerformComponent.js.map

@@ -51,11 +51,15 @@ class I18nUtils {
           e = o.Th;
         }
         if (e) {
-          if (StringUtils_1.StringUtils.IsEmpty(o.HandleType) || o.HandleType !== "main_player") {
-            return e;
-          } else {
-            return this.rW1(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
+          if (!StringUtils_1.StringUtils.IsEmpty(o.HandleType)) {
+            if (o.HandleType === "main_player") {
+              return this.rW1(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
+            }
+            if (o.HandleType === "main_player_new") {
+              return this.U2d(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
+            }
           }
+          return e;
         }
       }
     }
@@ -74,6 +78,14 @@ class I18nUtils {
       return "";
     } else {
       return e.replace(/\{Male:(.*?),Female:(.*?)\}/g, (e, o, n) => i ? o : n);
+    }
+  }
+  static U2d(e, o) {
+    if (StringUtils_1.StringUtils.IsEmpty(e)) {
+      return "";
+    } else {
+      e = /\{Male:(?<quote1>['"])(?<maleText>.*?)\1,Female:(?<quote2>['"])(?<femaleText>.*?)\3\}/g.exec(e);
+      return (o ? e?.groups?.maleText : e?.groups?.femaleText) ?? "";
     }
   }
   static SetRenderComponentTextByTextId(e, o) {

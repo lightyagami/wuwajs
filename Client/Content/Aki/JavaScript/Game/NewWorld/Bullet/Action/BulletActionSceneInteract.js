@@ -26,7 +26,7 @@ class BulletActionSceneInteract extends BulletActionBase_1.BulletActionBase {
     var e;
     var t;
     var s = this.BulletInfo.BulletDataMain;
-    if (s.Interact.IsSceneInteract) {
+    if (s.Interact.IsSceneInteract && ModelManager_1.ModelManager.SceneBattleInteractModel.Open) {
       if (this.BulletInfo.CollisionInfo.CollisionComponent) {
         s = ResourceSystem_1.ResourceSystem.Load(s.Interact.SceneInteract, UE.BP_SceneBattleInteract_C);
         if (e = ModelManager_1.ModelManager.SceneBattleInteractModel.CreateSceneBattleInteract(s, this.eoc())) {

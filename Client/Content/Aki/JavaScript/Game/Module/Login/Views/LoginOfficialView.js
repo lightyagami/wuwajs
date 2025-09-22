@@ -35,6 +35,7 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 const LoginDefine_1 = require("../Data/LoginDefine");
 const LoginServerController_1 = require("../LoginServerController");
 const LoginAgeTipView_1 = require("./LoginAgeTipView");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 class LoginOfficialView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -49,59 +50,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       }
     };
     this.HEi = () => {
-      if (this.VEi) {
-        if (ModelManager_1.ModelManager.LoginModel.IsSdkLoggingIn()) {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮-重复点击SDK登录");
-          }
-        } else {
-          if (ModelManager_1.ModelManager.LoginModel.IsSdkLogout()) {
-            if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-              ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SDKLoginBefore);
-              ControllerHolder_1.ControllerHolder.LoginController.OpenSdkLoginView();
-              return;
-            }
-            if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
-              ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SDKLoginBefore);
-              ControllerHolder_1.ControllerHolder.LoginController.SdkLoginNew();
-              return;
-            }
-          }
-          if (ModelManager_1.ModelManager.LoginModel.IsLoginStatus(LoginDefine_1.ELoginStatus.Init)) {
-            Stats_1.Stat.CreateInstantStat("LoginProcedure.ClickLoginButton");
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮");
-            }
-            PakKeyUpdate_1.PakKeyUpdate.CheckPakKey(() => {
-              if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
-                PakKeyUpdate_1.PakKeyUpdate.CheckVideoPakKey(() => {
-                  KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportClickEnterGame(undefined));
-                  HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.EnterGame, "enter_game_start");
-                  ControllerHolder_1.ControllerHolder.LoginController.GetHttp(false, false);
-                }, () => {
-                  var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
-                  var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
-                  e.SetTextArgs(r);
-                  ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
-                }).catch(e => {});
-              } else {
-                KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportClickEnterGame(undefined));
-                HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.EnterGame, "enter_game_start");
-                ControllerHolder_1.ControllerHolder.LoginController.GetHttp(false, false);
-              }
-            }, () => {
-              var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
-              var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
-              e.SetTextArgs(r);
-              ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
-            }).catch(e => {});
-          } else if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮-重复点击");
-          }
-        }
-      } else {
-        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("AgreementTips");
-      }
+      this.qMi(true);
     };
     this.jEi = () => {
       var e;
@@ -246,7 +195,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Login", 5, "PS5 PlaySession 直接启动 - 模拟点击登录按钮 事件触发");
       }
-      this.HEi();
+      this.qMi(false);
     };
     this.aSi = () => {};
     this.WEi = () => {
@@ -391,7 +340,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
     this.wml();
     if (CloudGameManager_1.CloudGameManager.IsCloudGame && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLoginNew-云游戏登录"), CloudGameManagerLauncher_1.CloudGameManagerLauncher.IsPreLaunch)) {
       ControllerHolder_1.ControllerHolder.LoginController.OnSdkLogin(CloudGameManager_1.CloudGameManager.GetCloudGameLoginInfo());
-      this.HEi();
+      this.qMi(false);
     }
     this.Ws1?.RefreshDot();
   }
@@ -407,9 +356,67 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
           Log_1.Log.Info("Login", 5, "PS5 PlaySession 直接启动 - 模拟点击登录按钮1");
         }
         if ((await ControllerHolder_1.ControllerHolder.LoginController.SdkLoginNew()) === 0) {
-          this.HEi();
+          this.qMi(false);
         }
       }
+    }
+  }
+  qMi(e) {
+    if (this.VEi) {
+      if (ModelManager_1.ModelManager.LoginModel.IsSdkLoggingIn()) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮-重复点击SDK登录");
+        }
+      } else {
+        if (ModelManager_1.ModelManager.LoginModel.IsSdkLogout()) {
+          if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
+            ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SDKLoginBefore);
+            ControllerHolder_1.ControllerHolder.LoginController.OpenSdkLoginView();
+            return;
+          }
+          if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
+            ControllerHolder_1.ControllerHolder.LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SDKLoginBefore);
+            ControllerHolder_1.ControllerHolder.LoginController.SdkLoginNew();
+            return;
+          }
+        }
+        if (ModelManager_1.ModelManager.LoginModel.IsLoginStatus(LoginDefine_1.ELoginStatus.Init)) {
+          Stats_1.Stat.CreateInstantStat("LoginProcedure.ClickLoginButton");
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮");
+          }
+          if (e) {
+            UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(1);
+          }
+          PakKeyUpdate_1.PakKeyUpdate.CheckPakKey(() => {
+            if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo()) {
+              PakKeyUpdate_1.PakKeyUpdate.CheckVideoPakKey(() => {
+                KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportClickEnterGame(undefined));
+                HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.EnterGame, "enter_game_start");
+                ControllerHolder_1.ControllerHolder.LoginController.GetHttp(false, false);
+              }, () => {
+                var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
+                var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
+                e.SetTextArgs(r);
+                ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+              }).catch(e => {});
+            } else {
+              KuroSdkReport_1.KuroSdkReport.Report(new KuroSdkReport_1.SdkReportClickEnterGame(undefined));
+              HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.EnterGame, "enter_game_start");
+              ControllerHolder_1.ControllerHolder.LoginController.GetHttp(false, false);
+            }
+          }, () => {
+            var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
+            var r = ConfigManager_1.ConfigManager.TextConfig.GetTextById("NoNetwork");
+            e.SetTextArgs(r);
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+          }).catch(e => {});
+        } else if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Login", 16, "LoginProcedure-点击登录按钮-重复点击");
+        }
+      }
+    } else {
+      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("AgreementTips");
     }
   }
   Krc() {
@@ -430,7 +437,7 @@ class LoginOfficialView extends UiViewBase_1.UiViewBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 5, "PS5 PlaySession 直接启动 - 模拟点击登录按钮2");
         }
-        this.HEi();
+        this.qMi(false);
       }
     } else {
       this.GetButton(14).RootUIComp.SetUIActive(false);

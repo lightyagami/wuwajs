@@ -48,27 +48,27 @@ class ShipTowerTeamTabItem extends CommonTabItemBase_1.CommonTabItemBase {
     this.GetText(1).SetText(e);
   }
   UpdateRedDotVisible(e) {
-    this.Oid().SetUIActive(e);
+    this.Yhd().SetUIActive(e);
   }
-  Oid() {
+  Yhd() {
     return this.GetItem(2);
   }
   BindRedDot(e, t = 0) {
     this.UnBindRedDot();
     this.l4e = e;
     if (this.l4e) {
-      RedDotController_1.RedDotController.BindRedDot(e, this.Oid(), undefined, t);
+      RedDotController_1.RedDotController.BindRedDot(e, this.Yhd(), undefined, t);
     }
   }
   BindGivenUid(e, t) {
     this.l4e = e;
     if (this.l4e) {
-      RedDotController_1.RedDotController.BindRedDot(e, this.Oid(), undefined, t);
+      RedDotController_1.RedDotController.BindRedDot(e, this.Yhd(), undefined, t);
     }
   }
   UnBindGivenUid(e) {
     if (this.l4e) {
-      RedDotController_1.RedDotController.UnBindGivenUi(this.l4e, this.Oid(), e);
+      RedDotController_1.RedDotController.UnBindGivenUi(this.l4e, this.Yhd(), e);
     }
   }
   UnBindRedDot() {

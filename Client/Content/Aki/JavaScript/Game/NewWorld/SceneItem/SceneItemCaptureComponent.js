@@ -83,27 +83,27 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     this.i4o = undefined;
     this.Ora = false;
     this.Ad_ = false;
-    this.wVu = () => {
+    this.OBu = () => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 20, "停止声骸掉落物材质控制器的Tick ");
       }
-      this.AVu = undefined;
-      this.l9e.SetEffectGroupProgress(this.LVu, this._9e);
+      this.qBu = undefined;
+      this.l9e.SetEffectGroupProgress(this.GOu, this._9e);
       this.l9e.UpdateMaterialEffectsOnly();
       if (this.l9e) {
         RenderModuleController_1.RenderModuleController.RemoveCharRenderShell(this.l9e);
       }
     };
-    this.AVu = undefined;
-    this.LVu = 0;
-    this.PVu = undefined;
+    this.qBu = undefined;
+    this.GOu = 0;
+    this.GBu = undefined;
     this.Udn = () => {
-      this.PVu = undefined;
+      this.GBu = undefined;
       this.l9e.RemoveMaterialControllerDataGroupWithEnding(this._9e);
     };
-    this.xVu = undefined;
+    this.FBu = undefined;
     this.Adn = () => {
-      this.xVu = undefined;
+      this.FBu = undefined;
       this.Entity.Disable("[SceneItemCaptureComponent.OnCaptureFinished] 捕获隐藏实体");
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
@@ -125,17 +125,17 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     }
   }
   OnClear() {
-    if (this.AVu) {
-      TimerSystem_1.TimerSystem.Remove(this.AVu);
-      this.AVu = undefined;
+    if (this.qBu) {
+      TimerSystem_1.TimerSystem.Remove(this.qBu);
+      this.qBu = undefined;
     }
-    if (this.PVu) {
-      TimerSystem_1.TimerSystem.Remove(this.PVu);
-      this.PVu = undefined;
+    if (this.GBu) {
+      TimerSystem_1.TimerSystem.Remove(this.GBu);
+      this.GBu = undefined;
     }
-    if (this.xVu) {
-      TimerSystem_1.TimerSystem.Remove(this.xVu);
-      this.xVu = undefined;
+    if (this.FBu) {
+      TimerSystem_1.TimerSystem.Remove(this.FBu);
+      this.FBu = undefined;
     }
     return true;
   }
@@ -320,11 +320,11 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
       if (e) {
         this._9e = this.l9e.AddMaterialControllerDataGroup(e);
         e = e.DataMap.GetKey(0);
-        this.LVu = e.LoopTime.Start;
+        this.GOu = e.LoopTime.Start;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Battle", 4, "开始倒计时关闭Rendering.Tick", ["EntityId", this.Entity.Id], ["Delay", this.LVu]);
+          Log_1.Log.Debug("Battle", 4, "开始倒计时关闭Rendering.Tick", ["EntityId", this.Entity.Id], ["Delay", this.GOu]);
         }
-        this.AVu = TimerSystem_1.TimerSystem.Delay(this.wVu, this.LVu * 1000, undefined, "SceneItemCapture Disable Tick");
+        this.qBu = TimerSystem_1.TimerSystem.Delay(this.OBu, this.GOu * 1000, undefined, "SceneItemCapture Disable Tick");
         if (this.Ad_) {
           this.Entity.GetComponent(203).SkeletalMesh.SetHiddenInGame(false);
           if (Log_1.Log.CheckDebug()) {
@@ -395,8 +395,8 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     if (this.Ldn) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.Ldn);
     }
-    this.PVu = TimerSystem_1.TimerSystem.Delay(this.Udn, this.Idn);
-    this.xVu = TimerSystem_1.TimerSystem.Delay(this.Adn, this.ydn);
+    this.GBu = TimerSystem_1.TimerSystem.Delay(this.Udn, this.Idn);
+    this.FBu = TimerSystem_1.TimerSystem.Delay(this.Adn, this.ydn);
     if (EffectSystem_1.EffectSystem.IsValid(this.rvi)) {
       EffectSystem_1.EffectSystem.StopEffectById(this.rvi, "开始收服，关闭特效", false);
     }

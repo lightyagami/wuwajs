@@ -113,7 +113,7 @@ class RoleInstance extends RoleDataBase_1.RoleDataBase {
     }
     this.GetResonanceData().SetResonantChainGroupIndex(t.mxs);
     this.SetRoleSkinId(t.Z7n);
-    this.SetBackgroundMusicEnabled(t.V8u);
+    this.SetBackgroundMusicEnabled(t.FWc);
   }
   RefreshResonance(e) {
     var t = this.GetResonanceData();

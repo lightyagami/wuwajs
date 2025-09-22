@@ -175,6 +175,9 @@ class TsBaseCharacter extends UE.BaseCharacter {
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RIDE:
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRide, e);
+        break;
+      case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SPLINE_CLIMB:
+        EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, e);
     }
   }
   FightCommand(e) {}

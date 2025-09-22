@@ -21,13 +21,13 @@ exports.CharacterDynamicFlowData = CharacterDynamicFlowData;
 class DynamicFlowController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     this.jYo();
-    Net_1.Net.Register(24658, DynamicFlowController.WYo);
-    Net_1.Net.Register(26237, DynamicFlowController.KYo);
+    Net_1.Net.Register(17368, DynamicFlowController.WYo);
+    Net_1.Net.Register(17029, DynamicFlowController.KYo);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24658);
-    Net_1.Net.UnRegister(26237);
+    Net_1.Net.UnRegister(17368);
+    Net_1.Net.UnRegister(17029);
     return true;
   }
   static jYo() {

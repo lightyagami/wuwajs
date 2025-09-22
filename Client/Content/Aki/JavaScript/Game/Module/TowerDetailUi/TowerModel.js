@@ -77,7 +77,7 @@ class TowerModel extends ModelBase_1.ModelBase {
     this.TowerBeginTime = t.cps;
     this.TowerEndTime = t.dps;
     this.MaxUnlockDifficulty = t.wGs;
-    this.QuickPassId = t.Aid;
+    this.QuickPassId = t.eod;
     if (this.CurrentSeason !== t.EGs) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, exports.TOWER_LOOP_ACTIVITY_ID);
     }
@@ -200,13 +200,13 @@ class TowerModel extends ModelBase_1.ModelBase {
     if (e) {
       e.Star = t.rxs;
       e.StarIndex = t.AGs;
-      e.IsQuickPass = t.Wju;
+      e.IsQuickPass = t.zWc;
       for (const r of e.Formation) {
         this.ReduceRoleFormationCost(r.Q6n, e.Difficulties, e.Cost);
       }
       e.Formation = t.ajn;
     } else {
-      e = new TowerData_1.TowerFloorInfo(t.hjn, t.rxs, t.ajn, t.AGs, t.Wju);
+      e = new TowerData_1.TowerFloorInfo(t.hjn, t.rxs, t.ajn, t.AGs, t.zWc);
       this.jLo.set(t.hjn, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTowerRecordUpdate, t.hjn, e.Difficulties);
     }

@@ -40,13 +40,16 @@ class SkillGameplayButton {
   get LongPressTime() {
     return this.longpresstime();
   }
-  __init(t, s) {
+  get RoleId() {
+    return this.roleid();
+  }
+  __init(t, i) {
     this.z7 = t;
-    this.J7 = s;
+    this.J7 = i;
     return this;
   }
-  static getRootAsSkillGameplayButton(t, s) {
-    return (s || new SkillGameplayButton()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsSkillGameplayButton(t, i) {
+    return (i || new SkillGameplayButton()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -65,20 +68,20 @@ class SkillGameplayButton {
     }
   }
   actionname(t) {
-    var s = this.J7.__offset(this.z7, 8);
-    var s = s ? this.J7.__string(this.z7 + s, t) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
+    var i = this.J7.__offset(this.z7, 8);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return s;
+    return i;
   }
   name(t) {
-    var s = this.J7.__offset(this.z7, 10);
-    var s = s ? this.J7.__string(this.z7 + s, t) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
+    var i = this.J7.__offset(this.z7, 10);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return s;
+    return i;
   }
   buttontype() {
     var t = this.J7.__offset(this.z7, 12);
@@ -97,20 +100,20 @@ class SkillGameplayButton {
     }
   }
   skillicon(t) {
-    var s = this.J7.__offset(this.z7, 16);
-    var s = s ? this.J7.__string(this.z7 + s, t) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return s;
+    return i;
   }
   GetSkillicontagsAt(t) {
     return this.skillicontags(t);
   }
   skillicontags(t) {
-    var s = this.J7.__offset(this.z7, 18);
-    if (s) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    var i = this.J7.__offset(this.z7, 18);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
@@ -137,6 +140,14 @@ class SkillGameplayButton {
   }
   longpresstime() {
     var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  roleid() {
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

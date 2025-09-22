@@ -54,10 +54,10 @@ class TrapDefenseBdBuffStrengthenView extends UiViewBase_1.UiViewBase {
       this.PanelBdBuffDescRight.SetActive(true);
       this.PanelBdBuffDescLeft.UpdateDataStrengthenModeBefore(this.BdBuffData);
       this.PanelBdBuffDescRight.UpdateDataStrengthenModeAfter(this.BdBuffData);
-      this.NHc();
+      this.VHu();
     }
   }
-  NHc() {
+  VHu() {
     var e = this.BdBuffData.GetBelongBdData();
     var t = !e.IsZeroBdType();
     this.BdProgressItem.SetActive(t);

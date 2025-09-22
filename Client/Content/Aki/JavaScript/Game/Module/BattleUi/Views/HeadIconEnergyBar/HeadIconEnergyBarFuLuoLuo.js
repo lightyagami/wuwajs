@@ -15,13 +15,13 @@ class HeadIconEnergyBarFuLuoLuo extends HeadIconEnergyBarBase_1.HeadIconEnergyBa
   constructor() {
     super(...arguments);
     this.Wdt = [];
-    this.xQu = [];
+    this.Aju = [];
     this.ewu = [];
-    this.ihd = 0;
-    this.BQu = false;
-    this.rhd = true;
-    this.NQu = (t, e) => {
-      this.VQu(e);
+    this.Hcd = 0;
+    this.xju = false;
+    this.$cd = true;
+    this.qju = (t, e) => {
+      this.Gju(e);
       this.ktl();
     };
   }
@@ -34,7 +34,7 @@ class HeadIconEnergyBarFuLuoLuo extends HeadIconEnergyBarBase_1.HeadIconEnergyBa
       var s = this.GetItem(0 + t);
       this.Wdt.push(s);
       var i = new HeadIconEnergyBarFuLuoLuoNoteItem();
-      this.xQu.push(i);
+      this.Aju.push(i);
       e.push(i.CreateThenShowByPathAsync(NOTE_ITEM_PATH, s));
     }
     await Promise.all(e);
@@ -43,13 +43,13 @@ class HeadIconEnergyBarFuLuoLuo extends HeadIconEnergyBarBase_1.HeadIconEnergyBa
   Tick(t) {}
   OnBeforeShow() {
     super.OnBeforeShow();
-    this.VQu(!!this.TagComponent?.HasTag(burstTag));
+    this.Gju(!!this.TagComponent?.HasTag(burstTag));
     this.fvt();
     this.ktl();
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForTagAddOrRemoveChanged(burstTag, this.NQu);
+    this.ListenForTagAddOrRemoveChanged(burstTag, this.qju);
   }
   RemoveEvents() {
     super.RemoveEvents();
@@ -61,33 +61,33 @@ class HeadIconEnergyBarFuLuoLuo extends HeadIconEnergyBarBase_1.HeadIconEnergyBa
   }
   fvt() {
     var t = this.AttributeComponent.GetCurrentValue(this.AttributeId);
-    if (t !== this.ihd) {
-      this.ihd = t;
-      this.rhd = true;
+    if (t !== this.Hcd) {
+      this.Hcd = t;
+      this.$cd = true;
     }
   }
-  VQu(t) {
-    if (this.BQu !== t) {
-      this.BQu = t;
-      this.rhd = true;
+  Gju(t) {
+    if (this.xju !== t) {
+      this.xju = t;
+      this.$cd = true;
     }
   }
   ktl() {
-    if (this.rhd) {
-      this.WQu();
-      this.rhd = false;
+    if (this.$cd) {
+      this.Vju();
+      this.$cd = false;
     }
   }
-  WQu() {
+  Vju() {
     for (let t = this.ewu.length = 0; t < SPECIAL_ENERGY_COUNT; t++) {
       var e = (SPECIAL_ENERGY_COUNT - t - 1) * 2;
-      var e = (this.ihd & 3 << e) >> e;
-      if (this.BQu || e > 0) {
+      var e = (this.Hcd & 3 << e) >> e;
+      if (this.xju || e > 0) {
         this.ewu.push(e);
       }
     }
-    for (let t = 0; t < this.xQu.length; t++) {
-      var s = this.xQu[t];
+    for (let t = 0; t < this.Aju.length; t++) {
+      var s = this.Aju[t];
       var i = this.ewu[t] ?? 0;
       s.SetEnergyType(i);
     }
@@ -99,8 +99,8 @@ class HeadIconEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.x5e = [];
     this.TweenAnimPlayer = undefined;
-    this.YQu = -1;
-    this.ohd = false;
+    this.Wju = -1;
+    this.Wcd = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem]];
@@ -117,9 +117,9 @@ class HeadIconEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
     this.InitTweenAnim(4);
   }
   SetEnergyType(e) {
-    if (e !== this.YQu) {
-      var s = this.YQu;
-      this.YQu = e;
+    if (e !== this.Wju) {
+      var s = this.Wju;
+      this.Wju = e;
       var t = (s === -1 || s === 0) && e !== 0;
       var i = s !== -1 && s !== 0 && e === 0;
       for (let t = 0; t < this.x5e.length; t++) {
@@ -131,13 +131,13 @@ class HeadIconEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
         }
       }
       if (t) {
-        if (this.ohd) {
+        if (this.Wcd) {
           this.PlayTweenAnim(3);
         }
-        this.ohd = false;
+        this.Wcd = false;
       } else if (i) {
         this.PlayTweenAnim(4);
-        this.ohd = true;
+        this.Wcd = true;
       }
     }
   }

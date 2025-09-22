@@ -18,6 +18,11 @@ class FlowActionOpenSimpleGameplay extends FlowActionBase_1.FlowActionBase {
       });
     }
   }
+  OnInterruptExecute() {
+    if (this.ActionInfo.Params.GameplayConfig.Type === "ItemInspection") {
+      ControllerHolder_1.ControllerHolder.ItemInspectController.InterruptItemInspect();
+    }
+  }
 }
 exports.FlowActionOpenSimpleGameplay = FlowActionOpenSimpleGameplay;
 //# sourceMappingURL=FlowActionOpenSimpleGameplay.js.map

@@ -162,9 +162,9 @@ class UnopenedAreaPullback {
     }
   }
   UBe() {
-    Net_1.Net.Call(20891, Protocol_1.Aki.Protocol.ECs.create(), t => {
+    Net_1.Net.Call(20179, Protocol_1.Aki.Protocol.ECs.create(), t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27241);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20896);
       }
     });
   }

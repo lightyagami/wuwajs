@@ -106,6 +106,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     this.Hulu = undefined;
     this.WKr = 0;
     this.Mba = false;
+    this.MGd = undefined;
     this.HuluHideEffect = 0;
     this.Paragliding = undefined;
     this.ParaglidingIsOpen = false;
@@ -470,7 +471,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     var t = this.Paragliding?.GetAnimInstance();
     if (t?.DebugDestructText) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Role", 6, "Paragliding OnClear", ["DebugDesturctText", t.DebugDestructText]);
+        Log_1.Log.Debug("Role", 6, "Paragliding OnClear", ["DebugDestructText", t.DebugDestructText]);
       }
       t.DebugDestructText = "";
     }
@@ -649,39 +650,47 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     UE.KuroAnimLibrary.EndAnimNotifyStates(t);
   }
   xQr() {
-    var t;
-    var i;
     if (this.Xjt) {
       this.HuluHideEffect = 0;
       this.cQr = undefined;
-      t = this.Entity.GetComponent(0);
-      i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.GetRoleId());
-      this.jQr(i.PartyId, 1, t.GetRoleId());
+      this.jQr(this.EGd());
     }
   }
-  jQr(t, i, s) {
-    if (this.Hulu) {
-      this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(6);
-    } else {
-      (h = this.Hte.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.HULU_MESH_COMP_NAME)).K2_AttachToComponent(this.Hte.Actor.Mesh, CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME, 0, 0, 0, true);
-      this.Hulu = h;
-      this.MQr(0);
-    }
-    const e = t * HULU_PARTY_ID + HULU_BASE_ID + i;
-    var h = ModelUtil_1.ModelUtil.GetModelConfig(e);
-    if (h) {
-      ResourceSystem_1.ResourceSystem.LoadAsync(h.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
-        if (t) {
-          this.WKr = e;
-          this.Hulu.SetSkeletalMesh(t);
-          this.Hte.Actor.CharRenderingComponent.AddComponentByCase(6, this.Hulu);
-          this.SetHuluHidden(false, true, true);
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Character", 57, "该葫芦Id没有配置网格体", ["Id", e]);
+  jQr(i) {
+    var t;
+    if (this.WKr !== i) {
+      if (this.Hulu) {
+        this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(6);
+      } else {
+        (t = this.Hte.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.HULU_MESH_COMP_NAME)).K2_AttachToComponent(this.Hte.Actor.Mesh, CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME, 0, 0, 0, true);
+        this.Hulu = t;
+        this.MQr(0);
+      }
+      if (t = ModelUtil_1.ModelUtil.GetModelConfig(i)) {
+        this.WKr = i;
+        ResourceSystem_1.ResourceSystem.LoadAsync(t.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
+          if (t) {
+            this.Hulu.SetSkeletalMesh(t);
+            this.Hte.Actor.CharRenderingComponent.AddComponentByCase(6, this.Hulu);
+            this.SetHuluHidden(false, true, true);
+            if (this.MGd && this.Lie?.HasTag(this.MGd.TagId)) {
+              this.Lie.RemoveTag(this.MGd.TagId);
+              this.MGd = undefined;
+            }
+            if ((t = ModelUtil_1.ModelUtil.GetHuluConfig(i)) && t.Tag.TagName !== "None") {
+              this.Lie?.AddTag(t.Tag.TagId);
+              this.MGd = t.Tag;
+            }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Character", 57, "该葫芦Id没有配置网格体", ["Id", i]);
+          }
+        });
+      } else {
+        t = this.Entity.GetComponent(0);
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Character", 57, "该葫芦Id没有配置Config", ["Id", i], ["roleId", t?.GetRoleId()]);
         }
-      });
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 57, "该葫芦Id没有配置Config", ["Id", e], ["partyId", t], ["quality", i], ["roleId", s]);
+      }
     }
   }
   MQr(s) {
@@ -740,6 +749,14 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
         this.Hulu.SetHiddenInGame(e);
       }
     }
+  }
+  OnEntityHuluSkinChangeNotify(t) {
+    this.jQr(this.EGd(t));
+  }
+  EGd(t = 0) {
+    let i = 0;
+    var t = t === 0 ? this.Entity.GetComponent(0)?.HuluSkinId ?? 0 : t;
+    return i = t > 0 ? ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(t).ModelId : (t = this.Entity.GetComponent(0), ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.GetRoleId()).PartyId * HULU_PARTY_ID + HULU_BASE_ID + 1);
   }
   VQr() {
     this.AiWeaponConfigId = 0;
@@ -894,7 +911,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Character", 4, "设置武器模型完成", ["modelId", _], ["weaponCount", a.length]);
               }
-              EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharacterWeaponLoaded);
+              EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharacterWeaponLoaded, f.GetName());
             }
           });
           this.rc_.add(i);

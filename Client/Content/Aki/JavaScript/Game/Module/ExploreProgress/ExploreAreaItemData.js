@@ -193,7 +193,8 @@ class ExploreAreaItemData {
       PlayPointId: t.PlayId,
       EntityId: t.EntityId,
       IsClear: t.IsClear,
-      ClearInfo: t.ClearInfo
+      ClearInfo: t.ClearInfo,
+      IsUnlock: t.IsUnlock
     });
   }
   ClearPlayPointData() {
@@ -225,10 +226,10 @@ class ExploreAreaItemData {
     if (this.PlayIdMap.size > 0) {
       this.TrackPlayPoint();
     } else {
-      this.mKu();
+      this.gZu();
     }
   }
-  mKu() {
+  gZu() {
     var t = this.SubTypes[0];
     ControllerHolder_1.ControllerHolder.ExploreProgressController.ExploreEntityTraceRequest(t, this.AreaId);
   }
@@ -253,6 +254,9 @@ class ExploreAreaItemData {
         Log_1.Log.Debug("ExploreProgress", 69, "导航去附近标记", ["MarkId", e.MarkId], ["MarkType", e.ObjectType], ["MarkName", ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e.MarkTitle)], ["FindState", t]);
       }
       if (t === 1) {
+        if (!ModelManager_1.ModelManager.MapModel.IsConfigMarkIdUnlock(e.MarkId)) {
+          ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e.MarkId);
+        }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
           MarkId: e.MarkId,
           MarkType: e.ObjectType,
@@ -265,6 +269,15 @@ class ExploreAreaItemData {
     }
     return true;
   }
+  GetNearTrackMapMark() {
+    if (!(this.PlayIdMap.size <= 0) && !this.IsFinishedPlayPoint) {
+      var t = this.yOl();
+      var e = this.EOl(t);
+      if (e.length !== 0) {
+        return this.GetMarkByPointState(t, e);
+      }
+    }
+  }
   GetMarkByPointState(t, e) {
     switch (t === 0 ? this.LockTrackType : this.UnlockTrackType) {
       case 0:
@@ -272,6 +285,9 @@ class ExploreAreaItemData {
       case 1:
         return this.eKl(e);
     }
+  }
+  GetPlayIdIsUnlock(t) {
+    return this.PlayIdMap.get(t)?.IsUnlock ?? true;
   }
   t6_(t) {
     if (this.e6_?.IsClear) {

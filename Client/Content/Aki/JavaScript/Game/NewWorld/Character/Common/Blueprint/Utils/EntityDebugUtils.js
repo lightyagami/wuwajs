@@ -165,7 +165,7 @@ ${i.AttributeIdSet}
       s = (s += `SceneItemMove信息:
 `) + n.GetDebugString() + "\n\n";
     }
-    var a = e.GetComponent(283);
+    var a = e.GetComponent(284);
     if (a) {
       s = (s += `Ai追逐信息:
 `) + a.GetDebugString() + "\n\n";

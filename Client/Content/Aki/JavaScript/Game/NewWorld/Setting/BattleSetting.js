@@ -16,7 +16,7 @@ class BattleSetting {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 19, "[BattleModule] Request module network mode", ["ModuleName", Protocol_1.Aki.Protocol.B4s[t]], ["ClientControl", e]);
     }
-    Net_1.Net.Call(29025, o, e => {
+    Net_1.Net.Call(26796, o, e => {
       BattleSetting.ReceiveSetModuleNetworkState(t, e.Jjn);
     });
   }

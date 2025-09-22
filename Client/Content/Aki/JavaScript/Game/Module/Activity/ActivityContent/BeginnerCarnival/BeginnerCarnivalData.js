@@ -83,7 +83,7 @@ class BeginnerCarnivalData extends ActivityData_1.ActivityBaseData {
         }
       }
     }
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10009) && !this.GetHaveGachaEnter()) {
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10009) && ModelManager_1.ModelManager.GachaModel.GachaInfoArray && !this.GetHaveGachaEnter()) {
       var t = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId[0]);
       var o = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(this.GachaId[1]);
       if (t || o) {

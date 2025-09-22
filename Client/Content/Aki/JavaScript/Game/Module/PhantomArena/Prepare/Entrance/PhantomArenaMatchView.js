@@ -106,7 +106,7 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     this.JCu = e => {
       return ModelManager_1.ModelManager.PhantomArenaModel.GetChallengeStateById(this.r_u) === 2;
     };
-    this.bNu = () => {
+    this.e5u = () => {
       for (const e of this.Mtu?.GetLayoutItemList()) {
         e.RefreshRedDot();
       }
@@ -141,10 +141,10 @@ class PhantomArenaMatchView extends UiViewBase_1.UiViewBase {
     this.nOe();
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.e5u);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.e5u);
   }
   WNe() {
     var e = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomBattleGymConfigByLevel(this.Stu);

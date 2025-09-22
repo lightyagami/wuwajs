@@ -28,7 +28,6 @@ class TsLguiEventSystemActor extends UE.LGUIEventSystemActor {
     this.GamepadClickThreshold = 5;
   }
   Constructor() {
-    this.CurrentInputModule = undefined;
     this.HandleWrapper = undefined;
     this.ShowTypeChange = (t, e) => {};
     this.ControllerConnectChange = (t, e, i) => {};
@@ -216,6 +215,12 @@ class TsLguiEventSystemActor extends UE.LGUIEventSystemActor {
       this.StandaloneInputModule.bOverrideMousePosition = t;
     }
   }
+  static IsInPointerInputType() {
+    return TsLguiEventSystemActor.InputType === 0;
+  }
+  static IsInNavigationInputType() {
+    return TsLguiEventSystemActor.InputType === 1;
+  }
   RegisterPointEnterExitEvent() {
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       this.EventSystem.RegisterPointerEnterExitEvent((0, puerts_1.toManualReleaseDelegate)(CursorController_1.CursorController.CursorEnterExit));
@@ -234,8 +239,7 @@ class TsLguiEventSystemActor extends UE.LGUIEventSystemActor {
 }
 (exports.TsLguiEventSystemActor = TsLguiEventSystemActor).InputType = 2;
 TsLguiEventSystemActor.ChangeController = t => {
-  if (t === 0) {
-    TsLguiEventSystemActor.InputType = 0;
+  if ((TsLguiEventSystemActor.InputType = t) === 0) {
     Info_1.Info.SwitchInputControllerType(1, "MouseMove");
   }
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PointerInputTypeChange, t);

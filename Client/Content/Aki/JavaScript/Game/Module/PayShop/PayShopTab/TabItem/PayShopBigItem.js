@@ -84,33 +84,35 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (t) {
       if ((this.Pe = t) instanceof PayShopGoods_1.PayShopGoods) {
         this.U71 = t.ConvertToPayShopBaseSt();
-        this.k71 = t.GetCountDownData()[2] !== 0;
+        s = t.GetCountDownData();
+        this.k71 = s[2] !== 0;
+        this.O71 = s[0];
         this.C3i = t.HasDiscount();
         this.E3i = t.GetDiscountNew();
       } else {
         this.U71 = ModelManager_1.ModelManager.PayItemModel.ConvertPayItemDataToPayShopItemBaseSt(t);
       }
       this.GetText(3).SetText(this.U71.ItemName);
-      t = this.GetTexture(2);
+      s = this.GetTexture(2);
       if (this.U71.StageImage !== "") {
-        s = this.U71.StageImage;
-        this.SetTextureByPath(s, t);
+        t = this.U71.StageImage;
+        this.SetTextureByPath(t, s);
       } else {
-        this.SetItemIcon(t, this.U71.ItemId);
+        this.SetItemIcon(s, this.U71.ItemId);
       }
-      s = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(this.U71.Quality);
-      this.SetTextureByPath(s.PayShopQualityTexture, this.GetTexture(1));
+      t = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(this.U71.Quality);
+      this.SetTextureByPath(t.PayShopQualityTexture, this.GetTexture(1));
       this.GetUiNiagara(14)?.SetUIActive(this.U71.Quality === PayShopDefine_1.GOLD_QUALITY);
       this.GetUiNiagara(15)?.SetUIActive(this.U71.Quality === PayShopDefine_1.GOLD_QUALITY);
-      t = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
-      this.GetButton(7).RootUIComp.SetUIActive(this.U71.Id === t);
-      s = this.GetTexture(13);
-      t = this.U71.PriceData;
-      if (this.U71.IsDirect || t.NowPrice === 0) {
-        s.SetUIActive(false);
+      s = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
+      this.GetButton(7).RootUIComp.SetUIActive(this.U71.Id === s);
+      t = this.GetTexture(13);
+      s = this.U71.PriceData;
+      if (this.U71.IsDirect || s.NowPrice === 0) {
+        t.SetUIActive(false);
       } else {
-        s.SetUIActive(true);
-        this.SetItemIcon(s, t.CurrencyId);
+        t.SetUIActive(true);
+        this.SetItemIcon(t, s.CurrencyId);
       }
       this.G71();
       this.iFi();

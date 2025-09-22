@@ -49,13 +49,14 @@ let AnimalDeathSyncComponent = class AnimalDeathSyncComponent extends BaseDeathC
       } else if (this.Xte.HasTag(1961456719)) {
         TimerSystem_1.TimerSystem.Delay(this.OnDeathEnded, DISAPPEAR_REMOVE_DELAY);
       } else if (this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Water) {
-        this.PlayDeathMontageWithType(1, this.OnDeathEnded);
+        this.PlayDeathMontageWithType(1, this.OnDeathEnded, undefined, true);
       } else {
-        this.PlayDeathMontageWithType(0, this.OnDeathEnded);
+        this.PlayDeathMontageWithType(0, this.OnDeathEnded, undefined, true);
       }
     };
     this.OnDeathEnded = () => {
       this.Entity.Disable("[BaseAttributeComponent.DieAnimationFinished] 死亡动画播放完后隐藏");
+      this.Entity.GetComponent(44)?.CancelForceDisableAnimOptimization(6);
       ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     };
   }

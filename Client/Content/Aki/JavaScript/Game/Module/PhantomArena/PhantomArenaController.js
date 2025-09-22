@@ -133,28 +133,28 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     return new PhantomArenaActivityData_1.PhantomArenaActivityData();
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(28361, this.TA1);
-    Net_1.Net.Register(24668, this.jau);
-    Net_1.Net.Register(25486, this.RA1);
-    Net_1.Net.Register(22653, this.LA1);
-    Net_1.Net.Register(27190, this.wA1);
-    Net_1.Net.Register(25421, this.AA1);
-    Net_1.Net.Register(18738, this.PA1);
-    Net_1.Net.Register(28395, this.xA1);
-    Net_1.Net.Register(16303, this.yV1);
-    Net_1.Net.Register(20708, this.Pou);
+    Net_1.Net.Register(17508, this.TA1);
+    Net_1.Net.Register(19940, this.jau);
+    Net_1.Net.Register(21526, this.RA1);
+    Net_1.Net.Register(27548, this.LA1);
+    Net_1.Net.Register(21523, this.wA1);
+    Net_1.Net.Register(24442, this.AA1);
+    Net_1.Net.Register(23092, this.PA1);
+    Net_1.Net.Register(15248, this.xA1);
+    Net_1.Net.Register(21093, this.yV1);
+    Net_1.Net.Register(28048, this.Pou);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28361);
-    Net_1.Net.UnRegister(24668);
-    Net_1.Net.UnRegister(25486);
-    Net_1.Net.UnRegister(22653);
-    Net_1.Net.UnRegister(27190);
-    Net_1.Net.UnRegister(25421);
-    Net_1.Net.UnRegister(18738);
-    Net_1.Net.UnRegister(28395);
-    Net_1.Net.UnRegister(16303);
-    Net_1.Net.UnRegister(20708);
+    Net_1.Net.UnRegister(17508);
+    Net_1.Net.UnRegister(19940);
+    Net_1.Net.UnRegister(21526);
+    Net_1.Net.UnRegister(27548);
+    Net_1.Net.UnRegister(21523);
+    Net_1.Net.UnRegister(24442);
+    Net_1.Net.UnRegister(23092);
+    Net_1.Net.UnRegister(15248);
+    Net_1.Net.UnRegister(21093);
+    Net_1.Net.UnRegister(28048);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -168,10 +168,10 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static TaskRewardRequest(o) {
     var e = new Protocol_1.Aki.Protocol.ff1();
     e.gps = o;
-    Net_1.Net.Call(20463, e, e => {
+    Net_1.Net.Call(27863, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20812);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18690);
         } else {
           ModelManager_1.ModelManager.PhantomArenaModel.UpdateTaskById(o);
         }
@@ -179,13 +179,13 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     });
   }
   static MasterLevelMultiRewardRequest(o) {
-    var e = new Protocol_1.Aki.Protocol.J5u();
+    var e = new Protocol_1.Aki.Protocol.d8u();
     e.Mg1 = o;
     e.w6n = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-    Net_1.Net.Call(20024, e, e => {
+    Net_1.Net.Call(21441, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19114);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23504);
         } else {
           ModelManager_1.ModelManager.PhantomArenaModel.UpdateMasterLevelByConfigIds(o);
         }
@@ -197,10 +197,10 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     var r = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData().Id;
     e.w6n = r;
     e.Lg1 = o;
-    Net_1.Net.Call(20695, e, e => {
+    Net_1.Net.Call(21547, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20812);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18690);
         } else {
           ModelManager_1.ModelManager.PhantomArenaModel.UpdateBadgeRewardByIds(o);
         }
@@ -210,7 +210,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static CardOutLookUpRequest(o, r) {
     var e = new Protocol_1.Aki.Protocol.Tf1();
     e.J7n = o;
-    Net_1.Net.Call(17616, e, e => {
+    Net_1.Net.Call(25783, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PhantomArenaModel.OnCardOutlookUnlock(o);
@@ -218,7 +218,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
           PhantomArenaController.PostUnlockView();
           r?.(o);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23970);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28469);
         }
       }
     });
@@ -228,10 +228,10 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     var r = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData().Id;
     e.w6n = r;
     e.I51 = o;
-    Net_1.Net.Call(26578, e, e => {
+    Net_1.Net.Call(19748, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20812);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18690);
         } else {
           ModelManager_1.ModelManager.PhantomArenaModel.UpdateCardRewardByIds(o);
         }
@@ -241,13 +241,13 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static RoleRewardRequest(o, r) {
     var e = new Protocol_1.Aki.Protocol.Pf1();
     e.xg1 = o;
-    Net_1.Net.Call(29264, e, e => {
+    Net_1.Net.Call(23637, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PhantomArenaModel.OnRoleReward(o);
           r?.(o);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23970);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28469);
         }
       }
     });
@@ -257,7 +257,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     a.H8n = e;
     a.Ug1 = o;
     a.w6n = r;
-    Net_1.Net.Call(27564, a, e => {
+    Net_1.Net.Call(26913, a, e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -269,7 +269,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
             Log_1.Log.Error("PhantomArena", 43, "创建卡组时服务器返回数据为空");
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25282);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20488);
         }
       }
     });
@@ -278,14 +278,14 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     var t = new Protocol_1.Aki.Protocol.$41();
     t.c5n = o;
     t.w6n = e;
-    Net_1.Net.Call(16800, t, e => {
+    Net_1.Net.Call(21521, t, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.PhantomArenaModel.UpdateDeckList(e.OC1);
           ModelManager_1.ModelManager.PhantomArenaModel.SetLastUsedCardDeckServerId(e.dK1);
           r?.(o);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28736);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22013);
         }
       }
     });
@@ -295,7 +295,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     o.c5n = r;
     o.Ug1 = e;
     o.w6n = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
-    Net_1.Net.Call(27919, o, e => {
+    Net_1.Net.Call(16350, o, e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -306,7 +306,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
             Log_1.Log.Error("PhantomArena", 43, "更新卡组时服务器返回数据为空");
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16947);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26910);
         }
       }
     });
@@ -314,10 +314,10 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static CardUnlockRequest(o, r) {
     var e = new Protocol_1.Aki.Protocol.Q41();
     e.J7n = o;
-    Net_1.Net.Call(18694, e, e => {
+    Net_1.Net.Call(23218, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29209);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15738);
         } else {
           r?.(o);
         }
@@ -327,10 +327,10 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static async ReChallengeRequestAsync(e) {
     var o = new Protocol_1.Aki.Protocol.p1u();
     o.e8n = e;
-    var e = await Net_1.Net.CallAsync(26512, o);
+    var e = await Net_1.Net.CallAsync(16130, o);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20824);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20906);
       }
       return e;
     }
@@ -436,10 +436,10 @@ exports.PhantomArenaController = PhantomArenaController;
   t.H8n = e;
   t.c5n = o;
   t.w6n = r;
-  var e = await Net_1.Net.CallAsync(22061, t);
+  var e = await Net_1.Net.CallAsync(22384, t);
   if (e) {
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19686);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21558);
     } else if (o = e.OC1) {
       ModelManager_1.ModelManager.PhantomArenaModel.UpdateProtocolDeckInfo(o);
     } else if (Log_1.Log.CheckError()) {

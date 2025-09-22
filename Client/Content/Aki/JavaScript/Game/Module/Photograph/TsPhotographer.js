@@ -14,6 +14,7 @@ const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const Global_1 = require("../../Global");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const GravityUtils_1 = require("../../Utils/GravityUtils");
 const PhotographController_1 = require("./PhotographController");
 const PhotographDefine_1 = require("./PhotographDefine");
@@ -31,6 +32,8 @@ class TsPhotographer extends UE.Actor {
     this.PlayerSourceLocation = undefined;
     this.CameraInitializeTransform = undefined;
     this.DefaultRotation = undefined;
+    this.CameraInitializeFov = -1;
+    this.CameraArmInitializeSocketOffset = new UE.Vector();
     this.SourceMaxPitch = 0;
     this.SourceMinPitch = 0;
     this.Character = undefined;
@@ -45,6 +48,10 @@ class TsPhotographer extends UE.Actor {
     this.CompleteHideDistance = 0;
     this.CameraUpAndDownMaxDistance = 0;
     this.CameraLeftAndRightMaxDistance = 0;
+    this.CameraUpAndDownSpeed = 1;
+    this.CameraLeftAndRightSpeed = 1;
+    this.MinFov = 0;
+    this.MaxFov = 0;
     this.CurCameraUpAndDownDistance = 0;
     this.CurCameraLeftAndRightDistance = 0;
     this.PitchInput = 0;
@@ -96,8 +103,21 @@ class TsPhotographer extends UE.Actor {
     this.PlayerLocation = Vector_1.Vector.Create();
     this.SourceMaxPitch = CommonParamById_1.configCommonParamById.GetIntConfig("CameraSourceMaxPitch");
     this.SourceMinPitch = CommonParamById_1.configCommonParamById.GetIntConfig("CameraSourceMinPitch");
-    this.CameraUpAndDownMaxDistance = CommonParamById_1.configCommonParamById.GetIntConfig("CameraUpAndDownDistance");
-    this.CameraLeftAndRightMaxDistance = CommonParamById_1.configCommonParamById.GetIntConfig("CameraLeftAndRightDistance");
+    this.CameraUpAndDownSpeed = 1;
+    this.CameraLeftAndRightSpeed = 1;
+    this.MaxFov = PhotographDefine_1.MAX_FOV;
+    this.MinFov = PhotographDefine_1.MIN_FOV;
+    this.CameraUpAndDownSpeed = 1;
+    this.CameraLeftAndRightSpeed = 1;
+    const s = ControllerHolder_1.ControllerHolder.PhotographController.CheckIfInFightPhotographCamera();
+    this.CameraUpAndDownMaxDistance = s ? CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraUpAndDownDistance") : CommonParamById_1.configCommonParamById.GetIntConfig("CameraUpAndDownDistance");
+    this.CameraLeftAndRightMaxDistance = s ? CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraLeftAndRightDistance") : CommonParamById_1.configCommonParamById.GetIntConfig("CameraLeftAndRightDistance");
+    if (s) {
+      this.MinFov = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMinFov");
+      this.MaxFov = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraMaxFov");
+      this.CameraUpAndDownSpeed = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraUpAndDownSpeed");
+      this.CameraLeftAndRightSpeed = CommonParamById_1.configCommonParamById.GetIntConfig("FightCameraLeftAndRightSpeed");
+    }
     this.CurCameraUpAndDownDistance = 0;
     this.CurCameraLeftAndRightDistance = 0;
     this.CurrentDither = 0;
@@ -109,13 +129,13 @@ class TsPhotographer extends UE.Actor {
     var t = Info_1.Info.IsMobilePlatform() ? MOBILE_CONFIG_PATH : CONFIG_PATH;
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_FightCameraConfig_C, t => {
       var t = t.基础;
-      this.StartHidePitch = t.Get(42);
-      var i = t.Get(40);
-      var h = t.Get(41);
+      this.StartHidePitch = s ? t.Get(94) : t.Get(42);
+      var i = s ? t.Get(96) : t.Get(40);
+      var h = s ? t.Get(97) : t.Get(41);
       this.StartHideDistance = Math.max(i, h) + HIDE_DISTANCE_OFFSET;
       this.CompleteHideDistance = Math.min(i, h) + HIDE_DISTANCE_OFFSET;
-      this.CompleteHidePitch = t.Get(43);
-      this.StartDitherValue = t.Get(44);
+      this.CompleteHidePitch = s ? t.Get(95) : t.Get(43);
+      this.StartDitherValue = s ? t.Get(98) : t.Get(44);
       this.IsLoadingConfigCompleted = true;
     });
     this.RefreshDitherEffect();
@@ -190,10 +210,22 @@ class TsPhotographer extends UE.Actor {
   GetCameraInitializeTransform() {
     return this.CameraInitializeTransform;
   }
+  SetCameraInitializeFov(t) {
+    this.CameraInitializeFov = t;
+  }
+  GetCameraInitializeFov() {
+    if (this.CameraInitializeFov === -1) {
+      return PhotographDefine_1.DEFAULT_FOV;
+    } else {
+      return this.CameraInitializeFov;
+    }
+  }
   ActivateCamera(t) {
     t.K2_AttachToComponent(this.CameraArm, FNameUtil_1.FNameUtil.NONE, 2, 2, 2, false);
     this.CameraActor = t;
-    this.SetFov(PhotographDefine_1.DEFAULT_FOV);
+    if (!ControllerHolder_1.ControllerHolder.PhotographController.CheckIfInFightPhotographCamera()) {
+      this.SetFov(PhotographDefine_1.DEFAULT_FOV);
+    }
   }
   DeactivateCamera() {
     if (this.CameraActor?.IsValid()) {
@@ -209,8 +241,19 @@ class TsPhotographer extends UE.Actor {
     this.RelativeVectorCache.Z = t.Z - i.Z;
     this.K2_AddActorWorldOffset(this.RelativeVectorCache, false, undefined, false);
   }
+  SetCameraArmTargetOffset(t, i = false) {
+    var h = this.CameraArm.K2_GetComponentRotation();
+    var s = this.D_K2_GetActorLocation().op_Addition(h.RotateVectorDouble(new UE.VectorDouble(-this.CameraArm.TargetArmLength, 0, 0)));
+    var t = t.op_Subtraction(s);
+    var s = h.Quaternion().Inverse().RotateVectorDouble(t).op_ToVector();
+    this.CameraArm.SocketOffset = s;
+    if (i) {
+      this.CameraArmInitializeSocketOffset = s;
+    }
+  }
   MoveUp(t) {
     var i;
+    var t = t * this.CameraUpAndDownSpeed;
     if (Math.abs(this.CurCameraUpAndDownDistance + t) < this.CameraUpAndDownMaxDistance) {
       i = GravityUtils_1.GravityUtils.GetVectorInGravity(Vector_1.Vector.UpVectorProxy, this.GravityQuat, this.TmpVector);
       this.CurCameraUpAndDownDistance += t;
@@ -221,6 +264,7 @@ class TsPhotographer extends UE.Actor {
   }
   MoveRight(t) {
     var i;
+    var t = t * this.CameraLeftAndRightSpeed;
     if (Math.abs(this.CurCameraLeftAndRightDistance + t) < this.CameraLeftAndRightMaxDistance) {
       i = GravityUtils_1.GravityUtils.GetVectorInGravity(Vector_1.Vector.RightVectorProxy, this.GravityQuat, this.TmpVector);
       this.CurCameraLeftAndRightDistance += t;
@@ -242,7 +286,7 @@ class TsPhotographer extends UE.Actor {
   }
   SetFov(t) {
     let i = 50;
-    i = PhotographController_1.PhotographController.CheckIfInEntityCamera() ? MathUtils_1.MathUtils.Clamp(t, PhotographController_1.PhotographController.MinFov ? PhotographController_1.PhotographController.MinFov.Value : PhotographDefine_1.MIN_FOV, PhotographController_1.PhotographController.MaxFov ? PhotographController_1.PhotographController.MaxFov.Value : PhotographDefine_1.MAX_FOV) : MathUtils_1.MathUtils.Clamp(t, PhotographDefine_1.MIN_FOV, PhotographDefine_1.MAX_FOV);
+    i = PhotographController_1.PhotographController.CheckIfInEntityCamera() ? MathUtils_1.MathUtils.Clamp(t, PhotographController_1.PhotographController.MinFov ? PhotographController_1.PhotographController.MinFov.Value : PhotographDefine_1.MIN_FOV, PhotographController_1.PhotographController.MaxFov ? PhotographController_1.PhotographController.MaxFov.Value : PhotographDefine_1.MAX_FOV) : MathUtils_1.MathUtils.Clamp(t, this.MinFov, this.MaxFov);
     this.CameraActor.CameraComponent.SetFieldOfView(i);
   }
   GetFov() {
@@ -252,8 +296,9 @@ class TsPhotographer extends UE.Actor {
     this.CapsuleCollision.K2_SetRelativeRotation(this.DefaultRotation, true, undefined, false);
     this.D_K2_SetActorTransform(this.CameraInitializeTransform, true, undefined, false);
     this.D_K2_SetActorLocation(this.PlayerSourceLocation, true, undefined, false);
-    this.SetFov(PhotographDefine_1.DEFAULT_FOV);
-    this.CameraArm.SocketOffset = Vector_1.Vector.ZeroVector;
+    var t = this.GetCameraInitializeFov();
+    this.SetFov(t);
+    this.CameraArm.SocketOffset = this.CameraArmInitializeSocketOffset;
     this.CurCameraUpAndDownDistance = 0;
     this.CurCameraLeftAndRightDistance = 0;
     this.CurrentDither = 0;

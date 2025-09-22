@@ -40,7 +40,6 @@ class BattleVisibleChildView extends BattleChildView_1.BattleChildView {
       this.SetActive(t);
     }
     if (t) {
-      this.SetActive(true);
       this.OnShowBattleChildView();
     }
   }

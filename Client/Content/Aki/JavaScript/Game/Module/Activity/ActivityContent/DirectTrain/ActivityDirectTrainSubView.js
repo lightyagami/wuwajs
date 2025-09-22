@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityDirectTrainSubView = undefined;
 const UE = require("ue");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
@@ -59,7 +57,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
               },
               SkipCallBack: () => {
                 ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrain(() => {
-                  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+                  UiManager_1.UiManager.ResetToBattleView();
                 });
               }
             };

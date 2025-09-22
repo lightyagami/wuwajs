@@ -49,7 +49,9 @@ const ExtraEffectBaseTypes_1 = require("./ExtraEffect/ExtraEffectBaseTypes");
 const ExtraEffectDamageAccumulation_1 = require("./ExtraEffect/ExtraEffectDamageAccumulation");
 const ExtraEffectDamageShare_1 = require("./ExtraEffect/ExtraEffectDamageShare");
 const ExtraEffectDamageTransferRecipients_1 = require("./ExtraEffect/ExtraEffectDamageTransferRecipients");
+const ExtraEffectMisc_1 = require("./ExtraEffect/ExtraEffectMisc");
 const ExtraEffectSnapModifier_1 = require("./ExtraEffect/ExtraEffectSnapModifier");
+const DIVIDED_TEN_THOUSAND = 0.0001;
 class DamageTransfer {
   constructor() {
     this.TransferTarget = undefined;
@@ -269,6 +271,7 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
     }
   }
   ProcessDamageExpression(e, t) {
+    CombatLog_1.CombatLog.Info("Damage", this.Entity, "执行伤害表达式", ["结算id", t.Id], ["formula", t.Condition]);
     ExpressionTreeController_1.ExpressionTreeController.GetDamageExpression(t.Id, t.Condition, t.ConstVariables).Evaluate(e, {
       Victim: this.Entity,
       Attacker: e.DamageParam.Attacker
@@ -417,7 +420,7 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
       },
       lHn: ModelManager_1.ModelManager.PlayerInfoModel.AdvanceRandomSeed(0)
     });
-    CombatMessage_1.CombatNet.Call(23331, this.Entity, i, e => {
+    CombatMessage_1.CombatNet.Call(24498, this.Entity, i, e => {
       var t;
       if (e && e.lAs !== Protocol_1.Aki.Protocol.G4s.Proto_EDamageImmune_Invincible && (t = {
         ...a,
@@ -441,7 +444,7 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
     }
   }
   cqr(e, t, a) {
-    this.Mqr(t);
+    this.Mqr(t, a);
     this.dqr(e, t.Attacker, a);
   }
   uqr(e, t, a) {
@@ -476,17 +479,21 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
       BaseDamageComponent_1.Iqr.Stop();
     }
   }
-  Mqr(e) {
-    var t = e.Attacker?.AttributeComponent;
-    if (t && e.IsAddEnergy) {
-      var a;
+  Mqr(e, t) {
+    var a = e.Attacker?.AttributeComponent;
+    if (a && e.IsAddEnergy) {
       var o;
-      var r = e.SkillLevel;
-      var e = e.DamageData;
-      for ([a, o] of [e.SpecialEnergy1, e.SpecialEnergy2, e.SpecialEnergy3, e.SpecialEnergy4, e.SpecialEnergy5].entries()) {
-        var i = CharacterAttributeTypes_1.specialEnergyIds[a];
-        var s = AbilityUtils_1.AbilityUtils.GetLevelValue(o, r, 0);
-        t.AddBaseValue(i, s);
+      var r;
+      var i = e.SkillLevel;
+      var s = e.DamageData;
+      for ([o, r] of [s.SpecialEnergy1, s.SpecialEnergy2, s.SpecialEnergy3, s.SpecialEnergy4, s.SpecialEnergy5].entries()) {
+        var n;
+        var m = CharacterAttributeTypes_1.specialEnergyIds[o];
+        var _ = AbilityUtils_1.AbilityUtils.GetLevelValue(r, i, 0);
+        if (_ !== 0) {
+          n = ExtraEffectMisc_1.SpecialEnergyModifier.ApplyEffects(e.Attacker?.Entity, this.BuffComponent, m, t);
+          a.AddBaseValue(m, _ * (1 + n * DIVIDED_TEN_THOUSAND));
+        }
       }
     }
   }
@@ -561,7 +568,7 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
     var t = Protocol_1.Aki.Protocol.T4n.create();
     t.F4n = this.Entity.GetComponent(0).GetCreatureDataId();
     t.o5n = e;
-    CombatMessage_1.CombatNet.Call(23719, this.Entity, t, e => {
+    CombatMessage_1.CombatNet.Call(29704, this.Entity, t, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (this.Zbr) {
           TimerSystem_1.TimerSystem.Remove(this.Zbr);

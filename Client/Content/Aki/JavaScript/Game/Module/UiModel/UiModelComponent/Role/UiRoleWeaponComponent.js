@@ -51,6 +51,11 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     this.Dwr = e => {
       this.SetDitherEffect(e);
     };
+    this.Twr = e => {
+      if (!e) {
+        this.HideAllWeapon();
+      }
+    };
     this.OnRoleIdChange = () => {
       this.RefreshWeaponCase();
       this.HideAllWeapon();
@@ -98,6 +103,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     this.Jwr?.RegisterAnsTrigger("UiWeaponAnsContext", this.OnAnsBegin, this.OnAnsEnd);
   }
   OnEnd() {
@@ -105,6 +111,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     for (const e of this.IBr) {
       SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(e);
     }

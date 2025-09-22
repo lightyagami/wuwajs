@@ -10,18 +10,18 @@ const TrapDefenseMarkItem_1 = require("./TrapDefenseMarkItem");
 class TrapDefensePhantomPointMarkItem extends TrapDefenseMarkItem_1.TrapDefenseMarkItem {
   constructor(e, t) {
     super(e, t);
-    this.$9c = [];
-    this.W9c = 0;
-    [this.W9c, this.$9c] = t ?? [];
+    this.Ijc = [];
+    this.Tjc = 0;
+    [this.Tjc, this.Ijc] = t ?? [];
   }
   get PhantomPoint() {
-    return this.$9c[0] ?? Vector_1.Vector.ZeroVectorProxy;
+    return this.Ijc[0] ?? Vector_1.Vector.ZeroVectorProxy;
   }
   get PhantomRoutePoints() {
-    return this.$9c;
+    return this.Ijc;
   }
   get SplineId() {
-    return this.W9c;
+    return this.Tjc;
   }
   get MarkType() {
     return 2;

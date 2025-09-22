@@ -42,32 +42,32 @@ class TrapDefenseLevelRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.UpdateBdBuff();
     }
   }
-  EYc(t) {
+  IJc(t) {
     this.GetItem(1)?.SetUIActive(t);
   }
-  IYc(t) {
+  TJc(t) {
     this.GetText(0)?.ShowTextNew(t);
   }
   UpdateTalent() {
-    this.EYc(true);
+    this.IJc(true);
     this.LayoutBdReward.SetActive(false);
     this.LayoutMachineReward.SetActive(false);
-    this.IYc(this.ItemData.TypeNameKey);
+    this.TJc(this.ItemData.TypeNameKey);
     this.GetText(2)?.SetText(this.ItemData.LevelData.Config.RewardMoneyCount.toString());
     this.GetItem(7)?.SetUIActive(this.ItemData.LevelData.IsPassed);
   }
   UpdateMachine() {
     this.LayoutMachineReward.SetActive(true);
-    this.EYc(false);
+    this.IJc(false);
     this.LayoutBdReward.SetActive(false);
-    this.IYc(this.ItemData.TypeNameKey);
+    this.TJc(this.ItemData.TypeNameKey);
     this.LayoutMachineReward.RefreshByData(this.ItemData.LevelData.GetRewardShowListMachineData());
   }
   UpdateBdBuff() {
     this.LayoutBdReward.SetActive(true);
-    this.EYc(false);
+    this.IJc(false);
     this.LayoutMachineReward.SetActive(false);
-    this.IYc(this.ItemData.TypeNameKey);
+    this.TJc(this.ItemData.TypeNameKey);
     this.LayoutBdReward.RefreshByData(this.ItemData.LevelData.GetRewardShowListBdBuffData());
   }
 }

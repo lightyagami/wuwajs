@@ -17,10 +17,10 @@ class FeedbackInfo {
 }
 class GamepadPsFeedbackData {
   constructor() {
-    this.jsd = new Map();
+    this.Q_d = new Map();
   }
   AddFeedbackReason(e, a, s) {
-    let o = this.jsd.get(e);
+    let o = this.Q_d.get(e);
     if (o) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("PsGamepadFeedback", 10, "刷新Ps5手柄高级震动", ["reason", e], ["mode", a], ["path", s]);
@@ -33,10 +33,10 @@ class GamepadPsFeedbackData {
       }
       o = new FeedbackInfo(e, a, s);
     }
-    this.jsd.set(e, o);
+    this.Q_d.set(e, o);
   }
   RemoveFeedbackReason(e) {
-    var a = this.jsd.delete(e);
+    var a = this.Q_d.delete(e);
     if (a && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PsGamepadFeedback", 10, "移除Ps5手柄高级震动", ["reason", e]);
     }
@@ -46,13 +46,13 @@ class GamepadPsFeedbackData {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PsGamepadFeedback", 10, "清除Ps5手柄高级震动");
     }
-    this.jsd.clear();
+    this.Q_d.clear();
   }
   GetLastFeedbackInfo() {
     var e;
-    if (!(this.jsd.size <= 0)) {
-      e = (e = Array.from(this.jsd.keys()))[e.length - 1];
-      return this.jsd.get(e);
+    if (!(this.Q_d.size <= 0)) {
+      e = (e = Array.from(this.Q_d.keys()))[e.length - 1];
+      return this.Q_d.get(e);
     }
   }
 }

@@ -31,6 +31,7 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.TabViewComponent = undefined;
     this.yvt = [];
     this.aji = 0;
+    this.PTt = [];
     this.lji = e => {
       this.TabComponent.SetCloseBtnShowState(e);
     };
@@ -39,31 +40,38 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     };
     this.uji = () => {
       var e;
-      var t;
-      if (ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji).GetQuality() > VisionDefine_1.CANNOTLEVELSUBQUALITY && (e = this.TabComponent.GetTabItemByIndex(1))) {
-        t = this.cji();
-        e.SetToggleStateForce(t ? 0 : 2, false);
+      var i;
+      var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
+      if (!(t.GetQuality() <= VisionDefine_1.CANNOTLEVELSUBQUALITY)) {
+        for ([e, i] of this.TabComponent.GetTabItemMap()) {
+          var n = this.yvt[e];
+          if (VisionDefine_1.tabViewWithLock.has(n.ChildViewName)) {
+            n = this.cji(n);
+            i.SetToggleStateForce(n ? 0 : 2, false);
+          }
+        }
       }
     };
     this.CanToggleChange = e => {
-      return e !== 1 || ((e = this.cji()) || ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionIdentifyLock"), e);
+      var e = this.yvt[e];
+      return !VisionDefine_1.tabViewWithLock.has(e.ChildViewName) || (!(e = this.cji(e)).IsUnlocked && e.Message && ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(e.Message), e.IsUnlocked);
     };
-    this.R6e = (e, t) => {
+    this.R6e = (e, i) => {
       return new VisionTabItem_1.VisionTabItem();
     };
-    this.SetOnUndeterminedClick = () => {
-      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionIdentifyLock");
-    };
     this.pqe = e => {
-      var t = this.yvt[e];
-      var i = t.ChildViewName;
+      var i = this.yvt[e];
+      var t = i.ChildViewName;
       var e = this.TabComponent.GetTabItemByIndex(e);
       var n = this.TabViewComponent.GetCurrentTabView();
       if (n) {
         n.HideUiTabView(false);
       }
-      this.TabViewComponent.ToggleCallBack(t, i, e, this.aji);
+      this.SetCurrencyItemList(t);
+      var n = this.CreateExtraParams(t);
+      this.TabViewComponent.ToggleCallBack(i, t, e, n);
       this.TabComponent.SetHelpButtonCallBack(this.mji);
+      this.BSd(t);
     };
     this.mji = () => {
       HelpController_1.HelpController.OpenHelpById(VISION_INTENSIFY_HELPID);
@@ -75,6 +83,27 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.CloseClick = () => {
       this.CloseMe();
     };
+    this.kSd = () => {
+      var e;
+      var i;
+      for ([e, i] of this.TabComponent.GetTabItemMap()) {
+        var t = this.yvt[e];
+        if (VisionDefine_1.tabViewWithLock.has(t.ChildViewName)) {
+          const n = this.cji(t);
+          i.SetToggleStateForce(n.IsUnlocked ? 0 : 2, false);
+          i.SetCanClickWhenDisable(true);
+          i.SetOnUndeterminedClick(() => {
+            if (n.Message) {
+              ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(n.Message);
+            }
+          });
+        }
+      }
+      this.TabComponent.SelectToggleByIndex(0, true);
+      this.TabViewComponent.SetCurrentTabViewState(true);
+      this.K8e();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshVisionIdentifyRedPoint, this.aji);
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
@@ -83,9 +112,6 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
     this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.CloseClick);
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1));
-    var e = new Array();
-    e.push(ItemDefines_1.EItemId.Gold);
-    this.TabComponent.SetCurrencyItemList(e);
     this.TabComponent.SetHelpButtonShowState(true);
     this.TabComponent.SetCanChange(this.CanToggleChange);
     this.GetItem(2).SetUIActive(false);
@@ -100,14 +126,37 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PhantomLevelUp, this.uji);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnClickVisionIntensifyItemJump, this._ji);
   }
-  cji() {
-    var e = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
-    var t = e.GetSubPropUnlockLevel(0);
-    var e = e.GetPhantomLevel() >= t;
-    if (e) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionIntensifyTabOpen);
+  cji(e) {
+    switch (e.ChildViewName) {
+      case "VisionIdentifyView":
+        var i = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
+        var t = i.GetSubPropUnlockLevel(0);
+        var i = i.GetPhantomLevel() >= t;
+        if (i) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionIntensifyTabOpen);
+        }
+        return {
+          IsUnlocked: i,
+          Message: i ? undefined : "VisionIdentifyLock"
+        };
+      case "VisionRefineTabView":
+        if (ModelManager_1.ModelManager.FunctionModel.IsOpen(e.FunctionId)) {
+          return {
+            IsUnlocked: t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji).GetVisionIfCanRefine(),
+            Message: t ? undefined : "Text_PhantomRefineConditionUnfit_Text"
+          };
+        } else {
+          return {
+            IsUnlocked: false,
+            Message: "Text_PhantomRefineNotOpen_Text"
+          };
+        }
+      default:
+        return {
+          IsUnlocked: true,
+          Message: undefined
+        };
     }
-    return e;
   }
   OnBeforePlayCloseSequence() {
     var e = this.TabViewComponent.GetCurrentTabView();
@@ -115,15 +164,52 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
       new UiSequencePlayer_1.UiSequencePlayer(e.GetRootItem()).PlaySequence("Close");
     }
   }
-  OnHandleLoadScene() {
-    if (!UiSceneManager_1.UiSceneManager.HasVisionSkeletalHandle()) {
-      UiSceneManager_1.UiSceneManager.InitVisionSkeletalHandle();
+  BSd(e) {
+    if (e === "VisionRefineTabView") {
+      this.OSd();
+    } else {
+      this.qSd();
     }
+  }
+  qSd() {
     var e;
-    var t = UiSceneManager_1.UiSceneManager.GetVisionSkeletalHandle();
-    if (t && (e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.aji))) {
-      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(e.GetConfigId(true), undefined, t);
+    var i = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.aji);
+    if (i && (UiSceneManager_1.UiSceneManager.HasVisionSkeletalHandle() || UiSceneManager_1.UiSceneManager.InitVisionSkeletalHandle(), e = UiSceneManager_1.UiSceneManager.GetVisionSkeletalHandle())) {
+      ControllerHolder_1.ControllerHolder.PhantomBattleController.SetMeshShow(i.GetConfigId(true), undefined, e);
     }
+  }
+  OSd() {
+    UiSceneManager_1.UiSceneManager.DestroyVisionSkeletalHandle();
+  }
+  CreateExtraParams(e) {
+    let i = undefined;
+    return i = e === "VisionRefineTabView" ? {
+      ViewState: 2,
+      UniqueId: this.aji,
+      ActiveCaptionItem: false,
+      SlotInteractive: false,
+      ResultShowTips: false
+    } : this.aji;
+  }
+  SetCurrencyItemList(e) {
+    this.PTt.length = 0;
+    if (e === "VisionRefineTabView") {
+      ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRefineMaterialCost(this.aji)?.forEach((e, i) => {
+        this.PTt.push(i);
+      });
+    } else {
+      this.PTt.push(ItemDefines_1.EItemId.Gold);
+    }
+    this.TabComponent.SetCurrencyItemList(this.PTt);
+  }
+  OnHandleLoadScene() {
+    var e = this.TabViewComponent.GetCurrentTabViewName();
+    if (e) {
+      this.BSd(e);
+    }
+  }
+  OnHandleReleaseScene() {
+    this.OSd();
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.PhantomBattleModel?.AddNeedCameraFocusMethodDisableViewCount();
@@ -131,27 +217,11 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     e.forEach(e => {
       this.yvt.push(e);
     });
-    var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
-    var i = ModelManager_1.ModelManager.FunctionModel.IsOpen(10001004);
+    var i = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(this.aji);
+    var t = ModelManager_1.ModelManager.FunctionModel.IsOpen(10001004);
     let n = 0;
-    n = t.GetQuality() <= VisionDefine_1.CANNOTLEVELSUBQUALITY || !i ? 1 : e.length;
-    this.TabComponent.RefreshTabItemByLength(n, () => {
-      var e;
-      var t;
-      var i;
-      for ([e, t] of this.TabComponent.GetTabItemMap()) {
-        if (e === 1) {
-          i = this.cji();
-          t.SetToggleStateForce(i ? 0 : 2, false);
-          t.SetCanClickWhenDisable(true);
-          t.SetOnUndeterminedClick(this.SetOnUndeterminedClick);
-        }
-      }
-      this.TabComponent.SelectToggleByIndex(0, true);
-      this.TabViewComponent.SetCurrentTabViewState(true);
-      this.K8e();
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshVisionIdentifyRedPoint, this.aji);
-    });
+    n = i.GetQuality() <= VisionDefine_1.CANNOTLEVELSUBQUALITY || !t ? 1 : e.length;
+    this.TabComponent.RefreshTabItemByLength(n, this.kSd);
   }
   K8e() {
     var e = this.yvt.findIndex(e => e.ChildViewName === "VisionIdentifyView");
@@ -169,9 +239,6 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.Ovt();
     ModelManager_1.ModelManager.PhantomBattleModel?.ReduceNeedCameraFocusMethodDisableViewCount();
   }
-  OnHandleReleaseScene() {
-    UiSceneManager_1.UiSceneManager.DestroyVisionSkeletalHandle();
-  }
   OnAfterHide() {
     var e = this.TabViewComponent.GetCurrentTabView();
     if (e) {
@@ -186,10 +253,10 @@ class VisionIntensifyView extends UiViewBase_1.UiViewBase {
     this.TabComponent.Destroy();
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    const t = Number(e[0]);
-    var i = this.TabComponent.GetTabItemByIndex(this.yvt.findIndex(e => e.Id === t)).GetRootItem();
-    if (i) {
-      return [i, i];
+    const i = Number(e[0]);
+    var t = this.TabComponent.GetTabItemByIndex(this.yvt.findIndex(e => e.Id === i)).GetRootItem();
+    if (t) {
+      return [t, t];
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Guide", 53, "聚焦引导extraParam项配置有误", ["configParams", e]);

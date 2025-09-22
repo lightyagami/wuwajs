@@ -278,7 +278,7 @@ class FlowShowTalk {
     }
   }
   vbn() {
-    if (!this.Context.IsBackground && (this.B8 !== "Prompt" || !ControllerHolder_1.ControllerHolder.PlotController.ShowTipsView(this.S$i, this.Context.UiParam))) {
+    if (!this.Context.IsBackground && (this.B8 !== "Prompt" || !ControllerHolder_1.ControllerHolder.PlotController.ShowTipsView(this.S$i, this.Context.PromptStyle, this.Context.UiParam))) {
       if (this.B8 === "LevelC" && this.S$i?.Type === "CenterText") {
         ModelManager_1.ModelManager.PlotModel.ShowTalkCenterText(this.S$i, this.SubmitSubtitle);
       } else {

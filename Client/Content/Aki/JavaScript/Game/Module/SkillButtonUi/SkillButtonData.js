@@ -15,6 +15,7 @@ const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const InputEnums_1 = require("../../Input/InputEnums");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const PhantomUtil_1 = require("../Phantom/PhantomUtil");
@@ -41,6 +42,7 @@ class SkillButtonData {
     this.gSo = [];
     this.pri = [];
     this.fSo = new Map();
+    this.pQd = [];
     this.mEa = 0;
     this.pSo = [];
     this.DY_ = [];
@@ -53,6 +55,8 @@ class SkillButtonData {
     this.AttributeId = 0;
     this.MaxAttributeId = 0;
     this.IsEnableWhenAttributeNoEnough = false;
+    this.FormationAttributeIdTagMap = new Map();
+    this.FormationAttributeId = 0;
     this.vSo = false;
     this.RoleConfig = undefined;
     this.Qst = undefined;
@@ -71,12 +75,12 @@ class SkillButtonData {
     this.$te = undefined;
     this.USo = undefined;
     this.Cvl = undefined;
-    this.bjc = undefined;
+    this.pWu = undefined;
     this.xut = 0;
     this.XMc = false;
     this.ConfigShowLongPressTagIds = [];
     this.ASo = false;
-    this.dEa = false;
+    this.DefaultHidden = false;
     this.BY_ = true;
     this.PSo = "";
     this.SkillIconName = "";
@@ -123,11 +127,11 @@ class SkillButtonData {
     this.SkillIdTagMap.clear();
     this.DynamicEffectTagIdMap.clear();
     if (h) {
-      for (var [l, u] of h.SkillIdTagMap) {
-        this.SkillIdTagMap.set(l, u);
+      for (var [l, a] of h.SkillIdTagMap) {
+        this.SkillIdTagMap.set(l, a);
       }
-      for (var [a, f] of h.DynamicEffectTagMap) {
-        this.DynamicEffectTagIdMap.set(a, f);
+      for (var [u, f] of h.DynamicEffectTagMap) {
+        this.DynamicEffectTagIdMap.set(u, f);
       }
     }
     for ([e, r] of i.SkillIdTagMap) {
@@ -146,10 +150,12 @@ class SkillButtonData {
     }
     if (this.ConfigRole) {
       this.kY_(this.ConfigRole);
+      this.e8d(this.ConfigRole);
+      this.DefaultHidden = this.ConfigRole.VisibleTags.length > 0;
     }
     if (this.ConfigFollower) {
       this.kY_(this.ConfigFollower);
-      this.dEa = !this.ConfigFollower.IsVisible;
+      this.DefaultHidden = !this.ConfigFollower.IsVisible;
     }
     this.vSo = i.IsLongPressControlCamera;
     this.TSo = t.GetComponent(39);
@@ -161,13 +167,14 @@ class SkillButtonData {
     this.$te = t.GetComponent(174);
     this.USo = t.GetComponent(43);
     this.Cvl = t.GetComponent(230);
-    this.bjc = t.GetComponent(297);
+    this.pWu = t.GetComponent(298);
     this.InitCustomHandle();
     this.InitVehicleHandle();
     this.qSo();
     this.RefreshIsExploreAsFight();
     this.RefreshSkillId();
     this.RefreshAttributeId();
+    this.RefreshFormationAttributeId();
     this.SetExploreSkillChange(false);
     this.pmi();
     this.RefreshDynamicEffect();
@@ -201,6 +208,8 @@ class SkillButtonData {
     this.AttributeId = 0;
     this.MaxAttributeId = 0;
     this.IsEnableWhenAttributeNoEnough = false;
+    this.FormationAttributeIdTagMap.clear();
+    this.FormationAttributeId = 0;
     this.XMc = false;
     this.vSo = undefined;
     this.TSo = undefined;
@@ -246,6 +255,11 @@ class SkillButtonData {
       }
     }
   }
+  e8d(t) {
+    for (var [i, s] of t.FormationAttributeIdTagMap) {
+      this.FormationAttributeIdTagMap.set(i, s);
+    }
+  }
   qSo() {
     var i;
     var s;
@@ -255,6 +269,7 @@ class SkillButtonData {
     this.gSo.length = 0;
     this.pri.length = 0;
     this.fSo.clear();
+    this.pQd.length = 0;
     this.pSo.length = 0;
     this.DY_.length = 0;
     this.ConfigShowLongPressTagIds.length = 0;
@@ -268,31 +283,34 @@ class SkillButtonData {
           this.fSo.set(r, n);
         }
       }
-      for (const u of e.DisableTags) {
-        this.pri.push(u);
+      for (const a of e.DisableTags) {
+        this.pri.push(a);
       }
     }
     if (h) {
-      for (const a of h.EnableTags) {
-        this.gSo.push(a);
+      for (const u of h.EnableTags) {
+        this.gSo.push(u);
       }
       for (const f of h.HiddenTags) {
         this.pSo.push(f);
       }
-      for (const d of h.ShowLongPressTags) {
-        this.ConfigShowLongPressTagIds.push(d);
+      for (const d of h.VisibleTags) {
+        this.pQd.push(d);
+      }
+      for (const v of h.ShowLongPressTags) {
+        this.ConfigShowLongPressTagIds.push(v);
       }
     } else if (this.ConfigVehicle) {
-      for (const v of this.ConfigVehicle.EnableTags) {
-        this.gSo.push(v);
+      for (const _ of this.ConfigVehicle.EnableTags) {
+        this.gSo.push(_);
       }
     } else if (this.ConfigFollower) {
-      for (const g of this.ConfigFollower.NotOccupyTags) {
-        this.DY_.push(g);
+      for (const I of this.ConfigFollower.NotOccupyTags) {
+        this.DY_.push(I);
       }
     }
-    for (const I of t.DisableTags) {
-      this.pri.push(I);
+    for (const g of t.DisableTags) {
+      this.pri.push(g);
     }
     for ([i, s] of t.DisableSkillIdTags) {
       if (s) {
@@ -301,8 +319,8 @@ class SkillButtonData {
           t = new Set();
           this.fSo.set(i, t);
         }
-        for (const _ of s.ArrayInt) {
-          t.add(_);
+        for (const m of s.ArrayInt) {
+          t.add(m);
         }
       }
     }
@@ -336,6 +354,9 @@ class SkillButtonData {
   }
   GetDisableSkillIdTagIds() {
     return this.fSo;
+  }
+  GetVisibleTagIds() {
+    return this.pQd;
   }
   GetHiddenTagIds() {
     return this.pSo;
@@ -438,13 +459,21 @@ class SkillButtonData {
     return this.BY_;
   }
   HasAttribute() {
-    return this.AttributeId !== 0 && this.MaxAttributeId !== 0;
+    return this.AttributeId !== 0 && this.MaxAttributeId !== 0 || this.FormationAttributeId !== 0;
   }
   GetAttribute() {
-    return this.$te.GetCurrentValue(this.AttributeId);
+    if (this.FormationAttributeId !== 0) {
+      return ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(this.FormationAttributeId);
+    } else {
+      return this.$te.GetCurrentValue(this.AttributeId);
+    }
   }
   GetMaxAttribute() {
-    return this.$te.GetCurrentValue(this.MaxAttributeId);
+    if (this.FormationAttributeId !== 0) {
+      return ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(this.FormationAttributeId);
+    } else {
+      return this.$te.GetCurrentValue(this.MaxAttributeId);
+    }
   }
   GetMaxAttributeColor() {
     return this.xSo;
@@ -620,6 +649,15 @@ class SkillButtonData {
       this.MaxAttributeId = s[1];
     }
   }
+  RefreshFormationAttributeId() {
+    for (var [t, i] of this.FormationAttributeIdTagMap) {
+      if (this.mSo(t)) {
+        this.FormationAttributeId = i;
+        return;
+      }
+    }
+    this.FormationAttributeId = 0;
+  }
   pmi() {
     if (this.u1t && this.ConfigRole) {
       this.RoleConfig = this.u1t.GetRoleConfig();
@@ -708,7 +746,7 @@ class SkillButtonData {
     } else if (this.CustomHandle?.ForceEnable) {
       this.bSo = true;
       this.J6a = 10;
-    } else if (this.HasAttribute() && this.GetAttribute() < this.GetMaxAttribute() && !this.IsEnableWhenAttributeNoEnough) {
+    } else if (this.HasAttribute() && this.GetAttribute() < this.GetMaxAttribute() && (!this.IsEnableWhenAttributeNoEnough || this.FormationAttributeId !== 0)) {
       this.bSo = false;
       this.J6a = 3;
     } else {
@@ -793,9 +831,24 @@ class SkillButtonData {
     this.J6a = i;
   }
   RefreshIsVisible(t = true) {
-    if (this.dEa && !this.FormationData?.IgnoreDefaultHidden) {
-      this.ASo = false;
-    } else if (this.RO && !ModelManager_1.ModelManager.BattleInputModel?.GetInputVisible(this.RO)) {
+    if (this.DefaultHidden) {
+      let t = false;
+      if (this.FormationData?.IgnoreDefaultHidden) {
+        t = true;
+      } else {
+        for (const i of this.pQd) {
+          if (this.mSo(i)) {
+            t = true;
+            break;
+          }
+        }
+      }
+      if (!t) {
+        this.ASo = false;
+        return;
+      }
+    }
+    if (this.RO && !ModelManager_1.ModelManager.BattleInputModel?.GetInputVisible(this.RO)) {
       this.ASo = false;
     } else {
       if (t) {
@@ -805,8 +858,8 @@ class SkillButtonData {
             return;
           }
         } else {
-          for (const i of this.pSo) {
-            if (this.mSo(i)) {
+          for (const s of this.pSo) {
+            if (this.mSo(s)) {
               this.ASo = false;
               return;
             }
@@ -820,12 +873,12 @@ class SkillButtonData {
     this.ASo = false;
   }
   SetDefaultHidden(t) {
-    this.dEa = t;
+    this.DefaultHidden = t;
   }
   RefreshIsOccupy() {
-    for (const t of this.pSo) {
+    for (const t of this.DY_) {
       if (this.mSo(t)) {
-        this.ASo = false;
+        this.BY_ = false;
         return;
       }
     }
@@ -956,7 +1009,7 @@ class SkillButtonData {
         }
         break;
       case 6:
-        if (this.bjc?.GetRoleState() !== 0) {
+        if (this.pWu?.GetRoleState() !== 0) {
           this.pvl = true;
           this.RefreshLongPressDuration();
         } else {
@@ -979,7 +1032,7 @@ class SkillButtonData {
       i = t?.GetComponent(241)?.GetHoldConfig(this.RO);
       this.fvl = i ? i[1] : 0;
     }
-    if (this.bjc && (i = this.bjc.GetLongPressDuration(this.RO)) > 0) {
+    if (this.pWu && (i = this.pWu.GetLongPressDuration(this.RO)) > 0) {
       this.fvl = i;
     }
   }
@@ -1009,11 +1062,14 @@ class SkillButtonData {
       t = this.Cvl?.VehicleEntity;
     }
     var i = !!t?.GetComponent(241)?.IsHoldingAction(this.RO);
-    var s = !!this.bjc?.IsHoldingAction(this.RO);
+    var s = !!this.pWu?.IsHoldingAction(this.RO);
     return i || s;
   }
   HasConfigFollower() {
     return this.ConfigFollower !== undefined;
+  }
+  GetFormationData() {
+    return this.FormationData;
   }
 }
 exports.SkillButtonData = SkillButtonData;

@@ -322,7 +322,7 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
   constructor() {
     super(...arguments);
     this.TaskData = undefined;
-    this.hQu = undefined;
+    this.D8u = undefined;
     this.OnClickedButton = () => {
       var t = ConfigManager_1.ConfigManager.ActivityMapTravelConfig.GetTravelTaskConfig(this.TaskData.Id);
       if (t.JumpId) {
@@ -330,7 +330,7 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
       }
     };
     this.OnClickedRewardButton = () => {
-      this.hQu?.();
+      this.D8u?.();
     };
   }
   Refresh(t) {
@@ -359,7 +359,7 @@ class TaskNormalItem extends MapTravelTaskItem_1.TaskItemBase {
     this.RewardScrollView.RefreshByData(i);
   }
   SetBtnClickCallback(t) {
-    this.hQu = t;
+    this.D8u = t;
   }
 }
 class TaskLockItem extends MapTravelTaskItem_1.TaskItemBase {

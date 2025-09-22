@@ -97,7 +97,7 @@ class PatrolMovePointsLogic {
           }
           (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
           i.V4n = true;
-          Net_1.Net.Call(22528, i, () => {});
+          Net_1.Net.Call(16730, i, () => {});
         } else {
           t = this.TargetIndex - 1;
         }
@@ -109,7 +109,7 @@ class PatrolMovePointsLogic {
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
         i.V4n = false;
-        Net_1.Net.Call(22528, i, () => {});
+        Net_1.Net.Call(16730, i, () => {});
       } else {
         t = this.TargetIndex + 1;
       }

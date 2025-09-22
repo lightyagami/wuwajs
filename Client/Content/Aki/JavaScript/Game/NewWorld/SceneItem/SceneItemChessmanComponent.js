@@ -41,10 +41,10 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     this.n$t = undefined;
     this.Xte = undefined;
     this.Lo = undefined;
-    this.SJc = undefined;
+    this.bed = undefined;
     this.Rnn = () => {
-      if (this.SJc) {
-        this.SJc();
+      if (this.bed) {
+        this.bed();
       }
     };
     this.AGa = undefined;
@@ -103,7 +103,7 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     return true;
   }
   RegisterOnSceneInteractionLoadCompleted(e) {
-    return !this.n$t?.GetIsSceneInteractionLoadCompleted() && (this.SJc = e, true);
+    return !this.n$t?.GetIsSceneInteractionLoadCompleted() && (this.bed = e, true);
   }
   UGa() {
     var e;
@@ -162,5 +162,5 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     }
   }
 };
-SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(258)], SceneItemChessmanComponent);
+SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(259)], SceneItemChessmanComponent);
 exports.SceneItemChessmanComponent = SceneItemChessmanComponent; //# sourceMappingURL=SceneItemChessmanComponent.js.map

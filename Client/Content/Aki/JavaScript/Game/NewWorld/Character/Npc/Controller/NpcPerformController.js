@@ -16,17 +16,17 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 class NpcPerformController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(28528, this.SetPerformStateNotify);
+    Net_1.Net.Register(29430, this.SetPerformStateNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMark, this.OnTrackMark);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UnTrackMark, this.OnUnTrackMark);
-    Net_1.Net.Register(15273, this.OnShopBuyNotify);
+    Net_1.Net.Register(17159, this.OnShopBuyNotify);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(28528);
+    Net_1.Net.UnRegister(29430);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMark, this.OnTrackMark);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnTrackMark, this.OnUnTrackMark);
-    Net_1.Net.UnRegister(15273);
+    Net_1.Net.UnRegister(17159);
     return true;
   }
   static ForceSetNpcDitherVisible(e, r, t) {

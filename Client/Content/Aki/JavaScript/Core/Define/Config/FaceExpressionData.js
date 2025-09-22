@@ -19,6 +19,9 @@ class FaceExpressionData {
   get MaleVariant() {
     return this.malevariant();
   }
+  get CloseAutoBlink() {
+    return this.closeautoblink();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -50,6 +53,10 @@ class FaceExpressionData {
       GameUtils_1.GameUtils.InternalizedString(s);
     }
     return s;
+  }
+  closeautoblink() {
+    var t = this.J7.__offset(this.z7, 10);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.FaceExpressionData = FaceExpressionData;

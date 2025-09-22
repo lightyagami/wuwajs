@@ -1071,25 +1071,33 @@ class EditBattleTeamView extends UiViewBase_1.UiViewBase {
     var t;
     return !ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation() && !!ModelManager_1.ModelManager.GameModeModel.IsMulti && !(t = ModelManager_1.ModelManager.EditBattleTeamModel.IsInEditBattleTeam(e), ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e)?.IsTrialRole()) && !t && !!ModelManager_1.ModelManager.EditFormationModel.IsRoleDead(e);
   }
-  mGe(e) {
-    var t = ModelManager_1.ModelManager.EditBattleTeamModel;
+  mGe(t) {
+    var e = ModelManager_1.ModelManager.EditBattleTeamModel;
     var o = this.GetText(16);
     let r = undefined;
-    if (e) {
-      e = ModelManager_1.ModelManager.TowerModel.CurrentSelectFloor;
-      n = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(e);
-      e = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerAreaName(e);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), "Text_TowerAreaFloor_Text", e, n.Floor);
+    if (t) {
+      var t = ModelManager_1.ModelManager.TowerModel.CurrentSelectFloor;
+      var n = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(t);
+      var t = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerAreaName(t);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), "Text_TowerAreaFloor_Text", t, n.Floor);
       r = n.RecommendElement;
-    } else if (e = t.GetCurrentDungeonConfig) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(o, e.MapName);
-      r = e.RecommendElement;
-    }
-    var n = this.GetItem(23);
-    if (!r || r.length <= 0) {
-      n.SetUIActive(false);
     } else {
-      n.SetUIActive(true);
+      t = e.GetCurrentDungeonConfig;
+      if (t) {
+        let e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.MapName) ?? "";
+        r = t.RecommendElement;
+        n = t.SubTitle;
+        if (n?.size > 0 && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+          e += ModelManager_1.ModelManager.OnlineModel.GetMultiInstanceRecommendLevelText(t.Id, n);
+        }
+        o?.SetText(e);
+      }
+    }
+    e = this.GetItem(23);
+    if (!r || r.length <= 0) {
+      e.SetUIActive(false);
+    } else {
+      e.SetUIActive(true);
       var i = this.GetItem(21);
       var a = this.GetItem(22);
       for (const _ of r) {

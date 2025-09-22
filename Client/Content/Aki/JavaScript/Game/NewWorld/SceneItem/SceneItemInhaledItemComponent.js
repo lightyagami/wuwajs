@@ -182,9 +182,9 @@ let SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = class Scen
       t.i_l = MathUtils_1.MathUtils.NumberToLong(this.e_l);
       t.r5n = this.wmo;
       t.r_l = [MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId())];
-      Net_1.Net.Call(23724, t, t => {
+      Net_1.Net.Call(20089, t, t => {
         if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17079);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28582);
         }
       });
       if (Log_1.Log.CheckInfo()) {
@@ -203,5 +203,5 @@ let SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = class Scen
     }
   }
 };
-SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(264)], SceneItemInhaledItemComponent);
+SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(265)], SceneItemInhaledItemComponent);
 exports.SceneItemInhaledItemComponent = SceneItemInhaledItemComponent; //# sourceMappingURL=SceneItemInhaledItemComponent.js.map

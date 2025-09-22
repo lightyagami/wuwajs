@@ -21,12 +21,12 @@ class KscActionBuffUpdate extends KscActionBase_1.KscActionBase {
       this.Warn("Skill", "刷新buff时找不到Id", ["EntityId", this.EntityId], ["Params", this.Params]);
       this.SetResult();
     } else {
-      this.o$u(s);
+      this.FKu(s);
       await this.Promise?.Promise;
     }
   }
-  o$u(s) {
-    const t = this.Params.Mju;
+  FKu(s) {
+    const t = this.Params.t9u;
     const i = this.Params.b6n;
     const e = this.KscCtrl.CurSubModel.KscEntities.get(s);
     var a;
@@ -40,6 +40,7 @@ class KscActionBuffUpdate extends KscActionBase_1.KscActionBase {
           Callback: s => {
             if (this.KscCtrl.WorldInit) {
               this.Info("Skill", "更新Buff", ["kscEntityHandle", e], ["buffId", i], ["IsAdd", t], ["buffDa", s?.GetName()]);
+              KscEnv_1.KscEnv.KscWorld?.BuffData?.AddBuffDA(BigInt(i), s);
               if (t) {
                 e.KscEntity.ApplyBuffSelf(s);
               } else {

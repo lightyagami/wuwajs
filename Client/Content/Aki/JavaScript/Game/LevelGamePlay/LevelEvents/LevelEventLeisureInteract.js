@@ -16,7 +16,7 @@ const SKILL_ID_FIX_HOOK_1 = 100020;
 const SKILL_ID_FIX_HOOK_2 = 100021;
 const SKILL_ID_XA_KITE = 210130;
 const SKILL_ID_XA_CHARACTER_DIR = 210330;
-const hardCodePoseId = new Map([[IAction_1.ELeisureInteract.FailurePose, 300002], [IAction_1.ELeisureInteract.GameplayPose1, 300003], [IAction_1.ELeisureInteract.GameplayPose2, 300004], [IAction_1.ELeisureInteract.GameplayPose3, 300005], [IAction_1.ELeisureInteract.WindProtagonistParkour1, 300601], [IAction_1.ELeisureInteract.WindProtagonistParkour2, 300602], [IAction_1.ELeisureInteract.WindProtagonistParkour3, 300603], [IAction_1.ELeisureInteract.WindProtagonistParkour4, 300604], [IAction_1.ELeisureInteract.WindProtagonistParkour5, 300605]]);
+const hardCodePoseId = new Map([[IAction_1.ELeisureInteract.FailurePose, 300002], [IAction_1.ELeisureInteract.GameplayPose1, 300003], [IAction_1.ELeisureInteract.GameplayPose2, 300004], [IAction_1.ELeisureInteract.GameplayPose3, 300005], [IAction_1.ELeisureInteract.WindProtagonistParkour1, 300601], [IAction_1.ELeisureInteract.WindProtagonistParkour2, 300602], [IAction_1.ELeisureInteract.WindProtagonistParkour3, 300603], [IAction_1.ELeisureInteract.WindProtagonistParkour4, 300604], [IAction_1.ELeisureInteract.WindProtagonistParkour5, 300605], [IAction_1.ELeisureInteract.PainCoveringHead, 700104], [IAction_1.ELeisureInteract.QiuyuanLongPressQinggong, 1411907], [IAction_1.ELeisureInteract.QiuyuanQinggongEnd, 1411908], [IAction_1.ELeisureInteract.QiuyuanQinggongExploration1, 1411909], [IAction_1.ELeisureInteract.QiuyuanQinggongExploration2, 1411910], [IAction_1.ELeisureInteract.QiuyuanQinggongStraight, 1411911], [IAction_1.ELeisureInteract.QiuyuanQinggongHovering, 1411912]]);
 const tmpRotator = Rotator_1.Rotator.Create();
 class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
@@ -29,10 +29,10 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
     var o = e;
     if (o) {
       if (Global_1.Global.BaseCharacter) {
-        var r = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
-        var s = r.GetComponent(29);
-        const c = r.GetComponent(194);
-        var _ = r.GetComponent(59);
+        var s = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
+        var _ = s.GetComponent(29);
+        const a = s.GetComponent(194);
+        var n = s.GetComponent(59);
         switch (o.Option.Type) {
           case IAction_1.ELeisureInteract.SitDown:
           case IAction_1.ELeisureInteract.SitOnGround:
@@ -41,16 +41,16 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
               if (o.Option.Type === IAction_1.ELeisureInteract.SitDown && o.Option?.OnlyAllowForwardStandUp) {
                 e = true;
               }
-              var a = this.aic(t, o.SceneEntity);
-              if (!a) {
+              var r = this.aic(t, o.SceneEntity);
+              if (!r) {
                 if (Log_1.Log.CheckError()) {
                   Log_1.Log.Error("LevelEvent", 36, " LevelEventLeisureInteract, 尝试坐下时交互实体不存在");
                 }
                 this.FinishExecute(false);
                 return;
               }
-              var n = this.Kul(o.Option.Type);
-              s.EnterSitDownAction(a, n, e);
+              var c = this.Kul(o.Option.Type);
+              _.EnterSitDownAction(r, c, e);
               this.FinishExecute(true);
             }
             break;
@@ -70,64 +70,64 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
                 case 1:
                   e = t.EntityId;
               }
-              a = EntitySystem_1.EntitySystem.Get(e);
-              s.StartCatapult(a, o.Option);
+              r = EntitySystem_1.EntitySystem.Get(e);
+              _.StartCatapult(r, o.Option);
               this.FinishExecute(true);
             }
             break;
           case IAction_1.ELeisureInteract.Bounce:
-            s.StartBounce(o.Option);
+            _.StartBounce(o.Option);
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.StandControl:
-            s.PlayCustomCommonSkill(400202);
+            _.PlayCustomCommonSkill(400202);
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.StandControl2:
-            c.AddTag(1334991742);
-            s.PlayCustomCommonSkill(400202);
+            a.AddTag(1334991742);
+            _.PlayCustomCommonSkill(400202);
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Soar:
-            var n = r.GetComponent(40);
+            var c = s.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              c.TagContainer.UpdateExactTag(2, 283451623, -1);
+              a.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1015);
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
-            n.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
+            c.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
               Reason: "LeisureInteract行为触发翱翔"
             }).then(() => {
               if (this.BaseContext?.Type === 9) {
-                c.TagContainer.UpdateExactTag(2, 283451623, 1);
+                a.TagContainer.UpdateExactTag(2, 283451623, 1);
               }
               this.FinishExecute(true);
             });
             break;
           case IAction_1.ELeisureInteract.Soar2:
-            a = r.GetComponent(40);
+            r = s.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              c.TagContainer.UpdateExactTag(2, 283451623, -1);
+              a.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
-            _?.SwitchCurrentSoarType(1);
-            a.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
+            n?.SwitchCurrentSoarType(1);
+            r.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
               Reason: "LeisureInteract行为触发遨游"
             }).then(() => {
               if (this.BaseContext?.Type === 9) {
-                c.TagContainer.UpdateExactTag(2, 283451623, 1);
+                a.TagContainer.UpdateExactTag(2, 283451623, 1);
               }
               this.FinishExecute(true);
             });
             break;
           case IAction_1.ELeisureInteract.Glide:
-            r.GetComponent(179).TrySetGlide();
+            s.GetComponent(179).TrySetGlide();
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.HookLock:
-            if (r.GetComponent(100)?.CanActivateFixHook()) {
-              n = c.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
-              r.GetComponent(40).BeginSkill(n, {
+            if (s.GetComponent(100)?.CanActivateFixHook()) {
+              c = a.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
+              s.GetComponent(40).BeginSkill(c, {
                 Reason: "LeisureInteract行为触发定点钩锁"
               });
               this.FinishExecute(true);
@@ -139,8 +139,8 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             }
             break;
           case IAction_1.ELeisureInteract.KiteHook:
-            if (c.HasTag(-1526637662)) {
-              r.GetComponent(40).BeginSkill(SKILL_ID_XA_KITE, {
+            if (a.HasTag(-1526637662)) {
+              s.GetComponent(40).BeginSkill(SKILL_ID_XA_KITE, {
                 Reason: "LeisureInteract行为触发风筝钩锁"
               });
               this.FinishExecute(true);
@@ -152,17 +152,17 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             }
             break;
           case IAction_1.ELeisureInteract.GetUp:
-            if (s.IsSitDown) {
-              s.PreLeaveSitDownAction();
+            if (_.IsSitDown) {
+              _.PreLeaveSitDownAction();
             }
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.FailurePose:
-            a = r.GetComponent(3);
+            r = s.GetComponent(3);
             tmpRotator.Set(o.Option.Rot.Y ?? 0, o.Option.Rot.Z ?? 0, o.Option.Rot.X ?? 0);
-            a.SetActorRotation(tmpRotator.ToUeRotator(), "LeisureInteract行为触发失败姿势", false);
-            a.ClearInput();
-            r.GetComponent(40).BeginSkill(hardCodePoseId.get(o.Option.Type), {
+            r.SetActorRotation(tmpRotator.ToUeRotator(), "LeisureInteract行为触发失败姿势", false);
+            r.ClearInput();
+            s.GetComponent(40).BeginSkill(hardCodePoseId.get(o.Option.Type), {
               Reason: "LeisureInteract行为触发失败姿势"
             });
             this.FinishExecute(true);
@@ -175,11 +175,18 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
           case IAction_1.ELeisureInteract.WindProtagonistParkour3:
           case IAction_1.ELeisureInteract.WindProtagonistParkour4:
           case IAction_1.ELeisureInteract.WindProtagonistParkour5:
-            s.PlayCustomCommonSkill(hardCodePoseId.get(o.Option.Type));
+          case IAction_1.ELeisureInteract.PainCoveringHead:
+          case IAction_1.ELeisureInteract.QiuyuanLongPressQinggong:
+          case IAction_1.ELeisureInteract.QiuyuanQinggongEnd:
+          case IAction_1.ELeisureInteract.QiuyuanQinggongExploration1:
+          case IAction_1.ELeisureInteract.QiuyuanQinggongExploration2:
+          case IAction_1.ELeisureInteract.QiuyuanQinggongStraight:
+          case IAction_1.ELeisureInteract.QiuyuanQinggongHovering:
+            _.PlayCustomCommonSkill(hardCodePoseId.get(o.Option.Type));
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.FaithJump:
-            s.PlayFaithJumpSkill();
+            _.PlayFaithJumpSkill();
             this.FinishExecute(true);
         }
         this.QYs = undefined;

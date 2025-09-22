@@ -73,12 +73,12 @@ class SpawnEffectImplementation {
           Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EEffectType参数不对", ["EEffectType", f]);
         }
       }
-      if (SpawnEffectImplementation.PWu.has(f)) {
+      if (SpawnEffectImplementation.NWc.has(f)) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EEffectType重复注册", ["EEffectType", f]);
         }
       } else {
-        SpawnEffectImplementation.PWu.set(f, n);
+        SpawnEffectImplementation.NWc.set(f, n);
       }
     };
   }
@@ -90,12 +90,12 @@ class SpawnEffectImplementation {
           Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EPos2参数不对", ["EPos2", f]);
         }
       }
-      if (SpawnEffectImplementation.DWu.has(f)) {
+      if (SpawnEffectImplementation.VWc.has(f)) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 72, "[SpawnEffectImplementation] EPos2重复注册", ["EPos2", f]);
         }
       } else {
-        SpawnEffectImplementation.DWu.set(f, n);
+        SpawnEffectImplementation.VWc.set(f, n);
       }
     };
   }
@@ -116,7 +116,7 @@ class SpawnEffectImplementation {
     return n;
   }
   static CommonEffectHandler(e, t) {
-    var n = SpawnEffectImplementation.DWu.get(e.Pos2.Type);
+    var n = SpawnEffectImplementation.VWc.get(e.Pos2.Type);
     if (n) {
       const f = n(e, t);
       const a = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, f.Transform.ToUeTransform(), f.AssetPath, "[LevelEventSpawnEffect.ExecuteNew]");
@@ -195,14 +195,14 @@ class SpawnEffectImplementation {
     return new TsAttachEffectContext(e.Path, applyOffsetThenGetTransform(Vector_1.Vector.Create(e.Pos2.Pos.X ?? 0, e.Pos2.Pos.Y ?? 0, e.Pos2.Pos.Z ?? 0), undefined), n, false);
   }
   static SpawnEffect(e, t) {
-    var n = SpawnEffectImplementation.PWu.get(e.Type);
+    var n = SpawnEffectImplementation.NWc.get(e.Type);
     if (n) {
       return n(e, t);
     }
   }
 }
-SpawnEffectImplementation.PWu = new Map();
-SpawnEffectImplementation.DWu = new Map();
+SpawnEffectImplementation.NWc = new Map();
+SpawnEffectImplementation.VWc = new Map();
 __decorate([SpawnEffectImplementation.RegisterEffectHandler("ScreenEffect")], SpawnEffectImplementation, "ScreenEffectHandler", null);
 __decorate([SpawnEffectImplementation.RegisterEffectHandler("Effect")], SpawnEffectImplementation, "CommonEffectHandler", null);
 __decorate([SpawnEffectImplementation.RegisterEffectHandler("DissolveEffect")], SpawnEffectImplementation, "DissolveEffectHandler", null);

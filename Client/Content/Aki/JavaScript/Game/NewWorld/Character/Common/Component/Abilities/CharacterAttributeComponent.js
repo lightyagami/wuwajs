@@ -65,25 +65,32 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   Koa() {
     var t = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("sys")?.sys?.Mna;
     if (t !== undefined) {
-      var e = new Map();
-      var r = [];
-      var i = this.Init();
-      for (const a of t) {
-        var s = a.tSs;
-        var o = a.vna;
-        var n = a.pna ?? 0;
-        if (n !== 0) {
-          e.set(s, n);
-        } else {
-          r.push(s);
+      var e = [];
+      var r = this.Init();
+      for (const n of t) {
+        var i = n.tSs;
+        var s = n.vna;
+        var o = n.pna ?? 0;
+        if (o === 0) {
+          e.push(i);
         }
-        this.BaseValues[s] = o;
-        this.CurrentValues[s] = o + n;
+        this.BaseValues[i] = s;
+        this.CurrentValues[i] = s + o;
       }
-      if (i) {
-        for (const h of r) {
-          this.UpdateCurrentValue(h);
+      if (r) {
+        for (const a of e) {
+          this.UpdateCurrentValue(a);
         }
+      }
+    }
+  }
+  SeamlessTravelingRefresh() {
+    var t = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("sys")?.sys?.Mna;
+    if (t !== undefined) {
+      for (const i of t) {
+        var e = i.vna;
+        var r = i.pna ?? 0;
+        this.SyncValueFromServer(i.tSs, e, e + r);
       }
     }
   }

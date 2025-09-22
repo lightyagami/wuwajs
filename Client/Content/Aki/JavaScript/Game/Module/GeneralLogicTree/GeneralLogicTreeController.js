@@ -178,8 +178,11 @@ GeneralLogicTreeController.mYt = e => {
     case Protocol_1.Aki.Protocol.TOs.$vs:
       o = s.$vs.ups;
       break;
-    case Protocol_1.Aki.Protocol.TOs.BBu:
-      o = s.BBu.ups;
+    case Protocol_1.Aki.Protocol.TOs.R3u:
+      o = s.R3u.ups;
+      break;
+    case Protocol_1.Aki.Protocol.TOs.Proto_ChildQuestNodeStuckCheckAction:
+      o = s.tfd.ups;
   }
   if (o) {
     t = MathUtils_1.MathUtils.LongToBigInt(o.w5n);

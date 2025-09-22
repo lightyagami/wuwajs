@@ -122,28 +122,28 @@ class KeepFollowingParams {
     this.HandType = undefined;
     this.FollowingOnce = false;
     this.Callback = undefined;
-    this.y4u = undefined;
-    this.S4u = undefined;
+    this.N5u = undefined;
+    this.V5u = undefined;
     this.Leader = t;
     this.HandType = i;
   }
   InitWithDataAsset(t) {
     this.DebugDraw = t.DebugDraw;
-    this.y4u = new FollowingMoveParams(t);
-    this.S4u = new FollowingRotatorParams(t);
+    this.N5u = new FollowingMoveParams(t);
+    this.V5u = new FollowingRotatorParams(t);
   }
   InitWithParams(t, i, s) {
     this.DebugDraw = s ?? false;
-    this.y4u = t;
-    this.S4u = i;
+    this.N5u = t;
+    this.V5u = i;
   }
   get MoveParams() {
-    this.y4u ||= new FollowingMoveParams();
-    return this.y4u;
+    this.N5u ||= new FollowingMoveParams();
+    return this.N5u;
   }
   get RotatorParams() {
-    this.S4u ||= new FollowingRotatorParams();
-    return this.S4u;
+    this.V5u ||= new FollowingRotatorParams();
+    return this.V5u;
   }
 }
 exports.KeepFollowingParams = KeepFollowingParams;
@@ -160,28 +160,28 @@ class KeepFollowingMoveLogic {
     this.Gce = undefined;
     this.oRe = undefined;
     this.rJo = undefined;
-    this.M4u = false;
-    this.E4u = undefined;
-    this.I4u = false;
+    this.j5u = false;
+    this.H5u = undefined;
+    this.$5u = false;
     this.aO1 = false;
-    this.PWc = ASYNC_INTERVAL;
+    this.fKu = ASYNC_INTERVAL;
     this.CapsuleHeight = 0;
-    this.T4u = false;
+    this.W5u = false;
     this.lJo = 0;
-    this.R4u = 0;
-    this.w4u = Vector_1.Vector.Create();
-    this.DWc = undefined;
-    this.xWc = undefined;
-    this.L4u = false;
-    this.P4u = 0;
-    this.x4u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
-    this.D4u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
-    this.U4u = 0;
-    this.god = 0;
-    this.lgd = 0;
-    this.Cad = 0;
-    this.Eld = Vector_1.Vector.Create();
-    this._gd = false;
+    this.K5u = 0;
+    this.X5u = Vector_1.Vector.Create();
+    this.gKu = undefined;
+    this.CKu = undefined;
+    this.Y5u = false;
+    this.J5u = 0;
+    this.Z5u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
+    this.e6u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
+    this.t6u = 0;
+    this.xld = 0;
+    this.H5d = 0;
+    this.Pud = 0;
+    this.wmd = Vector_1.Vector.Create();
+    this.$5d = false;
   }
   Init(t) {
     this.Jh = t;
@@ -194,39 +194,39 @@ class KeepFollowingMoveLogic {
     this.CapsuleHeight = (this.Hte.ScaledHalfHeight - this.Hte.ScaledRadius) * 2;
   }
   UpdateMove(t) {
-    if (this.M4u) {
-      if (this.I4u && !this.T4u) {
+    if (this.j5u) {
+      if (this.$5u && !this.W5u) {
         this.MoveEnd(1);
       } else {
         if (this.aO1) {
-          if (this.PWc < 0) {
+          if (this.fKu < 0) {
             this.Gce?.MoveController.PushMoveInfo();
-            this.PWc = ASYNC_INTERVAL;
+            this.fKu = ASYNC_INTERVAL;
           } else {
-            this.PWc -= t * Math.max(1, this.P4u * ASYNC_RATIO);
+            this.fKu -= t * Math.max(1, this.J5u * ASYNC_RATIO);
           }
         }
-        if (this.T4u) {
-          this.B4u(t);
+        if (this.W5u) {
+          this.i6u(t);
         }
-        this.Cod(t);
+        this.Uld(t);
       }
     }
   }
   IsMoving() {
-    return this.M4u;
+    return this.j5u;
   }
   MoveEnd(t) {
-    var i = this.E4u?.Callback;
+    var i = this.H5u?.Callback;
     this.StopMove();
     i?.(t);
   }
   StopMove() {
-    this.I4u = false;
-    this.M4u = false;
-    this.E4u = undefined;
-    this.O4u();
-    this.q4u();
+    this.$5u = false;
+    this.j5u = false;
+    this.H5u = undefined;
+    this.o6u();
+    this.n6u();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[KeepFollowing] 退出跟随", ["PbDataId", this.Hte?.CreatureData.GetPbDataId()]);
     }
@@ -239,8 +239,8 @@ class KeepFollowingMoveLogic {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[KeepFollowing] 开始跟随", ["PbDataId", this.Hte?.CreatureData.GetPbDataId()]);
     }
-    this.M4u = true;
-    this.E4u = t;
+    this.j5u = true;
+    this.H5u = t;
   }
   StartKeepFollowingWithDataAssetPath(t, i, s, e = false, h, o = undefined) {
     var r = ResourceSystem_1.ResourceSystem.Load(i, UE.BP_KeepFollowingConfig_C);
@@ -260,79 +260,79 @@ class KeepFollowingMoveLogic {
     }
     this.StartKeepFollowing(t);
   }
-  G4u(t, i, s, e, h) {
-    if (this.T4u) {
-      this.q4u();
+  s6u(t, i, s, e, h) {
+    if (this.W5u) {
+      this.n6u();
     }
-    this.w4u.DeepCopy(t);
-    this.w4u.Normalize();
+    this.X5u.DeepCopy(t);
+    this.X5u.Normalize();
     var o;
     var r;
-    var t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.w4u);
-    if (!(Math.abs(t) < Math.max(MIN_ANGLE, this.E4u.RotatorParams.ToleranceRotatorAngle))) {
+    var t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.X5u);
+    if (!(Math.abs(t) < Math.max(MIN_ANGLE, this.H5u.RotatorParams.ToleranceRotatorAngle))) {
       this.jye.DeepCopy(i);
       this.jye.SubtractionEqual(this.Hte.ActorLocationProxy);
       i = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.jye);
       if (Math.abs(i) > ANGLE_DIRECTION_TOLERANCE) {
-        o = this.jye.DotProduct(this.w4u);
+        o = this.jye.DotProduct(this.X5u);
         this.jye.CrossProduct(this.Hte.ActorForwardProxy, this.RTe);
         r = this.RTe.DotProduct(this.Hte.ActorUpProxy);
-        this.R4u = r < 0 ? 1 : -1;
-        if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("AI", 42, "[KeepFollowing] 移动转向findRotator", ["Clockwise", this.R4u], ["cross", r], ["dot", o]);
+        this.K5u = r < 0 ? 1 : -1;
+        if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("AI", 42, "[KeepFollowing] 移动转向findRotator", ["Clockwise", this.K5u], ["cross", r], ["dot", o]);
         }
       } else {
-        this.R4u = 0;
+        this.K5u = 0;
       }
-      r = this.R4u * t > 0 ? 360 - t * this.R4u : t;
+      r = this.K5u * t > 0 ? 360 - t * this.K5u : t;
       if (Math.abs(r) < 90) {
-        this.R4u = 0;
+        this.K5u = 0;
       }
-      this.lJo = Math.max(s, Math.abs(r) / (this.E4u.RotatorParams.MaxRotatorDuration * 0.001));
-      this.T4u = true;
-      this.DWc = h;
-      if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
+      this.lJo = Math.max(s, Math.abs(r) / (this.H5u.RotatorParams.MaxRotatorDuration * 0.001));
+      this.W5u = true;
+      this.gKu = h;
+      if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "[KeepFollowing] 设置移动转向", ["Context", e], ["rotSpeed", this.lJo], ["angle", t], ["faceAngle", i], ["resultAngle", r]);
       }
     }
   }
-  B4u(i) {
+  i6u(i) {
     if (this.Hte) {
-      var s = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.w4u);
-      if ((!!this.w4u.IsNearlyZero() || !!(Math.abs(s) < Math.max(MIN_ANGLE, this.E4u.RotatorParams.ToleranceRotatorAngle)) || !!this.DWc?.()) && (!this.xWc || !TimerSystem_1.TimerSystem.Has(this.xWc))) {
-        this.xWc = TimerSystem_1.TimerSystem.Delay(() => {
-          this.q4u();
+      var s = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.X5u);
+      if ((!!this.X5u.IsNearlyZero() || !!(Math.abs(s) < Math.max(MIN_ANGLE, this.H5u.RotatorParams.ToleranceRotatorAngle)) || !!this.gKu?.()) && (!this.CKu || !TimerSystem_1.TimerSystem.Has(this.CKu))) {
+        this.CKu = TimerSystem_1.TimerSystem.Delay(() => {
+          this.n6u();
           this.rJo?.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Stand);
         }, ROTATION_STOP_DELAY_STAND);
       }
       let t = s;
-      if (Math.abs(s) < ANGLE_DIRECTION_TOLERANCE || this.R4u === 0) {
-        this.RTe.DeepCopy(this.w4u);
+      if (Math.abs(s) < ANGLE_DIRECTION_TOLERANCE || this.K5u === 0) {
+        this.RTe.DeepCopy(this.X5u);
       } else {
-        t = this.lJo * i * this.R4u;
+        t = this.lJo * i * this.K5u;
         t = MathUtils_1.MathUtils.Clamp(t, -ANGLE_DIRECTION_TOLERANCE, ANGLE_DIRECTION_TOLERANCE);
         this.Hte.ActorForwardProxy.RotateAngleAxis(t, this.Hte.ActorUpProxy, this.RTe);
       }
-      if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 42, "[KeepFollowing] KeepTurningToTarget", ["angle", s], ["changeAngle", t], ["face", this.RTe], ["Clockwise", this.R4u]);
+      if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Character", 42, "[KeepFollowing] KeepTurningToTarget", ["angle", s], ["changeAngle", t], ["face", this.RTe], ["Clockwise", this.K5u]);
       }
       this.Hte.SetInputFacing(this.RTe, true);
       this.Hte.SetOverrideTurnSpeed(this.lJo);
     }
   }
-  q4u(t = true) {
-    this.T4u = false;
-    this.DWc = undefined;
+  n6u(t = true) {
+    this.W5u = false;
+    this.gKu = undefined;
     if (this.Hte && t) {
       this.Hte.SetOverrideTurnSpeed(0);
       this.Hte.SetInputFacing(this.Hte.ActorForwardProxy);
     }
-    if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
+    if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[KeepFollowing] 停止移动转向");
     }
   }
-  Cod(t) {
-    var i = this.E4u;
+  Uld(t) {
+    var i = this.H5u;
     var s = i?.Leader;
     if (i && s && this.Hte && this.Gce) {
       var e = i.RotatorParams.RotatorSpeed;
@@ -346,28 +346,28 @@ class KeepFollowingMoveLogic {
         var h = GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, this.cz, this.pz);
         var o = Math.sqrt(h);
         var r = Math.min(o, i.MoveParams.CompensateDistance);
-        if (this.N4u(t, o, this.cz, s.ActorRotationProxy)) {
-          this.Tld(s, e, "超时传送");
+        if (this.h6u(t, o, this.cz, s.ActorRotationProxy)) {
+          this.Pmd(s, e, "超时传送");
         } else {
           var a = this.Hte.ActorForwardProxy.DotProduct(this.tdc);
-          var [_, l, n] = this.Ild(o);
+          var [_, l, n] = this.Lmd(o);
           var E = Math.sqrt(GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, this.Hte.ActorLocationProxy, this.Hte.LastActorLocation)) / t;
           var T = Math.sqrt(GravityUtils_1.GravityUtils.GetDistSquared2dForActor(s, s.ActorLocationProxy, s.LastActorLocation)) / t;
           var c = i.MoveParams.FollowingSpeedRange.X * MIN_MOVE_SPEED_RATE;
           if (h > i.MoveParams.CompensateDistanceSquared) {
-            this.Bgd();
-            if (this.pod(t, this.cz, s.ActorRotationProxy, E, c)) {
-              this.Tld(s, e, "障碍传送");
+            this.o7d();
+            if (this.Bld(t, this.cz, s.ActorRotationProxy, E, c)) {
+              this.Pmd(s, e, "障碍传送");
               return;
             }
           } else {
-            this.god = 0;
-            if (!this._gd && this.ugd(t, E, T, c)) {
-              this.Tld(s, e, "检测到在范围内位移很小，保持跟随目标面向");
+            this.xld = 0;
+            if (!this.$5d && this.W5d(t, E, T, c)) {
+              this.Pmd(s, e, "检测到在范围内位移很小，保持跟随目标面向");
               return;
             }
-            if (this._gd) {
-              this.Tld(s, e, "站立下检测到在范围内位移很小，保持跟随目标面向");
+            if (this.$5d) {
+              this.Pmd(s, e, "站立下检测到在范围内位移很小，保持跟随目标面向");
               return;
             }
           }
@@ -377,35 +377,35 @@ class KeepFollowingMoveLogic {
           var C = Vector_1.Vector.Dist(this.pz, this.fz);
           var c = T < c ? i.MoveParams.WalkOffsetDistance : i.MoveParams.RunOffsetDistance;
           if (o < n && C < c - COMPENSATE_TOLERANCE_DISTANCE && !g) {
-            this.Tld(s, e, "在跟随臂长半径内，保持跟随目标面向");
+            this.Pmd(s, e, "在跟随臂长半径内，保持跟随目标面向");
           } else if (o < _) {
-            if (this.L4u && o > COMPENSATE_TOLERANCE_DISTANCE) {
+            if (this.Y5u && o > COMPENSATE_TOLERANCE_DISTANCE) {
               this.Hte.AddActorWorldOffset(this.tdc.ToUeVector(), "KeepFollowingState.R0站立位置修正", true);
             }
-            this.Tld(s, e, "近距离进入保持站立姿态，保持跟随目标面向", !g);
+            this.Pmd(s, e, "近距离进入保持站立姿态，保持跟随目标面向", !g);
             if (i.FollowingOnce) {
-              this.I4u = true;
+              this.$5u = true;
             }
           } else {
             if (o < l) {
               if (g) {
-                if (this.L4u && a < 0) {
-                  this.V4u(this.tdc, r, o, i.MoveParams.KeepStandDistance, "站立位置修正", true);
+                if (this.Y5u && a < 0) {
+                  this.l6u(this.tdc, r, o, i.MoveParams.KeepStandDistance, "站立位置修正", true);
                 }
-                this.Tld(s, e, "跟随容差范围内，保持跟随目标面向");
+                this.Pmd(s, e, "跟随容差范围内，保持跟随目标面向");
                 if (i.FollowingOnce) {
-                  this.I4u = true;
+                  this.$5u = true;
                 }
                 return;
               }
             } else if (n < o && i.MoveParams.EnableCompensate && E === CharacterUnifiedStateTypes_1.ECharMoveState.Run && h !== CharacterUnifiedStateTypes_1.ECharMoveState.Stand) {
               C = i.MoveParams.CompensateSpeed * t;
-              this.V4u(this.tdc, C, o, i.MoveParams.CompensateDistance, "跑步移动状态修正");
+              this.l6u(this.tdc, C, o, i.MoveParams.CompensateDistance, "跑步移动状态修正");
             }
-            if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Character", 42, "[KeepFollowing] 跟随参数", ["Dist", r], ["allDist", o], ["rangeType", this.Cad], ["dot", a], ["followerMoveState", E], ["LeaderSpeed", T]);
+            if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Character", 42, "[KeepFollowing] 跟随参数", ["Dist", r], ["allDist", o], ["rangeType", this.Pud], ["dot", a], ["followerMoveState", E], ["LeaderSpeed", T]);
             }
-            this.j4u(t, T, r, o, h);
+            this._6u(t, T, r, o, h);
             AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(this.Hte, this.tdc, e);
           }
         }
@@ -413,39 +413,39 @@ class KeepFollowingMoveLogic {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 42, "[KeepFollowing] 计算目标点时，未检测到地面或遇到障碍物");
         }
-        this.O4u();
+        this.o6u();
       }
     }
   }
-  Bgd() {
-    if (this._gd) {
-      this.lgd = 0;
-      this._gd = false;
+  o7d() {
+    if (this.$5d) {
+      this.H5d = 0;
+      this.$5d = false;
     }
   }
-  j4u(t, i, s, e, h) {
+  _6u(t, i, s, e, h) {
     var o;
-    var r = this.E4u;
+    var r = this.H5u;
     var a = r?.Leader;
-    if (this.M4u && r && a && this.Hte && this.Gce) {
-      this.L4u = true;
-      a = this.x4u === CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
+    if (this.j5u && r && a && this.Hte && this.Gce) {
+      this.Y5u = true;
+      a = this.Z5u === CharacterUnifiedStateTypes_1.ECharMoveState.Walk;
       o = s - r.MoveParams.ToleranceDistance;
       s = s < r.MoveParams.ToleranceDistance ? DECELERATION_SPEED_RATE : 1;
       o = Math.pow(Math.abs(o), 1.5) * s;
       s = i < r.MoveParams.MinFollowingSpeed ? e > DEFAULT_WALK_SPEED ? DEFAULT_RUN_SPEED : DEFAULT_WALK_SPEED : o + i + e;
       e = r.MoveParams.ChangeSpeedAcceleration * t;
-      if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 42, "[KeepFollowing] 速度变化", ["Speed", s], ["change", o], ["leaderSpeed", i], ["changeSpeed", r.MoveParams.ChangeSpeedAcceleration], ["LastRecordSpeed", this.P4u]);
+      if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Character", 42, "[KeepFollowing] 速度变化", ["Speed", s], ["change", o], ["leaderSpeed", i], ["changeSpeed", r.MoveParams.ChangeSpeedAcceleration], ["LastRecordSpeed", this.J5u]);
       }
-      s = MathUtils_1.MathUtils.Clamp(s, Math.max(r.MoveParams.FollowingSpeedRange.X, this.P4u - e), Math.min(r.MoveParams.FollowingSpeedRange.Y, this.P4u + e));
-      if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
+      s = MathUtils_1.MathUtils.Clamp(s, Math.max(r.MoveParams.FollowingSpeedRange.X, this.J5u - e), Math.min(r.MoveParams.FollowingSpeedRange.Y, this.J5u + e));
+      if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 42, "[KeepFollowing] 最终速度变化", ["Speed", s]);
       }
       this.Gce.SetMaxSpeed(s);
       this.tdc.Normalize();
       this.Hte.SetInputDirect(this.tdc);
-      this.P4u = s;
+      this.J5u = s;
       if (h === CharacterUnifiedStateTypes_1.ECharMoveState.Stand) {
         if (s > r.MoveParams.WalkRunDivideSpeed) {
           this.rJo?.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run);
@@ -459,20 +459,20 @@ class KeepFollowingMoveLogic {
       }
     }
   }
-  O4u(t = true) {
-    if (this.L4u && (this.L4u = false, this.P4u = 0, this.D4u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk, this.x4u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] StopFollowingMove"), this.Hte.ClearInput(), t) && this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+  o6u(t = true) {
+    if (this.Y5u && (this.Y5u = false, this.J5u = 0, this.e6u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk, this.Z5u = CharacterUnifiedStateTypes_1.ECharMoveState.Walk, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] StopFollowingMove"), this.Hte.ClearInput(), t) && this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
       this.rJo?.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Stand);
     }
   }
-  Tld(t, i, s, e) {
-    if (!this.T4u) {
-      this.O4u(e);
-      this.G4u(t.ActorForwardProxy, t.ActorLocationProxy, i, s);
+  Pmd(t, i, s, e) {
+    if (!this.W5u) {
+      this.o6u(e);
+      this.s6u(t.ActorForwardProxy, t.ActorLocationProxy, i, s);
     }
   }
-  Ild(t) {
-    var i = this.E4u;
-    var s = this.Cad;
+  Lmd(t) {
+    var i = this.H5u;
+    var s = this.Pud;
     let e = i.MoveParams.KeepStandDistance;
     let h = i.MoveParams.ToleranceDistance;
     let o = i.MoveParams.CompensateDistance;
@@ -491,34 +491,34 @@ class KeepFollowingMoveLogic {
       case 3:
         o -= (o - h) * STAND_TOLERANCE_RATE;
     }
-    this.Cad = t < e ? 0 : t < h ? 1 : t < o ? 2 : 3;
+    this.Pud = t < e ? 0 : t < h ? 1 : t < o ? 2 : 3;
     return [e, h, o];
   }
-  N4u(t, i, s, e) {
-    var h = this.E4u;
-    return !!h?.MoveParams.EnableTimeOutTeleport && !!(i > h.MoveParams.IllegalDistance ? this.U4u += t * BattleUiDefine_1.SECOND_TO_MILLISECOND : this.U4u = 0, this.U4u > h.MoveParams.TimeOutDuration) && !(this.vod(s, e, "跟随模式,异常距离超时传送"), this.U4u = 0);
+  h6u(t, i, s, e) {
+    var h = this.H5u;
+    return !!h?.MoveParams.EnableTimeOutTeleport && !!(i > h.MoveParams.IllegalDistance ? this.t6u += t * BattleUiDefine_1.SECOND_TO_MILLISECOND : this.t6u = 0, this.t6u > h.MoveParams.TimeOutDuration) && !(this.kld(s, e, "跟随模式,异常距离超时传送"), this.t6u = 0);
   }
-  pod(t, i, s, e, h) {
-    var o = this.E4u;
-    return !!o?.MoveParams.ObstacleTime && (e < h ? this.god += t * BattleUiDefine_1.SECOND_TO_MILLISECOND : this.god = 0, this.god > o.MoveParams.ObstacleTime) && (this.vod(i, s, "跟随模式,被阻挡传送"), !(this.god = 0));
+  Bld(t, i, s, e, h) {
+    var o = this.H5u;
+    return !!o?.MoveParams.ObstacleTime && (e < h ? this.xld += t * BattleUiDefine_1.SECOND_TO_MILLISECOND : this.xld = 0, this.xld > o.MoveParams.ObstacleTime) && (this.kld(i, s, "跟随模式,被阻挡传送"), !(this.xld = 0));
   }
-  ugd(t, i, s, e) {
+  W5d(t, i, s, e) {
     if (i < e || s < e) {
-      this.lgd += t * BattleUiDefine_1.SECOND_TO_MILLISECOND;
+      this.H5d += t * BattleUiDefine_1.SECOND_TO_MILLISECOND;
     } else {
-      this.lgd = 0;
-      this._gd = false;
+      this.H5d = 0;
+      this.$5d = false;
     }
-    return this.lgd > STAND_CHECK_TIME && (this.lgd = 0, this._gd = true, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] 检测到在范围内位移很小保持站立"), true);
+    return this.H5d > STAND_CHECK_TIME && (this.H5d = 0, this.$5d = true, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Character", 42, "[KeepFollowing] 检测到在范围内位移很小保持站立"), true);
   }
-  vod(t, i, s) {
-    if (this.Eld.Equals(t)) {
+  kld(t, i, s) {
+    if (this.wmd.Equals(t)) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 42, "[KeepFollowing] 触发传送位置和上一次传送位置相同，不传送", ["context", s], ["target", t]);
       }
     } else {
-      this.Eld.DeepCopy(t);
-      t = this.E4u;
+      this.wmd.DeepCopy(t);
+      t = this.H5u;
       if (t.MoveParams.TeleportEffectBuffId.length) {
         var e = this.Jh?.GetComponent(226);
         for (const h of t.MoveParams.TeleportEffectBuffId) {
@@ -527,16 +527,16 @@ class KeepFollowingMoveLogic {
           });
         }
       }
-      GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.Hte, this.Eld, this.Hte.ScaledHalfHeight);
-      this._gd = true;
-      this.Hte?.TeleportTo(this.Eld.ToUeVector(), i.ToUeRotator(), s);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(this.Hte, this.wmd, this.Hte.ScaledHalfHeight);
+      this.$5d = true;
+      this.Hte?.TeleportTo(this.wmd.ToUeVector(), i.ToUeRotator(), s);
       this.Gce?.MoveController.PushMoveInfo();
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 42, "[KeepFollowing] 触发保底传送", ["context", s], ["target", this.Eld]);
+        Log_1.Log.Debug("Character", 42, "[KeepFollowing] 触发保底传送", ["context", s], ["target", this.wmd]);
       }
     }
   }
-  V4u(i, s, e, h, o, r = false) {
+  l6u(i, s, e, h, o, r = false) {
     let a = h < e ? e - h : e;
     if (!((a = Math.min(s, a)) < 1)) {
       this.fz.DeepCopy(i);
@@ -550,15 +550,15 @@ class KeepFollowingMoveLogic {
       if (t && r) {
         this.oRe?.SetModelBuffer(t, MODEL_BUFFER_TIME);
       }
-      if (this.E4u?.DebugDraw && Log_1.Log.CheckDebug()) {
+      if (this.H5u?.DebugDraw && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "[KeepFollowing] 跟随位移补偿", ["context", o], ["dist", a], ["maxCompensate", s], ["allDist", e], ["range", h]);
       }
     }
   }
   GetTargetFollowingPosition(t, i) {
     var s;
-    var e = this.E4u;
-    if (this.D4u === CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+    var e = this.H5u;
+    if (this.e6u === CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
       t.FromConfigVector(e.MoveParams.WalkOffsetLocation);
     } else {
       t.FromConfigVector(e.MoveParams.RunOffsetLocation);
@@ -594,8 +594,8 @@ class KeepFollowingMoveLogic {
         this.cz.RotateAngleAxis(s, this.Hte.ActorGravityDirectProxy, this.pz);
         KeepFollowingMoveLogic.CalculateFollowingPosition(this.tdc, this.pz, i);
         _ = KeepFollowingMoveLogic.IJr(this.Hte, a, this.tdc, e.MoveParams.HeightDifference, h);
-        l = KeepFollowingMoveLogic.yod(this.Hte, a, this.tdc, o);
-        n = l || KeepFollowingMoveLogic.zcd(this.Hte, a, this.tdc, o, i);
+        l = KeepFollowingMoveLogic.Old(this.Hte, a, this.tdc, o);
+        n = l || KeepFollowingMoveLogic.URd(this.Hte, a, this.tdc, o, i);
       }
       this.Hte.ActorUpProxy.Multiply(r, this.fz);
       this.tdc.SubtractionEqual(this.fz);
@@ -626,7 +626,7 @@ class KeepFollowingMoveLogic {
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Lz);
     return !!TraceElementCommon_1.TraceElementCommon.ShapeTrace(t.Actor.CapsuleComponent, i, PROFILE_KEY, PROFILE_KEY) && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(i.HitResult, 0, s), true);
   }
-  static yod(t, i, s, e) {
+  static Old(t, i, s, e) {
     this.Lz.DeepCopy(s);
     GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, this.Lz, e + DETECT_HEIGHT);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, this.Lz);
@@ -635,7 +635,7 @@ class KeepFollowingMoveLogic {
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, this.Lz);
     return TraceElementCommon_1.TraceElementCommon.ShapeTrace(t.Actor.CapsuleComponent, i, PROFILE_KEY, PROFILE_KEY);
   }
-  static zcd(t, i, s, e, h) {
+  static URd(t, i, s, e, h) {
     this.Lz.DeepCopy(h.ActorLocationProxy);
     GravityUtils_1.GravityUtils.AddZnInGravityForActor(h, this.Lz, h.ScaledHalfHeight - i.Radius);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, this.Lz);

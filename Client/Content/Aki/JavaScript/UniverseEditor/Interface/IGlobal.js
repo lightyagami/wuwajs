@@ -69,6 +69,7 @@ function getGlobalConfig() {
       GlobalFixConfigPath: "Content/Data/Json/GlobalFixConfig.json",
       DynamicSpawnMonsterRandomPoolConfigPath: "Content/Data/Json/DynamicSpawnMonsterRandomPoolConfig.json",
       EntityCustomPrimitiveData: "Content/Data/Json/EntityCustomPrimitiveData.json",
+      AnimalStandbyTagPath: "Content/Data/Json/AnimalStandbyTag.json",
       AnsPerformDataPath: "Content/Data/Json/AnsPerformData.json"
     };
   } else {
@@ -142,6 +143,7 @@ function getGlobalConfig() {
       GridItemShapeConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GridItemShapeConfig.json",
       GlobalFixConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GlobalFixConfig.json",
       DynamicSpawnMonsterRandomPoolConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/DynamicSpawnMonsterRandomPoolConfig.json",
+      AnimalStandbyTagPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnimalStandbyTag.json",
       AnsPerformDataPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnsPerformData.json"
     };
   }
@@ -216,5 +218,6 @@ exports.globalConfigTemp = {
   GlobalFixConfigPath: "Content/Aki/UniverseEditorConfig/Json/GlobalFixConfig.json",
   DynamicSpawnMonsterRandomPoolConfigPath: "Content/Aki/UniverseEditorConfig/Json/DynamicSpawnMonsterRandomPoolConfig.json",
   EntityCustomPrimitiveData: "Content/Aki/UniverseEditorConfig/Json/EntityCustomPrimitiveData.json",
+  AnimalStandbyTagPath: "Content/Aki/UniverseEditorConfig/Json/AnimalStandbyTag.json",
   AnsPerformDataPath: "Content/Aki/UniverseEditorConfig/Json/AnsPerformData.json"
 }; //# sourceMappingURL=IGlobal.js.map

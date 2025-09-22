@@ -1905,20 +1905,20 @@ let SceneItemFanComponent = SceneItemFanComponent_1 = class SceneItemFanComponen
     var h = Protocol_1.Aki.Protocol.Tts.create();
     h.F4n = MathUtils_1.MathUtils.NumberToLong(t);
     h.aKn = i;
-    Net_1.Net.Call(15055, h, s);
+    Net_1.Net.Call(15100, h, s);
   }
   rgn(t, i, s, h) {
     var e = Protocol_1.Aki.Protocol.Rts.create();
     e.hKn = MathUtils_1.MathUtils.NumberToLong(t);
     e.lKn = MathUtils_1.MathUtils.NumberToLong(i);
     e.WHn = s ? 1 : 0;
-    Net_1.Net.Call(23482, e, h);
+    Net_1.Net.Call(26162, e, h);
   }
   f0n(t, i, s) {
     var h = Protocol_1.Aki.Protocol.Ats.create();
     h.hKn = MathUtils_1.MathUtils.NumberToLong(t);
     h.WHn = i ? 1 : 0;
-    Net_1.Net.Call(26394, h, s);
+    Net_1.Net.Call(18980, h, s);
   }
 };
 SceneItemFanComponent.C0n = new Array();

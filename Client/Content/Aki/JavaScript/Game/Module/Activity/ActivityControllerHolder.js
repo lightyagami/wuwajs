@@ -13,6 +13,8 @@ class ActivityControllerHolder {
     this.ActivityTrapDefenseController = undefined;
     this.ActivityFunPlayController = undefined;
     this.LineCrossActivityController = undefined;
+    this.ActivityShipTowerController = undefined;
+    this.FightPhotoController = undefined;
   }
 }
 (exports.ActivityControllerHolder = ActivityControllerHolder).ActivitySolarSpeedController = undefined;
@@ -22,4 +24,6 @@ ActivityControllerHolder.ActivityRegressController = undefined;
 ActivityControllerHolder.LifePointDrawActivityController = undefined;
 ActivityControllerHolder.ActivityTrapDefenseController = undefined;
 ActivityControllerHolder.ActivityFunPlayController = undefined;
-ActivityControllerHolder.LineCrossActivityController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map
+ActivityControllerHolder.LineCrossActivityController = undefined;
+ActivityControllerHolder.ActivityShipTowerController = undefined;
+ActivityControllerHolder.FightPhotoController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map

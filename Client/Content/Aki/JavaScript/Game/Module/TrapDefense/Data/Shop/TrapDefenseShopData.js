@@ -52,28 +52,28 @@ class TrapDefenseShopData {
       var e;
       var s;
       var a = this.ServerDataCache;
-      this.TotalRefreshCount = a.P7u;
-      this.RemainingRefreshCount = a.A7u;
+      this.TotalRefreshCount = a.B7u;
+      this.RemainingRefreshCount = a.U7u;
       this.RefreshCost = a.fm1;
       var i = new Map();
       var r = new Map();
-      for (const h of a.Z7u) {
-        if (h.iju) {
-          if (this.ItemGoodsMap.has(h.iju.oju)) {
-            this.ItemGoodsMap.get(h.iju.oju).Update(h);
+      for (const h of a.Szc) {
+        if (h.Izc) {
+          if (this.ItemGoodsMap.has(h.Izc.bzc)) {
+            this.ItemGoodsMap.get(h.Izc.bzc).Update(h);
           } else {
             t = TrapDefenseShopItemData_1.TrapDefenseShopItemData.Create(h);
             this.ItemGoodsMap.set(t.Id, t);
           }
-          i.set(h.iju.oju, true);
-        } else if (h.rju) {
-          if (this.BuffGoodsMap.has(h.rju.sju)) {
-            this.BuffGoodsMap.get(h.rju.sju).Update(h);
+          i.set(h.Izc.bzc, true);
+        } else if (h.Tzc) {
+          if (this.BuffGoodsMap.has(h.Tzc.wzc)) {
+            this.BuffGoodsMap.get(h.Tzc.wzc).Update(h);
           } else {
             t = TrapDefenseShopItemData_1.TrapDefenseShopBuffData.Create(h);
             this.BuffGoodsMap.set(t.Id, t);
           }
-          r.set(h.rju.sju, true);
+          r.set(h.Tzc.wzc, true);
         }
       }
       for ([e] of this.ItemGoodsMap) {

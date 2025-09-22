@@ -7,6 +7,7 @@ exports.ShipTowerScoreItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../Core/Common/Stats");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -34,9 +35,13 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
     this._el = 0;
     this.edt = undefined;
     this.Nll = undefined;
+    this.w5d = 0;
+    this.L5d = undefined;
     this.yct = t => {
       if (t === "Start") {
-        this.jpu("Loop2");
+        if (this.lel <= 0) {
+          this.SPe?.PlayLevelSequenceByName("Back", false, 1000 / this.w5d);
+        }
       } else if (t === "Start2") {
         this.jpu("Loop1");
       }
@@ -81,6 +86,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   OnBeforeDestroy() {
     this.SPe?.Clear();
     this.SPe = undefined;
+    this.P5d();
     super.OnBeforeDestroy();
   }
   OnBattleScoreChanged(t, e) {
@@ -135,7 +141,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   }
   OnTick(t) {
     ShipTowerScoreItem.Ult.Start();
-    if (this.nel && this.hel !== this.lel && this.GetActive() && (this._el = Math.min(MAX_SMOOTH_TIME, this._el + t), t = this._el / MAX_SMOOTH_TIME, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
+    if (this.nel && this.hel !== this.lel && this.GetActive() && (this._el = Math.min(this.w5d, this._el + t), t = this._el / this.w5d, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
       t = this.hel / this.xte;
       this.GetSprite(0)?.SetFillAmount(t);
       this.Nll.Yaw = t * -360;
@@ -143,22 +149,52 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
     }
     ShipTowerScoreItem.Ult.Stop();
   }
+  A5d() {
+    var t = ModelManager_1.ModelManager.ShipTowerModel.GetInTheBattleBuffInfo()?.ItemInfo?.ItemConfigId ?? 0;
+    if (t) {
+      t = ConfigManager_1.ConfigManager.ShipTowerConfig?.GetBuffCfgByItemId(t);
+      if (t?.BuffTime && (t.BuffTime > 0 || t.BuffTime === -1)) {
+        return t.BuffTime;
+      }
+    }
+    return this.SBn?.BuffTime ?? 0;
+  }
+  D5d() {
+    this.P5d();
+    this.L5d = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      var t = Math.floor((1 - this._el / this.w5d) * 100);
+      this.xvi.SetText(t + "%");
+      if (t <= 0) {
+        this.P5d();
+      }
+    }, MAX_SMOOTH_TIME);
+  }
+  P5d() {
+    if (this.L5d !== undefined) {
+      this.SPe?.StopSequenceByKey("Back", true, true);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.L5d);
+      this.L5d = undefined;
+    }
+  }
   uel(t) {
+    var e;
     if (t > 0) {
       this.ael = this.hel;
       this.lel = t;
       this._el = 0;
-      if (t >= this.xte) {
-        this.jpu("Start");
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Battle", 78, "焚潮开始", ["score", t]);
-        }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, "ShipTower_BurningTide_Start");
+      if (t >= this.xte && (this.jpu("Start"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Battle", 78, "焚潮开始", ["score", t]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, "ShipTower_BurningTide_Start"), (e = this.A5d()) > 0)) {
+        this.w5d = e;
+        this.lel = 0;
+        this.D5d();
+      } else {
+        this.w5d = MAX_SMOOTH_TIME;
       }
     } else {
+      this.P5d();
       this.ael = this.hel;
       this.lel = 0;
       this._el = MAX_SMOOTH_TIME;
+      this.w5d = MAX_SMOOTH_TIME;
       this.jpu("Start2");
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 78, "焚潮结束", ["score", t]);

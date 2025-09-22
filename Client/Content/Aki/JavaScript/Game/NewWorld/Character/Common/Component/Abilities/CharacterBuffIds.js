@@ -52,7 +52,7 @@ exports.buffId = {
   ElevatorBuff: 640003011,
   IgnoreHateBuff: 1103100015,
   StealthIgnoreHateBuff: 70000049,
-  ChangeRoleBuff: 70000049,
+  ChangeRoleBuff: 3118,
   ManipulateInteractBuffId: 640003012,
   ManipulateInteractBuffIdMaleX: 640003013,
   HardLockCompensateBuff: 1001006001

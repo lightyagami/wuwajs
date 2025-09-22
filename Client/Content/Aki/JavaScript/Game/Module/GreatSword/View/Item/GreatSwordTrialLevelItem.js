@@ -32,7 +32,7 @@ class GreatSwordTrialLevelItem extends GridProxyAbstract_1.GridProxyAbstract {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.Config.TitleText);
     this.GetItem(5)?.SetUIActive(!t.Unlocked);
     this.GetItem(6)?.SetUIActive(t.Completed);
-    this.gzu(t, i);
+    this.QXc(t, i);
   }
   Clear() {}
   OnSelected(t) {}
@@ -47,7 +47,7 @@ class GreatSwordTrialLevelItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnStart() {
     this.GetExtendToggle(0).CanExecuteChange.Bind(this.gke);
   }
-  gzu(t, e) {
+  QXc(t, e) {
     var i = BlackSwordUIAssetById_1.configBlackSwordUIAssetById.GetConfig(t.Config.UIConfigId ?? 0);
     var s = i?.LevelColors ?? [];
     var r = i?.PatternPaths ?? [];

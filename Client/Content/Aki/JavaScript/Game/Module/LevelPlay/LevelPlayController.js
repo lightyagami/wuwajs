@@ -45,34 +45,34 @@ const assistantMap = {
 class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAssistantBase {
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(18610, LevelPlayController.Opi);
-    Net_1.Net.Register(21427, LevelPlayController.kpi);
-    Net_1.Net.Register(17352, LevelPlayController.Fpi);
-    Net_1.Net.Register(19911, LevelPlayController.Vpi);
-    Net_1.Net.Register(18094, LevelPlayController.Hpi);
-    Net_1.Net.Register(17990, LevelPlayController.jpi);
-    Net_1.Net.Register(27049, LevelPlayController.oja);
+    Net_1.Net.Register(20248, LevelPlayController.Opi);
+    Net_1.Net.Register(15254, LevelPlayController.kpi);
+    Net_1.Net.Register(24387, LevelPlayController.Fpi);
+    Net_1.Net.Register(21761, LevelPlayController.Vpi);
+    Net_1.Net.Register(15632, LevelPlayController.Hpi);
+    Net_1.Net.Register(28943, LevelPlayController.jpi);
+    Net_1.Net.Register(23501, LevelPlayController.oja);
   }
   static OnUnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.UnRegister(18610);
-    Net_1.Net.UnRegister(21427);
-    Net_1.Net.UnRegister(17352);
-    Net_1.Net.UnRegister(19911);
-    Net_1.Net.UnRegister(18094);
-    Net_1.Net.UnRegister(17990);
-    Net_1.Net.UnRegister(27049);
+    Net_1.Net.UnRegister(20248);
+    Net_1.Net.UnRegister(15254);
+    Net_1.Net.UnRegister(24387);
+    Net_1.Net.UnRegister(21761);
+    Net_1.Net.UnRegister(15632);
+    Net_1.Net.UnRegister(28943);
+    Net_1.Net.UnRegister(23501);
   }
   static OnAddEvents() {
     super.OnAddEvents();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AnyCharGravityDirectChanged, LevelPlayController.M6c);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, LevelPlayController.dLe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, LevelPlayController.PFu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, LevelPlayController.Uku);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AnyCharGravityDirectChanged, LevelPlayController.M6c);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, LevelPlayController.dLe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, LevelPlayController.PFu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, LevelPlayController.Uku);
     super.OnRemoveEvents();
   }
   static RegisterAssistant() {
@@ -208,7 +208,7 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       Cal: r
     });
     ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = l.Id;
-    Net_1.Net.Call(20096, e, e => {
+    Net_1.Net.Call(16715, e, e => {
       ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = 0;
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         e = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(e.Q4n);
@@ -228,7 +228,7 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       e.ProcessAllItems();
     }
   }
-  static async xFu(e) {
+  static async Dku(e) {
     for (const t of await BattleNetController_1.BattleNetController.RequestBatchCaptureEntity(e)) {
       var r = EntitySystem_1.EntitySystem.Get(t);
       var l = r?.GetComponent(147);
@@ -237,7 +237,7 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       }
     }
   }
-  static DFu(e, r = 0) {
+  static Bku(e, r = 0) {
     var l;
     var t;
     var a;
@@ -249,10 +249,10 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       }
     }
     if (!(n.length <= 0)) {
-      this.xFu(n);
+      this.Dku(n);
     }
   }
-  static UFu(e) {
+  static kku(e) {
     if (e.Children) {
       if (ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos.has(e.Id)) {
         ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos.get(e.Id).Enable = true;
@@ -282,32 +282,32 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       }
     }
   }
-  static BFu(e) {
+  static Oku(e) {
     if (ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos?.has(e.Id)) {
       ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos.get(e.Id).Enable = false;
     }
   }
-  static kFu(e) {
+  static qku(e) {
     ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayInfos?.delete(e.Id);
   }
   static H0n(e, r, l) {
     var t;
     if (l?.Valid && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t === l) {
       if (r) {
-        this.UFu(e);
+        this.kku(e);
       } else {
-        this.BFu(e);
+        this.Oku(e);
       }
     }
   }
-  static OFu(e) {
+  static Gku(e) {
     var r;
     var l = e.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
     var l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l);
     if (l?.Valid && l.Entity?.Valid) {
       if (r = l.Entity?.GetComponent(86)) {
         if (r.IsOverlappingPlayer()) {
-          this.UFu(e);
+          this.kku(e);
         } else {
           EventSystem_1.EventSystem.AddWithTargetUseHoldKey(e, l.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n.bind(this, e));
         }
@@ -316,20 +316,20 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       }
     }
   }
-  static qFu(r) {
+  static Fku(r) {
     if (r.LevelPlayType === "NightmareSpawnPoint") {
       if (r.RangeAbsorbPhantom) {
         const l = r.RangeAbsorbPhantom.PlayerActiveFuncRangeEntity;
         var e;
         if (ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l)?.Valid) {
-          this.OFu(r);
+          this.Gku(r);
         } else {
           if (ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.has(r.Id)) {
             ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.get(r.Id)?.Cancel();
           }
           e = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelPlayController.RegisterNightmareRangeEntity", l, e => {
             if (e) {
-              this.OFu(r);
+              this.Gku(r);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Event", 72, "Entity加载超时或已被移除", ["PbDataId", l]);
             }
@@ -339,13 +339,13 @@ class LevelPlayController extends ControllerWithAssistantBase_1.ControllerWithAs
       }
     }
   }
-  static GFu(e) {
+  static Nku(e) {
     if (ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.has(e.Id)) {
       ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.get(e.Id)?.Cancel();
       ModelManager_1.ModelManager.LevelPlayModel.NightmareLevelPlayWaitEntityTask?.delete(e.Id);
     }
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(e);
-    this.kFu(e);
+    this.qku(e);
   }
 }
 exports.LevelPlayController = LevelPlayController;
@@ -421,7 +421,7 @@ LevelPlayController.Hpi = e => {
   var r = e.s5n;
   let l = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(r);
   l = l || ModelManager_1.ModelManager.LevelPlayModel.EnterLevelPlayRange(r);
-  LevelPlayController.qFu(l);
+  LevelPlayController.Fku(l);
   l.UpdateState(e.Y4n);
   l.UpdateCanGetReward(e.Txs);
   e = l.LevelPlayEnterAction;
@@ -441,7 +441,7 @@ LevelPlayController.jpi = e => {
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveLevelPlayNotify, e);
   var r = ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e);
   if (r) {
-    LevelPlayController.GFu(r);
+    LevelPlayController.Nku(r);
   }
   ModelManager_1.ModelManager.LevelPlayModel.LeaveLevelPlayRange(e);
   if (Log_1.Log.CheckInfo()) {
@@ -481,7 +481,7 @@ LevelPlayController.M6c = (e, r, l) => {
 LevelPlayController.dLe = () => {
   LevelPlayController.E6c();
 };
-LevelPlayController.PFu = e => {
+LevelPlayController.Uku = e => {
   var r;
   var l;
   var t;
@@ -491,9 +491,9 @@ LevelPlayController.PFu = e => {
       l.CurrentKillCount = 0;
       l.CurrentIntervalIndex = (l.CurrentIntervalIndex + 1) % l.IntervalKillNumber.length;
       if (t.RangeAbsorbPhantom?.DelayTime) {
-        TimerSystem_1.TimerSystem.Delay(_a.DFu.bind(_a, t), t.RangeAbsorbPhantom?.DelayTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+        TimerSystem_1.TimerSystem.Delay(_a.Bku.bind(_a, t), t.RangeAbsorbPhantom?.DelayTime * CommonDefine_1.MILLIONSECOND_PER_SECOND);
       } else {
-        _a.DFu(t);
+        _a.Bku(t);
       }
     }
   }

@@ -24,7 +24,7 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
     super(...arguments);
     this.Jh = undefined;
     this.Gin = undefined;
-    this.UWc = false;
+    this.pKu = false;
     this.$te = undefined;
     this.Xte = undefined;
     this.n$t = undefined;
@@ -41,12 +41,12 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
     };
     this.Zre = (t, e) => {
       if (SPECIAL_SKILL_ID === e) {
-        this.BWc(true);
+        this.QQu(true);
       }
     };
     this.ene = (t, e) => {
       if (SPECIAL_SKILL_ID === e) {
-        this.BWc(false);
+        this.QQu(false);
       }
     };
     this.lF1 = (t, e) => {
@@ -155,7 +155,7 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
     var e;
     var i;
     var s;
-    if (this.UWc && this.Gin && this.Jh && (e = this.Jh.GetComponent(1).ActorLocationProxy, s = (i = this.Gin.GetComponent(1)).ActorLocationProxy, Vector_1.Vector.DistSquaredXY(e, s) > DISTANCE_XY * DISTANCE_XY && (s.Subtraction(e, this.Lz), this.Lz.Normalize(), this.Lz.MultiplyEqual(DISTANCE_XY), this.Lz.AdditionEqual(e), i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招移动范围限制", false)), Math.abs(e.Z - s.Z) > DISTANCE_Z)) {
+    if (this.pKu && this.Gin && this.Jh && (e = this.Jh.GetComponent(1).ActorLocationProxy, s = (i = this.Gin.GetComponent(1)).ActorLocationProxy, Vector_1.Vector.DistSquaredXY(e, s) > DISTANCE_XY * DISTANCE_XY && (s.Subtraction(e, this.Lz), this.Lz.Normalize(), this.Lz.MultiplyEqual(DISTANCE_XY), this.Lz.AdditionEqual(e), i?.SetActorLocation(this.Lz.ToUeVector(), "弗洛洛大招移动范围限制", false)), Math.abs(e.Z - s.Z) > DISTANCE_Z)) {
       this.Lz.X = e.X;
       this.Lz.Y = e.Y;
       this.Lz.Z = e.Z - DISTANCE_Z_DELTA;
@@ -163,14 +163,14 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
       this.Gin.GetComponent(40)?.BeginSkill(RESET_SKILL);
     }
   }
-  BWc(t) {
+  QQu(t) {
     var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Jh, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, 2)?.Entity;
     if (e) {
       (this.Gin = e)?.GetComponent(179)?.SetWalkOffLedgeRecord(!t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Movement", 35, "弗洛洛大招边缘保护", ["开关", t]);
       }
-      this.UWc = t;
+      this.pKu = t;
     } else {
       this.Gin = undefined;
     }
@@ -185,7 +185,7 @@ class SpecialSkillFuLuoLuo extends SpecialSkillBase_1.SpecialSkillBase {
     }
   }
   _F1(t) {
-    if (this.UWc && t?.Entity === this.Jh) {
+    if (this.pKu && t?.Entity === this.Jh) {
       this.Jh?.GetComponent(94)?.DisableRoleWithoutEffect();
     }
   }

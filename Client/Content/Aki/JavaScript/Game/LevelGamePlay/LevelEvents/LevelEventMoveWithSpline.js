@@ -278,9 +278,9 @@ class LevelEventMoveWithSpline extends LevelGeneralBase_1.LevelEventBase {
     var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataIdByPbDataId(this.E0);
     if (!this.YLe && t) {
       (e = Protocol_1.Aki.Protocol.f1s.create()).F4n = MathUtils_1.MathUtils.NumberToLong(t);
-      Net_1.Net.Call(23281, e, e => {
+      Net_1.Net.Call(18961, e, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 27131);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 23005);
         }
       });
     }

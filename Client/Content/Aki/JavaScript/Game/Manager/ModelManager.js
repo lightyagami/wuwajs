@@ -268,13 +268,17 @@ ModelManager.QuestReviewModel = undefined;
 ModelManager.MechanismTimelineModel = undefined;
 ModelManager.BuildingGridModel = undefined;
 ModelManager.TowerDefenseEventModel = undefined;
-ModelManager.TowerDefenseInputModel = undefined;
-ModelManager.TowerDefensePlayerModel = undefined;
 ModelManager.LevelRangeDebugDrawModel = undefined;
 ModelManager.HoldingHandsModel = undefined;
 ModelManager.ExpressionModel = undefined;
 ModelManager.ItemInspectModel = undefined;
+ModelManager.HomeBtnModel = undefined;
 ModelManager.GreatSwordChallengeModel = undefined;
 ModelManager.ActivityFunPlayModel = undefined;
 ModelManager.SeekTraceModel = undefined;
-ModelManager.VideoBpModel = undefined; //# sourceMappingURL=ModelManager.js.map
+ModelManager.VideoBpModel = undefined;
+ModelManager.SurvivorsRogueModel = undefined;
+ModelManager.QuestTreeModel = undefined;
+ModelManager.RoleDevModel = undefined;
+ModelManager.CalabashSkinModel = undefined;
+ModelManager.SpecialTransitionModel = undefined; //# sourceMappingURL=ModelManager.js.map

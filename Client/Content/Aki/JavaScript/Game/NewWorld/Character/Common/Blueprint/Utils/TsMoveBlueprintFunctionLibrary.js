@@ -16,6 +16,7 @@ const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../../../../../Core/Utils/TraceElementCommon");
 const TsBaseCharacter_1 = require("../../../../../Character/TsBaseCharacter");
 const ControllerHolder_1 = require("../../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const ColorUtils_1 = require("../../../../../Utils/ColorUtils");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const CharacterSwimComponent_1 = require("../../Component/CharacterSwimComponent");
@@ -27,68 +28,68 @@ const tmpQuat = Quat_1.Quat.Create();
 const tmpRotator = Rotator_1.Rotator.Create();
 class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
-  static SetActorRotationWithPriority(t, e, i = false, n = "unknown") {
+  static SetActorRotationWithPriority(t, e, i = false, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
-    return !!t && t.SetActorRotationWithPriority(e, "BlueprintAPI." + n, 0, true, i);
+    return !!t && t.SetActorRotationWithPriority(e, "BlueprintAPI." + r, 0, true, i);
   }
-  static SetActorLocationWithContext(t, e, i = false, n = "unknown") {
+  static SetActorLocationWithContext(t, e, i = false, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
-    return !!t && t.SetActorLocation(e, "BlueprintAPI." + n, i);
+    return !!t && t.SetActorLocation(e, "BlueprintAPI." + r, i);
   }
-  static SetActorLocationAndRotationWithContext(t, e, i, n = false, r = "unknown") {
+  static SetActorLocationAndRotationWithContext(t, e, i, r = false, n = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.SetActorLocationAndRotation(e, i, "BlueprintAPI." + r, n);
+      t.SetActorLocationAndRotation(e, i, "BlueprintAPI." + n, r);
     }
   }
-  static SetActorRotationWithContext(t, e, i, n) {
+  static SetActorRotationWithContext(t, e, i, r) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
-    return !!t && t.SetActorRotation(e, "BlueprintAPI." + n, i);
+    return !!t && t.SetActorRotation(e, "BlueprintAPI." + r, i);
   }
-  static AddActorWorldOffsetWithContext(t, e, i = true, n = "unknown") {
+  static AddActorWorldOffsetWithContext(t, e, i = true, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.AddActorWorldOffset(e, "BlueprintAPI." + n, i);
+      t.AddActorWorldOffset(e, "BlueprintAPI." + r, i);
     }
   }
-  static AddActorWorldOffsetWithContextAndReset(t, e, i = true, n = "unknown") {
+  static AddActorWorldOffsetWithContextAndReset(t, e, i = true, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.AddActorWorldOffsetWithReset(e, "BlueprintAPI." + n, i);
+      t.AddActorWorldOffsetWithReset(e, "BlueprintAPI." + r, i);
     }
   }
-  static AddActorLocalOffsetWithContext(t, e, i = true, n = "unknown") {
+  static AddActorLocalOffsetWithContext(t, e, i = true, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.AddActorLocalOffset(e, "BlueprintAPI." + n, i);
+      t.AddActorLocalOffset(e, "BlueprintAPI." + r, i);
     }
   }
-  static AddActorWorldRotationWithContext(t, e, i = false, n = "unknown") {
+  static AddActorWorldRotationWithContext(t, e, i = false, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.AddActorWorldRotation(e, "BlueprintAPI." + n, i);
+      t.AddActorWorldRotation(e, "BlueprintAPI." + r, i);
     }
   }
-  static AddActorLocalRotationWithContext(t, e, i = false, n = "unknown") {
+  static AddActorLocalRotationWithContext(t, e, i = false, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.AddActorLocalRotation(e, "BlueprintAPI." + n, i);
+      t.AddActorLocalRotation(e, "BlueprintAPI." + r, i);
     }
   }
-  static ActorTeleportToWithContext(t, e, i, n = "unknown") {
+  static ActorTeleportToWithContext(t, e, i, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.TeleportTo(e, i, "BlueprintAPI." + n);
+      t.TeleportTo(e, i, "BlueprintAPI." + r);
     }
   }
   static SetActorLookAtWithContext(t, e, i) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     return !!t && (tmpVector.FromUeVector(e), tmpVector.SubtractionEqual(t.ActorLocationProxy), MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, t.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, tmpQuat), tmpQuat.Rotator(tmpRotator), t.SetActorRotation(tmpRotator.ToUeRotator(), `BlueprintAPI.${i}.LookAt`, false));
   }
-  static ActorKuroMoveAlongFloorWithContext(t, e, i, n = "unknown") {
+  static ActorKuroMoveAlongFloorWithContext(t, e, i, r = "unknown") {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (t) {
-      t.KuroMoveAlongFloor(e, i, "BlueprintAPI." + n);
+      t.KuroMoveAlongFloor(e, i, "BlueprintAPI." + r);
     }
   }
   static GetInputDirect(t) {
@@ -103,11 +104,11 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static SetInputRotator(t, e) {
     EntitySystem_1.EntitySystem.GetComponent(t, 3)?.SetInputRotator(e);
   }
-  static SetCharacterHidden(t, e, i, n) {
+  static SetCharacterHidden(t, e, i, r) {
     if (i?.IsValid()) {
-      i = `[蓝图:${i.GetName()}] ${n}`;
-      if ((n = EntitySystem_1.EntitySystem.Get(t))?.Valid) {
-        ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(n, !e, !e, !e, i, true);
+      i = `[蓝图:${i.GetName()}] ${r}`;
+      if ((r = EntitySystem_1.EntitySystem.Get(t))?.Valid) {
+        ControllerHolder_1.ControllerHolder.CreatureController.SetActorVisible(r, !e, !e, !e, i, true);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Entity", 3, "调用SetCharacterHidden失败，因为callObject为空");
@@ -137,8 +138,8 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetMovementData(t) {
     return EntitySystem_1.EntitySystem.GetComponent(t, 45)?.MovementData;
   }
-  static SmoothCharacterRotation(t, e, i, n) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SmoothCharacterRotation(e, i, Time_1.Time.DeltaTimeSeconds, false, n);
+  static SmoothCharacterRotation(t, e, i, r) {
+    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SmoothCharacterRotation(e, i, Time_1.Time.DeltaTimeSeconds, false, r);
   }
   static HasMoveInput(t) {
     return EntitySystem_1.EntitySystem.GetComponent(t, 45)?.HasMoveInput ?? false;
@@ -169,33 +170,33 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static SetForceSpeed(t, e) {
     EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetForceSpeed(e);
   }
-  static SetAddMove(t, e, i, n, r) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetAddMoveWithMesh(e, i, n, r);
+  static SetAddMove(t, e, i, r, n) {
+    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetAddMoveWithMesh(e, i, r, n);
   }
   static StopAddMove(t, e) {
     EntitySystem_1.EntitySystem.GetComponent(t, 45)?.StopAddMoveWithMesh(e);
   }
   static FixActorLocation(t, e, i) {
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
-    var n = new UE.HitResult();
+    var r = new UE.HitResult();
     if (t?.Valid) {
-      var r = MathUtils_1.MathUtils.CommonTempVector;
-      r.FromUeVector(e);
-      var e = t.FixActorLocation(i, true, r, "TsMoveBlueprintFunctionLibrary.FixActorLocation");
+      var n = MathUtils_1.MathUtils.CommonTempVector;
+      n.FromUeVector(e);
+      var e = t.FixActorLocation(i, true, n, "TsMoveBlueprintFunctionLibrary.FixActorLocation");
       if (e[0]) {
-        n.bBlockingHit = true;
-        n.Location = new UE.Vector(e[1].X, e[1].Y, e[1].Z);
-        return n;
+        r.bBlockingHit = true;
+        r.Location = new UE.Vector(e[1].X, e[1].Y, e[1].Z);
+        return r;
       }
     }
-    n.bBlockingHit = false;
-    return n;
+    r.bBlockingHit = false;
+    return r;
   }
   static StopAllAddMove(t) {
     EntitySystem_1.EntitySystem.GetComponent(t, 45)?.StopAllAddMove();
   }
-  static SetAddMoveWorld(t, e, i, n, r) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetAddMoveWorldWithMesh(e, i, n, r);
+  static SetAddMoveWorld(t, e, i, r, n) {
+    EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetAddMoveWorldWithMesh(e, i, r, n);
   }
   static SetAddMoveWorldSpeed(t, e, i) {
     EntitySystem_1.EntitySystem.GetComponent(t, 45)?.SetAddMoveWorldSpeedWithMesh(e, i);
@@ -282,23 +283,23 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return EntitySystem_1.EntitySystem.GetComponent(t, 34)?.DetectClimbWithDirect(e, i) ?? false;
   }
   static TurnToTarget(t, e, i) {
-    var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 3);
-    if (r && e instanceof TsBaseCharacter_1.default) {
-      if (n = EntitySystem_1.EntitySystem.GetComponent(t, 178)) {
-        n.MontageManager.StopMontage({
+    var r;
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 3);
+    if (n && e instanceof TsBaseCharacter_1.default) {
+      if (r = EntitySystem_1.EntitySystem.GetComponent(t, 178)) {
+        r.MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0
         });
       }
-      n = r.ActorLocationProxy;
-      r = e.CharacterActorComponent.ActorLocationProxy;
+      r = n.ActorLocationProxy;
+      n = e.CharacterActorComponent.ActorLocationProxy;
       e = MathUtils_1.MathUtils.CommonTempVector;
-      r.Subtraction(n, e);
-      r = MathUtils_1.MathUtils.CommonTempRotator;
-      n = EntitySystem_1.EntitySystem.GetComponent(t, 45);
-      e.ToOrientationRotator(r);
-      n?.SmoothCharacterRotation(r, i, Time_1.Time.DeltaTimeSeconds, false);
+      n.Subtraction(r, e);
+      n = MathUtils_1.MathUtils.CommonTempRotator;
+      r = EntitySystem_1.EntitySystem.GetComponent(t, 45);
+      e.ToOrientationRotator(n);
+      r?.SmoothCharacterRotation(n, i, Time_1.Time.DeltaTimeSeconds, false);
     }
   }
   static GetMonsterMoveDirection(t) {
@@ -332,10 +333,10 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetRacingRightSpeed(t) {
     return EntitySystem_1.EntitySystem.GetComponent(t, 109)?.LastRightSpeed ?? 0;
   }
-  static SetPendulumData(t, e, i, n, r, o, s, a, m, y, c, _) {
+  static SetPendulumData(t, e, i, r, n, o, a, s, m, y, c, _) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 71);
     if (t?.Valid) {
-      t.SetPendulumData(e, i, n, r, o, s, a, m, y, c, _);
+      t.SetPendulumData(e, i, r, n, o, a, s, m, y, c, _);
     }
   }
   static Reset(t) {
@@ -430,28 +431,28 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static UpdateAnimInfoMove(t, e) {
     var i;
-    var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (n = i.InputDirectProxy, r.InputDirect.Equals(n) || (r.InputDirect.DeepCopy(n), e.InputDirectRef = n.ToUeVectorOld()), n = i.InputRotatorProxy, r.InputRotator.Equals(n) || (r.InputRotator.DeepCopy(n), e.InputRotatorRef = n.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n && (r.Speed = n, e.SpeedRef = n), n = i.IsJump, r.IsJump !== n && (r.IsJump = n, e.IsJumpRef = n), n = i.GroundedTimeUe, r.GroundedTime !== n && (r.GroundedTime = n, e.GroundedTimeRef = n), n = i.IsFallingIntoWater, r.IsFallingIntoWater !== n && (r.IsFallingIntoWater = n, e.IsFallingIntoWaterRef = n), n = i.JumpUpRate, r.JumpUpRate !== n) && (r.JumpUpRate = n, e.JumpUpRateRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 34))?.Valid && (n = i.GetTsClimbInfo(), r.ClimbInfo.Equals(n) || (r.ClimbInfo.DeepCopy(n), e.ClimbInfoRef = i.GetClimbInfo()), n = i.GetTsClimbState(), r.ClimbState.Equals(n) || (r.ClimbState.DeepCopy(n), e.ClimbStateRef = i.GetClimbState()), n = i.GetClimbRadius(), r.ClimbRadius !== n && (r.ClimbRadius = n, e.ClimbRadiusRef = n), n = i.GetOnWallAngle(), r.ClimbOnWallAngle !== n) && (r.ClimbOnWallAngle = n, e.ClimbOnWallAngleRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 77))?.Valid && (n = i.SprintSwimOffset, r.SprintSwimOffset !== n && (r.SprintSwimOffset = n, e.SprintSwimOffsetRef = n), n = i.SprintSwimOffsetLerpSpeed, r.SprintSwimOffsetLerpSpeed !== n) && (r.SprintSwimOffsetLerpSpeed = n, e.SprintSwimOffsetLerpSpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 35))?.Valid) && (n = i.SlideForward, r.SlideForward.Equals(n) || (r.SlideForward.DeepCopy(n), e.SlideForwardRef = n.ToUeVectorOld()), t = i.SlideSwitchThisFrame, r.SlideSwitchThisFrame !== t && (r.SlideSwitchThisFrame = t, e.SlideSwitchThisFrameRef = t), n = i.StandMode, r.SlideStandMode !== n)) {
-      r.SlideStandMode = n;
-      e.SlideStandModeRef = n;
+    var r;
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (r = i.InputDirectProxy, n.InputDirect.Equals(r) || (n.InputDirect.DeepCopy(r), e.InputDirectRef = r.ToUeVectorOld()), r = i.InputRotatorProxy, n.InputRotator.Equals(r) || (n.InputRotator.DeepCopy(r), e.InputRotatorRef = r.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (r = i.Acceleration, n.Acceleration.Equals(r) || (n.Acceleration.DeepCopy(r), e.AccelerationRef = r.ToUeVectorOld()), r = i.IsMoving, n.IsMoving !== r && (n.IsMoving = r, e.IsMovingRef = r), r = i.HasMoveInput, n.HasMoveInput !== r && (n.HasMoveInput = r, e.HasMoveInputRef = r), r = i.Speed, n.Speed !== r && (n.Speed = r, e.SpeedRef = r), r = i.IsJump, n.IsJump !== r && (n.IsJump = r, e.IsJumpRef = r), r = i.GroundedTimeUe, n.GroundedTime !== r && (n.GroundedTime = r, e.GroundedTimeRef = r), r = i.IsFallingIntoWater, n.IsFallingIntoWater !== r && (n.IsFallingIntoWater = r, e.IsFallingIntoWaterRef = r), r = i.JumpUpRate, n.JumpUpRate !== r) && (n.JumpUpRate = r, e.JumpUpRateRef = r), (i = EntitySystem_1.EntitySystem.GetComponent(t, 34))?.Valid && (r = i.GetTsClimbInfo(), n.ClimbInfo.Equals(r) || (n.ClimbInfo.DeepCopy(r), e.ClimbInfoRef = i.GetClimbInfo()), r = i.GetTsClimbState(), n.ClimbState.Equals(r) || (n.ClimbState.DeepCopy(r), e.ClimbStateRef = i.GetClimbState()), r = i.GetClimbRadius(), n.ClimbRadius !== r && (n.ClimbRadius = r, e.ClimbRadiusRef = r), r = i.GetOnWallAngle(), n.ClimbOnWallAngle !== r) && (n.ClimbOnWallAngle = r, e.ClimbOnWallAngleRef = r), (i = EntitySystem_1.EntitySystem.GetComponent(t, 77))?.Valid && (r = i.SprintSwimOffset, n.SprintSwimOffset !== r && (n.SprintSwimOffset = r, e.SprintSwimOffsetRef = r), r = i.SprintSwimOffsetLerpSpeed, n.SprintSwimOffsetLerpSpeed !== r) && (n.SprintSwimOffsetLerpSpeed = r, e.SprintSwimOffsetLerpSpeedRef = r), (i = EntitySystem_1.EntitySystem.GetComponent(t, 35))?.Valid) && (r = i.SlideForward, n.SlideForward.Equals(r) || (n.SlideForward.DeepCopy(r), e.SlideForwardRef = r.ToUeVectorOld()), t = i.SlideSwitchThisFrame, n.SlideSwitchThisFrame !== t && (n.SlideSwitchThisFrame = t, e.SlideSwitchThisFrameRef = t), r = i.StandMode, n.SlideStandMode !== r)) {
+      n.SlideStandMode = r;
+      e.SlideStandModeRef = r;
     }
   }
   static UpdateAnimInfoMoveMonster(t, e) {
     var i;
-    var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid) && (t = i.IsMoving, n.IsMoving !== t && (n.IsMoving = t, e.IsMovingRef = t), t = i.HasMoveInput, n.HasMoveInput !== t)) {
-      n.HasMoveInput = t;
+    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid) && (t = i.IsMoving, r.IsMoving !== t && (r.IsMoving = t, e.IsMovingRef = t), t = i.HasMoveInput, r.HasMoveInput !== t)) {
+      r.HasMoveInput = t;
       e.HasMoveInputRef = t;
     }
   }
   static UpdateAnimInfoMoveRoleNpc(t, e) {
     var i;
-    var n;
-    var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (r?.Valid && (e = e, r = r.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, r.InputDirect.Equals(i) || (r.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (n = i.Acceleration, r.Acceleration.Equals(n) || (r.Acceleration.DeepCopy(n), e.AccelerationRef = n.ToUeVectorOld()), n = i.IsMoving, r.IsMoving !== n && (r.IsMoving = n, e.IsMovingRef = n), n = i.HasMoveInput, r.HasMoveInput !== n && (r.HasMoveInput = n, e.HasMoveInputRef = n), n = i.Speed, r.Speed !== n) && (r.Speed = n, e.SpeedRef = n), (i = EntitySystem_1.EntitySystem.GetComponent(t, 230))?.Valid) && (n = i.IsOnVehicle, r.IsOnVehicle !== n)) {
-      r.IsOnVehicle = n;
-      e.IsOnVehicle = n;
+    var r;
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
+    if (n?.Valid && (e = e, n = n.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 3))?.Valid && (i = i.InputDirectProxy, n.InputDirect.Equals(i) || (n.InputDirect.DeepCopy(i), e.InputDirectRef = i.ToUeVectorOld())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 45))?.Valid && (r = i.Acceleration, n.Acceleration.Equals(r) || (n.Acceleration.DeepCopy(r), e.AccelerationRef = r.ToUeVectorOld()), r = i.IsMoving, n.IsMoving !== r && (n.IsMoving = r, e.IsMovingRef = r), r = i.HasMoveInput, n.HasMoveInput !== r && (n.HasMoveInput = r, e.HasMoveInputRef = r), r = i.Speed, n.Speed !== r) && (n.Speed = r, e.SpeedRef = r), (i = EntitySystem_1.EntitySystem.GetComponent(t, 230))?.Valid) && (r = i.IsOnVehicle, n.IsOnVehicle !== r)) {
+      n.IsOnVehicle = r;
+      e.IsOnVehicle = r;
     }
   }
   static TurnOnAutomaticFlightMode(t, e) {
@@ -502,25 +503,25 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     return TsMoveBlueprintFunctionLibrary.GroundTraceInternal;
   }
-  static SimpleSwim(t, e, i, n) {
+  static SimpleSwim(t, e, i, r) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 3);
     if (!t?.Valid) {
       return Vector_1.Vector.ZeroVectorDouble;
     }
     var e = MathUtils_1.MathUtils.Clamp(e, 0, MAX_SIMPLE_SWIM_DELTA);
-    var r = TsMoveBlueprintFunctionLibrary.WaterTrace;
-    r.WorldContextObject = t.Actor;
+    var n = TsMoveBlueprintFunctionLibrary.WaterTrace;
+    n.WorldContextObject = t.Actor;
     t.ActorUpProxy.Multiply(i, tmpVector);
     tmpVector.AdditionEqual(t.ActorLocationProxy);
-    TraceElementCommon_1.TraceElementCommon.SetStartLocation(r, tmpVector);
+    TraceElementCommon_1.TraceElementCommon.SetStartLocation(n, tmpVector);
     t.ActorUpProxy.Multiply(-t.ScaledHalfHeight, tmpVector);
     tmpVector.AdditionEqual(t.ActorLocationProxy);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(r, tmpVector);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(n, tmpVector);
     let o = 0;
-    if (TraceElementCommon_1.TraceElementCommon.LineTrace(r, "SimpleSwim")) {
+    if (TraceElementCommon_1.TraceElementCommon.LineTrace(n, "SimpleSwim")) {
       i = TsMoveBlueprintFunctionLibrary.GroundTrace;
       i.WorldContextObject = t.Actor;
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(r.HitResult, 0, tmpVector);
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(n.HitResult, 0, tmpVector);
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, tmpVector);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, t.ActorLocationProxy);
       if (!TraceElementCommon_1.TraceElementCommon.LineTrace(i, "SimpleSwim_Ground")) {
@@ -528,40 +529,40 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
         o = MathUtils_1.MathUtils.Clamp(tmpVector.DotProduct(t.ActorUpProxy) / t.ScaledHalfHeight * 0.5 + 0.5, 0, 1);
       }
     } else {
-      r = TsMoveBlueprintFunctionLibrary.GroundTrace;
-      r.WorldContextObject = t.Actor;
+      n = TsMoveBlueprintFunctionLibrary.GroundTrace;
+      n.WorldContextObject = t.Actor;
       t.ActorUpProxy.Multiply(-t.ScaledHalfHeight - 2, tmpVector);
       tmpVector.AdditionEqual(t.ActorLocationProxy);
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(r, t.ActorLocationProxy);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(r, tmpVector);
-      if (TraceElementCommon_1.TraceElementCommon.LineTrace(r, "SimpleSwim_Ground")) {
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(n, t.ActorLocationProxy);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(n, tmpVector);
+      if (TraceElementCommon_1.TraceElementCommon.LineTrace(n, "SimpleSwim_Ground")) {
         return Vector_1.Vector.ZeroVectorDouble;
       }
     }
     i = t.Entity.GetComponent(45);
-    tmpVector.FromUeVector(n);
-    r = GravityUtils_1.GravityUtils.GetZnInGravityForActor(t, tmpVector);
-    let s = r;
+    tmpVector.FromUeVector(r);
+    n = GravityUtils_1.GravityUtils.GetZnInGravityForActor(t, tmpVector);
+    let a = n;
     if (i?.Valid) {
-      s += i.CharacterMovement.GetGravityZ() * e * (1 - o * CharacterSwimComponent_1.SWIMMING_BUOYANCY);
+      a += i.CharacterMovement.GetGravityZ() * e * (1 - o * CharacterSwimComponent_1.SWIMMING_BUOYANCY);
     } else {
-      s += e * 1960 * (1 - o * CharacterSwimComponent_1.SWIMMING_BUOYANCY);
+      a += e * 1960 * (1 - o * CharacterSwimComponent_1.SWIMMING_BUOYANCY);
     }
-    n = (r + (s *= Math.pow(CharacterSwimComponent_1.SWIMMING_DECELERATION, e))) / 2 * e;
-    n = MathUtils_1.MathUtils.Clamp(n, (o - 1) * 2 * t.ScaledHalfHeight, o * 2 * t.ScaledHalfHeight);
+    r = (n + (a *= Math.pow(CharacterSwimComponent_1.SWIMMING_DECELERATION, e))) / 2 * e;
+    r = MathUtils_1.MathUtils.Clamp(r, (o - 1) * 2 * t.ScaledHalfHeight, o * 2 * t.ScaledHalfHeight);
     tmpVector.Reset();
-    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, tmpVector, n);
+    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, tmpVector, r);
     if (i?.Valid) {
       i.MoveCharacter(tmpVector, e, "SimpleSwim");
     } else {
       t.AddActorWorldOffset(tmpVector.ToUeVector(), "SimpleSwim", true);
     }
     tmpVector2.Reset();
-    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, tmpVector2, s);
+    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, tmpVector2, a);
     return tmpVector2.ToUeVector();
   }
-  static EnterRoll(t, e, i, n, r, o, s) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 37)?.EnterRoll(e, i, n, r, o, s);
+  static EnterRoll(t, e, i, r, n, o, a) {
+    EntitySystem_1.EntitySystem.GetComponent(t, 37)?.EnterRoll(e, i, r, n, o, a);
   }
   static LeaveRoll(t) {
     EntitySystem_1.EntitySystem.GetComponent(t, 37)?.LeaveRoll();
@@ -570,6 +571,61 @@ class TsMoveBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 38);
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
     return !!e?.Valid && !!t?.Valid && e.EnterKite(t.GetCurrentTarget());
+  }
+  static LerpVelocityBlend(t, e, i) {
+    t.Forward = MathUtils_1.MathUtils.Lerp(t.Forward, e.Forward, i);
+    t.Backward = MathUtils_1.MathUtils.Lerp(t.Backward, e.Backward, i);
+    t.Left = MathUtils_1.MathUtils.Lerp(t.Left, e.Left, i);
+    t.Right = MathUtils_1.MathUtils.Lerp(t.Right, e.Right, i);
+    e = 1 / (t.Forward + t.Backward + t.Left + t.Right);
+    if (e < 1) {
+      t.Forward = t.Forward * e;
+      t.Backward = t.Backward * e;
+      t.Left = t.Left * e;
+      t.Right = t.Right * e;
+    }
+    return t;
+  }
+  static MoveCharacterDetectFloor(t, e) {
+    var i = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
+    i.WorldContextObject = t.Owner;
+    i.Radius = t.ScaledRadius;
+    for (const n of ModelManager_1.ModelManager.WorldModel.ActorsToIgnoreSet) {
+      i.ActorsToIgnore.Add(n);
+    }
+    tmpVector.DeepCopy(e);
+    tmpVector.AdditionEqual(t.ActorLocationProxy);
+    TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, tmpVector);
+    GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, tmpVector, -t.ScaledHalfHeight);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, tmpVector);
+    var r = "MoveCharacterDetectFloor";
+    if (TraceElementCommon_1.TraceElementCommon.ShapeTrace(t.Actor.CapsuleComponent, i, r, r)) {
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(i.HitResult, 0, e);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(t, e, t.ScaledHalfHeight);
+      e.SubtractionEqual(t.ActorLocationProxy);
+    }
+  }
+  static MoveCharacter(t, e, i, r) {
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 179);
+    if (t?.ActorComp) {
+      MathUtils_1.MathUtils.CommonTempVector.DeepCopy(e);
+      MathUtils_1.MathUtils.CommonTempVector.SubtractionEqual(t.ActorComp.ActorLocationProxy);
+      e = i * Time_1.Time.DeltaTimeSeconds;
+      i = Math.max(0, MathUtils_1.MathUtils.CommonTempVector.Size() - r);
+      MathUtils_1.MathUtils.CommonTempVector.Normalize();
+      if (e < i) {
+        MathUtils_1.MathUtils.CommonTempVector.MultiplyEqual(e);
+        TsMoveBlueprintFunctionLibrary.MoveCharacterDetectFloor(t.ActorComp, MathUtils_1.MathUtils.CommonTempVector);
+        t?.MoveCharacter(MathUtils_1.MathUtils.CommonTempVector, Time_1.Time.DeltaTimeSeconds, "TsMoveBlueprintFunctionLibrary.MoveCharacter");
+        return false;
+      }
+      if (i > 0) {
+        MathUtils_1.MathUtils.CommonTempVector.MultiplyEqual(i);
+        TsMoveBlueprintFunctionLibrary.MoveCharacterDetectFloor(t.ActorComp, MathUtils_1.MathUtils.CommonTempVector);
+        t?.MoveCharacter(MathUtils_1.MathUtils.CommonTempVector, Time_1.Time.DeltaTimeSeconds, "TsMoveBlueprintFunctionLibrary.MoveCharacter");
+      }
+    }
+    return true;
   }
 }
 TsMoveBlueprintFunctionLibrary.WaterTraceInternal = undefined;

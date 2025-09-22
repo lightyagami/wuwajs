@@ -24,6 +24,7 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
     this.Dne = false;
     this.Playing = false;
     this.RemainedTrigger = -1;
+    this.RandomByClient = false;
     this.Une = () => {
       this.Dne = false;
       if (this.Node.Activated) {
@@ -51,6 +52,7 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
     this.MontageNames = Array.from(t.TaskRandomMontage.MontageNames);
     this.Ine = t.TaskRandomMontage.HideOnLoading;
     this.ose = t.TaskRandomMontage.BlendInTime * 0.001;
+    this.RandomByClient = t.TaskRandomMontage.RandomByClient;
     return true;
   }
   OnEnter(t) {
@@ -61,7 +63,7 @@ class AiStateMachineTaskRandomMontage extends AiStateMachineTask_1.AiStateMachin
       this.Node.TaskFinished = false;
       this.Dne = true;
       this.Playing = false;
-      this.MontageIndex = this.Node.Owner.GetBlackboard(1);
+      this.MontageIndex = this.RandomByClient ? Math.floor(Math.random() * this.MontageNames.length) : this.Node.Owner.GetBlackboard(1);
       CombatLog_1.CombatLog.Info("StateMachineNew", this.Node.Entity, "随机Montage", ["MontageIndex", this.MontageIndex]);
       if (this.MontageIndex === undefined || this.MontageIndex < 0 || this.MontageIndex >= this.MontageNames.length) {
         CombatLog_1.CombatLog.Error("StateMachineNew", this.Node.Entity, "播放随机Montage失败，MontageIndex非法", ["MontageIndex", this.MontageIndex]);

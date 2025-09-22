@@ -8,20 +8,20 @@ const ConfigMarkItemView_1 = require("./ConfigMarkItemView");
 class GreatSwordChallengeMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
     super(e);
-    this.tZu = undefined;
-    this.tZu = e;
+    this.Xzc = undefined;
+    this.Xzc = e;
   }
   OnInitialize() {
     super.OnInitialize();
   }
   OnAfterShow() {
-    this.tZu.UpdateIconPath?.();
+    this.Xzc.UpdateIconPath?.();
     this.OnIconPathChanged(this.Holder.IconPath);
   }
   RegisterEvents() {}
   UnRegisterEvents() {}
   OnSafeUpdate(e, t, s) {
-    this.tZu.UpdateIconPath?.();
+    this.Xzc.UpdateIconPath?.();
     this.OnIconPathChanged(this.Holder.IconPath);
   }
   OnIconPathChanged(e) {

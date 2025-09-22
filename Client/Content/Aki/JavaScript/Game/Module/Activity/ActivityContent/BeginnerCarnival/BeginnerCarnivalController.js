@@ -35,23 +35,23 @@ class BeginnerCarnivalController extends ActivityControllerBase_1.ActivityContro
     UiManager_1.UiManager.OpenView("BeginnerCarnivalUnlockTipView");
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15398, BeginnerCarnivalController.NewbieCarnivalTaskDataUpdateNotify);
-    Net_1.Net.Register(16664, BeginnerCarnivalController.NewbieCarnivalTaskJumpUpdateNotify);
+    Net_1.Net.Register(24177, BeginnerCarnivalController.NewbieCarnivalTaskDataUpdateNotify);
+    Net_1.Net.Register(18337, BeginnerCarnivalController.NewbieCarnivalTaskJumpUpdateNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15398);
-    Net_1.Net.UnRegister(16664);
+    Net_1.Net.UnRegister(24177);
+    Net_1.Net.UnRegister(18337);
   }
   static NewbieCarnivalAwardRequest(i) {
     var e = Protocol_1.Aki.Protocol.G41.create();
     e.w6n = this.ActivityId;
     e.V41 = i;
-    Net_1.Net.Call(21572, e, e => {
+    Net_1.Net.Call(16035, e, e => {
       if (e) {
         var r;
         var n;
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29514);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16842);
         }
         for ([r, n] of this.GetBeginnerCarnivalData().TaskDataMap) {
           for (const t of n) {
@@ -70,10 +70,10 @@ class BeginnerCarnivalController extends ActivityControllerBase_1.ActivityContro
     var e = Protocol_1.Aki.Protocol.k41.create();
     e.w6n = this.ActivityId;
     e.Q6n = r;
-    Net_1.Net.Call(24245, e, e => {
+    Net_1.Net.Call(22434, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15018);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18086);
         }
         this.GetBeginnerCarnivalData().ChoseRoleId = r;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshBeginnerCarnivalChoseRole);

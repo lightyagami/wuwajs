@@ -31,12 +31,12 @@ class BuffItemControl extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28150, BuffItemControl.B0t);
-    Net_1.Net.Register(17208, BuffItemControl.b0t);
+    Net_1.Net.Register(23648, BuffItemControl.B0t);
+    Net_1.Net.Register(26898, BuffItemControl.b0t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28150);
-    Net_1.Net.UnRegister(17208);
+    Net_1.Net.UnRegister(23648);
+    Net_1.Net.UnRegister(26898);
   }
   static RequestUseBuffItem(e, g, r) {
     var t = new Protocol_1.Aki.Protocol.yzn();
@@ -46,7 +46,7 @@ class BuffItemControl extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("BuffItem", 37, "[Inventory]客户端请求使用Buff道具", ["massage", t]);
     }
-    Net_1.Net.Call(22754, t, r => {
+    Net_1.Net.Call(20054, t, r => {
       if (r.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         var t = r._Ls;
         if (t) {

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.VisionRefineTabView = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
@@ -17,9 +18,9 @@ const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const UiTabSequence_1 = require("../../../DynamicTab/UiTabViewBehavior/UiTabSequence");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
-const CalabashController_1 = require("../../CalabashController");
 const VisionRefineAttributePanel_1 = require("./VisionRefineAttributePanel");
 const VisionRefineChoosePanel_1 = require("./VisionRefineChoosePanel");
+const VisionRefineCostItem_1 = require("./VisionRefineCostItem");
 const VisionRefineMaterialItem_1 = require("./VisionRefineMaterialItem");
 const VisionRefineSlotItem_1 = require("./VisionRefineSlotItem");
 class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
@@ -30,9 +31,10 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     this.G1c = undefined;
     this.lqe = undefined;
     this.F1c = undefined;
-    this.sBc = 0;
+    this.sBc = undefined;
     this.IRu = undefined;
     this.j1c = false;
+    this.U1a = undefined;
     this.H1c = () => {
       return new VisionRefineMaterialItem_1.VisionRefineMaterialItem();
     };
@@ -73,7 +75,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
             this.z3e(2);
           }
         } else if (this.sBc === 2 && this.$_1()) {
-          CalabashController_1.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.IRu.PropItemId);
+          ControllerHolder_1.ControllerHolder.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.IRu.PropItemId);
         }
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineLackTip");
@@ -112,8 +114,16 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       this.k1c?.OnItemFuncValueChange(i);
     };
     this.huc = i => {
+      var t;
+      var i = {
+        Response: i,
+        ShowTips: true
+      };
+      if (this.ExtraParams && (t = this.ExtraParams).ResultShowTips !== undefined) {
+        i.ShowTips = t.ResultShowTips;
+      }
       UiManager_1.UiManager.OpenView("VisionRefineResultView", i, (i, t) => {
-        this.k1c.ClearSelection();
+        this.k1c?.ClearSelection();
         this.z3e(0);
         this.GetItem(3).SetAlpha(1);
         if (i) {
@@ -129,7 +139,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIHorizontalLayout], [7, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIHorizontalLayout], [7, UE.UIItem], [8, UE.UIItem]];
     this.BtnBindInfo = [[5, this.z1c], [2, this.J1c]];
   }
   async OnBeforeStartAsync() {
@@ -145,17 +155,17 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     this.G1c.BindClickCallBack(this.suc);
     await this.G1c.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
     this.F1c = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(6), this.H1c);
+    this.U1a = new VisionRefineCostItem_1.VisionRefineCostItem();
+    await this.U1a.CreateThenShowByActorAsync(this.GetItem(8).GetOwner());
   }
   OnStart() {
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
-    this.lqe.SetCloseCallBack(this.rki);
-    this.lqe.SetUiActive(false);
+    this.xSd(false);
     var i = this.GetTabBehavior(UiTabSequence_1.UiTabSequence)?.GetLevelSequencePlayer();
     if (i) {
       i.BindSequenceStartEvent(this.$1c);
       i.BindSequenceCloseEvent(this.W1c);
     }
-    this.sBc = 0;
+    this.z3e(0);
     this.IRu = undefined;
   }
   AddEventListener() {
@@ -164,6 +174,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnBeforeShow() {
     var i;
+    var t;
     this.j1c = false;
     if (this.q1c && this.sBc === 0) {
       i = this.q1c.GetUniqueId();
@@ -173,7 +184,11 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       }
     }
     if (this.ExtraParams) {
-      this.z3e(this.ExtraParams);
+      if ((i = this.ExtraParams).UniqueId) {
+        t = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(i.UniqueId);
+        this.k1c?.SetSelection(t);
+      }
+      this.z3e(i.ViewState);
     }
     this.Y1c();
   }
@@ -186,20 +201,26 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   iuc() {
     this.j1c = true;
-    var i = ModelManager_1.ModelManager.InventoryModel.GetUnEquipPhantomItemDataList();
+    var i = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemDataList();
     this.k1c.RefreshList(i);
   }
   z3e(i) {
     if (this.sBc !== i) {
-      this.k1c.SetActive(i === 1);
-      this.G1c.SetActive(i === 2);
-      this.F1c.SetActive(i !== 2);
-      if (i === 1) {
-        this.lBc(this.sBc);
-      } else if (i === 0) {
-        this._Bc(this.sBc);
-      } else if (i === 2) {
-        this.cBc(this.sBc);
+      this.k1c?.SetActive(i === 1);
+      this.G1c?.SetActive(i === 2);
+      this.F1c?.SetActive(i !== 2);
+      this.U1a?.SetActive(i === 2);
+      if (this.sBc !== undefined) {
+        switch (i) {
+          case 1:
+            this.lBc(this.sBc);
+            break;
+          case 0:
+            this._Bc(this.sBc);
+            break;
+          case 2:
+            this.cBc(this.sBc);
+        }
       }
       this.sBc = i;
       this.Y1c();
@@ -216,7 +237,7 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     } else if (i === 2) {
       this.UiViewSequence.PlaySequence("SwitchB_2");
       this.k1c.UiViewSequence.PlaySequence("SwitchA");
-      this.lqe.SetUiActive(false);
+      this.xSd(false);
     }
   }
   _Bc(i) {
@@ -228,13 +249,12 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     } else if (i === 2) {
       this.UiViewSequence.PlaySequence("SwitchC_1");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CalabashQuitInternalView);
-      this.lqe.SetUiActive(false);
+      this.xSd(false);
     }
   }
   cBc(i) {
-    this.lqe.SetUiActive(true);
+    this.xSd(true, i === 0);
     if (i === 0) {
-      this.UiViewSequence.PlaySequence("CaptionIn");
       this.UiViewSequence.PlaySequence("SwitchC_2");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CalabashEnterInternalView);
     } else if (i === 1) {
@@ -251,7 +271,16 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       this.k1c.ShowTipsComponent(i);
     }
   }
+  USd() {
+    let i = true;
+    var t;
+    if (this.ExtraParams && (t = this.ExtraParams).SlotInteractive !== undefined) {
+      i = t.SlotInteractive;
+    }
+    this.B1c.SetBtnInteractive(i);
+  }
   Y1c() {
+    this.USd();
     let i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRefineMaterialDefaultCost();
     if (this.q1c) {
       i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionRefineMaterialCost(this.q1c.GetUniqueId());
@@ -277,8 +306,20 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
       s = t.GetMainPropShowAttributeList(1);
       this.G1c.RefreshItemNow(s);
       this.G1c.RefreshItemSwitch(this.IRu);
+      if (i) {
+        this.RGt(i);
+      }
     } else {
       this.B1c.RefreshEmpty();
+    }
+  }
+  RGt(i) {
+    if (i.size === 1) {
+      i.forEach((i, t) => {
+        this.U1a?.SetCost(t, i);
+      });
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Calabash", 87, "检查数据重构的材料消耗配置，目前只展示一个材料消耗");
     }
   }
   get q1c() {
@@ -292,6 +333,25 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   $_1() {
     return !!this.IRu || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineAttributeEmpty"), false);
+  }
+  xSd(i, t) {
+    if (this.GetItem(7).bIsUIActive !== i) {
+      if (this.ExtraParams) {
+        var e = this.ExtraParams;
+        if (e.ActiveCaptionItem !== undefined) {
+          this.GetItem(7).SetUIActive(e.ActiveCaptionItem);
+          return;
+        }
+      }
+      if (!this.lqe) {
+        this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
+        this.lqe.SetCloseCallBack(this.rki);
+      }
+      this.lqe.SetUiActive(i);
+      if (i && t) {
+        this.UiViewSequence.PlaySequence("CaptionIn");
+      }
+    }
   }
 }
 exports.VisionRefineTabView = VisionRefineTabView;

@@ -13,11 +13,11 @@ const InputKeyDisplayData_1 = require("../../../InputSettings/InputKeyDisplayDat
 const InputSettings_1 = require("../../../InputSettings/InputSettings");
 const InputSettingsManager_1 = require("../../../InputSettings/InputSettingsManager");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
-const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const KeyUtil_1 = require("../../Util/KeyUtil");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleSkillTreeSkillSpriteItem_1 = require("./RoleSkillTreeSkillSpriteItem");
 const InputKeyUtils_1 = require("../../../InputSettings/InputKeyUtils");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 class RoleSkillInputItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
@@ -27,16 +27,16 @@ class RoleSkillInputItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem]];
   }
   Refresh(t, e, i) {
-    this.Imo = t;
-    t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillInputConfigById(this.Imo);
-    if (t) {
-      this.tV1(i % 2 == 0);
+    this.Imo = t.InputId;
+    var r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillInputConfigById(this.Imo);
+    if (r) {
+      this.tV1(t.InputIndex % 2 != 0);
       if (Info_1.Info.IsInKeyBoard()) {
-        this.HandlePcInputText(t);
+        this.HandlePcInputText(r);
       } else if (Info_1.Info.IsInTouch()) {
-        this.HandleMobileInputText(t);
+        this.HandleMobileInputText(r);
       } else if (Info_1.Info.IsInGamepad()) {
-        this.HandleGamepadInputText(t);
+        this.HandleGamepadInputText(r);
       }
     }
   }

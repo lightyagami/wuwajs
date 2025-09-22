@@ -42,7 +42,7 @@ class TrapDefenseBattleInventoryData {
         e = TrapDefenseBattleItemData_1.TrapDefenseBattleItemData.Create(t);
         this.ItemMap.set(a.v9n, e);
       }
-      e.UpdateByServerData(a.MJc, a.EJc);
+      e.UpdateByServerData(a.wed, a.Led);
     }
   }
 }

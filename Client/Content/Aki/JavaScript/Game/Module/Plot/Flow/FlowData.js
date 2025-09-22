@@ -41,26 +41,28 @@ class FlowContext {
     this.SeamlessPlot = false;
     this.EndSeamlessShowTalkId = 0;
     this.NeedPreloadUiSequenceData = undefined;
+    this.PromptStyle = undefined;
   }
-  Init(t, i, s, h, o, e, r, n, l = false, d = undefined, C, v = false, c = false, _ = 0, a) {
+  Init(t, i) {
     this.ht();
-    this.IsServerNotify = t;
-    this.FlowIncId = s;
-    this.FlowListName = i;
-    this.FlowId = h;
-    this.IsBackground = e;
-    this.IsBreakdown = r;
-    this.Context = n;
-    this.IsAsync = l;
-    this.UiParam = d;
-    this.FlowStateId = o;
-    this.Pos = C;
-    this.KeepMainRolePose = v;
-    this.SeamlessPlot = c;
-    this.EndSeamlessShowTalkId = _;
-    if (a) {
-      this.NeedPreloadUiSequenceData = [...a];
+    this.IsServerNotify = t.IsServerNotify;
+    this.FlowIncId = t.FlowIncId;
+    this.FlowListName = t.FlowListName;
+    this.FlowId = t.FlowId;
+    this.IsBackground = i;
+    this.IsBreakdown = t.IsBreakdown;
+    this.Context = t.Context;
+    this.IsAsync = t.IsAsync;
+    this.UiParam = t.UiParam;
+    this.FlowStateId = t.StateId;
+    this.Pos = t.Pos;
+    this.KeepMainRolePose = t.KeepMainRolePose;
+    this.SeamlessPlot = t.Seamless;
+    this.EndSeamlessShowTalkId = t.EndSeamlessShowTalkId;
+    if (t.PreloadSequenceUiData) {
+      this.NeedPreloadUiSequenceData = [...t.PreloadSequenceUiData];
     }
+    this.PromptStyle = t.PromptStyle;
   }
   ht() {
     this.FlowIncId = -1;

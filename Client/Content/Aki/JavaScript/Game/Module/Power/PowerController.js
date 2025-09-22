@@ -30,12 +30,12 @@ const REQUESTPOWERGAP = 1;
 const CHECKPOWERGAP = 500;
 class PowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18577, e => {
+    Net_1.Net.Register(16826, e => {
       ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e._Xs);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18577);
+    Net_1.Net.UnRegister(16826);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.loo);
@@ -60,7 +60,7 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static async FZu(r, o) {
+  static async czc(r, o) {
     var e;
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10017)) {
       await this.eFa();
@@ -156,7 +156,7 @@ class PowerController extends UiControllerBase_1.UiControllerBase {
       } else {
         (r = new CommonExchangeData_1.CommonExchangeData()).InitBySrcAndDestItemId(o, ItemDefines_1.EItemId.Power, e, i);
         r.ConfirmCallBack = (e, r) => {
-          this.FZu(o, r);
+          this.czc(o, r);
         };
         (t = new CommonExchangeData_1.CommonExchangeViewData()).GetGainCount = (e, r) => r * i;
         t.GetConsumeCount = (e, r) => r;
@@ -211,12 +211,12 @@ PowerController.SendUpdatePowerRequest = e => {
   var r = Protocol_1.Aki.Protocol.YZn.create();
   r.BVn = e;
   _a.Mea = TimeUtil_1.TimeUtil.GetServerTime();
-  Net_1.Net.Call(29506, r, e => {
+  Net_1.Net.Call(28139, r, e => {
     if (e) {
       if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.PowerModel.UpdatePowerData(e.uXs);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 15711);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 23372);
       }
     }
   });

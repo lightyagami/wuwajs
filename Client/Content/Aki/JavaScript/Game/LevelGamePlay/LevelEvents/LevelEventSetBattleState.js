@@ -239,7 +239,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
           a.u5n = e.GetCurrentPatrolSplineId();
           a.c5n = e.GetLastPointRawIndex();
           a.m5n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.StandbyTags[i]);
-          Net_1.Net.Call(18567, a, t => {
+          Net_1.Net.Call(19464, a, t => {
             if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("AI", 50, "请求状态机切换生态表演失败", ["CreatureId", a.F4n], ["PbDataId", o.CreatureData.GetPbDataId()], ["SplineId", a.u5n], ["Index", a.c5n], ["Tag", a.m5n]);
             }

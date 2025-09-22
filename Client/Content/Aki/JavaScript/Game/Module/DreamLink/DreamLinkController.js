@@ -103,16 +103,16 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("DreamLinkWhiteCatView", this._Ol);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21911, this.ZZa);
-    Net_1.Net.Register(16058, this.ecl);
-    Net_1.Net.Register(21882, this.V0l);
-    Net_1.Net.Register(24821, this.OEl);
+    Net_1.Net.Register(19093, this.ZZa);
+    Net_1.Net.Register(21145, this.ecl);
+    Net_1.Net.Register(18108, this.V0l);
+    Net_1.Net.Register(24881, this.OEl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21911);
-    Net_1.Net.UnRegister(16058);
-    Net_1.Net.UnRegister(21882);
-    Net_1.Net.UnRegister(24821);
+    Net_1.Net.UnRegister(19093);
+    Net_1.Net.UnRegister(21145);
+    Net_1.Net.UnRegister(18108);
+    Net_1.Net.UnRegister(24881);
   }
   GetActivityMapMarkState(e) {
     var r = DreamLinkController.GetCurrentActivityData();
@@ -122,9 +122,9 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     var e = new Protocol_1.Aki.Protocol.yg_();
     e.e5n = r;
     e.w6n = DreamLinkController.GetCurrentActivityData().Id;
-    Net_1.Net.Call(22934, e, e => {
+    Net_1.Net.Call(17667, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22934);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17667);
       } else {
         DreamLinkController.GetCurrentActivityData().DungeonProgressRecord = r;
       }
@@ -140,10 +140,10 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     } else if (r = DreamLinkController.GetCurrentActivityData()) {
       (t = new Protocol_1.Aki.Protocol.xf_()).c5n = e;
       t.w6n = r.Id;
-      Net_1.Net.Call(29784, t, e => {
+      Net_1.Net.Call(29821, t, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29784);
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29821);
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("DreamLink", 34, "RoleInstStartRequest response is undefined");
@@ -157,10 +157,10 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     if (t) {
       (e = new Protocol_1.Aki.Protocol.uC_()).c5n = r;
       e.w6n = t.Id;
-      Net_1.Net.Call(26310, e, e => {
+      Net_1.Net.Call(24580, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26310);
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24580);
           } else {
             t.SetRunTaskDone(r);
             t.RefreshRewardPerformance();
@@ -173,12 +173,12 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     const t = DreamLinkController.GetCurrentActivityData();
     var e;
     if (t) {
-      (e = new Protocol_1.Aki.Protocol.K5u()).c5n = r;
+      (e = new Protocol_1.Aki.Protocol.l8u()).c5n = r;
       e.w6n = t.Id;
-      Net_1.Net.Call(17487, e, e => {
+      Net_1.Net.Call(29269, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17487);
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29269);
           } else {
             r.forEach(e => {
               t.RefreshEnergyRewardData(e, 2);
@@ -194,10 +194,10 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     var e;
     if (t) {
       (e = new Protocol_1.Aki.Protocol.cg_()).c5n = r;
-      Net_1.Net.Call(21299, e, e => {
+      Net_1.Net.Call(17733, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21299);
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17733);
           } else {
             t.RefreshLimitTimeRewardData(r, 2);
             t.RefreshLimitRewardPerformance();
@@ -212,10 +212,10 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
     if (t) {
       (e = new Protocol_1.Aki.Protocol._C_()).c5n = r;
       e.w6n = t.Id;
-      Net_1.Net.Call(16743, e, e => {
+      Net_1.Net.Call(28085, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16743);
+            ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28085);
           } else {
             t.RefreshBossRewardData(r, 2);
             t.RefreshRewardPerformance();

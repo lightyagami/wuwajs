@@ -65,20 +65,20 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAbyssFirstRoomEnter, DangoAbyssController.PreloadRoomMonsterEntitiesOnEnter);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15238, this.Vvc);
-    Net_1.Net.Register(20635, this.jvc);
-    Net_1.Net.Register(19136, this.Hvc);
-    Net_1.Net.Register(18951, this.$vc);
-    Net_1.Net.Register(16250, this.Wvc);
-    Net_1.Net.Register(20115, this.gvc);
+    Net_1.Net.Register(29514, this.Vvc);
+    Net_1.Net.Register(18203, this.jvc);
+    Net_1.Net.Register(21407, this.Hvc);
+    Net_1.Net.Register(19717, this.$vc);
+    Net_1.Net.Register(24500, this.Wvc);
+    Net_1.Net.Register(29928, this.gvc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15238);
-    Net_1.Net.UnRegister(20635);
-    Net_1.Net.UnRegister(19136);
-    Net_1.Net.UnRegister(18951);
-    Net_1.Net.UnRegister(16250);
-    Net_1.Net.UnRegister(20115);
+    Net_1.Net.UnRegister(29514);
+    Net_1.Net.UnRegister(18203);
+    Net_1.Net.UnRegister(21407);
+    Net_1.Net.UnRegister(19717);
+    Net_1.Net.UnRegister(24500);
+    Net_1.Net.UnRegister(29928);
   }
   static OpenAbyssSelectViewByActivityId(e) {
     var n = new DangoAbyssData_1.DangoAbyssInsSelectViewData();
@@ -271,7 +271,7 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static async Qvc(e) {
     var n = Protocol_1.Aki.Protocol.v0c.create();
     n.Vy_ = e;
-    var e = await Net_1.Net.CallAsync(16197, n);
+    var e = await Net_1.Net.CallAsync(26524, n);
     if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Activity", 27, "团子深渊进入下个房间失败");
@@ -339,19 +339,19 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static AbyssLikePlayer(e) {
     var n = new Protocol_1.Aki.Protocol.f0c();
     n.W5n = e;
-    Net_1.Net.Call(17625, n, e => {
+    Net_1.Net.Call(18402, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29525);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18367);
       }
     });
   }
   static async RequestAbyssRankList(e) {
     var n = new Protocol_1.Aki.Protocol.A0c();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(16007, n);
+    var e = await Net_1.Net.CallAsync(21797, n);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrAbyssRankListCd) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26152);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25445);
       }
       ModelManager_1.ModelManager.DangoAbyssModel.OnAbyssChallegenRankUpdate(e);
     }
@@ -359,15 +359,15 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static async RequestAbyssSelfRank(e) {
     var n = new Protocol_1.Aki.Protocol.B0c();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(16330, n);
+    var e = await Net_1.Net.CallAsync(25894, n);
     ModelManager_1.ModelManager.DangoAbyssModel.OnAbyssChallengeSelfRankUpdate(e);
   }
   static async RequestSetAbyssShowName(e, n) {
     var t = new Protocol_1.Aki.Protocol.x0c();
     t.e8n = e;
     t.lnc = n;
-    var t = await Net_1.Net.CallAsync(23228, t);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19610), false) : (ModelManager_1.ModelManager.DangoAbyssModel.OnAnonymousNameStateChange(e, n), true));
+    var t = await Net_1.Net.CallAsync(17229, t);
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20523), false) : (ModelManager_1.ModelManager.DangoAbyssModel.OnAnonymousNameStateChange(e, n), true));
   }
   static StartAbyssChallenge(e) {
     e = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetDangoAbyssInstById(e);
@@ -426,18 +426,18 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestQuitChallenge() {
     var e = new Protocol_1.Aki.Protocol.u0c();
-    Net_1.Net.Call(28289, e, e => {
+    Net_1.Net.Call(20607, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15748);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27394);
       }
     });
   }
   static RequestChallengeUnlock(e) {
     var n = new Protocol_1.Aki.Protocol._0c();
     n.e8n = e;
-    Net_1.Net.Call(23301, n, e => {
+    Net_1.Net.Call(17340, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19657);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24060);
       }
     });
   }

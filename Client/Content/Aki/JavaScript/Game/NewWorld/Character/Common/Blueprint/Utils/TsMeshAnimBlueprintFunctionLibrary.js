@@ -29,6 +29,9 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetBattleIdleTime(t) {
     return EntitySystem_1.EntitySystem.GetComponent(t, 178)?.BattleIdleEndTime;
   }
+  static GetDisableBlink(t) {
+    return EntitySystem_1.EntitySystem.GetComponent(t, 44)?.DisableBlink ?? false;
+  }
   static EnterBattleIdle(t) {
     EntitySystem_1.EntitySystem.GetComponent(t, 178)?.EnterBattleIdle();
   }
@@ -105,7 +108,7 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var i;
     var n;
     var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (r?.Valid && (e = e, i = r.AnimLogicParamsSetter, n = r.BattleIdleEndTime, i.BattleIdleTime !== n && (i.BattleIdleTime = n, e.BattleIdleTimeRef = n), n = r.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = r.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), r = EntitySystem_1.EntitySystem.GetComponent(t, 72).GetRagRollQuitState(), i.RagQuitState !== r)) {
+    if (r?.Valid && (e = e, i = r.AnimLogicParamsSetter, n = r.BattleIdleEndTime, i.BattleIdleTime !== n && (i.BattleIdleTime = n, e.BattleIdleTimeRef = n), n = r.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = r.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = r.DisableBlink, i.DisableBlink !== n && (i.DisableBlink = n, e.DisableBlinkRef = n), r = EntitySystem_1.EntitySystem.GetComponent(t, 72).GetRagRollQuitState(), i.RagQuitState !== r)) {
       i.RagQuitState = r;
       e.RagQuitStateRef = r;
     }
@@ -114,7 +117,7 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var i;
     var n;
     var t = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (t?.Valid && (e = e, i = t.AnimLogicParamsSetter, n = t.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = t.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = t.GetTsLookAt(), i.LookAt.Equals(n) || (i.LookAt.DeepCopy(n), e.LookAtRef = n.ToUeVector2D()), i.EnableBlendSpaceLookAt !== t.EnableBlendSpaceLookAt && (i.EnableBlendSpaceLookAt = t.EnableBlendSpaceLookAt, e.EnableBlendSpaceLookAtRef = t.EnableBlendSpaceLookAt), i.EnableLowerBlend !== t.EnableLowerBlend && (i.EnableLowerBlend = t.EnableLowerBlend, e.StateLowerBlend = t.EnableLowerBlend), i.EnableLeftArmBlend !== t.EnableLeftArmBlend && (i.EnableLeftArmBlend = t.EnableLeftArmBlend, e.StateLeftArmBlend = t.EnableLeftArmBlend), i.EnableRightArmBlend !== t.EnableRightArmBlend)) {
+    if (t?.Valid && (e = e, i = t.AnimLogicParamsSetter, n = t.DegMovementSlope, i.DegMovementSlope !== n && (i.DegMovementSlope = n, e.DegMovementSlopeRef = n), n = t.GetTsSightDirect(), i.SightDirect.Equals(n) || (i.SightDirect.DeepCopy(n), e.SightDirectRef = n.ToUeVectorOld()), n = t.DisableBlink, i.DisableBlink !== n && (i.DisableBlink = n, e.DisableBlinkRef = n), n = t.GetTsLookAt(), i.LookAt.Equals(n) || (i.LookAt.DeepCopy(n), e.LookAtRef = n.ToUeVector2D()), i.EnableBlendSpaceLookAt !== t.EnableBlendSpaceLookAt && (i.EnableBlendSpaceLookAt = t.EnableBlendSpaceLookAt, e.EnableBlendSpaceLookAtRef = t.EnableBlendSpaceLookAt), i.EnableLowerBlend !== t.EnableLowerBlend && (i.EnableLowerBlend = t.EnableLowerBlend, e.StateLowerBlend = t.EnableLowerBlend), i.EnableLeftArmBlend !== t.EnableLeftArmBlend && (i.EnableLeftArmBlend = t.EnableLeftArmBlend, e.StateLeftArmBlend = t.EnableLeftArmBlend), i.EnableRightArmBlend !== t.EnableRightArmBlend)) {
       i.EnableRightArmBlend = t.EnableRightArmBlend;
       e.StateRightArmBlend = t.EnableRightArmBlend;
     }
@@ -122,7 +125,7 @@ class TsMeshAnimBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoHoldingHandsRoleNpc(t, e) {
     var i;
     var n = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (n?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 297)) && (e = e, n = n.AnimLogicParamsSetter, (i = t.GetHandIkTarget(0)) && !n.LeftHandIkTarget.Equals(i) && (n.LeftHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = i), (i = t.GetHandIkTarget(1)) && !n.RightHandIkTarget.Equals(i) && (n.RightHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(1)) && (e.RightHandIKTargetCS = i), (i = t.GetIsHoldingHands()) !== n.IsHoldingHands && (n.IsHoldingHands = i, e.IsHoldingHands = i), (i = t.GetIsBeHoldingHands()) !== n.IsBeHoldingHands && (n.IsBeHoldingHands = i, e.IsBeHoldingHands = i), (i = t.GetHandReachable(0) || t.GetHandReachable(1)) !== n.IsHoldingHandsReachable && (n.IsHoldingHandsReachable = i, e.IsHoldingHandsReachable = i), (i = t.GetIsAcceptingInvitation()) !== n.IsAcceptingInvitation)) {
+    if (n?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 298)) && (e = e, n = n.AnimLogicParamsSetter, (i = t.GetHandIkTarget(0)) && !n.LeftHandIkTarget.Equals(i) && (n.LeftHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = i), (i = t.GetHandIkTarget(1)) && !n.RightHandIkTarget.Equals(i) && (n.RightHandIkTarget.DeepCopy(i), i = t.GetHandIkTargetUe(1)) && (e.RightHandIKTargetCS = i), (i = t.GetIsHoldingHands()) !== n.IsHoldingHands && (n.IsHoldingHands = i, e.IsHoldingHands = i), (i = t.GetIsBeHoldingHands()) !== n.IsBeHoldingHands && (n.IsBeHoldingHands = i, e.IsBeHoldingHands = i), (i = t.GetHandReachable(0) || t.GetHandReachable(1)) !== n.IsHoldingHandsReachable && (n.IsHoldingHandsReachable = i, e.IsHoldingHandsReachable = i), (i = t.GetIsAcceptingInvitation()) !== n.IsAcceptingInvitation)) {
       n.IsAcceptingInvitation = i;
       e.IsAcceptingInvitation = i;
     }

@@ -29,13 +29,13 @@ class TrapDefenseFixedRewardView extends UiViewBase_1.UiViewBase {
     };
     this.CreateItemReward = () => {
       var e = new TrapDefenseRewardItem_1.TrapDefenseRewardItem();
-      e.OnClaimRewardCallback = this.vYc;
+      e.OnClaimRewardCallback = this.yJc;
       return e;
     };
     this.EventTrapDefenseRewardUpdate = () => {
       this.UpdateData();
     };
-    this.vYc = () => {
+    this.yJc = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.RewardData.RequestFixedReward();
     };
   }

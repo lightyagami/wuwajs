@@ -6,9 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.TowerDefenseSubModel = undefined;
 const KscSubModelBase_1 = require("../KscSubModelBase");
 class TowerDefenseSubModel extends KscSubModelBase_1.KscSubModelBase {
-  get GameplayType() {
-    return 0;
-  }
   GetSkillDtPath() {
     return TowerDefenseSubModel.SkillDtPath;
   }

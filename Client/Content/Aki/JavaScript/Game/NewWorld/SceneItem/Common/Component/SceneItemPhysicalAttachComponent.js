@@ -50,7 +50,7 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
     this.Hnr = undefined;
     this.zie = undefined;
     this.rvi = undefined;
-    this.TQc = false;
+    this.$Wu = false;
     this.zln = Vector_1.Vector.Create();
     this.Zln = t => {
       if (this.Yln === undefined) {
@@ -126,10 +126,10 @@ let SceneItemPhysicalAttachComponent = SceneItemPhysicalAttachComponent_1 = clas
       e = new UE.VectorDouble(this.Lo.AttachTarget.RelativePoint.X ?? 0, this.Lo.AttachTarget.RelativePoint.Y ?? 0, this.Lo.AttachTarget.RelativePoint.Z ?? 0);
       t.SetTranslation(this.Hte.ActorLocation.op_Addition(e));
     }
-    if (this.Jln === undefined && !this.TQc) {
-      this.TQc = true;
+    if (this.Jln === undefined && !this.$Wu) {
+      this.$Wu = true;
       ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_PhysicsAttachedBase_C", () => {
-        this.TQc = false;
+        this.$Wu = false;
         this.Jln = ActorSystem_1.ActorSystem.Get(UE.BP_PhysicsAttachedBase_C.StaticClass(), t);
       });
     }

@@ -27,6 +27,7 @@ class DeadReviveModel extends ModelBase_1.ModelBase {
     this.IsAutoRevive = false;
     this.IsShowRevive = false;
     this.ReviveLimitTime = 0;
+    this.BtBloodBathedModeInfo = undefined;
     this.RevivePosition = undefined;
     this.ReviveRotator = undefined;
     this.ReviveGravity = undefined;
@@ -81,6 +82,7 @@ class DeadReviveModel extends ModelBase_1.ModelBase {
     this.ReviveLimitTime = 0;
     this.IsShowRevive = false;
     this.IsAutoRevive = false;
+    this.BtBloodBathedModeInfo = undefined;
     if (this.DeadDelayTimer) {
       this.DeadDelayTimer.Remove();
       this.DeadDelayTimer = undefined;
@@ -95,13 +97,13 @@ class DeadReviveModel extends ModelBase_1.ModelBase {
         ParamType: 3
       });
       if (o) {
-        const r = o.GetPlayerId();
-        var t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(r, o.GetConfigId);
+        const h = o.GetPlayerId();
+        var t = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData?.GetRolePosition(h, o.GetConfigId);
         if (t && !(t < 1)) {
           const n = e * MathUtils_1.MathUtils.MillisecondToSecond;
           var i;
           var t = t - 1;
-          const h = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+          const r = TimerSystem_1.GameplayTimerSystem.Forever(() => {
             var e;
             var t;
             var i = this.ReviveCooldownCreatureMap.get(s);
@@ -112,19 +114,19 @@ class DeadReviveModel extends ModelBase_1.ModelBase {
                 this.UnRegisterCooldown(s);
               } else {
                 t = (i.RemainMilliseconds = e) * MathUtils_1.MathUtils.MillisecondToSecond;
-                EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshFormationCooldownExternalInBattleView, r, o.GetConfigId, t, n);
+                EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshFormationCooldownExternalInBattleView, h, o.GetConfigId, t, n);
                 EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleReviveCooldownChange, s, t);
               }
             } else {
-              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshFormationCooldownExternalInBattleView, r, o.GetConfigId);
+              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshFormationCooldownExternalInBattleView, h, o.GetConfigId);
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleReviveCooldownChange, s, 0);
-              h?.Remove();
+              r?.Remove();
             }
           }, 100);
-          if (h) {
+          if (r) {
             (i = new ReviveCooldownData()).Index = t;
             i.RemainMilliseconds = e;
-            i.TimerHandle = h;
+            i.TimerHandle = r;
             i.LastServerStopTimeStamp = Time_1.Time.ServerStopTimeStamp;
             this.ReviveCooldownCreatureMap.set(s, i);
           }
@@ -148,6 +150,9 @@ class DeadReviveModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshFormationCooldownExternalInBattleView, t.GetPlayerId(), t.GetConfigId);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleReviveCooldownChange, e, 0);
+  }
+  IsCanChangeBloodBathedMode() {
+    return !!this.BtBloodBathedModeInfo && this.BtBloodBathedModeInfo.LMd === 10;
   }
 }
 exports.DeadReviveModel = DeadReviveModel;

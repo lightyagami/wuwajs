@@ -27,9 +27,13 @@ class EffectModelAudioSpec extends EffectSpec_1.EffectSpec {
           this.V2c("OnPlay");
         }
         if (t instanceof EffectAudioContext_1.EffectAudioContext) {
-          this.N2c = EffectAudioController_1.EffectAudioController.AddPlayEffectAudio(this.EffectModel, this.ege, t.HitEffectType, t.FromPrimaryRole ? 0 : 2);
+          this.N2c = EffectAudioController_1.EffectAudioController.AddPlayEffectAudio(this.EffectModel, this.ege, t.HitEffectType, t.FromPrimaryRole ? 0 : 2, () => {
+            this.N2c = 0;
+          });
         } else {
-          this.N2c = EffectAudioController_1.EffectAudioController.AddPlayEffectAudio(this.EffectModel, this.ege, t?.HitEffectType);
+          this.N2c = EffectAudioController_1.EffectAudioController.AddPlayEffectAudio(this.EffectModel, this.ege, t?.HitEffectType, undefined, () => {
+            this.N2c = 0;
+          });
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Audio", 42, "[Game.EffectAudio] 无效的 EffectModel");
@@ -47,7 +51,7 @@ class EffectModelAudioSpec extends EffectSpec_1.EffectSpec {
   }
   V2c(t) {
     if (this.N2c !== 0) {
-      EffectAudioController_1.EffectAudioController.OnStopEffectAudio(this.N2c, t);
+      EffectAudioController_1.EffectAudioController.OnStopEffectAudio(this.N2c, t, false);
       this.N2c = 0;
     }
   }

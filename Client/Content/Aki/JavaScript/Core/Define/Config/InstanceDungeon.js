@@ -227,6 +227,9 @@ class InstanceDungeon {
   get DropVisionLimit() {
     return this.dropvisionlimit();
   }
+  get RecommendRoleBottom() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.recommendrolebottomLength(), this.recommendrolebottom, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -1149,6 +1152,33 @@ class InstanceDungeon {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  GetRecommendrolebottomAt(t) {
+    return this.recommendrolebottom(t);
+  }
+  recommendrolebottom(t) {
+    var i = this.J7.__offset(this.z7, 134);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  recommendrolebottomLength() {
+    var t = this.J7.__offset(this.z7, 134);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  recommendrolebottomArray() {
+    var t = this.J7.__offset(this.z7, 134);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
     }
   }
 }

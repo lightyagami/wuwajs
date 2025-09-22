@@ -25,12 +25,12 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     super(...arguments);
     this.eet = (e, t) => {
       if (e) {
-        TreeExpressAssistant.Dqu(e.BtType, e.Id, e.IsInChallenge);
+        TreeExpressAssistant.Pku(e.BtType, e.Id, e.IsInChallenge);
       }
     };
     this.aYt = e => {
       if (e) {
-        TreeExpressAssistant.Dqu(e.BtType, e.Id, e.IsInChallenge);
+        TreeExpressAssistant.Pku(e.BtType, e.Id, e.IsInChallenge);
       }
     };
   }
@@ -281,7 +281,7 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     }
     return t;
   }
-  static Dqu(e, t, r) {
+  static Pku(e, t, r) {
     switch (e) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
         break;

@@ -86,7 +86,7 @@ let RoleTagComponent = class RoleTagComponent extends BaseTagComponent_1.BaseTag
           if (o > 0 && t <= 0 || o <= 0 && t > 0) {
             (r = Protocol_1.Aki.Protocol.Ke_.create()).m5n = e;
             r.iSs = o;
-            CombatMessage_1.CombatNet.Send(26831, this.Entity, r, undefined);
+            CombatMessage_1.CombatNet.Send(23502, this.Entity, r, undefined);
           }
       }
       super.OnAnyTagChanged(e, o, t, n);

@@ -451,6 +451,18 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static IsOpenPhotograph() {
     return PhotographController_1.PhotographController.IsOpenPhotograph();
   }
+  static EnablePhotographTimeDilation(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Photograph", 57, "EnablePhotographTimeDilation", ["timeDilation", e]);
+    }
+    ModelManager_1.ModelManager.PhotographModel?.SetPhotographTimeDilation(e);
+  }
+  static DisablePhotographTimeDilation() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Photograph", 57, "DisablePhotographTimeDilation");
+    }
+    ModelManager_1.ModelManager.PhotographModel?.SetPhotographTimeDilation(1);
+  }
   static GetTopViewName() {
     let e = "None Normal / Pop View";
     var t;

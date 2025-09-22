@@ -14,23 +14,23 @@ class TrapDefenseTalentTreeRowItem extends GridProxyAbstract_1.GridProxyAbstract
   constructor() {
     super(...arguments);
     this.XIt = undefined;
-    this.wHc = undefined;
+    this.e$c = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     this.XIt = new TrapDefenseTalentTreeRowNodeListItem_1.TrapDefenseTalentTreeRowNodeListItem();
-    this.wHc = new TrapDefenseTalentTreeRowLineListItem_1.TrapDefenseTalentTreeRowLineListItem();
+    this.e$c = new TrapDefenseTalentTreeRowLineListItem_1.TrapDefenseTalentTreeRowLineListItem();
     var e = [];
     e.push(this.XIt.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
-    e.push(this.wHc.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    e.push(this.e$c.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
     await Promise.all(e);
   }
   Refresh(e, r, t) {
-    this.LHc();
-    this.AHc();
-    this.PHc();
+    this.t$c();
+    this.i$c();
+    this.r$c();
     for (const h of e.NodeList) {
       this.XIt.GetNodeItem(h.Index)?.SetNodeActive(true);
       this.XIt.GetNodeItem(h.Index)?.Refresh(h);
@@ -40,10 +40,10 @@ class TrapDefenseTalentTreeRowItem extends GridProxyAbstract_1.GridProxyAbstract
     for ([s, i] of ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.LineTypeMap[e.Row].entries()) {
       var n;
       var o;
-      var [a, f] = this.DHc(s);
+      var [a, f] = this.o$c(s);
       a.SetUIActive(i === 0);
       f.SetUIActive(i === 1);
-      var a = this.wHc.GetDotsByIndexInLineId(s);
+      var a = this.e$c.GetDotsByIndexInLineId(s);
       for ([n, o] of a) {
         var T = (0, TrapDefenseDefine_1.lineIndex2NodeIndex)(s);
         if (ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.IsDotVisible(e.Row, T)) {
@@ -63,8 +63,8 @@ class TrapDefenseTalentTreeRowItem extends GridProxyAbstract_1.GridProxyAbstract
   GetKey(e, r) {
     return e.Row;
   }
-  LHc() {
-    var e = this.wHc.GetAllLines();
+  t$c() {
+    var e = this.e$c.GetAllLines();
     for (const r of e) {
       r.SetUIActive(false);
       if (e.indexOf(r) < (TrapDefenseDefine_1.MAX_TALENT_NODES_IN_ROW - 2) * 2) {
@@ -75,18 +75,18 @@ class TrapDefenseTalentTreeRowItem extends GridProxyAbstract_1.GridProxyAbstract
       t.SetUIActive(false);
     }
   }
-  AHc() {
+  i$c() {
     for (let e = 0; e < TrapDefenseDefine_1.MAX_TALENT_NODES_IN_ROW; e++) {
       this.XIt.GetNodeItem(e)?.SetNodeActive(false);
     }
   }
-  PHc() {
-    for (const e of this.wHc.GetAllDots()) {
+  r$c() {
+    for (const e of this.e$c.GetAllDots()) {
       e.SetUIActive(false);
     }
   }
-  DHc(e) {
-    return this.wHc.GetLinesByIndexInLineId(e) ?? this.XIt.GetLinesByIndexInLineId(e);
+  o$c(e) {
+    return this.e$c.GetLinesByIndexInLineId(e) ?? this.XIt.GetLinesByIndexInLineId(e);
   }
 }
 exports.TrapDefenseTalentTreeRowItem = TrapDefenseTalentTreeRowItem;

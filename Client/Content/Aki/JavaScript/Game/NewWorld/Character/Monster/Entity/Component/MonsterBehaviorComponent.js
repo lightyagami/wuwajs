@@ -56,7 +56,7 @@ let MonsterBehaviorComponent = class MonsterBehaviorComponent extends EntityComp
       if (e === CharacterUnifiedStateTypes_1.ECharPositionState.Water && !this.Xte.HasTag(-1714966381)) {
         e = this.Hte.ActorLocationProxy;
         (i = Protocol_1.Aki.Protocol.Ve_.create()).l8n = e;
-        CombatMessage_1.CombatNet.Send(27440, this.Entity, i);
+        CombatMessage_1.CombatNet.Send(25528, this.Entity, i);
       }
     };
     this.qtn = () => {

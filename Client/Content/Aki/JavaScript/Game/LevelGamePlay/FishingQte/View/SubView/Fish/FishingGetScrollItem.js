@@ -20,17 +20,27 @@ class FishingGetScrollItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.ListSlideControl = undefined;
-    this.wOt = () => MAX_LIST_COUNT;
+    this.d_d = () => {
+      return new FishingGetItem();
+    };
     this.r0i = () => !ModelManager_1.ModelManager.FishingQteModel.IsTempGetDataEmpty();
-    this.s0i = () => ITEM_INTERVAL_TIME;
-    this.HDe = () => {};
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem]];
   }
   OnStart() {
-    var e = CommonParamById_1.configCommonParamById.GetIntConfig("FishingQteGetListItemShowTime");
-    this.ListSlideControl = new ListSliderControl_1.ListSliderControl(FishingGetItem, this.GetItem(1), this.wOt, this.r0i, this.s0i, this.HDe, 1, e, ITEM_SILDER_TIME, 1);
+    var e = this.GetItem(1);
+    this.ListSlideControl = new ListSliderControl_1.ListSliderControl({
+      CreateProxyFunction: this.d_d,
+      ParentUi: e.GetParentAsUIItem(),
+      CheckNext: this.r0i,
+      ChildTemplate: e,
+      MaxShowCount: MAX_LIST_COUNT,
+      AddItemTime: ITEM_INTERVAL_TIME,
+      ItemShowTime: CommonParamById_1.configCommonParamById.GetIntConfig("FishingQteGetListItemShowTime"),
+      ItemSliderTime: ITEM_SILDER_TIME,
+      TickMode: 1
+    });
     this.ListSlideControl.DisEnableParentLayout();
   }
   OnTick(e) {
@@ -116,23 +126,23 @@ class FishingGetTagItem extends UiPanelBase_1.UiPanelBase {
   RefreshTag(e) {
     let i = undefined;
     let t = undefined;
-    let s = undefined;
+    let a = undefined;
     switch (e) {
       case 2:
         i = "Reward_Tag_Extra";
         t = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Extra_Bg_Color");
-        s = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Extra_Text_Color");
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Extra_Text_Color");
         break;
       case 1:
         i = "Reward_Tag_Magnification";
         t = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Magnification_Bg_Color");
-        s = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Magnification_Text_Color");
+        a = CommonParamById_1.configCommonParamById.GetStringConfig("Reward_Tag_Magnification_Text_Color");
     }
     if (i) {
       this.GetText(1).ShowTextNew(i);
     }
-    if (s) {
-      this.GetText(1).SetColor(UE.Color.FromHex(s));
+    if (a) {
+      this.GetText(1).SetColor(UE.Color.FromHex(a));
     }
     if (t) {
       this.GetSprite(0).SetColor(UE.Color.FromHex(t));

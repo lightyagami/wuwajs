@@ -32,6 +32,7 @@ class PersonalOptionController extends UiControllerBase_1.UiControllerBase {
     this.v5i.set(12, this.D5i);
     this.v5i.set(13, this.R5i);
     this.v5i.set(14, this.Kac);
+    this.v5i.set(15, this.mSd);
   }
   static GetOptionFunc(e) {
     if (this.v5i.size === 0) {
@@ -133,6 +134,10 @@ PersonalOptionController.I5i = () => {
 };
 PersonalOptionController.Kac = () => {
   UiManager_1.UiManager.OpenView("PersonalEditView", 2);
+};
+PersonalOptionController.mSd = () => {
+  UiManager_1.UiManager.OpenView("PersonalRootView", ModelManager_1.ModelManager.PersonalModel.GetPersonalInfoData());
+  UiManager_1.UiManager.CloseView("PersonalOptionView");
 };
 PersonalOptionController.W0 = () => {
   CommonInputViewController_1.CommonInputViewController.OpenSetRoleNameInputView();

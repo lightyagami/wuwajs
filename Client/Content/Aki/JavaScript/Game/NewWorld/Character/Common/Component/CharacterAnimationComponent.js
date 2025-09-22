@@ -197,9 +197,6 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       this.jIu();
       this.Entity.GetComponent(50)?.RebuildAnimationStates();
       this.Entity.GetComponent(115)?.RefreshCharacterAnimInstance();
-      if (this.ActorComp) {
-        this.ActorComp.IsChangingMeshAnim = false;
-      }
     };
     this.bpr = t => {
       if (!t || !!ModelManager_1.ModelManager.LevelLoadingModel?.IsLoading) {
@@ -505,7 +502,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
   }
   OnChangeTimeDilation(t) {
-    var i = this.d_d();
+    var i = this.xfd();
     var s = i > 1;
     if (Info_1.Info.EnableForceTick) {
       this.BufferNowTime /= this.BufferNowScale;
@@ -753,7 +750,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           this.ZFr.BufferTimeLength = i / 1000;
           this.ZFr?.SetComponentTickEnabled(true);
         }
-        this.BufferNowScale = this.d_d();
+        this.BufferNowScale = this.xfd();
         e = this.Mesh.D_K2_GetComponentToWorld();
         this.ActorComp.SetActorTransformExceptMesh(t, "移动表现优化，Mesh缓动", h, s);
         this.G3r(e, this.ActorComp, this.BufferModelTransform);
@@ -783,7 +780,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           this.ZFr.BufferTimeLength = s / 1000;
           this.ZFr.SetComponentTickEnabled(true);
         }
-        this.BufferNowScale = this.d_d();
+        this.BufferNowScale = this.xfd();
         o = this.Mesh.D_K2_GetComponentToWorld();
         this.ActorComp.SetActorLocationAndRotationExceptMesh(t, i, h + "移动表现优化，Mesh缓动", r, e);
         this.G3r(o, this.ActorComp, this.BufferModelTransform);
@@ -798,7 +795,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
   SetModelBuffer(t, i) {
     var s;
     if (this.Mesh) {
-      s = this.d_d();
+      s = this.xfd();
       if (i < exports.MIN_BUFFER_TIME_LENGTH) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Test", 6, "ModelBuffer Time is Too Short", ["Actor", this.ActorComp?.Actor.GetName()], ["timeLength", i]);
@@ -820,7 +817,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           }
           this.ZFr?.SetComponentTickEnabled(true);
         }
-        this.BufferNowScale = this.d_d();
+        this.BufferNowScale = this.xfd();
         this.Mesh.D_K2_SetWorldTransform(t, false, undefined, true);
         this.Mesh.KuroRefreshCacheLocalTransform();
         this.G3r(t, this.ActorComp, this.BufferModelTransform);
@@ -1177,7 +1174,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
       (s = Protocol_1.Aki.Protocol.Me_.create()).nWn = Protocol_1.Aki.Protocol.nWn.create();
       s.nWn.sWn = t.toString();
       s.nWn.aWn = !i;
-      CombatMessage_1.CombatNet.Send(29110, this.Entity, s);
+      CombatMessage_1.CombatNet.Send(29733, this.Entity, s);
     }
   }
   static BoneVisibleChangeNotify(t, i) {}
@@ -1353,7 +1350,7 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
     return this.MainAnimInstanceInternal;
   }
-  d_d() {
+  xfd() {
     return ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1;
   }
 };

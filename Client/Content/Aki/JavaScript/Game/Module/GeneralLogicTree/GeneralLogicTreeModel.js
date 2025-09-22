@@ -156,14 +156,14 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("GeneralLogicTree", 18, "创建行为树失败", ["行为树类型Id", i.hps], ["行为树Id", i.sEs]);
     }
   }
-  RemoveBehaviorTree(e) {
-    var i = this.CYt.get(e);
-    if (i) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, e);
-      i.Destroy();
+  RemoveBehaviorTree(e, i = 0) {
+    var t = this.CYt.get(e);
+    if (t) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, e, i);
+      t.Destroy();
       this.CYt.delete(e);
-      this.gYt.get(i.BtType)?.delete(e);
-      return i;
+      this.gYt.get(t.BtType)?.delete(e);
+      return t;
     }
   }
   AddToPendingDestroy(e, i) {
@@ -268,6 +268,41 @@ class GeneralLogicTreeModel extends ModelBase_1.ModelBase {
       i = e.Name;
     }
     return i;
+  }
+  AddGuaranteeActionsWhenLogicTreeRemove(e, i, t) {
+    if (t?.Type === 6) {
+      t = t.TreeIncId;
+      if (!this.GuaranteeActionsWhenLogicTreeRemove.has(t)) {
+        this.GuaranteeActionsWhenLogicTreeRemove.set(t, []);
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("GeneralLogicTree", 93, "当前节点已经结束或者进入新的存档点，存档点前的黑幕保底行为进行额外记录", ["保底行为", e]);
+      }
+      this.GuaranteeActionsWhenLogicTreeRemove.get(t).push({
+        Name: e,
+        Params: i
+      });
+    }
+  }
+  PopGuaranteeActionsWhenLogicTreeRemove(i, t) {
+    if (this.GuaranteeActionsWhenLogicTreeRemove.has(i)) {
+      var r = this.GuaranteeActionsWhenLogicTreeRemove.get(i);
+      for (let e = r.length - 1; e >= 0; e--) {
+        var o = r[e];
+        if (o.Name === t.Name) {
+          r.splice(e, 1);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("GeneralLogicTree", 93, "移除额外记录的保底行为", ["保底行为", o]);
+          }
+          if (r.length > 0) {
+            this.GuaranteeActionsWhenLogicTreeRemove.set(i, r);
+          } else {
+            this.GuaranteeActionsWhenLogicTreeRemove.delete(i);
+          }
+          return o;
+        }
+      }
+    }
   }
 }
 exports.GeneralLogicTreeModel = GeneralLogicTreeModel;

@@ -16,16 +16,20 @@ class GuaranteeAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
   constructor() {
     super(...arguments);
     this.rIe = (e, t, n, r = 0) => {
-      var o;
-      var s;
-      if (t && t.Type === 6 && t.TreeIncId && (o = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeIncId))) {
-        s = GuaranteeActionCenter_1.GuaranteeActionCenter.GetActionFilterMode(n.Name);
-        o.AddGuaranteeActionInfo(e, t.NodeId, n, s);
+      let o = t;
+      var a;
+      if ((o = t && t.Type === 13 ? t.FinalContext : o) && o.Type === 6 && o.TreeIncId && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o.TreeIncId))) {
+        a = GuaranteeActionCenter_1.GuaranteeActionCenter.GetActionFilterMode(n.Name);
+        t.AddGuaranteeActionInfo(e, o.NodeId, n, a);
       }
     };
     this.nIe = (e, t, n, r = 0) => {
-      if (t && t.Type === 6 && t.TreeIncId && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t.TreeIncId))) {
-        t.PopGuaranteeActionInfo(e, n);
+      let o = t;
+      var a;
+      if ((o = t && t.Type === 13 ? t.FinalContext : o) && o.Type === 6 && o.TreeIncId && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(o.TreeIncId))) {
+        a = GuaranteeActionCenter_1.GuaranteeActionCenter.GetActionFilterMode(n.Name);
+        t.PopGuaranteeActionInfo(e, n, a);
+        ModelManager_1.ModelManager.GeneralLogicTreeModel.PopGuaranteeActionsWhenLogicTreeRemove(o.TreeIncId, n);
       }
     };
     this.DQt = (e, t, n) => {
@@ -48,10 +52,11 @@ class GuaranteeAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
         }
       }
     };
-    this.HQe = e => {
-      var t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
-      if (t && (t.ExecuteTreeGuaranteeActions(), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove?.has(e)) && (t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.get(e), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.delete(e), t) && t.length !== 0) {
-        ControllerHolder_1.ControllerHolder.GuaranteeController.ExecuteActions(t, LevelGeneralContextDefine_1.GuaranteeContext.Create());
+    this.HQe = (e, t) => {
+      var n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
+      if (n && (n.ExecuteTreeGuaranteeActions(t), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove?.has(e)) && (n = ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.get(e), ModelManager_1.ModelManager.GeneralLogicTreeModel.GuaranteeActionsWhenLogicTreeRemove.delete(e), n) && n.length !== 0) {
+        e = t === 1 ? LevelGeneralContextDefine_1.GuaranteeContext.Create(undefined, 1) : LevelGeneralContextDefine_1.GuaranteeContext.Create(undefined, 2);
+        ControllerHolder_1.ControllerHolder.GuaranteeController.ExecuteActions(n, e);
       }
     };
     this.jro = (e, t, n) => {

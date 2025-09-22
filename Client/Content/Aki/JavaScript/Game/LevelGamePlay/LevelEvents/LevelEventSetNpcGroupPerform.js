@@ -45,16 +45,16 @@ class LevelEventSetNpcGroupPerform extends LevelGeneralBase_1.LevelEventBase {
     var e = this.OPt;
     var r = this.nx;
     if (e && r) {
-      e = this.LWu(e, r);
+      e = this.f7u(e, r);
       this.FinishExecute(e);
     } else {
       this.FinishExecute(false);
     }
   }
-  LWu(e, r) {
+  f7u(e, r) {
     var t;
     var o = e.PerformType;
-    var s = this.AWu(o.Initiator.Initiator);
+    var s = this.g7u(o.Initiator.Initiator);
     var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o.Follower);
     if (s) {
       if (a) {
@@ -75,7 +75,7 @@ class LevelEventSetNpcGroupPerform extends LevelGeneralBase_1.LevelEventBase {
       return false;
     }
   }
-  AWu(e) {
+  g7u(e) {
     switch (e.Type) {
       case 1:
         return ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);

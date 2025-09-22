@@ -13,7 +13,7 @@ class KingShipBuffItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.eHr = 0;
-    this.MJu = 0;
+    this.zXc = 0;
     this.SPe = undefined;
     this.OnClickTipsCallBack = undefined;
     this.nqe = () => {
@@ -47,15 +47,15 @@ class KingShipBuffItem extends UiPanelBase_1.UiPanelBase {
     });
   }
   RefreshItem() {
-    this.MJu--;
-    if (this.MJu <= 0) {
+    this.zXc--;
+    if (this.zXc <= 0) {
       this.SPe?.StopCurrentSequence();
       this.SPe?.PlayOrReplaySequenceByName("Close");
     }
   }
   ShowBuffItem(i, e) {
     this.eHr = i;
-    this.MJu = e;
+    this.zXc = e;
     this.SetUiActive(true);
     this.SPe?.StopCurrentSequence();
     this.SPe?.PlayOrReplaySequenceByName("Start");
@@ -69,7 +69,7 @@ class KingShipBuffItem extends UiPanelBase_1.UiPanelBase {
     this.SPe?.PlayOrReplaySequenceByName("InfoOut");
   }
   GetIsShowingRoundsBuff() {
-    return this.MJu > 0;
+    return this.zXc > 0;
   }
 }
 exports.KingShipBuffItem = KingShipBuffItem;

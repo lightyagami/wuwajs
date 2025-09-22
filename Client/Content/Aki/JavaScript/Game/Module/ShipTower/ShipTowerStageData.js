@@ -288,7 +288,7 @@ class ShipTowerStageData {
     this.ProtoIsPassed = e.nA_;
     const i = this.TeamDataList[0];
     const s = this.TeamDataList[1];
-    this.IsQuickPass = e.Hju;
+    this.IsQuickPass = e.EKc;
     e.UL_?.RL_.forEach((e, t) => {
       i.ProtoSetRole(e, t);
     });
@@ -349,7 +349,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.ResetStage();
     });
-    this.Sfd();
+    this.I3d();
     this.pD_();
   }
   async SureCoverChallenge() {
@@ -359,7 +359,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.CoverChallenge();
     });
-    this.Sfd();
+    this.I3d();
     this.pD_();
   }
   UpdateNewChallengeScore() {
@@ -451,7 +451,7 @@ class ShipTowerStageData {
   GetCurSelectTeamData() {
     return this.TeamDataList[this.CurSelectTeamIndex];
   }
-  Sfd() {
+  I3d() {
     this.IsQuickPass = false;
   }
 }

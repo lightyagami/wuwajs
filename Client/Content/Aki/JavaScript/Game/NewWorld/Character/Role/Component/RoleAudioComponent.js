@@ -42,7 +42,6 @@ const CharacterAttributeTypes_1 = require("../../Common/Component/Abilities/Char
 const CharacterUnifiedStateTypes_1 = require("../../Common/Component/Abilities/CharacterUnifiedStateTypes");
 const CharacterAudioComponent_1 = require("../../Common/Component/CharacterAudioComponent");
 const CustomMovementDefine_1 = require("../../Common/Component/Move/CustomMovementDefine");
-const specialRoleId = new Map([[5026, 1501], [5027, 1502], [5028, 1608], [5034, 1608]]);
 const hookSkillEventMap = new Map([[100020, "play_role_commonskl_gousuo_target_start"], [100021, "play_role_commonskl_gousuo_target_start"], [100022, "play_amb_interact_suiguang_gousuo_target_start"], [100024, "play_role_commonskl_gousuo_target_start"], [210130, "play_role_commonskl_gousuo_target_start"]]);
 const footstepVariantMap = new Map([[0, "land"], [1, "run"], [2, "runstop"], [3, "sprint"], [4, "sprintstop"], [5, "walk"], [6, "walkstop"], [7, "turnback"]]);
 const foleyVariantMap = new Map([[0, "bodyfall"], [1, "fly"], [2, "run"], [3, "sprint"], [4, "hard"], [5, "hardfast"], [6, "weak"], [7, "weakfast"]]);
@@ -187,7 +186,7 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
       }
     };
     this.M9s = () => {
-      this.ecd();
+      this.HSd();
     };
   }
   OnInit() {
@@ -204,7 +203,7 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   }
   OnEnd() {
     super.OnEnd();
-    this.ecd();
+    this.HSd();
     if (this.Config && (EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkinChange, this.A$_), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeDamage, this.Dca), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.ero), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnRoleGoDownFinish, this.M9s), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharPossessed, this.PPr), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUnpossessed, this.xPr), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnInteractionWaterTypeChange, this.sk_), EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr), this.Config.Id === SPECIAL_JINXI_OPEN_BOX_ROLE_ID)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeArea, this.Hje);
       this.Xvl = undefined;
@@ -267,15 +266,18 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
   }
   lUr() {
     if (this.CreatureData?.Valid && ModelManager_1.ModelManager.RoleModel) {
-      var t = this.CreatureData.GetPbDataId();
-      var i = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t);
-      var i = specialRoleId.get(i) ?? i;
-      var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i);
-      if (i && i.RoleType === 1) {
+      var i = this.CreatureData.GetPbDataId();
+      var e = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i);
+      let t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      if (t && t.RoleType !== 1 && t.ParentId) {
+        e = t.ParentId;
+        t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      }
+      if (t && t.RoleType === 1) {
         let e = this.CreatureData.GetSkinId();
-        e = e || i.SkinId;
+        e = e || t.SkinId;
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Audio", 42, "[Game.Role] LoadConfig", ["pbDataId", t], ["SkinId", e]);
+          Log_1.Log.Debug("Audio", 42, "[Game.Role] LoadConfig", ["pbDataId", i], ["SkinId", e]);
         }
         this.Config = ConfigManager_1.ConfigManager.AudioConfig?.GetRoleConfig(e);
       }
@@ -298,7 +300,7 @@ let RoleAudioComponent = RoleAudioComponent_1 = class RoleAudioComponent extends
       AudioSystem_1.AudioSystem.SetState(ROLE_MOVE, e);
     }
   }
-  ecd() {
+  HSd() {
     var e = this.ActorComp?.Owner;
     if (this.Entity.GetComponent(15)?.IsDead()) {
       if (Log_1.Log.CheckDebug()) {

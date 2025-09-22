@@ -45,6 +45,7 @@ const LevelEventDisableEntityLookAt_1 = require("./LevelEventDisableEntityLookAt
 const LevelEventEnableAi_1 = require("./LevelEventEnableAi");
 const LevelEventEnableEntityLookAt_1 = require("./LevelEventEnableEntityLookAt");
 const LevelEventEnableHostility_1 = require("./LevelEventEnableHostility");
+const LevelEventEnableKey4Func_1 = require("./LevelEventEnableKey4Func");
 const LevelEventEnableSplineMoveModel_1 = require("./LevelEventEnableSplineMoveModel");
 const LevelEventEndPrompt_1 = require("./LevelEventEndPrompt");
 const LevelEventEnterOrbitalCamera_1 = require("./LevelEventEnterOrbitalCamera");
@@ -115,6 +116,7 @@ const LevelEventSetNpcPosition_1 = require("./LevelEventSetNpcPosition");
 const LevelEventSetPlayerMoveControl_1 = require("./LevelEventSetPlayerMoveControl");
 const LevelEventSetPlayerOperation_1 = require("./LevelEventSetPlayerOperation");
 const LevelEventSetRegionConfig_1 = require("./LevelEventSetRegionConfig");
+const LevelEventSetSkillButtonEffect_1 = require("./LevelEventSetSkillButtonEffect");
 const LevelEventSetSubLevelsVisible_1 = require("./LevelEventSetSubLevelsVisible");
 const LevelEventSetTeleControl_1 = require("./LevelEventSetTeleControl");
 const LevelEventSetTimeScale_1 = require("./LevelEventSetTimeScale");
@@ -139,6 +141,7 @@ const LevelEventTeleportDungeon_1 = require("./LevelEventTeleportDungeon");
 const LevelEventTimeTrackControl_1 = require("./LevelEventTimeTrackControl");
 const LevelEventToggleAirWall_1 = require("./LevelEventToggleAirWall");
 const LevelEventToggleMapMarkState_1 = require("./LevelEventToggleMapMarkState");
+const LevelEventTrapDefenseChangeMiniMap_1 = require("./LevelEventTrapDefenseChangeMiniMap");
 const LevelEventTrapDefensePlayerOperationConstraint_1 = require("./LevelEventTrapDefensePlayerOperationConstraint");
 const LevelEventTriggerCameraShake_1 = require("./LevelEventTriggerCameraShake");
 const LevelEventTriggerSpecificScanEffect_1 = require("./LevelEventTriggerSpecificScanEffect");
@@ -265,6 +268,7 @@ class LevelEventCenter {
     e("ExecClientBattleAction", LevelEventExecClientBattleAction_1.LevelEventExecClientBattleAction);
     e("OpenSystemFunction", LevelEventSystemFunction_1.LevelEventSystemFunction);
     e("StopUiScreenEffect", LevelEventStopUiScreenEffect_1.LevelEventStopUiScreenEffect, LEVEL_1);
+    e("EnableKey4Func", LevelEventEnableKey4Func_1.LevelEventEnableKey4Func);
     e("SetEntityClientVisible", LevelEventSetClientEntityVisible_1.LevelEventSetClientEntityVisible);
     e("ClientSetPlayerPos", LevelEventClientSetPlayerPos_1.LevelEventClientSetPlayerPos);
     e("LockEntity", LevelEventLockEntity_1.LevelEventLockEntity, LEVEL_1);
@@ -311,6 +315,8 @@ class LevelEventCenter {
     e("CommonTip2", LevelEventCommonTip2_1.LevelEventCommonTip2, LEVEL_1);
     e("SetTimeScale", LevelEventSetTimeScale_1.LevelEventSetTimeScale);
     e("ReignsSetPropertyVisible", LevelEventReignsSetPropertyVisible_1.LevelEventReignsSetPropertyVisible);
+    e("TrapDefenseChangeMiniMap", LevelEventTrapDefenseChangeMiniMap_1.LevelEventTrapDefenseChangeMiniMap);
+    e("SetSkillButtonEffect", LevelEventSetSkillButtonEffect_1.LevelEventSetSkillButtonEffect);
     e("SetNpcGroupPerform", LevelEventSetNpcGroupPerform_1.LevelEventSetNpcGroupPerform);
     e("RemoveNpcGroupPerform", LevelEventRemoveNpcGroupPerform_1.LevelEventRemoveNpcGroupPerform);
   }

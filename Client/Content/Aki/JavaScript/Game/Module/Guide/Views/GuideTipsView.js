@@ -27,7 +27,7 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
     this.m9s = undefined;
     this.fZt = e => {
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
-      if (e && !UiManager_1.UiManager.IsViewShow("GmView") && this.rud() && this.GuideStepInfo.Config.TimeScale < 1 && (e = Global_1.Global.CharacterController)) {
+      if (e && !UiManager_1.UiManager.IsViewShow("GmView") && this.avd() && this.GuideStepInfo.Config.TimeScale < 1 && (e = Global_1.Global.CharacterController)) {
         e.bShowMouseCursor = false;
         this.d9s();
       }
@@ -94,7 +94,7 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
     }
   }
   OnGuideBaseViewTick(e) {
-    var i = this.rud() && ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(26) && !this.HasConflictView();
+    var i = this.avd() && ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(26) && !this.HasConflictView();
     if (!this.IsBusy && i !== this.gZt) {
       this.gZt = i;
       this.SetActive(i);
@@ -126,7 +126,7 @@ class GuideTipsView extends GuideBaseView_1.GuideBaseView {
       this.iqt.OnDurationChange(e);
     }
   }
-  rud() {
+  avd() {
     for (const e of GuideDefine_1.guideTipsAllowedViews) {
       if (UiManager_1.UiManager.IsViewShow(e)) {
         return true;

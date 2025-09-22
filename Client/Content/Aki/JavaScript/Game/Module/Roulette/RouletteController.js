@@ -26,7 +26,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29225, e => {
+    Net_1.Net.Register(18157, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送探索技能设置更新信息");
@@ -36,7 +36,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e;
       }
     });
-    Net_1.Net.Register(18174, e => {
+    Net_1.Net.Register(29459, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送当前轮盘保存的数据");
@@ -44,7 +44,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.HPs);
       }
     });
-    Net_1.Net.Register(25228, e => {
+    Net_1.Net.Register(23433, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送探索技能解锁", ["Id", e.r5n]);
@@ -52,7 +52,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(e.r5n);
       }
     });
-    Net_1.Net.Register(20546, e => {
+    Net_1.Net.Register(24096, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送所有已解锁的探索技能及当前装备的探索技能");
@@ -70,10 +70,10 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29225);
-    Net_1.Net.UnRegister(18174);
-    Net_1.Net.UnRegister(25228);
-    Net_1.Net.UnRegister(20546);
+    Net_1.Net.UnRegister(18157);
+    Net_1.Net.UnRegister(29459);
+    Net_1.Net.UnRegister(23433);
+    Net_1.Net.UnRegister(24096);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.T0o);
@@ -106,7 +106,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 37, "请求设置探索技能", ["skillId", e]);
       }
-      Net_1.Net.Call(16481, Protocol_1.Aki.Protocol.Cts.create(r), e => {
+      Net_1.Net.Call(28129, Protocol_1.Aki.Protocol.Cts.create(r), e => {
         ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.shift();
         if (e) {
           if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -114,7 +114,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
             t?.(true);
           } else {
             t?.(false);
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20324);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27064);
           }
         } else {
           t?.(false);
@@ -138,7 +138,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     e.KHn = t;
     a.push(e);
     l.XHn = a;
-    Net_1.Net.Call(16394, Protocol_1.Aki.Protocol.vts.create(l), e => {
+    Net_1.Net.Call(29949, Protocol_1.Aki.Protocol.vts.create(l), e => {
       if (e) {
         if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (r) {
@@ -147,7 +147,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.XHn);
           n?.(true);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29590);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28681);
           n?.(false);
         }
       } else {
@@ -338,6 +338,9 @@ RouletteController.T0o = (e, t, o) => {
       break;
     case 210012:
       ControllerHolder_1.ControllerHolder.PhotographController.PhotographFastScreenShot();
+      break;
+    case 700103:
+      ControllerHolder_1.ControllerHolder.PhotographController.TryOpenPhotograph(3);
   }
 };
 RouletteController.iVe = (e, t) => {

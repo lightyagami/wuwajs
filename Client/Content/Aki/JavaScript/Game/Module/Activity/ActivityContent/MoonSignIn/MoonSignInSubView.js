@@ -75,8 +75,8 @@ class MoonSignInSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       this.mGe();
       this.jqe();
       this._Oe();
-      this.gtd();
-      this.Ctd();
+      this.wrd();
+      this.Lrd();
     }
   }
   Pqe() {
@@ -113,13 +113,13 @@ class MoonSignInSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     }
     this.ANe.FunctionButton.SetUiActive(i);
   }
-  gtd() {
+  wrd() {
     var i = MoonSignInController_1.MoonSignInController.GetData();
     if (i) {
       this.GetText(5).SetText(i.GetMoonPhaseProgress());
     }
   }
-  Ctd() {
+  Lrd() {
     var i = MoonSignInController_1.MoonSignInController.GetData();
     if (i) {
       this.GetItem(6).SetUIActive(i.GetCanGetMoonGrandReward());

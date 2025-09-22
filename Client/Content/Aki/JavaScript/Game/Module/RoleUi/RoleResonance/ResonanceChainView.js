@@ -46,23 +46,21 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
       var i = this.d1o.GetCurRoleResonanceGroupIndex() - 1;
       const s = this.kco[i];
       if (s && (s.PlayActivateSequence(() => {
-        s.SetActive(false);
+        s.SetUiActive(false);
         s.SetSelectState(false);
-      }), e = this.Wco(i), t = this.d1o.GetCurSelectRoleId(), e.SetSelectState(true), e.Update(t, s.GetResonanceId()), e.SetActive(true), (this.kco[i] = e).PlayActivateSequence(), (t = 1 + i) < this.kco.length)) {
+      }), e = this.Nco[i], t = this.d1o.GetCurSelectRoleId(), e.SetSelectState(true), e.Update(t, s.GetResonanceId()), e.SetUiActive(true), (this.kco[i] = e).PlayActivateSequence(), (t = 1 + i) < this.kco.length)) {
         this.kco[t].RefreshRedDot();
       }
     };
     this.Kco = e => {
       this.PlayMontageStart();
-      this.$pt.StopSequenceByKey("Start");
-      this.$pt.PlayLevelSequenceByName("Start");
+      this.$pt.PlayOrReplaySequenceByName("Start");
       this.bl();
       this.ShowItems();
     };
     this.Qco = () => {
       this.Xco();
-      this.$pt.StopSequenceByKey("CamLef");
-      this.$pt.PlayLevelSequenceByName("CamLef");
+      this.$pt.PlayOrReplaySequenceByName("CamLef");
       this.$co();
     };
     this.Yco = e => {
@@ -77,7 +75,9 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
         this.Vco = t;
         s = this.Jco(t);
       }
-      i?.RefreshToggleState(false);
+      i?.SetSelectState(false);
+      i?.RefreshToggleState();
+      s?.SetSelectState(true);
       s?.RefreshToggleState(true);
       if (this.d1o.RoleViewState === 0) {
         this.zco();
@@ -88,7 +88,7 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem]];
   }
-  OnStart() {
+  async OnBeforeStartAsync() {
     this.d1o = this.ExtraParams;
     if (this.d1o === undefined) {
       if (Log_1.Log.CheckError()) {
@@ -97,6 +97,14 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
     } else {
       this.Fq();
       this.Zco();
+      var t = [];
+      for (let e = 0; e < RESONANCE_ITEM_COUNT; e++) {
+        t.push(this.eQd(e));
+        t.push(this.tQd(e));
+      }
+      this.xKt = new ResonanceChainInfoItem_1.ResonanceChainInfoItem();
+      t.push(this.xKt.CreateByResourceIdAsync("UIItem_ResonanceChainInfo", this.RootItem));
+      await Promise.all(t);
     }
   }
   Fq() {
@@ -104,12 +112,9 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
     this.Nco = new Array(RESONANCE_ITEM_COUNT);
     this.Oco = new Array(RESONANCE_ITEM_COUNT);
     this.kco = new Array(RESONANCE_ITEM_COUNT);
-    this.Fco[0] = this.GetItem(0);
-    this.Fco[1] = this.GetItem(1);
-    this.Fco[2] = this.GetItem(2);
-    this.Fco[3] = this.GetItem(3);
-    this.Fco[4] = this.GetItem(4);
-    this.Fco[5] = this.GetItem(5);
+    for (let e = 0; e < RESONANCE_ITEM_COUNT; e++) {
+      this.Fco[e] = this.GetItem(0 + e);
+    }
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.$pt.BindSequenceStartEvent(this.owt);
   }
@@ -129,16 +134,13 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
   OnBeforeShow() {
     this.PlayMontageStart();
     this.bl();
-    this.ShowItems().then(() => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FinishGuideStepByEvent, "ResonanceChainGuide");
-    });
+    this.ShowItems();
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FinishGuideStepByEvent, "ResonanceChainGuide");
   }
-  async ShowItems() {
-    const t = [];
+  ShowItems() {
     this.kco.forEach(e => {
-      t.push(e.ShowItem());
+      e.ShowItem();
     });
-    await Promise.all(t);
   }
   zco() {
     this.emo();
@@ -150,40 +152,31 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
     RoleController_1.RoleController.PlayRoleMontage(7);
   }
   emo() {
-    if (this.Vco >= 0 && !this.xKt) {
-      this.xKt = new ResonanceChainInfoItem_1.ResonanceChainInfoItem(this.RootItem);
-    }
-    this.xKt.ShowItem().then(() => this.xKt?.SetUiActive(true));
+    this.xKt?.SetUiActive(true);
+    this.xKt.ShowItem();
   }
   Xco() {
-    this.xKt.HideItem().then(() => this.xKt?.SetUiActive(false));
+    this.xKt?.SetUiActive(false);
+    this.xKt.HideItem();
   }
   tmo(e) {
     if (!(e < 0) && !(e >= RESONANCE_ITEM_COUNT)) {
       return RESONANCE_FIRST_ITEM_ANGLE + e * RESONANCE_PER_ITEM_ANGLE;
     }
   }
-  imo(t) {
-    if (!(t < 0) && !(t >= RESONANCE_ITEM_COUNT)) {
-      let e = this.Oco[t];
-      if (!e) {
-        e = new ResonanceChainItem_1.ResonanceChainLockedItem(this.Fco[t]);
-        (this.Oco[t] = e).BindToggleCallBack(this.Yco);
-        e.SetIconRotation(this.tmo(t));
-      }
-      return e;
-    }
+  async eQd(e) {
+    var t = new ResonanceChainItem_1.ResonanceChainLockedItem();
+    await (this.Oco[e] = t).CreateByResourceIdAsync("UIItem_ResonanceChainLockedItem", this.Fco[e]);
+    t.BindToggleCallBack(this.Yco);
+    t.SetIconRotation(this.tmo(e));
+    return t;
   }
-  Wco(t) {
-    if (!(t < 0) && !(t >= RESONANCE_ITEM_COUNT)) {
-      let e = this.Nco[t];
-      if (!e) {
-        e = new ResonanceChainItem_1.ResonanceChainActivatedItem(this.Fco[t]);
-        (this.Nco[t] = e).BindToggleCallBack(this.Yco);
-        e.SetIconRotation(this.tmo(t));
-      }
-      return e;
-    }
+  async tQd(e) {
+    var t = new ResonanceChainItem_1.ResonanceChainActivatedItem();
+    await (this.Nco[e] = t).CreateByResourceIdAsync("UIItem_ResonanceChainActivatedItem", this.Fco[e]);
+    t.BindToggleCallBack(this.Yco);
+    t.SetIconRotation(this.tmo(e));
+    return t;
   }
   Jco(e) {
     e = ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceById(e);
@@ -197,9 +190,9 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
   bl() {
     const n = this.d1o.GetCurRoleResonanceGroupIndex();
     var e = this.d1o.GetCurRoleResonanceConfigList();
-    const h = this.d1o.GetCurSelectRoleId();
+    const r = this.d1o.GetCurSelectRoleId();
     this.kco.forEach(e => {
-      e?.SetActive(false);
+      e?.SetUiActive(false);
     });
     if (e && e.length > 0) {
       e.forEach(e => {
@@ -207,8 +200,8 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
         var i = e.GroupIndex;
         var s = i - 1;
         if (s < RESONANCE_ITEM_COUNT) {
-          (t = i <= n ? this.Wco(s) : this.imo(s)).SetActive(true);
-          t.Update(h, e.Id);
+          (t = (i <= n ? this.Nco : this.Oco)[s]).SetUiActive(true);
+          t.Update(r, e.Id);
           this.kco[s] = t;
         }
       });
@@ -221,10 +214,10 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
       t = this.Jco(e);
     }
     this.Vco = -1;
-    t?.RefreshToggleState(false, true);
+    t?.SetSelectState(false);
+    t?.RefreshToggleState(true);
   }
   jco() {
-    this.xKt ||= new ResonanceChainInfoItem_1.ResonanceChainInfoItem(this.RootItem);
     var e = this.d1o.GetCurSelectRoleData();
     this.xKt.Update(e.GetDataId(), this.Vco, e.IsTrialRole());
   }
@@ -261,7 +254,7 @@ class ResonanceChainView extends UiTabViewBase_1.UiTabViewBase {
     let t = undefined;
     var i = Number(e);
     if (i) {
-      t = this.imo(--i)?.GetUiItemForGuide();
+      t = this.Oco[--i]?.GetUiItemForGuide();
     } else if (e === "btn") {
       t = this.xKt?.GetUiItemForGuide();
     }

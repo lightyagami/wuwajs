@@ -23,14 +23,14 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
   }
   static Wil() {
     var e = new Protocol_1.Aki.Protocol._ss();
-    Net_1.Net.Call(21253, Protocol_1.Aki.Protocol._ss.create(e), e => {
+    Net_1.Net.Call(23464, Protocol_1.Aki.Protocol._ss.create(e), e => {
       if (e) {
         ModelManager_1.ModelManager.WeaponSkinModel.NotifyWeaponSkinData(e.qxs);
       }
     });
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26072, e => {
+    Net_1.Net.Register(27022, e => {
       if (e) {
         if (e.wVn) {
           ModelManager_1.ModelManager.WeaponSkinModel.NotifyAllUnlockSkinData(e.bBs);
@@ -39,74 +39,78 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
         }
       }
     });
-    Net_1.Net.Register(21887, e => {
+    Net_1.Net.Register(20613, e => {
       if (e && (ModelManager_1.ModelManager.WeaponSkinModel.DeleteWeaponSkinData(e.Q6n), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤卸载成功", ["roleId", e.Q6n]);
       }
     });
-    Net_1.Net.Register(19094, e => {
-      var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
+    Net_1.Net.Register(29739, e => {
+      var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 4, "服务器下发武器皮肤", ["WeaponSkinId", e.lI_?.yI_], ["ServerEntityId", o]);
+        Log_1.Log.Debug("Character", 4, "服务器下发武器皮肤", ["WeaponSkinId", e.lI_?.yI_], ["ServerEntityId", t]);
       }
-      o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(81);
-      if (o) {
-        o.OnEntityEquipSkinChangeNotify(e);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(81);
+      if (t) {
+        t.OnEntityEquipSkinChangeNotify(e);
       }
     });
-    Net_1.Net.Register(29671, e => {
-      for (const t of e.zDc) {
-        var o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
+    Net_1.Net.Register(16053, e => {
+      for (const o of e.zDc) {
+        var t = MathUtils_1.MathUtils.LongToNumber(o.F4n);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Character", 4, "服务器下发翱翔与滑翔翼皮肤", ["FlySkinId", t.cGc], ["ServerEntityId", o]);
+          Log_1.Log.Debug("Character", 4, "服务器下发翱翔与滑翔翼皮肤", ["FlySkinId", o.cGc], ["ServerEntityId", t]);
         }
-        o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(81);
-        if (!o) {
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(81);
+        if (!t) {
           return;
         }
-        o.OnEntitySoarWingOrParaglidingSkinChangeNotify(t);
+        t.OnEntitySoarWingOrParaglidingSkinChangeNotify(o);
       }
     });
+    Net_1.Net.Register(27538, this.IBd);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26072);
-    Net_1.Net.UnRegister(21887);
+    Net_1.Net.UnRegister(27022);
+    Net_1.Net.UnRegister(20613);
+    Net_1.Net.UnRegister(29739);
+    Net_1.Net.UnRegister(16053);
+    Net_1.Net.UnRegister(27538);
   }
-  static Jsl(o, t) {
+  static Jsl(t, o) {
     var e = Protocol_1.Aki.Protocol.tg_.create();
     e.R5n = Protocol_1.Aki.Protocol.kR_.create();
-    e.R5n.mjn = o;
-    e.R5n.Zsl = t;
-    Net_1.Net.Call(20029, e, e => {
+    e.R5n.mjn = t;
+    e.R5n.Zsl = o;
+    Net_1.Net.Call(19212, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WeaponSkinModel.EquipWeaponSkinData(e.Gxs);
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤装备成功", ["roleId", o], ["skinId", t]);
+            Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤装备成功", ["roleId", t], ["skinId", o]);
           }
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25792);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22204);
         }
       }
     });
   }
   static eal(e) {
-    var o;
+    var t;
     if (!!e && !(e <= 0)) {
-      (o = Protocol_1.Aki.Protocol.rg_.create()).mjn = e;
-      Net_1.Net.Call(15414, o, e => {
+      (t = Protocol_1.Aki.Protocol.rg_.create()).mjn = e;
+      Net_1.Net.Call(19107, t, e => {
         if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23635);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17787);
         }
       });
     }
   }
-  static SendEquipSkinRequest(e, o) {
+  static SendEquipSkinRequest(e, t) {
     if (!!e && !(e <= 0)) {
-      if (o === WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID) {
+      if (t === WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID) {
         WeaponSkinController.eal(e);
       } else {
-        WeaponSkinController.Jsl(e, o);
+        WeaponSkinController.Jsl(e, t);
       }
     }
   }
@@ -114,4 +118,6 @@ class WeaponSkinController extends UiControllerBase_1.UiControllerBase {
 (exports.WeaponSkinController = WeaponSkinController).Q5e = () => {
   WeaponSkinController.Wil();
 };
-//# sourceMappingURL=WeaponSkinController.js.map
+WeaponSkinController.IBd = e => {
+  ModelManager_1.ModelManager.WeaponSkinModel.RefreshUnlockSkinData(e.bBs);
+}; //# sourceMappingURL=WeaponSkinController.js.map

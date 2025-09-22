@@ -84,15 +84,19 @@ class InteractionSpotView extends UiPanelBase_1.UiPanelBase {
       t = Global_1.Global.CharacterController;
       i = this.uj1.D_GetTransform().TransformPositionNoScale(this.yB.ToUeVector());
       s = (0, puerts_1.$ref)(undefined);
-      UE.GameplayStatics.D_ProjectWorldToScreen(t, i, s);
-      t = (0, puerts_1.$unref)(s);
-      this.ScreenPosition.Set(t.X, t.Y);
-      if (!this.ICt.Equals(this.ScreenPosition, 1)) {
-        this.ICt.DeepCopy(this.ScreenPosition);
-        i = Vector2D_1.Vector2D.Create(t.X, t.Y);
-        s = ModelManager_1.ModelManager.BattleUiModel;
-        i.MultiplyEqual(s.ScreenPositionScale).AdditionEqual(s.ScreenPositionOffset).MultiplyEqual(Vector2D_1.Vector2D.Create(1, -1)).AdditionEqual(center);
-        this.RootItem.SetAnchorOffset(i.ToUeVector2D());
+      if (UE.GameplayStatics.D_ProjectWorldToScreen(t, i, s)) {
+        this.RootItem.SetUIActive(true);
+        t = (0, puerts_1.$unref)(s);
+        this.ScreenPosition.Set(t.X, t.Y);
+        if (!this.ICt.Equals(this.ScreenPosition, 1)) {
+          this.ICt.DeepCopy(this.ScreenPosition);
+          i = Vector2D_1.Vector2D.Create(t.X, t.Y);
+          s = ModelManager_1.ModelManager.BattleUiModel;
+          i.MultiplyEqual(s.ScreenPositionScale).AdditionEqual(s.ScreenPositionOffset).MultiplyEqual(Vector2D_1.Vector2D.Create(1, -1)).AdditionEqual(center);
+          this.RootItem.SetAnchorOffset(i.ToUeVector2D());
+        }
+      } else {
+        this.RootItem.SetUIActive(false);
       }
     }
   }

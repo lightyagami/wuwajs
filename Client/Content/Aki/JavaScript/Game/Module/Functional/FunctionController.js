@@ -110,9 +110,9 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   static async E7t(n) {
     var o = Protocol_1.Aki.Protocol.Krs.create();
     o.d6n = n;
-    var o = await Net_1.Net.CallAsync(21595, o);
+    var o = await Net_1.Net.CallAsync(25815, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25084);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25350);
       return false;
     } else {
       ModelManager_1.ModelManager.FunctionModel.RefreshInfoManualState(n);
@@ -159,17 +159,17 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     return this.p7t.has(n);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25685, n => {
+    Net_1.Net.Register(19926, n => {
       ModelManager_1.ModelManager.FunctionModel.SetFunctionOpenInfo(n);
     });
-    Net_1.Net.Register(25221, n => {
+    Net_1.Net.Register(22556, n => {
       ModelManager_1.ModelManager.FunctionModel.UpdateFunctionOpenInfo(n);
       FunctionController.TryOpenFunctionOpenView();
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25685);
-    Net_1.Net.UnRegister(25221);
+    Net_1.Net.UnRegister(19926);
+    Net_1.Net.UnRegister(22556);
   }
   static async mXa() {
     if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId())) === 1) {

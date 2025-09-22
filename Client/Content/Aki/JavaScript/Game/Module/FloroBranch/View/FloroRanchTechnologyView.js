@@ -26,7 +26,7 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
     this.TechnologyCoinData = new FloroRanchCurrencyData_1.FloroRanchCurrencyData(4);
     this.U1a = undefined;
     this.ScrollView = undefined;
-    this.Cqu = e => {
+    this.C2u = e => {
       this.UnlockSuccessPanel?.RefreshPanel(e);
       this.ScrollView?.RefreshByData(this.WUu);
       this.QUu();
@@ -58,7 +58,7 @@ class FloroRanchTechnologyView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     var e = [];
     this.TechDetailPanel = new FloroRanchTechDetailPanel_1.FloroRanchTechDetailPanel();
-    this.TechDetailPanel.UnlockSuccessCallback = this.Cqu;
+    this.TechDetailPanel.UnlockSuccessCallback = this.C2u;
     e.push(this.TechDetailPanel.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.UnlockSuccessPanel = new FloroRanchUnlockSuccessPanel_1.FloroRanchUnlockSuccessPanel();
     e.push(this.UnlockSuccessPanel.CreateByActorAsync(this.GetItem(8).GetOwner()));

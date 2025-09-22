@@ -136,6 +136,9 @@ class ActivityTurntableData extends ActivityData_1.ActivityBaseData {
   GetExDataRedPointShowState() {
     return !!this.IsActivityUnFinished() && (!!this.IsHasPreQuestRedDot() || !!this.IsHasRewardRedDot() || !!this.IsHasUnlockRedDot() || this.IsHasDailyRedDot() || this.IsHasNewQuestRedDot());
   }
+  GetExDataFinishShowState() {
+    return !this.IsActivityUnFinished();
+  }
   GetActivityCurrencyCount() {
     return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.TurntableCostConfigId);
   }

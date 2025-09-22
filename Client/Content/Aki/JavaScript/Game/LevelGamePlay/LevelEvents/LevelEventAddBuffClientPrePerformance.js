@@ -19,7 +19,7 @@ class LevelEventAddBuffClientPrePerformance extends LevelGeneralBase_1.LevelEven
     return this.constructor.name;
   }
   GetPreMessageId(e) {
-    var t = e.Entity.GetComponent(252);
+    var t = e.Entity.GetComponent(253);
     if (t?.Valid) {
       return t.ClientPrePerformancePreMessageId;
     } else {

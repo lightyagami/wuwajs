@@ -22,7 +22,7 @@ class BattleNetController {
     var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e);
     if (ModelManager_1.ModelManager.CreatureModel.GetEntity(t)) {
       (r = Protocol_1.Aki.Protocol.ocs.create()).s5n = MathUtils_1.MathUtils.NumberToLong(t);
-      return !!(r = await Net_1.Net.CallAsync(22432, r)) && (r.G9n === 0 || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Level", 29, "幻象收复失败", ["ErrCode", r.G9n]), 1));
+      return !!(r = await Net_1.Net.CallAsync(28369, r)) && (r.G9n === 0 || !(Log_1.Log.CheckWarn() && Log_1.Log.Warn("Level", 29, "幻象收复失败", ["ErrCode", r.G9n]), 1));
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 29, "[CreatureController.RequestCaptureEntity] 请求幻象收复失败, Entity为空。", ["CreatureDataId", t], ["EntityId", e]);
@@ -32,10 +32,10 @@ class BattleNetController {
   }
   static async RequestBatchCaptureEntity(e) {
     var t = Time_1.Time.Now;
-    if (t - this.QVu < REQUEST_TIME_GAP) {
+    if (t - this.jku < REQUEST_TIME_GAP) {
       return [];
     }
-    this.QVu = t;
+    this.jku = t;
     var r = [];
     var o = new Map();
     for (const _ of e) {
@@ -44,7 +44,7 @@ class BattleNetController {
       if (i) {
         if (ModelManager_1.ModelManager.CreatureModel.GetEntity(i)) {
           (a = Protocol_1.Aki.Protocol.ocs.create()).s5n = MathUtils_1.MathUtils.NumberToLong(i);
-          r.push(Net_1.Net.CallAsync(22432, a));
+          r.push(Net_1.Net.CallAsync(28369, a));
           o.set(i, _);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("World", 72, "[CreatureController.RequestBatchCaptureEntity] 客户端 请求幻象收复失败, Entity为空。", ["CreatureDataId", i], ["EntityId", _]);
@@ -67,4 +67,4 @@ class BattleNetController {
   }
 }
 (exports.BattleNetController = BattleNetController).C0r = 0;
-BattleNetController.QVu = 0; //# sourceMappingURL=BattleNetController.js.map
+BattleNetController.jku = 0; //# sourceMappingURL=BattleNetController.js.map

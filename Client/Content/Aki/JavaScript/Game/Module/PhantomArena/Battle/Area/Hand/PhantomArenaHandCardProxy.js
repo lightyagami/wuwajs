@@ -14,7 +14,7 @@ class PhantomArenaHandCardProxy {
     this.AreaItem = undefined;
     this.Area = undefined;
     this.WD_ = false;
-    this.iNu = -1;
+    this.XGu = -1;
     this.IsInit = false;
   }
   Init(t, i, s) {
@@ -221,13 +221,13 @@ class PhantomArenaHandCardProxy {
   }
   SetCardSelectedState(t) {
     if (t) {
-      this.iNu = this.AreaItem.GetOriginalItem().GetHierarchyIndex();
+      this.XGu = this.AreaItem.GetOriginalItem().GetHierarchyIndex();
       this.AreaItem.GetOriginalItem().SetAsLastHierarchy();
       this.wi1.SetSelectedState(true);
     } else {
-      if (this.iNu !== -1) {
-        this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.iNu);
-        this.iNu = -1;
+      if (this.XGu !== -1) {
+        this.AreaItem.GetOriginalItem().SetHierarchyIndex(this.XGu);
+        this.XGu = -1;
       }
       this.wi1.SetSelectedState(false);
     }

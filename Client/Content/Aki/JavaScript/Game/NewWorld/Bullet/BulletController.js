@@ -43,7 +43,9 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const StatDefine_1 = require("../../Common/StatDefine");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const Global_1 = require("../../Global");
+const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const CombatMessage_1 = require("../../Module/CombatMessage/CombatMessage");
 const CombatLog_1 = require("../../Utils/CombatLog");
@@ -98,11 +100,14 @@ class BulletController extends ControllerBase_1.ControllerBase {
     this.Q9o.Clear();
     this.aCe();
     BulletPool_1.BulletPool.Clear();
-    return !(this.X9o.length = 0);
+    this.X9o.length = 0;
+    this.StopKuroBulletWorld();
+    return true;
   }
   static OnLeaveLevel() {
     BulletConfig_1.BulletConfig.ClearBulletDataCache();
     ConfigManager_1.ConfigManager.BulletConfig.ClearPreload();
+    this.StopKuroBulletWorld();
     return true;
   }
   static GetActionCenter() {
@@ -275,7 +280,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     var l = new Protocol_1.Aki.Protocol.Gzn();
     l.VVn = 0;
     l.P8n = `@gmcreatebullet ${t} ${e}`;
-    Net_1.Net.Call(27932, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
+    Net_1.Net.Call(29900, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
     return 0;
   }
   static Y9o(t, e, l, r, o) {
@@ -402,11 +407,11 @@ class BulletController extends ControllerBase_1.ControllerBase {
       return t;
     }
   }
-  static DestroyBullet(t, e, l = 0) {
+  static DestroyBullet(t, e, l = 0, r = false) {
     if (StatDefine_1.BATTLESTAT_ENABLED) {
       StatDefine_1.battleStat.BulletDestroy?.Start();
     }
-    ModelManager_1.ModelManager.BulletModel.DestroyBullet(t, e, l);
+    ModelManager_1.ModelManager.BulletModel.DestroyBullet(t, e, l, r);
     if (StatDefine_1.BATTLESTAT_ENABLED) {
       StatDefine_1.battleStat.BulletDestroy?.Stop();
     }
@@ -658,6 +663,22 @@ class BulletController extends ControllerBase_1.ControllerBase {
       t.LiveTimeRatio = e;
     }
   }
+  static StartKuroBulletWorld() {
+    var t;
+    if (!this.KuroBulletWorld) {
+      t = UE.SubsystemBlueprintLibrary.GetGameInstanceSubsystem(GlobalData_1.GlobalData.GameInstance, UE.KuroBulletSubsystem.StaticClass());
+      this.KuroBulletWorld = t.GetBulletWorld();
+      this.KuroBulletWorld ||= t.CreateWorld();
+      this.KuroBulletWorld?.OnBulletModifyBuff.Add(BulletController._Ld);
+    }
+  }
+  static StopKuroBulletWorld() {
+    if (this.KuroBulletWorld) {
+      this.KuroBulletWorld.OnBulletModifyBuff.Clear();
+      UE.SubsystemBlueprintLibrary.GetGameInstanceSubsystem(GlobalData_1.GlobalData.GameInstance, UE.KuroBulletSubsystem.StaticClass()).DestroyWorld();
+      this.KuroBulletWorld = undefined;
+    }
+  }
 }
 BulletController.X9o = [];
 BulletController.Q9o = undefined;
@@ -698,6 +719,10 @@ BulletController.$9o = Stats_1.Stat.Create("BulletConfigGetData");
 BulletController.Mme = Transform_1.Transform.Create();
 BulletController.cie = Rotator_1.Rotator.Create();
 BulletController.e7o = Quat_1.Quat.Create();
+BulletController.KuroBulletWorld = undefined;
+BulletController._Ld = (t, e, l) => {
+  ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(t, l, Number(e));
+};
 __decorate([CombatMessage_1.CombatNet.Listen("MFn", true)], BulletController, "CreateBulletNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("SFn", true)], BulletController, "DestroyBulletNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("FFn", true)], BulletController, "ModifyBulletParamsNotify", null);

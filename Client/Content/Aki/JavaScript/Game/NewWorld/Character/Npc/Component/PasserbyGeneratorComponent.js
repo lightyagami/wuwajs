@@ -113,7 +113,7 @@ let PasserbyGeneratorComponent = class PasserbyGeneratorComponent extends Entity
     o.F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
     o.eKn = t;
     o.tKn = e;
-    Net_1.Net.Call(23022, o, e => {
+    Net_1.Net.Call(29868, o, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckError()) {
         Log_1.Log.Error("NPC", 50, "请求行人生成器生成NPC失败", ["CreatureId", this.Hte?.CreatureData.GetCreatureDataId()], ["SplineId", t], ["ErrorCode", e.Q4n]);
       }

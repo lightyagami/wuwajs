@@ -79,10 +79,10 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveCatapult, this.B$r);
     return true;
   }
-  SetConfig(t, e, i, n, o = "", a = BigJumpUnit_1.DEFAULT_GRAVITY, r = undefined, s = false) {
-    this.w$r = s;
+  SetConfig(t, e, i, n, o = "", a = BigJumpUnit_1.DEFAULT_GRAVITY, r = undefined, s, C = false) {
+    this.w$r = C;
     this.LockRotator = a > 0;
-    this.x$r.SetAll(t, e, i, n, o, a, r);
+    this.x$r.SetAll(t, e, i, n, o, a, r, s);
   }
   StartCatapult() {
     this.x$r.SetStartPoint(this.Hte.ActorLocationProxy);

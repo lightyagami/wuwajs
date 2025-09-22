@@ -100,9 +100,9 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.QEo = 0;
     this.Z1u = 0;
     this.euu = 0;
-    this.Led = undefined;
-    this.Aed = 0;
-    this.Ped = 0;
+    this.Fid = undefined;
+    this.Nid = 0;
+    this.Vid = 0;
     this.tuu = false;
     this.vun = false;
     this.Mun = false;
@@ -269,11 +269,11 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
         }
         break;
       case 1:
-        this.Aed = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner);
-        this.Ded();
+        this.Nid = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner);
+        this.jid();
         break;
       case 2:
-        this.Ded();
+        this.jid();
         break;
       case 5:
         this.ouu(6);
@@ -302,7 +302,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
     this._un.IsMoving = false;
   }
-  Ded() {
+  jid() {
     this.tuu = this.dun > this.Cun;
     this.suu();
     this.auu();
@@ -441,9 +441,9 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     var t = this.Hte;
     var s = this.lun * MathUtils_1.MathUtils.MillisecondToSecond;
     if (this.Y1u === "CustomSpeed") {
-      e = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) - this.Aed;
-      e = MathUtils_1.MathUtils.Clamp(e / this.Ped, 0, 1);
-      i = this.Led ? this.Led.GetFloatValue(e) : e;
+      e = UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) - this.Nid;
+      e = MathUtils_1.MathUtils.Clamp(e / this.Vid, 0, 1);
+      i = this.Fid ? this.Fid.GetFloatValue(e) : e;
       if (e >= 1) {
         t.SetActorLocation(this.J_n.ToUeVector());
       } else {
@@ -503,8 +503,8 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   SetTargetFloor(t) {
     var i;
     var e;
-    if (this.xed(t)) {
-      this.Ued(t, "Default");
+    if (this.Hid(t)) {
+      this.$id(t, "Default");
       this.uuu();
       if (this.vun) {
         this.Oun(t, true);
@@ -524,25 +524,25 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
   SetTargetFloorTeleport(t, i, e, s = false, h = 0) {
-    if (this.xed(t)) {
-      this.Ued(t, "Teleport", s, i, e, h);
+    if (this.Hid(t)) {
+      this.$id(t, "Teleport", s, i, e, h);
       this.uuu();
     }
   }
   SetTargetFloorPathMove(t, i, e) {
-    if (this.xed(t)) {
+    if (this.Hid(t)) {
       if (!StringUtils_1.StringUtils.IsBlank(i)) {
-        this.Led = ResourceSystem_1.ResourceSystem.Load(i, UE.CurveFloat);
+        this.Fid = ResourceSystem_1.ResourceSystem.Load(i, UE.CurveFloat);
       }
-      this.Ped = e;
-      this.Ued(t, "CustomSpeed");
+      this.Vid = e;
+      this.$id(t, "CustomSpeed");
       this.uuu();
     }
   }
-  xed(t) {
+  Hid(t) {
     return !this.Tun() && (t < 1 || t > this.mun.length || this.Cun === t ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "CheckTargetFloorValid Failed, Wrong Floor", ["CreatureId", ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id)], ["TargetFloor", t]), false) : this.Cun === 0 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "Elevator Running"), this.u6a = t, false));
   }
-  Ued(t, i, e = false, s = 0, h = 0, r = 0) {
+  $id(t, i, e = false, s = 0, h = 0, r = 0) {
     this.Cun = t;
     this.Y1u = i;
     this.X1u = e;
@@ -698,7 +698,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.Igo.Subtraction(this.J_n, this.cz);
     var t = this.cz.Size();
     let i = 0;
-    if ((i = this.Y1u === "CustomSpeed" ? this.Ped - UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) + this.Aed : this.eun ? t / MTOCM / this.nun : ACCELERATETIMERADIO * t / MTOCM / this.nun) < 0) {
+    if ((i = this.Y1u === "CustomSpeed" ? this.Vid - UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) + this.Nid : this.eun ? t / MTOCM / this.nun : ACCELERATETIMERADIO * t / MTOCM / this.nun) < 0) {
       return 0;
     } else if (i > THOUSAND) {
       return THOUSAND;

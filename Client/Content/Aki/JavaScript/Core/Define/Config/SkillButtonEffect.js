@@ -25,6 +25,9 @@ class SkillButtonEffect {
   get Color() {
     return this.color();
   }
+  get Scale() {
+    return this.scale();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -72,6 +75,14 @@ class SkillButtonEffect {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  scale() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
 }
 exports.SkillButtonEffect = SkillButtonEffect;

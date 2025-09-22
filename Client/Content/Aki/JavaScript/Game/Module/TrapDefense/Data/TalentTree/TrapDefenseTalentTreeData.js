@@ -153,7 +153,7 @@ class TrapDefenseTalentTreeData {
     }
     return s;
   }
-  M9c(e, t) {
+  ZHc(e, t) {
     if (e.IsUnlock && t.IsUnlock) {
       return 0;
     } else {
@@ -168,7 +168,7 @@ class TrapDefenseTalentTreeData {
       for (const s of this.NodeRowMap.get(r) ?? []) {
         for (const i of this.GetPreNodesByNodeData(s)) {
           var e = this.gT(i, s);
-          var t = this.M9c(i, s);
+          var t = this.ZHc(i, s);
           for (const n of e) {
             this.LineTypeMap[n[0]] ||= new Map();
             if (!this.LineTypeMap[n[0]].has(n[1]) || this.LineTypeMap[n[0]].get(n[1]) !== 0) {

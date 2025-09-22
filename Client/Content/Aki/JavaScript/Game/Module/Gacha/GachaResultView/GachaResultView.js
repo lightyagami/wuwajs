@@ -120,6 +120,7 @@ class GachaResultView extends GachaSceneView_1.GachaSceneView {
   }
   OnBeforeDestroy() {
     CameraController_1.CameraController.SetViewTarget(UiCameraAnimationManager_1.UiCameraAnimationManager.UiCamera?.GetCameraActor(), "GachaResultView.OnBeforeDestroy");
+    ControllerHolder_1.ControllerHolder.MenuController.OpenAllFilter();
   }
   AfterAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFirstShare, this.OWt);

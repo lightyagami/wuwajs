@@ -203,7 +203,7 @@ class SceneInteractionLevel {
       this.InteractionActor.PlayIndependentEndEffect(t);
     }
   }
-  Xdd(t) {
+  HUd(t) {
     var i = ConfigManager_1.ConfigManager.RenderModuleConfig.LevelCustomPrimitiveData?.get(this.PbDataId);
     if (i && i.CustomPrimitiveDataIndex0.length > 0) {
       var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLevelActors(t);
@@ -261,13 +261,13 @@ class SceneInteractionLevel {
           }
           this.LevelStreamingDynamic?.OnLevelShown.Clear();
         });
-        this.Xdd(e);
+        this.HUd(e);
         if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelShow]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
         }
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作");
+          Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作", ["LevelName", this.LevelName]);
         }
         this.LevelStreamingDynamic.OnLevelShown.Clear();
       }

@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TrapDefenseRouletteMainViewProxy = undefined;
 const Info_1 = require("../../../../Core/Common/Info");
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
@@ -19,9 +17,6 @@ class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.Roule
     super(...arguments);
     this.Cpo = undefined;
     this.ItemTips = undefined;
-    this.ZDe = () => {
-      this.View.CloseSelf();
-    };
   }
   async OnBeforeStartAsync() {
     this.ItemTips = new TrapDefenseRouletteItemTips_1.TrapDefenseRouletteItemTips();
@@ -32,12 +27,6 @@ class TrapDefenseRouletteMainViewProxy extends RouletteMainViewProxyBase_1.Roule
     if (!Info_1.Info.IsInTouch() && !(e = this.GetActionName(), ModelManager_1.ModelManager.InputDistributeModel.IsActionInPress(e))) {
       this.View.CloseSelf();
     }
-  }
-  OnAddEventListenerByStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisActiveBattleView, this.ZDe);
-  }
-  OnRemoveEventListenerByStart() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DisActiveBattleView, this.ZDe);
   }
   OnCanOpenView() {
     return ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(true) && ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelDataHasShop();

@@ -16,8 +16,8 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.OpenParam = undefined;
     this.t9_ = undefined;
-    this.mzc = [];
-    this.fzc = false;
+    this.pZc = [];
+    this.vZc = false;
     this.aq_ = (e, t) => {
       var i = Math.floor(e % TimeUtil_1.TimeUtil.Hour / TimeUtil_1.TimeUtil.Minute);
       var s = Math.floor(e % TimeUtil_1.TimeUtil.Minute);
@@ -28,13 +28,13 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
       this.GetText(0)?.SetText(`${i}:${s}:${e}`);
     };
     this.lq_ = e => {
-      this.mzc.push(e);
-      this.gzc();
+      this.pZc.push(e);
+      this.yZc();
     };
     this._q_ = () => {
       this.GetItem(1)?.SetUIActive(false);
-      this.fzc = false;
-      this.gzc();
+      this.vZc = false;
+      this.yZc();
     };
     this.r9_ = () => {
       this.o9_();
@@ -69,11 +69,11 @@ class ShipTowerCountDownView extends UiViewBase_1.UiViewBase {
   hq_(e) {
     return (e < 10 ? "0" : "") + e;
   }
-  gzc() {
+  yZc() {
     var e;
-    if (!this.fzc && this.mzc.length !== 0) {
-      e = this.mzc.shift();
-      this.fzc = true;
+    if (!this.vZc && this.pZc.length !== 0) {
+      e = this.pZc.shift();
+      this.vZc = true;
       this.GetItem(1)?.SetUIActive(true);
       this.GetText(2)?.ShowTextNew(e);
       this.i9_();

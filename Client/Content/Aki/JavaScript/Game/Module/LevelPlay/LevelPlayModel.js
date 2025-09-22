@@ -138,10 +138,8 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     }
   }
   LevelPlayClose(e) {
-    if (e) {
-      e.UpdateState(0);
-      e.Destroy();
-      this.$pi.delete(e.Id);
+    if (e && (e.UpdateState(0), e.Destroy(), this.$pi.delete(e.Id), e.Id === this.Ypi)) {
+      this.Ypi = 0;
     }
   }
   SetTrackLevelPlayId(e) {

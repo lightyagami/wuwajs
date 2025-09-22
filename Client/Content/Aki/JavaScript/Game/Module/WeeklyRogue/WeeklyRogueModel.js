@@ -19,7 +19,7 @@ class WeeklyRogueModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.BuffList = [];
-    this.O3u = new Map();
+    this.I2u = new Map();
     this.ModifierIdInForce = 0;
     this.OptionMap = new Map();
     this.CurrentLayer = 0;
@@ -67,16 +67,16 @@ class WeeklyRogueModel extends ModelBase_1.ModelBase {
     return this.OptionMap.get(e);
   }
   UpdateInstInfo(e) {
-    this.O3u.clear();
+    this.I2u.clear();
     this.BuffList = e.PN_;
     this.ModifierIdInForce = e.v9n;
     for (const r of e.PN_) {
       var t = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(r);
       if (t) {
-        let e = this.O3u.get(t.BuffType);
+        let e = this.I2u.get(t.BuffType);
         if (!e) {
           e = new Array();
-          this.O3u.set(t.BuffType, e);
+          this.I2u.set(t.BuffType, e);
         }
         e.push(r);
       }
@@ -87,7 +87,7 @@ class WeeklyRogueModel extends ModelBase_1.ModelBase {
     }
   }
   GetBuffIdListByType(e) {
-    e = this.O3u.get(e);
+    e = this.I2u.get(e);
     if (e) {
       return [...e];
     } else {
@@ -95,7 +95,7 @@ class WeeklyRogueModel extends ModelBase_1.ModelBase {
     }
   }
   GetArtifactBuffId() {
-    var e = this.O3u.get(1);
+    var e = this.I2u.get(1);
     if (e) {
       return e[0];
     } else {

@@ -209,7 +209,11 @@ const classDefined = {
   TsTowerDefenseEventActor_C: ["/Game/Aki/TypeScript/Game/Module/TowerDefenseEvent/Item/TsTowerDefenseEventActor.TsTowerDefenseEventActor_C", 0],
   PDA_HitMeshData_C: ["/Game/Aki/Render/RuntimeBP/Character/PDA_HitMeshData.PDA_HitMeshData_C", 0],
   BP_MediaDissolveManagea_C: ["/Game/Aki/Sequence/Seq_BP/BPSeqDissolve/BP_MediaDissolveManagea.BP_MediaDissolveManagea_C", 0],
-  BP_ItemInspectGlobalConfig_C: ["/Game/Aki/Data/Level/ItemInspect/BP_ItemInspectGlobalConfig.BP_ItemInspectGlobalConfig_C", 1]
+  BP_SeqNPC_C: ["/Game/Aki/Sequence/Seq_BP/BP_SeqNPC.BP_SeqNPC_C", 0],
+  BP_ItemInspectGlobalConfig_C: ["/Game/Aki/Data/Level/ItemInspect/BP_ItemInspectGlobalConfig.BP_ItemInspectGlobalConfig_C", 1],
+  BP_FirstPersonConfig_C: ["/Game/Aki/Character/Role/Common/Data/Structure/BP_FirstPersonConfig.BP_FirstPersonConfig_C", 1],
+  BP_SplineClimbConfig_C: ["/Game/Aki/Data/Level/SplineClimb/BP_SplineClimbConfig.BP_SplineClimbConfig_C", 0],
+  TsUiHomeHelper_C: ["/Game/Aki/TypeScript/Game/Module/UiComponent/UiHomeButton/TsUiHomeHelper.TsUiHomeHelper_C", 0]
 };
 const structDefined = {
   SModelConfig: ["/Game/Aki/Data/Entity/Struct/SModelConfig.SModelConfig", 0],

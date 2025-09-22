@@ -8,6 +8,7 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const AOI_OFFSET = 1000;
@@ -19,15 +20,32 @@ const Media_Actor_Group_Extra = new UE.FName("MediaActor_Extra");
 const MEDIA_ACTOR_Extra_CHECKFRAME_CLOSE = 20;
 const MEDIA_ACTOR_Extra_CHECKFRAME_PLAY = 25;
 class BpActorController extends ControllerBase_1.ControllerBase {
-  static RegisterBpActor(o, r) {
-    if (r?.IsValid()) {
+  static OnInit() {
+    var t = UE.NewArray(UE.GameBudgetBlueprintGroupConfig);
+    var o = new UE.GameBudgetBlueprintGroupConfig();
+    o.Group = 1;
+    o.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.DynamicPhysicsInteractionActor");
+    var r = new UE.GameBudgetBlueprintGroupConfig();
+    r.Group = 2;
+    r.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.StaticPhysicsInteractionActor");
+    t.Add(o);
+    t.Add(r);
+    UE.KuroGameBudgetBlueprintDefine.Initialize(t);
+    return true;
+  }
+  static OnClear() {
+    UE.KuroGameBudgetBlueprintDefine.Clear();
+    return true;
+  }
+  static RegisterBpActor(t, o) {
+    if (o?.IsValid()) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("World", 38, "BpActorController 注册", ["BPI_SceneBp", r.GetName()]);
+        Log_1.Log.Debug("World", 38, "BpActorController 注册", ["BPI_SceneBp", o.GetName()]);
       }
-      if (o.op_Equality(Media_Actor_Group)) {
-        if (r) {
-          r.SetActorTickEnabled(false);
-          this.VSa.add(r);
+      if (t.op_Equality(Media_Actor_Group)) {
+        if (o) {
+          o.SetActorTickEnabled(false);
+          this.VSa.add(o);
           return;
         } else {
           if (Log_1.Log.CheckError()) {
@@ -35,10 +53,10 @@ class BpActorController extends ControllerBase_1.ControllerBase {
           }
           return;
         }
-      } else if (o.op_Equality(Media_Actor_Group_Extra)) {
-        if (r) {
-          r.SetActorTickEnabled(false);
-          this.gzl.add(r);
+      } else if (t.op_Equality(Media_Actor_Group_Extra)) {
+        if (o) {
+          o.SetActorTickEnabled(false);
+          this.gzl.add(o);
           return;
         } else {
           if (Log_1.Log.CheckError()) {
@@ -57,14 +75,14 @@ class BpActorController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Error("World", 38, "BpActorController sceneBp 是空的");
     }
   }
-  static UnregisterBpActor(o, r) {
-    if (r?.IsValid()) {
+  static UnregisterBpActor(t, o) {
+    if (o?.IsValid()) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("World", 38, "BpActorController 反注册", ["BPI_SceneBp", r.GetName()]);
+        Log_1.Log.Debug("World", 38, "BpActorController 反注册", ["BPI_SceneBp", o.GetName()]);
       }
-      if (o.op_Equality(Media_Actor_Group)) {
-        if (r) {
-          this.VSa.delete(r);
+      if (t.op_Equality(Media_Actor_Group)) {
+        if (o) {
+          this.VSa.delete(o);
           if (this.VSa.size === 0 && this.HSa?.IsValid() && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("World", 38, "BpActorController MediaActor 移除最后一个 关掉当前");
           }
@@ -75,9 +93,9 @@ class BpActorController extends ControllerBase_1.ControllerBase {
           }
           return;
         }
-      } else if (o.op_Equality(Media_Actor_Group_Extra)) {
-        if (r) {
-          this.gzl.delete(r);
+      } else if (t.op_Equality(Media_Actor_Group_Extra)) {
+        if (o) {
+          this.gzl.delete(o);
           if (this.gzl.size === 0 && this.pzl?.IsValid() && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("World", 38, "BpActorController MediaActor_Extra 移除最后一个 关掉当前");
           }
@@ -99,11 +117,11 @@ class BpActorController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Error("World", 38, "BpActorController sceneBp 是空的");
     }
   }
-  static OnTick(o) {
+  static OnTick(t) {
     this.jSa();
   }
-  static DisableMediaByGM(o) {
-    this.IsDisableMediaByGM = o;
+  static DisableMediaByGM(t) {
+    this.IsDisableMediaByGM = t;
     if (this.IsDisableMediaByGM) {
       this.HSa?.Stop();
       this.HSa = undefined;
@@ -138,27 +156,27 @@ class BpActorController extends ControllerBase_1.ControllerBase {
   }
   static so_() {
     if (this.VSa.size > 0 && this.HSa?.IsValid()) {
-      let o = undefined;
-      var t;
+      let t = undefined;
+      var r;
       var e;
       var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      let r = Number.MAX_VALUE;
+      let o = Number.MAX_VALUE;
       for (const s of this.VSa) {
         var _ = s;
         var l = Vector_1.Vector.Create();
         l.FromUeVector(_.D_K2_GetActorLocation());
         var _ = Vector_1.Vector.Dist(i, l);
-        if (_ < r) {
-          r = _;
-          o = s;
+        if (_ < o) {
+          o = _;
+          t = s;
         }
       }
-      if (o?.IsValid()) {
-        e = (t = 0, puerts_1.$ref)(0);
-        o.GetAoiRange(e);
-        t = (0, puerts_1.$unref)(e);
-        if (this.HSa === o) {
-          if (t && t + AOI_OFFSET < r && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid()) {
+        e = (r = 0, puerts_1.$ref)(0);
+        t.GetAoiRange(e);
+        r = (0, puerts_1.$unref)(e);
+        if (this.HSa === t) {
+          if (r && r + AOI_OFFSET < o && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("World", 38, "BpActorController MediaActor 超出Aoi 关掉当前");
           }
         } else if (this.HSa?.IsValid() && (this.HSa.Stop(), this.HSa = undefined, Log_1.Log.CheckDebug())) {
@@ -169,49 +187,49 @@ class BpActorController extends ControllerBase_1.ControllerBase {
   }
   static ao_() {
     if (this.VSa.size > 0 && !this.HSa?.IsValid()) {
-      let o = undefined;
-      var t;
+      let t = undefined;
+      var r;
       var e;
       var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      let r = Number.MAX_VALUE;
+      let o = Number.MAX_VALUE;
       for (const s of this.VSa) {
         var _ = s;
         var l = Vector_1.Vector.Create();
         l.FromUeVector(_.D_K2_GetActorLocation());
         var _ = Vector_1.Vector.DistSquared(i, l);
-        if (_ < r) {
-          r = _;
-          o = s;
+        if (_ < o) {
+          o = _;
+          t = s;
         }
       }
-      if (o?.IsValid() && (r = Math.sqrt(r), e = (t = 0, puerts_1.$ref)(0), o.GetAoiRange(e), t = (0, puerts_1.$unref)(e)) && t > r && (o.Start(), this.HSa = o, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid() && (o = Math.sqrt(o), e = (r = 0, puerts_1.$ref)(0), t.GetAoiRange(e), r = (0, puerts_1.$unref)(e)) && r > o && (t.Start(), this.HSa = t, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("World", 38, "BpActorController MediaActor 当前距离小于AOI 开始播放");
       }
     }
   }
   static ho_() {
     if (this.gzl.size > 0 && this.pzl?.IsValid()) {
-      let o = undefined;
-      var t;
+      let t = undefined;
+      var r;
       var e;
       var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      let r = Number.MAX_VALUE;
+      let o = Number.MAX_VALUE;
       for (const s of this.gzl) {
         var _ = s;
         var l = Vector_1.Vector.Create();
         l.FromUeVector(_.D_K2_GetActorLocation());
         var _ = Vector_1.Vector.Dist(i, l);
-        if (_ < r) {
-          r = _;
-          o = s;
+        if (_ < o) {
+          o = _;
+          t = s;
         }
       }
-      if (o?.IsValid()) {
-        e = (t = 0, puerts_1.$ref)(0);
-        o.GetAoiRange(e);
-        t = (0, puerts_1.$unref)(e);
-        if (this.pzl === o) {
-          if (t && t + AOI_OFFSET < r && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid()) {
+        e = (r = 0, puerts_1.$ref)(0);
+        t.GetAoiRange(e);
+        r = (0, puerts_1.$unref)(e);
+        if (this.pzl === t) {
+          if (r && r + AOI_OFFSET < o && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("World", 38, "BpActorController MediaActor 超出Aoi 关掉当前");
           }
         } else if (this.pzl?.IsValid() && (this.pzl.Stop(), this.pzl = undefined, Log_1.Log.CheckDebug())) {
@@ -222,22 +240,22 @@ class BpActorController extends ControllerBase_1.ControllerBase {
   }
   static lo_() {
     if (this.gzl.size > 0 && !this.pzl?.IsValid()) {
-      let o = undefined;
-      var t;
+      let t = undefined;
+      var r;
       var e;
       var i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      let r = Number.MAX_VALUE;
+      let o = Number.MAX_VALUE;
       for (const s of this.gzl) {
         var _ = s;
         var l = Vector_1.Vector.Create();
         l.FromUeVector(_.D_K2_GetActorLocation());
         var _ = Vector_1.Vector.DistSquared(i, l);
-        if (_ < r) {
-          r = _;
-          o = s;
+        if (_ < o) {
+          o = _;
+          t = s;
         }
       }
-      if (o?.IsValid() && (r = Math.sqrt(r), e = (t = 0, puerts_1.$ref)(0), o.GetAoiRange(e), t = (0, puerts_1.$unref)(e)) && t > r && (o.Start(), this.pzl = o, Log_1.Log.CheckDebug())) {
+      if (t?.IsValid() && (o = Math.sqrt(o), e = (r = 0, puerts_1.$ref)(0), t.GetAoiRange(e), r = (0, puerts_1.$unref)(e)) && r > o && (t.Start(), this.pzl = t, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("World", 38, "BpActorController MediaActor 当前距离小于AOI 开始播放");
       }
     }

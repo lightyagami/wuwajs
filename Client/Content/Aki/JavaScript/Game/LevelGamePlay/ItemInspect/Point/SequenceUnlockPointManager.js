@@ -8,8 +8,8 @@ const ItemInspectPointManager_1 = require("./ItemInspectPointManager");
 class SequenceUnlockPointManager extends ItemInspectPointManager_1.ItemInspectPointManager {
   constructor() {
     super(...arguments);
-    this.q$u = 0;
-    this.G$u = [];
+    this.pQu = 0;
+    this.vQu = [];
   }
   Init(t) {
     for (const e of t.Stages) {
@@ -17,24 +17,24 @@ class SequenceUnlockPointManager extends ItemInspectPointManager_1.ItemInspectPo
       for (const o of e.InteractPoints) {
         s.push(this.CreatePoint(o));
       }
-      this.G$u.push(s);
+      this.vQu.push(s);
     }
-    if (this.G$u.length > 0) {
-      for (const i of this.G$u[0]) {
+    if (this.vQu.length > 0) {
+      for (const i of this.vQu[0]) {
         i.IsActive = true;
       }
     }
   }
   OnCheckPoint() {
-    if (!(this.q$u >= this.G$u.length)) {
-      for (const t of this.G$u[this.q$u]) {
+    if (!(this.pQu >= this.vQu.length)) {
+      for (const t of this.vQu[this.pQu]) {
         if (!t.IsChecked) {
           return;
         }
       }
-      this.q$u++;
-      if (!(this.q$u >= this.G$u.length)) {
-        for (const s of this.G$u[this.q$u]) {
+      this.pQu++;
+      if (!(this.pQu >= this.vQu.length)) {
+        for (const s of this.vQu[this.pQu]) {
           s.IsActive = true;
         }
       }

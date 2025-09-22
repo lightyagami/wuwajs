@@ -450,7 +450,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   UpdateByAdventureManualResponse(e) {
     if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28157);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 23795);
     } else {
       this.P4l = true;
       this.hK1 = e.NMs.sK1;

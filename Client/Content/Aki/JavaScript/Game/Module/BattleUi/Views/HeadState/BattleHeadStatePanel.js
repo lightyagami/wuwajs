@@ -151,7 +151,7 @@ class BattleHeadStatePanel {
     this.Tlt = t => {
       this.Slt(t);
     };
-    this.RQu = (t, e) => {
+    this.T9c = (t, e) => {
       e = this.EO1.get(e);
       if (e) {
         e.push(t);
@@ -413,7 +413,7 @@ class BattleHeadStatePanel {
         Log_1.Log.Info("Battle", 17, "[HeadState]休眠头顶状态条", ["EntityId", t]);
       }
       if (this.EO1.has(a.HeadStateType)) {
-        a.RecycleHeadStateView(this.RQu);
+        a.RecycleHeadStateView(this.T9c);
       } else {
         a.DestroyHeadStateView();
       }

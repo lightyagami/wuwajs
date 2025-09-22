@@ -90,10 +90,14 @@ class GameSettingsManager {
       return [Platform_1.Platform.IsCloudGame(), "isCloudGame"];
     } else if (e === "isNotCloudGame") {
       return [!Platform_1.Platform.IsCloudGame(), "isNotCloudGame"];
+    } else if (e === "isAutoAdjustImageQuality") {
+      return [Platform_1.Platform.IsPcPlatform() || Platform_1.Platform.IsAndroidPlatform(), "isAutoAdjustImageQuality"];
     } else if (e === "isMac") {
       return [Info_1.Info.IsMacPlatform(), "isMac"];
     } else if (e === "isNotMac") {
       return [!Info_1.Info.IsMacPlatform(), "isNotMac"];
+    } else if (e === "isNotMobile") {
+      return [!Info_1.Info.IsIosPlatform() && !Info_1.Info.IsAndroidPlatform(), "isNotMobile"];
     } else if (e === "isMetalSupport") {
       return [GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsMetalFxDevice(), "isMetalSupport"];
     } else if (e === "isRedMagic") {
@@ -205,9 +209,7 @@ class GameSettingsManager {
   static Hsc(e, t) {
     this.$sc.get(GameSettingsDefine_1.EFunction.IMAGEQUALITY)?.CacheValue(e.QualityType, t);
     for (var [i, n] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(e)) {
-      if (i !== GameSettingsDefine_1.EFunction.RayTracing) {
-        this.$sc.get(i)?.CacheValue(n, t);
-      }
+      this.$sc.get(i)?.CacheValue(n, t);
     }
   }
   static Wsc(e) {
@@ -219,7 +221,7 @@ class GameSettingsManager {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Menu", 64, "[ViewSensitivity]转化视角灵敏度", ["functionId", e], ["value", i], ["newValue", t]);
       }
-      this.$sc.get(e)?.CacheValue(t, 0);
+      this.$sc.get(e)?.CacheValue(t, 1);
     }
   }
   static Qsc(e, t, i) {
@@ -235,7 +237,7 @@ class GameSettingsManager {
     this.Jsc();
     this.MGc();
     this.Pr1();
-    this.Sku();
+    this.q5u();
   }
   static Xsc() {
     if (!LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsConvertAllViewSensitivity, false)) {
@@ -266,7 +268,7 @@ class GameSettingsManager {
       Log_1.Log.Debug("Menu", 64, "根据命令行判断是否为全屏模式", ["commandLine", e]);
     }
     if (e.includes("-windowed")) {
-      this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(1, 0);
+      this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(1, 1);
     }
   }
   static zsc() {
@@ -285,7 +287,7 @@ class GameSettingsManager {
     var e = this.ValidApplyConfigMap.get(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY);
     var t = this.$sc.get(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY);
     if (e !== undefined && t !== undefined && !(e = e.OptionsDefault, LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.HasRefreshNvidiaDlssQuality))) {
-      t.CacheValue(e, 0);
+      t.CacheValue(e, 1);
       LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.HasRefreshNvidiaDlssQuality, true);
     }
   }
@@ -295,9 +297,9 @@ class GameSettingsManager {
     if (e !== undefined && t !== undefined) {
       e = e.OptionsDefault;
       if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlss3HardwareSchedulingDisabled()) {
-        t.CacheValue(e, 0);
+        t.CacheValue(e, 1);
       } else if (this.GetCurrentValue(GameSettingsDefine_1.EFunction.NVIDIADLSS, false) === 0) {
-        t.CacheValue(0, 0);
+        t.CacheValue(0, 1);
       }
     }
   }
@@ -307,32 +309,32 @@ class GameSettingsManager {
     if (ModelManager_1.ModelManager.RecommendQualityModel.IsNeedApply) {
       t = this.$sc.get(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
       e = ModelManager_1.ModelManager.RecommendQualityModel.NeedApplyQuality;
-      t?.CacheValue(e, 0);
+      t?.CacheValue(e, 1);
       if ((t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(e)) !== undefined) {
-        this.Hsc(t, 0);
+        this.Hsc(t, 1);
       }
       ModelManager_1.ModelManager.RecommendQualityModel.IsNeedApply = false;
     }
   }
-  static iad() {
+  static gud() {
     var e;
     var t = this.$sc.get(GameSettingsDefine_1.EFunction.Vulkan);
     if (t !== undefined && (e = this.GetCurrentValue(GameSettingsDefine_1.EFunction.Vulkan, false)) !== undefined) {
-      t.CacheValue(e, 0);
+      t.CacheValue(e, 1);
     }
   }
   static Pr1() {
     var e = this.ValidApplyConfigMap.get(GameSettingsDefine_1.EFunction.BRIGHTNESS);
     var t = this.$sc.get(GameSettingsDefine_1.EFunction.BRIGHTNESS);
     if (e !== undefined && t !== undefined && !(e = e.OptionsDefault, LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.HasResetBrightness))) {
-      t.CacheValue(e, 0);
+      t.CacheValue(e, 1);
       LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.HasResetBrightness, true);
     }
   }
-  static Sku() {
+  static q5u() {
     var e;
     if (UE.KuroStaticLibrary.IsLowMemoryDevice() && (e = this.$sc.get(GameSettingsDefine_1.EFunction.NPCDENSITY)) !== undefined) {
-      e.CacheValue(0, 0);
+      e.CacheValue(0, 1);
     }
   }
   static eac() {
@@ -344,7 +346,7 @@ class GameSettingsManager {
         if (n !== undefined) {
           let e = true;
           if (e = t?.SetType === 2 ? t.OptionsValue.includes(n) : e) {
-            i.CacheValue(n, 1);
+            i.CacheValue(n, 2);
           }
         }
       }
@@ -353,16 +355,16 @@ class GameSettingsManager {
   static tac() {
     var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.TextLanguage);
     if (e !== undefined) {
-      this.$sc.get(GameSettingsDefine_1.EFunction.TEXTLANGUAGE)?.CacheValue(e, 2);
+      this.$sc.get(GameSettingsDefine_1.EFunction.TEXTLANGUAGE)?.CacheValue(e, 3);
     }
     if ((e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VoiceLanguage)) !== undefined) {
-      this.$sc.get(GameSettingsDefine_1.EFunction.VOICELANGUAGE)?.CacheValue(e, 2);
+      this.$sc.get(GameSettingsDefine_1.EFunction.VOICELANGUAGE)?.CacheValue(e, 3);
     }
   }
   static iac() {
     var e = LauncherGameSettingLib_1.LauncherGameSettingLib.LoadPlayMenuInfo();
-    if (e !== undefined && (this.Qsc(e, GameSettingsDefine_1.EFunction.MASTERVOLUMEFUNCTION, 3), this.Qsc(e, GameSettingsDefine_1.EFunction.VOICEVOLUMEFUNCTION, 3), this.Qsc(e, GameSettingsDefine_1.EFunction.MUSICVOLUMEFUNCTION, 3), this.Qsc(e, GameSettingsDefine_1.EFunction.SFXVOLUMEFUNCTION, 3), this.Qsc(e, GameSettingsDefine_1.EFunction.AMBVOLUMEFUNCTION, 3), this.Qsc(e, GameSettingsDefine_1.EFunction.UIVOLUMEFUNCTION, 3), (e = this.GetCurrentValue(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined) && e > 10) {
-      this.$sc.get(GameSettingsDefine_1.EFunction.HIGHESTFPS)?.CacheValue(GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameIndexByList(e), 3);
+    if (e !== undefined && (this.Qsc(e, GameSettingsDefine_1.EFunction.MASTERVOLUMEFUNCTION, 4), this.Qsc(e, GameSettingsDefine_1.EFunction.VOICEVOLUMEFUNCTION, 4), this.Qsc(e, GameSettingsDefine_1.EFunction.MUSICVOLUMEFUNCTION, 4), this.Qsc(e, GameSettingsDefine_1.EFunction.SFXVOLUMEFUNCTION, 4), this.Qsc(e, GameSettingsDefine_1.EFunction.AMBVOLUMEFUNCTION, 4), this.Qsc(e, GameSettingsDefine_1.EFunction.UIVOLUMEFUNCTION, 4), (e = this.GetCurrentValue(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined) && e > 10) {
+      this.$sc.get(GameSettingsDefine_1.EFunction.HIGHESTFPS)?.CacheValue(GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameIndexByList(e), 4);
     }
   }
   static rac() {
@@ -419,25 +421,25 @@ class GameSettingsManager {
     }
     for ([e, t] of i) {
       if (t !== undefined) {
-        this.$sc.get(e)?.CacheValue(t, 4);
+        this.$sc.get(e)?.CacheValue(t, 5);
       }
     }
   }
   static oac() {
     var e = LauncherGameSettingLib_1.LauncherGameSettingLib.LoadPlayMenuInfo();
     if (e !== undefined) {
-      this.Qsc(e, GameSettingsDefine_1.EFunction.CameraShakeStrength, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.MASTERVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.VOICEVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.MUSICVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.SFXVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.AMBVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.UIVOLUMEFUNCTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.RESOLUTION, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.TEXTLANGUAGE, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.VOICELANGUAGE, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.ADVICESETTING, 5);
-      this.Qsc(e, GameSettingsDefine_1.EFunction.GENDERSETTING, 5);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.CameraShakeStrength, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.MASTERVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.VOICEVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.MUSICVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.SFXVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.AMBVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.UIVOLUMEFUNCTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.RESOLUTION, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.TEXTLANGUAGE, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.VOICELANGUAGE, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.ADVICESETTING, 6);
+      this.Qsc(e, GameSettingsDefine_1.EFunction.GENDERSETTING, 6);
     }
   }
   static nac() {
@@ -447,35 +449,40 @@ class GameSettingsManager {
         Log_1.Log.Error("GameSettings", 64, "当前机型没有设置默认画质", ["当前机型", GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceType]);
       }
     } else {
-      this.Hsc(e, 6);
+      this.Hsc(e, 8);
+    }
+  }
+  static D7d() {
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultDeviceRenderFeature() !== undefined) {
+      this.$sc.get(GameSettingsDefine_1.EFunction.RayTracing)?.CacheValue(0, 7);
     }
   }
   static sac() {
-    this.$sc.get(GameSettingsDefine_1.EFunction.KeyboardLockEnemyMode)?.CacheValue(1, 7);
-    this.$sc.get(GameSettingsDefine_1.EFunction.GamepadLockEnemyMode)?.CacheValue(1, 7);
-    this.$sc.get(GameSettingsDefine_1.EFunction.VegetationDither)?.CacheValue(GameSettingsDeviceRender_1.GameSettingsDeviceRender.ShouldOverrideVegetationDitherDefaultValue() ? 0 : this.ValidApplyConfigMap.get(GameSettingsDefine_1.EFunction.VegetationDither)?.OptionsDefault ?? 0, 7);
+    this.$sc.get(GameSettingsDefine_1.EFunction.KeyboardLockEnemyMode)?.CacheValue(1, 9);
+    this.$sc.get(GameSettingsDefine_1.EFunction.GamepadLockEnemyMode)?.CacheValue(1, 9);
+    this.$sc.get(GameSettingsDefine_1.EFunction.VegetationDither)?.CacheValue(GameSettingsDeviceRender_1.GameSettingsDeviceRender.ShouldOverrideVegetationDitherDefaultValue() ? 0 : this.ValidApplyConfigMap.get(GameSettingsDefine_1.EFunction.VegetationDither)?.OptionsDefault ?? 0, 9);
   }
   static aac() {
     var e = UE.GameUserSettings.GetGameUserSettings();
     var t = e === undefined ? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX : GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionIndexByList(e.GetScreenResolution());
-    this.$sc.get(GameSettingsDefine_1.EFunction.RESOLUTION)?.CacheValue(t, 9);
+    this.$sc.get(GameSettingsDefine_1.EFunction.RESOLUTION)?.CacheValue(t, 11);
     var t = e?.GetFullscreenMode();
     if (t !== undefined) {
       switch (t) {
         case 0:
         case 1:
-          this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(0, 9);
+          this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(0, 11);
           break;
         case 2:
-          this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(1, 9);
+          this.$sc.get(GameSettingsDefine_1.EFunction.DISPLAYMODE)?.CacheValue(1, 11);
       }
     }
     LanguageSystem_1.LanguageSystem.FirstTimeSetLanguage(GlobalData_1.GlobalData.World);
     e = this.hac(LanguageSystem_1.LanguageSystem.PackageLanguage);
     t = this.lac(e);
-    this.$sc.get(GameSettingsDefine_1.EFunction.TEXTLANGUAGE)?.CacheValue(e, 9);
-    this.$sc.get(GameSettingsDefine_1.EFunction.VOICELANGUAGE)?.CacheValue(t, 9);
-    this.$sc.get(GameSettingsDefine_1.EFunction.Vulkan)?.CacheValue(UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Android.DisableVulkanSupport") > 0 ? 0 : 1, 9);
+    this.$sc.get(GameSettingsDefine_1.EFunction.TEXTLANGUAGE)?.CacheValue(e, 11);
+    this.$sc.get(GameSettingsDefine_1.EFunction.VOICELANGUAGE)?.CacheValue(t, 11);
+    this.$sc.get(GameSettingsDefine_1.EFunction.Vulkan)?.CacheValue(UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Android.DisableVulkanSupport") > 0 ? 0 : 1, 11);
   }
   static _ac() {
     for (var [t, i] of this.ValidApplyConfigMap) {
@@ -490,7 +497,7 @@ class GameSettingsManager {
           e = i.OptionsDefault;
       }
       if (e !== undefined) {
-        this.$sc.get(t)?.CacheValue(e, 8);
+        this.$sc.get(t)?.CacheValue(e, 10);
       }
     }
   }
@@ -524,6 +531,7 @@ class GameSettingsManager {
     this.iac();
     this.rac();
     this.oac();
+    this.D7d();
     this.nac();
     this.sac();
     this.aac();
@@ -555,7 +563,7 @@ class GameSettingsManager {
   }
   static HandleInitDataOnOpenLoading() {
     this.Zsc();
-    this.iad();
+    this.gud();
     for (var [e] of this.$sc) {
       var t = this.GetInitValue(e);
       if (t !== undefined) {

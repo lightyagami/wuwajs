@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PayShopSkinView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const TabComponent_1 = require("../../Common/TabComponent/TabComponent");
 const TabViewComponent_1 = require("../../Common/TabComponent/TabViewComponent");
@@ -20,15 +20,15 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
     this.TabList = [];
     this.CurrentSelectTabId = 0;
     this._3i = 0;
-    this.fqe = (i, e) => {
+    this.fqe = (e, i) => {
       return new PayShopSwitchItem_1.PayShopSwitchItem();
     };
-    this.pqe = i => {
-      this.CurrentSelectTabId = this.TabList[i];
-      var e = this.CurrentSelectTabId;
-      var t = PayShopDefine_1.skinTabView[e];
-      var i = this.TabGroup.GetTabItemByIndex(i);
-      this.TabViewComponent.ToggleCallBack(e, t, i, this._3i);
+    this.pqe = e => {
+      this.CurrentSelectTabId = this.TabList[e];
+      var i = this.CurrentSelectTabId;
+      var t = PayShopDefine_1.skinTabView[i];
+      var e = this.TabGroup.GetTabItemByIndex(e);
+      this.TabViewComponent.ToggleCallBack(i, t, e, this._3i);
     };
   }
   OnRegisterComponent() {
@@ -47,23 +47,23 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
   OnBeforeShow() {
     this._3i = this.Params;
     this.GetText(5).SetUIActive(false);
-    var i = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTableList(6);
-    this.TabList = i;
-    let e = 0;
+    var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTableList(6);
+    this.TabList = e;
+    let i = 0;
     if (this.ExtraParams) {
-      if ((e = this.ExtraParams) >= i.length) {
-        e = 0;
+      if ((i = this.ExtraParams) >= e.length) {
+        i = 0;
       }
     } else {
-      e = this.TabGroup.TryGetSelectedIndex(e);
+      i = this.TabGroup.TryGetSelectedIndex(i);
     }
     this.CHe().finally(() => {
-      this.TabGroup.SelectToggleByIndex(e, true);
+      this.TabGroup.SelectToggleByIndex(i, true);
       this.TabViewComponent.SetCurrentTabViewState(true);
     });
   }
-  OnHideUiTabViewBase(i) {
-    if (i) {
+  OnHideUiTabViewBase(e) {
+    if (e) {
       this.TabGroup.ResetSelectIndex();
     }
   }
@@ -76,14 +76,14 @@ class PayShopSkinView extends UiTabViewBase_1.UiTabViewBase {
     this.TabViewComponent.SetCurrentTabViewState(false);
   }
   async CHe() {
-    var i;
     var e;
+    var i;
     var t = this.TabList.length;
     await this.TabGroup.RefreshTabItemByLengthAsync(t);
     var t = this.TabGroup.GetTabItemMap();
-    for ([i, e] of t) {
-      e.UpdateView(this._3i, this.TabList[i]);
-      e.BindRedDot("PayShopTab", this.TabList[i]);
+    for ([e, i] of t) {
+      i.UpdateView(this._3i, this.TabList[e]);
+      i.BindRedDot("PayShopTab", this.TabList[e]);
     }
   }
   OnBeforeDestroy() {

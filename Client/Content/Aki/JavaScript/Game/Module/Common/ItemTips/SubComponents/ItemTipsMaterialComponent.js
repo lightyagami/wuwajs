@@ -51,7 +51,10 @@ class TipsMaterialComponent extends ItemTipsBaseSubComponent_1.TipsBaseSubCompon
       this.GetText(5).SetUIActive(e);
       this.xxt(i.LimitTimeTxt);
       var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i.ConfigId);
-      var t = e?.ItemType === 60000 || e?.ItemType === 60002 || e?.ItemType === 60005 || e?.ItemType === 60003 || e?.ItemType === 22;
+      let t = false;
+      if (e?.ItemType !== undefined && ConfigManager_1.ConfigManager.InventoryConfig.GetItemTypeConfig(e.ItemType)?.ShowStock === false) {
+        t = true;
+      }
       this.SetPanelNumVisible(!t);
       this.Pxt(this.GetWayDataList(i, e?.ItemType));
       if (!t) {

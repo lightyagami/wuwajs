@@ -22,10 +22,10 @@ class MapRoguePanelRole extends UiPanelBase_1.UiPanelBase {
     this._v1 = CommonParamById_1.configCommonParamById.GetIntConfig("MapRogueGetListMaxCount") ?? 1;
     this.cv1 = CommonParamById_1.configCommonParamById.GetFloatConfig("MapRogueGetListIntervalTime") ?? 0;
     this.DirectionRight = true;
-    this.wOt = () => this._v1;
+    this.d_d = () => {
+      return new RogueGetListItem_1.RogueGetListItem();
+    };
     this.r0i = () => !this.GameInfo.IsGetItemDataEmpty();
-    this.s0i = () => this.cv1;
-    this.HDe = () => {};
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [3, UE.SpineSkeletonAnimationComponent], [4, UE.UIItem], [5, UE.SpineSkeletonAnimationComponent], [6, UE.UIItem], [1, UE.UIVerticalLayout], [2, UE.UIItem]];
@@ -77,7 +77,17 @@ class MapRoguePanelRole extends UiPanelBase_1.UiPanelBase {
     this.GetVerticalLayout(1).RootUIComp.SetUIItemScale(e.ToUeVectorOld());
   }
   WE1() {
-    this.ListSliderControl = new ListSliderControl_1.ListSliderControl(RogueGetListItem_1.RogueGetListItem, this.GetItem(2), this.wOt, this.r0i, this.s0i, this.HDe, 1, CommonParamById_1.configCommonParamById.GetFloatConfig("MapRogueGetListShowTime"), CommonParamById_1.configCommonParamById.GetFloatConfig("MapRogueGetListSilderTime"), 1);
+    this.ListSliderControl = new ListSliderControl_1.ListSliderControl({
+      CreateProxyFunction: this.d_d,
+      ParentUi: this.GetItem(2).GetParentAsUIItem(),
+      CheckNext: this.r0i,
+      ChildTemplate: this.GetItem(2),
+      MaxShowCount: this._v1,
+      AddItemTime: this.cv1,
+      TickMode: 1,
+      ItemShowTime: CommonParamById_1.configCommonParamById.GetFloatConfig("MapRogueGetListShowTime"),
+      ItemSliderTime: CommonParamById_1.configCommonParamById.GetFloatConfig("MapRogueGetListSilderTime")
+    });
     this.ListSliderControl.DisEnableParentLayout();
   }
 }

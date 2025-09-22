@@ -29,6 +29,44 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
       });
     };
   }
+  ExecuteInGm(e, t, r) {
+    if (e) {
+      var i = e;
+      this.zLe = Vector_1.Vector.Create(i.Pos.X ?? 0, i.Pos.Y ?? 0, i.Pos.Z ?? 0);
+      switch (i.Target.Type) {
+        case "Player":
+          break;
+        case "Target":
+          this.$Le = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(i.Target.EntityId);
+          break;
+        case "Triggered":
+          if (!(t instanceof LevelGeneralContextDefine_1.TriggerContext) || !t.OtherEntityId) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("LevelEvent", 39, "[LevelEventCharacterMove] context数据异常");
+            }
+            this.FinishExecute(false);
+            return;
+          }
+          this.$Le = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t.OtherEntityId);
+          break;
+        default:
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("LevelEvent", 39, "[LevelEventCharacterMove] 不支持的目标类型");
+          }
+          this.FinishExecute(false);
+          return;
+      }
+      if (this.$Le && !this.$Le.Entity?.GetComponent(0)?.IsPlayer()) {
+        this.$Le.Entity?.GetComponent(1)?.SetActorLocation(this.zLe.ToUeVector(), "LevelEventCharacterMove:Gm推进", false);
+      }
+      this.FinishExecute(true);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelEvent", 39, "[LevelEventCharacterMove] 参数不合法");
+      }
+      this.FinishExecute(false);
+    }
+  }
   ExecuteNew(e, t, r) {
     if (e) {
       var i = e;
@@ -153,27 +191,27 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
     var t;
     var r;
     var i;
-    var o;
     var a;
+    var o;
     var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
     if (n?.Valid) {
       t = n.GetComponent(176);
       r = n.GetComponent(40);
       i = n.GetComponent(3);
-      o = n.GetComponent(62);
-      a = n.GetComponent(206);
+      a = n.GetComponent(62);
+      o = n.GetComponent(206);
       n = n.GetComponent(179);
       if (e) {
         n?.StopMove(false);
         n?.ResetMaxSpeed(t?.MoveState);
         i?.ClearInput();
-        o?.ClearMoveVectorCache();
-        o?.SetActive(true);
-        a?.RemoveTag(-1697149502);
-        a?.RemoveTag(-541178966);
-        a?.RemoveTag(-542518289);
-        a?.RemoveTag(-2140742267);
-        a?.RemoveTag(-1013832153);
+        a?.ClearMoveVectorCache();
+        a?.SetActive(true);
+        o?.RemoveTag(-1697149502);
+        o?.RemoveTag(-541178966);
+        o?.RemoveTag(-542518289);
+        o?.RemoveTag(-2140742267);
+        o?.RemoveTag(-1013832153);
       } else {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "LevelEventCharacterMove");
         if (t?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection) {
@@ -183,35 +221,35 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
           r.EndOwnerAndFollowSkills();
         }
         i?.ClearInput();
-        o?.ClearMoveVectorCache();
-        o?.SetActive(false);
-        a?.AddTag(-1697149502);
-        a?.AddTag(-541178966);
-        a?.AddTag(-542518289);
-        a?.AddTag(-2140742267);
-        a?.AddTag(-1013832153);
+        a?.ClearMoveVectorCache();
+        a?.SetActive(false);
+        o?.AddTag(-1697149502);
+        o?.AddTag(-541178966);
+        o?.AddTag(-542518289);
+        o?.AddTag(-2140742267);
+        o?.AddTag(-1013832153);
       }
       ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     }
   }
 }
-(exports.LevelEventCharacterMove = LevelEventCharacterMove).eDe = (e, t, r, i, o) => {
+(exports.LevelEventCharacterMove = LevelEventCharacterMove).eDe = (e, t, r, i, a) => {
   if (e !== 1) {
     e = t?.Entity?.GetComponent(3);
     if (r) {
       ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPositionNoLoading(i.ToUeVector(), e?.ActorRotation, "[LevelEventCharacterMove] 移动失败或超时，传送到目标位置").finally(() => {
         LevelEventCharacterMove.rDe(true);
-        o?.();
+        a?.();
       });
     } else {
       e?.TeleportAndFindStandLocation(i);
-      o?.();
+      a?.();
     }
   } else {
     if (r) {
       LevelEventCharacterMove.rDe(true);
     }
-    o?.();
+    a?.();
   }
 };
 //# sourceMappingURL=LevelEventCharacterMove.js.map

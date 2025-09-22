@@ -15,29 +15,29 @@ const TouchUiEditViewModel_1 = require("./TouchUiEditViewModel");
 class TouchUiEditProxy {
   constructor(i, e, t) {
     this.ERi = i;
-    this.fHu = e;
-    this.gHu = t;
+    this.N$u = e;
+    this.V$u = t;
     this.Yzt = undefined;
-    this.CHu = new Map();
+    this.j$u = new Map();
     this.p5l = [];
-    this.pHu = 0;
-    this.vHu = 0;
-    this.yHu = () => {
+    this.bQu = 0;
+    this.RQu = 0;
+    this.H$u = () => {
       var i = [];
-      for (const e of this.CHu.values()) {
+      for (const e of this.j$u.values()) {
         i.push(e.Data);
       }
-      this.fHu.SaveData(i);
+      this.N$u.SaveData(i);
     };
     this.Eqt = (i, e) => {
       var e = e.TouchType;
       var t = Number(i);
       switch (e) {
         case 0:
-          this.SHu(true, t);
+          this.$$u(true, t);
           break;
         case 1:
-          this.SHu(false, t);
+          this.$$u(false, t);
           break;
         case 2:
           this.imr(t);
@@ -52,23 +52,23 @@ class TouchUiEditProxy {
   }
   async OnBeforeStartAsync() {
     var i = [];
-    for (const e of this.fHu.GetResIdList()) {
+    for (const e of this.N$u.GetResIdList()) {
       i.push(e);
     }
     await this.ERi.LoadPanel(this.Yzt.GetAttachRoot(), i);
   }
   OnStart() {
     TouchUiEditViewModel_1.TouchUiEditViewModel.SetRootItem(this.ERi.GetRootItem());
-    for (const s of this.fHu.GetResIdList()) {
+    for (const s of this.N$u.GetResIdList()) {
       var e = this.ERi.GetItemList(s);
       for (let i = 0; i < e.length; i++) {
         var t = e[i];
-        var n = this.fHu.GetData(s, i);
-        var t = this.gHu(t, n);
+        var n = this.N$u.GetData(s, i);
+        var t = this.V$u(t, n);
         t.SetData(n);
-        var n = this.fHu.GetStorageId(s, i);
+        var n = this.N$u.GetStorageId(s, i);
         if (n) {
-          this.CHu.set(n, t);
+          this.j$u.set(n, t);
         }
         this.p5l.push(t);
         if (t.Data?.DefaultSelect) {
@@ -76,28 +76,28 @@ class TouchUiEditProxy {
         }
       }
     }
-    this.MHu();
+    this.W$u();
   }
   OnBeforeDestroy() {
-    this.EHu();
+    this.Q$u();
     TouchUiEditViewModel_1.TouchUiEditViewModel.SetCurrentSelectedItem(undefined);
     for (const i of this.p5l) {
       i.OnViewDestroy();
     }
-    this.CHu.clear();
+    this.j$u.clear();
     this.p5l.length = 0;
     this.ERi.OnViewDestroy();
   }
   OnTick(i) {
-    if (!!this.Yzt && !!this.UVi && (this.pHu !== 0 || this.vHu !== 0)) {
-      this.UVi.SetOffset(this.UVi.Data.OffsetX + this.pHu, this.UVi.Data.OffsetY + this.vHu);
+    if (!!this.Yzt && !!this.UVi && (this.bQu !== 0 || this.RQu !== 0)) {
+      this.UVi.SetOffset(this.UVi.Data.OffsetX + this.bQu, this.UVi.Data.OffsetY + this.RQu);
     }
   }
   SetOffsetDeltaX(i) {
-    this.pHu = i;
+    this.bQu = i;
   }
   SetOffsetDeltaY(i) {
-    this.vHu = i;
+    this.RQu = i;
   }
   SetScale(i) {
     this.UVi?.SetScale(i);
@@ -110,31 +110,31 @@ class TouchUiEditProxy {
   }
   Save() {
     var i;
-    if (this.IHu()) {
+    if (this.K$u()) {
       (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(103)).FunctionMap.set(2, () => {
-        this.yHu();
+        this.H$u();
         this.Yzt?.CloseMe();
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     } else {
-      this.yHu();
+      this.H$u();
       this.Yzt?.CloseMe();
     }
   }
   Reset() {
-    for (const t of this.CHu.values()) {
+    for (const t of this.j$u.values()) {
       var i;
-      var e = this.fHu.GetResPair(t.Data.StorageId);
-      if (e && ([e, i] = e, e = this.fHu.GetDefaultData(e, i))) {
+      var e = this.N$u.GetResPair(t.Data.StorageId);
+      if (e && ([e, i] = e, e = this.N$u.GetDefaultData(e, i))) {
         t.SetScale(e.Scale);
         t.SetOffset(e.OffsetX, e.OffsetY);
         t.SetAlpha(e.Alpha);
         t.SetHierarchyIndex(e.HierarchyIndex);
       }
     }
-    this.yHu();
+    this.H$u();
   }
-  IHu() {
+  K$u() {
     for (let e = 0; e < this.p5l.length; e++) {
       var t = this.p5l[e];
       if (t.Data?.ShouldCheckOverlap && t.RootItem.IsUIActiveInHierarchy() && t.RootItem.IsRaycastTarget()) {
@@ -148,13 +148,13 @@ class TouchUiEditProxy {
     }
     return false;
   }
-  MHu() {
+  W$u() {
     InputDistributeController_1.InputDistributeController.BindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.Eqt);
   }
-  EHu() {
+  Q$u() {
     InputDistributeController_1.InputDistributeController.UnBindTouches([InputMappingsDefine_1.touchIdMappings.Touch1, InputMappingsDefine_1.touchIdMappings.Touch2, InputMappingsDefine_1.touchIdMappings.Touch3, InputMappingsDefine_1.touchIdMappings.Touch4, InputMappingsDefine_1.touchIdMappings.Touch5, InputMappingsDefine_1.touchIdMappings.Touch6, InputMappingsDefine_1.touchIdMappings.Touch7, InputMappingsDefine_1.touchIdMappings.Touch8, InputMappingsDefine_1.touchIdMappings.Touch9, InputMappingsDefine_1.touchIdMappings.Touch10], this.Eqt);
   }
-  SHu(i, e) {
+  $$u(i, e) {
     e = TouchFingerManager_1.TouchFingerManager.GetTouchFingerData(e);
     if (e) {
       if (i) {
@@ -172,8 +172,8 @@ class TouchUiEditProxy {
       var t = t.GetFingerIndex();
       var n = n.GetFingerIndex();
       var t = TouchFingerManager_1.TouchFingerManager.GetFingerExpandCloseValue(t, n);
-      var n = MathUtils_1.MathUtils.RangeClamp(t, this.fHu.MinTouchMoveDifference, this.fHu.MaxTouchMoveDifference, this.fHu.MinTouchMoveValue, this.fHu.MaxTouchMoveValue);
-      var t = this.UVi.Data.Scale + n * this.fHu.ControlScaleRate;
+      var n = MathUtils_1.MathUtils.RangeClamp(t, this.N$u.MinTouchMoveDifference, this.N$u.MaxTouchMoveDifference, this.N$u.MinTouchMoveValue, this.N$u.MaxTouchMoveValue);
+      var t = this.UVi.Data.Scale + n * this.N$u.ControlScaleRate;
       var n = this.Yzt.GetScaleSlider();
       let i = t;
       if (n) {

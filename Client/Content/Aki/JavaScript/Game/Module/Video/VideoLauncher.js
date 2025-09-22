@@ -13,30 +13,29 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiManager_1 = require("../../Ui/UiManager");
 class VideoLauncher {
-  static ShowVideoCg(e, i, o, n, r = false) {
+  static ShowVideoCg(e, i, o, r, a = false) {
     if (e) {
-      VideoLauncher.ShowVideoCgAsync(e, i, o, n, r);
+      VideoLauncher.ShowVideoCgAsync(e, i, o, r, a);
     } else {
       i();
     }
   }
-  static async ShowVideoCgAsync(e, i, o, n, r) {
+  static async ShowVideoCgAsync(e, i, o, r, a) {
     this.PNo = i;
-    var a = ConfigManager_1.ConfigManager.VideoConfig.GetVideoData(e);
-    if (a) {
+    var n = ConfigManager_1.ConfigManager.VideoConfig.GetVideoData(e);
+    if (n) {
       this.pDe = {
-        VideoDataConf: a,
+        VideoDataConf: n,
         VideoCloseCb: this.Bto,
         BackgroundColor: o,
-        RemainViewWhenEnd: n
+        RemainViewWhenEnd: r
       };
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Video", 38, "打开视频播放界面", ["视频配置", e]);
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MoveCursorToRightDown);
       if (UiManager_1.UiManager.IsViewShow("VideoView")) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlayVideo, this.pDe);
-      } else if (r) {
+      } else if (a) {
         const t = new CustomPromise_1.CustomPromise();
         UiManager_1.UiManager.OpenViewByPlot("VideoView", this.pDe, () => {
           t.SetResult();

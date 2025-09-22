@@ -46,7 +46,7 @@ class ShopItemFullInfo {
     this.PurchaseText = s.Zqs;
     this.ItemId = s.L8n;
     this.ShopId = i;
-    this.SortIndex = s.nzc;
+    this.SortIndex = s.lZc;
   }
   get LockInfo() {
     var t;

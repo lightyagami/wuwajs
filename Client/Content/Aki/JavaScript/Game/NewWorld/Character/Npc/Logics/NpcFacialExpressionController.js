@@ -19,9 +19,12 @@ class FaceExpressionInfo {
     this.Type = undefined;
     this.Config = undefined;
     this.Asset = undefined;
+    this.DisableBlink = false;
     this.Id = t;
-    this.Config = ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(t)?.FaceExpression;
+    t = ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(t);
+    this.Config = t?.FaceExpression;
     this.Type = this.Config?.Type;
+    this.DisableBlink = t?.CloseAutoBlink ?? false;
   }
   IsValid() {
     return !!this.Config;
@@ -29,7 +32,7 @@ class FaceExpressionInfo {
 }
 class NpcFacialExpressionController {
   constructor(t) {
-    this.vad = 0;
+    this.Aud = 0;
     this.Mer = new UE.FName("AniSwitch_Face");
     this.Ser = new UE.FName("FaceAniMap");
     this.yer = new UE.FName("MI_Face");
@@ -37,8 +40,8 @@ class NpcFacialExpressionController {
     this.Hte = undefined;
     this.oRe = undefined;
     this.wDe = undefined;
-    this.lYc = undefined;
-    this._Yc = undefined;
+    this._Jc = undefined;
+    this.uJc = undefined;
     this.$0a = false;
     this.Ler = undefined;
     this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
@@ -47,7 +50,7 @@ class NpcFacialExpressionController {
     this.HOc = undefined;
     this.$Oc = undefined;
     this.$7a = new Set();
-    this.hQc = undefined;
+    this.AYu = undefined;
     this.WOc = (t, i) => {
       if (t?.IsValid() && this.HOc === t && !this.oRe?.MainAnimInstance?.Montage_IsActive(t)) {
         this.HOc = undefined;
@@ -59,7 +62,7 @@ class NpcFacialExpressionController {
     this.KOc = (t, i) => {
       if (t?.IsValid() && this.$Oc === t && !this.oRe?.MainAnimInstance?.Montage_IsActive(t)) {
         t = this.Hte?.Actor.CharRenderingComponent;
-        if (this.hQc && t) {
+        if (this.AYu && t) {
           t.CanUpdate = true;
         }
         this.$Oc = undefined;
@@ -75,8 +78,8 @@ class NpcFacialExpressionController {
   Init() {
     var t;
     var i = EntitySystem_1.EntitySystem.GetComponent(this.E0, 0)?.GetPbEntityInitData();
-    if (i && ((t = (0, IComponent_1.getComponent)(i.ComponentsData, "EntityVisibleComponent")) && (this.hQc = t.UseHolographicEffect), t = (0, IComponent_1.getComponent)(i.ComponentsData, "NpcPerformComponent")) && t.DefaultFaceExpressionId && (i = new FaceExpressionInfo(t.DefaultFaceExpressionId))?.IsValid()) {
-      this._Yc = i;
+    if (i && ((t = (0, IComponent_1.getComponent)(i.ComponentsData, "EntityVisibleComponent")) && (this.AYu = t.UseHolographicEffect), t = (0, IComponent_1.getComponent)(i.ComponentsData, "NpcPerformComponent")) && t.DefaultFaceExpressionId && (i = new FaceExpressionInfo(t.DefaultFaceExpressionId))?.IsValid()) {
+      this.uJc = i;
       this.QOc("初始化默认表情");
     }
   }
@@ -95,8 +98,8 @@ class NpcFacialExpressionController {
     var i;
     if (this.E0 && t) {
       if ((i = new FaceExpressionInfo(t)).IsValid()) {
-        if (this.uYc(i)) {
-          this.lYc = i;
+        if (this.cJc(i)) {
+          this._Jc = i;
           this.$0a = i.Type === "Morph";
         }
       } else if (Log_1.Log.CheckError()) {
@@ -104,8 +107,7 @@ class NpcFacialExpressionController {
       }
     }
   }
-  uYc(t) {
-    var i;
+  cJc(t) {
     if (t.Type === "Texture") {
       i = t.Config;
       this.Der(i.FaceIndex);
@@ -117,7 +119,11 @@ class NpcFacialExpressionController {
       this.Ler = i.MorphData;
       this.Rer(i.MorphData);
     } else if (t.Type === "AnimSequence") {
-      this.ozc(t);
+      this.nZc(t);
+    }
+    var i = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(44);
+    if (i?.Valid) {
+      i.DisableBlink = t.DisableBlink;
     }
     return true;
   }
@@ -137,9 +143,9 @@ class NpcFacialExpressionController {
     }
     return true;
   }
-  ozc(i) {
+  nZc(i) {
     var t;
-    if (this.RWa !== ResourceSystem_1.ResourceSystem.InvalidId && (this.lYc ?? this._Yc)?.Config.Path !== i.Config.Path) {
+    if (this.RWa !== ResourceSystem_1.ResourceSystem.InvalidId && (this._Jc ?? this.uJc)?.Config.Path !== i.Config.Path) {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.RWa);
       this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
     }
@@ -227,7 +233,7 @@ class NpcFacialExpressionController {
     var s;
     if (t && this.E0 && (i = this.oRe?.MainAnimInstance)) {
       s = this.Hte?.Actor.CharRenderingComponent;
-      if (this.hQc && s) {
+      if (this.AYu && s) {
         s.CanUpdate = false;
       }
       this.$Oc = t;
@@ -284,10 +290,10 @@ class NpcFacialExpressionController {
     if (this.$Oc) {
       this.X0a(4, t);
     } else if (this.HOc) {
-      this.Z0a(this.lYc?.Id);
+      this.Z0a(this._Jc?.Id);
       this.X0a(3, t);
-    } else if (this.$7a.size && this.lYc?.Id) {
-      this.Z0a(this.lYc.Id);
+    } else if (this.$7a.size && this._Jc?.Id) {
+      this.Z0a(this._Jc.Id);
       this.X0a(2, t);
     } else {
       this.X7a(t);
@@ -300,32 +306,36 @@ class NpcFacialExpressionController {
         this.RWa = ResourceSystem_1.ResourceSystem.InvalidId;
       }
       this.oRe?.MainAnimInstance?.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT);
-      switch (this.lYc?.Type ?? this._Yc?.Type ?? (this.$0a ? "Morph" : "Texture")) {
+      switch (this._Jc?.Type ?? this.uJc?.Type ?? (this.$0a ? "Morph" : "Texture")) {
         case "Texture":
-          var i = this._Yc?.Config;
+          var i = this.uJc?.Config;
           this.Der(i?.FaceIndex ?? 1);
           break;
         case "Morph":
           this.XOc(this.Ler);
           this.Ler = undefined;
-          i = this._Yc?.Config;
+          i = this.uJc?.Config;
           if (i?.MorphData) {
             this.Ler = i.MorphData;
             this.Rer(i.MorphData);
           }
           break;
         case "AnimSequence":
-          if (this._Yc?.IsValid()) {
-            this.ozc(this._Yc);
+          if (this.uJc?.IsValid()) {
+            this.nZc(this.uJc);
           }
       }
-      this.lYc = undefined;
+      var s = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(44);
+      if (s?.Valid) {
+        s.DisableBlink = false;
+      }
+      this._Jc = undefined;
       this.HOc = undefined;
-      this.cYc(t);
+      this.dJc(t);
     }
   }
-  cYc(t = "") {
-    if (this._Yc?.IsValid()) {
+  dJc(t = "") {
+    if (this.uJc?.IsValid()) {
       this.X0a(3, t);
     } else {
       this.X0a(1, t);
@@ -341,7 +351,7 @@ class NpcFacialExpressionController {
     return true;
   }
   GetFacialExpressionHandleId() {
-    return ++this.vad;
+    return ++this.Aud;
   }
 }
 exports.NpcFacialExpressionController = NpcFacialExpressionController;

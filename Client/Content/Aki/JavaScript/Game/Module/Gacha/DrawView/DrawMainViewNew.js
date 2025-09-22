@@ -6,17 +6,18 @@ Object.defineProperty(exports, "__esModule", {
 exports.DrawMainViewNew = undefined;
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
+const Info_1 = require("../../../../Core/Common/Info");
 const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
 const BlackScreenController_1 = require("../../BlackScreen/BlackScreenController");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
-const GlobalData_1 = require("../../../GlobalData");
-const Info_1 = require("../../../../Core/Common/Info");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const SHOW_TIPS_DELAY = 2000;
 class DrawMainViewNew extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
@@ -149,6 +150,7 @@ class DrawMainViewNew extends UiTickViewBase_1.UiTickViewBase {
     if (Info_1.Info.IsMacPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 0");
     }
+    ControllerHolder_1.ControllerHolder.MenuController.CloseAllFilter();
   }
   OnStart() {
     this.GetButton(1).RootUIComp.SetUIActive(true);

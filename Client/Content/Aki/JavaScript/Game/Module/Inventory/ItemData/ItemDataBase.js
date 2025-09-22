@@ -55,6 +55,24 @@ class ItemDataBase {
   GetIsDeprecated() {
     return false;
   }
+  GetIsShowUseButton() {
+    return false;
+  }
+  IsBuffEquipItem() {
+    return false;
+  }
+  IsBuffEquippedItem() {
+    return false;
+  }
+  IsBuffItem() {
+    return false;
+  }
+  IsShowInInventory() {
+    return this.OnIsShowInInventory();
+  }
+  OnIsShowInInventory() {
+    return this.GetType() !== 0;
+  }
 }
 exports.ItemDataBase = ItemDataBase;
 //# sourceMappingURL=ItemDataBase.js.map

@@ -10,10 +10,10 @@ class MonsterHandBookFilter extends CommonFilter_1.CommonFilter {
   constructor() {
     super(...arguments);
     this.eDt = e => {
-      return ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetMonsterDetectionConfById(e)?.DangerType ?? 0;
+      return ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(e)?.Type ?? 0;
     };
     this.tDt = e => {
-      return ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetMonsterDetectionConfById(e)?.TypeDescription2 ?? 0;
+      return ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(e)?.Classification ?? 0;
     };
   }
   OnInitFilterMap() {

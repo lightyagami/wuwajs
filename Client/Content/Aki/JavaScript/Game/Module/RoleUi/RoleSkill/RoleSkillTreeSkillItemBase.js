@@ -126,6 +126,9 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   GetState() {
     return this.ac;
   }
+  TriggerToggle() {
+    this.N8e();
+  }
 }
 exports.RoleSkillTreeSkillItemBase = RoleSkillTreeSkillItemBase;
 //# sourceMappingURL=RoleSkillTreeSkillItemBase.js.map

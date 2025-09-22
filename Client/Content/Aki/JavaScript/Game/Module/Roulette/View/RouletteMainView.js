@@ -16,6 +16,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const InputDistributeController_1 = require("../../../Ui/InputDistribute/InputDistributeController");
 const InputDistributeDefine_1 = require("../../../Ui/InputDistribute/InputDistributeDefine");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RouletteInputManager_1 = require("../RouletteInputManager");
 class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
@@ -82,6 +83,9 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
         this.ComponentRegisterInfos = [[0, UE.UIItem]];
     }
   }
+  OnBeforeCreate() {
+    UiInteractLogReport_1.UiInteractLogReport.RecordRouletteOpen();
+  }
   async OnBeforeStartAsync() {
     await this.ts1.BeforeStartAsync();
   }
@@ -130,6 +134,7 @@ class RouletteMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAfterDestroy() {
     this.Ipo();
+    UiInteractLogReport_1.UiInteractLogReport.RecordRouletteClose();
   }
   Ipo() {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(10, [19], true);

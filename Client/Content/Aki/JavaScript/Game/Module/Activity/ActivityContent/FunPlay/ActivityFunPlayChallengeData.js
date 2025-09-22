@@ -20,9 +20,9 @@ class ActivityFunPlayChallengeData extends ActivityData_1.ActivityExData {
     super(...arguments);
     this.hyc = 0;
     this.Gol = 0;
-    this.prd = Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanNoReward;
+    this.nnd = Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanNoReward;
     this.Lo = undefined;
-    this.vrd = [];
+    this.snd = [];
     this._be = 0;
     this.Index = -1;
   }
@@ -30,17 +30,17 @@ class ActivityFunPlayChallengeData extends ActivityData_1.ActivityExData {
     this.hyc = t.e8n;
     this.Lo = ConfigManager_1.ConfigManager.ActivityFunPlayConfig.GetFunPlayActivityChallenge(this.hyc);
     this.Gol = Number(MathUtils_1.MathUtils.LongToBigInt(t.yzs)) / 1000;
-    this.prd = t.t7u;
-    this.vrd.length = 0;
-    for (const i of t.hrd) {
+    this.nnd = t.Y$c;
+    this.snd.length = 0;
+    for (const i of t.qrd) {
       var e = ConfigManager_1.ConfigManager.ActivityFunPlayConfig.GetFunPlaySharpComment(i);
       if (e) {
-        this.vrd.push(e);
+        this.snd.push(e);
       }
     }
-    this.vrd.sort((t, e) => t.VarPriority - e.VarPriority);
+    this.snd.sort((t, e) => t.VarPriority - e.VarPriority);
     this._be = Number(MathUtils_1.MathUtils.LongToBigInt(t.rvs));
-    this.yrd();
+    this.hnd();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshActivityFunPlayRedDot, this.hyc);
     this.RefreshActivityRedPoint();
   }
@@ -96,10 +96,10 @@ class ActivityFunPlayChallengeData extends ActivityData_1.ActivityExData {
     return TimeUtil_1.TimeUtil.GetRemainTimeDataFormat(t).CountDownText ?? "";
   }
   CheckRewardStatus(t) {
-    return this.prd === t;
+    return this.nnd === t;
   }
   GetSharpComments() {
-    return this.vrd;
+    return this.snd;
   }
   GetChallengeId() {
     return this.hyc;
@@ -129,14 +129,14 @@ class ActivityFunPlayChallengeData extends ActivityData_1.ActivityExData {
     }
   }
   GetRedPoint() {
-    return !!this.Srd() || !!this.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanReward);
+    return !!this.lnd() || !!this.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanReward);
   }
-  Srd() {
-    return !!this.GetIsUnlock() && this.Mrd() === 1;
+  lnd() {
+    return !!this.GetIsUnlock() && this._nd() === 1;
   }
-  yrd() {
+  hnd() {
     var t = this.GetIsUnlock();
-    var e = this.Mrd();
+    var e = this._nd();
     if (t) {
       if (e === 1) {
         ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.ActivityId, 0, ActivityFunPlayData_1.CLICKQUESTKEY, 0, 0);
@@ -146,7 +146,7 @@ class ActivityFunPlayChallengeData extends ActivityData_1.ActivityExData {
       ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.ActivityId, this.hyc, LOCKKEY, 0, 1);
     }
   }
-  Mrd() {
+  _nd() {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.ActivityId, -1, this.hyc, LOCKKEY, 0);
   }
   RefreshUnlockRedDot() {

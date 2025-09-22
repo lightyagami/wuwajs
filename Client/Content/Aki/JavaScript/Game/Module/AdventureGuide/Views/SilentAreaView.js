@@ -15,6 +15,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
+const UiManager_1 = require("../../../Ui/UiManager");
 const CommonCurrencyItem_1 = require("../../Common/CommonCurrencyItem");
 const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -35,13 +36,13 @@ class SilentAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.O6e = undefined;
     this.k6e = undefined;
     this.YVe = (e, i, r) => {
-      var t = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      t.Initialize(i.GetOwner());
-      t.RefreshByConfigId(e.Id, e.Num, e);
-      t.SetReceivedVisible(e.Received);
+      var o = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
+      o.Initialize(i.GetOwner());
+      o.RefreshByConfigId(e.Id, e.Num, e);
+      o.SetReceivedVisible(e.Received);
       return {
         Key: r,
-        Value: t
+        Value: o
       };
     };
     this.z8e = (e, i) => {
@@ -54,19 +55,19 @@ class SilentAreaView extends UiTabViewBase_1.UiTabViewBase {
       this.$8e = e;
       var e = this.GetText(2);
       var r = this.GetText(1);
-      var t = i.Conf.Name;
-      var o = this.GetText(17);
-      o.SetUIActive(i.IsLock);
+      var o = i.Conf.Name;
+      var t = this.GetText(17);
+      t.SetUIActive(i.IsLock);
       this.GetButton(0).RootUIComp.SetUIActive(!i.IsLock);
       if (i.IsLock) {
         LguiUtil_1.LguiUtil.SetLocalText(r, AdventureGuideController_1.UNKNOWNTEXT);
         var n = i.Conf.LockCon;
         if (n) {
           n = ConditionGroupById_1.configConditionGroupById.GetConfig(n);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(o, n.HintText);
+          LguiUtil_1.LguiUtil.SetLocalTextNew(t, n.HintText);
         }
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(r, t);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(r, o);
         let e = 0;
         for (const _ of i.Conf.LevelPlayList) {
           var l = ModelManager_1.ModelManager.AdventureGuideModel.GetLevelOfLevelPlay(_);
@@ -75,51 +76,51 @@ class SilentAreaView extends UiTabViewBase_1.UiTabViewBase {
           }
         }
       }
-      var o = ControllerHolder_1.ControllerHolder.AdventureGuideController.GetMarkAreaText(i.Conf.MarkId);
-      if (o === "") {
+      var t = ControllerHolder_1.ControllerHolder.AdventureGuideController.GetMarkAreaText(i.Conf.MarkId);
+      if (t === "") {
         e.SetUIActive(false);
       } else {
         e.SetUIActive(true);
-        e.SetText(o);
+        e.SetText(t);
       }
-      var s = this.GetItem(7);
+      var a = this.GetItem(7);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(14), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataTextById(AdventureGuideController_1.HIGHLEVELTEXTID));
-      var a = this.GetItem(6);
+      var s = this.GetItem(6);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataTextById(AdventureGuideController_1.MIDLEVELTEXTID));
       var d = this.GetItem(5);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataTextById(AdventureGuideController_1.LOWLEVELTEXTID));
       switch (i.Conf.DangerType) {
         case 1:
-          s.SetUIActive(true);
-          a.SetUIActive(false);
+          a.SetUIActive(true);
+          s.SetUIActive(false);
           d.SetUIActive(false);
           break;
         case 2:
-          s.SetUIActive(false);
-          a.SetUIActive(true);
+          a.SetUIActive(false);
+          s.SetUIActive(true);
           d.SetUIActive(false);
           break;
         case 3:
-          s.SetUIActive(false);
           a.SetUIActive(false);
+          s.SetUIActive(false);
           d.SetUIActive(true);
       }
       n = this.GetTexture(4);
       r = this.GetItem(12);
-      t = this.GetText(13);
+      o = this.GetText(13);
       let h = "0";
       if (i.IsLock) {
         h = i.Conf.AttributesDescriptionLock;
         n.SetUIActive(false);
         r.SetUIActive(true);
         this.Y8e.SetInteractable(false);
-        LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.UNDISCOVERED);
+        LguiUtil_1.LguiUtil.SetLocalText(o, AdventureGuideController_1.UNDISCOVERED);
       } else {
         h = i.Conf.AttributesDescriptionUnlock;
         r.SetUIActive(false);
         n.SetUIActive(true);
         this.Y8e.SetInteractable(true);
-        LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.DETECT);
+        LguiUtil_1.LguiUtil.SetLocalText(o, AdventureGuideController_1.DETECT);
         this.SetTextureByPath(i.Conf.TemporaryIconUnLock, n);
       }
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), h);
@@ -128,19 +129,20 @@ class SilentAreaView extends UiTabViewBase_1.UiTabViewBase {
       if (!i.IsLock) {
         e.SetText(ModelManager_1.ModelManager.AdventureGuideModel.GetCostOfLevelPlay(i.Conf.LevelPlayList[0]).toString());
       }
-      o = this.GetText(9);
-      o.SetUIActive(false);
-      LguiUtil_1.LguiUtil.SetLocalText(o, AdventureGuideController_1.RECEIVED_COUNT, "");
+      t = this.GetText(9);
+      t.SetUIActive(false);
+      LguiUtil_1.LguiUtil.SetLocalText(t, AdventureGuideController_1.RECEIVED_COUNT, "");
       this.BuildRewardList(i.Conf.ShowReward);
     };
     this.Z8e = () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
-      var e = {
-        MarkId: CommonParamById_1.configCommonParamById.GetIntConfig("BoPianExchangeMarkId"),
-        MarkType: 8,
-        OpenFogId: 0
-      };
-      WorldMapController_1.WorldMapController.OpenView(2, false, e);
+      UiManager_1.UiManager.ResetToBattleView(() => {
+        var e = {
+          MarkId: CommonParamById_1.configCommonParamById.GetIntConfig("BoPianExchangeMarkId"),
+          MarkType: 8,
+          OpenFogId: 0
+        };
+        WorldMapController_1.WorldMapController.OpenView(2, false, e);
+      });
     };
     this.t8e = () => {
       var e;
@@ -208,13 +210,13 @@ class SilentAreaView extends UiTabViewBase_1.UiTabViewBase {
   BuildRewardList(e) {
     var i = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetDropShowInfo(e);
     var r = new Array();
-    for (const o of i.keys()) {
-      var t = {
-        Id: o,
-        Num: i.get(o),
+    for (const t of i.keys()) {
+      var o = {
+        Id: t,
+        Num: i.get(t),
         Received: false
       };
-      r.push(t);
+      r.push(o);
     }
     this.H3e.RefreshByData(r);
   }

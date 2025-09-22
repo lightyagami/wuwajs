@@ -116,8 +116,8 @@ class TimeUtil {
   }
   static CalculateDayGapBetweenNow(t, e) {
     var i = Time_1.Time.ServerTimeStamp / TimeUtil.InverseMillisecond;
-    var r = new Date();
-    var a = new Date(t * TimeUtil.InverseMillisecond);
+    var a = new Date();
+    var r = new Date(t * TimeUtil.InverseMillisecond);
     var i = e ? t - i : i - t;
     if (i < 0 && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Mail", 27, "时间非法");
@@ -125,7 +125,7 @@ class TimeUtil {
     var t = i / 86400;
     let n = t;
     if (t < 2) {
-      n = e ? r.getMonth() < a.getMonth() ? 1 : a.getDate() - r.getDate() : r.getMonth() > a.getMonth() ? 1 : r.getDate() - a.getDate();
+      n = e ? a.getMonth() < r.getMonth() ? 1 : r.getDate() - a.getDate() : a.getMonth() > r.getMonth() ? 1 : a.getDate() - r.getDate();
     }
     return parseInt(n.toFixed(0));
   }
@@ -176,37 +176,37 @@ class TimeUtil {
   static CalculateRemainingTime(e, i = 1) {
     if (!(e <= 0)) {
       let t = 3;
-      var r = {
+      var a = {
         TimeValue: 0,
         RemainingTime: e + TimeUtil.TimeDeviation,
         TextId: CommonDefine_1.remainTimeTextId[i]
       };
       for (; t >= i;) {
-        var a = TimeUtil.Fde[t](e);
-        if (a) {
-          r.TimeValue = a[0];
-          r.TextId = CommonDefine_1.remainTimeTextId[t];
-          r.RemainingTime = a[1] + TimeUtil.TimeDeviation;
-          return r;
+        var r = TimeUtil.Fde[t](e);
+        if (r) {
+          a.TimeValue = r[0];
+          a.TextId = CommonDefine_1.remainTimeTextId[t];
+          a.RemainingTime = r[1] + TimeUtil.TimeDeviation;
+          return a;
         }
         --t;
       }
-      return r;
+      return a;
     }
   }
-  static Vde(t, e, i, r) {
+  static Vde(t, e, i, a) {
     if (t <= 0) {
       return {
         CountDownText: undefined,
         RemainingTime: TimeUtil.TimeDeviation
       };
     }
-    var a = new StringBuilder_1.StringBuilder();
+    var r = new StringBuilder_1.StringBuilder();
     let n = t;
     let m = undefined;
     var o;
     m = i ?? 3;
-    o = r ?? 1;
+    o = a ?? 1;
     let s = undefined;
     switch (e) {
       case 0:
@@ -220,15 +220,15 @@ class TimeUtil {
     }
     while (m >= o) {
       var T = TimeUtil.Fde[m](n);
-      var u = this.Ode.GetTextById(s[m]);
-      var l = T ? T[0] : 0;
-      var u = StringUtils_1.StringUtils.Format(u, l.toString());
+      var l = this.Ode.GetTextById(s[m]);
+      var u = T ? T[0] : 0;
+      var l = StringUtils_1.StringUtils.Format(l, u.toString());
       n = T ? T[1] : n;
-      a.Append(u);
+      r.Append(l);
       --m;
     }
     return {
-      CountDownText: a.ToString(),
+      CountDownText: r.ToString(),
       RemainingTime: n + TimeUtil.TimeDeviation
     };
   }
@@ -279,10 +279,18 @@ class TimeUtil {
   }
   static GetRemainTimeDataFormat5(t) {
     var t = Math.max(0, t);
-    var e = Math.floor(t % TimeUtil.Hour / TimeUtil.Minute);
+    var e = this.Hour;
+    var t = Math.min(t, e);
+    var e = Math.floor(t / TimeUtil.Minute);
     var i = Math.floor(t % TimeUtil.Minute);
     var t = Math.floor((t - Math.floor(t)) * 100);
     return `${e.toString().padStart(2, "0")}:${i.toString().padStart(2, "0")}:${t.toString().padStart(2, "0")}`;
+  }
+  static GetRemainTimeDataFormat6(t) {
+    var t = Math.max(0, t);
+    var e = Math.floor(t % TimeUtil.Hour / TimeUtil.Minute);
+    var t = Math.floor(t % TimeUtil.Minute);
+    return e.toString().padStart(2, "0") + ":" + t.toString().padStart(2, "0");
   }
   static IsInTimeSpan(t, e) {
     var i = TimeUtil.GetServerTime();

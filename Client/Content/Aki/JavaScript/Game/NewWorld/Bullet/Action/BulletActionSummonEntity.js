@@ -28,6 +28,9 @@ class BulletActionSummonEntity extends BulletActionBase_1.BulletActionBase {
       Log_1.Log.Debug("Bullet", 20, "子弹召唤", ["Version", t]);
     }
     this.BulletInfo.SummonServerEntityId = ControllerHolder_1.ControllerHolder.CreatureController.SummonRequest(this.BulletInfo.BulletInitParams.SkillId, true, this.BulletInfo.ActorComponent.ActorTransform, this.BulletInfo.SummonAttackerId, this.BulletInfo.BulletDataMain.Summon.EntityId, t);
+    if (this.BulletInfo.SummonServerEntityId !== undefined) {
+      ModelManager_1.ModelManager.BulletModel.SummonerSummon(e.Id, this.BulletInfo.SummonServerEntityId);
+    }
     if (t > 0) {
       o.SetSummonsVersion(t + 1);
     }

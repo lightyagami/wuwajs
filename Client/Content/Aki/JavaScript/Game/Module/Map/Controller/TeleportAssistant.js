@@ -77,10 +77,10 @@ class TeleportAssistant extends ControllerAssistantBase_1.ControllerAssistantBas
     this.xK = undefined;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(24113, this.dDi);
+    Net_1.Net.Register(15017, this.dDi);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24113);
+    Net_1.Net.UnRegister(15017);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.hWe);
@@ -105,10 +105,10 @@ class TeleportAssistant extends ControllerAssistantBase_1.ControllerAssistantBas
   }
   async RequestTeleportData() {
     var e = Protocol_1.Aki.Protocol.cCs.create();
-    var e = await Net_1.Net.CallAsync(16418, e);
+    var e = await Net_1.Net.CallAsync(20759, e);
     if (e) {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 22525);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24129);
       } else {
         ModelManager_1.ModelManager.MapModel.UnlockTeleports(e.BVn, true);
       }

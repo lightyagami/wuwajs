@@ -47,9 +47,9 @@ class MapRogueOpMove extends MapRogueOp_1.MapRogueOp {
       t.SetMapGridBgStateProxy(t.CurSelectedIndex, false);
       t.SetMapGridBgStateProxy(s, true);
     }
-    this.Bod(t);
+    this.Vsd(t);
   }
-  async Bod(t) {
+  async Vsd(t) {
     t.FocusOnGrid(this.LastGridIndex, true, undefined, FOCUS_PLAYER_TWEEN_TIME);
     const s = new CustomPromise_1.CustomPromise();
     TimerSystem_1.GameplayTimerSystem.Delay(() => {

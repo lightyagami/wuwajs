@@ -108,6 +108,9 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
           break;
         case 4:
           await this.ResetToViewAsync(e.View);
+          break;
+        case 6:
+          await this.CloseAndOpenNewAsync(e.View, e.NextView);
       }
       e.ExecutePromise?.SetResult(true);
     }
@@ -279,13 +282,7 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
   }
   async CloseAndOpenNewAsync(e, i) {
     if (this.Rjt) {
-      if (i.IsQueueView) {
-        this.Wcr(e, 2);
-        this.Kcr(i);
-      } else {
-        this.Wcr(e, 3);
-        this.Wcr(i, 1);
-      }
+      this.Wcr(e, 6, i);
     } else {
       this.Ujt();
       if (e === this.v9.Peek()) {
@@ -295,6 +292,12 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
           Log_1.Log.Info("UiCore", 16, "CloseAndOpenNewAsync 入栈", ["ViewName", i.Info.Name]);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenView, i.Info.Name, i.GetViewId());
+        var t = e?.Info.ScenePath;
+        if (t && i.Info.ScenePath === t) {
+          i.SkipLoadScene = true;
+          i.SceneLoaded = true;
+          e.SkipReleaseScene = true;
+        }
         if (!(await i.CreateAsync())) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("UiCore", 10, "[CloseAndOpenNewAsync] CreateAsync failed", ["ViewName", i.Info.Name]);
@@ -324,8 +327,13 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
       for (const a of this.Ocr) {
         if (UiModel_1.UiModel.ResetToViewWhiteSet.has(a.View.Info.Name) || a.PendingType === 5) {
           i.push(a);
-        } else if (a.PendingType === 1) {
-          a.View.Destroy();
+        } else {
+          if (a.PendingType === 1) {
+            a.View.Destroy();
+          }
+          if (a.PendingType === 6) {
+            a.NextView.Destroy();
+          }
         }
       }
       this.Ocr = i;
@@ -618,8 +626,8 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
       this.Jft();
     }
   }
-  Wcr(e, i) {
-    var t = new UiViewPending_1.UiViewPending(e, i);
+  Wcr(e, i, t) {
+    t = new UiViewPending_1.UiViewPending(e, i, t);
     if (this.Ocr.length > 0) {
       var o = this.Ocr[this.Ocr.length - 1];
       if (o.Equal(t)) {

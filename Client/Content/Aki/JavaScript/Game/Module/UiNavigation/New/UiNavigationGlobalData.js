@@ -9,7 +9,7 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 class UiNavigationGlobalData {
   static GetListenerInstanceId() {
-    return ++this.e1d;
+    return ++this.Rgd;
   }
   static AddBlockListenerFocusTag(a) {
     if (Log_1.Log.CheckInfo()) {
@@ -36,4 +36,4 @@ UiNavigationGlobalData.IsAllowCrossNavigationGroup = false;
 UiNavigationGlobalData.IsAllowLoopScrollInteractHighlight = false;
 UiNavigationGlobalData.VisionReplaceViewFindDefault = true;
 UiNavigationGlobalData.IBo = new Set();
-UiNavigationGlobalData.e1d = 0; //# sourceMappingURL=UiNavigationGlobalData.js.map
+UiNavigationGlobalData.Rgd = 0; //# sourceMappingURL=UiNavigationGlobalData.js.map

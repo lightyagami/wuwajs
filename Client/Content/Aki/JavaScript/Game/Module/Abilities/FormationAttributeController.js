@@ -18,7 +18,7 @@ const CharacterAttributeTypes_1 = require("../../NewWorld/Character/Common/Compo
 class FormationAttributeController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     this.ConfigList = FormationPropertyAll_1.configFormationPropertyAll.GetConfigList();
-    Net_1.Net.Register(27027, FormationAttributeController.FormationAttrNotify);
+    Net_1.Net.Register(16549, FormationAttributeController.FormationAttrNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
     return true;
   }
@@ -31,14 +31,14 @@ class FormationAttributeController extends ControllerBase_1.ControllerBase {
   }
   static OnClear() {
     this.kBe();
-    Net_1.Net.UnRegister(27027);
+    Net_1.Net.UnRegister(16549);
     return true;
   }
   static OnFormationAttrChanged(t) {
     var e;
     var r;
     var i = this.Model?.GetData(t);
-    if (i && (e = Protocol_1.Aki.Protocol.t1s.create(), r = Protocol_1.Aki.Protocol.q4s.create(), e.M6n = [r], e.S6n = i.Timestamp, r.E6n = t, r.y6n = i.Value, r.I6n = i.Max, r.T6n = i.BaseMax, r.L6n = i.Speed, Net_1.Net.Call(23996, e, () => {}), Log_1.Log.CheckDebug())) {
+    if (i && (e = Protocol_1.Aki.Protocol.t1s.create(), r = Protocol_1.Aki.Protocol.q4s.create(), e.M6n = [r], e.S6n = i.Timestamp, r.E6n = t, r.y6n = i.Value, r.I6n = i.Max, r.T6n = i.BaseMax, r.L6n = i.Speed, Net_1.Net.Call(27702, e, () => {}), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Battle", 19, "发送队伍属性变化push", ["clientTime", i.Timestamp], ["data", JSON.stringify(r)]);
     }
   }

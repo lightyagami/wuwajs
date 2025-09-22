@@ -59,8 +59,8 @@ class BulletBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return t.GetComponent(170).Owner;
     }
   }
-  static DestroyBullet(t, e) {
-    BulletController_1.BulletController.DestroyBullet(t, e);
+  static DestroyBullet(t, e, r = false) {
+    BulletController_1.BulletController.DestroyBullet(t, e, 0, r);
     return true;
   }
   static DestroyAllBullet(t = false) {

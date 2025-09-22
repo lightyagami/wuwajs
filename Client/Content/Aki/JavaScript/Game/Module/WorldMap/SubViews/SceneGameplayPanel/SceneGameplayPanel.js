@@ -46,7 +46,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     this.U2o = undefined;
     this.rFo = undefined;
     this.nFo = false;
-    this.Jsd = false;
+    this.i1d = false;
     this.mji = () => {
       HelpController_1.HelpController.OpenHelpById(HELP_ID);
     };
@@ -177,7 +177,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
         var e;
         var i = ModelManager_1.ModelManager.AdventureGuideModel.GetNightMareTarget(this.u2o.MarkConfig.MapId, this.u2o.MarkConfig.RelativeId);
         if (!(i[1] <= 0)) {
-          this.Jsd = i[0] > 0;
+          this.i1d = i[0] > 0;
           this.hFo();
           (e = this.U2o.AddItemByKey(REWARD_SHARE_COUNT)).SetClickHelpFunc(this.XDu);
           e.SetLeftText(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("NightMareSceneGameplayPanelTips") ?? "");
@@ -308,7 +308,7 @@ class SceneGameplayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondaryU
     var t = this.Ymt.RefreshTime;
     if (t < i) {
       this.cG();
-    } else if (this.u2o?.MarkConfig?.RelativeSubType === 9 && !this.Jsd) {
+    } else if (this.u2o?.MarkConfig?.RelativeSubType === 9 && !this.i1d) {
       this.cG();
     } else {
       t = t - i;

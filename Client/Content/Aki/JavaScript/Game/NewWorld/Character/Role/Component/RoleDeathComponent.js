@@ -93,7 +93,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
             i.Z = t.Z;
             e.rdu = i;
           }
-          CombatMessage_1.CombatNet.Send(21893, this.Entity, e);
+          CombatMessage_1.CombatNet.Send(27681, this.Entity, e);
         } else if (t) {
           TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.ToUeVector(), undefined, "DrowningPunishment").finally(this.qin);
         }
@@ -115,7 +115,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     this.m1t = this.Entity.GetComponent(175);
     this.HBr = this.Entity.GetComponent(176);
     this.$te = this.Entity.GetComponent(174);
-    this.aTu = this.Entity.GetComponent(282);
+    this.aTu = this.Entity.GetComponent(283);
     return true;
   }
   OnStart() {
@@ -239,7 +239,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDrownInjure, t > 0 && e <= 0);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDrown, true);
-    CombatMessage_1.CombatNet.Send(21433, this.Entity, {});
+    CombatMessage_1.CombatNet.Send(29002, this.Entity, {});
   }
   IsDrowning() {
     return this.Xte?.HasTag(191377386) ?? false;

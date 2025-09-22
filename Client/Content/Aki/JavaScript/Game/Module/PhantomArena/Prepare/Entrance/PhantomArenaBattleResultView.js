@@ -21,7 +21,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
     this.Vnu = undefined;
     this.cmu = () => {
       this.Gau();
-      this.INu();
+      this.N3u();
       this.$pu();
     };
     this.Wpu = (e, i) => {
@@ -141,7 +141,7 @@ class PhantomArenaBattleResultView extends UiViewBase_1.UiViewBase {
       this.Oau.PlayExpTween(e, s, 0, 12);
     }
   }
-  INu() {
+  N3u() {
     if (this.Nvr.DS_.T51 !== this.Nvr.DS_.b51) {
       this.UiViewSequence.PlaySequence("Unlock");
     }

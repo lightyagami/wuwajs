@@ -1,16 +1,16 @@
 "use strict";
 
 var CreatureDataComponent_1;
-var __decorate = this && this.__decorate || function (t, i, e, s) {
-  var o;
+var __decorate = this && this.__decorate || function (t, i, e, o) {
+  var s;
   var r = arguments.length;
-  var n = r < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+  var n = r < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, i, e, s);
+    n = Reflect.decorate(t, i, e, o);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
-      if (o = t[h]) {
-        n = (r < 3 ? o(n) : r > 3 ? o(i, e, n) : o(i, e)) || n;
+      if (s = t[h]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(i, e, n) : s(i, e)) || n;
       }
     }
   }
@@ -129,6 +129,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.PbMoveSplineId = 0;
     this.PbMoveSplineConfig = undefined;
     this.PbMoveSplineSceneItemRuntimeData = undefined;
+    this.PbMoveToPointConfig = undefined;
     this.ZS1 = 1;
     this.eM1 = 0;
     this.SpawnedEntityInfos = [];
@@ -136,6 +137,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.HoldHandTargetEntityId = 0;
     this.HoldHandType = 0;
     this.HoldHandIsFollow = false;
+    this.HuluSkinId = 0;
     this.wDe = 0;
     this.vH = 0;
     this.mXr = false;
@@ -221,23 +223,22 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   OnInitData(t) {
     var i;
     var e = t;
-    var s = e.ComponentsKey;
+    var o = e.ComponentsKey;
     if (e instanceof CreateEntityData_1.CreateEntityData) {
       e = e.EntityData;
       this.E0 = this.Entity.Id;
-      this.ComponentsKey = s;
-      s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
+      this.ComponentsKey = o;
+      o = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
       i = t.CreatureDataId;
       this.SetCreatureDataId(i);
-      s.CreatureDataId = i;
-      this.SetPbDataId(e.v9n);
-      s.PbDataId = e.v9n;
+      o.CreatureDataId = i;
+      o.PbDataId = e.v9n;
       this.SetPrefabId(e.LEs);
       this.SetOwnerIncId(MathUtils_1.MathUtils.LongToNumber(e.JE_));
       this.SetEntityConfigType(e.ZHn);
-      s.ConfigType = e.ZHn;
+      o.ConfigType = e.ZHn;
       this.SetComponentKey(t.ComponentsKey);
-      s.EntityType = e.zHn;
+      o.EntityType = e.zHn;
       this.dXr = t.PbEntityInitData;
       this.d7a = t.TemplateData;
       this.gXr = t.PbModelConfigId ?? "";
@@ -792,11 +793,11 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
         this.nXr = new UE.SModelConfig();
         this.sXr = IComponent_1.levelPrefabBpPathConfig[t.BlueprintPath];
         this.nXr.场景交互物 = new UE.SoftObjectPath(FNameUtil_1.FNameUtil.GetDynamicFName(t.PrefabPath), "");
-        for (const s of t.PrefabStateList) {
-          this.nXr.场景交互物状态列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(s.LevelTag), s.SceneInteractionState);
+        for (const o of t.PrefabStateList) {
+          this.nXr.场景交互物状态列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(o.LevelTag), o.SceneInteractionState);
         }
-        for (const o of t.EffectStateList) {
-          this.nXr.场景交互物特效列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(o.LevelTag), o.SceneInteractionEffectState);
+        for (const s of t.EffectStateList) {
+          this.nXr.场景交互物特效列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(s.LevelTag), s.SceneInteractionEffectState);
         }
         if (t.NameOffsetZ) {
           this.nXr.名字Z偏移 = t.NameOffsetZ;
@@ -915,9 +916,6 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.fie = Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.nXr = undefined;
   }
-  SetPbDataId(t) {
-    this.wDe = t;
-  }
   GetPbDataId() {
     return this.wDe;
   }
@@ -1004,145 +1002,153 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   wXr(t) {
     this.ComponentDataMap.clear();
-    for (const l of t) {
-      var i = l.C3s;
-      this.ComponentDataMap.set(i, l);
+    for (const u of t) {
+      var i = u.C3s;
+      this.ComponentDataMap.set(i, u);
       switch (i) {
         case "sys":
-          this.SetHardnessModeId(l.sys.$Wn);
+          this.SetHardnessModeId(u.sys.$Wn);
           break;
         case "ays":
-          this.SetEntityCommonTags(l.ays.lIs);
+          this.SetEntityCommonTags(u.ays.lIs);
           break;
         case "dys":
-          this.SetBlackboardsByProtocol(l.dys.pIs);
+          this.SetBlackboardsByProtocol(u.dys.pIs);
           break;
         case "pys":
-          this.CXr = l.pys.yIs;
+          this.CXr = u.pys.yIs;
           break;
         case "lys":
-          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(l.lys.YWn));
-          this.SetSummonerPlayerId(l.lys.W5n);
-          this.SummonType = l.lys.h5n;
-          this.SummonCfgId = l.lys.dIs;
+          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(u.lys.YWn));
+          this.SetSummonerPlayerId(u.lys.W5n);
+          this.SummonType = u.lys.h5n;
+          this.SummonCfgId = u.lys.dIs;
           break;
         case "yys":
-          this.PXr(l.yys);
+          this.PXr(u.yys);
           break;
         case "Iys":
-          this.fXr = l.Iys.P5n ?? 1;
+          this.fXr = u.Iys.P5n ?? 1;
           break;
         case "Rys":
-          this.RelationId = l.Rys.bIs;
-          this.PbRelationMatchCfgIndex = l.Rys.BIs - 1;
-          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(l.Rys.xIs);
-          this.IsShowingHandFx = l.Rys.q5n;
+          this.RelationId = u.Rys.bIs;
+          this.PbRelationMatchCfgIndex = u.Rys.BIs - 1;
+          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(u.Rys.xIs);
+          this.IsShowingHandFx = u.Rys.q5n;
           break;
         case "Yys":
-          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(l.Yys.wIs);
+          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(u.Yys.wIs);
           break;
         case "Dys":
-          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(l.Dys.Z5n);
+          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(u.Dys.Z5n);
           this.RXr.length = 0;
-          for (const u of l.Dys.OIs) {
-            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(u));
+          for (const d of u.Dys.OIs) {
+            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(d));
           }
-          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(l.Dys.kIs);
+          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(u.Dys.kIs);
           break;
         case "wys":
-          for (const d of l.wys.FIs) {
-            this.OccupiedGridInfo.set(d.iLs, d);
+          for (const C of u.wys.FIs) {
+            this.OccupiedGridInfo.set(C.iLs, C);
           }
-          for (const C of l.wys.VIs) {
-            this.DynamicGridInfo.push(C);
+          for (const c of u.wys.VIs) {
+            this.DynamicGridInfo.push(c);
           }
-          this.BoardCanMove = l.wys.gI_;
+          this.BoardCanMove = u.wys.gI_;
           break;
         case "Nys":
-          this.PbInRangeEntityCreatureDataIds = l.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
-          this.PbInRangePlayerIds = l.Nys.iIs;
+          this.PbInRangeEntityCreatureDataIds = u.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
+          this.PbInRangePlayerIds = u.Nys.iIs;
           break;
         case "$ys":
-          var e = l.$ys;
+          var e = u.$ys;
           this.PbDynAttachEntityConfigId = e.qIs;
           this.PbDynAttachEntityActorKey = e.GIs;
           this.PbDynAttachRefActorKey = e._6n;
           this.PbDynAttachRelPos.Set(e.o6n?.X ?? 0, e.o6n?.Y ?? 0, e.o6n?.Z ?? 0);
           break;
         case "Hys":
-          e = l.Hys?.hEs;
+          e = u.Hys?.hEs;
           if (e) {
             this.sQt(e);
           }
           break;
         case "oI_":
-          this.zZa = l.oI_?.fI_ ?? false;
+          this.zZa = u.oI_?.fI_ ?? false;
           break;
         case "lI_":
-          var s = l.lI_;
-          this.nxl = s.yI_;
+          var o = u.lI_;
+          this.nxl = o.yI_;
           break;
         case "sI_":
-          s = l.sI_;
-          this.PbSceneItemAttributeIds = s.II_;
+          o = u.sI_;
+          this.PbSceneItemAttributeIds = o.II_;
           break;
         case "aI_":
-          var o = l.aI_;
-          this.PbPullingFoundationEntityId = o.bIs;
+          var s = u.aI_;
+          this.PbPullingFoundationEntityId = s.bIs;
           break;
         case "cI_":
-          o = l.cI_;
-          this.PbSceneAiEnabled = o.tWn;
-          this.PbPatrolInfoPb = o.tVn?.RI_;
+          s = u.cI_;
+          this.PbSceneAiEnabled = s.tWn;
+          this.PbPatrolInfoPb = s.tVn?.RI_;
           break;
         case "uI_":
-          var r = l.uI_;
+          var r = u.uI_;
           this.PbAnimalInitialPartIds = r.PI_;
           break;
         case "_I_":
-          r = l._I_;
+          r = u._I_;
           this.PbCombinePartInfoList = r.SI_;
           this.PbCombineTargetServerId = MathUtils_1.MathUtils.LongToNumber(r.TVn);
           break;
         case "mI_":
-          var n = l.mI_;
+          var n = u.mI_;
           this.PbHookLockPointDisabled = n.UI_;
           break;
         case "Tx_":
-          n = l.Tx_;
+          n = u.Tx_;
           this.PbHackingEntities = n.PSs;
           break;
         case "N7_":
-          var h = l.N7_;
+          var h = u.N7_;
           this.PbHackedByEntities = MathUtils_1.MathUtils.LongToNumber(h.V7_);
           break;
         case "TY_":
-          h = l.TY_;
+          h = u.TY_;
           this.PbGravityFlipDirection = h.RY_;
           break;
         case "pAc":
-          var a = l.pAc;
+          var a = u.pAc;
           this.PbMoveSplineId = a.dTs;
           this.PbMoveSplineConfig = a.vAc;
           this.PbMoveSplineSceneItemRuntimeData = a.yAc;
           break;
         case "Fp1":
-          this.UpdateRewardState(l.Fp1);
+          this.UpdateRewardState(u.Fp1);
           break;
         case "Av1":
-          a = l.Av1;
+          a = u.Av1;
           this.SpawnedEntityInfos = a.Pv1;
           this.TemplateSpawnerType = a.MS1;
           break;
-        case "XBu":
-          var _ = l.XBu;
-          this.TrapAuxiliaryConfigIds = _.JBu?.GNc;
+        case "WVu":
+          var _ = u.WVu;
+          this.TrapAuxiliaryConfigIds = _.KVu?.GNc;
           break;
-        case "_ju":
-          _ = l._ju;
-          this.HoldHandType = _.wju;
-          this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(_.TVn);
-          this.HoldHandIsFollow = _.Aju;
+        case "xLd":
+          _ = u.xLd;
+          this.HuluSkinId = _.ULd;
+          break;
+        case "t7u":
+          var l = u.t7u;
+          this.HoldHandType = l.i7u;
+          this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(l.TVn);
+          this.HoldHandIsFollow = l.o7u;
+          break;
+        case "K3d":
+          l = u.K3d;
+          this.PbMoveToPointConfig = l?.V41;
       }
     }
   }
@@ -1246,7 +1252,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     var t = Protocol_1.Aki.Protocol.kes.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Wpo);
     t.JWn = true;
-    Net_1.Net.Call(29413, t, () => {});
+    Net_1.Net.Call(24812, t, () => {});
   }
   IsRealMonster() {
     var t = this.fie === Protocol_1.Aki.Protocol.kks.Proto_Monster;
@@ -1305,6 +1311,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     for (const e of Object.keys(t)) {
       var i = t[e];
       this.xRn.set(e, i);
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.EntityVarUpdate, e, i);
     }
   }
   UpdateVar(t, i) {

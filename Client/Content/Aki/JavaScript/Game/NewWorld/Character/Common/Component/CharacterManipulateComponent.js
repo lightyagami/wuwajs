@@ -263,7 +263,7 @@ let CharacterManipulateComponent = CharacterManipulateComponent_1 = class Charac
     if (this.Bhh) {
       this.Eol();
     }
-    this.Bhh = InputController_1.InputController.CreateInputLayer(4);
+    this.Bhh = InputController_1.InputController.CreateInputLayer(5);
     if (this.Bhh && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity))) {
       this.Bhh.Init(t);
       InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
@@ -388,7 +388,7 @@ let CharacterManipulateComponent = CharacterManipulateComponent_1 = class Charac
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 39, "[CharacterManipulateComp] RequestChant(req)", ["Id", this.Entity.Id], ["PbdataId", this.Entity.GetComponent(0)?.GetPbDataId()], ["F4n", s]);
     }
-    Net_1.Net.Call(15614, a, t => {
+    Net_1.Net.Call(16465, a, t => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 39, "[CharacterManipulateComp] RequestChant(resp)", ["Id", this.Entity.Id], ["PbdataId", this.Entity.GetComponent(0)?.GetPbDataId()], ["F4n", s]);
       }
@@ -402,7 +402,7 @@ let CharacterManipulateComponent = CharacterManipulateComponent_1 = class Charac
             this.StopManipulate();
             return;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
             this.Q9r = false;
             this.StopManipulate();
             return;
@@ -414,7 +414,7 @@ let CharacterManipulateComponent = CharacterManipulateComponent_1 = class Charac
         } else {
           (e = Protocol_1.Aki.Protocol.Tds.create()).F4n = a.F4n;
           e.xWn = false;
-          Net_1.Net.Call(15614, e, t => {});
+          Net_1.Net.Call(16465, e, t => {});
         }
         this.Q9r = false;
       }
@@ -1515,7 +1515,7 @@ let CharacterManipulateComponent = CharacterManipulateComponent_1 = class Charac
       e = e.GetComponent(0)?.GetCreatureDataId();
       (t = Protocol_1.Aki.Protocol.Tds.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
       t.xWn = false;
-      Net_1.Net.Call(15614, t, t => {});
+      Net_1.Net.Call(16465, t, t => {});
     }
   }
   AddOrRemoveManipulateAirTag(t) {

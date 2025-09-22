@@ -19,6 +19,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const SkipTaskManager_1 = require("../SkipInterface/SkipTaskManager");
 const InventoryDefine_1 = require("./InventoryDefine");
+const CalabashSkinItemData_1 = require("./ItemData/CalabashSkinItemData");
 const CommonItemData_1 = require("./ItemData/CommonItemData");
 const PhantomItemData_1 = require("./ItemData/PhantomItemData");
 const WeaponItemData_1 = require("./ItemData/WeaponItemData");
@@ -36,14 +37,15 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.Xci = new Map();
     this.dWt = new Map();
     this.$ci = new Map();
+    this.ADd = new Map();
     this.Yci = new Map();
     this.Jci = new Map();
     this.Zci = undefined;
     this.emi = new Set();
     this.tmi = new Map();
     this.IsConfirmDestruction = false;
-    this.Fqu = new Map();
-    this.J1d = undefined;
+    this.Uqu = new Map();
+    this.Zpd = undefined;
   }
   OnInit() {
     return !(ConfigManager_1.ConfigManager.InventoryConfig.GetAllMainTypeConfig().length <= 0) && !(this.SetSelectedTypeIndex(0), 0);
@@ -58,18 +60,18 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   RefreshItemRedDotSet() {
     var t = ModelManager_1.ModelManager.NewFlagModel;
-    var r = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot);
+    var a = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的常规道具红点", ["commonItemRedDotSet", r]);
+      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的常规道具红点", ["commonItemRedDotSet", a]);
     }
-    if (r && r.size > 0) {
+    if (a && a.size > 0) {
       let e = false;
-      for (const o of r) {
-        if (this.GetCommonItemCount(o) <= 0) {
+      for (const n of a) {
+        if (this.GetCommonItemCount(n) <= 0) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除常规道具红点", ["configId", o]);
+            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除常规道具红点", ["configId", n]);
           }
-          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, o);
+          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, n);
           e = true;
         }
       }
@@ -77,27 +79,27 @@ class InventoryModel extends ModelBase_1.ModelBase {
         this.SaveRedDotCommonItemConfigIdList();
       }
     }
-    r = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
+    a = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的属性道具红点", ["attributeItemRedDotSet", r]);
+      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的属性道具红点", ["attributeItemRedDotSet", a]);
     }
-    if (r) {
+    if (a) {
       let e = false;
-      for (const n of r) {
-        var a = this.GetAttributeItemData(n);
-        if (a) {
-          if (a?.GetCount() <= 0) {
+      for (const o of a) {
+        var r = this.GetAttributeItemData(o);
+        if (r) {
+          if (r?.GetCount() <= 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", n]);
+              Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", o]);
             }
-            t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, n);
+            t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, o);
             e = true;
           }
         } else {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", n]);
+            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", o]);
           }
-          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, n);
+          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, o);
           e = true;
         }
       }
@@ -111,8 +113,8 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetOpenIdMainTypeConfig() {
     var e = [];
-    for (const r of this.Qci) {
-      var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemMainTypeConfig(r);
+    for (const a of this.Qci) {
+      var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemMainTypeConfig(a);
       if (t?.bShowInInventoryView) {
         e.push(t);
       }
@@ -121,12 +123,12 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   imi(e) {
     var t = e.GetType();
-    let r = this.Yci.get(t);
-    if (!r) {
-      r = new Set();
-      this.Yci.set(t, r);
+    let a = this.Yci.get(t);
+    if (!a) {
+      a = new Set();
+      this.Yci.set(t, a);
     }
-    r.add(e);
+    a.add(e);
   }
   omi(e) {
     var t = e.GetType();
@@ -140,12 +142,12 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   nmi(e) {
     var t = e.GetMainType();
-    let r = this.Jci.get(t);
-    if (!r) {
-      r = new ItemMainTypeMapping_1.ItemMainTypeMapping(t);
-      this.Jci.set(t, r);
+    let a = this.Jci.get(t);
+    if (!a) {
+      a = new ItemMainTypeMapping_1.ItemMainTypeMapping(t);
+      this.Jci.set(t, a);
     }
-    r.Add(e);
+    a.Add(e);
   }
   smi(e) {
     var t = e.GetMainType();
@@ -157,27 +159,27 @@ class InventoryModel extends ModelBase_1.ModelBase {
   ami(e) {
     this.Jci.delete(e);
   }
-  NewCommonItemData(e, t, r = 0, a) {
-    t = new CommonItemData_1.CommonItemData(e, r, t, 0, a);
-    let o = this.Xci.get(e);
-    if (!(o = o || new Map()).get(r)) {
-      o.set(r, t);
-      this.Xci.set(e, o);
+  NewCommonItemData(e, t, a = 0, r) {
+    t = new CommonItemData_1.CommonItemData(e, a, t, 0, r);
+    let n = this.Xci.get(e);
+    if (!(n = n || new Map()).get(a)) {
+      n.set(a, t);
+      this.Xci.set(e, n);
       this.imi(t);
       this.nmi(t);
       this.hmi(t);
     }
   }
   RemoveCommonItemData(e, t = 0) {
-    var r;
-    var a = this.Xci.get(e);
-    if (a && (r = a.get(t))) {
-      a.delete(t);
-      if (a.size === 0) {
+    var a;
+    var r = this.Xci.get(e);
+    if (r && (a = r.get(t))) {
+      r.delete(t);
+      if (r.size === 0) {
         this.Xci.delete(e);
       }
-      this.omi(r);
-      this.smi(r);
+      this.omi(a);
+      this.smi(a);
     }
   }
   RemoveCommonItemDataAndSaveNewList(e) {
@@ -231,9 +233,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
     var t = [];
     var e = this.Xci.get(e);
     if (e) {
-      for (const r of Array.from(e.values())) {
-        if (r.IsValid()) {
-          t.push(r);
+      for (const a of Array.from(e.values())) {
+        if (a.IsValid()) {
+          t.push(a);
         }
       }
     }
@@ -251,30 +253,30 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetAllPhantomItemDataByConfigId(e) {
     var t = [];
-    for (const r of this.GetAllPhantomItemDataIterator()) {
-      if (r.GetConfigId() === e) {
-        t.push(r);
+    for (const a of this.GetAllPhantomItemDataIterator()) {
+      if (a.GetConfigId() === e) {
+        t.push(a);
       }
     }
     return t;
   }
   GetAllWeaponItemDataByConfigId(e) {
     var t = [];
-    for (const r of this.GetWeaponItemDataList()) {
-      if (r.GetConfigId() === e) {
-        t.push(r);
+    for (const a of this.GetWeaponItemDataList()) {
+      if (a.GetConfigId() === e) {
+        t.push(a);
       }
     }
     return t;
   }
   GetAllWeaponItemDataByQualityAndType(e, t) {
-    var r = [];
-    for (const a of this.GetWeaponItemDataList()) {
-      if ((e === 0 || a.GetQuality() === e) && (t === 0 || a.GetConfig().WeaponType === t)) {
-        r.push(a);
+    var a = [];
+    for (const r of this.GetWeaponItemDataList()) {
+      if ((e === 0 || r.GetQuality() === e) && (t === 0 || r.GetConfig().WeaponType === t)) {
+        a.push(r);
       }
     }
-    return r;
+    return a;
   }
   GetCommonItemCount(e, t = 0) {
     e = this.GetCommonItemData(e, t);
@@ -284,9 +286,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
       return 0;
     }
   }
-  NewWeaponItemData(e, t, r) {
+  NewWeaponItemData(e, t, a) {
     if (!this.dWt.get(t)) {
-      e = new WeaponItemData_1.WeaponItemData(e, t, r, 2);
+      e = new WeaponItemData_1.WeaponItemData(e, t, a, 2);
       this.dWt.set(t, e);
       this.imi(e);
       this.nmi(e);
@@ -312,9 +314,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
   GetWeaponItemData(e) {
     return this.dWt.get(e);
   }
-  NewPhantomItemData(e, t, r) {
+  NewPhantomItemData(e, t, a) {
     if (!this.$ci.get(t)) {
-      e = new PhantomItemData_1.PhantomItemData(e, t, r, 3);
+      e = new PhantomItemData_1.PhantomItemData(e, t, a, 3);
       this.$ci.set(t, e);
       this.imi(e);
       this.nmi(e);
@@ -322,10 +324,10 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   UpdatePhantomItemData(e) {
     var t = e.s5n;
-    var r = e.b9n;
+    var a = e.b9n;
     var e = e.Vws;
-    this.RemovePhantomItemData(r);
-    this.NewPhantomItemData(t, r, e);
+    this.RemovePhantomItemData(a);
+    this.NewPhantomItemData(t, a, e);
   }
   RemovePhantomItemData(e) {
     var t = this.$ci.get(e);
@@ -347,11 +349,20 @@ class InventoryModel extends ModelBase_1.ModelBase {
   GetPhantomItemData(e) {
     return this.$ci.get(e);
   }
+  NewCalabashSkinItemData(e) {
+    var t;
+    if (!this.ADd.get(e)) {
+      t = new CalabashSkinItemData_1.CalabashSkinItemData(e, 1, 17);
+      this.ADd.set(e, t);
+      this.imi(t);
+      this.nmi(t);
+    }
+  }
   ClearCommonItemData() {
-    for (const r of this.Xci.values()) {
-      for (const a of r.values()) {
-        var e = a.GetMainType();
-        var t = a.GetType();
+    for (const a of this.Xci.values()) {
+      for (const r of a.values()) {
+        var e = r.GetMainType();
+        var t = r.GetType();
         this.ami(e);
         this.rmi(t);
       }
@@ -359,27 +370,37 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.Xci.clear();
   }
   ClearWeaponItemData() {
-    for (const r of this.dWt.values()) {
-      var e = r.GetMainType();
-      var t = r.GetType();
+    for (const a of this.dWt.values()) {
+      var e = a.GetMainType();
+      var t = a.GetType();
       this.ami(e);
       this.rmi(t);
     }
     this.dWt.clear();
   }
   ClearPhantomItemData() {
-    for (const r of this.$ci.values()) {
-      var e = r.GetMainType();
-      var t = r.GetType();
+    for (const a of this.$ci.values()) {
+      var e = a.GetMainType();
+      var t = a.GetType();
       this.ami(e);
       this.rmi(t);
     }
     this.$ci.clear();
   }
+  ClearCalabashSkinItemData() {
+    for (const a of this.ADd.values()) {
+      var e = a.GetMainType();
+      var t = a.GetType();
+      this.ami(e);
+      this.rmi(t);
+    }
+    this.ADd.clear();
+  }
   ClearAllItemData() {
     this.ClearCommonItemData();
     this.ClearWeaponItemData();
     this.ClearPhantomItemData();
+    this.ClearCalabashSkinItemData();
     this.Yci.clear();
     this.Jci.clear();
   }
@@ -415,9 +436,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetPhantomItemDataListByPhantomItemId(e) {
     var t = [];
-    for (const r of this.$ci.values()) {
-      if (r.GetConfigId() === e) {
-        t.push(r);
+    for (const a of this.$ci.values()) {
+      if (a.GetConfigId() === e) {
+        t.push(a);
       }
     }
     return t;
@@ -446,9 +467,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
   GetCommonItemDataList() {
     var e = [];
     for (const t of this.Xci.values()) {
-      for (const r of t.values()) {
-        if (r.IsValid()) {
-          e.push(r);
+      for (const a of t.values()) {
+        if (a.IsValid()) {
+          e.push(a);
         }
       }
     }
@@ -456,10 +477,10 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetCommonItemByItemType(e) {
     var t = [];
-    for (const r of this.Xci.values()) {
-      for (const a of r.values()) {
-        if (a.GetType() === e && a.IsValid()) {
-          t.push(a);
+    for (const a of this.Xci.values()) {
+      for (const r of a.values()) {
+        if (r.GetType() === e && r.IsValid()) {
+          t.push(r);
         }
       }
     }
@@ -467,10 +488,10 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetCommonItemByShowType(e) {
     var t = [];
-    for (const r of this.Xci.values()) {
-      for (const a of r.values()) {
-        if (a.GetShowTypeList().includes(e) && a.IsValid()) {
-          t.push(a);
+    for (const a of this.Xci.values()) {
+      for (const r of a.values()) {
+        if (r.GetShowTypeList().includes(e) && r.IsValid()) {
+          t.push(r);
         }
       }
     }
@@ -478,18 +499,18 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetWeaponItemByItemType(e) {
     var t = [];
-    for (const r of this.GetWeaponItemDataList()) {
-      if (r.GetType() === e) {
-        t.push(r);
+    for (const a of this.GetWeaponItemDataList()) {
+      if (a.GetType() === e) {
+        t.push(a);
       }
     }
     return t;
   }
   GetPhantomItemByItemType(e) {
     var t = [];
-    for (const r of this.$ci.values()) {
-      if (r.GetType() === e) {
-        t.push(r);
+    for (const a of this.$ci.values()) {
+      if (a.GetType() === e) {
+        t.push(a);
       }
     }
     return t;
@@ -509,9 +530,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
     var t = new Set();
     var e = this.Jci.get(e);
     if (e) {
-      for (const r of e.GetSet()) {
-        if (r.IsValid()) {
-          t.add(r);
+      for (const a of e.GetSet()) {
+        if (a.IsValid()) {
+          t.add(a);
         }
       }
     }
@@ -519,27 +540,27 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   GetInventoryItemGridCountByMainType(e) {
     var t;
-    let r = 0;
-    for (const a of this.GetItemDataBaseByMainType(e)) {
-      if (a.GetType() !== 0) {
-        if (a instanceof CommonItemData_1.CommonItemData) {
-          if (!((t = a.GetMaxStackCount()) <= 0)) {
-            r += Math.ceil(a.GetCount() / t);
+    let a = 0;
+    for (const r of this.GetItemDataBaseByMainType(e)) {
+      if (r.GetType() !== 0) {
+        if (r instanceof CommonItemData_1.CommonItemData) {
+          if (!((t = r.GetMaxStackCount()) <= 0)) {
+            a += Math.ceil(r.GetCount() / t);
           }
         } else {
-          r += 1;
+          a += 1;
         }
       }
     }
-    return r;
+    return a;
   }
   GetItemDataBaseByItemType(e) {
     var t = new Set();
     var e = this.Yci.get(e);
     if (e) {
-      for (const r of e) {
-        if (r.IsValid()) {
-          t.add(r);
+      for (const a of e) {
+        if (a.IsValid()) {
+          t.add(a);
         }
       }
     }
@@ -602,7 +623,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
       case 14:
         return this.dGc(e);
       case 15:
-        return this.Pzu(e);
+        return this.cYu(e);
+      case 17:
+        return this.DDd(e);
       default:
         return this.GetCommonItemCount(e, t);
     }
@@ -612,37 +635,37 @@ class InventoryModel extends ModelBase_1.ModelBase {
     if (!t.ItemAccess || t.ItemAccess.length <= 0) {
       return [];
     }
-    var r = [];
-    for (const o of t.ItemAccess) {
-      var a = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(o);
-      if (a) {
-        a = {
-          Id: o,
-          Type: a?.Type,
-          Text: a?.Description,
-          SortIndex: a?.SortIndex,
+    var a = [];
+    for (const n of t.ItemAccess) {
+      var r = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(n);
+      if (r) {
+        r = {
+          Id: n,
+          Type: r?.Type,
+          Text: r?.Description,
+          SortIndex: r?.SortIndex,
           Function: () => {
-            SkipTaskManager_1.SkipTaskManager.RunByConfigId(o, e);
+            SkipTaskManager_1.SkipTaskManager.RunByConfigId(n, e);
           }
         };
-        r.push(a);
+        a.push(r);
       }
     }
-    r.sort((e, t) => {
-      var r = e.SortIndex;
-      var a = t.SortIndex;
-      if (r === a) {
+    a.sort((e, t) => {
+      var a = e.SortIndex;
+      var r = t.SortIndex;
+      if (a === r) {
         return t.Id - e.Id;
       } else {
-        return a - r;
+        return r - a;
       }
     });
-    return r;
+    return a;
   }
   umi(e) {
     let t = 0;
-    for (const r of this.GetWeaponItemDataList()) {
-      if (r.GetConfigId() === e) {
+    for (const a of this.GetWeaponItemDataList()) {
+      if (a.GetConfigId() === e) {
         t++;
       }
     }
@@ -663,17 +686,20 @@ class InventoryModel extends ModelBase_1.ModelBase {
   dGc(e) {
     return ModelManager_1.ModelManager.FlySkinModel?.GetFlySkinItemCount(e) ?? 0;
   }
-  Pzu(e) {
+  cYu(e) {
     if (ModelManager_1.ModelManager.PhantomArenaModel?.IsCardUnlock(e) ?? false) {
       return ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e).CardGroupNum;
     } else {
       return 0;
     }
   }
+  DDd(e) {
+    return ModelManager_1.ModelManager.CalabashSkinModel.GetSkinCountById(e);
+  }
   cmi(e) {
     let t = 0;
-    for (const r of this.GetAllPhantomItemDataIterator()) {
-      if (r.GetConfigId() === e) {
+    for (const a of this.GetAllPhantomItemDataIterator()) {
+      if (a.GetConfigId() === e) {
         t++;
       }
     }
@@ -688,11 +714,11 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   mmi(t) {
-    var r = ModelManager_1.ModelManager.PersonalModel.GetCardDataList();
-    var a = r.length;
-    for (let e = 0; e < a; e++) {
-      var o = r[e];
-      if (o.CardId === t && o.IsUnLock) {
+    var a = ModelManager_1.ModelManager.PersonalModel.GetCardDataList();
+    var r = a.length;
+    for (let e = 0; e < r; e++) {
+      var n = a[e];
+      if (n.CardId === t && n.IsUnLock) {
         return 1;
       }
     }
@@ -738,8 +764,8 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return ModelManager_1.ModelManager.NewFlagModel.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItem);
   }
   TryAddRedDotCommonItem(e, t = 0) {
-    var r;
-    return !ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, e) && !!(r = this.GetCommonItemData(e, t)) && r.GetRedDotDisableRule() !== 0 && (t !== 0 ? ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, t) : ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, e), true);
+    var a;
+    return !ModelManager_1.ModelManager.NewFlagModel.HasNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, e) && !!(a = this.GetCommonItemData(e, t)) && a.GetRedDotDisableRule() !== 0 && (t !== 0 ? ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, t) : ModelManager_1.ModelManager.NewFlagModel.AddNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, e), true);
   }
   TryAddRedDotAttributeItem(e) {
     var t;
@@ -748,16 +774,16 @@ class InventoryModel extends ModelBase_1.ModelBase {
   HasRedDot() {
     var e = ModelManager_1.ModelManager.NewFlagModel;
     var t = e.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot);
-    let r = 0;
-    if (t) {
-      r = t.size;
-    }
     let a = 0;
-    t = e.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
     if (t) {
       a = t.size;
     }
-    return r > 0 || a > 0;
+    let r = 0;
+    t = e.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
+    if (t) {
+      r = t.size;
+    }
+    return a > 0 || r > 0;
   }
   IsMainTypeHasRedDot(e) {
     return this.GetItemMainTypeMapping(e)?.HasRedDot() ?? false;
@@ -795,19 +821,19 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return this.Zci;
   }
   CheckIsCoinEnough(e, t) {
-    for (const r of t) {
-      if (r.ItemId === e) {
-        return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) >= r.Count;
+    for (const a of t) {
+      if (a.ItemId === e) {
+        return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) >= a.Count;
       }
     }
     return true;
   }
   GetPhantomManageConfigClear() {
-    return this.Fqu.size === 0;
+    return this.Uqu.size === 0;
   }
   GetPhantomManageConfigByType(e) {
-    if (this.Fqu.size !== 0 && this.Fqu.get(e)) {
-      return this.Fqu.get(e);
+    if (this.Uqu.size !== 0 && this.Uqu.get(e)) {
+      return this.Uqu.get(e);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Inventory", 75, "批量管理方案未初始化");
@@ -816,9 +842,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   GetPhantomManageConfigByTypeAndIndex(e, t) {
-    for (const r of this.GetPhantomManageConfigByType(e)) {
-      if (r.GetIndex() === t) {
-        return r;
+    for (const a of this.GetPhantomManageConfigByType(e)) {
+      if (a.GetIndex() === t) {
+        return a;
       }
     }
     if (Log_1.Log.CheckError()) {
@@ -826,13 +852,13 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   UpdatePhantomManageConfig(e, t) {
-    var r = t.Axu;
-    var t = this.Fqu.get(e);
-    if (r && t) {
-      var a = r.c5n;
-      for (const o of t) {
-        if (a === o.GetIndex()) {
-          o.Parse(r);
+    var a = t.Axu;
+    var t = this.Uqu.get(e);
+    if (a && t) {
+      var r = a.c5n;
+      for (const n of t) {
+        if (r === n.GetIndex()) {
+          n.Parse(a);
           break;
         }
       }
@@ -841,73 +867,73 @@ class InventoryModel extends ModelBase_1.ModelBase {
     }
   }
   CoverAllPhantomManageConfig(e) {
-    this.Fqu.clear();
+    this.Uqu.clear();
     for (const s of e) {
       var t = s.Pxu;
-      let e = this.Fqu.get(t);
+      let e = this.Uqu.get(t);
       if (!e) {
         e = [];
-        this.Fqu.set(t, e);
+        this.Uqu.set(t, e);
       }
-      var r;
-      var a = s.Axu;
-      if (a) {
-        (r = new PhantomManageConfigData_1.PhantomManageConfigData(a.c5n)).SetType(t);
-        r.Parse(a);
-        e.push(r);
-        this.Fqu.set(t, e);
+      var a;
+      var r = s.Axu;
+      if (r) {
+        (a = new PhantomManageConfigData_1.PhantomManageConfigData(r.c5n)).SetType(t);
+        a.Parse(r);
+        e.push(a);
+        this.Uqu.set(t, e);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Inventory", 43, "批量管理方案设置数据为空");
       }
     }
-    for (var [o, n] of this.Fqu.entries()) {
-      while (n.length < this.GetConfigMaxCountConst()) {
-        var i = new PhantomManageConfigData_1.PhantomManageConfigData(n.length);
-        i.SetType(o);
-        n.push(i);
+    for (var [n, o] of this.Uqu.entries()) {
+      while (o.length < this.GetConfigMaxCountConst()) {
+        var i = new PhantomManageConfigData_1.PhantomManageConfigData(o.length);
+        i.SetType(n);
+        o.push(i);
       }
     }
   }
   InitPhantomManageConfig(e) {
-    this.Fqu.clear();
-    this.Nqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock, e.xxu);
-    this.Nqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoDisuse, e.Uxu);
+    this.Uqu.clear();
+    this.Dqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock, e.xxu);
+    this.Dqu(Protocol_1.Aki.Protocol.Oxu.Proto_AutoDisuse, e.Uxu);
   }
-  Vqu(e, t) {
-    for (const r of t) {
-      if (r.c5n === e) {
-        return r;
+  Bqu(e, t) {
+    for (const a of t) {
+      if (a.c5n === e) {
+        return a;
       }
     }
   }
-  Nqu(t, r) {
-    var a = [];
-    var o = this.GetConfigMaxCountConst();
-    for (let e = 0; e < o; e++) {
-      var n = new PhantomManageConfigData_1.PhantomManageConfigData(e);
-      n.SetType(t);
-      var i = this.Vqu(e, r);
+  Dqu(t, a) {
+    var r = [];
+    var n = this.GetConfigMaxCountConst();
+    for (let e = 0; e < n; e++) {
+      var o = new PhantomManageConfigData_1.PhantomManageConfigData(e);
+      o.SetType(t);
+      var i = this.Bqu(e, a);
       if (i) {
-        n.Parse(i);
+        o.Parse(i);
       }
-      a.push(n);
+      r.push(o);
     }
-    this.Fqu.set(t, a);
+    this.Uqu.set(t, r);
   }
   GetSettingTitleItemDataList() {
     var e = this.GetFilterIdConst();
     var t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(e)?.RuleList;
-    var r = [];
+    var a = [];
     if (t) {
-      for (const o of t) {
-        var a = {
+      for (const n of t) {
+        var r = {
           FilterId: e,
-          FilterRuleId: o
+          FilterRuleId: n
         };
-        r.push(a);
+        a.push(r);
       }
     }
-    return r;
+    return a;
   }
   GetFilterIdConst() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("PhantomAutoLockFilterId") ?? 0;
@@ -919,10 +945,10 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return InventoryDefine_1.recFilterRuleToGirdType[e] ?? 1;
   }
   SetPhantomManageSelectSet(e) {
-    this.J1d = e;
+    this.Zpd = e;
   }
   GetPhantomManageSelectSet() {
-    return this.J1d;
+    return this.Zpd;
   }
 }
 exports.InventoryModel = InventoryModel;

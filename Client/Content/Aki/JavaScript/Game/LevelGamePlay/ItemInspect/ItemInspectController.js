@@ -41,27 +41,26 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
   static TriggerRangeDebug() {
     ModelManager_1.ModelManager.ItemInspectModel.OpenRangeDebug = !ModelManager_1.ModelManager.ItemInspectModel.OpenRangeDebug;
   }
-  static OpenItemInspect(r, e, a) {
-    var t = r.RangeCheckConfig;
-    var o = t.CenterOffset;
+  static OpenItemInspect(t, e, a) {
+    var r = t.RangeCheckConfig;
+    var o = r.CenterOffset;
     var n = Global_1.Global.CharacterCameraManager;
     var M = Vector_1.Vector.Create(n.D_GetCameraLocation());
     M.X += o.X ?? 0;
     M.Y += o.Y ?? 0;
     M.Z += o.Z ?? 0;
-    var o = ItemInspectRangeChecker_1.ItemInspectRangeChecker.Create(t.Type, {
-      Height: t.Height,
-      Radius: t.Radius
+    var o = ItemInspectRangeChecker_1.ItemInspectRangeChecker.Create(r.Type, {
+      Height: r.Height,
+      Radius: r.Radius
     }, M, n.GetCameraRotation());
-    var t = (0, ItemInspectPointManagerCreator_1.createPointManager)(r.InteractPointsConfig);
-    if (o && t) {
-      const _ = ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor;
-      if (_?.IsValid()) {
+    var r = (0, ItemInspectPointManagerCreator_1.createPointManager)(t.InteractPointsConfig);
+    if (o && r) {
+      if (ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor?.IsValid()) {
         (M = UE.NewObject(UE.TraceLineElement.StaticClass())).WorldContextObject = GlobalData_1.GlobalData.World;
         M.bIsSingle = true;
         M.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldDynamic);
-        n = r.TextUiConfig;
-        ModelManager_1.ModelManager.ItemInspectModel.InitData(n.Type, r.RotateSpeed, o, t, r.ItemInteractFinishEffect, M, a);
+        n = t.TextUiConfig;
+        ModelManager_1.ModelManager.ItemInspectModel.InitData(n.Type, t.RotateSpeed, o, r, t.ItemInteractFinishEffect, M, a);
         if (o = ModelManager_1.ModelManager.ItemInspectModel.GetViewName()) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("LevelPlay", 48, "物品检视玩法开始");
@@ -69,36 +68,42 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
           ControllerHolder_1.ControllerHolder.SequenceController.PauseSequence("ItemInspect");
           e?.(o);
           UiManager_1.UiManager.OpenViewByPlot(o, n, () => {
-            ModelManager_1.ModelManager.ItemInspectModel.OpenViewReady();
-          });
-          this.zld(() => {
-            var e = _.D_K2_GetActorLocation();
-            var a = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(r.PrefabPath, 0, e, _.K2_GetActorRotation(), () => {
-              this.tcd(true);
-              ModelManager_1.ModelManager.ItemInspectModel.LoadPrefabReady();
-              TimerSystem_1.TimerSystem.Next(() => {
-                var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
-                this.E$u(e);
-                var e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionMainActor(e);
-                if (e?.IsValid()) {
-                  ModelManager_1.ModelManager.ItemInspectModel.TargetQuat.FromUeQuat(e.K2_GetActorQuaternion());
-                }
-              });
-            }, true, false);
-            ModelManager_1.ModelManager.ItemInspectModel.CurItemId = a ?? 0;
-            var a = Transform_1.Transform.Create();
-            a.SetLocation(e);
-            var e = ActorSystem_1.ActorSystem.Get(UE.StaticMeshActor.StaticClass(), a.ToUeTransform());
-            e.SetActorHiddenInGame(true);
-            ModelManager_1.ModelManager.ItemInspectModel.DarkStageActor = e;
-            if (GlobalData_1.GlobalData.IsPlayInEditor) {
-              e.SetActorLabel("ItemInspectDarkStage");
+            if (ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor) {
+              ModelManager_1.ModelManager.ItemInspectModel.OpenViewReady();
             }
-            this.Wld().finally(() => {
-              var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageAlpha();
-              var a = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageBlendTime();
-              this.Qld(0, e, a);
-            });
+          });
+          this.afd(() => {
+            var e;
+            var a;
+            var r = ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor;
+            if (r?.IsValid()) {
+              e = r.D_K2_GetActorLocation();
+              a = 0;
+              a = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(t.PrefabPath, 0, e, r.K2_GetActorRotation(), () => {
+                this.ZSd(true);
+                ModelManager_1.ModelManager.ItemInspectModel.LoadPrefabReady();
+                TimerSystem_1.TimerSystem.Next(() => {
+                  var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
+                  this.sQu(e);
+                  var e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionMainActor(e);
+                  if (e?.IsValid()) {
+                    ModelManager_1.ModelManager.ItemInspectModel.TargetQuat.FromUeQuat(e.K2_GetActorQuaternion());
+                  }
+                });
+              }, true, false);
+              ModelManager_1.ModelManager.ItemInspectModel.CurItemId = a ?? 0;
+              (r = Transform_1.Transform.Create()).SetLocation(e);
+              (a = ActorSystem_1.ActorSystem.Get(UE.StaticMeshActor.StaticClass(), r.ToUeTransform())).SetActorHiddenInGame(true);
+              ModelManager_1.ModelManager.ItemInspectModel.DarkStageActor = a;
+              if (GlobalData_1.GlobalData.IsPlayInEditor) {
+                a.SetActorLabel("ItemInspectDarkStage");
+              }
+              this.zmd().finally(() => {
+                var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageAlpha();
+                var a = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageBlendTime();
+                this.Jmd(0, e, a);
+              });
+            }
           });
         } else {
           if (Log_1.Log.CheckError()) {
@@ -126,17 +131,35 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     }
     var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageAlpha();
     var r = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageBlendTime();
-    this.Qld(e, 0, r, () => {
+    this.Jmd(e, 0, r, () => {
       var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
       SceneInteractionManager_1.SceneInteractionManager.Get().ToggleSceneInteractionVisible(e, false, true, undefined, "FinishItemInspect");
       SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(e);
-      this.tcd(false);
+      this.ZSd(false);
       ModelManager_1.ModelManager.ItemInspectModel.GetFinishCallback()?.(a);
       ModelManager_1.ModelManager.ItemInspectModel.ClearData();
       ControllerHolder_1.ControllerHolder.SequenceController.ResumeSequence("ItemInspect");
     });
   }
-  static tcd(a) {
+  static InterruptItemInspect() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("LevelPlay", 48, "物品检视玩法中断");
+    }
+    var e = ModelManager_1.ModelManager.ItemInspectModel.GetViewName();
+    if (e && UiManager_1.UiManager.IsViewOpen(e)) {
+      UiManager_1.UiManager.CloseView(e);
+    }
+    var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
+    if (e > 0) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().ToggleSceneInteractionVisible(e, false, true, undefined, "FinishItemInspect");
+      SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(e);
+    }
+    this.ZSd(false);
+    ModelManager_1.ModelManager.ItemInspectModel.GetFinishCallback()?.(true);
+    ModelManager_1.ModelManager.ItemInspectModel.ClearData();
+    ControllerHolder_1.ControllerHolder.SequenceController.ResumeSequence("ItemInspect");
+  }
+  static ZSd(a) {
     var e = ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor;
     if (e?.IsValid()) {
       e.SetActorHiddenInGame(a);
@@ -152,7 +175,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static zld(a) {
+  static afd(a) {
     if (ModelManager_1.ModelManager.ItemInspectModel.IsInitGlobalConfig()) {
       a();
     } else {
@@ -166,7 +189,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static async Wld() {
+  static async zmd() {
     var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageMeshPath();
     if (e !== "") {
       const r = new CustomPromise_1.CustomPromise();
@@ -202,7 +225,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static Qld(o, n, M, _) {
+  static Jmd(o, n, M, _) {
     if (ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer) {
       ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer.Remove();
       ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer = undefined;
@@ -231,7 +254,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("LevelPlay", 48, "物品检视，执行交互效果开始");
     }
-    this.I$u();
+    this.hzu();
     this.ResetRotateInput();
     const r = ModelManager_1.ModelManager.ItemInspectModel.GetPointManager();
     var t = () => {
@@ -272,20 +295,20 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     var a;
     if (!!ModelManager_1.ModelManager.ItemInspectModel.IsInspectReady() && !((a = ModelManager_1.ModelManager.ItemInspectModel.CurItemId) <= 0)) {
       if (GlobalData_1.GlobalData.IsPlayInEditor && ModelManager_1.ModelManager.ItemInspectModel.OpenRangeDebug) {
-        this.iud();
+        this.svd();
       }
       if (ModelManager_1.ModelManager.ItemInspectModel.ResettingItem) {
-        this.T$u(a, e);
-        this.E$u(a);
-      } else if (this.b$u(a, e)) {
-        this.E$u(a);
+        this.JWc(a, e);
+        this.sQu(a);
+      } else if (this.aQu(a, e)) {
+        this.sQu(a);
       }
     }
   }
-  static iud() {
+  static svd() {
     ModelManager_1.ModelManager.ItemInspectModel.GetRangeChecker()?.DebugDraw();
   }
-  static b$u(e, r) {
+  static aQu(e, r) {
     e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionMainActor(e);
     if (!e?.IsValid()) {
       return false;
@@ -320,7 +343,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     n.Rotator(t);
     return !o.Equals(t, ITEM_ROTATION_TOLERANCE) && (M.FromUeQuat(e.K2_GetActorQuaternion()), Quat_1.Quat.Slerp(M, n, MathUtils_1.MathUtils.Clamp(a * r, 0, 1), M), M.Rotator(t), e.K2_SetActorRotation(t.ToUeRotator(), false), true);
   }
-  static T$u(e, a) {
+  static JWc(e, a) {
     var r;
     var t;
     var e = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionMainActor(e);
@@ -342,10 +365,10 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.ItemInspectModel.OnResetItemRotationFinish?.();
     }
   }
-  static E$u(a) {
+  static sQu(a) {
     var r = SceneInteractionManager_1.SceneInteractionManager.Get().GetPartCollisionActorsNum(a) ?? 0;
     if (!(r <= 0)) {
-      this.I$u();
+      this.hzu();
       var t = ModelManager_1.ModelManager.ItemInspectModel.VisiblePoints;
       var o = ModelManager_1.ModelManager.ItemInspectModel.VisiblePointsPool;
       var n = ModelManager_1.ModelManager.ItemInspectModel.GetPointManager();
@@ -355,14 +378,14 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       for (let e = 0; e < r; e++) {
         var i = SceneInteractionManager_1.SceneInteractionManager.Get().GetPartCollisionActor(a, e);
         if (i?.IsValid()) {
-          var s = SceneInteractionManager_1.SceneInteractionManager.Get().GetPartCollisionActorTag(a, i);
-          if (s) {
-            var s = s.TagId;
-            var g = n.GetPoint(s);
-            if (g?.IsActive) {
+          var g = SceneInteractionManager_1.SceneInteractionManager.Get().GetPartCollisionActorTag(a, i);
+          if (g) {
+            var g = g.TagId;
+            var s = n.GetPoint(g);
+            if (s?.IsActive) {
               i = i.D_K2_GetActorLocation();
               if (M.IsPointInside(i)) {
-                if (!g.CancelTrace && l) {
+                if (!s.CancelTrace && l) {
                   TraceElementCommon_1.TraceElementCommon.SetStartLocation(l, i);
                   TraceElementCommon_1.TraceElementCommon.SetEndLocation(l, _);
                   if (TraceElementCommon_1.TraceElementCommon.LineTrace(l, PROFILE_KEY) && l.HitResult?.bBlockingHit) {
@@ -371,14 +394,14 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
                 }
                 let e = o.pop();
                 if (e) {
-                  e.TagId = s;
+                  e.TagId = g;
                   e.Location.FromUeVector(i);
-                  e.IsChecked = g.IsChecked;
+                  e.IsChecked = s.IsChecked;
                 } else {
                   e = {
-                    TagId: s,
+                    TagId: g,
                     Location: Vector_1.Vector.Create(i),
-                    IsChecked: g.IsChecked
+                    IsChecked: s.IsChecked
                   };
                 }
                 t.push(e);
@@ -389,7 +412,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static I$u() {
+  static hzu() {
     var a = ModelManager_1.ModelManager.ItemInspectModel.VisiblePoints;
     var r = ModelManager_1.ModelManager.ItemInspectModel.VisiblePointsPool;
     var t = a.length;

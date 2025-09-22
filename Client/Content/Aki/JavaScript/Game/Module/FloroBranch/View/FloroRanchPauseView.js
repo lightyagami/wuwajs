@@ -31,13 +31,13 @@ class FloroRanchPauseView extends UiViewBase_1.UiViewBase {
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.ResumeGame();
       });
     };
-    this.VKu = () => {
+    this.WHu = () => {
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.ExitGame(false);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.yxu], [1, this.Sxu], [2, this.JFe], [3, this.VKu]];
+    this.BtnBindInfo = [[0, this.yxu], [1, this.Sxu], [2, this.JFe], [3, this.WHu]];
   }
 }
 exports.FloroRanchPauseView = FloroRanchPauseView;

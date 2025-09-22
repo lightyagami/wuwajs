@@ -47,7 +47,7 @@ class TrapDefenseShopItemData {
     return i;
   }
   Update(t) {
-    this.BattleItemData = ModelManager_1.ModelManager.TrapDefenseModel.BattleInventoryData.ItemMap.get(t.iju?.oju ?? 0);
+    this.BattleItemData = ModelManager_1.ModelManager.TrapDefenseModel.BattleInventoryData.ItemMap.get(t.Izc?.bzc ?? 0);
     if (this.BattleItemData) {
       this.Config = this.BattleItemData.Config;
       this.Id = this.Config.Id;
@@ -55,9 +55,9 @@ class TrapDefenseShopItemData {
       this.Desc = this.Config.Desc;
       this.Icon = this.Config.Icon;
       this.QualityId = this.Config.Quality;
-      this.OriginalPrice = t.eju;
-      this.CurrentPrice = t.tju;
-      this.Stock = t.iju?.nju ?? 0;
+      this.OriginalPrice = t.Mzc;
+      this.CurrentPrice = t.Ezc;
+      this.Stock = t.Izc?.Rzc ?? 0;
     }
   }
   GetItemGridParam() {
@@ -110,7 +110,7 @@ class TrapDefenseShopBuffData {
     return i;
   }
   Update(t) {
-    this.Id = t.rju?.sju ?? 0;
+    this.Id = t.Tzc?.wzc ?? 0;
     this.BdBuffData = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData?.BdBuffDataMap.get(this.Id);
     if (this.BdBuffData) {
       if (this.BdBuffData.IsActive && this.BdBuffData.Level < this.BdBuffData.MaxLevel) {
@@ -123,9 +123,9 @@ class TrapDefenseShopBuffData {
       this.DescArgs = this.Config.DescArgs;
       this.Icon = this.Config.Icon;
       this.QualityId = this.BdBuffData.Config.Quality;
-      this.OriginalPrice = t.eju;
-      this.CurrentPrice = t.tju;
-      this.IsSold = t.rju?.aju ?? false;
+      this.OriginalPrice = t.Mzc;
+      this.CurrentPrice = t.Ezc;
+      this.IsSold = t.Tzc?.Lzc ?? false;
     }
   }
   GetItemGridParam() {

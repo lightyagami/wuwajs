@@ -27,6 +27,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const PhantomUtil_1 = require("../../Module/Phantom/PhantomUtil");
 const RoleDefine_1 = require("../../Module/RoleUi/RoleDefine");
+const TowerDefenseEventController_1 = require("../../Module/TowerDefenseEvent/TowerDefenseEventController");
 const UiCameraAnimationManager_1 = require("../../Module/UiCameraAnimation/UiCameraAnimationManager");
 const CampUtils_1 = require("../../NewWorld/Character/Common/Blueprint/Utils/CampUtils");
 const BattleSetting_1 = require("../../NewWorld/Setting/BattleSetting");
@@ -623,7 +624,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     n.l8n = WorldGlobal_1.WorldGlobal.ToTsVector(o.GetLocation());
     n._8n = WorldGlobal_1.WorldGlobal.ToTsRotator(o.GetRotation().Rotator());
     n.mKn = a;
-    Net_1.Net.Send(18014, n);
+    Net_1.Net.Send(29173, n);
   }
   static GetTestSpawnTemplateEntityString() {
     var t = UE.NewArray(UE.BuiltinString);
@@ -916,7 +917,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * t);
     var e = Protocol_1.Aki.Protocol.GCs.create();
     e.dKn = t;
-    Net_1.Net.Send(29374, e);
+    Net_1.Net.Send(25913, e);
   }
   static GetTimeDilation() {
     if (GlobalData_1.GlobalData.GameInstance) {
@@ -995,7 +996,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ControllerHolder_1.ControllerHolder.BpActorController.UnregisterBpActor(t, e);
   }
   static GetTrapDefenseUseBpUsing() {
-    return ControllerHolder_1.ControllerHolder.TowerDefenseEventController.TestBpUsing;
+    return TowerDefenseEventController_1.TowerDefenseEventController.TestBpUsing;
   }
   static DisableAllRoleWithoutControl(t) {
     ControllerHolder_1.ControllerHolder.SceneTeamController.DisableAllRoleWithoutControl(undefined, undefined, t);

@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PayShopSwitchItem = undefined;
 const UE = require("ue");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../../RedDot/RedDotController");
 const CommonTabItemBase_1 = require("../../../Common/TabComponent/TabItem/CommonTabItemBase");
 const UiTabSequence_1 = require("../../../DynamicTab/UiTabViewBehavior/UiTabSequence");
@@ -53,12 +53,12 @@ class PayShopSwitchItem extends CommonTabItemBase_1.CommonTabItemBase {
     return this.GetExtendToggle(1);
   }
   UpdateView(e, t) {
-    e = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopTabConfig(e, t);
-    this.GetText(0).ShowTextNew(e.Name);
-    this.RootItem.SetUIActive(e.Enable);
+    e = ModelManager_1.ModelManager.PayShopModel.GetPayShopTabDataByPayShopIdAndTabId(e, t);
+    this.GetText(0).SetText(e ? e.Name : "");
+    this.RootItem.SetUIActive(!!e && e.Enable);
   }
   UpdateTitle(e) {
-    this.GetText(0).ShowTextNew(e);
+    this.GetText(0).SetText(e);
   }
   BindRedDot(e, t = 0) {
     this.UnBindRedDot();

@@ -75,10 +75,10 @@ class Time {
     return this.b9 * Time.w9;
   }
   static get PlayerTime() {
-    return this.$5u;
+    return this.lju;
   }
   static get PlayerTimeSeconds() {
-    return this.$5u * Time.w9;
+    return this.lju * Time.w9;
   }
   static get WorldTime() {
     return this.q9;
@@ -123,7 +123,7 @@ class Time {
     this.x9 = t;
     this.B9 += 1;
     this.b9 += t;
-    this.$5u += t * this.V8c;
+    this.lju += t * this.V8c;
     this.q9 += t * this.R9;
     this.kUu += t * this.R9 * this.V8c;
     this.uP_ += t * this.R9 * this.cP_;
@@ -133,7 +133,7 @@ class Time {
 (exports.Time = Time).w9 = 0.001;
 Time.B9 = 0;
 Time.b9 = 0;
-Time.$5u = 0;
+Time.lju = 0;
 Time.q9 = 0;
 Time.kUu = 0;
 Time.uP_ = 0;

@@ -13,7 +13,7 @@ class WaitSceneReferenceEntityPlaySequenceNode extends TickBehaviorNode_1.TickBe
     super(...arguments);
     this.wDe = 0;
     this.$Pe = "";
-    this.XYc = false;
+    this.YJc = false;
     this.PXt = undefined;
   }
   get CorrelativeEntities() {
@@ -24,11 +24,11 @@ class WaitSceneReferenceEntityPlaySequenceNode extends TickBehaviorNode_1.TickBe
   }
   OnStart(e) {
     super.OnStart(e);
-    this.XYc = false;
+    this.YJc = false;
   }
   OnTick(e) {
     var t;
-    if (!this.XYc) {
+    if (!this.YJc) {
       if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.wDe))?.Entity?.Valid) {
         if (t = t.Entity.GetComponent(164)) {
           if (t.IsPlayToMarkFinished(this.$Pe)) {
@@ -45,7 +45,7 @@ class WaitSceneReferenceEntityPlaySequenceNode extends TickBehaviorNode_1.TickBe
   }
   OnAfterSubmit(e) {
     super.OnAfterSubmit(e);
-    this.XYc = e;
+    this.YJc = e;
   }
 }
 exports.WaitSceneReferenceEntityPlaySequenceNode = WaitSceneReferenceEntityPlaySequenceNode;

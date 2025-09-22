@@ -14,12 +14,12 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const MAX_SPEED_SIZE = 600;
 class AiWeaponNet {
   RegisterNet() {
-    Net_1.Net.Register(27651, e => {
+    Net_1.Net.Register(15291, e => {
       this.yje(e);
     });
   }
   UnRegisterNet() {
-    Net_1.Net.UnRegister(27651);
+    Net_1.Net.UnRegister(15291);
   }
   yje(e) {
     var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
@@ -41,7 +41,7 @@ class AiWeaponNet {
     var r = new Protocol_1.Aki.Protocol.Jcs();
     r.F4n = this.Ije(e);
     r.d8n = this.Ije(t);
-    Net_1.Net.Send(27132, r);
+    Net_1.Net.Send(16812, r);
     return true;
   }
   SendDiscardWeaponPush(e) {
@@ -84,7 +84,7 @@ class AiWeaponNet {
     o.f8n.Y = e.Y;
     o.f8n.Z = e.Z;
     r.C8n = o;
-    Net_1.Net.Call(21164, r, e => {});
+    Net_1.Net.Call(23864, r, e => {});
     return true;
   }
   Ije(e) {

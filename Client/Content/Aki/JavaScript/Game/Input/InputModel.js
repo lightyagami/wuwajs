@@ -8,6 +8,7 @@ const ModelBase_1 = require("../../Core/Framework/ModelBase");
 const DataTableUtil_1 = require("../../Core/Utils/DataTableUtil");
 const Switcher_1 = require("../Utils/Switcher");
 const NormalWorldInputData_1 = require("./BattleInputData/NormalWorldInputData");
+const SurvivorsRogueInputData_1 = require("./BattleInputData/SurvivorsRogueInputData");
 const TrapDefenseInputData_1 = require("./BattleInputData/TrapDefenseInputData");
 const InputLayer_1 = require("./InputLayer");
 exports.INPUT_COMMAND_TRANSFORM_DT_PATH = "/Game/Aki/Data/Fight/DT_InputCommandTransform.DT_InputCommandTransform";
@@ -24,23 +25,24 @@ class InputModel extends ModelBase_1.ModelBase {
     this.IsOpenInputAxisLog = false;
     this.Ze_ = undefined;
     this.et_ = false;
-    this.z9u = new Map();
-    this.J9u = 0;
+    this.fYu = new Map();
+    this.gYu = 0;
     this.eKa = false;
   }
   OnInit() {
-    this.z9u.set(0, new NormalWorldInputData_1.NormalWorldInputData(0));
-    this.z9u.set(1, new TrapDefenseInputData_1.TrapDefenseInputData(1));
+    this.fYu.set(0, new NormalWorldInputData_1.NormalWorldInputData(0));
+    this.fYu.set(1, new TrapDefenseInputData_1.TrapDefenseInputData(1));
+    this.fYu.set(2, new SurvivorsRogueInputData_1.SurvivorsRogueInputData(2));
     return true;
   }
   SetCurrentInputDataType(t) {
-    this.J9u = t;
+    this.gYu = t;
   }
   GetCurrentInputData() {
-    return this.z9u.get(this.J9u);
+    return this.fYu.get(this.gYu);
   }
   GetInputData(t) {
-    return this.z9u.get(t);
+    return this.fYu.get(t);
   }
   GetHandlers() {
     return this.WMe;
@@ -142,7 +144,7 @@ class InputModel extends ModelBase_1.ModelBase {
       this.et_ = true;
       var t;
       var e = new Map();
-      for (const r of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(23)) {
+      for (const r of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(24)) {
         if (r.Action !== 0 && r.State !== 0 && r.Tag.TagName !== "None") {
           if (!e.has(r.Action)) {
             e.set(r.Action, new Map());

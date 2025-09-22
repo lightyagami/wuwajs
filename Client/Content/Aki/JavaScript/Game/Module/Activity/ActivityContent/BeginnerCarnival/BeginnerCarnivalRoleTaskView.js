@@ -68,7 +68,7 @@ class BeginnerCarnivalRoleTaskView extends UiViewBase_1.UiViewBase {
       var i;
       if (e.has(BeginnerCarnivalController_1.BeginnerCarnivalController.ActivityId)) {
         e = () => {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+          UiManager_1.UiManager.ResetToBattleView();
         };
         (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115)).FunctionMap.set(1, e);
         i.FunctionMap.set(0, e);

@@ -7,29 +7,29 @@ exports.TrapDefenseShopViewModel = undefined;
 class TrapDefenseShopViewModel {
   constructor() {
     this.SelectedGoods = undefined;
-    this.N$c = [];
+    this.dXc = [];
   }
   static Create() {
     return new TrapDefenseShopViewModel();
   }
   AddOnSelectGoodsDelegate(e) {
-    this.N$c.push(e);
+    this.dXc.push(e);
   }
   RemoveOnSelectGoodsDelegate(e) {
-    e = this.N$c.indexOf(e);
+    e = this.dXc.indexOf(e);
     if (e >= 0) {
-      this.N$c.splice(e, 1);
+      this.dXc.splice(e, 1);
     }
   }
   SelectGoods(e) {
     this.SelectedGoods = e;
-    for (const s of this.N$c) {
+    for (const s of this.dXc) {
       s(e);
     }
   }
   OnViewClose() {
     this.SelectedGoods = undefined;
-    this.N$c.length = 0;
+    this.dXc.length = 0;
   }
 }
 exports.TrapDefenseShopViewModel = TrapDefenseShopViewModel;

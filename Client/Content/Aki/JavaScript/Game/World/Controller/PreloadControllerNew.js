@@ -7,6 +7,7 @@ exports.PreloadControllerNew = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const Stats_1 = require("../../../Core/Common/Stats");
 const CharacterPreloadById_1 = require("../../../Core/Define/ConfigQuery/CharacterPreloadById");
@@ -29,6 +30,7 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const AutoAttachDefine_1 = require("../../Module/AutoAttach/AutoAttachDefine");
+const ConfirmBoxDefine_1 = require("../../Module/ConfirmBox/ConfirmBoxDefine");
 const NpcIconDefine_1 = require("../../Module/NPC/NpcIconDefine");
 const PlotAudioModel_1 = require("../../Module/Plot/PlotAudioModel");
 const RoleDefine_1 = require("../../Module/RoleUi/RoleDefine");
@@ -162,12 +164,12 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     var r = Vector_1.Vector.Create(ModelManager_1.ModelManager.GameModeModel.BornLocation);
     var a = Vector_1.Vector.Create();
     var i = new Array();
-    for (const f of t) {
-      var n = f.Entity.GetComponent(0);
-      if (!f.IsInit && !n.GetLoading() && !n.GetRemoveState() && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Custom && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_PlayerEntity) {
+    for (const d of t) {
+      var n = d.Entity.GetComponent(0);
+      if (!d.IsInit && !n.GetLoading() && !n.GetRemoveState() && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Custom && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_PlayerEntity) {
         if (n.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player || (n = n.GetLocation(), a.X = n.X, a.Y = n.Y, a.Z = n.Z, Vector_1.Vector.DistSquared(r, a) <= NEED_PRELOAD_DISTANCE)) {
-          i.push(f);
-          o.AddNeedWaitEntity(f.Id);
+          i.push(d);
+          o.AddNeedWaitEntity(d.Id);
         }
       }
     }
@@ -199,16 +201,16 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         s.push(_);
       }
     }
-    let d = true;
+    let f = true;
     for (const m of await Promise.all(s)) {
       if (m === 2) {
-        d = false;
+        f = false;
       }
     }
     if (ModelManager_1.ModelManager.CreatureModel.EnableEntityLog && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Preload", 4, "[预加载] 批量预加载实体:结束", ["预加载结果", d]);
+      Log_1.Log.Info("Preload", 4, "[预加载] 批量预加载实体:结束", ["预加载结果", f]);
     }
-    return d;
+    return f;
   }
   static async PreloadEntity(e, o, t) {
     const r = ModelManager_1.ModelManager.PreloadModelNew;
@@ -244,14 +246,14 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     let l = undefined;
     let _ = undefined;
     let s = undefined;
-    let d = undefined;
     let f = undefined;
+    let d = undefined;
     if (o) {
       l = o.CreateChild(`预加载实体, CreatureDataId:${i.GetCreatureDataId()}, PbDataId:${i.GetPbDataId()}`, true);
       _ = l.CreateChild("预加载实体主要资源", true);
       s = l.CreateChild("预加载技能资源", true);
-      d = l.CreateChild("预加载子弹资源", true);
-      f = l.CreateChild("预加载实体固有资源", true);
+      f = l.CreateChild("预加载子弹资源", true);
+      d = l.CreateChild("预加载实体固有资源", true);
     }
     l?.Start();
     let u = r.GetEntityAssetElement(i.GetCreatureDataId());
@@ -331,11 +333,12 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       return 4;
     }
     var o = e.Entity.GetComponent(220);
-    if (o && (o.InitPreload(u), o.IsEnableInitMorph())) {
+    if (o) {
+      o.InitPreload(u);
       await o.InitMorph();
     }
     var m = new Array();
-    f?.Start();
+    d?.Start();
     switch (i.GetEntityConfigType()) {
       case Protocol_1.Aki.Protocol.rLs.F6n:
         var C = ModelManager_1.ModelManager.GameModeModel.MapId;
@@ -379,7 +382,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     });
     m.push(c.Promise);
-    f?.Stop();
+    d?.Stop();
     s?.Start();
     if (u.FightAssetManager.SkillAssetManager.SkillAssetMap.size) {
       let o = u.FightAssetManager.SkillAssetManager.SkillAssetMap.size;
@@ -403,19 +406,19 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     } else {
       s?.Stop();
     }
-    d?.Start();
+    f?.Start();
     const A = u.FightAssetManager.BulletAssetManager;
-    let v = A.BulletAssetMap.size;
-    if (v) {
+    let D = A.BulletAssetMap.size;
+    if (D) {
       for (const [L, I] of A.BulletAssetMap) {
-        var h;
-        var D = new GameModePromise_1.GameModePromise();
-        if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && (h = A.IndexMapping.get(L), Log_1.Log.CheckDebug())) {
-          Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载子弹资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["bulletId", h], ["\nAssets", "\n" + Array.from(I.AssetPathSet).map(e => "" + e).join("\n")]);
+        var M;
+        var h = new GameModePromise_1.GameModePromise();
+        if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && (M = A.IndexMapping.get(L), Log_1.Log.CheckDebug())) {
+          Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载子弹资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["bulletId", M], ["\nAssets", "\n" + Array.from(I.AssetPathSet).map(e => "" + e).join("\n")]);
         }
-        this.LoadAssetAsync(I, u.LoadPriority, false, D, e => {
-          if (! --v) {
-            d?.Stop();
+        this.LoadAssetAsync(I, u.LoadPriority, false, h, e => {
+          if (! --D) {
+            f?.Stop();
           }
           if (!e) {
             e = A.IndexMapping.get(L);
@@ -424,10 +427,10 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             }
           }
         });
-        m.push(D.Promise);
+        m.push(h.Promise);
       }
     } else {
-      d?.Stop();
+      f?.Stop();
     }
     t = await Promise.all(m);
     if (!e.Valid) {
@@ -442,13 +445,13 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       n.Stop();
       return 4;
     }
-    let M = true;
+    let v = true;
     for (const S of t) {
       if (!S) {
-        M = false;
+        v = false;
       }
     }
-    if (M) {
+    if (v) {
       a.SetResult(3);
       i.SetPreloadFinished(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreloadEntityFinished, e);
@@ -535,34 +538,33 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         a = n.Mode;
       } else if (s.Name === "ShowTalk") {
         if (a === "LevelA" || a === "LevelB") {
+          var l;
           var n = s.Params;
-          var l = n.SequenceDataAsset;
-          if (l) {
+          var _ = n.SequenceDataAsset;
+          if (_) {
             i = true;
-            r.PlotAssetManager.AddPath(o, l);
+            r.PlotAssetManager.AddPath(o, _);
           }
           if (a === "LevelB") {
-            const d = [];
+            const f = [];
             n.TalkItems.forEach(e => {
               if (e.TidTalk && e.PlayVoice) {
-                d.push(e.TidTalk);
+                f.push(e.TidTalk);
               }
             });
-            for (const f of d) {
-              if (!StringUtils_1.StringUtils.IsEmpty(f)) {
-                var _ = PlotAudioById_1.configPlotAudioById.GetConfig(f);
-                if (!_) {
-                  return;
+            for (const d of f) {
+              if (!StringUtils_1.StringUtils.IsEmpty(d)) {
+                if ((l = PlotAudioById_1.configPlotAudioById.GetConfig(d)) && l.GenLipSync) {
+                  l = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(l);
+                  r.PlotAssetManager.AddPath(o, l);
                 }
-                _ = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(_);
-                r.PlotAssetManager.AddPath(o, _);
               }
             }
           }
         }
-      } else if (s.Name === "PlaySequenceData" && (l = s.Params.Path)) {
+      } else if (s.Name === "PlaySequenceData" && (_ = s.Params.Path)) {
         i = true;
-        r.PlotAssetManager.AddPath(o, l);
+        r.PlotAssetManager.AddPath(o, _);
       }
     }
     if (i) {
@@ -774,21 +776,21 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     }
     var i = e.LoadingSet.size > 0;
-    for (const d of e.LoadingSet) {
+    for (const f of e.LoadingSet) {
       var n;
       var l;
-      var _ = ResourceSystem_1.ResourceSystem.Load(d, UE.Object);
-      e.RemoveLoading(d);
+      var _ = ResourceSystem_1.ResourceSystem.Load(f, UE.Object);
+      e.RemoveLoading(f);
       if (_?.IsValid()) {
-        e.AddObject(d, _);
+        e.AddObject(f, _);
         if (_.IsA(UE.AnimMontage.StaticClass()) && (n = e.GetEntityAssetElement()) && (n = n.Entity?.GetComponent(25))) {
-          l = UE.BlueprintPathsLibrary.GetBaseFilename(d);
-          n.AddMontage(l, _, d);
+          l = UE.BlueprintPathsLibrary.GetBaseFilename(f);
+          n.AddMontage(l, _, f);
         }
       } else {
         o = false;
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Preload", 4, "[预加载] 同步加载资源失败", ["Path", d]);
+          Log_1.Log.Error("Preload", 4, "[预加载] 同步加载资源失败", ["Path", f]);
         }
       }
     }
@@ -805,19 +807,19 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       let i = 0;
       for (let e = 0; e < n.NeedLoadAssets.length; e++) {
         var o = n.NeedLoadAssets[e];
-        const d = n.NeedLoadAssetTypes[e];
+        const f = n.NeedLoadAssetTypes[e];
         n.AddLoading(o);
         this.xpr(o, l, (e, o, t) => {
           a--;
           n.RemoveLoading(o);
           if (e) {
-            if (d === 1 && t.IsA(UE.AnimMontage.StaticClass()) && r) {
+            if (f === 1 && t.IsA(UE.AnimMontage.StaticClass()) && r) {
               e = UE.BlueprintPathsLibrary.GetBaseFilename(o);
               r.AddMontage(e, t, o);
             }
             n.AddObject(o, t);
             if (s) {
-              switch (d) {
+              switch (f) {
                 case 2:
                   this.upr(n, t);
                   break;
@@ -998,6 +1000,11 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             Log_1.Log.Error("Preload", 4, "[预加载] 预加载资源失败", ["Path", o]);
           }
           r?.(false, t, undefined);
+          if (!Info_1.Info.IsBuildShipping) {
+            (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(386)).SetTitle("预加载资源失败");
+            e.TextArgs = ["" + o];
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
+          }
         }
       }, e);
     } else {
@@ -1095,9 +1102,9 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       _ = new PreloadDefine_1.AssetElement(e);
       e.FightAssetManager.SkillAssetManager.AddSkill(o, _);
       for (let e = 0; e < s.NeedLoadAssets.length; e++) {
-        var d = s.NeedLoadAssets[e];
-        var f = s.NeedLoadAssetTypes[e];
-        _.AddAsset(f, d);
+        var f = s.NeedLoadAssets[e];
+        var d = s.NeedLoadAssetTypes[e];
+        _.AddAsset(d, f);
       }
     }
     if (e.BlueprintClassPath?.length) {
@@ -1149,9 +1156,9 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       _ = new PreloadDefine_1.AssetElement(undefined);
       o.SkillAssetManager.AddSkill(e, _);
       for (let e = 0; e < s.NeedLoadAssets.length; e++) {
-        var d = s.NeedLoadAssets[e];
-        var f = s.NeedLoadAssetTypes[e];
-        _.AddAsset(f, d);
+        var f = s.NeedLoadAssets[e];
+        var d = s.NeedLoadAssetTypes[e];
+        _.AddAsset(d, f);
       }
     }
     if (o.BlueprintClassPath?.length) {
@@ -1444,8 +1451,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     }
     if (e.Others) {
-      for (const d of e.Others) {
-        o.AddOther(d);
+      for (const f of e.Others) {
+        o.AddOther(f);
       }
     }
     PreloadControllerNew.$j1.Stop();

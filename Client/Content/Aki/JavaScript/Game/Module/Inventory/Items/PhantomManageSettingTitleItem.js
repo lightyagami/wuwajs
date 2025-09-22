@@ -16,7 +16,7 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.Wqu = 1;
+    this.Gqu = 1;
     this.s4e = undefined;
     this.fTu = t => {
       if (t === 2 || t === 3 || t === 4) {
@@ -24,7 +24,7 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
       }
     };
     this.hJs = (t, e) => {
-      if (this.Wqu === 1) {
+      if (this.Gqu === 1) {
         PhantomManageSettingTitleItem.ViewModel.SetEditDataById(t.RuleId, t.Value, e);
       } else if (e) {
         e = this.RB_(t);
@@ -33,7 +33,7 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
         PhantomManageSettingTitleItem.ViewModel.SetEditDataById(t.RuleId, t.Value, false);
       }
     };
-    this.zqu = t => {
+    this.Hqu = t => {
       for (var [e, i] of t) {
         PhantomManageSettingTitleItem.ViewModel.SetEditDataByIdList(e, i);
       }
@@ -50,14 +50,14 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
   }
   async RefreshAsync(t, e, i) {
     this.Pe = t;
-    this.Jqu();
+    this.$qu();
     await this.RefreshByViewModelAsync();
   }
   async RefreshByViewModelAsync() {
     if (!this.s4e) {
-      await this.Zqu(this.Pe.FilterRuleId);
+      await this.Wqu(this.Pe.FilterRuleId);
     }
-    var t = this.eGu();
+    var t = this.Qqu();
     await this.s4e.RefreshAsync(t);
   }
   Refresh(t, e, i) {
@@ -66,7 +66,7 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
     });
     this.RunAsyncTask(a);
   }
-  Jqu() {
+  $qu() {
     var t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(this.Pe.FilterRuleId);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t.Title);
   }
@@ -76,11 +76,11 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
   GetKey(t, e) {
     return t.FilterRuleId;
   }
-  async Zqu(t) {
+  async Wqu(t) {
     var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(t).FilterType;
-    this.Wqu = InventoryDefine_1.recFilterRuleToGirdType[e];
-    var e = this.Wqu === 1 ? "UiItem_Inventory_EchoSetGroup02_Prefab" : "UiItem_Inventory_EchoSetGroup04_Prefab";
-    this.s4e = new PhantomManageSettingGrid_1.SettingGridLayout(t, this.Wqu);
+    this.Gqu = InventoryDefine_1.recFilterRuleToGirdType[e];
+    var e = this.Gqu === 1 ? "UiItem_Inventory_EchoSetGroup02_Prefab" : "UiItem_Inventory_EchoSetGroup04_Prefab";
+    this.s4e = new PhantomManageSettingGrid_1.SettingGridLayout(t, this.Gqu);
     this.s4e.CallbackOnClicked = this.hJs;
     var t = this.GetVerticalLayout(1);
     await this.s4e.CreateThenShowByResourceIdAsync(e, t.GetRootComponent());
@@ -92,10 +92,10 @@ class PhantomManageSettingTitleItem extends GridProxyAbstract_1.GridProxyAbstrac
       FilterId: this.Pe.FilterId,
       RuleIdList: [t.RuleId],
       ValueMap: e,
-      CallbackConfirm: this.zqu
+      CallbackConfirm: this.Hqu
     };
   }
-  eGu() {
+  Qqu() {
     var t = this.Pe.FilterRuleId;
     var e = PhantomManageSettingTitleItem.ViewModel.GetSelectConfig();
     var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(t);

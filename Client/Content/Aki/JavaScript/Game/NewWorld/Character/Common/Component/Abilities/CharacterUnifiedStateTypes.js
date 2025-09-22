@@ -59,6 +59,7 @@ exports.legalMoveStates = new Map([[ECharPositionState.Ground, new Set([ECharMov
   t[t.AimDirection = 1] = "AimDirection";
   t[t.FaceDirection = 2] = "FaceDirection";
   t[t.LookAtDirection = 3] = "LookAtDirection";
+  t[t.CameraDirection = 4] = "CameraDirection";
 })(ECharDirectionState = exports.ECharDirectionState ||= {});
 (function (t) {
   t[t.None = 0] = "None";

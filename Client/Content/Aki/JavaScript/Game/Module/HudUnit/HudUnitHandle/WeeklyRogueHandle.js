@@ -11,32 +11,32 @@ const HudUnitHandleBase_1 = require("./HudUnitHandleBase");
 class WeeklyRogueHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
     super(...arguments);
-    this.kqu = undefined;
-    this.Oqu = e => {
-      if (e && !this.kqu) {
-        this.qqu();
-      } else if (this.kqu) {
-        this.kqu.SetVisible(e);
+    this.ENu = undefined;
+    this.INu = e => {
+      if (e && !this.ENu) {
+        this.TNu();
+      } else if (this.ENu) {
+        this.ENu.SetVisible(e);
       }
     };
   }
   OnDestroyed() {
-    this.Gqu();
+    this.bNu();
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.Oqu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.INu);
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.Oqu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.INu);
   }
-  qqu() {
-    this.kqu = this.NewHudUnitWithReturn(WeeklyRogueUnit_1.WeeklyRogueUnit, "UiView_WeeklyRogueLink", true, () => {});
-    this.kqu.SetVisible(true);
+  TNu() {
+    this.ENu = this.NewHudUnitWithReturn(WeeklyRogueUnit_1.WeeklyRogueUnit, "UiView_WeeklyRogueLink", true, () => {});
+    this.ENu.SetVisible(true);
   }
-  Gqu() {
-    if (this.kqu) {
-      this.DestroyHudUnit(this.kqu);
-      this.kqu = undefined;
+  bNu() {
+    if (this.ENu) {
+      this.DestroyHudUnit(this.ENu);
+      this.ENu = undefined;
     }
   }
 }

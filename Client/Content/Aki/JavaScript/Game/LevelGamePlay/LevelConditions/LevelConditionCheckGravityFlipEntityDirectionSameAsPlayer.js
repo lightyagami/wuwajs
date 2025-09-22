@@ -8,7 +8,7 @@ const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, t) {
-    return !!e && (e = e.EntityId, !!(e = EntitySystem_1.EntitySystem.GetComponent(e, 284))) && e.CheckPlayerGravityDirectionAsSelf();
+    return !!e && (e = e.EntityId, !!(e = EntitySystem_1.EntitySystem.GetComponent(e, 285))) && e.CheckPlayerGravityDirectionAsSelf();
   }
 }
 exports.LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer = LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer;

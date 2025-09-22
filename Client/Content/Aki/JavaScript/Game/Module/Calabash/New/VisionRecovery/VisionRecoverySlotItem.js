@@ -28,9 +28,9 @@ class VisionRecoverySlotItem extends UiPanelBase_1.UiPanelBase {
         this.rMt(false, this.oMt);
       }
     };
-    this.W2u = t => {
+    this.xVu = t => {
       if (this.oMt && this.oMt.GetUniqueId() === t) {
-        this.Q2u();
+        this.DVu();
       }
     };
     this.rMt = t;
@@ -55,10 +55,10 @@ class VisionRecoverySlotItem extends UiPanelBase_1.UiPanelBase {
     this.iQt();
   }
   tQt() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.xVu);
   }
   iQt() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.W2u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemFuncValueChange, this.xVu);
   }
   RefreshUi(t) {
     if ((this.oMt = t) === undefined) {
@@ -99,9 +99,9 @@ class VisionRecoverySlotItem extends UiPanelBase_1.UiPanelBase {
     var s = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomRareConfig(s).Cost;
     this.GetItem(7).SetUIActive(true);
     this.GetText(8).SetText(s.toString());
-    this.Q2u();
+    this.DVu();
   }
-  Q2u() {
+  DVu() {
     var t = this.oMt ? ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(this.oMt.GetUniqueId()) : undefined;
     if (t) {
       this.GetItem(9).SetUIActive(t.GetIsLock());

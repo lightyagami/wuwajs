@@ -16,13 +16,13 @@ const configNodesFilter = {
   ParallelSelect: true,
   Start: false,
   QuestSucceed: true,
-  AlwaysTrue: false,
+  AlwaysTrue: true,
   AlwaysFalse: true,
   Sequence: true,
-  Select: false,
-  Condition: false,
+  Select: true,
+  Condition: true,
   ConditionSelector: true,
-  Repeater: false
+  Repeater: true
 };
 class GeneralLogicTreeConfigUtil {
   static InitConfig(e, t) {

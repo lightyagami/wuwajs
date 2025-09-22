@@ -292,6 +292,9 @@ class Quest extends LogicTreeContainer_1.LogicTreeContainer {
       QuestController_1.QuestNewController.RedDotRequest(this.Id, 0);
     }
   }
+  GetCanAcceptMapMarkId() {
+    return this.Jro;
+  }
 }
 exports.Quest = Quest;
 //# sourceMappingURL=Quest.js.map

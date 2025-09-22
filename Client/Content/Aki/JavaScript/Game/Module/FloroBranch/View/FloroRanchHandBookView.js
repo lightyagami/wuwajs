@@ -18,13 +18,13 @@ class FloroRanchHandBookView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.a8e = 0;
     this.UVi = undefined;
-    this.JOu = undefined;
+    this.c4u = undefined;
     this.eVi = undefined;
     this.aPu = () => this.UVi !== undefined;
     this.Bco = i => {
       this.UVi?.OnDeselected();
       (this.UVi = i).OnSelected();
-      this.ZOu();
+      this.NOu();
       this.hPu(i.Data);
     };
     this.hPu = i => {
@@ -36,8 +36,8 @@ class FloroRanchHandBookView extends UiViewBase_1.UiViewBase {
         this.eVi.SetLock();
       }
     };
-    this.equ = () => this.a8e !== 0;
-    this.tqu = () => this.a8e !== 1;
+    this.VOu = () => this.a8e !== 0;
+    this.jOu = () => this.a8e !== 1;
     this.vG1 = () => {
       this.a8e = 0;
       this.GetExtendToggle(3)?.SetToggleStateForce(0);
@@ -64,15 +64,15 @@ class FloroRanchHandBookView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[0, this.AMo], [2, this.vG1], [3, this.lPu]];
   }
   async OnBeforeStartAsync() {
-    this.GetExtendToggle(2)?.CanExecuteChange.Bind(this.equ);
-    this.GetExtendToggle(3)?.CanExecuteChange.Bind(this.tqu);
+    this.GetExtendToggle(2)?.CanExecuteChange.Bind(this.VOu);
+    this.GetExtendToggle(3)?.CanExecuteChange.Bind(this.jOu);
     this.eVi = new FloroRanchCardItem_1.FloroRanchCardItem();
     this.eVi.OverrideTermViewType = 1;
     await this.eVi.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
     this.eVi.SetInteractive(false);
-    this.JOu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this._Pu, undefined, true);
+    this.c4u = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(4), this._Pu, undefined, true);
     await this.Og();
-    this.ZOu();
+    this.NOu();
   }
   async Og() {
     this.UVi?.OnDeselected();
@@ -85,10 +85,10 @@ class FloroRanchHandBookView extends UiViewBase_1.UiViewBase {
     if (this.a8e === 0) {
       s = i.GetFloroRanchRaceDataList(true).map(i => i.Id);
     }
-    await this.JOu.RefreshByDataAsync(s);
-    this.JOu.ScrollToTop(0);
+    await this.c4u.RefreshByDataAsync(s);
+    this.c4u.ScrollToTop(0);
   }
-  ZOu() {
+  NOu() {
     var i = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     this.GetItem(9)?.SetUIActive(i.IsCardHasRedDot());
     this.GetItem(10)?.SetUIActive(i.IsToyHasRedDot());

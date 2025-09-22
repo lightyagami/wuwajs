@@ -39,20 +39,20 @@ exports.builtinFuncMap = new Map(Object.entries(builtinFunc));
 class ExpressionTreeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.cKc = new Map();
+    this.LXc = new Map();
   }
   OnClear() {
-    this.cKc.clear();
+    this.LXc.clear();
     return true;
   }
   Add(e, t) {
-    this.cKc.set(e, t);
-    if (this.cKc.size > DAMAGE_EXPRESSION_CACHE && (e = this.cKc.keys().next().value) !== undefined) {
-      this.cKc.delete(e);
+    this.LXc.set(e, t);
+    if (this.LXc.size > DAMAGE_EXPRESSION_CACHE && (e = this.LXc.keys().next().value) !== undefined) {
+      this.LXc.delete(e);
     }
   }
   Get(e) {
-    return this.cKc.get(e);
+    return this.LXc.get(e);
   }
 }
 exports.ExpressionTreeModel = ExpressionTreeModel;

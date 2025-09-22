@@ -61,10 +61,10 @@ class ActivityFunPlayRewardView extends UiPanelBase_1.UiPanelBase {
   n3e() {
     var e = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
     if (e) {
-      this.GetText(2).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanNoReward));
-      this.GetItem(5).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanReward));
-      this.GetButton(4).RootUIComp.SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanReward));
-      this.GetSprite(3).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayRewarded));
+      this.GetText(2).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanNoReward));
+      this.GetItem(5).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanReward));
+      this.GetButton(4).RootUIComp.SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanReward));
+      this.GetSprite(3).SetUIActive(e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayRewarded));
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("ActivityFunPlay", 87, "趣味玩法关卡数据空");
     }

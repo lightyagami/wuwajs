@@ -44,7 +44,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.m5t = false;
     this.d5t = undefined;
     this.C5t = undefined;
-    this.lod = true;
+    this.$nd = true;
     this.g5t = () => {
       if (!this.IsDestroyOrDestroying) {
         this.f5t(this._5t);
@@ -269,7 +269,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.F4t], [6, this.p5t], [8, this.I5t], [9, this.G4t]];
   }
   async OnBeforeStartAsync() {
-    this.lod = this.OpenParam ?? true;
+    this.$nd = this.OpenParam ?? true;
     var i = ModelManager_1.ModelManager.EditFormationModel;
     var t = i.GetCurrentFormationId;
     if (t === undefined) {
@@ -369,17 +369,17 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     }
     this.C5t ||= TimerSystem_1.GameplayTimerSystem.Delay(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("EditFormationViewClosing", false);
-      this._od();
+      this.Wnd();
     }, EditFormationDefine_1.AUTO_CLOSE_EDIT_FORMATION);
   }
   async M5t() {
     this.m5t = true;
     await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
     UiLayer_1.UiLayer.SetShowMaskLayer("EditFormationViewClosing", false);
-    this._od();
+    this.Wnd();
   }
-  _od() {
-    if (this.lod) {
+  Wnd() {
+    if (this.$nd) {
       UiManager_1.UiManager.ResetToBattleView();
     } else {
       this.CloseMe();

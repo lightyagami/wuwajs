@@ -74,5 +74,5 @@ let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extend
     this.SpecialSkill?.OnDisable();
   }
 };
-CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], CharacterSpecialSkillComponent);
+CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(256)], CharacterSpecialSkillComponent);
 exports.CharacterSpecialSkillComponent = CharacterSpecialSkillComponent; //# sourceMappingURL=CharacterSpecialSkillComponent.js.map

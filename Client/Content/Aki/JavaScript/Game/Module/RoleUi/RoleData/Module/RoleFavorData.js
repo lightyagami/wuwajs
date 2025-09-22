@@ -87,11 +87,13 @@ class RoleFavorData extends RoleModuleDataBase_1.RoleModuleDataBase {
   }
   GetFavorItemState(t, e) {
     var r = this.K1o.get(e);
-    var o = r.length;
-    for (let e = 0; e < o; e++) {
-      var a = r[e];
-      if (a.Id === t) {
-        return a.Status;
+    if (r) {
+      var o = r.length;
+      for (let e = 0; e < o; e++) {
+        var a = r[e];
+        if (a.Id === t) {
+          return a.Status;
+        }
       }
     }
     return 0;
@@ -111,9 +113,9 @@ class RoleFavorData extends RoleModuleDataBase_1.RoleModuleDataBase {
     if (e === Protocol_1.Aki.Protocol.l6s.m8n) {
       return 0;
     } else if (e === Protocol_1.Aki.Protocol.l6s.Proto_Story) {
-      return 1;
+      return 2;
     } else if (e === Protocol_1.Aki.Protocol.l6s.Proto_Goods) {
-      return 3;
+      return 4;
     } else {
       return undefined;
     }
@@ -127,7 +129,7 @@ class RoleFavorData extends RoleModuleDataBase_1.RoleModuleDataBase {
     return false;
   }
   IsFavorItemCanUnlock(e) {
-    if (e === 2) {
+    if (e === 3) {
       return ModelManager_1.ModelManager.MotionModel.IfRoleMotionCanUnlock(this.RoleId);
     }
     var t = this.K1o.get(e);
@@ -143,7 +145,7 @@ class RoleFavorData extends RoleModuleDataBase_1.RoleModuleDataBase {
   }
   GetUnlockActionIndexList() {
     var t = [];
-    var r = this.K1o.get(2);
+    var r = this.K1o.get(3);
     if (r) {
       var o = r.length;
       for (let e = 0; e < o; e++) {

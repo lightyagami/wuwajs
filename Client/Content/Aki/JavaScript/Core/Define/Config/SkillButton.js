@@ -57,6 +57,9 @@ class SkillButton {
   disableskillidtagsValue(t) {
     return this.disableskillidtags(t)?.value();
   }
+  get VisibleTags() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.visibletagsLength(), this.visibletags, this);
+  }
   get HiddenTags() {
     return GameUtils_1.GameUtils.ConvertToArray(this.hiddentagsLength(), this.hiddentags, this);
   }
@@ -80,6 +83,15 @@ class SkillButton {
   }
   get AttributeEnableTags() {
     return GameUtils_1.GameUtils.ConvertToArray(this.attributeenabletagsLength(), this.attributeenabletags, this);
+  }
+  get FormationAttributeIdTagMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.formationattributeidtagmapLength(), this.formationattributeidtagmapKey, this.formationattributeidtagmapValue, this);
+  }
+  formationattributeidtagmapKey(t) {
+    return this.formationattributeidtagmap(t)?.key();
+  }
+  formationattributeidtagmapValue(t) {
+    return this.formationattributeidtagmap(t)?.value();
   }
   get MaxAttributeBurstEffectId() {
     return this.maxattributebursteffectid();
@@ -283,10 +295,10 @@ class SkillButton {
       return 0;
     }
   }
-  GetHiddentagsAt(t) {
-    return this.hiddentags(t);
+  GetVisibletagsAt(t) {
+    return this.visibletags(t);
   }
-  hiddentags(t) {
+  visibletags(t) {
     var i = this.J7.__offset(this.z7, 26);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
@@ -294,7 +306,7 @@ class SkillButton {
       return 0;
     }
   }
-  hiddentagsLength() {
+  visibletagsLength() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
@@ -302,7 +314,7 @@ class SkillButton {
       return 0;
     }
   }
-  hiddentagsArray() {
+  visibletagsArray() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
@@ -310,12 +322,39 @@ class SkillButton {
       return null;
     }
   }
-  iscdvisible() {
+  GetHiddentagsAt(t) {
+    return this.hiddentags(t);
+  }
+  hiddentags(t) {
+    var i = this.J7.__offset(this.z7, 28);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  hiddentagsLength() {
     var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  hiddentagsArray() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  iscdvisible() {
+    var t = this.J7.__offset(this.z7, 30);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   attributeid() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -323,7 +362,7 @@ class SkillButton {
     }
   }
   maxattributeid() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -334,7 +373,7 @@ class SkillButton {
     return this.attributeidtagmap(t);
   }
   attributeidtagmap(t, i) {
-    var s = this.J7.__offset(this.z7, 34);
+    var s = this.J7.__offset(this.z7, 36);
     if (s) {
       return (i || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -342,7 +381,7 @@ class SkillButton {
     }
   }
   attributeidtagmapLength() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -353,7 +392,7 @@ class SkillButton {
     return this.attributeenabletags(t);
   }
   attributeenabletags(t) {
-    var i = this.J7.__offset(this.z7, 36);
+    var i = this.J7.__offset(this.z7, 38);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -361,7 +400,7 @@ class SkillButton {
     }
   }
   attributeenabletagsLength() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -369,15 +408,34 @@ class SkillButton {
     }
   }
   attributeenabletagsArray() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
     }
   }
+  GetFormationattributeidtagmapAt(t, i) {
+    return this.formationattributeidtagmap(t);
+  }
+  formationattributeidtagmap(t, i) {
+    var s = this.J7.__offset(this.z7, 40);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  formationattributeidtagmapLength() {
+    var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   maxattributebursteffectid() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -385,7 +443,7 @@ class SkillButton {
     }
   }
   cdcompletedeffectid() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -393,11 +451,11 @@ class SkillButton {
     }
   }
   islongpresscontrolcamera() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 46);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   longpresstime() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -408,7 +466,7 @@ class SkillButton {
     return this.dynamiceffecttagmap(t);
   }
   dynamiceffecttagmap(t, i) {
-    var s = this.J7.__offset(this.z7, 46);
+    var s = this.J7.__offset(this.z7, 50);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -416,7 +474,7 @@ class SkillButton {
     }
   }
   dynamiceffecttagmapLength() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -424,7 +482,7 @@ class SkillButton {
     }
   }
   customhandleid() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -435,7 +493,7 @@ class SkillButton {
     return this.showlongpresstags(t);
   }
   showlongpresstags(t) {
-    var i = this.J7.__offset(this.z7, 50);
+    var i = this.J7.__offset(this.z7, 54);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -443,7 +501,7 @@ class SkillButton {
     }
   }
   showlongpresstagsLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -451,7 +509,7 @@ class SkillButton {
     }
   }
   showlongpresstagsArray() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

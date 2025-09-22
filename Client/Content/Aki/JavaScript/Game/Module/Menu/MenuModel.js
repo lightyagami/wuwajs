@@ -24,6 +24,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const FeatureRestrictionTemplate_1 = require("../Common/FeatureRestrictionTemplate");
 const MenuData_1 = require("./MenuData");
 const MenuDefine_1 = require("./MenuDefine");
+const MenuVersionCheckData_1 = require("./Views/MenuVersionCheckData");
 class MenuModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -44,6 +45,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.IsRayTracingOpenChecked = undefined;
     this.NeedRayTracingSubChange = undefined;
     this.IsVulkanOpenChecked = false;
+    this.BloodBathedMode = 5;
     this.pNn = new Map([[GameSettingsDefine_1.EFunction.CdKey, FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient]]);
     this.FilterSettingViewModel = undefined;
     this.ktu = undefined;
@@ -57,7 +59,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
       var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(n);
       for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(n)) {
-        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice()) && e !== GameSettingsDefine_1.EFunction.RayTracing) {
+        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice())) {
           var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
           if (i !== undefined && t !== i) {
             if (Log_1.Log.CheckDebug()) {
@@ -78,8 +80,12 @@ class MenuModel extends ModelBase_1.ModelBase {
     if (this.ktu === undefined) {
       var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
       this.ktu = new Map();
-      for (const t of FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? []) {
-        this.ktu.set(t.Id, [e?.get(t.Id)?.[0] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 0), e?.get(t.Id)?.[1] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 1), e?.get(t.Id)?.[2] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(t.Id, 2)]);
+      for (const n of FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? []) {
+        var t = [];
+        for (const i of MenuDefine_1.filterSettingParams) {
+          t[i] = e?.get(n.Id)?.[i] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(n.Id, i);
+        }
+        this.ktu.set(n.Id, t);
       }
     }
     return this.ktu;
@@ -132,7 +138,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     for ([e, t] of GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap) {
       if (this.pac(t)) {
         n = t.MainType;
-        i = new MenuData_1.MenuData(t);
+        i = this.D6d(t);
         this.zNa.set(e, i);
         if ((a = this.YNa.get(n)) && a.length > 0) {
           a.push(i);
@@ -156,6 +162,9 @@ class MenuModel extends ModelBase_1.ModelBase {
     for (const g of this.YNa.keys()) {
       this.Rwi(g);
     }
+  }
+  D6d(e) {
+    return new (e.FunctionId === GameSettingsDefine_1.EFunction.VersionCheck ? MenuVersionCheckData_1.MenuVersionCheckData : MenuData_1.MenuData)(e);
   }
   pac(e) {
     var t;
@@ -219,12 +228,12 @@ class MenuModel extends ModelBase_1.ModelBase {
   IsInMenuDataByFunctionId(e) {
     return this.zNa.has(e);
   }
-  ucd(e, t, n) {
+  dMd(e, t, n) {
     e = MathUtils_1.MathUtils.Clamp(e, 0, n.length - 1);
     t = MathUtils_1.MathUtils.Clamp(t, 0, n.length - 1);
     return n[e] - n[t];
   }
-  Agd(e) {
+  B7d(e) {
     var t = [{
       FunctionId: GameSettingsDefine_1.EFunction.SHADOWQUALITY,
       Key: "ShadowQuality",
@@ -314,7 +323,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       fieldMappings: t
     };
   }
-  ccd() {
+  mMd() {
     var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
     if (e === undefined) {
       return 0;
@@ -327,7 +336,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     var {
       recommended: n,
       fieldMappings: e
-    } = this.Agd(e);
+    } = this.B7d(e);
     let i = 0;
     for (const g of e) {
       var a;
@@ -343,15 +352,15 @@ class MenuModel extends ModelBase_1.ModelBase {
         t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
         a = 4000 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
         r = MathUtils_1.MathUtils.Clamp(a, 0.6, 3);
-        o = this.ucd(t, e, g.ScoreTable) * r;
+        o = this.dMd(t, e, g.ScoreTable) * r;
         i += o;
       } else {
-        i += this.ucd(t, e, g.ScoreTable);
+        i += this.dMd(t, e, g.ScoreTable);
       }
     }
     var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 0;
     var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv() ?? 0;
-    var e = this.ucd(e, t, MenuDefine_1.pcQualityLevelScores);
+    var e = this.dMd(e, t, MenuDefine_1.pcQualityLevelScores);
     var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RESOLUTION) ?? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX;
     var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
     var t = (t.X * t.Y / 3686400 - 1) * 40;
@@ -381,7 +390,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       return this.GetQualitySettingScoreMobilePlatform() * 100 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
     }
     if (Info_1.Info.IsPcPlatform()) {
-      var t = this.ccd();
+      var t = this.mMd();
       let e = 0;
       var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
       if (n !== undefined) {
@@ -447,6 +456,12 @@ class MenuModel extends ModelBase_1.ModelBase {
     } else {
       return t[e]?.Id ?? 1;
     }
+  }
+  GetBloodBathedMode() {
+    return this.BloodBathedMode;
+  }
+  SetBloodBathedMode(e) {
+    this.BloodBathedMode = e;
   }
 }
 exports.MenuModel = MenuModel;

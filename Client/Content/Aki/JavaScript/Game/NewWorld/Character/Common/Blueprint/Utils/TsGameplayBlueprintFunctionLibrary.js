@@ -12,10 +12,12 @@ const CommonDefine_1 = require("../../../../../../Core/Define/CommonDefine");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../../../../Core/Entity/EntitySystem");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const TimerSystem_1 = require("../../../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../../../Core/Utils/FNameUtil");
 const GameplayTagUtils_1 = require("../../../../../../Core/Utils/GameplayTagUtils");
 const Rotator_1 = require("../../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../../../../Core/Utils/StringUtils");
 const TsBaseCharacter_1 = require("../../../../../Character/TsBaseCharacter");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
@@ -30,7 +32,10 @@ const LogReportDefine_1 = require("../../../../../Module/LogReport/LogReportDefi
 const PhantomUtil_1 = require("../../../../../Module/Phantom/PhantomUtil");
 const ActorUtils_1 = require("../../../../../Utils/ActorUtils");
 const CombatDebugController_1 = require("../../../../../Utils/CombatDebugController");
+const BlackboardController_1 = require("../../../../../World/Controller/BlackboardController");
+const BulletController_1 = require("../../../../Bullet/BulletController");
 const BulletTypes_1 = require("../../../../Bullet/BulletTypes");
+const BulletUtil_1 = require("../../../../Bullet/BulletUtil");
 const SceneItemDynamicAttachTargetComponent_1 = require("../../../../SceneItem/Common/Component/SceneItemDynamicAttachTargetComponent");
 const EntityHandle_1 = require("../../../EntityHandle");
 const RoleAudioController_1 = require("../../../Role/RoleAudioController");
@@ -219,8 +224,8 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetBuffDebugStrings(t, e) {
     return TsGameplayBlueprintFunctionLibrary.GetBuffDebugStringsNoBlueprint(t, e);
   }
-  static GetShieldDebugString(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 22)?.GetShieldDebugString().trim() ?? "";
+  static GetShieldDebugString(t, e = "") {
+    return EntitySystem_1.EntitySystem.GetComponent(t, 22)?.GetShieldDebugString(e).trim() ?? "";
   }
   static GetPassiveSkillDebugString(t) {
     return "";
@@ -314,27 +319,33 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       }
     }
   }
+  static GetEntityActorName(t) {
+    var e;
+    if (t) {
+      return t?.GetComponent(3)?.Actor?.GetName() || ((e = t?.GetComponent(234)) && e.VehicleFeatures.has(2) ? t?.GetComponent(1)?.Owner?.GetName() : undefined);
+    }
+  }
   static RefreshEntityComboBox(e) {
     var t;
-    var i;
-    var r = e.GetOptionCount();
-    var n = new Set();
-    for (let t = r - 1; t >= 0; t--) {
-      var a = e.GetOptionAtIndex(t);
-      var s = Number(/_(?<entityId>\d+)$/.exec(a)?.groups.entityId ?? 0);
-      if (s === 0 || n.has(s) || !EntitySystem_1.EntitySystem.Get(s)) {
-        e.RemoveOption(a);
+    var i = e.GetOptionCount();
+    var r = new Set();
+    for (let t = i - 1; t >= 0; t--) {
+      var n = e.GetOptionAtIndex(t);
+      var a = /^(?<actorName>.+?)_(?<handleId>\d+)$/.exec(n);
+      var s = Number(a?.groups?.handleId ?? 0);
+      var a = a?.groups?.actorName;
+      var o = EntitySystem_1.EntitySystem.Get(s);
+      if (s === 0 || r.has(s) || !o || a !== TsGameplayBlueprintFunctionLibrary.GetEntityActorName(o)) {
+        e.RemoveOption(n);
       } else {
-        n.add(s);
+        r.add(s);
       }
     }
-    for (const o of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-      if (!n.has(o?.Id)) {
-        if (i = (t = o?.Entity)?.GetComponent(3)?.Actor?.GetName()) {
-          e.AddOption(i + "_" + o.Id);
-        } else if ((i = t?.GetComponent(234)) && i.VehicleFeatures.has(2)) {
-          i = t?.GetComponent(1)?.Owner?.GetName();
-          e.AddOption(i + "_" + o.Id);
+    for (const y of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
+      if (!r.has(y?.Id)) {
+        t = y?.Entity;
+        if (t = TsGameplayBlueprintFunctionLibrary.GetEntityActorName(t)) {
+          e.AddOption(t + "_" + y.Id);
         }
       }
     }
@@ -377,16 +388,16 @@ class TsGameplayBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
           y.add(c.Handle);
         }
       }
-      for (const S of n.GetAllBuffs()) {
-        if (!y.has(S.Handle) && (!(r.length > 0) || !!r.some(t => String(S.Id).startsWith(t)))) {
-          a = new UE.Layer(e, t + "," + S.Handle);
+      for (const u of n.GetAllBuffs()) {
+        if (!y.has(u.Handle) && (!(r.length > 0) || !!r.some(t => String(u.Id).startsWith(t)))) {
+          a = new UE.Layer(e, t + "," + u.Handle);
           e.AddItem(a);
         }
       }
       if ((0, RegisterComponent_1.isComponentInstance)(n, 191) && n.GetFormationBuffComp()) {
-        for (const u of n.GetFormationBuffComp().GetAllBuffs()) {
-          if (!y.has(u.Handle) && (!(r.length > 0) || !!r.some(t => String(u.Id).startsWith(t)))) {
-            s = new UE.Layer(e, t + "," + u.Handle);
+        for (const m of n.GetFormationBuffComp().GetAllBuffs()) {
+          if (!y.has(m.Handle) && (!(r.length > 0) || !!r.some(t => String(m.Id).startsWith(t)))) {
+            s = new UE.Layer(e, t + "," + m.Handle);
             e.AddItem(s);
           }
         }
@@ -922,10 +933,8 @@ ${e}`;
   }
   static GetSkillTarget(t) {
     t = EntitySystem_1.EntitySystem.GetComponent(t, 39);
-    if (t?.Valid && t.SkillTarget) {
-      return t.SkillTarget?.Entity?.GetComponent(1)?.Owner;
-    } else {
-      return undefined;
+    if (t?.SkillTarget?.Valid) {
+      return t.SkillTarget.Entity?.GetComponent(1)?.Owner;
     }
   }
   static SetSkillTarget(t, e) {
@@ -1140,7 +1149,7 @@ ${e}`;
     }
   }
   static BeginAddMoveByInputDirect(t, e, i, r, n) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 255)?.SpecialSkill;
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 256)?.SpecialSkill;
     if (t) {
       t.BeginAddMoveByInputDirect?.(e, i, r, n);
     }
@@ -1158,7 +1167,7 @@ ${e}`;
     SkillUtils_1.SkillUtils.EndTimeStopRequest(t);
   }
   static EndAddMoveByInputDirect(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 255)?.SpecialSkill;
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 256)?.SpecialSkill;
     if (t) {
       t.EndAddMoveByInputDirect?.();
     }
@@ -1574,7 +1583,7 @@ ${e}`;
     return t;
   }
   static StartInhalation(t, e, i, r, n, a) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 266);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 267);
     if (t?.Valid) {
       var s = [];
       var o = (0, puerts_1.$unref)(a);
@@ -1585,7 +1594,7 @@ ${e}`;
     }
   }
   static StopInhalation(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 266);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 267);
     if (t?.Valid) {
       t.StopInhalation();
     }
@@ -1710,7 +1719,7 @@ ${e}`;
     }
   }
   static FishingBoatSprint(t, e, i, r) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 277);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 278);
     if (t?.Valid) {
       t.FishingBoatEnterSprint(e, i, r);
     }
@@ -1719,10 +1728,10 @@ ${e}`;
     ControllerHolder_1.ControllerHolder.FishingController.BeginFishingSkill(t);
   }
   static GetCharacterMorphType(t) {
-    return EntitySystem_1.EntitySystem.GetComponent(t, 282)?.GetMorphType() ?? 0;
+    return EntitySystem_1.EntitySystem.GetComponent(t, 283)?.GetMorphType() ?? 0;
   }
   static SetCharacterMorphType(t, e) {
-    EntitySystem_1.EntitySystem.GetComponent(t, 282)?.SetMorphType(e);
+    EntitySystem_1.EntitySystem.GetComponent(t, 283)?.SetMorphType(e);
   }
   static SetSpecialEnergyAttrValue(t, e, i) {
     AbilityUtils_1.AbilityUtils.SetSpecialEnergyAttrValue(t, e, i);
@@ -1764,6 +1773,138 @@ ${e}`;
       t.SetWalkOffLedgeRecord(e);
     }
   }
+  static StartFlyingFeather(t, e, i) {
+    if (t instanceof TsBaseCharacter_1.default) {
+      const r = t.EntityId;
+      const n = BulletUtil_1.BulletUtil.GetSkillContextId(t.GetEntityNoBlueprint(), i.SkillId);
+      if (TimerSystem_1.TimerSystem.Has(TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Test", 42, "[FlyingFeather] 存在异常的飞雷神羽毛定时器，移除定时器", ["HandleId", TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle?.Id]);
+        }
+        TimerSystem_1.TimerSystem.Remove(TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle);
+        TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = undefined;
+      }
+      if (i.BulletDelayTime > TimerSystem_1.MIN_TIME && i.BulletDelayTime < TimerSystem_1.MAX_TIME) {
+        TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = TimerSystem_1.TimerSystem.Delay(() => {
+          TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = undefined;
+          TsGameplayBlueprintFunctionLibrary.EmitFeatherBullet(t, e, i, r, n);
+        }, i.BulletDelayTime);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Test", 42, "[FlyingFeather] 开始延时等待创建飞雷神羽毛子弹", ["HandleId", TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle?.Id], ["DelayTime", i.BulletDelayTime]);
+        }
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Test", 42, "[FlyingFeather] 直接创建飞雷神羽毛子弹");
+        }
+        TsGameplayBlueprintFunctionLibrary.EmitFeatherBullet(t, e, i, r, n);
+      }
+    }
+  }
+  static EmitFeatherBullet(e, t, i, r, n) {
+    if (e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent?.Entity.Valid) {
+      var a = BlackboardController_1.BlackboardController.GetVectorValueByEntity(r, i.FeatherTarget);
+      if (a) {
+        MathUtils_1.MathUtils.CommonTempVector.Set(a.X, a.Y, a.Z);
+      } else {
+        MathUtils_1.MathUtils.CommonTempVector.DeepCopy(t);
+      }
+      const s = BulletController_1.BulletController.CreateBulletCustomTarget(e, i.BulletId, e.D_GetTransform(), {
+        SkillId: i.SkillId,
+        SkillContextId: n,
+        InitTargetLocation: MathUtils_1.MathUtils.CommonTempVector.ToUeVector()
+      }, n)?.GetBulletInfo().BulletEntityId;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Test", 42, "[FlyingFeather] 创建飞雷神羽毛子弹", ["bulletId", s]);
+      }
+      const o = t => {
+        if (t.BulletEntityId === s && (TsGameplayBlueprintFunctionLibrary.ChangeFlyingFeatherMove(r), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Test", 42, "[FlyingFeather] 监听到羽毛子弹销毁", ["bulletId", s]), TimerSystem_1.TimerSystem.Has(TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Test", 42, "[FlyingFeather] 移除保底销毁羽毛子弹定时器", ["HandleId", TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle?.Id]), TimerSystem_1.TimerSystem.Remove(TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle)), TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = undefined, e.CharacterActorComponent?.Entity)) {
+          EventSystem_1.EventSystem.RemoveWithTarget(e.CharacterActorComponent.Entity, EventDefine_1.EEventName.BulletDestroy, o);
+        }
+      };
+      TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = TimerSystem_1.TimerSystem.Delay(() => {
+        TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = undefined;
+        TsGameplayBlueprintFunctionLibrary.ChangeFlyingFeatherMove(r);
+        var t = e.CharacterActorComponent?.Entity;
+        if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.BulletDestroy, o)) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Test", 42, "[FlyingFeather] 触发保底销毁羽毛子弹，移除子弹监听");
+          }
+          EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.BulletDestroy, o);
+        }
+      }, MathUtils_1.MathUtils.Clamp(i.MaxChangeStateTime, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Test", 42, "[FlyingFeather] 开启保底销毁羽毛子弹定时器", ["HandleId", TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle?.Id]);
+      }
+      EventSystem_1.EventSystem.AddWithTarget(e.CharacterActorComponent.Entity, EventDefine_1.EEventName.BulletDestroy, o);
+    }
+  }
+  static ChangeFlyingFeatherMove(t) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Test", 42, "[FlyingFeather] 飞雷神转成移动状态");
+    }
+    var e = EntitySystem_1.EntitySystem.GetComponent(t, 206);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
+    if (e && t?.GetIsHooking()) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Test", 42, "[FlyingFeather] 添加飞雷神移动中Tag");
+      }
+      if (!e.HasTag(-1281048221)) {
+        e.AddTag(-1281048221);
+      }
+    }
+  }
+  static GetFlyingFeatherTargetId(t) {
+    if (t instanceof TsBaseCharacter_1.default) {
+      var t = t.EntityId;
+      var t = EntitySystem_1.EntitySystem.GetComponent(t, 100);
+      var e = t?.GetCurrentTarget()?.GetHookBindEntityConfig();
+      if (t && e) {
+        t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e);
+        if (t) {
+          return t.Id.toString();
+        }
+      }
+    }
+  }
+  static AddFlyingFeatherTargetTag(t, e) {
+    var i;
+    var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(Number(e));
+    if (e) {
+      if (!(i = e.Entity?.GetComponent(206))?.HasTag(t.TagId)) {
+        i?.AddTag(t.TagId);
+      }
+      return e.Entity?.GetComponent(1)?.Owner;
+    }
+  }
+  static UpdateFlyingFeather(t, e) {
+    if (t instanceof TsBaseCharacter_1.default) {
+      var i = t.EntityId;
+      var r = EntitySystem_1.EntitySystem.GetComponent(i, 100);
+      var n = r?.GetCurrentTargetActor();
+      if (r && n) {
+        r = t.CharacterActorComponent.ActorLocationProxy;
+        n = n.D_K2_GetActorLocation();
+        BlackboardController_1.BlackboardController.SetVectorValueByEntity(i, e, n.X, n.Y, n.Z);
+        i = TsGameplayBlueprintFunctionLibrary.GetFlyingFeatherTargetId(t);
+        if (i) {
+          e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(Number(i))?.Entity?.GetComponent(1);
+          if (e) {
+            MathUtils_1.MathUtils.CommonTempVector.DeepCopy(e.ActorLocationProxy);
+            MathUtils_1.MathUtils.CommonTempVector.SubtractionEqual(r);
+            t = MathUtils_1.MathUtils.CommonTempVector.Size();
+            MathUtils_1.MathUtils.CommonTempVector.Normalize();
+            MathUtils_1.MathUtils.CommonTempVector.MultiplyEqual(Math.max(0, t - e.GetRadius()));
+            MathUtils_1.MathUtils.CommonTempVector.AdditionEqual(r);
+            return MathUtils_1.MathUtils.CommonTempVector.ToUeVector();
+          }
+        }
+        return n;
+      }
+    }
+  }
+  static EmitGlobalClientEvent(t) {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CheckClientEvent, t);
+  }
 }
-exports.default = TsGameplayBlueprintFunctionLibrary;
-//# sourceMappingURL=TsGameplayBlueprintFunctionLibrary.js.map
+TsGameplayBlueprintFunctionLibrary.FlyingFeatherHandle = undefined;
+exports.default = TsGameplayBlueprintFunctionLibrary; //# sourceMappingURL=TsGameplayBlueprintFunctionLibrary.js.map

@@ -47,6 +47,7 @@ const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeam
 const PreloadDefine_1 = require("../../../../../Preload/PreloadDefine");
 const ActorUtils_1 = require("../../../../../Utils/ActorUtils");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
+const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const BaseAbilityComponent_1 = require("../Abilities/BaseAbilityComponent");
 const CharacterBuffIds_1 = require("../Abilities/CharacterBuffIds");
@@ -55,7 +56,6 @@ const SkillBehaviorAction_1 = require("./SkillBehavior/SkillBehaviorAction");
 const SkillBehaviorCondition_1 = require("./SkillBehavior/SkillBehaviorCondition");
 const SkillUtils_1 = require("./SkillUtils");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
-const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
 exports.SKILL_GROUP_MAIN = 1;
 const HIT_CASE_SOCKET_NAME = "HitCase";
 const SKILL_GROUP_INDEX = 0;
@@ -231,9 +231,11 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
       var l = e.toString();
       let i = DataTableUtil_1.DataTableUtil.GetDataTableRow(this._Zr, l);
-      if (!i && this.DtSkillInfoExtraList) {
-        for (const t of this.DtSkillInfoExtraList) {
-          if (i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, l)) {
+      if (this.DtSkillInfoExtraList) {
+        for (const n of this.DtSkillInfoExtraList) {
+          var t = DataTableUtil_1.DataTableUtil.GetDataTableRow(n, l);
+          if (t) {
+            i = t;
             break;
           }
         }
@@ -587,7 +589,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
   }
   VZr(t, i) {
     BaseSkillComponent_1.Zzr.Start();
-    CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.RequestEndSkill", ["结束技能ID", t.SkillId], ["结束技能名称", t.SkillName], ["Reason", i], ["CanInterrupt", this.vZr], ["ReadyEnd", this.IsMainSkillReadyEnd], ["InterruptLevel", t.InterruptLevel]);
+    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.RequestEndSkill", ["结束技能ID", t.SkillId], ["结束技能名称", t.SkillName], ["Reason", i], ["CanInterrupt", this.vZr], ["ReadyEnd", this.IsMainSkillReadyEnd], ["InterruptLevel", t.InterruptLevel]);
     this.dZr?.ResetMultiSkills(t.SkillId);
     this.dZr?.ResetCdDelayTime(t.SkillId);
     i = t.SkillInfo.SkillMode;
@@ -676,7 +678,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         return;
       }
       this.OZr(t, i);
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.TryGetSkill", ["技能Id", t], ["技能名", i.SkillName.toString()]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.TryGetSkill", ["技能Id", t], ["技能名", i.SkillName.toString()]);
     }
     return this.LoadedSkills.get(t);
   }
@@ -688,7 +690,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         return;
       }
       this.OZr(t, i);
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.TryGetSkillAsync", ["技能Id", t], ["技能名", i.SkillName.toString()]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.TryGetSkillAsync", ["技能Id", t], ["技能名", i.SkillName.toString()]);
     }
     return this.LoadedSkills.get(t);
   }
@@ -741,11 +743,11 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent." + (i.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", t], ["技能名", l.SkillName], ["技能目标", (i.Target instanceof Entity_1.Entity ? i.Target.GetComponent(1)?.Owner : i.Target)?.GetName()], ["原因", i.Reason]);
+    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent." + (i.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", t], ["技能名", l.SkillName], ["技能目标", (i.Target instanceof Entity_1.Entity ? i.Target.GetComponent(1)?.Owner : i.Target)?.GetName()], ["原因", i.Reason]);
     var e = [];
     var n = this.WZr(l, e);
     if (n) {
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", t], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", t], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
@@ -785,7 +787,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         if (this.AbilityComp.TryActivateAbilityByClass(l.AbilityClass, true)) {
           break;
         }
-        CombatLog_1.CombatLog.Error("Skill", this.Entity, "BaseSkillComponent.执行GA失败!", ["技能Id", l.SkillId], ["技能名", l.SkillName], ["GaClass", l.AbilityClass?.GetName()]);
+        SkillUtils_1.SkillUtils.Log(3, 0, this.Entity, "BaseSkillComponent.执行GA失败!", ["技能Id", l.SkillId], ["技能名", l.SkillName], ["GaClass", l.AbilityClass?.GetName()]);
         this.lZr = undefined;
         this.SkillTarget = undefined;
         this.SkillTargetSocket = "";
@@ -949,6 +951,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     BaseSkillComponent_1.Wzr.Start();
     if (!this.hZr.has(t.SkillId)) {
       this.hZr.add(t.SkillId);
+      SkillUtils_1.SkillUtils.Log(1, 0, this.Entity, "BaseSkillComponent.DoSkillBegin", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
       i = this.GetSkillInfo(t.SkillId);
       t.BeginSkill();
       ModelManager_1.ModelManager.CombatMessageModel?.AddSkillRefCount(t.MNc);
@@ -988,7 +991,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     if (!this.hZr.has(t.SkillId)) {
       this.hZr.add(t.SkillId);
       BaseSkillComponent_1.eZr.Start();
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.DoSkillEnd", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.DoSkillEnd", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
       ModelManager_1.ModelManager.CombatMessageModel?.RemoveSkillRefCount(t.MNc);
       i = t.SkillInfo;
       BaseSkillComponent_1.tZr.Start();
@@ -1101,15 +1104,12 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   GetTargetTransform() {
-    var t = this.SkillTarget.Entity.GetComponent(0).GetEntityType();
-    if (t !== Protocol_1.Aki.Protocol.kks.Proto_Player && t !== Protocol_1.Aki.Protocol.kks.Proto_Npc && t !== Protocol_1.Aki.Protocol.kks.Proto_Monster && t !== Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-      return this.SkillTarget.Entity.GetComponent(1).ActorTransform;
-    }
-    {
+    if (SkillUtils_1.SkillUtils.IsTsActor(this.SkillTarget)) {
       let t = this.SkillTargetSocket;
       t = t || HIT_CASE_SOCKET_NAME;
       return SkillUtils_1.SkillUtils.GetTargetSocketTransform(this.SkillTarget.Entity, t, 0, "技能", 1);
     }
+    return this.SkillTarget.Entity.GetComponent(1).ActorTransform;
   }
   GetTargetDistance() {
     var t;
@@ -1317,14 +1317,27 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
   }
   *GetAllSkillData(t = 7) {
     var i = new Set();
+    if (this.DtSkillInfoExtraList && t & 4) {
+      for (const h of this.DtSkillInfoExtraList) {
+        var e = new Array();
+        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(h, e);
+        for (const r of e) {
+          var s = Number(r);
+          if (!i.has(s)) {
+            i.add(s);
+            yield s;
+          }
+        }
+      }
+    }
     if (this._Zr && t & 1) {
-      var e = new Array();
-      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this._Zr, e);
-      for (const h of e) {
-        var s = Number(h);
-        if (!i.has(s)) {
-          i.add(s);
-          yield s;
+      var l = new Array();
+      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this._Zr, l);
+      for (const a of l) {
+        var n = Number(a);
+        if (!i.has(n)) {
+          i.add(n);
+          yield n;
         }
       }
     }
@@ -1340,51 +1353,38 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         case Protocol_1.Aki.Protocol.kks.Proto_Vision:
           t = ConfigManager_1.ConfigManager.WorldConfig.GetVisionCommonSkillRowNames();
       }
-      for (const r of t) {
-        var l = Number(r);
-        if (!i.has(l)) {
-          i.add(l);
-          yield l;
-        }
-      }
-    }
-    if (this.DtSkillInfoExtraList && t & 4) {
-      for (const a of this.DtSkillInfoExtraList) {
-        var n = new Array();
-        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(a, n);
-        for (const S of n) {
-          var o = Number(S);
-          if (!i.has(o)) {
-            i.add(o);
-            yield o;
-          }
+      for (const S of t) {
+        var o = Number(S);
+        if (!i.has(o)) {
+          i.add(o);
+          yield o;
         }
       }
     }
   }
   *GetAllBulletData(t = 7) {
     var i = new Set();
-    if (this.DtBulletInfo && t & 1) {
-      var e = new Array();
-      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.DtBulletInfo, e);
-      for (const o of e) {
-        var s = BigInt(o);
-        if (!i.has(s)) {
-          i.add(s);
-          yield s;
+    if (this.DtBulletInfoExtraList && t & 4) {
+      for (const n of this.DtBulletInfoExtraList) {
+        var e = new Array();
+        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(n, e);
+        for (const o of e) {
+          var s = BigInt(o);
+          if (!i.has(s)) {
+            i.add(s);
+            yield s;
+          }
         }
       }
     }
-    if (this.DtBulletInfoExtraList && t & 4) {
-      for (const h of this.DtBulletInfoExtraList) {
-        var l = new Array();
-        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(h, l);
-        for (const r of l) {
-          var n = BigInt(r);
-          if (!i.has(n)) {
-            i.add(n);
-            yield n;
-          }
+    if (this.DtBulletInfo && t & 1) {
+      t = new Array();
+      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.DtBulletInfo, t);
+      for (const h of t) {
+        var l = BigInt(h);
+        if (!i.has(l)) {
+          i.add(l);
+          yield l;
         }
       }
     }

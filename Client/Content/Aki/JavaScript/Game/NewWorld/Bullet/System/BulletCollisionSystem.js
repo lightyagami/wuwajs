@@ -894,23 +894,31 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
       case 3:
         var e = this.a7o.CenterLocation;
         var i = this.a7o.AttackerMoveComp?.IsStandardGravity ?? true ? undefined : this.a7o.AttackerMoveComp.GravityUp;
-        for (const s of t.Components) {
-          if (SpaceUtils_1.SpaceUtils.IsComponentInRingArea(e, this.a7o.Size, s, i)) {
+        var l = t.Components;
+        if (!l || !l.length) {
+          return true;
+        }
+        for (const r of l) {
+          if (SpaceUtils_1.SpaceUtils.IsComponentInRingArea(e, this.a7o.Size, r, i)) {
             return true;
           }
         }
         return false;
       case 2:
-        var l = this.a7o.CenterLocation;
-        var o = BulletPool_1.BulletPool.CreateRotator();
-        o.FromUeRotator(this.a7o.CollisionInfo.CollisionTransform.Rotator());
-        for (const r of t.Components) {
-          if (SpaceUtils_1.SpaceUtils.IsComponentInSectorArea(l, this.a7o.Size, o.Quaternion(), r)) {
-            BulletPool_1.BulletPool.RecycleRotator(o);
+        var o = this.a7o.CenterLocation;
+        var s = BulletPool_1.BulletPool.CreateRotator();
+        s.FromUeRotator(this.a7o.CollisionInfo.CollisionTransform.Rotator());
+        var l = t.Components;
+        if (!l || !l.length) {
+          return true;
+        }
+        for (const a of l) {
+          if (SpaceUtils_1.SpaceUtils.IsComponentInSectorArea(o, this.a7o.Size, s.Quaternion(), a)) {
+            BulletPool_1.BulletPool.RecycleRotator(s);
             return true;
           }
         }
-        BulletPool_1.BulletPool.RecycleRotator(o);
+        BulletPool_1.BulletPool.RecycleRotator(s);
         return false;
       default:
         return true;
@@ -1233,7 +1241,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
       let l = 0;
       var f = s.Components;
       let o = undefined;
-      for (let t = 0, e = s.Components.length; t < e; t++) {
+      for (let t = 0, e = f.length; t < e; t++) {
         var C = f[t];
         const d = C.GetName();
         if (d !== BulletConstant_1.BulletConstant.MoveCylinder) {
@@ -1595,7 +1603,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
     var o = this.a7o.AttackerActorComp;
     return !!o?.Valid && !!t?.Valid && (i = o.Entity, l = t.Entity, e = (i = i.GetComponent(0)).IsRole() || i.IsVision(), i = i.GetSummonerPlayerId(), (l = l.GetComponent(0)).IsRole() || l.IsVision() ? t.IsAutonomousProxy : e ? o.IsAutonomousProxy : i > 0 ? i === ModelManager_1.ModelManager.PlayerInfoModel.GetId() : t.IsAutonomousProxy);
   }
-  lZc(t, e) {
+  dtd(t, e) {
     if (t && e) {
       t = t.GetComponent(203)?.GetInteractionMainActor();
       if (t) {
@@ -1673,7 +1681,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
   }
   TWo(e) {
     var l = this.a7o;
-    var i = this.lZc(e.Entity, e.Actor);
+    var i = this.dtd(e.Entity, e.Actor);
     if (this.AWo(e, i)) {
       var o = l.BulletDataMain;
       if (e.EntityHandle?.Valid) {
@@ -1783,7 +1791,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
         BulletPool_1.BulletPool.RecycleVector(n);
         this.Bjo.ObjectsHitCurrent.set(o, l.LiveTimeCurHit);
         BulletCollisionUtil_1.BulletCollisionUtil.PlayVehicleHitEffect(l, r.HitPosition, r.HitEffectRotation);
-        i.GetComponent(275).OnHit(r, l);
+        i.GetComponent(276).OnHit(r, l);
         BulletUtil_1.BulletUtil.SummonBullet(this.a7o, 1, e.Entity, false, n, l.CollisionInfo.LastFramePosition, false);
         this.$ba(a.Logic.DestroyOnHitCharacter, l.BulletEntityId, "结算时");
       }

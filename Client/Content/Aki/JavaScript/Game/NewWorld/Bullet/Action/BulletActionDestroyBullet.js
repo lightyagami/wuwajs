@@ -116,6 +116,9 @@ class BulletActionDestroyBullet extends BulletActionBase_1.BulletActionBase {
     BulletActionDestroyBullet.N5o.Start();
     this.BulletInfo.ActionLogicComponent.ActionDestroy();
     BulletActionDestroyBullet.N5o.Stop();
+    if (this.ActionInfo.DestroyEffectImmediately) {
+      this.BulletInfo.EffectInfo.IsFinishAuto = false;
+    }
     BulletStaticFunction_1.BulletStaticFunction.DestroyEffect(this.BulletInfo);
   }
 }

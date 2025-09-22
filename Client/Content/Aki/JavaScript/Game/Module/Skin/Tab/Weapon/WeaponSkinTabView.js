@@ -20,10 +20,10 @@ const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const WeaponController_1 = require("../../../Weapon/WeaponController");
+const SkinObtainItem_1 = require("../../Skip/SkinObtainItem");
 const WeaponSkinController_1 = require("./WeaponSkinController");
 const WeaponSkinDefine_1 = require("./WeaponSkinDefine");
 const WeaponSkinGridItem_1 = require("./WeaponSkinGridItem");
-const WeaponSkinObtainItem_1 = require("./WeaponSkinObtainItem");
 class WeaponSkinTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -40,7 +40,7 @@ class WeaponSkinTabView extends UiTabViewBase_1.UiTabViewBase {
       e.BindOnCanExecuteChange(this.yil.GridItemCanExecuteChange);
       return e;
     };
-    this.qil = () => new WeaponSkinObtainItem_1.WeaponSkinObtainItem();
+    this.qil = () => new SkinObtainItem_1.SkinObtainItem();
   }
   OnRegisterComponent() {
     this.yil = this.ExtraParams;
@@ -149,10 +149,11 @@ class WeaponSkinTabView extends UiTabViewBase_1.UiTabViewBase {
     this.GetButton(5)?.RootUIComp.SetUIActive(!a);
     this.ObtainLayout.SetActive(a);
     if (a) {
-      a = this.yil.GetSkinSkipDataList(e.SkinId);
-      this.ObtainLayout.SetActive(a.length !== 0);
-      if (a.length > 0) {
-        this.ObtainLayout.RefreshByData(a);
+      a = ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfig(e.SkinId);
+      e = this.yil.GetSkinSkipDataList(e.SkinId, a.ItemAccess);
+      this.ObtainLayout.SetActive(e.length !== 0);
+      if (e.length > 0) {
+        this.ObtainLayout.RefreshByData(e);
       }
     } else {
       this.GetButton(5)?.SetSelfInteractive(!i);

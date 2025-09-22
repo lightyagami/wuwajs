@@ -556,7 +556,7 @@ exports.entityDetailsAki = {
 该类型的实体用于实现简单的交互功能，例如任务中的调查光点。`,
     EntityLogic: "Item",
     EntityType: "简单交互物(SimpleInteract)",
-    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "BubbleComponent", "EntityVisibleComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "BubbleComponent", "EntityVisibleComponent", "AttachTargetComponent"]
   },
   Collect: {
     Category: "场景交互物类",
@@ -898,6 +898,15 @@ exports.entityDetailsAki = {
     EntityType: "可被破坏探索交互物(DestructibleExploreInteractor)",
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "SceneItemLifeCycleComponent", "RewardComponent", "ExploreSkillInteractComponent", "RangeComponent", "FightInteractComponent", "InteractAudioComponent", "ConditionListenerComponent", "VarComponent", "RefreshComponent"]
+  },
+  TargetGearExploreInteractor: {
+    Category: "场景交互物类",
+    Owner: 12,
+    Status: "开发中",
+    Description: "可以通过攻击改变其状态的探索交互物",
+    EntityType: "可打击的探索交互物(TargetGearExploreInteractor)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "DestructibleItem", "RangeComponent", "ExploreSkillInteractComponent", "SceneItemLifeCycleComponent", "SceneItemAttributeComponent", "TargetGearComponent", "SceneBulletComponent", "InteractAudioComponent"]
   },
   RollingFireball: {
     Category: "",
@@ -1491,7 +1500,7 @@ exports.entityDetailsAki = {
     Description: "该类型的实体用于根据不同情况发放唱片道具，可在留声机处消耗并播放对应曲目",
     EntityType: "唱片(Disc)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "RewardComponent", "RangeComponent", "EntityStateAudioComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemMovementComponent", "FollowTrackComponent", "SceneItemLifeCycleComponent", "InteractComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "RewardComponent", "RangeComponent", "EntityStateAudioComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemMovementComponent", "FollowTrackComponent", "SceneItemLifeCycleComponent", "InteractComponent", "TriggerComponent", "ClientTriggerComponent"]
   },
   AreaOccupation: {
     Category: "",
@@ -2032,6 +2041,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Vehicle",
     Components: ["BaseInfoComponent", "ModelComponent", "AttributeComponent", "InteractComponent", "VehicleComponent"]
   },
+  BattleVehicle: {
+    Category: "载具类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "该类型用于实现特定的，拥有独特运动、操控模式和战斗属性的载具形式实体",
+    EntityType: "战斗载具(BattleVehicle)",
+    EntityLogic: "Vehicle",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "AttributeComponent", "VehicleComponent"]
+  },
   EnrichmentArea: {
     Category: "富集区",
     Owner: 2,
@@ -2233,7 +2251,7 @@ exports.entityDetailsAki = {
   TowerDefenseTrap: {
     Category: "塔防陷阱",
     Owner: 12,
-    Status: "开发中",
+    Status: "可使用",
     Description: "塔防玩法中，由玩家建造的陷阱",
     EntityType: "塔防陷阱(TowerDefenseTrap)",
     EntityLogic: "SimpleCombat",
@@ -2242,7 +2260,7 @@ exports.entityDetailsAki = {
   TowerDefenseMonster: {
     Category: "塔防怪物",
     Owner: 12,
-    Status: "开发中",
+    Status: "可使用",
     Description: "塔防玩法中怪物",
     EntityType: "塔防怪物(TowerDefenseMonster)",
     EntityLogic: "SimpleCombat",
@@ -2283,6 +2301,42 @@ exports.entityDetailsAki = {
     EntityType: "寻痕玩法脚印(TraceTrackingFootPrint)",
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LevelPrefabPerformComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneItemLifeCycleComponent", "VarComponent"]
+  },
+  MusicListener: {
+    Category: "音乐监听机关",
+    Owner: 15,
+    Status: "开发中",
+    Description: "监听音乐节拍事件触发行为动作",
+    EntityType: "音乐监听机关(MusicListener)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "ClientConditionListenerComponent", "SceneItemAttributeComponent"]
+  },
+  MusicTriggerListener: {
+    Category: "音乐触发监听机关",
+    Owner: 15,
+    Status: "开发中",
+    Description: "带有多个客户端组件的音乐机关",
+    EntityType: "音乐触发监听机关(MusicTriggerListener)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "VarComponent", "RangeComponent", "ClientTriggerComponent", "ConditionListenerComponent", "ClientConditionListenerComponent"]
+  },
+  ClientTriggerGear: {
+    Category: "机关玩法类",
+    Owner: 4,
+    Status: "开发中",
+    Description: "客户端触发器机关",
+    EntityType: "客户端触发器机关(ClientTriggerGear)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ClientTriggerComponent", "SceneItemLifeCycleComponent"]
+  },
+  RollBlockItem: {
+    Category: "机关玩法类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "滚方块玩法中的实体类型（包括方块和地板），含有一个滚方块组件",
+    EntityType: "滚方块实体(RollBlockItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RollBlockComponent"]
   }
 };
 exports.entityDetails = {
@@ -2357,6 +2411,7 @@ exports.decompressEntityData = decompressEntityData;
 })(EExploratoryBelongType = exports.EExploratoryBelongType ||= {});
 (function (t) {
   t[t.Death = 0] = "Death";
+  t[t.DeathGroup = 1] = "DeathGroup";
 })(EEffectConfigType = exports.EEffectConfigType ||= {});
 (function (t) {
   t[t.Any = 0] = "Any";

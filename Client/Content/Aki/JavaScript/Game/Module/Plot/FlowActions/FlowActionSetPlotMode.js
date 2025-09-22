@@ -105,12 +105,12 @@ class FlowActionSetPlotMode extends FlowActionBase_1.FlowActionBase {
       t.SetResult();
     }, this.Context.UiParam);
     await t.Promise;
-    await this.wNu();
+    await this.SOu();
     if (this.Context.SeamlessPlot) {
       await PlotController_1.PlotController.CreateAspectTransformView();
     }
   }
-  async wNu() {
+  async SOu() {
     const o = new Array();
     if (this.Context.NeedPreloadUiSequenceData) {
       for (const t of this.Context.NeedPreloadUiSequenceData) {

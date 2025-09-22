@@ -37,7 +37,8 @@ class FaceExpressionConfig extends ConfigBase_1.ConfigBase {
       return {
         Id: r.Id,
         FaceExpression: JSON.parse(r.FaceExpression),
-        MaleVariant: e
+        MaleVariant: e,
+        CloseAutoBlink: r.CloseAutoBlink
       };
     }
     this.ver();

@@ -26,7 +26,7 @@ const MenuController_1 = require("../Menu/MenuController");
 const RouletteController_1 = require("../Roulette/RouletteController");
 class KeySettingViewModel {
   static get IsEditing() {
-    return this.Esd;
+    return this.Fsd;
   }
   static get InputControllerType() {
     return this.rEa;
@@ -86,7 +86,7 @@ class KeySettingViewModel {
   static WaitKeySetting(t, e) {
     this.cxi = t;
     this.SelectKey(t);
-    this.tJu(t, e);
+    this.NYu(t, e);
     var e = t.OpenViewType;
     if (e !== 0) {
       switch (e) {
@@ -113,140 +113,140 @@ class KeySettingViewModel {
     }
   }
   static SelectKey(t) {
-    this.iJu(t);
+    this.VYu(t);
   }
   static HoverKey(t) {
-    this.rJu(t);
+    this.jYu(t);
   }
   static UnHoverKey(t) {
-    this.oJu(t);
+    this.HYu(t);
   }
   static AddOnWaitKeySettingDelegate(t) {
-    if (!this.nJu.includes(t)) {
-      this.nJu.push(t);
+    if (!this.$Yu.includes(t)) {
+      this.$Yu.push(t);
     }
   }
   static RemoveOnWaitKeySettingDelegate(t) {
-    t = this.nJu.indexOf(t);
+    t = this.$Yu.indexOf(t);
     if (t !== -1) {
-      this.nJu.splice(t, 1);
+      this.$Yu.splice(t, 1);
     }
   }
   static AddOnKeyChangeDelegate(t) {
-    if (!this.sJu.includes(t)) {
-      this.sJu.push(t);
+    if (!this.WYu.includes(t)) {
+      this.WYu.push(t);
     }
   }
   static RemoveOnKeyChangeDelegate(t) {
-    t = this.sJu.indexOf(t);
+    t = this.WYu.indexOf(t);
     if (t !== -1) {
-      this.sJu.splice(t, 1);
+      this.WYu.splice(t, 1);
     }
   }
   static AddOnKeySelectedDelegate(t) {
-    if (!this.aJu.includes(t)) {
-      this.aJu.push(t);
+    if (!this.QYu.includes(t)) {
+      this.QYu.push(t);
     }
   }
   static RemoveOnKeySelectedDelegate(t) {
-    t = this.aJu.indexOf(t);
+    t = this.QYu.indexOf(t);
     if (t !== -1) {
-      this.aJu.splice(t, 1);
+      this.QYu.splice(t, 1);
     }
   }
   static AddOnBeforeBeginEditKeyDelegate(t) {
-    if (!this.hJu.includes(t)) {
-      this.hJu.push(t);
+    if (!this.KYu.includes(t)) {
+      this.KYu.push(t);
     }
   }
   static RemoveOnBeforeBeginEditKeyDelegate(t) {
-    t = this.hJu.indexOf(t);
+    t = this.KYu.indexOf(t);
     if (t !== -1) {
-      this.hJu.splice(t, 1);
+      this.KYu.splice(t, 1);
     }
   }
   static AddOnBeginEditKeyDelegate(t) {
-    if (!this.lJu.includes(t)) {
-      this.lJu.push(t);
+    if (!this.XYu.includes(t)) {
+      this.XYu.push(t);
     }
   }
   static RemoveOnBeginEditKeyDelegate(t) {
-    t = this.lJu.indexOf(t);
+    t = this.XYu.indexOf(t);
     if (t !== -1) {
-      this.lJu.splice(t, 1);
+      this.XYu.splice(t, 1);
     }
   }
   static AddOnFinishEditKeyDelegate(t) {
-    if (!this._Ju.includes(t)) {
-      this._Ju.push(t);
+    if (!this.YYu.includes(t)) {
+      this.YYu.push(t);
     }
   }
   static RemoveOnFinishEditKeyDelegate(t) {
-    t = this._Ju.indexOf(t);
+    t = this.YYu.indexOf(t);
     if (t !== -1) {
-      this._Ju.splice(t, 1);
+      this.YYu.splice(t, 1);
     }
   }
   static AddOnKeyHoverDelegate(t) {
-    if (!this.uJu.includes(t)) {
-      this.uJu.push(t);
+    if (!this.zYu.includes(t)) {
+      this.zYu.push(t);
     }
   }
   static RemoveOnKeyHoverDelegate(t) {
-    t = this.uJu.indexOf(t);
+    t = this.zYu.indexOf(t);
     if (t !== -1) {
-      this.uJu.splice(t, 1);
+      this.zYu.splice(t, 1);
     }
   }
   static AddOnKeyUnHoverDelegate(t) {
-    if (!this.cJu.includes(t)) {
-      this.cJu.push(t);
+    if (!this.JYu.includes(t)) {
+      this.JYu.push(t);
     }
   }
   static RemoveOnKeyUnHoverDelegate(t) {
-    t = this.cJu.indexOf(t);
+    t = this.JYu.indexOf(t);
     if (t !== -1) {
-      this.cJu.splice(t, 1);
+      this.JYu.splice(t, 1);
     }
   }
-  static tJu(e, i) {
-    this.nJu.forEach(t => {
+  static NYu(e, i) {
+    this.$Yu.forEach(t => {
       t(e, i);
     });
   }
-  static dJu(e, i) {
-    this.sJu.forEach(t => {
+  static ZYu(e, i) {
+    this.WYu.forEach(t => {
       t(e, i);
     });
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCommonKeySettingKeyChange, e, i);
   }
-  static iJu(e) {
-    this.aJu.forEach(t => {
+  static VYu(e) {
+    this.QYu.forEach(t => {
       t(e);
     });
   }
-  static mJu() {
-    this.hJu.forEach(t => {
+  static ezu() {
+    this.KYu.forEach(t => {
       t();
     });
   }
-  static fJu() {
-    this.lJu.forEach(t => {
+  static tzu() {
+    this.XYu.forEach(t => {
       t();
     });
   }
-  static gJu() {
-    this._Ju.forEach(t => {
+  static izu() {
+    this.YYu.forEach(t => {
       t();
     });
   }
-  static rJu(e) {
-    this.uJu.forEach(t => {
+  static jYu(e) {
+    this.zYu.forEach(t => {
       t(e);
     });
   }
-  static oJu(e) {
-    this.cJu.forEach(t => {
+  static HYu(e) {
+    this.JYu.forEach(t => {
       t(e);
     });
   }
@@ -257,14 +257,14 @@ class KeySettingViewModel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputAnyKey, this.rAt);
   }
   static ht() {
-    this.nJu.length = 0;
-    this.sJu.length = 0;
-    this.aJu.length = 0;
-    this.hJu.length = 0;
-    this.lJu.length = 0;
-    this._Ju.length = 0;
-    this.uJu.length = 0;
-    this.cJu.length = 0;
+    this.$Yu.length = 0;
+    this.WYu.length = 0;
+    this.QYu.length = 0;
+    this.KYu.length = 0;
+    this.XYu.length = 0;
+    this.YYu.length = 0;
+    this.zYu.length = 0;
+    this.JYu.length = 0;
     this.cxi = undefined;
     this.fxi.length = 0;
     this.bAn.length = 0;
@@ -327,15 +327,15 @@ class KeySettingViewModel {
     this.fxi.length = 0;
   }
   static Rxi() {
-    this.mJu();
+    this.ezu();
     this.dxi = TimerSystem_1.GameplayTimerSystem.Next(() => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("InputSettings", 10, "[KeySetting]当等待键盘输入改键时");
       }
       this.Vxi();
       this.qxi(true);
-      this.fJu();
-      this.Esd = true;
+      this.tzu();
+      this.Fsd = true;
     });
   }
   static Lxi() {
@@ -346,8 +346,8 @@ class KeySettingViewModel {
     this.Vxi();
     this.SelectKey(undefined);
     UiLayer_1.UiLayer.SetShowMaskLayer("KeySettingMask", false);
-    this.gJu();
-    this.Esd = false;
+    this.izu();
+    this.Fsd = false;
   }
   static qxi(t) {
     if (Log_1.Log.CheckInfo()) {
@@ -387,19 +387,19 @@ class KeySettingViewModel {
   }
   static Dkn(t, e) {
     for (const i of this.Akn(t, e)) {
-      this.dJu(i, this.InputControllerType);
+      this.ZYu(i, this.InputControllerType);
     }
   }
 }
 exports.KeySettingViewModel = KeySettingViewModel;
-(_a = KeySettingViewModel).nJu = [];
-KeySettingViewModel.sJu = [];
-KeySettingViewModel.aJu = [];
-KeySettingViewModel.hJu = [];
-KeySettingViewModel.lJu = [];
-KeySettingViewModel._Ju = [];
-KeySettingViewModel.uJu = [];
-KeySettingViewModel.cJu = [];
+(_a = KeySettingViewModel).$Yu = [];
+KeySettingViewModel.WYu = [];
+KeySettingViewModel.QYu = [];
+KeySettingViewModel.KYu = [];
+KeySettingViewModel.XYu = [];
+KeySettingViewModel.YYu = [];
+KeySettingViewModel.zYu = [];
+KeySettingViewModel.JYu = [];
 KeySettingViewModel.cxi = undefined;
 KeySettingViewModel.fxi = [];
 KeySettingViewModel.bAn = [];
@@ -407,7 +407,7 @@ KeySettingViewModel.lxi = [];
 KeySettingViewModel.Lkn = new Map();
 KeySettingViewModel.wd1 = new Map();
 KeySettingViewModel.rEa = 0;
-KeySettingViewModel.Esd = false;
+KeySettingViewModel.Fsd = false;
 KeySettingViewModel.dxi = undefined;
 KeySettingViewModel.rAt = (e, i) => {
   if (!UiManager_1.UiManager.IsViewOpen("RepeatKeyTipsView") && ModelManager_1.ModelManager.MenuModel.IsWaitForKeyInput) {
@@ -494,8 +494,8 @@ KeySettingViewModel.rAt = (e, i) => {
                   }
                   _a.cxi.SetAxisBindingKeys(e);
                 }
-                _a.dJu(_a.cxi, _a.InputControllerType);
-                _a.dJu(r, _a.InputControllerType);
+                _a.ZYu(_a.cxi, _a.InputControllerType);
+                _a.ZYu(r, _a.InputControllerType);
                 _a.Dkn(_a.cxi, o);
                 _a.Dkn(r, t);
                 InputSettingsController_1.InputSettingsController.InputSettingUpdateRequest(false);
@@ -509,7 +509,7 @@ KeySettingViewModel.rAt = (e, i) => {
           UiManager_1.UiManager.OpenView("RepeatKeyTipsView", e);
         } else if (_a.fxi.length > 0) {
           _a.cxi.SetKey(_a.fxi, _a.InputControllerType);
-          _a.dJu(_a.cxi, _a.InputControllerType);
+          _a.ZYu(_a.cxi, _a.InputControllerType);
           _a.Dkn(_a.cxi, _a.fxi);
           InputSettingsController_1.InputSettingsController.InputSettingUpdateRequest(false);
           InputSettings_1.InputSettings.SaveKeyMappings();
@@ -524,7 +524,7 @@ KeySettingViewModel.rAt = (e, i) => {
 KeySettingViewModel.Dxi = t => {
   if (_a.cxi && t) {
     _a.cxi.ChangeBothAction(_a.InputControllerType);
-    _a.dJu(_a.cxi, _a.InputControllerType);
+    _a.ZYu(_a.cxi, _a.InputControllerType);
     InputSettingsController_1.InputSettingsController.InputSettingUpdateRequest(false);
     InputSettings_1.InputSettings.SaveKeyMappings();
   }

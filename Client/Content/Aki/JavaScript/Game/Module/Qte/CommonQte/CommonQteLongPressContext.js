@@ -21,7 +21,7 @@ class CommonQteLongPressContext extends CommonQteContextBase_1.CommonQteContextB
     this.CurrentProgress = 0;
     this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
     this.RegressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
-    this.jZu = false;
+    this.VXu = false;
     this.Type = 2;
   }
   OnSetConfig(t) {
@@ -37,7 +37,7 @@ class CommonQteLongPressContext extends CommonQteContextBase_1.CommonQteContextB
     if (this.Config) {
       if (this.IsPending() || this.IsPendingSuccess()) {
         if (this.IsPending()) {
-          this.jZu = true;
+          this.VXu = true;
           ControllerHolder_1.ControllerHolder.CommonQteController.PlayExtraEffect(this.HandleId);
           this.AudioHandle = ControllerHolder_1.ControllerHolder.CommonQteController.PlayQteAudio(this.Config.AudioConfig.AudioEventResponse, this.UiActor);
         }
@@ -48,7 +48,7 @@ class CommonQteLongPressContext extends CommonQteContextBase_1.CommonQteContextB
     }
   }
   OnResponseEnd() {
-    this.jZu = false;
+    this.VXu = false;
     ControllerHolder_1.ControllerHolder.CommonQteController.StopExtraEffect(this.HandleId);
     if (this.AudioHandle) {
       ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.AudioHandle);
@@ -60,7 +60,7 @@ class CommonQteLongPressContext extends CommonQteContextBase_1.CommonQteContextB
     if (this.Config) {
       this.PassTime += t;
       i = this.CurrentProgress;
-      if (this.jZu) {
+      if (this.VXu) {
         this.CurrentProgress = Math.min(this.MaxProgress, this.CurrentProgress + this.IncreaseSpeed * t);
       } else {
         this.CurrentProgress = Math.max(0, this.CurrentProgress - this.DecreaseSpeed * t);

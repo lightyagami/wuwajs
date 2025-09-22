@@ -98,5 +98,5 @@ let SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = class Sc
     }
   }
 };
-SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(294)], SceneItemCurveControlComponent);
+SceneItemCurveControlComponent = SceneItemCurveControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], SceneItemCurveControlComponent);
 exports.SceneItemCurveControlComponent = SceneItemCurveControlComponent; //# sourceMappingURL=SceneItemCurveControlComponent.js.map

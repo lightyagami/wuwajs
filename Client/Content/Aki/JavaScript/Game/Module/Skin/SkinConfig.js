@@ -5,6 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SkinConfig = undefined;
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const CalabashSkinAll_1 = require("../../../Core/Define/ConfigQuery/CalabashSkinAll");
+const CalabashSkinById_1 = require("../../../Core/Define/ConfigQuery/CalabashSkinById");
+const CalabashTransformById_1 = require("../../../Core/Define/ConfigQuery/CalabashTransformById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
 const FlySkinConfigByType_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigByType");
 const RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById");
@@ -118,15 +121,15 @@ class SkinConfig extends ConfigBase_1.ConfigBase {
       return "";
     }
   }
-  GetFlySkinEquipBtnTextId(n, i) {
+  GetFlySkinEquipBtnTextId(n, a) {
     if (n === 1) {
-      if (i) {
+      if (a) {
         return "GliderSkin_EquipmentStatus_Equip";
       } else {
         return "GliderSkin_EquipmentStatus_IsEquipped";
       }
     } else if (n === 0) {
-      if (i) {
+      if (a) {
         return "SoarWingSkin_EquipmentStatus_Equip";
       } else {
         return "SoarWingSkin_EquipmentStatus_IsEquipped";
@@ -170,6 +173,30 @@ class SkinConfig extends ConfigBase_1.ConfigBase {
   }
   GetFlySkinConfigListByType(n) {
     return FlySkinConfigByType_1.configFlySkinConfigByType.GetConfigList(n);
+  }
+  GetCalabashSkinConfig(n) {
+    return CalabashSkinById_1.configCalabashSkinById.GetConfig(n);
+  }
+  GetCalabashSkinConfigList() {
+    return CalabashSkinAll_1.configCalabashSkinAll.GetConfigList();
+  }
+  GetDefaultCalabashSkinIconPath() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalCalabashSkinIcon");
+  }
+  GetDefaultCalabashSkinName() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalCalabashSkinName");
+  }
+  GetDefaultCalabashSkinDescription() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("OriginalCalabashSkinDescription");
+  }
+  GetCalabashTransformById(n) {
+    return CalabashTransformById_1.configCalabashTransformById.GetConfig(n);
+  }
+  GetCalabashSkinFailRequestCd() {
+    return CommonParamById_1.configCommonParamById.GetIntConfig("CalabashSkinFailRequestCd");
+  }
+  GetCalabashSkinNeedStopRotate() {
+    return CommonParamById_1.configCommonParamById.GetBoolConfig("CalabashSkinNeedStopRotate");
   }
 }
 exports.SkinConfig = SkinConfig;

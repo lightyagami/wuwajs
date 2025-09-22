@@ -11,9 +11,9 @@ const FloroRanchGroupActionData_1 = require("./FloroRanchGroupActionData");
 class FloroRanchSacrificeActionData extends FloroRanchActionBase_1.FloroRanchActionDataBase {
   constructor(t) {
     super(t);
-    this.tOu = undefined;
+    this.OVu = undefined;
     this.fPu = undefined;
-    this.tOu = t.NBu;
+    this.OVu = t.LVu;
   }
   async OnExecute() {
     var t;
@@ -21,7 +21,7 @@ class FloroRanchSacrificeActionData extends FloroRanchActionBase_1.FloroRanchAct
     if (!this.IsExit() && !(t = this.CasterEntity.GetUiItemComponent(), FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogSacrificeActionInfo(this.CasterEntity), await t.PlaySacrificeAnim(), await this.WaitIfPause(), this.IsExit())) {
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.RemoveOwnEntityData(this.CasterEntity);
       this.fPu = new FloroRanchGroupActionData_1.FloroRanchGroupActionData();
-      this.fPu.InitActionData(this.tOu.RJ_);
+      this.fPu.InitActionData(this.OVu.RJ_);
       this.fPu.SetIgnoreCasterEntityAnim(this.CasterEntity.EntityId);
       await this.fPu.ExecuteAction();
     }

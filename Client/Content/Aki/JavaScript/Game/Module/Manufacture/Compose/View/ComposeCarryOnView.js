@@ -831,7 +831,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       this.xjl = true;
       this.GetText(22)?.SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(22), "ComposeExchangeTips");
-    } else if (this.v5l && ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(this.fGt.ConfigId)?.ItemId === this.v5l.ItemId) {
+    } else if (this.v5l && this.v5l.Count > 0 && ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(this.fGt.ConfigId)?.ItemId === this.v5l.ItemId) {
       this.xjl = true;
       this.GetText(22)?.SetUIActive(true);
       var i = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(this.v5l.ItemId);

@@ -73,7 +73,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
             this.D9r[1] = t.rWn.DWn = i.MoveState;
             this.D9r[2] = t.rWn.AWn = i.DirectionState;
             this.D9r[3] = t.rWn.UWn = i.PositionSubState;
-            CombatMessage_1.CombatNet.Send(21055, this.Entity, t);
+            CombatMessage_1.CombatNet.Send(24291, this.Entity, t);
           }
         }
       }
@@ -120,7 +120,7 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
     t.RWn.DWn = this.I5r.MoveState;
     t.RWn.AWn = this.I5r.DirectionState;
     t.RWn.UWn = this.I5r.PositionSubState;
-    CombatMessage_1.CombatNet.Send(19137, this.Entity, t);
+    CombatMessage_1.CombatNet.Send(29657, this.Entity, t);
   }
   A9r(t) {
     this.P9r(0, t.LWn);
@@ -155,14 +155,14 @@ let CharacterLogicStateSyncComponent = class CharacterLogicStateSyncComponent ex
   static SwitchLogicStateNotify(t, e) {
     if (!t?.GetComponent(3)?.IsMoveAutonomousProxy) {
       if ((t = t?.GetComponent(64)) && e.rWn) {
-        this.icd(t, 0, e.rWn.LWn);
-        this.icd(t, 1, e.rWn.DWn);
-        this.icd(t, 2, e.rWn.AWn);
-        this.icd(t, 3, e.rWn.UWn);
+        this.eMd(t, 0, e.rWn.LWn);
+        this.eMd(t, 1, e.rWn.DWn);
+        this.eMd(t, 2, e.rWn.AWn);
+        this.eMd(t, 3, e.rWn.UWn);
       }
     }
   }
-  static icd(t, e, i) {
+  static eMd(t, e, i) {
     if (i !== 0) {
       t.P9r(e, i === 127 ? 0 : i);
     }

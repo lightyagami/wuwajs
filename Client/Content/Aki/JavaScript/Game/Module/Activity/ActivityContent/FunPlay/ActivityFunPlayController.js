@@ -20,8 +20,8 @@ class ActivityFunPlayController extends ActivityControllerBase_1.ActivityControl
   constructor() {
     super(...arguments);
     this.Data = undefined;
-    this.Erd = e => {
-      e.r7u.forEach(e => {
+    this.und = e => {
+      e.J$c.forEach(e => {
         ModelManager_1.ModelManager.ActivityFunPlayModel?.UpdateChallengeData(e);
       });
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityFunPlayInfoRefresh);
@@ -42,18 +42,18 @@ class ActivityFunPlayController extends ActivityControllerBase_1.ActivityControl
     return this.Data;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25238, this.Erd);
+    Net_1.Net.Register(17099, this.und);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25238);
+    Net_1.Net.UnRegister(17099);
   }
   ChallengeAwardRequest(e) {
-    var t = new Protocol_1.Aki.Protocol.W6u();
+    var t = new Protocol_1.Aki.Protocol.W$c();
     t.e8n = e;
-    Net_1.Net.Call(18985, t, e => {
+    Net_1.Net.Call(21572, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18985);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21572);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("ActivityFunPlay", 87, "领取奖励回包为空");
@@ -70,7 +70,7 @@ class ActivityFunPlayController extends ActivityControllerBase_1.ActivityControl
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("ActivityFunPlay", 87, "进入趣味活动副本", ["挑战id", e]);
       }
-      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.kju = t;
+      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.tWc = t;
       e = ModelManager_1.ModelManager.EditFormationModel.GetCurrentFormationData?.GetRoleIdList ?? [];
       await ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(r.InstId, e, 0, 0);
     } else if (Log_1.Log.CheckError()) {

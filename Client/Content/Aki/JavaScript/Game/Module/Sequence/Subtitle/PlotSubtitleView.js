@@ -53,6 +53,14 @@ const DEFAULT_PATH = "/Game/Aki/UI/UIResources/Common/Image/T_CommonDefault_UI.T
 const OPTIONHEIGHT_OFFSET = 265;
 const PAUSE_REASON_SUBTITLE = "Subtitle";
 const TIPS = "TermClickTip";
+class SpineQueueInfo {
+  constructor() {
+    this.Name = undefined;
+    this.NeedLoop = undefined;
+    this.Freeze = false;
+    this.MixDuration = 0;
+  }
+}
 class SubtitleInfo {
   constructor() {
     this.Cvo = new SequenceDefine_1.PlotSubtitleConfig();
@@ -148,12 +156,11 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.Leo = undefined;
     this.FWs = undefined;
     this.sCa = undefined;
-    this.aCa = undefined;
-    this.c31 = undefined;
+    this.SonUiInclude = undefined;
     this.ibc = undefined;
     this.QMa = undefined;
     this.hTl = undefined;
-    this.qNu = undefined;
+    this.SVu = undefined;
     this.YZt = new PlotTextLogic_1.PlotAudioDelegate();
     this.Lvo = undefined;
     this.Qsu = undefined;
@@ -186,10 +193,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.tu1 = () => {
-      this.qZu(true);
+      this.HQc(true);
     };
     this.EI1 = () => {
-      this.qZu(false);
+      this.HQc(false);
     };
     this.Dvo = t => {
       this.gto(false, false);
@@ -239,22 +246,22 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.zeo = () => {
-      this.qZu(true);
+      this.HQc(true);
       this.fha();
     };
     this.cCa = () => {
-      this.qZu(false);
+      this.HQc(false);
       this.pha();
     };
     this.Zeo = () => {
       this.fha();
       this.Lrt = false;
-      this.qZu(true);
+      this.HQc(true);
     };
     this.DZ_ = () => {
       if (ControllerHolder_1.ControllerHolder.FlowController.OpenPlotReviewView()) {
         this.fha();
-        this.qZu(true);
+        this.HQc(true);
       }
     };
     this.FQe = t => {
@@ -266,7 +273,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (t === "PlotReviewView") {
         AudioSystem_1.AudioSystem.PostEvent(PlotDefine_1.PLOT_REVIEW_EXIT_AUDIO_EVENT);
         this.Lrt = true;
-        this.qZu(false);
+        this.HQc(false);
         this.pha();
       }
     };
@@ -394,7 +401,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (!this.OpenParam?.HideAllUi && !!t && !this.Lrt) {
         this.Lrt = true;
         this.pha();
-        this.qZu(false);
+        this.HQc(false);
       }
     };
     this.eto = (t, i) => {
@@ -634,13 +641,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     if (t?.HideAllUi) {
       this.Zeo();
     }
-    this.qNu?.Clear();
-    this.qNu = new Queue_1.Queue();
+    this.SVu?.Clear();
+    this.SVu = new Queue_1.Queue();
     this.hTl?.Clear();
     this.hTl = new Queue_1.Queue();
-    if (this.B8 === "LevelA") {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MoveCursorToRightDown);
-    }
   }
   ResetSubtitle() {
     this.GetText(4).SetText("");
@@ -697,11 +701,11 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.Xvo();
     this.ibc?.clear();
     this.ibc = undefined;
-    this.aCa = undefined;
+    this.SonUiInclude = undefined;
     this.hTl?.Clear();
     this.hTl = undefined;
-    this.qNu?.Clear();
-    this.qNu = undefined;
+    this.SVu?.Clear();
+    this.SVu = undefined;
     this.sCa = undefined;
   }
   Yeo(t) {
@@ -779,7 +783,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     InputDistributeController_1.InputDistributeController.UnBindTouch(InputMappingsDefine_1.touchIdMappings.Touch1, this.eto);
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(5));
   }
-  qZu(t) {
+  HQc(t) {
     if (t) {
       ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay = false;
       this.Oeo();
@@ -1138,18 +1142,17 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       } else if (t.Type === IAction_1.EPostAkEvent.Target) {
         i = t.AkEvent;
         e = t.EntityId;
-        if (!(s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", e]);
-          }
-        }
-        if ((s = s.Entity.GetComponent(1)?.Owner)?.IsValid()) {
-          AudioController_1.AudioController.PostEvent(i, s);
-          if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Event", 26, "[PlotSubtitleView][FlowAudio][Entity]", ["EntityID", e], ["AkEvent", t?.AkEvent]);
+        if (s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)) {
+          if ((s = s.Entity.GetComponent(1)?.Owner)?.IsValid()) {
+            AudioController_1.AudioController.PostEvent(i, s);
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Event", 26, "[PlotSubtitleView][FlowAudio][Entity]", ["EntityID", e], ["AkEvent", t?.AkEvent]);
+            }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", e]);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", e]);
+          Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", e]);
         }
       }
     }
@@ -1421,12 +1424,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var s = this.rbc(t);
       if (s) {
-        this.qNu?.Push(s);
+        this.SVu?.Push(s);
         await s.OpenAsync(this.sCa, t, i, e, true);
-        this.aCa = s;
+        this.SonUiInclude = s;
         var h = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var o = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var o = this.SVu.Pop();
           if (o) {
             h.push(this.CloseWhichBackgroundUi(o));
           }
@@ -1434,12 +1437,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(h);
       } else {
         var s = new PlotChildView_1.PlotChildView();
-        this.qNu?.Push(s);
+        this.SVu?.Push(s);
         await s.OpenAsync(this.sCa, t, i, e);
-        this.aCa = s;
+        this.SonUiInclude = s;
         var r = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var n = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var n = this.SVu.Pop();
           if (n) {
             r.push(this.CloseWhichBackgroundUi(n));
           }
@@ -1457,12 +1460,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var e = this.rbc(t);
       if (e) {
-        this.qNu?.Push(e);
+        this.SVu?.Push(e);
         await e.OpenAsyncInArray(this.sCa, t, i, true);
-        this.aCa = e;
+        this.SonUiInclude = e;
         var s = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var h = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var h = this.SVu.Pop();
           if (h) {
             s.push(this.CloseWhichBackgroundUi(h));
           }
@@ -1470,12 +1473,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(s);
       } else {
         var e = new PlotChildView_1.PlotChildView();
-        this.qNu?.Push(e);
+        this.SVu?.Push(e);
         await e.OpenAsyncInArray(this.sCa, t, i);
-        this.aCa = e;
+        this.SonUiInclude = e;
         var o = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var r = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var r = this.SVu.Pop();
           if (r) {
             o.push(this.CloseWhichBackgroundUi(r));
           }
@@ -1486,29 +1489,28 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   async PlayUiLevelSeq(t) {
-    if (this.aCa) {
+    if (this.SonUiInclude) {
       if (t === undefined) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 45, "Ui预览图:名字为空");
         }
       } else {
-        await this.aCa.PlayUiLevelSequence(t);
+        await this.SonUiInclude.PlayUiLevelSequence(t);
       }
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Plot", 45, "Ui预览图:不存在的PlotView子类");
+      Log_1.Log.Warn("Plot", 45, "Ui预览图:不存在的PlotView子界面");
     }
   }
   async CloseBackgroundUiThis() {
     var t = [];
-    for (; this.qNu && this.qNu?.Size > 0;) {
-      var i = this.qNu.Pop();
+    for (; this.SVu && this.SVu?.Size > 0;) {
+      var i = this.SVu.Pop();
       if (i) {
         t.push(this.CloseWhichBackgroundUi(i));
       }
     }
     await Promise.all(t);
-    this.aCa = undefined;
-    this.c31 = undefined;
+    this.SonUiInclude = undefined;
   }
   async CloseWhichBackgroundUi(t) {
     if (t) {
@@ -1520,28 +1522,31 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
       await t?.CloseAsync();
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Plot", 45, "Ui预览图:CloseWhichBackgroundUi,但不存在的PlotView子类");
+      Log_1.Log.Warn("Plot", 45, "Ui预览图:CloseWhichBackgroundUi,但不存在的PlotView子界面");
     }
   }
-  CloseSpineAnimation(t) {
-    if (this.c31) {
-      this.aCa.CloseSpineAnimation(t);
-    } else if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类，关闭失败");
-    }
-  }
-  PlaySonUiSpine(t, i = true) {
-    var e;
+  CloseSpineAnimation(t, i = 0) {
     if (t) {
-      if (this.aCa) {
-        this.aCa.PlaySpineAnimation(t, i);
+      if (this.SonUiInclude) {
+        this.SonUiInclude.CloseSpineAnimation(t, i);
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面，关闭失败");
+      }
+    }
+  }
+  PlaySonUiSpine(t, i = true, e = false, s = 0) {
+    if (t) {
+      if (this.SonUiInclude) {
+        this.SonUiInclude.PlaySpineAnimation(t, i, e, s);
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类,已加入队列");
+          Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
         }
-        (e = new UE.SpineThingsInfo()).Name = t;
-        e.NeedLoop = i;
-        this.hTl?.Push(e);
+        (s = new SpineQueueInfo()).Name = t;
+        s.NeedLoop = i;
+        s.Freeze = e;
+        s.MixDuration = 0;
+        this.hTl?.Push(s);
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Plot", 45, "Ui预览图:SpineName为空");
@@ -1552,21 +1557,41 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Plot", 45, "Ui预览图:spineArray为空");
       }
-    } else if (this.aCa) {
+    } else if (this.SonUiInclude) {
       for (let t = 0; t < i.Num(); t++) {
-        this.aCa.PlaySpineAnimation(i.Get(t).Name, i.Get(t).NeedLoop);
+        this.SonUiInclude.PlaySpineAnimation(i.Get(t).Name, i.Get(t).NeedLoop);
       }
     } else {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类,已加入队列");
+        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
       }
       for (let t = 0; t < i.Num(); t++) {
-        this.hTl?.Push(i.Get(t));
+        var e = i.Get(t);
+        var s = new SpineQueueInfo();
+        s.Name = e.Name;
+        s.NeedLoop = e.NeedLoop;
+        this.hTl?.Push(s);
       }
     }
   }
+  UpdateSpineForQte(t) {
+    if (!this.SonUiInclude) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
+      }
+    }
+    this.SonUiInclude?.UpdateFrozenSpine(t);
+  }
+  RestoreFreezeSpine(t, i = false) {
+    if (!this.SonUiInclude) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
+      }
+    }
+    this.SonUiInclude?.RestoreFreezeSpine(t, i);
+  }
   _Tl() {
-    if (this.hTl && this.aCa) {
+    if (this.hTl && this.SonUiInclude) {
       while (this.hTl.Size > 0) {
         if (!this.hTl.Front) {
           if (Log_1.Log.CheckInfo()) {
@@ -1577,7 +1602,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 45, "Ui预览图:Queue播放", ["name", this.hTl.Front]);
         }
-        this.aCa.PlaySpineAnimation(this.hTl.Front.Name, this.hTl.Front.NeedLoop);
+        this.SonUiInclude.PlaySpineAnimation(this.hTl.Front.Name, this.hTl.Front.NeedLoop, this.hTl.Front.Freeze, this.hTl.Front.MixDuration);
         this.hTl.Pop();
       }
     }

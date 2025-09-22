@@ -27,36 +27,36 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   constructor() {
     super(...arguments);
     this.Jh = undefined;
-    this.AQu = undefined;
-    this.PQu = undefined;
+    this.Rju = undefined;
+    this.wju = undefined;
     this.ewu = [];
-    this.DQu = [];
+    this.Lju = [];
     this.Gwc = [];
-    this.xQu = [];
+    this.Aju = [];
     this.Wdt = [];
-    this.UQu = [];
+    this.Pju = [];
     this.Dxt = false;
-    this.BQu = false;
-    this.O1d = false;
-    this.kQu = false;
-    this.OQu = undefined;
-    this.GQu = 0;
+    this.xju = false;
+    this._0d = false;
+    this.Dju = false;
+    this.Uju = undefined;
+    this.kju = 0;
     this.bge = -1;
-    this.FQu = (t, i) => {
+    this.Oju = (t, i) => {
       this.Euo(i);
     };
-    this.NQu = (t, i) => {
-      this.VQu(i);
+    this.qju = (t, i) => {
+      this.Gju(i);
     };
     this.Nia = (t, i) => {
-      this.q1d(i);
+      this.u0d(i);
     };
     this.Tfe = () => {
-      if (this.kQu) {
-        this.jQu();
+      if (this.Dju) {
+        this.AYc();
       }
     };
-    this.Zsd = () => {
+    this.r1d = () => {
       if (!(this.ewu.length < SPECIAL_ENERGY_COUNT)) {
         let i = -1;
         let e = 0;
@@ -72,20 +72,20 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
               return;
             }
           }
-          this.ead(i, SPECIAL_ENERGY_COUNT);
+          this.o1d(i, SPECIAL_ENERGY_COUNT);
         }
       }
     };
-    this.omd = () => {
-      this.HQu();
-      this.GQu++;
-      this.OQu = TimerSystem_1.TimerSystem.Loop(this.q7e, NOTE_INTERVAL_TIME, SPECIAL_ENERGY_COUNT - 1, this.bge);
+    this.aBd = () => {
+      this.Fju();
+      this.kju++;
+      this.Uju = TimerSystem_1.TimerSystem.Loop(this.q7e, NOTE_INTERVAL_TIME, SPECIAL_ENERGY_COUNT - 1, this.bge);
     };
     this.q7e = () => {
-      this.HQu();
-      this.GQu++;
-      if (!(this.GQu < SPECIAL_ENERGY_COUNT)) {
-        this.XQu();
+      this.Fju();
+      this.kju++;
+      if (!(this.kju < SPECIAL_ENERGY_COUNT)) {
+        this.$ju();
       }
     };
   }
@@ -93,23 +93,23 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem]];
   }
   OnInitData() {
-    this.AQu = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(BURST_CONFIG_ID);
+    this.Rju = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(BURST_CONFIG_ID);
   }
   async OnBeforeStartAsync() {
     var t = [];
     t.push(this.InitKeyItem(this.GetItem(0)));
     t.push(this.InitBurstKeyItem(this.GetItem(0)));
-    t.push(this.$Qu());
+    t.push(this.Nju());
     await Promise.all(t);
   }
   async InitBurstKeyItem(t) {
-    if (!Info_1.Info.IsInTouch() && !(this.AQu.KeyInfoList.length <= 0)) {
-      this.PQu = new SpecialEnergyBarKeyItem_1.SpecialEnergyBarKeyItem();
-      this.PQu.SetConfig(this.AQu);
-      await this.PQu.CreateThenShowByResourceIdAsync("UiItem_EnergyBarHotKey", t);
+    if (!Info_1.Info.IsInTouch() && !(this.Rju.KeyInfoList.length <= 0)) {
+      this.wju = new SpecialEnergyBarKeyItem_1.SpecialEnergyBarKeyItem();
+      this.wju.SetConfig(this.Rju);
+      await this.wju.CreateThenShowByResourceIdAsync("UiItem_EnergyBarHotKey", t);
     }
   }
-  async $Qu() {
+  async Nju() {
     var e = [];
     var s = this.GetItem(18).GetOwner();
     for (let i = 0; i < SPECIAL_ENERGY_COUNT + 1; i++) {
@@ -118,7 +118,7 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
         t = LguiUtil_1.LguiUtil.DuplicateActor(s, this.RootItem);
       }
       var h = new SpecialEnergyBarFuLuoLuoNoteItem_1.SpecialEnergyBarFuLuoLuoNoteItem();
-      this.xQu.push(h);
+      this.Aju.push(h);
       e.push(h.CreateThenShowByActorAsync(t));
     }
     await Promise.all(e);
@@ -144,23 +144,23 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.InitTweenAnim(17);
     for (let t = 0; t < SPECIAL_ENERGY_COUNT; t++) {
       var e = this.GetItem(7 + t);
-      this.UQu.push(e);
+      this.Pju.push(e);
       var e = this.GetItem(1 + t);
       this.Wdt.push(e);
     }
     this.n4l(true);
-    this.jQu();
+    this.AYc();
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForTagAddOrRemoveChanged(lockTag, this.FQu);
-    this.ListenForTagAddOrRemoveChanged(burstTag, this.NQu);
+    this.ListenForTagAddOrRemoveChanged(lockTag, this.Oju);
+    this.ListenForTagAddOrRemoveChanged(burstTag, this.qju);
     this.ListenForTagAddOrRemoveChanged(disableTag, this.Nia);
     if (this.Jh) {
       EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.Tfe);
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TriggerUiTimeDilation, this.Tfe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FuLuoLuoAddDuplicatedEnergy, this.Zsd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FuLuoLuoAddDuplicatedEnergy, this.r1d);
   }
   RemoveEvents() {
     super.RemoveEvents();
@@ -168,22 +168,22 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
       EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.CharBeHitTimeScale, this.Tfe);
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TriggerUiTimeDilation, this.Tfe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FuLuoLuoAddDuplicatedEnergy, this.Zsd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FuLuoLuoAddDuplicatedEnergy, this.r1d);
   }
   OnBeforeDestroy() {
-    if (this.PQu) {
-      this.PQu?.Destroy();
-      this.PQu = undefined;
+    if (this.wju) {
+      this.wju?.Destroy();
+      this.wju = undefined;
     }
     super.OnBeforeDestroy();
   }
-  jQu() {
+  AYc() {
     let t = 1;
     var i;
     if (this.BuffComponent) {
       t = this.BuffComponent.GetTimeScale();
     }
-    if (this.bge !== t && (this.bge = t, this.OQu && TimerSystem_1.TimerSystem.Has(this.OQu) && (this.bge <= 0 ? TimerSystem_1.TimerSystem.IsPause(this.OQu) || TimerSystem_1.TimerSystem.Pause(this.OQu) : (TimerSystem_1.TimerSystem.IsPause(this.OQu) && TimerSystem_1.TimerSystem.Resume(this.OQu), TimerSystem_1.TimerSystem.ChangeDilation(this.OQu, this.bge))), i = t / Time_1.Time.InverseSelfCenteredTimeDilation, this.SetTweenTimeScale(17, i), Log_1.Log.CheckDebug())) {
+    if (this.bge !== t && (this.bge = t, this.Uju && TimerSystem_1.TimerSystem.Has(this.Uju) && (this.bge <= 0 ? TimerSystem_1.TimerSystem.IsPause(this.Uju) || TimerSystem_1.TimerSystem.Pause(this.Uju) : (TimerSystem_1.TimerSystem.IsPause(this.Uju) && TimerSystem_1.TimerSystem.Resume(this.Uju), TimerSystem_1.TimerSystem.ChangeDilation(this.Uju, this.bge))), i = t / Time_1.Time.InverseSelfCenteredTimeDilation, this.SetTweenTimeScale(17, i), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarFuLuoLuo]弗洛洛能量条时停刷新", ["timeScale", this.bge], ["tweenTimeScale", i]);
     }
   }
@@ -193,8 +193,8 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   OnMaxAttributeChanged() {}
   n4l(t = false) {
     if (!t) {
-      r = this.DQu;
-      this.DQu = this.ewu;
+      r = this.Lju;
+      this.Lju = this.ewu;
       this.ewu = r;
     }
     this.ewu.length = 0;
@@ -211,67 +211,67 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     }
     if (t) {
       for (let t = 0; t < SPECIAL_ENERGY_COUNT; t++) {
-        var s = this.xQu[t];
+        var s = this.Aju[t];
         var h = this.ewu[t] ?? 0;
         s.SetEnergyType(h);
         s.SetParent(this.Wdt[t]);
       }
-      this.xQu[SPECIAL_ENERGY_COUNT].SetEnergyType(0);
+      this.Aju[SPECIAL_ENERGY_COUNT].SetEnergyType(0);
       this.Euo(this.TagComponent?.HasTag(lockTag) ?? false, t);
-      this.VQu(this.TagComponent?.HasTag(burstTag) ?? false, t);
-      this.q1d(this.TagComponent?.HasTag(disableTag) ?? false);
+      this.Gju(this.TagComponent?.HasTag(burstTag) ?? false, t);
+      this.u0d(this.TagComponent?.HasTag(disableTag) ?? false);
     } else {
-      var r = this.DQu.length;
+      var r = this.Lju.length;
       var _ = this.ewu.length;
       if (r < _) {
-        this.WQu();
+        this.Vju();
       } else if (_ === r) {
         let i = -1;
         for (let t = 0; t < _; t++) {
-          if (this.DQu[t] !== 3) {
+          if (this.Lju[t] !== 3) {
             i = t;
             break;
           }
         }
         if (i >= 0) {
-          this.ead(i, _);
+          this.o1d(i, _);
         }
-      } else if (!this.BQu) {
+      } else if (!this.xju) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "SpecialEnergyBarFuLuoLuo 弗洛洛不在大招期间特殊能量被清除");
         }
-        this.WQu();
+        this.Vju();
       }
     }
     this.eht(t);
     this.Odl(t);
   }
-  ead(i, e) {
-    var t = this.xQu.splice(i, 1)[0];
-    this.xQu.push(t);
+  o1d(i, e) {
+    var t = this.Aju.splice(i, 1)[0];
+    this.Aju.push(t);
     this.StopTweenAnim(13);
-    this.UQu[5].SetAlpha(1);
+    this.Pju[5].SetAlpha(1);
     t.SetParent(this.Wdt[i]);
     for (let t = 0; t < i; t++) {
-      this.xQu[t].SetParent(this.Wdt[t]);
+      this.Aju[t].SetParent(this.Wdt[t]);
     }
     for (let t = i; t < e; t++) {
-      this.xQu[t].SetParent(this.UQu[t]);
+      this.Aju[t].SetParent(this.Pju[t]);
     }
-    this.WQu();
+    this.Vju();
     this.PlayTweenAnim(13);
   }
   eht(t) {
-    if (this.BQu) {
+    if (this.xju) {
       this.KeyItem?.SetUiActive(false);
-      this.PQu?.SetUiActive(false);
+      this.wju?.SetUiActive(false);
     } else if (this.Dxt) {
       this.KeyItem?.SetUiActive(false);
-      this.PQu?.SetUiActive(true);
-      this.PQu?.RefreshKeyEnable(true, t);
+      this.wju?.SetUiActive(true);
+      this.wju?.RefreshKeyEnable(true, t);
     } else {
       this.KeyItem?.SetUiActive(true);
-      this.PQu?.SetUiActive(false);
+      this.wju?.SetUiActive(false);
     }
   }
   Odl(t) {
@@ -279,17 +279,17 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.KeyItem?.RefreshKeyEnable(i, t);
   }
   GetKeyEnable() {
-    return !(this.ewu.length < SPECIAL_ENERGY_COUNT) && !this.O1d;
+    return !(this.ewu.length < SPECIAL_ENERGY_COUNT) && !this._0d;
   }
-  q1d(t) {
-    if (this.O1d !== t) {
-      this.O1d = t;
+  u0d(t) {
+    if (this._0d !== t) {
+      this._0d = t;
       this.Odl(false);
     }
   }
-  WQu() {
-    for (let t = 0; t < this.xQu.length; t++) {
-      var i = this.xQu[t];
+  Vju() {
+    for (let t = 0; t < this.Aju.length; t++) {
+      var i = this.Aju[t];
       var e = this.ewu[t] ?? 0;
       i.SetEnergyType(e);
     }
@@ -307,7 +307,7 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
         this.StopTweenAnim(15);
         this.PlayTweenAnim(16);
       }
-      for (const e of this.xQu) {
+      for (const e of this.Aju) {
         e.SetLockState(t);
       }
       if (!i) {
@@ -315,59 +315,59 @@ class SpecialEnergyBarFuLuoLuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
       }
     }
   }
-  VQu(t, i = false) {
-    if (this.BQu !== t && !(this.BQu = t, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarFuLuoLuo]弗洛洛大招演奏状态", ["", t]), t ? this.QQu() : this.KQu(), i)) {
+  Gju(t, i = false) {
+    if (this.xju !== t && !(this.xju = t, Log_1.Log.CheckDebug() && Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarFuLuoLuo]弗洛洛大招演奏状态", ["", t]), t ? this.jju() : this.Hju(), i)) {
       this.eht(i);
     }
   }
-  QQu() {
-    if (!this.kQu) {
-      this.kQu = true;
-      for (let t = this.GQu = 0; t < SPECIAL_ENERGY_COUNT; t++) {
-        this.xQu[t].SetParent(this.Wdt[t]);
+  jju() {
+    if (!this.Dju) {
+      this.Dju = true;
+      for (let t = this.kju = 0; t < SPECIAL_ENERGY_COUNT; t++) {
+        this.Aju[t].SetParent(this.Wdt[t]);
       }
       this.StopTweenAnim(16);
       this.PlayTweenAnim(17);
-      this.jQu();
-      this.OQu = TimerSystem_1.TimerSystem.Delay(this.omd, FIRST_NOTE_TIME, undefined, undefined, true);
-      if (this.OQu && this.bge !== 1) {
+      this.AYc();
+      this.Uju = TimerSystem_1.TimerSystem.Delay(this.aBd, FIRST_NOTE_TIME, undefined, undefined, true);
+      if (this.Uju && this.bge !== 1) {
         if (this.bge <= 0) {
-          TimerSystem_1.TimerSystem.Pause(this.OQu);
+          TimerSystem_1.TimerSystem.Pause(this.Uju);
         } else {
-          TimerSystem_1.TimerSystem.ChangeDilation(this.OQu, this.bge);
+          TimerSystem_1.TimerSystem.ChangeDilation(this.Uju, this.bge);
         }
       }
     }
   }
-  KQu() {
-    this.kQu = false;
+  Hju() {
+    this.Dju = false;
     this.StopTweenAnim(17);
     this.PlayTweenAnim(16);
-    this.WQu();
+    this.Vju();
     for (const t of this.Wdt) {
       t.SetAlpha(1);
     }
     for (let t = 0; t < SPECIAL_ENERGY_COUNT; t++) {
-      var i = this.xQu[t];
+      var i = this.Aju[t];
       i.SetParent(this.Wdt[t]);
       i.SetPerformState(false);
     }
-    this.xQu[SPECIAL_ENERGY_COUNT].SetPerformState(false);
-    this.XQu();
-    this.jQu();
+    this.Aju[SPECIAL_ENERGY_COUNT].SetPerformState(false);
+    this.$ju();
+    this.AYc();
   }
-  HQu() {
-    var t = this.xQu.shift();
-    this.xQu.push(t);
+  Fju() {
+    var t = this.Aju.shift();
+    this.Aju.push(t);
     t.SetPerformState(true);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarFuLuoLuo]弗洛洛演奏消耗音符", ["index", this.GQu]);
+      Log_1.Log.Debug("Battle", 17, "[SpecialEnergyBarFuLuoLuo]弗洛洛演奏消耗音符", ["index", this.kju]);
     }
   }
-  XQu() {
-    if (this.OQu && TimerSystem_1.TimerSystem.Has(this.OQu)) {
-      TimerSystem_1.TimerSystem.Remove(this.OQu);
-      this.OQu = undefined;
+  $ju() {
+    if (this.Uju && TimerSystem_1.TimerSystem.Has(this.Uju)) {
+      TimerSystem_1.TimerSystem.Remove(this.Uju);
+      this.Uju = undefined;
     }
   }
 }

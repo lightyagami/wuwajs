@@ -17,19 +17,20 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
     if (e) {
       this.wDe = e.EntityId;
       this.$Pe = e.Mark;
-      if (this.QYc(e.EntityId, e.Mark)) {
+      this.CreateWaitEntityTask(e.EntityId);
+      if (this.KJc(e.EntityId, e.Mark)) {
         this.FinishExecute(true);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 18, "执行行为LevelEventWaitSceneRefEntityPlaySequence失败，参数错误");
     }
   }
-  OnTick(e) {
-    if (this.QYc(this.wDe, this.$Pe)) {
+  ExecuteWhenEntitiesReady() {
+    if (this.KJc(this.wDe, this.$Pe)) {
       this.FinishExecute(true);
     }
   }
-  QYc(e, t) {
+  KJc(e, t) {
     var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (n?.Entity?.Valid) {
       if (n = n.Entity.GetComponent(164)) {

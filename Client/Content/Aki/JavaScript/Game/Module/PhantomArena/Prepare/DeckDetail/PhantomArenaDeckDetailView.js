@@ -36,13 +36,13 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
     this.NA1 = () => {
       PhantomArenaController_1.PhantomArenaController.CardUnlockRequest(this.Pe.CurCardId);
     };
-    this.MNu = (t, e) => {
+    this.sOu = (t, e) => {
       if (e === 1) {
         this.SelectCoreCardSlot();
       }
     };
     this.KTu = t => true;
-    this.ENu = (t, e) => {
+    this.aOu = (t, e) => {
       if (e === 1) {
         this.SelectNormalCardSlotByIndex(t.GridIndex);
       }
@@ -108,9 +108,9 @@ class PhantomArenaDeckDetailView extends UiViewBase_1.UiViewBase {
   RefreshDeckSlotsPanel() {
     var t = {
       DeckInfo: this.Pe.DeckInfo,
-      OnCoreSlotItemToggleStateChange: this.MNu,
+      OnCoreSlotItemToggleStateChange: this.sOu,
       CanCoreSlotItemToggleChange: this.KTu,
-      OnNormalSlotItemToggleStateChange: this.ENu,
+      OnNormalSlotItemToggleStateChange: this.aOu,
       CanNormalSlotItemToggleChange: this.i61,
       SortContext: {
         SortType: 1,

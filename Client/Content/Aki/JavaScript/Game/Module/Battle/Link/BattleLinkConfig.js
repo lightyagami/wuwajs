@@ -7,6 +7,7 @@ exports.BattleLinkConfig = undefined;
 const LinkCharacterById_1 = require("../../../../Core/Define/ConfigQuery/LinkCharacterById");
 const LinkDataById_1 = require("../../../../Core/Define/ConfigQuery/LinkDataById");
 const LinkParamById_1 = require("../../../../Core/Define/ConfigQuery/LinkParamById");
+const LinkPreloadById_1 = require("../../../../Core/Define/ConfigQuery/LinkPreloadById");
 const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
 class BattleLinkConfig extends ConfigBase_1.ConfigBase {
   GetLinkDataConfig(e) {
@@ -22,6 +23,11 @@ class BattleLinkConfig extends ConfigBase_1.ConfigBase {
   GetLinkParam(e) {
     if (e) {
       return LinkParamById_1.configLinkParamById.GetConfig(e);
+    }
+  }
+  GetLinkPreloadConfig(e) {
+    if (e) {
+      return LinkPreloadById_1.configLinkPreloadById.GetConfig(e);
     }
   }
 }

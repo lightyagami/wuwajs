@@ -18,17 +18,18 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
     this.Sqo = () => {
       this.vqo += TimerSystem_1.MIN_TIME;
       var e;
-      var i = this.GetHotKeyConfig();
-      let t = 0;
-      if (this.vqo > i.ReleaseFailureTime) {
+      var t = this.GetHotKeyConfig();
+      let i = 0;
+      if (this.vqo > t.ReleaseFailureTime) {
         this.yqo();
-        e = i.LongPressTime;
-        t = (this.vqo - i.ReleaseFailureTime) / e;
+        e = t.LongPressTime;
+        i = (this.vqo - t.ReleaseFailureTime) / e;
       }
-      if (t >= 1) {
+      if (i >= 1) {
         this.ReleaseWithoutCheck();
       } else {
-        this.CurComponent.SetLongPressState(t);
+        this.CurComponent.SetLongPressState(i);
+        this.R7d(i > 0 ? 1 : 0);
       }
     };
   }
@@ -41,6 +42,7 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
       this.ClickButton(e.BindButtonTag);
     }
     this.CurComponent.SetLongPressState(0);
+    this.R7d(0);
     this.Iqo();
     this.Eqo = false;
   }
@@ -64,13 +66,18 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
   Tqo() {
     this.Mqo = TimerSystem_1.GameplayTimerSystem.Forever(this.Sqo, TimerSystem_1.MIN_TIME);
   }
+  R7d(e) {
+    if (this.GetHotKeyConfig().ApplicableType === 6) {
+      this.CurComponent.SetLongPressItemAlpha(e);
+    }
+  }
   yqo() {
     if (!this.Eqo) {
       this.Eqo = true;
       var e = ModelManager_1.ModelManager.UiNavigationModel;
       if (e) {
-        for (const i of e.GetActionHotKeyComponentSet(this.GetActionName())) {
-          i.ResetPressState();
+        for (const t of e.GetActionHotKeyComponentSet(this.GetActionName())) {
+          t.ResetPressState();
         }
       }
     }

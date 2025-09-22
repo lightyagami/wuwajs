@@ -129,4 +129,4 @@ class LanguageSystem {
   }
 }
 (exports.LanguageSystem = LanguageSystem).GmShowLanguageKey = false;
-//# sourceMappingURL=LanguageSystem.js.map
+LanguageSystem.GmReplaceTextContent = ""; //# sourceMappingURL=LanguageSystem.js.map

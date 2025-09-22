@@ -19,14 +19,14 @@ const FloroRanchPopupRewardItem_1 = require("./FloroRanchPopupRewardItem");
 class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.zKu = undefined;
+    this.DQu = undefined;
     this.Vyu = new Set();
     this.jyu = [];
     this.TDe = undefined;
     this.ST1 = undefined;
     this.Hyu = undefined;
     this.ARu = undefined;
-    this.JKu = undefined;
+    this.PQu = undefined;
     this.J_ = e => {
       for (const i of this.Vyu) {
         i.Tick(e);
@@ -77,13 +77,13 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
     this.jyu.push(e);
   }
   BindCoinTargetPos(e) {
-    this.zKu = Vector_1.Vector.Create(e.X, e.Y, e.Z);
+    this.DQu = Vector_1.Vector.Create(e.X, e.Y, e.Z);
   }
   BindCoinChangeCallBack(e) {
     this.ARu = e;
   }
   BindDiamondChangeCallBack(e) {
-    this.JKu = e;
+    this.PQu = e;
   }
   async ShowPopupReward(e, i, a) {
     var r = Vector_1.Vector.Create();
@@ -94,7 +94,7 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
         if (i === 0) {
           this.ARu(a);
         } else if (i === 1) {
-          this.JKu(a);
+          this.PQu(a);
         }
       } else {
         var o = await this.$yu();
@@ -115,13 +115,13 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
     }
   }
   async MSu(e, i, a) {
-    if (this.zKu) {
+    if (this.DQu) {
       var r = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(1);
       i.Refresh(a, r.GetSmallIcon());
       i.PlayShowRewardAnim();
       const t = Vector_1.Vector.Create();
       e.Addition(FloroRanchDefine_1.floroRanchPopupRewardOffset, t);
-      const o = this.zKu;
+      const o = this.DQu;
       i.PopupReward(e, t, () => {
         AudioSystem_1.AudioSystem.PostEvent("play_ui_muchang_itemcost_close");
         i.PlayBezierCurve(t, o, () => {
@@ -144,7 +144,7 @@ class FloroRanchPopupRewardPanel extends UiPanelBase_1.UiPanelBase {
       i.PlayHideRewardAnim().then(() => {
         this.SSu(i);
       });
-      this.JKu(a);
+      this.PQu(a);
     });
     var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetPopupRewardWaitTime();
     await ModelManager_1.ModelManager.FloroRanchGamePlayModel.FloroRanchTimerSystem.Wait(e);

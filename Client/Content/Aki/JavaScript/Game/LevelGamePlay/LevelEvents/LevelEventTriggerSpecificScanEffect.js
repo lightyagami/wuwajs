@@ -17,22 +17,27 @@ class LevelEventTriggerSpecificScanEffect extends LevelGeneralBase_1.LevelEventB
   }
   ExecuteNew(e, r, o) {
     if (e) {
-      if (e.ScanEffect.Type === 1) {
-        this.iQ1 = this.rQ1(e.ScanEffect);
-      }
+      this.iQ1 = this.fFd(e.ScanEffect);
       if (this.iQ1 === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置失败");
         }
       } else {
-        (e = new UE.TransformDouble()).SetLocation(this.iQ1.ToUeVector());
-        ControllerHolder_1.ControllerHolder.ChargeSlashGameplayController.StartChargeSlashScanEffect(e);
+        var t = new UE.TransformDouble();
+        t.SetLocation(this.iQ1.ToUeVector());
+        switch (e.ScanEffect.Type) {
+          case 1:
+            ControllerHolder_1.ControllerHolder.ChargeSlashGameplayController.StartChargeSlashScanEffect(t);
+            break;
+          case 2:
+            ControllerHolder_1.ControllerHolder.FlyingFeatherController.StartFlyingFeatherScanEffect(t);
+        }
       }
     } else {
       this.Finish();
     }
   }
-  rQ1(e) {
+  fFd(e) {
     var r;
     var e = e.TriggerPosEntityId;
     var o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e);

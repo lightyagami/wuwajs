@@ -17,7 +17,7 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemNotify, this.oiu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.niu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResponseCommonItemFinished, this.w_d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResponseCommonItemFinished, this.egd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.k$1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.siu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this._fu);
@@ -26,7 +26,7 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemNotify, this.oiu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountRefresh, this.niu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResponseCommonItemFinished, this.w_d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResponseCommonItemFinished, this.egd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.k$1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.siu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddShowMoraleBuffTips, this._fu);
@@ -38,11 +38,11 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "F91", ["", o]);
     }
-    var e = await Net_1.Net.CallAsync(25951, o);
+    var e = await Net_1.Net.CallAsync(29768, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "N91", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 19691)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 26874)) {
       ModelManager_1.ModelManager.MoraleModel?.ProtoProgressRewardResponse(e);
     }
   }
@@ -51,7 +51,7 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "duu", ["", e]);
     }
-    var e = await Net_1.Net.CallAsync(25132, e);
+    var e = await Net_1.Net.CallAsync(28365, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Morale", 69, "muu", ["", e]);
     }
@@ -63,11 +63,11 @@ class MoraleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Morale", 69, "pUu", ["", o]);
     }
-    var e = await Net_1.Net.CallAsync(16151, o);
+    var e = await Net_1.Net.CallAsync(26715, o);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Morale", 69, "vUu", ["", e]);
     }
-    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 29977)) {
+    if (!ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 19723)) {
       ModelManager_1.ModelManager.MoraleModel?.ProtoMoraleTreasureBoxTraceResponse(e);
     }
   }
@@ -98,7 +98,7 @@ MoraleController.niu = (e, o, t) => {
     ModelManager_1.ModelManager.MoraleModel.CheckProgressScoreChange(e.s5n, o - t, o);
   }
 };
-MoraleController.w_d = () => {
+MoraleController.egd = () => {
   if (ModelManager_1.ModelManager.MoraleModel?.IsInitData) {
     ModelManager_1.ModelManager.MoraleModel.UpdateProgressScore();
   }

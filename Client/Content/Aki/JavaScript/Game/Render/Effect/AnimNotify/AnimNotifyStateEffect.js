@@ -200,7 +200,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
       if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(288))?.Valid) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(289))?.Valid) {
           i.AddEffect(e);
         }
       }

@@ -54,7 +54,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   }
   Load(e) {
     this.Jto();
-    this.GZu();
+    this.sjc();
     this.zto(t => {
       this.Zto(t);
       this.tio(e);
@@ -349,7 +349,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Model.PoseSwitched = false;
     }
   }
-  GZu() {
+  sjc() {
     this.PreLoadNpcMap.clear();
     ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
     this.NpcEntityMap.clear();
@@ -600,7 +600,7 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
             t.SetEnableMovementSync(true, "ActorAssistant");
             t.CollectSampleAndSend(true);
           }
-          if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(e.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc && (t = Protocol_1.Aki.Protocol.ecs.create(), (s = Protocol_1.Aki.Protocol.Zks.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o.CreatureData.GetCreatureDataId()), s.P5n = o.ActorLocationProxy, s.g8n = o.ActorRotationProxy, t.iVn = [s], Net_1.Net.Send(17569, t), Log_1.Log.CheckInfo())) {
+          if (WorldFunctionLibrary_1.default.GetEntityTypeByEntity(e.Entity.Id) === Protocol_1.Aki.Protocol.kks.Proto_Npc && (t = Protocol_1.Aki.Protocol.ecs.create(), (s = Protocol_1.Aki.Protocol.Zks.create()).F4n = MathUtils_1.MathUtils.NumberToLong(o.CreatureData.GetCreatureDataId()), s.P5n = o.ActorLocationProxy, s.g8n = o.ActorRotationProxy, t.iVn = [s], Net_1.Net.Send(18020, t), Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("AI", 42, "向服务器同步NPC位置", ["实体ID", s.F4n], ["X", s.P5n.X], ["Y", s.P5n.Y], ["Z", s.P5n.Z]);
           }
           if ((o = e.Entity.GetComponent(45))?.Valid) {
@@ -704,17 +704,21 @@ class ActorAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
         var t = PlotAudioById_1.configPlotAudioById.GetConfig(e);
         if (t) {
           const i = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(t);
-          ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(i, UE.AnimSequence, t => {
-            if (t) {
-              this.PreLoadMouthAssetMap.set(e, t);
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Plot", 38, "预加载口型资源", ["assetPath", i]);
+          if (t.GenLipSync) {
+            ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.GetAsset(i, UE.AnimSequence, t => {
+              if (t) {
+                this.PreLoadMouthAssetMap.set(e, t);
+                if (Log_1.Log.CheckDebug()) {
+                  Log_1.Log.Debug("Plot", 38, "预加载口型资源", ["assetPath", i]);
+                }
+              } else if (Log_1.Log.CheckWarn()) {
+                Log_1.Log.Warn("Plot", 38, "预加载口型资源错误：有语音没口型", ["textKey", e], ["assetPath", i]);
               }
-            } else if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Plot", 38, "预加载口型资源错误：有语音没口型", ["textKey", e], ["assetPath", i]);
-            }
+              this.sio();
+            });
+          } else {
             this.sio();
-          });
+          }
         } else {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Plot", 38, "预加载口型资源跳过，没有语音配置", ["textKey", e]);

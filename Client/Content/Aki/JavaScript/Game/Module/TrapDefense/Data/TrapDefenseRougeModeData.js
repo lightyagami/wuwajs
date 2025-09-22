@@ -29,9 +29,9 @@ class TrapDefenseRougeModeData extends TrapDefenseLevelModeDataBase_1.TrapDefens
     this.IsChangeCacheBdBuffs = false;
   }
   Init() {
-    this.y3u();
+    this.I5u();
   }
-  y3u() {
+  I5u() {
     for (const t of ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAllBdList()) {
       var e = TrapDefenseBdData_1.TrapDefenseBdData.Create(t);
       this.BdDataList.push(e);

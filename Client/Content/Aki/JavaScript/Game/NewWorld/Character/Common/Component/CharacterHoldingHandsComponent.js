@@ -192,34 +192,34 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     this.cBe = undefined;
     this.Bhh = undefined;
     this.IX1 = new Map();
-    this.yWc = new Map();
+    this.zKu = new Map();
     this.cz = Vector_1.Vector.Create();
     this.fz = Vector_1.Vector.Create();
     this.YJo = Vector_1.Vector.Create();
     this.aO1 = false;
-    this.dsd = false;
-    this.Xcd = undefined;
-    this.msd = undefined;
-    this.H1d = undefined;
-    this.$1d = undefined;
+    this.Lld = false;
+    this.DRd = undefined;
+    this.Pld = undefined;
+    this.E0d = undefined;
+    this.I0d = undefined;
     this.CanSkillInterrupt = true;
-    this.Pgd = false;
-    this.zmd = undefined;
+    this.$8d = false;
+    this.dFd = undefined;
     this.bJe = (t, i) => {
       if (listenSkillIds.has(i) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 82, "[CharacterHoldingHandsComponent.OnSkillEnd]", ["entityId", t], ["skillId", i]), i === SKILL_ID_INVITATION_END)) {
         this.OnInvitationAnimEnd();
       }
     };
-    this.SWc = (t, i) => {
+    this.S7u = (t, i) => {
       if (t === this.Entity.Id && listenSkillIds.has(i) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 82, "[CharacterHoldingHandsComponent.OnSillEndByInterrupt]", ["entityId", t], ["skillId", i]), this.CanSkillInterrupt)) {
         this.ReleaseAllHands("邀请技能被打断");
       }
     };
     this.OnStateInherit = (t, i) => {
       if (t?.Valid && !i) {
-        var s = t.GetComponent(297);
+        var s = t.GetComponent(298);
         if (s) {
-          for (const r of this.yWc) {
+          for (const r of this.zKu) {
             var e = r[0];
             var n = r[1];
             var h = this.Model?.GetRelation(n);
@@ -255,14 +255,14 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     };
   }
   get Params() {
-    CharacterHoldingHandsComponent_1.K3u ||= CharacterHoldingHandsComponent_1.LoadCommonParams();
-    return CharacterHoldingHandsComponent_1.K3u;
+    CharacterHoldingHandsComponent_1.k2u ||= CharacterHoldingHandsComponent_1.LoadCommonParams();
+    return CharacterHoldingHandsComponent_1.k2u;
   }
   get KeepFollowingConfig() {
-    if (!this.zmd && this.Params.KeepFollowingDa) {
-      this.zmd = ResourceSystem_1.ResourceSystem.Load(this.Params.KeepFollowingDa.ToAssetPathName(), UE.BP_KeepFollowingConfig_C);
+    if (!this.dFd && this.Params.KeepFollowingDa) {
+      this.dFd = ResourceSystem_1.ResourceSystem.Load(this.Params.KeepFollowingDa.ToAssetPathName(), UE.BP_KeepFollowingConfig_C);
     }
-    return this.zmd;
+    return this.dFd;
   }
   OnStart() {
     this.EIe = this.Entity.CheckGetComponent(0);
@@ -286,7 +286,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     var t;
     var i = this.oRe?.MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC) || UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
-      if (this.EIe?.HoldHandTargetEntityId && !this.EIe?.HoldHandIsFollow && (i = this.EIe.GetCreatureDataId().toString() + this.EIe?.HoldHandTargetEntityId.toString(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.EIe?.HoldHandTargetEntityId)?.Entity?.GetComponent(297))) {
+      if (this.EIe?.HoldHandTargetEntityId && !this.EIe?.HoldHandIsFollow && (i = this.EIe.GetCreatureDataId().toString() + this.EIe?.HoldHandTargetEntityId.toString(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.EIe?.HoldHandTargetEntityId)?.Entity?.GetComponent(298))) {
         HoldingHandsController_1.HoldingHandsController.AddBinding(i, this, t, this.EIe.HoldHandType).NoLerpNextUpdate = true;
       }
     } else {
@@ -305,18 +305,18 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
         for (const s of this.IX1.values()) {
           s.LerpAlphas(this.Params.IkAlphaDamping, t);
         }
-      } else if (this.EWc(i)) {
+      } else if (this.KXu(i)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Character", 82, "[CharacterHoldingHandsComponent] 因DisableTags断开牵手", ["entityId", this.Entity.Id]);
         }
         this.ReleaseAllHands("DisableTags");
       } else {
-        this.W1d();
+        this.T0d();
         this.TTu(i, t);
       }
     }
   }
-  EWc(t) {
+  KXu(t) {
     return this.Lie.HasAnyTag(this.Params.DisableTags);
   }
   TTu(i, s) {
@@ -346,13 +346,13 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     return i;
   }
   GetRelationByHand(t) {
-    t = this.yWc.get(t);
+    t = this.zKu.get(t);
     if (t !== undefined) {
       return this.Model?.GetRelation(t);
     }
   }
   GetRelationByFollower(t) {
-    for (const s of this.yWc.values()) {
+    for (const s of this.zKu.values()) {
       var i = this.Model?.GetRelation(s);
       if (i && i.Follower === t && i.Leader === this) {
         return i;
@@ -376,8 +376,8 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   GetRoleState() {
-    if (this.yWc && this.yWc.size !== 0) {
-      for (const i of this.yWc.values()) {
+    if (this.zKu && this.zKu.size !== 0) {
+      for (const i of this.zKu.values()) {
         var t = this.Model?.GetRelation(i);
         if (t && t instanceof HoldingHandsUtils_1.Binding) {
           if (t.Leader === this) {
@@ -398,10 +398,10 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     return this.GetRoleState() === 1;
   }
   GetIsAcceptingInvitation() {
-    return this.dsd;
+    return this.Lld;
   }
   GetLeaderInfo() {
-    for (const i of this.yWc) {
+    for (const i of this.zKu) {
       var t = this.Model?.GetRelation(i[1]);
       if (t && t.Follower === this) {
         return [i[0], t.Leader];
@@ -409,7 +409,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   GetFollowerInfo() {
-    for (const i of this.yWc) {
+    for (const i of this.zKu) {
       var t = this.Model?.GetRelation(i[1]);
       if (t && t.Leader === this) {
         return [i[0], t.Follower];
@@ -431,7 +431,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     return this.cz;
   }
   SetBindingsNoLerp() {
-    for (const i of this.yWc.values()) {
+    for (const i of this.zKu.values()) {
       var t = this.Model?.GetRelation(i);
       if (t && t instanceof HoldingHandsUtils_1.Binding && (t.NoLerpNextUpdate = true, Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Character", 82, "[CharacterHoldingHandsComponent.SetAllBindingsNoLerp]", ["key", t.Key], ["leader", t.Leader?.Entity.Id], ["follower", t.Follower?.Entity.Id]);
@@ -441,8 +441,8 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   static StartInvitation(t, i) {
     const e = t.Leader;
     const n = t.Follower;
-    e.yWc.set(i, t.Key);
-    n.yWc.set(1 - i, t.Key);
+    e.zKu.set(i, t.Key);
+    n.zKu.set(1 - i, t.Key);
     i = n.ActorComp.ActorLocationProxy;
     t = e.ActorComp.ActorLocationProxy;
     const h = e.cz;
@@ -473,8 +473,8 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
           t.Subtraction(i, s);
           s.Normalize();
           s.Multiply(-1, h);
-          n.w4u(h, 0);
-          e.w4u(s, 10, () => {
+          n.X5u(h, 0);
+          e.X5u(s, 10, () => {
             e.cBe?.BeginSkill(SKILL_ID_INVITATION_START, {
               Reason: "开始牵手邀约"
             });
@@ -496,19 +496,19 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
       e.cBe.StopAllSkills("牵手邀请");
     }
     e.MoveComp.MoveAlongPath(i);
-    e.Q1d(true, 2);
+    e.b0d(true, 2);
   }
   FollowerAccept() {
-    for (const i of this.yWc.values()) {
+    for (const i of this.zKu.values()) {
       var t = this.Model?.GetRelation(i);
       if (t && t.Follower && t.Leader) {
         const s = t.Follower;
-        s.dsd = true;
-        if (s.msd) {
-          s.msd.Remove();
+        s.Lld = true;
+        if (s.Pld) {
+          s.Pld.Remove();
         }
-        s.msd = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
-          if (s && (s.msd && (s.msd.Remove(), s.msd = undefined), s.ReleaseAllHands("邀请时未触发AN"), s.dsd = false, Log_1.Log.CheckError())) {
+        s.Pld = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
+          if (s && (s.Pld && (s.Pld.Remove(), s.Pld = undefined), s.ReleaseAllHands("邀请时未触发AN"), s.Lld = false, Log_1.Log.CheckError())) {
             Log_1.Log.Error("Character", 82, "[CharacterHoldingHandsComponent] Follower邀请接受AN未触发，退出牵手", ["follower", s.Entity.Id]);
           }
         }, 3000);
@@ -517,16 +517,16 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   InvitationToBinding() {
-    for (const n of this.yWc.values()) {
+    for (const n of this.zKu.values()) {
       var t = this.Model?.GetRelation(n);
       if (t && t.Follower && t.Leader) {
         const h = t.Follower;
         var i = t.Leader;
-        if (h.msd) {
-          h.msd.Remove();
-          h.msd = undefined;
+        if (h.Pld) {
+          h.Pld.Remove();
+          h.Pld = undefined;
         }
-        h.dsd = false;
+        h.Lld = false;
         HoldingHandsController_1.HoldingHandsController.AddBinding(t.Key, i, h, t.LeaderHandType, true);
         i.cBe?.EndSkill(SKILL_ID_INVITATION_START, "牵手邀请结束");
         t.Leader.cBe?.BeginSkill(SKILL_ID_INVITATION_END, {
@@ -567,7 +567,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   OnInvitationAnimEnd() {
-    for (const h of this.yWc.values()) {
+    for (const h of this.zKu.values()) {
       const o = this.Model?.GetRelation(h);
       if (o && o instanceof HoldingHandsUtils_1.Binding && o.Follower && o.Leader) {
         var t = o.Leader;
@@ -583,22 +583,22 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
         if (o.LeaderHandType === 0) {
           s.MultiplyEqual(-1);
         }
-        i.w4u(s, 0);
-        t.w4u(s, 0, () => {
-          CharacterHoldingHandsComponent_1.gsd(o);
+        i.X5u(s, 0);
+        t.X5u(s, 0, () => {
+          CharacterHoldingHandsComponent_1.Dld(o);
         });
         break;
       }
     }
   }
-  static gsd(t) {
+  static Dld(t) {
     var i;
     var s;
-    if (t && t instanceof HoldingHandsUtils_1.Binding && t.Follower && t.Leader && (i = t.Leader, s = t.Follower, i.H1d && (i.H1d.Remove(), i.H1d = undefined), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "进入牵手状态"), i.OnEnterHoldingHands(t.LeaderHandType), s.OnEnterHoldingHands(t.FollowerHandType), s.KeepFollowingConfig)) {
+    if (t && t instanceof HoldingHandsUtils_1.Binding && t.Follower && t.Leader && (i = t.Leader, s = t.Follower, i.E0d && (i.E0d.Remove(), i.E0d = undefined), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "进入牵手状态"), i.OnEnterHoldingHands(t.LeaderHandType), s.OnEnterHoldingHands(t.FollowerHandType), s.KeepFollowingConfig)) {
       s.MoveComp?.MoveController.StartKeepFollowingWithDataAsset(i.ActorComp, s.KeepFollowingConfig, t.FollowerHandType);
     }
   }
-  w4u(t, i, s = undefined) {
+  X5u(t, i, s = undefined) {
     var e = t.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg;
     var n = this.ActorComp.ActorRotationProxy.Yaw;
     var e = (e = Math.abs(e - n)) > 180 ? 360 - e : e;
@@ -613,24 +613,24 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
       };
       if (s) {
         i = e / this.Params.InvitationTurnSpeed * 1000 + (e > 45 ? 500 : 0);
-        if (this.H1d?.Valid()) {
-          this.H1d.Remove();
+        if (this.E0d?.Valid()) {
+          this.E0d.Remove();
         }
-        this.$1d = n;
-        this.H1d = TimerSystem_1.FlowTimeTimerSystem.Delay(this.$1d, i);
+        this.I0d = n;
+        this.E0d = TimerSystem_1.FlowTimeTimerSystem.Delay(this.I0d, i);
       }
     }
   }
-  W1d() {
-    if (this.H1d?.Valid() && this.MoveComp?.HasMoveInput) {
-      this.H1d.Remove();
-      this.H1d = undefined;
-      this.$1d?.();
-      this.$1d = undefined;
+  T0d() {
+    if (this.E0d?.Valid() && this.MoveComp?.HasMoveInput) {
+      this.E0d.Remove();
+      this.E0d = undefined;
+      this.I0d?.();
+      this.I0d = undefined;
     }
   }
   OnAddBinding(t, i, s = false) {
-    this.yWc.set(t, i);
+    this.zKu.set(t, i);
     i = this.GetHandRuntime(t);
     i.InBind = true;
     i.IkTarget ||= new HoldingHandsUtils_1.IkTarget();
@@ -641,8 +641,8 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   OnEnterHoldingHands(t) {
     var i = this.GetRoleState();
     if (i !== 0) {
-      this.Q1d(false, i);
-      this.K1d(true, i);
+      this.b0d(false, i);
+      this.R0d(true, i);
       if (i === 2) {
         this.MoveComp.CharacterMovement.HitPriority = this.Params.LeaderHitPriority;
         this.MoveComp.CharacterMovement.Mass = this.Params.LeaderMass;
@@ -656,20 +656,20 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
         Log_1.Log.Info("Character", 42, "[CharacterHoldingHandsComponent] 进入牵手状态", ["entityId", this.Entity.Id], ["roleState", i], ["handType", t]);
       }
       if (this.aO1) {
-        this.IWc();
+        this.yWu();
       }
       this.TryAddEvents();
     }
   }
   ReleaseAllHands(t = "", i = false, s = true) {
-    for (const e of this.yWc.values()) {
+    for (const e of this.zKu.values()) {
       HoldingHandsController_1.HoldingHandsController.RequestReleaseHands(e, t, i, s);
     }
   }
   OnDeleteRelation(t, i, s = true) {
     var e;
     var n = this.GetRelationByHand(t);
-    this.yWc.delete(t);
+    this.zKu.delete(t);
     var n = n instanceof HoldingHandsUtils_1.Binding;
     if (n) {
       (e = this.GetHandRuntime(t)).InBind = false;
@@ -678,21 +678,21 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
         e.IkTarget.Alpha = 0;
       }
     }
-    this.J3u(i, t, n);
+    this.F2u(i, t, n);
   }
-  J3u(t, i, s) {
+  F2u(t, i, s) {
     var e = t ? 2 : 1;
-    this.K1d(false, e);
-    this.Q1d(false, e);
-    if (this.msd) {
-      this.msd.Remove();
-      this.msd = undefined;
+    this.R0d(false, e);
+    this.b0d(false, e);
+    if (this.Pld) {
+      this.Pld.Remove();
+      this.Pld = undefined;
     }
-    if (this.H1d?.Valid()) {
-      this.H1d.Remove();
-      this.H1d = undefined;
+    if (this.E0d?.Valid()) {
+      this.E0d.Remove();
+      this.E0d = undefined;
     }
-    this.dsd = false;
+    this.Lld = false;
     if (t) {
       this.cBe?.EndSkill(SKILL_ID_INVITATION_START, "退出牵手");
     } else {
@@ -703,7 +703,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
     this.TryRemoveEvents();
   }
-  Q1d(t, i) {
+  b0d(t, i) {
     if (i === 2) {
       if (t) {
         for (const s of this.Params.InvitingTags) {
@@ -716,7 +716,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
       }
     }
   }
-  K1d(t, i) {
+  R0d(t, i) {
     let s = undefined;
     if (i === 2) {
       s = this.Params.LeadingTags;
@@ -739,13 +739,13 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     var s = this.Params.ReachableTag;
     if (t) {
       this.Lie?.AddTag(s);
-      this.Z3u(true, i);
+      this.N2u(true, i);
     } else {
       this.Lie?.RemoveTag(s);
-      this.Z3u(false, i);
+      this.N2u(false, i);
     }
   }
-  Z3u(t, i) {
+  N2u(t, i) {
     var s = i === 1 ? 135688342 : 205425647;
     if (t) {
       this.Lie?.AddTag(s);
@@ -770,25 +770,25 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   TryAddEvents() {
-    if (!this.Pgd) {
+    if (!this.$8d) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.SWc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.S7u);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStart, this.bpr);
       if (this.aO1) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
       }
-      this.Pgd = true;
+      this.$8d = true;
     }
   }
   TryRemoveEvents() {
-    if (this.Pgd) {
+    if (this.$8d) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.bJe);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.SWc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.S7u);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStart, this.bpr);
       if (this.aO1) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
       }
-      this.Pgd = false;
+      this.$8d = false;
     }
   }
   CheckObstacle(t) {
@@ -808,7 +808,7 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     var i = ResourceSystem_1.ResourceSystem.Load(t, UE.BP_HoldingHandsConfig_C);
     if (i?.IsValid()) {
       i = new HoldingHandsParams(i);
-      return CharacterHoldingHandsComponent_1.K3u = i;
+      return CharacterHoldingHandsComponent_1.k2u = i;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 82, "[CharacterHoldingHandsComponent.LoadCommonParams] 获取牵手参数DA失败", ["DaPath", t]);
@@ -816,11 +816,11 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
       return new HoldingHandsParams();
     }
   }
-  IWc() {
+  yWu() {
     if (this.Bhh) {
       this.Eol();
     }
-    this.Bhh = InputController_1.InputController.CreateInputLayer(6);
+    this.Bhh = InputController_1.InputController.CreateInputLayer(8);
     this.Bhh.Init(this);
     InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
   }
@@ -842,15 +842,15 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     return !!this.Bhh?.IsHoldingAction(t);
   }
   OnLeaderSitDown() {
-    if (this.Xcd) {
-      return this.Xcd;
+    if (this.DRd) {
+      return this.DRd;
     }
-    for (const t of this.yWc.values()) {
+    for (const t of this.zKu.values()) {
       const i = this.Model?.GetRelation(t);
       if (i && i instanceof HoldingHandsUtils_1.Binding && i.Follower) {
         this.SetDisableInputTags(true);
         i.Follower.SetDisableInputTags(true);
-        const s = ((this.Xcd = i).Follower.Xcd = i).Follower;
+        const s = ((this.DRd = i).Follower.DRd = i).Follower;
         const e = this.Entity.GetComponent(29);
         if (e) {
           e.OnLeaveSitDown = () => {
@@ -867,10 +867,10 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
   }
   OnLeaderStandUp() {
     this.SetDisableInputTags(false);
-    this.Xcd.Follower.SetDisableInputTags(false);
-    HoldingHandsController_1.HoldingHandsController.AddBinding(this.Xcd.Key, this.Xcd.Leader, this.Xcd.Follower, this.Xcd.LeaderHandType);
-    this.Xcd.Follower.Xcd = undefined;
-    this.Xcd = undefined;
+    this.DRd.Follower.SetDisableInputTags(false);
+    HoldingHandsController_1.HoldingHandsController.AddBinding(this.DRd.Key, this.DRd.Leader, this.DRd.Follower, this.DRd.LeaderHandType);
+    this.DRd.Follower.DRd = undefined;
+    this.DRd = undefined;
   }
   IsSitDown() {
     var t = this.Entity.GetComponent(29);
@@ -881,14 +881,14 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
   IsSitDownWithHoldingHands() {
-    return !!this.Xcd && this.IsSitDown();
+    return !!this.DRd && this.IsSitDown();
   }
   GetHoldingHandsOtherEntity() {
     var t;
     var i;
     if (this.IsSitDownWithHoldingHands()) {
-      t = this.Xcd.Leader.Entity;
-      i = this.Xcd.Follower.Entity;
+      t = this.DRd.Leader.Entity;
+      i = this.DRd.Follower.Entity;
       if (this.Entity === t) {
         return i;
       } else {
@@ -916,6 +916,6 @@ let CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = class Ch
     }
   }
 };
-CharacterHoldingHandsComponent.K3u = undefined;
-CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(297)], CharacterHoldingHandsComponent);
+CharacterHoldingHandsComponent.k2u = undefined;
+CharacterHoldingHandsComponent = CharacterHoldingHandsComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(298)], CharacterHoldingHandsComponent);
 exports.CharacterHoldingHandsComponent = CharacterHoldingHandsComponent; //# sourceMappingURL=CharacterHoldingHandsComponent.js.map

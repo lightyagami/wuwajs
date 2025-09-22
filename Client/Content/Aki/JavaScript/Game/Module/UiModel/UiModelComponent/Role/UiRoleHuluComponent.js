@@ -26,13 +26,10 @@ const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/Commo
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const CharacterNameDefines_1 = require("../../../../NewWorld/Character/Common/CharacterNameDefines");
 const SkeletalObserverManager_1 = require("../../../SkeletalObserver/SkeletalObserverManager");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
-const HULU_BASE_ID = 20000000;
-const HULU_PARTY_ID = 100000;
 let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
@@ -102,11 +99,12 @@ let UiRoleHuluComponent = class UiRoleHuluComponent extends UiModelComponentBase
     return this.dBr;
   }
   Refresh() {
-    var e = this.mBr.RoleConfigId;
-    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e).PartyId * HULU_PARTY_ID + HULU_BASE_ID + 1;
-    var t = this.dBr.Model;
-    if (e !== t.CheckGetComponent(0)?.ModelConfigId) {
-      t.CheckGetComponent(2)?.LoadModelByModelId(e);
+    var e = this.dBr.Model;
+    var t = e.CheckGetComponent(31);
+    t?.RefreshCurrentSkinData(this.mBr.RoleConfigId);
+    var t = t.ModelId;
+    if (t !== e.CheckGetComponent(0)?.ModelConfigId) {
+      e.CheckGetComponent(2)?.LoadModelByModelId(t);
     }
   }
   SetActive(e) {

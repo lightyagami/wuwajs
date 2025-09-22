@@ -24,16 +24,16 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
     super(...arguments);
     this.SPe = undefined;
     this.x8c = undefined;
-    this.S2u = undefined;
+    this.oNu = undefined;
     this.edt = undefined;
     this.Nll = undefined;
     this.m1t = undefined;
     this.eHr = 0;
     this.bst = undefined;
     this.p2a = 0;
-    this.E2u = 0;
-    this.I2u = undefined;
-    this.Uqu = undefined;
+    this.sNu = 0;
+    this.aNu = undefined;
+    this.SNu = undefined;
     this.Cdt = ResourceSystem_1.ResourceSystem.InvalidId;
     this.uat = undefined;
     this.j3 = undefined;
@@ -59,20 +59,20 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.InitTweenAnim(5);
     this.GetItem(4)?.SetAlpha(1);
-    this.E2u = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
-    if (this.E2u !== 0) {
-      this.I2u = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(this.E2u);
+    this.sNu = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
+    if (this.sNu !== 0) {
+      this.aNu = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(this.sNu);
     }
     var i = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleConfig()?.BattleBuffIdMap;
     if (i) {
-      let e = i.get(this.E2u);
+      let e = i.get(this.sNu);
       e = e || i.get(0);
       this.eHr = e ?? 0;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("WeeklyRogue", 17, "link进度监听的buff", ["BuffId", this.eHr]);
     }
-    this.S2u = this.GetTexture(0);
+    this.oNu = this.GetTexture(0);
     this.edt = this.GetItem(1);
     this.Nll = new UE.Rotator(0, 0, 0);
     if (!Info_1.Info.IsInTouch()) {
@@ -87,7 +87,7 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
   Kbe() {
     const i = this.GetTexture(2);
     i.SetUIActive(false);
-    var e = this.I2u?.ButtonIcon;
+    var e = this.aNu?.ButtonIcon;
     if (e) {
       this.Cdt = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture2D, e => {
         this.Cdt = ResourceSystem_1.ResourceSystem.InvalidId;
@@ -97,23 +97,23 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
         }
       }, 103);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("WeeklyRogue", 17, "神器图标路径为空", ["神器Id", this.E2u]);
+      Log_1.Log.Error("WeeklyRogue", 17, "神器图标路径为空", ["神器Id", this.sNu]);
     }
   }
   OnBeforeShow() {
     super.OnBeforeShow();
     this.SPe.PlaySequencePurely("Start");
-    this.Bqu();
+    this.MNu();
     var e;
     var i;
-    var t = this.Uqu?.BuffTriggerActionName;
+    var t = this.SNu?.BuffTriggerActionName;
     if (t) {
       this.x8c?.RefreshAction(t);
       this.x8c?.SetUiActive(true);
     } else {
       this.x8c?.SetUiActive(false);
     }
-    var t = this.Uqu?.BuffTriggerTagId;
+    var t = this.SNu?.BuffTriggerTagId;
     if (t) {
       if (e = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeekTagConfig(t)) {
         e = e.Name;
@@ -122,13 +122,13 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
         i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? e;
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("WeeklyRogueUseArtifact", [i]);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("WeeklyRogue", 17, "神器触发", ["神器Id", this.E2u], ["triggerTag", e]);
+          Log_1.Log.Debug("WeeklyRogue", 17, "神器触发", ["神器Id", this.sNu], ["triggerTag", e]);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("WeeklyRogue", 17, "神器触发tag缺少配置", ["BuffTriggerTagId", t]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("WeeklyRogue", 17, "神器触发tag为空", ["神器Id", this.E2u]);
+      Log_1.Log.Error("WeeklyRogue", 17, "神器触发tag为空", ["神器Id", this.sNu]);
     }
   }
   OnBeforeDestroy() {
@@ -140,22 +140,22 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Cdt);
       this.Cdt = ResourceSystem_1.ResourceSystem.InvalidId;
     }
-    this.Ezu();
+    this.XWu();
     this.BCe();
   }
   async OnBeforeHideAsync() {
     this.SPe.StopCurrentSequence();
     this.SPe.PlaySequencePurely("Close");
-    this.Ezu();
+    this.XWu();
     this.BCe();
     this.uat = new CustomPromise_1.CustomPromise();
     this.j3 = TimerSystem_1.TimerSystem.Delay(() => {
       this.j3 = undefined;
-      this.Ezu();
+      this.XWu();
     }, CLOSE_ANIM_TIME);
     await this.uat.Promise;
   }
-  Ezu() {
+  XWu() {
     if (this.uat) {
       this.uat.SetResult();
       this.uat = undefined;
@@ -167,12 +167,12 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
       this.j3 = undefined;
     }
   }
-  Bqu() {
+  MNu() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.GetBuffIdListByType(4);
     if (e.length > 0) {
-      this.Uqu = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e[0]);
+      this.SNu = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(e[0]);
     } else {
-      this.Uqu = this.I2u;
+      this.SNu = this.aNu;
     }
   }
   Tick(e) {
@@ -194,7 +194,7 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
   x_t(e) {
     this.Nll.Yaw = e * -360;
     this.edt?.SetUIRelativeRotation(this.Nll);
-    this.S2u?.SetFillAmount(e);
+    this.oNu?.SetFillAmount(e);
   }
   bMc(e) {
     if (this.Nml !== e) {

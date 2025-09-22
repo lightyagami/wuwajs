@@ -14,7 +14,7 @@ class TrapDefenseShopGoodsDetailPanel extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.e0t = undefined;
     this.xco = () => {};
-    this.THc = e => {
+    this._Xc = e => {
       this.RefreshPanel(e);
     };
   }
@@ -29,10 +29,10 @@ class TrapDefenseShopGoodsDetailPanel extends UiPanelBase_1.UiPanelBase {
     await Promise.all(e);
   }
   OnStart() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.AddOnSelectGoodsDelegate(this.THc);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.AddOnSelectGoodsDelegate(this._Xc);
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.RemoveOnSelectGoodsDelegate(this.THc);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelShop.RemoveOnSelectGoodsDelegate(this._Xc);
   }
   RefreshPanel(e) {
     if (e) {

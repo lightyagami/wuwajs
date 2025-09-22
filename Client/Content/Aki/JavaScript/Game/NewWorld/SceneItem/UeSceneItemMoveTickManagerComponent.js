@@ -35,43 +35,43 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     super(...arguments);
     this.Hte = undefined;
     this.o4o = undefined;
-    this.UVu = new Set();
+    this.k4u = new Set();
     this.IYt = -1;
-    this.TVu = false;
-    this.BVu = (e, t) => {
+    this.H7u = false;
+    this.O4u = (e, t) => {
       if (t) {
-        this.UVu.add(e);
+        this.k4u.add(e);
       } else if (e?.GetComponent(230)?.VehicleEntity !== this.Entity) {
-        this.UVu.delete(e);
+        this.k4u.delete(e);
       }
     };
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(203);
     if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
-      this.TVu = true;
+      this.H7u = true;
     }
     this.o4o = this.Hte.Owner.GetComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass());
     if (!this.o4o?.IsValid()) {
       this.o4o = this.Hte.Owner.AddComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass(), false, new UE.Transform(), false);
       this.o4o.Kuro_SetGravityDirect(this.Hte.ActorGravityDirectProxy.ToUeVectorOld());
       this.o4o.SetTickingMoveEnable(false);
-      if (this.TVu) {
+      if (this.H7u) {
         this.o4o.SetKuroOnlyTickOutside(true);
       }
     }
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, this.BVu);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, this.O4u);
     return true;
   }
   OnEnd() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, this.BVu);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, this.O4u);
     return true;
   }
   TickMovement(e, t = false) {
-    if ((t || this.TVu && this.IYt < Time_1.Time.Frame) && this.o4o?.IsValid()) {
+    if ((t || this.H7u && this.IYt < Time_1.Time.Frame) && this.o4o?.IsValid()) {
       this.o4o?.KuroTickComponentOutside(e * MathUtils_1.MathUtils.MillisecondToSecond);
       this.Hte?.ResetAllCachedTime();
-      for (const n of this.UVu) {
+      for (const n of this.k4u) {
         var i = n.GetComponent(1);
         if (i) {
           i.ResetAllCachedTime();
@@ -81,5 +81,5 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     }
   }
 };
-UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(298)], UeSceneItemMoveTickManagerComponent);
+UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(299)], UeSceneItemMoveTickManagerComponent);
 exports.UeSceneItemMoveTickManagerComponent = UeSceneItemMoveTickManagerComponent; //# sourceMappingURL=UeSceneItemMoveTickManagerComponent.js.map

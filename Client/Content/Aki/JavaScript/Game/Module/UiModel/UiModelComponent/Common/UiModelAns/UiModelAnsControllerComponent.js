@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, o, n) {
+var __decorate = this && this.__decorate || function (e, t, n, o) {
   var s;
-  var i = arguments.length;
-  var r = i < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, o) : n;
+  var r = arguments.length;
+  var i = r < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, o, n);
+    i = Reflect.decorate(e, t, n, o);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
       if (s = e[h]) {
-        r = (i < 3 ? s(r) : i > 3 ? s(t, o, r) : s(t, o)) || r;
+        i = (r < 3 ? s(i) : r > 3 ? s(t, n, i) : s(t, n)) || i;
       }
     }
   }
-  if (i > 3 && r) {
-    Object.defineProperty(t, o, r);
+  if (r > 3 && i) {
+    Object.defineProperty(t, n, i);
   }
-  return r;
+  return i;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -63,27 +63,26 @@ let UiModelAnsControllerComponent = class UiModelAnsControllerComponent extends 
     this.Hwr = new Map();
     this.jwr = new Map();
     this.Wwr = new AnsContextSet();
-    this.Kwr = new AnsContextSet();
   }
   OnInit() {
     this.NeedTick = true;
   }
-  RegisterAnsTrigger(e, t, o) {
-    this.jwr.set(e, new AnsContextTrigger(t, o));
+  RegisterAnsTrigger(e, t, n) {
+    this.jwr.set(e, new AnsContextTrigger(t, n));
   }
   AddAns(e, t) {
-    let o = this.Hwr.get(e);
-    if (!o) {
-      o = new AnsContextSet();
-      this.Hwr.set(e, o);
-    }
-    let n = o.Has(t);
+    let n = this.Hwr.get(e);
     if (!n) {
-      o.Add(t);
-      n = t;
+      n = new AnsContextSet();
+      this.Hwr.set(e, n);
     }
-    this.Qwr(n);
-    n.ExistCount++;
+    let o = n.Has(t);
+    if (!o) {
+      n.Add(t);
+      o = t;
+    }
+    this.LDd(o);
+    o.ExistCount++;
   }
   ReduceAns(e, t) {
     var e = this.Hwr.get(e);
@@ -94,7 +93,7 @@ let UiModelAnsControllerComponent = class UiModelAnsControllerComponent extends 
             Log_1.Log.Error("Character", 43, "Ans不成对,Ans数量为0,无法减少", ["AnsCount", t]);
           }
         } else {
-          this.Qwr(e);
+          this.LDd(e);
           e.ExistCount--;
         }
       } else if (Log_1.Log.CheckError()) {
@@ -104,40 +103,37 @@ let UiModelAnsControllerComponent = class UiModelAnsControllerComponent extends 
       Log_1.Log.Error("Character", 43, "Ans不成对,Set不存在");
     }
   }
-  Qwr(e) {
-    if (!this.Wwr.Has(e) && !this.Kwr.Has(e)) {
-      this.Kwr.Add(e);
+  LDd(e) {
+    if (!this.Wwr.Has(e)) {
+      this.Wwr.Add(e);
       e.CacheCount = e.ExistCount;
     }
   }
   Tick(e) {
     var t = this.Wwr.AnsContextSet;
     if (t.size > 0) {
-      for (const i of t) {
-        var o;
-        var n = i.CacheCount;
-        var s = i.ExistCount;
-        if (n === 0 && s > 0) {
-          if (o = this.jwr.get(i.constructor.name)) {
-            o.OnBegin(i);
+      for (const r of t) {
+        var n;
+        var o = r.CacheCount;
+        var s = r.ExistCount;
+        if (o === 0 && s > 0) {
+          if (n = this.jwr.get(r.constructor.name)) {
+            n.OnBegin(r);
           }
-        } else if (n > 0 && s === 0) {
-          o = i.constructor.name;
-          if (n = this.jwr.get(o)) {
-            n.OnEnd(i);
+        } else if (o > 0 && s === 0) {
+          n = r.constructor.name;
+          if (o = this.jwr.get(n)) {
+            o.OnEnd(r);
           }
-          this.Hwr.get(o)?.Delete(i);
+          this.Hwr.get(n)?.Delete(r);
         }
       }
       this.Wwr.Clear();
     }
-    t = this.Kwr.AnsContextSet;
-    if (t.size > 0) {
-      for (const r of t) {
-        this.Wwr.Add(r);
-      }
-      this.Kwr.Clear();
-    }
+  }
+  GetAnsContextSet(e) {
+    var t = this.Hwr.get(e);
+    return t || (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 43, "获取AnsContextSet失败, Set不存在", ["Type", e]), new AnsContextSet());
   }
 };
 UiModelAnsControllerComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(6)], UiModelAnsControllerComponent);

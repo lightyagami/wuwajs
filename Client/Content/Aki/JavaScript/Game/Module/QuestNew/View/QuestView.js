@@ -40,6 +40,7 @@ const FocusModeToggle_1 = require("./FocusModeToggle");
 const QuestTypeItem_1 = require("./QuestTypeItem");
 const QuestViewButton_1 = require("./QuestViewButton");
 const QuestViewStep_1 = require("./QuestViewStep");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const ALL_QUEST_TYPE = 0;
 const LEVEL_HELP = 49;
 class QuestView extends UiTickViewBase_1.UiTickViewBase {
@@ -423,6 +424,9 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestReview(e.Id);
       }
     };
+    this.ZLd = () => {
+      ControllerHolder_1.ControllerHolder.QuestTreeController.OpenMainView();
+    };
     this.Xno = (e, t) => {
       QuestController_1.QuestNewController.RedDotRequest(e, 0);
       this.kno = e;
@@ -442,8 +446,8 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIScrollViewWithScrollbarComponent], [19, UE.UIItem], [20, UE.UISprite], [21, UE.UIItem], [22, UE.UISprite], [23, UE.UISprite], [24, UE.UIItem], [25, UE.UISprite], [26, UE.UIText], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this._5e], [16, this.tso], [30, this.XJ1]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIScrollViewWithScrollbarComponent], [19, UE.UIItem], [20, UE.UISprite], [21, UE.UIItem], [22, UE.UISprite], [23, UE.UISprite], [24, UE.UIItem], [25, UE.UISprite], [26, UE.UIText], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIButtonComponent], [31, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[0, this._5e], [16, this.tso], [30, this.XJ1], [31, this.ZLd]];
   }
   async OnBeforeStartAsync() {
     this.GetItem(4).SetUIActive(false);
@@ -452,6 +456,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(14).SetUIActive(true);
     this.GetItem(1).SetUIActive(false);
     this.GetItem(17).SetUIActive(false);
+    this.GetButton(31).GetRootComponent().SetUIActive(true);
     this.UiViewSequence.AddSequenceStartEvent("Start", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("ShowView", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("Sle", this.Jno);
@@ -469,6 +474,8 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     await this.AH1.CreateByActorAsync(this.GetItem(29).GetOwner());
     this.AH1.BindToggleCallback(this.PH1, this.xH1);
     this.AH1.Hide();
+    var e = new LogReportDefine_1.QuestViewEnterLogEvent();
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
   OnBeforeDestroy() {
     if (this.Ivt) {

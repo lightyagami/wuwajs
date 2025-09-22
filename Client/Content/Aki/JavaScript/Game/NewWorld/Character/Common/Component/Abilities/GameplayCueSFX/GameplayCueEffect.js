@@ -35,10 +35,12 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     this.SocketTransform = Transform_1.Transform.Create();
     this.TargetTransform = Transform_1.Transform.Create();
     this.EffectTimeScaleType = 0;
-    this.ald = () => {
-      this.SetTargetMeshAndSocket();
-      this.AttachEffect(true);
-      this.hld();
+    this.hmd = t => {
+      if (this.TargetMesh?.GetName() === t) {
+        this.SetTargetMeshAndSocket();
+        this.AttachEffect(true);
+        this.lmd();
+      }
     };
   }
   OnInit() {
@@ -68,7 +70,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
       }
     });
     if (this.y$o()) {
-      this.EffectTimeScaleType = this.uWc();
+      this.EffectTimeScaleType = this.D9u();
       this.CueComp.AddCueEffectToSet(this.EffectViewHandle, this.EffectTimeScaleType);
       this.AttachEffect();
       this.I$o();
@@ -84,21 +86,21 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
           EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", true);
           break;
         case 1:
-          this.H3u();
+          this.kBu();
           EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", false);
           break;
         case 2:
           EffectSystem_1.EffectSystem.FreezeHandle(this.EffectViewHandle, false);
-          this.H3u();
+          this.kBu();
           EffectSystem_1.EffectSystem.StopEffectById(this.EffectViewHandle, "[GameplayCueEffect.OnDestroy]", false);
       }
     }
     if (this.CueConfig.Comp === 2) {
       this.gRa?.RemoveBuffEffect(this.EffectViewHandle);
-      this.hld();
+      this.lmd();
     }
   }
-  H3u() {
+  kBu() {
     var t = this.EntityHandle.Entity?.GetComponent(123);
     if (t && this.EffectTimeScaleType === 0) {
       EffectUtil_1.EffectUtil.ListenForeverTimeScale(this.EffectViewHandle, t);
@@ -144,7 +146,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     if (!this.TargetMesh?.DoesSocketExist(this.TargetSocket)) {
       this.TargetSocket = CharacterNameDefines_1.CharacterNameDefines.ROOT;
       if (this.CueConfig.Comp === 2) {
-        this.lld();
+        this._md();
       }
     }
   }
@@ -216,7 +218,7 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     t.EntityId = this.EntityHandle.Id;
     return t;
   }
-  uWc() {
+  D9u() {
     var t;
     if (this.BuffHandleId > 0 && (t = this.EntityHandle.Entity?.GetComponent(210)?.GetBuffByHandle(this.BuffHandleId)) && t.GetInstigator()?.GetComponent(0)?.IsRole()) {
       return 1;
@@ -224,16 +226,16 @@ class GameplayCueEffect extends GameplayCueMagnitude_1.GameplayCueMagnitude {
       return 0;
     }
   }
-  lld() {
+  _md() {
     var t;
-    if (!this.IsInstant && !!(t = this.EntityHandle.Entity)?.Valid && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.ald)) {
-      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.ald);
+    if (!this.IsInstant && !!(t = this.EntityHandle.Entity)?.Valid && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.hmd)) {
+      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.hmd);
     }
   }
-  hld() {
+  lmd() {
     var t = this.EntityHandle.Entity;
-    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.ald)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.ald);
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.hmd)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharacterWeaponLoaded, this.hmd);
     }
   }
 }

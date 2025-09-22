@@ -76,7 +76,7 @@ class BaseMoveCharacter {
       i.P5n = this.Hte.ActorLocationProxy;
       i.g8n = undefined;
       t.iVn = [i];
-      Net_1.Net.Send(17569, t);
+      Net_1.Net.Send(18020, t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", i.P5n.X], ["Y", i.P5n.Y], ["Z", i.P5n.Z]);
       }
@@ -371,12 +371,12 @@ class BaseMoveCharacter {
     var e = Protocol_1.Aki.Protocol.Yus.create();
     e.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     e.WRs.push(t.CollectPendingMoveInfos());
-    Net_1.Net.Send(23287, e);
+    Net_1.Net.Send(22129, e);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       t = {
         scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
         instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-        msg_id: 23287,
+        msg_id: 22129,
         immediately: true,
         sub_count: e.WRs.length,
         is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -397,7 +397,7 @@ class BaseMoveCharacter {
     t.g8n = this.Hte.ActorRotationProxy;
     var i = Protocol_1.Aki.Protocol.ecs.create();
     i.iVn = [t];
-    Net_1.Net.Send(17569, i);
+    Net_1.Net.Send(18020, i);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.wDe], ["X", t.P5n.X], ["Y", t.P5n.Y], ["Z", t.P5n.Z]);
     }

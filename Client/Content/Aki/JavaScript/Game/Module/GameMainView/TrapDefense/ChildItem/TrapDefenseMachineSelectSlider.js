@@ -10,7 +10,7 @@ const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const UiSequencePlayer_1 = require("../../../../Ui/Base/UiSequencePlayer");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const INTERVAL = 0.025;
+const INTERVAL = 0.0225;
 class TrapDefenseMachineSelectSlider extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -19,30 +19,30 @@ class TrapDefenseMachineSelectSlider extends UiPanelBase_1.UiPanelBase {
     this.LCa = Vector2D_1.Vector2D.Create();
     this.xi1 = Vector2D_1.Vector2D.Create();
     this.Q_t = Vector2D_1.Vector2D.Create();
-    this.dXu = false;
+    this.LKu = false;
     this.Hwt = undefined;
     this.SliderPointerDownNotify = undefined;
     this.SliderValueChangeNotify = undefined;
     this.SliderEndDragNotify = undefined;
-    this.mXu = i => {
+    this.VQu = i => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseBattle", 10, "触屏选择机关", ["Index", i]);
       }
       this.SliderValueChangeNotify?.(i);
     };
-    this.fXu = i => {
+    this.AKu = i => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseBattle", 10, "触屏选择机关按下");
       }
       this.Sequence?.StopSequenceByKey("ClickOut", false, true);
       this.Sequence?.PlaySequence("Click");
       this.Index = Math.floor(this.Hwt.Value);
-      this.dXu = true;
+      this.LKu = true;
       i = i.pointerPosition;
       LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiPosition(i, this.LCa);
       this.SliderPointerDownNotify?.();
     };
-    this.gXu = i => {
+    this.PKu = i => {
       var i = i.pointerPosition;
       LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiPosition(i, this.xi1);
       this.xi1.Subtraction(this.LCa, this.Q_t);
@@ -58,23 +58,23 @@ class TrapDefenseMachineSelectSlider extends UiPanelBase_1.UiPanelBase {
         }
       }
     };
-    this.CXu = i => {
-      if (this.dXu) {
+    this.xKu = i => {
+      if (this.LKu) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("TowerDefenseBattle", 10, "触屏选择机关抬起");
         }
-        this.dXu = false;
+        this.LKu = false;
         this.Sequence?.StopSequenceByKey("Click", false, true);
         this.Sequence?.PlaySequence("ClickOut");
         this.SliderEndDragNotify?.();
       }
     };
-    this.pXu = i => {
-      if (this.dXu) {
+    this.DKu = i => {
+      if (this.LKu) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("TowerDefenseBattle", 10, "触屏选择机关结束拖拽");
         }
-        this.dXu = false;
+        this.LKu = false;
         this.Sequence?.PlaySequence("ClickOut");
         this.SliderEndDragNotify?.();
       }
@@ -86,12 +86,12 @@ class TrapDefenseMachineSelectSlider extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Hwt = this.GetSlider(0);
-    this.Hwt.OnValueChangeCb.Bind(this.mXu);
+    this.Hwt.OnValueChangeCb.Bind(this.VQu);
     var i = this.GetDraggable(1);
-    i.OnPointerDownCallBack.Bind(this.fXu);
-    i.OnPointerDragCallBack.Bind(this.gXu);
-    i.OnPointerUpCallBack.Bind(this.CXu);
-    i.OnPointerEndDragCallBack.Bind(this.pXu);
+    i.OnPointerDownCallBack.Bind(this.AKu);
+    i.OnPointerDragCallBack.Bind(this.PKu);
+    i.OnPointerUpCallBack.Bind(this.xKu);
+    i.OnPointerEndDragCallBack.Bind(this.DKu);
   }
   OnBeforeDestroy() {
     if (this.Sequence) {

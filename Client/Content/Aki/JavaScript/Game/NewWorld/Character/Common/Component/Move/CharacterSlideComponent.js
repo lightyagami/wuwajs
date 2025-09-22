@@ -134,7 +134,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     this.EJr = Vector_1.Vector.Create();
     this.r2n = Vector_1.Vector.Create();
     this.o2n = Vector_1.Vector.Create();
-    this.Ecd = false;
+    this.XEd = false;
     this.hUe = (t, i) => {
       if (i !== CharacterUnifiedStateTypes_1.ECharMoveState.Slide) {
         this.Gce.CharacterMovement.FallingLateralFriction = 0;
@@ -590,7 +590,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     }
     return !TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, t, PROFILE_KEY, PROFILE_KEY) || (TraceElementCommon_1.TraceElementCommon.GetImpactNormal(t.HitResult, 0, this.fHo), this.fHo.AdditionEqual(this.SlideForward), !!this.fHo.Normalize() && GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.fHo) < COMBINE_NORMAL_Z_THRESHOLD);
   }
-  v4u() {
+  E2u() {
     var t = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
     t.WorldContextObject = this.Hte.Actor;
     t.Radius = this.Hte.ScaledRadius;
@@ -720,11 +720,11 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
           if (this.ixn()) {
             this.SlideForward.DeepCopy(this.EJr);
             this.GroundNormal.DeepCopy(this.SlideForward);
-            if (this.Ecd) {
+            if (this.XEd) {
               UE.KuroStaticLibrary.SetBaseAndSaveBaseLocation(this.Hte.Actor.CharacterMovement, this.exn);
             }
             if (this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.NormalSki) {
-              if (!this.v4u()) {
+              if (!this.E2u()) {
                 return;
               }
               i = ModelManager_1.ModelManager.TraceElementModel.GetActorTrace();
@@ -758,7 +758,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
         this.Lie.AddTag(-1697149502);
         this.F8a = true;
         this.N8a = true;
-        this.Ecd = i;
+        this.XEd = i;
         this._Jr = LEAVE_SKI_TIME;
         this.r2n.Reset();
         this.AKa();
@@ -766,7 +766,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     }
   }
   ExitSkiMode(t = true) {
-    if (this.pJr && (this.DKa(), this.Lie.RemoveTag(378770267), this.Lie.RemoveTag(-1697149502), this.pJr = undefined, this.N8a = false, this.Ecd = false, this.F8a = false, this.r2n.Reset(), this.I5r.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ski && (this.IJr() ? (this.Hte?.Actor.KuroSetMovementMode({
+    if (this.pJr && (this.DKa(), this.Lie.RemoveTag(378770267), this.Lie.RemoveTag(-1697149502), this.pJr = undefined, this.N8a = false, this.XEd = false, this.F8a = false, this.r2n.Reset(), this.I5r.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ski && (this.IJr() ? (this.Hte?.Actor.KuroSetMovementMode({
       Mode: 1,
       Context: "[CharacterSlideComponent.ExitSkiMode] Walking"
     }), this.I5r.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Run)) : this.Hte?.Actor.KuroSetMovementMode({
@@ -786,7 +786,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     var t = Protocol_1.Aki.Protocol.Lm_.create();
     t.H8a = Protocol_1.Aki.Protocol.PR_.Proto_None;
     t.j8a = Protocol_1.Aki.Protocol.PR_.Proto_Ski;
-    Net_1.Net.Call(29347, t, t => {
+    Net_1.Net.Call(24841, t, t => {
       if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Movement", 50, "请求切换滑雪模式失败");
@@ -799,7 +799,7 @@ let CharacterSlideComponent = CharacterSlideComponent_1 = class CharacterSlideCo
     var t = Protocol_1.Aki.Protocol.Lm_.create();
     t.H8a = Protocol_1.Aki.Protocol.PR_.Proto_Ski;
     t.j8a = Protocol_1.Aki.Protocol.PR_.Proto_None;
-    Net_1.Net.Call(29347, t, () => {});
+    Net_1.Net.Call(24841, t, () => {});
   }
   LKa() {
     if (this.pJr) {

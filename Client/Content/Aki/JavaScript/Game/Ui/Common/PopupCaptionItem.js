@@ -34,11 +34,12 @@ class PopupCaptionItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
     this.BtnBindInfo = [[3, this.Jvt], [2, this.pcr]];
   }
   SetCloseBtnActive(t) {
     this.GetButton(3).RootUIComp.SetUIActive(t);
+    this.SetHomeBtnShowState(t);
   }
   SetHelpBtnActive(t) {
     this.GetButton(2).RootUIComp.SetUIActive(t);
@@ -54,6 +55,10 @@ class PopupCaptionItem extends UiPanelBase_1.UiPanelBase {
   }
   SetCloseBtnShowState(t) {
     this.GetButton(3).RootUIComp.SetUIActive(t);
+    this.SetHomeBtnShowState(t);
+  }
+  SetHomeBtnShowState(t) {
+    this.GetItem(6).SetUIActive(t);
   }
   SetTitle(t) {
     this.GetText(1).SetText(t);

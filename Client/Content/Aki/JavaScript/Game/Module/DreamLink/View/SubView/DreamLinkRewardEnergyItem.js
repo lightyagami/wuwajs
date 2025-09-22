@@ -14,12 +14,12 @@ class DreamLinkRewardEnergyItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.Data = undefined;
     this.RewardScrollView = undefined;
-    this.cKu = undefined;
+    this.q8u = undefined;
     this.W2e = () => {
       return new ActivitySmallItemGrid_1.ActivitySmallItemGrid();
     };
     this.qOe = () => {
-      this.cKu?.();
+      this.q8u?.();
     };
   }
   OnRegisterComponent() {
@@ -48,7 +48,7 @@ class DreamLinkRewardEnergyItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   SetBtnClickCallback(e) {
-    this.cKu = e;
+    this.q8u = e;
   }
   jqe(e, i) {
     var t = [];

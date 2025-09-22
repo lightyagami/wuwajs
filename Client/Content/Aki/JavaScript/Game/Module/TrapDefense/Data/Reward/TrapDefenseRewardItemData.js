@@ -54,10 +54,10 @@ class TrapDefenseRewardItemData {
     if (this.Lo !== undefined) {
       this.Type = this.Lo.Type;
       this.Desc = this.Lo.Desc;
-      this.v9c();
+      this.o9u();
     }
   }
-  v9c() {
+  o9u() {
     this.ItemList = [];
     var e;
     var t;

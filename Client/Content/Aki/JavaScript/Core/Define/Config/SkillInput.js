@@ -19,6 +19,9 @@ class SkillInput {
   get SkillArray() {
     return GameUtils_1.GameUtils.ConvertToArray(this.skillarrayLength(), this.skillarray, this);
   }
+  get ImageArray() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.imagearrayLength(), this.imagearray, this);
+  }
   get Description() {
     return this.description();
   }
@@ -84,8 +87,27 @@ class SkillInput {
       return null;
     }
   }
+  GetImagearrayAt(t) {
+    return this.imagearray(t);
+  }
+  imagearray(t, i) {
+    var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  imagearrayLength() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   description(t) {
-    var i = this.J7.__offset(this.z7, 10);
+    var i = this.J7.__offset(this.z7, 12);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

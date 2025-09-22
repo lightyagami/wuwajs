@@ -20,11 +20,11 @@ const CommonQteViewBase_1 = require("./CommonQteViewBase");
 class CommonQteLongPressItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.$Zu = undefined;
+    this.$Xu = undefined;
     this.Tyr = undefined;
     this.DOt = undefined;
     this.Qtt = undefined;
-    this._jc = undefined;
+    this.WXu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UISprite]];
@@ -39,29 +39,29 @@ class CommonQteLongPressItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   OnStart() {
-    this.$Zu = this.GetButton(0);
+    this.$Xu = this.GetButton(0);
     this.Tyr = this.GetTexture(1);
     this.DOt = this.GetSprite(2);
     this.Tyr?.SetFillAmount(0);
-    this.$Zu?.OnPointDownCallBack.Bind(() => {
-      this._jc?.OnPress();
+    this.$Xu?.OnPointDownCallBack.Bind(() => {
+      this.WXu?.OnPress();
     });
-    this.$Zu?.OnPointUpCallBack.Bind(() => {
-      this._jc?.OnRelease();
+    this.$Xu?.OnPointUpCallBack.Bind(() => {
+      this.WXu?.OnRelease();
     });
-    this.$Zu?.OnPointCancelCallBack.Bind(() => {
-      this._jc?.OnRelease();
+    this.$Xu?.OnPointCancelCallBack.Bind(() => {
+      this.WXu?.OnRelease();
     });
     this.Qtt?.Hide();
   }
   OnBeforeDestroy() {
-    this.$Zu?.OnPointDownCallBack.Unbind();
-    this.$Zu?.OnPointUpCallBack.Unbind();
-    this.$Zu?.OnPointCancelCallBack.Unbind();
-    this._jc = undefined;
+    this.$Xu?.OnPointDownCallBack.Unbind();
+    this.$Xu?.OnPointUpCallBack.Unbind();
+    this.$Xu?.OnPointCancelCallBack.Unbind();
+    this.WXu = undefined;
   }
   SetQteView(t) {
-    this._jc = t || undefined;
+    this.WXu = t || undefined;
   }
   RefreshAction(t) {
     if (!Info_1.Info.IsInTouch()) {
@@ -87,7 +87,7 @@ class CommonQteLongPressItem extends UiPanelBase_1.UiPanelBase {
 class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
   constructor() {
     super(...arguments);
-    this.ujc = undefined;
+    this.QXu = undefined;
     this.SPe = undefined;
     this.NQa = false;
     this.FQa = "";
@@ -97,7 +97,7 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
       if (t === "Start") {
         if (!this.IsQteEnd) {
           if (!this.IsMobile) {
-            this.ujc?.ShowKeyItem();
+            this.QXu?.ShowKeyItem();
           }
           this.IsQteStart = true;
           this.IsQteInteractive = true;
@@ -124,16 +124,16 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.ujc = new CommonQteLongPressItem();
+    this.QXu = new CommonQteLongPressItem();
     var t = this.GetItem(0);
     if (t) {
-      await this.ujc?.CreateByActorAsync(t.GetOwner());
-      this.ujc.SetQteView(this);
+      await this.QXu?.CreateByActorAsync(t.GetOwner());
+      this.QXu.SetQteView(this);
     }
   }
   OnStart() {
     super.OnStart();
-    this.ujc?.SetUiActive(false);
+    this.QXu?.SetUiActive(false);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(0));
     this.SPe.BindSequenceCloseEvent(this.$xt);
   }
@@ -147,7 +147,7 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
     this.fS1 = undefined;
     this.iIl = -1;
     this.FQa = "";
-    this.ujc?.SetQteView(undefined);
+    this.QXu?.SetQteView(undefined);
   }
   SetQteContext(t) {
     var i;
@@ -155,14 +155,14 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
       this.iIl = t.HandleId;
       if (i = (this.fS1 = t).GetAction()) {
         this.FQa = i;
-        this.ujc?.RefreshAction(i);
+        this.QXu?.RefreshAction(i);
       }
       this.IsQteInteractive = false;
       if (i = t.GetUiConfig()) {
         this.IsQteInteractive = i.InteractiveTiming === 0;
       }
       if (i = t.Resource?.Icon) {
-        this.ujc?.RefreshIcon(i);
+        this.QXu?.RefreshIcon(i);
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "获取Qte图标失败", ["QteId", t.QteId]);
       }
@@ -173,7 +173,7 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
   PlayQteStart() {
     if (this.IsQteActive && !this.IsQteEnd && !this.IsQtePause && this.fS1) {
       this.IsQtePlayStart = true;
-      this.ujc?.SetUiActive(true);
+      this.QXu?.SetUiActive(true);
       this.SPe?.PlayLevelSequenceByName("Start");
       this.HQa();
       ControllerHolder_1.ControllerHolder.CommonQteController.SetExpiredTimer(this.fS1);
@@ -242,7 +242,7 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
   HandleQteEnd() {
     if (!this.IsQteEnd) {
       this.IsQteEnd = true;
-      this.ujc?.HideKeyItem();
+      this.QXu?.HideKeyItem();
       this.SPe?.StopCurrentSequence();
       this.SPe?.PlayLevelSequenceByName("Close");
       this.jQa();
@@ -274,7 +274,7 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
         this.HandleQteEnd();
       } else {
         this.fS1.UpdateTime(t);
-        this.ujc?.RefreshProgress(this.fS1.GetProgress());
+        this.QXu?.RefreshProgress(this.fS1.GetProgress());
         if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
           this.Bfc();
         }
@@ -285,8 +285,8 @@ class CommonQteLongPressView extends CommonQteViewBase_1.CommonQteViewBase {
     var t;
     if (this.fS1 && (t = this.fS1.GetUiConfig())) {
       t = t.UIConfig;
-      this.ujc?.GetRootItem().SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
-      this.ujc?.GetRootItem().SetAnchorOffset(t.AnchorOffset);
+      this.QXu?.GetRootItem().SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
+      this.QXu?.GetRootItem().SetAnchorOffset(t.AnchorOffset);
     }
   }
 }

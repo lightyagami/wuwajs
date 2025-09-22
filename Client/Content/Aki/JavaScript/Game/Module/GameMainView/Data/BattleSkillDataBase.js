@@ -163,6 +163,7 @@ class BattleSkillDataBase {
   IsEnableLongPress() {
     return false;
   }
+  GetFormationData() {}
 }
 exports.BattleSkillDataBase = BattleSkillDataBase;
 //# sourceMappingURL=BattleSkillDataBase.js.map

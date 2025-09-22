@@ -107,14 +107,14 @@ class MowingTowerController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16076, this.vSn);
-    Net_1.Net.Register(22559, this.yLl);
-    Net_1.Net.Register(28497, this.OnMowTowerFirstScoreNotify);
+    Net_1.Net.Register(20873, this.vSn);
+    Net_1.Net.Register(17297, this.yLl);
+    Net_1.Net.Register(28400, this.OnMowTowerFirstScoreNotify);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16076);
-    Net_1.Net.UnRegister(22559);
-    Net_1.Net.UnRegister(28497);
+    Net_1.Net.UnRegister(20873);
+    Net_1.Net.UnRegister(17297);
+    Net_1.Net.UnRegister(28400);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
@@ -199,18 +199,18 @@ class MowingTowerController extends ActivityControllerBase_1.ActivityControllerB
     ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(o, n, 0, 0);
   }
   static RequestSettlement() {
-    Net_1.Net.Call(19033, new Protocol_1.Aki.Protocol.Wg_(), e => {
+    Net_1.Net.Call(18746, new Protocol_1.Aki.Protocol.Wg_(), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23278);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16844);
       }
     });
   }
   static RequestGetMowingTowerLevelReward(o, e, r, t) {
     var n = new Protocol_1.Aki.Protocol.Yg_();
     n.N6n = e;
-    Net_1.Net.Call(22346, n, e => {
+    Net_1.Net.Call(20092, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15153);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22212);
       }
       ModelManager_1.ModelManager.ActivityModel.GetActivityById(o).SetRewardStateClaimed(r, t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMowingTowerReward);

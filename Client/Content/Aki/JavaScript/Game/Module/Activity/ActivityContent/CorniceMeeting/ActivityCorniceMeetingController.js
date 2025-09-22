@@ -39,10 +39,10 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
     return "UiItem_AbnormalData";
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15136, this.vSn);
+    Net_1.Net.Register(19751, this.vSn);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15136);
+    Net_1.Net.UnRegister(19751);
   }
   OnCreateSubPageComponent(e) {
     return new ActivitySubViewCorniceMeeting_1.ActivitySubViewCorniceMeeting();
@@ -61,9 +61,9 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
     var e = new Protocol_1.Aki.Protocol.ym_();
     e._ps = t;
     e.t8n = r;
-    Net_1.Net.Call(17119, e, e => {
+    Net_1.Net.Call(29859, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17119);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29859);
       } else {
         this.GetCurrentActivityData().UpdateRewarded(t, r);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
@@ -74,9 +74,9 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
   static CorniceMeetingChallengeTransRequest(e) {
     var t = new Protocol_1.Aki.Protocol.Cf_();
     t._ps = e;
-    Net_1.Net.Call(19212, t, e => {
+    Net_1.Net.Call(18498, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19212);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18498);
       }
     });
   }

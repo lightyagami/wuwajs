@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.KscRemoveContext = exports.KscEntityRemoveReason = exports.landFireRemoveReason = undefined;
+exports.KscRemoveContext = exports.kscEntityRemoveReasonList = exports.KscEntityRemoveReason = exports.landFireRemoveReason = undefined;
 const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../Core/Utils/Math/Vector");
 exports.landFireRemoveReason = FNameUtil_1.FNameUtil.GetDynamicFName("LandFireRemove");
@@ -13,6 +13,9 @@ KscEntityRemoveReason.WorldKill = FNameUtil_1.FNameUtil.GetDynamicFName("WorldKi
 KscEntityRemoveReason.Arrival = FNameUtil_1.FNameUtil.GetDynamicFName("Arrival");
 KscEntityRemoveReason.Coin = FNameUtil_1.FNameUtil.GetDynamicFName("Coin");
 KscEntityRemoveReason.LandFire = exports.landFireRemoveReason;
+KscEntityRemoveReason.CombatDirty = FNameUtil_1.FNameUtil.GetDynamicFName("CombatDirty");
+KscEntityRemoveReason.Destroy = FNameUtil_1.FNameUtil.GetDynamicFName("Destroy");
+exports.kscEntityRemoveReasonList = [KscEntityRemoveReason.Dead, KscEntityRemoveReason.WorldKill, KscEntityRemoveReason.Coin, KscEntityRemoveReason.CombatDirty, KscEntityRemoveReason.Destroy];
 class KscRemoveContext {
   constructor() {
     this.CreatureDataId = 0;

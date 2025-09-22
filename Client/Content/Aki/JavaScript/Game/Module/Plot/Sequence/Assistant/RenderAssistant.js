@@ -103,10 +103,10 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   CheckSeqStreamingData() {
     let t = true;
     if (SequenceDefine_1.SequenceRenderSettings.GetTexureStreamingEnable(GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 2)) {
-      var i = this.Model.SequenceData;
-      for (let e = 0; e < i.剧情资源.Num(); e++) {
-        var a = i.剧情资源.Get(e);
-        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, true)) {
+      var a = this.Model.SequenceData;
+      for (let e = 0; e < a.剧情资源.Num(); e++) {
+        var i = a.剧情资源.Get(e);
+        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, true)) {
           t = false;
         }
       }
@@ -127,8 +127,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (SequenceDefine_1.SequenceRenderSettings.GetTexureStreamingEnable(GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 2)) {
       var t = this.Model.SequenceData;
       for (let e = 0; e < t.剧情资源.Num(); e++) {
-        var i = t.剧情资源.Get(e);
-        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, false);
+        var a = t.剧情资源.Get(e);
+        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, false);
       }
       if (this.Model.SequenceData.NeedSwitchMainCharacter && this.Model.MainSeqCharacterMesh) {
         UE.KuroMeshTextureFunctionLibrary.HandleSkeletalMeshComponentStreaming(this.Model.MainSeqCharacterMesh, false);
@@ -152,6 +152,10 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       }
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlurQuality 0");
     }
+  }
+  CmdShadowUpdate() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.CacheMode3CacheUpdateIntervalsOverride 0,0,0");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.CSMMode3EnableUpdateIntervalOverride 1");
   }
 }
 exports.RenderAssistant = RenderAssistant;

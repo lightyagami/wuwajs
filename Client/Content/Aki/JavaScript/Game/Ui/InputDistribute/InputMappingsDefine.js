@@ -153,7 +153,8 @@ exports.actionMappings = {
   QTE方向左: "qte方向左",
   QTE方向右: "qte方向右",
   QTE分体选项1_左: "QTE分体选项1-左",
-  QTE分体选项2_右: "QTE分体选项2-右"
+  QTE分体选项2_右: "QTE分体选项2-右",
+  QTE_R2攻击: "QTE-R2攻击"
 };
 exports.axisMappings = {
   LookUp: "LookUp",

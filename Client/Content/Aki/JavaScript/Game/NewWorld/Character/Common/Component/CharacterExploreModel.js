@@ -65,7 +65,6 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
   }
   SetExploreSkillId(e, t = 0) {
     this.$Ac(e, t);
-    return !!this.ExistHigherLayerSkill(t);
   }
   ResetExplodeSkillId(e = 0) {
     this.$Ac(0, e);
@@ -73,13 +72,16 @@ class CharacterExploreModel extends ModelBase_1.ModelBase {
   ExistAutoLayerSkill() {
     return this.FAc[2] !== 0;
   }
-  ExistHigherLayerSkill(t) {
+  CheckNeedChangeSkill(e, t) {
+    if (this.FAc[t] === e || this.VAc === e) {
+      return false;
+    }
     for (let e = t + 1; e < 3; e++) {
       if (this.FAc[e] !== 0) {
-        return true;
+        return false;
       }
     }
-    return false;
+    return true;
   }
 }
 exports.CharacterExploreModel = CharacterExploreModel;

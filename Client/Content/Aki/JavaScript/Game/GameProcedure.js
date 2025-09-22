@@ -29,6 +29,9 @@ class GameProcedure {
     Stats_1.Stat.CreateInstantStat("GameProcedure_OnStart:Start");
     ResourceSystem_1.ResourceSystem.SetLoadModeInLoading(GlobalData_1.GlobalData.World, "GameProcedure.OnStart");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "kuro.MaxTimeForFinishDestroy 7257600");
+    if (Info_1.Info.IsPlayInEditor) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "s.KuroSkipMissingPackageEnabled 0");
+    }
     var r = (await this.m2a(Promise.resolve().then(() => require("../Core/Tick/TickSystem")), "TickSystem")).TickSystem;
     r.Initialize(e);
     TickProcessSystem_1.TickProcessSystem.Initialize();

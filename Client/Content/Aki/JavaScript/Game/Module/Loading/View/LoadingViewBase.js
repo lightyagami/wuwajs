@@ -14,7 +14,6 @@ const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
-const InputManager_1 = require("../../../Ui/Input/InputManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const BackToGameDefine_1 = require("../../Login/BackToGameDefine");
 const LoadingShowData_1 = require("../Data/LoadingShowData");
@@ -22,7 +21,7 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.Uvi = 0;
-    this.zJc = 0;
+    this.ttd = 0;
     this.ShowData = undefined;
     this.wvi = false;
     this.fla = undefined;
@@ -38,9 +37,6 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelSequencePlayerBandStateChange, this.eu1);
-  }
-  OnStartImplementImplement() {
-    InputManager_1.InputManager.SetShowCursor(true);
   }
   PPc() {
     this.ShowData = new LoadingShowData_1.LoadingShowData();
@@ -88,7 +84,7 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
   }
   OnTick(e) {
     e /= TimeUtil_1.TimeUtil.InverseMillisecond;
-    this.zJc += e;
+    this.ttd += e;
     this.kvi(e);
     this.Uvi += e;
     if (this.Uvi >= ModelManager_1.ModelManager.LoadingModel.TipTime) {
@@ -116,7 +112,7 @@ class LoadingViewBase extends UiTickViewBase_1.UiTickViewBase {
         }
       }
       e = this.ShowData.GetDuringTime();
-      if (!this.wvi && t <= a && this.zJc >= e) {
+      if (!this.wvi && t <= a && this.ttd >= e) {
         this.wvi = true;
         UiManager_1.UiManager.CloseView(this.Info.Name);
         this.fla?.Close();

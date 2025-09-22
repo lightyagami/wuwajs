@@ -17,6 +17,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
+const UiInteractLogReport_1 = require("../../../../Ui/LogReport/UiInteractLogReport");
 const UiLayer_1 = require("../../../../Ui/UiLayer");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const CommonItemSelectView_1 = require("../../../Common/CommonItemSelectView");
@@ -29,6 +30,8 @@ const SelectableComponent_1 = require("../../../Common/PropItem/SelectablePropIt
 const SelectableExpData_1 = require("../../../Common/PropItem/SelectablePropItem/SelectableExpData");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../../Item/Data/ItemDefines");
+const ItemHintDefines_1 = require("../../../ItemHint/Data/ItemHintDefines");
+const ItemHintViewNew_1 = require("../../../ItemHint/Views/ItemHintViewNew");
 const RoleLevelUpSuccessController_1 = require("../../../RoleUi/RoleLevel/RoleLevelUpSuccessController");
 const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsController");
 const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
@@ -94,72 +97,39 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       this.Aji();
     };
     this.sBu = () => {
-      this.TZu();
+      this.hjc();
     };
-    this.TZu = async () => {
-      if (this.aBu() && this.hBu() && (await this.Lji()) && (await this.lBu())) {
+    this.hjc = async () => {
+      if (this.aBu() && this.hBu() && (await this.lBu())) {
         this.Dji();
       }
     };
     this.Dji = () => {
-      const i = new Array();
-      const o = new Map();
-      this.fji.forEach(e => {
-        var t = new Protocol_1.Aki.Protocol.Y5s();
-        t.m9n = e.SelectedCount;
-        t.w5n = e.IncId;
-        t.L8n = e.ItemId;
-        i.push(t);
-        var t = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(e.IncId);
-        if (t) {
-          e = t.GetIdentifyBackItem();
-          this.Rji(e, o);
-        }
-      });
-      if (this.tBu > 0) {
-        t = (e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi)).GetCurrentIdentifyCostId();
-        r = o.get(t);
-        e = e.GetCurrentIdentifyCostValue();
-        e = this.tBu * e;
-        if (r && e < r) {
-          o.set(t, r - e);
-        } else {
-          o.delete(t);
-        }
-      }
-      var e;
-      var t;
-      var r = this.vji.GetOverExp();
-      if (r > 0) {
-        e = ModelManager_1.ModelManager.PhantomBattleModel.CalculateExpBackItem(r);
-        this.Rji(e, o);
-      }
-      const s = () => {
-        var e;
-        if (o.size > 0) {
-          (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(24)).ItemIdMap = o;
-          e.FunctionMap.set(2, () => {
-            ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomLevelUpRequest(this.qHi, i, this.tBu);
-          });
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
-        } else {
-          ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomLevelUpRequest(this.qHi, i, this.tBu);
+      const e = new Array();
+      const t = new Map();
+      this.T_d(e, t);
+      this.b_d(t);
+      this.R_d(t);
+      const i = () => {
+        if (!this.w_d(e, t)) {
+          ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomLevelUpRequest(this.qHi, e, this.tBu);
         }
       };
-      let n = false;
-      for (const h of i) {
-        if (h.w5n > 0 && ModelManager_1.ModelManager.VisionEquipGroupModel.CheckVisionListIfInGroup([h.w5n])) {
-          n = true;
+      let r = false;
+      for (const n of e) {
+        if (n.w5n > 0 && ModelManager_1.ModelManager.VisionEquipGroupModel.CheckVisionListIfInGroup([n.w5n])) {
+          r = true;
           break;
         }
       }
-      if (n) {
-        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(247)).FunctionMap.set(2, () => {
-          s();
+      var o;
+      if (r) {
+        (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(247)).FunctionMap.set(2, () => {
+          i();
         });
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
       } else {
-        s();
+        i();
       }
     };
     this.Uji = () => {
@@ -169,12 +139,12 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     this.Pji = () => {
       var t = ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityList()[this.Mji].Id;
       var i = ModelManager_1.ModelManager.PhantomBattleModel;
-      var o = i.GetVisionLevelUpMaterialUseType();
-      var t = i.GetSortedExpMaterialList(this.qHi, t, o === 0);
+      var r = i.GetVisionLevelUpMaterialUseType();
+      var t = i.GetSortedExpMaterialList(this.qHi, t, r === 0);
       if (t.length === 0) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("RoleNoMaterial");
       } else {
-        const n = new Array();
+        const s = new Array();
         t.forEach(e => {
           e = {
             IncId: e.GetUniqueId(),
@@ -182,20 +152,20 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
             Count: e.GetCount(),
             SelectedCount: 0
           };
-          n.push(e);
+          s.push(e);
         });
-        o = i.GetVisionLevelUpMaterialPutInMode() === 1;
+        r = i.GetVisionLevelUpMaterialPutInMode() === 1;
         let e = 0;
-        if (o) {
+        if (r) {
           var t = CommonParamById_1.configCommonParamById.GetIntArrayConfig("VisionLevelStageList");
-          var r = this.vji.GetCurrentLevel();
-          var s = this.vji.GetCurrentMaxLevel();
-          for (const h of t) {
-            if (h > s) {
+          var o = this.vji.GetCurrentLevel();
+          var n = this.vji.GetCurrentMaxLevel();
+          for (const a of t) {
+            if (a > n) {
               break;
             }
-            if (h > r) {
-              e = this.vji.GetExpDistanceToLevel(h);
+            if (a > o) {
+              e = this.vji.GetExpDistanceToLevel(a);
               break;
             }
           }
@@ -204,11 +174,11 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
         }
         i = ModelManager_1.ModelManager.WeaponModel;
         t = this.Cji.GetMaxCount();
-        if (o && !i.CheckSatisfyExp(e, t, n, this.xji)) {
+        if (r && !i.CheckSatisfyExp(e, t, s, this.xji)) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_EchoMaterialLack_Text");
         }
-        o = i.AutoAddExpItem(e, t, n, this.xji);
-        this.fji = o;
+        r = i.AutoAddExpItem(e, t, s, this.xji);
+        this.fji = r;
         this.Aji();
       }
     };
@@ -225,23 +195,23 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     };
     this.bji = (e, t) => {
       var i = new CommonItemSelectView_1.CommonItemSelectViewOpenViewData();
-      var o = ModelManager_1.ModelManager.PhantomBattleModel.GetExpMaterialList(this.qHi);
-      var r = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi);
-      var s = new CommonIntensifyPropExpData_1.CommonIntensifyPropExpData();
-      s.CurrentExp = r.GetExp();
-      s.CurrentLevel = r.GetPhantomLevel();
-      s.CurrentMaxLevel = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.qHi);
-      s.MaxExpFunction = this.qji;
-      s.GetItemExpFunction = this.xji;
-      var r = this.fji;
-      i.ItemDataBaseList = o;
-      i.SelectedDataList = r;
+      var r = ModelManager_1.ModelManager.PhantomBattleModel.GetExpMaterialList(this.qHi);
+      var o = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi);
+      var n = new CommonIntensifyPropExpData_1.CommonIntensifyPropExpData();
+      n.CurrentExp = o.GetExp();
+      n.CurrentLevel = o.GetPhantomLevel();
+      n.CurrentMaxLevel = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.qHi);
+      n.MaxExpFunction = this.qji;
+      n.GetItemExpFunction = this.xji;
+      var o = this.fji;
+      i.ItemDataBaseList = r;
+      i.SelectedDataList = o;
       i.UseWayId = 26;
-      i.ExpData = s;
-      var o = new SelectableComponent_1.SelectableComponentData();
-      o.IsSingleSelected = false;
-      o.MaxSelectedGridNum = this.Cji.GetMaxCount();
-      (i.SelectableComponentData = o).OnChangeSelectedFunction = this.AMt;
+      i.ExpData = n;
+      var r = new SelectableComponent_1.SelectableComponentData();
+      r.IsSingleSelected = false;
+      r.MaxSelectedGridNum = this.Cji.GetMaxCount();
+      (i.SelectableComponentData = r).OnChangeSelectedFunction = this.AMt;
       UiManager_1.UiManager.OpenView("CommonItemSelectViewRight", i);
     };
     this.qji = e => {
@@ -278,9 +248,9 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       this.ebt?.SetSelected(false, true);
       var t = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi).GetCurrentIdentifyCostId();
       var i = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(t);
-      let o = 0;
-      if ((o = i.length > 0 ? i[0].GetUniqueId() : o) !== undefined && o > 0) {
-        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(o, t);
+      let r = 0;
+      if ((r = i.length > 0 ? i[0].GetUniqueId() : r) !== undefined && r > 0) {
+        ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemUid(r, t);
       } else {
         ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t);
       }
@@ -376,8 +346,30 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
           UiModelUtil_1.UiModelUtil.SetRenderingMaterial(e, "VisionStepupController");
         }
         var e = ModelManager_1.ModelManager.PhantomBattleModel.GetLevelUpSuccessData(this.qHi);
+        e.ClickFunction = () => {
+          UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(5);
+          this.L_d();
+        };
         RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(e);
+        var e = new ItemHintViewNew_1.ItemHintViewNewData();
+        e.CheckPriorNext = () => ModelManager_1.ModelManager.PhantomBattleModel.GetTempSaveItemList().length > 0;
+        e.ShiftPriorItem = () => {
+          var e = ModelManager_1.ModelManager.PhantomBattleModel.ShiftTempSaveItemList();
+          var t = new ItemHintDefines_1.ItemRewardInfo();
+          t.ItemId = e[0].ItemId;
+          t.ItemCount = e[1];
+          var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e[0].ItemId);
+          t.Quality = e.QualityId;
+          return t;
+        };
+        e.TitleTextId = "Text_ItemReturnTitle_Text";
+        UiManager_1.UiManager.OpenView("ItemHintViewNew", e);
       }, i);
+    }
+  }
+  L_d() {
+    if (UiManager_1.UiManager.IsViewOpen("ItemHintViewNew")) {
+      UiManager_1.UiManager.CloseView("ItemHintViewNew");
     }
   }
   Gau() {
@@ -491,62 +483,129 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     }
     return e.Promise;
   }
-  async Lji() {
-    const e = new CustomPromise_1.CustomPromise();
-    let t = false;
+  T_d(i, r) {
+    this.fji.forEach(e => {
+      var t = new Protocol_1.Aki.Protocol.Y5s();
+      t.m9n = e.SelectedCount;
+      t.w5n = e.IncId;
+      t.L8n = e.ItemId;
+      i.push(t);
+      var t = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(e.IncId);
+      if (t) {
+        e = t.GetIdentifyBackItem();
+        this.Rji(e, r);
+      }
+    });
+  }
+  b_d(e) {
+    var t;
+    var i;
+    var r;
+    if (this.tBu > 0) {
+      t = (r = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi)).GetCurrentIdentifyCostId();
+      i = e.get(t);
+      r = r.GetCurrentIdentifyCostValue();
+      r = this.tBu * r;
+      if (i && r < i) {
+        e.set(t, i - r);
+      } else {
+        e.delete(t);
+      }
+    }
+  }
+  R_d(e) {
+    var t = this.vji.GetOverExp();
+    if (t > 0) {
+      t = ModelManager_1.ModelManager.PhantomBattleModel.CalculateExpBackItem(t);
+      this.Rji(t, e);
+    }
+  }
+  w_d(e, t) {
+    if (ModelManager_1.ModelManager.PhantomBattleModel.LevelUpConfirmTipsNotShow) {
+      return false;
+    }
     let i = false;
+    let r = false;
     let o = false;
-    for (const a of this.fji) {
-      var r = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(a.IncId);
-      if (r && (!t && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighQuality(r) && (t = true), !i && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighLevel(r) && (i = true), !o) && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighRare(r)) {
+    for (const _ of this.fji) {
+      var n = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(_.IncId);
+      if (n && (!i && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighQuality(n) && (i = true), !r && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighLevel(n) && (r = true), !o) && ModelManager_1.ModelManager.PhantomBattleModel.IsVisionHighRare(n)) {
         o = true;
       }
     }
-    let s = undefined;
-    var n;
-    var h = [];
-    if (t) {
-      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighQuality");
-      h.push(n);
-    }
+    var s = [];
     if (i) {
-      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighLevel");
-      h.push(n);
+      a = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighQuality");
+      s.push(a);
+    }
+    if (r) {
+      a = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighLevel");
+      s.push(a);
     }
     if (o) {
-      n = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighRare");
-      h.push(n);
+      a = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionHighRare");
+      s.push(a);
     }
-    switch (h.length) {
+    var a = t.size > 0;
+    var h = s.length > 0;
+    let l = undefined;
+    if (a && h) {
+      l = this.P_d(s, t);
+    } else if (a) {
+      l = this.A_d(t);
+    } else if (h) {
+      l = this.D_d(s);
+    }
+    return !!l && (l.HasToggle = true, l.ToggleText = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_PhantomLevelUpTips_Text"), l.SetToggleFunction(e => {
+      ModelManager_1.ModelManager.PhantomBattleModel.LevelUpConfirmTipsNotShow = e;
+    }), l.FunctionMap.set(2, () => {
+      ControllerHolder_1.ControllerHolder.PhantomBattleController.SendPhantomLevelUpRequest(this.qHi, e, this.tBu);
+    }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(l), true);
+  }
+  D_d(e) {
+    let t = undefined;
+    switch (e.length) {
       case 1:
-        s = 127;
+        t = 127;
         break;
       case 2:
-        s = 126;
+        t = 126;
         break;
       case 3:
-        s = 125;
+        t = 125;
     }
-    if (s) {
-      (n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(s)).SetTextArgs(...h);
-      n.FunctionMap.set(2, () => {
-        e.SetResult(true);
-      });
-      n.FunctionMap.set(1, () => {
-        e.SetResult(false);
-      });
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
-    } else {
-      e.SetResult(true);
-    }
-    return e.Promise;
+    var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(t);
+    i.SetTextArgs(...e);
+    return i;
   }
-  Rji(e, o) {
+  A_d(e) {
+    var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(24);
+    t.ItemIdMap = e;
+    return t;
+  }
+  P_d(e, t) {
+    let i = undefined;
+    switch (e.length) {
+      case 1:
+        i = 354;
+        break;
+      case 2:
+        i = 355;
+        break;
+      case 3:
+        i = 356;
+    }
+    var r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(i);
+    r.SetTextArgs(...e);
+    r.ItemIdMap = t;
+    return r;
+  }
+  Rji(e, r) {
     e.forEach((e, t) => {
-      let i = o.get(t);
+      let i = r.get(t);
       i = i || 0;
       i += e;
-      o.set(t, i);
+      r.set(t, i);
     });
   }
   Aji() {
@@ -555,10 +614,10 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     if (this.fji) {
       for (let e = 0; e < this.fji.length; e++) {
         var i = this.fji[e];
-        var o = this.pji[e];
-        o[0].IncId = i.IncId;
-        o[0].ItemId = i.ItemId;
-        o[1] = i.SelectedCount;
+        var r = this.pji[e];
+        r[0].IncId = i.IncId;
+        r[0].ItemId = i.ItemId;
+        r[1] = i.SelectedCount;
         t += this.xji(i) * i.SelectedCount;
       }
     }
@@ -582,6 +641,7 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
     this.dSe();
     this.bHi.Destroy();
     this.BHi.Destroy();
+    this.L_d();
     if (this.Ndl) {
       UiLayer_1.UiLayer.SetShowMaskLayer("PhantomLevelUp", false);
     }
@@ -595,12 +655,12 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       this.mBu(t, e);
     }
   }
-  mBu(o, r) {
+  mBu(r, o) {
     this.tBu = 0;
     this.rBu = undefined;
-    if (r) {
-      for (const a of o.GetLevelSubPropPreviewData(o.GetPhantomLevel(), o.GetPhantomLevel() + this.gji)) {
-        if (a.SlotState === 2 || a.SlotState === 1) {
+    if (o) {
+      for (const h of r.GetLevelSubPropPreviewData(r.GetPhantomLevel(), r.GetPhantomLevel() + this.gji)) {
+        if (h.SlotState === 2 || h.SlotState === 1) {
           this.tBu += 1;
         }
       }
@@ -609,22 +669,22 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
         this.ebt.Initialize(this.GetItem(10).GetOwner());
         this.ebt.BindOnExtendToggleStateChanged(this.wYt);
       }
-      const h = o.GetCurrentIdentifyCostId();
-      var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(h);
-      var r = {
+      const a = r.GetCurrentIdentifyCostId();
+      var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(a);
+      var o = {
         Type: 4,
-        ItemConfigId: h,
-        StarLevel: r.QualityId
+        ItemConfigId: a,
+        StarLevel: o.QualityId
       };
-      var s = o.GetCurrentIdentifyCostValue();
-      var n = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(h);
+      var n = r.GetCurrentIdentifyCostValue();
+      var s = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(a);
       let e = 0;
-      if (n.length > 0) {
-        e = n[0].GetCount();
+      if (s.length > 0) {
+        e = s[0].GetCount();
       }
       let i = 0;
       if (this.tBu > 0) {
-        i = s * this.tBu;
+        i = n * this.tBu;
         const l = new Map();
         this.fji.forEach(e => {
           var e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(e.IncId);
@@ -633,20 +693,20 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
             this.Rji(e, l);
           }
         });
-        const h = o.GetCurrentIdentifyCostId();
-        n = l.get(h);
+        const a = r.GetCurrentIdentifyCostId();
+        s = l.get(a);
         let t = e;
-        if (n) {
-          i = Math.max(0, i - n);
-          t += n;
+        if (s) {
+          i = Math.max(0, i - s);
+          t += s;
         }
-        if (t < s) {
+        if (t < n) {
           this.rBu = 332;
-        } else if (t < this.tBu * s) {
+        } else if (t < this.tBu * n) {
           this.rBu = 333;
         }
         for (let e = this.tBu; e >= 0; e--) {
-          if (t >= e * s) {
+          if (t >= e * n) {
             this.tBu = e;
             break;
           }
@@ -654,11 +714,11 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
       }
       let t = undefined;
       t = e >= i ? "Text_CollectProgress_Text" : "Text_ItemCostNotEnough_Text";
-      r.BottomText = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t), e.toString(), i.toString());
-      this.ebt?.Apply(r);
-      o = this.fBu() * this.tBu;
-      n = this.Cji.GetCurrentCostCount();
-      this.Cji.UpdateComponent(ItemDefines_1.EItemId.Gold, o + n, this.pji);
+      o.BottomText = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t), e.toString(), i.toString());
+      this.ebt?.Apply(o);
+      r = this.fBu() * this.tBu;
+      s = this.Cji.GetCurrentCostCount();
+      this.Cji.UpdateComponent(ItemDefines_1.EItemId.Gold, r + s, this.pji);
     }
   }
   fBu() {
@@ -670,58 +730,58 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
   }
   gBu(e, t) {
     var i = e.GetPhantomLevel();
-    var o = i === ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.qHi);
-    let r = false;
-    var s = e.GetLevelSubPropData(i);
-    for (const l of s) {
+    var r = i === ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.qHi);
+    let o = false;
+    var n = e.GetLevelSubPropData(i);
+    for (const l of n) {
       if (l.SlotState === 1) {
-        r = true;
+        o = true;
         break;
       }
     }
-    let n = true;
-    for (const _ of s) {
+    let s = true;
+    for (const _ of n) {
       if (_.SlotState !== 3) {
-        n = false;
+        s = false;
         break;
       }
     }
-    let h = false;
+    let a = false;
     for (const m of e.GetLevelSubPropPreviewData(i, i + this.gji)) {
       if (m.SlotState === 2) {
-        h = true;
+        a = true;
         break;
       }
     }
-    s = this.fji.length > 0;
-    let a = 0;
+    n = this.fji.length > 0;
+    let h = 0;
     for (const C of [{
-      Condition: t && r && !s,
+      Condition: t && o && !n,
       State: 1
     }, {
-      Condition: t && r && s,
+      Condition: t && o && n,
       State: 2
     }, {
-      Condition: t && !r && h,
+      Condition: t && !o && a,
       State: 2
     }, {
-      Condition: t && o && r,
+      Condition: t && r && o,
       State: 3
     }, {
-      Condition: t && o && n,
+      Condition: t && r && s,
       State: 5
     }, {
-      Condition: !t && o,
+      Condition: !t && r,
       State: 4
     }]) {
       if (C.Condition) {
-        a = C.State;
+        h = C.State;
       }
     }
-    return a;
+    return h;
   }
   uBu(e, t, i) {
-    var o = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi);
+    var r = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetPhantomItemDataByUniqueId(this.qHi);
     var e = {
       LevelUp: {
         CostRoot: !e,
@@ -744,7 +804,7 @@ class VisionLevelUpView extends UiTabViewBase_1.UiTabViewBase {
         MaxLevelTipsTextEnable: !t
       }
     };
-    var t = this.cBu(o) ? e.LevelUpIdentify : e.LevelUp;
+    var t = this.cBu(r) ? e.LevelUpIdentify : e.LevelUp;
     this.Cji?.SetCostRootItemState(t.CostRoot);
     this.Cji?.SetStrengthItemEnable(t.StrengthEnable);
     this.Cji?.SetMaxItemEnable(t.MaxEnable);

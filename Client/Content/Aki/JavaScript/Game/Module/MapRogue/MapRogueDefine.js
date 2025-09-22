@@ -91,8 +91,8 @@ class MapGridData {
     this.RewardItemIdList = t.JI1;
     this.ConditionInfo = t.ZI1;
     this.ToleranceLv = t.zxu;
-    this.SkipBattleLv = t.Vju;
-    this.CanSkipBattle = t.Fju;
+    this.SkipBattleLv = t.oZu;
+    this.CanSkipBattle = t.rZu;
     t = ConfigManager_1.ConfigManager.MapRogueConfig.GetGridEventConfigById(this.GridEventId);
     this.EventType = t?.EventType ?? -1;
     this.GridEventType = t?.ShowType ?? 0;
@@ -150,7 +150,7 @@ class MapRogueGameInfo {
     this.IsEnd = false;
     this.EnterBattleFlag = false;
     this.eUu = false;
-    this.iZu = false;
+    this.hZu = false;
     this.IsSkipBattle = false;
     this.NotTipsInactiveLink = false;
     this.MapScale = 1;
@@ -246,9 +246,9 @@ class MapRogueGameInfo {
     this.IsEnd = false;
     this.Z71();
     this.e91();
-    this.MapScale = this.rZu();
+    this.MapScale = this.lZu();
   }
-  rZu() {
+  lZu() {
     var t;
     var i = ConfigManager_1.ConfigManager.MapRogueConfig.GetInsGridConfigByInstId(this.InstanceId);
     if (i) {
@@ -258,13 +258,13 @@ class MapRogueGameInfo {
       return 1;
     }
   }
-  oZu() {
+  _Zu() {
     var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RogueResMapScale) ?? new Map();
     t.set(this.InstanceId, this.MapScale);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RogueResMapScale, t);
   }
   Clear() {
-    this.oZu();
+    this._Zu();
     this.CurHoverIndex = -1;
     this.CurSelectedIndex = -1;
     this.KGc = 0;
@@ -661,7 +661,7 @@ class MapRogueGameInfo {
       e();
     };
     if (this.eUu || this.IsOverEventRecommendLv(this.CurSelectedIndex)) {
-      if (!this.iZu && this.IsGridCanSkipBattle(this.CurSelectedIndex)) {
+      if (!this.hZu && this.IsGridCanSkipBattle(this.CurSelectedIndex)) {
         (s = new ConfirmBoxDefine_1.ConfirmBoxDataNew(349)).HasToggle = true;
         s.ToggleTextKey = "RogueRes_FightSweepConfirm_Hint";
         s.IsEscViewTriggerCallBack = false;
@@ -669,7 +669,7 @@ class MapRogueGameInfo {
         s.FunctionMap.set(1, h);
         s.FunctionMap.set(2, r);
         s.SetToggleFunction(t => {
-          this.iZu = t;
+          this.hZu = t;
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(s);
       } else {

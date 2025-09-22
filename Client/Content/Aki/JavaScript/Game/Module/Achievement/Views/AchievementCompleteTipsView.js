@@ -7,6 +7,8 @@ exports.AchievementCompleteTipsView = undefined;
 const UE = require("ue");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
@@ -21,9 +23,19 @@ class AchievementCompleteTipsView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.zbe = () => new AchievementCompleteTipsStarItem_1.AchievementCompleteTipsStarItem();
+    this.ZDe = () => {
+      ModelManager_1.ModelManager.AchievementModel.CurrentFinishAchievementArray.push(this.OpenParam.GetId());
+      this.CloseMe();
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIHorizontalLayout], [3, UE.UIItem]];
+  }
+  OnAddEventListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisActiveBattleView, this.ZDe);
+  }
+  OnRemoveEventListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DisActiveBattleView, this.ZDe);
   }
   OnStart() {
     var e;

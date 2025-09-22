@@ -14,21 +14,21 @@ const BattleChildViewPanel_1 = require("../../../BattleUi/Views/BattleChildViewP
 class TrapDefenseCampsiteHpPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
-    this.xXu = false;
+    this.dJu = false;
     this.Sequence = undefined;
     this.vK1 = e => {
       if (e === "WarnOut") {
         this.GetItem(8)?.SetUIActive(false);
       } else if (e === "Hit" || e === "Treatment") {
-        this.BXu(0);
+        this.UXu(0);
       }
     };
-    this.UXu = (e, t) => {
+    this.q7u = (e, t) => {
       var i;
       var s = this.GetArtText(6);
       if (!e && t) {
         s.SetText(MathUtils_1.MathUtils.LongToNumber(t.oTs).toString());
-        this.BXu(0);
+        this.UXu(0);
       } else if (e && t) {
         e = MathUtils_1.MathUtils.LongToNumber(e.oTs);
         t = MathUtils_1.MathUtils.LongToNumber(t.oTs);
@@ -36,10 +36,10 @@ class TrapDefenseCampsiteHpPanel extends BattleChildViewPanel_1.BattleChildViewP
         s.SetText(MathUtils_1.MathUtils.LongToNumber(t).toString());
         if (e < t) {
           i.SetText("+" + (t - e).toString());
-          this.BXu(1);
+          this.UXu(1);
         } else if (t < e) {
           i.SetText((t - e).toString());
-          this.BXu(2);
+          this.UXu(2);
         }
       }
     };
@@ -50,14 +50,14 @@ class TrapDefenseCampsiteHpPanel extends BattleChildViewPanel_1.BattleChildViewP
   InitializeTemp() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Sequence.BindOnEndSequenceEvent(this.vK1);
-    this.BXu(0);
-    this.kXu(this.xXu);
+    this.UXu(0);
+    this.mJu(this.dJu);
   }
   OnShowBattleChildViewPanel(e) {
     var t = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetHealth();
     this.GetArtText(6).SetText(t.toString());
     this.GetArtText(7).SetUIActive(false);
-    ModelManager_1.ModelManager.TrapDefenseModel.BattleData.AddTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Health, this.UXu);
+    ModelManager_1.ModelManager.TrapDefenseModel.BattleData.AddTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Health, this.q7u);
   }
   OnBeforeShow() {
     this.Sequence.PlaySequencePurely("Start");
@@ -67,12 +67,12 @@ class TrapDefenseCampsiteHpPanel extends BattleChildViewPanel_1.BattleChildViewP
     await this.Sequence.PlaySequenceAsync("Close", e);
   }
   OnHideBattleChildViewPanel() {
-    ModelManager_1.ModelManager.TrapDefenseModel.BattleData.RemoveTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Health, this.UXu);
+    ModelManager_1.ModelManager.TrapDefenseModel.BattleData.RemoveTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Health, this.q7u);
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
-  BXu(e) {
+  UXu(e) {
     if (e === 2) {
       this.Sequence.StopSequenceByKey("Treatment", false, true);
       this.Sequence.PlaySequencePurely("Hit");
@@ -84,12 +84,12 @@ class TrapDefenseCampsiteHpPanel extends BattleChildViewPanel_1.BattleChildViewP
     }
   }
   SetWarningItemActive(e) {
-    if (this.xXu !== e) {
-      this.xXu = e;
-      this.kXu(e);
+    if (this.dJu !== e) {
+      this.dJu = e;
+      this.mJu(e);
     }
   }
-  kXu(e) {
+  mJu(e) {
     if (e) {
       this.GetItem(8)?.SetUIActive(true);
       this.Sequence.StopSequenceByKey("WarnOut", false, true);

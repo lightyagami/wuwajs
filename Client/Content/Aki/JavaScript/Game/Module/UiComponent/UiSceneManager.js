@@ -15,7 +15,6 @@ const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
-const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
@@ -23,6 +22,7 @@ const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDevic
 const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
 const WorldController_1 = require("../../World/Controller/WorldController");
@@ -180,7 +180,7 @@ class UiSceneManager {
         Log_1.Log.Warn("UiSceneManager", 16, "[PhantomObserver]重复初始化");
       }
     } else {
-      UiSceneManager.Mxo = UiSceneManager.fxo(7);
+      UiSceneManager.Mxo = UiSceneManager.fxo(8);
     }
   }
   static GetPhantomObserver() {
@@ -197,13 +197,31 @@ class UiSceneManager {
       UiSceneManager.Mxo = undefined;
     }
   }
+  static InitHuluObserver() {
+    UiSceneManager.KDd = UiSceneManager.fxo(6);
+    return UiSceneManager.KDd;
+  }
+  static GetHuluObserver() {
+    if (UiSceneManager.KDd) {
+      return UiSceneManager.KDd;
+    }
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("UiSceneManager", 16, "[HuluObserver]未初始化");
+    }
+  }
+  static DestroyHuluObserver() {
+    if (UiSceneManager.KDd) {
+      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.KDd);
+      UiSceneManager.KDd = undefined;
+    }
+  }
   static InitHandBookObserver() {
     if (UiSceneManager.Exo !== undefined) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("UiSceneManager", 16, "[HandBookObserver]重复初始化");
       }
     } else {
-      UiSceneManager.Exo = UiSceneManager.fxo(7);
+      UiSceneManager.Exo = UiSceneManager.fxo(8);
     }
   }
   static GetHandBookObserver() {
@@ -305,7 +323,7 @@ class UiSceneManager {
         Log_1.Log.Warn("DreamLink", 34, "[DreamLinkRoleSkeletalHandle]重复初始化");
       }
     } else {
-      UiSceneManager.deh = UiSceneManager.fxo(9);
+      UiSceneManager.deh = UiSceneManager.fxo(10);
     }
   }
   static GetDreamLinkRoleSkeletalHandle() {
@@ -326,7 +344,7 @@ class UiSceneManager {
     }
   }
   static InitDreamLinkWeaponSkeletalHandle() {
-    var e = UiSceneManager.fxo(10);
+    var e = UiSceneManager.fxo(11);
     UiSceneManager.Hil.push(e);
     return e;
   }
@@ -381,7 +399,7 @@ class UiSceneManager {
         Log_1.Log.Warn("Phantom", 16, "[VisionSkeletalHandle]重复初始化");
       }
     } else {
-      UiSceneManager.tHi = UiSceneManager.fxo(7);
+      UiSceneManager.tHi = UiSceneManager.fxo(8);
     }
   }
   static HasVisionSkeletalHandle() {
@@ -408,7 +426,7 @@ class UiSceneManager {
         Log_1.Log.Warn("UiSceneManager", 27, "[AbyssDangoObserver]重复初始化");
       }
     } else {
-      UiSceneManager.xwc = UiSceneManager.fxo(15);
+      UiSceneManager.xwc = UiSceneManager.fxo(16);
     }
   }
   static GetAbyssDangoObserver() {
@@ -432,7 +450,7 @@ class UiSceneManager {
         Log_1.Log.Warn("UiSceneManager", 43, "[VisionSkeletalHandle]重复初始化");
       }
     } else {
-      UiSceneManager.oPl = UiSceneManager.fxo(12);
+      UiSceneManager.oPl = UiSceneManager.fxo(13);
     }
   }
   static HasLordSkeletalHandle() {
@@ -470,7 +488,7 @@ class UiSceneManager {
         var e = (0, puerts_1.$unref)(r);
         var r = (0, puerts_1.$unref)(n);
         this.PBa.DeepCopy(a.GetViewTarget().K2_GetActorLocation());
-        CameraController_1.CameraController.CameraLocation.Subtraction(this.PBa, this.PBa);
+        ControllerHolder_1.ControllerHolder.CameraController.CameraLocation.Subtraction(this.PBa, this.PBa);
         var n = ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation;
         n.DeepCopy(e);
         n.Addition(this.PBa, n);
@@ -525,7 +543,7 @@ class UiSceneManager {
         Log_1.Log.Warn("UiSceneManager", 43, "[GliderSkeletalHandle]重复初始化");
       }
     } else {
-      UiSceneManager.Jkc = UiSceneManager.fxo(16);
+      UiSceneManager.Jkc = UiSceneManager.fxo(17);
     }
   }
   static HasGliderSkeletalHandle() {
@@ -593,8 +611,8 @@ class UiSceneManager {
   }
   static Ixo() {
     if (GlobalData_1.GlobalData.World) {
-      CameraController_1.CameraController.ExitCameraMode(2, 0, 2, 0);
-      CameraController_1.CameraController.EnterCameraMode(2, 0, 2, 0);
+      ControllerHolder_1.ControllerHolder.CameraController.ExitCameraMode(2, 0, 2, 0);
+      ControllerHolder_1.ControllerHolder.CameraController.EnterCameraMode(2, 0, 2, 0);
     }
   }
   static SetUiStartSequenceFrame(e) {
@@ -645,6 +663,7 @@ class UiSceneManager {
     UiSceneManager.DestroyAllRoleSystemRoleActor();
     UiSceneManager.DestroyAllWeaponObserver();
     UiSceneManager.DestroyAllWeaponScabbardObserver();
+    UiSceneManager.DestroyHuluObserver();
   }
 }
 (exports.UiSceneManager = UiSceneManager).CurUiSceneName = "";
@@ -655,6 +674,7 @@ UiSceneManager.fWi = () => {
 UiSceneManager.pxo = new Stack_1.Stack();
 UiSceneManager.vxo = new Stack_1.Stack();
 UiSceneManager.Mxo = undefined;
+UiSceneManager.KDd = undefined;
 UiSceneManager.Exo = undefined;
 UiSceneManager.Sxo = new Stack_1.Stack();
 UiSceneManager.MKt = undefined;

@@ -81,7 +81,7 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
       if (r.RoguelikeGainDataType === Protocol_1.Aki.Protocol.a8s.flu) {
         o.c5n = Protocol_1.Aki.Protocol.s8s.Proto_ShopBindId;
       }
-      r = await Net_1.Net.CallAsync(21818, o);
+      r = await Net_1.Net.CallAsync(22427, o);
       ModelManager_1.ModelManager.RoguelikeModel.SetRoguelikeChooseData([r.Q2s]);
     }
     await RoguelikeController.OpenBuffSelectViewById(e);
@@ -128,7 +128,7 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var o = new Protocol_1.Aki.Protocol.a_s();
     o.RHn = e;
     o.AHn = ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount;
-    Net_1.Net.Call(16848, o, e => {
+    Net_1.Net.Call(19314, o, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeScrollingTipsView(e.Q4n, e.lvs);
       } else {
@@ -139,7 +139,7 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
   }
   static async RoguelikeLastInfoRequestAsync() {
     var e = new Protocol_1.Aki.Protocol.C_s();
-    var e = await Net_1.Net.CallAsync(26236, e);
+    var e = await Net_1.Net.CallAsync(25502, e);
     if (e?.oqs) {
       this.RoguelikeResultRequest(e.nqs[0].r6n);
     }
@@ -155,7 +155,7 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
   }
   static OpenRoguelikeInstanceView() {
     var e = new Protocol_1.Aki.Protocol.C_s();
-    Net_1.Net.Call(26236, e, o => {
+    Net_1.Net.Call(25502, e, o => {
       if (o?.oqs) {
         const r = o.nqs[0];
         o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(135);
@@ -198,9 +198,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
   static async RoguelikeTalentInfoRequest(e) {
     var o = Protocol_1.Aki.Protocol.D_s.create();
     o.UHn = e;
-    var r = await Net_1.Net.CallAsync(20911, o);
+    var r = await Net_1.Net.CallAsync(24709, o);
     if (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 27010);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 24001);
     } else {
       for (const l of Object.keys(r.Mqs)) {
         ModelManager_1.ModelManager.RoguelikeModel.SetRoguelikeSkillData(Number(l), r.Mqs[l]);
@@ -212,22 +212,22 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var r = new Protocol_1.Aki.Protocol.Ara();
     r.Mra = e;
     r.c5n = o;
-    var e = await Net_1.Net.CallAsync(18792, r);
-    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19941), false);
+    var e = await Net_1.Net.CallAsync(26127, r);
+    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26849), false);
   }
   static async RoguelikeSeasonRewardReceiveRequest(e, o) {
     var r = new Protocol_1.Aki.Protocol.G_s();
     r.UHn = o ?? 0;
     r.c5n = e;
-    var o = await Net_1.Net.CallAsync(16185, r);
-    return o.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 29203), false);
+    var o = await Net_1.Net.CallAsync(22517, r);
+    return o.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27826), false);
   }
   static async RoguelikeTalentLevelUpRequest(e) {
     var o = Protocol_1.Aki.Protocol.P_s.create();
     o.r5n = e;
-    var o = await Net_1.Net.CallAsync(19677, o);
+    var o = await Net_1.Net.CallAsync(18835, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26026);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22921);
     } else {
       ModelManager_1.ModelManager.RoguelikeModel.SetRoguelikeSkillData(e, o.F6n);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoguelikeTalentLevelUp, e);
@@ -241,10 +241,10 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     l.UHn = ActivityRogueController_1.ActivityRogueController.GetCurrentActivityData().SeasonData.UHn;
     ModelManager_1.ModelManager.RoguelikeModel.CurDungeonId = o;
     BlackScreenController_1.BlackScreenController.AddBlackScreen("None", "LeaveScene");
-    var e = await Net_1.Net.CallAsync(15765, l);
+    var e = await Net_1.Net.CallAsync(20713, l);
     BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene");
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29434);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28534);
       InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RevertEntranceFlowStep();
       return false;
     } else {
@@ -257,9 +257,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     if (!this.Sao) {
       const o = ModelManager_1.ModelManager.RoguelikeModel?.CheckIsGuideDungeon();
       var e = Protocol_1.Aki.Protocol.p_s.create();
-      Net_1.Net.Call(19000, e, e => {
+      Net_1.Net.Call(24960, e, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20949);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27189);
         }
         this.Sao = !o;
         ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
@@ -270,9 +270,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var o;
     if (!this.Sao) {
       (o = Protocol_1.Aki.Protocol.E_s.create()).r6n = e;
-      Net_1.Net.Call(25601, o, e => {
+      Net_1.Net.Call(25040, o, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15249);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17680);
         } else {
           this.Sao = ModelManager_1.ModelManager.RoguelikeModel?.CheckInRoguelike();
           UiManager_1.UiManager.OpenView("RoguelikeSettleView", e.dqs);
@@ -304,11 +304,11 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     if (l === 7) {
       i.RHn = Protocol_1.Aki.Protocol.s8s.Proto_EventBindId;
     }
-    Net_1.Net.Call(17619, i, o => {
+    Net_1.Net.Call(20702, i, o => {
       if (o.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_RogueGainIsSelect) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17619, o.lvs, false);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 20702, o.lvs, false);
       } else if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 17619, o.lvs);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 20702, o.lvs);
       } else {
         var r = ModelManager_1.ModelManager.RoguelikeModel.GetRoguelikeChooseDataById(i.RHn);
         r.IsSelect = o?.k2s;
@@ -336,31 +336,31 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(16654, RoguelikeController.yao);
-    Net_1.Net.Register(17644, RoguelikeController.Iao);
-    Net_1.Net.Register(24909, RoguelikeController.RoguelikeChooseDataNotify);
-    Net_1.Net.Register(22425, RoguelikeController.Tao);
-    Net_1.Net.Register(26334, RoguelikeController.Lao);
-    Net_1.Net.Register(17127, RoguelikeController.RoguelikeTalentUnlockNotify);
-    Net_1.Net.Register(28638, RoguelikeController.RoguelikeCurrencyNotify);
-    Net_1.Net.Register(18758, RoguelikeController.RoguelikeCurrencyUpdateNotify);
-    Net_1.Net.Register(29460, RoguelikeController.XMa);
-    Net_1.Net.Register(26944, RoguelikeController.RoguelikeGainDataUpdateNotify);
-    Net_1.Net.Register(24504, RoguelikeController.Sra);
-    Net_1.Net.Register(26082, RoguelikeController.Tpl);
+    Net_1.Net.Register(22084, RoguelikeController.yao);
+    Net_1.Net.Register(26152, RoguelikeController.Iao);
+    Net_1.Net.Register(25093, RoguelikeController.RoguelikeChooseDataNotify);
+    Net_1.Net.Register(19437, RoguelikeController.Tao);
+    Net_1.Net.Register(25527, RoguelikeController.Lao);
+    Net_1.Net.Register(21251, RoguelikeController.RoguelikeTalentUnlockNotify);
+    Net_1.Net.Register(28206, RoguelikeController.RoguelikeCurrencyNotify);
+    Net_1.Net.Register(20507, RoguelikeController.RoguelikeCurrencyUpdateNotify);
+    Net_1.Net.Register(22791, RoguelikeController.XMa);
+    Net_1.Net.Register(26750, RoguelikeController.RoguelikeGainDataUpdateNotify);
+    Net_1.Net.Register(16372, RoguelikeController.Sra);
+    Net_1.Net.Register(16314, RoguelikeController.Tpl);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16654);
-    Net_1.Net.UnRegister(17644);
-    Net_1.Net.UnRegister(24909);
-    Net_1.Net.UnRegister(22425);
-    Net_1.Net.UnRegister(26334);
-    Net_1.Net.UnRegister(17127);
-    Net_1.Net.UnRegister(28638);
-    Net_1.Net.UnRegister(18758);
-    Net_1.Net.UnRegister(29460);
-    Net_1.Net.UnRegister(24504);
-    Net_1.Net.UnRegister(26944);
+    Net_1.Net.UnRegister(22084);
+    Net_1.Net.UnRegister(26152);
+    Net_1.Net.UnRegister(25093);
+    Net_1.Net.UnRegister(19437);
+    Net_1.Net.UnRegister(25527);
+    Net_1.Net.UnRegister(21251);
+    Net_1.Net.UnRegister(28206);
+    Net_1.Net.UnRegister(20507);
+    Net_1.Net.UnRegister(22791);
+    Net_1.Net.UnRegister(16372);
+    Net_1.Net.UnRegister(26750);
   }
   static UWa(o) {
     return [o.fL_.filter(e => !o.mL_.includes(e)), o.mL_.filter(e => !o.fL_.includes(e))];
@@ -369,15 +369,15 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.Vg_.create();
     r.A5n = e;
     r.lUl = o;
-    Net_1.Net.Call(18724, r, e => {
+    Net_1.Net.Call(18545, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22050);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20997);
       }
     });
   }
   static async Dao() {
     var e = Protocol_1.Aki.Protocol.T_s.create();
-    var e = await Net_1.Net.CallAsync(16940, e);
+    var e = await Net_1.Net.CallAsync(19029, e);
     if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike()) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(15);
@@ -390,9 +390,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var o = Protocol_1.Aki.Protocol.k_s.create();
     o.RHn = e;
     o.AHn = ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount;
-    var e = await Net_1.Net.CallAsync(19819, o);
+    var e = await Net_1.Net.CallAsync(20300, o);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19819);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20300);
     } else {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoguelikeCloseGainSelectView);
     }
@@ -401,16 +401,16 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.B_s.create();
     r.UHn = e;
     r.s5n = o;
-    var e = await Net_1.Net.CallAsync(16475, r);
-    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16475), false);
+    var e = await Net_1.Net.CallAsync(26842, r);
+    return e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26842), false);
   }
   static async RoguelikePopularEntriesInfoRequest(e) {
     var o = Protocol_1.Aki.Protocol.Ogs.create();
     o.r6n = e;
     o.UHn = ActivityRogueController_1.ActivityRogueController.GetCurrentActivityData().SeasonData.UHn;
-    var e = await Net_1.Net.CallAsync(15107, o);
+    var e = await Net_1.Net.CallAsync(27005, o);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15107);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27005);
     }
     return e;
   }
@@ -418,9 +418,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     var o = new Protocol_1.Aki.Protocol.Rfs();
     o.UHn = ActivityRogueController_1.ActivityRogueController.GetCurrentActivityData().SeasonData.UHn;
     o.Rpl = e;
-    var e = await Net_1.Net.CallAsync(29035, o);
+    var e = await Net_1.Net.CallAsync(16645, o);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29035);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16645);
     }
     let r = [];
     for (const l of e.gL_) {
@@ -434,9 +434,9 @@ class RoguelikeController extends UiControllerBase_1.UiControllerBase {
     r.r6n = e;
     r.BHn = o;
     r.UHn = ActivityRogueController_1.ActivityRogueController.GetCurrentActivityData().SeasonData.UHn;
-    var e = await Net_1.Net.CallAsync(18371, r);
+    var e = await Net_1.Net.CallAsync(18753, r);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18371);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18753);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoguelikePopularEntriesChange, o);
   }

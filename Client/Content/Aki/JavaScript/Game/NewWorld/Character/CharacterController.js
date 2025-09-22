@@ -39,7 +39,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
       t = new Uint8Array(t);
       cpp_1.FuncOpenLibrary.FreeArrayBuffer(e);
       (e = new Protocol_1.Aki.Protocol.CombatMessage.Hfs()).Ujn = t;
-      t = await Net_1.Net.CallAsync(22847, e);
+      t = await Net_1.Net.CallAsync(28810, e);
       cpp_1.FuncOpenLibrary.SetIsCheckEncrypt(t?.JLs ?? "");
     }
   }

@@ -54,31 +54,31 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static AddTickPriority2(e) {
-    this.Pnd++;
-    this.Dnd.set(this.Pnd, e);
-    return this.Pnd;
+    this.Ksd++;
+    this.Xsd.set(this.Ksd, e);
+    return this.Ksd;
   }
   static RemoveTickPriority2(e) {
-    this.xnd.delete(e);
-    this.Dnd.delete(e);
+    this.Ysd.delete(e);
+    this.Xsd.delete(e);
   }
   static NextPriority2(e) {
     e = this.AddTickPriority2(e);
-    this.xnd.add(e);
+    this.Ysd.add(e);
     return e;
   }
   static AddAfterTick(e) {
-    this.Xad++;
-    this.Yad.set(this.Xad, e);
-    return this.Xad;
+    this.Ocd++;
+    this.qcd.set(this.Ocd, e);
+    return this.Ocd;
   }
   static RemoveAfterTick(e) {
-    this.zad.delete(e);
-    this.Yad.delete(e);
+    this.Gcd.delete(e);
+    this.qcd.delete(e);
   }
   static NextAfterTick(e) {
     e = this.AddAfterTick(e);
-    this.zad.add(e);
+    this.Gcd.add(e);
     return e;
   }
   static OnAddEvents() {
@@ -194,6 +194,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
   }
   static CloseAllUi() {
     this.PlotViewManager.ClosePlotView();
+    this.PlotViewManager.CloseTipsView();
   }
   static ClearUi() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ClearPlotSubtitle);
@@ -248,8 +249,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static ShowTipsView(e, t) {
-    return !ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed && (ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed = true, ModelManager_1.ModelManager.PlotModel.CurTalkItem = e, this.PlotViewManager.OpenPlotView("PlotTipsView", undefined, t), true);
+  static ShowTipsView(e, t, o) {
+    return !ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed && (ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed = true, ModelManager_1.ModelManager.PlotModel.CurTalkItem = e, this.PlotViewManager.OpenTipsView(t, o), true);
   }
   static ShowSystemOption(e, o) {
     const r = e;
@@ -515,7 +516,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PlotModel.UpdateLastViewControl();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEnableControlView, e);
   }
-  static UZu() {
+  static iHu() {
     return ModelManager_1.ModelManager.PlotModel.GetLastViewControl();
   }
   static UpdateViewControl(e) {
@@ -526,7 +527,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEnableControlView, e);
   }
   static ResetViewControl() {
-    var e = this.UZu();
+    var e = this.iHu();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 45, "[ViewControl]ResetViewControl", ["value", e]);
     }
@@ -668,12 +669,12 @@ PlotController.UYi = 0;
 PlotController.PYi = new Map();
 PlotController.AYi = 0;
 PlotController.qwa = "";
-PlotController.Dnd = new Map();
-PlotController.xnd = new Set();
-PlotController.Pnd = 0;
+PlotController.Xsd = new Map();
+PlotController.Ysd = new Set();
+PlotController.Ksd = 0;
 PlotController.TickPriority2 = o => {
-  if (!(_a.Dnd.size <= 0)) {
-    _a.Dnd.forEach((e, t) => {
+  if (!(_a.Xsd.size <= 0)) {
+    _a.Xsd.forEach((e, t) => {
       try {
         e(o);
       } catch (e) {
@@ -682,27 +683,27 @@ PlotController.TickPriority2 = o => {
         }
       }
     });
-    if (_a.xnd.size > 0) {
-      _a.xnd.forEach(e => {
-        _a.Dnd.delete(e);
+    if (_a.Ysd.size > 0) {
+      _a.Ysd.forEach(e => {
+        _a.Xsd.delete(e);
       });
-      _a.xnd.clear();
+      _a.Ysd.clear();
     }
   }
 };
-PlotController.Yad = new Map();
-PlotController.zad = new Set();
-PlotController.Xad = 0;
+PlotController.qcd = new Map();
+PlotController.Gcd = new Set();
+PlotController.Ocd = 0;
 PlotController.AfterTick = o => {
-  if (!(_a.Yad.size <= 0)) {
-    _a.Yad.forEach((e, t) => {
+  if (!(_a.qcd.size <= 0)) {
+    _a.qcd.forEach((e, t) => {
       e(o);
     });
-    if (_a.zad.size > 0) {
-      _a.zad.forEach(e => {
-        _a.Yad.delete(e);
+    if (_a.Gcd.size > 0) {
+      _a.Gcd.forEach(e => {
+        _a.qcd.delete(e);
       });
-      _a.zad.clear();
+      _a.Gcd.clear();
     }
   }
 };

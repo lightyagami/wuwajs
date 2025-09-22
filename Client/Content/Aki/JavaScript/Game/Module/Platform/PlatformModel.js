@@ -19,6 +19,7 @@ const CloudGameManager_1 = require("../../Manager/CloudGameManager");
 const MobileSwitchInputController_1 = require("../../Ui/Input/Moblie/MobileSwitchInputController");
 const LguiEventSystemManager_1 = require("../../Ui/LguiEventSystem/LguiEventSystemManager");
 const PlatformDefine_1 = require("./PlatformDefine");
+const Global_1 = require("../../Global");
 class PlatformModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -26,6 +27,11 @@ class PlatformModel extends ModelBase_1.ModelBase {
     this.Iya = (e, t) => {
       this.nEa();
       this.sEa();
+      if (!Global_1.Global.CharacterController || t !== 3 && t !== 4) {
+        UE.TriggerEffectBPLibrary.ResetPadColor(Global_1.Global.CharacterController);
+      } else {
+        UE.TriggerEffectBPLibrary.SetPadColor(Global_1.Global.CharacterController, UE.Color.FromHex("#0000FF"));
+      }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InputControllerChange, e, t);
     };
     this.Tya = (e, t) => {
@@ -220,20 +226,18 @@ class PlatformModel extends ModelBase_1.ModelBase {
       }
       return 2;
     }
-    if (Platform_1.Platform.IsIOSPlatform()) {
-      if (e.includes("Xbox")) {
-        return 2;
-      } else if (e.includes("DualShock")) {
-        return 4;
-      } else if (e.includes("BackBoneOne")) {
-        return 6;
-      } else if (e.includes("nspro")) {
-        return 7;
-      } else {
-        return 0;
-      }
-    } else {
+    if (!Platform_1.Platform.IsIOSPlatform() || e === "None") {
       return 0;
+    } else if (e.includes("Xbox")) {
+      return 2;
+    } else if (e.includes("DualShock")) {
+      return 4;
+    } else if (e.includes("BackBoneOne")) {
+      return 6;
+    } else if (e.includes("nspro")) {
+      return 7;
+    } else {
+      return 2;
     }
   }
   IsGamepadAttached() {

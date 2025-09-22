@@ -175,12 +175,12 @@ let SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = class 
     e.Roll = i.Roll;
     r.l8n = o;
     r._8n = e;
-    Net_1.Net.Call(23957, r, e => {
+    Net_1.Net.Call(15839, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20341);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21975);
       }
     });
   }
 };
-SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(267)], SceneItemGenericOutletComponent);
+SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], SceneItemGenericOutletComponent);
 exports.SceneItemGenericOutletComponent = SceneItemGenericOutletComponent; //# sourceMappingURL=SceneItemGenericOutletComponent.js.map

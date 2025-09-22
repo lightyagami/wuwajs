@@ -29,10 +29,10 @@ class ActivitySevenDaySignController extends ActivityControllerBase_1.ActivityCo
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(24599, this.w3e);
+    Net_1.Net.Register(29909, this.w3e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24599);
+    Net_1.Net.UnRegister(29909);
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
@@ -82,9 +82,9 @@ class ActivitySevenDaySignController extends ActivityControllerBase_1.ActivityCo
     var e = Protocol_1.Aki.Protocol.I$n.create();
     e.w6n = t;
     e.c5n = i;
-    Net_1.Net.Call(29534, e, e => {
+    Net_1.Net.Call(28310, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28628);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23448);
       } else {
         ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).SetRewardToGotState(i);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);

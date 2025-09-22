@@ -33,7 +33,7 @@ class KeySettingItemProxy {
         }
       }
     };
-    this.$zu = t => {
+    this.PYu = t => {
       if (this.uPi && this.HOi.GetSelectSprite) {
         t = this.uPi === t;
         this.HOi.GetSelectSprite().SetUIActive(t);
@@ -47,7 +47,7 @@ class KeySettingItemProxy {
         }
       }
     };
-    this.Wzu = t => {
+    this.xYu = t => {
       if (t === this.uPi) {
         this.Refresh(t, KeySettingViewModel_1.KeySettingViewModel.InputControllerType);
       }
@@ -59,16 +59,16 @@ class KeySettingItemProxy {
       this.HOi.GetCancelButton().OnClickCallBack.Bind(this.gPi);
     }
     this.c2n = new LevelSequencePlayer_1.LevelSequencePlayer(this.HOi.GetCursorItem());
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeySelectedDelegate(this.$zu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyChangeDelegate(this.Wzu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeySelectedDelegate(this.PYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyChangeDelegate(this.xYu);
   }
   OnBeforeDestroy() {
     this.HOi.GetKeySetToggle().OnStateChange.Remove(this.rxi);
     if (this.HOi.GetCancelButton) {
       this.HOi.GetCancelButton().OnClickCallBack.Unbind();
     }
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeySelectedDelegate(this.$zu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyChangeDelegate(this.Wzu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeySelectedDelegate(this.PYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyChangeDelegate(this.xYu);
     this.c2n?.Clear();
   }
   SetDetailItemVisible(t) {

@@ -25,15 +25,15 @@ class TrapDefenseBtnTagTips extends UiPanelBase_1.UiPanelBase {
     var t = this.GetSprite(2);
     switch (e) {
       case 4:
-        this.XHc(1);
+        this.O9u(1);
         t.SetChangeColor(true, t.changeColor);
         break;
       case 5:
-        this.XHc(0);
+        this.O9u(0);
         t.SetChangeColor(false, t.changeColor);
         break;
       default:
-        this.XHc(1);
+        this.O9u(1);
         t.SetChangeColor(true, t.changeColor);
     }
   }
@@ -49,7 +49,7 @@ class TrapDefenseBtnTagTips extends UiPanelBase_1.UiPanelBase {
         this.SetDesc("TrapDefense_BdBuffSelect_PurpleBuffToPool");
     }
   }
-  XHc(t) {
+  O9u(t) {
     [1, 0].forEach(e => {
       this.GetItem(e)?.SetUIActive(e === t);
     });

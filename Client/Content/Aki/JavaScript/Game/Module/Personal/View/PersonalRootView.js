@@ -43,7 +43,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     this.Hha = undefined;
     this.L6e = 0;
     this.gLt = undefined;
-    this.eQu = undefined;
+    this.FQc = undefined;
     this.nFe = () => {
       var e = new PersonalRoleDisplayMediumItem_1.PersonalRoleDisplayMediumItem();
       e.BindClickItemCallBack(this.OnRoleItemClick);
@@ -128,7 +128,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     };
     this.OnWaitLoadingConfirmCallBack = async e => {
       if (await PersonalController_1.PersonalController.SendRoleShowListUpdateRequestAsync(e)) {
-        await this.eQu.PreloadLevelSequenceList(e);
+        await this.FQc.PreloadLevelSequenceList(e);
         this.RefreshRoleShowList(e, false);
         this.BNe();
       }
@@ -142,7 +142,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
         this.nVi = t;
         e = this._Vi.findIndex(e => e === t);
         this.hVi.SelectGridProxy(e);
-        this.eQu.PlayRoleSequence(t);
+        this.FQc.PlayRoleSequence(t);
         this.L6e = Time_1.Time.Now;
       }
     };
@@ -175,8 +175,8 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerTitleChange, this.OnPlayerTitleChange);
   }
   OnBeforeCreate() {
-    this.eQu = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
-    this.AddUiBehavior(this.eQu);
+    this.FQc = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
+    this.AddUiBehavior(this.FQc);
   }
   async OnBeforeStartAsync() {
     this.p5i = this.OpenParam;
@@ -184,7 +184,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
     for (const t of this.p5i.RoleShowList) {
       e.push(t.Q6n);
     }
-    await this.eQu.PreloadLevelSequenceList(e);
+    await this.FQc.PreloadLevelSequenceList(e);
     this.gLt = new PlayerTitleItem_1.PlayerTitleItem();
     await this.gLt.CreateThenShowByActorAsync(this.GetItem(26).GetOwner());
   }
@@ -212,12 +212,12 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
   OnHandleLoadScene() {
     this.gKt = CameraController_1.CameraController.Model.CurrentCameraActor;
     this.Qma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("SceneCamera1"), 0);
-    this.eQu.BindSceneSequenceCamera(this.Qma);
+    this.FQc.BindSceneSequenceCamera(this.Qma);
     this.Kma = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("personal"), 0);
-    this.eQu.BindEmptySequenceCamera(this.Kma);
+    this.FQc.BindEmptySequenceCamera(this.Kma);
     this.Hha = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("UpdateInteractBP"), 0);
     this.Hha.SetTickableWhenPaused(true);
-    this.eQu.BindUpdateInteractBp(this.Hha);
+    this.FQc.BindUpdateInteractBp(this.Hha);
   }
   OnBeforeShow() {
     var e = [];
@@ -250,10 +250,10 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
       if (this._Vi.length > 0 && this._Vi[0] > 0) {
         this.nVi = this._Vi[0];
         this.hVi.SelectGridProxy(0);
-        this.eQu.PlayRoleSequence(this.nVi);
+        this.FQc.PlayRoleSequence(this.nVi);
         this.GetItem(15).SetUIActive(false);
       } else {
-        this.eQu.PlayEmptySequence();
+        this.FQc.PlayEmptySequence();
         this.GetItem(15).SetUIActive(true);
       }
     });
@@ -349,7 +349,7 @@ class PersonalRootView extends UiViewBase_1.UiViewBase {
   RefreshButtonState() {
     var e = !this.p5i.IsOtherData;
     this.GetButton(11).SetSelfInteractive(e);
-    this.GetButton(2).SetSelfInteractive(e);
+    this.GetButton(2).RootUIComp.SetUIActive(e);
     this.GetButton(12).RootUIComp.SetUIActive(e);
     this.GetButton(14).RootUIComp.SetUIActive(e);
     this.GetButton(18).RootUIComp.SetUIActive(e);

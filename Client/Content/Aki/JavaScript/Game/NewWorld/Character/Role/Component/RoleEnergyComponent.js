@@ -32,7 +32,7 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
     super(...arguments);
     this.n$t = undefined;
     this.$te = undefined;
-    this.had = true;
+    this.Sud = true;
     this.Qin = (t, e, r) => {
       this.RefreshStarScarMaterial();
     };
@@ -51,14 +51,14 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
   RefreshStarScarMaterial() {
     var t;
     var e;
-    if (this.had) {
+    if (this.Sud) {
       t = this.$te.GetCurrentValue(EAttributeId.Proto_Energy);
       e = this.$te.GetCurrentValue(EAttributeId.Proto_EnergyMax);
       this.n$t.Actor?.CharRenderingComponent.SetStarScarEnergy(t / e);
     }
   }
   SetEnableRefreshStarScarByEnergy(t) {
-    this.had = t;
+    this.Sud = t;
   }
 };
 RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], RoleEnergyComponent);

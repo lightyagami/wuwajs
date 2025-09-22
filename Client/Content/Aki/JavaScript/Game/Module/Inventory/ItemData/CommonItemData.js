@@ -85,6 +85,13 @@ class CommonItemData extends ItemDataBase_1.ItemDataBase {
   IsBuffEquippedItem() {
     return !!this.IsBuffEquipItem() && ModelManager_1.ModelManager.BuffItemModel.IsEquippedBuffItem(this.ConfigId);
   }
+  IsBuffItem() {
+    return ConfigManager_1.ConfigManager.BuffItemConfig.IsBuffItem(this.ConfigId);
+  }
+  GetIsShowUseButton() {
+    return this.GetConfig().ShowUseButton;
+  }
+  GetItemViewDataInfo(e) {}
 }
 exports.CommonItemData = CommonItemData;
 //# sourceMappingURL=CommonItemData.js.map

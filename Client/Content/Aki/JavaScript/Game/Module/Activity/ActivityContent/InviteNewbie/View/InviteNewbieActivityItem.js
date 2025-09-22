@@ -21,7 +21,7 @@ class InviteNewbieActivityItem extends UiPanelBase_1.UiPanelBase {
     this.DNe = undefined;
     this.UNe = undefined;
     this.ANe = undefined;
-    this.rQu = () => {
+    this.VWu = () => {
       var i = this.gV_;
       ActivityControllerHolder_1.ActivityControllerHolder.ActivityInviteNewbieController.HandleOnEnterClick(i);
     };
@@ -56,7 +56,7 @@ class InviteNewbieActivityItem extends UiPanelBase_1.UiPanelBase {
     this.UNe.InitGridLayout(this.UNe.InitCommonGridItem);
     this.UNe.RefreshItemLayout(i);
     this.UNe.SetTitleByTextId(InviteNewbieDefine_1.REWARD_TITLE_TEXT_ID_IN_SUBVIEW);
-    this.ANe.FunctionButton.SetFunction(this.rQu);
+    this.ANe.FunctionButton.SetFunction(this.VWu);
     this.ANe.FunctionButton.SetLocalTextNew(InviteNewbieDefine_1.ENTER_BUTTON_TITLE_TEXT_ID_IN_SUBVIEW);
   }
   OnBeforeShow() {

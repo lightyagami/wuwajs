@@ -17,129 +17,182 @@ const Platform_1 = require("../../../Launcher/Platform/Platform");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const KuroPerformanceController_1 = require("../KuroPerformance/KuroPerformanceController");
 class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
-  static SetMaxFrameRate(e) {
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "t.MaxFPS " + e);
+  static SetMaxFrameRate(t) {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "t.MaxFPS " + t);
   }
-  static GetCurrentValue(e) {
-    return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
+  static GetCurrentValue(t) {
+    return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(t);
   }
-  static ApplyNiagaraQuality(e) {
-    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DisableDistortion " + (e > 0 && t ? 0 : 1));
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.QualityLevel " + (e > 0 ? 1 : 0));
+  static ApplyNiagaraQuality(t) {
+    var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DisableDistortion " + (t > 0 && e ? 0 : 1));
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.QualityLevel " + (t > 0 ? 1 : 0));
   }
-  static ApplyMobileResolution(e) {
-    let t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetMobileResolutionByIndex(e);
-    e = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.SecondaryScreenPercentage.GameViewport");
-    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().Y < 750 && e < 70) {
-      t = Math.min(t * 1.5, 100);
+  static ApplyMobileResolution(t) {
+    let e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetMobileResolutionByIndex(t);
+    t = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.SecondaryScreenPercentage.GameViewport");
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().Y < 750 && t < 70) {
+      e = Math.min(e * 1.5, 100);
     }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage " + t);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage " + e);
   }
-  static ReduceImageQualityAndFrameRate() {
-    let e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMaxFps();
-    let t = this.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
+  static ReduceImageQualityAndFrameRate(t) {
+    let e = this.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
     let i = this.GetCurrentValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY);
-    let r = this.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT);
-    let o = this.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL);
+    let o = this.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT);
+    let r = this.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL);
     let s = this.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY);
     let a = this.GetCurrentValue(GameSettingsDefine_1.EFunction.NPCDENSITY);
     if (this.RKo && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "自动降温触发前", ["CurrentFps", e], ["Resolution", t], ["Niagara", i], ["ImageDetail", o], ["VolumeLight", r], ["Shadow", s], ["NpcDensity", a]);
+      Log_1.Log.Info("Render", 68, "自动渲染调节触发前", ["CurrentFps", t], ["Resolution", e], ["Niagara", i], ["ImageDetail", r], ["VolumeLight", o], ["Shadow", s], ["NpcDensity", a]);
     }
-    if (e > 55) {
+    if (t > 55) {
       this.cZa = true;
       this.SetMaxFrameRate(55);
-      e = 55;
+      t = 55;
       if (i && i > this.nMl) {
         this.ApplyNiagaraQuality(this.nMl);
         i = this.nMl;
       }
-      if (t && t > this.sMl) {
+      if (e && e > this.sMl) {
         this.ApplyMobileResolution(this.sMl);
-        t = this.sMl;
+        e = this.sMl;
       }
-    } else if (e > 50 && e <= 55) {
+    } else if (t > 50 && t <= 55) {
       this.cZa = true;
       this.SetMaxFrameRate(50);
-      e = 50;
-      if (r && r > this.aMl) {
+      t = 50;
+      if (o && o > this.aMl) {
         GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeLight(this.aMl);
-        r = this.aMl;
+        o = this.aMl;
       }
-      if (o && o > this.lMl) {
+      if (r && r > this.lMl) {
         GameSettingsUtils_1.GameSettingsUtils.ApplyImageDetail(this.lMl);
-        o = this.lMl;
+        r = this.lMl;
       }
-    } else if (e > 45 && e <= 50) {
+    } else if (t > 45 && t <= 50) {
       this.cZa = true;
       this.SetMaxFrameRate(45);
-      e = 45;
+      t = 45;
       if (a && a > this.hMl) {
         GameSettingsUtils_1.GameSettingsUtils.ApplyNpcDensity(this.hMl);
         a = this.hMl;
       }
-    } else if (e > 40 && e <= 45 && (this.cZa = true, this.SetMaxFrameRate(40), e = 40, s) && s > this._Ml) {
+    } else if (t > 40 && t <= 45 && (this.cZa = true, this.SetMaxFrameRate(40), t = 40, s) && s > this._Ml) {
       GameSettingsUtils_1.GameSettingsUtils.ApplyShadowQuality(this._Ml);
       s = this._Ml;
     }
     if (this.RKo && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "自动降温触发后", ["CurrentFps", e], ["Resolution", t], ["Niagara", i], ["ImageDetail", o], ["VolumeLight", r], ["NpcDensity", a], ["Shadow", s]);
+      Log_1.Log.Info("Render", 68, "自动渲染调节触发后", ["CurrentFps", t], ["Resolution", e], ["Niagara", i], ["ImageDetail", r], ["VolumeLight", o], ["NpcDensity", a], ["Shadow", s]);
     }
   }
-  static RestoreImageQualityAndFrameRate() {
+  static RestoreImageQualityAndFrameRate(t) {
     this.cZa = false;
-    let e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMaxFps();
-    var t = this.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
+    var e = this.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
     var i = this.GetCurrentValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY);
-    var r = this.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT);
-    var o = this.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL);
+    var o = this.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT);
+    var r = this.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL);
     var s = this.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY);
     var a = this.GetCurrentValue(GameSettingsDefine_1.EFunction.NPCDENSITY);
     if (this.RKo && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "自动降温恢复前", ["CurrentFps", e]);
+      Log_1.Log.Info("Render", 68, "自动渲染调节恢复前", ["CurrentFps", t]);
     }
-    if (e >= 55 && e < 60) {
+    if (t >= 55 && t < 60) {
       this.SetMaxFrameRate(60);
-      e = 60;
+      t = 60;
       if (i && i > this.nMl) {
         this.ApplyNiagaraQuality(i);
       }
-      if (t && t > this.sMl) {
-        this.ApplyMobileResolution(t);
+      if (e && e > this.sMl) {
+        this.ApplyMobileResolution(e);
       }
-    } else if (e >= 50 && e < 55) {
+    } else if (t >= 50 && t < 55) {
       this.SetMaxFrameRate(55);
-      e = 55;
-      if (r && r > this.aMl) {
-        GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeLight(r);
+      t = 55;
+      if (o && o > this.aMl) {
+        GameSettingsUtils_1.GameSettingsUtils.ApplyVolumeLight(o);
       }
-      if (o && o > this.lMl) {
-        GameSettingsUtils_1.GameSettingsUtils.ApplyImageDetail(o);
+      if (r && r > this.lMl) {
+        GameSettingsUtils_1.GameSettingsUtils.ApplyImageDetail(r);
       }
-    } else if (e >= 45 && e < 50) {
+    } else if (t >= 45 && t < 50) {
       this.SetMaxFrameRate(50);
-      e = 50;
+      t = 50;
       if (a && a > this.hMl) {
         GameSettingsUtils_1.GameSettingsUtils.ApplyNpcDensity(a);
       }
-    } else if (e >= 40 && e < 45 && (this.SetMaxFrameRate(45), e = 45, s) && s > this._Ml) {
+    } else if (t >= 40 && t < 45 && (this.SetMaxFrameRate(45), t = 45, s) && s > this._Ml) {
       GameSettingsUtils_1.GameSettingsUtils.ApplyShadowQuality(s);
     }
     if (this.RKo && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "自动降温恢复后", ["CurrentFps", e], ["Resolution", t], ["Niagara", i], ["ImageDetail", o], ["VolumeLight", r], ["NpcDensity", a], ["Shadow", s]);
+      Log_1.Log.Info("Render", 68, "自动渲染调节恢复后", ["CurrentFps", t], ["Resolution", e], ["Niagara", i], ["ImageDetail", r], ["VolumeLight", o], ["NpcDensity", a], ["Shadow", s]);
     }
   }
   static ltl() {
-    var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCpuTemperature();
+    var t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCpuTemperature();
     if (this.RKo && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "当前CPU温度", ["CpuTemperature", e]);
+      Log_1.Log.Info("Render", 68, "当前CPU温度", ["CpuTemperature", t]);
     }
     this.$Xr = 0;
-    if (this.cZa && e < this.a_l) {
-      this.RestoreImageQualityAndFrameRate();
-    } else if (e >= this.a_l) {
-      this.ReduceImageQualityAndFrameRate();
+    var e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMaxFps();
+    if (this.cZa && t < this.a_l) {
+      this.RestoreImageQualityAndFrameRate(e);
+    } else if (t >= this.a_l) {
+      this.ReduceImageQualityAndFrameRate(e);
+    }
+  }
+  static q9d(e) {
+    if (!(e <= 0)) {
+      var i = 1000 / e;
+      this.G9d.push(i);
+      this.F9d.push(e);
+      if (this.F9d.length > 3) {
+        this.F9d.shift();
+      }
+      if (this.F9d.length === 3 && (r = (this.F9d[0] + this.F9d[1] + this.F9d[2]) / 3, this.N9d.push((o = r * 2 < e && e > 84) ? 1 : 0), o) && this.RKo && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "检测到Jank帧", ["CurrentFrameTime", e], ["AvgLast3FrameTime", r]);
+      }
+      var o = Date.now();
+      if (o - this.V9d >= this.j9d) {
+        var r = this.N9d.reduce((t, e) => t + e, 0);
+        var s = this.G9d.length > 0 ? this.G9d.reduce((t, e) => t + e, 0) / this.G9d.length : 0;
+        this.V9d = o;
+        this.N9d = [];
+        this.G9d = [];
+        if (r >= 2) {
+          this.H9d++;
+          this.$9d = 0;
+        } else if (r >= 1) {
+          this.$9d = 0;
+        } else {
+          this.$9d++;
+          this.H9d = 0;
+        }
+        let t = this.W9d;
+        var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+        if (o !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(o)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(o).get(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameIndexByList(o)) < 0) {
+          t = o * 0.9;
+        }
+        if (this.RKo && Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Render", 92, "5秒窗口统计", ["JankCount", r], ["CurrentFrameTime", e], ["FpsThreshold", t], ["AvgFPS", s]);
+        }
+        if (!this.cZa && (this.H9d >= 2 || s < t)) {
+          if (this.RKo && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Render", 92, "触发降画质");
+          }
+          this.ReduceImageQualityAndFrameRate(i);
+        } else if (this.cZa && (r >= 1 || s < t)) {
+          if (this.RKo && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Render", 92, "维持降画质状态");
+          }
+        } else if (this.cZa && this.$9d >= 3 && s >= t) {
+          if (this.RKo && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Render", 92, "恢复升画质");
+          }
+          this.RestoreImageQualityAndFrameRate(i);
+        }
+        this.$Xr = 0;
+      }
     }
   }
   static OnInit() {
@@ -150,15 +203,21 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
     (0, puerts_1.releaseManualReleaseDelegate)(this.htl);
     return true;
   }
-  static OnTick(e) {
-    var t;
-    if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.AutoCoolEnable") > 0 && (t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.AutoCoolUIEnable") > 0, Platform_1.Platform.IsMobilePlatform()) && t && (this.$Xr += e, this.$Xr > this.uZa)) {
-      if (KuroPerformanceController_1.KuroPerformanceController.IsEnable) {
-        UE.KuroPerformanceBPLibrary.GetCurrentTemperatureData(this.TemperatureDelegate);
-      } else {
-        this.ltl();
+  static OnTick(t) {
+    if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.AutoCoolEnable") > 0 && UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.AutoCoolUIEnable") > 0) {
+      this.$Xr += t;
+      if (!(this.$Xr < this.uZa)) {
+        if (Platform_1.Platform.IsMobilePlatform()) {
+          if (KuroPerformanceController_1.KuroPerformanceController.IsEnable) {
+            UE.KuroPerformanceBPLibrary.GetCurrentTemperatureData(this.TemperatureDelegate);
+          } else {
+            this.ltl();
+          }
+        } else if (Platform_1.Platform.IsPcPlatform()) {
+          this.q9d(t);
+        }
+        this.$Xr = 0;
       }
-      this.$Xr = 0;
     }
   }
 }
@@ -166,6 +225,7 @@ exports.KuroAutoCoolController = KuroAutoCoolController;
 (_a = KuroAutoCoolController).uZa = 10000;
 KuroAutoCoolController.RKo = true;
 KuroAutoCoolController.a_l = 65;
+KuroAutoCoolController.W9d = 50;
 KuroAutoCoolController.$Xr = 0;
 KuroAutoCoolController.cZa = false;
 KuroAutoCoolController.sMl = 1;
@@ -175,13 +235,21 @@ KuroAutoCoolController.aMl = 0;
 KuroAutoCoolController.hMl = 1;
 KuroAutoCoolController._Ml = 1;
 KuroAutoCoolController.TemperatureDelegate = undefined;
-KuroAutoCoolController.htl = (e, t, i) => {
+KuroAutoCoolController.htl = (t, e, i) => {
   if (_a.RKo && Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("Render", 68, "KuroAutoCoolController.temperature", ["bResult", e], ["currentTemperature", t], ["tempBudget", i]);
+    Log_1.Log.Info("Render", 68, "KuroAutoCoolController.temperature", ["bResult", t], ["currentTemperature", e], ["tempBudget", i]);
   }
-  if (!e || i <= 5) {
-    _a.ReduceImageQualityAndFrameRate();
+  e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMaxFps();
+  if (!t || i <= 5) {
+    _a.ReduceImageQualityAndFrameRate(e);
   } else if (_a.cZa) {
-    _a.RestoreImageQualityAndFrameRate();
+    _a.RestoreImageQualityAndFrameRate(e);
   }
-}; //# sourceMappingURL=KuroAutoCoolController.js.map
+};
+KuroAutoCoolController.F9d = [];
+KuroAutoCoolController.N9d = [];
+KuroAutoCoolController.G9d = [];
+KuroAutoCoolController.V9d = 0;
+KuroAutoCoolController.H9d = 0;
+KuroAutoCoolController.$9d = 0;
+KuroAutoCoolController.j9d = 5000; //# sourceMappingURL=KuroAutoCoolController.js.map

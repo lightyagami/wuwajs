@@ -18,29 +18,30 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     this.Hte = undefined;
     this.Nce = undefined;
     this.cBe = undefined;
-    this.Eud = undefined;
-    this.Iud = false;
-    this.Tud = true;
-    this.bud = (t, e) => {
-      this.Iud = e;
+    this.eyd = undefined;
+    this.tyd = false;
+    this.iyd = true;
+    this.ryd = (t, e) => {
+      this.tyd = e;
       if (this.SpecialSkillComponent.Entity.Id === ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id) {
-        this.Rud(!e);
+        this.oyd(!e);
       }
     };
     this.xie = (t, e) => {
       var i = this.SpecialSkillComponent.Entity.Id;
       if (t.Entity?.Id === i) {
-        if (this.Iud) {
-          this.Rud(false);
+        if (this.tyd) {
+          this.oyd(false);
         }
-      } else if (e?.Entity?.Id === i && this.Iud) {
-        this.Rud(true);
+      } else if (e?.Entity?.Id === i) {
+        this.oyd(true);
       }
     };
     this.Jze = () => {
-      if (this.Iud) {
-        this.Rud(true);
-      }
+      this.oyd(true);
+    };
+    this.s$d = t => {
+      this.cBe.EndSkill(PASSIVE_SKILL_ID, "触发通用QTE，终止奥古斯塔时停被动技能");
     };
     this.tTu = (t, e) => {
       for (const i of this.cBe.GetAllSkillData(2)) {
@@ -59,29 +60,33 @@ class SpecialSkillAogusita extends SpecialSkillBase_1.SpecialSkillBase {
     if (this.Hte?.IsRoleAndCtrlByMe) {
       this.Nce = e.GetComponent(62);
       t = e.GetComponent(206);
-      this.Eud = t?.ListenForTagAddOrRemove(1519720150, this.bud);
+      this.eyd = t?.ListenForTagAddOrRemove(1519720150, this.ryd);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CommonQteStart, this.s$d);
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
     }
     EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
   }
   OnEnd() {
-    if (this.Hte?.IsRoleAndCtrlByMe && this.Iud) {
-      this.Rud(true);
+    if (this.Hte?.IsRoleAndCtrlByMe && this.tyd) {
+      this.oyd(true);
     }
-    this.Eud?.EndTask();
-    this.Eud = undefined;
+    this.eyd?.EndTask();
+    this.eyd = undefined;
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie)) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    }
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CommonQteStart, this.s$d)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CommonQteStart, this.s$d);
     }
     if (EventSystem_1.EventSystem.HasWithTarget(this.SpecialSkillComponent.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.SpecialSkillComponent.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
     }
     EventSystem_1.EventSystem.RemoveWithTarget(this.SpecialSkillComponent.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
   }
-  Rud(t) {
-    if (this.Tud !== t) {
-      this.Tud = t;
+  oyd(t) {
+    if (this.iyd !== t) {
+      this.iyd = t;
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(12, hideBattleUiChildren, t);
       this.Nce?.SetOnlyAllowFightInput(!t);
     }

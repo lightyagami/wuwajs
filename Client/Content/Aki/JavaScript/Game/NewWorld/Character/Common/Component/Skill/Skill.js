@@ -45,7 +45,6 @@ class Skill {
     this.qzo = false;
     this.Gzo = false;
     this.Nzo = undefined;
-    this.GroupSkillCdInfo = undefined;
     this.kzo = [];
     this.Fzo = false;
     this.Vzo = undefined;
@@ -155,7 +154,6 @@ class Skill {
     this.ActiveAbility = undefined;
     this.wzo = undefined;
     this.qzo = false;
-    this.GroupSkillCdInfo = undefined;
     this.jzo = undefined;
     return !(this.Vzo = undefined);
   }

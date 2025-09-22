@@ -100,7 +100,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     if (this.Ctc && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Camera", 45, "[CameraLookAt] OnExitGuide ExitCameraGuideAtOnce");
     }
-    this.N9u();
+    this.nWc();
   }
   SetConfigs(t, i) {
     super.SetConfigs(t, i);
@@ -353,7 +353,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     }
     this.Camera.CameraRotationZone.Unlock(this);
   }
-  N9u() {
+  nWc() {
     if (this.f_e === 1 || this.f_e === 2) {
       if (this.Ctc && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Camera", 45, "[CameraLookAt] 立马退出Guide", ["this.FadeInTime", this.j1e], ["this.ElapsedTime", this.H6], ["this.FadeOutElapsedTime", this.p_e], ["this.BlendState", this.f_e]);

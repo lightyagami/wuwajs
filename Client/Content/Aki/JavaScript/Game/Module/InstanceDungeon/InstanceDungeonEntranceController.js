@@ -81,45 +81,45 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, InstanceDungeonEntranceController.juc);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15605, InstanceDungeonEntranceController.mhi);
-    Net_1.Net.Register(21251, InstanceDungeonEntranceController.dhi);
-    Net_1.Net.Register(26972, InstanceDungeonEntranceController.Chi);
-    Net_1.Net.Register(29603, InstanceDungeonEntranceController.MatchTeamNotify);
-    Net_1.Net.Register(19727, InstanceDungeonEntranceController.ghi);
-    Net_1.Net.Register(19274, InstanceDungeonEntranceController.MatchTeamStateNotify);
-    Net_1.Net.Register(24248, InstanceDungeonEntranceController.fhi);
-    Net_1.Net.Register(25687, InstanceDungeonEntranceController.phi);
-    Net_1.Net.Register(20154, InstanceDungeonEntranceController.vhi);
-    Net_1.Net.Register(17973, InstanceDungeonEntranceController.Mhi);
-    Net_1.Net.Register(27282, InstanceDungeonEntranceController.Ehi);
-    Net_1.Net.Register(16993, InstanceDungeonEntranceController.Shi);
-    Net_1.Net.Register(16836, InstanceDungeonEntranceController.yhi);
-    Net_1.Net.Register(25291, InstanceDungeonEntranceController.Ihi);
-    Net_1.Net.Register(24975, InstanceDungeonEntranceController.Thi);
-    Net_1.Net.Register(17952, InstanceDungeonEntranceController.Lhi);
-    Net_1.Net.Register(21373, InstanceDungeonEntranceController.Dhi);
-    Net_1.Net.Register(22597, InstanceDungeonEntranceController.Rhi);
-    Net_1.Net.Register(15939, InstanceDungeonEntranceController.NMl);
+    Net_1.Net.Register(20816, InstanceDungeonEntranceController.mhi);
+    Net_1.Net.Register(23466, InstanceDungeonEntranceController.dhi);
+    Net_1.Net.Register(26551, InstanceDungeonEntranceController.Chi);
+    Net_1.Net.Register(19450, InstanceDungeonEntranceController.MatchTeamNotify);
+    Net_1.Net.Register(22290, InstanceDungeonEntranceController.ghi);
+    Net_1.Net.Register(17694, InstanceDungeonEntranceController.MatchTeamStateNotify);
+    Net_1.Net.Register(29718, InstanceDungeonEntranceController.fhi);
+    Net_1.Net.Register(20099, InstanceDungeonEntranceController.phi);
+    Net_1.Net.Register(18483, InstanceDungeonEntranceController.vhi);
+    Net_1.Net.Register(15553, InstanceDungeonEntranceController.Mhi);
+    Net_1.Net.Register(22318, InstanceDungeonEntranceController.Ehi);
+    Net_1.Net.Register(20182, InstanceDungeonEntranceController.Shi);
+    Net_1.Net.Register(27150, InstanceDungeonEntranceController.yhi);
+    Net_1.Net.Register(19826, InstanceDungeonEntranceController.Ihi);
+    Net_1.Net.Register(22055, InstanceDungeonEntranceController.Thi);
+    Net_1.Net.Register(25043, InstanceDungeonEntranceController.Lhi);
+    Net_1.Net.Register(24139, InstanceDungeonEntranceController.Dhi);
+    Net_1.Net.Register(23906, InstanceDungeonEntranceController.Rhi);
+    Net_1.Net.Register(23666, InstanceDungeonEntranceController.NMl);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15605);
-    Net_1.Net.UnRegister(21251);
-    Net_1.Net.UnRegister(26972);
-    Net_1.Net.UnRegister(29603);
-    Net_1.Net.UnRegister(19727);
-    Net_1.Net.UnRegister(19274);
-    Net_1.Net.UnRegister(24248);
-    Net_1.Net.UnRegister(25687);
-    Net_1.Net.UnRegister(20154);
-    Net_1.Net.UnRegister(17973);
-    Net_1.Net.UnRegister(27282);
-    Net_1.Net.UnRegister(16993);
-    Net_1.Net.UnRegister(16836);
-    Net_1.Net.UnRegister(25291);
-    Net_1.Net.UnRegister(24975);
-    Net_1.Net.UnRegister(17952);
-    Net_1.Net.UnRegister(21373);
-    Net_1.Net.UnRegister(15939);
+    Net_1.Net.UnRegister(20816);
+    Net_1.Net.UnRegister(23466);
+    Net_1.Net.UnRegister(26551);
+    Net_1.Net.UnRegister(19450);
+    Net_1.Net.UnRegister(22290);
+    Net_1.Net.UnRegister(17694);
+    Net_1.Net.UnRegister(29718);
+    Net_1.Net.UnRegister(20099);
+    Net_1.Net.UnRegister(18483);
+    Net_1.Net.UnRegister(15553);
+    Net_1.Net.UnRegister(22318);
+    Net_1.Net.UnRegister(20182);
+    Net_1.Net.UnRegister(27150);
+    Net_1.Net.UnRegister(19826);
+    Net_1.Net.UnRegister(22055);
+    Net_1.Net.UnRegister(25043);
+    Net_1.Net.UnRegister(24139);
+    Net_1.Net.UnRegister(23666);
   }
   static K9a() {
     InstanceDungeonEntranceController.X9a.set(8500, MowingRiskInstanceView_1.MowingRiskInstanceView);
@@ -232,12 +232,12 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
   static async LeaveInstanceDungeonRequest(e = 0) {
     var n = Protocol_1.Aki.Protocol.Hos.create();
     n.XVn = e;
-    var e = await Net_1.Net.CallAsync(22808, n);
-    return !!e && (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || !(ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17421), 1));
+    var e = await Net_1.Net.CallAsync(28791, n);
+    return !!e && !(e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18348), 1) : ModelManager_1.ModelManager.InstanceDungeonModel.LastEnterRoleList = undefined);
   }
   static async RestartInstanceDungeon(e = undefined) {
     let n = ModelManager_1.ModelManager.InstanceDungeonModel.LastEnterRoleList;
-    if (!n) {
+    if (!n || n.length <= 0) {
       n = [];
       for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
         n.push(o.GetConfigId);
@@ -248,7 +248,7 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
   static async InstEntranceDetailRequest(e) {
     var n = new Protocol_1.Aki.Protocol.Vos();
     n.L9n = e;
-    var e = await Net_1.Net.CallAsync(17931, n);
+    var e = await Net_1.Net.CallAsync(20159, n);
     if (!e) {
       return false;
     }
@@ -256,7 +256,7 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
       Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10209" + Protocol_1.Aki.Protocol.$os.name]);
     }
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28896);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16441);
       return false;
     }
     ModelManager_1.ModelManager.InstanceDungeonEntranceModel.EntranceInstanceIdList.length = 0;
@@ -275,36 +275,36 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
     n.Tzs = TowerDefenceController_1.TowerDefenseController.BuildPhantomIdListByOwnRoleCfgIdList(e);
     n.vPc = new Protocol_1.Aki.Protocol.lqc();
     n.vPc.SPc = ModelManager_1.ModelManager.DangoAbyssModel.GetMatchDangoRoleOwnData(ModelManager_1.ModelManager.PlayerInfoModel.GetId(), e);
-    var e = await Net_1.Net.CallAsync(20067, n);
-    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10061" + Protocol_1.Aki.Protocol.qas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20075), false));
+    var e = await Net_1.Net.CallAsync(24867, n);
+    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10061" + Protocol_1.Aki.Protocol.qas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17611), false));
   }
   static async MatchChangeReadyRequest(e) {
     var n = new Protocol_1.Aki.Protocol.Oas();
     n.D9n = e;
-    var n = await Net_1.Net.CallAsync(20228, n);
-    return !!n && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10064" + Protocol_1.Aki.Protocol.kas.name]), n.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(n.Q4n, 23926), false) : (n = ModelManager_1.ModelManager.PlayerInfoModel.GetId(), ModelManager_1.ModelManager.InstanceDungeonModel.SetPrewarPlayerReadyState(n, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PrewarReadyChanged, n, e), true));
+    var n = await Net_1.Net.CallAsync(17556, n);
+    return !!n && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10064" + Protocol_1.Aki.Protocol.kas.name]), n.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(n.Q4n, 15141), false) : (n = ModelManager_1.ModelManager.PlayerInfoModel.GetId(), ModelManager_1.ModelManager.InstanceDungeonModel.SetPrewarPlayerReadyState(n, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PrewarReadyChanged, n, e), true));
   }
   static async LeaveMatchTeamRequest() {
     var e = new Protocol_1.Aki.Protocol.Fas();
-    var e = await Net_1.Net.CallAsync(22147, e);
-    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10066" + Protocol_1.Aki.Protocol.Vas.name]), e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26458), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveTeam), true));
+    var e = await Net_1.Net.CallAsync(21582, e);
+    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10066" + Protocol_1.Aki.Protocol.Vas.name]), e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23155), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveTeam), true));
   }
   static async KickMatchTeamPlayerRequest(e) {
     var n = new Protocol_1.Aki.Protocol.Was();
     n.W5n = e;
-    var e = await Net_1.Net.CallAsync(28287, n);
-    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10071" + Protocol_1.Aki.Protocol.Kas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25652), false));
+    var e = await Net_1.Net.CallAsync(26005, n);
+    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10071" + Protocol_1.Aki.Protocol.Kas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26684), false));
   }
   static async SetMatchTeamMatchFlagRequest(e) {
     var n = new Protocol_1.Aki.Protocol.Qas();
     n.u6n = e;
-    var e = await Net_1.Net.CallAsync(24372, n);
-    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10075" + Protocol_1.Aki.Protocol.Xas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17064), false));
+    var e = await Net_1.Net.CallAsync(20055, n);
+    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10075" + Protocol_1.Aki.Protocol.Xas.name]), e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17376), false));
   }
   static async EnterMatchInstRequest() {
     var e = new Protocol_1.Aki.Protocol.Jas();
-    var e = await Net_1.Net.CallAsync(17154, e);
-    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10073" + Protocol_1.Aki.Protocol.zas.name]), e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24523, undefined, true, ModelManager_1.ModelManager.InstanceDungeonEntranceModel.IsNeedErrorCodeForEnterInstance), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveTeam), true));
+    var e = await Net_1.Net.CallAsync(18645, e);
+    return !!e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10073" + Protocol_1.Aki.Protocol.zas.name]), e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22306, undefined, true, ModelManager_1.ModelManager.InstanceDungeonEntranceModel.IsNeedErrorCodeForEnterInstance), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveTeam), true));
   }
   static CheckInstanceShieldView(e) {
     var n;
@@ -338,13 +338,13 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
       o.A9n = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.EntranceId;
       o.U9n = n;
       ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SetMatchingId(e);
-      Net_1.Net.Call(16880, o, e => {
+      Net_1.Net.Call(22285, o, e => {
         if (e) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10051" + Protocol_1.Aki.Protocol.yas.name]);
           }
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18101);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23693);
           } else {
             ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SetMatchingState(1);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMatchingBegin);
@@ -364,12 +364,12 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
   }
   static CancelMatchRequest() {
     var e = new Protocol_1.Aki.Protocol.Tas();
-    Net_1.Net.Call(28246, e, e => {
+    Net_1.Net.Call(21514, e, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10053" + Protocol_1.Aki.Protocol.Las.name]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15675);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22707);
       } else {
         ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SetMatchingState(0);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMatchingChange);
@@ -381,12 +381,12 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
   static MatchConfirmRequest(n) {
     var e = new Protocol_1.Aki.Protocol.Pas();
     e.R9n = n;
-    Net_1.Net.Call(17993, e, e => {
+    Net_1.Net.Call(15722, e, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10059" + Protocol_1.Aki.Protocol.Uas.name]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19766);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25806);
         ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SetMatchingState(0);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMatchingChange);
       } else {
@@ -405,12 +405,12 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
     o.r6n = e;
     o.A9n = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.EntranceId;
     o.U9n = n;
-    Net_1.Net.Call(28624, o, e => {
+    Net_1.Net.Call(19155, o, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10080" + Protocol_1.Aki.Protocol.ehs.name]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26562);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28980);
       }
     });
   }
@@ -419,24 +419,24 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
     o.r6n = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceId();
     o.CIa = e ? Protocol_1.Aki.Protocol.GR_.jc_ : n ? Protocol_1.Aki.Protocol.GR_.Proto_ActiveRefuse : Protocol_1.Aki.Protocol.GR_.Proto_TimeOutRefuse;
     o.qVn = ModelManager_1.ModelManager.OnlineModel.OwnerId;
-    Net_1.Net.Call(22367, o, e => {
+    Net_1.Net.Call(19485, o, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10085" + Protocol_1.Aki.Protocol.nhs.name]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26920);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25137);
       }
     });
   }
   static TeamMatchInviteRequest() {
     var e = new Protocol_1.Aki.Protocol.ths();
     e.r6n = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceId();
-    Net_1.Net.Call(29197, e, e => {
+    Net_1.Net.Call(29787, e, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InstanceDungeon", 5, "协议接收", ["协议id", "10085" + Protocol_1.Aki.Protocol.ihs.name]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27968);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28316);
       }
     });
   }

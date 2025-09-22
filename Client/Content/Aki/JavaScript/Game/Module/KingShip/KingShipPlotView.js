@@ -16,37 +16,37 @@ const CLICK_AUDIO_EVENT = "play_ui_ia_com_confirm";
 class KingShipPlotView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.RFu = undefined;
+    this.GFu = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.RFu = new KingShipPlotItem();
-    await this.RFu.CreateThenShowByResourceIdAsync("UiView_PlotD_Prefab", this.GetItem(1));
+    this.GFu = new KingShipPlotItem();
+    await this.GFu.CreateThenShowByResourceIdAsync("UiView_PlotD_Prefab", this.GetItem(1));
   }
   OnStart() {
     var i = this.OpenParam;
-    this.RFu?.RefreshPlot(i.FlowId);
+    this.GFu?.RefreshPlot(i.FlowId);
     this.SetTextureByPath(i.Path, this.GetTexture(0));
   }
   OnBeforeDestroy() {
     this.OpenParam.OnCloseCallBack();
   }
   async OnPlayingCloseSequenceAsync() {
-    await this.RFu.DestroyPortraitItem();
+    await this.GFu.DestroyPortraitItem();
   }
 }
 exports.KingShipPlotView = KingShipPlotView;
 class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.wFu = [];
-    this.LFu = 0;
+    this.FFu = [];
+    this.NFu = 0;
     this.lLt = undefined;
     this.geo = undefined;
     this.XTt = () => {
-      this.LFu++;
+      this.NFu++;
       this.ShowPlot();
       AudioSystem_1.AudioSystem.PostEvent(CLICK_AUDIO_EVENT);
     };
@@ -66,24 +66,24 @@ class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
     this.geo = new PlotTextLogic_1.PlotTextCommonLogic(this.GetItem(4), this.GetText(0), this.GetText(1), this.GetText(2), this.GetItem(3), i);
   }
   RefreshPlot(i) {
-    this.wFu = [];
-    this.LFu = 0;
+    this.FFu = [];
+    this.NFu = 0;
     for (const t of ConfigManager_1.ConfigManager.FlowConfig.GetFlowStateActions(i[0], Number(i[1]), Number(i[2]))) {
       if (t.Name === "ShowTalk") {
         for (const e of t.Params.TalkItems) {
-          this.wFu.push(e);
+          this.FFu.push(e);
         }
       }
     }
     this.ShowPlot();
   }
   ShowPlot() {
-    var i = this.wFu.length;
-    if (this.LFu >= i) {
+    var i = this.FFu.length;
+    if (this.NFu >= i) {
       this.lLt?.SetUiActive(false);
       UiManager_1.UiManager.CloseView("KingShipPlotView");
     } else {
-      i = this.wFu[this.LFu];
+      i = this.FFu[this.NFu];
       this.geo?.UpdatePlotSubtitle(i);
     }
   }

@@ -26,7 +26,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
     this.MusicMap = new Map();
     this.CaptionComponent = undefined;
     this.SequencePlayer = undefined;
-    this.qgd = 0;
+    this.v7d = 0;
     this.OnCreateAlbumItem = () => {
       var e = new PhonographAlbumItem_1.PhonographAlbumItem();
       e.OnClickAlbumItem = this.OnClickAlbumItem;
@@ -87,7 +87,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.PhonographModel.CurrentSelectMusicId = e;
       if (ModelManager_1.ModelManager.PhonographModel.IsUnlockMusic(e)) {
         this.MusicGenericLayout.SelectGridProxy(r);
-        this.qgd = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
+        this.v7d = ControllerHolder_1.ControllerHolder.PhonographController.PlayMusic(e);
         ModelManager_1.ModelManager.PhonographModel?.RemoveNewMusic(e);
         this.RefreshMusicInfo(e);
         this.SequencePlayer?.PlaySequencePurely("Single");
@@ -106,7 +106,7 @@ class PhonographView extends UiViewBase_1.UiViewBase {
       if (r === 0) {
         ModelManager_1.ModelManager.PhonographModel.RemovePlayIdRecord(t);
       } else {
-        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(t, this.qgd);
+        ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(t, this.v7d);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographSetBgm, r);
       this.RefreshSwitchBtn(e);

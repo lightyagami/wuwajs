@@ -30,7 +30,7 @@ class WeeklyRogueArtifactItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.Pqe();
       }
     };
-    this.$$c = () => {
+    this.X9u = () => {
       return new WeeklyRogueTagItem_1.WeeklyRogueTagItem();
     };
   }
@@ -39,7 +39,7 @@ class WeeklyRogueArtifactItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[0, this.eTt]];
   }
   OnStart() {
-    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.$$c);
+    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(4), this.X9u);
   }
   OnBeforeShow() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueDescModeChange, this.iV_);

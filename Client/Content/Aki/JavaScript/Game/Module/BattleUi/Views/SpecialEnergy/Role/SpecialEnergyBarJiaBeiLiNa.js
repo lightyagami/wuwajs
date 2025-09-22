@@ -1,0 +1,141 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SpecialEnergyBarJiaBeiLiNa = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../../Core/Common/Log");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const SpecialEnergyBarBase_1 = require("../SpecialEnergyBarBase");
+const SpecialEnergyBarJiaBeiLiNaMorphSlot_1 = require("./SpecialEnergyBarJiaBeiLiNaMorphSlot");
+const SpecialEnergyBarJiaBeiLiNaSlot_1 = require("./SpecialEnergyBarJiaBeiLiNaSlot");
+const MORPH_CONFIG_ID = 120801;
+const SUB_CONFIG_ID = 120802;
+const morphTagId = 332111384;
+const EXTRA_SUB_BUFF_ID = 1208003423;
+class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBarBase {
+  constructor() {
+    super(...arguments);
+    this.ps1 = undefined;
+    this.nQd = undefined;
+    this.pMc = undefined;
+    this.vs1 = undefined;
+    this._ii = 0;
+    this.bst = undefined;
+    this.p2a = 0;
+    this.sQd = false;
+    this.aQd = -1;
+    this.hQd = [false, false];
+    this.Ss1 = (i, t) => {
+      this.Owt(t ? 1 : 0, false);
+    };
+    this.lQd = (i, t) => {
+      this.sQd = t;
+    };
+    this._Qd = (i, t) => {
+      t = t >= 1;
+      if (this.hQd[i] !== t && (this.hQd[i] = t)) {
+        this.PlayTweenAnim(i === 0 ? 9 : 10);
+      }
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem]];
+  }
+  OnInitData() {
+    this.ps1 = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(MORPH_CONFIG_ID);
+    this.nQd = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(SUB_CONFIG_ID);
+  }
+  AddEvents() {
+    super.AddEvents();
+    this.ListenForTagAddOrRemoveChanged(morphTagId, this.Ss1);
+    this.ListenForTagAddOrRemoveChanged(this.nQd.KeyEnableTagId, this.lQd);
+  }
+  async OnBeforeStartAsync() {
+    var i = [];
+    i.push(this.InitBarItem());
+    await Promise.all(i);
+  }
+  async InitBarItem() {
+    this.pMc = new SpecialEnergyBarJiaBeiLiNaSlot_1.SpecialEnergyBarJiaBeiLiNaSlot();
+    this.pMc.InitData(this.RoleData, this.Config);
+    this.pMc.ForceHideBottomLine = true;
+    this.pMc.PercentCallback = this._Qd;
+    await this.pMc.InitByActorAsync(this.GetItem(5).GetOwner());
+    this.vs1 = new SpecialEnergyBarJiaBeiLiNaMorphSlot_1.SpecialEnergyBarJiaBeiLiNaMorphSlot();
+    this.vs1.InitData(this.RoleData, this.ps1, false);
+    this.vs1.ForceHideBottomLine = true;
+    await this.vs1.InitByActorAsync(this.GetItem(1).GetOwner());
+  }
+  OnStart() {
+    this.InitTweenAnim(11);
+    this.InitTweenAnim(12);
+    this.InitTweenAnim(8);
+    this.InitTweenAnim(9);
+    this.InitTweenAnim(10);
+    this.PlayTweenAnim(8);
+    for (let i = 0; i < this.hQd.length; i++) {
+      if (this.hQd[i]) {
+        this.PlayTweenAnim(i === 0 ? 9 : 10);
+      }
+    }
+    this._Oe(true);
+    this.OnBarPercentChanged();
+  }
+  uQd() {
+    let i = 0;
+    if ((i = this.sQd && (this.bst && this.BuffComponent?.GetBuffByHandle(this.p2a) || this.tst(), this.bst) ? this.bst.GetRemainDuration() / this.bst.Duration : i) !== this.aQd) {
+      this.aQd = i;
+      this.GetSprite(6)?.SetFillAmount(i);
+      this.GetSprite(2)?.SetFillAmount(i);
+      this.GetItem(7)?.SetAnchorOffsetX((i - 0.5) * 320);
+      this.GetItem(3)?.SetAnchorOffsetX((i - 0.5) * 289);
+    }
+  }
+  _Oe(i = false) {
+    if (this.TagComponent?.HasTag(morphTagId)) {
+      this.Owt(1, i);
+    } else {
+      this.Owt(0, i);
+    }
+    this.sQd = this.TagComponent?.HasTag(this.nQd.KeyEnableTagId) ?? false;
+  }
+  Owt(i, t = false) {
+    if (i !== this._ii || t) {
+      this._ii = i;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Battle", 17, "嘉贝莉娜能量条改变状态", ["强化", i]);
+      }
+      switch (this._ii) {
+        case 0:
+          if (!t) {
+            this.PlayTweenAnim(12);
+          }
+          break;
+        case 1:
+          if (!t) {
+            this.PlayTweenAnim(11);
+          }
+      }
+    }
+  }
+  Tick(i) {
+    super.Tick(i);
+    this.pMc?.Tick(i);
+    this.vs1?.Tick(i);
+    this.uQd();
+  }
+  tst() {
+    if (this.nQd?.BuffId) {
+      this.bst = this.BuffComponent?.GetBuffById(EXTRA_SUB_BUFF_ID);
+      this.bst ||= this.BuffComponent?.GetBuffById(this.nQd.BuffId);
+      this.p2a = this.bst?.Handle ?? 0;
+    } else {
+      this.bst = undefined;
+      this.p2a = 0;
+    }
+  }
+}
+exports.SpecialEnergyBarJiaBeiLiNa = SpecialEnergyBarJiaBeiLiNa;
+//# sourceMappingURL=SpecialEnergyBarJiaBeiLiNa.js.map

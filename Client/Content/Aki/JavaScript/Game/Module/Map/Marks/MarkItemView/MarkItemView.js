@@ -18,7 +18,9 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../../GlobalData");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const WorldMapDefine_1 = require("../../../WorldMap/WorldMapDefine");
 const MarkSpritePool_1 = require("../../Container/MarkSpritePool");
+const MapDefine_1 = require("../../MapDefine");
 const MarkItemChildIconHandle_1 = require("./Handles/MarkItemChildIconHandle");
 const MarkItemGravityReverseIconHandle_1 = require("./Handles/MarkItemGravityReverseIconHandle");
 const MarkItemNameHandle_1 = require("./Handles/MarkItemNameHandle");
@@ -30,7 +32,6 @@ const MarkItemTrackHandle_1 = require("./Handles/MarkItemTrackHandle");
 const MarkItemVerticlePointerHandle_1 = require("./Handles/MarkItemVerticlePointerHandle");
 const MarkPanelBase_1 = require("./MarkPanelBase");
 const SCALE_TWEEN_DURATION = 0.2;
-const MARK_ITEM_VIEW_PATH = "UiItem_WorldMapMark_Prefab";
 class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
   constructor(e) {
     super();
@@ -39,13 +40,13 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.c1a = 0;
     this.GOe = undefined;
     this.IsShowIcon = true;
-    this.pRi = undefined;
+    this.pRi = new UE.Vector();
     this.LevelSequencePlayer = undefined;
-    this.ERi = undefined;
-    this.Oua = undefined;
+    this.AttachParentSocketTransform = undefined;
     this.yRi = false;
     this.MarkComponentContext = undefined;
     this.MarkItemComponentHandleMap = new Map();
+    this.zSd = false;
     this.OnLevelSequenceStart = e => {
       this.Holder.OnLevelSequenceStart(e);
     };
@@ -54,7 +55,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       if (e === "HideView") {
         e = this.Holder.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(0);
         this.SetUiActive(e);
-        this.ERi?.SetAlpha(1);
+        this.GetItem(0)?.SetAlpha(1);
       }
     };
     this.kOe = () => {
@@ -79,7 +80,6 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       }
     };
     this.Holder = e;
-    this.pRi = new UE.Vector();
   }
   get MarkItemTopRightIconHandle() {
     return this.MarkItemComponentHandleMap.get(1);
@@ -116,11 +116,14 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       this.OnSelectedStateChange(e);
     }
   }
+  get ViewInitialized() {
+    return this.zSd;
+  }
   async InitializeMarkItemViewAsync() {
-    this.LoadingPromiseInner = this.CreateThenShowByPoolResourceIdAsync(MARK_ITEM_VIEW_PATH, this.Holder.ViewRoot);
+    this.LoadingPromiseInner = this.CreateThenShowByPoolResourceIdAsync(WorldMapDefine_1.MARK_ITEM_VIEW_PATH, this.Holder.ViewRoot);
     await this.LoadingPromiseInner;
     this.LoadingPromiseInner = undefined;
-    this.bRi(this.yRi);
+    this.bRi();
   }
   OnSelectedStateChange(e) {}
   OnInitialize() {
@@ -128,6 +131,76 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
   }
   RegisterEvents() {}
   UnRegisterEvents() {}
+  async InitializeMarkItemViewNewAsync() {
+    this.LoadingPromiseInner = this.CreateThenShowByPoolResourceIdAsync(WorldMapDefine_1.MARK_ITEM_VIEW_PATH, this.Holder.ViewRoot);
+    await this.LoadingPromiseInner;
+    this.LoadingPromiseInner = undefined;
+  }
+  InitializeData(e) {
+    this.Holder = e;
+    this.OnDataInitialized(this.Holder);
+  }
+  InitializeView() {
+    if (!this.zSd) {
+      this.zSd = true;
+      this.GetSprite(2).SetUIActive(false);
+      this.GetSprite(1).SetUIActive(false);
+      this.RefreshActorLabel();
+      this.RefreshParentSocketTransform();
+      this.RefreshLevelSequencePlayer();
+      this.Xd();
+      this.ZWd();
+      this.ApplyRootAnchorOffset();
+      this.OnViewInitialize();
+    }
+  }
+  RefreshView() {
+    this.IsShowIcon = true;
+    this.RefreshActorLabel();
+    this.ApplyRootAnchorOffset();
+    this.GetItem(0)?.SetAlpha(1);
+    this.MarkComponentContext.MarkItemEntity = this.Holder.MarkItemEntity;
+    this.MarkComponentContext.MarkItem = this.Holder;
+    this.MarkComponentContext.MarkParentItem = this.RootItem.GetParentAsUIItem();
+    this.MarkComponentContext.MarkRootItem = this.RootItem;
+    this.Xd();
+    this.xW_();
+    this.OnViewRefresh();
+    this.RegisterEvents();
+  }
+  RecycleView(e) {
+    this.UnRegisterEvents();
+    this.OnViewRecycle();
+    if (e) {
+      this.RecycleToPool();
+    } else {
+      this.SetVisible(false);
+      MarkSpritePool_1.MarkSpritePool.UnRef(this.ComponentId);
+      this.OnRecycle();
+    }
+  }
+  RecycleToPool() {
+    if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.Holder.MarkType)) {
+      this.DestroyView();
+    }
+    super.RecycleToPool();
+  }
+  DestroyView() {
+    this.En_();
+    this.LevelSequencePlayer?.Clear();
+    this.LevelSequencePlayer = undefined;
+    this.LoadingPromiseInner = undefined;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewDestroy, this);
+    this.ClearData();
+  }
+  ClearData() {
+    this.AttachParentSocketTransform = undefined;
+    this.Holder = undefined;
+  }
+  OnDataInitialized(e) {}
+  OnViewInitialize() {}
+  OnViewRefresh() {}
+  OnViewRecycle() {}
   GetIconItem() {
     return this.GetSprite(1);
   }
@@ -135,26 +208,20 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UISprite]];
   }
   OnStart() {
-    this.RefreshActorLabel();
-    var e = this.RootItem.GetAttachSocketName();
-    var t = this.RootItem.GetAttachParent();
-    this.Oua = t.D_GetSocketTransform(e);
-    this.ERi = this.GetItem(0);
-    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.LevelSequencePlayer.BindSequenceStartEvent(this.OnLevelSequenceStart);
-    this.LevelSequencePlayer.BindSequenceCloseEvent(this.OnLevelSequenceStop);
-    this.GetSprite(1).SetUIActive(false);
-    this.GetSprite(2).SetUIActive(false);
-    this.Xd();
-    this.Ph_();
-    this.ApplyRootAnchorOffset();
-    this.OnInitialize();
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewCreate, this);
-  }
-  RefreshActorLabel() {
-    if (GlobalData_1.GlobalData.IsPlayInEditor) {
-      this.RootActor.SetActorLabel(`MarkId:${this.Holder.MarkId},MarkType:${this.Holder.MarkType},MapType:${this.Holder.MapType},ComponentId:${this.ComponentId}`);
+    if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.Holder.MarkType)) {
+      this.CreateComponentHandles();
+    } else {
+      this.GetSprite(2).SetUIActive(false);
+      this.GetSprite(1).SetUIActive(false);
+      this.RefreshActorLabel();
+      this.RefreshParentSocketTransform();
+      this.RefreshLevelSequencePlayer();
+      this.Xd();
+      this.CreateAndInitComponentHandles();
+      this.ApplyRootAnchorOffset();
+      this.OnInitialize();
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewCreate, this);
   }
   OnAfterHide() {
     this.jm();
@@ -165,21 +232,36 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.LevelSequencePlayer = undefined;
     this.LoadingPromiseInner = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewDestroy, this);
-    this.Oua = undefined;
+    this.AttachParentSocketTransform = undefined;
     this.Holder = undefined;
+  }
+  RefreshActorLabel() {
+    if (GlobalData_1.GlobalData.IsPlayInEditor) {
+      this.RootActor.SetActorLabel(`MarkId:${this.Holder.MarkId},MarkType:${this.Holder.MarkType},MapType:${this.Holder.MapType},ComponentId:${this.ComponentId}`);
+    }
+  }
+  RefreshParentSocketTransform() {
+    var e = this.RootItem.GetAttachSocketName();
+    var t = this.RootItem.GetAttachParent();
+    this.AttachParentSocketTransform = t.D_GetSocketTransform(e);
+  }
+  RefreshLevelSequencePlayer() {
+    this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.LevelSequencePlayer.BindSequenceStartEvent(this.OnLevelSequenceStart);
+    this.LevelSequencePlayer.BindSequenceCloseEvent(this.OnLevelSequenceStop);
   }
   SetScale(e) {
     var t;
     var i;
     if (this.IsHolderValid()) {
       t = 1 / ((i = this.Holder.MapType === 1) ? 1 : ModelManager_1.ModelManager.WorldMapModel.MapScale);
-      i = i ? this.Oua.GetScale3D() : Vector_1.Vector.OneVectorProxy;
+      i = i ? this.AttachParentSocketTransform.GetScale3D() : Vector_1.Vector.OneVectorProxy;
       this.pRi.Set(e * t / i.X, e * t / i.Y, e * t / i.Z);
       this.RootItem.SetUIRelativeScale3D(this.pRi);
     }
   }
   IsHolderValid() {
-    return this.Holder !== undefined && this.Oua !== undefined;
+    return this.Holder !== undefined && this.AttachParentSocketTransform !== undefined;
   }
   get IsViewReady() {
     return !this.IsCreating && !this.IsDestroyOrDestroying && !this.IsHideOrHiding;
@@ -192,7 +274,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       }
     } else {
       this.yRi = i;
-      this.bRi(this.yRi);
+      this.bRi();
       if (s = this.Holder.IsCanShowView) {
         if (s && !this.RootItem?.bIsUIActive) {
           this.SetUiActive(true);
@@ -220,13 +302,13 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.gfc();
     this.Uh_();
   }
-  bRi(e) {
+  bRi() {
     if (this.Holder === undefined) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Map", 63, "Holder is undefined", ["ComponentState", this.IsDestroyOrDestroying], ["isCreating", this.IsCreating]);
       }
     } else {
-      if (e) {
+      if (this.yRi) {
         if (this.Holder.NeedPlayShowOrHideSeq) {
           switch (this.Holder.NeedPlayShowOrHideSeq) {
             case "ShowView":
@@ -319,8 +401,7 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.IsShowIcon = true;
     this.RefreshActorLabel();
     this.ApplyRootAnchorOffset();
-    this.SetScale(this.Holder.MarkScale);
-    this.ERi?.SetAlpha(1);
+    this.GetItem(0)?.SetAlpha(1);
     this.MarkComponentContext.MarkItemEntity = this.Holder.MarkItemEntity;
     this.MarkComponentContext.MarkItem = this.Holder;
     this.MarkComponentContext.MarkParentItem = this.RootItem.GetParentAsUIItem();
@@ -345,8 +426,11 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.GetSprite(1).SetUIItemScale(e);
     this.GetSprite(4).SetUIItemScale(this.Holder.CornerScaleVector);
   }
-  Ph_() {
+  CreateAndInitComponentHandles() {
     this.CreateComponentHandles();
+    this.ZWd();
+  }
+  ZWd() {
     for (const e of this.MarkItemComponentHandleMap.values()) {
       e.Init();
     }
@@ -355,8 +439,8 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.MarkComponentContext = {
       MarkItemEntity: this.Holder.MarkItemEntity,
       TopRightIconSprite: this.GetSprite(4),
-      SetSpriteByPathAction: (e, t, i, s = undefined, r = undefined) => {
-        this.SetSpriteByPath(e, t, i, s, r);
+      SetSpriteByPathAction: (e, t, i, s = undefined, h = undefined) => {
+        this.SetSpriteByPath(e, t, i, s, h);
       },
       MarkComponentContainer: this.GetItem(0),
       MarkParentItem: this.RootItem.GetParentAsUIItem(),

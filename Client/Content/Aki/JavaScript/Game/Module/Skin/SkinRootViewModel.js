@@ -13,9 +13,12 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const BlackScreenController_1 = require("../BlackScreen/BlackScreenController");
 const UiCameraInputComponent_1 = require("../Common/UiCamera/UiCameraInputComponent");
 const UiModelUtil_1 = require("../UiModel/UiModelUtil");
+const CalabashSkinDefine_1 = require("./Tab/Calabash/CalabashSkinDefine");
+const CalabashSkinViewProxy_1 = require("./Tab/Calabash/CalabashSkinViewProxy");
 const FlySkinTabViewModel_1 = require("./Tab/Fly/FlySkinTabViewModel");
 const WeaponSkinDefine_1 = require("./Tab/Weapon/WeaponSkinDefine");
 const WeaponSkinGridData_1 = require("./Tab/Weapon/WeaponSkinGridData");
+const fadeCurveMap = new Map([[0, new Map([[1, [0, "WeaponSkinRoleFadeInCurve"]], [2, [0, "FlySkinRoleFadeInCurve"]], [3, [0, "TerminalSkinRoleFadeInCurve"]]])], [1, new Map([[0, [1, "WeaponSkinRoleFadeOutCurve"]]])], [2, new Map([[0, [1, "FlySkinRoleFadeOutCurve"]]])], [3, new Map([[0, [1, "TerminalSkinRoleFadeOutCurve"]]])]]);
 class SkinRootViewModel {
   constructor() {
     this.Yzt = undefined;
@@ -24,6 +27,7 @@ class SkinRootViewModel {
     this.NeedLoadRole = false;
     this.CameraInputComponent = new UiCameraInputComponent_1.UiCameraInputComponent();
     this.GliderObserver = undefined;
+    this.HelpIdMap = new Map([["RoleSkinTabView", 146], ["CalabashSkinTabView", CalabashSkinDefine_1.CALABASH_SKIN_HELP_ID]]);
     this.CloseView = () => {
       if (this.NeedLoadRole) {
         BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", "CloseRoleSkinView");
@@ -43,39 +47,39 @@ class SkinRootViewModel {
     this.SkinDataList = [];
     this.Dil = undefined;
     this.IsInShowWeapon = false;
-    this.Ail = (i, e) => {
+    this.Ail = (e, i) => {
       var t;
-      if (this.RoleId === i) {
-        i = this.Ril(this.EquipSkinId);
-        t = this.Ril(e);
-        this.Dil?.RefreshGridSelect(i, t);
+      if (this.RoleId === e) {
+        e = this.Ril(this.EquipSkinId);
+        t = this.Ril(i);
+        this.Dil?.RefreshGridSelect(e, t);
         this.Dil?.RefreshConfirmBox(true);
         this.Dil?.ShowEquipTips();
-        this.EquipSkinId = e;
+        this.EquipSkinId = i;
       }
     };
-    this.xil = i => {
-      var e;
-      if (this.RoleId === i) {
-        i = this.Ril(this.EquipSkinId);
-        e = this.Ril(WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID);
-        this.Dil?.RefreshGridSelect(i, e);
+    this.xil = e => {
+      var i;
+      if (this.RoleId === e) {
+        e = this.Ril(this.EquipSkinId);
+        i = this.Ril(WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID);
+        this.Dil?.RefreshGridSelect(e, i);
         this.Dil?.RefreshConfirmBox(true);
         this.Dil?.ShowEquipTips();
         this.EquipSkinId = WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID;
       }
     };
-    this.WeaponHideUiClick = i => {
-      if (i === 1) {
+    this.WeaponHideUiClick = e => {
+      if (e === 1) {
         this.Dil?.ShowView();
-        this.Yzt.ShowView();
+        this.ShowRootView();
       } else {
         this.Dil?.HideView();
-        this.Yzt.HideView();
+        this.HideRootView();
       }
     };
-    this.WeaponSwitchShowClick = i => {
-      if (i === 1) {
+    this.WeaponSwitchShowClick = e => {
+      if (e === 1) {
         this.IsInShowWeapon = true;
         this.Dil?.SwitchWeaponShow(this.WeaponIncId, this.SelectedSkinId);
       } else {
@@ -86,30 +90,32 @@ class SkinRootViewModel {
     this.WeaponConfirmClick = () => {
       this.Dil?.TrySendPbEquipTakeOnRequest(this.RoleId, this.SelectedSkinId);
     };
-    this.GridItemClick = i => {
-      i = i.Data.SkinId;
-      this.Pil(i);
-      this.Dil?.SwitchWeaponSkinModel(this.WeaponIncId, i, this.IsInShowWeapon);
-      this.SelectedSkinId = i;
+    this.GridItemClick = e => {
+      e = e.Data.SkinId;
+      this.Pil(e);
+      this.Dil?.SwitchWeaponSkinModel(this.WeaponIncId, e, this.IsInShowWeapon);
+      this.SelectedSkinId = e;
     };
-    this.GridItemCanExecuteChange = i => {
-      i = i.SkinId;
-      return this.SelectedSkinId !== i;
+    this.GridItemCanExecuteChange = e => {
+      e = e.SkinId;
+      return this.SelectedSkinId !== e;
     };
     this.FlySkinTabViewModel = new FlySkinTabViewModel_1.FlySkinTabViewModel();
+    this.CalabashSkinViewProxy = new CalabashSkinViewProxy_1.CalabashSkinViewProxy();
     this.S6c = 0;
   }
-  RegisterView(i) {
-    this.Yzt = i;
+  RegisterView(e) {
+    this.Yzt = e;
   }
-  SetViewData(i, e, t, n, s = -1, a = 0) {
-    this.RoleId = i;
-    this.FlySkinTabViewModel.RoleDataId = i;
-    this.FlySkinTabViewModel.SelectedFlySkinId = s;
-    this.FlySkinTabViewModel.SelectedTab = a;
-    this.WeaponIncId = e;
-    this.CurSelectTabViewName = t;
-    this.NeedLoadRole = n;
+  SetViewData(e) {
+    this.RoleId = e.RoleId;
+    this.FlySkinTabViewModel.RoleDataId = e.RoleId;
+    this.FlySkinTabViewModel.SelectedFlySkinId = e.FlySkinId ?? -1;
+    this.FlySkinTabViewModel.SelectedTab = e.FlySkinTab ?? 0;
+    this.WeaponIncId = e.WeaponId;
+    this.CurSelectTabViewName = e.TabViewName;
+    this.NeedLoadRole = e.NeedLoadRole;
+    this.CalabashSkinViewProxy.SkinIdFromSkip = e.CalabashSkinId ?? CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
     this.sTl();
   }
   AddEventListener() {
@@ -122,113 +128,125 @@ class SkinRootViewModel {
   }
   BeforeDestroy() {
     this.Dil?.ReleaseWeaponObserver();
-    var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.RoleId);
-    this.Dil?.RecoverySceneRoleActorBySkin(i.GetIncId(), this.EquipSkinId);
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.RoleId);
+    this.Dil?.RecoverySceneRoleActorBySkin(e.GetIncId(), this.EquipSkinId);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkinRootViewDestroy);
     this.ChangeModelState(0);
   }
-  wil(i, e) {
-    return new WeaponSkinGridData_1.WeaponSkinData(i, e);
+  get IsMainRole() {
+    return ModelManager_1.ModelManager.RoleModel.IsMainRole(this.RoleId);
+  }
+  HideRootView() {
+    this.Yzt.HideView();
+  }
+  ShowRootView() {
+    this.Yzt.ShowView();
+  }
+  wil(e, i) {
+    return new WeaponSkinGridData_1.WeaponSkinData(e, i);
   }
   sTl() {
-    var i = (ModelManager_1.ModelManager.WeaponModel?.GetWeaponDataByIncId(this.WeaponIncId)).GetWeaponConfig().WeaponType;
-    var i = ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfigListByType(i);
-    const e = this.wil(WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID, this.RoleId);
-    this.SkinDataList.push(e);
-    for (const t of i) {
+    var e = (ModelManager_1.ModelManager.WeaponModel?.GetWeaponDataByIncId(this.WeaponIncId)).GetWeaponConfig().WeaponType;
+    var e = ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfigListByType(e);
+    const i = this.wil(WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID, this.RoleId);
+    this.SkinDataList.push(i);
+    for (const t of e) {
       if (!t.HideInSkinView) {
-        const e = this.wil(t.Id, this.RoleId);
-        this.SkinDataList.push(e);
+        const i = this.wil(t.Id, this.RoleId);
+        this.SkinDataList.push(i);
       }
     }
   }
   InitSelectedWeaponSkinId() {
-    var i = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(this.RoleId);
-    this.EquipSkinId = i;
-    var i = this.Ril(i);
-    this.SelectedSkinId = this.SkinDataList[i].SkinId;
+    var e = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(this.RoleId);
+    this.EquipSkinId = e;
+    var e = this.Ril(e);
+    this.SelectedSkinId = this.SkinDataList[e].SkinId;
   }
-  Ril(e) {
-    var i = this.SkinDataList.findIndex(i => i.SkinId === e);
-    if (i < 0) {
+  Ril(i) {
+    var e = this.SkinDataList.findIndex(e => e.SkinId === i);
+    if (e < 0) {
       return 0;
     } else {
-      return i;
+      return e;
     }
   }
-  Pil(i) {
-    var e = this.Ril(i);
-    var t = this.SkinDataList[e];
-    this.Dil?.RefreshBottom(t, this.EquipSkinId === i);
+  Pil(e) {
+    var i = this.Ril(e);
+    var t = this.SkinDataList[i];
+    this.Dil?.RefreshBottom(t, this.EquipSkinId === e);
     this.Dil?.RefreshText(t.Name, t.Description);
-    this.Dil?.SelectedGrid(e);
+    this.Dil?.SelectedGrid(i);
   }
-  RegisterWeaponSkinTabView(i) {
-    this.Dil = i;
+  RegisterWeaponSkinTabView(e) {
+    this.Dil = e;
     this.InitSelectedWeaponSkinId();
     this.Dil.InitWeaponModel(this.WeaponIncId, this.SelectedSkinId);
   }
   InitGridSelected() {
     this.Pil(this.SelectedSkinId);
   }
-  GetSkinSkipDataList(i) {
-    var e = [];
-    for (const n of ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfig(i).ItemAccess) {
-      var t = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(n);
-      if (t) {
-        t = {
+  GetSkinSkipDataList(e, i) {
+    var t = [];
+    for (const n of i) {
+      var a = ConfigManager_1.ConfigManager.GetWayConfig.GetConfigById(n);
+      if (a) {
+        a = {
           Id: n,
-          ConfigId: i,
-          Type: t?.Type,
-          Text: t.Description,
-          SortIndex: t.SortIndex
+          ConfigId: e,
+          Type: a?.Type,
+          Text: a.Description,
+          SortIndex: a.SortIndex
         };
-        e.push(t);
+        t.push(a);
       }
     }
-    e.sort((i, e) => {
-      var t = i.SortIndex;
-      var n = e.SortIndex;
-      if (t === n) {
-        return e.Id - i.Id;
+    t.sort((e, i) => {
+      var t = e.SortIndex;
+      var a = i.SortIndex;
+      if (t === a) {
+        return i.Id - e.Id;
       } else {
-        return n - t;
+        return a - t;
       }
     });
-    return e;
+    return t;
   }
-  SetCaptionItemActive(i) {
-    if (i) {
-      this.Yzt.ShowView();
+  SetCaptionItemActive(e) {
+    if (e) {
+      this.ShowRootView();
     } else {
-      this.Yzt.HideView();
+      this.HideRootView();
     }
   }
   RefreshGamePadKeyTip() {
     this.Yzt.RefreshGamePadKeyTip();
   }
+  SetMoveGamepadKeyTipActive(e) {
+    this.Yzt.SetMoveGamepadKeyTipActive(e);
+  }
   GetRoleTabCameraInputData() {
-    var i = this.IsWearWeaponSkin ? ConfigManager_1.ConfigManager.PayShopConfig.GetBuySkinDetailWeaponCameraConfigId() : ConfigManager_1.ConfigManager.PayShopConfig.GetBuySkinDetailRoleCameraConfigId();
-    var i = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(i);
-    var e = this.TsUiSceneRoleActor;
-    var t = e.D_K2_GetActorLocation();
-    var e = (e.Model?.CheckGetComponent(13)).RoleConfigId;
-    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e).RoleBody;
-    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraOffsetConfig(e);
+    var e = this.IsWearWeaponSkin ? ConfigManager_1.ConfigManager.PayShopConfig.GetBuySkinDetailWeaponCameraConfigId() : ConfigManager_1.ConfigManager.PayShopConfig.GetBuySkinDetailRoleCameraConfigId();
+    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig(e);
+    var i = this.TsUiSceneRoleActor;
+    var t = i.D_K2_GetActorLocation();
+    var i = (i.Model?.CheckGetComponent(13)).RoleConfigId;
+    var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i).RoleBody;
+    var i = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraOffsetConfig(i);
     return {
       DragComponent: this.Yzt.GetDragItem(),
-      CameraSettingConfig: i,
-      CameraOffsetConfig: e,
+      CameraSettingConfig: e,
+      CameraOffsetConfig: i,
       SourceLocation: t
     };
   }
   InitRoleTabCameraInputData() {
-    var i = this.GetRoleTabCameraInputData();
-    this.CameraInputComponent?.InitData(i);
+    var e = this.GetRoleTabCameraInputData();
+    this.CameraInputComponent?.InitData(e);
   }
   UpdateRoleTabCameraInputData() {
-    var i = this.GetRoleTabCameraInputData();
-    this.CameraInputComponent?.UpdateData(i);
+    var e = this.GetRoleTabCameraInputData();
+    this.CameraInputComponent?.UpdateData(e);
   }
   ActiveRoleTabCameraInput() {
     this.InitRoleTabCameraInputData();
@@ -244,36 +262,37 @@ class SkinRootViewModel {
     this.CameraInputComponent.CanCameraInput = true;
   }
   InitFlySkinTabCameraInputData() {
-    var i;
-    var e = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig("翱翔滑翔皮肤旋转查看");
-    if (this.GliderObserver?.Model) {
-      i = this.FlySkinTabViewModel.ModelCase;
-      i = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(i), 1).D_K2_GetActorLocation();
-      e = {
-        DragComponent: this.Yzt.GetDragItem(),
-        CameraSettingConfig: e,
-        SourceLocation: i
-      };
-      this.CameraInputComponent?.InitData(e);
-    }
-  }
-  GetTabRedDotName(i) {
-    if (i === "FlySkinTabView") {
-      return "FlySkinTab";
-    }
-  }
-  ChangeModelState(i) {
     var e;
+    var i = ConfigManager_1.ConfigManager.UiRoleCameraConfig.GetRoleCameraConfig("翱翔滑翔皮肤旋转查看");
+    if (this.GliderObserver?.Model) {
+      e = this.FlySkinTabViewModel.ModelCase;
+      e = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(e), 1).D_K2_GetActorLocation();
+      i = {
+        DragComponent: this.Yzt.GetDragItem(),
+        CameraSettingConfig: i,
+        SourceLocation: e
+      };
+      this.CameraInputComponent?.InitData(i);
+    }
+  }
+  GetTabRedDotName(e) {
+    if (e === "FlySkinTabView") {
+      return "FlySkinTab";
+    } else if (e === "CalabashSkinTabView") {
+      return "HuluSkinTab";
+    } else {
+      return undefined;
+    }
+  }
+  ChangeModelState(e) {
+    var i;
     var t;
-    if (this.S6c !== i && (e = this.S6c, i = this.S6c = i, t = this.TsUiSceneRoleActor?.Model)) {
-      if (e === 0 && i === 1) {
-        UiModelUtil_1.UiModelUtil.ModelFadeIn(t, "WeaponSkinRoleFadeInCurve");
-      } else if (e === 1 && i === 0) {
-        UiModelUtil_1.UiModelUtil.ModelFadeOut(t, "WeaponSkinRoleFadeOutCurve");
-      } else if (e === 0 && i === 2) {
-        UiModelUtil_1.UiModelUtil.ModelFadeIn(t, "FlySkinRoleFadeInCurve");
-      } else if (e === 2 && i === 0) {
-        UiModelUtil_1.UiModelUtil.ModelFadeOut(t, "FlySkinRoleFadeOutCurve");
+    var a;
+    if (this.S6c !== e && (t = this.S6c, e = this.S6c = e, i = this.TsUiSceneRoleActor?.Model) && (t = fadeCurveMap.get(t)) && (a = t.get(e))) {
+      if (a[0] === 0) {
+        UiModelUtil_1.UiModelUtil.ModelFadeIn(i, a[1]);
+      } else {
+        UiModelUtil_1.UiModelUtil.ModelFadeOut(i, a[1]);
       }
     }
   }

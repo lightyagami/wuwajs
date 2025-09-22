@@ -31,9 +31,9 @@ class LineCrossDetailViewModel {
     this.QPu = e;
     this.RefreshRewardLayout();
     this.Nft();
-    this.yed();
+    this.Lid();
     this.Iwn();
-    this.Sed();
+    this.Aid();
     this.SaveCurrentChallengeRedDotState();
     this.sFe();
   }
@@ -42,10 +42,10 @@ class LineCrossDetailViewModel {
     this.XPu();
     this.Iwn();
     this.Nft();
-    this.yed();
-    this.Med();
-    this.Sed();
-    this.Eed();
+    this.Lid();
+    this.Did();
+    this.Aid();
+    this.xid();
     this.SaveCurrentChallengeRedDotState();
   }
   GetCurrentChallengeFinishRewardState() {
@@ -67,11 +67,11 @@ class LineCrossDetailViewModel {
       this.Xmt?.RefreshRewardLayout(t);
     }
   }
-  Med() {
+  Did() {
     var e = ConfigManager_1.ConfigManager.LineCrossConfig.GetLineCrossGroupByGroupId(this.GroupId).ChallengeList;
     this.Xmt?.RefreshDifficultItem(e, this.QPu);
   }
-  Sed() {
+  Aid() {
     this.Xmt?.RefreshDifficultItemSelection(this.QPu);
   }
   XPu() {
@@ -82,7 +82,7 @@ class LineCrossDetailViewModel {
     var e = ConfigManager_1.ConfigManager.LineCrossConfig.GetLineCrossChallengeById(this.QPu).Name;
     this.Xmt?.RefreshTitleText(e);
   }
-  yed() {
+  Lid() {
     var e = ConfigManager_1.ConfigManager.LineCrossConfig.GetLineCrossChallengeById(this.QPu).DifficultDesc;
     this.Xmt?.RefreshDifficultDescText(e);
   }
@@ -90,7 +90,7 @@ class LineCrossDetailViewModel {
     var e = ConfigManager_1.ConfigManager.LineCrossConfig.GetLineCrossChallengeById(this.QPu).Desc;
     this.Xmt?.ShowDescText(e);
   }
-  Eed() {
+  xid() {
     var e = ModelManager_1.ModelManager.LineCrossModel.GetIfHiddenGroup(this.LineCrossActivityData.Id, this.GroupId);
     var t = ModelManager_1.ModelManager.LineCrossModel.GetGroupState(this.LineCrossActivityData.Id, this.GroupId);
     this.Xmt?.RefreshMiddleByChallengeState(e, t);

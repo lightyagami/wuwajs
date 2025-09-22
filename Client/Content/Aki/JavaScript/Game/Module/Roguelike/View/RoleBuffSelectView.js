@@ -74,7 +74,7 @@ class RoleBuffSelectView extends RogueSelectBaseView_1.RogueSelectBaseView {
       if (this.ulo.RogueGainEntryList.length <= 0) {
         (e = new Protocol_1.Aki.Protocol.c_s()).RHn = this.ulo?.Index ?? 0;
         e.AHn = ModelManager_1.ModelManager.RoguelikeModel.CurRoomCount;
-        Net_1.Net.Call(17619, e, () => {
+        Net_1.Net.Call(20702, e, () => {
           UiManager_1.UiManager.CloseView(this.Info.Name, this.ulo?.CallBack);
         });
       } else if (e = this.GetRoleBuffSelectItem()) {

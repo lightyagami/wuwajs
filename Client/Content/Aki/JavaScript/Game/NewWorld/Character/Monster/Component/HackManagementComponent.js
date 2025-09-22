@@ -104,5 +104,5 @@ let HackManagementComponent = HackManagementComponent_1 = class HackManagementCo
     return Math.max(0, this.U2_ - this.D2_.length);
   }
 };
-HackManagementComponent = HackManagementComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(280)], HackManagementComponent);
+HackManagementComponent = HackManagementComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], HackManagementComponent);
 exports.HackManagementComponent = HackManagementComponent; //# sourceMappingURL=HackManagementComponent.js.map

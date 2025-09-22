@@ -37,10 +37,10 @@ class ActivityDailyAdventureController extends ActivityControllerBase_1.Activity
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityDailyAdventureController.qdi);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17307, ActivityDailyAdventureController.KNe);
+    Net_1.Net.Register(22037, ActivityDailyAdventureController.KNe);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17307);
+    Net_1.Net.UnRegister(22037);
   }
   static GetDailyAdventureData() {
     return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityDailyAdventureController.CurrentActivityId);
@@ -56,10 +56,10 @@ class ActivityDailyAdventureController extends ActivityControllerBase_1.Activity
   static RequestTaskReward(t) {
     var e = new Protocol_1.Aki.Protocol.xZn();
     e.s5n = t;
-    Net_1.Net.Call(27210, e, e => {
+    Net_1.Net.Call(21219, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15902);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21312);
         } else if (e = this.GetDailyAdventureData()) {
           e.SetTaskInfo(t, 2);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
@@ -70,10 +70,10 @@ class ActivityDailyAdventureController extends ActivityControllerBase_1.Activity
   static RequestPointReward(t) {
     var e = new Protocol_1.Aki.Protocol.UZn();
     e.s5n = t;
-    Net_1.Net.Call(28358, e, e => {
+    Net_1.Net.Call(28865, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17283);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22180);
         } else if (e = this.GetDailyAdventureData()) {
           e.SetPointReward(t, true);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);

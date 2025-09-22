@@ -26,7 +26,7 @@ const SPINE_DEFAULT_ANIM_NAME = "idle";
 class MapRogueGridEventView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.uZu = 0;
+    this.Xju = 0;
     this.lqe = undefined;
     this.gyu = undefined;
     this.Cyu = undefined;
@@ -203,11 +203,11 @@ class MapRogueGridEventView extends UiViewBase_1.UiViewBase {
     if (i) {
       this.Cyu.SetLimit(i.MoodMin, i.MoodMax);
       if (t) {
-        t = i.Mood - this.uZu;
+        t = i.Mood - this.Xju;
         this.Cyu.ShowPreviewValue(t, i.Mood);
-        this.uZu = i.Mood;
+        this.Xju = i.Mood;
       } else {
-        this.uZu = i.Mood;
+        this.Xju = i.Mood;
         this.Cyu.SetCurrentValue(i.Mood);
       }
     }

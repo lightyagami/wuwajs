@@ -20,6 +20,7 @@ const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsCont
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const ExploreProgressController_1 = require("../ExploreProgressController");
+const ExploreDetailLockItem_1 = require("./ExploreDetailLockItem");
 const MapAreaRewardPanel_1 = require("./MapAreaRewardPanel");
 const MapExploreDetailItem_1 = require("./MapExploreDetailItem");
 const MapExplorePlayProgressPanel_1 = require("./MapExplorePlayProgressPanel");
@@ -34,6 +35,7 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.zJa = undefined;
     this.eNl = undefined;
     this.tNl = undefined;
+    this.Evd = undefined;
     this.wOl = () => {
       ExploreProgressController_1.ExploreProgressController.ReceiveAreaStageRewardAsyncRequest(this.YOl.GetStageRewardDataList().filter(t => t.State === 1).map(t => t.Id));
     };
@@ -78,9 +80,9 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
         ExploreAreaItemData: this.eNl
       }, this.Zjl);
     };
-    this.Zjl = (t, i) => {
+    this.Zjl = (t, e) => {
       if (t) {
-        UiModel_1.UiModel.NormalStack.Peek().AddChildViewById(i);
+        UiModel_1.UiModel.NormalStack.Peek().AddChildViewById(e);
       }
     };
     this.lNl = () => {
@@ -130,34 +132,44 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.MNl = () => {
       this.yNl();
     };
-    this.A8l = (t, i) => {
+    this.A8l = (t, e) => {
       if (this.YOl?.AreaId === t) {
-        this.x8l(i);
+        this.x8l(e);
       } else {
-        this.R8l(t, i);
+        this.R8l(t, e);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UILoopScrollViewComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIButtonComponent], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UIItem], [25, UE.UIText], [26, UE.UISprite], [27, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UILoopScrollViewComponent], [4, UE.UIButtonComponent], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIButtonComponent], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIText], [24, UE.UIItem], [25, UE.UIText], [26, UE.UISprite], [27, UE.UIItem], [28, UE.UIItem]];
     this.BtnBindInfo = [[1, this._Nl], [2, this.cNl], [4, this.oNl], [6, this.rNl], [15, this.nNl], [10, this.sNl], [17, this.aNl], [18, this.lNl]];
   }
   async OnBeforeStartAsync() {
     var t = this.OpenParam;
-    var i = t.AreaId;
-    if (this.dNl(i)) {
-      this.ZOl = new MapAreaRewardPanel_1.MapAreaRewardPanel();
-      await this.ZOl.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
-      this.ZOl.InitCommonRewardPopup(this.RootItem);
+    var e = t.AreaId;
+    if (this.dNl(e)) {
+      await Promise.all([this.Ivd(), this.Tvd(), this.bvd()]);
       this.zJa = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
       this.zJa.SetCloseCallBack(this.hNl);
-      this.tNl = new MapExplorePlayProgressPanel_1.MapExplorePlayProgressPanel();
-      await this.tNl.Init(this.GetItem(16));
       if (t?.ExploreType) {
         this.eNl = this.YOl.GetExploreAreaItemData(t.ExploreType);
       }
       this.InitExploreScroll();
     }
+  }
+  async Ivd() {
+    this.ZOl = new MapAreaRewardPanel_1.MapAreaRewardPanel();
+    await this.ZOl.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
+    this.ZOl.InitCommonRewardPopup(this.RootItem);
+  }
+  async Tvd() {
+    this.tNl = new MapExplorePlayProgressPanel_1.MapExplorePlayProgressPanel();
+    await this.tNl.Init(this.GetItem(16));
+  }
+  async bvd() {
+    this.Evd = new ExploreDetailLockItem_1.ExploreDetailLockItem();
+    await this.Evd.CreateThenShowByActorAsync(this.GetItem(28).GetOwner());
+    this.Evd.SetUiActive(false);
   }
   OnStart() {
     this.GetText(25)?.SetText("0");
@@ -204,17 +216,17 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   }
   b8l() {
     var t = this.YOl.GetAllExploreAreaItemData();
-    let i = 0;
-    if ((i = this.eNl ? t.findIndex(t => t.ExploreType === this.eNl.ExploreType) : i) === -1) {
-      i = 0;
-      this.eNl = t[i];
+    let e = 0;
+    if ((e = this.eNl ? t.findIndex(t => t.ExploreType === this.eNl.ExploreType) : e) === -1) {
+      e = 0;
+      this.eNl = t[e];
     }
-    return i;
+    return e;
   }
   uNl(t) {
-    var i = this.zOl.length;
+    var e = this.zOl.length;
     var t = this.JOl + t;
-    if ((t = MathUtils_1.MathUtils.Clamp(t, 0, i - 1)) !== this.JOl) {
+    if ((t = MathUtils_1.MathUtils.Clamp(t, 0, e - 1)) !== this.JOl) {
       this.JOl = t;
       this.YOl = this.zOl[t];
       this.CNl();
@@ -242,15 +254,15 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   TNl() {
     this.GetText(5)?.ShowTextNew(this.YOl.GetNameId());
     var t = this.YOl.GetProgress();
-    var i = t + "%";
-    this.GetText(8)?.SetText(i);
-    var i = this.GetText(25);
-    i.SetChangeColor(t > 0, i.changeColor);
+    var e = t + "%";
+    this.GetText(8)?.SetText(e);
+    var e = this.GetText(25);
+    e.SetChangeColor(t > 0, e.changeColor);
   }
   dNl(t) {
-    var i = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t);
-    if (i) {
-      this.YOl = i;
+    var e = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t);
+    if (e) {
+      this.YOl = e;
       if (this.zOl.length <= 0) {
         this.zOl = ModelManager_1.ModelManager.ExploreProgressModel.GetAllAreaDataListSortCountryState();
         this.zOl.forEach(t => {
@@ -267,41 +279,42 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
   OnTick(t) {
     this.ZOl?.OnTickRefresh(t);
   }
-  x8l(t, i = true) {
-    if (t && t !== this.eNl.ExploreType && (t = this.YOl.GetExploreAreaItemData(t)) && (this.eNl = t, i)) {
+  x8l(t, e = true) {
+    if (t && t !== this.eNl.ExploreType && (t = this.YOl.GetExploreAreaItemData(t)) && (this.eNl = t, e)) {
       this.T8l();
     }
   }
-  R8l(t, i) {
+  R8l(t, e) {
     if (this.dNl(t)) {
-      this.x8l(i, false);
+      this.x8l(e, false);
       this.CNl();
     }
   }
   vNl() {
     var t;
-    var i = !!this.eNl?.IsUnlocked();
-    this.GetItem(21)?.SetUIActive(i);
-    this.GetItem(22)?.SetUIActive(!i);
-    if (i) {
+    var e = !!this.eNl?.IsUnlocked();
+    this.GetItem(21)?.SetUIActive(e);
+    this.GetItem(22)?.SetUIActive(!e);
+    if (e) {
       this.SetTextureByPath(this.eNl.DescBg, this.GetTexture(11));
       this.GetText(12)?.ShowTextNew(this.eNl.DescId);
-      i = this.eNl.IsCompleted();
+      e = this.eNl.IsCompleted();
       t = this.eNl.HasPhantomSkill();
-      this.GetItem(24)?.SetUIActive(i);
-      this.GetItem(13)?.SetUIActive(!i && t);
+      this.GetItem(24)?.SetUIActive(e);
+      this.GetItem(13)?.SetUIActive(!e && t);
+      t = this.Rvd();
       this.UNl();
-      t = this.eNl.IsShowTrackBtn && !i;
-      this.GetButton(18)?.RootUIComp.SetUIActive(t);
-      i = this.GetText(14);
-      if (t = this.eNl.GetIsPhantomSkillUnlock() ? this.eNl.GetUnlockTextId() : this.eNl.GetLockTextId()) {
-        i.ShowTextNew(t);
+      e = this.eNl.IsShowTrackBtn && !e && t;
+      this.GetButton(18)?.RootUIComp.SetUIActive(e);
+      t = this.GetText(14);
+      if (e = this.eNl.GetIsPhantomSkillUnlock() ? this.eNl.GetUnlockTextId() : this.eNl.GetLockTextId()) {
+        t.ShowTextNew(e);
       }
-      i.SetUIActive(!!t);
-      i = this.eNl.ExploreType === 6;
-      this.GetButton(10).RootUIComp.SetUIActive(i);
-    } else if (t = this.eNl?.GetLockDetailId()) {
-      this.GetText(23)?.ShowTextNew(t);
+      t.SetUIActive(!!e);
+      t = this.eNl.ExploreType === 6;
+      this.GetButton(10).RootUIComp.SetUIActive(t);
+    } else if (e = this.eNl?.GetLockDetailId()) {
+      this.GetText(23)?.ShowTextNew(e);
     }
   }
   UNl() {
@@ -311,6 +324,19 @@ class MapExploreDetailView extends UiTickViewBase_1.UiTickViewBase {
       this.tNl?.UpdateData(this.eNl.GetPlayProgressDataIgnoreHiddenList());
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnUpdateExploreProgressBar);
     }
+  }
+  Rvd() {
+    var t = this.eNl.GetNearTrackMapMark();
+    let e = true;
+    if (t && t.GameplayLockJumpId !== 0 && t.GameplayLockText !== "") {
+      if (this.eNl?.GetPlayIdIsUnlock(t.RelativeId)) {
+        this.Evd?.Reset();
+      } else {
+        this.Evd?.RefreshExternalByData(t.MarkId);
+        e = false;
+      }
+    }
+    return e;
   }
   LNl() {
     for (const t of this.zOl) {

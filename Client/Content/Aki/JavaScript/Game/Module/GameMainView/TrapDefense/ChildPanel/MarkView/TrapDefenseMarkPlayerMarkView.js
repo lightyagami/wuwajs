@@ -13,7 +13,7 @@ const PLAYER_ROTATE_UPDATE_THRESHOLD = 10;
 class TrapDefensePlayerMarkView extends TrapDefenseMarkView_1.TrapDefenseMarkView {
   constructor(e, r) {
     super(e);
-    this.vXu = r;
+    this.jzu = r;
     this.aN_ = new UE.Rotator(0, 0, 0);
     this.hN_ = new UE.Rotator(0, 0, 0);
     this.NeedUpdatePositionInner = true;
@@ -30,7 +30,7 @@ class TrapDefensePlayerMarkView extends TrapDefenseMarkView_1.TrapDefenseMarkVie
       a = Vector2D_1.Vector2D.Create(a.X, a.Y);
       t = Vector2D_1.Vector2D.Create();
       a.Multiply(e, t).Subtraction(r, t);
-      this.SetAnchorOffset(t, [this.vXu]);
+      this.SetAnchorOffset(t, [this.jzu]);
       a = this.GetItem(0);
       e = -(i.ActorRotationProxy.Yaw + 90);
       if (Math.abs(this.hN_.Yaw - e) > PLAYER_ROTATE_UPDATE_THRESHOLD) {
@@ -39,7 +39,7 @@ class TrapDefensePlayerMarkView extends TrapDefenseMarkView_1.TrapDefenseMarkVie
       }
       r = ModelManager_1.ModelManager.CameraModel.CameraRotator.Yaw;
       this.aN_.Yaw = this.lN_(-(r + 90));
-      this.vXu.SetUIRelativeRotation(this.aN_);
+      this.jzu.SetUIRelativeRotation(this.aN_);
     }
   }
   lN_(e) {

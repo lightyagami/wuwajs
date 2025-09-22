@@ -11,6 +11,7 @@ const BaseConfigController_1 = require("../../Launcher/BaseConfig/BaseConfigCont
 const AiModelController_1 = require("../AI/Common/AiModelController");
 const TestModuleBridge_1 = require("../Bridge/TestModuleBridge");
 const CameraController_1 = require("../Camera/CameraController");
+const InputCSharpProxyController_1 = require("../Controller/InputCSharpProxyController");
 const CrashCollectionController_1 = require("../CrashCollection/CrashCollectionController");
 const EffectAudioController_1 = require("../Effect/EffectSpec/EffectAudioController");
 const GameSettingsController_1 = require("../GameSettings/GameSettingsController");
@@ -20,8 +21,6 @@ const TouchUiEditController_1 = require("../InputSettings/TouchUiEdit/TouchUiEdi
 const KuroPushController_1 = require("../KuroPushSdk/KuroPushController");
 const KuroSdkController_1 = require("../KuroSdk/KuroSdkController");
 const KscController_1 = require("../KuroSimpleCombat/KscController");
-const TDInputController_1 = require("../KuroSimpleCombat/TDInput/TDInputController");
-const TDPlayerController_1 = require("../KuroSimpleCombat/TDPlayer/TDPlayerController");
 const LevelAimLineController_1 = require("../LevelGamePlay/AimLine/LevelAimLineController");
 const BigStuffedDollController_1 = require("../LevelGamePlay/BigStuffedDoll/BigStuffedDollController");
 const CipherController_1 = require("../LevelGamePlay/Cipher/CipherController");
@@ -76,6 +75,7 @@ const CombatMessageController_1 = require("../Module/CombatMessage/CombatMessage
 const RoleSceneInteractController_1 = require("../Module/CombatMessage/RoleSceneInteractController");
 const SkillMessageController_1 = require("../Module/CombatMessage/SkillMessageController");
 const ComboTeachingController_1 = require("../Module/ComboTeach/ComboTeachingController");
+const ButtonStateController_1 = require("../Module/Common/Button/ButtonStateController");
 const CommonInputViewController_1 = require("../Module/Common/InputView/Controller/CommonInputViewController");
 const ConfirmBoxController_1 = require("../Module/ConfirmBox/ConfirmBoxController");
 const ControlScreenController_1 = require("../Module/ControlScreen/ControlScreenController");
@@ -147,14 +147,18 @@ const MapExploreToolController_1 = require("../Module/MapExploreTool/MapExploreT
 const MapRogueController_1 = require("../Module/MapRogue/MapRogueController");
 const MarqueeController_1 = require("../Module/Marquee/MarqueeController");
 const MechanismTimelineController_1 = require("../Module/MechanismTimeline/MechanismTimelineController");
+const BloodBathedController_1 = require("../Module/Menu/BloodBathedController");
 const FilterSettingController_1 = require("../Module/Menu/FilterSettingController");
 const MenuController_1 = require("../Module/Menu/MenuController");
+const EyeProtectController_1 = require("../Module/Menu/SubViews/EyeProtect/EyeProtectController");
+const MeshStreamController_1 = require("../Module/MeshStream/MeshStreamController");
 const MingSuController_1 = require("../Module/MingSu/MingSuController");
 const PreDownloadController_1 = require("../Module/MobilePredownload/PreDownloadController");
 const MoraleController_1 = require("../Module/Morale/MoraleController");
 const MotionController_1 = require("../Module/Motion/MotionController");
 const KuroMoveTriggerController_1 = require("../Module/Movement/KuroMoveTriggerController");
 const OnlineController_1 = require("../Module/Online/OnlineController");
+const ParallelPackageController_1 = require("../Module/ParallelPackage/ParallelPackageController");
 const PayItemController_1 = require("../Module/PayItem/PayItemController");
 const BattlePassController_1 = require("../Module/PayShop/BattlePass/BattlePassController");
 const MonthCardController_1 = require("../Module/PayShop/MonthCard/MonthCardController");
@@ -178,6 +182,7 @@ const BattleQteController_1 = require("../Module/Qte/BattleQte/BattleQteControll
 const CommonQteController_1 = require("../Module/Qte/CommonQte/CommonQteController");
 const QuestController_1 = require("../Module/QuestNew/Controller/QuestController");
 const QuestReviewController_1 = require("../Module/QuestReview/QuestReviewController");
+const QuestTreeController_1 = require("../Module/QuestTree/QuestTreeController");
 const ReConnectController_1 = require("../Module/ReConnect/ReConnectController");
 const ReportController_1 = require("../Module/Report/ReportController");
 const RewardController_1 = require("../Module/Reward/RewardController");
@@ -186,6 +191,7 @@ const RoguelikeController_1 = require("../Module/Roguelike/RoguelikeController")
 const RoleMorphController_1 = require("../Module/RoleMorph/RoleMorphController");
 const MainRoleController_1 = require("../Module/RoleUi/MainRoleController");
 const RoleController_1 = require("../Module/RoleUi/RoleController");
+const RoleDevController_1 = require("../Module/RoleUi/RoleDev/RoleDevController");
 const RouletteController_1 = require("../Module/Roulette/RouletteController");
 const SceneBattleInteractController_1 = require("../Module/SceneBattleInteract/SceneBattleInteractController");
 const SceneTeamController_1 = require("../Module/SceneTeam/SceneTeamController");
@@ -197,11 +203,14 @@ const ShopController_1 = require("../Module/Shop/ShopController");
 const SignalDecodeController_1 = require("../Module/SignalDecode/SignalDecodeController");
 const SkillButtonUiController_1 = require("../Module/SkillButtonUi/SkillButtonUiController");
 const SkinController_1 = require("../Module/Skin/SkinController");
+const CalabashSkinController_1 = require("../Module/Skin/Tab/Calabash/CalabashSkinController");
 const FlySkinController_1 = require("../Module/Skin/Tab/Fly/FlySkinController");
 const WeaponSkinController_1 = require("../Module/Skin/Tab/Weapon/WeaponSkinController");
 const SkipInterfaceController_1 = require("../Module/SkipInterface/SkipInterfaceController");
 const SoundAreaPlayTipsController_1 = require("../Module/SoundArea/SoundAreaPlayTipsController");
+const SpecialTransitionController_1 = require("../Module/SpecialTransition/SpecialTransitionController");
 const SplashScreenController_1 = require("../Module/SplashScreen/SplashScreenController");
+const SurvivorsRogueController_1 = require("../Module/SurvivorsRogue/SurvivorsRogueController");
 const TeleportController_1 = require("../Module/Teleport/TeleportController");
 const TermExplanationController_1 = require("../Module/TermExplanation/TermExplanationController");
 const TimeOfDayController_1 = require("../Module/TimeOfDay/TimeOfDayController");
@@ -213,6 +222,7 @@ const TrapDefenseController_1 = require("../Module/TrapDefense/TrapDefenseContro
 const TreasureHuntController_1 = require("../Module/TreasureHunt/TreasureHuntController");
 const TutorialController_1 = require("../Module/Tutorial/TutorialController");
 const UiCameraAnimationController_1 = require("../Module/UiCameraAnimation/UiCameraAnimationController");
+const HomeBtnController_1 = require("../Module/UiComponent/UiHomeButton/HomeBtnController");
 const UiNavigationNewController_1 = require("../Module/UiNavigation/New/UiNavigationNewController");
 const VideoBpController_1 = require("../Module/Video/VideoBpController");
 const WaitEntityTaskController_1 = require("../Module/WaitEntityTask/WaitEntityTaskController");
@@ -232,6 +242,7 @@ const NpcPerformController_1 = require("../NewWorld/Character/Npc/Controller/Npc
 const RoleAudioController_1 = require("../NewWorld/Character/Role/RoleAudioController");
 const RoleTriggerController_1 = require("../NewWorld/Character/Role/RoleTriggerController");
 const ChargeSlashGameplayController_1 = require("../NewWorld/SceneItem/Controller/ChargeSlashGameplayController");
+const FlyingFeatherController_1 = require("../NewWorld/SceneItem/Controller/FlyingFeatherController");
 const PortalController_1 = require("../NewWorld/SceneItem/Controller/PortalController");
 const SceneItemBuffController_1 = require("../NewWorld/SceneItem/Controller/SceneItemBuffController");
 const SecenItemMoveController_1 = require("../NewWorld/SceneItem/Controller/SecenItemMoveController");
@@ -746,6 +757,8 @@ class ControllerRegisterManager {
     this.qp(ChessController_1.ChessController);
     ControllerHolder_1.ControllerHolder.CiacconaGalController = CiacconaGalController_1.CiacconaGalController;
     this.qp(CiacconaGalController_1.CiacconaGalController);
+    ControllerHolder_1.ControllerHolder.EyeProtectController = EyeProtectController_1.EyeProtectController;
+    this.qp(EyeProtectController_1.EyeProtectController);
     ControllerHolder_1.ControllerHolder.InstanceGameplayModeController = InstanceGameplayModeController_1.InstanceGameplayModeController;
     this.qp(InstanceGameplayModeController_1.InstanceGameplayModeController);
     ControllerHolder_1.ControllerHolder.DangoGlobalController = DangoGlobalController_1.DangoGlobalController;
@@ -772,6 +785,8 @@ class ControllerRegisterManager {
         }
       });
     }
+    ControllerHolder_1.ControllerHolder.ButtonStateController = ButtonStateController_1.ButtonStateController;
+    this.qp(ButtonStateController_1.ButtonStateController);
     this.qp(CommonInputViewController_1.CommonInputViewController);
     this.qp(CharacterBuffController_1.default);
     ControllerHolder_1.ControllerHolder.SubLevelController = SubLevelController_1.SubLevelController;
@@ -802,10 +817,6 @@ class ControllerRegisterManager {
     this.qp(BuildingGridController_1.BuildingGridController);
     ControllerHolder_1.ControllerHolder.KuroSimpleCombatController = KscController_1.KuroSimpleCombatController;
     this.qp(KscController_1.KuroSimpleCombatController);
-    ControllerHolder_1.ControllerHolder.TowerDefensePlayerController = TDPlayerController_1.TowerDefensePlayerController;
-    this.qp(TDPlayerController_1.TowerDefensePlayerController);
-    ControllerHolder_1.ControllerHolder.TowerDefenseInputController = TDInputController_1.TowerDefenseInputController;
-    this.qp(TDInputController_1.TowerDefenseInputController);
     ControllerHolder_1.ControllerHolder.TowerDefenseUiController = TowerDefenseUiController_1.TowerDefenseUiController;
     this.qp(TowerDefenseUiController_1.TowerDefenseUiController);
     ControllerHolder_1.ControllerHolder.ExpressionTreeController = ExpressionTreeController_1.ExpressionTreeController;
@@ -824,6 +835,28 @@ class ControllerRegisterManager {
     this.qp(SeekTraceController_1.SeekTraceController);
     ControllerHolder_1.ControllerHolder.VideoBpController = VideoBpController_1.VideoBpController;
     this.qp(VideoBpController_1.VideoBpController);
+    ControllerHolder_1.ControllerHolder.SurvivorsRogueController = SurvivorsRogueController_1.SurvivorsRogueController;
+    this.qp(SurvivorsRogueController_1.SurvivorsRogueController);
+    ControllerHolder_1.ControllerHolder.MeshStreamController = MeshStreamController_1.MeshStreamController;
+    this.qp(MeshStreamController_1.MeshStreamController);
+    ControllerHolder_1.ControllerHolder.CalabashSkinController = CalabashSkinController_1.CalabashSkinController;
+    this.qp(CalabashSkinController_1.CalabashSkinController);
+    ControllerHolder_1.ControllerHolder.QuestTreeController = QuestTreeController_1.QuestTreeController;
+    this.qp(QuestTreeController_1.QuestTreeController);
+    ControllerHolder_1.ControllerHolder.BloodBathedController = BloodBathedController_1.BloodBathedController;
+    this.qp(BloodBathedController_1.BloodBathedController);
+    ControllerHolder_1.ControllerHolder.ParallelPackageController = ParallelPackageController_1.ParallelPackageController;
+    this.qp(ParallelPackageController_1.ParallelPackageController);
+    ControllerHolder_1.ControllerHolder.RoleDevController = RoleDevController_1.RoleDevController;
+    this.qp(RoleDevController_1.RoleDevController);
+    ControllerHolder_1.ControllerHolder.SpecialTransitionController = SpecialTransitionController_1.SpecialTransitionController;
+    this.qp(SpecialTransitionController_1.SpecialTransitionController);
+    ControllerHolder_1.ControllerHolder.FlyingFeatherController = FlyingFeatherController_1.FlyingFeatherController;
+    this.qp(FlyingFeatherController_1.FlyingFeatherController);
+    ControllerHolder_1.ControllerHolder.HomeBtnController = HomeBtnController_1.HomeBtnController;
+    this.qp(HomeBtnController_1.HomeBtnController);
+    ControllerHolder_1.ControllerHolder.InputCSharpProxyController = InputCSharpProxyController_1.InputCSharpProxyController;
+    this.qp(InputCSharpProxyController_1.InputCSharpProxyController);
     return true;
   }
   static RegisterTick() {
@@ -887,6 +920,8 @@ class ControllerRegisterManager {
     this.PBe(KscController_1.KuroSimpleCombatController);
     this.PBe(TowerDefenseEventController_1.TowerDefenseEventController);
     this.PBe(TowerDefenseUiController_1.TowerDefenseUiController);
+    this.PBe(MeshStreamController_1.MeshStreamController);
+    this.PBe(FlyingFeatherController_1.FlyingFeatherController);
     return true;
   }
   static qp(r) {

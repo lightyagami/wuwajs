@@ -9,27 +9,30 @@ const Log_1 = require("../../../../Core/Common/Log");
 const GlobalData_1 = require("../../../GlobalData");
 const UiLayerType_1 = require("../../Define/UiLayerType");
 const UiModel_1 = require("../../UiModel");
+const IPopViewWithCustomUiBlurItem_1 = require("./IPopViewWithCustomUiBlurItem");
 class UiBlurLogic {
-  static x_r(r) {
-    if (r) {
-      var i = r.GetOwner().GetComponentByClass(UE.TsUiBlur_C.StaticClass());
+  static x_r(i) {
+    if (i) {
+      var r = i.GetOwner().GetComponentByClass(UE.TsUiBlur_C.StaticClass());
       let e = undefined;
-      if (i) {
-        e = i.OverrideItem === undefined ? r : i.OverrideItem.RootComponent;
-        i.ApplyItem = r;
+      if (r) {
+        e = r.OverrideItem === undefined ? i : r.OverrideItem.RootComponent;
+        r.ApplyItem = i;
       }
-      if (e && i.EnableUiBlur) {
-        UE.LGUIBPLibrary.SetGlobalBlurUIItem(e, r.GetWorld());
+      if (e && r.EnableUiBlur) {
+        UE.LGUIBPLibrary.SetGlobalBlurUIItem(e, i.GetWorld());
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Blur", 10, "还原模糊");
         }
-        UE.LGUIBPLibrary.ResetGlobalBlurUIItem(r.GetWorld());
+        UE.LGUIBPLibrary.ResetGlobalBlurUIItem(i.GetWorld());
       }
     }
   }
   static w_r(e) {
-    if (e.ChildPopView) {
+    if ((0, IPopViewWithCustomUiBlurItem_1.isPopViewWithCustomUiBlurItem)(e)) {
+      return e.GetOverrideRootItem();
+    } else if (e.ChildPopView) {
       return e.ChildPopView.GetPopViewRootItem();
     } else {
       return e.GetRootItem();

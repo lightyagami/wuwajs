@@ -82,7 +82,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this.Lrn = undefined;
     this.DSa = 0;
     this.Drn = undefined;
-    this.lQc = false;
+    this.X6u = false;
     this.cz = Vector_1.Vector.Create();
     this.cie = Rotator_1.Rotator.Create();
     this.e7o = Quat_1.Quat.Create();
@@ -136,7 +136,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   NeedSyncTransform() {
-    return !this.lQc;
+    return !this.X6u;
   }
   static OnChangeRole(e, t, i, s, o, a, h) {
     if (Log_1.Log.CheckInfo()) {
@@ -210,7 +210,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   xrn(e, t, i, s) {
-    this.lQc = false;
+    this.X6u = false;
     var o = e === undefined;
     if (ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode()) {
       if (Log_1.Log.CheckInfo()) {
@@ -254,7 +254,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   InheritTransform(e = false) {
-    this.lQc = true;
+    this.X6u = true;
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetSpawnTransform();
     if (!t) {
       if (Log_1.Log.CheckError()) {
@@ -576,14 +576,14 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         }
         this.Drn = TimerSystem_1.TimerSystem.Delay(() => {
           this.Drn = undefined;
-          this._Qc();
+          this.Y6u();
         }, SceneTeamDefine_1.EFFECT_DELAY_QUIT, undefined, undefined, true, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       }
     } else {
-      this._Qc();
+      this.Y6u();
     }
   }
-  _Qc() {
+  Y6u() {
     this.Entity.GetComponent(0)?.SetVisible(false);
     this.Entity.DisableByKey(1, true);
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnOtherRoleGoDownFinish);

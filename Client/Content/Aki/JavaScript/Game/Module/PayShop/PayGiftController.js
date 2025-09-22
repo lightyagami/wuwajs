@@ -25,10 +25,10 @@ const SdkViewData_1 = require("../SdkUI/SdkViewData");
 const PayShopDefine_1 = require("./PayShopDefine");
 class PayGiftController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25088, PayGiftController.hFi);
+    Net_1.Net.Register(16611, PayGiftController.hFi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25088);
+    Net_1.Net.UnRegister(16611);
   }
   static OnShopInfoNotify(e) {
     ModelManager_1.ModelManager.PayGiftModel.Version = e.DBs.K7n;
@@ -54,14 +54,14 @@ class PayGiftController extends UiControllerBase_1.UiControllerBase {
   static async SendPayGiftInfoRequestAsync() {
     var e = Protocol_1.Aki.Protocol.Yhs.create();
     e.K7n = ModelManager_1.ModelManager.PayGiftModel.Version;
-    var e = await Net_1.Net.CallAsync(26599, e);
-    return !!e && !(e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27342), !e.K7n) && !!e.OUs && !(ModelManager_1.ModelManager.PayGiftModel.Version = e.K7n, ModelManager_1.ModelManager.PayGiftModel.InitDataByServer(e.OUs), 0);
+    var e = await Net_1.Net.CallAsync(15882, e);
+    return !!e && !(e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18515), !e.K7n) && !!e.OUs && !(ModelManager_1.ModelManager.PayGiftModel.Version = e.K7n, ModelManager_1.ModelManager.PayGiftModel.InitDataByServer(e.OUs), 0);
   }
   static SendPayGiftInfoRequest(t = false) {
     var e = Protocol_1.Aki.Protocol.Yhs.create();
     e.K7n = ModelManager_1.ModelManager.PayGiftModel.Version;
-    Net_1.Net.Call(26599, e, e => {
-      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27342), e.K7n) && e.OUs) {
+    Net_1.Net.Call(15882, e, e => {
+      if (e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18515), e.K7n) && e.OUs) {
         ModelManager_1.ModelManager.PayGiftModel.Version = e.K7n;
         ModelManager_1.ModelManager.PayGiftModel.InitDataByServer(e.OUs, t);
         var e = ModelManager_1.ModelManager.PayGiftModel.GetDataList();
@@ -77,7 +77,7 @@ class PayGiftController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.zhs.create();
     e.s5n = n;
     e.K7n = ModelManager_1.ModelManager.PayGiftModel.Version;
-    Net_1.Net.Call(21510, e, e => {
+    Net_1.Net.Call(15505, e, e => {
       var r;
       var o;
       var t;
@@ -91,7 +91,7 @@ class PayGiftController extends UiControllerBase_1.UiControllerBase {
       } else if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrPayShopDataChanged) {
         this.SendPayGiftInfoRequest();
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23638);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27343);
       }
     });
   }

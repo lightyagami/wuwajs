@@ -83,12 +83,12 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
   }
   xhu() {
     var t = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(this.Data.ConfigId);
-    var e = this.LZu();
+    var e = this.yKu();
     this.GetItem(10).SetUIActive(t.Element !== 0 && !e);
     this.GetItem(17).SetUIActive(t.Element !== 0 && e);
   }
   Uhu() {
-    var t = this.LZu();
+    var t = this.yKu();
     this.GetItem(15).SetUIActive(!t);
     this.GetItem(16).SetUIActive(t);
   }
@@ -129,7 +129,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     this.GetItem(20)?.SetUIActive(this.Data.UseCost >= PhantomArenaDefine_1.COST_THREE);
   }
   async hdu() {
-    if (this.LZu()) {
+    if (this.yKu()) {
       await this.ndu();
     } else {
       await this.sdu();
@@ -138,7 +138,7 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
   SetCardData(t) {
     this.Data = t;
   }
-  LZu() {
+  yKu() {
     return !this.Data.IsNpcCard && ModelManager_1.ModelManager.PhantomArenaModel.IsCardOutlookUnlock(this.Data.ConfigId);
   }
   async Vxu() {
@@ -152,12 +152,12 @@ class BattleCardComponent extends CardComponentBase_1.CardComponentBase {
     await this.EffectItem.CreateByResourceIdAsync("UiItem_SoundRemnantItemEffect", this.GetItem(11));
   }
   async InitEffect() {
-    if (this.Data.IsFourCost && this.LZu()) {
+    if (this.Data.IsFourCost && this.yKu()) {
       await Promise.all([this.Vxu(), this.jxu()]);
     }
   }
   async InitSpine() {
-    if (this.Data.IsFourCost && this.LZu()) {
+    if (this.Data.IsFourCost && this.yKu()) {
       this.SpineItem = new BattleCardSpineItem();
       this.SpineItem.SetCardConfigId(this.Data.ConfigId);
       await this.SpineItem.CreateThenShowByResourceIdAsync("UiItem_SoundRemnantItemSpine", this.GetItem(18));

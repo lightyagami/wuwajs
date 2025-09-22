@@ -40,5 +40,6 @@ exports.genericPromptView = {
   31: "MoralePrompt",
   32: "NightmareLordFloatTips",
   33: "NightmareSpawnPointFloatTips",
-  34: "PhantomArenaActivityOpen"
+  34: "PhantomArenaActivityOpen",
+  36: "FightPhotoEventTipView"
 }; //# sourceMappingURL=GenericPromptDefine.js.map

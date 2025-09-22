@@ -11,14 +11,20 @@ class BulletActionAttachActor extends BulletActionBase_1.BulletActionBase {
     if (t.IsParentActor) {
       this.BulletInfo.Actor.K2_AttachToActor(t.Actor, t.SocketName, t.LocationRule, t.RotationRule, t.ScaleRule, t.WeldSimulatedBodies);
       this.BulletInfo.ActorComponent.NeedDetach = true;
-      if (t.AttachLocationOffset) {
-        this.BulletInfo.Actor.D_K2_SetActorRelativeLocation(t.AttachLocationOffset, true, undefined, true);
+      if (t.RelativeLocation) {
+        this.BulletInfo.Actor.D_K2_SetActorRelativeLocation(t.RelativeLocation, true, undefined, true);
+      }
+      if (t.RelativeRotation) {
+        this.BulletInfo.Actor.K2_SetActorRelativeRotation(t.RelativeRotation, true, undefined, true);
       }
     } else {
       t.Actor.K2_AttachToActor(this.BulletInfo.Actor, t.SocketName, t.LocationRule, t.RotationRule, t.ScaleRule, t.WeldSimulatedBodies);
       this.BulletInfo.ActorComponent.ChildrenAttached.push(t.Actor);
-      if (t.AttachLocationOffset) {
-        t.Actor.D_K2_SetActorRelativeLocation(t.AttachLocationOffset, true, undefined, true);
+      if (t.RelativeLocation) {
+        t.Actor.D_K2_SetActorRelativeLocation(t.RelativeLocation, true, undefined, true);
+      }
+      if (t.RelativeRotation) {
+        t.Actor.K2_SetActorRelativeRotation(t.RelativeRotation, true, undefined, true);
       }
     }
   }

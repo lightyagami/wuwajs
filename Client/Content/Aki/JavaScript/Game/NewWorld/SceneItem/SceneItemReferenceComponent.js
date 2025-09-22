@@ -54,7 +54,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     this.ILr = new Map();
     this.rMn = undefined;
     this.Xvn = new Set();
-    this.vcd = [];
+    this.qEd = [];
     this.wWa = false;
     this.BWa = undefined;
     this.ze_ = new Queue_1.Queue();
@@ -97,17 +97,17 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     };
     this.den = () => {
       var e;
-      if (this.$Qc) {
+      if (this.NQc) {
         this.aMn(2);
       } else {
         e = this.EIe.GetPbDataId();
         if (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY_PREFIX + "_" + e) && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[RefComp] [疑难杂症] 实体状态改变，引用的actor未全部加载，继续等待", ["PbDataId", this.EIe?.GetPbDataId()], ["IsReady", this.$Qc]);
+          Log_1.Log.Info("SceneItem", 39, "[RefComp] [疑难杂症] 实体状态改变，引用的actor未全部加载，继续等待", ["PbDataId", this.EIe?.GetPbDataId()], ["IsReady", this.NQc]);
         }
       }
     };
     this.Je_ = () => {
-      if (this.$Qc) {
+      if (this.NQc) {
         this.aMn(3, true);
       } else {
         for (const i of this.Lo.ActorRefGroups) {
@@ -118,18 +118,18 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
         }
         var t = this.EIe.GetPbDataId();
         if (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel(DEBUG_DETAIL_KEY_PREFIX + "_" + t) && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SceneItem", 39, "[RefComp] 实体状态预改变，引用的actor未全部加载，继续等待", ["PbDataId", this.EIe?.GetPbDataId()], ["IsReady", this.$Qc]);
+          Log_1.Log.Info("SceneItem", 39, "[RefComp] 实体状态预改变，引用的actor未全部加载，继续等待", ["PbDataId", this.EIe?.GetPbDataId()], ["IsReady", this.NQc]);
         }
       }
     };
     this.hMn = e => {
-      var t = this.vcd.indexOf(e.toString());
+      var t = this.qEd.indexOf(e.toString());
       if (!(t < 0)) {
-        this.vcd.splice(t, 1);
+        this.qEd.splice(t, 1);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorAdd", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.vcd.length]);
+          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorAdd", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.qEd.length]);
         }
-        if (this.vcd.length <= 0) {
+        if (this.qEd.length <= 0) {
           this.aMn(4);
         }
         t = this.aln.GetActor(e);
@@ -143,17 +143,17 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     };
     this.lMn = e => {
       if (this.Xvn.has(e.toString())) {
-        this.vcd.push(e.toString());
+        this.qEd.push(e.toString());
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorRemove", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.vcd.length]);
+          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorRemove", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.qEd.length]);
         }
         this.UU_(0).OnActorRemove();
         this.rMn?.RemoveVolume(e.toString());
       }
     };
   }
-  get $Qc() {
-    return this.vcd.length === 0;
+  get NQc() {
+    return this.qEd.length === 0;
   }
   static get Dependencies() {
     return [203, 197];
@@ -171,7 +171,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     this.Xte = this.Entity.GetComponent(197);
     this.EIe = this.Entity.GetComponent(0);
     this.wWa = this.mBe.StateTagId === this.BWa;
-    this.WQc();
+    this.VQc();
     this._Mn();
     this.uMn();
     this.aln.OnAddToSubsystem.Add(this.hMn);
@@ -206,7 +206,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     }
     return true;
   }
-  WQc() {
+  VQc() {
     this.ILr.clear();
     var e = this.EIe.GetPbDataId();
     var t = this.EIe.GetCreatureDataId();
@@ -236,7 +236,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     }
   }
   uMn() {
-    this.vcd.length = 0;
+    this.qEd.length = 0;
     for (const t of this.Xvn) {
       var e = this.aln.GetActor(new UE.FName(t));
       if (e) {
@@ -246,10 +246,10 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
           e.Tags.Add(CharacterNameDefines_1.CharacterNameDefines.INVALID_POS);
         }
       } else {
-        this.vcd.push(t);
+        this.qEd.push(t);
       }
     }
-    if (this.vcd.length <= 0) {
+    if (this.qEd.length <= 0) {
       this.aMn(0);
     }
   }
@@ -273,17 +273,17 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     }
   }
   TryReInitRefActor() {
-    if (this.$Qc) {
+    if (this.NQc) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 已初始化过，不执行", ["pbDataId", this.Hte.CreatureData.GetPbDataId()]);
       }
     } else {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 开始", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.$Qc], ["actorList", this.vcd]);
+        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 开始", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.qEd]);
       }
       this.uMn();
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 结束", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.$Qc], ["actorList", this.vcd]);
+        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 结束", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.qEd]);
       }
     }
   }

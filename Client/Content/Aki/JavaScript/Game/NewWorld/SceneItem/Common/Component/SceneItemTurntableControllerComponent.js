@@ -537,7 +537,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     var t;
     if (this.u1t) {
       (t = Protocol_1.Aki.Protocol.f0s.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.u1t.GetCreatureDataId());
-      Net_1.Net.Call(28828, t, t => {
+      Net_1.Net.Call(26974, t, t => {
         if (t?.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs && t?.G9n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrStateEntityStateNoChange) {
           if (this.M_n && this.GetRotateAllowed() && this.IsBusyRotating()) {
             this.TriggerStopAllRingsRotate();

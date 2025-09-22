@@ -64,6 +64,7 @@ let BaseUnifiedStateComponent = BaseUnifiedStateComponent_1 = class BaseUnifiedS
         case 6:
           switch (a) {
             case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_CLIMB:
+            case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SPLINE_CLIMB:
               this.SetPositionState(CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
               break;
             case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SWIM:

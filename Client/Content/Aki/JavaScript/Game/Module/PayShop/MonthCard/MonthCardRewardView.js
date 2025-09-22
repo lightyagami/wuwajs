@@ -14,12 +14,14 @@ const UiManager_1 = require("../../../Ui/UiManager");
 const ItemRewardController_1 = require("../../ItemReward/ItemRewardController");
 const RewardItemData_1 = require("../../ItemReward/RewardData/RewardItemData");
 const SplashScreenController_1 = require("../../SplashScreen/SplashScreenController");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 class MonthCardRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Jkt = 0;
     this.Y2i = 0;
     this.J2i = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(12);
       var e = new RewardItemData_1.RewardItemData(this.Jkt, this.Y2i);
       var r = new Array();
       r.push(e);

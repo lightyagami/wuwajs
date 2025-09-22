@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GameModeModel = undefined;
+exports.GameModeModel = exports.PAUSE_TYPE = undefined;
 const UE = require("ue");
 const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
@@ -23,6 +23,7 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameMode_1 = require("../Define/GameMode");
 const GameModePromise_1 = require("../Define/GameModePromise");
 const WorldDefine_1 = require("../Define/WorldDefine");
+exports.PAUSE_TYPE = 3;
 class GameModeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -59,11 +60,11 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.R3c = false;
     this.sIl = undefined;
     this.aIl = undefined;
-    this.Fmd = undefined;
-    this.mKc = undefined;
-    this.fKc = undefined;
-    this.ndd = undefined;
-    this.sdd = undefined;
+    this.IGd = undefined;
+    this.LZu = undefined;
+    this.AZu = undefined;
+    this.qwd = undefined;
+    this.Gwd = undefined;
     this.ForceDisableGamePaused = false;
     this.PreAwakeEntityDuringLoad = true;
     this.GamePausedReasons = new Set();
@@ -73,8 +74,9 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.TimeDilationMap = new Map();
     this.rEr = undefined;
     this.pr_ = false;
-    this.ZVu = new Map();
-    this.e5u = new Map();
+    this.S5u = new Map();
+    this.P5u = new Map();
+    this.sBd = undefined;
     this.nEr = 0;
     this.LoadWorldProfiler = new LogProfiler_1.LogProfiler("加载世界");
     this.OpenLoadingProfiler = this.LoadWorldProfiler.CreateChild("打开Loading");
@@ -115,8 +117,8 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.MEr = undefined;
     this.U$_ = undefined;
     this.SEr = false;
-    this.t5u = GameMode_1.ELoadMapMode.ClientTravel;
-    this.i5u = false;
+    this.A3u = GameMode_1.ELoadMapMode.ClientTravel;
+    this.O5u = false;
     this.LoadMapControllerEnableWorldPartition = false;
     this.OK1 = undefined;
   }
@@ -323,19 +325,19 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.aIl?.SetResult(true);
   }
   get ChangeSceneModePromise() {
-    return this.Fmd;
+    return this.IGd;
   }
   get ChangeSceneModeVoxelPromise() {
-    return this.mKc;
+    return this.LZu;
   }
   get ChangeSceneModeStreamingPromise() {
-    return this.fKc;
+    return this.AZu;
   }
   get SwitchDataLayerWithSequencePromise() {
-    return this.sdd;
+    return this.Gwd;
   }
   get LoadSwitchDataLayerSequencePromise() {
-    return this.ndd;
+    return this.qwd;
   }
   AddPlayerStart(e) {
     this.WMr.push(e);
@@ -370,6 +372,12 @@ class GameModeModel extends ModelBase_1.ModelBase {
   get RoleLocation() {
     return this.hEr;
   }
+  get SpecialTransitionPb() {
+    return this.sBd;
+  }
+  set SpecialTransitionPb(e) {
+    this.sBd = e;
+  }
   CreateShapedStreamingSource(e, t = 100, i = 1) {
     i = [new UE.StreamingSourceShape(true, i, 0, true, t, undefined, undefined)];
     t = GameModeModel.nQs(MathUtils_1.MathUtils.DefaultTransformDouble, 128, 0, undefined, i);
@@ -399,26 +407,26 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   ScaleStreamingSource(e, t) {
     var i;
-    if (!!UE.KuroStaticLibrary.IsLowMemoryDevice() && (!(i = this.ZVu.get(e)) || i !== t)) {
+    if (!!UE.KuroStaticLibrary.IsLowMemoryDevice() && (!(i = this.S5u.get(e)) || i !== t)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "缩放流送源", ["Type", e], ["Scale", t]);
       }
-      this.ZVu.set(e, t);
-      this.r5u();
+      this.S5u.set(e, t);
+      this.M5u();
     }
   }
   CleanScaleStreamingSource(e) {
-    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && this.ZVu.delete(e)) {
+    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && this.S5u.delete(e)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "清理缩放流送源", ["Type", e]);
       }
-      this.r5u(true);
+      this.M5u(true);
     }
   }
-  o5u() {
+  E5u() {
     let i = 1;
     let s = undefined;
-    this.ZVu.forEach((e, t) => {
+    this.S5u.forEach((e, t) => {
       if (!s || !(t > s)) {
         i = e;
         s = t;
@@ -426,12 +434,12 @@ class GameModeModel extends ModelBase_1.ModelBase {
     });
     return i;
   }
-  r5u(i = false) {
-    if ((i || this.ZVu.size !== 0) && this.KMr?.IsValid()) {
+  M5u(i = false) {
+    if ((i || this.S5u.size !== 0) && this.KMr?.IsValid()) {
       i = this.KMr.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
       if (i?.IsValid()) {
-        if (this.ZVu.size > 0) {
-          var s = this.o5u();
+        if (this.S5u.size > 0) {
+          var s = this.E5u();
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 60, "更新流送源缩放", ["Scale", s]);
           }
@@ -464,34 +472,34 @@ class GameModeModel extends ModelBase_1.ModelBase {
     }
   }
   DisableHLODStreaming(e, t = 0) {
-    var i = this.e5u.get(e);
+    var i = this.P5u.get(e);
     if (i === undefined || i !== t) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "禁用流送HLOD", ["Type", e], ["Level", t]);
       }
-      this.e5u.set(e, t);
-      this.n5u();
+      this.P5u.set(e, t);
+      this.x5u();
     }
   }
   EnableHLODStreaming(e) {
-    if (this.e5u.delete(e)) {
+    if (this.P5u.delete(e)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "开启流送HLOD", ["Type", e]);
       }
-      this.n5u(true);
+      this.x5u(true);
     }
   }
-  zfd() {
+  Y4d() {
     let t = 2;
-    this.e5u.forEach(e => {
+    this.P5u.forEach(e => {
       if (e < t) {
         t = e;
       }
     });
     return t;
   }
-  n5u(e = false) {
-    if ((e || this.e5u.size !== 0) && this.KMr?.IsValid()) {
+  x5u(e = false) {
+    if ((e || this.P5u.size !== 0) && this.KMr?.IsValid()) {
       var t = this.KMr.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
       if (t?.IsValid()) {
         var i = new Set();
@@ -499,7 +507,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
           var s = t.TargetGrids.Get(e);
           i.add(FNameUtil_1.FNameUtil.GetDynamicFName(s.toString()));
         }
-        e = this.zfd();
+        e = this.Y4d();
         if (e > 1) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 60, "重置HLOD流送", ["Level", e]);
@@ -532,7 +540,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
           t.TargetGrids.Add(d);
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("GameMode", 60, "更新HLOD流送", ["Enabled", this.e5u.size === 0]);
+          Log_1.Log.Info("GameMode", 60, "更新HLOD流送", ["Enabled", this.P5u.size === 0]);
         }
       }
     }
@@ -552,8 +560,8 @@ class GameModeModel extends ModelBase_1.ModelBase {
       this.KMr?.D_K2_SetActorLocation(e.GetLocation(), false, undefined, false);
     } else {
       this.KMr = GameModeModel.nQs(e, 128, 1, t);
-      this.r5u();
-      this.n5u();
+      this.M5u();
+      this.x5u();
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 7, "StreamingSource出生信息", ["Location", this.BornLocation], ["Rotation", this.BornRotator], ["TargetGrids", t.join(", ")]);
@@ -684,24 +692,24 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.SEr = e;
   }
   get LoadMapMode() {
-    return this.t5u;
+    return this.A3u;
   }
   set LoadMapMode(e) {
     if (e >= GameMode_1.ELoadMapMode.Max || e < GameMode_1.ELoadMapMode.ClientTravel || !Number.isInteger(e)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 72, "f.副本.xlsx表AkiMapSource Sheet 填错LoadMapMode值", ["loadMapMode", e], ["MapPath", this.MapPath]);
       }
-      this.t5u = GameMode_1.ELoadMapMode.ClientTravel;
+      this.A3u = GameMode_1.ELoadMapMode.ClientTravel;
     } else {
-      this.t5u = e;
+      this.A3u = e;
     }
   }
   get ForceClientTravel() {
-    return this.i5u;
+    return this.O5u;
   }
   set ForceClientTravel(e) {
-    var t = this.i5u;
-    this.i5u = e;
+    var t = this.O5u;
+    this.O5u = e;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceClientTravelModify, t, e);
   }
   get LoadMapControllerDynamicStreamingLevels() {
@@ -739,24 +747,24 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   CreateChangeModePromise() {
     this.ETn = new GameModePromise_1.GameModePromise();
-    this.Fmd = new CustomPromise_1.CustomPromise();
-    this.mKc = new CustomPromise_1.CustomPromise();
-    this.fKc = new CustomPromise_1.CustomPromise();
+    this.IGd = new CustomPromise_1.CustomPromise();
+    this.LZu = new CustomPromise_1.CustomPromise();
+    this.AZu = new CustomPromise_1.CustomPromise();
   }
   ResetChangeModePromise() {
     this.ETn = undefined;
-    this.Fmd = undefined;
-    this.mKc = undefined;
-    this.fKc = undefined;
+    this.IGd = undefined;
+    this.LZu = undefined;
+    this.AZu = undefined;
   }
   SkipChangeSceneModeWait() {
-    this.Fmd?.SetResult(true);
-    this.mKc?.SetResult(true);
-    this.fKc?.SetResult(true);
+    this.IGd?.SetResult(true);
+    this.LZu?.SetResult(true);
+    this.AZu?.SetResult(true);
   }
   CreateSwitchDataLayerWithSequencePromise() {
-    this.ndd = new CustomPromise_1.CustomPromise();
-    this.sdd = new CustomPromise_1.CustomPromise();
+    this.qwd = new CustomPromise_1.CustomPromise();
+    this.Gwd = new CustomPromise_1.CustomPromise();
   }
   OnLeaveLevel() {
     this.TempDataLayer.length = 0;

@@ -42,7 +42,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.Wke = undefined;
     this.V1l = false;
     this.H1l = false;
-    this.esd = 0;
+    this.jnd = 0;
     this.JKa = undefined;
     this.kJa = undefined;
     this.KZa = undefined;
@@ -52,6 +52,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.as1 = undefined;
     this.g6_ = undefined;
     this.GUu = undefined;
+    this.gRd = 0;
     this.NewLinkGmTest = false;
     this.ZKa = 0;
     this.Ih1 = 0;
@@ -79,7 +80,8 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     this.ZKa = 0;
     this.Ih1 = 0;
     this.Er1 = 0;
-    return !(this.NewLinkGmTest = false);
+    this.NewLinkGmTest = false;
+    return !(this.gRd = 0);
   }
   b$1(t) {
     if (this.zul) {
@@ -103,53 +105,80 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     if (this.CheckInNewBattleLink()) {
       return this.Wke;
     }
-    var t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    if (!this.Yul) {
-      var e = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
-      if (!e) {
-        return;
+    if (!this.CheckInSpecialBattleLink()) {
+      var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      if (!this.Yul) {
+        var i = ConfigManager_1.ConfigManager.DreamLinkConfig?.GetActivityConfig(ACTIVITY_ID);
+        if (!i) {
+          return;
+        }
+        var s;
+        var r;
+        var i = i.PreloadRoleIds;
+        this.Yul = new Map();
+        for ([s, r] of i.entries()) {
+          var o = r.split(";").map(t => parseInt(t));
+          this.Yul.set(s, o);
+        }
       }
-      var i;
-      var s;
-      var e = e.PreloadRoleIds;
-      this.Yul = new Map();
-      for ([i, s] of e.entries()) {
-        var r = s.split(";").map(t => parseInt(t));
-        this.Yul.set(i, r);
+      let t = this.Yul.get(e);
+      return t = t || this.Wke;
+    }
+    if (this.gRd) {
+      i = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkPreloadConfig(this.gRd);
+      if (i) {
+        var a = [...i.RoleIdList];
+        var n = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW);
+        for (const l of a) {
+          let t = l;
+          if (n?.ChangeGenderMap.has(l) && (h = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(l)) && h.Gender !== ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender()) {
+            t = n?.ChangeGenderMap.get(l) ?? l;
+            a[a.indexOf(l)] = t;
+          }
+          var h = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(t)?.MeshId;
+          if (h) {
+            if (this.as1 === undefined) {
+              this.as1 = new Map();
+            }
+            this.as1.set(t, h);
+          }
+        }
+        return a;
       }
     }
-    let o = this.Yul.get(t);
-    return o = o || this.Wke;
   }
   SetRoleIdList(e) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 67, "[BattleLink]设置角色列表", ["roleIdList", e]);
     }
     this.Wke = [...e];
+    let i = true;
     if (this.CheckInNewBattleLink()) {
-      var i = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItems();
-      if (i) {
+      var s = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItems();
+      if (s) {
         this.as1?.clear();
         this.g6_?.clear();
-        this.esd = 0;
+        this.jnd = 0;
         var t = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW);
-        for (const a of i) {
-          var s;
-          var r = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(a.GetConfigId);
-          if (e.includes(r) && ((s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(a.GetCreatureDataId())?.Entity?.GetComponent(0)?.GetModelId() ?? 0) && (this.as1 === undefined && (this.as1 = new Map()), this.as1.set(r, s)), s = t?.MorphModelIdMap.get(s))) {
+        for (const n of s) {
+          var r;
+          var o = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(n.GetConfigId);
+          if (e.includes(o) && ((r = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n.GetCreatureDataId())?.Entity?.GetComponent(0)?.GetModelId() ?? 0) && (this.as1 === undefined && (this.as1 = new Map()), this.as1.set(o, r)), r = t?.MorphModelIdMap.get(r))) {
             if (this.g6_ === undefined) {
               this.g6_ = new Map();
             }
-            this.g6_.set(r, s);
+            this.g6_.set(o, r);
           }
         }
-        if (i.length === 1 && (i = ModelManager_1.ModelManager.RogueBattleModel.GetLinkIdByRoleIdList(e), (i = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(i))?.IsEnableOneRoleBurst) && (i = i.OneRoleBurstTeammateId, o = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(i))) {
-          o = o.RoleId;
-          this.as1?.set(o, i);
-          e.push(o);
-          this.esd = o;
+        if (s.length === 1 && (s = ModelManager_1.ModelManager.RogueBattleModel.GetLinkIdByRoleIdList(e), (s = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(s))?.IsEnableOneRoleBurst) && (s = s.OneRoleBurstTeammateId, a = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetRoleConfig(s))) {
+          a = a.RoleId;
+          this.as1?.set(a, s);
+          e.push(a);
+          this.jnd = a;
         }
       }
+    } else if (this.CheckInSpecialBattleLink()) {
+      i = false;
     }
     this.V1l = false;
     this.H1l = false;
@@ -160,14 +189,13 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     }
     if (this.V1l || this.H1l) {
       let t = e[0];
-      var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-      if (i) {
-        t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(i.GetConfigId);
+      if (i && (s = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem)) {
+        t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(s.GetConfigId);
       }
-      var o = [...e];
-      o.splice(e.indexOf(t), 1);
-      o.splice(1, 0, t);
-      this.Wke = o;
+      var a = [...e];
+      a.splice(e.indexOf(t), 1);
+      a.splice(1, 0, t);
+      this.Wke = a;
       this.Oll = t;
     } else {
       this.Oll = -1;
@@ -243,15 +271,20 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     }
     return this.PreloadRes();
   }
+  SetPreloadConfigId(t) {
+    if (ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkPreloadConfig(t)) {
+      this.gRd = t;
+    }
+  }
   async O_1() {
     var t = [];
     t.push(this.cwa());
-    if (this.CheckInNewBattleLink()) {
-      t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH));
-      t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_NEW_PATH));
-    } else {
+    if (this.CheckInDreamLink()) {
       t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_PATH));
       t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_PATH));
+    } else {
+      t.push(this.mwa(BattleLinkDefine_1.THREE_ROLE_SEQ_NEW_PATH));
+      t.push(this.mwa(BattleLinkDefine_1.TWO_ROLE_SEQ_NEW_PATH));
     }
     await Promise.all(t);
   }
@@ -276,7 +309,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   }
   async q_1(t) {
     this.GUu = [];
-    const s = this.CheckInNewBattleLink();
+    const s = !this.CheckInDreamLink();
     t.forEach((t, e) => {
       var i;
       if (s) {
@@ -335,7 +368,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   }
   async cwa() {
     const e = new CustomPromise_1.CustomPromise();
-    var t = this.CheckInNewBattleLink() ? BattleLinkDefine_1.BATTLE_LINK_BP_NEW_PATH : BattleLinkDefine_1.BATTLE_LINK_BP_PATH;
+    var t = this.CheckInDreamLink() ? BattleLinkDefine_1.BATTLE_LINK_BP_PATH : BattleLinkDefine_1.BATTLE_LINK_BP_NEW_PATH;
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
       if (t) {
         if (this.swa) {
@@ -617,7 +650,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   $Uu(t) {
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
       if (t === ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e.GetConfigId)) {
-        return !!e.EntityHandle?.Entity?.GetComponent(282)?.IsMorphing();
+        return !!e.EntityHandle?.Entity?.GetComponent(283)?.IsMorphing();
       }
     }
     return false;
@@ -655,7 +688,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
         Log_1.Log.Warn("Audio", 42, "[BattleLink]播放Link语音时获取当前角色失败", ["RoleId", this.Oll]);
       }
     } else {
-      t = this.esd !== 0 ? this.esd : this.Oll;
+      t = this.jnd !== 0 ? this.jnd : this.Oll;
       if (t = this.FUu(t, true)) {
         t = t.RoleLinkAudio;
         AudioSystem_1.AudioSystem.PostEvent(t);
@@ -701,17 +734,22 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
     return this.KZa;
   }
   CheckInBattleLink() {
-    return this.CheckInNewBattleLink() || this.CheckInDreamLink();
+    return this.CheckInNewBattleLink() || this.CheckInDreamLink() || this.CheckInSpecialBattleLink();
   }
   CheckInNewBattleLink() {
     var t;
     var e;
-    return !!this.NewLinkGmTest || !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t), e = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW), !t?.InstSubType) && !!e?.InstSubTypeList.includes(t.InstSubType);
+    return !!this.NewLinkGmTest && this.gRd === 0 || !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t), e = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW), !t?.InstSubType) && !!e?.InstSubTypeList.includes(t.InstSubType);
   }
   CheckInDreamLink() {
     var t;
     var e;
     return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && (t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t)?.InstSubType === 23 || !!(e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("LinkInstanceIds")) && !!e.includes(t));
+  }
+  CheckInSpecialBattleLink() {
+    var t;
+    var e;
+    return !!this.NewLinkGmTest && this.gRd !== 0 || !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(t = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t), e = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(LINK_COMMON_PARAM_ROW), !t?.Id) && !!e?.InstIdList.includes(t.Id);
   }
   IsNewLinkGmTest() {
     return this.NewLinkGmTest;
@@ -805,7 +843,7 @@ class BattleLinkModel extends ModelBase_1.ModelBase {
   }
   FUu(e, i = false) {
     let s = undefined;
-    if (this.CheckInNewBattleLink()) {
+    if (this.CheckInNewBattleLink() || this.CheckInSpecialBattleLink()) {
       let t = this.as1?.get(e) ?? 0;
       if (i) {
         t = this.HUu(e);

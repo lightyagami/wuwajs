@@ -210,6 +210,32 @@ class GameBudgetAllocatorConfigPcCreator {
       Cutscene_NotRendered: undefined
     };
   }
+  CreateDynamicPhysicsInteractionActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 500, 200),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 500, 200),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 300, 30),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
+  CreateStaticPhysicsInteractionActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 300, 120),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 300, 120),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 300, 30),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
 }
 exports.GameBudgetAllocatorConfigPcCreator = GameBudgetAllocatorConfigPcCreator;
 //# sourceMappingURL=GameBudgetAllocatorConfigPcCreator.js.map

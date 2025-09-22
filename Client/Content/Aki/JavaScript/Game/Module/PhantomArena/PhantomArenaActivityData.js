@@ -94,10 +94,10 @@ class PhantomArenaActivityData extends ActivityData_1.ActivityBaseData {
       if (e = i.E$s) {
         this.UpdateTaskInfo(e);
       }
-      this.gNu();
+      this.ZVu();
     }
   }
-  gNu() {
+  ZVu() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomArenaShopOpen);
   }
   UpdateChallengeInfoById(t, e, i) {

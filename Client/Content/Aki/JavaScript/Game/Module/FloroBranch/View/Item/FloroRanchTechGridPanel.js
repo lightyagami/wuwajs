@@ -10,7 +10,7 @@ const FloroRanchTechNodeItem_1 = require("./FloroRanchTechNodeItem");
 class FloroRanchTechGridPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Rqu = [];
+    this.b3u = [];
     this.ScrollViewDelegate = undefined;
     this.OnSelectTechNode = e => {};
     this.GridIndex = 0;
@@ -22,7 +22,7 @@ class FloroRanchTechGridPanel extends UiPanelBase_1.UiPanelBase {
   Refresh(e, s, t) {
     for (const r of e) {
       var o = this.GetItem(0 + r.Row);
-      var i = this.Rqu[r.Row];
+      var i = this.b3u[r.Row];
       if (i) {
         i.Refresh();
       } else {
@@ -31,7 +31,7 @@ class FloroRanchTechGridPanel extends UiPanelBase_1.UiPanelBase {
           h.OnClickCallback = this.OnSelectTechNode;
           h.Refresh();
         });
-        this.Rqu[r.Row] = h;
+        this.b3u[r.Row] = h;
       }
     }
   }

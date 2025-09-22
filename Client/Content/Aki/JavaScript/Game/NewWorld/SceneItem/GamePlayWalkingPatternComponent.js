@@ -331,9 +331,9 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     i.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     i.F4n = this.Hte.CreatureData.GetCreatureDataId();
     i.Eps = t ?? this.Vsh;
-    Net_1.Net.Call(21035, i, t => {
+    Net_1.Net.Call(21289, i, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27834);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17158);
       }
     });
     if (this.HFl === undefined) {
@@ -341,5 +341,5 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     }
   }
 };
-GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(271)], GamePlayWalkingPatternComponent);
+GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(272)], GamePlayWalkingPatternComponent);
 exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent; //# sourceMappingURL=GamePlayWalkingPatternComponent.js.map

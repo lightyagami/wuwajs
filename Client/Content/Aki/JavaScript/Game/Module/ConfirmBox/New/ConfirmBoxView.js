@@ -93,9 +93,13 @@ class ConfirmBoxView extends UiViewBase_1.UiViewBase {
     this.GetText(0).SetText(i);
     var i = t.TextArgs || [];
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Config.Content, ...i);
-    this.GetItem(8).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(t.Tip));
+    var i = !StringUtils_1.StringUtils.IsEmpty(t.Tip) || t.TableTxtArgNew !== undefined;
+    this.GetItem(8).SetUIActive(i);
     if (t.Tip) {
       this.GetText(9).SetText(t.Tip);
+    }
+    if (t.TableTxtArgNew) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.TableTxtArgNew.TextKey, ...t.TableTxtArgNew.Params);
     }
     await this.InitButton();
     this.InitPropItem();

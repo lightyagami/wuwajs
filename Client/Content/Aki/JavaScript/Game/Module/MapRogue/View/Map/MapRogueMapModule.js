@@ -175,8 +175,8 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.CachedSelectPanelList = [];
-    this.Bdd = new Array(CACHED_SELECT_PANEL_COUNT).fill(-1);
-    this.kdd = 0;
+    this.pDd = new Array(CACHED_SELECT_PANEL_COUNT).fill(-1);
+    this.vDd = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIDraggableComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UISliderComponent], [10, UE.UIButtonComponent], [11, UE.UITexture], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIItem]];
@@ -187,7 +187,7 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
     this.S7s();
     this.pFc();
     i.push(this.x3t());
-    i.push(this.Odd());
+    i.push(this.yDd());
     i.push(this.CreateMapGridPath(0, 34, false, true));
     i.push(this.OKs());
     this.GetButton(5).RootUIComp.SetUIActive(false);
@@ -227,7 +227,7 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
     this.CreatePendingList.sort((i, t) => t.Priority - i.Priority);
     this.GameInfo.SetInteractAvailable(5, false);
     this.l91 = this.CreatePendingList.length > 0;
-    this.zrd();
+    this.jsd();
   }
   S7s() {
     var i;
@@ -363,10 +363,10 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
       this.a91 = 0;
       this.l91 = this.CreatePendingList.length > 0;
       await Promise.all(i);
-      this.zrd();
+      this.jsd();
     }
   }
-  zrd() {
+  jsd() {
     if (this.l91) {
       this.GameInfo.SetTipsItemProxy(true, "RogueRes_Map_Loading");
     } else {
@@ -607,7 +607,7 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
     this.ScaleUp = new LongPressButton_1.LongPressButton(this.GetButton(7), this.CFc);
     this.ScaleDown = new LongPressButton_1.LongPressButton(this.GetButton(8), this.gFc);
   }
-  async Odd() {
+  async yDd() {
     var t = [];
     for (let i = 0; i < CACHED_SELECT_PANEL_COUNT; i++) {
       var s = new MapRogueGridSelectBase_1.MapRogueGridSelectBase();
@@ -623,9 +623,9 @@ class MapRogueMapModule extends UiPanelBase_1.UiPanelBase {
     var s;
     var e;
     var h = i.GridIndex;
-    if (!(this.CachedSelectPanelList.length <= this.kdd) && !!(t = this.GridItemMap.get(h)) && !(t.SelectPanel.length > 0)) {
-      if (i.Walkable && ([i, s] = this.CachedSelectPanelList.at(this.kdd), i.SetUiActive(false), s.SetUiActive(false), e = this.Bdd.at(this.kdd), (e = this.GridItemMap.get(e)) && e.ClearSelectPanel(), t.SetSelectPanel(i, s), this.Bdd[this.kdd] = h, this.kdd++, this.kdd >= this.CachedSelectPanelList.length)) {
-        this.kdd = 0;
+    if (!(this.CachedSelectPanelList.length <= this.vDd) && !!(t = this.GridItemMap.get(h)) && !(t.SelectPanel.length > 0)) {
+      if (i.Walkable && ([i, s] = this.CachedSelectPanelList.at(this.vDd), i.SetUiActive(false), s.SetUiActive(false), e = this.pDd.at(this.vDd), (e = this.GridItemMap.get(e)) && e.ClearSelectPanel(), t.SetSelectPanel(i, s), this.pDd[this.vDd] = h, this.vDd++, this.vDd >= this.CachedSelectPanelList.length)) {
+        this.vDd = 0;
       }
     }
   }

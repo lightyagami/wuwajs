@@ -23,7 +23,7 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
     this.poh = undefined;
     this.voh = undefined;
     this.bxt = undefined;
-    this.mFu = undefined;
+    this.WGu = undefined;
     this.Moh = () => {
       if (!this.IsPendingDestroy) {
         this.CloseMe();
@@ -41,9 +41,9 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(4);
     this.bxt = new VisionFetterSuitItem_1.VisionFetterSuitItem(i);
     await this.bxt.CreateThenShowByActorAsync(i.GetOwner());
-    this.mFu = new MediumItemGridLevelAndLockComponent_1.MediumItemGridLevelAndLockComponent();
-    await this.mFu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
-    this.mFu.SetLevel(undefined);
+    this.WGu = new MediumItemGridLevelAndLockComponent_1.MediumItemGridLevelAndLockComponent();
+    await this.WGu.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
+    this.WGu.SetLevel(undefined);
     this.GetButton(8).SetSelfInteractive(false);
   }
   OnStart() {
@@ -85,8 +85,8 @@ class PhantomTipsView extends UiViewBase_1.UiViewBase {
   _Oe(i) {
     var e = i.GetIsLock();
     var i = i.GetIsDeprecated();
-    this.mFu.SetLock(e);
-    this.mFu.SetDeprecate(i);
+    this.WGu.SetLock(e);
+    this.WGu.SetDeprecate(i);
     this.GetButton(8).SetSelfInteractive(true);
   }
   fvt(i) {

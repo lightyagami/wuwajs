@@ -2,19 +2,19 @@
 
 var ScanComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, n) {
-  var s;
-  var o = arguments.length;
-  var a = o < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
+  var o;
+  var s = arguments.length;
+  var a = s < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     a = Reflect.decorate(t, e, i, n);
   } else {
     for (var r = t.length - 1; r >= 0; r--) {
-      if (s = t[r]) {
-        a = (o < 3 ? s(a) : o > 3 ? s(e, i, a) : s(e, i)) || a;
+      if (o = t[r]) {
+        a = (s < 3 ? o(a) : s > 3 ? o(e, i, a) : o(e, i)) || a;
       }
     }
   }
-  if (o > 3 && a) {
+  if (s > 3 && a) {
     Object.defineProperty(e, i, a);
   }
   return a;
@@ -27,12 +27,14 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const Rotator_1 = require("../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -82,6 +84,7 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     this.nzr = false;
     this.szr = false;
     this.azr = new Array();
+    this.wFd = -1;
     this.jGn = false;
     this.hzr = 0;
     this.lzr = 0;
@@ -275,12 +278,12 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     let i = false;
     var n = (0, puerts_1.$ref)(undefined);
     e.GetAttachedActors(n, true);
-    var s = (0, puerts_1.$unref)(n);
-    if (s && s.Num() > 0) {
-      for (let t = 0; t < s.Num(); t++) {
-        var o = s.Get(t);
-        if (o) {
-          i = this.wzr(o);
+    var o = (0, puerts_1.$unref)(n);
+    if (o && o.Num() > 0) {
+      for (let t = 0; t < o.Num(); t++) {
+        var s = o.Get(t);
+        if (s) {
+          i = this.wzr(s);
         }
       }
     }
@@ -309,9 +312,23 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     }
     n = this.czr?.ItemMaterialDataPath;
     if (t && i && n) {
-      this.Entity.GetComponent(188)?.MaterialController?.ApplySimpleMaterialEffect(n);
       this.jGn = true;
-      this.hzr++;
+      if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
+        this.Entity.GetComponent(188)?.MaterialController?.ApplySimpleMaterialEffect(n);
+        this.hzr++;
+      } else if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+        let e = this.n$t?.Owner?.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass());
+        if (e = e || this.n$t?.Owner?.AddComponentByClass(UE.CharRenderingComponent_C.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false)) {
+          ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.PD_CharacterControllerData_C, t => {
+            if (this.xC) {
+              this.wFd = e.AddMaterialControllerData(t);
+              this.hzr++;
+            } else if (ScanComponent_1.EnableLog && Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("LevelPlay", 31, "[ScanComponent] 扫描过程已结束，加载超时", ["pbdataId", this.Ovr.GetPbDataId()]);
+            }
+          });
+        }
+      }
     }
     return i;
   }
@@ -337,7 +354,11 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
               ModelManager_1.ModelManager.RenderModuleModel.DisableActorData(t);
             }
             if (this.jGn) {
-              this.Entity.GetComponent(188)?.MaterialController?.RemoveSimpleMaterialEffect();
+              if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Npc) {
+                this.Entity.GetComponent(188)?.MaterialController?.RemoveSimpleMaterialEffect();
+              } else if (this.Ovr?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+                this.n$t?.Owner?.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())?.RemoveMaterialControllerDataGroupWithEnding(this.wFd);
+              }
             }
             this.azr.length = 0;
             this.gzr.delete(i);
@@ -379,33 +400,33 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
     if (this.n$t) {
       var i = this.n$t.Owner;
       if (i) {
-        for (const o of this.uzr.ScanInfos) {
-          if (o.ResourcePath.length !== 0) {
-            let t = o.ResourcePath;
+        for (const s of this.uzr.ScanInfos) {
+          if (s.ResourcePath.length !== 0) {
+            let t = s.ResourcePath;
             var n = t.indexOf("'");
             if (n !== -1) {
               t = t.substring(n + 1, t.length - 2);
             }
-            const a = "Effect_" + o.UId.toString();
+            const a = "Effect_" + s.UId.toString();
             let e = this.gzr.get(a);
             if (e) {
-              e.Delay(o.Interval * SECONDS_TO_MILLISECONDS, true);
+              e.Delay(s.Interval * SECONDS_TO_MILLISECONDS, true);
             } else {
               const r = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, i.D_GetTransform(), t, "[ScanComponent.EffectProcess]", new EffectContext_1.EffectContext(this.Entity.Id));
               if (EffectSystem_1.EffectSystem.IsValid(r)) {
                 n = EffectSystem_1.EffectSystem.GetSureEffectActor(r);
                 if (n && n.IsValid()) {
                   n.RootComponent.D_K2_SetWorldLocation(this.Izr().D_K2_GetComponentLocation(), false, undefined, false);
-                  var s = this.n$t.ActorRotationProxy;
-                  s.Set(0, s.Yaw, 0);
-                  n.RootComponent.K2_SetWorldRotation(s.ToUeRotator(), false, undefined, false);
+                  var o = this.n$t.ActorRotationProxy;
+                  o.Set(0, o.Yaw, 0);
+                  n.RootComponent.K2_SetWorldRotation(o.ToUeRotator(), false, undefined, false);
                   (e = new TimerManageContainer(() => {
                     if (ScanComponent_1.EnableLog && Log_1.Log.CheckInfo()) {
-                      Log_1.Log.Info("LevelPlay", 31, "[ScanComponent] 倒计时结束,关闭额外特效", ["pbdataId", this.Ovr.GetPbDataId()], ["Delay", o.Interval]);
+                      Log_1.Log.Info("LevelPlay", 31, "[ScanComponent] 倒计时结束,关闭额外特效", ["pbdataId", this.Ovr.GetPbDataId()], ["Delay", s.Interval]);
                     }
                     EffectSystem_1.EffectSystem.StopEffectById(r, "[ScanComponent.EffectProcess]", false);
                     this.gzr.delete(a);
-                  })).Delay(o.Interval * SECONDS_TO_MILLISECONDS, true);
+                  })).Delay(s.Interval * SECONDS_TO_MILLISECONDS, true);
                   this.gzr.set(a, e);
                   break;
                 }
@@ -421,22 +442,22 @@ let ScanComponent = ScanComponent_1 = class ScanComponent extends EntityComponen
       var i = this.n$t.Owner;
       if (i) {
         var n = this.Ovr.GetBaseInfo()?.ScanFunction?.TraceEffect;
-        var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n.Target);
+        var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n.Target);
         let t = Vector_1.Vector.ZeroVectorProxy;
-        t = s ? (s = s.Entity.GetComponent(1), Vector_1.Vector.Create(s.ActorLocationProxy)) : (ScanComponent_1.EnableLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelPlay", 31, "[ScanComponent] 追踪特效找不到对应目标Entity", ["pbdataId", n?.Target]), s = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(n.Target), Vector_1.Vector.Create(s?.Transform?.Pos.X ?? 0, s?.Transform?.Pos.Y ?? 0, s?.Transform?.Pos.Z ?? 0));
+        t = o ? (o = o.Entity.GetComponent(1), Vector_1.Vector.Create(o.ActorLocationProxy)) : (ScanComponent_1.EnableLog && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelPlay", 31, "[ScanComponent] 追踪特效找不到对应目标Entity", ["pbdataId", n?.Target]), o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(n.Target), Vector_1.Vector.Create(o?.Transform?.Pos.X ?? 0, o?.Transform?.Pos.Y ?? 0, o?.Transform?.Pos.Z ?? 0));
         const a = "TrackEffect";
         let e = this.gzr.get(a);
         if (e) {
           e.Delay(this.uzr.Interval * SECONDS_TO_MILLISECONDS, true);
         } else {
-          var s = Vector_1.Vector.Create();
-          t.Subtraction(this.n$t.ActorLocationProxy, s);
-          s.Normalize();
-          var o = new UE.Rotator();
-          s.ToOrientationRotator(o);
+          var o = Vector_1.Vector.Create();
+          t.Subtraction(this.n$t.ActorLocationProxy, o);
+          o.Normalize();
+          var s = new UE.Rotator();
+          o.ToOrientationRotator(s);
           const r = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, i.D_GetTransform(), n.Effect, "[ScanComponent.TrackEffectProcess]", new EffectContext_1.EffectContext(this.Entity.Id));
           if (EffectSystem_1.EffectSystem.IsValid(r)) {
-            EffectSystem_1.EffectSystem.GetEffectActor(r).K2_SetActorRotation(o, false);
+            EffectSystem_1.EffectSystem.GetEffectActor(r).K2_SetActorRotation(s, false);
           }
           (e = new TimerManageContainer(() => {
             if (ScanComponent_1.EnableLog && Log_1.Log.CheckInfo()) {

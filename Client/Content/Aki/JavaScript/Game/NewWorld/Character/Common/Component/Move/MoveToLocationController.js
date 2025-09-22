@@ -19,9 +19,9 @@ const MoveToLocationLogic_1 = require("./MoveToLocationLogic");
 class MoveToLocationController {
   constructor(o) {
     this.Y2l = new Queue_1.Queue();
-    this.H4u = undefined;
-    this.$4u = undefined;
-    this.W4u = undefined;
+    this.u6u = undefined;
+    this.c6u = undefined;
+    this.d6u = undefined;
     this.Jh = undefined;
     this.Hte = undefined;
     this.mBe = undefined;
@@ -32,7 +32,7 @@ class MoveToLocationController {
       t.P5n = this.Hte.ActorLocationProxy;
       t.g8n = undefined;
       o.iVn = [t];
-      Net_1.Net.Send(17569, o);
+      Net_1.Net.Send(18020, o);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "向服务器同步NPC位置", ["EntityId", this.Jh.Id], ["PbDataId", this.Hte?.CreatureData.GetPbDataId()], ["X", t.P5n.X], ["Y", t.P5n.Y], ["Z", t.P5n.Z]);
       }
@@ -42,37 +42,37 @@ class MoveToLocationController {
     this.mBe = o.GetComponent(102);
   }
   get oqn() {
-    if (!this.$4u) {
-      this.$4u = new BaseMoveCharacter_1.BaseMoveCharacter();
-      this.$4u.Init(this.Hte.Entity);
+    if (!this.c6u) {
+      this.c6u = new BaseMoveCharacter_1.BaseMoveCharacter();
+      this.c6u.Init(this.Hte.Entity);
     }
-    return this.$4u;
+    return this.c6u;
   }
   get rqn() {
-    if (!this.H4u) {
-      this.H4u = new MoveToLocationLogic_1.MoveToLocation();
-      this.H4u.Init(this.Hte.Entity);
+    if (!this.u6u) {
+      this.u6u = new MoveToLocationLogic_1.MoveToLocation();
+      this.u6u.Init(this.Hte.Entity);
     }
-    return this.H4u;
+    return this.u6u;
   }
-  get Q4u() {
-    if (!this.W4u) {
-      this.W4u = new KeepFollowingMoveLogic_1.KeepFollowingMoveLogic();
-      this.W4u.Init(this.Hte.Entity);
+  get m6u() {
+    if (!this.d6u) {
+      this.d6u = new KeepFollowingMoveLogic_1.KeepFollowingMoveLogic();
+      this.d6u.Init(this.Hte.Entity);
     }
-    return this.W4u;
+    return this.d6u;
   }
   UpdateMove(o) {
     if (this.oqn?.IsRunning) {
       this.oqn?.UpdateMove(o);
     } else if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
       this.rqn?.UpdateMove(o);
-    } else if (this.Q4u.IsMoving()) {
-      this.Q4u.UpdateMove(o);
+    } else if (this.m6u.IsMoving()) {
+      this.m6u.UpdateMove(o);
     }
   }
   IsMoving() {
-    return this.Q4u.IsMoving() || (this.oqn?.IsRunning ?? false) || this.rqn?.GetCurrentMoveToLocation() !== undefined;
+    return this.m6u.IsMoving() || (this.oqn?.IsRunning ?? false) || this.rqn?.GetCurrentMoveToLocation() !== undefined;
   }
   MoveEnd(o) {
     if (this.oqn?.IsRunning) {
@@ -81,8 +81,8 @@ class MoveToLocationController {
     if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
       this.rqn.MoveEnd(o);
     }
-    if (this.Q4u.IsMoving()) {
-      this.Q4u.MoveEnd(o);
+    if (this.m6u.IsMoving()) {
+      this.m6u.MoveEnd(o);
     }
   }
   StopMove() {
@@ -92,14 +92,14 @@ class MoveToLocationController {
     if (this.rqn?.GetCurrentMoveToLocation() !== undefined) {
       this.rqn.StopMove();
     }
-    if (this.Q4u.IsMoving()) {
-      this.Q4u.StopMove();
+    if (this.m6u.IsMoving()) {
+      this.m6u.StopMove();
     }
   }
   Dispose() {
     this.oqn?.Dispose();
     this.rqn?.Dispose();
-    this.Q4u?.Dispose();
+    this.m6u?.Dispose();
   }
   GetCurrentToLocation() {
     if (this.oqn?.IsRunning) {
@@ -111,16 +111,16 @@ class MoveToLocationController {
     }
   }
   GetFollowingPosition(o, t) {
-    this.Q4u?.GetTargetFollowingPosition(o, t);
+    this.m6u?.GetTargetFollowingPosition(o, t);
   }
   StartKeepFollowingWithDataAsset(o, t, i, e = false, r, s = undefined) {
-    this.Q4u.StartKeepFollowingWithDataAsset(o, t, i, e, r, s);
+    this.m6u.StartKeepFollowingWithDataAsset(o, t, i, e, r, s);
   }
   StartKeepFollowingWithDataAssetPath(o, t, i, e = false, r, s = undefined) {
-    this.Q4u.StartKeepFollowingWithDataAssetPath(o, t, i, e, r, s);
+    this.m6u.StartKeepFollowingWithDataAssetPath(o, t, i, e, r, s);
   }
   StopKeepHoldingHands() {
-    this.Q4u.StopMove();
+    this.m6u.StopMove();
   }
   MoveAlongPath(o) {
     this.oqn.MoveAlongPath(o);
@@ -187,7 +187,7 @@ class MoveToLocationController {
     } else {
       MoveToLocationController.jye.DeepCopy(e);
     }
-    e = MoveToLocationController.K4u(this.Hte, MoveToLocationController.jye, o.Position, this.Y2l, r);
+    e = MoveToLocationController.f6u(this.Hte, MoveToLocationController.jye, o.Position, this.Y2l, r);
     if (t && !e) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "寻路失败或起点终点不在NavMesh上。", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["EntityId", this.Hte.Entity.Id]);
@@ -209,7 +209,7 @@ class MoveToLocationController {
       Log_1.Log.Warn("AI", 42, "正在移动中，停止移动。", ["PbDataId", this.Hte.CreatureData.GetPbDataId()], ["EntityId", this.Hte.Entity.Id]);
     }
   }
-  static K4u(o, t, i, e, r) {
+  static f6u(o, t, i, e, r) {
     e.Clear();
     MoveToLocationController.Zxl.length = 0;
     var s = o.ActorLocationProxy;

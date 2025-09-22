@@ -25,7 +25,7 @@ class FlyStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     this.cRl = false;
     this._3a = false;
     this.Rjt = false;
-    this.Wnd = false;
+    this.Bsd = false;
     this.yni = 0;
     this.Eii = 0;
     this.Sii = 1;
@@ -62,8 +62,8 @@ class FlyStrengthItem extends StrengthItemBase_1.StrengthItemBase {
       }
     };
     this.Yst = (t, i) => {
-      if (this.Wnd !== i) {
-        this.Wnd = i;
+      if (this.Bsd !== i) {
+        this.Bsd = i;
         this.Lri();
       }
     };
@@ -144,7 +144,7 @@ class FlyStrengthItem extends StrengthItemBase_1.StrengthItemBase {
       this.cRl = this.RoleData?.GameplayTagComponent?.HasTag(-2027866845) ?? false;
       this._3a = this.RoleData?.GameplayTagComponent?.HasTag(-54528961) ?? false;
       this.Rjt = this.RoleData?.GameplayTagComponent?.HasTag(1745099302) ?? false;
-      this.Wnd = this.RoleData?.GameplayTagComponent?.HasTag(649220293) ?? false;
+      this.Bsd = this.RoleData?.GameplayTagComponent?.HasTag(649220293) ?? false;
       this.gRl();
       this.wke();
       this.Lri();
@@ -220,7 +220,7 @@ class FlyStrengthItem extends StrengthItemBase_1.StrengthItemBase {
     }
   }
   Lri() {
-    var t = !this.Wnd && (this.cRl || !this.uRl);
+    var t = !this.Bsd && (this.cRl || !this.uRl);
     this.SetActive(t);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("HudUnit", 17, "翱翔体力条显隐", ["visible", t]);

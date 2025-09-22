@@ -176,7 +176,7 @@ TimeController.TimeCheckRequest = () => {
       e.A6n = Time_1.Time.TimeDilation;
     }
     e.U6n = Time_1.Time.FlowTimeDilation;
-    Net_1.Net.Call(20887, e, e => {
+    Net_1.Net.Call(17714, e, e => {
       var t;
       var i;
       var r;

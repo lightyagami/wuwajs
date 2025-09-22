@@ -10,6 +10,7 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
 const UiLayerType_1 = require("../../../../Ui/Define/UiLayerType");
@@ -17,12 +18,13 @@ const UiLayer_1 = require("../../../../Ui/UiLayer");
 const FilterEntrance_1 = require("../../../Common/FilterSort/Filter/View/FilterEntrance");
 const SortEntrance_1 = require("../../../Common/FilterSort/Sort/View/SortEntrance");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
+const MeshStreamDefine_1 = require("../../../MeshStream/MeshStreamDefine");
+const MeshStreamTaskContext_1 = require("../../../MeshStream/MeshStreamTaskContext");
 const VisionCameraInputItem_1 = require("../../../Phantom/Vision/View/VisionCameraInputItem");
 const RoleModelLoadingItem_1 = require("../../../RoleUi/Component/RoleModelLoadingItem");
 const UiCameraControlRotationComponent_1 = require("../../../UiCamera/UiCameraComponent/UiCameraControlRotationComponent");
 const UiCameraManager_1 = require("../../../UiCamera/UiCameraManager");
 const UiCameraAnimationManager_1 = require("../../../UiCameraAnimation/UiCameraAnimationManager");
-const UiModelResourcesManager_1 = require("../../../UiComponent/UiModelResourcesManager");
 const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
 const LoopScrollView_1 = require("../../../Util/ScrollView/LoopScrollView");
 const CalabashCollectDetailItem_1 = require("./CalabashCollectDetailItem");
@@ -40,7 +42,7 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Dpt = 0;
     this.Rpt = 0;
     this.Upt = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.ENn = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    this.C0d = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     this.Apt = false;
     this.SPe = undefined;
     this.Ppt = () => {
@@ -236,9 +238,13 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
         a.Add(o.StaticMesh);
       }
     }
-    this.ENn = UiModelResourcesManager_1.UiModelResourcesManager.LoadMeshesComponentsBundleStreaming(t, a, () => {
+    i = new MeshStreamTaskContext_1.MeshStreamTaskContext();
+    i.SkeletalMeshes = t;
+    i.StaticMeshes = a;
+    i.OnTaskFinish = () => {
       this.Kpt(e);
-    });
+    };
+    this.C0d = ControllerHolder_1.ControllerHolder.MeshStreamController.AddMeshStreamTask(i);
   }
   Kpt(e) {
     var i = UiCameraManager_1.UiCameraManager.Get().GetUiCameraComponent(UiCameraControlRotationComponent_1.UiCameraControlRotationComponent);
@@ -265,9 +271,9 @@ class CalabashCollectTabView extends UiTabViewBase_1.UiTabViewBase {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Upt);
       this.Upt = ResourceSystem_1.ResourceSystem.InvalidId;
     }
-    if (this.ENn !== UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(this.ENn);
-      this.ENn = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    if (this.C0d !== MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID) {
+      ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(this.C0d);
+      this.C0d = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     }
     if (UiSceneManager_1.UiSceneManager.GetHandBookVision()) {
       UiSceneManager_1.UiSceneManager.DestroyHandBookVision();

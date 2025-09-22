@@ -35,8 +35,6 @@ class InstanceDungeonCostItem extends UiPanelBase_1.UiPanelBase {
     if (this.Uth) {
       this.RefreshItem(this.Uth.Item);
     }
-  }
-  OnBeforeShow() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPowerChanged, this.A6e);
   }
   OnBeforeDestroy() {

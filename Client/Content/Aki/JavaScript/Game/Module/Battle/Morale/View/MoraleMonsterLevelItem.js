@@ -26,7 +26,7 @@ class MoraleMonsterLevelItem extends UiPanelBase_1.UiPanelBase {
     this.weu = undefined;
     this.Aeu = undefined;
     this.yL1 = 1;
-    this.vQu = undefined;
+    this.j8u = undefined;
     this.SPe = undefined;
     this.wgu = (e, t, s, i) => {
       this.xeu(this.yL1);
@@ -60,8 +60,8 @@ class MoraleMonsterLevelItem extends UiPanelBase_1.UiPanelBase {
   }
   xeu(e) {
     e = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleLevelDiffType(e);
-    if (e !== this.vQu) {
-      this.vQu = e;
+    if (e !== this.j8u) {
+      this.j8u = e;
       var t = this.Leu?.get(e);
       if (t) {
         this.weu?.SetTexture(t);

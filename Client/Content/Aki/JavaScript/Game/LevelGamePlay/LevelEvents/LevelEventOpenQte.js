@@ -34,7 +34,7 @@ class LevelEventOpenQte extends LevelGeneralBase_1.LevelEventBase {
     return e.Config.Type === "PanelQte" && (PanelQteController_1.PanelQteController.StartLevelEventQte(e.Config.Id), true);
   }
   Axl(e, t) {
-    return e.Config.Type === "LevelQte" && ((e = this.Dxl(e.Config.LevelQteEntity, t))?.Valid ? (t = e.GetComponent(269)) ? t.StartQte() : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 39, "[LevelEventOpenQte] 实体缺少LevelQte组件"), false) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 39, "[LevelEventOpenQte] 找不到对应的QTE实体"), false));
+    return e.Config.Type === "LevelQte" && ((e = this.Dxl(e.Config.LevelQteEntity, t))?.Valid ? (t = e.GetComponent(270)) ? t.StartQte() : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 39, "[LevelEventOpenQte] 实体缺少LevelQte组件"), false) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 39, "[LevelEventOpenQte] 找不到对应的QTE实体"), false));
   }
   Dxl(e, t) {
     let l = undefined;

@@ -7,6 +7,7 @@ exports.LogicNodeBase = undefined;
 const UE = require("ue");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
 const PublicUtil_1 = require("../../../../Common/PublicUtil");
 const GlobalData_1 = require("../../../../GlobalData");
 const LevelGeneralController_1 = require("../../../../LevelGamePlay/LevelGeneralController");
@@ -46,6 +47,9 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     }
     if (i.DisableSkeletalAnimationCheck) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck false");
+    }
+    if (this.Config.LogicProgramSpecialProcess) {
+      this.U$d(true);
     }
     if (this.CustomUiConfig) {
       this.AddTag(0);
@@ -99,7 +103,27 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.Config.DisableSkeletalAnimationCheck) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck true");
     }
+    if (this.Config.LogicProgramSpecialProcess) {
+      this.U$d(false);
+    }
     super.OnNodeDeActive(t);
+  }
+  U$d(t) {
+    for (const e of this.Config.LogicProgramSpecialProcess.SpecialProcessList) {
+      if (e.Type === IQuest_1.ELogicProgramSpecialProcess.DisableURO) {
+        for (const s of e.EntityIds) {
+          var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s)?.Entity;
+          if (i?.Valid) {
+            i = i.GetComponent(44);
+            if (t) {
+              i?.StartForceDisableAnimOptimization(0, false);
+            } else {
+              i?.CancelForceDisableAnimOptimization(0);
+            }
+          }
+        }
+      }
+    }
   }
   L$t(t) {
     switch (this.BtType) {

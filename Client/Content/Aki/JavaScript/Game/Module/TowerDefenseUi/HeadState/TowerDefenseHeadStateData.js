@@ -44,7 +44,7 @@ class TowerDefenseHeadStateData {
     }
   }
   Tick(t) {
-    this.r9c(t);
+    this.ZXu(t);
     this.Wzi();
   }
   Wzi() {
@@ -53,7 +53,7 @@ class TowerDefenseHeadStateData {
     this.ActorScale.Y = t;
     this.ActorScale.Z = t;
   }
-  r9c(t) {
+  ZXu(t) {
     if (this.HpBufferPercent !== this.HpPercent && (this.HpBufferPercent < this.HpPercent || (this.HpBufferPercent -= HP_BUFFER_SPEED * t, this.HpBufferPercent < this.HpPercent))) {
       this.HpBufferPercent = this.HpPercent;
     }

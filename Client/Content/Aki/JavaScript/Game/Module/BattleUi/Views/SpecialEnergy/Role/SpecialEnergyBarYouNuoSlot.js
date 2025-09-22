@@ -15,8 +15,8 @@ class SpecialEnergyBarYouNuoSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBar
     this.wZt = [];
     this.dJs = [];
     this.Gwc = [];
-    this.Gcd = [];
-    this.Lcd = 1;
+    this.zbd = [];
+    this.iId = 1;
   }
   OnInitData() {
     this.wZt.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(141001));
@@ -48,24 +48,24 @@ class SpecialEnergyBarYouNuoSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBar
         r.SetFullEffectColor(t, this.IsMorph);
       }
     }
-    this.Fcd(this.Config);
-    this.Fcd(this.wZt[0]);
+    this.Jbd(this.Config);
+    this.Jbd(this.wZt[0]);
   }
-  Fcd(e) {
+  Jbd(e) {
     var t = UE.Color.FromHex(e.EffectColor);
     var e = UE.Color.FromHex(e.PointColor);
     this.Gwc.push(t);
-    this.Gcd.push(e);
+    this.zbd.push(e);
   }
   SetFullEffectPercent(e) {
-    if (this.Lcd !== e) {
-      this.Lcd = e;
+    if (this.iId !== e) {
+      this.iId = e;
       this.RefreshBarPercent();
     }
   }
   RefreshBarPercent(t = false) {
     var r = this.PercentMachine.GetCurPercent();
-    var i = r >= this.Lcd;
+    var i = r >= this.iId;
     for (let e = 0; e < this.SlotItemList.length; e++) {
       var s = this.SlotItemList[e];
       var a = r * this.SlotNum - e;
@@ -88,7 +88,7 @@ class SpecialEnergyBarYouNuoSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBar
     if (e < this.Gwc.length) {
       for (const t of this.SlotItemList) {
         t.SetBarColor(this.Gwc[e]);
-        t.SetPointColor(this.Gcd[e]);
+        t.SetPointColor(this.zbd[e]);
       }
     }
   }

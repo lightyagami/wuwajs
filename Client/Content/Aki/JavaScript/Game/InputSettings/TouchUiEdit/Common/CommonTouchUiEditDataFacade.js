@@ -19,9 +19,9 @@ class CommonTouchUiEditDataFacade {
     this.MaxTouchMoveValue = 0;
     this.MinTouchMoveValue = 0;
     this.ControlScaleRate = 0;
-    this.iHu = e => {
-      if (e.jju) {
-        for (const r of e.jju) {
+    this.oJc = e => {
+      if (e.THc) {
+        for (const r of e.THc) {
           var t = r.s5n;
           var o = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetConfigById(t);
           var o = {
@@ -46,12 +46,12 @@ class CommonTouchUiEditDataFacade {
     this.MaxTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MaxTouchMoveValue");
     this.MinTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MinTouchMoveValue");
     this.ControlScaleRate = CommonParamById_1.configCommonParamById.GetFloatConfig("ControlScaleRate");
-    Net_1.Net.Register(19779, this.iHu);
+    Net_1.Net.Register(24560, this.oJc);
   }
   Clear() {
     this.NQ.clear();
     this.wZt = undefined;
-    Net_1.Net.UnRegister(19779);
+    Net_1.Net.UnRegister(24560);
   }
   SetGroup(e) {
     this.hs = e;
@@ -118,10 +118,10 @@ class CommonTouchUiEditDataFacade {
         });
       }
     }
-    e = Protocol_1.Aki.Protocol.h8u.create();
+    e = Protocol_1.Aki.Protocol.oHc.create();
     e.v8n = t;
-    Net_1.Net.Call(28804, e, e => {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 28061);
+    Net_1.Net.Call(24656, e, e => {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15447);
     });
   }
   GetData(e, t) {

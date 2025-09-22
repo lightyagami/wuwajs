@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ItemHintItem = undefined;
+exports.ItemHintItem = exports.ItemHintItemBase = undefined;
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
@@ -17,12 +17,26 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 const ListSliderControl_1 = require("./ListSliderControl");
 const AUDIO_EFFECT_RARE_LEVEL = 4;
 const AUDIO_HINT_CD_MS = 500;
-class ItemHintItem extends ListSliderControl_1.SliderItem {
+class ItemHintItemBase extends ListSliderControl_1.SliderItem {
+  constructor() {
+    super(...arguments);
+    this.Data = undefined;
+    this.ShiftData = undefined;
+  }
+  SetShiftData(e) {
+    this.ShiftData = e;
+  }
+  async AsyncLoadUiResource() {
+    this.Data = this.ShiftData?.();
+    await this.OnRefresh(this.Data);
+  }
+  async OnRefresh(e) {}
+}
+class ItemHintItem extends (exports.ItemHintItemBase = ItemHintItemBase) {
   constructor() {
     super(...arguments);
     this.CurSequencePlayer = undefined;
     this.LevelSequencePlayer = undefined;
-    this.Data = undefined;
     this.zgi = undefined;
     this.K3t = e => {
       if (e === "Start") {
@@ -48,7 +62,7 @@ class ItemHintItem extends ListSliderControl_1.SliderItem {
     }
   }
   async AsyncLoadUiResource() {
-    this.Data = ModelManager_1.ModelManager.ItemHintModel.ShiftMainInterfaceData();
+    this.Data = this.ShiftData?.() ?? ModelManager_1.ModelManager.ItemHintModel.ShiftMainInterfaceData();
     const e = new CustomPromise_1.CustomPromise();
     this.SetItemIcon(this.GetTexture(0), this.Data.ItemId, undefined, () => {
       e.SetResult(undefined);

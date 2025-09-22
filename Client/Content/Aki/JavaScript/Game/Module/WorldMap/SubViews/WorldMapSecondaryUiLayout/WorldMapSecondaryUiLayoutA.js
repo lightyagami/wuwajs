@@ -30,7 +30,7 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.MapTipsActivateTipPanel = undefined;
     this.LayoutContext = undefined;
     this.DeliveryPropView = undefined;
-    this.tWc = this.UpdateTopRightIconActive.bind(this);
+    this.OQu = this.UpdateTopRightIconActive.bind(this);
     this.OnConfirmBtnClick = () => {
       this.HandleTeleportAndTrack();
     };
@@ -65,7 +65,7 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
   }
   OnStart() {
     this.RootItem.SetRaycastTarget(false);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMarkTopRightIconUpdate, this.tWc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMarkTopRightIconUpdate, this.OQu);
   }
   oaa() {
     this.LayoutContext = new WorldMapSecondaryUiContext_1.WorldMapSecondaryUiContext();
@@ -85,7 +85,7 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     this.LayoutContext.DelButton = this.GetButton(39);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMarkTopRightIconUpdate, this.tWc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMarkTopRightIconUpdate, this.OQu);
     this.ConfirmButton.Destroy();
     this.TrackBtn.Destroy();
     this.GotoBtn.Destroy();

@@ -59,7 +59,7 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
     this.Urh = e => {
       if (e === "Start" || e === "ShowView" || e === "Sle") {
         UiLayer_1.UiLayer.SetShowMaskLayer("VisionRecoveryTabView", false);
-        this.oKu();
+        this.$Qc();
       }
     };
     this.vMt = (e, i) => {
@@ -178,13 +178,13 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
         this.m7a(1);
       }
     };
-    this.$2u = () => {
+    this.Aqu = () => {
       ControllerHolder_1.ControllerHolder.InventoryController.OpenManageConfigView();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIHorizontalLayout], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIHorizontalLayout], [11, UE.UIText], [12, UE.UIText], [13, UE.UIButtonComponent], [14, UE.UIItem], [15, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.yMt], [4, this.LMt], [7, this.M3a], [13, this.E3a], [15, this.$2u]];
+    this.BtnBindInfo = [[3, this.yMt], [4, this.LMt], [7, this.M3a], [13, this.E3a], [15, this.Aqu]];
   }
   async OnBeforeStartAsync() {
     this.Xvt = new VisionRecoverySlotPanel_1.VisionRecoverySlotPanel(this.vMt, true);
@@ -323,7 +323,7 @@ class VisionRecoveryTabView extends UiTabViewBase_1.UiTabViewBase {
     this.GetButton(7).RootUIComp.SetUIActive(true);
     this.UiViewSequence.PlaySequence("BatchOut");
   }
-  oKu() {
+  $Qc() {
     if (this.ExtraParams !== undefined) {
       switch (this.ExtraParams) {
         case 0:

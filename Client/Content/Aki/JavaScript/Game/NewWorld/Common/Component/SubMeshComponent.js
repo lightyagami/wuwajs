@@ -94,9 +94,9 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     this.CharRenderComp = undefined;
     this.SubMeshMap = new Map();
     this.SubMeshOrderMap = new Map();
-    this.cQc = 1;
-    this.dQc = new Map();
-    this.mQc = new Map();
+    this.YZu = 1;
+    this.zZu = new Map();
+    this.JZu = new Map();
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
@@ -105,8 +105,8 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     return true;
   }
   OnClear() {
-    this.dQc.clear();
-    this.mQc.clear();
+    this.zZu.clear();
+    this.JZu.clear();
     return true;
   }
   OnActivate() {
@@ -168,23 +168,23 @@ let SubMeshComponent = class SubMeshComponent extends EntityComponent_1.EntityCo
     this.SubMeshMap.get(t)?.ResetAttach();
   }
   SetHideMesh(t, e, s, i, h = 0) {
-    if (h && this.dQc.get(t) !== h) {
-      return this.dQc.get(t) ?? 0;
+    if (h && this.zZu.get(t) !== h) {
+      return this.zZu.get(t) ?? 0;
     }
-    var r = this.mQc.get(t);
+    var r = this.JZu.get(t);
     if (r) {
       for (const m of r[1]) {
         m.SetActorHiddenInGame(!r[0]);
       }
-      this.mQc.delete(t);
+      this.JZu.delete(t);
     }
-    h = this.cQc++;
-    this.dQc.set(t, h);
+    h = this.YZu++;
+    this.zZu.set(t, h);
     t.SetVisibility(e, s);
     if (i) {
       var o = !e;
       var n = new Array();
-      this.mQc.set(t, [o, n]);
+      this.JZu.set(t, [o, n]);
       var s = this.Entity.GetComponent(3);
       var a = new Array();
       if (s && s.Actor.Mesh === t) {

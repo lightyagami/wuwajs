@@ -14,21 +14,22 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../../../Ui/Base/UiSequencePlayer");
 const BattleChildViewPanel_1 = require("../../../BattleUi/Views/BattleChildViewPanel/BattleChildViewPanel");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
+const TowerDefenseEventController_1 = require("../../../TowerDefenseEvent/TowerDefenseEventController");
 class TrapDefensePreparationPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
     this.Sequence = undefined;
-    this.MYu = () => {
-      if (this.ahd()) {
-        this.hhd();
+    this.q6u = () => {
+      if (this.Xcd()) {
+        this.Ycd();
       } else {
-        this.lhd();
+        this.zcd();
       }
     };
-    this.EYu = () => {
+    this.G6u = () => {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenOrganDevelop(true, undefined);
     };
-    this.IYu = () => {
+    this.F6u = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.OpenViewShop();
     };
     this.FWe = () => {
@@ -38,7 +39,7 @@ class TrapDefensePreparationPanel extends BattleChildViewPanel_1.BattleChildView
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.MYu], [1, this.EYu], [2, this.IYu]];
+    this.BtnBindInfo = [[0, this.q6u], [1, this.G6u], [2, this.F6u]];
   }
   OnStart() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
@@ -62,9 +63,9 @@ class TrapDefensePreparationPanel extends BattleChildViewPanel_1.BattleChildView
     this.Sequence.Clear();
   }
   OnCheckBattleChildViewPanelShowCondition() {
-    return ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsInPreview();
+    return TowerDefenseEventController_1.TowerDefenseEventController.IsInPreview();
   }
-  hhd() {
+  Ycd() {
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(363);
     e.HasToggle = true;
     e.ToggleTextKey = "ConfirmBox_363_Desc";
@@ -72,20 +73,20 @@ class TrapDefensePreparationPanel extends BattleChildViewPanel_1.BattleChildView
       ModelManager_1.ModelManager.TrapDefenseModel.IsSkipMachineFullCheck = e;
     });
     e.FunctionMap.set(2, () => {
-      this.lhd();
+      this.zcd();
     });
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
-  ahd() {
+  Xcd() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsCanBuildMachine;
     var r = ModelManager_1.ModelManager.TrapDefenseModel.IsSkipMachineFullCheck;
     return !!e && !r && !ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.IsSlotFull();
   }
-  async lhd() {
+  async zcd() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("TowerDefenseBattle", 10, "开始挑战");
     }
-    await ControllerHolder_1.ControllerHolder.TowerDefenseEventController.ExecuteStartFighting();
+    await TowerDefenseEventController_1.TowerDefenseEventController.ExecuteStartFighting();
   }
   RefreshShopItemActive() {
     this.GetButton(2)?.RootUIComp.SetUIActive(ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsShopOpen);

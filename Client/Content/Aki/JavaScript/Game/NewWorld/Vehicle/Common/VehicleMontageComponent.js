@@ -37,5 +37,5 @@ let VehicleMontageComponent = class VehicleMontageComponent extends BaseMontageC
     return this.AnimationComponent.MainAnimInstance;
   }
 };
-VehicleMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(278)], VehicleMontageComponent);
+VehicleMontageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(279)], VehicleMontageComponent);
 exports.VehicleMontageComponent = VehicleMontageComponent; //# sourceMappingURL=VehicleMontageComponent.js.map

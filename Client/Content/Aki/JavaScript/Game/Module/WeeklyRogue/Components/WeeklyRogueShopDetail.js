@@ -27,7 +27,7 @@ class WeeklyRogueShopDetail extends UiPanelBase_1.UiPanelBase {
         }
       });
     };
-    this.$$c = () => {
+    this.X9u = () => {
       return new WeeklyRogueTagItem_1.WeeklyRogueTagItem();
     };
   }
@@ -36,7 +36,7 @@ class WeeklyRogueShopDetail extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[7, this.ilo]];
   }
   OnStart() {
-    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(12), this.$$c);
+    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(12), this.X9u);
   }
   Refresh(e) {
     var i;

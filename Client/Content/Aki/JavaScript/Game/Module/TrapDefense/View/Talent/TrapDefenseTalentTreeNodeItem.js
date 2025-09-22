@@ -13,11 +13,11 @@ class TrapDefenseTalentTreeNodeItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Pe = undefined;
     this.Hea = undefined;
-    this._ld = true;
+    this.umd = true;
     this.eTt = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectNode(this.Pe, false);
     };
-    this.vnd = e => {
+    this.ald = e => {
       if (e === this.Pe) {
         this.GetExtendToggle(4).SetToggleState(1);
       } else {
@@ -30,11 +30,11 @@ class TrapDefenseTalentTreeNodeItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[4, this.eTt]];
   }
   OnStart() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.AddDelegateOnNodeSelect(this.vnd);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.AddDelegateOnNodeSelect(this.ald);
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.RemoveDelegateOnNodeSelect(this.vnd);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.RemoveDelegateOnNodeSelect(this.ald);
   }
   Refresh(e) {
     this.Pe = e;
@@ -49,10 +49,10 @@ class TrapDefenseTalentTreeNodeItem extends UiPanelBase_1.UiPanelBase {
     this.SetSpriteByPath(e.Icon, t, false);
     var s = e.IsUnlock ? "Loop" : "Start1";
     this.Hea.PlayLevelSequenceByName(s);
-    if (e.IsUnlock && !this._ld) {
+    if (e.IsUnlock && !this.umd) {
       this.Hea.PlayLevelSequenceByName("Start2");
     }
-    this._ld = e.IsUnlock;
+    this.umd = e.IsUnlock;
   }
   GetUpLines() {
     return [this.GetItem(2), this.GetItem(0)];

@@ -8,37 +8,37 @@ const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 class GreatSwordChallengeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.zYu = undefined;
+    this.FXc = undefined;
     this.hLt = 0;
-    this.fYc = 0;
-    this.gYc = false;
+    this.gJc = 0;
+    this.CJc = false;
   }
   InitChallenge(e) {
-    this.zYu = e;
+    this.FXc = e;
   }
   GetSubChallenges() {
-    return this.zYu?.SubChallenges ?? [];
+    return this.FXc?.SubChallenges ?? [];
   }
   SetSubChallengeState(e, t, s) {
-    if (this.zYu && this.zYu.SubChallenges[e]) {
-      this.zYu.SubChallenges[e].Unlocked = t;
-      this.zYu.SubChallenges[e].Completed = s;
+    if (this.FXc && this.FXc.SubChallenges[e]) {
+      this.FXc.SubChallenges[e].Unlocked = t;
+      this.FXc.SubChallenges[e].Completed = s;
     }
   }
   SetActionIncId(e) {
-    this.fYc = e;
+    this.gJc = e;
   }
   SetIsStartChallenge(e) {
-    this.gYc = e;
+    this.CJc = e;
   }
   GetActionIncId() {
-    return this.fYc;
+    return this.gJc;
   }
   GetIsStartChallenge() {
-    return this.gYc;
+    return this.CJc;
   }
   GetChallenge() {
-    return this.zYu;
+    return this.FXc;
   }
   GetSelectedIndex() {
     return this.hLt;
@@ -47,10 +47,10 @@ class GreatSwordChallengeModel extends ModelBase_1.ModelBase {
     this.hLt = e;
   }
   ClearData() {
-    this.zYu = undefined;
+    this.FXc = undefined;
     this.hLt = 0;
-    this.fYc = 0;
-    this.gYc = false;
+    this.gJc = 0;
+    this.CJc = false;
   }
 }
 exports.GreatSwordChallengeModel = GreatSwordChallengeModel;

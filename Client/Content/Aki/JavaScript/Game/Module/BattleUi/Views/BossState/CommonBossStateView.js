@@ -65,6 +65,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Ant = false;
     this.NN1 = undefined;
     this.VN1 = false;
+    this.SDd = false;
     this.OnBossHeathChanged = (t, i, s) => {
       this.Pnt(true);
     };
@@ -161,7 +162,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UITexture]];
     this.fnt = CommonParamById_1.configCommonParamById.GetIntConfig("HitEffectDuration");
   }
   OnStart() {
@@ -211,6 +212,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Znt();
     this.est();
     this.tst();
+    this.MDd();
     this.dnt.SetUpdateCallback(this.Nnt, this.knt, this.Vnt);
     this.ont.SetVisible(true, SHOW_VIEW_ANIM_TIME);
   }
@@ -539,6 +541,18 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
           this.GetUiNiagara(19).SetNiagaraVarFloat("Count", t);
         }
       }
+    }
+  }
+  MDd() {
+    let t = false;
+    var i;
+    if (ModelManager_1.ModelManager.MenuModel.GetBloodBathedMode() !== 5) {
+      i = this.GetEntity()?.GetComponent(206);
+      t = !!i?.HasTag(1521297804);
+    }
+    if (this.SDd !== t) {
+      this.SDd = t;
+      this.GetTexture(33)?.SetUIActive(t);
     }
   }
   Qnt() {

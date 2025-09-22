@@ -23,7 +23,7 @@ class RoleDataBase {
     this.t_o = new Map();
     this.i_o = [RoleLevelData_1.RoleLevelData, RoleAttributeData_1.RoleAttributeData, RoleSkillData_1.RoleSkillData, RoleResonanceData_1.RoleResonanceData, RolePhantomData_1.RolePhantomData, RoleAudioData_1.RoleAudioData, RoleFavorData_1.RoleFavorData];
     this.BIl = -1;
-    this.vjc = true;
+    this.CKc = true;
     this.SortAttrList = (e, t) => {
       var a = e.Priority !== 0;
       var r = t.Priority !== 0;
@@ -79,10 +79,10 @@ class RoleDataBase {
     }
   }
   SetBackgroundMusicEnabled(e) {
-    this.vjc = e;
+    this.CKc = e;
   }
   GetBackgroundMusicEnabled() {
-    return this.vjc;
+    return this.CKc;
   }
   GetElementInfo() {
     var e = this.GetRoleConfig();

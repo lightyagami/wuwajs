@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.OnlineHallItem = undefined;
 const UE = require("ue");
 const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const PlayerTitleItem_1 = require("../../Common/PlayerTitleItem");
@@ -56,7 +58,15 @@ class OnlineHallItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
     this.PNi = () => {
       ModelManager_1.ModelManager.OnlineModel.CachePlayerData = this.LNi;
-      UiManager_1.UiManager.OpenView("OnlineProcessView");
+      var i = this.LNi.PlayerId;
+      ControllerHolder_1.ControllerHolder.FriendController.RequestPlayerCurrentDeactivationState(i, i => {
+        if (i) {
+          i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PlayerDeleteSelf");
+          ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [i]);
+        } else {
+          UiManager_1.UiManager.OpenView("OnlineProcessView");
+        }
+      });
     };
     this.DNi = i;
   }
@@ -85,7 +95,7 @@ class OnlineHallItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.RNi = undefined;
     this.gLt?.Destroy();
   }
-  Refresh(i, t, e) {
+  Refresh(i, e, t) {
     this.LNi = i;
     if (this.LNi.ApplyTimeLeftTime > 0) {
       this.UNi(false);
@@ -113,32 +123,32 @@ class OnlineHallItem extends GridProxyAbstract_1.GridProxyAbstract {
     } else {
       this.GetItem(20).SetUIActive(false);
     }
-    var h = this.GetItem(5);
+    var o = this.GetItem(5);
     var a = this.GetItem(6);
     switch (i.PlayerCount) {
       case 2:
-        h.SetUIActive(true);
+        o.SetUIActive(true);
         a.SetUIActive(false);
         break;
       case 3:
-        h.SetUIActive(true);
+        o.SetUIActive(true);
         a.SetUIActive(true);
         break;
       default:
-        h.SetUIActive(false);
+        o.SetUIActive(false);
         a.SetUIActive(false);
     }
     var s = ModelManager_1.ModelManager.WorldLevelModel.OriginWorldLevel;
     var r = ModelManager_1.ModelManager.OnlineModel.EnterDiff;
-    var o = this.GetInteractionGroup(8);
-    var l = this.GetText(9);
+    var l = this.GetInteractionGroup(8);
+    var h = this.GetText(9);
     if (i.WorldLevel > s + r) {
-      o.SetInteractable(false);
+      l.SetInteractable(false);
       s = i.WorldLevel - r;
-      LguiUtil_1.LguiUtil.SetLocalText(l, "ApplyBtnDisable", s);
+      LguiUtil_1.LguiUtil.SetLocalText(h, "ApplyBtnDisable", s);
     } else {
-      LguiUtil_1.LguiUtil.SetLocalText(l, "ApplyBtnEnable");
-      o.SetInteractable(true);
+      LguiUtil_1.LguiUtil.SetLocalText(h, "ApplyBtnEnable");
+      l.SetInteractable(true);
     }
     var r = i.PlayerCard;
     if (r > 0) {
@@ -154,14 +164,14 @@ class OnlineHallItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(10).SetUIActive(!i);
   }
   Nxa(i) {
-    var t;
+    var e;
     if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.NeedShowThirdPartyId()) {
-      t = i.PlayerDetails.Jxa !== "";
-      this.GetItem(23)?.SetUIActive(t);
-      this.GetText(24)?.SetUIActive(t);
-      if (t) {
-        t = i.PlayerDetails.Qxa ?? "";
-        this.GetText(24)?.SetText(t);
+      e = i.PlayerDetails.Jxa !== "";
+      this.GetItem(23)?.SetUIActive(e);
+      this.GetText(24)?.SetUIActive(e);
+      if (e) {
+        e = i.PlayerDetails.Qxa ?? "";
+        this.GetText(24)?.SetText(e);
       }
     } else {
       this.GetItem(23)?.SetUIActive(false);

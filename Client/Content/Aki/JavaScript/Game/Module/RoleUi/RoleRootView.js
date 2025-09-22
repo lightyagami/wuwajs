@@ -50,6 +50,7 @@ const UiSceneManager_1 = require("../UiComponent/UiSceneManager");
 const RoleBackgroundMusicSwitchItem_1 = require("./Component/RoleBackgroundMusicSwitchItem");
 const RoleListComponent_1 = require("./Component/RoleListComponent");
 const RoleDefine_1 = require("./RoleDefine");
+const RoleDevController_1 = require("./RoleDev/RoleDevController");
 class OperationParam {
   constructor(e, t) {
     this.OperationType = e;
@@ -99,9 +100,8 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         this.Jft();
       });
     };
-    this.CanToggleChange = e => {
-      var t;
-      return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t;
+    this.CanToggleChange = (e, t) => {
+      return !!t || (this.gUd(e) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_RoleInformalTrialTips_Text"), false) : !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t);
     };
     this.R6e = (e, t) => {
       return new RoleTabItem_1.RoleTabItem();
@@ -119,6 +119,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.U8i = this.P8i();
       this.nn_(i);
       this.RefreshRoleBackgroundMusicSwitchItem();
+      this.kMd(i);
     };
     this.q8i = e => {
       if (e !== 0 && this.U8i && Info_1.Info.IsInGamepad()) {
@@ -165,6 +166,13 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     };
     this.RoleListClick = () => {
       UiManager_1.UiManager.OpenView("RoleSelectionView", this.d1o);
+    };
+    this.RoleDevClick = () => {
+      RoleDevController_1.RoleDevController.RequestRoleDevelopConfigAndOpenView(this.d1o.GetCurSelectRoleId());
+    };
+    this.RoleDevMarkClick = () => {
+      var e = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
+      RoleDevController_1.RoleDevController.RequestRoleDevelopConfigAndOpenView(e);
     };
     this.x8i = undefined;
     this.w8i = e => {
@@ -238,6 +246,14 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         this.RHt.SetPlaybackPosition(e);
       }
     };
+    this.C3d = () => {
+      var e = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
+      const t = this.GetTexture(12);
+      e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      this.SetTextureShowUntilLoaded(e.RoleHeadIconCircle, t, () => {
+        t.SetUIActive(true);
+      });
+    };
   }
   get Rjt() {
     return this.pjt;
@@ -264,8 +280,14 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [6, UE.UIDraggableComponent], [8, UE.UIItem], [9, UE.UIItem]];
-    this.BtnBindInfo = [[1, this.RoleListClick]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [6, UE.UIDraggableComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent], [12, UE.UITexture]];
+    this.BtnBindInfo = [[1, this.RoleListClick], [10, this.RoleDevClick], [11, this.RoleDevMarkClick]];
+  }
+  OnAddListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
+  }
+  OnRemoveListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
   }
   async OnBeforeStartAsync() {
     this.d1o = this.OpenParam;
@@ -296,6 +318,9 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   OnHandleLoadScene() {
     this.ADn();
+  }
+  OnStart() {
+    this.GetButton(10).RootUIComp.SetUIActive(true);
   }
   OnBeforeShow() {
     this.ADn();
@@ -377,7 +402,12 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     }
   }
   async OnRoleSelectAsync() {
+    var e;
     UiLayer_1.UiLayer.SetShowMaskLayer("SelectRoleByDataIdAsync", true);
+    if (this.gUd(this.I6e)) {
+      e = this.TabDataList.findIndex((e, t) => !this.gUd(t));
+      this.TabComponent.SelectToggleByIndex(e);
+    }
     this.RefreshUiMode();
     await this.RefreshTabListAsync().finally(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("SelectRoleByDataIdAsync", false);
@@ -396,6 +426,44 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     this.L6e = undefined;
     this.TabComponent.SetCanChange(this.CanToggleChange);
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(4));
+  }
+  gUd(e) {
+    var t;
+    return !(this.TabDataList.length <= 0) && (t = this.d1o.GetCurSelectRoleId(), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t), this.d1o.GetRoleSystemMode() === 0) && t.RoleType === 5 && this.TabDataList[e].ChildViewName !== "RoleAttributeTabView" && this.TabDataList[e].ChildViewName !== "RolePhantomTabView" && this.TabDataList[e].ChildViewName !== "RolePreviewAttributeTabView";
+  }
+  kMd(e) {
+    var t = ModelManager_1.ModelManager.FunctionModel?.IsOpen(10097) ?? false;
+    var e = e === "RoleAttributeTabView";
+    var i = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId !== 0;
+    var s = this.d1o?.GetCurSelectRoleData()?.IsTrialRole() ?? false;
+    this.qWd(e, t, s);
+    this.GWd(e, t, i, s);
+    this.FWd(i, s);
+  }
+  qWd(e, t, i) {
+    var s = this.GetButton(10);
+    if (s?.RootUIComp) {
+      s.RootUIComp.SetUIActive(e && t && !i);
+    }
+  }
+  GWd(e, t, i, s) {
+    var n = this.GetButton(11);
+    if (n) {
+      n.RootUIComp.SetUIActive(false);
+    }
+  }
+  FWd(e, t) {
+    var i;
+    if (e && !t && (e = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId ?? 0, t = this.GetTexture(12)) && (i = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e))) {
+      this.NWd(i.RoleHeadIconCircle, t);
+    }
+  }
+  NWd(e, t) {
+    this.SetTextureShowUntilLoaded(e, t, () => {
+      if (t) {
+        t.SetUIActive(true);
+      }
+    });
   }
   nn_(e) {
     this.TabComponent?.SetHelpButtonShowState(false);
@@ -465,6 +533,26 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         Log_1.Log.Error("Guide", 43, "异步操作执行过程中不能触发引导");
       }
     } else {
+      if (e[0] === "Rover") {
+        const s = this.d1o.GetRoleIdList();
+        const n = s.findIndex(e => ModelManager_1.ModelManager.RoleModel.IsMainRole(e));
+        if (n < 0 || n >= s.length) {
+          return;
+        }
+        const o = this.RoleListComponent?.GetSelfScrollView()?.GetScrollItemByIndex(n);
+        if (!o) {
+          return;
+        }
+        TimerSystem_1.TimerSystem.Next(() => {
+          this.RoleListComponent.GetSelfScrollView().ScrollTo(o.GetRootItem());
+        });
+        const r = o.RoleIconItem?.GetRootItem();
+        if (r) {
+          return [r, r];
+        } else {
+          return undefined;
+        }
+      }
       if (e.length === 2 && e[0] === GuideConfig_1.GuideConfig.TabTag) {
         if (!this.TabComponent) {
           t = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
@@ -477,8 +565,8 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
           }
           return;
         }
-        const s = Number(e[1]);
-        t = t.GetLayoutItemByIndex(s);
+        const n = Number(e[1]);
+        t = t.GetLayoutItemByIndex(n);
         if (t) {
           return [t.GetRootItem(), t.GetIconSprite()];
         } else {
@@ -489,8 +577,8 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         }
       }
       if (e.length === 2 && e[0] === GuideConfig_1.GuideConfig.SlotTag) {
-        const s = Number(e[1]);
-        t = this.RoleListComponent.GetSelfScrollView().GetScrollItemByIndex(s).GetToggleForGuide().RootUIComp;
+        const n = Number(e[1]);
+        t = this.RoleListComponent.GetSelfScrollView().GetScrollItemByIndex(n).GetToggleForGuide().RootUIComp;
         if (t) {
           return [t, t];
         } else {
@@ -499,21 +587,21 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       }
       t = e.length !== 2 ? e[0] : e.find(e => Number(e) === ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerRoleId());
       const i = Number(t);
-      e = this.d1o.GetRoleIdList();
-      const s = e.findIndex(e => e === i);
-      if (s < 0 || s >= e.length) {
+      const s = this.d1o.GetRoleIdList();
+      const n = s.findIndex(e => e === i);
+      if (n < 0 || n >= s.length) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Guide", 16, "角色界面聚焦引导的额外参数配置有误, 找不到角色Id", ["roleId", i]);
         }
       } else {
-        const n = this.RoleListComponent?.GetSelfScrollView()?.GetScrollItemByIndex(s);
-        if (n) {
+        const o = this.RoleListComponent?.GetSelfScrollView()?.GetScrollItemByIndex(n);
+        if (o) {
           TimerSystem_1.TimerSystem.Next(() => {
-            this.RoleListComponent.GetSelfScrollView().ScrollTo(n.GetRootItem());
+            this.RoleListComponent.GetSelfScrollView().ScrollTo(o.GetRootItem());
           });
-          t = n.RoleIconItem?.GetRootItem();
-          if (t) {
-            return [t, t];
+          const r = o.RoleIconItem?.GetRootItem();
+          if (r) {
+            return [r, r];
           }
         }
         if (Log_1.Log.CheckError()) {

@@ -34,6 +34,8 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.k_r = [];
     this.u9 = [];
     this.Parent = undefined;
+    this.IsCsViewProxy = false;
+    this.CsUiLife = undefined;
     this.F_r = new Map();
     this.ComponentRegisterInfos = [];
     this.BtnBindInfo = [];
@@ -99,7 +101,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.OnBeforeCreateImplement();
     this.OnBeforeCreate();
     let i = true;
-    await Promise.all([this.K_r(), this.OnCreateAsyncImplementImplement(), this.OnCreateAsync(), ...this.k_r.map(async t => t.CreateAsync()), ...this.u9.map(async t => t.CreateAsync())]).catch(t => {
+    await Promise.all([this.K_r(), this.OnCreateAsyncImplementImplement(), this.OnCreateAsync(), this.AfterOnCreateAsync(), ...this.k_r.map(async t => t.CreateAsync()), ...this.u9.map(async t => t.CreateAsync())]).catch(t => {
       if (t instanceof Error) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.ErrorWithStack("UiCore", 16, "[OnCreateAsyncImplement] 加载失败", t, ["component", this.constructor.name], ["error", t.message]);
@@ -114,6 +116,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   }
   async OnStartAsyncImplement() {
     await this.OnBeforeStartAsync();
+    await this.AfterOnBeforeStartAsync();
     this.OnStartImplement();
     this.OnStart();
     await Promise.all([...this.k_r.map(async t => t.StartAsync()), ...this.u9.map(async t => t.StartAsync())]);
@@ -158,6 +161,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   OnFinishShowImplementImplement() {}
   async OnHideAsyncImplement() {
     await this.OnBeforeHideAsync();
+    await this.AfterOnBeforeHideAsync();
     this.OnBeforeHide();
     this.OnBeforeHideImplement();
     await Promise.all([...this.k_r.map(async t => t.HideAsync()), ...this.u9.map(async t => t.HideAsync()), this.OnHideAsyncImplementImplement()]);
@@ -277,14 +281,16 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     return this.IsCreating;
   }
   async K_r() {
-    var i = this.O_r;
-    if (i) {
-      let t = undefined;
-      if ((t = this.UsePool ? (this.UiPoolActorNew = await UiActorPool_1.UiActorPool.GetAsync(i, this.ParentUiItem), UiActorPool_1.UiActorPool.SetKeepWhileCleaning(i, this.N_r), this.UiPoolActorNew.Actor) : await this.LoadPrefabAsync(i, this.ParentUiItem)).IsValid()) {
-        if (this.IsDestroy && Log_1.Log.CheckError()) {
-          Log_1.Log.Error("UiCore", 10, "当前Actor创建完成,界面已经处于销毁状态", ["path", i]);
+    if (!this.IsCsViewProxy) {
+      var i = this.O_r;
+      if (i) {
+        let t = undefined;
+        if ((t = this.UsePool ? (this.UiPoolActorNew = await UiActorPool_1.UiActorPool.GetAsync(i, this.ParentUiItem), UiActorPool_1.UiActorPool.SetKeepWhileCleaning(i, this.N_r), this.UiPoolActorNew.Actor) : await this.LoadPrefabAsync(i, this.ParentUiItem)).IsValid()) {
+          if (this.IsDestroy && Log_1.Log.CheckError()) {
+            Log_1.Log.Error("UiCore", 10, "当前Actor创建完成,界面已经处于销毁状态", ["path", i]);
+          }
+          this.oL(t);
         }
-        this.oL(t);
       }
     }
   }
@@ -791,6 +797,13 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       this.j_r.SetRoleSkinIconAsync(t, i, e, n);
     }
   }
+  SetRoleIconByRoleIdOrSkinId(t, i, e, s, n, o = undefined) {
+    if (!s || s <= 0) {
+      this.SetRoleIcon(t, i, e, o, n);
+    } else {
+      this.SetRoleSkinIcon(t, i, s, o, n);
+    }
+  }
   SetElementIcon(t, i, e, s = undefined) {
     if (s) {
       this.j_r.SetElementIconSync(t, i, e, s);
@@ -933,6 +946,15 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     }
     this.oL(t);
     this.StartCompatible();
+  }
+  async AfterOnCreateAsync() {
+    await Promise.resolve();
+  }
+  async AfterOnBeforeStartAsync() {
+    await Promise.resolve();
+  }
+  async AfterOnBeforeHideAsync() {
+    await Promise.resolve();
   }
 }
 exports.UiPanelBase = UiPanelBase;

@@ -62,6 +62,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.SelectedOption = 0;
     this.CurSubtitle = new SequenceDefine_1.PlotSubtitleConfig();
     this.NeedJumpWhenResume = false;
+    this.QteKeyFrames = [];
     this._Du = undefined;
     this.IsSubtitleConfigInit = false;
     this.DefaultGuardTime = 0;
@@ -138,6 +139,7 @@ class SequenceModel extends ModelBase_1.ModelBase {
     this.NpcGroupPerform.length = 0;
     this.NpcRelationMap.clear();
     this.NeedHideNpcSet.clear();
+    this.QteKeyFrames.length = 0;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-SequenceModel");
     }

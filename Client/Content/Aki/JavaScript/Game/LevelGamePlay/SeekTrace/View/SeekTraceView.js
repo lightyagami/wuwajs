@@ -29,15 +29,15 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.lqe = undefined;
     this.Abu = undefined;
-    this.Ted = undefined;
-    this.Ihd = false;
+    this.Oid = undefined;
+    this.mdd = false;
     this.$pt = undefined;
     this.Jna = undefined;
-    this.Thd = undefined;
-    this.Qhd = undefined;
-    this.rcd = false;
+    this.fdd = undefined;
+    this.Gdd = undefined;
+    this.tMd = false;
     this.v6e = () => {
-      if (this.rcd) {
+      if (this.tMd) {
         this.CloseMe();
       }
     };
@@ -47,12 +47,12 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
     this._cr = e => {
       if (e === "Reset") {
         this.Abu?.SetInteractEnable(true);
-        this.Ihd = false;
+        this.mdd = false;
       } else if (e === "Success") {
         if (!ModelManager_1.ModelManager.SeekTraceModel.RemainUiAfterCompletion || ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState) {
           this.CloseMe();
         } else if (ModelManager_1.ModelManager.SeekTraceModel.RemainUiAfterCompletion && !ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState) {
-          this.rcd = true;
+          this.tMd = true;
         }
         if (ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("LineCross_Challenge_Pass");
@@ -62,14 +62,14 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Gameplay_Locked");
         }
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("LevelPlay", 27, "已完成寻迹", ["WaitRewardViewClose", this.rcd]);
+          Log_1.Log.Debug("LevelPlay", 27, "已完成寻迹", ["WaitRewardViewClose", this.tMd]);
         }
         ControllerHolder_1.ControllerHolder.SeekTraceController.FinishSeekTrace();
       }
     };
     this.jtu = () => {
       if (!ModelManager_1.ModelManager.SeekTraceModel.IsGameFinish) {
-        this.Xid("CrossLine_Reset_Tips");
+        this.rnd("CrossLine_Reset_Tips");
       }
     };
     this.lPe = () => {
@@ -84,44 +84,44 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
       this.GetItem(0).SetUIActive(false);
       this.GetButton(3).RootUIComp.SetUIActive(false);
     };
-    this.rid = () => {
+    this.Qod = () => {
       this.GetItem(0).SetUIActive(true);
       this.GetButton(3).RootUIComp.SetUIActive(true);
       var e = ModelManager_1.ModelManager.SeekTraceModel;
-      this.Yid();
+      this.ond();
       if (e.IsGameFinish) {
         if (e.GameFinishResult) {
           this.$pt.PlaySequencePurely("Success");
           this.Abu.OnSeekTraceSucceed();
         } else {
-          this.Xid("CrossLine_Fail_Tips");
+          this.rnd("CrossLine_Fail_Tips");
         }
       }
     };
-    this.bhd = e => {
+    this.gdd = e => {
       this.GetText(2).SetText(e.toString());
     };
-    this.Rhd = () => {
+    this.Cdd = () => {
       if (this.Jna) {
         this.Jna.Kill();
         this.Jna.OnCompleteCallBack.Unbind();
         this.Jna = undefined;
       }
-      (0, puerts_1.releaseManualReleaseDelegate)(this.bhd);
+      (0, puerts_1.releaseManualReleaseDelegate)(this.gdd);
     };
-    this.Khd = (e, t) => {
-      this.Qhd?.MoveAxisInput(e, t);
+    this.Fdd = (e, t) => {
+      this.Gdd?.MoveAxisInput(e, t);
     };
-    this.Xhd = (e, t) => {
-      this.Qhd?.MoveActionInput(e, t);
+    this.Ndd = (e, t) => {
+      this.Gdd?.MoveActionInput(e, t);
     };
-    this.Yhd = () => {
+    this.Vdd = () => {
       this.Abu?.GamePadSelectItem();
     };
-    this.zhd = () => {
+    this.jdd = () => {
       this.Abu?.GamePadResetItem();
     };
-    this.Whd = e => {
+    this.qdd = e => {
       let t = 0;
       let i = 0;
       switch (e) {
@@ -147,18 +147,18 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCloseRewardView, this.v6e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceMoveActionInput, this.Xhd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceMoveAxisInput, this.Khd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceSelectItemInput, this.Yhd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceResetItemInput, this.zhd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceMoveActionInput, this.Ndd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceMoveAxisInput, this.Fdd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceSelectItemInput, this.Vdd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeekTraceResetItemInput, this.jdd);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseRewardView, this.v6e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceMoveActionInput, this.Xhd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceMoveAxisInput, this.Khd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceSelectItemInput, this.Yhd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceResetItemInput, this.zhd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceMoveActionInput, this.Ndd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceMoveAxisInput, this.Fdd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceSelectItemInput, this.Vdd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeekTraceResetItemInput, this.jdd);
   }
   async OnBeforeStartAsync() {
     var e;
@@ -173,20 +173,20 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SeekTraceResetCurve");
       ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
         if (e?.IsValid()) {
-          this.Thd = e;
+          this.fdd = e;
         }
       });
       this.Abu = new SeekTraceContentPanel_1.SeekTraceContentPanel();
       await this.Abu.CreateThenShowByResourceIdAsync(s, this.GetItem(1));
-      this.Abu.SetItemCallback(this.GIl, this.rid);
+      this.Abu.SetItemCallback(this.GIl, this.Qod);
       this.Abu.SetInteractEnable(true);
       this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
       await this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
       this.lqe.SetTitle("");
       this.lqe.SetHelpBtnActive(true);
       this.lqe.SetCloseCallBack(this.lPe);
-      this.Ted = new SeekTraceClawItem_1.SeekTraceClawItem();
-      await this.Ted.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
+      this.Oid = new SeekTraceClawItem_1.SeekTraceClawItem();
+      await this.Oid.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelPlay", 48, "SeekTrace尺寸不符合规格", ["Width", i], ["Height", t]);
     }
@@ -194,23 +194,23 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
   OnStart() {
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.$pt.BindOnEndSequenceEvent(this._cr);
-    this.Yid();
-    this.Qhd = new SeekTraceJoystickInput_1.SeekTraceJoystickInput();
-    this.Qhd?.RegisterMovePress(this.Whd);
+    this.ond();
+    this.Gdd = new SeekTraceJoystickInput_1.SeekTraceJoystickInput();
+    this.Gdd?.RegisterMovePress(this.qdd);
   }
   OnBeforeDestroy() {
     this.$pt?.Clear();
     this.$pt = undefined;
-    this.Thd = undefined;
+    this.fdd = undefined;
     ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState = false;
   }
   OnTick(e) {
-    this.Qhd?.Tick(e);
+    this.Gdd?.Tick(e);
     this.Abu?.UpdateKeyBoardSelectFrame();
   }
-  Xid(t) {
-    if (!this.Ihd) {
-      this.Ihd = true;
+  rnd(t) {
+    if (!this.mdd) {
+      this.mdd = true;
       const i = ModelManager_1.ModelManager.SeekTraceModel.StepLimit;
       ControllerHolder_1.ControllerHolder.SeekTraceController.ResetSeekTrace(() => {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(t);
@@ -218,18 +218,18 @@ class SeekTraceView extends UiTickViewBase_1.UiTickViewBase {
         this.Abu?.SetInteractEnable(false);
         this.Abu?.ResetView();
         var e = ModelManager_1.ModelManager.SeekTraceModel.StepLimit;
-        this.Jna = UE.LTweenBPLibrary.IntTo(GlobalData_1.GlobalData.World, (0, puerts_1.toManualReleaseDelegate)(this.bhd), i, e, 1);
+        this.Jna = UE.LTweenBPLibrary.IntTo(GlobalData_1.GlobalData.World, (0, puerts_1.toManualReleaseDelegate)(this.gdd), i, e, 1);
         if (this.Jna) {
-          if (this.Thd) {
+          if (this.fdd) {
             this.Jna.SetEase(28);
-            this.Jna.SetCurveFloat(this.Thd);
+            this.Jna.SetCurveFloat(this.fdd);
           }
-          this.Jna.OnCompleteCallBack.Bind(this.Rhd);
+          this.Jna.OnCompleteCallBack.Bind(this.Cdd);
         }
       });
     }
   }
-  Yid() {
+  ond() {
     this.GetText(2).SetText(ModelManager_1.ModelManager.SeekTraceModel.StepLimit.toString());
   }
 }

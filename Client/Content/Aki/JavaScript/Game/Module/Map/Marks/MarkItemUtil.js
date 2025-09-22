@@ -181,7 +181,7 @@ class MarkItemUtil {
       if (k = ModelManager_1.ModelManager.MapModel.GetMark(r.ObjectType, e)) {
         a.OverrideMapId = k.MapId;
       }
-      this.eZu(a, k?.MapGravity ?? 0, t);
+      this.kQu(a, k?.MapGravity ?? 0, t);
       return a;
     }
   }
@@ -243,7 +243,7 @@ class MarkItemUtil {
     });
     e.Initialize();
   }
-  static eZu(e, r, a) {
+  static kQu(e, r, a) {
     e.MarkItemEntity = MarkFactory_1.MarkFactory.CreateAndAssembleDynamicConfigMark({
       MarkId: e.MarkId,
       MarkType: e.MarkType,

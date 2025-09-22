@@ -100,6 +100,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.s7i = false;
     this.Gsa = 0;
     this.Ko_ = undefined;
+    this.Kkd = 0;
     this.JTt = i => {
       if (i === "ContrastSwitch") {
         this.GetItem(11).SetUIActive(this.o7i);
@@ -575,7 +576,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     }
   }
   async OnBeforeStartAsync() {
-    this.dFe = this.OpenParam;
+    var i = this.OpenParam;
+    this.dFe = i.RoleId;
+    this.Kkd = i.SelectIndex;
     this.q9i = new VisionDetailComponent_1.VisionDetailComponent(this.GetItem(10));
     await this.q9i.Init();
     this.G9i = new VisionDetailComponent_1.VisionDetailComponent(this.GetItem(11));
@@ -672,7 +675,12 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.e7i.SelectToggleByIndex(0, true);
   }
   rHi() {
-    this.b9i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex;
+    if (this.Kkd >= 0) {
+      this.b9i = this.Kkd;
+      ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex = this.Kkd;
+    } else {
+      this.b9i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex;
+    }
     var i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentSelectUniqueId;
     var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i);
     if (i > 0 && t) {

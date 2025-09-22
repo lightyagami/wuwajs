@@ -28,6 +28,7 @@ const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const CameraController_1 = require("../../Camera/CameraController");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const GlobalData_1 = require("../../GlobalData");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../NewWorld/Character/Common/CharacterNameDefines");
@@ -42,6 +43,8 @@ const MovingShotManager_1 = require("./MovingShotManager");
 const PlotAudioModel_1 = require("./PlotAudioModel");
 const PlotController_1 = require("./PlotController");
 const SequenceDefine_1 = require("./Sequence/SequenceDefine");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
+const GameSettingsUtils_1 = require("../../GameSettings/GameSettingsUtils");
 const PLAYER_UNUSED_INDEX = -1;
 const PLAYER_USED_ID = -1;
 const ACTOR_EMPTY_INDEX = -1;
@@ -102,6 +105,7 @@ class ActorData {
     this.PositionLocked = false;
     this.QueHandleIds = [];
     this.HoldingHands = false;
+    this.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
   }
   get Valid() {
     var t;
@@ -151,6 +155,7 @@ class ActorData {
     this.PositionLocked = false;
     this.QueHandleIds.length = 0;
     this.HoldingHands = false;
+    this.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
   }
   IsPlayer() {
     return this.PbDataId === PLAYER_USED_ID;
@@ -166,6 +171,29 @@ class DelayActionManager {
   constructor() {
     this.Sia = new Set();
     this.Eia = new Map();
+    this.zxd = new Map();
+  }
+  AddActionProxy(t, e, i) {
+    let o = undefined;
+    if (this.zxd.has(t)) {
+      o = this.zxd.get(t);
+    } else {
+      o = [];
+      this.zxd.set(t, o);
+    }
+    o.push([e ?? 0, i]);
+  }
+  ClearActionProxy() {
+    this.zxd.clear();
+  }
+  HandleActionProxy() {
+    for (var [e, i] of this.zxd) {
+      i.sort((t, e) => t[0] - e[0]);
+      for (let t = 0; t < i.length; t++) {
+        var o = i[t];
+        this.DelayAction(e, o[0], o[1], t === i.length - 1);
+      }
+    }
   }
   DelayAction(e, t, i, o) {
     if (t < TimerSystem_1.MIN_TIME || t > TimerSystem_1.MAX_TIME) {
@@ -237,7 +265,8 @@ class PlotTemplate {
     this.yia = new DelayActionManager();
     this.m8a = new DelayActionManager();
     this.z2_ = new DelayActionManager();
-    this.tsd = false;
+    this.Jxd = new DelayActionManager();
+    this.zsd = false;
     this.NP1 = new Map();
   }
   get IsInTemplate() {
@@ -269,8 +298,11 @@ class PlotTemplate {
     this.SJi = 0;
     this.nx = t;
     this.AWl = i.IsSwitchMainRole ?? false;
-    this.tsd = i.IsUseSeqFace ?? false;
+    this.zsd = i.IsUseSeqFace ?? false;
     RenderUtil_1.RenderUtil.BeginPSOSyncMode();
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
+      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, false);
+    }
     var e = new Array();
     for (const s of i.Actors) {
       e.push(s.EntityId);
@@ -413,7 +445,7 @@ class PlotTemplate {
                 });
               }
               s.SetBlendSpaceLookAt(true);
-              if ((r = i?.Entity?.GetComponent(297)) && r.GetIfHanding()) {
+              if ((r = i?.Entity?.GetComponent(298)) && r.GetIfHanding()) {
                 r.OnlyStopAiMove();
                 a.HoldingHands = true;
               }
@@ -468,8 +500,8 @@ class PlotTemplate {
               }
             }
           }
-          if (this.tsd && o.SeqFacePath && t !== this.dJi) {
-            i.push(this.isd(s, o.SeqFacePath));
+          if (this.zsd && o.SeqFacePath && t !== this.dJi) {
+            i.push(this.Jsd(s, o.SeqFacePath));
           }
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 26, "初始化演员失败", ["EntityId", o.EntityId]);
@@ -778,6 +810,9 @@ class PlotTemplate {
   async EndTemplateNew(t) {
     if (this.IsInTemplate) {
       RenderUtil_1.RenderUtil.EndPSOSyncMode();
+      if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
+        GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, true);
+      }
       this.LJi.Stop();
       this.yia.CleanAction(false);
       this.m8a.CleanAction(false);
@@ -864,6 +899,7 @@ class PlotTemplate {
                 BlendOutTime: MONTAGE_BLEND_OUT_TIME
               });
             }
+            this.Zxd(o);
           } else {
             NpcPerformController_1.NpcPerformController.ForceSetNpcDitherVisible(false, o.PbDataId, 1);
             if ((_ = s?.GetComponent(47))?.Valid && o.OriginEnableAi) {
@@ -893,11 +929,12 @@ class PlotTemplate {
               a = r.SkeletalMesh.SkeletalMesh;
               UE.KuroMeshTextureFunctionLibrary.HandleSkeletalMeshComponentStreaming(a, false);
             }
-            if ((_ = s?.GetComponent(297)) && _.GetIsBeHoldingHands()) {
+            if ((_ = s?.GetComponent(298)) && _.GetIsBeHoldingHands()) {
               _.OnlyStartAiMove();
             }
-            if (this.tsd) {
-              this.rsd(o.EntityId);
+            o.FaceChangeManager?.ResetFacialExpressionOuter();
+            if (this.zsd) {
+              this.Zsd(o.EntityId);
             }
           }
           i.push(this.KJi(o, e?.IsResetPosition));
@@ -951,7 +988,7 @@ class PlotTemplate {
           o.SetActorRotation(h, "模板演出结束设置位置", false);
           o.SetInputRotator(h);
           o.FixBornLocation("模板演出结束设置位置", true, _, false);
-          if (i?.GetComponent(297)?.GetIfHanding()) {
+          if (i?.GetComponent(298)?.GetIfHanding()) {
             o.MoveComp?.MoveController.PushMoveInfo();
           }
         }
@@ -1075,6 +1112,7 @@ class PlotTemplate {
       if (!this.nx.IsBackground) {
         this.XJi(t.WhoId, t.ActorLookAtArray, t.Type === "Option");
         this.$Ji(t.ActorMontageArray);
+        this.eBd(t.ActorFaceExpressionArray);
       }
     }
   }
@@ -1440,8 +1478,12 @@ class PlotTemplate {
           InSectionToStartMontageAt: i.StartFromLoop ? CharacterNameDefines_1.CharacterNameDefines.LOOP_SECTION : undefined,
           OnPlayCallback: t => {
             e.BodyMontage = t;
-            e.FaceChangeManager?.ResetFacialExpressionOuter();
-            e.FaceChangeManager?.ChangeFaceForExpression(t, e.FaceExpressionId);
+            if (e.IsPlayer()) {
+              e.FaceChangeManager?.ResetFacialExpressionOuter();
+              e.FaceChangeManager?.ChangeFaceForExpression(t, e.FaceExpressionId);
+            } else {
+              this.tBd(e, e.FaceExpressionId);
+            }
           },
           KeepOtherMontage: true
         });
@@ -1690,16 +1732,17 @@ class PlotTemplate {
         if (o?.Valid && o?.Visible) {
           const s = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(178)?.MainAnimInstance;
           if (s) {
-            t = PlotAudioById_1.configPlotAudioById.GetConfig(i.TidTalk);
-            t = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(t);
-            o.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimSequence, t => {
-              o.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
-              var e = s.PlaySlotAnimationAsDynamicMontage(t, SequenceDefine_1.ABP_Mouth_Slot_Name, 0, 0, 1, 1, -1, 0, false);
-              o.FaceChangeManager?.ChangeFaceForMouthMontage(e);
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Plot", 38, "MouthAnim 播放口型", ["Key", i.TidTalk], ["Asset", t?.GetName()], ["ABP", s.GetName()]);
-              }
-            });
+            if ((t = PlotAudioById_1.configPlotAudioById.GetConfig(i.TidTalk)).GenLipSync) {
+              t = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(t);
+              o.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimSequence, t => {
+                o.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
+                var e = s.PlaySlotAnimationAsDynamicMontage(t, SequenceDefine_1.ABP_Mouth_Slot_Name, 0, 0, 1, 1, -1, 0, false);
+                o.FaceChangeManager?.ChangeFaceForMouthMontage(e);
+                if (Log_1.Log.CheckDebug()) {
+                  Log_1.Log.Debug("Plot", 38, "MouthAnim 播放口型", ["Key", i.TidTalk], ["Asset", t?.GetName()], ["ABP", s.GetName()]);
+                }
+              });
+            }
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Plot", 26, "播放嘴型时拿不到AnimInst", ["EntityId", o.EntityId]);
           }
@@ -1844,17 +1887,17 @@ class PlotTemplate {
       this.rNn();
     }
   }
-  async isd(e, t) {
+  async Jsd(e, t) {
     const i = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.SkeletalMesh, t => {
       if (t?.IsValid()) {
-        this.rsd(e.EntityId, t);
+        this.Zsd(e.EntityId, t);
       }
       i.SetResult();
     });
     return i.Promise;
   }
-  rsd(t, e) {
+  Zsd(t, e) {
     var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(t);
     if (t?.IsInit && (t = t.Entity?.GetComponent(2))?.Valid) {
       if (e?.IsValid()) {
@@ -1862,6 +1905,73 @@ class PlotTemplate {
       } else {
         t.SwitchFace(false);
       }
+    }
+  }
+  tBd(o, e) {
+    if (e !== undefined) {
+      e = ConfigManager_1.ConfigManager.FaceExpressionConfig?.GetFaceExpressionConfig(e);
+      if (e && e.FaceExpression.Type === "AnimSequence") {
+        let t = undefined;
+        if ((t = e.MaleVariant && ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() !== 0 ? e.MaleVariant : e.FaceExpression)?.Path) {
+          if (o.PlayerExpressionLoadingId !== ResourceSystem_1.ResourceSystem.InvalidId) {
+            ResourceSystem_1.ResourceSystem.CancelAsyncLoad(o.PlayerExpressionLoadingId);
+          }
+          const s = e.CloseAutoBlink;
+          o.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.LoadAsync(t.Path, UE.AnimSequence, t => {
+            var e;
+            var i;
+            o.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
+            if (t?.IsValid() && (i = (e = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(178))?.MainAnimInstance)?.IsValid() && (i.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT), t = i.PlaySlotAnimationAsDynamicMontage(t, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false), i.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t), s)) {
+              e.DisableBlink = true;
+            }
+          });
+        }
+      }
+    }
+  }
+  Zxd(t) {
+    if (t.PlayerExpressionLoadingId !== ResourceSystem_1.ResourceSystem.InvalidId) {
+      ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t.PlayerExpressionLoadingId);
+      t.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
+    }
+    var t = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(178);
+    var e = t?.MainAnimInstance;
+    if (e?.IsValid()) {
+      e.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT);
+      t.DisableBlink = false;
+    }
+  }
+  eBd(t) {
+    if (t && t.length !== 0) {
+      this.Jxd.ClearActionProxy();
+      for (const e of t) {
+        const i = this.DJi[e.ActorIndex];
+        if (i.Valid) {
+          if (e.FaceExpression.Type === IAction_1.EActorFaceExpressionType.Play) {
+            const o = e.FaceExpression.FaceExpressionId;
+            this.Jxd.AddActionProxy(i.PbDataId, e.FaceExpression.DelayTime, () => {
+              if (i.IsPlayer()) {
+                this.tBd(i, o);
+              } else {
+                i.FaceChangeManager?.ResetFacialExpressionOuter();
+                i.FaceChangeManager?.ChangeFaceForExpressionFromAnimNotify(o);
+              }
+            });
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Plot", 26, "模板演出播放表情", ["演员", i.PbDataId], ["Id", e.FaceExpression.FaceExpressionId]);
+            }
+          } else if (e.FaceExpression.Type === IAction_1.EActorFaceExpressionType.Stop && (this.Jxd.AddActionProxy(i.PbDataId, e.FaceExpression.DelayTime, () => {
+            if (i.IsPlayer()) {
+              this.Zxd(i);
+            } else {
+              i.FaceChangeManager?.ResetFacialExpressionOuter();
+            }
+          }), Log_1.Log.CheckDebug())) {
+            Log_1.Log.Debug("Plot", 26, "模板演出停止表情", ["演员", i.PbDataId]);
+          }
+        }
+      }
+      this.Jxd.HandleActionProxy();
     }
   }
 }

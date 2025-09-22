@@ -154,6 +154,8 @@ function getBuffEffectClass(e) {
       return ExtraEffectMisc_1.ForeverTimeScaleEffect;
     case 85:
       return ExtraEffectMisc_1.SyncTimeScaleEffect;
+    case 87:
+      return ExtraEffectMisc_1.SpecialEnergyModifier;
     default:
       return;
   }

@@ -8,13 +8,13 @@ const UE = require("ue");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class CommonTouchUiEditContainer {
   constructor() {
-    this.Z9u = undefined;
+    this.P$u = undefined;
     this.Kot = new Map();
   }
   async LoadPanel(t, e) {
-    this.Z9u = new UiPanelBase_1.UiPanelBase();
-    await this.Z9u.CreateThenShowByResourceIdAsync("UiView_DynFightEdit", t);
-    var i = this.eHu(this.Z9u, 0);
+    this.P$u = new UiPanelBase_1.UiPanelBase();
+    await this.P$u.CreateThenShowByResourceIdAsync("UiView_DynFightEdit", t);
+    var i = this.x$u(this.P$u, 0);
     var r = [];
     for (const n of e) {
       var s = new UiPanelBase_1.UiPanelBase();
@@ -29,7 +29,7 @@ class CommonTouchUiEditContainer {
       if (e === -1) {
         return t.GetRootItem();
       }
-      t = this.tHu(t);
+      t = this.D$u(t);
       if (t) {
         t = t.Components.Get(e);
         if (t) {
@@ -43,7 +43,7 @@ class CommonTouchUiEditContainer {
     if (!t) {
       return [];
     }
-    var e = this.tHu(t);
+    var e = this.D$u(t);
     if (!e) {
       return [];
     }
@@ -57,24 +57,24 @@ class CommonTouchUiEditContainer {
     return i;
   }
   GetRootItem() {
-    return this.Z9u.GetRootItem();
+    return this.P$u.GetRootItem();
   }
   OnViewDestroy() {
     this.Kot.forEach(t => {
       t.Destroy();
     });
     this.Kot.clear();
-    if (this.Z9u) {
-      this.Z9u.Destroy();
+    if (this.P$u) {
+      this.P$u.Destroy();
     }
   }
-  tHu(t) {
+  D$u(t) {
     t = t.GetRootActor();
     if (t) {
       return t.GetComponentByClass(UE.LGUIComponentsRegistry.StaticClass());
     }
   }
-  eHu(t, e) {
+  x$u(t, e) {
     t = t.GetRootActor();
     if (t) {
       t = t.GetComponentByClass(UE.LGUIComponentsRegistry.StaticClass());

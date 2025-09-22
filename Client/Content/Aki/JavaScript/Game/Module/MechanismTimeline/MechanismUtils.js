@@ -10,13 +10,13 @@ const Log_1 = require("../../../Core/Common/Log");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 class MechanismUtils {
   static GetAllAnimNotifyEvents(e) {
-    return MechanismUtils.fZu(e, false);
+    return MechanismUtils.qjc(e, false);
   }
   static GetAllAnimNotifyStateEvents(e) {
-    return MechanismUtils.fZu(e, true);
+    return MechanismUtils.qjc(e, true);
   }
   static GetAllAnimNotifyEventsByPath(e, t) {
-    MechanismUtils.gZu(e).then(e => {
+    MechanismUtils.Gjc(e).then(e => {
       if (e) {
         e = MechanismUtils.GetAllAnimNotifyEvents(e);
         t(e);
@@ -24,14 +24,14 @@ class MechanismUtils {
     });
   }
   static GetAllAnimNotifyStateEventsByPath(e, t) {
-    MechanismUtils.gZu(e).then(e => {
+    MechanismUtils.Gjc(e).then(e => {
       if (e) {
         e = MechanismUtils.GetAllAnimNotifyStateEvents(e);
         t(e);
       }
     });
   }
-  static async gZu(e) {
+  static async Gjc(e) {
     const t = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LevelSequence, e => {
       t.SetResult(e);
@@ -41,7 +41,7 @@ class MechanismUtils {
       return e;
     }
   }
-  static fZu(e, t) {
+  static qjc(e, t) {
     var s = UE.KuroSequenceRuntimeFunctionLibrary.FindMasterTracksByType(e, UE.MovieSceneMechanismTrack.StaticClass());
     if (s && s.Num()) {
       var i = [];

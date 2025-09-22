@@ -74,14 +74,14 @@ let FreeCameraLogicComponent = FreeCameraLogicComponent_1 = class FreeCameraLogi
     return this.ZPr?.CameraActor;
   }
   OnInit() {
-    this.ZPr = this.Entity.GetComponent(291);
+    this.ZPr = this.Entity.GetComponent(292);
     return true;
   }
   InitConfig(t) {
     var i = Info_1.Info.IsMobileInputModel();
     let s = undefined;
     for (const e of t) {
-      var h = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(24, e.toString());
+      var h = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(25, e.toString());
       if (h && (!i && h.PC生效 || i && h.手机生效)) {
         s = h;
       }
@@ -285,5 +285,5 @@ let FreeCameraLogicComponent = FreeCameraLogicComponent_1 = class FreeCameraLogi
     return MathUtils_1.MathUtils.Clamp(t, i, s);
   }
 };
-FreeCameraLogicComponent = FreeCameraLogicComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(292)], FreeCameraLogicComponent);
+FreeCameraLogicComponent = FreeCameraLogicComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(293)], FreeCameraLogicComponent);
 exports.FreeCameraLogicComponent = FreeCameraLogicComponent; //# sourceMappingURL=FreeCameraLogicComponent.js.map

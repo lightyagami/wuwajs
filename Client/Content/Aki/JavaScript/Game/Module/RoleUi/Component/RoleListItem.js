@@ -69,7 +69,7 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.jH_(t);
         break;
       case 2:
-        this.UNu(t);
+        this.YGu(t);
         break;
       default:
         this.HH_(t);
@@ -103,7 +103,7 @@ class RoleListItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.$H_("SP_TeamEditFormation_" + e, true);
     }
   }
-  UNu(e) {
+  YGu(e) {
     e = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(e);
     if (e <= 0) {
       this.$H_();
@@ -177,7 +177,7 @@ class RoleIconItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite]];
   }
   Refresh(e) {
-    this.SetRoleSkinIcon(e.GetRoleConfig().RoleHeadIconBig, this.GetTexture(0), e.GetRoleSkinId(), "RoleRootView");
+    this.SetRoleIconByRoleIdOrSkinId(e.GetRoleConfig().RoleHeadIconBig, this.GetTexture(0), e.GetRoleId(), e.GetRoleSkinId(), undefined, "RoleRootView");
     this.mFe(e.GetRoleConfig().QualityId);
   }
   mFe(e) {

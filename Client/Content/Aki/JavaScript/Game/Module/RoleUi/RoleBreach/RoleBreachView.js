@@ -17,13 +17,13 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiManager_1 = require("../../../Ui/UiManager");
 const AttributeItem_1 = require("../../Common/AttributeItem");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiRoleUtils_1 = require("../../UiComponent/UiRoleUtils");
-const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleController_1 = require("../RoleController");
@@ -38,8 +38,9 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.lqe = undefined;
     this.b1o = undefined;
     this.q1o = undefined;
-    this.dVi = undefined;
+    this.yil = undefined;
     this.CloseClick = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(3);
       UiManager_1.UiManager.CloseView("RoleLevelUpView");
       this.CloseMe();
     };
@@ -67,10 +68,6 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
       }
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
     };
-    this.OnRoleBreachQuitSequenceFinish = () => {
-      var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe);
-      RoleController_1.RoleController.SendRoleLevelUpViewRequestWithOpenView(e.GetRoleId(), this.Info.Name);
-    };
     this.G1o = () => new AttributeItem_1.AttributeItem();
     this.vke = () => {
       return new StarItem_1.StarItem();
@@ -79,7 +76,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
       this.GetItem(3).SetUIActive(false);
       this.b1o.GetRootItem().SetUIActive(false);
       this.lqe.GetRootItem().SetUIActive(false);
-      UiRoleUtils_1.UiRoleUtils.PlayRoleBreachFinishEffect(this.dVi);
+      UiRoleUtils_1.UiRoleUtils.PlayRoleBreachFinishEffect(this.yil.TsUiSceneRoleActor);
       var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleBreachSuccessDelayTime();
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
         RoleController_1.RoleController.PlayRoleMontage(3);
@@ -101,30 +98,35 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIHorizontalLayout], [6, UE.UIVerticalLayout], [7, UE.UIItem], [8, UE.UIItem]];
   }
-  OnStart() {
-    this.dFe = this.OpenParam;
-    this.dVi = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-    this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.vke);
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
-    this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]);
-    this.lqe.SetCloseCallBack(this.CloseClick);
-    this.b1o = new CostItemGridComponent_1.CostItemGridComponent(this.GetItem(8), this.LevelUpClick, this.LevelUpLockTipClick);
-    this.b1o.SetMaxItemActive(false);
-    this.b1o.SetButtonItemLocalText("RoleBreakup");
-    this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.G1o);
-    this.UiViewSequence.AddSequenceFinishEvent("Quit", this.OnRoleBreachQuitSequenceFinish);
-    RoleController_1.RoleController.PlayRoleMontage(12);
-  }
-  OnHandleLoadScene() {
-    UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
-    var e = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
+  async OnBeforeStartAsync() {
+    var e = this.OpenParam;
     if (e) {
-      e.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
+      this.yil = e;
+      this.dFe = this.yil.RoleId;
+      this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.vke);
+      this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
+      await this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]);
+      this.lqe.SetCloseCallBack(this.CloseClick);
+      this.b1o = new CostItemGridComponent_1.CostItemGridComponent(this.GetItem(8), this.LevelUpClick, this.LevelUpLockTipClick);
+      this.b1o.SetMaxItemActive(false);
+      this.b1o.SetButtonItemLocalText("RoleBreakup");
+      this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(6), this.G1o);
+      await this.yil.InitRoleActor();
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Role", 88, "进入突破界面未传参");
     }
-    RoleController_1.RoleController.PlayRoleMontage(3, false, true);
   }
   OnBeforeShow() {
+    this.yil?.ShowActor();
     this.FTt();
+  }
+  OnHandleLoadScene() {
+    this.yil.HandleLoadScene(() => {
+      RoleController_1.RoleController.PlayRoleMontage(3, false, true);
+    });
+  }
+  OnHandleReleaseScene() {
+    this.yil.HandleReleaseScene();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleBreakUp, this.N1o);
@@ -133,12 +135,6 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleBreakUp, this.N1o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonItemCountAnyChange, this.qdi);
-  }
-  OnHandleReleaseScene() {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Character", 58, "RoleBreachView HandleReleaseScene 隐藏模型");
-    }
-    UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
   }
   FTt() {
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData();
@@ -150,17 +146,17 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     var o = [];
     var n = i.BreachConsume;
     if (n) {
-      for (var [a, s] of n) {
-        if (a === ItemDefines_1.EItemId.Gold) {
-          r = s;
+      for (var [s, a] of n) {
+        if (s === ItemDefines_1.EItemId.Gold) {
+          r = a;
         } else {
-          a = {
-            ItemId: a,
+          s = {
+            ItemId: s,
             IncId: 0,
-            SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(a),
-            Count: s
+            SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(s),
+            Count: a
           };
-          o.push(a);
+          o.push(s);
         }
       }
     }
@@ -175,12 +171,6 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
       this.b1o.SetLockItemActive(false);
     }
     this.b1o.Update(o, ItemDefines_1.EItemId.Gold, r);
-    i = ModelManager_1.ModelManager.RoleModel.RoleBreachResponseData.GetUnLockSkillId();
-    this.GetItem(1).SetUIActive(i !== 0);
-    if (i !== 0) {
-      n = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillConfigById(i);
-      this.SetTextureByPath(n.Icon, this.GetTexture(2));
-    }
     this.jxt(t, e.GetMaxBreachLevel());
     this.k1o();
   }
@@ -192,21 +182,21 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     var o = t.GetMaxBreachLevel();
     var n = [];
     for (const l of e) {
-      var a = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(this.dFe, l, i, r);
+      var s = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(this.dFe, l, i, r);
       let e = 0;
-      if (r < o && (s = ModelManager_1.ModelManager.RoleModel.GetAddAttrLevelUp(this.dFe, i, r, i, r + 1, l)) > 0) {
-        e = a + s;
+      if (r < o && (a = ModelManager_1.ModelManager.RoleModel.GetAddAttrLevelUp(this.dFe, i, r, i, r + 1, l)) > 0) {
+        e = s + a;
       }
-      var s = {
+      var a = {
         Id: l,
         IsRatio: false,
-        CurValue: a,
+        CurValue: s,
         BgActive: false,
-        ShowNext: e > a,
+        ShowNext: e > s,
         NextValue: e,
         UseAnotherName: true
       };
-      n.push(s);
+      n.push(a);
     }
     this.AttributeLayout.RefreshByData(n);
   }
@@ -226,7 +216,7 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.StarLayout.RefreshByData(r);
   }
   O1o() {
-    UiManager_1.UiManager.OpenView("RoleBreachSuccessView", this.dFe);
+    RoleController_1.RoleController.OpenRoleViewByViewModel("RoleBreachSuccessView", this.yil);
   }
 }
 exports.RoleBreachView = RoleBreachView;

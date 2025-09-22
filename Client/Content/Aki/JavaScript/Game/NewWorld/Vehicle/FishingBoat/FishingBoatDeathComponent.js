@@ -57,5 +57,5 @@ let FishingBoatDeathComponent = class FishingBoatDeathComponent extends BaseDeat
     this.Xte?.RemoveTag(1008164187);
   }
 };
-FishingBoatDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(279)], FishingBoatDeathComponent);
+FishingBoatDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(280)], FishingBoatDeathComponent);
 exports.FishingBoatDeathComponent = FishingBoatDeathComponent; //# sourceMappingURL=FishingBoatDeathComponent.js.map

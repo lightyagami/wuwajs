@@ -25,7 +25,7 @@ class WeeklyRogueTokenInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.SelectOnTokenId = -1;
     this.eV_ = (e, i) => {
       if (i) {
-        this.Q$c(e);
+        this.z9u(e);
       }
     };
     this.gke = (e, i, t) => e > 0;
@@ -55,12 +55,12 @@ class WeeklyRogueTokenInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.TokenItem.SetInteractive(false);
   }
   OnStart() {
-    this.K$c();
-    this.X$c();
+    this.J9u();
+    this.Z9u();
     this.tst();
     this.ArtifactGrid?.OnSelected(true);
   }
-  Q$c(e) {
+  z9u(e) {
     if (this.SelectOnTokenId > 0) {
       const i = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(this.SelectOnTokenId);
       if (!i) {
@@ -83,11 +83,11 @@ class WeeklyRogueTokenInfoPanel extends UiPanelBase_1.UiPanelBase {
       this.SelectOnTokenId = e;
     }
   }
-  K$c() {
+  J9u() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
     this.ArtifactGrid?.Refresh(e, true, 0);
   }
-  X$c() {
+  Z9u() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
     var i = ModelManager_1.ModelManager.WeeklyRogueModel.GetCoreTokenIdListByArtifactId(e);
     var t = ModelManager_1.ModelManager.WeeklyRogueModel.GetBuffIdListByType(2);

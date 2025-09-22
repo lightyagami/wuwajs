@@ -3,10 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logicModeLogString = exports.ID_SEGMENT = exports.EXIT_TAG = exports.ANY_KEY = exports.SPECIAL_TEXT = undefined;
+exports.logicModeLogString = exports.ID_SEGMENT = exports.HOME_TAG = exports.EXIT_TAG = exports.ANY_KEY = exports.SPECIAL_TEXT = undefined;
 exports.SPECIAL_TEXT = "Hide";
 exports.ANY_KEY = "AnyKey";
 exports.EXIT_TAG = "tag1";
+exports.HOME_TAG = "tag_home";
 exports.ID_SEGMENT = 10000;
 exports.logicModeLogString = {
   [0]: "None",

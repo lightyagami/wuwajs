@@ -29,10 +29,10 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20314, EditFormationController.i5t);
+    Net_1.Net.Register(24447, EditFormationController.i5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20314);
+    Net_1.Net.UnRegister(24447);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("EditFormationView", EditFormationController.CanOpenView, EditFormationController.name);
@@ -48,7 +48,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "请求所有编队数据");
     }
     var o = new Protocol_1.Aki.Protocol.Wis();
-    Net_1.Net.Call(15420, o, o => {});
+    Net_1.Net.Call(23796, o, o => {});
   }
   static async EditFormationRequest(o) {
     var r;
@@ -107,7 +107,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formations", e]);
     }
-    var g = await Net_1.Net.CallAsync(21217, g);
+    var g = await Net_1.Net.CallAsync(19040, g);
     return g?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
   static async UpdateFormationRequest(o, r, t, e) {
@@ -122,7 +122,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formation", n]);
     }
-    var r = await Net_1.Net.CallAsync(21217, o);
+    var r = await Net_1.Net.CallAsync(19040, o);
     return r !== undefined;
   }
   static async UpdateFightRoleRequest() {
@@ -158,7 +158,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "更新联机编队", ["massage", t]);
     }
     ModelManager_1.ModelManager.SceneTeamModel.RefreshLastTransform();
-    r = await Net_1.Net.CallAsync(26968, t);
+    r = await Net_1.Net.CallAsync(25889, t);
     return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
 }

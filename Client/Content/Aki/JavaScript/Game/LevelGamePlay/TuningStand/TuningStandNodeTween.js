@@ -35,11 +35,11 @@ class TuningStandNodeTween {
       var e = Vector_1.Vector.Create(e.X, e.Y, i).ToUeVector();
       this.NodeItem.D_K2_SetWorldLocation(e, false, undefined, false);
     };
-    this.Oku = () => {
+    this.t5u = () => {
       this.TweenerX &&= undefined;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TuningStandSuccessShowEnd);
     };
-    this.qku = () => {
+    this.i5u = () => {
       this.TweenerZ &&= undefined;
     };
     this.DelegateX = (0, puerts_1.toManualReleaseDelegate)(this.Icu);
@@ -63,12 +63,12 @@ class TuningStandNodeTween {
     if (this.TweenerX) {
       this.TweenerX.SetEase(28);
       this.TweenerX.SetCurveFloat(this.CurveX);
-      this.TweenerX.OnCompleteCallBack.Bind(this.Oku);
+      this.TweenerX.OnCompleteCallBack.Bind(this.t5u);
     }
     if (this.TweenerZ) {
       this.TweenerZ.SetEase(28);
       this.TweenerZ.SetCurveFloat(this.CurveZ);
-      this.TweenerZ.OnCompleteCallBack.Bind(this.qku);
+      this.TweenerZ.OnCompleteCallBack.Bind(this.i5u);
     }
   }
   Clear() {

@@ -20,7 +20,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CameraController_1 = require("../CameraController");
 const FightCameraLogicComponent_1 = require("../FightCameraLogicComponent");
 const CameraControllerBase_1 = require("./CameraControllerBase");
-const DEFAULT_MAX_FADE_TIME = 5;
+const DEFAULT_MAX_FADE_TIME = 10;
 const noAimGameplayTag = -1036349300;
 class CameraConfig {
   constructor(t) {
@@ -630,7 +630,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
       }
     }
     for (var [i, s] of this.xle) {
-      if (!!this.Camera.TargetContainsTag(i) && (s.LockOnParts.length === 0 || !!s.LockOnParts.includes(this.jle))) {
+      if (!!this.Camera.TargetContainsTag(i) && (s.LockOnParts.length === 0 || !!s.LockOnParts.includes(this.jle)) && !this.Ble.has(i)) {
         this.qle.Insert(s);
         this.Ble.add(i);
         this.Fle(s);
@@ -678,20 +678,22 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
     }
   }
   Fle(t) {
-    if (!(t.FadeInTime > this.Xle) && (!this.Kle && (!this.Camera.Fading || !this.Camera.IsUniqueFade) || !!t.IsUniqueFade)) {
+    var i = Math.min(t.FadeInTime, DEFAULT_MAX_FADE_TIME);
+    if (!(i > this.Xle) && (!this.Kle && (!this.Camera.Fading || !this.Camera.IsUniqueFade) || !!t.IsUniqueFade)) {
       this.Qle = true;
       this.Zle = true;
       this.Kle = t.IsUniqueFade;
-      this.Xle = t.FadeInTime;
+      this.Xle = i;
       this.$le = t.FadeInCurve;
     }
   }
   Vle(t) {
-    if (!(t.FadeOutTime > this.Jle) && (!this.Kle && (!this.Camera.Fading || !this.Camera.IsUniqueFade) || !!t.IsUniqueFade)) {
+    var i = Math.min(t.FadeOutTime, DEFAULT_MAX_FADE_TIME);
+    if (!(i > this.Jle) && (!this.Kle && (!this.Camera.Fading || !this.Camera.IsUniqueFade) || !!t.IsUniqueFade)) {
       this.Yle = true;
       this.Zle = true;
       this.Kle = t.IsUniqueFade;
-      this.Jle = t.FadeOutTime;
+      this.Jle = i;
       this.zle = t.FadeOutCurve;
     }
   }

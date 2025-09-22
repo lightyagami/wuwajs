@@ -24,7 +24,7 @@ class FloroRanchDayStartAction extends FloroRanchAsyncActionBase_1.FloroRanchAsy
     if (!this.IsExit()) {
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.ClearLastDayIncome();
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshEntityList(this.m_u.hlu);
-      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshRemoveEntityList(this.m_u.VBu);
+      ModelManager_1.ModelManager.FloroRanchGamePlayModel.RefreshRemoveEntityList(this.m_u.nOu);
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.ClearRemoveEntity();
       var e = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
       if (e) {

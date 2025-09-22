@@ -14,19 +14,19 @@ class MultiTextCsvModule {
     this.Ude = new Set();
     this.Ade = new Map();
   }
-  Pde(e) {
-    var t = StringUtils_1.StringUtils.ParseCsvContent(e);
-    const i = t[MultiTextDefine_1.CSV_LANG_INDEX];
-    for (let e = MultiTextDefine_1.CVS_START_INDEX; e < t.length; e++) {
-      var r = t[e];
+  Pde(t) {
+    var e = StringUtils_1.StringUtils.ParseCsvContent(t);
+    const i = e[MultiTextDefine_1.CSV_LANG_INDEX];
+    for (let t = MultiTextDefine_1.CVS_START_INDEX; t < e.length; t++) {
+      var r = e[t];
       if (!(r.length < 2)) {
         var s = r[1];
         if (!StringUtils_1.StringUtils.IsBlank(s)) {
           const o = new Map();
-          r.forEach((e, t) => {
-            if (t > 1) {
-              e = e.replace(/\\n/g, "\n");
-              o.set(i[t], e ?? "test/NoLocalTextNoLocalTextNoLocalText");
+          r.forEach((t, e) => {
+            if (e > 1) {
+              t = t.replace(/\\n/g, "\n");
+              o.set(i[e], t ?? "test/NoLocalTextNoLocalTextNoLocalText");
             }
           });
           this.Ade.set(s, o);
@@ -34,23 +34,53 @@ class MultiTextCsvModule {
       }
     }
   }
-  RegisterTextLocalConfig(e, t = false) {
-    var i;
-    if (!!t || !this.Ude.has(e)) {
-      this.Ude.add(e);
-      i = (t = undefined, puerts_1.$ref)(undefined);
-      UE.KuroStaticLibrary.LoadFileToString(i, e);
-      t = (0, puerts_1.$unref)(i);
-      this.Pde(t);
+  Jvd(t, e, i, r) {
+    var s = StringUtils_1.StringUtils.ParseCsvContent(t);
+    const o = s[e];
+    for (let t = i; t < s.length; t++) {
+      var a = s[t];
+      if (!(a.length < 2)) {
+        var n = a[r];
+        if (!StringUtils_1.StringUtils.IsBlank(n)) {
+          const l = new Map();
+          a.forEach((t, e) => {
+            if (r < e) {
+              t = t.replace(/\\n/g, "\n");
+              l.set(o[e], t ?? "test/NoLocalTextNoLocalTextNoLocalText");
+            }
+          });
+          this.Ade.set(n, l);
+        }
+      }
     }
   }
-  GetLocalText(e) {
-    var t = LanguageSystem_1.LanguageSystem.PackageLanguage;
-    var i = this.Ade.get(e);
+  RegisterTextLocalConfig(t, e = false) {
+    var i;
+    if (!!e || !this.Ude.has(t)) {
+      this.Ude.add(t);
+      i = (e = undefined, puerts_1.$ref)(undefined);
+      UE.KuroStaticLibrary.LoadFileToString(i, t);
+      e = (0, puerts_1.$unref)(i);
+      this.Pde(e);
+    }
+  }
+  RegisterTextLocalConfigWithParam(t, e = false, i = 1, r = 8, s = 2) {
+    var o;
+    if (!!e || !this.Ude.has(t)) {
+      this.Ude.add(t);
+      o = (e = undefined, puerts_1.$ref)(undefined);
+      UE.KuroStaticLibrary.LoadFileToString(o, t);
+      e = (0, puerts_1.$unref)(o);
+      this.Jvd(e, i, r, s);
+    }
+  }
+  GetLocalText(t) {
+    var e = LanguageSystem_1.LanguageSystem.PackageLanguage;
+    var i = this.Ade.get(t);
     if (i && i.size > 0) {
-      return i.get(t);
+      return i.get(e);
     } else {
-      return e;
+      return t;
     }
   }
 }

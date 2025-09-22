@@ -4,20 +4,20 @@ var RoleBuffComponent_1;
 var __decorate = this && this.__decorate || function (e, t, r, n) {
   var o;
   var f = arguments.length;
-  var i = f < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, r) : n;
+  var s = f < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, r) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    i = Reflect.decorate(e, t, r, n);
+    s = Reflect.decorate(e, t, r, n);
   } else {
-    for (var s = e.length - 1; s >= 0; s--) {
-      if (o = e[s]) {
-        i = (f < 3 ? o(i) : f > 3 ? o(t, r, i) : o(t, r)) || i;
+    for (var i = e.length - 1; i >= 0; i--) {
+      if (o = e[i]) {
+        s = (f < 3 ? o(s) : f > 3 ? o(t, r, s) : o(t, r)) || s;
       }
     }
   }
-  if (f > 3 && i) {
-    Object.defineProperty(t, r, i);
+  if (f > 3 && s) {
+    Object.defineProperty(t, r, s);
   }
-  return i;
+  return s;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -49,6 +49,7 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
     this.M2n = () => {
       currentRoleId = 0;
     };
+    this.SeamlessTravelRetainBuffPreMessage = 0n;
   }
   OnStart() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
@@ -74,13 +75,13 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
     }
     CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持对其它玩家操作编队buff");
   }
-  AddBuffInner(e, t, r, n, o, f, i, s, u, a, l, m, C, h, _, v, c, p) {
+  AddBuffInner(e, t, r, n, o, f, s, i, u, a, l, m, h, C, _, v, c, p) {
     if (abnormalBuffIds.includes(e) && !this.TagComponent?.HasTag(-1384309247)) {
       return ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
     } else if (t.FormationPolicy === 5) {
-      return this.GetFormationBuffComp()?.AddBuffInner(e, t, r, n, o, f, i, s, u, a, l, m, C, h, _, v, c, p) ?? ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
+      return this.GetFormationBuffComp()?.AddBuffInner(e, t, r, n, o, f, s, i, u, a, l, m, h, C, _, v, c, p) ?? ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
     } else {
-      return super.AddBuffInner(e, t, r, n, o, f, i, s, u, a, l, m, C, h, _, v, c, p);
+      return super.AddBuffInner(e, t, r, n, o, f, s, i, u, a, l, m, h, C, _, v, c, p);
     }
   }
   RemoveBuffLocal(e, t, r) {
@@ -118,20 +119,20 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   ShareApplyBuffInner(e, t, r, n, o, f) {
     if (this.HasBuffAuthority()) {
       if (e.Config?.FormationPolicy === 1) {
-        var i = [];
-        var s = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true);
-        if (s.some(e => e.Entity === this.Entity)) {
-          for (const m of s) {
+        var s = [];
+        var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true);
+        if (i.some(e => e.Entity === this.Entity)) {
+          for (const m of i) {
             var u = m.Entity?.GetComponent(175);
             if (m.Entity !== this.Entity && u) {
-              i.push(u);
+              s.push(u);
             }
           }
         }
         var a = e.Id;
         var l = e.Handle;
-        for (const C of i) {
-          C.AddBuffLocal(a, {
+        for (const h of s) {
+          h.AddBuffLocal(a, {
             InstigatorId: e.InstigatorId ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID,
             Level: e.Level,
             OuterStackCount: t,
@@ -205,6 +206,15 @@ let RoleBuffComponent = RoleBuffComponent_1 = class RoleBuffComponent extends Ch
   }
   NeedAddBuffOrder(e) {
     return true;
+  }
+  SeamlessTravelBuffRetain(e) {
+    return !!CharacterBuffIds_1.noBroadCastBuff.has(e.Id ?? 0) || 0n !== this.SeamlessTravelRetainBuffPreMessage && e.PreMessageId === this.SeamlessTravelRetainBuffPreMessage || super.SeamlessTravelBuffRetain(e);
+  }
+  SetSeamlessTravelBuffPreMessageId(e) {
+    this.SeamlessTravelRetainBuffPreMessage = e;
+  }
+  OnSeamlessTravelingRefreshEnd() {
+    this.SeamlessTravelRetainBuffPreMessage = 0n;
   }
 };
 RoleBuffComponent.FrozenImmuneTags = [400631093, -2100129479, -1009010563, -1221493771, 1733479717, 855966206, 1918148596, 1918148596];

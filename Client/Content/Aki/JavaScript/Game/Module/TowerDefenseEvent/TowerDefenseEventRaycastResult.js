@@ -15,7 +15,7 @@ const TowerDefenseEventUtility_1 = require("./TowerDefenseEventUtility");
 const RAYCAST_DISTANCE = 10000;
 class TowerDefenseEventRaycastResult {
   constructor() {
-    this.a3u = new UE.KuroBuildingGridRaycastResult();
+    this.dku = new UE.KuroBuildingGridRaycastResult();
     this.Start = Vector_1.Vector.Create();
     this.End = Vector_1.Vector.Create();
     this.Target = undefined;
@@ -41,29 +41,29 @@ class TowerDefenseEventRaycastResult {
     this.End.MultiplyEqual(RAYCAST_DISTANCE);
     this.End.AdditionEqual(this.Start);
     this.PlacementType = i;
-    this.a3u.Target = t;
-    this.a3u.DegreeAlongNormal = s;
-    i = (this.a3u.RaycastTarget = undefined, puerts_1.$ref)(this.a3u);
+    this.dku.Target = t;
+    this.dku.DegreeAlongNormal = s;
+    i = (this.dku.RaycastTarget = undefined, puerts_1.$ref)(this.dku);
     s = UE.KuroBuildingGridSubsystem.K2_RaycastGrid(GlobalData_1.GlobalData.World, this.Start.ToUeVector(), this.End.ToUeVector(), i);
     if (s) {
-      this.a3u = (0, puerts_1.$unref)(i);
-      this.Target = this.a3u.Target;
-      this.RaycastTarget = this.a3u.RaycastTarget;
-      this.Grid = this.a3u.Grid;
-      this.Location.DeepCopy(this.a3u.Location);
-      this.Rotation.DeepCopy(this.a3u.Rotation.Rotator());
-      this.Coords.Set(this.a3u.Coords.X, this.a3u.Coords.Y);
-      this.Degree = this.a3u.DegreeAlongNormal;
-      this.Normal.DeepCopy(this.a3u.Normal);
-      this.IsStateDirty = this.$jc(t, e);
+      this.dku = (0, puerts_1.$unref)(i);
+      this.Target = this.dku.Target;
+      this.RaycastTarget = this.dku.RaycastTarget;
+      this.Grid = this.dku.Grid;
+      this.Location.DeepCopy(this.dku.Location);
+      this.Rotation.DeepCopy(this.dku.Rotation.Rotator());
+      this.Coords.Set(this.dku.Coords.X, this.dku.Coords.Y);
+      this.Degree = this.dku.DegreeAlongNormal;
+      this.Normal.DeepCopy(this.dku.Normal);
+      this.IsStateDirty = this.Z$u(t, e);
     } else {
       this.Reset();
     }
     return s;
   }
   Reset() {
-    this.a3u.Target = undefined;
-    this.a3u.RaycastTarget = undefined;
+    this.dku.Target = undefined;
+    this.dku.RaycastTarget = undefined;
     this.Target = undefined;
     this.RaycastTarget = undefined;
     this.Grid = undefined;
@@ -72,14 +72,14 @@ class TowerDefenseEventRaycastResult {
     this.Coords.Set(0, 0);
     this.Degree = 0;
     this.Normal.Set(0, 0, 0);
-    this.IsStateDirty = this.$jc(this.Target, false);
+    this.IsStateDirty = this.Z$u(this.Target, false);
   }
-  $jc(t, i) {
-    t = this.t9c(t);
-    i = this.i9c(i);
+  Z$u(t, i) {
+    t = this.tKc(t);
+    i = this.iKc(i);
     return t || i;
   }
-  t9c(t) {
+  tKc(t) {
     let i = false;
     let s = false;
     let e = false;
@@ -102,7 +102,7 @@ class TowerDefenseEventRaycastResult {
     this.IsPolluted = h;
     return t;
   }
-  i9c(t) {
+  iKc(t) {
     var t = t && !!this.RaycastTarget;
     var i = this.IsCanRecycle !== t;
     this.IsCanRecycle = t;

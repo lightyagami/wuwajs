@@ -224,7 +224,7 @@ class DangoMonopolyResultView extends DangoMonopolyViewBase_1.DangoMonopolyViewB
     } else {
       t = this.ShowDangoIdList.map(t => {
         return {
-          UiModelUseWay: 13,
+          UiModelUseWay: 14,
           DangoId: t,
           Odds: 0,
           DangoPointCase: this.ShowCase,

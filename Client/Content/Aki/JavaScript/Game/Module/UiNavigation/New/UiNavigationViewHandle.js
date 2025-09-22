@@ -35,10 +35,10 @@ class UiNavigationViewHandle {
     this.vbo = false;
     this.Mbo = false;
     this.Ebo = false;
-    this.t1d = 0;
+    this.wgd = 0;
     this.Gfa = undefined;
     this.bIa = undefined;
-    this.Tad = undefined;
+    this.Oud = undefined;
     this.TagId = i;
     this.ViewName = t.ViewName;
     this.MainPanel = t;
@@ -399,6 +399,7 @@ class UiNavigationViewHandle {
   ResetNavigationListener() {
     this.Sbo();
     this.MarkResetCurrentPanelDirty();
+    this.ClearDynamicScrollViewNavigationContext();
   }
   MarkResetCurrentPanelDirty() {
     this.Vgl = true;
@@ -452,11 +453,11 @@ class UiNavigationViewHandle {
     }
   }
   MarkRefreshNavigationDirty(i = 0) {
-    this.t1d = i;
+    this.wgd = i;
     this.Ebo = true;
   }
   ResetNavigationDirty(i = 0) {
-    if (this.t1d === 0 || i === 0 || this.t1d === i) {
+    if (this.wgd === 0 || i === 0 || this.wgd === i) {
       this.Ebo = false;
     }
   }
@@ -498,16 +499,16 @@ class UiNavigationViewHandle {
     this.bIa?.UpdateMousePositionByItem(i);
   }
   SetDynamicScrollViewNavigationContext(i) {
-    this.Tad ||= i;
+    this.Oud ||= i;
   }
   ClearDynamicScrollViewNavigationContext() {
-    this.Tad = undefined;
+    this.Oud = undefined;
   }
   get IsWaitToFindDynamicGrid() {
-    return this.Tad !== undefined;
+    return this.Oud !== undefined;
   }
   GetDynamicScrollViewNavigationContext() {
-    return this.Tad;
+    return this.Oud;
   }
   TickViewHandle(i) {
     this.fbo.Start();

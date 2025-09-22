@@ -311,6 +311,10 @@ class ResourceSystem {
       }
     }
   }
+  static CheckAssetLoaded(e, s) {
+    s = ResourceSystem.nJ(e, s);
+    return !!s && !!(e = ResourceSystem.WY.GetLoadedAsset(e))?.IsValid() && !!e.IsA(s);
+  }
   static LoadAsync(e, s, t, o = 100) {
     ResourceSystem.lJ.Start();
     var r = Stats_1.Stat.CreateNoFlameGraph("RS.LoadAsync-" + e);

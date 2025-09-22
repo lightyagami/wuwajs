@@ -51,6 +51,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     this.ActorComponent = undefined;
     this.Gkr = undefined;
     this.o4o = undefined;
+    this.q2d = false;
     this.Si_ = undefined;
     this.Nkr = (t, e) => {
       FormationDataController_1.FormationDataController.MarkAggroDirty();
@@ -87,6 +88,7 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
               this.SetMoveState(i);
             }
             break;
+          case CharacterUnifiedStateTypes_1.ECharMoveState.Captured:
           case CharacterUnifiedStateTypes_1.ECharMoveState.Flying:
           case CharacterUnifiedStateTypes_1.ECharMoveState.Roll:
             break;
@@ -177,6 +179,9 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
               break;
             case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE:
               this.SetPositionState(CharacterUnifiedStateTypes_1.ECharPositionState.RailSlide);
+              break;
+            case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SPLINE_CLIMB:
+              this.SetPositionState(CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
               break;
             default:
               this.SetPositionState(CharacterUnifiedStateTypes_1.ECharPositionState.Air);
@@ -510,12 +515,12 @@ let CharacterUnifiedStateComponent = CharacterUnifiedStateComponent_1 = class Ch
     let e = false;
     return !(e = t ? this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk : this.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Run) || !!this.o4o?.CanWalkPress && (this.MarkWalkOrRun(t) && this.i2r(t), true);
   }
-  MarkWalkOrRun(t) {
-    var e;
-    if (t !== this.Okr) {
-      e = this.Okr;
+  MarkWalkOrRun(t, e = true, i) {
+    if (t !== this.Okr && !this.q2d) {
+      this.q2d = i ?? this.q2d;
+      i = this.Okr;
       this.Okr = t;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeWalkOrRun, e, t);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeWalkOrRun, i, t, e);
     }
     return false;
   }

@@ -247,26 +247,40 @@ exports.UiNavigationLogic = UiNavigationLogic;
     return LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystem.navigationComponent;
   }
 };
-UiNavigationLogic.bMe = (i, e) => {
-  var t = ModelManager_1.ModelManager.UiNavigationModel;
-  if (t) {
-    for (const a of t.GetActionHotKeyComponentSet(i)) {
-      if (a.IsHotKeyActive()) {
-        if (e === 0) {
-          a.Press();
+UiNavigationLogic.bMe = (e, t) => {
+  var a = ModelManager_1.ModelManager.UiNavigationModel;
+  if (a) {
+    a = a.GetActionHotKeyComponentSet(e);
+    let i = 0;
+    var n = a.size;
+    for (const o of a) {
+      if (i >= n) {
+        break;
+      }
+      i++;
+      if (o.IsHotKeyActive()) {
+        if (t === 0) {
+          o.Press();
         } else {
-          a.Release();
+          o.Release();
         }
       }
     }
   }
 };
-UiNavigationLogic.ABo = (i, e) => {
-  var t = ModelManager_1.ModelManager.UiNavigationModel;
-  if (t) {
-    for (const a of t.GetAxisHotKeyComponentSet(i)) {
-      if (a.IsAllowTickContinue()) {
-        a.InputAxis(i, e);
+UiNavigationLogic.ABo = (e, t) => {
+  var a = ModelManager_1.ModelManager.UiNavigationModel;
+  if (a) {
+    a = a.GetAxisHotKeyComponentSet(e);
+    let i = 0;
+    var n = a.size;
+    for (const o of a) {
+      if (i >= n) {
+        break;
+      }
+      i++;
+      if (o.IsAllowTickContinue()) {
+        o.InputAxis(e, t);
       }
     }
   }

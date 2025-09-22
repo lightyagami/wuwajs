@@ -158,10 +158,10 @@ class WalkingPatternBehaviorNode extends TickBehaviorNode_1.TickBehaviorNode {
           t.C9n = MathUtils_1.MathUtils.BigIntToLong(this.Context.TreeIncId);
           t.b5n = this.Context.NodeId;
           t.Eps = this.Vsh;
-          Net_1.Net.Call(23242, t, e => {
+          Net_1.Net.Call(20457, t, e => {
             this.OnAfterSubmit(e?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs);
             if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29850);
+              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20953);
             }
           });
         } else {

@@ -14,12 +14,12 @@ class TrapDefenseDesktopSkillPanel extends TrapDefenseSkillPanelBase_1.TrapDefen
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async InitializeAsync() {
-    await Promise.all([this.OXu()]);
+    await Promise.all([this._Wc()]);
   }
   OnChildStart() {
     this.Xlh();
   }
-  async OXu() {
+  async _Wc() {
     var e = new Map([[0, this.GetItem(0).GetOwner()], [1, this.GetItem(1).GetOwner()]]);
     await Promise.all(Array.from(e.entries()).map(async ([e, i]) => this.NewBattleSkillItem(i, e, false)));
   }

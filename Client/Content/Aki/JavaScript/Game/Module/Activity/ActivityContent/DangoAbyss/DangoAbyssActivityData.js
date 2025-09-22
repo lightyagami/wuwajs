@@ -418,6 +418,7 @@ class AbyssPluginItemInfo extends AttributeItemData_1.AttributeItemData {
       return [];
     }
   }
+  GetItemViewDataInfo(t) {}
 }
 exports.AbyssPluginItemInfo = AbyssPluginItemInfo;
 class AbyssRewardInfo {

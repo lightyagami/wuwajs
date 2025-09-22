@@ -207,8 +207,8 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     this.CUl = false;
     this.gUl = false;
     this.pUl = new Map();
-    this.kWu = false;
-    this.OWu = 0;
+    this.mju = false;
+    this.fju = 0;
     this.Rni = 0;
     this.v6e = () => {
       if (ModelManager_1.ModelManager.LifePointModel.Config.CloseUiAfterCompletion !== undefined) {
@@ -230,7 +230,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
           i[e].BeforeReset();
         }
       }
-      this.kWu = false;
+      this.mju = false;
     };
     this.NFl = () => {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(HELP_CONFIG_ID);
@@ -257,7 +257,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
       var e = this.GetText(8);
       e.SetText(this.Rlh.toString());
       e.SetColor(ModelManager_1.ModelManager.LifePointModel.NormalStepColor);
-      this.OWu++;
+      this.fju++;
     };
     this.Jke = () => {
       this.Rlh = this.OFl;
@@ -410,7 +410,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     AnimTask.Pool.Clear();
     ModelManager_1.ModelManager.LifePointModel.UnloadData();
     ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState = false;
-    this.qWu();
+    this.gju();
   }
   av() {
     for (let i = 0; i < LifePointModel_1.LINE_SIZE; i++) {
@@ -473,7 +473,7 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
         }
         ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestFinishUiGameplay(Protocol_1.Aki.Protocol.h3s.Proto_LifePoint, "");
         this.HDe?.();
-        this.kWu = true;
+        this.mju = true;
         if (ModelManager_1.ModelManager.LifePointModel.Config.CloseUiAfterCompletion === undefined || !!ModelManager_1.ModelManager.LifePointDrawModel.CurrentChallengeFinishState) {
           this.PlaySequence("Complete", this.B_e);
         }
@@ -512,16 +512,16 @@ class LifePointView extends UiTickViewBase_1.UiTickViewBase {
     this.HDe?.();
     this.PlaySequence("Complete", this.B_e);
   }
-  qWu() {
+  gju() {
     var e = new LogReportDefine_1.LifePointDrawLogEvent();
     e.i_config_id = this.Rni;
-    e.i_result = this.kWu ? 1 : 0;
+    e.i_result = this.mju ? 1 : 0;
     var i = EntitySystem_1.EntitySystem.Get(this.Rni);
     if (i) {
       i = i?.GetComponent(0);
       e.s_type_name = i?.GetPbEntityInitData()?.BlueprintType ?? "";
     }
-    e.i_try_count = this.OWu;
+    e.i_try_count = this.fju;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
 }

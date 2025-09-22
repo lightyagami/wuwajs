@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.NavigationToggle = undefined;
-const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiNavigationViewManager_1 = require("../UiNavigationViewManager");
 const NavigationSelectableBase_1 = require("./NavigationSelectableBase");
@@ -50,14 +49,10 @@ class NavigationToggle extends NavigationSelectableBase_1.NavigationSelectableBa
   }
   OnToggleClick(e) {}
   ScrollToSelectableComponent(e) {
-    if (this.Listener.HasDynamicScrollView()) {
-      TimerSystem_1.GameplayTimerSystem.Next(() => {
-        if (this.Listener.ScrollView) {
-          this.Listener.ScrollView.ScrollToSelectableComponent(e);
-        }
-      });
-    } else if (this.Listener.ScrollView) {
-      this.Listener.ScrollView.ScrollToSelectableComponent(e);
+    if (!this.Listener.HasDynamicScrollView()) {
+      if (this.Listener.ScrollView) {
+        this.Listener.ScrollView.ScrollToSelectableComponent(e);
+      }
     }
   }
   NeedAddToggleClick() {

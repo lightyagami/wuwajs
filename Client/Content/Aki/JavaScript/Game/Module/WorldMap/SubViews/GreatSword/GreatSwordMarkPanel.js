@@ -41,6 +41,8 @@ class GreatSwordMarkPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.GetVerticalLayout(7).RootUIComp.SetUIActive(false);
     this.GetItem(6).SetUIActive(false);
     this.GetVerticalLayout(5).RootUIComp.SetUIActive(false);
+    this.GetItem(32).SetUIActive(false);
+    this.ConfirmButton.SetActive(true);
   }
   OnShowWorldMapSecondaryUi(r) {
     this.u2o = r;
@@ -50,7 +52,6 @@ class GreatSwordMarkPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     if (e) {
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonEnableClickByTeleportState(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithFastMoveStyle(this.LayoutContext);
-      WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateTrackButtonTextWithTrackStyle(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateAreaTxtByConfigMarkItem(this.LayoutContext);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.MarkDesc);

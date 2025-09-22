@@ -14,38 +14,38 @@ class ActivityFunPlayPages extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.tPe = undefined;
-    this.wrd = 0;
-    this.Lrd = 0;
-    this.Ard = undefined;
-    this.Prd = () => new ActivityFunPlayPage();
+    this.gnd = 0;
+    this.Cnd = 0;
+    this.pnd = undefined;
+    this.vnd = () => new ActivityFunPlayPage();
     this.rHt = () => {
-      if (!(this.wrd - 1 < 0)) {
-        this.wrd--;
+      if (!(this.gnd - 1 < 0)) {
+        this.gnd--;
         this.I3e();
-        this.Drd(this.wrd);
-        this.tPe?.SelectGridProxy(this.wrd, true);
+        this.ynd(this.gnd);
+        this.tPe?.SelectGridProxy(this.gnd, true);
       }
     };
     this.nHt = () => {
       var t = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
       if (t) {
         t = t.GetSharpComments();
-        if (!(this.wrd + 1 > t.length - 1)) {
-          this.wrd++;
+        if (!(this.gnd + 1 > t.length - 1)) {
+          this.gnd++;
           this.I3e();
-          this.Drd(this.wrd);
-          this.tPe?.SelectGridProxy(this.wrd, true);
+          this.ynd(this.gnd);
+          this.tPe?.SelectGridProxy(this.gnd, true);
         }
       }
     };
-    this.Drd = t => {
+    this.ynd = t => {
       var i;
       var s = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
       if (s) {
         i = s.GetSharpComments();
-        this.xrd(t, i.length);
+        this.Snd(t, i.length);
         i = i[t];
-        this.Lrd = i.CommentId;
+        this.Cnd = i.CommentId;
         this.SetTextureByPath(i.RoleHeadPath, this.GetTexture(7));
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), i.RoleName);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), i.Comment);
@@ -62,7 +62,7 @@ class ActivityFunPlayPages extends UiPanelBase_1.UiPanelBase {
     this.HOe();
   }
   HOe() {
-    this.tPe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(11), this.Prd);
+    this.tPe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(11), this.vnd);
   }
   Refresh(t) {
     var i = ModelManager_1.ModelManager.ActivityFunPlayModel.GetCurrentChallengeData();
@@ -78,11 +78,11 @@ class ActivityFunPlayPages extends UiPanelBase_1.UiPanelBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "Activity_105900001_Lock");
       } else {
         const e = i.GetSharpComments();
-        this.wrd = t ? 0 : e.findIndex(t => t.CommentId === this.Lrd);
-        if (this.wrd === -1) {
-          this.wrd = 0;
+        this.gnd = t ? 0 : e.findIndex(t => t.CommentId === this.Cnd);
+        if (this.gnd === -1) {
+          this.gnd = 0;
         }
-        this.Drd(this.wrd);
+        this.ynd(this.gnd);
         this.RefreshPageDotLayout(e);
       }
     }
@@ -91,22 +91,22 @@ class ActivityFunPlayPages extends UiPanelBase_1.UiPanelBase {
     this.GetHorizontalLayout(11).RootUIComp.SetUIActive(t.length > 1);
     if (t.length > 1) {
       this.tPe?.RefreshByData(t, () => {
-        this.tPe?.SelectGridProxy(this.wrd, true);
+        this.tPe?.SelectGridProxy(this.gnd, true);
       });
     }
   }
-  xrd(t, i) {
+  Snd(t, i) {
     this.GetButton(3).RootUIComp.SetUIActive(t > 0);
     this.GetButton(4).RootUIComp.SetUIActive(t < i - 1);
   }
   SetParentSequence(t) {
-    this.Ard = t;
+    this.pnd = t;
   }
   I3e() {
-    if (this.Ard?.HasSequenceNameInPlaying("Switch1")) {
-      this.Ard?.StopSequenceByKey("Switch1", false, true);
+    if (this.pnd?.HasSequenceNameInPlaying("Switch1")) {
+      this.pnd?.StopSequenceByKey("Switch1", false, true);
     }
-    this.Ard?.PlaySequence("Switch1");
+    this.pnd?.PlaySequence("Switch1");
   }
 }
 exports.ActivityFunPlayPages = ActivityFunPlayPages;

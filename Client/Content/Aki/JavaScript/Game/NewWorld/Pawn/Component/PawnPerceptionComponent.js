@@ -44,8 +44,8 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     this.rzr = undefined;
     this.ConfigId = -0;
     this.Ihn = undefined;
-    this._Vu = new Map();
-    this.uVu = new Set();
+    this.iOu = new Map();
+    this.rOu = new Set();
     this.Thn = undefined;
     this.Lhn = undefined;
     this.vzr = () => {
@@ -63,7 +63,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return this.vhn;
   }
   get InAnyOptionWithOffsetRange() {
-    return this.uVu.size > 0;
+    return this.rOu.size > 0;
   }
   get IsInAdsorbRange() {
     return this.Mhn;
@@ -93,8 +93,8 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   }
   SetOffsetOptionInteractRange(t, e, i = 0, n = undefined, s = undefined, h = undefined) {
     this.rzr.SetLogicRange(Math.max(e + INTERACT_LOGIC_OFFSET, i) + (n ? n.Size() : 0));
-    if (this._Vu.has(t)) {
-      const o = this._Vu.get(t);
+    if (this.iOu.has(t)) {
+      const o = this.iOu.get(t);
       o.UpdateDistance(e, i === 0 ? e : i);
     }
     const o = this.rzr.CreatePerceptionEvent(e, this.Entity?.GameBudgetManagedToken, () => {
@@ -104,7 +104,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
       if (s) {
         s();
       }
-      this.uVu.add(t);
+      this.rOu.add(t);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInEntityInteractRangeChange, true);
     }, () => {
       if (Log_1.Log.CheckDebug()) {
@@ -113,10 +113,10 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
       if (h) {
         h();
       }
-      this.uVu.delete(t);
+      this.rOu.delete(t);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnInEntityInteractRangeChange, false);
     }, undefined, undefined, i, n);
-    this._Vu.set(t, o);
+    this.iOu.set(t, o);
   }
   SetSightRange(t) {
     this.rzr.SetLogicRange(t);
@@ -205,9 +205,9 @@ InteractRangeInfo:
     if (this.Ihn) {
       t += cpp_1.FKuroPerceptionInterface.GetPlayerPerceptionDebugString(this.Ihn.EventToken);
     }
-    if (this._Vu.size > 0) {
+    if (this.iOu.size > 0) {
       t += "\nOptionInteractRangeInfo:\n";
-      for (const e of this._Vu.values()) {
+      for (const e of this.iOu.values()) {
         t += cpp_1.FKuroPerceptionInterface.GetPlayerPerceptionDebugString(e.EventToken) + "\n";
       }
     }

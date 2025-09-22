@@ -43,12 +43,12 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.nye);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15299, GachaController.OnGachaResultNotify);
-    Net_1.Net.Register(26182, GachaController.OnGachaNewNotify);
+    Net_1.Net.Register(17438, GachaController.OnGachaResultNotify);
+    Net_1.Net.Register(24604, GachaController.OnGachaNewNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15299);
-    Net_1.Net.UnRegister(26182);
+    Net_1.Net.UnRegister(17438);
+    Net_1.Net.UnRegister(24604);
   }
   static CanCloseView() {
     return !!ModelManager_1.ModelManager.GachaModel.CanCloseView || (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseGachaSceneView), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Gacha", 27, "GachaController关闭GachaScene"), false);
@@ -71,14 +71,14 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       }
     });
     var n;
-    var r = await Net_1.Net.CallAsync(18704, r);
+    var r = await Net_1.Net.CallAsync(29791, r);
     if (r) {
       if (r.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrGachaIsNotInOpenTime) {
         n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(67);
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
         this.zHt();
       } else if (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 21256);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 20808);
       } else {
         ModelManager_1.ModelManager.GachaModel.UpdateCount(e, a);
         ModelManager_1.ModelManager.GachaModel.CurGachaResult = r.tws;
@@ -90,9 +90,9 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
   static async GachaPoolDetailRequestAsync(e) {
     var a = Protocol_1.Aki.Protocol._m_.create();
     a.o9n = e;
-    var e = await Net_1.Net.CallAsync(26222, a);
+    var e = await Net_1.Net.CallAsync(19905, a);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24274);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16256);
     }
     return e;
   }
@@ -105,10 +105,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       }
     } else {
       r = Protocol_1.Aki.Protocol.Xrs.create();
-      Net_1.Net.Call(19949, r, e => {
+      Net_1.Net.Call(25663, r, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18597);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26320);
           } else if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("Gacha", 34, "[GachaController.GachaInfoRequest] 在Loading中,打开抽卡界面取消");
@@ -139,10 +139,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
       a?.(true);
     }
     var e = Protocol_1.Aki.Protocol.Xrs.create();
-    Net_1.Net.Call(19949, e, e => {
+    Net_1.Net.Call(25663, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18597);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26320);
           a?.(false);
         } else if (ModelManager_1.ModelManager.LoadingModel?.IsLoading) {
           if (Log_1.Log.CheckInfo()) {
@@ -186,10 +186,10 @@ class GachaController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.eos.create();
     e.t9n = a;
     e.o9n = r;
-    Net_1.Net.Call(26283, e, e => {
+    Net_1.Net.Call(21386, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15875);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23033);
         } else if (e = ModelManager_1.ModelManager.GachaModel.GetGachaInfo(a)) {
           e.UsePoolId = r;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GachaPoolSelectResponse, a, r);

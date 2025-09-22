@@ -103,8 +103,8 @@ class DangoAbyssShopView extends UiViewBase_1.UiViewBase {
     await this.c6c.CreateThenShowByActorAsync(e.GetOwner());
     var i = ModelManager_1.ModelManager.DangoAbyssModel.GetOpenShopId();
     if (i > 0) {
-      e = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(i);
-      await this.ucr.SetCurrencyItemList(e.Money);
+      e = ModelManager_1.ModelManager.PayShopModel.GetPayShopInfoMoney(i);
+      await this.ucr.SetCurrencyItemList(e);
     }
   }
   PushCameraHandle(e, i, t) {

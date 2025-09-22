@@ -55,10 +55,10 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
     this.WQo = [];
     this.aFl = "BindBuffToTeam";
     this.qie = "BindBuffToTeam";
-    this.aWc = false;
+    this.mXu = false;
     this.yvi = () => {
       if (this.PendingBuff) {
-        var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(this.aWc);
+        var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(this.mXu);
         for (const r of t) {
           var e = r.Entity?.GetComponent(210);
           if (e && !this.WQo.includes(r.Id)) {
@@ -83,7 +83,7 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
   InitParameters(t) {
     t = t.ExtraEffectParameters;
     this.jQo = t[0].split("#").map(t => Number(t));
-    this.aWc = Number(t[1] ?? 0) === 1;
+    this.mXu = Number(t[1] ?? 0) === 1;
   }
   OnCreated() {
     if (this.OwnerBuffComponent?.HasBuffAuthority()) {
@@ -111,7 +111,7 @@ class BindBuffToTeam extends ExtraEffectBase_1.BuffEffect {
   }
   OnExecute() {}
   GetDebugEffectString() {
-    return `为${this.aWc ? "小队" : "全队"}绑定buff${this.jQo.join("、")}`;
+    return `为${this.mXu ? "小队" : "全队"}绑定buff${this.jQo.join("、")}`;
   }
 }
 exports.BindBuffToTeam = BindBuffToTeam;

@@ -33,7 +33,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     this.Wlo = undefined;
     this.TEu = new Map();
     this.bEu = undefined;
-    this.oOu = undefined;
+    this.u4u = undefined;
     this.nnu = new Map();
     this.REu = undefined;
     this.snu = new Map();
@@ -41,7 +41,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     this.UAu = undefined;
     this.ynu = undefined;
     this.hnu = new Map();
-    this.nOu = [];
+    this.T3u = [];
     this.WUu = [];
     this.wEu = new Map();
     this.LEu = new Map();
@@ -53,11 +53,11 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
       return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.BAu.MilestoneItemId);
     };
     this.BAu = undefined;
-    this.CKu = 0;
-    this.pKu = 0;
-    this.vKu = false;
-    this.sOu = 0;
-    this.yKu = 0;
+    this.vjc = 0;
+    this.yjc = 0;
+    this.Sjc = false;
+    this.g2u = 0;
+    this.w$u = 0;
   }
   OnInit(t) {
     var o;
@@ -77,22 +77,22 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
       this.UEu();
       this.DEu();
       o = t.jRs;
-      this.CKu = MathUtils_1.MathUtils.LongToNumber(o.h7u);
-      this.pKu = MathUtils_1.MathUtils.LongToNumber(o.l7u);
-      this.vKu = o.a7u;
+      this.vjc = MathUtils_1.MathUtils.LongToNumber(o.QZu);
+      this.yjc = MathUtils_1.MathUtils.LongToNumber(o.KZu);
+      this.Sjc = o.WZu;
       this.BEu(o.uru);
       this.kEu(o.dru);
-      this.OAu(o.asd);
-      this.OEu(o.n7u);
+      this.OAu(o.Grd);
+      this.OEu(o.q9u);
       this.qEu(o.cru);
       this.GEu(o.Wsu);
       this.FEu(o.nAu);
       this.NEu(o.mEu);
       this.UpdateFloroRanchMilestoneDataList(o.Cru);
       this.GAu(o.oAu);
-      this.UpdateFloroRanchSubDungeonRedDot(o.s7u);
-      this.sOu = t._ru;
-      this.yKu = t.Gru;
+      this.UpdateFloroRanchSubDungeonRedDot(o.$Zu);
+      this.g2u = t._ru;
+      this.w$u = t.Gru;
     }
   }
   GetExDataRedPointShowState() {
@@ -237,20 +237,20 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     }
   }
   GetFloroRanchRaceDataList(t = false) {
-    if (!this.bEu || !this.oOu) {
+    if (!this.bEu || !this.u4u) {
       this.bEu = [];
-      this.oOu = [];
+      this.u4u = [];
       for (const o of this.TEu.values()) {
         if (!o.IsCommon) {
           this.bEu.push(o);
         }
-        this.oOu.push(o);
+        this.u4u.push(o);
       }
       this.bEu.sort((t, o) => t.Id - o.Id);
-      this.oOu.sort((t, o) => t.Id - o.Id);
+      this.u4u.sort((t, o) => t.Id - o.Id);
     }
     if (t) {
-      return this.oOu;
+      return this.u4u;
     } else {
       return this.bEu;
     }
@@ -427,14 +427,14 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     for (const o of ConfigManager_1.ConfigManager.FloroRanchConfig.GetFloroRanchTechnologyConfigList(this.Id)) {
       var t = new FloroRanchTechnologyData_1.FloroRanchTechnologyData(o);
       this.hnu.set(o.Id, t);
-      this.nOu.push(t);
+      this.T3u.push(t);
       this.WUu[t.Column] ||= [];
       this.WUu[t.Column].push(t);
     }
     for (const a of this.WUu) {
       a?.sort((t, o) => t.Row - o.Row);
     }
-    this.nOu.sort((t, o) => t.Id - o.Id);
+    this.T3u.sort((t, o) => t.Id - o.Id);
   }
   qEu(t) {
     for (const a of t) {
@@ -495,7 +495,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   GetNextCanUnlockTechId() {
     let t = -1;
-    for (const o of this.nOu) {
+    for (const o of this.T3u) {
       if (t === -1 && !o.IsUnLock) {
         t = o.Id;
       }
@@ -506,7 +506,7 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
       }
     }
     if (t === -1) {
-      return this.nOu[0].Id;
+      return this.T3u[0].Id;
     } else {
       return t;
     }
@@ -673,16 +673,16 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
   }
   IsInLimitTime() {
     var t = TimeUtil_1.TimeUtil.GetServerTime();
-    return t >= this.CKu && t <= this.pKu;
+    return t >= this.vjc && t <= this.yjc;
   }
   GetLimitTimeActivityEndTime() {
-    return this.pKu;
+    return this.yjc;
   }
   ReadComic() {
-    this.vKu = true;
+    this.Sjc = true;
   }
   GetIsReadComic() {
-    return this.vKu;
+    return this.Sjc;
   }
   GetUnlockNum(t) {
     let o = 0;
@@ -703,24 +703,24 @@ class FloroRanchActivityData extends ActivityData_1.ActivityBaseData {
     return this.IsToyHasRedDot() || this.IsCardHasRedDot();
   }
   HasUnFinishedSubIns() {
-    return this.sOu !== 0;
+    return this.g2u !== 0;
   }
   SetUnFinishedSubDungeonId(t) {
-    this.sOu = t;
+    this.g2u = t;
   }
   ClearUnFinishedSubDungeonId() {
-    this.sOu = 0;
-    this.yKu = 0;
+    this.g2u = 0;
+    this.w$u = 0;
   }
   SetSavedStage(t) {
-    this.yKu = t;
+    this.w$u = t;
   }
   GetSavedStage() {
-    return this.yKu;
+    return this.w$u;
   }
   GetUnFinishedSubDungeonData() {
-    if (this.sOu !== 0) {
-      return this.GetFloroRanchSubDungeonData(this.sOu);
+    if (this.g2u !== 0) {
+      return this.GetFloroRanchSubDungeonData(this.g2u);
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanch", 71, "不存在未完成的关卡");

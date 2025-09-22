@@ -20,7 +20,7 @@ class InviteNewbieSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.C5c = undefined;
     this.qsi = undefined;
     this.iJs = undefined;
-    this.oQu = () => {
+    this.jWu = () => {
       ActivityControllerHolder_1.ActivityControllerHolder.ActivityInviteNewbieController.HandleOnCopyInviteCodeClick();
     };
     this.Xk1 = e => {
@@ -29,7 +29,7 @@ class InviteNewbieSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem]];
-    this.BtnBindInfo = [[2, this.oQu]];
+    this.BtnBindInfo = [[2, this.jWu]];
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InviteNewbieInviteCodeChanged, this.Xk1);
@@ -51,7 +51,7 @@ class InviteNewbieSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     var e = ModelManager_1.ModelManager.InviteNewbieModel;
     this.sSt();
     this.GetText(3)?.SetText(e.InviteCode);
-    this.nQu();
+    this.HWu();
   }
   OnTimer(e) {
     this.sSt();
@@ -60,7 +60,7 @@ class InviteNewbieSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     var [e, t] = this.GetTimeVisibleAndRemainTime();
     this.C5c?.RefreshTimerTextByData(e, t);
   }
-  nQu() {
+  HWu() {
     var e = ModelManager_1.ModelManager.InviteNewbieModel.InviteCode;
     var t = this.GetItem(5);
     if (t) {

@@ -8,7 +8,7 @@ const FloroRanchEntityComponentBase_1 = require("./FloroRanchEntityComponentBase
 class FloroRanchUiItemBaseComponent extends FloroRanchEntityComponentBase_1.FloroRanchEntityComponentBase {
   constructor() {
     super(...arguments);
-    this.Bhd = false;
+    this.Tdd = false;
   }
   async ShowUiItem() {}
   async HideUiItem() {}
@@ -16,10 +16,10 @@ class FloroRanchUiItemBaseComponent extends FloroRanchEntityComponentBase_1.Flor
   Resume() {}
   Exit() {}
   OnExit() {
-    this.Bhd = true;
+    this.Tdd = true;
   }
   CheckIsExit() {
-    return this.Bhd;
+    return this.Tdd;
   }
   async MoveToTarget(n) {}
   async MoveToOriginalPosition() {}

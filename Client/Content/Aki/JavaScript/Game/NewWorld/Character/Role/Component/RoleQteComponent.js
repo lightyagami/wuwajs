@@ -21,7 +21,7 @@ var __decorate = this && this.__decorate || function (t, e, i, r) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RoleQteComponent = exports.MAX_MULTI_QTE_DISTANCE = exports.isMultiQte = undefined;
+exports.RoleQteComponent = exports.MAX_MULTI_QTE_DISTANCE = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
@@ -37,7 +37,6 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const Global_1 = require("../../../../Global");
 const GlobalData_1 = require("../../../../GlobalData");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
 const CombatMessage_1 = require("../../../../Module/CombatMessage/CombatMessage");
@@ -48,10 +47,6 @@ const DEFAULT_ADD_HEIGHT = -1000;
 const SUB_SIZE = 5;
 const QTE_LOCKON_CONFIG_ID = 4;
 const normalQteTag = -658311908;
-function isMultiQte() {
-  return (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() ? ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerSize() : ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer().length) > 1;
-}
-exports.isMultiQte = isMultiQte;
 exports.MAX_MULTI_QTE_DISTANCE = 5000;
 let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -174,7 +169,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
       return false;
     }
     t = e.Entity.GetComponent(3);
-    if (isMultiQte()) {
+    if ((0, FormationDataController_1.isBattleMulti)()) {
       if (t.IsAutonomousProxy) {
         return false;
       }
@@ -291,10 +286,10 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
       let t = a;
       var n = Vector_1.Vector.Create();
       n.DeepCopy(t.ActorLocationProxy);
-      if (s.ReferenceTarget && (_ = this.tRr.SkillTarget)?.Valid) {
-        t = _.Entity.GetComponent(1);
-        _ = this.tRr.GetTargetTransform();
-        n.DeepCopy(_.GetLocation());
+      if (s.ReferenceTarget && (h = this.tRr.SkillTarget)?.Valid) {
+        t = h.Entity.GetComponent(1);
+        h = this.tRr.GetTargetTransform();
+        n.DeepCopy(h.GetLocation());
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Character", 48, "Qte设置位置开始", ["targetName", t.Owner?.GetName()], ["currentLocation", this.n$t.ActorLocationProxy], ["targetLocation", n]);
@@ -309,27 +304,27 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
         e = t.ScaledRadius;
         i = t.HalfHeight;
       } else if ((0, RegisterComponent_1.isComponentInstance)(t, 203)) {
-        _ = t.GetRadius();
-        e = _;
-        i = _;
+        h = t.GetRadius();
+        e = h;
+        i = h;
       }
-      var _ = {
+      var h = {
         Location: n,
         Radius: e,
         HalfHeight: i
       };
       let r = undefined;
       let o = undefined;
-      o = s.QteType === 1 ? (r = this.Aon(a, s, _), "Qte.设置空中位置") : (r = this.Pon(a, s, _), "Qte.设置地面位置");
+      o = s.QteType === 1 ? (r = this.Aon(a, s, h), "Qte.设置空中位置") : (r = this.Pon(a, s, h), "Qte.设置地面位置");
       var n = this.n$t;
       var s = n.ActorLocationProxy;
-      var _ = this.Mon;
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(_, a.ActorLocationProxy);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(_, r);
-      var a = TraceElementCommon_1.TraceElementCommon.LineTrace(_, PROFILE_KEY);
-      var _ = _.HitResult;
-      if (a && _.bBlockingHit) {
-        TraceElementCommon_1.TraceElementCommon.GetHitLocation(_, 0, r);
+      var h = this.Mon;
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(h, a.ActorLocationProxy);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(h, r);
+      var a = TraceElementCommon_1.TraceElementCommon.LineTrace(h, PROFILE_KEY);
+      var h = h.HitResult;
+      if (a && h.bBlockingHit) {
+        TraceElementCommon_1.TraceElementCommon.GetHitLocation(h, 0, r);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 48, "Qte设置位置，与目标位置间有障碍", ["碰撞位置", r]);
         }
@@ -339,11 +334,11 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
         a.Multiply(n.ScaledRadius, a);
         r.Subtraction(a, r);
       }
-      var _ = n.ScaledHalfHeight;
+      var h = n.ScaledHalfHeight;
       var s = Vector_1.Vector.Create(r);
       var a = Vector_1.Vector.Create(r);
-      GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, s, _);
-      GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, a, -_);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, s, h);
+      GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, a, -h);
       this.von.Radius = n.ScaledRadius;
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.von, s);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.von, a);
@@ -352,7 +347,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
       if (s && a.bBlockingHit) {
         s = ModelManager_1.ModelManager.TraceElementModel.CommonHitLocation;
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(a, 0, s);
-        GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, s, _);
+        GravityUtils_1.GravityUtils.AddZnInGravityForActor(n, s, h);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Character", 48, "Qte设置位置，地面检测修正位置", ["fixedLocation", s]);
         }
@@ -453,19 +448,19 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.von, t);
     var e = TraceElementCommon_1.TraceElementCommon.ShapeTrace(s, this.von, PROFILE_KEY, PROFILE_KEY);
     let n = this.von.HitResult;
-    var _ = Vector_1.Vector.Create();
     var h = Vector_1.Vector.Create();
+    var _ = Vector_1.Vector.Create();
     a.DeepCopy(t);
     if (e && n.bBlockingHit) {
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(n, 0, _);
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(n, 0, h);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 48, "Qte设置地面位置，延输入方向检测结果", ["障碍数量", n.Actors.Num()], ["障碍物", n.Actors.Get(0)?.GetName()], ["碰撞位置", _]);
+        Log_1.Log.Debug("Character", 48, "Qte设置地面位置，延输入方向检测结果", ["障碍数量", n.Actors.Num()], ["障碍物", n.Actors.Get(0)?.GetName()], ["碰撞位置", h]);
       }
-      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(n, 0, h);
-      if (o < MathUtils_1.MathUtils.GetAngleByVectorDot(h, this.n$t.MoveComp.GravityUp)) {
+      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(n, 0, _);
+      if (o < MathUtils_1.MathUtils.GetAngleByVectorDot(_, this.n$t.MoveComp.GravityUp)) {
         return;
       }
-      a.DeepCopy(_);
+      a.DeepCopy(h);
     }
     i = i / Math.tan(o * MathUtils_1.MathUtils.DegToRad) + r;
     t.DeepCopy(a);
@@ -478,18 +473,18 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.von, t);
     e = TraceElementCommon_1.TraceElementCommon.ShapeTrace(s, this.von, PROFILE_KEY, PROFILE_KEY);
     n = this.von.HitResult;
-    _.Reset();
     h.Reset();
+    _.Reset();
     if (e && n.bBlockingHit) {
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(n, 0, _);
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(n, 0, h);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Character", 48, "Qte设置地面位置，垂直方向检测结果", ["障碍数量", n.Actors.Num()], ["障碍物", n.Actors.Get(0)?.GetName()], ["碰撞位置", _]);
+        Log_1.Log.Debug("Character", 48, "Qte设置地面位置，垂直方向检测结果", ["障碍数量", n.Actors.Num()], ["障碍物", n.Actors.Get(0)?.GetName()], ["碰撞位置", h]);
       }
-      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(n, 0, h);
-      if (o < MathUtils_1.MathUtils.GetAngleByVectorDot(h, this.n$t.MoveComp.GravityUp)) {
+      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(n, 0, _);
+      if (o < MathUtils_1.MathUtils.GetAngleByVectorDot(_, this.n$t.MoveComp.GravityUp)) {
         return undefined;
       } else {
-        return _;
+        return h;
       }
     }
   }
@@ -535,7 +530,7 @@ let RoleQteComponent = class RoleQteComponent extends EntityComponent_1.EntityCo
     e.mUs = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
     e.U7a = UE.GASBPLibrary.FnvHash(this.tGn);
     var t = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    CombatMessage_1.CombatNet.Send(20386, this.Entity, e, undefined, t);
+    CombatMessage_1.CombatNet.Send(17414, this.Entity, e, undefined, t);
     return t;
   }
   static ExecuteQteNotify(t, e) {

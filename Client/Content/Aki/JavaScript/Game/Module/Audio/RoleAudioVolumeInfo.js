@@ -40,9 +40,9 @@ class EventVolumeInfo {
 }
 class RoleVolumeInfo {
   constructor(o, e) {
-    this.dQu = 0;
+    this.rJc = 0;
     this.qpi = RoleAudioVolumeInfo.MaxDistanceSquared;
-    this.mQu = new Map();
+    this.RQc = new Map();
     this.IsCurrentRole = false;
     this.RoleId = 0;
     this.EntityId = 0;
@@ -64,25 +64,25 @@ class RoleVolumeInfo {
     }
   }
   AddEvent(o, e) {
-    this.mQu.set(o, e);
-    e.OnChangeVolume(this.dQu, this);
+    this.RQc.set(o, e);
+    e.OnChangeVolume(this.rJc, this);
   }
   RemoveEvent(o) {
-    this.mQu.delete(o);
+    this.RQc.delete(o);
   }
   SetPlayEvent(o) {
     if (o) {
       this.Time = Time_1.Time.Now;
     }
     this.IsCurrentRole = o;
-    this.fQu(o ? 1 : 0);
+    this.wQc(o ? 1 : 0);
   }
   Empty() {
-    return this.mQu.size === 0;
+    return this.RQc.size === 0;
   }
-  fQu(o) {
-    this.dQu = o;
-    for (const e of this.mQu) {
+  wQc(o) {
+    this.rJc = o;
+    for (const e of this.RQc) {
       e[1].OnChangeVolume(o, this);
     }
   }
@@ -126,7 +126,7 @@ class RoleVolumeMapInfo {
     this.RoleVolumeMap = new Map();
     this.CurrentPlayEntityId = 0;
     this.LastPlayEntityId = -1;
-    this.gQu = new PriorityQueue_1.PriorityQueue(RoleVolumeInfo.Compare);
+    this.LQc = new PriorityQueue_1.PriorityQueue(RoleVolumeInfo.Compare);
   }
   OnUpdateTeam() {
     this.MaintainCurrentList();
@@ -160,11 +160,11 @@ class RoleVolumeMapInfo {
       } else if (t.length === 1) {
         this.CurrentPlayEntityId = t[0];
       } else if (t.length > 1) {
-        this.gQu.Clear();
+        this.LQc.Clear();
         for (const l of t) {
-          this.gQu.Push(this.RoleVolumeMap.get(l));
+          this.LQc.Push(this.RoleVolumeMap.get(l));
         }
-        this.CurrentPlayEntityId = this.gQu.Top?.EntityId ?? 0;
+        this.CurrentPlayEntityId = this.LQc.Top?.EntityId ?? 0;
       }
       if (this.LastPlayEntityId !== this.CurrentPlayEntityId) {
         if (Log_1.Log.CheckDebug()) {
@@ -204,7 +204,7 @@ class RoleVolumeMapInfo {
   }
   AddEvent(o, e, t, i, n) {
     i = new EventVolumeInfo(t, i, n);
-    this.CQu(o, e).AddEvent(t, i);
+    this.AQc(o, e).AddEvent(t, i);
     this.UpdateVolume();
   }
   RemoveEvent(o, e) {
@@ -227,7 +227,7 @@ class RoleVolumeMapInfo {
       }, RoleAudioVolumeInfo.DelayTime);
     }
   }
-  CQu(o, e) {
+  AQc(o, e) {
     if (!this.RoleVolumeMap.has(o)) {
       this.RoleVolumeMap.set(o, new RoleVolumeInfo(e, o));
       if (Log_1.Log.CheckDebug()) {
@@ -249,9 +249,9 @@ class RoleVolumeMapInfo {
 }
 class RoleAudioVolumeInfo {
   constructor() {
-    this.pQu = new RoleVolumeMapInfo();
+    this.PQc = new RoleVolumeMapInfo();
     this.dLe = () => {
-      this.pQu.OnUpdateTeam();
+      this.PQc.OnUpdateTeam();
     };
   }
   Init() {
@@ -277,7 +277,7 @@ class RoleAudioVolumeInfo {
   }
   Update() {
     if (Global_1.Global.BaseCharacter?.IsValid()) {
-      this.pQu.UpdateVolume();
+      this.PQc.UpdateVolume();
     }
   }
   PostEvent(o, t, e) {
@@ -297,9 +297,9 @@ class RoleAudioVolumeInfo {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 音乐播放完成回调", ["EntityId", r], ["RoleId", l], ["Handle", n], ["Event", t]);
           }
-          this.pQu.RemoveEvent(r, n);
+          this.PQc.RemoveEvent(r, n);
         }
-      }), this.pQu.AddEvent(r, l, n, t, o), i = true, Log_1.Log.CheckDebug())) {
+      }), this.PQc.AddEvent(r, l, n, t, o), i = true, Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Audio", 42, "[RoleAudioVolumeInfo] 开始播放具有音量调节的音乐", ["EntityId", r], ["RoleId", l], ["Handle", n], ["Event", t]);
       }
     }
@@ -308,7 +308,7 @@ class RoleAudioVolumeInfo {
   RemoveEvent(o, e) {
     if (o.IsA(UE.TsBaseCharacter_C.StaticClass())) {
       o = o.EntityId;
-      this.pQu.RemoveEvent(o, e);
+      this.PQc.RemoveEvent(o, e);
     }
   }
   static GetRoleId(o) {

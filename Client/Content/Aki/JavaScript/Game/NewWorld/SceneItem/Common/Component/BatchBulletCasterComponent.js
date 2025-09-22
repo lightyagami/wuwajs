@@ -125,5 +125,5 @@ let BatchBulletCasterComponent = BatchBulletCasterComponent_1 = class BatchBulle
     }
   }
 };
-BatchBulletCasterComponent = BatchBulletCasterComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(261)], BatchBulletCasterComponent);
+BatchBulletCasterComponent = BatchBulletCasterComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(262)], BatchBulletCasterComponent);
 exports.BatchBulletCasterComponent = BatchBulletCasterComponent; //# sourceMappingURL=BatchBulletCasterComponent.js.map

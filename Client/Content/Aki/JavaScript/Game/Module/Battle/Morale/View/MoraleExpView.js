@@ -41,7 +41,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.UQ = 0;
     this.h0u = false;
     this.Tyu = true;
-    this.n2u = false;
+    this._2u = false;
     this.SPe = undefined;
     this.kL1 = undefined;
     this._cr = t => {
@@ -80,7 +80,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
       }
     };
     this.Zpe = t => {
-      if (this.n2u) {
+      if (this._2u) {
         this.GetTexture(8)?.SetUIActive(!t);
         this.TL1?.SetChangeColor(t, this.TL1.changeColor);
         this.RL1?.SetChangeColor(t, this.RL1.changeColor);
@@ -99,7 +99,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
         this.h0u = false;
       }
     };
-    this.s2u = () => {
+    this.A5u = () => {
       this.h0u = true;
     };
     this.Ryu = () => {
@@ -157,7 +157,7 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePromptShow, this.d0u);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Ryu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.byu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleBattleFail, this.s2u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleBattleFail, this.A5u);
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleExpChanged, this.OL1);
@@ -165,17 +165,17 @@ class MoraleExpView extends BattleVisibleChildView_1.BattleVisibleChildView {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePromptShow, this.d0u);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoralePlayIndomitableLevelAnim, this.Ryu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoadingViewOnAfterShow, this.byu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleBattleFail, this.s2u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleBattleFail, this.A5u);
   }
   StartShow() {
-    this.n2u = true;
+    this._2u = true;
     this.GL1();
     this.SetVisible(1, true);
     this.m0u();
     this.Zpe(FormationDataController_1.FormationDataController.GlobalIsInFight);
   }
   EndShow() {
-    this.n2u = false;
+    this._2u = false;
     this.f0u();
   }
   m0u() {

@@ -64,13 +64,14 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     this.VictimBuffListenerDict = new Map();
     this.BuffRoutineExpirationLock = new Map();
     this.EffectTimeoutMap = new Map();
-    this.iWc = new Set();
+    this.CHu = new Set();
     this.Mbr = 0;
     this.TriggerMap = new Map();
     this.OwnerBuffTimeModifiers = new Map();
     this.InstigatorBuffTimeModifiers = new Map();
     this.BuffStackModifiers = new Map();
     this.Buff2CueMap = new Map();
+    this.SeamlessTravelBuffCue = undefined;
   }
   GetDebugName() {
     return "";
@@ -92,14 +93,15 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     this.BuffContainer.clear();
     this.BuffGarbageSet.clear();
     this.EffectTimeoutMap.clear();
-    this.iWc.clear();
-    return true;
+    this.CHu.clear();
+    return !(this.SeamlessTravelBuffCue = undefined);
   }
   OnTick(t) {
     this.BuffLock = 0;
-    this.iWc.clear();
+    this.CHu.clear();
     return true;
   }
+  InitBornBuff() {}
   NeedBroadcastBuff(t, e = false) {
     return !e && this.HasBuffAuthority();
   }
@@ -587,7 +589,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         SkillMessageController_1.SkillMessageController.AnimNotifyRequest(this.Entity, o ? o.SkillId : 0, -1, t, i, f);
         return f;
       }
-      CombatLog_1.CombatLog.Error("Buff", this.Entity, "CreateANCWithAnimBp Error", ["anIndex", t], ["animName", e], ["SkillId", o?.SkillId], ["contextId", i]);
+      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "CreateANCWithAnimBp Error", ["anIndex", t], ["animName", e], ["SkillId", o?.SkillId], ["contextId", i]);
     }
   }
   CreateAnimNotifyContentWithoutSkill(t, e) {
@@ -746,10 +748,10 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       m?.Stop();
       return ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
     }
-    let y = r && r > 0 ? r : f.DefaultStackCount;
+    let b = r && r > 0 ? r : f.DefaultStackCount;
     if (!this.CheckAdd(f, o ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, l)) {
       if (p) {
-        SceneTeamController_1.SceneTeamController.EmitAbilityEvent(p, 2, e, e, this.Entity, p, y, v);
+        SceneTeamController_1.SceneTeamController.EmitAbilityEvent(p, 2, e, e, this.Entity, p, b, v);
       }
       this.BuffLock--;
       m?.Stop();
@@ -758,9 +760,9 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     if (p) {
       SceneTeamController_1.SceneTeamController.EmitAbilityEvent(p, 1, e, e, this.Entity, p, t);
     }
-    var b = this.GetStackableBuff(o ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, e, f.StackingType);
+    var y = this.GetStackableBuff(o ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, e, f.StackingType);
     var t = this.CalculateBuffStackMax(e);
-    if (!b) {
+    if (!y) {
       let t = undefined;
       if (f.DurationPolicy === 0) {
         C = ActiveBuffConfigs_1.SUCCESS_INSTANT_BUFF_HANDLE;
@@ -769,7 +771,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         C = C ?? CharacterBuffController_1.default.GenerateHandle();
       }
       try {
-        t = ActiveBuff_1.ActiveBuffInternal.AllocBuff(f, C, o, this, B, a, n, i, y, u, s);
+        t = ActiveBuff_1.ActiveBuffInternal.AllocBuff(f, C, o, this, B, a, n, i, b, u, s);
       } catch (t) {
         CombatLog_1.CombatLog.ErrorWithStack("Buff", this.Entity, "Buff初始过程中发生异常", t, ...g);
       }
@@ -779,7 +781,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         return ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
       }
       if (!BaseBuffComponent_1.NoLogBuffSet.has(e)) {
-        CombatLog_1.CombatLog.Info("Buff", this.Entity, "本地添加buff", ...g, ["handle", C], ["前置行为id", a], ["说明", f.Desc], ["是否迭代", d], ["层数", y], ["bulletMessage", v]);
+        CombatLog_1.CombatLog.Info("Buff", this.Entity, "本地添加buff", ...g, ["handle", C], ["前置行为id", a], ["说明", f.Desc], ["是否迭代", d], ["层数", b], ["bulletMessage", v]);
       }
       try {
         this.OnBuffAdded(t, r, s, a, u, h, B, l, d, _, c);
@@ -794,25 +796,25 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       m?.Stop();
       return C;
     }
-    if (b.Config && (t <= 0 || !b.Config.DenyOverflowAdd || b.StackCount < t)) {
+    if (y.Config && (t <= 0 || !y.Config.DenyOverflowAdd || y.StackCount < t)) {
       if (f.StackAppendCount > 0) {
-        y = f.StackAppendCount;
+        b = f.StackAppendCount;
       }
-      n = b.StackCount;
-      v = Math.min(n + y, t);
+      n = y.StackCount;
+      v = Math.min(n + b, t);
       try {
-        this.OnBuffStackIncreased(b, n, v, o ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, i, r, s, a, u, B, d, _, c);
-        for (const M of b.Config.EffectInfos) {
-          M.ExecutionEffect?.OnBuffAddedCallback(b, d);
+        this.OnBuffStackIncreased(y, n, v, o ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID, i, r, s, a, u, B, d, _, c);
+        for (const M of y.Config.EffectInfos) {
+          M.ExecutionEffect?.OnBuffAddedCallback(y, d);
         }
       } catch (t) {
         CombatLog_1.CombatLog.ErrorWithStack("Buff", this.Entity, "Buff层数改变中发生异常", t, ...g);
       }
     }
-    SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 3, e, e, b.Handle);
+    SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 3, e, e, y.Handle);
     this.BuffLock--;
     m?.Stop();
-    return b.Handle;
+    return y.Handle;
   }
   RemoveBuff(t, e, f, o, i) {
     if (this.HasBuffAuthority()) {
@@ -1089,7 +1091,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
         this.BuffEffectManager.OnBuffAdded(e);
       }
       if (this.NeedCheck(e.Config)) {
-        this.OnBuffActiveChanged(e, r ?? this.CheckActivate(e.Config, e.GetInstigator()));
+        this.OnBuffActiveChanged(e, this.CheckActivate(e.Config, e.GetInstigator()));
       } else if (r === undefined) {
         CombatLog_1.CombatLog.Error("Buff", this.Entity, "buff激活状态未知", ["buffId", e.Id], ["handle", e.Handle]);
       } else {
@@ -1208,12 +1210,12 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     }
   }
   OnTagChanged(t) {
-    if (this.iWc.has(t)) {
+    if (this.CHu.has(t)) {
       CombatLog_1.CombatLog.Warn("Buff", this.Entity, "Tag变更循环派发", ["tagId", t]);
     } else {
-      this.iWc.add(t);
+      this.CHu.add(t);
       this.CheckWhenTagChanged(t);
-      this.iWc.delete(t);
+      this.CHu.delete(t);
     }
   }
   get BuffLock() {
@@ -1506,7 +1508,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
   OnRefreshBuffDuration(t, e) {
     var f = Protocol_1.Aki.Protocol.GG1.create();
     f.$As = t;
-    CombatMessage_1.CombatNet.Send(23237, this.Entity, f);
+    CombatMessage_1.CombatNet.Send(19601, this.Entity, f);
     for (const o of t) {
       for (const i of this.GetAllBuffById(o)) {
         i.SetDuration();
@@ -1588,7 +1590,7 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
     const f = this.GetCueComponent();
     if (f && t.IsActive()) {
       const o = t.Handle;
-      if (!this.Buff2CueMap.has(o)) {
+      if (!this.Buff2CueMap.has(o) && !this.CreateSeamlessTravelCue(t, f)) {
         t.Config.GameplayCueIds?.forEach(e => {
           e = f.AddCue(e, {
             Buff: t,
@@ -1623,6 +1625,60 @@ let BaseBuffComponent = BaseBuffComponent_1 = class BaseBuffComponent extends En
       this.DestroyGameplayCueByBuff(t);
     }
   }
+  CreateSeamlessTravelCue(t, e) {
+    var f = this.SeamlessTravelBuffCue?.get(t.Id);
+    if (f === undefined || f.length === 0) {
+      return false;
+    }
+    f = f.pop();
+    this.Buff2CueMap.set(t.Handle, f);
+    CombatLog_1.CombatLog.Info("Buff", this.Entity, "[无缝加载]buff特效复用", ["buffId", t.Id], ["buffHandle", t.Handle], ["cueHandle", f]);
+    for (const o of f) {
+      e.ChangeBuffHandle(o, t);
+    }
+    return true;
+  }
+  SeamlessTravelBuffRetain(t) {
+    return t.Id < 0;
+  }
+  SeamlessTravelingRefresh() {
+    CombatLog_1.CombatLog.Info("Buff", this.Entity, "[无缝加载]buff刷新");
+    var t = new Set();
+    for (const i of this.GetAllBuffs()) {
+      if (!this.SeamlessTravelBuffRetain(i)) {
+        t.add(i);
+      }
+    }
+    if (this.SeamlessTravelBuffCue === undefined) {
+      this.SeamlessTravelBuffCue = new Map();
+    }
+    for (const r of t) {
+      var e = this.Buff2CueMap.get(r.Handle);
+      if (e) {
+        let t = this.SeamlessTravelBuffCue.get(r.Id);
+        if (!t) {
+          this.SeamlessTravelBuffCue.set(r.Id, t = []);
+        }
+        t.push(e);
+        this.Buff2CueMap.delete(r.Handle);
+      }
+      this.RemoveBuffByHandle(r.Handle, -1, "无缝加载移除旧buff");
+    }
+    this.InitBornBuff();
+    const f = this.GetCueComponent();
+    if (f) {
+      for (var [, o] of this.SeamlessTravelBuffCue) {
+        for (const s of o) {
+          s.forEach(t => {
+            f.RemoveCueByHandle(t);
+          });
+        }
+      }
+    }
+    this.SeamlessTravelBuffCue.clear();
+    this.OnSeamlessTravelingRefreshEnd();
+  }
+  OnSeamlessTravelingRefreshEnd() {}
 };
 BaseBuffComponent.NoLogBuffSet = new Set([ActiveBuffConfigs_1.DYNAMIC_BUFF_ID, 1101003012, 800080191, 800100003081, 1302121034, 1304700001, 640007016, 1202803014, 1202002003]);
 BaseBuffComponent.u__ = Stats_1.Stat.Create("BaseBuffComponent.CheckWhenTagChanged");

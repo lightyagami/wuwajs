@@ -24,7 +24,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     this.rZt = 4000;
     this.nZt = undefined;
     this.sZt = undefined;
-    this.YYc = undefined;
+    this.zJc = undefined;
     this.aZt = () => {
       var t;
       if (!!this.hZt && (!(t = UiManager_1.UiManager.GetViewByName("BattleView")?.GetGuideUiItemAndUiItemForShowEx(this.Config.ExtraParam)) || t[0] !== this.GuideStepInfo?.ViewData?.GetAttachedUiItem())) {
@@ -55,14 +55,14 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
         this.DoCloseByFinished();
       }
     };
-    this.zYc = (t, i) => {
+    this.JJc = (t, i) => {
       if (i.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
-        this.YYc = t;
+        this.zJc = t;
       }
     };
-    this.JYc = t => {
-      if (this.YYc === t) {
-        this.YYc = undefined;
+    this.ZJc = t => {
+      if (this.zJc === t) {
+        this.zJc = undefined;
       }
     };
   }
@@ -90,8 +90,8 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       this.UiViewSequence.AddSequenceFinishEvent(this.sZt, this.cZt);
     }
     if (this.Config?.HideWhenOtherPopViewOccur) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnViewDone, this.zYc);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.JYc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnViewDone, this.JJc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.ZJc);
     }
   }
   OnGuideBaseViewAddEvent() {
@@ -118,8 +118,8 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       this.nZt = undefined;
     }
     if (this.Config?.HideWhenOtherPopViewOccur) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnViewDone, this.zYc);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.JYc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnViewDone, this.JJc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.ZJc);
     }
   }
   get hZt() {
@@ -144,7 +144,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   _Zt() {
     var t = this.GuideStepInfo.ViewData.GetAttachedView();
-    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition() || this.YYc !== undefined) {
+    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition() || this.zJc !== undefined) {
       return this.oZt = false;
     }
     this.oZt = true;

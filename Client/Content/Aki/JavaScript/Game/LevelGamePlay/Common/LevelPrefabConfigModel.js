@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.LevelPrefabConfigModel = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 class LevelPrefabConfig {
@@ -23,8 +24,8 @@ class LevelPrefabConfigModel extends ModelBase_1.ModelBase {
     var e = (0, puerts_1.$ref)("");
     var r = this.Reh();
     UE.KuroStaticLibrary.LoadFileToString(e, r);
-    r = (0, puerts_1.$unref)(e);
-    return !StringUtils_1.StringUtils.IsNothing(r) && !!(e = JSON.parse(r)) && (this.Lo = e, true);
+    e = (0, puerts_1.$unref)(e);
+    return !StringUtils_1.StringUtils.IsNothing(e) && ((e = JSON.parse(e)) ? this.Lo = e : Log_1.Log.CheckError() && Log_1.Log.Error("Config", 31, "Failed to parse LevelPrefabConfig.json", ["Path", r]), true);
   }
   Reh() {
     var e;

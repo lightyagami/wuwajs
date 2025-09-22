@@ -24,7 +24,7 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
     this.DRu = new Map();
     this.vDu = new Map();
     this.yDu = new Map();
-    this.bKu = 100000;
+    this.OWc = 100000;
   }
   SetActivityData(a) {
     this.CNe = a;
@@ -153,7 +153,7 @@ class FloroRanchModel extends ModelBase_1.ModelBase {
     return a;
   }
   GetCoinText(a) {
-    if (a > this.bKu) {
+    if (a > this.OWc) {
       return a.toExponential(2);
     } else {
       return a.toString();

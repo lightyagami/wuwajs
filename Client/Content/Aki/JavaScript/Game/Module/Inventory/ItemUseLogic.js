@@ -123,61 +123,51 @@ ItemUseLogic.TryUseMonthCardItem = (e, r = 0) => {
     ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1);
   }), ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o), true);
 };
-ItemUseLogic.TryUseGiftItem = (i, e = 0) => {
-  var r = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(i);
-  if (!r) {
-    return false;
-  }
-  if (r.GetType() !== 11) {
-    return false;
-  }
-  const a = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(i);
-  let o = a.Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift);
-  let n = false;
+ItemUseLogic.TryUseGiftItem = (e, r = 0) => {
+  const o = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
   if (!o) {
-    o = a.Parameters.get(ItemDefines_1.EItemFunctionType.AutoOpenGift);
-    n = true;
+    return false;
   }
-  const l = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(o);
-  if (!n) {
-    r = () => {
-      if (l.Type === GiftType_1.GiftType.Fixed || l.Type === GiftType_1.GiftType.Random || l.Type === GiftType_1.GiftType.RandomPhantom || l.Type === GiftType_1.GiftType.CaptureMonster) {
-        var e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i);
-        var r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(a.Name);
-        var o = [];
-        var n = [{
-          IncId: 0,
-          ItemId: a.Id
-        }, e];
-        o.push(n);
-        if (e > 1) {
-          const t = new AcquireData_1.AcquireData();
-          t.SetAcquireViewType(0);
-          t.SetAmount(1);
-          t.SetMaxAmount(e);
-          t.SetRemainItemCount(e);
-          t.SetItemData(o);
-          t.SetNameText(r);
-          t.SetRightButtonFunction(() => {
-            ItemUseLogic.Tmi(i, t.GetAmount());
-          });
-          InventoryGiftController_1.InventoryGiftController.ShowAcquireView(t);
-        } else {
-          InventoryGiftController_1.InventoryGiftController.SendItemGiftUseRequest(i, 1, undefined);
-        }
+  if (o.GetType() !== 11) {
+    return false;
+  }
+  var n = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e);
+  let t = n.Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift);
+  let i = false;
+  if (!t) {
+    t = n.Parameters.get(ItemDefines_1.EItemFunctionType.AutoOpenGift);
+    i = true;
+  }
+  var a = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(t);
+  if (!i) {
+    if (a.Type === GiftType_1.GiftType.Fixed || a.Type === GiftType_1.GiftType.Random || a.Type === GiftType_1.GiftType.RandomPhantom || a.Type === GiftType_1.GiftType.CaptureMonster) {
+      var l = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e);
+      var _ = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Name);
+      var g = [];
+      const o = [{
+        IncId: 0,
+        ItemId: n.Id
+      }, l];
+      g.push(o);
+      if (l > 1) {
+        const f = new AcquireData_1.AcquireData();
+        f.SetAcquireViewType(0);
+        f.SetAmount(1);
+        f.SetMaxAmount(l);
+        f.SetRemainItemCount(l);
+        f.SetItemData(g);
+        f.SetNameText(_);
+        f.SetConfigId(e);
+        f.SetRightButtonFunction(() => {
+          ItemUseLogic.Tmi(e, f.GetAmount());
+        });
+        InventoryGiftController_1.InventoryGiftController.ShowAcquireView(f);
       } else {
-        InventoryGiftController_1.InventoryGiftController.SendGiftPackPreviewRequest(i, l, undefined);
+        InventoryGiftController_1.InventoryGiftController.SendItemGiftUseRequest(e, 1, undefined);
       }
-    };
-    if (a.ShowTypes.includes(41)) {
-      var t = ModelManager_1.ModelManager.InventoryModel.GetInventoryItemGridCountByMainType(3);
-      var _ = ConfigManager_1.ConfigManager.InventoryConfig.GetItemMainTypeConfig(3).PackageId;
-      if (ConfigManager_1.ConfigManager.InventoryConfig.GetPackageConfig(_).Capacity <= t) {
-        ControllerHolder_1.ControllerHolder.InventoryController.TryOpenPhantomFullConfirmBox(r);
-        return true;
-      }
+    } else {
+      InventoryGiftController_1.InventoryGiftController.SendGiftPackPreviewRequest(e, a, undefined);
     }
-    r();
   }
   return true;
 };
@@ -205,9 +195,11 @@ ItemUseLogic.TryUseBirthdayItem = e => {
   return !!r && r.GetType() === 60007 && (BirthdayController_1.BirthdayController.UseBirthdayItem(e), true);
 };
 ItemUseLogic.TryUseVisionRefineItem = e => {
-  e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
-  return !!e && !!e.GetConfig().ShowTypes.includes(54) && (UiManager_1.UiManager.OpenView("CalabashRootView", {
+  var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
+  return !!e && !!e.GetConfig().ShowTypes.includes(54) && (e = {
     TabViewName: "VisionRefineTabView",
-    Param: 1
-  }), true);
+    Param: {
+      ViewState: 1
+    }
+  }, UiManager_1.UiManager.OpenView("CalabashRootView", e), true);
 }; //# sourceMappingURL=ItemUseLogic.js.map

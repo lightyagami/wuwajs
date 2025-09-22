@@ -126,8 +126,8 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
           case 6:
           case 9:
             var t = [];
-            for (const n of i) {
-              var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(n);
+            for (const h of i) {
+              var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(h);
               t.push(a.TrialId);
             }
             RoleController_1.RoleController.OpenRoleMainView(1, 0, t);
@@ -143,11 +143,11 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
               o.SetTrialId(s.TrialId);
               r.push(o);
             }
-            var h = {
+            var n = {
               WeaponDataList: r,
               SelectedIndex: 0
             };
-            UiManager_1.UiManager.OpenView("WeaponPreviewView", h);
+            UiManager_1.UiManager.OpenView("WeaponPreviewView", n);
         }
       }
     };
@@ -242,8 +242,13 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.Bpt = e => e !== this._jt?.GetGenericLayout()?.GetSelectedGridIndex();
     this.Njt = () => {
-      var e = this.vjt;
-      ControllerHolder_1.ControllerHolder.ItemExchangeController.OpenExchangeViewByItemId(e.ItemId);
+      var e = this.vjt?.ItemId;
+      if (!!e && !(e <= 0) && !!(e = ConfigManager_1.ConfigManager.GachaConfig.GetShopIdByGachaItemId(e)) && !(e <= 0)) {
+        ControllerHolder_1.ControllerHolder.PayShopController.OpenExchangePopView(e);
+      }
+    };
+    this.Emd = () => {
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewToRecharge();
     };
     this.Ojt = () => {
       var e = ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency();
@@ -384,7 +389,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(68);
       ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(e);
     }
-    this.gjt?.PlayStartSeqAsync();
+    this.gjt?.PlayStartSeq();
   }
   OnTick(e) {
     if (Time_1.Time.ServerTimeStamp - this._Ma >= CommonDefine_1.SECOND_PER_MINUTE * 5 * CommonDefine_1.MILLIONSECOND_PER_SECOND) {
@@ -408,10 +413,11 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   async ITt() {
     var e;
-    if (this.vjt && (await this.lqe.SetCurrencyItemList([ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency(), this.vjt.ItemId]), e = this.lqe.GetCurrencyItemList())) {
-      e[0]?.SetButtonFunction(this.Ojt);
-      (e = e[1]).SetButtonFunction(this.Njt);
-      e.SetButtonActive(false);
+    if (this.vjt && (await this.lqe.SetCurrencyItemList([ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency(), ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency(), this.vjt.ItemId]), e = this.lqe.GetCurrencyItemList())) {
+      e[0]?.SetButtonFunction(this.Emd);
+      e[1]?.SetButtonFunction(this.Ojt);
+      (e = e[2]).SetButtonFunction(this.Njt);
+      e.SetButtonActive(true);
     }
   }
   jjt() {

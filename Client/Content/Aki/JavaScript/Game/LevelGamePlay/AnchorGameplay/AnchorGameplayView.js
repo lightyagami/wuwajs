@@ -27,49 +27,49 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     super(...arguments);
     this.iJs = undefined;
     this.H_t = undefined;
-    this.n$u = undefined;
-    this.s$u = undefined;
+    this.OHc = undefined;
+    this.qHc = undefined;
     this.Sq1 = undefined;
-    this.a$u = false;
+    this.GHc = false;
     this.LCa = Vector2D_1.Vector2D.Create();
-    this.h$u = 0;
+    this.FHc = 0;
     this.fS1 = undefined;
     this.SPe = undefined;
     this.U1e = 560;
-    this.l$u = undefined;
-    this._$u = 100;
-    this.u$u = -0.05;
-    this.Nld = 500;
-    this.Vld = -1;
-    this.jld = false;
-    this.Hld = undefined;
+    this.NHc = undefined;
+    this.VHc = 100;
+    this.jHc = -0.05;
+    this.Wmd = 500;
+    this.Qmd = -1;
+    this.Kmd = false;
+    this.Xmd = undefined;
     this.vKe = t => {
       var e;
       var i;
       var s;
-      if (this.IsQteEnd || this.IsQtePause || !this.l$u || !this.a$u) {
+      if (this.IsQteEnd || this.IsQtePause || !this.NHc || !this.GHc) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag", ["IsQteEnd", this.IsQteEnd], ["IsQtePause", this.IsQtePause], ["MoveCurve", this.l$u], ["ClickedBtn", this.a$u]);
+          Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag", ["IsQteEnd", this.IsQteEnd], ["IsQtePause", this.IsQtePause], ["MoveCurve", this.NHc], ["ClickedBtn", this.GHc]);
         }
       } else {
         t = t.pointerPosition;
         e = Vector2D_1.Vector2D.Create();
         LguiUtil_1.LguiUtil.ConvertPointerPositionToLguiPosition(t, e);
         i = (e.Y - this.LCa.Y) / this.U1e;
-        this.h$u += i * -1;
-        this.h$u = MathUtils_1.MathUtils.Clamp(this.h$u, 0, 1);
+        this.FHc += i * -1;
+        this.FHc = MathUtils_1.MathUtils.Clamp(this.FHc, 0, 1);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag", ["deltaPercentage", i], ["CurPercentage", this.h$u]);
+          Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag", ["deltaPercentage", i], ["CurPercentage", this.FHc]);
         }
-        i = this.l$u.GetVectorValue(this.h$u);
-        this.n$u.SetUIRelativeLocation(i);
-        i = Vector2D_1.Vector2D.Create(this.n$u.GetLGUISpaceAbsolutePosition());
+        i = this.NHc.GetVectorValue(this.FHc);
+        this.OHc.SetUIRelativeLocation(i);
+        i = Vector2D_1.Vector2D.Create(this.OHc.GetLGUISpaceAbsolutePosition());
         s = Vector2D_1.Vector2D.Create(e);
-        if (Vector2D_1.Vector2D.Distance(i, s) > this._$u || this.h$u === 1) {
+        if (Vector2D_1.Vector2D.Distance(i, s) > this.VHc || this.FHc === 1) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag Detach", ["position", t], ["itemPos", i], ["pointerPos", s], ["Dist", Vector2D_1.Vector2D.Distance(i, s)], ["DetachOffset", this._$u]);
+            Log_1.Log.Info("Temp", 31, "[AnchorGameplayView] OnPointerDrag Detach", ["position", t], ["itemPos", i], ["pointerPos", s], ["Dist", Vector2D_1.Vector2D.Distance(i, s)], ["DetachOffset", this.VHc]);
           }
-          this.a$u = false;
+          this.GHc = false;
           this.kxe();
         } else {
           this.LCa.DeepCopy(e);
@@ -86,10 +86,10 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     this.kxe = () => {
       var t;
       if (this.fS1?.State !== 2) {
-        if (this.h$u !== 1) {
-          t = this.l$u.GetVectorValue(0);
-          this.n$u.SetUIRelativeLocation(t);
-          this.h$u = 0;
+        if (this.FHc !== 1) {
+          t = this.NHc.GetVectorValue(0);
+          this.OHc.SetUIRelativeLocation(t);
+          this.FHc = 0;
         } else {
           this.SPe?.PlayLevelSequenceByName("Success");
           this.fS1.QteSuccess();
@@ -97,13 +97,13 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
       }
     };
     this.qOi = () => {
-      this.a$u = true;
+      this.GHc = true;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Temp", 31, "[AnchorGameplayView]OnPress called");
       }
     };
     this.lG = () => {
-      this.a$u = false;
+      this.GHc = false;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Temp", 31, "[AnchorGameplayView]OnRelease called");
       }
@@ -122,28 +122,28 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     this.lqt = () => {
       this.kxe();
       if (Info_1.Info.IsInGamepad()) {
-        this.c$u();
+        this.HHc();
         this.Sq1?.Show();
       } else {
-        this.d$u();
+        this.$Hc();
         this.Sq1?.Hide();
       }
     };
-    this.m$u = (t, e) => {
-      if (!this.IsQteEnd && !this.IsQtePause && !!this.l$u) {
+    this.WHc = (t, e) => {
+      if (!this.IsQteEnd && !this.IsQtePause && !!this.NHc) {
         if (e <= 0) {
-          if (this.h$u !== 0) {
+          if (this.FHc !== 0) {
             this.kxe();
           }
         } else {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Temp", 31, "[AnchorGameplayView]OnGamepadInput called", ["value", e]);
           }
-          this.h$u += e * this.u$u;
-          this.h$u = MathUtils_1.MathUtils.Clamp(this.h$u, 0, 1);
-          e = this.l$u.GetVectorValue(this.h$u);
-          this.n$u.SetUIRelativeLocation(e);
-          if (this.h$u === 1) {
+          this.FHc += e * this.jHc;
+          this.FHc = MathUtils_1.MathUtils.Clamp(this.FHc, 0, 1);
+          e = this.NHc.GetVectorValue(this.FHc);
+          this.OHc.SetUIRelativeLocation(e);
+          if (this.FHc === 1) {
             this.kxe();
           }
         }
@@ -174,23 +174,23 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
   Vi() {
     this.U1e = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorBtnMoveDistance");
     var t = CommonParamById_1.configCommonParamById.GetStringConfig("AnchorMovementCurve");
-    this.l$u = ResourceSystem_1.ResourceSystem.Load(t, UE.CurveVector);
-    this._$u = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorBtnDetachOffset");
-    this.u$u = CommonParamById_1.configCommonParamById.GetFloatConfig("AnchorGamepadBtnMovementFactor");
-    this.Nld = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorEndAnimTime");
-    this.Vld = 1 / this.Nld;
+    this.NHc = ResourceSystem_1.ResourceSystem.Load(t, UE.CurveVector);
+    this.VHc = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorBtnDetachOffset");
+    this.jHc = CommonParamById_1.configCommonParamById.GetFloatConfig("AnchorGamepadBtnMovementFactor");
+    this.Wmd = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorEndAnimTime");
+    this.Qmd = 1 / this.Wmd;
   }
   OnStart() {
     super.OnStart();
     this.Vi();
     this.uYl();
-    this.s$u = this.GetButton(1);
-    this.s$u.OnPointDownCallBack.Bind(this.qOi);
-    this.s$u.OnPointUpCallBack.Bind(this.lG);
-    this.n$u = this.s$u.GetOwner()?.GetComponentByClass(UE.UIItem.StaticClass());
+    this.qHc = this.GetButton(1);
+    this.qHc.OnPointDownCallBack.Bind(this.qOi);
+    this.qHc.OnPointUpCallBack.Bind(this.lG);
+    this.OHc = this.qHc.GetOwner()?.GetComponentByClass(UE.UIItem.StaticClass());
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe.BindSequenceCloseEvent(this.$xt);
-    this.h$u = 0;
+    this.FHc = 0;
     this.iJs.SetUIActive(false);
   }
   OnBeforeDestroy() {
@@ -209,10 +209,10 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
   HandleQteEnd() {
     if (!this.IsQteEnd) {
       this.IsQteEnd = true;
-      if (this.h$u !== 1) {
+      if (this.FHc !== 1) {
         this.SPe?.StopCurrentSequence();
-        this.jld = true;
-        this.Hld = () => {
+        this.Kmd = true;
+        this.Xmd = () => {
           this.SPe?.PlayLevelSequenceByName("Success");
         };
       }
@@ -234,8 +234,8 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     }
   }
   OnTick(t) {
-    if (this.jld) {
-      this.$ld(t);
+    if (this.Kmd) {
+      this.Ymd(t);
     } else if (!!this.IsQteStart && !this.IsQteEnd && !this.IsQtePause) {
       if (!this.fS1 || this.fS1.IsInvalid()) {
         if (Log_1.Log.CheckInfo()) {
@@ -250,13 +250,13 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
       }
     }
   }
-  $ld(t) {
-    this.h$u += t * this.Vld;
-    this.h$u = MathUtils_1.MathUtils.Clamp(this.h$u, 0, 1);
-    t = this.l$u.GetVectorValue(this.h$u);
-    this.n$u.SetUIRelativeLocation(t);
-    if (this.h$u === 1 && (this.jld = false, this.Hld)) {
-      this.Hld();
+  Ymd(t) {
+    this.FHc += t * this.Qmd;
+    this.FHc = MathUtils_1.MathUtils.Clamp(this.FHc, 0, 1);
+    t = this.NHc.GetVectorValue(this.FHc);
+    this.OHc.SetUIRelativeLocation(t);
+    if (this.FHc === 1 && (this.Kmd = false, this.Xmd)) {
+      this.Xmd();
     }
   }
   PlayQteStart() {
@@ -276,14 +276,14 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
   }
   OnRemoveEventListener() {
     if (Info_1.Info.IsInGamepad()) {
-      this.d$u();
+      this.$Hc();
     }
   }
-  c$u() {
-    ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiScroll1, this.m$u);
+  HHc() {
+    ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiScroll1, this.WHc);
   }
-  d$u() {
-    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiScroll1, this.m$u);
+  $Hc() {
+    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiScroll1, this.WHc);
   }
   Bfc() {
     var t;

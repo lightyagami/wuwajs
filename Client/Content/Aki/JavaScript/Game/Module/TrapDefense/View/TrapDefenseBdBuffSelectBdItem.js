@@ -45,13 +45,13 @@ class TrapDefenseBdBuffSelectBdItem extends GridProxyAbstract_1.GridProxyAbstrac
   Refresh(t) {
     this.UpdateDataBase(t);
     this.UpdateProgressValue();
-    this.jHc();
+    this.U9u();
     this.CheckBdActiveNewQuality(true);
   }
   RefreshItem(t) {
     this.UpdateDataBase(t);
     this.UpdateProgressValue();
-    this.jHc();
+    this.U9u();
     this.CheckBdActiveNewQuality();
   }
   RefreshCheckProgress(t) {
@@ -64,7 +64,7 @@ class TrapDefenseBdBuffSelectBdItem extends GridProxyAbstract_1.GridProxyAbstrac
     } else {
       this.UpdateProgressValue();
     }
-    this.jHc();
+    this.U9u();
   }
   UpdateProgressValue(t, s, e) {
     var i = this.GetText(5);
@@ -86,7 +86,7 @@ class TrapDefenseBdBuffSelectBdItem extends GridProxyAbstract_1.GridProxyAbstrac
       this.SequenceItem?.StopSequenceByKey("Loop");
     }
   }
-  jHc() {
+  U9u() {
     var [t, s] = this.ItemData.PreAddedBuffIsActiveNewQuality();
     var e = t && this.IsUpStage;
     switch (this.Quality = s) {

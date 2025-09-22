@@ -212,9 +212,9 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     this.w1_(t === 3);
   }
   async iQi() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetRoleId();
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetSkinId();
     var i = PhotographController_1.PhotographController.GetRoleMainAnimInstanceType();
-    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListByRoleIdAndMainAnim(t, i));
+    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(t, i));
     if (t) {
       t.sort((t, i) => t.Sort - i.Sort);
       var i = this.GetItem(4);
@@ -285,10 +285,10 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
   }
   async rQi() {
     var t = [];
-    var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetRoleId();
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetSkinId();
     t.push(this.dQi());
     var e = PhotographController_1.PhotographController.GetRoleMainAnimInstanceType();
-    var i = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListByRoleIdAndMainAnim(i, e));
+    var i = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(i, e));
     if (i) {
       i.sort((t, i) => t.Sort - i.Sort);
       e = this.GetItem(4);

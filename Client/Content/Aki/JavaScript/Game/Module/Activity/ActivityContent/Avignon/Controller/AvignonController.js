@@ -19,10 +19,10 @@ class AvignonController extends ActivityControllerBase_1.ActivityControllerBase 
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15133, this.kSc);
+    Net_1.Net.Register(23718, this.kSc);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15133);
+    Net_1.Net.UnRegister(23718);
   }
   OnGetIsOpeningActivityRelativeView() {
     for (const e of ["AvignonActivityMainView", "AvignonStageTaskView"]) {
@@ -50,10 +50,10 @@ class AvignonController extends ActivityControllerBase_1.ActivityControllerBase 
     e.gps = t;
     var r = ModelManager_1.ModelManager.AvignonModel.GetAvignonActivityId();
     e.w6n = r;
-    Net_1.Net.Call(29489, e, e => {
+    Net_1.Net.Call(29570, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22145);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18315);
         } else {
           ModelManager_1.ModelManager.AvignonModel.UpdateTaskRewardStatus(t);
         }

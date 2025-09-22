@@ -59,10 +59,10 @@ class ActivityInviteNewbieController extends ActivityControllerBase_1.ActivityCo
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26801, this.g5c);
+    Net_1.Net.Register(29016, this.g5c);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26801);
+    Net_1.Net.UnRegister(29016);
   }
   mIi() {
     let e = undefined;

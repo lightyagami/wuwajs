@@ -38,7 +38,6 @@ class AutoRunModel extends ModelBase_1.ModelBase {
     this.eQe = new Map();
     this.tQe = new Map();
     this.dKs = new Map();
-    this.MapEntityDataCache = new Map();
   }
   OnInit() {
     this.YKe = "Disabled";
@@ -50,7 +49,6 @@ class AutoRunModel extends ModelBase_1.ModelBase {
     this.ClearAllOverrideTpInfo();
     this.ClearAllGuaranteeTpInfo();
     this.ClearCachedDataLayerInfo();
-    this.MapEntityDataCache.clear();
     return true;
   }
   GetAutoRunState() {

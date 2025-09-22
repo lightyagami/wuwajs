@@ -18,7 +18,7 @@ const LineCrossSubView_1 = require("./LineCrossSubView");
 class LineCrossActivityController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.ded = e => {
+    this.yid = e => {
       const n = new Array();
       const i = new Array();
       e.mps.forEach(e => {
@@ -57,10 +57,10 @@ class LineCrossActivityController extends ActivityControllerBase_1.ActivityContr
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(22460, this.ded);
+    Net_1.Net.Register(23675, this.yid);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22460);
+    Net_1.Net.UnRegister(23675);
   }
   wPu(e) {
     if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)) {
@@ -68,12 +68,12 @@ class LineCrossActivityController extends ActivityControllerBase_1.ActivityContr
     }
   }
   RequestStartChallenge(e, r) {
-    var t = new Protocol_1.Aki.Protocol.fJc();
+    var t = new Protocol_1.Aki.Protocol.yed();
     t.s5n = r;
     ModelManager_1.ModelManager.LineCrossModel.CurrentChallengeFinishState = ModelManager_1.ModelManager.LineCrossModel.GetChallengeFinishState(e, r);
-    Net_1.Net.Call(23905, t, e => {
+    Net_1.Net.Call(26680, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28580);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15660);
       }
     });
   }

@@ -206,5 +206,12 @@ exports.ELevelGeneralCondition = undefined;
   e.CheckTrapDefenseMachineLevel = "CheckTrapDefenseMachineLevel";
   e.CheckTrapDefenseTalentUnlock = "CheckTrapDefenseTalentUnlock";
   e.OnTrapDefenseMainLevelViewOpen = "OnTrapDefenseMainLevelViewOpen";
+  e.OnSurvivorsRogueEndlessToggleShow = "OnSurvivorsRogueEndlessToggleShow";
+  e.OnSurvivorsRogueComboBuffShow = "OnSurvivorsRogueComboBuffShow";
+  e.CheckFightPhotoLevelFinished = "CheckFightPhotoLevelFinished";
+  e.CheckCalabashChildFunctionOpen = "CheckCalabashChildFunctionOpen";
+  e.OnSurvivorsRoguePopViewRefresh = "OnSurvivorsRoguePopViewRefresh";
+  e.CheckSurvivorRogueTalentCanUnlock = "CheckSurvivorRogueTalentCanUnlock";
+  e.CheckSurvivorRogueHasWeaponBond = "CheckSurvivorRogueHasWeaponBond";
   e.AlwaysFalse = "AlwaysFalse";
 })(ELevelGeneralCondition = exports.ELevelGeneralCondition ||= {}); //# sourceMappingURL=LevelGeneralDefine.js.map

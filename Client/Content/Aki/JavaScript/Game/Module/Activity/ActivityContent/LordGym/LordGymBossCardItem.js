@@ -16,7 +16,7 @@ class LordGymBossCardItem extends AutoAttachItem_1.AutoAttachItem {
   constructor() {
     super(...arguments);
     this.$be = undefined;
-    this.Fod = [];
+    this.Vnd = [];
     this.q6e = undefined;
     this.zbe = () => new LordGymLordStarItem_1.LordGymLordStarItem();
   }
@@ -45,12 +45,12 @@ class LordGymBossCardItem extends AutoAttachItem_1.AutoAttachItem {
             e = MonsterInfoById_1.configMonsterInfoById.GetConfig(e[0]);
             LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Name);
             this.SetTextureByPath(e.BigIcon, this.GetTexture(1));
-            this.Fod.length = t.length;
-            for (let e = 0; e < this.Fod.length; e++) {
-              this.Fod[e] = ModelManager_1.ModelManager.LordGymModel.GetLordGymIsFinish(t[e]);
+            this.Vnd.length = t.length;
+            for (let e = 0; e < this.Vnd.length; e++) {
+              this.Vnd[e] = ModelManager_1.ModelManager.LordGymModel.GetLordGymIsFinish(t[e]);
             }
             this.$be ||= new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.zbe);
-            this.$be.RefreshByData(this.Fod);
+            this.$be.RefreshByData(this.Vnd);
           }
         }
       }

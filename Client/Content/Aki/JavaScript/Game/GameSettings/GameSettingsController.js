@@ -27,38 +27,38 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("Render", 40, "GameSettingsController-OnInit");
     }
     this.Ore();
-    this.lmd = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetEngineSubsystem(UE.KuroRenderQualityVolumeManager.StaticClass());
-    this._md();
+    this.x2d = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetEngineSubsystem(UE.KuroRenderQualityVolumeManager.StaticClass());
+    this.B2d();
     return true;
   }
   static OnClear() {
     this.kre();
-    this.umd();
+    this.k2d();
     return true;
   }
-  static cmd() {
+  static O2d() {
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
   }
-  static _md() {
-    this.lmd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
+  static B2d() {
+    this.x2d.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
       this.KuroRenderQualityLocalIndex = e;
-      this.cmd();
+      this.O2d();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Render", 92, "进入局部性能盒子，应用索引", ["LocalIndex:", e]);
       }
     });
-    this.lmd.OnLeaveVolumeBlueprintEvent.Add(() => {
+    this.x2d.OnLeaveVolumeBlueprintEvent.Add(() => {
       this.KuroRenderQualityLocalIndex = -1;
-      this.cmd();
+      this.O2d();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Render", 92, "离开局部性能盒子");
       }
     });
   }
-  static umd() {
-    this.lmd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Clear();
-    this.lmd.OnLeaveVolumeBlueprintEvent.Clear();
+  static k2d() {
+    this.x2d.OnApplyKuroRenderLocalSettingsBlueprintEvent.Clear();
+    this.x2d.OnLeaveVolumeBlueprintEvent.Clear();
   }
   static Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartLoadingState, this.hMe);
@@ -89,7 +89,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
 exports.GameSettingsController = GameSettingsController;
 (_a = GameSettingsController).IRe = undefined;
 GameSettingsController.IsGameSettingsAppliedOnOpenLoading = false;
-GameSettingsController.lmd = undefined;
+GameSettingsController.x2d = undefined;
 GameSettingsController.KuroRenderQualityLocalIndex = -1;
 GameSettingsController.hMe = () => {
   var e;

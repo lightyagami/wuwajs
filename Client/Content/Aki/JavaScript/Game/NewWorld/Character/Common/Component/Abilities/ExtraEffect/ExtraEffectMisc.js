@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SyncTimeScaleEffect = exports.ForeverTimeScaleEffect = exports.ModifyBuffTimeScale = exports.BuffOverStackCompensation = exports.AdditionBulletInterval = exports.AdditionBulletDuration = exports.AdditionBulletSize = exports.ExtraEffectModifyBuffMaxStack = exports.ModifyBuffDurationOrPeriodByInstigator = exports.ModifyBuffDurationOrPeriod = exports.PreventReduceStack = exports.ModifyToughReduce = exports.AddBuffToVision = exports.FrozenEffect = exports.AddPassiveSkill = exports.TimeScaleEffect = exports.LockLowerBound = exports.LockUpperBound = exports.LockValue = exports.ShieldEffect = undefined;
+exports.SpecialEnergyModifier = exports.SyncTimeScaleEffect = exports.ForeverTimeScaleEffect = exports.ModifyBuffTimeScale = exports.BuffOverStackCompensation = exports.AdditionBulletInterval = exports.AdditionBulletDuration = exports.AdditionBulletSize = exports.ExtraEffectModifyBuffMaxStack = exports.ModifyBuffDurationOrPeriodByInstigator = exports.ModifyBuffDurationOrPeriod = exports.PreventReduceStack = exports.ModifyToughReduce = exports.AddBuffToVision = exports.FrozenEffect = exports.AddPassiveSkill = exports.TimeScaleEffect = exports.LockLowerBound = exports.LockUpperBound = exports.LockValue = exports.ShieldEffect = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../../../Core/Common/Log");
 const Macro_1 = require("../../../../../../../Core/Preprocessor/Macro");
@@ -201,7 +201,7 @@ class AddPassiveSkill extends ExtraEffectBase_1.BuffEffect {
         if (this.Buff) {
           t.LearnPassiveSkill(e, {
             NeedBroadcast: true,
-            Buff: this.Buff,
+            PreMessageId: this.Buff.MessageId,
             CombatMessageId: this.Buff.MessageId
           });
         } else if (Log_1.Log.CheckWarn()) {
@@ -699,78 +699,118 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   constructor() {
     super(...arguments);
     this.Group = undefined;
-    this.V3u = false;
+    this.T4u = false;
   }
   OnExecute() {}
   OnCreated() {
     if (this.InstigatorEntityId !== this.OwnerEntity.Id && this.InstigatorEntity?.Valid) {
-      let t = SyncTimeScaleEffect.hWc.get(this.InstigatorEntityId);
+      let t = SyncTimeScaleEffect.F7u.get(this.InstigatorEntityId);
       if (!t) {
         t = new SyncTimescaleGroup(this.InstigatorEntity.Entity);
-        SyncTimeScaleEffect.hWc.set(this.InstigatorEntityId, t);
+        SyncTimeScaleEffect.F7u.set(this.InstigatorEntityId, t);
       }
       (this.Group = t).AddOwner(this.OwnerEntity);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BuffItem", 20, "顿帧同步效果 OnCreated", ["Buff", this.BuffId], ["Instigator", this.OwnerEntity.Id], ["Owner", this.OwnerEntity.Id], ["Instigator.Valid", !!this.InstigatorEntity?.Valid]);
       }
-      this.V3u = true;
+      this.T4u = true;
     }
   }
   OnRemoved() {
-    if (this.Group && !this.V3u && this.OwnerEntity?.Valid) {
+    if (this.Group && !this.T4u && this.OwnerEntity?.Valid) {
       this.Group.RemoveOwner(this.OwnerEntity.Id);
       if (this.Group.CanRelease()) {
         this.Group.Release();
-        SyncTimeScaleEffect.hWc.delete(this.InstigatorEntityId);
+        SyncTimeScaleEffect.F7u.delete(this.InstigatorEntityId);
       }
       this.Group = undefined;
     }
   }
 }
-(exports.SyncTimeScaleEffect = SyncTimeScaleEffect).hWc = new Map();
+(exports.SyncTimeScaleEffect = SyncTimeScaleEffect).F7u = new Map();
 class SyncTimescaleGroup {
   constructor(t = undefined) {
     this.InstigatorEntity = t;
-    this.lWc = new Map();
-    this._Wc = undefined;
+    this.N7u = new Map();
+    this.V7u = undefined;
     this.OnInstigatorTimeScaleChanged = (t, e) => {
-      for (var [, s] of this.lWc) {
+      for (var [, s] of this.N7u) {
         s.SetForceTimeScale(t, true);
       }
     };
-    this._Wc = this.InstigatorEntity.GetComponent(180);
+    this.V7u = this.InstigatorEntity.GetComponent(180);
     EventSystem_1.EventSystem.AddWithTarget(this.InstigatorEntity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
   }
   Release() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this._Wc.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.V7u.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
   }
   AddOwner(t = undefined) {
     var e;
-    if (this.lWc.get(t.Id)) {
+    if (this.N7u.get(t.Id)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BuffItem", 20, "添加了多个Buff都有85号效果");
       }
     } else {
       e = t.GetComponent(180);
-      this.lWc.set(t.Id, e);
+      this.N7u.set(t.Id, e);
     }
   }
   RemoveOwner(t) {
-    var e = this.lWc.get(t);
+    var e = this.N7u.get(t);
     if (e?.Valid) {
       e.RemoveForceTimeScale(true);
     }
-    this.lWc.delete(t);
+    this.N7u.delete(t);
   }
   SetTimeScale(t, e, s, i, r, h = false) {
-    return this._Wc.SetTimeScale(t, e, s, i, r, h);
+    return this.V7u.SetTimeScale(t, e, s, i, r, h);
   }
   RemoveTimeScale(t) {
-    this._Wc.RemoveTimeScale(t);
+    this.V7u.RemoveTimeScale(t);
   }
   CanRelease() {
-    return this.lWc.size <= 0;
+    return this.N7u.size <= 0;
   }
 }
+class SpecialEnergyModifier extends ExtraEffectBase_1.BuffEffect {
+  constructor() {
+    super(...arguments);
+    this.ModifyEnergy = undefined;
+    this.Percent = 0;
+  }
+  InitParameters(t) {
+    var e = t.ExtraEffectParameters;
+    this.ModifyEnergy = new Set(e[0].split("#").map(t => Number(t)));
+    this.Percent = AbilityUtils_1.AbilityUtils.GetLevelValue(t.ExtraEffectGrowParameters1, this.Level, 0);
+  }
+  OnExecute(t) {
+    if (this.ModifyEnergy && this.ModifyEnergy.has(t)) {
+      return this.Percent * (this.Buff?.StackCount ?? 1);
+    } else {
+      return 0;
+    }
+  }
+  static ApplyEffects(t, e, s, i) {
+    t = t?.GetComponent(175)?.BuffEffectManager;
+    if (!t) {
+      return 0;
+    }
+    let r = 0;
+    for (const h of t.FilterById(87)) {
+      if (h.Check(i, e)) {
+        r += h.Execute(s);
+      }
+    }
+    return r;
+  }
+  GetDebugEffectString() {
+    if (this.ModifyEnergy) {
+      return `结算特殊能量获取系数加成:生效能量ID${[...this.ModifyEnergy]}, 加成系数${this.Percent}`;
+    } else {
+      return "";
+    }
+  }
+}
+exports.SpecialEnergyModifier = SpecialEnergyModifier;
 //# sourceMappingURL=ExtraEffectMisc.js.map

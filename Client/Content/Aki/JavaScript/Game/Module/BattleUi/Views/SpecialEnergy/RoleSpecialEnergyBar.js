@@ -33,7 +33,9 @@ const SpecialEnergyBarMorphPlayUse_1 = require("./SpecialEnergyBarMorphPlayUse")
 const SpecialEnergyBarPoint_1 = require("./SpecialEnergyBarPoint");
 const SpecialEnergyBarPointGraduate_1 = require("./SpecialEnergyBarPointGraduate");
 const SpecialEnergyBarSlot_1 = require("./SpecialEnergyBarSlot");
-const specialEnergyBarClassMap = new Map([[11, SpecialEnergyBarChun_1.SpecialEnergyBarChun], [150402, SpecialEnergyBarDengDeng_1.SpecialEnergyBarDengDeng], [110701, SpecialEnergyBarKeLaiTa_1.SpecialEnergyBarKeLaiTa], [110702, SpecialEnergyBarKeLaiTaUltra_1.SpecialEnergyBarKeLaiTaUltra], [160600, SpecialEnergyBarLuoKeKe_1.SpecialEnergyBarLuoKeKe], [120600, SpecialEnergyBarBuLanTe_1.SpecialEnergyBarBuLanTe], [150601, SpecialEnergyBarFeibi_1.SpecialEnergyBarFeibi], [160700, SpecialEnergyBarKanTeLeiLa_1.SpecialEnergyBarKanTeLeiLa], [140600, SpecialEnergyBarWind_1.SpecialEnergyBarWind], [140700, SpecialEnergyBarXiaKong_1.SpecialEnergyBarXiaKong], [150700, SpecialEnergyBarZanni_1.SpecialEnergyBarZanni], [120700, SpecialEnergyBarLuPa_1.SpecialEnergyBarLuPa], [140900, SpecialEnergyBarKaTiXiYa_1.SpecialEnergyBarKaTiXiYa], [502100, SpecialEnergyBarMorphPlayUse_1.SpecialEnergyBarMorphPlayUse], [160800, SpecialEnergyBarFuLuoLuo_1.SpecialEnergyBarFuLuoLuo], [141000, SpecialEnergyBarYouNuo_1.SpecialEnergyBarYouNuo], [130600, SpecialEnergyBarAoGuSiTa_1.SpecialEnergyBarAoGuSiTa]]);
+const SpecialEnergyBarQiuYuan_1 = require("./Role/SpecialEnergyBarQiuYuan");
+const SpecialEnergyBarJiaBeiLiNa_1 = require("./Role/SpecialEnergyBarJiaBeiLiNa");
+const specialEnergyBarClassMap = new Map([[11, SpecialEnergyBarChun_1.SpecialEnergyBarChun], [150402, SpecialEnergyBarDengDeng_1.SpecialEnergyBarDengDeng], [110701, SpecialEnergyBarKeLaiTa_1.SpecialEnergyBarKeLaiTa], [110702, SpecialEnergyBarKeLaiTaUltra_1.SpecialEnergyBarKeLaiTaUltra], [160600, SpecialEnergyBarLuoKeKe_1.SpecialEnergyBarLuoKeKe], [120600, SpecialEnergyBarBuLanTe_1.SpecialEnergyBarBuLanTe], [150601, SpecialEnergyBarFeibi_1.SpecialEnergyBarFeibi], [160700, SpecialEnergyBarKanTeLeiLa_1.SpecialEnergyBarKanTeLeiLa], [140600, SpecialEnergyBarWind_1.SpecialEnergyBarWind], [140700, SpecialEnergyBarXiaKong_1.SpecialEnergyBarXiaKong], [150700, SpecialEnergyBarZanni_1.SpecialEnergyBarZanni], [120700, SpecialEnergyBarLuPa_1.SpecialEnergyBarLuPa], [140900, SpecialEnergyBarKaTiXiYa_1.SpecialEnergyBarKaTiXiYa], [502100, SpecialEnergyBarMorphPlayUse_1.SpecialEnergyBarMorphPlayUse], [160800, SpecialEnergyBarFuLuoLuo_1.SpecialEnergyBarFuLuoLuo], [141000, SpecialEnergyBarYouNuo_1.SpecialEnergyBarYouNuo], [130600, SpecialEnergyBarAoGuSiTa_1.SpecialEnergyBarAoGuSiTa], [141100, SpecialEnergyBarQiuYuan_1.SpecialEnergyBarQiuYuan], [120800, SpecialEnergyBarJiaBeiLiNa_1.SpecialEnergyBarJiaBeiLiNa]]);
 const specialEnergyBarClassList = [SpecialEnergyBarPoint_1.SpecialEnergyBarPoint, SpecialEnergyBarSlot_1.SpecialEnergyBarSlot, SpecialEnergyBarPointGraduate_1.SpecialEnergyBarPointGraduate, SpecialEnergyBarMorph_1.SpecialEnergyBarMorph, SpecialEnergyBarMorph_1.SpecialEnergyBarMorph, SpecialEnergyBarMorphCountDown_1.SpecialEnergyBarMorphCountDown, SpecialEnergyBarJianXin_1.SpecialEnergyBarJianXin, SpecialEnergyBarSanHua_1.SpecialEnergyBarSanHua, SpecialEnergyBarChiXia_1.SpecialEnergyBarChiXia, SpecialEnergyBarMorphCountDown_1.SpecialEnergyBarMorphCountDown, SpecialEnergyBarJinXi_1.SpecialEnergyBarMorphJinXi, SpecialEnergyBarXiangLiYao_1.SpecialEnergyBarXiangLiYao, SpecialEnergyBarZheZhi_1.SpecialEnergyBarZheZhi];
 class RoleSpecialEnergyBar {
   constructor() {
@@ -106,9 +108,9 @@ class RoleSpecialEnergyBar {
       var i;
       var n = this.Wst?.GameplayTagComponent;
       let e = 0;
-      for (const o of this.hdt.keys()) {
-        if (o !== 0 && n?.HasTag(o)) {
-          e = o;
+      for (const g of this.hdt.keys()) {
+        if (g !== 0 && n?.HasTag(g)) {
+          e = g;
           break;
         }
       }

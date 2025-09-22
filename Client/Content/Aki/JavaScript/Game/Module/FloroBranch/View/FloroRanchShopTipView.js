@@ -16,7 +16,7 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
     this.RAu = [];
     this.wAu = -1;
     this.LDu = () => {};
-    this.uod = () => {};
+    this.Knd = () => {};
     this.Xuu = undefined;
     this.rcu = async () => {
       var i = new FloroRanchToyGridItem_1.FloroRanchToyGridItem();
@@ -27,7 +27,7 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
       await i.CreateThenShowByActorAsync(t.GetOwner());
       this.RAu.push(i);
     };
-    this.mqu = i => {
+    this.e2u = i => {
       this.CloseMe();
       this.LDu?.(this.wAu);
     };
@@ -66,14 +66,14 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     var i;
     var t = this.OpenParam;
-    if (t && (i = t.ToyPoint, this.LDu = t.SellCallback, this.uod = t.ShowToyListCallback, this.LDu) && this.uod) {
-      this.uod(false);
+    if (t && (i = t.ToyPoint, this.LDu = t.SellCallback, this.Knd = t.ShowToyListCallback, this.LDu) && this.Knd) {
+      this.Knd(false);
       this.PAu();
       this.$du(i);
     }
   }
   OnBeforeHide() {
-    this.uod(true);
+    this.Knd(true);
   }
   PAu() {
     var t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnableToyCount;
@@ -105,7 +105,7 @@ class FloroRanchShopTipView extends UiViewBase_1.UiViewBase {
       this.Xuu.RefreshInfoTipByParam({
         TipType: 0,
         EntityData: t,
-        RemoveCallback: this.mqu
+        RemoveCallback: this.e2u
       });
     }
   }

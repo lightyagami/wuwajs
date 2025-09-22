@@ -151,5 +151,5 @@ let TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = class Te
     }
   }
 };
-TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], TemplateEntitySpawnerComponent);
+TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(296)], TemplateEntitySpawnerComponent);
 exports.TemplateEntitySpawnerComponent = TemplateEntitySpawnerComponent; //# sourceMappingURL=TemplateEntitySpawnerComponent.js.map

@@ -11,7 +11,7 @@ class TrapDefenseMarkView extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
     this.MarkId = 0;
-    this.yXu = Vector2D_1.Vector2D.Create(0, 0);
+    this.Hzu = Vector2D_1.Vector2D.Create(0, 0);
     this.NeedUpdatePositionInner = false;
     this.MarkId = e;
   }
@@ -36,7 +36,7 @@ class TrapDefenseMarkView extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetAnchorOffset(e, t) {
-    if (!e.Equals(this.yXu)) {
+    if (!e.Equals(this.Hzu)) {
       var r = this.GetRootItem();
       if (r !== undefined) {
         r.SetAnchorOffset(e.ToUeVector2D());
@@ -46,7 +46,7 @@ class TrapDefenseMarkView extends UiPanelBase_1.UiPanelBase {
           s.SetAnchorOffset(e.ToUeVector2D());
         }
       }
-      this.yXu.Set(e.X, e.Y);
+      this.Hzu.Set(e.X, e.Y);
     }
   }
 }

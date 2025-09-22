@@ -30,6 +30,7 @@ class PersonalModel extends ModelBase_1.ModelBase {
     this.C3l = new Map();
     this.g3l = new Map();
     this.Qac = new Map();
+    this.CurrentNewUnLockTitleArray = new Array();
     this.e6l = (e, t) => {
       var r = e.Lock ? 1 : 0;
       var a = t.Lock ? 1 : 0;
@@ -324,6 +325,9 @@ class PersonalModel extends ModelBase_1.ModelBase {
     for (const a of e) {
       var t;
       var r = new PersonalDefine_1.PersonalPlayerTitleData(a.tnc, a.K6n);
+      if (a.Dwu) {
+        r.SetUnLockProgress(a.Dwu.lMs, a.Dwu.j6n);
+      }
       if (a.GNs !== 0) {
         r.SetStarLevel(a.GNs);
       }
@@ -356,7 +360,11 @@ class PersonalModel extends ModelBase_1.ModelBase {
       if (a.GNs) {
         r.SetStarLevel(a.GNs);
       }
+      if (a.Dwu) {
+        r.SetUnLockProgress(a.Dwu.lMs, a.Dwu.j6n);
+      }
       if (a.K6n !== r.IsUnLock) {
+        this.CurrentNewUnLockTitleArray.push(r);
         t = MathUtils_1.MathUtils.LongToNumber(a.yzs);
         r.UnLock(t);
         (r = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PlayerTitleRecord) ?? new Map()).set(a.tnc, true);

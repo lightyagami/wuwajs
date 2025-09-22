@@ -12,7 +12,7 @@ exports.CLICKKEY = 100;
 exports.CLICKQUESTKEY = 200;
 class ActivityFunPlayData extends ActivityData_1.ActivityBaseData {
   PhraseEx(e) {
-    e = e.Q8u?.r7u;
+    e = e.X$c?.J$c;
     if (e) {
       ModelManager_1.ModelManager.ActivityFunPlayModel.CreateChallengeData(e, this.Id);
     }
@@ -40,6 +40,9 @@ class ActivityFunPlayData extends ActivityData_1.ActivityBaseData {
   }
   GetExDataRedPointShowState() {
     return this.CheckRedDot();
+  }
+  GetExDataFinishShowState() {
+    return !!this.IsUnLock() && !!this.GetPreGuideQuestFinishState() && ModelManager_1.ModelManager.ActivityFunPlayModel.IsAllRewardClaimed();
   }
 }
 exports.ActivityFunPlayData = ActivityFunPlayData;

@@ -75,7 +75,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     this.ocn = undefined;
     this.rcn = undefined;
     this.ncn = undefined;
-    this.mZc = undefined;
+    this.ptd = undefined;
     this.scn = undefined;
     this.acn = Vector_1.Vector.Create();
     this.hPl = false;
@@ -85,10 +85,10 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     this.cEn = 0;
     this.mPl = true;
     this.Lo = undefined;
-    this.fZc = false;
-    this.gZc = false;
-    this.CZc = undefined;
-    this.pZc = undefined;
+    this.vtd = false;
+    this.ytd = false;
+    this.Std = undefined;
+    this.Mtd = undefined;
     this.m5i = 0;
     this.dPl = () => {
       this.Gce?.RemoveStopMoveCallback(this.dPl);
@@ -122,7 +122,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
       if (this.lcn(t) && t.DamageId !== 0) {
         var e = this.Entity.GetComponent(134);
         if (!e.IsInState(3)) {
-          if (this.vZc(t)) {
+          if (this.Etd(t)) {
             this._pn?.CollectSampleAndSend(true);
             var i;
             var o;
@@ -142,10 +142,10 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
                   }
                 }
             }
-            if (this.fZc) {
-              this.yZc(t, n);
+            if (this.vtd) {
+              this.Itd(t, n);
             } else {
-              this.SZc(t, n);
+              this.Ttd(t, n);
             }
           }
         }
@@ -206,12 +206,12 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         t.TagListeners.set(o, undefined);
       }
     }
-    this.fZc = this.Lo.HitLogicType.Type === IComponent_1.EHitLogicType.ChangeByPartHit;
-    if (this.fZc) {
-      this.CZc = [];
-      this.pZc = [];
-      this.gZc = true;
-      this.mZc = new Map();
+    this.vtd = this.Lo.HitLogicType.Type === IComponent_1.EHitLogicType.ChangeByPartHit;
+    if (this.vtd) {
+      this.Std = [];
+      this.Mtd = [];
+      this.ytd = true;
+      this.ptd = new Map();
     }
     return true;
   }
@@ -372,18 +372,18 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     }
     return true;
   }
-  vZc(t) {
+  Etd(t) {
     var e;
     var i = this.rcn * THOUSAND;
     var o = TimeUtil_1.TimeUtil.GetServerTimeStamp();
-    if (t.HitPart && this.mZc) {
+    if (t.HitPart && this.ptd) {
       t = t.HitPart.toString();
-      if ((e = this.mZc.get(t)) === undefined) {
-        this.mZc.set(t, o);
+      if ((e = this.ptd.get(t)) === undefined) {
+        this.ptd.set(t, o);
         return true;
       } else {
         if (e = i < o - e) {
-          this.mZc.set(t, o);
+          this.ptd.set(t, o);
         }
         return e;
       }
@@ -394,28 +394,28 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
       return t;
     }
   }
-  yZc(t, e) {
+  Itd(t, e) {
     var i;
-    if (this.gZc && (TimerSystem_1.TimerSystem.Next(() => {
-      if (this.CZc && this.pZc) {
+    if (this.ytd && (TimerSystem_1.TimerSystem.Next(() => {
+      if (this.Std && this.Mtd) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("World", 79, "打击机关部位命中合并请求(结束)", ["FrontFrameHitPartBuffer", this.CZc]);
+          Log_1.Log.Info("World", 79, "打击机关部位命中合并请求(结束)", ["FrontFrameHitPartBuffer", this.Std]);
         }
-        this.SZc(t, e, this.CZc);
-        this.CZc.length = 0;
-        [this.CZc, this.pZc] = [this.pZc, this.CZc];
-        this.gZc = true;
+        this.Ttd(t, e, this.Std);
+        this.Std.length = 0;
+        [this.Std, this.Mtd] = [this.Mtd, this.Std];
+        this.ytd = true;
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("World", 79, "打击机关部位命中缓冲区为undefined", ["FrontFrameHitPartBuffer", this.CZc], ["BackFrameHitPartBuffer", this.pZc]);
+        Log_1.Log.Error("World", 79, "打击机关部位命中缓冲区为undefined", ["FrontFrameHitPartBuffer", this.Std], ["BackFrameHitPartBuffer", this.Mtd]);
       }
-    }), this.gZc = false, Log_1.Log.CheckInfo())) {
+    }), this.ytd = false, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("World", 79, "打击机关部位命中合并请求(开始)");
     }
-    if (t.HitPart && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 79, "打击机关部位命中", ["HitPart", t.HitPart], ["CurrentFrame", this.m5i], ["Time.Frame", Time_1.Time.Frame]), (i = this.m5i + 1 === Time_1.Time.Frame ? this.pZc : this.CZc).length <= SCENE_ITEM_PART_HIT_BATCH_REQUEST_MAX_NUM ? i.push(t.HitPart.toString()) : Log_1.Log.CheckError() && Log_1.Log.Error("World", 79, "打击机关部位单次命中部位数量超过最大限制, 需要检查配置", ["PbDataId", this.Entity.GetComponent(0)?.GetPbDataId()]), this.m5i + 1 !== Time_1.Time.Frame)) {
+    if (t.HitPart && (Log_1.Log.CheckInfo() && Log_1.Log.Info("World", 79, "打击机关部位命中", ["HitPart", t.HitPart], ["CurrentFrame", this.m5i], ["Time.Frame", Time_1.Time.Frame]), (i = this.m5i + 1 === Time_1.Time.Frame ? this.Mtd : this.Std).length <= SCENE_ITEM_PART_HIT_BATCH_REQUEST_MAX_NUM ? i.push(t.HitPart.toString()) : Log_1.Log.CheckError() && Log_1.Log.Error("World", 79, "打击机关部位单次命中部位数量超过最大限制, 需要检查配置", ["PbDataId", this.Entity.GetComponent(0)?.GetPbDataId()]), this.m5i + 1 !== Time_1.Time.Frame)) {
       this.m5i = Time_1.Time.Frame;
     }
   }
-  SZc(t, e, i = undefined) {
+  Ttd(t, e, i = undefined) {
     LevelGamePlayController_1.LevelGamePlayController.ShootTargetHitGearStateChangeRequest(this.Entity.Id, e, t.BulletId, i, t => {
       if (t) {
         if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTargetGearFinished) {
@@ -428,7 +428,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
               if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNoPermission) {
                 return undefined;
               } else {
-                ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21296);
+                ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16215);
                 return;
               }
             } else {
@@ -481,7 +481,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     return true;
   }
   GetHitPartActions(t) {
-    if (this.fZc && this.Lo) {
+    if (this.vtd && this.Lo) {
       return this.Lo.HitLogicType.PartHitConfig[t].Actions;
     }
   }

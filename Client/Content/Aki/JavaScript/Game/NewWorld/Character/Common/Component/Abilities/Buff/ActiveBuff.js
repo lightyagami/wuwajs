@@ -103,7 +103,7 @@ class ActiveBuffInternal {
     this.CQo();
     this.gQo();
     this.ClearModifiers();
-    this.rWc();
+    this.gHu();
     this.StackCountInternal = 0;
   }
   IsValid() {
@@ -185,7 +185,7 @@ class ActiveBuffInternal {
       this.OnTimeScaleChanged(i, e);
     }
   }
-  rWc() {
+  gHu() {
     this.BuffTimeScale = 1;
     this.BuffTimeScaleMap.clear();
   }

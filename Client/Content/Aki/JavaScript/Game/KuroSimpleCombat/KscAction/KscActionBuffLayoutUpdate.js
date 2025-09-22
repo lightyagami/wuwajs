@@ -21,13 +21,13 @@ class KscActionBuffLayoutUpdate extends KscActionBase_1.KscActionBase {
       this.Warn("Skill", "刷新buff Layer时时找不到Id", ["EntityId", this.EntityId], ["Params", this.Params]);
       this.SetResult();
     } else {
-      this.wfd(t);
+      this.Y3d(t);
       await this.Promise?.Promise;
     }
   }
-  wfd(t) {
+  Y3d(t) {
     const s = this.Params.b6n;
-    const i = this.Params.I_d;
+    const i = this.Params.Kfd;
     const a = this.KscCtrl.CurSubModel.KscEntities.get(t);
     var e;
     if (a && a.Valid) {

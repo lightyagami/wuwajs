@@ -218,6 +218,16 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
     this.Fa_(this.e$_);
     this.bA_();
     this.InitCurStageItemPos();
+    this.ijd();
+  }
+  ijd() {
+    const t = this.OpenParam?.IsFromInstanceDungeon;
+    this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
+      if (t && ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower()) {
+        ModelManager_1.ModelManager.TowerModel.CurrentTowerId = -1;
+        await ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
+      }
+    });
   }
   InitCurStageItemPos() {
     var t;
@@ -512,15 +522,15 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
         var s = this.UiScrollViewStage.RootUIComp.GetHeight();
         for (let t = 0; t < this.Ua_.length; t++) {
           var h = this.Ua_[t - 1];
-          var r = this.Ua_[t];
-          if (h && h.OutIndex + 1 === r.OutIndex) {
+          var a = this.Ua_[t];
+          if (h && h.OutIndex + 1 === a.OutIndex) {
             this.JW_(h.OutIndex - 1, h.OutIndex, s, i > 0);
             return;
           }
-          if (this.ZW_(r.OutIndex, e)) {
+          if (this.ZW_(a.OutIndex, e)) {
             return;
           }
-          if (this.eQ_(r.OutIndex - 1, e + s)) {
+          if (this.eQ_(a.OutIndex - 1, e + s)) {
             return;
           }
         }
@@ -529,13 +539,13 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
   }
   JW_(t, i, e, s) {
     var h = this.t$_;
-    var r = h + e;
-    var a = this.GetStageItemPosY(t, false);
+    var a = h + e;
+    var r = this.GetStageItemPosY(t, false);
     var o = this.GetStageItemPosY(i);
-    if (!(r < a + this.FlipPageDistanceThreshold * 0.5)) {
-      if (!(r < o)) {
-        if ((a = this.UiScrollViewStage.ContentUIItem.GetHeight()) <= o + e) {
-          if (a - e - h < this.FlipPageDistanceThreshold * 0.5) {
+    if (!(a < r + this.FlipPageDistanceThreshold * 0.5)) {
+      if (!(a < o)) {
+        if ((r = this.UiScrollViewStage.ContentUIItem.GetHeight()) <= o + e) {
+          if (r - e - h < this.FlipPageDistanceThreshold * 0.5) {
             this.ScrollToIndexFlipPage(i, true);
             return;
           } else {

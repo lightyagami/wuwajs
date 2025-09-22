@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PayShopRecommendView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const TabComponent_1 = require("../../Common/TabComponent/TabComponent");
 const TabViewComponent_1 = require("../../Common/TabComponent/TabViewComponent");
@@ -28,15 +28,15 @@ class PayShopRecommendView extends UiTabViewBase_1.UiTabViewBase {
     this.TabViewComponent = undefined;
     this.CurrentSelectTabId = 0;
     this.$Sl = [];
-    this.fqe = (e, i) => {
+    this.fqe = (e, t) => {
       return new PayShopSwitchItem_1.PayShopSwitchItem();
     };
     this.pqe = e => {
-      var i = this.$Sl[e];
-      var t = i.TabViewName;
+      var t = this.$Sl[e];
+      var i = t.TabViewName;
       var o = this.TabGroup.GetTabItemByIndex(e);
-      var i = i.Id;
-      this.TabViewComponent.ToggleCallBack(e, t, o, i, e);
+      var t = t.Id;
+      this.TabViewComponent.ToggleCallBack(e, i, o, t, e);
     };
   }
   OnRegisterComponent() {
@@ -67,20 +67,20 @@ class PayShopRecommendView extends UiTabViewBase_1.UiTabViewBase {
   }
   XSl() {
     this.$Sl = [];
-    for (const i of ConfigManager_1.ConfigManager.PayShopConfig.GetNeedShowRecommendData()) {
+    for (const t of ModelManager_1.ModelManager.PayShopModel.GetNeedShowRecommendData()) {
       var e = new RecommendData();
-      if (i.RecommendType === 1) {
+      if (t.RecommendType === 1) {
         e.TabViewName = PayShopDefine_1.recommendTabView[2];
-      } else if (i.RecommendType === 2) {
+      } else if (t.RecommendType === 2) {
         e.TabViewName = PayShopDefine_1.recommendTabView[3];
       }
-      e.TabName = i.TabName;
-      e.Param = i.RecommendId;
-      e.Id = i.Id;
-      e.Sort = i.Sort;
+      e.TabName = t.TabName;
+      e.Param = t.RecommendId;
+      e.Id = t.Id;
+      e.Sort = t.Sort;
       this.$Sl.push(e);
     }
-    this.$Sl.sort((e, i) => e.Sort - i.Sort);
+    this.$Sl.sort((e, t) => e.Sort - t.Sort);
   }
   OnAfterShow() {
     if (Log_1.Log.CheckInfo()) {
@@ -89,15 +89,15 @@ class PayShopRecommendView extends UiTabViewBase_1.UiTabViewBase {
   }
   async CHe() {
     var e;
-    var i;
-    var t = this.$Sl.length;
-    await this.TabGroup.RefreshTabItemByLengthAsync(t);
-    var t = this.TabGroup.GetTabItemMap();
-    for ([e, i] of t) {
-      i.BindRedDot("PayShopTab", this.$Sl[e].Id);
-      i.UpdateTitle(this.$Sl[e].TabName);
-      i.GetRootItem().SetUIActive(false);
-      i.GetRootItem().SetUIActive(true);
+    var t;
+    var i = this.$Sl.length;
+    await this.TabGroup.RefreshTabItemByLengthAsync(i);
+    var i = this.TabGroup.GetTabItemMap();
+    for ([e, t] of i) {
+      t.BindRedDot("PayShopTab", this.$Sl[e].Id);
+      t.UpdateTitle(this.$Sl[e].TabName);
+      t.GetRootItem().SetUIActive(false);
+      t.GetRootItem().SetUIActive(true);
     }
   }
   OnBeforeDestroy() {

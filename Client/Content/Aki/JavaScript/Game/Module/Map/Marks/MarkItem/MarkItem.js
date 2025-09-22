@@ -214,41 +214,69 @@ class MarkItem {
     this.MarkItemEntity.ViewLifeCircle.IsInAoiRange = t;
   }
   u8_() {
-    var t;
     if (this.InnerView === undefined) {
-      t = this.GetMarkItemViewType();
-      if ((t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType)) !== undefined) {
+      var t = this.GetMarkItemViewType();
+      var t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType);
+      if (t !== undefined) {
         this.InnerView = t;
-        this.ZJu();
+        this.UYc();
       } else {
         this.InnerView = this.CreateView();
-        this.InnerView.InitializeMarkItemViewAsync().then(() => {
-          this.ZJu();
-        });
+        const i = this.InnerView;
+        if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.MarkType)) {
+          this.InnerView.InitializeMarkItemViewNewAsync().then(() => {
+            if (this.InnerView === i) {
+              this.UYc();
+            }
+          });
+        } else {
+          this.InnerView.InitializeMarkItemViewAsync().then(() => {
+            this.UYc();
+          });
+        }
       }
     } else {
-      this.ZJu();
+      this.UYc();
     }
   }
-  ZJu() {
+  UYc() {
     if (this.InnerView !== undefined && !this.InnerView.LoadingPromise) {
-      (this.InnerView.Holder = this).MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
-      this.InnerView.Reset();
-      this.InnerView.SetUiActive(true);
-      this.InnerView.RegisterEvents();
+      if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.MarkType)) {
+        if (!this.IsDestroy) {
+          this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
+          this.InnerView.InitializeData(this);
+          this.InnerView.InitializeView();
+          this.InnerView.RefreshView();
+        }
+      } else {
+        this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
+        (this.InnerView.Holder = this).InnerView.Reset();
+        this.InnerView.SetUiActive(true);
+        this.InnerView.RegisterEvents();
+      }
     }
   }
   Ah_(t = false) {
+    var i;
     if (this.InnerView) {
       this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
-      if (this.InnerView.IsRegister || (this.InnerView.UnRegisterEvents(), t)) {
+      i = this.GetMarkItemViewType();
+      if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.MarkType)) {
+        if (this.InnerView.ViewInitialized) {
+          this.InnerView.RecycleView(t);
+          if (!t) {
+            MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(i + "_" + this.MapType, this.InnerView);
+          }
+        } else {
+          this.InnerView.RecycleToPool();
+        }
+      } else if (this.InnerView.IsRegister || (this.InnerView.UnRegisterEvents(), t)) {
         this.InnerView.RecycleToPool();
       } else {
         this.InnerView.SetVisible(false);
         MarkSpritePool_1.MarkSpritePool.UnRef(this.InnerView.ComponentId);
         this.InnerView.OnRecycle();
-        t = this.GetMarkItemViewType();
-        MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(t + "_" + this.MapType, this.InnerView);
+        MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(i + "_" + this.MapType, this.InnerView);
       }
       this.InnerView = undefined;
     }

@@ -9,29 +9,29 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 class SplineMoveTaskBase {
   constructor(e) {
     this.EntityHandle = e;
-    this.WWu = 0;
+    this.uYu = 0;
   }
   StartTask() {
-    if (!(this.WWu & 1)) {
+    if (!(this.uYu & 1)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 39, "[SplineMoveTaskBase] StartTask", ["EntityId", this.EntityHandle.Id]);
       }
       if (ControllerHolder_1.ControllerHolder.SplineMoveTaskController.RegisterTask(this)) {
         this.OnStartTask();
-        this.WWu |= 1;
+        this.uYu |= 1;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 39, "[SplineMoveTaskBase] Task注册失败，停止", ["EntityId", this.EntityHandle.Id]);
       }
     }
   }
   EndTask(e) {
-    if (!(this.WWu & 2)) {
+    if (!(this.uYu & 2)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 39, "[SplineMoveTaskBase] EndTask", ["EntityId", this.EntityHandle.Id], ["Success", e]);
       }
       ControllerHolder_1.ControllerHolder.SplineMoveTaskController.UnregisterTask(this);
       this.OnEndTask(e);
-      this.WWu |= 2;
+      this.uYu |= 2;
     }
   }
   TickTask(e) {

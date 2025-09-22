@@ -314,8 +314,8 @@ class CameraController extends ControllerBase_1.ControllerBase {
   static StopAllCameraShakes() {
     Global_1.Global.CharacterCameraManager.StopAllCameraShakes();
   }
-  static SetFirstPersonEnable(e) {
-    this.Model.FirstPersonEnabled = e;
+  static SetHideHeadEnable(e, t) {
+    this.Model.SetHideHeadEnabled(e, t);
   }
   static uml(e) {
     var t;

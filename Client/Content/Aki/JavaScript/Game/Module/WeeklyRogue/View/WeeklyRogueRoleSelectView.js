@@ -30,7 +30,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     this.DLu = undefined;
     this.BLu = undefined;
     this.DynamicRoleGroupLayout = undefined;
-    this.R3u = undefined;
+    this.ZGu = undefined;
     this.adi = undefined;
     this.Vlo = [];
     this.NLu = undefined;
@@ -87,23 +87,23 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
           i.push(r);
         }
       }
-      this.DynamicRoleGroupLayout.RefreshByData(this.w3u(i));
+      this.DynamicRoleGroupLayout.RefreshByData(this.eFu(i));
     };
-    this.L3u = () => {
+    this.tFu = () => {
       var e = new WeeklyRogueRoleDynamicContainer_1.WeeklyRogueRoleDynamicContainer();
-      e.RefreshRole = this.A3u;
+      e.RefreshRole = this.iFu;
       return e;
     };
-    this.A3u = e => {
+    this.iFu = e => {
       this.NLu = e;
-      this.P3u();
+      this.rFu();
     };
-    this.x3u = () => {
+    this.oFu = () => {
       var e = new WeeklyRogueRolePosItem_1.WeeklyRogueRolePosItem();
-      e.OnBtnClickFunc = this.D3u;
+      e.OnBtnClickFunc = this.nFu;
       return e;
     };
-    this.D3u = e => {
+    this.nFu = e => {
       if (e) {
         var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
         var i = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet;
@@ -117,7 +117,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
         this.DynamicRoleGroupLayout.GetScrollItemItems().forEach(e => {
           e.Refresh();
         });
-        this.P3u();
+        this.rFu();
       }
     };
   }
@@ -140,9 +140,9 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     e.push(this.BLu.CreateThenShowByActorAsync(this.GetItem(15).GetOwner()));
     this.BLu.SetFunction(this.jLu);
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(this.GetItem(17), this.Hlo);
-    e.push(this.U3u());
-    this.R3u = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(10), this.x3u);
-    this.P3u();
+    e.push(this.sFu());
+    this.ZGu = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(10), this.oFu);
+    this.rFu();
     await Promise.all(e);
     await this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Power]);
     this.lqe.SetCurrencyItemBtnFunction(ItemDefines_1.EItemId.Power, () => {
@@ -164,7 +164,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     this.adi?.Destroy();
     this.adi = undefined;
   }
-  async U3u() {
+  async sFu() {
     ModelManager_1.ModelManager.RoleSelectModel.ClearData();
     this.Vlo = ModelManager_1.ModelManager.RoleModel.GetRoleList();
     for (const e of ModelManager_1.ModelManager.WeeklyRogueModel.GetAllRecommendRole()) {
@@ -172,13 +172,13 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
         this.Vlo.push(new WeeklyRoguePreviewRoleData_1.WeeklyRoguePreviewRoleData(e));
       }
     }
-    this.DynamicRoleGroupLayout = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(1), this.GetItem(2), new WeeklyRogueRoleDynamicItem_1.WeeklyRogueRoleDynamicItem(), this.L3u);
+    this.DynamicRoleGroupLayout = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(1), this.GetItem(2), new WeeklyRogueRoleDynamicItem_1.WeeklyRogueRoleDynamicItem(), this.tFu);
     await this.DynamicRoleGroupLayout.Init();
-    this.DynamicRoleGroupLayout.RefreshByData(this.w3u(this.Vlo));
+    this.DynamicRoleGroupLayout.RefreshByData(this.eFu(this.Vlo));
   }
-  w3u(e = this.Vlo) {
+  eFu(e = this.Vlo) {
     var t = [];
-    var i = this.B3u(e, true);
+    var i = this.aFu(e, true);
     var r = i.length === 0;
     var o = {
       TitleId: "WeRougeFormationRecommendedRole",
@@ -196,7 +196,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
         DataList: i
       });
     }
-    var o = this.B3u(e, false);
+    var o = this.aFu(e, false);
     var r = o.length === 0;
     t.push({
       IsTitleType: true,
@@ -214,7 +214,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     }
     return t;
   }
-  B3u(e, t) {
+  aFu(e, t) {
     var i = new Array();
     for (const r of e) {
       if (t === ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(r.GetDataId())) {
@@ -237,7 +237,7 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
     }
     return i;
   }
-  P3u() {
+  rFu() {
     var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
     let i = false;
     var r = new Array();
@@ -248,10 +248,10 @@ class WeeklyRogueRoleSelectView extends UiViewBase_1.UiViewBase {
       }
       r.push(o);
     }
-    this.R3u.RefreshByData(r);
-    this.k3u(i);
+    this.ZGu.RefreshByData(r);
+    this.hFu(i);
   }
-  k3u(e) {
+  hFu(e) {
     var t;
     var i;
     var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;

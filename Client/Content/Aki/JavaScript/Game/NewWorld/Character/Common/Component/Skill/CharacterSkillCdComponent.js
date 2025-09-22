@@ -274,7 +274,7 @@ let CharacterSkillCdComponent = class CharacterSkillCdComponent extends BaseSkil
     if (e) {
       if (e.ResetDelayCd()) {
         (e = Protocol_1.Aki.Protocol.qe_.create()).r5n = t;
-        CombatMessage_1.CombatNet.Send(16053, this.Entity, e);
+        CombatMessage_1.CombatNet.Send(27255, this.Entity, e);
         this.EZo?.ResetMultiSkills(t, true);
       }
       return true;

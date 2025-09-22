@@ -491,6 +491,9 @@ class AutoAttachBaseView {
   GetCurrentSelectIndex() {
     return this.CurrentSelectItemIndex;
   }
+  GetCurrentSelectItem() {
+    return this.Items[this.CurrentSelectItemIndex];
+  }
   MovingState() {
     return this.DragState || this.InertiaState;
   }

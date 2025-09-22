@@ -12,6 +12,8 @@ class SkillButtonTypeFormationData {
     this.LongPressTime = 0;
     this.IgnoreHiddenTag = false;
     this.IgnoreDefaultHidden = false;
+    this.ExtraEffect = 0;
+    this.ExtraEffectDuration = 0;
   }
   Clear() {
     this.SkillIconPath = undefined;
@@ -20,6 +22,8 @@ class SkillButtonTypeFormationData {
     this.LongPressTime = 0;
     this.IgnoreHiddenTag = false;
     this.IgnoreDefaultHidden = false;
+    this.ExtraEffect = 0;
+    this.ExtraEffectDuration = 0;
   }
 }
 exports.SkillButtonTypeFormationData = SkillButtonTypeFormationData;

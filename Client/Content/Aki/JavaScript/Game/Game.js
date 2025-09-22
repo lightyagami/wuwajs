@@ -19,6 +19,7 @@ const Stats_1 = require("../Core/Common/Stats");
 const Time_1 = require("../Core/Common/Time");
 const Core_1 = require("../Core/Core");
 const Http_1 = require("../Core/Http/Http");
+const Net_1 = require("../Core/Net/Net");
 const ResourceSystem_1 = require("../Core/Resource/ResourceSystem");
 const TickProcessSystem_1 = require("../Core/Tick/TickProcessSystem");
 const TickSystem_1 = require("../Core/Tick/TickSystem");
@@ -29,11 +30,13 @@ const CloudGameManagerLauncher_1 = require("../Launcher/Platform/CloudGameManage
 const SoPatchStatic_1 = require("../Launcher/SoPatch/SoPatchStatic");
 const TestModuleBridge_1 = require("./Bridge/TestModuleBridge");
 const AsyncUtil_1 = require("./Common/AsyncUtil");
+const EventCSharpBridge_1 = require("./Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("./Common/Event/EventDefine");
 const EventSystem_1 = require("./Common/Event/EventSystem");
 const LocalStorage_1 = require("./Common/LocalStorage");
 const StatDefine_1 = require("./Common/StatDefine");
 const TimeUtil_1 = require("./Common/TimeUtil");
+const NetEventDispatcher_1 = require("./CsNet/NetEventDispatcher");
 const EffectSystem_1 = require("./Effect/EffectSystem");
 const GameSettingsDeviceRender_1 = require("./GameSettings/GameSettingsDeviceRender");
 const GameSettingsManager_1 = require("./GameSettings/GameSettingsManager");
@@ -95,6 +98,7 @@ class Game {
     CloudGameManager_1.CloudGameManager.Init();
     EnvironmentalPerceptionController_1.EnvironmentalPerceptionController.InitializeEnvironment();
     InputController_1.InputController.InitializeEnvironment();
+    EventCSharpBridge_1.EventCSharpBridge.InitializeEnvironment();
     Http_1.Http.SetHttpThreadActiveMinimumSleepTimeInSeconds(0.005);
     Http_1.Http.SetHttpThreadIdleMinimumSleepTimeInSeconds(0.033);
     ThinkingAnalyticsReporter_1.ThinkingAnalyticsReporter.Init();
@@ -162,6 +166,7 @@ class Game {
     PakManager_1.PakManager.Init();
     UiTimeDilation_1.UiTimeDilation.Init();
     NavigationRegisterCenter_1.NavigationRegisterCenter.Init();
+    Net_1.Net.NetEventDispatcher = new NetEventDispatcher_1.NetEventDispatcher();
     LauncherLogUpload_1.LauncherLogUpload.SetParams(LogUploadHelper_1.LogUploadHelper.CreateParams());
   }
   static TickerStart() {
@@ -185,6 +190,7 @@ class Game {
     TickProcessSystem_1.TickProcessSystem.Clear();
     ThirdPartySdkManager_1.ThirdPartySdkManager.Clear();
     PakManager_1.PakManager.Clear();
+    EventCSharpBridge_1.EventCSharpBridge.DestroyEnvironment();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Game", 24, "Game.Shutdown PerformanceManager.Destroy Finished");
     }

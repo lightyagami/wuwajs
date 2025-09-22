@@ -337,5 +337,5 @@ let SceneItemVehicleComponent = class SceneItemVehicleComponent extends EntityCo
     return this.Hte?.GetReferenceActor(t)?.RootComponent;
   }
 };
-SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(274)], SceneItemVehicleComponent);
+SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(275)], SceneItemVehicleComponent);
 exports.SceneItemVehicleComponent = SceneItemVehicleComponent; //# sourceMappingURL=SceneItemVehicleComponent.js.map

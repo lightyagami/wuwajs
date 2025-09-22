@@ -24,7 +24,7 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
     this.oeu = undefined;
     this.wf = false;
     this.Wft = 0;
-    this.H2u = e => {};
+    this.GVu = e => {};
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UINiagara], [1, UE.UISprite], [2, UE.UITexture], [3, UE.UINiagara], [4, UE.UINiagara], [5, UE.UIItem], [6, UE.UISprite]];
@@ -35,7 +35,7 @@ class VisionArenaScoreItem extends BaseScoreItem_1.BaseScoreItem {
   OnBeforeShow() {
     super.OnBeforeShow();
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
-    this.SPe.BindSequenceCloseEvent(this.H2u);
+    this.SPe.BindSequenceCloseEvent(this.GVu);
     this.AI1 = this.GetUiNiagara(0);
     if (this.bCt) {
       this.AI1?.SetNiagaraSystem(this.bCt);

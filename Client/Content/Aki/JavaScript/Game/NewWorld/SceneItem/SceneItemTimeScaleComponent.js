@@ -120,7 +120,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     super.OnChangeTimeDilation(t);
     if (this.EIe && LevelGeneralNetworks_1.LevelGeneralNetworks.CheckEntityCanPushTimeDilation(this.EIe.GetEntityTimeScaleModifyStrategy())) {
       let e = this.CurrentTimeScale * t;
-      t = this.Entity.GetComponent(287);
+      t = this.Entity.GetComponent(288);
       if (t && t?.ExtraTimeDilationInSelfCenteredMode !== 0) {
         e /= t.ExtraTimeDilationInSelfCenteredMode;
       }

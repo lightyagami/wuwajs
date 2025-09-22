@@ -42,16 +42,16 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.FWe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20336, TimeOfDayController.sTo);
-    Net_1.Net.Register(15599, TimeOfDayController.aTo);
-    Net_1.Net.Register(22916, TimeOfDayController.hTo);
-    Net_1.Net.Register(19394, TimeOfDayController.Awa);
+    Net_1.Net.Register(24699, TimeOfDayController.sTo);
+    Net_1.Net.Register(28441, TimeOfDayController.aTo);
+    Net_1.Net.Register(21602, TimeOfDayController.hTo);
+    Net_1.Net.Register(16340, TimeOfDayController.Awa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20336);
-    Net_1.Net.UnRegister(15599);
-    Net_1.Net.UnRegister(22916);
-    Net_1.Net.UnRegister(19394);
+    Net_1.Net.UnRegister(24699);
+    Net_1.Net.UnRegister(28441);
+    Net_1.Net.UnRegister(21602);
+    Net_1.Net.UnRegister(16340);
   }
   static OnTick(e) {
     if (!!TimeOfDayController.lTo && !!TimeOfDayController._To && !TimeOfDayController.uTo && !TimeOfDayController.cTo && !ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockState) {
@@ -233,10 +233,10 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
       o.ojn = t;
       o.x9n = a;
       o.njn = e;
-      Net_1.Net.Call(20578, o, e => {
+      Net_1.Net.Call(19344, o, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29933);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18601);
           } else {
             ModelManager_1.ModelManager.TimeOfDayModel.SetCurrentDay(e.aDs);
           }

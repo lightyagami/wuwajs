@@ -33,14 +33,14 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15284, this.Cyi);
-    Net_1.Net.Register(17155, this.gyi);
-    Net_1.Net.Register(18895, this.fyi);
+    Net_1.Net.Register(16048, this.Cyi);
+    Net_1.Net.Register(16250, this.gyi);
+    Net_1.Net.Register(22672, this.fyi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15284);
-    Net_1.Net.UnRegister(17155);
-    Net_1.Net.UnRegister(18895);
+    Net_1.Net.UnRegister(16048);
+    Net_1.Net.UnRegister(16250);
+    Net_1.Net.UnRegister(22672);
   }
   static SelectedMail(e) {
     if (e) {
@@ -58,11 +58,11 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestReadMail 未阅读邮件，申请阅读", ["mailId", e]);
     }
-    Net_1.Net.Call(25740, Protocol_1.Aki.Protocol.Nss.create(o), e => {
+    Net_1.Net.Call(18503, Protocol_1.Aki.Protocol.Nss.create(o), e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29972);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27015);
         } else if (o = ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e.s5n)) {
           o.ReadTime = MathUtils_1.MathUtils.LongToNumber(e.ebs);
           o.ExpiryTime = MathUtils_1.MathUtils.LongToNumber(e.jb_);
@@ -83,7 +83,7 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestPickAttachment 申请领取附件", ["attachmentIds", o.I7n]);
     }
-    Net_1.Net.Call(22960, Protocol_1.Aki.Protocol.Vss.create(o), o => {
+    Net_1.Net.Call(19676, Protocol_1.Aki.Protocol.Vss.create(o), o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           let e = "";
@@ -98,7 +98,7 @@ class MailController extends UiControllerBase_1.UiControllerBase {
           if (e !== "") {
             ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(e);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26324);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23476);
           }
         } else {
           ModelManager_1.ModelManager.MailModel.SetLastPickedAttachments(o.lbs, a);
@@ -112,10 +112,10 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestDeleteMail请求删除邮件", ["mailId", e]);
     }
-    Net_1.Net.Call(20329, Protocol_1.Aki.Protocol.Hss.create(o), e => {
+    Net_1.Net.Call(21952, Protocol_1.Aki.Protocol.Hss.create(o), e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21769);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24057);
         } else if (e._bs.length > 0) {
           for (const o of e._bs) {
             ModelManager_1.ModelManager.MailModel.DeleteMail(o);

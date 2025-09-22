@@ -30,7 +30,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     this.D8c = undefined;
     this.IsScoreEnable = false;
     this.Tr1 = 0;
-    this.S2u = undefined;
+    this.oNu = undefined;
     this.edt = undefined;
     this.Nll = undefined;
     this.nel = false;
@@ -43,19 +43,19 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     this.SBn = undefined;
     this.IBn = undefined;
     this.TBn = undefined;
-    this.M2u = false;
+    this.nNu = false;
     this.DP_ = false;
-    this.E2u = 0;
-    this.I2u = undefined;
+    this.sNu = 0;
+    this.aNu = undefined;
     this.Cdt = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.IQu = 0;
+    this.pHu = 0;
     this.oEc = () => {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
-      this.T2u();
+      this.hNu();
       this.SetVisible(true);
     };
     this.Vmu = (t, e) => {
-      if (this.IsScoreEnable && this.IBn && this.w2u(t)) {
+      if (this.IsScoreEnable && this.IBn && this.uNu(t)) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽评分更新", ["scoreId", t], ["score", e]);
         }
@@ -63,10 +63,10 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
       }
     };
     this.lqt = () => {
-      this.L2u();
+      this.cNu();
     };
-    this.TQu = t => {
-      this.R2u(t === Protocol_1.Aki.Protocol.qn1.Proto_Burst);
+    this.vHu = t => {
+      this._Nu(t === Protocol_1.Aki.Protocol.qn1.Proto_Burst);
     };
     this.bMe = (t, e) => {
       if (this.GetActive() && e === 0) {
@@ -104,25 +104,25 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     if (!Info_1.Info.IsInTouch()) {
       this.x8c?.RefreshAction(InputMappingsDefine_1.actionMappings.Link大招);
       this.D8c?.RefreshAction(InputMappingsDefine_1.actionMappings.Link大招);
-      this.L2u();
+      this.cNu();
     }
-    this.S2u = this.GetTexture(1);
+    this.oNu = this.GetTexture(1);
     this.edt = this.GetItem(5);
     this.Nll = new UE.Rotator(0, 0, 0);
     if (ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsInWeeklyRogue()) {
       t = ModelManager_1.ModelManager.WeeklyRogueModel.CurrentActivityId !== 0;
       if (this.IsScoreEnable = t) {
-        this.T2u();
+        this.hNu();
       } else {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WeeklyRogueCycleRefresh, this.oEc);
         this.SetVisible(false);
       }
     }
-    this.P2u();
-    this.bQu();
+    this.mNu();
+    this.uJu();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleScoreChanged, this.Vmu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.TQu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.vHu);
     InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.Link大招, this.bMe);
   }
   OnBeforeDestroy() {
@@ -131,7 +131,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleScoreChanged, this.Vmu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.TQu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNewLinkStatusChanged, this.vHu);
     InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.Link大招, this.bMe);
     if (this.Cdt !== ResourceSystem_1.ResourceSystem.InvalidId) {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.Cdt);
@@ -139,11 +139,11 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     }
     super.OnBeforeDestroy();
   }
-  T2u() {
+  hNu() {
     this.IsScoreEnable = true;
-    this.E2u = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
-    if (this.E2u !== 0) {
-      this.I2u = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(this.E2u);
+    this.sNu = ModelManager_1.ModelManager.WeeklyRogueModel.GetArtifactBuffId();
+    if (this.sNu !== 0) {
+      this.aNu = ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyBuffPool(this.sNu);
     }
     var t;
     var e;
@@ -159,10 +159,10 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("WeeklyRogue", 17, "周常肉鸽获取不到战斗评分等级配置", ["groupId", e]);
           }
-          this.x2u(0);
+          this.fNu(0);
           this.Kbe();
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽link按钮初始化成功", ["cycleId", i], ["linkId", s], ["scoreId", t], ["groupId", e], ["artifactId", this.E2u]);
+            Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽link按钮初始化成功", ["cycleId", i], ["linkId", s], ["scoreId", t], ["groupId", e], ["artifactId", this.sNu]);
           }
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("WeeklyRogue", 17, "周常肉鸽获取不到战斗评分等级配置", ["cycleId", i], ["linkId", s], ["scoreId", t]);
@@ -177,7 +177,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
   Kbe() {
     const e = this.GetTexture(6);
     e.SetUIActive(false);
-    var t = this.I2u?.ButtonIcon;
+    var t = this.aNu?.ButtonIcon;
     if (t) {
       this.Cdt = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Texture2D, t => {
         this.Cdt = ResourceSystem_1.ResourceSystem.InvalidId;
@@ -187,7 +187,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
         }
       }, 103);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("WeeklyRogue", 17, "[WeeklyRogue]神器图标路径为空", ["神器Id", this.E2u]);
+      Log_1.Log.Error("WeeklyRogue", 17, "[WeeklyRogue]神器图标路径为空", ["神器Id", this.sNu]);
     }
   }
   rTn() {
@@ -211,7 +211,7 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
       Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽评分最大值不合法", ["MaxScore", this.xte]);
     }
   }
-  w2u(t) {
+  uNu(t) {
     return this.Tr1 === t || ModelManager_1.ModelManager.BattleScoreModel?.GetScoreConfig(t, true)?.Type === 7;
   }
   oTn(t) {
@@ -229,16 +229,16 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
     if (this.nel && this.hel !== this.lel && this.GetActive()) {
       this._el = Math.min(MAX_SMOOTH_TIME, this._el + t);
       t = this._el / MAX_SMOOTH_TIME;
-      this.x2u(this.ael * (1 - t) + this.lel * t);
+      this.fNu(this.ael * (1 - t) + this.lel * t);
     }
   }
-  x2u(t) {
+  fNu(t) {
     this.hel = t;
     if (this.xte > 0) {
       t = this.hel / this.xte;
       this.Nll.Yaw = t * -360;
       this.edt?.SetUIRelativeRotation(this.Nll);
-      this.S2u?.SetFillAmount(t);
+      this.oNu?.SetFillAmount(t);
     }
     this.hB1(this.hel >= this.xte);
   }
@@ -253,45 +253,45 @@ class BattleWeeklyRogueButton extends FormationExtraButton_1.FormationExtraButto
       this._el = MAX_SMOOTH_TIME;
     }
   }
-  L2u() {
+  cNu() {
     this.x8c?.SetUiActive(Info_1.Info.IsInKeyBoard());
     this.D8c?.SetUiActive(Info_1.Info.IsInGamepad());
   }
   B8c() {
-    if (!!this.DP_ && !this.M2u && !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽按下link,发送请求给服务端"), Time_1.Time.Now < this.IQu)) {
+    if (!!this.DP_ && !this.nNu && !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽按下link,发送请求给服务端"), Time_1.Time.Now < this.pHu)) {
       if (WeeklyRogueController_1.WeeklyRogueController.Instance.RequestNewLinkBurst()) {
-        this.IQu = Time_1.Time.Now + CLICK_CD;
+        this.pHu = Time_1.Time.Now + CLICK_CD;
       }
     }
   }
   hB1(t) {
     if (this.DP_ !== t) {
       this.DP_ = t;
-      this.P2u();
-      this.bQu();
+      this.mNu();
+      this.uJu();
     }
   }
-  R2u(t) {
-    if (this.M2u !== t) {
-      this.M2u = t;
-      this.P2u();
-      this.bQu();
+  _Nu(t) {
+    if (this.nNu !== t) {
+      this.nNu = t;
+      this.mNu();
+      this.uJu();
       if (t) {
         ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(7);
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.M2u);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueBurstEnableChange, this.nNu);
     }
   }
-  P2u() {
+  mNu() {
     var t;
     if (!Info_1.Info.IsInTouch()) {
-      t = this.DP_ && !this.M2u;
+      t = this.DP_ && !this.nNu;
       this.x8c.SetGray(!t);
       this.D8c.SetGray(!t);
     }
   }
-  bQu() {
-    if (this.M2u) {
+  uJu() {
+    if (this.nNu) {
       this.GetTexture(2)?.SetUIActive(true);
       this.GetTexture(3)?.SetUIActive(false);
       this.GetItem(4)?.SetUIActive(false);

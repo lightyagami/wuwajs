@@ -12,6 +12,7 @@ const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../../RedDot/RedDotController");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const UiManager_1 = require("../../../../Ui/UiManager");
 const ShipTowerDefine_1 = require("../../../ShipTower/ShipTowerDefine");
 const ActivitySubViewBase_1 = require("../../View/SubView/ActivitySubViewBase");
 const ActivitySubViewGeneralInfo_1 = require("../../View/SubView/ActivitySubViewGeneralInfo");
@@ -20,8 +21,8 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
     super(...arguments);
     this.ActivityBaseData = undefined;
     this.CommonInfoPanel = undefined;
-    this.uzc = undefined;
-    this.czc = undefined;
+    this.fZc = undefined;
+    this.gZc = undefined;
     this.o1c = false;
     this.OnBtnReward = () => {
       this.PlaySubViewSequence("HideInfo");
@@ -51,7 +52,7 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
       this.CommonInfoPanel?.SetPanelTipVisible(e);
     };
     this.n1c = () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+      UiManager_1.UiManager.ResetToBattleView();
     };
   }
   OnRegisterComponent() {
@@ -65,12 +66,12 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
     this.CommonInfoPanel = new ActivitySubViewGeneralInfo_1.ActivitySubViewGeneralInfo();
     this.CommonInfoPanel.SetData(this.ActivityBaseData);
     this.CommonInfoPanel.SetClickFunc(this.Jk_);
-    var t = this.GetItem(0).GetOwner();
-    e.push(this.CommonInfoPanel.CreateThenShowByActorAsync(t));
-    this.uzc = new ActivitySubViewShipTowerRewardProgress();
-    e.push(this.uzc.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
-    this.czc = new ActivitySubViewShipTowerRewardProgress();
-    e.push(this.czc.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
+    var i = this.GetItem(0).GetOwner();
+    e.push(this.CommonInfoPanel.CreateThenShowByActorAsync(i));
+    this.fZc = new ActivitySubViewShipTowerRewardProgress();
+    e.push(this.fZc.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
+    this.gZc = new ActivitySubViewShipTowerRewardProgress();
+    e.push(this.gZc.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
     await Promise.all(e);
   }
   OnStart() {
@@ -103,15 +104,15 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   c7_() {
     var e = ModelManager_1.ModelManager.ShipTowerModel.GetRewardProgressText();
-    var t = ModelManager_1.ModelManager.ShipTowerModel.GetCurrentStageSeasonName();
+    var i = ModelManager_1.ModelManager.ShipTowerModel.GetCurrentStageSeasonName();
     this.GetText(2).SetText(e);
-    this.GetText(4).SetText(t);
+    this.GetText(4).SetText(i);
     this.d7_(true);
   }
   jG_() {
-    var e = ModelManager_1.ModelManager.ShipTowerModel.GetAreaList().filter(e => e.Id !== ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON);
-    this.uzc.SetData(e[0]);
-    this.czc.SetData(e[1]);
+    var e = ModelManager_1.ModelManager.ShipTowerModel.GetAreaList().filter(e => e.Id !== ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON).sort((e, i) => e.Index - i.Index);
+    this.fZc.SetData(e[0]);
+    this.gZc.SetData(e[1]);
   }
   OnTimer(e) {
     if (!this.o1c) {
@@ -127,9 +128,9 @@ class ActivitySubViewShipTowerRewardProgress extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText]];
   }
   SetData(e) {
-    var t = e.RewardList.filter(e => e.IsCompleted).length;
+    var i = e.RewardList.filter(e => e.IsCompleted).length;
     var e = e.RewardList.length;
-    this.GetText(1).SetText(`<color=#fff7a8ff>${t}</color>/<color=#ece5d8ff>${e}</color>`);
+    this.GetText(1).SetText(`<color=#fff7a8ff>${i}</color>/<color=#ece5d8ff>${e}</color>`);
   }
 }
 //# sourceMappingURL=ActivitySubViewShipTower.js.map

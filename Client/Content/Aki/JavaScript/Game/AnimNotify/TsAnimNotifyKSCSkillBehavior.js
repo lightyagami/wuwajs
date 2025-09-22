@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 const UE = require("ue");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const KscSkillData_1 = require("../KuroSimpleCombat/KSCDataClass/KscSkillData");
-const ControllerHolder_1 = require("../Manager/ControllerHolder");
+const TDPlayerController_1 = require("../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 class TsAnimNotifyKSCSkillBehavior extends UE.KuroAnimNotify {
   constructor() {
     super(...arguments);
@@ -24,7 +24,7 @@ class TsAnimNotifyKSCSkillBehavior extends UE.KuroAnimNotify {
         if (!r) {
           return false;
         }
-        ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.DoSkill(r, this.Action.SkillIndex);
+        TDPlayerController_1.TowerDefensePlayerController.DoSkill(r, this.Action.SkillIndex);
       }
     }
     return true;

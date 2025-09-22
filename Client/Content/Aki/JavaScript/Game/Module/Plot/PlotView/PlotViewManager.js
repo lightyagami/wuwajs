@@ -5,11 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PlotViewManager = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
+const IAction_1 = require("../../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiManager_1 = require("../../../Ui/UiManager");
+const PlotBattleTipsView_1 = require("../TipsTalk/PlotBattleTipsView");
+const PlotPhotoTipsView_1 = require("../TipsTalk/PlotPhotoTipsView");
+const PlotTipsView_1 = require("../TipsTalk/PlotTipsView");
 class ViewHandle {
   constructor(e = undefined, t = undefined, i = undefined) {
     this.ViewName = e;
@@ -78,7 +82,7 @@ class PlotViewManager {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.HangPlotViewHud, false);
       }
     };
-    this.Gud = e => {
+    this.iSd = e => {
       if (this.GetCurrentViewName() === "PlotViewHUD") {
         UiManager_1.UiManager.GetViewByName("PlotViewHUD")?.SetEnableTranslucent(e);
       }
@@ -87,6 +91,7 @@ class PlotViewManager {
         Log_1.Log.Debug("Plot", 26, "[PlotView] 半透D级剧情剧情", ["visible", e]);
       }
     };
+    this.Fqd = undefined;
     this.Bto = t => {
       var e = this.Dto;
       this.Dto = new Set();
@@ -102,7 +107,7 @@ class PlotViewManager {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UpdatePlotSubtitle, this.OnUpdateSubtitle);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTutorialTipExistChanged, this.pea);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewFail, this.yj1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.Gud);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.iSd);
   }
   UnRegisterEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotViewChange, this.wto);
@@ -111,7 +116,7 @@ class PlotViewManager {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UpdatePlotSubtitle, this.OnUpdateSubtitle);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTutorialTipExistChanged, this.pea);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenViewFail, this.yj1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.Gud);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSlowTimeVisibleChanged, this.iSd);
   }
   GetCurrentViewName() {
     return this.Lto;
@@ -145,6 +150,30 @@ class PlotViewManager {
   ClosePlotView() {
     this.tpi();
   }
+  async OpenTipsView(e, t) {
+    if (!this.Fqd) {
+      if (e === IAction_1.EPromptStyle.Default) {
+        this.Fqd = new PlotTipsView_1.PlotTipsView();
+      } else if (e === IAction_1.EPromptStyle.Battle) {
+        this.Fqd = new PlotBattleTipsView_1.PlotBattleTipsView();
+      } else {
+        if (e !== IAction_1.EPromptStyle.Photo) {
+          ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("剧情界面打开失败 跳过剧情", false);
+          return;
+        }
+        this.Fqd = new PlotPhotoTipsView_1.PlotPhotoTipsView();
+      }
+      if (!(await this.Fqd.OpenAsync(t))) {
+        ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("剧情界面打开失败 跳过剧情", false);
+      }
+    }
+  }
+  CloseTipsView() {
+    if (this.Fqd) {
+      this.Fqd.CloseAsync();
+    }
+    this.Fqd = undefined;
+  }
   Ao(e, t, i) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 26, "[PlotView] 请求打开界面", ["new", e], ["current", this.Lto]);
@@ -168,7 +197,7 @@ class PlotViewManager {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Plot", 26, "[PlotView] 打开", ["open", e]);
       }
-      if (e === "PlotViewHUD" || e === "PlotTipsView") {
+      if (e === "PlotViewHUD") {
         UiManager_1.UiManager.OpenView(e, t);
       } else {
         UiManager_1.UiManager.OpenViewByPlot(e, t);

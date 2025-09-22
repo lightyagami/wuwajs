@@ -19,7 +19,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnClear() {
-    this.wjc.clear();
+    this.iYc.clear();
     return true;
   }
   static OnAddEvents() {
@@ -87,18 +87,26 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
   }
   static AddEventInterface(e) {
     if (e) {
-      this.wjc.add(e);
+      this.iYc.add(e);
     }
   }
   static RemoveEventInterface(e) {
     if (e) {
-      this.wjc.delete(e);
+      this.iYc.delete(e);
+    }
+  }
+  static PlayExtraEffect(e, t, n = 0) {
+    var i = ModelManager_1.ModelManager.SkillButtonUiModel.SkillButtonFormationData?.GetSkillButtonTypeFormationData(e);
+    if (i) {
+      i.ExtraEffect = t;
+      i.ExtraEffectDuration = n;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, e);
     }
   }
 }
 exports.SkillButtonUiController = SkillButtonUiController;
 (_a = SkillButtonUiController).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonUiController");
-SkillButtonUiController.wjc = new Set();
+SkillButtonUiController.iYc = new Set();
 SkillButtonUiController.Uyo = (e, t, n) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.ExecuteMultiSkillIdChanged(e, t, n);
 };
@@ -129,19 +137,19 @@ SkillButtonUiController.OJe = () => {
   if (ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(e)?.SkillType !== 5) {
     ModelManager_1.ModelManager.SkillButtonUiModel.RefreshSkillButtonExplorePhantomSkillId(7);
   }
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.EquipExplorePhantomSkill?.();
   }
 };
 SkillButtonUiController.Pyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.SkillCountChanged?.(e);
   }
 };
 SkillButtonUiController.xyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.SkillRemainCdChanged?.(e);
   }
 };

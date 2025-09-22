@@ -2,19 +2,19 @@
 
 var GrapplingHookPointComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, o) {
-  var r;
-  var n = arguments.length;
-  var s = n < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var n;
+  var r = arguments.length;
+  var s = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     s = Reflect.decorate(t, e, i, o);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
-      if (r = t[h]) {
-        s = (n < 3 ? r(s) : n > 3 ? r(e, i, s) : r(e, i)) || s;
+      if (n = t[h]) {
+        s = (r < 3 ? n(s) : r > 3 ? n(e, i, s) : n(e, i)) || s;
       }
     }
   }
-  if (n > 3 && s) {
+  if (r > 3 && s) {
     Object.defineProperty(e, i, s);
   }
   return s;
@@ -45,8 +45,8 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
 const HOOK_VISION_ID = 1001;
 const OVERWRITE_HOOK_LOCATION_KEY = "OverwriteLocation";
-const hookPointStateTagMap = new Map([[0, 1888174838], [1, -1156116864], [2, -43463105]]);
-const hookTypeTagMap = new Map([["FixedPointHook", -833935142], ["SuiGuangHook", 561771029], ["KiteHook", -1526637662], ["RagDollJumpingPoint", -1347421268], ["RagDollClimbingPoint", 1978109078], ["MovementPointHook", -1771378495], ["SlashHook", -105059496], ["ChargeSlashHook", -105059496]]);
+const hookPointStateTagMap = new Map([[0, 1888174838], [1, -1156116864], [2, -43463105], [3, -981394298]]);
+const hookTypeTagMap = new Map([["FixedPointHook", -833935142], ["SuiGuangHook", 561771029], ["FlyingFeather", 576579223], ["KiteHook", -1526637662], ["RagDollJumpingPoint", -1347421268], ["RagDollClimbingPoint", 1978109078], ["MovementPointHook", -1771378495], ["SlashHook", -105059496], ["ChargeSlashHook", -105059496]]);
 const slashLeftQteTag = 898914517;
 const slashRightQteTag = 2102950531;
 let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class GrapplingHookPointComponent extends EntityComponent_1.EntityComponent {
@@ -60,7 +60,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.Lo = undefined;
     this.Lie = undefined;
     this.RadiusSquared = 0;
-    this.ac = 3;
+    this.ac = 4;
     this.Hte = undefined;
     this.N1_ = undefined;
     this.Hfn = undefined;
@@ -250,7 +250,7 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
     this.mjl = t.UI_;
   }
   IsMovable() {
-    return !!this.Entity.GetComponent(67) || this.GetHookInteractType() === "SuiGuangHook";
+    return !!this.Entity.GetComponent(67) || this.GetHookInteractType() === "SuiGuangHook" || this.GetHookInteractType() === "FlyingFeather";
   }
   ChangeHookPointState(t) {
     if (this.ac !== t) {
@@ -400,6 +400,13 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   GetSlashHitType() {
     if (this.Lo?.HookInteractConfig?.Type === "SlashHook") {
       return this.Lo.HookInteractConfig.SlashHitType ?? "HeavySlash";
+    }
+  }
+  GetHookBindEntityConfig() {
+    if (this.Lo?.HookInteractConfig?.Type === "FlyingFeather") {
+      return this.Lo?.HookInteractConfig?.EntityId ?? 0;
+    } else {
+      return 0;
     }
   }
   GetHookInteractConfig() {

@@ -10,7 +10,7 @@ const CommonDragLogicDataItem_1 = require("../../../../Ui/Common/CommonDragLogic
 class TrapDefenseBuildingDevelopDragDataItem extends CommonDragLogicDataItem_1.CommonDragLogicDataItem {
   constructor() {
     super(...arguments);
-    this.vld = -1;
+    this.Smd = -1;
   }
   CheckIfCanDrag() {
     return ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckIfCanDrag();
@@ -25,10 +25,10 @@ class TrapDefenseBuildingDevelopDragDataItem extends CommonDragLogicDataItem_1.C
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.ClearCurrentDragIndex();
   }
   GetClickTime() {
-    if (this.vld === -1) {
-      this.vld = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetDragItemClickTime();
+    if (this.Smd === -1) {
+      this.Smd = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetDragItemClickTime();
     }
-    return this.vld;
+    return this.Smd;
   }
 }
 exports.TrapDefenseBuildingDevelopDragDataItem = TrapDefenseBuildingDevelopDragDataItem;

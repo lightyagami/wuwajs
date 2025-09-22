@@ -12,8 +12,8 @@ class FloroRanchStageSuccessState extends FloroRanchStateBase_1.FloroRanchStateB
     var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     var o = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
     FloroRanchController_1.FloroRanchController.SendFloroRanchSettleDataRequest(e.Id, o, e => {
-      if (e?.g7u) {
-        if (e.KBu.j1u) {
+      if (e?.yQu) {
+        if (e.H4u.j1u) {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OpenAndRecordView("FloroRanchDungeonEndlessSettleView", e);
         } else {
           ModelManager_1.ModelManager.FloroRanchGamePlayModel.OpenAndRecordView("FloroRanchDungeonSuccessSettleView", e);

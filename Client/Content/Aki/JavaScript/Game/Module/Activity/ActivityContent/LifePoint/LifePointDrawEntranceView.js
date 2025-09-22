@@ -51,7 +51,7 @@ class LifePointDrawEntranceView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.RefreshView();
-    this.zku();
+    this.FNu();
   }
   RefreshView() {
     var i = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointEntranceById(this.DPu.Id).GroupList;
@@ -68,7 +68,7 @@ class LifePointDrawEntranceView extends UiViewBase_1.UiViewBase {
     }
     this.Qbe();
   }
-  zku() {
+  FNu() {
     var i = ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointEntranceById(this.DPu.Id).GroupList;
     var t = i.length;
     let r = 0;
@@ -132,7 +132,7 @@ class LifePointDrawItem extends UiPanelBase_1.UiPanelBase {
     this.DPu = i;
     this.OPu(i.Id, e);
     this.qPu(i.Id, e);
-    this.sQu(i.Id, e);
+    this.RZu(i.Id, e);
     this.FPu(i.Id, e);
     this.NPu(i.Id, e);
     this.VPu(i.Id, e);
@@ -155,7 +155,7 @@ class LifePointDrawItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(6).SetUIActive(!e && i);
     this.GetItem(7).SetUIActive(!e && !i);
   }
-  async sQu(e, i) {
+  async RZu(e, i) {
     e = ModelManager_1.ModelManager.LifePointDrawModel.GetGroupUnlockState(e, i);
     let t = "";
     t = e ? ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointGroupByGroupId(i).HighlightEntranceResource : ConfigManager_1.ConfigManager.LifePointDrawConfig.GetLifePointGroupByGroupId(i).LockHighlightEntranceResource;

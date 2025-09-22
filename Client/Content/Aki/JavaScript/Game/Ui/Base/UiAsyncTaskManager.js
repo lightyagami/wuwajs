@@ -17,7 +17,7 @@ class UiAsyncTaskManager {
     var e = s.Name;
     let r = this.Rk_.get(e);
     if (!r) {
-      (r = new UiAsyncTaskQueue_1.UiAsyncTaskQueue()).RunAfterCallback = this.Ufd.bind(this);
+      (r = new UiAsyncTaskQueue_1.UiAsyncTaskQueue()).RunAfterCallback = this.s4d.bind(this);
       this.Rk_.set(e, r);
     }
     r.EnQueue(s);
@@ -32,7 +32,7 @@ class UiAsyncTaskManager {
       this.Rk_.clear();
     }
   }
-  Ufd() {}
+  s4d() {}
 }
 exports.UiAsyncTaskManager = UiAsyncTaskManager;
 //# sourceMappingURL=UiAsyncTaskManager.js.map

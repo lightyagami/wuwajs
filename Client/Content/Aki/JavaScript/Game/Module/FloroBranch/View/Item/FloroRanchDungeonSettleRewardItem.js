@@ -17,13 +17,13 @@ class FloroRanchDungeonSettleRewardItem extends GridProxyAbstract_1.GridProxyAbs
       var t;
       var i;
       if (this.Pe !== undefined && (t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()) !== undefined) {
-        if (this.Pe.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchCard) {
+        if (this.Pe.h5n === Protocol_1.Aki.Protocol.$4u.Proto_FloroRanchCard) {
           i = t.GetFloroRanchCardData(this.Pe.s5n);
           UiManager_1.UiManager.OpenView("FloroRanchCommonTipsView", {
             TipType: 3,
             CardData: i
           });
-        } else if (this.Pe.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchToy) {
+        } else if (this.Pe.h5n === Protocol_1.Aki.Protocol.$4u.Proto_FloroRanchToy) {
           i = t.GetFloroRanchToyData(this.Pe.s5n);
           UiManager_1.UiManager.OpenView("FloroRanchCommonTipsView", {
             TipType: 2,
@@ -38,9 +38,9 @@ class FloroRanchDungeonSettleRewardItem extends GridProxyAbstract_1.GridProxyAbs
     this.BtnBindInfo = [[0, this.nqe]];
   }
   Refresh(t) {
-    if ((this.Pe = t).h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchCard) {
+    if ((this.Pe = t).h5n === Protocol_1.Aki.Protocol.$4u.Proto_FloroRanchCard) {
       this.cHt(t.s5n);
-    } else if (t.h5n === Protocol_1.Aki.Protocol.lku.Proto_FloroRanchToy) {
+    } else if (t.h5n === Protocol_1.Aki.Protocol.$4u.Proto_FloroRanchToy) {
       this.ybu(t.s5n);
     } else {
       this.Twc(t.s5n);

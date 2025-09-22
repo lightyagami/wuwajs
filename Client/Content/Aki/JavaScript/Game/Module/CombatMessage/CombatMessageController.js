@@ -58,26 +58,26 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.CombatMessageModel;
   }
   static OnInit() {
-    Net_1.Net.Register(27731, CombatMessageController.Zyt);
-    Net_1.Net.Register(28783, CombatMessageController.eIt);
-    Net_1.Net.Register(19242, CombatMessageController.tIt);
-    Net_1.Net.Register(18810, CombatMessageController.sMa);
-    Net_1.Net.Register(17916, CombatMessageController.oIt);
-    Net_1.Net.Register(24785, CombatMessageController.PreAiControlSwitchNotify);
-    Net_1.Net.Register(28745, this.rIt);
-    Net_1.Net.Register(19830, CombatMessageController.Ei_);
+    Net_1.Net.Register(16726, CombatMessageController.Zyt);
+    Net_1.Net.Register(27082, CombatMessageController.eIt);
+    Net_1.Net.Register(20450, CombatMessageController.tIt);
+    Net_1.Net.Register(17060, CombatMessageController.sMa);
+    Net_1.Net.Register(15540, CombatMessageController.oIt);
+    Net_1.Net.Register(20267, CombatMessageController.PreAiControlSwitchNotify);
+    Net_1.Net.Register(20640, this.rIt);
+    Net_1.Net.Register(29065, CombatMessageController.Ei_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.RegisterAiHateEntity);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(27731);
-    Net_1.Net.UnRegister(28783);
-    Net_1.Net.UnRegister(19242);
-    Net_1.Net.UnRegister(18810);
-    Net_1.Net.UnRegister(17916);
-    Net_1.Net.UnRegister(24785);
-    Net_1.Net.UnRegister(28745);
-    Net_1.Net.UnRegister(19830);
+    Net_1.Net.UnRegister(16726);
+    Net_1.Net.UnRegister(27082);
+    Net_1.Net.UnRegister(20450);
+    Net_1.Net.UnRegister(17060);
+    Net_1.Net.UnRegister(15540);
+    Net_1.Net.UnRegister(20267);
+    Net_1.Net.UnRegister(20640);
+    Net_1.Net.UnRegister(29065);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.RegisterAiHateEntity);
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     return true;
@@ -249,7 +249,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
               Log_1.Log.Error("MultiplayerCombat", 19, "仇恨数据过大", ["CreatureData", m.CreatureDataId], ["HateList", s.ISs.length]);
             }
             if (n) {
-              CombatMessage_1.CombatNet.Send(21680, m.Entity, s);
+              CombatMessage_1.CombatNet.Send(19592, m.Entity, s);
             }
           }
         }
@@ -261,7 +261,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         for (const c of this.WC1) {
           var i;
           var _;
-          if (c.IsInit && (i = Protocol_1.Aki.Protocol.Ai.Ee_.create(), (_ = BlackboardController_1.BlackboardController.PendingBlackboardParams.get(c.CreatureDataId)) && (i.eVn = [..._.values()], CombatMessage_1.CombatNet.Send(25535, c.Entity, i)), i.eVn.length > MAX_AI_INFO_COUNT) && Log_1.Log.CheckError()) {
+          if (c.IsInit && (i = Protocol_1.Aki.Protocol.Ai.Ee_.create(), (_ = BlackboardController_1.BlackboardController.PendingBlackboardParams.get(c.CreatureDataId)) && (i.eVn = [..._.values()], CombatMessage_1.CombatNet.Send(26827, c.Entity, i)), i.eVn.length > MAX_AI_INFO_COUNT) && Log_1.Log.CheckError()) {
             Log_1.Log.Error("MultiplayerCombat", 19, "黑板数据过大", ["CreatureData", c.CreatureDataId], ["AiBlackboards", i.eVn.length]);
           }
         }
@@ -278,13 +278,13 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
           }
         }
         if (g.WRs.length > 0) {
-          Net_1.Net.Send(23287, g);
+          Net_1.Net.Send(22129, g);
         }
         if (Info_1.Info.IsBuildDevelopmentOrDebug) {
           C = {
             scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
             instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-            msg_id: 23287,
+            msg_id: 22129,
             sub_count: g.WRs.length,
             is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
             ed: IS_WITH_EDITOR,
@@ -318,7 +318,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
               e.push(t.kFs);
             }
           }
-          Net_1.Net.Call(23086, o, e => {
+          Net_1.Net.Call(27742, o, e => {
             if (e.XLs) {
               this.rIt(e.XLs);
             }
@@ -327,7 +327,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
             o = {
               scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
               instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-              msg_id: 23086,
+              msg_id: 27742,
               sub_count: o.R5n.length,
               is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
               sub_msg: e,

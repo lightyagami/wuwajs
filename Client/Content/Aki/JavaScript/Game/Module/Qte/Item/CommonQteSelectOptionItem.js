@@ -23,9 +23,9 @@ class CommonQteSelectOptionItem extends UiPanelBase_1.UiPanelBase {
     this.NQa = false;
     this.fS1 = undefined;
     this.SPe = undefined;
-    this.QZu = undefined;
+    this.CQc = undefined;
     this.sit = undefined;
-    this.njc = undefined;
+    this.yQc = undefined;
     this.Qtt = undefined;
     this.$xt = t => {
       if (t === "Start") {
@@ -52,7 +52,7 @@ class CommonQteSelectOptionItem extends UiPanelBase_1.UiPanelBase {
   }
   Init(t, i, e) {
     this.Xy = t;
-    this.QZu = i;
+    this.CQc = i;
     this.sit = e;
   }
   OnRegisterComponent() {
@@ -69,8 +69,8 @@ class CommonQteSelectOptionItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     super.OnStart();
-    this.njc = this.GetExtendToggle(0);
-    this.njc?.OnPointDownCallBack.Bind(() => {
+    this.yQc = this.GetExtendToggle(0);
+    this.yQc?.OnPointDownCallBack.Bind(() => {
       this.OnPress();
     });
     if (this.Qtt) {
@@ -84,19 +84,19 @@ class CommonQteSelectOptionItem extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
     this.jQa();
-    this.njc?.OnPointDownCallBack.Unbind();
+    this.yQc?.OnPointDownCallBack.Unbind();
     this.SPe?.Clear();
     this.fS1 = undefined;
-    this.QZu = undefined;
+    this.CQc = undefined;
     this.FQa = "";
     this.sit = undefined;
   }
   SetQteContext(t) {
     if (t instanceof CommonQteSelectOptionContext_1.CommonQteSelectOptionContext && ((t = (this.fS1 = t).GetAction(this.Xy)) && (this.FQa = t, Info_1.Info.IsInTouch() || this.Qtt?.RefreshByActionOrAxis({
       ActionOrAxisName: t
-    })), this.QZu?.TextId)) {
+    })), this.CQc?.TextId)) {
       t = this.GetText(2);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(t, this.QZu.TextId);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(t, this.CQc.TextId);
     }
   }
   PlayQteStart() {
@@ -159,7 +159,7 @@ class CommonQteSelectOptionItem extends UiPanelBase_1.UiPanelBase {
     this.HQa();
   }
   RefreshUiOffset() {
-    var t = this.QZu;
+    var t = this.CQc;
     if (t) {
       this.RootItem?.SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
       this.RootItem?.SetAnchorOffset(t.AnchorOffset);

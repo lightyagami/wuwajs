@@ -23,7 +23,7 @@ class TrapDefenseMachineSelectItem extends UiPanelBase_1.UiPanelBase {
     this.gke = () => {
       return this.Toggle.GetToggleState() !== 1;
     };
-    this.cXu = i => {
+    this.Yju = i => {
       if (i === 1) {
         this.ToggleClick(this);
       }
@@ -31,7 +31,7 @@ class TrapDefenseMachineSelectItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UISprite], [8, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.cXu]];
+    this.BtnBindInfo = [[0, this.Yju]];
   }
   OnStart() {
     this.CdText = this.GetText(6);
@@ -40,17 +40,17 @@ class TrapDefenseMachineSelectItem extends UiPanelBase_1.UiPanelBase {
     this.Toggle = this.GetExtendToggle(0);
     this.Toggle.CanExecuteChange.Bind(this.gke);
   }
-  _rd(i) {
+  Ynd(i) {
     if (this.CdActiveState !== i) {
       this.CdActiveState = i;
       this.GetItem(5).SetUIActive(i);
     }
   }
-  urd() {
+  znd() {
     var i = (this.CdTime / TimeUtil_1.TimeUtil.InverseMillisecond).toFixed(1);
     this.CdText?.SetText(i);
   }
-  crd() {
+  Jnd() {
     this.CdSprite?.SetFillAmount(this.CdTime / this.Data.GetCoolDown());
   }
   Refresh(i) {
@@ -88,12 +88,12 @@ class TrapDefenseMachineSelectItem extends UiPanelBase_1.UiPanelBase {
   RefreshCd() {
     if (this.Data && this.Data.GetRemainCd() > 0) {
       this.CdTime = this.Data.GetRemainCd() * TimeUtil_1.TimeUtil.InverseMillisecond;
-      this._rd(this.CdTime > 0);
-      this.urd();
-      this.crd();
+      this.Ynd(this.CdTime > 0);
+      this.znd();
+      this.Jnd();
     } else {
       this.CdTime = 0;
-      this._rd(false);
+      this.Ynd(false);
     }
   }
   SetToggleState(i, t = false) {
@@ -102,9 +102,9 @@ class TrapDefenseMachineSelectItem extends UiPanelBase_1.UiPanelBase {
   Tick(i) {
     if (!!this.Data && !this.Data.IsBuilding && !(this.CdTime <= 0)) {
       this.CdTime -= i * Time_1.Time.TimeDilation;
-      this._rd(this.CdTime > 0);
-      this.urd();
-      this.crd();
+      this.Ynd(this.CdTime > 0);
+      this.znd();
+      this.Jnd();
     }
   }
 }

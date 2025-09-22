@@ -30,8 +30,8 @@ class TrapDefenseMapView extends UiViewBase_1.UiViewBase {
     await Promise.all([this.MiniMap.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()), this.CampsiteHpPanel.CreateThenShowByActorAsync(this.GetItem(2).GetOwner())]);
   }
   OnStart() {
-    this.bYc();
-    this.l_d();
+    this.RJc();
+    this.Rfd();
   }
   OnBeforeShow() {
     this.CampsiteHpPanel.ShowBattleChildViewPanel();
@@ -43,14 +43,14 @@ class TrapDefenseMapView extends UiViewBase_1.UiViewBase {
     this.MiniMap.Reset();
     this.CampsiteHpPanel.Reset();
   }
-  bYc() {
+  RJc() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel;
     var i = e.GetCurInstToLevelData();
     var i = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTrapDefenseWavesByLevelId(i.Id);
     var e = e.BattleData.GetBehaviorTreeVarToNumber(IQuest_1.ETrapDefenseSystemVarType.Batch);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), "TowerDefense_Map_Progress_Text", e, i.length);
   }
-  l_d() {
+  Rfd() {
     var e = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.GetEntityPositions();
     var i = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTrapDefenseWarningDistance();
     let r = false;

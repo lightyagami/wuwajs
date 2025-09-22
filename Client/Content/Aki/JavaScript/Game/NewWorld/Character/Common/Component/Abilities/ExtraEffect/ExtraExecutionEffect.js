@@ -892,19 +892,19 @@ class RemoveBuffByFilter extends PeriodExecution {
   constructor() {
     super(...arguments);
     this.vDt = 0;
-    this.Pdd = undefined;
+    this.NPd = undefined;
   }
   InitParameters(t) {
     this.vDt = Number(t.ExtraEffectParameters[0]);
     if (this.vDt === 0) {
-      this.Pdd = new Set(t.ExtraEffectParameters[1].split("#").map(t => Number(t)));
+      this.NPd = new Set(t.ExtraEffectParameters[1].split("#").map(t => Number(t)));
     }
   }
   OnExecute() {
     if (this.OwnerBuffComponent) {
       if (this.vDt === 0) {
         for (const t of this.OwnerBuffComponent.GetAllBuffs()) {
-          if (!this.Pdd.has(t.Id)) {
+          if (!this.NPd.has(t.Id)) {
             this.OwnerBuffComponent.RemoveBuff(t.Id, -1, "RemoveBuffsOutsideList");
           }
         }
@@ -914,7 +914,7 @@ class RemoveBuffByFilter extends PeriodExecution {
     }
   }
   GetDebugEffectString() {
-    return `buff${this.BuffId} 移除列表外的其他buff${this.Pdd}`;
+    return `buff${this.BuffId} 移除列表外的其他buff${this.NPd}`;
   }
 }
 exports.RemoveBuffByFilter = RemoveBuffByFilter;

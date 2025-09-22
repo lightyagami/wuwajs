@@ -48,18 +48,18 @@ class CiacconaGalController extends ControllerBase_1.ControllerBase {
     }
   }
   static q4c() {
-    Net_1.Net.Register(27805, CiacconaGalController.H4c);
-    Net_1.Net.Register(22622, CiacconaGalController.$4c);
-    Net_1.Net.Register(18053, CiacconaGalController.W4c);
-    Net_1.Net.Register(23604, CiacconaGalController.Q4c);
-    Net_1.Net.Register(27853, CiacconaGalController.K4c);
+    Net_1.Net.Register(28751, CiacconaGalController.H4c);
+    Net_1.Net.Register(26142, CiacconaGalController.$4c);
+    Net_1.Net.Register(26249, CiacconaGalController.W4c);
+    Net_1.Net.Register(20068, CiacconaGalController.Q4c);
+    Net_1.Net.Register(22650, CiacconaGalController.K4c);
   }
   static F4c() {
-    Net_1.Net.UnRegister(27805);
-    Net_1.Net.UnRegister(22622);
-    Net_1.Net.UnRegister(18053);
-    Net_1.Net.UnRegister(23604);
-    Net_1.Net.UnRegister(27853);
+    Net_1.Net.UnRegister(28751);
+    Net_1.Net.UnRegister(26142);
+    Net_1.Net.UnRegister(26249);
+    Net_1.Net.UnRegister(20068);
+    Net_1.Net.UnRegister(22650);
   }
   static j4c(a) {
     if (a & 1) {
@@ -221,9 +221,9 @@ class CiacconaGalController extends ControllerBase_1.ControllerBase {
     r.w6n = a;
     r.g4c = e;
     r.u4c = t;
-    var a = await Net_1.Net.CallAsync(29011, r);
+    var a = await Net_1.Net.CallAsync(20109, r);
     if (a && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 16476);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 20009);
     }
   }
   static async RequestUnlockChoice(a, e, t) {
@@ -232,8 +232,8 @@ class CiacconaGalController extends ControllerBase_1.ControllerBase {
       (r = new Protocol_1.Aki.Protocol.N3c()).w6n = a;
       r.g4c = e;
       r.l4c = t;
-      if ((a = await Net_1.Net.CallAsync(23636, r)) && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 19044);
+      if ((a = await Net_1.Net.CallAsync(23264, r)) && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 20500);
       }
     }
   }
@@ -242,27 +242,27 @@ class CiacconaGalController extends ControllerBase_1.ControllerBase {
     r.w6n = a;
     r.g4c = e;
     r.u4c = t;
-    var a = await Net_1.Net.CallAsync(24891, r);
+    var a = await Net_1.Net.CallAsync(18955, r);
     if (a && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 25292);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 28403);
     }
   }
   static async RequestGetActivityEndingReward(a, e) {
     var t = new Protocol_1.Aki.Protocol.j3c();
     t.w6n = a;
     t.u4c = e;
-    var a = await Net_1.Net.CallAsync(27568, t);
+    var a = await Net_1.Net.CallAsync(23187, t);
     if (a && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 18996);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 16239);
     }
   }
   static async RequestGetActivityProgressReward(a, e) {
     var t = new Protocol_1.Aki.Protocol.$3c();
     t.w6n = a;
     t.N6n = e;
-    var a = await Net_1.Net.CallAsync(24582, t);
+    var a = await Net_1.Net.CallAsync(18095, t);
     if (a && a.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 28091);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Q4n, 15084);
     }
   }
   static ReportEnterChapterEntryView(a) {

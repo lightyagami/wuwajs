@@ -28,7 +28,7 @@ class Info {
     this.v8 = cpp_1.KuroApplication.IsBuildShipping();
     this.M8 = cpp_1.KuroApplication.IsBuildTest();
     this.E8 = !this.v8 && !this.M8;
-    this.H5u = UE.KuroStaticLibrary.IsLowMemoryDevice();
+    this.FHu = UE.KuroStaticLibrary.IsLowMemoryDevice();
     this.S8 = this.p8 && UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCVarFloat("r.Kuro.Movie.EnableCGMovieRendering") > 0;
     if (Macro_1.NOT_SHIPPING_ENVIRONMENT && this.p8) {
       this.m6a = UE.KuroRenderingEditorBPPluginBPLibrary.IsSimulateInEditorInProgress();
@@ -66,7 +66,7 @@ class Info {
     return this.m6a || this.S8;
   }
   static get IsLowMemoryDevice() {
-    return this.H5u;
+    return this.FHu;
   }
   static get PlatformType() {
     return this.sXi;
@@ -128,7 +128,7 @@ class Info {
       }
     }
   }
-  static cXi(t, i) {
+  static SetInputControllerType(t, i) {
     var s;
     if (this.rEa !== t && (t === 1 && this.rEa === 5 && Log_1.Log.CheckError() && Log_1.Log.Error("Platform", 10, "[PlatformDebug]从Touch输入方式切换成了键鼠的输入方式", ["lastInputController", this.rEa], ["inputController", t]), s = this.rEa, this.rEa = t, this.aEa(), Info.Iya?.(s, this.rEa), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Platform", 16, "设置输入方式", ["lastInputController", s], ["InputController", this.rEa], ["Reason", i]);
@@ -221,7 +221,7 @@ class Info {
         Log_1.Log.Error("Platform", 10, "传入了EInputControllerType.None类型", ["Reason", i]);
       }
     } else if (!this.IsGmLockGamepad && (!this.IsMobileInputModel() || t !== 1) && (!this.IsPcInputModel() || t !== 5)) {
-      this.cXi(t, i);
+      this.SetInputControllerType(t, i);
       this.hEa(t);
     }
   }
@@ -255,7 +255,7 @@ Info.S8 = false;
 Info.UseFastInputCallback = true;
 Info.AxisInputOptimize = true;
 Info.m6a = false;
-Info.H5u = false;
+Info.FHu = false;
 Info.sXi = 0;
 Info.rEa = 0;
 Info.oEa = 0;

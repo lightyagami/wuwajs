@@ -84,7 +84,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.M01);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.dM1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToBattleView, this.Gto);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnResetToBattleView, this.Gto);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, this.ePt);
     return true;
   }
@@ -100,7 +100,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
     this.cj1 = 0;
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.M01);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewBeforeStart, this.dM1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetToBattleView, this.Gto);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnResetToBattleView, this.Gto);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationRegisteredTextContentChange, this.ePt);
     return true;
   }
@@ -257,7 +257,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       if (r.Enable) {
         r.NeedHighlight = false;
         if (r.ReportType) {
-          this.NNu(r.ReportType);
+          this.FVu(r.ReportType);
         }
         this.mM1 = r;
         t = {
@@ -370,10 +370,10 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
   }
   static Or1(t, e) {
     if (t.ReportType) {
-      this.NNu(t.ReportType);
+      this.FVu(t.ReportType);
     }
     if (t.Enable) {
-      if (this.Ljc(e)) {
+      if (this.FWu(e)) {
         t.NeedHighlight = true;
         this._W1(t.Group);
         this.mM1 = t;
@@ -381,7 +381,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
         var r = [];
         for (const t of this.dj1(this.cj1)) {
           for (const n of this.qr1(t.UiText.text, false)) {
-            if (!!this.Ljc(n) || !Info_1.Info.IsBuildShipping) {
+            if (!!this.FWu(n) || !Info_1.Info.IsBuildShipping) {
               r.push(n);
             }
           }
@@ -421,7 +421,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       this.Xd1(t);
     }
   }
-  static Ljc(t) {
+  static FWu(t) {
     var e = Number(t);
     if (isNaN(e)) {
       if (Log_1.Log.CheckError()) {
@@ -496,7 +496,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       return this.Gr1[e];
     }
   }
-  static VNu(t) {
+  static NVu(t) {
     var e = new LogReportDefine_1.EnterViewWithTermsEvent();
     e.i_scene = t;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
@@ -504,7 +504,7 @@ class TermExplanationController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Debug("TermExplanation", 74, "术语解释埋点: 进入带有术语的界面", ["场景类型", t]);
     }
   }
-  static NNu(t) {
+  static FVu(t) {
     var e = new LogReportDefine_1.ClickTermExplanationEvent();
     e.i_scene = t;
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
@@ -531,7 +531,7 @@ TermExplanationController.ePt = t => {
   for (const i of t) {
     var e = _a.Dr1.get(i);
     if (e && _a.qr1(e.UiText.text).length > 0) {
-      _a.VNu(e.ReportType);
+      _a.NVu(e.ReportType);
     }
   }
 };

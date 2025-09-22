@@ -40,6 +40,14 @@ class UpWeaponGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
     this.mWt = new WeaponDescribeComponent_1.WeaponDescribeComponent();
     await this.mWt.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
   }
+  OnPlayStartSeq() {
+    if (this.CWt) {
+      this.sOd(this.CWt);
+    }
+  }
+  OnAfterHide() {
+    this.CQd();
+  }
   Refresh() {
     var e;
     if (this.GachaViewInfo) {
@@ -62,38 +70,49 @@ class UpWeaponGachaPoolItem extends GachaPoolItem_1.GachaPoolItem {
       this.mWt.Update(t);
       this.SetTextureByPath(this.GachaViewInfo.TextTexture, this.GetTexture(2));
       var t = this.GetItem(0);
-      var i = this.GachaViewInfo.WeaponPrefabPath;
-      var s = this.dWt.get(i);
-      if (!s || s !== this.CWt) {
-        this.CWt?.SetUIActive(false);
-        this.hGc(this.CWt);
-        let e = s;
+      var s = this.GachaViewInfo.WeaponPrefabPath;
+      var h = this.dWt.get(s);
+      if (!h || h !== this.CWt) {
+        this.CQd();
+        let e = h;
         if (!e) {
-          s = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(i, t);
-          e = s.GetComponentByClass(UE.UIItem.StaticClass());
-          this.dWt.set(i, e);
+          h = await LguiUtil_1.LguiUtil.LoadPrefabByAsync(s, t);
+          e = h.GetComponentByClass(UE.UIItem.StaticClass());
+          let i = this.aGc.get(e);
+          if (!i) {
+            i = new LevelSequencePlayer_1.LevelSequencePlayer(e);
+            this.aGc.set(e, i);
+          }
+          e.GetOwner().OnSequencePlayEvent.Bind((e, t) => {
+            if (i && i.IsValid() && e === "Start" && t === "PlayLoop") {
+              i.PlayLevelSequenceByName("Loop");
+            }
+          });
+          this.dWt.set(s, e);
         }
         e.SetUIActive(true);
-        this.lGc(e);
+        this.sOd(e);
         this.CWt = e;
       }
     }
   }
-  lGc(e) {
-    let t = this.aGc.get(e);
-    if (!t) {
-      t = new LevelSequencePlayer_1.LevelSequencePlayer(e);
-      this.aGc.set(e, t);
-    }
-    if (t?.CheckSeqActorIsSeqPlaying("Loop")) {
-      t.ReplaySequenceByKey("Loop");
-    } else {
-      t.PlaySequencePurely("Loop");
+  sOd(e) {
+    e = this.aGc.get(e);
+    if (e) {
+      e.StopSequenceByKey("Loop");
+      e.PlayOrReplaySequenceByName("Start");
     }
   }
   hGc(e) {
     if (e &&= this.aGc.get(e)) {
       e.StopCurrentSequence();
+    }
+  }
+  CQd() {
+    if (this.CWt) {
+      this.CWt.SetUIActive(false);
+      this.hGc(this.CWt);
+      this.CWt = undefined;
     }
   }
 }

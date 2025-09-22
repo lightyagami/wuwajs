@@ -29,6 +29,9 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const ModelUtil_1 = require("../../../../../Core/Utils/ModelUtil");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const MeshStreamDefine_1 = require("../../../MeshStream/MeshStreamDefine");
+const MeshStreamTaskContext_1 = require("../../../MeshStream/MeshStreamTaskContext");
 const UiModelResourcesManager_1 = require("../../../UiComponent/UiModelResourcesManager");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelUtil_1 = require("../../UiModelUtil");
@@ -43,19 +46,19 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.LoadHandleId = UiModelResourcesManager_1.UiModelResourcesManager.InvalidValue;
     this.ResourceLoadCache = undefined;
     this.MeshArray = UE.NewArray(UE.SkeletalMesh);
-    this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    this.MeshStreamTaskId = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     this.LoadFinishCallBack = undefined;
     this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
     this.OnPostLoadAnimClass = (u, e, c, t, f = 0) => {
-      const p = this.GetMainMeshPath();
-      const v = this.GetChildMeshPathList();
+      const m = this.GetMainMeshPath();
+      const C = this.GetChildMeshPathList();
       var i = this.GetAllMorphPathList();
       var s = this.GetEffectAssetByAssetClass(u);
       var o = [];
-      if (p && !StringUtils_1.StringUtils.IsEmpty(p)) {
-        o.push(p);
+      if (m && !StringUtils_1.StringUtils.IsEmpty(m)) {
+        o.push(m);
       }
-      UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, v);
+      UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, C);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, i);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, t);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, s);
@@ -63,12 +66,12 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
         this.DestroyLoadMesh();
         this.ResourceLoadCache = t;
         var i = UE.NewArray(UE.SkeletalMesh);
-        var t = this.GetLoadedResource(p);
+        var t = this.GetLoadedResource(m);
         i.Add(t);
         let s = undefined;
-        if (v) {
+        if (C) {
           s = [];
-          for (const U of v) {
+          for (const U of C) {
             var o = this.GetLoadedResource(U);
             s.push(o);
             i.Add(o);
@@ -80,18 +83,18 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
         var n = [];
         var a = this.GetSpecialMorphIdList();
         if (a) {
-          for (const M of a) {
-            if (M.MainMeshPath) {
-              l = this.GetLoadedResource(M.MainMeshPath);
+          for (const _ of a) {
+            if (_.MainMeshPath) {
+              l = this.GetLoadedResource(_.MainMeshPath);
               i.Add(l);
               r = l;
             }
-            if (M.AnimPath) {
-              h = this.GetLoadedResource(M.AnimPath);
+            if (_.AnimPath) {
+              h = this.GetLoadedResource(_.AnimPath);
             }
-            if (M.ChildMeshPathList) {
-              for (const _ of M.ChildMeshPathList) {
-                var d = this.GetLoadedResource(_);
+            if (_.ChildMeshPathList) {
+              for (const M of _.ChildMeshPathList) {
+                var d = this.GetLoadedResource(M);
                 i.Add(d);
                 n.push(d);
               }
@@ -114,12 +117,14 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
           this.UiModelActorComponent?.ChangeMesh(t, u, s, f);
         }
         if (c) {
-          this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.LoadMeshesComponentsBundleStreaming(i, undefined, () => {
+          (a = new MeshStreamTaskContext_1.MeshStreamTaskContext()).SkeletalMeshes = i;
+          a.OnTaskFinish = () => {
             this.FinishLoad();
             var e = this.UiModelDataComponent?.GetLoadingVisible() ?? true;
             this.UiModelDataComponent?.SetVisible(e);
             this.UiModelDataComponent?.ClearLoadingVisible();
-          });
+          };
+          this.MeshStreamTaskId = ControllerHolder_1.ControllerHolder.MeshStreamController.AddMeshStreamTask(a);
         } else {
           this.FinishLoad();
           this.MeshArray.Empty();
@@ -268,9 +273,9 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     return t;
   }
   DestroyLoadMesh() {
-    if (this.StreamingHandleId !== UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(this.StreamingHandleId);
-      this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    if (this.MeshStreamTaskId !== MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID) {
+      ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(this.MeshStreamTaskId);
+      this.MeshStreamTaskId = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     }
   }
 };

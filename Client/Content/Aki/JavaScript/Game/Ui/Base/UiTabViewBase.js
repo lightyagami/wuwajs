@@ -14,6 +14,7 @@ class UiTabViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.sKe = TickSystem_1.TickSystem.InvalidId;
+    this.IsFirstShow = true;
     this.Params = undefined;
     this.lur = new Map();
     this.OperationList = [];
@@ -117,11 +118,13 @@ class UiTabViewBase extends UiPanelBase_1.UiPanelBase {
     this.Show();
     this.OnShowUiTabViewFromToggle();
     this.Cur();
+    this.IsFirstShow = false;
   }
   ShowUiTabViewFromView() {
     this.Show();
     this.OnShowUiTabViewFromView();
     this.dur();
+    this.IsFirstShow = false;
   }
   HideUiTabView(e) {
     this.Hide();

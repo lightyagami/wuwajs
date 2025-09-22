@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TrapDefenseBattleSkillData = undefined;
 const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
 const InputEnums_1 = require("../../../../Input/InputEnums");
+const TDPlayerController_1 = require("../../../../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
@@ -20,7 +21,7 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.CharacterSkillCdComponent = undefined;
     this.SkillTexturePath = undefined;
     this.IsEnableInternal = true;
-    this.Vod = false;
+    this.rsd = false;
   }
   OnInitData() {
     var t;
@@ -101,14 +102,14 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.IsEnableInternal = true;
   }
   SetIsBuilding(t) {
-    this.Vod = t;
+    this.rsd = t;
   }
   IsCdVisible() {
     var t;
-    return !this.Vod && !!(t = ModelManager_1.ModelManager.TowerDefensePlayerModel?.CurrentFollowerProxyId) && ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(t)?.CDSkill === 1;
+    return !this.rsd && !!(t = TDPlayerController_1.TowerDefensePlayerController.GetFollowerProxyId()) && ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(t)?.CDSkill === 1;
   }
   GetSkillIconName() {
-    if (this.Config && (this.GetActionName() !== InputMappingsDefine_1.actionMappings.塔防射击 || this.Vod)) {
+    if (this.Config && (this.GetActionName() !== InputMappingsDefine_1.actionMappings.塔防射击 || this.rsd)) {
       return this.Config.Name;
     }
   }

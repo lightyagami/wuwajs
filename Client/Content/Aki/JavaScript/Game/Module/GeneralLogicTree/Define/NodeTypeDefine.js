@@ -26,6 +26,7 @@ const ReachAreaBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReachAre
 const ReadMailBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ReadMailBehaviorNode");
 const ServerAchieveChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/ServerAchieveChildQuestNode");
 const ShowUiBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/ShowUiBehaviorNode");
+const TakePicturesWithTimeScaleChildQuestNode_1 = require("../BehaviorNode/ChildQuestNode/TakePicturesWithTimeScaleChildQuestNode");
 const UseItemBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/UseItemBehaviorNode");
 const WaitSceneReferenceEntityPlaySequenceNode_1 = require("../BehaviorNode/ChildQuestNode/WaitSceneReferenceEntityPlaySequenceNode");
 const WalkingPatternBehaviorNode_1 = require("../BehaviorNode/ChildQuestNode/WalkingPatternBehaviorNode");
@@ -40,20 +41,20 @@ class NodeTypeData {
 function newNodeObj(o) {
   if (o) {
     let e = undefined;
-    var a = o.Id;
+    var d = o.Id;
     switch (o.Type) {
       case "ChildQuest":
-        var d = o.Condition.Type;
-        e = new exports.childQuestNodeType[d].Ctor(a);
+        var a = o.Condition.Type;
+        e = new exports.childQuestNodeType[a].Ctor(d);
         break;
       case "QuestFailed":
-        e = new QuestFailedBehaviorNode_1.QuestFailedBehaviorNode(a);
+        e = new QuestFailedBehaviorNode_1.QuestFailedBehaviorNode(d);
         break;
       case "ParallelSelect":
-        e = new ParallelSelectNode_1.ParallelSelectNode(a);
+        e = new ParallelSelectNode_1.ParallelSelectNode(d);
         break;
       case "Sequence":
-        e = new SequenceNode_1.SequenceNode(a);
+        e = new SequenceNode_1.SequenceNode(d);
     }
     return e;
   }
@@ -103,6 +104,8 @@ exports.childQuestNodeType = {
   [IQuest_1.EChildQuest.CheckTrapDefenseEvent]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
   [IQuest_1.EChildQuest.CompareActorVar]: new NodeTypeData(CompareDemoActorVarChildQuestNode_1.CompareDemoActorVarChildQuestNode),
   [IQuest_1.EChildQuest.ProgramSpecialProcess]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
-  [IQuest_1.EChildQuest.WaitUntilLevelSequenceReachMark]: new NodeTypeData(WaitSceneReferenceEntityPlaySequenceNode_1.WaitSceneReferenceEntityPlaySequenceNode)
+  [IQuest_1.EChildQuest.WaitUntilLevelSequenceReachMark]: new NodeTypeData(WaitSceneReferenceEntityPlaySequenceNode_1.WaitSceneReferenceEntityPlaySequenceNode),
+  [IQuest_1.EChildQuest.FinishSurvivorsRouge]: new NodeTypeData(ServerAchieveChildQuestNode_1.ServerAchieveChildQuestNode),
+  [IQuest_1.EChildQuest.TakePicturesWithTimeScale]: new NodeTypeData(TakePicturesWithTimeScaleChildQuestNode_1.TakePicturesWithTimeScaleChildQuestNode)
 };
 exports.newNodeObj = newNodeObj; //# sourceMappingURL=NodeTypeDefine.js.map

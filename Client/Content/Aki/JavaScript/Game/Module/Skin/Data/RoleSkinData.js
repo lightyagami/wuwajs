@@ -44,6 +44,9 @@ class RoleSkinData {
   IsLocked() {
     return this.Rjt;
   }
+  LockSkin() {
+    this.Rjt = true;
+  }
   UnlockSkin() {
     this.Rjt = false;
   }

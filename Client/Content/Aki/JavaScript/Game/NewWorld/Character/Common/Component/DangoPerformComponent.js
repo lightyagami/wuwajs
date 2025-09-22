@@ -245,5 +245,5 @@ let DangoPerformComponent = class DangoPerformComponent extends StackableChessCo
     }
   }
 };
-DangoPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(286)], DangoPerformComponent);
+DangoPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(287)], DangoPerformComponent);
 exports.DangoPerformComponent = DangoPerformComponent; //# sourceMappingURL=DangoPerformComponent.js.map

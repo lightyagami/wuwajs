@@ -31,7 +31,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
       this.$qe();
       this.aqe();
       this.Yqe();
-      this.ZWu();
+      this.x8u();
     };
     this.Jqe = () => {
       return new AchievementSmallItem_1.AchievementSmallItem();
@@ -39,7 +39,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
     this.Awe = () => {
       this.CloseMe();
     };
-    this.JWu = () => {
+    this.P8u = () => {
       const r = [];
       const i = [];
       const n = new Set();
@@ -64,7 +64,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UILoopScrollViewComponent], [4, UE.UIScrollViewWithScrollbarComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[7, this.JWu]];
+    this.BtnBindInfo = [[7, this.P8u]];
   }
   async OnCreateAsync() {
     await ControllerHolder_1.ControllerHolder.AchievementController.RequestUpdateAchievementInfo();
@@ -85,7 +85,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
     this.$qe();
     this.zqe();
     this.aqe();
-    this.ZWu();
+    this.x8u();
     this.Yqe();
   }
   OnRemoveEventListener() {
@@ -107,7 +107,7 @@ class AchievementMainView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.AchievementModel.GetAchievementFinishedStar();
     this.Kqe.SetText(e.toString());
   }
-  ZWu() {
+  x8u() {
     const t = new Set();
     ConfigManager_1.ConfigManager.RoguelikeConfig.GetRogueSeasonConfigList()?.forEach(e => {
       t.add(e.Achievement);

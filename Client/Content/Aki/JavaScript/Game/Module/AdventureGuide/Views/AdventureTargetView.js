@@ -50,10 +50,10 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     this.c6e = () => false;
     this.m6e = () => {
       var e = new AdventureTargetItem_1.AdventureTargetItem();
-      e.SetClickGetButtonCb(this.uQu);
+      e.SetClickGetButtonCb(this.k8u);
       return e;
     };
-    this.uQu = e => {
+    this.k8u = e => {
       var t;
       if (!this.JVe) {
         this.JVe = true;

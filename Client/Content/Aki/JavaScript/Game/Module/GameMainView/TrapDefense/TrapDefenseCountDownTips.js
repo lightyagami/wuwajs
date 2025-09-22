@@ -13,7 +13,7 @@ class TrapDefenseCountDownTips extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.Data = undefined;
     this.nZ1 = 0;
-    this.RYu = 0;
+    this.qzu = 0;
     this.vDe = true;
     this.L0e = undefined;
     this.Cxo = undefined;
@@ -25,9 +25,9 @@ class TrapDefenseCountDownTips extends UiTickViewBase_1.UiTickViewBase {
     this.Cxo = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Data = this.OpenParam;
     this.nZ1 = this.Data.CountDownTime * TimeUtil_1.TimeUtil.InverseMillisecond;
-    this.RYu = this.Data.CountDownTime;
+    this.qzu = this.Data.CountDownTime;
     this.L0e = this.GetUiNiagara(1);
-    this.w6e(this.RYu);
+    this.w6e(this.qzu);
   }
   OnBeforeDestroy() {
     this.Cxo.Clear();
@@ -42,9 +42,9 @@ class TrapDefenseCountDownTips extends UiTickViewBase_1.UiTickViewBase {
       if (this.nZ1 <= 0) {
         this.vDe = false;
         this.CloseMe();
-      } else if (this.RYu - this.nZ1 / TimeUtil_1.TimeUtil.InverseMillisecond >= 1) {
-        --this.RYu;
-        this.w6e(this.RYu);
+      } else if (this.qzu - this.nZ1 / TimeUtil_1.TimeUtil.InverseMillisecond >= 1) {
+        --this.qzu;
+        this.w6e(this.qzu);
       }
     }
   }

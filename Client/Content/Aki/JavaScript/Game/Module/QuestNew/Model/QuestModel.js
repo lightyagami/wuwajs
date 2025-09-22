@@ -33,7 +33,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.ino = undefined;
     this.nVa = undefined;
     this.OF1 = undefined;
-    this.cjc = new Set();
+    this.j7u = new Set();
     this.TH1 = undefined;
     this.ono = undefined;
     this.rno = undefined;
@@ -466,6 +466,27 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       }
     }
   }
+  GetDisplayRewardCommonInfoFromQuestConfig(e) {
+    e = this.GetQuestConfig(e);
+    if (e) {
+      var t = ConfigManager_1.ConfigManager.QuestNewConfig.GetDropConfig(e.RewardId);
+      if (t && t.DropPreview.size !== 0) {
+        var i;
+        var s = [];
+        for ([i] of t.DropPreview) {
+          var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i);
+          var o = t.DropPreview.get(i);
+          if (r) {
+            s.push([{
+              IncId: 0,
+              ItemId: i
+            }, o]);
+          }
+        }
+        return s;
+      }
+    }
+  }
   GetQuestLockIconPath(t) {
     t = this.GetQuest(t);
     if (t) {
@@ -695,7 +716,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     }
   }
   AddQuestLockInfo(e) {
-    this.cjc.add(e.B5n);
+    this.j7u.add(e.B5n);
     switch (e.rpu) {
       case Protocol_1.Aki.Protocol.npu.Proto_QuestResource:
       case Protocol_1.Aki.Protocol.npu.Proto_QuestResourceShow:
@@ -707,7 +728,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.LockQuestSuspendByOnline(e.B5n, e.ipu);
   }
   GetAllLockQuests() {
-    return this.cjc;
+    return this.j7u;
   }
 }
 exports.QuestNewModel = QuestNewModel;

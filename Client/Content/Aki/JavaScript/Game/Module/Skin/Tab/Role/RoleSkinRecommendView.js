@@ -8,7 +8,6 @@ const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
 const UiTabSequence_1 = require("../../../DynamicTab/UiTabViewBehavior/UiTabSequence");
@@ -29,7 +28,7 @@ class RoleSkinRecommendView extends UiTabViewBase_1.UiTabViewBase {
   }
   async OnBeforeStartAsync() {
     var e = this.ExtraParams;
-    this.A6i = ConfigManager_1.ConfigManager.PayShopConfig.GetRecommendDataById(e);
+    this.A6i = ModelManager_1.ModelManager.PayShopModel.GetRecommendDataById(e);
     var i = ModelManager_1.ModelManager.PayShopModel.GetPayShopGoods(this.A6i.RecommendId);
     if (!i) {
       if (Log_1.Log.CheckError()) {

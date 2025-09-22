@@ -32,6 +32,7 @@ const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
+const StaticSceneUtils_1 = require("../../LevelGamePlay/StaticScene/StaticSceneUtils");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -39,7 +40,6 @@ const SeamlessTravelController_1 = require("../../Module/SeamlessTravel/Seamless
 const CreatureDensityContainer_1 = require("../Define/CreatureDensityContainer");
 const EntityContainer_1 = require("../Define/EntityContainer");
 const ComponentReadHelper_1 = require("../EntityReadCode/Component/ComponentReadHelper");
-const StaticSceneUtils_1 = require("../../LevelGamePlay/StaticScene/StaticSceneUtils");
 const zero = 0n;
 const ONE_HUNDRED = 100;
 exports.DISABLE_KAWAII_MASK = 1;
@@ -73,7 +73,6 @@ class CreatureModel extends ModelBase_1.ModelBase {
     this.DelayRemoveContainer = new EntityContainer_1.EntityContainer();
     this.lPr = new EntityContainer_1.EntityContainer();
     this.uYs = new CreatureDensityContainer_1.CreatureDensityContainer();
-    this.TMr = new Set();
     this.LMr = false;
     this.DMr = undefined;
     this.RMr = new Map();
@@ -311,7 +310,6 @@ class CreatureModel extends ModelBase_1.ModelBase {
     this.RemoveCreaturePendingSet.clear();
     this.DelayRemoveContainer.Clear();
     this.lPr.Clear();
-    this.TMr.clear();
     this.RMr.clear();
     this.hPr.Clear();
     this.uYs.Clear();
@@ -883,12 +881,8 @@ class CreatureModel extends ModelBase_1.ModelBase {
   PendingRemoveEntitySize() {
     return this.lPr.Size();
   }
-  AddPreCreature(t) {
-    this.TMr.add(t);
-    return true;
-  }
   RemovePreCreature(t) {
-    return this.TMr.delete(t);
+    return false;
   }
   SetRestoreEntityId(t) {
     this.DMr = t;

@@ -10,8 +10,8 @@ const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
-const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const TowerDefenseEventController_1 = require("../../Module/TowerDefenseEvent/TowerDefenseEventController");
 const GameSplineUtils_1 = require("./GameSplineUtils");
 const TsGameSplineActor_1 = require("./TsGameSplineActor");
 const TIMER_PERIOD = 5000;
@@ -22,51 +22,51 @@ class ActorId {
   }
 }
 class SplineAnalyzeData {
-  constructor(t, i = 5) {
-    this.Qdl = i;
+  constructor(t, s = 5) {
+    this.Qdl = s;
     this.xdt = 0;
     this.Kdl = new Array();
     this.xdt = t.GetNumberOfSplinePoints();
-    let s = t.D_GetLocationAtSplineInputKey(0, 1);
+    let i = t.D_GetLocationAtSplineInputKey(0, 1);
     this.Kdl.push(0);
     for (let e = 1; e <= (this.xdt - 1) * this.Qdl; ++e) {
-      var r = t.D_GetLocationAtSplineInputKey(e / i, 1);
-      this.Kdl.push(this.Kdl[e - 1] + UE.VectorDouble.Dist(s, r));
-      s = r;
+      var r = t.D_GetLocationAtSplineInputKey(e / s, 1);
+      this.Kdl.push(this.Kdl[e - 1] + UE.VectorDouble.Dist(i, r));
+      i = r;
     }
   }
   GetKeyTimeByLengthOffset(e, t) {
     if (this.xdt === 0) {
       return 0;
     }
-    let i = e * this.Qdl;
-    let s = Math.floor(i);
+    let s = e * this.Qdl;
+    let i = Math.floor(s);
     let r = 0;
-    if (s + 1 >= this.Kdl.length) {
+    if (i + 1 >= this.Kdl.length) {
       r = this.Kdl[this.Kdl.length - 1];
-      s = this.Kdl.length - 1;
+      i = this.Kdl.length - 1;
     } else {
-      r = MathUtils_1.MathUtils.Lerp(this.Kdl[s], this.Kdl[s + 1], i - s);
+      r = MathUtils_1.MathUtils.Lerp(this.Kdl[i], this.Kdl[i + 1], s - i);
     }
     var o = r + t;
     if (t > 0) {
-      while (s < this.Kdl.length && this.Kdl[s] < o) {
-        ++s;
+      while (i < this.Kdl.length && this.Kdl[i] < o) {
+        ++i;
       }
-      if (s === this.Kdl.length) {
+      if (i === this.Kdl.length) {
         return this.xdt - 1;
       }
-      i = s - (this.Kdl[s] - o) / (this.Kdl[s] - this.Kdl[s - 1]);
+      s = i - (this.Kdl[i] - o) / (this.Kdl[i] - this.Kdl[i - 1]);
     } else {
-      while (s >= 0 && this.Kdl[s] > o) {
-        --s;
+      while (i >= 0 && this.Kdl[i] > o) {
+        --i;
       }
-      if (s < 0) {
+      if (i < 0) {
         return 0;
       }
-      i = s + (o - this.Kdl[s]) / (this.Kdl[s + 1] - this.Kdl[s]);
+      s = i + (o - this.Kdl[i]) / (this.Kdl[i + 1] - this.Kdl[i]);
     }
-    return i / this.Qdl;
+    return s / this.Qdl;
   }
 }
 exports.SplineAnalyzeData = SplineAnalyzeData;
@@ -80,26 +80,26 @@ class GameSplineModel extends ModelBase_1.ModelBase {
     this.CurWindPipelineSpeedLimit = 0;
     this.zye = () => {
       for (var [e, t] of this.Jye) {
-        for (const i of t[2]) {
-          switch (i.Type) {
+        for (const s of t[2]) {
+          switch (s.Type) {
             case 0:
-              if (!ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.Id)) {
-                t[2].delete(i);
+              if (!ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s.Id)) {
+                t[2].delete(s);
               }
               break;
             case 1:
-              if (!EntitySystem_1.EntitySystem.Get(i.Id)) {
-                t[2].delete(i);
+              if (!EntitySystem_1.EntitySystem.Get(s.Id)) {
+                t[2].delete(s);
               }
               break;
             case 2:
-              if (!ModelManager_1.ModelManager.TowerDefenseEventModel.GetEntity(i.Id)) {
-                t[2].delete(i);
+              if (!ModelManager_1.ModelManager.TowerDefenseEventModel.GetEntity(s.Id)) {
+                t[2].delete(s);
               }
               break;
             case 3:
-              if (!ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsInPreview()) {
-                t[2].delete(i);
+              if (!TowerDefenseEventController_1.TowerDefenseEventController.IsInPreview()) {
+                t[2].delete(s);
               }
           }
         }
@@ -115,14 +115,14 @@ class GameSplineModel extends ModelBase_1.ModelBase {
       }
     };
   }
-  LoadAndGetSplineComponent(e, t, i = 0) {
-    let s = this.Jye.get(e);
+  LoadAndGetSplineComponent(e, t, s = 0) {
+    let i = this.Jye.get(e);
     var r;
-    if (!s && !(r = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), new UE.TransformDouble()), s = [r, GameSplineUtils_1.GameSplineUtils.InitGameSplineBySplineEntity(e, r), new Set()], this.Jye.set(e, s), this.j3)) {
+    if (!i && !(r = ActorSystem_1.ActorSystem.Get(TsGameSplineActor_1.default.StaticClass(), new UE.TransformDouble()), i = [r, GameSplineUtils_1.GameSplineUtils.InitGameSplineBySplineEntity(e, r), new Set()], this.Jye.set(e, i), this.j3)) {
       this.j3 = TimerSystem_1.TimerSystem.Forever(this.zye, TIMER_PERIOD);
     }
-    s[2].add(new ActorId(t, i));
-    return s[1];
+    i[2].add(new ActorId(t, s));
+    return i[1];
   }
   GetSplineActorBySplineId(e) {
     e = this.Jye.get(e);
@@ -130,20 +130,20 @@ class GameSplineModel extends ModelBase_1.ModelBase {
       return e[0];
     }
   }
-  ReleaseSpline(e, t, i = 0) {
-    var s = this.Jye.get(e);
-    if (s) {
-      for (const r of s[2]) {
-        if (r.Id === t && r.Type === i) {
-          s[2].delete(r);
+  ReleaseSpline(e, t, s = 0) {
+    var i = this.Jye.get(e);
+    if (i) {
+      for (const r of i[2]) {
+        if (r.Id === t && r.Type === s) {
+          i[2].delete(r);
         }
       }
     }
   }
   GetSplineAnalyzeData(e) {
     var t;
-    var i = this.$dl.get(e);
-    return i || ((t = this.Jye.get(e)) ? (i = new SplineAnalyzeData(t[1]), this.$dl.set(e, i), i) : undefined);
+    var s = this.$dl.get(e);
+    return s || ((t = this.Jye.get(e)) ? (s = new SplineAnalyzeData(t[1]), this.$dl.set(e, s), s) : undefined);
   }
 }
 exports.GameSplineModel = GameSplineModel;
