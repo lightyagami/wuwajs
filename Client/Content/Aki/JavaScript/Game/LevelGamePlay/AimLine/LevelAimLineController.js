@@ -29,16 +29,20 @@ class LevelAimLineController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_Miaozhunxian_C", () => {
       this.OC = ActorSystem_1.ActorSystem.Get(UE.BP_Miaozhunxian_C.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, undefined);
-      this.zie = this.OC.GetComponentByClass(UE.SplineComponent.StaticClass());
-      if (GlobalData_1.GlobalData.IsPlayInEditor) {
-        this.OC.ActorLabel = "AimLineController";
-        this.iye.ActorLabel = "AimLineBullet";
+      if (this.OC?.IsValid()) {
+        this.zie = this.OC.GetComponentByClass(UE.SplineComponent.StaticClass());
+        if (GlobalData_1.GlobalData.IsPlayInEditor) {
+          this.OC.ActorLabel = "AimLineController";
+          this.iye.ActorLabel = "AimLineBullet";
+        }
+        this.OC.Init();
       }
-      this.OC.Init();
     });
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_Miaozhunxian_Bullet_C", () => {
       this.iye = ActorSystem_1.ActorSystem.Get(UE.BP_Miaozhunxian_Bullet_C.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, undefined);
-      this.iye.OnActorBeginOverlap.Add(this.oye);
+      if (this.iye?.IsValid()) {
+        this.iye.OnActorBeginOverlap.Add(this.oye);
+      }
     });
     ResourceSystem_1.ResourceSystem.LoadAsync(DATA_PATH, ItemMaterialControllerActorData_1.default, e => {
       this.rye = e;
@@ -86,12 +90,12 @@ class LevelAimLineController extends ControllerBase_1.ControllerBase {
     var r = Vector_1.Vector.Create();
     this.OC.D_K2_SetActorLocation(i.ToUeVector(), false, undefined, true);
     var o = UE.NewArray(UE.SplinePoint);
-    let a = 5;
-    a = e === 0 ? 0 : 1;
+    let s = 5;
+    s = e === 0 ? 0 : 1;
     for (let e = 0; e < t.length; e++) {
       t[e].Subtraction(i, r);
-      var s = new UE.SplinePoint(e, r.ToUeVectorOld(), t[e === 0 ? e : e - 1].ToUeVectorOld(), t[e === t.length - 1 ? e : e + 1].ToUeVectorOld(), Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVector, a);
-      o.Add(s);
+      var a = new UE.SplinePoint(e, r.ToUeVectorOld(), t[e === 0 ? e : e - 1].ToUeVectorOld(), t[e === t.length - 1 ? e : e + 1].ToUeVectorOld(), Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVector, s);
+      o.Add(a);
     }
     this.zie.ClearSplinePoints();
     this.zie.AddPoints(o);

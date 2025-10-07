@@ -19,10 +19,10 @@ class TouchUiEditApplyHelper {
           var i;
           var a;
           var l = t.Components.Get(o);
-          if (l && (l = l.GetComponentByClass(UE.UIItem.StaticClass()), i = r.GetStorageId(e, o), l) && i && (this.F_d.has(i) || this.F_d.set(i, [l.GetAnchorOffsetX(), l.GetAnchorOffsetY()]), (a = r.GetData(e, o)).Editable)) {
+          if (l && (l = l.GetComponentByClass(UE.UIItem.StaticClass()), i = r.GetStorageId(e, o), l) && i && (this.cgd.has(i) || this.cgd.set(i, [l.GetAnchorOffsetX(), l.GetAnchorOffsetY()]), (a = r.GetData(e, o)).Editable)) {
             l.SetUIItemScale(new UE.Vector(a.Scale, a.Scale, a.Scale));
-            l.SetAnchorOffsetX(this.F_d.get(i)[0] + a.OffsetX);
-            l.SetAnchorOffsetY(this.F_d.get(i)[1] + a.OffsetY);
+            l.SetAnchorOffsetX(this.cgd.get(i)[0] + a.OffsetX);
+            l.SetAnchorOffsetY(this.cgd.get(i)[1] + a.OffsetY);
             l.SetUIItemAlpha(a.Alpha);
             l.SetHierarchyIndex(a.HierarchyIndex);
           }
@@ -40,5 +40,5 @@ class TouchUiEditApplyHelper {
     }
   }
 }
-(exports.TouchUiEditApplyHelper = TouchUiEditApplyHelper).F_d = new Map();
+(exports.TouchUiEditApplyHelper = TouchUiEditApplyHelper).cgd = new Map();
 //# sourceMappingURL=TouchUiEditApplyHelper.js.map

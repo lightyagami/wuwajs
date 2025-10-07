@@ -302,6 +302,24 @@ class HandBookModel extends ModelBase_1.ModelBase {
     }
     return [e, o.length];
   }
+  GetMonsterCount() {
+    let e = 0;
+    let o = 0;
+    for (const t of ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigList()) {
+      if (!t.IsSkin && !(t.OriginalFormInfoId > 0)) {
+        if (t.DefaultUnlock) {
+          e++;
+          o++;
+        } else {
+          o++;
+          if (!ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectData(t.Id)?.IsLock) {
+            e++;
+          }
+        }
+      }
+    }
+    return [e, o];
+  }
   GetAllHandBookMonsterIdList() {
     var e = [];
     for (const o of ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigList() ?? []) {

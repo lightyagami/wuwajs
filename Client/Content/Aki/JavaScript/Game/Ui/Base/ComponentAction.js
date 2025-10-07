@@ -42,6 +42,9 @@ class ComponentAction {
     });
     this.ComponentId = ++ComponentAction.f_r;
   }
+  static GetIncrementId() {
+    return this.f_r;
+  }
   get IsRegister() {
     return this.C_r === EComponentState.Register;
   }

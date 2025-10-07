@@ -155,23 +155,25 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
     this.PropertyMap.set(3, t);
   }
   get IsInPlayerMap() {
-    var t = ModelManager_1.ModelManager.WorldMapModel;
-    var e = ModelManager_1.ModelManager.MapModel;
-    var i = ConfigManager_1.ConfigManager.AreaConfig;
-    var t = t.LastBigSceneMiniMapInfo;
-    if (t) {
-      const s = i.GetAreaInfo(i.GetLevelOneAreaId(t.AreaId));
+    var t = ModelManager_1.ModelManager.MapModel;
+    var e = ConfigManager_1.ConfigManager.AreaConfig;
+    var i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(2);
+    if (i !== 0) {
+      const s = e.GetAreaInfo(i);
       if (s) {
         return s.MapConfigId === this.MapId;
       }
-      if (e.LastHighLevelArea) {
-        const s = i.GetAreaInfo(i.GetLevelOneAreaId(e.LastHighLevelArea));
-        if (s) {
-          return s.MapConfigId === this.MapId;
-        }
-      }
     }
-    return e.CurrentWorldMapConfigId === this.MapId;
+    i = t.LastHighLevelArea;
+    if (!i) {
+      return t.CurrentWorldMapConfigId === this.MapId;
+    }
+    const s = e.GetAreaInfo(e.GetLevelOneAreaId(i));
+    if (s) {
+      return s.MapConfigId === this.MapId;
+    } else {
+      return t.CurrentWorldMapConfigId === this.MapId;
+    }
   }
   get IsInPlayerGravity() {
     return ModelManager_1.ModelManager.MapModel.CurrentPlayerGravity === ModelManager_1.ModelManager.WorldMapModel.WorldMapSelectGravity;

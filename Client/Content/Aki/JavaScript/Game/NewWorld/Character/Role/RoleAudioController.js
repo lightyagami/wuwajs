@@ -292,7 +292,7 @@ class RoleAudioController extends ControllerBase_1.ControllerBase {
   }
   static Zsu(e, o) {
     var t;
-    if (this.iau !== 0 && (t = o.GetComponent(102).PositionState, e !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (AudioSystem_1.AudioSystem.ExecuteAction(this.iau, 0, {
+    if (this.iau !== 0 && this.iau === 0 && (t = o.GetComponent(102).PositionState, e !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) && (AudioSystem_1.AudioSystem.ExecuteAction(this.iau, 0, {
       TransitionDuration: 1000
     }), this.iau = 0, Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Audio", 42, "[RoleAudio] PostEvent 打断角色加速语音", ["RoleId", o?.GetComponent(3)?.CreatureData.GetPbDataId()], ["MoveState", e], ["PositionState", t]);

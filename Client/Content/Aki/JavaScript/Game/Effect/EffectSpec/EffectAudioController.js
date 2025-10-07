@@ -48,6 +48,7 @@ class EventModelInfo {
 }
 class EffectModelInfo {
   constructor(o) {
+    this.Start = false;
     this.Model = undefined;
     this.Model = o;
   }
@@ -89,29 +90,44 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
   static E2c() {
     if (EffectAudioController.I2c.size !== 0) {
       EffectAudioController.T2c.Start();
-      for (const r of EffectAudioController.I2c) {
-        var t = r[1];
+      for (const i of EffectAudioController.I2c) {
+        var t = i[1];
         if (t.EffectUidList.size !== 0) {
-          for (const f of t.EffectUidList) {
-            var o = EffectAudioController.MQe.get(f);
+          for (const l of t.EffectUidList) {
+            var o = EffectAudioController.MQe.get(l);
             if (o && o.EffectActor?.IsValid()) {
-              var o = o.EffectActor.D_K2_GetActorLocation();
-              var e = new UE.Vector();
-              e.Set(o.X, o.Y, o.Z);
-              if (t.EffectModel instanceof EffectModelAudio_1.default && t.EffectModel.LocationOffsets.Num() !== 0) {
-                for (let o = 0; o < t.EffectModel.LocationOffsets.Num(); o++) {
-                  t.Locations.Add(e.op_Addition(t.EffectModel.LocationOffsets.Get(o)));
+              if (o.IsTransform) {
+                if (!t.EffectModel.Start) {
+                  e = o.EffectActor.GetLocation();
+                  (r = new UE.Vector()).Set(e.X, e.Y, e.Z);
+                  t.Locations.Add(r);
                 }
-              } else if (!(t.EffectModel instanceof EventModelInfo) || !t.EffectModel.Start) {
-                t.Locations.Add(e);
+              } else {
+                var e = o.EffectActor;
+                if (e) {
+                  var r = e.D_K2_GetActorLocation();
+                  var f = new UE.Vector();
+                  f.Set(r.X, r.Y, r.Z);
+                  if (t.EffectModel instanceof EffectModelAudio_1.default && t.EffectModel.LocationOffsets.Num() !== 0) {
+                    for (let o = 0; o < t.EffectModel.LocationOffsets.Num(); o++) {
+                      t.Locations.Add(f.op_Addition(t.EffectModel.LocationOffsets.Get(o)));
+                    }
+                  } else {
+                    t.EffectModel instanceof EventModelInfo;
+                    t.Locations.Add(f);
+                  }
+                } else if (Log_1.Log.CheckError()) {
+                  Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] 类型判断失败", ["ActorUid", t.ActorUid], ["GetType", typeof o.EffectActor], ["EffectActor", o.EffectActor]);
+                }
               }
             }
           }
-          if (t.EffectModel instanceof EventModelInfo && !t.EffectModel.Start && (t.EffectModel.Start = true, AudioSystem_1.AudioSystem.SetRtpcValue("effect_count", t.EffectUidList.size, {
+          if (t.EffectModel instanceof EventModelInfo && !t.EffectModel.Start && (AudioSystem_1.AudioSystem.SetRtpcValue("effect_count", t.EffectUidList.size, {
             Actor: t.Actor
           }), Log_1.Log.CheckDebug())) {
             Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][Audio事件] ---- 音效合并更新RTPC", ["ActorUid", t.ActorUid], ["Count", t.EffectUidList.size], ["Locations", t.Locations]);
           }
+          t.EffectModel.Start = true;
           if (t.Locations.Num() > 0) {
             t.AkComponent.SetLocationOffsets(t.Locations);
             t.Locations.Empty();
@@ -121,19 +137,21 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
       EffectAudioController.T2c.Stop();
     }
   }
-  static H9u(o) {
+  static bYu(o) {
     return new (o instanceof EffectModelAudio_1.default ? EffectModelInfo : EventModelInfo)(o);
   }
-  static AddPlayEffectAudio(o, t, e, r) {
-    var o = EffectAudioController.H9u(o);
-    var f = o.GetAudioEvent();
-    if (!f || f.length === 0 || EffectAudioController.CheckSpecialInstanceDungeonEvent(f) || EffectAudioController.CheckHitEffectCooldownTime(e, f) || EffectAudioController.X81(f)) {
+  static AddPlayEffectAudio(o, t, e, r, f, i) {
+    var o = EffectAudioController.bYu(o);
+    var l = o.GetAudioEvent();
+    if (!l || l.length === 0 || EffectAudioController.CheckSpecialInstanceDungeonEvent(l) || EffectAudioController.CheckHitEffectCooldownTime(e, l) || EffectAudioController.X81(l)) {
       return 0;
     } else {
       e = ++EffectAudioController.b2c;
       t = {
         ActorUid: 0,
-        EffectActor: t
+        EffectActor: t,
+        IsTransform: i,
+        Callback: f
       };
       EffectAudioController.L2c.set(e, t);
       EffectAudioController.w2c.set(e, {
@@ -141,13 +159,12 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
         Priority: r
       });
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl] 加入待处理列表", ["EffectUid", e], ["AudioEvent", f]);
+        Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl] 加入待处理列表", ["EffectUid", e], ["AudioEvent", l]);
       }
       return e;
     }
   }
-  static OnStopEffectAudio(o, t) {
-    var e;
+  static OnStopEffectAudio(o, t, e = true) {
     var r;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl] Stop", ["EffectUid", o], ["Context", t]);
@@ -159,27 +176,31 @@ class EffectAudioController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Warn("Audio", 42, "[EffectAudioCtrl] Audio还在待处理列表中就Stop了", ["EffectUid", o]);
       }
     } else if (EffectAudioController.MQe.has(o)) {
-      t = EffectAudioController.MQe.get(o).ActorUid;
-      if (EffectAudioController.I2c.has(t)) {
-        if ((e = EffectAudioController.I2c.get(t)).EffectModel?.IsValid()) {
-          e.EffectUidList.delete(o);
+      t = EffectAudioController.MQe.get(o);
+      if (e && t.Callback) {
+        t.Callback();
+      }
+      e = t.ActorUid;
+      if (EffectAudioController.I2c.has(e)) {
+        if ((t = EffectAudioController.I2c.get(e)).EffectModel?.IsValid()) {
+          t.EffectUidList.delete(o);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] - DeleteAudioItem", ["ActorUid", t], ["EffectUid", o], ["AudioEvent", e.EffectModel.GetAudioEvent()], ["AudioCount", EffectAudioController.MQe.size - 1]);
+            Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl][维护AudioMap] - DeleteAudioItem", ["ActorUid", e], ["EffectUid", o], ["AudioEvent", t.EffectModel.GetAudioEvent()], ["AudioCount", EffectAudioController.MQe.size - 1]);
           }
-          if (e.EffectUidList.size === 0) {
-            if ((r = e.EffectModel.GetAudioEvent()) && EffectAudioController.K6.has(r)) {
+          if (t.EffectUidList.size === 0) {
+            if ((r = t.EffectModel.GetAudioEvent()) && EffectAudioController.K6.has(r)) {
               EffectAudioController.K6.delete(r);
             }
-            EffectAudioController.gTt(e);
-            EffectAudioController.R2c(e, e.Priority);
-            EffectAudioController.I2c.delete(t);
+            EffectAudioController.gTt(t);
+            EffectAudioController.R2c(t, t.Priority);
+            EffectAudioController.I2c.delete(e);
           }
           EffectAudioController.MQe.delete(o);
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] EffectModel无效", ["ActorUid", t], ["EffectUid", o]);
+          Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] EffectModel无效", ["ActorUid", e], ["EffectUid", o]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] ActorInfoMap没有指定ActorUid", ["ActorUid", t], ["EffectUid", o]);
+        Log_1.Log.Error("Audio", 42, "[EffectAudioCtrl] ActorInfoMap没有指定ActorUid", ["ActorUid", e], ["EffectUid", o]);
       }
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Audio", 42, "[EffectAudioCtrl] AudioInfoMap中不存在指定的Uid", ["EffectUid", o]);

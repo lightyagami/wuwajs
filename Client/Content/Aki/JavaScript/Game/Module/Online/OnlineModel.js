@@ -5,12 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.OnlineModel = exports.onlineDisabledSourceTipsId = exports.onlineContinuingChallengeIcon = undefined;
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
+const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const OnlineHallData_1 = require("./OnlineHallData");
 exports.onlineContinuingChallengeIcon = {
@@ -48,6 +51,7 @@ class OnlineModel extends ModelBase_1.ModelBase {
     this.gNi = true;
     this.fNi = new Map();
     this.CachePlayerData = undefined;
+    this.SingleTipsOpen = false;
     this.HallViewIsShowSearching = false;
     this.Ofa = (e, t) => {
       var i = ModelManager_1.ModelManager.WorldLevelModel.OriginWorldLevel;
@@ -501,6 +505,13 @@ class OnlineModel extends ModelBase_1.ModelBase {
       this.qh1 = true;
     }
     this.DisableOnline(3, !this.qh1);
+  }
+  GetMultiInstanceRecommendLevelText(e) {
+    let t = "";
+    var i = ModelManager_1.ModelManager.OnlineModel.OwnerId;
+    var i = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(i).WorldLevel;
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(e, i);
+    return t = e > 0 ? "-" + StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RecommendLevel") ?? "", e.toString()) : t;
   }
 }
 exports.OnlineModel = OnlineModel;

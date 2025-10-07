@@ -169,6 +169,7 @@ class Net {
   static Initialize() {
     Net._X(0);
     var e = new UE.KuroKcpClient();
+    e.IsMultiThreaded = true;
     if (Info_1.Info.PlatformType === 1) {
       e.UseNewResolveIp = false;
     }
@@ -207,6 +208,7 @@ class Net {
     e.SetKcpNoDelay(1, 10, 2, 1);
     e.SetKcpStream(true);
     Net.gX = e;
+    Net.NetEventDispatcher?.NotifyCsKcpClient(e);
     t = {
       GroupId: new UE.FName("NetOnceTaskGroup"),
       Priority: 100,
@@ -564,7 +566,7 @@ class Net {
   static YX(e) {
     return e === 111;
   }
-  static nmd(e) {
+  static n2d(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Net", 63, "KcpRecvError", ["ErrorCode", e]);
     }
@@ -682,22 +684,23 @@ class Net {
   }
   static ZX(e, t, N, o) {
     var i;
-    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 20578) && e !== 23287 && e !== 28783 && e !== 24484 && e !== 19242 && e !== 22444 && e !== 17028 && e !== 20887 && e !== 25190 && e !== 24020 && (Net.dX || e !== 23354 && e !== 27307 && e !== 19685 && e !== 15924 && e !== 19728 && e !== 18817 && e !== 23086 && e !== 28745 && e !== 29933) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
+    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 19344) && e !== 22129 && e !== 27082 && e !== 29546 && e !== 20450 && e !== 22643 && e !== 26611 && e !== 17714 && e !== 29004 && e !== 23682 && (Net.dX || e !== 17966 && e !== 20623 && e !== 16481 && e !== 17737 && e !== 23259 && e !== 27791 && e !== 27742 && e !== 20640 && e !== 18601) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", i ? this.tY(o) : ""]);
     }
   }
   static tY(e) {
     return JSON.stringify(e, (e, t) => t instanceof Long ? MathUtils_1.MathUtils.LongToBigInt(t).toString() : t);
   }
-  static rvu(e) {
-    if (!e) {
+  static rvu(N) {
+    if (!N) {
       let e = 0;
       let t = NetInfo_1.NetInfo.TcpRatio >= 10000;
       if (NetInfo_1.NetInfo.TcpRatio < 10000 && NetInfo_1.NetInfo.TcpRatio > 0) {
         e = Math.floor(Math.random() * 10000);
-        t = e < NetInfo_1.NetInfo.TcpRatio && NetInfo_1.NetInfo.TcpRetry < NetInfo_1.NetInfo.TcpMaxRetry;
+        t = e < NetInfo_1.NetInfo.TcpRatio;
       }
-      if (t) {
+      N = NetInfo_1.NetInfo.TcpRetry >= NetInfo_1.NetInfo.TcpMaxRetry;
+      if (t && !N) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Net", 63, "kcp会话id使用Tcp获取:", ["TcpRatio", NetInfo_1.NetInfo.TcpRatio], ["RandomValue", e], ["RetryCount", Net.Eoa], ["TcpRetry", NetInfo_1.NetInfo.TcpRetry]);
         }
@@ -714,8 +717,9 @@ class Net {
           Log_1.Log.Warn("Net", 63, "KCP已连接,无需建立TCP连接");
         }
       } else if (Net.gX !== undefined) {
+        Net.gX.CloseTcpConnect();
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Net", 63, "开始建立TCP连接:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
+          Log_1.Log.Info("Net", 63, "开始建立TCP连接:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["LoginTraceId", NetInfo_1.NetInfo.LoginTraceId]);
         }
         Net.gX.OnTcpConnected.Add(Net.ovu);
         Net.gX.OnTcpConnectFailed.Add(Net.nvu);
@@ -778,6 +782,7 @@ Net.YK = undefined;
 Net.JK = undefined;
 Net.zK = undefined;
 Net.$K = undefined;
+Net.NetEventDispatcher = undefined;
 Net.rpa = undefined;
 Net.fIo = new List_1.default(new CallbackQueueItem(() => {}, 103, true));
 Net._ul = 0;
@@ -804,6 +809,7 @@ Net.kX = Stats_1.Stat.Create("Net.Encode");
 Net.voa = () => {
   Net.gX?.SetKcpStream(true);
   _a.Doa(0);
+  Net.NetEventDispatcher?.KcpConnectSuccess();
 };
 Net.Doa = e => {
   if (Log_1.Log.CheckInfo()) {
@@ -822,6 +828,7 @@ Net.Doa = e => {
   }
 };
 Net.nX = (e, t, N, o, i) => {
+  Net.NetEventDispatcher?.OnError(e, t, N, o, i);
   switch (e) {
     case 1:
       if (Log_1.Log.CheckInfo()) {
@@ -837,35 +844,39 @@ Net.nX = (e, t, N, o, i) => {
       }
       break;
     case 4:
-      _a.nmd(t);
+      _a.n2d(t);
   }
 };
 Net.iX = (e, t, N, o) => {
   Net.JX(2, e, N, o, t);
+  Net.NetEventDispatcher?.ReceiveResponse(e, t, N, o);
 };
 Net.oX = (e, t, N, o) => {
   Net.JX(3, e, N, o, t);
+  Net.NetEventDispatcher?.ReceiveException(e, t, N, o);
 };
 Net.tvu = e => {
   if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("Net", 63, "TCP连接建立失败:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["ErrorCode", e]);
   }
   Net.Doa(4);
+  Net.NetEventDispatcher?.ReceiveTcpException(e);
 };
 Net.rX = (e, t, N) => {
   Net.JX(4, e, t, N);
+  Net.NetEventDispatcher?.ReceivePush(e, t, N);
 };
 Net.ovu = () => {
   var e;
   if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("Net", 63, "TCP连接建立成功:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
+    Log_1.Log.Info("Net", 63, "TCP连接建立成功:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["LoginTraceId", NetInfo_1.NetInfo.LoginTraceId]);
   }
   if (Net.gX) {
     (e = Protocol_1.Aki.Protocol.Egu.create()).a7n = NetInfo_1.NetInfo.LoginTraceId ?? "";
     e.oHn = NetInfo_1.NetInfo.DeviceId ?? "";
     e.Tgu = NetInfo_1.NetInfo.UdpPort;
     e.$9n = NetInfo_1.NetInfo.Token ?? "";
-    e.emd = NetInfo_1.NetInfo.DisableCrc;
+    e.yxd = NetInfo_1.NetInfo.DisableCrc;
     e = NetDefine_1.messageDefine[3728].encode(e).finish();
     Net.gX.SendTcpMessage(0, 3728, e);
   } else if (Log_1.Log.CheckError()) {

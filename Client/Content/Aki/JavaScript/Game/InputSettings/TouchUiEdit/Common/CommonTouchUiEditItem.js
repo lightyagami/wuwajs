@@ -13,11 +13,11 @@ class CommonTouchUiEditItem {
   constructor(t, i) {
     this.RootItem = t;
     this.Data = undefined;
-    this.rHu = new UE.Vector(1, 1, 1);
+    this.U$u = new UE.Vector(1, 1, 1);
     this.pgt = undefined;
     this.vgt = undefined;
-    this.oHu = 0;
-    this.nHu = 0;
+    this.SQu = 0;
+    this.MQu = 0;
     this.OnDrag = t => {
       var i;
       var s;
@@ -30,7 +30,7 @@ class CommonTouchUiEditItem {
           this.vgt.X += s;
           this.vgt.Y += t;
           this.vgt.Z = 0;
-          this.b_d(this.vgt);
+          this.Yfd(this.vgt);
           this.pgt = i;
         }
       }
@@ -93,14 +93,14 @@ class CommonTouchUiEditItem {
       t.OnStateChange.Add(this.OnExtendToggleStateChanged);
       t.CanExecuteChange.Bind(this.OnCheckCanExecuteChange);
     }
-    this.oHu = this.RootItem.GetAnchorOffsetX();
-    this.nHu = this.RootItem.GetAnchorOffsetY();
+    this.SQu = this.RootItem.GetAnchorOffsetX();
+    this.MQu = this.RootItem.GetAnchorOffsetY();
   }
   SetData(t) {
     this.Data = t;
-    this.aHu();
     var i = this.RootItem.GetLGUISpaceAbsolutePosition();
     this.vgt = new UE.Vector(i.X + (t?.OffsetX ?? 0), i.Y + (t?.OffsetY ?? 0), i.Z);
+    this.k$u();
   }
   SetOffset(t, i) {
     var s = this.RootItem.GetOwner().D_GetActorScale3D();
@@ -110,20 +110,20 @@ class CommonTouchUiEditItem {
       this.vgt.X += t;
       this.vgt.Y += i;
       this.vgt.Z = 0;
-      this.b_d(this.vgt);
+      this.Yfd(this.vgt);
     }
   }
   SetScale(t) {
-    this.rHu.X = t;
-    this.rHu.Y = t;
-    this.rHu.Z = t;
-    this.hHu("Scale", t);
+    this.U$u.X = t;
+    this.U$u.Y = t;
+    this.U$u.Z = t;
+    this.O$u("Scale", t);
   }
   SetAlpha(t) {
-    this.hHu("Alpha", t);
+    this.O$u("Alpha", t);
   }
   SetHierarchyIndex(t) {
-    this.hHu("HierarchyIndex", t);
+    this.O$u("HierarchyIndex", t);
   }
   OnViewDestroy() {
     var t;
@@ -133,19 +133,19 @@ class CommonTouchUiEditItem {
       t.CanExecuteChange.Unbind();
     }
   }
-  hHu(t, i) {
+  O$u(t, i) {
     if (this.Data) {
       this.Data[t] = i;
     }
-    this.aHu();
+    this.k$u();
   }
-  aHu() {
+  k$u() {
     if (this.RootItem && this.Data) {
-      this.RootItem.SetAnchorOffsetX(this.oHu + this.Data.OffsetX);
-      this.RootItem.SetAnchorOffsetY(this.nHu + this.Data.OffsetY);
-      this.rHu.X = this.Data.Scale;
-      this.rHu.Y = this.Data.Scale;
-      this.RootItem.SetUIItemScale(this.rHu);
+      this.RootItem.SetAnchorOffsetX(this.SQu + this.Data.OffsetX);
+      this.RootItem.SetAnchorOffsetY(this.MQu + this.Data.OffsetY);
+      this.U$u.X = this.Data.Scale;
+      this.U$u.Y = this.Data.Scale;
+      this.RootItem.SetUIItemScale(this.U$u);
       this.RootItem.SetUIItemAlpha(this.Data.Alpha);
       this.RootItem.SetHierarchyIndex(this.Data.HierarchyIndex);
       TouchUiEditViewModel_1.TouchUiEditViewModel.NotifySelectedItemChange(this);
@@ -169,7 +169,7 @@ class CommonTouchUiEditItem {
     t.Y = MathUtils_1.MathUtils.Clamp(t.Y, r, s);
     return t;
   }
-  b_d(t) {
+  Yfd(t) {
     var t = this.t0t(t);
     var i = this.RootItem.GetAnchorOffsetX();
     var s = this.RootItem.GetAnchorOffsetY();

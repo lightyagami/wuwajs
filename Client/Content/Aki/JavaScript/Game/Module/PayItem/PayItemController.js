@@ -25,7 +25,7 @@ const ReconnectDefine_1 = require("../ReConnect/ReconnectDefine");
 const SdkViewData_1 = require("../SdkUI/SdkViewData");
 class PayItemController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26231, e => {
+    Net_1.Net.Register(23716, e => {
       e = {
         PayItemId: e.s5n,
         OrderId: e.CBs,
@@ -36,11 +36,11 @@ class PayItemController extends UiControllerBase_1.UiControllerBase {
       PayItemController.KOi();
       ModelManager_1.ModelManager.PayItemModel.CleanPayingItemName();
     });
-    Net_1.Net.Register(26738, PayItemController.QOi);
+    Net_1.Net.Register(27192, PayItemController.QOi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26738);
-    Net_1.Net.UnRegister(26231);
+    Net_1.Net.UnRegister(27192);
+    Net_1.Net.UnRegister(23716);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.gSe);
@@ -61,11 +61,11 @@ class PayItemController extends UiControllerBase_1.UiControllerBase {
     e.s5n = o;
     e.K7n = ModelManager_1.ModelManager.PayItemModel.Version;
     ModelManager_1.ModelManager.PayItemModel.UpdatePayingItemName(o);
-    Net_1.Net.Call(22380, e, e => {
+    Net_1.Net.Call(27055, e, e => {
       var r;
       var t;
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27457);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27969);
       } else {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Shop", 10, "PayShop:ShopItem 充值请求成功,调用SDK接口", ["Id", o]);
@@ -94,8 +94,8 @@ class PayItemController extends UiControllerBase_1.UiControllerBase {
   static async SendPayItemInfoRequestAsync() {
     var e = Protocol_1.Aki.Protocol.Hhs.create();
     e.K7n = ModelManager_1.ModelManager.PayItemModel.Version;
-    var e = await Net_1.Net.CallAsync(17634, e);
-    return !!e && !(e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27342), !e.K7n) && !!e.OUs && !(ModelManager_1.ModelManager.PayItemModel.Version = e.K7n, ModelManager_1.ModelManager.PayItemModel.InitDataListByServer(e.OUs), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshPayShopInstanceRedDot, 100), 0);
+    var e = await Net_1.Net.CallAsync(18248, e);
+    return !!e && !(e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18515), !e.K7n) && !!e.OUs && !(ModelManager_1.ModelManager.PayItemModel.Version = e.K7n, ModelManager_1.ModelManager.PayItemModel.InitDataListByServer(e.OUs), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshPayShopInstanceRedDot, 100), 0);
   }
   static async QueryProductInfoAsync(e) {
     if (e.length === 0) {

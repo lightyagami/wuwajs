@@ -8,9 +8,12 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../Core/Common/Log");
+const ExternalSourceSettingById_1 = require("../../../Core/Define/ConfigQuery/ExternalSourceSettingById");
+const PlotAudioById_1 = require("../../../Core/Define/ConfigQuery/PlotAudioById");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
+const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal");
 const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -25,6 +28,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const UiManager_1 = require("../../Ui/UiManager");
 const LevelLoadingController_1 = require("../LevelLoading/LevelLoadingController");
+const PlotAudioModel_1 = require("./PlotAudioModel");
 const PlotCleanRange_1 = require("./PlotCleanRange");
 const PlotController_1 = require("./PlotController");
 const PlotData_1 = require("./PlotData");
@@ -61,6 +65,7 @@ class PlotConfig {
     this.IsAutoPlay = false;
     this.IsAutoPlayCache = false;
     this.PlotLevel = undefined;
+    this.SubtitleLevel = undefined;
     this.ShouldSwitchMainRole = false;
     this.PauseTime = false;
     this.SkipTalkWhenFighting = false;
@@ -150,6 +155,13 @@ class PlotConfig {
         this.SkipHiddenBlackScreenAtEnd = true;
         PlotController_1.PlotController.EnableViewControl(false);
     }
+    if (t.SubtitleStyle) {
+      if (t.SubtitleStyle.Type === IAction_1.ESubtitleStyle.LevelA) {
+        this.SubtitleLevel = "LevelA";
+      }
+    } else {
+      this.SubtitleLevel = this.PlotLevel;
+    }
   }
 }
 exports.PlotConfig = PlotConfig;
@@ -208,11 +220,12 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.InDigitalScreen = false;
     this.CanClick = false;
     this.CanControlView = false;
-    this.BZu = false;
+    this.rHu = false;
     this.LastPlotColor = exports.INVALID_NUM;
     this.LastPlotAspect = exports.INVALID_NUM;
     this.BlackScreenNowAspect = exports.INVALID_NUM;
     this.BlackScreenLastAspect = exports.INVALID_NUM;
+    this.MapPlotLevelSort = new Map([["LevelA", 1], ["LevelB", 2], ["LevelC", 3], ["LevelD", 4], ["Prompt", 5]]);
     this.PlotAspectTransformView = undefined;
     this.HasLoadEventType = false;
     this.OnShowCenterTextFinished = () => {
@@ -243,24 +256,46 @@ class PlotModel extends ModelBase_1.ModelBase {
       if (!this.IsInPlot) {
         return true;
       }
-      this.PendingPlot(t);
-      if (this.PlotConfig.PlotLevel === "LevelD" || this.PlotConfig.PlotLevel === "Prompt" && t.PlotLevel !== "LevelD" && t.PlotLevel !== "Prompt") {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Plot", 26, "打断当前DE级剧情", ["Level", this.PlotConfig.PlotLevel], ["FlowIncId", this.PlotResult.FlowIncId], ["FlowListName", this.PlotResult.FlowListName], ["FlowId", this.PlotResult.FlowId], ["PlotState", this.PlotResult.StateId]);
+      if ((this.PlotConfig.PlotLevel === "Prompt" || t.PlotLevel !== "Prompt") && this.PendingPlot(t)) {
+        if (this.PlotConfig.PlotLevel === "LevelD" || this.PlotConfig.PlotLevel === "Prompt") {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Plot", 26, "打断当前DE级剧情", ["Level", this.PlotConfig.PlotLevel], ["FlowIncId", this.PlotResult.FlowIncId], ["FlowListName", this.PlotResult.FlowListName], ["FlowId", this.PlotResult.FlowId], ["PlotState", this.PlotResult.StateId]);
+          }
+          if (this.IsServerNotify) {
+            ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("被别的剧情打断当前的D级剧情", false);
+          } else {
+            ControllerHolder_1.ControllerHolder.FlowController.FinishFlow("客户端剧情被新的剧情中断");
+          }
         }
-        if (this.IsServerNotify) {
-          ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("被别的剧情打断当前的D级剧情", false);
-        } else {
-          ControllerHolder_1.ControllerHolder.FlowController.FinishFlow("客户端剧情被新的剧情中断");
-        }
+      } else {
+        this.Gqd(t);
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Plot", 7, "[PlotModel.PlotSetupHandle] 无法找到对应剧情状态", ["PlotStateId", t.StateId]);
     }
     return false;
   }
+  Gqd(t) {
+    var e;
+    var i;
+    if (t.BlockAudio) {
+      t = PlotAudioById_1.configPlotAudioById.GetConfig(t.BlockAudio);
+      e = ExternalSourceSettingById_1.configExternalSourceSettingById.GetConfig(t.ExternalSourceSetting);
+      t = PlotAudioModel_1.PlotAudioModel.GetExternalSourcesMediaName(t);
+      i = (0, AudioSystem_1.parseAudioEventPath)(e.SubtitleEvent);
+      AudioSystem_1.AudioSystem.PostEvent(i, undefined, {
+        ExternalSourceName: e.SubtitleSrc,
+        ExternalSourceMediaName: t
+      });
+    }
+  }
   IsInHighLevelPlot() {
     return this.IsInPlot && this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt";
+  }
+  IsInOverLevel(t) {
+    var e = this.MapPlotLevelSort.get(this.PlotConfig.PlotLevel);
+    var t = this.MapPlotLevelSort.get(t);
+    return e !== undefined && t !== undefined && e < t;
   }
   IsInSequencePlot() {
     return this.IsInPlot && (this.PlotConfig.PlotLevel === "LevelA" || this.PlotConfig.PlotLevel === "LevelB");
@@ -268,17 +303,14 @@ class PlotModel extends ModelBase_1.ModelBase {
   PendingPlot(e) {
     for (let t = this.PlotPendingList.length - 1; t >= 0; t--) {
       var i = this.PlotPendingList[t];
-      if (i.PlotLevel === "LevelD") {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Plot", 26, "缓存队列中的D级剧情被中断/后台播放", ["FlowIncId", i.FlowIncId], ["FlowListName", i.FlowListName], ["FlowId", i.FlowId], ["PlotState", i.StateId], ["IsServer", i.IsServerNotify]);
-        }
-      } else {
-        if (i.PlotLevel !== "Prompt" || e.PlotLevel !== "LevelA" && e.PlotLevel !== "LevelB" && e.PlotLevel !== "LevelC") {
-          break;
-        }
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Plot", 26, "缓存队列中的E级剧情被中断/后台播放", ["FlowIncId", i.FlowIncId], ["FlowListName", i.FlowListName], ["FlowId", i.FlowId], ["PlotState", i.StateId], ["IsServer", i.IsServerNotify]);
-        }
+      if (i.PlotLevel !== "Prompt" && e.PlotLevel === "Prompt") {
+        return false;
+      }
+      if (i.PlotLevel !== "LevelD" && i.PlotLevel !== "Prompt") {
+        break;
+      }
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Plot", 26, "缓存队列中的D级剧情被中断/后台播放", ["FlowIncId", i.FlowIncId], ["FlowListName", i.FlowListName], ["FlowId", i.FlowId], ["PlotState", i.StateId], ["IsServer", i.IsServerNotify]);
       }
       if (i.IsServerNotify) {
         i.IsBackground = true;
@@ -290,13 +322,14 @@ class PlotModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Plot", 26, "剧情被缓存", ["FlowIncId", e.FlowIncId], ["FlowListName", e.FlowListName], ["FlowId", e.FlowId], ["PlotState", e.StateId]);
     }
+    return true;
   }
   SetPendingPlotState(t, e, i, o) {
-    for (const s of this.PlotPendingList) {
-      if (s.FlowIncId === t) {
-        s.IsBackground = i;
-        s.IsBreakdown = e;
-        s.IsServerEnd = o;
+    for (const r of this.PlotPendingList) {
+      if (r.FlowIncId === t) {
+        r.IsBackground = i;
+        r.IsBreakdown = e;
+        r.IsServerEnd = o;
         return true;
       }
     }
@@ -416,7 +449,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   HYi() {
     var t;
     var e;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(297)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+    if (this.PlotConfig.PlotLevel !== "LevelD" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(298)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
       e.CanSkillInterrupt = true;
     }
   }
@@ -438,7 +471,7 @@ class PlotModel extends ModelBase_1.ModelBase {
           break;
         case 1:
           CameraController_1.CameraController.ExitDialogMode();
-          if (this.PlotConfig.PlotLevel !== "LevelD") {
+          if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt") {
             CameraController_1.CameraController.ExitCameraMode(1, 0, 0, 0);
           }
           break;
@@ -501,9 +534,9 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   YYi(t, e) {
     let i = true;
-    for (const s of t.PreCondition.PreOptions) {
+    for (const r of t.PreCondition.PreOptions) {
       var o = this.GrayOptionMap.get(e.Id);
-      i = i && !!o && o.has(s);
+      i = i && !!o && o.has(r);
     }
     return i;
   }
@@ -725,10 +758,10 @@ class PlotModel extends ModelBase_1.ModelBase {
     return this.NYi.get(t);
   }
   UpdateLastViewControl() {
-    this.BZu = this.CanControlView;
+    this.rHu = this.CanControlView;
   }
   GetLastViewControl() {
-    return this.BZu;
+    return this.rHu;
   }
 }
 exports.PlotModel = PlotModel;

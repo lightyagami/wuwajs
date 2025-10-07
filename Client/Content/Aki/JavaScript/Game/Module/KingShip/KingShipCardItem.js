@@ -30,36 +30,36 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Gco = Rotator_1.Rotator.Create();
-    this.vFu = Rotator_1.Rotator.Create();
+    this.UFu = Rotator_1.Rotator.Create();
     this.JSu = Vector_1.Vector.Create();
     this.ZSu = Vector_1.Vector.Create();
-    this.EJu = Vector_1.Vector.Create();
+    this.dWc = Vector_1.Vector.Create();
     this.eUo = 1;
     this.tUo = 1;
     this.rUo = 0;
     this.eMu = 0;
     this.tMu = 0;
     this.iMu = 0;
-    this.yFu = 0;
+    this.DFu = 0;
     this.rMu = undefined;
-    this.Uzc = undefined;
+    this.qZc = undefined;
     this.YGl = undefined;
     this.L8e = undefined;
     this.oMu = undefined;
     this.nMu = undefined;
     this.sMu = undefined;
-    this.IJu = undefined;
-    this.TJu = undefined;
-    this.bJu = undefined;
-    this.RJu = undefined;
-    this.wJu = undefined;
-    this.LJu = undefined;
-    this.AJu = undefined;
-    this.PJu = undefined;
-    this.DJu = undefined;
-    this.xJu = undefined;
-    this.UJu = undefined;
-    this.Bzc = undefined;
+    this.L$c = undefined;
+    this.A$c = undefined;
+    this.mWc = undefined;
+    this.fWc = undefined;
+    this.gWc = undefined;
+    this.P$c = undefined;
+    this.D$c = undefined;
+    this.x$c = undefined;
+    this.fQc = undefined;
+    this.PYc = undefined;
+    this.DYc = undefined;
+    this.GZc = undefined;
     this.dUo = 0;
     this.aMu = 0;
     this.RightEnd = false;
@@ -68,11 +68,11 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     this.OnClearPostionMax = undefined;
     this.ContentItem = undefined;
     this.SPe = undefined;
-    this.BJu = 0;
-    this.kJu = new UE.FName("OffsetX");
-    this.OJu = new UE.FName("OffsetY");
+    this.B$c = 0;
+    this.k$c = new UE.FName("OffsetX");
+    this.O$c = new UE.FName("OffsetY");
     this.OnCallBackDropSequence = undefined;
-    this.qJu = false;
+    this.JXc = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UITexture], [5, UE.UITexture], [18, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UISprite], [12, UE.UIText], [13, UE.UITexture], [14, UE.UITexture], [15, UE.UITexture], [16, UE.UITexture], [20, UE.UITexture], [17, UE.UITexture], [21, UE.UITexture], [19, UE.UIItem], [22, UE.UIItem]];
@@ -82,7 +82,7 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsCard_RotatorA");
     const s = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveVector, t => {
-      this.IJu = t;
+      this.L$c = t;
       s.SetResult(undefined);
     });
     t.push(s);
@@ -96,28 +96,28 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsCard_Offset");
     const e = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
-      this.TJu = t;
+      this.A$c = t;
       e.SetResult(undefined);
     });
     t.push(e);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_Alpha");
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
-      this.RJu = t;
+      this.fWc = t;
       o.SetResult(undefined);
     });
     t.push(o);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_OffsetA");
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
-      this.bJu = t;
+      this.mWc = t;
       r.SetResult(undefined);
     });
     t.push(r);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_OffsetB");
     const a = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
-      this.wJu = t;
+      this.gWc = t;
       a.SetResult(undefined);
     });
     t.push(a);
@@ -136,19 +136,19 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.rMu = this.GetItem(19);
-    this.Uzc = this.GetItem(18);
+    this.qZc = this.GetItem(18);
     this.rMu?.SetUIRelativeRotation(this.Gco.ToUeRotator());
     this.YGl = this.GetItem(8);
     this.L8e = this.GetItem(7);
     this.oMu = this.GetTexture(5);
     this.nMu = this.GetTexture(4);
-    this.LJu = this.GetTexture(16);
-    this.AJu = this.GetTexture(15);
-    this.PJu = this.GetTexture(14);
-    this.DJu = this.GetTexture(13);
-    this.xJu = this.GetTexture(20);
-    this.UJu = this.GetTexture(17);
-    this.Bzc = this.GetTexture(21);
+    this.P$c = this.GetTexture(16);
+    this.D$c = this.GetTexture(15);
+    this.x$c = this.GetTexture(14);
+    this.fQc = this.GetTexture(13);
+    this.PYc = this.GetTexture(20);
+    this.DYc = this.GetTexture(17);
+    this.GZc = this.GetTexture(21);
     this.GetItem(9).SetUIActive(false);
     this.ZSu.Y = this.oMu.RelativeLocation.Y;
     this.eMu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipViewPortPercentage") ?? 0;
@@ -156,13 +156,13 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     this.eUo = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipGamepadInputRate") ?? 0;
     this.tUo = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipMobileRotateInputRate") ?? 0;
     this.iMu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipXLocationWhenPitch") ?? 0;
-    this.yFu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipCardContentTextRotateRate") ?? 0;
+    this.DFu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipCardContentTextRotateRate") ?? 0;
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe.BindSequenceCloseEvent(t => {
       if (t === "DropL" || t === "DropR") {
         this.OnCallBackDropSequence?.(t === "DropR");
-        this.BJu++;
-        if (this.qJu) {
+        this.B$c++;
+        if (this.JXc) {
           this.SPe?.PlayLevelSequenceByName("FlipB");
         } else {
           this.GetItem(9).SetUIActive(false);
@@ -174,13 +174,13 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
       if (t === "ResetL" || t === "ResetR") {
         this.ClearCardItemRotation();
       }
-      this.BJu--;
+      this.B$c--;
     });
   }
   RefreshCardItemByShowTalk(t, i) {
-    this.qJu = false;
+    this.JXc = false;
     if (i) {
-      this.GJu(i);
+      this.xYc(i);
     }
     i = t ? SpeakerById_1.configSpeakerById.GetConfig(t) : undefined;
     if (i) {
@@ -197,7 +197,7 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshCardItemByCallCard(t) {
-    this.qJu = false;
+    this.JXc = false;
     this.GetItem(9).SetUIActive(true);
     this.GetText(0).SetUIActive(false);
     this.GetText(1).SetUIActive(false);
@@ -206,7 +206,7 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     var i = ConfigManager_1.ConfigManager.KingShipConfig.GetReignsCallCard(t);
     if (i) {
       if (i.CardBackground) {
-        this.GJu(i.CardBackground);
+        this.xYc(i.CardBackground);
       }
       this.GetText(12).SetUIActive(false);
       i = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + t + "_CardTitle");
@@ -215,7 +215,7 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshCardItemByBuffCard(t) {
-    this.qJu = true;
+    this.JXc = true;
     this.GetItem(9).SetUIActive(true);
     this.GetText(0).SetUIActive(false);
     this.GetText(1).SetUIActive(false);
@@ -224,39 +224,39 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(22).SetUIActive(true);
     var i;
     var s = ConfigManager_1.ConfigManager.KingShipConfig.GetReignsCallCard(t);
-    if (s && (s.CardBackground && this.GJu(s.CardBackground), i = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + t + "_CardDesc"), this.GetText(12).SetText(i), i = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + t + "_CardTitle"), this.GetText(2).SetText(i), this.GetSprite(11).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(s.CardIcon)), s.CardIcon)) {
+    if (s && (s.CardBackground && this.xYc(s.CardBackground), i = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + t + "_CardDesc"), this.GetText(12).SetText(i), i = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + t + "_CardTitle"), this.GetText(2).SetText(i), this.GetSprite(11).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(s.CardIcon)), s.CardIcon)) {
       this.SetSpriteByPath(s.CardIcon, this.GetSprite(11), false);
     }
   }
-  GJu(t) {
-    this.LJu?.SetUIActive(false);
-    this.AJu?.SetUIActive(false);
-    this.PJu?.SetUIActive(false);
-    this.DJu?.SetUIActive(false);
-    this.xJu?.SetUIActive(false);
-    this.UJu?.SetUIActive(false);
-    this.ptd(t).finally(() => {
-      this.LJu?.SetUIActive(true);
-      this.AJu?.SetUIActive(true);
-      this.PJu?.SetUIActive(true);
-      this.DJu?.SetUIActive(true);
-      this.xJu?.SetUIActive(true);
-      this.UJu?.SetUIActive(true);
+  xYc(t) {
+    this.P$c?.SetUIActive(false);
+    this.D$c?.SetUIActive(false);
+    this.x$c?.SetUIActive(false);
+    this.fQc?.SetUIActive(false);
+    this.PYc?.SetUIActive(false);
+    this.DYc?.SetUIActive(false);
+    this.Ard(t).finally(() => {
+      this.P$c?.SetUIActive(true);
+      this.D$c?.SetUIActive(true);
+      this.x$c?.SetUIActive(true);
+      this.fQc?.SetUIActive(true);
+      this.PYc?.SetUIActive(true);
+      this.DYc?.SetUIActive(true);
     });
   }
-  async ptd(t) {
+  async Ard(t) {
     var i = [];
-    i.push(this.SetTextureAsync(t, this.LJu));
+    i.push(this.SetTextureAsync(t, this.P$c));
     var s = t.replace("_A", "_B").replace("_A", "_B");
-    i.push(this.SetTextureAsync(s, this.AJu));
+    i.push(this.SetTextureAsync(s, this.D$c));
     var s = t.replace("_A", "_C").replace("_A", "_C");
-    i.push(this.SetTextureAsync(s, this.PJu));
+    i.push(this.SetTextureAsync(s, this.x$c));
     var s = t.replace("_A", "_D").replace("_A", "_D");
-    i.push(this.SetTextureAsync(s, this.DJu));
+    i.push(this.SetTextureAsync(s, this.fQc));
     var s = t.replace("_A", "_E").replace("_A", "_E");
-    i.push(this.SetTextureAsync(s, this.xJu));
+    i.push(this.SetTextureAsync(s, this.PYc));
     var s = t.replace("_A", "_F").replace("_A", "_F");
-    i.push(this.SetTextureAsync(s, this.UJu));
+    i.push(this.SetTextureAsync(s, this.DYc));
     await Promise.all(i);
   }
   SetCardItemInputPitch(t) {
@@ -282,7 +282,7 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     this.aMu = 0;
   }
   Update(t) {
-    if (!(this.BJu > 0) && !!this.IsShowOrShowing) {
+    if (!(this.B$c > 0) && !!this.IsShowOrShowing) {
       if (MathUtils_1.MathUtils.IsNearlyZero(this.aMu)) {
         this.TUo(t);
       } else {
@@ -357,24 +357,24 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
   }
   cMu() {
     var t = this.Gco.Pitch / this.tMu;
-    var i = this.IJu?.GetVectorValue(t);
+    var i = this.L$c?.GetVectorValue(t);
     this.Gco.Roll = i?.X ?? 0;
     this.Gco.Yaw = i?.Z ?? 0;
-    this.JSu.X = (this.TJu?.GetFloatValue(t) ?? 0) * this.iMu;
-    this.Uzc?.SetUIRelativeLocation(this.JSu.ToUeVectorOld());
+    this.JSu.X = (this.A$c?.GetFloatValue(t) ?? 0) * this.iMu;
+    this.qZc?.SetUIRelativeLocation(this.JSu.ToUeVectorOld());
     this.rMu?.SetUIRelativeRotation(this.Gco.ToUeRotator());
-    this.vFu.Pitch = this.Gco.Pitch * this.yFu;
-    this.ContentItem?.SetUIRelativeRotation(this.vFu.ToUeRotator());
-    this.LJu?.SetCustomMaterialScalarParameter(this.kJu, this.Gco.Pitch * MATERIAL_LAYA);
-    this.LJu?.SetCustomMaterialScalarParameter(this.OJu, this.Gco.Roll * MATERIAL_LAYA);
-    this.AJu?.SetCustomMaterialScalarParameter(this.kJu, this.Gco.Pitch * MATERIAL_LAYB);
-    this.AJu?.SetCustomMaterialScalarParameter(this.OJu, this.Gco.Roll * MATERIAL_LAYB);
-    this.PJu?.SetCustomMaterialScalarParameter(this.kJu, this.Gco.Pitch * MATERIAL_LAYC);
-    this.PJu?.SetCustomMaterialScalarParameter(this.OJu, this.Gco.Roll * MATERIAL_LAYC);
-    this.DJu?.SetCustomMaterialScalarParameter(this.kJu, this.Gco.Pitch * MATERIAL_LAYD);
-    this.DJu?.SetCustomMaterialScalarParameter(this.OJu, this.Gco.Roll * MATERIAL_LAYD);
-    this.Bzc?.SetCustomMaterialScalarParameter(this.kJu, this.Gco.Pitch * MATERIAL_LAYG);
-    this.Bzc?.SetCustomMaterialScalarParameter(this.OJu, this.Gco.Roll * MATERIAL_LAYG);
+    this.UFu.Pitch = this.Gco.Pitch * this.DFu;
+    this.ContentItem?.SetUIRelativeRotation(this.UFu.ToUeRotator());
+    this.P$c?.SetCustomMaterialScalarParameter(this.k$c, this.Gco.Pitch * MATERIAL_LAYA);
+    this.P$c?.SetCustomMaterialScalarParameter(this.O$c, this.Gco.Roll * MATERIAL_LAYA);
+    this.D$c?.SetCustomMaterialScalarParameter(this.k$c, this.Gco.Pitch * MATERIAL_LAYB);
+    this.D$c?.SetCustomMaterialScalarParameter(this.O$c, this.Gco.Roll * MATERIAL_LAYB);
+    this.x$c?.SetCustomMaterialScalarParameter(this.k$c, this.Gco.Pitch * MATERIAL_LAYC);
+    this.x$c?.SetCustomMaterialScalarParameter(this.O$c, this.Gco.Roll * MATERIAL_LAYC);
+    this.fQc?.SetCustomMaterialScalarParameter(this.k$c, this.Gco.Pitch * MATERIAL_LAYD);
+    this.fQc?.SetCustomMaterialScalarParameter(this.O$c, this.Gco.Roll * MATERIAL_LAYD);
+    this.GZc?.SetCustomMaterialScalarParameter(this.k$c, this.Gco.Pitch * MATERIAL_LAYG);
+    this.GZc?.SetCustomMaterialScalarParameter(this.O$c, this.Gco.Roll * MATERIAL_LAYG);
   }
   dMu() {
     var t;
@@ -386,11 +386,11 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
       this.YGl?.SetUIActive(false);
       this.L8e?.SetUIActive(true);
       t = i / this.tMu;
-      this.ZSu.X = this.wJu?.GetFloatValue(t) ?? 0;
+      this.ZSu.X = this.gWc?.GetFloatValue(t) ?? 0;
       this.nMu?.SetUIRelativeLocation(this.ZSu.ToUeVectorOld());
-      this.L8e?.SetAlpha(this.RJu?.GetFloatValue(t) ?? 0);
-      this.EJu.X = this.bJu?.GetFloatValue(t) ?? 0;
-      this.L8e?.SetUIRelativeLocation(this.EJu.ToUeVectorOld());
+      this.L8e?.SetAlpha(this.fWc?.GetFloatValue(t) ?? 0);
+      this.dWc.X = this.mWc?.GetFloatValue(t) ?? 0;
+      this.L8e?.SetUIRelativeLocation(this.dWc.ToUeVectorOld());
       if (i >= this.tMu) {
         if (!this.LeftEnd) {
           this.OnPostionMaxCallBack?.(false);
@@ -407,11 +407,11 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
       this.YGl?.SetUIActive(true);
       this.L8e?.SetUIActive(false);
       t = i / this.tMu;
-      this.ZSu.X = this.wJu?.GetFloatValue(t) ?? 0;
+      this.ZSu.X = this.gWc?.GetFloatValue(t) ?? 0;
       this.oMu?.SetUIRelativeLocation(this.ZSu.ToUeVectorOld());
-      this.YGl?.SetAlpha(this.RJu?.GetFloatValue(t) ?? 0);
-      this.EJu.X = this.bJu?.GetFloatValue(t) ?? 0;
-      this.YGl?.SetUIRelativeLocation(this.EJu.ToUeVectorOld());
+      this.YGl?.SetAlpha(this.fWc?.GetFloatValue(t) ?? 0);
+      this.dWc.X = this.mWc?.GetFloatValue(t) ?? 0;
+      this.YGl?.SetUIRelativeLocation(this.dWc.ToUeVectorOld());
       if (i <= -this.tMu) {
         if (!this.RightEnd) {
           this.OnPostionMaxCallBack?.(true);
@@ -435,17 +435,17 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
   PlaySequenceByName(t) {
     this.SPe?.StopCurrentSequence(true, true);
     this.SPe?.PlayLevelSequenceByName(t);
-    this.BJu++;
+    this.B$c++;
     this.LeftEnd = false;
     this.RightEnd = false;
   }
   PlayReSetSequence() {
     if (this.YGl?.IsUIActiveSelf()) {
-      this.BJu++;
+      this.B$c++;
       this.SPe?.StopCurrentSequence(true, true);
       this.SPe?.PlayLevelSequenceByName("ResetR");
     } else if (this.L8e?.IsUIActiveSelf()) {
-      this.BJu++;
+      this.B$c++;
       this.SPe?.StopCurrentSequence(true, true);
       this.SPe?.PlayLevelSequenceByName("ResetL");
     }

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CameraModel = exports.CameraSpecificLockEntity = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = undefined;
+exports.CameraModel = exports.CameraSpecificLockEntity = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
@@ -45,6 +45,7 @@ const CAMERA_ADDITION_ARM_LENGTH_VALUE_DEFAULT = 50;
 const CAMERA_ADDITION_ARM_LENGTH_VALUE_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MAX = 2;
+exports.CAMER_DEFAULT_NEAR_CLIP = 10;
 exports.cameraModeDefault = new UE.FName("KuroDefault");
 exports.cameraModeLockOn = new UE.FName("KuroLockOn");
 exports.cameraModeWidget = new UE.FName("KuroWidget");
@@ -137,10 +138,10 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.Nhe = undefined;
     this.Ohe = true;
     this.l6a = new Set();
-    this.q9u = 0;
-    this.G9u = new Map();
-    this.F9u = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
-    this.pwl = false;
+    this.WWu = 0;
+    this.QWu = new Map();
+    this.KWu = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
+    this.sZc = new Set();
   }
   get CameraBaseYawSensitivity() {
     return this.Rhe;
@@ -168,6 +169,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     var t;
     if (this.IsEnableSpecificCameraSensitivity) {
       return this.SpecificCameraBaseYawSensitivity;
+    } else if ((this.FightCamera?.LogicComponent?.CameraInputController.SpecificCameraBaseYawSensitivity ?? -1) > 0) {
+      return this.FightCamera.LogicComponent.CameraInputController.SpecificCameraBaseYawSensitivity;
     } else {
       t = (t = this.Rhe) < CAMERA_DEFAULT_SENSITIVITY ? MathUtils_1.MathUtils.RangeClamp(t, CAMERA_MIN_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MIN_SENSITIVITY_MODIFIER, CAMERA_DEFAULT_SENSITIVITY_MODIFIER) : MathUtils_1.MathUtils.RangeClamp(t, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MAX_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY_MODIFIER, CAMERA_MAX_SENSITIVITY_MODIFIER);
       if (this.xhe) {
@@ -181,6 +184,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     var t;
     if (this.IsEnableSpecificCameraSensitivity) {
       return this.SpecificCameraBasePitchSensitivity;
+    } else if ((this.FightCamera?.LogicComponent?.CameraInputController.SpecificCameraBasePitchSensitivity ?? -1) > 0) {
+      return this.FightCamera.LogicComponent.CameraInputController.SpecificCameraBasePitchSensitivity;
     } else {
       t = (t = this.Uhe) < CAMERA_DEFAULT_SENSITIVITY ? MathUtils_1.MathUtils.RangeClamp(t, CAMERA_MIN_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MIN_SENSITIVITY_MODIFIER, CAMERA_DEFAULT_SENSITIVITY_MODIFIER) : MathUtils_1.MathUtils.RangeClamp(t, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MAX_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY_MODIFIER, CAMERA_MAX_SENSITIVITY_MODIFIER);
       if (this.whe) {
@@ -194,6 +199,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     var t;
     if (this.IsEnableSpecificCameraSensitivity) {
       return this.SpecificCameraAimingYawSensitivity;
+    } else if ((this.FightCamera?.LogicComponent?.CameraInputController.SpecificCameraAimingYawSensitivity ?? -1) > 0) {
+      return this.FightCamera.LogicComponent.CameraInputController.SpecificCameraAimingYawSensitivity;
     } else {
       t = (t = this.Ahe) < CAMERA_DEFAULT_SENSITIVITY ? MathUtils_1.MathUtils.RangeClamp(t, CAMERA_MIN_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MIN_SENSITIVITY_MODIFIER, CAMERA_DEFAULT_SENSITIVITY_MODIFIER) : MathUtils_1.MathUtils.RangeClamp(t, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MAX_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY_MODIFIER, CAMERA_MAX_SENSITIVITY_MODIFIER);
       if (this.Bhe) {
@@ -207,6 +214,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     var t;
     if (this.IsEnableSpecificCameraSensitivity) {
       return this.SpecificCameraAimingPitchSensitivity;
+    } else if ((this.FightCamera?.LogicComponent?.CameraInputController.SpecificCameraAimingPitchSensitivity ?? -1) > 0) {
+      return this.FightCamera.LogicComponent.CameraInputController.SpecificCameraAimingPitchSensitivity;
     } else {
       t = (t = this.Phe) < CAMERA_DEFAULT_SENSITIVITY ? MathUtils_1.MathUtils.RangeClamp(t, CAMERA_MIN_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MIN_SENSITIVITY_MODIFIER, CAMERA_DEFAULT_SENSITIVITY_MODIFIER) : MathUtils_1.MathUtils.RangeClamp(t, CAMERA_DEFAULT_SENSITIVITY, CAMERA_MAX_SENSITIVITY, CAMERA_DEFAULT_SENSITIVITY_MODIFIER, CAMERA_MAX_SENSITIVITY_MODIFIER);
       if (this.bhe) {
@@ -266,12 +275,18 @@ class CameraModel extends ModelBase_1.ModelBase {
   get FightCameraFinalDistance() {
     return this.FightCamera?.LogicComponent?.FinalCameraDistance ?? 0;
   }
-  get FirstPersonEnabled() {
-    return this.pwl;
+  get HideHeadEnabled() {
+    return this.sZc.size > 0;
   }
-  set FirstPersonEnabled(t) {
-    if (this.pwl !== t) {
-      if (this.pwl = t) {
+  SetHideHeadEnabled(t, e) {
+    var i = this.sZc.has(e);
+    if ((!t || !i) && (!!t || !!i)) {
+      if (t) {
+        this.sZc.add(e);
+      } else {
+        this.sZc.delete(e);
+      }
+      if (this.sZc.size > 0) {
         this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyHeadsOnly();
       } else {
         this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyAll();
@@ -399,20 +414,20 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.h6a || this.l6a.size > 0;
   }
   EnableCameraSpecificLockEntity(t, e) {
-    t = new CameraSpecificLockEntity(t, e, ++this.q9u);
-    this.F9u.Push(t);
-    this.G9u.set(t.Id, t);
+    t = new CameraSpecificLockEntity(t, e, ++this.WWu);
+    this.KWu.Push(t);
+    this.QWu.set(t.Id, t);
     return t.Id;
   }
   DisableCameraSpecificLockEntity(t) {
-    t = this.G9u.get(t);
+    t = this.QWu.get(t);
     if (t) {
       t.MarkDelete = true;
     }
   }
   GetCameraSpecificLockEntity() {
-    while (!this.F9u.Empty) {
-      var t = this.F9u.Top;
+    while (!this.KWu.Empty) {
+      var t = this.KWu.Top;
       if (!t) {
         return;
       }
@@ -420,8 +435,8 @@ class CameraModel extends ModelBase_1.ModelBase {
       if (!t.MarkDelete && e?.Valid) {
         return t;
       }
-      this.F9u.Pop();
-      this.G9u.delete(t.Id);
+      this.KWu.Pop();
+      this.QWu.delete(t.Id);
     }
   }
   OnInit() {
@@ -475,8 +490,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.dhe.Valid && this.Che.Valid && this.fhe.Valid && this.phe.Valid && this.vhe.Valid;
   }
   OnClear() {
-    this.F9u.Clear();
-    this.G9u.clear();
+    this.KWu.Clear();
+    this.QWu.clear();
     Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = 1;
     var t = EntitySystem_1.EntitySystem.Destroy(this.dhe);
     this.dhe = undefined;

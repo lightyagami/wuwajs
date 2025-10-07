@@ -161,12 +161,12 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     }
   }
   OnTick(t) {
-    this.t4u(t);
+    this.Mqu(t);
     if (this.NeedUpdateInputDirectAndFacing()) {
       this.UpdateVehicleInputDirectAndFacing();
     }
   }
-  t4u(t) {
+  Mqu(t) {
     if (this.InputCaches.length !== 0) {
       var s = t * TimeUtil_1.TimeUtil.Millisecond * (ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1);
       for (const e of this.InputCaches) {
@@ -657,7 +657,7 @@ let VehicleInputComponent = VehicleInputComponent_1 = class VehicleInputComponen
     return VehicleInputComponent_1.HoldActionMap.has(t);
   }
   NeedUpdateInputDirectAndFacing() {
-    return !!this.PerformComp?.CanBeenManipulated && !!this.PerformComp?.Drivers.size;
+    return !!this.PerformComp?.CanBeenManipulated && !!this.PerformComp?.Driver;
   }
   UpdateVehicleInputDirectAndFacing() {
     this.UpdateMoveCache();

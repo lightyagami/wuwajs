@@ -12,40 +12,32 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
     super(...arguments);
     this.wDe = 0;
     this.$Pe = "";
+    this.xXd = false;
   }
   ExecuteNew(e, t, n) {
     if (e) {
       this.wDe = e.EntityId;
       this.$Pe = e.Mark;
-      if (this.QYc(e.EntityId, e.Mark)) {
+      this.xXd = false;
+      this.CreateWaitEntityTask(e.EntityId);
+      if (this.KJc(e.EntityId, e.Mark)) {
         this.FinishExecute(true);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 18, "执行行为LevelEventWaitSceneRefEntityPlaySequence失败，参数错误");
     }
   }
+  ExecuteWhenEntitiesReady() {
+    this.xXd = true;
+  }
   OnTick(e) {
-    if (this.QYc(this.wDe, this.$Pe)) {
+    if (this.KJc(this.wDe, this.$Pe)) {
       this.FinishExecute(true);
     }
   }
-  QYc(e, t) {
+  KJc(e, t) {
     var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    if (n?.Entity?.Valid) {
-      if (n = n.Entity.GetComponent(164)) {
-        return n.IsPlayToMarkFinished(t);
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]);
-        }
-        return true;
-      }
-    } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体", ["pbDataId", e]);
-      }
-      return true;
-    }
+    return !n?.Entity?.Valid || !this.xXd || ((n = n.Entity.GetComponent(164)) ? n.IsPlayToMarkFinished(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]), true));
   }
 }
 exports.LevelEventWaitSceneRefEntityPlaySequence = LevelEventWaitSceneRefEntityPlaySequence;

@@ -34,6 +34,9 @@ class WeaponModelTransform {
   get AxisRotate() {
     return this.axisrotate();
   }
+  get ScabbardRotationOffset() {
+    return this.scabbardrotationoffset();
+  }
   __init(t, r) {
     this.z7 = t;
     this.J7 = r;
@@ -96,6 +99,14 @@ class WeaponModelTransform {
   }
   axisrotate(t) {
     var r = this.J7.__offset(this.z7, 18);
+    if (r) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + r), this.J7);
+    } else {
+      return null;
+    }
+  }
+  scabbardrotationoffset(t) {
+    var r = this.J7.__offset(this.z7, 20);
     if (r) {
       return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + r), this.J7);
     } else {

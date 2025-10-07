@@ -9,7 +9,7 @@ const MechanismEventCenter_1 = require("./MechanismEvent/MechanismEventCenter");
 class MechanismTimelineModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.$Fu = new WeakMap();
+    this.PNu = new WeakMap();
   }
   OnInit() {
     var e = super.OnInit();
@@ -22,16 +22,16 @@ class MechanismTimelineModel extends ModelBase_1.ModelBase {
   }
   RegisterSequenceContext(e, t) {
     if (e?.IsValid()) {
-      this.$Fu.set(e, t);
+      this.PNu.set(e, t);
     }
   }
   UnRegisterSequenceContext(e) {
     if (e?.IsValid()) {
-      this.$Fu.delete(e);
+      this.PNu.delete(e);
     }
   }
   GetContextByPlayer(e) {
-    return this.$Fu.get(e);
+    return this.PNu.get(e);
   }
 }
 exports.MechanismTimelineModel = MechanismTimelineModel;

@@ -46,7 +46,7 @@ class BasePlatform {
       r = this.EntityHandle.CreatureDataId;
       e.F4n = MathUtils_1.MathUtils.NumberToLong(r);
       e.phl = t;
-      Net_1.Net.Call(20679, e, t => {});
+      Net_1.Net.Call(27405, e, t => {});
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 31, "[BasePlatform.RequestEnterOrLeave] EntityHandle无效");
     }
@@ -85,7 +85,7 @@ class SceneItemBasePlatform extends BasePlatform {
     super(t);
     this.LeaveSphereRadiusSq = 0;
     this.CacheLocation = Vector_1.Vector.Create();
-    this.sVu = [];
+    this.Z2u = [];
     this.W$o = false;
     this.IsDeltaBaseSpeedNeedZ = true;
     var t = this.EntityHandle?.Entity.GetComponent(203);
@@ -111,7 +111,7 @@ class SceneItemBasePlatform extends BasePlatform {
         for (const s of e.VehicleFeatures) {
           if (s.Type === 8) {
             for (const i of s.PlayerAttachTags) {
-              this.sVu.push(i);
+              this.Z2u.push(i);
             }
             break;
           }
@@ -136,7 +136,7 @@ class SceneItemBasePlatform extends BasePlatform {
           (h = Vector_1.Vector.Create()).FromUeVector((0, puerts_1.$unref)(a));
           (a = Vector_1.Vector.Create()).FromUeVector((0, puerts_1.$unref)(s));
           a.Z += o.GetMaxJumpHeight();
-          t = this.uQc(r, a, h);
+          t = this.qQu(r, a, h);
         }
       } else {
         this.CacheLocation.DeepCopy(i.ActorLocationProxy);
@@ -149,8 +149,8 @@ class SceneItemBasePlatform extends BasePlatform {
       var a;
       var h;
       var n = e?.GetComponent(206);
-      if (this.sVu.length > 0) {
-        for (const f of this.sVu) {
+      if (this.Z2u.length > 0) {
+        for (const f of this.Z2u) {
           n?.RemoveTag(f);
         }
         this.RequestEnterOrLeave(false);
@@ -173,7 +173,7 @@ class SceneItemBasePlatform extends BasePlatform {
     }
     return true;
   }
-  uQc(t, e, r) {
+  qQu(t, e, r) {
     return t.X >= r.X - e.X && t.X <= r.X + e.X && t.Y >= r.Y - e.Y && t.Y <= r.Y + e.Y && t.Z >= r.Z - e.Z && t.Z <= r.Z + e.Z;
   }
   OnCharacterEnter(t, e) {
@@ -182,8 +182,8 @@ class SceneItemBasePlatform extends BasePlatform {
       var s = this.EntityHandle.Entity.GetComponent(203);
       var i = e?.GetOwner()?.GetEntityNoBlueprint();
       var o = i?.GetComponent(206);
-      if (this.sVu.length > 0) {
-        for (const a of this.sVu) {
+      if (this.Z2u.length > 0) {
+        for (const a of this.Z2u) {
           o?.AddTag(a);
         }
         this.RequestEnterOrLeave(true);
@@ -209,7 +209,7 @@ class VehicleBasePlatform extends BasePlatform {
     this.LeaveSphereRadiusSq = 0;
     this.BoneName = new UE.FName("Bone_Prop001");
     this.CacheLocation = Vector_1.Vector.Create();
-    this.sVu = [];
+    this.Z2u = [];
     this.IsDeltaBaseSpeedNeedZ = true;
     var t = this.EntityHandle?.Entity.GetComponent(203);
     var e = t?.GetInteractionMainActor();
@@ -233,7 +233,7 @@ class VehicleBasePlatform extends BasePlatform {
         for (const s of e.VehicleFeatures) {
           if (s.Type === 8) {
             for (const i of s.PlayerAttachTags) {
-              this.sVu.push(i);
+              this.Z2u.push(i);
             }
             break;
           }
@@ -259,8 +259,8 @@ class VehicleBasePlatform extends BasePlatform {
     var r = Vector_1.Vector.DistSquared(e, this.CacheLocation);
     if (r > this.LeaveSphereRadiusSq) {
       var s = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
-      if (this.sVu.length > 0) {
-        for (const i of this.sVu) {
+      if (this.Z2u.length > 0) {
+        for (const i of this.Z2u) {
           s?.RemoveTag(i);
         }
         this.RequestEnterOrLeave(false);
@@ -273,8 +273,8 @@ class VehicleBasePlatform extends BasePlatform {
     if (this.EntityHandle.Valid) {
       this.EntityHandle.Entity.GetComponent(115)?.SetTakeOverTick(true);
       var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
-      if (this.sVu.length > 0) {
-        for (const s of this.sVu) {
+      if (this.Z2u.length > 0) {
+        for (const s of this.Z2u) {
           r?.AddTag(s);
         }
         this.RequestEnterOrLeave(true);

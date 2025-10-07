@@ -103,7 +103,7 @@ class RogueBattleRoleBuffSelectView extends UiViewBase_1.UiViewBase {
       await Promise.all([this.OVc.RefreshByDataAsync(t.Data.LE1.QEc.fIc), this.clo.CreateByActorAsync(this.GetItem(0).GetOwner())]);
       this.AddChild(this.clo);
       this.clo.SetCloseBtnActive(false);
-      this.fjc();
+      this.YJu();
       this.OVc.SelectGridProxy(0, true);
     }
   }
@@ -113,7 +113,7 @@ class RogueBattleRoleBuffSelectView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
-  fjc() {
+  YJu() {
     var e = this.GetExtendToggle(6);
     var t = ModelManager_1.ModelManager.RogueBattleModel.DescMode === 1 ? 0 : 1;
     e?.SetToggleState(t);

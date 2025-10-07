@@ -122,6 +122,19 @@ class GachaConfig extends ConfigBase_1.ConfigBase {
   GetGachaViewTypeConfig(e) {
     return GachaViewTypeInfoByType_1.configGachaViewTypeInfoByType.GetConfig(e);
   }
+  GetShopIdByGachaItemId(a) {
+    var r = CommonParamById_1.configCommonParamById.GetIntArrayConfig("GachaItemIdToShopId");
+    if (r && r.length !== 0) {
+      for (let e = 0; e < r.length; e += 2) {
+        if (r[e] === a) {
+          return r[e + 1] ?? 0;
+        }
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Gacha", 43, "GachaItemIdToShopId配置为空");
+    }
+    return 0;
+  }
 }
 exports.GachaConfig = GachaConfig;
 //# sourceMappingURL=GachaConfig.js.map

@@ -48,27 +48,27 @@ class SplashScreenController extends ControllerBase_1.ControllerBase {
         if (UiManager_1.UiManager.IsNormalContainerEmpty()) {
           if (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) {
             if ((e = e.GetComponent(206)).HasTag(-1371021686) || e.HasTag(1996802261)) {
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("SplashScreenTask", 71, "处于战斗中，不运行开屏动画任务");
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("SplashScreenTask", 71, "处于战斗中，不运行开屏动画任务");
               }
             } else if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-              if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("SplashScreenTask", 71, "处于副本中，不运行开屏动画任务");
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("SplashScreenTask", 71, "处于副本中，不运行开屏动画任务");
               }
             } else {
               this.SplashScreenQueue.ProcessQueue();
             }
-          } else if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("SplashScreenTask", 71, "当前角色实体不存在，不运行开屏动画任务");
+          } else if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("SplashScreenTask", 71, "当前角色实体不存在，不运行开屏动画任务");
           }
-        } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SplashScreenTask", 71, "待打开界面队列不为空，不运行开屏动画任务");
+        } else if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SplashScreenTask", 71, "待打开界面队列不为空，不运行开屏动画任务");
         }
-      } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SplashScreenTask", 71, "未在战斗主界面，不运行开屏动画任务");
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SplashScreenTask", 71, "未在战斗主界面，不运行开屏动画任务");
       }
-    } else if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SplashScreenTask", 71, "世界未加载完成，且加载界面未关闭");
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SplashScreenTask", 71, "世界未加载完成，且加载界面未关闭");
     }
   }
   static ClearAllTasks() {
@@ -78,14 +78,14 @@ class SplashScreenController extends ControllerBase_1.ControllerBase {
 exports.SplashScreenController = SplashScreenController;
 (_a = SplashScreenController).SplashScreenQueue = new SplashScreenQueue_1.SplashScreenQueue();
 SplashScreenController.FWe = () => {
-  if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("SplashScreenTask", 71, "WorldDoneAndCloseLoading 尝试运行开屏动画任务");
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("SplashScreenTask", 71, "WorldDoneAndCloseLoading 尝试运行开屏动画任务");
   }
   _a.TryRunSplashScreenTask();
 };
 SplashScreenController.JDe = () => {
-  if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("SplashScreenTask", 71, "ActiveBattleView 尝试运行开屏动画任务");
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("SplashScreenTask", 71, "ActiveBattleView 尝试运行开屏动画任务");
   }
   _a.TryRunSplashScreenTask();
 };

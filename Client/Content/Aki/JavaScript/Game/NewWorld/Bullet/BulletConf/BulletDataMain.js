@@ -18,6 +18,7 @@ const BulletDataRender_1 = require("./BulletDataRender");
 const BulletDataScale_1 = require("./BulletDataScale");
 const BulletDataSummon_1 = require("./BulletDataSummon");
 const BulletDataTimeScale_1 = require("./BulletDataTimeScale");
+const TRACE_SIZE_MAX = 600;
 class BulletDataMain {
   constructor(e, t) {
     this.Data = e;
@@ -48,7 +49,30 @@ class BulletDataMain {
     return !(e.SpecialParams.size > 0) && e.BornPositionStandard === 0 && e.BlackboardKey === BulletDataMain.A8o && !!e.CenterOffset.IsZero() && !!e.BornPositionRandom.IsZero() && !!e.Rotator.IsNearlyZero() && !!e.BornDistLimit.IsZero() && !(e.CollisionActiveDuration > 0) && !(e.CollisionActiveDelay > 0) && e.HitType === 2 && e.DaHitTypePreset === BulletDataMain.A8o && !e.HitConditionTagId && !e.BanHitTagId && e.VictimCount === -1 && e.HitCountPerVictim === -1 && e.HitCountMax === -1 && !(e.Interval > 0) && !e.ShareCounter && e.HitEffectWeakness !== FNameUtil_1.FNameUtil.EMPTY && !!e.AttackDirection.IsNearlyZero() && !e.DestroyOnSkillEnd && !e.BornRequireTagIds && !e.BornForbidTagIds && !e.ContinuesCollision && !e.StickGround && !e.IgnoreGradient && e.SyncType === 0 && !e.TagId && !t.Aimed.AimedCtrlDir && !(t.Move.Speed > 0) && t.Move.FollowType === 1 && (e = t.Execution).SendGameplayEventTagToAttackerOnStart.TagName.length === 0 && e.SendGameplayEventTagToAttacker.TagName.length === 0 && e.SendGameplayEventTagToVictim.TagName.length === 0 && e.SendGameplayEventTagToAttackerOnEnd.TagName.length === 0 && !(e.SendGeIdToAttacker.length > 0) && !(e.SendGeIdToVictim.length > 0) && !(e.EnergyRecoverGeIds.length > 0) && !(e.SendGeIdToRoleInGame.length > 0) && !(e.GeIdApplyToVictim.length > 0) && (!e.GbDataList || !(e.GbDataList.length > 0)) && (e = t.Scale).SizeScale === Vector_1.Vector.OneVectorProxy && !e.ScaleCurve && !e.ShapeSwitch && !(t.Summon.EntityId > 0) && !(t.Children.length > 0) && !!t.Obstacle.Center.IsZero() && !(t.Obstacle.Radius > 0) && t.Interact.SceneInteract === BulletDataMain.A8o;
   }
   CheckValid() {
-    return !!this.Logic?.Data;
+    return !!this.Logic?.Data && (this.P8o(), true);
+  }
+  P8o() {
+    switch (this.Base.Shape) {
+      case 0:
+        this.Base.IsOversizeForTrace = this.Base.Size.GetMax() > TRACE_SIZE_MAX;
+        break;
+      case 1:
+        this.Base.IsOversizeForTrace = this.Base.Size.X > TRACE_SIZE_MAX;
+        break;
+      case 2:
+      case 3:
+        this.Base.IsOversizeForTrace = this.Base.Size.X > TRACE_SIZE_MAX || this.Base.Size.Z > TRACE_SIZE_MAX;
+        break;
+      case 6:
+      case 7:
+      case 8:
+      case 9:
+      case 4:
+        break;
+      default:
+        this.Base.IsOversizeForTrace = this.Base.Size.GetMax() > TRACE_SIZE_MAX;
+    }
+    return this.Base.IsOversizeForTrace;
   }
   Preload() {
     this.Base.Preload();

@@ -273,9 +273,9 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
   dfn(e = false, i = undefined) {
     var t = Protocol_1.Aki.Protocol.Ems.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
-    Net_1.Net.Call(18091, t, t => {
+    Net_1.Net.Call(16870, t, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28960);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21449);
       }
       this.ofn = t.ZLs;
       if (Log_1.Log.CheckInfo()) {

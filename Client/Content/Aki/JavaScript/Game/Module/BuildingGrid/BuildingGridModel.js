@@ -24,7 +24,7 @@ exports.BuildingGridCellModel = BuildingGridCellModel;
 class BuildingGridModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.eKu = new Map();
+    this.WKu = new Map();
   }
   UpdateGridCell(e) {
     var i = e.lEu?.jfu;
@@ -38,26 +38,26 @@ class BuildingGridModel extends ModelBase_1.ModelBase {
     if (!d) {
       return false;
     }
-    BuildingGridModel.tKu.X = l;
-    BuildingGridModel.tKu.Y = i;
-    if (!d.GetCellIndex(BuildingGridModel.tKu, BuildingGridModel.iKu)) {
+    BuildingGridModel.QKu.X = l;
+    BuildingGridModel.QKu.Y = i;
+    if (!d.GetCellIndex(BuildingGridModel.QKu, BuildingGridModel.KKu)) {
       return false;
     }
-    d = (0, puerts_1.$unref)(BuildingGridModel.iKu);
-    let t = this.eKu.get(r);
+    d = (0, puerts_1.$unref)(BuildingGridModel.KKu);
+    let t = this.WKu.get(r);
     if (!t) {
       if (!e.lWn) {
         return false;
       }
       t = new Map();
-      this.eKu.set(r, t);
+      this.WKu.set(r, t);
     }
     let o = t.get(d);
     if (!o) {
       if (!e.lWn) {
         return false;
       }
-      o = (o = BuildingGridModel.rKu.Get()) || BuildingGridModel.rKu.Create();
+      o = (o = BuildingGridModel.XKu.Get()) || BuildingGridModel.XKu.Create();
       t.set(d, o);
     }
     if (e.lWn) {
@@ -73,14 +73,14 @@ class BuildingGridModel extends ModelBase_1.ModelBase {
     } else {
       t.delete(d);
       if (t.size === 0) {
-        this.eKu.delete(r);
+        this.WKu.delete(r);
       }
-      BuildingGridModel.rKu.Put(o);
+      BuildingGridModel.XKu.Put(o);
     }
     return true;
   }
   IsCellPolluted(e, i) {
-    e = this.eKu.get(e);
+    e = this.WKu.get(e);
     if (e) {
       e = e.get(i);
       if (e) {
@@ -95,17 +95,17 @@ class BuildingGridModel extends ModelBase_1.ModelBase {
     return -1;
   }
   OnLeaveLevel() {
-    for (const e of this.eKu.values()) {
+    for (const e of this.WKu.values()) {
       for (const i of e.values()) {
-        BuildingGridModel.rKu.Put(i);
+        BuildingGridModel.XKu.Put(i);
       }
       e.clear();
     }
-    this.eKu.clear();
-    BuildingGridModel.rKu.Clear();
+    this.WKu.clear();
+    BuildingGridModel.XKu.Clear();
     return super.OnLeaveLevel();
   }
 }
-(exports.BuildingGridModel = BuildingGridModel).rKu = new Pool_1.Pool(100, () => new BuildingGridCellModel());
-BuildingGridModel.tKu = new UE.KuroBuildingGridCellVector();
-BuildingGridModel.iKu = (0, puerts_1.$ref)(0); //# sourceMappingURL=BuildingGridModel.js.map
+(exports.BuildingGridModel = BuildingGridModel).XKu = new Pool_1.Pool(100, () => new BuildingGridCellModel());
+BuildingGridModel.QKu = new UE.KuroBuildingGridCellVector();
+BuildingGridModel.KKu = (0, puerts_1.$ref)(0); //# sourceMappingURL=BuildingGridModel.js.map

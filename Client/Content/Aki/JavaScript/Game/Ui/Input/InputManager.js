@@ -21,18 +21,19 @@ const UiLayerType_1 = require("../Define/UiLayerType");
 const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
 const LguiEventSystemManager_1 = require("../LguiEventSystem/LguiEventSystemManager");
 const UiManager_1 = require("../UiManager");
+const UiModel_1 = require("../UiModel");
 const ViewHotKeyHandleDefine_1 = require("./Handle/ViewHotKeyHandleDefine");
+const ImmersiveMouseModule_1 = require("./ImmersiveMouseModule");
 const Input_1 = require("./Input");
 const InputExtraShowCursorCenter_1 = require("./InputExtraShowCursorCenter");
 const InputViewRecord_1 = require("./InputViewRecord");
 const ViewHotKeyHandleContainer_1 = require("./ViewHotKeyHandleContainer");
-const UiModel_1 = require("../UiModel");
 class InputManager {
   static Init() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerInit, this.il);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerDestroy, this.ht);
   }
-  static qzc(e) {
+  static VZc(e) {
     var t;
     if (!this.$ya.IsDataExist(e.Id)) {
       t = {
@@ -55,7 +56,7 @@ class InputManager {
       this.$ya.Add(t);
     }
   }
-  static Gzc(e) {
+  static jZc(e) {
     e = this.$ya.Get(e.ViewName);
     if (e) {
       for (const t of e) {
@@ -67,7 +68,7 @@ class InputManager {
     e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
     if (e) {
       for (const t of e) {
-        this.qzc(t);
+        this.VZc(t);
       }
     }
   }
@@ -75,7 +76,7 @@ class InputManager {
     e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
     if (e) {
       for (const t of e) {
-        this.Gzc(t);
+        this.jZc(t);
       }
     }
   }
@@ -125,26 +126,28 @@ class InputManager {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MoveCursorToRightDown, this.sX1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.RefreshStateOnPlatformChanged);
   }
-  static mmr(e) {
-    InputManager.dmr(e);
-    InputManager.Cmr(e);
-    InputManager.gmr(e);
+  static mmr(e, t) {
+    this.ImmersiveMouseModule?.RefreshMouseImmersiveMode();
+    InputManager.dmr(e, t);
+    InputManager.Cmr(e, t);
+    InputManager.gmr(e, t);
   }
-  static fmr(e) {
-    InputManager.pmr(e);
-    InputManager.vmr(e);
-    InputManager.Mmr(e);
+  static fmr(e, t) {
+    this.ImmersiveMouseModule?.RefreshMouseImmersiveMode();
+    InputManager.pmr(e, t);
+    InputManager.vmr(e, t);
+    InputManager.Mmr(e, t);
   }
-  static gmr(e) {
-    var t = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    if (t && !t.CanOpenViewByShortcutKey && (t = this.DisableShortcutKeyViewRecord.Add(e), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("InputManager", 10, "添加不允许打开界面快捷键的界面", ["viewName", e], ["length", this.DisableShortcutKeyViewRecord.Size()], ["count", t]);
+  static gmr(e, t) {
+    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    if (n && !n.CanOpenViewByShortcutKey && (n = this.DisableShortcutKeyViewRecord.Add(e), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("InputManager", 10, "添加不允许打开界面快捷键的界面", ["viewName", e], ["length", this.DisableShortcutKeyViewRecord.Size()], ["count", n]);
     }
   }
-  static vmr(e) {
-    var t;
-    if (this.DisableShortcutKeyViewRecord.Has(e) && (t = this.DisableShortcutKeyViewRecord.Remove(e), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("InputManager", 10, "删除不允许打开界面快捷键的界面", ["viewName", e], ["length", this.DisableShortcutKeyViewRecord.Size()], ["count", t ?? 0]);
+  static vmr(e, t) {
+    var n;
+    if (this.DisableShortcutKeyViewRecord.Has(e) && (n = this.DisableShortcutKeyViewRecord.Remove(e), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("InputManager", 10, "删除不允许打开界面快捷键的界面", ["viewName", e], ["length", this.DisableShortcutKeyViewRecord.Size()], ["count", n ?? 0]);
     }
   }
   static IsAllowOpenViewByShortcutKey() {
@@ -165,32 +168,32 @@ class InputManager {
         this.Imr();
     }
   }
-  static dmr(e) {
-    var t;
+  static dmr(e, t) {
+    var n;
     if (e === UiModel_1.UiModel.MainViewName) {
       InputManager.Tmr();
-    } else if (InputManager.Lmr() && (t = InputManager.IsShowMouseCursor(), InputManager.Dmr(e)) && !t) {
+    } else if (InputManager.Lmr() && (n = InputManager.IsShowMouseCursor(), InputManager.Dmr(e, t)) && !n) {
       InputManager.MoveCursorToCenter();
     }
   }
-  static Cmr(e) {
-    var t = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    if (t && t.IsShortKeysExitView && t.Type !== UiLayerType_1.ELayerType.Normal) {
+  static Cmr(e, t) {
+    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    if (n && n.IsShortKeysExitView && n.Type !== UiLayerType_1.ELayerType.Normal) {
       this.DisableCloseViewByShortcutKeyViewRecord.Add(e);
     }
   }
-  static Mmr(e) {
+  static Mmr(e, t) {
     this.DisableCloseViewByShortcutKeyViewRecord.Remove(e);
   }
-  static Dmr(e) {
-    var t;
-    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    return !!n && !(n.ShowCursorType === 2 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时显示鼠标 失败，原因是因为此界面的显示鼠标类型为：不影响鼠标显隐", ["viewName", e]), 1) : n.ShowCursorType === 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时显示鼠标 失败，原因是因为此界面的显示鼠标类型为：隐藏鼠标", ["viewName", e]), this.Zpc(e), 1) : (t = this.Umr.Add(e), InputManager.ymr !== 0 || (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时尝试显示鼠标成功", ["ViewName", e], ["ShowCursorType", n.ShowCursorType], ["count", t]), this.Zpc(e), 0)));
+  static Dmr(e, t) {
+    var n;
+    var a = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    return !!a && !(a.ShowCursorType === 2 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时显示鼠标 失败，原因是因为此界面的显示鼠标类型为：不影响鼠标显隐", ["viewName", e]), 1) : a.ShowCursorType === 0 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时显示鼠标 失败，原因是因为此界面的显示鼠标类型为：隐藏鼠标", ["viewName", e]), this.Zpc(e), 1) : (n = this.Umr.Add(e), InputManager.ymr !== 0 || (Log_1.Log.CheckInfo() && Log_1.Log.Info("InputManager", 10, "打开界面时尝试显示鼠标成功", ["ViewName", e], ["ShowCursorType", a.ShowCursorType], ["count", n]), this.Zpc(e), 0)));
   }
-  static pmr(e) {
-    var t = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    if (t) {
-      if (t.ShowCursorType === 2) {
+  static pmr(e, t) {
+    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    if (n) {
+      if (n.ShowCursorType === 2) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("InputManager", 10, "关闭界面时尝试隐藏失败，原因是因为UI表中，此界面的显示鼠标类型为：不影响鼠标显隐藏", ["viewName", e]);
         }
@@ -201,7 +204,7 @@ class InputManager {
       } else if (this.Umr.Has(e)) {
         this.Umr.Remove(e);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("InputManager", 10, "关闭界面时尝试隐藏鼠标成功", ["viewName", e], ["ShowCursorType", t.ShowCursorType]);
+          Log_1.Log.Info("InputManager", 10, "关闭界面时尝试隐藏鼠标成功", ["viewName", e], ["ShowCursorType", n.ShowCursorType]);
         }
         this.Zpc(e);
       } else if (Log_1.Log.CheckInfo()) {
@@ -210,7 +213,7 @@ class InputManager {
     }
   }
   static Zpc(e) {
-    var t = this.Umr.HasAny();
+    var t = this.Umr.HasAny() && !this.IsImmersiveMouseModeEnabled();
     this.SetAlwaysShowCursor(t);
     if (e !== "NetWorkMaskView") {
       if (t) {
@@ -237,7 +240,7 @@ class InputManager {
     } else {
       this.Amr = e;
     }
-    if (this.Amr !== this.Pmr && (t = ModelManager_1.ModelManager.LoadingModel) && !t.IsLoading) {
+    if (this.Amr !== this.Pmr) {
       this.SetShowCursor(this.Amr);
     }
   }
@@ -297,7 +300,7 @@ class InputManager {
   static MoveCursorToCenter() {
     var e;
     if (this.IsAutoMoveCursorToCenter && (e = this.Bmr())) {
-      InputManager.Fud(e);
+      InputManager.rSd(e);
     }
   }
   static aX1() {
@@ -327,7 +330,7 @@ class InputManager {
     var e = Global_1.Global.CharacterController;
     return !!e && !!e.IsValid();
   }
-  static Fud(e) {
+  static rSd(e) {
     Global_1.Global.CharacterController.SetMouseLocation(e.X, e.Y);
     InputManager.SetEventDataPrevPosition(e);
   }
@@ -340,6 +343,19 @@ class InputManager {
     if (e === Input_1.Input.OnlyRespondToKey) {
       Input_1.Input.OnlyRespondToKey = "";
     }
+  }
+  static PauseImmersiveMouseMode(e) {
+    if (this.ImmersiveMouseModule) {
+      this.ImmersiveMouseModule.PauseImmersiveMode(e);
+    }
+  }
+  static ResumeImmersiveMouseMode(e) {
+    if (this.ImmersiveMouseModule) {
+      this.ImmersiveMouseModule.ResumeImmersiveMode(e);
+    }
+  }
+  static IsImmersiveMouseModeEnabled() {
+    return this.ImmersiveMouseModule !== undefined && this.ImmersiveMouseModule.IsImmersiveModeEnabled();
   }
 }
 exports.InputManager = InputManager;
@@ -354,6 +370,7 @@ InputManager.m9s = undefined;
 InputManager.$ya = new ViewHotKeyHandleContainer_1.ViewHotKeyHandleContainer();
 InputManager.IsAutoMoveCursorToCenter = true;
 InputManager.IsAltPress = false;
+InputManager.ImmersiveMouseModule = undefined;
 InputManager.il = () => {
   if (!InputManager.gU) {
     InputManager.smr();
@@ -362,6 +379,8 @@ InputManager.il = () => {
     InputManager.DisableShortcutKeyViewRecord.Clear();
     InputManager.DisableCloseViewByShortcutKeyViewRecord.Clear();
     InputManager.IsAltPress = false;
+    _a.ImmersiveMouseModule = new ImmersiveMouseModule_1.ImmersiveMouseModule();
+    _a.ImmersiveMouseModule.Initialize();
   }
   UE.KuroInputFunctionLibrary.ClearInputModeReply();
 };
@@ -406,11 +425,11 @@ InputManager.hmr = (e, t) => {
     }
   }
 };
-InputManager.FQe = e => {
-  InputManager.mmr(e);
+InputManager.FQe = (e, t) => {
+  InputManager.mmr(e, t);
 };
-InputManager.$Ge = e => {
-  InputManager.fmr(e);
+InputManager.$Ge = (e, t) => {
+  InputManager.fmr(e, t);
 };
 InputManager.REt = () => {
   InputManager.Tmr();
@@ -423,7 +442,7 @@ InputManager.umr = () => {
 InputManager.sX1 = () => {
   var e = _a.aX1();
   if (e) {
-    InputManager.Fud(e);
+    InputManager.rSd(e);
   }
 };
 InputManager.nye = () => {

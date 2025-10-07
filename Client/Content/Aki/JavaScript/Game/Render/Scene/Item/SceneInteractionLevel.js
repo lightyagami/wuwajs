@@ -33,7 +33,7 @@ class SceneInteractionLevel {
     this.OnLevelStreamingHideCallback = undefined;
     this.t_r = false;
   }
-  Init(t, e, i, s, h, o, n, r, a = false, c = 0) {
+  Init(t, e, i, s, h, o, r, n, a = false, c = 0) {
     this.LevelStreamingDynamic = t;
     this.LevelName = e;
     this.Location = i;
@@ -46,12 +46,12 @@ class SceneInteractionLevel {
     this.LevelStreamingDynamic.bInitiallyLoaded = true;
     this.LevelStreamingDynamic.bInitiallyVisible = true;
     this.LevelStreamingDynamic.SetShouldBeLoaded(true);
-    this.LevelStreamingDynamic.SetShouldBeVisible(r);
+    this.LevelStreamingDynamic.SetShouldBeVisible(n);
     this.LoadingLevelComplete = false;
     this.IsDestroyed = false;
-    this.OnLevelStreamingShowCallback = n;
+    this.OnLevelStreamingShowCallback = r;
     if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", e], ["IsInitShow", a], ["afterLoadVisible", r]);
+      Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.Init]", ["HandleId", h], ["LevelName", e], ["IsInitShow", a], ["afterLoadVisible", n]);
     }
     this.LevelStreamingDynamic.OnLevelShown.Add(() => {
       this.i_r("Init");
@@ -69,7 +69,7 @@ class SceneInteractionLevel {
         }
       }
       this.LevelStreamingDynamic.SetShouldBeVisible(t);
-      if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
+      if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.ToggleLevelVisible]", ["HandleId", this.HandleId], ["LevelName", this.LevelName], ["Visible", t], ["NeedHidden", e], ["Reason", s]);
       }
       if (t) {
@@ -124,6 +124,7 @@ class SceneInteractionLevel {
     this.LevelStreamingDynamic = undefined;
     this.InteractionActor = undefined;
     this.OnLevelStreamingShowCallback = undefined;
+    this.OnLevelStreamingHideCallback = undefined;
   }
   Update(t) {
     if (!!this.Active && !this.IsDestroyed) {
@@ -203,7 +204,7 @@ class SceneInteractionLevel {
       this.InteractionActor.PlayIndependentEndEffect(t);
     }
   }
-  Xdd(t) {
+  HUd(t) {
     var i = ConfigManager_1.ConfigManager.RenderModuleConfig.LevelCustomPrimitiveData?.get(this.PbDataId);
     if (i && i.CustomPrimitiveDataIndex0.length > 0) {
       var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLevelActors(t);
@@ -212,20 +213,20 @@ class SceneInteractionLevel {
         if (h.IsValid()) {
           var o = h.K2_GetComponentsByClass(UE.StaticMeshComponent.StaticClass());
           for (let t = 0; t < o.Num(); t++) {
-            var n = o.Get(e);
-            if (n.IsValid()) {
+            var r = o.Get(e);
+            if (r.IsValid()) {
               switch (i.CustomPrimitiveDataIndex0.length) {
                 case CommonDefine_1.ONE:
-                  n.SetCustomPrimitiveDataFloat(CommonDefine_1.ZERO, i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO]);
+                  r.SetCustomPrimitiveDataFloat(CommonDefine_1.ZERO, i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO]);
                   break;
                 case CommonDefine_1.TWO:
-                  n.SetCustomPrimitiveDataVector2(CommonDefine_1.ZERO, new UE.Vector2D(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE]));
+                  r.SetCustomPrimitiveDataVector2(CommonDefine_1.ZERO, new UE.Vector2D(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE]));
                   break;
                 case CommonDefine_1.THREE:
-                  n.SetCustomPrimitiveDataVector3(CommonDefine_1.ZERO, new UE.Vector(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO]));
+                  r.SetCustomPrimitiveDataVector3(CommonDefine_1.ZERO, new UE.Vector(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO]));
                   break;
                 case CommonDefine_1.FOUR:
-                  n.SetCustomPrimitiveDataVector4(CommonDefine_1.ZERO, new UE.Vector4(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO], i.CustomPrimitiveDataIndex0[CommonDefine_1.THREE]));
+                  r.SetCustomPrimitiveDataVector4(CommonDefine_1.ZERO, new UE.Vector4(i.CustomPrimitiveDataIndex0[CommonDefine_1.ZERO], i.CustomPrimitiveDataIndex0[CommonDefine_1.ONE], i.CustomPrimitiveDataIndex0[CommonDefine_1.TWO], i.CustomPrimitiveDataIndex0[CommonDefine_1.THREE]));
                   break;
                 default:
                   if (Log_1.Log.CheckError()) {
@@ -261,13 +262,13 @@ class SceneInteractionLevel {
           }
           this.LevelStreamingDynamic?.OnLevelShown.Clear();
         });
-        this.Xdd(e);
+        this.HUd(e);
         if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelShow]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
         }
       } else {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作");
+          Log_1.Log.Error("RenderScene", 11, "找不到关卡蓝图,查看prefab是否按照规范进行制作", ["LevelName", this.LevelName]);
         }
         this.LevelStreamingDynamic.OnLevelShown.Clear();
       }

@@ -20,13 +20,13 @@ const OPTION_ITEM_OFFSET = 112;
 class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
   constructor() {
     super(...arguments);
-    this.KZu = 0;
+    this.pQc = 0;
     this.iIl = -1;
     this.fS1 = undefined;
-    this.XZu = [];
-    this.sjc = [];
+    this.vQc = [];
+    this.SQc = [];
     this.Tyr = undefined;
-    this.ajc = undefined;
+    this.MQc = undefined;
     this.lqt = () => {
       this.RefreshOnInputControllerChange();
     };
@@ -39,10 +39,10 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     }
   }
   SetPreloadQte(t) {
-    this.KZu = t;
+    this.pQc = t;
   }
   async OnBeforeStartAsync() {
-    var t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteConfig(this.KZu)?.BaseConfig.SelectOptionConfig;
+    var t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteConfig(this.pQc)?.BaseConfig.SelectOptionConfig;
     if (t) {
       var s = [];
       var o = t.UIConfigList;
@@ -60,12 +60,12 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
         var r = e[t];
         var m = new CommonQteSelectOptionItem_1.CommonQteSelectOptionItem();
         m.Init(t, n, this);
-        this.XZu.push(m);
+        this.vQc.push(m);
         s.push(m.CreateByActorAsync(r.GetOwner()));
         if (i) {
           m = i[t];
           (r = new CommonQteSelectOptionItem_1.CommonQteSelectOptionItem()).Init(t, n, this);
-          this.sjc.push(r);
+          this.SQc.push(r);
           s.push(r.CreateByActorAsync(m.GetOwner()));
         }
       }
@@ -87,12 +87,12 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
       this.GetItem(4)?.SetUIActive(false);
     } else {
       this.Tyr = this.GetSlider(11);
-      this.ajc = this.GetSlider(13);
+      this.MQc = this.GetSlider(13);
       this.GetItem(10)?.SetUIActive(false);
       this.GetItem(12)?.SetUIActive(false);
       this.SetAttachRootItem(this.GetItem(16));
     }
-    this.ljc();
+    this.IQc();
     this.RefreshOnInputControllerChange();
     this.SetUiActive(false);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
@@ -103,20 +103,20 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     if (!this.IsQteEnd && this.fS1?.IsActive()) {
       ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.fS1.HandleId);
     }
-    for (const t of this.XZu) {
+    for (const t of this.vQc) {
       t.Destroy();
     }
-    this.XZu.length = 0;
-    for (const e of this.sjc) {
+    this.vQc.length = 0;
+    for (const e of this.SQc) {
       e.Destroy();
     }
-    this.sjc.length = 0;
+    this.SQc.length = 0;
     this.fS1 = undefined;
     this.iIl = -1;
   }
   RefreshOnInputControllerChange() {
     var t;
-    if (this.sjc.length !== 0) {
+    if (this.SQc.length !== 0) {
       t = Info_1.Info.IsInGamepad();
       this.GetItem(4)?.SetUIActive(!t);
       this.GetItem(14)?.SetUIActive(!t);
@@ -131,17 +131,17 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
       }
     }
   }
-  ljc() {
-    switch (this.XZu.length) {
+  IQc() {
+    switch (this.vQc.length) {
       case 2:
-        this.XZu[0].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
+        this.vQc[0].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
         break;
       case 3:
-        this.XZu[1].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
+        this.vQc[1].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
         break;
       case 4:
-        this.XZu[1].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
-        this.XZu[2].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
+        this.vQc[1].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
+        this.vQc[2].SetAnchorOffsetX(OPTION_ITEM_OFFSET);
     }
   }
   SetQteContext(t) {
@@ -153,10 +153,10 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
       if (t.IsAttachToActor()) {
         (Info_1.Info.IsInTouch() ? this.GetItem(6) : (this.GetItem(14)?.SetAnchorOffset(Vector2D_1.Vector2D.ZeroVector), this.GetItem(15)))?.SetAnchorOffset(Vector2D_1.Vector2D.ZeroVector);
       }
-      for (const e of this.XZu) {
+      for (const e of this.vQc) {
         e.SetQteContext(t);
       }
-      for (const i of this.sjc) {
+      for (const i of this.SQc) {
         i.SetQteContext(t);
       }
       this.SetQteActive(t);
@@ -168,10 +168,10 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
       this.IsQtePlayStart = true;
       this.IsQteInteractive = true;
       this.SetUiActive(true);
-      for (const t of this.XZu) {
+      for (const t of this.vQc) {
         t.PlayQteStart();
       }
-      for (const e of this.sjc) {
+      for (const e of this.SQc) {
         e.PlayQteStart();
       }
       ControllerHolder_1.ControllerHolder.CommonQteController.SetExpiredTimer(this.fS1);
@@ -195,25 +195,25 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     if (!this.IsQteEnd) {
       this.IsQteEnd = true;
       this.ClearTickTimer();
-      for (const t of [...this.XZu]) {
+      for (const t of [...this.vQc]) {
         t.PlayQteEnd();
       }
-      for (const e of [...this.sjc]) {
+      for (const e of [...this.SQc]) {
         e.PlayQteEnd();
       }
     }
   }
   OnOptionItemPlayEnded(t) {
-    const e = this.XZu.indexOf(t);
+    const e = this.vQc.indexOf(t);
     if (e !== -1) {
-      this.XZu.splice(e, 1);
-    } else if (this.sjc.length > 0) {
-      const e = this.sjc.indexOf(t);
+      this.vQc.splice(e, 1);
+    } else if (this.SQc.length > 0) {
+      const e = this.SQc.indexOf(t);
       if (e !== -1) {
-        this.sjc.splice(e, 1);
+        this.SQc.splice(e, 1);
       }
     }
-    if (this.XZu.length === 0 && this.sjc.length === 0) {
+    if (this.vQc.length === 0 && this.SQc.length === 0) {
       this.Destroy();
     }
   }
@@ -243,7 +243,7 @@ class CommonQteSelectOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
           if (!this.fS1.IsPermanent) {
             t = this.fS1?.GetRemainingTimeProgress() ?? 1;
             this.Tyr?.SetValue(t);
-            this.ajc?.SetValue(t);
+            this.MQc?.SetValue(t);
           }
         }
       }

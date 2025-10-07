@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.WorldMapSecondaryUiComponent = undefined;
 const MapComponent_1 = require("../../Map/Base/MapComponent");
 const RogueResMapEntrancePanel_1 = require("../../PermanentRogue/View/RogueResMapEntrancePanel");
+const ActivityListPanel_1 = require("../SubViews/ActivityListPanel/ActivityListPanel");
 const ParkourEntrancePanel_1 = require("../SubViews/ActivityPanel/ParkourEntrancePanel");
 const BoxPanel_1 = require("../SubViews/BoxPanel/BoxPanel");
 const CaveHoleSecondaryPanel_1 = require("../SubViews/CaveHole/CaveHoleSecondaryPanel");
@@ -40,7 +41,7 @@ const WorldMapNotePanel_1 = require("../SubViews/WorldMapNote/WorldMapNotePanel"
 const WorldMapQuickNavigatePanel_1 = require("../SubViews/WorldMapQuickNavigate/WorldMapQuickNavigatePanel");
 const WorldMapDefine_1 = require("../WorldMapDefine");
 const WorldMapSecondaryUi_1 = require("./WorldMapSecondaryUi");
-const worldMapSecondaryPanelCtorMap = new Map([[WorldMapDefine_1.ESecondaryPanel.CustomMarkPanel, CustomMarkPanel_1.CustomMarkPanel], [WorldMapDefine_1.ESecondaryPanel.QuestPanel, QuestPanel_1.QuestPanel], [WorldMapDefine_1.ESecondaryPanel.GeneralPanel, GeneralPanel_1.GeneralPanel], [WorldMapDefine_1.ESecondaryPanel.MarkMenuPanel, MarkMenu_1.MarkMenu], [WorldMapDefine_1.ESecondaryPanel.ParkourPanel, ParkourEntrancePanel_1.ParkourEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.LordGymPanel, LordGymPanel_1.LordGymPanel], [WorldMapDefine_1.ESecondaryPanel.SceneGameplayPanel, SceneGameplayPanel_1.SceneGameplayPanel], [WorldMapDefine_1.ESecondaryPanel.TemporaryTeleportPanel, TemporaryTeleportPanel_1.TemporaryTeleportPanel], [WorldMapDefine_1.ESecondaryPanel.DetectorPanel, DetectorPanel_1.DetectorPanel], [WorldMapDefine_1.ESecondaryPanel.BoxPanel, BoxPanel_1.BoxPanel], [WorldMapDefine_1.ESecondaryPanel.EnrichmentAreaPanel, EnrichmentAreaPanel_1.EnrichmentAreaPanel], [WorldMapDefine_1.ESecondaryPanel.PunishReportPanel, PunishReportPanel_1.PunishReportPanel], [WorldMapDefine_1.ESecondaryPanel.TeleportPanel, TeleportPanel_1.TeleportPanel], [WorldMapDefine_1.ESecondaryPanel.InstanceDungeonEntrancePanel, InstanceDungeonEntrancePanel_1.InstanceDungeonEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.TowerEntrancePanel, TowerEntrancePanel_1.TowerEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.ShipTowerEntrancePanel, ShipTowerEntrancePanel_1.ShipTowerEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.RoguelikePanel, RoguelikeEntrancePanel_1.RoguelikeEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.WeeklyRoguePanel, WeeklyRogueEntrancePanel_1.WeeklyRogueEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.RogueResPanel, RogueResMapEntrancePanel_1.RogueResMapEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.CorniceMeetingPanel, CorniceMeetingEntrancePanel_1.CorniceMeetingEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.QuickNavigatePanel, WorldMapQuickNavigatePanel_1.WorldMapQuickNavigatePanel], [WorldMapDefine_1.ESecondaryPanel.CaveHole, CaveHoleSecondaryPanel_1.CaveHoleSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.CommonGamePlayPanel, CommonGamePlayPanel_1.CommonGamePlayPanel], [WorldMapDefine_1.ESecondaryPanel.TrackMenuPanel, TrackMenuPanel_1.TrackMenuPanel], [WorldMapDefine_1.ESecondaryPanel.WorldMapNotePanel, WorldMapNotePanel_1.WorldMapNotePanel], [WorldMapDefine_1.ESecondaryPanel.MapMarkTogglePanel, MapMarkTogglePanel_1.MapMarkTogglePanel], [WorldMapDefine_1.ESecondaryPanel.MapTravelQuestPanel, MapTravelQuestPanel_1.MapTravelQuestPanel], [WorldMapDefine_1.ESecondaryPanel.FishingShip, WorldMapFishingShipSecondaryPanel_1.WorldMapFishingShipSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingPoint, WorldMapFishingPointSecondaryPanel_1.WorldMapFishingPointSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingCage, WorldMapFishingCageSecondaryPanel_1.WorldMapFishingCageSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingDock, WorldMapFishingDockSecondaryPanel_1.WorldMapFishingDockSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.TraceExploreEntityPanel, TraceExploreEntityPanel_1.TraceExploreEntityPanel], [WorldMapDefine_1.ESecondaryPanel.GreatSwordChallengePanel, GreatSwordMarkPanel_1.GreatSwordMarkPanel]]);
+const worldMapSecondaryPanelCtorMap = new Map([[WorldMapDefine_1.ESecondaryPanel.CustomMarkPanel, CustomMarkPanel_1.CustomMarkPanel], [WorldMapDefine_1.ESecondaryPanel.QuestPanel, QuestPanel_1.QuestPanel], [WorldMapDefine_1.ESecondaryPanel.GeneralPanel, GeneralPanel_1.GeneralPanel], [WorldMapDefine_1.ESecondaryPanel.MarkMenuPanel, MarkMenu_1.MarkMenu], [WorldMapDefine_1.ESecondaryPanel.ParkourPanel, ParkourEntrancePanel_1.ParkourEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.LordGymPanel, LordGymPanel_1.LordGymPanel], [WorldMapDefine_1.ESecondaryPanel.SceneGameplayPanel, SceneGameplayPanel_1.SceneGameplayPanel], [WorldMapDefine_1.ESecondaryPanel.TemporaryTeleportPanel, TemporaryTeleportPanel_1.TemporaryTeleportPanel], [WorldMapDefine_1.ESecondaryPanel.DetectorPanel, DetectorPanel_1.DetectorPanel], [WorldMapDefine_1.ESecondaryPanel.BoxPanel, BoxPanel_1.BoxPanel], [WorldMapDefine_1.ESecondaryPanel.EnrichmentAreaPanel, EnrichmentAreaPanel_1.EnrichmentAreaPanel], [WorldMapDefine_1.ESecondaryPanel.PunishReportPanel, PunishReportPanel_1.PunishReportPanel], [WorldMapDefine_1.ESecondaryPanel.TeleportPanel, TeleportPanel_1.TeleportPanel], [WorldMapDefine_1.ESecondaryPanel.InstanceDungeonEntrancePanel, InstanceDungeonEntrancePanel_1.InstanceDungeonEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.TowerEntrancePanel, TowerEntrancePanel_1.TowerEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.ShipTowerEntrancePanel, ShipTowerEntrancePanel_1.ShipTowerEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.RoguelikePanel, RoguelikeEntrancePanel_1.RoguelikeEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.WeeklyRoguePanel, WeeklyRogueEntrancePanel_1.WeeklyRogueEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.RogueResPanel, RogueResMapEntrancePanel_1.RogueResMapEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.CorniceMeetingPanel, CorniceMeetingEntrancePanel_1.CorniceMeetingEntrancePanel], [WorldMapDefine_1.ESecondaryPanel.QuickNavigatePanel, WorldMapQuickNavigatePanel_1.WorldMapQuickNavigatePanel], [WorldMapDefine_1.ESecondaryPanel.CaveHole, CaveHoleSecondaryPanel_1.CaveHoleSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.CommonGamePlayPanel, CommonGamePlayPanel_1.CommonGamePlayPanel], [WorldMapDefine_1.ESecondaryPanel.TrackMenuPanel, TrackMenuPanel_1.TrackMenuPanel], [WorldMapDefine_1.ESecondaryPanel.WorldMapNotePanel, WorldMapNotePanel_1.WorldMapNotePanel], [WorldMapDefine_1.ESecondaryPanel.MapMarkTogglePanel, MapMarkTogglePanel_1.MapMarkTogglePanel], [WorldMapDefine_1.ESecondaryPanel.MapTravelQuestPanel, MapTravelQuestPanel_1.MapTravelQuestPanel], [WorldMapDefine_1.ESecondaryPanel.FishingShip, WorldMapFishingShipSecondaryPanel_1.WorldMapFishingShipSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingPoint, WorldMapFishingPointSecondaryPanel_1.WorldMapFishingPointSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingCage, WorldMapFishingCageSecondaryPanel_1.WorldMapFishingCageSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.FishingDock, WorldMapFishingDockSecondaryPanel_1.WorldMapFishingDockSecondaryPanel], [WorldMapDefine_1.ESecondaryPanel.TraceExploreEntityPanel, TraceExploreEntityPanel_1.TraceExploreEntityPanel], [WorldMapDefine_1.ESecondaryPanel.GreatSwordChallengePanel, GreatSwordMarkPanel_1.GreatSwordMarkPanel], [WorldMapDefine_1.ESecondaryPanel.ActivityListPanel, ActivityListPanel_1.ActivityListPanel]]);
 class WorldMapSecondaryUiComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
@@ -94,22 +95,25 @@ class WorldMapSecondaryUiComponent extends MapComponent_1.MapComponent {
   ShowMapMarkTogglePanel(e) {
     this.EFo(WorldMapDefine_1.ESecondaryPanel.MapMarkTogglePanel, e);
   }
+  ShowMapPeriodicActivityPanel(e) {
+    this.EFo(WorldMapDefine_1.ESecondaryPanel.ActivityListPanel, e);
+  }
   ShowQuickNavigate(e, n) {
     this.EFo(WorldMapDefine_1.ESecondaryPanel.QuickNavigatePanel, e, n);
   }
   async EFo(e, n, ...a) {
     var r = WorldMapDefine_1.ESecondaryPanel[e];
-    let o = this.vFo.get(r);
-    if (o) {
-      o.MarkForOpen();
+    let i = this.vFo.get(r);
+    if (i) {
+      i.MarkForOpen();
     } else {
       e = worldMapSecondaryPanelCtorMap.get(e);
-      o = new e();
-      this.vFo.set(r, o);
-      o.MarkForOpen();
-      await o.CreateByResourceIdAsync(o.GetResourceId(), n);
+      i = new e();
+      this.vFo.set(r, i);
+      i.MarkForOpen();
+      await i.CreateByResourceIdAsync(i.GetResourceId(), n);
     }
-    e = o;
+    e = i;
     r = this.NYa.Map;
     await e.ShowPanel(r, ...a);
   }

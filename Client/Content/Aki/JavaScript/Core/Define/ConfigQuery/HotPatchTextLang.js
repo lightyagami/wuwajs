@@ -8,6 +8,7 @@ const LanguageSystem_1 = require("../../Common/LanguageSystem");
 const Stats_1 = require("../../Common/Stats");
 const ConfigCommon_1 = require("../../Config/ConfigCommon");
 const DeserializeConfig_1 = require("../../Config/DeserializeConfig");
+const Macro_1 = require("../../Preprocessor/Macro");
 const StringUtils_1 = require("../../Utils/StringUtils");
 const CommonDefine_1 = require("../CommonDefine");
 const TEXTNOTFOUNT = "text not found";
@@ -25,25 +26,22 @@ exports.configHotPatchTextLang = {
     ConfigCommon_1.ConfigCommon.GetLangStatementId(TABLE, DB, COMMAND);
     initStat?.Stop();
   },
-  GetLocalText: (t, o = 0) => {},
-  GetLocalTextNew: (t, o = undefined) => {
+  GetLocalText: (o, t = 0) => {},
+  GetLocalTextNew: (o, t = undefined) => {
+    if (LanguageSystem_1.LanguageSystem.GmShowLanguageKey) {
+      e = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(t);
+      return `${TABLE}|${o}|${e}`;
+    }
     ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
     getLocalTextStat?.Start();
-    var e = Stats_1.Stat.CreateNoFlameGraph(`${"" + LOCAL_TEXT_STAT_PREFIX + t}, ${o})`);
+    var e = Stats_1.Stat.CreateNoFlameGraph(`${"" + LOCAL_TEXT_STAT_PREFIX + o}, ${t})`);
     e?.Start();
-    if (LanguageSystem_1.LanguageSystem.GmShowLanguageKey) {
-      i = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(o);
-      e?.Stop();
-      getLocalTextStat?.Stop();
-      ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
-      return `${TABLE}|${t}|${i}`;
-    }
-    let n = langCache.get(t);
+    let n = langCache.get(o);
     if (!n) {
       n = new Map();
-      langCache.set(t, n);
+      langCache.set(o, n);
     }
-    var i = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(o);
+    var i = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(t);
     let a = n.get(i);
     if (a) {
       e?.Stop();
@@ -52,22 +50,22 @@ exports.configHotPatchTextLang = {
       return a;
     }
     var g = ConfigCommon_1.ConfigCommon.GetLangStatementId(TABLE, DB, COMMAND, i);
-    if (m = ConfigCommon_1.ConfigCommon.CheckStatement(g) && ConfigCommon_1.ConfigCommon.BindString(g, 1, t, ...logPair, ["Id", t]) && ConfigCommon_1.ConfigCommon.Step(g, true, ...logPair, ["传入语言", o], ["查询语言", i], ["文本Id", t]) > 0) {
-      var C = undefined;
-      [m, C] = ConfigCommon_1.ConfigCommon.GetValue(g, 0, ...logPair, ["传入语言", o], ["查询语言", i], ["文本Id", t]);
-      if (m) {
-        var m = DeserializeConfig_1.DeserializeConfig.ParseStringRange(C, 0, C.byteLength, ...logPair, ["传入语言", o], ["查询语言", i], ["文本Id", t]);
-        if (m.Success) {
-          a = m.Value;
+    if (C = ConfigCommon_1.ConfigCommon.CheckStatement(g) && ConfigCommon_1.ConfigCommon.BindString(g, 1, o, ...logPair, ["Id", o]) && ConfigCommon_1.ConfigCommon.Step(g, true, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]) > 0) {
+      var r = undefined;
+      [C, r] = ConfigCommon_1.ConfigCommon.GetValue(g, 0, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]);
+      if (C) {
+        var C = DeserializeConfig_1.DeserializeConfig.ParseStringRange(r, 0, r.byteLength, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]);
+        if (C.Success) {
+          a = C.Value;
           ConfigCommon_1.ConfigCommon.Reset(g);
           e?.Stop();
           getLocalTextStat?.Stop();
           ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
-          if (StringUtils_1.StringUtils.IsEmpty(a) && o !== CommonDefine_1.CHS) {
-            C = exports.configHotPatchTextLang.GetLocalTextNew(t, CommonDefine_1.CHS);
-            if (!StringUtils_1.StringUtils.IsEmpty(C)) {
-              m = o === undefined ? "" : "|" + o;
-              a = TEXTNOTFOUNT + "|" + t + m;
+          if (StringUtils_1.StringUtils.IsEmpty(a) && t !== CommonDefine_1.CHS) {
+            r = exports.configHotPatchTextLang.GetLocalTextNew(o, CommonDefine_1.CHS);
+            if (!StringUtils_1.StringUtils.IsEmpty(r)) {
+              C = t === undefined ? "" : "|" + t;
+              a = TEXTNOTFOUNT + "|" + o + C;
             }
           }
           n.set(i, a);

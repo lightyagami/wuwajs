@@ -38,8 +38,13 @@ class LevelEventPreload extends LevelGeneralBase_1.LevelEventBase {
         }, true);
       }
       this.FinishExecute(true);
-    } else if (e.PreloadObjectType.Type === "PreloadPhantomCharacterForSkill" || e.PreloadObjectType.Type === "PreloadTrialCharacterForSkill") {
-      this.ZE1(e);
+    } else {
+      if (e.PreloadObjectType.Type === "PreloadPhantomCharacterForSkill" || e.PreloadObjectType.Type === "PreloadTrialCharacterForSkill") {
+        this.ZE1(e);
+      }
+      if (e.PreloadObjectType.Type === "PreloadLinkResource") {
+        this.uRd(e);
+      }
     }
   }
   ZE1(e) {
@@ -82,6 +87,20 @@ class LevelEventPreload extends LevelGeneralBase_1.LevelEventBase {
         this.FinishExecute(true);
       }, WAITE_ENTITY_PRELOAD_TIME);
     }
+  }
+  uRd(e) {
+    const o = e.PreloadObjectType;
+    ControllerHolder_1.ControllerHolder.BattleLinkController.PreloadRes(o.LinkResourceId).then(() => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Event", 67, "[PreloadLinkRes]资源预加载完成", ["LinkResourceId", o.LinkResourceId]);
+      }
+    }).catch(() => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Event", 67, "[PreloadLinkRes]资源预加载失败", ["LinkResourceId", o.LinkResourceId]);
+      }
+    }).finally(() => {
+      this.FinishExecute(true);
+    });
   }
 }
 exports.LevelEventPreload = LevelEventPreload;

@@ -40,7 +40,7 @@ class AutoAttachItem extends UiPanelBase_1.UiPanelBase {
   }
   InitItem() {
     this.RKe = this.SourceView.GetDataLength();
-    if (this.DKe < this.RKe) {
+    if (this.DKe < this.RKe || !this.SourceView.GetIfCircle()) {
       this.CurrentShowItemIndex = this.DKe;
     } else {
       this.CurrentShowItemIndex = this.DKe - this.SourceView.GetShowItemNum();

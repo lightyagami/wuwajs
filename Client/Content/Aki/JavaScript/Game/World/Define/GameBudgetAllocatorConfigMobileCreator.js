@@ -210,6 +210,74 @@ class GameBudgetAllocatorConfigMobileCreator {
       Cutscene_NotRendered: undefined
     };
   }
+  CreateBlueprintSingletonConfig() {
+    return new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 1, 1, 1);
+  }
+  CreateSceneBlueprintActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 2000, 400),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 2000, 400),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 1000, 200),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
+  CreateFarBlueprintActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 8000, 1000),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 120, 2000, 200),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
+  CreateSuperFarBlueprintActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 20, 50000, 30000),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 5000, 5000),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
+  CreateDynamicPhysicsInteractionActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 5, 1000, 300),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 5, 1000, 300),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 300, 50),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
+  CreateStaticPhysicsInteractionActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 500, 100),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 500, 100),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 300, 25),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
 }
 exports.GameBudgetAllocatorConfigMobileCreator = GameBudgetAllocatorConfigMobileCreator;
 //# sourceMappingURL=GameBudgetAllocatorConfigMobileCreator.js.map

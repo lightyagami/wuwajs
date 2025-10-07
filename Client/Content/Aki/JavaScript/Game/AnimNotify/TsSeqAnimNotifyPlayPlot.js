@@ -25,7 +25,9 @@ class TsSeqAnimNotifyPlayPlot extends UE.KuroAnimNotify {
         l = r[1];
         r = r[2];
         if (e && l && r) {
-          FlowController_1.FlowController.StartFlow(e, Number(l), Number(r));
+          FlowController_1.FlowController.StartFlowForView(e, Number(l), Number(r), {
+            AudioAttachActor: o.GetOwner()
+          }, false);
           return true;
         } else {
           if (Log_1.Log.CheckError()) {

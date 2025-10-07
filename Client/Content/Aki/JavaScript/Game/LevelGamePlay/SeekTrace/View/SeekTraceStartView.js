@@ -13,14 +13,14 @@ const DELAY_TIME = 2000;
 class SeekTraceStartView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.Ted = undefined;
+    this.Oid = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.Ted = new SeekTraceClawItem_1.SeekTraceClawItem();
-    await this.Ted.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
+    this.Oid = new SeekTraceClawItem_1.SeekTraceClawItem();
+    await this.Oid.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
   }
   OnStart() {
     TimerSystem_1.TimerSystem.Delay(() => {

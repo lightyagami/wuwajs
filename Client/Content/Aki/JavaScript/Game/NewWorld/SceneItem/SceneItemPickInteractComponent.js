@@ -74,5 +74,5 @@ let SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = class Sc
     this.xGa.length = 0;
   }
 };
-SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(257)], SceneItemPickInteractComponent);
+SceneItemPickInteractComponent = SceneItemPickInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(258)], SceneItemPickInteractComponent);
 exports.SceneItemPickInteractComponent = SceneItemPickInteractComponent; //# sourceMappingURL=SceneItemPickInteractComponent.js.map

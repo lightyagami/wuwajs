@@ -93,5 +93,5 @@ let VehicleHitComponent = class VehicleHitComponent extends BaseHitComponent_1.B
     }
   }
 };
-VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(275)], VehicleHitComponent);
+VehicleHitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(276)], VehicleHitComponent);
 exports.VehicleHitComponent = VehicleHitComponent; //# sourceMappingURL=VehicleHitComponent.js.map

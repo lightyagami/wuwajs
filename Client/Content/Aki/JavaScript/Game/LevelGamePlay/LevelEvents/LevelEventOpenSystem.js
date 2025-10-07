@@ -172,7 +172,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           this.FinishExecute(true);
           return;
         }
-        this.Mcd();
+        this.WEd();
         await this.Sjl.Promise;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]Loading完成继续往下执行");
@@ -253,7 +253,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       Log_1.Log.Error("LevelEvent", 36, "[LevelEventOpenSystem]参数类型出错");
     }
   }
-  Mcd() {
+  WEd() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]创建LoadingPromise");
     }

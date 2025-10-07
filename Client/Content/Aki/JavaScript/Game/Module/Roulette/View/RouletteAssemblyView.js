@@ -382,7 +382,7 @@ class RouletteAssemblyView extends UiTickViewBase_1.UiTickViewBase {
   Yfo() {
     var t = ModelManager_1.ModelManager.RouletteModel;
     this.Ifo = t.CreateAssemblyGridData();
-    this.Tfo = t.CreateTempAssemblyIdListData(t.ExploreSkillIdListServer, t.FunctionIdListServer, t.CurrentEquipItemId);
+    this.Tfo = t.CreateTempAssemblyIdListData(t.ExploreSkillIdListServer, t.FunctionIdListServer, t.CurrentEquipItemIdServer);
   }
   Jfo() {
     this.Mfo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(5), this.GetItem(6).GetOwner(), this.cHe);

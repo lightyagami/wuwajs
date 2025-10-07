@@ -16,8 +16,8 @@ class WeaponHandBookItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickCallBack = undefined;
-    this.tnd = undefined;
-    this.ind = undefined;
+    this.fsd = undefined;
+    this.gsd = undefined;
   }
   async Init(e) {
     await super.CreateByActorAsync(e.GetOwner(), undefined, true);
@@ -27,16 +27,16 @@ class WeaponHandBookItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async WZt() {
-    this.tnd = new WeaponHandBookTitleItem();
-    this.AddChild(this.tnd);
-    this.ind = new WeaponHandBookLayoutItem();
-    this.AddChild(this.ind);
+    this.fsd = new WeaponHandBookTitleItem();
+    this.AddChild(this.fsd);
+    this.gsd = new WeaponHandBookLayoutItem();
+    this.AddChild(this.gsd);
     var e = this.GetItem(0);
     e.SetUIActive(false);
     var t = this.GetItem(1);
     t.SetUIActive(false);
-    await Promise.all([this.tnd.CreateByActorAsync(e.GetOwner()), this.ind.CreateByActorAsync(t.GetOwner())]);
-    this.ind.OnClickCallBack = this.OnClickCallBack;
+    await Promise.all([this.fsd.CreateByActorAsync(e.GetOwner()), this.gsd.CreateByActorAsync(t.GetOwner())]);
+    this.gsd.OnClickCallBack = this.OnClickCallBack;
   }
   GetUsingItem(e) {
     return (e.TitleId ? this.GetItem(0) : this.GetItem(1)).GetOwner();
@@ -45,14 +45,14 @@ class WeaponHandBookItem extends UiPanelBase_1.UiPanelBase {
     this.Destroy();
   }
   Update(e, t) {
-    this.tnd?.SetUiActive(false);
-    this.ind?.SetUiActive(false);
+    this.fsd?.SetUiActive(false);
+    this.gsd?.SetUiActive(false);
     if (e.TitleId) {
-      this.tnd?.SetUiActive(true);
-      this.tnd?.Update(e.TitleId);
+      this.fsd?.SetUiActive(true);
+      this.fsd?.Update(e.TitleId);
     } else if (e.ItemData) {
-      this.ind?.SetUiActive(true);
-      this.ind?.Update(e.ItemData);
+      this.gsd?.SetUiActive(true);
+      this.gsd?.Update(e.ItemData);
     }
   }
 }

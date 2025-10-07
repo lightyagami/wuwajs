@@ -223,5 +223,5 @@ let SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = class Sc
     return e === 0 || e === this.Ygl.length - 1;
   }
 };
-SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(263)], SceneItemWindPipelineComponent);
+SceneItemWindPipelineComponent = SceneItemWindPipelineComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(264)], SceneItemWindPipelineComponent);
 exports.SceneItemWindPipelineComponent = SceneItemWindPipelineComponent; //# sourceMappingURL=SceneItemWindPipelineComponent.js.map

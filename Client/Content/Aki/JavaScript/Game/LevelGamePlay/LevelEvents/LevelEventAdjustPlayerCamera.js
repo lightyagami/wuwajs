@@ -107,7 +107,7 @@ class LevelEventAdjustPlayerCamera extends LevelGeneralBase_1.LevelEventBase {
             break;
           case IAction_1.EAdjustPlayerCamera.FirstPerson:
             this.TLe(o, noAimGameplayTag);
-            ControllerHolder_1.ControllerHolder.CameraController.SetFirstPersonEnable(true);
+            ControllerHolder_1.ControllerHolder.CameraController.SetHideHeadEnable(true, 0);
         }
         if (!r) {
           this.N4l();

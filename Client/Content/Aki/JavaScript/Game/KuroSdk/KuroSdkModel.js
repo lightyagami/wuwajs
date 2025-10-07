@@ -9,6 +9,7 @@ const LanguageSystem_1 = require("../../Core/Common/LanguageSystem");
 const Log_1 = require("../../Core/Common/Log");
 const AchievementAll_1 = require("../../Core/Define/ConfigQuery/AchievementAll");
 const PlayStationActivityConfigAll_1 = require("../../Core/Define/ConfigQuery/PlayStationActivityConfigAll");
+const PlayStationStaticActivityAll_1 = require("../../Core/Define/ConfigQuery/PlayStationStaticActivityAll");
 const ModelBase_1 = require("../../Core/Framework/ModelBase");
 const BaseConfigController_1 = require("../../Launcher/BaseConfig/BaseConfigController");
 const Platform_1 = require("../../Launcher/Platform/Platform");
@@ -56,11 +57,12 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     this.NeedReviewConfirmBox = false;
     this.QueryPromise = undefined;
     this.W3l = undefined;
-    this.Ptd = undefined;
+    this._od = undefined;
     this.NoticeRedDotState = false;
     this.NoticeSign = "1";
     this.GmIntroductionLink = "";
     this.IntroductionNoticeState = false;
+    this.rfd = [];
   }
   OnInit() {
     this.CanUseSdk = UE.KuroStaticLibrary.IsModuleLoaded("KuroSDK") && BaseConfigController_1.BaseConfigController.GetPublicValue("UseSDK") === KuroSdkDefine_1.USESDK;
@@ -109,42 +111,84 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  UpdateActivityProgress() {
-    if (this.kFa && this.kFa.length !== 0) {
-      var e = this.OFa;
-      var r = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk();
-      if (this.OFa < 0) {
-        this.OFa = 0;
-        r.StartActivity(this.kFa[0].ActivityStringId);
-      }
-      if (!(this.OFa >= this.kFa.length - 1)) {
-        var i = this.kFa.length;
-        var o = ModelManager_1.ModelManager.QuestNewModel;
-        for (let e = this.OFa, t = e + 1; t < i; e++, t++) {
-          var a = this.kFa[e];
-          var n = this.kFa[t];
-          if (n.QuestId !== 0 && !o.CheckQuestFinished(n.QuestId)) {
-            break;
-          }
-          r.EndActivity(a.ActivityStringId);
-          r.StartActivity(n.ActivityStringId);
-          this.OFa = t;
-        }
-      }
-      if (e !== this.OFa) {
-        this.UpdateActivityAvailability();
-      }
+  UpdateActivityProgress(e = 0) {
+    let t = false;
+    var r = ModelManager_1.ModelManager.KuroSdkModel?.GetNextProgressActivityQuestId() ?? 0;
+    let i = false;
+    if (t = e === 0 || e !== 0 && e === r ? true : t) {
+      e = this.OFa;
+      i = this.ofd(e);
+    }
+    r = this.nfd();
+    if (i || r) {
+      this.sfd();
     }
   }
-  UpdateActivityAvailability() {
-    if (!!this.kFa && !(this.OFa < 0) && !(this.OFa >= this.kFa.length)) {
-      var t = UE.NewArray(UE.BuiltinString);
-      var r = UE.NewArray(UE.BuiltinString);
-      for (let e = 0; e < this.kFa.length; e++) {
-        (e === this.OFa ? t : r).Add(this.kFa[e].ActivityStringId);
-      }
-      PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().ChangeActivityAvailability(t, r);
+  ofd(e) {
+    if (!this.kFa || this.kFa.length === 0) {
+      return false;
     }
+    var r = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk();
+    if (this.OFa < 0) {
+      this.OFa = 0;
+      r.StartActivity(this.kFa[0].ActivityStringId);
+    }
+    if (this.OFa >= this.kFa.length - 1) {
+      return e !== this.OFa;
+    }
+    var i = this.kFa.length;
+    var a = ModelManager_1.ModelManager.QuestNewModel;
+    for (let e = this.OFa, t = e + 1; t < i; e++, t++) {
+      var o = this.kFa[e];
+      var n = this.kFa[t];
+      if (n.QuestId !== 0 && !a.CheckQuestFinished(n.QuestId)) {
+        break;
+      }
+      r.EndActivity(o.ActivityStringId);
+      r.StartActivity(n.ActivityStringId);
+      this.OFa = t;
+    }
+    return e !== this.OFa;
+  }
+  nfd() {
+    var e = PlayStationStaticActivityAll_1.configPlayStationStaticActivityAll.GetConfigList();
+    if (!e || e.length === 0) {
+      return false;
+    }
+    let t = false;
+    var r = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk();
+    var i = ModelManager_1.ModelManager.QuestNewModel;
+    for (const a of e) {
+      if (i.CheckQuestFinished(a.QuestId) && !this.rfd.includes(a.ActivityStringId)) {
+        r.StartActivity(a.ActivityStringId);
+        if (!this.rfd.includes(a.ActivityStringId)) {
+          this.rfd.push(a.ActivityStringId);
+          t = true;
+        }
+      }
+    }
+    return t;
+  }
+  sfd() {
+    var t = UE.NewArray(UE.BuiltinString);
+    var r = UE.NewArray(UE.BuiltinString);
+    if (this.kFa) {
+      for (let e = 0; e < this.kFa.length; e++) {
+        if (e === this.OFa) {
+          t.Add(this.kFa[e].ActivityStringId);
+        } else if (!this.rfd.includes(this.kFa[e].ActivityStringId)) {
+          r.Add(this.kFa[e].ActivityStringId);
+        }
+      }
+    }
+    if (this.rfd) {
+      for (const e of this.rfd) {
+        if (!t.Contains(e)) {
+          t.Add(e);
+        }
+      }
+    }
+    PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().ChangeActivityAvailability(t, r);
   }
   GetNextProgressActivityQuestId() {
     if (!this.kFa || this.OFa < 0 || this.OFa + 1 >= this.kFa.length) {
@@ -161,12 +205,17 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     this.QueryPromise = undefined;
   }
   GetQueryProductCurrency(e) {
-    e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e));
-    e = this.LSe.get(e.ProductId);
-    if (e && e.Currency) {
-      return e.Currency;
+    var t;
+    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
+      t = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e)).ProductId;
+      return ModelManager_1.ModelManager.PayItemModel.GetProductCurrencyByGoodsId(t) ?? "";
     } else {
-      return "";
+      t = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e));
+      if ((e = this.LSe.get(t.ProductId)) && e.Currency) {
+        return e.Currency;
+      } else {
+        return "";
+      }
     }
   }
   GetQueryProductPrice(e) {
@@ -312,18 +361,18 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     return this.W3l;
   }
   SetIntroductionData(e) {
-    this.Ptd = e;
+    this._od = e;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KuroSdk", 27, "SetIntroductionData", ["data", e]);
     }
-    this.Dtd();
+    this.uod();
   }
   GetIntroductionData() {
-    return this.Ptd;
+    return this._od;
   }
-  Dtd() {
+  uod() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion) ?? "";
-    if (this.Ptd && this.Ptd.version !== e) {
+    if (this._od && this._od.version !== e) {
       this.IntroductionNoticeState = true;
     } else {
       this.IntroductionNoticeState = false;
@@ -331,7 +380,7 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
   }
   SaveCurrentClickIntroductionVersion() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion, this.Ptd ? this.Ptd.version : "");
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion, this._od ? this._od.version : "");
     this.IntroductionNoticeState = false;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
   }
@@ -351,13 +400,13 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
   FilterCurrentNeedShowNoticeContent(e, t) {
     var r = [];
     var i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
-    var o = e.game;
+    var a = e.game;
     var e = e.activity;
-    var o = o.concat(e);
-    var a = this.GetNoticePlatformId();
-    for (const s of o) {
+    var a = a.concat(e);
+    var o = this.GetNoticePlatformId();
+    for (const s of a) {
       var n = t !== "0";
-      if (this.Q3l(s) && this.K3l(s, t) && (s.permanent !== 0 || n) && this.$3l(s, i) && this.X3l(s, a)) {
+      if (this.Q3l(s) && this.K3l(s, t) && (s.permanent !== 0 || n) && this.$3l(s, i) && this.X3l(s, o)) {
         r.push(s);
       }
     }
@@ -458,16 +507,16 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     var t = ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId();
     var r = LanguageSystem_1.LanguageSystem.PackageLanguage;
     var i = ControllerHolder_1.ControllerHolder.KuroSdkController.GetDeviceDid();
-    var o = ModelManager_1.ModelManager.PlayerInfoModel;
-    var o = o.GetId() === undefined ? "0" : o.GetId().toString();
-    var a = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
+    var a = ModelManager_1.ModelManager.PlayerInfoModel;
+    var a = a.GetId() === undefined ? "0" : a.GetId().toString();
+    var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn";
     var n = PublicUtil_1.PublicUtil.GetGameId();
     var s = ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId();
     var l = this.GetPlatformStr();
     var u = ModelManager_1.ModelManager.LoginModel.GetSdkLoginInfo()?.Uid;
     var _ = ModelManager_1.ModelManager.KuroSdkModel.NoticeSign;
     var h = PublicUtil_1.PublicUtil.GetPublicInfo();
-    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${o}&svr_area=${a}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${_}&login_info=${UE.KuroStaticLibrary.Base64Encode(h)}`;
+    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${a}&svr_area=${o}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${_}&login_info=${UE.KuroStaticLibrary.Base64Encode(h)}`;
   }
   GetIntroductionVersionUrl() {
     let e = "";

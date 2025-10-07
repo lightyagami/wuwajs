@@ -41,15 +41,15 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     this.rRl = undefined;
     this.oRl = new Map();
     this.nRl = new Map();
-    this.bQc = new Array();
+    this.aZu = new Array();
     this.OnSequencePaused = () => {
-      for (const e of this.bQc) {
+      for (const e of this.aZu) {
         this.sRl(e.Key);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelPlay", 26, "[SceneItemReference][EventComp] 补做遗漏的帧事件", ["key", e.Key], ["id", this.wDe]);
         }
       }
-      this.bQc = [];
+      this.aZu = [];
     };
   }
   OnInitData(e) {
@@ -59,8 +59,9 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     this.Lo = o;
     this.Wpo = e.CreatureDataId;
     this.wDe = e.PbDataId;
-    var o = [[this.Lo.ForwardSections, this.oRl], [[...this.Lo.BackWardSections].reverse(), this.nRl]];
-    for ([t, n] of o) {
+    var o = [...this.Lo.ForwardSections].sort((e, t) => e.FrameId - t.FrameId);
+    var e = [...this.Lo.BackWardSections].sort((e, t) => t.FrameId - e.FrameId);
+    for ([t, n] of [[o, this.oRl], [e, this.nRl]]) {
       for (const r of t) {
         if (r.Type === "EventMark") {
           if (this.iRl.has(r.Key)) {
@@ -92,7 +93,7 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     var t;
     var n = this.iRl.get(e);
     if (n) {
-      if (!(t = this.bQc.pop()) || t.Key !== e) {
+      if (!(t = this.aZu.pop()) || t.Key !== e) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 26, "[SceneItemReference][EventComp] 帧事件执行顺序有错误", ["key", e], ["id", this.wDe]);
         }
@@ -117,14 +118,14 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
       var i = r ? this.oRl : this.nRl;
       var s = r ? this.Lo.ForwardSections : [...this.Lo.BackWardSections].reverse();
       let t = undefined;
-      this.bQc = [];
+      this.aZu = [];
       for (let e = i.get(this.rRl) - 1; e > i.get(o); e--) {
         if (s[e].Type !== "Mark") {
           if (r ? n > s[e].FrameId : n < s[e].FrameId) {
             t = s[e];
             break;
           }
-          this.bQc.push(s[e]);
+          this.aZu.push(s[e]);
         }
       }
       if (t) {
@@ -134,7 +135,7 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
         this.sRl(t.Key);
       }
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("LevelPlay", 26, "[SceneItemReference][EventComp] 切换状态，准备执行帧事件：", ["id", this.wDe], ["list", this.bQc]);
+        Log_1.Log.Debug("LevelPlay", 26, "[SceneItemReference][EventComp] 切换状态，准备执行帧事件：", ["id", this.wDe], ["list", this.aZu]);
       }
     }
   }
@@ -143,7 +144,7 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     t.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     t.F4n = this.Wpo;
     t.Z4n = e;
-    Net_1.Net.Call(28214, t, e => {});
+    Net_1.Net.Call(19086, t, e => {});
   }
 };
 LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(165)], LevelSequenceFrameEventComponent);

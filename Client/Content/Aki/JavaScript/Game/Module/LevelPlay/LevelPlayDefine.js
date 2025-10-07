@@ -29,5 +29,7 @@ exports.levelPlayTypeToNumber = {
   DecisionBt: 10,
   NightmareSpawnPoint: 11,
   MonsterKill: 12,
+  EntityManage: 13,
+  LogicControl: 14,
   BlackSwordChallenge: 15
 }; //# sourceMappingURL=LevelPlayDefine.js.map

@@ -20,6 +20,7 @@ const SkillButtonData_1 = require("./SkillButtonData");
 const SkillButtonMapping_1 = require("./SkillButtonMapping");
 const SkillButtonUiController_1 = require("./SkillButtonUiController");
 const SkillButtonUiDefine_1 = require("./SkillButtonUiDefine");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const buttonTypeToActionNameMap = new Map([[101, InputEnums_1.EInputAction.瞄准], [102, InputEnums_1.EInputAction.锁定目标]]);
 const commonRoleSkillButtonTypes = new Set([4, 6, 8, 11]);
 class SkillButtonEntityData {
@@ -40,9 +41,12 @@ class SkillButtonEntityData {
     this.BehaviorButtonDataMap = new Map();
     this.AttributeIdSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.AttributeIdTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
+    this.FormationAttrIdSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
+    this.FormationAttrIdTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.EnableTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.DisableTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.DisableSkillIdTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
+    this.VisibleTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.HiddenTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.DynamicEffectTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
     this.ConfigShowLongPressTagSkillButtonMapping = new SkillButtonMapping_1.SkillButtonMapping();
@@ -53,6 +57,8 @@ class SkillButtonEntityData {
     this.QSo = new BehaviorButtonMapping_1.BehaviorButtonMapping();
     this.XSo = new Set();
     this.GYe = new Map();
+    this.t8d = new Map();
+    this.i8d = new Map();
     this.wXe = undefined;
     this.$So = new Set();
     this.YSo = new Set();
@@ -88,12 +94,12 @@ class SkillButtonEntityData {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonDynamicEffectRefresh, e.GetButtonType());
       }
       this.ZSo.clear();
-      for (const n of this.tyo) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCdRefresh, n.GetButtonType());
+      for (const o of this.tyo) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCdRefresh, o.GetButtonType());
       }
       this.tyo.clear();
-      for (const o of this.pdt) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, o.GetButtonType());
+      for (const n of this.pdt) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonAttributeRefresh, n.GetButtonType());
       }
       this.pdt.clear();
       for (const r of this.eyo) {
@@ -171,11 +177,11 @@ class SkillButtonEntityData {
         this.VXe();
       }
     };
-    this.Rjc = (t, i, s, h) => {
+    this.vWu = (t, i, s, h) => {
       var e;
-      var n = this.SkillButtonDataMap.get(6);
-      if (n && (e = n.IsShowLongPress(), n.RefreshIsShowLongPress(), this.IsCurEntity) && n.IsShowLongPress() !== e) {
-        this.vvl.add(n);
+      var o = this.SkillButtonDataMap.get(6);
+      if (o && (e = o.IsShowLongPress(), o.RefreshIsShowLongPress(), this.IsCurEntity) && o.IsShowLongPress() !== e) {
+        this.vvl.add(o);
         this.VXe();
       }
       this.RefreshEnableByButtonType(6);
@@ -183,35 +189,48 @@ class SkillButtonEntityData {
     this.hyo = (t, i) => {
       t = this.AttributeIdTagSkillButtonMapping.Get(t);
       if (t) {
-        for (const o of t) {
-          var s = o.AttributeId;
-          var h = o.MaxAttributeId;
-          o.RefreshAttributeId();
-          var e = o.AttributeId;
-          var n = o.MaxAttributeId;
-          if (s !== e || h !== n) {
-            o.RefreshFrameSpriteColor();
-            this.AttributeIdSkillButtonMapping.RemoveSingle(s, o);
-            this.AttributeIdSkillButtonMapping.RemoveSingle(h, o);
+        for (const n of t) {
+          var s = n.AttributeId;
+          var h = n.MaxAttributeId;
+          n.RefreshAttributeId();
+          var e = n.AttributeId;
+          var o = n.MaxAttributeId;
+          if (s !== e || h !== o) {
+            n.RefreshFrameSpriteColor();
+            this.AttributeIdSkillButtonMapping.RemoveSingle(s, n);
+            this.AttributeIdSkillButtonMapping.RemoveSingle(h, n);
             if (e > 0) {
-              this.AttributeIdSkillButtonMapping.AddSingle(e, o);
-              this.AttributeIdSkillButtonMapping.AddSingle(n, o);
-              if (!this.GYe.has(e)) {
-                this.lyo(e, this._yo);
-              }
-              if (!this.GYe.has(n)) {
-                this.lyo(n, this._yo);
-              }
+              this.AttributeIdSkillButtonMapping.AddSingle(e, n);
+              this.AttributeIdSkillButtonMapping.AddSingle(o, n);
+              this.lyo(e);
+              this.lyo(o);
             }
-            s = o.IsEnable();
-            o.RefreshIsEnable();
+            s = n.IsEnable();
+            n.RefreshIsEnable();
             if (this.IsCurEntity) {
-              this.pdt.add(o);
-              if (s !== o.IsEnable()) {
-                this.$So.add(o);
+              this.pdt.add(n);
+              if (s !== n.IsEnable()) {
+                this.$So.add(n);
               }
               this.VXe();
             }
+          }
+        }
+      }
+    };
+    this.r8d = (t, i) => {
+      t = this.FormationAttrIdTagSkillButtonMapping.Get(t);
+      if (t) {
+        for (const e of t) {
+          var s = e.FormationAttributeId;
+          e.RefreshFormationAttributeId();
+          var h = e.FormationAttributeId;
+          if (s !== h && (e.RefreshFrameSpriteColor(), s > 0 && this.FormationAttrIdSkillButtonMapping.RemoveSingle(s, e), h > 0 && (this.FormationAttrIdSkillButtonMapping.AddSingle(h, e), this.o8d(h)), s = e.IsEnable(), e.RefreshIsEnable(), this.IsCurEntity)) {
+            this.pdt.add(e);
+            if (s !== e.IsEnable()) {
+              this.$So.add(e);
+            }
+            this.VXe();
           }
         }
       }
@@ -247,12 +266,24 @@ class SkillButtonEntityData {
     this.cyo = (i, s) => {
       var t = this.GetSkillButtonDataByDisableSkillIdTag(i);
       if (t) {
-        for (const n of t) {
+        for (const o of t) {
           let t = false;
           var h;
-          var e = n.IsEnable();
-          if (e === s && (s ? (h = n.GetSkillId()) && n.GetDisableSkillIdTagIds().get(i)?.has(h) && (n.SetEnable(false, 5), t = true) : (n.RefreshIsEnable(), t = n.IsEnable() !== e), this.IsCurEntity && t)) {
-            this.$So.add(n);
+          var e = o.IsEnable();
+          if (e === s && (s ? (h = o.GetSkillId()) && o.GetDisableSkillIdTagIds().get(i)?.has(h) && (o.SetEnable(false, 5), t = true) : (o.RefreshIsEnable(), t = o.IsEnable() !== e), this.IsCurEntity && t)) {
+            this.$So.add(o);
+            this.VXe();
+          }
+        }
+      }
+    };
+    this.VGa = (t, i) => {
+      t = this.VisibleTagSkillButtonMapping.Get(t);
+      if (t) {
+        for (const h of t) {
+          var s = h.IsVisible();
+          if (s !== i && (h.RefreshIsVisible(), s = h.IsVisible() !== s, this.IsCurEntity && s)) {
+            this.YSo.add(h);
             this.VXe();
           }
         }
@@ -264,7 +295,7 @@ class SkillButtonEntityData {
         for (const h of t) {
           let t = false;
           var s = h.IsVisible();
-          if (s === i && (t = i && !h.FormationData?.IgnoreHiddenTag ? (h.SetInvisible(), true) : (h.RefreshIsVisible(), h.IsVisible() !== s), this.IsCurEntity && t)) {
+          if (s === i && (t = !i || h.FormationData?.IgnoreHiddenTag || h.DefaultHidden ? (h.RefreshIsVisible(), h.IsVisible() !== s) : (h.SetInvisible(), true), this.IsCurEntity && t)) {
             this.YSo.add(h);
             this.VXe();
           }
@@ -274,16 +305,16 @@ class SkillButtonEntityData {
     this.myo = (t, i) => {
       var s = this.GetSkillButtonDataBySkillIdTag(t);
       if (s) {
-        for (const n of s) {
-          var h = n.GetSkillId();
+        for (const o of s) {
+          var h = o.GetSkillId();
           if (i) {
-            n.RefreshSkillIdByTag(t);
+            o.RefreshSkillIdByTag(t);
           } else {
-            n.RefreshSkillId();
+            o.RefreshSkillId();
           }
-          var e = n.GetSkillId();
-          if (h !== e && (n.RefreshSkillTexturePath(), n.RefreshIsEnable(), this.IsCurEntity)) {
-            this.JSo.add(n);
+          var e = o.GetSkillId();
+          if (h !== e && (o.RefreshSkillTexturePath(), o.RefreshIsEnable(), this.IsCurEntity)) {
+            this.JSo.add(o);
             this.VXe();
           }
         }
@@ -421,6 +452,20 @@ class SkillButtonEntityData {
         }
       }
     };
+    this.n8d = (t, i, s) => {
+      this.RefreshSkillButtonEnableByFormationAttrId(t);
+      if (this.IsCurEntity) {
+        var h = this.FormationAttrIdSkillButtonMapping.Get(t);
+        if (h) {
+          for (const e of h) {
+            if (e.FormationAttributeId === t) {
+              this.pdt.add(e);
+            }
+          }
+          this.VXe();
+        }
+      }
+    };
   }
   Init(t, i) {
     t = (this.EntityHandle = t).Entity;
@@ -461,9 +506,12 @@ class SkillButtonEntityData {
     this.BehaviorButtonDataMap = undefined;
     this.AttributeIdSkillButtonMapping = undefined;
     this.AttributeIdTagSkillButtonMapping = undefined;
+    this.FormationAttrIdSkillButtonMapping = undefined;
+    this.FormationAttrIdTagSkillButtonMapping = undefined;
     this.EnableTagSkillButtonMapping = undefined;
     this.DisableTagSkillButtonMapping = undefined;
     this.DisableSkillIdTagSkillButtonMapping = undefined;
+    this.VisibleTagSkillButtonMapping = undefined;
     this.HiddenTagSkillButtonMapping = undefined;
     this.DynamicEffectTagSkillButtonMapping = undefined;
     this.ConfigShowLongPressTagSkillButtonMapping = undefined;
@@ -473,7 +521,9 @@ class SkillButtonEntityData {
       i?.EndTask();
     }
     this.XSo = undefined;
+    this.i8d.clear();
     this.GYe = undefined;
+    this.t8d = undefined;
     this.KSo = undefined;
     this.QSo = undefined;
     this.CustomHandleSkillButtonMapping = undefined;
@@ -499,13 +549,13 @@ class SkillButtonEntityData {
       var e = ModelManager_1.ModelManager.SkillButtonUiModel.SkillPriorityButtonConfigMap;
       if (s) {
         for (const l of s) {
-          var n = l.ButtonType;
-          var o = this.GetSkillButtonDataByButton(n);
-          if (i && !commonRoleSkillButtonTypes.has(n)) {
-            CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮配置错误，常规角色的不允许配置该技能类型", ["roleId", this.RoleId], ["ButtonType", n]);
-          } else if (o) {
-            n = e.get(n);
-            this.Syo(o, l, n);
+          var o = l.ButtonType;
+          var n = this.GetSkillButtonDataByButton(o);
+          if (i && !commonRoleSkillButtonTypes.has(o)) {
+            CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮配置错误，常规角色的不允许配置该技能类型", ["roleId", this.RoleId], ["ButtonType", o]);
+          } else if (n) {
+            o = e.get(o);
+            this.Syo(n, l, o);
           }
         }
       }
@@ -533,15 +583,22 @@ class SkillButtonEntityData {
     for (const h of t.AttributeIdTagMap.keys()) {
       this.AttributeIdTagSkillButtonMapping.AddSingle(h, t);
     }
+    if (t.FormationAttributeId > 0) {
+      this.FormationAttrIdSkillButtonMapping.AddSingle(t.FormationAttributeId, t);
+    }
+    for (const e of t.FormationAttributeIdTagMap.keys()) {
+      this.FormationAttrIdTagSkillButtonMapping.AddSingle(e, t);
+    }
     this.EnableTagSkillButtonMapping.Add(t.GetEnableTagIds(), t);
     this.DisableTagSkillButtonMapping.Add(t.GetDisableTagIds(), t);
     this.DisableSkillIdTagSkillButtonMapping.Add(t.GetDisableSkillIdTagIds().keys(), t);
+    this.VisibleTagSkillButtonMapping.Add(t.GetVisibleTagIds(), t);
     this.HiddenTagSkillButtonMapping.Add(t.GetHiddenTagIds(), t);
     this.DynamicEffectTagSkillButtonMapping.Add(t.DynamicEffectTagIdMap.keys(), t);
     this.ConfigShowLongPressTagSkillButtonMapping.Add(t.ConfigShowLongPressTagIds, t);
     this.SkillIconTagSkillButtonMapping.Add(t.SkillIconTagIds, t);
-    for (const e of t.SkillIdTagMap.keys()) {
-      this.SkillIdTagSkillButtonMapping.AddSingle(e, t);
+    for (const o of t.SkillIdTagMap.keys()) {
+      this.SkillIdTagSkillButtonMapping.AddSingle(o, t);
     }
     if (t.GetActionType() === InputEnums_1.EInputAction.幻象2) {
       this.SkillIdTagSkillButtonMapping.AddSingle(SkillButtonData_1.controlVisionTagId, t);
@@ -570,86 +627,92 @@ class SkillButtonEntityData {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVehicleSkillEnableChanged, this.yKl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
-    EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.Rjc);
+    EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.vWu);
   }
   yyo() {
     if (!(this.RoleId <= 0)) {
-      for (const n of this.SkillButtonDataMap.values()) {
-        if (n.GetEntityHandle()) {
-          for (const o of n.AttributeIdTagMap.keys()) {
-            this.Tyo(o, this.hyo);
+      for (const o of this.SkillButtonDataMap.values()) {
+        if (o.GetEntityHandle()) {
+          for (const n of o.AttributeIdTagMap.keys()) {
+            this.Tyo(n, this.hyo);
           }
-          for (const r of n.GetEnableTagIds()) {
-            this.Tyo(r, this.uyo);
+          for (const r of o.FormationAttributeIdTagMap.keys()) {
+            this.Tyo(r, this.r8d);
           }
-          for (const a of n.GetDisableTagIds()) {
-            this.Tyo(a, this.Sri);
+          for (const a of o.GetEnableTagIds()) {
+            this.Tyo(a, this.uyo);
           }
-          for (const f of n.GetDisableSkillIdTagIds().keys()) {
-            this.Tyo(f, this.cyo);
+          for (const f of o.GetDisableTagIds()) {
+            this.Tyo(f, this.Sri);
           }
-          for (const l of n.GetHiddenTagIds()) {
-            this.Tyo(l, this.Jrt);
+          for (const l of o.GetDisableSkillIdTagIds().keys()) {
+            this.Tyo(l, this.cyo);
           }
-          for (const v of n.SkillIdTagMap.keys()) {
-            this.Tyo(v, this.myo);
+          for (const v of o.GetVisibleTagIds()) {
+            this.Tyo(v, this.VGa);
           }
-          for (const _ of n.SkillIconTagIds) {
-            this.Tyo(_, this.dyo);
+          for (const _ of o.GetHiddenTagIds()) {
+            this.Tyo(_, this.Jrt);
           }
-          for (const u of n.DynamicEffectTagIdMap.keys()) {
-            this.Tyo(u, this.Cyo);
+          for (const u of o.SkillIdTagMap.keys()) {
+            this.Tyo(u, this.myo);
           }
-          for (const S of n.ConfigShowLongPressTagIds) {
-            this.Tyo(S, this.YMc);
+          for (const S of o.SkillIconTagIds) {
+            this.Tyo(S, this.dyo);
           }
-          var t = n.CustomHandle?.TagIds;
+          for (const B of o.DynamicEffectTagIdMap.keys()) {
+            this.Tyo(B, this.Cyo);
+          }
+          for (const p of o.ConfigShowLongPressTagIds) {
+            this.Tyo(p, this.YMc);
+          }
+          var t = o.CustomHandle?.TagIds;
           if (t) {
             for (const E of t) {
               this.Qpl(E, this.Wpl);
             }
           }
-          if (n.GetButtonType() === 7) {
-            for (const B of n.ExploreAsFightTagIds) {
-              this.Tyo(B, this.iO_);
+          if (o.GetButtonType() === 7) {
+            for (const c of o.ExploreAsFightTagIds) {
+              this.Tyo(c, this.iO_);
             }
           }
         }
       }
       this.Tyo(40422668, this.ayo);
       this.Tyo(SkillButtonData_1.controlVisionTagId, this.syo);
-      for (const p of this.KSo.GetAllKey()) {
-        this.Tyo(p, this.pyo);
+      for (const d of this.KSo.GetAllKey()) {
+        this.Tyo(d, this.pyo);
       }
-      for (const c of this.QSo.GetAllKey()) {
-        this.Tyo(c, this.fyo);
+      for (const m of this.QSo.GetAllKey()) {
+        this.Tyo(m, this.fyo);
       }
       var i = this.SkillButtonIndexConfig;
       if (i) {
         var s = new Set();
         var h = ModelManager_1.ModelManager.SkillButtonUiModel.DefaultSkillButtonIndexData;
         if (i.Id === h.ButtonIndexConfigId) {
-          for (const d of h.ButtonIndexTagIdSet) {
-            s.add(d);
+          for (const y of h.ButtonIndexTagIdSet) {
+            s.add(y);
           }
-          for (const m of h.ButtonTypeTagMap.keys()) {
-            s.add(m);
+          for (const g of h.ButtonTypeTagMap.keys()) {
+            s.add(g);
           }
         } else {
-          for (const y of i.TagList) {
-            for (const g of y.ArrayString) {
-              var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(g);
+          for (const k of i.TagList) {
+            for (const D of k.ArrayString) {
+              var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(D);
               if (e) {
                 s.add(e);
               }
             }
           }
-          for (const D of (Info_1.Info.OperationType === 2 ? i.DesktopButtonTypeMap : i.PadButtonTypeMap).keys()) {
-            s.add(D);
+          for (const M of (Info_1.Info.OperationType === 2 ? i.DesktopButtonTypeMap : i.PadButtonTypeMap).keys()) {
+            s.add(M);
           }
         }
-        for (const k of s) {
-          this.Tyo(k, this.gyo);
+        for (const C of s) {
+          this.Tyo(C, this.gyo);
         }
       }
     }
@@ -663,17 +726,30 @@ class SkillButtonEntityData {
           t = s.AttributeId;
           i = s.MaxAttributeId;
           if (!!t && !(t <= 0) && !!i && !(i <= 0)) {
-            this.lyo(t, this._yo);
-            this.lyo(i, this._yo);
+            this.lyo(t);
+            this.lyo(i);
           }
         }
       }
     }
   }
-  Tyo(t, i) {
-    let s = undefined;
-    if ((s = typeof t == "string" ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : t) && (t = this.GameplayTagComponent.ListenForTagAddOrRemove(s, i))) {
-      this.XSo.add(t);
+  Tyo(i, s) {
+    let h = undefined;
+    if (h = typeof i == "string" ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i) : i) {
+      let t = this.i8d.get(h);
+      if (t) {
+        if (t.has(s)) {
+          return;
+        }
+        t.add(s);
+      } else {
+        (t = new Set()).add(s);
+        this.i8d.set(h, t);
+      }
+      i = this.GameplayTagComponent.ListenForTagAddOrRemove(h, s);
+      if (i) {
+        this.XSo.add(i);
+      }
     }
   }
   Qpl(t, i) {
@@ -681,32 +757,53 @@ class SkillButtonEntityData {
       this.XSo.add(t);
     }
   }
-  lyo(t, i) {
-    this.AttributeComponent.AddListener(t, i, "SkillButtonUiController");
-    this.GYe.set(t, i);
+  lyo(t) {
+    if (!this.GYe.has(t)) {
+      this.AttributeComponent.AddListener(t, this._yo, "SkillButtonUiController");
+      this.GYe.set(t, this._yo);
+    }
+  }
+  o8d(t) {
+    if (!this.t8d.has(t)) {
+      ControllerHolder_1.ControllerHolder.FormationAttributeController.AddValueListener(t, this.n8d);
+      ControllerHolder_1.ControllerHolder.FormationAttributeController.AddMaxListener(t, this.n8d);
+      this.t8d.set(t, this.n8d);
+    }
   }
   VXe() {
-    this.wXe ||= TimerSystem_1.TimerSystem.Next(this.GXe, SkillButtonEntityData.jXe);
-  }
-  OXe() {
-    if (!this.wXe) {
+    if (this.wXe) {
+      var t = TimerSystem_1.TimerSystem.GetNextRemainTime(this.wXe);
+      if (t <= 1) {
+        return;
+      }
+      CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮NextTimer异常", ["刷新时间", t]);
       if (TimerSystem_1.TimerSystem.Has(this.wXe)) {
         TimerSystem_1.TimerSystem.Remove(this.wXe);
       }
-      this.wXe = undefined;
-      this.$So.clear();
-      this.YSo.clear();
-      this.JSo.clear();
-      this.zSo.clear();
-      this.ZSo.clear();
-      this.tyo.clear();
-      this.pdt.clear();
-      this.eyo.clear();
-      this.vvl.clear();
-      this.iyo = false;
     }
+    this.wXe = TimerSystem_1.TimerSystem.Next(this.GXe, SkillButtonEntityData.jXe);
+  }
+  OXe() {
+    if (TimerSystem_1.TimerSystem.Has(this.wXe)) {
+      TimerSystem_1.TimerSystem.Remove(this.wXe);
+    } else if (this.wXe) {
+      CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮NextTimer异常, 计时器已经非法，但仍持有Handle");
+    }
+    this.wXe = undefined;
+    this.$So.clear();
+    this.YSo.clear();
+    this.JSo.clear();
+    this.zSo.clear();
+    this.ZSo.clear();
+    this.tyo.clear();
+    this.pdt.clear();
+    this.eyo.clear();
+    this.vvl.clear();
+    this.iyo = false;
+    this.oyo = false;
   }
   RefreshSkillButtonData(t) {
+    CombatLog_1.CombatLog.Info("BattleUi", this.EntityHandle?.Entity, "整体刷新技能按钮", ["原因", t], ["多次调用", this.oyo]);
     if (this.oyo) {
       if (t < this.ryo) {
         this.ryo = t;
@@ -733,6 +830,19 @@ class SkillButtonEntityData {
   }
   RefreshSkillButtonEnableByAttributeId(t) {
     t = this.GetSkillButtonDataByAttributeId(t);
+    if (t) {
+      for (const s of t) {
+        var i = s.IsEnable();
+        s.RefreshIsEnable();
+        if (this.IsCurEntity && i !== s.IsEnable()) {
+          this.$So.add(s);
+          this.VXe();
+        }
+      }
+    }
+  }
+  RefreshSkillButtonEnableByFormationAttrId(t) {
+    t = this.FormationAttrIdSkillButtonMapping.Get(t);
     if (t) {
       for (const s of t) {
         var i = s.IsEnable();
@@ -844,10 +954,11 @@ class SkillButtonEntityData {
   Eyo() {
     if (this.EntityHandle?.Valid) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle, EventDefine_1.EEventName.EntityVisionSkillChanged, this.syo);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.Rjc);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharHoldingHandsChanged, this.vWu);
       this.Lyo();
       this.Dyo();
     }
+    this.s8d();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSpecialItemAllowReqUse, this.nyo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnVehicleSkillUsableCountChanged, this.H6l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnVehicleSkillEnableChanged, this.yKl);
@@ -860,10 +971,17 @@ class SkillButtonEntityData {
       t?.EndTask();
     }
     this.XSo.clear();
+    this.i8d.clear();
   }
   Dyo() {
     for (var [t, i] of this.GYe) {
       this.AttributeComponent.RemoveListener(t, i);
+    }
+  }
+  s8d() {
+    for (var [t, i] of this.t8d) {
+      ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveValueListener(t, i);
+      ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveMaxListener(t, i);
     }
   }
   GetSkillButtonDataByButton(t) {

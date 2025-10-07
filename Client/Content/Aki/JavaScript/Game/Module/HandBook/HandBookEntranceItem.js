@@ -75,7 +75,11 @@ class HandBookEntranceItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   RefreshCollectProgress() {
     var e = HandBookController_1.HandBookController.GetCollectProgress(this.Bei.Id);
-    LguiUtil_1.LguiUtil.SetLocalText(this.GetText(5), "CollectProgress", e[0], e[1]);
+    if (this.Bei.Id === 3) {
+      this.GetText(5)?.SetText(e[0].toString());
+    } else {
+      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(5), "CollectProgress", e[0], e[1]);
+    }
   }
 }
 exports.HandBookEntranceItem = HandBookEntranceItem;

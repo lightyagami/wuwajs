@@ -33,7 +33,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
       a.ItemToPreSelectedIndexSetMap = new Map();
       a.MainItemMap = new Map();
       a.OnSeekTraceFinish = o;
-      this.Ftd();
+      this.Pod();
       UiManager_1.UiManager.OpenView("SeekTraceStartView");
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelPlay", 48, "SeekTrace初始化失败，缺少面板大小配置");
@@ -43,7 +43,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
     const o = ModelManager_1.ModelManager.SeekTraceModel;
     o.ResetTimes++;
     const a = () => {
-      this.Ftd();
+      this.Pod();
       e();
     };
     var t = o.Config?.MaxStepRewardRule;
@@ -100,7 +100,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
     e.ItemToPreSelectedIndexSetMap = undefined;
     e.MainItemMap = undefined;
   }
-  static Ftd() {
+  static Pod() {
     var e = ModelManager_1.ModelManager.SeekTraceModel;
     var r = e.Config;
     if (r) {
@@ -162,7 +162,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
             }
             return;
           }
-          this.Ntd(_, _.BasePosition);
+          this.Aod(_, _.BasePosition);
           if (_.FilledPositionOffsetList.length > 1) {
             n.set(_.ItemType, _);
           }
@@ -172,7 +172,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Error("LevelPlay", 48, "SeekTrace初始化失败，缺少配置");
     }
   }
-  static Ntd(o, e) {
+  static Aod(o, e) {
     var r = ModelManager_1.ModelManager.SeekTraceModel;
     var a = r.PanelWidth;
     var t = r.PanelHeight;
@@ -206,8 +206,8 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
                   o.FilledPositionOffsetList.push([I - u, C - S]);
                   n.set(T, o);
                 }
-                this.Vtd(d);
-                this.Ntd(o, _);
+                this.Dod(d);
+                this.Aod(o, _);
               }
             } else {
               let e = c.get(M);
@@ -360,7 +360,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
                 r.FilledPositionOffsetList.push([d - a, M - t]);
                 c.set(u, r);
               }
-              this.Vtd(C);
+              this.Dod(C);
             }
           }
         }
@@ -375,7 +375,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
           }
           e.ItemToPreSelectedIndexSetMap.delete(r);
         }
-        this.Ntd(r, r.BasePosition);
+        this.Aod(r, r.BasePosition);
       }
       e.SelectedItem = undefined;
       e.StepLimit--;
@@ -399,7 +399,7 @@ class SeekTraceController extends ControllerBase_1.ControllerBase {
     }
     return 0;
   }
-  static Vtd(e) {
+  static Dod(e) {
     e.BasePosition[0] = 0;
     e.BasePosition[1] = 0;
     e.FilledPositionOffsetList.length = 0;

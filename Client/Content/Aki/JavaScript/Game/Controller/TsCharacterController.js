@@ -30,6 +30,52 @@ class TsCharacterController extends TsBasePlayerController_1.TsBasePlayerControl
     this.MoveInputVector = undefined;
     this.TsUiKeyHandle = undefined;
   }
+  OnCSharpReceiveBeginPlay() {
+    super.ReceiveBeginPlay();
+    this.ChangeRotationOnPossess = false;
+    this.bShowMouseCursor = Info_1.Info.IsInKeyBoard();
+    UE.KuroInputFunctionLibrary.ApplyInputMode(this);
+  }
+  OnCSharpReceiveDestroyed() {
+    super.ReceiveDestroyed();
+    if (this.TsUiKeyHandle) {
+      this.TsUiKeyHandle.Reset();
+      this.TsUiKeyHandle = undefined;
+    }
+  }
+  OnCSharpReceivePossess(e) {
+    super.ReceivePossess(e);
+    ControllerHolder_1.ControllerHolder.CameraController.OnPossess(e);
+  }
+  OnCSharpReceiveUnPossess(e) {
+    super.ReceiveUnPossess(e);
+    ControllerHolder_1.ControllerHolder.CameraController.OnPossess(undefined);
+  }
+  OnCSharpReceivePreProcessInput(e, r) {
+    ControllerHolder_1.ControllerHolder.InputController.PreProcessInput(e, r);
+  }
+  OnCSharpReceivePostProcessInput(e, r) {
+    ControllerHolder_1.ControllerHolder.InputController.PostProcessInput(e, r);
+  }
+  OnCSharpSetUiRootActive() {
+    if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Input", 10, "按下 】 键显示所有界面");
+      }
+      UiLayer_1.UiLayer.ForceShowUi();
+    }
+  }
+  OnCSharpSetUiRootDeactivate() {
+    if (ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Input", 10, "按下 【 键隐藏所有界面");
+      }
+      UiLayer_1.UiLayer.ForceHideUi();
+    }
+  }
+  OnCSharpOnSetupInputComponent() {
+    this.OnSetupInputComponent();
+  }
   ReceiveBeginPlay() {
     super.ReceiveBeginPlay();
     this.ChangeRotationOnPossess = false;

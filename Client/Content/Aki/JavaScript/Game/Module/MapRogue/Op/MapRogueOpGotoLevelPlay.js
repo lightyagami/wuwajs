@@ -39,7 +39,7 @@ class MapRogueOpGotoLevelPlay extends MapRogueOp_1.MapRogueOp {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("RogueBattle", 34, "常驻肉鸽子关卡切换失败", ["unloads", o], ["newLoads", r]);
             }
-            this.OpExecuteClientId = Protocol_1.Aki.Protocol.B9u.Proto_LoadLevelPlayFail;
+            this.OpExecuteClientId = Protocol_1.Aki.Protocol.nZu.Proto_LoadLevelPlayFail;
             this.Execute(l);
           }
         });
@@ -49,7 +49,7 @@ class MapRogueOpGotoLevelPlay extends MapRogueOp_1.MapRogueOp {
         }
         a.push(UiManager_1.UiManager.CloseViewAsync("RogueBattleTeamEditView"));
         await Promise.all(a);
-        this.OpExecuteClientId = Protocol_1.Aki.Protocol.B9u.Proto_LoadLevelPlaySucc;
+        this.OpExecuteClientId = Protocol_1.Aki.Protocol.nZu.Proto_LoadLevelPlaySucc;
         this.Execute(l);
         await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(15, 1);
         return true;
@@ -62,8 +62,8 @@ class MapRogueOpGotoLevelPlay extends MapRogueOp_1.MapRogueOp {
     return `[LevelPlay] IncId:${this.IncId} Step:${this.CurrentStep}`;
   }
   OnStartExecute(e) {
-    if (this.Data.Yr1.Fju && e.IsSkipBattle) {
-      this.OpExecuteClientId = Protocol_1.Aki.Protocol.B9u.Proto_SkipBattle;
+    if (this.Data.Yr1.rZu && e.IsSkipBattle) {
+      this.OpExecuteClientId = Protocol_1.Aki.Protocol.nZu.Proto_SkipBattle;
       this.ExecuteOp();
     } else if (this.Data.Yr1.ho1) {
       UiManager_1.UiManager.OpenView("RogueBattleTeamEditView", this.IncId);
@@ -72,7 +72,7 @@ class MapRogueOpGotoLevelPlay extends MapRogueOp_1.MapRogueOp {
     }
   }
   OnExecute(e) {
-    this.OnRogueSubLevelNotify(this.Data.Yr1.QJc, e);
+    this.OnRogueSubLevelNotify(this.Data.Yr1.btd, e);
   }
   OnFinish(e) {}
 }

@@ -70,12 +70,12 @@ class PerformanceGmController {
         o = o.Entity.GetComponent(0).GetCreatureDataId();
         (t = new Protocol_1.Aki.Protocol.Gzn()).VVn = 0;
         t.P8n = "@GmRemoveMonster " + o;
-        Net_1.Net.Call(27932, t, () => {});
+        Net_1.Net.Call(29900, t, () => {});
       }
     }
     return true;
   }
-  static ZFu(e) {
+  static n2u(e) {
     switch (e) {
       case 0:
         return;
@@ -146,7 +146,7 @@ class PerformanceGmController {
   }
   static async EntityPerformanceTestAll(e) {
     var e = Number(e[0]);
-    var r = this.ZFu(e);
+    var r = this.n2u(e);
     if (!this.IgnoreBattle()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Performance", 35, "忽略战斗失效");

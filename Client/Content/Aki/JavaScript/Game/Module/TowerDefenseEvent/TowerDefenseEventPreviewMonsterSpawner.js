@@ -25,21 +25,21 @@ class TowerDefenseEventSplineMonsterSpawner {
   constructor() {
     this.OQt = undefined;
     this.Htn = 0;
-    this.Hid = 0;
+    this.Jhd = 0;
     this._0e = 0;
-    this.Xjc = [];
-    this.Yjc = new Map();
-    this.Jjc = 0;
-    this.Zjc = 0;
+    this.yYu = [];
+    this.SYu = new Map();
+    this.EYu = 0;
+    this.IYu = 0;
   }
   Init(e, t, r) {
     this.OQt = e;
     this.Htn = t;
-    this.Hid = TimeUtil_1.TimeUtil.SetTimeMillisecond(r._ed);
-    this._0e = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.ued);
-    this.Jjc = this.Hid;
-    this.Zjc = 0;
-    for (const o of r.T7u) {
+    this.Jhd = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.pid);
+    this._0e = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.vid);
+    this.EYu = this.Jhd;
+    this.IYu = 0;
+    for (const o of r.TKu) {
       var s = TowerDefenseEventEntityModel_1.TowerDefenseEventMonsterModel.InitFromConfigId(o);
       var i = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(s);
       if (i) {
@@ -48,20 +48,20 @@ class TowerDefenseEventSplineMonsterSpawner {
         }
         s.Release();
       } else {
-        this.Xjc.push(s);
+        this.yYu.push(s);
       }
     }
   }
   OnTick(e) {
-    if (this.Xjc.length !== 0 && !(e > MAX_TICK_DELTA) && !(this.Jjc -= e, this.Jjc > 0)) {
-      this.Zjc %= this.Xjc.length;
-      this.e9c();
-      this.Jjc = this.Jjc % this._0e + this._0e;
-      this.Zjc += 1;
+    if (this.yYu.length !== 0 && !(e > MAX_TICK_DELTA) && !(this.EYu -= e, this.EYu > 0)) {
+      this.IYu %= this.yYu.length;
+      this.TYu();
+      this.EYu = this.EYu % this._0e + this._0e;
+      this.IYu += 1;
     }
   }
-  e9c() {
-    var t = this.Xjc[this.Zjc];
+  TYu() {
+    var t = this.yYu[this.IYu];
     if (t) {
       var r;
       var s;
@@ -83,53 +83,53 @@ class TowerDefenseEventSplineMonsterSpawner {
           Spline: e,
           IsPreview: true
         });
-        this.Yjc.set(i, t);
+        this.SYu.set(i, t);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("TowerDefenseEvent", 60, "预览怪物生成失败，样条线组件未找到", ["configId", t.ConfigId], ["splineId", this.Htn]);
       }
     }
   }
   RemovePreviewMonster(e) {
-    var t = this.Yjc.get(e);
+    var t = this.SYu.get(e);
     if (t) {
       if (t.SplineId) {
         ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(t.SplineId, e, 3);
       }
-      this.Yjc.delete(e);
+      this.SYu.delete(e);
     }
   }
-  BJc() {
-    this.Yjc.forEach((e, t) => {
+  Ned() {
+    this.SYu.forEach((e, t) => {
       ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.RemoveEntity(t, TowerDefenseEventRemoveReason_1.TowerDefenseEventRemoveReason.Preview);
       if (e.SplineId) {
         ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(e.SplineId, t, 3);
       }
     });
-    this.Yjc.clear();
-    for (const e of this.Xjc) {
+    this.SYu.clear();
+    for (const e of this.yYu) {
       e.Release();
     }
-    this.Xjc.length = 0;
+    this.yYu.length = 0;
   }
   Reset() {
-    this.BJc();
+    this.Ned();
   }
 }
 class TowerDefenseEventPreviewMonsterSpawner {
   constructor() {
-    this.zjc = 0;
-    this.$id = new Map();
-    this.AJc = [];
-    this.PJc = new Map();
+    this.MYu = 1;
+    this.Zhd = new Map();
+    this.ked = [];
+    this.Oed = new Map();
   }
   Init(e) {
     this.Reset();
-    this.DJc(e);
-    this.xJc();
+    this.qed(e);
+    this.Ged();
   }
-  xJc() {
-    ModelManager_1.ModelManager.TowerDefenseEventModel.GetWaveSplineIds(this.AJc);
-    for (const r of this.AJc) {
+  Ged() {
+    ModelManager_1.ModelManager.TowerDefenseEventModel.GetWaveSplineIds(this.ked);
+    for (const r of this.ked) {
       var e;
       var t;
       if (ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(r, 0, 3)) {
@@ -144,7 +144,7 @@ class TowerDefenseEventPreviewMonsterSpawner {
             EffectSystem_1.EffectSystem.GetEffectActor(t).K2_AttachToActor(e, undefined, 2, 2, 2, false);
             EffectSystem_1.EffectSystem.SetEffectIgnoreVisibilityOptimize(t, true);
           }
-          this.PJc.set(r, t);
+          this.Oed.set(r, t);
         }
       } else {
         ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(r, 0, 3);
@@ -154,64 +154,65 @@ class TowerDefenseEventPreviewMonsterSpawner {
       }
     }
   }
-  UJc() {
-    for (var [e, t] of this.PJc.entries()) {
+  Fed() {
+    for (var [e, t] of this.Oed.entries()) {
       ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(e, 0, 3);
       if (EffectSystem_1.EffectSystem.IsValid(t)) {
         EffectSystem_1.EffectSystem.StopEffectById(t, "TowerDefenseEventPreviewMonsterSpawner.ReleaseSplines", true);
       }
     }
-    this.PJc.clear();
-    this.AJc.length = 0;
+    this.Oed.clear();
+    this.ked.length = 0;
   }
-  DJc(e) {
+  qed(e) {
     for (const s in e) {
       var t = e[s];
-      if (t && t.T7u.length !== 0) {
+      if (t && t.TKu.length !== 0) {
         var r = Number(s);
         if (isNaN(r)) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("TowerDefenseEvent", 60, "预览怪物组样条线ID无效", ["splineId", s]);
           }
         } else {
-          let e = TowerDefenseEventPreviewMonsterSpawner.Wid.Get();
-          (e = e || TowerDefenseEventPreviewMonsterSpawner.Wid.Create()).Init(this, r, t);
-          this.$id.set(r, e);
+          let e = TowerDefenseEventPreviewMonsterSpawner.eld.Get();
+          (e = e || TowerDefenseEventPreviewMonsterSpawner.eld.Create()).Init(this, r, t);
+          this.Zhd.set(r, e);
         }
       }
     }
   }
   GetSpawnUid() {
-    return ++this.zjc;
+    this.MYu += 2;
+    return this.MYu;
   }
   OnTick(e) {
-    if (this.$id.size !== 0) {
-      for (const t of this.$id.values()) {
+    if (this.Zhd.size !== 0) {
+      for (const t of this.Zhd.values()) {
         t.OnTick(e);
       }
     }
   }
-  Qid() {
-    this.$id.forEach(e => {
+  tld() {
+    this.Zhd.forEach(e => {
       e.Reset();
-      TowerDefenseEventPreviewMonsterSpawner.Wid.Put(e);
+      TowerDefenseEventPreviewMonsterSpawner.eld.Put(e);
     });
-    this.$id.clear();
+    this.Zhd.clear();
   }
   RemovePreviewMonster(e) {
-    for (const t of this.$id.values()) {
+    for (const t of this.Zhd.values()) {
       t.RemovePreviewMonster(e);
     }
   }
   Reset() {
-    this.zjc = 0;
-    this.UJc();
-    this.Qid();
+    this.MYu = 1;
+    this.Fed();
+    this.tld();
   }
   Clear() {
     this.Reset();
-    TowerDefenseEventPreviewMonsterSpawner.Wid.Clear();
+    TowerDefenseEventPreviewMonsterSpawner.eld.Clear();
   }
 }
-(exports.TowerDefenseEventPreviewMonsterSpawner = TowerDefenseEventPreviewMonsterSpawner).Wid = new Pool_1.Pool(SPLINE_POOL_SIZE, () => new TowerDefenseEventSplineMonsterSpawner());
+(exports.TowerDefenseEventPreviewMonsterSpawner = TowerDefenseEventPreviewMonsterSpawner).eld = new Pool_1.Pool(SPLINE_POOL_SIZE, () => new TowerDefenseEventSplineMonsterSpawner());
 //# sourceMappingURL=TowerDefenseEventPreviewMonsterSpawner.js.map

@@ -1,15 +1,15 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, n, o) {
-  var r;
+var __decorate = this && this.__decorate || function (e, t, n, r) {
+  var o;
   var a = arguments.length;
-  var s = a < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
+  var s = a < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, n) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(e, t, n, o);
+    s = Reflect.decorate(e, t, n, r);
   } else {
     for (var i = e.length - 1; i >= 0; i--) {
-      if (r = e[i]) {
-        s = (a < 3 ? r(s) : a > 3 ? r(t, n, s) : r(t, n)) || s;
+      if (o = e[i]) {
+        s = (a < 3 ? o(s) : a > 3 ? o(t, n, s) : o(t, n)) || s;
       }
     }
   }
@@ -30,6 +30,7 @@ const BaseGameplayCueComponent_1 = require("../../Character/Common/Component/Abi
 let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGameplayCueComponent_1.BaseGameplayCueComponent {
   constructor() {
     super(...arguments);
+    this.PlayerId = 0;
     this.xie = (e, t) => {
       for (const n of this.GetAllCurrentCueRef()) {
         if (n.EntityHandle !== e) {
@@ -37,6 +38,11 @@ let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGa
         }
       }
     };
+  }
+  OnInitData() {
+    var e = this.Entity.CheckGetComponent(0);
+    this.PlayerId = e?.GetPlayerId() ?? 0;
+    return true;
   }
   OnStart() {
     super.OnStart();
@@ -49,8 +55,7 @@ let PlayerGameplayCueComponent = class PlayerGameplayCueComponent extends BaseGa
     return true;
   }
   GetEntityHandle() {
-    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(e)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(this.PlayerId)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(e ?? 0);
   }
 };

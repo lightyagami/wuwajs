@@ -103,6 +103,7 @@ const RedDotFunctionPhantom_1 = require("./RedDots/FunctionMenu/RedDotFunctionPh
 const RedDotFunctionPhantomExploreSet_1 = require("./RedDots/FunctionMenu/RedDotFunctionPhantomExploreSet");
 const RedDotFunctionPhotograph_1 = require("./RedDots/FunctionMenu/RedDotFunctionPhotograph");
 const RedDotFunctionRole_1 = require("./RedDots/FunctionMenu/RedDotFunctionRole");
+const RedDotFunctionSetting_1 = require("./RedDots/FunctionMenu/RedDotFunctionSetting");
 const RedDotFunctionTutorial_1 = require("./RedDots/FunctionMenu/RedDotFunctionTutorial");
 const RedDotInfluenceReputation_1 = require("./RedDots/Influence/RedDotInfluenceReputation");
 const RedDotInfluenceReward_1 = require("./RedDots/Influence/RedDotInfluenceReward");
@@ -139,6 +140,7 @@ const RedDotMoraleScoreBox_1 = require("./RedDots/Morale/RedDotMoraleScoreBox");
 const MowingRiskRedDot_1 = require("./RedDots/MowingRisk/MowingRiskRedDot");
 const MowingTowerRewardRedDot_1 = require("./RedDots/MowingTower/MowingTowerRewardRedDot");
 const PersonalBirthdayRedDot_1 = require("./RedDots/Personal/PersonalBirthdayRedDot");
+const PersonalImageBookRedDot_1 = require("./RedDots/Personal/PersonalImageBookRedDot");
 const PersonalCardRedDot_1 = require("./RedDots/Personal/PersonalCardRedDot");
 const PersonalizeInfoRedDot_1 = require("./RedDots/Personal/PersonalizeInfoRedDot");
 const PersonalTitleRedDot_1 = require("./RedDots/Personal/PersonalTitleRedDot");
@@ -161,6 +163,7 @@ const RedDotRacingBetsActivityInternalReward_1 = require("./RedDots/RacingBets/R
 const RedDotRacingBetsActivityReward_1 = require("./RedDots/RacingBets/RedDotRacingBetsActivityReward");
 const RedDotBattleViewMenu_1 = require("./RedDots/RedDotBattleViewMenu");
 const RedDotTest_1 = require("./RedDots/RedDotTest");
+const RedDotVersionCheck_1 = require("./RedDots/RedDotVersionCheck");
 const RedDotRoguelikeAchievement_1 = require("./RedDots/Roguelike/RedDotRoguelikeAchievement");
 const RedDotRoguelikeAchievementGroup_1 = require("./RedDots/Roguelike/RedDotRoguelikeAchievementGroup");
 const RedDotRoguelikeShop_1 = require("./RedDots/Roguelike/RedDotRoguelikeShop");
@@ -186,6 +189,7 @@ const RedDotResonanceTab_1 = require("./RedDots/RoleSystem/RoleResonance/RedDotR
 const RedDotRoleWeaponBreakUp_1 = require("./RedDots/RoleSystem/RoleWeapon/RedDotRoleWeaponBreakUp");
 const RedDotFlySkinChildTab_1 = require("./RedDots/RoleSystem/Skin/RedDotFlySkinChildTab");
 const RedDotFlySkinTab_1 = require("./RedDots/RoleSystem/Skin/RedDotFlySkinTab");
+const RedDotHuluSkinTab_1 = require("./RedDots/RoleSystem/Skin/RedDotHuluSkinTab");
 const CustomerServerRedDot_1 = require("./RedDots/Sdk/CustomerServerRedDot");
 const IntroductionRedDot_1 = require("./RedDots/Sdk/IntroductionRedDot");
 const RedDotShipTower_1 = require("./RedDots/ShipTower/RedDotShipTower");
@@ -197,11 +201,11 @@ const TowerDefenceRewardRedDot_1 = require("./RedDots/TowerDefence/TowerDefenceR
 const RedDotTowerReward_1 = require("./RedDots/TowerRewrad/RedDotTowerReward");
 const RedDotTowerRewardByDifficulties_1 = require("./RedDots/TowerRewrad/RedDotTowerRewardByDifficulties");
 const RedDotTrapDefense_1 = require("./RedDots/TrapDefense/RedDotTrapDefense");
+const RedDotTrapDefenseBdBuffNewUnlock_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseBdBuffNewUnlock");
+const RedDotTrapDefenseBdSum_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseBdSum");
 const RedDotTrapDefenseDevelopBranchAll_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseDevelopBranchAll");
 const RedDotTrapDefenseDevelopBranchAuxiliary_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseDevelopBranchAuxiliary");
 const RedDotTrapDefenseDevelopBranchBuilding_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseDevelopBranchBuilding");
-const RedDotTrapDefenseBdBuffNewUnlock_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseBdBuffNewUnlock");
-const RedDotTrapDefenseBdSum_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseBdSum");
 const RedDotTrapDefenseLevelModeLevelReachOpenTime_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseLevelModeLevelReachOpenTime");
 const RedDotTrapDefenseMainLevel_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseMainLevel");
 const RedDotTrapDefenseRougeLevel_1 = require("./RedDots/TrapDefense/RedDotTrapDefenseRougeLevel");
@@ -216,6 +220,7 @@ const VisionIdentifyRedDot_1 = require("./RedDots/Vision/VisionIdentifyRedDot");
 const VisionLevelUpSettingRedDot_1 = require("./RedDots/Vision/VisionLevelUpSettingRedDot");
 const VisionOneKeyEquipRedDot_1 = require("./RedDots/Vision/VisionOneKeyEquipRedDot");
 const VisionTabRedDot_1 = require("./RedDots/Vision/VisionTabRedDot");
+const RedDotWeaponResonanceTab_1 = require("./RedDots/Weapon/RedDotWeaponResonanceTab");
 const RedDotWeeklyRogueScoreReward_1 = require("./RedDots/WeeklyRogue/RedDotWeeklyRogueScoreReward");
 class RedDotModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -238,6 +243,7 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("RoleChange", new RedDotRoleChange_1.RedDotRoleChange());
     this.qp("FlySkinTab", new RedDotFlySkinTab_1.RedDotFlySkinTab());
     this.qp("FlySkinChildTab", new RedDotFlySkinChildTab_1.RedDotFlySkinChildTab());
+    this.qp("HuluSkinTab", new RedDotHuluSkinTab_1.RedDotHuluSkinTab());
     this.qp("RoleAttributeTabBreakUp", new RedDotRoleBreakUp_1.RedDotRoleBreakUp());
     this.qp("RoleWeaponTabBreakUp", new RedDotRoleWeaponBreakUp_1.RedDotRoleWeaponBreakUp());
     this.qp("RoleResonanceTab", new RedDotResonanceTab_1.RedDotResonanceTab());
@@ -252,6 +258,7 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("FunctionPayShop", new RedDotFunctionPayShop_1.RedDotFunctionPayShop());
     this.qp("FunctionPhantomExploreSet", new RedDotFunctionPhantomExploreSet_1.RedDotFunctionPhantomExploreSet());
     this.qp("FunctionPhotograph", new RedDotFunctionPhotograph_1.RedDotFunctionPhotograph());
+    this.qp("FunctionSetting", new RedDotFunctionSetting_1.RedDotFunctionSetting());
     this.qp("AdventureManual", new RedDotAdventureManual_1.RedDotAdventureManual());
     this.qp("AdventureBattleButton", new RedDotAdventureBattleButton_1.RedDotAdventureBattleButtonItem());
     this.qp("AdventureFirstAward", new RedDotAdventureFirstAward_1.RedDotAdventureFirstAward());
@@ -333,6 +340,7 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("PersonalCard", new PersonalCardRedDot_1.PersonalCardRedDot());
     this.qp("PersonalTitle", new PersonalTitleRedDot_1.PersonalTitleRedDot());
     this.qp("PersonalBirthday", new PersonalBirthdayRedDot_1.PersonalBirthdayRedDot());
+    this.qp("PersonalImageBook", new PersonalImageBookRedDot_1.PersonalImageBookRedDot());
     this.qp("ActivityRecallSignEntry", new RedDotActivityRecallSignEntryButton_1.RedDotActivityRecallSignEntryButton());
     this.qp("ActivityRecallTask", new RedDotActivityRecallTaskEntryButton_1.RedDotActivityRecallTaskEntryButton());
     this.qp("ActivityRegressQuestionnaire", new RedDotActivityRegressQuestionnaire_1.RedDotActivityRegressQuestionnaire());
@@ -421,6 +429,7 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("RedDotDangoRole", new RedDotDangoRole_1.RedDotDangoRole());
     this.qp("RedDotDangoFormation", new RedDotDangoFormation_1.RedDotDangoFormation());
     this.qp("RedDotDangoFormationRole", new RedDotDangoFormationRole_1.RedDotDangoFormationRole());
+    this.qp("RedDotVersionCheck", new RedDotVersionCheck_1.RedDotVersionCheck());
     this.qp("RedDotRacingBetsActivityReward", new RedDotRacingBetsActivityReward_1.RedDotRacingBetsActivityReward());
     this.qp("RedDotRacingBetsActivityInternalReward", new RedDotRacingBetsActivityInternalReward_1.RedDotRacingBetsActivityInternalReward());
     this.qp("CumulativeShopTaskTabRedDot", new CumulativeShopTaskTabRedDot_1.CumulativeShopTaskTabRedDot());
@@ -440,6 +449,7 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("ActivityFunPlay", new RedDotActivityFunPlay_1.RedDotActivityFunPlay());
     this.qp("LineCrossChallengeRedDot", new LineCrossChallengeRedDot_1.LineCrossChallengeRedDot());
     this.qp("LineCrossGroupRedDot", new LineCrossGroupRedDot_1.LineCrossGroupRedDot());
+    this.qp("RedDotWeaponResonanceTab", new RedDotWeaponResonanceTab_1.RedDotWeaponResonanceTab());
     this.War();
     return true;
   }

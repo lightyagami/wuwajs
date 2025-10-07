@@ -54,7 +54,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
     this.eMn = new Map();
     this.gme = undefined;
     this.tMn = undefined;
-    this.$dd = undefined;
+    this.FUd = undefined;
     this.PKs = (e, t, i) => {
       var o;
       var r;
@@ -81,12 +81,12 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
     };
   }
   OnStart() {
-    this.$dd = UE.NewObject(UE.TraceLineElement.StaticClass());
-    this.$dd.bIsSingle = true;
-    this.$dd.bIgnoreSelf = true;
-    this.$dd.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
-    this.$dd.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
-    this.$dd.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.AcrossBlock);
+    this.FUd = UE.NewObject(UE.TraceLineElement.StaticClass());
+    this.FUd.bIsSingle = true;
+    this.FUd.bIgnoreSelf = true;
+    this.FUd.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
+    this.FUd.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
+    this.FUd.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.AcrossBlock);
   }
   OnEnd() {
     this.cMn();
@@ -97,10 +97,10 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
         }
       }
     }
-    this.$dd?.Dispose();
-    this.$dd = undefined;
+    this.FUd?.Dispose();
+    this.FUd = undefined;
   }
-  static Rsd(e) {
+  static zld(e) {
     e.OnActorHit.Clear();
     e = e.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
     if (e) {
@@ -111,7 +111,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
     if (this.Jvn?.length) {
       for (const t of this.Jvn) {
         var e = this.ActorSubsystem.GetActor(t);
-        if (e?.IsValid() && (RefCompAirWallController.Rsd(e), e.SetActorEnableCollision(false), EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs))) {
+        if (e?.IsValid() && (RefCompAirWallController.zld(e), e.SetActorEnableCollision(false), EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs))) {
           EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.BulletHitAirWall, this.PKs);
         }
       }
@@ -121,10 +121,10 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
       this.eMn.clear();
     }
   }
-  Wdd(e, t) {
-    return !!this.$dd && (ModelManager_1.ModelManager.SundryModel.GetModuleDebugLevel(LOG_CATEGORY) >= 4 && UE.KismetSystemLibrary.D_DrawDebugArrow(Global_1.Global.BaseCharacter, e.ToUeVector(), t.ToUeVector(), 50, ColorUtils_1.ColorUtils.LinearBlue, DEBUG_DRAW_TIME), this.$dd.WorldContextObject = Global_1.Global.BaseCharacter, TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.$dd, e), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.$dd, t), TraceElementCommon_1.TraceElementCommon.LineTrace(this.$dd, "NoAirWallBetweenTeamItemAndManager")) && (this.$dd.HitResult?.bBlockingHit ?? false);
+  NUd(e, t) {
+    return !!this.FUd && (ModelManager_1.ModelManager.SundryModel.GetModuleDebugLevel(LOG_CATEGORY) >= 4 && UE.KismetSystemLibrary.D_DrawDebugArrow(Global_1.Global.BaseCharacter, e.ToUeVector(), t.ToUeVector(), 50, ColorUtils_1.ColorUtils.LinearBlue, DEBUG_DRAW_TIME), this.FUd.WorldContextObject = Global_1.Global.BaseCharacter, TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.FUd, e), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.FUd, t), TraceElementCommon_1.TraceElementCommon.LineTrace(this.FUd, "NoAirWallBetweenTeamItemAndManager")) && (this.FUd.HitResult?.bBlockingHit ?? false);
   }
-  Qdd(t, i) {
+  VUd(t, i) {
     if (t) {
       if (ModelManager_1.ModelManager.SundryModel.GetModuleDebugLevel(LOG_CATEGORY) >= 4) {
         UE.KismetSystemLibrary.D_DrawDebugBox(Global_1.Global.BaseCharacter, new UE.VectorDouble(t.Origin), new UE.VectorDouble(t.BoxExtent), ColorUtils_1.ColorUtils.LinearBlue, new UE.Rotator(), DEBUG_DRAW_TIME);
@@ -148,7 +148,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
                   var r = o.GetComponent(94);
                   if (r && r.GetTeamState() === 1) {
                     r = o.GetComponent(1).ActorLocationProxy;
-                    if (!MathUtils_1.MathUtils.IsInsideBoxSphereBounds(t, r.ToUeVectorOld()) || this.Wdd(e, r)) {
+                    if (!MathUtils_1.MathUtils.IsInsideBoxSphereBounds(t, r.ToUeVectorOld()) || this.NUd(e, r)) {
                       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLevelEnvChange, 2);
                       break;
                     }
@@ -191,7 +191,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
           if (i) {
             _ = l.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
             if (t.Type === 1 && RefCompAirWallController.EnableTeleportIntoAirWall) {
-              _.OnComponentHit.Add(RefCompAirWallController.Lsd.bind(undefined, t.EntityId));
+              _.OnComponentHit.Add(RefCompAirWallController.Zld.bind(undefined, t.EntityId));
             }
             o = o ? MathUtils_1.MathUtils.BoxSphereBoundsUnion(o, _.D_GetComponentBounds()) : _.D_GetComponentBounds();
             if (ModelManager_1.ModelManager.SundryModel.GetModuleDebugLevel(LOG_CATEGORY) >= 4) {
@@ -213,10 +213,10 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
         }
       }
     }
-    this.Qdd(o, t);
+    this.VUd(o, t);
   }
   Ivl(t, e, i) {
-    RefCompAirWallController.Rsd(t);
+    RefCompAirWallController.zld(t);
     var o = this.Yvn?.get(e);
     if (EffectSystem_1.EffectSystem.IsValid(o ?? 0)) {
       EffectSystem_1.EffectSystem.StopEffectById(o, "[SceneItemReferenceComponent.HandleAirWall]", false);
@@ -345,7 +345,7 @@ class RefCompAirWallController extends RefCompControllerBase_1.RefCompController
   }
 }
 (exports.RefCompAirWallController = RefCompAirWallController).EnableTeleportIntoAirWall = false;
-RefCompAirWallController.Lsd = (e, t, i, o, r, l) => {
+RefCompAirWallController.Zld = (e, t, i, o, r, l) => {
   if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.Valid && e.Entity?.Valid && (e = e.Entity.CheckGetComponent(1)) && e.Owner?.IsValid() && Global_1.Global.BaseCharacter === i && t?.IsA(UE.BrushComponent.StaticClass())) {
     MathUtils_1.MathUtils.CommonTempVector.FromUeVector(l.ImpactNormal);
     i = Vector_1.Vector.Create(e.Owner.K2_GetActorLocation().op_Subtraction(l.ImpactPoint));

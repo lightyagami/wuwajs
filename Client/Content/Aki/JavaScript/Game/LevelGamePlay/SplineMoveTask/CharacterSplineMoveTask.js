@@ -44,12 +44,27 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     return e;
   }
   OnStartTask() {
+    var e;
+    var t;
     super.OnStartTask();
     if (this.EntityHandle.Entity.GetComponent(0)?.IsNpc() && this.gLe?.NpcFollow) {
       this.EntityHandle.Entity.GetComponent(188)?.PauseAi("StartMoveWithSpline");
       EventSystem_1.EventSystem.EmitWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.StartMoveWithSpline, this.gLe, this.RCl, e => {
         this.EndTask(e);
       });
+    } else if (this.gLe?.MoveOnWallConfig) {
+      if (e = this.EntityHandle.Entity.GetComponent(302)) {
+        (t = Vector_1.Vector.Create()).FromConfigVector(this.gLe?.MoveOnWallConfig.WallDetectDir);
+        Rotator_1.Rotator.Create(t.Y, t.Z, t.X).Vector(t);
+        e.EnterSplineClimb(this.Spline, t, e => {
+          this.EndTask(e);
+        });
+      } else {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Movement", 82, "[CharacterSplineMoveTask] 样条跑墙失败，无SplineClimbComponent");
+        }
+        this.EndTask(false);
+      }
     } else {
       this.LCl();
       this.ODe();
@@ -90,13 +105,13 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     i.Set(e.X, e.Y, e.Z);
     var s = this.gLe.CheckClimb.Direction;
     var r = CharacterSplineMoveTask.Gco;
-    var a = CharacterSplineMoveTask.jye;
+    var h = CharacterSplineMoveTask.jye;
     r.Set(s.Y ?? 0, s.Z ?? 0, s.X ?? 0);
-    r.Vector(a);
-    a.Normalize();
-    a.MultiplyEqual(this.gLe.CheckClimb.Distance);
+    r.Vector(h);
+    h.Normalize();
+    h.MultiplyEqual(this.gLe.CheckClimb.Distance);
     var s = ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation;
-    s.Set(e.X + a.X, e.Y + a.Y, e.Z + a.Z);
+    s.Set(e.X + h.X, e.Y + h.Y, e.Z + h.Z);
     var r = ModelManager_1.ModelManager.TraceElementModel.GetLineTrace();
     r.WorldContextObject = t.Owner;
     r.ActorsToIgnore.Empty();
@@ -104,27 +119,27 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(r, i);
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(r, s);
     var e = TraceElementCommon_1.TraceElementCommon.LineTrace(r, "MoveWithSplineDetectClimb");
-    var a = r.HitResult;
+    var h = r.HitResult;
     r.ClearCacheData();
-    return [e, a];
+    return [e, h];
   }
   sKl(e) {
     var t;
     var i;
     var s;
     var r = this.EntityHandle.Entity.GetComponent(1);
-    var a = this.nKl(e, r.Owner);
-    if (a[0]) {
-      a = a[1];
+    var h = this.nKl(e, r.Owner);
+    if (h[0]) {
+      h = h[1];
       t = CharacterSplineMoveTask.jye;
-      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(a, 0, t);
+      TraceElementCommon_1.TraceElementCommon.GetImpactNormal(h, 0, t);
       t.MultiplyEqual(CHARACTER_TRACE_DISTANCE);
       i = CharacterSplineMoveTask.RTe;
-      TraceElementCommon_1.TraceElementCommon.GetImpactPoint(a, 0, i);
+      TraceElementCommon_1.TraceElementCommon.GetImpactPoint(h, 0, i);
       i.AdditionEqual(t);
-      s = (a = this.EntityHandle.Entity.GetComponent(178)).GetMeshTransform();
+      s = (h = this.EntityHandle.Entity.GetComponent(178)).GetMeshTransform();
       r.SetActorLocation(i.ToUeVector(), "MoveWithSplineDetectClimb", true);
-      a.SetModelBuffer(s, 10);
+      h.SetModelBuffer(s, 10);
       (r = t).UnaryNegation(r);
       return this.EntityHandle.Entity.GetComponent(102)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb || (this.EntityHandle.Entity.GetComponent(34)?.DetectClimbWithDirect(false, r.ToUeVector(), true) ?? false);
     } else {
@@ -166,16 +181,16 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
     var r = [];
     for (let e = this.il; e <= this.wXt; ++e) {
-      var a;
-      var h = e - this.il;
-      var h = {
-        Index: h,
-        Position: s[h]
+      var h;
+      var a = e - this.il;
+      var a = {
+        Index: a,
+        Position: s[a]
       };
-      if (i && ((a = this.SplineData.Points[e])?.MoveSpeed && (h.MoveSpeed = a.MoveSpeed), a?.MoveState)) {
-        h.MoveState = a.MoveState;
+      if (i && ((h = this.SplineData.Points[e])?.MoveSpeed && (a.MoveSpeed = h.MoveSpeed), h?.MoveState)) {
+        a.MoveState = h.MoveState;
       }
-      r.push(h);
+      r.push(a);
     }
     var t = {
       Points: r,

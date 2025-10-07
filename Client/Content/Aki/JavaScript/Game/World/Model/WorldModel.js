@@ -50,10 +50,10 @@ class WorldEnvironmentInfo {
     var e;
     if (this.UTl !== this.ServerCaveMode && !(Time_1.Time.Now - this.pk < VOXEL_ENV_REQUEST_INTERVAL)) {
       (e = Protocol_1.Aki.Protocol.Rp_.create()).DTl = this.UTl;
-      Net_1.Net.Call(17107, e, e => {
+      Net_1.Net.Call(24250, e, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24173);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15935);
           } else {
             this.ServerCaveMode = e.DTl;
           }

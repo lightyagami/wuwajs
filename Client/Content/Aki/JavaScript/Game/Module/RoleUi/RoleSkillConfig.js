@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleSkillConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
+const RoleSkillFightTrickByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleSkillFightTrickByRoleId");
 const RoleSkillInputById_1 = require("../../../Core/Define/ConfigQuery/RoleSkillInputById");
 const SkillById_1 = require("../../../Core/Define/ConfigQuery/SkillById");
 const SkillBySkillGroupId_1 = require("../../../Core/Define/ConfigQuery/SkillBySkillGroupId");
@@ -122,6 +123,13 @@ class RoleSkillConfig extends ConfigBase_1.ConfigBase {
     if (e && e > 0) {
       return this.GetSkillConfigById(e)?.MaxSkillLevel;
     }
+  }
+  GetRoleSkillFightTrickList(e) {
+    var l = RoleSkillFightTrickByRoleId_1.configRoleSkillFightTrickByRoleId.GetConfigList(e);
+    if (l.length === 0 && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Role", 43, "没有找到任意的战斗技巧表数据", ["roleId", e]);
+    }
+    return l;
   }
 }
 exports.RoleSkillConfig = RoleSkillConfig;

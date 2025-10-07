@@ -15,17 +15,21 @@ const PublicUtil_1 = require("../../Common/PublicUtil");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const ActivityCommonDefine_1 = require("./ActivityCommonDefine");
 const ACTIVITYFORCECLOSETIME = -1;
 class ActivityBaseData {
   constructor() {
     this.FFe = 0;
     this.R4e = undefined;
     this.Bel = 0;
+    this.Hud = 0;
     this.U4e = -0;
     this.EndShowTimeInternal = -0;
     this.WFe = -0;
     this.EndOpenTimeInternal = -0;
+    this.BeginLimitTimeInternal = -0;
+    this.EndLimitTimeInternal = -0;
+    this.BeginRewardTimeInternal = -0;
+    this.EndRewardTimeInternal = -0;
     this.P4e = false;
     this.Dk_ = false;
     this.x4e = false;
@@ -49,6 +53,9 @@ class ActivityBaseData {
   get TimeType() {
     return this.Bel;
   }
+  get OpenType() {
+    return this.Hud;
+  }
   get Sort() {
     return this.w4e;
   }
@@ -63,6 +70,18 @@ class ActivityBaseData {
   }
   get EndOpenTime() {
     return this.EndOpenTimeInternal;
+  }
+  get BeginLimitTime() {
+    return this.BeginLimitTimeInternal;
+  }
+  get EndLimitTime() {
+    return this.EndLimitTimeInternal;
+  }
+  get BeginRewardTime() {
+    return this.BeginRewardTimeInternal;
+  }
+  get EndRewardTime() {
+    return this.EndRewardTimeInternal;
   }
   get FinishShowState() {
     if (!this.LocalConfig) {
@@ -142,8 +161,47 @@ class ActivityBaseData {
   CheckIfInOpenTime() {
     return this.CheckIfInTimeInterval(this.WFe, this.EndOpenTimeInternal);
   }
+  CheckIfInLimitTime() {
+    if (this.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited) {
+      return this.CheckIfInOpenTime();
+    } else {
+      return this.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent && this.CheckIfInTimeInterval(this.BeginLimitTimeInternal, this.EndLimitTimeInternal);
+    }
+  }
+  CheckIfInRewardTime() {
+    return this.CheckIfInTimeInterval(this.BeginRewardTimeInternal, this.EndRewardTimeInternal);
+  }
   CheckIfInTimeInterval(t, i) {
-    return (t !== ACTIVITYFORCECLOSETIME || i !== ACTIVITYFORCECLOSETIME) && (t === 0 && i === 0 || t <= (t = TimeUtil_1.TimeUtil.GetServerTime()) && t <= i);
+    if (t !== ACTIVITYFORCECLOSETIME || i !== ACTIVITYFORCECLOSETIME) {
+      if (t === 0 && i === 0) {
+        return true;
+      }
+      var e = TimeUtil_1.TimeUtil.GetServerTime();
+      if (t <= e) {
+        if (i === 0) {
+          return true;
+        }
+        if (e <= i) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  $ud(t) {
+    switch (t) {
+      case Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited:
+        this.Bel = 0;
+        break;
+      case Protocol_1.Aki.Protocol.OS_.Proto_Permanent:
+        this.Bel = 1;
+        break;
+      case Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent:
+        this.Bel = this.CheckIfInLimitTime() ? 0 : 1;
+        break;
+      default:
+        this.Bel = 0;
+    }
   }
   GetPreviewReward(t = this.LocalConfig.PreviewDrop) {
     var i = [];
@@ -222,6 +280,9 @@ class ActivityBaseData {
     }
     return i.ToString();
   }
+  GetPreGuideQuestIds() {
+    return this.B4e;
+  }
   GetIfFirstOpen() {
     return this.x4e;
   }
@@ -231,6 +292,9 @@ class ActivityBaseData {
       this.x4e = false;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.FFe);
     }
+  }
+  CheckIfShowTabTime() {
+    return this.OpenType !== Protocol_1.Aki.Protocol.OS_.Proto_Permanent && this.OpenType !== Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent && !!this.CheckIfInOpenTime() && this.LocalConfig.ShowTabTime;
   }
   OnSetFirstOpenFalse() {}
   GetExDataFinishShowState() {
@@ -265,11 +329,16 @@ class ActivityBaseData {
     this.EndShowTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.xps));
     this.WFe = Number(MathUtils_1.MathUtils.LongToBigInt(t.Pps));
     this.EndOpenTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.Ups));
+    this.BeginLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.CPs));
+    this.EndLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.gPs));
+    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.nmd));
+    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.smd));
     this.P4e = t.K6n;
     this.Dk_ = t.lk_;
     this.x4e = t.qps;
     this._8a = t.qS_;
-    this.Bel = ActivityCommonDefine_1.timeTypeStateResolver[t.OS_];
+    this.Hud = t.OS_;
+    this.$ud(t.OS_);
     this.OnInit(t);
   }
   Phrase(t) {
@@ -277,10 +346,16 @@ class ActivityBaseData {
     this.EndShowTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.xps));
     this.WFe = Number(MathUtils_1.MathUtils.LongToBigInt(t.Pps));
     this.EndOpenTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.Ups));
+    this.BeginLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.CPs));
+    this.EndLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.gPs));
+    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.nmd));
+    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.smd));
     this.P4e = t.K6n;
     this.Dk_ = t.lk_;
     this.x4e = t.qps;
     this._8a = t.qS_;
+    this.Hud = t.OS_;
+    this.$ud(t.OS_);
     var i = new StringBuilder_1.StringBuilder();
     i.Append(t.s5n);
     i.Append("_");

@@ -28,6 +28,7 @@ class HandBookRoleMediumItemGird extends LoopScrollMediumItemGrid_1.LoopScrollMe
       IsDisable: t,
       IsShowLock: t
     };
+    this.SetUseFixedAsync(true);
     this.Apply(e);
     this.SetSelected(o);
   }

@@ -16,10 +16,10 @@ class UiCameraAnimationConfig extends ConfigBase_1.ConfigBase {
     return UiShowByViewName_1.configUiShowByViewName.GetConfig(e);
   }
   GetUiCameraAnimationConfig(e) {
-    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(16, e);
+    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(17, e);
   }
   GetUiCameraAnimationBlendData(e) {
-    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(15, e);
+    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(16, e);
   }
   GetUiCameraMappingConfig(e) {
     return UiCameraMappingByViewName_1.configUiCameraMappingByViewName.GetConfig(e);

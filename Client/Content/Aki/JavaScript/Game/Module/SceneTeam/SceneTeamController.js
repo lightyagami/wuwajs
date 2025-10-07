@@ -46,12 +46,12 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PanelQteEnd, SceneTeamController.VOi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLevelEnvChange, SceneTeamController.PCl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartFlow, SceneTeamController.$an);
-    Net_1.Net.Register(17820, SceneTeamController.Apo);
-    Net_1.Net.Register(16178, SceneTeamController.Ppo);
-    Net_1.Net.Register(15182, SceneTeamController.xpo);
-    Net_1.Net.Register(28847, SceneTeamController.r$s);
-    Net_1.Net.Register(21122, SceneTeamController.Phl);
-    Net_1.Net.Register(24741, SceneTeamController.Sjc);
+    Net_1.Net.Register(16437, SceneTeamController.Apo);
+    Net_1.Net.Register(15078, SceneTeamController.Ppo);
+    Net_1.Net.Register(20014, SceneTeamController.xpo);
+    Net_1.Net.Register(22115, SceneTeamController.r$s);
+    Net_1.Net.Register(15638, SceneTeamController.Phl);
+    Net_1.Net.Register(17926, SceneTeamController.K6u);
     return true;
   }
   static OnClear() {
@@ -64,12 +64,12 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PanelQteEnd, SceneTeamController.VOi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLevelEnvChange, SceneTeamController.PCl);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnStartFlow, SceneTeamController.$an);
-    Net_1.Net.UnRegister(17820);
-    Net_1.Net.UnRegister(16178);
-    Net_1.Net.UnRegister(15182);
-    Net_1.Net.UnRegister(28847);
-    Net_1.Net.UnRegister(21122);
-    Net_1.Net.UnRegister(24741);
+    Net_1.Net.UnRegister(16437);
+    Net_1.Net.UnRegister(15078);
+    Net_1.Net.UnRegister(20014);
+    Net_1.Net.UnRegister(22115);
+    Net_1.Net.UnRegister(15638);
+    Net_1.Net.UnRegister(17926);
     if (this.wpo) {
       TimerSystem_1.TimerSystem.Remove(this.wpo);
       this.wpo = undefined;
@@ -136,7 +136,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
             i = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
             (c = new Protocol_1.Aki.Protocol.qis()).Q6n = g.GetConfigId;
             c.$Hn = v;
-            if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (g = o?.EntityHandle?.Entity?.GetComponent(94)?.GetTeamState() === 1, c.tku = g, _.GetCurrentTeamItem?.GetCreatureDataId() === e) && t.GetComponent(94)?.NeedSyncTransform() && (v = t.GetComponent(3))) {
+            if (ModelManager_1.ModelManager.GameModeModel.IsMulti && (g = o?.EntityHandle?.Entity?.GetComponent(94)?.GetTeamState() === 1, c.O3u = g, _.GetCurrentTeamItem?.GetCreatureDataId() === e) && t.GetComponent(94)?.NeedSyncTransform() && (v = t.GetComponent(3))) {
               g = new Protocol_1.Aki.Protocol.wn1();
               m = new Protocol_1.Aki.Protocol.Gks();
               s = new Protocol_1.Aki.Protocol.D2s();
@@ -152,7 +152,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
               g._8n = s;
               c.wn1 = g;
             }
-            CombatMessage_1.CombatNet.Call(21005, t, c, e => {
+            CombatMessage_1.CombatNet.Call(18905, t, c, e => {
               var o;
               _.ChangingRole = false;
               if (e) {
@@ -215,7 +215,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
       t = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
       (a = new Protocol_1.Aki.Protocol.qis()).Q6n = e.GetConfigId;
       a.$Hn = o;
-      CombatMessage_1.CombatNet.Call(21005, r, a, () => {}, undefined, t);
+      CombatMessage_1.CombatNet.Call(18905, r, a, () => {}, undefined, t);
     }
   }
   static Bpo() {
@@ -251,8 +251,8 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
     }
   }
   static RoleGoDownPush(e) {
-    var o = Protocol_1.Aki.Protocol.yBu.create();
-    CombatMessage_1.CombatNet.Send(19555, e, o);
+    var o = Protocol_1.Aki.Protocol.k3u.create();
+    CombatMessage_1.CombatNet.Send(15162, e, o);
   }
   static GetLivingSate(e) {
     switch (e) {
@@ -356,7 +356,7 @@ class SceneTeamController extends ControllerBase_1.ControllerBase {
         T.Bhl = M[0];
       }
     }
-    Net_1.Net.Call(19507, T, e => {
+    Net_1.Net.Call(16044, T, e => {
       if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "请求角色入队失败");
@@ -615,7 +615,7 @@ SceneTeamController.xpo = e => {
       var n = e.wn1;
       var l = n ? Vector_1.Vector.Create(n.l8n) : undefined;
       var n = n ? Rotator_1.Rotator.Create(n._8n) : undefined;
-      RoleTeamComponent_1.RoleTeamComponent.OnSimulateChangeRole(r, a, e.tku, l, n);
+      RoleTeamComponent_1.RoleTeamComponent.OnSimulateChangeRole(r, a, e.O3u, l, n);
       ModelManager_1.ModelManager.SceneTeamModel.OtherPlayerChangeRole(e.W5n, o);
       for (const _ of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(e.W5n)) {
         if (_.GetCreatureDataId() === t) {
@@ -633,7 +633,7 @@ SceneTeamController.xpo = e => {
     }
   }
 };
-SceneTeamController.Sjc = e => {
+SceneTeamController.K6u = e => {
   var e = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
   if (o?.Valid) {
@@ -729,7 +729,7 @@ SceneTeamController.qpo = () => {
         (a = new Protocol_1.Aki.Protocol.Xe_()).W5n = e.GetPlayerId();
         a.YHn = e.GetConfigId;
         a.JHn = e.GetCreatureDataId();
-        CombatMessage_1.CombatNet.Send(26444, o, a);
+        CombatMessage_1.CombatNet.Send(25489, o, a);
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneTeam", 48, "检查当前角色，控制特殊角色中", ["groupType", t]);
       }

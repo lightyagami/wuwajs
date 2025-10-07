@@ -27,22 +27,22 @@ class AiModel extends ModelBase_1.ModelBase {
     this.HatredGroups = new Map();
     this.a6_ = new Map();
     this.Lte = 0;
-    this.k9u = new Map();
+    this.ZHu = new Map();
     this.OnCharHoldingHandsChanged = (e, t, i, o) => {
-      if (this.k9u.size > 0) {
+      if (this.ZHu.size > 0) {
         this.CheckAiRemoveCondition();
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 牵手状态变更，检查移除条件", ["entityId", e], ["isEnter", t], ["state", i], ["handType", o]);
       }
     };
-    this.O9u = new Map();
-    this.Vzc = new Map();
-    this.jzc = new Map();
-    this.lad = new Map();
-    this._ad = new Map();
-    this.Hzc = new Map();
-    this.$zc = new Map();
+    this.e$u = new Map();
+    this.WZc = new Map();
+    this.QZc = new Map();
+    this.Mud = new Map();
+    this.Eud = new Map();
+    this.KZc = new Map();
+    this.XZc = new Map();
   }
   OnInit() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharHoldingHandsChanged, this.OnCharHoldingHandsChanged);
@@ -94,7 +94,7 @@ class AiModel extends ModelBase_1.ModelBase {
   }
   CheckAiRemoveCondition() {
     var e = [];
-    for (const i of this.k9u) {
+    for (const i of this.ZHu) {
       var t = i[1].RemoveCondition;
       if (t && LevelGeneralController_1.LevelGeneralController.CheckConditionNew(t, undefined)) {
         e.push(i[0]);
@@ -108,7 +108,7 @@ class AiModel extends ModelBase_1.ModelBase {
     }
   }
   SetAiBehaviorTree(e) {
-    if (this.k9u.has(e.Key) && Log_1.Log.CheckDebug()) {
+    if (this.ZHu.has(e.Key) && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 覆盖AI行为树标识被覆盖", ["Key", e.Key]);
     }
     var t = AiBehaviorTreeById_1.configAiBehaviorTreeById.GetConfig(e.BehaviorTree);
@@ -118,7 +118,7 @@ class AiModel extends ModelBase_1.ModelBase {
           Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发覆盖AI行为树时，满足移除条件，不处理", ["Entities", e.EntityIds], ["Id", e.BehaviorTree]);
         }
       } else {
-        this.k9u.set(e.Key, e);
+        this.ZHu.set(e.Key, e);
         for (const o of e.EntityIds) {
           var i = EntitySystem_1.EntitySystem.Get(o);
           if (i?.Valid) {
@@ -131,67 +131,67 @@ class AiModel extends ModelBase_1.ModelBase {
     }
   }
   ResetAiBehaviorTree(e) {
-    if (this.k9u.has(e)) {
-      for (const i of this.k9u.get(e).EntityIds) {
+    if (this.ZHu.has(e)) {
+      for (const i of this.ZHu.get(e).EntityIds) {
         var t = EntitySystem_1.EntitySystem.Get(i);
         if (t?.Valid) {
           t.GetComponent(47)?.ResetAiBehaviorTree();
         }
       }
-      this.k9u.delete(e);
+      this.ZHu.delete(e);
     }
   }
   UpdateEntityLookAt() {
-    if (Global_1.Global.BaseCharacter && (this.Hzc.size || this.$zc.size)) {
-      this.jzc.clear();
-      this.Wzc();
-      this.Qzc();
-      for (const i of this.O9u) {
+    if (Global_1.Global.BaseCharacter && (this.KZc.size || this.XZc.size)) {
+      this.QZc.clear();
+      this.YZc();
+      this.zZc();
+      for (const i of this.e$u) {
         for (const o of i[1]) {
-          var e = this.jzc.has(o);
-          var t = this.jzc.get(o);
+          var e = this.QZc.has(o);
+          var t = this.QZc.get(o);
           if (e && t) {
             let e = false;
-            if (this.Vzc.get(o.Id) !== t.Target.Id) {
-              this.Vzc.set(o.Id, t.Target.Id);
-              this.uad(o.Id, t.Perform);
+            if (this.WZc.get(o.Id) !== t.Target.Id) {
+              this.WZc.set(o.Id, t.Target.Id);
+              this.Iud(o.Id, t.Perform);
               e = true;
             }
-            this.Kzc(o, t.Target, true, e);
-          } else if (this.Vzc.has(o.Id)) {
-            this.Kzc(o, undefined, false, true);
-            this.Vzc.delete(o.Id);
-            this.cad(o.Id);
+            this.JZc(o, t.Target, true, e);
+          } else if (this.WZc.has(o.Id)) {
+            this.JZc(o, undefined, false, true);
+            this.WZc.delete(o.Id);
+            this.Tud(o.Id);
           }
         }
       }
     }
   }
-  Wzc() {
-    for (const i of this.$zc) {
+  YZc() {
+    for (const i of this.XZc) {
       var e = i[0];
-      if (this.O9u.has(e)) {
-        for (const o of this.O9u.get(e)) {
+      if (this.e$u.has(e)) {
+        for (const o of this.e$u.get(e)) {
           for (const r of i[1]) {
             var t = o.Entity?.GetComponent(1);
             if (t && r.RangeCheck.MapCheckReachedPosition(t.ActorLocationProxy) && (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.Target))?.Valid) {
-              this.Xzc(o, t, r.Perform);
+              this.ZZc(o, t, r.Perform);
             }
           }
         }
       }
     }
   }
-  Qzc() {
+  zZc() {
     var e = FlowController_1.FlowController.GetFlowName();
     if (e) {
-      for (const i of this.Hzc) {
+      for (const i of this.KZc) {
         var t = i[0];
-        if (this.O9u.has(t)) {
+        if (this.e$u.has(t)) {
           for (const o of i[1]) {
             if (e === o.PlotName) {
-              for (const r of this.O9u.get(t)) {
-                this.Yzc(r, o.Target, o.Perform);
+              for (const r of this.e$u.get(t)) {
+                this.eed(r, o.Target, o.Perform);
               }
             }
           }
@@ -199,27 +199,27 @@ class AiModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  uad(e, t) {
+  Iud(e, t) {
     var i;
     var o;
     var r;
     var s;
-    if (t && !this.lad.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(188), r = o?.Entity?.GetComponent(178), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.lad.set(e, r), t.FaceExpressionId) && (s = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
-      this._ad.set(e, s);
+    if (t && !this.Mud.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(188), r = o?.Entity?.GetComponent(178), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.Mud.set(e, r), t.FaceExpressionId) && (s = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
+      this.Eud.set(e, s);
     }
   }
-  cad(e) {
+  Tud(e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
     var i = t?.Entity?.GetComponent(188);
     var o = t?.Entity?.GetComponent(178);
-    if (t?.Valid && i && o && (this._ad.has(e) && (t = this._ad.get(e), i?.ExpressionController?.ResetFaceForExpressionFromAnimNotify(t)), this.lad.has(e))) {
-      o = this.lad.get(e);
+    if (t?.Valid && i && o && (this.Eud.has(e) && (t = this.Eud.get(e), i?.ExpressionController?.ResetFaceForExpressionFromAnimNotify(t)), this.Mud.has(e))) {
+      o = this.Mud.get(e);
       PlayMontageUtils_1.PlayMontageUtils.ClearAndEndMontage(o, true);
     }
-    this.lad.delete(e);
-    this._ad.delete(e);
+    this.Mud.delete(e);
+    this.Eud.delete(e);
   }
-  Kzc(e, t, i, o) {
+  JZc(e, t, i, o) {
     var r;
     if (e.Entity?.Valid) {
       r = e.Entity.GetComponent(178);
@@ -240,19 +240,19 @@ class AiModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  Xzc(e, t, i) {
-    return !!t.Entity?.GetComponent(31)?.IsPlayingFlow() && (this.jzc.set(e, {
+  ZZc(e, t, i) {
+    return !!t.Entity?.GetComponent(31)?.IsPlayingFlow() && (this.QZc.set(e, {
       Target: t,
       Perform: i
     }), true);
   }
-  Yzc(e, t, i) {
+  eed(e, t, i) {
     switch (t.Type) {
       case 1:
         var o = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(Global_1.Global.BaseCharacter.EntityId);
         var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
         if (o?.Valid) {
-          this.jzc.set(e, {
+          this.QZc.set(e, {
             Target: o,
             Perform: i
           });
@@ -261,7 +261,7 @@ class AiModel extends ModelBase_1.ModelBase {
       case 0:
         o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId);
         if (o?.Valid) {
-          this.jzc.set(e, {
+          this.QZc.set(e, {
             Target: o,
             Perform: i
           });
@@ -272,11 +272,11 @@ class AiModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[AiEntityLookAt] EnableEntityLookAt", ["Key", e.Key]);
     }
-    this.O9u.set(e.Key, []);
+    this.e$u.set(e.Key, []);
     for (const o of e.EntityIds) {
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o);
       if (t?.Valid) {
-        this.O9u.get(e.Key).push(t);
+        this.e$u.get(e.Key).push(t);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("AI", 42, "[AiEntityLookAt] AddEntity", ["PbDataId", o]);
         }
@@ -285,13 +285,13 @@ class AiModel extends ModelBase_1.ModelBase {
       }
     }
     if (e.OverrideLookAtType?.Type === 0) {
-      if (this.Hzc.has(e.Key)) {
-        this.Hzc.get(e.Key).length = 0;
+      if (this.KZc.has(e.Key)) {
+        this.KZc.get(e.Key).length = 0;
       } else {
-        this.Hzc.set(e.Key, []);
+        this.KZc.set(e.Key, []);
       }
       for (const r of e.OverrideLookAtType.CheckFlowLookAtConfigs) {
-        this.Hzc.get(e.Key).push({
+        this.KZc.get(e.Key).push({
           PlotName: r.Flow.FlowListName + "," + r.Flow.FlowId + "," + r.Flow.StateId,
           Target: r.Target,
           Perform: r.EntityLookAtPerform
@@ -299,14 +299,14 @@ class AiModel extends ModelBase_1.ModelBase {
       }
     }
     if (e.DefaultLookAtType.Type === 0) {
-      if (this.$zc.has(e.Key)) {
-        this.$zc.get(e.Key).length = 0;
+      if (this.XZc.has(e.Key)) {
+        this.XZc.get(e.Key).length = 0;
       } else {
-        this.$zc.set(e.Key, []);
+        this.XZc.set(e.Key, []);
       }
       for (const s of e.DefaultLookAtType.BubbleEntityConfig) {
         var i = new RangeCheck_1.RangeCheck();
-        this.$zc.get(e.Key).push({
+        this.XZc.get(e.Key).push({
           Target: s.BubbleEntity,
           RangeCheck: i,
           Perform: s.EntityLookAtPerform
@@ -322,14 +322,14 @@ class AiModel extends ModelBase_1.ModelBase {
     }
   }
   DisableEntityLookAt(e) {
-    var t = this.O9u.get(e);
+    var t = this.e$u.get(e);
     if (t) {
       for (const i of t) {
-        this.Vzc.delete(i.Id);
+        this.WZc.delete(i.Id);
       }
-      this.O9u.delete(e);
-      this.Hzc.delete(e);
-      this.$zc.delete(e);
+      this.e$u.delete(e);
+      this.KZc.delete(e);
+      this.XZc.delete(e);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("AI", 42, "[AiEntityLookAt] DisableEntityLookAt", ["Key", e]);
       }

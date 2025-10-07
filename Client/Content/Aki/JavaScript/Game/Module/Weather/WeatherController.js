@@ -55,10 +55,10 @@ class WeatherController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(27996, WeatherController.Qko);
+    Net_1.Net.Register(18968, WeatherController.Qko);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27996);
+    Net_1.Net.UnRegister(18968);
   }
   static jko() {
     WeatherModel_1.WeatherModel.GetWorldWeatherActor().Destroy();
@@ -66,9 +66,9 @@ class WeatherController extends ControllerBase_1.ControllerBase {
   static RequestChangeWeather(e) {
     var t = new Protocol_1.Aki.Protocol.Ods();
     t.pjn = e;
-    Net_1.Net.Call(20802, t, e => {
+    Net_1.Net.Call(18869, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26386);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20032);
       }
     });
   }

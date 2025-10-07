@@ -31,6 +31,9 @@ class PcKey {
   get MacKeyIconPath() {
     return this.mackeyiconpath();
   }
+  get FrenchKeyIconPath() {
+    return this.frenchkeyiconpath();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -89,6 +92,14 @@ class PcKey {
   }
   mackeyiconpath(t) {
     var e = this.J7.__offset(this.z7, 16);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  frenchkeyiconpath(t) {
+    var e = this.J7.__offset(this.z7, 18);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

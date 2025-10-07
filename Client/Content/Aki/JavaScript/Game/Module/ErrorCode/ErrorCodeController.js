@@ -49,12 +49,12 @@ class ErrorCodeController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19961, this.$5t);
-    Net_1.Net.Register(29714, this.Y5t);
+    Net_1.Net.Register(29969, this.$5t);
+    Net_1.Net.Register(26077, this.Y5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19961);
-    Net_1.Net.UnRegister(29714);
+    Net_1.Net.UnRegister(29969);
+    Net_1.Net.UnRegister(26077);
   }
   static OpenErrorCodeScrollingTipsView(r, o) {
     var e = ConfigManager_1.ConfigManager.ErrorCodeConfig.GetTextByErrorId(r);

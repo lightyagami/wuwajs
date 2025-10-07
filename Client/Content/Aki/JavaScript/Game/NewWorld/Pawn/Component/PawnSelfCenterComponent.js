@@ -87,5 +87,5 @@ let PawnSelfCenterComponent = class PawnSelfCenterComponent extends EntityCompon
     return true;
   }
 };
-PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(287)], PawnSelfCenterComponent);
+PawnSelfCenterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(288)], PawnSelfCenterComponent);
 exports.PawnSelfCenterComponent = PawnSelfCenterComponent; //# sourceMappingURL=PawnSelfCenterComponent.js.map

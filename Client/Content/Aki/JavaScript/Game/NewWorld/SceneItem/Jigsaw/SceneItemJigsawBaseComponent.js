@@ -129,7 +129,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       if (this.Icn.has(e)) {
         this.Rcn(i);
       }
-      if (this._Ga && !i.Entity?.GetComponent(258)?.RegisterOnSceneInteractionLoadCompleted(() => {
+      if (this._Ga && !i.Entity?.GetComponent(259)?.RegisterOnSceneInteractionLoadCompleted(() => {
         this.P5a(e);
       })) {
         this.P5a(e);
@@ -187,7 +187,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
           this.wkl = true;
           this.Mcn.delete(e.PutDownIndex.GetKey());
           this.Mcn.set(s.GetKey(), e);
-          o = e.Entity.GetComponent(258);
+          o = e.Entity.GetComponent(259);
           h = this.Config?.JigsawConfig.Shape === IAction_1.EJigsawShape.Circle;
           if (o) {
             if (this._Ga.CheckIsCenter(t) || this._Ga.CheckIsCenter(i) || !h) {
@@ -692,20 +692,20 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
     e.H5n = s ? 1 : 0;
     e.k5n = h;
     e.sKn = o;
-    Net_1.Net.Call(22387, e, t => {
+    Net_1.Net.Call(17413, e, t => {
       switch (t.G9n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlaceFailOfAlreadyOnBoard:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 17351);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 20329);
       }
     });
   }
   EDe() {
     var t = Protocol_1.Aki.Protocol.izn.create();
     t.j5n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
-    Net_1.Net.Call(28191, t, t => {
+    Net_1.Net.Call(19066, t, t => {
       if (t.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         this.OnFinish();
       } else if (t.G9n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrBoardNotActiveAllGrid) {
@@ -867,13 +867,15 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       this.vFl = i;
       this.fFl = true;
     }
-    Net_1.Net.Call(24264, e, t => {
+    Net_1.Net.Call(22814, e, t => {
       switch (t.G9n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
+          break;
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrGridPosAlreadyOccupied:
+        case Protocol_1.Aki.Protocol.Q4n.Proto_ErrInvalidGridPos:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 23557);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 19041);
       }
       var i;
       if (this.Config?.CompleteCondition.Type === IComponent_1.EJigsawCompleteCondition.ActivateRenjuPiece) {
@@ -881,7 +883,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
           if (this.SFl) {
             this.MFl();
           }
-        } else if (this.vFl && (this.fGa(s, this.vFl, false, false), i = s.Entity.GetComponent(258))) {
+        } else if (this.vFl && (this.fGa(s, this.vFl, false, false), i = s.Entity.GetComponent(259))) {
           i.SetTicTacToePieceLocation(this.vFl, this.oGa);
         }
         this.vFl = undefined;
@@ -1121,7 +1123,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       var a = this.pGa;
       a.SetValue(n, r);
       var n = a.GetKey();
-      if (this.Mcn.has(n) && (r = this.Mcn.get(n)) && (a = r.Entity?.GetComponent(258)) && (this.iwl.add(a), this.mJl)) {
+      if (this.Mcn.has(n) && (r = this.Mcn.get(n)) && (a = r.Entity?.GetComponent(259)) && (this.iwl.add(a), this.mJl)) {
         a.OnTicTacToePieceMovingChange(this.twl);
       }
     }
@@ -1216,7 +1218,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       this.vAl();
     } else {
       (t = new Protocol_1.Aki.Protocol.Mv_()).F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
-      Net_1.Net.Call(22993, t, t => {
+      Net_1.Net.Call(19087, t, t => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Level", 36, "OnWaitInitPiecesComplete RenjuExitMatchedActionResponse", ["ErrorCode", t.G9n]);
         }
@@ -1228,7 +1230,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
     var i;
     if (this._Ga && (!this._Ga.IsFinish || this.Hfc) && (this.Hfc = false, this.fFl = false, this.vFl = undefined, this.w1h = undefined, this.wkl = false, this.ewl = false, t = this.EIe?.GetCreatureDataId())) {
       (i = Protocol_1.Aki.Protocol.mf_.create()).F4n = t;
-      Net_1.Net.Call(22490, i, t => {
+      Net_1.Net.Call(17619, i, t => {
         if (t?.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var i = new Map();
           for (const r of this.Mcn) {
@@ -1242,7 +1244,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
             for (const n of t) {
               var h;
               var o = n.EntityId;
-              if (i.has(o) && (h = new JigsawIndex(n.Index.RowIndex, n.Index.ColumnIndex), o = i.get(o), this.Mcn.set(h.GetKey(), o), this.fGa(o, h, false, false), o = o.Entity.GetComponent(258))) {
+              if (i.has(o) && (h = new JigsawIndex(n.Index.RowIndex, n.Index.ColumnIndex), o = i.get(o), this.Mcn.set(h.GetKey(), o), this.fGa(o, h, false, false), o = o.Entity.GetComponent(259))) {
                 o.SetTicTacToePieceLocation(h, this.oGa);
               }
             }
@@ -1314,7 +1316,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
       var i;
       var e;
       var h = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(n);
-      if (h && (t = EntitySystem_1.EntitySystem.GetComponent(h.Id, 257)) && (i = EntitySystem_1.EntitySystem.GetComponent(h.Id, 203), h = EntitySystem_1.EntitySystem.GetComponent(h.Id, 139)) && (h = h.PutDownIndex, e = this.Config.JigsawConfig.Column, e = h.Row * e + h.Col, this._Ga?.CheckIsPlayerPiece(e)) && (h = i?.GetInteractionMainActor())) {
+      if (h && (t = EntitySystem_1.EntitySystem.GetComponent(h.Id, 258)) && (i = EntitySystem_1.EntitySystem.GetComponent(h.Id, 203), h = EntitySystem_1.EntitySystem.GetComponent(h.Id, 139)) && (h = h.PutDownIndex, e = this.Config.JigsawConfig.Column, e = h.Row * e + h.Col, this._Ga?.CheckIsPlayerPiece(e)) && (h = i?.GetInteractionMainActor())) {
         this.EGa.set(h, t);
         s.push(h);
       }
@@ -1335,7 +1337,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
     var t;
     if (this.w1h) {
       this.w1h.OnSelectEnd();
-      if (t = this.w1h.Entity.GetComponent(258)) {
+      if (t = this.w1h.Entity.GetComponent(259)) {
         t.OnTicTacToePieceSelect(false, true);
       }
       this.w1h = undefined;
@@ -1377,7 +1379,7 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
           this.ClearLevelPickSelect();
           i.OnSelect();
           this.w1h = i;
-          var s = this.w1h.Entity.GetComponent(258);
+          var s = this.w1h.Entity.GetComponent(259);
           if (s) {
             s.OnTicTacToePieceSelect(true, false);
           }

@@ -29,9 +29,9 @@ class GameSettingsDumpUtils {
 }
 exports.GameSettingsDumpUtils = GameSettingsDumpUtils;
 (_a = GameSettingsDumpUtils).DumpVolume = e => {
-  var a = (0, puerts_1.$ref)(0);
-  AudioController_1.AudioController.GetRTPCValue(a, e);
-  return `${e}: ${(0, puerts_1.$unref)(a)}\n`;
+  var t = (0, puerts_1.$ref)(0);
+  AudioController_1.AudioController.GetRTPCValue(t, e);
+  return `${e}: ${(0, puerts_1.$unref)(t)}\n`;
 };
 GameSettingsDumpUtils.DumpImageQuality = () => {
   var e = _a.JMc("sg.KuroRenderQuality");
@@ -47,8 +47,8 @@ GameSettingsDumpUtils.DumpResolution = () => {
 GameSettingsDumpUtils.DumpBrightness = () => {
   var e = "";
   e = (e += _a.JMc("r.TonemapperGamma")) + _a.JMc("r.LUT.Regenerate");
-  var a = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetUiShowBrightnessMaterialParameterCollection(), RenderConfig_1.RenderConfig.UIShowBrightness);
-  return e += `GetScalarParameterValue_UIShowBrightness: ${a}
+  var t = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetUiShowBrightnessMaterialParameterCollection(), RenderConfig_1.RenderConfig.UIShowBrightness);
+  return e += `GetScalarParameterValue_UIShowBrightness: ${t}
 `;
 };
 GameSettingsDumpUtils.DumpHighestFps = () => {
@@ -67,9 +67,9 @@ GameSettingsDumpUtils.DumpAntiAliasing = () => _a.JMc("r.DefaultFeature.AntiAlia
 GameSettingsDumpUtils.DumpSceneAo = () => {
   var e = "";
   e = (e += _a.JMc("r.AmbientOcclusionLevels")) + _a.JMc("r.Mobile.SSAO");
-  var a = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), new UE.FName("EnableMobileScreenAO"));
-  return e = `${e += `GetScalarParameterValue_EnableMobileScreenAO: ${a}
-`}GetScalarParameterValue_GlobalGrassAO: ${a = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), RenderConfig_1.RenderConfig.GlobalGrassAO)}
+  var t = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), new UE.FName("EnableMobileScreenAO"));
+  return e = `${e += `GetScalarParameterValue_EnableMobileScreenAO: ${t}
+`}GetScalarParameterValue_GlobalGrassAO: ${t = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), RenderConfig_1.RenderConfig.GlobalGrassAO)}
 `;
 };
 GameSettingsDumpUtils.DumpNpcDensity = () => `CreatureController.CurrentCreatureDensityLevelExternal: ${ControllerHolder_1.ControllerHolder.CreatureController.CurrentCreatureDensityLevelExternal}
@@ -146,13 +146,20 @@ GameSettingsDumpUtils.DumpSaturation = () => _a.JMc("r.Client.Saturation");
 GameSettingsDumpUtils.DumpContrast = () => _a.JMc("r.Client.Contrast");
 GameSettingsDumpUtils.DumpFilter = () => {
   var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingId);
-  var a = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
-  if (e === undefined || a === undefined || a.get(e) === undefined) {
+  var t = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
+  if (e === undefined || t === undefined || t.get(e) === undefined) {
     return "滤镜数据不完整，或者尚未初始化";
   } else {
-    return `滤镜数据：Id：${e}, x: ${a.get(e)[0]}, y: ${a.get(e)[1]}, intensity: ${a.get(e)[2]}`;
+    return `滤镜数据：Id：${e}, x: ${t.get(e)[0]}, y: ${t.get(e)[1]}, intensity: ${t.get(e)[2]}`;
   }
 };
+GameSettingsDumpUtils.DumpImageDisplayMode = () => _a.JMc("r.Kuro.ImageDisplayMode");
+GameSettingsDumpUtils.DumpEyeProtection = () => "";
+GameSettingsDumpUtils.DumpEyeProtectionMode = () => _a.JMc("r.Kuro.EyeProtectionMode");
+GameSettingsDumpUtils.DumpEyeProtectionTemp = () => _a.JMc("r.Kuro.EyeProtectionTemp");
+GameSettingsDumpUtils.DumpEyeProtectionStrength = () => _a.JMc("r.Kuro.EyeProtectionStrength");
+GameSettingsDumpUtils.DumpEyeProtectionBrightness = () => _a.JMc("r.Kuro.EyeProtectionBrightness");
+GameSettingsDumpUtils.DumpEyeProtectionTexture = () => _a.JMc("r.Kuro.EyeProtectionTexture");
 GameSettingsDumpUtils.DumpSkinDamageMode = () => "CharacterSkinDamageComponent.EnableSkinDamage: " + CharacterSkinDamageComponent_1.CharacterSkinDamageComponent.EnableSkinDamage;
 GameSettingsDumpUtils.DumpAdrenoFME = () => _a.JMc("r.FEstimation.Option");
 GameSettingsDumpUtils.DumpAutoRun = () => "AutoMovingSettingEnable: " + ModelManager_1.ModelManager.BattleUiModel?.FormationData?.AutoMovingSettingEnable;

@@ -311,7 +311,7 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
             ModelManager_1.ModelManager.GameModeModel.IsSilentLogin = true;
             var i = ModelManager_1.ModelManager.LoginModel.GetSingleMapId();
             if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i)?.InstType === Protocol_1.Aki.Protocol.i4s.Proto_NormalInstance && UiBlueprintFunctionLibrary.TestLoadSceneData().IsDisableTeleportDungeon) {
-              ModelManager_1.ModelManager.SundryModel.BlockTpDungeonCount++;
+              ModelManager_1.ModelManager.SundryModel.SetBlockTpDungeon(true, 1);
             }
             var r = () => {
               ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.Init);
@@ -450,6 +450,18 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static IsOpenPhotograph() {
     return PhotographController_1.PhotographController.IsOpenPhotograph();
+  }
+  static EnablePhotographTimeDilation(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Photograph", 57, "EnablePhotographTimeDilation", ["timeDilation", e]);
+    }
+    ModelManager_1.ModelManager.PhotographModel?.SetPhotographTimeDilation(e);
+  }
+  static DisablePhotographTimeDilation() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Photograph", 57, "DisablePhotographTimeDilation");
+    }
+    ModelManager_1.ModelManager.PhotographModel?.SetPhotographTimeDilation(1);
   }
   static GetTopViewName() {
     let e = "None Normal / Pop View";

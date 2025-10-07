@@ -37,17 +37,17 @@ class SeamlessTravelKeepKite {
     this.f41 = undefined;
     this.g41 = undefined;
     this.C41 = undefined;
-    this.Mjc = undefined;
+    this.AWu = undefined;
     this.V$o = Transform_1.Transform.Create();
     this.Tdc = Vector_1.Vector.Create();
     this.p41 = "";
     this.v41 = "";
     this.y41 = "";
-    this.BNu = Transform_1.Transform.Create();
+    this.tNu = Transform_1.Transform.Create();
     this.M41 = Transform_1.Transform.Create();
     this.E41 = Vector_1.Vector.Create();
-    this.Ejc = undefined;
-    this.Ijc = undefined;
+    this.PWu = undefined;
+    this.xWu = undefined;
     this.I41 = undefined;
   }
   get IsInit() {
@@ -157,11 +157,11 @@ class SeamlessTravelKeepKite {
       });
       this.f41.K2_AttachToComponent(this.Hte.Actor.Mesh, FNameUtil_1.FNameUtil.GetDynamicFName(this.y41), 2, 2, 2, false);
       this.f41.SetActorHiddenInGame(true);
-      this.Mjc = this.g41.AddComponentByClass(UE.NiagaraComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);
-      this.Mjc.SetAsset(this.d41);
+      this.AWu = this.g41.AddComponentByClass(UE.NiagaraComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);
+      this.AWu.SetAsset(this.d41);
       TimerSystem_1.TimerSystem.Next(() => {
-        UE.KuroEffectLibrary.SetNiagaraSimulationMinDeltaTime(this.Mjc, -1);
-        UE.KuroEffectLibrary.SetNiagaraFrameDeltaTime(this.Mjc, 1);
+        UE.KuroEffectLibrary.SetNiagaraSimulationMinDeltaTime(this.AWu, -1);
+        UE.KuroEffectLibrary.SetNiagaraFrameDeltaTime(this.AWu, 1);
       });
       this.g41.SetActorHiddenInGame(true);
       this.UpdateKeepKite();
@@ -196,7 +196,7 @@ class SeamlessTravelKeepKite {
     ActorSystem_1.ActorSystem.Put("SeamlessTravelKeepKite.Destroy", this.f41);
     this.f41 = undefined;
     this.d41 = undefined;
-    this.Mjc = undefined;
+    this.AWu = undefined;
     ActorSystem_1.ActorSystem.Put("SeamlessTravelKeepKite.Destroy", this.g41);
     this.g41 = undefined;
     this.h41 = undefined;
@@ -226,11 +226,11 @@ class SeamlessTravelKeepKite {
         s = this.Hte.Entity.GetComponent(81)?.Hulu;
         e = this.u41.SkeletalMeshComponent;
         if (i?.IsValid()) {
-          this.Ejc = i.bCastHiddenShadow;
+          this.PWu = i.bCastHiddenShadow;
           i.bCastHiddenShadow = true;
         }
         if (s?.IsValid()) {
-          this.Ijc = s.bCastHiddenShadow;
+          this.xWu = s.bCastHiddenShadow;
           s.bCastHiddenShadow = true;
         }
         if (e?.IsValid()) {
@@ -239,8 +239,8 @@ class SeamlessTravelKeepKite {
         if (this.C41?.IsValid()) {
           this.C41.bCastHiddenShadow = true;
         }
-        if (this.Mjc?.IsValid()) {
-          this.Mjc.bCastHiddenShadow = true;
+        if (this.AWu?.IsValid()) {
+          this.AWu.bCastHiddenShadow = true;
         }
         t?.(true);
       } else {
@@ -255,8 +255,8 @@ class SeamlessTravelKeepKite {
     var s;
     var e;
     if (this.IsInit) {
-      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(81)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.Ejc !== undefined && (i.bCastHiddenShadow = this.Ejc), s?.IsValid() && this.Ijc !== undefined && (s.bCastHiddenShadow = this.Ijc), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.Mjc?.IsValid())) {
-        this.Mjc.bCastHiddenShadow = false;
+      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(81)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.PWu !== undefined && (i.bCastHiddenShadow = this.PWu), s?.IsValid() && this.xWu !== undefined && (s.bCastHiddenShadow = this.xWu), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.AWu?.IsValid())) {
+        this.AWu.bCastHiddenShadow = false;
       }
       t?.(true);
     } else {
@@ -272,7 +272,7 @@ class SeamlessTravelKeepKite {
     var h = i.ActorTransform;
     this.V$o.FromUeTransform(e.GetRelativeTransform(h));
     this.Tdc.DeepCopy(i.ActorGravityDirectProxy);
-    this.BNu.FromUeTransform(t.GetRelativeTransform(e));
+    this.tNu.FromUeTransform(t.GetRelativeTransform(e));
     if (s instanceof UE.SkeletalMeshActor) {
       h = s.GetSkeletalMeshComponent();
       this.h41 = h?.SkeletalMesh;
@@ -284,7 +284,7 @@ class SeamlessTravelKeepKite {
   A41(t) {
     var i;
     if (this.u41?.IsValid()) {
-      i = this.BNu.ToUeTransform().op_Multiply(this.u41.D_GetTransform());
+      i = this.tNu.ToUeTransform().op_Multiply(this.u41.D_GetTransform());
       t.DeepCopy(i.GetLocation());
     }
     return t;

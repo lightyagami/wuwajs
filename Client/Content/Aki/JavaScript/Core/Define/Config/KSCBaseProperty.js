@@ -138,6 +138,12 @@ class KSCBaseProperty {
   get SkillCoolDown() {
     return this.skillcooldown();
   }
+  get DamageAmplify1() {
+    return this.damageamplify1();
+  }
+  get DamageAmplify2() {
+    return this.damageamplify2();
+  }
   get SkillCoolDownChangeMin() {
     return this.skillcooldownchangemin();
   }
@@ -493,8 +499,24 @@ class KSCBaseProperty {
       return 0;
     }
   }
-  skillcooldownchangemin() {
+  damageamplify1() {
     var e = this.J7.__offset(this.z7, 90);
+    if (e) {
+      return this.J7.readInt32(this.z7 + e);
+    } else {
+      return 0;
+    }
+  }
+  damageamplify2() {
+    var e = this.J7.__offset(this.z7, 92);
+    if (e) {
+      return this.J7.readInt32(this.z7 + e);
+    } else {
+      return 0;
+    }
+  }
+  skillcooldownchangemin() {
+    var e = this.J7.__offset(this.z7, 94);
     if (e) {
       return this.J7.readInt32(this.z7 + e);
     } else {

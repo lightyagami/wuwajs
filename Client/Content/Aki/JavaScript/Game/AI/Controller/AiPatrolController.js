@@ -67,7 +67,7 @@ class AiPatrolController {
   }
   ResetConfig(t) {
     var i;
-    if (t && t !== this.$ie && (this.$ie = t, this.Yie ||= new AiPatrolConfig_1.AiPatrolConfig(), this.Yie.Init(t), this.Zie = false, t = this.Hte.CreatureData?.GetPbEntityInitData()) && ((t = (0, IComponent_1.getComponent)(t.ComponentsData, "AiComponent")) && (t.Patrol !== undefined ? (t.Patrol.SplineEntityId && (this.Yie.SplineEntityId = t.Patrol.SplineEntityId), t.Patrol.SplineEntityId || (this.Yie.Id = 0), t.Patrol.IsCircle ? (this.Yie.Loop = true, this.Yie.CirclePatrol = true) : this.Yie.CirclePatrol = false, (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId()), Net_1.Net.Call(20200, t, () => {})) : this.Yie.Id = 0), this.Yie.Id !== 0) && (t = this.Hte.Entity.GetComponent(206)) && !t.HasTag(i = 2003306528)) {
+    if (t && t !== this.$ie && (this.$ie = t, this.Yie ||= new AiPatrolConfig_1.AiPatrolConfig(), this.Yie.Init(t), this.Zie = false, t = this.Hte.CreatureData?.GetPbEntityInitData()) && ((t = (0, IComponent_1.getComponent)(t.ComponentsData, "AiComponent")) && (t.Patrol !== undefined ? (t.Patrol.SplineEntityId && (this.Yie.SplineEntityId = t.Patrol.SplineEntityId), t.Patrol.SplineEntityId || (this.Yie.Id = 0), t.Patrol.IsCircle ? (this.Yie.Loop = true, this.Yie.CirclePatrol = true) : this.Yie.CirclePatrol = false, (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId()), Net_1.Net.Call(16952, t, () => {})) : this.Yie.Id = 0), this.Yie.Id !== 0) && (t = this.Hte.Entity.GetComponent(206)) && !t.HasTag(i = 2003306528)) {
       t.AddTag(i);
     }
   }

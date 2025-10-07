@@ -33,20 +33,20 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
   constructor() {
     super(...arguments);
     this.vtn = undefined;
-    this.gVu = undefined;
+    this.d5u = undefined;
     this.Uai = false;
-    this.CVu = undefined;
+    this.m5u = undefined;
     this.Rnn = () => {
       this.Uai = true;
     };
-    this.pVu = t => {
+    this.f5u = t => {
       if (this.Uai) {
-        this.vVu(t);
+        this.g5u(t);
       }
     };
     this.H0n = (t, e) => {
       if (this.Uai) {
-        this.yVu(t, e);
+        this.C5u(t, e);
       }
     };
   }
@@ -58,7 +58,7 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       }
       return false;
     } else if (t = t[0]) {
-      this.CVu = t.PerformanceOptimizationList;
+      this.m5u = t.PerformanceOptimizationList;
       return true;
     } else {
       if (Log_1.Log.CheckError()) {
@@ -70,11 +70,11 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
   OnStart() {
     this.vtn = this.Entity.GetComponent(86);
     if (this.vtn) {
-      this.gVu = new Array();
-      this.SVu();
-      this.MVu();
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu)) {
-        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu);
+      this.d5u = new Array();
+      this.p5u();
+      this.v5u();
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.f5u)) {
+        EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.f5u);
       }
       if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);
@@ -91,9 +91,9 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       return false;
     }
   }
-  SVu() {
-    if (this.CVu && this.CVu.length !== 0) {
-      this.CVu.forEach(t => {
+  p5u() {
+    if (this.m5u && this.m5u.length !== 0) {
+      this.m5u.forEach(t => {
         this.AddOptimizationStrategy(t.Type);
       });
     }
@@ -102,7 +102,7 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     var e = OptimizationStragyHelper_1.EPerformanceOptimizationMap[t];
     if (e) {
       e = new e();
-      this.gVu.push(e);
+      this.d5u.push(e);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Optimization", 57, "[OptimizationStrategyComponent] AddOptimizationStrategy", ["type", t]);
       }
@@ -110,32 +110,32 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
       Log_1.Log.Error("Optimization", 57, "[OptimizationStrategyComponent] 未找到对应的Profile", ["type", t]);
     }
   }
-  MVu() {
-    for (const t of this.gVu) {
+  v5u() {
+    for (const t of this.d5u) {
       t.Enable();
     }
   }
-  vVu(t) {
-    for (const e of this.gVu) {
+  g5u(t) {
+    for (const e of this.d5u) {
       e.MyPlayerEntityInOutRange(t);
     }
   }
-  yVu(t, e) {
-    for (const i of this.gVu) {
+  C5u(t, e) {
+    for (const i of this.d5u) {
       i.EntityInOutRange(t, e);
     }
   }
-  EVu() {
-    for (const t of this.gVu) {
+  y5u() {
+    for (const t of this.d5u) {
       t.Disable();
     }
   }
   OnEnd() {
-    this.EVu();
-    this.gVu = undefined;
+    this.y5u();
+    this.d5u = undefined;
     this.Uai = false;
-    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu)) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.pVu);
+    if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.f5u)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.f5u);
     }
     if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);

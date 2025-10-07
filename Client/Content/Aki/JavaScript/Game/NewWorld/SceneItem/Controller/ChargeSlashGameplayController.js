@@ -11,9 +11,8 @@ const ControllerBase_1 = require("../../../../Core/Framework/ControllerBase");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const ChargeSlashScanEffectData_1 = require("../ChargeSlash/ChargeSlashScanEffectData");
+const SpecificScanEffectData_1 = require("../SpecificScanEffect/SpecificScanEffectData");
 const SMALLEST_RANDOM_TIME = 0.02;
 const SCAN_EFFECT_CLASS_PATH = "/Game/Aki/Effect/BluePrint/BP_FX_Common/BP_DistortionWave.BP_DistortionWave_C";
 class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
@@ -28,15 +27,15 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
         var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
         if (t && t.Entity) {
           if (t.IsInit && t.Entity.IsInit) {
-            const s = t.Entity.GetComponent(294);
-            if (s) {
-              const o = Math.max(Math.random() * e, SMALLEST_RANDOM_TIME);
+            const o = t.Entity.GetComponent(295);
+            if (o) {
+              const s = Math.max(Math.random() * e, SMALLEST_RANDOM_TIME);
               t = TimerSystem_1.TimerSystem.Delay(() => {
                 this.v51.delete(r);
-                ChargeSlashGameplayController.fb1(s, o);
-              }, o * MathUtils_1.MathUtils.SecondToMillisecond);
+                ChargeSlashGameplayController.fb1(o, s);
+              }, s * MathUtils_1.MathUtils.SecondToMillisecond);
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("ChargeSlash", 31, "StartChargeSlash", ["pbDataId", r], ["randomTime", o]);
+                Log_1.Log.Debug("ChargeSlash", 31, "StartChargeSlash", ["pbDataId", r], ["randomTime", s]);
               }
               if (t) {
                 this.v51.set(r, t);
@@ -67,7 +66,7 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
         var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
         if (e && e.Entity) {
           if (e.IsInit && e.Entity.IsInit) {
-            if (e = e.Entity.GetComponent(294)) {
+            if (e = e.Entity.GetComponent(295)) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("ChargeSlash", 31, "StopChargeSlash", ["pbDataId", t]);
               }
@@ -121,8 +120,8 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
           r.push(e);
         }
       }
-      for (const s of r) {
-        this.StopChargeSlashScanEffect(s);
+      for (const o of r) {
+        this.StopChargeSlashScanEffect(o);
       }
     }
   }
@@ -134,7 +133,7 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(SCAN_EFFECT_CLASS_PATH, UE.Class, a => {
       if (a) {
         (a = ActorSystem_1.ActorSystem.Spawn(a, e, undefined)).StartScanEffect();
-        this.uQ1.set(this._A, new ChargeSlashScanEffectData_1.ChargeSlashScanEffectData(this._A, a, e.GetLocation()));
+        this.uQ1.set(this._A, new SpecificScanEffectData_1.SpecificScanEffectData(this._A, a, e.GetLocation()));
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 31, "加载ChargeSlash扫描特效失败", ["path", SCAN_EFFECT_CLASS_PATH]);
       }
@@ -156,26 +155,7 @@ class ChargeSlashGameplayController extends ControllerBase_1.ControllerBase {
     }
     this.uQ1.clear();
   }
-  static get MaxScanDistance() {
-    if (this.cQ1 === undefined) {
-      this.cQ1 = ConfigManager_1.ConfigManager.LevelGamePlayConfig?.ScanMaxDistance ?? 0;
-      this.cQ1 *= 100;
-    }
-    return this.cQ1;
-  }
-  static get MaxScanInteractionEffectDistance() {
-    if (this.dQ1 === undefined) {
-      this.dQ1 = ConfigManager_1.ConfigManager.LevelGamePlayConfig?.ScanShowInteractionEffectMaxDistance ?? 0;
-      this.dQ1 *= 100;
-    }
-    return this.dQ1;
-  }
-  static GetScanMaxDistance() {
-    return Math.max(this.MaxScanDistance, this.MaxScanInteractionEffectDistance);
-  }
 }
 (exports.ChargeSlashGameplayController = ChargeSlashGameplayController).v51 = new Map();
 ChargeSlashGameplayController._A = -1;
-ChargeSlashGameplayController.uQ1 = new Map();
-ChargeSlashGameplayController.cQ1 = undefined;
-ChargeSlashGameplayController.dQ1 = undefined; //# sourceMappingURL=ChargeSlashGameplayController.js.map
+ChargeSlashGameplayController.uQ1 = new Map(); //# sourceMappingURL=ChargeSlashGameplayController.js.map

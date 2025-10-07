@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PayShopRecommendTabItem = undefined;
 const UE = require("ue");
-const ConfigManager_1 = require("../../Manager/ConfigManager");
 const CommonTabItemBase_1 = require("../Common/TabComponent/TabItem/CommonTabItemBase");
 class PayShopRecommendTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   constructor(e) {
@@ -24,10 +23,6 @@ class PayShopRecommendTabItem extends CommonTabItemBase_1.CommonTabItemBase {
   OnStart() {
     super.OnStart();
     this.GetExtendToggle(0).SetToggleState(0);
-  }
-  SetName(e) {
-    e = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(e);
-    this.GetText(1).ShowTextNew(e.Name);
   }
   OnUpdateTabIcon(e) {}
   OnSetToggleState(e, t) {

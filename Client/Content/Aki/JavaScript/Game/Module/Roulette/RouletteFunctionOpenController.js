@@ -30,4 +30,9 @@ RouletteFunctionOpenController.Hw1 = () => {
     UiManager_1.UiManager.OpenView("RogueBattleSummary");
   }
 };
-RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map
+RouletteFunctionOpenController.R6d = () => {
+  if (ControllerHolder_1.ControllerHolder.SurvivorsRogueController.CheckInSurvivorsRogueInstance()) {
+    UiManager_1.UiManager.OpenView("SurvivorsTabMainView");
+  }
+};
+RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.R6d]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map

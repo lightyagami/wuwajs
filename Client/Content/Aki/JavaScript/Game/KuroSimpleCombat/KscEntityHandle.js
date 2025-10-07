@@ -19,13 +19,13 @@ class KscEntityHandle {
   SetCreatureDataId(t) {
     this.CreatureDataId = t;
   }
-  qHu() {
+  eWu() {
     var t;
     return !!this.CreatureDataId && !!(t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.CreatureDataId)) && !!t.Entity && !!this.Valid && !!t.Entity.GetComponent(3)?.Actor?.D_GetTransform();
   }
   SyncEntityLocation() {
     var t;
-    if (this.qHu()) {
+    if (this.eWu()) {
       t = ModelManager_1.ModelManager.CreatureModel.GetEntity(this.CreatureDataId).Entity.GetComponent(3).Actor.D_GetTransform();
       this.KscEntity.SetTransformByWorld(t);
     }

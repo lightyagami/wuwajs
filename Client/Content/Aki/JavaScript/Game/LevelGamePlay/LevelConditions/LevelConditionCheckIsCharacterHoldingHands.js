@@ -9,9 +9,9 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckIsCharacterHoldingHands extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, a) {
     var r;
-    return !!e && !!(r = this.wWu(e.Target)) && !!(r = r.Entity?.GetComponent(297)) && e.IsHoldingHands === (r.GetRoleState() !== 0);
+    return !!e && !!(r = this.m7u(e.Target)) && !!(r = r.Entity?.GetComponent(298)) && e.IsHoldingHands === (r.GetRoleState() !== 0);
   }
-  wWu(e) {
+  m7u(e) {
     switch (e.Type) {
       case "Entity":
         return ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);

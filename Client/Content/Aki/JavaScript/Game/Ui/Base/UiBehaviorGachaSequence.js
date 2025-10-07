@@ -13,23 +13,24 @@ const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const CameraController_1 = require("../../Camera/CameraController");
 const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const GachaScanView_1 = require("../../Module/Gacha/GachaResultView/GachaScanView");
 const PersonalDefine_1 = require("../../Module/Personal/Model/PersonalDefine");
 const PersonalUtil_1 = require("../../Module/Personal/Model/PersonalUtil");
-const UiModelResourcesManager_1 = require("../../Module/UiComponent/UiModelResourcesManager");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
 const UiLayer_1 = require("../UiLayer");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 class UiBehaviorGachaSequence {
   constructor() {
     this.C4_ = false;
-    this.oXu = 0;
+    this.NHu = 0;
     this.RoleShowSequence = undefined;
     this.Hha = undefined;
     this.Kma = undefined;
     this.Qma = undefined;
     this.cVi = new Map();
-    this.Vha = new Map();
+    this.v0d = new Map();
   }
   OnAfterUiStart() {
     this.C4_ = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.SkyBlending.AllowSettingLerpPerFrame") === 0;
@@ -39,9 +40,10 @@ class UiBehaviorGachaSequence {
     if (Info_1.Info.IsMacPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 0");
     }
-    if (Info_1.Info.IsLowMemoryDevice && (this.oXu = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.oXu !== 0)) {
+    if (Info_1.Info.IsLowMemoryDevice && (this.NHu = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.NHu !== 0)) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality 0");
     }
+    ControllerHolder_1.ControllerHolder.MenuController.CloseAllFilter();
   }
   BindUpdateInteractBp(e) {
     this.Hha = e;
@@ -54,13 +56,13 @@ class UiBehaviorGachaSequence {
     this.Kma = e;
   }
   async PreloadLevelSequenceList(e) {
-    var a = [];
-    for (const r of e) {
-      if (r > 0 && !this.cVi.has(r)) {
-        a.push(this.PreLoadLevelSequence(r));
+    var r = [];
+    for (const a of e) {
+      if (a > 0 && !this.cVi.has(a)) {
+        r.push(this.PreLoadLevelSequence(a));
       }
     }
-    await Promise.all(a);
+    await Promise.all(r);
   }
   async PreLoadLevelSequence(e) {
     if (e <= 0) {
@@ -72,13 +74,13 @@ class UiBehaviorGachaSequence {
         Log_1.Log.Error("GachaSequencePlayer", 58, "LevelSequenceActor already cached", ["roleId", e]);
       }
     } else {
-      await PersonalUtil_1.PersonalUtil.PreloadRoleSequence(e, this.cVi, this.Vha);
+      await PersonalUtil_1.PersonalUtil.PreloadRoleSequence(e, this.cVi, this.v0d);
     }
   }
-  PlayRoleSequence(a) {
-    if (a && !(a <= 0)) {
-      const r = this.cVi.get(a);
-      if (r) {
+  PlayRoleSequence(r) {
+    if (r && !(r <= 0)) {
+      const a = this.cVi.get(r);
+      if (a) {
         if (this.RoleShowSequence) {
           UiLayer_1.UiLayer.SetShowMaskLayer("PersonalRootView", true);
           AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME, undefined, {
@@ -88,44 +90,45 @@ class UiBehaviorGachaSequence {
                 this.RoleShowSequence?.Pause();
                 this.RoleShowSequence?.GoToEndAndStop(0);
                 TimerSystem_1.GameplayTimerSystem.Next(() => {
-                  this.JQc(a, r);
+                  this.jQc(r, a);
                   UiLayer_1.UiLayer.SetShowMaskLayer("PersonalRootView", false);
                 });
               }
             }
           });
         } else {
-          this.JQc(a, r);
+          this.jQc(r, a);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("GachaSequencePlayer", 58, "UiBehaviorGachaSequence 未找到SequenceActor", ["roleId", a]);
+        Log_1.Log.Error("GachaSequencePlayer", 58, "UiBehaviorGachaSequence 未找到SequenceActor", ["roleId", r]);
       }
     }
   }
-  JQc(e, a) {
+  jQc(e, r) {
     if (this.Qma) {
-      var r = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(e);
-      if (r) {
-        var i = a.GetSequence();
+      var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(e);
+      if (a) {
+        GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("PlaySequence");
+        var i = r.GetSequence();
         UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
         UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(i);
         CameraController_1.CameraController.SetViewTarget(this.Qma, "UiBehaviorGachaSequence");
-        a.bOverrideInstanceData = true;
-        a.SetTickableWhenPaused(!ModelManager_1.ModelManager.GameModeModel.IsMulti);
-        a.AddBindingByTag(GachaScanView_1.SCENE_CAMERA_TAG, this.Qma, false, true);
-        var i = a.DefaultInstanceData;
+        r.bOverrideInstanceData = true;
+        r.SetTickableWhenPaused(!ModelManager_1.ModelManager.GameModeModel.IsMulti);
+        r.AddBindingByTag(GachaScanView_1.SCENE_CAMERA_TAG, this.Qma, false, true);
+        var i = r.DefaultInstanceData;
         const o = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(RenderModuleController_1.RenderModuleController.GetKuroCurrentUiSceneTransform());
         i.TransformOrigin = o;
-        if (r.BindPoint?.length > 0) {
-          i.TransformOriginActor = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(r.BindPoint), 1);
+        if (a.BindPoint?.length > 0) {
+          i.TransformOriginActor = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(a.BindPoint), 1);
         } else {
-          r = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
-          const o = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(r.D_GetTransform());
+          a = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
+          const o = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(a.D_GetTransform());
           i.TransformOrigin = o;
         }
-        r = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(e);
-        this.Hha?.UpdateGachaShowItem(e, r.QualityId);
-        this.RoleShowSequence = a.SequencePlayer;
+        a = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(e);
+        this.Hha?.UpdateGachaShowItem(e, a.QualityId);
+        this.RoleShowSequence = r.SequencePlayer;
         i = this.RoleShowSequence.GetStartTime().Time;
         this.RoleShowSequence.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(i, 0, "", 0, 1));
         this.RoleShowSequence.PlayTo(new UE.MovieSceneSequencePlaybackParams(i, 0, "A", 2, 0));
@@ -150,10 +153,10 @@ class UiBehaviorGachaSequence {
       AudioSystem_1.AudioSystem.PostEvent(PersonalDefine_1.STOP_AUDIO_EVENT_NAME);
     }
   }
-  SetSequencePlayBackSetting(e, a) {
-    var r = this.cVi.get(e);
-    if (r) {
-      r.PlaybackSettings = a;
+  SetSequencePlayBackSetting(e, r) {
+    var a = this.cVi.get(e);
+    if (a) {
+      a.PlaybackSettings = r;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GachaSequencePlayer", 58, "UiBehaviorGachaSequence 未找到SequenceActor", ["roleId", e]);
     }
@@ -165,10 +168,11 @@ class UiBehaviorGachaSequence {
       UE.KuroActorManager.DestroyActor(e);
     }
     this.cVi.clear();
-    for (const a of this.Vha.values()) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(a);
+    for (const r of this.v0d.values()) {
+      ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(r);
     }
-    this.Vha.clear();
+    this.v0d.clear();
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("PlaySequence");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");
@@ -176,9 +180,10 @@ class UiBehaviorGachaSequence {
     if (Info_1.Info.IsMacPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 1");
     }
-    if (Info_1.Info.IsLowMemoryDevice && this.oXu !== 0) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.oXu);
+    if (Info_1.Info.IsLowMemoryDevice && this.NHu !== 0) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.NHu);
     }
+    ControllerHolder_1.ControllerHolder.MenuController.OpenAllFilter();
   }
 }
 exports.UiBehaviorGachaSequence = UiBehaviorGachaSequence;

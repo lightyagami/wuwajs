@@ -41,6 +41,8 @@ class ActivityModel extends ModelBase_1.ModelBase {
     this.G5e = "";
     this.N5e = "";
     this.O5e = "";
+    this.ywd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
+    this.gQd = false;
     this.OnLanguageChange = () => {
       this.q5e = "";
       this.G5e = "";
@@ -340,6 +342,12 @@ class ActivityModel extends ModelBase_1.ModelBase {
   GetActivityRedDotState(t) {
     return this.GetActivityById(t)?.RedPointShowState ?? false;
   }
+  GetActivityPermanentFilterId() {
+    return this.ywd;
+  }
+  SetActivityPermanentFilterId(t) {
+    this.ywd = t;
+  }
   SendActivityViewOpenLogData(t) {
     var e = new LogReportDefine_1.ActivityViewOpenLogData();
     e.i_open_way = t;
@@ -482,6 +490,12 @@ class ActivityModel extends ModelBase_1.ModelBase {
     var t = StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityErrorTips") ?? "", t.toString(), e.toString());
     i.SetTextArgs(t);
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+  }
+  SetDebugPermanentFilterVisible(t) {
+    this.gQd = t;
+  }
+  GetDebugPermanentFilterVisible() {
+    return this.gQd;
   }
 }
 (exports.ActivityModel = ActivityModel).SortFunc = (t, e) => t.FinishSinkState !== e.FinishSinkState ? t.FinishSinkState ? 1 : -1 : t.Sort !== e.Sort ? t.Sort - e.Sort : t.BeginOpenTime !== e.BeginOpenTime ? t.BeginOpenTime - e.BeginOpenTime : t.Id - e.Id;

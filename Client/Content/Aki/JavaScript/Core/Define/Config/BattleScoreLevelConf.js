@@ -22,6 +22,9 @@ class BattleScoreLevelConf {
   get LowerUpperLimits() {
     return GameUtils_1.GameUtils.ConvertToArray(this.lowerupperlimitsLength(), this.lowerupperlimits, this);
   }
+  get BuffTime() {
+    return this.bufftime();
+  }
   get Bgm() {
     return this.bgm();
   }
@@ -84,8 +87,16 @@ class BattleScoreLevelConf {
       return null;
     }
   }
+  bufftime() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   bgm(t) {
-    var e = this.J7.__offset(this.z7, 12);
+    var e = this.J7.__offset(this.z7, 14);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

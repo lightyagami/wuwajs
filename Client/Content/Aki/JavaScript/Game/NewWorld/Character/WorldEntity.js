@@ -42,7 +42,7 @@ class WorldEntity extends Entity_1.Entity {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsStabilizeLowEntityGroupConfig;
       }
       var n = r.GetComponent(129);
-      var i = r.GetComponent(274);
+      var i = r.GetComponent(275);
       if (n && i) {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
       }

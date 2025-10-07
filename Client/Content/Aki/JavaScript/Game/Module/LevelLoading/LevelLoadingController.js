@@ -9,9 +9,11 @@ const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const Net_1 = require("../../../Core/Net/Net");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
 const Global_1 = require("../../Global");
 const LevelGeneralContextUtil_1 = require("../../LevelGamePlay/LevelGeneralContextUtil");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -60,13 +62,13 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     LevelLoadingController.CameraFade = new CameraFadeLoading_1.CameraFadeLoading();
     LevelLoadingController.UYt = [];
-    Net_1.Net.Register(15019, this.fyu);
+    Net_1.Net.Register(25918, this.fyu);
     return true;
   }
   static OnClear() {
     LevelLoadingController.CameraFade = undefined;
     LevelLoadingController.UYt = undefined;
-    Net_1.Net.UnRegister(15019);
+    Net_1.Net.UnRegister(25918);
     return true;
   }
   static OnTick(e) {
@@ -123,10 +125,19 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("Loading", 18, "LevelLoading:打开流程开始", ["perfrom", o]);
       }
       GameAudioController_1.GameAudioController.UpdateLoadingType(o);
-      n = LevelLoadingController.CheckIsOpen(o);
-      if (n) {
-        if (o === 3 && (a = r)[5] === true) {
-          BlackScreenFadeController_1.BlackScreenFadeController.ChangeColorByForce(a[1]);
+      if (LevelLoadingController.CheckIsOpen(o)) {
+        switch (o) {
+          case 3:
+            var i = r;
+            if (i[5] === true) {
+              BlackScreenFadeController_1.BlackScreenFadeController.ChangeColorByForce(i[1]);
+            }
+            break;
+          case 6:
+            i = r[0].FlowParams.KeepTime;
+            if (i !== undefined) {
+              await TimerSystem_1.GameplayTimerSystem.Wait(i * TimeUtil_1.TimeUtil.InverseMillisecond);
+            }
         }
       } else {
         if (Log_1.Log.CheckInfo()) {
@@ -150,6 +161,9 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
             break;
           case 5:
             await this.yq1(...r);
+            break;
+          case 6:
+            await this.Xxd(...r);
         }
       }
       ControllerHolder_1.ControllerHolder.WorldController.ManuallyGarbageCollection(4);
@@ -175,12 +189,12 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     });
     await e.Promise;
   }
-  static async mpi(e, o, r, a, n, t) {
-    const l = new CustomPromise_1.CustomPromise();
+  static async mpi(e, o, r, a, n, i) {
+    const t = new CustomPromise_1.CustomPromise();
     this.CameraFade.EnterInterlude(e, r, a, n, o, () => {
-      l.SetResult(true);
+      t.SetResult(true);
     });
-    await l.Promise;
+    await t.Promise;
   }
   static async Cpi(e) {
     const o = new CustomPromise_1.CustomPromise();
@@ -197,6 +211,14 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     }, undefined, undefined, r);
     a.SetResult(true);
     await a.Promise;
+  }
+  static async Xxd(e) {
+    const o = new CustomPromise_1.CustomPromise();
+    LoadingController_1.LoadingController.OpenSpecialTransitionView(e.ViewParams, () => {
+      o.SetResult(true);
+      WorldMapController_1.WorldMapController.CloseWorldMap();
+    });
+    await o.Promise;
   }
   static CheckIsOpen(e) {
     let o = false;
@@ -215,6 +237,9 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
         break;
       case 5:
         o = UiManager_1.UiManager.IsViewOpen("VideoView");
+        break;
+      case 6:
+        o = UiManager_1.UiManager.IsViewOpen("SpecialTransitionView");
     }
     return o;
   }
@@ -267,7 +292,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
           }
           await this.vpi(o);
           ControllerHolder_1.ControllerHolder.QuestNewController.RequestSetFocusModeDeterCondition(true);
-          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(20);
+          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(22);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 18, "LevelLoading:相机淡出(完成)");
           }
@@ -287,6 +312,15 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
           }
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 18, "LevelLoading:关闭CG(完成)");
+          }
+          break;
+        case 6:
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Loading", 87, "LevelLoading:关闭SpecialTransition(开始)");
+          }
+          await this.Yxd();
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Loading", 87, "LevelLoading:关闭SpecialTransition(完成)");
           }
       }
     }
@@ -315,6 +349,13 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     });
     await e.Promise;
   }
+  static async Yxd() {
+    const e = new CustomPromise_1.CustomPromise();
+    LoadingController_1.LoadingController.CloseSpecialTransitionView(() => {
+      e.SetResult(true);
+    });
+    await e.Promise;
+  }
   static CloseAllBlackScreenLoading() {
     LevelLoadingController.CloseLoading(0);
     LevelLoadingController.CloseLoading(2);
@@ -333,17 +374,17 @@ LevelLoadingController.fyu = e => {
   const a = e.h5n;
   var n = e.C6n;
   var e = e.cvs;
-  var t = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(e);
+  var i = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(e);
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("BlackScreen", 45, "[黑幕]Proto_ActionOperationScreenNotify 服务端下发黑幕操作", ["playerId:", o], ["incId:", r], ["type:", a], ["inParam:", n]);
   }
-  function l() {
+  function t() {
     var e = Protocol_1.Aki.Protocol.Dpu.create({
       W5n: o,
       w5n: r,
       h5n: a
     });
-    Net_1.Net.Call(21783, e, e => {
+    Net_1.Net.Call(25194, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("BlackScreen", 45, "[黑幕]Proto_ActionOperationScreenSuccessRequest 超时", ["playerId:", o], ["incId:", r], ["type:", a === 0 ? "关闭" : "开启"], ["response!.Proto_Code:", e.Cvs]);
@@ -352,19 +393,19 @@ LevelLoadingController.fyu = e => {
     });
   }
   if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
-    l();
+    t();
   } else {
     switch (a) {
       case Protocol_1.Aki.Protocol.lyu.Proto_Close:
-        var i = JSON.parse(n);
+        var l = JSON.parse(n);
         ModelManager_1.ModelManager.PlotModel.IsFadeIn = false;
-        if (!i) {
+        if (!l) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("BlackScreen", 45, "[黑幕]Params 为空");
           }
           Global_1.Global.CharacterCameraManager.FadeAmount = 0;
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0, () => {
-            l();
+            t();
             ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 0;
             ModelManager_1.ModelManager.PlotModel.LastPlotAspect = PlotModel_1.INVALID_NUM;
             ModelManager_1.ModelManager.PlotModel.LastPlotColor = PlotModel_1.INVALID_NUM;
@@ -373,69 +414,79 @@ LevelLoadingController.fyu = e => {
         }
         if (ModelManager_1.ModelManager.PlotModel.BlackScreenType === 1) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadeBlackScreen, false, () => {
-            l();
+            t();
           });
         } else {
           Global_1.Global.CharacterCameraManager.FadeAmount = 0;
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0, () => {
-            l();
+            t();
             ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 0;
             ModelManager_1.ModelManager.PlotModel.LastPlotAspect = PlotModel_1.INVALID_NUM;
             ModelManager_1.ModelManager.PlotModel.LastPlotColor = PlotModel_1.INVALID_NUM;
-          }, i.Ease?.Duration);
-          i = {
+          }, l.Ease?.Duration);
+          l = {
             Name: "ActionBlackScreenFadeOut"
           };
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemGuaranteeAction, "LevelEventFadeInScreen", t, i);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemGuaranteeAction, "LevelEventFadeInScreen", i, l);
         }
         break;
       case Protocol_1.Aki.Protocol.lyu.V2_:
         {
           var d;
-          var i = JSON.parse(n);
+          var l = JSON.parse(n);
           ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 1;
           ModelManager_1.ModelManager.PlotModel.IsFadeIn = true;
-          if (!i) {
+          if (!l) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("BlackScreen", 45, "[黑幕]Params 为空");
             }
             ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(0, 3, () => {
-              l();
+              t();
             }, 1, IAction_1.EFadeInScreenShowType.Black, true, true);
             return;
           }
           let e = undefined;
-          if (!i.KeepFadeAfterTreeEnd && t && t.Type === 6 && (d = t) && d.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay && (e = d.TreeConfigId, Log_1.Log.CheckInfo())) {
+          if (!l.KeepFadeAfterTreeEnd && i && i.Type === 6 && (d = i) && d.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay && (e = d.TreeConfigId, Log_1.Log.CheckInfo())) {
             Log_1.Log.Info("BlackScreen", 45, "玩法内开启黑幕：", ["treeId", d.TreeConfigId]);
           }
           ModelManager_1.ModelManager.CameraModel?.FightCamera?.LogicComponent?.ExitCameraHook(false);
-          if (i.TypeOverride) {
+          if (l.TypeOverride) {
             ModelManager_1.ModelManager.PlotModel.BlackScreenType = 1;
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadeBlackScreen, true, () => {
-              l();
+              t();
             });
           } else {
             ModelManager_1.ModelManager.PlotModel.BlackScreenType = 0;
-            if (i.ScreenType === IAction_1.EFadeInScreenShowType.White) {
+            if (l.ScreenType === IAction_1.EFadeInScreenShowType.White) {
               ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 2;
             } else {
               IAction_1.EFadeInScreenShowType.Black;
               ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 1;
             }
-            ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(0, 3, () => {
-              l();
-            }, i.Ease?.Duration, i.ScreenType, true, true, e);
+            if (l.FadeBackground) {
+              ControllerHolder_1.ControllerHolder.SpecialTransitionController.OpenSpecialTransitionLoadingByFadeScreen(l.FadeBackground, l.Ease?.Duration, t);
+            } else {
+              ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(0, 3, () => {
+                t();
+              }, l.Ease?.Duration, l.ScreenType, true, true, e);
+            }
           }
-          if (i.KeepFadeAfterTreeEnd) {
+          if (l.KeepFadeAfterTreeEnd && i?.Type !== 13) {
             d = {
-              Name: "ActionBlackScreenFadeOut"
+              Name: "ActionBlackScreenFadeOut",
+              Params: {
+                KeepFadeAfterTreeRollBack: l.KeepFadeAfterTreeRollBack
+              }
             };
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemGuaranteeAction, "LevelEventFadeInScreen", t, d);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RemGuaranteeAction, "LevelEventFadeInScreen", i, d);
           } else {
-            i = {
-              Name: "ActionBlackScreenFadeOut"
+            d = {
+              Name: "ActionBlackScreenFadeOut",
+              Params: {
+                KeepFadeAfterTreeRollBack: l.KeepFadeAfterTreeRollBack
+              }
             };
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, "LevelEventFadeInScreen", t, i);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AddGuaranteeAction, "LevelEventFadeInScreen", i, d);
           }
           break;
         }

@@ -51,6 +51,9 @@ class TsAiController extends UE.KuroAIController {
   GetEntity() {
     return this.CharAiDesignComp?.Entity;
   }
+  GetAiComp() {
+    return this.CharAiDesignComp;
+  }
   SetupBehaviorTree(t) {
     return this.BehaviorTree !== t && (this.BehaviorTree = t, this.RunBehaviorTree(t), true);
   }

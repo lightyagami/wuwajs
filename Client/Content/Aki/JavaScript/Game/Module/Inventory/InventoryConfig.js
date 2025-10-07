@@ -11,6 +11,7 @@ const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParam
 const AbyssItemById_1 = require("../../../Core/Define/ConfigQuery/AbyssItemById");
 const AccessPathById_1 = require("../../../Core/Define/ConfigQuery/AccessPathById");
 const BackgroundCardById_1 = require("../../../Core/Define/ConfigQuery/BackgroundCardById");
+const CalabashSkinById_1 = require("../../../Core/Define/ConfigQuery/CalabashSkinById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
 const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
 const ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll");
@@ -133,6 +134,9 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
         break;
       case 16:
         n = PhantomBattleBadgeById_1.configPhantomBattleBadgeById.GetConfig(e);
+        break;
+      case 17:
+        n = CalabashSkinById_1.configCalabashSkinById.GetConfig(e);
     }
     if (n) {
       (r = new ItemConfig_1.ItemConfig()).Refresh(n, t);
@@ -177,6 +181,8 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
       return 15;
     } else if (e >= InventoryDefine_1.PhantomArenaBadgeItemRange[0] && e < InventoryDefine_1.PhantomArenaBadgeItemRange[1]) {
       return 16;
+    } else if (e >= InventoryDefine_1.calabashSkinIdRange[0] && e < InventoryDefine_1.calabashSkinIdRange[1]) {
+      return 17;
     } else {
       return 0;
     }

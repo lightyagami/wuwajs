@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.UiViewPending = undefined;
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 class UiViewPending {
-  constructor(s, i) {
+  constructor(s, i, t) {
+    this.NextView = undefined;
     this.PendingType = 1;
     this.ExecutePromise = undefined;
     this.View = s;
     this.PendingType = i;
+    this.NextView = t;
     this.ExecutePromise = new CustomPromise_1.CustomPromise();
   }
   Equal(s) {

@@ -14,9 +14,9 @@ class LevelConditionCheckTrapDefenseTalentCanUnlock extends LevelGeneralBase_1.L
 exports.LevelConditionCheckTrapDefenseTalentCanUnlock = LevelConditionCheckTrapDefenseTalentCanUnlock;
 class LevelConditionCheckTrapDefenseHasCanUpgradeMachine extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n) {
-    for (const r of ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetHaveList()) {
-      for (const a of r) {
-        return !a.GetIsMaxLevel(false);
+    for (const a of ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetHaveList()) {
+      for (const r of a) {
+        return !r.GetIsMaxLevel(false);
       }
     }
     return false;
@@ -24,24 +24,24 @@ class LevelConditionCheckTrapDefenseHasCanUpgradeMachine extends LevelGeneralBas
 }
 exports.LevelConditionCheckTrapDefenseHasCanUpgradeMachine = LevelConditionCheckTrapDefenseHasCanUpgradeMachine;
 class LevelConditionOnTrapDefenseAuxiliaryMachineUpgradeToMax extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    r = r[0];
-    return !!r && r.GetHasBranch() && r.GetIsUnlock() && !r.IsBuilding;
+  Check(e, n, ...a) {
+    a = a[0];
+    return !!a && a.GetHasBranch() && a.GetIsUnlock() && !a.IsBuilding;
   }
 }
 exports.LevelConditionOnTrapDefenseAuxiliaryMachineUpgradeToMax = LevelConditionOnTrapDefenseAuxiliaryMachineUpgradeToMax;
 class LevelConditionOnTrapDefenseMachineCanChooseBranch extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    r = r[0];
-    return !!r && r.GetHasBranch() && r.GetIsUnlock();
+  Check(e, n, ...a) {
+    a = a[0];
+    return !!a && a.GetHasBranch() && a.GetIsUnlock();
   }
 }
 exports.LevelConditionOnTrapDefenseMachineCanChooseBranch = LevelConditionOnTrapDefenseMachineCanChooseBranch;
 class LevelConditionCheckTrapDefenseLevelFinish extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n) {
-    const r = Number(e.LimitParams.get("TargetLevelId"));
-    var a;
-    return !!r && !isNaN(r) && (e = ModelManager_1.ModelManager.TrapDefenseModel.LevelModeData.LevelDataList.find(e => e.Id === r)?.IsPassed ?? false, a = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.LevelDataList.find(e => e.Id === r)?.IsPassed ?? false, e || a);
+    const a = Number(e.LimitParams.get("TargetLevelId"));
+    var r;
+    return !!a && !isNaN(a) && (e = ModelManager_1.ModelManager.TrapDefenseModel.LevelModeData.LevelDataList.find(e => e.Id === a)?.IsPassed ?? false, r = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.LevelDataList.find(e => e.Id === a)?.IsPassed ?? false, e || r);
   }
 }
 exports.LevelConditionCheckTrapDefenseLevelFinish = LevelConditionCheckTrapDefenseLevelFinish;
@@ -52,31 +52,31 @@ class LevelConditionCheckTrapDefenseRogueUnlock extends LevelGeneralBase_1.Level
 }
 exports.LevelConditionCheckTrapDefenseRogueUnlock = LevelConditionCheckTrapDefenseRogueUnlock;
 class LevelConditionOnTrapDefenseBuffGroupUpgrade extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    var [r, a] = r[1].PreAddedBuffIsActiveNewQuality();
+  Check(e, n, ...a) {
+    var [a, r] = a[1].PreAddedBuffIsActiveNewQuality();
     var e = Number(e.LimitParams.get("TargetQuality"));
-    return !!e && !isNaN(e) && r && a === e;
+    return !!e && !isNaN(e) && a && r === e;
   }
 }
 exports.LevelConditionOnTrapDefenseBuffGroupUpgrade = LevelConditionOnTrapDefenseBuffGroupUpgrade;
 class LevelConditionOnTrapDefenseBuildingDevelopPreviewBtnShow extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    var [r] = r;
-    return r;
+  Check(e, n, ...a) {
+    var [a] = a;
+    return a;
   }
 }
 exports.LevelConditionOnTrapDefenseBuildingDevelopPreviewBtnShow = LevelConditionOnTrapDefenseBuildingDevelopPreviewBtnShow;
 class LevelConditionOnTrapDefenseDeployingBuilding extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
+  Check(e, n, ...a) {
     e = Number(e.LimitParams.get("MachineId"));
-    return !!e && !isNaN(e) && ([r] = r, r === e);
+    return !!e && !isNaN(e) && ([a] = a, a === e);
   }
 }
 exports.LevelConditionOnTrapDefenseDeployingBuilding = LevelConditionOnTrapDefenseDeployingBuilding;
 class LevelConditionOnTrapDefenseBuildingDevelopBottomLayoutShow extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    var [r] = r;
-    return r;
+  Check(e, n, ...a) {
+    var [a] = a;
+    return a;
   }
 }
 exports.LevelConditionOnTrapDefenseBuildingDevelopBottomLayoutShow = LevelConditionOnTrapDefenseBuildingDevelopBottomLayoutShow;
@@ -89,24 +89,31 @@ class LevelConditionCheckTrapDefenseTalentUnlock extends LevelGeneralBase_1.Leve
 exports.LevelConditionCheckTrapDefenseTalentUnlock = LevelConditionCheckTrapDefenseTalentUnlock;
 class LevelConditionCheckTrapDefenseMachineLevel extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, n) {
-    var r = Number(e.LimitParams.get("MachineId"));
-    var a = Number(e.LimitParams.get("TargetLevel"));
+    var a = Number(e.LimitParams.get("MachineId"));
+    var r = Number(e.LimitParams.get("TargetLevel"));
     var o = e.LimitParams.get("Op");
-    if (r && !isNaN(r) && a && !isNaN(a)) {
+    if (a && !isNaN(a) && r && !isNaN(r)) {
       var s = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetHaveList();
       for (let e = 1; e < s.length; e++) {
         for (const t of s[e]) {
-          if (t.Id === r || r === -1) {
+          if (t.Id === a || a === -1) {
             var l = t.GetLevel();
+            let e = false;
             switch (o) {
               case "=":
-                return l === a;
+                e = l === r;
+                break;
               case ">":
-                return a < l;
+                e = r < l;
+                break;
               case "<":
-                return l < a;
+                e = l < r;
+                break;
               default:
-                return false;
+                e = false;
+            }
+            if (a !== -1 || e) {
+              return e;
             }
           }
         }
@@ -117,9 +124,9 @@ class LevelConditionCheckTrapDefenseMachineLevel extends LevelGeneralBase_1.Leve
 }
 exports.LevelConditionCheckTrapDefenseMachineLevel = LevelConditionCheckTrapDefenseMachineLevel;
 class LevelConditionOnTrapDefenseMainLevelViewOpen extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, n, ...r) {
-    var [r] = r;
-    return r;
+  Check(e, n, ...a) {
+    var [a] = a;
+    return a;
   }
 }
 exports.LevelConditionOnTrapDefenseMainLevelViewOpen = LevelConditionOnTrapDefenseMainLevelViewOpen;

@@ -94,6 +94,12 @@ class Activity {
   get TabTagIcon() {
     return this.tabtagicon();
   }
+  get FilterTabType() {
+    return this.filtertabtype();
+  }
+  get PermanentFilterType() {
+    return this.permanentfiltertype();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -327,6 +333,22 @@ class Activity {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  filtertabtype() {
+    var t = this.J7.__offset(this.z7, 60);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  permanentfiltertype() {
+    var t = this.J7.__offset(this.z7, 62);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
   }
 }
 exports.Activity = Activity;

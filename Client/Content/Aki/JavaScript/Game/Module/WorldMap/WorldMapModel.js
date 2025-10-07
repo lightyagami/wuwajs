@@ -13,16 +13,20 @@ const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParam
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
+const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
+const ActivityControllerHolder_1 = require("../Activity/ActivityControllerHolder");
 const MapUtil_1 = require("../Map/MapUtil");
 const MapLogger_1 = require("../Map/Misc/MapLogger");
+const TowerData_1 = require("../TowerDetailUi/TowerData");
 const WorldMapAxisInteractValidation_1 = require("./WorldMapAxisInteractValidation");
 class WorldMapModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -34,6 +38,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.MapScaleMax = -0;
     this.zNl = true;
     this.JNl = true;
+    this.Mld = 1;
     this.ghl = undefined;
     this.CurrentFocalMarkType = 0;
     this.CurrentFocalMarkId = 0;
@@ -54,14 +59,62 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.HideQuickTransferConfirmBox = false;
     this.LastWorldMapPointerWorldPosition = undefined;
     this.N61 = undefined;
+    this.Uvd = [];
     this.p3o = undefined;
     this.GEr = Info_1.Info.IsPlayInEditor;
+    this.Bvd = (e, r) => {
+      var t = e.LeftTime;
+      var a = r.LeftTime;
+      const o = CommonParamById_1.configCommonParamById.GetIntConfig("MapPeriodicActivityTime");
+      var i = (e, r, t) => e > 0 && e <= o && r ? 1 : e > 0 && e <= o && !t ? 2 : r ? 3 : t ? 5 : 4;
+      var e = i(t, e.RedPoint, e.IsFinish);
+      var i = i(a, r.RedPoint, r.IsFinish);
+      if (e !== i) {
+        return e - i;
+      } else {
+        return t - a;
+      }
+    };
+    this.Pvd = () => {
+      var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(1);
+      var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
+        MarkId: r?.GetCycleConfig()?.MapMark ?? 0,
+        MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
+        Focal: true
+      });
+      ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew);
+    };
+    this.Dvd = () => {
+      var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(2);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
+        MarkId: e.MarkId,
+        MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
+        Focal: true
+      });
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason, ModelManager_1.ModelManager.TowerModel.CurrentSeason);
+    };
+    this.xvd = () => {
+      var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(3);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
+        MarkId: e.MarkId,
+        MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
+        Focal: true
+      });
+      var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
+      if (e) {
+        ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(e);
+      }
+    };
   }
   get CustomMarksIsShow() {
     return this.zNl;
   }
   get CompletedPlayPointMarkIsShow() {
     return this.JNl;
+  }
+  get JoystickClickMultiplier() {
+    return this.Mld;
   }
   get WaitToTeleportMarkConfigId() {
     return this.ghl;
@@ -82,6 +135,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.LastBigSceneMiniMapInfo = undefined;
     this.JNl = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowFinishedPlayPointMark, true);
     this.zNl = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowCustomMark, true);
+    this.Mld = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, 1);
     return true;
   }
   OnClear() {
@@ -104,17 +158,17 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   }
   GetEntityPosition(e, r) {
     var t = r + "_" + e;
-    let o = this.jlc.Get(t);
-    var a = Vector_1.Vector.Create();
-    if (o) {
-      a.FromUeVector(o);
+    let a = this.jlc.Get(t);
+    var o = Vector_1.Vector.Create();
+    if (a) {
+      o.FromUeVector(a);
     } else {
       r = ConfigManager_1.ConfigManager.MapConfig.GetEntityConfigByMapIdAndEntityId(r, e)?.Transform[0];
-      o = r ? Vector_1.Vector.Create(r.X, r.Y, r.Z) : Vector_1.Vector.Create(0, 0, 0);
-      this.jlc.Put(t, o);
-      a.FromUeVector(o);
+      a = r ? Vector_1.Vector.Create(r.X, r.Y, r.Z) : Vector_1.Vector.Create(0, 0, 0);
+      this.jlc.Put(t, a);
+      o.FromUeVector(a);
     }
-    return a;
+    return o;
   }
   GetEntityAreaId(e, r) {
     return ModelManager_1.ModelManager.CreatureModel.GetEntityData(e, r)?.AreaId ?? 0;
@@ -158,6 +212,10 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   }
   SetCustomMarksShow(e) {
     return this.zNl !== e && (this.zNl = e, LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowCustomMark, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ToggleShowCustomMark, e), true);
+  }
+  SetJoystickClickMultiplier(e) {
+    this.Mld = Math.max(0, Math.min(CommonParamById_1.configCommonParamById.GetFloatConfig("MapJoystickClickMaxMultiplier"), e));
+    LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, this.Mld);
   }
   GetPlayerPosition() {
     var e;
@@ -267,6 +325,108 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   }
   get EnableDebug() {
     return !Info_1.Info.IsBuildShipping && this.GEr;
+  }
+  get ActivityListData() {
+    return this.Uvd;
+  }
+  UpdateActivityListItemData(e = true) {
+    var r = [];
+    var t = this.kvd();
+    if (t) {
+      r.push(t);
+    }
+    var t = this.Ovd();
+    if (t) {
+      r.push(t);
+    }
+    var t = this.qvd();
+    if (t) {
+      r.push(t);
+    }
+    if (e) {
+      r.sort(this.Bvd);
+    } else {
+      const a = new Map();
+      this.Uvd.forEach((e, r) => {
+        a.set(e.Id, r);
+      });
+      r.sort((e, r) => {
+        return (a.get(e.Id) ?? Number.MAX_SAFE_INTEGER) - (a.get(r.Id) ?? Number.MAX_SAFE_INTEGER);
+      });
+    }
+    this.Uvd.length = 0;
+    this.Uvd.push(...r);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapActivityListDataUpdate);
+  }
+  kvd() {
+    const r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
+    var e;
+    var t;
+    if (r && r.IsUnLock()) {
+      e = r.Score ?? 0;
+      t = r.GetCycleConfig()?.MaxScore ?? 0;
+      return {
+        Id: 1,
+        LeftTimeText: r.GetCycleCountDownData().CountDownText ?? "",
+        LeftTime: r.GetCycleRemainTime() ?? 0,
+        CurrentNum: e,
+        TotalNum: t,
+        IsFinish: r.IsScoreRewardAllReceive(),
+        RedPoint: r.GetIfFirstOpen(),
+        OnClickCb: this.Pvd,
+        OnLeftTimeRefreshCb: e => {
+          e.LeftTime = r.GetCycleRemainTime() ?? 0;
+          e.LeftTimeText = r.GetCycleCountDownData().CountDownText ?? "";
+        }
+      };
+    }
+  }
+  Ovd() {
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10055)) {
+      const n = ModelManager_1.ModelManager.TowerModel;
+      var e = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+      var r = n.GetSeasonCountDownData();
+      var t = n.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var a = n.GetDifficultyAllStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var o = n.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
+      return {
+        Id: 2,
+        LeftTime: e > 0 ? e : 0,
+        LeftTimeText: r.CountDownText ?? "",
+        CurrentNum: t,
+        TotalNum: a,
+        IsFinish: o === 1,
+        RedPoint: i < n.CurrentSeason,
+        OnClickCb: this.Dvd,
+        OnLeftTimeRefreshCb: e => {
+          var r = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+          e.LeftTime = r > 0 ? r : 0;
+          e.LeftTimeText = n.GetSeasonCountDownData().CountDownText ?? "";
+        }
+      };
+    }
+  }
+  qvd() {
+    var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
+    if (e && e.IsUnLock()) {
+      const a = ModelManager_1.ModelManager.ShipTowerModel;
+      var [r, t] = a.GetEndlessRewardProgressNumData();
+      return {
+        Id: 3,
+        LeftTimeText: a.GetSeasonCountDownData().CountDownText ?? "",
+        LeftTime: a.GetRemainTime(),
+        CurrentNum: r,
+        TotalNum: t,
+        IsFinish: r === t && r !== 0,
+        RedPoint: e.GetIfFirstOpen(),
+        OnClickCb: this.xvd,
+        OnLeftTimeRefreshCb: e => {
+          e.LeftTime = a.GetRemainTime();
+          e.LeftTimeText = a.GetSeasonCountDownData().CountDownText ?? "";
+        }
+      };
+    }
   }
 }
 exports.WorldMapModel = WorldMapModel;

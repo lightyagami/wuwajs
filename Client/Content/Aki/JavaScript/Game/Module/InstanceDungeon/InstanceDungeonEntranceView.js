@@ -150,7 +150,6 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
         UiManager_1.UiManager.CloseView("PowerView");
       }
       this.UiViewSequence.PlaySequencePurely("Close01", true);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseInstanceEntrancePositively, this.HLn.EntranceId);
     };
     this.Bli = () => {
       this.UiViewSequence.StopSequenceByKey("Popup");
@@ -333,6 +332,7 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     e.push(this.Cli.Init());
     this.Bth = new InstanceDungeonTimeAndCountItem_1.InstanceDungeonTimeAndCountItem();
     e.push(this.Bth.CreateThenShowByResourceIdAsync("UiItem_InstanceDungeon_TimeItem", this.GetItem(7)));
+    this.GetItem(7)?.SetUIActive(false);
     this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
     e.push(this.fea.CreateByResourceIdAsync("UIItem_CommonCurrencyItem", this.wth.GetCostContent()));
     this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem();
@@ -399,6 +399,7 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.cli = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBeforeDestroyInstanceDungeonEntranceView);
     ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId = 0;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseInstanceEntrancePositively, this.HLn.EntranceId);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.Oli);

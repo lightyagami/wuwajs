@@ -22,6 +22,9 @@ class CalabashTransform {
   get Size() {
     return this.size();
   }
+  get AxisRotate() {
+    return this.axisrotate();
+  }
   get RotateTime() {
     return this.rotatetime();
   }
@@ -65,8 +68,16 @@ class CalabashTransform {
       return null;
     }
   }
+  axisrotate(t) {
+    var s = this.J7.__offset(this.z7, 12);
+    if (s) {
+      return (t || new Vector_1.Vector()).__init(this.J7.__indirect(this.z7 + s), this.J7);
+    } else {
+      return null;
+    }
+  }
   rotatetime() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

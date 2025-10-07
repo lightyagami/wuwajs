@@ -14,10 +14,10 @@ class HideActorController extends ControllerBase_1.ControllerBase {
     this.Cti = false;
     this.jAn.clear();
     this.WAn.clear();
-    this.Lhd = false;
-    this.Phd = false;
-    this.Ahd.clear();
-    this.Dhd.clear();
+    this.vdd = false;
+    this.ydd = false;
+    this.Sdd.clear();
+    this.Mdd.clear();
     return true;
   }
   static OnTick(t) {
@@ -28,8 +28,8 @@ class HideActorController extends ControllerBase_1.ControllerBase {
         }
       }
     }
-    if (this.Phd) {
-      for (const s of this.Ahd) {
+    if (this.ydd) {
+      for (const s of this.Sdd) {
         if (s.Valid) {
           this.fti(s, true);
         }
@@ -49,15 +49,15 @@ class HideActorController extends ControllerBase_1.ControllerBase {
     }
   }
   static HideNpcMesh() {
-    if (!this.Lhd) {
-      this.Lhd = true;
-      this.xhd(true, false);
+    if (!this.vdd) {
+      this.vdd = true;
+      this.Edd(true, false);
     }
   }
   static HideNpcEffect() {
-    if (!this.Phd) {
-      this.Phd = true;
-      this.xhd(false, true);
+    if (!this.ydd) {
+      this.ydd = true;
+      this.Edd(false, true);
     }
   }
   static ShowMesh() {
@@ -73,15 +73,15 @@ class HideActorController extends ControllerBase_1.ControllerBase {
     }
   }
   static ShowNpcMesh() {
-    if (this.Lhd) {
-      this.Lhd = false;
-      this.Uhd(true, false);
+    if (this.vdd) {
+      this.vdd = false;
+      this.Idd(true, false);
     }
   }
   static ShowNpcEffect() {
-    if (this.Phd) {
-      this.Phd = false;
-      this.Uhd(false, true);
+    if (this.ydd) {
+      this.ydd = false;
+      this.Idd(false, true);
     }
   }
   static pti(t, i) {
@@ -96,14 +96,14 @@ class HideActorController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static xhd(t, i) {
+  static Edd(t, i) {
     if (Global_1.Global.BaseCharacter) {
       for (const r of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
         var s;
         var e;
-        if (r.Valid && r.IsInit && r.Entity.Active && (e = (s = r.Entity.GetComponent(2))?.Actor) && e !== Global_1.Global.BaseCharacter && (e = r.Entity.GetComponent(0))?.Valid && e.IsNpc() && (t && (this.g_d(r, true), e = s.DisableActor("[HideNpcActorController] 隐藏NpcMesh"), this.Dhd.set(r, e)), i)) {
+        if (r.Valid && r.IsInit && r.Entity.Active && (e = (s = r.Entity.GetComponent(2))?.Actor) && e !== Global_1.Global.BaseCharacter && (e = r.Entity.GetComponent(0))?.Valid && e.IsNpc() && (t && (this.Ffd(r, true), e = s.DisableActor("[HideNpcActorController] 隐藏NpcMesh"), this.Mdd.set(r, e)), i)) {
           this.fti(r, true);
-          this.Ahd.add(r);
+          this.Sdd.add(r);
         }
       }
     }
@@ -126,39 +126,39 @@ class HideActorController extends ControllerBase_1.ControllerBase {
       this.jAn.clear();
     }
   }
-  static Uhd(t, i) {
+  static Idd(t, i) {
     if (t) {
-      for (var [s, e] of this.Dhd) {
+      for (var [s, e] of this.Mdd) {
         if (s.Valid) {
           s.Entity.GetComponent(2).EnableActor(e);
-          this.g_d(s, false);
+          this.Ffd(s, false);
         }
       }
-      this.Dhd.clear();
+      this.Mdd.clear();
     }
     if (i) {
-      for (const r of this.Ahd) {
+      for (const r of this.Sdd) {
         if (r.Valid) {
           this.fti(r, false);
         }
       }
-      this.Ahd.clear();
+      this.Sdd.clear();
     }
   }
   static fti(t, i) {
     t.Entity.GetComponent(40)?.CurrentSkill?.SetEffectHidden(i);
     t.Entity.GetComponent(21)?.SetHidden(i);
   }
-  static g_d(t, i) {
+  static Ffd(t, i) {
     t.Entity.GetComponent(82)?.EnableHeadInfo(!i);
   }
   static OnClear() {
     this.dti = false;
     this.Cti = false;
     this.vti(true, true);
-    this.Lhd = false;
-    this.Phd = false;
-    this.Uhd(true, true);
+    this.vdd = false;
+    this.ydd = false;
+    this.Idd(true, true);
     return true;
   }
 }
@@ -166,7 +166,7 @@ class HideActorController extends ControllerBase_1.ControllerBase {
 HideActorController.Cti = false;
 HideActorController.jAn = new Set();
 HideActorController.WAn = new Map();
-HideActorController.Lhd = false;
-HideActorController.Phd = false;
-HideActorController.Ahd = new Set();
-HideActorController.Dhd = new Map(); //# sourceMappingURL=HideActorController.js.map
+HideActorController.vdd = false;
+HideActorController.ydd = false;
+HideActorController.Sdd = new Set();
+HideActorController.Mdd = new Map(); //# sourceMappingURL=HideActorController.js.map

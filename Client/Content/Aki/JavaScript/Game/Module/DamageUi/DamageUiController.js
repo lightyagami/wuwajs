@@ -1,9 +1,11 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.DamageUiController = undefined;
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
@@ -24,11 +26,29 @@ class DamageUiController extends ControllerBase_1.ControllerBase {
     this.RemoveEvents();
     DamageUiManager_1.DamageUiManager.Clear();
     DamageUiManager_1.DamageUiManager.ClearDamageViewData();
+    this.StopUeDamageUiManager();
     return true;
   }
   static OnLeaveLevel() {
     DamageUiManager_1.DamageUiManager.OnLeaveLevel();
+    this.StopUeDamageUiManager();
     return true;
+  }
+  static OnPreload() {
+    const t = new CustomPromise_1.CustomPromise();
+    DamageUiManager_1.DamageUiManager.PreloadAsync().then(() => {
+      t.SetResult(true);
+    }, e => {
+      if (e instanceof Error) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.ErrorWithStack("CombatInfo", 17, "Preload异常", e, ["error", e.message]);
+        }
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("CombatInfo", 17, "Preload异常", ["error", e]);
+      }
+      t.SetResult(false);
+    });
+    return ["DamageUiController Preload", t];
   }
   static OnTick(e) {
     DamageUiManager_1.DamageUiManager.Tick(e);
@@ -78,9 +98,19 @@ class DamageUiController extends ControllerBase_1.ControllerBase {
   static DisableDamageViewOptimization(e) {
     DamageUiManager_1.DamageUiManager.DisableDamageViewOptimization(e);
   }
+  static StartUeDamageUiManager() {
+    DamageUiManager_1.DamageUiManager.StartUeDamageUiManager();
+  }
+  static StopUeDamageUiManager() {
+    DamageUiManager_1.DamageUiManager.StopUeDamageUiManager();
+  }
+  static SetUeDamageConfig(e, t = false) {
+    DamageUiManager_1.DamageUiManager.SetUeDamageConfig(e, t);
+  }
 }
-(exports.DamageUiController = DamageUiController).nye = () => {
-  DamageUiManager_1.DamageUiManager.PreloadSequence();
+exports.DamageUiController = DamageUiController;
+(_a = DamageUiController).nye = () => {
+  _a.StartUeDamageUiManager();
 };
 DamageUiController.mWe = () => {
   var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
@@ -108,15 +138,15 @@ DamageUiController.zpe = (e, t) => {
 };
 DamageUiController.O2t = (e, t, a, n, i) => {
   var r = n.Damage;
-  var _ = n.DamageData;
-  switch (_.CalculateType) {
+  var o = n.DamageData;
+  switch (o.CalculateType) {
     case 0:
       ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.BeHit(t);
-      DamageUiManager_1.DamageUiManager.ApplyDamage(n.Damage, n.Element, i, t, a.IsCritical, false, _.DamageTextType, a.IsImmune ? BattleUiDefine_1.IMMUNITY_DAMAGE_TEXT : "");
+      DamageUiManager_1.DamageUiManager.ApplyDamage(n.Damage, n.Element, i, t, a.IsCritical, false, o.DamageTextType, a.IsImmune ? BattleUiDefine_1.IMMUNITY_DAMAGE_TEXT : "");
       break;
     case 1:
       var s = t.GetComponent(3);
-      DamageUiManager_1.DamageUiManager.ApplyDamage(-r, 0, s.ActorLocation, t, false, true, _.DamageTextType);
+      DamageUiManager_1.DamageUiManager.ApplyDamage(-r, 0, s.ActorLocation, t, false, true, o.DamageTextType);
   }
 };
 DamageUiController.G2t = (e, t, a) => {

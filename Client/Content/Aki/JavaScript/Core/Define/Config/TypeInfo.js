@@ -22,19 +22,22 @@ class TypeInfo {
   get Deprecate() {
     return this.deprecate();
   }
+  get ShowStock() {
+    return this.showstock();
+  }
   get SortIndex() {
     return this.sortindex();
   }
   get ItemInfoDisplayType() {
     return this.iteminfodisplaytype();
   }
-  __init(t, e) {
+  __init(t, s) {
     this.z7 = t;
-    this.J7 = e;
+    this.J7 = s;
     return this;
   }
-  static getRootAsTypeInfo(t, e) {
-    return (e || new TypeInfo()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsTypeInfo(t, s) {
+    return (s || new TypeInfo()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -45,12 +48,12 @@ class TypeInfo {
     }
   }
   typedescription(t) {
-    var e = this.J7.__offset(this.z7, 6);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var s = this.J7.__offset(this.z7, 6);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return e;
+    return s;
   }
   lock() {
     var t = this.J7.__offset(this.z7, 8);
@@ -60,8 +63,12 @@ class TypeInfo {
     var t = this.J7.__offset(this.z7, 10);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  sortindex() {
+  showstock() {
     var t = this.J7.__offset(this.z7, 12);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  sortindex() {
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -69,7 +76,7 @@ class TypeInfo {
     }
   }
   iteminfodisplaytype() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

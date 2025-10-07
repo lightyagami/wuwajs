@@ -85,7 +85,7 @@ let PawnInteractNewComponent = class PawnInteractNewComponent extends PawnIntera
     this.CanRestartAi = true;
     this.$Ua = false;
     this.Oc1 = undefined;
-    this.hVu = (t, i, e, s, n, h) => {
+    this.eOu = (t, i, e, s, n, h) => {
       this.gan.SetOffsetOptionInteractRange(t, i, e, s, n, h);
     };
     this.xie = (t, i) => {
@@ -333,7 +333,7 @@ let PawnInteractNewComponent = class PawnInteractNewComponent extends PawnIntera
       this.vir.FromUeVector(this.Can.ActorForwardProxy);
       this.rhn(t);
       this.Uan();
-      this.lVu();
+      this.tOu();
       this.Ore();
       return true;
     } else {
@@ -353,8 +353,8 @@ let PawnInteractNewComponent = class PawnInteractNewComponent extends PawnIntera
     }
     this.$Ua = t.GetBaseInfo()?.Category?.CollectType === "Botany";
   }
-  lVu() {
-    this.vzi?.InitOptionWithOffset(this.hVu);
+  tOu() {
+    this.vzi?.InitOptionWithOffset(this.eOu);
   }
   GetSubEntityInteractLogicController() {
     var t = this.Entity.GetComponent(0).GetPbModelConfig();
@@ -669,7 +669,8 @@ let PawnInteractNewComponent = class PawnInteractNewComponent extends PawnIntera
           Method: 0,
           BlendOutTime: 0
         });
-        i.MainAnimInstance.ConsumeExtractedRootMotion(1);
+        i.MainAnimInstance.Montage_Stop(0);
+        i.ConsumeRootMotion();
       }
       EventSystem_1.EventSystem.EmitWithTarget(s, EventDefine_1.EEventName.OnBeforeCharActionWithTarget, 1);
       this.b6a();

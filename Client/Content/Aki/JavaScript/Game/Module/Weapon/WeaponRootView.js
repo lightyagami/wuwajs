@@ -10,6 +10,7 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const RedDotController_1 = require("../../RedDot/RedDotController");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const UiLayer_1 = require("../../Ui/UiLayer");
 const CommonTabComponentData_1 = require("../Common/TabComponent/CommonTabComponentData");
@@ -124,6 +125,7 @@ class WeaponRootView extends UiViewBase_1.UiViewBase {
     this.DS1 = true;
   }
   OnBeforeDestroy() {
+    this.Ovt();
     var e = this.OpenParam;
     if (e && e.IsFromRoleRootView && UiSceneManager_1.UiSceneManager.HasRoleSystemRoleActor()) {
       WeaponController_1.WeaponController.RoleFadeOut(UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor());
@@ -144,6 +146,7 @@ class WeaponRootView extends UiViewBase_1.UiViewBase {
     this.TabComponent.RefreshTabItemByLength(this.TabDataList.length, () => {
       var e = t > 0 ? t : 0;
       this.TabComponent.SelectToggleByIndex(e);
+      this.K8e();
     });
   }
   GetWeaponTabList() {
@@ -173,6 +176,19 @@ class WeaponRootView extends UiViewBase_1.UiViewBase {
       if (e) {
         return [e, e];
       }
+    }
+  }
+  K8e() {
+    var e = this.TabDataList.findIndex(e => e.ChildViewName === "WeaponResonanceView");
+    if (e >= 0 && (e = this.TabComponent.GetTabItemByIndex(e))) {
+      e.BindRedDot("RedDotWeaponResonanceTab", this.DOo);
+    }
+  }
+  Ovt() {
+    var e = this.TabDataList.findIndex(e => e.ChildViewName === "WeaponResonanceView");
+    if (e >= 0 && (e = this.TabComponent.GetTabItemByIndex(e))) {
+      e.UnBindRedDot();
+      RedDotController_1.RedDotController.UnBindRedDotAndClearData("RedDotWeaponResonanceTab");
     }
   }
 }

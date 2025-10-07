@@ -198,5 +198,10 @@ ConfigManager.CommonTouchUiEditConfig = undefined;
 ConfigManager.ActivityFunPlayConfig = undefined;
 ConfigManager.AnsPerformConfig = undefined;
 ConfigManager.GamepadConfig = undefined;
+ConfigManager.SurvivorsRogueConfig = undefined;
 ConfigManager.LineCrossConfig = undefined;
-ConfigManager.MoonSignInConfig = undefined; //# sourceMappingURL=ConfigManager.js.map
+ConfigManager.MoonSignInConfig = undefined;
+ConfigManager.RoleDevConfig = undefined;
+ConfigManager.QuestTreeConfig = undefined;
+ConfigManager.ImmersiveMouseConfig = undefined;
+ConfigManager.MusicBeatTypeConfig = undefined; //# sourceMappingURL=ConfigManager.js.map

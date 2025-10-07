@@ -150,6 +150,7 @@ const GongduolaPerformComponent_1 = require("../Vehicle/Gongduola/GongduolaPerfo
 const GongduolaSplineMoveComponent_1 = require("../Vehicle/Gongduola/GongduolaSplineMoveComponent");
 const MotorcycleInputComponent_1 = require("../Vehicle/Motorcycle/MotorcycleInputComponent");
 const MotorcycleMoveComponent_1 = require("../Vehicle/Motorcycle/MotorcycleMoveComponent");
+const MotorcyclePerformComponent_1 = require("../Vehicle/Motorcycle/MotorcyclePerformComponent");
 const AnimalDeathSyncComponent_1 = require("./Animal/Component/AnimalDeathSyncComponent");
 const AnimalPerformComponent_1 = require("./Animal/Component/AnimalPerformComponent");
 const AnimalStateMachineComponent_1 = require("./Animal/Component/AnimalStateMachineComponent");
@@ -224,6 +225,7 @@ const CharacterPatrolComponent_1 = require("./Common/Component/Move/CharacterPat
 const CharacterRailSlideComponent_1 = require("./Common/Component/Move/CharacterRailSlideComponent");
 const CharacterRollComponent_1 = require("./Common/Component/Move/CharacterRollComponent");
 const CharacterSlideComponent_1 = require("./Common/Component/Move/CharacterSlideComponent");
+const CharacterSplineClimbComponent_1 = require("./Common/Component/Move/CharacterSplineClimbComponent");
 const NpcMoveComponent_1 = require("./Common/Component/NpcMoveComponent");
 const PawnHeadInfoComponent_1 = require("./Common/Component/PawnHeadInfoComponent");
 const RolePreloadComponent_1 = require("./Common/Component/RolePreloadComponent");
@@ -890,6 +892,9 @@ class WorldEntityHelper {
     if (!e.AddComponent(CharacterHoldingHandsComponent_1.CharacterHoldingHandsComponent)) {
       return false;
     }
+    if (!e.AddComponent(CharacterSplineClimbComponent_1.CharacterSplineClimbComponent)) {
+      return false;
+    }
     if (!e.AddComponent(UeSkeletalTickManageComponent_1.UeSkeletalTickManageComponent)) {
       return false;
     }
@@ -1548,7 +1553,7 @@ class WorldEntityHelper {
       case "NpcVehicle":
         return false;
       case "Motorcycle":
-        if (e.AddComponent(VehicleSplineMoveComponent_1.VehicleSplineMoveComponent) && e.AddComponent(MotorcycleInputComponent_1.MotorcycleInputComponent) && e.AddComponent(VehiclePerformComponent_1.VehiclePerformComponent) && e.AddComponent(VehicleAudioComponent_1.VehicleAudioComponent) && e.AddComponent(MotorcycleMoveComponent_1.MotorcycleMoveComponent)) {
+        if (e.AddComponent(VehicleSplineMoveComponent_1.VehicleSplineMoveComponent) && e.AddComponent(MotorcycleInputComponent_1.MotorcycleInputComponent) && e.AddComponent(MotorcyclePerformComponent_1.MotorcyclePerformComponent) && e.AddComponent(VehicleAudioComponent_1.VehicleAudioComponent) && e.AddComponent(MotorcycleMoveComponent_1.MotorcycleMoveComponent)) {
           break;
         }
         return false;

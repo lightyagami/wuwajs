@@ -576,7 +576,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
           K8n: undefined,
           uVn: l,
           CVn: MathUtils_1.MathUtils.NumberToLong(o)
-        }, CombatMessage_1.CombatNet.Send(23483, t.Attacker, r), Log_1.Log.CheckDebug())) {
+        }, CombatMessage_1.CombatNet.Send(23923, t.Attacker, r), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Bullet", 20, "修改子弹目标请求", ["新的目标id", e], ["CreatureId", o]);
         }
         t.TargetIdLast = e;

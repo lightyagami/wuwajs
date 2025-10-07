@@ -21,23 +21,23 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class AoiController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(21297, AoiController.Jgr);
-    Net_1.Net.Register(16941, AoiController.zgr);
-    Net_1.Net.Register(15745, AoiController.Zgr);
-    Net_1.Net.Register(23447, AoiController.e0r);
-    Net_1.Net.Register(16730, AoiController.t0r);
-    Net_1.Net.Register(29343, AoiController.i0r);
-    Net_1.Net.Register(18928, AoiController.o0r);
+    Net_1.Net.Register(29874, AoiController.Jgr);
+    Net_1.Net.Register(25244, AoiController.zgr);
+    Net_1.Net.Register(23479, AoiController.Zgr);
+    Net_1.Net.Register(17559, AoiController.e0r);
+    Net_1.Net.Register(25146, AoiController.t0r);
+    Net_1.Net.Register(29151, AoiController.i0r);
+    Net_1.Net.Register(28801, AoiController.o0r);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(21297);
-    Net_1.Net.UnRegister(16941);
-    Net_1.Net.UnRegister(15745);
-    Net_1.Net.UnRegister(23447);
-    Net_1.Net.UnRegister(16730);
-    Net_1.Net.UnRegister(29343);
-    Net_1.Net.UnRegister(18928);
+    Net_1.Net.UnRegister(29874);
+    Net_1.Net.UnRegister(25244);
+    Net_1.Net.UnRegister(23479);
+    Net_1.Net.UnRegister(17559);
+    Net_1.Net.UnRegister(25146);
+    Net_1.Net.UnRegister(29151);
+    Net_1.Net.UnRegister(28801);
     return true;
   }
   static r0r(e, o, r) {

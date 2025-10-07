@@ -21,13 +21,13 @@ class KscActionBuffLayoutUpdate extends KscActionBase_1.KscActionBase {
       this.Warn("Skill", "刷新buff Layer时时找不到Id", ["EntityId", this.EntityId], ["Params", this.Params]);
       this.SetResult();
     } else {
-      this.wfd(t);
+      this.Y3d(t);
       await this.Promise?.Promise;
     }
   }
-  wfd(t) {
+  Y3d(t) {
     const s = this.Params.b6n;
-    const i = this.Params.I_d;
+    const i = this.Params.Kfd;
     const a = this.KscCtrl.CurSubModel.KscEntities.get(t);
     var e;
     if (a && a.Valid) {
@@ -39,7 +39,6 @@ class KscActionBuffLayoutUpdate extends KscActionBase_1.KscActionBase {
           NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedBuffDa,
           Callback: t => {
             if (this.KscCtrl.WorldInit) {
-              this.Info("Skill", "更新Buff", ["kscEntityHandle", a], ["buffId", s], ["layerCount", i], ["buffDa", t?.GetName()]);
               a.KscEntity.UpdateBuffWithStackNumSelf(t, i);
             } else {
               this.Warn("Load", "战斗实体加载失败，KSC世界已清理");

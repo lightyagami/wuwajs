@@ -5,16 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PayShopConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
-const ConfigCommon_1 = require("../../../Core/Config/ConfigCommon");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const PayShopById_1 = require("../../../Core/Define/ConfigQuery/PayShopById");
 const PayShopConditionById_1 = require("../../../Core/Define/ConfigQuery/PayShopConditionById");
 const PayShopDirectGoodsByGoodsId_1 = require("../../../Core/Define/ConfigQuery/PayShopDirectGoodsByGoodsId");
-const PayShopRecommendAll_1 = require("../../../Core/Define/ConfigQuery/PayShopRecommendAll");
 const PayShopRecommendById_1 = require("../../../Core/Define/ConfigQuery/PayShopRecommendById");
-const PayShopTabByShopId_1 = require("../../../Core/Define/ConfigQuery/PayShopTabByShopId");
-const PayShopTabByShopIdAndTabId_1 = require("../../../Core/Define/ConfigQuery/PayShopTabByShopIdAndTabId");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class PayShopConfig extends ConfigBase_1.ConfigBase {
   GetPayShopGoodsLocalText(o) {
@@ -28,15 +24,6 @@ class PayShopConfig extends ConfigBase_1.ConfigBase {
       }
     }
     return e;
-  }
-  GetPayShopTabConfig(o, e) {
-    var a = PayShopTabByShopIdAndTabId_1.configPayShopTabByShopIdAndTabId.GetConfig(o, e);
-    if (!a) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 10, "查询商城数据失败,查看商业化商城表格PayShopTab", ["商城ID", o], ["页签ID", e]);
-      }
-    }
-    return a;
   }
   GetPayShopDirectGoods(o) {
     var e = PayShopDirectGoodsByGoodsId_1.configPayShopDirectGoodsByGoodsId.GetConfig(o);
@@ -59,17 +46,6 @@ class PayShopConfig extends ConfigBase_1.ConfigBase {
   GetPayShopConditionLocalText(o) {
     return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o);
   }
-  GetPayShopTableList(o) {
-    var o = ConfigCommon_1.ConfigCommon.ToList(PayShopTabByShopId_1.configPayShopTabByShopId.GetConfigList(o));
-    var e = [];
-    o.sort((o, e) => o.Sort - e.Sort);
-    for (const a of o) {
-      if (a.Enable) {
-        e.push(a.TabId);
-      }
-    }
-    return e;
-  }
   GetShopDiscountLabel(o) {
     return "ShopDiscountLabel_" + o;
   }
@@ -81,18 +57,6 @@ class PayShopConfig extends ConfigBase_1.ConfigBase {
   }
   GetRecommendRoleSkinIdList() {
     return CommonParamById_1.configCommonParamById.GetIntArrayConfig("RecommendRoleSkinId");
-  }
-  GetRecommendData() {
-    return PayShopRecommendAll_1.configPayShopRecommendAll.GetConfigList();
-  }
-  GetNeedShowRecommendData() {
-    var o = [];
-    for (const e of this.GetRecommendData()) {
-      if (e.Show) {
-        o.push(e);
-      }
-    }
-    return o;
   }
   GetRecommendDataById(o) {
     return PayShopRecommendById_1.configPayShopRecommendById.GetConfig(o);

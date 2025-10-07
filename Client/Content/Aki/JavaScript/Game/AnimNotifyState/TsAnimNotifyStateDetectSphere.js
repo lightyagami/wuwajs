@@ -122,6 +122,9 @@ class TsAnimNotifyStateDetectSphere extends UE.KuroAnimNotifyState {
     }
     return true;
   }
+  GetNotifyName() {
+    return "球形检测碰撞";
+  }
 }
 exports.default = TsAnimNotifyStateDetectSphere;
 //# sourceMappingURL=TsAnimNotifyStateDetectSphere.js.map

@@ -20,6 +20,7 @@ var EShopType;
 var ETeleControlState;
 var ECheckTargetType;
 var ESubLevelState;
+var ETargetBuffContainer;
 function getExploreLevel(e) {
   if (e && e.Conditions) {
     var e = e.Conditions.filter(e => e.Type === "ExploreLevel");
@@ -59,7 +60,7 @@ function getPreChildQuests(e) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ESubLevelState = exports.ECheckTargetType = exports.ETeleControlState = exports.EShopType = exports.ECheckSystemStateType = exports.ERogueThemeType = exports.ECheckPlayerCanJoinActivityType = exports.EPlayerCheckType = exports.EPlayerAttributeType = exports.ETargetType = exports.EHasUpgradableVisionType = exports.EHasEquippedVisionType = exports.EWeaponLevelType = exports.ERoleLevelType = exports.EFormationRoleInfoType = exports.ECheckJigsawInfoType = exports.ESkillReadyType = exports.ELevelPlayState = exports.EAiStateType = exports.getPreChildQuests = exports.getPreQuests = exports.getExploreLevel = exports.countNameMap = exports.EConditionLogicType = undefined;
+exports.ETargetBuffContainer = exports.ESubLevelState = exports.ECheckTargetType = exports.ETeleControlState = exports.EShopType = exports.ECheckSystemStateType = exports.ERogueThemeType = exports.ECheckPlayerCanJoinActivityType = exports.EPlayerCheckType = exports.EPlayerAttributeType = exports.ETargetType = exports.EHasUpgradableVisionType = exports.EHasEquippedVisionType = exports.EWeaponLevelType = exports.ERoleLevelType = exports.EFormationRoleInfoType = exports.ECheckJigsawInfoType = exports.ESkillReadyType = exports.ELevelPlayState = exports.EAiStateType = exports.getPreChildQuests = exports.getPreQuests = exports.getExploreLevel = exports.countNameMap = exports.EConditionLogicType = undefined;
 (function (e) {
   e.BaseAccessQuest = "BaseAccessQuest";
   e.Condition2 = "Condition2";
@@ -128,4 +129,5 @@ exports.getPreChildQuests = getPreChildQuests;
 (function (e) {
   e.Enable = "Enable";
   e.Disable = "Disable";
-})(ESubLevelState = exports.ESubLevelState ||= {}); //# sourceMappingURL=ICondition.js.map
+})(ESubLevelState = exports.ESubLevelState ||= {});
+(ETargetBuffContainer = exports.ETargetBuffContainer ||= {}).Monster = "Monster"; //# sourceMappingURL=ICondition.js.map

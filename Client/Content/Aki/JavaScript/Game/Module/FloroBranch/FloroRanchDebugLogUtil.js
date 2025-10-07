@@ -24,12 +24,12 @@ class FloroRanchDebugLogUtil {
   static LogFusionEndActionInfo(t) {}
   static LogResourceChangeActionInfo(t, e) {}
   static LogWageSettleActionInfo(t) {}
-  static EKu(t) {
+  static L9u(t) {
     return StringUtils_1.EMPTY_STRING;
   }
   static LogSacrificeActionInfo(t) {}
   static LogEntityChangeActionInfo(t, e, o) {}
-  static IKu(t) {
+  static A9u(t) {
     return StringUtils_1.EMPTY_STRING;
   }
   static A5(t) {}

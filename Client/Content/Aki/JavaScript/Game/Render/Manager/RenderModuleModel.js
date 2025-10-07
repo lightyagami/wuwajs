@@ -38,11 +38,20 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     this.K1r = 5;
     this.Q1r = false;
     this.X1r = false;
-    this.pud = undefined;
-    this.vud = 16;
-    this.yud = -this.vud;
-    this.Sud = false;
+    this.Qvd = undefined;
+    this.Kvd = 16;
+    this.Xvd = -this.Kvd;
+    this.Yvd = false;
     this.$1r = 0;
+    this.PAd = false;
+    this.imc = e => {
+      if (!e && this.PAd) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Render", 36, "退出真时停时仍然开启CharRenderShell的强制Tick");
+        }
+        this.DisableForceTickCharRenderShell("RenderModuleModel OnSetGamePaused");
+      }
+    };
     this.Enl = () => {
       UE.KuroRenderingRuntimeBPPluginBPLibrary.StopSomeWeatherBeforeTeleport(GlobalData_1.GlobalData.World);
     };
@@ -64,8 +73,8 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
           Global_1.Global.BaseCharacter?.CharRenderingComponent?.RefreshMaterialController();
         });
       }
-      this.Sud = e;
-      this.yud = 0;
+      this.Yvd = e;
+      this.Xvd = 0;
     };
     this.BPr = e => {
       if (!e && this.cKl && (UE.KuroRenderingRuntimeBPPluginBPLibrary.SetDisableEffectPostProcessVolume(GlobalData_1.GlobalData.World, false, 1), this.cKl = false, Log_1.Log.CheckInfo())) {
@@ -227,6 +236,25 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     this.V1r.get(e)?.Clear();
     return this.V1r.delete(e);
   }
+  get ForceTickCharRenderShell() {
+    return this.PAd;
+  }
+  DisableForceTickCharRenderShell(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Render", 36, "关闭CharRenderShell的强制Tick", ["Reason", e]);
+    }
+    this.PAd = false;
+  }
+  EnableForceTickCharRenderShell(e) {
+    if (TickSystem_1.TickSystem.IsPaused) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 36, "开启CharRenderShell的强制Tick", ["Reason", e]);
+      }
+      this.PAd = true;
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Render", 36, "只有真时停环境下才能开启CharRenderShell的强制Tick", ["Reason", e]);
+    }
+  }
   Tick(r) {
     const t = r * 0.001;
     RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickTickable?.Start();
@@ -240,7 +268,7 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
       }
     });
     RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickTickable?.Stop();
-    if (!CharRenderShell_1.CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick()) {
+    if (!CharRenderShell_1.CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || this.PAd) {
       RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickRenderShell?.Start();
       this.V1r.forEach(e => {
         try {
@@ -325,9 +353,9 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
       }
     }
     try {
-      if (Info_1.Info.IsGameRunning() && this.yud > -this.vud && this.yud < this.vud) {
-        this.yud += this.Sud ? t : -t;
-        UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, this.pud, mpcForGameplayNameBurstTime, this.yud);
+      if (Info_1.Info.IsGameRunning() && this.Xvd > -this.Kvd && this.Xvd < this.Kvd) {
+        this.Xvd += this.Yvd ? t : -t;
+        UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, this.Qvd, mpcForGameplayNameBurstTime, this.Xvd);
       }
     } catch (e) {
       if (e instanceof Error && Log_1.Log.CheckError()) {
@@ -355,8 +383,9 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.Yyn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSequenceCameraStatus, this.BPr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraModeChanged, this.cdu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetGamePaused, this.imc);
     ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/PostProcess/DistortionWave/MPC_ForGamePlay.MPC_ForGamePlay", UE.MaterialParameterCollection, e => {
-      this.pud = e;
+      this.Qvd = e;
     });
     return true;
   }
@@ -377,6 +406,7 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.Yyn);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSequenceCameraStatus, this.BPr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraModeChanged, this.cdu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetGamePaused, this.imc);
     return true;
   }
   OnLeaveLevel() {

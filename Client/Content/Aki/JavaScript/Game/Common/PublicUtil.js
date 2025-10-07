@@ -236,7 +236,7 @@ class PublicUtil {
     }
   }
   static GetParkourConfig(t) {
-    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(11, t);
+    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(12, t);
   }
   static IsUseTempData() {
     return (!!GlobalData_1.GlobalData.IsPlayInEditor || !!GlobalData_1.GlobalData.IsRunWithEditorStartConfig()) && (this.wde === undefined && this.Bde(), this.wde ?? false);

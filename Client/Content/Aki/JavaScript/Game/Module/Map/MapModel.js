@@ -41,7 +41,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.ADi = undefined;
     this.SSl = undefined;
     this.PDi = undefined;
-    this.FFu = [];
+    this.K4u = [];
     this.UnlockMapBlockIds = [];
     this.LastSafeLocation = Vector_1.Vector.Create();
     this.CacheEnrichmentAreaWorldMapCircle = undefined;
@@ -52,7 +52,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcc = [];
     this.Tj1 = new Set();
     this.of1 = new Map();
-    this.agd = undefined;
+    this.n5d = undefined;
     this.LastHighLevelAreaInner = undefined;
     this.yW1 = new Map();
     this.SW1 = new TrimLru_1.TrimLru(3);
@@ -81,7 +81,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcl = new Map();
     this.UnlockMapBlockIds = [];
     this.of1 = new Map();
-    this.agd = new Map();
+    this.n5d = new Map();
     this.InitTeleportMarkQueryCache();
     return true;
   }
@@ -104,7 +104,7 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Wcl.clear();
     this.Qcl.clear();
     this.of1.clear();
-    this.agd.clear();
+    this.n5d.clear();
     this.EDi = undefined;
     this.LDi = undefined;
     this.Nhl = undefined;
@@ -531,10 +531,10 @@ class MapModel extends ModelBase_1.ModelBase {
     return e !== undefined && (e.FogShow === 1 || ModelManager_1.ModelManager.MapModel.CheckFogUnlocked(e?.FogHide));
   }
   SetUnlockMultiMapIds(e) {
-    this.FFu = e;
+    this.K4u = e;
   }
   AddUnlockMultiMapIds(e) {
-    this.FFu = Array.from(new Set([...this.FFu, ...e]));
+    this.K4u = Array.from(new Set([...this.K4u, ...e]));
   }
   SetUnlockMapBlockIds(e) {
     this.UnlockMapBlockIds = e;
@@ -545,7 +545,7 @@ class MapModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MiniMapForceUpdate);
   }
   CheckUnlockMultiMapIds(e) {
-    return this.FFu.includes(e);
+    return this.K4u.includes(e);
   }
   CheckUnlockMapBlockIds(e, r, t) {
     let i = 0;
@@ -1066,13 +1066,13 @@ class MapModel extends ModelBase_1.ModelBase {
     };
   }
   GetEntityIdToMarkType(e) {
-    return this.agd?.get(e);
+    return this.n5d?.get(e);
   }
   AddEntityIdToMarkType(e, r) {
-    this.agd?.set(e, r);
+    this.n5d?.set(e, r);
   }
   RemoveEntityIdToMarkType(e) {
-    this.agd?.delete(e);
+    this.n5d?.delete(e);
   }
 }
 exports.MapModel = MapModel;

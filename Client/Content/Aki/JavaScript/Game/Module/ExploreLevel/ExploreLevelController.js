@@ -13,18 +13,18 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20180, ExploreLevelController.lVt);
+    Net_1.Net.Register(20428, ExploreLevelController.lVt);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20180);
+    Net_1.Net.UnRegister(20428);
   }
   static MultiExploreScoreRewardRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.o6u();
+    var o = new Protocol_1.Aki.Protocol.v8u();
     o.nBs = e;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求请求探索进度评分奖励 ExploreScoreRewardRequest", ["request", o]);
     }
-    Net_1.Net.Call(22075, o, this.dKu);
+    Net_1.Net.Call(15268, o, this.G8u);
   }
   static CountryExploreScoreInfoRequest(l, s) {
     var e = new Protocol_1.Aki.Protocol.lts();
@@ -32,7 +32,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求国家探索评分信息 CountryExploreScoreInfoRequest", ["request", e]);
     }
-    Net_1.Net.Call(25296, e, e => {
+    Net_1.Net.Call(25670, e, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("ExploreLevel", 63, "服务端返回国家探索评分信息 CountryExploreScoreInfoResponse", ["response", e]);
       }
@@ -56,7 +56,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("ExploreLevel", 63, "客户端请求国家探索评分信息 CountryExploreScoreInfoRequest", ["request", o]);
     }
-    var o = await Net_1.Net.CallAsync(25296, o);
+    var o = await Net_1.Net.CallAsync(25670, o);
     if (o) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("ExploreLevel", 63, "服务端返回国家探索评分信息 CountryExploreScoreInfoResponse", ["response", o]);
@@ -83,7 +83,7 @@ class ExploreLevelController extends UiControllerBase_1.UiControllerBase {
   }
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnExploreLevelNotify);
 };
-ExploreLevelController.dKu = e => {
+ExploreLevelController.G8u = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("ExploreLevel", 63, "服务端返回探索评分奖励 ExploreScoreRewardResponse", ["response", e]);
   }

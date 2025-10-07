@@ -30,10 +30,6 @@ const SolarSpeedDefine_1 = require("../Activity/ActivityContent/SolarisSpeed/Sol
 const TowerDefenseRolePanel_1 = require("../Activity/ActivityContent/SolarisSpeed/View/TowerDefenseRolePanel");
 const ActivityControllerBase_1 = require("../Activity/ActivityControllerBase");
 const EditFormationDefine_1 = require("../EditFormation/EditFormationDefine");
-const InstanceDungeonController_1 = require("../InstanceDungeon/InstanceDungeonController");
-const InstanceDungeonEntranceController_1 = require("../InstanceDungeon/InstanceDungeonEntranceController");
-const ItemRewardController_1 = require("../ItemReward/ItemRewardController");
-const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const TowerDefenceDefine_1 = require("./TowerDefenceDefine");
 const TowerDefenceInBattleView_1 = require("./View/TowerDefenceInBattleView");
 const TowerDefencePhantomIconItem_1 = require("./View/TowerDefencePhantomIconItem");
@@ -198,22 +194,22 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSelectInstanceIdChallenge, TowerDefenseController.y1l);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16894, this.tZs);
-    Net_1.Net.Register(18233, this.iZs);
-    Net_1.Net.Register(19187, this.rZs);
-    Net_1.Net.Register(15404, this.ECa);
-    Net_1.Net.Register(17237, this.Zra);
-    Net_1.Net.Register(26001, this.tQa);
-    Net_1.Net.Register(15829, this.iQa);
+    Net_1.Net.Register(22300, this.tZs);
+    Net_1.Net.Register(21596, this.iZs);
+    Net_1.Net.Register(29713, this.rZs);
+    Net_1.Net.Register(16407, this.ECa);
+    Net_1.Net.Register(18364, this.Zra);
+    Net_1.Net.Register(20809, this.tQa);
+    Net_1.Net.Register(20820, this.iQa);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16894);
-    Net_1.Net.UnRegister(18233);
-    Net_1.Net.UnRegister(19187);
-    Net_1.Net.UnRegister(15404);
-    Net_1.Net.UnRegister(17237);
-    Net_1.Net.UnRegister(26001);
-    Net_1.Net.UnRegister(15829);
+    Net_1.Net.UnRegister(22300);
+    Net_1.Net.UnRegister(21596);
+    Net_1.Net.UnRegister(29713);
+    Net_1.Net.UnRegister(16407);
+    Net_1.Net.UnRegister(18364);
+    Net_1.Net.UnRegister(20809);
+    Net_1.Net.UnRegister(20820);
   }
   GetActivityLevelUnlockState(e) {
     return TowerDefenseController.CheckIsInstanceUnlock(e);
@@ -436,7 +432,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("TowerDefense", 10, "进入塔防副本", ["instanceId", t], ["RoleIdList", n]);
       }
-      return await InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, n, e.EntranceId, 0, undefined, ModelManager_1.ModelManager.TowerDefenseModel.GetProtocolPhantomIdList(n));
+      return await ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(t, n, e.EntranceId, 0, undefined, ModelManager_1.ModelManager.TowerDefenseModel.GetProtocolPhantomIdList(n));
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("TowerDefense", 64, "进入副本失败，副本Id不存在", ["instanceId", t]);
@@ -448,7 +444,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     var e = Protocol_1.Aki.Protocol.gzs.create();
     const t = ModelManager_1.ModelManager.TowerDefenseModel;
     e.BVn = [n];
-    Net_1.Net.CallAsync(23956, e).then(e => {
+    Net_1.Net.CallAsync(23348, e).then(e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefense", 64, "塔防积分奖励的response", ["response", e], ["rewardId", n]);
       }
@@ -463,7 +459,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     var e = Protocol_1.Aki.Protocol.mzs.create();
     const t = ModelManager_1.ModelManager.TowerDefenseModel;
     e.BVn = [n];
-    Net_1.Net.CallAsync(16241, e).then(e => {
+    Net_1.Net.CallAsync(17037, e).then(e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefense", 64, "塔防关卡奖励的response", ["response", e], ["instanceId", n]);
       }
@@ -477,7 +473,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static async RequestSelfRankData(e) {
     var n = Protocol_1.Aki.Protocol.Nhc.create();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(18482, n);
+    var e = await Net_1.Net.CallAsync(15270, n);
     if (e) {
       ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
     }
@@ -485,13 +481,13 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static async RequestRankList(e) {
     var n = Protocol_1.Aki.Protocol.nnc.create();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(23760, n);
+    var e = await Net_1.Net.CallAsync(24281, n);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerDefenceRankCd) {
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetIsOpenAnonymousName(!e.lnc);
       } else if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20760);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17573);
       } else {
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetFriendServerData(e.dnc);
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
@@ -502,10 +498,10 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static RequestRankShowName(e, n) {
     var t = Protocol_1.Aki.Protocol.anc.create();
     t.lnc = e;
-    Net_1.Net.Call(21148, t, e => {
+    Net_1.Net.Call(22551, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20760);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17573);
         } else {
           n?.();
         }
@@ -533,7 +529,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static TryOpenPhantomViewByPlayerIdAndRoleId(e, n) {
     if (TowerDefenseController.CheckIsSelf(e)) {
       if (ModelManager_1.ModelManager.InstanceDungeonModel.GetPrewarPlayerReadyState(e)) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("TowerDefence_PhantasmTips");
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TowerDefence_PhantasmTips");
       } else {
         e = {
           RoleCfgId: n
@@ -551,7 +547,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
       n.RoleCfgId2PhantomIdMapCache.set(e, n.CurrentSelfPhantomIdInUiTemp);
       if (TowerDefenseController.toa()) {
         t = ModelManager_1.ModelManager.EditBattleTeamModel;
-        InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.MatchChangeRoleRequest(t.GetOwnRoleConfigIdList[0]).then(e => {
+        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.MatchChangeRoleRequest(t.GetOwnRoleConfigIdList[0]).then(e => {
           if (e) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TowerDefensePhantomChanged);
           }
@@ -614,7 +610,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
         },
         ButtonInfoList: a
       };
-      ItemRewardController_1.ItemRewardController.OpenExploreRewardViewNew(o);
+      ControllerHolder_1.ControllerHolder.ItemRewardController.OpenExploreRewardViewNew(o);
     }
   }
   static Usc(e) {
@@ -1007,7 +1003,7 @@ TowerDefenseController._Zs = () => {
 };
 TowerDefenseController.Fil = () => {
   if (TowerDefenseController.CheckInInstanceDungeon()) {
-    InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeon().finally(() => {
+    ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon().finally(() => {
       if (UiManager_1.UiManager.IsViewShow("ExploreRewardView")) {
         UiManager_1.UiManager.CloseView("ExploreRewardView");
       }
@@ -1016,7 +1012,7 @@ TowerDefenseController.Fil = () => {
   }
 };
 TowerDefenseController.CZs = e => {
-  InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeon().finally(() => {
+  ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon().finally(() => {
     if (UiManager_1.UiManager.IsViewShow("ExploreRewardView")) {
       UiManager_1.UiManager.CloseView("ExploreRewardView");
     }
@@ -1030,12 +1026,12 @@ TowerDefenseController.gZs = e => {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("TowerDefense", 64, "奖励结算时，申请多人投票");
     }
-    InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.SettleViewButtonSuccessOnMultiCallBack(e);
+    ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.SettleViewButtonSuccessOnMultiCallBack(e);
   } else {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("TowerDefense", 64, "奖励结算时，申请单人重进副本");
     }
-    InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.RestartInstanceDungeon().finally(() => {
+    ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon().finally(() => {
       if (UiManager_1.UiManager.IsViewShow("ExploreRewardView")) {
         UiManager_1.UiManager.CloseView("ExploreRewardView");
       }

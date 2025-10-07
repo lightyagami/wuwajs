@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelConditionCenter = undefined;
+const Log_1 = require("../../../Core/Common/Log");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const LevelGeneralDefine_1 = require("../LevelGeneralDefine");
 const LevelCodeConditionCheckGroup_1 = require("./LevelCodeConditionCheckGroup");
@@ -12,6 +13,7 @@ const LevelConditionAccountSettingOpen_1 = require("./LevelConditionAccountSetti
 const LevelConditionAlwaysFalse_1 = require("./LevelConditionAlwaysFalse");
 const LevelConditionAnyPhantomCouldUpdate_1 = require("./LevelConditionAnyPhantomCouldUpdate");
 const LevelConditionAnyRoleFullPhantom_1 = require("./LevelConditionAnyRoleFullPhantom");
+const LevelConditionCalabashGuide_1 = require("./LevelConditionCalabashGuide");
 const LevelConditionCheckActivityOpen_1 = require("./LevelConditionCheckActivityOpen");
 const LevelConditionCheckAiState_1 = require("./LevelConditionCheckAiState");
 const LevelConditionCheckAnimalParts_1 = require("./LevelConditionCheckAnimalParts");
@@ -20,6 +22,7 @@ const LevelConditionCheckBattleRoleIsNot_1 = require("./LevelConditionCheckBattl
 const LevelConditionCheckBattleRoleWeaponType_1 = require("./LevelConditionCheckBattleRoleWeaponType");
 const LevelConditionCheckBuff_1 = require("./LevelConditionCheckBuff");
 const LevelConditionCheckCalabashLevel_1 = require("./LevelConditionCheckCalabashLevel");
+const LevelConditionCheckCameraParam_1 = require("./LevelConditionCheckCameraParam");
 const LevelConditionCheckCharacterTag_1 = require("./LevelConditionCheckCharacterTag");
 const LevelConditionCheckCharacterTagByEvent_1 = require("./LevelConditionCheckCharacterTagByEvent");
 const LevelConditionCheckClientEvent_1 = require("./LevelConditionCheckClientEvent");
@@ -60,6 +63,7 @@ const LevelConditionCheckFishingRoleTechViewOpen_1 = require("./LevelConditionCh
 const LevelConditionCheckFishingTechUnlock_1 = require("./LevelConditionCheckFishingTechUnlock");
 const LevelConditionCheckFishingWareHouseItemListLength_1 = require("./LevelConditionCheckFishingWareHouseItemListLength");
 const LevelConditionCheckFormationAnyRoleDead_1 = require("./LevelConditionCheckFormationAnyRoleDead");
+const LevelConditionCheckGamePlayTag_1 = require("./LevelConditionCheckGamePlayTag");
 const LevelConditionCheckGramophonePlayingMusic_1 = require("./LevelConditionCheckGramophonePlayingMusic");
 const LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer_1 = require("./LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer");
 const LevelConditionCheckGuideStatus_1 = require("./LevelConditionCheckGuideStatus");
@@ -84,6 +88,7 @@ const LevelConditionCheckLevelPlayState_1 = require("./LevelConditionCheckLevelP
 const LevelConditionCheckLockEnemyMode_1 = require("./LevelConditionCheckLockEnemyMode");
 const LevelConditionCheckMapFocusByQuestId_1 = require("./LevelConditionCheckMapFocusByQuestId");
 const LevelConditionCheckMoraleLevelRange_1 = require("./LevelConditionCheckMoraleLevelRange");
+const LevelConditionCheckMusicBeatsEvent_1 = require("./LevelConditionCheckMusicBeatsEvent");
 const LevelConditionCheckOnSelectSettingMainType_1 = require("./LevelConditionCheckOnSelectSettingMainType");
 const LevelConditionCheckOnTrap_1 = require("./LevelConditionCheckOnTrap");
 const LevelConditionCheckOriginWorldLevel_1 = require("./LevelConditionCheckOriginWorldLevel");
@@ -91,6 +96,7 @@ const LevelConditionCheckPhantom_1 = require("./LevelConditionCheckPhantom");
 const LevelConditionCheckPlayerMotionState_1 = require("./LevelConditionCheckPlayerMotionState");
 const LevelConditionCheckPlayerMotionStateNew_1 = require("./LevelConditionCheckPlayerMotionStateNew");
 const LevelConditionCheckPlayerStateRestriction_1 = require("./LevelConditionCheckPlayerStateRestriction");
+const LevelConditionCheckPlayerUseSkill_1 = require("./LevelConditionCheckPlayerUseSkill");
 const LevelConditionCheckPositionRolePhantomSkillEquip_1 = require("./LevelConditionCheckPositionRolePhantomSkillEquip");
 const LevelConditionCheckPureModeWhenBattleViewActive_1 = require("./LevelConditionCheckPureModeWhenBattleViewActive");
 const LevelConditionCheckRangeByPbDataId_1 = require("./LevelConditionCheckRangeByPbDataId");
@@ -134,6 +140,7 @@ const LevelConditionDangoMonopolyGuide_1 = require("./LevelConditionDangoMonopol
 const LevelConditionDistanceLess_1 = require("./LevelConditionDistanceLess");
 const LevelConditionDragonPoolState_1 = require("./LevelConditionDragonPoolState");
 const LevelConditionEntityState_1 = require("./LevelConditionEntityState");
+const LevelConditionFightPhotoGuide_1 = require("./LevelConditionFightPhotoGuide");
 const LevelConditionFinishGuideStepByEvent_1 = require("./LevelConditionFinishGuideStepByEvent");
 const LevelConditionFloroRanchGuide_1 = require("./LevelConditionFloroRanchGuide");
 const LevelConditionForMoonChasing_1 = require("./LevelConditionForMoonChasing");
@@ -180,6 +187,7 @@ const LevelConditionSelfGameplayTagCheck_1 = require("./LevelConditionSelfGamepl
 const LevelConditionSelfState_1 = require("./LevelConditionSelfState");
 const LevelConditionSelfTagCheck_1 = require("./LevelConditionSelfTagCheck");
 const LevelConditionStartShootTarget_1 = require("./LevelConditionStartShootTarget");
+const LevelConditionSurvivorsRogueGuide_1 = require("./LevelConditionSurvivorsRogueGuide");
 const LevelConditionTargetTagCheck_1 = require("./LevelConditionTargetTagCheck");
 const LevelConditionTeamCouldEquipPhantom_1 = require("./LevelConditionTeamCouldEquipPhantom");
 const LevelConditionTeamRoleLevel_1 = require("./LevelConditionTeamRoleLevel");
@@ -192,6 +200,28 @@ const LevelConditionVisionIntensifyTabOpen_1 = require("./LevelConditionVisionIn
 const LevelConditionWorldMapGuide_1 = require("./LevelConditionWorldMapGuide");
 const E_LGC = LevelGeneralDefine_1.ELevelGeneralCondition;
 class LevelConditionCenter {
+  static StartMusicBeatCounter(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 音乐节拍开始计数", ["MusicEventType", e]);
+    }
+    this.Imd.set(e, 0);
+  }
+  static AddMusicBeatCounter(e) {
+    var i = this.Imd.get(e);
+    if (i === undefined) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 添加音乐节拍计数失败, 音乐类型计数器不存在", ["EMusicEventType", e]);
+      }
+    } else {
+      if (LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 音乐节拍增加计数", ["MusicEventType", e], ["BeatCount", i + 1]);
+      }
+      this.Imd.set(e, i + 1);
+    }
+  }
+  static GetMusicBeatCounter(e) {
+    return this.Imd.get(e);
+  }
   static RegistConditions() {
     this.$Te(E_LGC.DistanceLess, LevelConditionDistanceLess_1.LevelConditionDistanceLess);
     this.$Te(E_LGC.SelfTagCheck, LevelConditionSelfTagCheck_1.LevelConditionSelfTagCheck);
@@ -392,6 +422,16 @@ class LevelConditionCenter {
     this.$Te(E_LGC.CheckTrapDefenseMachineLevel, LevelConditionTrapDefenseGuide_1.LevelConditionCheckTrapDefenseMachineLevel);
     this.$Te(E_LGC.CheckTrapDefenseTalentUnlock, LevelConditionTrapDefenseGuide_1.LevelConditionCheckTrapDefenseTalentUnlock);
     this.$Te(E_LGC.OnTrapDefenseMainLevelViewOpen, LevelConditionTrapDefenseGuide_1.LevelConditionOnTrapDefenseMainLevelViewOpen, [EventDefine_1.EEventName.TrapDefenseMainLevelViewOpen]);
+    this.$Te(E_LGC.OnVisionIntensifyViewShow, LevelConditionCalabashGuide_1.LevelConditionOnVisionIntensifyViewShow, [EventDefine_1.EEventName.OnVisionIntensifyViewShow]);
+    this.$Te(E_LGC.CheckSurvivorRogueHasWeaponBond, LevelConditionSurvivorsRogueGuide_1.LevelConditionCheckSurvivorRogueHasWeaponBond);
+    this.$Te(E_LGC.CheckSurvivorRogueTalentCanUnlock, LevelConditionSurvivorsRogueGuide_1.LevelConditionCheckSurvivorRogueTalentCanUnlock);
+    this.$Te(E_LGC.OnSurvivorsRogueWeaponDetailTabViewShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow, [EventDefine_1.EEventName.SurvivorsRogueWeaponDetailTabViewShow]);
+    this.$Te(E_LGC.OnSurvivorsRoguePopViewRefresh, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRoguePopViewRefresh, [EventDefine_1.EEventName.SurvivorsRoguePopViewRefresh]);
+    this.$Te(E_LGC.OnSurvivorsRogueEndlessToggleShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueEndlessToggleShow, [EventDefine_1.EEventName.SurvivorsRogueLevelDetailViewEndlessToggleRefresh]);
+    this.$Te(E_LGC.OnSurvivorsRogueComboBuffShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueComboBuffShow, [EventDefine_1.EEventName.SurvivorsRogueComboBuffShow]);
+    this.$Te(E_LGC.CheckFightPhotoHasTarget, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoHasTarget);
+    this.$Te(E_LGC.CheckFightPhotoLevelFinished, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoLevelFinished);
+    this.$Te(E_LGC.CheckCalabashChildFunctionOpen, LevelConditionCalabashGuide_1.LevelConditionCheckCalabashChildFunctionOpen);
     this.$Te("CheckChildQuestFinished", LevelConditionQuestStepState_1.LevelConditionQuestStepState);
     this.$Te("CompareQuestState", LevelConditionQuestState_1.LevelConditionQuestState);
     this.$Te("CompareEntityState", LevelConditionEntityState_1.LevelConditionEntityState);
@@ -436,39 +476,25 @@ class LevelConditionCenter {
     this.$Te("CheckIsTrackingCurrentQuest", LevelConditionCheckTrackQuest_1.LevelConditionCheckTrackQuest);
     this.$Te("CheckPlayerMoraleLevelRange", LevelConditionCheckMoraleLevelRange_1.LevelConditionCheckMoraleLevelRange);
     this.$Te("CheckIsCharacterHoldingHands", LevelConditionCheckIsCharacterHoldingHands_1.LevelConditionCheckIsCharacterHoldingHands);
+    this.$Te("CheckPhotographCameraParam", LevelConditionCheckCameraParam_1.LevelConditionCheckCameraParam);
+    this.$Te("CheckPlayerUseSkill", LevelConditionCheckPlayerUseSkill_1.LevelConditionCheckPlayerUseSkill);
+    this.$Te("CheckGameplayTag", LevelConditionCheckGamePlayTag_1.LevelConditionCheckGamePlayTag);
     this.YTe(0, LevelConditionCheckCharacterTag_1.LevelConditionCheckCharacterTag);
     this.YTe(1, LevelConditionCheckEntityCommonTag_1.LevelConditionCheckEntityCommonTag);
     this.YTe(2, LevelConditionCheckFanIsNotRotating_1.LevelConditionCheckFanIsNotRotating);
     this.YTe(3, LevelCodeConditionCheckGroup_1.LevelCodeConditionCheckGroup);
     this.YTe(4, LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer_1.LevelConditionCheckGravityFlipEntityDirectionSameAsPlayer);
-    this.ddc("CheckClientEvent", LevelConditionCheckClientEvent_1.LevelConditionCheckClientEvent, new Map([[EventDefine_1.EEventName.CheckClientEvent, [0, 1]]]));
-    this.ddc("CheckSceneItemDirection", LevelConditionCheckSceneItemDirection_1.LevelConditionCheckSceneItemDirection, new Map([[EventDefine_1.EEventName.OnSceneItemRotateStopped, [1]]]));
-    this.ddc("CompareEntityState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState, new Map([[EventDefine_1.EEventName.OnSceneItemStateChange, [1]]]));
-    this.ddc("CompareEntitySelfState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState, new Map([[EventDefine_1.EEventName.OnSceneItemStateChange, [1]]]));
+    this.$Te("CheckClientEvent", LevelConditionCheckClientEvent_1.LevelConditionCheckClientEvent);
+    this.$Te("CheckSceneItemDirection", LevelConditionCheckSceneItemDirection_1.LevelConditionCheckSceneItemDirection);
+    this.$Te("CompareEntityState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState);
+    this.$Te("CompareEntitySelfState", LevelConditionCompareEntityState_1.LevelConditionCompareEntityState);
+    this.$Te("CheckMusicBeatsEvent", LevelConditionCheckMusicBeatsEvent_1.LevelConditionCheckMusicBeatsEvent);
   }
   static $Te(e, i, n) {
     this.JTe.set(e, {
       LevelCondition: new i(),
       EventNames: n || []
     });
-  }
-  static ddc(e, i, n) {
-    this.$Te(e, i);
-    if (!this.mdc.has(e)) {
-      this.mdc.set(e, new Map());
-    }
-    for (var [o, t] of n) {
-      if (!this.fdc.has(o)) {
-        this.fdc.set(o, new Set());
-      }
-      this.fdc.get(o).add(e);
-      if (!this.mdc.get(e).has(o)) {
-        this.mdc.get(e).set(o, new Set());
-      }
-      for (const C of t) {
-        this.mdc.get(e).get(o).add(C);
-      }
-    }
   }
   static YTe(e, i) {
     this.zTe.set(e, new i());
@@ -477,9 +503,6 @@ class LevelConditionCenter {
     if (this.JTe.has(e)) {
       return this.JTe.get(e).LevelCondition;
     }
-  }
-  static GetConditionsByEvent(e) {
-    return this.fdc.get(e);
   }
   static GetCodeCondition(e) {
     return this.zTe.get(e);
@@ -490,9 +513,6 @@ class LevelConditionCenter {
     } else {
       return [];
     }
-  }
-  static GetConditionListenerEventInfo(e) {
-    return this.mdc.get(e);
   }
   static GetConditionExParams(e) {
     return this.ZTe.get(e);
@@ -516,5 +536,5 @@ class LevelConditionCenter {
 LevelConditionCenter.zTe = new Map();
 LevelConditionCenter.eLe = undefined;
 LevelConditionCenter.ZTe = new Map();
-LevelConditionCenter.fdc = new Map();
-LevelConditionCenter.mdc = new Map(); //# sourceMappingURL=LevelConditionCenter.js.map
+LevelConditionCenter.MusicBeatLogOpen = false;
+LevelConditionCenter.Imd = new Map(); //# sourceMappingURL=LevelConditionCenter.js.map

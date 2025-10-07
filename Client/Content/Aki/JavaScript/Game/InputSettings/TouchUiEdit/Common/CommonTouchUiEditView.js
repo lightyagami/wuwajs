@@ -12,48 +12,48 @@ const TouchUiEditViewModel_1 = require("../TouchUiEditViewModel");
 class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.lHu = undefined;
+    this.q$u = undefined;
     this.pgt = undefined;
     this.vgt = undefined;
-    this._Hu = undefined;
+    this.EQu = undefined;
     this.Ogt = () => {
-      this.lHu.Reset();
+      this.q$u.Reset();
     };
     this.Fgt = () => {
-      this.lHu.Save();
+      this.q$u.Save();
     };
     this.Vgt = () => {
       this.CloseMe();
     };
     this.qgt = i => {
-      this.lHu.SetScale(i);
+      this.q$u.SetScale(i);
     };
     this.Ngt = i => {
-      this.lHu.SetAlpha(i);
+      this.q$u.SetAlpha(i);
     };
     this.Sgt = () => {
-      this.lHu.SetOffsetDeltaY(-1);
+      this.q$u.SetOffsetDeltaY(-1);
     };
     this.ygt = () => {
-      this.lHu.SetOffsetDeltaY(0);
+      this.q$u.SetOffsetDeltaY(0);
     };
     this.Igt = () => {
-      this.lHu.SetOffsetDeltaY(1);
+      this.q$u.SetOffsetDeltaY(1);
     };
     this.Tgt = () => {
-      this.lHu.SetOffsetDeltaY(0);
+      this.q$u.SetOffsetDeltaY(0);
     };
     this.Lgt = () => {
-      this.lHu.SetOffsetDeltaX(-1);
+      this.q$u.SetOffsetDeltaX(-1);
     };
     this.Dgt = () => {
-      this.lHu.SetOffsetDeltaX(0);
+      this.q$u.SetOffsetDeltaX(0);
     };
     this.Rgt = () => {
-      this.lHu.SetOffsetDeltaX(1);
+      this.q$u.SetOffsetDeltaX(1);
     };
     this.Ugt = () => {
-      this.lHu.SetOffsetDeltaX(0);
+      this.q$u.SetOffsetDeltaX(0);
     };
     this.Agt = i => {
       var t = i.GetLocalPointInPlane();
@@ -69,7 +69,7 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
           }
           this.vgt.X += h * s.X;
           this.vgt.Y += i * s.Y;
-          this.uHu(this.vgt);
+          this.IQu(this.vgt);
         }
         this.pgt = t;
       }
@@ -80,12 +80,12 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     this.xgt = () => {
       this.pgt = undefined;
     };
-    this.cHu = i => {
+    this.TQu = i => {
       var t;
       this.GetSlider(2).SetValue(i.Data.Scale);
       this.GetSlider(1).SetValue(i.Data.Alpha);
-      if (this._Hu !== i) {
-        i = (this._Hu = i).RootItem;
+      if (this.EQu !== i) {
+        i = (this.EQu = i).RootItem;
         (t = this.GetItem(12)).GetOwner().K2_AttachToActor(i.GetOwner(), undefined, 2, 0, 0, false);
         t.SetAnchorAlign(4, 4);
         t.SetStretchLeft(0);
@@ -102,20 +102,20 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
   }
   async OnBeforeStartAsync() {
     if (this.OpenParam) {
-      this.lHu = this.OpenParam;
-      this.lHu.SetView(this);
-      await this.lHu.OnBeforeStartAsync();
+      this.q$u = this.OpenParam;
+      this.q$u.SetView(this);
+      await this.q$u.OnBeforeStartAsync();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("TouchUiEdit", 74, "打开CommonTouchUiEditView时未指定OpenParam");
     }
   }
   OnStart() {
     this.vgt = this.GetItem(11).RelativeLocation;
-    this.lHu.OnStart();
+    this.q$u.OnStart();
     this.GetItem(12).SetUIActive(false);
   }
   OnTick(i) {
-    this.lHu.OnTick(i);
+    this.q$u.OnTick(i);
   }
   OnAddEventListener() {
     this.GetSlider(2).OnValueChangeCb.Bind(this.qgt);
@@ -140,7 +140,7 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     i.OnPointerBeginDragCallBack.Bind(this.Pgt);
     i.OnPointerDragCallBack.Bind(this.Agt);
     i.OnPointerEndDragCallBack.Bind(this.xgt);
-    TouchUiEditViewModel_1.TouchUiEditViewModel.AddDelegateOnSelectedItemChange(this.cHu);
+    TouchUiEditViewModel_1.TouchUiEditViewModel.AddDelegateOnSelectedItemChange(this.TQu);
     var i = TouchUiEditViewModel_1.TouchUiEditViewModel.GetCurrentSelectedItem();
     if (i) {
       TouchUiEditViewModel_1.TouchUiEditViewModel.NotifySelectedItemChange(i);
@@ -165,10 +165,10 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     i.OnPointerBeginDragCallBack.Unbind();
     i.OnPointerDragCallBack.Unbind();
     i.OnPointerEndDragCallBack.Unbind();
-    TouchUiEditViewModel_1.TouchUiEditViewModel.RemoveDelegateOnSelectedItemChange(this.cHu);
+    TouchUiEditViewModel_1.TouchUiEditViewModel.RemoveDelegateOnSelectedItemChange(this.TQu);
   }
   OnBeforeDestroy() {
-    this.lHu.OnBeforeDestroy();
+    this.q$u.OnBeforeDestroy();
   }
   GetAttachRoot() {
     return this.GetItem(0);
@@ -190,7 +190,7 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     i.X = MathUtils_1.MathUtils.Clamp(i.X, U * h - r, r - U * (1 - h));
     i.Y = MathUtils_1.MathUtils.Clamp(i.Y, t * e - o, o - t * (1 - e));
   }
-  uHu(i) {
+  IQu(i) {
     var t = this.GetItem(11);
     this.t0t(i);
     t.SetUIRelativeLocation(i);

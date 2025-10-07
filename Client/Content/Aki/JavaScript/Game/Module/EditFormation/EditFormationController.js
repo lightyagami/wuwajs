@@ -29,10 +29,10 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(20314, EditFormationController.i5t);
+    Net_1.Net.Register(24447, EditFormationController.i5t);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20314);
+    Net_1.Net.UnRegister(24447);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("EditFormationView", EditFormationController.CanOpenView, EditFormationController.name);
@@ -48,7 +48,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "请求所有编队数据");
     }
     var o = new Protocol_1.Aki.Protocol.Wis();
-    Net_1.Net.Call(15420, o, o => {});
+    Net_1.Net.Call(23796, o, o => {});
   }
   static async EditFormationRequest(o) {
     var r;
@@ -107,7 +107,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formations", e]);
     }
-    var g = await Net_1.Net.CallAsync(21217, g);
+    var g = await Net_1.Net.CallAsync(19040, g);
     return g?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
   static async UpdateFormationRequest(o, r, t, e) {
@@ -122,7 +122,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formation", n]);
     }
-    var r = await Net_1.Net.CallAsync(21217, o);
+    var r = await Net_1.Net.CallAsync(19040, o);
     return r !== undefined;
   }
   static async UpdateFightRoleRequest() {
@@ -158,7 +158,7 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Formation", 48, "更新联机编队", ["massage", t]);
     }
     ModelManager_1.ModelManager.SceneTeamModel.RefreshLastTransform();
-    r = await Net_1.Net.CallAsync(26968, t);
+    r = await Net_1.Net.CallAsync(25889, t);
     return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
 }
@@ -198,15 +198,15 @@ EditFormationController.CanOpenView = o => {
     }
     return false;
   }
-  r = t.Entity.GetComponent(206);
-  if (!r?.Valid) {
+  e = t.Entity.GetComponent(206);
+  if (!e?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 TagComponent 不存在");
     }
     return false;
   }
-  e = t.Entity.GetComponent(175);
-  if (!e?.Valid) {
+  var n = t.Entity.GetComponent(175);
+  if (!n?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 CharacterBuffComponent 不存在");
     }
@@ -227,51 +227,51 @@ EditFormationController.CanOpenView = o => {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleTeamLimit");
     return false;
   }
-  if (r.HasTag(855966206)) {
+  if (e.HasTag(855966206)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色正在水中");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   }
-  if (r.HasTag(191377386)) {
+  if (e.HasTag(191377386)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色正在播放溺水");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   }
-  if (r.HasTag(40422668)) {
+  if (e.HasTag(40422668)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色处于空中");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   }
-  if (r.HasTag(1996802261)) {
+  if (e.HasTag(1996802261)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色在战斗中");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ForbiddenActionInFight");
     return false;
   }
-  if (r.HasTag(504239013)) {
+  if (e.HasTag(504239013)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色处于攀爬中");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   }
-  if (r.HasTag(-1697149502)) {
+  if (e.HasTag(-1697149502)) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 7, "打开编队按钮时，当前角色不能切人");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   }
-  if (r.HasTag(-2100129479)) {
-    var r = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    if (r && r.Entity.GetComponent(206)?.HasTag(40422668)) {
+  if (e.HasTag(-2100129479)) {
+    var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
+    if (e && e.Entity.GetComponent(206)?.HasTag(40422668)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色为声骸变身状态且处于空中");
       }
@@ -279,14 +279,20 @@ EditFormationController.CanOpenView = o => {
       return false;
     }
   }
-  if (e.GetBuffTotalStackById(90003001) > 0) {
+  if (n.GetBuffTotalStackById(90003001) > 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 35, "打开编队按钮时，当前角色在电梯中");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
+  } else if ((e = t.Entity.GetComponent(79)) && e.WalkOnWaterStage > 0) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Formation", 36, "打开编队按钮时，当前角色在水面上行走");
+    }
+    ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
+    return false;
   } else {
-    return !(r = t.Entity.GetComponent(79)) || !(r.WalkOnWaterStage > 0) || !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 36, "打开编队按钮时，当前角色在水面上行走"), ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t), 1);
+    return r.CurrentGroupType !== 3 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Formation", 48, "打开编队按钮时，在剧情中无法打开"), false);
   }
 };
 EditFormationController.OpenEditFormationView = (o = undefined) => {

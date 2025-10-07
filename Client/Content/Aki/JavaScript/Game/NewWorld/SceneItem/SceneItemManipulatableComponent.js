@@ -391,7 +391,6 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     }
     t = this.u1t.ComponentDataMap.get("Rys");
     this.JUn = MathUtils_1.MathUtils.LongToBigInt(t.Rys._Vn);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSwitchMoveControl, this.$Dl);
     return true;
   }
   OnClear() {
@@ -456,6 +455,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnManipulatableSceneItemPosInFoundation, this.qpn);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnManipulateCancelChanting, this.Apn);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSwitchMoveControl, this.$Dl);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SceneItem", 31, "[电池] OnStart", ["State", this.inn.GetTagNames()]);
     }
@@ -850,13 +850,13 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     if (e) {
       (h = Protocol_1.Aki.Protocol.ums.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.u1t.GetCreatureDataId());
       h.cKn = MathUtils_1.MathUtils.NumberToLong(t);
-      Net_1.Net.Call(27619, h, t => {
+      Net_1.Net.Call(24703, h, t => {
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
         }
       });
     }
@@ -920,17 +920,17 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     this.lpn = false;
     this.ppn = 0;
     let e = !(this.tpn = false);
-    if (this.sxr !== undefined && (this.Enable(this.sxr, "SceneItemManipulatableComponent.TryEnableTick"), this.sxr = undefined, t) && this.ActorComp && this.ActorComp.PhysicsMode !== 3) {
+    if (this.sxr !== undefined && (this.Enable(this.sxr, "SceneItemManipulatableComponent.TryEnableTick"), this.sxr = undefined, t) && this.ActorComp.PhysicsMode !== 3) {
       this.ActorComp.PhysicsMode = 3;
       this.ActorComp.GetPrimitiveComponent().SetPhysicsLinearVelocity(Vector_1.Vector.OneVector.op_Multiply(0.1));
       e = false;
     }
     if (e) {
-      this.ActorComp?.GetPrimitiveComponent().SetPhysicsLinearVelocity(Vector_1.Vector.ZeroVector, false);
+      this.ActorComp.GetPrimitiveComponent().SetPhysicsLinearVelocity(Vector_1.Vector.ZeroVector, false);
     }
   }
   TryDisableTick(t) {
-    if (this.sxr === undefined && (this.sxr = this.Disable(t), this.ActorComp) && this.ActorComp.PhysicsMode !== 0) {
+    if (this.sxr === undefined && (this.sxr = this.Disable(t), this.ActorComp.PhysicsMode !== 0)) {
       this.ActorComp.PhysicsMode = 0;
     }
   }
@@ -1042,7 +1042,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
         Log_1.Log.Info("SceneItem", 31, "[Manipulate] RequestRemoveControllerId", ["location", this.ActorComp?.ActorLocationProxy], ["id", this.u1t?.GetPbDataId()]);
       }
       this.IsRequestingRemoveControllerId = true;
-      Net_1.Net.Call(15614, e, t => {
+      Net_1.Net.Call(16465, e, t => {
         this.IsRequestingRemoveControllerId = false;
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
@@ -1054,7 +1054,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
             this.IsCanBeHeld = true;
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
         }
       });
     }
@@ -1234,7 +1234,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     if (this.Config?.DestroyCfg?.StopPhysicAfterDestroyed) {
       this.ActorComp.GetPrimitiveComponent()?.SetSimulatePhysics(false);
     }
-    Net_1.Net.Call(21756, e, t => {
+    Net_1.Net.Call(17558, e, t => {
       switch (t.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
@@ -1244,7 +1244,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
           }
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22914);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18694);
       }
     });
   }

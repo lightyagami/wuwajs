@@ -61,14 +61,14 @@ class CameraRecorderObject {
 class CharacterRecorderObject {
   constructor(r, e, t, i) {
     this.Tae = r;
-    this.QQc = e;
+    this.GQu = e;
     this.ae = t;
     this.n8 = i;
     this.E0 = 0;
     this.Recorder = undefined;
     this.far = new Map();
     this.tfe = undefined;
-    this.KQc = r => {};
+    this.FQu = r => {};
     this.par = (r, e, t) => {
       this.far.set(t, new MaterialControllerParam(r, e, RecorderBlueprintFunctionLibrary.RecordingTimeNoBlueprint()));
     };
@@ -86,7 +86,7 @@ class CharacterRecorderObject {
         this.far.delete(r);
       }
     };
-    this.Z4u = () => {
+    this.G5u = () => {
       var r = this.Tae.GetEntityNoBlueprint();
       var e = r.GetComponent(123);
       this.Recorder.TickRecorder(Time_1.Time.DeltaTimeSeconds * r.TimeDilation * (e ? e.CurrentTimeScale : 1));
@@ -106,14 +106,14 @@ class CharacterRecorderObject {
         this.Recorder.BaseBlueprint = (0, puerts_1.$unref)(e);
       }
       this.Recorder.SetRecordActor(this.Tae, exports.RECORD_INTERVAL, exports.RECORDER_MAX_SPEED);
-      this.Recorder.StartRecorder(this.QQc, r);
+      this.Recorder.StartRecorder(this.GQu, r);
       this.Recorder.SetNotifiesRecordConfigs(RecorderBlueprintFunctionLibrary.RecordNotifies, RecorderBlueprintFunctionLibrary.ReplaceNotifies);
     };
     e(t);
-    this.KQc = e;
+    this.FQu = e;
     EventSystem_1.EventSystem.AddWithTarget(r.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
     EventSystem_1.EventSystem.AddWithTarget(r.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, this.var);
-    EventSystem_1.EventSystem.AddWithTarget(r.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
+    EventSystem_1.EventSystem.AddWithTarget(r.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.G5u);
   }
   static get NotUseCloneType() {
     this.gAr ||= new Set([Protocol_1.Aki.Protocol.kks.Proto_Player]);
@@ -133,9 +133,9 @@ class CharacterRecorderObject {
       }
       this.Recorder.StopRecorder();
       t = this.Recorder.GetMainGuid();
-      this.KQc(e);
+      this.FQu(e);
       i = this.Recorder.GetMainGuid();
-      UE.KuroRecorderLibrary.ChangeAttachTrack(this.QQc, t, i, e);
+      UE.KuroRecorderLibrary.ChangeAttachTrack(this.GQu, t, i, e);
     } else {
       this.Recorder.TickRecorder(r);
     }
@@ -153,7 +153,7 @@ class CharacterRecorderObject {
     if (EntitySystem_1.EntitySystem.Get(this.E0)) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.CharRenderingComponent, EventDefine_1.EEventName.OnAddMaterialController, this.par);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.CharRenderingComponent, EventDefine_1.EEventName.OnRemoveMaterialController, this.var);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Tae.GetEntityNoBlueprint(), EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.G5u);
     }
     for ([r] of this.far) {
       this.var(r);

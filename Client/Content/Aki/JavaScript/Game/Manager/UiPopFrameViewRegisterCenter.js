@@ -10,6 +10,7 @@ const NpcSystemViewItem_1 = require("../Ui/Common/NpcSystemViewItem");
 const PopupTypeBigItem_1 = require("../Ui/Common/PopupTypeBigItem");
 const PopupTypeLargeItem_1 = require("../Ui/Common/PopupTypeLargeItem");
 const PopupTypeMiddleItem_1 = require("../Ui/Common/PopupTypeMiddleItem");
+const PopupTypeRightItem_1 = require("../Ui/Common/PopupTypeRightItem");
 const PopupTypeSmallItem_1 = require("../Ui/Common/PopupTypeSmallItem");
 const UiPopFrameViewStorage_1 = require("../Ui/UiPopFrameViewStorage");
 const uiPopFrameViewCtorMap = {
@@ -23,7 +24,8 @@ const uiPopFrameViewCtorMap = {
   8: ["UiView_SoundRemnantArenaPopupB", PopupTypeBigItem_1.PopupTypeBigItem],
   9: ["UiView_SoundRemnantArenaPopupM", PopupTypeMiddleItem_1.PopupTypeMiddleItem],
   10: ["UiView_SoundRemnantArenaPopupS", PopupTypeSmallItem_1.PopupTypeSmallItem],
-  11: ["UiView_PasturePopupHelp", PopupTypeMiddleItem_1.PopupTypeMiddleItem]
+  11: ["UiView_PasturePopupHelp", PopupTypeMiddleItem_1.PopupTypeMiddleItem],
+  12: ["UiView_PopupR", PopupTypeRightItem_1.PopupTypeRightItem]
 };
 class UiPopFrameViewRegisterCenter {
   static Init() {

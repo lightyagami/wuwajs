@@ -12,45 +12,45 @@ const REPEAT_PRESS_INTERVAL = 100;
 const RELEASE_INTERVAL = 100;
 class SeekTraceJoystickInput {
   constructor() {
-    this.Vhd = 0;
-    this.jhd = 0;
-    this.Hhd = 0;
+    this.Udd = 0;
+    this.Bdd = 0;
+    this.kdd = 0;
     this.bwo = 0;
     this.Bwo = 0;
     this.Gwo = undefined;
     this.cz = Vector_1.Vector.Create();
     this.wut = false;
-    this.$hd = 0;
+    this.Odd = 0;
     this.cd_ = false;
-    this.Whd = undefined;
+    this.qdd = undefined;
   }
   RegisterMovePress(t) {
-    this.Whd = t;
+    this.qdd = t;
   }
   MoveAxisInput(t, s) {
     if (t === 1 || t === 2) {
-      this.jhd = s;
+      this.Bdd = s;
     } else {
-      this.Vhd = s;
+      this.Udd = s;
     }
   }
   Tick(t) {
     this._d_(t);
     if (this.cd_) {
-      this.Dwo(this.$hd, t);
+      this.Dwo(this.Odd, t);
     }
   }
   _d_(t) {
     var s;
     var i;
-    if (!this.cd_ && !(s = this.jhd, i = this.Vhd, this.Mwo(i) && this.Mwo(s) && !this.wut)) {
+    if (!this.cd_ && !(s = this.Bdd, i = this.Udd, this.Mwo(i) && this.Mwo(s) && !this.wut)) {
       if (this.Swo(i) && this.Swo(s) && this.wut) {
         this.wut = false;
-        this.Hhd = 0;
+        this.kdd = 0;
         this.Bwo = 0;
       } else {
         this.Lwo(i, s);
-        this.Dwo(this.Hhd, t);
+        this.Dwo(this.kdd, t);
         this.wut = true;
       }
     }
@@ -69,12 +69,12 @@ class SeekTraceJoystickInput {
       } else if (h >= 37 && h < 143) {
         t = 1;
       }
-      if (t !== this.Hhd) {
-        this.Hhd = t;
+      if (t !== this.kdd) {
+        this.kdd = t;
         this.Bwo = 0;
         this.bwo = FIRST_PRESS_INTERVAL;
         this.Gwo = 1;
-        this.Whd?.(t);
+        this.qdd?.(t);
       }
     }
   }
@@ -92,7 +92,7 @@ class SeekTraceJoystickInput {
           this.Bwo -= RELEASE_INTERVAL;
           this.bwo = REPEAT_PRESS_INTERVAL;
           this.Gwo = 1;
-          this.Whd?.(t);
+          this.qdd?.(t);
         }
       } else if (this.Gwo === 1 && this.Bwo > this.bwo) {
         this.Bwo -= this.bwo;
@@ -101,24 +101,24 @@ class SeekTraceJoystickInput {
     }
   }
   MoveActionInput(t, s) {
-    if (!this.wut && (this.$hd === 0 || this.$hd === t)) {
+    if (!this.wut && (this.Odd === 0 || this.Odd === t)) {
       if (s) {
-        this.$hd = t;
+        this.Odd = t;
         this.cd_ = true;
         this.Gwo = 1;
         this.Bwo = 0;
         this.bwo = FIRST_PRESS_INTERVAL;
-        this.Whd?.(t);
+        this.qdd?.(t);
       } else {
-        this.$hd = 0;
+        this.Odd = 0;
         this.cd_ = false;
         this.Gwo = 0;
       }
     }
   }
   ResetMoveActionInput() {
-    if (this.$hd !== 0) {
-      this.$hd = 0;
+    if (this.Odd !== 0) {
+      this.Odd = 0;
       this.cd_ = false;
       this.Gwo = 0;
     }

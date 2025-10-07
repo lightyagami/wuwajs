@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.InputSettings = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const StringUtils_1 = require("../../Core/Utils/StringUtils");
@@ -45,18 +46,28 @@ class InputSettings {
       this.MEe = (0, puerts_1.$ref)(undefined);
       this.CEe.GetActionMappingByName(n, this.MEe);
       var s = (0, puerts_1.$unref)(this.MEe);
-      let i = this.SEe.get(n.toString());
+      var n = n.toString();
+      if (Info_1.Info.IsPlayInEditor) {
+        if (!ConfigManager_1.ConfigManager.InputSettingsConfig.GetActionMappingConfigByActionName(n)) {
+          for (let t = 0; t < s.Num(); t++) {
+            var a = s.Get(t);
+            this.CEe.RemoveActionMapping(a);
+          }
+          continue;
+        }
+      }
+      let i = this.SEe.get(n);
       if (!i) {
         i = new Map();
-        this.SEe.set(n.toString(), i);
+        this.SEe.set(n, i);
       }
       for (let t = 0; t < s.Num(); t++) {
-        var a = s.Get(t);
-        var o = a.Key.KeyName.toString();
-        this.TEe(o);
-        if (!i.get(o)?.IsEqual(a)) {
-          a = InputActionKey_1.InputActionKey.NewByInputActionKeyMapping(a);
-          i.set(o, a);
+        var o = s.Get(t);
+        var r = o.Key.KeyName.toString();
+        this.TEe(r);
+        if (!i.get(r)?.IsEqual(o)) {
+          o = InputActionKey_1.InputActionKey.NewByInputActionKeyMapping(o);
+          i.set(r, o);
         }
       }
       s.Empty();
@@ -68,18 +79,28 @@ class InputSettings {
       var n = e.Get(t);
       this.CEe.GetAxisMappingByName(n, this.EEe);
       var s = (0, puerts_1.$unref)(this.EEe);
-      let i = this.yEe.get(n.toString());
+      var n = n.toString();
+      if (Info_1.Info.IsPlayInEditor) {
+        if (!ConfigManager_1.ConfigManager.InputSettingsConfig.GetAxisMappingConfigByAxisName(n)) {
+          for (let t = 0; t < s.Num(); t++) {
+            var a = s.Get(t);
+            this.CEe.RemoveAxisMapping(a);
+          }
+          continue;
+        }
+      }
+      let i = this.yEe.get(n);
       if (!i) {
         i = new Map();
-        this.yEe.set(n.toString(), i);
+        this.yEe.set(n, i);
       }
       for (let t = 0; t < s.Num(); t++) {
-        var a = s.Get(t);
-        var o = a.Key.KeyName.toString();
-        this.TEe(o);
-        if (!i.get(o)?.IsEqual(a)) {
-          a = InputAxisKey_1.InputAxisKey.NewByInputAxisKeyMapping(a);
-          i.set(o, a);
+        var o = s.Get(t);
+        var r = o.Key.KeyName.toString();
+        this.TEe(r);
+        if (!i.get(r)?.IsEqual(o)) {
+          o = InputAxisKey_1.InputAxisKey.NewByInputAxisKeyMapping(o);
+          i.set(r, o);
         }
       }
       s.Empty();

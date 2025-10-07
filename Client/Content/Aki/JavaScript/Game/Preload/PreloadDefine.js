@@ -110,6 +110,7 @@ class SkillAssetRecord {
   constructor() {
     this.SkillId = 0;
     this.ActorBlueprint = "";
+    this.LoadType = 0;
     this.IsCommon = false;
     this.HasMontagePath = false;
     this.AssetRecord = new AssetRecord();
@@ -367,6 +368,7 @@ class SkillAssetManager {
     this.V$a = undefined;
     this.SkillAssetMap = new Map();
     this._ar = undefined;
+    this.LoadTypeList = undefined;
   }
   GetEntitySkillPreload(t) {
     var s;
@@ -374,7 +376,9 @@ class SkillAssetManager {
       this.V$a = new Map();
       if ((s = this.FightAssetManager.EntityAssetElement.BlueprintClassPath)?.length) {
         ModelManager_1.ModelManager.PreloadModelNew.GetSkillPreloadData(s)?.forEach(t => {
-          this.V$a.set(t.SkillId, t);
+          if (this.LoadTypeList?.includes(t.LoadType) || t.LoadType === 0 && !this.V$a.has(t.SkillId)) {
+            this.V$a.set(t.SkillId, t);
+          }
         });
       }
     }

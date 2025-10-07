@@ -9,6 +9,8 @@ var ESpecialGamePlayConfigType;
 var EEnableSystemType;
 var EGradingSystemVarType;
 var ETrapDefenseSystemVarType;
+var ESurvivorsRougeSystemVarType;
+var ELogicProgramSpecialProcess;
 var EQuestScheduleType;
 var EQuestScheduleUiType;
 var EProgressBarLeftType;
@@ -25,10 +27,13 @@ var EOperation;
 var ESpecialProcess;
 var ETrapDefenseConditionStep;
 var ECheckTrapDefenseEvent;
+var ESurvivorsRougeConditionStep;
+var ERollBlockInteractType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.repeatBanList = undefined;
 exports.nodeTips = {
   Start: "",
   QuestSucceed: "任务完成，终止行为树",
@@ -56,6 +61,9 @@ exports.getTipsByNodeType = getTipsByNodeType;
 (function (e) {
   e.GradingSystem = "GradingSystem";
   e.TrapDefense = "TrapDefense";
+  e.SurvivorsRouge = "SurvivorsRouge";
+  e.GameDifficulty = "GameDifficulty";
+  e.LinkSystem = "LinkSystem";
 })(EEnableSystemType = exports.EEnableSystemType ||= {});
 (function (e) {
   e.Score = "Score";
@@ -74,6 +82,18 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.MapChangeCount = "MapChangeCount";
   e.SpawnMonsterStepCompleteCount = "SpawnMonsterStepCompleteCount";
 })(ETrapDefenseSystemVarType = exports.ETrapDefenseSystemVarType ||= {});
+(function (e) {
+  e.Gold = "Gold";
+  e.Batch = "Batch";
+  e.MaxBatch = "MaxBatch";
+  e.EndlessBatchLimit = "EndlessBatchLimit";
+  e.TreasureBoxCount = "TreasureBoxCount";
+  e.ConsecutiveKillCount = "ConsecutiveKillCount";
+  e.GoldGainEfficiency = "GoldGainEfficiency";
+  e.LoopCountOfBatch = "LoopCountOfBatch";
+  e.CurLoopOfCurBatch = "CurLoopOfCurBatch";
+})(ESurvivorsRougeSystemVarType = exports.ESurvivorsRougeSystemVarType ||= {});
+(ELogicProgramSpecialProcess = exports.ELogicProgramSpecialProcess ||= {}).DisableURO = "DisableURO";
 (function (e) {
   e.None = "None";
   e.ChildQuestCompleted = "ChildQuestCompleted";
@@ -160,6 +180,9 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.CheckTrapDefenseEvent = "CheckTrapDefenseEvent";
   e.ProgramSpecialProcess = "ProgramSpecialProcess";
   e.WaitUntilLevelSequenceReachMark = "WaitUntilLevelSequenceReachMark";
+  e.FinishSurvivorsRouge = "FinishSurvivorsRouge";
+  e.TakePicturesWithTimeScale = "TakePicturesWithTimeScale";
+  e.FinishRollBlock = "FinishRollBlock";
 })(EChildQuest = exports.EChildQuest ||= {});
 const childQuestAll = Object.values(EChildQuest);
 function createQuestTypeCnNameMap() {
@@ -222,7 +245,10 @@ exports.childQuestConfigs = {
   FinishTrapDefense: {},
   CheckTrapDefenseEvent: {},
   ProgramSpecialProcess: {},
-  WaitUntilLevelSequenceReachMark: {}
+  WaitUntilLevelSequenceReachMark: {},
+  FinishSurvivorsRouge: {},
+  TakePicturesWithTimeScale: {},
+  FinishRollBlock: {}
 };
 exports.childQuestsForTest = [];
 (function (e) {
@@ -245,8 +271,11 @@ exports.childQuestsForTest = [];
   e[e.ExploreTool = 10] = "ExploreTool";
   e[e.AirDodge = 11] = "AirDodge";
   e[e.SwitchSkill = 12] = "SwitchSkill";
+  e[e.NoneCategory = 13] = "NoneCategory";
+  e[e.BreakWeakSkill = 14] = "BreakWeakSkill";
 })(ESkillCategory = exports.ESkillCategory ||= {});
 exports.skillGenreCnMap = {
+  [ESkillCategory.NoCategory]: undefined,
   [ESkillCategory.Normal]: "普通攻击",
   [ESkillCategory.Accumulating]: "蓄力攻击",
   [ESkillCategory.ESkill]: "E技能",
@@ -260,7 +289,8 @@ exports.skillGenreCnMap = {
   [ESkillCategory.ExploreTool]: "探索技能",
   [ESkillCategory.AirDodge]: "空中闪避",
   [ESkillCategory.SwitchSkill]: "退场技",
-  [ESkillCategory.NoCategory]: "无类型"
+  [ESkillCategory.NoneCategory]: "无类别",
+  [ESkillCategory.BreakWeakSkill]: "破弱技能"
 };
 exports.skillTypeCnMap = {
   NormalSkill: "角色通用技能",
@@ -311,11 +341,26 @@ exports.combatStateConfig = {
   e.MapChange = "MapChange";
   e.Preview = "Preview";
   e.SpawnMonster = "SpawnMonster";
+  e.LoadAndRestoreMap = "LoadAndRestoreMap";
 })(ETrapDefenseConditionStep = exports.ETrapDefenseConditionStep ||= {});
 (function (e) {
   e.MonsterKilled = "MonsterKilled";
   e.BdBuffQualityUp = "BdBuffQualityUp";
 })(ECheckTrapDefenseEvent = exports.ECheckTrapDefenseEvent ||= {});
+(function (e) {
+  e.Prepare = "Prepare";
+  e.Battle = "Battle";
+  e.End = "End";
+  e.ChestReward = "ChestReward";
+  e.ChooseWeapon = "ChooseWeapon";
+  e.ChooseItem = "ChooseItem";
+  e.Shopping = "Shopping";
+})(ESurvivorsRougeConditionStep = exports.ESurvivorsRougeConditionStep ||= {});
+(function (e) {
+  e.Normal = "Normal";
+  e.Attack = "Attack";
+  e.Trigger = "Trigger";
+})(ERollBlockInteractType = exports.ERollBlockInteractType ||= {});
 exports.questFailedConfigs = {
   Timer: {},
   TimeRange: {},
@@ -347,7 +392,8 @@ exports.questFailedConfigs = {
   AddTimeConfig: {},
   CheckDataLayer: {},
   CompareVar: {},
-  RecallVehicle: {}
+  RecallVehicle: {},
+  SwitchGameDifficulty: {}
 };
 exports.questSubTypeCnMapper = {
   [1]: "2.3团子活动任务"

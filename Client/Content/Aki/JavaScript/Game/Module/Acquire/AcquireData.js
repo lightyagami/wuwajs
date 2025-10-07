@@ -19,6 +19,7 @@ class AcquireData extends UiPopViewData_1.UiPopViewData {
     this.qGe = undefined;
     this.GGe = 0;
     this.NGe = undefined;
+    this.Mne = 0;
   }
   SetAcquireViewType(t) {
     this.RGe = t;
@@ -34,6 +35,9 @@ class AcquireData extends UiPopViewData_1.UiPopViewData {
   }
   SetMaxAmount(t) {
     this.AGe = t;
+  }
+  SetConfigId(t) {
+    this.Mne = t;
   }
   GetMaxAmount() {
     return this.AGe;
@@ -82,6 +86,9 @@ class AcquireData extends UiPopViewData_1.UiPopViewData {
   }
   SetNameText(t) {
     this.NGe = t;
+  }
+  GetConfigId() {
+    return this.Mne;
   }
   GetNameText() {
     return this.NGe;

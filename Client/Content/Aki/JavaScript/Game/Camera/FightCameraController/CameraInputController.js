@@ -120,6 +120,10 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     this.VF_ = 0;
     this.qOn = 0;
     this.GOn = 0;
+    this.SpecificCameraBaseYawSensitivity = -1;
+    this.SpecificCameraBasePitchSensitivity = -1;
+    this.SpecificCameraAimingYawSensitivity = -1;
+    this.SpecificCameraAimingPitchSensitivity = -1;
   }
   get IsAiming() {
     return this.Camera.ContainsTag(428837378) || this.Camera.ContainsTag(-1058855731);
@@ -149,6 +153,10 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     this.SetConfigMap(12, "SensitivityPitchRange");
     this.SetCurveConfigMap(12, "SensitivityPitchCurve");
     this.SetConfigMap(13, "GamepadInputRate");
+    this.SetConfigMap(25, "SpecificCameraBaseYawSensitivity");
+    this.SetConfigMap(26, "SpecificCameraBasePitchSensitivity");
+    this.SetConfigMap(27, "SpecificCameraAimingYawSensitivity");
+    this.SetConfigMap(28, "SpecificCameraAimingPitchSensitivity");
     this.SetConfigMap(14, "AimAssistSpeedCenter");
     this.SetConfigMap(15, "AimAssistSpeedEdge");
     this.SetConfigMap(16, "AimAssistRange");

@@ -70,7 +70,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
     var r = Protocol_1.Aki.Protocol.NCs.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(a);
     r.c5n = e;
-    Net_1.Net.Call(18562, r, e => {
+    Net_1.Net.Call(26048, r, e => {
       if (e) {
         ModelManager_1.ModelManager.TimeTrackControlModel.InitControlInfo(e);
         ModelManager_1.ModelManager.StaticSceneModel.IsNotAutoExitSceneCamera = true;
@@ -104,7 +104,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
     var a = Protocol_1.Aki.Protocol.VCs.create();
     a.f6n = e;
     a.F4n = MathUtils_1.MathUtils.NumberToLong(t);
-    Net_1.Net.Call(24301, a, e => {
+    Net_1.Net.Call(18752, a, e => {
       var t;
       ModelManager_1.ModelManager.TimeTrackControlModel.CanUpdated = true;
       if (e) {
@@ -126,7 +126,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
     }
     var t = Protocol_1.Aki.Protocol.HCs.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(27465, t, e => {});
+    Net_1.Net.Call(24307, t, e => {});
   }
   static Gwe(t, a) {
     if (t?.length) {

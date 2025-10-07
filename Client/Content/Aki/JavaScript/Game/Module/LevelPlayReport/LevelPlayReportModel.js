@@ -21,6 +21,7 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
     this.cWl = new Map();
     this.Ox_ = new Map();
     this.Op1 = new Map();
+    this.Lvd = new Map();
   }
   HasRequestDetail(e, t) {
     e = this.vLl(e, t);
@@ -48,33 +49,40 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
     return this.pLl;
   }
   UpdateLevelPlayStateMsg(e, t) {
-    for (const v of e) {
-      var r = v.r6n;
-      for (const M of v.Uxs) {
-        var a = this.vLl(r, M);
-        this.cWl.delete(a);
-        this.Ox_.delete(a);
-        this.Op1.delete(a);
+    for (const M of e) {
+      var r = M.r6n;
+      for (const p of M.Uxs) {
+        var i = this.vLl(r, p);
+        this.cWl.delete(i);
+        this.Ox_.delete(i);
+        this.Op1.delete(i);
+        this.Lvd.delete(i);
       }
     }
-    for (const p of t) {
-      var i = p.qb_;
-      var s = p.Ob_;
-      var o = p.X4_;
-      for (const u of new Set(Array.from(Object.keys(i).concat(Object.keys(s)).concat(Object.keys(o))))) {
-        var n = Number(u);
-        var l = o[n] ? 5 : i[n];
-        var h = this.vLl(p.r6n, n);
-        if (l !== undefined) {
-          this.cWl.set(h, l);
+    for (const u of t) {
+      var s = u.qb_;
+      var a = u.Ob_;
+      var o = u.X4_;
+      var n = u._vd;
+      for (const f of new Set(Array.from(Object.keys(s).concat(Object.keys(a)).concat(Object.keys(o)).concat(Object.keys(n))))) {
+        var l = Number(f);
+        var h = o[l] ? 5 : s[l];
+        var v = this.vLl(u.r6n, l);
+        if (h !== undefined) {
+          this.cWl.set(v, h);
         }
-        if (s[n] !== undefined) {
-          this.Ox_.set(h, s[n]);
+        if (a[l] !== undefined) {
+          this.Ox_.set(v, a[l]);
         }
-        if (o[n] !== undefined) {
-          this.Op1.set(h, o[n]);
+        if (o[l] !== undefined) {
+          this.Op1.set(v, o[l]);
         } else {
-          this.Op1.delete(h);
+          this.Op1.delete(v);
+        }
+        if (n[l] !== undefined) {
+          this.Lvd.set(v, n[l]);
+        } else {
+          this.Lvd.delete(v);
         }
       }
     }
@@ -89,6 +97,10 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   GetLevelPlayStateMsgMap() {
     return this.cWl;
+  }
+  GetLevelPlayIsUnlock(e, t) {
+    e = this.vLl(e, t);
+    return this.Lvd.get(e) ?? false;
   }
   IsCommonLevelPlayComplete(e, t) {
     var r = this.vLl(e, t);
@@ -106,29 +118,29 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
     return this.pLl.get(e);
   }
   UpdateDetailReportMsg(e, t, r) {
-    var a = this.vLl(e, t);
-    this.fLl.set(a, r);
+    var i = this.vLl(e, t);
+    this.fLl.set(i, r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LevelPlayReportDetailUpdate, e, t);
   }
   GetVar(e, t, r) {
     e = this.vLl(e, t);
     t = this.fLl.get(e);
     if (t !== undefined) {
-      var a = t[r];
-      if (a !== undefined) {
+      var i = t[r];
+      if (i !== undefined) {
         let e = undefined;
-        switch ((0, IVar_1.getVarTypeByIndex)(a.iTs)) {
+        switch ((0, IVar_1.getVarTypeByIndex)(i.iTs)) {
           case "Boolean":
-            e = a.rTs;
+            e = i.rTs;
             break;
           case "Float":
-            e = a.sTs;
+            e = i.sTs;
             break;
           case "Int":
-            e = MathUtils_1.MathUtils.LongToNumber(a.oTs);
+            e = MathUtils_1.MathUtils.LongToNumber(i.oTs);
             break;
           case "String":
-            e = a.nTs;
+            e = i.nTs;
             break;
           default:
             e = undefined;
@@ -139,8 +151,8 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   IsLevelPlayReportComplete(e, t) {
     let r = 1;
-    for (const a of ConfigManager_1.ConfigManager.LevelPlayReportConfig.GetLevelPlayReportConfig(t)?.Vars ?? []) {
-      if (!this.GetVar(e, t, a)) {
+    for (const i of ConfigManager_1.ConfigManager.LevelPlayReportConfig.GetLevelPlayReportConfig(t)?.Vars ?? []) {
+      if (!this.GetVar(e, t, i)) {
         r = 0;
       }
     }
@@ -148,14 +160,14 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   HaveLevelPlayReportRewardCanGet(e, t) {
     var r = ConfigManager_1.ConfigManager.LevelPlayReportConfig.GetLevelPlayReportConfig(t);
-    var a = this.GetSimpleReportMsg(e, t)?.Fb_ ?? 0;
-    let i = 0;
-    for (const s of r.Vars) {
-      if (this.GetVar(e, t, s)) {
-        i += 1;
+    var i = this.GetSimpleReportMsg(e, t)?.Fb_ ?? 0;
+    let s = 0;
+    for (const a of r.Vars) {
+      if (this.GetVar(e, t, a)) {
+        s += 1;
       }
     }
-    return a < i;
+    return i < s;
   }
   GetLevelPlayReportTarget(e, t) {
     var r = {
@@ -170,15 +182,15 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
         r.States.push(0);
       }
     }
-    var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetPunishReportConfig(t);
-    var i = a?.CondDescription1 ?? "";
-    var s = a?.CondDescription2 ?? "";
-    var a = a?.CondDescription3 ?? "";
-    r.ConditionTxtIds.push(i);
+    var i = ConfigManager_1.ConfigManager.WorldMapConfig.GetPunishReportConfig(t);
+    var s = i?.CondDescription1 ?? "";
+    var a = i?.CondDescription2 ?? "";
+    var i = i?.CondDescription3 ?? "";
     r.ConditionTxtIds.push(s);
     r.ConditionTxtIds.push(a);
-    var i = this.GetSimpleReportMsg(e, t);
-    r.GetBoxNum = i?.Fb_ ?? 0;
+    r.ConditionTxtIds.push(i);
+    var s = this.GetSimpleReportMsg(e, t);
+    r.GetBoxNum = s?.Fb_ ?? 0;
     return r;
   }
 }

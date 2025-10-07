@@ -286,7 +286,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
         this.wbn();
       }
     };
-    this.I3u = () => {
+    this.UVu = () => {
       if (this.ONo) {
         for (const e of ConfigManager_1.ConfigManager.VideoConfig.GetVideoSounds(this.ONo)) {
           var i = e.EventPath;
@@ -356,7 +356,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
       this.wNo.OnEndReached.Add(this.KNo);
-      this.wNo.OnMediaOpened.Add(this.I3u);
+      this.wNo.OnMediaOpened.Add(this.UVu);
       this.wNo.OnMediaOpenFailed.Add(this.QNo);
       this.GetText(2).SetUIActive(false);
       this.b3c = undefined;
@@ -433,7 +433,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.ONo = undefined;
     this.wNo?.OnEndReached.Remove(this.KNo);
-    this.wNo?.OnMediaOpened.Remove(this.I3u);
+    this.wNo?.OnMediaOpened.Remove(this.UVu);
     this.wNo?.OnMediaOpenFailed.Remove(this.QNo);
     this.wNo?.Close();
     this.wNo = undefined;

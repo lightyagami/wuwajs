@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LguiEventSystemManager = undefined;
 const LguiUtil_1 = require("../../../Game/Module/Util/LguiUtil");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
@@ -23,6 +24,10 @@ class LguiEventSystemManager {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LoadLguiEventSystemActor);
     LguiEventSystemManager.Odr.InitializeLguiEventSystemActor();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InitializeLguiEventSystemActor);
+    this.I5d();
+  }
+  static I5d() {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLguiEventSystemInit, LguiEventSystemManager.Odr);
   }
   static Clear() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DestroyLguiEventSystemActor);

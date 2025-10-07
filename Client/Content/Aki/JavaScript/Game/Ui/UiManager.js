@@ -1,5 +1,6 @@
 "use strict";
 
+var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -10,6 +11,7 @@ const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const Stats_1 = require("../../Core/Common/Stats");
 const Time_1 = require("../../Core/Common/Time");
+const EventCSharpBridge_1 = require("../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const GlobalData_1 = require("../GlobalData");
@@ -27,6 +29,8 @@ const UiViewListContainer_1 = require("./Container/UiViewListContainer");
 const UiViewPlotStackContainer_1 = require("./Container/UiViewPlotStackContainer");
 const UiViewSetContainer_1 = require("./Container/UiViewSetContainer");
 const UiViewStackContainer_1 = require("./Container/UiViewStackContainer");
+const CsUiDefine_1 = require("./CsUiProxy/Define/CsUiDefine");
+const CsUiLife_1 = require("./CsUiProxy/Define/CsUiLife");
 const UiConfig_1 = require("./Define/UiConfig");
 const UiLayerType_1 = require("./Define/UiLayerType");
 const LguiEventSystemManager_1 = require("./LguiEventSystem/LguiEventSystemManager");
@@ -38,9 +42,9 @@ class UiManager {
   static get IsInited() {
     return UiManager.Ife === 2;
   }
-  static pF_(i, e = undefined, a, r) {
+  static pF_(i, e = undefined, a, r, n = true, o = 0) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenViewBegined, i);
-    UiManager.OpenViewAsync(i, e, a).then(e => {
+    UiManager.OpenViewAsync(i, e, a, n, o).then(e => {
       if (e !== undefined) {
         r?.(true, e);
         if (Log_1.Log.CheckInfo()) {
@@ -78,26 +82,29 @@ class UiManager {
       UiManager.OpenView(e, i, a);
     }
   }
-  static async OpenViewAsync(e, i = undefined, a) {
+  static async OpenViewAsync(e, i = undefined, a, r = true, n = 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]请求打开界面", ["界面名称", e]);
     }
-    var r = !!i && i?.IsMultipleView;
-    if (UiManager.iVe(e, r, i)) {
-      r = UiManager.BCr(e, i, a);
+    var o = !!i && i?.IsMultipleView;
+    if (UiManager.iVe(e, o, i)) {
+      o = UiManager.BCr(e, i, a);
       if (r) {
-        r.OpenParam = i;
-        r.OpenPromise = new CustomPromise_1.CustomPromise();
-        a = await Promise.all([UiManager.bCr.get(r.Info.GetContainerLayerType()).OpenViewAsync(r), r.OpenPromise.Promise]);
-        r.OpenPromise = undefined;
-        if (a[1]) {
-          r.TryEmitInterruptOpExitView();
-          if (r.Info?.IsFullScreen === true) {
-            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInFullScreen[${r.Info.Name}]`);
-          } else if (r.Info?.IsFullScreen === false) {
-            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInWindow[${r.Info.Name}]`);
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OpenViewRedirectToCs, e, o.GetViewId() - 1, n, a ?? 0);
+      }
+      if (o) {
+        o.OpenParam = i;
+        o.OpenPromise = new CustomPromise_1.CustomPromise();
+        r = await Promise.all([UiManager.bCr.get(o.Info.GetContainerLayerType()).OpenViewAsync(o), o.OpenPromise.Promise]);
+        o.OpenPromise = undefined;
+        if (r[1]) {
+          o.TryEmitInterruptOpExitView();
+          if (o.Info?.IsFullScreen === true) {
+            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInFullScreen[${o.Info.Name}]`);
+          } else if (o.Info?.IsFullScreen === false) {
+            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInWindow[${o.Info.Name}]`);
           }
-          return r.GetViewId();
+          return o.GetViewId();
         }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]打开界面失败, 界面在缓存队列中被清理", ["name", e]);
@@ -109,8 +116,8 @@ class UiManager {
       Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]打开界面失败, 不满足界面打开条件", ["界面名称", e]);
     }
   }
-  static CloseView(i, a) {
-    UiManager.CloseViewAsync(i).then(() => {
+  static CloseView(i, a, e = true) {
+    UiManager.CloseViewAsync(i, e).then(() => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCore", 16, "[CloseView]流程执行成功", ["ViewName", i]);
       }
@@ -126,17 +133,17 @@ class UiManager {
       a?.(false);
     });
   }
-  static async CloseViewAsync(e) {
-    var i = this.Ncr.get(e);
-    if (!i) {
+  static async CloseViewAsync(e, i = true) {
+    var a = this.Ncr.get(e);
+    if (!a) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("UiCore", 16, "[CloseViewAsync]关闭界面失败, 界面不存在", ["界面名称", e]);
       }
       return false;
     }
-    const a = [];
-    i.forEach(e => a.push(UiManager.CloseViewImplementAsync(e)));
-    return (await Promise.all(a)).every(e => e);
+    const r = [];
+    a.forEach(e => r.push(UiManager.CloseViewImplementAsync(e, i)));
+    return (await Promise.all(r)).every(e => e);
   }
   static CloseViewById(i, a) {
     UiManager.CloseViewByIdAsync(i).then(() => {
@@ -166,10 +173,13 @@ class UiManager {
       return false;
     }
   }
-  static async CloseViewImplementAsync(e) {
-    var i = e.Info;
+  static async CloseViewImplementAsync(e, i = true) {
+    var a = e.Info;
+    if (i) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.CloseViewRedirectToCs, a.Name);
+    }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]请求关闭界面", ["界面名称", i.Name], ["ViewId", e.GetViewId()]);
+      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]请求关闭界面", ["界面名称", a.Name], ["ViewId", e.GetViewId()]);
     }
     if (e.OpenPromise) {
       e.OpenPromise.SetResult(true);
@@ -179,7 +189,7 @@ class UiManager {
     await e.ClosePromise?.Promise;
     e.ClosePromise = undefined;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]关闭界面成功", ["界面名称", i.Name], ["ViewId", e.GetViewId()]);
+      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]关闭界面成功", ["界面名称", a.Name], ["ViewId", e.GetViewId()]);
     }
     if (e.Info?.IsFullScreen === true) {
       cpp_1.FKuroPerfSightHelper.EndExtTag(`UiViewInFullScreen[${e.Info.Name}]`);
@@ -232,26 +242,29 @@ class UiManager {
       return false;
     }
   }
-  static async PreOpenViewAsync(e) {
+  static async PreOpenViewAsync(e, i = true) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]请求预打开界面", ["界面名称", e]);
     }
-    var i = UiManager.BCr(e);
-    if (i) {
-      i.OnPreOpen();
-      UiManager.NCr.set(i.GetViewId(), i);
-      await UiManager.bCr.get(i.Info.GetContainerLayerType()).PreOpenViewAsync(i);
-      return i.GetViewId();
+    var a = UiManager.BCr(e);
+    if (a) {
+      if (i) {
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToCs, e, a.GetViewId() - 1);
+      }
+      a.OnPreOpen();
+      UiManager.NCr.set(a.GetViewId(), a);
+      await UiManager.bCr.get(a.Info.GetContainerLayerType()).PreOpenViewAsync(a);
+      return a.GetViewId();
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCore", 16, "[OpenViewAsync]打开界面失败, 注册界面失败", ["name", e]);
     }
   }
-  static async OpenViewAfterPreOpenedAsync(e, i) {
-    var a;
+  static async OpenViewAfterPreOpenedAsync(e, i, a = true) {
     var r;
-    var n = UiManager.NCr.get(e);
-    return !!n && !(a = n.Info.Name, Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCore", 16, "[OpenViewAfterPreOpenedAsync](已预打开过)请求打开界面", ["界面名称", a]), r = !!i && i?.IsMultipleView, UiManager.iVe(a, r, i) ? (n.OpenParam = i, n.OpenPromise = new CustomPromise_1.CustomPromise(), UiManager.RemovePreOpenView(e), await Promise.all([UiManager.bCr.get(n.Info.GetContainerLayerType()).OpenViewAfterPreOpenedAsync(n), n.OpenPromise.Promise]), n.OpenPromise = undefined) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCore", 16, "[OpenViewAfterPreOpenedAsync](已预打开过)打开界面失败, 不满足界面打开条件", ["界面名称", a]), 1));
+    var n;
+    var o = UiManager.NCr.get(e);
+    return !!o && !(r = o.Info.Name, Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCore", 16, "[OpenViewAfterPreOpenedAsync](已预打开过)请求打开界面", ["界面名称", r]), n = !!i && i?.IsMultipleView, UiManager.iVe(r, n, i) ? (a && EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OpenViewAfterPreOpenedAsyncToCs, e), o.OpenParam = i, o.OpenPromise = new CustomPromise_1.CustomPromise(), UiManager.RemovePreOpenView(e), await Promise.all([UiManager.bCr.get(o.Info.GetContainerLayerType()).OpenViewAfterPreOpenedAsync(o), o.OpenPromise.Promise]), o.OpenPromise = undefined) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiCore", 16, "[OpenViewAfterPreOpenedAsync](已预打开过)打开界面失败, 不满足界面打开条件", ["界面名称", r]), 1));
   }
   static RemovePreOpenView(e) {
     UiManager.NCr.delete(e);
@@ -357,17 +370,31 @@ class UiManager {
     }
   }
   static dde() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToBattleView, UiManager.kCr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ExitNormalQueueState, UiManager.FCr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActiveBattleView, UiManager.VCr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisActiveBattleView, UiManager.HCr);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewRedirectToTs, UiManager.CsNotifyOpenTsView);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseViewRedirectToTs, UiManager.CsNotifyCloseTsView);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToTs, UiManager.f$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsViewOnCreateAsync, UiManager.g$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsBeforeStartAsync, UiManager.C$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeHideAsync, UiManager.p$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingStartSequenceAsync, UiManager.v$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingCloseSequenceAsync, UiManager.y$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeShowAsyncImplementImplement, UiManager.S$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsOpenView, this.M$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToViewRedirectToTs, this.CsNotifyResetToView);
   }
   static ResetToBattleView(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiCore", 16, "重置回到主界面");
+    }
     UiManager.bCr.get(UiLayerType_1.ELayerType.Pop).CloseAllView();
     UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnResetToBattleView);
   }
-  static NormalResetToView(i, a) {
-    UiManager.NormalResetToViewAsync(i).then(() => {
+  static NormalResetToView(i, a, e = true) {
+    UiManager.NormalResetToViewAsync(i, e).then(() => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCore", 16, "[NormalResetToView]流程执行成功", ["ViewName", i]);
       }
@@ -383,7 +410,10 @@ class UiManager {
       a?.(false);
     });
   }
-  static async NormalResetToViewAsync(e) {
+  static async NormalResetToViewAsync(e, i = true) {
+    if (i) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.ResetToViewRedirectToCs, e);
+    }
     var i = UiManager.bCr.get(UiLayerType_1.ELayerType.Normal);
     var a = UiManager.GCr(e);
     if (a) {
@@ -431,21 +461,28 @@ class UiManager {
     UiManager.jCr.delete(e);
   }
   static BCr(e, i, a) {
-    var r = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    if (r) {
-      r.SetContainerLayerType(a);
-      a = new r.Ctor(r);
-      UiConfig_1.UiConfig.RewritePath(r, a, i);
-      UiConfig_1.UiConfig.RewritePopFrameType(r, a, i);
-      a.InitRootActorLoadInfo();
-      if (r.CommonPopBg > 0) {
-        i = new UiPopFrameView_1.UiPopFrameView(r);
-        a.ChildPopView = i;
-        a.AddChild(i);
+    var r;
+    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
+    if (n) {
+      n.SetContainerLayerType(a);
+      a = CsUiDefine_1.CsUiDefine.IsRedirectToCs(e);
+      r = UiConfig_1.UiConfig.GetCsViewProxyInfo();
+      r = new (a ? r : n).Ctor(n);
+      if (a) {
+        r.CsUiLife = new CsUiLife_1.CsUiLife();
+        r.IsCsViewProxy = true;
       }
-      UiManager.WCr(a);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CreateViewInstance, a);
-      return a;
+      UiConfig_1.UiConfig.RewritePath(n, r, i);
+      UiConfig_1.UiConfig.RewritePopFrameType(n, r, i);
+      r.InitRootActorLoadInfo();
+      if (n.CommonPopBg > 0 && !a) {
+        i = new UiPopFrameView_1.UiPopFrameView(n);
+        r.ChildPopView = i;
+        r.AddChild(i);
+      }
+      UiManager.WCr(r);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CreateViewInstance, r);
+      return r;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCore", 16, "界面信息viewInfo获取失败", ["name", e]);
@@ -465,6 +502,7 @@ class UiManager {
   static async Initialize() {
     if (GlobalData_1.GlobalData.World) {
       if (UiManager.Ife === 0) {
+        UiManager.IsClear = false;
         UiManager.Ife = 1;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "[Initialize]初始化UiManager");
@@ -476,6 +514,7 @@ class UiManager {
         await UIGlobalMaterialParam_1.UiGlobalMaterialParam.InitAsync();
         UiManager.dde();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiManagerInit);
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsUiManagerInit);
         UiManager.Ife = 2;
       }
     } else if (Log_1.Log.CheckError()) {
@@ -509,7 +548,7 @@ class UiManager {
     }
     var r = [];
     for (const n of UiManager.qCr.values()) {
-      if (!n.Info?.IsPermanent && !((n.Info.Type & UiLayerType_1.NORMAL_PLOT_CONTAINER_TYPE) > 0)) {
+      if (!n.IsCsViewProxy && !n.Info?.IsPermanent && !((n.Info.Type & UiLayerType_1.NORMAL_PLOT_CONTAINER_TYPE) > 0)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 10, "[UIManager.ClearAsync] 需要等待销毁的界面-非stack plot容器", ["Name", n.constructor.name], ["ComponentId", n.ComponentId]);
         }
@@ -532,7 +571,7 @@ class UiManager {
     i.ClearContainer(e);
     var a = [];
     for (const r of UiManager.qCr.values()) {
-      if (!r.Info.IsPermanent && !((r.Info.Type & UiLayerType_1.NORMAL_PLOT_CONTAINER_TYPE) <= 0) && (!e || !UiModel_1.UiModel.SeamlessStackWhileList.has(r.Info.Name))) {
+      if (!r.IsCsViewProxy && !r.Info.IsPermanent && !((r.Info.Type & UiLayerType_1.NORMAL_PLOT_CONTAINER_TYPE) <= 0) && (!e || !UiModel_1.UiModel.SeamlessStackWhileList.has(r.Info.Name))) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 10, "[UIManager.ClearAsync] 需要等待销毁的界面-Stack和Plot容器", ["Name", r.constructor.name], ["ComponentId", r.ComponentId]);
         }
@@ -576,6 +615,7 @@ class UiManager {
     UiSceneManager_1.UiSceneManager.Clear();
     this.tW_();
     UiManager.eW_(e);
+    UiManager.IsClear = true;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiCore", 16, "[UIManager.ClearAsync] 清理UIManager 完成");
     }
@@ -767,7 +807,9 @@ class UiManager {
     return UiManager.bCr.get(UiLayerType_1.ELayerType.Normal).IsViewPendingListEmpty();
   }
 }
-(exports.UiManager = UiManager).Ife = 0;
+exports.UiManager = UiManager;
+(_a = UiManager).Ife = 0;
+UiManager.IsClear = false;
 UiManager.bCr = new Map();
 UiManager.$Cr = new Map();
 UiManager.fbo = Stats_1.Stat.Create("UiManger");
@@ -775,12 +817,62 @@ UiManager.qCr = new Map();
 UiManager.Ncr = new Map();
 UiManager.jCr = new Set();
 UiManager.NCr = new Map();
-UiManager.kCr = () => {
-  if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("UiCore", 16, "重置回到主界面");
+UiManager.CsNotifyOpenTsView = e => {
+  UiManager.pF_(e, undefined, undefined, undefined, false);
+};
+UiManager.f$d = e => {
+  UiManager.PreOpenViewAsync(e, false);
+};
+UiManager.CsNotifyCloseTsView = e => {
+  UiManager.CloseView(e, undefined, false);
+};
+UiManager.CsNotifyResetToView = e => {
+  UiManager.NormalResetToView(e, undefined, false);
+};
+UiManager.g$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnCreateAsyncPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnCreateAsyncPromise.SetResult();
   }
-  UiManager.bCr.get(UiLayerType_1.ELayerType.Pop).CloseAllView();
-  UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName);
+};
+UiManager.C$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnBeforeStartAsyncPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnBeforeStartAsyncPromise.SetResult();
+  }
+};
+UiManager.p$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnBeforeHideAsyncPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnBeforeHideAsyncPromise.SetResult();
+  }
+};
+UiManager.v$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnPlayingStartSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnPlayingStartSequenceAsyncPromise.SetResult();
+  }
+};
+UiManager.y$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnPlayingCloseSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnPlayingCloseSequenceAsyncPromise.SetResult();
+  }
+};
+UiManager.S$d = (e, i) => {
+  i = _a.GetView(i);
+  if (i && i.CsUiLife) {
+    i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise ||= new CustomPromise_1.CustomPromise();
+    i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise.SetResult();
+  }
+};
+UiManager.M$d = (e, i) => {
+  _a.pF_(e, undefined, undefined, undefined, true, i);
 };
 UiManager.FCr = () => {
   if (Log_1.Log.CheckInfo()) {

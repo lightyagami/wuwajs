@@ -25,8 +25,8 @@ class AcquireView extends UiViewBase_1.UiViewBase {
     this.jGe = undefined;
     this.WGe = undefined;
     this.KGe = i => {
-      var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("UseCount");
-      return new LguiUtil_1.TableTextArgNew(e, i);
+      var t = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("UseCount");
+      return new LguiUtil_1.TableTextArgNew(t, i);
     };
     this.QGe = i => {
       if (this.jGe.GetRemainItemCount() > 0) {
@@ -55,12 +55,12 @@ class AcquireView extends UiViewBase_1.UiViewBase {
         this.WGe.Refresh(this.jGe.GetRemainItemCount());
       }
     };
-    this.JGe = (i, e, t) => {
+    this.JGe = (i, t, e) => {
       var s = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
-      s.Initialize(e.GetOwner());
+      s.Initialize(t.GetOwner());
       s.Refresh(i);
       return {
-        Key: t,
+        Key: e,
         Value: s
       };
     };
@@ -102,7 +102,14 @@ class AcquireView extends UiViewBase_1.UiViewBase {
       GetExchangeTableText: this.KGe,
       ValueChangeFunction: this.QGe
     };
+    if (this.x$d()) {
+      this.WGe.SetLimitMaxValue(ConfigManager_1.ConfigManager.CommonConfig.GetGiftMaxNineNineNine());
+    }
     this.WGe.Init(i);
+  }
+  x$d() {
+    var i = this.jGe.GetConfigId();
+    return i !== 0 && ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i).ItemType === 11;
   }
   OnStart() {
     this.jGe = this.OpenParam;
@@ -128,26 +135,26 @@ class AcquireView extends UiViewBase_1.UiViewBase {
   }
   RefreshButtonState() {
     var i = this.jGe.GetLeftButtonFunction();
-    var e = this.jGe.GetRightButtonFunction();
-    var t = this.GetButton(3);
+    var t = this.jGe.GetRightButtonFunction();
+    var e = this.GetButton(3);
     var s = this.GetButton(4);
     var h = this.GetButton(8);
     var r = this.GetButton(9);
-    if (i || e) {
+    if (i || t) {
       i = this.jGe.GetAcquireViewType();
       s.RootUIComp.SetUIActive(true);
       h.RootUIComp.SetUIActive(false);
       if (i === 2) {
         r.RootUIComp.SetUIActive(true);
-        t.RootUIComp.SetUIActive(false);
+        e.RootUIComp.SetUIActive(false);
       } else {
         r.RootUIComp.SetUIActive(false);
-        t.RootUIComp.SetUIActive(true);
+        e.RootUIComp.SetUIActive(true);
       }
       s.RootUIComp.SetUIActive(true);
       h.RootUIComp.SetUIActive(false);
     } else {
-      t.RootUIComp.SetUIActive(false);
+      e.RootUIComp.SetUIActive(false);
       s.RootUIComp.SetUIActive(false);
       r.RootUIComp.SetUIActive(false);
       h.RootUIComp.SetUIActive(true);

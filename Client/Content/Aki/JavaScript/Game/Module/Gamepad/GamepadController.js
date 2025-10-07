@@ -22,8 +22,8 @@ class GamepadController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnClear() {
-    this.Osd();
-    this.qsd.Clear();
+    this.N_d();
+    this.V_d.Clear();
     return true;
   }
   static PlayForceFeedbackByHit(e) {
@@ -41,15 +41,15 @@ class GamepadController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static Gsd() {
-    var e = this.Fsd.GetLastFeedbackInfo();
+  static j_d() {
+    var e = this.H_d.GetLastFeedbackInfo();
     if (e) {
-      this.qsd.PlayFeedback(e.Mode, e.Path);
+      this.V_d.PlayFeedback(e.Mode, e.Path);
     } else {
-      this.qsd.StopFeedback();
+      this.V_d.StopFeedback();
     }
   }
-  static Nsd(e) {
+  static $_d(e) {
     if (Info_1.Info.IsInGamepad()) {
       var r = InputSettings_1.InputSettings.GetActionMappings(e);
       if (!(r.Num() <= 0)) {
@@ -81,28 +81,28 @@ class GamepadController extends ControllerBase_1.ControllerBase {
     var t;
     var a = ConfigManager_1.ConfigManager.GamepadConfig?.GetPsFeedbackReason(a);
     if (a) {
-      if ((t = this.Nsd(a.ActionName)) === undefined) {
+      if ((t = this.$_d(a.ActionName)) === undefined) {
         this.RemoveFeedbackReason(e);
       } else {
-        this.Vsd(e, t, a.FeedbackPath);
+        this.W_d(e, t, a.FeedbackPath);
       }
     }
   }
-  static Vsd(e, a, t) {
-    this.Fsd.AddFeedbackReason(e, a, t);
-    this.Gsd();
+  static W_d(e, a, t) {
+    this.H_d.AddFeedbackReason(e, a, t);
+    this.j_d();
   }
   static RemoveFeedbackReason(e) {
-    if (this.Fsd.RemoveFeedbackReason(e)) {
-      this.Gsd();
+    if (this.H_d.RemoveFeedbackReason(e)) {
+      this.j_d();
     }
   }
-  static Osd() {
-    this.Fsd.ClearFeedbackReason();
-    this.Gsd();
+  static N_d() {
+    this.H_d.ClearFeedbackReason();
+    this.j_d();
   }
 }
 (exports.GamepadController = GamepadController).XKt = [];
 GamepadController.$Kt = [];
-GamepadController.Fsd = new GamepadPsFeedbackData_1.GamepadPsFeedbackData();
-GamepadController.qsd = new GamepadPsFeedbackModule_1.GamepadPsFeedbackModule(); //# sourceMappingURL=GamepadController.js.map
+GamepadController.H_d = new GamepadPsFeedbackData_1.GamepadPsFeedbackData();
+GamepadController.V_d = new GamepadPsFeedbackModule_1.GamepadPsFeedbackModule(); //# sourceMappingURL=GamepadController.js.map

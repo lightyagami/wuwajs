@@ -11,19 +11,12 @@ class SubLevelLoadingModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.LIo = 0;
     this.uEr = undefined;
-    this.DIo = false;
   }
   get ScreenEffect() {
     return this.LIo;
   }
   set ScreenEffect(e) {
     this.LIo = e;
-  }
-  get LoadSubLeveling() {
-    return this.DIo;
-  }
-  set LoadSubLeveling(e) {
-    this.DIo = e;
   }
   set LoadSubLevelPromise(e) {
     this.uEr = e;
@@ -32,12 +25,11 @@ class SubLevelLoadingModel extends ModelBase_1.ModelBase {
     return this.uEr;
   }
   OnLeaveLevel() {
-    return !(this.DIo = false);
+    return true;
   }
   OnClear() {
     this.LIo = 0;
     ModelManager_1.ModelManager.LoadingModel.ScreenEffect = 0;
-    this.DIo = false;
     return !(this.uEr = undefined);
   }
 }

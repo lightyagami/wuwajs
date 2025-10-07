@@ -53,7 +53,7 @@ class AnimController extends ControllerBase_1.ControllerBase {
     var n;
     var r;
     var a = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (a?.Valid && (e = a.MainAnimInstance.LogicParams, n = a.AnimLogicParamsSetter, r = a.BattleIdleEndTime, n.BattleIdleTime !== r && (n.BattleIdleTime = r, e.BattleIdleTimeRef = r), r = a.DegMovementSlope, n.DegMovementSlope !== r && (n.DegMovementSlope = r, e.DegMovementSlopeRef = r), r = a.GetTsSightDirect(), n.SightDirect.Equals(r) || (n.SightDirect.DeepCopy(r), e.SightDirectRef = r.ToUeVectorOld()), a = EntitySystem_1.EntitySystem.GetComponent(t, 72)) && (r = a.GetRagRollQuitState(), n.RagQuitState !== r)) {
+    if (a?.Valid && (e = a.MainAnimInstance.LogicParams, n = a.AnimLogicParamsSetter, r = a.BattleIdleEndTime, n.BattleIdleTime !== r && (n.BattleIdleTime = r, e.BattleIdleTimeRef = r), r = a.DegMovementSlope, n.DegMovementSlope !== r && (n.DegMovementSlope = r, e.DegMovementSlopeRef = r), r = a.GetTsSightDirect(), n.SightDirect.Equals(r) || (n.SightDirect.DeepCopy(r), e.SightDirectRef = r.ToUeVectorOld()), r = a.DisableBlink, n.DisableBlink !== r && (n.DisableBlink = r, e.bDisableBlink = r), a = EntitySystem_1.EntitySystem.GetComponent(t, 72)) && (r = a.GetRagRollQuitState(), n.RagQuitState !== r)) {
       n.RagQuitState = r;
       e.RagQuitStateRef = r;
     }
@@ -111,7 +111,7 @@ class AnimController extends ControllerBase_1.ControllerBase {
     var e;
     var n;
     var r = EntitySystem_1.EntitySystem.GetComponent(t, 178);
-    if (r?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 297)) && (e = r.MainAnimInstance.LogicParams, r = r.AnimLogicParamsSetter, (n = t.GetHandIkTarget(0)) && !r.LeftHandIkTarget.Equals(n) && (r.LeftHandIkTarget.DeepCopy(n), n = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = n), n = t.GetHandIkTarget(1)) && !r.RightHandIkTarget.Equals(n) && (r.RightHandIkTarget.DeepCopy(n), r = t.GetHandIkTargetUe(1))) {
+    if (r?.Valid && (t = EntitySystem_1.EntitySystem.GetComponent(t, 298)) && (e = r.MainAnimInstance.LogicParams, r = r.AnimLogicParamsSetter, (n = t.GetHandIkTarget(0)) && !r.LeftHandIkTarget.Equals(n) && (r.LeftHandIkTarget.DeepCopy(n), n = t.GetHandIkTargetUe(0)) && (e.LeftHandIKTargetCS = n), n = t.GetHandIkTarget(1)) && !r.RightHandIkTarget.Equals(n) && (r.RightHandIkTarget.DeepCopy(n), r = t.GetHandIkTargetUe(1))) {
       e.RightHandIKTargetCS = r;
     }
   }

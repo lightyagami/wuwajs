@@ -33,7 +33,7 @@ class SimpleLevelSequenceActor {
     this.QPe = false;
     this.XPe = false;
     this.$Pe = "";
-    this.QWu = "";
+    this.qQc = "";
     this.rT1 = false;
     this.oT1 = -1;
     this.nT1 = 1;
@@ -49,7 +49,7 @@ class SimpleLevelSequenceActor {
     this.rxe = false;
     this.nxe = 1;
     this.sxe = false;
-    this.KWu = undefined;
+    this.sZu = undefined;
     this.uIn = undefined;
     this.hT1 = () => {
       if (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.GetComponent(10)?.GetIsInCinematic()) {
@@ -101,10 +101,10 @@ class SimpleLevelSequenceActor {
     this.mxe();
   }
   AddOnPauseCallback(t) {
-    this.KWu = t;
+    this.sZu = t;
   }
   ClearOnPausedCallback() {
-    this.KWu = undefined;
+    this.sZu = undefined;
   }
   AddOnStopCallback(t) {
     this.uIn = t;
@@ -221,7 +221,7 @@ class SimpleLevelSequenceActor {
     }
   }
   PlayLoopBetweenMarks(t, i, s, e, h, r) {
-    this.QWu = i ? t.RightMark : t.LeftMark;
+    this.qQc = i ? t.RightMark : t.LeftMark;
     this.$Pe = i ? t.LeftMark : t.RightMark;
     if (s) {
       this.jPe = s.TransitType;
@@ -321,7 +321,7 @@ class SimpleLevelSequenceActor {
         this._T1(this.rT1, this.oT1);
         break;
       case 3:
-        this.XWu(this.XPe);
+        this.GQc(this.XPe);
     }
   }
   lT1(t, i) {
@@ -372,21 +372,21 @@ class SimpleLevelSequenceActor {
       Log_1.Log.Info("Interaction", 39, "LevelSequence循环播放", ["levelSequence", this.bPe.GetName()], ["bReverse", t], ["numLoops", i]);
     }
   }
-  XWu(t) {
+  GQc(t) {
     if (this.qPe?.IsValid()) {
       this.qPe.bOverrideInstanceData = true;
       const h = this.qPe.SequencePlayer;
       var i;
       var s;
       var e;
-      if (h?.IsValid() && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1), e = this.GetMarkValue(this.QWu), i = this.GetMarkValue(this.$Pe), e !== undefined) && i !== undefined && e !== i) {
+      if (h?.IsValid() && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1), e = this.GetMarkValue(this.qQc), i = this.GetMarkValue(this.$Pe), e !== undefined) && i !== undefined && e !== i) {
         s = this.GetCurrentFrame();
         if (this.XPe || e < i && i < s || i < e && s < i) {
           this.AddOnPauseCallback(() => {
             this.ClearOnPausedCallback();
-            h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.QWu);
+            h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
           });
-          e = new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.QWu, 2, 1);
+          e = new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.qQc, 2, 1);
           if (this.XPe) {
             h.Play();
             h.SetPlaybackPosition(e);
@@ -395,7 +395,7 @@ class SimpleLevelSequenceActor {
             h.PlayTo(e);
           }
         } else {
-          h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.QWu);
+          h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
         }
       }
     }
@@ -426,7 +426,7 @@ class SimpleLevelSequenceActor {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 33, "SimpleLevelSequenceActor OnSequencePause", ["levelSequence", this.bPe.GetName()]);
     }
-    this.KWu?.();
+    this.sZu?.();
     if (!this.XPe) {
       if (this.WPe !== 1 || this.sxe) {
         this.Exe();

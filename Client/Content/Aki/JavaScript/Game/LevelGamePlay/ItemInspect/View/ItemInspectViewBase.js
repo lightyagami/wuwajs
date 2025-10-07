@@ -17,50 +17,50 @@ const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappings
 class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
-    this.pWu = Vector2D_1.Vector2D.Create();
+    this.Bzu = Vector2D_1.Vector2D.Create();
     this.YCo = undefined;
     this.aot = false;
-    this.vWu = false;
-    this.yWu = false;
+    this.tQc = false;
+    this.iQc = false;
     this.H_i = 0;
-    this.SWu = 0;
-    this.aod = t => {
+    this.rQc = 0;
+    this.Rod = t => {
       if (t) {
-        this.pWu.X = 0;
-        this.pWu.Y = 0;
-        this.MWu(this.pWu, false);
+        this.Bzu.X = 0;
+        this.Bzu.Y = 0;
+        this.oQc(this.Bzu, false);
         t = t.GetLocalPointInPlane();
-        this.pWu.X = t.X;
-        this.pWu.Y = t.Y;
+        this.Bzu.X = t.X;
+        this.Bzu.Y = t.Y;
       }
     };
     this.B8i = t => {
       if (t) {
         t = t.GetLocalPointInPlane();
-        this.pWu.X -= t.X;
-        this.pWu.Y = t.Y - this.pWu.Y;
-        this.MWu(this.pWu, false);
-        this.pWu.X = t.X;
-        this.pWu.Y = t.Y;
+        this.Bzu.X -= t.X;
+        this.Bzu.Y = t.Y - this.Bzu.Y;
+        this.oQc(this.Bzu, false);
+        this.Bzu.X = t.X;
+        this.Bzu.Y = t.Y;
       }
     };
-    this.hod = t => {
-      this.EWu();
+    this.wod = t => {
+      this.nQc();
     };
     this.lqt = () => {
-      this.EWu();
-      this.IWu(Info_1.Info.IsInGamepad());
+      this.nQc();
+      this.sQc(Info_1.Info.IsInGamepad());
     };
     this.q8i = (t, i) => {
       if (Info_1.Info.IsInGamepad() && i !== this.H_i) {
         this.H_i = -i;
-        this.TWu();
+        this.aQc();
       }
     };
     this.G8i = (t, i) => {
-      if (Info_1.Info.IsInGamepad() && i !== this.SWu) {
-        this.SWu = -i;
-        this.TWu();
+      if (Info_1.Info.IsInGamepad() && i !== this.rQc) {
+        this.rQc = -i;
+        this.aQc();
       }
     };
   }
@@ -75,39 +75,39 @@ class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
   }
   InitDrag(t) {
     this.YCo = t;
-    this.bWu();
+    this.kzu();
     this.aot = true;
   }
   ClearDrag() {
-    this.RWu();
+    this.Ozu();
     this.YCo = undefined;
     this.aot = false;
-    this.vWu = false;
+    this.tQc = false;
     this.H_i = 0;
-    this.SWu = 0;
+    this.rQc = 0;
   }
   SetInputEnable(t) {
     if (!(this.aot = t)) {
-      this.EWu();
+      this.nQc();
     }
   }
   IsInteractingItem() {
-    return this.vWu;
+    return this.tQc;
   }
-  bWu() {
+  kzu() {
     var t = this.YCo;
     if (t?.IsValid()) {
-      t.OnPointerBeginDragCallBack.Bind(this.aod);
+      t.OnPointerBeginDragCallBack.Bind(this.Rod);
       t.OnPointerDragCallBack.Bind(this.B8i);
-      t.OnPointerEndDragCallBack.Bind(this.hod);
-      t.OnPointerDownCallBack.Bind(this.aod);
-      t.OnPointerCancelCallBack.Bind(this.hod);
-      t.OnPointerUpCallBack.Bind(this.hod);
+      t.OnPointerEndDragCallBack.Bind(this.wod);
+      t.OnPointerDownCallBack.Bind(this.Rod);
+      t.OnPointerCancelCallBack.Bind(this.wod);
+      t.OnPointerUpCallBack.Bind(this.wod);
     }
-    this.IWu(Info_1.Info.IsInGamepad());
+    this.sQc(Info_1.Info.IsInGamepad());
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
   }
-  RWu() {
+  Ozu() {
     var t = this.YCo;
     if (t?.IsValid()) {
       t.OnPointerBeginDragCallBack.Unbind();
@@ -117,45 +117,45 @@ class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
       t.OnPointerCancelCallBack.Unbind();
       t.OnPointerUpCallBack.Unbind();
     }
-    this.IWu(false);
+    this.sQc(false);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
   }
-  IWu(t) {
+  sQc(t) {
     if (t) {
-      if (!this.yWu) {
+      if (!this.iQc) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("LevelPlay", 48, "ItemInspect 绑定手柄输入");
         }
         InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiLookUp, this.q8i);
         InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiTurn, this.G8i);
-        this.yWu = true;
+        this.iQc = true;
       }
-    } else if (this.yWu) {
+    } else if (this.iQc) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 48, "ItemInspect 解绑手柄输入");
       }
       InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiLookUp, this.q8i);
       InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiTurn, this.G8i);
-      this.yWu = false;
+      this.iQc = false;
     }
   }
-  TWu() {
-    this.pWu.X = this.SWu;
-    this.pWu.Y = this.H_i;
-    if (this.pWu.IsNearlyZero(MathUtils_1.MathUtils.SmallNumber)) {
-      this.EWu();
+  aQc() {
+    this.Bzu.X = this.rQc;
+    this.Bzu.Y = this.H_i;
+    if (this.Bzu.IsNearlyZero(MathUtils_1.MathUtils.SmallNumber)) {
+      this.nQc();
     } else {
-      this.MWu(this.pWu, true);
+      this.oQc(this.Bzu, true);
     }
   }
-  MWu(t, i) {
+  oQc(t, i) {
     if (this.aot) {
-      this.vWu = true;
+      this.tQc = true;
       ControllerHolder_1.ControllerHolder.ItemInspectController.ReceiveRotateInput(t, i);
     }
   }
-  EWu() {
-    this.vWu = false;
+  nQc() {
+    this.tQc = false;
     ControllerHolder_1.ControllerHolder.ItemInspectController.ResetRotateInput();
   }
 }

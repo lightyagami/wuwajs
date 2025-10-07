@@ -3,15 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ActivityConditionGroupData = exports.ActivityTaskData = exports.taskStateToRewardStateResolver = exports.taskStateResolver = exports.activityViewStateSequence = exports.timeTypeStateResolver = exports.REDDOT_TOLERANCE = exports.ACTIVITYFIRSTUNLOCKFLAG = undefined;
+exports.ActivityConditionGroupData = exports.ActivityTaskData = exports.taskStateToRewardStateResolver = exports.taskStateResolver = exports.activityViewStateSequence = exports.ACTIVITY_FILTER_ALL_ID = exports.ACTIVITY_PERMANENT_TAB_ID = exports.REDDOT_TOLERANCE = exports.ACTIVITYFIRSTUNLOCKFLAG = undefined;
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const UiPopViewData_1 = require("../../Ui/Define/UiPopViewData");
 exports.ACTIVITYFIRSTUNLOCKFLAG = -100;
 exports.REDDOT_TOLERANCE = 0.1;
-exports.timeTypeStateResolver = {
-  [Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited]: 0,
-  [Protocol_1.Aki.Protocol.OS_.Proto_Permanent]: 1
-};
+exports.ACTIVITY_PERMANENT_TAB_ID = 999;
+exports.ACTIVITY_FILTER_ALL_ID = 999;
 exports.activityViewStateSequence = {
   [0]: ["SideIn", "SideOut"],
   1: ["GlobalIn", "GlobalOut"]
@@ -29,6 +27,7 @@ exports.taskStateToRewardStateResolver = {
 class ActivityTaskData {
   constructor() {
     this.Id = 0;
+    this.TypeId = 0;
     this.Current = 0;
     this.Target = 1;
     this.Status = 1;

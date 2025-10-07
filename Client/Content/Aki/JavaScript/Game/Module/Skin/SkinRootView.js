@@ -41,7 +41,7 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
       var i = t.ChildViewName;
       var e = this.TabComponent.GetTabItemByIndex(e);
       this.TabViewComponent.ToggleCallBack(t, i, e, this.yil);
-      this.TabComponent.SetHelpButtonShowState(i === "RoleSkinTabView");
+      this.TabComponent.SetHelpButtonShowState(this.yil.HelpIdMap.has(i));
       this.yil.CurSelectTabViewName = i;
       this.RefreshGamePadKeyTip();
     };
@@ -54,8 +54,9 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
       return !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t;
     };
     this.pcr = () => {
-      if (this.TabViewComponent.GetCurrentTabViewName() !== "RoleWeaponTabView") {
-        HelpController_1.HelpController.OpenHelpById(146);
+      var e = this.TabViewComponent.GetCurrentTabViewName();
+      if (e &&= this.yil.HelpIdMap.get(e)) {
+        HelpController_1.HelpController.OpenHelpById(e);
       }
     };
   }
@@ -64,30 +65,40 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
     this.yil.RegisterView(this);
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIDraggableComponent], [3, UE.UIItem], [4, UE.UIItem]];
   }
-  async OnBeforeStartAsync() {
+  OnStart() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
     this.TabComponent = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(0), e, this.yil.CloseView);
     this.TabComponent.SetHelpButtonCallBack(this.pcr);
     this.TabComponent.SetCanChange(this.CanToggleChange);
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(1));
-    await this.d8l();
+    AudioSystem_1.AudioSystem.SetState(RoleDefine_1.ROLE_MUTE_NATURE_AUDIO_GROUP, "mute");
   }
   OnHandleLoadScene() {
     var e;
     UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
-    if (this.yil.NeedLoadRole && ((e = UiSceneManager_1.UiSceneManager.GetActorByTag("RoleFloorCase")) && (this.Nlo = EffectUtil_1.EffectUtil.SpawnUiEffect("RoleSystemFloorEffect", "[RoleRootView.LoadFloorEffect]", e.D_GetTransform(), new EffectContext_1.EffectContext(undefined, e))), UiSceneManager_1.UiSceneManager.GetActorByTag("RoleCase")) && this.yil.TsUiSceneRoleActor) {
-      this.yil.TsUiSceneRoleActor.Model.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
+    if (this.yil.NeedLoadRole && (e = UiSceneManager_1.UiSceneManager.GetActorByTag("RoleFloorCase"))) {
+      this.Nlo = EffectUtil_1.EffectUtil.SpawnUiEffect("RoleSystemFloorEffect", "[RoleRootView.LoadFloorEffect]", e.D_GetTransform(), new EffectContext_1.EffectContext(undefined, e));
     }
   }
-  async d8l() {
+  async OnHandlePostLoadSceneAsync(e) {
+    if (!this.yil.TsUiSceneRoleActor) {
+      if (this.yil.NeedLoadRole) {
+        await this.D4d();
+      } else {
+        this.yil.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
+      }
+    }
+  }
+  async D4d() {
     var e;
-    AudioSystem_1.AudioSystem.SetState(RoleDefine_1.ROLE_MUTE_NATURE_AUDIO_GROUP, "mute");
-    if (this.yil.NeedLoadRole) {
-      if (!this.c8l && (this.c8l = true, this.yil.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(11), e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.yil.RoleId), await RoleController_1.RoleController.RefreshUiSceneRoleActorAsync(this.yil.TsUiSceneRoleActor, this.yil.RoleId, e.GetRoleSkinId()), UiSceneManager_1.UiSceneManager.GetActorByTag("RoleCase"))) {
+    if (!this.c8l) {
+      this.c8l = true;
+      this.yil.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(12);
+      e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.yil.RoleId);
+      await RoleController_1.RoleController.RefreshUiSceneRoleActorAsync(this.yil.TsUiSceneRoleActor, this.yil.RoleId, e.GetRoleSkinId());
+      if (UiSceneManager_1.UiSceneManager.GetActorByTag("RoleCase")) {
         this.yil.TsUiSceneRoleActor.Model.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
       }
-    } else {
-      this.yil.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
     }
   }
   OnHandleReleaseScene() {
@@ -101,7 +112,7 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
     this.RefreshGamePadKeyTip();
   }
   UpdateDynamicTabComponent() {
-    this.TabDataList = ModelManager_1.ModelManager.RoleSkinModel.GetSkinTabList();
+    this.TabDataList = ModelManager_1.ModelManager.RoleSkinModel.GetSkinTabList(this.yil.IsMainRole);
     var t = this.TabDataList.length;
     var i = this.TabComponent.CreateTabItemDataByLength(t);
     for (let e = 0; e < t; e++) {
@@ -160,8 +171,18 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
       this.GetItem(4)?.SetUIActive(e);
     }
   }
+  SetMoveGamepadKeyTipActive(e) {
+    this.GetItem(4)?.SetUIActive(e);
+  }
   GetDragItem() {
     return this.GetDraggable(2);
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    const t = Number(e[0]);
+    e = this.TabComponent?.GetTabItemByIndex(this.TabDataList.findIndex(e => e.Id === t))?.GetRootItem();
+    if (e) {
+      return [e, e];
+    }
   }
 }
 exports.SkinRootView = SkinRootView;

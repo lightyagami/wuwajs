@@ -52,7 +52,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
     this.ScaleCurve = undefined;
     this.ScaleVector = undefined;
     this.TargetLocation = undefined;
-    this.vgd = undefined;
+    this.q6d = undefined;
     this.oIl = t => {
       this.CommonQteEnd(t);
     };
@@ -75,7 +75,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     var t = UiLayer_1.UiLayer.GetFloatUnit(UiLayerType_1.ELayerType.BattleFloat, 2);
     if (t) {
-      this.RootItem.SetUIParent(t);
+      this.GetOriginalItem().SetUIParent(t);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DisableCustomInputData, this.RootActor.GetName());
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddCallback(20, this.mFl);
@@ -89,11 +89,11 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TriggerUiTimeDilation, this.esh);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CommonQteEnd, this.oIl);
     this.ClearTickTimer();
-    if (this.vgd !== undefined) {
+    if (this.q6d !== undefined) {
       if (t = UiLayer_1.UiLayer.WorldSpaceUiRoot?.GetComponentByClass(UE.LGUIWorldSpaceInteraction.StaticClass())) {
-        t.depth = this.vgd;
+        t.depth = this.q6d;
       }
-      this.vgd = undefined;
+      this.q6d = undefined;
     }
   }
   OnAfterShow() {
@@ -108,7 +108,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
   RefreshOnBattleUiVisibleChanged() {}
   Tick(t) {
     if (this.IsKeepRelativeToCamera) {
-      this.ojc();
+      this.HXu();
     } else if (this.IsUseTargetScreenPos) {
       this.UpdateScreenPosition();
     }
@@ -132,7 +132,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
   }
   ResumeQte(t = false) {
     if (this.IsQtePause && !this.IsQteEnd && (this.TickTimer?.Resume(), this.IsQtePause = false, this.IsQteActive && (t ? TimerSystem_1.TimerSystem.Next(() => {
-      if (this.RootItem?.IsValid()) {
+      if (this.GetOriginalItem()?.IsValid()) {
         this.OnQteResume();
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "Qte界面暂停恢复失败, 界面已销毁");
@@ -165,7 +165,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
       }
     } else if (t.Source === 3) {
       if ((i = UiManager_1.UiManager.GetViewByName("VideoView")) && (i = i.GetRootItem())) {
-        this.GetRootItem().SetUIParent(i);
+        this.GetOriginalItem().SetUIParent(i);
       }
     } else if (t.Source === 0) {
       if (!ModelManager_1.ModelManager.BattleUiModel.ChildViewData.GetChildVisible(20) || Time_1.Time.TimeDilation === 0) {
@@ -184,8 +184,8 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
       this.TempRotator = Rotator_1.Rotator.Create();
       this.IsKeepRelativeToCamera = e.KeepRelativeToCamera;
       i = (this.AttachTarget = s).GetComponentByClass(UE.SceneComponent.StaticClass());
-      this.RootActor?.K2_AttachToComponent(i, undefined, 0, this.IsKeepRelativeToCamera ? 1 : 0, 1, false);
-      this.ojc();
+      this.RootActor?.K2_AttachToComponent(i, undefined, 0, this.IsKeepRelativeToCamera ? 1 : 0, 0, false);
+      this.HXu();
       i = Vector_1.Vector.Create(e.Location.X, e.Location.Y, e.Location.Z);
       this.RootActor?.D_K2_SetActorRelativeLocation(i.ToUeVector(), false, undefined, true);
       this.ScaleCurve = t.Resource?.ScaleCurve;
@@ -197,14 +197,14 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
       this.IsAttaching = true;
       this.SetUiActive(true);
       if (t.Source === 2 && (i = UiLayer_1.UiLayer.UiRoot?.GetComponentByClass(UE.LGUIScreenSpaceInteraction.StaticClass()), t = UiLayer_1.UiLayer.WorldSpaceUiRoot?.GetComponentByClass(UE.LGUIWorldSpaceInteraction.StaticClass()), i) && t) {
-        this.vgd = t.depth;
+        this.q6d = t.depth;
         t.depth = i.depth + 1;
       }
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("CommonQte", 67, "QteItem挂接失败", ["AttachConfig", e], ["AttachTarget", s]);
     }
   }
-  ojc() {
+  HXu() {
     var t;
     var i;
     var e = this.GetAttachRootItem();
@@ -265,7 +265,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
     var i;
     if (this.AttachTarget && this.ScaleCurve) {
       i = ControllerHolder_1.ControllerHolder.CameraController.CameraLocation;
-      t = this.AttachTarget.K2_GetActorLocation();
+      t = this.AttachTarget.D_K2_GetActorLocation();
       this.TargetLocation.FromUeVector(t);
       t = Vector_1.Vector.DistSquared(i, this.TargetLocation);
       if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode && Log_1.Log.CheckDebug()) {
@@ -289,7 +289,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
   }
   SetPreloadQte(t) {}
   GetAttachRootItem() {
-    return this.AttachRootItem ?? this.RootItem;
+    return this.AttachRootItem ?? this.GetOriginalItem();
   }
   SetAttachRootItem(t) {
     this.AttachRootItem = t;

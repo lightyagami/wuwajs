@@ -14,12 +14,12 @@ class LevelEventClientChangeTeamPosition extends LevelGeneralBase_1.LevelEventBa
     if (ModelManager_1.ModelManager.SceneTeamModel.IsTeamReady) {
       this.BXe(r);
     } else {
-      this.Msd().finally(() => {
+      this.Lod().finally(() => {
         this.BXe(r);
       });
     }
   }
-  async Msd() {
+  async Lod() {
     await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
   }
   BXe(e) {

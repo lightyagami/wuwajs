@@ -106,12 +106,12 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(18, this.BQe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24141, this.Omc);
-    Net_1.Net.Register(29903, this.qmc);
+    Net_1.Net.Register(19461, this.Omc);
+    Net_1.Net.Register(15628, this.qmc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24141);
-    Net_1.Net.UnRegister(29903);
+    Net_1.Net.UnRegister(19461);
+    Net_1.Net.UnRegister(15628);
   }
   static async PreloadBattleViewFromLoading(e) {
     if (Log_1.Log.CheckDebug()) {
@@ -255,6 +255,15 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     var e = ModelManager_1.ModelManager.BattleUiModel?.PureModeData;
     return !!e && !!e.IsOpen && !(e.IsOpen = false);
   }
+  static UpdateTimeDilationSkillButtonState() {
+    var e = UiManager_1.UiManager.GetViewByName("BattleView");
+    if (e) {
+      e.UpdateTimeDilationButton();
+    }
+  }
+  static PlayConcertoExtraEffect(e, t = 0) {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, e, t);
+  }
 }
 exports.BattleUiControl = BattleUiControl;
 (_a = BattleUiControl).kQe = Stats_1.Stat.Create("[ChangeRole]BattleUiControl");
@@ -322,13 +331,13 @@ BattleUiControl.AQe = (e, t, n) => {
 BattleUiControl.mWe = () => {
   ModelManager_1.ModelManager.BattleUiModel.OnFormationLoaded();
 };
-BattleUiControl.PQe = (e, t) => {
-  if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid && Info_1.Info.IsInKeyBoard() && e !== t && (e = ModelManager_1.ModelManager.InputModel.GetCurrentInputData()) && (e = e.GetActionNameByInputAction(InputEnums_1.EInputAction.走跑切换))) {
-    e = InputSettingsManager_1.InputSettingsManager.GetActionBinding(e)?.GetCurrentPlatformKey()?.GetKeyIconPath();
+BattleUiControl.PQe = (e, t, n) => {
+  if (n && ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid && Info_1.Info.IsInKeyBoard() && e !== t && (n = ModelManager_1.ModelManager.InputModel.GetCurrentInputData()) && (e = n.GetActionNameByInputAction(InputEnums_1.EInputAction.走跑切换))) {
+    n = InputSettingsManager_1.InputSettingsManager.GetActionBinding(e)?.GetCurrentPlatformKey()?.GetKeyIconPath();
     if (t) {
-      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ChangeWalk", `<texture=${e}/>`);
+      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ChangeWalk", `<texture=${n}/>`);
     } else {
-      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ChangeRun", `<texture=${e}/>`);
+      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ChangeRun", `<texture=${n}/>`);
     }
   }
 };

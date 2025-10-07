@@ -34,16 +34,16 @@ class TouchUiEditViewModel {
     return this.xTt;
   }
   static AddDelegateOnSelectedItemChange(t) {
-    this.THu.push(t);
+    this.wQu.push(t);
   }
   static RemoveDelegateOnSelectedItemChange(t) {
-    t = this.THu.indexOf(t);
+    t = this.wQu.indexOf(t);
     if (t !== -1) {
-      this.THu.splice(t, 1);
+      this.wQu.splice(t, 1);
     }
   }
   static NotifySelectedItemChange(e) {
-    this.THu.forEach(t => {
+    this.wQu.forEach(t => {
       t(e);
     });
   }
@@ -51,4 +51,4 @@ class TouchUiEditViewModel {
 (exports.TouchUiEditViewModel = TouchUiEditViewModel).UVi = undefined;
 TouchUiEditViewModel.xTt = undefined;
 TouchUiEditViewModel.mgt = new Map();
-TouchUiEditViewModel.THu = []; //# sourceMappingURL=TouchUiEditViewModel.js.map
+TouchUiEditViewModel.wQu = []; //# sourceMappingURL=TouchUiEditViewModel.js.map

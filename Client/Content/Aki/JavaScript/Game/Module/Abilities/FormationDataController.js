@@ -4,7 +4,7 @@ var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FormationDataController = undefined;
+exports.FormationDataController = exports.isBattleMulti = undefined;
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
@@ -15,19 +15,32 @@ const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+function isBattleMulti() {
+  return (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() ? ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerSize() : ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer().length) > 1;
+}
+exports.isBattleMulti = isBattleMulti;
 class FormationDataController extends ControllerBase_1.ControllerBase {
   static get Model() {
     return ModelManager_1.ModelManager.FormationDataModel;
   }
   static OnInit() {
-    Net_1.Net.Register(29398, FormationDataController.BHa);
+    Net_1.Net.Register(19615, FormationDataController.BHa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.Djd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeModeFinish, this.Djd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Djd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Djd);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(29398);
+    Net_1.Net.UnRegister(19615);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.Djd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.Djd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Djd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Djd);
     return true;
   }
   static OnTick(t) {
@@ -96,14 +109,14 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
       for (const i of this.ibe) {
         this.Model.PlayerAggroSet.add(i);
       }
-      for (const s of this.bie) {
-        this.Model.PlayerAggroSet.delete(s);
+      for (const n of this.bie) {
+        this.Model.PlayerAggroSet.delete(n);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAggroAdd, this.ibe);
-      for (const n of this.ibe) {
+      for (const s of this.ibe) {
         var e;
-        var a = EntitySystem_1.EntitySystem.Get(n)?.GetComponent(0);
-        if (a && (!(e = a.GetBaseInfo()) || (e = e.Category.MonsterMatchType) !== 3 && e !== 2 || EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBossFight, n), e = a.GetPbEntityInitData()?.BlueprintType) && !StringUtils_1.StringUtils.IsBlank(e)) {
+        var a = EntitySystem_1.EntitySystem.Get(s)?.GetComponent(0);
+        if (a && (!(e = a.GetBaseInfo()) || (e = e.Category.MonsterMatchType) !== 3 && e !== 2 || EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBossFight, s), e = a.GetPbEntityInitData()?.BlueprintType) && !StringUtils_1.StringUtils.IsBlank(e)) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEntityFightByBpType, e);
         }
       }
@@ -211,4 +224,23 @@ FormationDataController.BHa = t => {
 FormationDataController.ibe = [];
 FormationDataController.bie = [];
 FormationDataController.tbe = false;
-FormationDataController.wK = false; //# sourceMappingURL=FormationDataController.js.map
+FormationDataController.wK = false;
+FormationDataController.Djd = () => {
+  var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+  var e = 547720200;
+  if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+    if (!_a.HasPlayerTag(t, e, true)) {
+      _a.AddPlayerTag(t, e);
+    }
+  } else if (_a.HasPlayerTag(t, e, true)) {
+    _a.RemovePlayerTag(t, e);
+  }
+  var e = 989377465;
+  if (isBattleMulti()) {
+    if (!_a.HasPlayerTag(t, e, true)) {
+      _a.AddPlayerTag(t, e);
+    }
+  } else if (_a.HasPlayerTag(t, e, true)) {
+    _a.RemovePlayerTag(t, e);
+  }
+}; //# sourceMappingURL=FormationDataController.js.map

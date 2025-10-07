@@ -100,7 +100,7 @@ class ManipulateConfig extends ConfigBase_1.ConfigBase {
     return this.Lnr;
   }
   GetPrecastLineValue(t, e) {
-    var a = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(10, t);
+    var a = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(11, t);
     if (a) {
       return this.Dnr(a.ManipulatePoints, a.Duration, e);
     }
@@ -109,7 +109,7 @@ class ManipulateConfig extends ConfigBase_1.ConfigBase {
     }
   }
   GetItemLineValue(t, e) {
-    var a = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(9, t);
+    var a = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(10, t);
     if (a) {
       return this.Dnr(a.ManipulatePoints, a.Duration, e);
     }

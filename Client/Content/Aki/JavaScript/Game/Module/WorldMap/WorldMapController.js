@@ -41,11 +41,13 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.ujd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.ujd);
   }
   static TryTeleport(e, r) {
     var o;
@@ -72,7 +74,7 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static MapOpenPush(e) {
     var r = new Protocol_1.Aki.Protocol.fas();
     r.vjn = e;
-    Net_1.Net.Send(28250, r);
+    Net_1.Net.Send(28841, r);
   }
   static OpenView(o, e, r, t) {
     if (ModelManager_1.ModelManager.WorldMapModel.PendingOpenWorldMapQuestId !== undefined) {
@@ -132,7 +134,7 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static CloseWorldMap() {
     if (UiManager_1.UiManager.IsViewShow("WorldMapView")) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DestroyAllUiCameraAnimationHandles);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+      UiManager_1.UiManager.ResetToBattleView();
     } else if (UiManager_1.UiManager.IsViewShow("FunctionView")) {
       UiManager_1.UiManager.CloseView("FunctionView");
     }
@@ -169,14 +171,13 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   }
   static Mdl(r) {
     var e = Protocol_1.Aki.Protocol.wg_.create();
-    Net_1.Net.Call(19714, e, e => {
+    Net_1.Net.Call(19868, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16591);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25778);
       }
       e = {
         InstanceDungeonId: r,
-        Position: Vector_1.Vector.Create(e.D7n, e.A7n, e.L7n),
-        AreaId: e.p6n
+        Position: Vector_1.Vector.Create(e.D7n, e.A7n, e.L7n)
       };
       ModelManager_1.ModelManager.WorldMapModel.LastBigSceneMiniMapInfo = e;
     });
@@ -212,9 +213,9 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
       Z: r.Z
     };
     t.w7n = o;
-    Net_1.Net.Call(18320, t, e => {
+    Net_1.Net.Call(15718, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20566);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24167);
       }
     });
   }
@@ -304,4 +305,13 @@ WorldMapController.Uct = e => {
       });
     }
   }
+};
+WorldMapController.ujd = (e, r, o) => {
+  e = {
+    MarkType: e,
+    MarkId: r,
+    OpenFogId: 0,
+    IsNotFocusTween: o
+  };
+  UiManager_1.UiManager.OpenView("WorldMapView", e);
 }; //# sourceMappingURL=WorldMapController.js.map

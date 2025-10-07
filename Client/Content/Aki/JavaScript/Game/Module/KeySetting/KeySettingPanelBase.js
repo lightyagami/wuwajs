@@ -10,52 +10,52 @@ class KeySettingPanelBase extends UiPanelBase_1.UiPanelBase {
   constructor(e = 0) {
     super();
     this.T_u = e;
-    this.Qzu = (e, t) => {
+    this.DYu = (e, t) => {
       this.OnWaitKeySetting();
     };
-    this.Kzu = () => {
+    this.UYu = () => {
       this.OnBeforeBeginEditKey();
     };
-    this.Xzu = () => {
+    this.BYu = () => {
       this.OnBeginEditKey();
     };
-    this.Yzu = () => {
+    this.kYu = () => {
       this.OnFinishEditKey();
     };
-    this.zzu = (e, t) => {
+    this.OYu = (e, t) => {
       this.OnKeyChange(e, t);
     };
-    this.Jzu = e => {
+    this.qYu = e => {
       this.OnKeySelected(e);
     };
-    this.Zzu = e => {
+    this.GYu = e => {
       this.OnKeyHover(e);
     };
-    this.eJu = e => {
+    this.FYu = e => {
       this.OnKeyUnHover(e);
     };
   }
   OnStartImplement() {
     KeySettingViewModel_1.KeySettingViewModel.InitData(this.T_u);
     KeySettingViewModel_1.KeySettingViewModel.OnViewStart();
-    KeySettingViewModel_1.KeySettingViewModel.AddOnWaitKeySettingDelegate(this.Qzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnBeforeBeginEditKeyDelegate(this.Kzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnBeginEditKeyDelegate(this.Xzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnFinishEditKeyDelegate(this.Yzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeySelectedDelegate(this.Jzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyChangeDelegate(this.zzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyHoverDelegate(this.Zzu);
-    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyUnHoverDelegate(this.eJu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnWaitKeySettingDelegate(this.DYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnBeforeBeginEditKeyDelegate(this.UYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnBeginEditKeyDelegate(this.BYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnFinishEditKeyDelegate(this.kYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeySelectedDelegate(this.qYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyChangeDelegate(this.OYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyHoverDelegate(this.GYu);
+    KeySettingViewModel_1.KeySettingViewModel.AddOnKeyUnHoverDelegate(this.FYu);
   }
   OnBeforeDestroyImplement() {
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnWaitKeySettingDelegate(this.Qzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnBeforeBeginEditKeyDelegate(this.Kzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnBeginEditKeyDelegate(this.Xzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnFinishEditKeyDelegate(this.Yzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeySelectedDelegate(this.Jzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyChangeDelegate(this.zzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyHoverDelegate(this.Zzu);
-    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyUnHoverDelegate(this.eJu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnWaitKeySettingDelegate(this.DYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnBeforeBeginEditKeyDelegate(this.UYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnBeginEditKeyDelegate(this.BYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnFinishEditKeyDelegate(this.kYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeySelectedDelegate(this.qYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyChangeDelegate(this.OYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyHoverDelegate(this.GYu);
+    KeySettingViewModel_1.KeySettingViewModel.RemoveOnKeyUnHoverDelegate(this.FYu);
     KeySettingViewModel_1.KeySettingViewModel.OnViewDestroy();
   }
   OnWaitKeySetting() {}

@@ -49,6 +49,9 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
   IsScoreRewardAllDone() {
     return !this.AwardsInfoList || !this.AwardsInfoList.some(e => e.zps === Protocol_1.Aki.Protocol.zps.Z6n);
   }
+  IsScoreRewardAllReceive() {
+    return !this.AwardsInfoList || this.AwardsInfoList.every(e => e.zps === Protocol_1.Aki.Protocol.zps.ovs);
+  }
   SetScoreRewardState(t, e) {
     var i = this.AwardsInfoList?.find(e => e.v9n === t);
     if (i) {

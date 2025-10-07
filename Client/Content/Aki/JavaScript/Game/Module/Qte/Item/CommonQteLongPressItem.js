@@ -25,9 +25,9 @@ class CommonQteLongPressItem extends CommonQteItemBase_1.CommonQteItemBase {
     this.fS1 = undefined;
     this.SPe = undefined;
     this.dbe = 0;
-    this.$Zu = undefined;
+    this.$Xu = undefined;
     this.Tyr = undefined;
-    this.WZu = undefined;
+    this.gQc = undefined;
     this.Qtt = undefined;
     this.$xt = t => {
       if (t === "Start") {
@@ -47,9 +47,9 @@ class CommonQteLongPressItem extends CommonQteItemBase_1.CommonQteItemBase {
       if (this.IsValidInput()) {
         this.bOi(i);
         if (i === 0) {
-          this.$Zu?.SetSelectionState(2);
+          this.$Xu?.SetSelectionState(2);
         } else {
-          this.$Zu?.SetSelectionState(0);
+          this.$Xu?.SetSelectionState(0);
         }
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("CommonQte", 67, "通用Qte输入无效");
@@ -77,20 +77,20 @@ class CommonQteLongPressItem extends CommonQteItemBase_1.CommonQteItemBase {
   OnStart() {
     var t;
     super.OnStart();
-    this.$Zu = this.GetButton(0);
+    this.$Xu = this.GetButton(0);
     this.Tyr = this.GetTexture(1);
-    this.WZu = this.GetSlider(4);
-    this.WZu?.SetValue(1);
-    this.WZu?.SetSelfInteractive(false);
+    this.gQc = this.GetSlider(4);
+    this.gQc?.SetValue(1);
+    this.gQc?.SetSelfInteractive(false);
     this.GetItem(3)?.SetUIActive(false);
     this.GetText(2)?.SetUIActive(false);
-    this.$Zu?.OnPointDownCallBack.Bind(() => {
+    this.$Xu?.OnPointDownCallBack.Bind(() => {
       this.OnPress();
     });
-    this.$Zu?.OnPointUpCallBack.Bind(() => {
+    this.$Xu?.OnPointUpCallBack.Bind(() => {
       this.OnRelease();
     });
-    this.$Zu?.OnPointCancelCallBack.Bind(() => {
+    this.$Xu?.OnPointCancelCallBack.Bind(() => {
       this.OnRelease();
     });
     if (this.Qtt) {
@@ -114,9 +114,9 @@ class CommonQteLongPressItem extends CommonQteItemBase_1.CommonQteItemBase {
       ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.fS1.HandleId);
     }
     this.jQa();
-    this.$Zu?.OnPointDownCallBack.Unbind();
-    this.$Zu?.OnPointUpCallBack.Unbind();
-    this.$Zu?.OnPointCancelCallBack.Unbind();
+    this.$Xu?.OnPointDownCallBack.Unbind();
+    this.$Xu?.OnPointUpCallBack.Unbind();
+    this.$Xu?.OnPointCancelCallBack.Unbind();
     this.SPe?.Clear();
     this.fS1 = undefined;
     this.iIl = -1;
@@ -259,7 +259,7 @@ class CommonQteLongPressItem extends CommonQteItemBase_1.CommonQteItemBase {
         } else {
           this.fS1.UpdateTime(t);
           if (!this.fS1.IsPermanent) {
-            this.WZu?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
+            this.gQc?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
           }
           if (this.fS1) {
             this.dbe = this.fS1.GetProgress();

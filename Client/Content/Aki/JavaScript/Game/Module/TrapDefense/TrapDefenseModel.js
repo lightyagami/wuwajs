@@ -15,6 +15,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
 const ActivityControllerHolder_1 = require("../Activity/ActivityControllerHolder");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
+const TowerDefenseEventController_1 = require("../TowerDefenseEvent/TowerDefenseEventController");
 const TrapDefenseBattleInventoryData_1 = require("./Data/BattleItem/TrapDefenseBattleInventoryData");
 const TrapDefenseRewardData_1 = require("./Data/Reward/TrapDefenseRewardData");
 const TrapDefenseShopData_1 = require("./Data/Shop/TrapDefenseShopData");
@@ -61,19 +62,19 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     this.ViewModelBuildingDevelop = TrapDefenseBuildingDevelopViewModel_1.TrapDefenseBuildingDevelopViewModel.Create(this);
     this.NeedOpenMainView = false;
     this.IsSkipMachineFullCheck = false;
-    this.kcd = undefined;
+    this.QTd = undefined;
     this.qto = () => !!this.LevelModeData || (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ErrorCode_2500068_Text"), false);
-    this.qid = () => !!this.qto() && (!!this.RougeModeData.CanEnterRougeMode() || !(ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseRougeModeNotOpen"), 1));
+    this.rld = () => !!this.qto() && (!!this.RougeModeData.CanEnterRougeMode() || !(ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseRougeModeNotOpen"), 1));
   }
   OnInit() {
-    this.pYc("TrapDefenseMainLevelView");
-    this.pYc("TrapDefenseRougeLevelView", this.qid);
-    this.pYc("TrapDefenseFixedRewardView");
-    this.pYc("TrapDefenseBdSumView");
-    this.pYc("TrapDefenseBdQualityView");
-    this.pYc("TrapDefenseBdBuffSelectView");
-    this.pYc("TrapDefenseBdBuffGetView");
-    this.pYc("TrapDefenseBdBuffStrengthenView");
+    this.vJc("TrapDefenseMainLevelView");
+    this.vJc("TrapDefenseRougeLevelView", this.rld);
+    this.vJc("TrapDefenseFixedRewardView");
+    this.vJc("TrapDefenseBdSumView");
+    this.vJc("TrapDefenseBdQualityView");
+    this.vJc("TrapDefenseBdBuffSelectView");
+    this.vJc("TrapDefenseBdBuffGetView");
+    this.vJc("TrapDefenseBdBuffStrengthenView");
     return true;
   }
   OnClear() {
@@ -87,7 +88,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     this.BattleData.Clear();
     return true;
   }
-  pYc(e, t = this.qto) {
+  vJc(e, t = this.qto) {
     UiManager_1.UiManager.AddOpenViewCheckFunction(e, t, e + ".CheckCanOpen");
     this.CheckCanOpenViewMap.set(e, t);
   }
@@ -108,7 +109,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
       this.LevelDataFromInstIdMap.clear();
       this.LevelDataFromIdMap.clear();
       ConfigManager_1.ConfigManager.TrapDefenseConfig.GetLevelListByActivityId(e).forEach(e => {
-        e = this.lHc(e);
+        e = this.e8u(e);
         this.LevelDataFromInstIdMap.set(e.Config.InstId, e);
         this.LevelDataFromIdMap.set(e.Config.Id, e);
       });
@@ -120,29 +121,29 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     e.mps.forEach(e => {
       this.LevelDataFromIdMap.get(e.e8n)?.ProtoUpdateData(e);
     });
-    e.j7u.forEach(e => {
+    e.pHc.forEach(e => {
       this.RougeModeData.BdDataMap.get(e)?.SetUnlock(true);
     });
-    e.Scd.forEach(e => {
+    e.HEd.forEach(e => {
       this.RougeModeData.BdBuffDataMap.get(e)?.SetUnlock(true);
     });
     this.ViewModelBuildingDevelop.InitDevelopInfo(e);
-    this.ViewModelBuildingDevelop.SetRemainPoints(e.Ohd);
+    this.ViewModelBuildingDevelop.SetRemainPoints(e.wdd);
     this.RewardData?.UpdateRewardsByServerData(e.nBs);
     this.RewardData.SetLimitTime(e.CPs, e.gPs);
-    this.RewardData.SpecialRewardData?.UpdateByServerData(e.V7u[0]);
-    e.N7u.forEach(e => {
+    this.RewardData.SpecialRewardData?.UpdateByServerData(e.CHc[0]);
+    e.gHc.forEach(e => {
       this.TalentTreeData?.NodeIdMap.get(e)?.SetUnlock();
     });
-    this.TalentTreeData?.SetRemainPoints(e.$7u);
-    this.TalentTreeData?.SetMaxPoints(e.H7u);
+    this.TalentTreeData?.SetRemainPoints(e.MKc);
+    this.TalentTreeData?.SetMaxPoints(e.SKc);
     this.TalentTreeData?.RefreshLineTypeMap();
     this.MapData.InitMapData();
     this.ShopData.TryUpdateData();
-    this.Ocd();
+    this.KTd();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate);
   }
-  lHc(e) {
+  e8u(e) {
     switch (e.ModeType) {
       case 1:
         return this.LevelModeData.AddLevelConfig(e);
@@ -217,7 +218,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     return this.LevelModeData.LevelDataList.reduce((e, t) => t.ReachTargetIndexList.length + e, 0) + this.RougeModeData.LevelDataList.reduce((e, t) => t.ReachTargetIndexList.length + e, 0);
   }
   OpenViewBdSum(e, t, i) {
-    e = e ?? ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsTowerDefenseEventInstance();
+    e = e ?? TowerDefenseEventController_1.TowerDefenseEventController.IsTowerDefenseEventInstance();
     this.ViewModelBdSum.SetIsInstance(e);
     this.ViewModelBdSum.SetJumpTabType(t);
     this.ViewModelBdSum.SetJumpBdId(i);
@@ -249,7 +250,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
   }
   OpenViewMonster(e, t, i) {
     e = e ? this.LevelDataFromInstIdMap.get(e) : this.GetCurInstToLevelData();
-    i = i ?? ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsTowerDefenseEventInstance();
+    i = i ?? TowerDefenseEventController_1.TowerDefenseEventController.IsTowerDefenseEventInstance();
     this.ViewModelMonster.SetSelectLevelData(e);
     this.ViewModelMonster.SetJumpTabType(t);
     this.ViewModelMonster.SetIsInstance(i);
@@ -301,7 +302,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
   ProtoBdBuffAllUpdateNotify(e) {
     if (this.RougeModeData) {
       const i = new Map();
-      e.w7u.forEach(e => {
+      e.x7u.forEach(e => {
         i.set(e.S9n, e);
       });
       this.RougeModeData.BdBuffDataList.forEach(e => {
@@ -311,45 +312,45 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
       });
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate);
     } else {
-      this.kcd = e;
+      this.QTd = e;
     }
   }
-  Ocd() {
-    if (this.kcd) {
-      this.ProtoBdBuffAllUpdateNotify(this.kcd);
-      this.kcd = undefined;
+  KTd() {
+    if (this.QTd) {
+      this.ProtoBdBuffAllUpdateNotify(this.QTd);
+      this.QTd = undefined;
     }
   }
   ProtoBdBuffSelectUpdateNotify(e) {
     e = e.ob_;
     if (e) {
-      if (e.L7u.length <= 0) {
+      if (e.D7u.length <= 0) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseBdBuffSelectEmptyListTips");
       } else {
-        this.ViewModeBdBuffSelect.SetRemainRefreshCount(e.A7u);
-        this.ViewModeBdBuffSelect.SetMaxRefreshCount(e.P7u);
+        this.ViewModeBdBuffSelect.SetRemainRefreshCount(e.U7u);
+        this.ViewModeBdBuffSelect.SetMaxRefreshCount(e.B7u);
         this.ViewModeBdBuffSelect.SetRefreshBuffCostNum(e.fm1);
         if (this.ViewModeBdBuffSelect.ShowingViewProcess) {
-          this.ViewModeBdBuffSelect.BackupIdList.push(e.L7u);
+          this.ViewModeBdBuffSelect.BackupIdList.push(e.D7u);
         } else {
           this.ViewModeBdBuffSelect.OnOpenView();
-          this.OpenViewBdBuffSelect(e.L7u);
+          this.OpenViewBdBuffSelect(e.D7u);
         }
       }
     }
   }
   ProtoBdBuffGetUpdateNotify(e) {
-    var t = e.bad;
-    if (t && e.x9n !== Protocol_1.Aki.Protocol.Rad.Proto_RewardSelect) {
+    var t = e.qud;
+    if (t && e.x9n !== Protocol_1.Aki.Protocol.Gud.Proto_RewardSelect) {
       this.RougeModeData.CheckBdBuffGetUpdate(t.S9n, t.gG_);
     }
   }
   ProtoBdBuffRefreshResponse(e) {
-    e = e.b7u;
-    if (e && e.L7u.length > 0) {
-      this.ViewModeBdBuffSelect.SetBuffList(e.L7u);
-      this.ViewModeBdBuffSelect.SetRemainRefreshCount(e.A7u);
-      this.ViewModeBdBuffSelect.SetMaxRefreshCount(e.P7u);
+    e = e.A7u;
+    if (e && e.D7u.length > 0) {
+      this.ViewModeBdBuffSelect.SetBuffList(e.D7u);
+      this.ViewModeBdBuffSelect.SetRemainRefreshCount(e.U7u);
+      this.ViewModeBdBuffSelect.SetMaxRefreshCount(e.B7u);
       this.ViewModeBdBuffSelect.SetRefreshBuffCostNum(e.fm1);
     }
   }
@@ -372,13 +373,13 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();
   }
   ProtoSpecialRewardUpdateNotify(e) {
-    this.RewardData?.SpecialRewardData?.UpdateByServerData(e.V7u[0]);
+    this.RewardData?.SpecialRewardData?.UpdateByServerData(e.CHc[0]);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseRewardUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotUpdateTrapDefenseLimitReward);
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();
   }
   ProtoTechUpdateNotify(e) {
-    e.N7u.forEach(e => {
+    e.gHc.forEach(e => {
       this.TalentTreeData?.NodeIdMap.get(e)?.SetUnlock();
     });
     this.TalentTreeData?.RefreshLineTypeMap();
@@ -387,12 +388,12 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();
   }
   ProtoBdUpdateNotify(e) {
-    e.j7u.forEach(e => {
+    e.pHc.forEach(e => {
       this.RougeModeData.BdDataMap.get(e)?.SetUnlock(true);
     });
   }
   ProtoBdBuffUpdateNotify(e) {
-    e.Scd.forEach(e => {
+    e.HEd.forEach(e => {
       this.RougeModeData.BdBuffDataMap.get(e)?.SetUnlock(true);
     });
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseBdBuffListUpdate);
@@ -400,16 +401,16 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();
   }
   ProtoTechPointUpdateNotify(e) {
-    this.TalentTreeData?.SetRemainPoints(e.$7u);
-    this.TalentTreeData?.SetMaxPoints(e.H7u);
-    this.ViewModelBuildingDevelop.SetRemainPoints(e.Ohd);
+    this.TalentTreeData?.SetRemainPoints(e.MKc);
+    this.TalentTreeData?.SetMaxPoints(e.SKc);
+    this.ViewModelBuildingDevelop.SetRemainPoints(e.wdd);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseTalentTreeUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotUpdateTrapDefenseTalentTree);
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();
   }
   ProtoShopRefreshResponse(e) {
-    if (e.hju) {
-      this.ShopData?.UpdateByServerData(e.hju);
+    if (e.Azc) {
+      this.ShopData?.UpdateByServerData(e.Azc);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseShopRefresh);
     }
   }

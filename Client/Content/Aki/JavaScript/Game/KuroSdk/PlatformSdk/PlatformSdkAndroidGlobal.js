@@ -82,7 +82,16 @@ class PlatformSdkAndroidGlobal extends PlatformSdkBase_1.PlatformSdkBase {
       return;
     }
     this.LastOpenTime = Time_1.Time.Now;
-    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, KuroSdkDefine_1.DEFAULTWEBVIEWIDENTIFIER, "");
+    var a = new KuroSdkData_1.OpenWebViewParamAndroid();
+    a.title = e;
+    a.url = r;
+    a.isLandscape = o;
+    a.transparent = t;
+    a.webAccelerated = n;
+    a.identifier = KuroSdkDefine_1.DEFAULTWEBVIEWIDENTIFIER;
+    a.showInDialog = false;
+    var a = Json_1.Json.Stringify(a);
+    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, KuroSdkDefine_1.DEFAULTWEBVIEWIDENTIFIER, a);
   }
   OpenFeedback() {
     var e;
@@ -104,7 +113,16 @@ class PlatformSdkAndroidGlobal extends PlatformSdkBase_1.PlatformSdkBase {
       return;
     }
     this.LastOpenTime = Time_1.Time.Now;
-    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, a, "");
+    var s = new KuroSdkData_1.OpenWebViewParamAndroid();
+    s.title = e;
+    s.url = r;
+    s.isLandscape = o;
+    s.transparent = t;
+    s.webAccelerated = n;
+    s.identifier = a;
+    s.showInDialog = false;
+    var s = Json_1.Json.Stringify(s);
+    ue_1.KuroSDKManager.OpenWebView(e, r, o, t, n, a, s);
   }
   OnQueryProduct(e) {
     var e = e.split("|");

@@ -317,7 +317,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
         (i = Protocol_1.Aki.Protocol.x4n.create()).X4n = Protocol_1.Aki.Protocol.IFs.Proto_BT_Task;
         i.$4n = s;
         i.Y4n = this.Uuid;
-        s = CombatMessage_1.CombatNet.Call(16196, this.Entity, i, t => {
+        s = CombatMessage_1.CombatNet.Call(27219, this.Entity, i, t => {
           if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             CombatLog_1.CombatLog.Warn("StateMachineNew", this.Entity, `FsmStateBehaviorRequest 节点Task行为失败 [${this.Name}|${this.Uuid}]`, ["ErrorCode", t.Q4n]);
           }
@@ -444,7 +444,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
     this.Owner.AnyChange = true;
     const o = ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
     this.RootNode.WaitSwitchStateSet.add(o);
-    this.RootNode.CurrentMessageIdCache = CombatMessage_1.CombatNet.Call(22523, this.Entity, t, t => {
+    this.RootNode.CurrentMessageIdCache = CombatMessage_1.CombatNet.Call(17088, this.Entity, t, t => {
       if (this.Owner?.Entity) {
         if (this.RootNode.WaitSwitchStateSet.has(o)) {
           if (t.fMs.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs || this.RootNode.IsAnimStateMachine) {
@@ -464,7 +464,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
               if (this.ActorComponent.IsAutonomousProxy) {
                 (i = Protocol_1.Aki.Protocol.xe_.create()).$4n = this.RootNode.Uuid;
                 i.Y4n = s;
-                CombatMessage_1.CombatNet.Send(17827, this.Entity, i);
+                CombatMessage_1.CombatNet.Send(15466, this.Entity, i);
               }
             } else {
               if (t.OTs <= 0) {
@@ -488,6 +488,7 @@ class AiStateMachineBase extends StateMachineCommon_1.StateMachineCommon {
         CombatLog_1.CombatLog.Info("StateMachineNew", this.Entity, `客户端先行切换状态 失败，实体已被销毁 [${this.Name}|${this.Uuid}] => [${h?.Name}|${h?.Uuid}]`);
       }
     }, undefined, o);
+    CombatLog_1.CombatLog.Info("StateMachineNew", this.Entity, "客户端先行切换状态", ["from", this.Name], ["to", h.Name]);
     this.Parent.Switch(h.Name, true, true, true);
     this.RootNode.CurrentMessageIdCache = undefined;
   }

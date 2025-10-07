@@ -35,6 +35,15 @@ class PayItemModel extends ModelBase_1.ModelBase {
   GetProductInfoByGoodsId(e) {
     return this.cFa.get(e);
   }
+  GetProductCurrencyByGoodsId(e) {
+    var e = this.cFa.get(e);
+    var e = e && e.Price ? e.Price : undefined;
+    if (e = e && /[a-zA-Z]+$/.exec(e)) {
+      return e[0];
+    } else {
+      return undefined;
+    }
+  }
   GetDataList() {
     return this.YOi;
   }
@@ -53,8 +62,8 @@ class PayItemModel extends ModelBase_1.ModelBase {
     this.zOi = e;
   }
   ResetSpecialBonus(e) {
-    for (const a of e) {
-      var t = this.JOi.get(a);
+    for (const r of e) {
+      var t = this.JOi.get(r);
       if (t) {
         t.CanSpecialBonus = true;
       }
@@ -64,11 +73,11 @@ class PayItemModel extends ModelBase_1.ModelBase {
     if (this.YOi.length !== 0 && e.length !== 0) {
       this.YOi.length = 0;
     }
-    for (const a of e) {
+    for (const r of e) {
       var t = new PayItemDefine_1.PayItemData();
-      t.Phrase(a);
+      t.Phrase(r);
       this.YOi.push(t);
-      this.JOi.set(a.s5n, t);
+      this.JOi.set(r.s5n, t);
     }
   }
   OnClear() {
@@ -78,20 +87,20 @@ class PayItemModel extends ModelBase_1.ModelBase {
     this.Version = "";
     return !(this.zOi = undefined);
   }
-  CreateSdkPayment(e, t, a) {
+  CreateSdkPayment(e, t, r) {
     var e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e);
-    var r = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
+    var a = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
     var o = ConfigManager_1.ConfigManager.ItemConfig.GetItemDesc(e.ItemId);
     var n = e.PayId;
-    var s = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(n);
+    var i = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(n);
     return {
       product_id: ModelManager_1.ModelManager.RechargeModel.GetPayIdProductId(n),
       cpOrderId: t,
-      price: s,
-      goodsName: "" + r + e.ItemCount,
+      price: i,
+      goodsName: "" + a + e.ItemCount,
       goodsDesc: "" + o + e.ItemCount,
       extraParams: " ",
-      callbackUrl: a,
+      callbackUrl: r,
       currency: ""
     };
   }

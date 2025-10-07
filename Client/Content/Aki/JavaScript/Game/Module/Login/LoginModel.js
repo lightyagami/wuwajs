@@ -171,7 +171,7 @@ class LoginModel extends ModelBase_1.ModelBase {
     this.iEi = 0;
     this.oEi = new Map();
     this.rEi = undefined;
-    this.z1d = undefined;
+    this.zpd = undefined;
     this.nEi = false;
     this.sEi = -0;
     this.aEi = 0;
@@ -362,7 +362,7 @@ class LoginModel extends ModelBase_1.ModelBase {
   }
   AddDataTableServers() {
     if (this.$Mi && GlobalData_1.GlobalData.World) {
-      for (const t of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(14)) {
+      for (const t of DataTableUtil_1.DataTableUtil.GetDataTableAllRow(15)) {
         this.$Mi.push(new ServerConfig(t.IP, t.Port, t.Name, t.Order));
       }
     }
@@ -709,8 +709,8 @@ class LoginModel extends ModelBase_1.ModelBase {
     }
   }
   CheckLoginToGameServerSdkConfigIfSame() {
-    if (this.rEi && this.z1d) {
-      if (this.rEi.Uid !== this.z1d.Uid || this.rEi.UserName !== this.z1d.UserName || this.rEi.Token !== this.z1d.Token) {
+    if (this.rEi && this.zpd) {
+      if (this.rEi.Uid !== this.zpd.Uid || this.rEi.UserName !== this.zpd.UserName || this.rEi.Token !== this.zpd.Token) {
         this.SdkAccountChangeNeedExitFlag = true;
       } else {
         this.SdkAccountChangeNeedExitFlag = false;
@@ -722,9 +722,9 @@ class LoginModel extends ModelBase_1.ModelBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Login", 27, "缓存当前登录服务器SDK登录配置", ["uId", this.rEi.Uid], ["userName", this.rEi.UserName]);
       }
-      this.z1d = new SdkLoginConfig(this.rEi.Uid, this.rEi.UserName, this.rEi.Token);
+      this.zpd = new SdkLoginConfig(this.rEi.Uid, this.rEi.UserName, this.rEi.Token);
     } else {
-      this.z1d = undefined;
+      this.zpd = undefined;
     }
   }
   GetSdkLoginConfig() {

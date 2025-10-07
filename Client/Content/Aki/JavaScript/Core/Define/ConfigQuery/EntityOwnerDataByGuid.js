@@ -41,7 +41,7 @@ exports.configEntityOwnerDataByGuid = {
           return a;
         }
       }
-      if (o = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, n, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, true, ...logPair, ["Guid", n]) > 0) {
+      if (o = ConfigCommon_1.ConfigCommon.BindString(handleId, 1, n, ...logPair) && ConfigCommon_1.ConfigCommon.Step(handleId, false, ...logPair, ["Guid", n]) > 0) {
         e = undefined;
         [o, e] = ConfigCommon_1.ConfigCommon.GetValue(handleId, 0, ...logPair, ["Guid", n]);
         if (o) {

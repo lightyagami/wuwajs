@@ -28,13 +28,13 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
     this.BtnConfirm = undefined;
     this.OpData = undefined;
     this.CurrentSelectIndex = -1;
-    this.cZu = false;
+    this.uZu = false;
     this.Refresh = () => {
       if (this.OpData) {
         if (this.CurrentSelectIndex >= 0) {
           this.RewardLayout.GetLayoutItemByKey(this.CurrentSelectIndex)?.SetToggleState(false, true);
         }
-        if (this.cZu) {
+        if (this.uZu) {
           this.GetButton(4).RootUIComp.SetUIActive(false);
           this.BtnConfirm?.SetLocalTextNew("RogueRes_FightGetAllItem_Desc");
           this.BtnConfirm?.SetEnableClick(true);
@@ -69,7 +69,7 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
     };
     this.d2t = () => {
       var t = new RewardItemToggle();
-      t.IsAllSelect = this.cZu;
+      t.IsAllSelect = this.uZu;
       t.OnExtendToggleClicked = this.q3e;
       t.OnCanExecuteChangeFunc = this.TKi;
       return t;
@@ -90,8 +90,8 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
     };
     this.tWt = () => {
       var t;
-      if (this.cZu) {
-        t = this.dZu();
+      if (this.uZu) {
+        t = this.cZu();
         this.OpData.SelectAll(t.map(t => t.Index));
       } else {
         this.OpData.Select(this.CurrentSelectIndex);
@@ -124,7 +124,7 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
     this.OpData.CloseViewFunc = this.Wfo;
     this.OpData.UpdateViewFunc = this.Refresh;
     var t = this.OpData.GetGainDataList();
-    this.cZu = t.length === this.OpData.MaxSelectCount;
+    this.uZu = t.length === this.OpData.MaxSelectCount;
   }
   OnBeforeShow() {
     this.Refresh();
@@ -138,11 +138,11 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
   v4e() {
     var t;
     if (this.OpData) {
-      t = this.dZu();
+      t = this.cZu();
       this.RewardLayout.RefreshByData(t, undefined, true);
     }
   }
-  dZu() {
+  cZu() {
     var i = this.OpData.GetGainDataList();
     var e = [];
     for (let t = 0; t < i.length; t++) {
@@ -152,7 +152,7 @@ class MapRogueRewardView extends UiViewBase_1.UiViewBase {
           Index: t,
           ConfigId: s.L8n,
           Count: s.m9n,
-          IsSelect: !this.cZu && s.k2s,
+          IsSelect: !this.uZu && s.k2s,
           IsRole: s.Jxu
         };
         e.push(s);

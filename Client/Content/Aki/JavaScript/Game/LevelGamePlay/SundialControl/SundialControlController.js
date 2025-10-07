@@ -127,7 +127,7 @@ class SundialControlController extends UiControllerBase_1.UiControllerBase {
     var t = Protocol_1.Aki.Protocol.wJn.create();
     t.a5n = e;
     t.h5n = Protocol_1.Aki.Protocol.h3s.Proto_SundialPuzzle;
-    Net_1.Net.Call(29184, t, e => {
+    Net_1.Net.Call(25221, t, e => {
       if (e.BEs === Protocol_1.Aki.Protocol.Q4n.KRs) {
         UiManager_1.UiManager.CloseView("SundialControlView");
       }

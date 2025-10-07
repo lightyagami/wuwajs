@@ -74,7 +74,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.Register(18943, WorldController.RBn);
+    Net_1.Net.Register(25035, WorldController.RBn);
     TickSystem_1.TickSystem.Add(this.k1r.bind(this), "WorldController", 2);
     TickSystem_1.TickSystem.Add(this.Bbl.bind(this), "WorldController", 5, true);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wo.ParallelOffset 1");
@@ -91,7 +91,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.UnRegister(18943);
+    Net_1.Net.UnRegister(25035);
     ModelManager_1.ModelManager.WorldModel.ControlPlayerLastLocation = undefined;
     if (this.LTl) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.LTl);
@@ -186,22 +186,22 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
     if (this.Kr_()) {
       this.$r_ = 0;
-      this.cgd();
-      let e = this.dgd;
+      this.Q5d();
+      let e = this.K5d;
       while (e-- > 0) {
         this.Npr();
         this.Opr();
       }
     }
   }
-  static cgd() {
+  static Q5d() {
     if ((Info_1.Info.IsLowMemoryDevice ? LOW_MEMORY_PENDING_REMOVE_COUNT : MAX_PENDING_REMOVE_COUNT) < ModelManager_1.ModelManager.CreatureModel.PendingRemoveEntitySize()) {
-      this.dgd++;
+      this.K5d++;
     } else {
-      this.dgd--;
+      this.K5d--;
     }
-    if (this.dgd < 1) {
-      this.dgd = 1;
+    if (this.K5d < 1) {
+      this.K5d = 1;
     }
   }
   static Kr_() {
@@ -500,9 +500,9 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
   }
   static RequestToNearestTeleport() {
-    Net_1.Net.Call(20891, Protocol_1.Aki.Protocol.ECs.create(), e => {
+    Net_1.Net.Call(20179, Protocol_1.Aki.Protocol.ECs.create(), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27241);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20896);
       }
     });
   }
@@ -781,7 +781,7 @@ WorldController.mea = 0;
 WorldController.AK = false;
 WorldController.Xr_ = 0;
 WorldController.$r_ = 0;
-WorldController.dgd = 1;
+WorldController.K5d = 1;
 WorldController.RBn = e => {
   cpp_1.FuncOpenLibrary.TryOpen(e.KEs);
 };

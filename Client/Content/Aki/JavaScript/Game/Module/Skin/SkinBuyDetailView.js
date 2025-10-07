@@ -280,7 +280,7 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
     this.A8i.ResumeTick();
   }
   OnStart() {
-    this.dmo = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(11);
+    this.dmo = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(12);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.$Oe);
     this.C0t = this.OpenParam;

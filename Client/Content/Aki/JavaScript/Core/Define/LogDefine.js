@@ -97,5 +97,6 @@ exports.logAuthorInfo = {
   89: ["LX", true],
   90: ["LJ", true],
   91: ["DX", true],
-  92: ["LQX", true]
+  92: ["LQX", true],
+  93: ["FJH", true]
 }; //# sourceMappingURL=LogDefine.js.map

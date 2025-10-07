@@ -11,16 +11,14 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
   constructor(t) {
     super(t.CreatureId);
     this.Params = undefined;
-    this.Lfd = t => {
+    this.z3d = t => {
       if (this.KscCtrl.WorldInit) {
         if (t?.IsValid()) {
           if (this.IsCancel) {
             this.Warn("Load", "战斗实体加载完成任务被取消", ["Id", this.EntityId], ["Class", this.constructor.name]);
             this.SetResult();
           } else {
-            this.Info("Load", "生成战斗实体时加载成功", ["Path", this.Params.AssetPath]);
-            this.D_d(t, this.Params).then(t => {
-              this.Info("Load", "安全加入战斗实体", ["Path", this.Params.AssetPath]);
+            this.ogd(t, this.Params).then(t => {
               if (this.Params.FinishCallback && t) {
                 this.Params.FinishCallback(t);
               }
@@ -39,7 +37,7 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
         this.SetResult();
       }
     };
-    this.Afd = () => {
+    this.J3d = () => {
       this.SetResult();
     };
     this.Params = t;
@@ -50,13 +48,13 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
       Id: this.Params.SimpleCombatId,
       Path: this.Params.AssetPath,
       NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedEntityDa,
-      Callback: this.Lfd,
-      FailCallback: this.Afd,
+      Callback: this.z3d,
+      FailCallback: this.J3d,
       KscWorldHandle: KscEnv_1.KscEnv.KscWorldHandle
     });
     await this.Promise?.Promise;
   }
-  async D_d(t, s) {
+  async ogd(t, s) {
     try {
       if (!s.Buffs || s.Buffs.length === 0) {
         return this.KscCtrl.AddEntityImpl(t, s);
@@ -74,12 +72,12 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
         throw new Error(`战斗实体${t.GetName()}外部关联资产安全加载正常,但后续加入异常`);
       }
       for (const c of i) {
-        var a = Number.parseInt(c);
-        var o = h.get(a);
-        var e = s.Buffs[c];
-        r.ApplyBuffSelf(o);
-        if (e > 1) {
-          r.UpdateBuffWithStackNumSelf(o, e);
+        var e = Number.parseInt(c);
+        var a = h.get(e);
+        var o = s.Buffs[c];
+        r.ApplyBuffSelf(a);
+        if (o > 1) {
+          r.UpdateBuffWithStackNumSelf(a, o);
         }
       }
       return r;

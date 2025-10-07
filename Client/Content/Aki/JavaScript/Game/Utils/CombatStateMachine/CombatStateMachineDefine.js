@@ -28,6 +28,7 @@ exports.Fsm = undefined;
       this.MontageNames = undefined;
       this.HideOnLoading = false;
       this.BlendInTime = 0;
+      this.RandomByClient = false;
     }
   };
   s.TaskLeaveFight = class h {

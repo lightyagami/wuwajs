@@ -79,6 +79,9 @@ class PlayerTitle {
   get ActvityName() {
     return this.actvityname();
   }
+  get IsShowProgress() {
+    return this.isshowprogress();
+  }
   get ItemAccess() {
     return this.itemaccess();
   }
@@ -280,8 +283,12 @@ class PlayerTitle {
     }
     return i;
   }
+  isshowprogress() {
+    var t = this.J7.__offset(this.z7, 50);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 50);
+    var i = this.J7.__offset(this.z7, 52);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -289,7 +296,7 @@ class PlayerTitle {
     return i;
   }
   sortindex() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -297,7 +304,7 @@ class PlayerTitle {
     }
   }
   iconintitleinfo(t) {
-    var i = this.J7.__offset(this.z7, 54);
+    var i = this.J7.__offset(this.z7, 56);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

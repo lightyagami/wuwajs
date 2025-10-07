@@ -16,14 +16,14 @@ class KingShipResultView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.$It = false;
     this.Ubu = 0;
-    this.FJu = 0;
+    this.DWu = 0;
     this.aRo = () => {
       var i;
       if (this.$It) {
         GeneralLogicTreeController_1.GeneralLogicTreeController.RequestFinishUiGameplay(Protocol_1.Aki.Protocol.h3s.Proto_Reigns, this.Ubu.toString());
       }
-      if (this.$It && this.FJu) {
-        i = KingShipUtil_1.KingShipUtil.GetKingShipOpenData(this.FJu);
+      if (this.$It && this.DWu) {
+        i = KingShipUtil_1.KingShipUtil.GetKingShipOpenData(this.DWu);
         UiManager_1.UiManager.OpenView("KingShipLoadingView", i, () => {
           this.CloseMe();
         });
@@ -46,7 +46,7 @@ class KingShipResultView extends UiViewBase_1.UiViewBase {
     var i = this.OpenParam;
     this.$It = i.IsSuccess;
     this.Ubu = i.ReignsId;
-    this.FJu = i.NextReignsId;
+    this.DWu = i.NextReignsId;
     var i = i.CardId;
     var e = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + i + "_CardDesc");
     this.GetText(3).SetText(e);

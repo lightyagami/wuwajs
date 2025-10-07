@@ -17,10 +17,10 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
     super(...arguments);
     this.jAe = undefined;
     this.SequencePlayer = undefined;
-    this.Pku = undefined;
-    this.xku = undefined;
-    this.Dku = undefined;
-    this.Uku = undefined;
+    this.QFu = undefined;
+    this.KFu = undefined;
+    this.XFu = undefined;
+    this.YFu = undefined;
     this.OnToggleHover = () => {
       var i = ModelManager_1.ModelManager.TuningStandModel.OnHover(this.Data);
       if (i === 2) {
@@ -50,23 +50,23 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
   }
   async OnBeforeStartAsync() {
     var i = [];
-    this.Pku = new TuningStandGridBase_1.TuningStandGridLine();
-    this.xku = new TuningStandGridBase_1.TuningStandGridLine();
-    this.Dku = new TuningStandGridBase_1.TuningStandGridLine();
-    this.Uku = new TuningStandGridBase_1.TuningStandGridLine();
-    i.push(this.Pku.CreateByActorAsync(this.GetItem(10).GetOwner()));
-    i.push(this.xku.CreateByActorAsync(this.GetItem(11).GetOwner()));
-    i.push(this.Dku.CreateByActorAsync(this.GetItem(12).GetOwner()));
-    i.push(this.Uku.CreateByActorAsync(this.GetItem(13).GetOwner()));
+    this.QFu = new TuningStandGridBase_1.TuningStandGridLine();
+    this.KFu = new TuningStandGridBase_1.TuningStandGridLine();
+    this.XFu = new TuningStandGridBase_1.TuningStandGridLine();
+    this.YFu = new TuningStandGridBase_1.TuningStandGridLine();
+    i.push(this.QFu.CreateByActorAsync(this.GetItem(10).GetOwner()));
+    i.push(this.KFu.CreateByActorAsync(this.GetItem(11).GetOwner()));
+    i.push(this.XFu.CreateByActorAsync(this.GetItem(12).GetOwner()));
+    i.push(this.YFu.CreateByActorAsync(this.GetItem(13).GetOwner()));
     await Promise.all(i);
-    this.Pku.SetUiActive(true);
-    this.xku.SetUiActive(true);
-    this.Dku.SetUiActive(true);
-    this.Uku.SetUiActive(true);
-    this.Pku.Refresh(false);
-    this.xku.Refresh(false);
-    this.Dku.Refresh(false);
-    this.Uku.Refresh(false);
+    this.QFu.SetUiActive(true);
+    this.KFu.SetUiActive(true);
+    this.XFu.SetUiActive(true);
+    this.YFu.SetUiActive(true);
+    this.QFu.Refresh(false);
+    this.KFu.Refresh(false);
+    this.XFu.Refresh(false);
+    this.YFu.Refresh(false);
   }
   OnStart() {
     this.SequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -76,10 +76,10 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
     this.InitGrid();
   }
   OnBeforeDestroy() {
-    this.Pku = undefined;
-    this.xku = undefined;
-    this.Dku = undefined;
-    this.Uku = undefined;
+    this.QFu = undefined;
+    this.KFu = undefined;
+    this.XFu = undefined;
+    this.YFu = undefined;
   }
   InitGrid() {
     var i;
@@ -95,7 +95,7 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
     }
   }
   OnResetGrid() {
-    this.YWu();
+    this.ujc();
     this.OnRefreshGrid();
   }
   OnRefreshGrid() {
@@ -116,16 +116,16 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
   }
   qPu() {
     var i = this.GetPrevDirection();
-    this.Pku.Refresh(i === 0, this.Data.GetCurGridState().State);
-    this.xku.Refresh(i === 1, this.Data.GetCurGridState().State);
-    this.Dku.Refresh(i === 2, this.Data.GetCurGridState().State);
-    this.Uku.Refresh(i === 3, this.Data.GetCurGridState().State);
+    this.QFu.Refresh(i === 0, this.Data.GetCurGridState().State);
+    this.KFu.Refresh(i === 1, this.Data.GetCurGridState().State);
+    this.XFu.Refresh(i === 2, this.Data.GetCurGridState().State);
+    this.YFu.Refresh(i === 3, this.Data.GetCurGridState().State);
   }
-  YWu() {
-    this.Pku.HideLine();
-    this.xku.HideLine();
-    this.Dku.HideLine();
-    this.Uku.HideLine();
+  ujc() {
+    this.QFu.HideLine();
+    this.KFu.HideLine();
+    this.XFu.HideLine();
+    this.YFu.HideLine();
   }
   OnLinkMiss(i) {
     if (i) {
@@ -135,10 +135,10 @@ class TuningStandGridNumItem extends TuningStandGridBase_1.TuningStandGridBase {
     }
   }
   StartRevolving() {
-    this.Pku.Refresh(false, this.Data.GetCurGridState().State);
-    this.xku.Refresh(false, this.Data.GetCurGridState().State);
-    this.Dku.Refresh(false, this.Data.GetCurGridState().State);
-    this.Uku.Refresh(false, this.Data.GetCurGridState().State);
+    this.QFu.Refresh(false, this.Data.GetCurGridState().State);
+    this.KFu.Refresh(false, this.Data.GetCurGridState().State);
+    this.XFu.Refresh(false, this.Data.GetCurGridState().State);
+    this.YFu.Refresh(false, this.Data.GetCurGridState().State);
   }
 }
 exports.TuningStandGridNumItem = TuningStandGridNumItem;

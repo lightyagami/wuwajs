@@ -19,12 +19,12 @@ class GeographyHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Cei = [];
     this.gei = [];
     this.fei = [];
-    this.WZt = (e, i, t) => {
+    this.WZt = (e, i, o) => {
       i = new GeographyHandBookChildItem_1.GeographyHandBookChildItem(i);
-      i.Refresh(e, false, t);
+      i.Refresh(e, false, o);
       this.fei.push(i);
       return {
-        Key: t,
+        Key: o,
         Value: i
       };
     };
@@ -32,24 +32,24 @@ class GeographyHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIGridLayout]];
   }
-  Refresh(e, i, t) {
-    var o = e.Id;
-    var o = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfigByType(o);
-    this.Cei = ConfigCommon_1.ConfigCommon.ToList(o);
+  Refresh(e, i, o) {
+    var r = e.Id;
+    var r = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfigByType(r);
+    this.Cei = ConfigCommon_1.ConfigCommon.ToList(r);
     this.Cei.sort((e, i) => e.Id - i.Id);
     this.GetText(0).ShowTextNew(e.TypeDescription);
     this.gei = [];
-    var r = this.Cei.length;
-    for (let e = 0; e < r; e++) {
-      var s = this.Cei[e];
-      var n = new HandBookDefine_1.HandBookCommonItemData();
-      var a = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(2, s.Id);
+    var t = this.Cei.length;
+    for (let e = 0; e < t; e++) {
+      var n = this.Cei[e];
+      var s = new HandBookDefine_1.HandBookCommonItemData();
+      var a = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(2, n.Id);
       var h = a === undefined;
       var a = a !== undefined && !a.IsRead;
-      n.Config = s;
-      n.IsLock = h;
-      n.IsNew = a;
-      this.gei.push(n);
+      s.Config = n;
+      s.IsLock = h;
+      s.IsNew = a;
+      this.gei.push(s);
     }
     this.fei = [];
     this.VZt = new GenericLayoutNew_1.GenericLayoutNew(this.GetGridLayout(1), this.WZt);
@@ -59,10 +59,6 @@ class GeographyHandBookItem extends GridProxyAbstract_1.GridProxyAbstract {
     return this.fei;
   }
   OnBeforeDestroy() {
-    if (this.VZt) {
-      this.VZt.ClearChildren();
-      this.VZt = undefined;
-    }
     this.Cei = [];
     this.gei = [];
     this.fei = [];

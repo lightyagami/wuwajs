@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Game = undefined;
+const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const ActorSystem_1 = require("../Core/Actor/ActorSystem");
@@ -19,6 +20,7 @@ const Stats_1 = require("../Core/Common/Stats");
 const Time_1 = require("../Core/Common/Time");
 const Core_1 = require("../Core/Core");
 const Http_1 = require("../Core/Http/Http");
+const Net_1 = require("../Core/Net/Net");
 const ResourceSystem_1 = require("../Core/Resource/ResourceSystem");
 const TickProcessSystem_1 = require("../Core/Tick/TickProcessSystem");
 const TickSystem_1 = require("../Core/Tick/TickSystem");
@@ -29,11 +31,13 @@ const CloudGameManagerLauncher_1 = require("../Launcher/Platform/CloudGameManage
 const SoPatchStatic_1 = require("../Launcher/SoPatch/SoPatchStatic");
 const TestModuleBridge_1 = require("./Bridge/TestModuleBridge");
 const AsyncUtil_1 = require("./Common/AsyncUtil");
+const EventCSharpBridge_1 = require("./Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("./Common/Event/EventDefine");
 const EventSystem_1 = require("./Common/Event/EventSystem");
 const LocalStorage_1 = require("./Common/LocalStorage");
 const StatDefine_1 = require("./Common/StatDefine");
 const TimeUtil_1 = require("./Common/TimeUtil");
+const NetEventDispatcher_1 = require("./CsNet/NetEventDispatcher");
 const EffectSystem_1 = require("./Effect/EffectSystem");
 const GameSettingsDeviceRender_1 = require("./GameSettings/GameSettingsDeviceRender");
 const GameSettingsManager_1 = require("./GameSettings/GameSettingsManager");
@@ -84,7 +88,6 @@ const ComponentForceTickController_1 = require("./World/Controller/ComponentForc
 const GameBudgetAllocatorConfigCreator_1 = require("./World/Define/GameBudgetAllocatorConfigCreator");
 const EnvironmentalPerceptionController_1 = require("./World/Enviroment/EnvironmentalPerceptionController");
 const TaskSystem_1 = require("./World/Task/TaskSystem");
-const cpp_1 = require("cpp");
 class Game {
   static *Start(e) {
     if (Log_1.Log.CheckInfo()) {
@@ -95,6 +98,7 @@ class Game {
     CloudGameManager_1.CloudGameManager.Init();
     EnvironmentalPerceptionController_1.EnvironmentalPerceptionController.InitializeEnvironment();
     InputController_1.InputController.InitializeEnvironment();
+    EventCSharpBridge_1.EventCSharpBridge.InitializeEnvironment();
     Http_1.Http.SetHttpThreadActiveMinimumSleepTimeInSeconds(0.005);
     Http_1.Http.SetHttpThreadIdleMinimumSleepTimeInSeconds(0.033);
     ThinkingAnalyticsReporter_1.ThinkingAnalyticsReporter.Init();
@@ -162,6 +166,7 @@ class Game {
     PakManager_1.PakManager.Init();
     UiTimeDilation_1.UiTimeDilation.Init();
     NavigationRegisterCenter_1.NavigationRegisterCenter.Init();
+    Net_1.Net.NetEventDispatcher = new NetEventDispatcher_1.NetEventDispatcher();
     LauncherLogUpload_1.LauncherLogUpload.SetParams(LogUploadHelper_1.LogUploadHelper.CreateParams());
   }
   static TickerStart() {
@@ -185,6 +190,7 @@ class Game {
     TickProcessSystem_1.TickProcessSystem.Clear();
     ThirdPartySdkManager_1.ThirdPartySdkManager.Clear();
     PakManager_1.PakManager.Clear();
+    EventCSharpBridge_1.EventCSharpBridge.DestroyEnvironment();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Game", 24, "Game.Shutdown PerformanceManager.Destroy Finished");
     }
@@ -335,6 +341,7 @@ Game.lve = () => {
   Game.Shutdown();
 };
 Game._ve = () => {
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnPreEndPIE);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreEndPIE);
   Game.Shutdown();
 };

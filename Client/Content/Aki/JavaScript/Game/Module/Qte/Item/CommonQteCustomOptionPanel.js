@@ -14,19 +14,19 @@ const CommonQteItemBase_1 = require("./CommonQteItemBase");
 class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
   constructor() {
     super(...arguments);
-    this.KZu = 0;
+    this.pQc = 0;
     this.iIl = -1;
     this.fS1 = undefined;
-    this.XZu = [];
+    this.vQc = [];
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
   }
   SetPreloadQte(t) {
-    this.KZu = t;
+    this.pQc = t;
   }
   async OnBeforeStartAsync() {
-    var t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteConfig(this.KZu)?.BaseConfig.SelectOptionConfig;
+    var t = ModelManager_1.ModelManager.CommonQteModel?.GetCommonQteConfig(this.pQc)?.BaseConfig.SelectOptionConfig;
     if (t) {
       var e = [];
       var o = t.UIConfigList;
@@ -34,7 +34,7 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
         var s = o.Get(t);
         var i = new CommonQteCustomOptionItem_1.CommonQteCustomOptionItem();
         i.Init(t, s, this);
-        this.XZu.push(i);
+        this.vQc.push(i);
         e.push(i.CreateByResourceIdAsync("UiItem_QteBtnSingleTap", this.GetRootItem()));
       }
       await Promise.all(e);
@@ -49,10 +49,10 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     if (!this.IsQteEnd && this.fS1?.IsActive()) {
       ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.fS1.HandleId);
     }
-    for (const t of this.XZu) {
+    for (const t of this.vQc) {
       t.Destroy();
     }
-    this.XZu.length = 0;
+    this.vQc.length = 0;
     this.fS1 = undefined;
     this.iIl = -1;
   }
@@ -60,7 +60,7 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     if (t instanceof CommonQteSelectOptionContext_1.CommonQteSelectOptionContext) {
       this.iIl = t.HandleId;
       this.fS1 = t;
-      for (const e of this.XZu) {
+      for (const e of this.vQc) {
         e.SetQteContext(t);
       }
       this.SetQteActive(t);
@@ -72,7 +72,7 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
       this.IsQtePlayStart = true;
       this.IsQteInteractive = true;
       this.SetUiActive(true);
-      for (const t of this.XZu) {
+      for (const t of this.vQc) {
         t.PlayQteStart();
       }
       ControllerHolder_1.ControllerHolder.CommonQteController.SetExpiredTimer(this.fS1);
@@ -96,17 +96,17 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
     if (!this.IsQteEnd) {
       this.IsQteEnd = true;
       this.ClearTickTimer();
-      for (const t of [...this.XZu]) {
+      for (const t of [...this.vQc]) {
         t.PlayQteEnd();
       }
     }
   }
   OnOptionItemPlayEnded(t) {
-    t = this.XZu.indexOf(t);
+    t = this.vQc.indexOf(t);
     if (t !== -1) {
-      this.XZu.splice(t, 1);
+      this.vQc.splice(t, 1);
     }
-    if (this.XZu.length === 0) {
+    if (this.vQc.length === 0) {
       this.Destroy();
     }
   }
@@ -135,12 +135,12 @@ class CommonQteCustomOptionPanel extends CommonQteItemBase_1.CommonQteItemBase {
           this.fS1.UpdateTime(t);
           if (!this.fS1.IsPermanent) {
             var e = this.fS1?.GetRemainingTimeProgress() ?? 1;
-            for (const o of this.XZu) {
+            for (const o of this.vQc) {
               o.SetProgress(e);
             }
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
-            for (const s of this.XZu) {
+            for (const s of this.vQc) {
               s.RefreshUiOffset();
             }
             if (this.IsAttaching) {

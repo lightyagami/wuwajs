@@ -12,6 +12,7 @@ const FragmentMemoryActivityController_1 = require("../FragmentMemory/FragmentMe
 const ActivityPermanentRogueController_1 = require("../PermanentRogue/ActivityPermanentRogueController");
 const PhantomArenaController_1 = require("../PhantomArena/PhantomArenaController");
 const RacingBetsController_1 = require("../RacingBets/RacingBetsController");
+const SurvivorsActivityController_1 = require("../SurvivorsRogue/Activity/SurvivorsActivityController");
 const TowerDefenceController_1 = require("../TowerDefence/TowerDefenceController");
 const WeeklyRogueController_1 = require("../WeeklyRogue/WeeklyRogueController");
 const ActivityLinkageController_1 = require("./ActivityContent/ActivityLinkPage/ActivityLinkageController");
@@ -31,6 +32,7 @@ const ActivityDangoMonopolyController_1 = require("./ActivityContent/DangoMonopo
 const ActivityDirectTrainController_1 = require("./ActivityContent/DirectTrain/ActivityDirectTrainController");
 const ActivityDoubleRewardController_1 = require("./ActivityContent/DoubleReward/ActivityDoubleRewardController");
 const FarmGoldController_1 = require("./ActivityContent/FarmGold/FarmGoldController");
+const FightPhotoController_1 = require("./ActivityContent/FightPhoto/FightPhotoController");
 const ActivityFishingController_1 = require("./ActivityContent/Fishing/Activity/ActivityFishingController");
 const ActivityFunPlayController_1 = require("./ActivityContent/FunPlay/ActivityFunPlayController");
 const ActivityInviteNewbieController_1 = require("./ActivityContent/InviteNewbie/Controller/ActivityInviteNewbieController");
@@ -106,7 +108,9 @@ class ActivityManager {
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_TowerDefenceActivity, new TowerDefenceController_1.TowerDefenseController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_TrackMoonActivity, new ActivityMoonChasingController_1.ActivityMoonChasingController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_TowerGuideNew, new ActivityLoopTowerController_1.ActivityLoopTowerController());
-    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_SlashAndTowerLevelPlay, new ActivityShipTowerController_1.ActivityShipTowerController());
+    var t = new ActivityShipTowerController_1.ActivityShipTowerController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_SlashAndTowerLevelPlay, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController = t;
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_DangoMonopoly, new ActivityDangoMonopolyController_1.ActivityDangoMonopolyController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MoraleActivity, new ActivityMoraleController_1.ActivityMoraleController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_Explore, new ActivityMapExploreController_1.ActivityMapExploreController());
@@ -162,8 +166,13 @@ class ActivityManager {
     var t = new LineCrossActivityController_1.LineCrossActivityController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_LineCross, t);
     ActivityControllerHolder_1.ActivityControllerHolder.LineCrossActivityController = t;
+    var t = new SurvivorsActivityController_1.SurvivorsActivityController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_Survivors, t);
     var t = new MoonSignInController_1.MoonSignInController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MoonPhase, t);
+    var t = new FightPhotoController_1.FightPhotoController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhotoFight, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController = t;
   }
   static O4e() {
     this.N4e.forEach((t, o) => {

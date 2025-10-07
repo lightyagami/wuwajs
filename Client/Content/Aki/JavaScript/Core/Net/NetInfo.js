@@ -62,10 +62,10 @@ class NetInfo {
     NetInfo.uvu = t;
   }
   static get DisableCrc() {
-    return NetInfo.smd;
+    return NetInfo.s2d;
   }
   static set DisableCrc(t) {
-    this.smd = t;
+    this.s2d = t;
   }
 }
 (exports.NetInfo = NetInfo).iY = 0;
@@ -76,5 +76,5 @@ NetInfo.hvu = undefined;
 NetInfo.lvu = 0;
 NetInfo._vu = 0;
 NetInfo.uvu = 0;
-NetInfo.smd = false;
+NetInfo.s2d = false;
 NetInfo.TcpMaxRetry = 1; //# sourceMappingURL=NetInfo.js.map

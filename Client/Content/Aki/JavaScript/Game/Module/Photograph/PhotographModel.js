@@ -6,10 +6,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.PhotographModel = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
+const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../GlobalData");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const UiCameraPostEffectComponent_1 = require("../UiCamera/UiCameraComponent/UiCameraPostEffectComponent");
 const UiCameraManager_1 = require("../UiCamera/UiCameraManager");
 const UiCameraPhotographerStructure_1 = require("../UiCamera/UiCameraStructure/UiCameraPhotographerStructure");
@@ -34,6 +39,7 @@ class PhotographModel extends ModelBase_1.ModelBase {
     this.SavePath = "";
     this.IsSaveButtonVisible = false;
     this.IsFilterToggleOpen = true;
+    this.SelectedFightPhotoOptionId = 0;
   }
   OnInit() {
     this.SavePath = CommonParamById_1.configCommonParamById.GetStringConfig("ScreenShotSavePath");
@@ -47,13 +53,16 @@ class PhotographModel extends ModelBase_1.ModelBase {
     this.DestroyUiCamera();
     return true;
   }
-  SpawnPhotographerStructure(t, e, r) {
+  SpawnPhotographerStructure(t, e, r, o) {
     this.FWi.SetLocation(t);
     this.FWi.SetRotation(e);
     this.FWi.SetScale3D(r);
     t = UiCameraManager_1.UiCameraManager.Get();
     this.OWi = t.PushStructure(UiCameraPhotographerStructure_1.UiCameraPhotographerStructure);
     this.OWi.SetActorTransform(this.FWi);
+    if (ControllerHolder_1.ControllerHolder.PhotographController.CheckIfInFightPhotographCamera()) {
+      this.OWi.SetCameraArmTargetOffset(o, true);
+    }
     t.GetUiCameraComponent(UiCameraPostEffectComponent_1.UiCameraPostEffectComponent).SetCameraFocalDistance(PhotographDefine_1.DEFAULT_MANUAL_FOCUS_DISTANCE);
     return this.OWi;
   }
@@ -125,11 +134,11 @@ class PhotographModel extends ModelBase_1.ModelBase {
     if (e = (0, puerts_1.$unref)(t)) {
       for (let t = 0; t < e.Num(); t++) {
         var r;
-        var i = e.Get(t);
-        i.BlendWeight = 0;
-        if (!(i.Tags.Num() < 2)) {
-          r = i.Tags.Get(1).toString();
-          this.j2_.set(r, i);
+        var o = e.Get(t);
+        o.BlendWeight = 0;
+        if (!(o.Tags.Num() < 2)) {
+          r = o.Tags.Get(1).toString();
+          this.j2_.set(r, o);
         }
       }
     }
@@ -153,6 +162,20 @@ class PhotographModel extends ModelBase_1.ModelBase {
   }
   GetFilterToggleState() {
     return this.IsFilterToggleOpen;
+  }
+  SetPhotographTimeDilation(t) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Photograph", 57, "SetPhotographTimeDilation", ["timeDilation", t]);
+    }
+    if (t !== 1) {
+      AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "slow");
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_battlephoto_timestop");
+    }
+    ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(t, 4);
+  }
+  SetFightPhotoOption(t) {
+    this.SelectedFightPhotoOptionId = t;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangeFightPhotoOption);
   }
 }
 exports.PhotographModel = PhotographModel;

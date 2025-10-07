@@ -44,6 +44,7 @@ class BulletActionInfoDestroyBullet extends BulletActionInfoBase {
   constructor() {
     super(...arguments);
     this.SummonChild = false;
+    this.DestroyEffectImmediately = false;
     this.DestroyReason = undefined;
   }
   Clear() {
@@ -62,7 +63,8 @@ class BulletActionInfoAttachActor extends BulletActionInfoBase {
     this.RotationRule = undefined;
     this.ScaleRule = undefined;
     this.WeldSimulatedBodies = false;
-    this.AttachLocationOffset = undefined;
+    this.RelativeLocation = undefined;
+    this.RelativeRotation = undefined;
   }
   Clear() {
     this.IsParentActor = false;
@@ -72,7 +74,8 @@ class BulletActionInfoAttachActor extends BulletActionInfoBase {
     this.RotationRule = undefined;
     this.ScaleRule = undefined;
     this.WeldSimulatedBodies = false;
-    this.AttachLocationOffset = undefined;
+    this.RelativeLocation = undefined;
+    this.RelativeRotation = undefined;
   }
 }
 exports.BulletActionInfoAttachActor = BulletActionInfoAttachActor;

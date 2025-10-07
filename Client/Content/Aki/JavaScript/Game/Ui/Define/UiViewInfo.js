@@ -8,7 +8,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiLayerType_1 = require("./UiLayerType");
 class UiViewInfo {
-  constructor(e, i, t, o, s, a, h, n, R, r, V, w, l, c, u, p, g, y, f, C, _, M, S, U, I, W = "") {
+  constructor(e, i, t, o, s, a, h, n, R, r, V, w, l, c, u, p, g, y, f, C, v, S, M, _, b, U = "") {
     this.Name = e;
     this.Type = i;
     this.Ctor = t;
@@ -29,12 +29,12 @@ class UiViewInfo {
     this.IsFullScreen = y;
     this.SortIndex = f;
     this.ConfigCommonPopBg = C;
-    this.CommonPopBgKey = _;
-    this.ScenePathInternal = M;
-    this.IsPermanent = S;
-    this.SkipAnimActions = U;
-    this.FunctionCondition = I;
-    this.ScenePointTag = W;
+    this.CommonPopBgKey = v;
+    this.ScenePathInternal = S;
+    this.IsPermanent = M;
+    this.SkipAnimActions = _;
+    this.FunctionCondition = b;
+    this.ScenePointTag = U;
     this.CF_ = UiLayerType_1.ELayerType.Normal;
     this.CommonPopBg = 0;
     this.Path = "";
@@ -75,5 +75,5 @@ class UiViewInfo {
     }
   }
 }
-(exports.UiViewInfo = UiViewInfo).Zcr = new Map([["RoleBreachView", "RoleRootView"], ["RoleSkillView", "RoleRootView"], ["RoleBreachSuccessView", "RoleRootView"], ["RoleElementView", "RoleRootView"], ["RoleAttributeDetailView", "RoleRootView"], ["RoleLevelUpView", "RoleRootView"], ["RoleFavorInfoView", "RoleRootView"], ["RoleSelectionView", "RoleRootView"], ["PhantomBattleFettersView", "RoleRootView"], ["WeaponReplaceView", "WeaponRootView"], ["WeaponBreachSuccessView", "WeaponRootView"], ["WeaponResonanceSuccessView", "WeaponRootView"], ["SkinRootView", "WeaponRootView"], ["VisionRecoveryResultView", "CalabashRootView"], ["VisionRecoveryBatchResultView", "CalabashRootView"], ["VisionRefineResultView", "CalabashRootView"], ["GachaScanView", "DrawMainView"], ["RogueAttributeDetailView", "WeeklyRogueInfo"], ["PhantomManageConfigView", "CalabashRootView"]]);
+(exports.UiViewInfo = UiViewInfo).Zcr = new Map([["RoleBreachView", "RoleRootView"], ["RoleSkillView", "RoleRootView"], ["RoleBreachSuccessView", "RoleRootView"], ["RoleElementView", "RoleRootView"], ["RoleAttributeDetailView", "RoleRootView"], ["RoleLevelUpView", "RoleRootView"], ["RoleFavorInfoView", "RoleRootView"], ["RoleSelectionView", "RoleRootView"], ["PhantomBattleFettersView", "RoleRootView"], ["RoleDevRootView", "RoleRootView"], ["RoleSkillMergeView", "RoleRootView"], ["WeaponReplaceView", "WeaponRootView"], ["WeaponBreachSuccessView", "WeaponRootView"], ["WeaponResonanceSuccessView", "WeaponRootView"], ["SkinRootView", "WeaponRootView"], ["VisionRecoveryResultView", "CalabashRootView"], ["VisionRecoveryBatchResultView", "CalabashRootView"], ["VisionRefineResultView", "CalabashRootView"], ["GachaScanView", "DrawMainView"], ["RogueAttributeDetailView", "WeeklyRogueInfo"], ["PhantomManageConfigView", "CalabashRootView"], ["SurvivorsAttributeDetailView", "SurvivorsHandbookView"]]);
 //# sourceMappingURL=UiViewInfo.js.map

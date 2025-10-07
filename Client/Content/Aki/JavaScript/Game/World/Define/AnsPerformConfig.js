@@ -14,14 +14,14 @@ const PublicUtil_1 = require("../../Common/PublicUtil");
 class AnsPerformConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
-    this.qfd = undefined;
+    this._4d = undefined;
   }
   OnInit() {
-    this.qfd = new Map();
+    this._4d = new Map();
     return true;
   }
   OnClear() {
-    return !(this.qfd = undefined);
+    return !(this._4d = undefined);
   }
   rTo(e) {
     e = AnsPerformById_1.configAnsPerformById.GetConfig(e, false);
@@ -31,14 +31,14 @@ class AnsPerformConfig extends ConfigBase_1.ConfigBase {
   }
   GetConfigData(e) {
     if (PublicUtil_1.PublicUtil.UseDbConfig()) {
-      if (!this.qfd.get(e)) {
+      if (!this._4d.get(e)) {
         const r = this.rTo(e);
         if (!r) {
           return;
         }
-        this.qfd.set(e, r);
+        this._4d.set(e, r);
       }
-      const r = this.qfd.get(e);
+      const r = this._4d.get(e);
       if (r) {
         return r;
       } else {
@@ -46,7 +46,7 @@ class AnsPerformConfig extends ConfigBase_1.ConfigBase {
       }
     }
     this.ver();
-    const r = this.qfd.get(e);
+    const r = this._4d.get(e);
     if (r) {
       return r;
     }
@@ -62,8 +62,8 @@ class AnsPerformConfig extends ConfigBase_1.ConfigBase {
       r = (0, puerts_1.$unref)(r);
       var r = JSON.parse(r);
       for (const i of r) {
-        if (i && !this.qfd.has(i.Id)) {
-          this.qfd.set(i.Id, i);
+        if (i && !this._4d.has(i.Id)) {
+          this._4d.set(i.Id, i);
         }
       }
     } else if (Log_1.Log.CheckError()) {

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UiLayer = exports.EInitState = undefined;
+exports.UiLayer = undefined;
 const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
@@ -12,17 +12,12 @@ const Vector2D_1 = require("../../Core/Utils/Math/Vector2D");
 const ObjectUtils_1 = require("../../Core/Utils/ObjectUtils");
 const StringUtils_1 = require("../../Core/Utils/StringUtils");
 const LguiUtil_1 = require("../../Game/Module/Util/LguiUtil");
+const EventCSharpBridge_1 = require("../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const GlobalData_1 = require("../GlobalData");
 const ModelManager_1 = require("../Manager/ModelManager");
 const UiLayerType_1 = require("./Define/UiLayerType");
-var EInitState;
-(function (i) {
-  i[i.None = 0] = "None";
-  i[i.Initializing = 1] = "Initializing";
-  i[i.Inited = 2] = "Inited";
-})(EInitState = exports.EInitState ||= {});
 class UiLayer {
   static get UiRoot() {
     return this.CCr;
@@ -38,40 +33,40 @@ class UiLayer {
   }
   static async vCr(i) {
     if (this.MCr.has(i)) {
-      var t = this.MCr.get(i);
-      if (t.length > 0 && t[0] !== undefined) {
+      var e = this.MCr.get(i);
+      if (e.length > 0 && e[0] !== undefined) {
         return;
       }
     }
-    var t = [];
-    var e = this.GetLayerRootUiItem(i);
-    await this.ECr(0, e, t);
-    this.MCr.set(i, t);
+    var e = [];
+    var t = this.GetLayerRootUiItem(i);
+    await this.ECr(0, t, e);
+    this.MCr.set(i, e);
   }
-  static async ECr(i, t, e) {
-    var a = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", t);
+  static async ECr(i, e, t) {
+    var a = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e);
     LguiUtil_1.LguiUtil.SetActorIsPermanent(a, true, false);
     var r = a.RootComponent;
-    e.push(r);
+    t.push(r);
     if (Info_1.Info.IsPlayInEditor) {
       a.SetActorLabel(a = "Unit_" + i);
       r.SetDisplayName(a);
     }
     var r = i + 1;
     if (r !== UiLayerType_1.TIP_LAYER_UNIT_COUNT) {
-      await this.ECr(r, t, e);
+      await this.ECr(r, e, t);
     }
   }
-  static GetFloatUnit(i, t) {
+  static GetFloatUnit(i, e) {
     i = this.MCr.get(i);
     if (i) {
-      if (t >= i.length) {
+      if (e >= i.length) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("UiCore", 10, "索引大于生成单元节点列表,返回当前最大值节点");
         }
         return i[i.length];
       } else {
-        return i[t];
+        return i[e];
       }
     }
     if (Log_1.Log.CheckError()) {
@@ -79,31 +74,31 @@ class UiLayer {
     }
   }
   static async pGl(i) {
-    var t = UiLayer.GetLayerRootUiItem(i);
-    var e = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", t);
-    var e = LguiUtil_1.LguiUtil.DuplicateActor(e, t);
-    LguiUtil_1.LguiUtil.SetActorIsPermanent(e, true, false);
-    var t = e.RootComponent;
+    var e = UiLayer.GetLayerRootUiItem(i);
+    var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e);
+    var t = LguiUtil_1.LguiUtil.DuplicateActor(t, e);
+    LguiUtil_1.LguiUtil.SetActorIsPermanent(t, true, false);
+    var e = t.RootComponent;
     if (Info_1.Info.IsPlayInEditor) {
-      e.SetActorLabel(e = "Unit_PureMode");
-      t.SetDisplayName(e);
+      t.SetActorLabel(t = "Unit_PureMode");
+      e.SetDisplayName(t);
     }
-    t.SetUIActive(false);
-    this.fGl.set(i, t);
+    e.SetUIActive(false);
+    this.fGl.set(i, e);
   }
   static GetPureModeFloatUnit(i) {
-    var t = this.fGl.get(i);
-    if (t) {
-      return t;
+    var e = this.fGl.get(i);
+    if (e) {
+      return e;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCore", 17, "该层级没有纯净模式的节点", ["layer", i]);
     }
   }
   static GetLayerRootUiItem(i) {
-    var t = this.SCr.get(i);
-    if (t) {
-      return t;
+    var e = this.SCr.get(i);
+    if (e) {
+      return e;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiCore", 10, "找不到对应的UiLayer, 此时UiLayer可能还未初始化", ["层级名称", UiLayerType_1.ELayerType[i]]);
@@ -112,24 +107,24 @@ class UiLayer {
   static GetBattleViewUnit(i) {
     return this.yCr[i];
   }
-  static SetLayerActive(i, t) {
-    var e = this.GetLayerRootUiItem(i);
-    if (e) {
-      e.SetUIActive(t);
+  static SetLayerActive(i, e) {
+    var t = this.GetLayerRootUiItem(i);
+    if (t) {
+      t.SetUIActive(e);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiLayer", 10, "有操作设置层级的显隐状态", ["层级类型", i], ["显示状态", t]);
+        Log_1.Log.Info("UiLayer", 10, "有操作设置层级的显隐状态", ["层级类型", i], ["显示状态", e]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiLayer", 10, "找不到对应的uiLayer：", ["type", i]);
     }
   }
-  static SetLayerRenderable(i, t, e) {
+  static SetLayerRenderable(i, e, t) {
     var a = this.GetLayerRootUiItem(i);
     if (a) {
       a = a;
-      UE.LGUIBPLibrary.SetUIRenderable(a, t);
+      UE.LGUIBPLibrary.SetUIRenderable(a, e);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiLayer", 10, "有操作设置层级的可渲染状态", ["层级类型", i], ["可渲染状态", t], ["reason", e]);
+        Log_1.Log.Info("UiLayer", 10, "有操作设置层级的可渲染状态", ["层级类型", i], ["可渲染状态", e], ["reason", t]);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiLayer", 10, "找不到对应的uiLayer：", ["type", i]);
@@ -141,7 +136,31 @@ class UiLayer {
       await Promise.all([this.ICr(), this.TCr()]);
       await this.LCr();
       await Promise.all([this.DCr(), this.vCr(UiLayerType_1.ELayerType.BattleFloat), this.vCr(UiLayerType_1.ELayerType.Float), this.pGl(UiLayerType_1.ELayerType.BattleFloat)]);
+      this.T5d();
     }
+  }
+  static T5d() {
+    var i;
+    var e = [];
+    e.push(this.CCr);
+    e.push(this.fCr);
+    var t = [];
+    for (const o of UiLayerType_1.LayerTypeEnumValues) {
+      if (!Info_1.Info.IsBuildShipping || o !== UiLayerType_1.ELayerType.Debug) {
+        i = this.GetLayerRootUiItem(o);
+        t.push(i);
+      }
+    }
+    for (const s of this.yCr) {
+      t.push(s);
+    }
+    var a = new Map();
+    var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
+    a.set(UiLayerType_1.ELayerType.BattleFloat, r);
+    var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
+    a.set(UiLayerType_1.ELayerType.Float, r);
+    var r = this.fGl.get(UiLayerType_1.ELayerType.BattleFloat);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLayerInit, e, t, a, r);
   }
   static async ICr() {
     var i;
@@ -177,26 +196,26 @@ class UiLayer {
   }
   static async LCr() {
     var i = [];
-    for (const t of UiLayerType_1.LayerTypeEnumValues) {
-      i.push(this.RCr(t));
+    for (const e of UiLayerType_1.LayerTypeEnumValues) {
+      i.push(this.RCr(e));
     }
     await Promise.all(i).then(() => {
       let i = 0;
-      for (const t of UiLayerType_1.LayerTypeEnumValues) {
-        if (!Info_1.Info.IsBuildShipping || t !== UiLayerType_1.ELayerType.Debug) {
-          this.GetLayerRootUiItem(t).SetHierarchyIndex(++i);
+      for (const e of UiLayerType_1.LayerTypeEnumValues) {
+        if (!Info_1.Info.IsBuildShipping || e !== UiLayerType_1.ELayerType.Debug) {
+          this.GetLayerRootUiItem(e).SetHierarchyIndex(++i);
         }
       }
     });
   }
-  static async RCr(t) {
-    if (this.SCr.has(t)) {
+  static async RCr(e) {
+    if (this.SCr.has(e)) {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("UiLayer", 16, "重复加载UI层级", ["层级类型", UiLayerType_1.ELayerType[t]]);
+        Log_1.Log.Warn("UiLayer", 16, "重复加载UI层级", ["层级类型", UiLayerType_1.ELayerType[e]]);
       }
-    } else if (!Info_1.Info.IsBuildShipping || t !== UiLayerType_1.ELayerType.Debug) {
+    } else if (!Info_1.Info.IsBuildShipping || e !== UiLayerType_1.ELayerType.Debug) {
       let i = "UiItem_Layer_Prefab";
-      switch (t) {
+      switch (e) {
         case UiLayerType_1.ELayerType.HUD:
           i = "UiItem_LayerHud_Prefab";
           break;
@@ -204,32 +223,32 @@ class UiLayer {
         case UiLayerType_1.ELayerType.NormalMask:
           i = "UiItem_LayerMask_Prefab";
       }
-      var e = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync(i, this.gCr);
-      LguiUtil_1.LguiUtil.SetActorIsPermanent(e, true, false);
-      this.SCr.set(t, e.RootComponent);
-      if (t === UiLayerType_1.ELayerType.Pool) {
-        e.RootComponent.SetUIActive(false);
+      var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync(i, this.gCr);
+      LguiUtil_1.LguiUtil.SetActorIsPermanent(t, true, false);
+      this.SCr.set(e, t.RootComponent);
+      if (e === UiLayerType_1.ELayerType.Pool) {
+        t.RootComponent.SetUIActive(false);
       }
     }
   }
   static async DCr() {
     if (!this.yCr) {
-      var e;
+      var t;
       var a = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.HUD);
       var r = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", a);
-      let t = r;
+      let e = r;
       this.yCr = [];
       for (let i = 0; i < UiLayerType_1.BATTLE_VIEW_UNIT_COUNT; i++) {
-        t = t || LguiUtil_1.LguiUtil.DuplicateActor(r, a);
-        LguiUtil_1.LguiUtil.SetActorIsPermanent(t, true, false);
-        const o = t.RootComponent;
+        e = e || LguiUtil_1.LguiUtil.DuplicateActor(r, a);
+        LguiUtil_1.LguiUtil.SetActorIsPermanent(e, true, false);
+        const o = e.RootComponent;
         if (Info_1.Info.IsPlayInEditor) {
-          e = "Unit_" + i;
-          t.SetActorLabel(e);
-          o.SetDisplayName(e);
+          t = "Unit_" + i;
+          e.SetActorLabel(t);
+          o.SetDisplayName(t);
         }
         this.yCr.push(o);
-        t = undefined;
+        e = undefined;
       }
       var i = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_SafeZoneUnitNode_Prefab", a);
       LguiUtil_1.LguiUtil.SetActorIsPermanent(i, true, false);
@@ -259,10 +278,10 @@ class UiLayer {
     }
   }
   static SetUiRootActive(i) {
-    var t;
+    var e;
     if (!this.IsForceHideUi()) {
-      if ((t = UiLayer.gCr) && UE.KismetSystemLibrary.IsValid(t)) {
-        t.SetUIActive(i);
+      if ((e = UiLayer.gCr) && UE.KismetSystemLibrary.IsValid(e)) {
+        e.SetUIActive(i);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnUiScreenRootVisibleChange, i);
       }
     }
@@ -292,27 +311,27 @@ class UiLayer {
     this.UCr = !i;
   }
   static SetWorldUiActive(i) {
-    var t;
+    var e;
     if (!this.IsForceHideUi()) {
-      if ((t = UiLayer.pCr) && UE.KismetSystemLibrary.IsValid(t)) {
-        t.SetUIActive(i);
+      if ((e = UiLayer.pCr) && UE.KismetSystemLibrary.IsValid(e)) {
+        e.SetUIActive(i);
       }
     }
   }
-  static SetShowMaskLayer(i, t) {
-    var e;
+  static SetShowMaskLayer(i, e) {
+    var t;
     var a = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Mask);
     if (a) {
-      if (t) {
+      if (e) {
         UiLayer.ACr.add(i);
       } else {
         UiLayer.ACr.delete(i);
       }
-      e = UiLayer.ACr.size;
+      t = UiLayer.ACr.size;
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("UiCore", 16, "Mask遮罩", ["tag", i], ["show", t], ["size", e]);
+        Log_1.Log.Debug("UiCore", 16, "Mask遮罩", ["tag", i], ["show", e], ["size", t]);
       }
-      a?.SetRaycastTarget(e > 0);
+      a?.SetRaycastTarget(t > 0);
     }
   }
   static GmClearMask() {
@@ -326,10 +345,10 @@ class UiLayer {
     var i = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Mask);
     return !!i && i.IsRaycastTarget();
   }
-  static SetShowNormalMaskLayer(i, t = "") {
-    var e;
-    if ((StringUtils_1.StringUtils.IsEmpty(this.PCr) || this.PCr === t && !i) && (e = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.NormalMask)) && (e?.SetRaycastTarget(i), i && StringUtils_1.StringUtils.IsEmpty(this.PCr) && t ? this.PCr = t : i || t !== this.PCr || (this.PCr = ""), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("UiCore", 16, "设置Normal层点击遮罩", ["是否显示", i], ["上次来源", this.PCr], ["当前来源", t]);
+  static SetShowNormalMaskLayer(i, e = "") {
+    var t;
+    if ((StringUtils_1.StringUtils.IsEmpty(this.PCr) || this.PCr === e && !i) && (t = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.NormalMask)) && (t?.SetRaycastTarget(i), i && StringUtils_1.StringUtils.IsEmpty(this.PCr) && e ? this.PCr = e : i || e !== this.PCr || (this.PCr = ""), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("UiCore", 16, "设置Normal层点击遮罩", ["是否显示", i], ["上次来源", this.PCr], ["当前来源", e]);
     }
   }
   static GetViewportSize() {
@@ -348,6 +367,7 @@ UiLayer.fCr = undefined;
 UiLayer.pCr = undefined;
 UiLayer.yCr = undefined;
 UiLayer.SCr = new Map();
+UiLayer.UCr = false;
 UiLayer.ACr = new Set();
 UiLayer.MCr = new Map();
 UiLayer.fGl = new Map();

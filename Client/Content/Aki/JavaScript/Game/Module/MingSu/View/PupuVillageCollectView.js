@@ -84,7 +84,6 @@ class PupuVillageItemView extends CollectItemViewBase_1.CollectItemViewBase {
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.CollectItemConfigId);
     };
     this.Vgt = () => {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnExitNpcInteract);
       this.CloseMe();
     };
   }
@@ -104,6 +103,7 @@ class PupuVillageItemView extends CollectItemViewBase_1.CollectItemViewBase {
   OnEnded() {
     this.Nbi = undefined;
     this.GAr = undefined;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnExitNpcInteract);
   }
   OnUpdateDragonPoolView() {
     this.NAr();

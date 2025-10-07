@@ -92,7 +92,7 @@ UiCameraAnimationController.PushCameraHandle = (e, a, i = true) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CameraAnimation", 58, "当打开界面时", ["viewName", e], ["delayTime", n]);
       }
-      if (n > 0) {
+      if (n > 0 && i) {
         UiCameraAnimationController.HAo(n, e, a);
       } else {
         UiCameraAnimationController.VAo();

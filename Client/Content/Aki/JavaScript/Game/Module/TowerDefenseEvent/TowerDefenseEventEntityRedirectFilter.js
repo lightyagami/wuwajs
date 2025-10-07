@@ -32,15 +32,15 @@ class TowerDefenseEventWorldEntityModel {
 class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEntityRedirectFilter {
   constructor() {
     super(...arguments);
-    this.LJc = [];
-    this.r3u = [];
-    this.Wjc = new Map();
+    this.Bed = [];
+    this.JNu = [];
+    this.IYc = new Map();
   }
   OnCreateEntity(e, t) {
     e = TowerDefenseEventEntityModel_1.TowerDefenseEventEntityModelBuilder.Get(e, t);
-    return !!e && ((t = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(e)) ? (Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "创建塔防实体失败: " + t, ["creatureId", e.Uid], ["templateId", e.TemplateId], ["combatId", e.CombatId], ["subTypeId", e.SubTypeId]), e.Release()) : this.t3u(e), true);
+    return !!e && ((t = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(e)) ? (Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "创建塔防实体失败: " + t, ["creatureId", e.Uid], ["templateId", e.TemplateId], ["combatId", e.CombatId], ["subTypeId", e.SubTypeId]), e.Release()) : this.YNu(e), true);
   }
-  t3u(e) {
+  YNu(e) {
     let t = e;
     var e = ModelManager_1.ModelManager.TowerDefenseEventModel;
     var r = e.GetEntity(t.Uid);
@@ -59,18 +59,18 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
       }
     }
     if (ModelManager_1.ModelManager.GameModeModel.MapDone) {
-      this.o3u(t);
+      this.ZNu(t);
     } else {
-      this.LJc.push(t);
+      this.Bed.push(t);
     }
   }
   OnInstantiateEntities() {
-    for (const e of this.LJc) {
-      this.o3u(e);
+    for (const e of this.Bed) {
+      this.ZNu(e);
     }
-    this.LJc.length = 0;
+    this.Bed.length = 0;
   }
-  o3u(t) {
+  ZNu(t) {
     let r = undefined;
     let o = undefined;
     let n = undefined;
@@ -113,10 +113,10 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("TowerDefenseEvent", 31, "创建特殊地块失败，找不到目标网格", ["creatureId", s.Uid], ["templateId", s.TemplateId], ["gridId", s.GridId], ["coords", s.Coords]);
         }
-        e = this.nhd(t);
+        e = this.Qcd(t);
       }
     }
-    var l = this.Wjc.get(t.Uid);
+    var l = this.IYc.get(t.Uid);
     if (l) {
       if (l.CombatId === t.CombatId && l.PropertyId === t.PropertyId && l.SplineId === t.SplineId && l.AssetPath === t.AssetPath) {
         return;
@@ -131,14 +131,14 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
       l.BuffIdLayers = t.BuffIdLayers;
       ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.RemoveEntity(t.Uid, TowerDefenseEventRemoveReason_1.TowerDefenseEventRemoveReason.CombatDirty);
     } else {
-      let e = TowerDefenseEventEntityRedirectFilter.Qjc.Get();
-      (e = e || TowerDefenseEventEntityRedirectFilter.Qjc.Create()).Uid = t.Uid;
+      let e = TowerDefenseEventEntityRedirectFilter.TYc.Get();
+      (e = e || TowerDefenseEventEntityRedirectFilter.TYc.Create()).Uid = t.Uid;
       e.CombatId = t.CombatId;
       e.PropertyId = t.PropertyId;
       e.AssetPath = t.AssetPath;
       e.SplineId = t.SplineId;
       e.BuffIdLayers = t.BuffIdLayers;
-      this.Wjc.set(t.Uid, e);
+      this.IYc.set(t.Uid, e);
     }
     let d = undefined;
     if (t.SplineId) {
@@ -170,25 +170,25 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
     if ((0, TowerDefenseEventEntityModel_1.isTypeOfTrapInfo)(t) && (t = TsTowerDefenseEventActor_1.default.GetTrapActor(t.Uid))) {
       t.Destroy("TowerDefenseEventController.DestroyEntity");
     }
-    var t = this.Wjc.get(e.Uid);
-    if (t && (this.Wjc.delete(e.Uid), TowerDefenseEventEntityRedirectFilter.Qjc.Put(t), ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.RemoveEntity(e.Uid, TowerDefenseEventRemoveReason_1.TowerDefenseEventRemoveReason.Destroy), t.SplineId)) {
+    var t = this.IYc.get(e.Uid);
+    if (t && (this.IYc.delete(e.Uid), TowerDefenseEventEntityRedirectFilter.TYc.Put(t), ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.RemoveEntity(e.Uid, TowerDefenseEventRemoveReason_1.TowerDefenseEventRemoveReason.Destroy), t.SplineId)) {
       ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(t.SplineId, e.Uid, 2);
     }
   }
   Reset() {
-    ModelManager_1.ModelManager.TowerDefenseEventModel.GetAllEntities(this.r3u);
-    for (const e of this.r3u) {
+    ModelManager_1.ModelManager.TowerDefenseEventModel.GetAllEntities(this.JNu);
+    for (const e of this.JNu) {
       this.TryRemoveEntity(e.Uid);
     }
-    this.r3u.length = 0;
+    this.JNu.length = 0;
     TowerDefenseEventEntityModel_1.TowerDefenseEventEntityModelBuilder.Clear();
     super.Reset();
-    for (const t of this.Wjc.values()) {
-      TowerDefenseEventEntityRedirectFilter.Qjc.Put(t);
+    for (const t of this.IYc.values()) {
+      TowerDefenseEventEntityRedirectFilter.TYc.Put(t);
     }
-    this.Wjc.clear();
-    TowerDefenseEventEntityRedirectFilter.Qjc.Clear();
-    this.LJc.length = 0;
+    this.IYc.clear();
+    TowerDefenseEventEntityRedirectFilter.TYc.Clear();
+    this.Bed.length = 0;
   }
   UpdateEntity(e) {
     var t;
@@ -199,11 +199,11 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
     if (i) {
       t = i;
       if ((0, TowerDefenseEventEntityModel_1.isTypeOfConfigInfo)(t)) {
-        if (r = (t = e.Rju).zBu?.v9n ?? t.Tju?.v9n ?? t.bju?.v9n ?? t.Tnd?.v9n) {
+        if (r = (t = e.Uzc).QVu?.v9n ?? t.SKu?.v9n ?? t.bWc?.v9n ?? t.Wrd?.v9n) {
           (o = i.Clone()).ConfigId = r;
-          if (t.zBu && (0, TowerDefenseEventEntityModel_1.isTypeOfTrapBaseInfo)(o)) {
-            (n = o).Level = t.zBu.U1d;
-            n.DeconstructReturn = t.zBu.LYc;
+          if (t.QVu && (0, TowerDefenseEventEntityModel_1.isTypeOfTrapBaseInfo)(o)) {
+            (n = o).Level = t.QVu.a0d;
+            n.DeconstructReturn = t.QVu.AJc;
           }
           if (n = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(o, true)) {
             o.Release();
@@ -214,7 +214,7 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
             i.Update(o);
             o.Release();
             if (ModelManager_1.ModelManager.GameModeModel.MapDone) {
-              this.o3u(i);
+              this.ZNu(i);
             }
           }
         } else if (Log_1.Log.CheckError()) {
@@ -225,15 +225,15 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
       Log_1.Log.Error("TowerDefenseEvent", 60, "塔防实体数据变更失败: 未找到实体模型", ["entityId", e.F4n]);
     }
   }
-  nhd(e) {
+  Qcd(e) {
     var t = e;
     if ((0, TowerDefenseEventEntityModel_1.isTypeOfSpecialCellBaseInfo)(t) && t.CellType === 1) {
-      return this.shd(e);
+      return this.Kcd(e);
     } else {
       return undefined;
     }
   }
-  shd(e) {
+  Kcd(e) {
     var t = ModelManager_1.ModelManager.TowerDefenseEventModel?.GetEntity(e.OwnerId)?.ExtraInfo;
     e.ExtraInfo = t;
     return t => {
@@ -252,5 +252,5 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
     };
   }
 }
-(exports.TowerDefenseEventEntityRedirectFilter = TowerDefenseEventEntityRedirectFilter).Qjc = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventWorldEntityModel());
+(exports.TowerDefenseEventEntityRedirectFilter = TowerDefenseEventEntityRedirectFilter).TYc = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventWorldEntityModel());
 //# sourceMappingURL=TowerDefenseEventEntityRedirectFilter.js.map

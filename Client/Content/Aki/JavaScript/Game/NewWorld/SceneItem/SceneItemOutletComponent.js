@@ -507,12 +507,12 @@ let SceneItemOutletComponent = SceneItemOutletComponent_1 = class SceneItemOutle
     i.Yaw = n.Yaw;
     t.l8n = e;
     t._8n = i;
-    Net_1.Net.Call(24906, t, t => {
+    Net_1.Net.Call(18317, t, t => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 31, "[Manipulate] Match outlet net response!", ["active", t.uKn]);
       }
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
       } else {
         r.AfterRequestMatch(t.uKn === 1, this.Entity);
       }
@@ -544,9 +544,9 @@ let SceneItemOutletComponent = SceneItemOutletComponent_1 = class SceneItemOutle
     e.H5n = 1;
     e.k5n = i;
     e.sKn = n;
-    Net_1.Net.Call(22387, e, t => {
+    Net_1.Net.Call(17413, e, t => {
       if (t.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 27691);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 28494);
       }
     });
   }

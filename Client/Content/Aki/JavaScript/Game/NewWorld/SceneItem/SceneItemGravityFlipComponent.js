@@ -391,5 +391,5 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
     this.qZ_ = t;
   }
 };
-SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(284)], SceneItemGravityFlipComponent);
+SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(285)], SceneItemGravityFlipComponent);
 exports.SceneItemGravityFlipComponent = SceneItemGravityFlipComponent; //# sourceMappingURL=SceneItemGravityFlipComponent.js.map

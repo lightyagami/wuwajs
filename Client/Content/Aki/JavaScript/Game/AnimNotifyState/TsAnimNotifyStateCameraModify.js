@@ -21,14 +21,17 @@ class TsAnimNotifyStateCameraModify extends UE.KuroAnimNotifyState {
     this.生效客户端类型 = 0;
     this.CameraAttachSocket = "CameraPosition";
     this.条件 = undefined;
+    this.ModifyInstance = 0;
   }
-  Constructor() {}
-  K2_NotifyBegin(t, e, r) {
-    t = t.GetOwner();
-    if (!(t instanceof TsBaseCharacter_1.default)) {
+  Constructor() {
+    this.ModifyInstance = 0;
+  }
+  K2_NotifyBegin(r, e, t) {
+    r = r.GetOwner();
+    if (!(r instanceof TsBaseCharacter_1.default)) {
       return false;
     }
-    var i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId);
+    var i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(r.EntityId);
     if (!i?.Valid) {
       return false;
     }
@@ -40,18 +43,18 @@ class TsAnimNotifyStateCameraModify extends UE.KuroAnimNotifyState {
       return false;
     }
     if (CameraUtility_1.CameraUtility.CheckApplyCameraModifyCondition(i, this.相机修改配置, this.生效客户端类型, this.条件)) {
-      let r = undefined;
+      let t = undefined;
       if (this.生效客户端类型 !== 0 && this.生效客户端类型 !== 1 && this.生效客户端类型 !== 6) {
-        r = t;
+        t = r;
         this.相机修改配置.IsLockInput = true;
         this.相机修改配置.OverrideCameraInput = true;
       }
-      a.ApplyCameraModify(this.Tag, MODIFY_TIME_LENGTH, this.淡入时间, this.淡出时间, this.相机修改配置, e, this.打断淡出时间, undefined, undefined, r, this.CameraAttachSocket, t);
+      this.ModifyInstance = a.ApplyCameraModify(this.Tag, MODIFY_TIME_LENGTH, this.淡入时间, this.淡出时间, this.相机修改配置, e, this.打断淡出时间, undefined, undefined, t, this.CameraAttachSocket, r);
     }
     return true;
   }
-  K2_NotifyEnd(r, t) {
-    return r.GetOwner() instanceof TsBaseCharacter_1.default && !!(r = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (r.StopCameraModify(t), true);
+  K2_NotifyEnd(t, r) {
+    return t.GetOwner() instanceof TsBaseCharacter_1.default && !!(t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (t.StopCameraModify(r, this.ModifyInstance), true);
   }
   GetNotifyName() {
     return "ModifyANS镜头";

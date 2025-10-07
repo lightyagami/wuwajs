@@ -14,6 +14,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const CombatLog_1 = require("../../Utils/CombatLog");
 var ESummonType = Protocol_1.Aki.Protocol.Summon.x3s;
+const UiManager_1 = require("../../Ui/UiManager");
 const PHANTOMSKILLIDSTART = 200000;
 const VISION_MORPH_SKILL_ID = 200001;
 const VISION_MORPH_MULTI_SKILL_ID = 200003;
@@ -72,46 +73,60 @@ class PhantomUtil {
     }
   }
   static GetVisionData(e) {
-    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(17, e.toString());
+    return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(18, e.toString());
   }
-  static GetSummonedEntity(e, t, r = 1) {
-    var o = e.GetComponent(0);
+  static GetSummonedEntity(e, t, i = 1) {
+    var r = e.GetComponent(0);
     let n = 0;
     switch (t) {
       case ESummonType.Proto_ESummonTypeConcomitantCustom:
-        var a = o.CustomServerEntityIds;
-        if (a.length === 0) {
+        var o = r.CustomServerEntityIds;
+        if (o.length === 0) {
           return;
         }
-        if (r < 1 || r > a.length) {
-          CombatLog_1.CombatLog.Error("Skill", e, "获取伴生物实体失败，位置参数错误", ["position", r], ["serverEntityIds", a]);
+        if (i < 1 || i > o.length) {
+          CombatLog_1.CombatLog.Error("Skill", e, "获取伴生物实体失败，位置参数错误", ["position", i], ["serverEntityIds", o]);
           return;
         }
-        n = a[r - 1];
+        n = o[i - 1];
         break;
       case ESummonType.Proto_ESummonTypeConcomitantVision:
-        n = o.VisionSkillServerEntityId;
+        n = r.VisionSkillServerEntityId;
         break;
       case ESummonType.Proto_ESummonTypeConcomitantPhantomRole:
-        n = o.VisionControlCreatureDataId ?? 0;
+        n = r.VisionControlCreatureDataId ?? 0;
     }
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(n);
   }
-  static GetSummonedEntityByOwnerId(e, t, r = 1) {
+  static GetSummonedEntityByOwnerId(e, t, i = 1) {
     e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e);
     if (e?.Valid) {
-      e = PhantomUtil.GetSummonedEntity(e.Entity, t, r);
+      e = PhantomUtil.GetSummonedEntity(e.Entity, t, i);
       if (e?.Valid) {
         return e;
       }
     }
   }
-  static SetVisionEnable(e, t, r, o = true) {
+  static SetVisionEnable(e, t, i, r = true) {
     var e = e.GetComponent(0).VisionSkillServerEntityId;
     if (e > 0 && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e))) {
-      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, t, r, o);
+      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, t, i, r);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomEnableStateChange, t);
     }
+  }
+  static OpenVisionEquipmentView(e, t = -1) {
+    e = {
+      RoleId: e,
+      SelectIndex: t
+    };
+    UiManager_1.UiManager.OpenView("VisionEquipmentView", e);
+  }
+  static CloseAndOpenVisionEquipmentView(e, t, i = -1) {
+    t = {
+      RoleId: t,
+      SelectIndex: i
+    };
+    UiManager_1.UiManager.CloseAndOpenView(e, "VisionEquipmentView", t);
   }
 }
 exports.PhantomUtil = PhantomUtil;

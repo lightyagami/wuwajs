@@ -32,6 +32,7 @@ const Net_1 = require("../../../Core/Net/Net");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../GlobalData");
@@ -196,6 +197,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
     ControllerHolder_1.ControllerHolder.GameModeController.CheckPreload(() => {
       ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("LoadMapController.WorldPartitionLoadLevelInstance");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AfterLoadMap);
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsAfterLoadMap);
     });
     await ModelManager_1.ModelManager.GameModeModel.PreloadPromise.Promise;
     ControllerHolder_1.ControllerHolder.LoadingController.AddProgress(o * 0.6, ELoadingPhase_1.PRELOAD_END_PROGRESS);

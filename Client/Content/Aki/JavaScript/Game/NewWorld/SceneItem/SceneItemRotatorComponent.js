@@ -41,7 +41,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     this.Hte = undefined;
     this.mBe = undefined;
     this.Lie = undefined;
-    this.DVu = undefined;
+    this.B4u = undefined;
     this.wMn = undefined;
     this.BMn = undefined;
     this.bMn = undefined;
@@ -53,7 +53,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     this.W1n = 0;
     this.FMn = undefined;
     this.EQl = 0;
-    this.TVu = false;
+    this.H7u = false;
     this.VMn = (t, e) => {
       this.GMn.delete(e);
       if (t) {
@@ -151,7 +151,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
       return false;
     }
     if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
-      this.TVu = true;
+      this.H7u = true;
     }
     this.wMn = this.Hte.Owner.GetComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass());
     if (!this.wMn?.IsValid()) {
@@ -164,7 +164,7 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
       }
       this.wMn.Kuro_SetGravityDirect(this.Hte.ActorGravityDirectProxy.ToUeVectorOld());
       this.wMn.SetTickingMoveEnable(false);
-      if (this.TVu) {
+      if (this.H7u) {
         this.wMn.SetKuroOnlyTickOutside(true);
       }
     }
@@ -172,8 +172,8 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     if (this.mBe) {
       this.Lie = this.Entity.GetComponent(197);
       if (this.Lie) {
-        this.DVu = this.Entity.GetComponent(298);
-        return !!this.DVu || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少UeSceneItemMoveTickManagerComponent", ["PbDataId", this.EIe?.GetPbDataId()]), false);
+        this.B4u = this.Entity.GetComponent(299);
+        return !!this.B4u || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少UeSceneItemMoveTickManagerComponent", ["PbDataId", this.EIe?.GetPbDataId()]), false);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 39, "[SceneItemRotatorComponent] 实体缺少LevelTagComponent", ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -199,8 +199,8 @@ let SceneItemRotatorComponent = SceneItemRotatorComponent_1 = class SceneItemRot
     return true;
   }
   OnTick(t) {
-    if (this.TVu) {
-      this.DVu?.TickMovement(t);
+    if (this.H7u) {
+      this.B4u?.TickMovement(t);
     }
   }
   OnDisable() {

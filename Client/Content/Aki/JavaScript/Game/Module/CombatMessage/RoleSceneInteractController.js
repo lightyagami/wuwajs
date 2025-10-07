@@ -59,7 +59,7 @@ class RoleSceneInteractController extends ControllerBase_1.ControllerBase {
         t.CIl.Y = o.HookLocation.Y;
         t.CIl.Z = o.HookLocation.Z;
       }
-      CombatMessage_1.CombatNet.Send(21424, e, t);
+      CombatMessage_1.CombatNet.Send(15887, e, t);
     }
   }
 }

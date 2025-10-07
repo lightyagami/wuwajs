@@ -21,14 +21,19 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.mQ1)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.mQ1);
       }
-      const t = (0, InputFunctionVisionSkill1_1.getVisionSkill1SkillId)();
-      if (t !== undefined) {
+      const l = (0, InputFunctionVisionSkill1_1.getVisionSkill1SkillId)();
+      if (l !== undefined) {
         TimerSystem_1.GameplayTimerSystem.Next(() => {
-          var e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity?.GetComponent(40);
-          if (e?.CurrentSkill?.SkillId !== t) {
-            e?.BeginSkill(t, {
-              Reason: "ExecClientBattleAction行为触发"
-            });
+          var e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity;
+          var t = e?.GetComponent(40);
+          let n = false;
+          if (!(n = t && t.CurrentSkill?.SkillId !== l ? t.BeginSkill(l, {
+            Reason: "ExecClientBattleAction行为触发"
+          }) : n)) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("LevelEvent", 31, "[LevelEventExecClientBattleAction.UseHookSkill] 技能释放失败", ["SkillId", l]);
+            }
+            e?.GetComponent(100)?.ClearForceTarget();
           }
           this.FinishExecute(true);
         });
@@ -58,7 +63,7 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
       }
       this.FinishExecute(false);
     }
-    var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(100);
+    var n = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(100);
     if (!n) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 31, "[LevelEventExecClientBattleAction] 未找到角色场景交互组件");
@@ -83,11 +88,11 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
     if (e && e.length !== 0) {
       var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(18);
       if (t) {
-        for (const i of e) {
-          var n = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(i);
+        for (const l of e) {
+          var n = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(l);
           if (!n) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("LevelEvent", 31, "[LevelEventExecClientBattleAction.HandleSendTagEvent] Tag事件标签未找到", ["TagName", i]);
+              Log_1.Log.Error("LevelEvent", 31, "[LevelEventExecClientBattleAction.HandleSendTagEvent] Tag事件标签未找到", ["TagName", l]);
             }
             this.FinishExecute(false);
             return;

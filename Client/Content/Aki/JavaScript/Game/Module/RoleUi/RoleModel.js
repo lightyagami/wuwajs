@@ -18,8 +18,6 @@ const SkillNodeDataInfo_1 = require("./RoleData/Module/DataInfo/SkillNodeDataInf
 const RoleOnlineInstanceData_1 = require("./RoleData/RoleOnlineInstanceData");
 const RoleRobotData_1 = require("./RoleData/RoleRobotData");
 const RoleDefine_1 = require("./RoleDefine");
-const RoleBreachResponseData_1 = require("./RoleLevel/RoleBreachResponseData");
-const RoleLevelResponseData_1 = require("./RoleLevel/RoleLevelResponseData");
 const RoleSkillResponseData_1 = require("./RoleSkill/RoleSkillResponseData");
 const RoleInstance_1 = require("./View/ViewData/RoleInstance");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
@@ -33,6 +31,7 @@ const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const RoleDevUtils_1 = require("./RoleDev/RoleDevUtils");
 const RoleNewJoinAgent_1 = require("./View/AgentData/RoleNewJoinAgent");
 const RolePreviewAgent_1 = require("./View/AgentData/RolePreviewAgent");
 const RoleViewAgent_1 = require("./View/AgentData/RoleViewAgent");
@@ -61,8 +60,6 @@ class RoleModel extends ModelBase_1.ModelBase {
         return -1;
       }
     };
-    this.Eco = undefined;
-    this.Sco = undefined;
     this.yco = undefined;
     this.Ico = [];
     this.zyn = false;
@@ -327,7 +324,7 @@ class RoleModel extends ModelBase_1.ModelBase {
     }
     return o;
   }
-  Dco() {
+  GetExpItemInInventory() {
     var e = [];
     for (const r of ModelManager_1.ModelManager.RoleModel.GetRoleCostExpList()) {
       var t = {
@@ -342,7 +339,7 @@ class RoleModel extends ModelBase_1.ModelBase {
   }
   GetSelectLevelUpItemNeedMoney(e) {
     var e = this.GetRoleInstanceById(e).GetLevelData().GetLevelUpNeedExp();
-    var t = this.Dco();
+    var t = this.GetExpItemInInventory();
     var e = this.Lco(e, t, e => this.GetRoleExpItemExp(e.ItemId));
     return this.GetMoneyToLevelUp(e);
   }
@@ -383,23 +380,9 @@ class RoleModel extends ModelBase_1.ModelBase {
     }
     return 2;
   }
-  GetBreachItemList() {
-    var t = this.RoleBreachResponseData.GetCostList();
-    if (t) {
-      var r = new Map();
-      let e = undefined;
-      for (const o of t) {
-        if (o.Z4n === ItemDefines_1.EItemId.Gold) {
-          e = o.e5n;
-        } else {
-          r.set(o.Z4n, o.e5n);
-        }
-      }
-      return {
-        needGold: e,
-        costItemList: r
-      };
-    }
+  GetRoleNeedBreakUp(e) {
+    e = this.GetRoleInstanceById(e);
+    return !!e && e.GetLevelData().GetRoleNeedBreakUp();
   }
   GetRoleCostExpList() {
     var e = [];
@@ -581,21 +564,6 @@ class RoleModel extends ModelBase_1.ModelBase {
     e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e).ResonantChainGroupId;
     return ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceList(e);
   }
-  get RoleLevelResponseData() {
-    this.Eco ||= new RoleLevelResponseData_1.RoleLevelResponseData();
-    return this.Eco;
-  }
-  UpdateLevelViewResponseData(e) {
-    this.RoleLevelResponseData.UpdateRoleLevelUpViewResponse(e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectLevelUpItemCount);
-  }
-  get RoleBreachResponseData() {
-    this.Sco ||= new RoleBreachResponseData_1.RoleBreachResponseData();
-    return this.Sco;
-  }
-  UpdateRoleBreachViewResponseData(e) {
-    this.RoleBreachResponseData.UpdateRoleBreakThroughViewResponse(e);
-  }
   get RoleSkillResponseData() {
     this.yco ||= new RoleSkillResponseData_1.RoleSkillResponseData();
     return this.yco;
@@ -631,7 +599,6 @@ class RoleModel extends ModelBase_1.ModelBase {
   }
   UpdateRoleSkillViewData(e, t, r) {
     this.RoleSkillResponseData.UpdateRoleSkillViewResponse(e, t, r);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateRoleSkillView);
   }
   UpdateRoleSkillNodeData(e, t) {
     e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
@@ -659,7 +626,7 @@ class RoleModel extends ModelBase_1.ModelBase {
   }
   UpdateRoleFavorCondition(e) {
     for (var [t, r] of e) {
-      ModelManager_1.ModelManager.RoleFavorConditionModel.UpdateRoleFavorCondtion(t, r);
+      ModelManager_1.ModelManager.RoleFavorConditionModel.UpdateRoleFavorCondition(t, r);
     }
   }
   UpdateRoleFavorDataSingle(e) {
@@ -678,8 +645,8 @@ class RoleModel extends ModelBase_1.ModelBase {
       i.SetFavorLevel(t);
       i.SetFavorExp(r);
       i.UpdateRoleFavorData(0, o);
-      i.UpdateRoleFavorData(1, n);
-      i.UpdateRoleFavorData(3, e);
+      i.UpdateRoleFavorData(2, n);
+      i.UpdateRoleFavorData(4, e);
     }
   }
   UpdateRoleFavorNewCanUnLockId(e) {
@@ -979,6 +946,119 @@ class RoleModel extends ModelBase_1.ModelBase {
   }
   ClientCheckRoleIsUpgradeLightMainRole(e) {
     return !!this.IsLightMainRole(e) && (e = CommonParamById_1.configCommonParamById.GetIntConfig("MainRoleTagReplaceCondition"), ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), undefined, false));
+  }
+  GetAllConfigRoleDataList() {
+    var t = [];
+    var r = new Set();
+    for (const a of ConfigManager_1.ConfigManager.RoleConfig.GetRoleList() ?? []) {
+      if (a.RoleType === 1 && !r.has(a.Id)) {
+        r.add(a.Id);
+        var o = a.Id;
+        let e = this.dco.get(o);
+        var n = !!e;
+        var i = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(o) === 0;
+        if ((!!n || !this.IsMainRole(o)) && !i) {
+          if (ModelManager_1.ModelManager.HandBookModel.GetRoleCanShowInHandBook(o)) {
+            e = e || new RoleInstance_1.RoleInstance(o);
+            t.push(e);
+          }
+        }
+      }
+    }
+    this.SortRoleDataList(t);
+    return t;
+  }
+  GetAllConfigRoleIdList() {
+    var e;
+    var t;
+    var r;
+    var o = [];
+    var n = new Set();
+    for (const i of ConfigManager_1.ConfigManager.RoleConfig.GetRoleList() ?? []) {
+      if (i.RoleType === 1 && !n.has(i.Id) && !(n.add(i.Id), e = i.Id, t = !!this.dco.get(e), r = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e) === 0, !t && this.IsMainRole(e)) && !r) {
+        if (ModelManager_1.ModelManager.HandBookModel.GetRoleCanShowInHandBook(e)) {
+          o.push(e);
+        }
+      }
+    }
+    this.NVd(o);
+    return o;
+  }
+  SortRoleDataList(e) {
+    e.sort((e, t) => this.gwd(e, t));
+  }
+  NVd(e) {
+    e.sort((e, t) => {
+      e = this.GetRoleDataByIdOrCreateDefault(e);
+      t = this.GetRoleDataByIdOrCreateDefault(t);
+      if (e && t) {
+        return this.gwd(e, t);
+      } else {
+        return 0;
+      }
+    });
+  }
+  gwd(e, t) {
+    var r = this.XRt(e, t);
+    if (r !== 0 || (r = this.oRt(e, t)) !== 0) {
+      return r;
+    } else {
+      return this.KDt(e, t);
+    }
+  }
+  XRt(t, r) {
+    let o = -1;
+    let n = -1;
+    var i = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
+    for (let e = 0; e < i.length; e++) {
+      var a = i[e];
+      if (t.GetDataId() === a.GetConfigId) {
+        o = e;
+      }
+      if (r.GetDataId() === a.GetConfigId) {
+        n = e;
+      }
+    }
+    var e = i[o] !== undefined;
+    var l = i[n] !== undefined;
+    if (e || l) {
+      if (e != l) {
+        return (l ? 1 : 0) - (e ? 1 : 0);
+      } else {
+        return o - n;
+      }
+    } else {
+      return 0;
+    }
+  }
+  oRt(e, t) {
+    e = e.GetLevelData();
+    t = t.GetLevelData();
+    if (e.GetLevel() !== t.GetLevel()) {
+      return t.GetLevel() - e.GetLevel();
+    } else if (e.GetBreachLevel() !== t.GetBreachLevel()) {
+      return t.GetBreachLevel() - e.GetBreachLevel();
+    } else {
+      return 0;
+    }
+  }
+  KDt(e, t) {
+    e = e.GetRoleConfig().QualityId;
+    t = t.GetRoleConfig().QualityId;
+    if (e !== t) {
+      return t - e;
+    } else {
+      return 0;
+    }
+  }
+  GetRoleDataByIdOrCreateDefault(t) {
+    if (ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t)) {
+      let e = this.dco.get(t);
+      return e = e || new RoleInstance_1.RoleInstance(t);
+    }
+  }
+  IsRoleOwned(e) {
+    return this.dco.has(e);
   }
 }
 exports.RoleModel = RoleModel;

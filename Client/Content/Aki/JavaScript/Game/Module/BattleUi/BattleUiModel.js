@@ -7,6 +7,7 @@ exports.BattleUiModel = undefined;
 const puerts_1 = require("puerts");
 const Log_1 = require("../../../Core/Common/Log");
 const Stats_1 = require("../../../Core/Common/Stats");
+const Time_1 = require("../../../Core/Common/Time");
 const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
@@ -15,8 +16,10 @@ const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector2D_1 = require("../../../Core/Utils/Math/Vector2D");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../Common/TimeUtil");
 const Global_1 = require("../../Global");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const UiLayer_1 = require("../../Ui/UiLayer");
@@ -35,6 +38,7 @@ const BattleUiSpecialEnergyBarData_1 = require("./BattleUiSpecialEnergyBarData")
 const FullScreenEffectHandle_1 = require("./FullScreenEffectHandle");
 const LevelUpCacheData_1 = require("./LevelUpCacheData");
 const HeadStateCommonParam_1 = require("./Views/HeadState/HeadStateCommonParam");
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 class BattleUiModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -87,6 +91,13 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.TrackDatas = new Map();
     this.TreeIncIdHandle = undefined;
     this.TreeHandle = undefined;
+    this.rxd = false;
+    this.TimeDilationSkillMaxTime = 0;
+    this.TimeDilationSkillCdTime = 0;
+    this.TimeDilationSkillRatio = 0;
+    this.TimeDilationCoolDownStartTime = 0;
+    this.oxd = undefined;
+    this.CurrentTimeDilationSkillState = 0;
     this.Hn1 = new Map();
     this.wXe = undefined;
     this.BXe = false;
@@ -155,6 +166,9 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.CursorCameraRotatorOffset.Pitch = CommonParamById_1.configCommonParamById.GetIntConfig("PitchOffset");
     this.CursorCameraRotatorOffset.Roll = CommonParamById_1.configCommonParamById.GetIntConfig("RollOffset");
     this.CursorCameraRotationTime = CommonParamById_1.configCommonParamById.GetIntConfig("RotationTime") / CommonDefine_1.MILLIONSECOND_PER_SECOND;
+    this.TimeDilationSkillMaxTime = CommonParamById_1.configCommonParamById.GetFloatConfig("PhotoFightTimeSlowMaxLast");
+    this.TimeDilationSkillCdTime = CommonParamById_1.configCommonParamById.GetFloatConfig("PhotoFightTimeSlowCooldownTime");
+    this.TimeDilationSkillRatio = CommonParamById_1.configCommonParamById.GetFloatConfig("PhotoFightTimeSlowEffectRatio");
     this.yXe = BigInt(0);
     this.InitHeadIconEnergyBarConfig();
     this.FormationData = new BattleUiFormationData_1.BattleUiFormationData();
@@ -179,6 +193,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.PureModeData.Init();
     this.IsShowingMissionViewItems = new Map();
     this._$1 = new Map();
+    this.CurrentTimeDilationSkillState = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
@@ -612,6 +627,41 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         }
       }
     }
+  }
+  SetTimeDilationSkillButtonEnable(t) {
+    this.rxd = t;
+    ControllerHolder_1.ControllerHolder.BattleUiControl?.UpdateTimeDilationSkillButtonState();
+  }
+  IsTimeDilationSkillButtonEnable() {
+    return this.rxd;
+  }
+  SetTimeDilationState(t) {
+    this.CurrentTimeDilationSkillState = t;
+    switch (this.CurrentTimeDilationSkillState) {
+      case 0:
+        ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
+        break;
+      case 1:
+        ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(ModelManager_1.ModelManager.BattleUiModel.TimeDilationSkillRatio);
+        if (TimerSystem_1.TimerSystem.Has(this.oxd)) {
+          TimerSystem_1.TimerSystem.Remove(this.oxd);
+        }
+        this.oxd = TimerSystem_1.TimerSystem.Delay(() => {
+          this.SetTimeDilationState(2);
+        }, this.TimeDilationSkillMaxTime * TimeUtil_1.TimeUtil.InverseMillisecond, undefined, undefined, false);
+        break;
+      case 2:
+        ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
+        AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
+        if (TimerSystem_1.TimerSystem.Has(this.oxd)) {
+          TimerSystem_1.TimerSystem.Remove(this.oxd);
+        }
+        this.TimeDilationCoolDownStartTime = Time_1.Time.WorldTime * TimeUtil_1.TimeUtil.Millisecond;
+        this.oxd = TimerSystem_1.TimerSystem.Delay(() => {
+          this.SetTimeDilationState(0);
+        }, this.TimeDilationSkillCdTime * TimeUtil_1.TimeUtil.InverseMillisecond);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiTimeDilationStateChanged);
   }
   Test() {
     this.ChildViewData = new BattleUiChildViewData_1.BattleUiChildViewData();

@@ -10,12 +10,17 @@ const Log_1 = require("../../../../Core/Common/Log");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const DataTableUtil_1 = require("../../../../Core/Utils/DataTableUtil");
+const CommonQteCompassRotateItem_1 = require("../Item/CommonQteCompassRotateItem");
 const CommonQteContinuousClickItem_1 = require("../Item/CommonQteContinuousClickItem");
 const CommonQteCustomOptionPanel_1 = require("../Item/CommonQteCustomOptionPanel");
 const CommonQteDragItem_1 = require("../Item/CommonQteDragItem");
+const CommonQteFocusSingleButton_1 = require("../Item/CommonQteFocusSingleButton");
+const CommonQteFullScreenPullItem_1 = require("../Item/CommonQteFullScreenPullItem");
 const CommonQteLongPressItem_1 = require("../Item/CommonQteLongPressItem");
+const CommonQteRightScreenDragItem_1 = require("../Item/CommonQteRightScreenDragItem");
 const CommonQteSelectOptionPanel_1 = require("../Item/CommonQteSelectOptionPanel");
 const CommonQteSingleClickItem_1 = require("../Item/CommonQteSingleClickItem");
+const CommontQteFullScreenLongPress_1 = require("../Item/CommontQteFullScreenLongPress");
 const CommonQteContinuousClickContext_1 = require("./CommonQteContinuousClickContext");
 const CommonQteDragContext_1 = require("./CommonQteDragContext");
 const CommonQteGroupContext_1 = require("./CommonQteGroupContext");
@@ -30,19 +35,19 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     this.hJ = -1;
     this.ZEl = 0;
     this.tlc = undefined;
-    this.Eod = undefined;
+    this.gad = undefined;
     this.tIl = undefined;
-    this.Eid = undefined;
-    this.HZu = undefined;
+    this.Cad = undefined;
+    this.jXu = undefined;
     this.IsRefreshMode = false;
   }
   OnLeaveLevel() {
     this.ClearPreloadCache();
     this.tIl?.clear();
     this.tlc = undefined;
-    return !(this.Eod = undefined);
+    return !(this.gad = undefined);
   }
-  CreateQteContext(t, o = undefined, n = undefined, i = 0, r = undefined) {
+  CreateQteContext(t, o = undefined, n = undefined, r = 0, i = undefined) {
     var m = this.GetCommonQteConfig(t);
     if (m) {
       let e = undefined;
@@ -66,35 +71,35 @@ class CommonQteModel extends ModelBase_1.ModelBase {
           return;
       }
       e.QteId = t;
-      e.Source = i;
+      e.Source = r;
       e.HandleId = this.ZEl++;
       e.SetConfig(m);
       e.SuccessCallback = o;
       e.FailCallback = n;
-      e.ExtraParams = r;
+      e.ExtraParams = i;
       return e;
     }
   }
-  CreateQteGroupContext(t, e = undefined, o = undefined, n = 0, i = undefined) {
-    var r = this.GetCommonQteGroupConfig(t);
-    if (r) {
+  CreateQteGroupContext(t, e = undefined, o = undefined, n = 0, r = undefined) {
+    var i = this.GetCommonQteGroupConfig(t);
+    if (i) {
       var m = new CommonQteGroupContext_1.CommonQteGroupContext();
       m.QteGroupId = t;
       m.Source = n;
       m.HandleId = this.ZEl++;
-      m.SetGroupConfig(r);
+      m.SetGroupConfig(i);
       m.SuccessCallback = e;
       m.FailCallback = o;
-      m.ExtraParams = i;
-      for (let e = 0; e < r.CommonQteIdSet.Num(); e++) {
-        var s = r.CommonQteIdSet.Get(e);
-        var C = this.CreateQteContext(s, undefined, m.OnContextFail, n, i);
+      m.ExtraParams = r;
+      for (let e = 0; e < i.CommonQteIdSet.Num(); e++) {
+        var s = i.CommonQteIdSet.Get(e);
+        var C = this.CreateQteContext(s, undefined, m.OnContextFail, n, r);
         if (C) {
           C.QteGroupId = t;
           C.GroupHandleId = m.HandleId;
           C.GroupContext = m;
-          C.SetGroupConfig(r);
-          m.AddContext(s, C, s === r.MainQteId);
+          C.SetGroupConfig(i);
+          m.AddContext(s, C, s === i.MainQteId);
         }
       }
       return m;
@@ -106,7 +111,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     this.tIl.set(e.HandleId, e);
   }
   GetCommonQteConfig(e) {
-    var t = this.HZu?.get(e);
+    var t = this.jXu?.get(e);
     if (t) {
       return t;
     }
@@ -122,15 +127,15 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     }
     t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.tlc, e.toString());
     if (t) {
-      this.HZu ||= new Map();
-      this.HZu.set(e, t);
+      this.jXu ||= new Map();
+      this.jXu.set(e, t);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("CommonQte", 67, "找不到通用QTE配置", ["QteId", e]);
     }
     return t;
   }
   GetCommonQteGroupConfig(e) {
-    if (!this.Eod) {
+    if (!this.gad) {
       var t = ResourceSystem_1.ResourceSystem.Load(DT_COMMON_QTE_GROUP_PATH, UE.DataTable);
       if (!t?.IsValid()) {
         if (Log_1.Log.CheckError()) {
@@ -138,9 +143,9 @@ class CommonQteModel extends ModelBase_1.ModelBase {
         }
         return;
       }
-      this.Eod = t;
+      this.gad = t;
     }
-    t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.Eod, e.toString());
+    t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.gad, e.toString());
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonQte", 67, "找不到通用QTE组配置", ["QteGroupId", e]);
@@ -174,23 +179,46 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     e = this.GetCommonQteConfig(e);
     if (e) {
       if (e.BaseConfig.QteType === 0) {
-        return "UiItem_QteBtnSingleTap";
-      }
-      if (e.BaseConfig.QteType === 1) {
-        return "UiItem_QteBtnTapRapidly";
-      }
-      if (e.BaseConfig.QteType === 3) {
-        return "UiItem_QteBtnLongPress";
-      }
-      if (e.BaseConfig.QteType === 2) {
-        return "UiItem_QteDrag";
-      }
-      if (e.BaseConfig.QteType === 4) {
-        if (e.BaseConfig.SelectOptionConfig.ViewType === 0) {
-          return "UiView_PlotInteraction";
+        if (e.BaseConfig.SingleClickConfig.ViewType === 1) {
+          return "UiItem_QteBtnSingleTap";
         }
-        if (e.BaseConfig.SelectOptionConfig.ViewType === 1) {
-          return "UiItem_QteObjectPos";
+        if (e.BaseConfig.SingleClickConfig.ViewType === 2) {
+          return "UiItem_FocusSingleButton";
+        }
+      } else {
+        if (e.BaseConfig.QteType === 1) {
+          return "UiItem_QteBtnTapRapidly";
+        }
+        if (e.BaseConfig.QteType === 3) {
+          if (e.BaseConfig.LongPressConfig.ViewType === 1) {
+            return "UiItem_QteBtnLongPress";
+          }
+          if (e.BaseConfig.LongPressConfig.ViewType === 2) {
+            return "UiItem_FullScreenLongPress";
+          }
+        } else if (e.BaseConfig.QteType === 2) {
+          if (e.BaseConfig.DragConfig.ViewType === 0) {
+            return "UiItem_QteDrag";
+          }
+          if (e.BaseConfig.DragConfig.ViewType === 2) {
+            return "UiItem_PullUp";
+          }
+          if (e.BaseConfig.DragConfig.ViewType === 3) {
+            return "UiItem_PullDown";
+          }
+          if (e.BaseConfig.DragConfig.ViewType === 4) {
+            return "UiItem_CompassRotate";
+          }
+          if (e.BaseConfig.DragConfig.ViewType === 5) {
+            return "UiItem_RightScreenDragItem";
+          }
+        } else if (e.BaseConfig.QteType === 4) {
+          if (e.BaseConfig.SelectOptionConfig.ViewType === 0) {
+            return "UiView_PlotInteraction";
+          }
+          if (e.BaseConfig.SelectOptionConfig.ViewType === 1) {
+            return "UiItem_QteObjectPos";
+          }
         }
       }
     }
@@ -209,6 +237,17 @@ class CommonQteModel extends ModelBase_1.ModelBase {
         return new CommonQteSelectOptionPanel_1.CommonQteSelectOptionPanel();
       case "UiItem_QteObjectPos":
         return new CommonQteCustomOptionPanel_1.CommonQteCustomOptionPanel();
+      case "UiItem_PullUp":
+      case "UiItem_PullDown":
+        return new CommonQteFullScreenPullItem_1.CommonQteFullScreenPullItem();
+      case "UiItem_FocusSingleButton":
+        return new CommonQteFocusSingleButton_1.CommonQteFocusSingleButton();
+      case "UiItem_CompassRotate":
+        return new CommonQteCompassRotateItem_1.CommonQteCompassRotateItem();
+      case "UiItem_FullScreenLongPress":
+        return new CommontQteFullScreenLongPress_1.CommonQteFullScreenLongPress();
+      case "UiItem_RightScreenDragItem":
+        return new CommonQteRightScreenDragItem_1.CommonQteRightScreenDragItem();
     }
   }
   GetQteHandleId() {
@@ -218,8 +257,8 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     e = e ?? this.hJ;
     e = this.tIl?.get(e)?.QteId;
     if (e) {
-      this.HZu?.delete(e);
-      this.Eid?.delete(e);
+      this.jXu?.delete(e);
+      this.Cad?.delete(e);
     }
     this.hJ = -1;
   }
@@ -228,39 +267,39 @@ class CommonQteModel extends ModelBase_1.ModelBase {
   }
   GetQteResource(e, t = false) {
     if (!t) {
-      return this.Eid?.get(e);
+      return this.Cad?.get(e);
     }
-    if (this.Eid === undefined) {
-      this.Eid = new Map();
+    if (this.Cad === undefined) {
+      this.Cad = new Map();
     }
-    let o = this.Eid.get(e);
+    let o = this.Cad.get(e);
     if (!o) {
       o = {};
-      this.Eid.set(e, o);
+      this.Cad.set(e, o);
     }
     return o;
   }
   LoadQteResource(e) {
     var t;
     var o;
-    if (this.Eid?.has(e)) {
+    if (this.Cad?.has(e)) {
       return [];
     } else {
       t = [];
       if (o = this.GetQteIconPath(e)) {
-        t.push(this.Iid(e, o));
+        t.push(this.vad(e, o));
       }
       if (o = this.GetQteScreenEffectPath(e, 1)) {
-        t.push(this.bid(e, o));
+        t.push(this.yad(e, o));
       }
       if (o = this.GetQteScreenEffectPath(e, 2)) {
-        t.push(this.Rid(e, o));
+        t.push(this.Sad(e, o));
       }
       if (o = this.GetQteCameraShakePath(e)) {
-        t.push(this.wid(e, o));
+        t.push(this.Mad(e, o));
       }
       if (o = this.GetQteScaleCurvePath(e)) {
-        t.push(this.Rmd(e, o));
+        t.push(this.Uqd(e, o));
       }
       return t;
     }
@@ -307,99 +346,106 @@ class CommonQteModel extends ModelBase_1.ModelBase {
       return undefined;
     }
   }
-  async Iid(o, n) {
-    const i = new CustomPromise_1.CustomPromise();
+  async vad(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.LGUITexturePackerSpriteData, e => {
       var t;
       if (e) {
         if (t = this.GetQteResource(o, true)) {
           t.Icon = e;
         }
-        i.SetResult(true);
+        r.SetResult(true);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonQte", 67, "QTE加载图标失败", ["iconPath", n]);
         }
-        i.SetResult(false);
+        r.SetResult(false);
       }
     }, 100);
-    return i.Promise;
+    return r.Promise;
   }
-  async bid(o, n) {
-    const i = new CustomPromise_1.CustomPromise();
+  async yad(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectScreenPlayData_C, e => {
       var t;
       if (e) {
         if (t = this.GetQteResource(o, true)) {
           t.ScreenEffect1 = e;
         }
-        i.SetResult(true);
+        r.SetResult(true);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonQte", 67, "QTE屏幕特效加载失败", ["path", n]);
         }
-        i.SetResult(false);
+        r.SetResult(false);
       }
     }, 100);
-    return i.Promise;
+    return r.Promise;
   }
-  async Rid(o, n) {
-    const i = new CustomPromise_1.CustomPromise();
-    ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectModelPostProcess_C, e => {
-      var t;
-      if (e) {
-        if (t = this.GetQteResource(o, true)) {
-          t.ScreenEffect2 = e;
+  async Sad(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
+    ResourceSystem_1.ResourceSystem.LoadTypeAsync("EffectModelPostProcess_C", () => {
+      ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectModelPostProcess_C, e => {
+        var t;
+        if (e) {
+          if (t = this.GetQteResource(o, true)) {
+            t.ScreenEffect2 = e;
+          }
+          r.SetResult(true);
+        } else {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("CommonQte", 67, "QTE屏幕特效加载失败", ["path", n]);
+          }
+          r.SetResult(false);
         }
-        i.SetResult(true);
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonQte", 67, "QTE屏幕特效加载失败", ["path", n]);
-        }
-        i.SetResult(false);
-      }
-    }, 100);
-    return i.Promise;
+      }, 100);
+    });
+    return r.Promise;
   }
-  async wid(o, n) {
-    const i = new CustomPromise_1.CustomPromise();
+  async Mad(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.Class, e => {
       var t;
       if (e) {
         if (t = this.GetQteResource(o, true)) {
           t.CameraShake = e;
         }
-        i.SetResult(true);
+        r.SetResult(true);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonQte", 67, "QTE震屏效果加载失败", ["path", n]);
         }
-        i.SetResult(false);
+        r.SetResult(false);
       }
     }, 100);
-    return i.Promise;
+    return r.Promise;
   }
-  async Rmd(o, n) {
-    const i = new CustomPromise_1.CustomPromise();
+  async Uqd(o, n) {
+    const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.CurveFloat, e => {
       var t;
       if (e) {
         if (t = this.GetQteResource(o, true)) {
           t.ScaleCurve = e;
         }
-        i.SetResult(true);
+        r.SetResult(true);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonQte", 67, "QTE缩放曲线加载失败", ["path", n]);
         }
-        i.SetResult(false);
+        r.SetResult(false);
       }
     }, 100);
-    return i.Promise;
+    return r.Promise;
   }
-  ClearPreloadCache() {
-    this.HZu?.clear();
-    this.Eid?.clear();
+  ClearPreloadCache(e) {
+    if (e !== undefined) {
+      this.jXu?.delete(e);
+      this.Cad?.delete(e);
+    } else {
+      this.jXu?.clear();
+      this.Cad?.clear();
+    }
   }
 }
 exports.CommonQteModel = CommonQteModel;

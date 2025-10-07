@@ -150,11 +150,11 @@ class RogueBattleTeamEditView extends UiViewBase_1.UiViewBase {
     this.tM1 = undefined;
   }
   Og() {
-    this.gjc();
+    this.Z6u();
     this.M3e();
     this.sF1();
   }
-  gjc() {
+  Z6u() {
     this.PLu?.RefreshLinkInfo(this.Ivt.GetSelectedIndex());
   }
   sF1() {

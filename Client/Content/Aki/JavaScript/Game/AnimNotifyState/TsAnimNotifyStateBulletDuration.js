@@ -16,6 +16,7 @@ class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
     this.BulletIds = undefined;
     this.LocationOffsets = undefined;
     this.RotatorOffsets = undefined;
+    this.DestroyEffectImmediately = false;
     this.BulletEntityIdsMap = undefined;
     this.UeTransform = undefined;
     this.ArrayPreviewActor = undefined;
@@ -79,7 +80,7 @@ class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
     if (i instanceof TsBaseCharacter_1.default) {
       if (i.CharacterActorComponent?.Entity?.Valid) {
         (this.BulletEntityIdsMap.get(t) ?? []).forEach(t => {
-          ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(t, false, 0);
+          ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(t, false, 0, this.DestroyEffectImmediately);
         });
         this.BulletEntityIdsMap.delete(t);
       } else if (Log_1.Log.CheckWarn()) {

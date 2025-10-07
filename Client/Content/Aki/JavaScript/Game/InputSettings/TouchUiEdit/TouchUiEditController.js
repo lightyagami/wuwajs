@@ -12,25 +12,25 @@ const CommonTouchUiEditItem_1 = require("./Common/CommonTouchUiEditItem");
 const TouchUiEditProxy_1 = require("./TouchUiEditProxy");
 class TouchUiEditController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    this.dHu(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
-    for (var [, o] of this.mHu) {
+    this.G$u(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
+    for (var [, o] of this.F$u) {
       o.Init();
     }
     return true;
   }
   static OnClear() {
-    for (var [, o] of this.mHu) {
+    for (var [, o] of this.F$u) {
       o.Clear();
     }
-    this.mHu.clear();
+    this.F$u.clear();
     return true;
   }
-  static dHu(o) {
+  static G$u(o) {
     var i = new o();
-    this.mHu.set(o.name, i);
+    this.F$u.set(o.name, i);
   }
   static GetDataFacade(o) {
-    return this.mHu.get(o.name);
+    return this.F$u.get(o.name);
   }
   static OpenCommonTouchUiEditView(o) {
     var i = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
@@ -42,5 +42,5 @@ class TouchUiEditController extends ControllerBase_1.ControllerBase {
     }
   }
 }
-(exports.TouchUiEditController = TouchUiEditController).mHu = new Map();
+(exports.TouchUiEditController = TouchUiEditController).F$u = new Map();
 //# sourceMappingURL=TouchUiEditController.js.map

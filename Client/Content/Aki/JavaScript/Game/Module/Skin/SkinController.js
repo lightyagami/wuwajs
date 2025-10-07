@@ -33,8 +33,8 @@ class SkinController extends UiControllerBase_1.UiControllerBase {
   }
   static OpenBuyRoleSkinDetailView(e) {
     var i = new Array();
-    for (const t of e) {
-      const n = ShopSkinData_1.ShopSkinData.Create(t);
+    for (const a of e) {
+      const n = ShopSkinData_1.ShopSkinData.Create(a);
       i.push(n);
     }
     const n = SkinBuyDetailViewData_1.SkinBuyDetailViewData.Create(i);
@@ -49,13 +49,38 @@ class SkinController extends UiControllerBase_1.UiControllerBase {
   static OpenSkinShowView(e) {
     UiManager_1.UiManager.OpenView("SkinShowView", e);
   }
-  static SkipToSkinView(e, i, n, t = -1, a, r, o) {
+  static SkipToSkinView(e, i, n, a = -1, t, o, r) {
     var l = new SkinRootViewModel_1.SkinRootViewModel();
     var _ = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(e);
     if (_ instanceof WeaponInstance_1.WeaponInstance) {
-      l.SetViewData(e, _.GetIncId(), i, n, r, o);
-      l.SelectRoleSkinId = t;
-      UiManager_1.UiManager.OpenView("SkinRootView", l, a);
+      l.SetViewData({
+        RoleId: e,
+        WeaponId: _.GetIncId(),
+        TabViewName: i,
+        NeedLoadRole: n,
+        FlySkinId: o,
+        FlySkinTab: r
+      });
+      l.SelectRoleSkinId = a;
+      UiManager_1.UiManager.OpenView("SkinRootView", l, t);
+    }
+  }
+  static SkipToCalabashSkinView(e) {
+    var i;
+    var n;
+    var a = new SkinRootViewModel_1.SkinRootViewModel();
+    var t = ModelManager_1.ModelManager.RoleModel.GetCurSelectMainRoleId();
+    if (t && (i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(t)) instanceof WeaponInstance_1.WeaponInstance) {
+      n = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinDataByRoleId(t)?.GetItemId() ?? -1;
+      a.SelectRoleSkinId = n;
+      a.SetViewData({
+        RoleId: t,
+        WeaponId: i.GetIncId(),
+        TabViewName: "CalabashSkinTabView",
+        NeedLoadRole: true,
+        CalabashSkinId: e
+      });
+      UiManager_1.UiManager.OpenView("SkinRootView", a);
     }
   }
   static OnAddEvents() {
@@ -65,18 +90,23 @@ class SkinController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.xkt);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19890, e => {
+    Net_1.Net.Register(29694, e => {
       ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkin(e.bBs);
       ModelManager_1.ModelManager.RoleSkinModel.UpdateWeaponSkinFirstWearRecord(e.bBs);
       ModelManager_1.ModelManager.RoleSkinModel.AddRoleSkinNewFlag(e.bBs);
     });
+    Net_1.Net.Register(26759, e => {
+      ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkinDataFull(e.bBs);
+      ModelManager_1.ModelManager.RoleSkinModel.UpdateWeaponSkinFirstWearRecord(e.bBs);
+    });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19890);
+    Net_1.Net.UnRegister(29694);
+    Net_1.Net.UnRegister(26759);
   }
   static nTl() {
     var e = new Protocol_1.Aki.Protocol.ep_();
-    Net_1.Net.Call(29497, Protocol_1.Aki.Protocol.ep_.create(e), e => {
+    Net_1.Net.Call(28867, Protocol_1.Aki.Protocol.ep_.create(e), e => {
       if (e) {
         ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkin(e.bBs);
       }

@@ -45,7 +45,7 @@ class EffectBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
         (r = Protocol_1.Aki.Protocol.ae_.create()).sVn = new Protocol_1.Aki.Protocol.sVn();
         r.sVn.nVn = t;
         r.sVn.aVn = a;
-        CombatMessage_1.CombatNet.Send(28554, o, r);
+        CombatMessage_1.CombatNet.Send(22503, o, r);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 19, "无法找到角色渲染组件", ["entityId", e]);
       }

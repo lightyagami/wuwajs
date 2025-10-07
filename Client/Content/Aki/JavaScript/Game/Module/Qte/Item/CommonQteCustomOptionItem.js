@@ -23,10 +23,10 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
     this.NQa = false;
     this.fS1 = undefined;
     this.SPe = undefined;
-    this.QZu = undefined;
+    this.CQc = undefined;
     this.sit = undefined;
-    this.$Zu = undefined;
-    this.WZu = undefined;
+    this.$Xu = undefined;
+    this.gQc = undefined;
     this.Qtt = undefined;
     this.$xt = t => {
       if (t === "Start") {
@@ -53,7 +53,7 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
   }
   Init(t, i, e) {
     this.Xy = t;
-    this.QZu = i;
+    this.CQc = i;
     this.sit = e;
   }
   OnRegisterComponent() {
@@ -71,13 +71,13 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     super.OnStart();
-    this.$Zu = this.GetButton(0);
-    this.WZu = this.GetSlider(3);
-    this.WZu?.SetValue(1);
-    this.WZu?.SetSelfInteractive(false);
+    this.$Xu = this.GetButton(0);
+    this.gQc = this.GetSlider(3);
+    this.gQc?.SetValue(1);
+    this.gQc?.SetSelfInteractive(false);
     this.GetItem(2)?.SetUIActive(false);
     this.GetText(1)?.SetUIActive(false);
-    this.$Zu?.OnPointDownCallBack.Bind(() => {
+    this.$Xu?.OnPointDownCallBack.Bind(() => {
       this.OnPress();
     });
     if (this.Qtt) {
@@ -92,10 +92,10 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
     this.jQa();
-    this.$Zu?.OnPointDownCallBack.Unbind();
+    this.$Xu?.OnPointDownCallBack.Unbind();
     this.SPe?.Clear();
     this.fS1 = undefined;
-    this.QZu = undefined;
+    this.CQc = undefined;
     this.FQa = "";
     this.sit = undefined;
   }
@@ -111,7 +111,7 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
           });
         }
       }
-      i = this.QZu?.TextId;
+      i = this.CQc?.TextId;
       e = this.GetText(1);
       if (i) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(e, i);
@@ -182,10 +182,10 @@ class CommonQteCustomOptionItem extends UiPanelBase_1.UiPanelBase {
     this.HQa();
   }
   SetProgress(t) {
-    this.WZu?.SetValue(t);
+    this.gQc?.SetValue(t);
   }
   RefreshUiOffset() {
-    var t = this.QZu;
+    var t = this.CQc;
     if (t) {
       this.RootItem?.SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign);
       this.RootItem?.SetAnchorOffset(t.AnchorOffset);

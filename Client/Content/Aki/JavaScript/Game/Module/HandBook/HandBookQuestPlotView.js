@@ -59,7 +59,6 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
     };
     this.pFe = () => {
       this.CloseMe();
-      HandBookQuestPlotList_1.HandBookQuestPlotTalkAudioUtil.ClearCurPlayAudio();
     };
     this.ebn = (e, i) => {
       if (!this.YBn) {
@@ -91,7 +90,7 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         this.fje();
       });
     };
-    this.fgd = new Map();
+    this.i6d = new Map();
     this.Z9s = [];
     this.Zu = (i, t, e, o) => {
       let s = this.BPn.get(i);
@@ -168,6 +167,7 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhotoSelect, this.$Bn[this.b9i]);
+    HandBookQuestPlotList_1.HandBookQuestPlotTalkAudioUtil.ClearCurPlayAudio();
   }
   Og() {
     var e = this.$Bn?.length ?? 0;
@@ -275,15 +275,15 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         var s;
         var n = l.Params.TalkItems;
         let i = 0;
-        this.fgd.clear();
+        this.i6d.clear();
         for (const _ of n) {
-          this.fgd.set(_.Id, i++);
+          this.i6d.set(_.Id, i++);
           if (this.GPn < 0) {
             return;
           }
           if (this.GPn) {
-            var h = this.fgd.get(this.GPn);
-            var r = this.fgd.get(_.Id);
+            var h = this.i6d.get(this.GPn);
+            var r = this.i6d.get(_.Id);
             if (!h || r < h) {
               continue;
             }
@@ -342,8 +342,8 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         }
         if (n.Name === "JumpTalk") {
           var e = n.Params.TalkId;
-          var o = this.fgd.get(e);
-          var s = this.fgd.get(t);
+          var o = this.i6d.get(e);
+          var s = this.i6d.get(t);
           if (o && o <= s) {
             this.GPn = -1;
             break;

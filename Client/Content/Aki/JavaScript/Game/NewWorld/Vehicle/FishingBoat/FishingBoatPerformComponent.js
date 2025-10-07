@@ -96,5 +96,5 @@ let FishingBoatPerformComponent = class FishingBoatPerformComponent extends Gong
     ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
 };
-FishingBoatPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(277)], FishingBoatPerformComponent);
+FishingBoatPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(278)], FishingBoatPerformComponent);
 exports.FishingBoatPerformComponent = FishingBoatPerformComponent; //# sourceMappingURL=FishingBoatPerformComponent.js.map

@@ -89,18 +89,17 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
         this.CloseMainView();
       }
     };
-    this.LeaveBattle = () => !!this.CheckInBattleShipTower() && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView), ModelManager_1.ModelManager.TowerModel.CurrentTowerId = -1, ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon(), true);
+    this.LeaveBattle = () => !!this.CheckInBattleShipTower() && (UiManager_1.UiManager.ResetToBattleView(() => {
+      ModelManager_1.ModelManager.TowerModel.CurrentTowerId = -1;
+      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
+    }), true);
   }
   get CurSeason() {
     return this.cA_;
   }
   get CurSeasonCfg() {
-    var e = ConfigManager_1.ConfigManager.ShipTowerConfig.GetSeasonCfgById(this.CurSeason);
-    if (e) {
-      return e;
-    }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("ShipTower", 78, "ShipTowerModel cfg is null", ["season", this.CurSeason]);
+    if (this.CurSeason !== ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON) {
+      return ConfigManager_1.ConfigManager.ShipTowerConfig.GetSeasonCfgById(this.CurSeason);
     }
   }
   get CurSeasonEndTime() {
@@ -117,6 +116,9 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   }
   get GetRewardTotalNum() {
     return this.oq_;
+  }
+  get IsRewardAllReceived() {
+    return this.dA_.size === this.oq_;
   }
   OnInit() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("ShipTowerView", this.CheckCanOpen, "ShipTowerModel.CheckCanOpen");
@@ -444,7 +446,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this.CA_();
   }
   SlashAndTowerInfoResponse(e) {
-    if (!this.ls_(e, 29202, false)) {
+    if (!this.ls_(e, 16293, false)) {
       this.Zn_.length = 0;
       e?.BL_.forEach(e => {
         this.as_(e.s5n);
@@ -468,7 +470,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerScoreRewardResponse(e) {
-    if (!this.ls_(e, 25264)) {
+    if (!this.ls_(e, 22657)) {
       e.cOl.forEach(e => {
         this.dA_.add(e);
       });
@@ -477,7 +479,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   EndLessHistoryResponse(e) {
-    if (!this.ls_(e, 28203)) {
+    if (!this.ls_(e, 17972)) {
       this.RecordList.length = 0;
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.CurrentRecord, e.qL_);
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.HistoryRecord, e.OL_);
@@ -517,7 +519,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerSaveRecordResponse(e, t) {
-    if (!this.ls_(t, 15212)) {
+    if (!this.ls_(t, 20711)) {
       this.GetStageDataById(e)?.CoverChallenge();
       this.CA_();
       this.SetChallengeStageDataNull();
@@ -526,7 +528,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerResetResponse(e, t) {
-    if (!this.ls_(t, 17218)) {
+    if (!this.ls_(t, 24341)) {
       this.GetStageDataById(e)?.ResetStage();
       this.CA_();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerSureResetStage, e);
@@ -534,12 +536,12 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerRecommendResponse(e, t) {
-    if (!this.ls_(t, 18714)) {
+    if (!this.ls_(t, 22662)) {
       this.GetStageDataById(e)?.ProtoUpdateTeamRecommendList(t);
     }
   }
   SlashAndTowerReviewResponse(e) {
-    if (!this.ls_(e, 24281)) {
+    if (!this.ls_(e, 22340)) {
       this.ReviewList.length = 0;
       e?.CG_.forEach(e => {
         var t = e.gG_;
@@ -549,7 +551,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
           Score: i,
           Grade: this.GetStageGradeResIdByStageId(t, i),
           StageId: t,
-          IsQuickPass: e.qcd
+          IsQuickPass: e.Zbd
         });
       });
       this.ReviewProgressList.length = 0;
@@ -668,6 +670,14 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     await ControllerHolder_1.ControllerHolder.ShipTowerController.SlashAndTowerScoreRewardRequest(e, t);
   }
   GetRewardProgressText(e = true) {
+    var [t, i] = this.GetRewardProgressNumData();
+    if (e) {
+      return `<color=#fadf85>${t}</color>/${i}`;
+    } else {
+      return t + "/" + i;
+    }
+  }
+  GetRewardProgressNumData() {
     let t = 0;
     let i = 0;
     const r = this.IsPassZeroSeason();
@@ -682,11 +692,16 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
       t += e.RewardList.filter(e => e.IsCompleted).length;
       i += e.RewardList.length;
     });
-    if (e) {
-      return `<color=#fadf85>${t}</color>/${i}`;
-    } else {
-      return t + "/" + i;
-    }
+    return [t, i];
+  }
+  GetEndlessRewardProgressNumData() {
+    let t = 0;
+    let i = 0;
+    this.uA_.filter(e => e.Id !== ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON).forEach(e => {
+      t += e.RewardList.filter(e => e.IsCompleted).length;
+      i += e.RewardList.length;
+    });
+    return [t, i];
   }
   GetRemainTime() {
     if (this.CurSeasonEndTime <= 0) {
@@ -699,10 +714,15 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     return this.GetRemainTime() <= 0;
   }
   GetRewardCountDownDesc() {
-    var e = ShipTowerDefine_1.shipTowerTextKey.RewardCountDownDesc;
+    var e;
     var t = this.GetRemainTime();
     var t = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat3(t);
-    return ConfigManager_1.ConfigManager.TextConfig.GetMultiText(e, t.CountDownText);
+    if (t.CountDownText === undefined) {
+      return "";
+    } else {
+      e = ShipTowerDefine_1.shipTowerTextKey.RewardCountDownDesc;
+      return ConfigManager_1.ConfigManager.TextConfig.GetMultiText(e, t.CountDownText);
+    }
   }
   IsCanReceiveAward() {
     return this.rq_ > 0;

@@ -38,7 +38,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.gla = undefined;
     this.BGc = undefined;
     this.Fu1 = undefined;
-    this.YJc = undefined;
+    this.etd = undefined;
   }
   get TipTime() {
     this.Tvi ||= ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTime();
@@ -168,14 +168,14 @@ class LoadingModel extends ModelBase_1.ModelBase {
   }
   SetSpecifiedLoadingConfigId(e) {
     if (e && (e = ConfigManager_1.ConfigManager.LoadingConfig.GetLevelAreaById(e))?.Type === 2) {
-      this.YJc = e;
+      this.etd = e;
     }
   }
   GetSpecifiedLoadingConfig() {
-    return this.YJc;
+    return this.etd;
   }
   ClearSpecifiedLoadingConfig() {
-    this.YJc = undefined;
+    this.etd = undefined;
   }
   OnClear() {
     this.ypi = false;

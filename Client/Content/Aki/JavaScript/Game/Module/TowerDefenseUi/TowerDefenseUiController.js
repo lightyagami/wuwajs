@@ -43,7 +43,7 @@ class TowerDefenseUiController extends ControllerBase_1.ControllerBase {
 TowerDefenseUiController.HeadStateManager = undefined;
 TowerDefenseUiController.IsEnable = false;
 TowerDefenseUiController.nye = () => {
-  TowerDefenseUiController.IsEnable = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsTowerDefenseEventInstance();
+  TowerDefenseUiController.IsEnable = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubController !== undefined;
   if (TowerDefenseUiController.IsEnable) {
     TowerDefenseUiController.HeadStateManager?.OnWorldDone();
   }

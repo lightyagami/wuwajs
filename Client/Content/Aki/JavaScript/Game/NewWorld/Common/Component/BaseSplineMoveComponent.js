@@ -84,7 +84,7 @@ class SplineMoveParams {
             this.AdjustFacingYaw = i.FacingConfig.Yaw ?? 0;
         }
       }
-    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(263)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
+    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(264)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
       this.InputLimitAngle = i.Limit.DirectionAngleLimit;
       this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.Limit.EdgeLimitCurveFactor);
     }

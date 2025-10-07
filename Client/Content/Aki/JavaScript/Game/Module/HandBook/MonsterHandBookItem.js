@@ -17,43 +17,43 @@ class MonsterHandBookItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickCallBack = undefined;
-    this.Hod = undefined;
-    this.$od = undefined;
+    this.nsd = undefined;
+    this.ssd = undefined;
   }
-  async Init(e) {
-    await super.CreateByActorAsync(e.GetOwner(), undefined, true);
+  async Init(t) {
+    await super.CreateByActorAsync(t.GetOwner(), undefined, true);
     await this.WZt();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async WZt() {
-    this.Hod = new MonsterHandBookTitleItem();
-    this.AddChild(this.Hod);
-    this.$od = new MonsterHandBookLayoutItem();
-    this.AddChild(this.$od);
-    var e = this.GetItem(0);
-    e.SetUIActive(false);
-    var t = this.GetItem(1);
+    this.nsd = new MonsterHandBookTitleItem();
+    this.AddChild(this.nsd);
+    this.ssd = new MonsterHandBookLayoutItem();
+    this.AddChild(this.ssd);
+    var t = this.GetItem(0);
     t.SetUIActive(false);
-    await Promise.all([this.Hod.CreateByActorAsync(e.GetOwner()), this.$od.CreateByActorAsync(t.GetOwner())]);
-    this.$od.OnClickCallBack = this.OnClickCallBack;
+    var e = this.GetItem(1);
+    e.SetUIActive(false);
+    await Promise.all([this.nsd.CreateByActorAsync(t.GetOwner()), this.ssd.CreateByActorAsync(e.GetOwner())]);
+    this.ssd.OnClickCallBack = this.OnClickCallBack;
   }
-  GetUsingItem(e) {
-    return (e.TitleId ? this.GetItem(0) : this.GetItem(1)).GetOwner();
+  GetUsingItem(t) {
+    return (t.TitleId ? this.GetItem(0) : this.GetItem(1)).GetOwner();
   }
   ClearItem() {
     this.Destroy();
   }
-  Update(e, t) {
-    this.Hod?.SetUiActive(false);
-    this.$od?.SetUiActive(false);
-    if (e.TitleId) {
-      this.Hod?.SetUiActive(true);
-      this.Hod?.Update(e.TitleId);
-    } else if (e.MonsterList) {
-      this.$od?.SetUiActive(true);
-      this.$od?.Update(e.MonsterList);
+  Update(t, e) {
+    this.nsd?.SetUiActive(false);
+    this.ssd?.SetUiActive(false);
+    if (t.TitleId) {
+      this.nsd?.SetUiActive(true);
+      this.nsd?.Update(t.TitleId);
+    } else if (t.MonsterList) {
+      this.ssd?.SetUiActive(true);
+      this.ssd?.Update(t.MonsterList);
     }
   }
 }
@@ -62,8 +62,8 @@ class MonsterHandBookTitleItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText]];
   }
-  Update(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e);
+  Update(t) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), t);
   }
 }
 class MonsterHandBookLayoutItem extends UiPanelBase_1.UiPanelBase {
@@ -72,9 +72,9 @@ class MonsterHandBookLayoutItem extends UiPanelBase_1.UiPanelBase {
     this.OnClickCallBack = undefined;
     this.Tei = undefined;
     this.sGe = () => {
-      var e = new MonsterHandBookMonsterItem();
-      e.OnClickCallBack = this.OnClickCallBack;
-      return e;
+      var t = new MonsterHandBookMonsterItem();
+      t.OnClickCallBack = this.OnClickCallBack;
+      return t;
     };
   }
   OnRegisterComponent() {
@@ -83,11 +83,11 @@ class MonsterHandBookLayoutItem extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.Tei = new GenericLayout_1.GenericLayout(this.GetGridLayout(0), this.sGe);
   }
-  Update(e) {
-    this.Tei?.RefreshByData(e, () => {
-      for (const e of this.Tei?.GetLayoutItemList() ?? []) {
-        if (e.HandBookId === ModelManager_1.ModelManager.HandBookModel.CurrentSelectMonsterHandBookId) {
-          e.OnSelected(true);
+  Update(t) {
+    this.Tei?.RefreshByData(t, () => {
+      for (const t of this.Tei?.GetLayoutItemList() ?? []) {
+        if (t.HandBookId === ModelManager_1.ModelManager.HandBookModel.CurrentSelectMonsterHandBookId) {
+          t.OnSelected(true);
           break;
         }
       }
@@ -100,8 +100,8 @@ class MonsterHandBookMonsterItem extends LoopScrollMediumItemGrid_1.LoopScrollMe
     this.HandBookId = 0;
     this.Rjt = true;
     this.OnClickCallBack = undefined;
-    this.OnHandBookRead = (e, t) => {
-      if (e === 0 && t === this.HandBookId) {
+    this.OnHandBookRead = (t, e) => {
+      if (t === 0 && e === this.HandBookId) {
         this.SetNewVisible(false);
       }
     };
@@ -112,34 +112,52 @@ class MonsterHandBookMonsterItem extends LoopScrollMediumItemGrid_1.LoopScrollMe
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnHandBookRead, this.OnHandBookRead);
   }
-  OnRefresh(e, t, i) {
-    this.HandBookId = e;
-    this.SetSelected(t);
-    var s;
-    var n;
-    var e = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterInfoConfig(this.HandBookId);
-    if (e && (t = ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigById(this.HandBookId), n = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(0, this.HandBookId), s = t.OriginalFormInfoId > 0 ? t.OriginalFormInfoId : this.HandBookId, s = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectData(s), n = !(t.OriginalFormInfoId > 0) && !n?.IsRead, this.Rjt = !t?.DefaultUnlock && (s?.IsLock ?? true), t = {
-      Type: 3,
-      Data: this.HandBookId,
-      MonsterId: e.Id,
-      IsNewVisible: n,
-      IsLockVisible: this.Rjt,
-      BottomTextId: this.Rjt ? "Text_UnDiscovered_Text" : e.Name
-    }, this.Apply(t), this.Rjt)) {
-      this.SetIconSprite();
+  OnRefresh(t, e, i) {
+    this.HandBookId = t;
+    this.SetSelected(e);
+    t = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterInfoConfig(this.HandBookId);
+    if (t) {
+      e = ConfigManager_1.ConfigManager.HandBookConfig.GetMonsterHandBookConfigById(this.HandBookId);
+      if (e?.DefaultUnlock) {
+        this.Rjt = false;
+        const o = {
+          Type: 3,
+          Data: this.HandBookId,
+          MonsterId: t.Id,
+          BottomTextId: t.Name
+        };
+        this.Apply(o);
+      } else {
+        var s = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(0, this.HandBookId);
+        var n = e.OriginalFormInfoId > 0 ? e.OriginalFormInfoId : this.HandBookId;
+        var n = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectData(n);
+        var e = !(e.OriginalFormInfoId > 0) && !s?.IsRead;
+        this.Rjt = n?.IsLock ?? true;
+        const o = {
+          Type: 3,
+          Data: this.HandBookId,
+          MonsterId: this.Rjt ? undefined : t.Id,
+          IsNewVisible: !this.Rjt && e,
+          IsPhantomLock: this.Rjt,
+          BottomTextId: this.Rjt ? "Text_UnDiscovered_Text" : t.Name
+        };
+        this.Apply(o);
+      }
     }
   }
-  OnSelected(e) {
+  OnSelected(t) {
     this.SetSelected(true);
-    if (e) {
-      this.OnExtendToggleClicked();
+    if (t) {
+      this.OnExtendToggleStateChanged(1);
     }
   }
-  OnDeselected(e) {
+  OnDeselected(t) {
     this.SetSelected(false, false);
   }
-  OnExtendToggleClicked() {
-    this.OnClickCallBack?.(this.GetItemGridExtendToggle(), this.HandBookId, this.Rjt);
+  OnExtendToggleStateChanged(t) {
+    if (t === 1) {
+      this.OnClickCallBack?.(this.GetItemGridExtendToggle(), this.HandBookId, this.Rjt);
+    }
   }
 }
 //# sourceMappingURL=MonsterHandBookItem.js.map

@@ -7,6 +7,7 @@ exports.KscUtil = undefined;
 const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Info_1 = require("../../Core/Common/Info");
 const KSCBasePropertyById_1 = require("../../Core/Define/ConfigQuery/KSCBasePropertyById");
 const TrapDefenseAuxiliaryById_1 = require("../../Core/Define/ConfigQuery/TrapDefenseAuxiliaryById");
 const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
@@ -15,18 +16,18 @@ const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const KscLog_1 = require("./KscLog");
 class KscUtil {
   static SetKscWorldHandle(e) {
-    this.xfd = e;
+    this.t4d = e;
   }
   static GetDtRows(e) {
     var r = new Array();
     cpp_1.FKuroDataTableFunctionLibrary.GetDataTableAllRowNames(e, r);
     var t = new Array();
     for (const a of r) {
-      var s = (0, puerts_1.$ref)(undefined);
-      var o = cpp_1.FKuroDataTableFunctionLibrary.GetDataTableRowFromName(e, a, s);
-      var s = (0, puerts_1.$unref)(s);
-      if (o) {
-        t.push(s);
+      var o = (0, puerts_1.$ref)(undefined);
+      var s = cpp_1.FKuroDataTableFunctionLibrary.GetDataTableRowFromName(e, a, o);
+      var o = (0, puerts_1.$unref)(o);
+      if (s) {
+        t.push(o);
       }
     }
     return t;
@@ -34,9 +35,9 @@ class KscUtil {
   static LoadDt(e, r, t) {
     r = ResourceSystem_1.ResourceSystem.Load(r, UE.DataTable);
     if (r) {
-      for (const o of KscUtil.GetDtRows(r)) {
-        var s = o.RuntimeDA.ToAssetPathName();
-        t?.set(o.Id, [o, s]);
+      for (const s of KscUtil.GetDtRows(r)) {
+        var o = s.RuntimeDA.ToAssetPathName();
+        t?.set(s.Id, [s, o]);
       }
     }
   }
@@ -45,45 +46,43 @@ class KscUtil {
       return e.split(".").pop();
     }
   }
-  static AsyncLoadKscAsset(o) {
-    ResourceSystem_1.ResourceSystem.LoadAsync(o.Path, UE.Object, (e, r) => {
+  static AsyncLoadKscAsset(s) {
+    ResourceSystem_1.ResourceSystem.LoadAsync(s.Path, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        if (o.KscWorldHandle !== this.xfd) {
-          var t = `[加载Ksc资产] 场景不一致, ${o.Path}, LoadHandle: ${o.KscWorldHandle}, CurHandle: ${this.xfd}`;
-          KscLog_1.KscLog.Info("Load", 69, o.Context, t);
-          const s = e;
-          o.NativeContainer?.Add(s, o.Id);
-          o.FailCallback?.(t);
+        if (s.KscWorldHandle !== this.t4d) {
+          var t = `[加载Ksc资产] 场景不一致, ${s.Path}, LoadHandle: ${s.KscWorldHandle}, CurHandle: ${this.t4d}`;
+          KscLog_1.KscLog.Info("Load", 69, s.Context, t);
+          const o = e;
+          s.NativeContainer?.Add(o, s.Id);
+          s.FailCallback?.(t);
         } else {
-          KscLog_1.KscLog.Info("Load", 84, o.Context, "[加载Ksc资产] 成功", ["Name", e?.GetName()]);
-          const s = e;
-          o.NativeContainer?.Add(s, o.Id);
-          o.Callback?.(s);
+          Info_1.Info.IsBuildDevelopmentOrDebug;
+          const o = e;
+          s.NativeContainer?.Add(o, s.Id);
+          s.Callback?.(o);
         }
       } else {
-        t = "[加载Ksc资产] 失败 " + o.Path;
-        KscLog_1.KscLog.Error("Load", 84, o.Context, t);
-        o.FailCallback?.(t);
+        t = "[加载Ksc资产] 失败 " + s.Path;
+        KscLog_1.KscLog.Error("Load", 84, s.Context, t);
+        s.FailCallback?.(t);
       }
     });
   }
   static AsyncLoadKscAssetDt(a, e, i, r, l) {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        KscLog_1.KscLog.Info("Load", 84, a, "[DT加载] 成功", ["Name", e.GetName()]);
-        for (const o of KscUtil.GetDtRows(e)) {
-          var t = o.Id;
-          var s = o.RuntimeDA.ToAssetPathName();
+        for (const s of KscUtil.GetDtRows(e)) {
+          var t = s.Id;
+          var o = s.RuntimeDA.ToAssetPathName();
           if (i) {
-            i.set(t, s);
+            i.set(t, o);
           }
-          KscLog_1.KscLog.Info("Load", 84, a, "[DT加载] 开始加载Ksc Da", ["Id", t]);
           this.AsyncLoadKscAsset({
             Context: a,
             Id: t,
-            Path: s,
+            Path: o,
             NativeContainer: l,
-            KscWorldHandle: this.xfd
+            KscWorldHandle: this.t4d
           });
         }
       } else {
@@ -94,10 +93,10 @@ class KscUtil {
   static GetFollowerSkillIdsByProxies(e) {
     var r = new Map();
     if (e.length > 0) {
-      for (const s of e) {
-        var t = TrapDefenseAuxiliaryById_1.configTrapDefenseAuxiliaryById.GetConfig(s)?.InitSkills;
+      for (const o of e) {
+        var t = TrapDefenseAuxiliaryById_1.configTrapDefenseAuxiliaryById.GetConfig(o)?.InitSkills;
         if (t) {
-          r.set(s, t);
+          r.set(o, t);
         }
       }
     }
@@ -148,6 +147,7 @@ class KscUtil {
     var r = new Map();
     r.set(1, e.Lv);
     r.set(2, e.LifeMax);
+    r.set(13, e.LifeMax);
     r.set(3, e.Life);
     r.set(4, e.Sheild);
     r.set(7, e.Atk);
@@ -188,8 +188,10 @@ class KscUtil {
     r.set(104, e.IgnoreDamageResistanceElement4);
     r.set(105, e.IgnoreDamageResistanceElement5);
     r.set(106, e.IgnoreDamageResistanceElement6);
+    r.set(44, e.DamageAmplify1);
+    r.set(45, e.DamageAmplify2);
     return r;
   }
 }
-(exports.KscUtil = KscUtil).xfd = 0;
+(exports.KscUtil = KscUtil).t4d = 0;
 //# sourceMappingURL=KscUtil.js.map

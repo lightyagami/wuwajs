@@ -23,6 +23,7 @@ class WeaponModel extends ModelBase_1.ModelBase {
     this.Rko = 0;
     this.BlueprintWeaponBreachLevel = 0;
     this.BlueprintWeaponEquippedRoleId = 0;
+    this.LevelUpConfirmTipsNotShow = false;
     this.Uko = (e, t) => t.QualityId - e.QualityId;
   }
   AddWeaponData(e) {
@@ -184,6 +185,17 @@ class WeaponModel extends ModelBase_1.ModelBase {
     }
     return r;
   }
+  GetWeaponExpMaterialList() {
+    var e;
+    var t = [];
+    for (const n of ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByMainType(2)) {
+      if (n.GetType() === 4 && (e = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(n.GetConfigId()))) {
+        t.push(e);
+      }
+    }
+    t.sort((e, t) => t.QualityId - e.QualityId);
+    return t;
+  }
   GetCanChangeMaterialList(e) {
     var t = new Map();
     var n = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.ItemConfig.GetConfigListByItemType(4));
@@ -340,19 +352,19 @@ class WeaponModel extends ModelBase_1.ModelBase {
   AutoAddExpItem(e, t, n, o) {
     let r = e;
     var a = [];
-    for (const u of n) {
+    for (const g of n) {
       if (t <= a.length || r <= 0) {
         break;
       }
-      var i = o(u);
+      var i = o(g);
       var s = Math.ceil(r / i);
-      var f = u.Count - u.SelectedCount;
-      var s = u.SelectedCount + Math.min(s, f);
+      var f = g.Count - g.SelectedCount;
+      var s = g.SelectedCount + Math.min(s, f);
       if (s > 0) {
         f = {
-          IncId: u.IncId,
-          ItemId: u.ItemId,
-          Count: u.Count,
+          IncId: g.IncId,
+          ItemId: g.ItemId,
+          Count: g.Count,
           SelectedCount: s
         };
         a.push(f);
@@ -364,14 +376,14 @@ class WeaponModel extends ModelBase_1.ModelBase {
   CheckSatisfyExp(e, t, n, o) {
     let r = e;
     let a = 0;
-    for (const u of n) {
+    for (const g of n) {
       if (a >= t || r <= 0) {
         break;
       }
-      var i = o(u);
+      var i = o(g);
       var s = Math.ceil(r / i);
-      var f = u.Count - u.SelectedCount;
-      var s = u.SelectedCount + Math.min(s, f);
+      var f = g.Count - g.SelectedCount;
+      var s = g.SelectedCount + Math.min(s, f);
       if (s > 0) {
         a++;
         r -= s * i;
@@ -425,6 +437,29 @@ class WeaponModel extends ModelBase_1.ModelBase {
   RedDotWeaponBreachCondition(e) {
     e = this.GetWeaponInstanceByRoleId(e);
     return e !== undefined && !!e.CanGoBreach() && this.GetWeaponBreachState(e.GetIncId()) === 2;
+  }
+  RedDotWeaponResonanceCondition(e) {
+    var t;
+    var n;
+    var e = this.GetWeaponDataByIncId(e);
+    return e !== undefined && (t = e.GetResonanceLevel(), !(e.GetWeaponConfig().ResonLevelLimit <= t) && !!(n = e.GetResonanceConfig()) && n.MaterialPlaceType === 1 && n.AlternativeConsume.length !== 0 && !(ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(n.AlternativeConsume[0]) <= 0)) && ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold) >= n.GoldConsume;
+  }
+  RedDotWeaponResonanceConditionByRole(e) {
+    e = this.GetWeaponInstanceByRoleId(e)?.GetIncId();
+    return !!e && this.RedDotWeaponResonanceCondition(e);
+  }
+  GetWeaponExpItemConfigList() {
+    var e = [];
+    var t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemList();
+    if (t) {
+      for (const o of t) {
+        var n = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(o.Id);
+        if (n) {
+          e.push(n);
+        }
+      }
+    }
+    return e;
   }
 }
 exports.WeaponModel = WeaponModel;

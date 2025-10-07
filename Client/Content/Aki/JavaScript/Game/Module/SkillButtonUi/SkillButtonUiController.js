@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SkillButtonUiController = undefined;
 const Info_1 = require("../../../Core/Common/Info");
+const Log_1 = require("../../../Core/Common/Log");
 const Stats_1 = require("../../../Core/Common/Stats");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -19,7 +20,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnClear() {
-    this.wjc.clear();
+    this.iYc.clear();
     return true;
   }
   static OnAddEvents() {
@@ -44,6 +45,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideLimitActionInput, this.bYd);
     InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
@@ -69,6 +71,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideLimitActionInput, this.bYd);
     InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
@@ -87,18 +90,26 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
   }
   static AddEventInterface(e) {
     if (e) {
-      this.wjc.add(e);
+      this.iYc.add(e);
     }
   }
   static RemoveEventInterface(e) {
     if (e) {
-      this.wjc.delete(e);
+      this.iYc.delete(e);
+    }
+  }
+  static PlayExtraEffect(e, t, n = 0) {
+    var i = ModelManager_1.ModelManager.SkillButtonUiModel.SkillButtonFormationData?.GetSkillButtonTypeFormationData(e);
+    if (i) {
+      i.ExtraEffect = t;
+      i.ExtraEffectDuration = n;
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, e);
     }
   }
 }
 exports.SkillButtonUiController = SkillButtonUiController;
 (_a = SkillButtonUiController).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonUiController");
-SkillButtonUiController.wjc = new Set();
+SkillButtonUiController.iYc = new Set();
 SkillButtonUiController.Uyo = (e, t, n) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.ExecuteMultiSkillIdChanged(e, t, n);
 };
@@ -129,19 +140,19 @@ SkillButtonUiController.OJe = () => {
   if (ConfigManager_1.ConfigManager.RouletteConfig.GetExploreConfigById(e)?.SkillType !== 5) {
     ModelManager_1.ModelManager.SkillButtonUiModel.RefreshSkillButtonExplorePhantomSkillId(7);
   }
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.EquipExplorePhantomSkill?.();
   }
 };
 SkillButtonUiController.Pyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.SkillCountChanged?.(e);
   }
 };
 SkillButtonUiController.xyo = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnSkillCdChanged(e);
-  for (const t of _a.wjc) {
+  for (const t of _a.iYc) {
     t.SkillRemainCdChanged?.(e);
   }
 };
@@ -186,10 +197,18 @@ SkillButtonUiController.$Ge = e => {
     ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.RefreshSwitchInteractOpen();
   }
 };
+SkillButtonUiController.bYd = (e, t) => {
+  if (e === InputMappingsDefine_1.actionMappings.组合主键) {
+    _a.RZe(e, t ? 0 : 1);
+  }
+};
 SkillButtonUiController.RZe = (e, t) => {
-  t = t === 0;
-  ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.SetIsPressCombineButton(t);
-  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, t);
+  if (Log_1.Log.CheckDebug()) {
+    Log_1.Log.Debug("Battle", 17, "[SkillButtonUiController] OnInputCombineButton", ["actionName", e], ["actionType", t]);
+  }
+  e = t === 0;
+  ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.SetIsPressCombineButton(e);
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, e);
 };
 SkillButtonUiController.qah = (e, t) => {
   t = t === 0;

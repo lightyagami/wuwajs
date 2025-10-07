@@ -48,7 +48,7 @@ class TuningStandGridStartItem extends TuningStandGridBase_1.TuningStandGridBase
     this.InitGrid();
   }
   OnResetGrid() {
-    this.Bku();
+    this.ZBu();
   }
   InitGrid() {
     this.CurSelected = false;
@@ -62,18 +62,18 @@ class TuningStandGridStartItem extends TuningStandGridBase_1.TuningStandGridBase
       t = ModelManager_1.ModelManager.TuningStandModel.GetCurIndex();
       if (ModelManager_1.ModelManager.TuningStandModel.GetGridList()[t].GetCurGridState().State === this.Data.StaticState.State && !this.CurSelected) {
         this.CurSelected = true;
-        this.Bku();
+        this.ZBu();
         this.SequencePlayer.PlayOrReplaySequenceByName("Drag");
       }
     } else if (this.CurSelected || this.Data.StaticState.Next === undefined) {
       if (this.CurSelected && this.Data.StaticState.Next === undefined) {
         this.CurSelected = false;
-        this.Bku();
+        this.ZBu();
         this.SequencePlayer.PlayOrReplaySequenceByName("Unfold");
       }
     } else {
       this.CurSelected = true;
-      this.Bku();
+      this.ZBu();
       this.SequencePlayer.PlayOrReplaySequenceByName("Drag");
     }
   }
@@ -83,7 +83,7 @@ class TuningStandGridStartItem extends TuningStandGridBase_1.TuningStandGridBase
     this.GetExtendToggle(5).OnHover.Add(this.OnToggleHover);
     this.GetExtendToggle(5).OnUnHover.Add(this.OnToggleUnHover);
   }
-  Bku() {
+  ZBu() {
     if (this.SequencePlayer?.IsPlayingSequence("Drag")) {
       this.SequencePlayer.StopSequenceByKey("Drag", false);
     }
@@ -101,7 +101,7 @@ class TuningStandGridStartItem extends TuningStandGridBase_1.TuningStandGridBase
     this.SequencePlayer?.PlayOrReplaySequenceByName("In", true, t / 10 + 1);
   }
   StartRevolving() {
-    this.Bku();
+    this.ZBu();
     this.SequencePlayer?.PlayLevelSequenceByName("Up");
   }
 }

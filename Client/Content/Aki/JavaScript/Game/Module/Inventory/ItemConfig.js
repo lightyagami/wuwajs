@@ -80,6 +80,9 @@ class ItemConfig {
         break;
       case 16:
         this.umu(i);
+        break;
+      case 17:
+        this.EDd(i);
     }
   }
   Cmi(i) {
@@ -365,6 +368,23 @@ class ItemConfig {
     this.ShowInBag = i.ShowInBag;
     this.ObtainedShowDescription = "";
     this.AttributesDescription = i.AttributesDescription;
+  }
+  EDd(i) {
+    this.ItemDataType = 17;
+    this.ItemType = 60015;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.TypeDescription = i.TypeDescription;
+    this.BgDescription = i.BgDescription;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.Mesh = undefined;
+    this.ItemAccess = i.ItemAccess;
+    this.Parameters.clear();
+    this.SortIndex = i.SortIndex;
+    this.RedDotDisableRule = i.RedDotDisableRule;
+    this.ShowInBag = i.ShowInBag;
+    this.ObtainedShowDescription = i.ObtainedShowDescription;
   }
 }
 exports.ItemConfig = ItemConfig;

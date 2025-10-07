@@ -160,7 +160,7 @@ let SceneItemMovementSyncComponent = class SceneItemMovementSyncComponent extend
       n.V8n = t;
       n.e5n = "V8n";
       r.C6n = [n];
-      Net_1.Net.Call(21903, r, () => {});
+      Net_1.Net.Call(26597, r, () => {});
       this.CollectSampleAndSend(true);
       return true;
     }

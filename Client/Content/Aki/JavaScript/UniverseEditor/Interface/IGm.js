@@ -360,5 +360,13 @@ exports.gmCommandConfigs = {
     ParseType: "Client",
     Code: "BrokenRockConfigHotFix",
     Hide: true
+  },
+  SetVar: {
+    CnName: "设置变量",
+    GmType: "Other",
+    GmSubType: "System",
+    ParseType: "Server",
+    Code: "GmEditorSetVar",
+    Hide: true
   }
 }; //# sourceMappingURL=IGm.js.map

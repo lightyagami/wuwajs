@@ -10,11 +10,11 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.jsr = undefined;
-    this.bVu = undefined;
+    this.Vku = undefined;
   }
   OnInit() {
     this.jsr = new Map();
-    this.bVu = new Map();
+    this.Vku = new Map();
     return true;
   }
   AddVisionCapture(e, i) {
@@ -24,22 +24,22 @@ class VisionCaptureModel extends ModelBase_1.ModelBase {
     this.jsr.set(e, i);
   }
   AddVisionCaptureFinish(e, i) {
-    this.bVu.set(e, i);
+    this.Vku.set(e, i);
   }
   RemoveVisionCapture(e) {
     this.jsr.delete(e);
-    this.bVu.delete(e);
+    this.Vku.delete(e);
   }
   GetVisionCapture(e) {
     return this.jsr.get(e);
   }
   GetVisionFinish() {
-    return this.bVu;
+    return this.Vku;
   }
   OnClear() {
     this.jsr = undefined;
-    this.bVu?.clear();
-    return !(this.bVu = undefined);
+    this.Vku?.clear();
+    return !(this.Vku = undefined);
   }
 }
 exports.VisionCaptureModel = VisionCaptureModel;

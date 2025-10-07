@@ -117,16 +117,16 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     }
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17188, RacingBetsController.STc);
-    Net_1.Net.Register(23359, RacingBetsController.MTc);
-    Net_1.Net.Register(22100, RacingBetsController.Ae1);
-    Net_1.Net.Register(29934, RacingBetsController.cx1);
+    Net_1.Net.Register(29620, RacingBetsController.STc);
+    Net_1.Net.Register(16589, RacingBetsController.MTc);
+    Net_1.Net.Register(24352, RacingBetsController.Ae1);
+    Net_1.Net.Register(17885, RacingBetsController.cx1);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17188);
-    Net_1.Net.UnRegister(23359);
-    Net_1.Net.UnRegister(22100);
-    Net_1.Net.UnRegister(29934);
+    Net_1.Net.UnRegister(29620);
+    Net_1.Net.UnRegister(16589);
+    Net_1.Net.UnRegister(24352);
+    Net_1.Net.UnRegister(17885);
   }
   static RacingBetsGearRequest(t, e, n, r, o) {
     var a = Protocol_1.Aki.Protocol.Az_.create();
@@ -136,10 +136,10 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     a.gJ_ = r;
     a._J_ = o;
     a.zZ_ = e.OddsVersion;
-    Net_1.Net.Call(28119, a, e => {
+    Net_1.Net.Call(17691, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18389);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26177);
         } else {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Dango_BetPage_BetSuccess");
           ModelManager_1.ModelManager.RacingBetsModel.OnPlayerInfoUpdate(e.jRs);
@@ -154,10 +154,10 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     r.w6n = t;
     r.mJ_ = e.Id;
     r.Kz_ = n;
-    Net_1.Net.Call(16970, r, e => {
+    Net_1.Net.Call(29439, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18389);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26177);
         } else {
           ModelManager_1.ModelManager.RacingBetsModel.OnPlayerInfoUpdate(e.jRs);
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Dango_BetPage_CancelSuccess");
@@ -170,12 +170,12 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
   static RacingBetsRankRequest(e, t) {
     var n = Protocol_1.Aki.Protocol.wz_.create();
     n.w6n = e;
-    Net_1.Net.Call(29468, n, e => {
+    Net_1.Net.Call(23937, n, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_RacingBetsBulletNotFundOpenRankCurTime) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Dango_RankPage_EmptyInfo");
         } else if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25356);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18865);
         } else {
           ModelManager_1.ModelManager.RacingBetsModel.RacingBetsRankRefresh(e);
           t?.();
@@ -186,10 +186,10 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
   static RacingBetsTaskRewardRequest(e) {
     var t = Protocol_1.Aki.Protocol.Bz_.create();
     t.gps = e;
-    Net_1.Net.Call(22779, t, e => {
+    Net_1.Net.Call(21229, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24623);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16537);
         }
         e = ModelManager_1.ModelManager.RacingBetsModel.GetRacingBetsSeasonData().Id;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e);
@@ -200,10 +200,10 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     var e = Protocol_1.Aki.Protocol.aa1.create();
     e.w6n = t;
     e.mJ_ = n;
-    Net_1.Net.Call(24055, e, e => {
+    Net_1.Net.Call(17425, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29002);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27003);
         } else {
           ModelManager_1.ModelManager.RacingBetsModel.RacingBetsMatchStart(n, e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t);
@@ -216,17 +216,17 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     r.w6n = e;
     r.mJ_ = t;
     r.pBc = n;
-    var e = await Net_1.Net.CallAsync(19807, r);
-    return !!e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23115), false) : (ModelManager_1.ModelManager.RacingBetsModel.RacingBetsMatchRoundRefresh(t, e.BJ_, true), true));
+    var e = await Net_1.Net.CallAsync(25049, r);
+    return !!e && (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17385), false) : (ModelManager_1.ModelManager.RacingBetsModel.RacingBetsMatchRoundRefresh(t, e.BJ_, true), true));
   }
   static RacingBetsMatchInfoRequest(e, t) {
     var n = Protocol_1.Aki.Protocol.sl1.create();
     n.w6n = e;
     n.mJ_ = t;
-    Net_1.Net.Call(23318, n, e => {
+    Net_1.Net.Call(15489, n, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22635);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16798);
         } else {
           ModelManager_1.ModelManager.RacingBetsModel.RacingBetsMatchPreview(t, e);
         }
@@ -240,10 +240,10 @@ class RacingBetsController extends ActivityControllerBase_1.ActivityControllerBa
     e.mJ_ = ModelManager_1.ModelManager.RacingBetsModel.DungeonMatchId;
     e.kJ_ = t;
     e.mTs = ModelManager_1.ModelManager.RacingBetsModel.GetCommandActionIndex();
-    Net_1.Net.Call(22231, e, e => {
+    Net_1.Net.Call(21279, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27518);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26610);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRacingBetsPushBulletScreen, [t], true);
         }
@@ -306,10 +306,10 @@ RacingBetsController.RacingBetsUpdateOddsRequest = () => {
   var n = t.GetCurLegMatchData();
   e.w6n = t.Id;
   e.mJ_ = n.Id;
-  Net_1.Net.Call(25260, e, e => {
+  Net_1.Net.Call(15924, e, e => {
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29167);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15237);
       } else {
         ModelManager_1.ModelManager.RacingBetsModel.OnRacingBetsOddsUpdate(e);
         _a.TryRegisterNextDangoOddsUpdateRequest(t);

@@ -88,7 +88,7 @@ class MingSuModel extends ModelBase_1.ModelBase {
     }
   }
   DoUpdateDragonPoolInfoMap(e) {
-    this.RefreshDragonPoolActiveStatus(e.k7n, e.WSs);
+    this.RefreshDragonPoolActiveStatus(e.k7n, e.HE_);
     this.RefreshDragonPoolLevel(e.k7n, e.F6n);
     this.RefreshDragonPoolHadCoreCount(e.k7n, e.KSs);
   }

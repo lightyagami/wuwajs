@@ -25,7 +25,7 @@ class ReportController extends UiControllerBase_1.UiControllerBase {
     r.H8n = e.GetName();
     r.zVn = e.GetSignature();
     l.LHn = r;
-    Net_1.Net.Call(27952, Protocol_1.Aki.Protocol.nYn.create(l), this.ReportPlayerResponse);
+    Net_1.Net.Call(28333, Protocol_1.Aki.Protocol.nYn.create(l), this.ReportPlayerResponse);
   }
   static OpenReportView(e, r) {
     e = new ReportDefine_1.ReportPersonInfo(e.PlayerId, e.PlayerName, e.Signature, r);
@@ -34,7 +34,7 @@ class ReportController extends UiControllerBase_1.UiControllerBase {
 }
 (exports.ReportController = ReportController).ReportPlayerResponse = e => {
   if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27017);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18830);
   } else {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ReportSuccess");
     if (UiManager_1.UiManager.IsViewShow("ReportView")) {

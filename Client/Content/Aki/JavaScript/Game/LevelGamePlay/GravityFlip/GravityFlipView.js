@@ -181,7 +181,7 @@ class GravityFlipView extends UiViewBase_1.UiViewBase {
         var t = Protocol_1.Aki.Protocol.MY_.create();
         t.bY_ = MathUtils_1.MathUtils.NumberToLong(e);
         t.LY_ = i;
-        Net_1.Net.Call(24069, t, e => {
+        Net_1.Net.Call(16684, t, e => {
           switch (e.Q4n) {
             case Protocol_1.Aki.Protocol.Q4n.KRs:
               break;
@@ -192,7 +192,7 @@ class GravityFlipView extends UiViewBase_1.UiViewBase {
               break;
             default:
               ControllerHolder_1.ControllerHolder.GravityFlipController.CancelWaitTeleport();
-              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27691);
+              ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28494);
           }
           ModelManager_1.ModelManager.GravityFlipModel.GravityFlipComp.SetGravityDirection(i);
           if (i !== e.RY_) {

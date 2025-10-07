@@ -36,7 +36,7 @@ const BulletMoveInfo_1 = require("./BulletMoveInfo");
 const BulletPool_1 = require("./BulletPool");
 const BulletTraceElementPool_1 = require("./BulletTraceElementPool");
 class BulletInitParams {
-  constructor(t, e, l, i, o = 0, s = 0, r = 0, n = 0, u = 0, a = undefined, h = false, _ = 0, B = undefined, d = undefined, v = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, f = undefined, c = undefined, g = -1, m = undefined, M = 0) {
+  constructor(t, e, l, i, o = 0, s = 0, r = 0, n = 0, u = 0, h = undefined, a = false, _ = 0, B = undefined, d = undefined, v = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, f = undefined, c = undefined, m = -1, g = undefined, M = 0) {
     this.Owner = t;
     this.BulletRowName = e;
     this.InitialTransform = l;
@@ -46,16 +46,16 @@ class BulletInitParams {
     this.TargetId = r;
     this.BaseTransformId = n;
     this.BaseVelocityId = u;
-    this.Size = a;
-    this.FromRemote = h;
+    this.Size = h;
+    this.FromRemote = a;
     this.SyncType = _;
     this.ContextId = B;
     this.SkillContextId = d;
     this.Source = v;
     this.LocationOffset = f;
     this.BeginRotatorOffset = c;
-    this.DtType = g;
-    this.BattleFlags = m;
+    this.DtType = m;
+    this.BattleFlags = g;
     this.CreateSource = M;
   }
 }
@@ -113,6 +113,15 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.IsSceneBulletOwnerCreated = false;
     this.ala = undefined;
     this.Aal = undefined;
+    this.a$d = undefined;
+    this.h$d = undefined;
+    this.zpe = (t, e) => {
+      var l;
+      var e = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e.Id);
+      if (this.h$d.has(e) && (l = this.h$d.get(e), this.h$d.delete(e), this.a$d.has(l))) {
+        this.a$d.get(l).delete(e);
+      }
+    };
   }
   GetBulletEntityMap() {
     return this.ZHo;
@@ -152,10 +161,13 @@ class BulletModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, this.djo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.Cjo);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BulletHit, this.sjo);
     }
     this.gjo();
+    this.a$d = new Map();
+    this.h$d = new Map();
     return true;
   }
   IsBulletHit(t) {
@@ -194,6 +206,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkStart, this.djo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.Cjo);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     if (Info_1.Info.IsBuildDevelopmentOrDebug) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BulletHit, this.sjo);
     }
@@ -206,20 +219,23 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.pjo();
     this.SceneBulletOwnerId = 0;
     this.hla();
-    return true;
+    this.a$d?.clear();
+    this.a$d = undefined;
+    this.h$d?.clear();
+    return !(this.h$d = undefined);
   }
-  CreateBullet(t, e, l, i, o = 0, s, r = false, n = 0, u, a, h, _, B = 0, d = undefined, v = undefined, f = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, c = undefined, g = undefined, m = -1, M = undefined, y = undefined, C = undefined, S = undefined, L = 0) {
-    var E = this.vjo(e);
-    if (!this.mjo || !E) {
+  CreateBullet(t, e, l, i, o = 0, s, r = false, n = 0, u, h, a, _, B = 0, d = undefined, v = undefined, f = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, c = undefined, m = undefined, g = -1, M = undefined, y = undefined, S = undefined, C = undefined, E = 0) {
+    var L = this.vjo(e);
+    if (!this.mjo || !L) {
       if (t?.Valid) {
-        _ = _ ?? ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(t, e, true, m);
+        _ = _ ?? ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(t, e, true, g);
         if (_) {
           if (!r) {
             var I = t.GetComponent(206);
-            var P = _.Base.BornForbidTagIds;
-            if (P) {
-              for (const D of P) {
-                if (I.HasTag(D)) {
+            var p = _.Base.BornForbidTagIds;
+            if (p) {
+              for (const P of p) {
+                if (I.HasTag(P)) {
                   if (Log_1.Log.CheckDebug()) {
                     Log_1.Log.Debug("Bullet", 17, "BulletModel.InitBullet 中止，攻击者存在该子弹禁止生成Tag ", ["子弹名称:", e]);
                   }
@@ -227,9 +243,9 @@ class BulletModel extends ModelBase_1.ModelBase {
                 }
               }
             }
-            P = _.Base.BornRequireTagIds;
-            if (P) {
-              for (const w of P) {
+            p = _.Base.BornRequireTagIds;
+            if (p) {
+              for (const w of p) {
                 if (!I.HasTag(w)) {
                   if (Log_1.Log.CheckDebug()) {
                     Log_1.Log.Debug("Bullet", 17, "BulletModel.InitBullet 中止，攻击者不存在该子弹生成所需Tag", ["子弹名称:", e]);
@@ -239,47 +255,47 @@ class BulletModel extends ModelBase_1.ModelBase {
               }
             }
           }
-          P = new BulletInitParams(t, e, l, i, o, s, n, _.Base.BornPositionStandard !== 3 && _.Base.BornPositionStandard !== 2 ? u : 0, a, h, r, B, d, v, f, c, g, m, C, L);
+          p = new BulletInitParams(t, e, l, i, o, s, n, _.Base.BornPositionStandard !== 3 && _.Base.BornPositionStandard !== 2 ? u : 0, h, a, r, B, d, v, f, c, m, g, S, E);
           BulletModel.Mjo.Start();
           l = BulletPool_1.BulletPool.CreateBulletEntity();
           if (l?.Valid) {
-            var p = l.GetBulletInfo();
-            if (S) {
+            var D = l.GetBulletInfo();
+            if (C) {
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Bullet", 20, "打印父子弹链", ["", Array.from(S).join(",")], ["当前子弹", e]);
+                Log_1.Log.Debug("Bullet", 20, "打印父子弹链", ["", Array.from(C).join(",")], ["当前子弹", e]);
               }
-              if (S.has(e)) {
-                CombatLog_1.CombatLog.Error("Bullet", t, "父子弹链中存在当前子弹ID", ["父子弹链", Array.from(S).join(",")], ["当前子弹", e]);
+              if (C.has(e)) {
+                CombatLog_1.CombatLog.Error("Bullet", t, "父子弹链中存在当前子弹ID", ["父子弹链", Array.from(C).join(",")], ["当前子弹", e]);
                 BulletModel.Mjo.Stop();
                 return;
               }
-              if (p.ParentIds) {
-                for (const s of S) {
-                  p.ParentIds.add(s);
+              if (D.ParentIds) {
+                for (const s of C) {
+                  D.ParentIds.add(s);
                 }
               } else {
-                p.ParentIds = S;
+                D.ParentIds = C;
               }
             }
-            if (r && (M && p.RandomPosOffset.FromUeVector(M), y)) {
-              p.RandomInitSpeedOffset.FromUeVector(y);
+            if (r && (M && D.RandomPosOffset.FromUeVector(M), y)) {
+              D.RandomInitSpeedOffset.FromUeVector(y);
             }
-            p.Init(P, _);
-            p.InitEntity(l);
+            D.Init(p, _);
+            D.InitEntity(l);
             this.ZHo.set(l.Id, l);
             if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Bullet", 17, "创建子弹", ...BulletLog_1.BulletLog.ToPairs(p));
+              Log_1.Log.Debug("Bullet", 17, "创建子弹", ...BulletLog_1.BulletLog.ToPairs(D));
             }
-            i = p.AttackerId;
+            i = D.AttackerId;
             o = this.tjo.get(i);
             (o || (s = this.ejo.pop() ?? new Set(), this.tjo.set(i, s), s)).add(l);
-            this.rMc(t, e, p);
+            this.rMc(t, e, D);
             EntitySystem_1.EntitySystem.Start(l);
             EntitySystem_1.EntitySystem.Activate(l);
             EntitySystem_1.EntitySystem.PostActive(l);
             BulletModel.Mjo.Stop();
-            BulletController_1.BulletController.AddSimpleAction(p, 1);
-            if (E) {
+            BulletController_1.BulletController.AddSimpleAction(D, 1);
+            if (L) {
               this.cjo.add(l.Id);
             }
             return l;
@@ -300,8 +316,8 @@ class BulletModel extends ModelBase_1.ModelBase {
       let t = 0;
       let e = 0;
       let l = 0;
-      for (const h of s.FilterById(72)) {
-        var u = h.GetBulletSizeScale(r);
+      for (const a of s.FilterById(72)) {
+        var u = a.GetBulletSizeScale(r);
         if (u) {
           t += u[0];
           e += u[1];
@@ -316,46 +332,47 @@ class BulletModel extends ModelBase_1.ModelBase {
       for (const B of s.FilterById(74)) {
         o += B.GetBulletInterval(r);
       }
-      var a;
+      var h;
       var s = t === 0 && e === 0 && l === 0;
       if (!s || i !== 0 || o !== 0) {
-        (a = new BulletInfo_1.BulletAdditionInfo()).Init();
+        (h = new BulletInfo_1.BulletAdditionInfo()).Init();
         if (!s) {
-          a.SizeScale.Set(t, e, l);
-          a.SizeScale.AdditionEqual(Vector_1.Vector.OneVectorProxy);
+          h.SizeScale.Set(t, e, l);
+          h.SizeScale.AdditionEqual(Vector_1.Vector.OneVectorProxy);
         }
-        a.DurationAddition = i;
-        a.IntervalScale = 1 + o;
-        n.AdditionInfo = a;
+        h.DurationAddition = i;
+        h.IntervalScale = 1 + o;
+        n.AdditionInfo = h;
       }
     }
   }
-  DestroyBullet(t, e, l = 0) {
-    var i;
+  DestroyBullet(t, e, l = 0, i = false) {
     var o;
-    var s = this.ZHo.get(t);
-    if (s) {
-      s = s.GetBulletInfo();
-      ModelManager_1.ModelManager.CombatMessageModel?.OnBulletRemoved(s.BulletInitParams.SkillContextId, s.ContextId);
-      if (!s.NeedDestroy) {
-        s.NeedDestroy = true;
+    var s;
+    var r = this.ZHo.get(t);
+    if (r) {
+      r = r.GetBulletInfo();
+      ModelManager_1.ModelManager.CombatMessageModel?.OnBulletRemoved(r.BulletInitParams.SkillContextId, r.ContextId);
+      if (!r.NeedDestroy) {
+        r.NeedDestroy = true;
         if (BulletConstant_1.BulletConstant.OpenDestroyLog) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(s));
+            Log_1.Log.Error("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
           }
         } else if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(s));
+          Log_1.Log.Debug("Bullet", 17, "销毁子弹开始", ...BulletLog_1.BulletLog.ToPairs(r));
         }
-        i = s.BulletRowName;
+        o = r.BulletRowName;
         if (StatDefine_1.BATTLESTAT_ENABLED) {
-          BulletController_1.BulletController.GetBulletDestroyStat(i).Start();
+          BulletController_1.BulletController.GetBulletDestroyStat(o).Start();
         }
-        (o = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(13)).SummonChild = e;
-        o.DestroyReason = l;
+        (s = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(13)).SummonChild = e;
+        s.DestroyReason = l;
+        s.DestroyEffectImmediately = i;
         this.ijo.add(t);
-        BulletController_1.BulletController.GetActionRunner().AddAction(s, o);
+        BulletController_1.BulletController.GetActionRunner().AddAction(r, s);
         if (StatDefine_1.BATTLESTAT_ENABLED) {
-          BulletController_1.BulletController.GetBulletDestroyStat(i).Stop();
+          BulletController_1.BulletController.GetBulletDestroyStat(o).Stop();
         }
       }
     }
@@ -385,7 +402,7 @@ class BulletModel extends ModelBase_1.ModelBase {
         }
         if (e = this.GetBulletHandleById(o)) {
           (l = Protocol_1.Aki.Protocol.te_.create()).uVn = e;
-          CombatMessage_1.CombatNet.Send(23189, t.Attacker, l);
+          CombatMessage_1.CombatNet.Send(24734, t.Attacker, l);
           if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Bullet", 20, "销毁子弹 发送协议", ...BulletLog_1.BulletLog.ToPairs(t));
           }
@@ -540,15 +557,15 @@ class BulletModel extends ModelBase_1.ModelBase {
   SetAllBulletTimeScale(t, e, l, i, o, s, r) {
     this.PersistentTimeScaleId--;
     var n = this.PersistentTimeScaleId;
-    for (const h of this.GetBulletEntityMap().values()) {
-      var u = h.GetBulletInfo();
+    for (const a of this.GetBulletEntityMap().values()) {
+      var u = a.GetBulletInfo();
       if (u.IsInit && !u.NeedDestroy && !u.BulletDataMain.TimeScale.TimeScaleWithAttacker) {
         if (t) {
-          var a = u.CollisionInfo.LastFramePosition;
-          if (!a) {
+          var h = u.CollisionInfo.LastFramePosition;
+          if (!h) {
             continue;
           }
-          if (Math.abs(a.X - t.X) > e || Math.abs(a.Y - t.Y) > e || Math.abs(a.Z - t.Z) > e) {
+          if (Math.abs(h.X - t.X) > e || Math.abs(h.Y - t.Y) > e || Math.abs(h.Z - t.Z) > e) {
             continue;
           }
         }
@@ -642,6 +659,27 @@ class BulletModel extends ModelBase_1.ModelBase {
       t = t.GetBulletInfo();
       EffectSystem_1.EffectSystem.SetEffectHidden(t.EffectInfo.Effect, e, "演出子弹特效清场");
     }
+  }
+  SummonerSummon(t, e) {
+    if (!this.a$d.has(t)) {
+      this.a$d.set(t, new Set());
+    }
+    this.a$d.get(t).add(e);
+    this.h$d.set(e, t);
+  }
+  GetSummonEntityIds(t) {
+    const l = [];
+    if (this.a$d.has(t)) {
+      this.a$d.get(t).forEach(t => {
+        var e = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t);
+        if (e) {
+          l.push(e);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Bullet", 72, "[BulletModel] 不存在实体Id", ["CreatureDataId", t]);
+        }
+      });
+    }
+    return l;
   }
 }
 (exports.BulletModel = BulletModel).DefaultBulletSceneInteraction = undefined;

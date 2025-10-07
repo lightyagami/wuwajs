@@ -4,11 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AiStateMachineTaskMontage = undefined;
-const Log_1 = require("../../../../Core/Common/Log");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
+const CombatLog_1 = require("../../../Utils/CombatLog");
 const AiStateMachine_1 = require("../AiStateMachine");
 const AiStateMachineTask_1 = require("./AiStateMachineTask");
 class AiStateMachineTaskMontage extends AiStateMachineTask_1.AiStateMachineTask {
@@ -37,9 +37,7 @@ class AiStateMachineTaskMontage extends AiStateMachineTask_1.AiStateMachineTask 
       this.rse = undefined;
     };
     this.sbu = t => {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("StateMachine", 84, "Montage Task OnMontageRemain", ["montage", this.GetNameByCurrentHandle()], ["remain time", t], ["remained trigger", this.RemainedTrigger]);
-      }
+      CombatLog_1.CombatLog.Info("StateMachineNew", this.Node?.Entity, "Montage Task OnMontageRemain", ["montage", this.GetNameByCurrentHandle()], ["remain time", t], ["remained trigger", this.RemainedTrigger]);
       EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnMontageRemain, t);
     };
   }

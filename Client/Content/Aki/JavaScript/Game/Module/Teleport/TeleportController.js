@@ -20,6 +20,7 @@ const Quat_1 = require("../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const Platform_1 = require("../../../Launcher/Platform/Platform");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const CameraController_1 = require("../../Camera/CameraController");
 const CameraUtility_1 = require("../../Camera/CameraUtility");
@@ -61,20 +62,20 @@ const SKIP_FALL_INJURE_TIME = 1000;
 const DELAYCLOSETIME = 1500;
 class TeleportController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(20659, this.AIo);
-    Net_1.Net.Register(22310, this.Nkl);
-    Net_1.Net.Register(21710, this.PIo);
-    Net_1.Net.Register(21667, this.S3l);
-    Net_1.Net.Register(18929, this.P$_);
+    Net_1.Net.Register(21467, this.AIo);
+    Net_1.Net.Register(23787, this.Nkl);
+    Net_1.Net.Register(21372, this.PIo);
+    Net_1.Net.Register(24101, this.S3l);
+    Net_1.Net.Register(20080, this.P$_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitArea, this.Hlh);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(20659);
-    Net_1.Net.UnRegister(22310);
-    Net_1.Net.UnRegister(21710);
-    Net_1.Net.UnRegister(21667);
-    Net_1.Net.UnRegister(18929);
+    Net_1.Net.UnRegister(21467);
+    Net_1.Net.UnRegister(23787);
+    Net_1.Net.UnRegister(21372);
+    Net_1.Net.UnRegister(24101);
+    Net_1.Net.UnRegister(20080);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InitArea, this.Hlh);
     return true;
   }
@@ -138,7 +139,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   static QueryCanTeleportNoLoading(e, o = false) {
     var r = Global_1.Global.BaseCharacter;
     if (r?.IsValid()) {
-      return (o ? UE.VectorDouble.Dist2D(r.CharacterActorComponent.ActorLocation, e) : UE.VectorDouble.Dist(r.CharacterActorComponent.ActorLocation, e)) < (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.UseWorldPartition ? DISTANCE_THRESHOLD_2 : DISTANCE_THRESHOLD_1);
+      return (o && !Platform_1.Platform.IsMacPlatform() ? UE.VectorDouble.Dist2D(r.CharacterActorComponent.ActorLocation, e) : UE.VectorDouble.Dist(r.CharacterActorComponent.ActorLocation, e)) < (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.UseWorldPartition ? DISTANCE_THRESHOLD_2 : DISTANCE_THRESHOLD_1);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Teleport", 29, "查询是否可以无加载传送:失败,找不到当前玩家");
@@ -153,7 +154,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       }
     }
     let a = l;
-    if (((a = a || new TeleportDefine_1.TeleportContext()).TeleportReason === Protocol_1.Aki.Protocol.v4s.SL_ || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Xvs || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Proto_Fall) && ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Proto_Gm && ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot()) {
+    if (((a = a || new TeleportDefine_1.TeleportContext()).TeleportReason === Protocol_1.Aki.Protocol.v4s.SL_ || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Xvs || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Proto_Fall) && ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.cVu && ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot()) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Teleport", 39, "传送:遇到不应执行传送的情况，使用伪传送替代", ["TeleportReason", a.TeleportReason], ["Reason", t]);
       }
@@ -169,7 +170,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       }
     }
     let a = l;
-    return ((a = a || new TeleportDefine_1.TeleportContext()).TeleportReason === Protocol_1.Aki.Protocol.v4s.SL_ || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Xvs) && !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Proto_Gm && !!ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot() || TeleportController.BIo(e, o, r, t, a, false);
+    return ((a = a || new TeleportDefine_1.TeleportContext()).TeleportReason === Protocol_1.Aki.Protocol.v4s.SL_ || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.Xvs) && !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || a.TeleportReason === Protocol_1.Aki.Protocol.v4s.cVu && !!ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot() || TeleportController.BIo(e, o, r, t, a, false);
   }
   static ShowTeleportConfirmBox(e = () => {}) {
     var o = ModelManager_1.ModelManager.InstanceDungeonModel.GetCurrentDungeonTelExitConfirmId();
@@ -179,28 +180,33 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
   static SendTeleportTransferRequest(e) {
     if (!this.ShowTeleportConfirmBox(() => {
-      ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
-      this.t4_(e);
+      this.t4_(e, () => {
+        ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
+      });
     })) {
       this.t4_(e);
     }
   }
-  static t4_(e) {
+  static t4_(e, o) {
     ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = e;
     ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = e;
-    this.SendTeleportTransferRequestById(e);
+    this.SendTeleportTransferRequestById(e, o);
   }
-  static SendTeleportTransferRequestById(e) {
+  static SendTeleportTransferRequestById(e, o) {
     ModelManager_1.ModelManager.GameModeModel.IsTeleport = true;
     e = Protocol_1.Aki.Protocol.mCs.create({
       s5n: e
     });
-    Net_1.Net.Call(21203, e, e => {
+    Net_1.Net.Call(16308, e, e => {
       if (GlobalData_1.GlobalData.World) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
-          ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29079);
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
+            ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25681);
+          } else {
+            o?.();
+          }
         }
       } else {
         ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
@@ -209,7 +215,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     });
   }
   static async wIo(e, o, r, t, l, a = true, _ = false, n = 0, i = true) {
-    if (!TeleportController.GNu(e, o, r, true, t, l, n)) {
+    if (!TeleportController.L3u(e, o, r, true, t, l, n)) {
       return false;
     }
     const g = ModelManager_1.ModelManager.TeleportModel;
@@ -228,6 +234,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     e = new AsyncTask_1.AsyncTask("TeleportToPositionNoLoadingImpl", async () => {
       ModelManager_1.ModelManager.TeleportModel.NeedRestoreCamera = a;
       if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() || !!ModelManager_1.ModelManager.GameModeModel.UseWorldPartition) {
+        this.q3u();
         ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 11;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Teleport", 29, "无加载传送:检测体素流送(开始)");
@@ -297,7 +304,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     }
     var t = new AsyncTask_1.AsyncTask("FakeTeleportToPositionImpl", async () => {
       r.CreatePromise();
-      if (e.TeleportReason === Protocol_1.Aki.Protocol.v4s.Proto_Gm) {
+      if (e.TeleportReason === Protocol_1.Aki.Protocol.v4s.cVu) {
         await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(6);
       }
       if (Log_1.Log.CheckInfo()) {
@@ -322,7 +329,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     return t.Promise;
   }
   static async BIo(e, o, r, t, l, a = true, _ = 0) {
-    if (!TeleportController.GNu(e, o, r, false, t, l, _)) {
+    if (!TeleportController.L3u(e, o, r, false, t, l, _)) {
       return false;
     }
     const n = ModelManager_1.ModelManager.TeleportModel;
@@ -355,7 +362,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
               await this.FIo(l.Option.q$_.y5n, () => {
                 var e = Protocol_1.Aki.Protocol.D$_.create();
                 e.x$_ = l.Option.q$_.y5n;
-                Net_1.Net.Call(26476, e, e => {
+                Net_1.Net.Call(15815, e, e => {
                   if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
                     if (Log_1.Log.CheckInfo()) {
                       Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);
@@ -410,10 +417,17 @@ class TeleportController extends ControllerBase_1.ControllerBase {
               break;
             case Protocol_1.Aki.Protocol.p5n.Proto_WithCustomLoading:
               if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("Teleport", 71, "TransitionType.CustomLoading开始", ["id", l.Option.$Jc?.v9n]);
+                Log_1.Log.Info("Teleport", 71, "TransitionType.CustomLoading开始", ["id", l.Option.zed?.v9n]);
               }
-              ModelManager_1.ModelManager.LoadingModel?.SetSpecifiedLoadingConfigId(l.Option.$Jc?.v9n);
+              ModelManager_1.ModelManager.LoadingModel?.SetSpecifiedLoadingConfigId(l.Option.zed?.v9n);
               await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(6, n.TeleportMode);
+              break;
+            case Protocol_1.Aki.Protocol.p5n.Proto_WithSpine:
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Teleport", 87, "TransitionType.SpecialTransition开始");
+              }
+              ControllerHolder_1.ControllerHolder.BlackScreenFadeController.NeedGuarantee = false;
+              await this.TeleportWithSpecialTransition(l.Option.BAd, "TeleportController");
               break;
             default:
               if (!ModelManager_1.ModelManager.TeleportModel.DisableAutoFade || ModelManager_1.ModelManager.TeleportModel.TeleportMode !== 3) {
@@ -489,7 +503,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         await this.SeamlessTeleportStart();
       }
       ModelManager_1.ModelManager.GameModeModel.StartIndependentStreaming(n.TargetPosition.ToUeVector());
-      this.FNu();
+      this.q3u();
       ModelManager_1.ModelManager.GameModeModel.LoadingPhase = 11;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Teleport", 29, "传送:检测体素流送(开始)");
@@ -624,6 +638,15 @@ class TeleportController extends ControllerBase_1.ControllerBase {
                   Log_1.Log.Info("Teleport", 45, "传送:纯黑幕传送完成(完成)");
                 }
                 break;
+              case Protocol_1.Aki.Protocol.p5n.Proto_WithSpine:
+                if (Log_1.Log.CheckInfo()) {
+                  Log_1.Log.Info("Teleport", 87, "传送:特殊过渡效果传送完成(开始)");
+                }
+                await ControllerHolder_1.ControllerHolder.SpecialTransitionController.CloseSpecialTransitionLoading();
+                if (Log_1.Log.CheckInfo()) {
+                  Log_1.Log.Info("Teleport", 87, "传送:特殊过渡效果传送完成(完成)");
+                }
+                break;
               default:
                 await LevelLoadingController_1.LevelLoadingController.WaitCloseLoading(6);
             }
@@ -721,7 +744,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     TaskSystem_1.TaskSystem.Run();
     return r.Promise;
   }
-  static GNu(e, o, r, t, l, a, _ = 0) {
+  static L3u(e, o, r, t, l, a, _ = 0) {
     var n = ModelManager_1.ModelManager.TeleportModel;
     if (n.IsTeleport) {
       if (Log_1.Log.CheckWarn()) {
@@ -919,7 +942,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       (e ? r.VoxelStreamingCompleted : r.StreamingCompleted).SetResult(true);
     }
   }
-  static FNu() {
+  static q3u() {
     var e;
     if (UE.KuroStaticLibrary.IsLowMemoryDevice() && (e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.WorldPartitionSubsystem.StaticClass())) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 60, "清理卸载流送单元(开始)", ["PhysicalMemory", GameSettingsDeviceRender_1.GameSettingsDeviceRender.PhysicalGBRam]), e.FlushUnloadingStreamingCells(), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Teleport", 60, "清理卸载流送单元(结束)");
@@ -927,7 +950,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
   static kIo() {
     var e = new Protocol_1.Aki.Protocol.pCs();
-    Net_1.Net.Call(26614, e, e => {
+    Net_1.Net.Call(15195, e, e => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Teleport", 29, "传送:TeleportFinishRequestSetResult(开始)");
       }
@@ -1431,6 +1454,9 @@ class TeleportController extends ControllerBase_1.ControllerBase {
         r.p5n = Protocol_1.Aki.Protocol.p5n.Proto_FadeInScreen;
         r.EIl = e.ScreenType === IAction_1.EFadeInScreenShowType.Black ? 1 : 0;
         break;
+      case IAction_1.ETeleportTransitionType.CustomScreen:
+        this.nBd(r, e);
+        break;
       default:
         r.p5n = Protocol_1.Aki.Protocol.p5n.Proto_Empty;
     }
@@ -1493,8 +1519,50 @@ class TeleportController extends ControllerBase_1.ControllerBase {
       case Protocol_1.Aki.Protocol.p5n.Proto_WithCustomLoading:
         ModelManager_1.ModelManager.TeleportModel.TeleportMode = 1;
         break;
+      case Protocol_1.Aki.Protocol.p5n.Proto_WithSpine:
+        ModelManager_1.ModelManager.TeleportModel.TeleportMode = 6;
+        break;
       default:
         ModelManager_1.ModelManager.TeleportModel.TeleportMode = this.KIo(r);
+    }
+  }
+  static nBd(e, o) {
+    e.p5n = Protocol_1.Aki.Protocol.p5n.Proto_WithSpine;
+    e.BAd = Protocol_1.Aki.Protocol.BAd.create();
+    e.BAd.kAd = Protocol_1.Aki.Protocol.kAd.create();
+    if (o.ScreenType.Type === IAction_1.ECustomScreenType.Spine) {
+      (e.BAd.kAd.FAd = Protocol_1.Aki.Protocol.FAd.create()).VAd = o.ScreenType.SpineId;
+    } else if (o.ScreenType.Type === IAction_1.ECustomScreenType.BackgroundImage) {
+      (e.BAd.kAd.NAd = Protocol_1.Aki.Protocol.NAd.create()).jAd = o.ScreenType.BackgroundImagePath;
+    }
+    if (o.FadeInEffect) {
+      e.BAd.OAd = Protocol_1.Aki.Protocol.OAd.create();
+    }
+    if (o.FadeOutEffect) {
+      e.BAd.qAd = Protocol_1.Aki.Protocol.qAd.create();
+    }
+    if (o.KeepTime) {
+      e.BAd.Zps = o.KeepTime;
+    }
+    if (o.CustomShowUi) {
+      e.BAd.GAd = Protocol_1.Aki.Protocol.GAd.create();
+    }
+  }
+  static async TeleportWithSpecialTransition(e, o) {
+    if (e) {
+      try {
+        await ControllerHolder_1.ControllerHolder.SpecialTransitionController.OpenSpecialTransitionLoadingByTeleportPb(e);
+      } catch (e) {
+        if (e instanceof Error) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.ErrorWithStack("Teleport", 87, "TeleportWithSpecialTransition执行异常", e, ["error", e.message], ["tag", o]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Teleport", 87, "TeleportWithSpecialTransition执行异常", ["error", e], ["tag", o]);
+        }
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Teleport", 87, "TransitionWithSpineLoadingPb为空", ["tag", o]);
     }
   }
 }
@@ -1608,7 +1676,7 @@ TeleportController.P$_ = o => {
   _a.FIo(o.x$_, () => {
     var e = Protocol_1.Aki.Protocol.D$_.create();
     e.x$_ = o.x$_;
-    Net_1.Net.Call(26476, e, e => {
+    Net_1.Net.Call(15815, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);

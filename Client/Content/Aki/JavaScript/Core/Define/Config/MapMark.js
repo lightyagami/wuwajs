@@ -129,6 +129,12 @@ class MapMark {
   get AssociatedGameplayMarks() {
     return GameUtils_1.GameUtils.ConvertToArray(this.associatedgameplaymarksLength(), this.associatedgameplaymarks, this);
   }
+  get GameplayLockText() {
+    return this.gameplaylocktext();
+  }
+  get GameplayLockJumpId() {
+    return this.gameplaylockjumpid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -499,6 +505,22 @@ class MapMark {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  gameplaylocktext(t) {
+    var i = this.J7.__offset(this.z7, 78);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  gameplaylockjumpid() {
+    var t = this.J7.__offset(this.z7, 80);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

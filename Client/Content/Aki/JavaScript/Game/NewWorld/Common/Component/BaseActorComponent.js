@@ -27,7 +27,6 @@ const Time_1 = require("../../../../Core/Common/Time");
 const Entity_1 = require("../../../../Core/Entity/Entity");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
-const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
@@ -118,6 +117,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     this.Nrn = true;
     this.Orn = true;
     this.IsInSequenceBinding = false;
+    this.UseAnimInstanceCachePool = false;
     this.DisableActorHandle = undefined;
     this.DisableCollisionHandle = undefined;
     this.krn = undefined;
@@ -572,9 +572,6 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   }
   DisableActor(t) {
     var i = this.DisableActorHandle.Disable(t, this.constructor.name);
-    if (this.vJ) {
-      EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.Entity.Id, false);
-    }
     if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureData?.GetEntityType()) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Entity", 3, "DisableActor", ["CreatureDataId", this.CreatureData?.GetCreatureDataId()], ["PbDataId", this.CreatureData?.GetPbDataId()], ["Handle", i], ["Reason", t]);
     }
@@ -597,23 +594,13 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureData?.GetEntityType()) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Entity", 3, "EnableActor", ["CreatureDataId", this.CreatureData?.GetCreatureDataId()], ["PbDataId", this.CreatureData?.GetPbDataId()], ["Handle", t]);
     }
+    var i;
     var t = this.DisableActorHandle.Enable(t, this.constructor.name);
-    var i = this.DisableActorHandle.Empty;
-    if (this.vJ) {
-      EventSystem_1.EventSystem.EmitWithTarget(this.vJ, EventDefine_1.EEventName.OnEnableActor, this.Entity.Id, i);
-    }
     if (t && this.ActorInternal?.IsValid() && this.ActorInternal.bHidden !== !this.DisableActorHandle.Empty) {
+      i = this.DisableActorHandle.Empty;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
       EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
-      if (this.Entity.GetComponent(115)) {
-        TimerSystem_1.TimerSystem.Next(() => {
-          if (this.ActorInternal?.IsValid()) {
-            this.ActorInternal.SetActorHiddenInGame(!this.DisableActorHandle.Empty);
-          }
-        });
-      } else {
-        this.ActorInternal.SetActorHiddenInGame(!i);
-      }
+      this.ActorInternal.SetActorHiddenInGame(!i);
     }
     return t;
   }

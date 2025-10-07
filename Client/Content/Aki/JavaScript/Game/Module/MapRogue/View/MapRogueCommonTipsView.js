@@ -11,7 +11,7 @@ class MapRogueCommonTipsView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Go1 = 0;
-    this._Zu = () => {
+    this.QJu = () => {
       if (this.UiViewSequence.HasSequenceNameInPlaying(this.UiViewSequence.StartSequenceName)) {
         this.UiViewSequence.StopSequenceByKey(this.UiViewSequence.StartSequenceName, true, true);
       }
@@ -19,7 +19,7 @@ class MapRogueCommonTipsView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this._Zu]];
+    this.BtnBindInfo = [[0, this.QJu]];
   }
   OnAfterShow() {
     this.CloseMe(() => {

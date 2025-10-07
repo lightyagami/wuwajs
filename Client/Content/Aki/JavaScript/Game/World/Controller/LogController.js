@@ -46,11 +46,11 @@ class SkillButtonDebugInfo extends Json_1.JsonObjBase {
 }
 class LogController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(17340, this.SLn);
+    Net_1.Net.Register(15310, this.SLn);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(17340);
+    Net_1.Net.UnRegister(15310);
     return true;
   }
   static qfr(o) {
@@ -188,6 +188,12 @@ class LogController extends ControllerBase_1.ControllerBase {
     }
     LogReportController_1.LogReportController.LogReport(o);
   }
+  static LogRoleDevPush(o) {
+    if (LOG_SWITCH && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("RoleDev", 88, "日志上报-角色培养计划日志", ["内容", o]);
+    }
+    LogReportController_1.LogReportController.LogReport(o);
+  }
   static GetSkillButtonDebugInfo() {
     var o = [];
     for (const l of ModelManager_1.ModelManager.SkillButtonUiModel.GetAllSkillButtonEntityData()) {
@@ -247,7 +253,7 @@ ${g}`);
   static RequestOutputDebugInfo() {
     var o = new Protocol_1.Aki.Protocol.Debug.FZn();
     o.GKn = LogController.OutputDebugInfo();
-    Net_1.Net.Call(23517, o, o => {
+    Net_1.Net.Call(25018, o, o => {
       if (o && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Log", 37, "[Debug]服务器端战斗状态信息打印");
       }

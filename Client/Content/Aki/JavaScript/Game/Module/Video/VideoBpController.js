@@ -19,7 +19,7 @@ class VideoBpController extends ControllerBase_1.ControllerBase {
   static OnClear() {
     return true;
   }
-  static Jhd() {
+  static Hdd() {
     return this.jio.SpawnOrGetVideoBp();
   }
   static RemoveBp() {
@@ -31,11 +31,11 @@ class VideoBpController extends ControllerBase_1.ControllerBase {
   static async PreloadMp4s(e) {
     var o = [];
     for (const r of e) {
-      o.push(this.kld(r));
+      o.push(this.Nmd(r));
     }
     await Promise.all(o);
   }
-  static async kld(o) {
+  static async Nmd(o) {
     const r = new CustomPromise_1.CustomPromise();
     const t = ConfigManager_1.ConfigManager.VideoConfig.GetVideoData(o);
     if (t) {
@@ -53,7 +53,7 @@ class VideoBpController extends ControllerBase_1.ControllerBase {
     return r.Promise;
   }
   static PlayEffect(o) {
-    const r = this.Jhd();
+    const r = this.Hdd();
     if (!r) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Preload", 45, "[VideoBp]生成VideoBp蓝图失败");

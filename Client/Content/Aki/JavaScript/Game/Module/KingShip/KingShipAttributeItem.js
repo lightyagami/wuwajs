@@ -21,19 +21,19 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     this.$Xt = 0;
     this.XSu = 0;
     this.YSu = 0;
-    this.gFu = 0;
+    this.rku = 0;
     this.CurrentCount = 0;
     this.HaveRefresh = false;
-    this.CFu = false;
-    this.pFu = false;
+    this.PFu = false;
+    this.xFu = false;
     this.s2i = undefined;
     this.a2i = undefined;
     this.zSu = undefined;
     this.SPe = undefined;
     this.OnClickTipsCallBack = undefined;
-    this.vJu = false;
-    this.yJu = false;
-    this.SJu = new Map();
+    this.KXc = false;
+    this.XXc = false;
+    this.YXc = new Map();
     this.IsShowByKingShip = false;
     this.nqe = () => {
       var t;
@@ -63,13 +63,13 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     this.a2i = this.GetSprite(5);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.SPe.BindSequenceCloseEvent(t => {
-      if (t === "ArrowOut" && (this.yJu && (this.GetItem(2).SetUIActive(false), this.yJu = false), this.vJu)) {
+      if (t === "ArrowOut" && (this.XXc && (this.GetItem(2).SetUIActive(false), this.XXc = false), this.KXc)) {
         this.GetItem(3).SetUIActive(false);
-        this.vJu = false;
+        this.KXc = false;
       }
     });
     this.YSu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipStaticAttributeChangeMoveSpeed") ?? 0;
-    this.gFu = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipValueUseBigEffect") ?? 0;
+    this.rku = CommonParamById_1.configCommonParamById.GetFloatConfig("KingShipValueUseBigEffect") ?? 0;
     this.GetItem(8).SetUIActive(false);
   }
   RefreshItem(t, i) {
@@ -99,34 +99,34 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KingShip", 5, "KingShip_Attribute", ["AttributeId:", this.ine], ["Value:", this.CurrentCount]);
     }
-    this.CFu = false;
-    this.pFu = false;
+    this.PFu = false;
+    this.xFu = false;
     if (t < 0) {
       this.s2i?.SetFillAmount(this.zSu?.fillAmount ?? 0);
       this.zSu?.SetFillAmount(this.CurrentCount / this.$Xt);
       this.zSu?.SetUIActive(false);
       this.a2i?.SetFillAmount(0);
-      this.CFu = true;
+      this.PFu = true;
     } else {
       this.a2i?.SetFillAmount(this.zSu?.fillAmount ?? 0);
       this.zSu?.SetFillAmount(this.CurrentCount / this.$Xt);
       this.zSu?.SetUIActive(false);
       this.s2i?.SetFillAmount(0);
-      this.pFu = true;
+      this.xFu = true;
     }
   }
   RefreshBuffItem(t, i) {
     if (t) {
-      this.SJu.set(t, i);
+      this.YXc.set(t, i);
     }
   }
   RefreshUpDownItem() {
     let t = 0;
-    if (this.SJu.size <= 0) {
+    if (this.YXc.size <= 0) {
       this.SetDownItem(false);
       this.SetUpItem(false);
     } else {
-      for (var [i] of this.SJu) {
+      for (var [i] of this.YXc) {
         t += i;
       }
       if (t > 0) {
@@ -139,12 +139,12 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   RefreshBuffRounds() {
-    for (var [t, i] of this.SJu) {
+    for (var [t, i] of this.YXc) {
       i = i - 1;
       if (i <= 0) {
-        this.SJu.delete(t);
+        this.YXc.delete(t);
       } else {
-        this.SJu.set(t, i);
+        this.YXc.set(t, i);
       }
     }
   }
@@ -156,7 +156,7 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
         this.SPe?.PlayLevelSequenceByName("ArrowIn");
       } else {
         this.SPe?.PlayLevelSequenceByName("ArrowOut");
-        this.yJu = true;
+        this.XXc = true;
       }
     }
   }
@@ -168,13 +168,13 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
         this.SPe?.PlayLevelSequenceByName("ArrowIn");
       } else {
         this.SPe?.PlayLevelSequenceByName("ArrowOut");
-        this.vJu = true;
+        this.KXc = true;
       }
     }
   }
   SetAttributeItem(t, i = 0) {
     if (t && i) {
-      t = Math.abs(i) >= this.gFu;
+      t = Math.abs(i) >= this.rku;
       this.GetItem(6).SetUIActive(t);
       this.GetItem(7).SetUIActive(!t);
       if (t) {
@@ -190,14 +190,14 @@ class KingShipAttributeItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   Update() {
-    if (this.a2i && this.zSu && this.s2i && (this.CFu || this.pFu) && (this.pFu && (this.a2i.fillAmount < this.zSu.fillAmount ? (this.a2i.SetUIActive(true), this.a2i.SetFillAmount(this.a2i?.fillAmount + this.YSu)) : (this.zSu.SetUIActive(true), this.a2i.SetUIActive(false), this.pFu = false)), this.CFu)) {
+    if (this.a2i && this.zSu && this.s2i && (this.PFu || this.xFu) && (this.xFu && (this.a2i.fillAmount < this.zSu.fillAmount ? (this.a2i.SetUIActive(true), this.a2i.SetFillAmount(this.a2i?.fillAmount + this.YSu)) : (this.zSu.SetUIActive(true), this.a2i.SetUIActive(false), this.xFu = false)), this.PFu)) {
       if (this.s2i.fillAmount > this.zSu.fillAmount) {
         this.s2i.SetUIActive(true);
         this.s2i.SetFillAmount(this.s2i?.fillAmount - this.YSu);
       } else {
         this.zSu.SetUIActive(true);
         this.s2i.SetUIActive(false);
-        this.CFu = false;
+        this.PFu = false;
       }
     }
   }

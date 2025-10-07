@@ -12,9 +12,10 @@ const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const CameraController_1 = require("../../Camera/CameraController");
 const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const LoginDefine_1 = require("../Login/Data/LoginDefine");
+const MeshStreamTaskContext_1 = require("../MeshStream/MeshStreamTaskContext");
 const UiModelUtil_1 = require("../UiModel/UiModelUtil");
-const UiModelResourcesManager_1 = require("./UiModelResourcesManager");
 const UiSceneRoleActorManager_1 = require("./UiSceneRoleActorManager");
 const SEQUENCE_CAMERA_TAG = new UE.FName("SequenceCamera");
 const CINEMATIC_TICK_TAG = new UE.FName("CinematicTick");
@@ -31,7 +32,7 @@ class UiLoginSceneManager {
   }
   static exo() {
     for (const n of this.bwa) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(n);
+      ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(n);
     }
     for (var [, e] of UiLoginSceneManager.ZPo) {
       e = e.GetRoleActorIndex();
@@ -79,24 +80,27 @@ class UiLoginSceneManager {
     var n = e[LoginDefine_1.ELoginSex.Boy];
     UiLoginSceneManager.hxo(n, "BoyCase");
   }
-  static hxo(n, i) {
-    const a = UiLoginSceneManager.GetRoleObserver(n);
-    const r = a.Model;
-    var e = r.CheckGetComponent(14);
-    const o = () => {
-      r.CheckGetComponent(18).SetActive(true);
+  static hxo(i, a) {
+    const r = UiLoginSceneManager.GetRoleObserver(i);
+    const o = r.Model;
+    var e = o.CheckGetComponent(14);
+    const g = () => {
+      o.CheckGetComponent(18).SetActive(true);
     };
-    e?.LoadModelByRoleConfigId(n, -1, false, () => {
-      var e = r.CheckGetComponent(18).GetHuluHandle().Model.CheckGetComponent(2).GetModelAllMesh();
-      var e = UiModelResourcesManager_1.UiModelResourcesManager.LoadMeshesComponentsBundleStreaming(e, undefined, o);
+    e?.LoadModelByRoleConfigId(i, -1, false, () => {
+      var e = o.CheckGetComponent(18).GetHuluHandle().Model.CheckGetComponent(2).GetModelAllMesh();
+      var n = new MeshStreamTaskContext_1.MeshStreamTaskContext();
+      n.SkeletalMeshes = e;
+      n.OnTaskFinish = g;
+      var e = ControllerHolder_1.ControllerHolder.MeshStreamController.AddMeshStreamTask(n);
       this.bwa.push(e);
-      UiModelUtil_1.UiModelUtil.SetVisible(r, true);
-      r.CheckGetComponent(16)?.SetState(11);
-      e = a.Model?.CheckGetComponent(1);
-      e?.SetTransformByTag(i);
-      e.MainMeshComponent.KuroLodMask = 1;
-      e.MainMeshComponent.KuroAnimInstanceLod = 1;
-      UiLoginSceneManager.txo.push(n);
+      UiModelUtil_1.UiModelUtil.SetVisible(o, true);
+      o.CheckGetComponent(16)?.SetState(11);
+      n = r.Model?.CheckGetComponent(1);
+      n?.SetTransformByTag(a);
+      n.MainMeshComponent.KuroLodMask = 1;
+      n.MainMeshComponent.KuroAnimInstanceLod = 1;
+      UiLoginSceneManager.txo.push(i);
       if (UiLoginSceneManager.txo.length >= 2) {
         UiLoginSceneManager.nxo();
         UiLoginSceneManager.VO_?.();

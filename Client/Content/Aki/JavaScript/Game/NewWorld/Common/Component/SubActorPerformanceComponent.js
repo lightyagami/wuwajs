@@ -165,5 +165,5 @@ let SubActorPerformanceComponent = SubActorPerformanceComponent_1 = class SubAct
     }
   }
 };
-SubActorPerformanceComponent = SubActorPerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], SubActorPerformanceComponent);
+SubActorPerformanceComponent = SubActorPerformanceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(269)], SubActorPerformanceComponent);
 exports.SubActorPerformanceComponent = SubActorPerformanceComponent; //# sourceMappingURL=SubActorPerformanceComponent.js.map

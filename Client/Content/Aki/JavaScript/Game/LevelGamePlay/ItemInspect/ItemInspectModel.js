@@ -15,18 +15,18 @@ const GAME_PAD_SENSITIVITY = 20;
 class ItemInspectModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.Jld = false;
-    this.Zld = 0;
-    this.e_d = 0;
-    this.t_d = 0;
-    this.i_d = "";
-    this.r_d = "";
-    this.o_d = 0;
-    this.n_d = 0;
-    this.s_d = 0;
-    this.a_d = 0;
-    this.R$u = new Map();
-    this.w$u = new ItemInspectEffectCenter_1.ItemInspectEffectCenter();
+    this.hfd = false;
+    this.lfd = 0;
+    this._fd = 0;
+    this.ufd = 0;
+    this.cfd = "";
+    this.dfd = "";
+    this.mfd = 0;
+    this.ffd = 0;
+    this.gfd = 0;
+    this.Cfd = 0;
+    this.hQu = new Map();
+    this.lQu = new ItemInspectEffectCenter_1.ItemInspectEffectCenter();
     this.CloseSkipConfirmBox = false;
     this.OpenRangeDebug = false;
     this.OriginItemActor = undefined;
@@ -44,90 +44,90 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     this.TempVector = Vector_1.Vector.Create();
     this.VisiblePoints = [];
     this.VisiblePointsPool = [];
-    this.L$u = false;
-    this.A$u = false;
-    this.P$u = undefined;
-    this.D$u = undefined;
-    this.x$u = undefined;
-    this.nld = 0;
-    this.sld = 0;
-    this.Aud = undefined;
+    this._Qu = false;
+    this.uQu = false;
+    this.cQu = undefined;
+    this.dQu = undefined;
+    this.mQu = undefined;
+    this.rmd = 0;
+    this.omd = 0;
+    this.vyd = undefined;
     this.Mon = undefined;
-    this.U$u = undefined;
+    this.lzu = undefined;
   }
   OnInit() {
-    this.R$u.set(0, "AstrologyItemInspectView");
-    this.w$u.Init();
+    this.hQu.set(0, "AstrologyItemInspectView");
+    this.lQu.Init();
     return true;
   }
   InitGlobalConfig(t) {
-    this.Zld = t.输入速度限制;
-    this.e_d = t.平滑插值旋转速度;
-    this.t_d = t.重置旋转速度;
-    this.i_d = t.压暗网格体.ToAssetPathName();
-    this.r_d = t.压暗材质.ToAssetPathName();
-    this.o_d = t.压暗屏幕深度;
-    this.n_d = t.压暗不透明度;
-    this.s_d = t.压暗过渡时间;
-    this.a_d = t.压暗过渡间隔;
-    this.Jld = true;
+    this.lfd = t.输入速度限制;
+    this._fd = t.平滑插值旋转速度;
+    this.ufd = t.重置旋转速度;
+    this.cfd = t.压暗网格体.ToAssetPathName();
+    this.dfd = t.压暗材质.ToAssetPathName();
+    this.mfd = t.压暗屏幕深度;
+    this.ffd = t.压暗不透明度;
+    this.gfd = t.压暗过渡时间;
+    this.Cfd = t.压暗过渡间隔;
+    this.hfd = true;
   }
   IsInitGlobalConfig() {
-    return this.Jld;
+    return this.hfd;
   }
   GetInputSeedLimit() {
-    return this.Zld;
+    return this.lfd;
   }
   GetRotateInterpSpeed() {
-    return this.e_d;
+    return this._fd;
   }
   GetResetItemRotationSpeed() {
-    return this.t_d;
+    return this.ufd;
   }
   GetDarkStageMeshPath() {
-    return this.i_d;
+    return this.cfd;
   }
   GetDarkStageMaterialPath() {
-    return this.r_d;
+    return this.dfd;
   }
   GetDarkStageScreenDepth() {
-    return this.o_d;
+    return this.mfd;
   }
   GetDarkStageAlpha() {
-    return this.n_d;
+    return this.ffd;
   }
   GetDarkStageBlendTime() {
-    return this.s_d;
+    return this.gfd;
   }
   GetDarkStageBlendInterval() {
-    return this.a_d;
+    return this.Cfd;
   }
   InitData(t, i, e, s, h, r, o) {
-    this.D$u = this.R$u.get(t);
-    this.nld = i;
-    this.sld = i * GAME_PAD_SENSITIVITY;
-    this.P$u = e;
-    this.x$u = s;
-    this.Aud = h;
+    this.dQu = this.hQu.get(t);
+    this.rmd = i;
+    this.omd = i * GAME_PAD_SENSITIVITY;
+    this.cQu = e;
+    this.mQu = s;
+    this.vyd = h;
     this.Mon = r;
-    this.U$u = o;
+    this.lzu = o;
   }
   ClearData() {
     this.CurItemId = 0;
     this.InputDirect.Reset();
-    this.w$u.ClearEffects();
+    this.lQu.ClearEffects();
     this.VisiblePoints.length = 0;
     this.VisiblePointsPool.length = 0;
-    this.L$u = false;
-    this.A$u = false;
-    this.P$u = undefined;
-    this.D$u = undefined;
-    this.x$u = undefined;
-    this.Aud = undefined;
+    this._Qu = false;
+    this.uQu = false;
+    this.cQu = undefined;
+    this.dQu = undefined;
+    this.mQu = undefined;
+    this.vyd = undefined;
     this.Mon = undefined;
-    this.nld = 0;
-    this.sld = 0;
-    this.U$u = undefined;
+    this.rmd = 0;
+    this.omd = 0;
+    this.lzu = undefined;
     this.ResettingItem = false;
     this.OnResetItemRotationFinish = undefined;
     this.OriginItemActor = undefined;
@@ -140,46 +140,46 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     this.DarkStageBlendTimer = undefined;
   }
   LoadPrefabReady() {
-    this.L$u = true;
+    this._Qu = true;
   }
   OpenViewReady() {
-    this.A$u = true;
+    this.uQu = true;
   }
   IsInspectReady() {
-    return this.L$u && this.A$u;
+    return this._Qu && this.uQu;
   }
   GetViewName() {
-    return this.D$u;
+    return this.dQu;
   }
   GetRangeChecker() {
-    return this.P$u;
+    return this.cQu;
   }
   GetPointManager() {
-    return this.x$u;
+    return this.mQu;
   }
   GetEffectCenter() {
-    return this.w$u;
+    return this.lQu;
   }
   GetDragSensitivity() {
-    return this.nld;
+    return this.rmd;
   }
   GetGamePadSensitivity() {
-    return this.sld;
+    return this.omd;
   }
   GetMaxValidPointCount() {
-    return this.x$u?.GetMaxValidCount() ?? 0;
+    return this.mQu?.GetMaxValidCount() ?? 0;
   }
   GetCheckedValidPointCount() {
-    return this.x$u?.GetCheckedValidCount() ?? 0;
+    return this.mQu?.GetCheckedValidCount() ?? 0;
   }
   GetFinishEffect() {
-    return this.Aud;
+    return this.vyd;
   }
   GetLineElement() {
     return this.Mon;
   }
   GetFinishCallback() {
-    return this.U$u;
+    return this.lzu;
   }
 }
 exports.ItemInspectModel = ItemInspectModel;

@@ -172,7 +172,7 @@ let SceneItemBeamReceiveComponent = SceneItemBeamReceiveComponent_1 = class Scen
     var e = Protocol_1.Aki.Protocol.Cgs.create();
     e.F4n = this.EIe.GetCreatureDataId();
     e.c6n = t;
-    Net_1.Net.Call(25172, e, e => {
+    Net_1.Net.Call(17223, e, e => {
       if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("SceneItem", 39, "[BeamReceiveComp] 请求执行光线接收行为出错", ["PbDataId", this.EIe?.GetPbDataId()], ["CreatureDataId", this.EIe?.GetCreatureDataId()], ["EntityBeamReceiveType", t], ["Response", e]);
       }

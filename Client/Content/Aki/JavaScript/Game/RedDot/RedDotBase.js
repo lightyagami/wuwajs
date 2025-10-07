@@ -236,11 +236,15 @@ class RedDotBase {
   UnBindGivenUiAndDeleteData(t = 0, e) {
     var i = this.ANo(t);
     if (i !== undefined && !(i.DeleteUiItem(e), i.GetUiItemSet().size > 0)) {
+      RedDotSystem_1.RedDotSystem.PopRedDotEventData(t, this.Name);
       this.NQ.delete(t);
     }
   }
   UnBindUiAndClearData() {
     this.UnBindUi();
+    for (const t of this.NQ.keys()) {
+      RedDotSystem_1.RedDotSystem.PopRedDotEventData(t, this.Name);
+    }
     this.NQ.clear();
   }
   UpdateState(t = 0) {

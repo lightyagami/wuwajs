@@ -68,18 +68,18 @@ class QuestReviewController extends ControllerBase_1.ControllerBase {
     }
   }
   static JJ1() {
-    Net_1.Net.Register(26262, this.eZ1);
+    Net_1.Net.Register(25029, this.eZ1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnterGameSuccess, this.TJt);
   }
   static ZJ1() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterGameSuccess, this.TJt);
-    Net_1.Net.UnRegister(26262);
+    Net_1.Net.UnRegister(25029);
   }
   static async RequestQuestReviewData() {
     var e = new Protocol_1.Aki.Protocol.eJ1();
-    var e = await Net_1.Net.CallAsync(18419, e);
+    var e = await Net_1.Net.CallAsync(22772, e);
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15066);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28340);
     }
   }
   static SetBurnFinish() {

@@ -60,9 +60,9 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.yMu = 0;
     this.SMu = 0;
     this.MMu = 0;
-    this.SFu = false;
-    this.kid = true;
-    this.MFu = 0;
+    this.BFu = false;
+    this.Nsd = true;
+    this.kFu = 0;
     this.uCa = undefined;
     this.B9e = undefined;
     this.Yal = [];
@@ -71,19 +71,19 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.TMu = [];
     this.bMu = [];
     this.Dbu = new Map();
-    this.EFu = [];
+    this.oku = [];
     this.lLt = undefined;
-    this.FJu = 0;
-    this.NJu = undefined;
-    this.VJu = undefined;
-    this.jJu = undefined;
-    this.HJu = undefined;
-    this.Xld = false;
-    this.$Ju = false;
+    this.DWu = 0;
+    this.q$c = undefined;
+    this.G$c = undefined;
+    this.F$c = undefined;
+    this._zc = undefined;
+    this.efd = false;
+    this.ZXc = false;
     this.x8i = undefined;
     this.B8i = i => {
       var t;
-      if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1 || InputSettings_1.InputSettings.IsInputKeyDown("RightMouseButton") || !this.IFu()) {
+      if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1 || InputSettings_1.InputSettings.IsInputKeyDown("RightMouseButton") || !this.OFu()) {
         this.x8i = undefined;
       } else {
         this.eVi.ClearTargetRotation();
@@ -95,7 +95,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.b8i = i => {
-      if (this.IFu()) {
+      if (this.OFu()) {
         if (this.eVi?.RightEnd) {
           this.wMu();
         } else if (this.eVi?.LeftEnd) {
@@ -108,7 +108,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.RXe = (0, puerts_1.$ref)(0);
     this.AMu = new Vector2D_1.Vector2D();
     this.PMu = (i, t) => {
-      if (this.IFu() && t !== 0) {
+      if (this.OFu() && t !== 0) {
         if (this.eVi?.RightEnd) {
           this.wMu();
         } else if (this.eVi?.LeftEnd) {
@@ -117,7 +117,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.xMu = (i, t) => {
-      if (this.IFu()) {
+      if (this.OFu()) {
         if (t === 1) {
           this.fMu = false;
           if (!this.mMu) {
@@ -131,7 +131,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.UMu = (i, t) => {
-      if (this.IFu()) {
+      if (this.OFu()) {
         if (t === 1) {
           this.mMu = false;
           if (!this.fMu) {
@@ -169,9 +169,9 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.Bbu = undefined;
-    this.WJu = new Queue_1.Queue();
+    this.eYc = new Queue_1.Queue();
     this.aRo = () => {
-      if (!Info_1.Info.IsInTouch() && this.IFu()) {
+      if (!Info_1.Info.IsInTouch() && this.OFu()) {
         if (this.eVi?.RightEnd) {
           this.wMu();
         } else if (this.eVi?.LeftEnd) {
@@ -185,14 +185,14 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
         Log_1.Log.Debug("Plot", 5, "王权玩法-剧情梗概", ["text", this.uCa]);
       }
       if (this.uCa) {
-        this.SFu = true;
+        this.BFu = true;
         this.eVi?.PlayReSetSequence();
         i = {
           Text: this.uCa,
           ConfirmFunc: () => {
             GeneralLogicTreeController_1.GeneralLogicTreeController.RequestFinishUiGameplay(Protocol_1.Aki.Protocol.h3s.Proto_Reigns, this.Ubu.toString());
-            if (this.FJu) {
-              const t = KingShipUtil_1.KingShipUtil.GetKingShipOpenData(this.FJu);
+            if (this.DWu) {
+              const t = KingShipUtil_1.KingShipUtil.GetKingShipOpenData(this.DWu);
               ControllerHolder_1.ControllerHolder.BlackScreenController.AddBlackScreen("None", "KingShip-Skip");
               this.CloseMe(() => {
                 ControllerHolder_1.ControllerHolder.BlackScreenController.RemoveBlackScreen("None", "KingShip-Skip");
@@ -201,7 +201,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
             } else {
               this.CloseMe();
             }
-            this.SFu = false;
+            this.BFu = false;
             var i = new LogReportDefine_1.KingShipLogEvent();
             i.i_step_id = this.Ubu;
             ControllerHolder_1.ControllerHolder.LogReportController.LogReport(i);
@@ -210,7 +210,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
             if (UiManager_1.UiManager.IsViewOpen("SummaryPopView")) {
               UiManager_1.UiManager.CloseView("SummaryPopView");
             }
-            this.SFu = false;
+            this.BFu = false;
           }
         };
         UiManager_1.UiManager.OpenView("SummaryPopView", i);
@@ -222,7 +222,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
         t = i ? t.Options[1] : t.Options[0];
         if ((t.Actions?.length ?? 0) > 0) {
           for (const e of t.Actions) {
-            this.TFu(e);
+            this.nku(e);
           }
         }
         this.GetItem(24).SetUIActive(i);
@@ -244,9 +244,9 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
         t.CloseTipsItem();
       }
     };
-    this.bFu = i => {
+    this.qFu = i => {
       this.lLt?.SetUiActive(i);
-      if (this.SFu = i) {
+      if (this.BFu = i) {
         this.eVi?.PlayReSetSequence();
       }
     };
@@ -256,13 +256,13 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.YHt = i => {
       if (i === "HelpView") {
-        this.SFu = true;
+        this.BFu = true;
         this.eVi?.PlayReSetSequence();
       }
     };
     this.$Oe = i => {
       if (i === "HelpView") {
-        this.SFu = false;
+        this.BFu = false;
       }
     };
   }
@@ -276,12 +276,12 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.lqe.SetCloseCallBack(() => {
       var i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(353);
       i.FunctionMap.set(1, () => {
-        this.SFu = false;
+        this.BFu = false;
       });
       i.FunctionMap.set(2, () => {
         this.CloseMe();
       });
-      this.SFu = true;
+      this.BFu = true;
       this.eVi?.PlayReSetSequence();
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     });
@@ -304,9 +304,9 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     var t = new KingShipBuffItem_1.KingShipBuffItem();
     var e = new KingShipBuffItem_1.KingShipBuffItem();
     await Promise.all([i.CreateThenShowByActorAsync(this.GetItem(11).GetOwner()), t.CreateThenShowByActorAsync(this.GetItem(12).GetOwner()), e.CreateThenShowByActorAsync(this.GetItem(13).GetOwner())]);
-    i.OnClickTipsCallBack = this.bFu;
-    t.OnClickTipsCallBack = this.bFu;
-    e.OnClickTipsCallBack = this.bFu;
+    i.OnClickTipsCallBack = this.qFu;
+    t.OnClickTipsCallBack = this.qFu;
+    e.OnClickTipsCallBack = this.qFu;
     this.Yal.push(i);
     this.Yal.push(t);
     this.Yal.push(e);
@@ -314,37 +314,37 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.lLt.SetButtonFunction(this.XTt);
     await this.lLt.Init();
     this.lLt.GetRootItem().SetAsFirstHierarchy();
-    this.VJu = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(21));
-    this.VJu.BindSequenceCloseEvent(i => {
+    this.G$c = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(21));
+    this.G$c.BindSequenceCloseEvent(i => {
       if (i === "GuideIn") {
-        this.VJu?.PlayLevelSequenceByName("Loop");
+        this.G$c?.PlayLevelSequenceByName("Loop");
       }
       if (i === "GuideOut") {
         this.GetItem(21).SetUIActive(false);
       }
     });
-    this.jJu = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(16));
-    this.jJu.BindSequenceCloseEvent(i => {
+    this.F$c = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(16));
+    this.F$c.BindSequenceCloseEvent(i => {
       if (i === "Achievement") {
-        this.MFu--;
+        this.kFu--;
         this.GetItem(16).SetUIActive(false);
       }
     });
-    this.NJu = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(25));
-    this.HJu = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.q$c = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(25));
+    this._zc = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.UiViewSequence?.AddSequenceFinishEvent("Start", () => {
-      this.kid = false;
+      this.Nsd = false;
     });
   }
   OnStart() {
     var i = this.OpenParam;
     this.Ubu = i.ReignsId;
-    this.FJu = i.NextReignsId;
+    this.DWu = i.NextReignsId;
     var t = PublicUtil_1.PublicUtil.GetConfigTextByKey("Reigns_" + this.Ubu + "_TargetText");
     this.GetText(2).SetText(t);
     this.BMu(i.FlowId);
     this.kMu(i.BaseAttribute);
-    this.kzc();
+    this.FZc();
     this.TMu.push(...i.EndingList);
     this.OMu();
     this.xDo();
@@ -353,7 +353,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.lqe.SetTitle(t);
     this.SMu = i.UseReducePercent ? i.PropertyDownReducePercent : 0;
     this.GetItem(16).SetUIActive(false);
-    this.HJu?.BindSequenceCloseEvent(i => {
+    this._zc?.BindSequenceCloseEvent(i => {
       if (i === "TextOut") {
         this.GetText(15).SetUIActive(false);
       }
@@ -370,14 +370,14 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.Og();
   }
   OnBeforeDestroy() {
-    this.VJu?.Clear();
-    this.VJu = undefined;
-    this.NJu?.Clear();
-    this.NJu = undefined;
-    this.jJu?.Clear();
-    this.jJu = undefined;
-    this.HJu?.Clear();
-    this.HJu = undefined;
+    this.G$c?.Clear();
+    this.G$c = undefined;
+    this.q$c?.Clear();
+    this.q$c = undefined;
+    this.F$c?.Clear();
+    this.F$c = undefined;
+    this._zc?.Clear();
+    this._zc = undefined;
     this.lLt?.Destroy();
   }
   BMu(i) {
@@ -415,11 +415,11 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   kMu(i) {
     let t = 0;
-    this.EFu = [];
+    this.oku = [];
     for (const s of i) {
-      this.EFu.push(s.AttributeId);
+      this.oku.push(s.AttributeId);
       var e = this.EMu[t++];
-      e.RefreshItem(s, this.bFu);
+      e.RefreshItem(s, this.qFu);
       this.IMu.set(s.AttributeId, e);
       e.SetIsShow(s.IsDefaultEnable);
     }
@@ -460,7 +460,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   Og() {
     this.cHt();
     this.X7e();
-    this.khd();
+    this.Rdd();
   }
   cHt() {
     var i = this.FMu(this.vMu);
@@ -475,21 +475,21 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     if (t) {
       t = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(t.Tid) ?? "";
       if (!(i = this.GetText(15)).bIsUIActive) {
-        this.HJu?.PlayLevelSequenceByName("TextIn");
+        this._zc?.PlayLevelSequenceByName("TextIn");
       }
       i.SetUIActive(true);
       i.SetText(t);
     }
   }
-  khd() {
+  Rdd() {
     if (this.vMu === SKIP_SHOW_TALK_ID) {
       this.GetButton(20).RootUIComp.SetUIActive(true);
     }
   }
   W4l(i = false) {
-    if (!this.$Ju || !i) {
+    if (!this.ZXc || !i) {
       if (i) {
-        this.$Ju = true;
+        this.ZXc = true;
       }
       for (const t of this.Yal) {
         t.RefreshItem();
@@ -500,7 +500,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     for (const t of this.EMu) {
       t.Update();
     }
-    if (this.IFu()) {
+    if (this.OFu()) {
       if (this.eVi) {
         this.eVi.Update(i);
       }
@@ -577,7 +577,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       this.eVi?.PlaySequenceByName(i ? "DropR" : "DropL");
       if (this.Bbu) {
         this.W4l(true);
-        this.QJu();
+        this.tYc();
         return;
       } else {
         this.Og();
@@ -597,21 +597,21 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     if (i.Name === "ReignsChangeBackground") {
       const e = i.Params;
       if (e.ChangeMode === 2) {
-        this.HJu?.PlayLevelSequenceByName("Switch");
-        this.Xld = true;
+        this._zc?.PlayLevelSequenceByName("Switch");
+        this.efd = true;
       } else if (e.ChangeMode === 1) {
-        if (this.Xld) {
+        if (this.efd) {
           this.WMu(e.Background, "SwitchB");
         } else {
           this.WMu(e.Background, "SwitchA");
         }
-        this.Xld = false;
+        this.efd = false;
       } else if (e.ChangeMode === 0) {
-        this.xsd(e.Background).finally(() => {
-          if (this.Xld) {
+        this.q_d(e.Background).finally(() => {
+          if (this.efd) {
             this.WMu(e.Background, "SwitchB");
           }
-          this.Xld = false;
+          this.efd = false;
         });
       }
     }
@@ -635,7 +635,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
         this.yMu = t.TalkId;
       }
       if (i.Name === "ReignsCheckSettle") {
-        return this.KJu(true);
+        return this.UWu(true);
       } else {
         if (i.Name === "PostAkEvent") {
           t = i.Params;
@@ -649,14 +649,14 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(1).SetUIActive(true);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i);
     this.B9e = i;
-    this.HJu?.PlayLevelSequenceByName("Title");
+    this._zc?.PlayLevelSequenceByName("Title");
   }
   WMu(i, t) {
-    this.xsd(i).finally(() => {
-      this.HJu?.PlayLevelSequenceByName(t);
+    this.q_d(i).finally(() => {
+      this._zc?.PlayLevelSequenceByName(t);
     });
   }
-  async xsd(i) {
+  async q_d(i) {
     var t = [];
     t.push(this.SetTextureAsync(i, this.GetTexture(19)));
     t.push(this.SetTextureAsync(i, this.GetTexture(26)));
@@ -667,7 +667,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     var e;
     var s = ConfigManager_1.ConfigManager.KingShipConfig.GetKingShipBuff(i);
     var h = new Map();
-    for (const l of this.EFu) {
+    for (const l of this.oku) {
       h.set(l, 0);
     }
     if (s.Type === 1) {
@@ -732,7 +732,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       if (e.Type === 1) {
         for (var [s, h] of e.ParamMap) {
           if (!this.fvt(s, h)) {
-            this.$Ju = true;
+            this.ZXc = true;
             break;
           }
         }
@@ -758,16 +758,16 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     for (const s of this.TMu) {
       if (s.IsSuccess) {
         if (KingShipUtil_1.KingShipUtil.CheckEndingList([s], this.XMu(), this.YMu())) {
-          this.NJu?.PlayLevelSequenceByName("Sweep");
+          this.q$c?.PlayLevelSequenceByName("Sweep");
           this.GetItem(5).SetUIActive(true);
         } else {
           this.GetItem(5).SetUIActive(false);
         }
       }
     }
-    return this.KJu(false);
+    return this.UWu(false);
   }
-  KJu(i) {
+  UWu(i) {
     var t = [];
     if (i) {
       t.push(...this.TMu);
@@ -795,7 +795,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   QMu(i, t) {
     if (t) {
-      this.Ozc();
+      this.NZc();
     }
     this.IMu.get(i)?.SetIsShow(t);
     let e = true;
@@ -843,22 +843,22 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
         this.eVi?.RefreshCardItemByCallCard(i);
         e = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + i + "_CardDesc");
         if (!(t = this.GetText(15)).bIsUIActive) {
-          this.HJu?.PlayLevelSequenceByName("TextIn");
+          this._zc?.PlayLevelSequenceByName("TextIn");
         }
         t.SetUIActive(true);
         t.SetText(e);
         this.CMu = true;
       } else if (s.CardType === "AchievementCard") {
         this.GetItem(16).SetUIActive(true);
-        this.MFu++;
+        this.kFu++;
         t = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + i + "_CardDesc");
         this.GetText(18).SetText(t);
         e = PublicUtil_1.PublicUtil.GetConfigTextByKey("ReignsCard_" + i + "_CardTitle");
         this.GetText(17).SetText(e);
-        this.jJu?.PlayLevelSequenceByName("Achievement");
+        this.F$c?.PlayLevelSequenceByName("Achievement");
       } else if (s.CardType === "BuffCard") {
         this.eVi?.RefreshCardItemByBuffCard(i);
-        this.HJu?.PlayLevelSequenceByName("TextOut");
+        this._zc?.PlayLevelSequenceByName("TextOut");
         this.CMu = true;
       }
     }
@@ -866,20 +866,20 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   DMu(i) {
     if (i) {
       this.GetItem(21).SetUIActive(true);
-      this.VJu?.PlayLevelSequenceByName("GuideIn");
+      this.G$c?.PlayLevelSequenceByName("GuideIn");
     } else {
-      this.VJu?.PlayLevelSequenceByName("GuideOut");
+      this.G$c?.PlayLevelSequenceByName("GuideOut");
     }
   }
   GMu(i) {
     for (const t of (this.Bbu = i).CardIds) {
-      this.WJu.Push(t);
+      this.eYc.Push(t);
     }
-    this.QJu();
-    this.HJu?.PlayLevelSequenceByName("Ending");
+    this.tYc();
+    this._zc?.PlayLevelSequenceByName("Ending");
   }
-  QJu() {
-    if (this.WJu.Size <= 0) {
+  tYc() {
+    if (this.eYc.Size <= 0) {
       if (this.Bbu.IsSuccess) {
         this.CloseMe();
         return;
@@ -890,7 +890,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     }
     var i;
     var t;
-    var e = this.WJu.Pop();
+    var e = this.eYc.Pop();
     if (e) {
       if ((i = ConfigManager_1.ConfigManager.KingShipConfig.GetReignsCallCard(e)).CardType === "OptionCard") {
         this.KMu(e);
@@ -900,7 +900,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
             CardId: e,
             ReignsId: this.Ubu,
             IsSuccess: this.Bbu.IsSuccess,
-            NextReignsId: this.FJu
+            NextReignsId: this.DWu
           };
           UiManager_1.UiManager.OpenView("KingShipResultView", t);
           this.CloseMe();
@@ -911,7 +911,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
               this.zMu();
             }
           };
-          this.SFu = true;
+          this.BFu = true;
           this.eVi?.PlayReSetSequence();
           UiManager_1.UiManager.OpenView("KingShipFailView", t);
         }
@@ -921,7 +921,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
           FlowId: i.StaticImageFlow,
           OnCloseCallBack: () => {
             if (this.Bbu) {
-              this.QJu();
+              this.tYc();
             }
           }
         };
@@ -961,7 +961,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     });
   }
-  TFu(i) {
+  nku(i) {
     if (i.Name === "ReignsAddBuff") {
       i = i.Params;
       i = ConfigManager_1.ConfigManager.KingShipConfig.GetKingShipBuff(i.BuffId);
@@ -972,16 +972,16 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     }
   }
-  IFu() {
+  OFu() {
     var i;
-    if (this.SFu || this.MFu > 0 || this.kid || this.Dad()) {
+    if (this.BFu || this.kFu > 0 || this.Nsd || this.Wud()) {
       this.mMu = false;
       return this.fMu = false;
     } else {
       return !Info_1.Info.IsInGamepad() || ((i = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GroupName === DEFAULT_NAVIGATION_GROU_NAME) || (this.mMu = false, this.fMu = false), i);
     }
   }
-  kzc() {
+  FZc() {
     for (var [, i] of this.IMu) {
       if (i.IsShowByKingShip) {
         this.GetItem(25).SetUIActive(true);
@@ -990,10 +990,10 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.GetItem(25).SetUIActive(false);
   }
-  Ozc() {
+  NZc() {
     this.GetItem(25).SetUIActive(true);
   }
-  Dad() {
+  Wud() {
     var i = ModelManager_1.ModelManager.GuideModel.GetRunningWithoutPendingGroupIdList().length > 0;
     if (i) {
       this.eVi?.PlayReSetSequence();

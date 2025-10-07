@@ -35,35 +35,35 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const MechanismDefine_1 = require("../../Module/MechanismTimeline/MechanismDefine");
 const MechanismEventCenter_1 = require("../../Module/MechanismTimeline/MechanismEvent/MechanismEventCenter");
-const SERVER_DATA = "uju";
+const SERVER_DATA = "BXc";
 let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class SceneItemEventListenerComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.Xte = undefined;
     this.n$t = undefined;
     this.u1t = undefined;
-    this.DQc = new WeakMap();
-    this.xQc = new Map();
-    this.VFu = new Map();
-    this.UQc = new Map();
-    this.BQc = new Map();
-    this.kQc = new Map();
+    this.Kjc = new WeakMap();
+    this.Xjc = new Map();
+    this.wNu = new Map();
+    this.Yjc = new Map();
+    this.zjc = new Map();
+    this.Jjc = new Map();
     this.wDe = 0;
-    this.OQc = BigInt(0);
-    this.qQc = (e, t) => {
-      t = this.GQc(t);
-      let n = this.UQc.get(t);
+    this.RYc = BigInt(0);
+    this.Zjc = (e, t) => {
+      t = this.e9c(t);
+      let n = this.Yjc.get(t);
       if (n) {
         n.length = 0;
       } else {
         n = [];
-        this.UQc.set(t, n);
+        this.Yjc.set(t, n);
       }
     };
-    this.FQc = (e, t) => {
-      t = this.GQc(t);
-      this.NQc(t);
-      this.VQc(t, e);
+    this.t9c = (e, t) => {
+      t = this.e9c(t);
+      this.i9c(t);
+      this.r9c(t, e);
     };
   }
   OnInitData(e) {
@@ -84,61 +84,61 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
               n.push(a);
             }
           }
-          this.xQc.set(r.SeqPath, i);
-          this.kQc.set(r.SeqGuid, n);
+          this.Xjc.set(r.SeqPath, i);
+          this.Jjc.set(r.SeqGuid, n);
         }
       }
     }
     this.Xte = this.Entity.GetComponent(197);
     this.n$t = this.Entity.GetComponent(1);
     this.u1t = this.Entity.GetComponent(0);
-    e = this.u1t?.ComponentDataMap.get(SERVER_DATA)?.uju;
+    e = this.u1t?.ComponentDataMap.get(SERVER_DATA)?.BXc;
     if (e) {
-      this.OQc = MathUtils_1.MathUtils.LongToBigInt(e._Vn);
+      this.RYc = MathUtils_1.MathUtils.LongToBigInt(e._Vn);
     }
     return true;
   }
   OnStart() {
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequencePlay, this.qQc);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequenceOver, this.FQc);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequencePlay, this.Zjc);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequenceOver, this.t9c);
     return true;
   }
   OnClear() {
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequencePlay, this.qQc);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequenceOver, this.FQc);
-    for (var [, e] of this.VFu) {
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequencePlay, this.Zjc);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionSequenceOver, this.t9c);
+    for (var [, e] of this.wNu) {
       for (var [, t] of e) {
         t.End();
         t.Dispose();
       }
     }
-    this.xQc.clear();
-    this.VFu.clear();
-    this.UQc.clear();
-    this.BQc.clear();
-    this.kQc.clear();
+    this.Xjc.clear();
+    this.wNu.clear();
+    this.Yjc.clear();
+    this.zjc.clear();
+    this.Jjc.clear();
     this.Xte = undefined;
     return !(this.n$t = undefined);
   }
-  NQc(e) {
-    var t = this.VFu.get(e);
+  i9c(e) {
+    var t = this.wNu.get(e);
     if (t) {
       for (var [, n] of t) {
         n.End();
         n.Dispose();
       }
       t.clear();
-      this.VFu.delete(e);
+      this.wNu.delete(e);
     }
   }
-  VQc(e, t) {
-    var n = this.UQc.get(e);
+  r9c(e, t) {
+    var n = this.Yjc.get(e);
     if (n) {
-      var i = this.BQc.get(e);
+      var i = this.zjc.get(e);
       if (i) {
         var s;
         var o;
-        var r = this.kQc.get(i);
+        var r = this.Jjc.get(i);
         if (r && r.length !== 0) {
           for (const a of r) {
             if (!n.includes(a.EventName)) {
@@ -147,7 +147,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
                 SeqGuid: i
               };
               s = new MechanismDefine_1.MechanismEventLevelPrefabContext(this.wDe, t);
-              if (o = this.jQc(e, o, 0, s)) {
+              if (o = this.o9c(e, o, 0, s)) {
                 o.Trigger();
                 n.push(a.EventName);
               }
@@ -172,7 +172,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
         Log_1.Log.Error("SceneItem", 18, "SceneItemEventListenerComponent.ExecuteEvent:找不到SequencePath", ["pbDataId", this.wDe], ["eventType", t], ["eventName", n]);
       }
     } else {
-      var r = this.xQc.get(o)?.get(n);
+      var r = this.Xjc.get(o)?.get(n);
       if (r) {
         var a = r.Info;
         if (t !== a.Action.Name) {
@@ -188,9 +188,9 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
             Log_1.Log.Error("SceneItem", 18, "SceneItemEventListenerComponent.ExecuteEvent:执行事件错误，事件配置中不为AN", ["pbDataId", this.wDe], ["sequencePath", o], ["eventType", t], ["eventName", n], ["executeType", i]);
           }
         } else {
-          var v = this.GQc(e);
-          this.BQc.set(v, r.SeqGuid);
-          var h = this.jQc(v, r, i, s);
+          var v = this.e9c(e);
+          this.zjc.set(v, r.SeqGuid);
+          var h = this.o9c(v, r, i, s);
           if (h) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("SceneItem", 18, "SceneItemEventListenerComponent.ExecuteEvent:执行事件开始", ["pbDataId", this.wDe], ["sequencePath", o], ["eventType", t], ["eventName", n], ["executeType", i]);
@@ -198,7 +198,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
             switch (i) {
               case 0:
                 h.Trigger();
-                this.UQc.get(v)?.push(n);
+                this.Yjc.get(v)?.push(n);
                 break;
               case 1:
                 h.Start();
@@ -208,7 +208,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
                 break;
               case 3:
                 h.End();
-                this.HQc(v, r, i);
+                this.n9c(v, r, i);
             }
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("SceneItem", 18, "SceneItemEventListenerComponent.ExecuteEvent:执行事件结束", ["pbDataId", this.wDe], ["sequencePath", o], ["eventType", t], ["eventName", n], ["executeType", i]);
@@ -220,15 +220,15 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
       }
     }
   }
-  GQc(e) {
-    let t = this.DQc.get(e);
+  e9c(e) {
+    let t = this.Kjc.get(e);
     if (!t) {
       t = new WeakRef(e);
-      this.DQc.set(e, t);
+      this.Kjc.set(e, t);
     }
     return t;
   }
-  jQc(n, i, e, s) {
+  o9c(n, i, e, s) {
     var o = i.Info.Action.Name;
     var r = MechanismEventCenter_1.MechanismEventCenter.GetEventClass(o);
     if (r) {
@@ -240,10 +240,10 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
           break;
         case 1:
           {
-            let e = this.VFu.get(n);
+            let e = this.wNu.get(n);
             if (!e) {
               e = new Map();
-              this.VFu.set(n, e);
+              this.wNu.set(n, e);
             }
             t = new r(i, s, this, a);
             e.set(i.Info.EventName, t);
@@ -251,7 +251,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
           }
         case 2:
         case 3:
-          var v = this.VFu.get(n);
+          var v = this.wNu.get(n);
           if (v) {
             t = v.get(i.Info.EventName);
           } else if (Log_1.Log.CheckError()) {
@@ -264,8 +264,8 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
       Log_1.Log.Error("LevelEvent", 18, "SceneItemEventListenerComponent.GetEventObj,机关时间轴事件未定义", ["PbDataId", this.wDe], ["sequence", i.SeqGuid], ["eventType", o], ["eventName", i.Info.EventName]);
     }
   }
-  HQc(e, t, n) {
-    return n === 3 && ((n = this.VFu.get(e)) ? (e = n.get(t.Info.EventName)) ? (e.Dispose(), n.delete(t.Info.EventName)) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SceneItemEventListenerComponent.DestroyEventObj,通过sequencePlayer获取EventObj失败", ["PbDataId", this.wDe], ["sequence", t.SeqGuid], ["eventType", t.Info.Action.Name], ["eventName", t.Info.EventName]), false) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SceneItemEventListenerComponent.DestroyEventObj,通过sequencePlayer获取EventStates失败", ["PbDataId", this.wDe], ["sequence", t.SeqGuid], ["eventType", t.Info.Action.Name], ["eventName", t.Info.EventName]), false));
+  n9c(e, t, n) {
+    return n === 3 && ((n = this.wNu.get(e)) ? (e = n.get(t.Info.EventName)) ? (e.Dispose(), n.delete(t.Info.EventName)) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SceneItemEventListenerComponent.DestroyEventObj,通过sequencePlayer获取EventObj失败", ["PbDataId", this.wDe], ["sequence", t.SeqGuid], ["eventType", t.Info.Action.Name], ["eventName", t.Info.EventName]), false) : (Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SceneItemEventListenerComponent.DestroyEventObj,通过sequencePlayer获取EventStates失败", ["PbDataId", this.wDe], ["sequence", t.SeqGuid], ["eventType", t.Info.Action.Name], ["eventName", t.Info.EventName]), false));
   }
   AddTags(e) {
     for (const i of e) {
@@ -290,7 +290,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
   CreateBullet(e, t) {
     var n = ControllerHolder_1.ControllerHolder.BulletController.GetSceneBulletOwner();
     if (n?.IsInit) {
-      return ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(n.Entity, e.BulletId.toString(), this.n$t?.ActorTransform, {}, this.OQc)?.Id ?? 0;
+      return ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(n.Entity, e.BulletId.toString(), this.n$t?.ActorTransform, {}, this.RYc)?.Id ?? 0;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 17, "Bullet生成错误, 找不到场景子弹owner", ["EntityID", this.Entity.Id]);
@@ -302,5 +302,5 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
     ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(e, false);
   }
 };
-SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(300)], SceneItemEventListenerComponent);
+SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(301)], SceneItemEventListenerComponent);
 exports.SceneItemEventListenerComponent = SceneItemEventListenerComponent; //# sourceMappingURL=SceneItemEventListenerComponent.js.map

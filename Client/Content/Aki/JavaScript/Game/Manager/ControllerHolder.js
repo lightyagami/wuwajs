@@ -252,8 +252,6 @@ ControllerHolder.MechanismTimelineController = undefined;
 ControllerHolder.KuroSimpleCombatController = undefined;
 ControllerHolder.TowerDefenseEventController = undefined;
 ControllerHolder.BuildingGridController = undefined;
-ControllerHolder.TowerDefenseInputController = undefined;
-ControllerHolder.TowerDefensePlayerController = undefined;
 ControllerHolder.TowerDefenseUiController = undefined;
 ControllerHolder.ExpressionTreeController = undefined;
 ControllerHolder.LevelRangeDebugDrawController = undefined;
@@ -262,4 +260,17 @@ ControllerHolder.TouchUiEditController = undefined;
 ControllerHolder.ItemInspectController = undefined;
 ControllerHolder.GreatSwordController = undefined;
 ControllerHolder.SeekTraceController = undefined;
-ControllerHolder.VideoBpController = undefined; //# sourceMappingURL=ControllerHolder.js.map
+ControllerHolder.VideoBpController = undefined;
+ControllerHolder.SurvivorsRogueController = undefined;
+ControllerHolder.MeshStreamController = undefined;
+ControllerHolder.CalabashSkinController = undefined;
+ControllerHolder.QuestTreeController = undefined;
+ControllerHolder.ParallelPackageController = undefined;
+ControllerHolder.RoleDevController = undefined;
+ControllerHolder.SpecialTransitionController = undefined;
+ControllerHolder.FlyingFeatherController = undefined;
+ControllerHolder.EyeProtectController = undefined;
+ControllerHolder.ButtonStateController = undefined;
+ControllerHolder.UiModelEffectController = undefined;
+ControllerHolder.HomeBtnController = undefined;
+ControllerHolder.InputCSharpProxyController = undefined; //# sourceMappingURL=ControllerHolder.js.map

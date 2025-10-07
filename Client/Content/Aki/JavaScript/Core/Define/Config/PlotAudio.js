@@ -34,6 +34,9 @@ class PlotAudio {
   get CheckGenderZh() {
     return this.checkgenderzh();
   }
+  get GenLipSync() {
+    return this.genlipsync();
+  }
   get TailTime() {
     return this.tailtime();
   }
@@ -92,8 +95,12 @@ class PlotAudio {
     var t = this.J7.__offset(this.z7, 18);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  tailtime() {
+  genlipsync() {
     var t = this.J7.__offset(this.z7, 20);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  tailtime() {
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -101,7 +108,7 @@ class PlotAudio {
     }
   }
   varparams(t) {
-    var e = this.J7.__offset(this.z7, 22);
+    var e = this.J7.__offset(this.z7, 24);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

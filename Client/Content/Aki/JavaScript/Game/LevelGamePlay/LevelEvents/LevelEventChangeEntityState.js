@@ -17,7 +17,7 @@ class LevelEventChangeEntityState extends LevelGeneralBase_1.LevelEventBase {
     this.fLe = undefined;
   }
   ExecuteNew(t, e, i) {
-    if (e.Type === 1 && e.ClientExecuteActions) {
+    if (e.Type === 1 && e.ClientExecuteActions || e.Type === 5 && e.IsClientTrigger) {
       this.Lo = t;
       let e = undefined;
       switch (this.Lo.Type) {

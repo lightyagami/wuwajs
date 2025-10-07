@@ -25,11 +25,11 @@ const POSTICKCOUNT = 120;
 const MINSPEEDINIT = 999999;
 class AceAntiCheatController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(16578, AceAntiCheatController.PTa);
+    Net_1.Net.Register(24389, AceAntiCheatController.PTa);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(16578);
+    Net_1.Net.UnRegister(24389);
     return true;
   }
   static OnTick(t) {
@@ -75,7 +75,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         e.$Ta = o[2] ? this.QTa(o[2]) : undefined;
         e.XTa = o[3] ? this.QTa(o[3]) : undefined;
         this.YTa(true);
-        Net_1.Net.Call(26251, e, () => {});
+        Net_1.Net.Call(29275, e, () => {});
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Net", 35, "StartSecFbRound roleList Error", ["logId", t]);
       }
@@ -135,7 +135,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(24638, e, () => {});
+      Net_1.Net.Call(22888, e, () => {});
       this.FTa = -1n;
     }
   }
@@ -208,7 +208,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       }
       i.gLa = r;
       i.fLa = e;
-      Net_1.Net.Call(17580, i, () => {});
+      Net_1.Net.Call(19239, i, () => {});
       for (const s of this._La) {
         var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(s.CreatureDataId)?.Entity;
         if (a) {
@@ -278,7 +278,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(26416, e, () => {});
+      Net_1.Net.Call(16856, e, () => {});
       this.ELa = -1n;
     }
   }
@@ -300,7 +300,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         e.$Ta = o[2] ? this.QTa(o[2]) : undefined;
         e.XTa = o[3] ? this.QTa(o[3]) : undefined;
         this.YTa(true);
-        Net_1.Net.Call(22205, e, () => {});
+        Net_1.Net.Call(22076, e, () => {});
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Net", 35, "StartSecWorldFlow roleList Error", ["logId", t]);
       }
@@ -321,7 +321,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(18348, e, () => {});
+      Net_1.Net.Call(23758, e, () => {});
     }
   }
   static jhh(t) {

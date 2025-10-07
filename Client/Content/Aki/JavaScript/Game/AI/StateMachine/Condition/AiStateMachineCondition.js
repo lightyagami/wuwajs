@@ -4,13 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.AiStateMachineCondition = undefined;
-const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const CombatMessage_1 = require("../../../Module/CombatMessage/CombatMessage");
 const CharacterStateMachineNewComponent_1 = require("../../../NewWorld/Character/Common/Component/CharacterStateMachineNewComponent");
+const CombatLog_1 = require("../../../Utils/CombatLog");
 const AiStateMachine_1 = require("../AiStateMachine");
 class AiStateMachineCondition {
-  constructor(t, i, e) {
+  constructor(t, i, s) {
     this.Inited = false;
     this.Node = undefined;
     this.Transition = undefined;
@@ -28,7 +28,7 @@ class AiStateMachineCondition {
     this.Transition = t;
     this.ConditionData = i;
     this.Reverse = i.Reverse;
-    this.Index = e;
+    this.Index = s;
   }
   get Result() {
     return this.ResultSelf === !this.Reverse;
@@ -63,13 +63,13 @@ class AiStateMachineCondition {
     return !this.Node.RootNode.IsAnimStateMachine && this.CheckForClient && this.Result !== this.LastResult;
   }
   ReqFsmConditionPass() {
-    var t = Protocol_1.Aki.Protocol.x1d.create();
+    var t = Protocol_1.Aki.Protocol.s0d.create();
     t.$4n = this.Node.RootNode.Uuid;
     t.J4n = this.Transition.From;
     t.z4n = this.Transition.To;
     t.t5n = this.Index;
     t.e5n = this.Result;
-    CombatMessage_1.CombatNet.Send(25415, this.Node.Entity, t);
+    CombatMessage_1.CombatNet.Send(23570, this.Node.Entity, t);
   }
   OnTick() {}
   Clear() {
@@ -86,9 +86,7 @@ class AiStateMachineCondition {
   OnSignaled() {}
   Signaled() {
     if (CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn && this.CheckForClient) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("StateMachine", 84, "Signaled", ["condition", this.ConditionData.Name]);
-      }
+      CombatLog_1.CombatLog.Info("StateMachineNew", this.Node?.Entity, "Signaled", ["condition", this.ConditionData.Name]);
       this.HasSignaled = true;
       if (this.CanReqFsmConditionPass()) {
         this.ReqFsmConditionPass();

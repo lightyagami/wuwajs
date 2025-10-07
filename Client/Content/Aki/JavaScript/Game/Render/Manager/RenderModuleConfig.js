@@ -121,14 +121,14 @@ class RenderModuleConfig extends ConfigBase_1.ConfigBase {
     this.LevelCustomPrimitiveData = undefined;
   }
   OnInit() {
-    this.Kdd();
+    this.jUd();
     return true;
   }
   OnClear() {
     this.LevelCustomPrimitiveData?.clear();
     return !(this.LevelCustomPrimitiveData = undefined);
   }
-  Kdd() {
+  jUd() {
     this.LevelCustomPrimitiveData = new Map();
     var t = LevelCustomPrimitiveDataAll_1.configLevelCustomPrimitiveDataAll.GetConfigList();
     if (t) {

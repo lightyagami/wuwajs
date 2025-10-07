@@ -110,6 +110,12 @@ class UiShow {
   get FunctionCondition() {
     return this.functioncondition();
   }
+  get HomeBtnShowType() {
+    return this.homebtnshowtype();
+  }
+  get HomeBtnResourceId() {
+    return this.homebtnresourceid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -150,12 +156,12 @@ class UiShow {
     return this.obstructui(t);
   }
   obstructui(t, i) {
-    var s = this.J7.__offset(this.z7, 12);
-    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
+    var e = this.J7.__offset(this.z7, 12);
+    var e = e ? this.J7.__string(this.J7.__vector(this.z7 + e) + t * 4, i) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
     }
-    return s;
+    return e;
   }
   obstructuiLength() {
     var t = this.J7.__offset(this.z7, 12);
@@ -348,6 +354,22 @@ class UiShow {
     } else {
       return 0;
     }
+  }
+  homebtnshowtype() {
+    var t = this.J7.__offset(this.z7, 70);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  homebtnresourceid(t) {
+    var i = this.J7.__offset(this.z7, 72);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.UiShow = UiShow;

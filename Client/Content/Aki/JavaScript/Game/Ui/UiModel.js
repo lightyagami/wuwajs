@@ -21,6 +21,24 @@ class UiModel {
         return Array.from(UiModel.HudMap.values())[UiModel.HudMap.size - 1];
       case UiLayerType_1.ELayerType.Plot:
         return UiModel.PlotNormalStack.Peek();
+      case UiLayerType_1.ELayerType.NetWork:
+        if (UiModel.NetWorkList.length > 0) {
+          return UiModel.NetWorkList[UiModel.NetWorkList.length - 1];
+        } else {
+          return undefined;
+        }
+      case UiLayerType_1.ELayerType.Loading:
+        if (UiModel.LoadingMap.size > 0) {
+          return Array.from(UiModel.LoadingMap.values())[UiModel.LoadingMap.size - 1];
+        } else {
+          return undefined;
+        }
+      case UiLayerType_1.ELayerType.Guide:
+        if (UiModel.GuideList.length > 0) {
+          return UiModel.GuideList[UiModel.GuideList.length - 1];
+        } else {
+          return undefined;
+        }
       default:
         return;
     }

@@ -670,7 +670,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     }
     r.C$s = i;
     s.g$s = r;
-    Net_1.Net.Call(15489, s, t => {
+    Net_1.Net.Call(27965, s, t => {
       e.forEach(t => {
         this.ServerProcessingEntities.delete(t.Target.Id);
       });
@@ -679,7 +679,7 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrConnectorEntityNoExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17168);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18740);
       }
     });
   }
@@ -803,9 +803,9 @@ let CommonConnectComponent = CommonConnectComponent_1 = class CommonConnectCompo
     var i = MathUtils_1.MathUtils.NumberToLong(this.ActorComp.CreatureData.GetCreatureDataId());
     e.F4n = i;
     e.SDs = t;
-    Net_1.Net.Call(19030, e, t => {
+    Net_1.Net.Call(21247, e, t => {
       if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27691);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
       }
     });
   }

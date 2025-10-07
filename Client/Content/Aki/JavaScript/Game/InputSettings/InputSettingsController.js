@@ -23,12 +23,12 @@ const InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine
 const InputSettingsManager_1 = require("./InputSettingsManager");
 class InputSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(26897, InputSettingsController.zih);
+    Net_1.Net.Register(25496, InputSettingsController.zih);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(26897);
+    Net_1.Net.UnRegister(25496);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
@@ -46,12 +46,12 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
   }
   static InputSettingRequest() {
     var t = new Protocol_1.Aki.Protocol.jf_();
-    Net_1.Net.Call(18045, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
+    Net_1.Net.Call(19804, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
   }
   static InputSettingUpdateRequest(t) {
     var e = new Protocol_1.Aki.Protocol.$f_();
     e.Zih = this.Ttl(t);
-    Net_1.Net.Call(24117, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
+    Net_1.Net.Call(26982, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
   }
   static aY1() {
     for (const a of KeySettingAll_1.configKeySettingAll.GetConfigList()) {
@@ -66,7 +66,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("InputSettings", 10, "处理键位联动问题", ["ActionName", e], ["LinkActionName", t]);
           }
           var e = [];
-          n.GetKeyNameList(e);
+          n.GetPcKeyNameList(e);
           o?.SetKeyboardKeys(e);
         }
       }
@@ -498,6 +498,6 @@ InputSettingsController.Jih = t => {
 };
 InputSettingsController.erh = t => {
   if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22186);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27541);
   }
 }; //# sourceMappingURL=InputSettingsController.js.map

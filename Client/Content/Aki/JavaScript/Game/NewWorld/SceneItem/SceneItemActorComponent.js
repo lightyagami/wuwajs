@@ -88,14 +88,14 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
         SceneInteractionManager_1.SceneInteractionManager.Get().PlayKuroSkeletalMeshDestruction(this.u9e, t.Actor);
       }
     };
-    this.RVu = t => {
+    this.TVu = t => {
       if (this.u9e === t && this.omn) {
         this.TryRefreshShowActor();
       }
     };
     this.v9e = () => {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Entity", 17, "Entity还没销毁，Actor已经被销毁了，需检查造物点是否会使生成的实体掉出边界外", ["造物点ID", this.CreatureDataInternal.GetOwnerId()], ["model表Id", this.CreatureDataInternal.GetModelConfig().ID]);
+        Log_1.Log.Error("Entity", 17, "Entity还没销毁，Actor已经被销毁了，需检查造物点是否会使生成的实体掉出边界外", ["model表Id", this.CreatureDataInternal.GetModelConfig()?.ID], ["CreatureData", this.CreatureDataInternal.GetCreatureDataId()], ["ConfigType", this.CreatureDataInternal.GetEntityConfigType()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()]);
       }
       this.umn();
       this.Entity.ChangeTickInterval(0);
@@ -135,7 +135,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.RefreshShowActor();
     };
     this.mmn = undefined;
-    this.LQc = 1;
+    this.pKc = 1;
   }
   get IsReadyForOverlap() {
     return this.YGa;
@@ -371,7 +371,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   Vr() {
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHitByHitActorData, this.hxc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.RVu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.TVu);
   }
   pJl() {
     var t = this.CreatureDataInternal.GetPbDataId();
@@ -381,7 +381,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   sya() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHitByHitActorData, this.hxc);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.RVu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneInteractionAllEffectPlaying, this.TVu);
   }
   OnEnd() {
     if (this.nmn !== undefined) {
@@ -555,6 +555,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(205)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted);
       SceneInteractionManager_1.SceneInteractionManager.Get().EnableInteractionLevel(this.u9e);
       if (!this.cca) {
         this.ToggleSceneInteractionVisible(false, () => {
@@ -567,6 +568,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   b4a() {
     this.omn = false;
     this.YGa = false;
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted);
     SceneInteractionManager_1.SceneInteractionManager.Get().DisableInteractionLevel(this.u9e);
   }
   TryRefreshShowActor() {
@@ -951,17 +953,17 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   UpdateAkFinalTimeScale(t, e = false) {
-    if (!!e || t !== this.LQc) {
+    if (!!e || t !== this.pKc) {
       if (e = this.Owner) {
-        this.AQc(e, t, this.LQc);
+        this.vKc(e, t, this.pKc);
       }
       if (e = this.GetInteractionMainActor()) {
-        this.AQc(e, t, this.LQc);
+        this.vKc(e, t, this.pKc);
       }
-      this.LQc = t;
+      this.pKc = t;
     }
   }
-  AQc(t, e, i) {
+  vKc(t, e, i) {
     AudioSystem_1.AudioSystem.SetRtpcValue("entity_time_scale_combat", e, {
       Actor: t
     });

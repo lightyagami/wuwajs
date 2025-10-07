@@ -18,6 +18,7 @@ var EAudioRangeType;
 var EAkEventType;
 var EAudioType;
 var EEntityGroupFailureCondition;
+var EMotorInteractConstraintType;
 var EBulletCreateCondition;
 var EScanMode;
 var EAimPointType;
@@ -76,8 +77,8 @@ var ERangeConstraint;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.EColorChangeStrategyOfSplineEffect = exports.EReviveType = exports.runtimePlatformCnMap = exports.ETriggerMode = exports.EConveyorBeltMoveType = exports.EConveyorBeltFieldType = exports.ESpecialNpcType = exports.ENpcUiInteractType = exports.ENpcStandbyShowFinitelyPlayMode = exports.ENpcStandbyShowMode = exports.EGroupFinishConfig = exports.EGearHitAffectType = exports.ETargetGearGroupFailureCondition = exports.ETargetGearGroupSuccessCondition = exports.EHitBulletType = exports.EHitLogicType = exports.ESpawnMonsterConstraint = exports.ESpawnMonsterPreCondition = exports.ESpawnMonsterCompleteCondition = exports.ESpawnMonsterStartCondition = exports.EPullingFoundation = exports.EItemFoundation = exports.EDirection = exports.EThrowMotion = exports.ETeleControlDestroyCondition = exports.EAimPointType = exports.EScanMode = exports.EBulletCreateCondition = exports.EEntityGroupFailureCondition = exports.EAudioType = exports.EAkEventType = exports.EAudioRangeType = exports.rewardTypeCollectConfig = exports.rewardTypeCommonConfig = exports.rewardTypeCnMap = exports.aoizLayerValues = exports.aoiXyLayerValues = exports.AOI_EXITRANGE_INCREMENT = exports.entityCategoryConfig = exports.EFightMusicsSwitchType = exports.EWorldLevelBonus = exports.EAiWanderType = exports.EInteractTurnAround = exports.EInteractPlayerDiractionType = exports.DEFAULT_INIT_SPEED = exports.getOriginalComponent = exports.getComponent = exports.componentList = exports.componentInterfaceMap = exports.componentMap = undefined;
-exports.ERangeConstraint = exports.EPointChooseType = exports.EMonsterChooseType = exports.EWindSourceType = exports.ERenderSpecifiedRangeType = exports.EInhaledPerResultType = exports.EInhalationPerformanceType = exports.EGroupAiMode = exports.EBatchBulletMovementType = exports.EDetectionFrequency = exports.EPickInteraction = exports.EAiGearStrategy = exports.levelPrefabBpPathConfig = exports.EFanGearType = exports.EFanInteractType = exports.EExploreSkillSearchTargetCfg = exports.EExploreSkillInteractType = exports.EJigsawCompleteCondition = exports.EFillType = exports.EReboundOptionType = exports.EControllerType = exports.ELevelAiCycleMode = exports.EPatrolCycleMode = exports.patrolMoveStateNameByValue = exports.EPatrolMoveState = exports.EEffectSplineCreateMode = exports.EPointGroupGenerateType = exports.ESplineType = exports.ESplineLine = exports.EMonsterShowOnDeathType = undefined;
+exports.EReviveType = exports.runtimePlatformCnMap = exports.ETriggerMode = exports.EConveyorBeltMoveType = exports.EConveyorBeltFieldType = exports.ESpecialNpcType = exports.ENpcUiInteractType = exports.ENpcStandbyShowFinitelyPlayMode = exports.ENpcStandbyShowMode = exports.EGroupFinishConfig = exports.EGearHitAffectType = exports.ETargetGearGroupFailureCondition = exports.ETargetGearGroupSuccessCondition = exports.EHitBulletType = exports.EHitLogicType = exports.ESpawnMonsterConstraint = exports.ESpawnMonsterPreCondition = exports.ESpawnMonsterCompleteCondition = exports.ESpawnMonsterStartCondition = exports.EPullingFoundation = exports.EItemFoundation = exports.EDirection = exports.EThrowMotion = exports.ETeleControlDestroyCondition = exports.EAimPointType = exports.EScanMode = exports.EBulletCreateCondition = exports.EMotorInteractConstraintType = exports.EEntityGroupFailureCondition = exports.EAudioType = exports.EAkEventType = exports.EAudioRangeType = exports.rewardTypeCollectConfig = exports.rewardTypeCommonConfig = exports.rewardTypeCnMap = exports.aoizLayerValues = exports.aoiXyLayerValues = exports.AOI_EXITRANGE_INCREMENT = exports.entityCategoryConfig = exports.EFightMusicsSwitchType = exports.EWorldLevelBonus = exports.EAiWanderType = exports.EInteractTurnAround = exports.EInteractPlayerDiractionType = exports.DEFAULT_INIT_SPEED = exports.getOriginalComponent = exports.getComponent = exports.componentList = exports.componentInterfaceMap = exports.componentMap = undefined;
+exports.ERangeConstraint = exports.EPointChooseType = exports.EMonsterChooseType = exports.EWindSourceType = exports.ERenderSpecifiedRangeType = exports.EInhaledPerResultType = exports.EInhalationPerformanceType = exports.EGroupAiMode = exports.EBatchBulletMovementType = exports.EDetectionFrequency = exports.EPickInteraction = exports.EAiGearStrategy = exports.levelPrefabBpPathConfig = exports.EFanGearType = exports.EFanInteractType = exports.EExploreSkillSearchTargetCfg = exports.EExploreSkillInteractType = exports.EJigsawCompleteCondition = exports.EFillType = exports.EReboundOptionType = exports.EControllerType = exports.ELevelAiCycleMode = exports.EPatrolCycleMode = exports.patrolMoveStateNameByValue = exports.EPatrolMoveState = exports.EEffectSplineCreateMode = exports.EPointGroupGenerateType = exports.ESplineType = exports.ESplineLine = exports.EMonsterShowOnDeathType = exports.EColorChangeStrategyOfSplineEffect = undefined;
 exports.componentMap = {
   AirWallSpawnerComponent: undefined,
   ActorStateComponent: undefined,
@@ -240,7 +241,8 @@ exports.componentMap = {
   PerformanceOptimizationComponent: undefined,
   SceneItemEventListenerComponent: undefined,
   DynamicSpawnMonsterPointComponent: undefined,
-  DynamicSpawnMonsterComponent: undefined
+  DynamicSpawnMonsterComponent: undefined,
+  RollBlockComponent: undefined
 };
 exports.componentInterfaceMap = exports.componentMap;
 exports.componentList = Object.keys(exports.componentInterfaceMap).sort();
@@ -319,6 +321,7 @@ exports.rewardTypeCollectConfig = [0, 1, 2];
   o.SequentialState = "SequentialState";
   o.ArbitraryState = "ArbitraryState";
 })(EEntityGroupFailureCondition = exports.EEntityGroupFailureCondition ||= {});
+(EMotorInteractConstraintType = exports.EMotorInteractConstraintType ||= {}).FaceToTarget = "FaceToTarget";
 (function (o) {
   o.OnHit = "OnHit";
   o.OnMatching = "OnMatching";
@@ -454,6 +457,7 @@ exports.runtimePlatformCnMap = {
   o.ContinuesVariableSpeedMovement = "ContinuesVariableSpeedMovement";
   o.TimePatrol = "TimePatrol";
   o.Range = "Range";
+  o.Way = "Way";
 })(ESplineType = exports.ESplineType ||= {});
 (EPointGroupGenerateType = exports.EPointGroupGenerateType ||= {}).Layer = "Layer";
 (function (o) {
@@ -497,6 +501,7 @@ exports.patrolMoveStateNameByValue = {
   o.RagDollCrushingRock = "RagDollCrushingRock";
   o.RagDollDestroySolidRock = "RagDollDestroySolidRock";
   o.LonelyDollPollutant = "LonelyDollPollutant";
+  o.QuantumDiffusion = "QuantumDiffusion";
   o.Custom = "Custom";
 })(EExploreSkillInteractType = exports.EExploreSkillInteractType ||= {});
 (function (o) {

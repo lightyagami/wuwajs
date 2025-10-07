@@ -78,7 +78,7 @@ class LevelEventEntityTurnTo extends LevelGeneralBase_1.LevelEventBase {
           s.P5n = n.ActorLocationProxy;
           s.g8n = i;
           r.iVn = [s];
-          Net_1.Net.Send(17569, r);
+          Net_1.Net.Send(18020, r);
           if (this.IsAsync) {
             o.PerformTurn(2, {
               TargetLocation: e

@@ -12,11 +12,12 @@ class TsAnimNotifyStateCameraStateChange extends UE.KuroAnimNotifyState {
     super(...arguments);
     this.是否为单客户端 = false;
     this.是否跟随 = false;
+    this.切人时恢复跟随 = false;
   }
   Constructor() {}
   K2_NotifyBegin(e, r, t) {
     e = e.GetOwner();
-    return (!this.是否为单客户端 || e instanceof TsBaseCharacter_1.default && Global_1.Global.BaseCharacter === e) && (ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.IsFollowing = this.是否跟随, true);
+    return (!this.是否为单客户端 || e instanceof TsBaseCharacter_1.default && Global_1.Global.BaseCharacter === e) && (ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.IsFollowing = this.是否跟随, ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.RestoreFollowingOnChangeRole = this.切人时恢复跟随, true);
   }
   K2_NotifyEnd(e, r) {
     e = e.GetOwner();

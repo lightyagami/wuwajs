@@ -4,25 +4,26 @@ var SceneItemDropItemComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, o) {
   var s;
   var _ = arguments.length;
-  var a = _ < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var r = _ < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, i, o);
+    r = Reflect.decorate(t, e, i, o);
   } else {
-    for (var r = t.length - 1; r >= 0; r--) {
-      if (s = t[r]) {
-        a = (_ < 3 ? s(a) : _ > 3 ? s(e, i, a) : s(e, i)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (s = t[a]) {
+        r = (_ < 3 ? s(r) : _ > 3 ? s(e, i, r) : s(e, i)) || r;
       }
     }
   }
-  if (_ > 3 && a) {
-    Object.defineProperty(e, i, a);
+  if (_ > 3 && r) {
+    Object.defineProperty(e, i, r);
   }
-  return a;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SceneItemDropItemComponent = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const Info_1 = require("../../../Core/Common/Info");
@@ -304,10 +305,12 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     this.fCn();
   }
   pCn() {
-    var t = this.Hte.Owner.GetComponentByClass(UE.SphereComponent.StaticClass());
+    var t = (0, puerts_1.$ref)(undefined);
+    this.Hte.Owner.GetActorBounds(false, undefined, t);
+    var t = (0, puerts_1.$unref)(t);
     var e = this.Hte.ActorLocationProxy;
     var i = ConfigManager_1.ConfigManager.RewardConfig.GetDropChestOffsetZ();
-    var t = t.GetScaledSphereRadius();
+    var t = t.Size();
     var o = ModelManager_1.ModelManager.RewardModel.CheckGroundHit(e, t, i);
     var s = MathUtils_1.MathUtils.CommonTempVector;
     s.FromUeVector(e);
@@ -433,8 +436,10 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
   aCn() {
     var t = this.Hte.ActorLocationProxy;
-    var e = this.Hte.Owner.GetComponentByClass(UE.SphereComponent.StaticClass()).GetScaledSphereRadius();
-    return !!ModelManager_1.ModelManager.RewardModel.CheckWaterHit(this.oCn, t, CHECK_WATER_OFFSET_Z, e) && (this.fGt.DropFinished = true, this.fGt.DropState = 5, (t = this.Hte.StaticMesh).SetCollisionEnabled(0), t.SetConstraintMode(6), t.SetEnableGravity(false), t.SetSimulatePhysics(false), t.SetUseCCD(false), true);
+    var e = (0, puerts_1.$ref)(undefined);
+    this.Hte.Owner.GetActorBounds(false, undefined, e);
+    var e = (0, puerts_1.$unref)(e);
+    return !!ModelManager_1.ModelManager.RewardModel.CheckWaterHit(this.oCn, t, CHECK_WATER_OFFSET_Z, e.Size()) && (this.fGt.DropFinished = true, this.fGt.DropState = 5, (t = this.Hte.StaticMesh).SetCollisionEnabled(0), t.SetConstraintMode(6), t.SetEnableGravity(false), t.SetSimulatePhysics(false), t.SetUseCCD(false), true);
   }
   DestroyWithEffect() {
     this.Hte.StaticMesh.SetCollisionEnabled(0);

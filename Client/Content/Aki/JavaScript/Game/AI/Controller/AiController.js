@@ -284,7 +284,7 @@ class AiController {
         j4n: t,
         W4n: true
       })];
-      CombatMessage_1.CombatNet.Send(21180, this.CharAiDesignComp.Entity, o);
+      CombatMessage_1.CombatNet.Send(15441, this.CharAiDesignComp.Entity, o);
     }
     if (e !== undefined && s && s.IsValid()) {
       s.Callback.Broadcast(true);
@@ -318,7 +318,7 @@ class AiController {
           j4n: t,
           W4n: false
         })];
-        CombatMessage_1.CombatNet.Send(21180, this.CharAiDesignComp.Entity, e);
+        CombatMessage_1.CombatNet.Send(15441, this.CharAiDesignComp.Entity, e);
       }
     }
   }
@@ -366,7 +366,7 @@ class AiController {
     var o = Protocol_1.Aki.Protocol.Ai.zXn.create();
     const e = t.GetComponent(0).GetCreatureDataId();
     o.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(15422, o, t => {
+    Net_1.Net.Call(15425, o, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AI", 14, "AiControlSwitchRequest返回错误", ["EntityId", e], ["ErrorCode", t.Q4n]);

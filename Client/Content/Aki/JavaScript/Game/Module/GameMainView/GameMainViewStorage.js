@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.GameMainViewStorage = undefined;
 class GameMainViewStorage {
   static RegisterMainViewInfo(e, t) {
-    this.uXu.set(e, t);
+    this.fHu.set(e, t);
   }
   static GetMainViewInfo(e) {
-    return this.uXu.get(e);
+    return this.fHu.get(e);
   }
   static HasRegisterMainViewInfo(e) {
-    return this.uXu.has(e);
+    return this.fHu.has(e);
   }
 }
-(exports.GameMainViewStorage = GameMainViewStorage).uXu = new Map();
+(exports.GameMainViewStorage = GameMainViewStorage).fHu = new Map();
 //# sourceMappingURL=GameMainViewStorage.js.map

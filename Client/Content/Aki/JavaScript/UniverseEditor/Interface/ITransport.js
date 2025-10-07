@@ -397,6 +397,7 @@ const gameRpcServiceConfig = {
   GetActivatedDataLayers: () => [],
   IsEntityExist: t => false,
   IsEntityInitDone: t => false,
+  IsInRangeEntityRange: t => false,
   IsSceneItemComponentInitDone: t => false,
   TriggerInteractOption: () => {},
   ChangeInteractOption: () => {},

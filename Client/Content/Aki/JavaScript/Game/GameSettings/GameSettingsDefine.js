@@ -15,8 +15,8 @@ const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const GameSettingsDumpUtils_1 = require("./GameSettingsDumpUtils");
+const GameSettingsManager_1 = require("./GameSettingsManager");
 const GameSettingsUtils_1 = require("./GameSettingsUtils");
-const GameSettingsUtils_2 = require("./GameSettingsUtils");
 var EFunction;
 (function (e) {
   e[e.MASTERVOLUMEFUNCTION = 1] = "MASTERVOLUMEFUNCTION";
@@ -126,16 +126,21 @@ var EFunction;
   e[e.BasicGraphicSetting = 20203] = "BasicGraphicSetting";
   e[e.Vulkan = 20360] = "Vulkan";
   e[e.ResDownLoad = 55113] = "ResDownLoad";
+  e[e.VersionCheck = 51506] = "VersionCheck";
   e[e.AutoRun = 60208] = "AutoRun";
   e[e.AutoSprint = 60209] = "AutoSprint";
   e[e.ShowOtherName = 51102] = "ShowOtherName";
   e[e.WaterInteract = 20033] = "WaterInteract";
   e[e.VegetationDither = 20034] = "VegetationDither";
-  e[e.EyeProtection = 20510] = "EyeProtection";
-  e[e.EyeProtectionEnvironment = 20520] = "EyeProtectionEnvironment";
-  e[e.EyeProtectionStrength = 20530] = "EyeProtectionStrength";
-  e[e.EyeProtectionTexture = 20540] = "EyeProtectionTexture";
+  e[e.ImageDisplayMode = 20216] = "ImageDisplayMode";
+  e[e.EyeProtection = 20210] = "EyeProtection";
+  e[e.EyeProtectionMode = 20211] = "EyeProtectionMode";
+  e[e.EyeProtectionTemp = 20212] = "EyeProtectionTemp";
+  e[e.EyeProtectionStrength = 20213] = "EyeProtectionStrength";
+  e[e.EyeProtectionBrightness = 20214] = "EyeProtectionBrightness";
+  e[e.EyeProtectionTexture = 20215] = "EyeProtectionTexture";
   e[e.AutoExposure = 20610] = "AutoExposure";
+  e[e.AdjustiveGamePadTrigger = 60210] = "AdjustiveGamePadTrigger";
 })(EFunction = exports.EFunction ||= {});
 const masterVolume = {
   GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
@@ -328,7 +333,7 @@ const fsr3 = {
 const fsr3Fg = {
   GameSettingId: EFunction.FSR3_FG,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Fsr3Fg,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(e, GameSettingsUtils_2.EFFXFIApplyMode.Default),
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(e, GameSettingsUtils_1.EFFXFIApplyMode.Default),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpFsr3Fg()
 };
 const fsr3Quality = {
@@ -930,35 +935,66 @@ const vegetationDither = {
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVegetationDither(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVegetationDither()
 };
+const versionCheck = {
+  GameSettingId: EFunction.VersionCheck,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => ""
+};
+const imageDisplayMode = {
+  GameSettingId: EFunction.ImageDisplayMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.ImageDisplayMode,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyImageDisplayMode(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpImageDisplayMode()
+};
 const eyeProtection = {
   GameSettingId: EFunction.EyeProtection,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtection,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtection(e),
-  DumpCallback: () => "todo"
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtection()
 };
-const eyeProtectionEnvironment = {
-  GameSettingId: EFunction.EyeProtectionEnvironment,
-  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionEnvironment,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionEnvironment(e),
-  DumpCallback: () => "todo"
+const eyeProtectionMode = {
+  GameSettingId: EFunction.EyeProtectionMode,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionMode,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionMode(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtectionMode()
+};
+const eyeProtectionTemp = {
+  GameSettingId: EFunction.EyeProtectionTemp,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionTemp,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionTemp(e, GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(EFunction.EyeProtectionMode)),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtectionTemp()
 };
 const eyeProtectionStrength = {
   GameSettingId: EFunction.EyeProtectionStrength,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionStrength,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionStrength(e),
-  DumpCallback: () => "todo"
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionStrength(e, GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(EFunction.EyeProtectionMode)),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtectionStrength()
+};
+const eyeProtectionBrightness = {
+  GameSettingId: EFunction.EyeProtectionBrightness,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionBrightness,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionBrightness(e, GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(EFunction.EyeProtectionMode)),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtectionBrightness()
 };
 const eyeProtectionTexture = {
   GameSettingId: EFunction.EyeProtectionTexture,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.EyeProtectionTexture,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionTexture(e),
-  DumpCallback: () => "todo"
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionTexture(e, GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(EFunction.EyeProtectionMode)),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpEyeProtectionTexture()
 };
 const autoExposure = {
   GameSettingId: EFunction.AutoExposure,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AutoExposure,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoExposure(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoExposure()
+};
+const adjustiveGamePadTrigger = {
+  GameSettingId: EFunction.AdjustiveGamePadTrigger,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AdjustiveGamePadTrigger,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyAdjustiveGamePadTrigger(e);
+    return true;
+  },
+  DumpCallback: () => "[AdjustiveGamePadTrigger]same to getter"
 };
 exports.function2GameSettings = {
   [EFunction.MASTERVOLUMEFUNCTION]: masterVolume,
@@ -1073,11 +1109,16 @@ exports.function2GameSettings = {
   [EFunction.ShowOtherName]: showOtherName,
   [EFunction.WaterInteract]: waterInteract,
   [EFunction.VegetationDither]: vegetationDither,
+  [EFunction.ImageDisplayMode]: imageDisplayMode,
   [EFunction.EyeProtection]: eyeProtection,
-  [EFunction.EyeProtectionEnvironment]: eyeProtectionEnvironment,
+  [EFunction.EyeProtectionMode]: eyeProtectionMode,
+  [EFunction.EyeProtectionTemp]: eyeProtectionTemp,
   [EFunction.EyeProtectionStrength]: eyeProtectionStrength,
+  [EFunction.EyeProtectionBrightness]: eyeProtectionBrightness,
   [EFunction.EyeProtectionTexture]: eyeProtectionTexture,
-  [EFunction.AutoExposure]: autoExposure
+  [EFunction.VersionCheck]: versionCheck,
+  [EFunction.AutoExposure]: autoExposure,
+  [EFunction.AdjustiveGamePadTrigger]: adjustiveGamePadTrigger
 };
 exports.WINDOWS_RESOLUTION_INDEX = 2;
 exports.NPC_DENSITY_THRESHOLD = 1;
@@ -1085,4 +1126,4 @@ exports.NPC_DENSITY_PC_THRESHOLD = 1;
 exports.HEAVY_SCENEVULUME_INDEX_START = 5;
 exports.HEAVY_SCENEVULUME_INDEX_END = 9;
 exports.MAIN_TYPE_OF_KEY_SETTING = 3;
-exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 9, 8]; //# sourceMappingURL=GameSettingsDefine.js.map
+exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10]; //# sourceMappingURL=GameSettingsDefine.js.map
