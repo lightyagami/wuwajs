@@ -34,10 +34,17 @@ class QuestTreeChapterData {
   }
   get Progress() {
     let e = 0;
-    var r = this.NodeMap.size;
-    for (const t of this.NodeMap.values()) {
-      if (t.State === 4) {
+    let r = this.NodeMap.size;
+    var t = ConfigManager_1.ConfigManager.QuestTreeConfig.GetMoonChasingQuestId();
+    if (ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t) < 2) {
+      --r;
+    }
+    for (const o of this.NodeMap.values()) {
+      if (o.State === 4 && o.Config.NodeType !== 3) {
         e++;
+      }
+      if (o.Config.NodeType === 3) {
+        r--;
       }
     }
     return [e, r];
@@ -83,17 +90,27 @@ class QuestTreeChapterData {
     return e;
   }
   GetMainNodeList() {
-    var e = [];
-    for (const t of this.NodeMap.values()) {
-      if (t.Config.QuestType === 1 && t.State !== 0) {
-        e.push(t);
+    var r = [];
+    let t = undefined;
+    for (const e of this.NodeMap.values()) {
+      if (e.Config.QuestType === 1 && e.State !== 0 && e.PreQuestNodes.length === 0) {
+        t = e;
+        break;
       }
     }
-    var r = e[e.length - 1];
-    if (!r.Config.IsChapterEnding && r.State === 4) {
-      e.push(ModelManager_1.ModelManager.QuestTreeModel.GetOrCreateDummyQuestTreeNodeData(r.Config));
+    if (t) {
+      r.push(t);
+      let e = t.NextQuestNode;
+      while (e && e.State !== 0) {
+        r.push(e);
+        e = e.NextQuestNode;
+      }
+      var o = r[r.length - 1];
+      if (!o.Config.IsChapterEnding && o.State === 4) {
+        r.push(ModelManager_1.ModelManager.QuestTreeModel.GetOrCreateDummyQuestTreeNodeData(o.Config));
+      }
     }
-    return e;
+    return r;
   }
   GetNoParentNodeGroupList() {
     var e;

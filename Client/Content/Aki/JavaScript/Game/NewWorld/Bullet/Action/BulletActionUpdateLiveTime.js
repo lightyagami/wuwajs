@@ -16,12 +16,16 @@ class BulletActionUpdateLiveTime extends BulletActionBase_1.BulletActionBase {
     this.BulletInfo.CreateFrame = 0;
   }
   AfterTick(t) {
+    var e;
     if (this.BulletInfo.CreateFrame === 0) {
       this.BulletInfo.CreateFrame = Time_1.Time.Frame;
     }
     this.BulletInfo.LiveTime = this.BulletInfo.LiveTimeAddDelta;
-    var e = this.BulletInfo.Actor;
-    if (e?.IsValid()) {
+    if (this.BulletInfo.NeedDestroy) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Bullet", 20, "子弹UpdateLive已销毁", ["子弹ID", this.BulletInfo.BulletRowName]);
+      }
+    } else if ((e = this.BulletInfo.Actor)?.IsValid()) {
       if (e.IsActorBeingDestroyed()) {
         this.HVo();
         if (Log_1.Log.CheckError()) {

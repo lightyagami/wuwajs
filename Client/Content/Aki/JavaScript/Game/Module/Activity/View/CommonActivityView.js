@@ -7,6 +7,7 @@ exports.CommonActivityView = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const Macro_1 = require("../../../../Core/Preprocessor/Macro");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
@@ -47,6 +48,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.yvt = undefined;
     this.Iwd = undefined;
     this.Twd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
+    this.VYd = false;
     this.s5e = undefined;
     this.a5e = new Map();
     this.SPe = undefined;
@@ -217,19 +219,19 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     var i = ConfigManager_1.ConfigManager.ActivityConfig.GetAllActivityFilter();
     if (i) {
       var e = ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities();
-      for (const n of i) {
-        var s = this.FilterActivitiesByTabId(e, n.Id);
+      for (const h of i) {
+        var s = this.FilterActivitiesByTabId(e, h.Id);
         if (s.length !== 0) {
-          if (n.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
+          if (h.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID) {
             t.push({
               IsLineType: true
             });
           }
           t.push({
-            Id: n.Id,
-            TextId: n.FilterName,
+            Id: h.Id,
+            TextId: h.FilterName,
             IsLineType: false,
-            IconPath: n.FilterIcon,
+            IconPath: h.FilterIcon,
             Activities: s
           });
         }
@@ -267,13 +269,13 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.uxt();
     this.bvt();
     let s = undefined;
-    var n = [];
-    for (const h of this.yvt) {
-      if (!h.IsLineType) {
-        for (const o of h.Activities) {
-          n.push(o.Id);
-          if (o.Id === i) {
-            s = h.Id;
+    var h = [];
+    for (const n of this.yvt) {
+      if (!n.IsLineType) {
+        for (const r of n.Activities) {
+          h.push(r.Id);
+          if (r.Id === i) {
+            s = n.Id;
           }
         }
       }
@@ -285,7 +287,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
         }
         this.Pwd();
       }
-      this.BindRedDotIds(n);
+      this.BindRedDotIds(h);
       this.XY_[0] = this.GetButton(11).RootUIComp;
       this.XY_[1] = this.GetButton(12).RootUIComp;
       this.qel.set(s, i);
@@ -333,11 +335,17 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     this.GetItem(9).SetUIActive(false);
     this.XY_[0]?.SetUIActive(false);
     this.XY_[1]?.SetUIActive(false);
+    this.VYd = true;
     this.v5e(t, false).finally(() => {
       this.SPe.PlayLevelSequenceByName(i ? "SwitchModel" : "SwitchList", true);
       this.GetItem(8).SetUIActive(true);
       this.GetItem(9).SetUIActive(true);
       this.HY_();
+      TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        this.VYd = false;
+        this.HY_();
+        this.$Y_();
+      }, 100);
     });
   }
   wwd(i, t) {
@@ -375,14 +383,18 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     }
   }
   HY_() {
-    var i = [];
-    for (let t = 0; t < this.h5e.length; t++) {
-      var e = this.h5e[t].Id;
-      if (this.Nel.get(e)) {
-        i.push(t);
+    if (this.VYd) {
+      this.FY_ = [undefined, undefined];
+    } else {
+      var i = [];
+      for (let t = 0; t < this.h5e.length; t++) {
+        var e = this.h5e[t].Id;
+        if (this.Nel.get(e)) {
+          i.push(t);
+        }
       }
+      this.FY_ = i.length <= 0 ? [undefined, undefined] : [this.i5e.GetItemByIndex(i[0]), this.i5e.GetItemByIndex(i[i.length - 1])];
     }
-    this.FY_ = i.length <= 0 ? [undefined, undefined] : [this.i5e.GetItemByIndex(i[0]), this.i5e.GetItemByIndex(i[i.length - 1])];
   }
   async v5e(t, i) {
     var e = ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities();
@@ -430,8 +442,8 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
     let e = this.a5e.get(t);
     if (!e) {
       var s = ActivityManager_1.ActivityManager.GetActivityController(t.Type);
-      var n = this.GetItem(3);
-      var h = s.GetActivityResource(t);
+      var h = this.GetItem(3);
+      var n = s.GetActivityResource(t);
       if (!(e = s.CreateSubPageComponent(t))) {
         return;
       }
@@ -440,7 +452,7 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
         this.H41 = undefined;
       }
       e.SetData(t);
-      await e.CreateByPathAsync(h, n);
+      await e.CreateByPathAsync(n, h);
       this.a5e.set(t, e);
     }
     if (this.k4e === t.Id) {
@@ -516,10 +528,10 @@ class CommonActivityView extends UiViewBase_1.UiViewBase {
       var e = this.yvt?.find(t => t.Id === ActivityCommonDefine_1.ACTIVITY_PERMANENT_TAB_ID);
       var s = [i.find(t => t.Id === ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID)];
       if (e) {
-        var n = new Set(e.Activities?.map(t => t.LocalConfig.PermanentFilterType) ?? []);
-        for (const h of i) {
-          if (h.Id !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID && n.has(h.Id)) {
-            s.push(h);
+        var h = new Set(e.Activities?.map(t => t.LocalConfig.PermanentFilterType) ?? []);
+        for (const n of i) {
+          if (n.Id !== ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID && h.has(n.Id)) {
+            s.push(n);
           }
         }
       }

@@ -6,23 +6,21 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleDevWeaponRecommendItemDataBase = undefined;
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
-const RoleDevWeaponSubRecommendItemDataFactory_1 = require("./RoleDevWeaponSubRecommendItemDataFactory");
+const RoleDevWeaponSubRecommendItemDataBase_1 = require("./RoleDevWeaponSubRecommendItemDataBase");
 class RoleDevWeaponRecommendItemDataBase {
   constructor() {
     this.RoleIdInternal = 0;
-    this.IsRoleObtainedInternal = false;
     this.SubRecommendItemsInternal = [];
   }
   InitByRoleId(e) {
     this.RoleIdInternal = e;
-    this.IsRoleObtainedInternal = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e) !== undefined;
     this.InitByRoleType(e);
   }
   get RoleId() {
     return this.RoleIdInternal;
   }
   get IsRoleObtained() {
-    return this.IsRoleObtainedInternal;
+    return ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId) !== undefined;
   }
   get SubRecommendItems() {
     return this.SubRecommendItemsInternal;
@@ -59,10 +57,22 @@ class RoleDevWeaponRecommendItemDataBase {
     var t = ConfigManager_1.ConfigManager.RoleDevConfig?.GetWeaponRecommendListConfig(e);
     if (t) {
       for (const r of t) {
-        var a = RoleDevWeaponSubRecommendItemDataFactory_1.RoleDevWeaponSubRecommendItemDataFactory.Create(r, e, this.IsRoleObtained);
+        var a = new RoleDevWeaponSubRecommendItemDataBase_1.RoleDevWeaponSubRecommendItemDataBase();
+        a.InitByWeaponId(r, e);
         this.SubRecommendItemsInternal.push(a);
       }
     }
+  }
+  IsEquipRecommendWeapon() {
+    var e = this.GetWeaponConfigId();
+    if (!(e <= 0)) {
+      for (const t of this.SubRecommendItemsInternal) {
+        if (t.WeaponId === e) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
 exports.RoleDevWeaponRecommendItemDataBase = RoleDevWeaponRecommendItemDataBase;

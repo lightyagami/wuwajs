@@ -60,6 +60,7 @@ class SurvivorsItemTabView extends SurvivorsTabViewBase_1.SurvivorsTabViewBase {
       }
       r.push(t);
     }
+    this.RXd(r);
     return r;
   }
   OnSelectItem(e, r = true) {
@@ -72,7 +73,7 @@ class SurvivorsItemTabView extends SurvivorsTabViewBase_1.SurvivorsTabViewBase {
       this.UiViewSequence?.PlaySequence("Switch");
     }
   }
-  SortUiDataList(e) {
+  RXd(e) {
     if (e) {
       e.sort((e, r) => e.LockState !== r.LockState ? e.LockState ? 1 : -1 : e.QualityId !== r.QualityId ? r.QualityId - e.QualityId : e.Id - r.Id);
     }

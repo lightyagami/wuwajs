@@ -36,7 +36,6 @@ class KscActionBuffModifyLocal extends KscActionBase_1.KscActionBase {
           NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedBuffDa,
           Callback: s => {
             if (this.KscCtrl.WorldInit) {
-              this.Info("Skill", "更新Buff", ["kscEntityHandle", c], ["buffId", t], ["IsAdd", i], ["buffDa", s?.GetName()]);
               KscEnv_1.KscEnv.KscWorld?.BuffData?.AddBuffDA(BigInt(t), s);
               if (i) {
                 c.KscEntity.ApplyBuffSelf(s);
@@ -55,7 +54,7 @@ class KscActionBuffModifyLocal extends KscActionBase_1.KscActionBase {
           KscWorldHandle: KscEnv_1.KscEnv.KscWorldHandle
         });
       } else {
-        this.Warn("Skill", `Buff${t}安全加载路径非法`);
+        this.Error("Skill", "Buff路径非法", ["buffId", t]);
         this.SetResult();
       }
     } else {

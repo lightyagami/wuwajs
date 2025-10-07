@@ -71,6 +71,9 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Refresh(t, e, i) {
     try {
+      if (this.Pe) {
+        this.Ovt();
+      }
       this.Pe = t;
       this.K8e(t);
       this.Oqe(e);
@@ -135,7 +138,6 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   K8e(t) {
-    this.Ovt();
     RedDotController_1.RedDotController.BindRedDot("CommonActivityPage", this.GetItem(2), undefined, t.Id);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
     this.U5e = true;

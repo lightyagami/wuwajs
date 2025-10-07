@@ -42,25 +42,25 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
     }
     this.CAd(false, this.pAd);
   }
-  static hod(e, o, r = 0) {
+  static hod(e, o, a = 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig", ["url", e]);
     }
-    Http_1.Http.Get(e, undefined, (e, r, a) => {
-      o(!!e && r === 200, r, a);
+    Http_1.Http.Get(e, undefined, (e, a, r) => {
+      o(!!e && a === 200, a, r);
     });
   }
   static CAd(o, t) {
     let l;
     l = BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl ? o ? BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl.MainUrl : BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl.SubUrl : "";
-    this.hod(l, (e, r, a) => {
+    this.hod(l, (e, a, r) => {
       if (e) {
-        t(e, a);
+        t(e, r);
       } else if (o) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig", ["Failed to get parallel package config", l]);
         }
-        t(e, a);
+        t(e, r);
       } else {
         this.CAd(true, t);
       }
@@ -74,36 +74,38 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       return e;
     }
   }
-  static CheckIfNeedParallelPackage() {
+  static CheckParallelPackageWithCache() {
     var e;
-    var r;
+    return !!this.GmTest || !this.yAd && (e = this.vAd(), this.MAd() !== e) && this.CheckParallelPackage();
+  }
+  static CheckParallelPackage() {
+    var e;
     var a;
-    var o;
-    var t;
-    return !!this.GmTest || !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !this.yAd && !!(r = this.SAd()) && !(e = r.parentVersion, r = r.childVersion, a = this.vAd(), this.MAd() === a) && !(a = UE.KuroLauncherLibrary.GetAppVersion(), this.YHd(e) !== this.YHd(a)) && !(o = Number(r), t = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(o)) && !isNaN(t) && t < o;
+    var r;
+    return !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !!(e = this.SAd()) && !(a = e.parentVersion, e = e.childVersion, r = UE.KuroLauncherLibrary.GetAppVersion(), this.YHd(a) !== this.YHd(r)) && !(a = Number(e), r = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(a)) && !isNaN(r) && r < a;
   }
   static YHd(e) {
-    var r = e.split(".");
-    if (r.length >= 2) {
-      return r[0] + "." + r[1];
+    var a = e.split(".");
+    if (a.length >= 2) {
+      return a[0] + "." + a[1];
     } else {
       return e;
     }
   }
   static EAd(e) {
-    var r = this.Lo.languageConfig;
-    if (r === undefined || (r = r[e]) === undefined) {
+    var a = this.Lo.languageConfig;
+    if (a === undefined || (a = a[e]) === undefined) {
       return "";
     } else {
-      return r.content;
+      return a.content;
     }
   }
   static IAd(e) {
-    var r = this.Lo.languageConfig;
-    if (r === undefined || (r = r[e]) === undefined) {
+    var a = this.Lo.languageConfig;
+    if (a === undefined || (a = a[e]) === undefined) {
       return "";
     } else {
-      return r.title;
+      return a.title;
     }
   }
   static MAd() {
@@ -117,39 +119,40 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
   static SAd() {
     if (this.Lo !== undefined && this.Lo.version !== undefined) {
       var e = PublicUtil_1.PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId();
-      for (const r of this.Lo.packageConfig ?? []) {
-        if (r.packageId === e) {
-          return r;
+      for (const a of this.Lo.packageConfig ?? []) {
+        if (a.packageId === e) {
+          return a;
         }
       }
     }
   }
   static TryShowParallelPackageUpdateConfirmBox(o) {
-    if (this.CheckIfNeedParallelPackage()) {
+    if (this.CheckParallelPackageWithCache()) {
       this.yAd = true;
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(373);
       var l = LanguageSystem_1.LanguageSystem.PackageLanguage;
       let e = this.IAd(l);
-      let r = this.EAd(l);
+      let a = this.EAd(l);
       if (e === "") {
         e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ParallelPackageUpdateDefaultTitle") ?? "";
       }
-      if (r === "") {
-        r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ParallelPackageUpdateDefaultDesc") ?? "";
+      if (a === "") {
+        a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ParallelPackageUpdateDefaultDesc") ?? "";
       }
       t.SetTitle(e);
-      t.SetTextArgs(r);
+      t.SetTextArgs(a);
       t.HasToggle = true;
-      let a = !(t.ToggleTextKey = "ParallelPackageVersionTip");
+      let r = !(t.ToggleTextKey = "ParallelPackageVersionTip");
       t.SetToggleFunction(e => {
-        a = e;
+        r = e;
       });
+      t.CanExecuteCloseFunc = e => e !== 2;
       t.FunctionMap.set(2, () => {
         PackageUpdateController_1.PackageUpdateController.TryOpenParallelPackageUpdateUrl();
         var e = o === 0 ? 1 : 3;
-        var r = new LogReportDefine_1.ParallelDownloadConfirmBoxOperation();
-        r.i_type = e;
-        LogReportController_1.LogReportController.LogReport(r);
+        var a = new LogReportDefine_1.ParallelDownloadConfirmBoxOperation();
+        a.i_type = e;
+        LogReportController_1.LogReportController.LogReport(a);
       });
       t.FunctionMap.set(1, () => {
         var e = new LogReportDefine_1.ParallelDownloadConfirmBoxOperation();
@@ -158,7 +161,7 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       });
       t.SetCloseFunction(() => {
         var e;
-        if (a) {
+        if (r) {
           e = this.MAd();
           LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.ParallelPackageVersion, e);
         }
@@ -175,10 +178,10 @@ exports.ParallelPackageController = ParallelPackageController;
 (_a = ParallelPackageController).GmTest = false;
 ParallelPackageController.Lo = undefined;
 ParallelPackageController.yAd = false;
-ParallelPackageController.pAd = (e, r) => {
+ParallelPackageController.pAd = (e, a) => {
   if (e) {
-    _a.Lo = Json_1.Json.Parse(r);
+    _a.Lo = Json_1.Json.Parse(a);
   } else if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig fail", [r, BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl]);
+    Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig fail", [a, BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl]);
   }
 }; //# sourceMappingURL=ParallelPackageController.js.map

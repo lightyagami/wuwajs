@@ -28,21 +28,22 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     this.CanClickCallBack = undefined;
     this.nhd = undefined;
     this.Pe = undefined;
-    this.T1d = undefined;
-    this.b1d = undefined;
+    this.aKd = undefined;
+    this.hKd = undefined;
     this.ahd = () => {
       return new RoleDevDetailItem_1.RoleDevDetailItem();
     };
     this.i9i = () => {
-      var e;
-      var t = this.Pe.RoleId;
-      if (ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(t) !== undefined) {
-        RoleDevController_1.RoleDevController.LogRoleDevSubPageClick(t, 1, 1);
+      var e = this.Pe.RoleId;
+      if (ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e) !== undefined) {
+        RoleDevController_1.RoleDevController.LogRoleDevSubPageClick(e, 1, 1);
+        (e = new RoleViewViewModel_1.RoleViewViewModel(e, false)).FadeInCurveId = "RoleFadeInCurve";
+        e.FadeOutCurveId = "RoleFadeOutCurve";
+        e.NeedShowOnViewPlayingStartSequence = true;
+        e.NeedHideOnViewPlayingCloseSequence = true;
         if (this.Pe.IsCanUpgrade) {
-          e = new RoleViewViewModel_1.RoleViewViewModel(t, false);
           RoleController_1.RoleController.OpenRoleViewByViewModel("RoleLevelUpView", e);
         } else if (this.Pe.IsCanBreach) {
-          e = new RoleViewViewModel_1.RoleViewViewModel(t, false);
           RoleController_1.RoleController.OpenRoleViewByViewModel("RoleBreachView", e);
         }
       }
@@ -115,26 +116,25 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     if (ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.RoleId) !== undefined) {
       if (e.RoleLevel !== e.RoleGoalUpgradeLevel || e.RoleLevelIsMax) {
         if (e.RoleLevelIsMax) {
-          this.GetText(2).SetText("");
           this.GetText(2).SetUIActive(false);
           this.GetItem(4)?.SetUIActive(false);
           this.GetItem(5)?.SetUIActive(false);
           this.GetItem(7).SetUIActive(true);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), "RoleProject_Tips06");
         } else {
+          this.GetText(2).SetUIActive(true);
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_TargetLevel", [e.RoleGoalUpgradeLevel]);
-          this.GetItem(4)?.SetUIActive(!e.IsAllMaterialEnough);
-          this.GetItem(5)?.SetUIActive(!!e.IsAllMaterialEnough);
+          this.kYd(e);
           this.GetItem(7)?.SetUIActive(false);
         }
       } else {
+        this.GetText(2).SetUIActive(true);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_Tips04");
-        this.GetItem(4).SetUIActive(true);
-        this.GetItem(5).SetUIActive(false);
-        this.T1d.SetLocalTextNew("RoleProject_Button02");
+        this.kYd(e);
         this.GetItem(7)?.SetUIActive(false);
       }
     } else {
+      this.GetText(2).SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_TargetLevel", [e.RoleGoalUpgradeLevel]);
       this.GetItem(4)?.SetUIActive(false);
       this.GetItem(5)?.SetUIActive(false);
@@ -143,8 +143,21 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     }
     if (e.IsForecast) {
       this.GetItem(3).SetUIActive(false);
+      this.GetText(2).SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "RoleProject_TargetLevel", [e.RoleGoalUpgradeLevel]);
     }
+  }
+  kYd(e) {
+    if (!ModelManager_1.ModelManager.RoleModel.GetRoleNeedBreakUp(e.RoleId) || ModelManager_1.ModelManager.RoleModel.GetRoleBreachState(e.RoleId) !== 4) {
+      this.nzd(e);
+    } else {
+      this.GetItem(4).SetUIActive(true);
+      this.GetItem(5).SetUIActive(false);
+      this.aKd?.SetLocalTextNew("RoleProject_Button02");
+    }
+  }
+  nzd(e) {
+    (e.IsAllMaterialEnough ? (this.GetItem(4).SetUIActive(false), this.GetItem(5).SetUIActive(true), this.hKd) : (this.GetItem(4).SetUIActive(true), this.GetItem(5).SetUIActive(false), this.aKd))?.SetLocalTextNew("RoleProject_Button01");
   }
   bCd() {
     this.TCd = new SmallItemGrid_1.SmallItemGrid();
@@ -157,16 +170,16 @@ class RoleDevRoleViewItem extends UiPanelBase_1.UiPanelBase {
     this.nhd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(8), this.ahd);
   }
   A1d() {
-    this.T1d = new ButtonItem_1.ButtonItem(this.GetItem(4));
-    this.T1d.SetLocalTextNew("RoleProject_Button01");
-    this.T1d.SetFunction(() => {
+    this.aKd = new ButtonItem_1.ButtonItem(this.GetItem(4));
+    this.aKd.SetLocalTextNew("RoleProject_Button01");
+    this.aKd.SetFunction(() => {
       this.i9i();
     });
   }
   D1d() {
-    this.b1d = new ButtonItem_1.ButtonItem(this.GetItem(5));
-    this.b1d.SetLocalTextNew("RoleProject_Button01");
-    this.b1d.SetFunction(() => {
+    this.hKd = new ButtonItem_1.ButtonItem(this.GetItem(5));
+    this.hKd.SetLocalTextNew("RoleProject_Button01");
+    this.hKd.SetFunction(() => {
       this.i9i();
     });
   }

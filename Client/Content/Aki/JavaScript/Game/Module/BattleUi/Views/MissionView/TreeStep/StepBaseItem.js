@@ -77,10 +77,16 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
           if (!r) {
             return false;
           }
-          e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.MapName) ?? r.MapName;
+          if (r.InstSubType === 12) {
+            if ((s = r.EntranceEntities)?.length && (n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s[0].DungeonId)) && (s = ModelManager_1.ModelManager.CreatureModel.GetEntityData(s[0].EntranceEntityId, n.MapConfigId)?.AreaId ?? 0, n = (n = ConfigManager_1.ConfigManager.AreaConfig.GetLevelOneAreaId(s)) !== 0 ? n : s, s = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(n))) {
+              e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s.Title) ?? s.Title;
+            }
+          } else {
+            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.MapName) ?? r.MapName;
+          }
         }
-        s = t.GetNode(i);
-        if (this.DescribeTextVisible || s?.NodeType !== "ChildQuest" || s.ChildQuestType !== IQuest_1.EChildQuest.PlayFlow) {
+        var n = t.GetNode(i);
+        if (this.DescribeTextVisible || n?.NodeType !== "ChildQuest" || n.ChildQuestType !== IQuest_1.EChildQuest.PlayFlow) {
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.DistanceTextComp, "CrossMapMissionTips", e);
           return true;
         } else {
@@ -88,8 +94,8 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
           return !(this.DescribeTextVisible = true);
         }
       }
-      r = t.GetNodeTrackPosition(i);
-      return !!r && QuestUtil_1.QuestUtil.SetTrackDistanceText(this.DistanceTextComp, r);
+      s = t.GetNodeTrackPosition(i);
+      return !!s && QuestUtil_1.QuestUtil.SetTrackDistanceText(this.DistanceTextComp, s);
     };
   }
   get IsDescribeTextVisible() {

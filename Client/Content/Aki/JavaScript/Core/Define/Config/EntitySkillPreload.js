@@ -19,6 +19,9 @@ class EntitySkillPreload {
   get ActorBlueprint() {
     return this.actorblueprint();
   }
+  get LoadType() {
+    return this.loadtype();
+  }
   get IsCommon() {
     return this.iscommon();
   }
@@ -81,19 +84,27 @@ class EntitySkillPreload {
     }
     return s;
   }
-  iscommon() {
+  loadtype() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  iscommon() {
+    var t = this.J7.__offset(this.z7, 12);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   hasmontagepath() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetActorclassAt(t) {
     return this.actorclass(t);
   }
   actorclass(t, s) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 16);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -101,7 +112,7 @@ class EntitySkillPreload {
     return i;
   }
   actorclassLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -112,7 +123,7 @@ class EntitySkillPreload {
     return this.animations(t);
   }
   animations(t, s) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -120,7 +131,7 @@ class EntitySkillPreload {
     return i;
   }
   animationsLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -131,7 +142,7 @@ class EntitySkillPreload {
     return this.effects(t);
   }
   effects(t, s) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -139,7 +150,7 @@ class EntitySkillPreload {
     return i;
   }
   effectsLength() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -150,7 +161,7 @@ class EntitySkillPreload {
     return this.audios(t);
   }
   audios(t, s) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -158,7 +169,7 @@ class EntitySkillPreload {
     return i;
   }
   audiosLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -169,7 +180,7 @@ class EntitySkillPreload {
     return this.meshes(t);
   }
   meshes(t, s) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -177,7 +188,7 @@ class EntitySkillPreload {
     return i;
   }
   meshesLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -188,7 +199,7 @@ class EntitySkillPreload {
     return this.materials(t);
   }
   materials(t, s) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -196,7 +207,7 @@ class EntitySkillPreload {
     return i;
   }
   materialsLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -207,7 +218,7 @@ class EntitySkillPreload {
     return this.animationblueprints(t);
   }
   animationblueprints(t, s) {
-    var i = this.J7.__offset(this.z7, 26);
+    var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -215,7 +226,7 @@ class EntitySkillPreload {
     return i;
   }
   animationblueprintsLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -226,7 +237,7 @@ class EntitySkillPreload {
     return this.others(t);
   }
   others(t, s) {
-    var i = this.J7.__offset(this.z7, 28);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -234,7 +245,7 @@ class EntitySkillPreload {
     return i;
   }
   othersLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

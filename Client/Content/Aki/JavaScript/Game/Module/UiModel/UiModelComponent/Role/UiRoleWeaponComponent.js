@@ -7,8 +7,8 @@ var __decorate = this && this.__decorate || function (e, t, i, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(e, t, i, s);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (n = e[r]) {
+    for (var a = e.length - 1; a >= 0; a--) {
+      if (n = e[a]) {
         h = (o < 3 ? n(h) : o > 3 ? n(t, i, h) : n(t, i)) || h;
       }
     }
@@ -128,7 +128,21 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     for (let e = 0; e < this.TBr; e++) {
       var s = this.IBr[e].Model;
       s.CheckGetComponent(22)?.SetWeaponData(this.yBr);
-      s.CheckGetComponent(2)?.LoadModelByModelId(t[e]);
+      s.CheckGetComponent(2)?.LoadModelByModelId(t[e], false, () => {
+        this.lKd(e);
+      });
+    }
+  }
+  lKd(e) {
+    var t;
+    if (e < 0 || e >= this.IBr.length) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Weapon", 43, "显示武器索引错误", ["weaponIndex", e]);
+      }
+    } else {
+      t = this.DBr[e];
+      e = this.IBr[e].Model;
+      UiModelUtil_1.UiModelUtil.SetVisible(e, t === 2);
     }
   }
   ShowAllWeapon(t = false) {
@@ -148,11 +162,14 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "显示武器索引错误", ["index", e]);
       }
-    } else if (!(s = (i = this.IBr[e].Model).CheckGetComponent(0))?.GetVisible()) {
+    } else {
+      s = (i = this.IBr[e].Model).CheckGetComponent(0);
       this.DBr[e] = 2;
-      s?.SetVisible(true);
-      if (t) {
-        UiModelUtil_1.UiModelUtil.SetRenderingMaterial(i, "ChangeWeaponMaterialController");
+      if (!s?.GetVisible()) {
+        s?.SetVisible(true);
+        if (t) {
+          UiModelUtil_1.UiModelUtil.SetRenderingMaterial(i, "ChangeWeaponMaterialController");
+        }
       }
     }
   }
@@ -163,8 +180,12 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "隐藏武器索引错误", ["index", e]);
       }
-    } else if ((s = (i = this.IBr[e].Model).CheckGetComponent(0))?.GetVisible() && (this.DBr[e] = 1, s?.SetVisible(false), t)) {
-      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(i, "ShowHideWeaponEffect");
+    } else {
+      s = (i = this.IBr[e].Model).CheckGetComponent(0);
+      this.DBr[e] = 1;
+      if (s?.GetVisible() && (s?.SetVisible(false), t)) {
+        UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(i, "ShowHideWeaponEffect");
+      }
     }
   }
   RefreshWeaponCase() {
@@ -201,7 +222,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     this.IBr[e].Model?.CheckGetComponent(1)?.Actor?.K2_AttachToComponent(this.n$t.MainMeshComponent, t ?? FNameUtil_1.FNameUtil.GetDynamicFName(this.LBr[e]), 0, 0, 0, false);
   }
   SetWeaponByWeaponData(e, t) {
-    if (e) {
+    if (!!e && (this.yBr?.GetItemId() !== e.GetItemId() || this.nxl !== t)) {
       this.yBr = e;
       this.nxl = t;
       this.Refresh();

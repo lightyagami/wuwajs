@@ -24,8 +24,10 @@ class RoleDevViewModel {
     this.ESd = {
       DevPropsList: []
     };
-    this.k9d = false;
-    this.O9d = 0;
+    this.lXd = new Set();
+    this.pXd = new Map();
+    this.vXd = new Map();
+    this.DYd = new Map();
   }
   InitHotRoleDataList() {
     this.npd.length = 0;
@@ -57,17 +59,17 @@ class RoleDevViewModel {
         if (e.TypeTag === 0) {
           return [t, e.Id];
         } else if (e.TypeTag === 2 || e.TypeTag === 1) {
-          return [t, -(ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id) !== undefined ? 1 : 0), -e.Level, e.Id];
+          return [t, ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e.Id) !== undefined ? 1 : 0, -e.Level, e.Id];
         } else {
           return [t];
         }
       };
       var i = o(e);
-      var l = o(t);
-      for (let e = 0; e < Math.max(i.length, l.length); e++) {
-        var r = (i[e] ?? 0) - (l[e] ?? 0);
-        if (r != 0) {
-          return r;
+      var r = o(t);
+      for (let e = 0; e < Math.max(i.length, r.length); e++) {
+        var l = (i[e] ?? 0) - (r[e] ?? 0);
+        if (l != 0) {
+          return l;
         }
       }
       return 0;
@@ -78,20 +80,43 @@ class RoleDevViewModel {
   }
   InitAllDevItemDataByRoleId(e) {
     this.rud = RoleDevRoleViewItemDataFactory_1.RoleDevRoleViewItemDataFactory.Create(e);
-    this.oud = RoleDevWeaponViewItemDataFactory_1.RoleDevWeaponViewItemDataFactory.Create(e);
+    this.oud = RoleDevWeaponViewItemDataFactory_1.RoleDevWeaponViewItemDataFactory.Create(e, this);
     this.sud = RoleDevSkillViewItemDataFactory_1.RoleDevSkillViewItemDataFactory.Create(e, this);
-    this.nud = RoleDevPhantomViewItemDataFactory_1.RoleDevPhantomViewItemDataFactory.Create(e);
+    this.nud = RoleDevPhantomViewItemDataFactory_1.RoleDevPhantomViewItemDataFactory.Create(e, this);
+    this.lXd.add(e);
   }
-  GetCurrentRoleSkillPlanState(e) {
-    if (this.O9d !== e) {
+  GetRoleSkillPlanState(e) {
+    var t = this.pXd.get(e);
+    if (t === undefined) {
       return RoleDevUtils_1.RoleDevUtils.GetDefaultSkillPlanByRoleId(e);
     } else {
-      return this.k9d;
+      return t;
     }
   }
-  SetCurrentRoleSkillPlanState(e, t) {
-    this.O9d = e;
-    this.k9d = t;
+  SetRoleSkillPlanState(e, t) {
+    this.pXd.set(e, t);
+  }
+  GetRoleWeaponTabType(e) {
+    e = this.vXd.get(e);
+    if (e === undefined) {
+      return 0;
+    } else {
+      return e;
+    }
+  }
+  SetRoleWeaponTabType(e, t) {
+    this.vXd.set(e, t);
+  }
+  GetRoleRecommendFetterGroupId(e) {
+    e = this.DYd.get(e);
+    if (e === undefined) {
+      return 0;
+    } else {
+      return e;
+    }
+  }
+  SetRoleRecommendFetterGroupId(e, t) {
+    this.DYd.set(e, t);
   }
   InitRoleDevelopConfigData(e) {
     this.ESd = e;
@@ -116,6 +141,9 @@ class RoleDevViewModel {
   }
   get HotRoleDataList() {
     return this.npd;
+  }
+  CheckRoleIdIsCreated(e) {
+    return this.lXd.has(e);
   }
 }
 exports.RoleDevViewModel = RoleDevViewModel;

@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SurvivorsRogueSubController = undefined;
 const UE = require("ue");
-const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
@@ -60,32 +59,24 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     var e = new UE.DamageConfig();
     e.PcFontSizeScale = 0.6;
     e.MobileFontSizeScale = 0.9;
-    ControllerHolder_1.ControllerHolder.DamageUiController.SetUeDamageConfig(e);
+    e.MaxDamagePerFrame = 1;
+    ControllerHolder_1.ControllerHolder.DamageUiController.SetUeDamageConfig(e, true);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SurvivorsRogue", 17, "SurvivorsRogueSubController OnInitMap");
     }
   }
-  async PreloadAsync() {
-    await super.PreloadAsync();
-    await this.LoadBulletDt();
-  }
-  async LoadBulletDt() {
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SurvivorsRogue", 17, "SurvivorsRogueSubController OnPreload");
-    }
-    const r = new CustomPromise_1.CustomPromise();
-    ResourceSystem_1.ResourceSystem.LoadAsync(SurvivorsRogueSubModel_1.SurvivorsRogueSubModel.BulletDtPath, UE.DataTable, e => {
-      if (e?.IsValid()) {
-        this.GetModel().BulletDataTable = e;
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("SurvivorsRogue", 17, "加载子弹DT失败");
-      }
-      r.SetResult(true);
-    });
-    await r.Promise;
-  }
   OnMapLoaded() {
     ControllerHolder_1.ControllerHolder.BulletController.StartKuroBulletWorld();
+    var e = ResourceSystem_1.ResourceSystem.Load(SurvivorsRogueSubModel_1.SurvivorsRogueSubModel.BulletDtPath, UE.DataTable);
+    if (e?.IsValid()) {
+      this.GetModel().BulletDataTable = e;
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SurvivorsRogue", 17, "加载子弹DT失败");
+    }
+    var r = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld;
+    if (r && e) {
+      r.AddCommonBulletDataTable(e);
+    }
     this.K2d();
   }
   OnWorldDone() {
@@ -94,10 +85,6 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     }
     var e;
     var r = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld;
-    var o = this.GetModel().BulletDataTable;
-    if (r && o) {
-      r.AddCommonBulletDataTable(o);
-    }
     var o = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
     if (o?.Valid) {
       e = o.Entity.GetComponent(3).ActorLocation;
@@ -148,17 +135,17 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       switch (n) {
         case KscData_1.KscEntityRemoveReason.Dead:
           if (i.EntityType === 2) {
-            a = Protocol_1.Aki.Protocol.Mqd.create();
-            s.Sqd = a;
+            l = Protocol_1.Aki.Protocol.Mqd.create();
+            s.Sqd = l;
             this.Ajd();
           } else {
-            (a = Protocol_1.Aki.Protocol.ZUd.create()).F4n = e.KillerId;
-            s.KUd = a;
+            (l = Protocol_1.Aki.Protocol.ZUd.create()).F4n = e.KillerId;
+            s.KUd = l;
           }
           break;
         case KscData_1.KscEntityRemoveReason.Coin:
-          var a = Protocol_1.Aki.Protocol.exd.create();
-          s.XUd = a;
+          var l = Protocol_1.Aki.Protocol.exd.create();
+          s.XUd = l;
           break;
         default:
           if (Log_1.Log.CheckError()) {
@@ -321,10 +308,10 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
           if (n && i.KscPlayerEntity) {
             ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(i.KscPlayerEntity.EntityId_, false, n);
           }
-          var a = e.WeaponBuffIds[s - 1];
-          if (a) {
+          var l = e.WeaponBuffIds[s - 1];
+          if (l) {
             for (const u of i.WeaponKscEntities) {
-              ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(u.EntityId_, false, a);
+              ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(u.EntityId_, false, l);
             }
           }
         }
@@ -333,10 +320,10 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
           if (n && i.KscPlayerEntity) {
             ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(i.KscPlayerEntity.EntityId_, true, n);
           }
-          var l = e.WeaponBuffIds[r - 1];
-          if (l) {
+          var a = e.WeaponBuffIds[r - 1];
+          if (a) {
             for (const _ of i.WeaponKscEntities) {
-              ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(_.EntityId_, true, l);
+              ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(_.EntityId_, true, a);
             }
           }
         }

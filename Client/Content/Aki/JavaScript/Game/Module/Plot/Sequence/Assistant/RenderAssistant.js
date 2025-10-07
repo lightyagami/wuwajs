@@ -32,6 +32,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     RenderUtil_1.RenderUtil.CloseToonSceneShadow();
     RenderUtil_1.RenderUtil.OpenMobileSpotLightShadow();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.SetSequenceFrameRateLimit();
+    if (Info_1.Info.IsLowMemoryDevice) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274432");
+    }
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
     }
@@ -39,6 +42,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 0);
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("PrePlaySequence");
     var e = this.Model.GetCurrentSequence();
     UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(e);
     var t = UE.KuroStaticLibrary.GetEnableMobileLowStreaming(e);
@@ -48,15 +52,11 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(819, UE.KuroSequencePerformanceManager.GetPerformanceMode().toString());
     }
-    RenderUtil_1.RenderUtil.BeginPSOSyncMode();
     this.cio = true;
     var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.METALFX);
     if (this.Model.GetType() === 0 && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsMetalFxDevice() && e !== undefined && e > 0) {
       this.LSl = true;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(0);
-    }
-    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
-      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, false);
     }
   }
   PreEachPlay() {
@@ -68,6 +68,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   AllStop() {
     RenderUtil_1.RenderUtil.OpenToonSceneShadow();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.EnableKuroSpotlightsShadow " + this.dio);
+    if (Info_1.Info.IsLowMemoryDevice) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274960");
+    }
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancleSequenceFrameRateLimit();
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
@@ -76,21 +79,18 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount " + this.Model.PreviousMotionBlur);
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 1);
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("PrePlaySequence");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     ModelManager_1.ModelManager.GameModeModel.CleanScaleStreamingSource(1);
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(819, UE.KuroSequencePerformanceManager.GetPerformanceMode().toString());
     }
     this.ReleaseSeqStreamingData();
-    RenderUtil_1.RenderUtil.EndPSOSyncMode();
     if (this.LSl) {
       this.LSl = false;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(1);
     }
     this.cio = false;
-    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
-      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, true);
-    }
   }
   End() {
     if (this.uio) {

@@ -138,14 +138,12 @@ class SceneCharacterTriggerEffect {
           e.UserParameterFloat = [];
           e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("VelocityStrength"), Math.max(this.CurrentVelocity.Size() / 500, 0.3) * i]);
           e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("LUTIndex"), this.CacheData.HitBushLUTIndex]);
-          if (this.CacheData.BushIEParam) {
-            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
-            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
-            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
-            e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
-            e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
-            e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
-          }
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
+          e.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
+          e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
+          e.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
           EffectSystem_1.EffectSystem.SetEffectParameterNiagara(h, e);
           if (EffectSystem_1.EffectSystem.IsValid(this.BushEffectHandle)) {
             const t = this.BushEffectHandle;
@@ -198,10 +196,8 @@ class SceneCharacterTriggerEffect {
         if (this.OwnerStateComponent?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
           t = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, SOARING_TREE_EFFCT, "[SceneEffect.SpawnTriggerSoaringTreeEffect]");
           e = Math.max(this.CurrentVelocity.Size() / 500, 1);
-          if (this.CacheData.BushIEParam) {
-            i = this.CacheData.BushIEParam.SoaringSpawnSizeScale;
-            s = this.CacheData.BushIEParam.SoaringSpawnCountScale;
-          }
+          i = this.CacheData.BushIEParam.SoaringSpawnSizeScale;
+          s = this.CacheData.BushIEParam.SoaringSpawnCountScale;
         } else {
           t = EffectSystem_1.EffectSystem.SpawnUnloopedEffect(this.Owner, this.EmptyUeTransform, BUSH_OUT_EFFCT, "[SceneEffect.SpawnTriggerBushEffect]");
           e = Math.max(this.CurrentVelocity.Size() / 500, 0.3);
@@ -210,17 +206,18 @@ class SceneCharacterTriggerEffect {
         h.UserParameterFloat = [];
         h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("VelocityStrength"), e]);
         h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("LUTIndex"), this.CacheData.HitBushLUTIndex]);
-        if (this.CacheData.BushIEParam) {
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringScale"), i]);
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringCountScale"), s]);
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
-          h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
-          h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
-          h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
-        }
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnCountScale"), this.CacheData.BushIEParam.SpawnCountScale]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("BushScale"), this.CacheData.BushIEParam.SpawnSizeScale]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringScale"), i]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("SoaringCountScale"), s]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexBegin"), this.CacheData.BushIEParam.UVIndexBegin]);
+        h.UserParameterFloat.push([FNameUtil_1.FNameUtil.GetDynamicFName("UVIndexEnd"), this.CacheData.BushIEParam.UVIndexEnd]);
+        h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxExtent"), this.CacheData.BushIEParam.SpawnBoxExtent]);
+        h.UserParameterVector?.push([FNameUtil_1.FNameUtil.GetDynamicFName("SpawnBoxOffset"), this.CacheData.BushIEParam.SpawnBoxOffset]);
         EffectSystem_1.EffectSystem.SetEffectParameterNiagara(t, h);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("RenderEffect", 83, "SoarEffect DebugMessage", ["UVIndexBegin", this.CacheData.BushIEParam.UVIndexBegin], ["UVIndexEnd", this.CacheData.BushIEParam.UVIndexEnd], ["SoaringScale", this.CacheData.BushIEParam.SoaringSpawnSizeScale], ["SoaringCountScale", this.CacheData.BushIEParam.SoaringSpawnCountScale]);
+        }
       }
     }
   }

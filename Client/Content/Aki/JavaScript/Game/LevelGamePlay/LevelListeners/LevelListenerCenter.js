@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.LevelListenerCenter = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const LevelConditionListenerCheckClientEvent_1 = require("./LevelConditionListenerCheckClientEvent");
+const LevelConditionListenerCheckEntitiesExist_1 = require("./LevelConditionListenerCheckEntitiesExist");
+const LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1 = require("./LevelConditionListenerCheckEntityHasSceneItemAttributeTag");
 const LevelConditionListenerCheckMusicBeatsEvent_1 = require("./LevelConditionListenerCheckMusicBeatsEvent");
 const LevelConditionListenerCheckSceneItemDirection_1 = require("./LevelConditionListenerCheckSceneItemDirection");
 const LevelConditionListenerCompareEntityState_1 = require("./LevelConditionListenerCompareEntityState");
@@ -44,21 +46,26 @@ class LevelListenerCenter {
     this.KBd(2, LevelConditionListenerCheckSceneItemDirection_1.LevelConditionListenerCheckSceneItemDirection);
     this.KBd(3, LevelConditionListenerCompareEntityState_1.LevelConditionListenerCompareEntityState);
     this.KBd(4, LevelConditionListenerCompareVar_1.LevelConditionListenerCompareVar);
+    this.KBd(5, LevelConditionListenerCheckEntitiesExist_1.LevelConditionListenerCheckEntitiesExist);
+    this.KBd(6, LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1.LevelConditionListenerCheckEntityHasSceneItemAttributeTag);
     this.XBd("CheckClientEvent", 0);
     this.XBd("CheckMusicBeatsEvent", 1);
     this.XBd("CheckSceneItemDirection", 2);
     this.XBd("CompareEntityState", 3);
     this.XBd("CompareEntitySelfState", 3);
     this.XBd("CompareVar", 4);
+    this.XBd("CheckEntitesExist", 5);
+    this.XBd("CheckEntityHasSceneItemAttributeTag", 6);
   }
   static KBd(e, t) {
-    if (this.NBd) {
+    if (this.NBd && this.jBd) {
       if (this.NBd.has(e)) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("LevelListener", 39, "注册监听失败: 监听已注册过", ["ListenerType", e]);
         }
       } else {
         this.NBd.set(e, t);
+        this.jBd.set(t.name, new t());
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("LevelListener", 39, "注册监听失败: 容器未初始化", ["ListenerType", e]);

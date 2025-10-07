@@ -15,7 +15,7 @@ class SurvivorsRogueResidentWaveTipsPanel extends SurvivorsRogueTipsPanelBase_1.
     this._6d = undefined;
     this.EId = undefined;
     this.MQd = () => {
-      var e = ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveType === 2;
+      var e = ModelManager_1.ModelManager.SurvivorsRogueModel.IsEndlessWave;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this._6d, e ? "SurvivorsCombat_EndlessMode" : "SurvivorsCombat_WavePeriod");
       if (e) {
         this.EId.SetUIActive(false);

@@ -37,7 +37,11 @@ exports.SurvivorsWeaponUnlockView = SurvivorsWeaponUnlockView;
 class CardScrollItem extends SurvivorsRogueCardScrollItemBase_1.SurvivorsRogueCardScrollItemBase {
   async RefreshAsync(e, r, i) {
     e = SurvivorsRogueCardDataFactory_1.SurvivorsRogueCardDataFactory.CreateGeneralWeapon(e);
+    e.UseToggle = true;
     await this.Apply(e);
+  }
+  OnCanExecuteChange() {
+    return false;
   }
 }
 //# sourceMappingURL=SurvivorsWeaponUnlockView.js.map

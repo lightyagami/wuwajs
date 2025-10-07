@@ -9,30 +9,30 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const LevelConditionCenter_1 = require("./LevelConditionCenter");
 class LevelConditionCheckMusicBeatsEvent extends LevelGeneralBase_1.LevelConditionBase {
-  CheckNew(t, e, o) {
+  CheckNew(t, e, n) {
     if (t) {
-      let e = o;
-      if ((e = o?.Type === 11 ? o.GetContextByType(10) : e)?.Type === 10) {
-        var o = e.Params;
-        var n = o[0];
-        var o = o[1];
-        if (t.MusicEvent.Type === n) {
-          if (o === 7) {
+      let e = n;
+      if ((e = n?.Type === 11 ? n.GetContextByType(10) : e)?.Type === 10) {
+        var n = e.Params;
+        var o = n[0];
+        var n = n[1];
+        if (t.MusicEvent.Type === o) {
+          if (n === 7) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发音乐开始行为", ["MusicEventType", n]);
+              Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发音乐开始行为", ["MusicEventType", o]);
             }
             return true;
           }
-          if (o === 8) {
-            var i = LevelConditionCenter_1.LevelConditionCenter.GetMusicBeatCounter(n);
+          if (n === 8) {
+            var i = LevelConditionCenter_1.LevelConditionCenter.GetMusicBeatCounter(o);
             if (!i) {
               return false;
             }
-            var o = t.MusicEvent.BeatType;
-            var r = ConfigManager_1.ConfigManager.MusicBeatTypeConfig.GetMusicBeatTypeConfig(o);
+            var n = t.MusicEvent.BeatType;
+            var r = ConfigManager_1.ConfigManager.MusicBeatTypeConfig.GetMusicBeatTypeConfig(n);
             if (!r) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 音乐配置不存在", ["BeatType", o]);
+                Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 音乐配置不存在", ["BeatType", n]);
               }
               return false;
             }
@@ -59,23 +59,23 @@ class LevelConditionCheckMusicBeatsEvent extends LevelGeneralBase_1.LevelConditi
     return false;
   }
   a2d(e, t) {
-    var o;
-    var n = t.BeatConfig;
-    if (n.length !== 2) {
+    var n;
+    var o = t.BeatConfig;
+    if (o.length !== 2) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 不合法的节拍配置", ["BeatType", t.BeatType]);
       }
       return false;
     } else {
-      o = n[0];
-      n = n[1];
-      return o <= e && (e - o) % n == 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发节拍行为", ["MusicType", t.MusicType], ["BeatType", t.BeatType], ["StartBeatIndex", o], ["BeatInterval", n], ["BeatCount", e]), true);
+      n = o[0];
+      o = o[1];
+      return n <= e && (e - n) % o == 0 && (LevelConditionCenter_1.LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发节拍行为", ["MusicType", t.MusicType], ["BeatType", t.BeatType], ["StartBeatIndex", n], ["BeatInterval", o], ["BeatCount", e]), true);
     }
   }
   h2d(e, t) {
-    for (const o of t.BeatConfig) {
-      if (e === o) {
-        if (Log_1.Log.CheckInfo()) {
+    for (const n of t.BeatConfig) {
+      if (e === n) {
+        if (LevelConditionCenter_1.LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发节拍行为", ["MusicType", t.MusicType], ["BeatType", t.BeatType], ["BeatCount", e]);
         }
         return true;

@@ -211,11 +211,9 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
         this.D3r();
       }
     };
-    this.ri_ = 0;
     this.GYs = (t, i) => {
       if (t === this.Entity.Id && i) {
-        this.StartForceDisableAnimOptimization(1);
-        this.ri_ = 2;
+        this.NeedAfterTickAnim = true;
       }
     };
     this.U3r = () => {
@@ -557,10 +555,6 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
     }
   }
   OnEnd() {
-    if (this.ri_ > 0) {
-      this.ri_ = 0;
-      this.CancelForceDisableAnimOptimization(1);
-    }
     AnimController_1.AnimController.UnregisterUpdateAnimInfoEntity(this.Entity.Id);
     this.kre();
     this.StopModelBuffer();
@@ -591,9 +585,6 @@ let CharacterAnimationComponent = CharacterAnimationComponent_1 = class Characte
           Log_1.Log.Warn("Test", 6, "DengDengDoll Log3", ["DD_Bip001Pelvis", this.h3r]);
         }
       }
-    }
-    if (this.ri_ > 0 && (this.ri_ = this.ri_ - 1, this.ri_ <= 0)) {
-      this.CancelForceDisableAnimOptimization(1);
     }
     this.yDa();
     this.x3r();

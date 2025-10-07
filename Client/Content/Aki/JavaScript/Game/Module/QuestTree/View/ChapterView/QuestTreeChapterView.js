@@ -47,6 +47,7 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     this.yVd = 0;
     this.rQd = false;
     this.oQd = false;
+    this.BXd = false;
     this.A2t = e => {
       var t = this.GetSlider(4);
       this.rPd.SetInteractive(e < t.GetMaxValue());
@@ -153,7 +154,8 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     var e;
     var t = this.GetScrollViewWithScrollbar(5);
     t.SetVertical(true);
-    t.SetHorizontal(false);
+    t.SetHorizontal(true);
+    this.BXd = true;
     var t = this.OpenParam.ChapterId;
     var t = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(t);
     if (t) {
@@ -181,6 +183,8 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
       this.tPd = new UE.Margin(e.Left, e.Top, e.Right, e.Bottom);
       this.rPd = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(2), 1, this.oPd);
       this.acc = new LongPressButtonItem_1.LongPressButtonItem(this.GetButton(3), 1, this.nPd);
+      this.rPd.ShouldPlayLongPressSound = true;
+      this.acc.ShouldPlayLongPressSound = true;
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), t.Config.Name);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.Config.TitleText);
       this.GetItem(7).SetUIActive(false);
@@ -205,18 +209,20 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestTreeNodeDataUpdate, this.AOe);
   }
+  OnBeforeShow() {}
   OnAfterShow() {
-    this.GetScrollViewWithScrollbar(5).SetHorizontal(true);
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.NotifyUpdateNode();
+    this.AOe(undefined);
+    this.BXd = false;
     var e;
     var t = this.OpenParam.ChapterId;
     var t = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(t);
-    if (t) {
-      if (e = (e = this.OpenParam.NodeId) ? t.NodeMap.get(e) : t.GetDefaultLocatingNode()) {
-        ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocateToNode(e);
-      }
-      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.NotifyUpdateNode();
-      this.AOe(e);
+    if (t && (e = (e = this.OpenParam.NodeId) ? t.NodeMap.get(e) : t.GetDefaultLocatingNode())) {
+      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocateToNode(e);
     }
+  }
+  OnBeforeHide() {
+    ControllerHolder_1.ControllerHolder.QuestTreeController.CloseNodeDetailView();
   }
   OnBeforeDestroy() {
     this.CTd = undefined;
@@ -228,30 +234,50 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     this.oQd = false;
   }
   OnTick(e) {
+    this.kXd(e);
+    this.OXd(e);
+    this.qXd(e);
+    this.GXd(e);
+  }
+  kXd(e) {
     this.mie += e;
     if (this.mie >= 100 && (this.mie = 0, this.iPd)) {
-      const t = this.GetHorizontalLayout(6);
-      t.GetRootComponent().SetUIActive(false);
-      t.GetRootComponent().SetUIActive(true);
+      (e = this.GetHorizontalLayout(6)).GetRootComponent().SetUIActive(false);
+      e.GetRootComponent().SetUIActive(true);
       this.iPd = false;
     }
+  }
+  OXd(e) {
+    var t;
+    var i;
+    var s;
     if (this.tPd) {
-      const t = this.GetHorizontalLayout(6);
-      var e = ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.MaxHeightBalanceValue;
-      if (e > 0) {
-        this.tPd.Top = -e + ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.MaxToggleHeight + EXTRA_BALANCE_UP_REDUCE;
+      t = this.GetHorizontalLayout(6);
+      i = ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.MaxTopHeight;
+      if ((s = ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.MaxBottomHeight - i) > 0) {
+        this.tPd.Top = -s + ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.MaxToggleHeight * (i > 0 ? 0 : 1) + EXTRA_BALANCE_UP_REDUCE;
         this.tPd.Bottom = 50;
       } else {
         this.tPd.Top = 50;
-        this.tPd.Bottom = -e;
+        this.tPd.Bottom = -s;
       }
       t.SetPadding(this.tPd);
-      if (this.rQd) {
-        this.rQd = false;
-      } else if (this.oQd) {
-        (e = this.GetScrollViewWithScrollbar(5)).SetHorizontal(true);
-        e.SetVertical(true);
-      }
+    }
+  }
+  GXd(e) {
+    var t;
+    var i;
+    if (this.BXd && (t = this.OpenParam.ChapterId, t = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(t)) && (i = (i = this.OpenParam.NodeId) ? t.NodeMap.get(i) : t.GetDefaultLocatingNode())) {
+      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocateToNode(i, false);
+    }
+  }
+  qXd(e) {
+    var t;
+    if (this.rQd) {
+      this.rQd = false;
+    } else if (this.oQd) {
+      (t = this.GetScrollViewWithScrollbar(5)).SetHorizontal(true);
+      t.SetVertical(true);
     }
   }
   GetScrollView() {
@@ -268,16 +294,16 @@ class QuestTreeChapterView extends UiTickViewBase_1.UiTickViewBase {
     var t = UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(t.ToUeVector2D());
     var i = this.GetHorizontalLayout(6).GetRootComponent();
     var s = i.GetLGUISpaceAbsolutePosition();
-    var h = t.X - s.X;
+    var r = t.X - s.X;
     var t = t.Y - s.Y;
     var s = this.GetSlider(4);
-    var r = e / s.GetValue();
-    var h = h * (1 - r);
-    var t = t * (1 - r);
-    var r = i.GetAnchorOffset().X + h;
-    var h = i.GetAnchorOffset().Y + t;
-    i.SetAnchorOffsetX(r);
-    i.SetAnchorOffsetY(h);
+    var h = e / s.GetValue();
+    var r = r * (1 - h);
+    var t = t * (1 - h);
+    var h = i.GetAnchorOffset().X + r;
+    var r = i.GetAnchorOffset().Y + t;
+    i.SetAnchorOffsetX(h);
+    i.SetAnchorOffsetY(r);
     s.SetValue(e);
   }
 }

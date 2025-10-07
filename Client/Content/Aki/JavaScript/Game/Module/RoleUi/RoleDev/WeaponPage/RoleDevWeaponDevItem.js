@@ -22,8 +22,8 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.nhd = undefined;
     this.dFe = undefined;
     this.Pe = undefined;
-    this.T1d = undefined;
-    this.b1d = undefined;
+    this.aKd = undefined;
+    this.hKd = undefined;
     this.OnClickBtnSwitch = undefined;
     this.ahd = () => new RoleDevDetailItem_1.RoleDevDetailItem();
     this.uko = () => {
@@ -34,7 +34,7 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
         e = {
           WeaponIncId: e.GetIncId(),
           WeaponSkinId: t,
-          IsFromRoleRootView: true
+          IsFromRoleRootView: false
         };
         UiManager_1.UiManager.OpenView("WeaponRootView", e);
       }
@@ -49,10 +49,12 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
       ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.dFe, 2, t ? 15 : 11);
       this.uko();
     };
-    this.y8i = () => {};
+    this.y8i = () => {
+      UiManager_1.UiManager.OpenView("GachaMainView", this.Pe.GachaId);
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIVerticalLayout], [10, UE.UIItem], [11, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIVerticalLayout], [10, UE.UIItem], [11, UE.UIButtonComponent], [12, UE.UIItem]];
     this.BtnBindInfo = [[1, this.Qad], [11, this.y8i]];
   }
   async OnBeforeStartAsync() {
@@ -62,12 +64,12 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.sft.SetExtendToggleEnable(false);
     this.sft.SetToggleInteractive(false);
     this.nhd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.ahd);
-    this.T1d = new ButtonItem_1.ButtonItem();
-    t.push(this.T1d.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
-    this.T1d.SetFunction(this.Wpd);
-    this.b1d = new ButtonItem_1.ButtonItem();
-    t.push(this.b1d.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
-    this.b1d.SetFunction(this.Wpd);
+    this.aKd = new ButtonItem_1.ButtonItem();
+    t.push(this.aKd.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
+    this.aKd.SetFunction(this.Wpd);
+    this.hKd = new ButtonItem_1.ButtonItem();
+    t.push(this.hKd.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
+    this.hKd.SetFunction(this.Wpd);
     await Promise.all(t);
   }
   Refresh(t) {
@@ -93,18 +95,21 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   A8d(t) {
+    this.GetItem(12).SetUIActive(false);
     var e = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProjectConfig(t.RoleId);
     var e = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevWeaponItemConfig(e.WeaponType);
     this.U8d(e.WeaponTypeIcon, e.WeaponTypeDescribe);
     this.x8d(t);
   }
   P8d(t) {
+    this.GetItem(12).SetUIActive(true);
     var e = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(t.WeaponConfigId);
     this.B8d(e, t);
     this.k8d(t.WeaponName);
     this.O8d(t);
   }
   D8d(t) {
+    this.GetItem(12).SetUIActive(false);
     var e = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(t.RoleId);
     var e = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevWeaponItemConfig(e.WeaponType);
     this.U8d(e.WeaponTypeIcon, e.WeaponTypeDescribe);
@@ -118,7 +123,7 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   x8d(t) {
     t = t.RoleType === 2;
-    this.GetItem(11).SetUIActive(false);
+    this.GetButton(11).RootUIComp.SetUIActive(false);
     this.GetItem(0).SetUIActive(!t);
     this.GetItem(7).SetUIActive(false);
     this.GetItem(8).SetUIActive(false);
@@ -137,7 +142,7 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), t);
   }
   O8d(t) {
-    this.GetItem(11).SetUIActive(t.IsCall);
+    this.GetButton(11).RootUIComp.SetUIActive(t.IsCall);
     this.Kpd(t);
     t = t.IsHighQuality;
     this.GetItem(0).SetUIActive(t);
@@ -149,22 +154,22 @@ class RoleDevWeaponDevItem extends GridProxyAbstract_1.GridProxyAbstract {
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(e, "RoleProject_Tips04");
     }
-    e.SetUIActive(true);
+    e.SetUIActive(!t.WeaponIsMaxLevel);
   }
   Kpd(t) {
     var e = t.WeaponLevel === t.WeaponGoalUpgradeLevel && !t.WeaponIsMaxLevel || t.WeaponIsMaxLevel;
     var i = e ? "RoleProject_Button02" : "RoleProject_Button01";
-    this.T1d?.SetLocalTextNew(i);
-    this.b1d?.SetLocalTextNew(i);
+    this.aKd?.SetLocalTextNew(i);
+    this.hKd?.SetLocalTextNew(i);
     if (e) {
-      this.T1d?.SetUiActive(false);
-      this.b1d?.SetUiActive(true);
+      this.aKd?.SetUiActive(true);
+      this.hKd?.SetUiActive(false);
     } else {
-      this.T1d?.SetUiActive(!t.IsAllMaterialEnough);
-      this.b1d?.SetUiActive(t.IsAllMaterialEnough);
+      this.aKd?.SetUiActive(!t.IsAllMaterialEnough);
+      this.hKd?.SetUiActive(t.IsAllMaterialEnough);
     }
-    this.T1d?.SetFunction(this.Wpd);
-    this.b1d?.SetFunction(this.Wpd);
+    this.aKd?.SetFunction(this.Wpd);
+    this.hKd?.SetFunction(this.Wpd);
   }
 }
 exports.RoleDevWeaponDevItem = RoleDevWeaponDevItem;

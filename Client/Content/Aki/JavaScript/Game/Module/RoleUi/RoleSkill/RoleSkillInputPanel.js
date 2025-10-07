@@ -24,7 +24,9 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.dFe = 0;
+    this.VXd = 0;
     this.SPd = undefined;
+    this.jXd = false;
     this.iV1 = () => new RoleSkillInputDescItem_1.RoleSkillInputDescItem();
     this.Lmo = () => {
       if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
@@ -36,13 +38,13 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
       } else {
         var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.dFe);
         var i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(e.Name);
-        const o = e.RoleGuide;
-        if (o === 0) {
+        const t = e.RoleGuide;
+        if (t === 0) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("RoleGuideNotice02", i);
         } else {
           (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(94)).SetTextArgs(i);
           e.FunctionMap.set(2, () => {
-            var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o).FightFormationId;
+            var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t).FightFormationId;
             var e = ConfigManager_1.ConfigManager.EditBattleTeamConfig.GetFightFormationConfig(e)?.AutoRole;
             if ((e?.length ?? 0) > 0) {
               var i = new Array();
@@ -53,7 +55,7 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
                 Q6n: this.dFe
               };
               ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Hah = e;
-              InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(o, i, 0, 0);
+              InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, i, 0, 0);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Role", 43, "未配置出战人物");
             }
@@ -69,80 +71,84 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnStart() {
     this.SPd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.iV1);
+    this.VXd = this.GetItem(13).Height;
   }
   async RefreshUiAsync(e, i, r = false) {
-    this.dFe = e;
-    var o = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillInputConfigById(e);
-    if (o) {
-      e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillFightTrickList(e);
-      if (e) {
-        var t = this.GetVerticalLayout(2).GetRootComponent();
-        var l = new Array();
-        const k = new Array();
-        var n = new Map();
-        var a = new Map();
-        var s = new Map();
-        var u = new Map();
-        for (const M of e) {
-          var _ = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(3), t);
-          var c = new RoleSkillTrickSmallTitleItem_1.RoleSkillTrickSmallTitleItem();
-          l.push(c.CreateThenShowByActorAsync(_.GetOwner()));
-          n.set(c, M.SkillTitle);
-          var _ = M.SkillDesc;
-          if (M.Type === 1) {
-            LguiUtil_1.LguiUtil.CopyItem(this.GetItem(7), t).SetUIActive(true);
-          }
-          let e = 1;
-          for (const h of _) {
-            var g;
-            var f;
-            var I = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillInputConfigById(h);
-            for (const U of I.ImageArray) {
-              var m = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(4), t);
-              var C = new RoleSkillTrickTextureItem_1.RoleSkillTrickTextureItem();
-              l.push(C.CreateThenShowByActorAsync(m.GetOwner()));
-              a.set(C, U);
+    if (!this.jXd) {
+      this.dFe = e;
+      var t = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillInputConfigById(e);
+      if (t) {
+        e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillFightTrickList(e);
+        if (e) {
+          var o = this.GetVerticalLayout(2).GetRootComponent();
+          var l = new Array();
+          const C = new Array();
+          var n = new Map();
+          var a = new Map();
+          var s = new Map();
+          var u = new Map();
+          for (const k of e) {
+            var _ = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(3), o);
+            var c = new RoleSkillTrickSmallTitleItem_1.RoleSkillTrickSmallTitleItem();
+            l.push(c.CreateThenShowByActorAsync(_.GetOwner()));
+            n.set(c, k.SkillTitle);
+            var _ = k.SkillDesc;
+            if (k.Type === 1) {
+              LguiUtil_1.LguiUtil.CopyItem(this.GetItem(7), o).SetUIActive(true);
             }
-            if (I.InputArray.length > 0 && I.SkillArray.length > 0) {
-              f = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(6), t);
-              g = new RoleSkillTrickInputItem_1.RoleSkillTrickInputItem();
-              l.push(g.CreateThenShowByActorAsync(f.GetOwner()));
-              f = {
-                InputId: I.Id,
-                InputIndex: e
-              };
-              s.set(g, [f]);
-            } else {
-              g = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(5), t);
-              f = new RoleSkillTrickDescItem_1.RoleSkillTrickDescItem();
-              l.push(f.CreateThenShowByActorAsync(g.GetOwner()));
-              u.set(f, [I.Description]);
+            let e = 1;
+            for (const M of _) {
+              var g;
+              var h;
+              var f = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillInputConfigById(M);
+              for (const U of f.ImageArray) {
+                var I = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(4), o);
+                var m = new RoleSkillTrickTextureItem_1.RoleSkillTrickTextureItem();
+                l.push(m.CreateThenShowByActorAsync(I.GetOwner()));
+                a.set(m, U);
+              }
+              if (f.InputArray.length > 0 && f.SkillArray.length > 0) {
+                h = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(6), o);
+                g = new RoleSkillTrickInputItem_1.RoleSkillTrickInputItem();
+                l.push(g.CreateThenShowByActorAsync(h.GetOwner()));
+                h = {
+                  InputId: f.Id,
+                  InputIndex: e
+                };
+                s.set(g, [h]);
+              } else {
+                g = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(5), o);
+                h = new RoleSkillTrickDescItem_1.RoleSkillTrickDescItem();
+                l.push(h.CreateThenShowByActorAsync(g.GetOwner()));
+                u.set(h, [f.Description]);
+              }
+              e++;
             }
-            e++;
           }
-        }
-        await Promise.all(l);
-        this.GetItem(0).SetUIActive(o.SkillDescList.length > 0);
-        k.push(this.SPd.RefreshByDataAsync(o.SkillDescList));
-        n.forEach((e, i) => {
-          i.SetText(e);
-        });
-        a.forEach((e, i) => {
-          k.push(i.SetTexture(e));
-        });
-        s.forEach((e, i) => {
-          k.push(i.RefreshAsync(e));
-        });
-        u.forEach((e, i) => {
-          k.push(i.RefreshAsync(e));
-        });
-        await Promise.all(k);
-        if (r) {
-          e = ModelManager_1.ModelManager.FunctionModel.IsShow(10043);
-          o = ModelManager_1.ModelManager.FunctionModel.IsOpen(10043);
-          this.GetItem(8).SetUIActive(!i && e && o);
-        } else {
-          this.GetItem(8).SetUIActive(false);
+          await Promise.all(l);
+          this.GetItem(0).SetUIActive(t.SkillDescList.length > 0);
+          C.push(this.SPd.RefreshByDataAsync(t.SkillDescList));
+          n.forEach((e, i) => {
+            i.SetText(e);
+          });
+          a.forEach((e, i) => {
+            C.push(i.SetTexture(e));
+          });
+          s.forEach((e, i) => {
+            C.push(i.RefreshAsync(e));
+          });
+          u.forEach((e, i) => {
+            C.push(i.RefreshAsync(e));
+          });
+          await Promise.all(C);
+          if (r) {
+            e = ModelManager_1.ModelManager.FunctionModel.IsShow(10043);
+            t = ModelManager_1.ModelManager.FunctionModel.IsOpen(10043);
+            this.GetItem(8).SetUIActive(!i && e && t);
+          } else {
+            this.GetItem(8).SetUIActive(false);
+          }
+          this.jXd = true;
         }
       }
     }
@@ -156,6 +162,17 @@ class RoleSkillInputPanel extends UiPanelBase_1.UiPanelBase {
     this.GetVerticalLayout(2).RootUIComp.SetUIActive(e);
   }
   SetEmptyActive(e) {
+    if (e) {
+      this.SPd.BindLateUpdate(() => {
+        var e = this.GetRootItem().Height - this.GetItem(0).Height - this.GetVerticalLayout(1).RootUIComp.Height;
+        if (e < this.VXd) {
+          this.GetItem(13).SetUIActive(false);
+        } else {
+          this.GetItem(13).SetHeight(e);
+          this.SPd.UnBindLateUpdate();
+        }
+      });
+    }
     this.GetItem(13).SetUIActive(e);
   }
 }

@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FriendProcessView = undefined;
 const UE = require("ue");
+const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
@@ -32,27 +33,27 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
     this.Y8t = undefined;
     this.g8t = undefined;
     this.gLt = undefined;
-    this.J8t = (e, t, i) => {
-      t = new PersonalOptionItem_1.PersonalOptionItem(t);
-      t.Refresh(e, false, i);
+    this.J8t = (e, i, t) => {
+      i = new PersonalOptionItem_1.PersonalOptionItem(i);
+      i.Refresh(e, false, t);
       if (e === 1) {
-        this.j8t = t;
+        this.j8t = i;
       } else if (e === 2) {
-        this.W8t = t;
+        this.W8t = i;
       } else if (e === 3) {
-        this.K8t = t;
+        this.K8t = i;
       } else if (e === 4) {
-        this.Q8t = t;
+        this.Q8t = i;
       } else if (e === 5) {
-        this.X8t = t;
+        this.X8t = i;
       } else if (e === 12) {
-        this.$8t = t;
+        this.$8t = i;
       } else if (e === 13) {
-        this.Y8t = t;
+        this.Y8t = i;
       }
       return {
-        Key: i,
-        Value: t
+        Key: t,
+        Value: i
       };
     };
     this.z8t = () => {
@@ -66,10 +67,10 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
     this.Byt = e => {
       this.j8t.GetRootItem().SetUIActive(false);
       this.W8t.GetRootItem().SetUIActive(false);
-      var t = ModelManager_1.ModelManager.FriendModel.ShowingView;
-      if (t === "FriendView" || t === "FriendSearchView") {
-        if (e === (t = ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance())?.PlayerId) {
-          (ModelManager_1.ModelManager.ChatModel.IsInMute(t.PlayerId) ? this.j8t : this.W8t).GetRootItem().SetUIActive(true);
+      var i = ModelManager_1.ModelManager.FriendModel.ShowingView;
+      if (i === "FriendView" || i === "FriendSearchView") {
+        if (e === (i = ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance())?.PlayerId) {
+          (ModelManager_1.ModelManager.ChatModel.IsInMute(i.PlayerId) ? this.j8t : this.W8t).GetRootItem().SetUIActive(true);
         }
       }
       this.RefreshMute();
@@ -93,7 +94,7 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIGridLayout], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIButtonComponent], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIGridLayout], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UITexture], [16, UE.UIItem], [17, UE.UITexture]];
     this.BtnBindInfo = [[6, this.Z8t]];
   }
   OnAddEventListener() {
@@ -117,8 +118,8 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
     this.GetText(4).SetText("");
     this.i9t();
     var e = ModelManager_1.ModelManager.FriendModel;
-    var t = e.GetSelectedPlayerOrItemInstance();
-    e.CachePlayerData = t;
+    var i = e.GetSelectedPlayerOrItemInstance();
+    e.CachePlayerData = i;
     this.t9t();
   }
   i9t() {
@@ -130,9 +131,9 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
   }
   o9t() {
     var e = [];
-    for (const t of ConfigManager_1.ConfigManager.FriendConfig.GetProcessViewFunctionList()) {
-      if (t !== 12 || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10060)) {
-        e.push(t);
+    for (const i of ConfigManager_1.ConfigManager.FriendConfig.GetProcessViewFunctionList()) {
+      if (i !== 12 || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10060)) {
+        e.push(i);
       }
     }
     return e;
@@ -144,6 +145,11 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
     this.GetText(5).SetText(e.PlayerLevel.toString());
     this.Byt(e.PlayerId);
     this.gLt.Refresh(e.PlayerTitleId, e.PlayerTitleStarLevel, e.PlayerSex);
+    var e = e.CurCard;
+    if (e > 0) {
+      e = BackgroundCardById_1.configBackgroundCardById.GetConfig(e);
+      this.SetTextureByPath(e.FunctionViewCardPath, this.GetTexture(17));
+    }
   }
   RefreshMute() {
     var e = ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance();
@@ -152,13 +158,13 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
   }
   P5e() {
     var e = ModelManager_1.ModelManager.FriendModel;
-    var t = this.GetText(2);
+    var i = this.GetText(2);
     if (FriendController_1.FriendController.CheckRemarkIsValid(e.GetSelectedPlayerOrItemInstance().FriendRemark)) {
-      t.SetText(`(${e.GetSelectedPlayerOrItemInstance().FriendRemark})`);
-      t.useChangeColor = true;
+      i.SetText(`(${e.GetSelectedPlayerOrItemInstance().FriendRemark})`);
+      i.useChangeColor = true;
     } else {
-      t.SetText(e.GetSelectedPlayerOrItemInstance().PlayerName);
-      t.useChangeColor = false;
+      i.SetText(e.GetSelectedPlayerOrItemInstance().PlayerName);
+      i.useChangeColor = false;
     }
   }
   Nxa() {
@@ -182,27 +188,27 @@ class FriendProcessView extends UiViewBase_1.UiViewBase {
   }
   r9t() {
     var e = ModelManager_1.ModelManager.FriendModel;
-    var t = e.GetSelectedPlayerOrItemInstance()?.Signature;
-    var i = this.GetText(11);
-    if (t && t !== "") {
-      i.SetText(t);
+    var i = e.GetSelectedPlayerOrItemInstance()?.Signature;
+    var t = this.GetText(11);
+    if (i && i !== "") {
+      t.SetText(i);
     } else if (e.GetSelectedPlayerOrItemInstance()?.PlayerId !== ModelManager_1.ModelManager.FunctionModel.PlayerId) {
-      i?.SetText("");
+      t?.SetText("");
     } else {
-      LguiUtil_1.LguiUtil.SetLocalText(i, "EmptySign");
+      LguiUtil_1.LguiUtil.SetLocalText(t, "EmptySign");
     }
   }
   w8t() {
     var e = ModelManager_1.ModelManager.FriendModel;
-    var t = e.FilterState;
-    var i = e.ShowingView;
+    var i = e.FilterState;
+    var t = e.ShowingView;
     this.P5e();
     this.r9t();
     this.Nxa();
     this.Y8t.GetRootItem().SetUIActive(e.IsMyFriend(e.GetSelectedPlayerOrItemInstance().PlayerId));
-    this.W8t.GetRootItem().SetUIActive((i === "FriendView" || i === "FriendSearchView") && t === 1 || t === 2);
+    this.W8t.GetRootItem().SetUIActive((t === "FriendView" || t === "FriendSearchView") && i === 1 || i === 2);
     this.X8t.GetRootItem().SetUIActive(true);
-    if (i === "FriendView" || i === "FriendSearchView" || i === "FriendBlackListView") {
+    if (t === "FriendView" || t === "FriendSearchView" || t === "FriendBlackListView") {
       this.z8t();
     }
     this.Q8t.GetRootItem().SetUIActive(e.IsMyFriend(e.GetSelectedPlayerOrItemInstance().PlayerId));

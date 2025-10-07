@@ -213,7 +213,7 @@ class LevelConditionCenter {
         Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 添加音乐节拍计数失败, 音乐类型计数器不存在", ["EMusicEventType", e]);
       }
     } else {
-      if (Log_1.Log.CheckInfo()) {
+      if (LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 音乐节拍增加计数", ["MusicEventType", e], ["BeatCount", i + 1]);
       }
       this.Imd.set(e, i + 1);
@@ -422,11 +422,14 @@ class LevelConditionCenter {
     this.$Te(E_LGC.CheckTrapDefenseMachineLevel, LevelConditionTrapDefenseGuide_1.LevelConditionCheckTrapDefenseMachineLevel);
     this.$Te(E_LGC.CheckTrapDefenseTalentUnlock, LevelConditionTrapDefenseGuide_1.LevelConditionCheckTrapDefenseTalentUnlock);
     this.$Te(E_LGC.OnTrapDefenseMainLevelViewOpen, LevelConditionTrapDefenseGuide_1.LevelConditionOnTrapDefenseMainLevelViewOpen, [EventDefine_1.EEventName.TrapDefenseMainLevelViewOpen]);
+    this.$Te(E_LGC.OnVisionIntensifyViewShow, LevelConditionCalabashGuide_1.LevelConditionOnVisionIntensifyViewShow, [EventDefine_1.EEventName.OnVisionIntensifyViewShow]);
     this.$Te(E_LGC.CheckSurvivorRogueHasWeaponBond, LevelConditionSurvivorsRogueGuide_1.LevelConditionCheckSurvivorRogueHasWeaponBond);
     this.$Te(E_LGC.CheckSurvivorRogueTalentCanUnlock, LevelConditionSurvivorsRogueGuide_1.LevelConditionCheckSurvivorRogueTalentCanUnlock);
+    this.$Te(E_LGC.OnSurvivorsRogueWeaponDetailTabViewShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow, [EventDefine_1.EEventName.SurvivorsRogueWeaponDetailTabViewShow]);
     this.$Te(E_LGC.OnSurvivorsRoguePopViewRefresh, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRoguePopViewRefresh, [EventDefine_1.EEventName.SurvivorsRoguePopViewRefresh]);
     this.$Te(E_LGC.OnSurvivorsRogueEndlessToggleShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueEndlessToggleShow, [EventDefine_1.EEventName.SurvivorsRogueLevelDetailViewEndlessToggleRefresh]);
     this.$Te(E_LGC.OnSurvivorsRogueComboBuffShow, LevelConditionSurvivorsRogueGuide_1.LevelConditionOnSurvivorsRogueComboBuffShow, [EventDefine_1.EEventName.SurvivorsRogueComboBuffShow]);
+    this.$Te(E_LGC.CheckFightPhotoHasTarget, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoHasTarget);
     this.$Te(E_LGC.CheckFightPhotoLevelFinished, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoLevelFinished);
     this.$Te(E_LGC.CheckCalabashChildFunctionOpen, LevelConditionCalabashGuide_1.LevelConditionCheckCalabashChildFunctionOpen);
     this.$Te("CheckChildQuestFinished", LevelConditionQuestStepState_1.LevelConditionQuestStepState);
@@ -533,4 +536,5 @@ class LevelConditionCenter {
 LevelConditionCenter.zTe = new Map();
 LevelConditionCenter.eLe = undefined;
 LevelConditionCenter.ZTe = new Map();
+LevelConditionCenter.MusicBeatLogOpen = false;
 LevelConditionCenter.Imd = new Map(); //# sourceMappingURL=LevelConditionCenter.js.map

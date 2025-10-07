@@ -464,6 +464,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       } else if (d.WasRecentlyRenderOnScreen() && this.x1h(d.MatchRoleOption) && !d.IsInCd && !d.Entity.GetComponent(134)?.IsInState(3) && !d.IsHookDisabled && (d !== this.Die?.Point || this.Die.PortalPairId !== 0 || !this.Die.PortalA2B)) {
         if (d.UseRangeComponent) {
           if (!d.Entity.GetComponent(86)?.IsOverlappingPlayer()) {
+            HookPointUtils.HookPointSetDelete(this.eKs, d);
             continue;
           }
         } else if (Vector_1.Vector.DistSquared(d.TriggerLocation, l) > d.RadiusSquared) {
@@ -869,7 +870,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
         o.Inverse(o);
         var s = t?.GazeCondition?.ScanRange?.Height ?? DEFAULT_GAZE_HEIGHT;
         var t = (t?.GazeCondition?.ScanRange?.Radius ?? DEFAULT_GAZE_RADIUS) / s;
-        this.Uul(ModelManager_1.ModelManager.CameraModel.CameraLocation, o, s, t, t, e);
+        this.wKd(ModelManager_1.ModelManager.CameraModel.CameraLocation, o, s, t, t, e);
         for ([, i] of e) {
           if (i !== this.Die.Point && i.GetHookInteractType() === this.Die.Point.GetHookInteractType()) {
             CameraController_1.CameraController.FightCamera.LogicComponent.ApplyCameraHook(i, this.Die.Point);
@@ -879,7 +880,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       }
     }
   }
-  Uul(t, i, e, o, s, h, r = true, n = false) {
+  wKd(t, i, e, o, s, h, r = true, n = false) {
     if (r) {
       h.clear();
     }
@@ -888,7 +889,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     var l = s * s;
     let c = true;
     for (const I of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
-      if (I.Entity.GetComponent(0)?.GetRemoveState() || !I.CheckCondition()) {
+      if (I.Entity.GetComponent(0)?.GetRemoveState() || !I.CheckHookEnableCondition()) {
         if (I === this.Die?.Point && !this.Kon) {
           I.ChangeHookPointState(0);
           this.Die = undefined;

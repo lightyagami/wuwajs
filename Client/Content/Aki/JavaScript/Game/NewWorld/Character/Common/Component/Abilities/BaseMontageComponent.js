@@ -149,6 +149,7 @@ let BaseMontageComponent = BaseMontageComponent_1 = class BaseMontageComponent e
     var t;
     if (!BaseMontageComponent_1.x2l) {
       (t = UE.NewSet(UE.BuiltinString)).Add("TsAnimNotifyAddBuff_C");
+      t.Add("TsAnimNotifyAddTag_C");
       t.Add("TsAnimNotifySkillBehavior_C");
       t.Add("TsAnimNotifyReSkillEvent_C");
       t.Add("TsAnimNotifyChangeRoleQte_C");
@@ -156,6 +157,7 @@ let BaseMontageComponent = BaseMontageComponent_1 = class BaseMontageComponent e
       t.Add("TsAnimNotifyJoinTeamQte_C");
       t.Add("TsAnimNotifyDetach_C");
       t.Add("TsAnimNotifyStateAddBuff_C");
+      t.Add("TsAnimNotifyStateAddTag_C");
       t.Add("TsAnimNotifyStateCounterAttack_C");
       t.Add("TsAnimNotifyStateVisionCounterAttack_C");
       t.Add("TsAnimNotifyStateBulletDuration_C");

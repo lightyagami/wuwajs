@@ -264,7 +264,7 @@ class BulletActionInitCollision extends BulletActionBase_1.BulletActionBase {
       var s = this.CollisionInfo.NeedHitObstacles;
       var l = this.BulletInfo.BulletDataMain.Base.IsOversizeForTrace;
       let t = false;
-      if (t = !this.CollisionInfo.HasObstaclesCollision && s ? !l : this.BulletInfo.ActorComponent.NeedDetach) {
+      if (t = !this.CollisionInfo.HasObstaclesCollision && s ? !l : !l && this.BulletInfo.ActorComponent.NeedDetach) {
         i.SetCollisionProfileName(BulletConstant_1.BulletConstant.ProfileNameOnlyBullet);
       }
       this.BulletInfo.Actor.SetActorEnableCollision(true);

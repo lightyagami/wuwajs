@@ -25,6 +25,7 @@ class CalabashSkinViewProxy {
     this.EquipSkinId = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
     this.SelectedSkinId = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
     this.SkinIdFromSkip = CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID;
+    this.NeedLoadModel = false;
     this.CalabashHideUiClick = i => {
       if (i === 1) {
         this.View?.ShowView();
@@ -135,6 +136,11 @@ class CalabashSkinViewProxy {
   iHa() {
     var i = UiCameraHandleData_1.UiCameraHandleData.NewByView("CalabashSkinTabView");
     UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandle(i, true, true, "1001");
+  }
+  TryPushCamera() {
+    this.NeedLoadModel = true;
+    var i = UiCameraHandleData_1.UiCameraHandleData.NewByView("CalabashSkinTabView");
+    UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandle(i, true, true, "10010");
   }
   InitGridSelected() {
     if (this.SkinIdFromSkip !== CalabashSkinDefine_1.CALABASH_SKIN_DEFAULT_ID) {

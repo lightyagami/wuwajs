@@ -143,6 +143,9 @@ class SurvivorsRogueRewardView extends UiTickViewBase_1.UiTickViewBase {
       this.qoh.ScrollToTop(0);
     }, true);
   }
+  OnTick(e) {
+    this.sSt();
+  }
   sSt() {
     var e;
     if (this.ActivityDataBase?.CheckIfInOpenTime()) {

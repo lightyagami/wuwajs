@@ -17,6 +17,7 @@ class ActivityMapExploreController extends ActivityControllerBase_1.ActivityCont
   constructor() {
     super(...arguments);
     this.Data = undefined;
+    this.pct = false;
   }
   OnGetIsOpeningActivityRelativeView() {
     return false;
@@ -45,17 +46,21 @@ class ActivityMapExploreController extends ActivityControllerBase_1.ActivityCont
     Net_1.Net.UnRegister(17497);
   }
   async RequestGetReward(e) {
-    var t = new Protocol_1.Aki.Protocol.atc();
-    t.gps = e;
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Temp", 69, "atc", ["", t]);
-    }
-    var e = await Net_1.Net.CallAsync(29085, t);
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Temp", 69, "htc", ["", e]);
-    }
-    if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29085);
+    var t;
+    if (!this.pct) {
+      (t = new Protocol_1.Aki.Protocol.atc()).gps = e;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Temp", 69, "atc", ["", t]);
+      }
+      this.pct = true;
+      e = await Net_1.Net.CallAsync(29085, t);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Temp", 69, "htc", ["", e]);
+      }
+      if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29085);
+      }
+      this.pct = false;
     }
   }
   rqc() {

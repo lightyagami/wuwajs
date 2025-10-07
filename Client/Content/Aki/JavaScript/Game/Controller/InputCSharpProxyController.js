@@ -164,118 +164,127 @@ class InputCSharpProxyController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static Hjd(e) {
-    e.OnCSharpReceiveSetupInputComponent();
+    e?.OnCSharpReceiveSetupInputComponent();
   }
   static a5d(e) {
-    e.OnCSharpReceiveBeginPlay();
+    e?.OnCSharpReceiveBeginPlay();
   }
   static h5d(e) {
-    e.ReceiveDestroyed();
+    e?.ReceiveDestroyed();
   }
   static $jd(e, t) {
-    e.OnCSharpReceiveTick(t);
+    e?.OnCSharpReceiveTick(t);
   }
   static Wjd(e) {
-    e.OnCSharpReceivedPlayer();
+    e?.OnCSharpReceivedPlayer();
   }
   static j$d(e) {
-    e.InitInputHandle();
+    e?.InitInputHandle();
   }
   static H$d(e) {
-    e.AddInputBinding();
+    e?.AddInputBinding();
   }
   static $$d(e) {
-    e.ClearInputBinding();
+    e?.ClearInputBinding();
   }
   static W$d(e) {
-    e.OnCSharpOnSetupInputComponent();
+    e?.OnCSharpOnSetupInputComponent();
   }
   static Q$d(e) {
-    e.OnCSharpBindTouchHandle();
+    e?.OnCSharpBindTouchHandle();
   }
   static K$d(e, t, n) {
-    e.OnCSharpTouchBegin(t, n);
+    e?.OnCSharpTouchBegin(t, n);
   }
   static X$d(e, t, n) {
-    e.OnCSharpTouchEnd(t, n);
+    e?.OnCSharpTouchEnd(t, n);
   }
   static Y$d(e, t, n) {
-    e.OnCSharpTouchMove(t, n);
+    e?.OnCSharpTouchMove(t, n);
   }
   static z$d(e, t) {
-    e.OnCSharpPressAnyKey(t);
+    e?.OnCSharpPressAnyKey(t);
   }
   static J$d(e, t) {
-    e.OnCSharpReleaseAnyKey(t);
+    e?.OnCSharpReleaseAnyKey(t);
   }
   static Z$d(e, t) {
-    e.OnCSharpRemoveActionHandle(t);
+    e?.OnCSharpRemoveActionHandle(t);
   }
   static eWd(e, t, n) {
-    e = e.OnCSharpGetActionHandle(n);
+    e = e?.OnCSharpGetActionHandle(n);
+    if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveObject(t);
+    }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
   static tWd(e, t) {
-    e.OnCSharpRemoveAxisHandle(t);
+    e?.OnCSharpRemoveAxisHandle(t);
   }
   static iWd(e, t, n) {
-    e = e.OnCSharpGetAxisHandle(n);
+    e = e?.OnCSharpGetAxisHandle(n);
+    if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveObject(t);
+    }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
   static rWd(e, t, n) {
-    e = e.IsInTouch(n);
+    e = e?.IsInTouch(n) ?? false;
+    if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
+    }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
   static oWd(e, t) {
-    e.SetIsPrintKeyName(t);
+    e?.SetIsPrintKeyName(t);
   }
   static Qjd(e, t, n, i) {
-    e.OnCSharpInputAction(t, n, i);
+    e?.OnCSharpInputAction(t, n, i);
   }
   static Kjd(e, t, n, i = false) {
-    e.OnCSharpInputAxis(t, n, i);
+    e?.OnCSharpInputAxis(t, n, i);
   }
   static Xjd(e, t, n) {
-    e.OnCSharpTouchBegin(t, n);
+    e?.OnCSharpTouchBegin(t, n);
   }
   static Yjd(e, t, n) {
-    e.OnCSharpTouchEnd(t, n);
+    e?.OnCSharpTouchEnd(t, n);
   }
   static zjd(e, t, n) {
-    e.OnCSharpTouchMove(t, n);
+    e?.OnCSharpTouchMove(t, n);
   }
   static Jjd(e, t) {
-    e.OnCSharpPressAnyKey(t);
+    e?.OnCSharpPressAnyKey(t);
   }
   static Zjd(e, t) {
-    e.OnCSharpReleaseAnyKey(t);
+    e?.OnCSharpReleaseAnyKey(t);
   }
   static nWd(e) {
-    e.OnCSharpReceiveBeginPlay();
+    e?.OnCSharpReceiveBeginPlay();
   }
   static sWd(e) {
-    e.OnCSharpReceiveDestroyed();
+    e?.OnCSharpReceiveDestroyed();
   }
   static eHd(e, t) {
-    e.OnCSharpReceivePossess(t);
+    e?.OnCSharpReceivePossess(t);
   }
   static tHd(e, t) {
-    e.OnCSharpReceiveUnPossess(t);
+    e?.OnCSharpReceiveUnPossess(t);
   }
   static aWd(e) {
-    e.OnCSharpOnSetupInputComponent();
+    e?.OnCSharpOnSetupInputComponent();
   }
   static iHd(e, t, n) {
-    e.OnCSharpReceivePreProcessInput(t, n);
+    e?.OnCSharpReceivePreProcessInput(t, n);
   }
   static rHd(e, t, n) {
-    e.OnCSharpReceivePostProcessInput(t, n);
+    e?.OnCSharpReceivePostProcessInput(t, n);
   }
   static oHd(e) {
-    e.OnCSharpSetUiRootActive();
+    e?.OnCSharpSetUiRootActive();
   }
   static nHd(e) {
-    e.OnCSharpSetUiRootDeactivate();
+    e?.OnCSharpSetUiRootDeactivate();
   }
   static sHd(e, t) {
     Info_1.Info.SwitchInputControllerType(e, t);
@@ -313,10 +322,16 @@ class InputCSharpProxyController extends ControllerBase_1.ControllerBase {
   }
   static hWd(e, t) {
     e = e.OnCheckCanSetNavigationBP();
+    if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
+    }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
   static lWd(e, t) {
     e = e.OnCheckLoopScrollChangeNavigationBP();
+    if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
+    }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
   static gHd(e) {
@@ -384,14 +399,23 @@ class InputCSharpProxyController extends ControllerBase_1.ControllerBase {
   }
   static _Wd(e, t) {
     e = e.GetNowHitComponent();
+    if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveObject(t);
+    }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
   static uWd(e, t, n, i) {
     e = e.GetPointerEventData(n, i);
+    if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveObject(t);
+    }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
   static cWd(e, t, n) {
     e = e.IsPointerEventDataLineTrace(n);
+    if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
+      UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
+    }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
   static OHd(e) {

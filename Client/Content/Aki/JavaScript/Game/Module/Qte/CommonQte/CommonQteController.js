@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CommonQteController = undefined;
 const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
+const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const ControllerBase_1 = require("../../../../Core/Framework/ControllerBase");
@@ -20,6 +21,7 @@ const Global_1 = require("../../../Global");
 const GlobalData_1 = require("../../../GlobalData");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ScreenEffectSystem_1 = require("../../../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
+const InputManager_1 = require("../../../Ui/Input/InputManager");
 const UiManager_1 = require("../../../Ui/UiManager");
 const GameModeController_1 = require("../../../World/Controller/GameModeController");
 const CommonQteGroupContext_1 = require("./CommonQteGroupContext");
@@ -141,6 +143,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       this.AddExtraEffect(t.ExtraConfig);
       this.SetQteTimeDilation(t.BaseConfig.TimeDilation);
     }
+    InputManager_1.InputManager.PauseImmersiveMouseMode("Qte");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteStart, this.nx.HandleId);
     return true;
   }
@@ -227,6 +230,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       this.AddExtraEffect(t.ExtraConfig);
     }
     this.SetQteTimeDilation(r.GroupConfig.TimeDilation);
+    InputManager_1.InputManager.PauseImmersiveMouseMode("Qte");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteStart, this.nx.HandleId);
     return true;
   }
@@ -290,6 +294,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
         this.PlayQteAudio(t.AudioConfig.AudioEventFail);
       }
     }
+    InputManager_1.InputManager.ResumeImmersiveMouseMode("Qte");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CommonQteEnd, this.nx?.HandleId);
     ModelManager_1.ModelManager.CommonQteModel?.ClearQteHandleId();
     if (this.nx instanceof CommonQteGroupContext_1.CommonQteGroupContext) {
@@ -493,9 +498,11 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static StopQteAudio(t) {
+  static StopQteAudio(t, e) {
     if (t !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
-      AudioSystem_1.AudioSystem.ExecuteAction(t, 0);
+      AudioSystem_1.AudioSystem.ExecuteAction(t, 0, {
+        TransitionDuration: e
+      });
     }
   }
   static async PreloadQteRes(t, e = -1, i = false) {
@@ -530,47 +537,47 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       }
       var a = Array.from(o);
       var n = [];
-      for (const g of a) {
-        if (UiManager_1.UiManager.IsViewOpen(g)) {
-          n.push(UiManager_1.UiManager.CloseViewAsync(g));
+      for (const M of a) {
+        if (UiManager_1.UiManager.IsViewOpen(M)) {
+          n.push(UiManager_1.UiManager.CloseViewAsync(M));
         }
       }
       await Promise.allSettled(n);
-      var m = [];
-      for (const M of a) {
-        m.push(UiManager_1.UiManager.OpenViewAsync(M));
+      var m = Info_1.Info.IsBuildDevelopmentOrDebug;
+      var h = [];
+      for (const u of a) {
+        h.push(UiManager_1.UiManager.OpenViewAsync(u));
       }
-      var h = await Promise.allSettled(m);
-      for (let t = 0; t < h.length; t++) {
-        var _ = a[t];
-        var l = h[t];
-        if (l.status === "fulfilled" && l.value !== undefined && _ !== undefined) {
-          l = l.value;
-          this.sS1.set(_, UiManager_1.UiManager.GetView(l));
+      var _ = await Promise.allSettled(h);
+      for (let t = 0; t < _.length; t++) {
+        var l = a[t];
+        var d = _[t];
+        if (d.status === "fulfilled" && d.value !== undefined && l !== undefined && (d = d.value, this.sS1.set(l, UiManager_1.UiManager.GetView(d)), m)) {
+          this.CommonQteViewMapDebug ||= new Map();
+          this.CommonQteViewMapDebug.set(l, UiManager_1.UiManager.GetView(d));
         }
       }
-      var d;
       var Q;
+      var C;
       var v = [];
-      for ([d, Q] of s.entries()) {
-        var C = ModelManager_1.ModelManager.CommonQteModel?.CreateCommonQteItem(Q);
-        if (C) {
-          C.SetPreloadQte(d);
-          this.NXu.set(d, C);
-          v.push(C.CreateByResourceIdAsync(Q));
+      for ([Q, C] of s.entries()) {
+        var f = ModelManager_1.ModelManager.CommonQteModel?.CreateCommonQteItem(C);
+        if (f && (f.SetPreloadQte(Q), this.NXu.set(Q, f), v.push(f.CreateByResourceIdAsync(C)), m)) {
+          this.CommonQteItemMapDebug ||= new Map();
+          this.CommonQteItemMapDebug.set(Q, f);
         }
       }
       await Promise.allSettled(v);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CommonQte", 67, "通用Qte预加载界面完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }
-      var f = [];
+      var g = [];
       for (const S of t) {
-        for (const u of ModelManager_1.ModelManager.CommonQteModel.LoadQteResource(S)) {
-          f.push(u);
+        for (const I of ModelManager_1.ModelManager.CommonQteModel.LoadQteResource(S)) {
+          g.push(I);
         }
       }
-      await Promise.all(f);
+      await Promise.all(g);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("CommonQte", 67, "通用Qte预加载全部完成", ["HandleId", this.nx?.HandleId], ["qteIdList", t]);
       }
@@ -594,6 +601,8 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
     }
     this.NXu.clear();
     ModelManager_1.ModelManager.CommonQteModel?.ClearPreloadCache();
+    this.CommonQteItemMapDebug?.clear();
+    this.CommonQteViewMapDebug?.clear();
   }
   static kfc(t) {
     if (!this.fk1) {
@@ -633,6 +642,8 @@ CommonQteController.dad = -1;
 CommonQteController.uad = undefined;
 CommonQteController.pYi = undefined;
 CommonQteController.mad = undefined;
+CommonQteController.CommonQteViewMapDebug = undefined;
+CommonQteController.CommonQteItemMapDebug = undefined;
 CommonQteController.V3u = () => {
   if (_a.IsInQte() && _a.nx?.IsActive() && _a.nx?.IsPending()) {
     if (Log_1.Log.CheckDebug()) {

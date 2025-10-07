@@ -65,7 +65,7 @@ class ExploreAreaItemData {
     return this.PlayPointCompletedCount >= this.PlayPointTotalCount;
   }
   get IsShowRecommendPlayPoint() {
-    return this.IsRecommend && !this.IsFinishedPlayPoint && this.IsUnlocked();
+    return this.IsRecommend && !this.IsFinishedPlayPoint && this.IsUnlocked() && this.IsNearestPlayPointUnlock();
   }
   Initialize(t) {
     this.AreaId = t.Area;
@@ -218,6 +218,11 @@ class ExploreAreaItemData {
   }
   HasSpecialPlayPoint() {
     return this.PlayProgressDataList.some(t => t.PlayPointType === 1);
+  }
+  IsNearestPlayPointUnlock() {
+    var t = this.GetNearTrackMapMark();
+    let e = true;
+    return e = t && t.GameplayLockJumpId !== 0 && t.GameplayLockText !== "" && !this.GetPlayIdIsUnlock(t.RelativeId) ? false : e;
   }
   TrackPoint() {
     if (Log_1.Log.CheckDebug()) {
@@ -384,57 +389,71 @@ class ExploreAreaItemData {
     return i;
   }
   IOl(t) {
-    let s = undefined;
-    let o = undefined;
-    let a = Number.MAX_VALUE;
-    const h = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(未缩小)", ["MyPos", h]);
-    }
-    h.DivisionEqual(1000);
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(已缩小)", ["MyPos", h], ["Scale", 1000]);
-    }
-    t.forEach(t => {
-      var e;
-      var i;
-      var r = this.Czl(t);
-      if (r && (e = r.EntityConfigId, i = r.MapId, e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(未缩小)", ["MarkPos", e]), e.DivisionEqual(MapDefine_1.UNIT * 1000), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "标记位置(已缩小)", ["MarkPos", e]), i = Vector_1.Vector.DistSquared(h, e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("ExploreProgress", 69, "计算标记与玩家的距离", ["标记id", r.MarkId], ["标记的位置", e], ["距离的平方", i], ["Info", t]), i < a)) {
-        a = i;
-        s = r;
-        o = t;
-      }
-    });
-    if (s) {
+    if (t.length === 0) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", s.MarkId], ["NearInfo", o]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到附近的标记", ["InfoList", t]);
       }
-      this.e6_ = o;
-      return s;
-    }
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "没有找到附近的标记", ["InfoList", t]);
+    } else {
+      const i = ModelManager_1.ModelManager.WorldMapModel.GetPlayerPosition();
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(未缩小)", ["MyPos", i]);
+      }
+      i.DivisionEqual(1000);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ExploreProgress", 69, "玩家位置(已缩小)", ["MyPos", i], ["Scale", 1000]);
+      }
+      var e = t.map(t => ({
+        Info: t,
+        Mark: this.Czl(t)
+      })).filter(t => t.Mark !== undefined);
+      if (e.length !== 0) {
+        e = e.sort((t, e) => {
+          if (t.Info.IsUnlock !== e.Info.IsUnlock) {
+            if (t.Info.IsUnlock) {
+              return -1;
+            } else {
+              return 1;
+            }
+          } else {
+            t = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(t.Mark.EntityConfigId, t.Mark.MapId);
+            e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e.Mark.EntityConfigId, e.Mark.MapId);
+            t.DivisionEqual(MapDefine_1.UNIT * 1000);
+            e.DivisionEqual(MapDefine_1.UNIT * 1000);
+            return Vector_1.Vector.DistSquared(i, t) - Vector_1.Vector.DistSquared(i, e);
+          }
+        })[0];
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("ExploreProgress", 69, "找到附近的标记", ["MarkId", e.Mark.MarkId], ["NearInfo", e.Info]);
+        }
+        this.e6_ = e.Info;
+        return e.Mark;
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", t]);
+      }
     }
   }
   eKl(t) {
-    let i = undefined;
-    let r = undefined;
-    t.forEach(t => {
-      var e = this.Czl(t);
-      if (e && (!i || e.MarkId < i.MarkId)) {
-        i = e;
-        r = t;
-      }
-    });
-    if (i) {
+    if (t.length === 0) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "找到标记id最小的玩法点", ["MarkId", i.MarkId], ["Info", r]);
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到标记id最小的玩法点", ["InfoList", t]);
       }
-      this.e6_ = r;
-      return i;
-    }
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("ExploreProgress", 69, "没有找到标记id最小的玩法点", ["InfoList", t]);
+    } else {
+      var e = t.map(t => ({
+        Info: t,
+        Mark: this.Czl(t)
+      })).filter(t => t.Mark !== undefined);
+      if (e.length !== 0) {
+        e = e.sort((t, e) => t.Info.IsUnlock !== e.Info.IsUnlock ? t.Info.IsUnlock ? -1 : 1 : t.Mark.MarkId - e.Mark.MarkId)[0];
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("ExploreProgress", 69, "找到标记id最小的玩法点", ["MarkId", e.Mark.MarkId], ["Info", e.Info]);
+        }
+        this.e6_ = e.Info;
+        return e.Mark;
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("ExploreProgress", 69, "没有找到有效的标记", ["InfoList", t]);
+      }
     }
   }
   Czl(t) {

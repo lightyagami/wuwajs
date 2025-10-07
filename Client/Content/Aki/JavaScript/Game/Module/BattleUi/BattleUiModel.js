@@ -38,6 +38,7 @@ const BattleUiSpecialEnergyBarData_1 = require("./BattleUiSpecialEnergyBarData")
 const FullScreenEffectHandle_1 = require("./FullScreenEffectHandle");
 const LevelUpCacheData_1 = require("./LevelUpCacheData");
 const HeadStateCommonParam_1 = require("./Views/HeadState/HeadStateCommonParam");
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 class BattleUiModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -651,6 +652,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         break;
       case 2:
         ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
+        AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
         if (TimerSystem_1.TimerSystem.Has(this.oxd)) {
           TimerSystem_1.TimerSystem.Remove(this.oxd);
         }

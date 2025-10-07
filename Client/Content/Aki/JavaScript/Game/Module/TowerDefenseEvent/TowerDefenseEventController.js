@@ -103,6 +103,10 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   static IsFighting() {
     return this.rYc === 2;
   }
+  static ResetWorldAttr() {
+    this.Sgd = 0;
+    this.ygd = 0;
+  }
   static IsTowerDefenseEventInstance() {
     return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType === 37;
   }
@@ -113,6 +117,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   }
   static OnWorldDone() {
     this.IsWorldInit = true;
+    this.ResetWorldAttr();
   }
   static OnWorldReset() {
     if (this.IsWorldInit) {
@@ -368,6 +373,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     this.RotateTrap();
   }
   static PreviewTrap(e) {
+    this.RaycastResult.Reset();
     this.gku.BeginInit(e);
     var t = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(this.gku);
     this.gku.EndInit();
@@ -402,7 +408,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     var e;
     var t;
     var r;
-    return !!this.RaycastResult.IsCanBuild && ((t = this.RaycastResult.Grid)?.IsValid() ? !!TrapDefenseBattleGuideManager_1.TrapDefenseBattleGuideManager.CheckCanExecuteAndShowFailTips("ConstructTrap") && ((e = TowerDefenseEventEntityModel_1.TowerDefenseEventTrapModel.GetTrapModel(this.gku)).UpdateData(t.GetBuildingGridGuidString(), this.RaycastResult.Coords), (r = (t = await this.vku(e)) === Protocol_1.Aki.Protocol.Q4n.KRs) || Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "占用陷阱失败，服务器请求失败", ["errorCode", t]), e.Release(), r) : (Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "占用陷阱失败，网格无效"), false));
+    return !!this.RaycastResult.IsCanBuild && !!this.gku.IsInPreview() && !((t = this.RaycastResult.Grid)?.IsValid() ? !TrapDefenseBattleGuideManager_1.TrapDefenseBattleGuideManager.CheckCanExecuteAndShowFailTips("ConstructTrap") || ((e = TowerDefenseEventEntityModel_1.TowerDefenseEventTrapModel.GetTrapModel(this.gku)).UpdateData(t.GetBuildingGridGuidString(), this.RaycastResult.Coords), (r = (t = await this.vku(e)) === Protocol_1.Aki.Protocol.Q4n.KRs) || Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "占用陷阱失败，服务器请求失败", ["errorCode", t]), e.Release(), !r) : (Log_1.Log.CheckError() && Log_1.Log.Error("TowerDefenseEvent", 60, "占用陷阱失败，网格无效"), 1));
   }
   static async vku(e) {
     var t = Protocol_1.Aki.Protocol.Dfu.create();

@@ -27,7 +27,7 @@ class ActivityListItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.DNl = i.Data;
     this.wvd = i.OnclickCb;
     this.RefreshReadPoint();
-    this.nOe();
+    this.RefreshInfo();
   }
   RefreshReadPoint() {
     this.GetItem(1).SetUIActive(this.DNl.RedPoint);
@@ -35,7 +35,7 @@ class ActivityListItem extends GridProxyAbstract_1.GridProxyAbstract {
   GetMapPeriodicActivityId() {
     return this.DNl.Id;
   }
-  nOe() {
+  RefreshInfo() {
     var i = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(this.DNl.Id);
     this.GetText(2).ShowTextNew(i?.TitleKey ?? "");
     this.GetText(4).ShowTextNew(i?.DescriptionKey ?? "");

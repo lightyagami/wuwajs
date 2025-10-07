@@ -67,7 +67,7 @@ class EnrichmentAreaItem extends ServerMarkItem_1.ServerMarkItem {
             i.push(Vector2D_1.Vector2D.Create(a.X, a.Y));
           }
         }
-        const n = MapUtil_1.MapUtil.MinBoundingCircle(i);
+        const n = MapUtil_1.MapUtil.MinBoundingCircle(i, r.EntityConfigId === 177750258 ? 3 : 10);
         ModelManager_1.ModelManager.MapModel.CacheEnrichmentAreaWorldMapCircle = n;
       }
       ModelManager_1.ModelManager.MapModel.CacheEnrichmentAreaEntityId = r.EntityConfigId ?? 0;

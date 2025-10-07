@@ -60,7 +60,7 @@ class EntityComponentSystem {
     return true;
   }
   static HW(t) {
-    return !!(t instanceof Stats_1.Stat) || !!(t instanceof Function) || !(t instanceof Array ? t.length = 0 : t instanceof Vector_1.Vector || t instanceof Vector2D_1.Vector2D || t instanceof Rotator_1.Rotator || t instanceof Quat_1.Quat || t instanceof Transform_1.Transform ? (t.Reset(), 0) : t instanceof Map || t instanceof Set ? (t.clear(), 0) : t instanceof Queue_1.Queue || t instanceof PriorityQueue_1.PriorityQueue || t instanceof Deque_1.Deque ? (t.Clear(), 0) : !t.ClearObject || !t.ClearObject());
+    return t instanceof Stats_1.Stat || t instanceof Function || (t instanceof Array ? !(t.length = 0) : t instanceof Vector_1.Vector || t instanceof Vector2D_1.Vector2D || t instanceof Rotator_1.Rotator || t instanceof Quat_1.Quat || t instanceof Transform_1.Transform ? (t.Reset(), true) : t instanceof Map || t instanceof Set ? (t.clear(), true) : t instanceof Queue_1.Queue || t instanceof PriorityQueue_1.PriorityQueue || t instanceof Deque_1.Deque ? (t.Clear(), true) : t instanceof WeakMap || !!t.ClearObject && !!t.ClearObject());
   }
 }
 (exports.EntityComponentSystem = EntityComponentSystem).ComponentTemplates = new Map();

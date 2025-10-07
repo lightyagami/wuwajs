@@ -29,7 +29,9 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
     this.bFd = undefined;
     this.z7d = 0;
     this.Ebd = e => {
-      this.Command.RequestCommand([e.fEd.w5n]);
+      if (!this.Command.IsFinished) {
+        this.Command.RequestCommand([e.fEd.w5n]);
+      }
     };
     this.Ibd = (i, t) => {
       this.Command.RequestLock(i.fEd.w5n, t, e => {
@@ -160,8 +162,8 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
           break;
         case "uEd":
           var t = i.uEd.zys;
-          var s = i.uEd.sEd;
-          if (e && (s.F6n === s.wJs || this.bFd.O2s)) {
+          var r = i.uEd.sEd;
+          if (e && (r.F6n === r.wJs || this.bFd.O2s)) {
             return;
           }
           this.cbd.RoleStatePanel.GetWeaponGrid(t)?.SetSelectOn(e);
@@ -169,19 +171,33 @@ class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
     }
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
-    var i;
-    var t;
     if (!(e.length <= 0)) {
-      if ((i = e[0]) === "ShopCardLock") {
-        if (t = this.Sbd?.GetLayoutItemByIndex(0)?.GetGuideUiItem("0")) {
+      var i = e[0];
+      if (i === "ShopCardLock") {
+        if (t = this.Sbd?.GetLayoutItemByIndex(0)?.CardItem?.GetGuideUiItem("0")) {
           return [t, t];
         } else {
           return undefined;
         }
-      } else if (i === "SurvivorFightInfo") {
-        return this.cbd?.RoleStatePanel?.GetGuideUiItemAndUiItemForShowEx(e);
-      } else if (i === "EvolveBar" && (t = this.Sbd?.GetLayoutItemByIndex(0)?.GetGuideUiItem("2"))) {
-        return [t, t];
+      }
+      if (i === "SurvivorFightInfo") {
+        if (e.length < 3) {
+          return;
+        }
+        var t = e[2];
+        if (t === "FirstWeapon") {
+          return this.cbd?.RoleStatePanel?.GetGuideUiItemAndUiItemForShowEx(e);
+        }
+        if (t === "FirstTwoWeapon") {
+          if (t = this.GetGuideUiItem("3")) {
+            return [t, t];
+          } else {
+            return undefined;
+          }
+        }
+      }
+      if (i === "EvolveBar") {
+        return this.Sbd?.GetLayoutItemByIndex(0)?.GetGuideUiItemAndUiItemForShowEx(e);
       } else {
         return undefined;
       }

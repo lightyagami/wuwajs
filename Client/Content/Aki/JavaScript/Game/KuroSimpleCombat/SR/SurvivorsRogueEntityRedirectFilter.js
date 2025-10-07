@@ -8,7 +8,6 @@ const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const Pool_1 = require("../../../Core/Container/Pool");
 const SimpleCombatDetailConfigBySimpleCombatIdAndSubTypeId_1 = require("../../../Core/Define/ConfigQuery/SimpleCombatDetailConfigBySimpleCombatIdAndSubTypeId");
-const SurvivorsDeathrattleById_1 = require("../../../Core/Define/ConfigQuery/SurvivorsDeathrattleById");
 const SurvivorsTemplateById_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTemplateById");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const IComponent_1 = require("../../../UniverseEditor/Interface/IComponent");
@@ -180,32 +179,18 @@ class SurvivorsRogueEntityRedirectFilter extends KscSubControllerBase_1.KscEntit
   }
   FillUpModelInfo(e) {
     var r = e;
-    if (r.EntityType === 1) {
-      var t = SurvivorsTemplateById_1.configSurvivorsTemplateById.GetConfig(r.ConfigId);
-      if (!t) {
-        return "怪物配置不存在";
-      }
-      r.DeathType = t.Deathrattle;
-      if (r.DeathType !== 0) {
-        t = SurvivorsDeathrattleById_1.configSurvivorsDeathrattleById.GetConfig(r.DeathType);
-        if (!t) {
-          return "死亡回响配置不存在";
-        }
-        r.BuffRadius = t.NearbyMonsterRadius;
-        r.BuffIds = t.NearbyMonsterBuffs;
-        r.PolluteRadius = t.PolluteRadius;
-        r.SpawnIds = t.SpawnMonsters;
-      }
+    if (r.EntityType === 1 && !SurvivorsTemplateById_1.configSurvivorsTemplateById.GetConfig(r.ConfigId)) {
+      return "怪物配置不存在";
     }
     r = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(e.TemplateId);
     if (!r) {
       return "实体模板不存在";
     }
-    t = (0, IComponent_1.getComponent)(r.ComponentsData, "SimpleCombatComponent");
-    if (!t) {
+    r = (0, IComponent_1.getComponent)(r.ComponentsData, "SimpleCombatComponent");
+    if (!r) {
       return "战斗组件不存在";
     }
-    e.CombatId = t.Id;
+    e.CombatId = r.Id;
     r = SimpleCombatDetailConfigBySimpleCombatIdAndSubTypeId_1.configSimpleCombatDetailConfigBySimpleCombatIdAndSubTypeId.GetConfig(e.CombatId, e.SubTypeId);
     if (!r) {
       return "战斗配置不存在";

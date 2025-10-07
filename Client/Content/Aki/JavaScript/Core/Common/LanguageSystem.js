@@ -38,6 +38,8 @@ class LanguageSystem {
   static set PackageLanguage(e) {
     var a = LanguageSystem.T8;
     LanguageSystem.T8 = e;
+    UE.KuroVariableFunctionLibrary.RemoveStringValue("PackageLanguage");
+    UE.KuroVariableFunctionLibrary.SetStringValue("PackageLanguage", e);
     UE.LGUIFontData.SetAllFontCurrentCulture(exports.languageCultureMap.get(e));
     if (!Info_1.Info.IsPlayInEditor) {
       UE.KismetInternationalizationLibrary.SetCurrentCulture(e, true);

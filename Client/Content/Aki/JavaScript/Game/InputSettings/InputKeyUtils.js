@@ -5,9 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.InputKeyUtils = undefined;
 const Info_1 = require("../../Core/Common/Info");
+const StringUtils_1 = require("../../Core/Utils/StringUtils");
 const LocalStorage_1 = require("../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../Manager/ConfigManager");
+const InputSettingsManager_1 = require("./InputSettingsManager");
 class InputKeyUtils {
   static GetGamepadKeyIconPath(e) {
     e = ConfigManager_1.ConfigManager.InputSettingsConfig.GetGamepadKeyConfig(e);
@@ -25,16 +27,16 @@ class InputKeyUtils {
       return "";
     }
   }
-  static GetGamepadKeyIconPathByType(e, a) {
+  static GetGamepadKeyIconPathByType(e, t) {
     e = ConfigManager_1.ConfigManager.InputSettingsConfig.GetGamepadKeyConfig(e);
     if (e) {
-      if (a === 3 || a === 4) {
+      if (t === 3 || t === 4) {
         return e.PsKeyIconPath;
-      } else if (a === 6) {
+      } else if (t === 6) {
         return e.BackBoneKeyIconPath;
-      } else if (a === 7) {
+      } else if (t === 7) {
         return e.NsKeyIconPath;
-      } else if (a === 2) {
+      } else if (t === 2) {
         return e.KeyIconPath;
       } else {
         return "";
@@ -48,6 +50,8 @@ class InputKeyUtils {
     if (e) {
       if (Info_1.Info.PlatformType === 4) {
         return e.MacKeyIconPath;
+      } else if (InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard && !StringUtils_1.StringUtils.IsBlank(e.FrenchKeyIconPath)) {
+        return e.FrenchKeyIconPath;
       } else {
         return e.KeyIconPath;
       }

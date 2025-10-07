@@ -265,12 +265,12 @@ ControllerHolder.SurvivorsRogueController = undefined;
 ControllerHolder.MeshStreamController = undefined;
 ControllerHolder.CalabashSkinController = undefined;
 ControllerHolder.QuestTreeController = undefined;
-ControllerHolder.BloodBathedController = undefined;
 ControllerHolder.ParallelPackageController = undefined;
 ControllerHolder.RoleDevController = undefined;
 ControllerHolder.SpecialTransitionController = undefined;
 ControllerHolder.FlyingFeatherController = undefined;
 ControllerHolder.EyeProtectController = undefined;
 ControllerHolder.ButtonStateController = undefined;
+ControllerHolder.UiModelEffectController = undefined;
 ControllerHolder.HomeBtnController = undefined;
 ControllerHolder.InputCSharpProxyController = undefined; //# sourceMappingURL=ControllerHolder.js.map

@@ -28,7 +28,7 @@ class SurvivorsTalentUnlockView extends UiViewBase_1.UiViewBase {
     var i;
     var t = this.OpenParam;
     if (t) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.Title);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.Tag);
       e = this.GetHorizontalLayout(2).GetRootComponent();
       i = this.GetText(4);
       e.SetUIActive(false);

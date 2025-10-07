@@ -45,7 +45,6 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.IsRayTracingOpenChecked = undefined;
     this.NeedRayTracingSubChange = undefined;
     this.IsVulkanOpenChecked = false;
-    this.BloodBathedMode = 5;
     this.pNn = new Map([[GameSettingsDefine_1.EFunction.CdKey, FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient]]);
     this.FilterSettingViewModel = undefined;
     this.ktu = undefined;
@@ -59,7 +58,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
       var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(n);
       for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(n)) {
-        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice())) {
+        if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice()) && e !== GameSettingsDefine_1.EFunction.RayTracing) {
           var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
           if (i !== undefined && t !== i) {
             if (Log_1.Log.CheckDebug()) {
@@ -456,12 +455,6 @@ class MenuModel extends ModelBase_1.ModelBase {
     } else {
       return t[e]?.Id ?? 1;
     }
-  }
-  GetBloodBathedMode() {
-    return this.BloodBathedMode;
-  }
-  SetBloodBathedMode(e) {
-    this.BloodBathedMode = e;
   }
 }
 exports.MenuModel = MenuModel;

@@ -10,6 +10,7 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
 const InputMultiKeyItem_1 = require("../../Common/InputKey/InputMultiKeyItem");
 class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
@@ -40,19 +41,21 @@ class BattleSkillLeftRouletteItem extends UiPanelBase_1.UiPanelBase {
     var e = this._Ze;
     if (e.RouletteKey !== "Gamepad_LeftShoulder" && e.RouletteKey) {
       e = {
-        KeyName: e.RouletteKey
+        ActionOrAxisName: InputMappingsDefine_1.actionMappings.幻象探索选择界面
       };
-      this.Qtt.RefreshByKeyList(e);
+      this.Qtt.RefreshByActionOrAxis(e);
     }
   }
   RefreshVisible() {
     var e;
+    var t;
     if (!this.IsDestroyOrDestroying) {
-      if (ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance() || !Info_1.Info.IsInGamepad() || (e = this._Ze).GetIsPressCombineButton()) {
+      if (ModelManager_1.ModelManager.DangoAbyssModel.CheckIfInSmallWorldInstance() || !Info_1.Info.IsInGamepad() || (t = this._Ze).GetIsPressCombineButton()) {
         this.SetActive(false);
       } else {
-        e = e.RouletteKey !== "Gamepad_LeftShoulder" && e.RouletteKey !== undefined;
-        this.SetActive(e);
+        e = ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1);
+        t = t.RouletteKey !== "Gamepad_LeftShoulder" && t.RouletteKey !== undefined && e;
+        this.SetActive(t);
       }
     }
   }

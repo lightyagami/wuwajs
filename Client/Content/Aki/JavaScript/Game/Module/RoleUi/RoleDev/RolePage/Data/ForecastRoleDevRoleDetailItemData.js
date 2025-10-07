@@ -72,7 +72,7 @@ class ForecastRoleDevRoleDetailItemData {
   }
   jNd(e, t) {
     t = RoleDevUtils_1.RoleDevUtils.GroupMaterialsByType(t);
-    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 1, 2)[0];
+    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 1)[0];
   }
   WNd(e, t, r, a) {
     let i = a;

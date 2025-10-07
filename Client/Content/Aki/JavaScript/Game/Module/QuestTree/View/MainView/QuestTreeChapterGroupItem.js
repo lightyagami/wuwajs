@@ -28,17 +28,27 @@ class QuestTreeChapterGroupItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   Refresh(e, t, s) {
+    this.fLc(e);
+  }
+  async RefreshAsync(e) {
+    await this.fLc(e);
+  }
+  async fLc(e) {
     if (e.length !== 0 && !(e.length > QuestTreeDefine_1.QUEST_TREE_VIEW_CHAPTER_GROUP_LENGTH)) {
       this.ypt = e;
+      var t = [];
       for (let e = 0; e < QuestTreeDefine_1.QUEST_TREE_VIEW_CHAPTER_GROUP_LENGTH; e++) {
+        var s;
         var r = this.ypt[e];
         if (r) {
-          this.wyd[e].LoadOrRefresh(r, this.Ryd[e]);
+          s = this.wyd[e];
+          t.push(s.LoadOrRefresh(r, this.Ryd[e]));
           this.Lyd[e].SetUIActive(true);
         } else {
           this.Lyd[e].SetUIActive(false);
         }
       }
+      await Promise.all(t);
     }
   }
 }

@@ -384,20 +384,22 @@ class CommonQteModel extends ModelBase_1.ModelBase {
   }
   async Sad(o, n) {
     const r = new CustomPromise_1.CustomPromise();
-    ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectModelPostProcess_C, e => {
-      var t;
-      if (e) {
-        if (t = this.GetQteResource(o, true)) {
-          t.ScreenEffect2 = e;
+    ResourceSystem_1.ResourceSystem.LoadTypeAsync("EffectModelPostProcess_C", () => {
+      ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectModelPostProcess_C, e => {
+        var t;
+        if (e) {
+          if (t = this.GetQteResource(o, true)) {
+            t.ScreenEffect2 = e;
+          }
+          r.SetResult(true);
+        } else {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("CommonQte", 67, "QTE屏幕特效加载失败", ["path", n]);
+          }
+          r.SetResult(false);
         }
-        r.SetResult(true);
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonQte", 67, "QTE屏幕特效加载失败", ["path", n]);
-        }
-        r.SetResult(false);
-      }
-    }, 100);
+      }, 100);
+    });
     return r.Promise;
   }
   async Mad(o, n) {

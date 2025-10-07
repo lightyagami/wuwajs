@@ -104,8 +104,8 @@ class DamageUiController extends ControllerBase_1.ControllerBase {
   static StopUeDamageUiManager() {
     DamageUiManager_1.DamageUiManager.StopUeDamageUiManager();
   }
-  static SetUeDamageConfig(e) {
-    DamageUiManager_1.DamageUiManager.SetUeDamageConfig(e);
+  static SetUeDamageConfig(e, t = false) {
+    DamageUiManager_1.DamageUiManager.SetUeDamageConfig(e, t);
   }
 }
 exports.DamageUiController = DamageUiController;

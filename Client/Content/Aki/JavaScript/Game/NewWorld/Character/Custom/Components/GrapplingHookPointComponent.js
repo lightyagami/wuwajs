@@ -265,6 +265,10 @@ let GrapplingHookPointComponent = GrapplingHookPointComponent_1 = class Grapplin
   CheckCondition() {
     return this.N1_ === undefined || this.N1_.length === 0 || this.N1_.every(t => ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
   }
+  CheckHookEnableCondition() {
+    var t = this.Lo.HookEnableCondition;
+    return !t || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, this.Hte.Owner, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
+  }
   BeHooked(t) {
     this.zNc();
     if (this.Lo?.HookInteractConfig?.Type === "SlashHook") {

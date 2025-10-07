@@ -33,7 +33,7 @@ class TsAnimNotifySummonBeginSkill extends UE.KuroAnimNotify {
       Entity: o,
       SkillComponent: i,
       Skill: i.CurrentSkill
-    }, n = SkillBehaviorAction_1.SkillBehaviorAction.CalculateLocation(this.ActionSetLocation, o), o = SkillBehaviorAction_1.SkillBehaviorAction.CalculateRotation(this.ActionSetRotation, o), n.Equals(Vector_1.Vector.ZeroVectorDouble, MathCommon_1.MathCommon.KindaSmallNumber) || (l = e.Entity.GetComponent(3), CombatLog_1.CombatLog.Info("Skill", e.Entity, "TsAnimNotifySummonBeginSkill.SetActorLocationAndRotation", ["位置", n], ["旋转", o]), l.SetActorLocationAndRotation(n, o, "TsAnimNotifySummonBeginSkill.SetActorLocationAndRotation", false)), this.EnableEntity && ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, true, "TsAnimNotifySummonBeginSkill.SetEntityEnable", true), r.BeginSkill(this.SkillId, {
+    }, n = SkillBehaviorAction_1.SkillBehaviorAction.CalculateLocation(this.ActionSetLocation, o), o = SkillBehaviorAction_1.SkillBehaviorAction.CalculateRotation(this.ActionSetRotation, o), n.Equals(Vector_1.Vector.ZeroVectorDouble, MathCommon_1.MathCommon.KindaSmallNumber) || (l = e.Entity.GetComponent(3), CombatLog_1.CombatLog.Info("Skill", e.Entity, "TsAnimNotifySummonBeginSkill.SetActorLocationAndRotation", ["位置", n], ["旋转", o]), l.SetActorLocationAndRotation(n, o, "TsAnimNotifySummonBeginSkill.SetActorLocationAndRotation", false)), this.EnableEntity && ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, true, "TsAnimNotifySummonBeginSkill.SetEntityEnable", true), r.BeginSkillAsync(this.SkillId, {
       Target: i.SkillTarget?.Entity,
       Reason: "TsAnimNotifySummonBeginSkill.UseSummonSkill"
     }), 0);

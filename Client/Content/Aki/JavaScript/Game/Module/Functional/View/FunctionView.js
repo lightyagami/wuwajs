@@ -100,6 +100,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     };
     this.dSd = () => {
       UiManager_1.UiManager.OpenView("PersonalEditView", 2);
+      this.gLt?.SetToggleState();
     };
     this.rHt = () => {
       var e;

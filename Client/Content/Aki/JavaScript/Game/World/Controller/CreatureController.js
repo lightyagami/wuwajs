@@ -1361,6 +1361,7 @@ class CreatureController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.LoadingModel?.SetSpecifiedLoadingConfigId(t.zed?.v9n);
         break;
       case Protocol_1.Aki.Protocol.p5n.Proto_WithSpine:
+        ControllerHolder_1.ControllerHolder.BlackScreenFadeController.NeedGuarantee = false;
         ModelManager_1.ModelManager.GameModeModel.SpecialTransitionPb = t.BAd;
     }
   }

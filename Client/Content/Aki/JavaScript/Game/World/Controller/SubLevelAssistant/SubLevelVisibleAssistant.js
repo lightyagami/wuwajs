@@ -20,12 +20,10 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const EffectSystem_1 = require("../../../Effect/EffectSystem");
 const Global_1 = require("../../../Global");
 const GlobalData_1 = require("../../../GlobalData");
-const LevelEventLockInputState_1 = require("../../../LevelGamePlay/LevelEventLockInputState");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const ControllerAssistantBase_1 = require("../../../Module/GeneralLogicTree/ControllerAssistant/ControllerAssistantBase");
 const ScreenEffectSystem_1 = require("../../../Render/Effect/ScreenEffectSystem/ScreenEffectSystem");
-const ALLINPUTTAG = "BlockAllInputTag";
 class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   constructor() {
     super(...arguments);
@@ -63,33 +61,16 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
     this.lW_ = undefined;
     this.ap1 = undefined;
   }
-  jp1() {
-    if (LevelEventLockInputState_1.LevelEventLockInputState.IsLockInput()) {
-      LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.push(ALLINPUTTAG);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
-    } else {
-      ModelManager_1.ModelManager.InputDistributeModel.SetInputDistributeTag(ALLINPUTTAG);
-      LevelEventLockInputState_1.LevelEventLockInputState.Lock([ALLINPUTTAG]);
-    }
-  }
-  Hp1() {
-    var e;
-    if (LevelEventLockInputState_1.LevelEventLockInputState.IsLockInput() && ((e = LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.findIndex(e => e === ALLINPUTTAG)) >= 0 && LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.splice(e, 1), LevelEventLockInputState_1.LevelEventLockInputState.InputTagNames.length === 0)) {
-      LevelEventLockInputState_1.LevelEventLockInputState.Unlock();
-      ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
-    }
-  }
   ZHd(e) {
     e = e.TransitionOption;
-    if (e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput) {
-      this.jp1();
-    }
+    let t = false;
+    t = e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput;
+    ModelManager_1.ModelManager.SubLevelModel.SetSubLevelSwitching(t);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
   }
   e$d(e) {
-    e = e.TransitionOption;
-    if (e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput) {
-      this.Hp1();
-    }
+    ModelManager_1.ModelManager.SubLevelModel.UnsetSubLevelSwitching();
+    ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
   }
   async dW_(t) {
     if (Log_1.Log.CheckDebug()) {
@@ -101,14 +82,14 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 开始执行转换表现", ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
-      if (s.SceneCaptureEffect && !StringUtils_1.StringUtils.IsBlank(s.SceneCaptureEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 开始播放SceneCaptureEffect特效", ["ActionId", this.xe], ["GroupId", this._Dt]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.Release"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.ImmediateCapture 5"), this.cW_ = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Global_1.Global.BaseCharacter?.D_GetTransform(), s.SceneCaptureEffect, "[LevelEventSetSubLevelsVisible]", undefined, 3, undefined, e => {
+      if (s.SceneCaptureEffect && !StringUtils_1.StringUtils.IsBlank(s.SceneCaptureEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 开始播放SceneCaptureEffect(场景特效)", ["Path", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.Release"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.ImmediateCapture 5"), this.cW_ = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Global_1.Global.BaseCharacter?.D_GetTransform(), s.SceneCaptureEffect, "[LevelEventSetSubLevelsVisible]", undefined, 3, undefined, e => {
         this.lW_.SetResult(e);
-      }), EffectSystem_1.EffectSystem.GetEffectActor(this.cW_)?.K2_AttachToActor(Global_1.Global.BaseCharacter, undefined, 2, 2, 2, false), (i = await this.lW_.Promise) !== 5 && Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 加载屏幕特效错误", ["loadResult", i], ["SceneCaptureEffectPath", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible SceneCaptureEffect特效播放成功", ["ActionId", this.xe], ["GroupId", this._Dt]);
+      }), EffectSystem_1.EffectSystem.GetEffectActor(this.cW_)?.K2_AttachToActor(Global_1.Global.BaseCharacter, undefined, 2, 2, 2, false), (i = await this.lW_.Promise) !== 5 && Log_1.Log.CheckError() && Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 加载SceneCaptureEffect错误", ["loadResult", i], ["Path", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible SceneCaptureEffect播放成功", ["Path", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
       let e = undefined;
-      if (s.ScreenEffectLoop && !StringUtils_1.StringUtils.IsBlank(s.ScreenEffectLoop) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 准备开始播放ScreenEffectLoop特效", ["ActionId", this.xe], ["GroupId", this._Dt]), e = await this.mW_(s.ScreenEffectLoop), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible ScreenEffectLoop已经打开", ["ActionId", this.xe], ["GroupId", this._Dt]);
+      if (s.ScreenEffectLoop && !StringUtils_1.StringUtils.IsBlank(s.ScreenEffectLoop) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 准备开始播放ScreenEffectLoop(屏幕特效)", ["Path", s.ScreenEffectLoop], ["ActionId", this.xe], ["GroupId", this._Dt]), e = await this.mW_(s.ScreenEffectLoop), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible ScreenEffectLoop已经打开", ["Path", s.ScreenEffectLoop], ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
       TimerSystem_1.GameplayTimerSystem.Next(() => {
         this.ap1.SetResult();
@@ -118,14 +99,14 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
         Log_1.Log.Debug("LevelEvent", 39, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 等待指定时间(再处理子关卡): 完成", ["ActionId", this.xe], ["GroupId", this._Dt], ["DelayTime", s.DelayTime]);
       }
       await this.fW_(t);
-      if (s.ScreenEffect && !StringUtils_1.StringUtils.IsBlank(s.ScreenEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect", ["ActionId", this.xe], ["GroupId", this._Dt]), await this.mW_(s.ScreenEffect), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect结束", ["ActionId", this.xe], ["GroupId", this._Dt]);
+      if (s.ScreenEffect && !StringUtils_1.StringUtils.IsBlank(s.ScreenEffect) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect(屏幕特效)", ["Path", s.ScreenEffect], ["ActionId", this.xe], ["GroupId", this._Dt]), await this.mW_(s.ScreenEffect), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 生成ScreenEffect结束", ["Path", s.ScreenEffect], ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
       if (e?.IsValid() && (ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(e), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 关闭ScreenEffectLoop", ["ActionId", this.xe], ["GroupId", this._Dt]);
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 关闭ScreenEffectLoop", ["Path", s.ScreenEffectLoop], ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
-      if (EffectSystem_1.EffectSystem.IsValid(this.cW_) && (EffectSystem_1.EffectSystem.StopEffectById(this.cW_, "[WorldLevelUpView.RecycleEffect]", false), this.cW_ = 0, Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 关闭ScreenCapture特效", ["ActionId", this.xe], ["GroupId", this._Dt]);
+      if (EffectSystem_1.EffectSystem.IsValid(this.cW_) && (EffectSystem_1.EffectSystem.StopEffectById(this.cW_, "[SubLevelVisibleAssistant.StopScreenCaptureEffect]", false), this.cW_ = 0, Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:StartSetSubLevelsVisible 关闭ScreenCaptureEffect", ["Path", s.SceneCaptureEffect], ["ActionId", this.xe], ["GroupId", this._Dt]);
       }
     } else {
       await this.fW_(t);
@@ -199,9 +180,12 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
     });
     var i = await t.Promise;
     if (i.IsValid()) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant:PlayScreenEffect 生成ScreenEffect", ["Path", e], ["ActionId", this.xe], ["GroupId", this._Dt]);
+      }
       ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(i);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant 屏幕特效资源无效", ["effectPath", e]);
+      Log_1.Log.Error("LevelEvent", 18, "SubLevelController.SubLevelVisibleAssistant 屏幕特效资源无效", ["Path", e], ["ActionId", this.xe], ["GroupId", this._Dt]);
     }
     return i;
   }

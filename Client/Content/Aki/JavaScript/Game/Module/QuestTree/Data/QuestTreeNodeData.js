@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.QuestTreeNodeData = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -22,7 +25,7 @@ class QuestTreeNodeData {
     this.IsDummy = false;
   }
   get IsTracking() {
-    return !this.IsDummy && ModelManager_1.ModelManager.QuestNewModel.IsTrackingQuest(this.QuestId);
+    return !this.IsDummy && ModelManager_1.ModelManager.QuestNewModel.IsTrackingQuest(this.QuestId) && this.State === 3;
   }
   get Name() {
     if (this.IsDummy) {
@@ -50,12 +53,19 @@ class QuestTreeNodeData {
   get NextQuestNode() {
     var e = this.Config.NextNode;
     if (e !== 0) {
-      return ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(this.ChapterId)?.NodeMap.get(e);
+      e = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(this.ChapterId)?.NodeMap.get(e);
+      if (this.Config.QuestType === 1 && e?.IsMoonChasingQuest() && e.State === 0) {
+        return e.NextQuestNode;
+      } else {
+        return e;
+      }
     }
   }
   get State() {
     var e;
-    if (this.IsDummy) {
+    if (ControllerHolder_1.ControllerHolder.QuestTreeController.IsGmSetAllNodeFinish) {
+      return 4;
+    } else if (this.IsDummy) {
       return 1;
     } else {
       e = ConfigManager_1.ConfigManager.QuestTreeConfig.GetMoonChasingQuestId();
@@ -67,9 +77,9 @@ class QuestTreeNodeData {
         }
       } else if (this.QuestIdList.length === 0 || this.PreQuestNodes.some(e => e.State !== 4)) {
         return 0;
-      } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 0)) {
+      } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 0 || !ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e))) {
         return 1;
-      } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 3)) {
+      } else if (this.QuestIdList.every(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 3 || !ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e))) {
         return 4;
       } else if (this.QuestIdList.some(e => ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 2)) {
         return 3;
@@ -153,13 +163,20 @@ class QuestTreeNodeData {
     t.Id = e.Id;
     t.ChapterId = e.ChapterId;
     t.QuestIdList = e.QuestArray;
-    var e = t.QuestId;
-    for (const s of ModelManager_1.ModelManager.QuestNewModel.GetDisplayRewardCommonInfo(e) ?? ModelManager_1.ModelManager.QuestNewModel.GetDisplayRewardCommonInfoFromQuestConfig(e) ?? []) {
-      var r = s[0].ItemId;
-      if (t.RewardItemMap.has(r)) {
-        t.RewardItemMap.get(r)[1] += s[1];
+    for (const r of t.QuestIdList) {
+      if (!ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(r)) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("QuestTree", 74, "任务树节点配置了不存在的任务", ["节点Id", t.Id], ["任务Id", r]);
+        }
+      }
+    }
+    const r = t.QuestId;
+    for (const i of ModelManager_1.ModelManager.QuestNewModel.GetDisplayRewardCommonInfo(r) ?? ModelManager_1.ModelManager.QuestNewModel.GetDisplayRewardCommonInfoFromQuestConfig(r) ?? []) {
+      var s = i[0].ItemId;
+      if (t.RewardItemMap.has(s)) {
+        t.RewardItemMap.get(s)[1] += i[1];
       } else {
-        t.RewardItemMap.set(r, [s[0], s[1]]);
+        t.RewardItemMap.set(s, [i[0], i[1]]);
       }
     }
     return t;
@@ -209,8 +226,33 @@ class QuestTreeNodeData {
       a.sort((e, t) => e.Config.SortOrder - t.Config.SortOrder);
     }
     var s = [];
-    for (const n of Array.from(t.keys()).sort((e, t) => (r.NodeMap.get(e)?.Config.SortOrder ?? 0) - (r.NodeMap.get(t)?.Config.SortOrder ?? 0))) {
-      s.push(t.get(n));
+    for (const o of Array.from(t.keys()).sort((e, t) => (r.NodeMap.get(e)?.Config.SortOrder ?? 0) - (r.NodeMap.get(t)?.Config.SortOrder ?? 0))) {
+      s.push(t.get(o));
+    }
+    return s;
+  }
+  GetDirectChildrenGroupsInUpArea() {
+    var e;
+    var t = new Map();
+    if (this.Config.QuestType !== 1) {
+      return [];
+    }
+    const r = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(this.ChapterId);
+    for (const i of r?.NodeMap.values() ?? []) {
+      if (i.Config.QuestType !== 1 && i.Config.PreNode.includes(this.Id) && i.Config.SortOrder < 0) {
+        e = i.Config.NextNode;
+        if (!t.has(e)) {
+          t.set(e, []);
+        }
+        t.get(e).push(i);
+      }
+    }
+    for (const a of t.values()) {
+      a.sort((e, t) => e.Config.SortOrder - t.Config.SortOrder);
+    }
+    var s = [];
+    for (const o of Array.from(t.keys()).sort((e, t) => (r.NodeMap.get(e)?.Config.SortOrder ?? 0) - (r.NodeMap.get(t)?.Config.SortOrder ?? 0))) {
+      s.push(t.get(o));
     }
     return s;
   }
@@ -282,7 +324,8 @@ class QuestTreeNodeData {
     } else if (this.State === 3) {
       t = {
         Type: 2,
-        Text: this.StepText
+        Text: this.StepText,
+        TextKey: "QuestTree_NoTrackInfo"
       };
       e.push(t);
     } else if (this.State === 1) {
@@ -352,9 +395,15 @@ class QuestTreeNodeData {
     return this.Config.QuestArray.includes(e);
   }
   HasNewTag() {
-    return false;
+    return !this.IsDummy && !(LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestTreeNodeNewTag) ?? new Set()).has(this.Id);
   }
-  RemoveNewTag() {}
+  RemoveNewTag() {
+    var e;
+    if (!this.IsDummy) {
+      (e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestTreeNodeNewTag) ?? new Set()).add(this.Id);
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.QuestTreeNodeNewTag, e);
+    }
+  }
 }
 exports.QuestTreeNodeData = QuestTreeNodeData;
 //# sourceMappingURL=QuestTreeNodeData.js.map

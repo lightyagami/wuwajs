@@ -170,10 +170,13 @@ class WorldMapSecondaryUiLayoutA extends WorldMapSecondaryUi_1.WorldMapSecondary
     }
   }
   UpdateTopRightIconActive() {
-    var t = this.LayoutContext.MarkItem;
-    var i = t.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(1);
-    var t = t.MarkItemEntity.Resource.TopRightIconPath;
-    this.UpdateTopRightIcon(i, t);
+    var t;
+    var i = this.LayoutContext.MarkItem;
+    if (i !== undefined) {
+      t = i.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(1);
+      i = i.MarkItemEntity.Resource.TopRightIconPath;
+      this.UpdateTopRightIcon(t, i);
+    }
   }
   UpdateTopRightIconByTeleportState() {
     var t;

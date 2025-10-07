@@ -228,6 +228,9 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     t.SetSelfInteractive(e);
     if (this.Type !== 0 && this.YBi) {
       this.YBi.SetInteractionActive(e);
+      if (!e) {
+        this.YBi.SetDetailVisible(false);
+      }
     }
   }
   LM1(e) {

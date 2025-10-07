@@ -58,6 +58,9 @@ class MenuData {
   get OptionsDefault() {
     return this.rSl.OptionsDefault;
   }
+  get BtnDisableTipsEnable() {
+    return this.rSl.BtnDisableTipsEnable;
+  }
   get OptionsNameListInternal() {
     return this.rSl.OptionsName;
   }

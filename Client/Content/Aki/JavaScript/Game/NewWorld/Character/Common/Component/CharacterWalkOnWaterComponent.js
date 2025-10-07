@@ -131,7 +131,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         }
       }
     };
-    this.T1u = (t, e, i) => {
+    this.T1u = (t, e, i, s) => {
       this.vWr = i + WALK_ON_WATER_HALF_HEIGHT_OFFSET;
     };
     this.Ilt = (t, e) => {

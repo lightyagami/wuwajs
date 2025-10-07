@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FightPhotoActivitySubView = undefined;
 const UE = require("ue");
+const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../../Ui/UiManager");
+const ScrollingTipsController_1 = require("../../../../ScrollingTips/ScrollingTipsController");
 const ActivitySubViewBase_1 = require("../../../View/SubView/ActivitySubViewBase");
 const ActivitySubViewGeneralInfo_1 = require("../../../View/SubView/ActivitySubViewGeneralInfo");
 class FightPhotoActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBase {
@@ -18,7 +20,9 @@ class FightPhotoActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBas
     };
     this.tWt = () => {
       var i;
-      if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
+      if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
+      } else if (this.ActivityBaseData.GetPreGuideQuestFinishState()) {
         UiManager_1.UiManager.OpenView("FightPhotoLoadingView", this.ActivityBaseData);
       } else {
         i = this.ActivityBaseData.GetUnFinishPreGuideQuestId();
@@ -43,8 +47,8 @@ class FightPhotoActivitySubView extends ActivitySubViewBase_1.ActivitySubViewBas
     this.GetText(1)?.SetText(this.ActivityBaseData.GetFinishedLevelNum().toString());
     this.GetText(2)?.SetText("/" + this.ActivityBaseData.GetTotalLevelNum().toString());
     var i = this.ActivityBaseData.GetFinishedTaskNum();
-    var t = this.ActivityBaseData.GetTotalTaskNum();
-    this.GetText(4)?.SetText(i + "/" + t);
+    var e = this.ActivityBaseData.GetTotalTaskNum();
+    this.GetText(4)?.SetText(i + "/" + e);
     this.GetItem(5)?.SetUIActive(this.ActivityBaseData.IsTaskHasRedDot());
     this.CommonInfoPanel?.SetFunctionRedDotVisible(this.ActivityBaseData.IsLevelHasRedDot());
   }

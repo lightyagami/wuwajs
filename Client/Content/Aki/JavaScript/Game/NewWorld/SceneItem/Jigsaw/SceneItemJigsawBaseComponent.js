@@ -870,7 +870,9 @@ let SceneItemJigsawBaseComponent = SceneItemJigsawBaseComponent_1 = class SceneI
     Net_1.Net.Call(22814, e, t => {
       switch (t.G9n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
+          break;
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrGridPosAlreadyOccupied:
+        case Protocol_1.Aki.Protocol.Q4n.Proto_ErrInvalidGridPos:
           break;
         default:
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.G9n, 19041);

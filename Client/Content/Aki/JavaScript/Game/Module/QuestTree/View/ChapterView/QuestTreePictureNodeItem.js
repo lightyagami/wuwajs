@@ -21,6 +21,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.Loader = undefined;
     this.Pe = undefined;
     this.TTd = undefined;
+    this.gYd = undefined;
     this.Hea = undefined;
     this.aPd = undefined;
     this.Type = 1;
@@ -59,9 +60,9 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
         this.nOe(t);
       }
     };
-    this.lPd = t => {
+    this.lPd = (t, i) => {
       if (t === this.Pe) {
-        this.LocateSelf();
+        this.LocateSelf(i);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.RootItem, true);
       }
     };
@@ -72,12 +73,13 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIVerticalLayout], [19, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [31, UE.UIItem], [9, UE.UIItem], [30, UE.UIItem], [33, UE.UISizeControlByOther], [32, UE.UISizeControlByOther], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [34, UE.UISizeControlByOther]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UITexture], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [16, UE.UIVerticalLayout], [17, UE.UIItem], [18, UE.UIVerticalLayout], [19, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [31, UE.UIItem], [9, UE.UIItem], [30, UE.UIItem], [33, UE.UISizeControlByOther], [32, UE.UISizeControlByOther], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [34, UE.UISizeControlByOther]];
     this.BtnBindInfo = [[0, this.eTt]];
   }
   OnStart() {
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.TTd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(18), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
+    this.gYd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(16), () => this.Loader.CreateLogicalNodeItem(4), undefined, true);
     this.OriginalTopHeight = this.GetUiSizeControlByOther(32).GetAdditionalHeight();
     this.OriginalBottomHeight = this.GetUiSizeControlByOther(33).GetAdditionalHeight();
     this.GetItem(9).SetUIActive(false);
@@ -110,7 +112,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     await this.RTd(this.Pe);
     var i = (t.PreQuestNodes[0]?.Config.QuestType === 1 || t.PreQuestNodes.length === 0) && t.Config.QuestType !== 1;
     this.GetItem(10).SetUIActive(t.Config.SortOrder < 0);
-    this.GetItem(11).SetUIActive(i);
+    this.GetItem(11).SetUIActive(i && t.Config.SortOrder > 0);
     this.GetUiSizeControlByOther(33).GetRootComponent().SetUIActive(t.Config.QuestType === 1);
     this.GetUiSizeControlByOther(32).GetRootComponent().SetUIActive(t.Config.QuestType === 1);
   }
@@ -127,9 +129,9 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
       return 0;
     }
   }
-  LocateSelf() {
-    var t = this.GetExtendToggle(0).GetRootComponent();
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(t, true);
+  LocateSelf(t = true) {
+    var i = this.GetExtendToggle(0).GetRootComponent();
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(i, t);
     this.Hea.PlayLevelSequenceByName("Jumpy");
   }
   nOe(t) {
@@ -149,6 +151,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     var e;
     var s;
     var h;
+    var r;
     this.wTd();
     if (t.State === 4) {
       i = t.IsFirstNodeOfPredecessorUnion();
@@ -156,10 +159,18 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
       s = t.IsInPredecessorUnion();
       if (t.Config.QuestType === 1) {
         this.GetItem(12).SetUIActive(!t.IsLastMainNodeOfChapter());
-        if ((h = t.GetDirectChildrenGroupsInDownArea()).length > 0) {
+        if ((h = t.GetDirectChildrenGroupsInUpArea()).length > 0) {
+          r = h[0][0];
+          this.GetItem(14).SetUIActive(r.Config.NodeType === 1);
+          this.GetItem(15).SetUIActive(r.Config.NodeType !== 1);
+          this.GetItem(13).SetUIActive(true);
+          this.GetVerticalLayout(16).GetRootComponent().SetUIActive(true);
+          await this.gYd.RefreshByDataAsync(h);
+        }
+        if ((r = t.GetDirectChildrenGroupsInDownArea()).length > 0) {
           this.GetItem(17).SetUIActive(true);
           this.GetVerticalLayout(18).GetRootComponent().SetUIActive(true);
-          await this.TTd.RefreshByDataAsync(h);
+          await this.TTd.RefreshByDataAsync(r);
         }
       } else if (s && i) {
         await this.LTd(t.NextQuestNode);
@@ -197,18 +208,19 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.aPd = await this.Loader.LoadNodeItem(t, i);
   }
   bTd() {
-    var t;
-    var i = this.GetUiSizeControlByOther(33);
-    var e = this.GetUiSizeControlByOther(32);
-    var s = i.GetRootComponent().GetHeight() - e.GetRootComponent().GetHeight();
-    if (!(Math.abs(s) <= EPS)) {
-      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RecordHeightBalanceValue(this.Pe.Id, s);
-      if (s > 0) {
-        t = e.GetAdditionalHeight();
-        e.SetAdditionalHeight(t + s);
-      } else {
+    var t = this.GetUiSizeControlByOther(33);
+    var i = this.GetUiSizeControlByOther(32);
+    var e = i.GetRootComponent().GetHeight();
+    var s = t.GetRootComponent().GetHeight();
+    var h = s - e;
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RecordHeightBalanceValue(this.Pe.Id, e, s);
+    if (!(Math.abs(h) <= EPS)) {
+      if (h > 0) {
         e = i.GetAdditionalHeight();
-        i.SetAdditionalHeight(e - s);
+        i.SetAdditionalHeight(e + h);
+      } else {
+        s = t.GetAdditionalHeight();
+        t.SetAdditionalHeight(s - h);
       }
     }
   }
@@ -217,7 +229,7 @@ class QuestTreePictureNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIt
     this.GetItem(11).SetUIActive(false);
     this.GetItem(12).SetUIActive(false);
     this.GetItem(13).SetUIActive(false);
-    this.GetItem(16).SetUIActive(false);
+    this.GetVerticalLayout(16).GetRootComponent().SetUIActive(false);
     this.GetItem(17).SetUIActive(false);
     this.GetVerticalLayout(18).GetRootComponent().SetUIActive(false);
     this.GetItem(19).SetUIActive(false);

@@ -28,7 +28,9 @@ const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleController_1 = require("../RoleController");
 const StarItem_1 = require("../View/StarItem");
+const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 const CostItemGridComponent_1 = require("./CostItemGridComponent");
+const RoleBreachSuccessViewData_1 = require("./RoleBreachSuccessViewData");
 class RoleBreachView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -71,6 +73,19 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.G1o = () => new AttributeItem_1.AttributeItem();
     this.vke = () => {
       return new StarItem_1.StarItem();
+    };
+    this.$Xd = () => {
+      var e;
+      if (ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData().GetRoleIsMaxLevel()) {
+        this.CloseMe();
+        UiManager_1.UiManager.CloseView("RoleBreachSuccessView");
+      } else {
+        (e = new RoleViewViewModel_1.RoleViewViewModel(this.dFe, false)).FadeInCurveId = this.yil.FadeInCurveId;
+        e.NeedHideOnViewPlayingCloseSequence = this.yil.NeedHideOnViewPlayingCloseSequence;
+        this.yil.NeedHideOnViewPlayingCloseSequence = false;
+        this.CloseMe();
+        RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleBreachSuccessView", "RoleLevelUpView", e);
+      }
     };
     this.N1o = (e, t) => {
       this.GetItem(3).SetUIActive(false);
@@ -117,8 +132,19 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     }
   }
   OnBeforeShow() {
-    this.yil?.ShowActor();
     this.FTt();
+  }
+  async OnPlayingStartSequenceAsync() {
+    if (this.yil?.NeedShowOnViewPlayingStartSequence) {
+      this.yil.ShowActor();
+    }
+    return Promise.resolve();
+  }
+  async OnPlayingCloseSequenceAsync() {
+    if (this.yil?.NeedHideOnViewPlayingCloseSequence) {
+      this.yil.HideActor();
+    }
+    return Promise.resolve();
   }
   OnHandleLoadScene() {
     this.yil.HandleLoadScene(() => {
@@ -216,7 +242,8 @@ class RoleBreachView extends UiViewBase_1.UiViewBase {
     this.StarLayout.RefreshByData(r);
   }
   O1o() {
-    RoleController_1.RoleController.OpenRoleViewByViewModel("RoleBreachSuccessView", this.yil);
+    var e = new RoleBreachSuccessViewData_1.RoleBreachSuccessViewData(this.dFe, this.$Xd);
+    UiManager_1.UiManager.OpenView("RoleBreachSuccessView", e);
   }
 }
 exports.RoleBreachView = RoleBreachView;

@@ -27,12 +27,15 @@ const FightPhotoLevelGroupItem_1 = require("./Item/FightPhotoLevelGroupItem");
 const FightPhotoLevelItem_1 = require("./Item/FightPhotoLevelItem");
 const FightPhotoRoleItem_1 = require("./Item/FightPhotoRoleItem");
 const FightPhotoTaskTargetItem_1 = require("./Item/FightPhotoTaskTargetItem");
+const TEAM_MAX_NUMBER = 3;
 class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
     this.CNe = undefined;
     this.D3d = undefined;
     this.Hwl = undefined;
+    this.ezd = [];
+    this.OQd = false;
     this.hLt = -1;
     this.lqe = undefined;
     this.wVl = undefined;
@@ -106,9 +109,11 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.N4t = t => {
-      this.Hwl.SetRoleIdList(t);
-      t = this.Hwl.GetRoleIdListIncludeZero();
-      this.tFe.RefreshByData(t);
+      while (t.length < TEAM_MAX_NUMBER) {
+        t.push(0);
+      }
+      this.ezd = t;
+      this.tFe.RefreshByData(this.ezd);
     };
     this.Oye = t => {
       if (!(t.length <= 0)) {
@@ -136,8 +141,12 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       return false;
     };
     this.dxl = () => {
-      ModelManager_1.ModelManager.LoadingModel.SetSpecifiedLoadingConfigId(this.Hwl.LoadingId);
-      ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.Hwl.GetRoleIdList());
+      if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ErrorCode_600064_Text");
+      } else {
+        ModelManager_1.ModelManager.LoadingModel.SetSpecifiedLoadingConfigId(this.Hwl.LoadingId);
+        ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.EnterFightPhotoDungeonDirectly(this.CNe.Id, this.Hwl.LevelId, this.Hwl.InstanceId, this.ezd);
+      }
     };
     this.U3d = () => {
       this.ELo.GetCurrentSelectItem().RefreshRedDot();
@@ -207,17 +216,21 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnTick(t) {
     var i;
-    if (this.D3d && !this.D3d.IsUnLock) {
-      i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("FightPhotoUnlockTime") ?? "{0}后解锁";
-      i = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.D3d.UnlockTime, i) ?? "";
-      this.GetText(27)?.SetText(i);
+    if (this.D3d) {
+      if (this.D3d.IsUnLock) {
+        if (!this.OQd) {
+          this.Og(this.D3d);
+        }
+      } else {
+        i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("FightPhotoUnlockTime") ?? "{0}后解锁";
+        i = ModelManager_1.ModelManager.ActivityModel.GetRemainTimeText(this.D3d.UnlockTime, i) ?? "";
+        this.GetText(27)?.SetText(i);
+      }
     }
   }
   Og(i) {
     this.GetItem(10)?.SetUIActive(!i.IsUnLock);
     this.GetItem(11)?.SetUIActive(i.IsUnLock);
-    this.GetButton(19)?.RootUIComp.SetUIActive(i.IsUnLock);
-    this.wVl?.SetUiActive(i.IsUnLock);
     this.GetText(9)?.SetUIActive(i.IsUnLock);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i.TargetRoleName);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(14), i.TargetRoleName);
@@ -225,6 +238,7 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), this.D3d.TargetRoleName);
     }
     this.D3d = i;
+    this.OQd = i.IsUnLock;
     this.GLl.DeselectCurrentGridProxy();
     this.GLl.RefreshByData(i.LevelDataList, () => {
       let t = this.CNe.GetCurrentLevelData(false);
@@ -251,9 +265,10 @@ class FightPhotoMainView extends UiTickViewBase_1.UiTickViewBase {
         t.SetIsFinished(this.Hwl.IsFinished);
       }
     });
-    this.tFe.RefreshByData(t.GetRoleIdListIncludeZero());
+    this.ezd = t.GetRoleIdListIncludeZero();
+    this.tFe.RefreshByData(this.ezd);
     this.GetButton(19)?.RootUIComp.SetUIActive(t.IsUnLock);
-    this.wVl?.SetUiActive(!t.IsUnLock);
+    this.wVl?.SetUiActive(t.LevelGroupData.IsUnLock && !t.IsUnLock);
     if (!t.IsUnLock) {
       t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.PreLevelName);
       this.wVl?.SetTextByTextId("PrefabTextItem_28127837_Text", t);

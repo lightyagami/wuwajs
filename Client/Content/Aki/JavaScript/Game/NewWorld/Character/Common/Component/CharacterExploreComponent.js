@@ -1,22 +1,22 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var h;
-  var n = arguments.length;
-  var r = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var r;
+  var o = arguments.length;
+  var h = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(e, t, i, s);
+    h = Reflect.decorate(e, t, i, s);
   } else {
-    for (var o = e.length - 1; o >= 0; o--) {
-      if (h = e[o]) {
-        r = (n < 3 ? h(r) : n > 3 ? h(t, i, r) : h(t, i)) || r;
+    for (var n = e.length - 1; n >= 0; n--) {
+      if (r = e[n]) {
+        h = (o < 3 ? r(h) : o > 3 ? r(t, i, h) : r(t, i)) || h;
       }
     }
   }
-  if (n > 3 && r) {
-    Object.defineProperty(t, i, r);
+  if (o > 3 && h) {
+    Object.defineProperty(t, i, h);
   }
-  return r;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -46,8 +46,6 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
     this.cBe = undefined;
     this.ldu = undefined;
     this.Unu = undefined;
-    this.z4r = undefined;
-    this.Z4r = false;
     this.t5r = false;
     this.fHe = () => {
       if (this.i5r()) {
@@ -66,13 +64,6 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
             i.CurHookTriggerId = e.Entity.Id;
           }
           i.HookFound = true;
-          if (this.Z4r) {
-            if (this.z4r !== 0) {
-              i.SetExploreSkillId(HOOK_VISION_ID, 2);
-            } else if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene)) {
-              EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene);
-            }
-          }
         }
       } else {
         i.HookFound = false;
@@ -90,13 +81,6 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
           i.ManipulateEntity = t;
           i.ManipulateActorComp = t.GetComponent(1);
           i.CurManipulateTriggerId = t.Id;
-          if (this.Z4r) {
-            if (this.z4r !== 1) {
-              i.SetExploreSkillId(MANIPULATE_VISION_ID, 2);
-            } else if (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene)) {
-              EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene);
-            }
-          }
         } else {
           i.ManipulateFound = false;
           i.ManipulateEntity = undefined;
@@ -113,22 +97,25 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
       t.HookFound = false;
       t.AutoResetSkillFinished = true;
     };
-    this.l5r = (e, t) => {};
     this.ene = (e, t) => {
       if (this.Unu.has(t)) {
-        this.Z4r = false;
-        this.z4r = undefined;
         const i = ModelManager_1.ModelManager.ExploreModel;
-        i.ResetExplodeSkillId(2);
-        t = i.GetTopLayerExplodeSkillId();
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Character", 79, "[CharacterExploreComponent] OnCharSkillEnd", ["OldSkill", ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId], ["NewSkill", t], ["Id", this.Entity.Id]);
+        if (i.HookFound) {
+          this.m5r(0);
+        } else if (i.ManipulateFound) {
+          this.m5r(1);
+        } else {
+          i.ResetExplodeSkillId(2);
+          t = i.GetTopLayerExplodeSkillId();
+          RouletteController_1.RouletteController.ExploreSkillSetRequest(t, e => {
+            i.AutoResetSkillFinished = true;
+          }, true);
         }
-        RouletteController_1.RouletteController.ExploreSkillSetRequest(t, e => {
-          i.AutoResetSkillFinished = true;
-        }, true);
-        EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Character", 79, "[CharacterExploreComponent] OnCharSkillEnd", ["OldSkill", ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId], ["HookFound", i.HookFound], ["ManipulateFound", i.ManipulateFound], ["TopLayerSkillId", i.GetTopLayerExplodeSkillId()]);
+        }
         this.O4r.NeedChangeTargetState = true;
+        EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ene);
       }
     };
   }
@@ -246,7 +233,6 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnManipulateSwitchToNewTarget, this.s5r);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleFindFixHook, this.o5r);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.l5r);
     }
   }
   kre() {
@@ -255,7 +241,6 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnManipulateSwitchToNewTarget, this.s5r);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleFindFixHook, this.o5r);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeVisionSkillByTab, this.h5r);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.l5r);
     }
   }
   m5r(e) {
@@ -287,10 +272,8 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
       this.m5r(0);
       this.O4r.NeedChangeTargetState = true;
     } else if (!t.ManipulateFound && t.ExistAutoLayerSkill()) {
-      if (this.C5r()) {
+      if (this.C5r(e)) {
         if (e !== undefined) {
-          this.z4r = e;
-          this.Z4r = true;
           switch (e) {
             case 0:
               this.Unu = HOOK_SKILL_ID_MAP;
@@ -318,15 +301,15 @@ let CharacterExploreComponent = class CharacterExploreComponent extends EntityCo
   d5r(e) {
     return ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(e);
   }
-  C5r() {
-    var e;
-    return !!this.cBe.CurrentSkill && !(e = this.cBe.CurrentSkill.SkillId, !MANIPULATE_SKILL_ID_MAP.has(e) && !HOOK_SKILL_ID_MAP.has(e));
+  C5r(e) {
+    var t;
+    return !!this.cBe.CurrentSkill && (t = this.cBe.CurrentSkill.SkillId, e === 0 && !!HOOK_SKILL_ID_MAP.has(t) || e === 1 && !!MANIPULATE_SKILL_ID_MAP.has(t));
   }
   i5r() {
     return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Id === this.Entity.Id;
   }
-  ShowHighlightExploreSkill(e, t, i, s, h, n) {
-    this.ExploreSkillHighlightHandle.ShowHighlightExploreSkill(e, t, i, s, h, n);
+  ShowHighlightExploreSkill(e, t, i, s, r, o) {
+    this.ExploreSkillHighlightHandle.ShowHighlightExploreSkill(e, t, i, s, r, o);
   }
   HideHighlightExploreSkill() {
     this.ExploreSkillHighlightHandle.HideHighlightExploreSkill();

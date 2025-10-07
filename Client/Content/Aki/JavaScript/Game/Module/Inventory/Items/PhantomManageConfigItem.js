@@ -43,7 +43,7 @@ class PhantomManageConfigItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetExtendToggle(3).SetToggleState(t);
     this.GetExtendToggle(3).SetSelfInteractive(!h);
     this.GetRootItem().SetBubbleUpToParent(!h);
-    this.fLt.SetSortOrder(s ? 1 : 0, true);
+    this.fLt.SetSortOrder(s && h ? 1 : 0, true);
   }
   GetKey(t, i) {
     return t.GetIndex();

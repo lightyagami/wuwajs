@@ -18,6 +18,7 @@ class KeySettingRowData {
     this.IsExpandDetail = false;
     this.bPi = "";
     this.qPi = "";
+    this.nKd = new Set();
     this.IsActionOrAxis = true;
     this.ActionBinding = undefined;
     this.AxisBinding = undefined;
@@ -108,6 +109,16 @@ class KeySettingRowData {
     } else {
       this.CombinationAxisBinding = InputSettingsManager_1.InputSettingsManager.GetCombinationAxisBindingByAxisName(this.qPi);
       this.AxisBinding = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(this.qPi);
+    }
+    this.sKd();
+  }
+  sKd() {
+    this.nKd.clear();
+    if (InputSettingsManager_1.InputSettingsManager.IsOriginalCombinationActionName(this.qPi, 1)) {
+      this.nKd.add(1);
+    }
+    if (InputSettingsManager_1.InputSettingsManager.IsOriginalCombinationActionName(this.qPi, 2)) {
+      this.nKd.add(2);
     }
   }
   FindCombinationActionBinding() {
@@ -552,9 +563,9 @@ class KeySettingRowData {
       if (this.BothActionName && this.BothActionName.length === 2) {
         InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[0]);
         InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.BothActionName[1]);
-      } else if (this.IsCombination(t)) {
+      } else if (this.IsCombination(t) || this.nKd.has(t)) {
         if (this.IsActionOrAxis) {
-          InputSettingsManager_1.InputSettingsManager.ResetCombinationActionKeyByName(this.qPi);
+          InputSettingsManager_1.InputSettingsManager.ResetCombinationActionKeyByName(this.qPi, t);
         }
       } else if (this.IsActionOrAxis) {
         InputSettingsManager_1.InputSettingsManager.ResetActionKeyByName(this.qPi);

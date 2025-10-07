@@ -400,11 +400,13 @@ class ActiveBuffInternal {
         this.SetPeriod();
       }
       this.ResetModifiers();
-      e.GrantedTags?.forEach(t => {
-        if (GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t)) {
-          h.TagContainer.UpdateExactTag(2, t, i - s);
-        }
-      });
+      if (this.mQo) {
+        e.GrantedTags?.forEach(t => {
+          if (GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t)) {
+            h.TagContainer.UpdateExactTag(2, t, i - s);
+          }
+        });
+      }
     } else {
       CombatLog_1.CombatLog.Error("Buff", this.GetOwner(), "buff更改层数时无法获取到持有者", ["handle", this.Handle], ["buffId", this.Id], ["持有者", this.oQo?.GetDebugName()]);
     }

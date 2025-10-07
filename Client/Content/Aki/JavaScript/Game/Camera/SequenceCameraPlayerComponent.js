@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
-  var r;
-  var h = arguments.length;
-  var a = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h;
+  var r = arguments.length;
+  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     a = Reflect.decorate(t, e, i, s);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
-      if (r = t[o]) {
-        a = (h < 3 ? r(a) : h > 3 ? r(e, i, a) : r(e, i)) || a;
+      if (h = t[o]) {
+        a = (r < 3 ? h(a) : r > 3 ? h(e, i, a) : h(e, i)) || a;
       }
     }
   }
-  if (h > 3 && a) {
+  if (r > 3 && a) {
     Object.defineProperty(e, i, a);
   }
   return a;
@@ -31,6 +31,7 @@ const EntitySystem_1 = require("../../Core/Entity/EntitySystem");
 const RegisterComponent_1 = require("../../Core/Entity/RegisterComponent");
 const TimerSystem_1 = require("../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
+const Rotator_1 = require("../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../Core/Utils/TraceElementCommon");
@@ -92,16 +93,23 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.hQa = true;
     this.L6d = false;
     this.Hxr = true;
+    this.XXd = new Set();
+    this.Lz = Vector_1.Vector.Create();
     this.Fse = undefined;
     this.jxr = undefined;
     this.Wxr = false;
     this.Wse = Vector_1.Vector.Create();
     this.Kxr = Vector_1.Vector.Create();
+    this.ZHa = Rotator_1.Rotator.Create();
+    this.YXd = Rotator_1.Rotator.Create();
     this.Qxr = undefined;
     this.Xxr = Vector_1.Vector.Create();
     this.$xr = Vector_1.Vector.Create();
     this.Yxr = Vector_1.Vector.Create();
     this.I7 = Vector_1.Vector.Create();
+  }
+  get IsDitherEffectEnabled() {
+    return this.XXd.size > 0;
   }
   SetPlayCameraSequenceEnabled(t) {
     this.Hxr = t;
@@ -118,7 +126,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       this.Tae = t;
     }
   }
-  PlayCameraSequence(t, e, i, s, r, h, a, o, n, _ = false, l = true, m = true, C = false, E = false, y = undefined) {
+  PlayCameraSequence(t, e, i, s, h, r, a, o, n, _ = false, l = true, m = true, E = false, C = false, c = undefined) {
     if (!this.Hxr) {
       return false;
     }
@@ -140,19 +148,19 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Vxr = o;
     this.bxr = this.Tae;
     this.Tae = s;
-    this.Nxr = h;
-    this.g1t = r;
+    this.Nxr = r;
+    this.g1t = h;
     if (!FNameUtil_1.FNameUtil.IsEmpty(this.g1t)) {
       if (!this.Oxr?.IsValid() && !(this.Oxr = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble), this.Oxr.K2_GetRootComponent())) {
         this.Oxr.D_AddComponentByClass(UE.SceneComponent.StaticClass(), false, this.Oxr.D_GetTransform(), false);
       }
       this.Oxr.K2_AttachToComponent(this.Tae.Mesh, this.g1t, 2, 2, 2, false);
     }
-    this.zxr(t, l, m, y);
-    n = this.S9e(E, _);
+    this.zxr(t, l, m, c);
+    n = this.S9e(C, _);
     this.Bxr = e;
     this.wxr = i;
-    if (n && (this.GQe(t), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSequenceCameraStatus, true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DelaySetNearClipPlane 1"), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Camera", 38, "进入Sequence相机，最小近裁面"), C)) {
+    if (n && (this.GQe(t), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSequenceCameraStatus, true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DelaySetNearClipPlane 1"), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Camera", 38, "进入Sequence相机，最小近裁面"), E)) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlayCameraLevelSequence, t.CameraSequence, s, this.exr, CameraUtility_1.CameraUtility.GetRootTransform(s));
@@ -259,8 +267,10 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       this.iwr();
       this.vxr += t * MathUtils_1.MathUtils.MillisecondToSecond * this.Mxr;
       this.exr.SequencePlayer.PlayToSeconds(this.vxr);
+      this.zXd();
       this.owr();
       this.CheckCollision(false);
+      this.JXd();
       if (this.vxr >= this.uAo) {
         this.Zxr();
       } else if (this.Rxr && this.Uxr > 0 && this.vxr >= this.Uxr) {
@@ -273,6 +283,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       }
     } else if (this.yxr) {
       this.yxr = Math.max(0, this.yxr - t * MathUtils_1.MathUtils.MillisecondToSecond);
+      this.zXd();
       this.CheckCollision(true);
     }
   }
@@ -283,7 +294,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     return this.sor ?? ControllerHolder_1.ControllerHolder.CameraController.GetCharacter();
   }
   zxr(t, e = true, i = true, s = undefined) {
-    var r;
+    var h;
     this.hQa = true;
     this.Exr = t.BlendInTime;
     this.Sxr = t.BlendOutTime;
@@ -292,10 +303,10 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     if (this.nZo) {
       this.ResetCameraRatioSetting();
       this.ZPr?.CineCamera?.ResetSeqCineCamSetting();
-      (r = new UE.MovieSceneSequencePlaybackSettings()).bDisableMovementInput = e;
-      r.bDisableLookAtInput = i;
+      (h = new UE.MovieSceneSequencePlaybackSettings()).bDisableMovementInput = e;
+      h.bDisableLookAtInput = i;
       this.exr = ActorSystem_1.ActorSystem.Get(UE.LevelSequenceActor.StaticClass(), new UE.TransformDouble(), undefined, false);
-      this.exr.PlaybackSettings = r;
+      this.exr.PlaybackSettings = h;
       this.exr.SetSequence(this.nZo);
       e = this.exr.SequencePlayer.GetStartTime();
       this.vxr = (e.Time.FrameNumber.Value + e.Time.SubFrame) * e.Rate.Denominator / e.Rate.Numerator;
@@ -308,10 +319,10 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       if (s && (this.uAo = Math.min(this.uAo, s.OverrideSequenceTime), this.Sxr = s.OverrideBlendOutTime, s.IsRecoverRotation)) {
         this.Sth = true;
         this.Mth ||= new UE.Rotator();
-        r = ControllerHolder_1.ControllerHolder.CameraController.CameraRotator;
-        this.Mth.Pitch = r.Pitch;
-        this.Mth.Yaw = r.Yaw;
-        this.Mth.Roll = r.Roll;
+        h = ControllerHolder_1.ControllerHolder.CameraController.CameraRotator;
+        this.Mth.Pitch = h.Pitch;
+        this.Mth.Yaw = h.Yaw;
+        this.Mth.Roll = h.Roll;
       }
       this.qxr.WorldContextObject = GlobalData_1.GlobalData.World;
       this.Gxr.WorldContextObject = GlobalData_1.GlobalData.World;
@@ -473,7 +484,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     }
     this.g1t = FNameUtil_1.FNameUtil.EMPTY;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSequenceCameraStatus, false);
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DelaySetNearClipPlane 10");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DelaySetNearClipPlane " + CameraModel_1.CAMER_DEFAULT_NEAR_CLIP);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.MOTIONBLUR);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Camera", 38, "退出Sequence相机，正常近裁面");
@@ -496,6 +507,29 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       this.ZPr.CineCamera.D_K2_SetActorLocation(t, false, undefined, false);
     }
   }
+  JXd() {
+    if (this.IsDitherEffectEnabled && this.Tae?.IsValid() && this.Qxr?.IsValid()) {
+      var i = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent;
+      if (i) {
+        this.Lz.DeepCopy(this.Qxr.GetLocation());
+        this.Kxr.DeepCopy(this.ZPr.CineCamera.D_K2_GetActorLocation());
+        this.ZHa.DeepCopy(this.ZPr.CineCamera.K2_GetActorRotation());
+        CameraUtility_1.CameraUtility.GetRotatorInGravity(this.ZHa, this.YXd);
+        var s = Vector_1.Vector.DistSquared(this.Lz, this.Kxr);
+        let t = 1;
+        if (s < i.StartHideDistanceSquared) {
+          t = MathUtils_1.MathUtils.RangeClamp(Math.sqrt(s), i.StartHideDistance, i.CompleteHideDistance, i.StartDitherValue, 0.01);
+        }
+        s = this.YXd.Pitch;
+        let e = 1;
+        if (s > i.StartHidePitch) {
+          e = MathUtils_1.MathUtils.RangeClamp(s, i.StartHidePitch, i.CompleteHidePitch, i.StartDitherValue, 0.01);
+        }
+        s = Math.min(t, e);
+        this.Tae.SetDitherEffect(s, 1);
+      }
+    }
+  }
   Jxr(t, e) {
     return !!e?.IsValid() && (!t?.IsValid() || t === e || !(t = t.GetEntityNoBlueprint()?.GetComponent(0), e = e.GetEntityNoBlueprint()?.GetComponent(0), !t?.IsRole() || !e?.IsMonster()));
   }
@@ -515,82 +549,68 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     return new UE.TransformDouble(t.GetRotation(), t.GetTranslation(), t.GetScale3D());
   }
   OnChangeTimeDilation(t) {}
-  CheckCollision(t) {
-    var e;
+  zXd() {
+    var t;
     if (this.Tae?.IsValid()) {
-      this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
       if (FNameUtil_1.FNameUtil.IsEmpty(this.Nxr)) {
-        e = this.Tae.GetEntityNoBlueprint().GetComponent(178);
-        this.Qxr = e.GetCameraTransform();
+        t = this.Tae.GetEntityNoBlueprint().GetComponent(178);
+        this.Qxr = t.GetCameraTransform();
       } else {
         this.Qxr = this.GetBoneTransform(this.Nxr);
       }
-      if (this.Qxr?.IsValid()) {
-        this._sr.Empty();
-        this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter());
-        this.Fse.ActorsToIgnore = this._sr;
-        TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, this.Qxr.GetLocation());
-        this.Kxr.DeepCopy(this.ZPr.CineCamera.D_K2_GetActorLocation());
-        TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, this.Kxr);
-        this.Fse.Radius = 10;
-        this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
-        if (this.Wxr && (t || this.hQa)) {
-          TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.Wse);
-          this.ZPr.CineCamera.D_K2_SetActorLocation(this.Wse.ToUeVector(), false, undefined, false);
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 22, "CheckCollision  SocketTransform 不存在");
+    }
+  }
+  CheckCollision(t) {
+    if (this.Qxr?.IsValid()) {
+      this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
+      this._sr.Empty();
+      this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter());
+      this.Fse.ActorsToIgnore = this._sr;
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, this.Qxr.GetLocation());
+      this.Kxr.DeepCopy(this.ZPr.CineCamera.D_K2_GetActorLocation());
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, this.Kxr);
+      this.Fse.Radius = 10;
+      this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
+      if (this.Wxr && (t || this.hQa)) {
+        TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.Wse);
+        this.ZPr.CineCamera.D_K2_SetActorLocation(this.Wse.ToUeVector(), false, undefined, false);
       }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Character", 22, "CheckCollision  SocketTransform 不存在");
     }
   }
   CheckSphereCollision() {
-    if (this.Vxr === 0) {
-      return false;
-    }
-    this.jxr.WorldContextObject = GlobalData_1.GlobalData.World;
-    var t = this.Tae.GetEntityNoBlueprint().GetComponent(178);
-    this.Qxr = t.GetCameraTransform();
-    t.GetCameraPosition(this.Xxr);
-    this.$xr.DeepCopy(this.Tae.CharacterActorComponent.ActorForwardProxy);
-    this.$xr.Multiply(this.kxr.X, this.$xr);
-    this.Yxr.DeepCopy(Vector_1.Vector.OneVectorProxy);
-    this.Yxr.Multiply(this.kxr.Y, this.Yxr);
-    this.I7.DeepCopy(Vector_1.Vector.UpVectorProxy);
-    this.I7.Multiply(this.kxr.Z, this.I7);
-    this.Xxr.Addition(this.$xr, this.Xxr);
-    this.Xxr.Addition(this.Yxr, this.Xxr);
-    this.Xxr.Addition(this.I7, this.Xxr);
-    this._sr.Empty();
-    this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter());
-    this.jxr.ActorsToIgnore = this._sr;
-    TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.jxr, this.Xxr);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.jxr, this.Xxr);
-    this.jxr.Radius = this.Vxr;
-    return TraceElementCommon_1.TraceElementCommon.SphereTrace(this.jxr, PROFILE_KEY2);
+    return this.Vxr !== 0 && (this.jxr.WorldContextObject = GlobalData_1.GlobalData.World, this.Tae.GetEntityNoBlueprint().GetComponent(178).GetCameraPosition(this.Xxr), this.$xr.DeepCopy(this.Tae.CharacterActorComponent.ActorForwardProxy), this.$xr.Multiply(this.kxr.X, this.$xr), this.Yxr.DeepCopy(Vector_1.Vector.OneVectorProxy), this.Yxr.Multiply(this.kxr.Y, this.Yxr), this.I7.DeepCopy(Vector_1.Vector.UpVectorProxy), this.I7.Multiply(this.kxr.Z, this.I7), this.Xxr.Addition(this.$xr, this.Xxr), this.Xxr.Addition(this.Yxr, this.Xxr), this.Xxr.Addition(this.I7, this.Xxr), this._sr.Empty(), this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter()), this.jxr.ActorsToIgnore = this._sr, TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.jxr, this.Xxr), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.jxr, this.Xxr), this.jxr.Radius = this.Vxr, TraceElementCommon_1.TraceElementCommon.SphereTrace(this.jxr, PROFILE_KEY2));
   }
   GetBoneTransform(t) {
     return this.Tae.Mesh.D_GetSocketTransform(t, 0);
+  }
+  SetDitherEffectEnable(t) {
+    this.XXd.add(t);
+  }
+  SetDitherEffectDisable(t) {
+    this.XXd.delete(t);
   }
   SetCameraCollisionState(t) {
     this.hQa = t;
   }
   DrawCube(t, e, i) {
     var s;
-    var r;
     var h;
+    var r;
     if (t) {
       i = new UE.LinearColor(i, i, i, i);
-      h = t.GetLocation();
+      r = t.GetLocation();
       s = new UE.Vector(10, 10, 10);
       s = new UE.VectorDouble(s.X * 0.5, s.Y * 0.5, s.Z * 0.5);
-      r = t.Rotator();
-      UE.KismetSystemLibrary.D_DrawDebugBox(GlobalData_1.GlobalData.World, h, s, i, r, e, 30);
-      h = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(0.5, 0.5, 0.5));
+      h = t.Rotator();
+      UE.KismetSystemLibrary.D_DrawDebugBox(GlobalData_1.GlobalData.World, r, s, i, h, e, 30);
+      r = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(0.5, 0.5, 0.5));
       s = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(-0.5, -0.5, -0.5));
-      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, h, s, i, e, 15);
-      r = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(0.5, -0.5, 0.5));
-      h = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(-0.5, 0.5, 0.5));
-      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, r, h, i, e, 15);
+      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, r, s, i, e, 15);
+      h = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(0.5, -0.5, 0.5));
+      r = UE.KismetMathLibrary.D_TransformLocation(t, new UE.VectorDouble(-0.5, 0.5, 0.5));
+      UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, h, r, i, e, 15);
     }
   }
   SaveSeqCamera() {

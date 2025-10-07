@@ -30,12 +30,14 @@ class RoleTriggerController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.T1u);
     return true;
   }
   static OnClear() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.T1u);
     this.Pir();
     return true;
   }
@@ -117,6 +119,12 @@ RoleTriggerController.nye = () => {
     RoleTriggerController.Koh();
   }
   RoleTriggerController.sxl = true;
+};
+RoleTriggerController.T1u = (e, r, o, l) => {
+  e = e.CheckGetComponent(3);
+  if (e && e.Actor === Global_1.Global.BaseCharacter) {
+    RoleTriggerController.UpdateRoleTriggerHalfHeightAndRadius(r, o, l);
+  }
 };
 RoleTriggerController.xie = (e, r) => {
   if (RoleTriggerController.sxl && (RoleTriggerController.xir && RoleTriggerController.xir.IsValid() || (RoleTriggerController.IsInitTrigger = false), RoleTriggerController.IsInitTrigger || RoleTriggerController.Koh(), e?.Valid) && (e = e.Entity.GetComponent(3)?.Actor)?.IsValid()) {

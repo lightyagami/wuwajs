@@ -11,6 +11,7 @@ const FilterSeniorSettingAll_1 = require("../../../../../Core/Define/ConfigQuery
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const LocalStorage_1 = require("../../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../../Common/LocalStorageDefine");
+const GlobalData_1 = require("../../../../GlobalData");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
@@ -140,6 +141,7 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
   OnBeforeCreate() {
     this.VmCache = this.OpenParam;
     this.VmCache.OnViewBeforeCreate?.();
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroEnableScreenFilter 1");
   }
   OnStart() {}
   OnBeforeShow() {
@@ -279,7 +281,7 @@ class FilterSettingView extends UiTickViewBase_1.UiTickViewBase {
           this.GetExtendToggle(15)?.RootUIComp?.SetUIActive(!this.VmCache.IsHideByPad);
         }
         if (this.VmCache.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.IsHideByClick)) {
-          if (FilterSettingViewModel_1.FilterSettingViewModel.Flags.IsHideByClick) {
+          if (this.VmCache.IsHideByClick) {
             this.GetItem(18)?.SetUIActive(false);
             this.GetItem(23)?.SetUIActive(false);
           } else {
@@ -324,7 +326,7 @@ class FilterSettingSliderItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.$tu = i => {
-      if (this.Wtu !== undefined) {
+      if (this.Wtu !== undefined && !this.Wtu.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.IntensityNormalized)) {
         this.Wtu.IntensityNormalized = i;
         this.Wtu.OnSliderChanged?.();
       }

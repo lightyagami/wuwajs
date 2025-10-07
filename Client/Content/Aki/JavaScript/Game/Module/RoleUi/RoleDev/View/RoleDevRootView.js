@@ -17,9 +17,10 @@ const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
 const FilterSortEntrance_1 = require("../../../Common/FilterSort/FilterSortEntrance");
 const CommonSelectItem_1 = require("../../../Roguelike/View/CommonSelectItem");
 const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
+const UiModelUtil_1 = require("../../../UiModel/UiModelUtil");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const RoleSelectionMediumItemGrid_1 = require("../../View/RoleSelectionMediumItemGrid");
+const RoleDevMediumItemGrid_1 = require("../Item/RoleDevMediumItemGrid");
 const RoleDevRootTabItem_1 = require("../Item/RoleDevRootTabItem");
 const RoleDevTagItem_1 = require("../Item/RoleDevTagItem");
 const RoleDevPhantomViewItem_1 = require("../PhantomPage/RoleDevPhantomViewItem");
@@ -35,7 +36,6 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.TSd = undefined;
-    this.K9d = undefined;
     this.$Cd = undefined;
     this.phd = undefined;
     this.W1d = undefined;
@@ -44,6 +44,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.X1d = undefined;
     this.dqc = undefined;
     this.adi = undefined;
+    this.yvt = undefined;
     this.GEo = [];
     this.Ehd = new RoleDevViewModel_1.RoleDevViewModel();
     this.DMd = undefined;
@@ -53,10 +54,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.spd = 0;
     this.nRd = true;
     this.qVd = 0;
-    this.bSd = e => {
-      this.RSd(e);
-      this.rpd();
-    };
+    this.eKd = false;
     this.C3d = () => {
       var e = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
       var t = this.TempRoleMarkRoleId;
@@ -66,17 +64,18 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("RoleProject_Tips13");
       }
       this.GVd(e);
-      this.Jqd(e);
-      this.TSd.RefreshByData(this.Ehd.RoleDataList, () => {
-        this.TSd.SelectGridProxyByKey(this.CurSelectRoleId, false);
-        this.zCd(this.CurSelectRoleId, 0, false, true);
-      });
+      this.Jqd(this.CurSelectRoleId);
+      this.TSd.RefreshWithoutDataSync();
     };
     this.OnRoleSelect = () => {
       this.rpd();
     };
+    this.TTt = () => {
+      this.Cxd();
+      this.rpd();
+    };
     this.cHe = () => {
-      var e = new RoleSelectionMediumItemGrid_1.RoleSelectionMediumItemGrid();
+      var e = new RoleDevMediumItemGrid_1.RoleDevMediumItemGrid();
       e.BindOnExtendToggleStateChanged(e => {
         var t = e.State;
         var e = e.Data;
@@ -84,6 +83,10 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       });
       e.BindOnCanExecuteChange(this.WCd);
       return e;
+    };
+    this.wYd = (e, t) => {
+      this.Ehd.RoleDevPhantomViewItemData?.RefreshSuitDataList();
+      this.rpd();
     };
     this.QCd = () => {
       var e = new RoleDevSelectionMediumItemGrid_1.RoleDevSelectionMediumItemGrid();
@@ -94,6 +97,9 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       });
       e.BindOnCanExecuteChange(this.XCd);
       return e;
+    };
+    this.hXd = e => {
+      this.Cxd();
     };
     this.C0o = (e, t, i) => {
       e = this.t6d(e);
@@ -106,8 +112,8 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
         this.$Cd?.DeselectCurrentGridProxy();
         this.TSd?.DeselectCurrentGridProxy();
         this.zCd(e, 0);
-        this.UiViewSequence?.StopSequenceByKey("Switch", false, true);
-        this.UiViewSequence.PlaySequence("Switch");
+        this.XPd(this.CurSelectTab);
+        this.UiViewSequence.PlayOrReplaySequenceByName("Switch");
       }
     };
     this.KCd = (e, t) => {
@@ -116,8 +122,8 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
         this.$Cd?.DeselectCurrentGridProxy();
         this.TSd?.DeselectCurrentGridProxy();
         this.zCd(e, 1);
-        this.UiViewSequence?.StopSequenceByKey("Switch", false, true);
-        this.UiViewSequence.PlaySequence("Switch");
+        this.XPd(this.CurSelectTab);
+        this.UiViewSequence.PlayOrReplaySequenceByName("Switch");
       }
     };
     this.WCd = (e, t, i) => {
@@ -134,18 +140,9 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       this.GEo.push(e);
       return e;
     };
-    this.etc = (e, t = false, i = false) => {
-      this.SetCurSelectTab(e);
-      this.JCd(e);
-      if (!i) {
-        if (t) {
-          this.gxd(e);
-        } else {
-          this.XPd(e);
-          i = RoleDevDefine_1.tabTypeToMainPageMap[e];
-          RoleDevController_1.RoleDevController.LogRoleDevPageClick(this.CurSelectRoleId, i);
-        }
-      }
+    this.etc = e => {
+      this._Xd(e);
+      this.XPd(e);
     };
     this.zqd = () => {
       var t = this.CurSelectRoleId;
@@ -163,31 +160,29 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[22, this.zqd]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVisionRecommendFetterGroupSelected, this.bSd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleSystemChangeRole, this.OnRoleSelect);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnVisionRecommendFetterGroupSelected, this.bSd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleSystemChangeRole, this.OnRoleSelect);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.TTt);
   }
   async OnBeforeStartAsync() {
-    await Promise.all([this.Bhd(), this.khd(), this.xMd(), this.UMd()]);
-  }
-  OnStart() {
     this.phd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(11), this.C5e);
     var e = this.GetItem(3).GetOwner();
     this.$Cd = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.QCd, e);
     this.TSd = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.cHe, e);
-    this.K9d = this.TSd.GetUiAnimController();
     this.adi = new FilterSortEntrance_1.FilterSortEntrance(this.GetItem(4), this.C0o);
+    await Promise.all([this.Bhd(), this.khd(), this.xMd(), this.UMd(), this.tKd()]);
   }
-  OnBeforeShow() {
-    var e = this.OpenParam;
+  OnStart() {
     this.sRd();
+  }
+  async OnBeforeShowAsyncImplementImplement() {
+    var e = this.OpenParam;
     this.Ehd.InitHotRoleDataList();
-    this.$Cd.RefreshByData(this.Ehd.HotRoleDataList);
     var t = ModelManager_1.ModelManager.RoleModel.GetAllConfigRoleDataList();
     this.GVd(ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId);
     if (this.IsFirstEnter) {
@@ -199,20 +194,28 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     if (t.length > 0) {
       this.Ehd.InitAllDevItemDataByRoleId(this.CurSelectRoleId);
     }
-    this.TSd.RefreshByData(t, () => {
-      this.TSd.SelectGridProxyByKey(this.CurSelectRoleId, false);
-      this.zCd(this.CurSelectRoleId, 0, this.IsFirstEnter);
-      this.X9d();
-    });
+    this.eKd = true;
     this.adi.UpdateData(47, t);
-    this.Cxd();
+    await Promise.all([this.$Cd.RefreshByDataAsync(this.Ehd.HotRoleDataList, false), this.TSd.RefreshByDataAsync(this.Ehd.RoleDataList, false)]);
+    this.eKd = false;
+    this.GetGridLayout(1).RootUIComp.SetUIActive(this.Ehd.HotRoleDataList.length > 0);
+    this.zCd(this.CurSelectRoleId, this.CurSelectRoleListType);
+    this.XPd(this.CurSelectTab);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleDevViewOpen);
   }
   aRd() {
-    UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
+    var e = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
+    if (e) {
+      UiModelUtil_1.UiModelUtil.SetVisible(e.Model, true);
+      UiModelUtil_1.UiModelUtil.ModelFadeOut(e.Model, "TerminalSkinRoleFadeOutCurve");
+    }
   }
   sRd() {
-    UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
+    var e = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
+    if (e) {
+      UiModelUtil_1.UiModelUtil.SetDitherEffect(e.Model, 0);
+      UiModelUtil_1.UiModelUtil.SetVisible(e.Model, false);
+    }
   }
   async xMd() {
     var e = this.GetItem(8);
@@ -229,14 +232,6 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       e.SetUIActive(true);
     }
   }
-  RSd(e) {
-    var t;
-    var i = this.CurSelectRoleId;
-    if (i !== 0 && (this.Ehd.InitAllDevItemDataByRoleId(i), this.CurSelectTab === 2) && (t = this.Ehd.RoleDevPhantomViewItemData)) {
-      t.RefreshByFetterGroupId(e);
-      this.K1d?.Refresh(t);
-    }
-  }
   async khd() {
     this.dqc = new PopupCaptionItem_1.PopupCaptionItem();
     this.dqc.SetCloseCallBack(() => {
@@ -246,7 +241,6 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.dqc.SetTitleByTextIdAndArgNew("RoleProject_Name");
   }
   xpt() {
-    this.aRd();
     this.CloseMe();
   }
   async Bhd() {
@@ -254,25 +248,21 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.Q1d = new RoleDevWeaponViewItem_1.RoleDevWeaponViewItem();
     this.K1d = new RoleDevPhantomViewItem_1.RoleDevPhantomViewItem();
     this.X1d = new RoleDevSkillViewItem_1.RoleDevSkillViewItem();
+    this.X1d.OnPlanChangeCallback = this.hXd;
     await Promise.all([this.W1d.CreateByResourceIdAsync("UiItem_PlanRole", this.GetItem(13), false), this.Q1d.CreateByResourceIdAsync("UiItem_PlanWeapon", this.GetItem(17), false), this.K1d.CreateByResourceIdAsync("UiItem_PlanVision", this.GetItem(19), false), this.X1d.CreateByResourceIdAsync("UiItem_PlanRoleSkill", this.GetItem(15), false)]);
+    this.K1d.OnChangeFetterGroupSuccessCallBack = this.wYd;
   }
-  Cxd() {
-    var e = this.Ehd.RoleDevRoleViewItemData;
-    var t = this.Ehd.RoleDevWeaponViewItemData;
-    var i = this.Ehd.RoleDevSkillViewItemData;
-    var s = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(this.CurSelectRoleId) === 0;
-    var h = ModelManager_1.ModelManager.RoleModel.IsRoleOwned(this.CurSelectRoleId);
-    var s = s || !h;
-    var h = [{
+  async tKd() {
+    this.yvt = [{
       TabIndex: 0,
       TabName: "RoleProject_Role",
-      TabIsUpgrade: !s && (e?.IsAllMaterialEnough ?? false),
-      TabIsFinish: !s && (e?.IsFinish ?? false)
+      TabIsUpgrade: false,
+      TabIsFinish: false
     }, {
       TabIndex: 1,
       TabName: "RoleProject_Weapon",
-      TabIsUpgrade: !s && (t?.DevItemData.IsAllMaterialEnough ?? false),
-      TabIsFinish: !s && (t?.DevItemData.IsFinish ?? false)
+      TabIsUpgrade: false,
+      TabIsFinish: false
     }, {
       TabIndex: 2,
       TabName: "RoleProject_Phantom",
@@ -281,12 +271,38 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     }, {
       TabIndex: 3,
       TabName: "RoleProject_Skill",
-      TabIsUpgrade: !s && (i?.IsAllMaterialEnough ?? false),
-      TabIsFinish: !s && (i?.IsPerfectPlanFinished ?? false)
+      TabIsUpgrade: false,
+      TabIsFinish: false
     }];
-    this.phd.RefreshByData(h, () => {
-      this.GEo.find(e => e.TabIndex === this.CurSelectTab)?.SetToggleState(1);
-    });
+    await this.phd.RefreshByDataAsync(this.yvt);
+  }
+  Cxd() {
+    var e = this.Ehd.RoleDevRoleViewItemData;
+    var t = this.Ehd.RoleDevWeaponViewItemData;
+    var i = this.Ehd.RoleDevSkillViewItemData;
+    var s = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(this.CurSelectRoleId) === 0;
+    var h = ModelManager_1.ModelManager.RoleModel.IsRoleOwned(this.CurSelectRoleId);
+    var r = s || !h;
+    for (const a of this.yvt) {
+      switch (a.TabIndex) {
+        case 0:
+          a.TabIsUpgrade = !r && e.IsAllMaterialEnough;
+          a.TabIsFinish = !r && e.IsFinish;
+          break;
+        case 1:
+          a.TabIsUpgrade = !r && t.DevItemData.IsAllMaterialEnough && t.IsWeaponHighQuality;
+          a.TabIsFinish = !r && t.DevItemData.IsFinish;
+          break;
+        case 2:
+          a.TabIsUpgrade = false;
+          a.TabIsFinish = false;
+          break;
+        case 3:
+          a.TabIsUpgrade = !r && i.IsCurrentPlanAllMaterialEnough;
+          a.TabIsFinish = !r && i.IsPerfectPlanFinished;
+      }
+    }
+    this.phd.RefreshWithoutDataSync();
   }
   t6d(e) {
     var t = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
@@ -301,15 +317,12 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     return [...i, ...s];
   }
   YCd(e, t, i) {
-    if (this.CurSelectRoleId !== 0 && !(e.length <= 0)) {
+    if (!this.eKd) {
       this.TSd.RefreshByData(e, () => {
         if (this.CurSelectRoleListType === 0) {
           this.TSd.SelectGridProxyByKey(this.CurSelectRoleId, false);
-          this.SetCurSelectRoleId(this.CurSelectRoleId);
-          this.SetCurSelectRoleListType(0);
         }
-        this.X9d();
-      });
+      }, true);
     }
   }
   Y1d() {
@@ -337,13 +350,13 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
       i?.SetText(e);
     }
   }
-  dwd(e, t = false, i = false) {
-    this.slo(e.GetRoleConfig().Id, 0, t, i);
+  dwd(e) {
+    this.slo(e.GetRoleConfig().Id, 0);
   }
-  epd(e, t = false, i = false) {
-    this.slo(e.Id, 1, t, i);
+  epd(e) {
+    this.slo(e.Id, 1);
   }
-  slo(t, e, i = false, s = false) {
+  slo(t, e) {
     if (e === 0) {
       this.TSd.SelectGridProxyByKey(t, false);
     } else if (this.Ehd.HotRoleDataList.findIndex(e => e.Id === t) !== -1) {
@@ -351,13 +364,8 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     }
     this.tpd(t, e);
     this.Cxd();
-    if (i) {
-      this.SetCurSelectTab(this.Y1d());
-    }
     this.Dhd(this.CurSelectTab);
-    e = RoleDevDefine_1.tabTypeToMainPageMap[this.CurSelectTab];
-    RoleDevController_1.RoleDevController.LogRoleDevRoleButtonClick(t, e);
-    this.etc(this.CurSelectTab, true, s);
+    this._Xd(this.CurSelectTab);
   }
   hRd(t, i) {
     if (this.DMd) {
@@ -381,100 +389,86 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.FVd();
   }
   rpd() {
-    var e;
-    var t = this.CurSelectTab;
-    if (t === 0) {
-      if (e = this.Ehd.RoleDevRoleViewItemData) {
-        this.W1d?.Refresh(e);
-      }
-    } else if (t === 1) {
-      if (e = this.Ehd.RoleDevWeaponViewItemData) {
-        this.Q1d?.Refresh(e);
-      }
-    } else if (t === 2) {
-      if (e = this.Ehd.RoleDevPhantomViewItemData) {
-        this.K1d?.Refresh(e);
-      }
-    } else if (t === 3 && (e = this.Ehd.RoleDevSkillViewItemData)) {
-      this.X1d?.Refresh(e);
+    switch (this.CurSelectTab) {
+      case 0:
+        var e = this.Ehd.RoleDevRoleViewItemData;
+        if (e) {
+          this.W1d?.Refresh(e);
+        }
+        break;
+      case 1:
+        e = this.Ehd.RoleDevWeaponViewItemData;
+        if (e) {
+          this.Q1d?.RefreshByData(e);
+        }
+        break;
+      case 2:
+        e = this.Ehd.RoleDevPhantomViewItemData;
+        if (e) {
+          this.K1d?.Refresh(e);
+        }
+        break;
+      case 3:
+        e = this.Ehd.RoleDevSkillViewItemData;
+        if (e) {
+          this.X1d?.Refresh(e);
+        }
     }
   }
   ipd(e, t) {
     this.SetCurSelectRoleId(e);
     this.Ehd.InitAllDevItemDataByRoleId(e);
   }
-  zCd(t, e, i = false, s = false) {
+  zCd(t, e) {
     this.SetCurSelectRoleId(t);
     this.SetCurSelectRoleListType(e);
     if (e === 0) {
       if (e = this.Ehd.RoleDataList.find(e => e.GetRoleConfig().Id === t)) {
-        this.dwd(e, i, s);
+        this.dwd(e);
       }
     } else if (e = this.Ehd.HotRoleDataList.find(e => e.Id === t)) {
-      this.epd(e, i, s);
+      this.epd(e);
     }
+  }
+  _Xd(e) {
+    this.SetCurSelectTab(e);
+    this.JCd(e);
+    e = RoleDevDefine_1.tabTypeToMainPageMap[e];
+    RoleDevController_1.RoleDevController.LogRoleDevPageClick(this.CurSelectRoleId, e);
   }
   XPd(e) {
-    this.O$d(e, false);
-  }
-  gxd(e) {
-    this.O$d(e, true);
-  }
-  O$d(e, t) {
     switch (e) {
       case 0:
-        this.q$d(t);
+        this.q$d();
         break;
       case 1:
-        this.G$d(t);
+        this.G$d();
         break;
       case 2:
-        this.F$d(t);
+        this.F$d();
         break;
       case 3:
-        this.N$d(t);
+        this.N$d();
     }
   }
-  q$d(e) {
-    this.W1d?.UiViewSequence?.StopSequenceByKey("Start", false, true);
-    if (e) {
-      this.W1d?.UiViewSequence?.ReplaySequence("Start");
-    } else {
-      this.W1d?.UiViewSequence?.PlaySequence("Start");
-    }
+  q$d() {
+    this.W1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  G$d(e) {
-    this.Q1d?.UiViewSequence?.StopSequenceByKey("Start", false, true);
-    if (e) {
-      this.Q1d?.UiViewSequence?.ReplaySequence("Start");
-    } else {
-      this.Q1d?.UiViewSequence?.PlaySequence("Start");
-    }
+  G$d() {
+    this.Q1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  F$d(e) {
-    this.K1d?.UiViewSequence?.StopSequenceByKey("Start", false, true);
-    if (e) {
-      this.K1d?.UiViewSequence?.ReplaySequence("Start");
-    } else {
-      this.K1d?.UiViewSequence?.PlaySequence("Start");
-    }
+  F$d() {
+    this.K1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
-  N$d(e) {
-    this.X1d?.UiViewSequence?.StopSequenceByKey("Start", false, true);
-    if (e) {
-      this.X1d?.UiViewSequence?.ReplaySequence("Start");
-    } else {
-      this.X1d?.UiViewSequence?.PlaySequence("Start");
-    }
+  N$d() {
+    this.X1d?.UiViewSequence?.PlayOrReplaySequenceByName("Start");
   }
   JCd(e) {
     this.Dhd(e);
     this.xhd();
   }
   Dhd(e) {
-    for (const t of this.GEo) {
-      t.SetToggleState(t.TabIndex === e ? 1 : 0);
-    }
+    this.phd?.SelectGridProxy(e, false);
   }
   xhd() {
     var e = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(this.CurSelectRoleId) === 0;
@@ -504,34 +498,7 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.GetItem(15).SetUIActive(e);
     this.GetItem(16).SetUIActive(e);
     this.X1d?.SetUiActive(e);
-    this.opd();
-  }
-  opd() {
-    switch (this.CurSelectTab) {
-      case 0:
-        var e = this.Ehd.RoleDevRoleViewItemData;
-        if (e) {
-          this.W1d?.Refresh(e);
-        }
-        break;
-      case 1:
-        e = this.Ehd.RoleDevWeaponViewItemData;
-        if (e) {
-          this.Q1d?.Refresh(e);
-        }
-        break;
-      case 2:
-        e = this.Ehd.RoleDevPhantomViewItemData;
-        if (e) {
-          this.K1d?.Refresh(e);
-        }
-        break;
-      case 3:
-        e = this.Ehd.RoleDevSkillViewItemData;
-        if (e) {
-          this.X1d?.Refresh(e);
-        }
-    }
+    this.rpd();
   }
   tje(e) {
     var t;
@@ -547,11 +514,11 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     const t = this.GetTexture(5);
     var i;
     if (RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e) === 0) {
-      i = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(e).RoleHeadIcon;
+      i = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(e).RoleHeadIconSmall;
       this.SetTextureByPath(i, t);
     } else {
       i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
-      this.SetTextureShowUntilLoaded(i.RoleHeadIconCircle, t, () => {
+      this.SetTextureShowUntilLoaded(i.RoleHeadIcon, t, () => {
         t.SetUIActive(true);
       });
     }
@@ -613,12 +580,8 @@ class RoleDevRootView extends UiViewBase_1.UiViewBase {
     this.oRd = 0;
     this.qVd = 0;
   }
-  X9d() {
-    if (this.K9d) {
-      this.K9d.Play("Start");
-    }
-  }
   OnBeforeDestroy() {
+    this.aRd();
     this.ClearCache();
   }
 }

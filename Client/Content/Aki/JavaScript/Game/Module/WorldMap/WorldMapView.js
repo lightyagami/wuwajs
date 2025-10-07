@@ -32,9 +32,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const UiModel_1 = require("../../Ui/UiModel");
 const LevelSequencePlayer_1 = require("../Common/LevelSequencePlayer");
 const WorldNavigation_1 = require("../Common/WorldNavigation");
-const ExploreProgressController_1 = require("../ExploreProgress/ExploreProgressController");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
-const LordGymController_1 = require("../LordGym/LordGymController");
 const MapController_1 = require("../Map/Controller/MapController");
 const MapDefine_1 = require("../Map/MapDefine");
 const MapHelper_1 = require("../Map/MapHelper");
@@ -197,7 +195,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         if (this.WorldMapUiEntity.IsInPlayerMap && this.WorldMapUiEntity.PlayerComponent.PlayerOutOfBound && this.C4o(_, this.v3o.SelfPlayerNode, true)[0]) {
           this.WorldMapUiEntity.MoveComponent.FocusPlayer(this.WorldMapUiEntity.PlayerComponent.PlayerUiPosition, true, 1);
         } else {
-          const l = [];
+          const M = [];
           var e = Vector_1.Vector.Create(t.X, t.Y, t.Z);
           var s = [];
           var a = [];
@@ -205,9 +203,9 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
             var e = await t.GetRootItemAsync();
             return [t, e];
           };
-          for (const M of this.v3o.GetMarkItemsByClickPosition(e)) {
-            if (M.View && M.GetInteractiveFlag() && !M.IsOutOfBound) {
-              s.push(r(M));
+          for (const l of this.v3o.GetMarkItemsByClickPosition(e)) {
+            if (l.View && l.GetInteractiveFlag() && !l.IsOutOfBound) {
+              s.push(r(l));
             }
           }
           let i = s.length <= 1;
@@ -215,7 +213,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
           var n = Promise.all(s).then(t => {
             for (const e of t) {
               if (this.C4o(_, e[1], i)[0]) {
-                l.push(e[0]);
+                M.push(e[0]);
               }
             }
           });
@@ -230,17 +228,17 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
           t = Promise.all(a).then(t => {
             for (const e of t) {
               if (this.C4o(_, e[1], i)[0]) {
-                l.push(e[0]);
+                M.push(e[0]);
               }
             }
           });
           Promise.all([t, n]).then(() => {
-            if (l.length === 0) {
+            if (M.length === 0) {
               this.g4o(_);
-            } else if (l.length === 1) {
-              this.f4o(l[0]);
-            } else if (l.length > 1) {
-              this.p4o(l, _);
+            } else if (M.length === 1) {
+              this.f4o(M[0]);
+            } else if (M.length > 1) {
+              this.p4o(M, _);
             }
           });
         }
@@ -402,20 +400,18 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.Nvd = () => {
-      this.Fvd?.RefreshView();
+      this.Fvd?.RefreshView(this.krh());
     };
     this.P4o = () => {
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_com_slider_tick");
       this.x4o(SCALE_STEP, 1);
     };
     this.w4o = () => {
+      AudioSystem_1.AudioSystem.PostEvent("play_ui_com_slider_tick");
       this.x4o(-SCALE_STEP, 1);
     };
     this.AMo = () => {
-      if (ModelManager_1.ModelManager.HomeBtnModel.EnableHomeBtnFunction) {
-        this.CloseMe();
-      } else {
-        UiManager_1.UiManager.ResetToBattleView();
-      }
+      UiManager_1.UiManager.ResetToBattleView();
     };
     this.x4o = (t, e) => {
       if (e === 2 && this.WorldMapUiEntity.InteractComponent.IsJoystickZoom) {
@@ -555,7 +551,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
           s = i.GetTargetDragonPoolCoreById(MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID);
           if (e <= i.GetItemCount(s) && t) {
             return {
-              MapNoteId: 12,
+              MapNoteId: 15,
               ClickCallBack: this.b4o,
               MapNoteConfig: t,
               MapMarkId: t.MarkIdMap.get(MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID)
@@ -821,8 +817,6 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     await this.j4o();
     await this.W3o.OnWorldMapBeforeStartAsync();
     this.X3o = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(18), () => new WorldMapSubMapItem_1.WorldMapSubMapItem());
-    await ControllerHolder_1.ControllerHolder.TowerController.RefreshTower();
-    await ControllerHolder_1.ControllerHolder.MingSuController.SendDarkCoastDeliveryRequestAsync();
     ModelManager_1.ModelManager.ExploreProgressModel.LoadLocalShowNoteIdMap();
     this.GetText(28).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.EnableDebug);
   }
@@ -864,7 +858,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   async j4o() {
-    await Promise.all([ExploreProgressController_1.ExploreProgressController.AllExploreProgressAsyncRequest(), LordGymController_1.LordGymController.LordGymInfoRequest()]);
+    await Promise.all([ControllerHolder_1.ControllerHolder.ExploreProgressController.AllExploreProgressAsyncRequest(), ControllerHolder_1.ControllerHolder.LordGymController.LordGymInfoRequest(), ControllerHolder_1.ControllerHolder.TowerController.RefreshTower(), ControllerHolder_1.ControllerHolder.MingSuController.SendDarkCoastDeliveryRequestAsync()]);
     await Promise.all([this.Gkn(), this.Q4o(), this.X4o(), this.$4o(), this.rYs(), this.Y4o(), this.J4o(), this.cwu(), this.q7l()]);
     this.z4o();
   }
@@ -917,9 +911,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     var t = this.GetItem(16);
     this.Fvd = new WorldMapPeriodicActivityItem_1.WorldMapPeriodicActivityItem();
     await this.Fvd.CreateThenShowByActorAsync(t.GetOwner());
-    var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10055) && this.krh();
-    t.SetUIActive(e);
-    this.Fvd.Refresh(() => {
+    this.Fvd.Refresh(this.krh(), () => {
       this.u4o(() => {
         this.WorldMapUiEntity?.SecondaryUiComponent.ShowMapPeriodicActivityPanel(this.RootItem);
       });

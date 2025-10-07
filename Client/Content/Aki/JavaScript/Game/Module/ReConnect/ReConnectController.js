@@ -432,12 +432,13 @@ ReConnectController.Cso = () => {
     cpp_1.FuncOpenLibrary.SetFirstTimestamp(0);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DoLeaveLevel);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ClearSceneBegin);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsClearSceneBegin);
     await GlobalData_1.GlobalData.ClearSceneDone?.Promise;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LogOut);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ExitGamePush);
     ThirdPartySdkManager_1.ThirdPartySdkManager.Logout();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ReconnectClearData);
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.ReconnectClearData);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsReconnectClearData);
     UE.KuroLauncherLibrary.LogoutToLauncher();
     ConfigCommon_1.ConfigCommon.CloseAllConnection();
     HotFixSceneManager_1.HotFixSceneManager.StopHotPatchBgm();

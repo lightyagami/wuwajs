@@ -11,6 +11,7 @@ const Log_1 = require("../Common/Log");
 const Stats_1 = require("../Common/Stats");
 const TrimLru_1 = require("../Container/TrimLru");
 const CommonDbConnectManager_1 = require("./CommonDbConnectManager");
+const ConfigStatementLibSync_1 = require("./ConfigStatementLibSync");
 exports.dataRef = (0, puerts_1.$ref)(undefined);
 class ConfigBase {
   constructor() {
@@ -35,11 +36,11 @@ class ConfigCommon {
   static ToList(n) {
     if (n) {
       var t = n.length;
-      var C = new Array(t);
+      var i = new Array(t);
       for (let o = 0; o < t; o++) {
-        C[o] = n[o];
+        i[o] = n[o];
       }
-      return C;
+      return i;
     }
   }
   static GetProjectContentDir() {
@@ -58,91 +59,91 @@ class ConfigCommon {
     if (n.length <= 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Config", 2, "dbName为空！请确认该配置表在拆分Db表中是否有正确配置！");
     }
-    var C = ConfigCommon.GetProjectContentDir() + "Aki/ConfigDB/" + n;
-    var o = UE.KuroPrepareStatementLib.CreateStatement(C, t);
+    var i = ConfigCommon.GetProjectContentDir() + "Aki/ConfigDB/" + n;
+    var o = ConfigStatementLibSync_1.ConfigStatementLibSync.CreateStatement(i, t);
     switch (o) {
       case -1:
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Config", 2, "找不到Db连接", ["path", C]);
+          Log_1.Log.Error("Config", 2, "找不到Db连接", ["path", i]);
         }
         break;
       case -2:
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Config", 2, "创建语句失败", ["path", C], ["command", t]);
+          Log_1.Log.Error("Config", 2, "创建语句失败", ["path", i], ["command", t]);
         }
     }
     ConfigCommon.O9.Stop();
     return o;
   }
-  static GetLangStatementId(o, n, t, C = "") {
+  static GetLangStatementId(o, n, t, i = "") {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.GetLangStatementId(o, n, t, C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.GetLangStatementId(o, n, t, i);
     }
     ConfigCommon.k9.Start();
     if (n.length <= 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Config", 2, "dbName为空！请确认该配置表在拆分Db表中是否有正确配置！");
     }
-    C = C && C.length !== 0 ? C : LanguageSystem_1.LanguageSystem.PackageLanguage;
-    let i = ConfigCommon.F9.get(o);
-    if (!i) {
-      i = new Map();
-      ConfigCommon.F9.set(o, i);
+    i = i && i.length !== 0 ? i : LanguageSystem_1.LanguageSystem.PackageLanguage;
+    let C = ConfigCommon.F9.get(o);
+    if (!C) {
+      C = new Map();
+      ConfigCommon.F9.set(o, C);
     }
-    let m = i.get(C);
-    if (!m) {
-      var e = `${ConfigCommon.GetProjectContentDir()}Aki/ConfigDB/${C}/${n}`;
-      switch (m = UE.KuroPrepareStatementLib.CreateStatement(e, t)) {
+    let e = C.get(i);
+    if (!e) {
+      var m = `${ConfigCommon.GetProjectContentDir()}Aki/ConfigDB/${i}/${n}`;
+      switch (e = ConfigStatementLibSync_1.ConfigStatementLibSync.CreateStatement(m, t)) {
         case -1:
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Config", 2, "找不到语言表Db连接", ["path", e]);
+            Log_1.Log.Error("Config", 2, "找不到语言表Db连接", ["path", m]);
           }
           break;
         case -2:
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Config", 2, "创建语言表语句失败", ["path", e], ["command", t]);
+            Log_1.Log.Error("Config", 2, "创建语言表语句失败", ["path", m], ["command", t]);
           }
       }
-      i.set(C, m);
+      C.set(i, e);
     }
     ConfigCommon.k9.Stop();
-    return m;
+    return e;
   }
   static CheckStatement(o, ...n) {
     if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.CheckStatement(o, ...n);
     }
     let t = true;
-    let C = "";
+    let i = "";
     switch (o) {
       case 0:
-        C = "语句未初始化！";
+        i = "语句未初始化！";
         break;
       case -1:
-        C = "找不到该语句的 DB 连接！";
+        i = "找不到该语句的 DB 连接！";
         break;
       case -2:
-        C = "语句创建不成功！";
+        i = "语句创建不成功！";
     }
-    if (C && (t = false, Log_1.Log.CheckError())) {
-      Log_1.Log.Error("Config", 2, C, ...n);
+    if (i && (t = false, Log_1.Log.CheckError())) {
+      Log_1.Log.Error("Config", 2, i, ...n);
     }
     return t;
   }
-  static BindBigInt(o, n, t, ...C) {
+  static BindBigInt(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindBigInt(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindBigInt(o, n, t, ...i);
     } else {
       ConfigCommon.V9.Start();
       if (typeof t != "bigint") {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Config", 2, "绑定参数 int64 失败", ["handleId", o], ["bindingIndex", n], ["value", t], ...C);
+          Log_1.Log.Error("Config", 2, "绑定参数 int64 失败", ["handleId", o], ["bindingIndex", n], ["value", t], ...i);
         }
         ConfigCommon.V9.Stop();
         return false;
       } else {
         if (!(t = UE.KuroPrepareStatementLib.SetBindingValueBigInt(o, n, t))) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Config", 2, "绑定参数 int64 失败", ["handleId", o], ["bindingIndex", n], ...C);
+            Log_1.Log.Error("Config", 2, "绑定参数 int64 失败", ["handleId", o], ["bindingIndex", n], ...i);
           }
         }
         ConfigCommon.V9.Stop();
@@ -150,71 +151,71 @@ class ConfigCommon {
       }
     }
   }
-  static BindInt(o, n, t, ...C) {
+  static BindInt(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindInt(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindInt(o, n, t, ...i);
     }
     ConfigCommon.H9.Start();
     t = UE.KuroPrepareStatementLib.SetBindingValueInt(o, n, t);
     if (!t) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 2, "绑定参数 int32 失败", ["handleId", o], ["bindingIndex", n], ...C);
+        Log_1.Log.Error("Config", 2, "绑定参数 int32 失败", ["handleId", o], ["bindingIndex", n], ...i);
       }
     }
     ConfigCommon.H9.Stop();
     return t;
   }
-  static BindFloat(o, n, t, ...C) {
+  static BindFloat(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat(o, n, t, ...i);
     }
     ConfigCommon.j9.Start();
     t = UE.KuroPrepareStatementLib.SetBindingValueFloat(o, n, t);
     if (!t) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 2, "绑定参数 float 失败", ["handleId", o], ["bindingIndex", n], ...C);
+        Log_1.Log.Error("Config", 2, "绑定参数 float 失败", ["handleId", o], ["bindingIndex", n], ...i);
       }
     }
     ConfigCommon.j9.Stop();
     return t;
   }
-  static BindFloat64(o, n, t, ...C) {
+  static BindFloat64(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat64(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindFloat64(o, n, t, ...i);
     }
     ConfigCommon.mtl.Start();
     t = UE.KuroPrepareStatementLib.SetBindingValueFloat64(o, n, t);
     if (!t) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 62, "绑定参数 float64 失败", ["handleId", o], ["bindingIndex", n], ...C);
+        Log_1.Log.Error("Config", 62, "绑定参数 float64 失败", ["handleId", o], ["bindingIndex", n], ...i);
       }
     }
     ConfigCommon.mtl.Stop();
     return t;
   }
-  static BindBool(o, n, t, ...C) {
+  static BindBool(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindBool(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindBool(o, n, t, ...i);
     }
     ConfigCommon.W9.Start();
     t = UE.KuroPrepareStatementLib.SetBindingValueBool(o, n, t);
     if (!t) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 2, "绑定参数 bool 失败", ["handleId", o], ["bindingIndex", n], ...C);
+        Log_1.Log.Error("Config", 2, "绑定参数 bool 失败", ["handleId", o], ["bindingIndex", n], ...i);
       }
     }
     ConfigCommon.W9.Stop();
     return t;
   }
-  static BindString(o, n, t, ...C) {
+  static BindString(o, n, t, ...i) {
     if (ConfigCommon.mNd) {
-      return CommonDbConnectManager_1.CommonDbConnectManager.BindString(o, n, t, ...C);
+      return CommonDbConnectManager_1.CommonDbConnectManager.BindString(o, n, t, ...i);
     }
     ConfigCommon.K9.Start();
     t = UE.KuroPrepareStatementLib.SetBindingValueString(o, n, t);
     if (!t) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Config", 2, "绑定参数 string 失败", ["handleId", o], ["bindingIndex", n], ...C);
+        Log_1.Log.Error("Config", 2, "绑定参数 string 失败", ["handleId", o], ["bindingIndex", n], ...i);
       }
     }
     ConfigCommon.K9.Stop();
@@ -244,28 +245,28 @@ class ConfigCommon {
     if (ConfigCommon.mNd) {
       return CommonDbConnectManager_1.CommonDbConnectManager.Step(o, n, ...t);
     }
-    var C = UE.KuroPrepareStatementLib.Step(o);
-    let i = "";
-    switch (C) {
+    var i = UE.KuroPrepareStatementLib.Step(o);
+    let C = "";
+    switch (i) {
       case 0:
-        i = n ? "配置表中没有该数据，请确认该问题，或修改为合理的查询！" : undefined;
+        C = n ? "配置表中没有该数据，请确认该问题，或修改为合理的查询！" : undefined;
         break;
       case -1:
-        i = "找不到创建的语句，确认语句是否已调用过销毁，但业务还持有着句柄！";
+        C = "找不到创建的语句，确认语句是否已调用过销毁，但业务还持有着句柄！";
         break;
       case -2:
-        i = "创建的语句无效或已被释放！";
+        C = "创建的语句无效或已被释放！";
         break;
       case -3:
-        i = "事务繁忙中，查询失败！";
+        C = "事务繁忙中，查询失败！";
         break;
       case -4:
-        i = "执行查询出错！";
+        C = "执行查询出错！";
     }
-    if (i && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Config", 2, i, ["handleId", o], ...t);
+    if (C && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Config", 2, C, ["handleId", o], ...t);
     }
-    return C;
+    return i;
   }
   static GetValue(o, n, ...t) {
     if (ConfigCommon.mNd) {
@@ -283,7 +284,7 @@ class ConfigCommon {
     return [n, o];
   }
   static CloseAllConnection() {
-    (ConfigCommon.mNd ? CommonDbConnectManager_1.CommonDbConnectManager : UE.KuroPrepareStatementLib).CloseAllConnection();
+    (ConfigCommon.mNd ? CommonDbConnectManager_1.CommonDbConnectManager : ConfigStatementLibSync_1.ConfigStatementLibSync).CloseAllConnection();
   }
 }
 (exports.ConfigCommon = ConfigCommon).N9 = undefined;

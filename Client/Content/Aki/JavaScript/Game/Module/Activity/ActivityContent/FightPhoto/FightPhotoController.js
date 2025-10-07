@@ -4,15 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.FightPhotoController = exports.stepTextIdList = undefined;
+const UE = require("ue");
+const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../Core/Net/Net");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../../../GlobalData");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const InstanceDungeonController_1 = require("../../../InstanceDungeon/InstanceDungeonController");
 const SplashScreenTask_1 = require("../../../SplashScreen/SplashScreenTask");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
@@ -34,17 +38,29 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     };
     this.JDe = () => {
       var e;
-      if (this.WRd && this.CheckInFightPhotoDungeon() && (UiManager_1.UiManager.OpenView("FightPhotoFocusView"), (e = this.F5d()) < MAX_STEP_NUM) && this.G5d < e) {
+      if (this.WRd && this.CheckInFightPhotoDungeon() && (UiManager_1.UiManager.OpenView("FightPhotoFocusView"), ControllerHolder_1.ControllerHolder.FilterSettingController.SetDefaultFilterSetting(), (e = this.F5d()) < MAX_STEP_NUM) && this.G5d < e) {
         this.G5d = e;
         this.ShowFightPhotoTips(exports.stepTextIdList[e]);
       }
     };
-    this.fSn = () => {
-      this.LeaveInstanceDungeon();
-    };
     this.nye = () => {
       if (this.WRd && this.WRd.IsNeedShowFightPhotoMainView) {
         this.tHu();
+      }
+      if (this.CheckInFightPhotoDungeon()) {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ForceNoPerBoneMotionBlur 1");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.FixScaleZeroProblem 1");
+      }
+    };
+    this.g3e = e => {
+      var t;
+      if (this.WRd && e.has(this.WRd.Id) && this.CheckInFightPhotoDungeon()) {
+        e = () => {
+          this.LeaveInstanceDungeon();
+        };
+        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(393)).FunctionMap.set(1, e);
+        t.FunctionMap.set(0, e);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
       }
     };
   }
@@ -59,12 +75,12 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActiveBattleView, this.JDe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityClose, this.g3e);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActiveBattleView, this.JDe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, this.fSn);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, this.g3e);
   }
   OnOpenView(e) {
     throw new Error("Method not implemented.");
@@ -106,21 +122,25 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
     }
     return this.WRd;
   }
-  EnterFightPhotoDungeonDirectly(e, t, i, o) {
+  async EnterFightPhotoDungeonDirectly(e, t, o, i) {
     e = {
       w6n: e,
       gG_: t
     };
     ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.Wbd = e;
-    InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(i, o, 0, 0);
-    this.GetActivityData().SetCurrentLevelId(t);
+    e = await InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(o, i, 0, 0);
+    if (e) {
+      this.GetActivityData().SetCurrentLevelId(t);
+    } else {
+      ModelManager_1.ModelManager.LoadingModel.ClearSpecifiedLoadingConfig();
+    }
   }
   RequestTaskReward(e) {
     const t = this.GetActivityData();
-    var i = new Protocol_1.Aki.Protocol.Ubd();
-    i.$bd = e;
-    i.w6n = t.Id;
-    Net_1.Net.Call(22904, i, e => {
+    var o = new Protocol_1.Aki.Protocol.Ubd();
+    o.$bd = e;
+    o.w6n = t.Id;
+    Net_1.Net.Call(22904, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21302);
@@ -145,7 +165,12 @@ class FightPhotoController extends ActivityControllerBase_1.ActivityControllerBa
   LeaveInstanceDungeon() {
     if (this.CheckInFightPhotoDungeon()) {
       ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
-      this.WRd.IsNeedShowFightPhotoMainView = true;
+      AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ForceNoPerBoneMotionBlur 0");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.FixScaleZeroProblem 0");
+      if (this.WRd && !this.WRd.CheckIfClose()) {
+        this.WRd.IsNeedShowFightPhotoMainView = true;
+      }
       ControllerHolder_1.ControllerHolder.PhotographController.ClearAllSavedFightPhotos();
       ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
       this.G5d = 0;

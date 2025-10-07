@@ -23,6 +23,7 @@ const SurvivorsScoreRewardByActivity_1 = require("../../../Core/Define/ConfigQue
 const SurvivorsTalentEffectById_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTalentEffectById");
 const SurvivorsTalentTreeByActivityId_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTalentTreeByActivityId");
 const SurvivorsTalentTreeById_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTalentTreeById");
+const SurvivorsTaskByActivityId_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTaskByActivityId");
 const SurvivorsTaskById_1 = require("../../../Core/Define/ConfigQuery/SurvivorsTaskById");
 const SurvivorsWaveByLevel_1 = require("../../../Core/Define/ConfigQuery/SurvivorsWaveByLevel");
 const SurvivorsWeaponByActivityId_1 = require("../../../Core/Define/ConfigQuery/SurvivorsWeaponByActivityId");
@@ -181,6 +182,9 @@ class SurvivorsRogueConfig extends ConfigBase_1.ConfigBase {
   }
   GetSurvivorsTask(e) {
     return SurvivorsTaskById_1.configSurvivorsTaskById.GetConfig(e);
+  }
+  GetSurvivorsTaskByActId(e) {
+    return SurvivorsTaskByActivityId_1.configSurvivorsTaskByActivityId.GetConfigList(e) ?? [];
   }
   GetAllSurvivorsScoreRewardByActId(e) {
     return SurvivorsScoreRewardByActivity_1.configSurvivorsScoreRewardByActivity.GetConfigList(e) ?? [];

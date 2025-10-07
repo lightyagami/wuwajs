@@ -39,6 +39,7 @@ class RoleDevDetailSubItemList extends LoopScrollSmallItemGrid_1.LoopScrollSmall
       this.SetIconByPath(r?.UnknownItemIcon ?? "");
       this.SetToggleInteractive(false);
       this.SetBottomTextVisible(false);
+      this.SetQuality(undefined);
     } else {
       t = (r = ModelManager_1.ModelManager?.InventoryModel?.GetItemCountByConfigId(e.ItemId) ?? 0) >= e.RequiredCount ? CommonDefine_1.MATERIAL_ENOUGHT_TEXT_PATTERN : CommonDefine_1.MATERIAL_NOT_ENOUGHT_TEXT_PATTERN;
       t = StringUtils_1.StringUtils.Format(t, r.toString(), e.RequiredCount.toString());

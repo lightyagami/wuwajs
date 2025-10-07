@@ -264,6 +264,13 @@ class SurvivorsRogueCardShopItem extends GridProxyAbstract_1.GridProxyAbstract {
   GetKey(t, e) {
     return t.fEd.w5n;
   }
+  GetGuideUiItemAndUiItemForShowEx(t) {
+    if (!(t.length <= 0) && t[0] === "EvolveBar" && (t = this.GetVerticalLayout(3)?.GetRootComponent())) {
+      return [t, t];
+    } else {
+      return undefined;
+    }
+  }
 }
 exports.SurvivorsRogueCardShopItem = SurvivorsRogueCardShopItem;
 //# sourceMappingURL=SurvivorsRogueCardShopItem.js.map

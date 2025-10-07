@@ -27,8 +27,8 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     this.CurComboConfig = undefined;
     this.MaxWaveNum = 0;
     this.WaveTypeArray = [];
-    this.ComboTimerFreezeTimeCfg = [0, 0, 0];
-    this.ComboDurationAdditionCfg = [0, 0, 0];
+    this.ComboTimerFreezeTimeCfg = [0, 0, 0, 0];
+    this.ComboDurationAdditionCfg = [0, 0, 0, 0];
     this._jd = 0;
     this.HasNewSettle = false;
     this.Svd = 0;
@@ -61,13 +61,8 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
   get CurWaveRemainTime() {
     return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetWaveDuration(this.CurLevelId, this.CurWaveNum);
   }
-  get CurWaveType() {
-    var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetWaveType(this.CurLevelId, this.CurWaveNum);
-    if (e !== 2 || this.BattleData.EndlessWaveEnabled) {
-      return e;
-    } else {
-      return 0;
-    }
+  get IsEndlessWave() {
+    return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetWaveType(this.CurLevelId, this.CurWaveNum) === 2 && this.BattleData.EndlessWaveEnabled;
   }
   get IsBonusWave() {
     return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.IsBonusWave(this.CurLevelId, this.CurWaveNum);

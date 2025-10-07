@@ -218,7 +218,7 @@ class CalabashSkin {
   }
   showwhenlocked() {
     var t = this.J7.__offset(this.z7, 36);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
   sortindex() {
     var t = this.J7.__offset(this.z7, 38);

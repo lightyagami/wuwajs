@@ -170,7 +170,7 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
         }
         let t = this.W9d;
         var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
-        if (o !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(o)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(o).get(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameIndexByList(o)) < 0) {
+        if (o !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(o)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(o).get(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(o)) < 0) {
           t = o * 0.9;
         }
         if (this.RKo && Log_1.Log.CheckInfo()) {

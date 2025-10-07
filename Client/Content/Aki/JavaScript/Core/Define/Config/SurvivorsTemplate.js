@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SurvivorsTemplate = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
-const DicIntInt_1 = require("./SubType/DicIntInt");
 class SurvivorsTemplate {
   constructor() {
     this.J7 = null;
@@ -32,23 +31,8 @@ class SurvivorsTemplate {
   get InitBuffs() {
     return GameUtils_1.GameUtils.ConvertToArray(this.initbuffsLength(), this.initbuffs, this);
   }
-  get DropGoldEffect() {
-    return GameUtils_1.GameUtils.ConvertToMap(this.dropgoldeffectLength(), this.dropgoldeffectKey, this.dropgoldeffectValue, this);
-  }
-  dropgoldeffectKey(t) {
-    return this.dropgoldeffect(t)?.key();
-  }
-  dropgoldeffectValue(t) {
-    return this.dropgoldeffect(t)?.value();
-  }
-  get DropGold() {
-    return this.dropgold();
-  }
   get Deathrattles() {
     return GameUtils_1.GameUtils.ConvertToArray(this.deathrattlesLength(), this.deathrattles, this);
-  }
-  get Deathrattle() {
-    return this.deathrattle();
   }
   get Tag() {
     return GameUtils_1.GameUtils.ConvertToArray(this.tagLength(), this.tag, this);
@@ -150,38 +134,11 @@ class SurvivorsTemplate {
       return null;
     }
   }
-  GetDropgoldeffectAt(t, s) {
-    return this.dropgoldeffect(t);
-  }
-  dropgoldeffect(t, s) {
-    var i = this.J7.__offset(this.z7, 18);
-    if (i) {
-      return (s || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
-    } else {
-      return null;
-    }
-  }
-  dropgoldeffectLength() {
-    var t = this.J7.__offset(this.z7, 18);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  dropgold() {
-    var t = this.J7.__offset(this.z7, 20);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   GetDeathrattlesAt(t) {
     return this.deathrattles(t);
   }
   deathrattles(t) {
-    var s = this.J7.__offset(this.z7, 22);
+    var s = this.J7.__offset(this.z7, 18);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -189,7 +146,7 @@ class SurvivorsTemplate {
     }
   }
   deathrattlesLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -197,26 +154,18 @@ class SurvivorsTemplate {
     }
   }
   deathrattlesArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
     }
   }
-  deathrattle() {
-    var t = this.J7.__offset(this.z7, 24);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   GetTagAt(t) {
     return this.tag(t);
   }
   tag(t) {
-    var s = this.J7.__offset(this.z7, 26);
+    var s = this.J7.__offset(this.z7, 20);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -224,7 +173,7 @@ class SurvivorsTemplate {
     }
   }
   tagLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -232,7 +181,7 @@ class SurvivorsTemplate {
     }
   }
   tagArray() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -243,7 +192,7 @@ class SurvivorsTemplate {
     return this.attrshow(t);
   }
   attrshow(t) {
-    var s = this.J7.__offset(this.z7, 28);
+    var s = this.J7.__offset(this.z7, 22);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -251,7 +200,7 @@ class SurvivorsTemplate {
     }
   }
   attrshowLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -259,7 +208,7 @@ class SurvivorsTemplate {
     }
   }
   attrshowArray() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

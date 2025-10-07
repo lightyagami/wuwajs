@@ -350,14 +350,17 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
   SetItemQuality(t) {
     var e = ConfigManager_1.ConfigManager.InventoryConfig?.GetItemDataTypeByConfigId(t.ItemConfigId);
     if (e === 10 || e === 11 || e === 14 || e === 17) {
-      this.SetQuality(undefined);
-      this.Hpl(t);
+      this.SetSkinQualityByParameters(t);
     } else if (e === 13) {
       this.JO1(t);
     } else {
       this.SetSkinQuality(undefined);
       this.jpl(t);
     }
+  }
+  SetSkinQualityByParameters(t) {
+    this.SetQuality(undefined);
+    this.Hpl(t);
   }
   SetQuality(t) {
     var e = this.GetSprite(0);
@@ -466,6 +469,15 @@ class SmallItemGrid extends ItemGridBase_1.ItemGridBase {
       this.SetBottomTextVisible(false);
     }
     this.RefreshComponent(SmallItemGridSkinComponent_1.SmallItemGridSkinComponent, i, i ? t : undefined);
+  }
+  RefreshSkinByDefault(t, e) {
+    t = {
+      QualityId: t
+    };
+    if (e === 10 || e === 11 || e === 14 || e === 17) {
+      this.SetBottomTextVisible(false);
+    }
+    this.RefreshComponent(SmallItemGridSkinComponent_1.SmallItemGridSkinComponent, true, t);
   }
   SetEmptySlotVisible(t) {
     var e = this.RefreshComponent(SmallItemGridEmptySlotComponent_1.SmallItemGridEmptySlotComponent, t, t);

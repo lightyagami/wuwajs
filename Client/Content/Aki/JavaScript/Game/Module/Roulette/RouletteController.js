@@ -157,7 +157,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
   }
   static SaveCurrentRouletteData(e, t, o, r = false, n) {
     var l = ModelManager_1.ModelManager.RouletteModel;
-    this.lB_(e ?? l.ExploreSkillIdListServer, t ?? l.FunctionIdListServer, o ?? l.CurrentEquipItemId, r, n);
+    this.lB_(e ?? l.ExploreSkillIdListServer, t ?? l.FunctionIdListServer, o ?? l.CurrentEquipItemIdServer, r, n);
   }
   static FunctionOpenRequest(e) {
     if (e !== 0 && e !== undefined && (e = ModelManager_1.ModelManager.RouletteModel.GetFuncDataByFuncId(e))) {

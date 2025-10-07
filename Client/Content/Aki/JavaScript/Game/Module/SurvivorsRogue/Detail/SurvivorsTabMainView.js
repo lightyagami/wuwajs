@@ -151,7 +151,7 @@ class SurvivorsTabMainView extends UiViewBase_1.UiViewBase {
         e?.RefreshTabState(2);
       }
     });
-    this.EOd?.SetTextById("Text_Role_Text");
+    this.EOd?.SetTextById("SurvivorCharacterAttributeInterface_Name");
     this.EOd?.RefreshTabState(2);
     this.IOd?.SetTextById("Text_Prop_Text");
     this.IOd?.RefreshTabState(2);

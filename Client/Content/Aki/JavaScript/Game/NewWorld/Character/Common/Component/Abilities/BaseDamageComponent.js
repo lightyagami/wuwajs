@@ -119,14 +119,15 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
       return 0;
     }
     if (o.Condition) {
-      this.ProcessDamageExpression(r = {
+      r = {
         ContextType: 0,
         DamageParam: t,
         BulletEntityId: e,
         ContextId: a,
         ToughResult: 0,
         Victim: this
-      }, o);
+      };
+      ExpressionTreeController_1.ExpressionTreeController.DoDamageExpression(r, o, t.Attacker);
       return r.ToughResult;
     }
     var r = EntitySystem_1.EntitySystem.Get(e);
@@ -185,13 +186,13 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
     var s = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(Number(e.DamageDataId));
     if (s) {
       if (s.Condition) {
-        this.ProcessDamageExpression({
+        ExpressionTreeController_1.ExpressionTreeController.DoDamageExpression({
           ContextType: 1,
           DamageParam: e,
           Payload: t,
           ContextId: a,
           Victim: this
-        }, s);
+        }, s, e.Attacker);
       } else {
         e.Attacker = e.Attacker?.GetComponent(56)?.GetAttributeHolder() ?? e.Attacker;
         (o = new ExtraEffectBaseTypes_1.RequirementPayload()).PartialAssign(t);
@@ -231,14 +232,14 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
     var s = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(Number(e.DamageDataId));
     if (s) {
       if (s.Condition) {
-        this.ProcessDamageExpression({
+        ExpressionTreeController_1.ExpressionTreeController.DoDamageExpression({
           ContextType: 2,
           DamageParam: e,
           Payload: t,
           ExtraRate: a,
           ContextId: o,
           Victim: this
-        }, s);
+        }, s, e.Attacker);
       } else {
         (r = new ExtraEffectBaseTypes_1.RequirementPayload()).PartialAssign(t);
         t = e.Attacker.CheckGetComponent(19);
@@ -269,13 +270,6 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
         }
       }
     }
-  }
-  ProcessDamageExpression(e, t) {
-    CombatLog_1.CombatLog.Info("Damage", this.Entity, "执行伤害表达式", ["结算id", t.Id], ["formula", t.Condition]);
-    ExpressionTreeController_1.ExpressionTreeController.GetDamageExpression(t.Id, t.Condition, t.ConstVariables).Evaluate(e, {
-      Victim: this.Entity,
-      Attacker: e.DamageParam.Attacker
-    });
   }
   ProcessDamage(e, t) {
     if (this.TagComponent.HasTag(1918148596) && t.DamageData.ImmuneType === 0) {
@@ -399,8 +393,8 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
   }
   INc(a, o, e, r) {
     var t = a.Attacker;
-    var i = a.DamageData;
-    var i = Protocol_1.Aki.Protocol.U3n.create({
+    const i = a.DamageData;
+    const s = Protocol_1.Aki.Protocol.U3n.create({
       Fjn: MathUtils_1.MathUtils.NumberToLong(i.Id),
       Wjn: a.SkillLevel,
       kjn: MathUtils_1.MathUtils.NumberToLong(t.Entity.GetComponent(0).GetCreatureDataId()),
@@ -420,19 +414,34 @@ let BaseDamageComponent = BaseDamageComponent_1 = class BaseDamageComponent exte
       },
       lHn: ModelManager_1.ModelManager.PlayerInfoModel.AdvanceRandomSeed(0)
     });
-    CombatMessage_1.CombatNet.Call(24498, this.Entity, i, e => {
+    const n = ModelManager_1.ModelManager.GameModeModel.IsMulti && i.Id === 1505600001;
+    if (n) {
+      CombatLog_1.CombatLog.Info("Damage", this.Entity, "发起结算请求", ["攻击方", MathUtils_1.MathUtils.LongToBigInt(s.kjn)], ["受击方", MathUtils_1.MathUtils.LongToBigInt(s.TVn)], ["结算id", i.Id], ["BulletId", o.BulletId ?? 0n]);
+    }
+    CombatMessage_1.CombatNet.Call(24498, this.Entity, s, e => {
       var t;
-      if (e && e.lAs !== Protocol_1.Aki.Protocol.G4s.Proto_EDamageImmune_Invincible && (t = {
-        ...a,
-        Damage: -e.nAs,
-        ChangeLife: e.jQ_,
-        ShieldCoverDamage: e.hAs,
-        IsCritical: e.sAs,
-        IsTargetKilled: e.aAs,
-        IsImmune: e.lAs === Protocol_1.Aki.Protocol.G4s.Proto_EDamageImmune_BuffEffectElement,
-        Element: e.wHn
-      }, o.IsCritical = t.IsCritical, o.IsImmune = t.IsImmune, o.IsTargetKilled = t.IsTargetKilled, e.Q4n === 0)) {
-        this.sj1(o, a, t, r);
+      if (e && e.lAs !== Protocol_1.Aki.Protocol.G4s.Proto_EDamageImmune_Invincible) {
+        t = {
+          ...a,
+          Damage: -e.nAs,
+          ChangeLife: e.jQ_,
+          ShieldCoverDamage: e.hAs,
+          IsCritical: e.sAs,
+          IsTargetKilled: e.aAs,
+          IsImmune: e.lAs === Protocol_1.Aki.Protocol.G4s.Proto_EDamageImmune_BuffEffectElement,
+          Element: e.wHn
+        };
+        o.IsCritical = t.IsCritical;
+        o.IsImmune = t.IsImmune;
+        o.IsTargetKilled = t.IsTargetKilled;
+        if (n) {
+          CombatLog_1.CombatLog.Info("Damage", this.Entity, "收到结算回包", ["攻击方", MathUtils_1.MathUtils.LongToBigInt(s.kjn)], ["受击方", MathUtils_1.MathUtils.LongToBigInt(s.TVn)], ["结算id", i.Id], ["伤害值", t.Damage], ["errorCode", e.Q4n]);
+        }
+        if (e.Q4n === 0) {
+          this.sj1(o, a, t, r);
+        }
+      } else if (n) {
+        CombatLog_1.CombatLog.Info("Damage", this.Entity, "Proto_EDamageImmune_Invincible", ["攻击方", MathUtils_1.MathUtils.LongToBigInt(s.kjn)], ["受击方", MathUtils_1.MathUtils.LongToBigInt(s.TVn)], ["结算id", i.Id]);
       }
     }, e, undefined);
   }

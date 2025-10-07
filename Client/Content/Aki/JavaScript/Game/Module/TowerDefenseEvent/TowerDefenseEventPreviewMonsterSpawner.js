@@ -117,7 +117,7 @@ class TowerDefenseEventSplineMonsterSpawner {
 }
 class TowerDefenseEventPreviewMonsterSpawner {
   constructor() {
-    this.MYu = 0;
+    this.MYu = 1;
     this.Zhd = new Map();
     this.ked = [];
     this.Oed = new Map();
@@ -182,7 +182,8 @@ class TowerDefenseEventPreviewMonsterSpawner {
     }
   }
   GetSpawnUid() {
-    return ++this.MYu;
+    this.MYu += 2;
+    return this.MYu;
   }
   OnTick(e) {
     if (this.Zhd.size !== 0) {
@@ -204,7 +205,7 @@ class TowerDefenseEventPreviewMonsterSpawner {
     }
   }
   Reset() {
-    this.MYu = 0;
+    this.MYu = 1;
     this.Fed();
     this.tld();
   }

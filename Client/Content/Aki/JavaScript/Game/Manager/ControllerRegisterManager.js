@@ -147,7 +147,6 @@ const MapExploreToolController_1 = require("../Module/MapExploreTool/MapExploreT
 const MapRogueController_1 = require("../Module/MapRogue/MapRogueController");
 const MarqueeController_1 = require("../Module/Marquee/MarqueeController");
 const MechanismTimelineController_1 = require("../Module/MechanismTimeline/MechanismTimelineController");
-const BloodBathedController_1 = require("../Module/Menu/BloodBathedController");
 const FilterSettingController_1 = require("../Module/Menu/FilterSettingController");
 const MenuController_1 = require("../Module/Menu/MenuController");
 const EyeProtectController_1 = require("../Module/Menu/SubViews/EyeProtect/EyeProtectController");
@@ -223,6 +222,7 @@ const TreasureHuntController_1 = require("../Module/TreasureHunt/TreasureHuntCon
 const TutorialController_1 = require("../Module/Tutorial/TutorialController");
 const UiCameraAnimationController_1 = require("../Module/UiCameraAnimation/UiCameraAnimationController");
 const HomeBtnController_1 = require("../Module/UiComponent/UiHomeButton/HomeBtnController");
+const UiModelEffectController_1 = require("../Module/UiModel/Controller/UiModelEffectController");
 const UiNavigationNewController_1 = require("../Module/UiNavigation/New/UiNavigationNewController");
 const VideoBpController_1 = require("../Module/Video/VideoBpController");
 const WaitEntityTaskController_1 = require("../Module/WaitEntityTask/WaitEntityTaskController");
@@ -843,8 +843,8 @@ class ControllerRegisterManager {
     this.qp(CalabashSkinController_1.CalabashSkinController);
     ControllerHolder_1.ControllerHolder.QuestTreeController = QuestTreeController_1.QuestTreeController;
     this.qp(QuestTreeController_1.QuestTreeController);
-    ControllerHolder_1.ControllerHolder.BloodBathedController = BloodBathedController_1.BloodBathedController;
-    this.qp(BloodBathedController_1.BloodBathedController);
+    ControllerHolder_1.ControllerHolder.UiModelEffectController = UiModelEffectController_1.UiModelEffectController;
+    this.qp(UiModelEffectController_1.UiModelEffectController);
     ControllerHolder_1.ControllerHolder.ParallelPackageController = ParallelPackageController_1.ParallelPackageController;
     this.qp(ParallelPackageController_1.ParallelPackageController);
     ControllerHolder_1.ControllerHolder.RoleDevController = RoleDevController_1.RoleDevController;

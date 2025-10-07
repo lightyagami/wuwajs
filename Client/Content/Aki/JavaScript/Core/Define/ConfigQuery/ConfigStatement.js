@@ -1642,6 +1642,7 @@ const WeaponBreachByBreachId_1 = require("./WeaponBreachByBreachId");
 const WeaponBreachByBreachIdAndLevel_1 = require("./WeaponBreachByBreachIdAndLevel");
 const WeaponConfByIsShow_1 = require("./WeaponConfByIsShow");
 const WeaponConfByItemId_1 = require("./WeaponConfByItemId");
+const WeaponExpItemAll_1 = require("./WeaponExpItemAll");
 const WeaponExpItemById_1 = require("./WeaponExpItemById");
 const WeaponHandBookAll_1 = require("./WeaponHandBookAll");
 const WeaponHandBookById_1 = require("./WeaponHandBookById");
@@ -3303,6 +3304,7 @@ class ConfigStatement {
     WeaponBreachByBreachIdAndLevel_1.configWeaponBreachByBreachIdAndLevel.Init();
     WeaponConfByIsShow_1.configWeaponConfByIsShow.Init();
     WeaponConfByItemId_1.configWeaponConfByItemId.Init();
+    WeaponExpItemAll_1.configWeaponExpItemAll.Init();
     WeaponExpItemById_1.configWeaponExpItemById.Init();
     WeaponHandBookAll_1.configWeaponHandBookAll.Init();
     WeaponHandBookById_1.configWeaponHandBookById.Init();

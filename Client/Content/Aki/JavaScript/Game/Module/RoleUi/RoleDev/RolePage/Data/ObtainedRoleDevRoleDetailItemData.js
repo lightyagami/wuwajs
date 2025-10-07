@@ -54,11 +54,12 @@ class ObtainedRoleDevRoleDetailItemData {
   }
   zNd(t, a, r) {
     let i = 0;
-    for (let e = a; e <= r; e++) {
+    var e = this.o3d(t).GetLevelData().GetExp();
+    for (let e = a + 1; e <= r; e++) {
       i += ModelManager_1.ModelManager.RoleModel.GetRoleLevelUpExp(t, e);
     }
     a = this.k$d(t);
-    return i += a;
+    return i = i + a - e;
   }
   k$d(e) {
     var t = this.o3d(e).GetLevelData().GetBreachLevel();
@@ -82,7 +83,7 @@ class ObtainedRoleDevRoleDetailItemData {
   }
   jNd(e, t) {
     t = RoleDevUtils_1.RoleDevUtils.GroupMaterialsByType(t);
-    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 1, 2)[0];
+    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 1)[0];
   }
   ICd(e, t) {
     var a = [];

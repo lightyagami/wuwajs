@@ -31,6 +31,7 @@ const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const RoleController_1 = require("../RoleController");
 const RoleDefine_1 = require("../RoleDefine");
 const AttrListScrollData_1 = require("../View/ViewData/AttrListScrollData");
+const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 const RoleExpItemGridComponent_1 = require("./RoleExpItemGridComponent");
 const RoleLevelUpSuccessController_1 = require("./RoleLevelUpSuccessController");
 class RoleLevelUpView extends UiViewBase_1.UiViewBase {
@@ -163,11 +164,19 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
       UiManager_1.UiManager.CloseView("RoleLevelUpView");
     };
     this.yNd = () => {
-      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", this.yil);
+      var e = new RoleViewViewModel_1.RoleViewViewModel(this.RoleInstance.GetRoleId(), false);
+      e.FadeInCurveId = this.yil.FadeInCurveId;
+      e.NeedHideOnViewPlayingCloseSequence = this.yil.NeedHideOnViewPlayingCloseSequence;
+      this.yil.NeedHideOnViewPlayingCloseSequence = false;
+      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", e);
     };
     this.nco = () => {
       UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(3);
-      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", this.yil);
+      var e = new RoleViewViewModel_1.RoleViewViewModel(this.RoleInstance.GetRoleId(), false);
+      e.FadeInCurveId = this.yil.FadeInCurveId;
+      e.NeedHideOnViewPlayingCloseSequence = this.yil.NeedHideOnViewPlayingCloseSequence;
+      this.yil.NeedHideOnViewPlayingCloseSequence = false;
+      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", e);
     };
     this.sco = () => {
       this.aco();
@@ -231,19 +240,19 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
       var o = this.RoleInstance.GetLevelData().GetBreachLevel();
       var s = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(this.RoleInstance.GetRoleId(), t, r, o);
       e.SetCurrentValue(s);
-      let a = false;
-      let n = 0;
+      let n = false;
+      let a = 0;
       if (r < i) {
         if ((r = ModelManager_1.ModelManager.RoleModel.GetAddAttrLevelUp(this.RoleInstance.GetRoleId(), r, o, i, o, t)) > 0) {
-          n = s + r;
-          a = true;
+          a = s + r;
+          n = true;
         }
       } else {
-        a = false;
+        n = false;
       }
-      e.SetNextItemActive(a);
-      if (a) {
-        e.SetNextValue(n);
+      e.SetNextItemActive(n);
+      if (n) {
+        e.SetNextValue(a);
       }
     };
   }
@@ -281,8 +290,17 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Error("Role", 88, "进入角色升级界面未传参");
     }
   }
-  OnBeforeShow() {
-    this.yil.ShowActor();
+  async OnPlayingStartSequenceAsync() {
+    if (this.yil?.NeedShowOnViewPlayingStartSequence) {
+      this.yil.ShowActor();
+    }
+    return Promise.resolve();
+  }
+  async OnPlayingCloseSequenceAsync() {
+    if (this.yil?.NeedHideOnViewPlayingCloseSequence) {
+      this.yil.HideActor();
+    }
+    return Promise.resolve();
   }
   OnHandleLoadScene() {
     this.yil.HandleLoadScene(() => {
@@ -329,14 +347,14 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
     var r = [];
     var o = this.RoleInstance.GetLevelData();
     var s = this.RoleInstance.GetRoleId();
-    var a = o.GetBreachLevel();
+    var n = o.GetBreachLevel();
     for (const _ of i) {
-      var n = _.GetAttributeId();
-      var l = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(s, n, e, a);
-      var h = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(s, n, t, a);
+      var a = _.GetAttributeId();
+      var l = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(s, a, e, n);
+      var h = ModelManager_1.ModelManager.RoleModel.GetAttributeByLevel(s, a, t, n);
       if (l !== h) {
-        l = new AttrListScrollData_1.AttrListScrollData(n, l, h, 0, false, 0);
-        (h = RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.ConvertsAttrListScrollDataToAttributeInfo(l)).Name = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(n).AnotherName;
+        l = new AttrListScrollData_1.AttrListScrollData(a, l, h, 0, false, 0);
+        (h = RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.ConvertsAttrListScrollDataToAttributeInfo(l)).Name = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(a).AnotherName;
         r.push(h);
       }
     }

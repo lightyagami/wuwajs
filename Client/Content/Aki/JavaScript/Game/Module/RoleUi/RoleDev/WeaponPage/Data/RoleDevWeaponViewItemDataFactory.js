@@ -9,24 +9,24 @@ const ForecastRoleDevWeaponViewItemData_1 = require("./ForecastRoleDevWeaponView
 const NotObtainedRoleDevWeaponViewItemData_1 = require("./NotObtainedRoleDevWeaponViewItemData");
 const ObtainedRoleDevWeaponViewItemData_1 = require("./ObtainedRoleDevWeaponViewItemData");
 class RoleDevWeaponViewItemDataFactory {
-  static Create(e) {
-    var a = RoleDevUtils_1.RoleDevUtils.GetRoleDevDataTypeByRoleId(e);
-    let t = undefined;
-    switch (a) {
+  static Create(e, a) {
+    var t = RoleDevUtils_1.RoleDevUtils.GetRoleDevDataTypeByRoleId(e);
+    let o = undefined;
+    switch (t) {
       case 0:
-        t = new ObtainedRoleDevWeaponViewItemData_1.ObtainedRoleDevWeaponViewItemData();
+        o = new ObtainedRoleDevWeaponViewItemData_1.ObtainedRoleDevWeaponViewItemData();
         break;
       case 1:
-        t = new NotObtainedRoleDevWeaponViewItemData_1.NotObtainedRoleDevWeaponViewItemData();
+        o = new NotObtainedRoleDevWeaponViewItemData_1.NotObtainedRoleDevWeaponViewItemData();
         break;
       case 2:
-        t = new ForecastRoleDevWeaponViewItemData_1.ForecastRoleDevWeaponViewItemData();
+        o = new ForecastRoleDevWeaponViewItemData_1.ForecastRoleDevWeaponViewItemData();
         break;
       default:
-        t = new NotObtainedRoleDevWeaponViewItemData_1.NotObtainedRoleDevWeaponViewItemData();
+        o = new NotObtainedRoleDevWeaponViewItemData_1.NotObtainedRoleDevWeaponViewItemData();
     }
-    t.InitByRoleId(e, a);
-    return t;
+    o.InitByRoleId(e, t, a);
+    return o;
   }
 }
 exports.RoleDevWeaponViewItemDataFactory = RoleDevWeaponViewItemDataFactory;

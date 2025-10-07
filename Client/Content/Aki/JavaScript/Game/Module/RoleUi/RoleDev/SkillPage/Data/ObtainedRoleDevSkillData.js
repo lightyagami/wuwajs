@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ObtainedRoleDevSkillData = undefined;
+const Log_1 = require("../../../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const RoleDevUtils_1 = require("../../RoleDevUtils");
@@ -12,9 +13,10 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   constructor() {
     super(...arguments);
     this.H1d = [];
-    this.G1d = [];
+    this.nXd = [];
+    this.sXd = [];
     this.C1d = [];
-    this.N1d = [];
+    this.aXd = [];
     this.j1d = [];
     this.B9d = undefined;
   }
@@ -26,74 +28,95 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     var e = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(t);
     var r = e.NormalSkillLevel || [];
     var i = e.PrefectSkillLevel || [];
-    var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t);
-    var e = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeListByGroupId(e.SkillTreeGroupId);
-    var a = this.Qhd(e ?? []);
-    var s = [];
-    var l = [];
-    for (const d of a) {
-      var n = ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(t, d.Id);
-      var o = ConfigManager_1.ConfigManager.RoleSkillConfig.GetRoleSkillMaxLevelBySkillNodeId(d.Id);
-      s.push(n);
-      l.push(o);
+    var a = ConfigManager_1.ConfigManager.RoleDevConfig.GetCanLevelUpSkillNodeIndexList();
+    if (a.length !== r.length || a.length !== i.length) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Role", 43, "LevelUpSkillNodeIndexList长度与NormalSkillLevel或PrefectSkillLevel长度不一致");
+      }
+    } else {
+      var l = [];
+      var s = [];
+      var o = [];
+      var n = [];
+      var h = [];
+      var v = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t);
+      for (let e = 0; e < a.length; e++) {
+        var g = a[e];
+        var g = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(v.SkillTreeGroupId, g).Id;
+        h.push(g);
+        n.push(g);
+        l.push(ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(t, g));
+        s.push(r[e]);
+        o.push(i[e]);
+      }
+      e = e?.SkillTreeConfigArray;
+      if (e) {
+        for (const c of e) {
+          var d = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNodeByGroupIdAndIndex(v.SkillTreeGroupId, c).Id;
+          n.push(d);
+          l.push(ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(t, d));
+          s.push(1);
+          o.push(1);
+        }
+      }
+      var u = [];
+      for (let e = 0; e < h.length; e++) {
+        var _ = {
+          RoleId: t,
+          SkillNodeId: h[e],
+          IconId: h[e],
+          CurrentLevel: l[e],
+          NormalTargetLevel: s[e],
+          PerfectTargetLevel: o[e],
+          SkillType: e + 1,
+          NodeIndex: e
+        };
+        u.push(_);
+      }
+      var e = this.$1d(n, l, s, t);
+      var M = this.$1d(n, l, o, t);
+      this.H1d = u;
+      this.sXd = s;
+      this.aXd = o;
+      this.C1d = e;
+      this.j1d = M;
+      this.nXd = n;
+      if (!this.B9d?.CheckRoleIdIsCreated(t)) {
+        this.B9d?.SetRoleSkillPlanState(t, this.IsNormalPlanFinished);
+      }
     }
-    var h = [];
-    for (let e = 0; e < a.length; e++) {
-      var v = a[e];
-      var v = {
-        RoleId: t,
-        SkillNodeId: v.Id,
-        IconId: v.Id,
-        CurrentLevel: s[e],
-        MaxLevel: l[e],
-        NormalTargetLevel: r[e],
-        PerfectTargetLevel: i[e],
-        SkillType: e + 1,
-        IsReached: s[e] >= (this.GetIsPerfectPlan() ? i : r)[e],
-        NodeIndex: e
-      };
-      h.push(v);
-    }
-    var e = this.$1d(a, s, r, t);
-    var u = this.$1d(a, s, i, t);
-    this.H1d = h;
-    this.G1d = r;
-    this.N1d = i;
-    this.C1d = e;
-    this.j1d = u;
-    this.HPd();
   }
   GetIsRoleOwned() {
     return true;
   }
   GetIsPerfectPlan() {
-    return this.B9d?.GetCurrentRoleSkillPlanState(this.RoleId) ?? false;
+    return this.B9d?.GetRoleSkillPlanState(this.RoleId) ?? false;
   }
   GetIsNormalPlanFinished() {
-    return this.kCd(this.H1d.map(e => e.CurrentLevel), this.G1d);
+    return this.kCd(this.nXd.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.sXd);
   }
   GetIsPerfectPlanFinished() {
-    return this.kCd(this.H1d.map(e => e.CurrentLevel), this.N1d);
+    return this.kCd(this.nXd.map(e => ModelManager_1.ModelManager.RoleModel.GetRoleSkillTreeNodeLevel(this.RoleId, e)), this.aXd);
   }
   GetSkillSlots() {
     return this.H1d;
   }
   GetSkillGoalUpgradeLevel() {
-    return this.G1d;
+    return this.sXd;
   }
-  GetDetailItems() {
+  GetNormalDetailItems() {
     return this.C1d;
   }
-  GetIsAllMaterialEnough() {
+  GetIsNormalAllMaterialEnough() {
     return RoleDevUtils_1.RoleDevUtils.CheckAllItemsUp(this.C1d);
   }
   GetIsUnlockedPerfect() {
     var e = ModelManager_1.ModelManager.FunctionModel?.GetPlayerLevel();
     var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.RoleId).MaxLevel;
-    return this.N1d.length > 0 && e !== undefined && t !== undefined && t <= e;
+    return this.aXd.length > 0 && e !== undefined && t !== undefined && t <= e;
   }
   GetPerfectGoalUpgradeLevel() {
-    return this.N1d;
+    return this.aXd;
   }
   GetPerfectDetailItems() {
     return this.j1d;
@@ -103,7 +126,7 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   }
   GetIsBreakthroughLevelLow() {
     const r = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleId).GetLevelData().GetBreachLevel();
-    return this.H1d.some((e, t) => e.CurrentLevel >= this.G1d[t] && r < 6);
+    return this.H1d.some((e, t) => e.CurrentLevel >= this.sXd[t] && r < 6);
   }
   GetIsHideMaterialList() {
     return false;
@@ -112,49 +135,23 @@ class ObtainedRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     return false;
   }
   GetShouldForcePerfectPlan() {
-    if (this.H1d.length === 0) {
-      return false;
-    }
-    for (const e of this.H1d) {
-      if (e.CurrentLevel <= e.NormalTargetLevel) {
-        return false;
-      }
-    }
-    return true;
+    return false;
   }
   SwitchPlan() {
     var e = this.GetIsPerfectPlan();
-    this.B9d?.SetCurrentRoleSkillPlanState(this.RoleId, !e);
+    this.B9d?.SetRoleSkillPlanState(this.RoleId, !e);
     this.OCd();
   }
   OCd() {
     for (const r of this.H1d) {
-      var e = this.G1d[r.NodeIndex];
-      var t = this.N1d[r.NodeIndex];
+      var e = this.sXd[r.NodeIndex];
+      var t = this.aXd[r.NodeIndex];
       r.NormalTargetLevel = e;
       r.PerfectTargetLevel = t;
-      r.IsReached = r.CurrentLevel >= (this.GetIsPerfectPlan() ? t : e);
     }
   }
-  HPd() {}
   kCd(e, r) {
     return r.length !== 0 && e.length === r.length && e.every((e, t) => e >= r[t]);
-  }
-  Qhd(e) {
-    var t = [];
-    var r = e.filter(e => e.NodeType === 2).sort((e, t) => e.Coordinate - t.Coordinate);
-    for (let e = 0; e < Math.min(4, r.length); e++) {
-      t.push(r[e]);
-    }
-    var i = e.find(e => e.NodeType === 1);
-    if (i) {
-      t.push(i);
-    }
-    var i = e.filter(e => e.NodeType === 3);
-    t.push(...i);
-    var i = e.filter(e => e.NodeType === 4);
-    t.push(...i);
-    return t;
   }
   $1d(e, t, r, i) {
     return RoleDevUtils_1.RoleDevUtils.CreateSkillDetailItemsData(e, t, r, i);

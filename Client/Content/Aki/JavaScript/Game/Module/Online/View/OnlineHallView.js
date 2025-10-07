@@ -156,7 +156,11 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
             LguiUtil_1.LguiUtil.SetLocalTextNew(t, "OnlineHallViewRefreshBtnCd", this.WMd.toString());
           }
         }, TimeUtil_1.TimeUtil.InverseMillisecond);
-        OnlineController_1.OnlineController.RefreshWorldList();
+        OnlineController_1.OnlineController.RefreshWorldList().then(e => {
+          if (!e) {
+            this.bNi?.GetUiAnimController()?.Play("Start");
+          }
+        });
       }
     };
     this.sOi = () => {

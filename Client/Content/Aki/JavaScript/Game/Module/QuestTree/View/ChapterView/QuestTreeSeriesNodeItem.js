@@ -33,9 +33,9 @@ class QuestTreeSeriesNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeIte
       this._Pd = !this._Pd;
       this.EVd(this._Pd);
     };
-    this.lPd = e => {
+    this.lPd = (e, t) => {
       if (e === this.Pe || e?.BelongedNode === this.Pe) {
-        this.LocateSelf();
+        this.LocateSelf(t);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.RootItem, true);
         if (e.IsTracking) {
           this.u4d.PlayLevelSequenceByName("Jumpy");

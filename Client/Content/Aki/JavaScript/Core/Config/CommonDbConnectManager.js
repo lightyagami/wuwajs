@@ -11,6 +11,7 @@ const Log_1 = require("../Common/Log");
 const Stats_1 = require("../Common/Stats");
 const Lru_1 = require("../Container/Lru");
 const CommonDbData_1 = require("./CommonDbData");
+const ConfigStatementLibSync_1 = require("./ConfigStatementLibSync");
 const ConnectDbObject_1 = require("./ConnectDbObject");
 const dataRef = (0, puerts_1.$ref)(undefined);
 const DB_CONNECT_LRU_SIZE = 200;
@@ -333,7 +334,7 @@ class CommonDbConnectManager {
     this.cNd.Clear();
     this.F9.clear();
     this.lNd.clear();
-    UE.KuroPrepareStatementLib.CloseAllConnection();
+    ConfigStatementLibSync_1.ConfigStatementLibSync.CloseAllConnection();
   }
   static LogConnection() {
     var n = this.cNd.Size;

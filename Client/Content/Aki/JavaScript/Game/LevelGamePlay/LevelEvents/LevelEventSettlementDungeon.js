@@ -25,66 +25,62 @@ class LevelEventSettlementDungeon extends LevelGeneralBase_1.LevelEventBase {
     } else {
       var o;
       var n;
-      var a;
       var l;
+      var a;
       var t;
       var i;
       var g;
-      var _;
-      var M = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;
-      const d = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(M);
-      if (d) {
+      var _ = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;
+      const M = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(_);
+      if (M) {
         if (ModelManager_1.ModelManager.InstanceDungeonModel.InstanceRewardHaveTake) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("HaveReceiveRewrad");
           this.FinishExecute(true);
         } else if (ControllerHolder_1.ControllerHolder.ConfirmBoxController.CheckIsConfirmBoxOpen()) {
           this.FinishExecute(true);
-        } else if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.CheckInstanceCanReward(M) && ModelManager_1.ModelManager.ExchangeRewardModel.GetInstanceDungeonIfCanExchange(M)) {
-          o = !!ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(M);
-          a = ModelManager_1.ModelManager.InstanceDungeonModel.CurrentInstanceIsFinish;
-          if (o && !a) {
+        } else if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.CheckInstanceCanReward(_) && ModelManager_1.ModelManager.ExchangeRewardModel.GetInstanceDungeonIfCanExchange(_)) {
+          t = !!ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(_);
+          g = ModelManager_1.ModelManager.InstanceDungeonModel.CurrentInstanceIsFinish;
+          if (t && !g) {
             this.FinishExecute(true);
           } else {
-            o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(M);
-            a = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivity(o.CustomTypes);
-            [M, i, g, t, l] = ModelManager_1.ModelManager.ActivityRegressModel.GetDungeonDoubleDropTuple(M);
-            _ = a && a.LeftUpCount > 0;
-            if (!M && !_ && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeInstType")?.includes(o.InstSubType)) {
-              n = {
-                SinglePowerCost: d,
+            t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(_);
+            g = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivity(t.CustomTypes);
+            [_, o, n, l, a] = ModelManager_1.ModelManager.ActivityRegressModel.GetDungeonDoubleDropTuple(_);
+            i = g && g.LeftUpCount > 0;
+            if (!_ && !i && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeInstType")?.includes(t.InstSubType)) {
+              t = {
+                SinglePowerCost: M,
                 RewardCallBack: e => {
                   ControllerHolder_1.ControllerHolder.InstanceDungeonController.GetInstExchangeRewardRequest(e);
                 }
               };
-              UiManager_1.UiManager.OpenView("PowerMagnificationRewardPopView", n);
+              UiManager_1.UiManager.OpenView("PowerMagnificationRewardPopView", t);
               this.FinishExecute(true);
             } else {
-              (n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(64)).ShowPowerItem = true;
-              n.CanExecuteCloseFunc = e => e !== 2 || ModelManager_1.ModelManager.PowerModel.IsPowerEnough(d);
-              n.SetTextArgs(d.toString());
-              n.FunctionMap.set(2, () => {
+              (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(64)).ShowPowerItem = true;
+              t.CanExecuteCloseFunc = e => e !== 2 || ModelManager_1.ModelManager.PowerModel.IsPowerEnough(M);
+              t.SetTextArgs(M.toString());
+              t.FunctionMap.set(2, () => {
                 var e;
-                if (ModelManager_1.ModelManager.PowerModel.IsPowerEnough(d)) {
+                if (ModelManager_1.ModelManager.PowerModel.IsPowerEnough(M)) {
                   ControllerHolder_1.ControllerHolder.InstanceDungeonController.GetInstExchangeRewardRequest(1);
                 } else {
                   e = ConfigManager_1.ConfigManager.TextConfig.GetTextById("ReceiveLevelPlayPowerNotEnough");
                   ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByText(e);
-                  ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView(2, ModelManager_1.ModelManager.PowerModel.GetCurrentNeedPower(d));
+                  ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView(2, ModelManager_1.ModelManager.PowerModel.GetCurrentNeedPower(M));
                 }
               });
-              if (_) {
-                n.Tip = a.GetFullTip();
+              if (i) {
+                t.Tip = g.GetFullTip();
               }
-              if (M) {
-                _ = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(l);
-                a = StringUtils_1.StringUtils.FormatStaticBuilder(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t), i, g);
-                n.Tip = "" + _ + a;
+              if (_) {
+                i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(a);
+                g = StringUtils_1.StringUtils.FormatStaticBuilder(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(l), o, n);
+                t.Tip = "" + i + g;
               }
               this.FinishExecute(true);
-              if ((M = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(o.RewardId)?.SharedId) && (l = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(M), t = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(M), (_ = (g = (i = l.MaxCount) - t) >= 0 ? g : 0) > 0)) {
-                n.SetTableTextArgNew("Text_ReceivedCountWindowTips_Text", _, i);
-              }
-              ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
+              ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
             }
           }
         } else {

@@ -70,12 +70,12 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     };
     this.J1c = () => {
       if (this.q1c) {
-        if (this.sBc !== 2 && this.q1c) {
-          if (this.H_1()) {
+        if (this.H_1()) {
+          if (this.sBc !== 2) {
             this.z3e(2);
+          } else if (this.$_1()) {
+            ControllerHolder_1.ControllerHolder.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.IRu.PropItemId);
           }
-        } else if (this.sBc === 2 && this.$_1()) {
-          ControllerHolder_1.ControllerHolder.CalabashController.RequestPhantomPolishRequest(this.q1c.GetUniqueId(), this.IRu.PropItemId);
         }
       } else {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineLackTip");
@@ -123,18 +123,20 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
         i.ShowTips = t.ResultShowTips;
       }
       UiManager_1.UiManager.OpenView("VisionRefineResultView", i, (i, t) => {
-        this.k1c?.ClearSelection();
-        this.z3e(0);
-        this.GetItem(3).SetAlpha(1);
         if (i) {
           UiManager_1.UiManager.GetView(t).OnCloseCallback = this.hBc;
+          if (!this.ExtraParams || !this.ExtraParams.IsSingleMode) {
+            this.k1c?.ClearSelection();
+            this.z3e(0);
+            this.GetItem(3)?.SetAlpha(1);
+          }
+          this.IRu = undefined;
         }
       });
     };
     this.hBc = i => {
-      if (i) {
+      if (!!i && (!this.ExtraParams || !this.ExtraParams.IsSingleMode)) {
         this.z3e(1);
-        this.iuc();
       }
     };
   }
@@ -172,9 +174,19 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnVisionRefineResult, this.huc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemFuncValueChange, this.I3a);
   }
-  OnBeforeShow() {
+  OnShowUiTabViewFromToggle() {
     var i;
     var t;
+    if (this.ExtraParams) {
+      if ((i = this.ExtraParams).UniqueId) {
+        t = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(i.UniqueId);
+        this.k1c?.SetSelection(t);
+      }
+      this.z3e(i.ViewState);
+    }
+  }
+  OnBeforeShow() {
+    var i;
     this.j1c = false;
     if (this.q1c && this.sBc === 0) {
       i = this.q1c.GetUniqueId();
@@ -183,14 +195,8 @@ class VisionRefineTabView extends UiTabViewBase_1.UiTabViewBase {
         this.k1c.ShowTipsComponent(undefined);
       }
     }
-    if (this.ExtraParams) {
-      if ((i = this.ExtraParams).UniqueId) {
-        t = ModelManager_1.ModelManager.InventoryModel.GetPhantomItemData(i.UniqueId);
-        this.k1c?.SetSelection(t);
-      }
-      this.z3e(i.ViewState);
-    }
     this.Y1c();
+    this.iuc();
   }
   OnAfterShow() {
     ModelManager_1.ModelManager.PhantomBattleModel.RecordVisionRefineRedDot(false);

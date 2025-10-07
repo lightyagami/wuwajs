@@ -85,9 +85,9 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
     if (ModelManager_1.ModelManager.TowerModel.NeedOpenConfirmView) {
       ModelManager_1.ModelManager.TowerModel.DefaultFloor = ModelManager_1.ModelManager.TowerModel.NeedOpenConfirmViewTowerId;
     } else {
-      for (const r of t) {
-        if (!ModelManager_1.ModelManager.TowerModel.GetHaveChallengeFloorAndFormation(r)) {
-          ModelManager_1.ModelManager.TowerModel.DefaultFloor = r;
+      for (const i of t) {
+        if (!ModelManager_1.ModelManager.TowerModel.GetHaveChallengeFloorAndFormation(i)) {
+          ModelManager_1.ModelManager.TowerModel.DefaultFloor = i;
           break;
         }
       }
@@ -111,22 +111,30 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
       }
     });
     this.Mli = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(13), this.NDo);
-    let i = undefined;
+    let r = undefined;
     if (e === TowerData_1.LOW_RISK_DIFFICULTY) {
-      i = "Text_LowRisk_Text";
+      r = "Text_LowRisk_Text";
     } else if (e === TowerData_1.HIGH_RISK_DIFFICULTY) {
-      i = "Text_HighRisk_Text";
+      r = "Text_HighRisk_Text";
     } else if (e === TowerData_1.VARIATION_RISK_DIFFICULTY) {
-      i = "Text_Variation_Text";
+      r = "Text_Variation_Text";
     } else if (e === TowerData_1.OVERLOCK_RISK_DIFFICULTY) {
-      i = "Text_OverLock_Text";
+      r = "Text_OverLock_Text";
     }
     e = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerAreaName(t[0]);
-    this.gLt.RefreshText(i ?? "", e);
+    this.gLt.RefreshText(r ?? "", e);
     this.Og(ModelManager_1.ModelManager.TowerModel.DefaultFloor, false);
     if (ModelManager_1.ModelManager.TowerModel.NeedOpenConfirmView) {
       UiManager_1.UiManager.OpenView("TowerApplyFloorDataView");
     }
+    this.ijd();
+  }
+  ijd() {
+    this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
+      if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+        await TowerController_1.TowerController.LeaveTower();
+      }
+    });
   }
   OnBeforeDestroy() {
     this.bDo = undefined;
@@ -141,29 +149,29 @@ class TowerFloorView extends UiViewBase_1.UiViewBase {
   Og(e, t) {
     this.TDo = e;
     ModelManager_1.ModelManager.TowerModel.CurrentSelectFloor = e;
-    var i = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(e);
-    this.UDo.RefreshByData(i.ShowBuffs);
-    this.H1i.RefreshByData(i.ShowMonsters, () => {
+    var r = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTowerInfo(e);
+    this.UDo.RefreshByData(r.ShowBuffs);
+    this.H1i.RefreshByData(r.ShowMonsters, () => {
       this.GetItem(14).SetAnchorOffsetY(0);
     });
-    if (i.RecommendElement?.length > 0) {
+    if (r.RecommendElement?.length > 0) {
       this.GetItem(12)?.SetUIActive(true);
-      this.Mli.RefreshByData(i.RecommendElement);
+      this.Mli.RefreshByData(r.RecommendElement);
     } else {
       this.GetItem(12)?.SetUIActive(false);
     }
-    var r = [];
+    var i = [];
     var o = ModelManager_1.ModelManager.TowerModel.GetFloorStarsIndex(e);
     for (let e = 0; e < TowerModel_1.FLOOR_STAR; e++) {
-      var s = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTargetConfig(i.TargetConfig[e]);
-      var s = [!!o && !!o.includes(e), s];
-      r.push(s);
+      var a = ConfigManager_1.ConfigManager.TowerClimbConfig.GetTargetConfig(r.TargetConfig[e]);
+      var a = [!!o && !!o.includes(e), a];
+      i.push(a);
     }
-    this.ADo.RefreshByData(r);
-    this.GetText(5).SetText("" + i.Cost);
+    this.ADo.RefreshByData(i);
+    this.GetText(5).SetText("" + r.Cost);
     this.GetItem(9).SetUIActive(!t);
     this.GetItem(10).SetUIActive(t);
-    this.SetTextureByPath(i.BgPath, this.GetTexture(8));
+    this.SetTextureByPath(r.BgPath, this.GetTexture(8));
     e = ModelManager_1.ModelManager.TowerModel.GetFloorData(this.TDo);
     if (e && e.Formation.length !== 0) {
       this.GetButton(6).RootUIComp.SetUIActive(true);

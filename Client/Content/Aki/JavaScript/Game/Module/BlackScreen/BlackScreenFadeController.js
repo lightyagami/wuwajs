@@ -135,7 +135,7 @@ class BlackScreenFadeController extends UiControllerBase_1.UiControllerBase {
 exports.BlackScreenFadeController = BlackScreenFadeController;
 (_a = BlackScreenFadeController).r0t = undefined;
 BlackScreenFadeController.NeedInputDis = false;
-BlackScreenFadeController.wtd = 21;
+BlackScreenFadeController.wtd = 22;
 BlackScreenFadeController.l0t = new Set(["GuideTutorialView", "GuideTutorialPopView"]);
 BlackScreenFadeController.pu1 = true;
 BlackScreenFadeController.n0t = () => {

@@ -24,7 +24,7 @@ class EyeProtectItemData {
     return this.ModeName;
   }
   IsCustom() {
-    return this.ModeValue === 3;
+    return this.ModeValue === 2;
   }
   GetViewModel() {
     return this.ViewModel;
@@ -43,8 +43,8 @@ class EyeProtectSliderData {
     this.MetaData = undefined;
     this.ModeValue = undefined;
     this.OnChangeValue = t => {
-      if (this.GetModeValue() === 3 && this.ViewModel) {
-        this.ViewModel.IsDirty = true;
+      if (this.GetModeValue() === 2 && this.ViewModel) {
+        this.ViewModel.IsSliderDirty = true;
         this.ViewModel.OnSliderValueChange?.();
         this.CurValueInternal = t;
         switch (this.FunctionId) {
@@ -63,7 +63,7 @@ class EyeProtectSliderData {
       }
     };
     this.OnApplyValue = () => {
-      if (this.GetModeValue() === 3) {
+      if (this.GetModeValue() === 2) {
         GameSettingsManager_1.GameSettingsManager.HandleValueChange(this.FunctionId, this.CurValueInternal, 1);
       }
     };
@@ -71,14 +71,14 @@ class EyeProtectSliderData {
     this.MinValueInternal = e.SliderRange[0];
     this.MaxValueInternal = e.SliderRange[1];
     this.ViewModel = t;
-    if (i === 3) {
+    if (i === 2) {
       this.CurValueInternal = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e.FunctionId) ?? e.SliderDefault;
     } else {
       this.CurValueInternal = e.SliderDefault;
       let t = undefined;
-      if (i === 1) {
+      if (i === 0) {
         t = this.ViewModel?.ParamStrong;
-      } else if (i === 2) {
+      } else if (i === 1) {
         t = this.ViewModel?.ParamWeak;
       }
       if (t) {

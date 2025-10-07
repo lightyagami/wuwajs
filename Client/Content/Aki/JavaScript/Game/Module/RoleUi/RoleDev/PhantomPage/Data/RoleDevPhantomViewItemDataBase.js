@@ -8,10 +8,12 @@ class RoleDevPhantomViewItemDataBase {
   constructor() {
     this.RoleIdInternal = 0;
     this.RoleTypeInternal = 0;
+    this.RoleDevViewModelInternal = undefined;
   }
-  InitByRoleId(t, e) {
+  InitByRoleId(t, e, s) {
     this.RoleIdInternal = t;
     this.RoleTypeInternal = e;
+    this.RoleDevViewModelInternal = s;
     this.InitByRoleType(t);
   }
   get RoleId() {
@@ -32,8 +34,8 @@ class RoleDevPhantomViewItemDataBase {
   get IsNotObtained() {
     return this.RoleType === 1;
   }
-  RefreshByFetterGroupId(t) {
-    this.RefreshSuitDataListByFetterGroupId(t);
+  get RoleDevViewModel() {
+    return this.RoleDevViewModelInternal;
   }
 }
 exports.RoleDevPhantomViewItemDataBase = RoleDevPhantomViewItemDataBase;

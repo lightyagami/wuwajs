@@ -77,7 +77,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
   static get zio() {
     return this.Assistants.get(6);
   }
-  static Play(t, s, i, e = true, a = true, h = false, r = 1, n = false) {
+  static Play(t, s, i, e = true, r = true, h = false, a = 1, n = false) {
     if (this.jio.IsPlaying) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("重复播放剧情Sequence，当前一次只能播放一段");
       i(false);
@@ -89,9 +89,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       }
       this.jio.Config = t;
       this.jio.IsViewTargetControl = e;
-      this.jio.IsSubtitleUiUse = a;
+      this.jio.IsSubtitleUiUse = r;
       this.jio.IsWaitRenderData = h;
-      this.jio.PlayRate = r;
+      this.jio.PlayRate = a;
       this.jio.IsSeamless = n;
       this.jio.FinishCallback = i;
       this.un(t => {
@@ -163,10 +163,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var t = this.zio.LoadPromise();
       var i = this.Kio.BeginLoadMouthAssetPromise();
       const e = new CustomPromise_1.CustomPromise();
-      const a = new CustomPromise_1.CustomPromise();
+      const r = new CustomPromise_1.CustomPromise();
       this.Qio.Load(t => {
         if (t) {
-          this.zio.PreloadUi(a);
+          this.zio.PreloadUi(r);
           this.Kio.Load(t => {
             if (t) {
               this.$io.Load(t => {
@@ -194,10 +194,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
           });
         } else {
           e.SetResult(false);
-          a.SetResult(false);
+          r.SetResult(false);
         }
       });
-      Promise.all([t, i, e.Promise, a.Promise]).then(t => {
+      Promise.all([t, i, e.Promise, r.Promise]).then(t => {
         t = t[0] && t[1] && t[2] && t[3];
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "[剧情加载等待] Sequence加载-完成", ["result", t]);
@@ -299,9 +299,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var i = s.Num();
       var e = new UE.FName("SequencePostProcess");
       for (let t = 0; t < i; t++) {
-        var a = s.Get(t);
-        if (a.ActorHasTag(e)) {
-          a.Settings = new UE.PostProcessSettings();
+        var r = s.Get(t);
+        if (r.ActorHasTag(e)) {
+          r.Settings = new UE.PostProcessSettings();
         }
       }
       this.jio.State = 0;
@@ -366,9 +366,6 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     }
     this.Yio.CalcPreloadLocation();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.InvalidSeveralFrameOcculusion 5");
-    if (GlobalData_1.GlobalData.IsSm5) {
-      this.Wio.CmdShadowUpdate();
-    }
   }
   static ShowLogo(t) {
     this.$io.ShowLogo(t);

@@ -77,8 +77,9 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     };
     this.Pvd = () => {
       var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(1);
+      var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
-        MarkId: e.MarkId,
+        MarkId: r?.GetCycleConfig()?.MapMark ?? 0,
         MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
         Focal: true
       });
@@ -329,87 +330,101 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return this.Uvd;
   }
   UpdateActivityListItemData(e = true) {
-    this.Uvd.length = 0;
-    var r = this.kvd();
-    if (r) {
-      this.Uvd.push(r);
+    var r = [];
+    var t = this.kvd();
+    if (t) {
+      r.push(t);
     }
-    var r = this.Ovd();
-    if (r) {
-      this.Uvd.push(r);
+    var t = this.Ovd();
+    if (t) {
+      r.push(t);
     }
-    var r = this.qvd();
-    if (r) {
-      this.Uvd.push(r);
+    var t = this.qvd();
+    if (t) {
+      r.push(t);
     }
     if (e) {
-      this.Uvd.sort(this.Bvd);
+      r.sort(this.Bvd);
+    } else {
+      const a = new Map();
+      this.Uvd.forEach((e, r) => {
+        a.set(e.Id, r);
+      });
+      r.sort((e, r) => {
+        return (a.get(e.Id) ?? Number.MAX_SAFE_INTEGER) - (a.get(r.Id) ?? Number.MAX_SAFE_INTEGER);
+      });
     }
+    this.Uvd.length = 0;
+    this.Uvd.push(...r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapActivityListDataUpdate);
   }
   kvd() {
+    const r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
     var e;
-    var r;
-    var t = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
-    if (t && t.IsUnLock()) {
-      e = t.Score ?? 0;
-      r = t.GetCycleConfig()?.MaxScore ?? 0;
+    var t;
+    if (r && r.IsUnLock()) {
+      e = r.Score ?? 0;
+      t = r.GetCycleConfig()?.MaxScore ?? 0;
       return {
         Id: 1,
-        LeftTimeText: t.GetCycleCountDownData().CountDownText ?? "",
-        LeftTime: t.GetCycleRemainTime() ?? 0,
+        LeftTimeText: r.GetCycleCountDownData().CountDownText ?? "",
+        LeftTime: r.GetCycleRemainTime() ?? 0,
         CurrentNum: e,
-        TotalNum: r,
-        IsFinish: t.IsScoreRewardAllReceive(),
-        RedPoint: t.GetIfFirstOpen(),
-        OnClickCb: this.Pvd
+        TotalNum: t,
+        IsFinish: r.IsScoreRewardAllReceive(),
+        RedPoint: r.GetIfFirstOpen(),
+        OnClickCb: this.Pvd,
+        OnLeftTimeRefreshCb: e => {
+          e.LeftTime = r.GetCycleRemainTime() ?? 0;
+          e.LeftTimeText = r.GetCycleCountDownData().CountDownText ?? "";
+        }
       };
     }
   }
   Ovd() {
-    var e;
-    var r;
-    var t;
-    var a;
-    var o;
-    var i;
-    var n;
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10055)) {
-      e = ModelManager_1.ModelManager.TowerModel;
-      r = MathUtils_1.MathUtils.LongToNumber(e.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
-      t = e.GetSeasonCountDownData();
-      a = e.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      o = e.GetDifficultyAllStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      i = e.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      n = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
+      const n = ModelManager_1.ModelManager.TowerModel;
+      var e = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+      var r = n.GetSeasonCountDownData();
+      var t = n.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var a = n.GetDifficultyAllStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var o = n.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
       return {
         Id: 2,
-        LeftTime: r > 0 ? r : 0,
-        LeftTimeText: t.CountDownText ?? "",
-        CurrentNum: a,
-        TotalNum: o,
-        IsFinish: i === 1,
-        RedPoint: n < e.CurrentSeason,
-        OnClickCb: this.Dvd
+        LeftTime: e > 0 ? e : 0,
+        LeftTimeText: r.CountDownText ?? "",
+        CurrentNum: t,
+        TotalNum: a,
+        IsFinish: o === 1,
+        RedPoint: i < n.CurrentSeason,
+        OnClickCb: this.Dvd,
+        OnLeftTimeRefreshCb: e => {
+          var r = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+          e.LeftTime = r > 0 ? r : 0;
+          e.LeftTimeText = n.GetSeasonCountDownData().CountDownText ?? "";
+        }
       };
     }
   }
   qvd() {
-    var e;
-    var r;
-    var t;
-    var a = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
-    if (a && a.IsUnLock()) {
-      [r, t] = (e = ModelManager_1.ModelManager.ShipTowerModel).GetEndlessRewardProgressNumData();
+    var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
+    if (e && e.IsUnLock()) {
+      const a = ModelManager_1.ModelManager.ShipTowerModel;
+      var [r, t] = a.GetEndlessRewardProgressNumData();
       return {
         Id: 3,
-        LeftTimeText: e.GetSeasonCountDownData().CountDownText ?? "",
-        LeftTime: e.GetRemainTime(),
+        LeftTimeText: a.GetSeasonCountDownData().CountDownText ?? "",
+        LeftTime: a.GetRemainTime(),
         CurrentNum: r,
         TotalNum: t,
         IsFinish: r === t && r !== 0,
-        RedPoint: a.GetIfFirstOpen(),
-        OnClickCb: this.xvd
+        RedPoint: e.GetIfFirstOpen(),
+        OnClickCb: this.xvd,
+        OnLeftTimeRefreshCb: e => {
+          e.LeftTime = a.GetRemainTime();
+          e.LeftTimeText = a.GetSeasonCountDownData().CountDownText ?? "";
+        }
       };
     }
   }

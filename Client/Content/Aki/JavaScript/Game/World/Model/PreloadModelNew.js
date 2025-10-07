@@ -41,6 +41,7 @@ class PreloadSkillSaveData extends PreloadSaveData {
   constructor() {
     super(...arguments);
     this.SkillId = undefined;
+    this.LoadType = 0;
   }
 }
 exports.PreloadSkillSaveData = PreloadSkillSaveData;
@@ -180,6 +181,7 @@ class PreloadModelNew extends ModelBase_1.ModelBase {
     for (const t of EntitySkillPreloadByAll_1.configEntitySkillPreloadByAll.GetConfigList()) {
       var e = this.AFl(t);
       e.SkillId = t.SkillId;
+      e.LoadType = t.LoadType;
       if (this.SkillPreloadDataMap.has(t.ActorBlueprint)) {
         this.SkillPreloadDataMap.get(t.ActorBlueprint)?.push(e);
       } else {
@@ -304,14 +306,14 @@ class PreloadModelNew extends ModelBase_1.ModelBase {
   RemoveNeedWaitEntity(e) {
     this.LoadingNeedWaitEntitySet.delete(e);
   }
-  AddCommonSkill(e, t, r) {
+  AddCommonSkill(e, t, i) {
     if (this.PEr.has(e)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Preload", 4, "[预加载] 重复添加技能", ["SkillId", e]);
       }
       return false;
     } else {
-      this.PEr.set(e, [t, r]);
+      this.PEr.set(e, [t, i]);
       return true;
     }
   }

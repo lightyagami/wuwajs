@@ -160,8 +160,8 @@ class TrapDefenseBuildingDevelopDetailInfoItem extends UiPanelBase_1.UiPanelBase
         this.GetTexture(7).SetCustomUIMaterial(e);
         t.SetResult();
       }, 102);
+      await t.Promise;
     }
-    await t.Promise;
   }
   X3i() {
     if (this.hJ !== ResourceSystem_1.ResourceSystem.InvalidId) {

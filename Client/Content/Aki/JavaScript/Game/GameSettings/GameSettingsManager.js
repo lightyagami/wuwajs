@@ -122,15 +122,16 @@ class GameSettingsManager {
     var s = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsVulkanDevice();
     var r = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetD3D12Type() > 0;
     var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXess2Supported();
-    var g = UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn();
-    var _ = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3Supported();
-    var m = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported();
-    var S = _ && !r;
-    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
-    var c = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && f;
-    var G = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && f;
-    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && f;
-    var u = UE.KismetRenderingLibrary.IsSupportedAFME();
+    var g = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXeFGSupported();
+    var _ = UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn();
+    var m = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3Supported();
+    var S = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported();
+    var f = m && !r;
+    var c = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
+    var G = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && c;
+    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && c;
+    var u = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && c;
+    var d = UE.KismetRenderingLibrary.IsSupportedAFME();
     switch (e) {
       case GameSettingsDefine_1.EFunction.NVIDIADLSS:
         return [t, "EFunction.NVIDIADLSS"];
@@ -143,7 +144,7 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.NVIDIAREFLEX:
         return [t, "EFunction.NVIDIAREFLEX"];
       case GameSettingsDefine_1.EFunction.FSR:
-        return [i || S, "EFunction.FSR"];
+        return [i || f, "EFunction.FSR"];
       case GameSettingsDefine_1.EFunction.IRX:
         return [n, "EFunction.IRX"];
       case GameSettingsDefine_1.EFunction.METALFX:
@@ -153,14 +154,15 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.XESS_QUALITY:
         return [false, "EFunction.XESS_QUALITY"];
       case GameSettingsDefine_1.EFunction.XESS2:
-      case GameSettingsDefine_1.EFunction.XESS2_FG:
       case GameSettingsDefine_1.EFunction.XESS2_QUALITY:
         return [o, "EFunction.XESS2"];
+      case GameSettingsDefine_1.EFunction.XESS2_FG:
+        return [o && g, "EFunction.XESS2_FG"];
       case GameSettingsDefine_1.EFunction.FSR3:
       case GameSettingsDefine_1.EFunction.FSR3_QUALITY:
-        return [_ && r && g, "EFunction.FSR3"];
+        return [m && r && _, "EFunction.FSR3"];
       case GameSettingsDefine_1.EFunction.FSR3_FG:
-        return [m && r && g, "EFunction.FSR3_FG"];
+        return [S && r && _, "EFunction.FSR3_FG"];
       case GameSettingsDefine_1.EFunction.SCENEAO:
         return [!Info_1.Info.IsMobilePlatform() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformAOValid() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIOSPlatformAOValid(), "EFunction.SCENEAO"];
       case GameSettingsDefine_1.EFunction.VOLUMEFOG:
@@ -168,15 +170,15 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.DOLBYATOMS:
         return [UE.KuroAudioStatics.IsDolbyAtmosGameSupported(), "EFunction.DOLBYATOMS"];
       case GameSettingsDefine_1.EFunction.RayTracing:
-        return [f, "EFunction.RayTracing"];
+        return [c, "EFunction.RayTracing"];
       case GameSettingsDefine_1.EFunction.RayTracedGI:
-        return [c, "EFunction.RayTracedGI"];
+        return [G, "EFunction.RayTracedGI"];
       case GameSettingsDefine_1.EFunction.RayTracedReflection:
-        return [G, "EFunction.RayTracedReflection"];
+        return [D, "EFunction.RayTracedReflection"];
       case GameSettingsDefine_1.EFunction.RayTracedShadow:
-        return [D, "EFunction.RayTracedShadow"];
+        return [u, "EFunction.RayTracedShadow"];
       case GameSettingsDefine_1.EFunction.AdrenoFME:
-        return [u, "EFunction.AdrenoFME"];
+        return [d, "EFunction.AdrenoFME"];
       case GameSettingsDefine_1.EFunction.Vulkan:
         return [s, "EFunction.Vulkan"];
       default:
@@ -546,6 +548,13 @@ class GameSettingsManager {
     var n = this.GetInitValue(GameSettingsDefine_1.EFunction.VOICELANGUAGE);
     if (this.IsValid(GameSettingsDefine_1.EFunction.VOICELANGUAGE) && n !== undefined) {
       this.uac(GameSettingsDefine_1.EFunction.VOICELANGUAGE, n, 2);
+    }
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsXuanJie) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("GameSettings", 64, "小米显卡不满足Vulkan条件，强制关闭Vulkan");
+      }
+      this.ForceSaveValue(GameSettingsDefine_1.EFunction.Vulkan, 0);
+      this._X1(GameSettingsDefine_1.EFunction.Vulkan, 0, 2);
     }
     if (Info_1.Info.IsPcPlatform() && !GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting()) {
       if (Log_1.Log.CheckInfo()) {

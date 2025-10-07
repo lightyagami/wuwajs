@@ -503,37 +503,41 @@ class SceneInteractionActor extends UE.KuroSceneInteractionActor {
   SkeletalMeshDestructibleTick(t) {
     SceneInteractionActor.DestructibleInitStat.Start();
     for (const s of this.SkeletalMeshDestructibleActors.values()) {
-      var i = s.KuroDestructibleAsset?.PieceInfos;
-      if (i) {
-        let t = 0;
-        if (!((t = this.SkeletalMeshDestructibleCellListMap.has(s) ? this.SkeletalMeshDestructibleCellListMap.get(s) : t) >= i.Num())) {
-          var i = i.Get(t);
-          SceneInteractionActor.TempTransform.SetIdentity();
-          SceneInteractionActor.TempTransform.SetTranslation(i.InitialTransform.GetTranslation());
-          var e = s.AddComponentByClass(UE.StaticMeshComponent.StaticClass(), false, SceneInteractionActor.TempTransform, false);
-          if (!e?.IsValid()) {
-            if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Interaction", 72, "StaticMeshComponent AddComponentByClass 返回无效值", ["LevelName", this.LevelName], ["Location", this.K2_GetActorLocation()], ["D_Location", this.D_K2_GetActorLocation()], ["World", this.GetWorld()], ["WorldIsTearingDown", UE.KuroStaticLibrary.IsWorldTearingDown(this.GetWorld())]);
+      if (s?.IsValid()) {
+        var i = s.KuroDestructibleAsset?.PieceInfos;
+        if (i) {
+          let t = 0;
+          if (!((t = this.SkeletalMeshDestructibleCellListMap.has(s) ? this.SkeletalMeshDestructibleCellListMap.get(s) : t) >= i.Num())) {
+            var i = i.Get(t);
+            SceneInteractionActor.TempTransform.SetIdentity();
+            SceneInteractionActor.TempTransform.SetTranslation(i.InitialTransform.GetTranslation());
+            var e = s.AddComponentByClass(UE.StaticMeshComponent.StaticClass(), false, SceneInteractionActor.TempTransform, false);
+            if (!e?.IsValid()) {
+              if (Log_1.Log.CheckError()) {
+                Log_1.Log.Error("Interaction", 72, "StaticMeshComponent AddComponentByClass 返回无效值", ["LevelName", this.LevelName], ["Location", this.K2_GetActorLocation()], ["D_Location", this.D_K2_GetActorLocation()], ["World", this.GetWorld()], ["WorldIsTearingDown", UE.KuroStaticLibrary.IsWorldTearingDown(this.GetWorld())]);
+              }
+              break;
             }
+            e.SetVisibility(false);
+            if (s.KuroDestructibleDestructionAsset?.IsValid()) {
+              e.SetCollisionProfileName(s.KuroDestructibleDestructionAsset.CollisionProfileName.Name);
+            }
+            e.SetCollisionEnabled(2);
+            e.SetStaticMesh(i.StaticMesh);
+            s.StaticMeshChunkList.Add(e);
+            this.SkeletalMeshDestructibleCellListMap.set(s, ++t);
             break;
           }
-          e.SetVisibility(false);
-          if (s.KuroDestructibleDestructionAsset?.IsValid()) {
-            e.SetCollisionProfileName(s.KuroDestructibleDestructionAsset.CollisionProfileName.Name);
+          if (!this.SkeletalMeshDestructibleActorsList.includes(s)) {
+            s.OnDestructibleInit();
+            this.SkeletalMeshDestructibleActorsList.push(s);
           }
-          e.SetCollisionEnabled(2);
-          e.SetStaticMesh(i.StaticMesh);
-          s.StaticMeshChunkList.Add(e);
-          this.SkeletalMeshDestructibleCellListMap.set(s, ++t);
-          break;
-        }
-        if (!this.SkeletalMeshDestructibleActorsList.includes(s)) {
+        } else {
           s.OnDestructibleInit();
           this.SkeletalMeshDestructibleActorsList.push(s);
         }
-      } else {
-        s.OnDestructibleInit();
-        this.SkeletalMeshDestructibleActorsList.push(s);
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Interaction", 72, "[SceneInteractionActor] 配置出错", ["LevelName", this.LevelName]);
       }
     }
     if (this.SkeletalMeshDestructibleActorsList.length >= this.SkeletalMeshDestructibleActors.size) {

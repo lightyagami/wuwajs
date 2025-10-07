@@ -23,19 +23,27 @@ class SundryModel extends ModelBase_1.ModelBase {
     this.RunningGmName = "";
     this.CanOpenGmView = false;
     this.IsBlockTips = false;
-    this.eIn = 0;
+    this.rzd = new Set();
     this.ModuleDebugLevelMap = new Map();
     this.TipsActorDataMap = undefined;
     this.TipsSplineActorDataMap = undefined;
   }
-  set BlockTpDungeonCount(e) {
-    this.eIn = e < 0 ? 0 : e;
+  SetBlockTpDungeon(e, t) {
+    if (e) {
+      this.rzd.add(t);
+    } else {
+      this.rzd.delete(t);
+    }
   }
-  get BlockTpDungeonCount() {
-    return this.eIn;
+  ForceSetBlockTpDungeon(e) {
+    if (e) {
+      this.rzd.add(2);
+    } else {
+      this.rzd.clear();
+    }
   }
   IsBlockTpDungeon() {
-    return this.BlockTpDungeonCount > 0;
+    return this.rzd.size > 0;
   }
   ChangeModuleDebugLevel(e, t) {
     if (t > 0) {

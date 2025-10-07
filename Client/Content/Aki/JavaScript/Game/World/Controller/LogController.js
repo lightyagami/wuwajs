@@ -21,7 +21,7 @@ const CharacterGasDebugComponent_1 = require("../../NewWorld/Character/Common/Co
 const LOG_SWITCH = false;
 const FRAMING_LOG_NUM = 20;
 class DebugInfo extends Json_1.JsonObjBase {
-  constructor(o, t, e, r, l, a, n, g, _, s, L, i) {
+  constructor(o, t, e, r, l, a, n, g, _, s, i, L) {
     super();
     this.场景模式 = o;
     this.是否场景主 = t;
@@ -33,8 +33,8 @@ class DebugInfo extends Json_1.JsonObjBase {
     this.编队玩家 = g;
     this.队伍buff = _;
     this.队伍属性 = s;
-    this.编队角色 = L;
-    this.技能按钮 = i;
+    this.编队角色 = i;
+    this.技能按钮 = L;
   }
 }
 class SkillButtonDebugInfo extends Json_1.JsonObjBase {
@@ -188,15 +188,11 @@ class LogController extends ControllerBase_1.ControllerBase {
     }
     LogReportController_1.LogReportController.LogReport(o);
   }
-  static LogRoleDevPush(o, t = false) {
+  static LogRoleDevPush(o) {
     if (LOG_SWITCH && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("RoleDev", 88, "日志上报-角色培养计划日志", ["内容", o]);
     }
-    if (t) {
-      LogController.qfr(o);
-    } else {
-      LogReportController_1.LogReportController.LogReport(o);
-    }
+    LogReportController_1.LogReportController.LogReport(o);
   }
   static GetSkillButtonDebugInfo() {
     var o = [];

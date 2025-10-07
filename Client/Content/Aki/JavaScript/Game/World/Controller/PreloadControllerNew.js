@@ -62,33 +62,33 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       if (!e?.length) {
         return false;
       }
-      for (const n of e) {
+      for (const i of e) {
         var t = new PreloadDefine_1.AssetElement(undefined);
-        this.ypr(n, t);
-        o.AddCommonSkill(n.Id, n.HasMontagePath, t);
+        this.ypr(i, t);
+        o.AddCommonSkill(i.Id, i.HasMontagePath, t);
       }
     } else {
       var r = UE.KuroStaticLibrary.GetFilesRecursive(o.CommonSkillJsonExportPath, "*", true, false);
       for (let e = 0; e < r.Num(); ++e) {
         var a = r.Get(e);
-        var i = (0, puerts_1.$ref)("");
-        UE.KuroStaticLibrary.LoadFileToString(i, a);
-        if (!(i = (0, puerts_1.$unref)(i))?.length) {
+        var n = (0, puerts_1.$ref)("");
+        UE.KuroStaticLibrary.LoadFileToString(n, a);
+        if (!(n = (0, puerts_1.$unref)(n))?.length) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Preload", 4, "[预加载] 加载文件失败", ["path", a]);
           }
           return false;
         }
-        i = JSON.parse(i);
-        if (!i) {
+        n = JSON.parse(n);
+        if (!n) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Preload", 4, "[预加载] 序列化skillAssetRecord失败", ["path", a]);
           }
           return false;
         }
         a = new PreloadDefine_1.AssetElement(undefined);
-        this.ypr(i.AssetRecord, a);
-        o.AddCommonSkill(i.SkillId, i.HasMontagePath, a);
+        this.ypr(n.AssetRecord, a);
+        o.AddCommonSkill(n.SkillId, n.HasMontagePath, a);
       }
     }
     return true;
@@ -163,17 +163,17 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     var r = Vector_1.Vector.Create(ModelManager_1.ModelManager.GameModeModel.BornLocation);
     var a = Vector_1.Vector.Create();
-    var i = new Array();
+    var n = new Array();
     for (const d of t) {
-      var n = d.Entity.GetComponent(0);
-      if (!d.IsInit && !n.GetLoading() && !n.GetRemoveState() && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Custom && n.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_PlayerEntity) {
-        if (n.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player || (n = n.GetLocation(), a.X = n.X, a.Y = n.Y, a.Z = n.Z, Vector_1.Vector.DistSquared(r, a) <= NEED_PRELOAD_DISTANCE)) {
-          i.push(d);
+      var i = d.Entity.GetComponent(0);
+      if (!d.IsInit && !i.GetLoading() && !i.GetRemoveState() && i.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Custom && i.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_PlayerEntity) {
+        if (i.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player || (i = i.GetLocation(), a.X = i.X, a.Y = i.Y, a.Z = i.Z, Vector_1.Vector.DistSquared(r, a) <= NEED_PRELOAD_DISTANCE)) {
+          n.push(d);
           o.AddNeedWaitEntity(d.Id);
         }
       }
     }
-    let l = i.length;
+    let l = n.length;
     if (ModelManager_1.ModelManager.CreatureModel.EnableEntityLog && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Preload", 4, "[预加载] 批量预加载实体:开始", ["当前实体总数", t.length], ["需要预加载的实体个数", l]);
     }
@@ -185,7 +185,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     var _;
     var s = new Array();
-    for (const u of i) {
+    for (const u of n) {
       const c = u.Entity.GetComponent(0);
       if (!u.IsInit && !c.GetLoading()) {
         if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(u) && Log_1.Log.CheckInfo()) {
@@ -202,8 +202,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     }
     let f = true;
-    for (const m of await Promise.all(s)) {
-      if (m === 2) {
+    for (const C of await Promise.all(s)) {
+      if (C === 2) {
         f = false;
       }
     }
@@ -215,8 +215,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
   static async PreloadEntity(e, o, t) {
     const r = ModelManager_1.ModelManager.PreloadModelNew;
     var a = new CustomPromise_1.CustomPromise();
-    const i = e.Entity.GetComponent(0);
-    if (i.GetRemoveState()) {
+    const n = e.Entity.GetComponent(0);
+    if (n.GetRemoveState()) {
       t?.(4);
       return 4;
     }
@@ -227,20 +227,20 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       t?.(2);
       return 2;
     }
-    if (i.GetPreloadFinished()) {
+    if (n.GetPreloadFinished()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Preload", 4, "[预加载] 实体重复预加载，creatureDataComponent.GetPreloadFinished()为true");
       }
       t?.(2);
       return 2;
     }
-    var n = StatSeconds_1.StatSecondsAccumulator.Create(`CreatureDataId:${i.GetCreatureDataId()}, PbDataId:${i.GetPbDataId()}`);
-    n.Start();
-    if (i.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Custom) {
-      i.SetPreloadFinished(true);
+    var i = StatSeconds_1.StatSecondsAccumulator.Create(`CreatureDataId:${n.GetCreatureDataId()}, PbDataId:${n.GetPbDataId()}`);
+    i.Start();
+    if (n.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Custom) {
+      n.SetPreloadFinished(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreloadEntityFinished, e);
       t?.(3);
-      n.Stop();
+      i.Stop();
       return 3;
     }
     let l = undefined;
@@ -249,30 +249,30 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     let f = undefined;
     let d = undefined;
     if (o) {
-      l = o.CreateChild(`预加载实体, CreatureDataId:${i.GetCreatureDataId()}, PbDataId:${i.GetPbDataId()}`, true);
+      l = o.CreateChild(`预加载实体, CreatureDataId:${n.GetCreatureDataId()}, PbDataId:${n.GetPbDataId()}`, true);
       _ = l.CreateChild("预加载实体主要资源", true);
       s = l.CreateChild("预加载技能资源", true);
       f = l.CreateChild("预加载子弹资源", true);
       d = l.CreateChild("预加载实体固有资源", true);
     }
     l?.Start();
-    let u = r.GetEntityAssetElement(i.GetCreatureDataId());
+    let u = r.GetEntityAssetElement(n.GetCreatureDataId());
     if (u) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Preload", 4, "[预加载] 实体重复预加载");
       }
       t?.(2);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 2;
     }
     (u = new PreloadDefine_1.EntityAssetElement(e)).LoadState = 0;
     u.Promise = a.Promise;
     u.AddCallback(t);
     u.MainAsset.AddObjectCallback = (e, o) => {
-      r.HoldPreloadObject.AddEntityAsset(i.GetCreatureDataId(), e);
+      r.HoldPreloadObject.AddEntityAsset(n.GetCreatureDataId(), e);
     };
-    o = i.GetModelConfig();
+    o = n.GetModelConfig();
     if (o && o.特效替换表 && o.蒙太奇替换表) {
       if ((c = o.特效替换表.ToAssetPathName()).length > 0) {
         u?.MainAsset.SetupReplaceEffect(c);
@@ -284,12 +284,12 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     } else if (!o) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Preload", 4, "[预加载] ModelConfig为空", ["CreatureDataId", u?.CreatureDataComponent?.GetCreatureDataId()], ["EntityId", e.Entity?.Id], ["ModelId", i?.GetModelId()]);
+        Log_1.Log.Error("Preload", 4, "[预加载] ModelConfig为空", ["CreatureDataId", u?.CreatureDataComponent?.GetCreatureDataId()], ["EntityId", e.Entity?.Id], ["ModelId", n?.GetModelId()]);
       }
     }
-    r.AddEntityAsset(i.GetCreatureDataId(), u);
-    if (i.ModelBlueprintPath) {
-      var c = i.GetPbEntityInitData();
+    r.AddEntityAsset(n.GetCreatureDataId(), u);
+    if (n.ModelBlueprintPath) {
+      var c = n.GetPbEntityInitData();
       let e = undefined;
       if (c) {
         e = (0, IComponent_1.getComponent)(c.ComponentsData, "ModelComponent");
@@ -297,22 +297,22 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       if (!this.Svl(u.MainAsset, e)) {
         t?.(2);
         l?.Stop();
-        n.Stop();
+        i.Stop();
         return 2;
       }
-    } else if (!this.CollectAssetByModelId(u, i.GetModelId())) {
+    } else if (!this.CollectAssetByModelId(u, n.GetModelId())) {
       t?.(2);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 2;
     }
-    if (i.IsAutoRole() && (c = i.GetAutoRoleConfig()?.Id) && (t = CharacterPreloadById_1.configCharacterPreloadById.GetConfig(c))) {
+    if (n.IsAutoRole() && (c = n.GetAutoRoleConfig()?.Id) && (t = CharacterPreloadById_1.configCharacterPreloadById.GetConfig(c))) {
       this.ypr(t, u.MainAsset);
     }
     _?.Start();
     c = new GameModePromise_1.GameModePromise();
     if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载主要资源", ["CreatureDataId", u?.CreatureDataComponent?.GetCreatureDataId()], ["EntityId", e.Entity?.Id], ["ModelId", i?.GetModelId()], ["Dis", o?.描述], ["BP", o?.蓝图.ToAssetPathName()], ["\nAssets", "\n" + Array.from(u.MainAsset.AssetPathSet).map(e => "" + e).join("\n")]);
+      Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载主要资源", ["CreatureDataId", u?.CreatureDataComponent?.GetCreatureDataId()], ["EntityId", e.Entity?.Id], ["ModelId", n?.GetModelId()], ["Dis", o?.描述], ["BP", o?.蓝图.ToAssetPathName()], ["\nAssets", "\n" + Array.from(u.MainAsset.AssetPathSet).map(e => "" + e).join("\n")]);
     }
     this.LoadAssetAsync(u.MainAsset, u.LoadPriority, false, c);
     t = await c.Promise;
@@ -323,13 +323,13 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
       u.DoCallback(2);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 2;
     }
     if (!e?.Valid) {
       u.DoCallback(4);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 4;
     }
     var o = e.Entity.GetComponent(220);
@@ -337,42 +337,42 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       o.InitPreload(u);
       await o.InitMorph();
     }
-    var m = new Array();
+    var C = new Array();
     d?.Start();
-    switch (i.GetEntityConfigType()) {
+    switch (n.GetEntityConfigType()) {
       case Protocol_1.Aki.Protocol.rLs.F6n:
-        var C = ModelManager_1.ModelManager.GameModeModel.MapId;
-        var g = i.GetPbDataId();
-        var C = r.PbDataPreloadDataMap.get(C)?.get(g);
-        if (C) {
-          this.ypr(C, u.MainAsset);
+        var m = ModelManager_1.ModelManager.GameModeModel.MapId;
+        var g = n.GetPbDataId();
+        var m = r.PbDataPreloadDataMap.get(m)?.get(g);
+        if (m) {
+          this.ypr(m, u.MainAsset);
         } else {
-          g = i.GetTemplateId();
+          g = n.GetTemplateId();
           if (!g) {
             break;
           }
-          C = r.GetTemplatePreloadData(g);
-          if (C) {
-            this.ypr(C, u.MainAsset);
+          m = r.GetTemplatePreloadData(g);
+          if (m) {
+            this.ypr(m, u.MainAsset);
           }
         }
         break;
       case Protocol_1.Aki.Protocol.rLs.lTs:
-        var g = i.GetPbEntityInitData()?.BlueprintType;
-        if (g && (C = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(g)) && (g = r.GetTemplatePreloadData(C.Id))) {
+        var g = n.GetPbEntityInitData()?.BlueprintType;
+        if (g && (m = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(g)) && (g = r.GetTemplatePreloadData(m.Id))) {
           this.ypr(g, u.MainAsset);
         }
         break;
       case Protocol_1.Aki.Protocol.rLs.Proto_Template:
-        C = i.GetPbDataId();
-        g = r.GetTemplatePreloadData(C);
+        m = n.GetPbDataId();
+        g = r.GetTemplatePreloadData(m);
         if (g) {
           this.ypr(g, u.MainAsset);
         }
     }
     c = new GameModePromise_1.GameModePromise();
     if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载主体固定资源资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["EntityConfigType", i.GetEntityConfigType()], ["\nAssets", "\n" + Array.from(u.MainAsset.AssetPathSet).map(e => "" + e).join("\n")]);
+      Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载主体固定资源资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["EntityConfigType", n.GetEntityConfigType()], ["\nAssets", "\n" + Array.from(u.MainAsset.AssetPathSet).map(e => "" + e).join("\n")]);
     }
     this.LoadAssetAsync(u.MainAsset, u.LoadPriority, false, c, e => {
       if (!e) {
@@ -381,7 +381,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         }
       }
     });
-    m.push(c.Promise);
+    C.push(c.Promise);
     d?.Stop();
     s?.Start();
     if (u.FightAssetManager.SkillAssetManager.SkillAssetMap.size) {
@@ -401,7 +401,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             }
           }
         });
-        m.push(P.Promise);
+        C.push(P.Promise);
       }
     } else {
       s?.Stop();
@@ -411,12 +411,12 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     let D = A.BulletAssetMap.size;
     if (D) {
       for (const [L, I] of A.BulletAssetMap) {
-        var M;
-        var h = new GameModePromise_1.GameModePromise();
-        if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && (M = A.IndexMapping.get(L), Log_1.Log.CheckDebug())) {
-          Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载子弹资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["bulletId", M], ["\nAssets", "\n" + Array.from(I.AssetPathSet).map(e => "" + e).join("\n")]);
+        var v;
+        var M = new GameModePromise_1.GameModePromise();
+        if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && (v = A.IndexMapping.get(L), Log_1.Log.CheckDebug())) {
+          Log_1.Log.Debug("Preload", 4, "[预加载] 开始预加载子弹资源", ["CreatureDataId", u.CreatureDataComponent.GetCreatureDataId()], ["bulletId", v], ["\nAssets", "\n" + Array.from(I.AssetPathSet).map(e => "" + e).join("\n")]);
         }
-        this.LoadAssetAsync(I, u.LoadPriority, false, h, e => {
+        this.LoadAssetAsync(I, u.LoadPriority, false, M, e => {
           if (! --D) {
             f?.Stop();
           }
@@ -427,42 +427,42 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             }
           }
         });
-        m.push(h.Promise);
+        C.push(M.Promise);
       }
     } else {
       f?.Stop();
     }
-    t = await Promise.all(m);
+    t = await Promise.all(C);
     if (!e.Valid) {
       u.DoCallback(4);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 4;
     }
-    if (i.GetRemoveState()) {
+    if (n.GetRemoveState()) {
       u.DoCallback(4);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 4;
     }
-    let v = true;
+    let h = true;
     for (const S of t) {
       if (!S) {
-        v = false;
+        h = false;
       }
     }
-    if (v) {
+    if (h) {
       a.SetResult(3);
-      i.SetPreloadFinished(true);
+      n.SetPreloadFinished(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreloadEntityFinished, e);
       u.DoCallback(3);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return a.Promise;
     } else {
       u.DoCallback(2);
       l?.Stop();
-      n.Stop();
+      i.Stop();
       return 2;
     }
   }
@@ -531,23 +531,23 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     var t;
     var r = ModelManager_1.ModelManager.PreloadModelNew;
     let a = undefined;
-    let i = false;
+    let n = false;
     for (const s of e) {
       if (s.Name === "SetPlotMode") {
-        var n = s.Params;
-        a = n.Mode;
+        var i = s.Params;
+        a = i.Mode;
       } else if (s.Name === "ShowTalk") {
         if (a === "LevelA" || a === "LevelB") {
           var l;
-          var n = s.Params;
-          var _ = n.SequenceDataAsset;
+          var i = s.Params;
+          var _ = i.SequenceDataAsset;
           if (_) {
-            i = true;
+            n = true;
             r.PlotAssetManager.AddPath(o, _);
           }
           if (a === "LevelB") {
             const f = [];
-            n.TalkItems.forEach(e => {
+            i.TalkItems.forEach(e => {
               if (e.TidTalk && e.PlayVoice) {
                 f.push(e.TidTalk);
               }
@@ -563,11 +563,11 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
           }
         }
       } else if (s.Name === "PlaySequenceData" && (_ = s.Params.Path)) {
-        i = true;
+        n = true;
         r.PlotAssetManager.AddPath(o, _);
       }
     }
-    if (i) {
+    if (n) {
       e = ModelManager_1.ModelManager.SequenceModel.SeqMainCharacterModelConfig.网格体?.ToAssetPathName();
       t = ModelManager_1.ModelManager.SequenceModel.SeqMainCharacterModelConfig.蓝图?.ToAssetPathName();
       r.PlotAssetManager.AddPath(o, e);
@@ -608,8 +608,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       t.push(r);
     }
     let a = true;
-    for (const i of await Promise.all(t)) {
-      if (i === 2) {
+    for (const n of await Promise.all(t)) {
+      if (n === 2) {
         a = false;
       }
     }
@@ -627,40 +627,40 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       return 2;
     }
     var a = a.GetCompleteEntityData(o);
-    var i = a?.ComponentsData;
-    if (!i) {
+    var n = a?.ComponentsData;
+    if (!n) {
       return 2;
     }
-    var n = t.GetPbEntityAssetElement(o);
-    if (n) {
+    var i = t.GetPbEntityAssetElement(o);
+    if (i) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Preload", 80, "[预加载] pb实体重复预加载");
       }
       e?.(2);
       return 2;
     }
-    (n = new PreloadDefine_1.PbEntityAssetElement(o)).LoadState = 0;
-    n.Promise = r.Promise;
-    n.AddCallback(e);
-    t.AddPbEntityAsset(o, n);
-    var i = (0, IComponent_1.getComponent)(i, "ModelComponent");
-    var l = i?.ModelType;
-    if (i && i.Disabled === true && l?.Type === "ModelId" && this.CollectAssetByModelId(n, l.ModelId ?? 0) && this.Svl(n.MainAsset, i)) {
+    (i = new PreloadDefine_1.PbEntityAssetElement(o)).LoadState = 0;
+    i.Promise = r.Promise;
+    i.AddCallback(e);
+    t.AddPbEntityAsset(o, i);
+    var n = (0, IComponent_1.getComponent)(n, "ModelComponent");
+    var l = n?.ModelType;
+    if (n && n.Disabled === true && l?.Type === "ModelId" && this.CollectAssetByModelId(i, l.ModelId ?? 0) && this.Svl(i.MainAsset, n)) {
       e?.(2);
       return 2;
     } else {
       l = new GameModePromise_1.GameModePromise();
-      this.LoadAssetAsync(n.MainAsset, n.LoadPriority, false, l);
+      this.LoadAssetAsync(i.MainAsset, i.LoadPriority, false, l);
       if (await l.Promise) {
-        i = n.MainAsset;
+        n = i.MainAsset;
         e = ModelManager_1.ModelManager.GameModeModel.MapId;
         if (l = t.PbDataPreloadDataMap.get(e)?.get(o)) {
-          this.ypr(l, i);
+          this.ypr(l, n);
         } else if ((e = a.BlueprintType) && (l = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(e)) && (a = t.GetTemplatePreloadData(l.Id))) {
-          this.ypr(a, i);
+          this.ypr(a, n);
         }
         e = new GameModePromise_1.GameModePromise();
-        this.LoadAssetAsync(i, n.LoadPriority, false, e, e => {
+        this.LoadAssetAsync(n, i.LoadPriority, false, e, e => {
           if (!e) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Preload", 80, "[预加载] 预加载固定资源失败", ["pbDataId", o]);
@@ -669,17 +669,17 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         });
         if (await e.Promise) {
           r.SetResult(3);
-          n.DoCallback(3);
+          i.DoCallback(3);
           return r.Promise;
         } else {
-          n.DoCallback(2);
+          i.DoCallback(2);
           return 2;
         }
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Preload", 80, "[预加载] 预加载主要资源失败", ["pbDataId", o]);
         }
-        n.DoCallback(2);
+        i.DoCallback(2);
         return 2;
       }
     }
@@ -692,22 +692,22 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       return true;
     }
     let o = true;
-    for (const i of e.NeedLoadAssets) {
-      e.AddLoading(i);
+    for (const n of e.NeedLoadAssets) {
+      e.AddLoading(n);
       var t;
       var r;
-      var a = ResourceSystem_1.ResourceSystem.Load(i, UE.Object);
-      e.RemoveLoading(i);
+      var a = ResourceSystem_1.ResourceSystem.Load(n, UE.Object);
+      e.RemoveLoading(n);
       if (a?.IsValid()) {
-        e.AddObject(i, a);
+        e.AddObject(n, a);
         if (a.IsA(UE.AnimMontage.StaticClass()) && (t = e.GetEntityAssetElement()) && (t = t.Entity?.GetComponent(25))) {
-          r = UE.BlueprintPathsLibrary.GetBaseFilename(i);
-          t.AddMontage(r, a, i);
+          r = UE.BlueprintPathsLibrary.GetBaseFilename(n);
+          t.AddMontage(r, a, n);
         }
       } else {
         o = false;
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Preload", 4, "[预加载] 同步加载资源失败", ["Path", i]);
+          Log_1.Log.Error("Preload", 4, "[预加载] 同步加载资源失败", ["Path", n]);
         }
       }
     }
@@ -721,8 +721,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     if (e) {
       [e, t] = this.Ppr(e);
       if (e && t) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Preload", 3, "[预加载] 技能资源预加载中，立马使用技能会变成同步加载", ["SkillId", o]);
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Preload", 3, "[预加载] 技能资源预加载中，立马使用技能会变成同步加载", ["SkillId", o]);
         }
         return false;
       } else {
@@ -775,17 +775,17 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         }
       }
     }
-    var i = e.LoadingSet.size > 0;
+    var n = e.LoadingSet.size > 0;
     for (const f of e.LoadingSet) {
-      var n;
+      var i;
       var l;
       var _ = ResourceSystem_1.ResourceSystem.Load(f, UE.Object);
       e.RemoveLoading(f);
       if (_?.IsValid()) {
         e.AddObject(f, _);
-        if (_.IsA(UE.AnimMontage.StaticClass()) && (n = e.GetEntityAssetElement()) && (n = n.Entity?.GetComponent(25))) {
+        if (_.IsA(UE.AnimMontage.StaticClass()) && (i = e.GetEntityAssetElement()) && (i = i.Entity?.GetComponent(25))) {
           l = UE.BlueprintPathsLibrary.GetBaseFilename(f);
-          n.AddMontage(l, _, f);
+          i.AddMontage(l, _, f);
         }
       } else {
         o = false;
@@ -794,63 +794,63 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         }
       }
     }
-    return [o, i];
+    return [o, n];
   }
-  static Apr(n, l, _, s) {
-    if (n.NeedLoadAssets.length) {
+  static Apr(i, l, _, s) {
+    if (i.NeedLoadAssets.length) {
       let r = undefined;
-      var e = n.GetEntityAssetElement();
+      var e = i.GetEntityAssetElement();
       if (e) {
         r = e.Entity?.GetComponent(24);
       }
-      let a = n.NeedLoadAssets.length;
-      let i = 0;
-      for (let e = 0; e < n.NeedLoadAssets.length; e++) {
-        var o = n.NeedLoadAssets[e];
-        const f = n.NeedLoadAssetTypes[e];
-        n.AddLoading(o);
+      let a = i.NeedLoadAssets.length;
+      let n = 0;
+      for (let e = 0; e < i.NeedLoadAssets.length; e++) {
+        var o = i.NeedLoadAssets[e];
+        const f = i.NeedLoadAssetTypes[e];
+        i.AddLoading(o);
         this.xpr(o, l, (e, o, t) => {
           a--;
-          n.RemoveLoading(o);
+          i.RemoveLoading(o);
           if (e) {
             if (f === 1 && t.IsA(UE.AnimMontage.StaticClass()) && r) {
               e = UE.BlueprintPathsLibrary.GetBaseFilename(o);
               r.AddMontage(e, t, o);
             }
-            n.AddObject(o, t);
+            i.AddObject(o, t);
             if (s) {
               switch (f) {
                 case 2:
-                  this.upr(n, t);
+                  this.upr(i, t);
                   break;
                 case 0:
-                  this.epr(n, t);
+                  this.epr(i, t);
                   break;
                 case 1:
                   if (t.IsA(UE.AnimMontage.StaticClass())) {
-                    this.hpr(n, t, animBuffList);
+                    this.hpr(i, t, animBuffList);
                   } else if (t.IsA(UE.AnimSequenceBase.StaticClass())) {
-                    this.lpr(n, t, animBuffList);
+                    this.lpr(i, t, animBuffList);
                   }
                   break;
                 case 6:
-                  this.cpr(n, t);
+                  this.cpr(i, t);
               }
             }
           } else {
-            i++;
+            n++;
           }
           if (!a) {
-            if (s && n.NeedLoadCount()) {
-              this.Apr(n, l, _, s);
+            if (s && i.NeedLoadCount()) {
+              this.Apr(i, l, _, s);
             } else {
-              _?.(i === 0);
+              _?.(n === 0);
             }
           }
         });
       }
-      n.NeedLoadAssets.length = 0;
-      n.NeedLoadAssetTypes.length = 0;
+      i.NeedLoadAssets.length = 0;
+      i.NeedLoadAssetTypes.length = 0;
     } else {
       _?.(true);
     }
@@ -887,11 +887,11 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     (0, puerts_1.$unref)(animNotifyEventsRef).Empty();
     UE.KuroStaticLibrary.GetAnimSequenceNotifies(e, animNotifyEventsRef);
     var a = (0, puerts_1.$unref)(animNotifyEventsRef);
-    var i = a.Num();
-    if (i !== 0) {
-      for (let e = 0; e < i; ++e) {
-        var n = a.Get(e);
-        this.Mpr(o, n, t);
+    var n = a.Num();
+    if (n !== 0) {
+      for (let e = 0; e < n; ++e) {
+        var i = a.Get(e);
+        this.Mpr(o, i, t);
       }
       r.Stop();
     }
@@ -904,16 +904,16 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     var a = (0, puerts_1.$unref)(animNotifyEventsRef);
     if (a.Num() > 0) {
       for (let e = 0; e < a.Num(); ++e) {
-        var i = a.Get(e);
-        this.Mpr(o, i, t);
+        var n = a.Get(e);
+        this.Mpr(o, n, t);
       }
     }
     (0, puerts_1.$unref)(animSequenceBasesRef).Empty();
     UE.KuroStaticLibrary.GetAnimSequencesByAnimMontage(e, animSequenceBasesRef);
-    var n = (0, puerts_1.$unref)(animSequenceBasesRef);
-    if (n.Num() > 0) {
-      for (let e = 0; e < n.Num(); ++e) {
-        var l = n.Get(e);
+    var i = (0, puerts_1.$unref)(animSequenceBasesRef);
+    if (i.Num() > 0) {
+      for (let e = 0; e < i.Num(); ++e) {
+        var l = i.Get(e);
         this.lpr(o, l, t);
       }
     }
@@ -979,9 +979,9 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
             if (r.Path.length) {
               e.AddEffect(r.Path);
             }
-            for (const i of r.Resources) {
-              if (i.length) {
-                e.AddEffect(i);
+            for (const n of r.Resources) {
+              if (n.length) {
+                e.AddEffect(n);
               }
             }
           }
@@ -1022,8 +1022,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         return false;
       }
       e.BlueprintClassPath = a.ActorClassPath;
-      const i = t ?? e.MainAsset;
-      this.ypr(a, i);
+      const n = t ?? e.MainAsset;
+      this.ypr(a, n);
     } else {
       a = "" + r.ModelConfigJsonExportPath + o + ".json";
       if (UE.BlueprintPathsLibrary.FileExists(a)) {
@@ -1034,8 +1034,8 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         }
         r = JSON.parse(o);
         e.BlueprintClassPath = r.ActorClassPath;
-        const i = t ?? e.MainAsset;
-        this.ypr(r.AssetRecord, i);
+        const n = t ?? e.MainAsset;
+        this.ypr(r.AssetRecord, n);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("World", 4, "[预加载] 不存在配置文件，重新导出ModelConfig对应的配置？", ["Path", a]);
       }
@@ -1087,55 +1087,74 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     return true;
   }
-  static CollectAssetBySkillId(e, o, t) {
+  static CollectAssetBySkillId(o, t, r) {
     PreloadControllerNew.Hj1.Start();
-    var r;
-    var a = ModelManager_1.ModelManager.PreloadModelNew;
-    var i = a.GetCommonSkill(o);
-    let n = false;
+    const a = ModelManager_1.ModelManager.PreloadModelNew;
+    var n = a.GetCommonSkill(t);
+    let i = false;
     let l = false;
     let _ = undefined;
-    if (i) {
-      n = true;
-      l = i[0];
-      var s = i[1];
-      _ = new PreloadDefine_1.AssetElement(e);
-      e.FightAssetManager.SkillAssetManager.AddSkill(o, _);
+    if (n) {
+      i = true;
+      l = n[0];
+      var s = n[1];
+      _ = new PreloadDefine_1.AssetElement(o);
+      o.FightAssetManager.SkillAssetManager.AddSkill(t, _);
       for (let e = 0; e < s.NeedLoadAssets.length; e++) {
         var f = s.NeedLoadAssets[e];
         var d = s.NeedLoadAssetTypes[e];
         _.AddAsset(d, f);
       }
     }
-    if (e.BlueprintClassPath?.length) {
+    if (o.BlueprintClassPath?.length) {
       if (PublicUtil_1.PublicUtil.UseDbConfig()) {
-        if (i = e.FightAssetManager.SkillAssetManager.GetEntitySkillPreload(o)) {
-          _ = _ || new PreloadDefine_1.AssetElement(e);
-          e.FightAssetManager.SkillAssetManager.AddSkill(o, _);
-          this.ypr(i, _);
+        n = o.FightAssetManager.SkillAssetManager.GetEntitySkillPreload(t);
+        if (n) {
+          _ = _ || new PreloadDefine_1.AssetElement(o);
+          o.FightAssetManager.SkillAssetManager.AddSkill(t, _);
+          this.ypr(n, _);
         }
+        PreloadControllerNew.Hj1.Stop();
       } else {
-        i = (i = e.BlueprintClassPath.substring(CHARACTER_PREFIX_PATH.length)).substring(0, i.lastIndexOf("."));
-        a = `${"" + a.SkillJsonExportPath + i}/${o}.json`;
-        if (UE.BlueprintPathsLibrary.FileExists(a)) {
-          r = (i = "", puerts_1.$ref)("");
-          UE.KuroStaticLibrary.LoadFileToString(r, a);
-          if ((i = (0, puerts_1.$unref)(r))?.length) {
-            if (!_) {
-              _ = new PreloadDefine_1.AssetElement(e);
-              e.FightAssetManager.SkillAssetManager.AddSkill(o, _);
-            }
-            r = JSON.parse(i);
-            this.ypr(r.AssetRecord, _);
+        n = o.BlueprintClassPath.substring(CHARACTER_PREFIX_PATH.length);
+        const C = n.substring(0, n.lastIndexOf("."));
+        var u;
+        var c = e => {
+          e = `${"" + a.SkillJsonExportPath + C}/${e}/${t}.json`;
+          if (UE.BlueprintPathsLibrary.FileExists(e)) {
+            return e;
+          } else {
+            return "";
           }
-        } else if (t && Log_1.Log.CheckError()) {
-          Log_1.Log.Error("World", 4, "[预加载] 不存在技能配置文件", ["Path", a], ["是否公共技能", n], ["是否拥有蒙太奇", l], ["CreatureDataId", e.CreatureDataComponent?.GetCreatureDataId()]);
+        };
+        let e = "";
+        for (const m of o.FightAssetManager.SkillAssetManager.LoadTypeList) {
+          if ((e = c(m)).length) {
+            break;
+          }
+        }
+        if (e = e || c(0)) {
+          u = (n = "", puerts_1.$ref)("");
+          UE.KuroStaticLibrary.LoadFileToString(u, e);
+          if ((n = (0, puerts_1.$unref)(u))?.length) {
+            if (!_) {
+              _ = new PreloadDefine_1.AssetElement(o);
+              o.FightAssetManager.SkillAssetManager.AddSkill(t, _);
+            }
+            u = JSON.parse(n);
+            this.ypr(u.AssetRecord, _);
+          }
+          PreloadControllerNew.Hj1.Stop();
+        } else {
+          if (r && Log_1.Log.CheckError()) {
+            Log_1.Log.Error("World", 4, "[预加载] 不存在技能配置文件", ["Path", e], ["是否公共技能", i], ["是否拥有蒙太奇", l], ["CreatureDataId", o.CreatureDataComponent?.GetCreatureDataId()]);
+          }
+          PreloadControllerNew.Hj1.Stop();
         }
       }
-      PreloadControllerNew.Hj1.Stop();
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("World", 4, "[预加载] 角色蓝图无效", ["SkillId", o], ["CreatureDataId", e.CreatureDataComponent?.GetCreatureDataId()]);
+        Log_1.Log.Error("World", 4, "[预加载] 角色蓝图无效", ["SkillId", t], ["CreatureDataId", o.CreatureDataComponent?.GetCreatureDataId()]);
       }
       PreloadControllerNew.Hj1.Stop();
     }
@@ -1145,14 +1164,14 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     PreloadControllerNew.Hj1.Start();
     var r;
     var a = ModelManager_1.ModelManager.PreloadModelNew;
-    var i = a.GetCommonSkill(e);
-    let n = false;
+    var n = a.GetCommonSkill(e);
+    let i = false;
     let l = false;
     let _ = undefined;
-    if (i) {
-      n = true;
-      l = i[0];
-      var s = i[1];
+    if (n) {
+      i = true;
+      l = n[0];
+      var s = n[1];
       _ = new PreloadDefine_1.AssetElement(undefined);
       o.SkillAssetManager.AddSkill(e, _);
       for (let e = 0; e < s.NeedLoadAssets.length; e++) {
@@ -1163,27 +1182,27 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     if (o.BlueprintClassPath?.length) {
       if (PublicUtil_1.PublicUtil.UseDbConfig()) {
-        if (i = o.SkillAssetManager.GetEntitySkillPreload(e)) {
+        if (n = o.SkillAssetManager.GetEntitySkillPreload(e)) {
           _ = _ || new PreloadDefine_1.AssetElement(undefined);
           o.SkillAssetManager.AddSkill(e, _);
-          this.ypr(i, _);
+          this.ypr(n, _);
         }
       } else {
-        i = (i = o.BlueprintClassPath.substring(CHARACTER_PREFIX_PATH.length)).substring(0, i.lastIndexOf("."));
-        a = `${"" + a.SkillJsonExportPath + i}/${e}.json`;
+        n = (n = o.BlueprintClassPath.substring(CHARACTER_PREFIX_PATH.length)).substring(0, n.lastIndexOf("."));
+        a = `${"" + a.SkillJsonExportPath + n}/${e}.json`;
         if (UE.BlueprintPathsLibrary.FileExists(a)) {
-          r = (i = "", puerts_1.$ref)("");
+          r = (n = "", puerts_1.$ref)("");
           UE.KuroStaticLibrary.LoadFileToString(r, a);
-          if ((i = (0, puerts_1.$unref)(r))?.length) {
+          if ((n = (0, puerts_1.$unref)(r))?.length) {
             if (!_) {
               _ = new PreloadDefine_1.AssetElement(undefined);
               o.SkillAssetManager.AddSkill(e, _);
             }
-            r = JSON.parse(i);
+            r = JSON.parse(n);
             this.ypr(r.AssetRecord, _);
           }
         } else if (t && Log_1.Log.CheckError()) {
-          Log_1.Log.Error("World", 4, "[预加载] 不存在技能配置文件", ["Path", a], ["是否公共技能", n], ["是否拥有蒙太奇", l]);
+          Log_1.Log.Error("World", 4, "[预加载] 不存在技能配置文件", ["Path", a], ["是否公共技能", i], ["是否拥有蒙太奇", l]);
         }
       }
       PreloadControllerNew.Hj1.Stop();
@@ -1195,47 +1214,47 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
     }
     return _;
   }
-  static async CollectModelAssetSkillMap(i) {
-    var e = i.BlueprintClassPath;
+  static async CollectModelAssetSkillMap(n) {
+    var e = n.BlueprintClassPath;
     if (e?.length) {
       e = ConfigManager_1.ConfigManager.WorldConfig.GetCharacterFightInfo(e);
       if (e) {
         e = e.SkillDataTable.ToAssetPathName();
-        const n = new CustomPromise_1.CustomPromise();
+        const i = new CustomPromise_1.CustomPromise();
         ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.DataTable, (e, o) => {
           if (e) {
             var t = new Array();
             DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(e, t);
             for (const a of t) {
               var r = Number(a);
-              this.ModelAssetElementCollectAssetBySkillId(r, i, false);
+              this.ModelAssetElementCollectAssetBySkillId(r, n, false);
             }
           }
-          n.SetResult();
+          i.SetResult();
         });
-        await n.Promise;
+        await i.Promise;
       }
     }
   }
-  static async CollectModelAssetBulletMap(i) {
-    var e = i.BlueprintClassPath;
+  static async CollectModelAssetBulletMap(n) {
+    var e = n.BlueprintClassPath;
     if (e?.length) {
       e = ConfigManager_1.ConfigManager.WorldConfig.GetCharacterFightInfo(e);
       if (e) {
         e = e.BulletDataTable.ToAssetPathName();
-        const n = new CustomPromise_1.CustomPromise();
+        const i = new CustomPromise_1.CustomPromise();
         ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.DataTable, (e, o) => {
           if (e) {
             var t = new Array();
             DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(e, t);
             for (const a of t) {
               var r = BigInt(a);
-              this.ModelAssetElementCollectAssetByBulletId(i, r);
+              this.ModelAssetElementCollectAssetByBulletId(n, r);
             }
           }
-          n.SetResult();
+          i.SetResult();
         });
-        await n.Promise;
+        await i.Promise;
       }
     }
   }
@@ -1256,22 +1275,22 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       if (!(r = (0, puerts_1.$unref)(a))?.length) {
         return;
       }
-      const i = new PreloadDefine_1.AssetElement(e);
-      e.FightAssetManager.BulletAssetManager.AddBullet(o, i);
+      const n = new PreloadDefine_1.AssetElement(e);
+      e.FightAssetManager.BulletAssetManager.AddBullet(o, n);
       a = JSON.parse(r);
-      this.ypr(a.AssetRecord, i);
-      return i;
+      this.ypr(a.AssetRecord, n);
+      return n;
     }
     PreloadControllerNew.a31.Start();
     r = t.GetBulletPreloadData(e.BlueprintClassPath, o);
     if (r) {
-      const i = new PreloadDefine_1.AssetElement(e);
-      e.FightAssetManager.BulletAssetManager.AddBullet(o, i);
+      const n = new PreloadDefine_1.AssetElement(e);
+      e.FightAssetManager.BulletAssetManager.AddBullet(o, n);
       PreloadControllerNew.a31.Stop();
       PreloadControllerNew.h31.Start();
-      this.ypr(r, i);
+      this.ypr(r, n);
       PreloadControllerNew.h31.Stop();
-      return i;
+      return n;
     }
     PreloadControllerNew.a31.Stop();
   }
@@ -1292,22 +1311,22 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       if (!(r = (0, puerts_1.$unref)(a))?.length) {
         return;
       }
-      const i = new PreloadDefine_1.AssetElement(undefined);
-      e.BulletAssetManager.AddAsset(o, i);
+      const n = new PreloadDefine_1.AssetElement(undefined);
+      e.BulletAssetManager.AddAsset(o, n);
       a = JSON.parse(r);
-      this.ypr(a.AssetRecord, i);
-      return i;
+      this.ypr(a.AssetRecord, n);
+      return n;
     }
     PreloadControllerNew.a31.Start();
     r = t.GetBulletPreloadData(e.BlueprintClassPath, o);
     if (r) {
-      const i = new PreloadDefine_1.AssetElement(undefined);
-      e.BulletAssetManager.AddAsset(o, i);
+      const n = new PreloadDefine_1.AssetElement(undefined);
+      e.BulletAssetManager.AddAsset(o, n);
       PreloadControllerNew.a31.Stop();
       PreloadControllerNew.h31.Start();
-      this.ypr(r, i);
+      this.ypr(r, n);
       PreloadControllerNew.h31.Stop();
-      return i;
+      return n;
     }
     PreloadControllerNew.a31.Stop();
   }
@@ -1345,16 +1364,16 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       if (!(r = (0, puerts_1.$unref)(a))?.length) {
         return;
       }
-      const i = new PreloadDefine_1.AssetElement(e);
+      const n = new PreloadDefine_1.AssetElement(e);
       a = JSON.parse(r);
-      this.ypr(a.AssetRecord, i);
-      return i;
+      this.ypr(a.AssetRecord, n);
+      return n;
     }
     r = t.GetStateMachinePreloadData(o);
     if (r) {
-      const i = new PreloadDefine_1.AssetElement(e);
-      this.ypr(r, i);
-      return i;
+      const n = new PreloadDefine_1.AssetElement(e);
+      this.ypr(r, n);
+      return n;
     }
   }
   static RemoveSkill(e, o) {
@@ -1382,24 +1401,24 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
         var r = t;
         var a = r.EffectData.Num();
         for (let e = 0; e < a; ++e) {
-          var i;
-          var n = r.EffectData.GetKey(e);
-          if (n?.IsValid()) {
-            if (n.IsA(UE.EffectModelGroup_C.StaticClass())) {
+          var n;
+          var i = r.EffectData.GetKey(e);
+          if (i?.IsValid()) {
+            if (i.IsA(UE.EffectModelGroup_C.StaticClass())) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Preload", 4, "[预加载]子特效不能是DA_Fx_Group", ["父特效", t.GetName()], ["子特效", n.GetName()]);
+                Log_1.Log.Error("Preload", 4, "[预加载]子特效不能是DA_Fx_Group", ["父特效", t.GetName()], ["子特效", i.GetName()]);
               }
             } else {
-              this.upr(o, n);
-              if (n.IsA(UE.EffectModelSkeletalMesh_C.StaticClass())) {
-                if ((i = n.AnimationRef)?.IsValid()) {
-                  if (i.IsA(UE.AnimSequence.StaticClass())) {
-                    this.lpr(o, i, animBuffList);
-                  } else if (i.IsA(UE.AnimMontage.StaticClass())) {
-                    this.hpr(o, i, animBuffList);
+              this.upr(o, i);
+              if (i.IsA(UE.EffectModelSkeletalMesh_C.StaticClass())) {
+                if ((n = i.AnimationRef)?.IsValid()) {
+                  if (n.IsA(UE.AnimSequence.StaticClass())) {
+                    this.lpr(o, n, animBuffList);
+                  } else if (n.IsA(UE.AnimMontage.StaticClass())) {
+                    this.hpr(o, n, animBuffList);
                   }
                 } else if (Log_1.Log.CheckError()) {
-                  Log_1.Log.Error("Preload", 4, "[预加载]特效的mesh没有配置动画", ["父特效", t.GetName()], ["子特效", n.GetName()]);
+                  Log_1.Log.Error("Preload", 4, "[预加载]特效的mesh没有配置动画", ["父特效", t.GetName()], ["子特效", i.GetName()]);
                 }
               }
             }
@@ -1422,17 +1441,17 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       }
     }
     if (e.Effects) {
-      for (const i of e.Effects) {
-        o.AddEffect(i);
+      for (const n of e.Effects) {
+        o.AddEffect(n);
         var t = o.GetEntityAssetElement()?.Entity?.Id;
         if (t) {
-          ModelManager_1.ModelManager.PreloadModelNew.PreCreateEffect.AddPreCreateEffect(t, i);
+          ModelManager_1.ModelManager.PreloadModelNew.PreCreateEffect.AddPreCreateEffect(t, n);
         }
       }
     }
     if (e.Audios) {
-      for (const n of e.Audios) {
-        o.AddAudio(n);
+      for (const i of e.Audios) {
+        o.AddAudio(i);
       }
     }
     if (e.Materials) {

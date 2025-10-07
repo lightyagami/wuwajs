@@ -7,9 +7,7 @@ exports.SpecialTransitionController = undefined;
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
-const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
-const TimeUtil_1 = require("../../Common/TimeUtil");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class SpecialTransitionController extends ControllerBase_1.ControllerBase {
@@ -111,8 +109,7 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
   }
   static async OpenSpecialTransitionLoading(e, o) {
     if (ModelManager_1.ModelManager.SpecialTransitionModel.SetSpecialTransitionParams(e)) {
-      const r = e.FlowParams;
-      var i = r.FadeInEffect;
+      var i = e.FlowParams.FadeInEffect;
       var a = i?.FadeInTime;
       var n = i?.FadeColor;
       if (a !== undefined && n !== undefined) {
@@ -122,45 +119,36 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
           }
         }, a, n);
       }
-      var a = e.ViewParams;
-      const t = i?.FadeOutTime;
-      ModelManager_1.ModelManager.SpecialTransitionModel.KeepShowPromise = new CustomPromise_1.CustomPromise();
+      var a = i?.FadeOutTime;
+      const r = new CustomPromise_1.CustomPromise();
       ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(20, 6, () => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Loading", 87, "SpecialTransition:打开SpecialTransitionView(完成)");
         }
-        if (t === undefined) {
-          this.iBd(r.KeepTime);
-        }
-      }, a);
-      if (t !== undefined) {
+        r.SetResult();
+      }, e);
+      if (a !== undefined) {
         ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0, () => {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 87, "SpecialTransition:进入效果：黑幕淡出(完成)");
           }
-          this.iBd(r.KeepTime);
-        }, t);
+        }, a);
       }
+      this.iBd(e);
       if (o) {
-        await this.CloseSpecialTransitionLoading();
+        this.CloseSpecialTransitionLoading();
       }
+      await r.Promise;
     }
   }
-  static async iBd(e) {
-    if (e === undefined) {
-      ModelManager_1.ModelManager.SpecialTransitionModel.KeepShowPromise?.SetResult();
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Loading", 87, "SpecialTransitionView 没有配置持续时间，直接返回");
-      }
-    } else {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Loading", 87, "SpecialTransitionView 开始等待显示");
-      }
-      await TimerSystem_1.GameplayTimerSystem.Wait(e * TimeUtil_1.TimeUtil.InverseMillisecond);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Loading", 87, "SpecialTransitionView 等待显示完成");
-      }
-      ModelManager_1.ModelManager.SpecialTransitionModel.KeepShowPromise?.SetResult();
+  static iBd(e) {
+    if (e.FlowParams.KeepTime !== undefined) {
+      ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(21, 6, () => {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Loading", 87, "SpecialTransitionView 等待显示完成");
+        }
+      }, e);
+      ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(21);
     }
   }
   static async CloseSpecialTransitionLoading() {
@@ -168,8 +156,6 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
     var o;
     var i = ModelManager_1.ModelManager.SpecialTransitionModel.GetSpecialTransitionParams();
     if (i) {
-      await ModelManager_1.ModelManager.SpecialTransitionModel.KeepShowPromise?.Promise;
-      ModelManager_1.ModelManager.SpecialTransitionModel.KeepShowPromise = undefined;
       o = (i = i.FlowParams.FadeOutEffect)?.FadeInTime;
       e = i?.FadeColor;
       if (o !== undefined && e !== undefined) {

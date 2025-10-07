@@ -34,9 +34,6 @@ class RoleDevCultivateProject {
   get SkillTreeConfigArray() {
     return GameUtils_1.GameUtils.ConvertToArray(this.skilltreeconfigarrayLength(), this.skilltreeconfigarray, this);
   }
-  get SkillOuterAttributeConfigArray() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.skillouterattributeconfigarrayLength(), this.skillouterattributeconfigarray, this);
-  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -160,33 +157,6 @@ class RoleDevCultivateProject {
   }
   skilltreeconfigarrayArray() {
     var t = this.J7.__offset(this.z7, 18);
-    if (t) {
-      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
-  GetSkillouterattributeconfigarrayAt(t) {
-    return this.skillouterattributeconfigarray(t);
-  }
-  skillouterattributeconfigarray(t) {
-    var e = this.J7.__offset(this.z7, 20);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
-    } else {
-      return 0;
-    }
-  }
-  skillouterattributeconfigarrayLength() {
-    var t = this.J7.__offset(this.z7, 20);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  skillouterattributeconfigarrayArray() {
-    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

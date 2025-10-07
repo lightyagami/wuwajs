@@ -8,12 +8,15 @@ class RoleDevWeaponViewItemDataBase {
   constructor() {
     this.RoleIdInternal = 0;
     this.RoleTypeInternal = 0;
+    this.RoleDevViewModelInternal = undefined;
   }
-  InitByRoleId(e, t) {
+  InitByRoleId(e, t, s) {
     this.RoleIdInternal = e;
     this.RoleTypeInternal = t;
-    this.InitByRoleType(e);
+    this.RoleDevViewModelInternal = s;
+    this.InitByRoleType(e, s);
   }
+  CheckTabType() {}
   get RoleId() {
     return this.RoleIdInternal;
   }
@@ -34,6 +37,12 @@ class RoleDevWeaponViewItemDataBase {
   }
   get IsRoleObtainedType() {
     return this.RoleType === 0;
+  }
+  get TabType() {
+    return this.RoleDevViewModelInternal.GetRoleWeaponTabType(this.RoleId);
+  }
+  set TabType(e) {
+    this.RoleDevViewModelInternal.SetRoleWeaponTabType(this.RoleId, e);
   }
 }
 exports.RoleDevWeaponViewItemDataBase = RoleDevWeaponViewItemDataBase;

@@ -205,9 +205,12 @@ class MenuView extends UiViewBase_1.UiViewBase {
           this.uHa();
         } else {
           this.peh();
-          this.Xpt?.SetSelected(false);
+          if (this.Xpt?.GetMenuData()?.GetEnable()) {
+            this.Xpt?.SetSelected(false);
+          }
           this.Xpt?.SetDetailVisible(false);
           e.SetDetailVisible(!i.GetIsDetailTextVisible());
+          e.SetSelected(true);
           this.Xpt = e;
           this.lHa = i;
           t = e.MenuScrollItemData;

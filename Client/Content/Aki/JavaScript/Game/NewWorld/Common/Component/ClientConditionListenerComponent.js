@@ -1,21 +1,21 @@
 "use strict";
 
 var ClientConditionListenerComponent_1;
-var __decorate = this && this.__decorate || function (e, t, n, o) {
+var __decorate = this && this.__decorate || function (e, n, t, o) {
   var i;
   var r = arguments.length;
-  var l = r < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, n) : o;
+  var l = r < 3 ? n : o === null ? o = Object.getOwnPropertyDescriptor(n, t) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    l = Reflect.decorate(e, t, n, o);
+    l = Reflect.decorate(e, n, t, o);
   } else {
     for (var s = e.length - 1; s >= 0; s--) {
       if (i = e[s]) {
-        l = (r < 3 ? i(l) : r > 3 ? i(t, n, l) : i(t, n)) || l;
+        l = (r < 3 ? i(l) : r > 3 ? i(n, t, l) : i(n, t)) || l;
       }
     }
   }
   if (r > 3 && l) {
-    Object.defineProperty(t, n, l);
+    Object.defineProperty(n, t, l);
   }
   return l;
 };
@@ -32,10 +32,10 @@ const LevelListenerCenter_1 = require("../../../LevelGamePlay/LevelListeners/Lev
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 class ConditionListenInfo {
-  constructor(e, t, n) {
+  constructor(e, n, t) {
     this.ListenType = e;
-    this.ConditionListener = t;
-    this.CheckResult = n;
+    this.ConditionListener = n;
+    this.CheckResult = t;
     this.LevelListenerIds = [];
   }
 }
@@ -50,8 +50,8 @@ let ClientConditionListenerComponent = ClientConditionListenerComponent_1 = clas
     if (!e) {
       return false;
     }
-    for (const t of e.Listeners) {
-      this.ydc(t);
+    for (const n of e.Listeners) {
+      this.ydc(n);
     }
     return true;
   }
@@ -63,57 +63,65 @@ let ClientConditionListenerComponent = ClientConditionListenerComponent_1 = clas
   Rkd() {
     if (this.Cdc) {
       for (const e of this.Cdc.values()) {
-        for (const t of e.LevelListenerIds) {
-          LevelListenerCenter_1.LevelListenerCenter.UnListenTo(t);
+        for (const n of e.LevelListenerIds) {
+          LevelListenerCenter_1.LevelListenerCenter.UnListenTo(n);
         }
       }
     }
   }
   ydc(e) {
-    var t = ModelManager_1.ModelManager.LevelGeneralModel.MakeConditionGroupIncId();
-    var n = LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id);
-    var n = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e.Condition, undefined, n);
-    if (n) {
-      this.m8(e);
+    var n = ModelManager_1.ModelManager.LevelGeneralModel.MakeConditionGroupIncId();
+    var t = LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id);
+    var o = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e.Condition, undefined, t);
+    if (o) {
+      this.m8(e, t);
     }
-    var o = new ConditionListenInfo(1, e, n);
-    this.Cdc?.set(t, o);
-    for (const r of e.Condition.Conditions) {
-      var i = LevelListenerCenter_1.LevelListenerCenter.ListenToCondition(r.Type, r, this.wkd.bind(this, t), LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
-      o.LevelListenerIds.push(i);
+    var i = new ConditionListenInfo(1, e, o);
+    this.Cdc?.set(n, i);
+    for (const l of e.Condition.Conditions) {
+      var r = LevelListenerCenter_1.LevelListenerCenter.ListenToCondition(l.Type, l, this.wkd.bind(this, n), LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
+      i.LevelListenerIds.push(r);
     }
   }
-  wkd(e, t) {
-    var n = this.Cdc?.get(e);
-    if (n) {
-      var o = n.CheckResult;
+  wkd(e, n) {
+    var t = this.Cdc?.get(e);
+    if (t) {
+      var o = t.CheckResult;
       var i = LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id);
       let e = undefined;
-      e = t && t instanceof LevelGeneralContextDefine_1.ClientEventContext ? LevelGeneralContextDefine_1.CombinationContext.Create(i, t) : i;
-      var r = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(n.ConditionListener.Condition, undefined, e);
-      n.CheckResult = r;
-      switch (n.ListenType) {
+      e = n && n instanceof LevelGeneralContextDefine_1.ClientEventContext ? LevelGeneralContextDefine_1.CombinationContext.Create(i, n) : i;
+      var r = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t.ConditionListener.Condition, undefined, e);
+      t.CheckResult = r;
+      switch (t.ListenType) {
         case 1:
           if (r) {
-            this.m8(n.ConditionListener);
+            this.m8(t.ConditionListener, e);
           }
           break;
         case 0:
           if (r && o !== r) {
-            this.m8(n.ConditionListener);
+            this.m8(t.ConditionListener, e);
           }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelCondition", 72, "条件监听信息不存在", ["incId", e]);
     }
   }
-  m8(e) {
-    var t = LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id);
-    t.ClientExecuteActions = true;
-    ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e.Actions, t);
+  m8(e, n) {
+    if (n instanceof LevelGeneralContextDefine_1.EntityContext) {
+      n.ClientExecuteActions = true;
+    }
+    if (n instanceof LevelGeneralContextDefine_1.CombinationContext && n.Contexts) {
+      for (const t of n.Contexts) {
+        if (t instanceof LevelGeneralContextDefine_1.EntityContext) {
+          t.ClientExecuteActions = true;
+        }
+      }
+    }
+    ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsNew(e.Actions, n);
     if (e.SendSelfEvent) {
-      t = this.Entity.GetComponent(0);
-      LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(t.GetCreatureDataId(), e.SendSelfEvent);
+      n = this.Entity.GetComponent(0);
+      LevelGeneralNetworks_1.LevelGeneralNetworks.RequestEntitySendEvent(n.GetCreatureDataId(), e.SendSelfEvent);
     }
   }
 };

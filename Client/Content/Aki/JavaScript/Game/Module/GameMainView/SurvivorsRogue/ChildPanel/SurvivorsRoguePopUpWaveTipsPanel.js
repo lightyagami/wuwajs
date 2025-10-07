@@ -28,6 +28,9 @@ class SurvivorsRoguePopUpWaveTipsPanel extends UiPanelBase_1.UiPanelBase {
     this.x4d = false;
     this.$An = e => {
       if (e === "TipsShow") {
+        if (ModelManager_1.ModelManager.SurvivorsRogueModel.IsEndlessWave) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips);
+        }
         if (ModelManager_1.ModelManager.SurvivorsRogueModel.IsBonusWave) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips);
         }

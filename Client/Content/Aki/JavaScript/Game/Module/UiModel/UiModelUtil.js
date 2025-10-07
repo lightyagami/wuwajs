@@ -8,7 +8,6 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
@@ -89,48 +88,30 @@ class UiModelUtil {
     e.Model.CheckGetComponent(30)?.ReplaceSelectMaterial(t);
   }
   static DangoFadeIn(e, t = "RoleFadeInCurve", a) {
-    const r = e.Model.CheckGetComponent(8);
-    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
-      var t;
-      if (e) {
-        t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
-        r?.Fade(1, 0, t, e, a);
-      }
-    });
+    var e = e.Model.CheckGetComponent(8);
+    var r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
+    e?.Fade(1, 0, r, t, a);
   }
   static DangoFadeOut(e, t = "RoleFadeOutCurve", a) {
-    const r = e.Model.CheckGetComponent(8);
-    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
-      var t;
-      if (e) {
-        t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
-        r?.Fade(0, 1, t, e, a);
-      }
-    });
+    var e = e.Model.CheckGetComponent(8);
+    var r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
+    e?.Fade(0, 1, r, t, a);
   }
-  static ModelFadeIn(e, t = "RoleFadeInCurve") {
-    const a = e.CheckGetComponent(8);
-    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
-      var t;
-      if (e) {
-        t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
-        a?.Fade(1, 0, t, e);
-      }
-    });
+  static ModelFadeIn(e, t = "RoleFadeInCurve", a) {
+    var r;
+    if (e) {
+      e = e.CheckGetComponent(8);
+      r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
+      e?.Fade(1, 0, r, t, a);
+    }
   }
-  static ModelFadeOut(e, t = "RoleFadeOutCurve") {
-    const a = e.CheckGetComponent(8);
-    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
-      var t;
-      if (e) {
-        t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
-        a?.Fade(0, 1, t, e);
-      }
-    });
+  static ModelFadeOut(e, t = "RoleFadeOutCurve", a) {
+    var r;
+    if (e) {
+      e = e.CheckGetComponent(8);
+      r = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
+      e?.Fade(0, 1, r, t, a);
+    }
   }
   static SetDitherEffect(e, t) {
     e.CheckGetComponent(0)?.SetDitherEffect(t);

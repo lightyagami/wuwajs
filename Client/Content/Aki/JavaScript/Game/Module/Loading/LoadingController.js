@@ -111,9 +111,8 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Loading", 8, "打开Loading界面", ["从登录界面进入大世界", a]);
       }
-      if (a) {
-        UiLoginSceneManager_1.UiLoginSceneManager.Destroy();
-        await this.RequestLoadingConfigAsync();
+      if (a && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 63, "预备请求Loading配置"), UiLoginSceneManager_1.UiLoginSceneManager.Destroy(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Loading", 63, "请求Loading配置"), await this.RequestLoadingConfigAsync(), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Loading", 63, "结束请求Loading配置");
       }
       LoadingController.OpenLoadingView(undefined, e);
     }
@@ -203,8 +202,16 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestLoadingConfigAsync() {
     var e = new Protocol_1.Aki.Protocol.oqc();
-    var e = await Net_1.Net.CallAsync(16316, e);
-    return !!e && (ModelManager_1.ModelManager.LoadingModel?.SetLoadingConfig(e.sqc), true);
+    var e = await Net_1.Net.CallAsync(16316, e, 3000);
+    if (e) {
+      ModelManager_1.ModelManager.LoadingModel?.SetLoadingConfig(e.sqc);
+      return true;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Loading", 63, "RequestLoadingConfigAsync无有效返回");
+      }
+      return false;
+    }
   }
 }
 exports.LoadingController = LoadingController;

@@ -10,11 +10,12 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
+const SortViewData_1 = require("../../../Common/FilterSort/Sort/Model/SortViewData");
 const SmallItemGrid_1 = require("../../../Common/SmallItemGrid/SmallItemGrid");
 const SkipTaskManager_1 = require("../../../SkipInterface/SkipTaskManager");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const WeaponController_1 = require("../../../Weapon/WeaponController");
+const RoleDevUtils_1 = require("../RoleDevUtils");
 class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
@@ -84,6 +85,7 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.fOe.SetLocalTextNew("RoleProject_Tips02");
     this.G0d.SetFunction(this.j0d);
     this.G0d.SetLocalTextNew("RoleProject_Button04");
+    this.G0d.SetRedDotVisible(false);
   }
   Refresh(t, e, i) {
     this.Pe = t;
@@ -96,10 +98,9 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   PKt(t) {
     this.GetItem(7)?.SetUIActive(t.IsEquipped);
-    this.GetButton(2).RootUIComp.SetUIActive(!t.IsEquipped && t.IsCall && !t.NotObtained);
+    this.GetButton(2).RootUIComp.SetUIActive(!t.IsEquipped && t.IsCall);
     this.o9i(t);
     this.$0d(t);
-    this.GetNotObtainedButtonState(t);
     this.ssc(t);
   }
   ssc(t) {
@@ -112,62 +113,88 @@ class RoleDevRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   o9i(t) {
     if (this.fOe) {
-      if (t.NotObtained || t.IsEquipped) {
-        this.fOe.SetUiActive(false);
-      } else {
+      if (t.IsObtained && !t.IsEquipped) {
         t = t.HasRole ? "RoleProject_Button05" : "RoleProject_Button06";
         this.fOe.SetLocalTextNew(t);
         t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.Pe.WeaponId);
         this.fOe.SetUiActive(t > 0);
+      } else {
+        this.fOe.SetUiActive(false);
       }
     }
   }
   $0d(t) {
-    if (!(ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.WeaponId) > 0)) {
-      if (t.NotObtained && t.WeaponJumpGroupConfig?.PathDescribe !== undefined) {
-        t = t.WeaponJumpGroupConfig?.PathDescribe;
-        this.G0d.SetLocalTextNew(t);
-        this.G0d.SetUiActive(true);
-      } else {
-        this.G0d.SetUiActive(false);
-      }
-    }
-  }
-  GetNotObtainedButtonState(t) {
-    var e;
-    var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.WeaponId);
-    if (!this.xpd(t) || i > 0) {
-      this.GetItem(4)?.SetUIActive(false);
+    var e = this.GetItem(4);
+    if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.WeaponId) > 0) {
       this.G0d.SetUiActive(false);
+      e.SetUIActive(false);
+    } else if (t.WeaponJumpGroupConfig.JumpPath !== 0) {
+      this.G0d.SetLocalTextNew(t.WeaponJumpGroupConfig.PathDescribe);
+      this.G0d.SetUiActive(true);
+      e.SetUIActive(false);
     } else {
-      i = t.WeaponJumpGroupConfig;
-      e = this.GetItem(4);
-      if (i && i.JumpType === 3) {
-        if (t.IsCall) {
-          this.G0d.SetUiActive(true);
-          e?.SetUIActive(false);
-        } else {
-          this.G0d.SetUiActive(i.PathDescribe !== undefined);
-          e?.SetUIActive(true);
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "RoleProject_Access_None");
-        }
+      this.G0d.SetUiActive(false);
+      e.SetUIActive(true);
+      if (t.IsCall || t.WeaponJumpGroupConfig.JumpType !== 1) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), t.WeaponJumpGroupConfig.PathDescribe);
       } else {
-        this.G0d.SetUiActive(false);
-        e?.SetUIActive(true);
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "RoleProject_Access_01");
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "RoleProject_Access_None");
       }
     }
-  }
-  xpd(t) {
-    return t.WeaponQuality === 5;
   }
   N0d() {
-    var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.Pe.RoleId).GetIncId();
-    var e = this.Pe.WeaponId;
-    WeaponController_1.WeaponController.OpenWeaponReplaceView(this.Pe.RoleId, t, false, e);
+    var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.Pe.RoleId);
+    var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponListFromReplace(t.GetWeaponConfig().WeaponType);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortId(3);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(e);
+    var i = new SortViewData_1.SortResultData();
+    i.SetConfigId(e.Id);
+    i.SetIsAscending(false);
+    var r = e.BaseSortList[0];
+    var a = ConfigManager_1.ConfigManager.SortConfig.GetSortRuleName(r, e.DataId);
+    i.SetSelectBaseSort([r, a]);
+    ModelManager_1.ModelManager.SortModel.SortDataList(t, e.Id, i);
+    let s = -1;
+    let o = -1;
+    for (const h of t) {
+      if (h.GetConfigId() === this.Pe.WeaponId) {
+        var n = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(h.GetUniqueId());
+        if (n) {
+          if (n.GetRoleId() === 0) {
+            o = h.GetUniqueId();
+            break;
+          }
+          if (s < 0) {
+            s = h.GetUniqueId();
+          }
+        }
+      }
+    }
+    if (o < 0) {
+      o = s;
+    }
+    RoleDevUtils_1.RoleDevUtils.OpenWeaponReplaceView(this.Pe.RoleId, o);
   }
   V0d() {
-    UiManager_1.UiManager.OpenView("InventoryView", this.Pe.WeaponId);
+    var t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(this.Pe.WeaponId);
+    var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponListFromReplace(t.WeaponType);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortId(3);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(e);
+    var i = new SortViewData_1.SortResultData();
+    i.SetConfigId(e.Id);
+    i.SetIsAscending(false);
+    var r = e.BaseSortList[0];
+    var a = ConfigManager_1.ConfigManager.SortConfig.GetSortRuleName(r, e.DataId);
+    i.SetSelectBaseSort([r, a]);
+    ModelManager_1.ModelManager.SortModel.SortDataList(t, e.Id, i);
+    let s = undefined;
+    for (const o of t) {
+      if (o.GetConfigId() === this.Pe.WeaponId) {
+        s = o.GetUniqueId();
+        break;
+      }
+    }
+    UiManager_1.UiManager.OpenView("InventoryView", s);
   }
   H0d(t) {
     this.MSd(t);

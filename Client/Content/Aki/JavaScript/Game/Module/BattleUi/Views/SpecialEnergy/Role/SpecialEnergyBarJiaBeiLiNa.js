@@ -41,7 +41,7 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UISprite], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UINiagara]];
   }
   OnInitData() {
     this.ps1 = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(MORPH_CONFIG_ID);
@@ -82,15 +82,20 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
     }
     this._Oe(true);
     this.OnBarPercentChanged();
+    this.uQd(true);
   }
-  uQd() {
-    let i = 0;
-    if ((i = this.sQd && (this.bst && this.BuffComponent?.GetBuffByHandle(this.p2a) || this.tst(), this.bst) ? this.bst.GetRemainDuration() / this.bst.Duration : i) !== this.aQd) {
-      this.aQd = i;
-      this.GetSprite(6)?.SetFillAmount(i);
-      this.GetSprite(2)?.SetFillAmount(i);
-      this.GetItem(7)?.SetAnchorOffsetX((i - 0.5) * 320);
-      this.GetItem(3)?.SetAnchorOffsetX((i - 0.5) * 289);
+  OnBeforeShow() {
+    super.OnBeforeShow();
+    this.GetUiNiagara(13)?.SetUIActive(false);
+  }
+  uQd(i = false) {
+    let t = 0;
+    if ((t = this.sQd && (this.bst && this.BuffComponent?.GetBuffByHandle(this.p2a) || this.tst(), this.bst) ? this.bst.GetRemainDuration() / this.bst.Duration : t) !== this.aQd || !!i) {
+      this.aQd = t;
+      this.GetSprite(6)?.SetFillAmount(t);
+      this.GetSprite(2)?.SetFillAmount(t);
+      this.GetItem(7)?.SetAnchorOffsetX((t - 0.5) * 320);
+      this.GetItem(3)?.SetAnchorOffsetX((t - 0.5) * 289);
     }
   }
   _Oe(i = false) {
@@ -110,13 +115,15 @@ class SpecialEnergyBarJiaBeiLiNa extends SpecialEnergyBarBase_1.SpecialEnergyBar
       switch (this._ii) {
         case 0:
           if (!t) {
+            this.StopTweenAnim(11);
             this.PlayTweenAnim(12);
           }
           break;
         case 1:
           if (!t) {
-            this.PlayTweenAnim(11);
+            this.StopTweenAnim(12);
           }
+          this.PlayTweenAnim(11);
       }
     }
   }

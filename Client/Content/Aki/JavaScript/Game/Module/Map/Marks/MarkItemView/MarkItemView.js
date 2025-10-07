@@ -147,7 +147,6 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
       this.GetSprite(1).SetUIActive(false);
       this.RefreshActorLabel();
       this.RefreshParentSocketTransform();
-      this.RefreshLevelSequencePlayer();
       this.Xd();
       this.ZWd();
       this.ApplyRootAnchorOffset();
@@ -189,7 +188,6 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.En_();
     this.LevelSequencePlayer?.Clear();
     this.LevelSequencePlayer = undefined;
-    this.LoadingPromiseInner = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewDestroy, this);
     this.ClearData();
   }
@@ -208,20 +206,23 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UISprite]];
   }
   OnStart() {
-    if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.Holder.MarkType)) {
-      this.CreateComponentHandles();
-    } else {
-      this.GetSprite(2).SetUIActive(false);
-      this.GetSprite(1).SetUIActive(false);
-      this.RefreshActorLabel();
-      this.RefreshParentSocketTransform();
-      this.RefreshLevelSequencePlayer();
-      this.Xd();
-      this.CreateAndInitComponentHandles();
-      this.ApplyRootAnchorOffset();
-      this.OnInitialize();
+    if (this.Holder !== undefined) {
+      if (MapDefine_1.newLifeCycleMarkTypeRecord.get(this.Holder.MarkType)) {
+        this.CreateComponentHandles();
+        this.InitLevelSequencePlayer();
+      } else {
+        this.GetSprite(2).SetUIActive(false);
+        this.GetSprite(1).SetUIActive(false);
+        this.RefreshActorLabel();
+        this.RefreshParentSocketTransform();
+        this.RefreshLevelSequencePlayer();
+        this.Xd();
+        this.CreateAndInitComponentHandles();
+        this.ApplyRootAnchorOffset();
+        this.OnInitialize();
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewCreate, this);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemViewCreate, this);
   }
   OnAfterHide() {
     this.jm();
@@ -244,6 +245,13 @@ class MarkItemView extends MarkPanelBase_1.MarkPanelBase {
     var e = this.RootItem.GetAttachSocketName();
     var t = this.RootItem.GetAttachParent();
     this.AttachParentSocketTransform = t.D_GetSocketTransform(e);
+  }
+  InitLevelSequencePlayer() {
+    if (!this.LevelSequencePlayer) {
+      this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+      this.LevelSequencePlayer.BindSequenceStartEvent(this.OnLevelSequenceStart);
+      this.LevelSequencePlayer.BindSequenceCloseEvent(this.OnLevelSequenceStop);
+    }
   }
   RefreshLevelSequencePlayer() {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);

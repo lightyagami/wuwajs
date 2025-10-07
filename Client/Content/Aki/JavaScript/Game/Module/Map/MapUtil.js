@@ -286,7 +286,7 @@ class MapUtil {
       let n = undefined;
       for (let e = 0; e < t; e++) {
         var l = o.filter(e => Vector2D_1.Vector2D.Distance(e, g) <= Vector2D_1.Vector2D.Distance(e, o[Math.floor(Math.random() * o.length)]));
-        if (l.length < o.length && (l = MapUtil.MinBoundingCircle(l)) && (!n || l.R < n.R)) {
+        if (l.length < o.length && (l = MapUtil.MinBoundingCircle(l, t)) && (!n || l.R < n.R)) {
           n = l;
         }
       }

@@ -55,7 +55,6 @@ class SurvivorsTabViewBase extends UiTabViewBase_1.UiTabViewBase {
   async Bkd() {
     this.ItemScroll = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(this.GetLoopScrollComponentIndex()), this.GetItem(this.GetLoopItemIndex()).GetOwner(), this.CreateLoopItem.bind(this), true);
     var e = this.GenerateItemUiDataList();
-    this.SortUiDataList(e);
     this.mGe(e);
     await this.ItemScroll.RefreshByDataAsync(e, false, true);
     const t = this.ExtraParams;
@@ -65,9 +64,6 @@ class SurvivorsTabViewBase extends UiTabViewBase_1.UiTabViewBase {
     }
     this.ItemScroll.SelectGridProxy(i, false);
     this.sWt(i, false);
-  }
-  SortUiDataList(e) {
-    e.sort((e, t) => e.LockState !== t.LockState ? e.LockState ? 1 : -1 : e.Id - t.Id);
   }
   sWt(e, t = true) {
     this.ItemScroll.SelectGridProxy(e);

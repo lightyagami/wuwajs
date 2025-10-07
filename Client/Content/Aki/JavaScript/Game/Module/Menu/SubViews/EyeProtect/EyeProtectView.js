@@ -33,14 +33,16 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
       return t;
     };
     this.tNd = t => {
-      var i = t + 1;
-      this.ZFd?.SelectGridProxy(t);
-      this.VmCache?.OnModeValueChange(i);
-      this.iNd();
-      if (i === 3) {
-        this.GetItem(3).SetUIActive(true);
-      } else {
-        this.GetItem(3).SetUIActive(false);
+      var i = this.qGe[t];
+      if (i) {
+        this.ZFd?.SelectGridProxy(t);
+        this.VmCache?.OnModeValueChange(i.GetModeValue());
+        this.iNd();
+        if (i.GetModeValue() === 2) {
+          this.GetItem(3).SetUIActive(true);
+        } else {
+          this.GetItem(3).SetUIActive(false);
+        }
       }
     };
     this.Bpt = t => t !== this.ZFd?.GetSelectedGridIndex();
@@ -48,18 +50,18 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
       this.rNd();
     };
     this.rNd = () => {
-      if (this.VmCache?.ModeCurValue !== 3) {
+      if (this.VmCache?.ModeCurValue !== 2) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("EyeProtectMode_Tips_ResetFail");
       } else {
         let t = undefined;
-        var i = this.VmCache.GetSliderDataList(3);
+        var i = this.VmCache.GetSliderDataList(2);
         if (i) {
           for (const e of i) {
             e.OnChangeValue(e.DefaultCurValue);
           }
           if (this.ZFd) {
             for (const s of this.ZFd.GetLayoutItemList()) {
-              if (s.Data?.GetModeValue() === 3) {
+              if (s.Data?.GetModeValue() === 2) {
                 t = s;
                 break;
               }
@@ -77,26 +79,20 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
     };
     this.zGl = () => {
       var t;
-      if (this.VmCache?.IsDirty) {
-        this.VmCache?.OnModeValueApply();
-        if (this.ZFd) {
-          this.ZFd.GetLayoutItemList().forEach(t => {
-            t.OnApply(this.VmCache.ModeCurValue);
-          });
-        }
-        if (t = this.VmCache.GetSliderDataList(3)) {
-          t.forEach(t => {
-            t.OnApplyValue();
-          });
-        }
-        this.VmCache.IsDirty = false;
+      if (this.VmCache?.IsDirty && (this.VmCache?.OnModeValueApply(), this.ZFd && this.ZFd.GetLayoutItemList().forEach(t => {
+        t.OnApply(this.VmCache.ModeCurValue);
+      }), t = this.VmCache.GetSliderDataList(2))) {
+        t.forEach(t => {
+          t.OnApplyValue();
+        });
+        this.VmCache.IsSliderDirty = false;
       }
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("EyeProtectMode_Tips_ApplySuccess");
       this.iNd();
     };
     this.oNd = t => {
-      this.GetItem(6).SetUIActive(t === 0);
-      this.GetItem(8).SetUIActive(t === 0);
+      this.GetItem(6).SetUIActive(t === 1);
+      this.GetItem(8).SetUIActive(t === 1);
     };
     this.lPe = () => {
       var t;
@@ -116,12 +112,8 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(MenuDefine_1.EYE_PROTECT_SETTING_HELP_ID);
     };
     this.iNd = () => {
-      if (this.VmCache?.IsDirty) {
-        this.ucc?.SetEnableClick(true);
-      } else {
-        this.ucc?.SetEnableClick(false);
-      }
-      this.ucc?.SetLocalTextNew("EyeProtectMode_ApplySetting");
+      var t = this.VmCache?.IsDirty;
+      this.ucc?.SetEnableClick(t);
     };
     this.bQi = t => {
       this.VmCache?.OnDragMoved?.(t);
@@ -152,9 +144,9 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
       this.ccc = new ButtonItem_1.ButtonItem();
       this.ucc = new ButtonItem_1.ButtonItem();
       await Promise.all([this.VmCache.InitParam(), this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.ccc.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()), this.ucc.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())]);
+      this.VmCache.InitSliderDataList(0);
       this.VmCache.InitSliderDataList(1);
       this.VmCache.InitSliderDataList(2);
-      this.VmCache.InitSliderDataList(3);
       this.lqe.SetHelpCallBack(this.XOe);
       this.lqe.SetCloseCallBack(this.lPe);
       this.lqe.SetCurrencyItemVisible(false);
@@ -164,6 +156,7 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
       this.ucc.SetFunction(this.Htu);
       this.ucc.SetLocalTextNew("EyeProtectMode_ApplySetting");
       this.iNd();
+      this.GetExtendToggle(5).SetToggleState(1);
       this.GetExtendToggle(5).OnStateChange.Add(this.oNd);
     }
   }
@@ -181,10 +174,11 @@ class EyeProtectView extends UiViewBase_1.UiViewBase {
     ControllerHolder_1.ControllerHolder.EyeProtectController.ApplyEyeProtectSetting();
   }
   OnStart() {
-    var t;
-    if (this.VmCache !== undefined && (this.ZFd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.eNd), this.qGe = this.VmCache.GetModeDataList(), this.ZFd.RefreshByData(this.qGe), this.VmCache.ModeCurValue)) {
-      t = this.VmCache.ModeCurValue - 1;
-      this.tNd(t ?? 0);
+    if (this.VmCache !== undefined) {
+      this.ZFd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(1), this.eNd);
+      this.qGe = this.VmCache.GetModeDataList();
+      this.ZFd.RefreshByData(this.qGe);
+      this.tNd(this.VmCache.ModeCurValue ?? 0);
     }
   }
   OnAddEventListener() {

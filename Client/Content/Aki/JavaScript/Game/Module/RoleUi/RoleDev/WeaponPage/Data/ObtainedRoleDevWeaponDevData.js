@@ -51,12 +51,17 @@ class ObtainedRoleDevWeaponDevData extends RoleDevWeaponDevItemDataBase_1.RoleDe
     return this.IsCanShowBreachItem && e === 2;
   }
   GetIsCall() {
-    var e;
-    return !!RoleDevUtils_1.RoleDevUtils.IsHotRole(this.RoleId) && (e = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(this.RoleId) ?? 0, RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(e).length > 0);
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(this.RoleId) ?? 0;
+    return RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(e).length > 0;
   }
   GetGachaId() {
-    var e;
-    return RoleDevUtils_1.RoleDevUtils.IsHotRole(this.RoleId) && (e = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(this.RoleId) ?? 0, RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(e)[0]) || 0;
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(this.RoleId) ?? 0;
+    var e = RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(e);
+    if (e.length > 0) {
+      return e[0];
+    } else {
+      return 0;
+    }
   }
   GetWeaponConfigId() {
     return ModelManager_1.ModelManager.WeaponModel.GetWeaponIdByRoleDataId(this.RoleId) ?? 0;

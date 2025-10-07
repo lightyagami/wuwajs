@@ -59,6 +59,11 @@ class FightPhotoActivityData extends ActivityData_1.ActivityBaseData {
         return false;
       }
     }
+    for (const i of this.q6c.values()) {
+      if (!i.IsFinished) {
+        return false;
+      }
+    }
     return true;
   }
   FRd() {

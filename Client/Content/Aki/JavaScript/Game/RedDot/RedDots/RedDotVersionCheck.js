@@ -19,7 +19,7 @@ class RedDotVersionCheck extends RedDotBase_1.RedDotBase {
   }
   OnCheck() {
     var e = UE.KuroLauncherLibrary.GetAppVersion();
-    return LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VersionRedDotMap) !== e && ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckIfNeedParallelPackage();
+    return LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.VersionRedDotMap) !== e && ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckParallelPackageWithCache();
   }
 }
 exports.RedDotVersionCheck = RedDotVersionCheck;

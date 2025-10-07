@@ -20,7 +20,7 @@ class PlayerTitleItem extends UiPanelBase_1.UiPanelBase {
     this.Fac = undefined;
     this.L0 = false;
     this.qac = 0;
-    this.CallBack = () => {};
+    this.CallBack = undefined;
     this.CanShowTip = true;
     this.eje = () => {
       var e;
@@ -38,14 +38,16 @@ class PlayerTitleItem extends UiPanelBase_1.UiPanelBase {
           }, () => {
             var e = UiManager_1.UiManager.GetViewByName("PlayerTitleInfoTip");
             if (e) {
-              e.BindCloseCallback(this.EUt);
+              e.BindCloseCallback(this.SetToggleState);
             }
           });
         }
-        this.CallBack();
+        if (this.CallBack) {
+          this.CallBack();
+        }
       }
     };
-    this.EUt = () => {
+    this.SetToggleState = () => {
       this.GetExtendToggle(12).SetToggleStateForce(0);
     };
   }

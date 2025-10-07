@@ -387,8 +387,7 @@ class FlowSequence {
   }
   OnQteExecute(e, i) {
     var s = this.fkl.get(e);
-    if (s && s.Options) {
-      this.L9_.set(e, -1);
+    if (s && (this.L9_.set(e, -1), s.Options) && s.Options.length !== 0) {
       for (let t = 0; t < s.Options.length; t++) {
         var o = s.Options[t];
         if (o.TypeParams) {
@@ -433,7 +432,7 @@ class FlowSequence {
       this.L9_.delete(t);
       this.fkl.delete(t);
       if (i !== -1 && (this.w9_(e, i), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", t], ["delay option index", i]);
+        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", t], ["delay option index", i], ["delay no more", this.T$i]);
       }
     }
   }
@@ -463,8 +462,10 @@ class FlowSequence {
     }
   }
   w9_(t, e) {
-    ControllerHolder_1.ControllerHolder.FlowController.SelectOption(t.Id, e);
-    this.G$i(t.Options[e].Actions, undefined, true);
+    if (t.Options && t.Options.length !== 0) {
+      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(t.Id, e);
+      this.G$i(t.Options[e].Actions, undefined, true);
+    }
   }
   G$i(t, e, i = false) {
     ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(t, t => {

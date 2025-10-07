@@ -159,7 +159,7 @@ class QuestTreeNodeUnlockConditionGender extends QuestTreeNodeUnlockConditionBas
 }
 class QuestTreeNodeUnlockConditionOpenDate extends QuestTreeNodeUnlockConditionBase {
   get IsFinished() {
-    return true;
+    return false;
   }
 }
 class QuestTreeNodeUnlockConditionPreDungeon extends QuestTreeNodeUnlockConditionBase {

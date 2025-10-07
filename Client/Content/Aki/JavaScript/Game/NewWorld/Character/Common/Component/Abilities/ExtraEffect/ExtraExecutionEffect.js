@@ -40,9 +40,12 @@ class BuffExecution extends ExtraEffectBase_1.BuffEffectBase {
     return !!this.OwnerBuffComponent?.HasBuffAuthority();
   }
   Check(t) {
-    return !!this.CheckExecutable() && (this.OpponentEntityId = this.OwnerBuffComponent.GetEntity()?.Id ?? 0, !!this.CheckLoop()) && !!this.CheckRequirements(t);
+    return !!this.CheckExecutable() && (this.OpponentEntityId = this.OwnerBuffComponent.GetEntity()?.Id ?? 0, !!this.CheckRequirements(t));
   }
   TryExecute(t, ...e) {
+    if (!this.CheckLoop()) {
+      return false;
+    }
     this.Level = t.Level;
     var i;
     var s = (this.Buff = t).GetOwnerBuffComponent();
@@ -170,7 +173,11 @@ class DamageExecution extends PeriodExecution {
             BuffId: this.BuffId
           }, {}, this.Buff.MessageId);
         }
+      } else {
+        CombatLog_1.CombatLog.Warn("Buff", this.OwnerEntity, "结算触发异常", ["handle", this.Buff?.Handle], ["buffId", this.BuffId], ["damageComponent", !e], ["hitPosition", !i], ["attacker", !s]);
       }
+    } else {
+      CombatLog_1.CombatLog.Warn("Buff", this.OwnerEntity, "触发结算异常,OwnerBuffComponent为空", ["handle", this.Buff?.Handle], ["buffId", this.BuffId]);
     }
   }
 }
@@ -305,7 +312,7 @@ class PhantomAssistExecution extends InitExecution {
     var e = this.OwnerBuffComponent.GetEntity();
     var e = e ? PhantomUtil_1.PhantomUtil.GetSummonedEntity(e, this.ZXo, this.e$o) : undefined;
     if (e) {
-      e.Entity.GetComponent(40).BeginSkill(this.wmo, {
+      e.Entity.GetComponent(40).BeginSkillAsync(this.wmo, {
         Target: this.i$o()?.Entity,
         Reason: "PhantomAssistExecution.OnExecute"
       });

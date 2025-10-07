@@ -49,6 +49,9 @@ class RoleDevProsProject {
   get RoleHeadIcon() {
     return this.roleheadicon();
   }
+  get RoleHeadIconSmall() {
+    return this.roleheadiconsmall();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -231,6 +234,14 @@ class RoleDevProsProject {
   }
   roleheadicon(t) {
     var e = this.J7.__offset(this.z7, 28);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  roleheadiconsmall(t) {
+    var e = this.J7.__offset(this.z7, 30);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

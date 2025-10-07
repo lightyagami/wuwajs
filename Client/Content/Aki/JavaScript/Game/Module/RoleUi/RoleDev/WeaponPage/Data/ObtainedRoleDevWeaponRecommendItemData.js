@@ -27,7 +27,12 @@ class ObtainedRoleDevWeaponRecommendItemData extends RoleDevWeaponRecommendItemD
     return RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(this.WeaponConfigId).length > 0;
   }
   GetGachaId() {
-    return RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(this.WeaponConfigId)[0] || 0;
+    var e = RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(this.WeaponConfigId);
+    if (e.length > 0) {
+      return e[0];
+    } else {
+      return 0;
+    }
   }
   GetIsWeaponHighQuality() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.RoleId);

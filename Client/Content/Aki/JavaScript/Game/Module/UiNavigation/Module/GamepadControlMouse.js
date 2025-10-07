@@ -9,6 +9,7 @@ const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
+const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
@@ -28,6 +29,8 @@ class GamepadControlMouse {
     this.vIa = undefined;
     this.MIa = 0;
     this.SIa = 0;
+    this.MYd = 0;
+    this.EYd = 0;
     this.EIa = 0;
     this.yIa = 0;
     this.IIa = false;
@@ -39,10 +42,10 @@ class GamepadControlMouse {
     this.TCa = undefined;
     this.uGo = undefined;
     this.DIa = Vector2D_1.Vector2D.Create();
+    this.DXd = Vector2D_1.Vector2D.Create();
     this.YFo = t => {
       this.DIa.Set(t.X, t.Y);
-      t = this.fLt.ConvertPositionFromLGUICanvasToViewport(this.DIa.ToUeVector2D());
-      this.Q_t.Set(t.X, t.Y);
+      this.Q_t.Set(this.DIa.X, this.DIa.Y);
       this.RIa();
     };
     this.lqt = () => {
@@ -62,6 +65,9 @@ class GamepadControlMouse {
     this.U9_ = this.fLt.Canvas.GetCanvasScale();
     this.MIa = UiLayer_1.UiLayer.UiRootItem.GetWidth() / 2;
     this.SIa = UiLayer_1.UiLayer.UiRootItem.GetHeight() / 2;
+    t = UiLayer_1.UiLayer.UiRootItem.GetRenderCanvas().GetViewportSize();
+    this.MYd = t.X;
+    this.EYd = t.Y;
     this.uGo = (0, puerts_1.toManualReleaseDelegate)(this.YFo);
   }
   get Q_t() {
@@ -91,20 +97,20 @@ class GamepadControlMouse {
     if (t.X > this.MIa) {
       i = t.X - this.MIa;
       t.X = this.MIa;
-      this.Q_t.X -= this.yIa;
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.MYd);
     } else if (t.X < -this.MIa) {
       i = t.X + this.MIa;
       t.X = -this.MIa;
-      this.Q_t.X -= this.yIa;
+      this.Q_t.X = MathUtils_1.MathUtils.Clamp(this.Q_t.X - this.yIa, 0, this.MYd);
     }
     if (t.Y > this.SIa) {
       e = t.Y - this.SIa;
       t.Y = this.SIa;
-      this.Q_t.Y += this.EIa;
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.EYd);
     } else if (t.Y < -this.SIa) {
       e = t.Y + this.SIa;
       t.Y = -this.SIa;
-      this.Q_t.Y += this.EIa;
+      this.Q_t.Y = MathUtils_1.MathUtils.Clamp(this.Q_t.Y + this.EIa, 0, this.EYd);
     }
     this.vIa.SetAnchorOffset(t.ToUeVector2D());
     LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor?.OverrideMousePosition(this.Q_t.ToUeVector2D());
@@ -113,8 +119,7 @@ class GamepadControlMouse {
     }
   }
   bKl() {
-    var t = this.vIa.GetLGUISpaceAbsolutePosition();
-    var t = this.fLt.ConvertPositionFromLGUICanvasToViewport(new UE.Vector2D(t.X, t.Y));
+    var t = this.vIa.GetPositionInViewPort(true);
     this.pIa.pointerPosition = new UE.Vector(t.X, t.Y, 0);
   }
   D9_(t) {
@@ -143,9 +148,11 @@ class GamepadControlMouse {
     }
   }
   PIa(t, i) {
-    var e = i.RootUIComp.GetLGUISpaceAbsolutePositionByPivot(i.AdsorbedPivot);
+    var e = i.RootUIComp.GetPositionInViewportWithPivot(true, i.AdsorbedPivot);
+    var s = this.fLt.ConvertPositionFromViewportToLGUICanvas(e);
     this.LIa.Set(e.X, e.Y);
-    return !(Math.abs(this.LIa.X - t.X) > i.AdsorbedDistance) && !(Math.abs(this.LIa.Y - t.Y) > i.AdsorbedDistance) && !(Vector2D_1.Vector2D.Distance(this.LIa, t) > i.AdsorbedDistance);
+    this.DXd.Set(s.X, s.Y);
+    return !(Math.abs(this.DXd.X - t.X) > i.AdsorbedDistance) && !(Math.abs(this.DXd.Y - t.Y) > i.AdsorbedDistance) && !(Vector2D_1.Vector2D.Distance(this.DXd, t) > i.AdsorbedDistance);
   }
   wIa(t) {
     var i = Vector2D_1.Vector2D.Create(t);
@@ -164,7 +171,7 @@ class GamepadControlMouse {
       t = this.fLt.ConvertPositionFromViewportToLGUICanvas(this.Q_t.ToUeVector2D());
       if (this.wIa(t)) {
         this.xCa();
-        this.TCa = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.uGo, t, this.LIa.ToUeVector2D(true), TWEEN_TIME);
+        this.TCa = UE.LTweenBPLibrary.Vector2To(GlobalData_1.GlobalData.World, this.uGo, this.Q_t.ToUeVector2D(), this.LIa.ToUeVector2D(true), TWEEN_TIME);
       }
     }
   }
@@ -200,8 +207,7 @@ class GamepadControlMouse {
     }
   }
   UpdateMousePositionByItem(t) {
-    t = t.GetLGUISpaceAbsolutePosition();
-    t = this.fLt.ConvertPositionFromLGUICanvasToViewport(new UE.Vector2D(t.X, t.Y));
+    t = t.GetPositionInViewPort(true);
     this.Q_t.Set(t.X, t.Y);
     this.xCa();
     this.RIa();

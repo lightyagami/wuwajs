@@ -65,7 +65,6 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Ant = false;
     this.NN1 = undefined;
     this.VN1 = false;
-    this.SDd = false;
     this.OnBossHeathChanged = (t, i, s) => {
       this.Pnt(true);
     };
@@ -212,7 +211,6 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Znt();
     this.est();
     this.tst();
-    this.MDd();
     this.dnt.SetUpdateCallback(this.Nnt, this.knt, this.Vnt);
     this.ont.SetVisible(true, SHOW_VIEW_ANIM_TIME);
   }
@@ -541,18 +539,6 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
           this.GetUiNiagara(19).SetNiagaraVarFloat("Count", t);
         }
       }
-    }
-  }
-  MDd() {
-    let t = false;
-    var i;
-    if (ModelManager_1.ModelManager.MenuModel.GetBloodBathedMode() !== 5) {
-      i = this.GetEntity()?.GetComponent(206);
-      t = !!i?.HasTag(1521297804);
-    }
-    if (this.SDd !== t) {
-      this.SDd = t;
-      this.GetTexture(33)?.SetUIActive(t);
     }
   }
   Qnt() {

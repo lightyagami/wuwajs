@@ -212,14 +212,10 @@ class SurvivorsRogueRoleStatePanel extends UiPanelBase_1.UiPanelBase {
   GetGuideUiItemAndUiItemForShowEx(t) {
     var e;
     if (!(t.length <= 2)) {
-      if ((t = t[2]) === "FirstWeapon") {
-        if (e = this.jwd?.GetItemByIndex(0)) {
-          return [e, e];
-        } else {
-          return undefined;
-        }
-      } else if (t === "FirstTwoWeapon" && (e = this.GetGuideUiItem("1"))) {
-        return [e, e];
+      if ((e = t[2]) === "FirstWeapon") {
+        return this.jwd?.GetLayoutItemByIndex(0)?.GetGuideUiItemAndUiItemForShowEx(t);
+      } else if (e === "FirstTwoWeapon" && (t = this.GetGuideUiItem("1"))) {
+        return [t, t];
       } else {
         return undefined;
       }

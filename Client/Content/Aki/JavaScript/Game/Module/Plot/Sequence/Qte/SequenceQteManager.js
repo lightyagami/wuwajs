@@ -12,6 +12,8 @@ const GlobalData_1 = require("../../../../GlobalData");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const SequenceQteContinuousClick_1 = require("./SequenceQteContinuousClick");
+const SequenceQteDrag_1 = require("./SequenceQteDrag");
+const SequenceQteGroup_1 = require("./SequenceQteGroup");
 const SequenceQteHandleBase_1 = require("./SequenceQteHandleBase");
 const SequenceQteLongPress_1 = require("./SequenceQteLongPress");
 const SequenceQteSelectOption_1 = require("./SequenceQteSelectOption");
@@ -59,28 +61,29 @@ class SequenceQteManager {
     ControllerHolder_1.ControllerHolder.PlotController.RemoveAfterTick(this.Ocd);
     this.QteManager = undefined;
   }
-  StartSequenceQte(e, t, o, n, i, a, l) {
+  StartSequenceQte(e) {
     if (this.utd.size > 0) {
-      for (const [, u] of this.utd) {
-        u.ForceStopSequenceQte();
+      for (const [, i] of this.utd) {
+        i.ForceStopSequenceQte();
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] sequence qte 重叠");
         }
       }
       this.utd.clear();
     }
-    let r = undefined;
-    let s = undefined;
-    if (o) {
-      r = new UE.FrameTime(a.FrameNumber, a.SubFrame);
-      --(s = new UE.FrameTime(l.FrameNumber, l.SubFrame)).FrameNumber.Value;
+    var t = !e.IsTriggerType;
+    let o = undefined;
+    let n = undefined;
+    if (t) {
+      o = new UE.FrameTime(e.StartFrame.FrameNumber, e.StartFrame.SubFrame);
+      --(n = new UE.FrameTime(e.EndFrame.FrameNumber, e.EndFrame.SubFrame)).FrameNumber.Value;
     }
-    const u = this.CreateQte(e, t, o, r, s, n, i);
-    if (u) {
-      this.utd.set(e, u);
-      u.OnBegin();
+    const i = this.CreateQte(e.QteId, e.SubtitleId, t, e.IsGroupQte, o, n, e.AttachActor, e.SpineInfo, e.SubQteParams);
+    if (i) {
+      this.utd.set(e.QteId, i);
+      i.OnBegin();
       if (ModelManager_1.ModelManager.SequenceModel.IsPlaying) {
-        if (u.IsProgressQte) {
+        if (i.IsProgressQte) {
           ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.PauseOnNextFrame();
         } else {
           ControllerHolder_1.ControllerHolder.SequenceController.PauseSequence(QTE_REASON);
@@ -89,12 +92,12 @@ class SequenceQteManager {
       this.ctd = 2;
       ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 开始", ["QteId", e]);
+        Log_1.Log.Debug("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 开始", ["QteId", e.QteId]);
       }
     } else {
-      this.QteManager?.FinishQte(e);
+      this.QteManager?.FinishQte(e.QteId);
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 失败", ["QteId", e]);
+        Log_1.Log.Error("Plot", 26, "[FlowSequence][PlotQte] Sequence Qte 失败", ["QteId", e.QteId]);
       }
     }
   }
@@ -184,17 +187,30 @@ class SequenceQteManager {
       ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor?.SequencePlayer?.SetPlayRate(1);
     }
   }
-  CreateQte(t, o, n, i, a, e, l) {
-    t = ControllerHolder_1.ControllerHolder.CommonQteController.StartQte(t, undefined, undefined, 2, {
-      AttachTarget: e
-    });
-    if (t) {
+  CreateQte(e, t, o, n, i, a, r, l, s) {
+    let u = undefined;
+    if (u = n ? ControllerHolder_1.ControllerHolder.CommonQteController.StartQteGroup(e, undefined, undefined, 2, {
+      AttachTarget: r
+    }) : ControllerHolder_1.ControllerHolder.CommonQteController.StartQte(e, undefined, undefined, 2, {
+      AttachTarget: r
+    })) {
       let e = undefined;
-      (e = new (t.Type === 2 ? SequenceQteLongPress_1.SequenceQteLongPress : t.Type === 1 ? SequenceQteContinuousClick_1.SequenceQteContinuousClick : t.Type === 4 ? SequenceQteSelectOption_1.SequenceQteSelectOption : SequenceQteHandleBase_1.SequenceQteHandleBase)(this, t)).SubtitleId = o;
-      e.IsProgressQte = n;
+      if (u.Type === 2) {
+        e = new SequenceQteLongPress_1.SequenceQteLongPress(this, u);
+      } else if (u.Type === 1) {
+        e = new SequenceQteContinuousClick_1.SequenceQteContinuousClick(this, u);
+      } else if (u.Type === 4) {
+        e = new SequenceQteSelectOption_1.SequenceQteSelectOption(this, u);
+      } else if (u.Type === 5) {
+        (e = new SequenceQteGroup_1.SequenceQteGroup(this, u)).SetSubQteParams(s);
+      } else {
+        e = new (u.Type === 3 ? SequenceQteDrag_1.SequenceQteDrag : SequenceQteHandleBase_1.SequenceQteHandleBase)(this, u);
+      }
+      e.SubtitleId = t;
+      e.IsProgressQte = o;
       e.SequenceQteStartRange = i;
       e.SequenceQteEndRange = a;
-      e.SetQteSpineInfo(l);
+      e.SpineInfo = SequenceQteHandleBase_1.QteSpineInfoProxy.CreateQteSpineInfo(l);
       return e;
     }
   }

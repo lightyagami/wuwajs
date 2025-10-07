@@ -52,7 +52,7 @@ class UiNavigationModeModule {
       e = i.GroupConfig;
       t = i.ScrollView;
       e = e.GetOppositeListenerListByListener(t.GetOwner(), undefined);
-      a = UiNavigationModeModule.qBo(i.LastListener);
+      a = i.IsScrollToEdge ? i.LastListenerPosition : UiNavigationModeModule.qBo(i.LastListener);
       return UiNavigationModeModule.FindOppositeNavigationComponent(a, e, i.WrapMode, i.PriorityMode, i.IsVertical, i.NavigateTolerance, i.NavigateToleranceReverse, t, i.GroupConfig, i.NegativeDirection);
     }
     if (!i.NeedWaitScroll) {
@@ -234,32 +234,33 @@ class UiNavigationModeModule {
     if (this.Nxo.HasDynamicScrollView()) {
       var v = this.Nxo.ScrollView;
       if ((!v || a === v.Vertical || r !== 0) && !v.IsAllItemDisplayed()) {
-        var M;
-        var l = v.TotalItemNum;
-        var h = v.GetStartItemIndex();
-        var u = v.GetEndItemIndex();
+        var M = v.TotalItemNum;
+        var l = v.GetStartItemIndex();
+        var h = v.GetEndItemIndex();
         let i = -1;
         let t = false;
         let e = false;
         let o = false;
-        e = a ? (M = UiNavigationModeModule.BBo.Z < 0, u === l - 1 && M ? (i = 0, o = true) : h !== 0 || M ? (t = true, i = M ? u + 1 : h, !M) : (i = l - 1, !(o = true))) : (M = UiNavigationModeModule.BBo.X > 0, u === l - 1 && M ? (i = 0, o = true) : h !== 0 || M ? (t = true, i = M ? u + 1 : h - 1, !M) : (i = l - 1, !(o = true)));
-        u = new NavigationDynamicScrollViewFindContext_1.NavigationDynamicScrollViewFindContext();
-        u.WrapMode = r;
-        u.IsVertical = a;
-        u.PriorityMode = n;
-        u.ScrollView = v;
-        u.GroupConfig = s;
-        u.NavigateTolerance = this.PBo;
-        u.NavigateToleranceReverse = this.ixd;
-        u.NegativeDirection = o;
-        u.Reversed = e;
-        u.LastListener = this.Nxo;
-        u.NextType = d;
-        u.NeedWaitScroll = t;
-        u.IsScrollToEdge = i === 0 || i === l - 1;
-        this.Nxo.PanelConfig?.MarkToFindDynamicGrid(u);
-        h = a ? this.Nxo.RootUIComp.Height : this.Nxo.RootUIComp.Width;
-        v.ScrollToItemIndexForNavigation(i, e, h);
+        e = a ? (u = UiNavigationModeModule.BBo.Z < 0, h === M - 1 && u ? (i = 0, o = true) : l !== 0 || u ? (t = true, i = u ? h + 1 : l - 1, !u) : (i = M - 1, !(o = true))) : (u = UiNavigationModeModule.BBo.X > 0, h === M - 1 && u ? (i = 0, o = true) : l !== 0 || u ? (t = true, i = u ? h + 1 : l - 1, !u) : (i = M - 1, !(o = true)));
+        var h = UiNavigationModeModule.qBo(this.Nxo);
+        var l = new NavigationDynamicScrollViewFindContext_1.NavigationDynamicScrollViewFindContext();
+        l.LastListenerPosition = h;
+        l.WrapMode = r;
+        l.IsVertical = a;
+        l.PriorityMode = n;
+        l.ScrollView = v;
+        l.GroupConfig = s;
+        l.NavigateTolerance = this.PBo;
+        l.NavigateToleranceReverse = this.ixd;
+        l.NegativeDirection = o;
+        l.Reversed = e;
+        l.LastListener = this.Nxo;
+        l.NextType = d;
+        l.NeedWaitScroll = t;
+        l.IsScrollToEdge = i === 0 || i === M - 1;
+        this.Nxo.PanelConfig?.MarkToFindDynamicGrid(l);
+        var u = a ? this.Nxo.RootUIComp.Height : this.Nxo.RootUIComp.Width;
+        v.ScrollToItemIndexForNavigation(i, e, u);
       }
     }
   }

@@ -1314,7 +1314,7 @@ let RangeComponent = RangeComponent_1 = class RangeComponent extends EntityCompo
           var e = MathUtils_1.MathUtils.LongToNumber(t.zWn);
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
           var s = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
-          if (i.Valid && i.Entity?.Valid && s?.Valid) {
+          if (i?.Valid && i.Entity?.Valid && s?.Valid) {
             for (const o of Object.keys(t.uL_._L_)) {
               var h = t.uL_._L_[o];
               RangeComponentMessageManager_1.RangeComponentMessageManager.Instance.EmitMessage(i.Entity, t.uL_.i6n, Number(o), s, h);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CameraModel = exports.CameraSpecificLockEntity = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = undefined;
+exports.CameraModel = exports.CameraSpecificLockEntity = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
@@ -45,6 +45,7 @@ const CAMERA_ADDITION_ARM_LENGTH_VALUE_DEFAULT = 50;
 const CAMERA_ADDITION_ARM_LENGTH_VALUE_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MIN = 0;
 const CAMERA_SHAKE_MODIFIER_MAX = 2;
+exports.CAMER_DEFAULT_NEAR_CLIP = 10;
 exports.cameraModeDefault = new UE.FName("KuroDefault");
 exports.cameraModeLockOn = new UE.FName("KuroLockOn");
 exports.cameraModeWidget = new UE.FName("KuroWidget");
@@ -68,10 +69,10 @@ class SeqCameraThings {
 }
 exports.SeqCameraThings = SeqCameraThings;
 class CameraSpecificLockEntity {
-  constructor(t, i, e) {
+  constructor(t, e, i) {
     this.EntityId = t;
-    this.Priority = i;
-    this.Id = e;
+    this.Priority = e;
+    this.Id = i;
     this.MarkDelete = false;
   }
 }
@@ -157,11 +158,11 @@ class CameraModel extends ModelBase_1.ModelBase {
   get IsEnableSoftLockCameraExternal() {
     return this.h6a;
   }
-  static CompareCameraSpecificLockIdPriority(t, i) {
-    if (t.Priority === i.Priority) {
+  static CompareCameraSpecificLockIdPriority(t, e) {
+    if (t.Priority === e.Priority) {
       return -1;
     } else {
-      return i.Priority - t.Priority;
+      return e.Priority - t.Priority;
     }
   }
   get CameraBaseYawSensitivityInputModifier() {
@@ -277,13 +278,13 @@ class CameraModel extends ModelBase_1.ModelBase {
   get HideHeadEnabled() {
     return this.sZc.size > 0;
   }
-  SetHideHeadEnabled(t, i) {
-    var e = this.sZc.has(i);
-    if ((!t || !e) && (!!t || !!e)) {
+  SetHideHeadEnabled(t, e) {
+    var i = this.sZc.has(e);
+    if ((!t || !i) && (!!t || !!i)) {
       if (t) {
-        this.sZc.add(i);
+        this.sZc.add(e);
       } else {
-        this.sZc.delete(i);
+        this.sZc.delete(e);
       }
       if (this.sZc.size > 0) {
         this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyHeadsOnly();
@@ -314,8 +315,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.rwa = t;
     this.RefreshAimAssetMode();
   }
-  SetAimAssistModeWithKey(t, i) {
-    this.owa.set(t, i);
+  SetAimAssistModeWithKey(t, e) {
+    this.owa.set(t, e);
     this.RefreshAimAssetMode();
   }
   ClearAimAssistModeWithKey(t) {
@@ -398,9 +399,9 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.l6a.add(++CameraModel._6a);
     return CameraModel._6a;
   }
-  DisableSoftLock(t, i) {
+  DisableSoftLock(t, e) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Camera", 57, "关闭软锁状态", ["reason", i]);
+      Log_1.Log.Debug("Camera", 57, "关闭软锁状态", ["reason", e]);
     }
     if (this.l6a.has(t)) {
       this.l6a.delete(t);
@@ -412,8 +413,8 @@ class CameraModel extends ModelBase_1.ModelBase {
   IsSoftLockEnable() {
     return this.h6a || this.l6a.size > 0;
   }
-  EnableCameraSpecificLockEntity(t, i) {
-    t = new CameraSpecificLockEntity(t, i, ++this.WWu);
+  EnableCameraSpecificLockEntity(t, e) {
+    t = new CameraSpecificLockEntity(t, e, ++this.WWu);
     this.KWu.Push(t);
     this.QWu.set(t.Id, t);
     return t.Id;
@@ -430,8 +431,8 @@ class CameraModel extends ModelBase_1.ModelBase {
       if (!t) {
         return;
       }
-      var i = ModelManager_1.ModelManager.CharacterModel.GetHandle(t.EntityId);
-      if (!t.MarkDelete && i?.Valid) {
+      var e = ModelManager_1.ModelManager.CharacterModel.GetHandle(t.EntityId);
+      if (!t.MarkDelete && e?.Valid) {
         return t;
       }
       this.KWu.Pop();

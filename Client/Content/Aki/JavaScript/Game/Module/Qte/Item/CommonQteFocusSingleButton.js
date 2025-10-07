@@ -103,6 +103,7 @@ class CommonQteFocusSingleButton extends CommonQteItemBase_1.CommonQteItemBase {
           this.Qtt?.RefreshByActionOrAxis({
             ActionOrAxisName: i
           });
+          this.Qtt?.Show();
         }
       }
       this.IsQteInteractive = false;
@@ -176,7 +177,6 @@ class CommonQteFocusSingleButton extends CommonQteItemBase_1.CommonQteItemBase {
   HandleQteEnd() {
     if (!this.IsQteEnd) {
       this.IsQteEnd = true;
-      this.Qtt?.Hide();
       this.SPe?.StopCurrentSequence();
       this.SPe?.PlayLevelSequenceByName("Close");
       this.jQa();
@@ -224,8 +224,10 @@ class CommonQteFocusSingleButton extends CommonQteItemBase_1.CommonQteItemBase {
   }
   Bfc() {
     var t;
-    if (this.fS1 && (t = this.fS1.GetUiConfig()) && (t = t.UIConfig, this.RootItem?.SetAnchorAlign(t.AnchorHAlign, t.AnchorVAlign), this.RootItem?.SetAnchorOffset(t.AnchorOffset), this.IsAttaching)) {
-      this.Reattach(this.fS1);
+    var i;
+    if (this.fS1 && (t = this.fS1.GetUiConfig()) && (i = t.UIConfig, this.RootItem?.SetAnchorAlign(i.AnchorHAlign, i.AnchorVAlign), this.RootItem?.SetAnchorOffset(i.AnchorOffset), this.IsAttaching && this.Reattach(this.fS1), i = this.GetButton(1)?.RootUIComp)) {
+      i.SetAnchorAlign(t.ButtonAnchorHAlign, t.ButtonAnchorVAlign);
+      i.SetAnchorOffset(t.ButtonOffset);
     }
   }
 }

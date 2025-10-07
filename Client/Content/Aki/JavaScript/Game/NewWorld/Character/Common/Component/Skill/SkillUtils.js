@@ -36,20 +36,20 @@ class SkillUtils {
           switch (o.Type) {
             case 0:
               if (i.SkillTarget) {
-                a = i.SkillTarget.Entity.CheckGetComponent(1);
-                a = i.GetCurrentSkillRotateTargetDirect(a, r);
-                l.DeepCopy(a);
+                s = i.SkillTarget.Entity.CheckGetComponent(1);
+                s = i.GetCurrentSkillRotateTargetDirect(s, r);
+                l.DeepCopy(s);
               }
               break;
             case 1:
-              var a = o.Target;
-              SkillUtils.Lz.DeepCopy(a);
+              var s = o.Target;
+              SkillUtils.Lz.DeepCopy(s);
               SkillUtils.Lz.SubtractionEqual(r);
               l.DeepCopy(SkillUtils.Lz);
               break;
             case 2:
-              a = o.Target;
-              l.DeepCopy(a);
+              s = o.Target;
+              l.DeepCopy(s);
               break;
             case 3:
             case 6:
@@ -58,27 +58,27 @@ class SkillUtils {
                 if (!(e = o.Type === 3 ? BlackboardController_1.BlackboardController.GetEntityIdByEntity(t.Entity.Id, o.Target) : BlackboardController_1.BlackboardController.GetIntValueByEntity(t.Entity.Id, o.Target))) {
                   break;
                 }
-                a = EntitySystem_1.EntitySystem.Get(e)?.CheckGetComponent(1);
-                if (!a?.Valid) {
+                s = EntitySystem_1.EntitySystem.Get(e)?.CheckGetComponent(1);
+                if (!s?.Valid) {
                   break;
                 }
-                SkillUtils.Lz.DeepCopy(a.ActorLocationProxy);
+                SkillUtils.Lz.DeepCopy(s.ActorLocationProxy);
                 SkillUtils.Lz.SubtractionEqual(r);
                 l.DeepCopy(SkillUtils.Lz);
                 break;
               }
             case 4:
-              a = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
-              if (a) {
-                SkillUtils.Lz.DeepCopy(a);
+              s = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
+              if (s) {
+                SkillUtils.Lz.DeepCopy(s);
                 SkillUtils.Lz.SubtractionEqual(r);
                 l.DeepCopy(SkillUtils.Lz);
               }
               break;
             case 5:
-              a = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
-              if (a) {
-                l.DeepCopy(a);
+              s = BlackboardController_1.BlackboardController.GetVectorValueByEntity(t.Entity.Id, o.Target);
+              if (s) {
+                l.DeepCopy(s);
               }
               break;
             case 7:
@@ -102,12 +102,12 @@ class SkillUtils {
   }
   static GetTargetSocketTransform(e, t, o, l, i = 0) {
     var r = e.GetComponent(3);
-    var a = r?.Actor;
-    if (a?.IsValid() && t) {
-      a = a.Mesh;
+    var s = r?.Actor;
+    if (s?.IsValid() && t) {
+      s = s.Mesh;
       t = FNameUtil_1.FNameUtil.GetDynamicFName(t);
-      if (a?.DoesSocketExist(t)) {
-        return a.D_GetSocketTransform(t, o);
+      if (s?.DoesSocketExist(t)) {
+        return s.D_GetSocketTransform(t, o);
       }
     }
     if (i === 2) {
@@ -156,17 +156,15 @@ class SkillUtils {
   }
   static EndAbsoluteTimeStop(e) {
     var t;
-    if (!ModelManager_1.ModelManager.GameModeModel?.IsMulti) {
-      if (skillAbsoluteTimeStopSet.has(e) && (skillAbsoluteTimeStopSet.delete(e), ControllerHolder_1.ControllerHolder.TimeController.RemoveLock(e), (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid)) {
-        t = e.Entity;
-        CombatLog_1.CombatLog.Info("Skill", t, "结束大招时停");
-        this.nId(e);
-        (e = Protocol_1.Aki.Protocol.Qe_.create()).o5n = false;
-        e.n5n = 0;
-        CombatMessage_1.CombatNet.Send(25343, t, e);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
-        EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
-      }
+    if (skillAbsoluteTimeStopSet.has(e) && (skillAbsoluteTimeStopSet.delete(e), ControllerHolder_1.ControllerHolder.TimeController.RemoveLock(e), (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid)) {
+      t = e.Entity;
+      CombatLog_1.CombatLog.Info("Skill", t, "结束大招时停");
+      this.nId(e);
+      (e = Protocol_1.Aki.Protocol.Qe_.create()).o5n = false;
+      e.n5n = 0;
+      CombatMessage_1.CombatNet.Send(25343, t, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
+      EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
     }
   }
   static BeginTimeStopRequest(e, t) {
@@ -204,7 +202,7 @@ class SkillUtils {
     }
   }
   static EndTimeStopRequest(e) {
-    if (!ModelManager_1.ModelManager.GameModeModel?.IsMulti && skillTimeStopRequestSet.has(e)) {
+    if (skillTimeStopRequestSet.has(e)) {
       skillTimeStopRequestSet.delete(e);
       Time_1.Time.SetFlowTimeDilation(ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       for (const o of ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet) {

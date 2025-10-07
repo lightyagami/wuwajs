@@ -72,6 +72,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.MontageManager = new MontageManager_1.MontageManager();
     this.NoUpdateMeshes = undefined;
     this.CurMontageTimerHandle = undefined;
+    this.NeedAfterTickAnim = false;
   }
   static get Dependencies() {
     return [2, 0];
@@ -380,6 +381,18 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
   }
   OnTick(t) {
     this.MontageManager.OnTick(t);
+  }
+  OnAfterTick(e) {
+    if (this.NeedAfterTickAnim) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Character", 35, "动画强制更新一帧");
+      }
+      var i = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
+      for (let t = 0; t < i.Num(); t++) {
+        i.Get(t).ForceUpdateAnimation(e * MathUtils_1.MathUtils.MillisecondToSecond, false);
+      }
+      this.NeedAfterTickAnim = false;
+    }
   }
 };
 BaseAnimationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(44)], BaseAnimationComponent);

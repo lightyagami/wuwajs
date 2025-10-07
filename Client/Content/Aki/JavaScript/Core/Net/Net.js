@@ -691,15 +691,16 @@ class Net {
   static tY(e) {
     return JSON.stringify(e, (e, t) => t instanceof Long ? MathUtils_1.MathUtils.LongToBigInt(t).toString() : t);
   }
-  static rvu(e) {
-    if (!e) {
+  static rvu(N) {
+    if (!N) {
       let e = 0;
       let t = NetInfo_1.NetInfo.TcpRatio >= 10000;
       if (NetInfo_1.NetInfo.TcpRatio < 10000 && NetInfo_1.NetInfo.TcpRatio > 0) {
         e = Math.floor(Math.random() * 10000);
-        t = e < NetInfo_1.NetInfo.TcpRatio && NetInfo_1.NetInfo.TcpRetry < NetInfo_1.NetInfo.TcpMaxRetry;
+        t = e < NetInfo_1.NetInfo.TcpRatio;
       }
-      if (t) {
+      N = NetInfo_1.NetInfo.TcpRetry >= NetInfo_1.NetInfo.TcpMaxRetry;
+      if (t && !N) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Net", 63, "kcp会话id使用Tcp获取:", ["TcpRatio", NetInfo_1.NetInfo.TcpRatio], ["RandomValue", e], ["RetryCount", Net.Eoa], ["TcpRetry", NetInfo_1.NetInfo.TcpRetry]);
         }
@@ -716,8 +717,9 @@ class Net {
           Log_1.Log.Warn("Net", 63, "KCP已连接,无需建立TCP连接");
         }
       } else if (Net.gX !== undefined) {
+        Net.gX.CloseTcpConnect();
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Net", 63, "开始建立TCP连接:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
+          Log_1.Log.Info("Net", 63, "开始建立TCP连接:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["LoginTraceId", NetInfo_1.NetInfo.LoginTraceId]);
         }
         Net.gX.OnTcpConnected.Add(Net.ovu);
         Net.gX.OnTcpConnectFailed.Add(Net.nvu);
@@ -867,7 +869,7 @@ Net.rX = (e, t, N) => {
 Net.ovu = () => {
   var e;
   if (Log_1.Log.CheckInfo()) {
-    Log_1.Log.Info("Net", 63, "TCP连接建立成功:", ["TcpPort", NetInfo_1.NetInfo.TcpPort]);
+    Log_1.Log.Info("Net", 63, "TCP连接建立成功:", ["TcpPort", NetInfo_1.NetInfo.TcpPort], ["LoginTraceId", NetInfo_1.NetInfo.LoginTraceId]);
   }
   if (Net.gX) {
     (e = Protocol_1.Aki.Protocol.Egu.create()).a7n = NetInfo_1.NetInfo.LoginTraceId ?? "";

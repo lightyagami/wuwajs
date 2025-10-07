@@ -16,7 +16,7 @@ class ObtainedRoleDevWeaponDetailItemData {
     var a = t.GetLevel();
     var r = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponLevel;
     var i = t.GetBreachLevel();
-    var l = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponBreachLevel;
+    var l = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponBreachLevel - 1;
     this.fpd(e, t, a, r);
     this.gpd(e, t, i, l);
   }
@@ -45,8 +45,8 @@ class ObtainedRoleDevWeaponDetailItemData {
     }
   }
   zNd(t, a, r) {
-    let i = 0;
-    for (let e = a; e <= r; e++) {
+    let i = -t.GetExp();
+    for (let e = a; e < r; e++) {
       i += t.GetLevelExp(e);
     }
     a = this.k$d(t);
@@ -62,23 +62,11 @@ class ObtainedRoleDevWeaponDetailItemData {
     }
   }
   VNd() {
-    var e = [];
-    for (const a of ModelManager_1.ModelManager.WeaponModel.GetWeaponExpMaterialList()) {
-      var t = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(a.Id);
-      e.push(...t);
-    }
-    return this.KNd(e);
-  }
-  KNd(e) {
-    return e.sort((e, t) => {
-      e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.GetConfigId());
-      t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t.GetConfigId());
-      return (e?.QualityId ?? 0) - (t?.QualityId ?? 0);
-    });
+    return ModelManager_1.ModelManager.WeaponModel.GetWeaponExpItemConfigList().sort((e, t) => e.QualityId - t.QualityId);
   }
   jNd(e, t) {
     t = RoleDevUtils_1.RoleDevUtils.GroupMaterialsByType(t);
-    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2, 12)[0];
+    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2)[0];
   }
   Epd(e, t) {
     var a = [];
@@ -88,19 +76,21 @@ class ObtainedRoleDevWeaponDetailItemData {
   }
   JNd(e, t, a, r) {
     let i = r;
-    for (const s of e) {
+    for (const n of e) {
       if (i >= t) {
         break;
       }
-      var l = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(s.GetConfigId()).BasicExp;
-      var o = Math.ceil((t - i) / l);
-      var o = Math.min(o, s.GetCount());
-      if (o > 0) {
+      var l = n.Id;
+      var s = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(l);
+      var o = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(l).BasicExp;
+      var _ = Math.ceil((t - i) / o);
+      var _ = Math.min(_, s);
+      if (_ > 0) {
         a.push({
-          ItemId: s.GetConfigId(),
-          RequiredCount: o
+          ItemId: l,
+          RequiredCount: _
         });
-        i += o * l;
+        i += _ * o;
       }
     }
     return i;
@@ -109,16 +99,16 @@ class ObtainedRoleDevWeaponDetailItemData {
     var i;
     if (!(t <= r) && e.length !== 0) {
       e = e[e.length - 1];
-      i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(e.GetConfigId()).BasicExp;
+      i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(e.Id).BasicExp;
       t = Math.ceil((t - r) / i);
       a.push({
-        ItemId: e.GetConfigId(),
+        ItemId: e.Id,
         RequiredCount: t
       });
     }
   }
   fud(e, t, a, r) {
-    if (!(r <= a)) {
+    if (!(r < a)) {
       t = t.GetWeaponConfig();
       if (t) {
         t = this.e3d(t, a, r);
@@ -133,9 +123,9 @@ class ObtainedRoleDevWeaponDetailItemData {
     var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponBreachMaxLevel(t.BreachId);
     var l = Math.min(i, e);
     for (let e = a; e <= l; e++) {
-      var o = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t.BreachId, e);
-      if (o) {
-        this.t3d(o, r);
+      var s = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponBreach(t.BreachId, e);
+      if (s) {
+        this.t3d(s, r);
       }
     }
     return r;

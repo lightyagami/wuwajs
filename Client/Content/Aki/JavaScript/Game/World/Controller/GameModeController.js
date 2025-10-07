@@ -91,6 +91,12 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       Application_1.Application.AddApplicationHandler(0, GameModeController.hra);
       Application_1.Application.AddApplicationHandler(1, GameModeController.Oje);
     }
+    if (Info_1.Info.IsMacPlatform()) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 36, "UseSeparatedBody In MAC");
+      }
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Kuro.Collision.UseSeparatedBody 1");
+    }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SlowStreamingBySoar, this.qJl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -305,6 +311,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
                 ModelManager_1.ModelManager.WorldModel.SetMapDone(true);
                 ModelManager_1.ModelManager.GameModeModel.RemoveLoadMapHandle("GameModeController.Load");
                 EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AfterLoadMap);
+                EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsAfterLoadMap);
               });
               return true;
             }, async () => n.PreloadPromise.Promise, e => {
@@ -522,7 +529,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("GameMode", 3, "加载场景:派发WorldDone事件通知");
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldDone);
-          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.WorldDone);
+          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsWorldDone);
           RoleAudioController_1.RoleAudioController.SetUpdateAudioDynamicTrace(true);
           if (!n.PlayTravelMp4) {
             this.m6("GameModeController.Load:OpenBattleViewFromLoading Start");

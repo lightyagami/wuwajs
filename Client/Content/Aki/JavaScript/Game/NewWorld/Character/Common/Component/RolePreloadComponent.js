@@ -42,7 +42,7 @@ const PreloadDefine_1 = require("../../../../Preload/PreloadDefine");
 const CombatLog_1 = require("../../../../Utils/CombatLog");
 const PreloadControllerNew_1 = require("../../../../World/Controller/PreloadControllerNew");
 const GameModePromise_1 = require("../../../../World/Define/GameModePromise");
-const characterCommonSkillSet = new Set([100001, 100002, 100003, 100004, 100005, 100006, 100007, 210001, 200001, 200002]);
+const characterCommonSkillSet = new Set([100001, 100002, 100003, 100004, 100005, 100006, 100007, 210001, 200001, 200002, 210030]);
 const TIME_LIMIT_MICRO_SECOND = 5000;
 let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -117,6 +117,10 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     }
   }
   EGn() {
+    this.LKd();
+    this.PKd();
+  }
+  LKd() {
     this.T8_.length = 0;
     var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.CreatureModel.GetInstanceId());
     if (e && e.FightInfoDtType.length > 0) {
@@ -140,6 +144,9 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
         this.T8_.push(1);
       }
     }
+  }
+  PKd() {
+    this.XJr.FightAssetManager.SkillAssetManager.LoadTypeList = this.T8_;
   }
   zJr() {
     RolePreloadComponent_1.r31.Start();
@@ -378,7 +385,7 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
       if (o && o.Num() !== 0) {
         var t = [];
         var r = this.XJr;
-        const C = this.u1t?.GetCreatureDataId() ?? 0;
+        const P = this.u1t?.GetCreatureDataId() ?? 0;
         var i = this.Entity.GetComponent(283);
         for (let e = 0; e < o.Num(); e++) {
           var l = o.GetKey(e);
@@ -396,7 +403,7 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
               }
             } else if (!n) {
               if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Preload", 67, "[预加载] 多形态预加载 ModelConfig为空", ["CreatureDataId", C], ["EntityId", this.Entity?.Id], ["ModelId", a.ModelId]);
+                Log_1.Log.Error("Preload", 67, "[预加载] 多形态预加载 ModelConfig为空", ["CreatureDataId", P], ["EntityId", this.Entity?.Id], ["ModelId", a.ModelId]);
               }
             }
             RolePreloadComponent_1.yRc.Start();
@@ -411,17 +418,17 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
                   i?.AddMorphMontagePath(s.NeedLoadAssets[e], l);
                 }
               }
-              this.Entity.GetComponent(1).UseAnimInstanceCachePool = true;
+              this.Entity.GetComponent(1).UseAnimInstanceCachePool = false;
               this.Entity.GetComponent(25)?.SetHasMorphMontage(true);
             }
           }
         }
         RolePreloadComponent_1.SRc.Start();
         var e = [];
-        const P = ModelManager_1.ModelManager.PreloadModelNew;
+        const C = ModelManager_1.ModelManager.PreloadModelNew;
         for (const m of t) {
           m.AddObjectCallback = (e, o) => {
-            P.HoldPreloadObject.AddEntityAsset(C, e);
+            C.HoldPreloadObject.AddEntityAsset(P, e);
           };
           var d = new GameModePromise_1.GameModePromise();
           PreloadControllerNew_1.PreloadControllerNew.LoadAssetAsync(m, this.XJr.LoadPriority, false, d);

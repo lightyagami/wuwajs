@@ -21,6 +21,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const AcquireData_1 = require("../Acquire/AcquireData");
 const BirthdayController_1 = require("../Birthday/BirthdayController");
 const BuffItemControl_1 = require("../BuffItem/BuffItemControl");
+const CalabashController_1 = require("../Calabash/CalabashController");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const PayShopViewData_1 = require("../PayShop/PayShopData/PayShopViewData");
@@ -143,25 +144,25 @@ ItemUseLogic.TryUseGiftItem = (e, r = 0) => {
     if (a.Type === GiftType_1.GiftType.Fixed || a.Type === GiftType_1.GiftType.Random || a.Type === GiftType_1.GiftType.RandomPhantom || a.Type === GiftType_1.GiftType.CaptureMonster) {
       var l = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e);
       var _ = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Name);
-      var g = [];
+      var f = [];
       const o = [{
         IncId: 0,
         ItemId: n.Id
       }, l];
-      g.push(o);
+      f.push(o);
       if (l > 1) {
-        const f = new AcquireData_1.AcquireData();
-        f.SetAcquireViewType(0);
-        f.SetAmount(1);
-        f.SetMaxAmount(l);
-        f.SetRemainItemCount(l);
-        f.SetItemData(g);
-        f.SetNameText(_);
-        f.SetConfigId(e);
-        f.SetRightButtonFunction(() => {
-          ItemUseLogic.Tmi(e, f.GetAmount());
+        const g = new AcquireData_1.AcquireData();
+        g.SetAcquireViewType(0);
+        g.SetAmount(1);
+        g.SetMaxAmount(l);
+        g.SetRemainItemCount(l);
+        g.SetItemData(f);
+        g.SetNameText(_);
+        g.SetConfigId(e);
+        g.SetRightButtonFunction(() => {
+          ItemUseLogic.Tmi(e, g.GetAmount());
         });
-        InventoryGiftController_1.InventoryGiftController.ShowAcquireView(f);
+        InventoryGiftController_1.InventoryGiftController.ShowAcquireView(g);
       } else {
         InventoryGiftController_1.InventoryGiftController.SendItemGiftUseRequest(e, 1, undefined);
       }
@@ -195,11 +196,8 @@ ItemUseLogic.TryUseBirthdayItem = e => {
   return !!r && r.GetType() === 60007 && (BirthdayController_1.BirthdayController.UseBirthdayItem(e), true);
 };
 ItemUseLogic.TryUseVisionRefineItem = e => {
-  var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
-  return !!e && !!e.GetConfig().ShowTypes.includes(54) && (e = {
-    TabViewName: "VisionRefineTabView",
-    Param: {
-      ViewState: 1
-    }
-  }, UiManager_1.UiManager.OpenView("CalabashRootView", e), true);
+  e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
+  return !!e && !!e.GetConfig().ShowTypes.includes(54) && (CalabashController_1.CalabashController.JumpToCalabashRootView("VisionRefineTabView", {
+    ViewState: 1
+  }), true);
 }; //# sourceMappingURL=ItemUseLogic.js.map

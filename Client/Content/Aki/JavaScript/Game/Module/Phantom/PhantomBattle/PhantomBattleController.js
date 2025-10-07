@@ -160,7 +160,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static SendPhantomAutoPutRequest(t, o) {
+  static SendPhantomAutoPutRequest(t, o, n) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Phantom", 27, "10014_角色幻象一键装配请求!!!!");
     }
@@ -168,14 +168,14 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
     } else {
       let e = false;
-      var n = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Id);
-      var n = PhantomUtil_1.PhantomUtil.GetSummonedEntity(n, Number(Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision));
-      if (e = n && n.Entity.Active ? true : e) {
+      var r = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Id);
+      var r = PhantomUtil_1.PhantomUtil.GetSummonedEntity(r, Number(Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision));
+      if (e = r && r.Entity.Active ? true : e) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       } else if (!RoleController_1.RoleController.CheckCharacterInBattleTagAndShowTips()) {
-        (n = new Protocol_1.Aki.Protocol.Lls()).Q6n = t;
-        n.eHn = o;
-        Net_1.Net.Call(29749, Protocol_1.Aki.Protocol.Lls.create(n), e => {
+        (r = new Protocol_1.Aki.Protocol.Lls()).Q6n = t;
+        r.eHn = o;
+        Net_1.Net.Call(29749, Protocol_1.Aki.Protocol.Lls.create(r), e => {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Phantom", 27, "10014_角色幻象一键装配返回!!!!");
           }
@@ -186,6 +186,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
                 ModelManager_1.ModelManager.PhantomBattleModel.UpdateRoleEquipmentData(o);
                 ModelManager_1.ModelManager.PhantomBattleModel.UpdateFetterList(o.Q6n);
               }
+              n?.();
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquip);
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipWithSourceAndTargetPos, 0, 0, false);
             } else if (Log_1.Log.CheckError()) {

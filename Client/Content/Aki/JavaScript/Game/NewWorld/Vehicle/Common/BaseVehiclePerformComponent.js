@@ -230,17 +230,7 @@ let BaseVehiclePerformComponent = class BaseVehiclePerformComponent extends Enti
     var r = this.PassengerInfoMap.get(e.Id);
     if (r) {
       r.ExitType = t;
-      if (r.ExitType !== 3) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 退出载具", ["V_PbDataId", i], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", r.Seat], ["isDriver", r.IsDriver], ["ExitType", r.ExitType]);
-        }
-        this.LeaveVehiclePerform(r);
-        EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnLeaveVehicle, r);
-        EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, r);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicle, r);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenLeaved, r);
-        this.PassengerInfoMap.delete(e.Id);
-        this.SeatInfoMap.delete(r.Seat);
+      if (r.ExitType !== 3 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Vehicle", 50, "[BaseVehicleComp] 退出载具", ["V_PbDataId", i], ["V_CreatureId", this.CreatureData.GetCreatureDataId()], ["P_PbDataId", e.GetComponent(0)?.GetPbDataId()], ["P_PlayerId", e.GetComponent(0)?.GetPlayerId()], ["Seat", r.Seat], ["isDriver", r.IsDriver], ["ExitType", r.ExitType]), this.LeaveVehiclePerform(r), EventSystem_1.EventSystem.EmitWithTarget(e, EventDefine_1.EEventName.OnLeaveVehicle, r), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnLeaveVehicle, r), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVehicleBeenLeaved, r), this.PassengerInfoMap.delete(e.Id), this.SeatInfoMap.delete(r.Seat), e === this.Driver)) {
         this.Driver = undefined;
       }
     } else if (Log_1.Log.CheckWarn()) {

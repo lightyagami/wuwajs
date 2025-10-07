@@ -144,6 +144,9 @@ class UiBehaviorLevelSequence {
     this.lcr = e;
     this.rcr?.PlaySequencePurely(e, t, i);
   }
+  PlayOrReplaySequenceByName(e, t = false, i = undefined) {
+    this.rcr?.PlayOrReplaySequenceByName(e, t, i);
+  }
   PauseSequence() {
     this.rcr.PauseSequence();
   }

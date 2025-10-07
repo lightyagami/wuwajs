@@ -9,7 +9,6 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 class SpecialTransitionModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.KeepShowPromise = undefined;
     this.rBd = undefined;
   }
   GetSpecialTransitionParams() {
@@ -30,7 +29,6 @@ class SpecialTransitionModel extends ModelBase_1.ModelBase {
     this.rBd = undefined;
   }
   OnClear() {
-    this.KeepShowPromise = undefined;
     return !(this.rBd = undefined);
   }
 }

@@ -11,6 +11,8 @@ const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const MathCommon_1 = require("../../../../Core/Utils/Math/MathCommon");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -319,12 +321,13 @@ class ShipTowerView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShipTowerBuffNewUpdate, this.$W_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShipTowerEndlessRecordUpdate, this.gq_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.Xtc);
-    RedDotController_1.RedDotController.UnBindRedDot("ShipTowerReward");
+    RedDotController_1.RedDotController.UnBindGivenUi("ShipTowerReward", this.GetItem(23));
   }
   OnBeforeShow() {
     this.Slo();
     this.sma = TimerSystem_1.RealTimeTimerSystem.Forever(this.kOe, 500);
     ModelManager_1.ModelManager.ShipTowerModel.CloseWelcomeView();
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerSeason, ModelManager_1.ModelManager.ShipTowerModel.CurSeason);
   }
   OnAfterPlayStartSequence() {
     if (!this.OpenParam?.IsOpenStageDesc) {

@@ -114,8 +114,14 @@ class BlockInputDistribute extends InputDistributeSetup_1.InputDistributeSetup {
         }
         this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
         return true;
+      } else if (this.dgl()) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Input", 67, "[InputDistribute]播放Link分屏中 设置输入分发tag为 BlockAllInputTag");
+        }
+        this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag);
+        return true;
       } else {
-        return !!this.dgl() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 67, "[InputDistribute]播放Link分屏中 设置输入分发tag为 BlockAllInputTag"), this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag), true);
+        return !!ModelManager_1.ModelManager.SubLevelModel?.IsInSubLevelSwitchingAndBlockingInput() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Input", 10, "[InputDistribute]切换子关卡且禁止输入 设置输入分发tag为 BlockAllInputTag"), this.SetInputDistributeTag(InputDistributeDefine_1.inputDistributeTagDefine.BlockAllInputTag), true);
       }
     }
   }

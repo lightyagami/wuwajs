@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Game = undefined;
+const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const ActorSystem_1 = require("../Core/Actor/ActorSystem");
@@ -87,7 +88,6 @@ const ComponentForceTickController_1 = require("./World/Controller/ComponentForc
 const GameBudgetAllocatorConfigCreator_1 = require("./World/Define/GameBudgetAllocatorConfigCreator");
 const EnvironmentalPerceptionController_1 = require("./World/Enviroment/EnvironmentalPerceptionController");
 const TaskSystem_1 = require("./World/Task/TaskSystem");
-const cpp_1 = require("cpp");
 class Game {
   static *Start(e) {
     if (Log_1.Log.CheckInfo()) {
@@ -341,6 +341,7 @@ Game.lve = () => {
   Game.Shutdown();
 };
 Game._ve = () => {
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnPreEndPIE);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreEndPIE);
   Game.Shutdown();
 };
