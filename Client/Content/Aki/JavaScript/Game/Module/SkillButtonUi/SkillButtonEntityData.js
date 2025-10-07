@@ -660,11 +660,11 @@ class SkillButtonEntityData {
           for (const S of o.SkillIconTagIds) {
             this.Tyo(S, this.dyo);
           }
-          for (const B of o.DynamicEffectTagIdMap.keys()) {
-            this.Tyo(B, this.Cyo);
+          for (const p of o.DynamicEffectTagIdMap.keys()) {
+            this.Tyo(p, this.Cyo);
           }
-          for (const p of o.ConfigShowLongPressTagIds) {
-            this.Tyo(p, this.YMc);
+          for (const B of o.ConfigShowLongPressTagIds) {
+            this.Tyo(B, this.YMc);
           }
           var t = o.CustomHandle?.TagIds;
           if (t) {
@@ -771,39 +771,27 @@ class SkillButtonEntityData {
     }
   }
   VXe() {
-    if (this.wXe) {
-      var t = TimerSystem_1.TimerSystem.GetNextRemainTime(this.wXe);
-      if (t <= 1) {
-        return;
-      }
-      CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮NextTimer异常", ["刷新时间", t]);
+    this.wXe ||= TimerSystem_1.TimerSystem.Next(this.GXe, SkillButtonEntityData.jXe);
+  }
+  OXe() {
+    if (!this.wXe) {
       if (TimerSystem_1.TimerSystem.Has(this.wXe)) {
         TimerSystem_1.TimerSystem.Remove(this.wXe);
       }
+      this.wXe = undefined;
+      this.$So.clear();
+      this.YSo.clear();
+      this.JSo.clear();
+      this.zSo.clear();
+      this.ZSo.clear();
+      this.tyo.clear();
+      this.pdt.clear();
+      this.eyo.clear();
+      this.vvl.clear();
+      this.iyo = false;
     }
-    this.wXe = TimerSystem_1.TimerSystem.Next(this.GXe, SkillButtonEntityData.jXe);
-  }
-  OXe() {
-    if (TimerSystem_1.TimerSystem.Has(this.wXe)) {
-      TimerSystem_1.TimerSystem.Remove(this.wXe);
-    } else if (this.wXe) {
-      CombatLog_1.CombatLog.Error("BattleUi", this.EntityHandle?.Entity, "技能按钮NextTimer异常, 计时器已经非法，但仍持有Handle");
-    }
-    this.wXe = undefined;
-    this.$So.clear();
-    this.YSo.clear();
-    this.JSo.clear();
-    this.zSo.clear();
-    this.ZSo.clear();
-    this.tyo.clear();
-    this.pdt.clear();
-    this.eyo.clear();
-    this.vvl.clear();
-    this.iyo = false;
-    this.oyo = false;
   }
   RefreshSkillButtonData(t) {
-    CombatLog_1.CombatLog.Info("BattleUi", this.EntityHandle?.Entity, "整体刷新技能按钮", ["原因", t], ["多次调用", this.oyo]);
     if (this.oyo) {
       if (t < this.ryo) {
         this.ryo = t;

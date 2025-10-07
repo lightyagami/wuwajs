@@ -11,8 +11,6 @@ const GlobalData_1 = require("../GlobalData");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const WaitEntityTask_1 = require("../World/Define/WaitEntityTask");
-const LevelGeneralBaseFrameScheduler_1 = require("./LevelGeneralBaseFrameScheduler");
-const LevelGeneralContextDefine_1 = require("./LevelGeneralContextDefine");
 const EACH_WAIT_ENTITY_OVER_TIME = 30000;
 class LevelEventBase {
   constructor(e) {
@@ -34,17 +32,7 @@ class LevelEventBase {
     }
     if (ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode()) {
       this.ExecuteInGm(e, t, i);
-    } else if (!LevelGeneralBaseFrameScheduler_1.LevelGeneralBaseFrameScheduler.PushActionToFrameScheduler(this, e, t, i)) {
-      if (t instanceof LevelGeneralContextDefine_1.CombinationContext) {
-        var n = t.GetContextByType(1);
-        if (!n) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelEvent", 79, "CombinationContext不合法, 内部必须包含EntityContext", ["InParams", e], ["Context", t], ["ActionId", i]);
-          }
-          return;
-        }
-        this.ExecuteNew(e, n, i);
-      }
+    } else {
       this.ExecuteNew(e, t, i);
     }
   }

@@ -18,7 +18,9 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
             this.Warn("Load", "战斗实体加载完成任务被取消", ["Id", this.EntityId], ["Class", this.constructor.name]);
             this.SetResult();
           } else {
+            this.Info("Load", "生成战斗实体时加载成功", ["Path", this.Params.AssetPath]);
             this.ogd(t, this.Params).then(t => {
+              this.Info("Load", "安全加入战斗实体", ["Path", this.Params.AssetPath]);
               if (this.Params.FinishCallback && t) {
                 this.Params.FinishCallback(t);
               }
@@ -72,12 +74,12 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
         throw new Error(`战斗实体${t.GetName()}外部关联资产安全加载正常,但后续加入异常`);
       }
       for (const c of i) {
-        var e = Number.parseInt(c);
-        var a = h.get(e);
-        var o = s.Buffs[c];
-        r.ApplyBuffSelf(a);
-        if (o > 1) {
-          r.UpdateBuffWithStackNumSelf(a, o);
+        var a = Number.parseInt(c);
+        var o = h.get(a);
+        var e = s.Buffs[c];
+        r.ApplyBuffSelf(o);
+        if (e > 1) {
+          r.UpdateBuffWithStackNumSelf(o, e);
         }
       }
       return r;

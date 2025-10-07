@@ -7,7 +7,6 @@ exports.FightPhotoResultView = undefined;
 const UE = require("ue");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
-const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const ActivityControllerHolder_1 = require("../../Activity/ActivityControllerHolder");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -29,38 +28,35 @@ class FightPhotoResultView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[0, this.Yyd], [11, this.zyd], [12, this.Jyd]];
   }
   OnStart() {
-    var t = ControllerHolder_1.ControllerHolder.PhotographController.GetSavedFightPhotos();
-    for (let e = 0; e < t.length; e++) {
-      var i = t[e];
-      var r = this.GetTexture(6 + e);
+    var e = ControllerHolder_1.ControllerHolder.PhotographController.GetSavedFightPhotos();
+    for (let t = 0; t < e.length; t++) {
+      var i = e[t];
+      var r = this.GetTexture(6 + t);
       this.nwd(r, i);
-      var r = this.GetTexture(2 + e);
+      var r = this.GetTexture(2 + t);
       this.nwd(r, i);
     }
-    var e = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
-    this.SetTextureByPath(e.NpcHeadIcon, this.GetTexture(9));
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), e.NpcDialogue);
-    var o = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name);
-    var e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.IsDifficulty ? "FightPhotoDifficulty" : "FightPhotoEasy");
-    this.GetText(5)?.SetText(o + "-" + e);
+    var t = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
+    this.SetTextureByPath(t.NpcHeadIcon, this.GetTexture(9));
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(10), t.NpcDialogue);
+    var o = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
+    var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.IsDifficulty ? "FightPhotoDifficulty" : "FightPhotoEasy");
+    this.GetText(5)?.SetText(o + "-" + t);
   }
-  nwd(e, t) {
-    e.SetTexture(t);
-    var i = t.Blueprint_GetSizeX();
-    var t = t.Blueprint_GetSizeY();
-    var r = e.GetWidth();
-    var o = e.GetHeight();
-    var l = i / t;
+  nwd(t, e) {
+    t.SetTexture(e);
+    var i = e.Blueprint_GetSizeX();
+    var e = e.Blueprint_GetSizeY();
+    var r = t.GetWidth();
+    var o = t.GetHeight();
+    var l = i / e;
     var s = r / o;
     let n = new UE.Vector4(0, 0, 1, 1);
-    n = s < l ? (l = (i - (s = r / (o / t))) / 2 / i, s = s / i, new UE.Vector4(l, 0, s, 1)) : (s = (t - (l = o / (r / i))) / 2 / t, o = l / t, new UE.Vector4(0, s, 1, o));
-    e.SetUVRect(n);
+    n = s < l ? (l = (i - (s = r / (o / e))) / 2 / i, s = s / i, new UE.Vector4(l, 0, s, 1)) : (s = (e - (l = o / (r / i))) / 2 / e, o = l / e, new UE.Vector4(0, s, 1, o));
+    t.SetUVRect(n);
   }
   OnBeforeDestroy() {
     ControllerHolder_1.ControllerHolder.PhotographController.ClearAllSavedFightPhotos();
-  }
-  OnAfterPlayStartSequence() {
-    ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
   }
 }
 exports.FightPhotoResultView = FightPhotoResultView;

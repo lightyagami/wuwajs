@@ -19,9 +19,6 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
       this.RefreshKeyItem();
       this.RefreshVisible();
     };
-    this.XBo = () => {
-      this.RefreshKeyItem();
-    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem]];
@@ -34,11 +31,9 @@ class BattleSkillRouletteItem extends UiPanelBase_1.UiPanelBase {
     this.RefreshKeyItem();
     this.RefreshVisible();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRouletteKeyChanged, this.Aah);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
   }
   OnBeforeDestroy() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRouletteKeyChanged, this.Aah);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
   }
   RefreshKeyItem() {
     var e = this._Ze;

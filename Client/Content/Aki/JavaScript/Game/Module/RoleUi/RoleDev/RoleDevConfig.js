@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleDevConfig = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
-const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const PropertyIndexById_1 = require("../../../../Core/Define/ConfigQuery/PropertyIndexById");
 const RoleDevCulProjectConfigById_1 = require("../../../../Core/Define/ConfigQuery/RoleDevCulProjectConfigById");
 const RoleDevCultivateProjectByProjectProjectId_1 = require("../../../../Core/Define/ConfigQuery/RoleDevCultivateProjectByProjectProjectId");
@@ -153,9 +152,6 @@ class RoleDevConfig extends ConfigBase_1.ConfigBase {
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("RoleDev", 88, "RoleDevStatic表无效configId", ["configId", 1]);
     }
-  }
-  GetCanLevelUpSkillNodeIndexList() {
-    return CommonParamById_1.configCommonParamById.GetIntArrayConfig("RoleDevCanLevelUpSkillNodeIndexList");
   }
 }
 exports.RoleDevConfig = RoleDevConfig;

@@ -478,9 +478,7 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     this.Myt(i);
   }
   Myt(t) {
-    if (t.length <= 0) {
-      this.YSt([]);
-    } else {
+    if (!(t.length <= 0)) {
       this.YSt(t);
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
         this.yBd?.ScrollToItemIndex(t.length - 1);
@@ -545,7 +543,6 @@ class ChatView extends UiTickViewBase_1.UiTickViewBase {
     var r = this.GetText(6);
     if (e) {
       LguiUtil_1.LguiUtil.SetLocalText(i, "CurrentTeam");
-      i?.SetColor(ChatDefine_1.playerRealNameColor);
       r.SetUIActive(false);
     } else {
       e = t.GetPlayerName();

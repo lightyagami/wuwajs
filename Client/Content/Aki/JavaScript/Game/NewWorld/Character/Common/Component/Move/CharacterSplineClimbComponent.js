@@ -1,23 +1,23 @@
 "use strict";
 
 var CharacterSplineClimbComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, s) {
+var __decorate = this && this.__decorate || function (t, i, e, s) {
   var h;
-  var n = arguments.length;
-  var r = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var r = arguments.length;
+  var n = r < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, e, i, s);
+    n = Reflect.decorate(t, i, e, s);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
       if (h = t[o]) {
-        r = (n < 3 ? h(r) : n > 3 ? h(e, i, r) : h(e, i)) || r;
+        n = (r < 3 ? h(n) : r > 3 ? h(i, e, n) : h(i, e)) || n;
       }
     }
   }
-  if (n > 3 && r) {
-    Object.defineProperty(e, i, r);
+  if (r > 3 && n) {
+    Object.defineProperty(i, e, n);
   }
-  return r;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -45,7 +45,7 @@ const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 const CharacterUnifiedStateTypes_1 = require("../Abilities/CharacterUnifiedStateTypes");
 const CustomMovementDefine_1 = require("./CustomMovementDefine");
 class SplineClimbParams {
-  constructor(e) {
+  constructor(i) {
     this.Tags = [];
     this.InterruptSkills = [];
     this.SampleLength = 200;
@@ -54,17 +54,17 @@ class SplineClimbParams {
     this.TraceStartOffset = -200;
     this.ExtraWallRadius = 2.5;
     this.DebugDraw = false;
-    if (e) {
-      this.Tags = GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(e.期间Tag);
-      for (let t = 0; t < e.打断技能.Num(); t++) {
-        this.InterruptSkills.push(e.打断技能.Get(t));
+    if (i) {
+      this.Tags = GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(i.期间Tag);
+      for (let t = 0; t < i.打断技能.Num(); t++) {
+        this.InterruptSkills.push(i.打断技能.Get(t));
       }
-      this.SampleLength = e.采样长度;
-      this.SampleInterval = e.采样间隔;
-      this.TraceLength = e.检测距离;
-      this.TraceStartOffset = e.检测起始偏移;
-      this.ExtraWallRadius = e.离墙额外距离;
-      this.DebugDraw = e.DebugDraw;
+      this.SampleLength = i.采样长度;
+      this.SampleInterval = i.采样间隔;
+      this.TraceLength = i.检测距离;
+      this.TraceStartOffset = i.检测起始偏移;
+      this.ExtraWallRadius = i.离墙额外距离;
+      this.DebugDraw = i.DebugDraw;
     }
   }
 }
@@ -98,6 +98,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.ZQl = Transform_1.Transform.Create();
     this.kxd = Vector_1.Vector.Create();
     this.Due = Vector_1.Vector.Create();
+    this.r9d = Vector_1.Vector.Create();
     this.Ele = Rotator_1.Rotator.Create();
     this.Mme = Transform_1.Transform.Create();
     this.cz = Vector_1.Vector.Create();
@@ -113,17 +114,17 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.Jze = () => {
       this.ExitSplineClimb("OnRoleDead", true, false);
     };
-    this.ero = (t, e, i) => {
-      var s = this.OPt?.InterruptSkills.includes(e);
+    this.ero = (t, i, e) => {
+      var s = this.OPt?.InterruptSkills.includes(i);
       if (t === this.Entity.Id && s) {
-        this.ExitSplineClimb("使用技能" + e, true, false);
+        this.ExitSplineClimb("使用技能" + i, true, false);
       } else if (!s) {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Movement", 82, "[CharacterSplineClimbComponent] 样条跑墙期间使用技能", ["SkillId", e]);
+          Log_1.Log.Debug("Movement", 82, "[CharacterSplineClimbComponent] 样条跑墙期间使用技能", ["SkillId", i]);
         }
       }
     };
-    this.xsa = (t, e) => {
+    this.xsa = (t, i) => {
       this.i9d = true;
     };
   }
@@ -150,11 +151,11 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.i9d = false;
     }
   }
-  EnterSplineClimb(t, e, i) {
+  EnterSplineClimb(t, i, e) {
     if (this.Bxd) {
       this.ExitSplineClimb("重复进入", false);
     }
-    this.Uxd.DeepCopy(e);
+    this.Uxd.DeepCopy(i);
     this.qxd(t);
     this.Gxd();
     this.xxd = 0;
@@ -167,12 +168,12 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.Lie?.AddTag(s);
     }
     this.Ore();
-    e = this.Entity?.GetComponent(39);
-    if (e) {
-      e.StopAllSkills("开始样条跑墙");
+    i = this.Entity?.GetComponent(39);
+    if (i) {
+      i.StopAllSkills("开始样条跑墙");
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "[CharacterSplineClimbComponent] 开始样条跑墙");
-    this.Axd = i;
+    this.Axd = e;
     this.Bxd = true;
     if (GlobalData_1.GlobalData.IsPlayInEditor) {
       CharacterSplineClimbComponent_1.wX1();
@@ -185,10 +186,10 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     }
     this.Due.DeepCopy(this.Hte.ActorLocationProxy);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 82, "开始样条跑墙", ["SourceLength", this.Dxd?.SourceSpline.GetSplineLength()], ["DistanceInSource", this.Dxd?.DistanceInSource], ["SourceLengthUe", this.Dxd?.SourceSplineUe?.GetSplineLength()], ["SplineLocation", this.Dxd?.SourceSpline.SplineTransform.GetLocation()]);
+      Log_1.Log.Info("Movement", 82, "开始样条跑墙");
     }
   }
-  ExitSplineClimb(t, e = true, i = true) {
+  ExitSplineClimb(t, i = true, e = true) {
     this.kre();
     if (this.RWr) {
       this.RWr.Enable(this.w6d, "样条跑墙结束");
@@ -196,10 +197,10 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     }
     var s;
     var h = this.Entity.GetComponent(176).PositionState;
-    var i = !i || this.nz1();
-    var n = e && i && (h === CharacterUnifiedStateTypes_1.ECharPositionState.Air || h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
-    var e = e && h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
-    if (n) {
+    var e = !e || this.nz1();
+    var r = i && e && (h === CharacterUnifiedStateTypes_1.ECharPositionState.Air || h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
+    var i = i && h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
+    if (r) {
       if (GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.ActorVelocityProxy) > 0) {
         this.cz.DeepCopy(this.Hte.ActorVelocityProxy);
         GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Hte, this.cz);
@@ -208,18 +209,18 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       (h = this.cz).DeepCopy(this.kxd);
       if (!h.IsNearlyZero()) {
         if (Math.abs(h.Y) > MathUtils_1.MathUtils.SmallNumber) {
-          n = Vector_1.Vector.DotProduct(h, this.Gce.GravityUp);
+          r = Vector_1.Vector.DotProduct(h, this.Gce.GravityUp);
           s = this.fz;
-          this.Gce.GravityUp.Multiply(n, s);
+          this.Gce.GravityUp.Multiply(r, s);
           h.SubtractionEqual(s);
           MathUtils_1.MathUtils.LookRotationUpFirst(h, this.Gce.GravityUp, this.e7o);
-          (n = this.Hte.ActorTransform).SetRotation(this.e7o.ToUeQuat());
-          this.RWr.SetCharacterTransformAndBuffer(n, 300);
+          (r = this.Hte.ActorTransform).SetRotation(this.e7o.ToUeQuat());
+          this.RWr.SetCharacterTransformAndBuffer(r, 300);
         }
       }
     }
-    if (e) {
-      if (i) {
+    if (i) {
+      if (e) {
         this.Hte?.Actor.KuroSetMovementMode({
           Mode: 3,
           Context: "[CharacterSplineClimbComponent.ExitSplineClimb]"
@@ -233,8 +234,8 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
         this.RWr?.KickWallExit();
       }
     }
-    for (const r of this.OPt.Tags) {
-      this.Lie?.RemoveTag(r);
+    for (const n of this.OPt.Tags) {
+      this.Lie?.RemoveTag(n);
     }
     this.Bxd = false;
     this.i9d = false;
@@ -243,15 +244,15 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     }
     this.Axd?.(true);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 82, "退出样条跑墙", ["reason", t], ["DistanceInSource", this.Dxd?.DistanceInSource], ["WallSplineLength", this.Dxd?.WallSpline?.GetSplineLength()], ["DistanceOnWall", this.Dxd?.DistanceInWallSpline], ["bChangeState", e]);
+      Log_1.Log.Info("Movement", 82, "退出样条跑墙", ["reason", t]);
     }
   }
   qxd(t) {
     this.Dxd = new SplineRuntime();
     this.Dxd.SourceSplineUe = t;
-    var e = this.Dxd.SourceSpline;
-    e.Init(t.SplineCurves.Position, t.SplineCurves.ReparamTable.Points, t.SplineCurves.Rotation, t.SplineCurves.Scale);
-    e.SetSplineTransform(Transform_1.Transform.Create(t.D_K2_GetComponentToWorld()), false);
+    var i = this.Dxd.SourceSpline;
+    i.Init(t.SplineCurves.Position, t.SplineCurves.ReparamTable.Points, t.SplineCurves.Rotation, t.SplineCurves.Scale);
+    i.SetSplineTransform(Transform_1.Transform.Create(t.D_K2_GetComponentToWorld()), false);
   }
   Gxd() {
     var t = this.Dxd.SourceSplineUe.D_FindInputKeyClosestToWorldLocationInGravity(this.Hte.ActorLocation, this.Hte.ActorGravityDirectProxy.ToUeVectorOld(), 800);
@@ -274,64 +275,72 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   }
   SRa(i) {
     if (this.Bxd && this.Dxd && this.Dxd.SourceSpline) {
-      var s = this.Dxd;
-      let e = s.WallSpline.GetSplineLength();
-      var h = s.SourceSpline.GetSplineLength();
-      if (!s.InitialUpdate && s.DistanceInSource >= h && s.DistanceInWallSpline >= e - 0.1) {
+      var e = this.Dxd;
+      var s = e.WallSpline.GetSplineLength();
+      var h = e.SourceSpline.GetSplineLength();
+      if (!e.InitialUpdate && e.DistanceInSource >= h && e.DistanceInWallSpline >= s) {
         this.ExitSplineClimb("样条结束");
       } else {
-        if (s.InitialUpdate || s.DistanceInWallSpline >= e - 0.1) {
-          var n = s.DistanceInWallSpline - e;
+        if (e.InitialUpdate || e.DistanceInWallSpline >= s) {
+          var s = e.DistanceInWallSpline - s;
           var r = this.OPt.SampleLength;
-          if (!this.Fxd(s.SourceSpline, s.WallSpline, s.DistanceInSource, Math.min(h, s.DistanceInSource + r), this.Uxd)) {
+          if (!this.Fxd(e.SourceSpline, e.WallSpline, e.DistanceInSource, Math.min(h, e.DistanceInSource + r), this.Uxd)) {
             this.ExitSplineClimb("无法投影");
             return;
           }
-          s.DistanceInSource += r;
-          s.DistanceInWallSpline = n;
-          e = s.WallSpline.GetSplineLength();
+          e.DistanceInSource += r;
+          e.DistanceInWallSpline = s;
+          e.WallSpline.GetSplineLength();
         }
         this.Dxd.WallSpline.GetTransformAtDistanceAlongSpline(this.Dxd.DistanceInWallSpline, 1, this.ZQl);
         let t = this.Gce.CharacterMovement.AnimRootMotionVelocity.Size();
-        if (t <= 100) {
+        if (t <= 0) {
           t = 500;
         }
-        s.DistanceInWallSpline = Math.min(s.DistanceInWallSpline + t * i, e - 0.1);
-        this.Due.DeepCopy(this.ZQl.GetLocation());
-        this.Due.Subtraction(this.Hte.ActorLocationProxy, this.kxd);
-        this.Hte.AddActorWorldOffset(this.kxd.ToUeVector(), "[CharacterSplineClimbComponent] 沿样条跑墙", true);
-        this.Nxd(this.Uxd, this.ZQl, this.Ele);
-        this.Gce.SmoothCharacterRotation(this.Ele, 800, i, false, "[SplineClimb] 沿样条跑墙");
-        this.Vxd(this.ZQl, i);
-        this.oRe?.ConsumeRootMotion();
-        this.RWr?.SetLastSafeLocation(this.Hte.ActorLocationProxy);
-        s.InitialUpdate = false;
+        e.DistanceInWallSpline += t * i;
+        this.ZQl.GetLocation().Subtraction(this.Due, this.r9d);
+        if (this.r9d.Size() === 0) {
+          this.ExitSplineClimb("样条结束");
+        } else {
+          this.Due.DeepCopy(this.ZQl.GetLocation());
+          this.Due.Subtraction(this.Hte.ActorLocationProxy, this.kxd);
+          h = Math.min(this.kxd.Size(), t * i);
+          this.kxd.Normalize();
+          this.kxd.MultiplyEqual(h);
+          this.Hte.AddActorWorldOffset(this.kxd.ToUeVector(), "[CharacterSplineClimbComponent] 沿样条跑墙", true);
+          this.Nxd(this.Uxd, this.ZQl, this.Ele);
+          this.Gce.SmoothCharacterRotation(this.Ele, 800, i, false, "[SplineClimb] 沿样条跑墙");
+          this.Vxd(this.ZQl, i);
+          this.oRe?.ConsumeRootMotion();
+          this.RWr?.SetLastSafeLocation(this.Hte.ActorLocationProxy);
+          e.InitialUpdate = false;
+        }
       }
     }
   }
-  Nxd(t, e, i) {
-    var e = e.GetRotation();
+  Nxd(t, i, e) {
+    var i = i.GetRotation();
     var s = this.cz;
-    e.GetForwardVector(s);
-    var e = Vector_1.Vector.DotProduct(s, this.Hte.ActorGravityDirectProxy);
+    i.GetForwardVector(s);
+    var i = Vector_1.Vector.DotProduct(s, this.Hte.ActorGravityDirectProxy);
     var h = this.fz;
-    this.Hte.ActorGravityDirectProxy.Multiply(e, h);
+    this.Hte.ActorGravityDirectProxy.Multiply(i, h);
     s.SubtractionEqual(h);
     s.Normalize();
-    var e = Vector_1.Vector.DotProduct(t, s);
+    var i = Vector_1.Vector.DotProduct(t, s);
     var h = this.fz;
-    s.Multiply(e, h);
+    s.Multiply(i, h);
     var s = this.pz;
     t.Subtraction(h, s);
     s.Normalize();
-    s.ToOrientationRotator(i);
+    s.ToOrientationRotator(e);
   }
-  Fxd(e, t, i, s, h) {
-    var n = [];
-    var r = e.GetSplineLength();
-    var s = s - i;
+  Fxd(i, t, e, s, h) {
+    var r = [];
+    var n = i.GetSplineLength();
+    var s = s - e;
     if (s < 10) {
-      t.InitPoints(n);
+      t.InitPoints(r);
     }
     var o = this.OPt.SampleInterval;
     var a = s / o;
@@ -340,59 +349,58 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     var _ = this.OPt.TraceLength;
     var C = this.OPt.ExtraWallRadius;
     for (let t = 0; t <= a; t++) {
-      var p = i + t * o;
-      var v = Math.min(p, r - 0.1);
+      var p = e + t * o;
+      if (n < p) {
+        break;
+      }
+      var v = Math.min(p, n - 0.1);
       var c = this.Mme;
-      e.GetTransformAtDistanceAlongSpline(v, 1, c);
+      i.GetTransformAtDistanceAlongSpline(v, 1, c);
       this.mWi ||= this.wTu();
       this.mWi.Radius = l;
-      var S = this.cz;
-      h.GetSafeNormal(S);
-      S.MultiplyEqual(m);
-      S.AdditionEqual(c.GetLocation());
-      var u = this.fz;
+      var u = this.cz;
       h.GetSafeNormal(u);
-      u.MultiplyEqual(_);
+      u.MultiplyEqual(m);
       u.AdditionEqual(c.GetLocation());
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.mWi, S);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.mWi, u);
-      var S = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.mWi, "CharacterSplineClimbComponent.BuildWallSpline");
-      if (S && this.mWi.HitResult) {
-        var u = this.cz;
+      var S = this.fz;
+      h.GetSafeNormal(S);
+      S.MultiplyEqual(_);
+      S.AdditionEqual(c.GetLocation());
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.mWi, u);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.mWi, S);
+      var c = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.mWi, "CharacterSplineClimbComponent.BuildWallSpline");
+      if (c && this.mWi.HitResult) {
+        u = this.cz;
         TraceElementCommon_1.TraceElementCommon.GetImpactPoint(this.mWi.HitResult, 0, u);
-        var S = this.fz;
+        S = this.fz;
         TraceElementCommon_1.TraceElementCommon.GetImpactNormal(this.mWi.HitResult, 0, S);
-        var E = new SplineCurve_1.InterpCurvePointVector(5);
-        E.InVal = p;
+        c = new SplineCurve_1.InterpCurvePointVector(5);
+        c.InVal = p;
         S.MultiplyEqual(l + C);
         u.AdditionEqual(S);
         S.Normalize();
-        E.OutVal.DeepCopy(u);
-        var u = this.cz;
-        e.GetDirectionAtDistanceAlongSpline(v, 1, u);
-        var v = Vector_1.Vector.DotProduct(u, S);
+        c.OutVal.DeepCopy(u);
+        u = this.cz;
+        i.GetDirectionAtDistanceAlongSpline(v, 1, u);
+        v = Vector_1.Vector.DotProduct(u, S);
         S.MultiplyEqual(v);
         u.SubtractionEqual(S);
         u.Normalize();
-        E.ArriveTangent.DeepCopy(u);
-        E.LeaveTangent.DeepCopy(u);
-        n.push(E);
+        c.ArriveTangent.DeepCopy(u);
+        c.LeaveTangent.DeepCopy(u);
+        r.push(c);
         if (GlobalData_1.GlobalData.IsPlayInEditor && this.OPt.DebugDraw) {
-          v = E.OutVal.ToUeVector();
-          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, v, 5, 12, ColorUtils_1.ColorUtils.LinearYellow, 5);
-          const h = E.ArriveTangent.ToUeVector();
+          v = c.OutVal.ToUeVector();
+          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, v, l, 12, ColorUtils_1.ColorUtils.LinearYellow, 5);
+          const h = c.ArriveTangent.ToUeVector();
           UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, v, v.op_Addition(h.op_Multiply(20)), ColorUtils_1.ColorUtils.LinearRed, 5);
-          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, c.GetLocation().ToUeVector(), 2, 12, ColorUtils_1.ColorUtils.LinearBlue, 5);
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Movement", 82, "[CharacterSplineClimbComponent] 未检测到墙壁", ["distance", p], ["maxDistance", r]);
-      }
-      if (r <= p) {
-        break;
+        Log_1.Log.Warn("Movement", 82, "[CharacterSplineClimbComponent] 未检测到墙壁", ["distance", p], ["maxDistance", n]);
       }
     }
-    t.InitPoints(n);
-    return !(n.length < 1);
+    t.InitPoints(r);
+    return !(r.length < 2);
   }
   wTu() {
     var t = UE.NewObject(UE.TraceSphereElement.StaticClass());
@@ -403,28 +411,29 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     t.bTraceComplex = false;
     t.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStatic);
     t.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
+    t.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Climb);
     return t;
   }
-  Vxd(t, e) {
+  Vxd(t, i) {
     var t = t.GetRotation();
-    var i = this.cz;
-    t.GetForwardVector(i);
-    var t = this.jxd(i);
-    this.xxd = MathUtils_1.MathUtils.InterpTo(this.xxd, t, e, 4);
+    var e = this.cz;
+    t.GetForwardVector(e);
+    var t = this.jxd(e);
+    this.xxd = MathUtils_1.MathUtils.InterpTo(this.xxd, t, i, 4);
     this.rRe.FastClimbMix = this.xxd;
   }
   jxd(t) {
-    var e = this.Hte.ActorRightProxy;
-    let i = Vector_1.Vector.DotProduct(t, e);
-    e = -Vector_1.Vector.DotProduct(t, this.Hte.ActorGravityDirectProxy);
-    return i = e < 0 ? i < 0 ? -1 : 1 : i;
+    var i = this.Hte.ActorRightProxy;
+    let e = Vector_1.Vector.DotProduct(t, i);
+    i = -Vector_1.Vector.DotProduct(t, this.Hte.ActorGravityDirectProxy);
+    return e = i < 0 ? e < 0 ? -1 : 1 : e;
   }
   static wX1() {
     var t = "/Game/Aki/Data/Level/SplineClimb/DA_SplineClimb_Common.DA_SplineClimb_Common";
-    var e = ResourceSystem_1.ResourceSystem.Load(t, UE.BP_SplineClimbConfig_C);
-    if (e?.IsValid()) {
-      e = new SplineClimbParams(e);
-      return CharacterSplineClimbComponent_1.k2u = e;
+    var i = ResourceSystem_1.ResourceSystem.Load(t, UE.BP_SplineClimbConfig_C);
+    if (i?.IsValid()) {
+      i = new SplineClimbParams(i);
+      return CharacterSplineClimbComponent_1.k2u = i;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Movement", 82, "[CharacterSplineClimbComponent] 获取样条跑墙DA参数失败", ["DaPath", t]);

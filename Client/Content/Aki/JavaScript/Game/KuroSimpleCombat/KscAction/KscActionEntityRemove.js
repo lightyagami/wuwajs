@@ -21,6 +21,8 @@ class KscActionEntityRemove extends KscActionBase_1.KscActionBase {
       } else {
         this.KscCtrl.RemoveEntityImplByReasonType(t, this.RemoveReasonType);
       }
+    } else {
+      this.Warn("Common", "移除战斗实体时找不到Id", ["creatureId", this.EntityId]);
     }
     this.SetResult();
     await this.Promise?.Promise;

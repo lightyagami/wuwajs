@@ -380,10 +380,6 @@ class RoleModel extends ModelBase_1.ModelBase {
     }
     return 2;
   }
-  GetRoleNeedBreakUp(e) {
-    e = this.GetRoleInstanceById(e);
-    return !!e && e.GetLevelData().GetRoleNeedBreakUp();
-  }
   GetRoleCostExpList() {
     var e = [];
     var t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleExpItemList();

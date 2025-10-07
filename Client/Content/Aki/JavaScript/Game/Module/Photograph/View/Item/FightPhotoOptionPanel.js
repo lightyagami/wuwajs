@@ -49,7 +49,7 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
     this.o8a = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.n8a);
     await this.Zyd.RefreshByDataAsync(ConfigManager_1.ConfigManager.PhotographConfig.GetAllFightPhotoOptionConfig());
     this.Zyd.SelectGridProxy(0);
-    this.RefreshCondition();
+    this._Fe();
     this.GetItem(4)?.SetUIActive(false);
     this.GetSprite(7).SetUIActive(false);
     this.GetSprite(8).SetUIActive(true);
@@ -63,14 +63,14 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
   OnBeforeShow() {
     this.kot();
   }
-  RefreshCondition() {
+  _Fe() {
     var e;
     var i;
     var t = ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode;
-    if (t && t.InProgress) {
+    if (t) {
       e = [];
       if (i = t.PhotographCondition) {
-        e.push(new PhotographDefine_1.FightPhotoConditionData(i.TidTip, i.Target.CommonCondition, true));
+        e.push(new PhotographDefine_1.FightPhotoConditionData(i.TidTip, i.Target.CommonCondition));
       }
       if (i = t.CameraCondition) {
         e.push(new PhotographDefine_1.FightPhotoConditionData(i.TidTip, i.Condition));
@@ -85,7 +85,7 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
   }
   RefreshFinishSprite() {
     var e = ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode;
-    if (e && e.InProgress) {
+    if (e) {
       this.GetText(9)?.SetUIActive(!e.CheckRoleInCamera());
       this.GetItem(6)?.SetUIActive(e.CheckPhotographCondition());
     }
@@ -133,15 +133,6 @@ class FightPhotoOptionPanel extends UiPanelBase_1.UiPanelBase {
           t = o.Entity.Disable("[FightPhotoOptionPanel.OnHideMonsterToggleClick] state为false");
           this.E7d.set(o, t);
         }
-      }
-    }
-  }
-  GetGuideUiItemAndUiItemForShowEx(e) {
-    if (e.length !== 0 && e[0] === "HideEnemy") {
-      var e = this.GetExtendToggle(10)?.GetRootComponent();
-      var i = this.GetGuideUiItem("2");
-      if (e && i) {
-        return [e, i];
       }
     }
   }

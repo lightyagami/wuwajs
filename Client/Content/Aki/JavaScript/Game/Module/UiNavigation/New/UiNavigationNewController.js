@@ -84,7 +84,6 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.cEa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PointerInputTypeChange, this.$Bo);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyUiNavigationNewControllerSetNavigationFocusForView, UiNavigationNewController.SetNavigationFocusForView);
     InputDistributeController_1.InputDistributeController.BindActions([InputMappingsDefine_1.actionMappings.Ui方向上, InputMappingsDefine_1.actionMappings.Ui方向下, InputMappingsDefine_1.actionMappings.Ui方向左, InputMappingsDefine_1.actionMappings.Ui方向右], this.YBo);
     InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.手柄引导下一步, this.JBo);
   }
@@ -94,7 +93,6 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.cEa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PointerInputTypeChange, this.$Bo);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyUiNavigationNewControllerSetNavigationFocusForView, UiNavigationNewController.SetNavigationFocusForView);
     InputDistributeController_1.InputDistributeController.UnBindActions([InputMappingsDefine_1.actionMappings.Ui方向上, InputMappingsDefine_1.actionMappings.Ui方向下, InputMappingsDefine_1.actionMappings.Ui方向左, InputMappingsDefine_1.actionMappings.Ui方向右], this.YBo);
     InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.手柄引导下一步, this.JBo);
   }
@@ -586,9 +584,9 @@ class UiNavigationNewController extends UiControllerBase_1.UiControllerBase {
           Log_1.Log.Info("UiNavigation", 10, "业务设置了导航对象", ["名字", i.displayName]);
         }
         if (t) {
-          UiNavigationNewController.SwitchNavigationFocusWithDirtyCheck(e);
+          this.SwitchNavigationFocusWithDirtyCheck(e);
         } else {
-          UiNavigationNewController.SwitchNavigationFocus(e);
+          this.SwitchNavigationFocus(e);
         }
       }
     }

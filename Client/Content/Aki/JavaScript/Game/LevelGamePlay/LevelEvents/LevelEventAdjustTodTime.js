@@ -15,7 +15,9 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventAdjustTodTime extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, o, r) {
     if (e) {
-      if (o.Type === 6 && o.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst || o.Type === 8) {
+      if (o.Type !== 6 || o.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeInst) {
+        this.FinishExecute(true);
+      } else {
         o = e;
         const t = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(o.Hour, o.Min);
         if (t < 0) {
@@ -42,8 +44,6 @@ class LevelEventAdjustTodTime extends LevelGeneralBase_1.LevelEventBase {
           ControllerHolder_1.ControllerHolder.TimeOfDayController.AdjustTime(t, Protocol_1.Aki.Protocol.C4s.Proto_LevelPlayAuto);
           this.FinishExecute(true);
         }
-      } else {
-        this.FinishExecute(true);
       }
     } else {
       this.FinishExecute(false);

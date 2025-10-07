@@ -100,7 +100,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     }
   }
   een() {
-    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(62)?.IsLocalInput) {
+    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir()) {
       MathUtils_1.MathUtils.LookRotationUpFirst(this.ActorComp.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
       this.TmpTransform.Set(this.ActorComp.ActorLocationProxy, this.TmpRotator.Quaternion(), this.ActorComp.ActorScaleProxy);
       this.ActorComp.SetActorTransform(this.TmpTransform.ToUeTransform(), "释放技能.转向输入方向", false, 1);

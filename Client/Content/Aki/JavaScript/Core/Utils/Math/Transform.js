@@ -30,11 +30,6 @@ class Transform {
         r.mC = Quat_1.Quat.Create(s.GetRotation());
         r.rz = Vector_1.Vector.Create(s.GetTranslation());
         r.nz = Vector_1.Vector.Create(s.GetScale3D());
-      } else {
-        s = t[0];
-        r.mC = Quat_1.Quat.Create(s.GetRotation());
-        r.rz = Vector_1.Vector.Create(s.GetTranslation());
-        r.nz = Vector_1.Vector.Create(s.GetScale3D());
       }
     } else if (t.length === 0) {
       r.mC = Quat_1.Quat.Create();

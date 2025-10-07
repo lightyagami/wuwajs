@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleSkillTreeInfoItem = undefined;
 const UE = require("ue");
-const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
@@ -13,10 +12,10 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const UiViewSequence_1 = require("../../../Ui/Base/UiViewSequence");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
-const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
@@ -52,14 +51,17 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.kmo = 1;
     this.Fmo = [];
     this.Vmo = [];
-    this.SPe = undefined;
-    this.OnBackBtnCallBack = undefined;
     this.Dcl = 0;
+    this.kgl = undefined;
+    this.OnUpdateSkillTreeInfoView = i => {
+      this.Update(i);
+      this.ShowLeftPanelByTabType(this.kmo);
+    };
     this.OnCommonItemCountAnyChange = () => {
       this.Refresh();
     };
     this.pFe = () => {
-      this.OnBackBtnCallBack?.();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewQuit);
     };
     this.Wmo = i => {
       if (this.Omo = i) {
@@ -157,8 +159,11 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture], [9, UE.UIText], [3, UE.UIText], [4, UE.UIExtendToggle], [5, UE.UIExtendToggle], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIText], [10, UE.UIText], [11, UE.UIHorizontalLayout], [12, UE.UITexture], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIItem], [18, UE.UIText], [19, UE.UIExtendToggle], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIButtonComponent], [25, UE.UIButtonComponent], [26, UE.UIButtonComponent], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIButtonComponent], [30, UE.UIExtendToggle], [31, UE.UIItem], [32, UE.UIText], [33, UE.UIText], [34, UE.UIItem]];
     this.BtnBindInfo = [[4, this.zmo], [5, this.Zmo], [19, this.Wmo], [24, this.pFe], [25, this.Xmo], [26, this.tdo], [29, this.Ymo], [30, this.Pcl]];
   }
+  OnBeforeCreate() {
+    this.kgl = new UiViewSequence_1.UiBehaviorLevelSequence(this);
+    this.AddUiBehavior(this.kgl);
+  }
   async OnBeforeStartAsync() {
-    this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
     this.Nmo = new RoleSkillInputPanel_1.RoleSkillInputPanel();
     var i = this.GetItem(28).GetOwner();
     this.RoleBackgroundMusicSwitchItem = new RoleBackgroundMusicSwitchItem_1.RoleBackgroundMusicSwitchItem();
@@ -179,10 +184,6 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     var i = this.OpenParam;
     this.WVd = i;
     this.kmo = 1;
-    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(10), 1, 4, 2);
-  }
-  OnBeforeDestroy() {
-    ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(10));
   }
   xcl() {
     var i;
@@ -196,6 +197,12 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
       this.GetExtendToggle(30).SetToggleState(i);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(33), "SkillBriefDescription_text");
     }
+  }
+  OnAddEventListener() {
+    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(10), 1, 4, 2);
+  }
+  OnRemoveEventListener() {
+    ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(10));
   }
   Update(i) {
     this.WVd = i;
@@ -215,20 +222,22 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   Refresh() {
-    switch (ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.WVd.SkillNodeId).NodeType) {
-      case 4:
-        this.ndo();
-        break;
-      case 3:
-        this.sdo();
-        break;
-      case 2:
-        this.ado();
-        break;
-      case 1:
-        this.hdo();
+    if (!this.InAsyncLoading()) {
+      switch (ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(this.WVd.SkillNodeId).NodeType) {
+        case 4:
+          this.ndo();
+          break;
+        case 3:
+          this.sdo();
+          break;
+        case 2:
+          this.ado();
+          break;
+        case 1:
+          this.hdo();
+      }
+      this.RefreshRoleBackgroundMusicSwitchItem();
     }
-    this.RefreshRoleBackgroundMusicSwitchItem();
   }
   rdo() {
     this.GetItem(22).SetUIActive(false);
@@ -481,16 +490,12 @@ class RoleSkillTreeInfoItem extends UiPanelBase_1.UiPanelBase {
   }
   Qmo(i) {
     if (i) {
-      this.SPe.PlayOrReplaySequenceByName("ViewShow");
+      this.kgl.StopSequenceByKey("ViewShow");
+      this.kgl.PlaySequence("ViewShow");
     } else {
-      this.SPe.PlayOrReplaySequenceByName("ViewHide");
+      this.kgl.StopSequenceByKey("ViewHide");
+      this.kgl.PlaySequence("ViewHide");
     }
-  }
-  PlayItemSequence(i) {
-    this.SPe.PlayOrReplaySequenceByName(i);
-  }
-  async PlayItemSequenceAsync(i) {
-    await this.SPe.PlaySequenceAsync(i, new CustomPromise_1.CustomPromise());
   }
   RefreshRoleBackgroundMusicSwitchItem() {
     var i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.WVd.RoleId);

@@ -33,7 +33,7 @@ class WeaponReplaceMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
       }
     };
     this.Apply(d);
-    this.SetSelected(o, true);
+    this.SetSelected(o);
   }
 }
 exports.WeaponReplaceMediumItemGrid = WeaponReplaceMediumItemGrid;

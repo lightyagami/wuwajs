@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ForecastRoleDevWeaponDetailItemData = undefined;
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
-const CommonItemData_1 = require("../../../../Inventory/ItemData/CommonItemData");
 const RoleDevUtils_1 = require("../../RoleDevUtils");
 class ForecastRoleDevWeaponDetailItemData {
   constructor() {
@@ -40,9 +39,9 @@ class ForecastRoleDevWeaponDetailItemData {
   }
   VNd() {
     var e = [];
-    for (const r of ModelManager_1.ModelManager.WeaponModel.GetWeaponExpItemConfigList()) {
-      var t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(r.Id);
-      e.push(new CommonItemData_1.CommonItemData(r.Id, -1, t, 0));
+    for (const r of ModelManager_1.ModelManager.WeaponModel.GetWeaponExpMaterialList()) {
+      var t = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(r.Id);
+      e.push(...t);
     }
     return this.KNd(e);
   }
@@ -55,7 +54,7 @@ class ForecastRoleDevWeaponDetailItemData {
   }
   jNd(e, t) {
     t = RoleDevUtils_1.RoleDevUtils.GroupMaterialsByType(t);
-    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2)[0];
+    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2, 12)[0];
   }
   Epd(e, t) {
     var r = [];
@@ -65,19 +64,19 @@ class ForecastRoleDevWeaponDetailItemData {
   }
   JNd(e, t, r, a) {
     let i = a;
-    for (const s of e) {
+    for (const n of e) {
       if (i >= t) {
         break;
       }
-      var o = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(s.GetConfigId()).BasicExp;
-      var n = Math.ceil((t - i) / o);
-      var n = Math.min(n, s.GetCount());
-      if (n > 0) {
+      var o = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemConfig(n.GetConfigId()).BasicExp;
+      var s = Math.ceil((t - i) / o);
+      var s = Math.min(s, n.GetCount());
+      if (s > 0) {
         r.push({
-          ItemId: s.GetConfigId(),
-          RequiredCount: n
+          ItemId: n.GetConfigId(),
+          RequiredCount: s
         });
-        i += n * o;
+        i += s * o;
       }
     }
     return i;

@@ -150,7 +150,7 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
     }
     if (s && i > 0) {
       var t = s.GetCurrentPosition() + i;
-      var h = Math.abs(s.GetCurrentPosition()) + this.GetTrueBoundary();
+      var h = s.GetCurrentPosition() + this.GetTrueBoundary();
       if (Math.abs(t) > Math.abs(h)) {
         return false;
       }

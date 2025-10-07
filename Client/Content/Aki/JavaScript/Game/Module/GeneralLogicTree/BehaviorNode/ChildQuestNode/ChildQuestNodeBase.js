@@ -23,14 +23,11 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   get CanGiveUp() {
     return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress;
   }
-  get InProgress() {
-    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress;
-  }
   get IsFinished() {
     return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished || this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_FinishAction;
   }
-  Init(t, e, i, s, o) {
-    if (s.Type === "ChildQuest" && (super.Init(t, e, i, s, o), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs)) {
+  Init(t, e, i, s, h) {
+    if (s.Type === "ChildQuest" && (super.Init(t, e, i, s, h), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs)) {
       this.UpdateChildQuestStatus(i.nEs.H6n, e);
       this.UpdateProgress(i.nEs.nvs);
     }

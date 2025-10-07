@@ -19,8 +19,8 @@ class QuestTreeNodeItemBase extends GridProxyAbstract_1.GridProxyAbstract {
     return 0;
   }
   UpdateDataList(e) {}
-  LocateSelf(e = true) {
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(this.GetRootItem(), e);
+  LocateSelf() {
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(this.GetRootItem(), true);
   }
 }
 exports.QuestTreeNodeItemBase = QuestTreeNodeItemBase;

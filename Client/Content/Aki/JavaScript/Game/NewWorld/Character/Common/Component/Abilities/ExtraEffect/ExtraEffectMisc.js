@@ -13,7 +13,6 @@ const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
 const PanelQteController_1 = require("../../../../../../Module/PanelQte/PanelQteController");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
-const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const AbilityEvent_1 = require("../AbilityEvent");
 const AbilityUtils_1 = require("../AbilityUtils");
 const ActiveBuffConfigs_1 = require("../Buff/ActiveBuffConfigs");
@@ -700,17 +699,14 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
   constructor() {
     super(...arguments);
     this.Group = undefined;
-    this.fye = 0;
     this.T4u = false;
-    this.QYd = new Set();
   }
   OnExecute() {}
   OnCreated() {
     if (this.InstigatorEntityId !== this.OwnerEntity.Id && this.InstigatorEntity?.Valid) {
-      this.fye = this.OwnerEntity.Id;
       let t = SyncTimeScaleEffect.F7u.get(this.InstigatorEntityId);
       if (!t) {
-        t = new SyncTimescaleGroup(this.InstigatorEntity);
+        t = new SyncTimescaleGroup(this.InstigatorEntity.Entity);
         SyncTimeScaleEffect.F7u.set(this.InstigatorEntityId, t);
       }
       (this.Group = t).AddOwner(this.OwnerEntity);
@@ -722,12 +718,8 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
     }
   }
   OnRemoved() {
-    if (this.Group && !this.T4u) {
-      for (const t of this.QYd) {
-        this.RemoveTimeScale(t, false);
-      }
-      this.QYd.clear();
-      this.Group.RemoveOwner(this.fye);
+    if (this.Group && !this.T4u && this.OwnerEntity?.Valid) {
+      this.Group.RemoveOwner(this.OwnerEntity.Id);
       if (this.Group.CanRelease()) {
         this.Group.Release();
         SyncTimeScaleEffect.F7u.delete(this.InstigatorEntityId);
@@ -735,42 +727,23 @@ class SyncTimeScaleEffect extends ExtraEffectBase_1.BuffEffect {
       this.Group = undefined;
     }
   }
-  SetTimeScale(t, e, s, i, r, h = false, o = false) {
-    if (this.Group?.InstigatorTimeScaleComp?.Valid) {
-      t = this.Group.InstigatorTimeScaleComp.SetTimeScale(t, e, s, i, r, h, o);
-      this.QYd.add(t);
-      return t;
-    } else {
-      return 0;
-    }
-  }
-  RemoveTimeScale(t, e = true) {
-    if (e) {
-      this.QYd.delete(t);
-    }
-    this.Group?.InstigatorTimeScaleComp?.RemoveTimeScale(t);
-  }
 }
 (exports.SyncTimeScaleEffect = SyncTimeScaleEffect).F7u = new Map();
 class SyncTimescaleGroup {
-  constructor(t) {
-    this.InstigatorHandle = t;
+  constructor(t = undefined) {
+    this.InstigatorEntity = t;
     this.N7u = new Map();
-    this.InstigatorTimeScaleComp = undefined;
+    this.V7u = undefined;
     this.OnInstigatorTimeScaleChanged = (t, e) => {
       for (var [, s] of this.N7u) {
-        if (s?.Valid) {
-          s.SetForceTimeScale(t, true);
-        }
+        s.SetForceTimeScale(t, true);
       }
     };
-    this.InstigatorTimeScaleComp = this.InstigatorHandle.Entity.GetComponent(180);
-    EventSystem_1.EventSystem.AddWithTarget(this.InstigatorHandle.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
+    this.V7u = this.InstigatorEntity.GetComponent(180);
+    EventSystem_1.EventSystem.AddWithTarget(this.InstigatorEntity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
   }
   Release() {
-    if (this.InstigatorHandle.Valid) {
-      EventSystem_1.EventSystem.RemoveWithTarget(this.InstigatorHandle.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
-    }
+    EventSystem_1.EventSystem.RemoveWithTarget(this.V7u.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.OnInstigatorTimeScaleChanged);
   }
   AddOwner(t = undefined) {
     var e;
@@ -783,15 +756,18 @@ class SyncTimescaleGroup {
       this.N7u.set(t.Id, e);
     }
   }
-  GetOwnerInfo() {
-    return Array.from(this.N7u.keys()).toString();
-  }
   RemoveOwner(t) {
     var e = this.N7u.get(t);
     if (e?.Valid) {
       e.RemoveForceTimeScale(true);
     }
     this.N7u.delete(t);
+  }
+  SetTimeScale(t, e, s, i, r, h = false) {
+    return this.V7u.SetTimeScale(t, e, s, i, r, h);
+  }
+  RemoveTimeScale(t) {
+    this.V7u.RemoveTimeScale(t);
   }
   CanRelease() {
     return this.N7u.size <= 0;

@@ -27,7 +27,6 @@ class SurvivorsLevelInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
     super(...arguments);
     this.LevelInfo = undefined;
     this.LevelSequencePlayer = undefined;
-    this.RYd = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText]];
@@ -53,8 +52,7 @@ class SurvivorsLevelInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   _2d(e) {
     var i = this.LevelInfo.Info;
-    this.RYd = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelTimeUnlockState(this.LevelInfo.LevelId);
-    var t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelUnlockState(this.LevelInfo.LevelId, true);
+    var t = i.K6n;
     var r = i.qLd > 0;
     var s = this.GetSprite(1);
     var v = this.GetItem(3);
@@ -78,8 +76,7 @@ class SurvivorsLevelInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   u2d(e) {
     var i = this.LevelInfo.Info;
-    this.RYd = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelTimeUnlockState(this.LevelInfo.LevelId);
-    var t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelUnlockState(this.LevelInfo.LevelId, false);
+    var t = i.K6n;
     var r = i.CM_;
     var s = this.GetSprite(1);
     var v = this.GetItem(3);
@@ -136,7 +133,7 @@ class SurvivorsLevelInfoItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   OnTick(e) {
-    if (!!this.LevelInfo && !this.RYd) {
+    if (!!this.LevelInfo && !this.LevelInfo.Info.K6n) {
       this.wke(false);
     }
   }

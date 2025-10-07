@@ -39,10 +39,10 @@ class QuestTreeNodeItemPool {
       ++s;
     }
     await this.MTd();
-    for (var [r, o] of this.RUe) {
-      var a = this.vTd.get(r);
-      for (let t = 0; t < a; t++) {
-        o[t]?.SetUiActive(true);
+    for (var [r, a] of this.RUe) {
+      var o = this.vTd.get(r);
+      for (let t = 0; t < o; t++) {
+        a[t]?.SetUiActive(true);
       }
     }
   }
@@ -118,16 +118,10 @@ class QuestTreeNodeContainer extends QuestTreeNodeItemLoader_1.QuestTreeNodeItem
     this.Pe = t;
     await this.ITd.RefreshByData(t);
     var s = t[0];
-    let e = t.length > 1 && !!s.NextQuestNode;
-    for (const i of t) {
-      if (i.State !== 4) {
-        e = false;
-        break;
-      }
-    }
-    this.GetItem(3).SetUIActive(e && s.Config.NodeType === 1);
-    this.GetItem(4).SetUIActive(e && s.Config.NodeType !== 1);
-    t = this.GetAdditionalHeight();
+    var t = t.length > 1 && !!s.NextQuestNode;
+    this.GetItem(3).SetUIActive(t && s.Config.NodeType === 1);
+    this.GetItem(4).SetUIActive(t && s.Config.NodeType !== 1);
+    var t = this.GetAdditionalHeight();
     this.tPd.Bottom = t;
     this.GetVerticalLayout(0).SetPadding(this.tPd);
   }

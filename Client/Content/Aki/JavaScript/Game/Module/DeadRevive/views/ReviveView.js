@@ -36,10 +36,14 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
     this.e3t = undefined;
     this.t3t = false;
     this.eiu = false;
+    this.ekd = false;
     this.i3t = () => {
       if (this.WFt === 0) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("CannotRevive");
       } else if (this.ZFt) {
+        if (ModelManager_1.ModelManager.DeadReviveModel.IsCanChangeBloodBathedMode() && this.ekd) {
+          ControllerHolder_1.ControllerHolder.BloodBathedController.RequestChangeBtBloodMode();
+        }
         DeadReviveController_1.DeadReviveController.ReviveRequest(false, this.tiu);
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Battle", 4, "Time Or Times Limit!!!");
@@ -70,10 +74,19 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     };
+    this.tkd = () => {
+      if (ModelManager_1.ModelManager.DeadReviveModel.IsCanChangeBloodBathedMode()) {
+        ControllerHolder_1.ControllerHolder.BloodBathedController.RequestChangeBtBloodMode();
+        this.i3t();
+      }
+    };
+    this.ikd = i => {
+      this.ekd = i === 1;
+    };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIHorizontalLayout], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UITexture], [11, UE.UIText], [12, UE.UIText]];
-    this.BtnBindInfo = [[2, this.i3t], [3, this.o3t], [8, this.r3t]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIHorizontalLayout], [8, UE.UIButtonComponent], [9, UE.UIText], [10, UE.UITexture], [11, UE.UIText], [12, UE.UIText], [13, UE.UIButtonComponent], [14, UE.UIExtendToggle], [15, UE.UIItem]];
+    this.BtnBindInfo = [[2, this.i3t], [3, this.o3t], [8, this.r3t], [13, this.tkd], [14, this.ikd]];
   }
   OnStart() {
     this.XFt = this.GetText(4);
@@ -96,9 +109,12 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
       t.GetRootComponent().SetUIActive(false);
       this.n3t();
     }
-    var s = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig;
-    if (s) {
-      this.WFt = s.ReviveTimes;
+    var s = ModelManager_1.ModelManager.DeadReviveModel.IsCanChangeBloodBathedMode();
+    this.GetButton(13)?.RootUIComp.SetUIActive(s && !this.t3t);
+    this.GetItem(15)?.SetUIActive(s && this.t3t);
+    var t = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig;
+    if (t) {
+      this.WFt = t.ReviveTimes;
     }
     e.SetUIActive(true);
     i.SetUIActive(false);
@@ -121,9 +137,9 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.XFt.SetUIActive(r);
     this.GetText(5).ShowTextNew(ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig?.ReviveTitle ?? "");
-    t = this.GetText(6);
+    s = this.GetText(6);
     if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      t.ShowTextNew(this.iiu());
+      s.ShowTextNew(this.iiu());
     }
     this.e3t = new TrainingView_1.TrainingView();
     this.e3t.Show(this.GetHorizontalLayout(7), this.riu());
@@ -146,12 +162,12 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
     var t;
     var s;
     var r;
-    var n = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig;
-    if (n) {
-      i = n.UseItemId;
+    var o = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig;
+    if (o) {
+      i = o.UseItemId;
     }
-    var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i);
-    if (!(n <= 0)) {
+    var o = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(i);
+    if (!(o <= 0)) {
       (e = this.GetButton(8)).GetRootComponent().SetUIActive(true);
       r = this.GetTexture(10);
       t = this.GetText(11);
@@ -170,7 +186,7 @@ class ReviveView extends UiTickViewBase_1.UiTickViewBase {
         LguiUtil_1.LguiUtil.SetLocalText(t, "ReviveItemCd");
         e.GetOwner().GetComponentByClass(UE.UIInteractionGroup.StaticClass()).SetInteractable(false);
       } else {
-        t.SetText(n.toString());
+        t.SetText(o.toString());
       }
     }
   }

@@ -138,6 +138,9 @@ class SkillBehaviorAction {
         break;
       case 1:
         if (i.SkillComponent.SkillTarget) {
+          if (!SkillUtils_1.SkillUtils.IsTsActor(i.SkillComponent.SkillTarget)) {
+            return l;
+          }
           [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(i.SkillComponent.SkillTarget.Entity.GetComponent(1).Owner);
           var o = i.SkillComponent.GetTargetTransform().GetLocation();
           var c = (0, SkillBehaviorMisc_1.traceWall)(a, Vector_1.Vector.Create(r), Vector_1.Vector.Create(o), t.DebugTrace);
@@ -151,6 +154,9 @@ class SkillBehaviorAction {
       case 2:
         c = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(32).GetCurrentTarget();
         if (c) {
+          if (!SkillUtils_1.SkillUtils.IsTsActor(c)) {
+            return l;
+          }
           [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.Entity.GetComponent(1).Owner);
         }
         break;
@@ -266,8 +272,8 @@ class SkillBehaviorAction {
               var M = Vector_1.Vector.Create();
               var B = Vector_1.Vector.Create();
               h.Subtraction(_, M);
-              for (const f of SkillBehaviorMisc_1.angles) {
-                M.RotateAngleAxis(f, Vector_1.Vector.UpVectorProxy, B);
+              for (const p of SkillBehaviorMisc_1.angles) {
+                M.RotateAngleAxis(p, Vector_1.Vector.UpVectorProxy, B);
                 _.Addition(B, h);
                 var d = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
                 if (!d) {
@@ -308,9 +314,9 @@ class SkillBehaviorAction {
           if (b) {
             var C = b.GetHitCount();
             for (let e = 0; e < C; e++) {
-              var p = b.Actors.Get(e);
-              if (ObjectUtils_1.ObjectUtils.IsValid(p)) {
-                if (p.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
+              var U = b.Actors.Get(e);
+              if (ObjectUtils_1.ObjectUtils.IsValid(U)) {
+                if (U.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
                   SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
                   h = m[1];
                   break;
@@ -333,9 +339,9 @@ class SkillBehaviorAction {
     v = t.Navigation;
     if (v > 0) {
       var S = i.Entity.GetComponent(179);
-      var U = Vector_1.Vector.Create();
-      S.GravityUp.Multiply(v, U);
-      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, U.ToUeVector(), v)) {
+      var f = Vector_1.Vector.Create();
+      S.GravityUp.Multiply(v, f);
+      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, f.ToUeVector(), v)) {
         S = (0, puerts_1.$ref)(undefined);
         if (!UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, r, S, v)) {
           SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation没有找到合法的导航网格落点，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);

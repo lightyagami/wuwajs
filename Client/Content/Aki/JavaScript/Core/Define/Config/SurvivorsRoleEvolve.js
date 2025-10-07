@@ -16,17 +16,8 @@ class SurvivorsRoleEvolve {
   get RoleId() {
     return this.roleid();
   }
-  get Level() {
-    return this.level();
-  }
   get Quality() {
     return this.quality();
-  }
-  get CondLevel() {
-    return this.condlevel();
-  }
-  get CondType() {
-    return this.condtype();
   }
   get EvolveName() {
     return this.evolvename();
@@ -64,7 +55,7 @@ class SurvivorsRoleEvolve {
       return 0;
     }
   }
-  level() {
+  quality() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -72,32 +63,8 @@ class SurvivorsRoleEvolve {
       return 0;
     }
   }
-  quality() {
-    var t = this.J7.__offset(this.z7, 10);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  condlevel() {
-    var t = this.J7.__offset(this.z7, 12);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  condtype() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   evolvename(t) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 10);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -105,7 +72,7 @@ class SurvivorsRoleEvolve {
     return i;
   }
   describe(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 12);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -113,7 +80,7 @@ class SurvivorsRoleEvolve {
     return i;
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 14);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -121,7 +88,7 @@ class SurvivorsRoleEvolve {
     return i;
   }
   skillid() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

@@ -27,8 +27,6 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     this.Jo_ = undefined;
     this.eGe = undefined;
     this.gSd = false;
-    this.wYd = undefined;
-    this.LYd = undefined;
     this.sGe = () => {
       return new VisionFetterDescItem_1.VisionFetterDescItem();
     };
@@ -69,9 +67,10 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     this.pSd = () => {
       var e;
       if (this.gSd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
-        e = e[this.b9i];
-        this.wYd?.(this.zo_, e.GetRecommendFetterGroupId());
-        this.CloseMe();
+        e = e[this.b9i].GetRecommendFetterGroupId();
+        UiManager_1.UiManager.CloseView("VisionRecommendView");
+        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.zo_, 3, 20);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRecommendFetterGroupSelected, e);
       }
     };
   }
@@ -83,8 +82,6 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     var e = this.OpenParam;
     this.zo_ = e.RoleId;
     this.gSd = e.IsFromRoleDev;
-    this.wYd = e.SuccessCallBack;
-    this.LYd = e.GetSelectedFetterGroupIdCallBack;
     this.Jo_ = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.W2e);
     this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.sGe);
     this.vSd();
@@ -165,9 +162,8 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
   }
   CSd() {
     var e;
-    if (this.gSd && this.LYd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
-      e = e[this.b9i];
-      if (this.LYd(this.zo_) === e.GetRecommendFetterGroupId()) {
+    if (this.gSd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
+      if ((e = e[this.b9i]).GetRecommendFetterGroupId() === e.GetRecommendFetterGroupId()) {
         this.fSd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
         this.fSd.SetEnableClick(false);
       } else {

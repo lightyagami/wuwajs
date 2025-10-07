@@ -21,12 +21,11 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
     this.chd = [];
     this.nhd = undefined;
     this.Pe = undefined;
-    this.aKd = undefined;
-    this.hKd = undefined;
+    this.fOe = undefined;
+    this.qCd = undefined;
     this.OnClickToggleCallBack = undefined;
     this.CanClickCallBack = undefined;
     this.OnConfirmCallback = undefined;
-    this.OnPlanChangeCallback = undefined;
     this.UiViewSequence = undefined;
     this.ahd = () => {
       return new RoleDevDetailItem_1.RoleDevDetailItem();
@@ -36,8 +35,6 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
         this.UiViewSequence?.StopSequenceByKey("Switch", false, true);
         this.UiViewSequence?.PlaySequence("Switch");
         this.Pe.SwitchPlan();
-        this.OnPlanChangeCallback?.(this.Pe);
-        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe.RoleId, 4, 20);
         this.Refresh(this.Pe);
       }
     };
@@ -49,7 +46,7 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
           RoleId: this.Pe?.RoleId ?? 0,
           SkillNodeIndex: 0
         };
-        t = this.Pe.CurrentPlanFinished;
+        t = this.Pe.IsHideMaterialList || this.Pe.IsBreakthroughLevelLow;
         ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe.RoleId, 4, t ? 25 : 21);
         UiManager_1.UiManager.OpenView("RoleSkillMergeView", e);
       }
@@ -83,6 +80,7 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
     this.NCd(e);
     this.VCd(e);
     this.jCd(e);
+    this.HCd(e);
   }
   NCd(e) {
     var t = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e.RoleId) === 0;
@@ -90,53 +88,57 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), i);
     if (t) {
       const s = this.GetButton(1);
-      const l = this.GetText(0);
-      if (s && l) {
+      const o = this.GetText(0);
+      if (s && o) {
         s.RootUIComp.SetUIActive(false);
-        l.SetUIActive(false);
+        o.SetUIActive(false);
       }
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), "RoleProject_SkillUpgradePrefect");
     } else {
       var i = !!RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e.RoleId)?.PrefectSkillLevel;
       const s = this.GetButton(1);
-      const l = this.GetText(0);
-      if (s && l && (t = i && !e.ShouldForcePerfectPlan, s.RootUIComp.SetUIActive(t), l.SetUIActive(t), t)) {
+      const o = this.GetText(0);
+      if (s && o && (t = i && !e.ShouldForcePerfectPlan, s.RootUIComp.SetUIActive(t), o.SetUIActive(t), t)) {
         i = e.IsPerfectPlan ? "RoleProject_Button_SkillUpgradeBasic" : "RoleProject_Button_SkillUpgradePrefect";
-        LguiUtil_1.LguiUtil.SetLocalTextNew(l, i);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(o, i);
       }
     }
   }
   VCd(e) {
-    e = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e.RoleId) === 0 || e.IsPerfectPlan || e.ShouldForcePerfectPlan ? e.PerfectDetailItems : e.NormalDetailItems;
+    e = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e.RoleId) === 0 || e.IsPerfectPlan || e.ShouldForcePerfectPlan ? e.PerfectDetailItems : e.DetailItems;
     this.nhd?.RefreshByData(e);
     this.GetItem(16).SetUIActive(e.length !== 0);
   }
-  jCd(l) {
-    this.GetVerticalLayout(12).RootUIComp.SetUIActive(true);
-    var o = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(l.RoleId) === 0;
-    var r = l.IsRoleOwned;
-    var o = !o && r;
-    this.GetItem(7).SetUIActive(o);
-    this.GetItem(11).SetUIActive(!o);
-    if (r) {
-      o = l.CurrentPlanFinished;
-      let e = false;
-      let t = false;
-      let i = "";
-      let s = false;
-      s = o ? (r = l.IsBreakthroughLevelLow, e = true, t = false, i = "RoleProject_Button02", r) : (o = l.CurrentPlanMaterialEnough, e = !o, t = o, !(i = "RoleProject_Button01"));
-      this.aKd?.SetLocalTextNew(i);
-      this.hKd?.SetLocalTextNew(i);
-      this.aKd?.SetUiActive(e);
-      this.hKd?.SetUiActive(t);
-      this.GetItem(9).SetUIActive(s);
-      if (s) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "RoleProject_Tips05");
-      }
+  jCd(e) {
+    var t = e.CurrentPlanMaterialEnough;
+    this.fOe?.SetUiActive(!t);
+    this.qCd?.SetUiActive(t);
+    this.GetItem(7).SetUIActive(true);
+    var t = RoleDevUtils_1.RoleDevUtils.GetRoleTypeTagByRoleId(e.RoleId) === 0;
+    if (t) {
+      this.GetItem(7).SetUIActive(false);
+    }
+  }
+  HCd(e) {
+    if (e.IsHideMaterialList || e.IsBreakthroughLevelLow) {
+      this.fOe?.SetLocalTextNew("RoleProject_Button02");
+      this.qCd?.SetLocalTextNew("RoleProject_Button02");
     } else {
-      this.aKd?.SetUiActive(false);
-      this.hKd?.SetUiActive(false);
+      this.fOe?.SetLocalTextNew("RoleProject_Button01");
+      this.qCd?.SetLocalTextNew("RoleProject_Button01");
+    }
+    this.GetVerticalLayout(12).RootUIComp.SetUIActive(true);
+    if (e.IsBreakthroughLevelLow) {
+      this.GetItem(9).SetUIActive(true);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "RoleProject_Tips05");
+    } else {
       this.GetItem(9).SetUIActive(false);
+    }
+    if (!e.IsRoleOwned) {
+      this.fOe?.SetUiActive(false);
+      this.qCd?.SetUiActive(false);
+      this.fOe?.SetLocalTextNew("RoleProject_Button02");
+      this.qCd?.SetLocalTextNew("RoleProject_Button02");
     }
   }
   async fhd() {
@@ -144,30 +146,30 @@ class RoleDevSkillViewItem extends UiPanelBase_1.UiPanelBase {
     var i = [];
     for (let e = 0; e < t.length; e++) {
       var s = t[e];
-      var l = new RoleDevSkillSlotItem_1.RoleDevSkillSlotItem();
-      var s = l.CreateThenShowByActorAsync(this.GetItem(s).GetOwner());
+      var o = new RoleDevSkillSlotItem_1.RoleDevSkillSlotItem();
+      var s = o.CreateThenShowByActorAsync(this.GetItem(s).GetOwner());
       i.push(s);
-      l.SetClickCallback(() => {
+      o.SetClickCallback(() => {
         this.OVd(e);
       });
-      this.chd.push(l);
+      this.chd.push(o);
     }
     await Promise.all(i);
   }
   async FCd() {
-    this.aKd = new ButtonItem_1.ButtonItem();
-    this.hKd = new ButtonItem_1.ButtonItem();
-    await Promise.all([this.aKd.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()), this.hKd.CreateThenShowByActorAsync(this.GetItem(10).GetOwner())]);
-    this.aKd.SetFunction(this.GCd);
-    this.hKd.SetFunction(this.GCd);
+    this.fOe = new ButtonItem_1.ButtonItem();
+    this.qCd = new ButtonItem_1.ButtonItem();
+    await Promise.all([this.fOe.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()), this.qCd.CreateThenShowByActorAsync(this.GetItem(10).GetOwner())]);
+    this.fOe.SetFunction(this.GCd);
+    this.qCd.SetFunction(this.GCd);
   }
   ghd(t) {
     var i = t.SkillSlots;
     for (let e = 0; e < this.chd.length; e++) {
       var s = this.chd[e];
-      var l = e < i.length ? i[e] : undefined;
+      var o = e < i.length ? i[e] : undefined;
       s.SetIsPerfectPlan(t.IsPerfectPlan || t.ShouldForcePerfectPlan);
-      s.Refresh(l);
+      s.Refresh(o);
     }
   }
 }

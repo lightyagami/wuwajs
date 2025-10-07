@@ -13,7 +13,6 @@ const PlotAudioById_1 = require("../../../Core/Define/ConfigQuery/PlotAudioById"
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const GameBudgetInterfaceController_1 = require("../../../Core/GameBudgetAllocator/GameBudgetInterfaceController");
-const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal");
 const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -65,7 +64,6 @@ class PlotConfig {
     this.IsAutoPlay = false;
     this.IsAutoPlayCache = false;
     this.PlotLevel = undefined;
-    this.SubtitleLevel = undefined;
     this.ShouldSwitchMainRole = false;
     this.PauseTime = false;
     this.SkipTalkWhenFighting = false;
@@ -154,13 +152,6 @@ class PlotConfig {
         this.SkipTalkWhenFighting = t.Interruptible;
         this.SkipHiddenBlackScreenAtEnd = true;
         PlotController_1.PlotController.EnableViewControl(false);
-    }
-    if (t.SubtitleStyle) {
-      if (t.SubtitleStyle.Type === IAction_1.ESubtitleStyle.LevelA) {
-        this.SubtitleLevel = "LevelA";
-      }
-    } else {
-      this.SubtitleLevel = this.PlotLevel;
     }
   }
 }
@@ -471,7 +462,7 @@ class PlotModel extends ModelBase_1.ModelBase {
           break;
         case 1:
           CameraController_1.CameraController.ExitDialogMode();
-          if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt") {
+          if (this.PlotConfig.PlotLevel !== "LevelD") {
             CameraController_1.CameraController.ExitCameraMode(1, 0, 0, 0);
           }
           break;

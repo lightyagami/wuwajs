@@ -24,6 +24,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 const UiManager_1 = require("../../Ui/UiManager");
 const RoleController_1 = require("../RoleUi/RoleController");
+const RoleViewViewModel_1 = require("../RoleUi/View/ViewData/RoleViewViewModel");
 const WeaponSkinDefine_1 = require("../Skin/Tab/Weapon/WeaponSkinDefine");
 const LoadAsyncPromise_1 = require("../UiComponent/LoadAsyncPromise");
 const UiModelUtil_1 = require("../UiModel/UiModelUtil");
@@ -222,14 +223,30 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     return await new LoadAsyncPromise_1.LoadAsyncPromise(e, UE.PD_WeaponLevelMaterialDatas_C).Promise;
   }
   static RoleFadeIn(e, o = "RoleFadeInCurve") {
-    var e = e.Model.CheckGetComponent(8);
-    var t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
-    e?.Fade(1, 0, t, o);
+    const t = e.Model.CheckGetComponent(8);
+    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(o);
+    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
+      var o;
+      if (e) {
+        o = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeInDuration");
+        t?.Fade(1, 0, o, e);
+      }
+    });
   }
   static RoleFadeOut(e, o = "RoleFadeOutCurve") {
-    var e = e.Model.CheckGetComponent(8);
-    var t = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
-    e?.Fade(0, 1, t, o);
+    const t = e.Model.CheckGetComponent(8);
+    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(o);
+    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
+      var o;
+      if (e) {
+        o = CommonParamById_1.configCommonParamById.GetIntConfig("RoleFadeOutDuration");
+        t?.Fade(0, 1, o, e);
+      }
+    });
+  }
+  static OpenWeaponReplaceView(e, o, t = false, r = 0) {
+    e = new RoleViewViewModel_1.RoleViewViewModel(e, t, o, r);
+    RoleController_1.RoleController.OpenRoleViewByViewModel("WeaponReplaceView", e);
   }
 }
 (exports.WeaponController = WeaponController).QCi = e => {

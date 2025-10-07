@@ -76,6 +76,9 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   OnStart() {
     this.CommonInfoPanel?.SetBtnText("LongShanStage_Join");
+    var e = this.ActivityBaseData.HasNewCycle();
+    this.CommonInfoPanel?.SetFunctionRedDotVisible(e);
+    this.CommonInfoPanel?.SetPanelTipVisible(e);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.ActivityBaseData.Id);
   }
   OnAddEventListener() {
@@ -90,14 +93,11 @@ class ActivitySubViewShipTower extends ActivitySubViewBase_1.ActivitySubViewBase
     RedDotController_1.RedDotController.BindRedDot("ShipTowerReward", this.GetItem(3));
   }
   OnBeforeHide() {
-    RedDotController_1.RedDotController.UnBindGivenUi("ShipTowerReward", this.GetItem(3));
+    RedDotController_1.RedDotController.UnBindRedDot("ShipTowerReward");
   }
   OnRefreshView() {
     this.c7_();
     this.jG_();
-    var e = this.ActivityBaseData.HasNewCycle();
-    this.CommonInfoPanel?.SetFunctionRedDotVisible(e);
-    this.CommonInfoPanel?.SetPanelTipVisible(e);
   }
   d7_(e) {
     this.GetButton(1).RootUIComp.SetUIActive(e);

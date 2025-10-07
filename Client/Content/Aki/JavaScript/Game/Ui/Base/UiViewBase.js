@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UiViewBase = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioController_1 = require("../../../Core/Audio/AudioController");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
@@ -408,19 +407,6 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
   ResetOperationQueue() {
     this.gWt.Clear();
   }
-  GetCsRootItem() {
-    var e;
-    var i;
-    if (this.IsCsViewProxy) {
-      e = (this.Info?.Name ?? "") + "CSRootItem";
-      i = (0, puerts_1.$ref)(undefined);
-      if (UE.KuroVariableFunctionLibrary.GetObject(e, i)) {
-        return (0, puerts_1.$unref)(i);
-      } else {
-        return undefined;
-      }
-    }
-  }
   WillLoadScene() {
     return !this.SkipLoadScene && !StringUtils_1.StringUtils.IsEmpty(this.Info.ScenePath) && this.OnCheckIfNeedScene() && UiSceneManager_1.UiSceneManager.CurUiSceneName !== this.Info.ScenePath;
   }
@@ -489,16 +475,16 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       }
     });
   }
-  AfterOnCreate() {
-    super.AfterOnCreate();
+  async AfterOnCreateAsync() {
+    await super.AfterOnCreateAsync();
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsViewOnCreateAsync, this.Info.Name, this.GetViewId());
   }
-  AfterOnBeforeStart() {
-    super.AfterOnBeforeStart();
+  async AfterOnBeforeStartAsync() {
+    await super.AfterOnBeforeStartAsync();
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsBeforeStartAsync, this.Info.Name, this.GetViewId());
   }
-  AfterOnBeforeHide() {
-    super.AfterOnBeforeHide();
+  async AfterOnBeforeHideAsync() {
+    await super.AfterOnBeforeHideAsync();
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnBeforeHideAsync, this.Info.Name, this.GetViewId());
   }
   AfterOnPlayingStartSequenceAsync() {

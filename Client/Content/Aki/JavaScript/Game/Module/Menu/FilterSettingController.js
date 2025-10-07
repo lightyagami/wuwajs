@@ -49,7 +49,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LogOut, this.bBu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.bBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.eVd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.tVd);
   }
@@ -57,7 +57,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LogOut, this.bBu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.bBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.eVd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.tVd);
     if (this.CameraComponent) {
@@ -243,10 +243,10 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
         UE.KuroGISystem.SetKuroAdvancedModeScreenFilter(GlobalData_1.GlobalData.World, FilterSettingById_1.configFilterSettingById.GetConfig(e).LogicIndex, t[0], t[1], t[2], t[3] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[4] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[5] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[6] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[7] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[8] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[9] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[10] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[11] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, t[12] ?? MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE);
       }
     } else {
-      this.SetDefaultFilterSetting();
+      this.IQd();
     }
   }
-  static SetDefaultFilterSetting() {
+  static IQd() {
     UE.KuroGISystem.SetKuroAdvancedModeScreenFilter(GlobalData_1.GlobalData.World, FilterSettingById_1.configFilterSettingById.GetConfig(MenuDefine_1.FILTER_SETTING_DEFAULT_FILTER_ID).LogicIndex, MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SETTING_INTENSITY_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE, MenuDefine_1.DEFAULT_FILTER_SENIOR_SETTING_VALUE);
   }
   static pmu(e, t, i, n, r) {
@@ -257,11 +257,11 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Error("GameSettings", 71, "未找到当前滤镜id相关的参数值", ["filterId", t]);
     }
   }
-  static oqd(e, t, i, n, r, a, o, l, _, s, g, M, u, S, f) {
+  static oqd(e, t, i, n, r, a, l, o, _, s, g, M, u, S, f) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("GameSettings", 71, "设置全局滤镜值", ["filterId", t], ["horizontalNormalized", i], ["verticalNormalized", n], ["intensityNormalized", r], ["sharpenIntensity", a], ["brightness", o], ["contrast", l], ["colorTemperature", _], ["saturation", s], ["bloom", g], ["gamma", M], ["shadowIntensity", u], ["noiseIntensity", S], ["halation", f]);
+      Log_1.Log.Info("GameSettings", 71, "设置全局滤镜值", ["filterId", t], ["horizontalNormalized", i], ["verticalNormalized", n], ["intensityNormalized", r], ["sharpenIntensity", a], ["brightness", l], ["contrast", o], ["colorTemperature", _], ["saturation", s], ["bloom", g], ["gamma", M], ["shadowIntensity", u], ["noiseIntensity", S], ["halation", f]);
     }
-    UE.KuroGISystem.SetKuroAdvancedModeScreenFilter(GlobalData_1.GlobalData.World, FilterSettingById_1.configFilterSettingById.GetConfig(t).LogicIndex, i, n, r, a, o, l, _, s, g, M, u, S, f);
+    UE.KuroGISystem.SetKuroAdvancedModeScreenFilter(GlobalData_1.GlobalData.World, FilterSettingById_1.configFilterSettingById.GetConfig(t).LogicIndex, i, n, r, a, l, o, _, s, g, M, u, S, f);
   }
   static async CloseViewAndReturnWorld() {
     await this.OpenBlackScreen();
@@ -293,26 +293,6 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     } else {
       UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     }
-  }
-  static IsFilterSettingChange() {
-    var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingId);
-    if (e) {
-      if (e !== MenuDefine_1.FILTER_SETTING_DEFAULT_FILTER_ID) {
-        return true;
-      }
-      var t = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
-      if (t) {
-        var i = t.get(e);
-        if (i) {
-          for (const n of MenuDefine_1.filterSettingParams) {
-            if (i[n] && i[n] !== this.GetFilterDefaultValue(e, n)) {
-              return true;
-            }
-          }
-        }
-      }
-    }
-    return false;
   }
   static SwitchFilter(e) {
     if (e) {

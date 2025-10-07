@@ -5,17 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FightPhotoLevelGroupItem = undefined;
 const UE = require("ue");
-const TimerSystem_1 = require("../../../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../../Common/Event/EventSystem");
-const TimeUtil_1 = require("../../../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
 const AutoAttachItem_1 = require("../../../../../AutoAttach/AutoAttachItem");
 class FightPhotoLevelGroupItem extends AutoAttachItem_1.AutoAttachItem {
   constructor(t) {
     super();
     this.Pe = undefined;
-    this.TDe = undefined;
     this.OnToggleClickCallback = undefined;
     this.OnSelectCallback = undefined;
     this.CheckToggleCanClick = undefined;
@@ -51,45 +48,23 @@ class FightPhotoLevelGroupItem extends AutoAttachItem_1.AutoAttachItem {
     this.GetExtendToggle(0)?.SetToggleStateForce(0, false);
   }
   OnRefreshItem(t) {
-    var i = (this.Pe = t) !== undefined;
-    this.GetItem(2)?.SetUIActive(i && t.IsFinished);
-    this.GetItem(3)?.SetUIActive(i && !t.IsUnLock);
-    this.GetTexture(4)?.SetUIActive(i);
-    this.GetTexture(5)?.SetUIActive(i);
+    var e = (this.Pe = t) !== undefined;
+    this.GetItem(2)?.SetUIActive(e && t.IsFinished);
+    this.GetItem(3)?.SetUIActive(e && !t.IsUnLock);
+    this.GetTexture(4)?.SetUIActive(e);
+    this.GetTexture(5)?.SetUIActive(e);
     this.GetText(6)?.SetUIActive(false);
     this.RefreshRedDot();
-    if (i) {
+    if (e) {
       this.GetExtendToggle(0).SetSelfInteractive(true);
       t = this.Pe.IsUnLock ? this.Pe.RoleTextureLight : this.Pe.RoleTextureDark;
       this.SetTextureByPath(t, this.GetTexture(1));
       this.SetTextureByPath(this.Pe.NumTexture, this.GetTexture(4));
       this.SetTextureByPath(this.Pe.NumTexture2, this.GetTexture(5));
     } else {
-      i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_BattlePhotoRoleEmpty");
-      this.SetTextureByPath(i, this.GetTexture(1));
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_BattlePhotoRoleEmpty");
+      this.SetTextureByPath(e, this.GetTexture(1));
       this.GetExtendToggle(0).SetSelfInteractive(false);
-    }
-    if (this.Pe && !this.Pe.IsUnLock) {
-      this.kot();
-    } else {
-      this.xHe();
-    }
-  }
-  imd() {
-    if (this.Pe && this.Pe.IsUnLock) {
-      this.OnRefreshItem(this.Pe);
-    }
-  }
-  kot() {
-    this.xHe();
-    this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.imd();
-    }, TimeUtil_1.TimeUtil.InverseMillisecond);
-  }
-  xHe() {
-    if (this.TDe !== undefined) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
-      this.TDe = undefined;
     }
   }
   RefreshRedDot() {

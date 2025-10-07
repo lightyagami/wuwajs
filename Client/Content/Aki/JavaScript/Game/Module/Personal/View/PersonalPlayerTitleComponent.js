@@ -59,15 +59,15 @@ class PersonalPlayerTitleComponent extends UiPanelBase_1.UiPanelBase {
     this.B6d = new PersonalPlayerTitleMiniPreView_1.PersonalPlayerTitleMiniPreView();
     await this.B6d.CreateThenShowByActorAsync(this.GetItem(9).GetOwner());
     this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.ehc, true);
-    this.AddEventListener();
   }
-  async OnBeforeShowAsyncImplement() {
+  OnStart() {
     var e = this.jTd();
-    await this.xqe.RefreshByDataAsync(e);
+    this.xqe.RefreshByData(e);
     this.Jac = e[0];
     this.xqe.SelectGridProxy(0);
     this.xqe.ScrollToGridIndex(0);
     this.RefreshPlayerTitleInfo();
+    this.AddEventListener();
   }
   OnBeforeDestroy() {
     this.RemoveEventListener();

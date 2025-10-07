@@ -19,6 +19,7 @@ const ScreenEffectSystem_1 = require("../../../Render/Effect/ScreenEffectSystem/
 const GameMainViewProxy_1 = require("../GameMainViewProxy");
 const SurvivorsRogueBossTrackedMarker_1 = require("./ChildPanel/SurvivorsRogueBossTrackedMarker");
 const SurvivorsRogueCountDownTipsPanel_1 = require("./ChildPanel/SurvivorsRogueCountDownTipsPanel");
+const SurvivorsRogueEndlessWaveTipsPanel_1 = require("./ChildPanel/SurvivorsRogueEndlessWaveTipsPanel");
 const SurvivorsRogueFightInfoPanel_1 = require("./ChildPanel/SurvivorsRogueFightInfoPanel");
 const SurvivorsRoguePlayerTrackerMarker_1 = require("./ChildPanel/SurvivorsRoguePlayerTrackerMarker");
 const SurvivorsRoguePopUpWaveTipsPanel_1 = require("./ChildPanel/SurvivorsRoguePopUpWaveTipsPanel");
@@ -66,9 +67,6 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     };
     this.DId = () => {
       this.BonusWaveTips.ShowTips();
-    };
-    this.hYd = () => {
-      this.EndlessWaveTips.ShowTips();
     };
     this.vqd = (e, i) => {
       if (Log_1.Log.CheckDebug()) {
@@ -126,7 +124,6 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.AId);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.DId);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.hYd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.vqd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.gqd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
@@ -138,7 +135,6 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.AId);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.DId);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.hYd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.vqd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.gqd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
@@ -194,7 +190,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     this.PanelResIdMap.set("DynTreasureChestTips", e);
   }
   async WId() {
-    var e = new SurvivorsRogueTipsPanelBase_1.SurvivorsRogueTipsPanelBase();
+    var e = new SurvivorsRogueEndlessWaveTipsPanel_1.SurvivorsRogueEndlessWaveTipsPanel();
     await e.CreateByResourceIdAsync("DynInfinitelyOpenTips", this.View.GetContentPanel());
     this.EndlessWaveTips = e;
     this.PanelResIdMap.set("DynInfinitelyOpenTips", e);
@@ -231,10 +227,10 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     }
   }
   async nXc() {
-    this.MobileSkillPanel = await this.CreateChildPanel("DynSurvivorSkill", this.View.GetContentPanel(), SurvivorsRogueSkillPanel_1.SurvivorsRogueSkillPanel, true, true, 36);
+    this.MobileSkillPanel = await this.CreateChildPanel("DynSurvivorSkill", this.View.GetContentPanel(), SurvivorsRogueSkillPanel_1.SurvivorsRogueSkillPanel, true, true, 9);
   }
   async sXc() {
-    this.DesktopSkillPanel = await this.CreateChildPanel("PC_DynSurvivorSkill", this.View.GetContentPanel(), SurvivorsRogueSkillPanel_1.SurvivorsRogueSkillPanel, true, true, 35);
+    this.DesktopSkillPanel = await this.CreateChildPanel("PC_DynSurvivorSkill", this.View.GetContentPanel(), SurvivorsRogueSkillPanel_1.SurvivorsRogueSkillPanel, true, true, 9);
   }
   async QId(e) {
     var i = new SurvivorsRogueBossTrackedMarker_1.SurvivorsRogueBossTrackedMarker(e);
@@ -260,27 +256,27 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
         this.CountDownTips.HideTips();
         this.WaveCompleteTips.HideTips();
         this.BonusWaveTips.HideTips();
-        this.EndlessWaveTips.HideTips();
         break;
       case 1:
         if (SurvivorsWaveByLevel_1.configSurvivorsWaveByLevel.GetConfigList(ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId)) {
           this.PopUpWaveTips.ShowWaveTips();
+          if (ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveType === 2) {
+            this.EndlessWaveTips.ShowTips();
+          }
           this.FightInfoPanel.SetChestActive(ModelManager_1.ModelManager.SurvivorsRogueModel.IsBonusWave);
           this.ResidentWaveTips.HideTips();
           this.CountDownTips.HideTips();
           this.WaveCompleteTips.HideTips();
           this.BonusWaveTips.HideTips();
-          this.EndlessWaveTips.HideTips();
         }
         break;
       case 2:
-        this.CountDownTips.InitCountDown(ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetWaveDuration(ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId, ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum), ModelManager_1.ModelManager.SurvivorsRogueModel.IsEndlessWave);
+        this.CountDownTips.InitCountDown(ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetWaveDuration(ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId, ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum), ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveType === 2);
         this.PopUpWaveTips.Hide();
         this.ResidentWaveTips.ShowTips();
         this.CountDownTips.ShowTips();
         this.WaveCompleteTips.HideTips();
         this.BonusWaveTips.HideTips();
-        this.EndlessWaveTips.HideTips();
         break;
       case 3:
         this.zHd();
@@ -289,7 +285,6 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
         this.CountDownTips.HideTips();
         this.WaveCompleteTips.ShowTips();
         this.BonusWaveTips.HideTips();
-        this.EndlessWaveTips.HideTips();
     }
   }
   zHd() {

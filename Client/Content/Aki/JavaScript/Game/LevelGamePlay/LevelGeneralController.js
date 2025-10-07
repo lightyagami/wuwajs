@@ -23,7 +23,6 @@ const CodeDefineLevelConditionInfo_1 = require("./LevelConditions/CodeDefineLeve
 const LevelConditionCenter_1 = require("./LevelConditions/LevelConditionCenter");
 const LevelConditionRegistry_1 = require("./LevelConditions/LevelConditionRegistry");
 const LevelEventCenter_1 = require("./LevelEvents/LevelEventCenter");
-const LevelGeneralBaseFrameScheduler_1 = require("./LevelGeneralBaseFrameScheduler");
 const LevelGeneralCommons_1 = require("./LevelGeneralCommons");
 const LevelGeneralNetworks_1 = require("./LevelGeneralNetworks");
 class LevelGeneralController extends ControllerBase_1.ControllerBase {
@@ -46,7 +45,6 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HandleNextAction, this.bUe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HandleActionFailure, this.qUe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.GUe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi);
     this.pie();
     this.AddAttributeEvent();
     return true;
@@ -58,7 +56,6 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HandleNextAction, this.bUe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HandleActionFailure, this.qUe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.GUe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SettingFrameRateChanged, this.zfi);
     this.RemoveAttributeEvent();
     return true;
   }
@@ -74,12 +71,12 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     var e;
     var t;
     var n;
-    var r = RenderDataManager_1.RenderDataManager.Get().GetSceneInteractionMaterialParameterCollection();
-    if (r?.IsValid()) {
+    var i = RenderDataManager_1.RenderDataManager.Get().GetSceneInteractionMaterialParameterCollection();
+    if (i?.IsValid()) {
       e = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(11);
       t = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(11);
-      n = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), r, FNameUtil_1.FNameUtil.GetDynamicFName("FlameRaceStrength"));
-      UE.KuroMaterialParameterCollectionManager.SetScalarParameterValueTimeCurve(GlobalData_1.GlobalData.GameInstance.GetWorld(), r, FNameUtil_1.FNameUtil.GetDynamicFName("FlameRaceStrength"), e / t, n, 0.1, GlobalData_1.GlobalData.GameInstance.GetWorld(), false);
+      n = UE.KismetMaterialLibrary.GetScalarParameterValue(GlobalData_1.GlobalData.GameInstance.GetWorld(), i, FNameUtil_1.FNameUtil.GetDynamicFName("FlameRaceStrength"));
+      UE.KuroMaterialParameterCollectionManager.SetScalarParameterValueTimeCurve(GlobalData_1.GlobalData.GameInstance.GetWorld(), i, FNameUtil_1.FNameUtil.GetDynamicFName("FlameRaceStrength"), e / t, n, 0.1, GlobalData_1.GlobalData.GameInstance.GetWorld(), false);
     }
   }
   static GetBehaviorTreeRunningActions() {
@@ -95,22 +92,22 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       return e;
     }
   }
-  static ExecuteActionsNew(n, r, i) {
+  static ExecuteActionsNew(n, i, r) {
     var e = --this.NUe;
-    if (i) {
-      this.xUe.set(e, i);
+    if (r) {
+      this.xUe.set(e, r);
     }
-    var i = n.length;
-    if (i === 1) {
+    var r = n.length;
+    if (r === 1) {
       var t = n[0];
       var o = EventTempData.Create();
       o.EventType = t.Name || t.Params.constructor.name;
       o.EventParamsNew = t.Params;
       o.IsAsync = t.Async ?? false;
-      if (r.Type === 1) {
-        o.EventEntityId = r.EntityId;
+      if (i.Type === 1) {
+        o.EventEntityId = i.EntityId;
       }
-      o.Context = r;
+      o.Context = i;
       o.ActionIndex = 0;
       o.ActionId = t.ActionId ?? 0;
       o.ActionGuid = t.ActionGuid ?? "";
@@ -118,17 +115,17 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     } else {
       var s = new Array();
       this.PUe.set(e, s);
-      let t = i;
-      for (let e = i - 1; e > -1; e--) {
+      let t = r;
+      for (let e = r - 1; e > -1; e--) {
         var l = n[e];
         var a = EventTempData.Create();
         a.EventType = l.Name || l.Params.constructor.name;
         a.EventParamsNew = l.Params;
         a.IsAsync = l.Async ?? false;
-        if (r.Type === 1) {
-          a.EventEntityId = r.EntityId;
+        if (i.Type === 1) {
+          a.EventEntityId = i.EntityId;
         }
-        a.Context = r;
+        a.Context = i;
         a.ActionIndex = --t;
         a.ActionId = l.ActionId ?? 0;
         s.push(a);
@@ -136,24 +133,24 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       this.HandleNextAction(e);
     }
   }
-  static ExecuteActionsByServerNotify(r, i, e, o, s, l, n, a) {
+  static ExecuteActionsByServerNotify(i, r, e, o, s, l, n, a) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 7, "开始执行行为组", ["PlayerId", e], ["SessionId", o], ["StartIndex", s], ["EndIndex", l]);
     }
-    var v = r.length;
+    var v = i.length;
     if (v <= s || v <= l) {
       this.HandleFinishActions(e, o, s, `行为组开始节点超过数组上限  StartIndex：${s}，EndIndex：${l}，ActionsLen：${v}`);
     } else {
       if (this.LevelEventLogOpen) {
         let t = "";
         try {
-          t = JSON.stringify(i);
+          t = JSON.stringify(r);
         } catch (e) {
           t = "无法JSON序列化的Context";
         }
         let n = "";
         try {
-          n = JSON.stringify(r);
+          n = JSON.stringify(i);
         } catch (e) {
           n = "无法JSON序列化的Actions";
         }
@@ -172,15 +169,15 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       let t = this.PUe.get(v);
       if (t) {
         for (let e = s; e <= l; e++) {
-          var h = r[e];
+          var h = i[e];
           var _ = EventTempData.Create();
           _.EventType = h.Name || h.Params.constructor.name;
           _.EventParamsNew = h.Params;
           _.IsAsync = h.Async ?? false;
-          if (i.Type === 1) {
-            _.EventEntityId = i.EntityId;
+          if (r.Type === 1) {
+            _.EventEntityId = r.EntityId;
           }
-          _.Context = i;
+          _.Context = r;
           _.ActionIndex = e;
           _.ActionId = h.ActionId ?? 0;
           _.SessionId = o;
@@ -192,15 +189,15 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
         t = new Array();
         this.PUe.set(v, t);
         for (let e = l; e >= s; e--) {
-          var d = r[e];
+          var d = i[e];
           var C = EventTempData.Create();
           C.EventType = d.Name || d.Params.constructor.name;
           C.EventParamsNew = d.Params;
           C.IsAsync = d.Async ?? false;
-          if (i.Type === 1) {
-            C.EventEntityId = i.EntityId;
+          if (r.Type === 1) {
+            C.EventEntityId = r.EntityId;
           }
-          C.Context = i;
+          C.Context = r;
           C.ActionIndex = e;
           C.ActionId = d.ActionId ?? 0;
           C.SessionId = o;
@@ -231,32 +228,32 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
   }
   static VUe(e, t = "") {
     var n;
-    var r = this.wUe.get(e);
+    var i = this.wUe.get(e);
     if (this.LevelEventLogOpen) {
       let e = "";
-      e = r ? `PlayerId：${r[0]} SessionId：${r[1]} StartIndex：${r[2]}` : "空";
+      e = i ? `PlayerId：${i[0]} SessionId：${i[1]} StartIndex：${i[2]}` : "空";
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 7, "行为组为空，准备删除", ["ContextArray", e]);
       }
     }
-    if (r && this.Cih.get(e)) {
+    if (i && this.Cih.get(e)) {
       this.wUe.delete(e);
-      i = r[0];
-      n = r[1];
-      r = this.$ih.get(e) ?? r[2];
-      this.HandleFinishActions(i, n, r, t);
+      r = i[0];
+      n = i[1];
+      i = this.$ih.get(e) ?? i[2];
+      this.HandleFinishActions(r, n, i, t);
     }
-    var i = this.xUe.get(e);
-    if (i) {
-      i(1);
+    var r = this.xUe.get(e);
+    if (r) {
+      r(1);
       this.xUe.delete(e);
     }
   }
-  static HandleActionsFailure(e, t, n, r) {
-    var i = this.PUe.get(e);
-    if (i) {
-      while (i.length > 0) {
-        var o = i.pop();
+  static HandleActionsFailure(e, t, n, i) {
+    var r = this.PUe.get(e);
+    if (r) {
+      while (r.length > 0) {
+        var o = r.pop();
         EventTempData.Release(o);
       }
       this.PUe.delete(e);
@@ -284,18 +281,18 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Warn("LevelEvent", 7, "行为组执行失败（定位问题专用日志，不是报错信息）", ["Msg", t]);
     }
   }
-  static HandleFinishActions(e, t, n, r) {
+  static HandleFinishActions(e, t, n, i) {
     if (this.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 7, "请求完成行为组", ["SessionId", t]);
     }
-    LevelGeneralNetworks_1.LevelGeneralNetworks.RequestActionsFinish(e, t, n, r, e => {});
+    LevelGeneralNetworks_1.LevelGeneralNetworks.RequestActionsFinish(e, t, n, i, e => {});
   }
   static StopActionsExecute(e) {
     var t = this.PUe?.get(e);
     t?.splice(0, t.length);
     this.qDa?.get(e)?.Finish();
   }
-  static CheckCondition(n, r, e = true, ...i) {
+  static CheckCondition(n, i, e = true, ...r) {
     if (n === "None") {
       return true;
     }
@@ -305,13 +302,13 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       let t = false;
       if (o.Relation) {
         for (const s of o.GroupId) {
-          if ((e = ConditionById_1.configConditionById.GetConfig(s)) && (t = this.HandleCondition(e, r, n, ...i))) {
+          if ((e = ConditionById_1.configConditionById.GetConfig(s)) && (t = this.HandleCondition(e, i, n, ...r))) {
             return t;
           }
         }
       } else {
         for (const l of o.GroupId) {
-          if ((e = ConditionById_1.configConditionById.GetConfig(l)) && !(t = this.HandleCondition(e, r, n, ...i))) {
+          if ((e = ConditionById_1.configConditionById.GetConfig(l)) && !(t = this.HandleCondition(e, i, n, ...r))) {
             return t;
           }
         }
@@ -324,21 +321,21 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     if (!e || !e.Conditions || e.Conditions.length === 0) {
       return true;
     }
-    let r = false;
+    let i = false;
     if (e.Type === 0) {
-      for (const i of e.Conditions) {
-        if (!(r = this.HUe(i, t, n))) {
-          return r;
+      for (const r of e.Conditions) {
+        if (!(i = this.HUe(r, t, n))) {
+          return i;
         }
       }
     } else {
       for (const o of e.Conditions) {
-        if (r = this.HUe(o, t, n)) {
-          return r;
+        if (i = this.HUe(o, t, n)) {
+          return i;
         }
       }
     }
-    return r;
+    return i;
   }
   static kUe(e, t) {
     var n = t.EventType;
@@ -357,29 +354,29 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("LevelEvent", 7, `执行行为组节点(${t.EventType})`, ["PlayerId", t.PlayerId], ["SessionId", t.SessionId], ["ActionIndex", t.ActionIndex]);
     }
     var n = t.EventType;
-    var r = LevelEventCenter_1.LevelEventCenter.GetEvent(n);
-    if (r) {
-      r.GroupId = e;
-      r.IsAsync = t.IsAsync;
-      r.SessionId = t.SessionId;
-      r.ActionIndex = t.ActionIndex;
+    var i = LevelEventCenter_1.LevelEventCenter.GetEvent(n);
+    if (i) {
+      i.GroupId = e;
+      i.IsAsync = t.IsAsync;
+      i.SessionId = t.SessionId;
+      i.ActionIndex = t.ActionIndex;
       if (LevelEventCenter_1.LevelEventCenter.IsNeedTick(n)) {
-        r.OpenTick();
+        i.OpenTick();
       }
       try {
-        this.qDa.set(e, r);
+        this.qDa.set(e, i);
         if (t.EventParamsNew) {
-          r.ExecuteAction(t.EventParamsNew, t.Context, t.ActionId);
+          i.ExecuteAction(t.EventParamsNew, t.Context, t.ActionId);
         }
-        if (!r.IsWaitEnd) {
-          r.Finish();
+        if (!i.IsWaitEnd) {
+          i.Finish();
         }
       } catch (e) {
-        r.Failure();
-        r = "行为节点：" + n + "逻辑执行异常，请检查报错信息";
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenConfirmBoxByText(r);
+        i.Failure();
+        i = "行为节点：" + n + "逻辑执行异常，请检查报错信息";
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenConfirmBoxByText(i);
         if (e instanceof Error && Log_1.Log.CheckError()) {
-          Log_1.Log.ErrorWithStack("LevelEvent", 7, r, e, ["Details", e.message]);
+          Log_1.Log.ErrorWithStack("LevelEvent", 7, i, e, ["Details", e.message]);
         }
       }
     } else {
@@ -387,10 +384,10 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     }
     EventTempData.Release(t);
   }
-  static HandleCondition(e, t, n, ...r) {
-    var i = LevelConditionCenter_1.LevelConditionCenter.GetCondition(e.Type);
-    if (i) {
-      return i.Check(e, t, ...r);
+  static HandleCondition(e, t, n, ...i) {
+    var r = LevelConditionCenter_1.LevelConditionCenter.GetCondition(e.Type);
+    if (r) {
+      return r.Check(e, t, ...i);
     } else {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelCondition", 16, `条件组使用场合不恰当!!!
@@ -401,16 +398,11 @@ class LevelGeneralController extends ControllerBase_1.ControllerBase {
     }
   }
   static HUe(e, t, n) {
-    let r = undefined;
-    return !!(r = e instanceof CodeDefineLevelConditionInfo_1.CodeCondition ? LevelConditionCenter_1.LevelConditionCenter.GetCodeCondition(e.CodeType) : LevelConditionCenter_1.LevelConditionCenter.GetCondition(e.Type)) && r.CheckNew(e, t, n);
+    let i = undefined;
+    return !!(i = e instanceof CodeDefineLevelConditionInfo_1.CodeCondition ? LevelConditionCenter_1.LevelConditionCenter.GetCodeCondition(e.CodeType) : LevelConditionCenter_1.LevelConditionCenter.GetCondition(e.Type)) && i.CheckNew(e, t, n);
   }
   static OnTick(e) {
-    LevelGeneralBaseFrameScheduler_1.LevelGeneralBaseFrameScheduler.UpdateActionFrameScheduler();
     LevelEventCenter_1.LevelEventCenter.Tick(e);
-  }
-  static OnLeaveLevel() {
-    LevelGeneralBaseFrameScheduler_1.LevelGeneralBaseFrameScheduler.ClearActionFrameScheduler();
-    return true;
   }
 }
 exports.LevelGeneralController = LevelGeneralController;
@@ -436,14 +428,11 @@ LevelGeneralController.bUe = e => {
     LevelGeneralController.HandleNextAction(e);
   });
 };
-LevelGeneralController.qUe = (e, t, n, r) => {
-  LevelGeneralController.HandleActionsFailure(e, t, n, r);
+LevelGeneralController.qUe = (e, t, n, i) => {
+  LevelGeneralController.HandleActionsFailure(e, t, n, i);
 };
 LevelGeneralController.GUe = (e, t, n) => {
   LevelConditionRegistry_1.LevelConditionRegistry.RegisterEntityPawnRange(t.Entity);
-};
-LevelGeneralController.zfi = e => {
-  LevelGeneralBaseFrameScheduler_1.LevelGeneralBaseFrameScheduler.OnSettingFrameRateChanged(e);
 };
 class EventTempData {
   constructor() {

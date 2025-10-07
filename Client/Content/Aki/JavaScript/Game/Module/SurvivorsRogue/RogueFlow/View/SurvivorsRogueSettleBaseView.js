@@ -58,11 +58,6 @@ class SurvivorsRogueSettleBaseView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.$An);
   }
-  OnAfterShow() {
-    this.bDd.GetLayoutItemList().forEach(e => {
-      e.PlayAnim();
-    });
-  }
   OnBeforeDestroyImplement() {
     this.k4d.Clear();
   }

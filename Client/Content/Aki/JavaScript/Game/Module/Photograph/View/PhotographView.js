@@ -200,20 +200,7 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
       this.AQi(-1);
     };
     this.WQi = () => {
-      var t;
-      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-      if (e?.Valid && e?.Entity) {
-        if (e = e.Entity.CheckGetComponent(0)) {
-          t = PhotographController_1.PhotographController.GetRoleMainAnimInstanceType();
-          UiManager_1.UiManager.OpenView("PhotographSetupView", {
-            PhotoSetupMode: 1,
-            SkinId: e.GetSkinId(),
-            RoleAnimType: t
-          });
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Photograph", 58, "场景队伍数据当前实体为空");
-      }
+      UiManager_1.UiManager.OpenView("PhotographSetupView", 1);
     };
     this.Ixi = () => {
       PhotographController_1.PhotographController.ResetCamera();
@@ -271,8 +258,6 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.$Ge = t => {
       if (t === "FightPhotoResultView") {
-        ControllerHolder_1.ControllerHolder.PhotographController.InitFightPhotoTask();
-        this.eSd?.RefreshCondition();
         this.eSd?.SetTipVisible(false);
       }
     };
@@ -775,29 +760,6 @@ class PhotographView extends UiTickViewBase_1.UiTickViewBase {
   }
   fSl() {
     this.GetItem(11).SetUIActive(true);
-  }
-  GetGuideUiItemAndUiItemForShowEx(t) {
-    var e;
-    var o;
-    if (t.length !== 0) {
-      if ((e = t[0]) === "FightPhotoTask") {
-        if (o = this.eSd?.GetGuideUiItem("0")) {
-          return [o, o];
-        } else {
-          return undefined;
-        }
-      } else if (e === "FightPhotoFilter") {
-        if (o = this.eSd?.GetGuideUiItem("1")) {
-          return [o, o];
-        } else {
-          return undefined;
-        }
-      } else if (e === "HideEnemy") {
-        return this.eSd?.GetGuideUiItemAndUiItemForShowEx(t);
-      } else {
-        return undefined;
-      }
-    }
   }
 }
 exports.PhotographView = PhotographView;

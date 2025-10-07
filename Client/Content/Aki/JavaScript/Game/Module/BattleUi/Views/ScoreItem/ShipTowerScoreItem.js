@@ -7,7 +7,6 @@ exports.ShipTowerScoreItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../Core/Common/Stats");
-const Time_1 = require("../../../../../Core/Common/Time");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -142,7 +141,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   }
   OnTick(t) {
     ShipTowerScoreItem.Ult.Start();
-    if (this.nel && this.hel !== this.lel && this.GetActive() && Time_1.Time.TimeDilation !== 0 && (this._el = Math.min(this.w5d, this._el + t), t = this._el / this.w5d, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
+    if (this.nel && this.hel !== this.lel && this.GetActive() && (this._el = Math.min(this.w5d, this._el + t), t = this._el / this.w5d, this.hel = this.ael * (1 - t) + this.lel * t, this.xte > 0)) {
       t = this.hel / this.xte;
       this.GetSprite(0)?.SetFillAmount(t);
       this.Nll.Yaw = t * -360;
@@ -162,7 +161,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   }
   D5d() {
     this.P5d();
-    this.L5d = TimerSystem_1.FlowTimeTimerSystem.Forever(() => {
+    this.L5d = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       var t = Math.floor((1 - this._el / this.w5d) * 100);
       this.xvi.SetText(t + "%");
       if (t <= 0) {
@@ -173,7 +172,7 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
   P5d() {
     if (this.L5d !== undefined) {
       this.SPe?.StopSequenceByKey("Back", true, true);
-      TimerSystem_1.FlowTimeTimerSystem.Remove(this.L5d);
+      TimerSystem_1.GameplayTimerSystem.Remove(this.L5d);
       this.L5d = undefined;
     }
   }
@@ -183,20 +182,10 @@ class ShipTowerScoreItem extends BaseScoreItem_1.BaseScoreItem {
       this.ael = this.hel;
       this.lel = t;
       this._el = 0;
-      if (t >= this.xte) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Battle", 78, "焚潮开始", ["score", t]);
-        }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, "ShipTower_BurningTide_Start");
-        if ((e = this.A5d()) > 0) {
-          this.jpu("Start");
-          this.w5d = e;
-          this.lel = 0;
-          this.D5d();
-        } else {
-          this.jpu("Immortal");
-          this.w5d = MAX_SMOOTH_TIME;
-        }
+      if (t >= this.xte && (this.jpu("Start"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Battle", 78, "焚潮开始", ["score", t]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerBattleTip, "ShipTower_BurningTide_Start"), (e = this.A5d()) > 0)) {
+        this.w5d = e;
+        this.lel = 0;
+        this.D5d();
       } else {
         this.w5d = MAX_SMOOTH_TIME;
       }

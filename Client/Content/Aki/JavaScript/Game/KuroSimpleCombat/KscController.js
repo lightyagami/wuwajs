@@ -121,7 +121,6 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
           KscWorldHandle: KscEnv_1.KscEnv.KscWorldHandle
         });
       } else {
-        KscLog_1.KscLog.Error("Load", 17, KscEnv_1.KscEnv.KscWorld, "Buff加载路径非法", ["buffId", r], ["path", t]);
         o(new Error(`Buff${r}安全加载路径非法`));
       }
     }));
@@ -142,6 +141,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
         r.SetRenderActor(e.RenderActor);
       }
       o = new KscEntityHandle_1.KscEntityHandle(r, e.CreatureId);
+      KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "Ksc加入战斗实体", ["asset", t.GetName()], ["creature", e.CreatureId]);
       this.CurSubModel.KscEntities.set(r.EntityId_, o);
       if (e.PropertyId) {
         this.CurSubController.SetAttrs(r, e.PropertyId, e.AttributeMap);
@@ -159,6 +159,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     var o;
     var r = this.CurSubModel.KscEntities.get(t);
     if (r && r.Valid) {
+      KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "移除战斗实体", ["id", t], ["entity", r.KscEntity?.GetName()], ["removeReason", e]);
       if (this.CurSubModel.KscPlayerEntity === r.KscEntity) {
         this.CurSubModel.SetKscPlayerEntity(undefined, 0);
       }
@@ -180,6 +181,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     var i = this.CurSubModel.KscEntities.get(t);
     if (i && i.Valid) {
       o = KscData_1.kscEntityRemoveReasonList[e];
+      KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "移除战斗实体", ["id", t], ["entity", i.KscEntity?.GetName()], ["removeReason", o]);
       if (this.CurSubModel.KscPlayerEntity === i.KscEntity) {
         this.CurSubModel.SetKscPlayerEntity(undefined, 0);
       }
@@ -238,6 +240,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   static _Wu(e) {
     var t = Protocol_1.Aki.Protocol.Cwu.create();
     t.pWc = e;
+    KscLog_1.KscLog.Info("Common", 84, KscEnv_1.KscEnv.KscWorld, "请求实体死亡", ["requestInfos", e]);
     Net_1.Net.Call(25112, t, t => {
       if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         KscLog_1.KscLog.Warn("Common", 84, KscEnv_1.KscEnv.KscWorld, "请求实体死亡异常", ["requestInfos", e], ["error", t?.Q4n]);
@@ -310,18 +313,17 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
       return e;
     }
   }
-  static PushSimpleCombatEntityHp(t, e, o) {
-    var r = Protocol_1.Aki.Protocol.e2d.create();
-    var i = {};
-    var s = Protocol_1.Aki.Protocol.o2d.create();
-    var n = {
-      3: e,
-      2: o
+  static PushSimpleCombatEntityHp(t, e) {
+    var o = Protocol_1.Aki.Protocol.e2d.create();
+    var r = {};
+    var i = Protocol_1.Aki.Protocol.o2d.create();
+    var s = {
+      3: e
     };
-    s.t2d = n;
-    i[t] = s;
-    r.i2d = i;
-    Net_1.Net.Send(26235, r);
+    i.t2d = s;
+    r[t] = i;
+    o.i2d = r;
+    Net_1.Net.Send(26235, o);
   }
   static SetDebugOn(t) {
     this.IsDebug = t;

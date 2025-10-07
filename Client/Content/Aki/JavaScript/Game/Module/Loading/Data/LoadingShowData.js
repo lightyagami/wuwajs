@@ -26,8 +26,8 @@ class LoadingShowData {
     this.mvi = this.dvi.reduce((e, t) => e + t.Weight, 0);
   }
   gvi(e) {
-    e = Array.from(new Map(e.map(e => [e.ImageId, e])).values());
-    e = e[Math.floor(Math.random() * e.length)];
+    e = [...new Set(e)];
+    e = e[Math.floor(Math.random() * (e.length - 1))];
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Loading", 71, "获取loading界面数据", ["id", e.LevelAreaId]);
     }

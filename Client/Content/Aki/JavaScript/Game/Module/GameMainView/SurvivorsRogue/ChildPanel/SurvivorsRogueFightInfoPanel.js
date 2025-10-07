@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.SurvivorsRogueFightInfoPanel = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
@@ -17,6 +15,8 @@ const SurvivorsRogueController_1 = require("../../../SurvivorsRogue/SurvivorsRog
 const SurvivorsRogueModel_1 = require("../../../SurvivorsRogue/SurvivorsRogueModel");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const SurvivorsRogueCollectionItem_1 = require("../ChildItem/SurvivorsRogueCollectionItem");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const DEFAULT_COMBO_DURATION_TIME = 5000;
 class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
@@ -129,33 +129,21 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
       } else {
         this.mNe -= i;
         if (this.mNe <= 0) {
-          this._fe = false;
-          this.MId(0);
+          this.SetComboAreaActive(false);
         } else {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("SurvivorsRogue", 79, "连杀时间进度更新", ["RemainTime", this.mNe], ["ComboDurationTime", this.yId], ["Percent", this.mNe / this.yId]);
-          }
           this.MId(this.mNe / this.yId);
         }
       }
     }
   }
   RefreshComboNum(i) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SurvivorsRogue", 79, "RefreshComboNum", ["ComboNum", i]);
-    }
-    this.dId.SetText(i.toString());
-    this.D9d(i);
     if (i === 0) {
-      this.P9d = 0;
-      this.mNe = 0;
-      this.MId(0);
       this.SetComboAreaActive(false);
-      this._fe = false;
     } else {
+      this.D9d(i);
+      this.dId.SetText(i.toString());
       this.MId(1);
       this.SetComboAreaActive(true);
-      this._fe = true;
     }
   }
   D9d(e) {
@@ -169,15 +157,15 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
           Log_1.Log.Error("SurvivorsRogue", 79, "幸存者连杀等级配置数量不匹配", ["连杀阈值配置数量", s.length], ["连杀时间配置数量", o.length], ["合法数量", SurvivorsRogueModel_1.COMBO_LEVEL_CONFIG_LENGTH]);
         }
       } else {
-        var r = t.ComboTimerFreezeTimeCfg;
-        var h = SurvivorsRogueModel_1.COMBO_LEVEL_CONFIG_LENGTH - 1;
-        for (let i = 0; i < h; i++) {
-          if (e >= s[i] && e < s[i + 1]) {
-            this.U9d(i, o[i], t.ComboDurationAdditionCfg[i], r[i]);
+        var h = t.ComboTimerFreezeTimeCfg;
+        for (let i = 0; i < SurvivorsRogueModel_1.COMBO_LEVEL_CONFIG_LENGTH; i++) {
+          if (e < s[i]) {
+            this.U9d(i, o[i], t.ComboDurationAdditionCfg[i], h[i]);
             return;
           }
         }
-        this.U9d(h, o[h], t.ComboDurationAdditionCfg[h], r[h]);
+        i = SurvivorsRogueModel_1.COMBO_LEVEL_CONFIG_LENGTH - 1;
+        this.U9d(i, o[i], t.ComboDurationAdditionCfg[i], h[i]);
       }
     }
   }
@@ -206,49 +194,43 @@ class SurvivorsRogueFightInfoPanel extends UiPanelBase_1.UiPanelBase {
     this.eAd.PlayOrReplaySequenceByName("Start");
   }
   SetComboAreaActive(i, e = true) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SurvivorsRogue", 79, "SetComboAreaActive", ["Active", i], ["PlaySequence", e], ["SkipPlaySequence", this.uId.IsUIActiveInHierarchy() === i]);
-    }
     if (this.lId.IsUIActiveInHierarchy() !== i) {
-      this.eAd.StopPlayingSequence();
       if (i) {
+        this._fe = true;
         this.lId.SetUIActive(true);
         if (e) {
+          this.eAd.StopPlayingSequence();
           this.eAd.PlayOrReplaySequenceByName("Start");
         }
-      } else if (e) {
-        this.eAd.StopPlayingSequence();
-        this.eAd.PlayOrReplaySequenceByName("Close");
       } else {
-        this.lId.SetUIActive(false);
+        this._fe = false;
+        if (e) {
+          this.eAd.StopPlayingSequence();
+          this.eAd.PlayOrReplaySequenceByName("Close");
+        } else {
+          this.lId.SetUIActive(false);
+        }
       }
     }
   }
   SetPositiveAreaActive(i, e = true) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SurvivorsRogue", 79, "SetPositiveAreaActive", ["Active", i], ["PlaySequence", e], ["SkipPlaySequence", this.uId.IsUIActiveInHierarchy() === i]);
-    }
-    if (this.uId.IsUIActiveInHierarchy() !== i) {
+    if (i) {
+      this.uId.SetUIActive(true);
       this.tAd.StopPlayingSequence();
-      if (i) {
-        this.uId.SetUIActive(true);
-        this.fId.SetUIActive(true);
-        this.CId.SetUIActive(true);
-        this.tAd.PlayOrReplaySequenceByName("Start");
-      } else if (e) {
-        this.tAd.PlayOrReplaySequenceByName("Close");
-      } else {
-        this.uId.SetUIActive(false);
-      }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueComboBuffShow, i);
+      this.tAd.PlayOrReplaySequenceByName("Start");
+    } else if (e) {
+      this.tAd.StopPlayingSequence();
+      this.tAd.PlayOrReplaySequenceByName("Close");
+    } else {
+      this.uId.SetUIActive(false);
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueComboBuffShow, i);
   }
   RefreshPositiveArea(i) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("SurvivorsRogue", 79, "RefreshPositiveArea", ["Value", i]);
-    }
     var e = i > 0;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.l6d, "SurvivorsCombat_IncomeBuff", Math.ceil(i / 100));
+    this.fId.SetUIActive(e);
+    this.CId.SetUIActive(e);
     this.SetPositiveAreaActive(e);
   }
   MId(i) {

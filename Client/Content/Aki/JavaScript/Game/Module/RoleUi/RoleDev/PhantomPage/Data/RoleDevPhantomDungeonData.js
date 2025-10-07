@@ -13,7 +13,7 @@ class RoleDevPhantomDungeonData extends RoleDevPhantomVisionSuitItemData_1.RoleD
     var o;
     if (e && (a = ModelManager_1.ModelManager.AdventureGuideModel?.GetSilentAreaDetectData(e)) && !a.IsLock && (a = a.Conf)) {
       o = this.GetDungeonDropRewards(a);
-      this.InitByBaseData(e, 1, a.Name || "", 0, "RoleProject_Button02", a.BigIcon);
+      this.InitByBaseData(e, a.Name || "", 0, "RoleProject_Button02");
       this.SetRewardDataList(o);
       this.SetDungeonId(e);
     }
@@ -21,11 +21,12 @@ class RoleDevPhantomDungeonData extends RoleDevPhantomVisionSuitItemData_1.RoleD
   GetDungeonDropRewards(e) {
     var a = [];
     if (e.ShowRewardMap) {
-      e = e.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(e.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(e.ShowRewardMap);
+      var o = ModelManager_1.ModelManager.AdventureGuideModel?.CurrentShowLevel ?? 1;
+      var e = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetShowReward(e.ShowRewardMap, o);
       if (e) {
-        for (var [o, n] of e) {
+        for (var [t, n] of e) {
           a.push({
-            ItemId: o,
+            ItemId: t,
             Count: n,
             HaveFinish: false
           });

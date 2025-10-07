@@ -34,7 +34,7 @@ class SurvivorsRogueCommandShop extends SurvivorsRogueCommandBase_1.SurvivorsRog
   }
   OnDelete() {}
   RequestLock(e, r, o) {
-    if (!!this.InForeground && !this.IsFinished) {
+    if (this.InForeground) {
       ControllerHolder_1.ControllerHolder.SurvivorsRogueController.RequestDataLock(this.IncId, e, r, e => {
         o?.(e);
         if (e) {

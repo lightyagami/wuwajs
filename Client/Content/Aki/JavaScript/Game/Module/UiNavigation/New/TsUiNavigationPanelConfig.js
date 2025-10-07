@@ -256,14 +256,11 @@ class TsUiNavigationPanelConfig extends UE.LGUIBehaviour {
               i.Result = 7;
               return;
             }
-            var e;
-            var o = UiNavigationModeModule_1.UiNavigationModeModule.FindDynamicScrollViewNavigationComponent(t);
-            if (o?.IsCanFocus()) {
+            var e = UiNavigationModeModule_1.UiNavigationModeModule.FindDynamicScrollViewNavigationComponent(t);
+            if (e?.IsCanFocus()) {
               i.Result = 1;
-              i.Listener = o;
-              e = t.LastListener?.RootUIComp.flattenHierarchyIndex ?? 0;
-              e = o.RootUIComp.flattenHierarchyIndex < e;
-              s.NavigateScrollToUIItem(o.RootUIComp, e, t.WrapMode);
+              i.Listener = e;
+              s.NavigateScrollToUIItem(e.RootUIComp, t.Reversed, t.WrapMode);
               this.ViewHandle.ClearDynamicScrollViewNavigationContext();
               return;
             }

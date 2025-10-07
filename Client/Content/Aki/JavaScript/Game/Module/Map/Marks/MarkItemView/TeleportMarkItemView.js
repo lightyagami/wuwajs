@@ -43,7 +43,12 @@ class TeleportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapSelectMultiMap, this.Zbn);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnlockTeleport, this.uRi);
   }
-  OnViewRefresh() {
+  OnAfterShow() {
+    super.OnAfterShow();
+    this.bl();
+  }
+  OnReset() {
+    super.OnReset();
     this.bl();
   }
   bl() {

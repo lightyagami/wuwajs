@@ -47,9 +47,9 @@ class QuestTreeMainViewModel {
       this.vPd.splice(e, 1);
     }
   }
-  LocateNode(e, t = true) {
-    for (const i of this.vPd) {
-      i(e, t);
+  LocateNode(e) {
+    for (const t of this.vPd) {
+      t(e);
     }
   }
   GetDefaultLocatingNode() {

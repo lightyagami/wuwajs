@@ -21,8 +21,7 @@ class EyeProtectViewModel {
     this.ModeMetaData = undefined;
     this.ModeCurValue = undefined;
     this.FilterCameraComponent = undefined;
-    this.IsModeDirty = false;
-    this.IsSliderDirty = false;
+    this.IsDirty = false;
     this.SliderDataListMap = new Map();
     this.ParamStrong = undefined;
     this.ParamWeak = undefined;
@@ -50,13 +49,6 @@ class EyeProtectViewModel {
       this.ModeCurValue = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionMode);
     }
   }
-  get IsDirty() {
-    if (this.ModeCurValue !== 2) {
-      return this.IsModeDirty;
-    } else {
-      return this.IsModeDirty || this.IsSliderDirty;
-    }
-  }
   async BuildComponentAndOpen() {
     if (this.FilterCameraComponent === undefined) {
       this.FilterCameraComponent = new FilterCameraComponent_1.FilterCameraComponent(async () => ControllerHolder_1.ControllerHolder.EyeProtectController.BuildViewModelAndOpen(this), "EyeProtectView");
@@ -66,17 +58,19 @@ class EyeProtectViewModel {
   OnModeValueChange(e) {
     this.ModeCurValue = e;
     GameSettingsUtils_1.GameSettingsUtils.ApplyEyeProtectionMode(e);
-    if (e === 2) {
+    if (e === 3) {
       for (const t of this.GetSliderDataList(e)) {
         t.OnSetValue();
       }
     }
-    this.IsModeDirty = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionMode) !== e;
+    if (GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionMode) !== e) {
+      this.IsDirty = true;
+    }
   }
   OnModeValueApply() {
-    if (this.IsModeDirty) {
+    if (this.IsDirty) {
       GameSettingsManager_1.GameSettingsManager.HandleValueChange(GameSettingsDefine_1.EFunction.EyeProtectionMode, this.ModeCurValue, 1);
-      this.IsModeDirty = false;
+      this.IsDirty = false;
     }
   }
   GetTitle() {
@@ -87,8 +81,8 @@ class EyeProtectViewModel {
   }
   GetModeDataList() {
     var t = [];
-    for (let e = 0; e < this.ModeMetaData.OptionsValueList.length; e++) {
-      t.push(new EyeProtectData_1.EyeProtectItemData(this.ModeMetaData.OptionsValueList[e], this.ModeMetaData.OptionsNameList[e], this));
+    for (let e = 1; e < this.ModeMetaData.OptionsValueList.length; e++) {
+      t.push(new EyeProtectData_1.EyeProtectItemData(e, this.ModeMetaData.OptionsNameList[e], this));
     }
     return t;
   }
@@ -108,8 +102,8 @@ class EyeProtectViewModel {
   }
   InitSliderDataList(e) {
     var t = [];
-    for (const s of this.sNd) {
-      var i = GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap.get(s);
+    for (const a of this.sNd) {
+      var i = GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap.get(a);
       if (i) {
         i = new MenuData_1.MenuData(i);
         i = new EyeProtectData_1.EyeProtectSliderData(i, this, e);

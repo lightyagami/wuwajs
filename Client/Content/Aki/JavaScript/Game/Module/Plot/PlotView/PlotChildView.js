@@ -17,8 +17,6 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.LevelSequencePlayer = undefined;
-    this.L0e = [];
-    this.FiniteSpineEndCallback = undefined;
     this.SWd = new Map();
     this.MWd = new Map();
     this.PlaySpineAnimation = (t, i = true, s = false, o = 0) => {
@@ -34,11 +32,14 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
           if (n.IsA(UE.UISpineRenderable.StaticClass()) && ((n = (n.GetOwner()?.GetComponentByClass(UE.SpineSkeletonAnimationComponent.StaticClass())).SetAnimation(0, t, i))?.SetMixDuration(o), n?.isValidAnimation()) && !i) {
             if (s) {
               n.SetTimeScale(0);
-              this.SWd.set(n, n.getAnimationDuration());
+              this.SWd.set(n, n.getAnimationDuration() + o);
             }
             (this.MWd.has(t) ? this.MWd : this.MWd.set(t, new Set())).get(t).add(n);
             n.AnimationComplete.Add(this.EWd);
           }
+        }
+        if (!this.MWd.has(t)) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, t);
         }
       }
     };
@@ -52,9 +53,8 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
           }
         }
         if (e) {
-          this.MWd.delete(e);
-          this.FiniteSpineEndCallback?.(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, e);
+          this.MWd.delete(e);
         }
       }
     };
@@ -89,7 +89,6 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlayPlotSpine, this.PlaySpineAnimation);
   }
   OnBeforeDestroy() {
-    this.L0e.length = 0;
     this.MWd.clear();
     this.SWd.clear();
     this.LevelSequencePlayer?.Clear();
@@ -107,15 +106,6 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
         await this.ShowAsync();
       } else {
         await this.CreateThenShowByResourceIdAsync(t, e, false);
-      }
-      var o = (0, puerts_1.$ref)(undefined);
-      this.RootItem?.GetAllAttachUIChildren(o);
-      var r = (0, puerts_1.$unref)(o);
-      for (let e = 0; e < r.Num(); e++) {
-        var n = r.Get(e);
-        if (n.IsA(UE.UINiagara.StaticClass())) {
-          this.L0e.push(n);
-        }
       }
       this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
       this.LevelSequencePlayer?.PlayLevelSequenceByName("Start", false);
@@ -156,18 +146,9 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
   }
   UpdateFrozenSpine(e) {
     for (var [t, i] of this.SWd) {
-      if (t.isValidAnimation()) {
-        i = i * e;
-        t?.SetTrackTime(i);
-        t?.SetMixTime(i);
-      }
-    }
-  }
-  ManualUpdateNiagara(e, t) {
-    for (const i of e) {
-      for (const s of this.L0e) {
-        s.SetNiagaraVarFloat(i, t);
-      }
+      i = i * e;
+      t?.SetTrackTime(i);
+      t?.SetMixTime(i);
     }
   }
   RestoreFreezeSpine(e, t = false) {
@@ -175,25 +156,16 @@ class PlotChildView extends UiPanelBase_1.UiPanelBase {
     if (i) {
       var s = new Set();
       for (const o of i) {
+        o.SetLoop(t);
+        o.SetTimeScale(1);
         this.SWd.delete(o);
-        if (o.isValidAnimation()) {
-          o.SetLoop(t);
-          o.SetTimeScale(1);
-        } else {
+        if (!o.isValidAnimation()) {
           s.add(o);
         }
       }
       for (const r of s) {
         i.delete(r);
       }
-      if (i.size === 0) {
-        this.MWd.delete(e);
-        this.FiniteSpineEndCallback?.(e);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, e);
-      }
-    } else {
-      this.FiniteSpineEndCallback?.(e);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FiniteSpineEnd, e);
     }
   }
 }

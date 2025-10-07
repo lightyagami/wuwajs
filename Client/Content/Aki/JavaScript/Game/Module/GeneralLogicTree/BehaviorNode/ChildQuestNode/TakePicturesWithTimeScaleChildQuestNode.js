@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.TakePicturesWithTimeScaleChildQuestNode = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -29,7 +28,6 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     this.CameraCondition = undefined;
     this.gFd = false;
     this.V5d = false;
-    this.azd = false;
     this.$Fd = 0;
     this.dad = 0;
     this.N5d = false;
@@ -51,7 +49,7 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     this.$Ge = e => {
       if (e === "FightPhotographView") {
         this.N5d = false;
-        this.azd = true;
+        this.WFd();
       }
     };
   }
@@ -79,20 +77,18 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
       }
     } else if (this.TipType !== 0) {
       if (this.CheckRoleInCamera() && this.CheckPhotographCondition()) {
-        if (!!this.azd || !this.gFd) {
+        if (!this.gFd) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, true);
           this.CFd(true);
           this.gFd = true;
-          this.azd = false;
           if (this.TipType === 2) {
             ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(ModelManager_1.ModelManager.BattleUiModel.TimeDilationSkillRatio);
             this.V5d = true;
             this.WFd();
           }
         }
-      } else if ((this.azd || this.gFd) && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, false), this.CFd(false), this.gFd = false, this.azd = false, this.TipType === 2)) {
+      } else if (this.gFd && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNeedShowFightPhotoFocus, false), this.CFd(false), this.gFd = false, this.TipType === 2)) {
         ModelManager_1.ModelManager.PhotographModel.SetPhotographTimeDilation(1);
-        AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
         this.V5d = false;
         this.WFd();
       }
@@ -133,15 +129,15 @@ class TakePicturesWithTimeScaleChildQuestNode extends TickBehaviorNode_1.TickBeh
     if (this.CheckIsTargetRole()) {
       var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (e) {
-        const s = ControllerHolder_1.ControllerHolder.CharacterController.GetActor(e)?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
-        if (s) {
-          const r = Global_1.Global.CharacterController;
+        const r = ControllerHolder_1.ControllerHolder.CharacterController.GetActor(e)?.GetComponentByClass(UE.SkeletalMeshComponent.StaticClass());
+        if (r) {
+          const s = Global_1.Global.CharacterController;
           var t;
           var i = e => {
             var t;
-            var e = s.D_GetSocketLocation(new UE.FName(e));
+            var e = r.D_GetSocketLocation(new UE.FName(e));
             var i = (0, puerts_1.$ref)(undefined);
-            return !!UE.GameplayStatics.D_ProjectWorldToScreen(r, e, i) && (e = (0, puerts_1.$unref)(i), i = (0, puerts_1.$ref)(0), t = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController?.GetViewportSize(i, t), e.X > 0) && e.X < (0, puerts_1.$unref)(i) && e.Y > 0 && e.Y < (0, puerts_1.$unref)(t);
+            return !!UE.GameplayStatics.D_ProjectWorldToScreen(s, e, i) && (e = (0, puerts_1.$unref)(i), i = (0, puerts_1.$ref)(0), t = (0, puerts_1.$ref)(0), Global_1.Global.CharacterController?.GetViewportSize(i, t), e.X > 0) && e.X < (0, puerts_1.$unref)(i) && e.Y > 0 && e.Y < (0, puerts_1.$unref)(t);
           };
           if (this.PhotographCondition.Target.OnCameraCheckType === 0) {
             e = i("Bip001Head");

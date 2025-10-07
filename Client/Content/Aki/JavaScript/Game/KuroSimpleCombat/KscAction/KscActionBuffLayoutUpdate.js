@@ -39,6 +39,7 @@ class KscActionBuffLayoutUpdate extends KscActionBase_1.KscActionBase {
           NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedBuffDa,
           Callback: t => {
             if (this.KscCtrl.WorldInit) {
+              this.Info("Skill", "更新Buff", ["kscEntityHandle", a], ["buffId", s], ["layerCount", i], ["buffDa", t?.GetName()]);
               a.KscEntity.UpdateBuffWithStackNumSelf(t, i);
             } else {
               this.Warn("Load", "战斗实体加载失败，KSC世界已清理");

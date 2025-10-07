@@ -150,6 +150,7 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
         UiManager_1.UiManager.CloseView("PowerView");
       }
       this.UiViewSequence.PlaySequencePurely("Close01", true);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseInstanceEntrancePositively, this.HLn.EntranceId);
     };
     this.Bli = () => {
       this.UiViewSequence.StopSequenceByKey("Popup");
@@ -399,7 +400,6 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.cli = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBeforeDestroyInstanceDungeonEntranceView);
     ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId = 0;
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CloseInstanceEntrancePositively, this.HLn.EntranceId);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.Oli);

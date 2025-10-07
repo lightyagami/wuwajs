@@ -50,7 +50,7 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
       e = e.Data.IncId;
       this.SelectedWeaponHandle(e);
     };
-    this.Lke = (e, t) => {
+    this.Lke = (e, i) => {
       return this.SelectedIncId !== e.IncId;
     };
     this.UpdateList = e => {
@@ -64,31 +64,31 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
       }
     };
     this.uko = e => {
-      var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
+      var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
       var e = {
         WeaponIncId: e,
-        WeaponSkinId: ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(t.GetRoleId()),
+        WeaponSkinId: ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(i.GetRoleId()),
         IsFromRoleRootView: true
       };
       UiManager_1.UiManager.OpenView("WeaponRootView", e);
       WeaponController_1.WeaponController.RoleFadeIn(UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor());
     };
     this.cko = e => {
-      var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(this.RoleDataId);
-      var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
-      const r = t.GetRoleId();
-      var n;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206);
-      if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId === r && t?.Valid && t.HasTag(202314845)) {
+      var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(this.RoleDataId);
+      var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
+      const r = i.GetRoleId();
+      var o;
+      var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206);
+      if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId === r && i?.Valid && i.HasTag(202314845)) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TagCantSwitchWeapon");
-      } else if (i.HasRole()) {
-        t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponName(i.GetWeaponConfig().WeaponName);
-        i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(i.GetRoleId()).GetName();
-        (n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(22)).SetTextArgs(t, i);
-        n.FunctionMap.set(2, () => {
+      } else if (t.HasRole()) {
+        i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponName(t.GetWeaponConfig().WeaponName);
+        t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(t.GetRoleId()).GetName();
+        (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(22)).SetTextArgs(i, t);
+        o.FunctionMap.set(2, () => {
           WeaponController_1.WeaponController.SendPbEquipTakeOnRequest(r, WeaponDefine_1.WEAPON_EQUIPTYPE, e);
         });
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
       } else {
         WeaponController_1.WeaponController.SendPbEquipTakeOnRequest(r, WeaponDefine_1.WEAPON_EQUIPTYPE, e);
       }
@@ -98,20 +98,20 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
       this.UpdateSelectedTips(this.SelectedIncId);
       this.RefreshPropItem();
     };
-    this.dko = (e, t) => {
+    this.dko = (e, i) => {
       if (this.sko.GetWeaponIncId() === e) {
-        this.sko.UpdateWeaponLock(t);
+        this.sko.UpdateWeaponLock(i);
       }
       if (this.nko.GetWeaponIncId() === e) {
-        this.nko.UpdateWeaponLock(t);
+        this.nko.UpdateWeaponLock(i);
       }
       this.RefreshPropItem();
     };
     this.W7t = () => {
       var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleDataId).GetRoleId();
-      var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(e);
+      var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(e);
       var e = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(e);
-      this.yil.TsUiSceneRoleActor.Model?.CheckGetComponent(17)?.SetWeaponByWeaponData(t, e);
+      this.yil.TsUiSceneRoleActor.Model?.CheckGetComponent(17)?.SetWeaponByWeaponData(i, e);
       this.CloseMe();
     };
     this.hko = () => {
@@ -157,28 +157,24 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
     }
   }
   OnBeforeShow() {
+    this.yil.ShowActor();
     ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(4);
-    var e;
-    var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.SelectedIncId);
-    if (t !== undefined) {
-      e = t.GetWeaponConfig();
-      this.ItemDataList = ModelManager_1.ModelManager.WeaponModel.GetWeaponListFromReplace(e.WeaponType);
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.SelectedIncId);
+    if (e !== undefined) {
+      var i = e.GetWeaponConfig();
+      this.ItemDataList = ModelManager_1.ModelManager.WeaponModel.GetWeaponListFromReplace(i.WeaponType);
       this.SortComponent.UpdateData(3, this.ItemDataList);
+      if (this.yil.WeaponConfigId !== 0) {
+        i = this.Y9d(this.yil.WeaponConfigId);
+        if (i) {
+          this.SelectedIncId = 0;
+          this.SelectedWeaponHandle(i.GetUniqueId(), true);
+          return;
+        }
+      }
       this.SelectedIncId = 0;
-      this.SelectedWeaponHandle(t.GetIncId(), true);
+      this.SelectedWeaponHandle(e.GetIncId(), true);
     }
-  }
-  async OnPlayingStartSequenceAsync() {
-    if (this.yil?.NeedShowOnViewPlayingStartSequence) {
-      this.yil.ShowActor();
-    }
-    return Promise.resolve();
-  }
-  async OnPlayingCloseSequenceAsync() {
-    if (this.yil?.NeedHideOnViewPlayingCloseSequence) {
-      this.yil.HideActor();
-    }
-    return Promise.resolve();
   }
   OnBeforeDestroy() {
     this.Jkd();
@@ -197,9 +193,9 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
   Jkd() {
     try {
       var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleDataId).GetRoleId();
-      var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(e);
-      var i = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(e);
-      this.yil.TsUiSceneRoleActor.Model?.CheckGetComponent(17)?.SetWeaponByWeaponData(t, i);
+      var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByRoleDataId(e);
+      var t = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(e);
+      this.yil.TsUiSceneRoleActor.Model?.CheckGetComponent(17)?.SetWeaponByWeaponData(i, t);
     } catch (e) {
       if (e instanceof Error) {
         if (Log_1.Log.CheckError()) {
@@ -231,14 +227,14 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
     this.UiViewSequence.StopSequenceByKey("TipClose");
     this.UiViewSequence.PlaySequence(e ? "TipStart" : "TipClose");
   }
-  SelectedWeaponHandle(t, i = false) {
-    if (this.SelectedIncId !== t) {
-      this.UpdateSelectedTips(t);
-      var r = this.GetWeaponItemIndex(t);
+  SelectedWeaponHandle(i, t = false) {
+    if (this.SelectedIncId !== i) {
+      this.UpdateSelectedTips(i);
+      var r = this.GetWeaponItemIndex(i);
       if (!(r < 0)) {
-        this.LoopScrollView.SelectGridProxy(r, i);
-        this.SelectedIncId = t;
-        r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(t);
+        this.LoopScrollView.SelectGridProxy(r, t);
+        this.SelectedIncId = i;
+        r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(i);
         let e = WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID;
         if (r.GetRoleId() === this.RoleDataId) {
           e = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(this.RoleDataId);
@@ -259,9 +255,9 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleDataId);
     this.sko.UpdateEquip(e.GetRoleId());
   }
-  GetWeaponItemIndex(t) {
+  GetWeaponItemIndex(i) {
     for (let e = 0; e < this.ItemDataList.length; e++) {
-      if (this.ItemDataList[e].GetUniqueId() === t) {
+      if (this.ItemDataList[e].GetUniqueId() === i) {
         return e;
       }
     }
@@ -273,23 +269,33 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
         Log_1.Log.Error("Guide", 16, "武器替换界面聚焦引导ExtraParam参数配置错误", ["configParams", e]);
       }
     } else {
-      var i = Number(e[0]);
-      let t = undefined;
+      var t = Number(e[0]);
+      let i = undefined;
       for (let e = 0; e < this.ItemDataList.length; e++) {
         var r = SelectablePropDataUtil_1.SelectablePropDataUtil.GetSelectablePropData(this.ItemDataList[e]);
-        if (r.ItemId === i && (t = e, r.RoleId !== this.RoleDataId)) {
+        if (r.ItemId === t && (i = e, r.RoleId !== this.RoleDataId)) {
           break;
         }
       }
       if (this.LoopScrollView.Iei !== -1) {
-        this.LoopScrollView.ScrollToGridIndex(t);
+        this.LoopScrollView.ScrollToGridIndex(i);
       }
-      e = this.LoopScrollView.GetGrid(t);
-      if (e && t !== undefined) {
+      e = this.LoopScrollView.GetGrid(i);
+      if (e && i !== undefined) {
         return [e, e];
       }
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Guide", 16, "武器替换界面聚焦引导ExtraParam参数配置错误, 找不到道具", ["itemId", i]);
+        Log_1.Log.Error("Guide", 16, "武器替换界面聚焦引导ExtraParam参数配置错误, 找不到道具", ["itemId", t]);
+      }
+    }
+  }
+  Y9d(e) {
+    if (this.ItemDataList && this.ItemDataList.length !== 0) {
+      for (const t of this.ItemDataList) {
+        var i = t;
+        if (i.GetConfigId() === e) {
+          return i;
+        }
       }
     }
   }

@@ -170,7 +170,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.uae = Vector_1.Vector.Create();
     this.Wxr = false;
     this.m4r = false;
-    this.qQd = Vector_1.Vector.Create();
+    this.g4r = Vector_1.Vector.Create();
     this.n5t = Vector_1.Vector.Create();
     this.OnCatcherForceRemove = (t, i) => {
       if (t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeForce || t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeNormal) {
@@ -651,12 +651,10 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
       if (this.Wxr) {
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.n5t);
-        e = s.op_Subtraction(t.ActorLocation);
-        this.qQd.DeepCopy(e);
-        this.n5t = this.SetAddRadiusLocation(this.qQd, this.n5t, t.Radius + ADD_LENGTH);
+        this.n5t = this.SetAddRadiusLocation(this.g4r, this.n5t, t.Radius + ADD_LENGTH);
         if (!this.n5t.IsZero()) {
-          CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时与抓取者碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
           t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
+          CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时与抓取者碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
         }
       }
     } else {
@@ -665,17 +663,17 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.Fse.HitResult?.Clear();
     this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
     const s = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z + t.Radius + ADD_LENGTH);
-    i = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z - t.Radius - ADD_LENGTH);
+    e = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z - t.Radius - ADD_LENGTH);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, s);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, i);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, e);
     this.Fse.Radius = 0.3;
     this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
     if (this.Wxr) {
       TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.n5t);
       this.n5t.Addition(Vector_1.Vector.Create(0, 0, t.Radius + ADD_LENGTH), this.n5t);
       if (!this.n5t.IsZero()) {
-        CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时地面碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
         t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
+        CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时地面碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
       }
     }
   }

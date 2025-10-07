@@ -59,49 +59,47 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return true;
   }
   RefreshItemRedDotSet() {
-    var a;
-    var r = ModelManager_1.ModelManager.NewFlagModel;
-    var n = r.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot);
+    var t = ModelManager_1.ModelManager.NewFlagModel;
+    var a = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的常规道具红点", ["commonItemRedDotSet", n]);
+      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的常规道具红点", ["commonItemRedDotSet", a]);
     }
-    if (n && n.size > 0) {
-      let t = false;
-      for (const o of n) {
-        let e = false;
-        if (e = this.GetCommonItemCount(o) <= 0 || (a = this.GetCommonItemData(o, 0)) && a.GetRedDotDisableRule() === 0 ? true : e) {
+    if (a && a.size > 0) {
+      let e = false;
+      for (const n of a) {
+        if (this.GetCommonItemCount(n) <= 0) {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除常规道具红点", ["configId", o]);
+            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除常规道具红点", ["configId", n]);
           }
-          r.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, o);
-          t = true;
+          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryCommonItemRedDot, n);
+          e = true;
         }
       }
-      if (t) {
+      if (e) {
         this.SaveRedDotCommonItemConfigIdList();
       }
     }
-    n = r.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
+    a = t.GetNewFlagSet(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的属性道具红点", ["attributeItemRedDotSet", n]);
+      Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]当前本地保存的属性道具红点", ["attributeItemRedDotSet", a]);
     }
-    if (n) {
+    if (a) {
       let e = false;
-      for (const i of n) {
-        var t = this.GetAttributeItemData(i);
-        if (t) {
-          if (t?.GetCount() <= 0) {
+      for (const o of a) {
+        var r = this.GetAttributeItemData(o);
+        if (r) {
+          if (r?.GetCount() <= 0) {
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", i]);
+              Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", o]);
             }
-            r.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, i);
+            t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, o);
             e = true;
           }
         } else {
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", i]);
+            Log_1.Log.Debug("Inventory", 37, "[InventoryRedDot]消除属性道具红点", ["uniqueId", o]);
           }
-          r.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, i);
+          t.RemoveNewFlag(LocalStorageDefine_1.ELocalStoragePlayerKey.InventoryAttributeItemRedDot, o);
           e = true;
         }
       }

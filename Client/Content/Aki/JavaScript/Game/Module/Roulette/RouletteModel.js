@@ -38,7 +38,6 @@ class RouletteModel extends ModelBase_1.ModelBase {
     this.Bcc = undefined;
     this.kcc = [];
     this.qcc = [];
-    this.CYd = 0;
     this.H0o = 0;
     this.j0o = 0;
     this.fB_ = [];
@@ -61,7 +60,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
       }
     };
     this.zJu = new Map();
-    this.pYd = 0;
+    this.CurrentEquipItemId = 0;
     this.XPn = new InputKeyDisplayData_1.InputKeyDisplayData();
     this.GetRouletteActionName = {
       [1]: InputMappingsDefine_1.actionMappings.幻象探索选择界面,
@@ -160,7 +159,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
         if (!!e && !(ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) > 0)) {
           e = 0;
         }
-        this.CYd = e;
+        ControllerHolder_1.ControllerHolder.RouletteController.SaveCurrentRouletteData(undefined, undefined, e);
         if (this.ExploreSkillIdListServer.includes(this.H0o)) {
           this.dB_ = this.H0o;
         } else {
@@ -171,7 +170,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
         ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(t);
         ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(t, undefined, true);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Phantom", 37, "[ExploreRoulette] 进入替换模式", ["ReplaceId", this.uB_], ["ReplaceSkillId", t], ["ReplaceItemId", e], ["RestoreSkillId", this.dB_]);
+          Log_1.Log.Info("Phantom", 37, "[ExploreRoulette] 进入替换模式", ["ReplaceId", this.uB_], ["ReplaceSkillId", t], ["RestoreSkillId", this.dB_]);
         }
       }
     }
@@ -410,19 +409,9 @@ class RouletteModel extends ModelBase_1.ModelBase {
   GetOtherIdList(e) {
     return this.zJu.get(e) ?? [];
   }
-  get CurrentEquipItemId() {
-    if (this.IsExploreRouletteReplace()) {
-      return this.CYd;
-    } else {
-      return this.pYd;
-    }
-  }
-  get CurrentEquipItemIdServer() {
-    return this.pYd;
-  }
   CB_(e) {
     var t = this.rfo();
-    this.pYd = e;
+    this.CurrentEquipItemId = e;
     var e = this.rfo();
     if (e) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSpecialItemUpdate, this.CurrentEquipItemId);
@@ -624,11 +613,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
       case 1:
         return (i ? this.FunctionIdList : this.FunctionIdListServer)[e];
       case 2:
-        if (i) {
-          return this.CurrentEquipItemId;
-        } else {
-          return this.CurrentEquipItemIdServer;
-        }
+        return this.CurrentEquipItemId;
     }
   }
   CreateAssemblyGridData() {

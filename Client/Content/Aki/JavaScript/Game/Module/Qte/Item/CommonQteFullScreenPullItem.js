@@ -7,9 +7,7 @@ exports.CommonQteFullScreenPullItem = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
-const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
-const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
@@ -27,24 +25,18 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     this.SPe = undefined;
     this.fS1 = undefined;
     this.DZu = 0;
-    this.JKd = 0;
-    this.ZKd = 0;
-    this.aXa = 0;
-    this.eXd = 0;
     this.NQa = false;
     this.OZu = undefined;
     this.DWd = Vector_1.Vector.Create();
     this.Ead = false;
     this.Iad = false;
     this.bzt = false;
-    this.dzd = false;
     this.lqt = (t, i) => {
       if (!Info_1.Info.IsInGamepad()) {
         this.DWd.Reset();
         this.Iad = false;
         this.Ead = false;
       }
-      this.ZKd = 0;
     };
     this.$xt = t => {
       if (t === "Start") {
@@ -57,23 +49,17 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     };
     this.BZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.DWd.X = i;
+        this.DWd.X = i * this.DZu * GAMEPAD_ENHANCE_RATE;
         this.Ead = i !== 0;
         this.Tad(this.Ead || this.Iad);
       }
     };
     this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.DWd.Y = -i;
+        this.DWd.Y = -i * this.DZu * GAMEPAD_ENHANCE_RATE;
         this.Iad = i !== 0;
         this.Tad(this.Ead || this.Iad);
       }
-    };
-    this.JCo = t => {
-      this.ZKd = this.JKd;
-    };
-    this.zKd = t => {
-      this.ZKd = 0;
     };
     this.w8i = t => {
       if (this.IsValidInput() && this.NQa) {
@@ -85,7 +71,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
       if (this.IsValidInput() && this.NQa) {
         if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1) {
           this.OZu = undefined;
-        } else if (this.OZu && (t = t.GetLocalPointInPlane())) {
+        } else if (t = t.GetLocalPointInPlane()) {
           this.DWd.Y = t.Y - this.OZu.Y;
           this.DWd.X = t.X - this.OZu.X;
         }
@@ -93,7 +79,6 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     };
     this.b8i = t => {
       if (this.IsValidInput() && this.NQa) {
-        this.ZKd = 0;
         this.OZu = undefined;
         this.DWd.Reset();
         this.Tad(false);
@@ -124,8 +109,6 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     t.OnPointerBeginDragCallBack.Bind(this.w8i);
     t.OnPointerDragCallBack.Bind(this.B8i);
     t.OnPointerEndDragCallBack.Bind(this.b8i);
-    t.OnPointerDownCallBack.Bind(this.JCo);
-    t.OnPointerUpCallBack.Bind(this.zKd);
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
@@ -147,13 +130,6 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
       if (i = t.GetUiConfig()) {
         this.IsQteInteractive = i.InteractiveTiming === 0;
         this.DZu = i.SlideLength;
-        if (i.ViewType === 3) {
-          this.eXd = -1;
-        } else if (i.ViewType === 2) {
-          this.eXd = 1;
-        }
-        this.aXa = i.LerpSpeed / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.dzd = i.CheckByRealTimeInput;
       }
       this.SetQteActive(t);
     }
@@ -238,44 +214,20 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
       }
     }
   }
-  OnTick(i) {
+  OnTick(t) {
+    var i;
     if (this.RootItem?.IsValid()) {
-      if (this.IsQteStart && !this.IsQteEnd && !this.IsQtePause) {
+      if (!!this.IsQteStart && !this.IsQteEnd && !this.IsQtePause) {
         if (!this.fS1 || this.fS1.IsInvalid()) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("CommonQte", 67, "Qte界面Context已无效, 强制关闭界面", ["State", this.fS1?.State]);
           }
           this.HandleQteEnd();
         } else {
-          this.fS1.UpdateTime(i);
-          var s;
-          var e = this.DWd.HeadingAngle();
-          let t = 0;
-          if (Info_1.Info.IsInGamepad()) {
-            if (this.aXa < 0) {
-              t = this.DWd.Y * GAMEPAD_ENHANCE_RATE * this.eXd * this.DZu;
-              this.JKd = t;
-            } else {
-              if ((s = this.DWd.Y * this.eXd) <= MathUtils_1.MathUtils.SmallNumber) {
-                this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, 0, i, this.aXa);
-              } else {
-                this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, this.DZu, i, this.aXa * s);
-              }
-              t = this.JKd;
-            }
-          } else {
-            t = this.DWd.Y * this.eXd + this.ZKd;
-            if (this.aXa > 0) {
-              this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, t, i, this.aXa);
-            } else {
-              this.JKd = t;
-            }
-          }
-          this.JKd = MathUtils_1.MathUtils.Clamp(this.JKd, 0, this.DZu);
-          this.fS1.SetDraggingInfo(this.JKd, e);
-          if (this.dzd && this.fS1.CheckDragComplete(t, e)) {
-            this.fS1.IsPreSuccess = true;
-          }
+          this.fS1.UpdateTime(t);
+          t = this.DWd.Size2D();
+          i = this.DWd.HeadingAngle();
+          this.fS1.SetDraggingInfo(t, i);
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
             this.Bfc();
           }

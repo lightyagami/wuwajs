@@ -106,25 +106,30 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static r0a(e) {
-    var r;
-    var o = ModelManager_1.ModelManager.DeadReviveModel;
+    var r = ModelManager_1.ModelManager.DeadReviveModel;
     if (e.W5n === ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
-      o.InitReviveConfig(e.I2s);
-      o.ReviveLimitTime = e.E2s;
-      o.IsShowRevive = e.T2s;
-      o.IsAutoRevive = e.y2s;
+      r.InitReviveConfig(e.I2s);
+      r.ReviveLimitTime = e.E2s;
+      r.IsShowRevive = e.T2s;
+      r.IsAutoRevive = e.y2s;
+      for (const a of e.wxd) {
+        if (a.wMd) {
+          r.BtBloodBathedModeInfo = a.wMd;
+        }
+      }
       if (!e.y2s && !!e.T2s && !this.g51()) {
         UiManager_1.UiManager.ResetToBattleView();
       }
-      if ((r = ModelManager_1.ModelManager.LordGymModel).IsChallenging()) {
-        r.IsDeadInChallenge = true;
+      var o = ModelManager_1.ModelManager.LordGymModel;
+      if (o.IsChallenging()) {
+        o.IsDeadInChallenge = true;
       }
       if (e.wVn) {
         EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, DeadReviveController.s0a);
-      } else if (o.SkipDeathAnim) {
+      } else if (r.SkipDeathAnim) {
         DeadReviveController.a0a();
       } else {
-        o.DeadDelayTimer = TimerSystem_1.GameplayTimerSystem.Delay(DeadReviveController.a0a, TIME_TO_REVIVE);
+        r.DeadDelayTimer = TimerSystem_1.GameplayTimerSystem.Delay(DeadReviveController.a0a, TIME_TO_REVIVE);
       }
     }
   }
@@ -245,15 +250,10 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
       InputDistributeController_1.InputDistributeController.RefreshInputTag();
       ModelManager_1.ModelManager.DeadReviveModel.OpenedViewName = r;
       UiManager_1.UiManager.ResetToBattleView(() => {
-        if (ModelManager_1.ModelManager.SceneTeamModel.GetGroupLivingState(ModelManager_1.ModelManager.PlayerInfoModel.GetId() ?? 0, 1) === 1) {
+        UiManager_1.UiManager.OpenView(r, o, () => {
           ModelManager_1.ModelManager.DeadReviveModel.BlockAllInput = false;
           InputDistributeController_1.InputDistributeController.RefreshInputTag();
-        } else {
-          UiManager_1.UiManager.OpenView(r, o, () => {
-            ModelManager_1.ModelManager.DeadReviveModel.BlockAllInput = false;
-            InputDistributeController_1.InputDistributeController.RefreshInputTag();
-          });
-        }
+        });
       });
     }
   }

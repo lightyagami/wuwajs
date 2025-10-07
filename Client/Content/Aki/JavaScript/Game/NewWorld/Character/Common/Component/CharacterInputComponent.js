@@ -55,7 +55,6 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const FormationAttributeController_1 = require("../../../../Module/Abilities/FormationAttributeController");
 const FormationDataController_1 = require("../../../../Module/Abilities/FormationDataController");
-const RoleDefine_1 = require("../../../../Module/RoleUi/RoleDefine");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
 const RoleGaitStatic_1 = require("../../Role/Component/Define/RoleGaitStatic");
 const RoleAudioController_1 = require("../../Role/RoleAudioController");
@@ -72,7 +71,6 @@ const FIRST_FORWARD_ANGLE = 50;
 const FLYING_FEATHER_CONFIG_PATH = "/Game/Aki/Character/Role/Common/Data/DA/DA_FirstPersonConfig.DA_FirstPersonConfig";
 const LOW_STRENGTH_EXIT_VALUE = 2200;
 const interruptAutoMoving = [0, 1, 2, 3, 4, 5, 7, 8, 9];
-const useDelayCacheModeRoleIds = [1409, 1306, 1410];
 class InputEvent {
   constructor(t, i, e) {
     this.Action = t;
@@ -95,8 +93,8 @@ class InputCache {
   constructor(t, i, e, s, h) {
     this.Action = t;
     this.State = i;
-    this.Time = e;
-    this.WorldTime = s;
+    this.EventTime = e;
+    this.Time = s;
     this.AccumulateTime = h;
   }
 }
@@ -320,7 +318,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.Z6r = 0;
     this.e8r = 0;
     this.t8r = 0;
-    this.xQd = 1;
     this.BJe = (t, i, e) => {
       i = this.tRr?.GetSkillInfo(i);
       if (i && interruptAutoMoving.includes(i.SkillGenre)) {
@@ -382,7 +379,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.S8r = undefined;
     this.y8r = new Map();
     this.I8r = new Map();
-    this.RKd = false;
     this.s5u = undefined;
     this.G2d = false;
     this.YPd = false;
@@ -420,9 +416,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
   }
   get IsLocalInput() {
     return this.t6c;
-  }
-  set IsLocalInput(t) {
-    this.t6c = t;
   }
   GetPriority() {
     return 0;
@@ -719,7 +712,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
     this.F8r();
     ModelManager_1.ModelManager.InputModel?.InitInputCommandTransformMap();
-    this.BQd();
     return true;
   }
   OnEnd() {
@@ -1003,7 +995,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     }
   }
   Q8r(t = true) {
-    if (this.RKd) {
+    if (this.mBe.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection) {
       this.l5u();
     } else if (this.t6c) {
       this.Hte.SetInputFacing(this.Hte.ActorForwardProxy, t);
@@ -1066,7 +1058,7 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     if (this.j6r.length === 0) {
       return false;
     }
-    if (this.xQd === 0) {
+    if (CharacterInputComponent_1.InputCacheExecuteMode === 0) {
       return !(this.mFd = true);
     }
     const s = new Array();
@@ -1074,16 +1066,16 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
       let e = undefined;
       switch (t.State) {
         case 1:
-          e = this.w8r(t.Action, t.Time);
+          e = this.w8r(t.Action, t.EventTime);
           break;
         case 2:
-          e = this.b8r(t.Action, t.Time);
+          e = this.b8r(t.Action, t.EventTime);
           break;
         case 3:
-          e = this.G8r(t.Action, t.Time);
+          e = this.G8r(t.Action, t.EventTime);
       }
       if (e && e.CommandType !== 0) {
-        s.push(new InputCommand(t.Action, t.State, t.Time, e, i));
+        s.push(new InputCommand(t.Action, t.State, t.EventTime, e, i));
       }
     });
     var t = this.U8r(s);
@@ -1460,29 +1452,9 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     this.kTd = t;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOnlyAllowFightInputStateChanged);
   }
-  BQd() {
-    var i = this.Entity.GetComponent(0);
-    if (i) {
-      let t = i.GetPbDataId();
-      if (i.IsRole() && t && t > RoleDefine_1.ROBOT_DATA_MIN_ID && ConfigManager_1.ConfigManager.RoleConfig) {
-        if (i = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(t)) {
-          t = i.ParentId;
-        } else if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Battle", 67, "无法找到试用角色数据", ["pbDataId", t]);
-        }
-      }
-      if (useDelayCacheModeRoleIds.includes(t)) {
-        this.xQd = 0;
-      }
-    }
-  }
-  SetInputCacheMode(t) {
-    this.xQd = t;
-  }
   a5u() {
     this.s5u = this.Lie?.ListenForTagAddOrRemove(-869438579, (t, i) => {
       if (i) {
-        this.RKd = true;
         this.RVd(t => {
           for (const i of t.FirstPersonTagList) {
             this.Lie?.AddTag(i);
@@ -1491,7 +1463,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
         this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
         this.Entity?.GetComponent(45)?.SetLockedRotation(true);
       } else {
-        this.RKd = false;
         this.J6d();
       }
     });
@@ -1552,10 +1523,6 @@ let CharacterInputComponent = CharacterInputComponent_1 = class CharacterInputCo
     } else {
       if (this.rJo?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Sprint) {
         this.zWd(false);
-      }
-      if (this.mBe.DirectionState !== CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection) {
-        this.mBe?.SetDirectionState(CharacterUnifiedStateTypes_1.ECharDirectionState.CameraDirection);
-        this.Entity?.GetComponent(45)?.SetLockedRotation(true);
       }
       if (this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && !this.fz.IsNearlyZero() && !this.tRr?.CurrentSkill && (t = GravityUtils_1.GravityUtils.GetAngleOffsetInGravityForActor(this.Hte, this.Hte.ActorForwardProxy, this.Hte.InputDirectProxy), Math.abs(t) < (this.bVd?.ForwardAngle ?? FIRST_FORWARD_ANGLE))) {
         this.zWd(true);
@@ -1684,5 +1651,6 @@ CharacterInputComponent.B0l = Stats_1.Stat.Create("CharacterInputComponent.Dispa
 CharacterInputComponent.b0l = Stats_1.Stat.Create("CharacterInputComponent.HandlePress");
 CharacterInputComponent.q0l = Stats_1.Stat.Create("CharacterInputComponent.HandleRelease");
 CharacterInputComponent.T8r = new Map();
+CharacterInputComponent.InputCacheExecuteMode = 0;
 CharacterInputComponent = CharacterInputComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(62)], CharacterInputComponent);
 exports.CharacterInputComponent = CharacterInputComponent; //# sourceMappingURL=CharacterInputComponent.js.map

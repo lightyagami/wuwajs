@@ -24,11 +24,11 @@ class EyeProtectController extends UiControllerBase_1.UiControllerBase {
   static OnUnRegisterNetEvent() {}
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LogOut, this.bBu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BackLoginView, this.bBu);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LogOut, this.bBu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BackLoginView, this.bBu);
   }
   static async BuildViewModelAndOpen(e) {
     return (await UiManager_1.UiManager.OpenViewAsync("EyeProtectView", e)) !== undefined;

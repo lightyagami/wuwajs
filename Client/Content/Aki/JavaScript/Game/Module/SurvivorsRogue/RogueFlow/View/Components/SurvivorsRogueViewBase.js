@@ -16,7 +16,7 @@ const SurvivorsRogueCurrencyItem_1 = require("./SurvivorsRogueCurrencyItem");
 class SurvivorsRogueViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.CaptionItem = undefined;
+    this.lqe = undefined;
     this.Jwd = undefined;
     this.RoleStatePanel = undefined;
     this.fqt = undefined;
@@ -33,20 +33,20 @@ class SurvivorsRogueViewBase extends UiPanelBase_1.UiPanelBase {
   }
   async OnBeforeStartAsync() {
     var e = [];
-    this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem();
-    e.push(this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
-    this.CaptionItem.SetHelpCallBack(this.JGn);
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
+    e.push(this.lqe.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
+    this.lqe.SetHelpCallBack(this.JGn);
     this.Jwd = new SurvivorsRogueResidentWaveTipsPanel_1.SurvivorsRogueResidentWaveTipsPanel();
     e.push(this.Jwd.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
     this.RoleStatePanel = new SurvivorsRogueRoleStatePanel_1.SurvivorsRogueRoleStatePanel();
     e.push(this.RoleStatePanel.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
     await Promise.all(e);
     this.fqt = new SurvivorsRogueCurrencyItem_1.SurvivorsRogueCurrencyItem();
-    var e = this.CaptionItem.GetCostContent();
+    var e = this.lqe.GetCostContent();
     var i = ModelManager_1.ModelManager.SurvivorsRogueModel.GetRogueCurrencyItemId();
     await this.fqt.Init(e);
     this.fqt.ShowWithoutText(i);
-    this.CaptionItem.SetHelpBtnActive(true);
+    this.lqe.SetHelpBtnActive(true);
   }
   SetMainTitle(e, ...i) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e, ...i);

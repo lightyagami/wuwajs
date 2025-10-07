@@ -311,7 +311,7 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
             ModelManager_1.ModelManager.GameModeModel.IsSilentLogin = true;
             var i = ModelManager_1.ModelManager.LoginModel.GetSingleMapId();
             if (ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i)?.InstType === Protocol_1.Aki.Protocol.i4s.Proto_NormalInstance && UiBlueprintFunctionLibrary.TestLoadSceneData().IsDisableTeleportDungeon) {
-              ModelManager_1.ModelManager.SundryModel.SetBlockTpDungeon(true, 1);
+              ModelManager_1.ModelManager.SundryModel.BlockTpDungeonCount++;
             }
             var r = () => {
               ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.Init);

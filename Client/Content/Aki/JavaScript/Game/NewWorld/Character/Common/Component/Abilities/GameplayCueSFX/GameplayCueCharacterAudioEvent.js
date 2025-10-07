@@ -51,8 +51,9 @@ class GameplayCueCharacterAudioEvent extends GameplayCueBase_1.GameplayCueBase {
     }
   }
   XZi(e) {
-    e = this.CueConfig.Parameters[e];
-    return !!e && !!this.EntityHandle.Entity?.GetComponent(51) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 17, "GameplayCueCharacterAudioEvent PlayAudio", ["", e]), AudioSystem_1.AudioSystem.PostEvent(e), true);
+    var t;
+    var e = this.CueConfig.Parameters[e];
+    return !!e && !!(t = this.EntityHandle.Entity?.GetComponent(51)) && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 17, "GameplayCueCharacterAudioEvent PlayAudio", ["", e]), AudioSystem_1.AudioSystem.PostEvent(e, t.GetAkComponent()), true);
   }
 }
 exports.GameplayCueCharacterAudioEvent = GameplayCueCharacterAudioEvent;

@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CalabashSkinTabView = undefined;
 const UE = require("ue");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiTabViewBase_1 = require("../../../../Ui/Base/UiTabViewBase");
@@ -14,7 +12,6 @@ const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const SkinObtainItem_1 = require("../../Skip/SkinObtainItem");
-const CalabashSkinDefine_1 = require("./CalabashSkinDefine");
 const CalabashSkinGridItem_1 = require("./CalabashSkinGridItem");
 class CalabashSkinTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
@@ -26,18 +23,12 @@ class CalabashSkinTabView extends UiTabViewBase_1.UiTabViewBase {
     this.TsUiSceneRoleActor = undefined;
     this.Draggable = undefined;
     this.W2e = () => {
-      var e = new CalabashSkinGridItem_1.CalabashSkinGridItem();
-      e.BindOnExtendToggleStateChanged(this.yil.CalabashSkinViewProxy.CalabashGridItemClick);
-      e.BindOnCanExecuteChange(this.yil.CalabashSkinViewProxy.CalabashGridItemCanExecuteChange);
-      return e;
+      var i = new CalabashSkinGridItem_1.CalabashSkinGridItem();
+      i.BindOnExtendToggleStateChanged(this.yil.CalabashSkinViewProxy.CalabashGridItemClick);
+      i.BindOnCanExecuteChange(this.yil.CalabashSkinViewProxy.CalabashGridItemCanExecuteChange);
+      return i;
     };
     this.qil = () => new SkinObtainItem_1.SkinObtainItem();
-    this.mmo = e => {
-      if (e.ViewName === "CalabashSkinTabView" && this.yil.CalabashSkinViewProxy.NeedLoadModel) {
-        this.yil.CalabashSkinViewProxy.NeedLoadModel = false;
-        this.FDd(this.yil.CalabashSkinViewProxy.SelectedSkinId);
-      }
-    };
   }
   OnRegisterComponent() {
     this.yil = this.ExtraParams;
@@ -56,18 +47,11 @@ class CalabashSkinTabView extends UiTabViewBase_1.UiTabViewBase {
     this.GetExtendToggle(3)?.SetToggleState(1);
   }
   OnBeforeShow() {
-    this.yil.ChangeModelState(3);
     this.yil.CalabashSkinViewProxy.InitGridSelected();
-    this.yil.CalabashSkinViewProxy.TryPushCamera();
+    this.FDd(this.yil.CalabashSkinViewProxy.SelectedSkinId);
   }
   async OnBeforeShowAsyncImplement() {
     await this.GridLayout.RefreshByDataAsync(this.yil.CalabashSkinViewProxy.SkinDataList);
-  }
-  AddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo);
-  }
-  RemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivateUiCameraAnimationHandle, this.mmo);
   }
   OnBeforeHide() {
     this.NDd();
@@ -80,29 +64,28 @@ class CalabashSkinTabView extends UiTabViewBase_1.UiTabViewBase {
   }
   GDd() {
     this.HuluObserver = UiSceneManager_1.UiSceneManager.InitHuluObserver();
-    var e = this.HuluObserver.Model;
-    e.CheckGetComponent(1)?.SetTransformByTag(CalabashSkinDefine_1.DEFAULT_CALABASH_SKIN_CASE);
-    e.CheckGetComponent(0)?.SetLoadingIconFollowState(false);
+    this.HuluObserver.Model.CheckGetComponent(0)?.SetLoadingIconFollowState(false);
   }
   NDd() {
     if (this.HuluObserver) {
       UiSceneManager_1.UiSceneManager.HideObserver(this.HuluObserver, "ShowHideWeaponEffect");
     }
   }
-  FDd(e) {
-    ControllerHolder_1.ControllerHolder.CalabashSkinController.SelectedCalabashSkinChange(e, this.yil.RoleId, this.HuluObserver?.Model);
+  FDd(i) {
+    this.yil.ChangeModelState(3);
+    ControllerHolder_1.ControllerHolder.CalabashSkinController.SelectedCalabashSkinChange(i, this.yil.RoleId, this.HuluObserver?.Model);
   }
-  SwitchHuluRotate(e) {
-    var i = this.HuluObserver?.Model?.CheckGetComponent(9);
-    if (e) {
-      i?.StopRotate();
+  SwitchHuluRotate(i) {
+    var e = this.HuluObserver?.Model?.CheckGetComponent(9);
+    if (i) {
+      e?.StopRotate();
     } else {
-      i?.StartRotate();
+      e?.StartRotate();
     }
   }
   ReleaseHuluObserver() {
     if (this.HuluObserver) {
-      UiSceneManager_1.UiSceneManager.HideObserverWithCallback(this.HuluObserver, "ShowHideWeaponEffect", e => {
+      UiSceneManager_1.UiSceneManager.HideObserverWithCallback(this.HuluObserver, "ShowHideWeaponEffect", i => {
         UiSceneManager_1.UiSceneManager.DestroyHuluObserver();
       });
     }
@@ -119,46 +102,46 @@ class CalabashSkinTabView extends UiTabViewBase_1.UiTabViewBase {
     this.yil.ShowRootView();
     this.Draggable.RootUIComp.SetUIActive(false);
   }
-  SelectedGrid(e) {
+  SelectedGrid(i) {
     this.GridLayout.DeselectCurrentGridProxy();
-    this.GridLayout.SelectGridProxy(e, true);
+    this.GridLayout.SelectGridProxy(i, true);
   }
-  RefreshText(e, i) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), e);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), i);
+  RefreshText(i, e) {
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), i);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), e);
   }
-  RefreshConfirmBox(e) {
-    this.GetButton(4)?.SetSelfInteractive(!e);
+  RefreshConfirmBox(i) {
+    this.GetButton(4)?.SetSelfInteractive(!i);
   }
-  RefreshGridSelect(e, i) {
-    this.GridLayout.GetLayoutItemByIndex(e)?.RefreshVisible();
+  RefreshGridSelect(i, e) {
     this.GridLayout.GetLayoutItemByIndex(i)?.RefreshVisible();
+    this.GridLayout.GetLayoutItemByIndex(e)?.RefreshVisible();
   }
-  RefreshBottom(e, i) {
-    var t = e.GetIsLock();
+  RefreshBottom(i, e) {
+    var t = i.GetIsLock();
     this.GetButton(4)?.RootUIComp.SetUIActive(!t);
     this.ObtainLayout.SetActive(t);
     if (t) {
-      t = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(e.SkinId);
-      e = this.yil.GetSkinSkipDataList(e.SkinId, t.ItemAccess);
-      this.ObtainLayout.SetActive(e.length !== 0);
-      if (e.length > 0) {
-        this.ObtainLayout.RefreshByData(e);
+      t = ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(i.SkinId);
+      i = this.yil.GetSkinSkipDataList(i.SkinId, t.ItemAccess);
+      this.ObtainLayout.SetActive(i.length !== 0);
+      if (i.length > 0) {
+        this.ObtainLayout.RefreshByData(i);
       }
     } else {
-      this.GetButton(4)?.SetSelfInteractive(!i);
+      this.GetButton(4)?.SetSelfInteractive(!e);
     }
   }
   ShowEquipTips() {
     ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TerminalSkin_Change_Success");
   }
-  SwitchHuluObserver(e) {
-    ControllerHolder_1.ControllerHolder.CalabashSkinController.SelectedCalabashSkinChange(e, this.yil.RoleId, this.HuluObserver?.Model);
+  SwitchHuluObserver(i) {
+    ControllerHolder_1.ControllerHolder.CalabashSkinController.SelectedCalabashSkinChange(i, this.yil.RoleId, this.HuluObserver?.Model);
   }
   RefreshMainRoleHulu() {
-    var e = this.TsUiSceneRoleActor.Model?.GetComponent(18);
-    if (e) {
-      e.Refresh();
+    var i = this.TsUiSceneRoleActor.Model?.CheckGetComponent(18);
+    if (i) {
+      i.Refresh();
     }
   }
   GetDragItem() {

@@ -40,7 +40,6 @@ const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
-const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
 const LevelGamePlayController_1 = require("../../LevelGamePlay/LevelGamePlayController");
@@ -347,14 +346,8 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
     if (t) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
-      if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsSupportedAFME) {
-        GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableAFME("ElevatorOnMobile");
-      }
     } else {
       GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.MOTIONBLUR);
-      if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsSupportedAFME) {
-        GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("ElevatorOnMobile");
-      }
     }
   }
   Oun(i, e) {

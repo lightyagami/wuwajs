@@ -250,24 +250,26 @@ class InputSettingsManager {
       Log_1.Log.Error("InputSettings", 74, "Axis按键配置不存在", ["AxisName", t]);
     }
   }
-  static ResetCombinationActionKeyByName(t, i) {
+  static ResetCombinationActionKeyByName(t) {
+    var i;
     var e;
     var n;
-    for ([e, n] of [...(this.kEe.get(t) ?? [])]) {
-      this.RemoveCombinationActionKeyMap(t, e, n);
-    }
-    if (InputSettingsManager.IsOriginalCombinationActionName(t, i)) {
-      var a = ConfigManager_1.ConfigManager.InputSettingsConfig.GetCombinationActionConfigByActionName(t);
-      if (a) {
-        for (var [s, o] of a.PcKeys) {
-          this.AddCombinationActionKeyMap(t, s, o)?.SetKeyboardVersion(a.KeyboardVersion);
-        }
-        for (var [r, g] of a.GamepadKeys) {
-          this.AddCombinationActionKeyMap(t, r, g)?.SetGamepadVersion(a.GamepadVersion);
-        }
-      } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("InputSettings", 74, "组合Action按键配置不存在", ["ActionName", t]);
+    var a;
+    var s;
+    var o;
+    var r = ConfigManager_1.ConfigManager.InputSettingsConfig.GetCombinationActionConfigByActionName(t);
+    if (r) {
+      for ([i, e] of [...(this.kEe.get(t) ?? [])]) {
+        this.RemoveCombinationActionKeyMap(t, i, e);
       }
+      for ([n, a] of r.PcKeys) {
+        this.AddCombinationActionKeyMap(t, n, a)?.SetKeyboardVersion(r.KeyboardVersion);
+      }
+      for ([s, o] of r.GamepadKeys) {
+        this.AddCombinationActionKeyMap(t, s, o)?.SetGamepadVersion(r.GamepadVersion);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("InputSettings", 74, "组合Action按键配置不存在", ["ActionName", t]);
     }
   }
   static GetActionBinding(t) {
@@ -418,28 +420,21 @@ class InputSettingsManager {
     }
   }
   static drh() {
-    this.iKd.clear();
     var t = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllCombinationActionConfig();
     if (t) {
-      var i = new Set();
-      var e = new Set();
-      for (const g of t) {
+      for (const o of t) {
+        var i;
+        var e;
         var n;
         var a;
-        var s;
-        var o;
-        var r = g.ActionName;
-        for ([n, a] of g.PcKeys) {
-          this.AddCombinationActionKeyMap(r, n, a)?.SetKeyboardVersion(g.KeyboardVersion);
-          i.add(r);
+        var s = o.ActionName;
+        for ([i, e] of o.PcKeys) {
+          this.AddCombinationActionKeyMap(s, i, e)?.SetKeyboardVersion(o.KeyboardVersion);
         }
-        for ([s, o] of g.GamepadKeys) {
-          this.AddCombinationActionKeyMap(r, s, o)?.SetGamepadVersion(g.GamepadVersion);
-          e.add(r);
+        for ([n, a] of o.GamepadKeys) {
+          this.AddCombinationActionKeyMap(s, n, a)?.SetGamepadVersion(o.GamepadVersion);
         }
       }
-      this.iKd.set(1, i);
-      this.iKd.set(2, e);
     }
   }
   static SetCombinationActionKeyboardKeys(t, i) {
@@ -692,10 +687,6 @@ class InputSettingsManager {
     }
     return false;
   }
-  static IsOriginalCombinationActionName(t, i) {
-    i = this.iKd.get(i);
-    return !!i && i.has(t);
-  }
   static Ykn() {
     this.Jkn = true;
     this.zkn();
@@ -730,7 +721,6 @@ InputSettingsManager.OEe = undefined;
 InputSettingsManager.kEe = new Map();
 InputSettingsManager.Jkn = undefined;
 InputSettingsManager.eFn = undefined;
-InputSettingsManager.iKd = new Map();
 InputSettingsManager.fZa = new Map();
 InputSettingsManager.pZa = new Map();
 InputSettingsManager.frh = "";

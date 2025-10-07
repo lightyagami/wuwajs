@@ -35,7 +35,6 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
     var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.Id);
     if (e) {
       this.ActId = e.Id;
-      this.RQd();
       this.sx_();
       this.OKs();
       this.vvd();
@@ -105,25 +104,18 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
   set NotTipsEnterInst(t) {
     this.SaveCacheState(6, 0, 0, t ? 1 : 0);
   }
-  RQd() {
-    for (const t of ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsTaskByActId(this.ActId)) {
-      this.wQd(t.Id);
+  RefreshRewardTaskData(e) {
+    let i = this.RewardTaskMap.get(e.s5n);
+    if (!i) {
+      i = new ActivityCommonDefine_1.ActivityTaskData();
+      var r = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsTask(e.s5n)?.PageType ?? 0;
+      i.TypeId = r;
+      this.RewardTaskMap.set(e.s5n, i);
+      let t = this.RewardType2TaskIdList.get(r);
+      (t = t || new Array()).push(e.s5n);
+      this.RewardType2TaskIdList.set(r, t);
     }
-  }
-  RefreshRewardTaskData(t) {
-    let e = this.RewardTaskMap.get(t.s5n);
-    (e = e || this.wQd(t.s5n)).Refresh(t);
-  }
-  wQd(t) {
-    var e = new ActivityCommonDefine_1.ActivityTaskData();
-    var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsTask(t)?.PageType ?? 0;
-    e.TypeId = i;
-    e.Id = t;
-    this.RewardTaskMap.set(t, e);
-    let r = this.RewardType2TaskIdList.get(i);
-    (r = r || new Array()).push(t);
-    this.RewardType2TaskIdList.set(i, r);
-    return e;
+    i.Refresh(e);
   }
   SetRewardTaskDataDone(t) {
     this.RewardTaskMap.get(t).Status = 2;
@@ -253,6 +245,10 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
   IsEndlessMode(t) {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 3, t, 0) === 1;
   }
+  IsEndlessModeUnlock(t) {
+    t = this.LevelMap.get(t);
+    return !!t && (t.QUd?.K6n ?? false);
+  }
   GetLevelUnlockRedDotState() {
     if (this.GetPreGuideQuestFinishState()) {
       for (const t of this.LevelMap.values()) {
@@ -265,22 +261,23 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
   }
   _Bd(t) {
     var e = t.WUd;
-    if (e && this.GetLevelUnlockState(t.gG_, false) && !e.CM_ && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 1, t.gG_, 0) === 0) {
+    if (e && e.K6n && !e.CM_ && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 1, t.gG_, 0) === 0) {
       return true;
     }
     e = t.QUd;
-    if (e && this.GetLevelUnlockState(t.gG_, true) && !e.qLd && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 1, t.gG_, 1) === 0) {
+    if (e && e.K6n && !e.qLd && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, 1, t.gG_, 1) === 0) {
       return true;
     }
     return false;
   }
   TryRemoveLevelNewUnlock(t, e) {
-    if (this.LevelMap.get(t)) {
+    var i = this.LevelMap.get(t);
+    if (i) {
       if (e) {
-        if (this.GetLevelUnlockState(t, true)) {
+        if (i.QUd?.K6n) {
           return !this.SaveCacheState(1, t, 1);
         }
-      } else if (this.GetLevelUnlockState(t, false)) {
+      } else if (i.WUd?.K6n) {
         return !this.SaveCacheState(1, t, 0);
       }
     }
@@ -293,7 +290,7 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
   IsEndlessFirstOpenCheck() {
     let t = false;
     for (const e of this.LevelMap.values()) {
-      if (this.GetLevelUnlockState(e.gG_, true)) {
+      if (e.QUd?.K6n) {
         t = true;
         break;
       }
@@ -309,30 +306,18 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
       }
     }
   }
-  GetLevelTimeUnlockState(t) {
-    t = this.LevelMap.get(t);
-    return !!t && Number(MathUtils_1.MathUtils.LongToBigInt(t.pDs)) <= TimeUtil_1.TimeUtil.GetServerTime();
-  }
-  GetLevelUnlockState(t, e) {
-    t = this.LevelMap.get(t);
-    if (!t) {
-      return false;
-    }
-    let i = false;
-    return !!(i = (e && t.QUd ? t.QUd : t.WUd).K6n) && Number(MathUtils_1.MathUtils.LongToBigInt(t.pDs)) <= TimeUtil_1.TimeUtil.GetServerTime();
-  }
   GetFocusLevelId() {
     var t = this.GetAllLevelId();
     let e = t[0];
-    for (const s of t) {
-      var i = this.LevelMap.get(s);
+    for (const r of t) {
+      var i = this.LevelMap.get(r);
       if (this._Bd(i)) {
-        e = s;
+        e = r;
         break;
       }
-      var r = this.GetCurrentLevelInfoByLevelId(s);
-      if (this.GetLevelUnlockState(i.gG_, r.IsEndlessMode) && (e = s, r.Info.AEs === 0)) {
-        e = s;
+      i = this.GetCurrentLevelInfoByLevelId(r);
+      if (i.Info.K6n && (e = r, i.Info.AEs === 0)) {
+        e = r;
         break;
       }
     }
@@ -344,7 +329,7 @@ class SurvivorsActivityData extends ActivityData_1.ActivityBaseData {
     for (let t = 1; t < e.length; t++) {
       var r = e[t];
       var r = this.LevelMap.get(r);
-      if (!this.GetLevelUnlockState(r.gG_, false)) {
+      if (!r.WUd.K6n) {
         break;
       }
       if (this._Bd(r)) {

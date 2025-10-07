@@ -244,7 +244,11 @@ class VisionDetailMonsterItem extends LoopScrollSmallItemGrid_1.LoopScrollSmallI
     this.u8i = 0;
     this.RFe = () => {};
     this.c8i = () => {
-      ControllerHolder_1.ControllerHolder.AdventureGuideController.TryJumpToTargetViewByMonsterId(this.u8i);
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10023)) {
+        ControllerHolder_1.ControllerHolder.AdventureGuideController.JumpToTargetView("MonsterDetectView", ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(this.u8i)?.MonsterProbeId);
+      } else {
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NoJumpTo");
+      }
     };
   }
   OnStart() {

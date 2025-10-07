@@ -147,7 +147,6 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
     var i = this.Command.GetViewInfo();
     if (i) {
       this.dbd = i;
-      this.cbd.CaptionItem?.SetTitleByTextIdAndArgNew(i.CaptionId);
       this.cbd.SetMainTitle(i.TitleId);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i.ButtonId);
       await this.CardList.RefreshByDataAsync(i.GoodsList);
@@ -158,16 +157,13 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
         case 1:
           this.gbd(true);
       }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRoguePopViewRefresh, this.Command.Type);
     }
   }
   GetGuideUiItemAndUiItemForShowEx(i) {
     if (i.length !== 0 && i[0] === "WeaponEvolve") {
-      for (const e of this.CardList?.GetLayoutItemList() ?? []) {
-        if (e.HasBondInfo()) {
-          return e.GetGuideUiItemAndUiItemForShowEx(i);
-        }
-      }
+      return this.CardList?.GetLayoutItemByIndex(0)?.GetGuideUiItemAndUiItemForShowEx(i);
+    } else {
+      return undefined;
     }
   }
 }

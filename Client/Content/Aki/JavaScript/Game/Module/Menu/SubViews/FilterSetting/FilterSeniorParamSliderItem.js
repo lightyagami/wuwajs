@@ -10,19 +10,16 @@ const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const FilterSettingViewModel_1 = require("./FilterSettingViewModel");
 class FilterSeniorParamSliderItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.ParentViewModel = undefined;
     this.nqd = undefined;
     this.$tu = (t, i = 0) => {
-      var e;
-      if (!this.ParentViewModel?.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.IsSeniorParamRefresh)) {
-        e = (t = MathUtils_1.MathUtils.RangeClamp(t, 0, 1, this.nqd.RangeMin, this.nqd.RangeMax)) / this.nqd.Ratio;
-        this.ParentViewModel?.OnSeniorSliderChanged?.(this.nqd.ParamIndex, e);
-        this.GetText(0).SetText("" + Math.round(t) + this.nqd.Unit);
-      }
+      var t = MathUtils_1.MathUtils.RangeClamp(t, 0, 1, this.nqd.RangeMin, this.nqd.RangeMax);
+      var e = t / this.nqd.Ratio;
+      this.ParentViewModel?.OnSeniorSliderChanged?.(this.nqd.ParamIndex, e);
+      this.GetText(0).SetText("" + Math.round(t) + this.nqd.Unit);
     };
   }
   OnRegisterComponent() {

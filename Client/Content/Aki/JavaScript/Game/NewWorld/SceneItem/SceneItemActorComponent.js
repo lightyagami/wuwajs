@@ -555,7 +555,6 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(205)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
-      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted);
       SceneInteractionManager_1.SceneInteractionManager.Get().EnableInteractionLevel(this.u9e);
       if (!this.cca) {
         this.ToggleSceneInteractionVisible(false, () => {
@@ -568,7 +567,6 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   b4a() {
     this.omn = false;
     this.YGa = false;
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionHideCompleted);
     SceneInteractionManager_1.SceneInteractionManager.Get().DisableInteractionLevel(this.u9e);
   }
   TryRefreshShowActor() {

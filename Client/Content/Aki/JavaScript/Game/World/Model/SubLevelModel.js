@@ -15,8 +15,6 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     this.SW_ = new Map();
     this.da = new Map();
     this.MW_ = new Map();
-    this.fXd = false;
-    this.gXd = false;
   }
   OnLeaveLevel() {
     var e;
@@ -28,26 +26,10 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     for ([t] of this.da) {
       l.push(t);
     }
-    for (const r of l) {
-      this.RemoveSubLevel(r, true);
+    for (const o of l) {
+      this.RemoveSubLevel(o, true);
     }
-    l.length = 0;
-    this.fXd = false;
-    return !(this.gXd = false);
-  }
-  SetSubLevelSwitching(e) {
-    this.fXd = true;
-    this.gXd = e;
-  }
-  UnsetSubLevelSwitching() {
-    this.fXd = false;
-    this.gXd = false;
-  }
-  IsInSubLevelSwitching() {
-    return this.fXd;
-  }
-  IsInSubLevelSwitchingAndBlockingInput() {
-    return this.fXd && this.gXd;
+    return !(l.length = 0);
   }
   GetAllPreloadSubLevels() {
     return this.SW_;
@@ -116,32 +98,32 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     if (l.LoadState === 3) {
       return false;
     }
-    let r = 0;
-    var o = FNameUtil_1.FNameUtil.GetDynamicFName(e);
+    let o = 0;
+    var r = FNameUtil_1.FNameUtil.GetDynamicFName(e);
     var s = this.MW_.size;
-    let i = false;
-    var a;
-    var u = l.LoadState;
+    let a = false;
+    var i;
+    var d = l.LoadState;
     if (t) {
       if (l.LoadState === 1) {
         l.UnLoadPromise.SetResult(true);
       } else if (l.LoadState === 2) {
-        r = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(o, true);
-        l.UnLoadLinkId = r;
+        o = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(r, true);
+        l.UnLoadLinkId = o;
         this.AddUnloadSubLevel(e, l);
       } else {
         l.LoadPromise.SetResult(false);
         l.UnLoadPromise.SetResult(true);
       }
     } else if (l.LoadState === 1) {
-      if (a = this.GetUnloadSubLevel(e)) {
-        a.UnLoadPromise?.SetResult(true);
-        i = true;
+      if (i = this.GetUnloadSubLevel(e)) {
+        i.UnLoadPromise?.SetResult(true);
+        a = true;
       }
       this.AddUnloadSubLevel(e, l);
     } else if (l.LoadState === 2) {
-      r = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(o, true);
-      l.UnLoadLinkId = r;
+      o = GlobalData_1.GlobalData.GameInstance.场景加载通知器.UnloadStreamLevel(r, true);
+      l.UnLoadLinkId = o;
       this.AddUnloadSubLevel(e, l);
     } else {
       l.LoadPromise.SetResult(false);
@@ -150,7 +132,7 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     l.LoadState = 3;
     l.Dispose();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("World", 3, "切换子关卡:卸载子关卡。", ["Path", e], ["LinkId", r], ["需要释放数量(前)", s], ["需要释放数量(后)", this.MW_.size], ["loadType", u], ["foreceRemove", t], ["isInUnloadLevel", i]);
+      Log_1.Log.Info("World", 3, "切换子关卡:卸载子关卡。", ["Path", e], ["LinkId", o], ["需要释放数量(前)", s], ["需要释放数量(后)", this.MW_.size], ["loadType", d], ["foreceRemove", t], ["isInUnloadLevel", a]);
     }
     return l.UnLoadPromise.Promise;
   }

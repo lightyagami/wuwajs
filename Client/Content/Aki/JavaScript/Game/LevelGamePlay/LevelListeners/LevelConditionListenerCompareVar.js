@@ -4,11 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelConditionListenerCompareVar = undefined;
-const Log_1 = require("../../../Core/Common/Log");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const LevelGamePlayUtils_1 = require("../LevelGamePlayUtils");
 const LevelGeneralContextDefine_1 = require("../LevelGeneralContextDefine");
 const LevelListenerBase_1 = require("./LevelListenerBase");
@@ -19,8 +17,8 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
       var i = t?.[0];
       if (i !== undefined) {
         let e = false;
-        for (const n of Object.keys(i)) {
-          if (this.RBd.has(n)) {
+        for (const s of Object.keys(i)) {
+          if (this.RBd.has(s)) {
             e = true;
             break;
           }
@@ -42,7 +40,6 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
     this.RBd = new Set();
     this.ABd = new Map();
     this.PBd = new Map();
-    this.kHa = undefined;
   }
   OnListen(e, t, i) {
     this.DBd(e.Var1);
@@ -52,10 +49,6 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
     this.UBd();
     this.xBd();
     this.BBd();
-    if (this.kHa) {
-      this.kHa.Cancel();
-    }
-    this.kHa = undefined;
   }
   DBd(e) {
     switch (e.Source) {
@@ -71,34 +64,25 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
         this.qBd(e.Keyword);
     }
   }
-  OBd(t) {
-    if (t.Source === "Other") {
-      switch (t.RefType) {
+  OBd(e) {
+    if (e.Source === "Other") {
+      switch (e.RefType) {
         case "Entity":
-          this.kHa = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelConditionListenerCompareVar", t.RefId, () => {
-            this.kHa = undefined;
-            var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(t.RefId)?.Entity;
-            if (e?.Valid) {
-              this.GBd(e, t.Name);
-            } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 实体无效");
-            }
-          }, undefined, false, true);
+          var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.RefId)?.Entity;
+          if (t?.Valid) {
+            this.GBd(t, e.Name);
+          }
           break;
         case "Quest":
-          var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t.RefId)?.Tree;
-          if (e) {
-            this.FBd(e, t.Name);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 任务无效");
+          t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e.RefId)?.Tree;
+          if (t) {
+            this.FBd(t, e.Name);
           }
           break;
         case "LevelPlay":
-          e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t.RefId)?.Tree;
-          if (e) {
-            this.FBd(e, t.Name);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 玩法无效");
+          t = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(e.RefId)?.Tree;
+          if (t) {
+            this.FBd(t, e.Name);
           }
       }
     }
@@ -111,16 +95,12 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
           var t = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandle(undefined, this.Context)?.Entity;
           if (t?.Valid) {
             this.GBd(t, e.Name);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 实体无效");
           }
           break;
         case 6:
           t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.Context.TreeIncId, true);
           if (t) {
             this.FBd(t, e.Name);
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 行为树无效");
           }
       }
     }

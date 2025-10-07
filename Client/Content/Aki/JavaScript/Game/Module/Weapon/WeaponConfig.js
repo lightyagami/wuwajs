@@ -15,7 +15,6 @@ const WeaponBreachByBreachId_1 = require("../../../Core/Define/ConfigQuery/Weapo
 const WeaponBreachByBreachIdAndLevel_1 = require("../../../Core/Define/ConfigQuery/WeaponBreachByBreachIdAndLevel");
 const WeaponConfByIsShow_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByIsShow");
 const WeaponConfByItemId_1 = require("../../../Core/Define/ConfigQuery/WeaponConfByItemId");
-const WeaponExpItemAll_1 = require("../../../Core/Define/ConfigQuery/WeaponExpItemAll");
 const WeaponExpItemById_1 = require("../../../Core/Define/ConfigQuery/WeaponExpItemById");
 const WeaponLevelByLevelId_1 = require("../../../Core/Define/ConfigQuery/WeaponLevelByLevelId");
 const WeaponLevelByLevelIdAndLevel_1 = require("../../../Core/Define/ConfigQuery/WeaponLevelByLevelIdAndLevel");
@@ -133,9 +132,6 @@ class WeaponConfig extends ConfigBase_1.ConfigBase {
   }
   GetWeaponSkinConfig(e) {
     return WeaponSkinById_1.configWeaponSkinById.GetConfig(e);
-  }
-  GetWeaponExpItemList() {
-    return WeaponExpItemAll_1.configWeaponExpItemAll.GetConfigList();
   }
   OnClear() {
     this.Cko.clear();

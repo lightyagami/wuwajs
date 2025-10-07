@@ -5,19 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SpecialSkillBase = undefined;
 class SpecialSkillBase {
-  constructor(t) {
-    this.SpecialSkillComponent = t;
+  constructor(e) {
+    this.SpecialSkillComponent = e;
   }
-  static Spawn(t) {
-    return new this(t);
+  static Spawn(e) {
+    return new this(e);
   }
   OnStart() {}
   OnActivate() {}
   OnEnd() {}
-  OnTick(t) {}
+  OnTick(e) {}
   OnEnable() {}
   OnDisable() {}
-  static SetOptimizeEnable(t) {}
 }
 exports.SpecialSkillBase = SpecialSkillBase;
 //# sourceMappingURL=SpecialSkillBase.js.map

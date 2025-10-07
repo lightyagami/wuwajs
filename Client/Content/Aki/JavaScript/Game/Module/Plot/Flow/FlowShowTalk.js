@@ -78,13 +78,11 @@ class FlowShowTalk {
     this.CurTalkItemIndex = -1;
     this.CurShowTalk = undefined;
     this.Context = undefined;
+    this.B8 = undefined;
     this.dbn = false;
     PlotController_1.PlotController.ClearUi();
     ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
-    if (this.B8 && this.CheckPlotLevelInAbc()) {
-      CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
-    }
-    this.B8 = undefined;
+    CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEndShowTalk);
     ControllerHolder_1.ControllerHolder.FlowController.RunNextAction();
   }
@@ -292,9 +290,6 @@ class FlowShowTalk {
     if (this.Context && !this.Context.IsBackground) {
       this.HandleShowTalkItemOption(t, e);
     }
-  }
-  CheckPlotLevelInAbc() {
-    return this.B8 === "LevelA" || this.B8 === "LevelB" || this.B8 === "LevelC";
   }
 }
 exports.FlowShowTalk = FlowShowTalk;

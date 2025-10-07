@@ -8,20 +8,19 @@ const UE = require("ue");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const UiTickViewBase_1 = require("../../../../Ui/Base/UiTickViewBase");
+const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
 const LogReportDefine_1 = require("../../../LogReport/LogReportDefine");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
 const QuestTreeDefine_1 = require("../../QuestTreeDefine");
 const QuestTreeChapterGroupItem_1 = require("./QuestTreeChapterGroupItem");
 const BG_MOVEMENT_RATE = 0.2;
-class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
+class QuestTreeMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.Ayd = undefined;
     this.Qyi = undefined;
     this.Dyd = 0;
-    this.GXd = false;
     this.Ga_ = e => {
       var r = this.GetHorizontalLayout(4)?.GetRootComponent()?.GetAnchorOffsetX() ?? 0;
       var i = r - this.Dyd;
@@ -48,9 +47,6 @@ class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
     this.BtnBindInfo = [[6, this.Lqd], [7, this.Pqd]];
   }
   async OnBeforeStartAsync() {
-    var e = this.GetScrollViewWithScrollbar(3);
-    this.Ayd = new GenericScrollViewNew_1.GenericScrollViewNew(e, () => new QuestTreeChapterGroupItem_1.QuestTreeChapterGroupItem(), this.GetItem(5).GetOwner(), true);
-    await this.Ayd.RefreshByDataAsync(ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetViewDataList());
     var e = [];
     this.Qyi = new PopupCaptionItem_1.PopupCaptionItem();
     e.push(this.Qyi.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
@@ -67,41 +63,28 @@ class QuestTreeMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnStart() {
     var e = this.GetScrollViewWithScrollbar(3);
+    this.Ayd = new GenericScrollViewNew_1.GenericScrollViewNew(e, () => new QuestTreeChapterGroupItem_1.QuestTreeChapterGroupItem(), this.GetItem(5).GetOwner());
     e.OnScrollValueChange.Bind(this.Ga_);
     this.GetScrollViewWithScrollbar(0).SetCanScroll(false);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.InitLocatingHelper(e);
     this.GetButton(6).GetRootComponent().SetUIActive(false);
-    this.PXd();
+    this.GetButton(7).GetRootComponent().SetUIActive(ModelManager_1.ModelManager.QuestTreeModel.GetCurTrackingChapterData() !== undefined);
     var e = new LogReportDefine_1.QuestTreeEnterLogEvent();
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
   }
   OnBeforeShow() {
-    this.GXd = true;
     this.Ayd.RefreshByData(ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetViewDataList());
-    this.PXd();
   }
   OnAfterShow() {
-    this.FXd(true);
-    this.GXd = false;
+    var e = ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetDefaultLocatingNode();
+    if (e && ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.ShouldLocateToDefaultNode) {
+      ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.LocateNode(e);
+    }
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.SetShouldLocateToDefaultNode(true);
   }
   OnBeforeDestroy() {
     this.GetScrollViewWithScrollbar(3).OnScrollValueChange.Unbind();
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.SetShouldLocateToDefaultNode(true);
     ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.OnViewClose();
-  }
-  OnTick(e) {
-    if (this.GXd) {
-      this.FXd(false);
-    }
-  }
-  PXd() {
-    this.GetButton(7).GetRootComponent().SetUIActive(ModelManager_1.ModelManager.QuestTreeModel.GetCurTrackingChapterData() !== undefined);
-  }
-  FXd(e = true) {
-    var r = ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.GetDefaultLocatingNode();
-    if (r && ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.ShouldLocateToDefaultNode) {
-      ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.LocateNode(r, e);
-    }
   }
 }
 exports.QuestTreeMainView = QuestTreeMainView;

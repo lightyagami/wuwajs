@@ -32,7 +32,6 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const EffectContext_1 = require("../../../../Effect/EffectContext/EffectContext");
 const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const GlobalData_1 = require("../../../../GlobalData");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
 class UiModelEffectPlayContext {
@@ -75,7 +74,7 @@ exports.UiModelEffectPlayContext = UiModelEffectPlayContext;
 let UiModelEffectComponent = class UiModelEffectComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
-    this.led = new Set();
+    this.u1o = new Array();
     this.Ywr = new Map();
     this.Jwr = undefined;
     this.rb1 = undefined;
@@ -93,9 +92,9 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
         this.SetAllEffectShowState(this.Zla);
       }
       if (t) {
-        this.WQd();
+        this.nfu(1);
       } else {
-        this.QQd();
+        this.nfu(0);
       }
     };
     this.i1a = t => {
@@ -128,18 +127,16 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.i1a);
     this.Jwr?.RegisterAnsTrigger("UiEffectAnsContext", this.OnAnsBegin, this.OnAnsEnd);
-    ControllerHolder_1.ControllerHolder.UiModelEffectController.SetEffectAdditionTimeScaleEnable(true, this.Owner.Id);
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.i1a);
-    ControllerHolder_1.ControllerHolder.UiModelEffectController.SetEffectAdditionTimeScaleEnable(false, this.Owner.Id);
     this.DestroyAllEffect();
   }
   PlayEffectOnRoot(t, e, i, s) {
     this.PlayEffectByPath(t, e, i, true, false, Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVectorDouble, s);
   }
-  PlayEffectByPath(t, i, s, o, f, h, n, r, a, e, c) {
+  PlayEffectByPath(t, i, s, o, f, h, n, r, c, e, a) {
     t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, t, "[RoleAnimStateEffectManager.PlayEffect]", e || new EffectContext_1.EffectContext(undefined, i), 1, t => {
       var e;
       var t = EffectSystem_1.EffectSystem.GetEffectActor(t);
@@ -153,11 +150,11 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
           t.D_K2_SetActorLocationAndRotation(e.TransformPosition(h), e.TransformRotation(n.Quaternion()).Rotator(), false, undefined, true);
           t.D_SetActorScale3D(r);
         }
-        t.SetActorHiddenInGame(!this.Zla && !a);
+        t.SetActorHiddenInGame(!this.Zla && !c);
       }
-    }, c);
+    }, a);
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
-      this.led.add(t);
+      this.u1o.push(t);
     }
     return t;
   }
@@ -179,7 +176,7 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       }
     }, i.Callback);
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
-      this.led.add(t);
+      this.u1o.push(t);
     }
     return t;
   }
@@ -209,37 +206,34 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
     }
   }
+  AttachEffect(t) {
+    this.u1o.push(t);
+  }
   DestroyAllEffect() {
-    if (this.led && this.led.size !== 0) {
-      this.led.forEach(t => {
+    if (this.u1o && this.u1o.length !== 0) {
+      this.u1o.forEach(t => {
         if (EffectSystem_1.EffectSystem.IsValid(t)) {
           EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
           EffectSystem_1.EffectSystem.StopEffectById(t, "[RoleAnimStateEffectManager.RecycleEffect]", true);
         }
       });
-      this.led.clear();
+      this.u1o.length = 0;
       this.Ywr.clear();
     }
   }
   SetAllEffectShowState(e) {
-    this.led.forEach(t => {
+    this.u1o.forEach(t => {
       EffectSystem_1.EffectSystem.SetEffectHidden(t, !e);
     });
   }
-  WQd() {
-    this.led.forEach(t => {
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 1);
-    });
-  }
-  QQd() {
-    this.led.forEach(t => {
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 0);
+  nfu(e) {
+    this.u1o.forEach(t => {
+      EffectSystem_1.EffectSystem.SetTimeScale(t, e);
     });
   }
   StopEffect(t, e = true) {
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
       EffectSystem_1.EffectSystem.StopEffectById(t, "[RoleAnimStateEffectManager.StopEffect]", e);
-      this.led.delete(t);
     }
   }
   PDd(t) {

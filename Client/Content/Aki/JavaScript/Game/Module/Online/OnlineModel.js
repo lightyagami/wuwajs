@@ -506,12 +506,19 @@ class OnlineModel extends ModelBase_1.ModelBase {
     }
     this.DisableOnline(3, !this.qh1);
   }
-  GetMultiInstanceRecommendLevelText(e) {
-    let t = "";
-    var i = ModelManager_1.ModelManager.OnlineModel.OwnerId;
-    var i = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(i).WorldLevel;
-    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(e, i);
-    return t = e > 0 ? "-" + StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RecommendLevel") ?? "", e.toString()) : t;
+  GetMultiInstanceRecommendLevelText(e, t) {
+    let i = "";
+    let r = undefined;
+    for (var [s] of t) {
+      r = s;
+    }
+    t = ModelManager_1.ModelManager.OnlineModel.OwnerId;
+    t = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(t).WorldLevel;
+    if (r === 2) {
+      e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetRecommendLevel(e, t);
+      i = "-" + StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("RecommendLevel") ?? "", e.toString());
+    }
+    return i;
   }
 }
 exports.OnlineModel = OnlineModel;

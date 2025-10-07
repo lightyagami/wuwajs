@@ -127,8 +127,8 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return "";
     }
     var n = new Set(CharacterAttributeTypes_1.attributeIdsWithMax.values());
-    var i = new Set(CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.values());
-    var o = new Set(CharacterAttributeTypes_1.attrsAutoRecoverMaxMap.values());
+    var o = new Set(CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.values());
+    var i = new Set(CharacterAttributeTypes_1.attrsAutoRecoverMaxMap.values());
     let s = "";
     const u = e.ServerDebugInfo?.GSs;
     var l = new Array(CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX);
@@ -138,7 +138,7 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       }
     }
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
-      if (!CharacterAttributeTypes_1.attributeIdsWithMax.has(t) && !n.has(t) && !CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.has(t) && !i.has(t) && !o.has(t) && (!(r.size > 0) || !!r.has(t))) {
+      if (!CharacterAttributeTypes_1.attributeIdsWithMax.has(t) && !n.has(t) && !CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.has(t) && !o.has(t) && !i.has(t) && (!(r.size > 0) || !!r.has(t))) {
         var [C, b] = [a.GetBaseValue(t), a.GetCurrentValue(t)];
         var c = b.toFixed(0);
         var b = b === C ? "" : (C < b ? "(+" : "(") + (b - C).toFixed(0) + ")";
@@ -160,35 +160,35 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return "";
     }
     let n = "";
-    const i = e.ServerDebugInfo?.GSs;
-    var o = new Array(CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX);
-    if (i) {
-      for (const m of i) {
-        o[m.tSs] = m;
+    const o = e.ServerDebugInfo?.GSs;
+    var i = new Array(CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX);
+    if (o) {
+      for (const m of o) {
+        i[m.tSs] = m;
       }
     }
     for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
       if ((CharacterAttributeTypes_1.attributeIdsWithMax.has(t) || CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.has(t)) && (!(r.size > 0) || r.has(t))) {
         var s = a.GetBaseValue(t).toFixed(0);
-        const i = o[t];
+        const o = i[t];
         var u;
         var l;
         var C;
         var b;
-        var c = (i?.eSs ?? 0).toFixed(0);
+        var c = (o?.eSs ?? 0).toFixed(0);
         if (CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.has(t)) {
           u = CharacterAttributeTypes_1.attrsAutoRecoverSpeedMap.get(t) ?? 0;
           b = CharacterAttributeTypes_1.attrsAutoRecoverMaxMap.get(t) ?? 0;
           l = a.GetCurrentValue(b).toFixed(0);
-          b = (o[b]?.y6n ?? 0).toFixed(0);
+          b = (i[b]?.y6n ?? 0).toFixed(0);
           C = a.GetCurrentValue(u).toFixed(0);
-          u = (o[u]?.y6n ?? 0).toFixed(0);
+          u = (i[u]?.y6n ?? 0).toFixed(0);
           n += `#${t} undefined C:${s}/${l} (${C}/s) | S:${c}/${b} (${u}/s)
 `;
         } else if (CharacterAttributeTypes_1.attributeIdsWithMax.has(t)) {
           l = CharacterAttributeTypes_1.attributeIdsWithMax.get(t) ?? 0;
           C = a.GetCurrentValue(l).toFixed(0);
-          b = (o[l]?.y6n ?? 0).toFixed(0);
+          b = (i[l]?.y6n ?? 0).toFixed(0);
           n += `#${t} undefined C:${s}/${C} | S:${c}/${b}
 `;
         }
@@ -204,8 +204,8 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     let a = "";
     var n;
-    var i;
     var o;
+    var i;
     var s;
     var u;
     var l;
@@ -220,13 +220,13 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     for (const m of FormationPropertyAll_1.configFormationPropertyAll.GetConfigList()) {
       if (!(r.size > 0) || !!r.has(m.Id)) {
         n = m.Id;
-        i = FormationAttributeController_1.FormationAttributeController.GetValue(n);
-        o = FormationAttributeController_1.FormationAttributeController.GetMax(n);
+        o = FormationAttributeController_1.FormationAttributeController.GetValue(n);
+        i = FormationAttributeController_1.FormationAttributeController.GetMax(n);
         s = FormationAttributeController_1.FormationAttributeController.GetSpeed(n);
         u = (C = b[n])?.y6n.toFixed(0) ?? "???";
         l = C?.I6n.toFixed(0) ?? "???";
         C = C?.L6n.toFixed(0) ?? "???";
-        a += `#${n} C:${i?.toFixed(0)}/${o?.toFixed(0)} (${s?.toFixed(0)}/s) | S:${u}/${l} (${C}/s)
+        a += `#${n} C:${o?.toFixed(0)}/${i?.toFixed(0)} (${s?.toFixed(0)}/s) | S:${u}/${l} (${C}/s)
 `;
       }
     }
@@ -242,15 +242,6 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     return e;
   }
-  static GetPassiveCdString(t) {
-    let e = "";
-    for (var [r] of t.SkillCdFinishStampMap) {
-      var a = t.GetCurRemainingCd(r);
-      e += `entityId: ${r} CD:${a.toFixed(2)}
-`;
-    }
-    return e;
-  }
   static GetPassiveDebugString(t, e = "") {
     var r = [...e.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
     var e = EntitySystem_1.EntitySystem.GetComponent(t, 26);
@@ -260,17 +251,16 @@ class CombatDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     let n = "";
     if (e.GetAllPassiveSkills().length > 0) {
-      var i = EntitySystem_1.EntitySystem.GetComponent(t, 207);
+      var o = EntitySystem_1.EntitySystem.GetComponent(t, 207);
       n += "----- 客户端被动技能 -----\n";
       for (const l of e.GetAllPassiveSkills()) {
         if (!(r.length > 0) || r.some(t => String(l.SkillId).startsWith(t))) {
           a?.GetTrigger(l.TriggerHandle);
-          var o = PassiveSkillById_1.configPassiveSkillById.GetConfig(l.SkillId);
-          var s = i?.GetPassiveSkillCdInfo(l.SkillId);
-          var s = s ? CombatDebugBlueprintFunctionLibrary.GetPassiveCdString(s) : "【无CD组件】";
-          n = `${n = `${n = `${n = `${n}技能: ${l.SkillId} handle: ${l.TriggerHandle}
-${"" + s}`}说明: ${o.SkillDesc}
-`}触发器类型: ${o.TriggerType}${TriggerType_1.ETriggerEvent[o.TriggerType] !== undefined ? "" : "(非法类型)"}
+          var i = PassiveSkillById_1.configPassiveSkillById.GetConfig(l.SkillId);
+          var s = o?.GetPassiveSkillCdInfo(l.SkillId)?.CurRemainingCd?.toFixed(2) ?? "【无CD组件】";
+          n = `${n = `${n = `${n += `技能: ${l.SkillId} handle: ${l.TriggerHandle} CD:${s}
+`}说明: ${i.SkillDesc}
+`}触发器类型: ${i.TriggerType}${TriggerType_1.ETriggerEvent[i.TriggerType] !== undefined ? "" : "(非法类型)"}
 触发时机: undefined
 `}条件公式: undefined
 触发行为:
@@ -335,9 +325,9 @@ ${"" + s}`}说明: ${o.SkillDesc}
   }
   static GetTagsDebugString(t, e = "") {
     const s = e.split(/[,，]/).map(t => t.trim());
-    const o = EntitySystem_1.EntitySystem.GetComponent(t, 206)?.TagContainer;
+    const i = EntitySystem_1.EntitySystem.GetComponent(t, 206)?.TagContainer;
     e = EntitySystem_1.EntitySystem.GetComponent(t, 22);
-    if (!e || !o) {
+    if (!e || !i) {
       return "";
     }
     var t = e?.ServerDebugInfo?.bAs;
@@ -346,9 +336,9 @@ ${"" + s}`}说明: ${o.SkillDesc}
     const u = new Map([["实体", new Map()], ["编队", new Map()]]);
     if (t) {
       var a = u.get("实体");
-      for (const i of t) {
-        r.set(i.m5n, r.get(i.m5n) ?? 0 + i.m9n);
-        a.set(i.m5n, i.m9n);
+      for (const o of t) {
+        r.set(o.m5n, r.get(o.m5n) ?? 0 + o.m9n);
+        a.set(o.m5n, o.m9n);
       }
     }
     if (e) {
@@ -358,17 +348,17 @@ ${"" + s}`}说明: ${o.SkillDesc}
         n.set(l.m5n, l.m9n);
       }
     }
-    return ("【客户端】\n" + [...o.GetAllExactTags()].map(t => {
+    return ("【客户端】\n" + [...i.GetAllExactTags()].map(t => {
       const e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t);
       if (e && s.length > 0 && !s.some(t => CombatDebugBlueprintFunctionLibrary.IsRegexFuzzyMatch(e, t))) {
         return "";
       }
-      var r = o.GetExactTagCount(t);
+      var r = i.GetExactTagCount(t);
       let a = `${GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)} x ${r}(`;
-      for (const i of o.GetAllChannels()) {
-        var n = o.GetRawTagCount(i, t);
+      for (const o of i.GetAllChannels()) {
+        var n = i.GetRawTagCount(o, t);
         if (n) {
-          a += `${CharacterTagContainer_1.channelDebugName[i]} x ${n} `;
+          a += `${CharacterTagContainer_1.channelDebugName[o]} x ${n} `;
         }
       }
       return a.trimEnd() + ")\n";
@@ -379,11 +369,11 @@ ${"" + s}`}说明: ${o.SkillDesc}
       }
       let a = `${GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)} x ${e}(`;
       var n;
-      var i;
-      for ([n, i] of u.entries()) {
-        var o = i.get(t);
-        if (o) {
-          a += `${n} x ${o} `;
+      var o;
+      for ([n, o] of u.entries()) {
+        var i = o.get(t);
+        if (i) {
+          a += `${n} x ${i} `;
         }
       }
       return a.trimEnd() + ")\n";
@@ -396,9 +386,9 @@ ${"" + s}`}说明: ${o.SkillDesc}
     }
     let a = "实体Cue:\n";
     var n = [...t.matchAll(/[0-9]+/g)].map(t => t[0] ?? "");
-    for (const i of r.GetAllCurrentCueRef()) {
-      if (!(n.length > 0) || !!n.some(t => String(i.CueConfig.Id).includes(t))) {
-        a += `CueId: ${i.CueConfig.Id} CueHandleId: ${[...i.CueHandleIds]} BuffId: ${i.BuffId}
+    for (const o of r.GetAllCurrentCueRef()) {
+      if (!(n.length > 0) || !!n.some(t => String(o.CueConfig.Id).includes(t))) {
+        a += `CueId: ${o.CueConfig.Id} CueHandleId: ${[...o.CueHandleIds]} BuffId: ${o.BuffId}
 `;
       }
     }
@@ -406,9 +396,9 @@ ${"" + s}`}说明: ${o.SkillDesc}
       a += "\n编队Cue:\n";
       t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(227);
       if (t) {
-        for (const o of t.GetAllCurrentCueRef()) {
-          if (!(n.length > 0) || !!n.some(t => String(o.CueConfig.Id).includes(t))) {
-            a += `CueId: ${o.CueConfig.Id} CueHandleId: ${[...o.CueHandleIds]} BuffId: ${o.BuffId}
+        for (const i of t.GetAllCurrentCueRef()) {
+          if (!(n.length > 0) || !!n.some(t => String(i.CueConfig.Id).includes(t))) {
+            a += `CueId: ${i.CueConfig.Id} CueHandleId: ${[...i.CueHandleIds]} BuffId: ${i.BuffId}
 `;
           }
         }

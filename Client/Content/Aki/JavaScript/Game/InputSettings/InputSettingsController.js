@@ -66,7 +66,7 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
             Log_1.Log.Info("InputSettings", 10, "处理键位联动问题", ["ActionName", e], ["LinkActionName", t]);
           }
           var e = [];
-          n.GetPcKeyNameList(e);
+          n.GetKeyNameList(e);
           o?.SetKeyboardKeys(e);
         }
       }

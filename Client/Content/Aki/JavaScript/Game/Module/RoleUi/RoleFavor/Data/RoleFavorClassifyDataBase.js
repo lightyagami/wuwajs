@@ -127,15 +127,11 @@ class RoleFavorActionClassifyData extends RoleFavorClassifyDataBase {
   }
   InitContentDataList() {
     this.ContentDataList.length = 0;
-    var t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId);
-    if (t) {
-      var t = t.GetRoleSkinId();
-      var a = ConfigManager_1.ConfigManager.MotionConfig.GetRoleMotionByRoleSkinId(t);
-      var e = a.length;
-      for (let t = 0; t < e; t++) {
-        var s = a[t];
-        this.ContentDataList.push(this.gcd(s));
-      }
+    var a = ConfigManager_1.ConfigManager.MotionConfig.GetRoleMotionByType(this.RoleId, this.TypeParam);
+    var e = a.length;
+    for (let t = 0; t < e; t++) {
+      var s = a[t];
+      this.ContentDataList.push(this.gcd(s));
     }
   }
   gcd(t) {

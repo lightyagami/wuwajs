@@ -20,7 +20,7 @@ class MenuVersionCheckData extends MenuData_1.MenuData {
     return "CurrentVersion";
   }
   get ButtonTextId() {
-    if (ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckParallelPackage()) {
+    if (ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckIfNeedParallelPackage()) {
       return "NewVersionTip02";
     } else {
       return "NewVersionTip01";
@@ -30,7 +30,7 @@ class MenuVersionCheckData extends MenuData_1.MenuData {
     return [UE.KuroLauncherLibrary.GetAppVersion()];
   }
   get EnableRedDot() {
-    return ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckParallelPackage();
+    return ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckIfNeedParallelPackage();
   }
   OnRefresh() {
     this.x6d();
@@ -42,7 +42,7 @@ class MenuVersionCheckData extends MenuData_1.MenuData {
     }
   }
   GetButtonEnable() {
-    return ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckParallelPackage();
+    return ControllerHolder_1.ControllerHolder.ParallelPackageController.CheckIfNeedParallelPackage();
   }
 }
 exports.MenuVersionCheckData = MenuVersionCheckData;

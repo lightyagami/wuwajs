@@ -54,20 +54,14 @@ class SurvivorsWeaponTabView extends SurvivorsTabViewBase_1.SurvivorsTabViewBase
   }
   GenerateItemUiDataList() {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.ActId;
-    var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetAllSurvivorsWeaponByActId(e).map(e => {
+    return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetAllSurvivorsWeaponByActId(e).map(e => {
       var t = ModelManager_1.ModelManager.SurvivorsRogueModel.GetItemIsLock(this.ItemType, e.Id);
       return {
         Id: e.Id,
         LockState: t,
-        IsNew: ModelManager_1.ModelManager.SurvivorsRogueModel.GetItemIsNew(this.ItemType, e.Id),
-        SortId: e.SortId
+        IsNew: ModelManager_1.ModelManager.SurvivorsRogueModel.GetItemIsNew(this.ItemType, e.Id)
       };
     });
-    this.RXd(e);
-    return e;
-  }
-  RXd(e) {
-    e.sort((e, t) => e.LockState !== t.LockState ? e.LockState ? 1 : -1 : e.SortId !== t.SortId ? e.SortId - t.SortId : e.Id - t.Id);
   }
   qkd(e) {
     var t = e.Id;

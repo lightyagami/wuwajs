@@ -194,7 +194,7 @@ class SurvivorsLevelDetailView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo;
     var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(e.LevelId);
     if (i.EndlessMode) {
-      t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.GetLevelUnlockState(e.LevelId, true);
+      t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData.IsEndlessModeUnlock(e.LevelId);
       this.q5d(t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueLevelDetailViewEndlessToggleRefresh, t);
     } else {

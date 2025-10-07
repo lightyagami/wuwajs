@@ -18,13 +18,13 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     this.IDd = undefined;
     this.Data = undefined;
     this.k4d = new ScrollingNumberTool_1.ScrollingNumberTool();
-    this.lzd = false;
     this.TDd = () => {
       return new SurvivorsRogueWeaponEvolveItem_1.SurvivorsRogueWeaponEvolveItem();
     };
-    this.Wpu = (i, t) => {
-      if (i === "Start" && t === "Got") {
-        this.PlayAnim();
+    this.Wpu = (e, t) => {
+      if (e === "Start" && t === "Got" && !!this.Data && !this.Data.IsLock && !this.Data.IsDisable) {
+        this.EFd();
+        this.k4d.StartScrolling();
       }
     };
   }
@@ -42,19 +42,13 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     this.k4d.Clear();
     this.RootActor.OnSequencePlayEvent.Unbind();
   }
-  Refresh(i, t, e) {
-    if ((this.Data = i).IsDisable) {
+  Refresh(e, t, i) {
+    if ((this.Data = e).IsDisable) {
       this.Zwd();
-    } else if (i.IsLock) {
+    } else if (e.IsLock) {
       this.eLd();
     } else {
       this.tLd();
-    }
-  }
-  PlayAnim() {
-    if (!this.lzd && !(this.lzd = true, !this.Data) && !this.Data.IsLock && !this.Data.IsDisable) {
-      this.EFd();
-      this.k4d.StartScrolling();
     }
   }
   Zwd() {
@@ -71,50 +65,50 @@ class SurvivorsRogueWeaponSettleItem extends GridProxyAbstract_1.GridProxyAbstra
     this.GetItem(0).SetUIActive(false);
     this.GetItem(1).SetUIActive(false);
     this.GetItem(3).SetUIActive(true);
-    var i;
+    var e;
     var t = this.Data.WeaponData;
-    if (t && (i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.ConfigId))) {
+    if (t && (e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.ConfigId))) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), SurvivorsRogueUiDefine_1.SURVIVORS_LV_KEY, t.Data.F6n);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), i.Name);
-      this.k4d.Init(0, t.Data.qLd, i => {
-        this.GetText(8).SetText(Math.round(i).toString());
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.Name);
+      this.k4d.Init(0, t.Data.qLd, e => {
+        this.GetText(8).SetText(Math.round(e).toString());
       });
-      this.SetTextureShowUntilLoaded(i.Icon, this.GetTexture(4));
+      this.SetTextureShowUntilLoaded(e.Icon, this.GetTexture(4));
     }
   }
   EFd() {
     var t = this.Data.WeaponData;
     if (t) {
-      var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.ConfigId);
-      if (i) {
-        var e;
+      var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.ConfigId);
+      if (e) {
+        var i;
         var r;
-        var s = [];
-        var o = new Map();
-        for ([e, r] of i.EvolveIds.entries()) {
-          o.set(r, e);
+        var o = [];
+        var s = new Map();
+        for ([i, r] of e.EvolveIds.entries()) {
+          s.set(r, i);
         }
-        var h;
-        var i = Array.from(o.values());
-        for (let i = 0; i < t.Data.dEd.length; i++) {
-          var a = {
-            EvolveId: t.Data.dEd[i],
+        var a;
+        var e = Array.from(s.values());
+        for (let e = 0; e < t.Data.dEd.length; e++) {
+          var h = {
+            EvolveId: t.Data.dEd[e],
             IsUnlock: true,
-            ShowLine: i > 0
+            ShowLine: e > 0
           };
-          s.push(a);
+          o.push(h);
         }
-        for (const n of i) {
+        for (const n of e) {
           if (!t.Data.dEd.includes(n)) {
-            h = {
+            a = {
               EvolveId: n,
               IsUnlock: false,
-              ShowLine: s.length !== 0
+              ShowLine: o.length !== 0
             };
-            s.push(h);
+            o.push(a);
           }
         }
-        this.IDd.RefreshByData(s, undefined, true);
+        this.IDd.RefreshByData(o, undefined, true);
       }
     }
   }

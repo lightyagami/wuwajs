@@ -19,7 +19,6 @@ class SurvivorsRogueCommandRewardSelect extends SurvivorsRogueCommandBaseObtain_
   GetViewInfo() {
     var e = this.hbd();
     return {
-      CaptionId: "SurvivorPropSelection_ScreenName",
       TitleId: "SurvivorsNewProp_Title",
       ButtonId: "SurvivorsNewProp_ConfirtButton",
       ChooseData: this.GetChooseData(e, 0),

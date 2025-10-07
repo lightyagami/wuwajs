@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ConnectDbObject = undefined;
 const UE = require("ue");
 const Log_1 = require("../Common/Log");
-const ConfigStatementLibSync_1 = require("./ConfigStatementLibSync");
 class ConnectDbObject {
   constructor() {
     this.YPo = 0;
@@ -19,7 +18,7 @@ class ConnectDbObject {
     return this.YPo;
   }
   gNd(t, e) {
-    var n = ConfigStatementLibSync_1.ConfigStatementLibSync.CreateStatement(t, e);
+    var n = UE.KuroPrepareStatementLib.CreateStatement(t, e);
     switch (n) {
       case -1:
         if (Log_1.Log.CheckError()) {
@@ -35,10 +34,7 @@ class ConnectDbObject {
   }
   DisConnectStatement() {
     if (this.YPo > 0) {
-      if (!ConfigStatementLibSync_1.ConfigStatementLibSync.IsHandleHoldingByCs(this.YPo)) {
-        UE.KuroPrepareStatementLib.CloseConnection(this.YPo);
-      }
-      this.YPo = 0;
+      UE.KuroPrepareStatementLib.CloseConnection(this.YPo);
     }
   }
   ConnectStatement(t) {

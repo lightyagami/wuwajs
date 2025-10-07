@@ -89,7 +89,7 @@ class LevelEventCameraLookAtPosition extends LevelGeneralBase_1.LevelEventBase {
           ModelManager_1.ModelManager.BattleUiModel.ChildViewData.HideBattleView(1);
         }
         ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ExitSequenceDialogue();
-        ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ApplyCameraGuide(this.LLe, n, s, l, t.LockCamera ?? false, e, t.Fov, t.CancelBuffer ?? false, t.IsLockCameraPos ?? false, t.ArmLength ?? 0, t.DisableCameraOffSet ?? false);
+        ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.ApplyCameraGuide(this.LLe, n, s, l, t.LockCamera ?? false, e, t.Fov, t.CancelBuffer ?? false, t.IsLockCameraPos ?? false, t.ArmLength ?? 0);
         if (this.IsAsync) {
           if (t.BanInput) {
             ModelManager_1.ModelManager.GeneralLogicTreeModel.DisableInput = false;

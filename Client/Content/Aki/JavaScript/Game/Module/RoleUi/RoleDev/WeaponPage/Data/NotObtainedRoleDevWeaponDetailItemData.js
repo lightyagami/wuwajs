@@ -6,14 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.NotObtainedRoleDevWeaponDetailItemData = undefined;
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
-const CommonItemData_1 = require("../../../../Inventory/ItemData/CommonItemData");
 const RoleDevUtils_1 = require("../../RoleDevUtils");
 class NotObtainedRoleDevWeaponDetailItemData {
   constructor() {
     this.C1d = [];
   }
   InitByWeaponType(e, t) {
-    var a = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponBreachLevel - 1;
+    var a = RoleDevUtils_1.RoleDevUtils.GetCultivateProject(e).WeaponBreachLevel;
     var r = this.w8d(t);
     this.C1d = [];
     var t = this.p3d(t);
@@ -52,9 +51,9 @@ class NotObtainedRoleDevWeaponDetailItemData {
   }
   VNd() {
     var e = [];
-    for (const a of ModelManager_1.ModelManager.WeaponModel.GetWeaponExpItemConfigList()) {
-      var t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(a.Id);
-      e.push(new CommonItemData_1.CommonItemData(a.Id, -1, t, 0));
+    for (const a of ModelManager_1.ModelManager.WeaponModel.GetWeaponExpMaterialList()) {
+      var t = ModelManager_1.ModelManager.InventoryModel.GetItemDataBaseByConfigId(a.Id);
+      e.push(...t);
     }
     return this.KNd(e);
   }
@@ -67,7 +66,7 @@ class NotObtainedRoleDevWeaponDetailItemData {
   }
   jNd(e, t) {
     t = RoleDevUtils_1.RoleDevUtils.GroupMaterialsByType(t);
-    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2)[0];
+    return RoleDevUtils_1.RoleDevUtils.BuildDetailItemData(e, t, 2, 12)[0];
   }
   Epd(e, t) {
     var a = [];
@@ -118,7 +117,7 @@ class NotObtainedRoleDevWeaponDetailItemData {
     }
   }
   Mpd(e, t, a, r) {
-    if (!(r < a)) {
+    if (!(r <= a)) {
       t = this.e3d(t, a, r);
       if (t.length !== 0) {
         return this.$Nd(e, t);

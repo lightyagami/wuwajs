@@ -139,15 +139,12 @@ let CharacterMoveComponent = CharacterMoveComponent_1 = class CharacterMoveCompo
       if (t?.Valid && (i = t.GetComponent(179))?.Valid) {
         s = t.GetComponent(62);
         h = this.Entity.GetComponent(62);
-        if (s && h) {
-          if ((r = s.GetAutoMovingConfig()).GetAutoMovingState()) {
-            if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Input", 42, "换人继承自动持续奔跑", ["Old", i.Entity.Id], ["Old", i.ActorComp.Actor.GetName()], ["New", this.ActorComp.Entity.Id], ["New", this.ActorComp.Actor.GetName()]);
-            }
-            h.SetAutoMovingConfig(r);
-            r.ResetAutoMovingState("切人");
+        if (s && h && (r = s.GetAutoMovingConfig()).GetAutoMovingState()) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Input", 42, "换人继承自动持续奔跑", ["Old", i.Entity.Id], ["Old", i.ActorComp.Actor.GetName()], ["New", this.ActorComp.Entity.Id], ["New", this.ActorComp.Actor.GetName()]);
           }
-          h.IsLocalInput = s.IsLocalInput;
+          h.SetAutoMovingConfig(r);
+          r.ResetAutoMovingState("切人");
         }
         this.SetGravityDirectWithoutRotate(i.GravityDirect);
         this.CharacterMovement.ConsumeInputVector();

@@ -136,16 +136,16 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
       this.OnTick(0);
     }
   }
-  SetTimeScale(e, t, i, o, r, s, n = false) {
-    var a = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85);
-    if (a) {
-      return a.SetTimeScale(e, t, i, o, r, s, n);
+  SetTimeScale(e, t, i, o, r, s) {
+    var n = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
+    if (n) {
+      return n.SetTimeScale(e, t, i, o, r, s);
     } else {
-      return super.SetTimeScale(e, t, i, o, r, s, n);
+      return super.SetTimeScale(e, t, i, o, r, s);
     }
   }
   RemoveTimeScale(e) {
-    var t = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85);
+    var t = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
     if (t) {
       t.RemoveTimeScale(e);
     } else {

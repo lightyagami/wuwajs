@@ -39,6 +39,7 @@ class KscActionBuffUpdate extends KscActionBase_1.KscActionBase {
           NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedBuffDa,
           Callback: s => {
             if (this.KscCtrl.WorldInit) {
+              this.Info("Skill", "更新Buff", ["kscEntityHandle", e], ["buffId", i], ["IsAdd", t], ["buffDa", s?.GetName()]);
               KscEnv_1.KscEnv.KscWorld?.BuffData?.AddBuffDA(BigInt(i), s);
               if (t) {
                 e.KscEntity.ApplyBuffSelf(s);

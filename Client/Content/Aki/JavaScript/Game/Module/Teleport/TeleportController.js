@@ -20,7 +20,6 @@ const Quat_1 = require("../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
-const Platform_1 = require("../../../Launcher/Platform/Platform");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const CameraController_1 = require("../../Camera/CameraController");
 const CameraUtility_1 = require("../../Camera/CameraUtility");
@@ -139,7 +138,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   static QueryCanTeleportNoLoading(e, o = false) {
     var r = Global_1.Global.BaseCharacter;
     if (r?.IsValid()) {
-      return (o && !Platform_1.Platform.IsMacPlatform() ? UE.VectorDouble.Dist2D(r.CharacterActorComponent.ActorLocation, e) : UE.VectorDouble.Dist(r.CharacterActorComponent.ActorLocation, e)) < (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.UseWorldPartition ? DISTANCE_THRESHOLD_2 : DISTANCE_THRESHOLD_1);
+      return (o ? UE.VectorDouble.Dist2D(r.CharacterActorComponent.ActorLocation, e) : UE.VectorDouble.Dist(r.CharacterActorComponent.ActorLocation, e)) < (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !ModelManager_1.ModelManager.GameModeModel.UseWorldPartition ? DISTANCE_THRESHOLD_2 : DISTANCE_THRESHOLD_1);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Teleport", 29, "查询是否可以无加载传送:失败,找不到当前玩家");
@@ -180,33 +179,28 @@ class TeleportController extends ControllerBase_1.ControllerBase {
   }
   static SendTeleportTransferRequest(e) {
     if (!this.ShowTeleportConfirmBox(() => {
-      this.t4_(e, () => {
-        ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
-      });
+      ModelManager_1.ModelManager.InstanceDungeonModel.ClearInstanceDungeonInfo();
+      this.t4_(e);
     })) {
       this.t4_(e);
     }
   }
-  static t4_(e, o) {
+  static t4_(e) {
     ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = e;
     ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = e;
-    this.SendTeleportTransferRequestById(e, o);
+    this.SendTeleportTransferRequestById(e);
   }
-  static SendTeleportTransferRequestById(e, o) {
+  static SendTeleportTransferRequestById(e) {
     ModelManager_1.ModelManager.GameModeModel.IsTeleport = true;
     e = Protocol_1.Aki.Protocol.mCs.create({
       s5n: e
     });
     Net_1.Net.Call(16308, e, e => {
       if (GlobalData_1.GlobalData.World) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
-            ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25681);
-          } else {
-            o?.();
-          }
+        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
+          ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25681);
         }
       } else {
         ModelManager_1.ModelManager.GameModeModel.IsTeleport = false;
@@ -426,7 +420,6 @@ class TeleportController extends ControllerBase_1.ControllerBase {
               if (Log_1.Log.CheckInfo()) {
                 Log_1.Log.Info("Teleport", 87, "TransitionType.SpecialTransition开始");
               }
-              ControllerHolder_1.ControllerHolder.BlackScreenFadeController.NeedGuarantee = false;
               await this.TeleportWithSpecialTransition(l.Option.BAd, "TeleportController");
               break;
             default:

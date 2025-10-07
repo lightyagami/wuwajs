@@ -1086,17 +1086,18 @@ class EditBattleTeamView extends UiViewBase_1.UiViewBase {
       if (t) {
         let e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.MapName) ?? "";
         r = t.RecommendElement;
-        if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-          e += ModelManager_1.ModelManager.OnlineModel.GetMultiInstanceRecommendLevelText(t.Id);
+        n = t.SubTitle;
+        if (n?.size > 0 && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+          e += ModelManager_1.ModelManager.OnlineModel.GetMultiInstanceRecommendLevelText(t.Id, n);
         }
         o?.SetText(e);
       }
     }
-    n = this.GetItem(23);
+    e = this.GetItem(23);
     if (!r || r.length <= 0) {
-      n.SetUIActive(false);
+      e.SetUIActive(false);
     } else {
-      n.SetUIActive(true);
+      e.SetUIActive(true);
       var i = this.GetItem(21);
       var a = this.GetItem(22);
       for (const _ of r) {

@@ -504,13 +504,6 @@ class AdventureGuideController extends UiControllerBase_1.UiControllerBase {
   static JumpToTargetView(e, r = undefined, t = undefined) {
     AdventureGuideController.OpenGuideView(e, r, t);
   }
-  static TryJumpToTargetViewByMonsterId(e, r = undefined) {
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10023)) {
-      ControllerHolder_1.ControllerHolder.AdventureGuideController.JumpToTargetView("MonsterDetectView", ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(e)?.MonsterProbeId, r);
-    } else {
-      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NoJumpTo");
-    }
-  }
   static GetMarkAreaText(e) {
     var r;
     var t;

@@ -30,9 +30,7 @@ class UiBlurLogic {
     }
   }
   static w_r(e) {
-    if (e.IsCsViewProxy) {
-      return e.GetCsRootItem();
-    } else if ((0, IPopViewWithCustomUiBlurItem_1.isPopViewWithCustomUiBlurItem)(e)) {
+    if ((0, IPopViewWithCustomUiBlurItem_1.isPopViewWithCustomUiBlurItem)(e)) {
       return e.GetOverrideRootItem();
     } else if (e.ChildPopView) {
       return e.ChildPopView.GetPopViewRootItem();

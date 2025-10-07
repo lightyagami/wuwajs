@@ -20,7 +20,7 @@ class QuestTreeChapterStartNodeItem extends UiPanelBase_1.UiPanelBase {
     this.Rjd = 0;
     this.J_ = e => {
       var t = this.GetVerticalLayout(4);
-      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RecordHeightBalanceValue(-1, 0, t?.GetRootComponent()?.GetHeight() ?? 0);
+      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RecordHeightBalanceValue(-1, t?.GetRootComponent()?.GetHeight() ?? 0);
       var t = this.GetUiSizeControlByOther(5);
       var i = this.ATd.GetLayoutItemByIndex(this.ATd.GetDatas().length - 1);
       if (i) {

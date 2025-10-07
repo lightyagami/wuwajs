@@ -140,19 +140,16 @@ class UiLayer {
     }
   }
   static T5d() {
-    var i;
+    var i = [];
+    i.push(this.CCr);
+    i.push(this.fCr);
     var e = [];
-    e.push(this.CCr);
-    e.push(this.fCr);
-    var t = [];
     for (const o of UiLayerType_1.LayerTypeEnumValues) {
-      if (!Info_1.Info.IsBuildShipping || o !== UiLayerType_1.ELayerType.Debug) {
-        i = this.GetLayerRootUiItem(o);
-        t.push(i);
-      }
+      var t = this.GetLayerRootUiItem(o);
+      e.push(t);
     }
     for (const s of this.yCr) {
-      t.push(s);
+      e.push(s);
     }
     var a = new Map();
     var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
@@ -160,7 +157,7 @@ class UiLayer {
     var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
     a.set(UiLayerType_1.ELayerType.Float, r);
     var r = this.fGl.get(UiLayerType_1.ELayerType.BattleFloat);
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLayerInit, e, t, a, r);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLayerInit, i, e, a, r);
   }
   static async ICr() {
     var i;

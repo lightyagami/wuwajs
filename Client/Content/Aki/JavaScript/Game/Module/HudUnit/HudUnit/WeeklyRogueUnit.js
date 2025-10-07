@@ -11,8 +11,6 @@ const Log_1 = require("../../../../Core/Common/Log");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -40,9 +38,6 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
     this.uat = undefined;
     this.j3 = undefined;
     this.Nml = false;
-    this.lgu = () => {
-      this.Hwc();
-    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIItem], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem]];
@@ -84,6 +79,10 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
       this.x8c?.SetUiActive(true);
     }
     this.Kbe();
+    i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+    if (i) {
+      this.m1t = i.BuffComponent;
+    }
   }
   Kbe() {
     const i = this.GetTexture(2);
@@ -103,8 +102,6 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
   }
   OnBeforeShow() {
     super.OnBeforeShow();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.lgu);
-    this.Hwc();
     this.SPe.PlaySequencePurely("Start");
     this.MNu();
     var e;
@@ -133,15 +130,6 @@ class WeeklyRogueUnit extends HudUnitBase_1.HudUnitBase {
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("WeeklyRogue", 17, "神器触发tag为空", ["神器Id", this.sNu]);
     }
-  }
-  Hwc() {
-    var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-    if (e) {
-      this.m1t = e.BuffComponent;
-    }
-  }
-  OnBeforeHide() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.lgu);
   }
   OnBeforeDestroy() {
     this.StopTweenAnim(5);

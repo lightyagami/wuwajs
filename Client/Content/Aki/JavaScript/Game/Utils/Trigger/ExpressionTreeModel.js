@@ -24,14 +24,11 @@ const builtinFunc = {
     } else if (e.ContextType === 1) {
       e.DamageParam.DamageDataId = BigInt(t);
       e.Victim.ExecuteBuffDamage(e.DamageParam, e.Payload, e.ContextId);
-    } else if (e.ContextType === 2) {
-      e.DamageParam.DamageDataId = BigInt(t);
-      e.Victim.ExecuteBuffShareDamage(e.DamageParam, e.Payload, e.ExtraRate, e.ContextId);
     } else {
-      if (e.ContextType !== 3) {
+      if (e.ContextType !== 2) {
         return false;
       }
-      e.DamageCb(t);
+      e.Victim.ExecuteBuffShareDamage(e.DamageParam, e.Payload, e.ExtraRate, e.ContextId);
     }
     return true;
   },

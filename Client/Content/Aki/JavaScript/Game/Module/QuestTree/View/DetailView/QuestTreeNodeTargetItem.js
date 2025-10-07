@@ -33,10 +33,10 @@ class QuestTreeNodeTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GetItem(4).SetUIActive(!!t.HelpId && !t.IsFinished);
     this.GetItem(5).SetUIActive((!!t.GotoId || !!t.OnGoto) && !t.IsFinished);
     this.GetItem(6).SetUIActive(!t.IsFinished && t.Type === 1 && !t.HelpId && !t.OnGoto);
-    if (t.Text) {
-      this.GetText(2).SetText(t.Text);
-    } else if (t.TextKey) {
+    if (t.TextKey) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.TextKey, ...(t.TextParam ?? []));
+    } else if (t.Text) {
+      this.GetText(2).SetText(t.Text);
     }
     var i = this.GetExtendToggle(0);
     if (t.IsFinished || t.Type === 2) {

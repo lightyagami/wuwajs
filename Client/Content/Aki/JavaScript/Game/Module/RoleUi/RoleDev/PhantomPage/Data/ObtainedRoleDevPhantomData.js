@@ -12,25 +12,18 @@ class ObtainedRoleDevPhantomData extends RoleDevPhantomViewItemDataBase_1.RoleDe
     super(...arguments);
     this.tCd = [];
   }
-  InitByRoleType(t) {
-    var e;
-    if (this.RoleDevViewModelInternal && !this.RoleDevViewModelInternal.CheckRoleIdIsCreated(this.RoleId)) {
-      e = RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.GetDefaultRecommendFetterGroupId(this.RoleId);
-      this.RoleDevViewModelInternal.SetRoleRecommendFetterGroupId(this.RoleId, e);
-    }
-    this.RefreshSuitDataList();
+  InitByRoleType(e) {
+    this.iCd();
   }
   GetSuitDataList() {
     return this.tCd;
   }
-  RefreshSuitDataList() {
-    var t;
-    var e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.RoleId);
-    if (e && this.RoleDevViewModelInternal) {
-      RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.SortRecommendInfo(e);
-      t = this.RoleDevViewModelInternal.GetRoleRecommendFetterGroupId(this.RoleId);
-      this.tCd = RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.RefreshSuitDataListByRecommendInfo(this.RoleId, e, t);
-    }
+  RefreshSuitDataListByFetterGroupId(e) {
+    this.tCd = RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.RefreshSuitDataListByFetterGroupId(this.RoleId, e);
+  }
+  iCd() {
+    var e = ModelManager_1.ModelManager.VisionRecommendModel?.GetRoleFetterRecommendInfo(this.RoleId);
+    this.tCd = RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.RefreshSuitDataListByRecommendInfo(this.RoleId, e ?? []);
   }
 }
 exports.ObtainedRoleDevPhantomData = ObtainedRoleDevPhantomData;

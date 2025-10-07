@@ -73,13 +73,13 @@ let BaseSkillCdComponent = class BaseSkillCdComponent extends EntityComponent_1.
     }
     return i;
   }
-  IsPassiveSkillInCd(t, e) {
+  IsPassiveSkillInCd(t) {
     t = this.Gzr.get(t);
-    return !!t && t.IsInCd(e);
+    return !!t && t.IsInCd();
   }
-  StartPassiveCd(t, e, i = -1) {
-    var s = this.Gzr.get(t);
-    return !!s && (s.StartCd(t, e, i), true);
+  StartPassiveCd(t, e = -1) {
+    var i = this.Gzr.get(t);
+    return !!i && (i.StartCd(t, e), true);
   }
   GetPassiveSkillCdInfo(t) {
     return this.Gzr.get(t);

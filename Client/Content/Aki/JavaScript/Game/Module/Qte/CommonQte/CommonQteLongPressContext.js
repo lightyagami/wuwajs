@@ -97,18 +97,22 @@ class CommonQteLongPressContext extends CommonQteContextBase_1.CommonQteContextB
     }
   }
   OnQteFail() {
-    this.StopQteAudio();
-  }
-  OnQteSuccess() {
-    this.StopQteAudio();
-  }
-  StopQteAudio() {
     if (this.ProgressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
-      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.ProgressAudioHandle, this.Config.AudioConfig.AudioEventProgressFadeOutTime);
+      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.ProgressAudioHandle);
       this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
     }
     if (this.RegressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
-      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.RegressAudioHandle, this.Config.AudioConfig.AudioEventRegressFadeOutTime);
+      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.RegressAudioHandle);
+      this.RegressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
+    }
+  }
+  OnQteSuccess() {
+    if (this.ProgressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
+      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.ProgressAudioHandle);
+      this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
+    }
+    if (this.RegressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
+      ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.RegressAudioHandle);
       this.RegressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
     }
   }

@@ -58,7 +58,6 @@ class SurvivorsTalentTreeView extends UiViewBase_1.UiViewBase {
       }
       this.ebl = i;
       this.ebl.SetToggleState(1);
-      ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.ebl.RootUIComp);
       this.Hea.StopSequenceByKey("Switch");
       this.Hea.PlayLevelSequenceByName("Switch");
       new UiAsyncTask_1.UiAsyncTask("RefreshSkillInfo", async () => {

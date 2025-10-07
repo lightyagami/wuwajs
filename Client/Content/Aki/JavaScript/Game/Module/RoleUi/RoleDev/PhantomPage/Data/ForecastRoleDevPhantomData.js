@@ -4,19 +4,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ForecastRoleDevPhantomData = undefined;
+const RoleDevPhantomDataUtils_1 = require("./RoleDevPhantomDataUtils");
 const RoleDevPhantomViewItemDataBase_1 = require("./RoleDevPhantomViewItemDataBase");
 class ForecastRoleDevPhantomData extends RoleDevPhantomViewItemDataBase_1.RoleDevPhantomViewItemDataBase {
   constructor() {
     super(...arguments);
     this.tCd = [];
   }
-  InitByRoleType(e) {
-    this.RefreshSuitDataList();
+  InitByRoleType(t) {
+    this.iCd();
   }
   GetSuitDataList() {
     return this.tCd;
   }
-  RefreshSuitDataList() {
+  RefreshSuitDataListByFetterGroupId(t) {
+    this.tCd = RoleDevPhantomDataUtils_1.RoleDevPhantomDataUtils.RefreshSuitDataListByFetterGroupId(this.RoleId, t);
+  }
+  iCd() {
     this.tCd = [];
   }
 }

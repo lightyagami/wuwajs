@@ -313,8 +313,6 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       o = this.IWi.D_GetTransform();
       i = i.SpawnPhotographerStructure(e, o.GetRotation(), o.GetScale3D(), o.GetLocation());
       if (this.CheckIfInFightPhotographCamera()) {
-        this.rwd = false;
-        this.hzd = false;
         i.SetCameraInitializeFov(t.Fov);
         this.SetTargetActorAndSkeletalMesh();
         this.InitFightPhotoTask();
@@ -548,22 +546,22 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     var s = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.PhotoAndShareShowPlayerName, true);
     var n = o.GetPhotographOption(3);
     var h = o.GetPhotographFilter();
-    var _ = new LogReportDefine_1.PhotographerLogData();
-    _.event_id = "1009";
-    _.i_area_id = r.AreaInfo.AreaId;
-    _.i_father_area_id = r.AreaInfo.Father;
-    _.f_pos_x = e.X;
-    _.f_pos_y = e.Y;
-    _.f_pos_z = e.Z;
-    _.i_motion = o.MontageId;
-    _.i_expression = 0;
-    _.i_role_id = i;
-    _.i_shot_option = o.GetPhotographOption(2);
-    _.i_self_option = a ? 0 : 1;
-    _.i_info_option = s ? 0 : 1;
-    _.i_dof_option = n ? 1 : 0;
-    _.i_filter_id = h;
-    LogReportController_1.LogReportController.LogReport(_);
+    var l = new LogReportDefine_1.PhotographerLogData();
+    l.event_id = "1009";
+    l.i_area_id = r.AreaInfo.AreaId;
+    l.i_father_area_id = r.AreaInfo.Father;
+    l.f_pos_x = e.X;
+    l.f_pos_y = e.Y;
+    l.f_pos_z = e.Z;
+    l.i_motion = o.MontageId;
+    l.i_expression = 0;
+    l.i_role_id = i;
+    l.i_shot_option = o.GetPhotographOption(2);
+    l.i_self_option = a ? 0 : 1;
+    l.i_info_option = s ? 0 : 1;
+    l.i_dof_option = n ? 1 : 0;
+    l.i_filter_id = h;
+    LogReportController_1.LogReportController.LogReport(l);
     if (this.CheckIfInFightPhotographCamera()) {
       UiManager_1.UiManager.OpenView("FightPhotoSaveView");
     } else {
@@ -580,23 +578,19 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static FightPhotoLogReport() {
-    var t;
-    var e;
-    if (this.CheckIfInFightPhotographCamera()) {
-      t = new LogReportDefine_1.FightPhotoTakePhotoLogEvent();
-      e = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
-      t.inst_id = e.InstanceId;
-      t.inst_diff = e.IsDifficulty ? 1 : 0;
-      t.trace_id = ModelManager_1.ModelManager.CreatureModel.GetSceneTraceId().toString();
-      t.filter_id = ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId;
-      if (this.CurrentBtNode) {
-        t.photo_num = this.rwd ? this.owd.length : this.owd.length + 1;
-      } else {
-        t.photo_num = 0;
-      }
-      t.photo_status = this.IsSatisfyAllConditions() ? 1 : 0;
-      LogReportController_1.LogReportController.LogReport(t);
+    var t = new LogReportDefine_1.FightPhotoTakePhotoLogEvent();
+    var e = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
+    t.inst_id = e.InstanceId;
+    t.inst_diff = e.IsDifficulty ? 1 : 0;
+    t.trace_id = ModelManager_1.ModelManager.CreatureModel.GetSceneTraceId().toString();
+    t.filter_id = ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId;
+    if (this.CurrentBtNode) {
+      t.photo_num = this.rwd ? this.owd.length : this.owd.length + 1;
+    } else {
+      t.photo_num = 0;
     }
+    t.photo_status = this.IsSatisfyAllConditions() ? 1 : 0;
+    LogReportController_1.LogReportController.LogReport(t);
   }
   static c$e() {
     this.RWi(1996802261, this.UWi);
@@ -822,7 +816,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static IsOpenPhotograph() {
-    return ModelManager_1.ModelManager.PhotographModel.IsOpenPhotograph || UiManager_1.UiManager.IsViewOpen("FilterSettingView") || UiManager_1.UiManager.IsViewOpen("EyeProtectView");
+    return ModelManager_1.ModelManager.PhotographModel.IsOpenPhotograph || UiManager_1.UiManager.IsViewOpen("FilterSettingView");
   }
   static GetAllCheckPoints(t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(t);
@@ -1359,24 +1353,20 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static CloseFightPhotographMode() {
-    if (!this.hzd) {
-      this.hzd = true;
-      this.ResetCamera();
-      ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId = 0;
-      this.rwd = false;
-      TimerSystem_1.TimerSystem.Delay(() => {
-        var t = new SeamlessTravelDefine_1.SeamlessTravelContext();
-        ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(t, true);
-        this.ResetPhotograph();
-        if (UiManager_1.UiManager.IsViewOpen("FightPhotoResultView")) {
-          UiManager_1.UiManager.CloseView("FightPhotoResultView");
-        }
-        UiManager_1.UiManager.CloseView("FightPhotographView", () => {
-          ControllerHolder_1.ControllerHolder.SeamlessTravelController.EndSeamlessTravel();
-          this.hzd = false;
-        });
-      }, 200);
-    }
+    this.ResetCamera();
+    ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId = 0;
+    this.rwd = false;
+    TimerSystem_1.TimerSystem.Delay(() => {
+      var t = new SeamlessTravelDefine_1.SeamlessTravelContext();
+      ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(t, true);
+      this.ResetPhotograph();
+      if (UiManager_1.UiManager.IsViewOpen("FightPhotoResultView")) {
+        UiManager_1.UiManager.CloseView("FightPhotoResultView");
+      }
+      UiManager_1.UiManager.CloseView("FightPhotographView", () => {
+        ControllerHolder_1.ControllerHolder.SeamlessTravelController.EndSeamlessTravel();
+      });
+    }, 200);
   }
   static InitFightPhotoTask() {
     this.CurrentBtNode = undefined;
@@ -1414,7 +1404,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static IsSatisfyAllConditions() {
-    return !!this.CurrentBtNode && (!!this.IsIgnoreAllCondition || !!this.CurrentBtNode.InProgress && !!this.CurrentBtNode.CheckRoleInCamera() && !!this.CurrentBtNode.CheckCameraCondition() && !!this.CurrentBtNode.CheckPhotographCondition());
+    return !!this.CurrentBtNode && (!!this.IsIgnoreAllCondition || !!this.CurrentBtNode.CheckRoleInCamera() && !!this.CurrentBtNode.CheckCameraCondition() && !!this.CurrentBtNode.CheckPhotographCondition());
   }
   static IsFinishCurrentBtNode() {
     return !!this.CheckIfInFightPhotographCamera() && this.rwd;
@@ -1507,7 +1497,7 @@ PhotographController.Jze = t => {
 };
 PhotographController.vWi = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     if (_a.CameraCaptureType === 1) {
       o.AddCameraArmPitchInput(e);
     } else {
@@ -1517,7 +1507,7 @@ PhotographController.vWi = (t, e) => {
 };
 PhotographController.MWi = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     if (_a.CameraCaptureType === 1) {
       o.AddCameraArmYawInput(e);
     } else {
@@ -1527,13 +1517,13 @@ PhotographController.MWi = (t, e) => {
 };
 PhotographController.q8i = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     o.AddCameraArmPitchInput(-e);
   }
 };
 PhotographController.G8i = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     o.AddCameraArmYawInput(e);
   }
 };
@@ -1558,7 +1548,6 @@ PhotographController.Kue = (t, e) => {
 };
 PhotographController.FPo = undefined;
 PhotographController.VPo = undefined;
-PhotographController.hzd = false;
 PhotographController.owd = [];
 PhotographController.rwd = false;
 PhotographController.CurrentBtNode = undefined;

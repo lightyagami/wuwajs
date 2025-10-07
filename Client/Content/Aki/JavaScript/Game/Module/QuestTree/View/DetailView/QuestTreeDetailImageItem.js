@@ -38,7 +38,7 @@ class QuestTreeDetailImageItem extends UiPanelBase_1.UiPanelBase {
   }
   async I6d(t) {
     this.Pe = t;
-    await this.SetTextureAsync(this.Pe.ImageSmall, this.GetTexture(1));
+    await this.SetTextureAsync(this.Pe.ImageLarge, this.GetTexture(1));
     this.E6d();
     this.brd();
   }

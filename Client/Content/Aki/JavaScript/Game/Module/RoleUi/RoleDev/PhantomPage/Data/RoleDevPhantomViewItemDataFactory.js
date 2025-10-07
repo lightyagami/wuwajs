@@ -9,24 +9,24 @@ const ForecastRoleDevPhantomData_1 = require("./ForecastRoleDevPhantomData");
 const NotObtainedRoleDevPhantomData_1 = require("./NotObtainedRoleDevPhantomData");
 const ObtainedRoleDevPhantomData_1 = require("./ObtainedRoleDevPhantomData");
 class RoleDevPhantomViewItemDataFactory {
-  static Create(e, a) {
-    var t = RoleDevUtils_1.RoleDevUtils.GetRoleDevDataTypeByRoleId(e);
-    let o = undefined;
-    switch (t) {
+  static Create(e) {
+    var a = RoleDevUtils_1.RoleDevUtils.GetRoleDevDataTypeByRoleId(e);
+    let t = undefined;
+    switch (a) {
       case 0:
-        o = new ObtainedRoleDevPhantomData_1.ObtainedRoleDevPhantomData();
+        t = new ObtainedRoleDevPhantomData_1.ObtainedRoleDevPhantomData();
         break;
       case 1:
-        o = new NotObtainedRoleDevPhantomData_1.NotObtainedRoleDevPhantomData();
+        t = new NotObtainedRoleDevPhantomData_1.NotObtainedRoleDevPhantomData();
         break;
       case 2:
-        o = new ForecastRoleDevPhantomData_1.ForecastRoleDevPhantomData();
+        t = new ForecastRoleDevPhantomData_1.ForecastRoleDevPhantomData();
         break;
       default:
-        o = new NotObtainedRoleDevPhantomData_1.NotObtainedRoleDevPhantomData();
+        t = new NotObtainedRoleDevPhantomData_1.NotObtainedRoleDevPhantomData();
     }
-    o.InitByRoleId(e, t, a);
-    return o;
+    t.InitByRoleId(e, a);
+    return t;
   }
 }
 exports.RoleDevPhantomViewItemDataFactory = RoleDevPhantomViewItemDataFactory;

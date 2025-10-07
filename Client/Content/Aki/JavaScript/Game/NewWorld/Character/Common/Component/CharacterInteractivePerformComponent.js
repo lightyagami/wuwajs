@@ -2,26 +2,26 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var n;
-  var r = arguments.length;
-  var h = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h = arguments.length;
+  var r = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, s);
+    r = Reflect.decorate(t, e, i, s);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
       if (n = t[o]) {
-        h = (r < 3 ? n(h) : r > 3 ? n(e, i, h) : n(e, i)) || h;
+        r = (h < 3 ? n(r) : h > 3 ? n(e, i, r) : n(e, i)) || r;
       }
     }
   }
-  if (r > 3 && h) {
-    Object.defineProperty(e, i, h);
+  if (h > 3 && r) {
+    Object.defineProperty(e, i, r);
   }
-  return h;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CharacterInteractivePerformComponent = exports.animationList = undefined;
+exports.CharacterInteractivePerformComponent = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
@@ -32,7 +32,6 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
-exports.animationList = ["/Game/Aki/Character/Role/MaleM/BaseAnim/AM_Sit_1_Stand.AM_Sit_1_Stand", "/Game/Aki/Character/Role/FemaleM/BaseAnim/AM_Sit_1_Stand.AM_Sit_1_Stand"];
 let CharacterInteractivePerformComponent = class CharacterInteractivePerformComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);

@@ -57,30 +57,17 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
   static GetCurrentActivityData() {
     return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityCorniceMeetingController.ActivityId);
   }
-  static MultiCorniceMeetingRewardRequest(e, o, a) {
-    const r = {};
-    o.forEach((e, t) => {
-      r[t] = {
-        pKd: e
-      };
-    });
-    var t = new Protocol_1.Aki.Protocol.fKd();
-    t.w6n = e;
-    t.CKd = r;
-    Net_1.Net.Call(24118, t, e => {
+  static CorniceMeetingRewardRequest(t, r, i) {
+    var e = new Protocol_1.Aki.Protocol.ym_();
+    e._ps = t;
+    e.t8n = r;
+    Net_1.Net.Call(29859, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24118);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29859);
       } else {
-        var t;
-        var r;
-        var i = this.GetCurrentActivityData();
-        for ([t, r] of o) {
-          for (const n of r) {
-            i.UpdateRewarded(t, n);
-          }
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
-        }
-        a();
+        this.GetCurrentActivityData().UpdateRewarded(t, r);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
+        i();
       }
     });
   }

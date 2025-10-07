@@ -16,20 +16,20 @@ class SurvivorsRogueCommandAdditionRewardGot extends SurvivorsRogueCommandBaseOb
   OnBindView() {
     if (this.ViewProxy) {
       let o = false;
-      var r = new Set();
+      var t = new Set();
       for (const i of this.hbd().IEd) {
-        var t = i.fEd;
-        switch (t.R5n) {
+        var r = i.fEd;
+        switch (r.R5n) {
           case "lEd":
             o = true;
             break;
           case "uEd":
-            var e = t.uEd.zys;
-            r.add(e);
+            var e = r.uEd.zys;
+            t.add(e);
         }
       }
       this.ViewProxy.GetRoleStatePanel()?.RoleGrid?.SetSelectOn(o);
-      for (const s of r) {
+      for (const s of t) {
         this.ViewProxy.GetRoleStatePanel()?.GetWeaponGrid(s)?.SetSelectOn(true);
       }
     }
@@ -40,7 +40,6 @@ class SurvivorsRogueCommandAdditionRewardGot extends SurvivorsRogueCommandBaseOb
   GetViewInfo() {
     var o = this.hbd();
     return {
-      CaptionId: "SurvivorPropObtain_ScreenName",
       TitleId: "SurvivorsItemAcquireAdditionallyTitle",
       ButtonId: "SurvivorsTreasure_ConfirtButton",
       ChooseData: this.GetChooseData(o),

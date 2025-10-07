@@ -375,7 +375,6 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       var l;
       var n = new LogReportDefine_1.StartSdkPayEvent();
       n.s_sdk_pay_order = e.cpOrderId;
-      n.s_sdk_callback_url = e.callbackUrl ?? "";
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(n);
       ModelManager_1.ModelManager.KuroSdkModel.CurrentPayingOrderId = e.cpOrderId;
       this.cSe?.SdkPay(e);

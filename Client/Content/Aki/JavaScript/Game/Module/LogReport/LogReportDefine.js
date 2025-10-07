@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ActivityRegressLogData = exports.ActivityRecallLogData = exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.DefaultFilterLogEvent = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = undefined;
-exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogEvent = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = undefined;
+exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogData = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = undefined;
 const UE = require("ue");
 const Json_1 = require("../../../Core/Common/Json");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
@@ -831,7 +831,6 @@ class StartSdkPayEvent extends PlayerCommonLogData {
     super(...arguments);
     this.event_id = "1040";
     this.s_sdk_pay_order = "";
-    this.s_sdk_callback_url = "";
   }
 }
 exports.StartSdkPayEvent = StartSdkPayEvent;
@@ -1167,7 +1166,7 @@ class UiInteractChatLogEvent extends PlayerCommonLogData {
   }
 }
 exports.UiInteractChatLogEvent = UiInteractChatLogEvent;
-class RoleDevLogEvent extends PlayerCommonLogData {
+class RoleDevLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1807";
@@ -1177,7 +1176,7 @@ class RoleDevLogEvent extends PlayerCommonLogData {
     this.i_sub_page = 0;
   }
 }
-exports.RoleDevLogEvent = RoleDevLogEvent;
+exports.RoleDevLogData = RoleDevLogData;
 class RoleSkillTreeLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);

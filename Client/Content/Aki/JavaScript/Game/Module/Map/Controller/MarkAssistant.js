@@ -504,15 +504,16 @@ class MarkAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
       Execute: async () => {
         var e = o.filter(e => ModelManager_1.ModelManager.MapModel.IsMarkIdExist(a, e));
         if (e.length !== 0) {
-          for (const r of e) {
-            ModelManager_1.ModelManager.MapModel.RemoveMapMark(a, r);
-          }
           e = Protocol_1.Aki.Protocol.Zss.create({
             Ika: e
           });
           e = await Net_1.Net.CallAsync(29534, e);
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25141);
+          } else {
+            for (const r of e.Ika) {
+              ModelManager_1.ModelManager.MapModel.RemoveMapMark(a, r);
+            }
           }
         }
       }

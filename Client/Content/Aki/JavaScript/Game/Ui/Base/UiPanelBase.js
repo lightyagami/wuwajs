@@ -101,7 +101,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.OnBeforeCreateImplement();
     this.OnBeforeCreate();
     let i = true;
-    await Promise.all([this.K_r(), this.OnCreateAsyncImplementImplement(), this.OnCreateAsync(), ...this.k_r.map(async t => t.CreateAsync()), ...this.u9.map(async t => t.CreateAsync())]).catch(t => {
+    await Promise.all([this.K_r(), this.OnCreateAsyncImplementImplement(), this.OnCreateAsync(), this.AfterOnCreateAsync(), ...this.k_r.map(async t => t.CreateAsync()), ...this.u9.map(async t => t.CreateAsync())]).catch(t => {
       if (t instanceof Error) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.ErrorWithStack("UiCore", 16, "[OnCreateAsyncImplement] 加载失败", t, ["component", this.constructor.name], ["error", t.message]);
@@ -111,13 +111,12 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       }
       i = false;
     });
-    this.AfterOnCreate();
     this.OnAfterCreateImplement();
     return i;
   }
   async OnStartAsyncImplement() {
     await this.OnBeforeStartAsync();
-    this.AfterOnBeforeStart();
+    await this.AfterOnBeforeStartAsync();
     this.OnStartImplement();
     this.OnStart();
     await Promise.all([...this.k_r.map(async t => t.StartAsync()), ...this.u9.map(async t => t.StartAsync())]);
@@ -134,7 +133,6 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   }
   async OnShowAsyncImplement() {
     await this.OnBeforeShowAsyncImplement();
-    this.AfterOnBeforeShow();
     this.OnBeforeShowImplement();
     this.OnBeforeShow();
     this.SetUiActive(true);
@@ -163,7 +161,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   OnFinishShowImplementImplement() {}
   async OnHideAsyncImplement() {
     await this.OnBeforeHideAsync();
-    this.AfterOnBeforeHide();
+    await this.AfterOnBeforeHideAsync();
     this.OnBeforeHide();
     this.OnBeforeHideImplement();
     await Promise.all([...this.k_r.map(async t => t.HideAsync()), ...this.u9.map(async t => t.HideAsync()), this.OnHideAsyncImplementImplement()]);
@@ -949,10 +947,15 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.oL(t);
     this.StartCompatible();
   }
-  AfterOnCreate() {}
-  AfterOnBeforeStart() {}
-  AfterOnBeforeShow() {}
-  AfterOnBeforeHide() {}
+  async AfterOnCreateAsync() {
+    await Promise.resolve();
+  }
+  async AfterOnBeforeStartAsync() {
+    await Promise.resolve();
+  }
+  async AfterOnBeforeHideAsync() {
+    await Promise.resolve();
+  }
 }
 exports.UiPanelBase = UiPanelBase;
 //# sourceMappingURL=UiPanelBase.js.map

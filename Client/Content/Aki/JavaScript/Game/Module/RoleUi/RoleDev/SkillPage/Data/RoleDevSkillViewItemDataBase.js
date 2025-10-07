@@ -38,14 +38,11 @@ class RoleDevSkillViewItemDataBase {
   get SkillGoalUpgradeLevel() {
     return this.GetSkillGoalUpgradeLevel();
   }
-  get NormalDetailItems() {
-    return this.GetNormalDetailItems();
+  get DetailItems() {
+    return this.GetDetailItems();
   }
-  get IsNormalAllMaterialEnough() {
-    return this.GetIsNormalAllMaterialEnough();
-  }
-  get IsCurrentPlanAllMaterialEnough() {
-    return this.GetIsCurrentPlanAllMaterialEnough();
+  get IsAllMaterialEnough() {
+    return this.GetIsAllMaterialEnough();
   }
   get IsUnlockedPerfect() {
     return this.GetIsUnlockedPerfect();
@@ -75,14 +72,7 @@ class RoleDevSkillViewItemDataBase {
     if (this.IsPerfectPlan) {
       return this.IsPerfectMaterialEnough;
     } else {
-      return this.IsNormalAllMaterialEnough;
-    }
-  }
-  get CurrentPlanFinished() {
-    if (this.IsPerfectPlan) {
-      return this.IsPerfectPlanFinished;
-    } else {
-      return this.IsNormalPlanFinished;
+      return this.IsAllMaterialEnough;
     }
   }
   get IsRoleObtained() {
@@ -98,7 +88,7 @@ class RoleDevSkillViewItemDataBase {
   GetButtonState() {
     return {
       Text: this.IsRoleOwned ? "RoleProject_Button01" : "RoleProject_Button02",
-      IsHighlight: this.IsRoleOwned && (this.IsPerfectPlan ? this.IsPerfectMaterialEnough : this.IsNormalAllMaterialEnough)
+      IsHighlight: this.IsRoleOwned && (this.IsPerfectPlan ? this.IsPerfectMaterialEnough : this.IsAllMaterialEnough)
     };
   }
   GetPlanSwitchButtonState() {
@@ -110,13 +100,6 @@ class RoleDevSkillViewItemDataBase {
   }
   SwitchPlan() {
     throw new Error("SwitchPlan must be implemented by subclass");
-  }
-  GetIsCurrentPlanAllMaterialEnough() {
-    if (this.IsPerfectPlan) {
-      return this.IsPerfectMaterialEnough;
-    } else {
-      return this.IsNormalAllMaterialEnough;
-    }
   }
 }
 exports.RoleDevSkillViewItemDataBase = RoleDevSkillViewItemDataBase;

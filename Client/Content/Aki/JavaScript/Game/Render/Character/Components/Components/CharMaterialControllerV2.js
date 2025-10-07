@@ -89,7 +89,6 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
   OnResetRenderState() {
     for (const e of this.vel.keys()) {
       EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnRemoveMaterialController, e);
-      this.RenderComponent.OnRemoveMaterialController(e);
     }
     this.vel.clear();
     var t = this.Q9d.size;
@@ -108,7 +107,7 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
   }
   Mel(e) {
     var t = this.vel.get(e);
-    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), this.RenderComponent.OnRemoveMaterialController(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]), this.Q9d.has(e))) {
+    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]), this.Q9d.has(e))) {
       this.Uhr.RemoveBattleMaskCount(0);
       this.Q9d.delete(e);
     }

@@ -77,13 +77,6 @@ class Info {
   static get InputControllerMainType() {
     return this.oEa;
   }
-  static set InputControllerMainType(t) {
-    if (UE.KuroVariableFunctionLibrary.HasIntValue("InputControllerMainType")) {
-      UE.KuroVariableFunctionLibrary.RemoveIntValue("InputControllerMainType");
-    }
-    UE.KuroVariableFunctionLibrary.SetIntValue("InputControllerMainType", t);
-    this.oEa = t;
-  }
   static get OperationType() {
     return this.aXi;
   }
@@ -130,7 +123,7 @@ class Info {
     if (Platform_1.Platform.IsCloudGame()) {
       if (t === "Android" || t === "IOS") {
         Info.SwitchInputControllerType(5, "InitCloudGame Mobile");
-      } else if (t === "Mac" || t === "Windows") {
+      } else if (t === "Mac" || t == "Windows") {
         Info.SwitchInputControllerType(1, "InitCloudGame Desktop");
       }
     }
@@ -155,7 +148,7 @@ class Info {
     var i = InfoDefine_1.inputControllerMainTypeMap[this.rEa];
     if (i !== this.oEa) {
       t = this.oEa;
-      this.InputControllerMainType = i;
+      this.oEa = i;
       Info.Lya?.(t, i);
     }
   }

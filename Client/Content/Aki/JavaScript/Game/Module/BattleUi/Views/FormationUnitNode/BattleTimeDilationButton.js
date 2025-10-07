@@ -34,7 +34,6 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.nxd = undefined;
     this.sxd = undefined;
     this.axd = undefined;
-    this.GQd = undefined;
     this.UiLevelSequence = undefined;
     this.$Fd = 0;
     this.dad = 0;
@@ -42,13 +41,10 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.dit = 0;
     this.hxd = false;
     this.N5d = false;
-    this.lxd = (t, e) => {
-      if (this.GetActive() && e === 0) {
+    this.lxd = (e, t) => {
+      if (this.GetActive() && t === 0) {
         this._xd();
       }
-    };
-    this.jYe = () => {
-      this._xd();
     };
     this.lqt = () => {
       this.cNu();
@@ -77,19 +73,19 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
         this.WFd();
       }
     };
-    this.QFd = (t, e) => {
-      if (t === 5) {
-        this.KFd(e);
+    this.QFd = (e, t) => {
+      if (e === 5) {
+        this.KFd(t);
       }
     };
-    this.FQe = t => {
-      if (t === "FightPhotographView") {
+    this.FQe = e => {
+      if (e === "FightPhotographView") {
         this.N5d = true;
         this.UPi();
       }
     };
-    this.$Ge = t => {
-      if (t === "FightPhotographView") {
+    this.$Ge = e => {
+      if (e === "FightPhotographView") {
         this.N5d = false;
         this.UPi();
       }
@@ -97,22 +93,22 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
   }
   OnRegisterComponent() {
     super.OnRegisterComponent();
-    this.ComponentRegisterInfos.push([0, UE.UIItem], [1, UE.UIExtendToggle], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIText]);
+    this.ComponentRegisterInfos.push([0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UIText]);
     if (!Info_1.Info.IsInTouch()) {
       this.ComponentRegisterInfos.push([5, UE.UIItem]);
       this.ComponentRegisterInfos.push([6, UE.UIItem]);
     }
   }
   async OnBeforeStartAsync() {
-    var t;
+    var e;
     if (!Info_1.Info.IsInTouch()) {
-      t = this.GetItem(5);
+      e = this.GetItem(5);
       this.x8c = new CombineKeyItem_1.CombineKeyItem();
-      await this.x8c.CreateByActorAsync(t.GetOwner());
+      await this.x8c.CreateByActorAsync(e.GetOwner());
       this.x8c.SetUiActive(false);
-      t = this.GetItem(6);
+      e = this.GetItem(6);
       this.D8c = new CombineKeyItem_1.CombineKeyItem();
-      await this.D8c.CreateByActorAsync(t.GetOwner());
+      await this.D8c.CreateByActorAsync(e.GetOwner());
       this.D8c.SetUiActive(false);
     }
   }
@@ -130,8 +126,6 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.nxd = this.GetItem(2);
     this.sxd = this.GetSprite(3);
     this.axd = this.GetText(4);
-    this.GQd = this.GetExtendToggle(1);
-    this.GQd?.OnPointDownCallBack.Bind(this.jYe);
     this.$Fd = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, POST_EFFECT_PATH, "BattleTimeDilationButton_effect", undefined, 3, undefined, this.QFd, undefined, true);
     ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.Link大招, this.lxd);
   }
@@ -151,13 +145,13 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
     this.hxd = false;
   }
-  Tick(t) {
-    var e;
+  Tick(e) {
+    var t;
     var i;
     if (!!this.hxd && !(this.mit <= 0)) {
-      i = (e = this.mit - Time_1.Time.WorldTime * TimeUtil_1.TimeUtil.Millisecond + this.dit) / this.mit;
+      i = (t = this.mit - Time_1.Time.WorldTime * TimeUtil_1.TimeUtil.Millisecond + this.dit) / this.mit;
       this.sxd?.SetFillAmount(i);
-      this.axd?.SetText(e.toFixed(1));
+      this.axd?.SetText(t.toFixed(1));
     }
   }
   _xd() {
@@ -186,39 +180,33 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     }
   }
   I9d() {
-    var t = new LogReportDefine_1.FightPhotoTimeDilationLogEvent();
-    var e = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
-    t.inst_id = e.InstanceId;
-    t.inst_diff = e.IsDifficulty ? 1 : 0;
-    t.trace_id = ModelManager_1.ModelManager.CreatureModel.GetSceneTraceId().toString();
-    LogReportController_1.LogReportController.LogReport(t);
+    var e = new LogReportDefine_1.FightPhotoTimeDilationLogEvent();
+    var t = ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController.GetActivityData().GetCurrentLevelData();
+    e.inst_id = t.InstanceId;
+    e.inst_diff = t.IsDifficulty ? 1 : 0;
+    e.trace_id = ModelManager_1.ModelManager.CreatureModel.GetSceneTraceId().toString();
+    LogReportController_1.LogReportController.LogReport(e);
   }
   o1h() {
     return !!ModelManager_1.ModelManager.BattleUiModel;
   }
   PlayShowAnim() {
-    if (!this.UiLevelSequence.HasSequenceNameInPlaying("Start")) {
-      if (this.UiLevelSequence.IsInSequence()) {
-        this.UiLevelSequence.StopPrevSequence(false, true);
-      }
-      this.UiLevelSequence.PlaySequence("Start", false);
+    if (this.UiLevelSequence.IsInSequence()) {
+      this.UiLevelSequence.StopPrevSequence(false, true);
     }
+    this.UiLevelSequence.PlaySequence("Start", false);
   }
   PlayLoopAnim() {
-    if (!this.UiLevelSequence.HasSequenceNameInPlaying("Loop")) {
-      if (this.UiLevelSequence.IsInSequence()) {
-        this.UiLevelSequence.StopPrevSequence(false, true);
-      }
-      this.UiLevelSequence.PlaySequence("Loop", false);
+    if (this.UiLevelSequence.IsInSequence()) {
+      this.UiLevelSequence.StopPrevSequence(false, true);
     }
+    this.UiLevelSequence.PlaySequence("Loop", false);
   }
   PlayCloseAnim() {
-    if (!this.UiLevelSequence.HasSequenceNameInPlaying("Close")) {
-      if (this.UiLevelSequence.IsInSequence()) {
-        this.UiLevelSequence.StopPrevSequence(false, true);
-      }
-      this.UiLevelSequence.PlaySequence("Close", false);
+    if (this.UiLevelSequence.IsInSequence()) {
+      this.UiLevelSequence.StopPrevSequence(false, true);
     }
+    this.UiLevelSequence.PlaySequence("Close", false);
   }
   cNu() {
     this.x8c?.SetUiActive(Info_1.Info.IsInKeyBoard());
@@ -232,19 +220,19 @@ class BattleTimeDilationButton extends FormationExtraButton_1.FormationExtraButt
     this.KFd(this.$Fd);
     this.XFd();
   }
-  KFd(t) {
-    if (EffectSystem_1.EffectSystem.IsValid(t) && this.o1h()) {
+  KFd(e) {
+    if (EffectSystem_1.EffectSystem.IsValid(e) && this.o1h()) {
       if (this.N5d) {
-        EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
+        EffectSystem_1.EffectSystem.SetEffectHidden(e, true);
       } else {
         switch (ModelManager_1.ModelManager.BattleUiModel.CurrentTimeDilationSkillState) {
           case 1:
-            EffectSystem_1.EffectSystem.ReplayEffect(t, "[BattleTimeDilationButton.ReplayEffect]");
-            EffectSystem_1.EffectSystem.SetEffectHidden(t, false);
+            EffectSystem_1.EffectSystem.ReplayEffect(e, "[BattleTimeDilationButton.ReplayEffect]");
+            EffectSystem_1.EffectSystem.SetEffectHidden(e, false);
             break;
           case 0:
           case 2:
-            EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
+            EffectSystem_1.EffectSystem.SetEffectHidden(e, true);
         }
       }
     }

@@ -35,7 +35,7 @@ class SpecialEnergyBarJiaBeiLiNaSlot extends SpecialEnergyBarSlot_1.SpecialEnerg
   OnStart() {
     this.OverrideColor = true;
     super.OnStart();
-    this.SlotItemList[0].SetEffectBasePercent(0.27);
+    this.SlotItemList[0].SetEffectBasePercent(0.3);
     this.SlotItemList[0].SetFullEffectPercent(1);
     this.SlotItemList[1].SetEffectBasePercent(0.7);
     this.SlotItemList[1].SetFullEffectPercent(1);

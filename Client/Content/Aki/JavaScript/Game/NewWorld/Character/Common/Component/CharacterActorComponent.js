@@ -61,6 +61,7 @@ const AoiController_1 = require("../../../../World/Controller/AoiController");
 const BlackboardController_1 = require("../../../../World/Controller/BlackboardController");
 const AimPartUtils_1 = require("../../../Common/AimPartUtils");
 const BaseActorComponent_1 = require("../../../Common/Component/BaseActorComponent");
+const RoleTriggerController_1 = require("../../Role/RoleTriggerController");
 const FunctionRequestProxy_1 = require("./Actor/FunctionRequestProxy");
 const BaseCharacterComponent_1 = require("./BaseCharacterComponent");
 const CharacterLockOnComponent_1 = require("./LockOn/CharacterLockOnComponent");
@@ -899,8 +900,9 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.HalfHeightInternal = e;
     this.Actor.CapsuleComponent.SetCapsuleRadius(t, i);
     this.Actor.CapsuleComponent.SetCapsuleHalfHeight(e, i);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e, i);
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e, i);
+    RoleTriggerController_1.RoleTriggerController.UpdateRoleTriggerHalfHeightAndRadius(t, e, i);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e);
     if (!!s && (o !== e || r !== t) && (h === 1 || h === 2 || h === 0)) {
       i = Math.min(0, e - o);
       if ((s = this.FixActorLocation(i)) && s[0] && (this.SetActorLocation(s[1].ToUeVector(), "修改胶囊体后地面修正", false), Log_1.Log.CheckInfo())) {

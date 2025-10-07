@@ -14,17 +14,17 @@ class MarkItemComponentHandle {
     this.OnInit();
   }
   Update() {
-    if (this.Context.MarkItemEntity !== undefined && !this.Context.MarkItem.IsDestroy) {
+    if (this.Context.MarkItemEntity !== undefined) {
       this.OnUpdate();
     }
   }
   SetVisible(t) {
-    if (this.Context.MarkItemEntity !== undefined && !this.Context.MarkItem.IsDestroy) {
+    if (this.Context.MarkItemEntity !== undefined) {
       this.OnSetVisible(t);
     }
   }
   ApplyModified() {
-    if (this.Context.MarkItemEntity !== undefined && !this.Context.MarkItem.IsDestroy) {
+    if (this.Context.MarkItemEntity !== undefined) {
       this.OnApplyModified();
     }
   }

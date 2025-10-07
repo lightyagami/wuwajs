@@ -26,6 +26,9 @@ class SurvivorsWeapon {
   get BindWeaponsId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.bindweaponsidLength(), this.bindweaponsid, this);
   }
+  get BindWeaponId() {
+    return this.bindweaponid();
+  }
   get EvolveIds() {
     return GameUtils_1.GameUtils.ConvertToMap(this.evolveidsLength(), this.evolveidsKey, this.evolveidsValue, this);
   }
@@ -120,11 +123,19 @@ class SurvivorsWeapon {
       return null;
     }
   }
+  bindweaponid() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetEvolveidsAt(t, i) {
     return this.evolveids(t);
   }
   evolveids(t, i) {
-    var s = this.J7.__offset(this.z7, 14);
+    var s = this.J7.__offset(this.z7, 16);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -132,7 +143,7 @@ class SurvivorsWeapon {
     }
   }
   evolveidsLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -140,14 +151,6 @@ class SurvivorsWeapon {
     }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 16);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  icon(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -155,8 +158,16 @@ class SurvivorsWeapon {
     }
     return i;
   }
+  icon(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   sortid() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -167,7 +178,7 @@ class SurvivorsWeapon {
     return this.recommendproperty(t);
   }
   recommendproperty(t) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 24);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -175,7 +186,7 @@ class SurvivorsWeapon {
     }
   }
   recommendpropertyLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -183,7 +194,7 @@ class SurvivorsWeapon {
     }
   }
   recommendpropertyArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -194,7 +205,7 @@ class SurvivorsWeapon {
     return this.propertylist(t);
   }
   propertylist(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -202,7 +213,7 @@ class SurvivorsWeapon {
     }
   }
   propertylistLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -210,7 +221,7 @@ class SurvivorsWeapon {
     }
   }
   propertylistArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -218,7 +229,7 @@ class SurvivorsWeapon {
     }
   }
   templateid() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

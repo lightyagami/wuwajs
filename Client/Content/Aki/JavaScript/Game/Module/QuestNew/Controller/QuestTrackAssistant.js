@@ -96,8 +96,8 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
           return 4;
         }
       } else if (!s.CanShowTrackExpression()) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Quest", 18, "QuestTrackAssistant.RequestTrackQuest,任务不可显示追踪表现", ["questId", e]);
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Quest", 18, "QuestTrackAssistant.RequestTrackQuest,任务不可显示追踪表现", ["questId", e]);
         }
         n?.();
         return 3;

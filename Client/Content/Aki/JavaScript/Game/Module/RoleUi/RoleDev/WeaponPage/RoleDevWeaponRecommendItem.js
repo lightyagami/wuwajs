@@ -14,7 +14,7 @@ const SmallItemGrid_1 = require("../../../Common/SmallItemGrid/SmallItemGrid");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const RoleDevUtils_1 = require("../RoleDevUtils");
+const WeaponController_1 = require("../../../Weapon/WeaponController");
 const RoleDevRecommendItem_1 = require("./RoleDevRecommendItem");
 class RoleDevWeaponRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
@@ -35,7 +35,7 @@ class RoleDevWeaponRecommendItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
     this.IOe = () => {
       var t = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(this.Pe.RoleId).GetIncId();
-      RoleDevUtils_1.RoleDevUtils.OpenWeaponReplaceView(this.Pe.RoleId, t);
+      WeaponController_1.WeaponController.OpenWeaponReplaceView(this.Pe.RoleId, t);
       ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe.RoleId, 2, 6);
     };
     this.y8i = () => {

@@ -32,11 +32,11 @@ class SnapModifier {
     let a = undefined;
     switch (r) {
       case 0:
-      case 1:
+      case 2:
         a = s.Target.OwnerBuffComponent;
         break;
       case 3:
-      case 2:
+      case 1:
         a = s.Attacker.OwnerBuffComponent;
     }
     for (const h of e) {

@@ -11,7 +11,7 @@ class RoleDevPhantomFetterGroupData extends RoleDevPhantomVisionSuitItemData_1.R
   InitByFetterGroup(e, t) {
     var a = ModelManager_1.ModelManager.PhantomBattleModel?.GetFetterGroupMonsterIdArray(e);
     if (a && a.length > 0 && (a = a.filter(e => this.LNd(e, 4)).map(e => this.PNd(e))).length > 0) {
-      this.InitByBaseData(1, 0, "Cost4", 4, "RoleProject_Button03", "");
+      this.InitByBaseData(1, "Cost4", 4, "RoleProject_Button03");
       this.SetMonsterDataList(a);
       this.SetFetterGroupInfo(e, t);
     }

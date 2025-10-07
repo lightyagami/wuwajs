@@ -26,14 +26,8 @@ class SurvivorsWave {
   get WaveTime() {
     return this.wavetime();
   }
-  get EndlessModeWaveTime() {
-    return this.endlessmodewavetime();
-  }
   get ConditionSpawnIds() {
     return GameUtils_1.GameUtils.ConvertToArray(this.conditionspawnidsLength(), this.conditionspawnids, this);
-  }
-  get EndlessModeConditionSpawnIds() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.endlessmodeconditionspawnidsLength(), this.endlessmodeconditionspawnids, this);
   }
   get WaveType() {
     return this.wavetype();
@@ -114,19 +108,11 @@ class SurvivorsWave {
       return 0;
     }
   }
-  endlessmodewavetime() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   GetConditionspawnidsAt(t) {
     return this.conditionspawnids(t);
   }
   conditionspawnids(t) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 14);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -134,7 +120,7 @@ class SurvivorsWave {
     }
   }
   conditionspawnidsLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -142,34 +128,7 @@ class SurvivorsWave {
     }
   }
   conditionspawnidsArray() {
-    var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
-  GetEndlessmodeconditionspawnidsAt(t) {
-    return this.endlessmodeconditionspawnids(t);
-  }
-  endlessmodeconditionspawnids(t) {
-    var i = this.J7.__offset(this.z7, 18);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
-    } else {
-      return 0;
-    }
-  }
-  endlessmodeconditionspawnidsLength() {
-    var t = this.J7.__offset(this.z7, 18);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  endlessmodeconditionspawnidsArray() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -177,7 +136,7 @@ class SurvivorsWave {
     }
   }
   wavetype() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -188,7 +147,7 @@ class SurvivorsWave {
     return this.treasurepool(t);
   }
   treasurepool(t, i) {
-    var s = this.J7.__offset(this.z7, 22);
+    var s = this.J7.__offset(this.z7, 18);
     if (s) {
       return (i || new DicStringInt_1.DicStringInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -196,7 +155,7 @@ class SurvivorsWave {
     }
   }
   treasurepoolLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {

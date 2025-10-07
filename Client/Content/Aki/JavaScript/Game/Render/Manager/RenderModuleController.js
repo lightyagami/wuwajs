@@ -130,6 +130,7 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
   }
   static k1r(e) {
     if (this.tZ) {
+      this.GlobalTimeDilation = 1;
       this.IsGamePaused = MathUtils_1.MathUtils.IsNearlyEqual(this.GlobalTimeDilation, 0);
       if (this.WaitingForAddWuYinQuBattleActors !== undefined && this.WaitingForAddWuYinQuBattleActors.length !== 0) {
         this.WaitingForAddWuYinQuBattleActors.forEach(e => {

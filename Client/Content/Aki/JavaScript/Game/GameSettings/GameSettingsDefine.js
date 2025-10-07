@@ -65,6 +65,7 @@ var EFunction;
   e[e.VOICEPACKMANAGER = 53] = "VOICEPACKMANAGER";
   e[e.ADVICESETTING = 59] = "ADVICESETTING";
   e[e.GENDERSETTING = 88] = "GENDERSETTING";
+  e[e.BloodBathedMode = 51401] = "BloodBathedMode";
   e[e.HorizontalViewSensitivity = 89] = "HorizontalViewSensitivity";
   e[e.VerticalViewSensitivity = 90] = "VerticalViewSensitivity";
   e[e.AimHorizontalViewSensitivity = 91] = "AimHorizontalViewSensitivity";
@@ -987,6 +988,24 @@ const autoExposure = {
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyAutoExposure(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpAutoExposure()
 };
+const bloodBathedMode = {
+  GameSettingId: EFunction.BloodBathedMode,
+  GetCallbackOrGlobalKey: () => {
+    if (ModelManager_1.ModelManager.MenuModel.GetBloodBathedMode() === 10) {
+      return 1;
+    } else {
+      return 0;
+    }
+  },
+  ApplyCallback: (e, t) => {
+    if (t === 1) {
+      t = e === 1 ? 10 : 5;
+      ControllerHolder_1.ControllerHolder.BloodBathedController.TryRequestChangePlayerBloodMode(t);
+    }
+    return false;
+  },
+  DumpCallback: () => "[BloodBathedMode]same to getter"
+};
 const adjustiveGamePadTrigger = {
   GameSettingId: EFunction.AdjustiveGamePadTrigger,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AdjustiveGamePadTrigger,
@@ -1118,6 +1137,7 @@ exports.function2GameSettings = {
   [EFunction.EyeProtectionTexture]: eyeProtectionTexture,
   [EFunction.VersionCheck]: versionCheck,
   [EFunction.AutoExposure]: autoExposure,
+  [EFunction.BloodBathedMode]: bloodBathedMode,
   [EFunction.AdjustiveGamePadTrigger]: adjustiveGamePadTrigger
 };
 exports.WINDOWS_RESOLUTION_INDEX = 2;

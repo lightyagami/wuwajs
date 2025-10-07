@@ -132,7 +132,6 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
     }
     if (this.HasActionLimitSet()) {
       if (!this.IsActionInLimitSet(i)) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GuideLimitActionInput, i, e);
         return false;
       }
     } else {

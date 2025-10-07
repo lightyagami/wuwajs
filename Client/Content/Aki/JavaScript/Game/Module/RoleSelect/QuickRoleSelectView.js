@@ -138,30 +138,28 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
           s.push(t.get(i));
         }
       }
-      for (const a of i) {
-        if (!s.includes(a)) {
-          s.push(a);
+      for (const h of i) {
+        if (!s.includes(h)) {
+          s.push(h);
         }
       }
-      var i = s.length > 0;
+      i = s.length > 0;
       this.GetItem(11).SetUIActive(!i);
       this.GetButton(3).RootUIComp.SetUIActive(i);
-      var r = this.Data.YellowTipText !== "";
-      this.GetItem(16).SetUIActive(r && i);
       this.GetLoopScrollViewComponent(1).RootUIComp.SetUIActive(i);
       if (i) {
         this.RoleScrollView.RefreshByData(s);
-        for (const l of t.values()) {
-          var o = this.RoleList.indexOf(l);
-          var h = s.indexOf(l);
-          if (this.RoleScrollView.Iei >= 0 && o !== h && o < this.RoleScrollView.GetDisplayGridEndIndex()) {
-            ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.delete(l.GetDataId());
-            this.RoleScrollView.UnsafeGetGridProxy(o)?.OnDeselected(false);
+        for (const a of t.values()) {
+          var r = this.RoleList.indexOf(a);
+          var o = s.indexOf(a);
+          if (this.RoleScrollView.Iei >= 0 && r !== o && r < this.RoleScrollView.GetDisplayGridEndIndex()) {
+            ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.delete(a.GetDataId());
+            this.RoleScrollView.UnsafeGetGridProxy(r)?.OnDeselected(false);
           }
         }
-        for (const _ of t.values()) {
-          var n = s.indexOf(_);
-          ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.add(_.GetDataId());
+        for (const l of t.values()) {
+          var n = s.indexOf(l);
+          ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.add(l.GetDataId());
           this.RoleScrollView.UnsafeGetGridProxy(n)?.OnForceSelected();
         }
         this.RoleList = s;

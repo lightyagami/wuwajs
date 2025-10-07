@@ -669,10 +669,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
       t = UE.SubsystemBlueprintLibrary.GetGameInstanceSubsystem(GlobalData_1.GlobalData.GameInstance, UE.KuroBulletSubsystem.StaticClass());
       this.KuroBulletWorld = t.GetBulletWorld();
       this.KuroBulletWorld ||= t.CreateWorld();
-      if (this.KuroBulletWorld) {
-        this.KuroBulletWorld.ForceUpdateOverlap = true;
-        this.KuroBulletWorld.OnBulletModifyBuff.Add(BulletController._Ld);
-      }
+      this.KuroBulletWorld?.OnBulletModifyBuff.Add(BulletController._Ld);
     }
   }
   static StopKuroBulletWorld() {

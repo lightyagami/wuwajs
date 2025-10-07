@@ -27,8 +27,6 @@ const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const CameraController_1 = require("../../Camera/CameraController");
 const TimeUtil_1 = require("../../Common/TimeUtil");
-const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
-const GameSettingsUtils_1 = require("../../GameSettings/GameSettingsUtils");
 const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -36,6 +34,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../NewWorld/Character/Common/CharacterNameDefines");
 const GameplayCueController_1 = require("../../NewWorld/Character/Common/Component/Abilities/GameplayCueSFX/Controller/GameplayCueController");
 const NpcPerformController_1 = require("../../NewWorld/Character/Npc/Controller/NpcPerformController");
+const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const GravityUtils_1 = require("../../Utils/GravityUtils");
 const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const HoldingHandsController_1 = require("../HoldHands/HoldingHandsController");
@@ -44,6 +43,8 @@ const MovingShotManager_1 = require("./MovingShotManager");
 const PlotAudioModel_1 = require("./PlotAudioModel");
 const PlotController_1 = require("./PlotController");
 const SequenceDefine_1 = require("./Sequence/SequenceDefine");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
+const GameSettingsUtils_1 = require("../../GameSettings/GameSettingsUtils");
 const PLAYER_UNUSED_INDEX = -1;
 const PLAYER_USED_ID = -1;
 const ACTOR_EMPTY_INDEX = -1;
@@ -180,7 +181,7 @@ class DelayActionManager {
       o = [];
       this.zxd.set(t, o);
     }
-    o.push([(e ?? 0) * CommonDefine_1.MILLIONSECOND_PER_SECOND, i]);
+    o.push([e ?? 0, i]);
   }
   ClearActionProxy() {
     this.zxd.clear();
@@ -298,6 +299,7 @@ class PlotTemplate {
     this.nx = t;
     this.AWl = i.IsSwitchMainRole ?? false;
     this.zsd = i.IsUseSeqFace ?? false;
+    RenderUtil_1.RenderUtil.BeginPSOSyncMode();
     if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
       GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, false);
     }
@@ -807,6 +809,7 @@ class PlotTemplate {
   }
   async EndTemplateNew(t) {
     if (this.IsInTemplate) {
+      RenderUtil_1.RenderUtil.EndPSOSyncMode();
       if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
         GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, true);
       }

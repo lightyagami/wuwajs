@@ -243,21 +243,6 @@ class ActivityCorniceMeetingData extends ActivityData_1.ActivityBaseData {
       return "ActivityCorniceMeetingPointNeed";
     }
   }
-  GetExDataFinishShowState() {
-    for (const i of this.GetLevelPlayIdList()) {
-      var t = this.GetLevelEntryData(i);
-      if (!t) {
-        return false;
-      }
-      var e = t.GetRewardList();
-      for (let t = 0; t < e.length; t++) {
-        if (this.GetRewardState(i, t) !== 2) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
 }
 exports.ActivityCorniceMeetingData = ActivityCorniceMeetingData;
 //# sourceMappingURL=ActivityCorniceMeetingData.js.map

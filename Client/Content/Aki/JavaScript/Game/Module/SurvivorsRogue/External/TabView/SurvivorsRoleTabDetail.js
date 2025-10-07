@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.SurvivorsRoleTabDetail = undefined;
 const UE = require("ue");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
@@ -27,12 +26,6 @@ class SurvivorsRoleTabDetail extends UiPanelBase_1.UiPanelBase {
   OnStart() {
     this.u9i = new SurvivorsRoleVisionAttribute(this.GetItem(1));
     this.u9i.Init();
-    var e = {
-      UiText: this.GetText(3),
-      ViewType: 0,
-      ReportType: 10
-    };
-    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(e);
   }
   Refresh(e, i = false, t = DEFAULT_SHOW_ATTRIBUTE_NUM) {
     var r = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRole(e);
@@ -40,15 +33,15 @@ class SurvivorsRoleTabDetail extends UiPanelBase_1.UiPanelBase {
     this.ko_ = e;
     var a = r.RecommendProperty;
     var r = r.PropertyList;
-    var o = a.slice(0, t);
-    if (o.length < t) {
-      for (const n of r) {
-        if (!o.includes(n) && (o.push(n), o.length === t)) {
+    var n = a.slice(0, t);
+    if (n.length < t) {
+      for (const o of r) {
+        if (!n.includes(o) && (n.push(o), n.length === t)) {
           break;
         }
       }
     }
-    a = ModelManager_1.ModelManager.SurvivorsRogueModel.GetRoleDefaultAttributeList(e, o);
+    a = ModelManager_1.ModelManager.SurvivorsRogueModel.GetRoleDefaultAttributeList(e, n);
     this.u9i?.Refresh(a, i);
     r = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRoleDefaultEvolve(e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), r.Describe);

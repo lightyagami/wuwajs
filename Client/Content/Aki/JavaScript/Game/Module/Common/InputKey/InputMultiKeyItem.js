@@ -118,47 +118,46 @@ class InputMultiKeyItem extends UiPanelBase_1.UiPanelBase {
       var i = s.ActionOrAxisName;
       this.cAt.Reset();
       let e = InputSettingsManager_1.InputSettingsManager.GetActionKeyDisplayData(this.cAt, i);
-      if (!(e = e || InputSettingsManager_1.InputSettingsManager.GetAxisKeyDisplayData(this.cAt, i)) || (i = s.Index ?? 0, !(i = this.cAt.GetDisplayKeyNameList(i))) || i.length <= 0) {
-        this._At?.SetActive(false);
-        this.uAt?.SetActive(false);
-        this.GetText(0)?.SetUIActive(false);
-      } else {
-        if (i.length === 1) {
-          t = {
-            KeyName: i[0],
-            IsLongPressDisable: s.IsLongPressDisable,
-            LongPressTime: s.LongPressTime,
-            DelayPressTime: s.DelayPressTime,
-            IsLongPressProcessVisible: s.IsLongPressProcessVisible,
-            IsShowLongPressWhenPress: s.IsShowLongPressWhenPress,
-            IsShowLongPressWhenRelease: s.IsShowLongPressWhenRelease,
-            IsTextArrowVisible: s.IsTextArrowVisible,
-            IsUpArrowVisible: s.IsUpArrowVisible,
-            IsDownArrowVisible: s.IsDownArrowVisible,
-            IsShowTextArrowWhenPress: s.IsShowTextArrowWhenPress,
-            IsShowTextArrowWhenRelease: s.IsShowTextArrowWhenRelease,
-            DescriptionId: s.DescriptionId
-          };
-          this.fAt(t);
-        }
-        if (i.length === 2) {
-          t = {
-            KeyName: i[0]
-          };
-          i = {
-            KeyName: i[1],
-            LongPressTime: s.LongPressTime,
-            IsLongPressProcessVisible: s.IsLongPressProcessVisible,
-            IsShowLongPressWhenPress: s.IsShowLongPressWhenPress,
-            IsShowLongPressWhenRelease: s.IsShowLongPressWhenRelease,
-            IsTextArrowVisible: s.IsTextArrowVisible,
-            IsUpArrowVisible: s.IsUpArrowVisible,
-            IsDownArrowVisible: s.IsDownArrowVisible,
-            IsShowTextArrowWhenPress: s.IsShowTextArrowWhenPress,
-            IsShowTextArrowWhenRelease: s.IsShowTextArrowWhenRelease,
-            DescriptionId: s.DescriptionId
-          };
-          this.fAt(t, i, s.LinkString);
+      if (e = e || InputSettingsManager_1.InputSettingsManager.GetAxisKeyDisplayData(this.cAt, i)) {
+        i = s.Index ?? 0;
+        if (!!(i = this.cAt.GetDisplayKeyNameList(i)) && !(i.length <= 0)) {
+          if (i.length === 1) {
+            t = {
+              KeyName: i[0],
+              IsLongPressDisable: s.IsLongPressDisable,
+              LongPressTime: s.LongPressTime,
+              DelayPressTime: s.DelayPressTime,
+              IsLongPressProcessVisible: s.IsLongPressProcessVisible,
+              IsShowLongPressWhenPress: s.IsShowLongPressWhenPress,
+              IsShowLongPressWhenRelease: s.IsShowLongPressWhenRelease,
+              IsTextArrowVisible: s.IsTextArrowVisible,
+              IsUpArrowVisible: s.IsUpArrowVisible,
+              IsDownArrowVisible: s.IsDownArrowVisible,
+              IsShowTextArrowWhenPress: s.IsShowTextArrowWhenPress,
+              IsShowTextArrowWhenRelease: s.IsShowTextArrowWhenRelease,
+              DescriptionId: s.DescriptionId
+            };
+            this.fAt(t);
+          }
+          if (i.length === 2) {
+            t = {
+              KeyName: i[0]
+            };
+            i = {
+              KeyName: i[1],
+              LongPressTime: s.LongPressTime,
+              IsLongPressProcessVisible: s.IsLongPressProcessVisible,
+              IsShowLongPressWhenPress: s.IsShowLongPressWhenPress,
+              IsShowLongPressWhenRelease: s.IsShowLongPressWhenRelease,
+              IsTextArrowVisible: s.IsTextArrowVisible,
+              IsUpArrowVisible: s.IsUpArrowVisible,
+              IsDownArrowVisible: s.IsDownArrowVisible,
+              IsShowTextArrowWhenPress: s.IsShowTextArrowWhenPress,
+              IsShowTextArrowWhenRelease: s.IsShowTextArrowWhenRelease,
+              DescriptionId: s.DescriptionId
+            };
+            this.fAt(t, i, s.LinkString);
+          }
         }
       }
     }

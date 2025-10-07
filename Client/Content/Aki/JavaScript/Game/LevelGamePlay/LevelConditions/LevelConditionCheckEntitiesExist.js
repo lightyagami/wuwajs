@@ -13,14 +13,13 @@ class LevelConditionCheckEntitiesExist extends LevelGeneralBase_1.LevelCondition
       return false;
     }
     let t = true;
-    for (const i of a.EntityIds) {
-      var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
-      var s = (n?.Valid && n?.Entity?.Valid) ?? false;
-      if (s !== a.IsExist) {
+    for (const s of a.EntityIds) {
+      var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s);
+      if (((n?.Valid && n?.Entity?.Valid) ?? false) !== a.IsExist) {
         t = false;
         break;
       }
-      if (s && a.IsFinishLoading && !n?.Entity?.IsInit) {
+      if (a.IsFinishLoading && !n?.Entity?.IsInit) {
         t = false;
         break;
       }

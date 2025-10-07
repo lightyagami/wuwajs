@@ -42,32 +42,29 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.LevelItemMap = new Map();
     this.d2d = undefined;
     this.m2d = undefined;
-    this.PWa = t => {
-      if (this.ActivityDataBase.Id === t) {
+    this.PWa = i => {
+      if (this.ActivityDataBase.Id === i) {
         this.L2d();
       }
     };
     this.G3d = () => {
       this.L2d();
-      var i = this.ActivityDataBase.GetAllLevelId();
-      for (let t = i.length - 1; t >= 0; t--) {
-        var e = i[t];
+      var t = this.ActivityDataBase.GetAllLevelId();
+      for (let i = t.length - 1; i >= 0; i--) {
+        var e = t[i];
         var s = this.ActivityDataBase.GetCurrentLevelInfoByLevelId(e);
         var r = this.LevelItemMap.get(e);
         var h = this.LevelInfoItemMap.get(e);
         if (s && h) {
           r.Refresh(e, s.IsEndlessMode);
-          h.Refresh(s, false, t);
+          h.Refresh(s, false, i);
         }
       }
     };
-    this.Oli = (t, i) => {
-      if (t === "SurvivorsWeaponUnlockView") {
+    this.Oli = (i, t) => {
+      if (i === "SurvivorsWeaponUnlockView") {
         this.F3d();
       }
-    };
-    this.mKd = () => {
-      this.L2d();
     };
     this.rH_ = [];
     this.N3d = 0;
@@ -82,11 +79,11 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
       this.IsDragging = false;
       return this.StartElasticMovement = true;
     };
-    this.Ga_ = t => {
-      var t = t.Y;
-      if (t !== this.Ra_ && (this.Ra_ = t, t = this.ScrollViewComp.ContentUIItem.GetAnchorOffsetY() ?? 0, this.ScrollContentLastPosY = t, this.f2d(t), this.d$_(t), this.g2d(), this.StartElasticMovement) && Math.abs(this.ScrollViewComp.GetVelocity().Y) < this.AVd) {
-        t = this.DiffAreaUiInfoList[this.CurrentDiff];
-        this.ScrollLevelIdToBottom(t.LowerBoundLevelId, true);
+    this.Ga_ = i => {
+      var i = i.Y;
+      if (i !== this.Ra_ && (this.Ra_ = i, i = this.ScrollViewComp.ContentUIItem.GetAnchorOffsetY() ?? 0, this.ScrollContentLastPosY = i, this.f2d(i), this.d$_(i), this.g2d(), this.StartElasticMovement) && Math.abs(this.ScrollViewComp.GetVelocity().Y) < this.AVd) {
+        i = this.DiffAreaUiInfoList[this.CurrentDiff];
+        this.ScrollLevelIdToBottom(i.LowerBoundLevelId, true);
         this.StartElasticMovement = false;
       }
     };
@@ -105,15 +102,15 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.DiffAreaUiInfoList = [];
     this.CurrentDiff = -1;
     this.CurrentUnlockDiff = -1;
-    this.CUu = t => {
-      if (t && (t = t.getAnimationName(), (t = diffIdUnlockToSpineName.indexOf(t)) !== -1)) {
-        this.GetSpine(22)?.SetAnimation(0, diffIdToleSpineName[t], true);
+    this.CUu = i => {
+      if (i && (i = i.getAnimationName(), (i = diffIdUnlockToSpineName.indexOf(i)) !== -1)) {
+        this.GetSpine(22)?.SetAnimation(0, diffIdToleSpineName[i], true);
       }
     };
     this.p2d = () => {
-      UiManager_1.UiManager.OpenView("SurvivorsRogueRewardView", undefined, (t, i) => {
-        if (t) {
-          this.AddChildViewById(i);
+      UiManager_1.UiManager.OpenView("SurvivorsRogueRewardView", undefined, (i, t) => {
+        if (i) {
+          this.AddChildViewById(t);
         }
       });
     };
@@ -124,54 +121,49 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
       UiManager_1.UiManager.OpenView("SurvivorsTalentTreeView");
     };
     this.S2d = () => {
-      var t;
-      if (!this.IsDragging) {
-        if (this.FW_ && !this.M2d()) {
-          t = this.DiffAreaUiInfoList[this.CurrentDiff + 1];
-          this.ScrollLevelIdToBottom(t.LowerBoundLevelId, true);
-        }
+      var i;
+      if (this.FW_ && !this.M2d()) {
+        i = this.DiffAreaUiInfoList[this.CurrentDiff + 1];
+        this.ScrollLevelIdToBottom(i.LowerBoundLevelId, true);
       }
     };
     this.E2d = () => {
-      var t;
-      if (!this.IsDragging) {
-        if (this.FW_ && !this.I2d()) {
-          t = this.DiffAreaUiInfoList[this.CurrentDiff - 1];
-          this.ScrollLevelIdToBottom(t.LowerBoundLevelId, true);
-        }
+      var i;
+      if (this.FW_ && !this.I2d()) {
+        i = this.DiffAreaUiInfoList[this.CurrentDiff - 1];
+        this.ScrollLevelIdToBottom(i.LowerBoundLevelId, true);
       }
     };
-    this.eqd = t => {
-      if (t) {
+    this.eqd = i => {
+      if (i) {
         this.d2d = new SurvivorsActivityDefine_1.SurvivorsLevelInfo();
-        for (const i of this.LevelInfoItemMap.values()) {
-          i.SetSaveFile(this.d2d);
+        for (const t of this.LevelInfoItemMap.values()) {
+          t.SetSaveFile(this.d2d);
         }
       }
     };
-    this.T2d = t => {
-      var i = this.ActivityDataBase.IsEndlessMode(t);
-      if (this.ActivityDataBase.GetLevelUnlockState(t, i)) {
-        var e;
-        var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(t);
+    this.T2d = i => {
+      if (this.ActivityDataBase.GetCurrentLevelInfoByLevelId(i).Info.K6n) {
+        var t;
+        var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(i);
         ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo = this.d2d;
         if (this.d2d.IsSaveFile) {
-          if (this.d2d.LevelId !== t) {
+          if (this.d2d.LevelId !== i) {
             ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SurvivorsEnterHasSaveTips");
             return;
           } else {
-            e = {
+            t = {
               IsExternal: true,
               Batch: this.d2d.Batch,
               MaxBatch: this.d2d.MaxBatch
             };
-            UiManager_1.UiManager.OpenView("SurvivorsRogueExitView", e);
+            UiManager_1.UiManager.OpenView("SurvivorsRogueExitView", t);
             return;
           }
         }
-        this.d2d.LevelId = t;
-        this.d2d.InstId = i.InstId;
-        this.d2d.IsEndless = this.ActivityDataBase.IsEndlessMode(t);
+        this.d2d.LevelId = i;
+        this.d2d.InstId = e.InstId;
+        this.d2d.IsEndless = this.ActivityDataBase.IsEndlessMode(i);
         UiManager_1.UiManager.OpenView("SurvivorsLevelDetailView");
       } else {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SurvivorsEnterLockTips");
@@ -181,9 +173,9 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
       this.CloseMe();
     };
     this.b2d = () => {
-      var t = ModelManager_1.ModelManager.SurvivorsRogueModel.GetRogueActivityConfig()?.HelpId;
-      if (t) {
-        ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(t);
+      var i = ModelManager_1.ModelManager.SurvivorsRogueModel.GetRogueActivityConfig()?.HelpId;
+      if (i) {
+        ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(i);
       }
     };
   }
@@ -195,9 +187,9 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.m2d = await this.SAo("UiCurve_AreaMove");
   }
   async OnBeforeStartAsync() {
-    var t = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData;
-    if (t && (this.ActivityDataBase = t, (t = []).push(this.R2d()), this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(), t.push(this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())), this.CaptionItem.SetCloseCallBack(this.Yyd), this.CaptionItem.SetHelpCallBack(this.b2d), this.ButtonTalentTree = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), t.push(this.ButtonTalentTree.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())), this.ButtonTalentTree.SetFunction(this.y2d), this.ButtonHandbook = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), t.push(this.ButtonHandbook.CreateThenShowByActorAsync(this.GetItem(5).GetOwner())), this.ButtonHandbook.SetFunction(this.v2d), this.ButtonReward = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), t.push(this.ButtonReward.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())), this.ButtonReward.SetFunction(this.p2d), await Promise.all(t), t = await ControllerHolder_1.ControllerHolder.SurvivorsRogueController.RequestLastFile())) {
-      this.d2d = t;
+    var i = ModelManager_1.ModelManager.SurvivorsRogueModel.ActivityData;
+    if (i && (this.ActivityDataBase = i, (i = []).push(this.R2d()), this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(), i.push(this.CaptionItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())), this.CaptionItem.SetCloseCallBack(this.Yyd), this.CaptionItem.SetHelpCallBack(this.b2d), this.ButtonTalentTree = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), i.push(this.ButtonTalentTree.CreateThenShowByActorAsync(this.GetItem(4).GetOwner())), this.ButtonTalentTree.SetFunction(this.y2d), this.ButtonHandbook = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), i.push(this.ButtonHandbook.CreateThenShowByActorAsync(this.GetItem(5).GetOwner())), this.ButtonHandbook.SetFunction(this.v2d), this.ButtonReward = new SurvivorsFunctionButtonItem_1.SurvivorsFunctionButtonItem(), i.push(this.ButtonReward.CreateThenShowByActorAsync(this.GetItem(6).GetOwner())), this.ButtonReward.SetFunction(this.p2d), await Promise.all(i), i = await ControllerHolder_1.ControllerHolder.SurvivorsRogueController.RequestLastFile())) {
+      this.d2d = i;
       this.sH_();
       this.Jfo();
       this.j3d();
@@ -216,8 +208,8 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     SurvivorsActivityController_1.SurvivorsActivityController.CheckIsActivityClose();
   }
   OnAfterShow() {
-    ControllerHolder_1.ControllerHolder.SurvivorsRogueController.TryOpenWeaponUnlockView().then(t => {
-      if (!t) {
+    ControllerHolder_1.ControllerHolder.SurvivorsRogueController.TryOpenWeaponUnlockView().then(i => {
+      if (!i) {
         this.F3d();
       }
     });
@@ -227,14 +219,12 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.PWa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.G3d);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.Oli);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueTalentNodeUpdate, this.mKd);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsInstSettle, this.eqd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.PWa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityCrossDayRefresh, this.G3d);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.Oli);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueTalentNodeUpdate, this.mKd);
   }
   OnBeforeDestroy() {
     this.rH_.length = 0;
@@ -244,13 +234,13 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.GetSpine(22)?.AnimationComplete.Remove(this.CUu);
     this.QW_();
   }
-  async SAo(t) {
-    t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    return new LoadAsyncPromise_1.LoadAsyncPromise(t, UE.CurveFloat).Promise;
+  async SAo(i) {
+    i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
+    return new LoadAsyncPromise_1.LoadAsyncPromise(i, UE.CurveFloat).Promise;
   }
-  OnTick(t) {
-    for (const i of this.LevelInfoItemMap.values()) {
-      i.OnTick(t);
+  OnTick(i) {
+    for (const t of this.LevelInfoItemMap.values()) {
+      t.OnTick(i);
     }
   }
   Jfo() {
@@ -265,47 +255,47 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     this.N3d = this.ScrollViewComp.RootUIComp.GetHeight() / 2;
   }
   sH_() {
-    var t = this.GetScrollViewWithScrollbar(1).ContentUIItem;
+    var i = this.GetScrollViewWithScrollbar(1).ContentUIItem;
     this.rH_.push({
-      Item: t,
-      InitPosY: t.GetAnchorOffsetY() ?? 0,
+      Item: i,
+      InitPosY: i.GetAnchorOffsetY() ?? 0,
       ParallaxFactor: this.xVd
     });
   }
   w2d() {
-    var t = this.d2d.LevelId;
-    if (t) {
-      this.ScrollLevelIdToCenter(t);
+    var i = this.d2d.LevelId;
+    if (i) {
+      this.ScrollLevelIdToCenter(i);
     } else {
-      t = this.ActivityDataBase.GetFocusLevelId();
-      this.ScrollLevelIdToCenter(t);
+      i = this.ActivityDataBase.GetFocusLevelId();
+      this.ScrollLevelIdToCenter(i);
     }
-    for (const i of this.LevelInfoItemMap.values()) {
-      i.SetSaveFile(this.d2d);
+    for (const t of this.LevelInfoItemMap.values()) {
+      t.SetSaveFile(this.d2d);
     }
   }
   d$_(e) {
-    this.rH_.forEach(t => {
-      var i = t.InitPosY + (e - this.ScrollContentInitPosY) * t.ParallaxFactor;
-      t.Item.SetAnchorOffsetY(Math.max(0, i));
+    this.rH_.forEach(i => {
+      var t = i.InitPosY + (e - this.ScrollContentInitPosY) * i.ParallaxFactor;
+      i.Item.SetAnchorOffsetY(Math.max(0, t));
     });
   }
-  ScrollLevelIdToBottom(t, i = true) {
+  ScrollLevelIdToBottom(i, t = true) {
     var e;
-    var s = this.LevelItemMap.get(t);
-    if (s && (e = (0, puerts_1.$ref)(new UE.Vector2D(this.ScrollViewComp.ContentUIItem.RelativeLocation)), s = s.GetBottomPosItem(), this.ScrollViewComp.StopMovement(), i && this.A2d(), this.ScrollViewComp.ScrollToBottom(e, s, i), i && (this.ScrollViewComp.Tweener?.SetDuration(this.DVd), this.ScrollViewComp.Tweener?.SetCurveFloat(this.m2d), this.YW_()), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("SurvivorsRogue", 37, "指定关卡滚动至下方", ["LevelId", t], ["Tween", i]);
+    var s = this.LevelItemMap.get(i);
+    if (s && (e = (0, puerts_1.$ref)(new UE.Vector2D(this.ScrollViewComp.ContentUIItem.RelativeLocation)), s = s.GetBottomPosItem(), this.ScrollViewComp.StopMovement(), t && this.A2d(), this.ScrollViewComp.ScrollToBottom(e, s, t), t && (this.ScrollViewComp.Tweener?.SetDuration(this.DVd), this.ScrollViewComp.Tweener?.SetCurveFloat(this.m2d), this.YW_()), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("SurvivorsRogue", 37, "指定关卡滚动至下方", ["LevelId", i], ["Tween", t]);
     }
   }
-  ScrollLevelIdToCenter(t) {
-    var i = this.LevelItemMap.get(t);
-    if (!!i && !((i = -i.GetOriginalItem().GetAnchorOffsetY() - this.N3d) <= 0)) {
+  ScrollLevelIdToCenter(i) {
+    var t = this.LevelItemMap.get(i);
+    if (!!t && !((t = -t.GetOriginalItem().GetAnchorOffsetY() - this.N3d) <= 0)) {
       this.Q_t.Reset();
-      this.Q_t.Y = i;
+      this.Q_t.Y = t;
       this.ScrollViewComp.StopMovement();
       this.ScrollViewComp.ContentUIItem.SetAnchorOffset(this.Q_t.ToUeVector2D());
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SurvivorsRogue", 37, "指定关卡滚动至中心区域", ["LevelId", t], ["PosY", i]);
+        Log_1.Log.Debug("SurvivorsRogue", 37, "指定关卡滚动至中心区域", ["LevelId", i], ["PosY", t]);
       }
     }
   }
@@ -344,7 +334,7 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     return this.CurrentDiff === 0;
   }
   async R2d() {
-    var i = this.ActivityDataBase.GetAllLevelId();
+    var t = this.ActivityDataBase.GetAllLevelId();
     var e = [];
     var s = [18, 17, 16, 15, 14, 13, 12];
     var r = this.GetItem(20);
@@ -352,8 +342,8 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     r.SetUIActive(false);
     h.SetUIActive(false);
     var o = this.GetItem(19);
-    for (let t = i.length - 1; t >= 0; t--) {
-      var n = i[t];
+    for (let i = t.length - 1; i >= 0; i--) {
+      var n = t[i];
       var a = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(n).LevelInfoType === 0 ? r : h;
       var v = new SurvivorsLevelInfoItem_1.SurvivorsLevelInfoItem();
       var a = LguiUtil_1.LguiUtil.CopyItem(a, o);
@@ -362,43 +352,43 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
       this.LevelInfoItemMap.set(n, v);
       var a = new SurvivorsLevelItem_1.SurvivorsLevelItem();
       a.OnButtonClickedCallback = this.T2d;
-      var v = this.GetItem(s[t]);
+      var v = this.GetItem(s[i]);
       e.push(a.CreateThenShowByActorAsync(v.GetOwner()));
       this.LevelItemMap.set(n, a);
     }
     await Promise.all(e);
   }
   j3d() {
-    var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.ActivityDataBase.Id).AreaBoundLevelId;
+    var t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.ActivityDataBase.Id).AreaBoundLevelId;
     var e = this.ScrollViewComp.RootUIComp.GetHeight() * this.UVd;
-    for (let t = 0; t < i.length; t++) {
-      var s = i[t];
+    for (let i = 0; i < t.length; i++) {
+      var s = t[i];
       var r = this.LevelItemMap.get(s).GetOriginalItem();
       var h = r.GetHeight();
       var r = r.GetAnchorOffsetY();
       var s = {
-        Diff: 0 + t,
+        Diff: 0 + i,
         LowerBoundLevelId: s,
         LowerBoundPosY: r - h + e
       };
       this.DiffAreaUiInfoList.push(s);
     }
     this.CurrentUnlockDiff = this.ActivityDataBase.GetCurrentUnlockDiffId();
-    var t = diffIdToleSpineName[this.CurrentUnlockDiff];
+    var i = diffIdToleSpineName[this.CurrentUnlockDiff];
     this.GetSpine(22).AnimationComplete.Add(this.CUu);
-    this.GetSpine(22).SetAnimation(0, t, true);
+    this.GetSpine(22).SetAnimation(0, i, true);
   }
   g2d() {
-    for (var [t, i] of this.LevelItemMap.entries()) {
-      i = i.GetRootActor().D_K2_GetActorLocation();
-      this.LevelInfoItemMap.get(t).GetRootActor().D_K2_SetActorLocation(i, false, undefined, false);
+    for (var [i, t] of this.LevelItemMap.entries()) {
+      t = t.GetRootActor().D_K2_GetActorLocation();
+      this.LevelInfoItemMap.get(i).GetRootActor().D_K2_SetActorLocation(t, false, undefined, false);
     }
   }
-  f2d(i) {
+  f2d(t) {
     let e = 0;
-    for (let t = 1; t < this.DiffAreaUiInfoList.length; t++) {
-      var s = this.DiffAreaUiInfoList[t];
-      if (i + s.LowerBoundPosY > 0) {
+    for (let i = 1; i < this.DiffAreaUiInfoList.length; i++) {
+      var s = this.DiffAreaUiInfoList[i];
+      if (t + s.LowerBoundPosY > 0) {
         break;
       }
       e = s.Diff;
@@ -410,40 +400,40 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   $3d() {
-    var t = this.GetText(21);
-    let i = "";
+    var i = this.GetText(21);
+    let t = "";
     switch (this.CurrentDiff) {
       case 2:
-        i = "SurvivorsLevelDifficult_TagName";
+        t = "SurvivorsLevelDifficult_TagName";
         break;
       case 1:
-        i = "SurvivorsLevelOrdinary_TagName";
+        t = "SurvivorsLevelOrdinary_TagName";
         break;
       case 0:
-        i = "SurvivorsLevelSimple_TagName";
+        t = "SurvivorsLevelSimple_TagName";
     }
-    LguiUtil_1.LguiUtil.SetLocalTextNew(t, i);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(i, t);
     this.H3d(this.CurrentDiff).SetToggleState(1);
   }
   GetNearestCenterLevelId() {
-    let t = 0;
-    var i;
+    let i = 0;
+    var t;
     var e;
     var s = MathUtils_1.MathUtils.Int32Max;
     var r = this.ScrollViewComp.ContentUIItem.GetAnchorOffsetY();
     var h = r - this.V3d;
     var o = r + this.V3d;
-    for ([i, e] of this.LevelItemMap.entries()) {
+    for ([t, e] of this.LevelItemMap.entries()) {
       var n = e.GetOriginalItem();
       var n = n.GetHeight() - n.GetAnchorOffsetY() - this.N3d;
       if (h <= n && n <= o && Math.abs(n - this.N3d) < s) {
-        t = i;
+        i = t;
       }
     }
-    return t;
+    return i;
   }
-  H3d(t) {
-    switch (t) {
+  H3d(i) {
+    switch (i) {
       case 2:
         return this.GetExtendToggle(9);
       case 1:
@@ -453,28 +443,28 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     }
     return this.GetExtendToggle(10);
   }
-  D2d(i) {
-    this.LevelItemMap.forEach(t => {
-      t.SetButtonInteractive(i);
+  D2d(t) {
+    this.LevelItemMap.forEach(i => {
+      i.SetButtonInteractive(t);
     });
   }
   F3d() {
-    let t = false;
-    for (var [i, e] of this.LevelInfoItemMap.entries()) {
-      var s = this.ActivityDataBase.TryRemoveLevelNewUnlock(i, false);
-      var r = this.ActivityDataBase.TryRemoveLevelNewUnlock(i, true);
-      var i = this.ActivityDataBase.TryRemoveLevelNewFinished(i);
+    let i = false;
+    for (var [t, e] of this.LevelInfoItemMap.entries()) {
+      var s = this.ActivityDataBase.TryRemoveLevelNewUnlock(t, false);
+      var r = this.ActivityDataBase.TryRemoveLevelNewUnlock(t, true);
+      var t = this.ActivityDataBase.TryRemoveLevelNewFinished(t);
       if (r) {
         e.PlaySequenceByName("EndlessOpen");
-        t = true;
+        i = true;
       } else if (s) {
         e.PlaySequenceByName("Unlock");
-        t = true;
-      } else if (i) {
+        i = true;
+      } else if (t) {
         e.PlaySequenceByName("Complete");
       }
     }
-    if (t) {
+    if (i) {
       this.ActivityDataBase.RefreshActivityRedDot();
     }
     if (this.ActivityDataBase.IsEndlessFirstOpenCheck()) {
@@ -489,35 +479,35 @@ class SurvivorsRogueMainView extends UiTickViewBase_1.UiTickViewBase {
     UiLayer_1.UiLayer.SetShowNormalMaskLayer(false);
   }
   B4d() {
-    let t = this.LevelItemMap.size;
-    for (var [i, e] of this.LevelItemMap.entries()) {
-      var s = this.ActivityDataBase.GetCurrentLevelInfoByLevelId(i);
-      var r = this.LevelInfoItemMap.get(i);
+    let i = this.LevelItemMap.size;
+    for (var [t, e] of this.LevelItemMap.entries()) {
+      var s = this.ActivityDataBase.GetCurrentLevelInfoByLevelId(t);
+      var r = this.LevelInfoItemMap.get(t);
       if (s) {
-        e.Refresh(i, s.IsEndlessMode);
-        r.Refresh(s, false, t);
-        t--;
+        e.Refresh(t, s.IsEndlessMode);
+        r.Refresh(s, false, i);
+        i--;
       }
     }
   }
   L2d() {
-    var t = this.ActivityDataBase.GetFinishedRewardTaskCount().toString();
-    var i = this.ActivityDataBase.RewardTaskMap.size.toString();
-    this.ButtonReward.SetDescText("SurvivorsReward", t, i);
+    var i = this.ActivityDataBase.GetFinishedRewardTaskCount().toString();
+    var t = this.ActivityDataBase.RewardTaskMap.size.toString();
+    this.ButtonReward.SetDescText("SurvivorsReward", i, t);
     this.ButtonReward.SetRedDotVisible(this.ActivityDataBase.GetRewardRedDotState());
-    var t = this.ActivityDataBase.GetAllItemUnlockCount().toString();
-    var i = this.ActivityDataBase.GetAllItemCount().toString();
-    this.ButtonHandbook.SetDescText("SurvivorsCollection", t, i);
-    var t = this.ActivityDataBase.TalentNodeMap;
+    var i = this.ActivityDataBase.GetAllItemUnlockCount().toString();
+    var t = this.ActivityDataBase.GetAllItemCount().toString();
+    this.ButtonHandbook.SetDescText("SurvivorsCollection", i, t);
+    var i = this.ActivityDataBase.TalentNodeMap;
     let e = 0;
-    for (const s of t.values()) {
+    for (const s of i.values()) {
       if (s.Status === 1) {
         e++;
       }
     }
-    i = t.size.toString();
+    t = i.size.toString();
     this.ButtonTalentTree.SetRedDotVisible(this.ActivityDataBase.GetTalentTreeRed());
-    this.ButtonTalentTree.SetDescText("SurvivorsSkillTree", e.toString(), i);
+    this.ButtonTalentTree.SetDescText("SurvivorsSkillTree", e.toString(), t);
   }
 }
 exports.SurvivorsRogueMainView = SurvivorsRogueMainView;

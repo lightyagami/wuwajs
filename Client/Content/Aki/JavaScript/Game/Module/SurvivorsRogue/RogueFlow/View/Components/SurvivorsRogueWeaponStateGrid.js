@@ -83,17 +83,17 @@ class SurvivorsRogueWeaponStateGrid extends GridProxyAbstract_1.GridProxyAbstrac
     var i;
     var t;
     var e;
-    var r = this.Data.WeaponData;
-    if (r && (i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(r.ConfigId), t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeaponEvolve(r.GetCurrentEvolveId()), i) && t && (t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetQualityConfig(t.Quality))) {
+    var s = this.Data.WeaponData;
+    if (s && (i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(s.ConfigId), t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeaponEvolve(s.GetCurrentEvolveId()), i) && t && (t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetQualityConfig(t.Quality))) {
       e = this.GetText(4);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(e, SurvivorsRogueUiDefine_1.SURVIVORS_LV_KEY, r.Data.F6n);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, SurvivorsRogueUiDefine_1.SURVIVORS_LV_KEY, s.Data.F6n);
       e.SetUIActive(true);
       this.GetItem(14).SetUIActive(true);
       this.SetTextureShowUntilLoaded(i.Icon, this.GetTexture(2));
-      r = UE.Color.FromHex(t.WeaponColor);
+      s = UE.Color.FromHex(t.WeaponColor);
       e = this.GetSprite(1).changeColor;
       this.GetSprite(1).SetChangeColor(false, e);
-      this.GetSprite(5).SetChangeColor(true, r);
+      this.GetSprite(5).SetChangeColor(true, s);
       this.GetSprite(5).SetUIActive(true);
       if (this.Data.BondPosition === -1) {
         this.SetConnected(true, 0);
@@ -121,7 +121,6 @@ class SurvivorsRogueWeaponStateGrid extends GridProxyAbstract_1.GridProxyAbstrac
     this.SPe.PlayOrReplaySequenceByName(i);
   }
   SetConnected(i, t) {
-    this.SetDisConnected();
     this.IFd = (i ? [7, 9, 11] : [6, 8, 10])[t];
     this.GetItem(this.IFd)?.SetUIActive(true);
     this.SPe.PlayOrReplaySequenceByName("Connect");
@@ -141,14 +140,6 @@ class SurvivorsRogueWeaponStateGrid extends GridProxyAbstract_1.GridProxyAbstrac
   }
   GetKey(i, t) {
     return i.WeaponData?.ConfigId ?? 0;
-  }
-  GetGuideUiItemAndUiItemForShowEx(i) {
-    var t = this.GetButton(0)?.GetRootComponent();
-    if (t) {
-      return [t, t];
-    } else {
-      return undefined;
-    }
   }
 }
 exports.SurvivorsRogueWeaponStateGrid = SurvivorsRogueWeaponStateGrid;

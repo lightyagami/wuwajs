@@ -35,25 +35,21 @@ class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
   GetCurrentShowState() {
     return this.aPi;
   }
-  Refresh(e, t) {
-    this.Gvd = t;
-    this.RefreshView(e);
+  Refresh(e) {
+    this.Gvd = e;
+    this.RefreshView();
     this.RefreshRedPoint();
   }
-  RefreshView(e) {
-    var t = ModelManager_1.ModelManager.WorldMapModel.ActivityListData;
-    if (t.length === 0) {
+  RefreshView() {
+    var e = ModelManager_1.ModelManager.WorldMapModel.ActivityListData;
+    if (e.length === 0) {
       this.GetRootItem().SetUIActive(false);
     } else {
-      if (e) {
-        this.GetRootItem().SetUIActive(true);
-      } else {
-        this.GetRootItem().SetUIActive(false);
-      }
-      e = t[0];
+      this.GetRootItem().SetUIActive(true);
+      e = e[0];
       this.GetText(1).SetText(e.CurrentNum + "/" + e.TotalNum);
-      t = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(e.Id);
-      this.SetSpriteByPath(t.IconPath, this.GetSprite(7), false);
+      e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(e.Id);
+      this.SetSpriteByPath(e.IconPath, this.GetSprite(7), false);
       this.RefreshRedPoint();
     }
   }

@@ -32,7 +32,7 @@ class SurvivorsRoguePlayerHpHandle {
   }
   OnPlayerHpChange(i) {
     if (!!this.gU && !(i.MaxHp <= 0)) {
-      if (i.Hp < this.zna && i.Hp < i.MaxHp) {
+      if (i.Hp < this.zna) {
         this.m9d();
       }
       this.zna = i.Hp;

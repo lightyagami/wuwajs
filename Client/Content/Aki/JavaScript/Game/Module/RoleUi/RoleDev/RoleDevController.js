@@ -75,7 +75,7 @@ class RoleDevController extends UiControllerBase_1.UiControllerBase {
   static T6d(o, r, t) {
     try {
       var e = RoleDevController.b6d(o);
-      var l = new LogReportDefine_1.RoleDevLogEvent();
+      var l = new LogReportDefine_1.RoleDevLogData();
       l.i_role_id = o;
       l.i_role_type = e;
       l.i_main_page = r;
@@ -106,6 +106,12 @@ class RoleDevController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static LogRoleDevPageClick(e, o) {
+    e = RoleDevController.T6d(e, o, -1);
+    if (e) {
+      LogController_1.LogController.LogRoleDevPush(e);
+    }
+  }
+  static LogRoleDevRoleButtonClick(e, o) {
     e = RoleDevController.T6d(e, o, -1);
     if (e) {
       LogController_1.LogController.LogRoleDevPush(e);

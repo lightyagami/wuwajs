@@ -22,35 +22,24 @@ class RoleDevPhantomViewItem extends UiPanelBase_1.UiPanelBase {
     this.CanClickCallBack = undefined;
     this.OnDevelopCallBack = undefined;
     this.OnPerfectDevelopCallBack = undefined;
-    this.OnChangeFetterGroupSuccessCallBack = undefined;
+    this.ko_ = 0;
     this.jad = [];
     this.lpt = undefined;
     this.aCd = undefined;
     this.UiViewSequence = undefined;
-    this.Pe = undefined;
     this.Had = () => new RoleDevPhantomSuitItem_1.RoleDevPhantomSuitItem();
     this.$ad = () => {
-      ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe.RoleId, 3, 16);
-      ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex = 0;
-      var e = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipByIndex(this.Pe.RoleId, 0);
-      ModelManager_1.ModelManager.PhantomBattleModel.CurrentSelectUniqueId = e;
-      PhantomUtil_1.PhantomUtil.OpenVisionEquipmentView(this.Pe.RoleId, 0);
+      ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.ko_, 3, 16);
+      PhantomUtil_1.PhantomUtil.OpenVisionEquipmentView(this.ko_, 0);
     };
     this.Qad = () => {
-      ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe.RoleId, 3, 17);
+      ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.ko_, 3, 17);
       var e = {
-        RoleId: this.Pe.RoleId,
-        IsFromRoleDev: true,
-        SuccessCallBack: this.PYd,
-        GetSelectedFetterGroupIdCallBack: this.AYd
+        RoleId: this.ko_,
+        IsFromRoleDev: true
       };
       UiManager_1.UiManager.OpenView("VisionRecommendView", e);
     };
-    this.PYd = (e, t) => {
-      this.Pe?.RoleDevViewModel?.SetRoleRecommendFetterGroupId(e, t);
-      this.OnChangeFetterGroupSuccessCallBack?.(e, t);
-    };
-    this.AYd = e => this.Pe?.RoleDevViewModel?.GetRoleRecommendFetterGroupId(e) ?? 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIButtonComponent], [9, UE.UIVerticalLayout], [10, UE.UIItem]];
@@ -65,20 +54,18 @@ class RoleDevPhantomViewItem extends UiPanelBase_1.UiPanelBase {
     this.AddUiBehavior(this.UiViewSequence);
   }
   async Xad() {
-    var t = [];
     this.jad.length = 0;
     for (let e = 3; e <= 7; e++) {
-      var i = new RoleDevPhantomHeadItem_1.RoleDevPhantomHeadItem(e - 3);
-      t.push(i.CreateThenShowByActorAsync(this.GetItem(e).GetOwner()));
-      this.jad.push(i);
+      var t = new RoleDevPhantomHeadItem_1.RoleDevPhantomHeadItem(this.GetItem(e), e - 3);
+      this.jad.push(t);
     }
-    await Promise.all(t);
+    await Promise.all(this.jad.map(async e => e.Init()));
   }
   Kad() {
     this.lpt = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.Had);
   }
   Refresh(e) {
-    this.Pe = e;
+    this.ko_ = e.RoleId;
     if (ModelManager_1.ModelManager.RoleModel?.GetRoleDataById(e.RoleId) !== undefined) {
       this.GetItem(0).SetUIActive(true);
       this._Cd(e.SuitDataList);
@@ -93,7 +80,7 @@ class RoleDevPhantomViewItem extends UiPanelBase_1.UiPanelBase {
   Xkd() {
     var t = this.jad.length;
     for (let e = 0; e < t; e++) {
-      this.jad[e].SetRoleId(this.Pe.RoleId);
+      this.jad[e].SetRoleId(this.ko_);
     }
   }
   zad(e) {

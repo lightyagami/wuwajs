@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow = exports.LevelConditionCheckSurvivorRogueHasWeaponBond = exports.LevelConditionCheckSurvivorRogueTalentCanUnlock = exports.LevelConditionOnSurvivorsRoguePopViewRefresh = exports.LevelConditionOnSurvivorsRogueComboBuffShow = exports.LevelConditionOnSurvivorsRogueEndlessToggleShow = undefined;
+exports.LevelConditionCheckSurvivorRogueHasWeaponBond = exports.LevelConditionCheckSurvivorRogueTalentCanUnlock = exports.LevelConditionOnSurvivorsRoguePopViewRefresh = exports.LevelConditionOnSurvivorsRogueComboBuffShow = exports.LevelConditionOnSurvivorsRogueEndlessToggleShow = undefined;
 const ModelManager_1 = require("../../Manager/ModelManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnSurvivorsRogueEndlessToggleShow extends LevelGeneralBase_1.LevelConditionBase {
@@ -23,10 +23,7 @@ exports.LevelConditionOnSurvivorsRogueComboBuffShow = LevelConditionOnSurvivorsR
 class LevelConditionOnSurvivorsRoguePopViewRefresh extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, o, ...r) {
     var [r] = r;
-    var n = Number(e.LimitParams.get("Type"));
-    var e = Number(e.LimitParams.get("LevelId"));
-    var s = ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId;
-    return r === n && (!e || e === s);
+    return r === Number(e.LimitParams.get("Type"));
   }
 }
 exports.LevelConditionOnSurvivorsRoguePopViewRefresh = LevelConditionOnSurvivorsRoguePopViewRefresh;
@@ -42,11 +39,4 @@ class LevelConditionCheckSurvivorRogueHasWeaponBond extends LevelGeneralBase_1.L
   }
 }
 exports.LevelConditionCheckSurvivorRogueHasWeaponBond = LevelConditionCheckSurvivorRogueHasWeaponBond;
-class LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, o, ...r) {
-    var [r] = r;
-    return r;
-  }
-}
-exports.LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow = LevelConditionOnSurvivorsRogueWeaponDetailTabViewShow;
 //# sourceMappingURL=LevelConditionSurvivorsRogueGuide.js.map

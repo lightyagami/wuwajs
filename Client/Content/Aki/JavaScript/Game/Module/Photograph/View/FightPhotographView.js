@@ -24,7 +24,7 @@ class FightPhotographView extends PhotographView_1.PhotographView {
         UiManager_1.UiManager.OpenView("FightPhotoResultView");
       } else {
         ControllerHolder_1.ControllerHolder.PhotographController.CloseFightPhotographMode();
-        ControllerHolder_1.ControllerHolder.FilterSettingController.SetDefaultFilterSetting();
+        ControllerHolder_1.ControllerHolder.FilterSettingController.ApplyFilterSetting();
       }
     };
   }
@@ -39,15 +39,15 @@ class FightPhotographView extends PhotographView_1.PhotographView {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.NotifyBtFightPhotoTaskFinish, this.twd);
   }
   OnAfterTick(e) {
-    var o;
+    var r;
     if (!ControllerHolder_1.ControllerHolder.PhotographController.CurrentBtNode || this.Y8d) {
       if (this.UiViewSequence?.HasSequenceNameInPlaying("Loop")) {
         this.UiViewSequence.StopSequenceByKey("Loop", false, true);
       }
     } else {
-      o = ControllerHolder_1.ControllerHolder.PhotographController.IsSatisfyAllConditions();
-      if (this.z8d !== o) {
-        if (this.z8d = o) {
+      r = ControllerHolder_1.ControllerHolder.PhotographController.IsSatisfyAllConditions();
+      if (this.z8d !== r) {
+        if (this.z8d = r) {
           this.UiViewSequence.PlaySequence("ShowChanging");
           this.UiViewSequence.PlaySequence("Loop");
         } else {
@@ -63,7 +63,6 @@ class FightPhotographView extends PhotographView_1.PhotographView {
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
     ModelManager_1.ModelManager.RenderModuleModel?.DisableForceTickCharRenderShell("FightPhotographView OnBeforeDestroy");
-    AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
     this.VDc();
   }
   NDc() {

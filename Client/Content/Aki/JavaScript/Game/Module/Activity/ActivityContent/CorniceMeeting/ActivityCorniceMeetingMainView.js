@@ -49,20 +49,20 @@ class ActivityCorniceMeetingMainView extends UiViewBase_1.UiViewBase {
       this.F6a.RefreshGridProxy(e);
     };
     this.g3e = e => {
-      var i;
+      var t;
       if (e.has(ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.ActivityId)) {
         e = () => {
           this.CloseMe();
         };
-        (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115)).FunctionMap.set(1, e);
-        i.FunctionMap.set(0, e);
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
+        (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115)).FunctionMap.set(1, e);
+        t.FunctionMap.set(0, e);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
       }
     };
     this.H6a = e => {
-      var i = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
-      i.CurrentSelectLevelPlayId = e;
-      this.m3e = i.GetLevelEntryData(e);
+      var t = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
+      t.CurrentSelectLevelPlayId = e;
+      this.m3e = t.GetLevelEntryData(e);
       this.j6a();
       this.S3e();
       this.W6a();
@@ -88,57 +88,16 @@ class ActivityCorniceMeetingMainView extends UiViewBase_1.UiViewBase {
     this.kOe = () => {
       this.y3e();
       var e;
-      var i = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
-      if (i) {
-        if ((i = i.GetIsShow(i.CurrentSelectLevelPlayId)) && this.R3e !== i) {
+      var t = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
+      if (t) {
+        if ((t = t.GetIsShow(t.CurrentSelectLevelPlayId)) && this.R3e !== t) {
           e = this.F6a.GetSelectedGridIndex();
           this.F6a.RefreshGridProxy(e);
           this.W6a();
           this.S3e();
         }
-        this.R3e = i;
+        this.R3e = t;
       }
-    };
-    this.j5c = () => {
-      var i = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
-      var t = new Map();
-      var r = this.LHa[this.F6a.GetSelectedGridIndex()].LevelPlayId;
-      var e = i.GetLevelEntryData(r);
-      if (e) {
-        var n = e.GetRewardList();
-        for (let e = 0; e < n.length; e++) {
-          if (i.GetRewardState(r, e) === 1) {
-            if (t.has(r)) {
-              t.get(r).push(e);
-            } else {
-              t.set(r, [e]);
-            }
-          }
-        }
-        ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.MultiCorniceMeetingRewardRequest(i.Id, t, () => {
-          this.j6a();
-          this.Eua();
-        });
-      }
-    };
-    this.Eua = () => {
-      const e = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
-      var i = e.GetLevelPlayIdList();
-      this.F6a.BindOnScrollValueChanged(e => {
-        let i = false;
-        let t = false;
-        for (let e = 0; e < this.LHa.length; e++) {
-          var r = this.LHa[e];
-          if ((r &&= ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData().GetLevelEntryData(r.LevelPlayId)) && (r.GetRedDot() && e < this.F6a.GetDisplayGridStartIndex() && (i = true), r.GetRedDot()) && e > this.F6a.GetDisplayGridEndIndex()) {
-            t = true;
-          }
-        }
-        this.GetItem(10).SetUIActive(i);
-        this.GetItem(11).SetUIActive(t);
-      });
-      this.F6a.RefreshByData(i, false, () => {
-        this.F6a?.SelectGridProxy(e.GetSelectLevelPlayIdIndex());
-      });
     };
   }
   OnRegisterComponent() {
@@ -195,20 +154,36 @@ class ActivityCorniceMeetingMainView extends UiViewBase_1.UiViewBase {
       this.GetText(8).SetText(e);
     }
   }
-  x3e(e, i) {
-    var t = TimeUtil_1.TimeUtil.GetServerTime();
-    var e = Number(e) - t;
-    var t = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat3(e);
-    var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(i);
+  x3e(e, t) {
+    var i = TimeUtil_1.TimeUtil.GetServerTime();
+    var e = Number(e) - i;
+    var i = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat3(e);
+    var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(t);
     let r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e);
-    return r = r.replace("{0}", t.CountDownText);
+    return r = r.replace("{0}", i.CountDownText);
   }
   j6a() {
-    var e = this.m3e.GetRewardList().map(e => ({
-      RewardId: e,
-      OnClickFinishBtnCb: this.j5c
-    }));
+    var e = this.m3e.GetRewardList();
     this.H3e.RefreshByData(e);
+  }
+  Eua() {
+    const e = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
+    var t = e.GetLevelPlayIdList();
+    this.F6a.BindOnScrollValueChanged(e => {
+      let t = false;
+      let i = false;
+      for (let e = 0; e < this.LHa.length; e++) {
+        var r = this.LHa[e];
+        if ((r &&= ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData().GetLevelEntryData(r.LevelPlayId)) && (r.GetRedDot() && e < this.F6a.GetDisplayGridStartIndex() && (t = true), r.GetRedDot()) && e > this.F6a.GetDisplayGridEndIndex()) {
+          i = true;
+        }
+      }
+      this.GetItem(10).SetUIActive(t);
+      this.GetItem(11).SetUIActive(i);
+    });
+    this.F6a.RefreshByData(t, false, () => {
+      this.F6a?.SelectGridProxy(e.GetSelectLevelPlayIdIndex());
+    });
   }
   S3e() {
     var e = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
@@ -219,20 +194,20 @@ class ActivityCorniceMeetingMainView extends UiViewBase_1.UiViewBase {
   }
   W6a() {
     var e;
-    var i;
-    var t = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
-    var t = t.GetLevelEntryData(t.CurrentSelectLevelPlayId);
-    var r = TimeUtil_1.TimeUtil.GetTimeString(t.RemainTime);
-    if (t?.MaxScore === 0) {
+    var t;
+    var i = ActivityCorniceMeetingController_1.ActivityCorniceMeetingController.GetCurrentActivityData();
+    var i = i.GetLevelEntryData(i.CurrentSelectLevelPlayId);
+    var r = TimeUtil_1.TimeUtil.GetTimeString(i.RemainTime);
+    if (i?.MaxScore === 0) {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "ActivityCorniceMeetingScoreNoRecord");
     } else {
-      e = t.MaxScore;
-      i = t?.GetMaxScoreConfig() ?? 0;
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "Text_ItemCost_Text", (i < e ? i : e).toString(), i);
+      e = i.MaxScore;
+      t = i?.GetMaxScoreConfig() ?? 0;
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "Text_ItemCost_Text", (t < e ? t : e).toString(), t);
     }
-    this.GetItem(9).SetUIActive(t.IsAllFinished());
+    this.GetItem(9).SetUIActive(i.IsAllFinished());
     this.GetText(6).SetText(r);
-    this.GetItem(12).SetUIActive(t.IsUnlock());
+    this.GetItem(12).SetUIActive(i.IsUnlock());
   }
 }
 exports.ActivityCorniceMeetingMainView = ActivityCorniceMeetingMainView;

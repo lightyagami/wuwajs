@@ -198,7 +198,7 @@ class LevelEventCenter {
     e("InterludeActions", LevelEventInterludeActions_1.LevelEventInterludeActions, LEVEL_1);
     e("AddBuffToTriggeredEntity", LevelEventAddBuffToTriggeredEntity_1.LevelEventAddBuffToTriggeredEntity);
     e("SetTime", LevelEventAdjustTodTime_1.LevelEventAdjustTodTime, LEVEL_1);
-    e("SetBattleState", LevelEventSetBattleState_1.LevelEventSetBattleState, LEVEL_1, true);
+    e("SetBattleState", LevelEventSetBattleState_1.LevelEventSetBattleState, LEVEL_1);
     e("WaitBattleCondition", LevelEventCheckBattleState_1.LevelEventCheckBattleState, LEVEL_2);
     e("EnableHostility", LevelEventEnableHostility_1.LevelEventEnableHostility, LEVEL_2);
     e("RunActions", LevelEventRunAction_1.LevelEventRunAction, LEVEL_1);
@@ -283,7 +283,7 @@ class LevelEventCenter {
     e("DisableEntityLookAt", LevelEventDisableEntityLookAt_1.LevelEventDisableEntityLookAt);
     e("PlayWalkingOverlayMontage", LevelEventPlayWalkingOverlayMontage_1.LevelEventPlayWalkingOverlayMontage);
     e("CloseWalkingOverlayMontage", LevelEventCloseWalkingOverlayMontage_1.LevelEventCloseWalkingOverlayMontage);
-    e("ChangeEntityState", LevelEventChangeEntityState_1.LevelEventChangeEntityState, LEVEL_1, true);
+    e("ChangeEntityState", LevelEventChangeEntityState_1.LevelEventChangeEntityState);
     e("ChangeSelfEntityState", LevelEventChangeSelfEntityState_1.LevelEventChangeSelfEntityState);
     e("ChangeNpcPerformState", LevelEventChangeNpcPerformState_1.LevelEventChangeNpcPerformState);
     e("SwitchDataLayers", LevelEventSwitchDataLayers_1.LevelEventSwitchDataLayers);

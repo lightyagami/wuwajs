@@ -39,12 +39,6 @@ class SurvivorsRoleDetailTabView extends UiPanelBase_1.UiPanelBase {
     this.cOd(t.Get(3), t.Get(2), t.Get(4));
     this.dOd(i, t);
     this.Jlo(e);
-    var r = {
-      UiText: this.GetText(9),
-      ViewType: 0,
-      ReportType: 10
-    };
-    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(r);
   }
   U5t(e, i) {
     this._Od?.RefreshBySurvivorRoleId(e);

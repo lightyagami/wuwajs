@@ -18,25 +18,25 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
     if (e) {
       const i = e;
       if (i.EventConfig.Type === IAction_1.EPostAkEvent.Global) {
-        const r = (0, AudioSystem_1.parseAudioEventPath)(i.EventConfig.AkEvent);
+        const a = (0, AudioSystem_1.parseAudioEventPath)(i.EventConfig.AkEvent);
         if (ModelManager_1.ModelManager.MapModel.CurrentInWorld || i.PersistWhenExitDungeon) {
           if (i.MusicEventType) {
-            AudioSystem_1.AudioSystem.PostEvent(r, undefined, {
+            AudioSystem_1.AudioSystem.PostEvent(a, undefined, {
               CallbackHandler: (e, o) => {
                 this.Tmd(e, i);
               },
               CallbackMask: 384
             });
           } else {
-            AudioSystem_1.AudioSystem.PostEvent(r);
+            AudioSystem_1.AudioSystem.PostEvent(a);
           }
         } else {
-          const a = AudioSystem_1.AudioSystem.PostEvent(r, undefined, {
+          const l = AudioSystem_1.AudioSystem.PostEvent(a, undefined, {
             CallbackHandler: (e, o) => {
               if (e === 0) {
-                GameAudioController_1.GameAudioController.RemovePostAkEventHandle(a);
+                GameAudioController_1.GameAudioController.RemovePostAkEventHandle(l);
                 if (Log_1.Log.CheckDebug()) {
-                  Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle移除记录", ["Handle", a], ["Event", r]);
+                  Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle移除记录", ["Handle", l], ["Event", a]);
                 }
               } else {
                 this.Tmd(e, i);
@@ -45,14 +45,14 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
             CallbackMask: (i.MusicEventType ? 384 : 0) | 1
           });
           if (!ModelManager_1.ModelManager.MapModel.CurrentInWorld) {
-            GameAudioController_1.GameAudioController.AddPostAkEventHandle(a);
+            GameAudioController_1.GameAudioController.AddPostAkEventHandle(l);
             if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle添加记录", ["Handle", a], ["Event", r]);
+              Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle添加记录", ["Handle", l], ["Event", a]);
             }
           }
         }
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Audio", 56, "[Game.Action] PostEvent", ["Event", r]);
+          Log_1.Log.Info("Audio", 56, "[Game.Action] PostEvent", ["Event", a]);
         }
       } else {
         var t;
@@ -91,8 +91,14 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
     o = o.MusicEventType;
     if (o) {
       if (e === 7) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Audio", 79, "[音乐节拍] 触发音乐开始事件", ["CallbackType", e]);
+        }
         LevelConditionCenter_1.LevelConditionCenter.StartMusicBeatCounter(o);
       } else if (e === 8) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Audio", 79, "[音乐节拍] 触发音乐节拍事件", ["CallbackType", e]);
+        }
         LevelConditionCenter_1.LevelConditionCenter.AddMusicBeatCounter(o);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CheckMusicBeatsEvent, o, e);
       }

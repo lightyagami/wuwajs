@@ -165,7 +165,6 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     e.push(101);
     e.push(105);
     e.push(107);
-    e.push(16316);
     Net_1.Net.InitCanTimerOutMessage(e);
     AudioSystem_1.AudioSystem.SetState("platform", cpp_1.KuroApplication.IniPlatformName());
     AudioSystem_1.AudioSystem.SetRtpcValue("time_local", TimeUtil_1.TimeUtil.GetHoursFloat());
@@ -548,7 +547,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   }
   static async UMi(n, t, i, e) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Login", 16, "LoginProcedure-连接网关", ["token", n], ["host", t.join()], ["port", i], ["isSmokeTest", e], ["LoginTraceId", NetInfo_1.NetInfo.LoginTraceId]);
+      Log_1.Log.Info("Login", 16, "LoginProcedure-连接网关", ["token", n], ["host", t.join()], ["port", i], ["isSmokeTest", e]);
     }
     let a = false;
     let _ = undefined;
@@ -655,7 +654,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.ConvGate);
     LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.ConvGate);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Login", 8, "LoginProcedure-登录网关", ["host", o], ["port", r], ["LoginTraceId", ModelManager_1.ModelManager.LoginModel.LoginTraceId]);
+      Log_1.Log.Info("Login", 8, "LoginProcedure-登录网关", ["host", o], ["port", r]);
     }
     var t = await Net_1.Net.ConnectAsync(o, r, 3000, 1);
     if (t !== 0) {
@@ -765,7 +764,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     o.z3a = BaseConfigController_1.BaseConfigController.GetPackageClientFightConfig();
     o.L5u = UE.KuroStaticLibrary.IsLowMemoryDevice();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-请求登录", ["account", o.X9n], ["token", o.$9n], ["AppVersion", o.Y9n], ["LauncherVersion", o.J9n], ["ResourceVersion", o.z9n], ["ClientBasicInfo", o.Z9n], ["ConfigMd5", NetDefine_1.CONFIG_MD5_VALUE], ["ConfigVersion", NetDefine_1.CONFIG_VERSION], ["ProtoMd5", NetDefine_1.PROTO_MD5_VALUE], ["ProtoSeedMd5", NetDefine_1.PROTO_SEED_MD5_VALUE], ["ProtoVersion", NetDefine_1.PROTO_VERSION], ["pQ_", o.pQ_], ["IsLowMemoryPlatform", o.L5u], ["LoginTraceId", ModelManager_1.ModelManager.LoginModel.LoginTraceId]);
+      Log_1.Log.Info("Login", 16, "LoginProcedure-LoginRequest-请求登录", ["account", o.X9n], ["token", o.$9n], ["AppVersion", o.Y9n], ["LauncherVersion", o.J9n], ["ResourceVersion", o.z9n], ["ClientBasicInfo", o.Z9n], ["ConfigMd5", NetDefine_1.CONFIG_MD5_VALUE], ["ConfigVersion", NetDefine_1.CONFIG_VERSION], ["ProtoMd5", NetDefine_1.PROTO_MD5_VALUE], ["ProtoSeedMd5", NetDefine_1.PROTO_SEED_MD5_VALUE], ["ProtoVersion", NetDefine_1.PROTO_VERSION], ["pQ_", o.pQ_], ["IsLowMemoryPlatform", o.L5u]);
     }
     r = await LoginController.qMi(o);
     if (r?.Cvs === Protocol_1.Aki.Protocol.Q4n.Proto_ServerFullLoadGate) {

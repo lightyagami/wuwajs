@@ -23,20 +23,11 @@ class QuestTreeChapterViewModel {
   SetOverrideLockReasonGoto(e) {
     this.VWd = e;
   }
-  get MaxTopHeight() {
+  get MaxHeightBalanceValue() {
     let e = 0;
     for (const t of this.NodeHeightDeltaMap.values()) {
-      if (t[0] > e) {
-        e = t[0];
-      }
-    }
-    return e;
-  }
-  get MaxBottomHeight() {
-    let e = 0;
-    for (const t of this.NodeHeightDeltaMap.values()) {
-      if (t[1] > e) {
-        e = t[1];
+      if (Math.abs(t) > Math.abs(e) || e * t < 0) {
+        e = t;
       }
     }
     return e;
@@ -86,13 +77,13 @@ class QuestTreeChapterViewModel {
       this.vPd.splice(e, 1);
     }
   }
-  LocateToNode(e, t = true) {
-    for (const i of this.vPd) {
-      i(e, t);
+  LocateToNode(e) {
+    for (const t of this.vPd) {
+      t(e);
     }
   }
-  RecordHeightBalanceValue(e, t, i) {
-    this.NodeHeightDeltaMap.set(e, [t, i]);
+  RecordHeightBalanceValue(e, t) {
+    this.NodeHeightDeltaMap.set(e, t);
   }
   RecordToggleHeight(e) {
     if (e > this.MaxToggleHeight) {

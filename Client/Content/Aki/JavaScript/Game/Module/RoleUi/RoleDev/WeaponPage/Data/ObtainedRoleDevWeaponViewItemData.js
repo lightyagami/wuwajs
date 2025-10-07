@@ -16,17 +16,8 @@ class ObtainedRoleDevWeaponViewItemData extends RoleDevWeaponViewItemDataBase_1.
     this.fwd = false;
   }
   InitByRoleType(e) {
-    var t;
     this.pie(e);
     this.Vpd(e);
-    if (this.RoleDevViewModelInternal?.CheckRoleIdIsCreated(e)) {
-      if (!this.fwd) {
-        this.RoleDevViewModelInternal.SetRoleWeaponTabType(e, 2);
-      }
-    } else {
-      t = this.fwd ? 1 : 2;
-      this.RoleDevViewModelInternal.SetRoleWeaponTabType(e, t);
-    }
   }
   pie(e) {
     e = ModelManager_1.ModelManager.WeaponModel.GetWeaponInstanceByRoleId(e);

@@ -352,19 +352,19 @@ class WeaponModel extends ModelBase_1.ModelBase {
   AutoAddExpItem(e, t, n, o) {
     let r = e;
     var a = [];
-    for (const g of n) {
+    for (const l of n) {
       if (t <= a.length || r <= 0) {
         break;
       }
-      var i = o(g);
+      var i = o(l);
       var s = Math.ceil(r / i);
-      var f = g.Count - g.SelectedCount;
-      var s = g.SelectedCount + Math.min(s, f);
+      var f = l.Count - l.SelectedCount;
+      var s = l.SelectedCount + Math.min(s, f);
       if (s > 0) {
         f = {
-          IncId: g.IncId,
-          ItemId: g.ItemId,
-          Count: g.Count,
+          IncId: l.IncId,
+          ItemId: l.ItemId,
+          Count: l.Count,
           SelectedCount: s
         };
         a.push(f);
@@ -376,14 +376,14 @@ class WeaponModel extends ModelBase_1.ModelBase {
   CheckSatisfyExp(e, t, n, o) {
     let r = e;
     let a = 0;
-    for (const g of n) {
+    for (const l of n) {
       if (a >= t || r <= 0) {
         break;
       }
-      var i = o(g);
+      var i = o(l);
       var s = Math.ceil(r / i);
-      var f = g.Count - g.SelectedCount;
-      var s = g.SelectedCount + Math.min(s, f);
+      var f = l.Count - l.SelectedCount;
+      var s = l.SelectedCount + Math.min(s, f);
       if (s > 0) {
         a++;
         r -= s * i;
@@ -447,19 +447,6 @@ class WeaponModel extends ModelBase_1.ModelBase {
   RedDotWeaponResonanceConditionByRole(e) {
     e = this.GetWeaponInstanceByRoleId(e)?.GetIncId();
     return !!e && this.RedDotWeaponResonanceCondition(e);
-  }
-  GetWeaponExpItemConfigList() {
-    var e = [];
-    var t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponExpItemList();
-    if (t) {
-      for (const o of t) {
-        var n = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(o.Id);
-        if (n) {
-          e.push(n);
-        }
-      }
-    }
-    return e;
   }
 }
 exports.WeaponModel = WeaponModel;

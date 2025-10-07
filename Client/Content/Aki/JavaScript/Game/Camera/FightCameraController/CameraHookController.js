@@ -16,9 +16,9 @@ class GazeParams {
     this.StayTime = 0;
     if (s) {
       this.LockCamera = t.GazeNextPointAfterInteract?.GazePerformance.LockCamera ?? false;
-      this.FadeInTime = t.GazeNextPointAfterInteract?.GazePerformance.FadeInTime ?? 0;
-      this.FadeOutTime = t.GazeNextPointAfterInteract?.GazePerformance.FadeOutTime;
-      this.StayTime = t.GazeNextPointAfterInteract?.GazePerformance.StayTime ?? 0;
+      this.FadeInTime = t.GazeNextPointAfterInteract?.GazePerformance.FadeInTime ?? 1;
+      this.FadeOutTime = t.GazeNextPointAfterInteract?.GazePerformance.FadeOutTime || 1;
+      this.StayTime = t.GazeNextPointAfterInteract?.GazePerformance.StayTime ?? 1;
     } else {
       this.LockCamera = t.CameraGaze?.LockCamera ?? false;
       this.FadeInTime = t.CameraGaze?.FadeInTime ?? 0;

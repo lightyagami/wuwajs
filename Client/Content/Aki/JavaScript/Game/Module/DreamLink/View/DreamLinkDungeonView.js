@@ -13,7 +13,6 @@ const FNameUtil_1 = require("../../../../Core/Utils/FNameUtil");
 const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const ObjectUtils_1 = require("../../../../Core/Utils/ObjectUtils");
-const CameraController_1 = require("../../../Camera/CameraController");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const Global_1 = require("../../../Global");
@@ -24,7 +23,6 @@ const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const EffectUtil_1 = require("../../../Utils/EffectUtil");
-const BlackScreenController_1 = require("../../BlackScreen/BlackScreenController");
 const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmallItemGrid");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
 const HelpController_1 = require("../../Help/HelpController");
@@ -37,6 +35,8 @@ const DreamLinkController_1 = require("../DreamLinkController");
 const DreamLinkDungeonRolePanel_1 = require("./DreamLinkDungeonRolePanel");
 const DreamLinkScoreRewardItem_1 = require("./DreamLinkScoreRewardItem");
 const DreamLinkCatProgressItem_1 = require("./SubView/DreamLinkCatProgressItem");
+const CameraController_1 = require("../../../Camera/CameraController");
+const BlackScreenController_1 = require("../../BlackScreen/BlackScreenController");
 const PER_PAGE_COUNT = 3;
 const MAX_PAGE_COUNT = 2;
 const DOOR_OPEN_SEQUENCE_PATH = "/Game/Aki/Map/UISceneLevel/UI_Scene/LevelSequence/Ani_Door.Ani_Door";
@@ -616,7 +616,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
       });
     }
   }
-  PlaySceneLevelSequence(e, r = false, o = false, n = true) {
+  PlaySceneLevelSequence(e, s = false, r = false, o = true) {
     if (this.RHt) {
       this.RHt.Stop();
       this.RHt = undefined;
@@ -624,27 +624,24 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LevelSequence, e => {
       var i;
       var t;
-      var s;
       if (ObjectUtils_1.ObjectUtils.IsValid(e)) {
         e = e;
-        s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneInteractionActorSystem.StaticClass());
         i = (0, puerts_1.$ref)(undefined);
         UE.LevelSequencePlayer.CreateLevelSequencePlayer(GlobalData_1.GlobalData.World, e, new UE.MovieSceneSequencePlaybackSettings(), i);
         i = (0, puerts_1.$unref)(i);
-        (t = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = o;
-        t.bPauseAtEnd = r;
+        (t = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = r;
+        t.bPauseAtEnd = s;
         i.PlaybackSettings = t;
         i.SetTickableWhenPaused(true);
         i.SetSequence(e);
-        s.SetSequenceWithTargetLevelActor(i, e, this.oeh);
         UE.KuroSequenceRuntimeFunctionLibrary.SetSequenceInUiScene(e, true);
         this.xtl?.SequencePlayer?.PlayLooping(-1);
         i.SequencePlayer?.Play();
-        if (n) {
+        if (o) {
           i.bOverrideInstanceData = true;
           t = i.DefaultInstanceData;
-          s = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
-          e = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(s.D_GetTransform());
+          e = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
+          e = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(e.D_GetTransform());
           t.TransformOrigin = e;
         }
         this.RHt = i.SequencePlayer;

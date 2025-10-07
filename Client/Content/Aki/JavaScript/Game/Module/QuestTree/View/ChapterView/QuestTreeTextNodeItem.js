@@ -38,9 +38,9 @@ class QuestTreeTextNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeItemB
         this.nOe(t);
       }
     };
-    this.lPd = (t, e) => {
+    this.lPd = t => {
       if (t === this.Pe && !this.Pe.BelongedNode) {
-        this.LocateSelf(e);
+        this.LocateSelf();
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.RootItem, true);
       }
     };
@@ -87,9 +87,9 @@ class QuestTreeTextNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeItemB
       return 0;
     }
   }
-  LocateSelf(t = true) {
-    var e = this.GetExtendToggle(0).GetRootComponent();
-    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(e, t);
+  LocateSelf() {
+    var t = this.GetExtendToggle(0).GetRootComponent();
+    ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.LocatingHelper?.LocateToNode(t, true);
     if (!!this.Pe.IsTracking || this.Pe.State === 2) {
       this.Hea.PlayLevelSequenceByName("Jumpy");
     }
@@ -120,8 +120,8 @@ class QuestTreeTextNodeItem extends QuestTreeNodeItemLoader_1.QuestTreeNodeItemB
     this.GetItem(10).SetUIActive(t.Config.SortOrder < 0);
     this.GetItem(11).SetUIActive(t.Config.SortOrder > 0 && e && !t.BelongedNode);
     this.GetItem(12).SetUIActive(!!t.BelongedNode);
-    this.GetItem(24).SetUIActive(t.IsInPredecessorUnion() && t.IsLastNodeOfPredecessorUnion() && t.State === 4);
-    this.GetItem(23).SetUIActive(t.IsInPredecessorUnion() && !t.IsFirstNodeOfPredecessorUnion() && !t.IsLastNodeOfPredecessorUnion() && t.State === 4);
+    this.GetItem(24).SetUIActive(t.IsInPredecessorUnion() && t.IsLastNodeOfPredecessorUnion());
+    this.GetItem(23).SetUIActive(t.IsInPredecessorUnion() && !t.IsFirstNodeOfPredecessorUnion() && !t.IsLastNodeOfPredecessorUnion());
   }
   async PTd(t) {
     var e = t.Config.NodeType === 1 ? this.GetItem(20) : this.GetItem(22);

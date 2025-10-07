@@ -14,7 +14,6 @@ class SurvivorsRogueInputLayer extends InputLayer_1.InputLayer {
   HandlePress(e, r) {
     switch (e) {
       case InputEnums_1.EInputAction.闪避:
-      case InputEnums_1.EInputAction.走跑切换:
         return;
       case InputEnums_1.EInputAction.技能1:
         this.Fwd();

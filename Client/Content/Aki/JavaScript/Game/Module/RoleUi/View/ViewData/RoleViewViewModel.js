@@ -9,75 +9,51 @@ const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const EffectUtil_1 = require("../../../../Utils/EffectUtil");
 const UiSceneManager_1 = require("../../../UiComponent/UiSceneManager");
-const UiModelUtil_1 = require("../../../UiModel/UiModelUtil");
 const RoleController_1 = require("../../RoleController");
 class RoleViewViewModel {
-  constructor(e, t) {
+  constructor(e, t, i = 0, o = 0) {
     this.RoleId = 0;
     this.WeaponIncId = 0;
+    this.WeaponConfigId = 0;
     this.IsNeedLoadRole = false;
     this.TsUiSceneRoleActor = undefined;
-    this.RoleStatePlayContextOnShow = undefined;
-    this.RoleStatePlayContextOnHide = undefined;
-    this.NeedShowOnViewPlayingStartSequence = false;
-    this.NeedHideOnViewPlayingCloseSequence = false;
     this.N4d = false;
     this.Nlo = 0;
-    this.FadeInCurveId = "None";
-    this.FadeOutCurveId = "None";
     this.RoleId = e;
+    this.WeaponIncId = i;
+    this.WeaponConfigId = o;
     this.IsNeedLoadRole = t;
   }
   async InitRoleActor() {
     var e;
-    var t;
-    var i;
-    var o;
     if (this.IsNeedLoadRole) {
       if (!this.TsUiSceneRoleActor && !this.N4d) {
         this.N4d = true;
         this.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(1);
-        o = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId);
-        await RoleController_1.RoleController.RefreshUiSceneRoleActorAsync(this.TsUiSceneRoleActor, this.RoleId, o.GetRoleSkinId());
+        e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId);
+        await RoleController_1.RoleController.RefreshUiSceneRoleActorAsync(this.TsUiSceneRoleActor, this.RoleId, e.GetRoleSkinId());
       }
     } else {
       this.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-      o = this.RoleId;
-      if (e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(o)) {
-        t = e.GetRoleSkinId();
-        if ((i = this.TsUiSceneRoleActor.Model.GetComponent(13)).RoleConfigId !== o || i.RoleSkinId !== t) {
-          RoleController_1.RoleController.OnSelectedRoleChange(o, e.GetRoleSkinId());
-        }
-      }
     }
   }
   HandleLoadScene(e) {
     this.InitRoleActor().then(() => {
+      this.TVd();
+      this.TsUiSceneRoleActor.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
       e?.();
     });
-    this.TVd();
-    this.TsUiSceneRoleActor.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
   }
   ShowActor() {
+    var e = this.RoleId;
+    var t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
+    if (t) {
+      RoleController_1.RoleController.OnSelectedRoleChange(e, t.GetRoleSkinId());
+    }
     UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
-    if (this.FadeOutCurveId !== "None") {
-      UiModelUtil_1.UiModelUtil.ModelFadeOut(this.TsUiSceneRoleActor.Model, this.FadeOutCurveId);
-    }
-    if (this.RoleStatePlayContextOnShow) {
-      RoleController_1.RoleController.PlayRoleMontage(this.RoleStatePlayContextOnShow.RoleState, this.RoleStatePlayContextOnShow.ReLoop, this.RoleStatePlayContextOnShow.ReLoopFromLoopToStart, this.RoleStatePlayContextOnShow.WaitLaseStateEnd);
-    }
   }
   HideActor() {
-    if (this.FadeInCurveId !== "None") {
-      UiModelUtil_1.UiModelUtil.ModelFadeIn(this.TsUiSceneRoleActor.Model, this.FadeInCurveId, () => {
-        UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
-      });
-    } else {
-      UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
-    }
-    if (this.RoleStatePlayContextOnHide) {
-      RoleController_1.RoleController.PlayRoleMontage(this.RoleStatePlayContextOnHide.RoleState, this.RoleStatePlayContextOnHide.ReLoop, this.RoleStatePlayContextOnHide.ReLoopFromLoopToStart, this.RoleStatePlayContextOnHide.WaitLaseStateEnd);
-    }
+    UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
   }
   TVd() {
     var e = UiSceneManager_1.UiSceneManager.GetActorByTag("RoleFloorCase");
@@ -93,7 +69,9 @@ class RoleViewViewModel {
     UiSceneManager_1.UiSceneManager.DestroyRoleSystemRoleActor(this.TsUiSceneRoleActor);
     this.TsUiSceneRoleActor = undefined;
     UiSceneManager_1.UiSceneManager.ClearUiSequenceFrame();
-    this.IsNeedLoadRole = true;
+    this.RoleId = 0;
+    this.WeaponIncId = 0;
+    this.IsNeedLoadRole = false;
     this.N4d = false;
   }
 }

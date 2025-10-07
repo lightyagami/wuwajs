@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.KscEnv = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const Macro_1 = require("../../Core/Preprocessor/Macro");
 const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
 const GlobalData_1 = require("../GlobalData");
 const ConfigManager_1 = require("../Manager/ConfigManager");
@@ -50,16 +49,16 @@ class KscEnv {
   }
   static CNd() {
     var s;
-    var e;
     var t;
+    var e;
     if (KscEnv.lLd) {
       if (s = ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId) {
-        if (e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(s)) {
-          if (e.BoundsPath) {
-            if ((t = ResourceSystem_1.ResourceSystem.Load(e.BoundsPath, UE.KSC_DA_WorldBounds))?.IsValid) {
-              KscEnv.lLd.SetWorldBounds(t);
+        if (t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(s)) {
+          if (t.BoundsPath) {
+            if ((e = ResourceSystem_1.ResourceSystem.Load(t.BoundsPath, UE.KSC_DA_WorldBounds))?.IsValid) {
+              KscEnv.lLd.SetWorldBounds(e);
             } else {
-              KscLog_1.KscLog.Error("Load", 20, KscEnv.lLd, "加载不到对应的DA", ["Path", e.BoundsPath], ["LevelId", s]);
+              KscLog_1.KscLog.Error("Load", 20, KscEnv.lLd, "加载不到对应的DA", ["Path", t.BoundsPath], ["LevelId", s]);
               KscEnv.lLd.SetWorldBounds(undefined);
             }
           } else {

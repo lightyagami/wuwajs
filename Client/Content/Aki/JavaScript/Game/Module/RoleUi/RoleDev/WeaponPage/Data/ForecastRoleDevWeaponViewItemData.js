@@ -16,7 +16,6 @@ class ForecastRoleDevWeaponViewItemData extends RoleDevWeaponViewItemDataBase_1.
   InitByRoleType(e) {
     this.pie(e);
     this.Vpd(e);
-    this.RoleDevViewModelInternal?.SetRoleWeaponTabType(e, 1);
   }
   pie(e) {
     this.fwd = true;

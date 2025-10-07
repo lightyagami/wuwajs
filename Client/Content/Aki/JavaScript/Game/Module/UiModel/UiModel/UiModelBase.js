@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.UiModelBase = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 class UiModelBase {
-  constructor(o, t) {
-    this.Id = o;
+  constructor(o) {
+    this.Id = 0;
     this.xxo = new Array();
     this.UseWay = undefined;
-    this.UseWay = t;
+    this.UseWay = o;
   }
   GetComponent(o) {
     return this.xxo[o];

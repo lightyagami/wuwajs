@@ -7,7 +7,6 @@ exports.KscSubControllerBase = exports.KscEntityRedirectFilter = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const CustomPromise_1 = require("../../Core/Common/CustomPromise");
-const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
 const CommonParamById_1 = require("../../Core/Define/ConfigCommon/CommonParamById");
@@ -40,7 +39,7 @@ class KscEntityRedirectFilter {
       }
       var s = t.has("sEu");
       if (t.get("WVu")?.WVu?.KVu?.GNc !== undefined) {
-        Info_1.Info.IsBuildDevelopmentOrDebug;
+        KscLog_1.KscLog.Info("Common", 60, undefined, "塔防辅助机不拦截", ["CreatureDataId", e.s5n]);
         return false;
       } else {
         if (s) {
@@ -188,22 +187,15 @@ class KscSubControllerBase {
       if (!s || s.size <= 0) {
         KscLog_1.KscLog.Warn("Attr", 17, KscEnv_1.KscEnv.KscWorld, "塔防属性设置失败:异常配置", ["entityId", e.EntityId_], ["propertyId", t]);
       } else {
-        Info_1.Info.IsBuildDevelopmentOrDebug;
+        KscLog_1.KscLog.Info("Attr", 17, KscEnv_1.KscEnv.KscWorld, "塔防属性设置成功", ["entityId", e.EntityId_], ["propertyId", t], ["attrConfig", s]);
         if (r) {
           for (var [o, i] of s) {
             i = r[o] ?? i;
-            if (o === 3) {
-              var n = r[2] ?? s.get(2);
-              if (n && n < i) {
-                e.SetAttr(o, n);
-                continue;
-              }
-            }
             e.SetAttr(o, i);
           }
         } else {
-          for (var [a, _] of s) {
-            e.SetAttr(a, _);
+          for (var [n, a] of s) {
+            e.SetAttr(n, a);
           }
         }
       }
@@ -372,7 +364,7 @@ class KscSubControllerBase {
   PushPlayerHp() {
     if (!!this.Model?.IsHpModify && !(this.Model.NextPlayerHpSyncTime > Time_1.Time.FlowTime)) {
       if (this.Model.KscPlayerCreatureDataId !== 0) {
-        ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.PushSimpleCombatEntityHp(this.Model.KscPlayerCreatureDataId, this.Model.KscPlayerHeadStateData.Hp, this.Model.KscPlayerHeadStateData.MaxHp);
+        ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.PushSimpleCombatEntityHp(this.Model.KscPlayerCreatureDataId, this.Model.KscPlayerHeadStateData.Hp);
         this.SubModel.IsHpModify = false;
         this.Model.NextPlayerHpSyncTime = Time_1.Time.FlowTime + 1000;
       }

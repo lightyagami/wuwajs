@@ -30,104 +30,103 @@ class WorldPassiveSkillCdData {
     this.AllShareSkillCdData.Clear();
     this.OffRoleSkillCdMap.clear();
   }
-  InitPassiveSkillCd(i, e) {
-    let s = e.CdThreshold;
-    if (s < 0) {
-      s = CommonParamById_1.configCommonParamById.GetFloatConfig("PassiveSkillCdThreshold") ?? 0;
+  InitPassiveSkillCd(i, s) {
+    let e = s.CdThreshold;
+    if (e < 0) {
+      e = CommonParamById_1.configCommonParamById.GetFloatConfig("PassiveSkillCdThreshold") ?? 0;
     }
-    return this.InitSkillCdCommon(i, e.Id, e.CDTime, e.IsShareAllCdSkill, s);
+    return this.InitSkillCdCommon(i, s.Id, s.CDTime, s.IsShareAllCdSkill, e);
   }
-  InitSkillCdCommon(i, e, s, t, a) {
+  InitSkillCdCommon(i, s, e, t, a) {
     let o = undefined;
     var r;
     var l;
-    var n = i.Id;
+    var n;
     if (t) {
       o = this.AllShareSkillCdData;
     } else {
-      l = undefined;
-      if (!(o = this.EntitySkillCdMap.get(n))) {
-        o = i.GetComponent(0).IsRole() && (r = i.GetComponent(0).GetPbDataId(), l = this.OffRoleSkillCdMap.get(r)) ? (this.OffRoleSkillCdMap.delete(r), l) : new PassiveSkillCdData();
-        this.EntitySkillCdMap.set(n, o);
+      r = i.Id;
+      n = undefined;
+      if (!(o = this.EntitySkillCdMap.get(r))) {
+        o = i.GetComponent(0).IsRole() && (l = i.GetComponent(0).GetPbDataId(), n = this.OffRoleSkillCdMap.get(l)) ? (this.OffRoleSkillCdMap.delete(l), n) : new PassiveSkillCdData();
+        this.EntitySkillCdMap.set(r, o);
       }
     }
-    let d = o.SkillCdInfoMap.get(e);
+    let d = o.SkillCdInfoMap.get(s);
     if (!d) {
-      (d = new PassiveSkillCdInfo_1.PassiveSkillCdInfo()).SkillId = e;
-      d.SkillCd = s;
+      (d = new PassiveSkillCdInfo_1.PassiveSkillCdInfo()).SkillId = s;
+      d.SkillCd = e;
       if (a !== undefined) {
         d.Threshold = a;
       }
       d.IsShareAllCdSkill = t;
       d.CurMaxCd = 0;
-      if (r = o.ServerSkillCd.get(e)) {
-        if ((l = Time_1.Time.ServerTimeStamp) < r) {
-          d.SkillCdFinishStampMap.set(n, Time_1.Time.FlowTime + (r - l));
+      if (l = o.ServerSkillCd.get(s)) {
+        if ((n = Time_1.Time.ServerTimeStamp) < l) {
+          d.SkillCdFinishStamp = Time_1.Time.FlowTime + (l - n);
         }
-        o.ServerSkillCd.delete(e);
+        o.ServerSkillCd.delete(s);
       }
-      o.SkillCdInfoMap.set(e, d);
+      o.SkillCdInfoMap.set(s, d);
     }
     d.EntityIds.add(i.Id);
     return d;
   }
   RemoveEntity(i) {
-    var e = i.Id;
-    var s = this.EntitySkillCdMap.get(e);
-    if (s && (this.EntitySkillCdMap.delete(e), i.GetComponent(0).IsRole())) {
+    var s = i.Id;
+    var e = this.EntitySkillCdMap.get(s);
+    if (e && (this.EntitySkillCdMap.delete(s), i.GetComponent(0).IsRole())) {
       i = i.GetComponent(0).GetPbDataId();
-      for (const t of s.SkillCdInfoMap.values()) {
+      for (const t of e.SkillCdInfoMap.values()) {
         t.EntityIds.clear();
       }
-      this.OffRoleSkillCdMap.set(i, s);
+      this.OffRoleSkillCdMap.set(i, e);
     }
     for (const a of this.AllShareSkillCdData.SkillCdInfoMap.values()) {
-      a.EntityIds.delete(e);
+      a.EntityIds.delete(s);
     }
   }
   HandlePassiveSkillNotify(i) {
     var s = Time_1.Time.ServerTimeStamp;
-    for (const r of i.jBs) {
-      let [i, e] = this.nQe(r.Q6n);
-      if (!e) {
-        e = new PassiveSkillCdData();
-        this.OffRoleSkillCdMap.set(r.Q6n, e);
+    for (const o of i.jBs) {
+      let i = this.nQe(o.Q6n);
+      if (!i) {
+        i = new PassiveSkillCdData();
+        this.OffRoleSkillCdMap.set(o.Q6n, i);
       }
-      for (const l of r.HBs) {
+      for (const r of o.HBs) {
+        var e;
         var t;
-        var a;
-        var o = MathUtils_1.MathUtils.LongToNumber(l.$Bs);
-        if (!(o <= s)) {
-          t = MathUtils_1.MathUtils.LongToNumber(l.r5n);
-          if ((a = e.SkillCdInfoMap.get(t)) && i) {
-            a.SkillCdFinishStampMap.delete(i);
-            a.SkillCdFinishStampMap.set(i, Time_1.Time.FlowTime + (o - s));
+        var a = MathUtils_1.MathUtils.LongToNumber(r.$Bs);
+        if (!(a <= s)) {
+          e = MathUtils_1.MathUtils.LongToNumber(r.r5n);
+          if (t = i.SkillCdInfoMap.get(e)) {
+            t.SkillCdFinishStamp = Time_1.Time.FlowTime + (a - s);
           } else {
-            e.ServerSkillCd.set(t, o);
+            i.ServerSkillCd.set(e, a);
           }
         }
       }
     }
   }
   nQe(i) {
-    const e = this.OffRoleSkillCdMap.get(i);
-    if (e) {
-      return [undefined, e];
+    const s = this.OffRoleSkillCdMap.get(i);
+    if (s) {
+      return s;
     }
-    for (const [t, e] of this.EntitySkillCdMap) {
-      var s = ModelManager_1.ModelManager.CharacterModel?.GetHandle(t);
-      if (s?.Valid) {
-        s = s.Entity;
-        if (!e) {
-          if (s.GetComponent(0).IsRole()) {
-            if (s.GetComponent(0).GetPbDataId() === i) {
-              return [t, e];
+    for (const [t, s] of this.EntitySkillCdMap) {
+      var e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(t);
+      if (e?.Valid) {
+        e = e.Entity;
+        if (!s) {
+          if (e.GetComponent(0).IsRole()) {
+            if (e.GetComponent(0).GetPbDataId() === i) {
+              return s;
             }
           }
         }
       }
     }
-    return [undefined, undefined];
   }
 }
 exports.WorldPassiveSkillCdData = WorldPassiveSkillCdData;

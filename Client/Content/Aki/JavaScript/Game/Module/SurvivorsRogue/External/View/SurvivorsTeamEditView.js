@@ -123,7 +123,6 @@ class SurvivorsTeamEditView extends UiViewBase_1.UiViewBase {
     }
     this.zOd.RefreshFourAttr(this.YOd.SurRoleId, true);
     var e = SurvivorsRogueCardDataFactory_1.SurvivorsRogueCardDataFactory.CreateGeneralWeapon(this.YOd.InitWeaponID);
-    e.TagVisible = false;
     this.eVi.Apply(e);
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.YOd.TrialRoleId);
     if (e) {

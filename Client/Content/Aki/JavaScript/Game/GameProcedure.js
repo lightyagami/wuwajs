@@ -1,11 +1,9 @@
 "use strict";
 
-var _a;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GameProcedure = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../Core/Common/Info");
 const Log_1 = require("../Core/Common/Log");
@@ -18,44 +16,6 @@ const ThinkDataLaunchReporter_1 = require("../Launcher/ThinkDataReport/ThinkData
 const GlobalData_1 = require("./GlobalData");
 class GameProcedure {
   static Start(e) {
-    this.USr = e;
-    var r = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleStartup();
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Game", 63, "c#环境启动:", ["csEnvStartup", r]);
-    }
-    if (r) {
-      this.BKd();
-    } else {
-      this.kKd = new UE.KuroTickManager(e, "GameProcedure");
-      this.kKd.AddTick(0, (0, puerts_1.toManualReleaseDelegate)(this.OKd));
-    }
-  }
-  static BKd() {
-    var e = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Game", 63, "c#环境是否灰度命中:", ["hasSharpherealModuleGreyBoxHit", e]);
-    }
-    if (e) {
-      let e = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
-      if (e) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Game", 63, "c#环境已经初始化，无需重复初始化:", ["hasCSharpEnvironmentInitialized", e]);
-        }
-      } else {
-        UE.CSharpBlueprintFunctionLibrary.InitializeMonoEnvironment();
-        e = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
-      }
-      e;
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Game", 63, "c#环境是否初始化成功:", ["hasCSharpEnvironmentInitialized", e]);
-      }
-      UE.CSharpBlueprintFunctionLibrary.CallCSharpFunction("CSharpScript.dll", "CSharpScript.Launcher", "Startup", "Main", 1, this.USr);
-      this.qKd(this.USr);
-    } else {
-      this.qKd(this.USr);
-    }
-  }
-  static qKd(e) {
     Info_1.Info.Initialize(e);
     var r = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("JSDebugId");
     Log_1.Log.SetJsDebugId(r);
@@ -197,7 +157,7 @@ class GameProcedure {
     Stats_1.Stat.CreateInstantStat(`GameProcedure.FrameCallAsyncGenerator_${e}:Start`);
     let o = Date.now();
     let i = 0;
-    for await (const n of a(...t)) {
+    for await (const l of a(...t)) {
       var s;
       if (r) {
         if ((s = Date.now()) - o > this.g2a && Log_1.Log.CheckError()) {
@@ -218,17 +178,6 @@ class GameProcedure {
     return new Promise(e => this.Vgr = e);
   }
 }
-exports.GameProcedure = GameProcedure;
-(_a = GameProcedure).Inited = false;
+(exports.GameProcedure = GameProcedure).Inited = false;
 GameProcedure.g2a = 200;
-GameProcedure.Vgr = undefined;
-GameProcedure.USr = undefined;
-GameProcedure.kKd = undefined;
-GameProcedure.OKd = () => {
-  if (UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleStartup()) {
-    (0, puerts_1.releaseManualReleaseDelegate)(_a.OKd);
-    _a.kKd.ClearTick();
-    _a.kKd = undefined;
-    _a.BKd();
-  }
-}; //# sourceMappingURL=GameProcedure.js.map
+GameProcedure.Vgr = undefined; //# sourceMappingURL=GameProcedure.js.map

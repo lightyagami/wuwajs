@@ -25,7 +25,8 @@ class GreatSwordMarkTargetListPanel {
     var t = this.J7a.GetLayoutItemByKey(e);
     if (!t) {
       this.J7a.AddItemToLayout([e]);
-      (t = this.J7a.GetLayoutItemByKey(e)).SetState(false);
+      (t = this.J7a.GetLayoutItemByKey(e)).SetDescTxt("");
+      t.SetState(false);
     }
     return t;
   }

@@ -29,9 +29,11 @@ class ForecastRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
           SkillNodeId: 0,
           IconId: 0,
           CurrentLevel: 1,
+          MaxLevel: 10,
           NormalTargetLevel: 10,
           PerfectTargetLevel: 10,
           SkillType: e + 1,
+          IsReached: false,
           NodeIndex: e
         });
       }
@@ -75,7 +77,7 @@ class ForecastRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
     return false;
   }
   GetIsPerfectPlan() {
-    return this.B9d?.GetRoleSkillPlanState(this.RoleId) ?? true;
+    return this.B9d?.GetCurrentRoleSkillPlanState(this.RoleId) ?? true;
   }
   GetIsNormalPlanFinished() {
     return false;
@@ -89,10 +91,10 @@ class ForecastRoleDevSkillData extends RoleDevSkillViewItemDataBase_1.RoleDevSki
   GetSkillGoalUpgradeLevel() {
     return new Array(5).fill(10);
   }
-  GetNormalDetailItems() {
+  GetDetailItems() {
     return this.C1d;
   }
-  GetIsNormalAllMaterialEnough() {
+  GetIsAllMaterialEnough() {
     return RoleDevUtils_1.RoleDevUtils.CheckAllItemsUp(this.C1d);
   }
   GetIsUnlockedPerfect() {

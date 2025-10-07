@@ -170,6 +170,8 @@ class PhotographModel extends ModelBase_1.ModelBase {
     if (t !== 1) {
       AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "slow");
       AudioSystem_1.AudioSystem.PostEvent("play_ui_battlephoto_timestop");
+    } else {
+      AudioSystem_1.AudioSystem.SetState("game_sys_fightphoto", "none");
     }
     ControllerHolder_1.ControllerHolder.GameModeController.SetTimeDilation(t, 4);
   }

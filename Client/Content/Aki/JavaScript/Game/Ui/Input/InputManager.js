@@ -344,16 +344,6 @@ class InputManager {
       Input_1.Input.OnlyRespondToKey = "";
     }
   }
-  static PauseImmersiveMouseMode(e) {
-    if (this.ImmersiveMouseModule) {
-      this.ImmersiveMouseModule.PauseImmersiveMode(e);
-    }
-  }
-  static ResumeImmersiveMouseMode(e) {
-    if (this.ImmersiveMouseModule) {
-      this.ImmersiveMouseModule.ResumeImmersiveMode(e);
-    }
-  }
   static IsImmersiveMouseModeEnabled() {
     return this.ImmersiveMouseModule !== undefined && this.ImmersiveMouseModule.IsImmersiveModeEnabled();
   }

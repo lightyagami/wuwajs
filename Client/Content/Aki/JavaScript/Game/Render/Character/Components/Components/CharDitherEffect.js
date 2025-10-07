@@ -96,16 +96,6 @@ class CharDitherEffect extends CharRenderBase_1.CharRenderBase {
     this.Shr(1);
     this.vhr = false;
   }
-  TempRemoveDither() {
-    if (this.vhr) {
-      this.Ihr();
-    }
-  }
-  TempRecoverDither() {
-    if (this.vhr) {
-      this.Thr();
-    }
-  }
   yhr() {
     this.Thr();
     this.vhr = true;

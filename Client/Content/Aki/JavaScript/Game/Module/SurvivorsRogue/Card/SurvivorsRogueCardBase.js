@@ -243,7 +243,6 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
   $yd(e) {
     this.GetItem(11).SetUIActive(e.IsLevelUp ?? false);
     this.SetToggleInteractive(e.UseToggle ?? false);
-    this.GetText(8).SetBubbleUpToParent(e.UseToggle ?? false);
   }
   t01(e) {
     this.GetTexture(2).SetUIActive(false);
@@ -333,9 +332,6 @@ class SurvivorsRogueCardBase extends UiPanelBase_1.UiPanelBase {
     } else {
       return undefined;
     }
-  }
-  HasBondInfo() {
-    return this.Data?.WeaponBondInfo ?? false;
   }
 }
 exports.SurvivorsRogueCardBase = SurvivorsRogueCardBase;

@@ -126,7 +126,7 @@ class UiAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.Promise = undefined;
     };
     this.OnQteStart = e => {
-      this.itd.StartSequenceQte(e);
+      this.itd.StartSequenceQte(e.QteId, e.SubtitleId, !e.IsTriggerType, e.AttachActor, e.SpineInfo, e.IsTriggerType ? undefined : e.StartFrame, e.IsTriggerType ? undefined : e.EndFrame);
     };
     this.OnQteAnimEnd = e => {
       this.itd.OnSequenceAnimFinished(e);

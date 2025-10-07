@@ -30,8 +30,7 @@ class GreatSwordMarkPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     super.OnStart();
   }
   async OnBeforeShowWorldMapSecondaryUiAsync(r) {
-    this.u2o = r;
-    if ((this.LayoutContext.MarkItem = r).MarkType === 42) {
+    if (r.MarkType === 42) {
       this.SetActive(false);
       r = r.MarkConfig.RelativeId;
       await ControllerHolder_1.ControllerHolder.GreatSwordController.RequestGreatSwordChallengeMarkItemPanelInfo(r);
@@ -46,21 +45,23 @@ class GreatSwordMarkPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.ConfirmButton.SetActive(true);
   }
   OnShowWorldMapSecondaryUi(r) {
-    var e = this.u2o.MarkConfigId;
-    var a = MapMarkByMarkId_1.configMapMarkByMarkId.GetConfig(e);
-    if (a) {
+    this.u2o = r;
+    this.LayoutContext.MarkItem = r;
+    var r = this.u2o.MarkConfigId;
+    var e = MapMarkByMarkId_1.configMapMarkByMarkId.GetConfig(r);
+    if (e) {
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonEnableClickByTeleportState(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateConfirmButtonTextWithFastMoveStyle(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateIconAndTitle(this.LayoutContext);
       WorldMapSecondaryUiLayoutHelper_1.WorldMapSecondaryUiLayoutHelper.UpdateAreaTxtByConfigMarkItem(this.LayoutContext);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), a.MarkDesc);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e.MarkDesc);
       this.UpdateMultiMap();
       this.UpdateTopRightIconActive();
       this.UpdateHidePlayMapTipPanel();
       this.GetVerticalLayout(16).RootUIComp.SetUIActive(true);
       this.v4e();
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Map", 88, "缺少标记配置", ["MarkId", e]);
+      Log_1.Log.Error("Map", 88, "缺少标记配置", ["MarkId", r]);
     }
   }
   v4e() {

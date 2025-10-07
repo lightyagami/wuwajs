@@ -29,20 +29,20 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Rad = () => new RoleDevDetailSubItemList_1.RoleDevDetailSubItemList();
     this.OnBtnTrack = () => {
       var e = ConfigManager_1.ConfigManager.RoleDevConfig?.GetItemJumpGroupConfig(this.Pe?.ItemGroup[0].ItemId ?? 0);
-      var t = e?.SpecialJumpGroup ?? 0;
-      if (t > 0) {
-        this.oql(t);
+      var r = e?.SpecialJumpGroup ?? 0;
+      if (r > 0) {
+        this.oql(r);
       } else {
-        t = e?.JumpGroup ?? [];
-        e = RoleDevUtils_1.RoleDevUtils.GetFirstUnlockedTeleportId(t);
+        r = e?.JumpGroup ?? [];
+        e = RoleDevUtils_1.RoleDevUtils.GetFirstUnlockedTeleportId(r);
         this.VPd(e);
-        t = this.Pe?.ButtonType ?? -1;
-        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe?.RoleId ?? 0, this.Pe?.MainPage ?? 0, t);
+        r = this.Pe?.ButtonType ?? 0;
+        ControllerHolder_1.ControllerHolder.RoleDevController.LogRoleDevSubPageClick(this.Pe?.RoleId ?? 0, this.Pe?.MainPage ?? 0, r);
       }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
     this.DLu = new ButtonItem_1.ButtonItem();
@@ -54,43 +54,47 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
   Refresh(e) {
     this.Pe = e;
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.Title);
-    var t = e.ItemGroup.map(e => RoleDevDetailSubItemList_1.RoleDevDetailSubItemList.CreateMaterialData(e.ItemId, e.RequiredCount));
-    this.bad?.RefreshByData(t);
-    var t = t.every(e => e.RequiredCount <= (ModelManager_1.ModelManager.InventoryModel?.GetItemCountByConfigId(e.ItemId) ?? 0));
+    var r = e.ItemGroup.map(e => RoleDevDetailSubItemList_1.RoleDevDetailSubItemList.CreateMaterialData(e.ItemId, e.RequiredCount));
+    this.bad?.RefreshByData(r);
+    var r = r.every(e => e.RequiredCount <= (ModelManager_1.ModelManager.InventoryModel?.GetItemCountByConfigId(e.ItemId) ?? 0));
     this.Xqd = e.ItemGroup.some(e => e.ItemId === ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId);
-    this.GetItem(6)?.SetUIActive(t && !this.Xqd);
-    this.DLu.SetUiActive(!this.Xqd);
+    this.GetItem(6)?.SetUIActive(r && !this.Xqd);
+    this.DLu.SetUiActive(true);
     this.DLu.SetLocalTextNew(this.Xqd ? "RoleProject_Access_None" : "RoleProject_Button03");
     this.DLu?.SetFunction(this.OnBtnTrack);
     this.DLu?.SetEnableClick(this.Yqd());
-    this.GetItem(5)?.SetUIActive(this.Xqd);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), "RoleProject_Access_None");
     this.e6d(e);
   }
-  e6d(e) {
-    const t = ConfigManager_1.ConfigManager.RoleDevConfig;
-    if (t) {
-      const o = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId;
-      var r;
-      var e = e.ItemGroup.some(e => {
-        return e.ItemId !== o && t.GetItemJumpGroupConfig(e.ItemId)?.ItemType === 5;
+  e6d(t) {
+    const i = ConfigManager_1.ConfigManager.RoleDevConfig;
+    var e;
+    var r;
+    var o;
+    if (i) {
+      r = t.ItemGroup.some(e => {
+        var r = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId;
+        if (e.ItemId === r) {
+          return ConfigManager_1.ConfigManager.RoleDevConfig?.GetRoleDevProsRoleItemConfig(t.ItemGroupId)?.ItemTypeId;
+        } else {
+          return i.GetItemJumpGroupConfig(e.ItemId)?.ItemType === 5;
+        }
       });
-      var i = this.GetText(1);
-      if (e) {
-        i?.SetUIActive(true);
-        e = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(1);
-        r = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(1);
-        r = (e = e.MaxCount) - r;
-        LguiUtil_1.LguiUtil.SetLocalText(i, AdventureGuideController_1.RECEIVED_COUNT, r + "/" + e);
+      e = this.GetText(1);
+      if (r) {
+        e?.SetUIActive(true);
+        r = ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeShareConfig(1);
+        o = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeRewardShareCount(1);
+        o = (r = r.MaxCount) - o;
+        LguiUtil_1.LguiUtil.SetLocalText(e, AdventureGuideController_1.RECEIVED_COUNT, o + "/" + r);
       } else {
-        i?.SetUIActive(false);
+        e?.SetUIActive(false);
       }
     }
   }
   Yqd() {
     if (this.Pe?.ItemGroup) {
-      const t = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId;
-      return !this.Pe.ItemGroup.some(e => e.ItemId === t);
+      const r = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevStaticConfig()?.UnknownItemId;
+      return !this.Pe.ItemGroup.some(e => e.ItemId === r);
     }
     return true;
   }
@@ -105,43 +109,43 @@ class RoleDevDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
       var a = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetPreOpenDetectionConfById(n);
       if (a !== undefined) {
         let e = undefined;
-        let t = 0;
         let r = 0;
+        let t = 0;
         let i = 0;
-        i = (a.SoundAreaType === 0 ? (a = ModelManager_1.ModelManager.AdventureGuideModel.GetSoundAreaDetectData(n), t = a.Conf.Id, r = 0, a) : (a = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(n), t = a.Conf.Id, r = 1, a)).Conf.PreOpenId;
-        e = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(t, r, i);
+        i = (a.SoundAreaType === 0 ? (a = ModelManager_1.ModelManager.AdventureGuideModel.GetSoundAreaDetectData(n), r = a.Conf.Id, t = 0, a) : (a = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(n), r = a.Conf.Id, t = 1, a)).Conf.PreOpenId;
+        e = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(r, t, i);
         if (o = e ? e.Spoiler : o) {
           (n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(380)).FunctionMap.set(2, () => {
-            this.nql(t, r, i);
+            this.nql(r, t, i);
           });
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
         } else {
-          this.nql(t, r, i);
+          this.nql(r, t, i);
         }
       }
     }
   }
-  nql(e, t, r) {
-    e = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(e, t, r);
-    t = e.TeleportEntityId;
-    if (t) {
-      WorldMapController_1.WorldMapController.TryTeleport(t);
+  nql(e, r, t) {
+    e = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(e, r, t);
+    r = e.TeleportEntityId;
+    if (r) {
+      WorldMapController_1.WorldMapController.TryTeleport(r);
     } else {
-      r = e.DungeonEntranceId;
-      if (r) {
-        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(r);
+      t = e.DungeonEntranceId;
+      if (t) {
+        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(t);
       } else {
-        t = e.InstanceID;
-        if (t) {
-          var r = {
+        r = e.InstanceID;
+        if (r) {
+          var t = {
             v9n: e.Id
           };
-          ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.m1c = r;
+          ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.m1c = t;
           var i = [];
           for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
             i.push(o.GetConfigId);
           }
-          InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, i, 0, 0);
+          InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(r, i, 0, 0);
         }
       }
     }

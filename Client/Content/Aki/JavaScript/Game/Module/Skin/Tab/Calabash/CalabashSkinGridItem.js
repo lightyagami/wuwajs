@@ -22,22 +22,17 @@ class CalabashSkinGridItem extends LoopScrollSmallItemGrid_1.LoopScrollSmallItem
     this.SetSelected(false, true);
   }
   OnRefresh(e, i, a) {
-    var t = {
+    var r = {
       Type: 4,
       Data: this.Data = e,
       IconPath: e.IsEmptyData ? ConfigManager_1.ConfigManager.SkinConfig.GetDefaultCalabashSkinIconPath() : undefined,
       ItemConfigId: e.IsEmptyData ? undefined : e.SkinId,
-      IsNewVisible: e.IsNew,
-      QualityId: e.IsEmptyData ? 5 : undefined
+      IsNewVisible: e.IsNew
     };
-    this.Apply(t);
+    this.Apply(r);
     this.SetSelected(i);
     this.SetLockBlackVisible(e.GetIsLock());
     this.RefreshVisible();
-    if (e.IsEmptyData) {
-      this.SetSkinQualityByParameters(t);
-      this.RefreshSkinByDefault(t.QualityId, 17);
-    }
   }
   RefreshVisible() {
     var e = this.Data;

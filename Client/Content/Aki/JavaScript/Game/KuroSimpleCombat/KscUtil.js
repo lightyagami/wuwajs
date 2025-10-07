@@ -7,7 +7,6 @@ exports.KscUtil = undefined;
 const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
-const Info_1 = require("../../Core/Common/Info");
 const KSCBasePropertyById_1 = require("../../Core/Define/ConfigQuery/KSCBasePropertyById");
 const TrapDefenseAuxiliaryById_1 = require("../../Core/Define/ConfigQuery/TrapDefenseAuxiliaryById");
 const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
@@ -23,11 +22,11 @@ class KscUtil {
     cpp_1.FKuroDataTableFunctionLibrary.GetDataTableAllRowNames(e, r);
     var t = new Array();
     for (const a of r) {
-      var o = (0, puerts_1.$ref)(undefined);
-      var s = cpp_1.FKuroDataTableFunctionLibrary.GetDataTableRowFromName(e, a, o);
-      var o = (0, puerts_1.$unref)(o);
-      if (s) {
-        t.push(o);
+      var s = (0, puerts_1.$ref)(undefined);
+      var o = cpp_1.FKuroDataTableFunctionLibrary.GetDataTableRowFromName(e, a, s);
+      var s = (0, puerts_1.$unref)(s);
+      if (o) {
+        t.push(s);
       }
     }
     return t;
@@ -35,9 +34,9 @@ class KscUtil {
   static LoadDt(e, r, t) {
     r = ResourceSystem_1.ResourceSystem.Load(r, UE.DataTable);
     if (r) {
-      for (const s of KscUtil.GetDtRows(r)) {
-        var o = s.RuntimeDA.ToAssetPathName();
-        t?.set(s.Id, [s, o]);
+      for (const o of KscUtil.GetDtRows(r)) {
+        var s = o.RuntimeDA.ToAssetPathName();
+        t?.set(o.Id, [o, s]);
       }
     }
   }
@@ -46,41 +45,43 @@ class KscUtil {
       return e.split(".").pop();
     }
   }
-  static AsyncLoadKscAsset(s) {
-    ResourceSystem_1.ResourceSystem.LoadAsync(s.Path, UE.Object, (e, r) => {
+  static AsyncLoadKscAsset(o) {
+    ResourceSystem_1.ResourceSystem.LoadAsync(o.Path, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        if (s.KscWorldHandle !== this.t4d) {
-          var t = `[加载Ksc资产] 场景不一致, ${s.Path}, LoadHandle: ${s.KscWorldHandle}, CurHandle: ${this.t4d}`;
-          KscLog_1.KscLog.Info("Load", 69, s.Context, t);
-          const o = e;
-          s.NativeContainer?.Add(o, s.Id);
-          s.FailCallback?.(t);
+        if (o.KscWorldHandle !== this.t4d) {
+          var t = `[加载Ksc资产] 场景不一致, ${o.Path}, LoadHandle: ${o.KscWorldHandle}, CurHandle: ${this.t4d}`;
+          KscLog_1.KscLog.Info("Load", 69, o.Context, t);
+          const s = e;
+          o.NativeContainer?.Add(s, o.Id);
+          o.FailCallback?.(t);
         } else {
-          Info_1.Info.IsBuildDevelopmentOrDebug;
-          const o = e;
-          s.NativeContainer?.Add(o, s.Id);
-          s.Callback?.(o);
+          KscLog_1.KscLog.Info("Load", 84, o.Context, "[加载Ksc资产] 成功", ["Name", e?.GetName()]);
+          const s = e;
+          o.NativeContainer?.Add(s, o.Id);
+          o.Callback?.(s);
         }
       } else {
-        t = "[加载Ksc资产] 失败 " + s.Path;
-        KscLog_1.KscLog.Error("Load", 84, s.Context, t);
-        s.FailCallback?.(t);
+        t = "[加载Ksc资产] 失败 " + o.Path;
+        KscLog_1.KscLog.Error("Load", 84, o.Context, t);
+        o.FailCallback?.(t);
       }
     });
   }
   static AsyncLoadKscAssetDt(a, e, i, r, l) {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        for (const s of KscUtil.GetDtRows(e)) {
-          var t = s.Id;
-          var o = s.RuntimeDA.ToAssetPathName();
+        KscLog_1.KscLog.Info("Load", 84, a, "[DT加载] 成功", ["Name", e.GetName()]);
+        for (const o of KscUtil.GetDtRows(e)) {
+          var t = o.Id;
+          var s = o.RuntimeDA.ToAssetPathName();
           if (i) {
-            i.set(t, o);
+            i.set(t, s);
           }
+          KscLog_1.KscLog.Info("Load", 84, a, "[DT加载] 开始加载Ksc Da", ["Id", t]);
           this.AsyncLoadKscAsset({
             Context: a,
             Id: t,
-            Path: o,
+            Path: s,
             NativeContainer: l,
             KscWorldHandle: this.t4d
           });
@@ -93,10 +94,10 @@ class KscUtil {
   static GetFollowerSkillIdsByProxies(e) {
     var r = new Map();
     if (e.length > 0) {
-      for (const o of e) {
-        var t = TrapDefenseAuxiliaryById_1.configTrapDefenseAuxiliaryById.GetConfig(o)?.InitSkills;
+      for (const s of e) {
+        var t = TrapDefenseAuxiliaryById_1.configTrapDefenseAuxiliaryById.GetConfig(s)?.InitSkills;
         if (t) {
-          r.set(o, t);
+          r.set(s, t);
         }
       }
     }
@@ -147,7 +148,6 @@ class KscUtil {
     var r = new Map();
     r.set(1, e.Lv);
     r.set(2, e.LifeMax);
-    r.set(13, e.LifeMax);
     r.set(3, e.Life);
     r.set(4, e.Sheild);
     r.set(7, e.Atk);

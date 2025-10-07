@@ -20,7 +20,6 @@ const PersonalDefine_1 = require("../../Module/Personal/Model/PersonalDefine");
 const PersonalUtil_1 = require("../../Module/Personal/Model/PersonalUtil");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
 const UiLayer_1 = require("../UiLayer");
-const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 class UiBehaviorGachaSequence {
   constructor() {
     this.C4_ = false;
@@ -108,30 +107,29 @@ class UiBehaviorGachaSequence {
     if (this.Qma) {
       var a = ConfigManager_1.ConfigManager.GachaConfig.GetGachaTextureInfo(e);
       if (a) {
-        GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("PlaySequence");
-        var i = r.GetSequence();
+        var o = r.GetSequence();
         UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
-        UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(i);
+        UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(o);
         CameraController_1.CameraController.SetViewTarget(this.Qma, "UiBehaviorGachaSequence");
         r.bOverrideInstanceData = true;
         r.SetTickableWhenPaused(!ModelManager_1.ModelManager.GameModeModel.IsMulti);
         r.AddBindingByTag(GachaScanView_1.SCENE_CAMERA_TAG, this.Qma, false, true);
-        var i = r.DefaultInstanceData;
-        const o = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(RenderModuleController_1.RenderModuleController.GetKuroCurrentUiSceneTransform());
-        i.TransformOrigin = o;
+        var o = r.DefaultInstanceData;
+        const i = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(RenderModuleController_1.RenderModuleController.GetKuroCurrentUiSceneTransform());
+        o.TransformOrigin = i;
         if (a.BindPoint?.length > 0) {
-          i.TransformOriginActor = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(a.BindPoint), 1);
+          o.TransformOriginActor = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName(a.BindPoint), 1);
         } else {
           a = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("KuroUiSceneRoot"), 1);
-          const o = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(a.D_GetTransform());
-          i.TransformOrigin = o;
+          const i = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(a.D_GetTransform());
+          o.TransformOrigin = i;
         }
         a = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(e);
         this.Hha?.UpdateGachaShowItem(e, a.QualityId);
         this.RoleShowSequence = r.SequencePlayer;
-        i = this.RoleShowSequence.GetStartTime().Time;
-        this.RoleShowSequence.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(i, 0, "", 0, 1));
-        this.RoleShowSequence.PlayTo(new UE.MovieSceneSequencePlaybackParams(i, 0, "A", 2, 0));
+        o = this.RoleShowSequence.GetStartTime().Time;
+        this.RoleShowSequence.SetPlaybackPosition(new UE.MovieSceneSequencePlaybackParams(o, 0, "", 0, 1));
+        this.RoleShowSequence.PlayTo(new UE.MovieSceneSequencePlaybackParams(o, 0, "A", 2, 0));
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GachaSequencePlayer", 58, "未设置SceneSequenceCamera");
@@ -172,7 +170,6 @@ class UiBehaviorGachaSequence {
       ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(r);
     }
     this.v0d.clear();
-    GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("PlaySequence");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");

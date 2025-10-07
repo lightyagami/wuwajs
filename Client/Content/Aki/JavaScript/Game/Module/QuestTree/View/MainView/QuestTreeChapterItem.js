@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.QuestTreeChapterItem = undefined;
 const UE = require("ue");
-const Info_1 = require("../../../../../Core/Common/Info");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
@@ -26,10 +25,15 @@ class QuestTreeChapterItem extends UiPanelBase_1.UiPanelBase {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("QuestTree_ChapterIsLocked");
       }
     };
-    this.wqd = (e, t) => {
-      var i;
-      if (e === this.Pe && (i = this.GetExtendToggle(3).GetRootComponent(), ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.LocatingHelper?.LocateToNode(i, t), e?.IsTracking && this.Hea.PlayLevelSequenceByName("Jumpy"), Info_1.Info.IsInGamepad())) {
-        ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(i, true);
+    this.wqd = e => {
+      var t;
+      if (e === this.Pe) {
+        t = this.GetExtendToggle(3).GetRootComponent();
+        ModelManager_1.ModelManager.QuestTreeModel.ViewModelMain.LocatingHelper?.LocateToNode(t, true, false);
+        if (e?.IsTracking) {
+          this.Hea.PlayLevelSequenceByName("Jumpy");
+        }
+        ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(t, true);
       }
     };
   }

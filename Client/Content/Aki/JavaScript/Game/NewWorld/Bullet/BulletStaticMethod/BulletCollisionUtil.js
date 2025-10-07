@@ -369,7 +369,7 @@ class BulletCollisionUtil {
             BulletStaticFunction_1.HitStaticFunction.PlayHitAudio(5, t, v, e);
           }
         } else {
-          t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, BulletCollisionUtil.oHo.ToUeTransform(), l, "[BulletCollisionUtil.ProcessHitEffect]", U, 0, undefined, f === 1 ? h : undefined);
+          t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, BulletCollisionUtil.oHo.ToUeTransform(), l, "[BulletCollisionUtil.ProcessHitEffect]", U, undefined, undefined, f === 1 ? h : undefined);
           EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
           if (!c.has(l)) {
             c.set(l, new Queue_1.Queue());

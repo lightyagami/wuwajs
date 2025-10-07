@@ -18,9 +18,6 @@ class NotObtainedRoleDevWeaponViewItemData extends RoleDevWeaponViewItemDataBase
   InitByRoleType(e) {
     this.pie(e);
     this.Vpd(e);
-    if (!this.RoleDevViewModelInternal?.CheckRoleIdIsCreated(e)) {
-      this.RoleDevViewModelInternal?.SetRoleWeaponTabType(e, 1);
-    }
   }
   pie(e) {
     if (ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProjectConfig(e)) {

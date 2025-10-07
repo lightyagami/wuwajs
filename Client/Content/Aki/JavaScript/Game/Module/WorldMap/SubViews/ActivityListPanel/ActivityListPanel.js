@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ActivityListPanel = undefined;
 const UE = require("ue");
-const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
@@ -16,23 +15,9 @@ class ActivityListPanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
     super(...arguments);
     this.zJa = new PopupCaptionItem_1.PopupCaptionItem();
     this.xqe = undefined;
-    this.IRe = undefined;
     this.Avd = () => {
-      ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData(false);
+      ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData();
       this.xqe?.RefreshByDataAsync(this.wja());
-    };
-    this.kQd = () => {
-      ModelManager_1.ModelManager.WorldMapModel.ActivityListData.forEach(e => {
-        e.OnLeftTimeRefreshCb(e);
-      });
-      if (ModelManager_1.ModelManager.WorldMapModel.ActivityListData.some(e => e.LeftTime <= 0)) {
-        ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData();
-        this.xqe?.RefreshByDataAsync(this.wja());
-      } else {
-        this.xqe?.GetScrollItemList().forEach(e => {
-          e.RefreshInfo();
-        });
-      }
     };
   }
   GetResourceId() {
@@ -50,14 +35,7 @@ class ActivityListPanel extends WorldMapSecondaryUi_1.WorldMapSecondaryUi {
     this.zJa.SetHelpBtnActive(false);
   }
   OnShowWorldMapSecondaryUi() {
-    this.IRe ||= TimerSystem_1.GameplayTimerSystem.Forever(this.kQd, 1000);
     this.Avd();
-  }
-  OnBeforeHide() {
-    if (this.IRe) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.IRe);
-      this.IRe = undefined;
-    }
   }
   wja() {
     return ModelManager_1.ModelManager.WorldMapModel.ActivityListData.map(e => ({

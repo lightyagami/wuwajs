@@ -41,7 +41,7 @@ class ShipTowerBurningTideItem extends UiPanelBase_1.UiPanelBase {
     this.xvi.SetText(s + "%");
     this.xvi.useChangeColor = t <= e;
     if (i >= 1) {
-      this.jpu("Immortal");
+      this.jpu("Start");
     } else {
       this.jpu("Start2");
     }

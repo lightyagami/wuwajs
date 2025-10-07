@@ -92,9 +92,6 @@ class InstanceDungeon {
   get MonsterTips() {
     return this.monstertips();
   }
-  get RecommendRoleBottom() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.recommendrolebottomLength(), this.recommendrolebottom, this);
-  }
   get FirstRewardId() {
     return this.firstrewardid();
   }
@@ -229,6 +226,9 @@ class InstanceDungeon {
   }
   get DropVisionLimit() {
     return this.dropvisionlimit();
+  }
+  get RecommendRoleBottom() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.recommendrolebottomLength(), this.recommendrolebottom, this);
   }
   __init(t, i) {
     this.z7 = t;
@@ -639,35 +639,8 @@ class InstanceDungeon {
     }
     return i;
   }
-  GetRecommendrolebottomAt(t) {
-    return this.recommendrolebottom(t);
-  }
-  recommendrolebottom(t) {
-    var i = this.J7.__offset(this.z7, 56);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
-    } else {
-      return 0;
-    }
-  }
-  recommendrolebottomLength() {
-    var t = this.J7.__offset(this.z7, 56);
-    if (t) {
-      return this.J7.__vector_len(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  recommendrolebottomArray() {
-    var t = this.J7.__offset(this.z7, 56);
-    if (t) {
-      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
-    } else {
-      return null;
-    }
-  }
   firstrewardid() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -675,7 +648,7 @@ class InstanceDungeon {
     }
   }
   rewardid() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -683,7 +656,7 @@ class InstanceDungeon {
     }
   }
   repeatrewardid() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -691,7 +664,7 @@ class InstanceDungeon {
     }
   }
   exchangerewardid() {
-    var t = this.J7.__offset(this.z7, 64);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -702,7 +675,7 @@ class InstanceDungeon {
     return this.sharedtreasuregroup(t);
   }
   sharedtreasuregroup(t) {
-    var i = this.J7.__offset(this.z7, 66);
+    var i = this.J7.__offset(this.z7, 64);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -710,7 +683,7 @@ class InstanceDungeon {
     }
   }
   sharedtreasuregroupLength() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -718,7 +691,7 @@ class InstanceDungeon {
     }
   }
   sharedtreasuregroupArray() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -726,7 +699,7 @@ class InstanceDungeon {
     }
   }
   entercontrolid() {
-    var t = this.J7.__offset(this.z7, 68);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -737,7 +710,7 @@ class InstanceDungeon {
     return this.entercondition(t);
   }
   entercondition(t) {
-    var i = this.J7.__offset(this.z7, 70);
+    var i = this.J7.__offset(this.z7, 68);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -745,7 +718,7 @@ class InstanceDungeon {
     }
   }
   enterconditionLength() {
-    var t = this.J7.__offset(this.z7, 70);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -753,7 +726,7 @@ class InstanceDungeon {
     }
   }
   enterconditionArray() {
-    var t = this.J7.__offset(this.z7, 70);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -761,7 +734,7 @@ class InstanceDungeon {
     }
   }
   enterconditiontext(t) {
-    var i = this.J7.__offset(this.z7, 72);
+    var i = this.J7.__offset(this.z7, 70);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -769,7 +742,7 @@ class InstanceDungeon {
     return i;
   }
   difficultyicon(t) {
-    var i = this.J7.__offset(this.z7, 74);
+    var i = this.J7.__offset(this.z7, 72);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -777,7 +750,7 @@ class InstanceDungeon {
     return i;
   }
   entitylevel() {
-    var t = this.J7.__offset(this.z7, 76);
+    var t = this.J7.__offset(this.z7, 74);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -788,7 +761,7 @@ class InstanceDungeon {
     return this.recommendlevel(t);
   }
   recommendlevel(t, i) {
-    var s = this.J7.__offset(this.z7, 78);
+    var s = this.J7.__offset(this.z7, 76);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -796,7 +769,7 @@ class InstanceDungeon {
     }
   }
   recommendlevelLength() {
-    var t = this.J7.__offset(this.z7, 78);
+    var t = this.J7.__offset(this.z7, 76);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -807,7 +780,7 @@ class InstanceDungeon {
     return this.recommendrole(t);
   }
   recommendrole(t) {
-    var i = this.J7.__offset(this.z7, 80);
+    var i = this.J7.__offset(this.z7, 78);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -815,7 +788,7 @@ class InstanceDungeon {
     }
   }
   recommendroleLength() {
-    var t = this.J7.__offset(this.z7, 80);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -823,7 +796,7 @@ class InstanceDungeon {
     }
   }
   recommendroleArray() {
-    var t = this.J7.__offset(this.z7, 80);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -834,7 +807,7 @@ class InstanceDungeon {
     return this.recommendelement(t);
   }
   recommendelement(t) {
-    var i = this.J7.__offset(this.z7, 82);
+    var i = this.J7.__offset(this.z7, 80);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -842,7 +815,7 @@ class InstanceDungeon {
     }
   }
   recommendelementLength() {
-    var t = this.J7.__offset(this.z7, 82);
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -850,7 +823,7 @@ class InstanceDungeon {
     }
   }
   recommendelementArray() {
-    var t = this.J7.__offset(this.z7, 82);
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -858,7 +831,7 @@ class InstanceDungeon {
     }
   }
   shareattri() {
-    var t = this.J7.__offset(this.z7, 84);
+    var t = this.J7.__offset(this.z7, 82);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -869,7 +842,7 @@ class InstanceDungeon {
     return this.fightinfodttype(t);
   }
   fightinfodttype(t) {
-    var i = this.J7.__offset(this.z7, 86);
+    var i = this.J7.__offset(this.z7, 84);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -877,7 +850,7 @@ class InstanceDungeon {
     }
   }
   fightinfodttypeLength() {
-    var t = this.J7.__offset(this.z7, 86);
+    var t = this.J7.__offset(this.z7, 84);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -885,7 +858,7 @@ class InstanceDungeon {
     }
   }
   fightinfodttypeArray() {
-    var t = this.J7.__offset(this.z7, 86);
+    var t = this.J7.__offset(this.z7, 84);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -893,7 +866,7 @@ class InstanceDungeon {
     }
   }
   savedays() {
-    var t = this.J7.__offset(this.z7, 88);
+    var t = this.J7.__offset(this.z7, 86);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -904,7 +877,7 @@ class InstanceDungeon {
     return this.limitviewname(t);
   }
   limitviewname(t, i) {
-    var s = this.J7.__offset(this.z7, 90);
+    var s = this.J7.__offset(this.z7, 88);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -912,7 +885,7 @@ class InstanceDungeon {
     return s;
   }
   limitviewnameLength() {
-    var t = this.J7.__offset(this.z7, 90);
+    var t = this.J7.__offset(this.z7, 88);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -923,7 +896,7 @@ class InstanceDungeon {
     return this.funclimit(t);
   }
   funclimit(t) {
-    var i = this.J7.__offset(this.z7, 92);
+    var i = this.J7.__offset(this.z7, 90);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -931,7 +904,7 @@ class InstanceDungeon {
     }
   }
   funclimitLength() {
-    var t = this.J7.__offset(this.z7, 92);
+    var t = this.J7.__offset(this.z7, 90);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -939,7 +912,7 @@ class InstanceDungeon {
     }
   }
   funclimitArray() {
-    var t = this.J7.__offset(this.z7, 92);
+    var t = this.J7.__offset(this.z7, 90);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -947,7 +920,7 @@ class InstanceDungeon {
     }
   }
   canuseitem() {
-    var t = this.J7.__offset(this.z7, 94);
+    var t = this.J7.__offset(this.z7, 92);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -955,7 +928,7 @@ class InstanceDungeon {
     }
   }
   gameplaymode() {
-    var t = this.J7.__offset(this.z7, 96);
+    var t = this.J7.__offset(this.z7, 94);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -963,7 +936,7 @@ class InstanceDungeon {
     }
   }
   guidetype() {
-    var t = this.J7.__offset(this.z7, 98);
+    var t = this.J7.__offset(this.z7, 96);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -971,7 +944,7 @@ class InstanceDungeon {
     }
   }
   guidevalue() {
-    var t = this.J7.__offset(this.z7, 100);
+    var t = this.J7.__offset(this.z7, 98);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -979,7 +952,7 @@ class InstanceDungeon {
     }
   }
   settlebuttontype() {
-    var t = this.J7.__offset(this.z7, 102);
+    var t = this.J7.__offset(this.z7, 100);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -990,7 +963,7 @@ class InstanceDungeon {
     return this.subtitle(t);
   }
   subtitle(t, i) {
-    var s = this.J7.__offset(this.z7, 104);
+    var s = this.J7.__offset(this.z7, 102);
     if (s) {
       return (i || new DicIntString_1.DicIntString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -998,7 +971,7 @@ class InstanceDungeon {
     }
   }
   subtitleLength() {
-    var t = this.J7.__offset(this.z7, 104);
+    var t = this.J7.__offset(this.z7, 102);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1006,7 +979,7 @@ class InstanceDungeon {
     }
   }
   subinstancetitle(t) {
-    var i = this.J7.__offset(this.z7, 106);
+    var i = this.J7.__offset(this.z7, 104);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -1014,7 +987,7 @@ class InstanceDungeon {
     return i;
   }
   autoleavetime() {
-    var t = this.J7.__offset(this.z7, 108);
+    var t = this.J7.__offset(this.z7, 106);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1022,7 +995,7 @@ class InstanceDungeon {
     }
   }
   limittime() {
-    var t = this.J7.__offset(this.z7, 110);
+    var t = this.J7.__offset(this.z7, 108);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1030,7 +1003,7 @@ class InstanceDungeon {
     }
   }
   leavewaittime() {
-    var t = this.J7.__offset(this.z7, 112);
+    var t = this.J7.__offset(this.z7, 110);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1038,7 +1011,7 @@ class InstanceDungeon {
     }
   }
   failtips(t) {
-    var i = this.J7.__offset(this.z7, 114);
+    var i = this.J7.__offset(this.z7, 112);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -1046,14 +1019,14 @@ class InstanceDungeon {
     return i;
   }
   verifycreaturegen() {
-    var t = this.J7.__offset(this.z7, 116);
+    var t = this.J7.__offset(this.z7, 114);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetDifficultylevelAt(t) {
     return this.difficultylevel(t);
   }
   difficultylevel(t) {
-    var i = this.J7.__offset(this.z7, 118);
+    var i = this.J7.__offset(this.z7, 116);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -1061,7 +1034,7 @@ class InstanceDungeon {
     }
   }
   difficultylevelLength() {
-    var t = this.J7.__offset(this.z7, 118);
+    var t = this.J7.__offset(this.z7, 116);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1069,7 +1042,7 @@ class InstanceDungeon {
     }
   }
   difficultylevelArray() {
-    var t = this.J7.__offset(this.z7, 118);
+    var t = this.J7.__offset(this.z7, 116);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -1080,7 +1053,7 @@ class InstanceDungeon {
     return this.difficultydesc(t);
   }
   difficultydesc(t, i) {
-    var s = this.J7.__offset(this.z7, 120);
+    var s = this.J7.__offset(this.z7, 118);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -1088,7 +1061,7 @@ class InstanceDungeon {
     return s;
   }
   difficultydescLength() {
-    var t = this.J7.__offset(this.z7, 120);
+    var t = this.J7.__offset(this.z7, 118);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1099,7 +1072,7 @@ class InstanceDungeon {
     return this.drop(t);
   }
   drop(t) {
-    var i = this.J7.__offset(this.z7, 122);
+    var i = this.J7.__offset(this.z7, 120);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -1107,7 +1080,7 @@ class InstanceDungeon {
     }
   }
   dropLength() {
-    var t = this.J7.__offset(this.z7, 122);
+    var t = this.J7.__offset(this.z7, 120);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1115,7 +1088,7 @@ class InstanceDungeon {
     }
   }
   dropArray() {
-    var t = this.J7.__offset(this.z7, 122);
+    var t = this.J7.__offset(this.z7, 120);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -1123,7 +1096,7 @@ class InstanceDungeon {
     }
   }
   entercount() {
-    var t = this.J7.__offset(this.z7, 124);
+    var t = this.J7.__offset(this.z7, 122);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1131,7 +1104,7 @@ class InstanceDungeon {
     }
   }
   enterconditiongroup() {
-    var t = this.J7.__offset(this.z7, 126);
+    var t = this.J7.__offset(this.z7, 124);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1139,7 +1112,7 @@ class InstanceDungeon {
     }
   }
   icontagpath(t) {
-    var i = this.J7.__offset(this.z7, 128);
+    var i = this.J7.__offset(this.z7, 126);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -1147,7 +1120,7 @@ class InstanceDungeon {
     return i;
   }
   viewmapid() {
-    var t = this.J7.__offset(this.z7, 130);
+    var t = this.J7.__offset(this.z7, 128);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -1158,7 +1131,7 @@ class InstanceDungeon {
     return this.rendersettings(t);
   }
   rendersettings(t, i) {
-    var s = this.J7.__offset(this.z7, 132);
+    var s = this.J7.__offset(this.z7, 130);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -1166,7 +1139,7 @@ class InstanceDungeon {
     }
   }
   rendersettingsLength() {
-    var t = this.J7.__offset(this.z7, 132);
+    var t = this.J7.__offset(this.z7, 130);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -1174,11 +1147,38 @@ class InstanceDungeon {
     }
   }
   dropvisionlimit() {
-    var t = this.J7.__offset(this.z7, 134);
+    var t = this.J7.__offset(this.z7, 132);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  GetRecommendrolebottomAt(t) {
+    return this.recommendrolebottom(t);
+  }
+  recommendrolebottom(t) {
+    var i = this.J7.__offset(this.z7, 134);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  recommendrolebottomLength() {
+    var t = this.J7.__offset(this.z7, 134);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  recommendrolebottomArray() {
+    var t = this.J7.__offset(this.z7, 134);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
     }
   }
 }

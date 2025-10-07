@@ -5,16 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleDevWeaponSubRecommendItemDataBase = undefined;
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
-const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const RoleDevUtils_1 = require("../../RoleDevUtils");
 class RoleDevWeaponSubRecommendItemDataBase {
   constructor() {
     this.RoleIdInternal = 0;
     this.WeaponIdInternal = 0;
+    this.HasRoleInternal = false;
   }
-  InitByWeaponId(e, t) {
+  InitByWeaponId(e, t, r = true) {
     this.RoleIdInternal = t;
     this.WeaponIdInternal = e;
+    this.HasRoleInternal = r;
+    this.InitByWeaponType(e, t, r);
   }
   get RoleId() {
     return this.RoleIdInternal;
@@ -23,7 +25,7 @@ class RoleDevWeaponSubRecommendItemDataBase {
     return this.WeaponIdInternal;
   }
   get HasRole() {
-    return ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.RoleId) !== undefined;
+    return this.HasRoleInternal;
   }
   get WeaponName() {
     return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(this.WeaponIdInternal).WeaponName;
@@ -41,18 +43,16 @@ class RoleDevWeaponSubRecommendItemDataBase {
   get GachaId() {
     var e = this.WeaponJumpGroupConfig;
     if (e?.JumpType === 1 || e?.JumpType === 2) {
-      e = RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(this.WeaponIdInternal);
-      if (e.length > 0) {
-        return e[0];
-      }
+      return RoleDevUtils_1.RoleDevUtils.GetRoleGachaIds(this.WeaponIdInternal)[0] ?? 0;
+    } else {
+      return 0;
     }
-    return 0;
   }
   get IsEquipped() {
-    return !!this.HasRole && ModelManager_1.ModelManager.WeaponModel?.GetWeaponIdByRoleDataId(this.RoleId) === this.WeaponId;
+    return this.GetIsEquipped();
   }
-  get IsObtained() {
-    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.WeaponId) > 0;
+  get NotObtained() {
+    return this.GetNotObtained();
   }
 }
 exports.RoleDevWeaponSubRecommendItemDataBase = RoleDevWeaponSubRecommendItemDataBase;

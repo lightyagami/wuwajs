@@ -26,8 +26,8 @@ class PersonalCardView extends UiViewBase_1.UiViewBase {
     this.p5i = undefined;
     this.lqe = undefined;
     this.uHt = () => {
-      var t = this.jTd();
-      this.xqe.RefreshByData(t);
+      var e = this.jTd();
+      this.xqe.RefreshByData(e);
       this.xqe.SelectGridProxy(0);
       this.xqe.ScrollToGridIndex(0);
       this.NFd(this.FFd);
@@ -45,24 +45,23 @@ class PersonalCardView extends UiViewBase_1.UiViewBase {
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.FFd.CardId);
     };
     this.Y5i = () => {
-      var t = new PersonalCardItem_1.PersonalCardItem();
-      t.SetToggleCallBack(this.Oha);
-      t.SetNeedShowRedDot(false);
-      t.SetIsOtherCardItem(this.p5i?.IsOtherData ?? false);
-      return t;
+      var e = new PersonalCardItem_1.PersonalCardItem();
+      e.SetToggleCallBack(this.Oha);
+      e.SetNeedShowRedDot(false);
+      return e;
     };
-    this.Oha = (t, e) => {
-      this.FFd = e;
+    this.Oha = (e, t) => {
+      this.FFd = t;
       var i = this.p5i.CardDataList;
       var r = i.length;
-      for (let t = 0; t < r; t++) {
-        var s = i[t];
+      for (let e = 0; e < r; e++) {
+        var s = i[e];
         if (s.CardId === this.FFd.CardId && s.IsUnLock && !s.IsRead) {
           PersonalController_1.PersonalController.SendReadCardRequest(this.FFd.CardId);
           break;
         }
       }
-      this.xqe.SelectGridProxy(t);
+      this.xqe.SelectGridProxy(e);
       this.RefreshCardInfo(this.FFd);
       this.NFd(this.FFd);
     };
@@ -72,28 +71,23 @@ class PersonalCardView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[8, this.qha]];
   }
   OnStart() {
-    var t;
-    this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
-    this.lqe.SetCloseCallBack(this.Jvt);
+    var e;
     this.p5i = this.OpenParam;
+    this.m8t = new ButtonItem_1.ButtonItem(this.GetButton(9).RootUIComp);
+    this.m8t?.SetFunction(this.p5t);
     if (this.p5i) {
-      this.m8t = new ButtonItem_1.ButtonItem(this.GetButton(9).RootUIComp);
+      e = this.jTd();
       this.xqe = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.Y5i);
-      t = this.jTd();
-      this.GetItem(6).SetUIActive(t.length > 0);
-      this.xqe.RefreshByData(t);
-      if (t.length > 0) {
+      this.xqe.RefreshByData(e);
+      if (e.length > 0) {
         this.xqe.SelectGridProxy(0);
-        this.FFd = t[0];
+        this.FFd = e[0];
         this.RefreshCardInfo(this.FFd);
-      }
-      if (this.p5i.IsOtherData) {
-        this.m8t.SetUiActive(false);
-      } else {
-        this.m8t.SetUiActive(true);
         this.NFd(this.FFd);
-        this.m8t.SetFunction(this.p5t);
       }
+      this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(7));
+      this.lqe.SetCloseCallBack(this.Jvt);
+      this.GetItem(6).SetUIActive(e.length > 0);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Personal", 58, "PersonalCardView Invalid OpenParam");
     }
@@ -104,32 +98,32 @@ class PersonalCardView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCardChange, this.uHt);
   }
-  RefreshCardInfo(t) {
-    t = BackgroundCardById_1.configBackgroundCardById.GetConfig(t.CardId);
-    this.SetTextureByPath(t.CardPath, this.GetTexture(2));
-    this.GetText(3).ShowTextNew(t.Title);
-    this.GetText(4).ShowTextNew(t.AttributesDescription);
-    this.GetText(5).ShowTextNew(t.Tips);
+  RefreshCardInfo(e) {
+    e = BackgroundCardById_1.configBackgroundCardById.GetConfig(e.CardId);
+    this.SetTextureByPath(e.CardPath, this.GetTexture(2));
+    this.GetText(3).ShowTextNew(e.Title);
+    this.GetText(4).ShowTextNew(e.AttributesDescription);
+    this.GetText(5).ShowTextNew(e.Tips);
   }
-  NFd(t) {
-    var e = t.CardId === this.p5i.CurCardId;
-    var t = t.IsUnLock && !e;
-    this.m8t.SetEnableClick(t);
-    this.GetInteractionGroup(10).SetInteractable(t);
-    var t = e ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1";
-    this.m8t.SetLocalTextNew(t);
+  NFd(e) {
+    var t = e.CardId === this.p5i.CurCardId;
+    var e = e.IsUnLock && !t;
+    this.m8t.SetEnableClick(e);
+    this.GetInteractionGroup(10).SetInteractable(e);
+    var e = t ? "Text_InUse_Text" : "ConfirmBox_173_ButtonText_1";
+    this.m8t.SetLocalTextNew(e);
   }
   jTd() {
-    var e = [...this.p5i.GetCardList(true)];
-    var i = e.findIndex(t => t.CardId === this.p5i.CurCardId);
-    if (!(i <= 0) && !(e.length <= i)) {
-      var t = e[i];
-      for (let t = i; t > 0; t--) {
-        e[t] = e[t - 1];
+    var t = [...this.p5i.GetCardList(true)];
+    var i = t.findIndex(e => e.CardId === this.p5i.CurCardId);
+    if (!(i <= 0) && !(t.length <= i)) {
+      var e = t[i];
+      for (let e = i; e > 0; e--) {
+        t[e] = t[e - 1];
       }
-      e[0] = t;
+      t[0] = e;
     }
-    return e;
+    return t;
   }
   OnBeforeDestroy() {
     if (this.xqe) {

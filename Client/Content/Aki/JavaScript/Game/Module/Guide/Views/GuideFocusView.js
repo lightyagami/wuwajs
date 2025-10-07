@@ -45,18 +45,18 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     this.cZt = () => {
       this.UiViewSequence.PlaySequence("AutoLoopManual");
     };
-    this.mZt = (t, e) => {
-      if ((!this.RootItem || !!this.RootItem.bIsUIActive) && (!t || !(this.CombineInputMap.set(t, e), !this.IsAllCombineInputPass()))) {
-        e = this.Config.InputEnums;
-        this.UnbindInput(this.Config.InputEnums, e);
+    this.mZt = (t, i) => {
+      if ((!this.RootItem || !!this.RootItem.bIsUIActive) && (!t || !(this.CombineInputMap.set(t, i), !this.IsAllCombineInputPass()))) {
+        i = this.Config.InputEnums;
+        this.UnbindInput(this.Config.InputEnums, i);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Guide", 53, "聚焦监听按键完成引导", ["最后按键", t]);
         }
         this.DoCloseByFinished();
       }
     };
-    this.JJc = (t, e) => {
-      if (e.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
+    this.JJc = (t, i) => {
+      if (i.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
         this.zJc = t;
       }
     };
@@ -64,9 +64,6 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       if (this.zJc === t) {
         this.zJc = undefined;
       }
-    };
-    this.izd = t => {
-      this.GetRootItem()?.SetUIActive(t);
     };
   }
   OnBeforeGuideBaseViewCreate() {
@@ -99,11 +96,9 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   OnGuideBaseViewAddEvent() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.izd);
   }
   OnGuideBaseViewRemoveEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.izd);
   }
   OnGuideViewAfterShow() {
     this.RootItem.SetRaycastTarget(false);
@@ -158,9 +153,9 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   uZt() {
     var t;
-    var e = this.GuideStepInfo.ViewData.GetAttachedUiItem();
-    if (e?.IsValid() && (t = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow(), this.nZt = this.CZt(e, t), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Guide", 16, "[聚焦引导界面:InitFocusItem 初始化附着UI对象管理类成功]", ["引导步骤", this.GuideStepInfo.Id], ["框住的按钮名称", e.GetDisplayName()], ["框住的显示节点名称", t.GetDisplayName()]);
+    var i = this.GuideStepInfo.ViewData.GetAttachedUiItem();
+    if (i?.IsValid() && (t = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow(), this.nZt = this.CZt(i, t), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Guide", 16, "[聚焦引导界面:InitFocusItem 初始化附着UI对象管理类成功]", ["引导步骤", this.GuideStepInfo.Id], ["框住的按钮名称", i.GetDisplayName()], ["框住的显示节点名称", t.GetDisplayName()]);
     }
   }
   dZt() {
@@ -187,11 +182,11 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     }
     this.nZt?.OnBaseViewCloseWhenFinish();
   }
-  CZt(t, e) {
-    var i = this.GetItem(0);
-    i.SetActive(false);
-    var t = new GuideFocusItem_1.GuideFocusItem(t, e, this);
-    t.Init(i);
+  CZt(t, i) {
+    var e = this.GetItem(0);
+    e.SetActive(false);
+    var t = new GuideFocusItem_1.GuideFocusItem(t, i, this);
+    t.Init(e);
     return t;
   }
 }

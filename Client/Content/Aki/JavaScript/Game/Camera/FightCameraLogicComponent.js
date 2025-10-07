@@ -481,9 +481,6 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
     this.SPn = t;
     this.yPn = t * t;
   }
-  get StartHideDistanceSquared() {
-    return this.yPn;
-  }
   get IsTargetLocationValid() {
     return !this.TargetLocation.ContainsNaN();
   }
@@ -569,9 +566,9 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
       }
     }
     if (i) {
-      for (var [l, _] of i) {
-        l = this.C1e.get(l);
-        this.p1e(l, _);
+      for (var [_, l] of i) {
+        _ = this.C1e.get(_);
+        this.p1e(_, l);
       }
       for (var [C, m] of this.C1e) {
         if (this[m] === undefined) {
@@ -744,14 +741,14 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
       this.CameraCollision?.SetCameraConfig(t.基础.Get(11), t.基础.Get(65));
     });
   }
-  ApplyCameraModify(t, i, s, h, e, a, r = BREAK_BLEND_OUT_TIME, o = undefined, n = undefined, l = undefined, _ = "", C = undefined) {
-    return this.CameraModifyController.ApplyCameraModify(t, i, s, h, r, e, a, o, n, l, _, C);
+  ApplyCameraModify(t, i, s, h, e, a, r = BREAK_BLEND_OUT_TIME, o = undefined, n = undefined, _ = undefined, l = "", C = undefined) {
+    return this.CameraModifyController.ApplyCameraModify(t, i, s, h, r, e, a, o, n, _, l, C);
   }
   StopCameraModify(t, i) {
     this.CameraModifyController.StopCameraModify(t, i);
   }
-  ApplyCameraGuide(t, i, s, h, e, a, r, o = false, n = false, l = 0, _ = false) {
-    this.CameraGuideController.ApplyCameraGuide(t, i, s, h, e, a, r, o, n, l, _);
+  ApplyCameraGuide(t, i, s, h, e, a, r, o = false, n = false, _ = 0) {
+    this.CameraGuideController.ApplyCameraGuide(t, i, s, h, e, a, r, o, n, _);
   }
   ApplyCameraHook(t, i = undefined) {
     this.CameraHookController.ApplyCameraHook(t, i);
@@ -1091,7 +1088,7 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
     this.cPr = this.Character?.IsValid() ?? false;
     if (this.CameraActor?.IsValid() && this.cPr) {
       if (ModelManager_1.ModelManager.CameraModel.CameraMode !== 0) {
-        if (!ControllerHolder_1.ControllerHolder.PhotographController.IsOpenPhotograph() && !ModelManager_1.ModelManager.CameraModel?.HideHeadEnabled && (ModelManager_1.ModelManager.CameraModel.CameraMode !== 1 || !ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera?.PlayerComponent?.IsDitherEffectEnabled)) {
+        if (!ControllerHolder_1.ControllerHolder.PhotographController.IsOpenPhotograph() && !ModelManager_1.ModelManager.CameraModel?.HideHeadEnabled) {
           this.Character.SetDitherEffect(1, 1);
         }
         this.CameraCollision?.ResetAllNpcDither();
@@ -1170,13 +1167,13 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
   $Pr(t, i, s, h, e, a, r, o) {
     var n = t - i;
     if (n < 0) {
-      const l = MathUtils_1.MathUtils.Lerp(h, e, o.GetCurrentValue(n / a));
-      const _ = l * s;
-      return MathUtils_1.MathUtils.Clamp(t + _, i + a, i);
+      const _ = MathUtils_1.MathUtils.Lerp(h, e, o.GetCurrentValue(n / a));
+      const l = _ * s;
+      return MathUtils_1.MathUtils.Clamp(t + l, i + a, i);
     }
-    const l = MathUtils_1.MathUtils.Lerp(h, e, o.GetCurrentValue(n / r));
-    const _ = l * s;
-    return MathUtils_1.MathUtils.Clamp(t - _, i, i + r);
+    const _ = MathUtils_1.MathUtils.Lerp(h, e, o.GetCurrentValue(n / r));
+    const l = _ * s;
+    return MathUtils_1.MathUtils.Clamp(t - l, i, i + r);
   }
   S1h(t, i, s, h, e, a, r, o) {
     var n = t - i;
@@ -1197,9 +1194,9 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
       return MathUtils_1.MathUtils.Clamp(t + h, i + a, i + r);
     }
   }
-  a1l(t, i, s, h, e, a, r, o, n, l) {
-    var _ = this.Character.CharacterActorComponent.InputDirectProxy;
-    if (MathUtils_1.MathUtils.IsNearlyZero(_.Y, MathUtils_1.MathUtils.KindaSmallNumber)) {
+  a1l(t, i, s, h, e, a, r, o, n, _) {
+    var l = this.Character.CharacterActorComponent.InputDirectProxy;
+    if (MathUtils_1.MathUtils.IsNearlyZero(l.Y, MathUtils_1.MathUtils.KindaSmallNumber)) {
       var C = t - i;
       if (C > 0) {
         const d = a * s;
@@ -1214,18 +1211,18 @@ let FightCameraLogicComponent = FightCameraLogicComponent_1 = class FightCameraL
     a = this.PlayerRotatorInGravity.Yaw;
     C = CameraUtility_1.CameraUtility.GetYawInGravity(this.CameraRotation);
     C = MathUtils_1.MathUtils.WrapAngle(C - a);
-    if (_.Y < 0) {
+    if (l.Y < 0) {
       if (C < 0) {
         return t;
       }
-      const m = MathUtils_1.MathUtils.Lerp(h, e, n.GetCurrentValue(C / l));
+      const m = MathUtils_1.MathUtils.Lerp(h, e, n.GetCurrentValue(C / _));
       const d = m * s;
       return MathUtils_1.MathUtils.Clamp(t - d, i + r, i + o);
     }
     if (C > 0) {
       return t;
     }
-    const m = MathUtils_1.MathUtils.Lerp(h, e, n.GetCurrentValue(-C / l));
+    const m = MathUtils_1.MathUtils.Lerp(h, e, n.GetCurrentValue(-C / _));
     const d = m * s;
     return MathUtils_1.MathUtils.Clamp(t + d, i + r, i + o);
   }

@@ -34,7 +34,6 @@ const LIST_REQUEST_CD = 5;
 const NOTIFY_PLAYSTATION_CD = +TimeUtil_1.TimeUtil.InverseMillisecond;
 const ONLINE_SING_LONG_TIME = TimeUtil_1.TimeUtil.InverseMillisecond * 300;
 const ONLINE_SING_TIPS_TIME = TimeUtil_1.TimeUtil.InverseMillisecond * 1200;
-const ONLINE_SING_TIPS_TIMER_INTERVAL = TimeUtil_1.TimeUtil.InverseMillisecond * 60;
 class OnlineController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
     OnlineController.UGi = CommonParamById_1.configCommonParamById.GetIntConfig("netstate_push_interval") * TimeUtil_1.TimeUtil.InverseMillisecond;
@@ -145,7 +144,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
   static async RefreshWorldList() {
     var e;
     var n = TimeUtil_1.TimeUtil.GetServerTime();
-    return n - OnlineController.F6t > LIST_REQUEST_CD && (ModelManager_1.ModelManager.OnlineModel.CleanFriendWorldList(), ModelManager_1.ModelManager.OnlineModel.CleanStrangerWorldList(), (e = []).push(OnlineController.LobbyListRequest(false)), e.push(OnlineController.LobbyListRequest(true)), await Promise.all(e), OnlineController.F6t = n, EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshWorldList), true);
+    return n - OnlineController.F6t > LIST_REQUEST_CD && (ModelManager_1.ModelManager.OnlineModel.CleanFriendWorldList(), ModelManager_1.ModelManager.OnlineModel.CleanStrangerWorldList(), (e = []).push(OnlineController.LobbyListRequest(false)), e.push(OnlineController.LobbyListRequest(true)), await Promise.all(e), OnlineController.F6t = n, true);
   }
   static OnTick(e) {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDone && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -180,6 +179,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
       }
     }
     ModelManager_1.ModelManager.OnlineModel.SortWorldList(n);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshWorldList);
   }
   static WorldEnterPermissionsRequest(e) {
     var n = new Protocol_1.Aki.Protocol.N0s();
@@ -378,8 +378,8 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
       var t = new OnlineHallData_1.OnlineTeamData(r.JMs, r.W5n, r.F6n, r.dSs, r.zVn, e + 1, r.mOs, r.gOs, r.tnc, r.inc, r.v7n, r.B7_);
       ModelManager_1.ModelManager.OnlineModel.PushCurrentTeamList(t);
       var a = new Array();
-      for (const s of r.COs.dUs) {
-        var i = new OnlineHallData_1.WorldTeamRoleInfo(s.Q6n, s.eI_, s.Ebs);
+      for (const g of r.COs.dUs) {
+        var i = new OnlineHallData_1.WorldTeamRoleInfo(g.Q6n, g.eI_, g.Ebs);
         a.push(i);
       }
       t = new OnlineHallData_1.WorldTeamPlayerFightInfo(ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(r.W5n).Name, r.W5n, r.COs.FVn, r.mOs.Qxa, r.mOs.ywa, a);
@@ -395,8 +395,8 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
       this.PlayerCreatePsnSessionRequest(e);
     }
     var _ = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetSdkBlockingUser();
-    for (const g of ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer()) {
-      var M = ModelManager_1.ModelManager.OnlineModel.GetWorldTeamPlayerFightInfo(g);
+    for (const s of ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer()) {
+      var M = ModelManager_1.ModelManager.OnlineModel.GetWorldTeamPlayerFightInfo(s);
       if (M && _ && _.get(M.ThirdPartyAccountId)) {
         M.Name = "";
       }
@@ -651,13 +651,13 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
         this.FMd ||= TimerSystem_1.GameplayTimerSystem.Delay(() => {
           var e;
           var n;
-          if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-            this.jKd();
-          } else if (ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamSize() !== 1) {
+          if (ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamSize() !== 1) {
             this.GMd();
           } else {
             (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(371)).FunctionMap.set(0, n = () => {
-              this.jKd();
+              this.NMd = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+                this.VMd();
+              }, ONLINE_SING_TIPS_TIME);
             });
             e.FunctionMap.set(1, () => {
               var e = ModelManager_1.ModelManager.PlayerInfoModel.GetId() ?? 0;
@@ -665,11 +665,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
             });
             e.FunctionMap.set(2, n);
             e.IsEscViewTriggerCallBack = false;
-            if (UiManager_1.UiManager.IsViewShow("BattleView")) {
-              ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
-            } else {
-              this.jKd();
-            }
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
             this.GMd();
             this.qMd = true;
           }
@@ -677,29 +673,13 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static jKd() {
-    this.HMd();
-    this.NMd = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.VMd();
-    }, ONLINE_SING_TIPS_TIMER_INTERVAL);
-  }
   static VMd() {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-      if (ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamSize() !== 1) {
-        this._Kd = 0;
+      if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+        this.jMd = true;
       } else {
-        this._Kd += ONLINE_SING_TIPS_TIMER_INTERVAL;
-        if (!(this._Kd < ONLINE_SING_TIPS_TIME)) {
-          if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-            this.jMd = true;
-          } else {
-            ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("OnlineSingleTips");
-            this._Kd = 0;
-          }
-        }
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("OnlineSingleTips");
       }
-    } else {
-      this.HMd();
     }
   }
   static HMd() {
@@ -765,7 +745,6 @@ OnlineController.p5a = () => {
     _a.VMd();
     _a.jMd = false;
   }
-  _a.OMd();
 };
 OnlineController.jJa = () => {
   if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -1022,5 +1001,4 @@ OnlineController.uFa = undefined;
 OnlineController.FMd = undefined;
 OnlineController.NMd = undefined;
 OnlineController.jMd = false;
-OnlineController.qMd = false;
-OnlineController._Kd = 0; //# sourceMappingURL=OnlineController.js.map
+OnlineController.qMd = false; //# sourceMappingURL=OnlineController.js.map

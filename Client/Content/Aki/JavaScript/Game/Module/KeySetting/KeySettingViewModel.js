@@ -76,14 +76,8 @@ class KeySettingViewModel {
     for (const t of this.lxi) {
       t.ResetKey(1);
     }
-    for (const e of this.rKd) {
-      e.ResetKey(1);
-    }
-    for (const i of this.bAn) {
-      i.ResetKey(2);
-    }
-    for (const n of this.oKd) {
-      n.ResetKey(2);
+    for (const e of this.bAn) {
+      e.ResetKey(2);
     }
   }
   static ExternalFinishEditKey() {
@@ -409,9 +403,7 @@ KeySettingViewModel.JYu = [];
 KeySettingViewModel.cxi = undefined;
 KeySettingViewModel.fxi = [];
 KeySettingViewModel.bAn = [];
-KeySettingViewModel.oKd = [];
 KeySettingViewModel.lxi = [];
-KeySettingViewModel.rKd = [];
 KeySettingViewModel.Lkn = new Map();
 KeySettingViewModel.wd1 = new Map();
 KeySettingViewModel.rEa = 0;

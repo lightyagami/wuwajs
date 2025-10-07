@@ -109,24 +109,18 @@ class BulletUtil {
     return !!t.AttackerActorComp.IsRoleAndCtrlByMe || !!t.AttackerActorComp.IsAutonomousProxy && !!t.BulletDataMain.Render.CameraShakeToSummonOwner && !!(t = t.AttackerCreatureDataComp.GetSummonerPlayerId()) && t === ModelManager_1.ModelManager.PlayerInfoModel.GetId();
   }
   static SummonBullet(t, e, o, l, r = undefined, a = undefined, i = true) {
-    var n;
-    if (t.NeedDestroy) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Bullet", 20, "子弹SummonBullet父子弹已销毁", ["子弹ID", t.BulletRowName]);
-      }
-    } else {
-      (n = ControllerHolder_1.ControllerHolder.BulletController.GetActionCenter().CreateBulletActionInfo(11)).ChildrenType = e;
-      n.Victim = o;
-      n.IsStayInCharacter = l;
-      n.CreateOnAuthority = i;
-      if (r) {
-        n.ParentImpactPoint = Vector_1.Vector.Create(r);
-      }
-      if (a) {
-        n.ParentLastPosition = Vector_1.Vector.Create(a);
-      }
-      ControllerHolder_1.ControllerHolder.BulletController.GetActionRunner().AddAction(t, n);
+    var n = ControllerHolder_1.ControllerHolder.BulletController.GetActionCenter().CreateBulletActionInfo(11);
+    n.ChildrenType = e;
+    n.Victim = o;
+    n.IsStayInCharacter = l;
+    n.CreateOnAuthority = i;
+    if (r) {
+      n.ParentImpactPoint = Vector_1.Vector.Create(r);
     }
+    if (a) {
+      n.ParentLastPosition = Vector_1.Vector.Create(a);
+    }
+    ControllerHolder_1.ControllerHolder.BulletController.GetActionRunner().AddAction(t, n);
   }
   static CheckSupport(t, e) {
     t = t.BulletDataMain.Execution.SupportCamp;

@@ -140,7 +140,6 @@ const RedDotMoraleScoreBox_1 = require("./RedDots/Morale/RedDotMoraleScoreBox");
 const MowingRiskRedDot_1 = require("./RedDots/MowingRisk/MowingRiskRedDot");
 const MowingTowerRewardRedDot_1 = require("./RedDots/MowingTower/MowingTowerRewardRedDot");
 const PersonalBirthdayRedDot_1 = require("./RedDots/Personal/PersonalBirthdayRedDot");
-const PersonalImageBookRedDot_1 = require("./RedDots/Personal/PersonalImageBookRedDot");
 const PersonalCardRedDot_1 = require("./RedDots/Personal/PersonalCardRedDot");
 const PersonalizeInfoRedDot_1 = require("./RedDots/Personal/PersonalizeInfoRedDot");
 const PersonalTitleRedDot_1 = require("./RedDots/Personal/PersonalTitleRedDot");
@@ -340,7 +339,6 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("PersonalCard", new PersonalCardRedDot_1.PersonalCardRedDot());
     this.qp("PersonalTitle", new PersonalTitleRedDot_1.PersonalTitleRedDot());
     this.qp("PersonalBirthday", new PersonalBirthdayRedDot_1.PersonalBirthdayRedDot());
-    this.qp("PersonalImageBook", new PersonalImageBookRedDot_1.PersonalImageBookRedDot());
     this.qp("ActivityRecallSignEntry", new RedDotActivityRecallSignEntryButton_1.RedDotActivityRecallSignEntryButton());
     this.qp("ActivityRecallTask", new RedDotActivityRecallTaskEntryButton_1.RedDotActivityRecallTaskEntryButton());
     this.qp("ActivityRegressQuestionnaire", new RedDotActivityRegressQuestionnaire_1.RedDotActivityRegressQuestionnaire());

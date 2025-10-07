@@ -57,9 +57,6 @@ class MonsterHandBookView extends UiViewBase_1.UiViewBase {
       if (i !== this.lsd) {
         this._sd = false;
         this.lsd = i;
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("HandBook", 5, "monsterInfoId:" + this.lsd);
-        }
         ModelManager_1.ModelManager.HandBookModel.CurrentSelectMonsterHandBookId = this.lsd;
         this.kpt();
         this.Rjt = t;
@@ -238,7 +235,6 @@ class MonsterHandBookView extends UiViewBase_1.UiViewBase {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), "MonsterHandBookMonsterNotHave");
         this.GetButton(13).RootUIComp.SetUIActive(false);
       }
-      this.Tpt.SetLoadingActive(false);
       return true;
     } else {
       this.GetItem(17).SetUIActive(false);

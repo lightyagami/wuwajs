@@ -43,11 +43,9 @@ class SurvivorsWeaponDetailItem extends GridProxyAbstract_1.GridProxyAbstract {
     var t = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeaponEvolve(t);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t.EvolveName);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(11), t.Describe);
-    var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsWeapon(t.WeaponId);
-    this.SetTextureShowUntilLoaded(e.Icon, this.GetTexture(8));
     var e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetQualityConfig(t.Quality);
     this.jOd(e.WeaponColor);
-    this.SetTextureShowUntilLoaded(e.WeaponEvolvePath, this.GetTexture(3));
+    this.SetTextureByPath(e.WeaponEvolvePath, this.GetTexture(3));
     this.HOd(t);
   }
   HOd(s) {
@@ -79,14 +77,6 @@ exports.SurvivorsWeaponDetailItem = SurvivorsWeaponDetailItem;
 class EntryItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UISprite], [2, UE.UIText]];
-  }
-  OnStart() {
-    var t = {
-      UiText: this.GetText(2),
-      ViewType: 0,
-      ReportType: 10
-    };
-    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(t);
   }
   Refresh(t, e, r) {
     this.SetTextById(t.Text, t.Args);
