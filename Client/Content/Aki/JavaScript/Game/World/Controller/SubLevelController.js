@@ -291,7 +291,7 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     } else {
       l = r.AddSubLevel(e, o);
     }
-    if (l.LoadState === 0 && (r = GlobalData_1.GlobalData.GameInstance.场景加载通知器.LoadStreamLevel(FNameUtil_1.FNameUtil.GetDynamicFName(e), l.LoadVisibleParam, false), l.LinkId = r, Log_1.Log.CheckInfo())) {
+    if (l.LoadState === 0 && (l.LoadState = 1, r = GlobalData_1.GlobalData.GameInstance.场景加载通知器.LoadStreamLevel(FNameUtil_1.FNameUtil.GetDynamicFName(e), l.LoadVisibleParam, false), l.LinkId = r, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("World", 3, "SubLevelController:加载子关卡", ["Path", e], ["LinkId", r]);
     }
     return await l.LoadPromise.Promise;

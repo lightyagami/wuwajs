@@ -449,7 +449,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   HYi() {
     var t;
     var e;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(298)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(298)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
       e.CanSkillInterrupt = true;
     }
   }

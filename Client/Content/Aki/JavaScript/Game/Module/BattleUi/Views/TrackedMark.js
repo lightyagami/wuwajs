@@ -512,6 +512,8 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
       if (t) {
         this.RootItem.SetUIActive(true);
         this.RCt?.PlayLevelSequenceByName("Start");
+      } else if (this.DCt < 0) {
+        this.RootItem.SetUIActive(false);
       } else {
         this.RCt?.PlayLevelSequenceByName("Close");
       }

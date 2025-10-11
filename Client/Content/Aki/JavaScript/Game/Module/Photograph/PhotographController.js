@@ -48,6 +48,7 @@ const SpecialItemController_1 = require("../Item/SpecialItem/SpecialItemControll
 const LevelLoadingController_1 = require("../LevelLoading/LevelLoadingController");
 const LogReportController_1 = require("../LogReport/LogReportController");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
+const ScreenShotManager_1 = require("../ScreenShot/ScreenShotManager");
 const SeamlessTravelController_1 = require("../SeamlessTravel/SeamlessTravelController");
 const SeamlessTravelDefine_1 = require("../SeamlessTravel/SeamlessTravelDefine");
 const UiCameraManager_1 = require("../UiCamera/UiCameraManager");
@@ -1399,8 +1400,22 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
+  static TrySaveFightPhotoFromBuffer(t, e, o, i) {
+    if (this.pzd()) {
+      if (t = ScreenShotManager_1.ScreenShotManager.CreateTextureFromBuffer(t, e, o, i)) {
+        this.owd.push(t);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("FightPhotograph", 71, "保存战斗拍照截图成功", ["任务", this.owd.length]);
+        }
+        this.rwd = true;
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBtFightPhotoTaskFinish);
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("FightPhotograph", 71, "战斗拍照截图生成texture失败");
+      }
+    }
+  }
   static TrySaveFightPhoto(t, e, o) {
-    if (this.CheckIfInFightPhotographCamera() && !this.rwd && this.IsSatisfyAllConditions()) {
+    if (this.pzd()) {
       if (t = UE.LGUIBPLibrary.CreateTexture2DFromColors(t, e, o)) {
         this.owd.push(t);
         if (Log_1.Log.CheckInfo()) {
@@ -1412,6 +1427,9 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Error("FightPhotograph", 71, "战斗拍照截图生成texture失败");
       }
     }
+  }
+  static pzd() {
+    return !!this.CheckIfInFightPhotographCamera() && !this.rwd && !!this.IsSatisfyAllConditions();
   }
   static IsSatisfyAllConditions() {
     return !!this.CurrentBtNode && (!!this.IsIgnoreAllCondition || !!this.CurrentBtNode.InProgress && !!this.CurrentBtNode.CheckRoleInCamera() && !!this.CurrentBtNode.CheckCameraCondition() && !!this.CurrentBtNode.CheckPhotographCondition());

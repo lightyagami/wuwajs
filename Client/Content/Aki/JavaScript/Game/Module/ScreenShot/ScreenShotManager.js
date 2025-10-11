@@ -43,6 +43,9 @@ class ScreenShotManager {
     t?.TakeScreenshot();
     return await a.Promise;
   }
+  static CreateTextureFromBuffer(t, e, r, s) {
+    return UE.LGUIBPLibrary.CreateTexture2DFromBuffer(t, r, e, s);
+  }
 }
 (exports.ScreenShotManager = ScreenShotManager).nvo = undefined;
 //# sourceMappingURL=ScreenShotManager.js.map

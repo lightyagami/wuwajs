@@ -45,10 +45,14 @@ class CommonQteDragContext extends CommonQteContextBase_1.CommonQteContextBase {
   }
   OnGetAction() {
     var t;
-    if (this.Config && (t = this.Config.BaseConfig.DragConfig.UIConfig.Action) > 0 && t < QteDefine_1.qteInputActions.length) {
-      return QteDefine_1.qteInputActions[t];
-    } else {
-      return undefined;
+    if (this.Config) {
+      if (this.Config.BaseConfig.DragConfig.ViewType === 0) {
+        return "Ui右摇杆";
+      } else if ((t = this.Config.BaseConfig.DragConfig.UIConfig.Action) > 0 && t < QteDefine_1.qteInputActions.length) {
+        return QteDefine_1.qteInputActions[t];
+      } else {
+        return undefined;
+      }
     }
   }
   OnGetUiConfig() {

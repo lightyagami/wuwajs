@@ -109,6 +109,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Video", 38, "开始关闭VideoView", ["bRemain", i]);
       }
+      this.yzd(false);
       if (this.$ul) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Video", 38, "MediaPlayer还在倒计时检查状态中,提前移除TimeTimer");
@@ -200,6 +201,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (ModelManager_1.ModelManager.GameModeModel.NeedOpenBlackScreenWhenTeleportDungeon) {
         LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, undefined, 1, ModelManager_1.ModelManager.GameModeModel.Mp4FadeOutScreenColor === IAction_1.EMovieBackgroundType.White ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black, false, false, undefined, true);
       }
+      this.yzd(true);
       this.hgl = false;
       this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.CgFile, UE.MediaSource, i => {
         if (i) {
@@ -571,6 +573,20 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       e = MathUtils_1.MathUtils.GetRangePct(0, this.sgl - this.agl, this.lgl - this.agl);
       i = this.zCl + (this.YCl - this.zCl) * e;
       this.ZCl(i);
+    }
+  }
+  yzd(i) {
+    var e = !!GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) > 0;
+    if (i) {
+      if (e) {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Lumen.DiffuseIndirect.Allow 0");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Lumen.Reflections.Allow 0");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.RayTracing.Shadows 0");
+      }
+    } else if (e) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Lumen.DiffuseIndirect.Allow 1");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Lumen.Reflections.Allow 1");
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.RayTracing.Shadows 1");
     }
   }
 }

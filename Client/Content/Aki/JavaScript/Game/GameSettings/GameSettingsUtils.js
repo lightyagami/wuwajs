@@ -42,8 +42,8 @@ var EFFXFIApplyMode;
   e[e.UIView = 4] = "UIView";
 })(EFFXFIApplyMode = exports.EFFXFIApplyMode ||= {});
 class GameSettingsUtils {
-  static ApplyVolume(e, a) {
-    UE.AkGameplayStatics.SetRTPCValue(undefined, e, 0, undefined, FNameUtil_1.FNameUtil.GetDynamicFName(a));
+  static ApplyVolume(e, t) {
+    UE.AkGameplayStatics.SetRTPCValue(undefined, e, 0, undefined, FNameUtil_1.FNameUtil.GetDynamicFName(t));
     return true;
   }
   static ApplyImageQualityOnly(e) {
@@ -62,15 +62,15 @@ class GameSettingsUtils {
     }
     cpp_1.FCrashSightProxy.SetCustomData("DX12", GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetD3D12Type().toString());
     cpp_1.FCrashSightProxy.SetCustomData("Vulkan", GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsVulkanRHI().toString());
-    var a;
     var t;
+    var a;
     var r;
-    var l = UE.GameUserSettings.GetGameUserSettings();
-    if (l) {
-      a = Info_1.Info.IsPcOrGamepadPlatform();
-      t = Info_1.Info.IsMobilePlatform();
+    var i = UE.GameUserSettings.GetGameUserSettings();
+    if (i) {
+      t = Info_1.Info.IsPcOrGamepadPlatform();
+      a = Info_1.Info.IsMobilePlatform();
       r = Info_1.Info.IsPs5Platform();
-      if (a) {
+      if (t) {
         if (r) {
           if (e === 3) {
             UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality 1");
@@ -81,7 +81,7 @@ class GameSettingsUtils {
             Log_1.Log.Info("GameSettings", 59, "优先应用的画质等级[done]@[PS5]", ["ps5 quality level", e]);
           }
         } else {
-          l.SetGameQualitySettingLevel(e);
+          i.SetGameQualitySettingLevel(e);
           if (Info_1.Info.IsMacPlatform()) {
             if (e > 2) {
               UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage 70");
@@ -97,8 +97,8 @@ class GameSettingsUtils {
             Log_1.Log.Info("GameSettings", 64, "优先应用的画质等级[done]@[Pc或手柄平台]", ["quality level", e]);
           }
         }
-        l.ApplySettings(true);
-      } else if (t && (l.SetMobileGameQualitySettingLevel(e), Log_1.Log.CheckInfo())) {
+        i.ApplySettings(true);
+      } else if (a && (i.SetMobileGameQualitySettingLevel(e), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("GameSettings", 64, "优先应用的画质等级[done]@[移动端平台]", ["quality level", e]);
       }
       return true;
@@ -121,26 +121,26 @@ class GameSettingsUtils {
     return true;
   }
   static ApplyDisplayMode(e) {
-    var a = [1, 2];
-    var e = a[MathUtils_1.MathUtils.Clamp(e, 0, a.length - 1)];
-    var a = UE.GameUserSettings.GetGameUserSettings();
-    a.SetFullscreenMode(e);
-    a.ApplySettings(true);
+    var t = [1, 2];
+    var e = t[MathUtils_1.MathUtils.Clamp(e, 0, t.length - 1)];
+    var t = UE.GameUserSettings.GetGameUserSettings();
+    t.SetFullscreenMode(e);
+    t.ApplySettings(true);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetDisplayMode);
     return true;
   }
-  static ApplyResolution(a) {
-    var a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(a);
+  static ApplyResolution(t) {
+    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
     var e = UE.GameUserSettings.GetGameUserSettings();
-    e.SetScreenResolution(a);
+    e.SetScreenResolution(t);
     e.ApplySettings(true);
     if (PerfSightController_1.PerfSightController.IsEnable) {
       let e = 1;
-      if (a.X > 4000) {
+      if (t.X > 4000) {
         e = 4;
-      } else if (a.X > 3000) {
+      } else if (t.X > 3000) {
         e = 3;
-      } else if (a.X > 2000) {
+      } else if (t.X > 2000) {
         e = 2;
       }
       UE.PerfSightHelper.PostEvent(803, e.toString());
@@ -149,40 +149,40 @@ class GameSettingsUtils {
     return true;
   }
   static ApplyBrightness(e) {
-    let a = 2.2;
-    a = e < 0 ? MathUtils_1.MathUtils.Lerp(1.5, 2.2, e + 1) : MathUtils_1.MathUtils.Lerp(2.2, 3.5, e);
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.TonemapperGamma " + a);
+    let t = 2.2;
+    t = e < 0 ? MathUtils_1.MathUtils.Lerp(1.5, 2.2, e + 1) : MathUtils_1.MathUtils.Lerp(2.2, 3.5, e);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.TonemapperGamma " + t);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.LUT.Regenerate 1");
-    UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetUiShowBrightnessMaterialParameterCollection(), RenderConfig_1.RenderConfig.UIShowBrightness, a);
+    UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetUiShowBrightnessMaterialParameterCollection(), RenderConfig_1.RenderConfig.UIShowBrightness, t);
     return true;
   }
   static ApplyHighestFps(e) {
-    var a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(e);
-    GameSettingsDeviceRender_1.GameSettingsDeviceRender.ApplyFrameRate(a);
+    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(e);
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.ApplyFrameRate(t);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("GameSettings", 64, "[FPSDebug]ApplyHighestFps", ["value", e], ["FPS", a]);
+      Log_1.Log.Debug("GameSettings", 64, "[FPSDebug]ApplyHighestFps", ["value", e], ["FPS", t]);
     }
     return true;
   }
   static ApplyNiagaraQuality(e) {
-    var a;
-    var t = UE.GameUserSettings.GetGameUserSettings();
+    var t;
+    var a = UE.GameUserSettings.GetGameUserSettings();
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.QualityLevel " + (e > 0 ? 2 : 1));
     } else {
-      a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DisableDistortion " + (e > 0 && a ? 0 : 1));
+      t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DisableDistortion " + (e > 0 && t ? 0 : 1));
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "fx.Niagara.QualityLevel " + (e > 0 ? 1 : 0));
     }
-    t.ApplySettings(true);
+    a.ApplySettings(true);
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(807, e.toString());
     }
     return true;
   }
   static ApplyImageDetail(e) {
-    var a;
     var t;
+    var a;
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(805, e.toString());
     }
@@ -202,18 +202,18 @@ class GameSettingsUtils {
       }
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.ToonOutlineDrawDistanceMobile 500");
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "foliage.DensityType " + e);
-      a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformScreenBetter();
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.SceneObjMobileSSR " + (e > 1 && a ? 1 : 0));
-      t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformNotLow();
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.TreeRimLight " + (e > 1 && t ? 1 : 0));
+      t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformScreenBetter();
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.SceneObjMobileSSR " + (e > 1 && t ? 1 : 0));
+      a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformNotLow();
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.TreeRimLight " + (e > 1 && a ? 1 : 0));
       if (GlobalData_1.GlobalData.World.GetWorld().K2_GetWorldSettings()?.bEnableWorldPartition) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameSettings", 59, "UpdateFoliageDataLayer", ["value", e + 1]);
         }
         UE.KuroRenderingRuntimeBPPluginBPLibrary.UpdateFoliageDataLayer(GlobalData_1.GlobalData.World, e + 1);
       }
-      t = a && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidAdreno();
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure " + (e > 1 && t ? 1 : 0));
+      a = t && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidAdreno();
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure " + (e > 1 && a ? 1 : 0));
       if (Info_1.Info.IsMobilePlatform()) {
         if (e < 1) {
           UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.ForceKuroRuntimeLODBias 1");
@@ -240,36 +240,36 @@ class GameSettingsUtils {
         UE.PerfSightHelper.PostEvent(810, e.toString());
       }
     } else {
-      var a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformAOValid() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIOSPlatformAOValid();
-      var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY);
-      if (t === undefined) {
+      var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformAOValid() || GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIOSPlatformAOValid();
+      var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY);
+      if (a === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("GameSettings", 64, "【移动端】设定场景AO时，不能获得阴影质量保存值");
         }
         return false;
       }
-      t = t > 0 && a ? e : 0;
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.SSAO " + t);
-      UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), new UE.FName("EnableMobileScreenAO"), t);
-      RenderDataManager_1.RenderDataManager.Get().SetGrassAo(t);
+      a = a > 0 && t ? e : 0;
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.SSAO " + a);
+      UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), new UE.FName("EnableMobileScreenAO"), a);
+      RenderDataManager_1.RenderDataManager.Get().SetGrassAo(a);
       if (PerfSightController_1.PerfSightController.IsEnable) {
-        UE.PerfSightHelper.PostEvent(810, t.toString());
+        UE.PerfSightHelper.PostEvent(810, a.toString());
       }
     }
     return true;
   }
   static ApplyNpcDensity(e) {
-    let a = e;
+    let t = e;
     e = GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex;
-    if (e >= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_START && e <= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_END && a > GameSettingsDefine_1.NPC_DENSITY_PC_THRESHOLD && (a = GameSettingsDefine_1.NPC_DENSITY_PC_THRESHOLD, Log_1.Log.CheckInfo())) {
+    if (e >= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_START && e <= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_END && t > GameSettingsDefine_1.NPC_DENSITY_PC_THRESHOLD && (t = GameSettingsDefine_1.NPC_DENSITY_PC_THRESHOLD, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("GameSettings", 59, "KuroLocalRenderSettingIndex Change npcDensity 2");
     }
-    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && a > GameSettingsDefine_1.NPC_DENSITY_THRESHOLD) {
-      a = GameSettingsDefine_1.NPC_DENSITY_THRESHOLD;
+    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && t > GameSettingsDefine_1.NPC_DENSITY_THRESHOLD) {
+      t = GameSettingsDefine_1.NPC_DENSITY_THRESHOLD;
     }
-    ControllerHolder_1.ControllerHolder.CreatureController.RefreshDensityLevel(a);
+    ControllerHolder_1.ControllerHolder.CreatureController.RefreshDensityLevel(t);
     if (PerfSightController_1.PerfSightController.IsEnable) {
-      UE.PerfSightHelper.PostEvent(806, a.toString());
+      UE.PerfSightHelper.PostEvent(806, t.toString());
     }
     return true;
   }
@@ -280,18 +280,18 @@ class GameSettingsUtils {
     return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlss3GpuDevice() && (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaStreamlinePluginLoaded() && (GameSettingsDeviceRender_1.GameSettingsDeviceRender.EnableDLSSG(e), PerfSightController_1.PerfSightController.IsEnable) && UE.PerfSightHelper.PostEvent(820, e.toString()), true);
   }
   static ApplyPcVsync(e) {
-    var a = UE.GameUserSettings.GetGameUserSettings();
-    a.SetVSyncEnabled(e === 1);
-    a.ApplySettings(true);
+    var t = UE.GameUserSettings.GetGameUserSettings();
+    t.SetVSyncEnabled(e === 1);
+    t.ApplySettings(true);
     return true;
   }
   static ApplyNvidiaSuperSamplingMode(e) {
     return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlssGpuDevice() && (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaDlssPluginLoaded() && UE.DLSSLibrary.GetDLSSMode() !== e && (UE.DLSSLibrary.SetDLSSMode(e), PerfSightController_1.PerfSightController.IsEnable) && UE.PerfSightHelper.PostEvent(812, e.toString()), true);
   }
   static ApplyNvidiaSuperSamplingQuality(e) {
-    var a;
     var t;
-    return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlssGpuDevice() && !(t = GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex, this.kYc === e && this.OYc === t) && !(this.OYc = t, this.kYc = e, GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaDlssPluginLoaded() && (e === 99 ? t >= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_START && t <= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_END ? (a = (t = UE.GameUserSettings.GetGameUserSettings().GetScreenResolution()).X, t = t.Y, a > 3000 || t > 3000 ? (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality -2"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameSettings", 59, "KuroLocalRenderSettingIndex Change DLSS.Quality -2")) : (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality -1"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameSettings", 59, "KuroLocalRenderSettingIndex Change DLSS.Quality -1"))) : UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 1") : (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality " + e)), PerfSightController_1.PerfSightController.IsEnable) && UE.PerfSightHelper.PostEvent(812, e.toString()), 0);
+    var a;
+    return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlssGpuDevice() && !(a = GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex, this.kYc === e && this.OYc === a) && !(this.OYc = a, this.kYc = e, GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaDlssPluginLoaded() && (e === 99 ? a >= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_START && a <= GameSettingsDefine_1.HEAVY_SCENEVULUME_INDEX_END ? (t = (a = UE.GameUserSettings.GetGameUserSettings().GetScreenResolution()).X, a = a.Y, t > 3000 || a > 3000 ? (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality -2"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameSettings", 59, "KuroLocalRenderSettingIndex Change DLSS.Quality -2")) : (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality -1"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameSettings", 59, "KuroLocalRenderSettingIndex Change DLSS.Quality -1"))) : UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 1") : (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality.Auto 0"), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.NGX.DLSS.Quality " + e)), PerfSightController_1.PerfSightController.IsEnable) && UE.PerfSightHelper.PostEvent(812, e.toString()), 0);
   }
   static ApplyNvidiaSuperSamplingSharpness(e) {
     return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDlssGpuDevice() && (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsNvidiaDlssPluginLoaded() && UE.DLSSLibrary.SetDLSSSharpness(e), true);
@@ -351,8 +351,8 @@ class GameSettingsUtils {
   static ApplyFsr3Enable(e) {
     return !!UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn() && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Enable", ["r.FidelityFX.FSR3.Enabled", e]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.FidelityFX.FSR3.Enabled " + e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Enable", ["r.TemporalAA.Upsampling", e]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.TemporalAA.Upsampling " + e), true);
   }
-  static ApplyFsr3Fg(e, a) {
-    return !!UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn() && !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported() && (this.a4d = a, this.h4d[a] = e, this.UFd = e !== 0, this.IsInTemporaryFFXFIApplyState() && !this.IsTemporaryFFXFIApplyMode(a) ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Fg", ["IsInTemporaryFFXFIApplyState, failed to apply DefaultMode ", e]) : (GameSettingsDeviceRender_1.GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.UFd), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Fg", ["Fsr3FgApplyMode", EFFXFIApplyMode[a]]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.FidelityFX.FI.Enabled " + e)), true);
+  static ApplyFsr3Fg(e, t) {
+    return !!UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn() && !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported() && (this.a4d = t, this.h4d[t] = e, this.UFd = e !== 0, this.IsInTemporaryFFXFIApplyState() && !this.IsTemporaryFFXFIApplyMode(t) ? Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Fg", ["IsInTemporaryFFXFIApplyState, failed to apply DefaultMode ", e]) : (GameSettingsDeviceRender_1.GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.UFd), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Render", 91, "ApplyFsr3Fg", ["Fsr3FgApplyMode", EFFXFIApplyMode[t]]), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.FidelityFX.FI.Enabled " + e)), true);
   }
   static IsFsr3FgEnable() {
     return this.UFd;
@@ -411,18 +411,18 @@ class GameSettingsUtils {
     return true;
   }
   static ApplySceneLightQuality(e) {
-    var a;
+    var t;
     if (Info_1.Info.IsMobilePlatform()) {
       if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice()) {
-        a = [1, 2, 3, 4, 4];
-        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + a[e]);
+        t = [1, 2, 3, 4, 4];
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + t[e]);
       } else {
-        a = [1, 2, 3, 3, 3];
-        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + a[e]);
+        t = [1, 2, 3, 3, 3];
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + t[e]);
       }
     } else {
-      a = [4, 4, 4, 4, 5];
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + a[e]);
+      t = [4, 4, 4, 4, 5];
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.GlobalLightQuality " + t[e]);
     }
     return true;
   }
@@ -430,13 +430,13 @@ class GameSettingsUtils {
     return !!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsEnableVolumeFog() && (Info_1.Info.IsPcOrGamepadPlatform() && (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.volumetricfog " + e), PerfSightController_1.PerfSightController.IsEnable) && UE.PerfSightHelper.PostEvent(809, e.toString()), true);
   }
   static ApplyVolumeLight(e) {
-    var a;
+    var t;
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.lightShaftQuality " + e);
     }
     if (Info_1.Info.IsMobilePlatform()) {
-      a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MobileLightShaft " + (a ? e : 0));
+      t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIosAndAndroidHighDevice();
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MobileLightShaft " + (t ? e : 0));
     }
     return true;
   }
@@ -454,35 +454,35 @@ class GameSettingsUtils {
     if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.InCacheSceneColorMode === 1) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.CacheSceneColor.Start");
     }
-    let a = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetMobileResolutionByIndex(e);
-    var t = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MobileContentScaleFactor");
+    let t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetMobileResolutionByIndex(e);
+    var a = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.MobileContentScaleFactor");
     var r = UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.SecondaryScreenPercentage.GameViewport");
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 16, "分辨率参数获取", ["r.MobileContentScaleFactor", t]);
+      Log_1.Log.Debug("Game", 16, "分辨率参数获取", ["r.MobileContentScaleFactor", a]);
     }
-    let l = 1;
-    var i;
+    let i = 1;
+    var l;
     var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().Y;
     if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidHighResolutionDevice() && n > 0) {
-      if ((i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().X) < n && n < t * 1280) {
-        l = t * 1280 / n;
-      } else if (n < i && n < t * 720) {
-        l = t * 720 / n;
+      if ((l = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().X) < n && n < a * 1280) {
+        i = a * 1280 / n;
+      } else if (n < l && n < a * 720) {
+        i = a * 720 / n;
       }
-      i = Math.min(r * l, 100);
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.SecondaryScreenPercentage.GameViewport " + i);
+      l = Math.min(r * i, 99);
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.SecondaryScreenPercentage.GameViewport " + l);
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Game", 40, "分辨率校正", ["deviceScaleCorrect", l], ["secondaryScreenPercentage", r], ["newSecondaryScreenPercentage", i]);
+        Log_1.Log.Info("Game", 40, "分辨率校正", ["deviceScaleCorrect", i], ["secondaryScreenPercentage", r], ["newSecondaryScreenPercentage", l]);
       }
     } else if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultScreenResolution().Y < 750 && r < 70) {
-      a = Math.min(a * 1.5, 100);
+      t = Math.min(t * 1.5, 100);
     }
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(803, e.toString());
     }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage " + a);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage " + t);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 16, "分辨率参数设置", ["r.ScreenPercentage", a]);
+      Log_1.Log.Debug("Game", 16, "分辨率参数设置", ["r.ScreenPercentage", t]);
     }
     return true;
   }
@@ -502,30 +502,30 @@ class GameSettingsUtils {
     ModelManager_1.ModelManager.CameraModel.SetCameraAimingPitchSensitivity(e);
   }
   static ApplyCameraShakeStrength(e) {
-    let a = 0;
+    let t = 0;
     if (Info_1.Info.IsMobilePlatform()) {
-      a = e;
+      t = e;
     } else {
       switch (e) {
         case 0:
-          a = ModelManager_1.ModelManager.MenuModel.LowShake;
+          t = ModelManager_1.ModelManager.MenuModel.LowShake;
           break;
         case 1:
-          a = ModelManager_1.ModelManager.MenuModel.MiddleShake;
+          t = ModelManager_1.ModelManager.MenuModel.MiddleShake;
           break;
         case 2:
-          a = ModelManager_1.ModelManager.MenuModel.HighShake;
+          t = ModelManager_1.ModelManager.MenuModel.HighShake;
       }
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("GameSettings", 64, "相机抖动强度真实值", ["setting value", e], ["strength", a]);
+      Log_1.Log.Debug("GameSettings", 64, "相机抖动强度真实值", ["setting value", e], ["strength", t]);
     }
-    ModelManager_1.ModelManager.CameraModel.SetCameraShakeModify(a);
+    ModelManager_1.ModelManager.CameraModel.SetCameraShakeModify(t);
   }
   static ApplyTextLanguage(e) {
-    var a;
+    var t;
     var e = GameSettingsManager_1.GameSettingsManager.GetLanguageCodeById(e);
-    return !!e && (a = LanguageSystem_1.LanguageSystem.PackageLanguage, LanguageSystem_1.LanguageSystem.PackageLanguage = e, ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(16), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TextLanguageChange, a, e), true);
+    return !!e && (t = LanguageSystem_1.LanguageSystem.PackageLanguage, LanguageSystem_1.LanguageSystem.PackageLanguage = e, ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(16), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TextLanguageChange, t, e), true);
   }
   static ApplyTextLanguageOnGameStart(e) {
     e = GameSettingsManager_1.GameSettingsManager.GetLanguageCodeById(e);
@@ -563,17 +563,17 @@ class GameSettingsUtils {
     ModelManager_1.ModelManager.CameraModel.SetSettingSoftLockState(e === 1);
   }
   static ApplyJoystickShakeStrength(e) {
-    var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.JoystickShakeType);
-    this.WNa(a, e);
+    var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.JoystickShakeType);
+    this.WNa(t, e);
     return true;
   }
   static ApplyJoystickShakeType(e) {
-    var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.JoystickShakeStrength);
-    this.WNa(e, a);
+    var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.JoystickShakeStrength);
+    this.WNa(e, t);
     return true;
   }
-  static WNa(e, a) {
-    UE.BasePlayerController.SetKuroForceFeedbackConfig(e, a);
+  static WNa(e, t) {
+    UE.BasePlayerController.SetKuroForceFeedbackConfig(e, t);
   }
   static ApplyWalkOrRunRate(e) {
     RoleGaitStatic_1.RoleGaitStatic.SetWalkOrRunRateForRocker(e);
@@ -591,46 +591,46 @@ class GameSettingsUtils {
     ControllerHolder_1.ControllerHolder.FormationDataController.SetKeyboardLockEnemyMode(e);
   }
   static ApplyHorizontalViewRevert(e) {
-    var a = ConfigManager_1.ConfigManager.MenuBaseConfig?.GetAxisRevertConfigListByRevertType(0);
-    if (a) {
-      this.Zia(e === 1, a);
+    var t = ConfigManager_1.ConfigManager.MenuBaseConfig?.GetAxisRevertConfigListByRevertType(0);
+    if (t) {
+      this.Zia(e === 1, t);
     }
   }
   static ApplyVerticalViewRevert(e) {
-    var a = ConfigManager_1.ConfigManager.MenuBaseConfig?.GetAxisRevertConfigListByRevertType(1);
-    if (a) {
-      this.Zia(e === 1, a);
+    var t = ConfigManager_1.ConfigManager.MenuBaseConfig?.GetAxisRevertConfigListByRevertType(1);
+    if (t) {
+      this.Zia(e === 1, t);
     }
   }
   static RefreshViewRevertState(e) {
-    let a = 0;
     let t = 0;
+    let a = 0;
     if (e === 2) {
-      a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.HorizontalViewRevert) ?? 0;
-      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.VerticalViewRevert) ?? 0;
+      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.HorizontalViewRevert) ?? 0;
+      a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.VerticalViewRevert) ?? 0;
     }
-    this.ApplyHorizontalViewRevert(a);
-    this.ApplyVerticalViewRevert(t);
+    this.ApplyHorizontalViewRevert(t);
+    this.ApplyVerticalViewRevert(a);
   }
-  static Zia(a, e) {
+  static Zia(t, e) {
     for (const g of e) {
-      var t = g.AxisName;
-      var t = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(t);
-      if (t) {
+      var a = g.AxisName;
+      var a = InputSettingsManager_1.InputSettingsManager.GetAxisBinding(a);
+      if (a) {
         var r = new Map();
-        var l = g.RevertInfo;
-        var i = t.GetInputAxisKeyMap();
-        if (i) {
-          for (var [n, o] of l) {
-            var s = i.get(n);
+        var i = g.RevertInfo;
+        var l = a.GetInputAxisKeyMap();
+        if (l) {
+          for (var [n, o] of i) {
+            var s = l.get(n);
             if (s) {
               let e = 0;
               s = s.Scale;
               if (o === 0) {
-                e = a ? s > 0 ? -s : s : s > 0 ? s : -s;
+                e = t ? s > 0 ? -s : s : s > 0 ? s : -s;
               }
               if (o === 1) {
-                e = a ? s > 0 ? s : -s : s > 0 ? -s : s;
+                e = t ? s > 0 ? s : -s : s > 0 ? -s : s;
               }
               r.set(n, e);
             }
@@ -638,7 +638,7 @@ class GameSettingsUtils {
           if (r.size <= 0) {
             return;
           }
-          t.SetKeys(r);
+          a.SetKeys(r);
         }
       }
     }
@@ -649,11 +649,11 @@ class GameSettingsUtils {
   static ApplyEnemyHitDisplayMode(e) {
     ModelManager_1.ModelManager.BulletModel.OpenHitMaterial = e === 1;
   }
-  static ApplyPushEnableState(e, a) {
+  static ApplyPushEnableState(e, t) {
     if (e === 0) {
       ControllerHolder_1.ControllerHolder.KuroPushController.TurnOffPush();
     } else {
-      ControllerHolder_1.ControllerHolder.KuroPushController.TurnOnPush(a === 1);
+      ControllerHolder_1.ControllerHolder.KuroPushController.TurnOnPush(t === 1);
     }
   }
   static ApplyAutoAdjustImageQuality(e) {
@@ -680,16 +680,23 @@ class GameSettingsUtils {
     }
   }
   static ApplyRayTracing(e) {
-    if (e > 0) {
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.RayTracingQuality " + e);
+    let t = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("GameSettings", 92, "对AMD设备的光追特殊处理", ["是否为AMD设备", GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAMD()], ["KuroRenderQualityLocalIndex", GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex]);
     }
-    var a = UE.BlueprintPathsLibrary.ProjectSavedDir() + "SaveGames/RTX.json";
-    if (UE.KuroStaticLibrary.FileExists(a)) {
-      UE.KuroStaticLibrary.DeleteFile(a);
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAMD() && GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex >= GameSettingsDefine_1.AMD_DISABLE_RAYTRACING_INDEX_START && GameSettingsController_1.GameSettingsController.KuroRenderQualityLocalIndex <= GameSettingsDefine_1.AMD_DISABLE_RAYTRACING_INDEX_END && (t = 0, Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("GameSettings", 92, "AMD设备，当前区域自动关闭光追");
     }
-    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetRayTracingEnable(e > 0);
+    if (t > 0) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.RayTracingQuality " + t);
+    }
+    e = UE.BlueprintPathsLibrary.ProjectSavedDir() + "SaveGames/RTX.json";
+    if (UE.KuroStaticLibrary.FileExists(e)) {
+      UE.KuroStaticLibrary.DeleteFile(e);
+    }
+    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetRayTracingEnable(t > 0);
     if (PerfSightController_1.PerfSightController.IsEnable) {
-      UE.PerfSightHelper.PostEvent(821, e.toString());
+      UE.PerfSightHelper.PostEvent(821, t.toString());
     }
     return true;
   }
@@ -743,25 +750,25 @@ class GameSettingsUtils {
     return true;
   }
   static ApplySaturationClient(e) {
-    let a = 1;
+    let t = 1;
     if (e <= 50) {
-      a = MathUtils_1.MathUtils.Lerp(0, 1, e * 2 / 100);
+      t = MathUtils_1.MathUtils.Lerp(0, 1, e * 2 / 100);
     }
     if (e > 50) {
-      a = MathUtils_1.MathUtils.Lerp(1, 2, (e - 50) * 2 / 100);
+      t = MathUtils_1.MathUtils.Lerp(1, 2, (e - 50) * 2 / 100);
     }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Client.Saturation " + a);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Client.Saturation " + t);
     return true;
   }
   static ApplyContrastClient(e) {
-    let a = 1;
+    let t = 1;
     if (e <= 50) {
-      a = MathUtils_1.MathUtils.Lerp(0.5, 1, e * 2 / 100);
+      t = MathUtils_1.MathUtils.Lerp(0.5, 1, e * 2 / 100);
     }
     if (e > 50) {
-      a = MathUtils_1.MathUtils.Lerp(1, 2, (e - 50) * 2 / 100);
+      t = MathUtils_1.MathUtils.Lerp(1, 2, (e - 50) * 2 / 100);
     }
-    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Client.Contrast " + a);
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Client.Contrast " + t);
     return true;
   }
   static ApplySkinDamageMode(e) {
@@ -786,8 +793,8 @@ class GameSettingsUtils {
     return true;
   }
   static ApplyVegetationDither(e) {
-    var a = new UE.FName("FoliageDitherState");
-    UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), a, e > 0 ? 1 : 0);
+    var t = new UE.FName("FoliageDitherState");
+    UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetGlobalShaderParameters(), t, e > 0 ? 1 : 0);
     return true;
   }
   static ApplyImageDisplayMode(e) {
@@ -814,37 +821,37 @@ class GameSettingsUtils {
     return true;
   }
   static ApplyEyeProtectionMode(e) {
-    var a;
     var t;
+    var a;
     var r;
-    var l;
+    var i;
     UE.KuroGISystem.ApplyEyeProtectionEnvironment(GlobalData_1.GlobalData.World, e);
     if (e === 2) {
-      a = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTemp);
-      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionStrength);
+      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTemp);
+      a = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionStrength);
       r = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionBrightness);
-      l = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTexture);
-      GameSettingsUtils.ApplyEyeProtectionTemp(a, e);
-      GameSettingsUtils.ApplyEyeProtectionStrength(t, e);
+      i = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTexture);
+      GameSettingsUtils.ApplyEyeProtectionTemp(t, e);
+      GameSettingsUtils.ApplyEyeProtectionStrength(a, e);
       GameSettingsUtils.ApplyEyeProtectionBrightness(r, e);
-      GameSettingsUtils.ApplyEyeProtectionTexture(l, e);
+      GameSettingsUtils.ApplyEyeProtectionTexture(i, e);
     }
     return true;
   }
-  static ApplyEyeProtectionTemp(e, a) {
-    UE.KuroGISystem.ApplyEyeProtectionTemperature(GlobalData_1.GlobalData.World, e, a);
+  static ApplyEyeProtectionTemp(e, t) {
+    UE.KuroGISystem.ApplyEyeProtectionTemperature(GlobalData_1.GlobalData.World, e, t);
     return true;
   }
-  static ApplyEyeProtectionStrength(e, a) {
-    UE.KuroGISystem.ApplyEyeProtectionStrength(GlobalData_1.GlobalData.World, e, a);
+  static ApplyEyeProtectionStrength(e, t) {
+    UE.KuroGISystem.ApplyEyeProtectionStrength(GlobalData_1.GlobalData.World, e, t);
     return true;
   }
-  static ApplyEyeProtectionBrightness(e, a) {
-    UE.KuroGISystem.ApplyEyeProtectionBrightness(GlobalData_1.GlobalData.World, e, a);
+  static ApplyEyeProtectionBrightness(e, t) {
+    UE.KuroGISystem.ApplyEyeProtectionBrightness(GlobalData_1.GlobalData.World, e, t);
     return true;
   }
-  static ApplyEyeProtectionTexture(e, a) {
-    UE.KuroGISystem.ApplyEyeProtectionTexture(GlobalData_1.GlobalData.World, e, a);
+  static ApplyEyeProtectionTexture(e, t) {
+    UE.KuroGISystem.ApplyEyeProtectionTexture(GlobalData_1.GlobalData.World, e, t);
     return true;
   }
   static ApplyAutoExposure(e) {

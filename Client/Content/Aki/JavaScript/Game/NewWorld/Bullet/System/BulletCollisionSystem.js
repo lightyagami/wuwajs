@@ -1714,7 +1714,6 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
         var v = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(C);
         var v = C > 0 ? v.CalculateType : -1;
         var B = new BulletTypes_1.HitInformation(l.Attacker, undefined, B, Number(l.BulletRowName), UE.KismetMathLibrary.D_TransformRotation(u.Actor.Mesh.D_K2_GetComponentToWorld(), o.Base.AttackDirection.ToUeRotator()), false, i ? FNameUtil_1.FNameUtil.GetDynamicFName(i) : undefined, r, 0, o, this.a7o.BulletRowName, C, o.Logic.Data, c, v, !!l.Attacker.GetComponent(61)?.ShouldOptimize);
-        BulletUtil_1.BulletUtil.SummonBullet(l, 1, e.Entity, false);
         this.Ojo.ActionHitObstacles(e);
         EventSystem_1.EventSystem.EmitWithTarget(l.Entity, EventDefine_1.EEventName.BulletHit, B, undefined);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BulletHit, B, undefined);
@@ -1727,12 +1726,20 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
           BulletCollisionUtil_1.BulletCollisionUtil.EntityEnter(this.a7o, e.Entity);
           C = u.OnSceneItemHit(B, e);
           v = (t = (t = u.GetPenetrationType()) === undefined ? IMatch_1.EBulletPenetrationType.Penetrable : t) === IMatch_1.EBulletPenetrationType.Penetrable ? o.Logic.DestroyOnHitCharacter : o.Logic.DestroyOnHitObstacle;
-          if (C && v) {
+          if (C) {
+            BulletUtil_1.BulletUtil.SummonBullet(l, t === IMatch_1.EBulletPenetrationType.Penetrable ? 2 : 1, e.Entity, false);
+            if (v) {
+              BulletController_1.BulletController.DestroyBullet(l.BulletEntityId, false);
+            }
+          } else {
+            BulletUtil_1.BulletUtil.SummonBullet(l, 2, e.Entity, false);
+          }
+        } else {
+          BulletUtil_1.BulletUtil.SummonBullet(l, 2, e.Entity, false);
+          if (o.Logic.DestroyOnHitObstacle) {
+            BulletStaticFunction_1.BulletStaticFunction.BulletHitEffect(this.a7o, r.ToUeVector());
             BulletController_1.BulletController.DestroyBullet(l.BulletEntityId, false);
           }
-        } else if (o.Logic.DestroyOnHitCharacter) {
-          BulletStaticFunction_1.BulletStaticFunction.BulletHitEffect(this.a7o, r.ToUeVector());
-          BulletController_1.BulletController.DestroyBullet(l.BulletEntityId, false);
         }
         BulletPool_1.BulletPool.RecycleVector(r);
         this.Bjo.ObjectsHitCurrent.set(_, l.LiveTimeCurHit);

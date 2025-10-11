@@ -32,6 +32,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     RenderUtil_1.RenderUtil.CloseToonSceneShadow();
     RenderUtil_1.RenderUtil.OpenMobileSpotLightShadow();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.SetSequenceFrameRateLimit();
+    if (Info_1.Info.IsLowMemoryDevice) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274432");
+    }
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
     }
@@ -39,6 +42,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount 0");
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 0);
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("PrePlaySequence");
     var e = this.Model.GetCurrentSequence();
     UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(e);
     var t = UE.KuroStaticLibrary.GetEnableMobileLowStreaming(e);
@@ -55,9 +59,6 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       this.LSl = true;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(0);
     }
-    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
-      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, false);
-    }
   }
   PreEachPlay() {
     this.uio = true;
@@ -68,6 +69,9 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   AllStop() {
     RenderUtil_1.RenderUtil.OpenToonSceneShadow();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.EnableKuroSpotlightsShadow " + this.dio);
+    if (Info_1.Info.IsLowMemoryDevice) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274960");
+    }
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancleSequenceFrameRateLimit();
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 1");
@@ -76,6 +80,7 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.Amount " + this.Model.PreviousMotionBlur);
     }
     UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, RenderDataManager_1.RenderDataManager.Get().GetEyesParameterMaterialParameterCollection(), this.mio, 1);
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("PrePlaySequence");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     ModelManager_1.ModelManager.GameModeModel.CleanScaleStreamingSource(1);
     if (PerfSightController_1.PerfSightController.IsEnable) {
@@ -88,9 +93,6 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(1);
     }
     this.cio = false;
-    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
-      GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.Seq, true);
-    }
   }
   End() {
     if (this.uio) {
@@ -103,10 +105,10 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
   CheckSeqStreamingData() {
     let t = true;
     if (SequenceDefine_1.SequenceRenderSettings.GetTexureStreamingEnable(GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 2)) {
-      var i = this.Model.SequenceData;
-      for (let e = 0; e < i.剧情资源.Num(); e++) {
-        var a = i.剧情资源.Get(e);
-        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, true)) {
+      var a = this.Model.SequenceData;
+      for (let e = 0; e < a.剧情资源.Num(); e++) {
+        var i = a.剧情资源.Get(e);
+        if (!UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, true)) {
           t = false;
         }
       }
@@ -127,8 +129,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (SequenceDefine_1.SequenceRenderSettings.GetTexureStreamingEnable(GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 2)) {
       var t = this.Model.SequenceData;
       for (let e = 0; e < t.剧情资源.Num(); e++) {
-        var i = t.剧情资源.Get(e);
-        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(i, false);
+        var a = t.剧情资源.Get(e);
+        UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(a, false);
       }
       if (this.Model.SequenceData.NeedSwitchMainCharacter && this.Model.MainSeqCharacterMesh) {
         UE.KuroMeshTextureFunctionLibrary.HandleSkeletalMeshComponentStreaming(this.Model.MainSeqCharacterMesh, false);
@@ -152,6 +154,10 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       }
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlurQuality 0");
     }
+  }
+  CmdShadowUpdate() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.CacheMode3CacheUpdateIntervalsOverride 0,0,0");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Shadow.CSMMode3EnableUpdateIntervalOverride 1");
   }
 }
 exports.RenderAssistant = RenderAssistant;

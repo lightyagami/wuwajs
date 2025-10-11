@@ -39,6 +39,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
   static O2d() {
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
+    GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.RayTracing, 0, false);
   }
   static B2d() {
     this.x2d.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {

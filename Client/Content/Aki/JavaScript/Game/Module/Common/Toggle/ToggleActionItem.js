@@ -31,7 +31,6 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
     this.Qoa = undefined;
     this.Rqe = undefined;
     this.hMa = undefined;
-    this.E1a = true;
     this.lMa = undefined;
     this.IsPlayingReleaseSequence = false;
     this.J_ = () => {
@@ -43,12 +42,12 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
     };
     this.dua = () => {
       var t = Global_1.Global.CharacterController;
-      var i = (0, puerts_1.$ref)(0);
       var e = (0, puerts_1.$ref)(0);
-      t.GetViewportSize(i, e);
-      var t = (0, puerts_1.$unref)(i);
-      var i = (0, puerts_1.$unref)(e);
-      return new UE.IntPoint(t, i);
+      var i = (0, puerts_1.$ref)(0);
+      t.GetViewportSize(e, i);
+      var t = (0, puerts_1.$unref)(e);
+      var e = (0, puerts_1.$unref)(i);
+      return new UE.IntPoint(t, e);
     };
     this.ToggleClick = t => {
       if (!this.IsPlayingReleaseSequence) {
@@ -148,40 +147,29 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
       this.eZi.GetRealSize();
       t = this.eZi.GetRenderLineNum() < 2;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] IsSingleRow", ["isSingleRow", t], ["this.IsSingleRow", this.E1a], ["text", this.Text]);
+        Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] IsSingleRow", ["isSingleRow", t], ["text", this.Text]);
       }
-      if (this.E1a !== t) {
-        this.E1a = t;
-        if (this.E1a) {
+      if (t) {
+        this.Qoa?.SetControlHeight(false);
+        this.S1a?.SetHeight(this.DefaultToggleItemHeight);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single height set", ["text", this.Text]);
+        }
+      } else {
+        this.eZi.SetFontSize(FONT_SIZE);
+        this.Qoa?.SetControlHeight(true);
+        this.eZi.SetFontSize(FONT_SIZE);
+        this.eZi.GetRealSize();
+        if (this.eZi.GetRenderLineNum() < 2) {
           this.Qoa?.SetControlHeight(false);
-          this.eZi.SetFontSize(this.$Js);
-          this.eZi.GetRealSize();
-          if (!(this.eZi.GetRenderLineNum() < 2)) {
-            this.eZi.SetFontSize(FONT_SIZE);
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Enlarge fail", ["text", this.Text]);
-            }
-          }
           this.S1a?.SetHeight(this.DefaultToggleItemHeight);
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single height set", ["text", this.Text]);
+            Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single after reduce size", ["text", this.Text]);
           }
         } else {
-          this.eZi.SetFontSize(FONT_SIZE);
           this.Qoa?.SetControlHeight(true);
-          this.eZi.SetFontSize(FONT_SIZE);
-          this.eZi.GetRealSize();
-          if (this.eZi.GetRenderLineNum() < 2) {
-            this.Qoa?.SetControlHeight(false);
-            this.E1a = true;
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Single after reduce size", ["text", this.Text]);
-            }
-          } else {
-            this.Qoa?.SetControlHeight(true);
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Not single after reduce size", ["text", this.Text]);
-            }
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Not single after reduce size", ["text", this.Text]);
           }
         }
       }
@@ -189,10 +177,10 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Info("UiCommon", 26, "[RefreshTextHeight] Refresh Invalid", ["text", this.Text]);
     }
   }
-  SetToggleTexture(i, e = false) {
+  SetToggleTexture(e, i = false) {
     const s = this.GetTexture(2);
     if (s) {
-      s.SetUIItemScale(new UE.Vector(e ? TRACKING_ICON_SIZE : 1));
+      s.SetUIItemScale(new UE.Vector(i ? TRACKING_ICON_SIZE : 1));
       const h = this.GetTexture(2).GetOwner()?.GetComponentByClass(UE.UIExtendToggleTextureTransition.StaticClass());
       let t = undefined;
       if (h) {
@@ -200,7 +188,7 @@ class ToggleActionItem extends UiPanelBase_1.UiPanelBase {
           h?.SetAllTransitionStateTexture(s.GetTexture());
         };
       }
-      this.SetTextureByPath(i, s, undefined, t);
+      this.SetTextureByPath(e, s, undefined, t);
     }
   }
   SetToggleTextGray(t) {

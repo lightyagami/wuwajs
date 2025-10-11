@@ -128,6 +128,13 @@ class ErrorCodeController extends UiControllerBase_1.UiControllerBase {
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
     }
   }
+  static OpenConfirmBoxByTextIdNew(r) {
+    var r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r);
+    var o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(33);
+    o.SetTextArgs(r);
+    o.NotAddChildToTopStackView = true;
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
+  }
   static CheckErrorCode(r, o, e = true) {
     return !r || r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && (Log_1.Log.CheckInfo() && Log_1.Log.Info("ErrorCode", 69, "CheckErrorCode", ["ErrorCode", r.Q4n], ["MsgId", o]), e && this.OpenErrorCodeTipView(r.Q4n, o), true);
   }

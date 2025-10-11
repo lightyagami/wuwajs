@@ -7,8 +7,8 @@ var __decorate = this && this.__decorate || function (e, t, i, s) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(e, t, i, s);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (n = e[r]) {
+    for (var a = e.length - 1; a >= 0; a--) {
+      if (n = e[a]) {
         h = (o < 3 ? n(h) : o > 3 ? n(t, i, h) : n(t, i)) || h;
       }
     }
@@ -48,12 +48,23 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     this.TBr = 0;
     this.LBr = new Array();
     this.DBr = new Array();
+    this.Czd = new Array();
     this.Dwr = e => {
       this.SetDitherEffect(e);
+    };
+    this.Twr = t => {
+      for (let e = 0; e < this.Czd.length; e++) {
+        if (this.Czd[e] && t) {
+          this.ShowWeaponByIndex(e);
+        } else {
+          this.HideWeaponByIndex(e);
+        }
+      }
     };
     this.OnRoleIdChange = () => {
       this.RefreshWeaponCase();
       this.HideAllWeapon();
+      this.ResetWeaponStatesOnRole();
       var e = this.mBr.RoleDataId;
       var t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
       var i = ModelManager_1.ModelManager.WeaponSkinModel.GetSkinIdByRoleId(e);
@@ -72,6 +83,11 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     };
     this.OnAnsBegin = e => {
       var t = e.Index;
+      if (t >= 0 && t < this.Czd.length) {
+        this.Czd[t] = true;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Weapon", 43, "武器Ans索引错误", ["index", t]);
+      }
       this.ShowWeaponByIndex(t, e.ShowMaterialController);
       if (!FNameUtil_1.FNameUtil.IsEmpty(e.HangSocketName)) {
         this.fMl(t, e.HangSocketName);
@@ -81,6 +97,12 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       }
     };
     this.OnAnsEnd = e => {
+      var t = e.Index;
+      if (t >= 0 && t < this.Czd.length) {
+        this.Czd[t] = false;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Weapon", 43, "武器Ans索引错误", ["index", t]);
+      }
       this.HideWeaponByIndex(e.Index, e.HideEffect);
       if (!FNameUtil_1.FNameUtil.IsEmpty(e.HangSocketName)) {
         this.fMl(e.Index, undefined);
@@ -98,6 +120,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+    EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     this.Jwr?.RegisterAnsTrigger("UiWeaponAnsContext", this.OnAnsBegin, this.OnAnsEnd);
   }
   OnEnd() {
@@ -105,6 +128,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete, this.OnRoleMeshLoadComplete);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelRoleDataIdChange, this.OnRoleIdChange);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     for (const e of this.IBr) {
       SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(e);
     }
@@ -116,12 +140,27 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       var i = SkeletalObserverManager_1.SkeletalObserverManager.NewSkeletalObserver(2);
       this.IBr.push(i);
       this.DBr.push(0);
+      this.Czd.push(false);
       this.HideWeaponByIndex(e);
     }
     for (let e = 0; e < this.TBr; e++) {
       var s = this.IBr[e].Model;
       s.CheckGetComponent(22)?.SetWeaponData(this.yBr);
-      s.CheckGetComponent(2)?.LoadModelByModelId(t[e]);
+      s.CheckGetComponent(2)?.LoadModelByModelId(t[e], false, () => {
+        this.lKd(e);
+      });
+    }
+  }
+  lKd(e) {
+    var t;
+    if (e < 0 || e >= this.IBr.length) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Weapon", 43, "显示武器索引错误", ["weaponIndex", e]);
+      }
+    } else {
+      t = this.DBr[e];
+      e = this.IBr[e].Model;
+      UiModelUtil_1.UiModelUtil.SetVisible(e, t === 2);
     }
   }
   ShowAllWeapon(t = false) {
@@ -134,6 +173,11 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       this.HideWeaponByIndex(e, t);
     }
   }
+  ResetWeaponStatesOnRole() {
+    for (let e = 0; e < this.Czd.length; e++) {
+      this.Czd[e] = false;
+    }
+  }
   ShowWeaponByIndex(e, t = false) {
     var i;
     var s;
@@ -141,11 +185,14 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "显示武器索引错误", ["index", e]);
       }
-    } else if (!(s = (i = this.IBr[e].Model).CheckGetComponent(0))?.GetVisible()) {
+    } else {
+      s = (i = this.IBr[e].Model).CheckGetComponent(0);
       this.DBr[e] = 2;
-      s?.SetVisible(true);
-      if (t) {
-        UiModelUtil_1.UiModelUtil.SetRenderingMaterial(i, "ChangeWeaponMaterialController");
+      if (!s?.GetVisible()) {
+        s?.SetVisible(true);
+        if (t) {
+          UiModelUtil_1.UiModelUtil.SetRenderingMaterial(i, "ChangeWeaponMaterialController");
+        }
       }
     }
   }
@@ -156,8 +203,12 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Weapon", 43, "隐藏武器索引错误", ["index", e]);
       }
-    } else if ((s = (i = this.IBr[e].Model).CheckGetComponent(0))?.GetVisible() && (this.DBr[e] = 1, s?.SetVisible(false), t)) {
-      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(i, "ShowHideWeaponEffect");
+    } else {
+      s = (i = this.IBr[e].Model).CheckGetComponent(0);
+      this.DBr[e] = 1;
+      if (s?.GetVisible() && (s?.SetVisible(false), t)) {
+        UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(i, "ShowHideWeaponEffect");
+      }
     }
   }
   RefreshWeaponCase() {
@@ -206,6 +257,7 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
       var i = SkeletalObserverManager_1.SkeletalObserverManager.NewSkeletalObserver(2);
       this.IBr.push(i);
       this.DBr.push(0);
+      this.Czd.push(false);
       this.HideWeaponByIndex(e);
     }
     let s = 0;
@@ -240,11 +292,6 @@ let UiRoleWeaponComponent = class UiRoleWeaponComponent extends UiModelComponent
   }
   GetWeaponCount() {
     return this.TBr;
-  }
-  OnRoleActiveChange() {
-    if (this.n$t.Actor.bHidden) {
-      this.HideAllWeapon();
-    }
   }
 };
 UiRoleWeaponComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(17)], UiRoleWeaponComponent);

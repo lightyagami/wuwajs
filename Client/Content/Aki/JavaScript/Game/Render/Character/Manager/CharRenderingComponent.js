@@ -568,9 +568,13 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
         this.SetBodyEffectOpacity(r.GetDitherRate());
         this.SetDecalShadowOpacity(r.GetDitherRate());
         this.SetRealTimeShadowOpacity(r.GetDitherRate());
-      } catch {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Render", 25, "CharacterRenderingComponent.SetDitherEffect执行异常");
+      } catch (e) {
+        if (e instanceof Error) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.ErrorWithStack("Render", 25, "CharacterRenderingComponent.SetDitherEffect执行异常", e, ["error", e.message]);
+          }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Render", 25, "CharacterRenderingComponent.SetDitherEffect执行异常", ["error", e]);
         }
       }
     }

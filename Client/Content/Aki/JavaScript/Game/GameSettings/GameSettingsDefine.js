@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
+exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.AMD_DISABLE_RAYTRACING_INDEX_END = exports.AMD_DISABLE_RAYTRACING_INDEX_START = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
 const AudioDefine_1 = require("../../Core/Audio/AudioDefine");
 const Info_1 = require("../../Core/Common/Info");
 const EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment");
@@ -1125,5 +1125,7 @@ exports.NPC_DENSITY_THRESHOLD = 1;
 exports.NPC_DENSITY_PC_THRESHOLD = 1;
 exports.HEAVY_SCENEVULUME_INDEX_START = 5;
 exports.HEAVY_SCENEVULUME_INDEX_END = 9;
+exports.AMD_DISABLE_RAYTRACING_INDEX_START = 40;
+exports.AMD_DISABLE_RAYTRACING_INDEX_END = 44;
 exports.MAIN_TYPE_OF_KEY_SETTING = 3;
 exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10]; //# sourceMappingURL=GameSettingsDefine.js.map

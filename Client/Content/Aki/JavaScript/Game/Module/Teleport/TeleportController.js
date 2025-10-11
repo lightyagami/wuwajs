@@ -483,7 +483,7 @@ class TeleportController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Teleport", 29, "传送:处理打开loading结束事件(完成)");
     }
-    const i = ModelManager_1.ModelManager.TeleportModel.TeleportMode === 2 || ModelManager_1.ModelManager.TeleportModel.TeleportMode === 1;
+    const i = ModelManager_1.ModelManager.TeleportModel.TeleportMode === 2 || ModelManager_1.ModelManager.TeleportModel.TeleportMode === 1 || UE.KuroStaticLibrary.IsLowMemoryDevice();
     if (i) {
       ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(false);
     }

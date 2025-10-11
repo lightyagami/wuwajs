@@ -7,6 +7,7 @@ exports.QuestTrackAssistant = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../Core/Net/Net");
+const EventCSharpBridge_1 = require("../../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../../Common/LocalStorage");
@@ -50,10 +51,10 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(27031, this.Hro);
+    Net_1.Net.Register(29350, this.Hro);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(27031);
+    Net_1.Net.UnRegister(29350);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeSuspend, this.jro);
@@ -96,22 +97,23 @@ class QuestTrackAssistant extends ControllerAssistantBase_1.ControllerAssistantB
           return 4;
         }
       } else if (!s.CanShowTrackExpression()) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Quest", 18, "QuestTrackAssistant.RequestTrackQuest,任务不可显示追踪表现", ["questId", e]);
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Quest", 18, "QuestTrackAssistant.RequestTrackQuest,任务不可显示追踪表现", ["questId", e]);
         }
         n?.();
         return 3;
       }
     }
     ModelManager_1.ModelManager.QuestNewModel.SetQuestTrackState(e, r, o);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyQuestTrackState, e, r, o);
     i = Protocol_1.Aki.Protocol.l1s.create({
       B5n: e,
       fHn: r ? 1 : 2,
       gHn: t
     });
-    Net_1.Net.Call(20281, i, e => {
+    Net_1.Net.Call(28887, i, e => {
       if (e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 23297);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 16949);
       }
       n?.();
     });

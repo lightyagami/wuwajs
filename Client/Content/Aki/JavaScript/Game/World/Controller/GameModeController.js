@@ -83,6 +83,7 @@ const ONE_SECOND = 1000;
 const GAME_MODE_CTRL_THINKING_INDEX = 21;
 const SHOUWANG_AREA = 36;
 const lowMemoryAreaIds = new Set([33, SHOUWANG_AREA]);
+const SANWANGFENG_INSTANCEID = 1550;
 exports.LOG_STREAMING_STUCK_INTERVAL = 60000;
 const cellProgress = (0, puerts_1.$ref)(0);
 class GameModeController extends ControllerBase_1.ControllerBase {
@@ -124,6 +125,27 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeArea, this.Hje);
     this.Kta();
     return true;
+  }
+  static Tzd(e) {
+    if (UE.KuroStaticLibrary.IsLowMemoryDevice()) {
+      if (e) {
+        this.bzd = true;
+        this.Rzd = UE.KismetSystemLibrary.GetConsoleVariableIntValue("sg.KuroRenderQuality");
+        if (this.Rzd > 1) {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality 1");
+        }
+        if (!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsTargetBaseProfile("IPad", false)) {
+          UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.RuntimeLODBiasDeviceMappingIndices 274432");
+        }
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DepthOfFieldQuality 0");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenSizeCullRatioFactor 85.0");
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.StaticMeshLODDistanceScale 2.5");
+      } else if (this.bzd) {
+        this.bzd = false;
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality " + this.Rzd);
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.RuntimeLODBiasDeviceMappingIndices 274960");
+      }
+    }
   }
   static SetGameModeData(e, o) {
     var a;
@@ -170,6 +192,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     }
     if (n.BornLocation) {
       if (n.BornRotator) {
+        this.Tzd(_.Id === SANWANGFENG_INSTANCEID);
         this.m6("GameModeController.Load: Start");
         n.LoadWorldProfiler.Restart();
         n.CreatePromise();
@@ -1631,6 +1654,8 @@ class GameModeController extends ControllerBase_1.ControllerBase {
 }
 exports.GameModeController = GameModeController;
 (_a = GameModeController).$vn = undefined;
+GameModeController.bzd = false;
+GameModeController.Rzd = -1;
 GameModeController.hra = () => {
   var e;
   if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = 0, Net_1.Net.Send(25913, e), Log_1.Log.CheckInfo())) {

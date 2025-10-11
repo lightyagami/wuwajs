@@ -47,6 +47,7 @@ const BulletController_1 = require("../../../Bullet/BulletController");
 const BulletUtil_1 = require("../../../Bullet/BulletUtil");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const SkillUtils_1 = require("./Skill/SkillUtils");
+var EAttributeId = Protocol_1.Aki.Protocol.Vks;
 const DEFAULT_CAUGHT_LEVEL = 10;
 const ZOOM_PRECENTAGE = 0.1;
 const ADD_LENGTH = 5;
@@ -111,11 +112,15 @@ class CaughtBindingInfo {
     this.CaughtId = t;
     this.AYo = i;
     this.BindingInfo = this.AYo.BindingInfo;
-    this.BulletEntityId = BulletUtil_1.BulletUtil.CreateBulletFromAN(e.Actor, this.BindingInfo.BulletId, e.ActorTransform, h, false, s.CaughtBindingAnsMessageId);
-    this.BulletActorComponent = this.BulletEntity.GetComponent(170);
+    if (this.BindingInfo.BulletId) {
+      this.BulletEntityId = BulletUtil_1.BulletUtil.CreateBulletFromAN(e.Actor, this.BindingInfo.BulletId, e.ActorTransform, h, false, s.CaughtBindingAnsMessageId);
+    }
+    this.BulletActorComponent = this.BulletEntity?.GetComponent(170);
   }
   get BulletEntity() {
-    return EntitySystem_1.EntitySystem.Get(this.BulletEntityId);
+    if (this.BulletEntityId) {
+      return EntitySystem_1.EntitySystem.Get(this.BulletEntityId);
+    }
   }
   Clear() {
     this.CaughtId = "";
@@ -154,7 +159,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     };
     this.sWl = false;
     this.aWl = false;
-    this.mWc = false;
+    this.XZu = false;
     this.hWl = false;
     this.PendingCaughtList = new Map();
     this.lWl = new Map();
@@ -166,7 +171,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.uae = Vector_1.Vector.Create();
     this.Wxr = false;
     this.m4r = false;
-    this.g4r = Vector_1.Vector.Create();
+    this.qQd = Vector_1.Vector.Create();
     this.n5t = Vector_1.Vector.Create();
     this.OnCatcherForceRemove = (t, i) => {
       if (t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeForce || t === Protocol_1.Aki.Protocol.Fks.Proto_RemoveTypeNormal) {
@@ -236,7 +241,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       var r;
       var n = [];
       for ([e, s] of this.PendingCaughtList) {
-        if (s && (s[2] > 1 ? (n.push(e), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除抓取搁置", ["caught id", e])) : s[2] += i, (h = s[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (o = this.a4r.get(e))) {
+        if (s && (s[2] > 1 ? (n.push(e), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除抓取搁置", ["caught id", e])) : s[2] += i, (h = s[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (o = this.a4r.get(e)) && o.BulletActorComponent) {
           a = (r = o.BulletActorComponent.Owner).D_K2_GetActorLocation();
           this.c1u(r, a, e.toString(), 8, new UE.LinearColor(1, 1, 0, 1));
           r = h.d1u(o.BindingInfo.TargetBoneName, 0)?.GetLocation();
@@ -256,7 +261,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       var m;
       var v = [];
       for ([_, l] of this.lWl) {
-        if (l && (l[2] > 1 ? (v.push(_), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除远端抓取搁置", ["caught id", _])) : l[2] += i, (C = l[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (g = this.a4r.get(_))) {
+        if (l && (l[2] > 1 ? (v.push(_), CombatLog_1.CombatLog.Info("Caught", this.Entity, "超时移除远端抓取搁置", ["caught id", _])) : l[2] += i, (C = l[0]?.GetComponent(52))?.aWl) && IS_DEBUG && (g = this.a4r.get(_)) && g.BulletActorComponent) {
           u = (m = g.BulletActorComponent.Owner).D_K2_GetActorLocation();
           this.c1u(m, u, _.toString(), 8, new UE.LinearColor(1, 0, 1, 1));
           m = C.d1u(g.BindingInfo.TargetBoneName, 0)?.GetLocation();
@@ -267,7 +272,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
         this.lWl.delete(d);
       }
     }
-    if (this.aWl && !this.mWc) {
+    if (this.aWl && !this.XZu) {
       this.CorrectPosition();
     }
   }
@@ -339,65 +344,45 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       CombatLog_1.CombatLog.Warn("Caught", this.Entity, "[Caught.PlayCaughtMontage] 没有CaughtInfoInternal数据", ["EntityID:", this.Entity.Id]);
     }
   }
-  L4r(t, i) {
-    var e = Vector_1.Vector.Create();
-    var s = Vector_1.Vector.Create();
-    t.Subtraction(i, e);
-    var t = Vector_1.Vector.Create();
-    var i = this.Hte;
-    t.DeepCopy(i.ActorLocationProxy);
-    t.Subtraction(e, e);
-    if (i.HalfHeight) {
-      s.Set(0, 0, i.HalfHeight / 2);
-    }
-    e.Addition(s, e);
-    i.SetActorLocation(e.ToUeVector(), "抓取.计算当前对象相对位置的坐标", true);
-  }
   D4r(t) {
     var i = Vector_1.Vector.Create();
+    var e = Vector_1.Vector.Create();
     if (this.nWl !== 0) {
-      var e = EntitySystem_1.EntitySystem.Get(this.nWl);
+      var s = EntitySystem_1.EntitySystem.Get(this.nWl);
       this.Gue.Reset();
-      var s = this.Hte;
-      var h = s.ActorLocationProxy;
+      var h = this.Hte;
+      e.DeepCopy(h.Actor.D_K2_GetActorLocation());
       switch (t.BindingInfo.CaughtDirectionType) {
         case 0:
-          i.DeepCopy(e.GetComponent(3).ActorLocationProxy);
-          i.SubtractionEqual(h);
+          i.DeepCopy(s.GetComponent(3).ActorLocationProxy);
+          i.SubtractionEqual(e);
           MathUtils_1.MathUtils.LookRotationUpFirst(i, this.Gce.GravityUp, this.Gue);
           break;
         case 1:
+          if (!t.BulletActorComponent) {
+            return;
+          }
           i.FromUeVector(t.BulletActorComponent.ActorLocationProxy);
-          i.SubtractionEqual(h);
+          i.SubtractionEqual(e);
           MathUtils_1.MathUtils.LookRotationUpFirst(i, this.Gce.GravityUp, this.Gue);
           break;
         case 2:
+          if (!t.BulletActorComponent) {
+            return;
+          }
           i.FromUeVector(t.BulletActorComponent.ActorLocationProxy);
           i.Subtraction(this.n4r, i);
           i.Set(-i.X, -i.Y, 0);
           MathUtils_1.MathUtils.LookRotationUpFirst(i, this.Gce.GravityUp, this.Gue);
       }
-      s.SetActorRotation(this.Gue.ToUeRotator(), "抓取", false);
+      h.SetActorRotation(this.Gue.ToUeRotator(), "抓取", false);
     }
   }
   d1u(t, i) {
     return SkillUtils_1.SkillUtils.GetTargetSocketTransform(this.Entity, t, i, "抓取");
   }
-  Hdd(t) {
+  GUd(t) {
     return this.Hte.SkeletalMesh.GetRefBoneWorldPosition(FNameUtil_1.FNameUtil.GetDynamicFName(t));
-  }
-  ResetPosition() {
-    var t = this.o4r.BulletEntity?.GetComponent(170)?.ActorLocation;
-    if (this.o4r.BulletEntity && t) {
-      this.Hte.SetActorLocation(t, "抓取.重置抓取位置", false);
-      this.U4r();
-    }
-  }
-  U4r() {
-    var t = this.d1u(this.o4r.BindingInfo.TargetBoneName, 0);
-    if (t) {
-      this.L4r(Vector_1.Vector.Create(t.GetLocation()), this.o4r.BulletEntity.GetComponent(170).ActorLocationProxy);
-    }
   }
   BeginCaughtTrigger(i, e) {
     CombatLog_1.CombatLog.Info("Caught", this.Entity, "开始抓取触发器", ["skillId", e], ["caughtIds", i]);
@@ -521,7 +506,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     this.Xte.RemoveTag(665255436);
   }
   BeginBeCaught(i, t) {
-    CombatLog_1.CombatLog.Info("Caught", this.Entity, "此对象开始被抓取,若联机通知远端", ["CaughtId", i.CaughtId]);
+    CombatLog_1.CombatLog.Info("Caught", this.Entity, "此对象开始被抓取", ["CaughtId", i.CaughtId]);
     var e = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t);
     if (!EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.OnCatcherForceRemove)) {
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.OnCatcherForceRemove);
@@ -541,7 +526,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     e.YVn.Zjn = MathUtils_1.MathUtils.NumberToLong(t.GetComponent(0).GetCreatureDataId());
     e.YVn._Wn = MathUtils_1.MathUtils.BigIntToLong(BigInt(i.CaughtId));
     e.YVn.uWn = false;
-    CombatMessage_1.CombatNet.Send(18002, this.Entity, e);
+    CombatMessage_1.CombatNet.Send(23335, this.Entity, e);
   }
   Vh1(t, i) {
     CombatLog_1.CombatLog.Info("Caught", this.Entity, "远端被抓取");
@@ -569,7 +554,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       Context: "[CharacterCaughtNewComponent.BeginBeCaughtInternal]"
     });
     this.HBr.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Captured);
-    this.mWc = i.GetComponent(0)?.GetPbDataId() === DISABLE_CORRECT_MONSTER_ID;
+    this.XZu = i.GetComponent(0)?.GetPbDataId() === DISABLE_CORRECT_MONSTER_ID;
     this.Hte?.SetEnableVoxelDetection(false, "被抓取者关闭体素检测，防止因为穿地导致误检测");
     this.y4r(t.BindingInfo.CollisionResponseToChannel);
     this.T4r();
@@ -588,9 +573,9 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       o.RotationRule = 2;
       o.ScaleRule = 2;
       o.WeldSimulatedBodies = true;
-      if (a = this.Hdd(t.BindingInfo.TargetBoneName)) {
+      if (t.BindingInfo.TargetBoneName && (a = this.GUd(t.BindingInfo.TargetBoneName))) {
         a = this.Hte.ActorTransform.InverseTransformPosition(a);
-        o.AttachLocationOffset = a.op_Multiply(-1);
+        o.RelativeLocation = a.op_Multiply(-1);
       }
       if (IS_DEBUG) {
         this.c1u(s, h, t.CaughtId.toString(), 16, new UE.LinearColor(1, 1, 0, 1));
@@ -614,7 +599,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       (t = Protocol_1.Aki.Protocol.Le_.create()).YVn = Protocol_1.Aki.Protocol.L4s.create();
       t.YVn.uWn = true;
       CombatLog_1.CombatLog.Info("Caught", this.Entity, "此对象结束被抓取,若联机通知远端", ["CaughtId", this.o4r?.CaughtId]);
-      CombatMessage_1.CombatNet.Send(18002, this.Entity, t);
+      CombatMessage_1.CombatNet.Send(23335, this.Entity, t);
     }
   }
   EndBeCaughtHandle() {
@@ -625,7 +610,7 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
     var t;
     if (this.aWl) {
       this.aWl = false;
-      this.mWc = false;
+      this.XZu = false;
       this.Xte.RemoveTag(-648310348);
       this.Xte.RemoveTag(-1697149502);
       if (t = this.Hte) {
@@ -667,29 +652,32 @@ let CharacterCaughtNewComponent = class CharacterCaughtNewComponent extends Enti
       this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
       if (this.Wxr) {
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.n5t);
-        this.n5t = this.SetAddRadiusLocation(this.g4r, this.n5t, t.Radius + ADD_LENGTH);
+        e = s.op_Subtraction(t.ActorLocation);
+        this.qQd.DeepCopy(e);
+        this.n5t = this.SetAddRadiusLocation(this.qQd, this.n5t, t.Radius + ADD_LENGTH);
         if (!this.n5t.IsZero()) {
-          t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
           CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时与抓取者碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
+          t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
         }
       }
     } else {
       CombatLog_1.CombatLog.Error("Caught", this.Entity, "该实体被抓取结束时无法找到抓取者！", ["BeCaughtEntity", this.Entity.Id]);
     }
+    i = this.Entity.CheckGetComponent(173).GetCurrentValue(EAttributeId.Proto_Tough) > 0 ? t.DefaultHalfHeight : t.Radius;
     this.Fse.HitResult?.Clear();
     this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
-    const s = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z + t.Radius + ADD_LENGTH);
-    e = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z - t.Radius - ADD_LENGTH);
+    const s = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z + i + ADD_LENGTH);
+    e = Vector_1.Vector.Create(t.ActorLocation.X, t.ActorLocation.Y, t.ActorLocation.Z - i - ADD_LENGTH);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, s);
     TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, e);
     this.Fse.Radius = 0.3;
     this.Wxr = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY2);
     if (this.Wxr) {
       TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Fse.HitResult, 0, this.n5t);
-      this.n5t.Addition(Vector_1.Vector.Create(0, 0, t.Radius + ADD_LENGTH), this.n5t);
+      this.n5t.Addition(Vector_1.Vector.Create(0, 0, i + ADD_LENGTH), this.n5t);
       if (!this.n5t.IsZero()) {
+        CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时地面碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["testOffset", i]);
         t.SetActorLocation(this.n5t.ToUeVector(), "抓取.结束被抓取", false);
-        CombatLog_1.CombatLog.Info("Caught", this.Entity, "被抓取结束时地面碰撞检测修正", ["FixPos", this.n5t], ["StartTrace", s], ["EndTrace", t.ActorLocation], ["Radius", t.Radius]);
       }
     }
   }

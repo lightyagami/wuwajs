@@ -152,7 +152,7 @@ class NpcPerformDestroyState extends NpcPerformBaseState_1.NpcPerformBaseState {
   }
   TryRemoveDeathMaterialEffectEvents() {
     var t;
-    if (this.ActorComp?.Actor.CharRenderingComponent && (t = this.ActorComp.Actor.CharRenderingComponent, EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialController, this.OnDeathMatEffectEnd) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialController, this.OnDeathMatEffectEnd), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.OnDeathMatEffectEnd))) {
+    if (this.ActorComp?.Actor?.CharRenderingComponent && (t = this.ActorComp.Actor.CharRenderingComponent, EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialController, this.OnDeathMatEffectEnd) && EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialController, this.OnDeathMatEffectEnd), EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.OnDeathMatEffectEnd))) {
       EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.OnRemoveMaterialControllerGroup, this.OnDeathMatEffectEnd);
     }
   }

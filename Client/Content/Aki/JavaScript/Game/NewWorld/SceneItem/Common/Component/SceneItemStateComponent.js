@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var o;
   var r = arguments.length;
-  var n = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var h = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
-    for (var h = t.length - 1; h >= 0; h--) {
-      if (o = t[h]) {
-        n = (r < 3 ? o(n) : r > 3 ? o(e, i, n) : o(e, i)) || n;
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (o = t[n]) {
+        h = (r < 3 ? o(h) : r > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (r > 3 && n) {
-    Object.defineProperty(e, i, n);
+  if (r > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return n;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,7 +28,6 @@ const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponen
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const GameplayTagUtils_1 = require("../../../../../Core/Utils/GameplayTagUtils");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
-const IAction_1 = require("../../../../../UniverseEditor/Interface/IAction");
 const IComponent_1 = require("../../../../../UniverseEditor/Interface/IComponent");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -270,24 +269,17 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       }
     }
   }
-  ChangePerformanceState(t, e = false, i = true) {
+  ChangePerformanceState(t, e = false, i) {
     if (t !== this.h_n || !!e) {
-      e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t);
-      if (!(0, IAction_1.isPerformanceTypeContainTag)(this.StateConfig.PrefabPerformanceType, e) && i) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Level", 7, "[ChangePerformanceTag] 传入的Tag与Entity设定的状态类型不匹配", ["configComp", this.StateConfig.PrefabPerformanceType], ["TagName", e], ["CreatureDataId", this.Wpo]);
-        }
+      if (this.h_n) {
+        e = this.h_n;
+        this.h_n = t;
+        this.Xte?.ChangeLocalLevelTag(this.h_n, e);
       } else {
-        if (this.h_n) {
-          i = this.h_n;
-          this.h_n = t;
-          this.Xte?.ChangeLocalLevelTag(this.h_n, i);
-        } else {
-          this.h_n = t;
-          this.Xte?.AddTag(t);
-        }
-        this.l_n = t !== -687845000;
+        this.h_n = t;
+        this.Xte?.AddTag(t);
       }
+      this.l_n = t !== -687845000;
     }
   }
   GetLifeCycleStageActions(t) {

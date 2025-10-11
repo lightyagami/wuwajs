@@ -85,7 +85,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     }
   }
   TY1(e) {
-    if (!ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 1)) {
+    if (ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 1)) {
       ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(1009, undefined, true);
     }
     ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 1);

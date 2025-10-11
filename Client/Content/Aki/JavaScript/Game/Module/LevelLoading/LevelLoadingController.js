@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelLoadingController = undefined;
+const UE = require("ue");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
@@ -113,8 +114,15 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
   }
   static async hpi(e, o, ...r) {
     var a = ModelManager_1.ModelManager.LevelLoadingModel;
-    var n = a.GetPerformByReason(e);
-    if (n === undefined) {
+    if (a.GetPerformByReason(e) !== undefined) {
+      if (o === 3 && UE.KuroStaticLibrary.IsLowMemoryDevice()) {
+        ControllerHolder_1.ControllerHolder.WorldController.ManuallyGarbageCollection(4);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Loading", 7, "LevelLoading:ForceGarbageCollection in LowMemoryDevice");
+        }
+        ControllerHolder_1.ControllerHolder.WorldController.ForceGarbageCollection(true);
+      }
+    } else {
       a.SetLoadingState(true);
       a.AddLoadingReason(e, o);
       if (e === 15) {
@@ -128,15 +136,15 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
       if (LevelLoadingController.CheckIsOpen(o)) {
         switch (o) {
           case 3:
-            var i = r;
-            if (i[5] === true) {
-              BlackScreenFadeController_1.BlackScreenFadeController.ChangeColorByForce(i[1]);
+            var n = r;
+            if (n[5] === true) {
+              BlackScreenFadeController_1.BlackScreenFadeController.ChangeColorByForce(n[1]);
             }
             break;
           case 6:
-            i = r[0].FlowParams.KeepTime;
-            if (i !== undefined) {
-              await TimerSystem_1.GameplayTimerSystem.Wait(i * TimeUtil_1.TimeUtil.InverseMillisecond);
+            n = r[0].FlowParams.KeepTime;
+            if (n !== undefined) {
+              await TimerSystem_1.GameplayTimerSystem.Wait(n * TimeUtil_1.TimeUtil.InverseMillisecond);
             }
         }
       } else {
@@ -151,9 +159,9 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
             await this.cpi();
             break;
           case 3:
-            var t = r;
+            var i = r;
             BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(e);
-            await this.mpi(...t);
+            await this.mpi(...i);
             ControllerHolder_1.ControllerHolder.QuestNewController.RequestSetFocusModeDeterCondition(false);
             break;
           case 0:

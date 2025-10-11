@@ -211,7 +211,9 @@ class GameSettingsManager {
   static Hsc(e, t) {
     this.$sc.get(GameSettingsDefine_1.EFunction.IMAGEQUALITY)?.CacheValue(e.QualityType, t);
     for (var [i, n] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(e)) {
-      this.$sc.get(i)?.CacheValue(n, t);
+      if (i !== GameSettingsDefine_1.EFunction.RayTracing) {
+        this.$sc.get(i)?.CacheValue(n, t);
+      }
     }
   }
   static Wsc(e) {

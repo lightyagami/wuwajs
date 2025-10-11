@@ -811,6 +811,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       return true;
     } else {
       LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.ProtoKeyRet, Protocol_1.Aki.Protocol.Q4n.Proto_ProtoKeyTimeout);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenConfirmBoxByTextIdNew("Text_HttpTimeout_Text");
       return false;
     }
   }

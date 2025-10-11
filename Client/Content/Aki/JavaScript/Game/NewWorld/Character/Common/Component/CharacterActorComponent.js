@@ -61,7 +61,6 @@ const AoiController_1 = require("../../../../World/Controller/AoiController");
 const BlackboardController_1 = require("../../../../World/Controller/BlackboardController");
 const AimPartUtils_1 = require("../../../Common/AimPartUtils");
 const BaseActorComponent_1 = require("../../../Common/Component/BaseActorComponent");
-const RoleTriggerController_1 = require("../../Role/RoleTriggerController");
 const FunctionRequestProxy_1 = require("./Actor/FunctionRequestProxy");
 const BaseCharacterComponent_1 = require("./BaseCharacterComponent");
 const CharacterLockOnComponent_1 = require("./LockOn/CharacterLockOnComponent");
@@ -800,8 +799,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
         this.FixBornLocation("实体初始化.地面修正");
         break;
       default:
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Entity", 18, "[CharacterActorComponent.FixBornLocationByMovementMode] 实体地面修正:当前处于不可修正的移动状态", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["MovementMode", this.Actor.CharacterMovement.MovementMode]);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Entity", 18, "[CharacterActorComponent.FixBornLocationByMovementMode] 实体地面修正:当前处于不可修正的移动状态", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["DefaultLandMovementMode", this.Actor.CharacterMovement.DefaultLandMovementMode]);
         }
     }
   }
@@ -812,6 +811,7 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
       case 2:
       case 0:
       case 3:
+      case 7:
         break;
       case 6:
         if (this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SKI && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE && this.Actor.CharacterMovement.CustomMovementMode !== CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_ROLL) {
@@ -900,9 +900,8 @@ let CharacterActorComponent = CharacterActorComponent_1 = class CharacterActorCo
     this.HalfHeightInternal = e;
     this.Actor.CapsuleComponent.SetCapsuleRadius(t, i);
     this.Actor.CapsuleComponent.SetCapsuleHalfHeight(e, i);
-    RoleTriggerController_1.RoleTriggerController.UpdateRoleTriggerHalfHeightAndRadius(t, e, i);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e);
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e, i);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnCharacterCapsuleChanged, this.Entity, t, e, i);
     if (!!s && (o !== e || r !== t) && (h === 1 || h === 2 || h === 0)) {
       i = Math.min(0, e - o);
       if ((s = this.FixActorLocation(i)) && s[0] && (this.SetActorLocation(s[1].ToUeVector(), "修改胶囊体后地面修正", false), Log_1.Log.CheckInfo())) {

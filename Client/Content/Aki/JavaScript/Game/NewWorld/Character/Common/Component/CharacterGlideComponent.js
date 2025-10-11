@@ -198,7 +198,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     this.DVr = () => {
       this.RefreshSoarBoost();
       this.Z5l();
-      this.vWc();
+      this.KQc();
     };
     this.hUe = (t, e) => {
       if (e === CharacterUnifiedStateTypes_1.ECharMoveState.Soar) {
@@ -290,7 +290,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
         this.Bnh = t.Bnh;
         this.CurrentSoarType = t.CurrentSoarType;
         t.CurrentSoarType = 0;
-        this.vWc();
+        this.KQc();
       }
     };
     this.eVr = (t, e) => {
@@ -300,7 +300,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
       this.i7l = e;
       this.RefreshSoarBoost();
     };
-    this.vWc = () => {
+    this.KQc = () => {
       var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1015;
       var e = this.Entity.GetComponent(176).PositionState;
       if (t && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
@@ -456,8 +456,8 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveGlide, this.J5r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSoar, this.z5r);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.vWc);
-    this.vWc();
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.KQc);
+    this.KQc();
     this.j5r = this.Xte.ListenForTagAddOrRemove(-1819043374, this.eVr);
     this.e7l = this.Xte.ListenForTagAddOrRemove(1317391447, this.o7l);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.OnStateInherit);
@@ -468,7 +468,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveGlide, this.J5r);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSoar, this.z5r);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.vWc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.KQc);
     this.j5r.EndTask();
     this.j5r = undefined;
     this.e7l.EndTask();
@@ -676,7 +676,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     var r = a.Size();
     var n = h.CurrentSplineMoveParams;
     if (s || !o) {
-      s = h.SplineDirection.DotProduct(a) > 0;
+      s = h.CurrentSplineMoveParams?.OnlyForward || h.SplineDirection.DotProduct(a) > 0;
       o = n.SplineAnalyzeData.GetKeyTimeByLengthOffset(h.SplineTimeKey, Math.max(this.Hkl.SoarSplineMinSpeed, r) * (s ? 0.5 : -0.5));
       if (this.Hkl.DebugDraw) {
         if (Log_1.Log.CheckDebug()) {

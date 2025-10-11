@@ -63,7 +63,7 @@ class SubLevel {
         e = e.GetLoadedLevel();
         (i = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance)).AddLevel(this.LinkId, e);
         i.SetOneFrameExecuteCount(Platform_1.Platform.IsPcPlatform() ? LoadLevelDefine_1.PC_ONEFRAME_MAXSET_COUNT : LoadLevelDefine_1.MOBILE_ONEFRAME_MAXSET_COUNT);
-        await this.SetLevelVisible(this.VisibleAfterLoad, "OnLevelLoad");
+        await this.SetLevelVisible(this.VisibleAfterLoad, "OnLevelLoad", false);
       }
       this.LoadState = 2;
     } else if (Log_1.Log.CheckError()) {
@@ -71,8 +71,11 @@ class SubLevel {
     }
     this.LoadPromise.SetResult(true);
   }
-  async SetLevelVisible(e, i) {
+  async SetLevelVisible(e, i, t = true) {
     if (this.Level && this.Level.IsLevelLoaded()) {
+      if (t && this.LoadState === 1) {
+        await this.LoadPromise.Promise;
+      }
       if (this.DependOnBeginPlayLogic) {
         await this.zz1(this.Level, e, i);
       } else {
@@ -82,18 +85,30 @@ class SubLevel {
       Log_1.Log.Error("GameMode", 18, "SetLevelVisible:失败,Level未加载完毕", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]);
     }
   }
-  async zz1(e, i, s) {
-    var t;
-    var o;
-    if (e.IsLevelVisible() !== i && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", s]), this.Pd1 = new CustomPromise_1.CustomPromise(), (o = i ? e.OnLevelShown : e.OnLevelHidden).Add(t = () => {
-      this.Pd1.SetResult(true);
-    }), e.SetShouldBeVisible(i), await this.Pd1.Promise, o.Remove(t), this.Yz1 = i, Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:结束", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", s]);
+  async zz1(e, i, t) {
+    var s = e.IsLevelVisible();
+    if (s !== i) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", t]);
+      }
+      const a = new CustomPromise_1.CustomPromise();
+      var s = () => {
+        a.SetResult(true);
+      };
+      var o = i ? e.OnLevelShown : e.OnLevelHidden;
+      o.Add(s);
+      e.SetShouldBeVisible(i);
+      await a.Promise;
+      o.Remove(s);
+      this.Yz1 = i;
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleWithBeginPlay:结束", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", i], ["reason", t]);
+      }
     }
   }
   async Jz1(e, i) {
-    var s;
-    if (this.Yz1 !== e && (this.Yz1 = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), s = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance), this.Pd1 = new CustomPromise_1.CustomPromise(), s = s.SetLevelActorsVisible(this.LinkId, e, this.xd1), await this.Pd1.Promise, s || Log_1.Log.CheckError() && Log_1.Log.Error("GameMode", 18, "SetLevelVisibleNoBeginPlay:失败,Actors为空", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), Log_1.Log.CheckDebug())) {
+    var t;
+    if (this.Yz1 !== e && (this.Yz1 = e, Log_1.Log.CheckDebug() && Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:开始", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), t = UE.KuroSubLevelVisibleSubsystem.GetSubSystem(GlobalData_1.GlobalData.GameInstance), this.Pd1 = new CustomPromise_1.CustomPromise(), t = t.SetLevelActorsVisible(this.LinkId, e, this.xd1), await this.Pd1.Promise, t || Log_1.Log.CheckError() && Log_1.Log.Error("GameMode", 18, "SetLevelVisibleNoBeginPlay:失败,Actors为空", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("GameMode", 18, "SetLevelVisibleNoBeginPlay:结束", ["path", this.Path], ["LinkId", this.LinkId], ["bVisible", e], ["reason", i]);
     }
   }

@@ -299,7 +299,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.RoleBackgroundMusicSwitchItem = new RoleBackgroundMusicSwitchItem_1.RoleBackgroundMusicSwitchItem();
       RenderUtil_1.RenderUtil.BeginPSOSyncMode();
       this.RoleListComponent = new RoleListComponent_1.RoleListComponent();
-      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner()), ControllerHolder_1.ControllerHolder.HandBookController.SendIllustratedInfoRequestAsync([1])]);
+      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner())]);
       this.InitTabComponent();
       this.d1o.RoleViewState = 0;
       this.dmo = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(1);

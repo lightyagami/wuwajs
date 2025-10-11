@@ -65,12 +65,12 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.Bvd = (e, r) => {
       var t = e.LeftTime;
       var a = r.LeftTime;
-      const o = CommonParamById_1.configCommonParamById.GetIntConfig("MapPeriodicActivityTime");
-      var i = (e, r, t) => e > 0 && e <= o && r ? 1 : e > 0 && e <= o && !t ? 2 : r ? 3 : t ? 5 : 4;
-      var e = i(t, e.RedPoint, e.IsFinish);
-      var i = i(a, r.RedPoint, r.IsFinish);
-      if (e !== i) {
-        return e - i;
+      const i = CommonParamById_1.configCommonParamById.GetIntConfig("MapPeriodicActivityTime");
+      var o = (e, r, t) => e > 0 && e <= i && r ? 1 : e > 0 && e <= i && !t ? 2 : r ? 3 : t ? 5 : 4;
+      var e = o(t, e.RedPoint, e.IsFinish);
+      var o = o(a, r.RedPoint, r.IsFinish);
+      if (e !== o) {
+        return e - o;
       } else {
         return t - a;
       }
@@ -83,7 +83,6 @@ class WorldMapModel extends ModelBase_1.ModelBase {
         MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
         Focal: true
       });
-      ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew);
     };
     this.Dvd = () => {
       var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(2);
@@ -101,10 +100,6 @@ class WorldMapModel extends ModelBase_1.ModelBase {
         MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
         Focal: true
       });
-      var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
-      if (e) {
-        ControllerHolder_1.ControllerHolder.ActivityController.RequestReadActivity(e);
-      }
     };
   }
   get CustomMarksIsShow() {
@@ -159,16 +154,16 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   GetEntityPosition(e, r) {
     var t = r + "_" + e;
     let a = this.jlc.Get(t);
-    var o = Vector_1.Vector.Create();
+    var i = Vector_1.Vector.Create();
     if (a) {
-      o.FromUeVector(a);
+      i.FromUeVector(a);
     } else {
       r = ConfigManager_1.ConfigManager.MapConfig.GetEntityConfigByMapIdAndEntityId(r, e)?.Transform[0];
       a = r ? Vector_1.Vector.Create(r.X, r.Y, r.Z) : Vector_1.Vector.Create(0, 0, 0);
       this.jlc.Put(t, a);
-      o.FromUeVector(a);
+      i.FromUeVector(a);
     }
-    return o;
+    return i;
   }
   GetEntityAreaId(e, r) {
     return ModelManager_1.ModelManager.CreatureModel.GetEntityData(e, r)?.AreaId ?? 0;
@@ -372,7 +367,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
         CurrentNum: e,
         TotalNum: t,
         IsFinish: r.IsScoreRewardAllReceive(),
-        RedPoint: r.GetIfFirstOpen(),
+        RedPoint: r.HasNewCycle(),
         OnClickCb: this.Pvd,
         OnLeftTimeRefreshCb: e => {
           e.LeftTime = r.GetCycleRemainTime() ?? 0;
@@ -388,16 +383,16 @@ class WorldMapModel extends ModelBase_1.ModelBase {
       var r = n.GetSeasonCountDownData();
       var t = n.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
       var a = n.GetDifficultyAllStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      var o = n.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
-      var i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
+      var i = n.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var o = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
       return {
         Id: 2,
         LeftTime: e > 0 ? e : 0,
         LeftTimeText: r.CountDownText ?? "",
         CurrentNum: t,
         TotalNum: a,
-        IsFinish: o === 1,
-        RedPoint: i < n.CurrentSeason,
+        IsFinish: i === 1,
+        RedPoint: o < n.CurrentSeason,
         OnClickCb: this.Dvd,
         OnLeftTimeRefreshCb: e => {
           var r = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
@@ -419,7 +414,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
         CurrentNum: r,
         TotalNum: t,
         IsFinish: r === t && r !== 0,
-        RedPoint: e.GetIfFirstOpen(),
+        RedPoint: e.HasNewCycle(),
         OnClickCb: this.xvd,
         OnLeftTimeRefreshCb: e => {
           e.LeftTime = a.GetRemainTime();

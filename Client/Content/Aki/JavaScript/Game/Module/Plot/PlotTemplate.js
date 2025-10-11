@@ -36,6 +36,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterNameDefines_1 = require("../../NewWorld/Character/Common/CharacterNameDefines");
 const GameplayCueController_1 = require("../../NewWorld/Character/Common/Component/Abilities/GameplayCueSFX/Controller/GameplayCueController");
 const NpcPerformController_1 = require("../../NewWorld/Character/Npc/Controller/NpcPerformController");
+const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const GravityUtils_1 = require("../../Utils/GravityUtils");
 const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
 const HoldingHandsController_1 = require("../HoldHands/HoldingHandsController");
@@ -298,6 +299,7 @@ class PlotTemplate {
     this.nx = t;
     this.AWl = i.IsSwitchMainRole ?? false;
     this.zsd = i.IsUseSeqFace ?? false;
+    RenderUtil_1.RenderUtil.BeginPSOSyncMode();
     if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
       GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, false);
     }
@@ -807,6 +809,7 @@ class PlotTemplate {
   }
   async EndTemplateNew(t) {
     if (this.IsInTemplate) {
+      RenderUtil_1.RenderUtil.EndPSOSyncMode();
       if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported()) {
         GameSettingsDeviceRender_1.GameSettingsDeviceRender.ToggleFFXFIStateTemporarily(GameSettingsUtils_1.EFFXFIApplyMode.SeqC, true);
       }

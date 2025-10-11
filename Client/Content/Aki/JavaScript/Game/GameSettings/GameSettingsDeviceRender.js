@@ -78,6 +78,13 @@ class GameSettingsDeviceRender {
       return this.BYd.includes(e);
     }
   }
+  static IsTargetBaseProfile(e, t) {
+    if (t) {
+      return e === this.UNa;
+    } else {
+      return this.UNa.includes(e);
+    }
+  }
   static InitializeBaseInfo() {
     this.ANa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetPhysicalGBRam();
     this.DNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIVendorName();
@@ -342,6 +349,9 @@ class GameSettingsDeviceRender {
       return false;
     }
   }
+  static IsAMD() {
+    return this.DNa === "AMD";
+  }
   static IsNvidia4060() {
     return this.DNa === "NVIDIA" && this.RNa.includes("4060");
   }
@@ -525,19 +535,19 @@ class GameSettingsDeviceRender {
     let s = UE.KuroRenderingRuntimeBPPluginBPLibrary.SupportVulkan();
     if (e) {
       var a = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceModel();
-      var n = UE.KismetSystemLibrary.GetVulkanAllowedModels();
+      var r = UE.KismetSystemLibrary.GetVulkanAllowedModels();
       let t = false;
-      for (let e = 0; e < n.Num(); ++e) {
-        if (n.Get(e).includes(a)) {
+      for (let e = 0; e < r.Num(); ++e) {
+        if (r.Get(e).includes(a)) {
           t = true;
           break;
         }
       }
       s = s || t;
-      var r = UE.KismetSystemLibrary.GetVulkanBlockedModels();
+      var n = UE.KismetSystemLibrary.GetVulkanBlockedModels();
       let i = false;
-      for (let e = 0; e < r.Num(); ++e) {
-        if (r.Get(e).includes(a)) {
+      for (let e = 0; e < n.Num(); ++e) {
+        if (n.Get(e).includes(a)) {
           i = true;
           break;
         }
@@ -758,7 +768,7 @@ class GameSettingsDeviceRender {
     if (this.IsFFXFISupported()) {
       var s = GameSettingsUtils_1.GameSettingsUtils.GetFsr3FgApplyMode();
       var a = GameSettingsUtils_1.GameSettingsUtils.GetFsr3FgSwitchState(GameSettingsUtils_1.EFFXFIApplyMode.Default);
-      var n = a !== 0;
+      var r = a !== 0;
       if (GameSettingsUtils_1.GameSettingsUtils.IsTemporaryFFXFIApplyMode(t)) {
         if (i) {
           GameSettingsUtils_1.GameSettingsUtils.LeaveTemporaryFFXFIApplyState();
@@ -769,7 +779,7 @@ class GameSettingsDeviceRender {
       let e = true;
       if (!GameSettingsUtils_1.GameSettingsUtils.IsTemporaryFFXFIApplyMode(s) || !GameSettingsUtils_1.GameSettingsUtils.IsTemporaryFFXFIApplyMode(t) || t <= s) {
         if (i) {
-          GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(n ? 1 : 0, GameSettingsUtils_1.EFFXFIApplyMode.Default);
+          GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(r ? 1 : 0, GameSettingsUtils_1.EFFXFIApplyMode.Default);
         } else {
           GameSettingsUtils_1.GameSettingsUtils.ApplyFsr3Fg(0, t);
         }

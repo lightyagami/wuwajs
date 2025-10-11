@@ -78,11 +78,13 @@ class FlowShowTalk {
     this.CurTalkItemIndex = -1;
     this.CurShowTalk = undefined;
     this.Context = undefined;
-    this.B8 = undefined;
     this.dbn = false;
     PlotController_1.PlotController.ClearUi();
     ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(false);
-    CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
+    if (this.B8 && this.CheckPlotLevelInAbc()) {
+      CameraController_1.CameraController.FightCamera.LogicComponent.ExitCameraGuideAtOnce();
+    }
+    this.B8 = undefined;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotEndShowTalk);
     ControllerHolder_1.ControllerHolder.FlowController.RunNextAction();
   }
@@ -156,8 +158,8 @@ class FlowShowTalk {
   mbn(t) {
     if (this.CurShowTalk && !this.gjs) {
       t = t ?? this.S$i;
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Plot", 26, "[FlowShowTalk][Subtitle] 字幕完成", ["id", t.Id]);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Plot", 26, "[FlowShowTalk][Subtitle] 字幕完成", ["id", t.Id]);
       }
       this.gjs = true;
       this.S$i = undefined;
@@ -278,7 +280,7 @@ class FlowShowTalk {
     }
   }
   vbn() {
-    if (!this.Context.IsBackground && (this.B8 !== "Prompt" || !ControllerHolder_1.ControllerHolder.PlotController.ShowTipsView(this.S$i, this.Context.UiParam))) {
+    if (!this.Context.IsBackground && (this.B8 !== "Prompt" || !ControllerHolder_1.ControllerHolder.PlotController.ShowTipsView(this.S$i, this.Context.PromptStyle, this.Context.UiParam))) {
       if (this.B8 === "LevelC" && this.S$i?.Type === "CenterText") {
         ModelManager_1.ModelManager.PlotModel.ShowTalkCenterText(this.S$i, this.SubmitSubtitle);
       } else {
@@ -290,6 +292,9 @@ class FlowShowTalk {
     if (this.Context && !this.Context.IsBackground) {
       this.HandleShowTalkItemOption(t, e);
     }
+  }
+  CheckPlotLevelInAbc() {
+    return this.B8 === "LevelA" || this.B8 === "LevelB" || this.B8 === "LevelC";
   }
 }
 exports.FlowShowTalk = FlowShowTalk;

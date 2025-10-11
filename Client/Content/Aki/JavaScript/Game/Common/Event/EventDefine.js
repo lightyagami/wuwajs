@@ -2159,4 +2159,5 @@ exports.EEventName = undefined;
   e[e.CsNotifyOpenHelpView = 10126] = "CsNotifyOpenHelpView";
   e[e.CsNotifyDbHandle = 10127] = "CsNotifyDbHandle";
   e[e.CsNotifyAllDbHandles = 10128] = "CsNotifyAllDbHandles";
+  e[e.TsNotifyQuestTrackState = 10129] = "TsNotifyQuestTrackState";
 })(EEventName = exports.EEventName ||= {}); //# sourceMappingURL=EventDefine.js.map

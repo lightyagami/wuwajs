@@ -309,6 +309,7 @@ class Net {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Net", 30, "重连流程,", ["lastReceived", N]);
     }
+    var e = Date.now();
     var o = Net.RX.Count;
     if (o > 0) {
       let e = Net.RX.GetHeadNextNode();
@@ -346,6 +347,9 @@ class Net {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Net", 30, "重连流程, 重发未被服务器确认的消息", ["Count", e], ["lastSeqNo", t], ["lastMsgId", N]);
       }
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Net", 63, "重连流程,", ["消耗时间", Date.now() - e]);
     }
     Net.gXa();
   }
@@ -418,11 +422,11 @@ class Net {
     const o = N.MessageId;
     var t;
     if (Net.MX.has(o)) {
-      t = TimerSystem_1.GameplayTimerSystem.Delay(() => {
+      t = TimerSystem_1.GameplayTimerSystem.Delay(t => {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Net", 30, "协议超时", ["message", o], ["timeout", e]);
+          Log_1.Log.Info("Net", 30, "协议超时", ["message", o], ["timeout", e], ["deltaTime", t], ["InverseSelfCenteredTimeDilation", Time_1.Time.InverseSelfCenteredTimeDilation]);
         }
-        var t = N.Handle;
+        t = N.Handle;
         N.ClearHandle();
         N.TimeoutHandle = undefined;
         if (t) {

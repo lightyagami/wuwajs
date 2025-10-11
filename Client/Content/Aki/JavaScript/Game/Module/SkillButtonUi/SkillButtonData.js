@@ -301,12 +301,12 @@ class SkillButtonData {
         this.ConfigShowLongPressTagIds.push(v);
       }
     } else if (this.ConfigVehicle) {
-      for (const _ of this.ConfigVehicle.EnableTags) {
-        this.gSo.push(_);
+      for (const I of this.ConfigVehicle.EnableTags) {
+        this.gSo.push(I);
       }
     } else if (this.ConfigFollower) {
-      for (const I of this.ConfigFollower.NotOccupyTags) {
-        this.DY_.push(I);
+      for (const _ of this.ConfigFollower.NotOccupyTags) {
+        this.DY_.push(_);
       }
     }
     for (const g of t.DisableTags) {
@@ -1070,6 +1070,9 @@ class SkillButtonData {
   }
   GetFormationData() {
     return this.FormationData;
+  }
+  IsSkillIdChangeByTag() {
+    return this.E9_ !== 0;
   }
 }
 exports.SkillButtonData = SkillButtonData;
