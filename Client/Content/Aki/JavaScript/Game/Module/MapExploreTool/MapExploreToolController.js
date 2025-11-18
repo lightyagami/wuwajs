@@ -78,7 +78,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   static IAi(e, o) {
     ModelManager_1.ModelManager.MapExploreToolModel.SetCharExploreSkillBusy(false);
     if (!o) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(208)?.ModifyCdTime([e.SkillId], 0, -1);
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(211)?.ModifyCdTime([e.SkillId], 0, -1);
     }
   }
   static EAi(e) {
@@ -103,7 +103,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
       return false;
     } else {
       a = (r = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId))?.Entity?.GetComponent(3);
-      o = r?.Entity?.GetComponent(176);
+      o = r?.Entity?.GetComponent(179);
       if (r && a && o) {
         if (a.IsAutonomousProxy) {
           if (o.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
@@ -386,9 +386,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   }
   static Jcl(o) {
     var e = Protocol_1.Aki.Protocol.KC_.create();
-    Net_1.Net.Call(20787, e, e => {
+    Net_1.Net.Call(29226, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSkillIsEffect) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16084);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22600);
       } else {
         o({
           PhantomSkillId: 1011,
@@ -399,9 +399,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   }
   static Zcl(o) {
     var e = Protocol_1.Aki.Protocol.HC_.create();
-    Net_1.Net.Call(23261, e, e => {
+    Net_1.Net.Call(19015, e, e => {
       if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Cvs !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrTreasureBoxAllActive) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24895);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24567);
       } else {
         ModelManager_1.ModelManager.MapModel.UpdateBoxSlotInfo(e.IT_);
         o({
@@ -423,9 +423,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
         var e = ModelManager_1.ModelManager.MapModel.GetBoxSlotInfoByMarkId(r);
         var o = Protocol_1.Aki.Protocol.WC_.create();
         o.b7n = e.b7n;
-        var o = await Net_1.Net.CallAsync(28870, o);
+        var o = await Net_1.Net.CallAsync(24765, o);
         if (o.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 27377);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 22560);
         } else {
           ModelManager_1.ModelManager.MapModel.RemoveBoxSlotInfo(e.b7n);
         }
@@ -439,9 +439,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
       (r = Protocol_1.Aki.Protocol.YC_.create()).l8n = e.Pos;
       r._8n = e.Rot;
       r.Suc = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId() ?? 0;
-      Net_1.Net.Call(22713, r, e => {
+      Net_1.Net.Call(15033, r, e => {
         if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 23206);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24513);
         } else {
           o({
             PhantomSkillId: 1010,
@@ -454,9 +454,9 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   static RemoveTemporaryTeleportRequest(e, o) {
     var r = Protocol_1.Aki.Protocol.PCs.create();
     r.R7n = e;
-    Net_1.Net.Call(21370, r, e => {
+    Net_1.Net.Call(24777, r, e => {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25447);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27959);
       } else {
         ModelManager_1.ModelManager.MapModel.RemoveTemporaryTeleportInfo(o);
       }
@@ -466,7 +466,7 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
     var e = Protocol_1.Aki.Protocol.r0_.create();
     return {
       PhantomSkillId: 1011,
-      Content: await Net_1.Net.CallAsync(15720, e)
+      Content: await Net_1.Net.CallAsync(18624, e)
     };
   }
 }

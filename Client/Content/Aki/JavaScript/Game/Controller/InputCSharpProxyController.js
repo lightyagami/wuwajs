@@ -11,417 +11,417 @@ const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 class InputCSharpProxyController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveSetupInputComponent, this.Hjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveBeginPlay, this.a5d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveDestroyed, this.h5d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveTick, this.$jd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceivedPlayer, this.Wjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInitInputHandle, this.j$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerAddInputBinding, this.H$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerClearInputBinding, this.$$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnSetupInputComponent, this.W$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerBindTouchHandle, this.Q$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAction, this.Qjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAxis, this.Kjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchBegin, this.K$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchEnd, this.X$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchMove, this.Y$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnPressAnyKey, this.z$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnReleaseAnyKey, this.J$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveActionHandle, this.Z$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerGetActionHandle, this.eWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveAxisHandle, this.tWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerGetAxisHandle, this.iWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerIsInTouch, this.rWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerSetIsPrintKeyName, this.oWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchBegin, this.Xjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchEnd, this.Yjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchMove, this.zjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerPressAnyKey, this.Jjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReleaseAnyKey, this.Zjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveBeginPlay, this.nWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveDestroyed, this.sWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePossess, this.eHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveUnPossess, this.tHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerOnSetupInputComponent, this.aWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePreProcessInput, this.iHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePostProcessInput, this.rHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootActive, this.oHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootDeactivate, this.nHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyInfoSwitchInputControllerType, this.sHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerAwakeBP, this.aHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerStartBP, this.hHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationEnterBP, this.lHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationSelectBP, this._Hd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnEnableBP, this.uHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDisableBP, this.cHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyInteractiveBP, this.dHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNotInteractiveBP, this.mHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDestroyBP, this.fHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckCanSetNavigationBP, this.hWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckLoopScrollChangeNavigationBP, this.lWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigAwakeBP, this.gHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigStartBP, this.CHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnEnableBP, this.pHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDisableBP, this.vHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDestroyBP, this.yHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiBlurSetEnableUiBlur, this.SHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentAwakeBP, this.MHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentStartBP, this.EHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnEnableBP, this.IHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDisableBP, this.THd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDestroyBP, this.bHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerAwakeBP, this.RHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerStartBP, this.wHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerOnNotifyTextChangeBP, this.LHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTrigger, this.PHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputNavigation, this.AHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTriggerForNavigation, this.DHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputScroll, this.UHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchTrigger, this.xHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchMove, this.BHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorSetClickThresholdWithInputKeyType, this.kHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorGetNowHitComponent, this._Wd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorGetPointerEventData, this.uWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorIsPointerEventDataLineTrace, this.cWd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerAwakeBP, this.OHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerOnDestroyBP, this.qHd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveSetupInputComponent, this.Asm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveBeginPlay, this.Dsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveDestroyed, this.Usm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveTick, this.xsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReceivedPlayer, this.Bsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInitInputHandle, this.ksm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerAddInputBinding, this.qsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerClearInputBinding, this.Osm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnSetupInputComponent, this.Gsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerBindTouchHandle, this.Nsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAction, this.Vsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAxis, this.jsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchBegin, this.Hsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchEnd, this.$sm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchMove, this.Wsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnPressAnyKey, this.Qsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerOnReleaseAnyKey, this.Ksm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveActionHandle, this.Xsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerGetActionHandle, this.Ysm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveAxisHandle, this.zsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerGetAxisHandle, this.Jsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerIsInTouch, this.Zsm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerSetIsPrintKeyName, this.eam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchBegin, this.tam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchEnd, this.iam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchMove, this.ram);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerPressAnyKey, this.oam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsBasePlayerControllerReleaseAnyKey, this.nam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveBeginPlay, this.sam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveDestroyed, this.aam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePossess, this.ham);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceiveUnPossess, this.lam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerOnSetupInputComponent, this._am);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePreProcessInput, this.uam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerReceivePostProcessInput, this.cam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootActive, this.dam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootDeactivate, this.mam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyInfoSwitchInputControllerType, this.fam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerAwakeBP, this.gam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerStartBP, this.Cam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationEnterBP, this.pam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationSelectBP, this.vam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnEnableBP, this.yam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDisableBP, this.Sam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyInteractiveBP, this.Mam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNotInteractiveBP, this.Eam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDestroyBP, this.Iam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckCanSetNavigationBP, this.Tam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckLoopScrollChangeNavigationBP, this.bam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigAwakeBP, this.Ram);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigStartBP, this.wam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnEnableBP, this.Lam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDisableBP, this.Pam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDestroyBP, this.Aam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiBlurSetEnableUiBlur, this.Dam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentAwakeBP, this.Uam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentStartBP, this.xam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnEnableBP, this.Bam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDisableBP, this.kam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDestroyBP, this.qam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerAwakeBP, this.Oam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerStartBP, this.Gam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerOnNotifyTextChangeBP, this.Fam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTrigger, this.Nam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputNavigation, this.Vam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTriggerForNavigation, this.jam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputScroll, this.Ham);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchTrigger, this.$am);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchMove, this.Wam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorSetClickThresholdWithInputKeyType, this.Qam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorGetNowHitComponent, this.Kam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorGetPointerEventData, this.Xam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorIsPointerEventDataLineTrace, this.Yam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerAwakeBP, this.zam);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerOnDestroyBP, this.Jam);
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveSetupInputComponent, this.Hjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveBeginPlay, this.a5d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveDestroyed, this.h5d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveTick, this.$jd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceivedPlayer, this.Wjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInitInputHandle, this.j$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerAddInputBinding, this.H$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerClearInputBinding, this.$$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnSetupInputComponent, this.W$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerBindTouchHandle, this.Q$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAction, this.Qjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAxis, this.Kjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchBegin, this.K$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchEnd, this.X$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchMove, this.Y$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnPressAnyKey, this.z$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnReleaseAnyKey, this.J$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveActionHandle, this.Z$d);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerGetActionHandle, this.eWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveAxisHandle, this.tWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerGetAxisHandle, this.iWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerIsInTouch, this.rWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerSetIsPrintKeyName, this.oWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchBegin, this.Xjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchEnd, this.Yjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchMove, this.zjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerPressAnyKey, this.Jjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReleaseAnyKey, this.Zjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveBeginPlay, this.nWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveDestroyed, this.sWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePossess, this.eHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveUnPossess, this.tHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerOnSetupInputComponent, this.aWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePreProcessInput, this.iHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePostProcessInput, this.rHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootActive, this.oHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootDeactivate, this.nHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyInfoSwitchInputControllerType, this.sHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerAwakeBP, this.aHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerStartBP, this.hHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationEnterBP, this.lHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationSelectBP, this._Hd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnEnableBP, this.uHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDisableBP, this.cHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyInteractiveBP, this.dHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNotInteractiveBP, this.mHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDestroyBP, this.fHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckCanSetNavigationBP, this.hWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckLoopScrollChangeNavigationBP, this.lWd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigAwakeBP, this.gHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigStartBP, this.CHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnEnableBP, this.pHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDisableBP, this.vHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDestroyBP, this.yHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiBlurSetEnableUiBlur, this.SHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentAwakeBP, this.MHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentStartBP, this.EHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnEnableBP, this.IHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDisableBP, this.THd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDestroyBP, this.bHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerAwakeBP, this.RHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerStartBP, this.wHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerOnNotifyTextChangeBP, this.LHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTrigger, this.PHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputNavigation, this.AHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTriggerForNavigation, this.DHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputScroll, this.UHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchTrigger, this.xHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchMove, this.BHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorSetClickThresholdWithInputKeyType, this.kHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerAwakeBP, this.OHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerOnDestroyBP, this.qHd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveSetupInputComponent, this.Asm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveBeginPlay, this.Dsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveDestroyed, this.Usm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceiveTick, this.xsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReceivedPlayer, this.Bsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInitInputHandle, this.ksm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerAddInputBinding, this.qsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerClearInputBinding, this.Osm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnSetupInputComponent, this.Gsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerBindTouchHandle, this.Nsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAction, this.Vsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerInputAxis, this.jsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchBegin, this.Hsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchEnd, this.$sm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnTouchMove, this.Wsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnPressAnyKey, this.Qsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerOnReleaseAnyKey, this.Ksm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveActionHandle, this.Xsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerGetActionHandle, this.Ysm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerRemoveAxisHandle, this.zsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerGetAxisHandle, this.Jsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerIsInTouch, this.Zsm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerSetIsPrintKeyName, this.eam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchBegin, this.tam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchEnd, this.iam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerTouchMove, this.ram);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerPressAnyKey, this.oam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsBasePlayerControllerReleaseAnyKey, this.nam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveBeginPlay, this.sam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveDestroyed, this.aam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePossess, this.ham);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceiveUnPossess, this.lam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerOnSetupInputComponent, this._am);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePreProcessInput, this.uam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerReceivePostProcessInput, this.cam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootActive, this.dam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTsCharacterControllerSetUiRootDeactivate, this.mam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyInfoSwitchInputControllerType, this.fam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerAwakeBP, this.gam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerStartBP, this.Cam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationEnterBP, this.pam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNavigationSelectBP, this.vam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnEnableBP, this.yam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDisableBP, this.Sam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyInteractiveBP, this.Mam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnNotifyNotInteractiveBP, this.Eam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnDestroyBP, this.Iam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckCanSetNavigationBP, this.Tam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationBehaviorListenerOnCheckLoopScrollChangeNavigationBP, this.bam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigAwakeBP, this.Ram);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigStartBP, this.wam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnEnableBP, this.Lam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDisableBP, this.Pam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPanelConfigOnDestroyBP, this.Aam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiBlurSetEnableUiBlur, this.Dam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentAwakeBP, this.Uam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentStartBP, this.xam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnEnableBP, this.Bam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDisableBP, this.kam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiHotKeyActorComponentOnDestroyBP, this.qam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerAwakeBP, this.Oam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerStartBP, this.Gam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationTextChangeListenerOnNotifyTextChangeBP, this.Fam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTrigger, this.Nam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputNavigation, this.Vam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTriggerForNavigation, this.jam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputScroll, this.Ham);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchTrigger, this.$am);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorInputTouchMove, this.Wam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsLguiEventSystemActorSetClickThresholdWithInputKeyType, this.Qam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerAwakeBP, this.zam);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsUiNavigationPlatformChangeListenerOnDestroyBP, this.Jam);
     return true;
   }
-  static Hjd(e) {
+  static Asm(e) {
     e?.OnCSharpReceiveSetupInputComponent();
   }
-  static a5d(e) {
+  static Dsm(e) {
     e?.OnCSharpReceiveBeginPlay();
   }
-  static h5d(e) {
+  static Usm(e) {
     e?.ReceiveDestroyed();
   }
-  static $jd(e, t) {
+  static xsm(e, t) {
     e?.OnCSharpReceiveTick(t);
   }
-  static Wjd(e) {
+  static Bsm(e) {
     e?.OnCSharpReceivedPlayer();
   }
-  static j$d(e) {
+  static ksm(e) {
     e?.InitInputHandle();
   }
-  static H$d(e) {
+  static qsm(e) {
     e?.AddInputBinding();
   }
-  static $$d(e) {
+  static Osm(e) {
     e?.ClearInputBinding();
   }
-  static W$d(e) {
+  static Gsm(e) {
     e?.OnCSharpOnSetupInputComponent();
   }
-  static Q$d(e) {
+  static Nsm(e) {
     e?.OnCSharpBindTouchHandle();
   }
-  static K$d(e, t, n) {
+  static Hsm(e, t, n) {
     e?.OnCSharpTouchBegin(t, n);
   }
-  static X$d(e, t, n) {
+  static $sm(e, t, n) {
     e?.OnCSharpTouchEnd(t, n);
   }
-  static Y$d(e, t, n) {
+  static Wsm(e, t, n) {
     e?.OnCSharpTouchMove(t, n);
   }
-  static z$d(e, t) {
+  static Qsm(e, t) {
     e?.OnCSharpPressAnyKey(t);
   }
-  static J$d(e, t) {
+  static Ksm(e, t) {
     e?.OnCSharpReleaseAnyKey(t);
   }
-  static Z$d(e, t) {
+  static Xsm(e, t) {
     e?.OnCSharpRemoveActionHandle(t);
   }
-  static eWd(e, t, n) {
+  static Ysm(e, t, n) {
     e = e?.OnCSharpGetActionHandle(n);
     if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
       UE.KuroVariableFunctionLibrary.RemoveObject(t);
     }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
-  static tWd(e, t) {
+  static zsm(e, t) {
     e?.OnCSharpRemoveAxisHandle(t);
   }
-  static iWd(e, t, n) {
+  static Jsm(e, t, n) {
     e = e?.OnCSharpGetAxisHandle(n);
     if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
       UE.KuroVariableFunctionLibrary.RemoveObject(t);
     }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
-  static rWd(e, t, n) {
+  static Zsm(e, t, n) {
     e = e?.IsInTouch(n) ?? false;
     if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
       UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
     }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
-  static oWd(e, t) {
+  static eam(e, t) {
     e?.SetIsPrintKeyName(t);
   }
-  static Qjd(e, t, n, i) {
+  static Vsm(e, t, n, i) {
     e?.OnCSharpInputAction(t, n, i);
   }
-  static Kjd(e, t, n, i = false) {
+  static jsm(e, t, n, i = false) {
     e?.OnCSharpInputAxis(t, n, i);
   }
-  static Xjd(e, t, n) {
+  static tam(e, t, n) {
     e?.OnCSharpTouchBegin(t, n);
   }
-  static Yjd(e, t, n) {
+  static iam(e, t, n) {
     e?.OnCSharpTouchEnd(t, n);
   }
-  static zjd(e, t, n) {
+  static ram(e, t, n) {
     e?.OnCSharpTouchMove(t, n);
   }
-  static Jjd(e, t) {
+  static oam(e, t) {
     e?.OnCSharpPressAnyKey(t);
   }
-  static Zjd(e, t) {
+  static nam(e, t) {
     e?.OnCSharpReleaseAnyKey(t);
   }
-  static nWd(e) {
+  static sam(e) {
     e?.OnCSharpReceiveBeginPlay();
   }
-  static sWd(e) {
+  static aam(e) {
     e?.OnCSharpReceiveDestroyed();
   }
-  static eHd(e, t) {
+  static ham(e, t) {
     e?.OnCSharpReceivePossess(t);
   }
-  static tHd(e, t) {
+  static lam(e, t) {
     e?.OnCSharpReceiveUnPossess(t);
   }
-  static aWd(e) {
+  static _am(e) {
     e?.OnCSharpOnSetupInputComponent();
   }
-  static iHd(e, t, n) {
+  static uam(e, t, n) {
     e?.OnCSharpReceivePreProcessInput(t, n);
   }
-  static rHd(e, t, n) {
+  static cam(e, t, n) {
     e?.OnCSharpReceivePostProcessInput(t, n);
   }
-  static oHd(e) {
+  static dam(e) {
     e?.OnCSharpSetUiRootActive();
   }
-  static nHd(e) {
+  static mam(e) {
     e?.OnCSharpSetUiRootDeactivate();
   }
-  static sHd(e, t) {
+  static fam(e, t) {
     Info_1.Info.SwitchInputControllerType(e, t);
   }
-  static aHd(e) {
+  static gam(e) {
     e.AwakeBP();
   }
-  static hHd(e) {
+  static Cam(e) {
     e.StartBP();
   }
-  static lHd(e, t) {
+  static pam(e, t) {
     if (t) {
       e.OnNotifyNavigationEnterBP(t);
     }
   }
-  static _Hd(e, t) {
+  static vam(e, t) {
     if (t) {
       e.OnNotifyNavigationSelectBP(t);
     }
   }
-  static uHd(e) {
+  static yam(e) {
     e.OnEnableBP();
   }
-  static cHd(e) {
+  static Sam(e) {
     e.OnDisableBP();
   }
-  static dHd(e) {
+  static Mam(e) {
     e.OnNotifyInteractiveBP();
   }
-  static mHd(e) {
+  static Eam(e) {
     e.OnNotifyNotInteractiveBP();
   }
-  static fHd(e) {
+  static Iam(e) {
     e.OnDestroyBP();
   }
-  static hWd(e, t) {
+  static Tam(e, t) {
     e = e.OnCheckCanSetNavigationBP();
     if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
       UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
     }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
-  static lWd(e, t) {
+  static bam(e, t) {
     e = e.OnCheckLoopScrollChangeNavigationBP();
     if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
       UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
     }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
-  static gHd(e) {
+  static Ram(e) {
     e.AwakeBP();
   }
-  static CHd(e) {
+  static wam(e) {
     e.StartBP();
   }
-  static pHd(e) {
+  static Lam(e) {
     e.OnEnableBP();
   }
-  static vHd(e) {
+  static Pam(e) {
     e.OnDisableBP();
   }
-  static yHd(e) {
+  static Aam(e) {
     e.OnDestroyBP();
   }
-  static SHd(e, t) {
+  static Dam(e, t) {
     e.SetEnableUiBlur(t);
   }
-  static MHd(e) {
+  static Uam(e) {
     e.AwakeBP();
   }
-  static EHd(e) {
+  static xam(e) {
     e.StartBP();
   }
-  static IHd(e) {
+  static Bam(e) {
     e.OnEnableBP();
   }
-  static THd(e) {
+  static kam(e) {
     e.OnDisableBP();
   }
-  static bHd(e) {
+  static qam(e) {
     e.OnDestroyBP();
   }
-  static RHd(e) {
+  static Oam(e) {
     e.AwakeBP();
   }
-  static wHd(e) {
+  static Gam(e) {
     e.StartBP();
   }
-  static LHd(e, t) {
+  static Fam(e, t) {
     e.OnNotifyTextChangeBP(t);
   }
-  static PHd(e, t, n) {
+  static Nam(e, t, n) {
     e.InputTrigger(t, n);
   }
-  static AHd(e, t, n, i) {
+  static Vam(e, t, n, i) {
     e.InputNavigation(t, n, i);
   }
-  static DHd(e, t) {
+  static jam(e, t) {
     e.InputTriggerForNavigation(t);
   }
-  static UHd(e, t) {
+  static Ham(e, t) {
     e.InputScroll(t);
   }
-  static xHd(e, t, n, i) {
+  static $am(e, t, n, i) {
     e.InputTouchTrigger(t, n, i);
   }
-  static BHd(e, t, n) {
+  static Wam(e, t, n) {
     e.InputTouchMove(t, n);
   }
-  static kHd(e, t) {
+  static Qam(e, t) {
     e.SetClickThresholdWithInputKeyType(t);
   }
-  static _Wd(e, t) {
+  static Kam(e, t) {
     e = e.GetNowHitComponent();
     if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
       UE.KuroVariableFunctionLibrary.RemoveObject(t);
     }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
-  static uWd(e, t, n, i) {
+  static Xam(e, t, n, i) {
     e = e.GetPointerEventData(n, i);
     if (UE.KuroVariableFunctionLibrary.HasObject(t)) {
       UE.KuroVariableFunctionLibrary.RemoveObject(t);
     }
     UE.KuroVariableFunctionLibrary.SetObject(t, e);
   }
-  static cWd(e, t, n) {
+  static Yam(e, t, n) {
     e = e.IsPointerEventDataLineTrace(n);
     if (UE.KuroVariableFunctionLibrary.HasBoolValue(t)) {
       UE.KuroVariableFunctionLibrary.RemoveBoolValue(t);
     }
     UE.KuroVariableFunctionLibrary.SetBoolValue(t, e);
   }
-  static OHd(e) {
+  static zam(e) {
     e.AwakeBP();
   }
-  static qHd(e) {
+  static Jam(e) {
     e.OnDestroyBP();
   }
 }

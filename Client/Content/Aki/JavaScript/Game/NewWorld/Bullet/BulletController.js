@@ -280,7 +280,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     var l = new Protocol_1.Aki.Protocol.Gzn();
     l.VVn = 0;
     l.P8n = `@gmcreatebullet ${t} ${e}`;
-    Net_1.Net.Call(29900, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
+    Net_1.Net.Call(22424, Protocol_1.Aki.Protocol.Gzn.create(l), () => {});
     return 0;
   }
   static Y9o(t, e, l, r, o) {
@@ -671,7 +671,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
       this.KuroBulletWorld ||= t.CreateWorld();
       if (this.KuroBulletWorld) {
         this.KuroBulletWorld.ForceUpdateOverlap = true;
-        this.KuroBulletWorld.OnBulletModifyBuff.Add(BulletController._Ld);
+        this.KuroBulletWorld.OnBulletModifyBuff.Add(BulletController.qAd);
       }
     }
   }
@@ -723,7 +723,7 @@ BulletController.Mme = Transform_1.Transform.Create();
 BulletController.cie = Rotator_1.Rotator.Create();
 BulletController.e7o = Quat_1.Quat.Create();
 BulletController.KuroBulletWorld = undefined;
-BulletController._Ld = (t, e, l) => {
+BulletController.qAd = (t, e, l) => {
   ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.ModifyBuffAsync(t, l, Number(e));
 };
 __decorate([CombatMessage_1.CombatNet.Listen("MFn", true)], BulletController, "CreateBulletNotify", null);

@@ -8,6 +8,8 @@ const Log_1 = require("../../../Core/Common/Log");
 const Time_1 = require("../../../Core/Common/Time");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const TimeOfDayDefine_1 = require("./TimeOfDayDefine");
 const TimeOfDaySecondItem_1 = require("./Views/TimeOfDaySecondItem");
@@ -115,11 +117,23 @@ class TimeOfDayModel extends ModelBase_1.ModelBase {
   get GameTime() {
     return this.RTo;
   }
+  SetTimeRunLockStateClient(e, t = true) {
+    this.TimeRunLockStateClient = e;
+    if (t) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestLockTimeRunStateClient, e);
+    }
+  }
   get TimeRunLockState() {
     if (this.Z41) {
       return this.TimeRunLockStateClient;
     } else {
       return this.TimeRunLockStateServer;
+    }
+  }
+  SetTimeSyncLockStateClient(e, t = true) {
+    this.TimeSyncLockStateClient = e;
+    if (t) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestLockTimeSyncLockStateClient, e);
     }
   }
   get TimeSynLockState() {
@@ -141,10 +155,13 @@ class TimeOfDayModel extends ModelBase_1.ModelBase {
   get TimeScale() {
     return this.ATo;
   }
-  set TimeScale(e) {
+  SetTimeScale(e, t = true) {
     if (!this.FreezeTimeScale && !(e < 0)) {
       this.PTo = this.ATo;
       this.ATo = e;
+      if (t) {
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestSetTimeScale, e);
+      }
     }
   }
   OnInit() {

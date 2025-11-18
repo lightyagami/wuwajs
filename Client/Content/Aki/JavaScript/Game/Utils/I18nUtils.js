@@ -56,7 +56,7 @@ class I18nUtils {
               return this.rW1(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
             }
             if (o.HandleType === "main_player_new") {
-              return this.U2d(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
+              return this.YGd(e, ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1);
             }
           }
           return e;
@@ -80,7 +80,7 @@ class I18nUtils {
       return e.replace(/\{Male:(.*?),Female:(.*?)\}/g, (e, o, n) => i ? o : n);
     }
   }
-  static U2d(e, o) {
+  static YGd(e, o) {
     if (StringUtils_1.StringUtils.IsEmpty(e)) {
       return "";
     } else {
@@ -96,7 +96,7 @@ class I18nUtils {
   static SetI18nBillboardComponentSpriteById(e, o) {
     var o = this.GetI18nPathAtCurrentLanguage(o);
     if (o) {
-      o = ResourceSystem_1.ResourceSystem.Load(o, UE.Texture2D);
+      o = ResourceSystem_1.ResourceSystem.Load(o, UE.Texture2D, "Ui.PlotUi");
       e.SetSprite(o);
     }
   }

@@ -37,15 +37,22 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.Xci = new Map();
     this.dWt = new Map();
     this.$ci = new Map();
-    this.ADd = new Map();
+    this.TBd = new Map();
     this.Yci = new Map();
     this.Jci = new Map();
     this.Zci = undefined;
     this.emi = new Set();
     this.tmi = new Map();
     this.IsConfirmDestruction = false;
+    this.B_m = undefined;
     this.Uqu = new Map();
-    this.Zpd = undefined;
+    this.ySd = undefined;
+  }
+  SetItemNeedCount(e) {
+    this.B_m = e;
+  }
+  GetItemNeedCount() {
+    return this.B_m;
   }
   OnInit() {
     return !(ConfigManager_1.ConfigManager.InventoryConfig.GetAllMainTypeConfig().length <= 0) && !(this.SetSelectedTypeIndex(0), 0);
@@ -353,9 +360,9 @@ class InventoryModel extends ModelBase_1.ModelBase {
   }
   NewCalabashSkinItemData(e) {
     var t;
-    if (!this.ADd.get(e)) {
-      t = new CalabashSkinItemData_1.CalabashSkinItemData(e, 1, 17);
-      this.ADd.set(e, t);
+    if (!this.TBd.get(e)) {
+      t = new CalabashSkinItemData_1.CalabashSkinItemData(e, 1, 18);
+      this.TBd.set(e, t);
       this.imi(t);
       this.nmi(t);
     }
@@ -390,13 +397,13 @@ class InventoryModel extends ModelBase_1.ModelBase {
     this.$ci.clear();
   }
   ClearCalabashSkinItemData() {
-    for (const a of this.ADd.values()) {
+    for (const a of this.TBd.values()) {
       var e = a.GetMainType();
       var t = a.GetType();
       this.ami(e);
       this.rmi(t);
     }
-    this.ADd.clear();
+    this.TBd.clear();
   }
   ClearAllItemData() {
     this.ClearCommonItemData();
@@ -626,8 +633,8 @@ class InventoryModel extends ModelBase_1.ModelBase {
         return this.dGc(e);
       case 15:
         return this.cYu(e);
-      case 17:
-        return this.DDd(e);
+      case 18:
+        return this.bBd(e);
       default:
         return this.GetCommonItemCount(e, t);
     }
@@ -695,7 +702,7 @@ class InventoryModel extends ModelBase_1.ModelBase {
       return 0;
     }
   }
-  DDd(e) {
+  bBd(e) {
     return ModelManager_1.ModelManager.CalabashSkinModel.GetSkinCountById(e);
   }
   cmi(e) {
@@ -947,10 +954,10 @@ class InventoryModel extends ModelBase_1.ModelBase {
     return InventoryDefine_1.recFilterRuleToGirdType[e] ?? 1;
   }
   SetPhantomManageSelectSet(e) {
-    this.Zpd = e;
+    this.ySd = e;
   }
   GetPhantomManageSelectSet() {
-    return this.Zpd;
+    return this.ySd;
   }
 }
 exports.InventoryModel = InventoryModel;

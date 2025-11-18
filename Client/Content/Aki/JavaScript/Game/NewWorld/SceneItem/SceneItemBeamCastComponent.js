@@ -132,9 +132,9 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnStart() {
     this.vtn = this.Entity.GetComponent(86);
-    this.mBe = this.Entity.GetComponent(134);
-    this.Hte = this.Entity.GetComponent(203);
-    this.Lie = this.Entity.GetComponent(197);
+    this.mBe = this.Entity.GetComponent(137);
+    this.Hte = this.Entity.GetComponent(206);
+    this.Lie = this.Entity.GetComponent(200);
     if (this.vtn && this.mBe && this.Hte && this.Lie) {
       this.Tmn = new Set();
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, this.Nmn);
@@ -148,7 +148,7 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnActivate() {
     this.Omn("[BeamCastComp] 初始停止Tick");
-    var t = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    var t = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
     this.nxe = this.TimeDilation * t;
     if (this.Hte.GetIsSceneInteractionLoadCompleted()) {
       this.Rnn();
@@ -186,7 +186,7 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
     this.nxe = t * e;
     if (this.qmn && EffectSystem_1.EffectSystem.IsValid(this.qmn)) {
       EffectSystem_1.EffectSystem.SetTimeScale(this.qmn, this.nxe);
@@ -428,5 +428,5 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
   }
 };
-SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(215)], SceneItemBeamCastComponent);
+SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(218)], SceneItemBeamCastComponent);
 exports.SceneItemBeamCastComponent = SceneItemBeamCastComponent; //# sourceMappingURL=SceneItemBeamCastComponent.js.map

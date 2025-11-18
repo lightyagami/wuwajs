@@ -285,7 +285,7 @@ class UiCameraAnimation {
         if (!StringUtils_1.StringUtils.IsEmpty(i)) {
           ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, i => {
             this.CAo = i;
-          });
+          }, 100, "Ui.UiCamera");
         }
       }
     }
@@ -300,7 +300,7 @@ class UiCameraAnimation {
           if (!StringUtils_1.StringUtils.IsEmpty(a)) {
             ResourceSystem_1.ResourceSystem.LoadAsync(a, UE.CurveFloat, i => {
               this._Ao.set(e, i);
-            });
+            }, 100, "Ui.UiCamera");
           }
         }
       }

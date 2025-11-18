@@ -106,12 +106,12 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveCallback(18, this.BQe);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19461, this.Omc);
-    Net_1.Net.Register(15628, this.qmc);
+    Net_1.Net.Register(24045, this.Omc);
+    Net_1.Net.Register(19418, this.qmc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19461);
-    Net_1.Net.UnRegister(15628);
+    Net_1.Net.UnRegister(24045);
+    Net_1.Net.UnRegister(19418);
   }
   static async PreloadBattleViewFromLoading(e) {
     if (Log_1.Log.CheckDebug()) {

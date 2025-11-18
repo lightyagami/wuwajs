@@ -10,7 +10,7 @@ const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
 const GlobalData_1 = require("../GlobalData");
 const UiResourceLoadModule_1 = require("./UiResourceLoadModule");
 class UiSpineAtlasLoadModule extends UiResourceLoadModule_1.UiResourceLoadModule {
-  async LoadAtlasAssetAsync(e, o) {
+  async LoadAtlasAssetAsync(e, o, s = "js_undefined") {
     if (GlobalData_1.GlobalData.World && o && o.IsValid()) {
       this.CancelResource(o);
       const t = new CustomPromise_1.CustomPromise();
@@ -20,14 +20,14 @@ class UiSpineAtlasLoadModule extends UiResourceLoadModule_1.UiResourceLoadModule
         if (o.IsValid()) {
           o.Atlas = e;
         }
-      });
+      }, 100, s);
       this.SetResourceId(o, e);
       await t.Promise;
     }
   }
 }
 class UiSpineSkeletonLoadModule extends UiResourceLoadModule_1.UiResourceLoadModule {
-  async LoadAtlasAssetAsync(e, o) {
+  async LoadAtlasAssetAsync(e, o, s = "js_undefined") {
     if (GlobalData_1.GlobalData.World && o && o.IsValid()) {
       this.CancelResource(o);
       const t = new CustomPromise_1.CustomPromise();
@@ -37,7 +37,7 @@ class UiSpineSkeletonLoadModule extends UiResourceLoadModule_1.UiResourceLoadMod
         if (o.IsValid()) {
           o.SkeletonData = e;
         }
-      });
+      }, 100, s);
       this.SetResourceId(o, e);
       await t.Promise;
     }
@@ -48,8 +48,8 @@ class UiSpineLoadModule {
     this.BAr = new UiSpineAtlasLoadModule();
     this.bAr = new UiSpineSkeletonLoadModule();
   }
-  async LoadSpineAssetAsync(e, s, o) {
-    await Promise.all([this.BAr.LoadAtlasAssetAsync(e, o), this.bAr.LoadAtlasAssetAsync(s, o)]);
+  async LoadSpineAssetAsync(e, s, o, t) {
+    await Promise.all([this.BAr.LoadAtlasAssetAsync(e, o, t), this.bAr.LoadAtlasAssetAsync(s, o, t)]);
   }
   Clear() {
     this.BAr.Clear();

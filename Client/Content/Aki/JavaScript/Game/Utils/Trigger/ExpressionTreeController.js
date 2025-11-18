@@ -15,14 +15,14 @@ class ExpressionTreeController extends ControllerBase_1.ControllerBase {
     return r || ((r = new ExpressionTree_1.ExpressionTree()).Parse("结算" + e.Id, e.Condition, e.ConstVariables), ModelManager_1.ModelManager.ExpressionModel?.Add(e.Id, r), r);
   }
   static DoDamageExpression(e, r, o) {
-    this.wXd.Start();
+    this.r0m.Start();
     r = this.GetDamageExpression(r);
-    this.wXd.Stop();
-    this.LXd.Start();
+    this.r0m.Stop();
+    this.o0m.Start();
     r.Evaluate(e, {
       Attacker: o
     });
-    this.LXd.Stop();
+    this.o0m.Stop();
   }
   static GetEffectDamageId(e, o) {
     var t = ModelManager_1.ModelManager.DamageModel?.GetDamageConfigById(e);
@@ -39,5 +39,5 @@ class ExpressionTreeController extends ControllerBase_1.ControllerBase {
     return e;
   }
 }
-(exports.ExpressionTreeController = ExpressionTreeController).wXd = Stats_1.Stat.Create("GetDamageExpression");
-ExpressionTreeController.LXd = Stats_1.Stat.Create("DoDamageExpression"); //# sourceMappingURL=ExpressionTreeController.js.map
+(exports.ExpressionTreeController = ExpressionTreeController).r0m = Stats_1.Stat.Create("GetDamageExpression");
+ExpressionTreeController.o0m = Stats_1.Stat.Create("DoDamageExpression"); //# sourceMappingURL=ExpressionTreeController.js.map

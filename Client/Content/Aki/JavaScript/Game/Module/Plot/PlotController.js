@@ -54,31 +54,31 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static AddTickPriority2(e) {
-    this.Ksd++;
-    this.Xsd.set(this.Ksd, e);
-    return this.Ksd;
+    this._ld++;
+    this.uld.set(this._ld, e);
+    return this._ld;
   }
   static RemoveTickPriority2(e) {
-    this.Ysd.delete(e);
-    this.Xsd.delete(e);
+    this.cld.delete(e);
+    this.uld.delete(e);
   }
   static NextPriority2(e) {
     e = this.AddTickPriority2(e);
-    this.Ysd.add(e);
+    this.cld.add(e);
     return e;
   }
   static AddAfterTick(e) {
-    this.Ocd++;
-    this.qcd.set(this.Ocd, e);
-    return this.Ocd;
+    this.jcd++;
+    this.Hcd.set(this.jcd, e);
+    return this.jcd;
   }
   static RemoveAfterTick(e) {
-    this.Gcd.delete(e);
-    this.qcd.delete(e);
+    this.$cd.delete(e);
+    this.Hcd.delete(e);
   }
   static NextAfterTick(e) {
     e = this.AddAfterTick(e);
-    this.Gcd.add(e);
+    this.$cd.add(e);
     return e;
   }
   static OnAddEvents() {
@@ -172,6 +172,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PlotModel.IsTipsViewShowed = false;
     ModelManager_1.ModelManager.PlotModel.CurTalkItem = undefined;
     ModelManager_1.ModelManager.PlotModel.CurShowTalk = undefined;
+    ModelManager_1.ModelManager.PlotModel.TimeLimitedOptionTag = false;
     this.RemoveAspectTransformView();
     Global_1.Global.CharacterCameraManager.FadeAmount = 0;
     CameraController_1.CameraController.ExitDialogMode();
@@ -313,8 +314,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t && !this.TYi.has(t.Id)) {
       this.TYi.add(t.Id);
-      e = t?.Entity?.GetComponent(175);
-      if (t = t?.Entity?.GetComponent(206)) {
+      e = t?.Entity?.GetComponent(178);
+      if (t = t?.Entity?.GetComponent(209)) {
         if (!t.HasTag(this.LYi)) {
           t.AddTag(this.LYi);
         }
@@ -336,8 +337,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     this.TYi.clear();
   }
   static RYi(e, t) {
-    var o = e?.GetComponent(175);
-    var e = e?.GetComponent(206);
+    var o = e?.GetComponent(178);
+    var e = e?.GetComponent(209);
     if (t) {
       e?.RemoveTag(this.LYi);
       e?.RemoveTag(this.DYi);
@@ -348,7 +349,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     return !ModelManager_1.ModelManager.PlotModel.IsInPlot || ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelD" || ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "Prompt";
   }
   static NeedInputRefresh() {
-    return ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot() || ModelManager_1.ModelManager.PlotModel.PlotPendingList.length > 0;
+    return ModelManager_1.ModelManager.PlotModel.IsInPlot || ModelManager_1.ModelManager.PlotModel.PlotPendingList.length > 0;
   }
   static TriggerInteraction(t = true) {
     if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {
@@ -368,7 +369,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
         this.EndInteraction();
         return false;
       }
-      var r = o.Entity.GetComponent(198);
+      var r = o.Entity.GetComponent(201);
       if (!r) {
         this.EndInteraction();
         return false;
@@ -669,12 +670,12 @@ PlotController.UYi = 0;
 PlotController.PYi = new Map();
 PlotController.AYi = 0;
 PlotController.qwa = "";
-PlotController.Xsd = new Map();
-PlotController.Ysd = new Set();
-PlotController.Ksd = 0;
+PlotController.uld = new Map();
+PlotController.cld = new Set();
+PlotController._ld = 0;
 PlotController.TickPriority2 = o => {
-  if (!(_a.Xsd.size <= 0)) {
-    _a.Xsd.forEach((e, t) => {
+  if (!(_a.uld.size <= 0)) {
+    _a.uld.forEach((e, t) => {
       try {
         e(o);
       } catch (e) {
@@ -683,27 +684,27 @@ PlotController.TickPriority2 = o => {
         }
       }
     });
-    if (_a.Ysd.size > 0) {
-      _a.Ysd.forEach(e => {
-        _a.Xsd.delete(e);
+    if (_a.cld.size > 0) {
+      _a.cld.forEach(e => {
+        _a.uld.delete(e);
       });
-      _a.Ysd.clear();
+      _a.cld.clear();
     }
   }
 };
-PlotController.qcd = new Map();
-PlotController.Gcd = new Set();
-PlotController.Ocd = 0;
+PlotController.Hcd = new Map();
+PlotController.$cd = new Set();
+PlotController.jcd = 0;
 PlotController.AfterTick = o => {
-  if (!(_a.qcd.size <= 0)) {
-    _a.qcd.forEach((e, t) => {
+  if (!(_a.Hcd.size <= 0)) {
+    _a.Hcd.forEach((e, t) => {
       e(o);
     });
-    if (_a.Gcd.size > 0) {
-      _a.Gcd.forEach(e => {
-        _a.qcd.delete(e);
+    if (_a.$cd.size > 0) {
+      _a.$cd.forEach(e => {
+        _a.Hcd.delete(e);
       });
-      _a.Gcd.clear();
+      _a.$cd.clear();
     }
   }
 };

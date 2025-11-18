@@ -25,27 +25,28 @@ class CombatNet {
   static CheckHandle(e, t, o, a) {
     return typeof e == "function" || (Log_1.Log.CheckError() && Log_1.Log.Error("MultiplayerCombat", 19, "CombatMessage notify callback should be static function", ["MessageKey", t], ["MessageId", o], ["FunctionName", a]), false);
   }
-  static Listen(o, s) {
-    const i = NetDefine_1.ECombatNotifyDataMessage[o];
+  static Listen(o, s, i = false) {
+    const n = NetDefine_1.ECombatNotifyDataMessage[o];
     return (a, t, r) => {
-      if (this.CheckHandle(a, o, i, t)) {
-        let e = this.NotifyMap.get(i);
+      if (this.CheckHandle(a, o, n, t)) {
+        let e = this.NotifyMap.get(n);
         if (!e) {
           e = {
             Type: 0,
             IsSync: s,
+            IsCache: i,
             Listener: undefined,
             Preprocessor: undefined
           };
-          this.NotifyMap.set(i, e);
+          this.NotifyMap.set(n, e);
         }
         if (e.Type === 1 || e.Listener) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("MultiplayerCombat", 19, "重复注册函数监听", ["MessageKey", o], ["MessageId", i], ["FunctionName", t]);
+            Log_1.Log.Error("MultiplayerCombat", 19, "重复注册函数监听", ["MessageKey", o], ["MessageId", n], ["FunctionName", t]);
           }
         } else {
           e.IsSync = e.IsSync ?? s;
-          if (this.CheckHandle(a, o, i, t)) {
+          if (this.CheckHandle(a, o, n, t)) {
             e.Listener = (e, t, o) => {
               r.value?.call(a, e, t, o);
             };
@@ -63,6 +64,7 @@ class CombatNet {
           e = {
             Type: 0,
             IsSync: undefined,
+            IsCache: undefined,
             Listener: undefined,
             Preprocessor: undefined
           };
@@ -91,25 +93,25 @@ class CombatNet {
   static Call(e, t, o, a, r, s, i, n) {
     CombatNet.Tc_.Start();
     if (r && this.R5l.has(r)) {
-      const [m, l, _] = this.R5l.get(r);
-      CombatNet.RequestMap.set(m, l);
+      const [C, l, _] = this.R5l.get(r);
+      CombatNet.RequestMap.set(C, l);
       ModelManager_1.ModelManager.CombatMessageModel.MessagePack.R5n.push(_);
       this.R5l.delete(r);
     }
     t = (t instanceof Entity_1.Entity ? t : ModelManager_1.ModelManager.CreatureModel.GetEntity(t)?.Entity)?.GetComponent(0)?.GetCreatureDataId() ?? 0;
     e = NetDefine_1.ECombatRequestDataMessage[e];
-    const m = CombatNet.GenerateRpcId();
+    const C = CombatNet.GenerateRpcId();
     var s = s ?? ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    var C = RequestData.create();
-    C.W8n = m;
-    C.K8n = CombatNet.CreateCombatCommon(t, i, r, s);
-    C[e] = o;
+    var m = RequestData.create();
+    m.W8n = C;
+    m.K8n = CombatNet.CreateCombatCommon(t, i, r, s);
+    m[e] = o;
     const _ = SendData.create();
-    _.x5n = C;
+    _.x5n = m;
     if (n) {
-      this.R5l.set(s, [m, a, _]);
+      this.R5l.set(s, [C, a, _]);
     } else {
-      CombatNet.RequestMap.set(m, a);
+      CombatNet.RequestMap.set(C, a);
       ModelManager_1.ModelManager.CombatMessageModel.MessagePack.R5n.push(_);
     }
     CombatNet.Tc_.Stop();
@@ -118,8 +120,8 @@ class CombatNet {
   static Send(e, t, o, a, r, s) {
     CombatNet.bc_.Start();
     if (a && this.R5l.has(a)) {
-      const [m, C, n] = this.R5l.get(a);
-      CombatNet.RequestMap.set(m, C);
+      const [C, m, n] = this.R5l.get(a);
+      CombatNet.RequestMap.set(C, m);
       ModelManager_1.ModelManager.CombatMessageModel.MessagePack.R5n.push(n);
       this.R5l.delete(a);
     }

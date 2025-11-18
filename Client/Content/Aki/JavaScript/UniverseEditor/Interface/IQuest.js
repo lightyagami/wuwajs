@@ -18,6 +18,7 @@ var EStatisticsEventType;
 var EPlayerHitStatisticsType;
 var EPlayerDamageInfoType;
 var EChildQuest;
+var EPhoneMessageProgressType;
 var ESkillType;
 var ESkillCategory;
 var EUseSkillCheckType;
@@ -32,8 +33,8 @@ var ERollBlockInteractType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
-exports.repeatBanList = undefined;
+exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.EPhoneMessageProgressType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.repeatBanList = exports.getSkillTypeFromCnName = undefined;
 exports.nodeTips = {
   Start: "",
   QuestSucceed: "任务完成，终止行为树",
@@ -183,6 +184,7 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.FinishSurvivorsRouge = "FinishSurvivorsRouge";
   e.TakePicturesWithTimeScale = "TakePicturesWithTimeScale";
   e.FinishRollBlock = "FinishRollBlock";
+  e.ReadPhoneMessage = "ReadPhoneMessage";
 })(EChildQuest = exports.EChildQuest ||= {});
 const childQuestAll = Object.values(EChildQuest);
 function createQuestTypeCnNameMap() {
@@ -248,9 +250,11 @@ exports.childQuestConfigs = {
   WaitUntilLevelSequenceReachMark: {},
   FinishSurvivorsRouge: {},
   TakePicturesWithTimeScale: {},
-  FinishRollBlock: {}
+  FinishRollBlock: {},
+  ReadPhoneMessage: {}
 };
 exports.childQuestsForTest = [];
+(EPhoneMessageProgressType = exports.EPhoneMessageProgressType ||= {}).CompleteMessage = "CompleteMessage";
 (function (e) {
   e.NormalSkill = "NormalSkill";
   e.VisionSkill = "VisionSkill";
@@ -271,8 +275,8 @@ exports.childQuestsForTest = [];
   e[e.ExploreTool = 10] = "ExploreTool";
   e[e.AirDodge = 11] = "AirDodge";
   e[e.SwitchSkill = 12] = "SwitchSkill";
-  e[e.NoneCategory = 13] = "NoneCategory";
-  e[e.BreakWeakSkill = 14] = "BreakWeakSkill";
+  e[e.BreakWeakSkill = 13] = "BreakWeakSkill";
+  e[e.NoneCategory = 14] = "NoneCategory";
 })(ESkillCategory = exports.ESkillCategory ||= {});
 exports.skillGenreCnMap = {
   [ESkillCategory.NoCategory]: undefined,

@@ -86,11 +86,11 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
         this.ParamsMap.set(e.Id, new AnsRotateParam(s));
       }
       if (this.在横板模式中禁用) {
-        if (e.GetComponent(109)?.Active) {
+        if (e.GetComponent(111)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!e.GetComponent(109)?.Active) {
+        if (!e.GetComponent(111)?.Active) {
           return false;
         }
       }
@@ -126,11 +126,11 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
       var o = h.NowTime;
       h.NowTime += r;
       if (this.在横板模式中禁用) {
-        if (a.GetComponent(109)?.Active) {
+        if (a.GetComponent(111)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!a.GetComponent(109)?.Active) {
+        if (!a.GetComponent(111)?.Active) {
           return false;
         }
       }

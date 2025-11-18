@@ -58,7 +58,8 @@ class ActivityControllerBase {
   GetActivityMapMarkState(e) {
     return false;
   }
-  OnActivityFirstUnlock(e) {
+  OnActivityFirstUnlock(e) {}
+  OnShowActivityFirstUnlockView(e) {
     if (e.LocalConfig && e.LocalConfig.ShowUnlockTip) {
       UiManager_1.UiManager.OpenView("ActivityUnlockTipView", e);
     }

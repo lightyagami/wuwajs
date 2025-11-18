@@ -23,25 +23,25 @@ class MotionController extends ControllerBase_1.ControllerBase {
   static OnAddEvents() {}
   static OnRemoveEvents() {}
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15798, MotionController.hqi);
-    Net_1.Net.Register(29021, MotionController.lqi);
-    Net_1.Net.Register(18893, MotionController._qi);
-    Net_1.Net.Register(19988, MotionController.uqi);
+    Net_1.Net.Register(19311, MotionController.hqi);
+    Net_1.Net.Register(27289, MotionController.lqi);
+    Net_1.Net.Register(19645, MotionController._qi);
+    Net_1.Net.Register(15619, MotionController.uqi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15798);
-    Net_1.Net.UnRegister(29021);
-    Net_1.Net.UnRegister(18893);
-    Net_1.Net.UnRegister(19988);
+    Net_1.Net.UnRegister(19311);
+    Net_1.Net.UnRegister(27289);
+    Net_1.Net.UnRegister(19645);
+    Net_1.Net.UnRegister(15619);
   }
 }
 (exports.MotionController = MotionController).RequestUnlockMotion = (e, o) => {
   var t = new Protocol_1.Aki.Protocol.Wts();
   t.Q6n = e;
   t.F7n = o;
-  Net_1.Net.Call(29934, t, e => {
+  Net_1.Net.Call(24625, t, e => {
     if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28096);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27650);
     } else {
       ModelManager_1.ModelManager.MotionModel.OnMotionUnlock(e.Q6n, e.F7n);
     }

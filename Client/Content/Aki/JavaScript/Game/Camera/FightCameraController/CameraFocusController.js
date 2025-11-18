@@ -159,7 +159,10 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     this.l_e.Reset();
   }
   UpdateCustomEnableCondition() {
-    return !!this.Camera.TargetEntity && this.Camera.CharacterEntityHandle.IsInit;
+    return this.kQd() && this.Camera.CharacterEntityHandle.IsInit;
+  }
+  kQd() {
+    return !!this.Camera.TargetEntity || this.Camera.IsSpecificLockTarget && this.Camera.SpecificLockTargetType === 1;
   }
   UpdateInternal(t) {
     this.iza(t);
@@ -169,7 +172,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
   iza(t) {
     var i;
     var s;
-    if (this.Camera.TargetEntity && this.Camera.IsTargetLocationValid) {
+    if (this.kQd() && this.Camera.IsTargetLocationValid) {
       [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput();
       i *= Info_1.Info.IsInGamepad() ? this.SoftLockInputYawSensitivityGamepad : this.SoftLockInputYawSensitivity;
       s *= Info_1.Info.IsInGamepad() ? this.SoftLockInputPitchSensitivityGamepad : this.SoftLockInputPitchSensitivity;
@@ -187,7 +190,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var h;
     var e;
     var a;
-    if (this.Camera.TargetEntity && this.Camera.IsTargetLocationValid) {
+    if (this.kQd() && this.Camera.IsTargetLocationValid) {
       if (!this.Camera.IsModifiedArmRotationPitch || !this.Camera.IsModifiedArmRotationYaw) {
         [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput();
         e = !(h = this.Camera.ContainsAnyTag([-1150819426, 1260125908])) && ModelManager_1.ModelManager.CameraModel.IsSoftLockEnable() && !this.ShouldSoftUnlock() && !this.CanMoveCameraInSoftLock();

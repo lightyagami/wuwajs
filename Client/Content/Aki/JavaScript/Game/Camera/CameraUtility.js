@@ -52,7 +52,7 @@ class CameraUtility {
         e.FromUeVector(t.Mesh.D_GetSocketLocation(a));
         return;
       } else {
-        s.Entity.GetComponent(178).GetCameraPosition(e);
+        s.Entity.GetComponent(181).GetCameraPosition(e);
         return;
       }
     }
@@ -71,7 +71,7 @@ class CameraUtility {
     }
   }
   static TargetCanBeSelect(t) {
-    return !!t.Valid && !!t.Active && (!(t = t.Entity.GetComponent(206)) || !t.HasTag(1008164187) && !t.HasTag(-1243968098));
+    return !!t.Valid && !!t.Active && (!(t = t.Entity.GetComponent(209)) || !t.HasTag(1008164187) && !t.HasTag(-1243968098));
   }
   static GetCameraTargetEntityHandle() {
     var t = ModelManager_1.ModelManager.CameraModel.FightCamera.LogicComponent;
@@ -116,7 +116,7 @@ class CameraUtility {
     var a = CommonParamById_1.configCommonParamById.GetFloatConfig("InitialCameraPitch");
     var e = ModelManager_1.ModelManager.CameraModel?.FightCamera?.LogicComponent;
     if (e?.Valid && e?.Character?.IsValid() && e?.Character?.CharacterActorComponent) {
-      if (!(t = e.Character.CharacterActorComponent.Entity.GetComponent(206))?.Valid || t.HasTag(-648310348)) {
+      if (!(t = e.Character.CharacterActorComponent.Entity.GetComponent(209))?.Valid || t.HasTag(-648310348)) {
         this.cie.Reset();
         CameraUtility.SetPitchInGravity(this.cie, a, this.cie);
       } else if (e.IsInNormalGravityMode()) {
@@ -195,7 +195,7 @@ class CameraUtility {
     if (!t?.Valid) {
       return false;
     }
-    var r = t.Entity.GetComponent(223);
+    var r = t.Entity.GetComponent(226);
     if (r?.Valid) {
       return r.IsAutonomousProxy;
     }
@@ -325,7 +325,7 @@ class CameraUtility {
     return true;
   }
   static Whe(t) {
-    var a = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(206);
+    var a = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(209);
     var a = t.AnyTag ? a.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : a.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     if (t.Reverse) {
       return !a;
@@ -337,7 +337,7 @@ class CameraUtility {
     let a = false;
     var e = this.GetCameraLockOnTargetEntityHandle();
     if (e) {
-      e = e.Entity.GetComponent(206);
+      e = e.Entity.GetComponent(209);
       a = t.AnyTag ? e.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : e.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     }
     if (t.Reverse) {
@@ -487,7 +487,7 @@ class CameraUtility {
   }
   static CharacterMovementBaseIsMoving() {
     var t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent?.Character?.BasedMovement?.MovementBase;
-    return !!t && t.Mobility === 2 && (!t.GetComponentVelocity().IsNearlyZero(MathUtils_1.MathUtils.KindaSmallNumber) || !!(t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByBaseItem(t.GetOwner())?.Entity.GetComponent(140)) && !!t.IsMovingOrTeleporting());
+    return !!t && t.Mobility === 2 && (!t.GetComponentVelocity().IsNearlyZero(MathUtils_1.MathUtils.KindaSmallNumber) || !!(t = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByBaseItem(t.GetOwner())?.Entity.GetComponent(143)) && !!t.IsMovingOrTeleporting());
   }
   static SetCameraRotationWithString(t) {
     var a = [];

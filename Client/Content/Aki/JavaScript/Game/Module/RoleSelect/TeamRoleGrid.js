@@ -14,60 +14,64 @@ class TeamRoleGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
     super(...arguments);
     this.IsHighlightIndex = undefined;
   }
-  OnRefresh(o, e, r) {
-    var l = o.GetLevelData();
-    var a = o.GetDataId();
+  OnRefresh(o, e, a) {
+    var r = o.GetLevelData();
+    var l = o.GetDataId();
     var i = ModelManager_1.ModelManager.EditFormationModel;
-    var t = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(a);
+    var t = ModelManager_1.ModelManager.RoleSelectModel.GetRoleIndex(l);
     let d = false;
-    var n = o.IsTrialRole();
-    if (!n && !ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation() && !ModelManager_1.ModelManager.MowingTowerModel.IsOpenMowingTowerFormation() && !ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) {
-      d = i.IsRoleDead(a);
+    var M = o.IsTrialRole();
+    if (!M && !ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation() && !ModelManager_1.ModelManager.MowingTowerModel.IsOpenMowingTowerFormation() && !ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) {
+      d = i.IsRoleDead(l);
     }
     var i = this.IsHighlightIndex?.(t);
-    let M = false;
-    let s = false;
+    let n = false;
+    let g = false;
     if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId) {
-      var g = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId);
-      let e = g.RecommendRole;
-      M = e.includes(o.GetRoleId());
-      e = g.RecommendRoleBottom;
-      s = e.includes(o.GetRoleId());
+      var s = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId);
+      let e = s.RecommendRole;
+      n = e.includes(o.GetRoleId());
+      e = s.RecommendRoleBottom;
+      g = e.includes(o.GetRoleId());
     }
-    g = ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(a ?? -1) ? {
+    s = ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(l ?? -1) ? {
       BelongTo: 1 - ModelManager_1.ModelManager.MowingTowerModel.CurrentOptionArea
     } : undefined;
-    n = {
+    M = {
       Type: 2,
-      ItemConfigId: a,
+      ItemConfigId: l,
       SkinId: o.GetRoleSkinId(),
-      IsTrialRoleVisible: n,
+      IsTrialRoleVisible: M,
       BottomTextId: "Text_LevelShow_Text",
-      BottomTextParameter: [l.GetLevel()],
+      BottomTextParameter: [r.GetLevel()],
       Index: t > 0 ? t : undefined,
       HighlightIndex: i,
       ElementId: o.GetRoleConfig().ElementId,
       IsShowCost: ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation(),
       Data: o,
       IsDisable: d,
-      IsRecommendVisible: M,
-      HalfAreaInfo: g,
-      IsShowWeeklyRogueTag: ModelManager_1.ModelManager.WeeklyRogueModel.IsWeeklyRogueOpen() && ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(a),
-      IsRecommendBottomVisible: s
+      IsRecommendVisible: n,
+      HalfAreaInfo: s,
+      IsShowWeeklyRogueTag: ModelManager_1.ModelManager.WeeklyRogueModel.IsWeeklyRogueOpen() && ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(l),
+      IsRecommendBottomVisible: g
     };
-    this.Apply(n);
+    this.Apply(M);
     if (o.IsTrialRole()) {
       this.SetLevelAndLock();
     } else {
-      l = !o || !ModelManager_1.ModelManager.EditBattleTeamModel.CanAddRoleToEditTeam(a);
-      this.SetLevelAndLock(undefined, l);
+      r = !o || !ModelManager_1.ModelManager.EditBattleTeamModel.CanAddRoleToEditTeam(l);
+      this.SetLevelAndLock(undefined, r);
     }
     t = o.GetLevelData().GetLevel() < ModelManager_1.ModelManager.MowingTowerModel.AddLevel[0];
     if (ModelManager_1.ModelManager.MowingTowerModel.AddLevel[0] !== -1 && t) {
       this.SetAddLevelComponent(ModelManager_1.ModelManager.MowingTowerModel.AddLevel[0], t);
     }
-    i = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.has(a);
-    this.SetSelected(i, true);
+    i = o.GetLevelData().GetLevel() < ModelManager_1.ModelManager.HonamiStoryModel.AddLevel[0];
+    if (ModelManager_1.ModelManager.HonamiStoryModel.AddLevel[0] !== -1 && i) {
+      this.SetAddLevelComponent(ModelManager_1.ModelManager.HonamiStoryModel.AddLevel[0], i);
+    }
+    s = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.has(l);
+    this.SetSelected(s, true);
   }
   OnForceSelected() {
     this.SetSelected(true, true);
@@ -79,11 +83,11 @@ class TeamRoleGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
     this.SetSelected(false);
   }
   SetAddLevelComponent(e, o) {
-    var r = this.Data.GetLevelData().GetLevel();
-    var r = Math.max(r, e);
-    var e = this.RefreshComponent(RoguelikeSelectRoleView_1.RogueAddLevelComponent, true, r);
+    var a = this.Data.GetLevelData().GetLevel();
+    var a = Math.max(a, e);
+    var e = this.RefreshComponent(RoguelikeSelectRoleView_1.RogueAddLevelComponent, true, a);
     this.SetComponentVisible(e, o);
-    if (r) {
+    if (a) {
       this.SetBottomTextVisible(false);
     }
   }

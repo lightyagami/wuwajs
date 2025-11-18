@@ -40,6 +40,7 @@ class PhotographModel extends ModelBase_1.ModelBase {
     this.IsSaveButtonVisible = false;
     this.IsFilterToggleOpen = true;
     this.SelectedFightPhotoOptionId = 0;
+    this.PlayerActionSortId = undefined;
   }
   OnInit() {
     this.SavePath = CommonParamById_1.configCommonParamById.GetStringConfig("ScreenShotSavePath");

@@ -135,10 +135,10 @@ class ConditionEventPair {
     this.Clear();
     this.Qte = new AiConditions(t);
     this.EventBinder = i;
-    this.Xte = s.Entity.GetComponent(206);
-    this.$te = s.Entity.GetComponent(174);
+    this.Xte = s.Entity.GetComponent(209);
+    this.$te = s.Entity.GetComponent(177);
     this.eie = this.Qte.Tags.size + this.Qte.Attributes.size + this.Qte.AttributeRates.length;
-    var h = s.Entity.GetComponent(206);
+    var h = s.Entity.GetComponent(209);
     if (h) {
       for (var [e] of this.Qte.Tags) {
         e = h.ListenForTagAnyCountChanged(e, this.hie(e));
@@ -293,13 +293,13 @@ class AiConditionEvents {
   }
   AddSceneItemDestroyEvent(t, i) {
     if (this._ie.size === 0) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
     }
     this._ie.set(i, t * t);
   }
   RemoveSceneItemDestroyEvent(t) {
     if (this._ie.delete(t) && this._ie.size === 0) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
     }
   }
   Clear() {
@@ -308,7 +308,7 @@ class AiConditionEvents {
     });
     this.lie.splice(0, this.lie.length);
     if (this._ie.size > 0) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
     }
     this._ie.clear();
   }

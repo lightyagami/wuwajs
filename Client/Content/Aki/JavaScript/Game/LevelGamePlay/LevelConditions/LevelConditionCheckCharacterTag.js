@@ -10,7 +10,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckCharacterTag extends LevelGeneralBase_1.LevelConditionBase {
   Check(e, a) {
     var r;
-    return !!e.LimitParams && !!(e = e.LimitParams.get("Tag")) && !!(r = (r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && r.Entity.GetComponent(206)) && r.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
+    return !!e.LimitParams && !!(e = e.LimitParams.get("Tag")) && !!(r = (r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && r.Entity.GetComponent(209)) && r.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
   }
   CheckNew(e, a) {
     if (!e) {
@@ -18,7 +18,7 @@ class LevelConditionCheckCharacterTag extends LevelGeneralBase_1.LevelConditionB
     }
     let r = false;
     var l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (l &&= l.Entity.GetComponent(206)) {
+    if (l &&= l.Entity.GetComponent(209)) {
       r = l.HasTag(e.TagId);
     }
     if (e.IsContain) {

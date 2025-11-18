@@ -37,96 +37,96 @@ const LevelGeneralContextUtil_1 = require("./LevelGeneralContextUtil");
 exports.WAIT_ENTITY_ERROR_TIME = 90000;
 class LevelGeneralNetworks {
   static Register() {
-    Net_1.Net.Register(15474, this.QUe);
-    Net_1.Net.Register(27651, LevelGeneralNetworks.XUe);
-    Net_1.Net.Register(24546, LevelGeneralNetworks.$Ue);
-    Net_1.Net.Register(25095, LevelGeneralNetworks.YUe);
-    Net_1.Net.Register(19621, LevelGeneralNetworks.JUe);
-    Net_1.Net.Register(23803, this.zUe);
-    Net_1.Net.Register(26818, this.XTl);
-    Net_1.Net.Register(22032, this.ZUe);
-    Net_1.Net.Register(21760, this.Iqn);
-    Net_1.Net.Register(15634, this.eAe);
-    Net_1.Net.Register(15472, this.tAe);
-    Net_1.Net.Register(15440, this.iAe);
-    Net_1.Net.Register(18406, this.mza);
-    Net_1.Net.Register(18851, this.dza);
-    Net_1.Net.Register(23270, this.rAe);
-    Net_1.Net.Register(29475, this.nAe);
-    Net_1.Net.Register(29160, this.sAe);
-    Net_1.Net.Register(25312, this.HPl);
-    Net_1.Net.Register(19966, this.aAe);
-    Net_1.Net.Register(25868, this.hAe);
-    Net_1.Net.Register(29853, this.lAe);
-    Net_1.Net.Register(24782, this._Ae);
-    Net_1.Net.Register(20204, this.uAe);
-    Net_1.Net.Register(17550, this.URn);
-    Net_1.Net.Register(26593, this.Pm1);
-    Net_1.Net.Register(23871, this.sQs);
-    Net_1.Net.Register(18387, this.mla);
-    Net_1.Net.Register(24848, this.u3a);
-    Net_1.Net.Register(21144, this.$Ja);
-    Net_1.Net.Register(26462, this.$rh);
-    Net_1.Net.Register(16955, this.xal);
-    Net_1.Net.Register(23362, this.yMl);
-    Net_1.Net.Register(25916, this.rEl);
-    Net_1.Net.Register(20489, this.oEl);
-    Net_1.Net.Register(28426, this.nEl);
-    Net_1.Net.Register(27316, this.FTl);
-    Net_1.Net.Register(29897, this.mwl);
-    Net_1.Net.Register(18061, this.ujl);
-    Net_1.Net.Register(15094, this.R2_);
-    Net_1.Net.Register(22989, this.A2_);
-    Net_1.Net.Register(25434, this.kZ_);
-    Net_1.Net.Register(15592, this.Flc);
-    Net_1.Net.Register(26132, this.XS1);
-    Net_1.Net.Register(26028, this.ob1);
-    Net_1.Net.Register(15468, this.B5u);
-    Net_1.Net.Register(25433, this.A4d);
+    Net_1.Net.Register(24942, this.QUe);
+    Net_1.Net.Register(15046, LevelGeneralNetworks.XUe);
+    Net_1.Net.Register(19171, LevelGeneralNetworks.$Ue);
+    Net_1.Net.Register(28300, LevelGeneralNetworks.YUe);
+    Net_1.Net.Register(20267, LevelGeneralNetworks.JUe);
+    Net_1.Net.Register(28018, this.zUe);
+    Net_1.Net.Register(29566, this.XTl);
+    Net_1.Net.Register(20574, this.ZUe);
+    Net_1.Net.Register(25706, this.Iqn);
+    Net_1.Net.Register(20725, this.eAe);
+    Net_1.Net.Register(23397, this.tAe);
+    Net_1.Net.Register(28791, this.iAe);
+    Net_1.Net.Register(22953, this.mza);
+    Net_1.Net.Register(17733, this.dza);
+    Net_1.Net.Register(29714, this.rAe);
+    Net_1.Net.Register(17762, this.nAe);
+    Net_1.Net.Register(28170, this.sAe);
+    Net_1.Net.Register(24421, this.HPl);
+    Net_1.Net.Register(26599, this.aAe);
+    Net_1.Net.Register(15823, this.hAe);
+    Net_1.Net.Register(26205, this.lAe);
+    Net_1.Net.Register(26489, this._Ae);
+    Net_1.Net.Register(17454, this.uAe);
+    Net_1.Net.Register(29933, this.URn);
+    Net_1.Net.Register(26011, this.Pm1);
+    Net_1.Net.Register(24523, this.sQs);
+    Net_1.Net.Register(19896, this.mla);
+    Net_1.Net.Register(27997, this.u3a);
+    Net_1.Net.Register(27455, this.$Ja);
+    Net_1.Net.Register(23715, this.$rh);
+    Net_1.Net.Register(18361, this.xal);
+    Net_1.Net.Register(22505, this.yMl);
+    Net_1.Net.Register(26326, this.rEl);
+    Net_1.Net.Register(23958, this.oEl);
+    Net_1.Net.Register(23961, this.nEl);
+    Net_1.Net.Register(24313, this.FTl);
+    Net_1.Net.Register(22363, this.mwl);
+    Net_1.Net.Register(15317, this.ujl);
+    Net_1.Net.Register(23545, this.R2_);
+    Net_1.Net.Register(29389, this.A2_);
+    Net_1.Net.Register(27824, this.kZ_);
+    Net_1.Net.Register(17387, this.Flc);
+    Net_1.Net.Register(29441, this.XS1);
+    Net_1.Net.Register(27252, this.ob1);
+    Net_1.Net.Register(17161, this.B5u);
+    Net_1.Net.Register(15971, this.Xjd);
   }
   static UnRegister() {
-    Net_1.Net.UnRegister(15474);
-    Net_1.Net.UnRegister(27651);
-    Net_1.Net.UnRegister(24546);
-    Net_1.Net.UnRegister(25095);
-    Net_1.Net.UnRegister(23803);
-    Net_1.Net.UnRegister(22032);
-    Net_1.Net.UnRegister(21760);
-    Net_1.Net.UnRegister(15634);
-    Net_1.Net.UnRegister(15440);
-    Net_1.Net.UnRegister(18406);
-    Net_1.Net.UnRegister(18851);
-    Net_1.Net.UnRegister(23270);
-    Net_1.Net.UnRegister(29160);
-    Net_1.Net.UnRegister(19966);
-    Net_1.Net.UnRegister(29853);
-    Net_1.Net.UnRegister(24782);
-    Net_1.Net.UnRegister(20204);
-    Net_1.Net.UnRegister(17550);
-    Net_1.Net.UnRegister(26593);
-    Net_1.Net.UnRegister(18387);
-    Net_1.Net.UnRegister(24848);
-    Net_1.Net.UnRegister(21144);
-    Net_1.Net.UnRegister(26462);
-    Net_1.Net.UnRegister(16955);
-    Net_1.Net.UnRegister(23362);
-    Net_1.Net.UnRegister(25916);
-    Net_1.Net.UnRegister(20489);
-    Net_1.Net.UnRegister(28426);
-    Net_1.Net.UnRegister(27316);
-    Net_1.Net.UnRegister(29897);
-    Net_1.Net.UnRegister(18061);
-    Net_1.Net.UnRegister(15094);
-    Net_1.Net.UnRegister(22989);
-    Net_1.Net.UnRegister(25434);
-    Net_1.Net.UnRegister(15592);
-    Net_1.Net.UnRegister(15468);
-    Net_1.Net.UnRegister(25433);
+    Net_1.Net.UnRegister(24942);
+    Net_1.Net.UnRegister(15046);
+    Net_1.Net.UnRegister(19171);
+    Net_1.Net.UnRegister(28300);
+    Net_1.Net.UnRegister(28018);
+    Net_1.Net.UnRegister(20574);
+    Net_1.Net.UnRegister(25706);
+    Net_1.Net.UnRegister(20725);
+    Net_1.Net.UnRegister(28791);
+    Net_1.Net.UnRegister(22953);
+    Net_1.Net.UnRegister(17733);
+    Net_1.Net.UnRegister(29714);
+    Net_1.Net.UnRegister(28170);
+    Net_1.Net.UnRegister(26599);
+    Net_1.Net.UnRegister(26205);
+    Net_1.Net.UnRegister(26489);
+    Net_1.Net.UnRegister(17454);
+    Net_1.Net.UnRegister(29933);
+    Net_1.Net.UnRegister(26011);
+    Net_1.Net.UnRegister(19896);
+    Net_1.Net.UnRegister(27997);
+    Net_1.Net.UnRegister(27455);
+    Net_1.Net.UnRegister(23715);
+    Net_1.Net.UnRegister(18361);
+    Net_1.Net.UnRegister(22505);
+    Net_1.Net.UnRegister(26326);
+    Net_1.Net.UnRegister(23958);
+    Net_1.Net.UnRegister(23961);
+    Net_1.Net.UnRegister(24313);
+    Net_1.Net.UnRegister(22363);
+    Net_1.Net.UnRegister(15317);
+    Net_1.Net.UnRegister(23545);
+    Net_1.Net.UnRegister(29389);
+    Net_1.Net.UnRegister(27824);
+    Net_1.Net.UnRegister(17387);
+    Net_1.Net.UnRegister(17161);
+    Net_1.Net.UnRegister(15971);
   }
   static cAe(e) {
     var t;
     var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
-    var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)?.Entity?.GetComponent(157);
+    var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)?.Entity?.GetComponent(160);
     if (o) {
       t = MathUtils_1.MathUtils.LongToNumber(e.bDs);
       o.SetControllerId(t);
@@ -141,7 +141,7 @@ class LevelGeneralNetworks {
     var o;
     var r = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e);
     if (r?.Valid) {
-      if (o = r?.Entity?.GetComponent(159)) {
+      if (o = r?.Entity?.GetComponent(162)) {
         o.SetAutonomousId(t);
       } else {
         CombatLog_1.CombatLog.Error("Move", r?.Entity, "[ControllerIdModifyNotify] 场景物找不到移动同步组件", ["entityId", e], ["PbDataId", r.PbDataId], ["posSender", t]);
@@ -181,12 +181,12 @@ class LevelGeneralNetworks {
     var o;
     var r = MathUtils_1.MathUtils.LongToNumber(e.DI_);
     var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
-    var a = r.Entity.GetComponent(138);
-    var r = r.Entity.GetComponent(162);
+    var a = r.Entity.GetComponent(141);
+    var r = r.Entity.GetComponent(165);
     if (r && r.Valid) {
       r = r.Config.Config.Type;
       t = MathUtils_1.MathUtils.LongToNumber(e.nLs.iLs);
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t).Entity.GetComponent(139);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t).Entity.GetComponent(142);
       o = new SceneItemJigsawBaseComponent_1.JigsawIndex(e.nLs.l8n.N5n, e.nLs.l8n.F5n);
       t.Rotation = e.nLs.l8n.V5n;
       a.PutDownItem(t, o, r);
@@ -197,12 +197,12 @@ class LevelGeneralNetworks {
     var o;
     var r = MathUtils_1.MathUtils.LongToNumber(e.DI_);
     var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
-    var a = r.Entity.GetComponent(138);
-    var r = r.Entity.GetComponent(162);
+    var a = r.Entity.GetComponent(141);
+    var r = r.Entity.GetComponent(165);
     if (r && r.Valid) {
       r = r.Config.Config.Type;
       t = MathUtils_1.MathUtils.LongToNumber(e.nLs.iLs);
-      t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t).Entity.GetComponent(139);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t).Entity.GetComponent(142);
       o = new SceneItemJigsawBaseComponent_1.JigsawIndex(e.nLs.l8n.N5n, e.nLs.l8n.F5n);
       t.Rotation = e.nLs.l8n.V5n;
       a.PickUpItem(t, o, r);
@@ -210,9 +210,9 @@ class LevelGeneralNetworks {
   }
   static gAe(e) {
     var t = MathUtils_1.MathUtils.LongToNumber(e.G5n);
-    var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(138);
+    var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t).Entity.GetComponent(141);
     var o = MathUtils_1.MathUtils.LongToNumber(e.O5n);
-    var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(139);
+    var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(142);
     var r = new SceneItemJigsawBaseComponent_1.JigsawIndex(e.k5n.N5n, e.k5n.F5n);
     o.Rotation = e.k5n.V5n;
     t.PickUpItem(o, r, IComponent_1.EItemFoundation.BuildingBlock);
@@ -220,7 +220,7 @@ class LevelGeneralNetworks {
   }
   static fAe(e) {
     e = MathUtils_1.MathUtils.LongToNumber(e.j5n);
-    ModelManager_1.ModelManager.CreatureModel.GetEntity(e).Entity.GetComponent(138).OnFinish();
+    ModelManager_1.ModelManager.CreatureModel.GetEntity(e).Entity.GetComponent(141).OnFinish();
   }
   static pAe(r, a, n, l) {
     if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
@@ -275,7 +275,7 @@ class LevelGeneralNetworks {
       }
     }, exports.WAIT_ENTITY_ERROR_TIME, true, true);
   }
-  static uMd(o, r, a, n) {
+  static OId(o, r, a, n) {
     if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelEvent", 18, "执行ntityConditionListenerAction，等待创建Entity", ["CreatureDataId", r], ["PlayerId", o.W5n], ["SessionId", o.w5n], ["StartIndex", o.K5n], ["EndIndex", o.mvs]);
     }
@@ -293,13 +293,13 @@ class LevelGeneralNetworks {
     var o = Protocol_1.Aki.Protocol.fms.create();
     o.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     o.Q5n = t;
-    Net_1.Net.Call(27884, o, e => {});
+    Net_1.Net.Call(20368, o, e => {});
   }
   static RequestActiveOrDeactiveManipulateFx(e, t) {
     var o = Protocol_1.Aki.Protocol.Dds.create();
     o.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     o.q5n = t;
-    Net_1.Net.Call(29313, o, e => {});
+    Net_1.Net.Call(23913, o, e => {});
   }
   static RequestAwakePbEntity(e, t) {}
   static RequestSpawnPbEntity(e, t) {
@@ -309,7 +309,7 @@ class LevelGeneralNetworks {
     var o = Protocol_1.Aki.Protocol.pds.create();
     o.F4n = t.EntityId;
     o.X5n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.State);
-    Net_1.Net.Call(18523, o, e => {
+    Net_1.Net.Call(24618, o, e => {
       if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Level", 7, "[ControllerHolder.LevelGeneralController.RequestChangeEntityState] 请求实体状态改变成功", ["PbDataId:", t.EntityId], ["TargetState:", t.State]);
       }
@@ -324,7 +324,7 @@ class LevelGeneralNetworks {
     } else {
       (e = Protocol_1.Aki.Protocol.tts.create()).F4n = t;
       e.$5n = o;
-      Net_1.Net.Call(16356, e, e => {
+      Net_1.Net.Call(29845, e, e => {
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Level", 35, "[ControllerHolder.LevelGeneralController.EntitySendEventResponse] 请求实体监听事件成功", ["creatureDataId:", t], ["eventKey:", o]);
         }
@@ -336,7 +336,7 @@ class LevelGeneralNetworks {
     var t;
     if (e) {
       (t = Protocol_1.Aki.Protocol.Vds.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-      Net_1.Net.Call(20043, t, e => {});
+      Net_1.Net.Call(24591, t, e => {});
     }
   }
   static RequestActionsFinish(e, t, o, r, a) {
@@ -345,7 +345,7 @@ class LevelGeneralNetworks {
     n.w5n = t;
     n.K5n = o;
     n.J5n = r;
-    Net_1.Net.Call(29369, n, a);
+    Net_1.Net.Call(27403, n, a);
   }
   static RequestEntityInteractOption(e, t, o, r) {
     var a = Protocol_1.Aki.Protocol.Res.create();
@@ -354,19 +354,19 @@ class LevelGeneralNetworks {
     if (r) {
       a.Z5n = r;
     }
-    Net_1.Net.Call(22437, a, o);
+    Net_1.Net.Call(15250, a, o);
   }
   static RequestEntityDynamicInteractOption(e, t, o) {
     var r = Protocol_1.Aki.Protocol.Ues.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
     r.e6n = t;
-    Net_1.Net.Call(19661, r, o);
+    Net_1.Net.Call(17213, r, o);
   }
   static RequestEntityRandomInteractOption(e, t, o) {
     var r = Protocol_1.Aki.Protocol.Aes.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
     r.z5n = t;
-    Net_1.Net.Call(25860, r, o);
+    Net_1.Net.Call(26064, r, o);
   }
   static RequestClientTeleportByClientTrigger(e, t, o, r, a, n, l) {
     var i = Protocol_1.Aki.Protocol.Gg_.create();
@@ -388,7 +388,7 @@ class LevelGeneralNetworks {
     r.gpl = a;
     o.Cpl = r;
     i.ppl = o;
-    Net_1.Net.Call(23764, i, l);
+    Net_1.Net.Call(21488, i, l);
   }
   static RequestClientTeleportByNoRenderPortal(e, t, o, r) {
     var a = Protocol_1.Aki.Protocol.Gg_.create();
@@ -404,7 +404,7 @@ class LevelGeneralNetworks {
     a.ppl = Protocol_1.Aki.Protocol.Yw_.create();
     a.ppl.MIl = Protocol_1.Aki.Protocol.MIl.create();
     a.ppl.MIl.A5n = e;
-    Net_1.Net.Call(23764, a, r);
+    Net_1.Net.Call(21488, a, r);
   }
   static IsEntityEnableAwake(e) {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti && ModelManager_1.ModelManager.PlayerInfoModel.GetId() !== ModelManager_1.ModelManager.CreatureModel.GetWorldOwner()) {
@@ -491,10 +491,10 @@ class LevelGeneralNetworks {
     var o = Protocol_1.Aki.Protocol.Ugs.create();
     o.zWn = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     o.i6n = t ? Protocol_1.Aki.Protocol.i6n.Proto_RangeEnter : Protocol_1.Aki.Protocol.i6n.Proto_RangeLeave;
-    Net_1.Net.Call(25272, o, e => {});
+    Net_1.Net.Call(28654, o, e => {});
   }
   static aQs(e, t, o) {
-    e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(228);
+    e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity?.GetComponent(231);
     if (e) {
       if (o) {
         e.ServerConnectEntities(t);
@@ -507,7 +507,7 @@ class LevelGeneralNetworks {
     var o = Protocol_1.Aki.Protocol.Cm_.create();
     o.F4n = e;
     o.dKn = t;
-    Net_1.Net.Send(25255, o);
+    Net_1.Net.Send(23518, o);
   }
   static CheckEntityCanPushTimeDilation(e) {
     return !ModelManager_1.ModelManager.GameModeModel.IsMulti && e === 1;
@@ -516,7 +516,7 @@ class LevelGeneralNetworks {
     var e = Protocol_1.Aki.Protocol.Xp_.create();
     e.F4n = o;
     e.eOl = r;
-    Net_1.Net.Call(20569, e, e => {
+    Net_1.Net.Call(22742, e, e => {
       var t = !r && e?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_CameraAlertHasNotAlert || r && e?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_CameraAlertHasAlert;
       if (!e || !t && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckError()) {
@@ -549,7 +549,7 @@ class LevelGeneralNetworks {
         if (o?.Valid && o.Entity?.Valid) {
           e = o.Entity.GetComponent(1);
           if (e?.Valid) {
-            var t = o.Entity.GetComponent(237);
+            var t = o.Entity.GetComponent(240);
             if (t?.Valid) {
               const r = e.Owner;
               if (r instanceof TsBaseVehicle_1.default) {
@@ -593,7 +593,7 @@ class LevelGeneralNetworks {
     ModelManager_1.ModelManager.LoadingModel.LoadingTexturePathOverride = undefined;
     this.n8u = undefined;
     t = Protocol_1.Aki.Protocol.R5u.create();
-    t = await Net_1.Net.CallAsync(20798, t);
+    t = await Net_1.Net.CallAsync(18342, t);
     if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Level", 72, "[LevelGeneralNetworks] LowMemoryChangeSceneFinish response", ["ErrorCode", t?.Q4n], ["FromForceClientTravel", e]);
@@ -601,10 +601,10 @@ class LevelGeneralNetworks {
     }
   }
   static PushCharacterMoveToPointEnd(e, t) {
-    var o = Protocol_1.Aki.Protocol.Q3d.create();
+    var o = Protocol_1.Aki.Protocol.Bjd.create();
     o.F4n = e;
     o.LAc = t;
-    Net_1.Net.Send(19547, o);
+    Net_1.Net.Send(20593, o);
   }
   static HandleRecvCharacterMoveToPoint(e, t) {
     const o = e.GetComponent(0).GetCreatureDataId();
@@ -718,14 +718,14 @@ LevelGeneralNetworks.JUe = t => {
 LevelGeneralNetworks.zUe = e => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
   if (t) {
-    t.Entity.GetComponent(134)?.UpdateState(e.m5n, e.CTs);
+    t.Entity.GetComponent(137)?.UpdateState(e.m5n, e.CTs);
   }
 };
 LevelGeneralNetworks.XTl = e => {
   var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t);
   if (o?.Valid && o.Entity) {
-    o.Entity.GetComponent(159)?.ModifyBlackboardFromRemote(e.C6n, e.GI_);
+    o.Entity.GetComponent(162)?.ModifyBlackboardFromRemote(e.C6n, e.GI_);
   } else if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("Level", 19, "SceneItemBlackboardNotify下发的Id找不到对应的Entity", ["Entity Id", t]);
   }
@@ -797,7 +797,7 @@ LevelGeneralNetworks.Pal = e => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
   var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o);
   if (r?.Valid) {
-    if (r = r.Entity.GetComponent(268)) {
+    if (r = r.Entity.GetComponent(272)) {
       r.EntityInSocket = t?.Entity;
       if (e.x9n === Protocol_1.Aki.Protocol.tR_.Proto_ItemRelateFoundationReason_Init) {
         r.InitMatch(o);
@@ -813,7 +813,7 @@ LevelGeneralNetworks.tAe = e => {
   var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (o?.Valid) {
-    var r = o?.Entity?.GetComponent(126);
+    var r = o?.Entity?.GetComponent(129);
     if (r) {
       var a = new SceneItemDynamicAttachTargetComponent_1.AttachParam();
       a.PosAttachType = 2;
@@ -1200,11 +1200,11 @@ LevelGeneralNetworks.QUe = t => {
       SceneItemUtility_1.SceneItemUtility.HandleTargetGearHitPartByServerNotify(t, e, a);
       break;
     case Protocol_1.Aki.Protocol.TOs.Proto_EntityAfterConditionActionCtx:
-      n = MathUtils_1.MathUtils.LongToNumber(o.rMd.eps.w5n);
+      n = MathUtils_1.MathUtils.LongToNumber(o.DId.eps.w5n);
       if (ControllerHolder_1.ControllerHolder.LevelGeneralController.LevelEventLogOpen && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 18, "服务端驱动执行行为组（TargetGearHitPart）", ["CreatureDataId", n]);
       }
-      LevelGeneralNetworks.uMd(t, n, o.rMd.oMd, o.rMd.nMd);
+      LevelGeneralNetworks.OId(t, n, o.DId.xId, o.DId.BId);
   }
 };
 LevelGeneralNetworks.sAe = n => {
@@ -1213,7 +1213,7 @@ LevelGeneralNetworks.sAe = n => {
     if (e) {
       e = ModelManager_1.ModelManager.CreatureModel.GetEntity(l);
       if (e) {
-        var t = e.Entity.GetComponent(138);
+        var t = e.Entity.GetComponent(141);
         if (t) {
           for (const a of n.aLs) {
             var o = new SceneItemJigsawBaseComponent_1.JigsawIndex(a.zTs, a.ZTs);
@@ -1228,7 +1228,7 @@ LevelGeneralNetworks.sAe = n => {
 LevelGeneralNetworks.HPl = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.j5n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnBoardCanMovePlacementNotify", o, e => {
-    if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && (e = e.Entity.GetComponent(138))) {
+    if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && (e = e.Entity.GetComponent(141))) {
       e.OnBoardCanMovePlacementNotify(t.gI_);
     }
   });
@@ -1279,7 +1279,7 @@ LevelGeneralNetworks.uAe = e => {
   const t = MathUtils_1.MathUtils.LongToNumber(e.v2s);
   const o = e.p2s === Protocol_1.Aki.Protocol.p2s.Proto_Up;
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnTrampleGearTransitionNotify", t, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t))?.Valid && (e = e.Entity.GetComponent(153))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t))?.Valid && (e = e.Entity.GetComponent(156))) {
       e.ChangeTransition(o);
     }
   });
@@ -1332,7 +1332,7 @@ LevelGeneralNetworks.mla = e => {
       if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a))?.Valid && (t = (r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity)?.GetComponent(65), r = r?.GetComponent(1), t?.Valid) && r?.Valid && t.CanManipulate()) {
         (o = MathUtils_1.MathUtils.CommonTempVector).Set(100, 0, 0);
         r = r.ActorTransform.TransformPositionNoScale(o.ToUeVector());
-        e.Entity.GetComponent(203)?.SetActorLocation(r);
+        e.Entity.GetComponent(206)?.SetActorLocation(r);
         t.TryManipulateSpecificItem(e.Entity);
       }
     });
@@ -1347,7 +1347,7 @@ LevelGeneralNetworks.u3a = e => {
         var t;
         var o;
         var r;
-        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a))?.Valid && e.Entity?.Valid && e.Entity?.IsInit && (t = e.Entity.GetComponent(1))?.Valid && (o = ModelManager_1.ModelManager.CreatureModel.GetEntity(n))?.Valid && o.Entity?.Valid && o?.IsInit && (o = o.Entity.GetComponent(1))?.Valid && (r = e.Entity.GetComponent(216))?.Valid) {
+        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a))?.Valid && e.Entity?.Valid && e.Entity?.IsInit && (t = e.Entity.GetComponent(1))?.Valid && (o = ModelManager_1.ModelManager.CreatureModel.GetEntity(n))?.Valid && o.Entity?.Valid && o?.IsInit && (o = o.Entity.GetComponent(1))?.Valid && (r = e.Entity.GetComponent(219))?.Valid) {
           r.GetPortalEffectActor()?.Stop("移动传送门到新位置之前", true);
           ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, false, "移动传送门到新位置之前", false);
           t.SetActorLocationAndRotation(o.ActorLocation, o.ActorRotation, "OnPortalReplaceNotify", false);
@@ -1362,7 +1362,7 @@ LevelGeneralNetworks.$rh = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
   if (o) {
     WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnSceneItemAttributeChangeNotify", o, e => {
-      if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.IsInit && (e = e.Entity?.GetComponent(131))) {
+      if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.IsInit && (e = e.Entity?.GetComponent(134))) {
         e.HandleAttributeChanged(t.EI_, t.lWn);
       }
     });
@@ -1374,7 +1374,7 @@ LevelGeneralNetworks.yMl = e => {
 LevelGeneralNetworks.oEl = e => {
   const t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnSceneItemAiDisableNotify", t, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t))?.Valid && (e = e.Entity.GetComponent(137))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(t))?.Valid && (e = e.Entity.GetComponent(140))) {
       e.ModifyAiEnableState(false);
     }
   });
@@ -1382,7 +1382,7 @@ LevelGeneralNetworks.oEl = e => {
 LevelGeneralNetworks.rEl = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnSceneItemAiEnableNotify", o, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(137))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(140))) {
       e.ModifyAiEnableState(true, t.tVn?.RI_);
     }
   });
@@ -1390,7 +1390,7 @@ LevelGeneralNetworks.rEl = t => {
 LevelGeneralNetworks.nEl = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnSceneItemAiPatrolPointNotify", o, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(137))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(140))) {
       e.UpdateLastPassIndex(t.AI_);
     }
   });
@@ -1400,7 +1400,7 @@ LevelGeneralNetworks.FTl = r => {
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnAnimalCollectStateNotify", a, e => {
     var t;
     var o;
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a))?.Valid && (t = e.Entity.GetComponent(172))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(a))?.Valid && (t = e.Entity.GetComponent(175))) {
       o = "Collected" + r.jjn;
       if (r.xI_ === Protocol_1.Aki.Protocol.$w_.Proto_SlotRefreshed) {
         t.ShowPart(r.jjn);
@@ -1440,7 +1440,7 @@ LevelGeneralNetworks.R2_ = e => {
   const r = MathUtils_1.MathUtils.LongToNumber(e.Lx_);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.AddHackingEntityNotify", [o, r], e => {
     var t;
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r))?.Valid && (e = e.Entity.GetComponent(281))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r))?.Valid && (e = e.Entity.GetComponent(285))) {
       ControllerHolder_1.ControllerHolder.FollowShooterHackController.AddRelationship(o, r);
       e.AddHackEntity(t.Entity);
     }
@@ -1451,7 +1451,7 @@ LevelGeneralNetworks.A2_ = e => {
   const r = MathUtils_1.MathUtils.LongToNumber(e.Lx_);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.RemoveHackingEntityNotify", [o, r], e => {
     var t;
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r))?.Valid && (e = e.Entity.GetComponent(281))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (t = ModelManager_1.ModelManager.CreatureModel.GetEntity(r))?.Valid && (e = e.Entity.GetComponent(285))) {
       ControllerHolder_1.ControllerHolder.FollowShooterHackController.RemoveRelationship(o, r);
       e.RemoveHackEntity(t.Entity);
     }
@@ -1460,7 +1460,7 @@ LevelGeneralNetworks.A2_ = e => {
 LevelGeneralNetworks.kZ_ = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnGravityFlipUpdateTypeNotify", o, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(285))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(289))) {
       e.OnNotifyUpdateGravityDirection(t.wY_);
     }
   });
@@ -1487,7 +1487,7 @@ LevelGeneralNetworks.XS1 = e => {
 LevelGeneralNetworks.ob1 = t => {
   const o = MathUtils_1.MathUtils.LongToNumber(t.F4n);
   WaitEntityTask_1.WaitEntityTask.Create("LevelGeneralNetworks.OnTemplateEntitySpawnerContentNotify", o, e => {
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(296))) {
+    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntity(o))?.Valid && (e = e.Entity.GetComponent(300))) {
       e.OnNotifyUpdateContent(t.Pv1);
     }
   });
@@ -1501,7 +1501,7 @@ LevelGeneralNetworks.n8u = undefined;
 LevelGeneralNetworks.B5u = e => {
   _a.k5u(!e.D5u, e.U5u);
 };
-LevelGeneralNetworks.A4d = o => {
+LevelGeneralNetworks.Xjd = o => {
   const r = MathUtils_1.MathUtils.LongToNumber(o.F4n);
   const a = o.V41;
   if (a?.CIl) {

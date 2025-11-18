@@ -160,7 +160,9 @@ exports.actionMappings = {
   QTE分体选项1_左: "QTE分体选项1-左",
   QTE分体选项2_右: "QTE分体选项2-右",
   QTE_R2攻击: "QTE-R2攻击",
-  QTE_空格A: "QTE-空格和A键"
+  QTE_空格A: "QTE-空格和A键",
+  D级限时选项_1: "D级限时选项-1",
+  D级限时选项_2: "D级限时选项-2"
 };
 exports.axisMappings = {
   LookUp: "LookUp",

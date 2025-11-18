@@ -22,6 +22,15 @@ class GuideFocusNew {
   get Platform() {
     return this.platform();
   }
+  get MultiGuideBox() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.multiguideboxLength(), this.multiguidebox, this);
+  }
+  get GuideMarkName() {
+    return this.guidemarkname();
+  }
+  get GuideMarkNameForShow() {
+    return this.guidemarknameforshow();
+  }
   get HookName() {
     return this.hookname();
   }
@@ -137,8 +146,43 @@ class GuideFocusNew {
     }
     return i;
   }
+  GetMultiguideboxAt(t) {
+    return this.multiguidebox(t);
+  }
+  multiguidebox(t, i) {
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  multiguideboxLength() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  guidemarkname(t) {
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  guidemarknameforshow(t) {
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   hookname(t) {
-    var i = this.J7.__offset(this.z7, 12);
+    var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -146,7 +190,7 @@ class GuideFocusNew {
     return i;
   }
   hooknameforshow(t) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -157,7 +201,7 @@ class GuideFocusNew {
     return this.extraparam(t);
   }
   extraparam(t, i) {
-    var s = this.J7.__offset(this.z7, 16);
+    var s = this.J7.__offset(this.z7, 22);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -165,7 +209,7 @@ class GuideFocusNew {
     return s;
   }
   extraparamLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -173,7 +217,7 @@ class GuideFocusNew {
     }
   }
   extraparamdesc(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -181,7 +225,7 @@ class GuideFocusNew {
     return i;
   }
   contentdirection(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -189,11 +233,11 @@ class GuideFocusNew {
     return i;
   }
   showarrow() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 28);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   content(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -204,7 +248,7 @@ class GuideFocusNew {
     return this.button(t);
   }
   button(t, i) {
-    var s = this.J7.__offset(this.z7, 26);
+    var s = this.J7.__offset(this.z7, 32);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -212,7 +256,7 @@ class GuideFocusNew {
     return s;
   }
   buttonLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -223,7 +267,7 @@ class GuideFocusNew {
     return this.inputenums(t);
   }
   inputenums(t, i) {
-    var s = this.J7.__offset(this.z7, 28);
+    var s = this.J7.__offset(this.z7, 34);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -231,7 +275,7 @@ class GuideFocusNew {
     return s;
   }
   inputenumsLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -242,7 +286,7 @@ class GuideFocusNew {
     return this.limitinputenums(t);
   }
   limitinputenums(t, i) {
-    var s = this.J7.__offset(this.z7, 30);
+    var s = this.J7.__offset(this.z7, 36);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -250,7 +294,7 @@ class GuideFocusNew {
     return s;
   }
   limitinputenumsLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -258,23 +302,23 @@ class GuideFocusNew {
     }
   }
   showmouse() {
-    var t = this.J7.__offset(this.z7, 32);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  usemask() {
-    var t = this.J7.__offset(this.z7, 34);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  useclick() {
-    var t = this.J7.__offset(this.z7, 36);
-    return !t || !!this.J7.readInt8(this.z7 + t);
-  }
-  clickanywhere() {
     var t = this.J7.__offset(this.z7, 38);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  clickanywhereshowtime() {
+  usemask() {
     var t = this.J7.__offset(this.z7, 40);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  useclick() {
+    var t = this.J7.__offset(this.z7, 42);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  clickanywhere() {
+    var t = this.J7.__offset(this.z7, 44);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  clickanywhereshowtime() {
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -282,27 +326,27 @@ class GuideFocusNew {
     }
   }
   enablehover() {
-    var t = this.J7.__offset(this.z7, 42);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  enablealltogglestate() {
-    var t = this.J7.__offset(this.z7, 44);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  expandclickarea() {
-    var t = this.J7.__offset(this.z7, 46);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  onlyframe() {
     var t = this.J7.__offset(this.z7, 48);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  onlytext() {
+  enablealltogglestate() {
     var t = this.J7.__offset(this.z7, 50);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  roleheadid() {
+  expandclickarea() {
     var t = this.J7.__offset(this.z7, 52);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  onlyframe() {
+    var t = this.J7.__offset(this.z7, 54);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  onlytext() {
+    var t = this.J7.__offset(this.z7, 56);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  roleheadid() {
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -310,7 +354,7 @@ class GuideFocusNew {
     }
   }
   headimgpath(t) {
-    var i = this.J7.__offset(this.z7, 54);
+    var i = this.J7.__offset(this.z7, 60);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -321,7 +365,7 @@ class GuideFocusNew {
     return this.textoffset(t);
   }
   textoffset(t) {
-    var i = this.J7.__offset(this.z7, 56);
+    var i = this.J7.__offset(this.z7, 62);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -329,7 +373,7 @@ class GuideFocusNew {
     }
   }
   textoffsetLength() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -337,7 +381,7 @@ class GuideFocusNew {
     }
   }
   textoffsetArray() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -345,11 +389,11 @@ class GuideFocusNew {
     }
   }
   textinscreen() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 64);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   hidewhenotherpopviewoccur() {
-    var t = this.J7.__offset(this.z7, 60);
+    var t = this.J7.__offset(this.z7, 66);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

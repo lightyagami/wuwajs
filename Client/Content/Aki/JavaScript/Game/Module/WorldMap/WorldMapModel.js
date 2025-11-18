@@ -38,7 +38,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.MapScaleMax = -0;
     this.zNl = true;
     this.JNl = true;
-    this.Mld = 1;
+    this.p_d = 1;
     this.ghl = undefined;
     this.CurrentFocalMarkType = 0;
     this.CurrentFocalMarkId = 0;
@@ -59,32 +59,32 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.HideQuickTransferConfirmBox = false;
     this.LastWorldMapPointerWorldPosition = undefined;
     this.N61 = undefined;
-    this.Uvd = [];
+    this.tMd = [];
     this.p3o = undefined;
     this.GEr = Info_1.Info.IsPlayInEditor;
-    this.Bvd = (e, r) => {
-      var t = e.LeftTime;
-      var a = r.LeftTime;
+    this.iMd = (e, t) => {
+      var r = e.LeftTime;
+      var a = t.LeftTime;
       const i = CommonParamById_1.configCommonParamById.GetIntConfig("MapPeriodicActivityTime");
-      var o = (e, r, t) => e > 0 && e <= i && r ? 1 : e > 0 && e <= i && !t ? 2 : r ? 3 : t ? 5 : 4;
-      var e = o(t, e.RedPoint, e.IsFinish);
-      var o = o(a, r.RedPoint, r.IsFinish);
+      var o = (e, t, r) => e > 0 && e <= i && t ? 1 : e > 0 && e <= i && !r ? 2 : t ? 3 : r ? 5 : 4;
+      var e = o(r, e.RedPoint, e.IsFinish);
+      var o = o(a, t.RedPoint, t.IsFinish);
       if (e !== o) {
         return e - o;
       } else {
-        return t - a;
+        return r - a;
       }
     };
-    this.Pvd = () => {
+    this.zSd = () => {
       var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(1);
-      var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
+      var t = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
-        MarkId: r?.GetCycleConfig()?.MapMark ?? 0,
+        MarkId: t?.GetCycleConfig()?.MapMark ?? 0,
         MarkType: ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.MarkId).ObjectType,
         Focal: true
       });
     };
-    this.Dvd = () => {
+    this.ZSd = () => {
       var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(2);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
         MarkId: e.MarkId,
@@ -93,7 +93,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
       });
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason, ModelManager_1.ModelManager.TowerModel.CurrentSeason);
     };
-    this.xvd = () => {
+    this.eMd = () => {
       var e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(3);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
         MarkId: e.MarkId,
@@ -109,7 +109,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return this.JNl;
   }
   get JoystickClickMultiplier() {
-    return this.Mld;
+    return this.p_d;
   }
   get WaitToTeleportMarkConfigId() {
     return this.ghl;
@@ -130,7 +130,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.LastBigSceneMiniMapInfo = undefined;
     this.JNl = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowFinishedPlayPointMark, true);
     this.zNl = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowCustomMark, true);
-    this.Mld = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, 1);
+    this.p_d = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, 1);
     return true;
   }
   OnClear() {
@@ -144,42 +144,48 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return true;
   }
   ResetMapScale() {
-    this.MapScale = (ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(1)?.BigMapDefaultScale ?? 0) / 100;
-    var e = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(1);
-    if (e) {
-      this.MapScaleMax = e.BigMapMaxScale / e.BigMapDefaultScale;
-      this.MapScaleMin = e.BigMapMinScale / e.BigMapDefaultScale;
+    var e = this.WorldMapId ?? 1;
+    var t = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(e);
+    if (t) {
+      this.MapScaleMax = t.BigMapMaxScale / t.BigMapDefaultScale;
+      this.MapScaleMin = t.BigMapMinScale / t.BigMapDefaultScale;
+      t = (ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(e)?.BigMapDefaultScale ?? 0) / 100;
+      if (this.MapScale === 0) {
+        this.MapScale = t;
+      } else {
+        this.MapScale = Math.max(this.MapScaleMin, Math.min(this.MapScaleMax, this.MapScale));
+      }
     }
   }
-  GetEntityPosition(e, r) {
-    var t = r + "_" + e;
-    let a = this.jlc.Get(t);
+  GetEntityPosition(e, t) {
+    var r = t + "_" + e;
+    let a = this.jlc.Get(r);
     var i = Vector_1.Vector.Create();
     if (a) {
       i.FromUeVector(a);
     } else {
-      r = ConfigManager_1.ConfigManager.MapConfig.GetEntityConfigByMapIdAndEntityId(r, e)?.Transform[0];
-      a = r ? Vector_1.Vector.Create(r.X, r.Y, r.Z) : Vector_1.Vector.Create(0, 0, 0);
-      this.jlc.Put(t, a);
+      t = ConfigManager_1.ConfigManager.MapConfig.GetEntityConfigByMapIdAndEntityId(t, e)?.Transform[0];
+      a = t ? Vector_1.Vector.Create(t.X, t.Y, t.Z) : Vector_1.Vector.Create(0, 0, 0);
+      this.jlc.Put(r, a);
       i.FromUeVector(a);
     }
     return i;
   }
-  GetEntityAreaId(e, r) {
-    return ModelManager_1.ModelManager.CreatureModel.GetEntityData(e, r)?.AreaId ?? 0;
+  GetEntityAreaId(e, t) {
+    return ModelManager_1.ModelManager.CreatureModel.GetEntityData(e, t)?.AreaId ?? 0;
   }
   UpdateAreaExploreInfo(e) {
     if (e) {
-      var r = new Array();
-      for (const t of e.HVn) {
-        r.push({
-          ExploreProgressId: t.qPs,
-          ExplorePercent: t.BPs
+      var t = new Array();
+      for (const r of e.HVn) {
+        t.push({
+          ExploreProgressId: r.qPs,
+          ExplorePercent: r.BPs
         });
       }
       this.p3o = {
         AreaId: e.p6n,
-        ExploreProgress: r,
+        ExploreProgress: t,
         ExplorePercent: e.BPs
       };
     }
@@ -188,16 +194,16 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return this.p3o;
   }
   RecordPlaySoundMarkSfx(e) {
-    var r = Time_1.Time.ServerStopTimeStamp;
-    this.NDl.set(e, r);
+    var t = Time_1.Time.ServerStopTimeStamp;
+    this.NDl.set(e, t);
   }
-  SetPlaySoundMarkSfxForbidden(e, r) {
-    this.FDl.set(e, r);
+  SetPlaySoundMarkSfxForbidden(e, t) {
+    this.FDl.set(e, t);
   }
   IsSoundMarkSfxCoolingDown(e) {
     var e = this.NDl.get(e) ?? 0;
-    var r = this.sGl;
-    return Time_1.Time.ServerStopTimeStamp - e <= r;
+    var t = this.sGl;
+    return Time_1.Time.ServerStopTimeStamp - e <= t;
   }
   IsSoundMarkSfxForbidden(e) {
     return this.FDl.get(e) ?? false;
@@ -209,8 +215,8 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return this.zNl !== e && (this.zNl = e, LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsShowCustomMark, e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ToggleShowCustomMark, e), true);
   }
   SetJoystickClickMultiplier(e) {
-    this.Mld = Math.max(0, Math.min(CommonParamById_1.configCommonParamById.GetFloatConfig("MapJoystickClickMaxMultiplier"), e));
-    LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, this.Mld);
+    this.p_d = Math.max(0, Math.min(CommonParamById_1.configCommonParamById.GetFloatConfig("MapJoystickClickMaxMultiplier"), e));
+    LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.JoystickClickMultiplier, this.p_d);
   }
   GetPlayerPosition() {
     var e;
@@ -226,38 +232,38 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   }
   IsPlayerInInstanceDungeon() {
     var e = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstType;
-    var r = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
-    return e !== Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance || r !== 13;
+    var t = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
+    return e !== Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance || t !== 13;
   }
   IsPlayerInWorldInstanceDungeon() {
     var e = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstType;
-    var r = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
-    return e === Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance && r === 12;
+    var t = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
+    return e === Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance && t === 12;
   }
   IsPlayerInBigWorldInstanceDungeon() {
     return ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstType === Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance;
   }
   IsPlayerInStoryInstanceDungeon() {
     var e = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstType;
-    var r = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
-    var r = r === 1 || r === 2 || r === 0;
-    return e === Protocol_1.Aki.Protocol.i4s.Proto_NormalInstance && r;
+    var t = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
+    var t = t === 1 || t === 2 || t === 0;
+    return e === Protocol_1.Aki.Protocol.i4s.Proto_NormalInstance && t;
   }
   IsPlayerInActivityInstanceDungeon() {
     return !this.IsPlayerInBigWorldInstanceDungeon() && !this.IsPlayerInStoryInstanceDungeon();
   }
-  InstIsType(e, r, t) {
+  InstIsType(e, t, r) {
     e = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);
-    return e?.InstType === r && e?.InstSubType === t;
+    return e?.InstType === t && e?.InstSubType === r;
   }
   CheckGamePlayIsTracked(e) {
-    var r;
     var t;
-    return !!this.NavigateMarkShowRangeInfo && !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 69, "检查玩法是否需要追踪", ["playInfo-playId", e.Id], ["NavigateMarkShowRangeInfo", this.NavigateMarkShowRangeInfo]), this.NavigateMarkShowRangeInfo.GamePlayId !== e.Id) && !UiManager_1.UiManager.IsViewOpen("WorldMapView") && !this.NavigateMarkShowRangeInfo.IsDiscover && !(e = this.NavigateMarkShowRangeInfo.MarkId, r = this.NavigateMarkShowRangeInfo.MarkType, t = this.NavigateMarkShowRangeInfo.ExploreTypeName, t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t), this.NavigateMarkShowRangeInfo.IsDiscover = true, ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e), ControllerHolder_1.ControllerHolder.MapController.RequestTrackMapMark({
-      MarkType: r,
+    var r;
+    return !!this.NavigateMarkShowRangeInfo && !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("World", 69, "检查玩法是否需要追踪", ["playInfo-playId", e.Id], ["NavigateMarkShowRangeInfo", this.NavigateMarkShowRangeInfo]), this.NavigateMarkShowRangeInfo.GamePlayId !== e.Id) && !UiManager_1.UiManager.IsViewOpen("WorldMapView") && !this.NavigateMarkShowRangeInfo.IsDiscover && !(e = this.NavigateMarkShowRangeInfo.MarkId, t = this.NavigateMarkShowRangeInfo.MarkType, r = this.NavigateMarkShowRangeInfo.ExploreTypeName, r = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(r, r), this.NavigateMarkShowRangeInfo.IsDiscover = true, ModelManager_1.ModelManager.MapModel.CreateTempMapMark(e), ControllerHolder_1.ControllerHolder.MapController.RequestTrackMapMark({
+      MarkType: t,
       MarkId: e,
       Track: true
-    }), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PlayPointFind_Text", t), 0);
+    }), ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PlayPointFind_Text", r), 0);
   }
   get CurrentWorldMapConfigId() {
     return this.WorldMapId ?? ModelManager_1.ModelManager.MapModel.CurrentMapConfigId;
@@ -294,14 +300,14 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   get WorldMapSelectGravity() {
     return this.Ofc;
   }
-  SetWorldMapSelectedGravity(e, r) {
-    this.WorldMapSelectGravity = this.GetFinalWorldMapGravity(e, r);
+  SetWorldMapSelectedGravity(e, t) {
+    this.WorldMapSelectGravity = this.GetFinalWorldMapGravity(e, t);
     return this.WorldMapSelectGravity;
   }
-  GetFinalWorldMapGravity(e, r) {
+  GetFinalWorldMapGravity(e, t) {
     if (this.IsGravityMap(e)) {
-      if (r !== undefined && r !== 0) {
-        return r;
+      if (t !== undefined && t !== 0) {
+        return t;
       } else {
         return ModelManager_1.ModelManager.MapModel.CurrentPlayerGravity;
       }
@@ -322,100 +328,100 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     return !Info_1.Info.IsBuildShipping && this.GEr;
   }
   get ActivityListData() {
-    return this.Uvd;
+    return this.tMd;
   }
   UpdateActivityListItemData(e = true) {
-    var r = [];
-    var t = this.kvd();
-    if (t) {
-      r.push(t);
+    var t = [];
+    var r = this.rMd();
+    if (r) {
+      t.push(r);
     }
-    var t = this.Ovd();
-    if (t) {
-      r.push(t);
+    var r = this.oMd();
+    if (r) {
+      t.push(r);
     }
-    var t = this.qvd();
-    if (t) {
-      r.push(t);
+    var r = this.nMd();
+    if (r) {
+      t.push(r);
     }
     if (e) {
-      r.sort(this.Bvd);
+      t.sort(this.iMd);
     } else {
       const a = new Map();
-      this.Uvd.forEach((e, r) => {
-        a.set(e.Id, r);
+      this.tMd.forEach((e, t) => {
+        a.set(e.Id, t);
       });
-      r.sort((e, r) => {
-        return (a.get(e.Id) ?? Number.MAX_SAFE_INTEGER) - (a.get(r.Id) ?? Number.MAX_SAFE_INTEGER);
+      t.sort((e, t) => {
+        return (a.get(e.Id) ?? Number.MAX_SAFE_INTEGER) - (a.get(t.Id) ?? Number.MAX_SAFE_INTEGER);
       });
     }
-    this.Uvd.length = 0;
-    this.Uvd.push(...r);
+    this.tMd.length = 0;
+    this.tMd.push(...t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapActivityListDataUpdate);
   }
-  kvd() {
-    const r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
+  rMd() {
+    const t = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew;
     var e;
-    var t;
-    if (r && r.IsUnLock()) {
-      e = r.Score ?? 0;
-      t = r.GetCycleConfig()?.MaxScore ?? 0;
+    var r;
+    if (t && t.IsUnLock()) {
+      e = t.Score ?? 0;
+      r = t.GetCycleConfig()?.MaxScore ?? 0;
       return {
         Id: 1,
-        LeftTimeText: r.GetCycleCountDownData().CountDownText ?? "",
-        LeftTime: r.GetCycleRemainTime() ?? 0,
+        LeftTimeText: t.GetCycleCountDownData().CountDownText ?? "",
+        LeftTime: t.GetCycleRemainTime() ?? 0,
         CurrentNum: e,
-        TotalNum: t,
-        IsFinish: r.IsScoreRewardAllReceive(),
-        RedPoint: r.HasNewCycle(),
-        OnClickCb: this.Pvd,
+        TotalNum: r,
+        IsFinish: t.IsScoreRewardAllReceive(),
+        RedPoint: t.HasNewCycle(),
+        OnClickCb: this.zSd,
         OnLeftTimeRefreshCb: e => {
-          e.LeftTime = r.GetCycleRemainTime() ?? 0;
-          e.LeftTimeText = r.GetCycleCountDownData().CountDownText ?? "";
+          e.LeftTime = t.GetCycleRemainTime() ?? 0;
+          e.LeftTimeText = t.GetCycleCountDownData().CountDownText ?? "";
         }
       };
     }
   }
-  Ovd() {
+  oMd() {
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10055)) {
       const n = ModelManager_1.ModelManager.TowerModel;
       var e = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
-      var r = n.GetSeasonCountDownData();
-      var t = n.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
+      var t = n.GetSeasonCountDownData();
+      var r = n.GetDifficultyMaxStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
       var a = n.GetDifficultyAllStars(TowerData_1.VARIATION_RISK_DIFFICULTY);
       var i = n.GetDifficultyRewardProgress(TowerData_1.VARIATION_RISK_DIFFICULTY);
       var o = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerIsClickSeason) ?? -1;
       return {
         Id: 2,
         LeftTime: e > 0 ? e : 0,
-        LeftTimeText: r.CountDownText ?? "",
-        CurrentNum: t,
+        LeftTimeText: t.CountDownText ?? "",
+        CurrentNum: r,
         TotalNum: a,
         IsFinish: i === 1,
         RedPoint: o < n.CurrentSeason,
-        OnClickCb: this.Dvd,
+        OnClickCb: this.ZSd,
         OnLeftTimeRefreshCb: e => {
-          var r = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
-          e.LeftTime = r > 0 ? r : 0;
+          var t = MathUtils_1.MathUtils.LongToNumber(n.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime();
+          e.LeftTime = t > 0 ? t : 0;
           e.LeftTimeText = n.GetSeasonCountDownData().CountDownText ?? "";
         }
       };
     }
   }
-  qvd() {
+  nMd() {
     var e = ActivityControllerHolder_1.ActivityControllerHolder.ActivityShipTowerController?.Data;
     if (e && e.IsUnLock()) {
       const a = ModelManager_1.ModelManager.ShipTowerModel;
-      var [r, t] = a.GetEndlessRewardProgressNumData();
+      var [t, r] = a.GetEndlessRewardProgressNumData();
       return {
         Id: 3,
         LeftTimeText: a.GetSeasonCountDownData().CountDownText ?? "",
         LeftTime: a.GetRemainTime(),
-        CurrentNum: r,
-        TotalNum: t,
-        IsFinish: r === t && r !== 0,
+        CurrentNum: t,
+        TotalNum: r,
+        IsFinish: t === r && t !== 0,
         RedPoint: e.HasNewCycle(),
-        OnClickCb: this.xvd,
+        OnClickCb: this.eMd,
         OnLeftTimeRefreshCb: e => {
           e.LeftTime = a.GetRemainTime();
           e.LeftTimeText = a.GetSeasonCountDownData().CountDownText ?? "";

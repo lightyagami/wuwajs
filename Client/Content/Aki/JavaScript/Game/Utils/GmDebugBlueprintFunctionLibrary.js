@@ -9,7 +9,7 @@ const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
 const GlobalData_1 = require("../GlobalData");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
-const CharacterDebugUtil_1 = require("../NewWorld/Character/CharacterDebugUtil");
+const FightDebugUtil_1 = require("../NewWorld/Character/FightDebugUtil");
 class GmDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static TsRunGm(e) {
@@ -37,7 +37,7 @@ class GmDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ModelManager_1.ModelManager.SundryModel.GetGmUniverseEditorFunctionLib()?.GmStopGameCommandService();
   }
   static OpenWbpDebugWin() {
-    var e = ResourceSystem_1.ResourceSystem.Load("/Game/NotInFinalPackage/DebugWin/WBP_DebugWin.WBP_DebugWin_C", UE.Class);
+    var e = ResourceSystem_1.ResourceSystem.Load("/Game/NotInFinalPackage/DebugWin/WBP_DebugWin.WBP_DebugWin_C", UE.Class, "Debug");
     UE.UMGManager.CreateWidget(GlobalData_1.GlobalData.World.GetWorld(), e).AddToViewport();
   }
   static TsCheatInputRequest(e) {
@@ -56,7 +56,10 @@ class GmDebugBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ModelManager_1.ModelManager.SundryModel.GetGmBlueprintFunctionLib()?.SetAoeDestroyEnemyRange(e);
   }
   static TsGmLoadFightDt(e) {
-    CharacterDebugUtil_1.CharacterDebugUtil.LoadFightDtDebug(e);
+    FightDebugUtil_1.FightDebugUtil.LoadFightDtDebug(e);
+  }
+  static TsSetFightDtTypeForDebug(e) {
+    FightDebugUtil_1.FightDebugUtil.SetFightDtTypeForDebug(e);
   }
   static TsTestLifePoint(e, t, a, r, n, o) {
     ModelManager_1.ModelManager.LifePointModel.AnimParam.MaxTime = e;

@@ -26,7 +26,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(18157, e => {
+    Net_1.Net.Register(17973, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送探索技能设置更新信息");
@@ -36,7 +36,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId = e;
       }
     });
-    Net_1.Net.Register(29459, e => {
+    Net_1.Net.Register(15986, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送当前轮盘保存的数据");
@@ -44,7 +44,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.HPs);
       }
     });
-    Net_1.Net.Register(23433, e => {
+    Net_1.Net.Register(24974, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送探索技能解锁", ["Id", e.r5n]);
@@ -52,7 +52,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
         ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkill(e.r5n);
       }
     });
-    Net_1.Net.Register(24096, e => {
+    Net_1.Net.Register(16541, e => {
       if (e) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Phantom", 37, "推送所有已解锁的探索技能及当前装备的探索技能");
@@ -70,10 +70,10 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18157);
-    Net_1.Net.UnRegister(29459);
-    Net_1.Net.UnRegister(23433);
-    Net_1.Net.UnRegister(24096);
+    Net_1.Net.UnRegister(17973);
+    Net_1.Net.UnRegister(15986);
+    Net_1.Net.UnRegister(24974);
+    Net_1.Net.UnRegister(16541);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.T0o);
@@ -106,7 +106,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 37, "请求设置探索技能", ["skillId", e]);
       }
-      Net_1.Net.Call(28129, Protocol_1.Aki.Protocol.Cts.create(r), e => {
+      Net_1.Net.Call(26867, Protocol_1.Aki.Protocol.Cts.create(r), e => {
         ModelManager_1.ModelManager.RouletteModel.OnSettingExploreSkillIdList.shift();
         if (e) {
           if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -114,7 +114,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
             t?.(true);
           } else {
             t?.(false);
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27064);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25083);
           }
         } else {
           t?.(false);
@@ -138,7 +138,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     e.KHn = t;
     a.push(e);
     l.XHn = a;
-    Net_1.Net.Call(29949, Protocol_1.Aki.Protocol.vts.create(l), e => {
+    Net_1.Net.Call(15340, Protocol_1.Aki.Protocol.vts.create(l), e => {
       if (e) {
         if (e.G9n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (r) {
@@ -147,7 +147,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
           ModelManager_1.ModelManager.RouletteModel.UpdateRouletteData(e.XHn);
           n?.(true);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28681);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 18777);
           n?.(false);
         }
       } else {
@@ -251,7 +251,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
     return !!e && e.CanEquip;
   }
   static ListenRelatedTags(e) {
-    var t = e?.Entity?.GetComponent(194);
+    var t = e?.Entity?.GetComponent(197);
     this.StopListenRelatedTags();
     var o = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList;
     var r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList;
@@ -266,7 +266,7 @@ class RouletteController extends UiControllerBase_1.UiControllerBase {
   static StopListenRelatedTags() {
     var e = ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle;
     if (e) {
-      var t = e.Entity?.GetComponent(194);
+      var t = e.Entity?.GetComponent(197);
       if (t) {
         for (const o of ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList) {
           t.RemoveTagAddOrRemoveListener(o, this._B_);
@@ -358,7 +358,7 @@ RouletteController.xie = (e, t) => {
 RouletteController._B_ = (e, t) => {
   var o;
   var r;
-  if (ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle?.Entity?.GetComponent(194)) {
+  if (ModelManager_1.ModelManager.RouletteModel.RelatedTagEntityHandle?.Entity?.GetComponent(197)) {
     o = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdPriorityList;
     (r = ModelManager_1.ModelManager.RouletteModel.RelatedTagIdExistPriorityList)[o.indexOf(e)] = t;
     _a.L5_(o, r);
@@ -366,10 +366,11 @@ RouletteController._B_ = (e, t) => {
 };
 RouletteController.nye = () => {
   var e;
+  var t;
   if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
     e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-    if (e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) {
-      ModelManager_1.ModelManager.RouletteModel.TryActiveFunctionRouletteReplaceConfig(e.InstSubType);
+    if (t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)) {
+      ModelManager_1.ModelManager.RouletteModel.TryActiveFunctionRouletteReplaceConfig(e, t.InstSubType);
     }
   } else {
     ModelManager_1.ModelManager.RouletteModel.DisActiveFunctionRouletteReplaceConfig();

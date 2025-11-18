@@ -95,6 +95,9 @@ class PhantomUtil {
         break;
       case ESummonType.Proto_ESummonTypeConcomitantPhantomRole:
         n = r.VisionControlCreatureDataId ?? 0;
+        break;
+      case ESummonType.Proto_ESummonTypeConcomitantWeakVision:
+        n = r.BossRushCreatureDataId;
     }
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(n);
   }

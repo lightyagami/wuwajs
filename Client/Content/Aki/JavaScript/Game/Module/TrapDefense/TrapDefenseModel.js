@@ -62,13 +62,13 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     this.ViewModelBuildingDevelop = TrapDefenseBuildingDevelopViewModel_1.TrapDefenseBuildingDevelopViewModel.Create(this);
     this.NeedOpenMainView = false;
     this.IsSkipMachineFullCheck = false;
-    this.QTd = undefined;
+    this.vwd = undefined;
     this.qto = () => !!this.LevelModeData || (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("ErrorCode_2500068_Text"), false);
-    this.rld = () => !!this.qto() && (!!this.RougeModeData.CanEnterRougeMode() || !(ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseRougeModeNotOpen"), 1));
+    this.Vod = () => !!this.qto() && (!!this.RougeModeData.CanEnterRougeMode() || !(ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TrapDefenseRougeModeNotOpen"), 1));
   }
   OnInit() {
     this.vJc("TrapDefenseMainLevelView");
-    this.vJc("TrapDefenseRougeLevelView", this.rld);
+    this.vJc("TrapDefenseRougeLevelView", this.Vod);
     this.vJc("TrapDefenseFixedRewardView");
     this.vJc("TrapDefenseBdSumView");
     this.vJc("TrapDefenseBdQualityView");
@@ -124,11 +124,11 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     e.pHc.forEach(e => {
       this.RougeModeData.BdDataMap.get(e)?.SetUnlock(true);
     });
-    e.HEd.forEach(e => {
+    e.gbd.forEach(e => {
       this.RougeModeData.BdBuffDataMap.get(e)?.SetUnlock(true);
     });
     this.ViewModelBuildingDevelop.InitDevelopInfo(e);
-    this.ViewModelBuildingDevelop.SetRemainPoints(e.wdd);
+    this.ViewModelBuildingDevelop.SetRemainPoints(e.Bdd);
     this.RewardData?.UpdateRewardsByServerData(e.nBs);
     this.RewardData.SetLimitTime(e.CPs, e.gPs);
     this.RewardData.SpecialRewardData?.UpdateByServerData(e.CHc[0]);
@@ -140,7 +140,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     this.TalentTreeData?.RefreshLineTypeMap();
     this.MapData.InitMapData();
     this.ShopData.TryUpdateData();
-    this.KTd();
+    this.ywd();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseActivityDataUpdate);
   }
   e8u(e) {
@@ -312,13 +312,13 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
       });
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate);
     } else {
-      this.QTd = e;
+      this.vwd = e;
     }
   }
-  KTd() {
-    if (this.QTd) {
-      this.ProtoBdBuffAllUpdateNotify(this.QTd);
-      this.QTd = undefined;
+  ywd() {
+    if (this.vwd) {
+      this.ProtoBdBuffAllUpdateNotify(this.vwd);
+      this.vwd = undefined;
     }
   }
   ProtoBdBuffSelectUpdateNotify(e) {
@@ -340,8 +340,8 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     }
   }
   ProtoBdBuffGetUpdateNotify(e) {
-    var t = e.qud;
-    if (t && e.x9n !== Protocol_1.Aki.Protocol.Gud.Proto_RewardSelect) {
+    var t = e.Hud;
+    if (t && e.x9n !== Protocol_1.Aki.Protocol.$ud.Proto_RewardSelect) {
       this.RougeModeData.CheckBdBuffGetUpdate(t.S9n, t.gG_);
     }
   }
@@ -393,7 +393,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
     });
   }
   ProtoBdBuffUpdateNotify(e) {
-    e.HEd.forEach(e => {
+    e.gbd.forEach(e => {
       this.RougeModeData.BdBuffDataMap.get(e)?.SetUnlock(true);
     });
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseBdBuffListUpdate);
@@ -403,7 +403,7 @@ class TrapDefenseModel extends ModelBase_1.ModelBase {
   ProtoTechPointUpdateNotify(e) {
     this.TalentTreeData?.SetRemainPoints(e.MKc);
     this.TalentTreeData?.SetMaxPoints(e.SKc);
-    this.ViewModelBuildingDevelop.SetRemainPoints(e.wdd);
+    this.ViewModelBuildingDevelop.SetRemainPoints(e.Bdd);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseTalentTreeUpdate);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotUpdateTrapDefenseTalentTree);
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityTrapDefenseController?.RefreshActivityRedDot();

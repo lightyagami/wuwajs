@@ -9,7 +9,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCompareNpcPerformState extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, r) {
     if (e) {
-      var a = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId)?.Entity?.GetComponent(188);
+      var a = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e.EntityId)?.Entity?.GetComponent(191);
       if (a?.PerformGroupController) {
         var t = a.PerformGroupController.IsPerformStateEnabled(e.State);
         switch (e.Compare) {

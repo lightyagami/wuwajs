@@ -235,8 +235,8 @@ class SkillButtonFollowerEntityData {
     this.IsEnable = i;
     i = t.GetComponent(0);
     this.PbDataId = i.GetPbDataId();
-    this.AttributeComponent = t.GetComponent(174);
-    this.GameplayTagComponent = t.GetComponent(206);
+    this.AttributeComponent = t.GetComponent(177);
+    this.GameplayTagComponent = t.GetComponent(209);
     this.SkillComponent = t.GetComponent(40);
     i = ConfigManager_1.ConfigManager.SkillButtonConfig;
     this.SkillButtonConfigList = i.GetAllSkillFollowerButtonConfig(this.PbDataId);

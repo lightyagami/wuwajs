@@ -21,6 +21,7 @@ class ProtoGachaPoolInfo {
     this.ShowIdList = [];
     this.UpList = [];
     this.PreviewIdList = [];
+    this.ComplianceDetail = "";
     this.Id = t.s5n;
     this.BeginTime = MathUtils_1.MathUtils.LongToNumber(t.cps);
     this.EndTime = MathUtils_1.MathUtils.LongToNumber(t.dps);
@@ -31,6 +32,7 @@ class ProtoGachaPoolInfo {
     this.ShowIdList = t.pb_;
     this.UpList = t.vb_;
     this.PreviewIdList = t.yb_;
+    this.ComplianceDetail = t.czd;
     t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.Id);
     if (t) {
       this.Sort = t.Sort;

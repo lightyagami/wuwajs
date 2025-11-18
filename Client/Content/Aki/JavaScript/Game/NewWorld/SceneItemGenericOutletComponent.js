@@ -63,9 +63,9 @@ let SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = class 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
-    this.Oln = this.Entity.GetComponent(131);
-    this.Lie = this.Entity.GetComponent(197);
+    this.Hte = this.Entity.GetComponent(206);
+    this.Oln = this.Entity.GetComponent(134);
+    this.Lie = this.Entity.GetComponent(200);
     var e = this.Hte?.CreatureData.PbPullingFoundationEntityId;
     if (e !== undefined && e !== 0) {
       this.InitMatch(e);
@@ -90,7 +90,7 @@ let SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = class 
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.GUe);
     } else {
       this.EntityInSocket = i.Entity;
-      if ((i = this.EntityInSocket.GetComponent(203)) === undefined) {
+      if ((i = this.EntityInSocket.GetComponent(206)) === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 31, "雕像交互点的雕像没有ActorComponent", ["relationId", e]);
         }
@@ -111,7 +111,7 @@ let SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = class 
   }
   $al(t) {
     var i = t.GetComponent(0)?.GetBaseInfo();
-    var o = t.GetComponent(206);
+    var o = t.GetComponent(209);
     if (i !== undefined && o !== undefined) {
       for (let e = 0; e < this.Lo.Config.MatchingConfigs.length; e++) {
         var r = this.Lo.Config.MatchingConfigs[e];
@@ -175,12 +175,12 @@ let SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = class 
     e.Roll = i.Roll;
     r.l8n = o;
     r._8n = e;
-    Net_1.Net.Call(15839, r, e => {
+    Net_1.Net.Call(29773, r, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21975);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22404);
       }
     });
   }
 };
-SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(268)], SceneItemGenericOutletComponent);
+SceneItemGenericOutletComponent = SceneItemGenericOutletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(272)], SceneItemGenericOutletComponent);
 exports.SceneItemGenericOutletComponent = SceneItemGenericOutletComponent; //# sourceMappingURL=SceneItemGenericOutletComponent.js.map

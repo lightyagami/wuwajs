@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PerformanceCondition = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
+const GameplayTagArray_1 = require("./SubType/GameplayTagArray");
 class PerformanceCondition {
   constructor() {
     this.J7 = null;
@@ -19,8 +20,8 @@ class PerformanceCondition {
   get StandingNormalZ() {
     return GameUtils_1.GameUtils.ConvertToArray(this.standingnormalzLength(), this.standingnormalz, this);
   }
-  get DisableTag() {
-    return GameUtils_1.GameUtils.ConvertToArray(this.disabletagLength(), this.disabletag, this);
+  get DisableTags() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.disabletagsLength(), this.disabletags, this);
   }
   get Radius() {
     return GameUtils_1.GameUtils.ConvertToArray(this.radiusLength(), this.radius, this);
@@ -95,18 +96,18 @@ class PerformanceCondition {
       return null;
     }
   }
-  GetDisabletagAt(t) {
-    return this.disabletag(t);
+  GetDisabletagsAt(t, i) {
+    return this.disabletags(t);
   }
-  disabletag(t, i) {
+  disabletags(t, i) {
     var s = this.J7.__offset(this.z7, 10);
-    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
+    if (s) {
+      return (i || new GameplayTagArray_1.GameplayTagArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
     }
-    return s;
   }
-  disabletagLength() {
+  disabletagsLength() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);

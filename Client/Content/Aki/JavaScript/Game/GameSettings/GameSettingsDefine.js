@@ -3,13 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.AMD_DISABLE_RAYTRACING_INDEX_END = exports.AMD_DISABLE_RAYTRACING_INDEX_START = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
+exports.gameSettingsInitSourceTypePriority = exports.MAIN_TYPE_OF_KEY_SETTING = exports.RENDER_QUALITY_SUIBO_INDEX_END = exports.RENDER_QUALITY_SUIBO_INDEX_START = exports.HEAVY_SCENEVULUME_INDEX_END = exports.HEAVY_SCENEVULUME_INDEX_START = exports.NPC_DENSITY_PC_THRESHOLD = exports.NPC_DENSITY_THRESHOLD = exports.WINDOWS_RESOLUTION_INDEX = exports.function2GameSettings = exports.EFunction = undefined;
 const AudioDefine_1 = require("../../Core/Audio/AudioDefine");
 const Info_1 = require("../../Core/Common/Info");
 const EffectEnvironment_1 = require("../../Core/Effect/EffectEnvironment");
 const Platform_1 = require("../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
+const LocalStorage_1 = require("../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
@@ -107,6 +108,7 @@ var EFunction;
   e[e.EnemyHitDisplayMode = 135] = "EnemyHitDisplayMode";
   e[e.PlayStationOnly = 136] = "PlayStationOnly";
   e[e.MobileGamepadMode = 137] = "MobileGamepadMode";
+  e[e.BackendVolume = 10107] = "BackendVolume";
   e[e.SkinDamageMode = 20031] = "SkinDamageMode";
   e[e.AutoAdjustImageQuality = 145] = "AutoAdjustImageQuality";
   e[e.ShowDamage = 20023] = "ShowDamage";
@@ -126,6 +128,7 @@ var EFunction;
   e[e.BasicGraphicSetting = 20203] = "BasicGraphicSetting";
   e[e.Vulkan = 20360] = "Vulkan";
   e[e.ResDownLoad = 55113] = "ResDownLoad";
+  e[e.ResClear = 55114] = "ResClear";
   e[e.VersionCheck = 51506] = "VersionCheck";
   e[e.AutoRun = 60208] = "AutoRun";
   e[e.AutoSprint = 60209] = "AutoSprint";
@@ -177,6 +180,11 @@ const ambVolume = {
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.AMBVolume,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVolume(e, "volume_sfx_amb"),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVolume("volume_sfx_amb")
+};
+const backendVolume = {
+  GameSettingId: EFunction.BackendVolume,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.BackendVolume,
+  DumpCallback: () => ""
 };
 const imageQuality = {
   GameSettingId: EFunction.IMAGEQUALITY,
@@ -624,9 +632,14 @@ const cdKey = {
   DumpCallback: () => "[DumpCdKey]this is just a switch entry"
 };
 const resDownLoad = {
-  GameSettingId: EFunction.CdKey,
+  GameSettingId: EFunction.ResDownLoad,
   GetCallbackOrGlobalKey: () => 0,
-  DumpCallback: () => "[resDownLoad]this is just a switch entry"
+  DumpCallback: () => "[resDownLoad]SubPackageDownLoad"
+};
+const resClear = {
+  GameSettingId: EFunction.ResClear,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[resClear]SubPackageDownLoadClear"
 };
 const pushMode = {
   GameSettingId: EFunction.PushMode,
@@ -913,6 +926,11 @@ const vulkan = {
   GameSettingId: EFunction.Vulkan,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Vulkan,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVulkan(e),
+  HandleDoneCallback: (e, t) => {
+    if (t === 1 || t === 2) {
+      LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VulkanChangeFlag, true);
+    }
+  },
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVulkan()
 };
 const showOtherName = {
@@ -1003,6 +1021,7 @@ exports.function2GameSettings = {
   [EFunction.SFXVOLUMEFUNCTION]: sfxVolume,
   [EFunction.UIVOLUMEFUNCTION]: uiVolume,
   [EFunction.AMBVOLUMEFUNCTION]: ambVolume,
+  [EFunction.BackendVolume]: backendVolume,
   [EFunction.IMAGEQUALITY]: imageQuality,
   [EFunction.DISPLAYMODE]: displayMode,
   [EFunction.RESOLUTION]: resolution,
@@ -1105,6 +1124,7 @@ exports.function2GameSettings = {
   [EFunction.AutoRun]: autoRun,
   [EFunction.Vulkan]: vulkan,
   [EFunction.ResDownLoad]: resDownLoad,
+  [EFunction.ResClear]: resClear,
   [EFunction.AutoSprint]: autoSprint,
   [EFunction.ShowOtherName]: showOtherName,
   [EFunction.WaterInteract]: waterInteract,
@@ -1123,9 +1143,9 @@ exports.function2GameSettings = {
 exports.WINDOWS_RESOLUTION_INDEX = 2;
 exports.NPC_DENSITY_THRESHOLD = 1;
 exports.NPC_DENSITY_PC_THRESHOLD = 1;
-exports.HEAVY_SCENEVULUME_INDEX_START = 5;
-exports.HEAVY_SCENEVULUME_INDEX_END = 9;
-exports.AMD_DISABLE_RAYTRACING_INDEX_START = 40;
-exports.AMD_DISABLE_RAYTRACING_INDEX_END = 44;
+exports.HEAVY_SCENEVULUME_INDEX_START = 30;
+exports.HEAVY_SCENEVULUME_INDEX_END = 39;
+exports.RENDER_QUALITY_SUIBO_INDEX_START = 60;
+exports.RENDER_QUALITY_SUIBO_INDEX_END = 69;
 exports.MAIN_TYPE_OF_KEY_SETTING = 3;
 exports.gameSettingsInitSourceTypePriority = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 10]; //# sourceMappingURL=GameSettingsDefine.js.map

@@ -10,6 +10,7 @@ const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const Stats_1 = require("../../Core/Common/Stats");
 const GlobalData_1 = require("../GlobalData");
+const EventCSharpBridge_1 = require("./Event/EventCSharpBridge");
 const EventDefine_1 = require("./Event/EventDefine");
 const EventSystem_1 = require("./Event/EventSystem");
 const LocalStorageCache_1 = require("./LocalStorageCache");
@@ -49,6 +50,7 @@ class LocalStorage {
         LocalStorage.mde();
       }
       LocalStorage.dde();
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsLocalStorageInit);
     }
   }
   static Destroy() {

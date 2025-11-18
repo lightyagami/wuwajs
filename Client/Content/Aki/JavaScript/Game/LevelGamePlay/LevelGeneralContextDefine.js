@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CustomContext = exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.DynamicInteractContext = exports.EntityContext = exports.GeneralContext = undefined;
+exports.InteractSecondConfirmContext = exports.CustomContext = exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.DynamicInteractContext = exports.EntityContext = exports.GeneralContext = undefined;
 class GeneralContext {
   constructor() {
     this.Type = undefined;
@@ -324,4 +324,20 @@ class CustomContext extends GeneralContext {
   }
 }
 exports.CustomContext = CustomContext;
+class InteractSecondConfirmContext extends GeneralContext {
+  constructor() {
+    super();
+    this.Handle = 0;
+    this.Option = undefined;
+    this.ConfirmCallback = undefined;
+    this.Type = 14;
+  }
+  static Create(t, e) {
+    var n = GeneralContext.GetObj(14, undefined, InteractSecondConfirmContext);
+    n.Handle = t;
+    n.Option = e;
+    return n;
+  }
+}
+exports.InteractSecondConfirmContext = InteractSecondConfirmContext;
 //# sourceMappingURL=LevelGeneralContextDefine.js.map

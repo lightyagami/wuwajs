@@ -62,6 +62,8 @@ class PlatformSdkBase {
     this.kSe = false;
     this.FSe = false;
     this.CurrentCustomerShowState = false;
+    this.ExternalLoginState = false;
+    this.AchievementMap = new Map();
     this.VSe = e => {
       e = e === 1;
       ControllerHolder_1.ControllerHolder.KuroSdkController.SetPostWebViewRedPointState(e);
@@ -78,6 +80,7 @@ class PlatformSdkBase {
     this.KuroDeepLinkBindFunction();
     this.KuroGameWinStateBindFunction();
     this.BindSpecialEvent();
+    this.BindExternalEvent();
     if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
       this.KSe();
     }
@@ -756,6 +759,89 @@ class PlatformSdkBase {
   }
   CloseWebView(e) {
     ue_1.KuroSDKManager.CloseWebView(e);
+  }
+  ShowExternalLogin() {
+    if (Info_1.Info.PlatformType === 1) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "ShowExternalLoginUI");
+      }
+      ue_1.KuroSDKManager.ShowExternalLogin();
+    }
+  }
+  QueryExternalAchievement() {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("KuroSdk", 27, "CacheExternalAchievement");
+    }
+    ue_1.KuroSDKManager.QueryExternalAchievements();
+  }
+  UnlockSdkTrophy(e) {
+    this.UpdateExternalAchievementProgress(e.toString(), 100);
+  }
+  UpdateExternalAchievementProgress(e, o) {
+    var r;
+    if (!!this.ExternalLoginState && !((this.AchievementMap.get(e) ? this.AchievementMap.get(e).Progress : 0) >= 100)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "UpdateExternalAchievementProgress", ["achievementName", e]);
+      }
+      (r = new KuroSdkData_1.AchievementContentData()).AchievementId = e;
+      r.Progress = o;
+      (e = new KuroSdkData_1.AchievementData()).Achievements = new Array();
+      e.Achievements.push(r);
+      o = Json_1.Json.Stringify(e);
+      ue_1.KuroSDKManager.WriteExternalAchievements(o);
+    }
+  }
+  BindExternalEvent() {
+    this.KuroBindExternalLoginResult();
+    this.KuroBindExternalAchievementWriteResult();
+    this.KuroBindExternalAchievementQueryResult();
+  }
+  KuroBindExternalLoginResult() {
+    UE.KuroSDKManager.Get().ExternalLoginCallBack.Clear();
+    UE.KuroSDKManager.Get().ExternalLoginCallBack.Add(e => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "ShowExternalLoginUI", ["result", e]);
+      }
+      if (e) {
+        this.ExternalLoginState = true;
+        this.QueryExternalAchievement();
+      }
+      this.ExternalLoginState = e;
+    });
+  }
+  KuroBindExternalAchievementQueryResult() {
+    UE.KuroSDKManager.Get().ExternalQueryAchievementsDelegate.Clear();
+    UE.KuroSDKManager.Get().ExternalQueryAchievementsDelegate.Add((e, o) => {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "CacheExternalAchievement", ["result", e]);
+      }
+      this.AchievementMap.clear();
+      if (e) {
+        var r = o.Num();
+        for (let e = 0; e < r; e++) {
+          var t = o.Get(e);
+          var n = new KuroSdkData_1.AchievementContentData();
+          n.AchievementId = t.AchievementId;
+          n.Progress = t.Progress;
+          this.AchievementMap.set(t.AchievementId, n);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("KuroSdk", 27, "AchievementData", ["AchievementId", t.AchievementId], ["Progress", t.Progress]);
+          }
+        }
+      }
+    });
+  }
+  KuroBindExternalAchievementWriteResult() {
+    ue_1.KuroSDKManager.Get().ExternalWriteAchievementsDelegate.Clear();
+    ue_1.KuroSDKManager.Get().ExternalWriteAchievementsDelegate.Add((o, r) => {
+      var t = r.Num();
+      for (let e = 0; e < t; e++) {
+        var n = r.Get(e);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("KuroSdk", 27, "AchievementData", ["AchievementId", n], ["result", o]);
+        }
+      }
+    });
   }
   OnClear() {}
   RecoverSdkData() {}

@@ -36,6 +36,7 @@ const TurntableControlModel_1 = require("../LevelGamePlay/TurntableControl/Turnt
 const FormationAttributeModel_1 = require("../Module/Abilities/FormationAttributeModel");
 const FormationDataModel_1 = require("../Module/Abilities/FormationDataModel");
 const AchievementModel_1 = require("../Module/Achievement/AchievementModel");
+const AdvanceNoticeModel_1 = require("../Module/Activity/ActivityContent/AdvanceNotice/AdvanceNoticeModel");
 const AvignonModel_1 = require("../Module/Activity/ActivityContent/Avignon/AvignonModel");
 const BabelTowerModel_1 = require("../Module/Activity/ActivityContent/BabelTower/BabelTowerModel");
 const BossRushModel_1 = require("../Module/Activity/ActivityContent/BossRush/BossRushModel");
@@ -55,6 +56,7 @@ const MoonChasingRewardModel_1 = require("../Module/Activity/ActivityContent/Moo
 const MoonChasingTaskModel_1 = require("../Module/Activity/ActivityContent/MoonChasing/Main/Task/Model/MoonChasingTaskModel");
 const MowingRiskModel_1 = require("../Module/Activity/ActivityContent/MowingRisk/Model/MowingRiskModel");
 const MowingTowerModel_1 = require("../Module/Activity/ActivityContent/MowingTower/MowingTowerModel");
+const ActivityPreWarmModel_1 = require("../Module/Activity/ActivityContent/PreWarm/ActivityPreWarmModel");
 const ActivityRegressModel_1 = require("../Module/Activity/ActivityContent/Regress/ActivityRegressModel");
 const ActivityRunModel_1 = require("../Module/Activity/ActivityContent/Run/ActivityRunModel");
 const ActivityScratchTicketModel_1 = require("../Module/Activity/ActivityContent/ScratchTicket/ActivityScratchTicketModel");
@@ -119,6 +121,7 @@ const GreatSwordChallengeModel_1 = require("../Module/GreatSword/Model/GreatSwor
 const GuideModel_1 = require("../Module/Guide/Model/GuideModel");
 const HandBookModel_1 = require("../Module/HandBook/HandBookModel");
 const HoldingHandsModel_1 = require("../Module/HoldHands/HoldingHandsModel");
+const HonamiStoryModel_1 = require("../Module/HonamiStory/HonamiStoryModel");
 const InfluenceModel_1 = require("../Module/Influence/Model/InfluenceModel");
 const InfluenceReputationModel_1 = require("../Module/Influence/Model/InfluenceReputationModel");
 const InfoDisplayModel_1 = require("../Module/InfoDisplay/Data/InfoDisplayModel");
@@ -148,6 +151,7 @@ const LordGymModel_1 = require("../Module/LordGym/LordGymModel");
 const MailModel_1 = require("../Module/Mail/MailModel");
 const MailBindModel_1 = require("../Module/MailBind/MailBindModel");
 const ComposeModel_1 = require("../Module/Manufacture/Compose/ComposeModel");
+const ComposePopupModel_1 = require("../Module/Manufacture/Compose/QuicklyPopup/ComposePopupModel");
 const ForgingModel_1 = require("../Module/Manufacture/Forging/ForgingModel");
 const MapModel_1 = require("../Module/Map/MapModel");
 const MapExploreToolModel_1 = require("../Module/MapExploreTool/MapExploreToolModel");
@@ -192,6 +196,7 @@ const QuestResourceModel_1 = require("../Module/QuestResource/Model/QuestResourc
 const QuestReviewModel_1 = require("../Module/QuestReview/QuestReviewModel");
 const QuestTreeModel_1 = require("../Module/QuestTree/QuestTreeModel");
 const RacingBetsModel_1 = require("../Module/RacingBets/RacingBetsModel");
+const RandomPlotModel_1 = require("../Module/RandomPlot/RandomPlotModel");
 const RechargeModel_1 = require("../Module/Recharge/RechargeModel");
 const RecommendQualityModel_1 = require("../Module/RecommendQuality/RecommendQualityModel");
 const ReConnectModel_1 = require("../Module/ReConnect/ReConnectModel");
@@ -223,6 +228,7 @@ const SkipInterfaceModel_1 = require("../Module/SkipInterface/SkipInterfaceModel
 const SoundAreaPlayTipsModel_1 = require("../Module/SoundArea/SoundAreaPlayTipsModel");
 const SpecialTransitionModel_1 = require("../Module/SpecialTransition/SpecialTransitionModel");
 const SubLevelLoadingModel_1 = require("../Module/SubLevelLoading/SubLevelLoadingModel");
+const SubPackageDownLoadModel_1 = require("../Module/SubPackage/SubPackageDownLoadModel");
 const SundryModel_1 = require("../Module/Sundry/SundryModel");
 const SurvivorsRogueModel_1 = require("../Module/SurvivorsRogue/SurvivorsRogueModel");
 const TeleportModel_1 = require("../Module/Teleport/TeleportModel");
@@ -254,6 +260,7 @@ const CharacterManipulateInteractModel_1 = require("../NewWorld/Character/Common
 const CharacterManipulaterModel_1 = require("../NewWorld/Character/Common/Component/CharacterManipulaterModel");
 const PerformModel_1 = require("../NewWorld/Character/Common/Component/Performance/PerformModel");
 const NpcConfigModel_1 = require("../NewWorld/Character/Npc/Datas/NpcConfigModel");
+const ClientTagModel_1 = require("../NewWorld/Common/Model/ClientTagModel");
 const ConnectGamePlayModel_1 = require("../NewWorld/SceneItem/Model/ConnectGamePlayModel");
 const PortalModel_1 = require("../NewWorld/SceneItem/Model/PortalModel");
 const RangeItemModel_1 = require("../NewWorld/SceneItem/Model/RangeItemModel");
@@ -282,6 +289,7 @@ const TraceElementModel_1 = require("../World/Model/TraceElementModel");
 const WorldDebugModel_1 = require("../World/Model/WorldDebugModel");
 const WorldModel_1 = require("../World/Model/WorldModel");
 const ModelManager_1 = require("./ModelManager");
+const ResourceManagerModel_1 = require("../Module/ResManager/Model/ResourceManagerModel");
 class ModelManagerCreator {
   static Init() {
     ModelManager_1.ModelManager.PlatformModel = new PlatformModel_1.PlatformModel();
@@ -372,6 +380,8 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestNewModel);
     ModelManager_1.ModelManager.QuestResourceModel = new QuestResourceModel_1.QuestResourceModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestResourceModel);
+    ModelManager_1.ModelManager.ResourceManagerModel = new ResourceManagerModel_1.ResourceManagerModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ResourceManagerModel);
     ModelManager_1.ModelManager.ItemHintModel = new ItemHintModel_1.ItemHintModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ItemHintModel);
     ModelManager_1.ModelManager.AttributeModel = new AttributeModel_1.AttributeModel();
@@ -824,20 +834,34 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.GreatSwordChallengeModel);
     ModelManager_1.ModelManager.ActivityFunPlayModel = new ActivityFunPlayModel_1.ActivityFunPlayModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityFunPlayModel);
+    ModelManager_1.ModelManager.HonamiStoryModel = new HonamiStoryModel_1.HonamiStoryModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.HonamiStoryModel);
     ModelManager_1.ModelManager.SeekTraceModel = new SeekTraceModel_1.SeekTraceModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SeekTraceModel);
+    ModelManager_1.ModelManager.ClientTagModel = new ClientTagModel_1.ClientTagModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ClientTagModel);
     ModelManager_1.ModelManager.VideoBpModel = new VideoBpModel_1.VideoBpModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.VideoBpModel);
     ModelManager_1.ModelManager.SurvivorsRogueModel = new SurvivorsRogueModel_1.SurvivorsRogueModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SurvivorsRogueModel);
     ModelManager_1.ModelManager.QuestTreeModel = new QuestTreeModel_1.QuestTreeModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.QuestTreeModel);
+    ModelManager_1.ModelManager.ActivityPreWarmModel = new ActivityPreWarmModel_1.ActivityPreWarmModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ActivityPreWarmModel);
     ModelManager_1.ModelManager.RoleDevModel = new RoleDevModel_1.RoleDevModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RoleDevModel);
     ModelManager_1.ModelManager.CalabashSkinModel = new CalabashSkinModel_1.CalabashSkinModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.CalabashSkinModel);
     ModelManager_1.ModelManager.SpecialTransitionModel = new SpecialTransitionModel_1.SpecialTransitionModel();
     ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SpecialTransitionModel);
+    ModelManager_1.ModelManager.AdvanceNoticeModel = new AdvanceNoticeModel_1.AdvanceNoticeModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.AdvanceNoticeModel);
+    ModelManager_1.ModelManager.RandomPlotModel = new RandomPlotModel_1.RandomPlotModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.RandomPlotModel);
+    ModelManager_1.ModelManager.ComposePopupModel = new ComposePopupModel_1.ComposePopupModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.ComposePopupModel);
+    ModelManager_1.ModelManager.SubPackageDownLoadModel = new SubPackageDownLoadModel_1.SubPackageDownLoadModel();
+    ModelManager_1.ModelManager.Add(ModelManager_1.ModelManager.SubPackageDownLoadModel);
     ModelManager_1.ModelManager.Init();
     if (Info_1.Info.IsPlayInEditor) {
       TestModuleBridge_1.TestModuleBridge.TryGetTestModuleExports().then(e => {
@@ -886,6 +910,7 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.MingSuModel = undefined;
     ModelManager_1.ModelManager.ShopModel = undefined;
     ModelManager_1.ModelManager.WeaponModel = undefined;
+    ModelManager_1.ModelManager.ClientTagModel = undefined;
     ModelManager_1.ModelManager.InstanceDungeonModel = undefined;
     ModelManager_1.ModelManager.InstanceDungeonEntranceModel = undefined;
     ModelManager_1.ModelManager.RoleModel = undefined;
@@ -970,6 +995,7 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.WaitEntityTaskModel = undefined;
     ModelManager_1.ModelManager.QuestNewModel = undefined;
     ModelManager_1.ModelManager.QuestResourceModel = undefined;
+    ModelManager_1.ModelManager.ResourceManagerModel = undefined;
     ModelManager_1.ModelManager.ComboTeachingModel = undefined;
     ModelManager_1.ModelManager.PersonalModel = undefined;
     ModelManager_1.ModelManager.ActivityModel = undefined;
@@ -1037,8 +1063,13 @@ class ModelManagerCreator {
     ModelManager_1.ModelManager.ActivityFunPlayModel = undefined;
     ModelManager_1.ModelManager.AvoidanceModel = undefined;
     ModelManager_1.ModelManager.QuestTreeModel = undefined;
+    ModelManager_1.ModelManager.ActivityPreWarmModel = undefined;
     ModelManager_1.ModelManager.CalabashSkinModel = undefined;
-    return !(ModelManager_1.ModelManager.SpecialTransitionModel = undefined);
+    ModelManager_1.ModelManager.AdvanceNoticeModel = undefined;
+    ModelManager_1.ModelManager.SpecialTransitionModel = undefined;
+    ModelManager_1.ModelManager.RandomPlotModel = undefined;
+    ModelManager_1.ModelManager.ComposePopupModel = undefined;
+    return !(ModelManager_1.ModelManager.SubPackageDownLoadModel = undefined);
   }
 }
 exports.ModelManagerCreator = ModelManagerCreator;

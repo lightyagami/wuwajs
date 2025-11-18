@@ -1,16 +1,53 @@
 "use strict";
 
+var __decorate = this && this.__decorate || function (t, e, o, s) {
+  var i;
+  var a = arguments.length;
+  var r = a < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, o) : s;
+  if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
+    r = Reflect.decorate(t, e, o, s);
+  } else {
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (i = t[n]) {
+        r = (a < 3 ? i(r) : a > 3 ? i(e, o, r) : i(e, o)) || r;
+      }
+    }
+  }
+  if (a > 3 && r) {
+    Object.defineProperty(e, o, r);
+  }
+  return r;
+};
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ActivityRegressLogData = exports.ActivityRecallLogData = exports.ActivityLockConditionClickLogData = exports.ActivityViewJumpClickLogData = exports.ActivityTabViewOpenLogData = exports.ActivityViewOpenLogData = exports.FollowShooterUseLogData = exports.ScanSkillUseLogData = exports.ManipulateSkillUseLogData = exports.HookSkillUseLogData = exports.ExploreToolItemUseLogData = exports.ExploreToolEquipLogData = exports.ExploreToolSwitchLogData = exports.ExploreToolUseLogData = exports.ExploreToolAssemblyLogData = exports.SettingMenuLogData = exports.PlayFlowLogData = exports.DefaultFilterLogEvent = exports.SettingMenuLogEvent = exports.PhotographerLogData = exports.AdviceWatchLogData = exports.QuestDiscoverLogData = exports.ReconvProcessLink = exports.LoginProcessLink = exports.DeathRecord = exports.ElevatorUsedRecord = exports.TriggerBuffDamageRecord = exports.InstMonsterSkillReportLog = exports.InstReactionLogRecord = exports.InstRoleSkillReportLog = exports.InstMonsterStateRecord = exports.InstRoleStateRecord = exports.InstFightEndRecord = exports.InstFightStartRecord = exports.ReactionRecord = exports.ReactionLogRecord = exports.MonsterSkillRecord = exports.MonsterSkillReportLog = exports.RoleSkillRecord = exports.RoleSkillReportLog = exports.MonsterStateRecord = exports.RoleStateRecord = exports.BattleEndLogData = exports.MonsterInfoLogData = exports.TeamCharacterLogData = exports.BattleStartLogData = exports.HangUpTimeLogData = exports.AssemblyLogData = exports.PlayerCommonLogData = exports.CommonLogData = undefined;
-exports.QuestTreeEnterLogEvent = exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogEvent = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = undefined;
+exports.QuestViewEnterLogEvent = exports.FightPhotoTimeDilationLogEvent = exports.FightPhotoTakePhotoLogEvent = exports.RoleSkillInputLogEvent = exports.RoleSkillTreeLogEvent = exports.RoleDevLogEvent = exports.UiInteractChatLogEvent = exports.UiInteractRouletteLogEvent = exports.UiInteractSpaceKeyLogEvent = exports.ParallelDownloadConfirmBoxOperation = exports.AutoShowParallelDownloadConfirmBox = exports.HoldHandSitDownLogEvent = exports.HoldHandExitLogEvent = exports.HoldHandEnterLogEvent = exports.ShipTowerSwitch = exports.KingShipLogEvent = exports.LifePointDrawLogEvent = exports.ClickTermExplanationEvent = exports.EnterViewWithTermsEvent = exports.PhantomArenaDeckUpdateEvent = exports.GachaRecordClickLogEvent = exports.NoticeClickLogEvent = exports.GameInformationClickLogEvent = exports.SubPackageClearSpaceFinishLogEvent = exports.SubPackageClearSpaceLogEvent = exports.SubPackageOutOfSpaceLogEvent = exports.SubPackageDownLoadLogEvent = exports.SubPackageKeySubPackageLogEvent = exports.DownloadVideoResNotEnoughSpaceLogData = exports.DownloadVideoResLogData = exports.CiacconaEnterMainViewLogEvent = exports.PreDownloadDownloadNoSpaceBeforeStartRecord = exports.PreDownloadDownloadModeSuccessRecord = exports.PreDownloadPauseRecord = exports.PreDownloadDownloadModeSwitchRecord = exports.PreDownloadEntranceRecord = exports.BirthdayRepeatEnterEvent = exports.BirthdaySelectRoleEvent = exports.LinkageClickGoEvent = exports.LinkageSwitchModuleEvent = exports.SdkStartReview = exports.ShareEvent = exports.MailBindJumpToWebViewEvent = exports.MailBindClickEvent = exports.GamepadActiveEvent = exports.SdkPayGetServerBillEvent = exports.FailSdkPayEvent = exports.SuccessSdkPayEvent = exports.StartSdkPayEvent = exports.ActivityPreheatLogData = undefined;
+exports.NextVersionContentLogEvent = exports.ActivityPreWarmStayLogEvent = exports.ActivityPreWarmOpenLogEvent = exports.CustomServiceLogEvent = exports.QuestTreeEnterLogEvent = undefined;
 const UE = require("ue");
 const Json_1 = require("../../../Core/Common/Json");
+const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const PROJECT_ID = "Aki";
+const EVENT_ID_REGISTRY = new Map();
+function CheckEventIdUnique(...s) {
+  return function (t) {
+    for (const o of s) {
+      var e = EVENT_ID_REGISTRY.get(o);
+      if (e && e.length > 0) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LogReport", 10, "检测到LogReport事件id重复", ["事件id", o], ["已有事件名", e], ["新增事件名", t.name]);
+        }
+        e.push(t.name);
+      } else {
+        EVENT_ID_REGISTRY.set(o, [t.name]);
+      }
+    }
+    return t;
+  };
+}
 class CommonLogData extends Json_1.JsonObjBase {
   constructor() {
     super();
@@ -44,15 +81,16 @@ class AssemblyLogData {
   }
 }
 exports.AssemblyLogData = AssemblyLogData;
-class HangUpTimeLogData extends PlayerCommonLogData {
+let HangUpTimeLogData = class HangUpTimeLogData extends PlayerCommonLogData {
   constructor() {
     super();
     this.f_hang_up_time = "";
     this.event_id = "7";
   }
-}
+};
+HangUpTimeLogData = __decorate([CheckEventIdUnique("7")], HangUpTimeLogData);
 exports.HangUpTimeLogData = HangUpTimeLogData;
-class BattleStartLogData extends PlayerCommonLogData {
+let BattleStartLogData = class BattleStartLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102704";
@@ -64,7 +102,8 @@ class BattleStartLogData extends PlayerCommonLogData {
     this.s_team_character = undefined;
     this.s_team_hp_per = undefined;
   }
-}
+};
+BattleStartLogData = __decorate([CheckEventIdUnique("102704")], BattleStartLogData);
 exports.BattleStartLogData = BattleStartLogData;
 class TeamCharacterLogData {}
 exports.TeamCharacterLogData = TeamCharacterLogData;
@@ -79,7 +118,7 @@ class MonsterInfoLogData {
   }
 }
 exports.MonsterInfoLogData = MonsterInfoLogData;
-class BattleEndLogData extends PlayerCommonLogData {
+let BattleEndLogData = class BattleEndLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102705";
@@ -121,9 +160,10 @@ class BattleEndLogData extends PlayerCommonLogData {
     this.i_dash_duration = -0;
     this.i_other_duration = -0;
   }
-}
+};
+BattleEndLogData = __decorate([CheckEventIdUnique("102705")], BattleEndLogData);
 exports.BattleEndLogData = BattleEndLogData;
-class RoleStateRecord extends PlayerCommonLogData {
+let RoleStateRecord = class RoleStateRecord extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "102700";
@@ -173,10 +213,11 @@ class RoleStateRecord extends PlayerCommonLogData {
     this.i_sub_page = 0;
     this.i_role_id = t;
   }
-}
+};
+RoleStateRecord = __decorate([CheckEventIdUnique("102700")], RoleStateRecord);
 exports.RoleStateRecord = RoleStateRecord;
-class MonsterStateRecord extends PlayerCommonLogData {
-  constructor(t, s) {
+let MonsterStateRecord = class MonsterStateRecord extends PlayerCommonLogData {
+  constructor(t, e) {
     super();
     this.event_id = "102701";
     this.s_battle_id = "";
@@ -210,11 +251,12 @@ class MonsterStateRecord extends PlayerCommonLogData {
     this.i_from_quest = 0;
     this.i_from_play = 0;
     this.i_monster_id = t;
-    this.s_pb_model_config_id = s;
+    this.s_pb_model_config_id = e;
   }
-}
+};
+MonsterStateRecord = __decorate([CheckEventIdUnique("102701")], MonsterStateRecord);
 exports.MonsterStateRecord = MonsterStateRecord;
-class RoleSkillReportLog extends PlayerCommonLogData {
+let RoleSkillReportLog = class RoleSkillReportLog extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102702";
@@ -224,7 +266,8 @@ class RoleSkillReportLog extends PlayerCommonLogData {
     this.i_role_quality = 0;
     this.s_reports = "";
   }
-}
+};
+RoleSkillReportLog = __decorate([CheckEventIdUnique("102702")], RoleSkillReportLog);
 exports.RoleSkillReportLog = RoleSkillReportLog;
 class RoleSkillRecord extends Json_1.JsonObjBase {
   constructor(t) {
@@ -240,8 +283,8 @@ class RoleSkillRecord extends Json_1.JsonObjBase {
   }
 }
 exports.RoleSkillRecord = RoleSkillRecord;
-class MonsterSkillReportLog extends PlayerCommonLogData {
-  constructor(t, s) {
+let MonsterSkillReportLog = class MonsterSkillReportLog extends PlayerCommonLogData {
+  constructor(t, e) {
     super();
     this.event_id = "102803";
     this.s_battle_id = "";
@@ -250,9 +293,10 @@ class MonsterSkillReportLog extends PlayerCommonLogData {
     this.s_pb_model_config_id = "";
     this.s_reports = "";
     this.i_monster_id = t;
-    this.s_pb_model_config_id = s;
+    this.s_pb_model_config_id = e;
   }
-}
+};
+MonsterSkillReportLog = __decorate([CheckEventIdUnique("102803")], MonsterSkillReportLog);
 exports.MonsterSkillReportLog = MonsterSkillReportLog;
 class MonsterSkillRecord extends Json_1.JsonObjBase {
   constructor(t) {
@@ -269,28 +313,29 @@ class MonsterSkillRecord extends Json_1.JsonObjBase {
   }
 }
 exports.MonsterSkillRecord = MonsterSkillRecord;
-class ReactionLogRecord extends PlayerCommonLogData {
+let ReactionLogRecord = class ReactionLogRecord extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102703";
     this.s_battle_id = "";
     this.s_reports = "";
   }
-}
+};
+ReactionLogRecord = __decorate([CheckEventIdUnique("102703")], ReactionLogRecord);
 exports.ReactionLogRecord = ReactionLogRecord;
 class ReactionRecord extends Json_1.JsonObjBase {
-  constructor(t, s) {
+  constructor(t, e) {
     super();
     this.role_id = 0;
     this.reaction = 0;
     this.trigger_count = 0;
     this.damage = 0;
     this.role_id = t;
-    this.reaction = s;
+    this.reaction = e;
   }
 }
 exports.ReactionRecord = ReactionRecord;
-class InstFightStartRecord extends PlayerCommonLogData {
+let InstFightStartRecord = class InstFightStartRecord extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102800";
@@ -304,9 +349,10 @@ class InstFightStartRecord extends PlayerCommonLogData {
     this.i_start_time = 0;
     this.i_area_index = 0;
   }
-}
+};
+InstFightStartRecord = __decorate([CheckEventIdUnique("102800")], InstFightStartRecord);
 exports.InstFightStartRecord = InstFightStartRecord;
-class InstFightEndRecord extends PlayerCommonLogData {
+let InstFightEndRecord = class InstFightEndRecord extends PlayerCommonLogData {
   constructor() {
     super();
     this.event_id = "102801";
@@ -391,64 +437,70 @@ class InstFightEndRecord extends PlayerCommonLogData {
     this.i_other_duration = 0;
     this.i_area_index = 0;
   }
-}
+};
+InstFightEndRecord = __decorate([CheckEventIdUnique("102801")], InstFightEndRecord);
 exports.InstFightEndRecord = InstFightEndRecord;
-class InstRoleStateRecord extends RoleStateRecord {
-  constructor(t, s, o) {
+let InstRoleStateRecord = class InstRoleStateRecord extends RoleStateRecord {
+  constructor(t, e, o) {
     super(t);
     this.event_id = "102804";
     this.i_inst_id = 0;
     this.s_fight_id = "";
-    this.i_inst_id = s;
+    this.i_inst_id = e;
     this.s_fight_id = o;
   }
-}
+};
+InstRoleStateRecord = __decorate([CheckEventIdUnique("102804")], InstRoleStateRecord);
 exports.InstRoleStateRecord = InstRoleStateRecord;
-class InstMonsterStateRecord extends MonsterStateRecord {
-  constructor(t, s, o, e) {
-    super(t, s);
+let InstMonsterStateRecord = class InstMonsterStateRecord extends MonsterStateRecord {
+  constructor(t, e, o, s) {
+    super(t, e);
     this.event_id = "102805";
     this.i_inst_id = 0;
     this.s_fight_id = "";
     this.i_inst_id = o;
-    this.s_fight_id = e;
+    this.s_fight_id = s;
   }
-}
+};
+InstMonsterStateRecord = __decorate([CheckEventIdUnique("102805")], InstMonsterStateRecord);
 exports.InstMonsterStateRecord = InstMonsterStateRecord;
-class InstRoleSkillReportLog extends RoleSkillReportLog {
-  constructor(t, s) {
+let InstRoleSkillReportLog = class InstRoleSkillReportLog extends RoleSkillReportLog {
+  constructor(t, e) {
     super();
     this.event_id = "102806";
     this.i_inst_id = 0;
     this.s_fight_id = "";
     this.i_inst_id = t;
-    this.s_fight_id = s;
+    this.s_fight_id = e;
   }
-}
+};
+InstRoleSkillReportLog = __decorate([CheckEventIdUnique("102806")], InstRoleSkillReportLog);
 exports.InstRoleSkillReportLog = InstRoleSkillReportLog;
-class InstReactionLogRecord extends ReactionLogRecord {
-  constructor(t, s) {
+let InstReactionLogRecord = class InstReactionLogRecord extends ReactionLogRecord {
+  constructor(t, e) {
     super();
     this.event_id = "102807";
     this.i_inst_id = 0;
     this.s_fight_id = "";
     this.i_inst_id = t;
-    this.s_fight_id = s;
+    this.s_fight_id = e;
   }
-}
+};
+InstReactionLogRecord = __decorate([CheckEventIdUnique("102807")], InstReactionLogRecord);
 exports.InstReactionLogRecord = InstReactionLogRecord;
-class InstMonsterSkillReportLog extends MonsterSkillReportLog {
-  constructor(t, s, o, e) {
-    super(t, s);
+let InstMonsterSkillReportLog = class InstMonsterSkillReportLog extends MonsterSkillReportLog {
+  constructor(t, e, o, s) {
+    super(t, e);
     this.event_id = "102808";
     this.i_inst_id = 0;
     this.s_fight_id = "";
     this.i_inst_id = o;
-    this.s_fight_id = e;
+    this.s_fight_id = s;
   }
-}
+};
+InstMonsterSkillReportLog = __decorate([CheckEventIdUnique("102808")], InstMonsterSkillReportLog);
 exports.InstMonsterSkillReportLog = InstMonsterSkillReportLog;
-class TriggerBuffDamageRecord extends PlayerCommonLogData {
+let TriggerBuffDamageRecord = class TriggerBuffDamageRecord extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "6";
@@ -460,9 +512,10 @@ class TriggerBuffDamageRecord extends PlayerCommonLogData {
     this.f_player_pos_z = "";
     this.i_damage = "";
   }
-}
+};
+TriggerBuffDamageRecord = __decorate([CheckEventIdUnique("6")], TriggerBuffDamageRecord);
 exports.TriggerBuffDamageRecord = TriggerBuffDamageRecord;
-class ElevatorUsedRecord extends PlayerCommonLogData {
+let ElevatorUsedRecord = class ElevatorUsedRecord extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "11";
@@ -473,9 +526,10 @@ class ElevatorUsedRecord extends PlayerCommonLogData {
     this.f_player_pos_y = "";
     this.f_player_pos_z = "";
   }
-}
+};
+ElevatorUsedRecord = __decorate([CheckEventIdUnique("11")], ElevatorUsedRecord);
 exports.ElevatorUsedRecord = ElevatorUsedRecord;
-class DeathRecord extends PlayerCommonLogData {
+let DeathRecord = class DeathRecord extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "102706";
@@ -487,9 +541,10 @@ class DeathRecord extends PlayerCommonLogData {
     this.i_death_role_id = 0;
     this.i_death_reason = 0;
   }
-}
+};
+DeathRecord = __decorate([CheckEventIdUnique("102706")], DeathRecord);
 exports.DeathRecord = DeathRecord;
-class LoginProcessLink extends CommonLogData {
+let LoginProcessLink = class LoginProcessLink extends CommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "18000";
@@ -508,9 +563,10 @@ class LoginProcessLink extends CommonLogData {
     this.s_device_id = "";
     this.s_command_line = "";
   }
-}
+};
+LoginProcessLink = __decorate([CheckEventIdUnique("18000")], LoginProcessLink);
 exports.LoginProcessLink = LoginProcessLink;
-class ReconvProcessLink extends CommonLogData {
+let ReconvProcessLink = class ReconvProcessLink extends CommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "18001";
@@ -525,9 +581,10 @@ class ReconvProcessLink extends CommonLogData {
     this.s_client_version = "";
     this.i_error_code = 0;
   }
-}
+};
+ReconvProcessLink = __decorate([CheckEventIdUnique("18001")], ReconvProcessLink);
 exports.ReconvProcessLink = ReconvProcessLink;
-class QuestDiscoverLogData extends PlayerCommonLogData {
+let QuestDiscoverLogData = class QuestDiscoverLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1007";
@@ -540,9 +597,10 @@ class QuestDiscoverLogData extends PlayerCommonLogData {
     this.f_pos_y = 0;
     this.f_pos_z = 0;
   }
-}
+};
+QuestDiscoverLogData = __decorate([CheckEventIdUnique("1007")], QuestDiscoverLogData);
 exports.QuestDiscoverLogData = QuestDiscoverLogData;
-class AdviceWatchLogData extends PlayerCommonLogData {
+let AdviceWatchLogData = class AdviceWatchLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1008";
@@ -557,9 +615,10 @@ class AdviceWatchLogData extends PlayerCommonLogData {
     this.i_expression = 0;
     this.i_motion = 0;
   }
-}
+};
+AdviceWatchLogData = __decorate([CheckEventIdUnique("1008")], AdviceWatchLogData);
 exports.AdviceWatchLogData = AdviceWatchLogData;
-class PhotographerLogData extends PlayerCommonLogData {
+let PhotographerLogData = class PhotographerLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.i_area_id = 0;
@@ -576,9 +635,10 @@ class PhotographerLogData extends PlayerCommonLogData {
     this.i_dof_option = 0;
     this.i_filter_id = 0;
   }
-}
+};
+PhotographerLogData = __decorate([CheckEventIdUnique("1009")], PhotographerLogData);
 exports.PhotographerLogData = PhotographerLogData;
-class SettingMenuLogEvent extends PlayerCommonLogData {
+let SettingMenuLogEvent = class SettingMenuLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1017";
@@ -617,16 +677,18 @@ class SettingMenuLogEvent extends PlayerCommonLogData {
     this.eyeprotect_mode = 0;
     this.eyeprotect_list = "";
   }
-}
+};
+SettingMenuLogEvent = __decorate([CheckEventIdUnique("1017")], SettingMenuLogEvent);
 exports.SettingMenuLogEvent = SettingMenuLogEvent;
-class DefaultFilterLogEvent extends PlayerCommonLogData {
+let DefaultFilterLogEvent = class DefaultFilterLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1805";
   }
-}
+};
+DefaultFilterLogEvent = __decorate([CheckEventIdUnique("1805")], DefaultFilterLogEvent);
 exports.DefaultFilterLogEvent = DefaultFilterLogEvent;
-class PlayFlowLogData extends PlayerCommonLogData {
+let PlayFlowLogData = class PlayFlowLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1010";
@@ -641,7 +703,8 @@ class PlayFlowLogData extends PlayerCommonLogData {
     this.f_pos_y = 0;
     this.f_pos_z = 0;
   }
-}
+};
+PlayFlowLogData = __decorate([CheckEventIdUnique("1010")], PlayFlowLogData);
 exports.PlayFlowLogData = PlayFlowLogData;
 class SettingMenuLogData extends PlayerCommonLogData {}
 exports.SettingMenuLogData = SettingMenuLogData;
@@ -653,8 +716,8 @@ class ExploreToolAssemblyLogData extends AssemblyLogData {
     this.SetLogDataToAssembly = t => {
       this.AssemblyLogData.o_report.push(t);
     };
-    var s = CommonParamById_1.configCommonParamById.GetIntConfig("LogReportPeriod_ExploreTool");
-    this.SendTimePeriod = s * TimeUtil_1.TimeUtil.InverseMillisecond;
+    var e = CommonParamById_1.configCommonParamById.GetIntConfig("LogReportPeriod_ExploreTool");
+    this.SendTimePeriod = e * TimeUtil_1.TimeUtil.InverseMillisecond;
     this.AssemblyLogData.i_tool_id = t;
     this.AssemblyId = "1026_" + t;
   }
@@ -666,25 +729,27 @@ class ExploreToolAssemblyLogData extends AssemblyLogData {
   }
 }
 exports.ExploreToolAssemblyLogData = ExploreToolAssemblyLogData;
-class ExploreToolUseLogData extends PlayerCommonLogData {
+let ExploreToolUseLogData = class ExploreToolUseLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1026";
     this.i_tool_id = "";
     this.o_report = [];
   }
-}
+};
+ExploreToolUseLogData = __decorate([CheckEventIdUnique("1026")], ExploreToolUseLogData);
 exports.ExploreToolUseLogData = ExploreToolUseLogData;
-class ExploreToolSwitchLogData extends PlayerCommonLogData {
+let ExploreToolSwitchLogData = class ExploreToolSwitchLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1011";
     this.i_explore_tool_id = 0;
     this.o_authorization = [];
   }
-}
+};
+ExploreToolSwitchLogData = __decorate([CheckEventIdUnique("1011")], ExploreToolSwitchLogData);
 exports.ExploreToolSwitchLogData = ExploreToolSwitchLogData;
-class ExploreToolEquipLogData extends PlayerCommonLogData {
+let ExploreToolEquipLogData = class ExploreToolEquipLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1018";
@@ -693,9 +758,10 @@ class ExploreToolEquipLogData extends PlayerCommonLogData {
     this.i_item_id = 0;
     this.i_operation = 0;
   }
-}
+};
+ExploreToolEquipLogData = __decorate([CheckEventIdUnique("1018")], ExploreToolEquipLogData);
 exports.ExploreToolEquipLogData = ExploreToolEquipLogData;
-class ExploreToolItemUseLogData extends PlayerCommonLogData {
+let ExploreToolItemUseLogData = class ExploreToolItemUseLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1015";
@@ -706,9 +772,10 @@ class ExploreToolItemUseLogData extends PlayerCommonLogData {
     this.f_pos_z = 0;
     this.i_item_id = 0;
   }
-}
+};
+ExploreToolItemUseLogData = __decorate([CheckEventIdUnique("1015")], ExploreToolItemUseLogData);
 exports.ExploreToolItemUseLogData = ExploreToolItemUseLogData;
-class HookSkillUseLogData {
+let HookSkillUseLogData = class HookSkillUseLogData {
   constructor() {
     this.event_id = "1012";
     this.i_father_area_id = 0;
@@ -718,9 +785,10 @@ class HookSkillUseLogData {
     this.f_pos_z = 0;
     this.i_has_target = 0;
   }
-}
+};
+HookSkillUseLogData = __decorate([CheckEventIdUnique("1012")], HookSkillUseLogData);
 exports.HookSkillUseLogData = HookSkillUseLogData;
-class ManipulateSkillUseLogData {
+let ManipulateSkillUseLogData = class ManipulateSkillUseLogData {
   constructor() {
     this.event_id = "1013";
     this.i_father_area_id = 0;
@@ -730,9 +798,10 @@ class ManipulateSkillUseLogData {
     this.f_pos_z = 0;
     this.i_has_target = 0;
   }
-}
+};
+ManipulateSkillUseLogData = __decorate([CheckEventIdUnique("1013")], ManipulateSkillUseLogData);
 exports.ManipulateSkillUseLogData = ManipulateSkillUseLogData;
-class ScanSkillUseLogData {
+let ScanSkillUseLogData = class ScanSkillUseLogData {
   constructor() {
     this.event_id = "1014";
     this.i_father_area_id = 0;
@@ -742,9 +811,10 @@ class ScanSkillUseLogData {
     this.f_pos_z = 0;
     this.i_has_target = 0;
   }
-}
+};
+ScanSkillUseLogData = __decorate([CheckEventIdUnique("1014")], ScanSkillUseLogData);
 exports.ScanSkillUseLogData = ScanSkillUseLogData;
-class FollowShooterUseLogData {
+let FollowShooterUseLogData = class FollowShooterUseLogData {
   constructor() {
     this.event_id = "1025";
     this.i_father_area_id = 0;
@@ -754,17 +824,19 @@ class FollowShooterUseLogData {
     this.f_pos_z = 0;
     this.i_has_target = 0;
   }
-}
+};
+FollowShooterUseLogData = __decorate([CheckEventIdUnique("1025")], FollowShooterUseLogData);
 exports.FollowShooterUseLogData = FollowShooterUseLogData;
-class ActivityViewOpenLogData extends PlayerCommonLogData {
+let ActivityViewOpenLogData = class ActivityViewOpenLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1019";
     this.i_open_way = 0;
   }
-}
+};
+ActivityViewOpenLogData = __decorate([CheckEventIdUnique("1019")], ActivityViewOpenLogData);
 exports.ActivityViewOpenLogData = ActivityViewOpenLogData;
-class ActivityTabViewOpenLogData extends PlayerCommonLogData {
+let ActivityTabViewOpenLogData = class ActivityTabViewOpenLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1020";
@@ -773,9 +845,10 @@ class ActivityTabViewOpenLogData extends PlayerCommonLogData {
     this.i_time_left = 0;
     this.i_unlock = 0;
   }
-}
+};
+ActivityTabViewOpenLogData = __decorate([CheckEventIdUnique("1020")], ActivityTabViewOpenLogData);
 exports.ActivityTabViewOpenLogData = ActivityTabViewOpenLogData;
-class ActivityViewJumpClickLogData extends PlayerCommonLogData {
+let ActivityViewJumpClickLogData = class ActivityViewJumpClickLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1021";
@@ -783,18 +856,20 @@ class ActivityViewJumpClickLogData extends PlayerCommonLogData {
     this.i_activity_type = 0;
     this.i_unlock = 0;
   }
-}
+};
+ActivityViewJumpClickLogData = __decorate([CheckEventIdUnique("1021")], ActivityViewJumpClickLogData);
 exports.ActivityViewJumpClickLogData = ActivityViewJumpClickLogData;
-class ActivityLockConditionClickLogData extends PlayerCommonLogData {
+let ActivityLockConditionClickLogData = class ActivityLockConditionClickLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1029";
     this.i_activity_id = 0;
     this.i_activity_type = 0;
   }
-}
+};
+ActivityLockConditionClickLogData = __decorate([CheckEventIdUnique("1029")], ActivityLockConditionClickLogData);
 exports.ActivityLockConditionClickLogData = ActivityLockConditionClickLogData;
-class ActivityRecallLogData extends PlayerCommonLogData {
+let ActivityRecallLogData = class ActivityRecallLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.i_activity_id = 0;
@@ -804,18 +879,20 @@ class ActivityRecallLogData extends PlayerCommonLogData {
     this.i_quest_id = 0;
     this.i_grade_id = 0;
   }
-}
+};
+ActivityRecallLogData = __decorate([CheckEventIdUnique("1023", "1024")], ActivityRecallLogData);
 exports.ActivityRecallLogData = ActivityRecallLogData;
-class ActivityRegressLogData extends PlayerCommonLogData {
+let ActivityRegressLogData = class ActivityRegressLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.i_activity_id = 0;
     this.i_grade_id = 0;
     this.i_question_id = 0;
   }
-}
+};
+ActivityRegressLogData = __decorate([CheckEventIdUnique("1060", "1061")], ActivityRegressLogData);
 exports.ActivityRegressLogData = ActivityRegressLogData;
-class ActivityPreheatLogData extends PlayerCommonLogData {
+let ActivityPreheatLogData = class ActivityPreheatLogData extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1030";
@@ -824,69 +901,77 @@ class ActivityPreheatLogData extends PlayerCommonLogData {
     this.i_time_left = 0;
     this.i_type = 0;
   }
-}
+};
+ActivityPreheatLogData = __decorate([CheckEventIdUnique("1030")], ActivityPreheatLogData);
 exports.ActivityPreheatLogData = ActivityPreheatLogData;
-class StartSdkPayEvent extends PlayerCommonLogData {
+let StartSdkPayEvent = class StartSdkPayEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1040";
     this.s_sdk_pay_order = "";
     this.s_sdk_callback_url = "";
   }
-}
+};
+StartSdkPayEvent = __decorate([CheckEventIdUnique("1040")], StartSdkPayEvent);
 exports.StartSdkPayEvent = StartSdkPayEvent;
-class SuccessSdkPayEvent extends PlayerCommonLogData {
+let SuccessSdkPayEvent = class SuccessSdkPayEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1041";
     this.s_sdk_pay_order = "";
   }
-}
+};
+SuccessSdkPayEvent = __decorate([CheckEventIdUnique("1041")], SuccessSdkPayEvent);
 exports.SuccessSdkPayEvent = SuccessSdkPayEvent;
-class FailSdkPayEvent extends PlayerCommonLogData {
+let FailSdkPayEvent = class FailSdkPayEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1042";
     this.s_sdk_pay_order = "";
     this.s_reason = "";
   }
-}
+};
+FailSdkPayEvent = __decorate([CheckEventIdUnique("1042")], FailSdkPayEvent);
 exports.FailSdkPayEvent = FailSdkPayEvent;
-class SdkPayGetServerBillEvent extends PlayerCommonLogData {
+let SdkPayGetServerBillEvent = class SdkPayGetServerBillEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1043";
     this.s_sdk_pay_order = "";
   }
-}
+};
+SdkPayGetServerBillEvent = __decorate([CheckEventIdUnique("1043")], SdkPayGetServerBillEvent);
 exports.SdkPayGetServerBillEvent = SdkPayGetServerBillEvent;
-class GamepadActiveEvent extends PlayerCommonLogData {
+let GamepadActiveEvent = class GamepadActiveEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1050";
     this.i_gamepad_count = 0;
     this.i_gamepad_time = 0;
   }
-}
+};
+GamepadActiveEvent = __decorate([CheckEventIdUnique("1050")], GamepadActiveEvent);
 exports.GamepadActiveEvent = GamepadActiveEvent;
-class MailBindClickEvent extends PlayerCommonLogData {
+let MailBindClickEvent = class MailBindClickEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1051";
     this.i_language = 0;
     this.i_if_binded = 0;
   }
-}
+};
+MailBindClickEvent = __decorate([CheckEventIdUnique("1051")], MailBindClickEvent);
 exports.MailBindClickEvent = MailBindClickEvent;
-class MailBindJumpToWebViewEvent extends PlayerCommonLogData {
+let MailBindJumpToWebViewEvent = class MailBindJumpToWebViewEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1052";
     this.i_language = 0;
   }
-}
+};
+MailBindJumpToWebViewEvent = __decorate([CheckEventIdUnique("1052")], MailBindJumpToWebViewEvent);
 exports.MailBindJumpToWebViewEvent = MailBindJumpToWebViewEvent;
-class ShareEvent extends PlayerCommonLogData {
+let ShareEvent = class ShareEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1053";
@@ -894,18 +979,20 @@ class ShareEvent extends PlayerCommonLogData {
     this.i_share_result = 0;
     this.i_share_scene = 0;
   }
-}
+};
+ShareEvent = __decorate([CheckEventIdUnique("1053")], ShareEvent);
 exports.ShareEvent = ShareEvent;
-class SdkStartReview extends PlayerCommonLogData {
+let SdkStartReview = class SdkStartReview extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1044";
     this.s_channel = "";
     this.i_id = 0;
   }
-}
+};
+SdkStartReview = __decorate([CheckEventIdUnique("1044")], SdkStartReview);
 exports.SdkStartReview = SdkStartReview;
-class LinkageSwitchModuleEvent extends PlayerCommonLogData {
+let LinkageSwitchModuleEvent = class LinkageSwitchModuleEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1058";
@@ -914,9 +1001,10 @@ class LinkageSwitchModuleEvent extends PlayerCommonLogData {
     this.i_id = 0;
     this.i_if_finish = 0;
   }
-}
+};
+LinkageSwitchModuleEvent = __decorate([CheckEventIdUnique("1058")], LinkageSwitchModuleEvent);
 exports.LinkageSwitchModuleEvent = LinkageSwitchModuleEvent;
-class LinkageClickGoEvent extends PlayerCommonLogData {
+let LinkageClickGoEvent = class LinkageClickGoEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1059";
@@ -924,9 +1012,10 @@ class LinkageClickGoEvent extends PlayerCommonLogData {
     this.i_activity_type = 0;
     this.i_id = 0;
   }
-}
+};
+LinkageClickGoEvent = __decorate([CheckEventIdUnique("1059")], LinkageClickGoEvent);
 exports.LinkageClickGoEvent = LinkageClickGoEvent;
-class BirthdaySelectRoleEvent extends PlayerCommonLogData {
+let BirthdaySelectRoleEvent = class BirthdaySelectRoleEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1062";
@@ -935,63 +1024,80 @@ class BirthdaySelectRoleEvent extends PlayerCommonLogData {
     this.i_birthday_count = 0;
     this.i_trigger_type = 0;
   }
-}
+};
+BirthdaySelectRoleEvent = __decorate([CheckEventIdUnique("1062")], BirthdaySelectRoleEvent);
 exports.BirthdaySelectRoleEvent = BirthdaySelectRoleEvent;
-class BirthdayRepeatEnterEvent extends PlayerCommonLogData {
+let BirthdayRepeatEnterEvent = class BirthdayRepeatEnterEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1063";
     this.i_item_id = 0;
     this.i_trigger_type = 0;
   }
-}
+};
+BirthdayRepeatEnterEvent = __decorate([CheckEventIdUnique("1063")], BirthdayRepeatEnterEvent);
 exports.BirthdayRepeatEnterEvent = BirthdayRepeatEnterEvent;
-class PreDownloadEntranceRecord extends PlayerCommonLogData {
+let PreDownloadEntranceRecord = class PreDownloadEntranceRecord extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "1054";
     this.i_entrance_id = 0;
     this.i_entrance_id = t;
   }
-}
+};
+PreDownloadEntranceRecord = __decorate([CheckEventIdUnique("1054")], PreDownloadEntranceRecord);
 exports.PreDownloadEntranceRecord = PreDownloadEntranceRecord;
-class PreDownloadDownloadModeSwitchRecord extends PlayerCommonLogData {
+let PreDownloadDownloadModeSwitchRecord = class PreDownloadDownloadModeSwitchRecord extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "1055";
     this.i_download_mode = 0;
     this.i_download_mode = t;
   }
-}
+};
+PreDownloadDownloadModeSwitchRecord = __decorate([CheckEventIdUnique("1055")], PreDownloadDownloadModeSwitchRecord);
 exports.PreDownloadDownloadModeSwitchRecord = PreDownloadDownloadModeSwitchRecord;
-class PreDownloadPauseRecord extends PlayerCommonLogData {
+let PreDownloadPauseRecord = class PreDownloadPauseRecord extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "1056";
     this.i_pause_reason = 0;
     this.i_pause_reason = t;
   }
-}
+};
+PreDownloadPauseRecord = __decorate([CheckEventIdUnique("1056")], PreDownloadPauseRecord);
 exports.PreDownloadPauseRecord = PreDownloadPauseRecord;
-class PreDownloadDownloadModeSuccessRecord extends PlayerCommonLogData {
+let PreDownloadDownloadModeSuccessRecord = class PreDownloadDownloadModeSuccessRecord extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "1057";
     this.i_download_mode = 0;
     this.i_download_mode = t;
   }
-}
+};
+PreDownloadDownloadModeSuccessRecord = __decorate([CheckEventIdUnique("1057")], PreDownloadDownloadModeSuccessRecord);
 exports.PreDownloadDownloadModeSuccessRecord = PreDownloadDownloadModeSuccessRecord;
-class CiacconaEnterMainViewLogEvent extends PlayerCommonLogData {
+let PreDownloadDownloadNoSpaceBeforeStartRecord = class PreDownloadDownloadNoSpaceBeforeStartRecord extends PlayerCommonLogData {
+  constructor(t) {
+    super();
+    this.event_id = "1708";
+    this.i_required_space = 0;
+    this.i_required_space = Number(t);
+  }
+};
+PreDownloadDownloadNoSpaceBeforeStartRecord = __decorate([CheckEventIdUnique("1708")], PreDownloadDownloadNoSpaceBeforeStartRecord);
+exports.PreDownloadDownloadNoSpaceBeforeStartRecord = PreDownloadDownloadNoSpaceBeforeStartRecord;
+let CiacconaEnterMainViewLogEvent = class CiacconaEnterMainViewLogEvent extends PlayerCommonLogData {
   constructor(t) {
     super();
     this.event_id = "156003";
     this.i_trigger_type = 0;
     this.i_trigger_type = t;
   }
-}
+};
+CiacconaEnterMainViewLogEvent = __decorate([CheckEventIdUnique("156003")], CiacconaEnterMainViewLogEvent);
 exports.CiacconaEnterMainViewLogEvent = CiacconaEnterMainViewLogEvent;
-class DownloadVideoResLogData extends CommonLogData {
+let DownloadVideoResLogData = class DownloadVideoResLogData extends CommonLogData {
   constructor() {
     super();
     this.event_id = "1701";
@@ -1004,9 +1110,10 @@ class DownloadVideoResLogData extends CommonLogData {
     this.i_resource_type = 0;
     this.i_resource_size = 0;
   }
-}
+};
+DownloadVideoResLogData = __decorate([CheckEventIdUnique("1701")], DownloadVideoResLogData);
 exports.DownloadVideoResLogData = DownloadVideoResLogData;
-class DownloadVideoResNotEnoughSpaceLogData extends CommonLogData {
+let DownloadVideoResNotEnoughSpaceLogData = class DownloadVideoResNotEnoughSpaceLogData extends CommonLogData {
   constructor() {
     super();
     this.event_id = "1702";
@@ -1015,30 +1122,99 @@ class DownloadVideoResNotEnoughSpaceLogData extends CommonLogData {
     this.i_required_space = 0;
     this.i_remaining_space = 0;
   }
-}
+};
+DownloadVideoResNotEnoughSpaceLogData = __decorate([CheckEventIdUnique("1702")], DownloadVideoResNotEnoughSpaceLogData);
 exports.DownloadVideoResNotEnoughSpaceLogData = DownloadVideoResNotEnoughSpaceLogData;
-class GameInformationClickLogEvent extends PlayerCommonLogData {
+let SubPackageKeySubPackageLogEvent = class SubPackageKeySubPackageLogEvent extends CommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1705";
+    this.i_download_time = 0;
+    this.i_download_status = 0;
+    this.o_phantoms = [];
+  }
+};
+SubPackageKeySubPackageLogEvent = __decorate([CheckEventIdUnique("1705")], SubPackageKeySubPackageLogEvent);
+exports.SubPackageKeySubPackageLogEvent = SubPackageKeySubPackageLogEvent;
+let SubPackageDownLoadLogEvent = class SubPackageDownLoadLogEvent extends CommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1706";
+    this.s_suit_name = "";
+    this.b_if_storage_alert = false;
+    this.i_peak_speed = 0;
+    this.i_download_time = 0;
+    this.i_download_status = 0;
+    this.i_resource_type = 0;
+    this.i_resource_size = 0;
+    this.i_state = 0;
+    this.i_role_id = 0;
+  }
+};
+SubPackageDownLoadLogEvent = __decorate([CheckEventIdUnique("1706")], SubPackageDownLoadLogEvent);
+exports.SubPackageDownLoadLogEvent = SubPackageDownLoadLogEvent;
+let SubPackageOutOfSpaceLogEvent = class SubPackageOutOfSpaceLogEvent extends CommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1707";
+    this.s_suit_name = "";
+    this.i_resource_type = 0;
+    this.b_if_storage_alert = false;
+    this.i_required_space = 0;
+    this.i_remaining_space = 0;
+    this.i_role_id = 0;
+  }
+};
+SubPackageOutOfSpaceLogEvent = __decorate([CheckEventIdUnique("1707")], SubPackageOutOfSpaceLogEvent);
+exports.SubPackageOutOfSpaceLogEvent = SubPackageOutOfSpaceLogEvent;
+let SubPackageClearSpaceLogEvent = class SubPackageClearSpaceLogEvent extends CommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1710";
+    this.i_task_id = 0;
+    this.b_if_storage_alert = false;
+    this.i_required_space = 0;
+  }
+};
+SubPackageClearSpaceLogEvent = __decorate([CheckEventIdUnique("1710")], SubPackageClearSpaceLogEvent);
+exports.SubPackageClearSpaceLogEvent = SubPackageClearSpaceLogEvent;
+let SubPackageClearSpaceFinishLogEvent = class SubPackageClearSpaceFinishLogEvent extends CommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1709";
+    this.i_task_id = 0;
+    this.i_required_space = 0;
+    this.i_remaining_space = 0;
+    this.b_if_storage_alert = false;
+  }
+};
+SubPackageClearSpaceFinishLogEvent = __decorate([CheckEventIdUnique("1709")], SubPackageClearSpaceFinishLogEvent);
+exports.SubPackageClearSpaceFinishLogEvent = SubPackageClearSpaceFinishLogEvent;
+let GameInformationClickLogEvent = class GameInformationClickLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "69001";
   }
-}
+};
+GameInformationClickLogEvent = __decorate([CheckEventIdUnique("69001")], GameInformationClickLogEvent);
 exports.GameInformationClickLogEvent = GameInformationClickLogEvent;
-class NoticeClickLogEvent extends PlayerCommonLogData {
+let NoticeClickLogEvent = class NoticeClickLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "69002";
   }
-}
+};
+NoticeClickLogEvent = __decorate([CheckEventIdUnique("69002")], NoticeClickLogEvent);
 exports.NoticeClickLogEvent = NoticeClickLogEvent;
-class GachaRecordClickLogEvent extends PlayerCommonLogData {
+let GachaRecordClickLogEvent = class GachaRecordClickLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "69003";
   }
-}
+};
+GachaRecordClickLogEvent = __decorate([CheckEventIdUnique("69003")], GachaRecordClickLogEvent);
 exports.GachaRecordClickLogEvent = GachaRecordClickLogEvent;
-class PhantomArenaDeckUpdateEvent extends PlayerCommonLogData {
+let PhantomArenaDeckUpdateEvent = class PhantomArenaDeckUpdateEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1703";
@@ -1050,25 +1226,28 @@ class PhantomArenaDeckUpdateEvent extends PlayerCommonLogData {
     this.i_build_id = 0;
     this.i_deck_status = 0;
   }
-}
+};
+PhantomArenaDeckUpdateEvent = __decorate([CheckEventIdUnique("1703")], PhantomArenaDeckUpdateEvent);
 exports.PhantomArenaDeckUpdateEvent = PhantomArenaDeckUpdateEvent;
-class EnterViewWithTermsEvent extends PlayerCommonLogData {
+let EnterViewWithTermsEvent = class EnterViewWithTermsEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1067";
     this.i_scene = 0;
   }
-}
+};
+EnterViewWithTermsEvent = __decorate([CheckEventIdUnique("1067")], EnterViewWithTermsEvent);
 exports.EnterViewWithTermsEvent = EnterViewWithTermsEvent;
-class ClickTermExplanationEvent extends PlayerCommonLogData {
+let ClickTermExplanationEvent = class ClickTermExplanationEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1068";
     this.i_scene = 0;
   }
-}
+};
+ClickTermExplanationEvent = __decorate([CheckEventIdUnique("1068")], ClickTermExplanationEvent);
 exports.ClickTermExplanationEvent = ClickTermExplanationEvent;
-class LifePointDrawLogEvent extends PlayerCommonLogData {
+let LifePointDrawLogEvent = class LifePointDrawLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1704";
@@ -1078,72 +1257,81 @@ class LifePointDrawLogEvent extends PlayerCommonLogData {
     this.i_result = 0;
     this.i_try_count = 0;
   }
-}
+};
+LifePointDrawLogEvent = __decorate([CheckEventIdUnique("1704")], LifePointDrawLogEvent);
 exports.LifePointDrawLogEvent = LifePointDrawLogEvent;
-class KingShipLogEvent extends PlayerCommonLogData {
+let KingShipLogEvent = class KingShipLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1801";
     this.i_step_id = 0;
   }
-}
+};
+KingShipLogEvent = __decorate([CheckEventIdUnique("1801")], KingShipLogEvent);
 exports.KingShipLogEvent = KingShipLogEvent;
-class ShipTowerSwitch extends PlayerCommonLogData {
+let ShipTowerSwitch = class ShipTowerSwitch extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1802";
     this.i_inst_id = 0;
   }
-}
+};
+ShipTowerSwitch = __decorate([CheckEventIdUnique("1802")], ShipTowerSwitch);
 exports.ShipTowerSwitch = ShipTowerSwitch;
-class HoldHandEnterLogEvent extends PlayerCommonLogData {
+let HoldHandEnterLogEvent = class HoldHandEnterLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "160301";
     this.reason = "";
   }
-}
+};
+HoldHandEnterLogEvent = __decorate([CheckEventIdUnique("160301")], HoldHandEnterLogEvent);
 exports.HoldHandEnterLogEvent = HoldHandEnterLogEvent;
-class HoldHandExitLogEvent extends PlayerCommonLogData {
+let HoldHandExitLogEvent = class HoldHandExitLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "160302";
     this.reason = "";
   }
-}
+};
+HoldHandExitLogEvent = __decorate([CheckEventIdUnique("160302")], HoldHandExitLogEvent);
 exports.HoldHandExitLogEvent = HoldHandExitLogEvent;
-class HoldHandSitDownLogEvent extends PlayerCommonLogData {
+let HoldHandSitDownLogEvent = class HoldHandSitDownLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "160303";
   }
-}
+};
+HoldHandSitDownLogEvent = __decorate([CheckEventIdUnique("160303")], HoldHandSitDownLogEvent);
 exports.HoldHandSitDownLogEvent = HoldHandSitDownLogEvent;
-class AutoShowParallelDownloadConfirmBox extends PlayerCommonLogData {
+let AutoShowParallelDownloadConfirmBox = class AutoShowParallelDownloadConfirmBox extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1851";
   }
-}
+};
+AutoShowParallelDownloadConfirmBox = __decorate([CheckEventIdUnique("1851")], AutoShowParallelDownloadConfirmBox);
 exports.AutoShowParallelDownloadConfirmBox = AutoShowParallelDownloadConfirmBox;
-class ParallelDownloadConfirmBoxOperation extends PlayerCommonLogData {
+let ParallelDownloadConfirmBoxOperation = class ParallelDownloadConfirmBoxOperation extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1852";
     this.i_type = 0;
   }
-}
+};
+ParallelDownloadConfirmBoxOperation = __decorate([CheckEventIdUnique("1852")], ParallelDownloadConfirmBoxOperation);
 exports.ParallelDownloadConfirmBoxOperation = ParallelDownloadConfirmBoxOperation;
-class UiInteractSpaceKeyLogEvent extends PlayerCommonLogData {
+let UiInteractSpaceKeyLogEvent = class UiInteractSpaceKeyLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1806";
     this.i_type = 0;
     this.i_status = 0;
   }
-}
+};
+UiInteractSpaceKeyLogEvent = __decorate([CheckEventIdUnique("1806")], UiInteractSpaceKeyLogEvent);
 exports.UiInteractSpaceKeyLogEvent = UiInteractSpaceKeyLogEvent;
-class UiInteractRouletteLogEvent extends PlayerCommonLogData {
+let UiInteractRouletteLogEvent = class UiInteractRouletteLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1808";
@@ -1153,9 +1341,10 @@ class UiInteractRouletteLogEvent extends PlayerCommonLogData {
     this.i_cost_time = 0;
     this.i_skill_id = 0;
   }
-}
+};
+UiInteractRouletteLogEvent = __decorate([CheckEventIdUnique("1808")], UiInteractRouletteLogEvent);
 exports.UiInteractRouletteLogEvent = UiInteractRouletteLogEvent;
-class UiInteractChatLogEvent extends PlayerCommonLogData {
+let UiInteractChatLogEvent = class UiInteractChatLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1809";
@@ -1165,9 +1354,10 @@ class UiInteractChatLogEvent extends PlayerCommonLogData {
     this.i_cost_time = 0;
     this.i_skill_id = 0;
   }
-}
+};
+UiInteractChatLogEvent = __decorate([CheckEventIdUnique("1809")], UiInteractChatLogEvent);
 exports.UiInteractChatLogEvent = UiInteractChatLogEvent;
-class RoleDevLogEvent extends PlayerCommonLogData {
+let RoleDevLogEvent = class RoleDevLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1807";
@@ -1176,23 +1366,26 @@ class RoleDevLogEvent extends PlayerCommonLogData {
     this.i_main_page = 0;
     this.i_sub_page = 0;
   }
-}
+};
+RoleDevLogEvent = __decorate([CheckEventIdUnique("1807")], RoleDevLogEvent);
 exports.RoleDevLogEvent = RoleDevLogEvent;
-class RoleSkillTreeLogEvent extends PlayerCommonLogData {
+let RoleSkillTreeLogEvent = class RoleSkillTreeLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1900";
   }
-}
+};
+RoleSkillTreeLogEvent = __decorate([CheckEventIdUnique("1900")], RoleSkillTreeLogEvent);
 exports.RoleSkillTreeLogEvent = RoleSkillTreeLogEvent;
-class RoleSkillInputLogEvent extends PlayerCommonLogData {
+let RoleSkillInputLogEvent = class RoleSkillInputLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1901";
   }
-}
+};
+RoleSkillInputLogEvent = __decorate([CheckEventIdUnique("1901")], RoleSkillInputLogEvent);
 exports.RoleSkillInputLogEvent = RoleSkillInputLogEvent;
-class FightPhotoTakePhotoLogEvent extends PlayerCommonLogData {
+let FightPhotoTakePhotoLogEvent = class FightPhotoTakePhotoLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1803";
@@ -1203,9 +1396,10 @@ class FightPhotoTakePhotoLogEvent extends PlayerCommonLogData {
     this.photo_num = 0;
     this.photo_status = 0;
   }
-}
+};
+FightPhotoTakePhotoLogEvent = __decorate([CheckEventIdUnique("1803")], FightPhotoTakePhotoLogEvent);
 exports.FightPhotoTakePhotoLogEvent = FightPhotoTakePhotoLogEvent;
-class FightPhotoTimeDilationLogEvent extends PlayerCommonLogData {
+let FightPhotoTimeDilationLogEvent = class FightPhotoTimeDilationLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1804";
@@ -1213,20 +1407,64 @@ class FightPhotoTimeDilationLogEvent extends PlayerCommonLogData {
     this.inst_diff = 0;
     this.trace_id = "";
   }
-}
+};
+FightPhotoTimeDilationLogEvent = __decorate([CheckEventIdUnique("1804")], FightPhotoTimeDilationLogEvent);
 exports.FightPhotoTimeDilationLogEvent = FightPhotoTimeDilationLogEvent;
-class QuestViewEnterLogEvent extends PlayerCommonLogData {
+let QuestViewEnterLogEvent = class QuestViewEnterLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1910";
   }
-}
+};
+QuestViewEnterLogEvent = __decorate([CheckEventIdUnique("1910")], QuestViewEnterLogEvent);
 exports.QuestViewEnterLogEvent = QuestViewEnterLogEvent;
-class QuestTreeEnterLogEvent extends PlayerCommonLogData {
+let QuestTreeEnterLogEvent = class QuestTreeEnterLogEvent extends PlayerCommonLogData {
   constructor() {
     super(...arguments);
     this.event_id = "1911";
   }
-}
+};
+QuestTreeEnterLogEvent = __decorate([CheckEventIdUnique("1911")], QuestTreeEnterLogEvent);
 exports.QuestTreeEnterLogEvent = QuestTreeEnterLogEvent;
-//# sourceMappingURL=LogReportDefine.js.map
+let CustomServiceLogEvent = class CustomServiceLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1810";
+    this.s_trace_id = "";
+    this.log_status = 0;
+  }
+};
+CustomServiceLogEvent = __decorate([CheckEventIdUnique("1810")], CustomServiceLogEvent);
+exports.CustomServiceLogEvent = CustomServiceLogEvent;
+let ActivityPreWarmOpenLogEvent = class ActivityPreWarmOpenLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1811";
+    this.i_activity_id = 0;
+    this.i_chapter_id = 0;
+  }
+};
+ActivityPreWarmOpenLogEvent = __decorate([CheckEventIdUnique("1811")], ActivityPreWarmOpenLogEvent);
+exports.ActivityPreWarmOpenLogEvent = ActivityPreWarmOpenLogEvent;
+let ActivityPreWarmStayLogEvent = class ActivityPreWarmStayLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1812";
+    this.i_activity_id = 0;
+    this.i_chapter_id = 0;
+    this.i_cost_time = 0;
+  }
+};
+ActivityPreWarmStayLogEvent = __decorate([CheckEventIdUnique("1812")], ActivityPreWarmStayLogEvent);
+exports.ActivityPreWarmStayLogEvent = ActivityPreWarmStayLogEvent;
+let NextVersionContentLogEvent = class NextVersionContentLogEvent extends PlayerCommonLogData {
+  constructor() {
+    super(...arguments);
+    this.event_id = "1813";
+    this.i_activity_id = 0;
+    this.i_second_tab = 0;
+    this.i_third_tab = 0;
+  }
+};
+NextVersionContentLogEvent = __decorate([CheckEventIdUnique("1813")], NextVersionContentLogEvent);
+exports.NextVersionContentLogEvent = NextVersionContentLogEvent; //# sourceMappingURL=LogReportDefine.js.map

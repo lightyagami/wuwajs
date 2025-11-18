@@ -17,6 +17,7 @@ const Global_1 = require("../../Global");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const SceneInteractionManager_1 = require("../../Render/Scene/Interaction/SceneInteractionManager");
+const UiConfig_1 = require("../../Ui/Define/UiConfig");
 const REVERTIME = 3000;
 class AdviceCreateActor {
   constructor() {
@@ -125,6 +126,7 @@ class AdviceCreateActor {
     this.d9e = false;
     this.C9e = false;
     this.y9e = undefined;
+    i = UiConfig_1.UiConfig.GetMemoryTag("AdviceCreateView");
     ResourceSystem_1.ResourceSystem.LoadAsync(s.网格体.ToAssetPathName(), UE.SkeletalMesh, (t, i) => {
       e.SetSkeletalMesh(t);
       this.d9e = true;
@@ -132,31 +134,31 @@ class AdviceCreateActor {
         Log_1.Log.Debug("Advice", 27, "modelConfig.网格体.ToAssetPathName()读取", ["mesh", s.网格体.ToAssetPathName()]);
       }
       this.I9e();
-    });
-    const r = ConfigManager_1.ConfigManager.MotionConfig.GetMotionAnimation(t);
-    ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.AnimationAsset, (t, i) => {
+    }, 100, i);
+    const o = ConfigManager_1.ConfigManager.MotionConfig.GetMotionAnimation(t);
+    ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.AnimationAsset, (t, i) => {
       this.m9e = true;
       this.y9e = t;
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Advice", 27, "动画读取", ["animation", r]);
+        Log_1.Log.Debug("Advice", 27, "动画读取", ["animation", o]);
       }
       this.I9e();
-    });
+    }, 100, i);
     e.SetPlayRate(1);
     e.SetPosition(1);
     if (this.l9e) {
       this.l9e.AddComponentByCase(0, this.SkeletalMeshInternal);
-      const o = ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceModelMat();
-      ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.PD_CharacterControllerData_C, (t, i) => {
+      const r = ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceModelMat();
+      ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.PD_CharacterControllerData_C, (t, i) => {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Advice", 27, "溯言特效读取", ["effectPath", o]);
+          Log_1.Log.Debug("Advice", 27, "溯言特效读取", ["effectPath", r]);
         }
         this.C9e = true;
         if (this.Td) {
           this._9e = this.l9e.AddMaterialControllerData(t);
         }
         this.I9e();
-      });
+      }, 100, i);
     }
     this.c9e = TimerSystem_1.TimerSystem.Delay(this.g9e, REVERTIME);
   }

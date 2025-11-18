@@ -124,6 +124,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     this.SpecificCameraBasePitchSensitivity = -1;
     this.SpecificCameraAimingYawSensitivity = -1;
     this.SpecificCameraAimingPitchSensitivity = -1;
+    this.ZEm = true;
   }
   get IsAiming() {
     return this.Camera.ContainsTag(428837378) || this.Camera.ContainsTag(-1058855731);
@@ -338,6 +339,9 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
   aue(t) {
     var i = this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
     this.Camera.DesiredCamera.ZoomModifier = MathUtils_1.MathUtils.Clamp(t * i, this.Camera.CurrentCamera.MinArmLength, this.Camera.CurrentCamera.MaxArmLength) / i;
+    if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.ZEm && (this.ZEm = false, Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Camera", 57, "[DebugZoomModifier ClampZoomModifier]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["zoomModifier", t], ["currentArmLength", i], ["MinArmLength", this.Camera.CurrentCamera.MinArmLength], ["MaxArmLength", this.Camera.CurrentCamera.MaxArmLength], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
+    }
     this.mae = this.Camera.CurrentCamera.ArmLength;
     this.V_e = this.Camera.CurrentCamera.MinArmLength;
     this.H_e = this.Camera.CurrentCamera.MaxArmLength;
@@ -423,7 +427,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
                   this.ega(n, s, e);
                 }
               }
-              o = l.Entity.GetComponent(155);
+              o = l.Entity.GetComponent(158);
               if (o) {
                 for (const M of o.AimParts) {
                   this.ega(M, s, e);

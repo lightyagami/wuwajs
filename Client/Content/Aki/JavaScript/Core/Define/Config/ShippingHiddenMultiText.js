@@ -16,8 +16,8 @@ class ShippingHiddenMultiText {
   get Key() {
     return this.key();
   }
-  get ReplaceText() {
-    return this.replacetext();
+  get HiddenState() {
+    return this.hiddenstate();
   }
   __init(t, i) {
     this.z7 = t;
@@ -43,7 +43,7 @@ class ShippingHiddenMultiText {
     }
     return i;
   }
-  replacetext(t) {
+  hiddenstate(t) {
     var i = this.J7.__offset(this.z7, 8);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {

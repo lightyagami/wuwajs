@@ -41,8 +41,8 @@ class ActivityModel extends ModelBase_1.ModelBase {
     this.G5e = "";
     this.N5e = "";
     this.O5e = "";
-    this.ywd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
-    this.gQd = false;
+    this.KPd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
+    this._lm = false;
     this.OnLanguageChange = () => {
       this.q5e = "";
       this.G5e = "";
@@ -326,7 +326,10 @@ class ActivityModel extends ModelBase_1.ModelBase {
     for (const e of this.GetCurrentShowingActivities()) {
       var t = this.GetActivityCacheData(e.Id, 0, ActivityCommonDefine_1.ACTIVITYFIRSTUNLOCKFLAG, 0, 0);
       if (e.IsUnLock() && t === 0) {
-        ActivityManager_1.ActivityManager.GetActivityController(e.Type).OnActivityFirstUnlock(e);
+        (t = ActivityManager_1.ActivityManager.GetActivityController(e.Type)).OnActivityFirstUnlock(e);
+        if (e.TimeType === 0) {
+          t.OnShowActivityFirstUnlockView(e);
+        }
         this.SaveActivityData(e.Id, ActivityCommonDefine_1.ACTIVITYFIRSTUNLOCKFLAG, 0, 0, 1);
       }
     }
@@ -343,10 +346,10 @@ class ActivityModel extends ModelBase_1.ModelBase {
     return this.GetActivityById(t)?.RedPointShowState ?? false;
   }
   GetActivityPermanentFilterId() {
-    return this.ywd;
+    return this.KPd;
   }
   SetActivityPermanentFilterId(t) {
-    this.ywd = t;
+    this.KPd = t;
   }
   SendActivityViewOpenLogData(t) {
     var e = new LogReportDefine_1.ActivityViewOpenLogData();
@@ -492,10 +495,10 @@ class ActivityModel extends ModelBase_1.ModelBase {
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
   }
   SetDebugPermanentFilterVisible(t) {
-    this.gQd = t;
+    this._lm = t;
   }
   GetDebugPermanentFilterVisible() {
-    return this.gQd;
+    return this._lm;
   }
 }
 (exports.ActivityModel = ActivityModel).SortFunc = (t, e) => t.FinishSinkState !== e.FinishSinkState ? t.FinishSinkState ? 1 : -1 : t.Sort !== e.Sort ? t.Sort - e.Sort : t.BeginOpenTime !== e.BeginOpenTime ? t.BeginOpenTime - e.BeginOpenTime : t.Id - e.Id;

@@ -37,6 +37,12 @@ const OpenSystemFragmentMemory_1 = require("./OpenSystem/OpenSystemFragmentMemor
 const OpenSystemGameSysOpen_1 = require("./OpenSystem/OpenSystemGameSysOpen");
 const OpenSystemGreatSwordSelectView_1 = require("./OpenSystem/OpenSystemGreatSwordSelectView");
 const OpenSystemHiddenBossWindow_1 = require("./OpenSystem/OpenSystemHiddenBossWindow");
+const OpenSystemHonamiChooseLevelView_1 = require("./OpenSystem/OpenSystemHonamiChooseLevelView");
+const OpenSystemHonamiInventoryView_1 = require("./OpenSystem/OpenSystemHonamiInventoryView");
+const OpenSystemHonamiMainView_1 = require("./OpenSystem/OpenSystemHonamiMainView");
+const OpenSystemHonamiMascotView_1 = require("./OpenSystem/OpenSystemHonamiMascotView");
+const OpenSystemHonamiShop_1 = require("./OpenSystem/OpenSystemHonamiShop");
+const OpenSystemHonamiTalentTreeView_1 = require("./OpenSystem/OpenSystemHonamiTalentTreeView");
 const OpenSystemInformationView_1 = require("./OpenSystem/OpenSystemInformationView");
 const OpenSystemInstanceEntrance_1 = require("./OpenSystem/OpenSystemInstanceEntrance");
 const OpenSystemInstanceFailure_1 = require("./OpenSystem/OpenSystemInstanceFailure");
@@ -65,6 +71,7 @@ const OpenSystemShopView_1 = require("./OpenSystem/OpenSystemShopView");
 const OpenSystemShower_1 = require("./OpenSystem/OpenSystemShower");
 const OpenSystemSoundAreaPlayInfo_1 = require("./OpenSystem/OpenSystemSoundAreaPlayInfo");
 const OpenSystemSynthetic_1 = require("./OpenSystem/OpenSystemSynthetic");
+const OpenSystemTransitionPopupView_1 = require("./OpenSystem/OpenSystemTransitionPopupView");
 const OpenSystemTrapDefenseMapChange_1 = require("./OpenSystem/OpenSystemTrapDefenseMapChange");
 const OpenSystemTrialRoleDescription_1 = require("./OpenSystem/OpenSystemTrialRoleDescription");
 const OpenSystemTurntableControl_1 = require("./OpenSystem/OpenSystemTurntableControl");
@@ -151,6 +158,13 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     this.KDe.set("GreatSwordChallenge", new OpenSystemGreatSwordSelectView_1.OpenSystemGreatSwordSelectView(this));
     this.KDe.set("TrapDefenseMapChange", new OpenSystemTrapDefenseMapChange_1.OpenSystemTrapDefenseMapChange(this));
     this.KDe.set("FindBug", new OpenSystemActivityFunPlay_1.OpenSystemActivityFunPlay(this));
+    this.KDe.set("HonamiStoryResourceStation", new OpenSystemHonamiShop_1.OpenSystemHonamiShopView(this));
+    this.KDe.set("HonamiStoryFightPreparation", new OpenSystemHonamiMainView_1.OpenSystemHonamiMainView(this));
+    this.KDe.set("HonamiStoryWareHouse", new OpenSystemHonamiInventoryView_1.OpenSystemHonamiInventoryView(this));
+    this.KDe.set("HonamiStoryMascot", new OpenSystemHonamiMascotView_1.OpenSystemHonamiMascotView(this));
+    this.KDe.set("HonamiStoryTalentTree", new OpenSystemHonamiTalentTreeView_1.OpenSystemHonamiTalentTreeView(this));
+    this.KDe.set("HonamiStoryChooseLevel", new OpenSystemHonamiChooseLevelView_1.OpenSystemHonamiChooseLevelView(this));
+    this.KDe.set("TransitionPopup", new OpenSystemTransitionPopupView_1.OpenSystemTransitionPopupView(this));
   }
   OnReset() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.QDe)) {
@@ -172,7 +186,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           this.FinishExecute(true);
           return;
         }
-        this.WEd();
+        this.pbd();
         await this.Sjl.Promise;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]Loading完成继续往下执行");
@@ -180,9 +194,9 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       }
       var i = s.GetViewName(t, n);
       let e = false;
-      var r = n;
-      if (r?.EntityId && i) {
-        if (!EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 198)?.CanInteraction) {
+      var o = n;
+      if (o?.EntityId && i) {
+        if (!EntitySystem_1.EntitySystem.GetComponent(o.EntityId, 201)?.CanInteraction) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(i);
           e = true;
         }
@@ -193,11 +207,11 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,异步", ["SystemType", t.SystemType]);
         }
       } else {
-        r = await s.ExecuteOpenView(t, n);
+        o = await s.ExecuteOpenView(t, n);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", r]);
+          Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,同步", ["SystemType", t.SystemType], ["IsSuccess", o]);
         }
-        if (!r) {
+        if (!o) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem] 执行打开界面失败算直接完成", ["OpenSystemType", t.SystemType]);
           }
@@ -253,7 +267,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       Log_1.Log.Error("LevelEvent", 36, "[LevelEventOpenSystem]参数类型出错");
     }
   }
-  WEd() {
+  pbd() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelEvent", 87, "[LevelEventOpenSystem]创建LoadingPromise");
     }
@@ -270,7 +284,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       } else {
         let e = undefined;
         s = s?.EntityId;
-        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(188) : e) {
+        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(191) : e) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(n);
           e.SetUiOpenPerformance(n, t.BoardId);
         }

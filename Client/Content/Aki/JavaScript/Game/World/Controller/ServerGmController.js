@@ -15,11 +15,11 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../GlobalData");
 class ServerGmController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(17416, ServerGmController.OnServerCommandNotify);
+    Net_1.Net.Register(29659, ServerGmController.OnServerCommandNotify);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(17416);
+    Net_1.Net.UnRegister(29659);
     return true;
   }
 }

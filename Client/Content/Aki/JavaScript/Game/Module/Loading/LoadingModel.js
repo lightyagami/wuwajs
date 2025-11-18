@@ -14,6 +14,7 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const HonamiStoryLoadingChecker_1 = require("./Checker/HonamiStoryLoadingChecker");
 const LoadingController_1 = require("./LoadingController");
 const LoadingDefine_1 = require("./LoadingDefine");
 class LoadingModel extends ModelBase_1.ModelBase {
@@ -36,6 +37,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.LoadingTexturePathOverride = undefined;
     this.Cla = undefined;
     this.gla = undefined;
+    this.svm = [new HonamiStoryLoadingChecker_1.HonamiStoryLoadingChecker()];
     this.BGc = undefined;
     this.Fu1 = undefined;
     this.etd = undefined;
@@ -120,15 +122,16 @@ class LoadingModel extends ModelBase_1.ModelBase {
   }
   Dd1(e, i) {
     if (!(e <= 0)) {
-      var t;
-      var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
-      if (e) {
-        t = e.InstSubType;
-        if ((t = LoadingDefine_1.dungeonToLoadingViewMap.get(t)) && (i || !t.IgnoreExitLoading) && (!t.WorldSubType || t.WorldSubType === e.WorldDungeonSubType)) {
-          return t.View;
-        } else {
-          return undefined;
-        }
+      var t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
+      if (t) {
+        return this.xdm(e) || (e = t.InstSubType, (e = LoadingDefine_1.dungeonToLoadingViewMap.get(e)) && (i || !e.IgnoreExitLoading) && (!e.WorldSubType || e.WorldSubType === t.WorldDungeonSubType) ? e.View : undefined);
+      }
+    }
+  }
+  xdm(e) {
+    for (const i of this.svm) {
+      if (i.CanHandle(e)) {
+        return i.GetLoadingViewName(e);
       }
     }
   }
@@ -145,9 +148,9 @@ class LoadingModel extends ModelBase_1.ModelBase {
       for (const r of this.BGc) {
         var i = new Protocol_1.Aki.Protocol.aqc(r);
         var t = TimeUtil_1.TimeUtil.GetServerTimeStamp();
-        var n = Number(MathUtils_1.MathUtils.LongToBigInt(i.cps));
-        var o = Number(MathUtils_1.MathUtils.LongToBigInt(i.dps));
-        if (n <= t && t <= o) {
+        var o = Number(MathUtils_1.MathUtils.LongToBigInt(i.cps));
+        var n = Number(MathUtils_1.MathUtils.LongToBigInt(i.dps));
+        if (o <= t && t <= n) {
           e.push(i.s5n);
         }
       }
@@ -176,6 +179,15 @@ class LoadingModel extends ModelBase_1.ModelBase {
   }
   ClearSpecifiedLoadingConfig() {
     this.etd = undefined;
+  }
+  SetSpecialCustomLoadingInfo(e) {
+    var e = e.ahm;
+    if (e) {
+      e = {
+        LoadingId: e.hhm
+      };
+      ModelManager_1.ModelManager.HonamiStoryModel.SetMainTaskLoadingData(e);
+    }
   }
   OnClear() {
     this.ypi = false;

@@ -22,7 +22,7 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(e, t, i) {
     var r;
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(210)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), r = e.GetComponent(40), !!(e = e.GetComponent(52))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, r?.CurrentSkill?.SkillId ?? 0), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(213)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), r = e.GetComponent(40), !!(e = e.GetComponent(52))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, r?.CurrentSkill?.SkillId ?? 0), true);
   }
   CheckPosition(i) {
     for (let e = 0; e < this.CaughtIds.Num(); e++) {

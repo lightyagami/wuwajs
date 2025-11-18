@@ -24,38 +24,45 @@ class GameProcedure {
       Log_1.Log.Info("Game", 63, "c#环境启动:", ["csEnvStartup", r]);
     }
     if (r) {
-      this.BKd();
+      this.ggm();
     } else {
-      this.kKd = new UE.KuroTickManager(e, "GameProcedure");
-      this.kKd.AddTick(0, (0, puerts_1.toManualReleaseDelegate)(this.OKd));
+      this.Cgm = new UE.KuroTickManager(e, "GameProcedure");
+      this.Cgm.AddTick(0, (0, puerts_1.toManualReleaseDelegate)(this.pgm));
     }
   }
-  static BKd() {
-    var e = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
+  static ggm() {
+    var a = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Game", 63, "c#环境是否灰度命中:", ["hasSharpherealModuleGreyBoxHit", e]);
+      Log_1.Log.Info("Game", 63, "c#环境是否灰度命中:", ["hasSharpherealModuleGreyBoxHit", a]);
     }
-    if (e) {
+    if (a) {
       let e = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
-      if (e) {
+      a = (0, puerts_1.$ref)(false);
+      UE.KuroVariableFunctionLibrary.GetBoolValue("hasCsEnvInited", a);
+      let r = (0, puerts_1.$unref)(a);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Game", 63, "c#环境是否已经初始化？:", ["hasCSharpEnvironmentInitialized", e], ["hasCsEnvInited", r]);
+      }
+      if (e || r) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Game", 63, "c#环境已经初始化，无需重复初始化:", ["hasCSharpEnvironmentInitialized", e]);
+          Log_1.Log.Info("Game", 63, "c#环境已经初始化，无需重复初始化:", ["hasCSharpEnvironmentInitialized", e], ["hasCsEnvInited", r]);
         }
       } else {
+        UE.KuroVariableFunctionLibrary.SetBoolValue("hasCsEnvInited", true);
+        r = true;
         UE.CSharpBlueprintFunctionLibrary.InitializeMonoEnvironment();
         e = UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized();
       }
-      e;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Game", 63, "c#环境是否初始化成功:", ["hasCSharpEnvironmentInitialized", e]);
+        Log_1.Log.Info("Game", 63, "c#环境是否初始化成功:", ["hasCSharpEnvironmentInitialized", e], ["hasCsEnvInited", r]);
       }
       UE.CSharpBlueprintFunctionLibrary.CallCSharpFunction("CSharpScript.dll", "CSharpScript.Launcher", "Startup", "Main", 1, this.USr);
-      this.qKd(this.USr);
+      this.vgm(this.USr);
     } else {
-      this.qKd(this.USr);
+      this.vgm(this.USr);
     }
   }
-  static qKd(e) {
+  static vgm(e) {
     Info_1.Info.Initialize(e);
     var r = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("JSDebugId");
     Log_1.Log.SetJsDebugId(r);
@@ -223,12 +230,12 @@ exports.GameProcedure = GameProcedure;
 GameProcedure.g2a = 200;
 GameProcedure.Vgr = undefined;
 GameProcedure.USr = undefined;
-GameProcedure.kKd = undefined;
-GameProcedure.OKd = () => {
+GameProcedure.Cgm = undefined;
+GameProcedure.pgm = () => {
   if (UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleStartup()) {
-    (0, puerts_1.releaseManualReleaseDelegate)(_a.OKd);
-    _a.kKd.ClearTick();
-    _a.kKd = undefined;
-    _a.BKd();
+    (0, puerts_1.releaseManualReleaseDelegate)(_a.pgm);
+    _a.Cgm.ClearTick();
+    _a.Cgm = undefined;
+    _a.ggm();
   }
 }; //# sourceMappingURL=GameProcedure.js.map

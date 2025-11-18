@@ -53,7 +53,7 @@ class GenericPromptView extends UiTickViewBase_1.UiTickViewBase {
         this.tJt?.SetActive(false);
       }
     };
-    this.fYd = (e, t) => {
+    this.JCm = (e, t) => {
       this.iJt({
         TypeId: e,
         MainTextObj: {
@@ -84,13 +84,13 @@ class GenericPromptView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InsertFloatTips, this.iJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveFloatTips, this.nbu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.OnPreparePhotoScreenShot);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyShowTips, this.fYd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyShowTips, this.JCm);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InsertFloatTips, this.iJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveFloatTips, this.nbu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.OnPreparePhotoScreenShot);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyShowTips, this.fYd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyShowTips, this.JCm);
   }
   nJt() {
     var e;

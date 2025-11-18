@@ -96,11 +96,11 @@ class PlotInfo {
       i.UiParam.ViewName = UiModel_1.UiModel.MainViewName;
     }
     if (t === "Prompt") {
-      this.qqd(s, i);
+      this.u3d(s, i);
       i.PromptStyle = o?.Type ?? IAction_1.EPromptStyle.Default;
     }
   }
-  static qqd(t, i) {
+  static u3d(t, i) {
     var s;
     var o;
     var e = new Map();

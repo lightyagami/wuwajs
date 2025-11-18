@@ -23,28 +23,28 @@ exports.PERMYRIAD_RATIO = 10000;
 class SurvivorsRogueModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.RAd = 0;
+    this.yxd = 0;
     this.CurComboConfig = undefined;
     this.MaxWaveNum = 0;
     this.WaveTypeArray = [];
     this.ComboTimerFreezeTimeCfg = [0, 0, 0, 0];
     this.ComboDurationAdditionCfg = [0, 0, 0, 0];
-    this._jd = 0;
+    this.kem = 0;
     this.HasNewSettle = false;
-    this.Svd = 0;
+    this.XSd = 0;
     this.SelectLevelInfo = undefined;
     this.NotTipsShopPurchaseAvailable = false;
     this.BattleData = SurvivorsRogueBattleData_1.SurvivorsRogueBattleData.Create();
     this.GainData = SurvivorsRogueGainData_1.SurvivorsRogueGainData.Create();
     this.CommandQueue = undefined;
     this.mmu = false;
-    this.Hkd = undefined;
+    this.hGd = undefined;
   }
   get CurLevelId() {
-    return this.RAd;
+    return this.yxd;
   }
   set CurLevelId(t) {
-    this.RAd = t;
+    this.yxd = t;
     this.MaxWaveNum = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetMaxWaveNumByLevelId(t);
     this.WaveTypeArray = new Array(this.MaxWaveNum);
     for (let e = 0; e < this.MaxWaveNum; e++) {
@@ -78,7 +78,7 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     } else {
       for (let e = 0; e < exports.COMBO_LEVEL_CONFIG_LENGTH; e++) {
         this.ComboTimerFreezeTimeCfg[e] = t[e].Zps;
-        this.ComboDurationAdditionCfg[e] = t[e].w9d;
+        this.ComboDurationAdditionCfg[e] = t[e].vZd;
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SurvivorsRogue", 79, "InitComboEnhanceCfg", ["ComboTimerFreezeTimeCfg", this.ComboTimerFreezeTimeCfg], ["ComboDurationAdditionCfg", this.ComboDurationAdditionCfg]);
@@ -86,17 +86,17 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     }
   }
   set WaveTipsState(e) {
-    if (this._jd === e) {
+    if (this.kem === e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SurvivorsRogue", 79, "重复设置WaveTipsState, 直接跳过", ["State", e]);
       }
     } else {
-      this._jd = e;
+      this.kem = e;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, e);
     }
   }
   get WaveTipsState() {
-    return this._jd;
+    return this.kem;
   }
   get NeedOpenActivityMainView() {
     var e = this.HasNewSettle;
@@ -104,14 +104,14 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     return e;
   }
   SetCurrentActivityId(e) {
-    this.Svd = e;
+    this.XSd = e;
   }
   IsActivityOn() {
-    return this.Svd !== 0;
+    return this.XSd !== 0;
   }
   get ActivityData() {
-    if (this.Svd !== 0) {
-      return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.Svd);
+    if (this.XSd !== 0) {
+      return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.XSd);
     }
   }
   InitCommandQueue() {
@@ -129,10 +129,10 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     this.BattleData.Clear();
     this.GainData.Clear();
     this.SelectLevelInfo = undefined;
-    this.RAd = 0;
+    this.yxd = 0;
     this.MaxWaveNum = 0;
     this.WaveTypeArray = [];
-    this._jd = 0;
+    this.kem = 0;
     this.NotTipsShopPurchaseAvailable = false;
     for (let e = 0; e < exports.COMBO_LEVEL_CONFIG_LENGTH; e++) {
       this.ComboTimerFreezeTimeCfg[e] = 0;
@@ -144,33 +144,33 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
   }
   GetRogueActivityConfig() {
     if (this.IsActivityOn()) {
-      return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.Svd);
+      return ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsActivityConfigByActivityId(this.XSd);
     }
   }
   SetDebugMode(e) {
     this.mmu = e;
   }
   SaveCacheHandbookClickedMap() {
-    if (this.Hkd !== undefined) {
-      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SurvivorsHandbookClicked, this.Hkd);
+    if (this.hGd !== undefined) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SurvivorsHandbookClicked, this.hGd);
     }
   }
   GetItemIsNew(e, t) {
-    if (this.Hkd === undefined) {
-      this.Hkd = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SurvivorsHandbookClicked);
+    if (this.hGd === undefined) {
+      this.hGd = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SurvivorsHandbookClicked);
     }
-    return !this.GetItemIsLock(e, t) && !this.Hkd?.get(this.Svd)?.get(e)?.has(t);
+    return !this.GetItemIsLock(e, t) && !this.hGd?.get(this.XSd)?.get(e)?.has(t);
   }
   SetItemClicked(i, r) {
-    if (this.Hkd === undefined) {
-      this.Hkd = new Map();
+    if (this.hGd === undefined) {
+      this.hGd = new Map();
     }
     if (!this.GetItemIsLock(i, r)) {
-      var o = this.Svd;
-      let e = this.Hkd.get(o);
+      var o = this.XSd;
+      let e = this.hGd.get(o);
       if (e === undefined) {
         e = new Map();
-        this.Hkd.set(o, e);
+        this.hGd.set(o, e);
       }
       let t = e.get(i);
       if (t === undefined) {

@@ -69,9 +69,6 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.qth = undefined;
     this.hX_ = undefined;
     this.HLn = undefined;
-    this.yli = () => {
-      this.CloseMe();
-    };
     this.Ili = () => {
       PowerController_1.PowerController.OpenPowerView();
     };
@@ -149,7 +146,8 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
       if (UiManager_1.UiManager.IsViewOpen("PowerView")) {
         UiManager_1.UiManager.CloseView("PowerView");
       }
-      this.UiViewSequence.PlaySequencePurely("Close01", true);
+      this.UiViewSequence.CloseSequenceName = "Close01";
+      this.CloseMe();
     };
     this.Bli = () => {
       this.UiViewSequence.StopSequenceByKey("Popup");
@@ -354,7 +352,6 @@ class InstanceDungeonEntranceView extends UiTickViewBase_1.UiTickViewBase {
     this.GetTexture(3)?.SetUIActive(false);
     this.sli = new Map();
     this.nyi();
-    this.UiViewSequence.AddSequenceFinishEvent("Close01", this.yli);
   }
   OnTick(e) {
     if (this.Xai) {

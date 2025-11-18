@@ -29,21 +29,21 @@ const SurvivorsRogueSubModel_1 = require("./SurvivorsRogueSubModel");
 class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControllerBase {
   constructor() {
     super(...arguments);
-    this.Vwd = undefined;
+    this.gAd = undefined;
     this.dZr = undefined;
     this.cBe = undefined;
     this.EYc = new SurvivorsRogueEntityRedirectFilter_1.SurvivorsRogueEntityRedirectFilter();
-    this.C9d = new SurvivorsRoguePlayerHpHandle_1.SurvivorsRoguePlayerHpHandle();
-    this.hAd = (e, r) => {
+    this.aZd = new SurvivorsRoguePlayerHpHandle_1.SurvivorsRoguePlayerHpHandle();
+    this.jUd = (e, r) => {
       r = MathUtils_1.MathUtils.LongToNumber(r.oTs);
       if (this.GetModel().GoldNum !== r) {
         this.GetModel().GoldNum = r;
         KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(2, r);
       }
     };
-    this.lAd = (e, r) => {
+    this.HUd = (e, r) => {
       r = MathUtils_1.MathUtils.LongToNumber(r.oTs);
-      this.Q2d(r);
+      this.cFd(r);
     };
   }
   CreateModel() {
@@ -77,7 +77,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     if (r && e) {
       r.AddCommonBulletDataTable(e);
     }
-    this.K2d();
+    this.dFd();
   }
   OnWorldDone() {
     if (Log_1.Log.CheckDebug()) {
@@ -89,16 +89,16 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     if (o?.Valid) {
       e = o.Entity.GetComponent(3).ActorLocation;
       r?.EnableFlatGroundByAbovePoint(e);
-      this.Vwd = o;
-      this.dZr = o.Entity.GetComponent(208);
+      this.gAd = o;
+      this.dZr = o.Entity.GetComponent(211);
       this.cBe = o.Entity.GetComponent(40);
     } else {
       KscLog_1.KscLog.Warn("Common", 17, KscEnv_1.KscEnv.KscWorld, "Ksc找不到玩家角色,未设置地面坐标");
     }
-    this.C9d.Init();
+    this.aZd.Init();
     var r = this.GetModel().KscPlayerHeadStateData;
     if (r) {
-      this.C9d.OnPlayerHpChange(r);
+      this.aZd.OnPlayerHpChange(r);
     }
   }
   OnWorldReset() {
@@ -106,10 +106,10 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       Log_1.Log.Debug("SurvivorsRogue", 17, "SurvivorsRogueSubController OnWorldReset");
     }
     ControllerHolder_1.ControllerHolder.BulletController.StopKuroBulletWorld();
-    this.Vwd = undefined;
+    this.gAd = undefined;
     this.dZr = undefined;
-    this.X2d();
-    this.C9d.Clear();
+    this.mFd();
+    this.aZd.Clear();
   }
   OnEntityRemoved(e, r) {
     var o = this.Model.GetLogicProxy(e.CreatureDataId);
@@ -135,17 +135,17 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       switch (n) {
         case KscData_1.KscEntityRemoveReason.Dead:
           if (i.EntityType === 2) {
-            l = Protocol_1.Aki.Protocol.Mqd.create();
-            s.Sqd = l;
-            this.Ajd();
+            l = Protocol_1.Aki.Protocol.XNd.create();
+            s.KNd = l;
+            this.Mtm();
           } else {
-            (l = Protocol_1.Aki.Protocol.ZUd.create()).F4n = e.KillerId;
-            s.KUd = l;
+            (l = Protocol_1.Aki.Protocol.e2d.create()).F4n = e.KillerId;
+            s.Xkd = l;
           }
           break;
         case KscData_1.KscEntityRemoveReason.Coin:
-          var l = Protocol_1.Aki.Protocol.exd.create();
-          s.XUd = l;
+          var l = Protocol_1.Aki.Protocol.t2d.create();
+          s.Ykd = l;
           break;
         default:
           if (Log_1.Log.CheckError()) {
@@ -156,7 +156,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       r[e.CreatureDataId] = s;
     }
   }
-  Ajd() {
+  Mtm() {
     TimerSystem_1.TimerSystem.Next(() => {
       var e = [];
       this.GetModel().GetAllEntities(e);
@@ -173,12 +173,12 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     this.RedirectFilter = this.EYc;
   }
   GetPossessedPlayerEntity() {
-    return this.Vwd;
+    return this.gAd;
   }
   AddInputLayer() {
     var e;
     var r;
-    if (this.myd()) {
+    if (this.BMd()) {
       this.RemoveInputLayer();
     }
     if (e = InputController_1.InputController.CreateInputLayer(7)) {
@@ -194,7 +194,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     }
   }
   RemoveInputLayer() {
-    var e = this.myd();
+    var e = this.BMd();
     if (e) {
       InputController_1.InputController.RemoveInputLayer(e);
       e.Clear();
@@ -204,7 +204,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       return false;
     }
   }
-  myd() {
+  BMd() {
     var e = this.GetPossessedPlayerEntity();
     if (e) {
       return InputController_1.InputController.GetInputLayer(e.Id, 7);
@@ -226,8 +226,8 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     }
   }
   SyncPlayerTransform() {
-    if ((this.GetModel().KscPlayerEntity || !(this.GetModel().WeaponKscEntities.length <= 0)) && this.Vwd?.Valid) {
-      var e = this.Vwd.Entity.GetComponent(3).Actor.D_GetTransform();
+    if ((this.GetModel().KscPlayerEntity || !(this.GetModel().WeaponKscEntities.length <= 0)) && this.gAd?.Valid) {
+      var e = this.gAd.Entity.GetComponent(3).Actor.D_GetTransform();
       this.GetModel().KscPlayerEntity?.SetTransformByWorld(e);
       for (const r of this.GetModel().WeaponKscEntities) {
         r.SetTransformByWorld(e);
@@ -272,24 +272,24 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       }
     }
   }
-  K2d() {
+  dFd() {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
-    this.mAd(e, IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.hAd);
-    this.mAd(e, IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.lAd);
+    this.XUd(e, IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.jUd);
+    this.XUd(e, IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.HUd);
   }
-  mAd(e, r, o) {
+  XUd(e, r, o) {
     e.AddTreeVarUpdateDelegate(r, o);
     e = e.GetBehaviorTreeVar(r);
     if (e) {
       o(undefined, e);
     }
   }
-  X2d() {
+  mFd() {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.hAd);
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.lAd);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.jUd);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.HUd);
   }
-  Q2d(o) {
+  cFd(o) {
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.CurComboConfig;
     if (e) {
       let r = 0;
@@ -335,7 +335,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
   }
   OnHandlePlayerHeadHpInfo(e, r) {
     super.OnHandlePlayerHeadHpInfo(e, r);
-    this.C9d.OnPlayerHpChange(e);
+    this.aZd.OnPlayerHpChange(e);
   }
   GmPrintInfo() {
     var e = this.GetModel();

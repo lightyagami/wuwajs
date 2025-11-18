@@ -241,11 +241,7 @@ CloudGameManager.Ku_ = (e, a) => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("CloudGame", 16, "OnResolutionChange:", ["width", e], ["height", a]);
   }
-  e = new ue_1.IntPoint(e, a);
-  a = ue_1.GameUserSettings.GetGameUserSettings();
-  a.SetFullscreenMode(2);
-  a.SetScreenResolution(e);
-  a.ApplySettings(false);
+  ue_1.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.SetRes " + e + "x" + a + "w");
 };
 CloudGameManager.OnGamePadDeviceChange = e => {
   var e = Json_1.Json.Decode(e);

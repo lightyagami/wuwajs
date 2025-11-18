@@ -30,14 +30,14 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.Csd = undefined;
-    this.psd = undefined;
-    this.vsd = undefined;
+    this.Ihd = undefined;
+    this.Thd = undefined;
+    this.bhd = undefined;
     this.V6e = undefined;
-    this.ysd = [];
-    this.Ssd = [];
-    this.Msd = undefined;
-    this.Esd = undefined;
+    this.Rhd = [];
+    this.whd = [];
+    this.Lhd = undefined;
+    this.Phd = undefined;
     this.BO_ = 0;
     this.N2i = undefined;
     this.O2i = undefined;
@@ -47,12 +47,12 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
     this.AttributeLayout = undefined;
     this.NPn = (i, e, t) => {
       var a = new WeaponHandBookItem_1.WeaponHandBookItem();
-      a.OnClickCallBack = this.Isd;
+      a.OnClickCallBack = this.Ahd;
       return a;
     };
     this.C5e = () => {
       var i = new HandBookTab();
-      i.OnClickCallBack = this.Tsd;
+      i.OnClickCallBack = this.Dhd;
       return i;
     };
     this.vke = () => {
@@ -106,29 +106,33 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
           s.push(n);
         }
         if (s.length <= 0) {
-          this.csd();
+          this.vhd();
         } else {
           ModelManager_1.ModelManager.HandBookModel.CurrentSelectWeaponHandBookId = s[1]?.ItemData?.[0].ItemId ?? 0;
-          this.Csd?.RefreshByData(s);
+          this.Ihd?.RefreshByData(s);
         }
       }
     };
-    this.bsd = new WeaponTrialData_1.WeaponTrialData();
-    this.Isd = (i, e) => {
-      if (this.NHe !== e && (this.Esd !== i && this.Esd?.SetToggleStateForce(0), this.Esd = i, this.Rsd(e), ModelManager_1.ModelManager.HandBookModel.CurrentSelectWeaponHandBookId = e, this.NHe = e, this.csd(), this.wsd(e), Log_1.Log.CheckDebug())) {
+    this.xhd = new WeaponTrialData_1.WeaponTrialData();
+    this.Ahd = (i, e) => {
+      if (this.Phd !== i) {
+        this.Phd?.SetToggleStateForce(0);
+      }
+      this.Phd = i;
+      if (this.NHe !== e && (this.Uhd(e), ModelManager_1.ModelManager.HandBookModel.CurrentSelectWeaponHandBookId = e, this.NHe = e, this.vhd(), this.Bhd(e), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("HandBook", 5, "点击武器图鉴：" + ["WeaponId:", e]);
       }
     };
-    this.Tsd = (i, e) => {
-      this.Msd?.SetToggleStateForce(0);
-      this.Msd = i;
+    this.Dhd = (i, e) => {
+      this.Lhd?.SetToggleStateForce(0);
+      this.Lhd = i;
       if ((this.BO_ = e) === 0) {
         this.V6e?.ClearData(46);
-        this.V6e?.UpdateData(45, this.ysd);
+        this.V6e?.UpdateData(45, this.Rhd);
       }
       if (e === 1) {
         this.V6e?.ClearData(45);
-        this.V6e?.UpdateData(46, this.Ssd);
+        this.V6e?.UpdateData(46, this.whd);
       }
     };
     this.Apt = false;
@@ -138,7 +142,7 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
         this.GetItem(26).SetUIActive(true);
         this.GetItem(2).SetUIActive(true);
         this.lqe?.SetUiActive(true);
-        this.csd();
+        this.vhd();
         this.Apt = false;
       } else {
         this.UiViewSequence?.PlaySequence("On");
@@ -150,14 +154,14 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
         this.Apt = true;
       }
     };
-    this.Lsd = () => {
-      this.Rsd();
-      this.csd();
+    this.khd = () => {
+      this.Uhd();
+      this.vhd();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIDynScrollViewComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UIText], [12, UE.UIText], [13, UE.UIHorizontalLayout], [14, UE.UIItem], [15, UE.UIVerticalLayout], [16, UE.UIItem], [17, UE.UIText], [18, UE.UIText], [19, UE.UIText], [20, UE.UIText], [21, UE.UIItem], [22, UE.UIText], [23, UE.UIText], [24, UE.UIExtendToggle], [25, UE.UIExtendToggle], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem]];
-    this.BtnBindInfo = [[24, this.Npt], [25, this.Lsd]];
+    this.BtnBindInfo = [[24, this.Npt], [25, this.khd]];
   }
   async OnBeforeStartAsync() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
@@ -167,11 +171,11 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
     });
     this.lqe.SetTitleByTextIdAndArgNew("HandBookEntrance_3_Name");
     this.lqe.SetHelpBtnActive(false);
-    this.psd = new WeaponHandBookDynamicItem_1.WeaponHandBookDynamicItem();
-    this.Csd = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(6), this.GetItem(7), this.psd, this.NPn);
-    await this.Csd.Init();
+    this.Thd = new WeaponHandBookDynamicItem_1.WeaponHandBookDynamicItem();
+    this.Ihd = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(6), this.GetItem(7), this.Thd, this.NPn);
+    await this.Ihd.Init();
     this.V6e = new FilterSortEntrance_1.FilterSortEntrance(this.GetItem(8), this.Z6e);
-    this.vsd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.C5e);
+    this.bhd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.C5e);
     this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(13), this.vke);
     this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(15), this.G1o);
     this.N2i = UiSceneManager_1.UiSceneManager.InitWeaponObserver(this.Vjs);
@@ -179,32 +183,32 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(2);
-    this.ysd = ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponIdList();
-    this.Ssd = ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponSkinIdList();
-    this.vsd?.RefreshByData([0, 1], () => {
-      this.vsd?.GetScrollItemByIndex(0)?.SelectToggle();
+    this.Rhd = ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponIdList();
+    this.whd = ModelManager_1.ModelManager.HandBookModel.GetAllHandBookWeaponSkinIdList();
+    this.bhd?.RefreshByData([0, 1], () => {
+      this.bhd?.GetScrollItemByIndex(0)?.SelectToggle();
     });
   }
-  csd() {
+  vhd() {
     if (this.BO_ === 0) {
       this.GetItem(9).SetUIActive(true);
       this.GetItem(21).SetUIActive(false);
-      this.Psd();
+      this.Ohd();
     }
     if (this.BO_ === 1) {
       this.GetItem(9).SetUIActive(false);
       this.GetItem(21).SetUIActive(true);
-      this.Asd();
+      this.qhd();
     }
   }
-  Psd() {
+  Ohd() {
     var i;
     var e;
     var t;
     var a;
     if (this.NHe && (i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(this.NHe))) {
       this.GetItem(28).SetUIActive(true);
-      t = this.BO_ === 0 && this.GetExtendToggle(25).GetToggleState() === 1 ? this.bsd.GetFullLevelWeaponData() : this.bsd;
+      t = this.BO_ === 0 && this.GetExtendToggle(25).GetToggleState() === 1 ? this.xhd.GetFullLevelWeaponData() : this.xhd;
       e = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(i.QualityId);
       e = UE.Color.FromHex(e.DropColor);
       this.GetText(11).SetColor(e);
@@ -280,7 +284,7 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  Asd() {
+  qhd() {
     var i;
     if (this.NHe && (i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponSkinConfig(this.NHe))) {
       this.GetItem(28).SetUIActive(false);
@@ -291,19 +295,19 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), "WeaponHandBook_WeaponSkin_Name");
     }
   }
-  Rsd(i) {
+  Uhd(i) {
     let e = WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID;
     if (this.BO_ === 0 && i) {
       t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(i);
-      this.bsd.SetTrialId(t.HandBookTrialId);
+      this.xhd.SetTrialId(t.HandBookTrialId);
     }
     if (this.BO_ === 1 && i) {
       t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponSkinConfig(i);
-      this.bsd.SetTrialId(t.HandBookTrialId);
+      this.xhd.SetTrialId(t.HandBookTrialId);
       e = i;
     }
     var t = this.BO_ === 0 && this.GetExtendToggle(25).GetToggleState() === 1;
-    var i = t ? this.bsd.GetFullLevelWeaponData() : this.bsd;
+    var i = t ? this.xhd.GetFullLevelWeaponData() : this.xhd;
     WeaponController_1.WeaponController.OnSelectedWeaponChange(i, this.N2i, this.O2i, e, this.Vjs);
   }
   OnBeforeDestroy() {
@@ -315,7 +319,7 @@ class WeaponHandBookView extends UiViewBase_1.UiViewBase {
     this.V6e?.ClearData(45);
     this.V6e?.ClearData(46);
   }
-  wsd(i) {
+  Bhd(i) {
     var e = ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(3, i);
     if (e && !e.IsRead) {
       ControllerHolder_1.ControllerHolder.HandBookController.SendIllustratedReadRequest(3, i);

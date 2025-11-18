@@ -44,6 +44,10 @@ const environmentItemConfig = {
   ResourceId: "UiItem_BuffEnvironmentItem_Prefab",
   PreloadCount: 5
 };
+const weaknessItemConfig = {
+  ResourceId: "UiItem_FightBossConcertoState",
+  PreloadCount: 5
+};
 class BattleUiPoolElement {
   constructor() {
     this.ActorList = undefined;
@@ -117,12 +121,13 @@ class BattleUiPool {
     t.push(this.e$e(damageViewConfig, this.JXe));
     t.push(this.e$e(buffItemConfig, this.YXe));
     t.push(this.e$e(environmentItemConfig, this.YXe));
+    t.push(this.e$e(weaknessItemConfig, this.YXe));
     await Promise.all(t);
     return true;
   }
   async e$e(e, i) {
     var t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.ResourceId);
-    var o = await this.QXe.LoadPrefabAsync(t, i);
+    var o = await this.QXe.LoadPrefabAsync(t, i, "BattleUi");
     if (!o?.IsValid()) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "预加载Actor失败", ["resourceId", e.ResourceId]);
@@ -255,13 +260,33 @@ class BattleUiPool {
       return true;
     }
   }
+  GetWeaknessItem(t) {
+    return this.GetActor(weaknessItemConfig.ResourceId, t, true);
+  }
+  RecycleWeaknessItem(t) {
+    if (this.tZ) {
+      return this.RecycleActor(weaknessItemConfig.ResourceId, t, true);
+    } else {
+      ActorSystem_1.ActorSystem.Put("BattleUiPool.RecycleWeaknessItem", t);
+      return true;
+    }
+  }
+  async LoadActorNoCache(t, e) {
+    e = await this.QXe.LoadPrefabAsync(t, e, "BattleUi");
+    if (e?.IsValid()) {
+      return e;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Battle", 17, "加载Actor失败", ["", t]);
+    }
+  }
   async LoadActor(t, e) {
     var i;
     var o = undefined;
     let r = this.WXe.get(t);
     if (r) {
       return this.t$e(r, e);
-    } else if ((o = await this.QXe.LoadPrefabAsync(t, this.$Xe))?.IsValid()) {
+    } else if ((o = await this.QXe.LoadPrefabAsync(t, this.$Xe, "BattleUi"))?.IsValid()) {
       if (r = this.WXe.get(t)) {
         ActorSystem_1.ActorSystem.Put("BattleUiPool.LoadActor", o);
       } else {

@@ -79,7 +79,7 @@ class SeamlessTravelKeepKite {
               } else {
                 this.b41();
               }
-            });
+            }, 100, "SeamlessTravel");
           }
           if (!this.l41?.IsValid()) {
             ResourceSystem_1.ResourceSystem.LoadAsync(DEFAULT_KITE_ANIM_PATH, UE.AnimationAsset, t => {
@@ -89,7 +89,7 @@ class SeamlessTravelKeepKite {
               } else {
                 this.b41();
               }
-            });
+            }, 100, "SeamlessTravel");
           }
           if (!this.c41?.IsValid()) {
             ResourceSystem_1.ResourceSystem.LoadAsync(this.p41, UE.NiagaraSystem, t => {
@@ -99,7 +99,7 @@ class SeamlessTravelKeepKite {
               } else {
                 this.b41();
               }
-            });
+            }, 100, "SeamlessTravel");
           }
           if (!this.d41?.IsValid()) {
             ResourceSystem_1.ResourceSystem.LoadAsync(this.v41, UE.NiagaraSystem, t => {
@@ -109,7 +109,7 @@ class SeamlessTravelKeepKite {
               } else {
                 this.b41();
               }
-            });
+            }, 100, "SeamlessTravel");
           }
           this.T41();
         } else {
@@ -264,7 +264,7 @@ class SeamlessTravelKeepKite {
     }
   }
   SetInitData(t, i) {
-    var t = t.GetComponent(203);
+    var t = t.GetComponent(206);
     var s = t.GetActorInSceneInteraction(KITE_ACTOR_REF_NAME);
     var t = t.Owner?.D_GetTransform() ?? t.ActorTransform;
     var e = s?.D_GetTransform() ?? t;

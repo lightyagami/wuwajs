@@ -11,7 +11,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class QuestTreeNodeUnlockConditionFactory {
   constructor() {
-    this.ePd = new Map();
+    this.BDd = new Map();
   }
   static get Instance() {
     if (!this.cj) {
@@ -21,21 +21,21 @@ class QuestTreeNodeUnlockConditionFactory {
     return this.cj;
   }
   Create(e) {
-    var t = this.ePd.get(e.Type);
+    var t = this.BDd.get(e.Type);
     if (t) {
       return new t(e);
     }
   }
   AU() {
-    this.ePd.set("ExploreLevel", QuestTreeNodeUnlockConditionExploreLevel);
-    this.ePd.set("PreQuest", QuestTreeNodeUnlockConditionPreQuest);
-    this.ePd.set("PreChildQuest", QuestTreeNodeUnlockConditionPreChildQuest);
-    this.ePd.set("Item", QuestTreeNodeUnlockConditionItem);
-    this.ePd.set("PreLevelPlay", QuestTreeNodeUnlockConditionPreLevelPlay);
-    this.ePd.set("Gender", QuestTreeNodeUnlockConditionGender);
-    this.ePd.set("OpenDate", QuestTreeNodeUnlockConditionOpenDate);
-    this.ePd.set("PreDungeon", QuestTreeNodeUnlockConditionPreDungeon);
-    this.ePd.set("SystemState", QuestTreeNodeUnlockConditionSystemState);
+    this.BDd.set("ExploreLevel", QuestTreeNodeUnlockConditionExploreLevel);
+    this.BDd.set("PreQuest", QuestTreeNodeUnlockConditionPreQuest);
+    this.BDd.set("PreChildQuest", QuestTreeNodeUnlockConditionPreChildQuest);
+    this.BDd.set("Item", QuestTreeNodeUnlockConditionItem);
+    this.BDd.set("PreLevelPlay", QuestTreeNodeUnlockConditionPreLevelPlay);
+    this.BDd.set("Gender", QuestTreeNodeUnlockConditionGender);
+    this.BDd.set("OpenDate", QuestTreeNodeUnlockConditionOpenDate);
+    this.BDd.set("PreDungeon", QuestTreeNodeUnlockConditionPreDungeon);
+    this.BDd.set("SystemState", QuestTreeNodeUnlockConditionSystemState);
   }
 }
 (exports.QuestTreeNodeUnlockConditionFactory = QuestTreeNodeUnlockConditionFactory).cj = undefined;

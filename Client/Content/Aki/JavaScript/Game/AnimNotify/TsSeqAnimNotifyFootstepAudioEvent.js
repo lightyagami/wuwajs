@@ -161,7 +161,7 @@ class TsSeqAnimNotifyFootstepAudioEvent extends UE.KuroAnimNotify {
     if (t) {
       var i = t.GetHitCount();
       for (let e = 0; e < i; ++e) {
-        if (t.Components.Get(e).BodyInstance.CollisionResponses.ResponseToChannels.GameTraceChannel2 === 2) {
+        if (UE.KuroCollisionLibrary.GetBodyInstance(t, e).CollisionResponses.ResponseToChannels.GameTraceChannel2 === 2) {
           return "WaterSurface";
         }
       }

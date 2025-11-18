@@ -349,7 +349,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.ResetStage();
     });
-    this.I3d();
+    this.w9d();
     this.pD_();
   }
   async SureCoverChallenge() {
@@ -359,7 +359,7 @@ class ShipTowerStageData {
     this.TeamDataList.forEach(e => {
       e.CoverChallenge();
     });
-    this.I3d();
+    this.w9d();
     this.pD_();
   }
   UpdateNewChallengeScore() {
@@ -451,7 +451,7 @@ class ShipTowerStageData {
   GetCurSelectTeamData() {
     return this.TeamDataList[this.CurSelectTeamIndex];
   }
-  I3d() {
+  w9d() {
     this.IsQuickPass = false;
   }
 }

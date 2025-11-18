@@ -49,7 +49,7 @@ class TsAnimNotifyStateAudioEvent extends UE.KuroAnimNotifyState {
     o = e.GetOuter();
     if (Info_1.Info.IsGameRunning()) {
       if (o instanceof TsBaseCharacter_1.default) {
-        if (o.GetEntityNoBlueprint()?.GetComponent(206)?.HasTag(1654452863)) {
+        if (o.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(1654452863)) {
           return false;
         }
         o = o.CharacterActorComponent?.GetReplaceEffect(t);

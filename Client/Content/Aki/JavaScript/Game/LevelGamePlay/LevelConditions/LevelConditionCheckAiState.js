@@ -29,7 +29,7 @@ class LevelConditionCheckAiState extends LevelGeneralBase_1.LevelConditionBase {
       }
       return false;
     }
-    var i = n.Entity.GetComponent(206);
+    var i = n.Entity.GetComponent(209);
     let r = false;
     switch (e.StateType) {
       case ICondition_1.EAiStateType.AnimalRandomAction:

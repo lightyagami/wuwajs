@@ -76,4 +76,4 @@ UiModel.IsInMainView = false;
 UiModel.InNormalQueue = false;
 UiModel.SeamlessStackWhileList = new Set(["BattleView"]);
 UiModel.MainViewName = "BattleView";
-UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView"]); //# sourceMappingURL=UiModel.js.map
+UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView", "HonamiStoryTechnologyView"]); //# sourceMappingURL=UiModel.js.map

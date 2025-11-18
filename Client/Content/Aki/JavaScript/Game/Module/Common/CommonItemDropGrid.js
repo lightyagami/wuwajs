@@ -85,7 +85,7 @@ class CommonItemDropGrid extends GridProxyAbstract_1.GridProxyAbstract {
           if (i) {
             i();
           }
-        });
+        }, 100, this.MemoryTag);
       }
     }
   }

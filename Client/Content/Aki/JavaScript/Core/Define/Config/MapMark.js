@@ -135,6 +135,9 @@ class MapMark {
   get GameplayLockJumpId() {
     return this.gameplaylockjumpid();
   }
+  get AreaShowText() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.areashowtextLength(), this.areashowtext, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -519,6 +522,25 @@ class MapMark {
     var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetAreashowtextAt(t) {
+    return this.areashowtext(t);
+  }
+  areashowtext(t, i) {
+    var r = this.J7.__offset(this.z7, 82);
+    var r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + t * 4, i) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  areashowtextLength() {
+    var t = this.J7.__offset(this.z7, 82);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }

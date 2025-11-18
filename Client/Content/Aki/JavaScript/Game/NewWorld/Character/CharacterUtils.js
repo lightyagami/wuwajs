@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CharacterUtils = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const CalabashMeshById_1 = require("../../../Core/Define/ConfigQuery/CalabashMeshById");
 const MonsterBattleConfById_1 = require("../../../Core/Define/ConfigQuery/MonsterBattleConfById");
 const MonsterBattleConfByRoleId_1 = require("../../../Core/Define/ConfigQuery/MonsterBattleConfByRoleId");
 const MonsterPerformanceConfById_1 = require("../../../Core/Define/ConfigQuery/MonsterPerformanceConfById");
@@ -21,19 +22,19 @@ class CharacterUtils {
   }
   static Jil(r) {
     if (r?.Valid) {
-      var t = r.Entity.GetComponent(0);
-      var a = r.Entity.GetComponent(40);
-      var o = r.Entity.GetComponent(206);
+      var a = r.Entity.GetComponent(0);
+      var t = r.Entity.GetComponent(40);
+      var o = r.Entity.GetComponent(209);
       let e = undefined;
-      r = t.GetMonsterComponent()?.FightConfigId;
+      r = a.GetMonsterComponent()?.FightConfigId;
       if (r) {
         e = MonsterBattleConfById_1.configMonsterBattleConfById.GetConfig(r);
       }
-      r = t.GetRoleId();
-      t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(r);
-      if (e = t ? MonsterBattleConfByRoleId_1.configMonsterBattleConfByRoleId.GetConfig(t) : e) {
+      r = a.GetRoleId();
+      a = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(r);
+      if (e = a ? MonsterBattleConfByRoleId_1.configMonsterBattleConfByRoleId.GetConfig(a) : e) {
         var r = MonsterPerformanceConfById_1.configMonsterPerformanceConfById.GetConfigList(e.MonsterPerformanceId);
-        var n = a.CurrentSkill?.SkillId ?? 0;
+        var n = t.CurrentSkill?.SkillId ?? 0;
         for (const s of r ?? []) {
           if (s.SkillIds.includes(n)) {
             var i = s.Tag;
@@ -50,11 +51,22 @@ class CharacterUtils {
     }
     return false;
   }
-  static SetActorHiddenInGame(e, r, t) {
+  static SetActorHiddenInGame(e, r, a) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Character", 67, "CharacterUtils.SetActorHiddenInGame", ["Actor", e.GetName()], ["IsHidden", r], ["Reason", t]);
+      Log_1.Log.Info("Character", 67, "CharacterUtils.SetActorHiddenInGame", ["Actor", e.GetName()], ["IsHidden", r], ["Reason", a]);
     }
     e.SetActorHiddenInGame(r);
+  }
+  static GetHuluModelId(e) {
+    var r = CalabashMeshById_1.configCalabashMeshById.GetConfig(e);
+    if (r) {
+      return r.MeshId;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Character", 28, "势力.xlsx里没有配葫芦模型ID", ["partyId", e]);
+      }
+      return 0;
+    }
   }
 }
 exports.CharacterUtils = CharacterUtils;

@@ -29,7 +29,7 @@ class LevelConditionCheckEntityGravityDirection extends LevelGeneralBase_1.Level
   }
   $j_(e) {
     var t;
-    var i = e.Entity.GetComponent(179);
+    var i = e.Entity.GetComponent(182);
     if (i) {
       return i.GravityDirect;
     } else if (i = e.Entity.GetComponent(1)) {
@@ -61,16 +61,15 @@ class LevelConditionCheckEntityGravityDirection extends LevelGeneralBase_1.Level
       return false;
     }
   }
-  CheckNew(e, t, i) {
-    var r = e;
-    var e = LevelGamePlayUtils_1.LevelGamePlayUtils.GetCheckTargetConditionEntityHandles(r.Target, t, i);
-    if (e.length === 0) {
+  rLd(e, t, i) {
+    var r = LevelGamePlayUtils_1.LevelGamePlayUtils.GetCheckTargetConditionEntityHandles(e.Target, t, i);
+    if (r.length === 0) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("LevelCondition", 72, "[CheckEntityGravityDirection] 没有符合条件的联机判断的玩家或者指定的实体", ["config", r], ["inTrigger", t], ["context", i]);
+        Log_1.Log.Info("LevelCondition", 72, "[CheckEntityGravityDirection] 没有符合条件的联机判断的玩家或者指定的实体", ["config", e], ["inTrigger", t], ["context", i]);
       }
       return false;
     }
-    for (const c of e) {
+    for (const c of r) {
       if (!c?.Valid) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelCondition", 72, "[CheckEntityGravityDirection] 联机条件判断的玩家或者指定的实体无效", ["entityHandle", c]);
@@ -84,24 +83,24 @@ class LevelConditionCheckEntityGravityDirection extends LevelGeneralBase_1.Level
         }
         return false;
       }
-      switch (r.GravityDirection.Type) {
+      switch (e.GravityDirection.Type) {
         case "SelfRotation":
           if (this.Qj_(o, t, i)) {
             break;
           }
           return false;
         case "VectorInfo":
-          if (Vector_1.Vector.Create(r.GravityDirection.Direction.X, r.GravityDirection.Direction.Y, r.GravityDirection.Direction.Z).Equals(o)) {
+          if (Vector_1.Vector.Create(e.GravityDirection.Direction.X, e.GravityDirection.Direction.Y, e.GravityDirection.Direction.Z).Equals(o)) {
             break;
           }
           return false;
         case "WorldAxis":
-          if (this.Hj_(r.GravityDirection.WorldAxis).Equals(o)) {
+          if (this.Hj_(e.GravityDirection.WorldAxis).Equals(o)) {
             break;
           }
           return false;
         case "EntityGravity":
-          var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.GravityDirection.EntityId);
+          var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.GravityDirection.EntityId);
           if (n?.Valid) {
             var a = this.$j_(n);
             if (a && a.Equals(o)) {
@@ -119,6 +118,14 @@ class LevelConditionCheckEntityGravityDirection extends LevelGeneralBase_1.Level
       }
     }
     return true;
+  }
+  CheckNew(e, t, i) {
+    t = this.rLd(e, t, i);
+    if (e.IsNotInTargetDirection) {
+      return !t;
+    } else {
+      return t;
+    }
   }
 }
 (exports.LevelConditionCheckEntityGravityDirection = LevelConditionCheckEntityGravityDirection).Wj_ = Vector_1.Vector.DownVectorProxy;

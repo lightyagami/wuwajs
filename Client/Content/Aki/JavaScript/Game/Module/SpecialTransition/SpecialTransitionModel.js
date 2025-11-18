@@ -9,27 +9,27 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 class SpecialTransitionModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.rBd = undefined;
+    this.oOd = undefined;
   }
   GetSpecialTransitionParams() {
-    return this.rBd;
+    return this.oOd;
   }
   SetSpecialTransitionParams(e) {
-    if (this.rBd) {
+    if (this.oOd) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Loading", 87, "SpecialTransitionParams已存在,被重复设置");
       }
       return false;
     } else {
-      this.rBd = e;
+      this.oOd = e;
       return true;
     }
   }
   ClearSpecialTransitionParams() {
-    this.rBd = undefined;
+    this.oOd = undefined;
   }
   OnClear() {
-    return !(this.rBd = undefined);
+    return !(this.oOd = undefined);
   }
 }
 exports.SpecialTransitionModel = SpecialTransitionModel;

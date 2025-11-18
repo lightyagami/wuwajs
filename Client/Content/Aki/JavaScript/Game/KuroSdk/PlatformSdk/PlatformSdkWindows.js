@@ -241,7 +241,7 @@ class PlatformSdkWindows extends PlatformSdkBase_1.PlatformSdkBase {
     r.currency = "";
     r.extraParams = "";
     let t = Json_1.Json.Stringify(r);
-    return t = (t = t.replace("}", ",")) + StringUtils_1.StringUtils.Format("\"price\":{0}", e.price.toString()) + "}";
+    return t = t.substring(0, t.length - 1) + "," + StringUtils_1.StringUtils.Format("\"price\":{0}", e.price.toString()) + "}";
   }
   OpenCustomerService(e) {
     var o = ModelManager_1.ModelManager.LoginModel;

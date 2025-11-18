@@ -82,5 +82,5 @@ let FreeCameraDisplayComponent = class FreeCameraDisplayComponent extends Entity
     }
   }
 };
-FreeCameraDisplayComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(292)], FreeCameraDisplayComponent);
+FreeCameraDisplayComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(296)], FreeCameraDisplayComponent);
 exports.FreeCameraDisplayComponent = FreeCameraDisplayComponent; //# sourceMappingURL=FreeCameraDisplayComponent.js.map

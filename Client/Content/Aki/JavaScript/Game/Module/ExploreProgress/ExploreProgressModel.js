@@ -48,17 +48,21 @@ class ExploreProgressModel extends ModelBase_1.ModelBase {
     var t = ConfigManager_1.ConfigManager.AreaConfig;
     this.JVt.length = 0;
     for (const s of e) {
-      var r = new ExploreCountryData_1.ExploreCountryData();
-      r.Initialize(s);
-      this.YVt.set(s.Id, r);
-      var a = t.GetAreaConfigByCountryAndLevel(s.Id, ExploreProgressDefine_1.AREA_LEVEL);
-      for (const n of a) {
-        var o = n.AreaId;
-        var i = r.AddExploreAreaData(n);
-        this.QVt.set(o, i);
-        this.JVt.push(o);
+      var r;
+      var a;
+      var o = new ExploreCountryData_1.ExploreCountryData();
+      o.Initialize(s);
+      this.YVt.set(s.Id, o);
+      var i = t.GetAreaConfigByCountryAndLevel(s.Id, 2);
+      for (const n of i) {
+        if (!n.IsDisableInExplore) {
+          r = n.AreaId;
+          a = o.AddExploreAreaData(n);
+          this.QVt.set(r, a);
+          this.JVt.push(r);
+        }
       }
-      r.UpdateStateAreaDataListSort();
+      o.UpdateStateAreaDataListSort();
     }
   }
   InitializeCurrentCountryIdAndAreaId() {

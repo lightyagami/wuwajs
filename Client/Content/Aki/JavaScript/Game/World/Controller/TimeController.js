@@ -47,12 +47,12 @@ class TimeController extends ControllerBase_1.ControllerBase {
         StopMove: t
       });
     }
-    EntitySystem_1.EntitySystem.Get(e)?.GetComponent(123)?.AddDelayLock("ANS AbsoluteTimeStop Role");
+    EntitySystem_1.EntitySystem.Get(e)?.GetComponent(126)?.AddDelayLock("ANS AbsoluteTimeStop Role");
     this.Khh();
   }
   static RemoveLock(e) {
     this.Qhh.delete(e);
-    EntitySystem_1.EntitySystem.Get(e)?.GetComponent(123)?.RemoveDelayLock("ANS AbsoluteTimeStop Role");
+    EntitySystem_1.EntitySystem.Get(e)?.GetComponent(126)?.RemoveDelayLock("ANS AbsoluteTimeStop Role");
     this.Khh();
   }
   static Khh() {
@@ -125,7 +125,7 @@ class TimeController extends ControllerBase_1.ControllerBase {
   }
   static Jhh(e, t) {
     this.Zll.add(e);
-    e.Entity?.GetComponent(123)?.AddPauseLock("ANS AbsoluteTimeStop monster");
+    e.Entity?.GetComponent(126)?.AddPauseLock("ANS AbsoluteTimeStop monster");
     var i = e.Entity?.GetComponent(45);
     if (t) {
       i?.AddPauseLock("ANS AbsoluteTimeStop monster");
@@ -136,7 +136,7 @@ class TimeController extends ControllerBase_1.ControllerBase {
   }
   static zhh(e) {
     this.Zll.delete(e);
-    e.Entity?.GetComponent(123)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
+    e.Entity?.GetComponent(126)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
     e.Entity?.GetComponent(45)?.RemovePauseLock("ANS AbsoluteTimeStop monster");
     BulletUtil_1.BulletUtil.UnFrozenCharacterBullet(e.Id);
   }
@@ -176,7 +176,7 @@ TimeController.TimeCheckRequest = () => {
       e.A6n = Time_1.Time.TimeDilation;
     }
     e.U6n = Time_1.Time.FlowTimeDilation;
-    Net_1.Net.Call(17714, e, e => {
+    Net_1.Net.Call(21575, e, e => {
       var t;
       var i;
       var r;

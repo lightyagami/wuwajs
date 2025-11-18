@@ -24,9 +24,11 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ActivityDoubleRewardController_1 = require("../Activity/ActivityContent/DoubleReward/ActivityDoubleRewardController");
 const MapUtil_1 = require("../Map/MapUtil");
+const ShipTowerDefine_1 = require("../ShipTower/ShipTowerDefine");
 const AdventureDefine_1 = require("./AdventureDefine");
 const AdventureGuideController_1 = require("./AdventureGuideController");
 const ENERGYCOST_ID = 5;
+const DEFAULT_SEASON_ID = -100;
 class AdventureGuideModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -114,18 +116,18 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var t = ConfigManager_1.ConfigManager.DynamicTabConfig.GetViewTabList("AdventureGuideView");
     var r = t.length;
     var i = [];
-    let n = -1;
-    var o = this.GetAllTaskFinish();
+    let o = -1;
+    var n = this.GetAllTaskFinish();
     for (let e = 0; e < r; e++) {
-      var s = t[e];
-      if (o && s.ChildViewName === "AdventureTargetView") {
-        n = e;
-      } else if (this.GetIsTabViewHaveData(s.ChildViewName) && ModelManager_1.ModelManager.FunctionModel.IsOpen(s.FunctionId)) {
-        i.push(s);
+      var a = t[e];
+      if (n && a.ChildViewName === "AdventureTargetView") {
+        o = e;
+      } else if (this.GetIsTabViewHaveData(a.ChildViewName) && ModelManager_1.ModelManager.FunctionModel.IsOpen(a.FunctionId)) {
+        i.push(a);
       }
     }
-    if (n !== -1) {
-      i.push(t[n]);
+    if (o !== -1) {
+      i.push(t[o]);
     }
     return i;
   }
@@ -220,6 +222,24 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     }
     return t;
   }
+  GetChapterReceivedCount(e) {
+    let t = 0;
+    for (const r of this.SVe.get(e)) {
+      if (r.Status >= Protocol_1.Aki.Protocol.Aks.Proto_Received) {
+        t++;
+      }
+    }
+    return t;
+  }
+  GetChapterFinishCount(e) {
+    let t = 0;
+    for (const r of this.SVe.get(e)) {
+      if (r.Status >= Protocol_1.Aki.Protocol.Aks.a3_) {
+        t++;
+      }
+    }
+    return t;
+  }
   GetLevelOfLevelPlay(e) {
     e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(e);
     if (e === undefined) {
@@ -227,12 +247,12 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     }
     let t = 0;
     if (e.ReferenceAllEntity) {
-      for (const n of e.ReferenceAllEntity) {
+      for (const o of e.ReferenceAllEntity) {
         var r;
-        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityData(n);
+        var i = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o);
         if (i === undefined) {
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("AdventureGuide", 9, "玩法关联实体丢失", ["entity ", n]);
+            Log_1.Log.Warn("AdventureGuide", 9, "玩法关联实体丢失", ["entity ", o]);
           }
         } else {
           r = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(i.BlueprintType);
@@ -275,7 +295,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var e = this.VVe.get(e);
     if (e) {
       for (const i of e) {
-        if ((!t || i.DungeonDetectionRecord.Conf.MatType === t) && !this.IsDetectionPreOpen(i) && !i.IsLock) {
+        if ((!t || i.DungeonDetectionRecord.Conf.MatType === t) && !this.GetIsDetectionPreOpenByData(i) && !i.IsLock) {
           r.push(i);
         }
       }
@@ -284,26 +304,26 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   GetCanShowDungeonRecordsByType(e, t, r = true) {
     var i = new Array();
-    var n = this.VVe.get(e);
-    if (!n) {
+    var o = this.VVe.get(e);
+    if (!o) {
       return [false, i];
     }
-    for (const o of n) {
-      if ((!t || o.DungeonDetectionRecord.Conf.MatType === t) && (!!this.IsDetectionPreOpen(o) || !o.IsLock || e === 63)) {
-        i.push(o);
+    for (const n of o) {
+      if ((!t || n.DungeonDetectionRecord.Conf.MatType === t) && (!!this.GetIsDetectionPreOpenByData(n) || !n.IsLock || e === 63 || !!n.Conf.PeriodicityChallengeType)) {
+        i.push(n);
       }
     }
     if (r) {
       if (e === 6 || e === 62) {
-        const s = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
+        const a = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
         if (e === 6) {
           i.forEach(e => {
             var t = e.Conf.SubDungeonId;
             if (ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(t)) {
-              s.set(e.Conf.Id, true);
+              a.set(e.Conf.Id, true);
             }
           });
-          LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, s);
+          LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, a);
         }
         i.sort((e, t) => {
           var r = e.Conf.SubDungeonId;
@@ -312,7 +332,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
           var i = ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(i) ? 1 : 0;
           if (r != i) {
             return r - i;
-          } else if ((r = !s.get(e.Conf.Id)) != !s.get(t.Conf.Id)) {
+          } else if ((r = !a.get(e.Conf.Id)) != !a.get(t.Conf.Id)) {
             if (r) {
               return -1;
             } else {
@@ -326,8 +346,8 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
         });
       } else {
         i.sort((e, t) => {
-          var r = this.IsDetectionPreOpen(e) ? 1 : 0;
-          var i = this.IsDetectionPreOpen(t) ? 1 : 0;
+          var r = this.GetIsDetectionPreOpenByData(e) ? 1 : 0;
+          var i = this.GetIsDetectionPreOpenByData(t) ? 1 : 0;
           if (r != i) {
             return i - r;
           } else if ((i = this.IsDetectionNewContentOpen(e) ? 1 : 0) != (r = this.IsDetectionNewContentOpen(t) ? 1 : 0)) {
@@ -419,24 +439,24 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     for (const i of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllMonsterDetection()) {
       this.AllMonsterDetectionRecord.set(i.Id, new AdventureDefine_1.MonsterDetectionRecord(i, true, 0));
     }
-    for (const n of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllDungeonDetection()) {
-      var t = new AdventureDefine_1.DungeonDetectionRecord(n, true, 0);
-      this.AllDungeonDetectionRecord.set(n.Id, t);
-      let e = this.VVe.get(n.Secondary);
-      if (!e) {
-        e = [];
-        this.VVe.set(n.Secondary, e);
-      }
-      t = new AdventureDefine_1.SoundAreaDetectionRecord(0, t);
-      e.push(t);
-    }
-    for (const o of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection()) {
-      var r = new AdventureDefine_1.SilentAreaDetectionRecord(o, o.LockCon !== 0, 0);
-      this.AllSilentAreaDetectionRecord.set(o.Id, r);
+    for (const o of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllDungeonDetection()) {
+      var t = new AdventureDefine_1.DungeonDetectionRecord(o, true, 0);
+      this.AllDungeonDetectionRecord.set(o.Id, t);
       let e = this.VVe.get(o.Secondary);
       if (!e) {
         e = [];
         this.VVe.set(o.Secondary, e);
+      }
+      t = new AdventureDefine_1.SoundAreaDetectionRecord(0, t);
+      e.push(t);
+    }
+    for (const n of ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection()) {
+      var r = new AdventureDefine_1.SilentAreaDetectionRecord(n, n.LockCon !== 0, 0);
+      this.AllSilentAreaDetectionRecord.set(n.Id, r);
+      let e = this.VVe.get(n.Secondary);
+      if (!e) {
+        e = [];
+        this.VVe.set(n.Secondary, e);
       }
       r = new AdventureDefine_1.SoundAreaDetectionRecord(1, undefined, r);
       e.push(r);
@@ -450,7 +470,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   UpdateByAdventureManualResponse(e) {
     if (e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 23795);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17290);
     } else {
       this.P4l = true;
       this.hK1 = e.NMs.sK1;
@@ -458,8 +478,8 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       for (const i of e.NMs.UMs) {
         this.WVe(i);
       }
-      for (const n of e.FMs) {
-        this.KVe(n);
+      for (const o of e.FMs) {
+        this.KVe(o);
       }
       this.HandleMonsterDetectLockStatus(e.$Ms);
       this.FullUpdateDetectionPreOpenData(1, e.wE_);
@@ -468,9 +488,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       this.UpdateDetectionServerConfig(1, e.TE_);
       this.EVe.clear();
       if (e.jMs.size !== 0) {
-        for (const o of Object.keys(e.jMs)) {
-          var t = e.jMs[o];
-          var r = Number(o);
+        for (const n of Object.keys(e.jMs)) {
+          var t = e.jMs[n];
+          var r = Number(n);
           this.EVe.set(r, t);
           if (t === Protocol_1.Aki.Protocol.wks.CM_) {
             ControllerHolder_1.ControllerHolder.AdventureGuideController.EmitRedDotFirstAwardEvent(r);
@@ -498,23 +518,23 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   HandleMonsterDetectLockStatus(e) {
     let t = false;
     let r = false;
-    for (const s of e.GMs) {
-      var i = this.GetMonsterDetectData(s);
+    for (const a of e.GMs) {
+      var i = this.GetMonsterDetectData(a);
       if (i !== undefined) {
         i.IsLock = false;
       }
     }
-    for (const a of e.OMs) {
-      var n = this.GetSoundAreaDetectData(a);
-      if (n !== undefined) {
-        n.IsLock = false;
+    for (const s of e.OMs) {
+      var o = this.GetSoundAreaDetectData(s);
+      if (o !== undefined) {
+        o.IsLock = false;
         r = true;
       }
     }
     for (const h of e.kMs) {
-      var o = this.GetSilentAreaDetectData(h);
-      if (o !== undefined) {
-        o.IsLock = false;
+      var n = this.GetSilentAreaDetectData(h);
+      if (n !== undefined) {
+        n.IsLock = false;
         t = true;
       }
     }
@@ -529,13 +549,13 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAdventureTaskConfig(t.s5n);
     if (r) {
       var i = r.ChapterId;
-      var n = this.SVe.get(i);
+      var o = this.SVe.get(i);
       let e = undefined;
-      if (n === undefined) {
+      if (o === undefined) {
         e = new Array();
         this.SVe.set(i, e);
       } else {
-        e = n;
+        e = o;
       }
       i = e.find(e => e.AdventureTaskBase.Id === t.s5n);
       if (i !== undefined) {
@@ -604,6 +624,22 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   GetChapterTasks(e) {
     return this.SVe.get(e);
   }
+  HaveChapterTasksFinish(e) {
+    for (const t of this.SVe.get(e) ?? []) {
+      if (t.Status === Protocol_1.Aki.Protocol.Aks.a3_) {
+        return true;
+      }
+    }
+    return false;
+  }
+  HaveChapterTasksUnFinish(e) {
+    for (const t of this.SVe.get(e) ?? []) {
+      if (t.Status === Protocol_1.Aki.Protocol.Aks.Proto_UnFinish) {
+        return true;
+      }
+    }
+    return false;
+  }
   SortChapterTasks(e) {
     var t = this.SVe.get(e);
     t.sort((e, t) => {
@@ -627,10 +663,10 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
         }
       }
     } else {
-      for (const n of this.SVe.keys()) {
-        for (const o of r = this.SVe.get(n)) {
-          if (o.AdventureTaskBase.Id === e) {
-            return o;
+      for (const o of this.SVe.keys()) {
+        for (const n of r = this.SVe.get(o)) {
+          if (n.AdventureTaskBase.Id === e) {
+            return n;
           }
         }
       }
@@ -655,8 +691,8 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     if (t.length === 0 && Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("AdventureGuide", 9, "未找到实体配置", ["type ", e]);
     }
-    for (const n of t) {
-      var i = ModelManager_1.ModelManager.CreatureModel.GetEntityData(n);
+    for (const o of t) {
+      var i = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o);
       if (i?.ComponentsData !== undefined && (i = (0, IComponent_1.getComponent)(i.ComponentsData, "AttributeComponent")).Level > r) {
         r = i.Level;
       }
@@ -670,27 +706,35 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     }
   }
   UpdatePendingMonsterList(e, t) {
-    if (e.length !== 0) {
+    if (!(e.length <= 0)) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("AdventureGuide", 5, "更新怪物探测信息", ["怪物id", e[0].s5n], ["探测id", e[0].o8n], ["RefreshTime", e[0].qMs]);
+        Log_1.Log.Debug("AdventureGuide", 5, "更新怪物探测信息", ["配置Id", t]);
       }
       if (t !== this.GetCurDetectingMonsterConfId()) {
         this.GVe.clear();
         this.wVe = t;
       }
       for (const i of e) {
-        var r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(i.s5n, i.w7n).Transform.Pos;
-        var r = {
-          Id: i.s5n,
-          RefreshTime: i.qMs,
-          MapId: i.w7n,
-          PositionX: r.X,
-          PositionY: r.Y,
-          PositionZ: r.Z
-        };
-        this.GVe.set(i.s5n, r);
+        for (const o of i.FLd) {
+          var r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(o, i.w7n).Transform.Pos;
+          var r = {
+            Id: o,
+            RefreshTime: 0,
+            MapId: i.w7n,
+            PositionX: r.X,
+            PositionY: r.Y,
+            PositionZ: r.Z
+          };
+          this.GVe.set(o, r);
+        }
       }
     }
+  }
+  DeletePendingMonsterList(e) {
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("AdventureGuide", 5, "更新怪物探测信息-删除对应怪物", ["怪物id", e]);
+    }
+    this.GVe.delete(e);
   }
   UpdatePendingDungeonList(e, t) {
     if (t !== this.GetCurDetectingDungeonConfId()) {
@@ -698,22 +742,20 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       this.BVe = t;
     }
     for (const i of e) {
-      var r;
-      if (i.BMs) {
-        r = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(i.s5n);
-        if (r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r.TeleportEntityConfigId, i.w7n)) {
+      for (const o of i.FLd) {
+        var r = ConfigManager_1.ConfigManager.InstanceDungeonEntranceConfig.GetConfig(o);
+        var r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r.TeleportEntityConfigId, i.w7n);
+        if (r) {
           r = {
-            Id: i.s5n,
-            RefreshTime: i.qMs,
+            Id: o,
+            RefreshTime: 0,
             MapId: i.w7n,
             PositionX: r.Transform.Pos.X ?? 0,
             PositionY: r.Transform.Pos.Y ?? 0,
             PositionZ: r.Transform.Pos.Z ?? 0
           };
-          this.NVe.set(i.s5n, r);
+          this.NVe.set(o, r);
         }
-      } else {
-        this.NVe.delete(i.s5n);
       }
     }
   }
@@ -723,22 +765,20 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       this.bVe = t;
     }
     for (const i of e) {
-      var r;
-      if (i.BMs) {
-        if ((r = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(i.s5n)) !== undefined) {
+      for (const o of i.FLd) {
+        var r = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayConfig(o);
+        if (r !== undefined) {
           r = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r.LevelPlayEntityId, i.w7n).Transform.Pos;
           r = {
-            Id: i.s5n,
-            RefreshTime: i.qMs,
+            Id: o,
+            RefreshTime: 0,
             MapId: i.w7n,
             PositionX: r.X,
             PositionY: r.Y,
             PositionZ: r.Z
           };
-          this.OVe.set(i.s5n, r);
+          this.OVe.set(o, r);
         }
-      } else {
-        this.OVe.delete(i.s5n);
       }
     }
   }
@@ -795,22 +835,28 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   GetAllCanShowDungeonTypeList(e, t = true) {
     let r = undefined;
     var i;
-    var n;
+    var o;
     var e = e || this.CurrentGuideTabName;
-    r = e === "NewSoundAreaView" ? 3 : 2;
-    var o = new Array();
-    for ([i, n] of this.VVe) {
-      var s = n[0];
-      if ((s.Type !== 0 || s.DungeonDetectionRecord.Conf.GuideId === r) && (s.Type !== 1 || s.SilentAreaDetectionRecord.Conf.GuideId === r)) {
+    if (e === "NewSoundAreaView") {
+      r = 3;
+    } else if (e === "DisposableChallengeView") {
+      r = 2;
+    } else if (e === "PeriodicityChallengeView") {
+      r = 5;
+    }
+    var n = new Array();
+    for ([i, o] of this.VVe) {
+      var a = o[0];
+      if ((a.Type !== 0 || a.DungeonDetectionRecord.Conf.GuideId === r) && (a.Type !== 1 || a.SilentAreaDetectionRecord.Conf.GuideId === r)) {
         if (this.CheckTargetDungeonTypeCanShow(i)) {
-          o.push(i);
+          n.push(i);
         }
       }
     }
     if (t) {
-      return o.sort((e, t) => ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(e).SortNumber - ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(t).SortNumber);
+      return n.sort((e, t) => ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(e).SortNumber - ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(t).SortNumber);
     } else {
-      return o;
+      return n;
     }
   }
   GetIsTabViewHaveData(e) {
@@ -819,6 +865,8 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       t = 3;
     } else if (e === "DisposableChallengeView") {
       t = 2;
+    } else if (e === "PeriodicityChallengeView") {
+      t = 5;
     }
     if (!t) {
       return true;
@@ -836,27 +884,27 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   }
   InitAllDetectSilentAreasList() {
     var e = new Map();
-    for (const n of this.AllSilentAreaDetectionRecord.values()) {
-      var t = e.get(n.Conf.Secondary);
+    for (const o of this.AllSilentAreaDetectionRecord.values()) {
+      var t = e.get(o.Conf.Secondary);
       if (t) {
-        t.push(n);
+        t.push(o);
       } else {
-        (t = new Array()).push(n);
-        e.set(n.Conf.Secondary, t);
+        (t = new Array()).push(o);
+        e.set(o.Conf.Secondary, t);
       }
     }
-    for (const o of e.values()) {
-      o.sort(AdventureGuideController_1.silentAreasSortFunc);
+    for (const n of e.values()) {
+      n.sort(AdventureGuideController_1.silentAreasSortFunc);
     }
-    for (const s of Array.from(e.keys()).sort((e, t) => t - e)) {
-      var r = e.get(s);
+    for (const a of Array.from(e.keys()).sort((e, t) => t - e)) {
+      var r = e.get(a);
       if (r.length !== 0) {
         var i = r[0].Conf.DangerType;
-        for (const a of r) {
+        for (const s of r) {
           this.jVe.push({
             IsShow: false,
             DangerType: i,
-            SilentAreaDetectionData: a,
+            SilentAreaDetectionData: s,
             SilentAreaTitleData: undefined
           });
         }
@@ -874,19 +922,19 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   GetShowSilentAreasList(e, t, r) {
     if (t !== undefined) {
       var i = t;
-      for (const o of this.jVe) {
-        this.XVe(e, o, i);
+      for (const n of this.jVe) {
+        this.XVe(e, n, i);
       }
     } else if (r !== undefined) {
-      var n = this.GetSilentAreaDetectData(r);
-      if (n) {
-        for (const s of this.jVe) {
-          this.XVe(e, s, n.Conf.Secondary);
+      var o = this.GetSilentAreaDetectData(r);
+      if (o) {
+        for (const a of this.jVe) {
+          this.XVe(e, a, o.Conf.Secondary);
         }
       }
     } else {
-      for (const a of this.jVe) {
-        this.XVe(e, a, undefined);
+      for (const s of this.jVe) {
+        this.XVe(e, s, undefined);
       }
     }
   }
@@ -928,6 +976,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var t = e.Conf;
     return !!t && !!t.LockCon && !e.IsLock && this.DetectionRedDotRecord?.get(t.Id) !== true && !this.IsDetectionFinished(e);
   }
+  CheckRedDotPeriodicityTab() {
+    return !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(3, ModelManager_1.ModelManager.TowerModel.CurrentSeason) || !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(6, ModelManager_1.ModelManager.ShipTowerModel.CurSeason) || !!ModelManager_1.ModelManager.AdventureGuideModel.GetPeriodicityRedDot(7, ModelManager_1.ModelManager.WeeklyRogueModel.CycleId);
+  }
   IsDetectionFinished(e) {
     var t = e.Conf.Secondary;
     if (t === 61) {
@@ -964,25 +1015,32 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   IsDetectionTypeAllowPreOpen(e) {
     return this.tql.has(e);
   }
-  IsDetectionPreOpen(e) {
-    if (!this.IsDetectionTypeAllowPreOpen(e.Type)) {
+  GetIsDetectionPreOpen(e, t, r) {
+    if (!this.IsDetectionTypeAllowPreOpen(t)) {
       return false;
     }
-    var t = this.GetPreOpenDetectionConf(e.Conf.Id, e.Type, e.Conf.PreOpenId);
-    if (t === undefined) {
+    e = this.GetPreOpenDetectionConf(e, t, r);
+    if (e === undefined) {
       return false;
     }
-    var r = t.ConditionGroup;
+    r = e.ConditionGroup;
     let i = true;
     if (r > 0) {
       i = !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(r.toString(), undefined);
     }
-    var r = this.U4l.get(e.Type)?.get(t.Id);
-    let n = false;
-    if (r && (e = MathUtils_1.MathUtils.LongToNumber(r.AE_), t = MathUtils_1.MathUtils.LongToNumber(r.PE_), e <= (r = TimeUtil_1.TimeUtil.GetServerTimeStamp())) && r <= t) {
-      n = true;
+    var r = this.U4l.get(t)?.get(e.Id);
+    let o = false;
+    if (r && (t = MathUtils_1.MathUtils.LongToNumber(r.AE_), e = MathUtils_1.MathUtils.LongToNumber(r.PE_), t <= (r = TimeUtil_1.TimeUtil.GetServerTimeStamp())) && r <= e) {
+      o = true;
     }
-    return i && n;
+    return i && o;
+  }
+  GetIsDetectionPreOpenByData(e) {
+    return this.GetIsDetectionPreOpen(e.Conf.Id, e.Type, e.Conf.PreOpenId);
+  }
+  GetIsDetectionPreOpenByPreOpenId(e) {
+    e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetPreOpenDetectionConfById(e);
+    return e !== undefined && this.GetIsDetectionPreOpen(e.DetectionId, e.SoundAreaType, e.Id);
   }
   IsDetectionNewContentOpen(e) {
     var t;
@@ -993,9 +1051,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
   GetPreOpenDetectionConf(e, t, r) {
     var e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetPreOpenDetectionConfList(e, t, r);
     var i = this.U4l.get(t);
-    for (const n of e) {
-      if (i?.get(n.Id)) {
-        return n;
+    for (const o of e) {
+      if (i?.get(o.Id)) {
+        return o;
       }
     }
   }
@@ -1008,9 +1066,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       } catch {
         return i;
       }
-      for (const n of t) {
-        if (!n.IsLock && !!n.Conf && !((MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Conf.Name) ?? "").search(e) < 0)) {
-          i.push(n);
+      for (const o of t) {
+        if (!o.IsLock && !!o.Conf && !((MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o.Conf.Name) ?? "").search(e) < 0)) {
+          i.push(o);
         }
       }
     }
@@ -1032,12 +1090,12 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       return [-1, -1];
     }
     var i = [-1, -1];
-    for (const o of r?.Vars ?? []) {
-      var n = this.GetVar(e, t, o);
+    for (const n of r?.Vars ?? []) {
+      var o = this.GetVar(e, t, n);
       if (i[0] < 0) {
-        i[0] = n ?? 0;
+        i[0] = o ?? 0;
       } else {
-        i[1] = n ?? r.DefaultValues.at(1) ?? 0;
+        i[1] = o ?? r.DefaultValues.at(1) ?? 0;
       }
     }
     return i;
@@ -1079,6 +1137,54 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     var t = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew) ?? new Map();
     t.set(e, true);
     LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.RoleTutorialNew, t);
+  }
+  IsTowerType(e) {
+    return e === 3 || e === 1 || e === 2 || e === 4;
+  }
+  IsShipTowerType(e) {
+    return e === 6 || e === 5;
+  }
+  IsWeeklyRogueType(e) {
+    return e === 7;
+  }
+  GetShipTowerStateListByType(e) {
+    var t = [];
+    var r = ConfigManager_1.ConfigManager.ShipTowerConfig.GetStageCfgBySeason(ShipTowerDefine_1.SHIP_TOWER_ZERO_SEASON);
+    if (e === 5) {
+      for (const o of r) {
+        t.push(o.Id);
+      }
+    } else {
+      if (e !== 6) {
+        return [];
+      }
+      var i = ModelManager_1.ModelManager.ShipTowerModel.TowerStageDataList;
+      for (let e = r.length; e < i.length; e++) {
+        t.push(i[e].Id);
+      }
+    }
+    return t;
+  }
+  GetPeriodicityRedDot(e, t) {
+    if (this.IsTowerType(e)) {
+      return !!this.CheckTargetDungeonTypeCanShow(5) && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueTower) ?? DEFAULT_SEASON_ID) < t;
+    } else if (this.IsShipTowerType(e)) {
+      return !!this.CheckTargetDungeonTypeCanShow(28) && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueShipTowerSeason) ?? DEFAULT_SEASON_ID) < t;
+    } else {
+      return !!this.IsWeeklyRogueType(e) && !!this.CheckTargetDungeonTypeCanShow(29) && !!(e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData).CheckIfInShowTime() && !!e.CycleId && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueWeeklyRogue) ?? DEFAULT_SEASON_ID) < t;
+    }
+  }
+  SetPeriodicityRedDot(e, t) {
+    if (this.IsTowerType(e)) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueTower, t);
+    }
+    if (this.IsShipTowerType(e)) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueShipTowerSeason, t);
+    }
+    if (this.IsWeeklyRogueType(e)) {
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueWeeklyRogue, t);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotAdventurePeriodicityTabUpdate);
   }
 }
 exports.AdventureGuideModel = AdventureGuideModel;

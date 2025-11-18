@@ -142,7 +142,7 @@ class GameBudgetInterfaceController extends ControllerBase_1.ControllerBase {
     this.PK();
   }
   static TryUpdateCenterRoleOffset(e) {
-    e = e.GetComponent(283)?.GetCenterActorLocationOffset();
+    e = e.GetComponent(287)?.GetCenterActorLocationOffset();
     if (e) {
       this.SetCenterActorLocationOffset(e);
     }

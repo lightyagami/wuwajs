@@ -183,7 +183,7 @@ class SkillButtonVehicleEntityData {
     var t = (this.EntityHandle = t).Entity;
     var i = t.GetComponent(0);
     this.PbDataId = i.GetPbDataId();
-    this.TagComponent = t.GetComponent(206);
+    this.TagComponent = t.GetComponent(209);
     this.SkillComponent = t.GetComponent(40);
     i = ConfigManager_1.ConfigManager.SkillButtonConfig.GetAllSkillVehicleButtonConfig(this.PbDataId);
     if (this.SkillButtonConfigList = i) {

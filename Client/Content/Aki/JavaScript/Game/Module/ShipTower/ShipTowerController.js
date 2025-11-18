@@ -13,22 +13,24 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
+const UiTimeDilation_1 = require("../../Ui/Base/UiTimeDilation");
 const UiManager_1 = require("../../Ui/UiManager");
 class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(22730, e => {
+    Net_1.Net.Register(26641, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "My_", ["割草爬塔活动副本积分结算推送", e]);
       }
+      UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("ShipTower");
       ModelManager_1.ModelManager.ShipTowerModel.UpdateResultNotify(e);
     });
-    Net_1.Net.Register(29760, e => {
+    Net_1.Net.Register(20814, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "Ey_", ["割草爬塔关卡信息更新", e]);
       }
       ModelManager_1.ModelManager.ShipTowerModel.UpdateLevelPlayNotify(e);
     });
-    Net_1.Net.Register(18322, e => {
+    Net_1.Net.Register(26381, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("ShipTower", 69, "_O1", ["割草爬塔局内周期更新推送", e]);
       }
@@ -36,21 +38,21 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22730);
-    Net_1.Net.UnRegister(29760);
-    Net_1.Net.UnRegister(18322);
+    Net_1.Net.UnRegister(26641);
+    Net_1.Net.UnRegister(20814);
+    Net_1.Net.UnRegister(26381);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CrossDay, this.T4d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CrossDay, this.Vjd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this.T4d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this.Vjd);
   }
   static RequestChallenge(e, o = false, r = false) {
     var t = e.TeamDataList[0];
@@ -70,7 +72,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Cy_");
     }
-    var e = await Net_1.Net.CallAsync(24558, e);
+    var e = await Net_1.Net.CallAsync(19991, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "gy_", ["", e]);
     }
@@ -83,7 +85,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "py_", ["", r]);
     }
-    var e = await Net_1.Net.CallAsync(20800, r);
+    var e = await Net_1.Net.CallAsync(29579, r);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "vy_", ["", e]);
     }
@@ -94,7 +96,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "yy_");
     }
-    var e = await Net_1.Net.CallAsync(21986, e);
+    var e = await Net_1.Net.CallAsync(17579, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Sy_", ["", e]);
     }
@@ -106,7 +108,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Iy_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(22409, o);
+    var o = await Net_1.Net.CallAsync(25369, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ty_", ["", o]);
     }
@@ -118,7 +120,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "by_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(29737, o);
+    var o = await Net_1.Net.CallAsync(24247, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ly_", ["", o]);
     }
@@ -130,7 +132,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "wy_", ["", o]);
     }
-    var o = await Net_1.Net.CallAsync(16546, o);
+    var o = await Net_1.Net.CallAsync(17051, o);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "Ry_", ["", o]);
     }
@@ -141,7 +143,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "lG_");
     }
-    var e = await Net_1.Net.CallAsync(17692, e);
+    var e = await Net_1.Net.CallAsync(16220, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("ShipTower", 69, "_G_", ["", e]);
     }
@@ -149,10 +151,13 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   }
 }
 (exports.ShipTowerController = ShipTowerController).Jn_ = () => {
+  if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower()) {
+    UiTimeDilation_1.UiTimeDilation.AddWaitSetTimeDilationTag("ShipTower");
+  }
   ModelManager_1.ModelManager.ShipTowerModel.InitData();
   ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
 };
-ShipTowerController.T4d = () => {
+ShipTowerController.Vjd = () => {
   ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
 };
 ShipTowerController.PG_ = e => {

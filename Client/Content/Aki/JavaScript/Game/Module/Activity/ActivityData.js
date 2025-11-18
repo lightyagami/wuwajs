@@ -21,7 +21,7 @@ class ActivityBaseData {
     this.FFe = 0;
     this.R4e = undefined;
     this.Bel = 0;
-    this.Hud = 0;
+    this.Yud = 0;
     this.U4e = -0;
     this.EndShowTimeInternal = -0;
     this.WFe = -0;
@@ -33,7 +33,6 @@ class ActivityBaseData {
     this.P4e = false;
     this.Dk_ = false;
     this.x4e = false;
-    this.w4e = 0;
     this.B4e = new Array();
     this.b4e = 0;
     this.Bk_ = 0;
@@ -54,10 +53,16 @@ class ActivityBaseData {
     return this.Bel;
   }
   get OpenType() {
-    return this.Hud;
+    return this.Yud;
   }
   get Sort() {
-    return this.w4e;
+    if (this.LocalConfig === undefined) {
+      return -1;
+    } else if (this.TimeType !== 1 || this.LocalConfig.PermanentSort === -1) {
+      return this.LocalConfig.Sort;
+    } else {
+      return this.LocalConfig.PermanentSort;
+    }
   }
   get BeginShowTime() {
     return this.U4e;
@@ -188,7 +193,7 @@ class ActivityBaseData {
     }
     return false;
   }
-  $ud(t) {
+  zud(t) {
     switch (t) {
       case Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited:
         this.Bel = 0;
@@ -203,20 +208,21 @@ class ActivityBaseData {
         this.Bel = 0;
     }
   }
-  GetPreviewReward(t = this.LocalConfig.PreviewDrop) {
+  GetPreviewReward(t) {
     var i = [];
-    if (t !== 0) {
-      var e = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(t)?.DropPreview;
-      if (e) {
-        for (var [r, s] of e) {
-          r = [{
+    let e = t ?? 0;
+    if ((e = t === undefined ? this.TimeType === 1 ? this.LocalConfig.PermanentPreviewDrop : this.LocalConfig.PreviewDrop : e) !== 0) {
+      t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e)?.DropPreview;
+      if (t) {
+        for (var [s, r] of t) {
+          s = [{
             IncId: 0,
-            ItemId: r
-          }, s];
-          i.push(r);
+            ItemId: s
+          }, r];
+          i.push(s);
         }
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Activity", 27, "找不到奖励配置", ["id", t]);
+        Log_1.Log.Debug("Activity", 27, "找不到奖励配置", ["id", e]);
       }
     }
     return i;
@@ -226,6 +232,13 @@ class ActivityBaseData {
       return "";
     } else {
       return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.LocalConfig.Title) ?? "";
+    }
+  }
+  GetTitleTextId() {
+    if (this.LocalConfig === undefined) {
+      return "";
+    } else {
+      return this.LocalConfig.Title;
     }
   }
   GetHelpId() {
@@ -263,18 +276,18 @@ class ActivityBaseData {
   GetPreShowGuideQuestName() {
     var i = new StringBuilder_1.StringBuilder();
     var e = new Array();
-    var r = this.B4e;
-    let s = r.length;
-    for (let t = 0; t < s; t++) {
-      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(r[0])) {
-        e.push(r[t]);
+    var s = this.B4e;
+    let r = s.length;
+    for (let t = 0; t < r; t++) {
+      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(s[0])) {
+        e.push(s[t]);
       }
     }
-    s = e.length;
-    for (let t = 0; t < s; t++) {
+    r = e.length;
+    for (let t = 0; t < r; t++) {
       var h = PublicUtil_1.PublicUtil.GetConfigTextByKey(ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e[t]).TidName);
       i.Append(h);
-      if (t !== s - 1) {
+      if (t !== r - 1) {
         i.Append(",");
       }
     }
@@ -321,7 +334,6 @@ class ActivityBaseData {
     if (this.LocalConfig) {
       this.b4e = this.LocalConfig.PreConditionGroupId;
       this.Bk_ = this.LocalConfig.PreOpenCondition;
-      this.w4e = this.LocalConfig.Sort;
       this.B4e = this.LocalConfig.PreShowGuideQuest;
     }
     ModelManager_1.ModelManager.QuestNewModel.SetActivityQuestData(this.FFe, this.B4e ?? []);
@@ -331,14 +343,14 @@ class ActivityBaseData {
     this.EndOpenTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.Ups));
     this.BeginLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.CPs));
     this.EndLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.gPs));
-    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.nmd));
-    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.smd));
+    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.umd));
+    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.cmd));
     this.P4e = t.K6n;
     this.Dk_ = t.lk_;
     this.x4e = t.qps;
     this._8a = t.qS_;
-    this.Hud = t.OS_;
-    this.$ud(t.OS_);
+    this.Yud = t.OS_;
+    this.zud(t.OS_);
     this.OnInit(t);
   }
   Phrase(t) {
@@ -348,14 +360,14 @@ class ActivityBaseData {
     this.EndOpenTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.Ups));
     this.BeginLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.CPs));
     this.EndLimitTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.gPs));
-    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.nmd));
-    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.smd));
+    this.BeginRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.umd));
+    this.EndRewardTimeInternal = Number(MathUtils_1.MathUtils.LongToBigInt(t.cmd));
     this.P4e = t.K6n;
     this.Dk_ = t.lk_;
     this.x4e = t.qps;
     this._8a = t.qS_;
-    this.Hud = t.OS_;
-    this.$ud(t.OS_);
+    this.Yud = t.OS_;
+    this.zud(t.OS_);
     var i = new StringBuilder_1.StringBuilder();
     i.Append(t.s5n);
     i.Append("_");

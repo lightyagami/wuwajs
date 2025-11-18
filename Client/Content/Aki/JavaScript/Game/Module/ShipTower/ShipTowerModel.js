@@ -18,6 +18,7 @@ const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiTimeDilation_1 = require("../../Ui/Base/UiTimeDilation");
 const UiManager_1 = require("../../Ui/UiManager");
 const UiModel_1 = require("../../Ui/UiModel");
 const ActivityShipTowerController_1 = require("../Activity/ActivityContent/ShipTower/ActivityShipTowerController");
@@ -89,10 +90,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
         this.CloseMainView();
       }
     };
-    this.LeaveBattle = () => !!this.CheckInBattleShipTower() && (UiManager_1.UiManager.ResetToBattleView(() => {
-      ModelManager_1.ModelManager.TowerModel.CurrentTowerId = -1;
-      ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
-    }), true);
+    this.LeaveBattle = () => !!this.CheckInBattleShipTower() && (UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("ShipTower"), ModelManager_1.ModelManager.TowerModel.CurrentTowerId = -1, ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon(), true);
   }
   get CurSeason() {
     return this.cA_;
@@ -446,7 +444,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     this.CA_();
   }
   SlashAndTowerInfoResponse(e) {
-    if (!this.ls_(e, 16293, false)) {
+    if (!this.ls_(e, 16849, false)) {
       this.Zn_.length = 0;
       e?.BL_.forEach(e => {
         this.as_(e.s5n);
@@ -470,7 +468,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerScoreRewardResponse(e) {
-    if (!this.ls_(e, 22657)) {
+    if (!this.ls_(e, 23571)) {
       e.cOl.forEach(e => {
         this.dA_.add(e);
       });
@@ -479,7 +477,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   EndLessHistoryResponse(e) {
-    if (!this.ls_(e, 17972)) {
+    if (!this.ls_(e, 19548)) {
       this.RecordList.length = 0;
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.CurrentRecord, e.qL_);
       this.nq_(ShipTowerDefine_1.shipTowerTextKey.HistoryRecord, e.OL_);
@@ -519,7 +517,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerSaveRecordResponse(e, t) {
-    if (!this.ls_(t, 20711)) {
+    if (!this.ls_(t, 28508)) {
       this.GetStageDataById(e)?.CoverChallenge();
       this.CA_();
       this.SetChallengeStageDataNull();
@@ -528,7 +526,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerResetResponse(e, t) {
-    if (!this.ls_(t, 24341)) {
+    if (!this.ls_(t, 16258)) {
       this.GetStageDataById(e)?.ResetStage();
       this.CA_();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShipTowerSureResetStage, e);
@@ -536,12 +534,12 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     }
   }
   SlashAndTowerRecommendResponse(e, t) {
-    if (!this.ls_(t, 22662)) {
+    if (!this.ls_(t, 22559)) {
       this.GetStageDataById(e)?.ProtoUpdateTeamRecommendList(t);
     }
   }
   SlashAndTowerReviewResponse(e) {
-    if (!this.ls_(e, 22340)) {
+    if (!this.ls_(e, 16655)) {
       this.ReviewList.length = 0;
       e?.CG_.forEach(e => {
         var t = e.gG_;
@@ -551,7 +549,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
           Score: i,
           Grade: this.GetStageGradeResIdByStageId(t, i),
           StageId: t,
-          IsQuickPass: e.Zbd
+          IsQuickPass: e.hLd
         });
       });
       this.ReviewProgressList.length = 0;
@@ -760,6 +758,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
     var e;
     if (!this.CheckIsNeedShowConfirmSeasonUpdate()) {
       if (this.sq_() && !ModelManager_1.ModelManager.SceneTeamModel.IsAllDid()) {
+        UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("ShipTower");
         e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
         e = this.ChallengeStageData?.TeamDataList[1].InstId === e;
         ControllerHolder_1.ControllerHolder.ShipTowerController.RequestChallenge(this.ChallengeStageData, e, true);
@@ -769,6 +768,7 @@ class ShipTowerModel extends ModelBase_1.ModelBase {
   OpenViewMainFromFight() {
     var e;
     if (this.sq_()) {
+      UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("ShipTower");
       e = this.ChallengeStageData.Id;
       this.OpenViewMain({
         StageId: e,

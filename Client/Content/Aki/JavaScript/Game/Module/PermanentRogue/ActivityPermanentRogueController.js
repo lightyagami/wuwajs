@@ -31,9 +31,9 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
     this.RequestEnterDungeon = e => {
       var t = new Protocol_1.Aki.Protocol.EEc();
       t.r6n = e;
-      Net_1.Net.Call(25709, t, e => {
+      Net_1.Net.Call(27846, t, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27419);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17172);
         }
       });
     };
@@ -57,22 +57,22 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(25404, ActivityPermanentRogueController.R6c);
-    Net_1.Net.Register(22666, ActivityPermanentRogueController.A6c);
-    Net_1.Net.Register(16664, ActivityPermanentRogueController.P6c);
-    Net_1.Net.Register(24208, ActivityPermanentRogueController.Is1);
-    Net_1.Net.Register(19092, ActivityPermanentRogueController.x6c);
-    Net_1.Net.Register(25450, ActivityPermanentRogueController.em1);
-    Net_1.Net.Register(20122, ActivityPermanentRogueController.Fw1);
+    Net_1.Net.Register(22552, ActivityPermanentRogueController.R6c);
+    Net_1.Net.Register(24556, ActivityPermanentRogueController.A6c);
+    Net_1.Net.Register(24427, ActivityPermanentRogueController.P6c);
+    Net_1.Net.Register(18854, ActivityPermanentRogueController.Is1);
+    Net_1.Net.Register(19117, ActivityPermanentRogueController.x6c);
+    Net_1.Net.Register(25270, ActivityPermanentRogueController.em1);
+    Net_1.Net.Register(20315, ActivityPermanentRogueController.Fw1);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25404);
-    Net_1.Net.UnRegister(22666);
-    Net_1.Net.UnRegister(16664);
-    Net_1.Net.UnRegister(24208);
-    Net_1.Net.UnRegister(19092);
-    Net_1.Net.UnRegister(25450);
-    Net_1.Net.UnRegister(20122);
+    Net_1.Net.UnRegister(22552);
+    Net_1.Net.UnRegister(24556);
+    Net_1.Net.UnRegister(24427);
+    Net_1.Net.UnRegister(18854);
+    Net_1.Net.UnRegister(19117);
+    Net_1.Net.UnRegister(25270);
+    Net_1.Net.UnRegister(20315);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCloseLoadingView, this.wGi);
@@ -80,7 +80,7 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseLoadingView, this.wGi);
   }
-  OnActivityFirstUnlock(e) {
+  OnShowActivityFirstUnlockView(e) {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(30);
   }
   static SetReturnToWorld(e) {
@@ -98,9 +98,9 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
   RequestIllustrationAward(l) {
     var e = new Protocol_1.Aki.Protocol.khc();
     e.GNc = l;
-    Net_1.Net.Call(23919, e, t => {
+    Net_1.Net.Call(22968, e, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18690);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28825);
       } else {
         if (t.wQ1) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_EchoLimit_Text");
@@ -124,9 +124,9 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
   static async RequestRogueResTalentSkillLevel(e) {
     var t = new Protocol_1.Aki.Protocol.Mhc();
     t.r5n = e;
-    var t = await Net_1.Net.CallAsync(18587, t);
+    var t = await Net_1.Net.CallAsync(15751, t);
     if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21392);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 24092);
     } else {
       ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetActivityData().UpgradeSkill(e, t.F6n);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueResTalentLevelUp, e);
@@ -134,9 +134,9 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
   }
   static async RequestRogueResLastInstInfo() {
     var e = new Protocol_1.Aki.Protocol.bEc();
-    var e = await Net_1.Net.CallAsync(15952, e);
+    var e = await Net_1.Net.CallAsync(19512, e);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21978);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15370);
     }
     return e;
   }
@@ -144,9 +144,9 @@ class ActivityPermanentRogueController extends ActivityControllerBase_1.Activity
     var n = new Protocol_1.Aki.Protocol.bhc();
     n.UHn = t;
     n.c5n = e;
-    Net_1.Net.Call(29386, n, e => {
+    Net_1.Net.Call(28889, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21747);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16224);
       } else {
         ModelManager_1.ModelManager.ActivityPermanentRogueModel.SetEndingAwardData(o);
         e = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetEndingAwardViewData(t);
@@ -169,9 +169,9 @@ ActivityPermanentRogueController.R6c = e => {
 ActivityPermanentRogueController.RequestTaskAward = t => {
   var e = new Protocol_1.Aki.Protocol.Uhc();
   e.v9n = t;
-  Net_1.Net.Call(29872, e, e => {
+  Net_1.Net.Call(26633, e, e => {
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26621);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15555);
     } else {
       ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetActivityData().SetTaskRewardGot(t);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PermanentRogueRewardUpdate);

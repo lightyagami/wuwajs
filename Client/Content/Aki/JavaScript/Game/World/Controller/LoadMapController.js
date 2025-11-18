@@ -32,6 +32,8 @@ const Net_1 = require("../../../Core/Net/Net");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const VideoResUpdate_1 = require("../../../Launcher/DiffPatch/Update/VideoResUpdate");
+const ResourceUpdateManager_1 = require("../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -81,8 +83,11 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
     await ControllerHolder_1.ControllerHolder.GameModeController.OpenLoading();
   }
   static async CheckQuestResource() {
-    if (ModelManager_1.ModelManager.QuestResourceModel.IsSeparateVideo && ModelManager_1.ModelManager.QuestResourceModel.NeedCheckQuestResource()) {
+    if (VideoResUpdate_1.VideoResUpdate.GetIsGrayBoxHit() && ModelManager_1.ModelManager.QuestResourceModel.IsSeparateVideo && ModelManager_1.ModelManager.QuestResourceModel.NeedCheckQuestResource()) {
       await ModelManager_1.ModelManager.QuestResourceModel.CheckQuestResource();
+    }
+    if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() && (Log_1.Log.CheckInfo() && Log_1.Log.Info("QuestResource", 70, "开始检查可选下载资源"), await ControllerHolder_1.ControllerHolder.ResourceManagerController.CheckOptResDownload(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("QuestResource", 70, "完成检查可选下载资源");
     }
   }
   static AK1() {
@@ -241,6 +246,7 @@ class LoadMapController extends ControllerBase_1.ControllerBase {
   static async VoxelStreamingAsync() {
     if (ModelManager_1.ModelManager.GameModeModel.LoadMapControllerEnableWorldPartition) {
       ControllerHolder_1.ControllerHolder.GameModeController.InitStreamingSources();
+      ControllerHolder_1.ControllerHolder.ResourceManagerController.InitBlockDownloadState();
       ControllerHolder_1.ControllerHolder.WorldController.ManuallyClearStreamingPool();
       ControllerHolder_1.ControllerHolder.GameModeController.AddOrRemoveRenderAssetsQueryViewInfo(ModelManager_1.ModelManager.GameModeModel.BornLocation, ResourceSystem_1.WAIT_RENDER_ASSET_DURATION);
       await ControllerHolder_1.ControllerHolder.GameModeController.CheckVoxelStreamingCompleted(ELoadingPhase_1.CHECK_VOXEL_STREAMING_END_PROGRESS - ELoadingPhase_1.SETDATALAYER_AND_LOADSUBLEVEL_END_PROGRESS, ELoadingPhase_1.CHECK_VOXEL_STREAMING_END_PROGRESS);

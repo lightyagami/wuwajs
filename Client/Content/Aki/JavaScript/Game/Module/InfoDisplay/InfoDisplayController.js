@@ -67,12 +67,12 @@ class InfoDisplayController extends ControllerBase_1.ControllerBase {
   static RequestReadDisplayInfo(e) {
     var o = new Protocol_1.Aki.Protocol.bos();
     o.T9n = e;
-    Net_1.Net.Call(28843, o, e => {
+    Net_1.Net.Call(18925, o, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("InfoDisplay", 27, "协议接收", ["协议id", "10162"]);
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16477);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23410);
       }
     });
   }

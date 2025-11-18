@@ -6,17 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 exports.GiftItemData = exports.InventoryGiftData = undefined;
 const UiPopViewData_1 = require("../../Ui/Define/UiPopViewData");
 class InventoryGiftData extends UiPopViewData_1.UiPopViewData {
-  constructor(t, i, s, e) {
+  constructor(t, i, s, e, o) {
     super();
     this.InitializedSelectedId = undefined;
+    this.SelectedCount = undefined;
     this.ConfigId = t;
-    var o = i.length;
+    var a = i.length;
     this.ItemList = [];
-    for (let t = 0; t < o; t++) {
+    for (let t = 0; t < a; t++) {
       this.ItemList.push(i[t]);
     }
     this.GiftPackage = s;
     this.InitializedSelectedId = e;
+    this.SelectedCount = o;
   }
 }
 exports.InventoryGiftData = InventoryGiftData;

@@ -57,12 +57,12 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     this.NeedReviewConfirmBox = false;
     this.QueryPromise = undefined;
     this.W3l = undefined;
-    this._od = undefined;
+    this.jrd = undefined;
     this.NoticeRedDotState = false;
     this.NoticeSign = "1";
     this.GmIntroductionLink = "";
     this.IntroductionNoticeState = false;
-    this.rfd = [];
+    this.a0d = [];
   }
   OnInit() {
     this.CanUseSdk = UE.KuroStaticLibrary.IsModuleLoaded("KuroSDK") && BaseConfigController_1.BaseConfigController.GetPublicValue("UseSDK") === KuroSdkDefine_1.USESDK;
@@ -117,14 +117,14 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     let i = false;
     if (t = e === 0 || e !== 0 && e === r ? true : t) {
       e = this.OFa;
-      i = this.ofd(e);
+      i = this.h0d(e);
     }
-    r = this.nfd();
+    r = this.l0d();
     if (i || r) {
-      this.sfd();
+      this._0d();
     }
   }
-  ofd(e) {
+  h0d(e) {
     if (!this.kFa || this.kFa.length === 0) {
       return false;
     }
@@ -150,7 +150,7 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     }
     return e !== this.OFa;
   }
-  nfd() {
+  l0d() {
     var e = PlayStationStaticActivityAll_1.configPlayStationStaticActivityAll.GetConfigList();
     if (!e || e.length === 0) {
       return false;
@@ -159,30 +159,30 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     var r = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk();
     var i = ModelManager_1.ModelManager.QuestNewModel;
     for (const a of e) {
-      if (i.CheckQuestFinished(a.QuestId) && !this.rfd.includes(a.ActivityStringId)) {
+      if (i.CheckQuestFinished(a.QuestId) && !this.a0d.includes(a.ActivityStringId)) {
         r.StartActivity(a.ActivityStringId);
-        if (!this.rfd.includes(a.ActivityStringId)) {
-          this.rfd.push(a.ActivityStringId);
+        if (!this.a0d.includes(a.ActivityStringId)) {
+          this.a0d.push(a.ActivityStringId);
           t = true;
         }
       }
     }
     return t;
   }
-  sfd() {
+  _0d() {
     var t = UE.NewArray(UE.BuiltinString);
     var r = UE.NewArray(UE.BuiltinString);
     if (this.kFa) {
       for (let e = 0; e < this.kFa.length; e++) {
         if (e === this.OFa) {
           t.Add(this.kFa[e].ActivityStringId);
-        } else if (!this.rfd.includes(this.kFa[e].ActivityStringId)) {
+        } else if (!this.a0d.includes(this.kFa[e].ActivityStringId)) {
           r.Add(this.kFa[e].ActivityStringId);
         }
       }
     }
-    if (this.rfd) {
-      for (const e of this.rfd) {
+    if (this.a0d) {
+      for (const e of this.a0d) {
         if (!t.Contains(e)) {
           t.Add(e);
         }
@@ -219,12 +219,21 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     }
   }
   GetQueryProductPrice(e) {
-    e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e));
-    e = this.LSe.get(e.ProductId);
-    if (e && e.Price) {
-      return e.Price;
+    var t;
+    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
+      t = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e)).ProductId;
+      if (t = ModelManager_1.ModelManager.PayItemModel.GetProductPriceByGoodsId(t)) {
+        return Number(t);
+      } else {
+        return 0;
+      }
     } else {
-      return 0;
+      t = ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(Number(e));
+      if ((e = this.LSe.get(t.ProductId)) && e.Price) {
+        return e.Price;
+      } else {
+        return 0;
+      }
     }
   }
   GetQueryProductShowPrice(e) {
@@ -361,18 +370,18 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     return this.W3l;
   }
   SetIntroductionData(e) {
-    this._od = e;
+    this.jrd = e;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("KuroSdk", 27, "SetIntroductionData", ["data", e]);
     }
-    this.uod();
+    this.Hrd();
   }
   GetIntroductionData() {
-    return this._od;
+    return this.jrd;
   }
-  uod() {
+  Hrd() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion) ?? "";
-    if (this._od && this._od.version !== e) {
+    if (this.jrd && this.jrd.version !== e) {
       this.IntroductionNoticeState = true;
     } else {
       this.IntroductionNoticeState = false;
@@ -380,7 +389,7 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
   }
   SaveCurrentClickIntroductionVersion() {
-    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion, this._od ? this._od.version : "");
+    LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.IntroductionVersion, this.jrd ? this.jrd.version : "");
     this.IntroductionNoticeState = false;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkIntroductionRedPointRefresh);
   }

@@ -40,7 +40,7 @@ class ItemUseLogic {
     if (n.GetConfigId > RoleDefine_1.ROBOT_DATA_MIN_ID) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NoneRole");
     } else {
-      n = n?.EntityHandle?.Entity?.GetComponent(174);
+      n = n?.EntityHandle?.Entity?.GetComponent(177);
       if (!n) {
         return false;
       }
@@ -172,9 +172,9 @@ ItemUseLogic.TryUseGiftItem = (e, r = 0) => {
   }
   return true;
 };
-ItemUseLogic.TryUseGiftItemWithSelectedItem = (e, r, o = 0) => {
+ItemUseLogic.TryUseGiftItemWithSelectedItem = (e, r, o = 1) => {
   var n = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
-  return !!n && n.GetType() === 11 && !!(n = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e).Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift)) && (n = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(n)).Type === GiftType_1.GiftType.Optional && (InventoryGiftController_1.InventoryGiftController.SendGiftPackPreviewRequest(e, n, r), true);
+  return !!n && n.GetType() === 11 && !!(n = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(e).Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift)) && (n = ConfigManager_1.ConfigManager.GiftPackageConfig.GetGiftPackageConfig(n)).Type === GiftType_1.GiftType.Optional && (InventoryGiftController_1.InventoryGiftController.SendGiftPackPreviewRequest(e, n, r, o), true);
 };
 ItemUseLogic.TryUseShipTowerItem = e => {
   e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);

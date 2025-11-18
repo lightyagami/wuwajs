@@ -63,13 +63,13 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     LevelLoadingController.CameraFade = new CameraFadeLoading_1.CameraFadeLoading();
     LevelLoadingController.UYt = [];
-    Net_1.Net.Register(25918, this.fyu);
+    Net_1.Net.Register(28500, this.fyu);
     return true;
   }
   static OnClear() {
     LevelLoadingController.CameraFade = undefined;
     LevelLoadingController.UYt = undefined;
-    Net_1.Net.UnRegister(25918);
+    Net_1.Net.UnRegister(28500);
     return true;
   }
   static OnTick(e) {
@@ -130,7 +130,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueLevelLoadingLockTimeDilation);
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Loading", 18, "LevelLoading:打开流程开始", ["perfrom", o]);
+        Log_1.Log.Info("Loading", 18, "LevelLoading:打开流程开始", ["perform", o]);
       }
       GameAudioController_1.GameAudioController.UpdateLoadingType(o);
       if (LevelLoadingController.CheckIsOpen(o)) {
@@ -149,7 +149,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
         }
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Loading", 45, "LevelLoading:打开流程准备开启黑幕", ["perfrom", o]);
+          Log_1.Log.Info("Loading", 45, "LevelLoading:打开流程准备开启黑幕", ["perform", o]);
         }
         switch (o) {
           case 1:
@@ -171,7 +171,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
             await this.yq1(...r);
             break;
           case 6:
-            await this.Xxd(...r);
+            await this.Y2d(...r);
         }
       }
       ControllerHolder_1.ControllerHolder.WorldController.ManuallyGarbageCollection(4);
@@ -220,7 +220,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     a.SetResult(true);
     await a.Promise;
   }
-  static async Xxd(e) {
+  static async Y2d(e) {
     const o = new CustomPromise_1.CustomPromise();
     LoadingController_1.LoadingController.OpenSpecialTransitionView(e.ViewParams, () => {
       o.SetResult(true);
@@ -326,7 +326,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 87, "LevelLoading:关闭SpecialTransition(开始)");
           }
-          await this.Yxd();
+          await this.z2d();
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 87, "LevelLoading:关闭SpecialTransition(完成)");
           }
@@ -357,7 +357,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
     });
     await e.Promise;
   }
-  static async Yxd() {
+  static async z2d() {
     const e = new CustomPromise_1.CustomPromise();
     LoadingController_1.LoadingController.CloseSpecialTransitionView(() => {
       e.SetResult(true);
@@ -392,7 +392,7 @@ LevelLoadingController.fyu = e => {
       w5n: r,
       h5n: a
     });
-    Net_1.Net.Call(25194, e, e => {
+    Net_1.Net.Call(21699, e, e => {
       if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("BlackScreen", 45, "[黑幕]Proto_ActionOperationScreenSuccessRequest 超时", ["playerId:", o], ["incId:", r], ["type:", a === 0 ? "关闭" : "开启"], ["response!.Proto_Code:", e.Cvs]);

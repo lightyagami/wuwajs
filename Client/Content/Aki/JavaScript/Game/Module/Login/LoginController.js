@@ -26,7 +26,6 @@ const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
-const VideoResUpdate_1 = require("../../../Launcher/DiffPatch/Update/VideoResUpdate");
 const HotPatchKuroSdk_1 = require("../../../Launcher/HotPatchKuroSdk/HotPatchKuroSdk");
 const HotPatchLogReport_1 = require("../../../Launcher/HotPatchLogReport");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
@@ -39,6 +38,7 @@ const PreDownloadManager_1 = require("../../../Launcher/PreDownload/PreDownloadM
 const HotFixSceneManager_1 = require("../../../Launcher/Ui/HotFix/HotFixSceneManager");
 const AppUtil_1 = require("../../../Launcher/Update/AppUtil");
 const LanguageUpdateManager_1 = require("../../../Launcher/Update/LanguageUpdateManager");
+const ResourceUpdateManager_1 = require("../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const LauncherStorageLib_1 = require("../../../Launcher/Util/LauncherStorageLib");
 const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -165,7 +165,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     e.push(101);
     e.push(105);
     e.push(107);
-    e.push(16316);
+    e.push(22400);
     Net_1.Net.InitCanTimerOutMessage(e);
     AudioSystem_1.AudioSystem.SetState("platform", cpp_1.KuroApplication.IniPlatformName());
     AudioSystem_1.AudioSystem.SetRtpcValue("time_local", TimeUtil_1.TimeUtil.GetHoursFloat());
@@ -213,14 +213,14 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
     Net_1.Net.Register(110, LoginController.SMi);
     Net_1.Net.Register(115, LoginController.pla);
-    Net_1.Net.Register(16024, LoginController.Y3a);
-    Net_1.Net.Register(28651, LoginController.Ta1);
+    Net_1.Net.Register(27248, LoginController.Y3a);
+    Net_1.Net.Register(28626, LoginController.Ta1);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(110);
     Net_1.Net.UnRegister(115);
-    Net_1.Net.UnRegister(16024);
-    Net_1.Net.UnRegister(28651);
+    Net_1.Net.UnRegister(27248);
+    Net_1.Net.UnRegister(28626);
   }
   static yMi(o) {
     Heartbeat_1.Heartbeat.StopHeartBeat(HeartbeatDefine_1.EStopHeartbeat.LogoutNotify);
@@ -723,8 +723,13 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     o.h7n = new Protocol_1.Aki.Protocol.h7n();
     o.pQ_ = Number(BaseConfigController_1.BaseConfigController.GetConfigVersion("FsmVersion"));
     o.l31 = 1;
-    if (VideoResUpdate_1.VideoResUpdate.GetIsSeparateVideo() && (r = LauncherStorageLib_1.LauncherStorageLib.GetDeviceSaved(LauncherStorageLib_1.ELauncherStorageDeviceKey.UserFirstSelectedVideoUpdate, 0)) > 0 && (o.l31 = r, Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("QuestResource", 38, "登陆前 上报任务视频资源状态", ["videoState", r]);
+    if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+      r = UE.KuroLauncherLibrary.IsSeparateVideo();
+      o.l31 = r ? 2 : 1;
+      o.NSm = Protocol_1.Aki.Protocol.QSm.Proto_BStateSimple;
+    } else {
+      o.l31 = 1;
+      o.NSm = Protocol_1.Aki.Protocol.QSm.Proto_BStateAll;
     }
     let n = false;
     let t = false;
@@ -1364,15 +1369,15 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
     this.Ibc();
   }
-  static tOd() {
+  static wFd() {
     return AppUtil_1.AppUtil.IsPioneerApp() || cpp_1.KuroApplication.GetAppReleaseType().toLowerCase() === "prerelease";
   }
-  static iOd() {
-    return this.tOd() || BaseConfigController_1.BaseConfigController.GetRptIsOpen();
+  static LFd() {
+    return this.wFd() || BaseConfigController_1.BaseConfigController.GetRptIsOpen();
   }
-  static rOd(e) {
-    if (this.oOd !== "") {
-      return [this.oOd, false];
+  static PFd(e) {
+    if (this.AFd !== "") {
+      return [this.AFd, false];
     }
     let o = false;
     let r = "";
@@ -1392,8 +1397,8 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     var n = BaseConfigController_1.BaseConfigController.GetPublicValue("UrlPath");
     var e = cpp_1.KuroApplication.IniPlatformNameIncludeEditor();
     var i = UE.KuroLauncherLibrary.GetAppVersion();
-    this.oOd = r + n + "/" + e + "/" + i + "/ManifestLang_base.txt";
-    return [this.oOd, o];
+    this.AFd = r + n + "/" + e + "/" + i + "/ManifestLang_base.txt";
+    return [this.AFd, o];
   }
   static YLc(_, e, l, g) {
     const L = (e, o, r, n, t) => {
@@ -1431,12 +1436,12 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       (0, puerts_1.releaseManualReleaseDelegate)(L);
     };
     UE.KuroHttp.PostRpt1(_, e, PublicUtil_1.PublicUtil.GetIfGlobalSdk(), (0, puerts_1.toManualReleaseDelegate)(L), 10);
-    if (this.tOd()) {
-      this.nOd(_, e);
+    if (this.wFd()) {
+      this.DFd(_, e);
     }
   }
-  static nOd(a, _) {
-    const [l, e] = this.rOd(PublicUtil_1.PublicUtil.GetIfGlobalSdk());
+  static DFd(a, _) {
+    const [l, e] = this.PFd(PublicUtil_1.PublicUtil.GetIfGlobalSdk());
     const g = (e, o, r, n, t) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 30, "Aliyun2", ["localErrorCode", o], ["httpResponseCode", n], ["connectedSuccess", t]);
@@ -1586,14 +1591,12 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
     if (Info_1.Info.IsWindowsPlatform() && !cpp_1.KuroApplication.IsWithEditor()) {
       return this.Lbc();
-    } else if (cpp_1.KuroApplication.IsWithEditor()) {
-      return [cpp_1.KuroApplication.GetSessionCachedUserName(), ""];
     } else {
-      return [cpp_1.KuroApplication.IniPlatformNameIncludeEditor(), ""];
+      return ["", ""];
     }
   }
   static Lbc() {
-    let e = "Default";
+    let e = "";
     let o = "";
     var r;
     var n;
@@ -1704,6 +1707,7 @@ LoginController.Ta1 = e => {
       Log_1.Log.Info("QuestResource", 38, "添加资源检查");
     }
     ModelManager_1.ModelManager.QuestResourceModel.FillCheckQuests(e.a2s);
+    ModelManager_1.ModelManager.ResourceManagerModel.FillLoginInfo(e.a2s, e.$Rs);
   }
 };
 LoginController.Wvi = () => {
@@ -1859,6 +1863,7 @@ LoginController.OnSdkLogin = e => {
       Log_1.Log.Info("Login", 16, "LoginProcedure-OnSdkLogin-SDK登录成功");
     }
     LoginController.wfa();
+    ControllerHolder_1.ControllerHolder.LoginServerController.TryGetServerPlayerInfo();
   } else {
     ModelManager_1.ModelManager.LoginModel.SetSdkLoginState(0);
     HotPatchLogReport_1.HotPatchLogReport.ReportLogin(HotPatchLogReport_1.LoginLogEventDefine.SdkLogin, "sdk_login_failed");
@@ -1944,9 +1949,9 @@ LoginController.zLc = 0;
 LoginController.Oh1 = 0;
 LoginController.kh1 = undefined;
 LoginController.QLc = undefined;
-LoginController.oOd = "";
+LoginController.AFd = "";
 LoginController.Ibc = () => {
-  if (_a.iOd()) {
+  if (_a.LFd()) {
     let e = ModelManager_1.ModelManager.LoginModel.CurrentIdStr;
     if ((e = e === "" ? _a.bbc()[0] : e) === "") {
       e = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("BuildId", "");

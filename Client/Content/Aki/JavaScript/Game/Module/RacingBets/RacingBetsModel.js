@@ -416,7 +416,7 @@ class RacingBetsModel extends ModelBase_1.ModelBase {
       ResourceSystem_1.ResourceSystem.LoadAsync(RacingBetsDefine_1.MPC_DICE_DATE_PATH, UE.MaterialParameterCollection, e => {
         this.WFc = e;
         t.SetResult(undefined);
-      }, 102);
+      }, 102, "Ui.RacingBetsUi");
       await t.Promise;
     }
     return this.WFc;

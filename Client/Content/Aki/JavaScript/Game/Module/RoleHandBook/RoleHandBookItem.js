@@ -115,7 +115,7 @@ class RoleHandBookItem extends UiPanelBase_1.UiPanelBase {
         this.DHt.PlaybackSettings = t;
         this.DHt.SetSequence(e);
       }
-    });
+    }, 100, this.MemoryTag);
   }
   UpdateCostInfo() {
     if (this.dFe) {

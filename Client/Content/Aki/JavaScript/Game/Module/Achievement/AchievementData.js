@@ -8,6 +8,7 @@ const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParam
 const StringBuilder_1 = require("../../../Core/Utils/StringBuilder");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class AchievementData {
   constructor(t) {
@@ -19,7 +20,7 @@ class AchievementData {
     this.mbe = false;
     this.dbe = undefined;
     this.Cbe = undefined;
-    this.nba = -1;
+    this.nba = "-1";
     this.gbe = ConfigManager_1.ConfigManager.AchievementConfig.GetAchievementNextLink(this.xe);
   }
   SetLastLink(t) {
@@ -30,17 +31,22 @@ class AchievementData {
     this.mbe = t.ovs;
     this.dbe = t.nvs.tvs;
     this.Cbe = t.nvs.ivs;
-    this.nba = ConfigManager_1.ConfigManager.AchievementConfig.GetThirdPartyTrophyId(this.xe);
+    this.lYd();
     this.sba();
   }
   sba() {
     var t = this.GetThirdPartyTrophyId();
-    if (this.GetFinishState() !== 0 && t !== -1) {
-      PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.UnlockSdkTrophy(t);
+    if (this.GetFinishState() !== 0 && t !== "-1") {
+      ControllerHolder_1.ControllerHolder.KuroSdkController.UnlockSdkTrophy(t);
     }
   }
   GetId() {
     return this.xe;
+  }
+  lYd() {
+    if (this.nba === "-1") {
+      this.nba = PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn ? ConfigManager_1.ConfigManager.AchievementConfig.GetThirdPartyTrophyId(this.xe).toString() : ConfigManager_1.ConfigManager.AchievementConfig.GetExternalTrophyId(this.xe);
+    }
   }
   GetThirdPartyTrophyId() {
     return this.nba;
@@ -248,9 +254,9 @@ class AchievementCategoryData {
     let t = 0;
     let e = 0;
     for (const i of ModelManager_1.ModelManager.AchievementModel.GetAchievementCategoryGroups(this.xe)) {
-      for (const a of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(i.GetId(), false)) {
-        var r = a.GetFinishState();
-        if ((!a.GetHiddenState() || r !== 0) && a.GetMaxProgress() !== undefined) {
+      for (const n of ModelManager_1.ModelManager.AchievementModel.GetGroupAchievements(i.GetId(), false)) {
+        var r = n.GetFinishState();
+        if ((!n.GetHiddenState() || r !== 0) && n.GetMaxProgress() !== undefined) {
           t++;
           if (r !== 0) {
             e++;

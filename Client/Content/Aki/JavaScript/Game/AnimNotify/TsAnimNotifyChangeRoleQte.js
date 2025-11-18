@@ -18,7 +18,7 @@ class TsAnimNotifyChangeRoleQte extends UE.KuroAnimNotify {
   K2_Notify(r, t) {
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem;
-      if (o?.EntityHandle?.Entity?.GetComponent(206)?.HasTag(-1697149502)) {
+      if (o?.EntityHandle?.Entity?.GetComponent(209)?.HasTag(-1697149502)) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("PanelQte", 17, "当前角色不能下场，不触发换人QTE");
         }
@@ -43,7 +43,7 @@ class TsAnimNotifyChangeRoleQte extends UE.KuroAnimNotify {
         a = r.GetOwner();
         if (a instanceof TsBaseCharacter_1.default) {
           n = a?.CharacterActorComponent?.Entity;
-          e = n?.GetComponent(210).CreateAnimNotifyContent(t.GetName(), this.exportIndex);
+          e = n?.GetComponent(213).CreateAnimNotifyContent(t.GetName(), this.exportIndex);
         }
         for (const s of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
           if (s.GetCreatureDataId() !== o?.GetCreatureDataId() && s.CanGoBattle() === 0) {

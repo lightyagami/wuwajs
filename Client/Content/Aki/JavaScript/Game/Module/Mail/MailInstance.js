@@ -12,6 +12,7 @@ const PublicUtil_1 = require("../../Common/PublicUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ScrollViewDataBase_1 = require("../Util/ScrollView/ScrollViewDataBase");
+const MailParamHandlerDefine_1 = require("./Data/MailParamHandlerDefine");
 class MailData extends ScrollViewDataBase_1.ScrollViewDataBase {
   constructor() {
     super(...arguments);
@@ -61,6 +62,42 @@ class MailData extends ScrollViewDataBase_1.ScrollViewDataBase {
       Log_1.Log.Info("Mail", 27, "邮件详情：设置阅读状态", ["MailId", this.Id], ["scanned", t]);
     }
   }
+  SetShowSubIconId(t) {
+    this.Syi = t;
+  }
+  SetShowSubContentColor(t) {
+    this.yyi = t;
+  }
+  SetShowSubContentJumpId(t) {
+    this.Iyi = t;
+  }
+  SetQuestionActiveId(t) {
+    this.Tyi = t;
+  }
+  SetSubTitle(t) {
+    this.Lyi = t;
+  }
+  SetSubUrl(t) {
+    this.Dyi = t;
+  }
+  SetIsQuestion(t) {
+    this.Ryi = t;
+  }
+  SetIfShowNewMail(t) {
+    this.Uyi = t;
+  }
+  SetUseDefaultBrowser(t) {
+    this.Ayi = t;
+  }
+  SetQuestionPass(t) {
+    this.Pyi = t;
+  }
+  SetIfLandscape(t) {
+    this.vjs = t;
+  }
+  SetNeedPlayerInfo(t) {
+    this.WKa = t;
+  }
   GetReceiveTime() {
     return this.Time;
   }
@@ -85,36 +122,15 @@ class MailData extends ScrollViewDataBase_1.ScrollViewDataBase {
     this.Ryi = false;
     this.Tyi = "";
     this.Eyi = "";
-    var e = t.split(",");
-    for (let t = 0; t < e.length; t++) {
-      if (e[t].includes("iconId=")) {
-        this.Syi = Number(e[t].replace("iconId=", ""));
-      } else if (e[t].includes("color=#")) {
-        this.yyi = e[t].replace("color=#", "");
-      } else if (e[t].includes("jumpId=")) {
-        this.Iyi = Number(e[t].replace("jumpId=", ""));
-      } else if (e[t].includes("url=")) {
-        this.Dyi = e[t].replace("url=", "");
-      } else if (e[t].includes("showNewMail")) {
-        this.Uyi = true;
-      } else if (e[t].includes("useDefaultBrowser")) {
-        this.Ayi = true;
-      } else if (e[t].includes("isWenjuanxing=")) {
-        this.Ryi = Number(e[t].replace("isWenjuanxing=", "")) === 1;
-      } else if (e[t].includes("wenjuanId=")) {
-        this.Tyi = e[t].replace("wenjuanId=", "");
-      } else if (e[t].includes("wenjuanTitle=")) {
-        this.Lyi = e[t].replace("wenjuanTitle=", "");
-      } else if (e[t].includes("subTitle=")) {
-        this.Lyi = e[t].replace("subTitle=", "");
-      } else if (e[t].includes("wenjuanPass=")) {
-        this.Pyi = e[t].replace("wenjuanPass=", "");
-      } else if (e[t].includes("is_orientation=")) {
-        this.vjs = e[t].replace("is_orientation=", "") === "landscape";
-      } else if (e[t].includes("needPlayerInfo")) {
-        this.WKa = true;
+    for (const s of t.split(",")) {
+      var e = s.indexOf("=");
+      var i = e !== -1 ? s.substring(0, e) : s;
+      var i = MailParamHandlerDefine_1.mailParamHandlerMapDefine.get(i);
+      if (i) {
+        e = e !== -1 ? s.substring(e + 1) : "";
+        i.Handler(this, e);
       } else {
-        this.Eyi = this.Eyi.concat(e[t]);
+        this.Eyi = this.Eyi.concat(s);
       }
     }
   }

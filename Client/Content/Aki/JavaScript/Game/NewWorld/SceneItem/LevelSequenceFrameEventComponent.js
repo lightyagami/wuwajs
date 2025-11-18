@@ -144,8 +144,8 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     t.ORs = ModelManager_1.ModelManager.CreatureModel.GetWorldOwner();
     t.F4n = this.Wpo;
     t.Z4n = e;
-    Net_1.Net.Call(19086, t, e => {});
+    Net_1.Net.Call(24624, t, e => {});
   }
 };
-LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(165)], LevelSequenceFrameEventComponent);
+LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(168)], LevelSequenceFrameEventComponent);
 exports.LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent; //# sourceMappingURL=LevelSequenceFrameEventComponent.js.map

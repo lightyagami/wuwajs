@@ -143,8 +143,11 @@ class LevelPlayModel extends ModelBase_1.ModelBase {
     }
   }
   SetTrackLevelPlayId(e) {
+    var i;
     if (this.Ypi !== e) {
-      this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(false);
+      if (!(i = this.GetProcessingLevelPlayInfo(this.Ypi))?.IsTrackPriorityOverride()) {
+        i?.SetTrack(false);
+      }
       this.Ypi = e;
       this.GetProcessingLevelPlayInfo(this.Ypi)?.SetTrack(true);
     }

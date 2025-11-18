@@ -92,7 +92,9 @@ class PlayerTitleItem extends UiPanelBase_1.UiPanelBase {
       if (t) {
         e = this.Fac.FemaleRoleHeadIcon;
       }
-      this.SetTextureByPath(e, this.GetTexture(17));
+      this.SetTextureShowUntilLoaded(e, this.GetTexture(17), () => {
+        this.GetTexture(17)?.SetSizeFromTexture();
+      });
     }
   }
   RefreshStarTitle(e) {

@@ -22,6 +22,9 @@ class FlowState {
   get IsPreloadFlow() {
     return this.ispreloadflow();
   }
+  get IsClientFlow() {
+    return this.isclientflow();
+  }
   get Pos() {
     return this.pos();
   }
@@ -60,8 +63,12 @@ class FlowState {
     var t = this.J7.__offset(this.z7, 10);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
+  isclientflow() {
+    var t = this.J7.__offset(this.z7, 12);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
   pos(t) {
-    var s = this.J7.__offset(this.z7, 12);
+    var s = this.J7.__offset(this.z7, 14);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -69,7 +76,7 @@ class FlowState {
     return s;
   }
   actions(t) {
-    var s = this.J7.__offset(this.z7, 14);
+    var s = this.J7.__offset(this.z7, 16);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);

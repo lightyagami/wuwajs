@@ -52,13 +52,7 @@ class SimpleLevelSequenceActor {
     this.sZu = undefined;
     this.uIn = undefined;
     this.hT1 = () => {
-      if (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.GetComponent(10)?.GetIsInCinematic()) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("UiCore", 45, "DoPlayToMark在Cinematic因此跳过");
-        }
-        this.XPe = true;
-        this.PlayLevelSequence();
-      } else if (this.sxe) {
+      if (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.GetComponent(10)?.GetIsInCinematic() || this.sxe) {
         this.PlayLevelSequence();
       } else if (this.XPe || !this.hxe) {
         if (Log_1.Log.CheckInfo()) {

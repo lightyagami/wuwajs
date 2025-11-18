@@ -28,11 +28,11 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
       i.Parameters.get(ItemDefines_1.EItemFunctionType.AutoOpenGift);
     }
     const a = r.GetCount() - e;
-    Net_1.Net.Call(26921, n, e => {
+    Net_1.Net.Call(24997, n, e => {
       var r;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29069);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23280);
         } else {
           if (UiManager_1.UiManager.IsViewShow("InventoryGiftView")) {
             UiManager_1.UiManager.CloseView("InventoryGiftView");
@@ -51,10 +51,10 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
       }
     });
   }
-  static SendGiftPackPreviewRequest(o, _, l) {
+  static SendGiftPackPreviewRequest(o, _, l, s = 1) {
     var e = new Protocol_1.Aki.Protocol.bg_();
     e.Igl = _.Id;
-    Net_1.Net.Call(21348, e, e => {
+    Net_1.Net.Call(22749, e, e => {
       if (e) {
         var r;
         var t;
@@ -66,7 +66,7 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
           }
           n.push(i);
         }
-        var a = new InventoryGiftData_1.InventoryGiftData(o, n, _, l);
+        var a = new InventoryGiftData_1.InventoryGiftData(o, n, _, l, s);
         UiManager_1.UiManager.OpenView("InventoryGiftView", a);
       }
     });
@@ -102,10 +102,10 @@ class InventoryGiftController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(23957, InventoryGiftController.ItemGiftUseNotify);
+    Net_1.Net.Register(24266, InventoryGiftController.ItemGiftUseNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23957);
+    Net_1.Net.UnRegister(24266);
   }
 }
 (exports.InventoryGiftController = InventoryGiftController).ItemGiftUseNotify = r => {

@@ -58,7 +58,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return !!t && t.GetPbDataId() === e;
   }
   static ActorHasSceneItemTag(t, e) {
-    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(197).HasTag(e);
+    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(200).HasTag(e);
   }
   static GetControlVisionEntityId(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
@@ -250,7 +250,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityDestructible(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
     if (e) {
-      return e.GetComponent(103) !== undefined;
+      return e.GetComponent(105) !== undefined;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 39, "无法找到实体", ["entityId", t]);
@@ -624,7 +624,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     n.l8n = WorldGlobal_1.WorldGlobal.ToTsVector(o.GetLocation());
     n._8n = WorldGlobal_1.WorldGlobal.ToTsRotator(o.GetRotation().Rotator());
     n.mKn = a;
-    Net_1.Net.Send(29173, n);
+    Net_1.Net.Send(15253, n);
   }
   static GetTestSpawnTemplateEntityString() {
     var t = UE.NewArray(UE.BuiltinString);
@@ -917,7 +917,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     UE.GameplayStatics.SetGlobalTimeDilation(GlobalData_1.GlobalData.GameInstance, ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * t);
     var e = Protocol_1.Aki.Protocol.GCs.create();
     e.dKn = t;
-    Net_1.Net.Send(25913, e);
+    Net_1.Net.Send(16566, e);
   }
   static GetTimeDilation() {
     if (GlobalData_1.GlobalData.GameInstance) {
@@ -975,16 +975,16 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetPlayerFollower() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(225)?.GetFollower()?.Id;
+    var t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(228)?.GetFollower()?.Id;
     return t || 0;
   }
   static IsPlayerFollowerEnable() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(225)?.IsFollowerEnable() ?? false;
+    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(228)?.IsFollowerEnable() ?? false;
   }
   static SetPlayerFollowerEnable(t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(225)?.SetFollowerEnable(t);
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(228)?.SetFollowerEnable(t);
   }
   static IsPlayerFollowerNeedInput(t, e) {
     return false;

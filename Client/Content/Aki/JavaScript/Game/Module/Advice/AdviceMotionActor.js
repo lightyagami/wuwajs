@@ -13,6 +13,7 @@ const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const ModelUtil_1 = require("../../../Core/Utils/ModelUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiConfig_1 = require("../../Ui/Define/UiConfig");
 const REVERTIME = 3000;
 class AdviceMotionActor {
   constructor() {
@@ -48,7 +49,7 @@ class AdviceMotionActor {
   }
   M9e(t, e) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    var i = t.GetComponent(203);
+    var i = t.GetComponent(206);
     var t = t.GetComponent(0).GetAdviceInfo().GetAdviceData().GetAdviceMotionId();
     if (t !== 0) {
       if (!this.ActorInternal) {
@@ -65,11 +66,12 @@ class AdviceMotionActor {
       i = ConfigManager_1.ConfigManager.MotionConfig.GetMotionRoleId(t);
       t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i);
       i = ModelUtil_1.ModelUtil.GetModelConfig(t.MeshId);
+      t = UiConfig_1.UiConfig.GetMemoryTag("AdviceInfoView");
       ResourceSystem_1.ResourceSystem.LoadAsync(i.网格体.ToAssetPathName(), UE.SkeletalMesh, (t, i) => {
         this.SkeletalMeshInternal?.SetSkeletalMesh(t);
         this.SkeletalMeshInternal?.SetHiddenInGame(true);
         e();
-      });
+      }, 100, t);
       this.ActorInternal.OnDestroyed.Add(this.OnActorDestroy);
     }
   }
@@ -82,12 +84,13 @@ class AdviceMotionActor {
       this.f9e();
       const e = this.SkeletalMeshInternal;
       var t = ConfigManager_1.ConfigManager.MotionConfig.GetMotionAnimation(t);
+      var i = UiConfig_1.UiConfig.GetMemoryTag("AdviceInfoView");
       ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimationAsset, (t, i) => {
         if (this.Td) {
           e.PlayAnimation(t, false);
         }
         this.Y9e();
-      });
+      }, 100, i);
       e.SetPlayRate(1);
       e.SetPosition(1);
       this.l9e.AddComponentByCase(0, this.SkeletalMeshInternal);
@@ -98,7 +101,7 @@ class AdviceMotionActor {
             this._9e = this.l9e.AddMaterialControllerData(t);
           }
           this.Y9e();
-        });
+        }, 100, i);
       }
       ModelManager_1.ModelManager.AdviceModel.AddPlayingMotionEntity(this.X9e, this);
     }

@@ -9,4 +9,5 @@ exports.DropGroupType = undefined;
   o[o.FixRandom = 0] = "FixRandom";
   o[o.WeigthRandom = 1] = "WeigthRandom";
   o[o.PhantomWeight = 2] = "PhantomWeight";
+  o[o.HonamiStoryRed = 3] = "HonamiStoryRed";
 })(DropGroupType = exports.DropGroupType ||= {}); //# sourceMappingURL=DropGroupType.js.map

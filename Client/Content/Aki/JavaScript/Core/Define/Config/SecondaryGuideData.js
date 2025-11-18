@@ -37,6 +37,9 @@ class SecondaryGuideData {
   get DropDownTypeId() {
     return this.dropdowntypeid();
   }
+  get TimeOutDay() {
+    return this.timeoutday();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -107,6 +110,14 @@ class SecondaryGuideData {
   }
   dropdowntypeid() {
     var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  timeoutday() {
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

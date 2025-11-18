@@ -418,7 +418,7 @@ class InputSettingsManager {
     }
   }
   static drh() {
-    this.iKd.clear();
+    this.Ndm.clear();
     var t = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllCombinationActionConfig();
     if (t) {
       var i = new Set();
@@ -438,8 +438,8 @@ class InputSettingsManager {
           e.add(r);
         }
       }
-      this.iKd.set(1, i);
-      this.iKd.set(2, e);
+      this.Ndm.set(1, i);
+      this.Ndm.set(2, e);
     }
   }
   static SetCombinationActionKeyboardKeys(t, i) {
@@ -460,6 +460,24 @@ class InputSettingsManager {
       return e;
     }
   }
+  static SetOrAddCombinationActionKeyboardKeys(t, i) {
+    var e;
+    var n;
+    var a = this.GetCombinationActionBindingByActionName(t);
+    if (a) {
+      var s;
+      var o;
+      var r = new Map();
+      a.GetPcKeyNameMap(r);
+      for ([s, o] of r) {
+        InputSettingsManager.RemoveCombinationActionKeyMap(t, s, o);
+      }
+    }
+    for ([e, n] of i) {
+      InputSettingsManager.AddCombinationActionKeyMap(t, e, n);
+    }
+    return a;
+  }
   static SetCombinationActionGamepadKeys(t, i) {
     var e = this.GetCombinationActionBindingByActionName(t);
     if (e) {
@@ -477,6 +495,24 @@ class InputSettingsManager {
       }
       return e;
     }
+  }
+  static SetOrAddCombinationActionGamepadKeys(t, i) {
+    var e;
+    var n;
+    var a = this.GetCombinationActionBindingByActionName(t);
+    if (a) {
+      var s;
+      var o;
+      var r = new Map();
+      a.GetGamepadKeyNameMap(r);
+      for ([s, o] of r) {
+        InputSettingsManager.RemoveCombinationActionKeyMap(t, s, o);
+      }
+    }
+    for ([e, n] of i) {
+      InputSettingsManager.AddCombinationActionKeyMap(t, e, n);
+    }
+    return a;
   }
   static ConvertInputActionSort() {
     var t = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.IsConvertInputActionSort, false);
@@ -693,7 +729,7 @@ class InputSettingsManager {
     return false;
   }
   static IsOriginalCombinationActionName(t, i) {
-    i = this.iKd.get(i);
+    i = this.Ndm.get(i);
     return !!i && i.has(t);
   }
   static Ykn() {
@@ -730,7 +766,7 @@ InputSettingsManager.OEe = undefined;
 InputSettingsManager.kEe = new Map();
 InputSettingsManager.Jkn = undefined;
 InputSettingsManager.eFn = undefined;
-InputSettingsManager.iKd = new Map();
+InputSettingsManager.Ndm = new Map();
 InputSettingsManager.fZa = new Map();
 InputSettingsManager.pZa = new Map();
 InputSettingsManager.frh = "";

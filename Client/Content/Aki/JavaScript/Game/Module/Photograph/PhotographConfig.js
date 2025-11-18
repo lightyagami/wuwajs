@@ -9,6 +9,7 @@ const FightPhotoOptionAll_1 = require("../../../Core/Define/ConfigQuery/FightPho
 const PhotoFilterAll_1 = require("../../../Core/Define/ConfigQuery/PhotoFilterAll");
 const PhotoFilterById_1 = require("../../../Core/Define/ConfigQuery/PhotoFilterById");
 const PhotoMontageById_1 = require("../../../Core/Define/ConfigQuery/PhotoMontageById");
+const PhotoMontageByRoleIdAndSort_1 = require("../../../Core/Define/ConfigQuery/PhotoMontageByRoleIdAndSort");
 const PhotoMontageBySkinIdAndMainAnimInstanceType_1 = require("../../../Core/Define/ConfigQuery/PhotoMontageBySkinIdAndMainAnimInstanceType");
 const PhotoSetupAll_1 = require("../../../Core/Define/ConfigQuery/PhotoSetupAll");
 const PhotoSetupByValueType_1 = require("../../../Core/Define/ConfigQuery/PhotoSetupByValueType");
@@ -21,6 +22,9 @@ class PhotographConfig extends ConfigBase_1.ConfigBase {
   }
   GetPhotoMontageConfigListBySkinIdAndMainAnim(e, o) {
     return PhotoMontageBySkinIdAndMainAnimInstanceType_1.configPhotoMontageBySkinIdAndMainAnimInstanceType.GetConfigList(e, o);
+  }
+  GetPhotoMontageConfigByRoleId(e, o) {
+    return PhotoMontageByRoleIdAndSort_1.configPhotoMontageByRoleIdAndSort.GetConfigList(e, o);
   }
   GetPhotoSetupConfig(e) {
     return PhotoSetupByValueType_1.configPhotoSetupByValueType.GetConfig(e);

@@ -56,7 +56,6 @@ function getGlobalConfig() {
       EditorStartConfig: "Content/Data/Json/EditorStartConfig.json",
       BubbleConfigPath: "Content/Data/Json/BubbleConfig.json",
       LevelEntityVoxelPath: "Content/Data/Json/LevelEntityVoxel.json",
-      PipelineConfigPath: "Content/Data/Json/PipelineConfig.json",
       TidTextTempPath: "",
       AudioStatePath: "",
       PlotHandBookPath: "Content/Data/Json/PlotHandBook.json",
@@ -70,7 +69,10 @@ function getGlobalConfig() {
       DynamicSpawnMonsterRandomPoolConfigPath: "Content/Data/Json/DynamicSpawnMonsterRandomPoolConfig.json",
       EntityCustomPrimitiveData: "Content/Data/Json/EntityCustomPrimitiveData.json",
       AnimalStandbyTagPath: "Content/Data/Json/AnimalStandbyTag.json",
-      AnsPerformDataPath: "Content/Data/Json/AnsPerformData.json"
+      AnsPerformDataPath: "Content/Data/Json/AnsPerformData.json",
+      RoadZonePath: "Content/Data/Json/RoadZone.json",
+      UltraLeaveRadiusLevelPlayPath: "Content/Data/Json/UltraLeaveRadiusLevelPlay.json",
+      AreaTeleportPath: "Content/Data/Json/AreaTeleportData.json"
     };
   } else {
     return {
@@ -84,7 +86,6 @@ function getGlobalConfig() {
       BundleDir: "../Config/Raw/Tables/k.可视化编辑/s.实体包",
       AreaEntitiesPath: "../Config/Raw/Tables/k.可视化编辑/AreaEntitiesPath.json",
       LevelEntityVoxelPath: "../Config/Raw/Tables/k.可视化编辑/LevelEntityVoxel.json",
-      PipelineConfigPath: "../Config/Raw/Tables/k.可视化编辑/PipelineConfig.json",
       FlowTemplateCameraDir: "../Config/Raw/Tables/k.可视化编辑/y.演出模板",
       EntityPerformanceDataPath: "../Config/Raw/Tables/k.可视化编辑/EntityPerformanceData.json",
       MarkedErrorCsvPath: "../Config/Raw/Tables/k.可视化编辑/MarkedErrorData.csv",
@@ -136,6 +137,7 @@ function getGlobalConfig() {
       GravityAbnormalEntityListPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GravityAbnormalEntityList.json",
       ActorRefComponentsConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/ActorRefComponentsConfig.json",
       QuestRefMp4Path: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/QuestRefMp4Config.json",
+      UltraLeaveRadiusLevelPlayPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/UltraLeaveRadiusLevelPlay.json",
       TypeScriptRoot: "TypeScript/Src",
       GlobalVarConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GlobalVar.json",
       SystemVarConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/SystemVar.json",
@@ -144,7 +146,9 @@ function getGlobalConfig() {
       GlobalFixConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/GlobalFixConfig.json",
       DynamicSpawnMonsterRandomPoolConfigPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/DynamicSpawnMonsterRandomPoolConfig.json",
       AnimalStandbyTagPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnimalStandbyTag.json",
-      AnsPerformDataPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnsPerformData.json"
+      AnsPerformDataPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AnsPerformData.json",
+      RoadZonePath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/RoadZone.json",
+      AreaTeleportPath: "../Config/Raw/Tables/k.可视化编辑/__Temp__/Json/AreaTeleportData.json"
     };
   }
 }
@@ -201,7 +205,6 @@ exports.globalConfigTemp = {
   EditorStartConfig: "Content/Aki/UniverseEditorConfig/Json/EditorStartConfig.json",
   BubbleConfigPath: "Content/Aki/UniverseEditorConfig/Json/BubbleConfig.json",
   LevelEntityVoxelPath: "Content/Aki/UniverseEditorConfig/LevelEntityVoxel.json",
-  PipelineConfigPath: "Content/Aki/UniverseEditorConfig/PipelineConfig.json",
   TidTextTempPath: "",
   AudioStatePath: "Content/Aki/UniverseEditorConfig/Json/a.AudioState.json",
   PlotHandBookPath: "Content/Aki/UniverseEditorConfig/Json/PlotHandBook.json",
@@ -219,5 +222,8 @@ exports.globalConfigTemp = {
   DynamicSpawnMonsterRandomPoolConfigPath: "Content/Aki/UniverseEditorConfig/Json/DynamicSpawnMonsterRandomPoolConfig.json",
   EntityCustomPrimitiveData: "Content/Aki/UniverseEditorConfig/Json/EntityCustomPrimitiveData.json",
   AnimalStandbyTagPath: "Content/Aki/UniverseEditorConfig/Json/AnimalStandbyTag.json",
-  AnsPerformDataPath: "Content/Aki/UniverseEditorConfig/Json/AnsPerformData.json"
+  AnsPerformDataPath: "Content/Aki/UniverseEditorConfig/Json/AnsPerformData.json",
+  RoadZonePath: "Content/Aki/UniverseEditorConfig/Json/RoadZone.json",
+  UltraLeaveRadiusLevelPlayPath: "Content/Aki/UniverseEditorConfig/Json/UltraLeaveRadiusLevelPlay.json",
+  AreaTeleportPath: "Content/Aki/UniverseEditorConfig/Json/AreaTeleportData.json"
 }; //# sourceMappingURL=IGlobal.js.map

@@ -182,7 +182,7 @@ GeneralLogicTreeController.mYt = e => {
       o = s.R3u.ups;
       break;
     case Protocol_1.Aki.Protocol.TOs.Proto_ChildQuestNodeStuckCheckAction:
-      o = s.tfd.ups;
+      o = s.IId.ups;
   }
   if (o) {
     t = MathUtils_1.MathUtils.LongToBigInt(o.w5n);

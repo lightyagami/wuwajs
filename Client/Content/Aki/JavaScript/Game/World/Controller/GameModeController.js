@@ -35,6 +35,7 @@ const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigC
 const BaseConfigModel_1 = require("../../../Launcher/BaseConfig/BaseConfigModel");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
 const ThinkDataLaunchReporter_1 = require("../../../Launcher/ThinkDataReport/ThinkDataLaunchReporter");
+const ResourceUpdateManager_1 = require("../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const CameraController_1 = require("../../Camera/CameraController");
 const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
@@ -58,7 +59,7 @@ const Heartbeat_1 = require("../../Module/Login/Heartbeat");
 const LogReportController_1 = require("../../Module/LogReport/LogReportController");
 const LogReportDefine_1 = require("../../Module/LogReport/LogReportDefine");
 const SeamlessTravelController_1 = require("../../Module/SeamlessTravel/SeamlessTravelController");
-const TeleportController_1 = require("../../Module/Teleport/TeleportController");
+const TeleportTransitionHelper_1 = require("../../Module/Teleport/TeleportTransitionHelper");
 const RoleAudioController_1 = require("../../NewWorld/Character/Role/RoleAudioController");
 const RefCompDefine_1 = require("../../NewWorld/SceneItem/RefCompController/RefCompDefine");
 const PerfSightController_1 = require("../../PerfSight/PerfSightController");
@@ -92,12 +93,6 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       Application_1.Application.AddApplicationHandler(0, GameModeController.hra);
       Application_1.Application.AddApplicationHandler(1, GameModeController.Oje);
     }
-    if (Info_1.Info.IsMacPlatform()) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("World", 36, "UseSeparatedBody In MAC");
-      }
-      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "Kuro.Collision.UseSeparatedBody 1");
-    }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SlowStreamingBySoar, this.qJl);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -126,12 +121,12 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     this.Kta();
     return true;
   }
-  static Tzd(e) {
+  static Rbm(e) {
     if (UE.KuroStaticLibrary.IsLowMemoryDevice()) {
       if (e) {
-        this.bzd = true;
-        this.Rzd = UE.KismetSystemLibrary.GetConsoleVariableIntValue("sg.KuroRenderQuality");
-        if (this.Rzd > 1) {
+        this.wbm = true;
+        this.Lbm = UE.KismetSystemLibrary.GetConsoleVariableIntValue("sg.KuroRenderQuality");
+        if (this.Lbm > 1) {
           UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality 1");
         }
         if (!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsTargetBaseProfile("IPad", false)) {
@@ -140,9 +135,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.DepthOfFieldQuality 0");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenSizeCullRatioFactor 85.0");
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.StaticMeshLODDistanceScale 2.5");
-      } else if (this.bzd) {
-        this.bzd = false;
-        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality " + this.Rzd);
+      } else if (this.wbm) {
+        this.wbm = false;
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "sg.KuroRenderQuality " + this.Lbm);
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.RuntimeLODBiasDeviceMappingIndices 274960");
       }
     }
@@ -180,6 +175,25 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       return false;
     }
   }
+  static CheckIsSameMapTravel(e) {
+    var o;
+    var a = InstanceDungeonById_1.configInstanceDungeonById.GetConfig(e);
+    if (a) {
+      if (o = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapSourceConfig(a.MapConfigId)) {
+        return ModelManager_1.ModelManager.GameModeModel.MapPath === o.MapPath.toString();
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("World", 3, "[GameModeController.CheckIsSameMapTravel] 不存在Id", ["MapConfigId", a.MapConfigId]);
+        }
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("World", 18, "[GameModeController.CheckIsSameMapTravel] 不存在副本表id:", ["id", e]);
+      }
+      return false;
+    }
+  }
   static async Load(l) {
     const n = ModelManager_1.ModelManager.GameModeModel;
     var e = n.Mode;
@@ -192,13 +206,25 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     }
     if (n.BornLocation) {
       if (n.BornRotator) {
-        this.Tzd(_.Id === SANWANGFENG_INSTANCEID);
+        this.Rbm(_.Id === SANWANGFENG_INSTANCEID);
         this.m6("GameModeController.Load: Start");
         n.LoadWorldProfiler.Restart();
         n.CreatePromise();
         n.SkipChangeSceneModeWait();
         const i = ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel;
         e = new AsyncTask_1.AsyncTask("GameModeController.Load", async () => {
+          if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("QuestResource", 70, "开始检查可选下载资源");
+            }
+            await ControllerHolder_1.ControllerHolder.ResourceManagerController.CheckOptResDownload();
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("QuestResource", 70, "完成检查可选下载资源");
+            }
+            if (!n.IsSameMapTraveling) {
+              ModelManager_1.ModelManager.ResourceManagerModel.BlockNeedReOpenMap.clear();
+            }
+          }
           ModelManager_1.ModelManager.GameModeModel.OpenLoadingProfiler.Restart();
           n.LoadingPhase = 3;
           PerfSightController_1.PerfSightController.StartPersistentOrDungeon();
@@ -212,8 +238,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           n.LoadingPhase = 4;
           cpp_1.FKuroPerfSightHelper.EndExtTag("Load.OpenLoading");
           ModelManager_1.ModelManager.GameModeModel.OpenLoadingProfiler.Stop();
-          if (ModelManager_1.ModelManager.QuestResourceModel.IsSeparateVideo && (Log_1.Log.CheckInfo() && Log_1.Log.Info("QuestResource", 38, "开始检查任务资源"), ModelManager_1.ModelManager.QuestResourceModel.NeedCheckQuestResource() && (await ModelManager_1.ModelManager.QuestResourceModel.CheckQuestResource()), ModelManager_1.ModelManager.QuestResourceModel.UpdateServerQuestState(), Log_1.Log.CheckInfo())) {
-            Log_1.Log.Info("QuestResource", 38, "完成检查任务资源");
+          MathUtils_1.MathUtils.CommonTempVector.DeepCopy(n.BornLocation);
+          if (ControllerHolder_1.ControllerHolder.TeleportControllerNew.BackToGameIfTargetPositionInvalid(MathUtils_1.MathUtils.CommonTempVector, "GameModeController.Load")) {
+            return false;
           }
           n.OpenLevelProfiler.Restart();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.OpenLevel");
@@ -434,6 +461,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           n.LoadDataLayerAndSubLevelProfiler.Stop();
           n.CheckVoxelStreamingSourceProfiler.Restart();
           this.InitStreamingSources();
+          ControllerHolder_1.ControllerHolder.ResourceManagerController.InitBlockDownloadState();
           n.StartIndependentStreaming();
           cpp_1.FKuroPerfSightHelper.BeginExtTag("Load.CheckVoxelStreaming");
           n.LoadingPhase = 11;
@@ -515,8 +543,11 @@ class GameModeController extends ControllerBase_1.ControllerBase {
             let e = true;
             if (e = Info_1.Info.IsPlayInEditor ? UE.KuroEditorUtilityLibrary.GetGConfigEditorSettings("/Script/KuroEditorUtility.KuroEditorUtilitySetting", "WaitHLODResInLoading") : e) {
               await this.CheckRenderAssetsStreamingCompleted(n.BornLocation, "加载场景:");
-            } else if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("World", 41, "加载场景:编辑器跳过等待Streaming阶段，加速进入场景。你可以在UGS勾选发布模式来恢复等待。", ["DoWaitStreamingCompleted", e]);
+            } else {
+              n.RenderAssetDone = true;
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("World", 41, "加载场景:编辑器跳过等待Streaming阶段，加速进入场景。你可以在UGS勾选发布模式来恢复等待。", ["DoWaitStreamingCompleted", e]);
+              }
             }
             n.WaitRenderAssetsProfiler.Stop();
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FixBornLocation);
@@ -660,7 +691,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
                 Log_1.Log.Info("GameMode", 3, "加载场景:检测到处于未开放区域，请求传送");
               }
               r = Protocol_1.Aki.Protocol.ECs.create();
-              Net_1.Net.Call(20179, r, () => {});
+              Net_1.Net.Call(16437, r, () => {});
             }
             if (ModelManager_1.ModelManager.GameModeModel.MapConfig.IgnoreWorldOrigin) {
               WorldController_1.WorldController.SetEnableWorldOrigin(true);
@@ -761,9 +792,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("GameMode", 3, "改变场景模式:请求服务器SceneModeChangeFinishRequest(开始)");
       }
       var o = Protocol_1.Aki.Protocol.yfs.create();
-      var o = await Net_1.Net.CallAsync(28906, o);
+      var o = await Net_1.Net.CallAsync(29581, o);
       if (o && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 26145);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23536);
         return false;
       } else {
         if (Log_1.Log.CheckInfo()) {
@@ -812,7 +843,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         if (!ModelManager_1.ModelManager.GameModeModel.HasDataLayer(WorldDefine_1.SpecificVolumeDatalayer2.toString())) {
           RenderModuleController_1.RenderModuleController.SetWorldPartitionDataLayerState(WorldDefine_1.SpecificVolumeDatalayer2.toString(), false);
         }
-        e.OnDataLayerActivationStateChanged.Add(this.w7d);
+        e.OnDataLayerActivationStateChanged.Add(this.Szd);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("GameMode", 70, "注册DataLayer变化监听");
         }
@@ -1004,6 +1035,12 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.GameModeModel.UpdateBornLocation(o.GetLocation());
     }
   }
+  static AfterTick(e) {
+    var o = ModelManager_1.ModelManager.GameModeModel.GetCacheTimeDilationValue();
+    if (o) {
+      this.LCm(o.TimeDilation);
+    }
+  }
   static PrintLoadDetail(e) {
     var o;
     var a;
@@ -1106,6 +1143,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       } else {
         r.add(o);
         TickSystem_1.TickSystem.IsPaused = true;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncTickPauseState, TickSystem_1.TickSystem.IsSetPaused);
         cpp_1.FKuroGameBudgetAllocatorInterface.SetPauseFrame(UE.KismetSystemLibrary.GetFrameCount());
         GameModeController.SetTimeDilation(0, 2);
         Time_1.Time.LastPauseTimeFrame = Time_1.Time.Frame;
@@ -1119,7 +1157,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       if (r.has(o)) {
         r.delete(o);
       }
-      return r.size !== 0 || (TickSystem_1.TickSystem.IsPaused = false, GameModeController.SetTimeDilation(a, 2), Time_1.Time.LastResumeTimeFrame = Time_1.Time.Frame, Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 54, "时停:解除真时停"), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetGamePaused, false), UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, false));
+      return r.size !== 0 || (TickSystem_1.TickSystem.IsPaused = false, EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncTickPauseState, TickSystem_1.TickSystem.IsSetPaused), GameModeController.SetTimeDilation(a, 2), Time_1.Time.LastResumeTimeFrame = Time_1.Time.Frame, Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 54, "时停:解除真时停"), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetGamePaused, false), UE.GameplayStatics.SetGamePaused(GlobalData_1.GlobalData.World, false));
     }
   }
   static CheckAndUpdateGamePaused() {
@@ -1129,6 +1167,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     }
     if (e.size === 0) {
       TickSystem_1.TickSystem.IsPaused = false;
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncTickPauseState, TickSystem_1.TickSystem.IsSetPaused);
       GameModeController.SetTimeDilation(1, 2);
       Time_1.Time.LastResumeTimeFrame = Time_1.Time.Frame;
       if (Log_1.Log.CheckInfo()) {
@@ -1142,6 +1181,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
     if (e) {
       ModelManager_1.ModelManager.GameModeModel.ForceDisableGamePaused = true;
       TickSystem_1.TickSystem.IsPaused = false;
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncTickPauseState, TickSystem_1.TickSystem.IsSetPaused);
       GameModeController.SetTimeDilation(1, 1);
       Time_1.Time.LastResumeTimeFrame = Time_1.Time.Frame;
       if (Log_1.Log.CheckInfo()) {
@@ -1153,6 +1193,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.GameModeModel.ForceDisableGamePaused = false;
       if (ModelManager_1.ModelManager.GameModeModel.GamePausedReasons.size > 0) {
         TickSystem_1.TickSystem.IsPaused = true;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncTickPauseState, TickSystem_1.TickSystem.IsSetPaused);
         cpp_1.FKuroGameBudgetAllocatorInterface.SetPauseFrame(UE.KismetSystemLibrary.GetFrameCount());
         GameModeController.SetTimeDilation(1, 1);
         Time_1.Time.LastPauseTimeFrame = Time_1.Time.Frame;
@@ -1170,27 +1211,27 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static SetTimeDilation(a, r = 0) {
+  static SetTimeDilation(e, a = 0) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("GameMode", 54, "时停:调用假时停", ["timeDilation", a], ["timeDilationType", r]);
+      Log_1.Log.Info("GameMode", 54, "时停:调用假时停", ["timeDilation", e], ["timeDilationType", a]);
     }
-    var t = ModelManager_1.ModelManager.GameModeModel.TimeDilationMap;
-    if (a === 1) {
-      t.delete(r);
+    var r = ModelManager_1.ModelManager.GameModeModel.TimeDilationMap;
+    if (e === 1) {
+      r.delete(a);
     } else {
-      t.set(r, a);
+      r.set(a, e);
     }
     if (ModelManager_1.ModelManager.GameModeModel.ForceDisableGamePaused) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("GameMode", 45, "时停:由于在传送过程中，不执行假时停，只保存", ["timeDilation", a], ["timeDilationType", r]);
+        Log_1.Log.Info("GameMode", 45, "时停:由于在传送过程中，不执行假时停，只保存", ["timeDilation", e], ["timeDilationType", a]);
       }
     } else {
       let e = 1;
       let o = 1;
-      for (var [l, n] of t) {
-        e *= n;
-        if ((l & GameModeModel_1.PAUSE_TYPE) == 0) {
-          o *= n;
+      for (var [t, l] of r) {
+        e *= l;
+        if ((t & GameModeModel_1.PAUSE_TYPE) == 0) {
+          o *= l;
         }
       }
       if (e < MathUtils_1.MathUtils.SmallNumber) {
@@ -1199,35 +1240,43 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       if (o < MathUtils_1.MathUtils.SmallNumber) {
         o = 0;
       }
-      if ((r & GameModeModel_1.PAUSE_TYPE) == 0) {
+      if ((a & GameModeModel_1.PAUSE_TYPE) == 0) {
         Time_1.Time.OriginTimeDilation = o;
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 54, "时停:假时停计算后的值", ["finalDilation", e], ["finalDilationWithoutPause", o], ["Time.OriginTimeDilation", Time_1.Time.OriginTimeDilation]);
       }
-      Time_1.Time.SetTimeDilation(e);
-      ControllerHolder_1.ControllerHolder.TimeOfDayController.ChangeTimeScale(e);
-      ControllerHolder_1.ControllerHolder.CharacterController.SetTimeDilation(e);
-      ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(e);
-      ControllerHolder_1.ControllerHolder.BulletController.SetTimeDilation(e);
-      CameraController_1.CameraController.SetTimeDilation(e);
-      ControllerHolder_1.ControllerHolder.ComponentForceTickController.SetTimeDilation(e);
-      EffectEnvironment_1.EffectEnvironment.GlobalTimeScale = e;
-      a = Protocol_1.Aki.Protocol.GCs.create();
-      a.dKn = e;
-      Net_1.Net.Send(25913, a);
-      if (e === 0) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 1);
+      if (TickSystem_1.TickSystem.IsSetPaused && !TickSystem_1.TickSystem.IsPaused) {
+        ModelManager_1.ModelManager.GameModeModel.SetCacheTimeDilationValue(e);
+      } else {
+        this.LCm(e);
       }
-      if (e === 1) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 0);
-      }
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TriggerUiTimeDilation);
     }
+  }
+  static LCm(e) {
+    ModelManager_1.ModelManager.GameModeModel.ClearCacheTimeDilationValue();
+    Time_1.Time.SetTimeDilation(e);
+    ControllerHolder_1.ControllerHolder.TimeOfDayController.ChangeTimeScale(e);
+    ControllerHolder_1.ControllerHolder.CharacterController.SetTimeDilation(e);
+    ControllerHolder_1.ControllerHolder.FormationDataController.SetTimeDilation(e);
+    ControllerHolder_1.ControllerHolder.BulletController.SetTimeDilation(e);
+    CameraController_1.CameraController.SetTimeDilation(e);
+    ControllerHolder_1.ControllerHolder.ComponentForceTickController.SetTimeDilation(e);
+    EffectEnvironment_1.EffectEnvironment.GlobalTimeScale = e;
+    var o = Protocol_1.Aki.Protocol.GCs.create();
+    o.dKn = e;
+    Net_1.Net.Send(16566, o);
+    if (e === 0) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 1);
+    }
+    if (e === 1) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PauseGame, 0);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TriggerUiTimeDilation);
   }
   static FixBornLocation(e = undefined) {
     var o;
-    if (Global_1.Global.BaseCharacter && !Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(231)?.IsOnVehicle) {
+    if (Global_1.Global.BaseCharacter && !Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(234)?.IsOnVehicle) {
       if (e) {
         Global_1.Global.BaseCharacter.CharacterActorComponent.TeleportAndFindStandLocation(e);
       } else {
@@ -1237,11 +1286,11 @@ class GameModeController extends ControllerBase_1.ControllerBase {
         Mode: 1,
         Context: "[GameModeController.FixBornLocation]"
       });
-      if (o = (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(178)) {
+      if (o = (e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity).GetComponent(181)) {
         o.MainAnimInstance?.SyncAnimStates(undefined);
       }
-      e.GetComponent(179)?.StopAllAddMove();
-      e.GetComponent(176)?.ResetCharState();
+      e.GetComponent(182)?.StopAllAddMove();
+      e.GetComponent(179)?.ResetCharState();
     }
   }
   static LoadDataLayers(e) {
@@ -1283,9 +1332,9 @@ class GameModeController extends ControllerBase_1.ControllerBase {
   static wfr() {
     var e = Protocol_1.Aki.Protocol.lms.create();
     e.r6n = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.Id;
-    Net_1.Net.Call(29144, e, e => {
+    Net_1.Net.Call(22065, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17496);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21430);
       }
     });
   }
@@ -1581,7 +1630,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
       (ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel ? (ModelManager_1.ModelManager.LoadingModel.SetIsLoading(true), o.SetResult(true), a.OpenLoadingEnd) : ModelManager_1.ModelManager.GameModeModel.PlayTravelMp4 ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:播放CG(开始)"), await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(18, 5, ModelManager_1.ModelManager.GameModeModel.TravelMp4Path, () => {
         var e = Protocol_1.Aki.Protocol.D$_.create();
         e.x$_ = ModelManager_1.ModelManager.GameModeModel.TravelMp4Path ?? "";
-        Net_1.Net.Call(15815, e, e => {
+        Net_1.Net.Call(17997, e, e => {
           if (!e || e.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("Teleport", 45, "播放CG完成请求失败", ["ErrorCode", e.Cvs]);
@@ -1589,7 +1638,7 @@ class GameModeController extends ControllerBase_1.ControllerBase {
           }
           ModelManager_1.ModelManager.GameModeModel.VideoStartPromise.SetResult(true);
         });
-      }, false), a.OpenLoadingEnd.SetResult(true), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:播放CG(完成)"), o) : (ModelManager_1.ModelManager.GameModeModel.UseAsBlackScreen ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开纯黑幕界面(开始)"), await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(7, 3, 1, ModelManager_1.ModelManager.GameModeModel.BlackScreenColor, false, false, undefined, true), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开纯黑幕界面(完成)")) : ModelManager_1.ModelManager.GameModeModel.UseShowCenterText ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开黑幕白字界面(开始)"), await TeleportController_1.TeleportController.TeleportWithCenterTextStart(ModelManager_1.ModelManager.GameModeModel.ShowCenterTextFlow), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开黑幕白字界面(完成)")) : (e = ModelManager_1.ModelManager.GameModeModel.SpecialTransitionPb) ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 87, "加载场景:打开特殊过渡界面(开始)"), await TeleportController_1.TeleportController.TeleportWithSpecialTransition(e, "GameModeController"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 87, "加载场景:打开特殊过渡界面(完成)"), ModelManager_1.ModelManager.LoadingModel.SetIsLoading(true)) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "加载场景:打开Loading界面(开始)"), await LoadingController_1.LoadingController.GameModeOpenLoading(), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "加载场景:打开Loading界面(完成)")), o.SetResult(true), a.OpenLoadingEnd)).SetResult(true);
+      }, false), a.OpenLoadingEnd.SetResult(true), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:播放CG(完成)"), o) : (ModelManager_1.ModelManager.GameModeModel.UseAsBlackScreen ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开纯黑幕界面(开始)"), await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(7, 3, 1, ModelManager_1.ModelManager.GameModeModel.BlackScreenColor, false, false, undefined, true), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开纯黑幕界面(完成)")) : ModelManager_1.ModelManager.GameModeModel.UseShowCenterText ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开黑幕白字界面(开始)"), await TeleportTransitionHelper_1.TeleportTransitionHelper.PlayTransitionCenterText(ModelManager_1.ModelManager.GameModeModel.ShowCenterTextFlow), BlackScreenController_1.BlackScreenController.RemoveBlackScreen("None", "LeaveScene"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 45, "加载场景:打开黑幕白字界面(完成)")) : (e = ModelManager_1.ModelManager.GameModeModel.SpecialTransitionPb) ? (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 87, "加载场景:打开特殊过渡界面(开始)"), await TeleportTransitionHelper_1.TeleportTransitionHelper.PlayTransitionSpecial(e, "GameModeController"), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 87, "加载场景:打开特殊过渡界面(完成)"), ModelManager_1.ModelManager.LoadingModel.SetIsLoading(true)) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "加载场景:打开Loading界面(开始)"), await LoadingController_1.LoadingController.GameModeOpenLoading(), Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "加载场景:打开Loading界面(完成)")), o.SetResult(true), a.OpenLoadingEnd)).SetResult(true);
     } else {
       o.SetResult(true);
     }
@@ -1654,17 +1703,17 @@ class GameModeController extends ControllerBase_1.ControllerBase {
 }
 exports.GameModeController = GameModeController;
 (_a = GameModeController).$vn = undefined;
-GameModeController.bzd = false;
-GameModeController.Rzd = -1;
+GameModeController.wbm = false;
+GameModeController.Lbm = -1;
 GameModeController.hra = () => {
   var e;
-  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = 0, Net_1.Net.Send(25913, e), Log_1.Log.CheckInfo())) {
+  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = 0, Net_1.Net.Send(16566, e), Log_1.Log.CheckInfo())) {
     Log_1.Log.Info("GameMode", 54, "ApplicationHasDeactivated 发生时停协议", ["TimeDilation", Time_1.Time.TimeDilation]);
   }
 };
 GameModeController.Oje = () => {
   var e;
-  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = Time_1.Time.TimeDilation, Net_1.Net.Send(25913, e), Log_1.Log.CheckInfo())) {
+  if (Net_1.Net.IsServerConnected() && ((e = Protocol_1.Aki.Protocol.GCs.create()).dKn = Time_1.Time.TimeDilation, Net_1.Net.Send(16566, e), Log_1.Log.CheckInfo())) {
     Log_1.Log.Info("GameMode", 54, "ApplicationHasReactivated 发生时停协议", ["TimeDilation", Time_1.Time.TimeDilation]);
   }
 };
@@ -1682,7 +1731,7 @@ GameModeController.Hje = () => {
     ModelManager_1.ModelManager.GameModeModel.ScaleStreamingSource(2, e);
   }
 };
-GameModeController.w7d = (e, o) => {
+GameModeController.Szd = (e, o) => {
   if (o && e?.IsValid()) {
     if ((!!(o = e.GetDataLayerLabel()).op_Equality(WorldDefine_1.SpecificVolumeDatalayer1) || !!o.op_Equality(WorldDefine_1.SpecificVolumeDatalayer2)) && !ModelManager_1.ModelManager.GameModeModel.HasDataLayer(o.toString())) {
       if (Log_1.Log.CheckInfo()) {

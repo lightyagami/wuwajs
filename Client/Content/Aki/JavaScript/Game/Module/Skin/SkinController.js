@@ -90,30 +90,30 @@ class SkinController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.xkt);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29694, e => {
+    Net_1.Net.Register(26355, e => {
       ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkin(e.bBs);
       ModelManager_1.ModelManager.RoleSkinModel.UpdateWeaponSkinFirstWearRecord(e.bBs);
       ModelManager_1.ModelManager.RoleSkinModel.AddRoleSkinNewFlag(e.bBs);
     });
-    Net_1.Net.Register(26759, e => {
+    Net_1.Net.Register(20950, e => {
       ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkinDataFull(e.bBs);
       ModelManager_1.ModelManager.RoleSkinModel.UpdateWeaponSkinFirstWearRecord(e.bBs);
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29694);
-    Net_1.Net.UnRegister(26759);
+    Net_1.Net.UnRegister(26355);
+    Net_1.Net.UnRegister(20950);
   }
   static nTl() {
     var e = new Protocol_1.Aki.Protocol.ep_();
-    Net_1.Net.Call(28867, Protocol_1.Aki.Protocol.ep_.create(e), e => {
+    Net_1.Net.Call(17439, Protocol_1.Aki.Protocol.ep_.create(e), e => {
       if (e) {
         ModelManager_1.ModelManager.RoleSkinModel.UpdateUnlockRoleSkin(e.bBs);
       }
     });
   }
   static CheckCanWearSkinAndShowTip() {
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206);
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209);
     if (e.HasTag(-1371021686) || e.HasTag(1996802261)) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_ForbiddenActionInFight_Text");
       return false;

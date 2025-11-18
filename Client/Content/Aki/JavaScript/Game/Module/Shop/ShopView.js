@@ -150,7 +150,7 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     let t = "";
     var i = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.ShopModel.InteractTarget);
     if (i) {
-      t = i.GetComponent(118)?.PawnName ?? "";
+      t = i.GetComponent(121)?.PawnName ?? "";
     }
     this.GetText(2).SetText(t);
   }

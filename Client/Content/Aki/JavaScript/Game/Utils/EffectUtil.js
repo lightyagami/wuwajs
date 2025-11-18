@@ -59,7 +59,7 @@ class EffectUtil {
   }
   static SetAdditionalEffectTimeScaleByEntity(e, t) {
     var f;
-    if (e?.Valid && (f = e.Entity.GetComponent(123))?.Valid) {
+    if (e?.Valid && (f = e.Entity.GetComponent(126))?.Valid) {
       EffectUtil.SetEffectTimeScale(t, f, e.Entity.TimeDilation);
     }
   }

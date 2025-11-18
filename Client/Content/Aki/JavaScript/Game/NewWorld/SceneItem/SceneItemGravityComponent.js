@@ -75,7 +75,7 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     this.H0n = (t, e) => {
       var e = e.Entity;
       if (!(e?.GetComponent(3) ?? !t)) {
-        if (this.R0n.StopTeleControlMove !== false && (t = e?.GetComponent(157), e = e?.GetComponent(203), t) && e?.IsAutonomousProxy) {
+        if (this.R0n.StopTeleControlMove !== false && (t = e?.GetComponent(160), e = e?.GetComponent(206), t) && e?.IsAutonomousProxy) {
           t.ForceStopDropping();
         }
       }
@@ -99,10 +99,10 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     return !!t && (this.EIe = this.Entity.CheckGetComponent(0), this.R0n = t, this.P0n = this.R0n.DownTime / MathUtils_1.MathUtils.MillisecondToSecond, this.R0n.ShowLandTipRadius && (this.q0n = this.R0n.ShowLandTipRadius.EnterRadius, this.G0n = this.R0n.ShowLandTipRadius.LeaveRadius), true);
   }
   OnStart() {
-    this.Hte = this.Entity.CheckGetComponent(203);
-    this.Lie = this.Entity.CheckGetComponent(197);
-    this.mBe = this.Entity.CheckGetComponent(134);
-    this._un = this.Entity.CheckGetComponent(131);
+    this.Hte = this.Entity.CheckGetComponent(206);
+    this.Lie = this.Entity.CheckGetComponent(200);
+    this.mBe = this.Entity.CheckGetComponent(137);
+    this._un = this.Entity.CheckGetComponent(134);
     if (!EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n)) {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnEntityInOutRangeLocal, this.H0n);
     }
@@ -157,7 +157,7 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     this.W0n(t * this.nxe);
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(123);
+    var e = this.Entity.GetComponent(126);
     this.nxe = e ? t * e.CurrentTimeScale : 1;
   }
   k0n() {
@@ -356,5 +356,5 @@ let SceneItemGravityComponent = SceneItemGravityComponent_1 = class SceneItemGra
     return this.R0n?.ExitActions;
   }
 };
-SceneItemGravityComponent = SceneItemGravityComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(153)], SceneItemGravityComponent);
+SceneItemGravityComponent = SceneItemGravityComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(156)], SceneItemGravityComponent);
 exports.SceneItemGravityComponent = SceneItemGravityComponent; //# sourceMappingURL=SceneItemGravityComponent.js.map

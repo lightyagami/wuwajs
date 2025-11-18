@@ -109,7 +109,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Video", 38, "开始关闭VideoView", ["bRemain", i]);
       }
-      this.yzd(false);
+      this.ubm(false);
       if (this.$ul) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Video", 38, "MediaPlayer还在倒计时检查状态中,提前移除TimeTimer");
@@ -201,7 +201,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (ModelManager_1.ModelManager.GameModeModel.NeedOpenBlackScreenWhenTeleportDungeon) {
         LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, undefined, 1, ModelManager_1.ModelManager.GameModeModel.Mp4FadeOutScreenColor === IAction_1.EMovieBackgroundType.White ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black, false, false, undefined, true);
       }
-      this.yzd(true);
+      this.ubm(true);
       this.hgl = false;
       this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.CgFile, UE.MediaSource, i => {
         if (i) {
@@ -463,6 +463,9 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
     this.b3c = undefined;
   }
   OnBeforeDestroy() {
+    if (!this.Pbn) {
+      this.ubm(false);
+    }
     this.bra();
     (0, this.OpenParam?.VideoCloseCb)?.();
     if (Log_1.Log.CheckDebug()) {
@@ -575,7 +578,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       this.ZCl(i);
     }
   }
-  yzd(i) {
+  ubm(i) {
     var e = !!GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) > 0;
     if (i) {
       if (e) {

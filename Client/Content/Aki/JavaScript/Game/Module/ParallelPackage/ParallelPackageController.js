@@ -24,7 +24,7 @@ const LogReportController_1 = require("../LogReport/LogReportController");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 class ParallelPackageController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    this.gAd();
+    this.zUd();
     return true;
   }
   static TestParallelPackage() {
@@ -33,16 +33,16 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       MainUrl: "https://gm-test.aki-game.com/force_update/OptionalUpdate.json",
       SubUrl: "https://gm-test.aki-game.com/force_update/OptionalUpdate.json"
     };
-    this.gAd();
+    this.zUd();
   }
-  static gAd() {
+  static zUd() {
     var e = UE.KuroLauncherLibrary.GetAppParallel();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig", ["parallelName", e]);
     }
-    this.CAd(false, this.pAd);
+    this.JUd(false, this.ZUd);
   }
-  static hod(e, o, a = 0) {
+  static Nrd(e, o, a = 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("KuroSdk", 27, "InitParallelPackageConfig", ["url", e]);
     }
@@ -50,10 +50,10 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       o(!!e && a === 200, a, r);
     });
   }
-  static CAd(o, t) {
+  static JUd(o, t) {
     let l;
     l = BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl ? o ? BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl.MainUrl : BaseConfigController_1.BaseConfigController.GetCdnReturnConfigInfo().ParallelPackageDescUrl.SubUrl : "";
-    this.hod(l, (e, a, r) => {
+    this.Nrd(l, (e, a, r) => {
       if (e) {
         t(e, r);
       } else if (o) {
@@ -62,11 +62,11 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
         }
         t(e, r);
       } else {
-        this.CAd(true, t);
+        this.JUd(true, t);
       }
     });
   }
-  static vAd() {
+  static oxd() {
     var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.ParallelPackageVersion);
     if (e === undefined) {
       return "";
@@ -76,15 +76,15 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
   }
   static CheckParallelPackageWithCache() {
     var e;
-    return !!this.GmTest || !this.yAd && (e = this.vAd(), this.MAd() !== e) && this.CheckParallelPackage();
+    return !!this.GmTest || !this.nxd && (e = this.oxd(), this.axd() !== e) && this.CheckParallelPackage();
   }
   static CheckParallelPackage() {
     var e;
     var a;
     var r;
-    return !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !!(e = this.SAd()) && !(a = e.parentVersion, e = e.childVersion, r = UE.KuroLauncherLibrary.GetAppVersion(), this.YHd(a) !== this.YHd(r)) && !(a = Number(e), r = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(a)) && !isNaN(r) && r < a;
+    return !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !!(e = this.sxd()) && !(a = e.parentVersion, e = e.childVersion, r = UE.KuroLauncherLibrary.GetAppVersion(), this.cim(a) !== this.cim(r)) && !(a = Number(e), r = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(a)) && !isNaN(r) && r < a;
   }
-  static YHd(e) {
+  static cim(e) {
     var a = e.split(".");
     if (a.length >= 2) {
       return a[0] + "." + a[1];
@@ -92,7 +92,7 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       return e;
     }
   }
-  static EAd(e) {
+  static hxd(e) {
     var a = this.Lo.languageConfig;
     if (a === undefined || (a = a[e]) === undefined) {
       return "";
@@ -100,7 +100,7 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       return a.content;
     }
   }
-  static IAd(e) {
+  static lxd(e) {
     var a = this.Lo.languageConfig;
     if (a === undefined || (a = a[e]) === undefined) {
       return "";
@@ -108,15 +108,15 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       return a.title;
     }
   }
-  static MAd() {
-    var e = this.SAd();
+  static axd() {
+    var e = this.sxd();
     if (e === undefined) {
       return "";
     } else {
       return e.parentVersion + "_" + e.childVersion;
     }
   }
-  static SAd() {
+  static sxd() {
     if (this.Lo !== undefined && this.Lo.version !== undefined) {
       var e = PublicUtil_1.PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId();
       for (const a of this.Lo.packageConfig ?? []) {
@@ -128,11 +128,11 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
   }
   static TryShowParallelPackageUpdateConfirmBox(o) {
     if (this.CheckParallelPackageWithCache()) {
-      this.yAd = true;
+      this.nxd = true;
       var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(373);
       var l = LanguageSystem_1.LanguageSystem.PackageLanguage;
-      let e = this.IAd(l);
-      let a = this.EAd(l);
+      let e = this.lxd(l);
+      let a = this.hxd(l);
       if (e === "") {
         e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ParallelPackageUpdateDefaultTitle") ?? "";
       }
@@ -162,7 +162,7 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
       t.SetCloseFunction(() => {
         var e;
         if (r) {
-          e = this.MAd();
+          e = this.axd();
           LocalStorage_1.LocalStorage.SetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.ParallelPackageVersion, e);
         }
       });
@@ -177,8 +177,8 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
 exports.ParallelPackageController = ParallelPackageController;
 (_a = ParallelPackageController).GmTest = false;
 ParallelPackageController.Lo = undefined;
-ParallelPackageController.yAd = false;
-ParallelPackageController.pAd = (e, a) => {
+ParallelPackageController.nxd = false;
+ParallelPackageController.ZUd = (e, a) => {
   if (e) {
     _a.Lo = Json_1.Json.Parse(a);
   } else if (Log_1.Log.CheckInfo()) {

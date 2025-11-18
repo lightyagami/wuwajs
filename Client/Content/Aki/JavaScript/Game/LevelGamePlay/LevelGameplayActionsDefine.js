@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ActionInteractGravityFlip = exports.ActionInteractFan = exports.ActionTimeTrackControl = exports.ActionBtGm = exports.ActionOpenAdvice = exports.ActionPlotChangeRole = exports.ActionPickupDropItem = exports.ActionBubbleData = exports.ActionPlayBubble = exports.ActionEnterSequenceCamera = exports.ActionPlotInterludeAction = exports.ActionSetSeqCameraTransform = exports.ActionSetNpcPosition = exports.EntityPositionData = exports.ActionMoveToLocation = exports.ActionDeliverQuestBehavior = exports.ActionSubmitQuestBehavior = exports.ActionSendGameplayEvent = exports.ActionCaptureRequest = exports.ActionExecution = exports.CommonInteractOption = exports.optionTypeLogString = exports.CommonInteractActions = exports.CommonActionInfo = undefined;
+exports.ActionInteractGravityFlip = exports.ActionInteractFan = exports.ActionTimeTrackControl = exports.ActionBtGm = exports.ActionOpenAdvice = exports.ActionPlotChangeRole = exports.ActionPickupDropItem = exports.ActionBubbleData = exports.ActionPlayBubble = exports.ActionEnterSequenceCamera = exports.ActionPlotInterludeAction = exports.ActionSetSeqCameraTransform = exports.ActionSetNpcPosition = exports.EntityPositionData = exports.ActionMoveToLocation = exports.ActionDeliverQuestBehavior = exports.ActionSubmitQuestBehavior = exports.ActionSendGameplayEvent = exports.ActionCaptureRequest = exports.BreakWeakness = exports.ActionExecution = exports.CommonInteractOption = exports.optionTypeLogString = exports.CommonInteractActions = exports.CommonActionInfo = undefined;
 const Protocol_1 = require("../../Core/Define/Net/Protocol");
 const Vector_1 = require("../../Core/Utils/Math/Vector");
 const IAction_1 = require("../../UniverseEditor/Interface/IAction");
@@ -49,6 +49,7 @@ class CommonInteractOption {
     this.ConditionCheck = false;
     this.LockTips = undefined;
     this.Offset = undefined;
+    this.ConfirmBox = undefined;
   }
   get Disabled() {
     let t = 0;
@@ -78,6 +79,7 @@ class CommonInteractOption {
     this.ContentType = n;
     this.DelayRemove = h;
     this.LockTips = a;
+    this.ConfirmBox = o.ConfirmBox;
     this.Offset = Vector_1.Vector.Create(o.InteractPointOffset?.X ?? 0, o.InteractPointOffset?.Y ?? 0, o.InteractPointOffset?.Z ?? 0);
     this.ConditionCheck = false;
     if (o.UniquenessTest) {
@@ -106,6 +108,12 @@ class ActionExecution {
   }
 }
 exports.ActionExecution = ActionExecution;
+class BreakWeakness {
+  constructor() {
+    this.SuccessEvent = undefined;
+  }
+}
+exports.BreakWeakness = BreakWeakness;
 class ActionCaptureRequest {
   constructor() {
     this.SuccessEvent = undefined;

@@ -151,7 +151,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     s.UseKeepMovementMode = false;
     let _ = undefined;
     let n = undefined;
-    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(100))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(102))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
       s.UseTreadmill = false;
       s.UseKeepKite = true;
       s.UseKeepMovementMode = true;
@@ -173,7 +173,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       });
     }
     if (s.UseKeepKite) {
-      a = r.GetComponent(100).GetCurrentTargetEntity().Entity;
+      a = r.GetComponent(102).GetCurrentTargetEntity().Entity;
       s.SeamlessTravelKeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
       s.SeamlessTravelKeepKite.SetInitData(a, r);
       if (Log_1.Log.CheckInfo()) {
@@ -190,12 +190,12 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
         }
         var r;
         var a = s.SeamlessTravelPlayerEntityHandle.Entity;
-        var l = a?.GetComponent(100);
+        var l = a?.GetComponent(102);
         if (l?.GetIsHooking() && l.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
           l.GetCurrentTargetEntity().Entity?.Disable("[无缝加载]隐藏风筝声骸");
           l.SetIsHookEndByInterrupt(true);
           if ((r = (l = a?.GetComponent(40))?.CurrentSkill) && r.MNc && r.SkillId === InputDefine_1.SKILL_ID_XA_KITE) {
-            a?.GetComponent(191)?.SetSeamlessTravelBuffPreMessageId(r.MNc);
+            a?.GetComponent(194)?.SetSeamlessTravelBuffPreMessageId(r.MNc);
           }
           l?.EndSkill(InputDefine_1.SKILL_ID_XA_KITE, "[无缝加载]停止勾风筝技能");
         }
@@ -313,7 +313,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
           Log_1.Log.Info("SeamlessTravel", 39, "[无缝加载:后处理混入(完成)]");
         }
         r.PostProcessBlendedInPromise?.SetResult(e);
-      })), r.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(开始)]"), await r.MeshAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(完成)]"), SeamlessTravelController.AddSeamlessTravelActor(r.SeamlessTravelTreadmill.GetFloorActor()), e = r.SeamlessTravelPlayerEntityHandle.Entity.GetComponent(3), (a = MathUtils_1.MathUtils.CommonTempVector).DeepCopy(e.ActorLocationProxy), a.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT, r.SeamlessTravelTreadmill.ResetLockOnLocation(a), e.TeleportAndFindStandLocation(a), CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(false, true), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(开始)]"), r.SeamlessTravelTreadmill.AppearEffect(() => {
+      })), r.UseTreadmill && (Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(开始)]"), await r.MeshAssetLoadedPromise.Promise, Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:等待地板资产加载(完成)]"), SeamlessTravelController.AddSeamlessTravelActor(r.SeamlessTravelTreadmill.GetFloorActor()), e = r.SeamlessTravelPlayerEntityHandle.Entity.GetComponent(3), (a = MathUtils_1.MathUtils.CommonTempVector).DeepCopy(e.ActorLocationProxy), r.Config?.IsTeleportInPlace || (a.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT), r.SeamlessTravelTreadmill.ResetLockOnLocation(a), e.TeleportAndFindStandLocation(a), CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(false, true), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(开始)]"), r.SeamlessTravelTreadmill.AppearEffect(() => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:地板显形(完成)]");
         }
@@ -534,8 +534,8 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     return false;
   }
   static SeamlessTravelingRefreshData(e) {
-    e.GetComponent(174)?.SeamlessTravelingRefresh();
-    e.GetComponent(210)?.SeamlessTravelingRefresh();
+    e.GetComponent(177)?.SeamlessTravelingRefresh();
+    e.GetComponent(213)?.SeamlessTravelingRefresh();
   }
 }
 (exports.SeamlessTravelController = SeamlessTravelController).qea = () => {
@@ -550,7 +550,9 @@ SeamlessTravelController.Gea = () => {
   var r;
   if (e.IsSeamlessTravel && (e.EnterDestinationMapPromise?.SetResult(true), Log_1.Log.CheckInfo() && Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载]进入目标地图并重新设置位置"), a = Global_1.Global.BaseCharacter?.CharacterActorComponent) && e.UseTreadmill) {
     (r = MathUtils_1.MathUtils.CommonTempVector).DeepCopy(a.CreatureData.GetLocation());
-    r.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT;
+    if (!e.Config?.IsTeleportInPlace) {
+      r.Z += SeamlessTravelTreadmill_1.DEFAULT_SEAMLESS_TRANSITION_HEIGHT;
+    }
     e.SeamlessTravelTreadmill.ResetLockOnLocation(r);
     a.TeleportAndFindStandLocation(MathUtils_1.MathUtils.CommonTempVector);
     CameraController_1.CameraController.FightCamera.LogicComponent.ResetFightCameraLogic(false, true);

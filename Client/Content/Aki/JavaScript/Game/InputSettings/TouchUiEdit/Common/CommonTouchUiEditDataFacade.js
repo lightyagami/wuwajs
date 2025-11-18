@@ -46,12 +46,12 @@ class CommonTouchUiEditDataFacade {
     this.MaxTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MaxTouchMoveValue");
     this.MinTouchMoveValue = CommonParamById_1.configCommonParamById.GetFloatConfig("MinTouchMoveValue");
     this.ControlScaleRate = CommonParamById_1.configCommonParamById.GetFloatConfig("ControlScaleRate");
-    Net_1.Net.Register(24560, this.oJc);
+    Net_1.Net.Register(24830, this.oJc);
   }
   Clear() {
     this.NQ.clear();
     this.wZt = undefined;
-    Net_1.Net.UnRegister(24560);
+    Net_1.Net.UnRegister(24830);
   }
   SetGroup(e) {
     this.hs = e;
@@ -120,8 +120,8 @@ class CommonTouchUiEditDataFacade {
     }
     e = Protocol_1.Aki.Protocol.oHc.create();
     e.v8n = t;
-    Net_1.Net.Call(24656, e, e => {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 15447);
+    Net_1.Net.Call(29996, e, e => {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 18091);
     });
   }
   GetData(e, t) {

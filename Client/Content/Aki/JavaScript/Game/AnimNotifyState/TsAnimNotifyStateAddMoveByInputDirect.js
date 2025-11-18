@@ -50,7 +50,7 @@ class TsAnimNotifyStateAddMoveByInputDirect extends UE.KuroAnimNotifyState {
     h.CharSkillComp = e.GetComponent(40);
     h.MoveComp = e.GetComponent(45);
     h.CharActorComp = t.CharacterActorComponent;
-    paramMap.set(t.CharacterActorComponent.Entity.Id, h);
+    paramMap.set(t.EntityId, h);
     this.TotalTime = s;
     if (this.AccelerationTime + this.DecelerationTime > s) {
       CombatLog_1.CombatLog.Error("Skill", t.CharacterActorComponent.Entity, "加速时间+减速时间大于帧事件总时长", ["加速时间", this.AccelerationTime], ["减速时间", this.DecelerationTime], ["总时长", this.TotalTime], ["动画", i.GetName()]);
@@ -69,11 +69,11 @@ class TsAnimNotifyStateAddMoveByInputDirect extends UE.KuroAnimNotifyState {
     var h;
     var e;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (h = t.CharacterActorComponent.Entity, (e = paramMap.get(h.Id)) ? ((t = t.CharacterActorComponent.InputDirectProxy).IsNearlyZero() || e.InputDirectCache.DeepCopy(t), t = this.GetOffset(t, s, e), e.MoveComp?.MoveCharacter(t, s, "TsAnimNotifyStateAddMoveByInputDirect"), e.NowTime += s, true) : (CombatLog_1.CombatLog.Error("Skill", h, "没有找到对应的AddMoveParams", ["EntityId", h.Id]), false));
+    return t instanceof TsBaseCharacter_1.default && ((h = paramMap.get(t.EntityId)) ? ((e = t.CharacterActorComponent.InputDirectProxy).IsNearlyZero() || h.InputDirectCache.DeepCopy(e), e = this.GetOffset(e, s, h), h.MoveComp?.MoveCharacter(e, s, "TsAnimNotifyStateAddMoveByInputDirect"), h.NowTime += s, true) : (CombatLog_1.CombatLog.Error("Skill", t.CharacterActorComponent.Entity, "没有找到对应的AddMoveParams", ["EntityId", t.EntityId]), false));
   }
   K2_NotifyEnd(t, i) {
     t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (paramMap.delete(t.CharacterActorComponent.Entity.Id), true);
+    return t instanceof TsBaseCharacter_1.default && (paramMap.delete(t.EntityId), true);
   }
   GetNotifyName() {
     return "输入向量叠加位移";

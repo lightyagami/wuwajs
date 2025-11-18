@@ -13,10 +13,10 @@ const LevelListenerBase_1 = require("./LevelListenerBase");
 class LevelConditionListenerCheckEntitiesExist extends LevelListenerBase_1.LevelListenerBase {
   constructor() {
     super(...arguments);
-    this.rXd = (...e) => {
+    this.ygm = (...e) => {
       this.Callback?.(LevelGeneralContextDefine_1.ClientEventContext.Create(EventDefine_1.EEventName.AddEntity, ...e));
     };
-    this.oXd = (...e) => {
+    this.Sgm = (...e) => {
       this.Callback?.(LevelGeneralContextDefine_1.ClientEventContext.Create(EventDefine_1.EEventName.RemoveEntity, ...e));
     };
   }
@@ -28,11 +28,11 @@ class LevelConditionListenerCheckEntitiesExist extends LevelListenerBase_1.Level
       i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId)?.Entity;
     }
     if (i?.Valid) {
-      if (!EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.AddEntity, this.rXd)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, i, EventDefine_1.EEventName.AddEntity, this.rXd);
+      if (!EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.AddEntity, this.ygm)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, i, EventDefine_1.EEventName.AddEntity, this.ygm);
       }
-      if (!EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.RemoveEntity, this.oXd)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, i, EventDefine_1.EEventName.RemoveEntity, this.oXd);
+      if (!EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.RemoveEntity, this.Sgm)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, i, EventDefine_1.EEventName.RemoveEntity, this.Sgm);
       }
     }
   }

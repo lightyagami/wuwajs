@@ -289,7 +289,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
       } else {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200");
       }
-    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), AudioSystem_1.AudioSystem.PostEvent("enable_monster_effect_2_5_time_slow"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.w2u(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(16353, t), 0);
+    }), EffectSystem_1.EffectSystem.EnableNiagaraDownSampling(), RenderUtil_1.RenderUtil.UnsetNeedRenderKuroToonDepth()) : (AudioSystem_1.AudioSystem.SetState("level_2_5_time_slow", "enable"), AudioSystem_1.AudioSystem.PostEvent("enable_monster_effect_2_5_time_slow"), this.HTu(true), UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.MotionBlur.TargetFPS 1200"), EffectSystem_1.EffectSystem.DisableNiagaraDownSampling(), RenderUtil_1.RenderUtil.SetNeedRenderKuroToonDepth()), this.w2u(), Log_1.Log.CheckInfo() && Log_1.Log.Info("Character", 57, "SelfCentered Change.", ["timeDilation", i], ["SelfCenteredMode", this.SEu]), t !== 5 && this.SEu === 5 ? this.yTu() : t === 5 && this.STu(), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.SEu, i), (t = Protocol_1.Aki.Protocol.kpu.create()).A6n = i, t.o5n = i !== 1, t.n5n = this.lRu(e) * TimeUtil_1.TimeUtil.InverseMillisecond, Net_1.Net.Send(24043, t), 0);
   }
   yTu() {
     FormationAttributeController_1.FormationAttributeController.AddThresholdListener(12, this.grn, 0, 0, "Strength.RoleStrengthComponent");
@@ -307,7 +307,7 @@ class CharacterModel extends ModelBase_1.ModelBase {
   w2u() {
     var e;
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (t?.Valid && (e = t.Entity.GetComponent(289))?.Valid) {
+      if (t?.Valid && (e = t.Entity.GetComponent(293))?.Valid) {
         e.SetSelfCenterTimeDilation(this.InverseSelfCenteredTimeDilation);
       }
     }

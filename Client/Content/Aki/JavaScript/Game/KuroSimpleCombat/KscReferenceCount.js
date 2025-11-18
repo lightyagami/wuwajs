@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.KscReferenceCount = undefined;
 class KscReferenceCount {
   constructor() {
-    this.e4d = new Map();
+    this._jd = new Map();
   }
   AddRef(e) {
-    this.e4d.set(e, this.GetCount(e) + 1);
+    this._jd.set(e, this.GetCount(e) + 1);
   }
   SubRef(e) {
-    this.e4d.set(e, this.GetCount(e) - 1);
+    this._jd.set(e, this.GetCount(e) - 1);
   }
   IsEmptyRef(e) {
     return this.GetCount(e) === 0;
@@ -24,13 +24,13 @@ class KscReferenceCount {
     return this.GetCount(e) > 0;
   }
   SetEmptyRef(e) {
-    this.e4d.set(e, 0);
+    this._jd.set(e, 0);
   }
   Clear() {
-    this.e4d.clear();
+    this._jd.clear();
   }
   GetCount(e) {
-    return this.e4d.get(e) ?? 0;
+    return this._jd.get(e) ?? 0;
   }
 }
 exports.KscReferenceCount = KscReferenceCount;

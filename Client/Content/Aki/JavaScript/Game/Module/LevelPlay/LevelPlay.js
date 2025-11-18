@@ -27,11 +27,13 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     this.TrackRadiusSquared = 0;
     this.CacheDistanceSquared = 0;
     this.c1i = "";
+    this.pRm = "";
     this.m1i = 0;
     this.d1i = 0;
     this.C1i = 0;
     this.Upi = undefined;
     this.Api = undefined;
+    this.CLm = undefined;
     this.RQ1 = 0;
     this.p1i = 0;
     this.Ppi = 0;
@@ -99,6 +101,9 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
   get Name() {
     return this.c1i;
   }
+  get NameKey() {
+    return this.pRm;
+  }
   get LevelPlayEntityId() {
     return this.m1i;
   }
@@ -115,7 +120,23 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
     return this.MarkConfig !== undefined;
   }
   get TrackPriority() {
-    return this.Api?.TrackPriority ?? LevelPlayDefine_1.INVALID_LEVELPLAY_TRACKPRIORITY;
+    if (this.CLm !== undefined) {
+      return this.CLm;
+    } else {
+      return this.Api?.TrackPriority ?? LevelPlayDefine_1.INVALID_LEVELPLAY_TRACKPRIORITY;
+    }
+  }
+  SetTrackPriorityOverride(t) {
+    this.CLm = t;
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SceneGameplay", 78, "设置玩法追踪优先级覆盖", ["玩法id", this.u1i], ["玩法名", this.Name], ["原优先级", this.Api?.TrackPriority ?? LevelPlayDefine_1.INVALID_LEVELPLAY_TRACKPRIORITY], ["新优先级", t ?? "使用配置值"]);
+    }
+  }
+  ResetTrackPriorityOverride() {
+    this.SetTrackPriorityOverride(undefined);
+  }
+  IsTrackPriorityOverride() {
+    return this.CLm !== undefined;
   }
   get CustomIconId() {
     return this.RQ1;
@@ -170,6 +191,7 @@ class LevelPlayInfo extends LogicTreeContainer_1.LogicTreeContainer {
       this.m1i = t.LevelPlayEntityId;
       this.C1i = t.InstanceId ?? 0;
       this.c1i = PublicUtil_1.PublicUtil.GetConfigTextByKey(t.TidName);
+      this.pRm = t.TidName;
       this.Upi = t.LevelPlayMark;
       this.Api = t.LevelPlayTrack;
       this.Rpi = true;

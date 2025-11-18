@@ -11,7 +11,7 @@ class LevelConditionCheckGamePlayTag extends LevelGeneralBase_1.LevelConditionBa
   CheckNew(e, a) {
     var l;
     var r;
-    return !!e && !!(l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) && !!(l = l.GetComponent(206)) && (r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.GameplayTag), e.Compare === "Eq" && !!l.HasTag(r) || e.Compare === "Ne" && !l.HasTag(r));
+    return !!e && !!(l = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity) && !!(l = l.GetComponent(209)) && (r = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.GameplayTag), e.Compare === "Eq" && !!l.HasTag(r) || e.Compare === "Ne" && !l.HasTag(r));
   }
 }
 exports.LevelConditionCheckGamePlayTag = LevelConditionCheckGamePlayTag;

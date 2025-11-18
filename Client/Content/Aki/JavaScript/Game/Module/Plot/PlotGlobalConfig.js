@@ -48,6 +48,7 @@ class PlotGlobalConfig {
     this.ProtectOptionTime = 0;
     this.AudioEndDelay = 0;
     this.BubbleAudioEndDelay = 0;
+    this.TransitionPopupTime = 0;
     this.gU = false;
   }
   Init() {
@@ -87,6 +88,7 @@ class PlotGlobalConfig {
       this.ProtectOptionTime = this.xYi("Plot.ProtectOptionTime") * TimeUtil_1.TimeUtil.InverseMillisecond;
       this.AudioEndDelay = this.xYi("Plot.AudioEndDelay");
       this.BubbleAudioEndDelay = this.xYi("Plot.BubbleAudioEndDelay");
+      this.TransitionPopupTime = this.xYi("Plot.TransitionPopupTime");
       this.gU = true;
     }
   }

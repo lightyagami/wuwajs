@@ -7,7 +7,6 @@ exports.MenuData = undefined;
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
-const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class MenuData {
   constructor(e) {
@@ -35,6 +34,9 @@ class MenuData {
   }
   get FunctionId() {
     return this.rSl.FunctionId;
+  }
+  get NeedScale() {
+    return this.rSl.NeedScale;
   }
   get SetType() {
     return this.rSl.SetType;
@@ -103,6 +105,9 @@ class MenuData {
   get ClickedTipsMap() {
     return this.rSl.ClickedTipsMap;
   }
+  get IsDataCache() {
+    return this.rSl.IsDataCache;
+  }
   get ClickedTips() {
     return this.rSl.ClickedTips;
   }
@@ -112,16 +117,16 @@ class MenuData {
   get CustomTitleArgs() {}
   GetEnable() {
     if (this.FunctionId === GameSettingsDefine_1.EFunction.MobileGamepadMode) {
-      return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MobileGamepadMode) === 1;
+      return ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.MobileGamepadMode) === 1;
     }
     if (this.FunctionId === GameSettingsDefine_1.EFunction.Filter) {
-      return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 1;
+      return ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 1;
     }
     if (this.FunctionId === GameSettingsDefine_1.EFunction.EyeProtection) {
-      return GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 2;
+      return ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.ImageDisplayMode) === 2;
     }
     for (var [e, t] of this.gac) {
-      e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
+      e = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(e);
       if (e !== undefined && t.includes(e)) {
         return false;
       }

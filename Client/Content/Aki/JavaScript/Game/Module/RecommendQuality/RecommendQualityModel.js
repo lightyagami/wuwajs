@@ -44,7 +44,7 @@ class RecommendQualityModel extends ModelBase_1.ModelBase {
     return true;
   }
   InitQualityRangeMap() {
-    this.QualityRangeMap = new Map([[0, [0, 1, 2]], [1, [1, 2, 3]], [2, [2, 3]], [3, [3]], [4, [2, 3, 4]]]);
+    this.QualityRangeMap = new Map([[0, [0, 1, 2]], [1, [1, 2, 3]], [2, [2, 3]], [3, [3]], [4, [2, 3, 4]], [5, [3, 4, 5]]]);
   }
   InitQualityList() {
     var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetQualityRange();

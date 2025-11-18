@@ -22,6 +22,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const UiModel_1 = require("../../Ui/UiModel");
 const ActivityDirectTrainHelper_1 = require("../Activity/ActivityContent/DirectTrain/ActivityDirectTrainHelper");
 const EditFormationController_1 = require("../EditFormation/EditFormationController");
+const HonamiStoryController_1 = require("../HonamiStory/HonamiStoryController");
 const MailBindController_1 = require("../MailBind/MailBindController");
 const TutorialController_1 = require("../Tutorial/TutorialController");
 class FunctionController extends UiControllerBase_1.UiControllerBase {
@@ -57,21 +58,24 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     this.K9t.set(10072, FunctionController.jtl);
     this.K9t.set(10086, FunctionController.D71);
     this.K9t.set(10095, FunctionController.Fvu);
+    this.K9t.set(10102, FunctionController.OMm);
     return true;
   }
   static InitFunctionOpenViewLimit() {
     var o = FunctionOpenViewLimitAll_1.configFunctionOpenViewLimitAll.GetConfigList();
     var e = o.length;
     for (let n = 0; n < e; n++) {
-      var r = o[n];
-      this.p7t.add(r.ViewName);
+      var t = o[n];
+      this.p7t.add(t.ViewName);
     }
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.v7t);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.sLm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.v7t);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.sLm);
   }
   static async TryOpenFunctionOpenView() {
     if (!this.M7t()) {
@@ -88,21 +92,21 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   static async ManualOpenFunctionOpenView(...n) {
     var o;
     var e = [];
-    for (const r of n) {
-      if (ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(r).ShowUIType !== 2) {
+    for (const t of n) {
+      if (ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(t).ShowUIType !== 2) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Functional", 10, "传入的id表格不支持手动开启,详细查功能开启表", ["FunctionId", r]);
+          Log_1.Log.Error("Functional", 10, "传入的id表格不支持手动开启,详细查功能开启表", ["FunctionId", t]);
         }
-      } else if ((o = ModelManager_1.ModelManager.FunctionModel.GetFunctionInstance(r)).GetIsOpen()) {
+      } else if ((o = ModelManager_1.ModelManager.FunctionModel.GetFunctionInstance(t)).GetIsOpen()) {
         if (o.GetHasManualShowUi()) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Functional", 10, "传入的id已经手动开启过了,不允许再次开启", ["FunctionId", r]);
+            Log_1.Log.Info("Functional", 10, "传入的id已经手动开启过了,不允许再次开启", ["FunctionId", t]);
           }
         } else {
-          e.push(r);
+          e.push(t);
         }
       } else if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Functional", 10, "传入的id还未开启", ["FunctionId", r]);
+        Log_1.Log.Info("Functional", 10, "传入的id还未开启", ["FunctionId", t]);
       }
     }
     return !(e.length <= 0) && this.E7t(e);
@@ -110,9 +114,9 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   static async E7t(n) {
     var o = Protocol_1.Aki.Protocol.Krs.create();
     o.d6n = n;
-    var o = await Net_1.Net.CallAsync(25815, o);
+    var o = await Net_1.Net.CallAsync(24863, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 25350);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 21988);
       return false;
     } else {
       ModelManager_1.ModelManager.FunctionModel.RefreshInfoManualState(n);
@@ -139,12 +143,12 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
       return false;
     }
     let e = true;
-    var r = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-    for (const t of [1733479717, -1791250236]) {
-      if (r?.GameplayTagComponent?.HasTag(t)) {
-        r?.GameplayTagComponent?.AddTagAddOrRemoveListener(t, FunctionController.Uzs);
+    var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+    for (const r of [1733479717, -1791250236]) {
+      if (t?.GameplayTagComponent?.HasTag(r)) {
+        t?.GameplayTagComponent?.AddTagAddOrRemoveListener(r, FunctionController.Uzs);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Functional", 37, "功能开启界面打开时存在Tag限制", ["TagId", t]);
+          Log_1.Log.Info("Functional", 37, "功能开启界面打开时存在Tag限制", ["TagId", r]);
         }
         e = false;
       }
@@ -159,17 +163,17 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     return this.p7t.has(n);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(19926, n => {
+    Net_1.Net.Register(21616, n => {
       ModelManager_1.ModelManager.FunctionModel.SetFunctionOpenInfo(n);
     });
-    Net_1.Net.Register(22556, n => {
+    Net_1.Net.Register(15014, n => {
       ModelManager_1.ModelManager.FunctionModel.UpdateFunctionOpenInfo(n);
       FunctionController.TryOpenFunctionOpenView();
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19926);
-    Net_1.Net.UnRegister(22556);
+    Net_1.Net.UnRegister(21616);
+    Net_1.Net.UnRegister(15014);
   }
   static async mXa() {
     if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId())) === 1) {
@@ -242,6 +246,9 @@ FunctionController.Uzs = (n, o) => {
 };
 FunctionController.v7t = n => {
   FunctionController.TryOpenFunctionOpenView();
+};
+FunctionController.sLm = n => {
+  _a.OpenFunctionRelateView(n);
 };
 FunctionController.Q9t = () => {
   ControllerHolder_1.ControllerHolder.RoleController.OpenRoleMainView(0);
@@ -332,4 +339,7 @@ FunctionController.a7t = () => {
 };
 FunctionController.l7t = () => {
   ControllerHolder_1.ControllerHolder.BattlePassController.OpenBattlePassView();
+};
+FunctionController.OMm = () => {
+  HonamiStoryController_1.HonamiStoryController.OpenHonamiStoryBag();
 }; //# sourceMappingURL=FunctionController.js.map

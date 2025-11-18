@@ -23,7 +23,7 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
           if (i.MusicEventType) {
             AudioSystem_1.AudioSystem.PostEvent(r, undefined, {
               CallbackHandler: (e, o) => {
-                this.Tmd(e, i);
+                this.Pgd(e, i);
               },
               CallbackMask: 384
             });
@@ -39,7 +39,7 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
                   Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle移除记录", ["Handle", a], ["Event", r]);
                 }
               } else {
-                this.Tmd(e, i);
+                this.Pgd(e, i);
               }
             },
             CallbackMask: (i.MusicEventType ? 384 : 0) | 1
@@ -65,7 +65,7 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
               if (i.MusicEventType) {
                 AudioSystem_1.AudioSystem.PostEvent(n, undefined, {
                   CallbackHandler: (e, o) => {
-                    this.Tmd(e, i);
+                    this.Pgd(e, i);
                   },
                   CallbackMask: 384
                 });
@@ -87,7 +87,7 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
       Log_1.Log.Error("Event", 33, "参数配置错误");
     }
   }
-  Tmd(e, o) {
+  Pgd(e, o) {
     o = o.MusicEventType;
     if (o) {
       if (e === 7) {

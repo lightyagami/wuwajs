@@ -26,7 +26,7 @@ const MenuController_1 = require("../Menu/MenuController");
 const RouletteController_1 = require("../Roulette/RouletteController");
 class KeySettingViewModel {
   static get IsEditing() {
-    return this.Fsd;
+    return this.P_d;
   }
   static get InputControllerType() {
     return this.rEa;
@@ -76,13 +76,13 @@ class KeySettingViewModel {
     for (const t of this.lxi) {
       t.ResetKey(1);
     }
-    for (const e of this.rKd) {
+    for (const e of this.Vdm) {
       e.ResetKey(1);
     }
     for (const i of this.bAn) {
       i.ResetKey(2);
     }
-    for (const n of this.oKd) {
+    for (const n of this.jdm) {
       n.ResetKey(2);
     }
   }
@@ -341,7 +341,7 @@ class KeySettingViewModel {
       this.Vxi();
       this.qxi(true);
       this.tzu();
-      this.Fsd = true;
+      this.P_d = true;
     });
   }
   static Lxi() {
@@ -353,7 +353,7 @@ class KeySettingViewModel {
     this.SelectKey(undefined);
     UiLayer_1.UiLayer.SetShowMaskLayer("KeySettingMask", false);
     this.izu();
-    this.Fsd = false;
+    this.P_d = false;
   }
   static qxi(t) {
     if (Log_1.Log.CheckInfo()) {
@@ -409,13 +409,13 @@ KeySettingViewModel.JYu = [];
 KeySettingViewModel.cxi = undefined;
 KeySettingViewModel.fxi = [];
 KeySettingViewModel.bAn = [];
-KeySettingViewModel.oKd = [];
+KeySettingViewModel.jdm = [];
 KeySettingViewModel.lxi = [];
-KeySettingViewModel.rKd = [];
+KeySettingViewModel.Vdm = [];
 KeySettingViewModel.Lkn = new Map();
 KeySettingViewModel.wd1 = new Map();
 KeySettingViewModel.rEa = 0;
-KeySettingViewModel.Fsd = false;
+KeySettingViewModel.P_d = false;
 KeySettingViewModel.dxi = undefined;
 KeySettingViewModel.rAt = (e, i) => {
   if (!UiManager_1.UiManager.IsViewOpen("RepeatKeyTipsView") && ModelManager_1.ModelManager.MenuModel.IsWaitForKeyInput) {

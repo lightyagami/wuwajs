@@ -42,12 +42,12 @@ class UiCameraAnimationManager {
     this.LoadingViewManualFocusDistance = CommonParamById_1.configCommonParamById.GetFloatConfig("LoadingViewManualFocusDistance");
     this.LoadingViewAperture = CommonParamById_1.configCommonParamById.GetFloatConfig("LoadingViewAperture");
     this.nPo();
-    this.wAd();
+    this.Sxd();
   }
   static Clear() {
     this.ClearDisplay();
     this.sPo();
-    this.LAd.clear();
+    this.Mxd.clear();
   }
   static nPo() {
     for (const i of ConfigManager_1.ConfigManager.UiCameraAnimationConfig.GetAllUiCameraMappingConfig()) {
@@ -59,15 +59,15 @@ class UiCameraAnimationManager {
       this.aPo.set(t.ViewName, e);
     }
   }
-  static wAd() {
-    this.LAd.set(1, new UiCameraTargetTypePlayer_1.UiCameraTargetTypePlayer());
-    this.LAd.set(2, new UiCameraTargetTypeNpc_1.UiCameraTargetTypeNpc());
-    this.LAd.set(3, new UiCameraTargetTypeUiSceneRole_1.UiCameraTargetTypeUiSceneRole());
-    this.LAd.set(4, new UiCameraTargetTypeUiSceneSkeletal_1.UiCameraTargetTypeUiSceneSkeletal());
-    this.LAd.set(5, new UiCameraTargetTypeUiVisionHandBook_1.UiCameraTargetTypeUiVisionHandBook());
-    this.LAd.set(6, new UiCameraTargetTypeUiGlider_1.UiCameraTargetTypeUiGlider());
-    this.LAd.set(7, new UiCameraTargetTypeSailDock_1.UiCameraTargetTypeSailDock());
-    this.LAd.set(8, new UiCameraTargetTypeUiSceneHulu_1.UiCameraTargetTypeUiSceneHulu());
+  static Sxd() {
+    this.Mxd.set(1, new UiCameraTargetTypePlayer_1.UiCameraTargetTypePlayer());
+    this.Mxd.set(2, new UiCameraTargetTypeNpc_1.UiCameraTargetTypeNpc());
+    this.Mxd.set(3, new UiCameraTargetTypeUiSceneRole_1.UiCameraTargetTypeUiSceneRole());
+    this.Mxd.set(4, new UiCameraTargetTypeUiSceneSkeletal_1.UiCameraTargetTypeUiSceneSkeletal());
+    this.Mxd.set(5, new UiCameraTargetTypeUiVisionHandBook_1.UiCameraTargetTypeUiVisionHandBook());
+    this.Mxd.set(6, new UiCameraTargetTypeUiGlider_1.UiCameraTargetTypeUiGlider());
+    this.Mxd.set(7, new UiCameraTargetTypeSailDock_1.UiCameraTargetTypeSailDock());
+    this.Mxd.set(8, new UiCameraTargetTypeUiSceneHulu_1.UiCameraTargetTypeUiSceneHulu());
   }
   static SetDynamicDisablePushCamera(a, e) {
     if (e) {
@@ -467,19 +467,19 @@ class UiCameraAnimationManager {
     return this.lPo;
   }
   static GetTargetActor(a) {
-    a = this.LAd.get(a);
+    a = this.Mxd.get(a);
     if (a) {
       return a.GetTargetActor();
     }
   }
   static GetTargetBodyKey(a) {
-    a = this.LAd.get(a);
+    a = this.Mxd.get(a);
     if (a) {
       return a.GetTargetBodyKey();
     }
   }
   static GetTargetActorSkeletalMesh(a, e = 0) {
-    a = this.LAd.get(a);
+    a = this.Mxd.get(a);
     if (a) {
       return a.GetTargetSkeletalMesh();
     }
@@ -623,4 +623,4 @@ UiCameraAnimationManager.UiCameraSpringStructure = undefined;
 UiCameraAnimationManager.UiCameraPostEffectComponent = undefined;
 UiCameraAnimationManager.UiCameraSequenceComponent = undefined;
 UiCameraAnimationManager.UiCameraDebugTool = undefined;
-UiCameraAnimationManager.LAd = new Map(); //# sourceMappingURL=UiCameraAnimationManager.js.map
+UiCameraAnimationManager.Mxd = new Map(); //# sourceMappingURL=UiCameraAnimationManager.js.map

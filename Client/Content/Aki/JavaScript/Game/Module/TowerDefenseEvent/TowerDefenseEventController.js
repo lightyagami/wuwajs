@@ -104,16 +104,16 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     return this.rYc === 2;
   }
   static ResetWorldAttr() {
-    this.Sgd = 0;
-    this.ygd = 0;
+    this.VCd = 0;
+    this.NCd = 0;
   }
   static IsTowerDefenseEventInstance() {
     return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType === 37;
   }
   static InitMap() {
     this.Tju();
-    Net_1.Net.Register(22005, TowerDefenseEventController.bJu);
-    Net_1.Net.Register(20834, TowerDefenseEventController.Ded);
+    Net_1.Net.Register(25112, TowerDefenseEventController.bJu);
+    Net_1.Net.Register(15809, TowerDefenseEventController.Ded);
   }
   static OnWorldDone() {
     this.IsWorldInit = true;
@@ -122,8 +122,8 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   static OnWorldReset() {
     if (this.IsWorldInit) {
       this.IsWorldInit = false;
-      Net_1.Net.UnRegister(22005);
-      Net_1.Net.UnRegister(20834);
+      Net_1.Net.UnRegister(25112);
+      Net_1.Net.UnRegister(15809);
       this.nHu();
     }
   }
@@ -145,10 +145,10 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
         var i = FNameUtil_1.FNameUtil.GetDynamicFName(e.ReasonName.toString());
         switch (i) {
           case KscData_1.KscEntityRemoveReason.Dead:
-            var o = Protocol_1.Aki.Protocol.fmd.create();
+            var o = Protocol_1.Aki.Protocol.hfd.create();
             o.F4n = e.KillerId;
-            o.mmd = this.YKu(r);
-            s.cmd = o;
+            o.afd = this.YKu(r);
+            s.nfd = o;
             break;
           case KscData_1.KscEntityRemoveReason.WorldKill:
             o = Protocol_1.Aki.Protocol.DWc.create();
@@ -175,9 +175,9 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
                 r.Nfu = 0;
                 n.push(r);
               });
-              this.zhd(r, e.Params);
+              this.Xod(r, e.Params);
               o.TWc = n;
-              o.$rd = e.FireNum;
+              o.$od = e.FireNum;
               s.yWc = o;
               break;
             }
@@ -188,14 +188,14 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
             return;
         }
         if ((0, TowerDefenseEventEntityModel_1.isTypeOfSpecialCellBaseInfo)(r)) {
-          i = Protocol_1.Aki.Protocol.gmd.create();
-          s.dmd = i;
+          i = Protocol_1.Aki.Protocol.lfd.create();
+          s.sfd = i;
         }
         t[e.CreatureDataId] = s;
       }
     }
   }
-  static zhd(e, t) {
+  static Xod(e, t) {
     if (t && !(t.Num() <= 0)) {
       var r = UE.NewMap(UE.BuiltinInt, UE.BuiltinFloat);
       for (let e = 0; e < t.Num(); e++) {
@@ -259,9 +259,9 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     if (this.IsInPreview()) {
       this.vYu.OnTick(e);
     }
-    if (this.IsFighting() && ((e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetBatch()) !== this.ygd && (KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(3, e), this.ygd = e), (e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetGoldNum()) !== this.Sgd)) {
+    if (this.IsFighting() && ((e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetBatch()) !== this.NCd && (KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(3, e), this.NCd = e), (e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetGoldNum()) !== this.VCd)) {
       KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(2, e);
-      this.Sgd = e;
+      this.VCd = e;
     }
     e = this.IsInPreview() && ModelManager_1.ModelManager.TowerDefenseEventModel.CurrentTrapCount > 0 || this.gku.IsInPreview();
     if (e) {
@@ -287,7 +287,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
       this.z$u.ResetRemove();
       this.z$u = undefined;
     }
-    this.PRd();
+    this.rPd();
     if (this.gku.GetConfigDirtyAndReset() || this.RaycastResult.IsStateDirty) {
       this.Ued.Start();
       this.Z$u();
@@ -330,7 +330,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     if (this.IsInPreview()) {
       if (TrapDefenseBattleGuideManager_1.TrapDefenseBattleGuideManager.CheckCanExecuteAndShowFailTips("SpawnMonster")) {
         var e = Protocol_1.Aki.Protocol.cFu.create();
-        var e = await Net_1.Net.CallAsync(26133, e);
+        var e = await Net_1.Net.CallAsync(28404, e);
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           return true;
         }
@@ -419,7 +419,7 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
     r.rPs = e.Coords.Y;
     r.Nfu = TowerDefenseEventUtility_1.TowerDefenseEventUtility.ConvertDegree2Direction(e.Degree);
     t.Vfu = r;
-    var r = await Net_1.Net.CallAsync(28649, t);
+    var r = await Net_1.Net.CallAsync(16486, t);
     if (r && r.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
       e.Uid = MathUtils_1.MathUtils.LongToNumber(r.s5n);
     }
@@ -433,21 +433,21 @@ class TowerDefenseEventController extends ControllerBase_1.ControllerBase {
   static async Sku(e) {
     var t = Protocol_1.Aki.Protocol.kfu.create();
     t.s5n = e.Uid;
-    var e = await Net_1.Net.CallAsync(16937, t);
+    var e = await Net_1.Net.CallAsync(20223, t);
     return e?.Q4n;
   }
-  static PRd() {
+  static rPd() {
     var e = this.RaycastResult.RaycastTarget?.GetTapModel();
     var t = e ? e.Uid : undefined;
-    if (this.ARd !== t && (this.ARd = t)) {
+    if (this.oPd !== t && (this.oPd = t)) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TowerDefenseRecycleRaycastNotify, e.DeconstructReturn);
     }
   }
 }
 exports.TowerDefenseEventController = TowerDefenseEventController;
-(_a = TowerDefenseEventController).JSd = Stats_1.Stat.Create("TowerDefenseEventController.StepUpdateNotify");
+(_a = TowerDefenseEventController).MId = Stats_1.Stat.Create("TowerDefenseEventController.StepUpdateNotify");
 TowerDefenseEventController.Ued = Stats_1.Stat.Create("TowerDefenseEventController.RaycastStateChanged");
-TowerDefenseEventController.ARd = undefined;
+TowerDefenseEventController.oPd = undefined;
 TowerDefenseEventController.IsWorldInit = false;
 TowerDefenseEventController.TestBpUsing = false;
 TowerDefenseEventController.rYc = 0;
@@ -459,13 +459,13 @@ TowerDefenseEventController.z$u = undefined;
 TowerDefenseEventController.RaycastResult = new TowerDefenseEventRaycastResult_1.TowerDefenseEventRaycastResult();
 TowerDefenseEventController.xed = false;
 TowerDefenseEventController.vYu = new TowerDefenseEventPreviewMonsterSpawner_1.TowerDefenseEventPreviewMonsterSpawner();
-TowerDefenseEventController.Sgd = 0;
-TowerDefenseEventController.ygd = 0;
+TowerDefenseEventController.VCd = 0;
+TowerDefenseEventController.NCd = 0;
 TowerDefenseEventController.Ded = e => {
   _a.EntityRedirectFilter.UpdateEntity(e);
 };
 TowerDefenseEventController.bJu = e => {
-  _a.JSd.Start();
+  _a.MId.Start();
   switch (e.aJu) {
     case "oJu":
       _a.rYc = 1;
@@ -497,5 +497,5 @@ TowerDefenseEventController.bJu = e => {
   }
   TsTowerDefenseEventActor_1.default.UpdateTrapRangeState();
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TowerDefenseEventStepUpdate, _a.rYc);
-  _a.JSd.Stop();
+  _a.MId.Stop();
 }; //# sourceMappingURL=TowerDefenseEventController.js.map

@@ -36,34 +36,34 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26789, InventoryController.Tci);
-    Net_1.Net.Register(25313, InventoryController.Lci);
-    Net_1.Net.Register(26343, InventoryController.Dci);
-    Net_1.Net.Register(28986, InventoryController.Rci);
-    Net_1.Net.Register(23419, InventoryController.Uci);
-    Net_1.Net.Register(26277, InventoryController.Aci);
-    Net_1.Net.Register(28152, InventoryController.Pci);
-    Net_1.Net.Register(25826, InventoryController.xci);
-    Net_1.Net.Register(20171, InventoryController.wci);
-    Net_1.Net.Register(29395, InventoryController.Bci);
-    Net_1.Net.Register(22061, InventoryController.bci);
-    Net_1.Net.Register(28065, InventoryController.qci);
-    Net_1.Net.Register(20106, InventoryController.WQc);
+    Net_1.Net.Register(24813, InventoryController.Tci);
+    Net_1.Net.Register(26789, InventoryController.Lci);
+    Net_1.Net.Register(20423, InventoryController.Dci);
+    Net_1.Net.Register(25155, InventoryController.Rci);
+    Net_1.Net.Register(24973, InventoryController.Uci);
+    Net_1.Net.Register(27763, InventoryController.Aci);
+    Net_1.Net.Register(22371, InventoryController.Pci);
+    Net_1.Net.Register(17170, InventoryController.xci);
+    Net_1.Net.Register(28197, InventoryController.wci);
+    Net_1.Net.Register(25953, InventoryController.Bci);
+    Net_1.Net.Register(15945, InventoryController.bci);
+    Net_1.Net.Register(27174, InventoryController.qci);
+    Net_1.Net.Register(27971, InventoryController.WQc);
   }
   static OnUnRegisterNetEvent() {
+    Net_1.Net.UnRegister(24813);
     Net_1.Net.UnRegister(26789);
-    Net_1.Net.UnRegister(25313);
-    Net_1.Net.UnRegister(26343);
-    Net_1.Net.UnRegister(28986);
-    Net_1.Net.UnRegister(23419);
-    Net_1.Net.UnRegister(26277);
-    Net_1.Net.UnRegister(28152);
-    Net_1.Net.UnRegister(25826);
-    Net_1.Net.UnRegister(20171);
-    Net_1.Net.UnRegister(29395);
-    Net_1.Net.UnRegister(22061);
-    Net_1.Net.UnRegister(28065);
-    Net_1.Net.UnRegister(20106);
+    Net_1.Net.UnRegister(20423);
+    Net_1.Net.UnRegister(25155);
+    Net_1.Net.UnRegister(24973);
+    Net_1.Net.UnRegister(27763);
+    Net_1.Net.UnRegister(22371);
+    Net_1.Net.UnRegister(17170);
+    Net_1.Net.UnRegister(28197);
+    Net_1.Net.UnRegister(25953);
+    Net_1.Net.UnRegister(15945);
+    Net_1.Net.UnRegister(27174);
+    Net_1.Net.UnRegister(27971);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("InventoryView", InventoryController.iVe, "InventoryController.CanOpenView");
@@ -80,9 +80,9 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
         n.q9n = o ? 1 : 2;
         ModelManager_1.ModelManager.InventoryModel.SetCurrentLockItemUniqueId(t);
         const r = e.GetIsDeprecated();
-        Net_1.Net.Call(22633, n, e => {
+        Net_1.Net.Call(29074, n, e => {
           if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 22703);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19115);
           } else {
             if (o) {
               if (r) {
@@ -107,9 +107,9 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
         n.b9n = e;
         n.q9n = t ? 1 : 2;
         const r = o.GetIsLock();
-        Net_1.Net.Call(20561, n, e => {
+        Net_1.Net.Call(29312, n, e => {
           if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20482);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 20639);
           } else if (t) {
             if (r) {
               ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EchoLockToAbandon");
@@ -147,12 +147,12 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Inventory", 37, "5207_客户端请求使用物品:massage", ["massage", e]);
       }
-      Net_1.Net.Call(21827, e, e => {
+      Net_1.Net.Call(22120, e, e => {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Inventory", 37, "5208_服务端返回使用道具结果:massage", ["massage", e]);
         }
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 18651);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29496);
         } else if (n.SpecialItem && n && n.Parameters.size === 0) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSpecialItemUse, t, o);
         } else {
@@ -166,28 +166,28 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Inventory", 37, "NormalItemRequest 获取所有普通道具请求");
     }
-    Net_1.Net.Call(22576, Protocol_1.Aki.Protocol.gns.create(e), this.Gci);
+    Net_1.Net.Call(16394, Protocol_1.Aki.Protocol.gns.create(e), this.Gci);
   }
   static ValidTimeItemRequest() {
     var e = new Protocol_1.Aki.Protocol.qns();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Inventory", 37, "ValidTimeItemRequest 获取所有特殊限时道具请求");
     }
-    Net_1.Net.Call(18519, Protocol_1.Aki.Protocol.gns.create(e), this.Nci);
+    Net_1.Net.Call(25013, Protocol_1.Aki.Protocol.gns.create(e), this.Nci);
   }
   static WeaponItemRequest() {
     var e = new Protocol_1.Aki.Protocol.Sns();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Inventory", 37, "WeaponItemRequest 获取所有武器道具请求");
     }
-    Net_1.Net.Call(17228, Protocol_1.Aki.Protocol.Sns.create(e), this.Oci);
+    Net_1.Net.Call(21063, Protocol_1.Aki.Protocol.Sns.create(e), this.Oci);
   }
   static PhantomItemRequest() {
     var e = new Protocol_1.Aki.Protocol.Tns();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Inventory", 37, "PhantomItemRequest 获取所有幻象道具请求");
     }
-    Net_1.Net.Call(23749, Protocol_1.Aki.Protocol.Tns.create(e), this.kci);
+    Net_1.Net.Call(22064, Protocol_1.Aki.Protocol.Tns.create(e), this.kci);
   }
   static InitCalabashSkinItemData(e) {
     var t = ModelManager_1.ModelManager.InventoryModel;
@@ -226,10 +226,10 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
   static ItemDestructPreviewRequest(a) {
     var e = new Protocol_1.Aki.Protocol.sns();
     e.O9n = a;
-    Net_1.Net.Call(18989, e, e => {
+    Net_1.Net.Call(20864, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23849);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20579);
         } else {
           var t = [];
           for (const i of a) {
@@ -260,10 +260,10 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
   static ItemDestructRequest(t) {
     var e = new Protocol_1.Aki.Protocol.ons();
     e.O9n = t;
-    Net_1.Net.Call(21374, e, e => {
+    Net_1.Net.Call(17139, e, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19011);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 22509);
         } else if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Inventory", 37, "执行道具销毁成功", ["ItemList", t]);
         }
@@ -275,7 +275,7 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
     if (!this.Fci) {
       this.Fci = true;
       e = new Protocol_1.Aki.Protocol.wns();
-      Net_1.Net.Call(21764, e, e => {
+      Net_1.Net.Call(25735, e, e => {
         this.Fci = false;
         if (e && e.zws && UiManager_1.UiManager.IsViewOpen("InventoryView")) {
           this.InvalidItemCheckRequest();
@@ -285,7 +285,7 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
   }
   static InvalidItemCheckRequest() {
     var e = new Protocol_1.Aki.Protocol.bns();
-    Net_1.Net.Call(16392, e, e => {
+    Net_1.Net.Call(25103, e, e => {
       if (e && e.Zws.length !== 0) {
         var t = new Map();
         for (const a of e.Zws) {
@@ -326,12 +326,12 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
     var o = new Protocol_1.Aki.Protocol.Rxu();
     o.b9n = e;
     o.q9n = t;
-    var o = await Net_1.Net.CallAsync(17467, o);
+    var o = await Net_1.Net.CallAsync(18356, o);
     if (!o) {
       return false;
     }
     if (o.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.G9n, 22658);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.G9n, 16345);
       return false;
     }
     let n = 0;
@@ -351,7 +351,7 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
   }
   static PhantomManageConfigRequest(t) {
     var e = new Protocol_1.Aki.Protocol.Exu();
-    Net_1.Net.Call(27782, e, e => {
+    Net_1.Net.Call(17121, e, e => {
       if (e && (ModelManager_1.ModelManager.InventoryModel.InitPhantomManageConfig(e), t)) {
         t();
       }
@@ -360,8 +360,8 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
   static async PhantomSettingBatchUpdateRequestAsync(e) {
     var t = new Protocol_1.Aki.Protocol.JJu();
     t.eZu = e;
-    var t = await Net_1.Net.CallAsync(16112, t);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17623), false) : (ModelManager_1.ModelManager.InventoryModel.CoverAllPhantomManageConfig(e), true));
+    var t = await Net_1.Net.CallAsync(21942, t);
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 23541), false) : (ModelManager_1.ModelManager.InventoryModel.CoverAllPhantomManageConfig(e), true));
   }
   static OpenManageConfigView() {
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(InventoryDefine_1.MANAGE_CONFIG_FUNCTION_ID)) {
@@ -716,10 +716,10 @@ InventoryController.PhantomManageConfigUpdateRequest = async (e, t) => {
   var o = new Protocol_1.Aki.Protocol.Txu();
   o.Pxu = e;
   o.Axu = t;
-  var t = await Net_1.Net.CallAsync(25455, o);
+  var t = await Net_1.Net.CallAsync(28831, o);
   if (t) {
     if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22922);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19933);
     } else {
       ModelManager_1.ModelManager.InventoryModel.UpdatePhantomManageConfig(e, t);
     }

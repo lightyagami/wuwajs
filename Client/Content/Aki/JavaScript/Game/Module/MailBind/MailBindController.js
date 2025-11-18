@@ -28,10 +28,10 @@ class MailBindController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this._Mo);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28885, MailBindController.oil);
+    Net_1.Net.Register(24048, MailBindController.oil);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28885);
+    Net_1.Net.UnRegister(24048);
   }
   static MainBindInfoRequest() {
     MailBindController.MailBindInfoRequestAsync().then(undefined).catch(e => {
@@ -43,7 +43,7 @@ class MailBindController extends UiControllerBase_1.UiControllerBase {
   static async MailBindInfoRequestAsync() {
     return new Promise(t => {
       var e = new Protocol_1.Aki.Protocol.bC_();
-      Net_1.Net.Call(23565, e, e => {
+      Net_1.Net.Call(21551, e, e => {
         if (e = e && e.Hb_) {
           ModelManager_1.ModelManager.MailBindModel.UpdateByProtoMailBindInfo(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMailBindInfoResponse);
@@ -56,7 +56,7 @@ class MailBindController extends UiControllerBase_1.UiControllerBase {
   }
   static MailBindRequest() {
     var e = new Protocol_1.Aki.Protocol.AC_();
-    Net_1.Net.Call(15020, e, e => {
+    Net_1.Net.Call(18932, e, e => {
       if (e) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMailBindResponse);
       }
@@ -64,10 +64,10 @@ class MailBindController extends UiControllerBase_1.UiControllerBase {
   }
   static MailBindRewardRequest() {
     var e = new Protocol_1.Aki.Protocol.LC_();
-    Net_1.Net.Call(26196, e, e => {
+    Net_1.Net.Call(29607, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20808);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27660);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMailBindRewardResponse);
         }

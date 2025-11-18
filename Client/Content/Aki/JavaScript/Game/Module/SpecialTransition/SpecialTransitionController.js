@@ -59,40 +59,40 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
       }
     } else {
       let e = undefined;
-      var r = a.OAd?.XAd;
+      var r = a.Axd?.jxd;
       if (r) {
         e = {
-          FadeColor: r.YAd === 0 ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black,
-          FadeInTime: r.zAd,
-          FadeOutTime: r.JAd
+          FadeColor: r.Hxd === 0 ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black,
+          FadeInTime: r.$xd,
+          FadeOutTime: r.Wxd
         };
       }
       let o = undefined;
-      r = a.qAd?.ZAd;
+      r = a.Dxd?.Qxd;
       if (r) {
         o = {
-          FadeColor: r.YAd === 0 ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black,
-          FadeInTime: r.zAd,
-          FadeOutTime: r.JAd
+          FadeColor: r.Hxd === 0 ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black,
+          FadeInTime: r.$xd,
+          FadeOutTime: r.Wxd
         };
       }
       let i = undefined;
-      var r = a.GAd;
+      var r = a.Uxd;
       if (r) {
         i = {};
-        if (t = r.HAd) {
+        if (t = r.qxd) {
           i.TextSetting = {
-            IsShowTextInfo: t.WAd,
-            TidTextContent: t.QAd,
-            EdTidTextContent: t.KAd
+            IsShowTextInfo: t.Fxd,
+            TidTextContent: t.Nxd,
+            EdTidTextContent: t.Vxd
           };
         }
-        i.IsHideCircle = r.$Ad;
+        i.IsHideCircle = r.Gxd;
       }
       var t = {
         ViewParams: {
-          SpineId: a.kAd?.FAd?.VAd,
-          BgPath: a.kAd?.NAd?.jAd,
+          SpineId: a.Pxd?.xxd?.kxd,
+          BgPath: a.Pxd?.Bxd?.Oxd,
           CustomShowUi: i
         },
         FlowParams: {
@@ -134,14 +134,14 @@ class SpecialTransitionController extends ControllerBase_1.ControllerBase {
           }
         }, a);
       }
-      this.iBd(e);
+      this.rOd(e);
       if (o) {
         this.CloseSpecialTransitionLoading();
       }
       await r.Promise;
     }
   }
-  static iBd(e) {
+  static rOd(e) {
     if (e.FlowParams.KeepTime !== undefined) {
       ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(21, 6, () => {
         if (Log_1.Log.CheckInfo()) {

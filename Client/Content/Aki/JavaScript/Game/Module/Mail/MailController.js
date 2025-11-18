@@ -12,6 +12,7 @@ const ErrorCodeById_1 = require("../../../Core/Define/ConfigQuery/ErrorCodeById"
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -28,19 +29,25 @@ class MailController extends UiControllerBase_1.UiControllerBase {
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSelectMail, this.xpm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Bpm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestDeleteMail, this.kpm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSelectMail, this.xpm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Bpm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestDeleteMail, this.kpm);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(16048, this.Cyi);
-    Net_1.Net.Register(16250, this.gyi);
-    Net_1.Net.Register(22672, this.fyi);
+    Net_1.Net.Register(24551, this.Cyi);
+    Net_1.Net.Register(15551, this.gyi);
+    Net_1.Net.Register(29086, this.fyi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16048);
-    Net_1.Net.UnRegister(16250);
-    Net_1.Net.UnRegister(22672);
+    Net_1.Net.UnRegister(24551);
+    Net_1.Net.UnRegister(15551);
+    Net_1.Net.UnRegister(29086);
   }
   static SelectedMail(e) {
     if (e) {
@@ -52,17 +59,17 @@ class MailController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static RequestReadMail(e, a) {
+  static RequestReadMail(e, t) {
     var o = new Protocol_1.Aki.Protocol.Nss();
     o.s5n = e;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestReadMail 未阅读邮件，申请阅读", ["mailId", e]);
     }
-    Net_1.Net.Call(18503, Protocol_1.Aki.Protocol.Nss.create(o), e => {
+    Net_1.Net.Call(25715, Protocol_1.Aki.Protocol.Nss.create(o), e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27015);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29158);
         } else if (o = ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e.s5n)) {
           o.ReadTime = MathUtils_1.MathUtils.LongToNumber(e.ebs);
           o.ExpiryTime = MathUtils_1.MathUtils.LongToNumber(e.jb_);
@@ -70,20 +77,22 @@ class MailController extends UiControllerBase_1.UiControllerBase {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Mail", 27, "邮件控制器：阅读选中，状态码", ["response.State", e.Y4n]);
           }
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectedMail, e.s5n, a);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SelectedMail, e.s5n, t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SwitchUnfinishedFlag);
         }
+        o = Protocol_1.Aki.Protocol.Fss.encode(e).finish().slice().buffer;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnReadMailResponse, o);
       }
     });
   }
-  static RequestPickAttachment(e, a) {
+  static RequestPickAttachment(e, t) {
     var o = new Protocol_1.Aki.Protocol.Vss();
-    var t = CommonParamById_1.configCommonParamById.GetIntConfig("mail_take_limit");
-    o.I7n = e.slice(0, t);
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("mail_take_limit");
+    o.I7n = e.slice(0, a);
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestPickAttachment 申请领取附件", ["attachmentIds", o.I7n]);
     }
-    Net_1.Net.Call(19676, Protocol_1.Aki.Protocol.Vss.create(o), o => {
+    Net_1.Net.Call(26940, Protocol_1.Aki.Protocol.Vss.create(o), o => {
       if (o) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           let e = "";
@@ -98,11 +107,13 @@ class MailController extends UiControllerBase_1.UiControllerBase {
           if (e !== "") {
             ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(e);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23476);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 23247);
           }
         } else {
-          ModelManager_1.ModelManager.MailModel.SetLastPickedAttachments(o.lbs, a);
+          ModelManager_1.ModelManager.MailModel.SetLastPickedAttachments(o.lbs, t);
         }
+        o = Protocol_1.Aki.Protocol.$ss.encode(o).finish().slice().buffer;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnPickMailAttachmentResponse, o, t);
       }
     });
   }
@@ -112,10 +123,10 @@ class MailController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Mail", 27, "邮件控制器：RequestDeleteMail请求删除邮件", ["mailId", e]);
     }
-    Net_1.Net.Call(21952, Protocol_1.Aki.Protocol.Hss.create(o), e => {
+    Net_1.Net.Call(27588, Protocol_1.Aki.Protocol.Hss.create(o), e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24057);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21470);
         } else if (e._bs.length > 0) {
           for (const o of e._bs) {
             ModelManager_1.ModelManager.MailModel.DeleteMail(o);
@@ -126,6 +137,8 @@ class MailController extends UiControllerBase_1.UiControllerBase {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MailDelete");
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DeletingMail, e._bs);
         }
+        e = Protocol_1.Aki.Protocol.jss.encode(e).finish().slice().buffer;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnDeleteMailResponse, e);
       }
     });
   }
@@ -136,11 +149,11 @@ MailController.Cyi = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Mail", 27, "邮件控制器：OnMailInfosNotify [Mail]6100 Mails response, length: ", ["response.MailInfos.length", e.sbs.length]);
   }
-  for (const a of e.sbs) {
+  for (const t of e.sbs) {
     if (ModelManager_1.ModelManager.MailModel.GetMailListLength() >= ModelManager_1.ModelManager.MailModel.GetMailCapacity() && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Mail", 27, "[MailError]MailBox is fulfilled");
     }
-    var o = new Protocol_1.Aki.Protocol.L5s(a);
+    var o = new Protocol_1.Aki.Protocol.L5s(t);
     ModelManager_1.ModelManager.MailModel.AddMail(o, false);
   }
   ModelManager_1.ModelManager.MailModel.ReloadMailList();
@@ -204,4 +217,13 @@ MailController.dyi = (e = "NewMail") => {
       ModelManager_1.ModelManager.MailModel.SaveShowNewMailMap();
     }
   }
+};
+MailController.xpm = (e, o) => {
+  _a.SelectedMail(ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e));
+};
+MailController.Bpm = (e, o) => {
+  _a.RequestPickAttachment(e, o);
+};
+MailController.kpm = e => {
+  _a.RequestDeleteMail(e);
 }; //# sourceMappingURL=MailController.js.map

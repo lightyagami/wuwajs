@@ -43,6 +43,9 @@ class Achievement {
   get ThirdPartyTrophyId() {
     return this.thirdpartytrophyid();
   }
+  get ExternalTrophyId() {
+    return this.externaltrophyid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -130,6 +133,14 @@ class Achievement {
     } else {
       return -1;
     }
+  }
+  externaltrophyid(t) {
+    var i = this.J7.__offset(this.z7, 26);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.Achievement = Achievement;

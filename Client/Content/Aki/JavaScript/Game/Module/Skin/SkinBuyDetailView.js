@@ -30,6 +30,7 @@ const UiModelUtil_1 = require("../UiModel/UiModelUtil");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const SkinDefine_1 = require("./SkinDefine");
+const RenderUtil_1 = require("../../Render/Utils/RenderUtil");
 const SkinRewardItemGrid_1 = require("./SkinRewardItemGrid");
 class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
@@ -251,12 +252,14 @@ class SkinBuyDetailView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAfterShow() {
     this.Tyl();
+    RenderUtil_1.RenderUtil.BeginPSOSyncMode();
   }
   OnAfterHide() {
     var i = this.dmo?.Model;
     if (i) {
       UiModelUtil_1.UiModelUtil.SetVisible(i, false);
     }
+    RenderUtil_1.RenderUtil.EndPSOSyncMode();
   }
   Tyl() {
     var i;

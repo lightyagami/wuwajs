@@ -63,6 +63,22 @@ class InfoDisplayModuleConfig extends ConfigBase_1.ConfigBase {
       return i;
     }
   }
+  GetInfoDisplayEntryAudio(e) {
+    e = this.Hsi(e);
+    if (e) {
+      return e.EntryAudio;
+    } else {
+      return "";
+    }
+  }
+  GetInfoDisplayExitAudio(e) {
+    e = this.Hsi(e);
+    if (e) {
+      return e.ExitAudio;
+    } else {
+      return "";
+    }
+  }
 }
 exports.InfoDisplayModuleConfig = InfoDisplayModuleConfig;
 //# sourceMappingURL=InfoDisplayModuleConfig.js.map

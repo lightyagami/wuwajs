@@ -406,6 +406,7 @@ exports.Fsm = undefined;
       this.KnockUp = false;
       this.KnockDown = false;
       this.Parry = false;
+      this.BreakWeakness = false;
       this.VisionCounterAttackId = 0;
     }
   };

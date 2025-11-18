@@ -25,11 +25,11 @@ const POSTICKCOUNT = 120;
 const MINSPEEDINIT = 999999;
 class AceAntiCheatController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(24389, AceAntiCheatController.PTa);
+    Net_1.Net.Register(22605, AceAntiCheatController.PTa);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24389);
+    Net_1.Net.UnRegister(22605);
     return true;
   }
   static OnTick(t) {
@@ -75,7 +75,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         e.$Ta = o[2] ? this.QTa(o[2]) : undefined;
         e.XTa = o[3] ? this.QTa(o[3]) : undefined;
         this.YTa(true);
-        Net_1.Net.Call(29275, e, () => {});
+        Net_1.Net.Call(26535, e, () => {});
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Net", 35, "StartSecFbRound roleList Error", ["logId", t]);
       }
@@ -89,7 +89,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
     e.F6n = i?.GetLevel() ?? 0;
     e.U8n = i?.GetExp() ?? 0;
     e.Q6n = t.RoleId;
-    var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.CreatureDataId)?.Entity?.GetComponent(174);
+    var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.CreatureDataId)?.Entity?.GetComponent(177);
     if (r) {
       var a = [];
       for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
@@ -135,7 +135,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(22888, e, () => {});
+      Net_1.Net.Call(20680, e, () => {});
       this.FTa = -1n;
     }
   }
@@ -173,7 +173,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(i.CreatureDataId);
         var o = o?.Entity;
         if (o) {
-          o.GetComponent(173)?.AddGeneralListener(this.qbr);
+          o.GetComponent(176)?.AddGeneralListener(this.qbr);
           if (!EventSystem_1.EventSystem.HasWithTarget(o, EventDefine_1.EEventName.CharDamage, this.Uie)) {
             EventSystem_1.EventSystem.AddWithTarget(o, EventDefine_1.EEventName.CharDamage, this.Uie);
           }
@@ -208,11 +208,11 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       }
       i.gLa = r;
       i.fLa = e;
-      Net_1.Net.Call(19239, i, () => {});
+      Net_1.Net.Call(24816, i, () => {});
       for (const s of this._La) {
         var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(s.CreatureDataId)?.Entity;
         if (a) {
-          a.GetComponent(173)?.RemoveGeneralListener(this.qbr);
+          a.GetComponent(176)?.RemoveGeneralListener(this.qbr);
           EventSystem_1.EventSystem.RemoveWithTarget(a, EventDefine_1.EEventName.CharDamage, this.Uie);
           this.GTa = false;
         } else if (Log_1.Log.CheckWarn()) {
@@ -278,7 +278,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(16856, e, () => {});
+      Net_1.Net.Call(22945, e, () => {});
       this.ELa = -1n;
     }
   }
@@ -300,7 +300,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         e.$Ta = o[2] ? this.QTa(o[2]) : undefined;
         e.XTa = o[3] ? this.QTa(o[3]) : undefined;
         this.YTa(true);
-        Net_1.Net.Call(22076, e, () => {});
+        Net_1.Net.Call(26788, e, () => {});
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Net", 35, "StartSecWorldFlow roleList Error", ["logId", t]);
       }
@@ -321,7 +321,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       e.rLa = this.qTa === MINSPEEDINIT ? 0 : this.qTa;
       e.oLa = this.BTa;
       this.YTa(false);
-      Net_1.Net.Call(23758, e, () => {});
+      Net_1.Net.Call(29993, e, () => {});
     }
   }
   static jhh(t) {
@@ -408,7 +408,7 @@ AceAntiCheatController.dLa = undefined;
 AceAntiCheatController.qbr = (t, e, o) => {
   if (_a.OTa) {
     for (const r of _a.OTa.keys()) {
-      const o = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(173)?.GetCurrentValue(t) ?? 0;
+      const o = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(176)?.GetCurrentValue(t) ?? 0;
       var i = _a.OTa.get(r).cLa.JTa[t - 1];
       if (i && i.s5n === t && i.e5n < o) {
         i.e5n = o;

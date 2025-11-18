@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.UiLayer = undefined;
+exports.UiLayer = exports.EInitState = undefined;
 const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
@@ -18,6 +18,12 @@ const EventSystem_1 = require("../Common/Event/EventSystem");
 const GlobalData_1 = require("../GlobalData");
 const ModelManager_1 = require("../Manager/ModelManager");
 const UiLayerType_1 = require("./Define/UiLayerType");
+var EInitState;
+(function (i) {
+  i[i.None = 0] = "None";
+  i[i.Initializing = 1] = "Initializing";
+  i[i.Inited = 2] = "Inited";
+})(EInitState = exports.EInitState ||= {});
 class UiLayer {
   static get UiRoot() {
     return this.CCr;
@@ -44,7 +50,7 @@ class UiLayer {
     this.MCr.set(i, e);
   }
   static async ECr(i, e, t) {
-    var a = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e);
+    var a = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e, undefined, 100, "Ui");
     LguiUtil_1.LguiUtil.SetActorIsPermanent(a, true, false);
     var r = a.RootComponent;
     t.push(r);
@@ -75,7 +81,7 @@ class UiLayer {
   }
   static async pGl(i) {
     var e = UiLayer.GetLayerRootUiItem(i);
-    var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e);
+    var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", e, undefined, 100, "Ui");
     var t = LguiUtil_1.LguiUtil.DuplicateActor(t, e);
     LguiUtil_1.LguiUtil.SetActorIsPermanent(t, true, false);
     var e = t.RootComponent;
@@ -136,10 +142,10 @@ class UiLayer {
       await Promise.all([this.ICr(), this.TCr()]);
       await this.LCr();
       await Promise.all([this.DCr(), this.vCr(UiLayerType_1.ELayerType.BattleFloat), this.vCr(UiLayerType_1.ELayerType.Float), this.pGl(UiLayerType_1.ELayerType.BattleFloat)]);
-      this.T5d();
+      this.gfm();
     }
   }
-  static T5d() {
+  static gfm() {
     var i;
     var e = [];
     e.push(this.CCr);
@@ -169,7 +175,7 @@ class UiLayer {
         Log_1.Log.Info("UiCore", 1, "界面根节点已存在");
       }
     } else {
-      this.CCr = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_Root_Prefab", undefined);
+      this.CCr = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_Root_Prefab", undefined, undefined, 100, "Ui");
       if (this.CCr && (this.gCr = this.CCr.GetComponentByClass(UE.UIItem.StaticClass()), this.gCr)) {
         if (i = this.gCr.GetCanvasScaler()) {
           i.OnViewportSizeChanged.Bind(this.ZL1);
@@ -223,7 +229,7 @@ class UiLayer {
         case UiLayerType_1.ELayerType.NormalMask:
           i = "UiItem_LayerMask_Prefab";
       }
-      var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync(i, this.gCr);
+      var t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync(i, this.gCr, undefined, 100, "Ui");
       LguiUtil_1.LguiUtil.SetActorIsPermanent(t, true, false);
       this.SCr.set(e, t.RootComponent);
       if (e === UiLayerType_1.ELayerType.Pool) {
@@ -235,7 +241,7 @@ class UiLayer {
     if (!this.yCr) {
       var t;
       var a = UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.HUD);
-      var r = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", a);
+      var r = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", a, undefined, 100, "Ui");
       let e = r;
       this.yCr = [];
       for (let i = 0; i < UiLayerType_1.BATTLE_VIEW_UNIT_COUNT; i++) {
@@ -250,7 +256,7 @@ class UiLayer {
         this.yCr.push(o);
         e = undefined;
       }
-      var i = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_SafeZoneUnitNode_Prefab", a);
+      var i = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_SafeZoneUnitNode_Prefab", a, GlobalData_1.GlobalData.World, 100, "Ui");
       LguiUtil_1.LguiUtil.SetActorIsPermanent(i, true, false);
       const o = i.RootComponent;
       this.yCr.push(o);
@@ -262,7 +268,7 @@ class UiLayer {
         Log_1.Log.Info("UiCore", 1, "空间界面根节点已存在");
       }
     } else {
-      this.fCr = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_WorldSpace_Prefab", undefined);
+      this.fCr = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_WorldSpace_Prefab", undefined, undefined, 100, "Ui");
       if (this.fCr && (this.pCr = this.fCr.GetComponentByClass(UE.UIItem.StaticClass()), this.fCr)) {
         this.fCr.OnDestroyed.Add(() => {
           if (Log_1.Log.CheckInfo()) {

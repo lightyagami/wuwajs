@@ -64,7 +64,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     };
     this.zcn = (t, e) => {
       e = e.Entity;
-      if (this.M_n && e && (e.GetComponent(61) || e.GetComponent(155))) {
+      if (this.M_n && e && (e.GetComponent(61) || e.GetComponent(158))) {
         if (this.Qcn = t) {
           this.oZo(this.G2e);
         } else {
@@ -114,7 +114,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     } else {
       this.Jcn = true;
     }
-    var e = this.Entity.GetComponent(197);
+    var e = this.Entity.GetComponent(200);
     for (const i of this.Ycn.keys()) {
       if (e.HasTag(i)) {
         this.G2e = i;
@@ -159,7 +159,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
           return;
         }
         s = BulletController_1.BulletController.CreateBulletCustomTarget(s.Entity, e.BulletId.toString(), i.ToUeTransform(), t, this.JUn);
-        if (s?.GetComponent(170)?.Owner?.IsValid()) {
+        if (s?.GetComponent(173)?.Owner?.IsValid()) {
           (i = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(14)).IsParentActor = true;
           i.Actor = this.Hte.Owner;
           i.LocationRule = 1;
@@ -187,7 +187,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
         }
         var e = EntitySystem_1.EntitySystem.Get(i.BulletEntityId);
         if (e?.Valid) {
-          e.GetComponent(170).Owner?.K2_DetachFromActor(1, 1, 1);
+          e.GetComponent(173).Owner?.K2_DetachFromActor(1, 1, 1);
         }
         BulletController_1.BulletController.DestroyBullet(i.BulletEntityId, false);
         i.BulletEntityId = undefined;
@@ -222,5 +222,5 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     return true;
   }
 };
-SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(143)], SceneBulletComponent);
+SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(146)], SceneBulletComponent);
 exports.SceneBulletComponent = SceneBulletComponent; //# sourceMappingURL=SceneBulletComponent.js.map

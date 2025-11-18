@@ -35,7 +35,7 @@ class TsAnimNotifyBattleQte extends UE.KuroAnimNotify {
         return false;
       }
     }
-    return (!this.存在Tag时才触发 || this.存在Tag时才触发.TagName === StringUtils_1.NONE_STRING || !!t?.GetComponent(206)?.HasTag(this.存在Tag时才触发.TagId)) && !(e = ModelManager_1.ModelManager.CharacterModel?.GetHandleByEntity(t), t = t?.GetComponent(210)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex), e && t && ControllerHolder_1.ControllerHolder.BattleQteController.StartBattleQte(this.BattleQteId, t, e, 0), 0);
+    return (!this.存在Tag时才触发 || this.存在Tag时才触发.TagName === StringUtils_1.NONE_STRING || !!t?.GetComponent(209)?.HasTag(this.存在Tag时才触发.TagId)) && !(e = ModelManager_1.ModelManager.CharacterModel?.GetHandleByEntity(t), t = t?.GetComponent(213)?.CreateAnimNotifyContent(r.GetName(), this.exportIndex), e && t && ControllerHolder_1.ControllerHolder.BattleQteController.StartBattleQte(this.BattleQteId, t, e, 0), 0);
   }
   GetNotifyName() {
     return "战斗QTE";

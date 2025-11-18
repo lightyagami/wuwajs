@@ -11,6 +11,7 @@ const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParam
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const SceneItemCaptureComponent_1 = require("../../../Game/NewWorld/SceneItem/SceneItemCaptureComponent");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal");
 const LocalStorage_1 = require("../../Common/LocalStorage");
@@ -20,6 +21,7 @@ const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
+const InteractConfirmController_1 = require("./SecondConfirm/InteractConfirmController");
 const TsInteractionUtils_1 = require("./TsInteractionUtils");
 const DEFAULT_CD = 0.5;
 exports.UNLOCK_TEXTURE = "/Game/Aki/UI/UIResources/Common/Image/InteractionIcon/T_InteractionIcon11.T_InteractionIcon11";
@@ -65,6 +67,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     this.ShowLongPressTime = CommonParamById_1.configCommonParamById.GetIntConfig("ShowLongPressTime");
     this.AutoInteractionGuideCount = CommonParamById_1.configCommonParamById.GetIntConfig("AutoInteractionGuideCount");
     TsInteractionUtils_1.TsInteractionUtils.Init();
+    InteractConfirmController_1.InteractConfirmController.RegisterActions();
     return true;
   }
   OnClear() {
@@ -75,6 +78,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     this.R_i.length = 0;
     this.U_i?.clear();
     TsInteractionUtils_1.TsInteractionUtils.Clear();
+    InteractConfirmController_1.InteractConfirmController.Clear();
     return true;
   }
   OnLeaveLevel() {
@@ -140,11 +144,22 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   RefreshInteractEntities(e) {
     let t = 0;
-    for (const o of this.R_i) {
-      if (o) {
-        var i = o.GetEntity();
+    for (const n of this.R_i) {
+      if (n) {
+        var i = n.GetEntity();
         if (i?.Valid) {
-          var r = o.DirectOptionInstanceIds.length;
+          if (SceneItemCaptureComponent_1.VISION_CAPTURE_WITH_RANGE) {
+            let t = false;
+            for (const o of e) {
+              if (o.GetComponent(121)?.GetPawnNameKey() === SceneItemCaptureComponent_1.ABSORB_PAWN_NAME_KEY) {
+                t = true;
+              }
+            }
+            if (t) {
+              continue;
+            }
+          }
+          var r = n.DirectOptionInstanceIds.length;
           if (r <= 0) {
             e.push(i);
             if (this.CanAutoPickUp(i)) {
@@ -163,8 +178,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
     }
     this.x_i = e.length;
     e.sort((t, e) => {
-      t = t.GetComponent(198);
-      e = e.GetComponent(198);
+      t = t.GetComponent(201);
+      e = e.GetComponent(201);
       t = t.GetInteractController().InteractEntity.Priority;
       return e.GetInteractController().InteractEntity.Priority - t;
     });
@@ -175,7 +190,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CanAutoPickUp(t) {
     var e;
-    return !!t?.Valid && !t.GetComponent(254)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(198))?.IsPawnInteractive() && (!!t.GetComponent(118)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
+    return !!t?.Valid && !t.GetComponent(258)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(201))?.IsPawnInteractive() && (!!t.GetComponent(121)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
   }
   GetOptionInstanceIdByIndex(t) {
     let e = t;
@@ -285,14 +300,14 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CheckOptionUniqueness(t, e = undefined, i = -1) {
     var r;
-    var o;
-    return e.CustomOptionType !== 1 && (!e.IsUniqueness || e.UniequenessType !== IAction_1.EInteractUniqueness.Closest || e.TidContent === "" || i === -1 || !((r = this.U_i.get(e.TidContent)) ? r.CurrentDistance > i && t !== r.EntityId ? ((o = this.D_i.indexOf(r.EntityId)) > -1 && (this.D_i.splice(o, 1), this.R_i.splice(o, 1)), r.EntityId = t, r.CurrentDistance = i, 0) : t !== r.EntityId || (r.CurrentDistance = i, 0) : ((o = new SameTipInteract()).EntityId = t, o.CurrentDistance = i, this.U_i.set(e.TidContent, o), 0)));
+    var n;
+    return e.CustomOptionType !== 1 && e.CustomOptionType !== 3 && (!e.IsUniqueness || e.UniequenessType !== IAction_1.EInteractUniqueness.Closest || e.TidContent === "" || i === -1 || !((r = this.U_i.get(e.TidContent)) ? r.CurrentDistance > i && t !== r.EntityId ? ((n = this.D_i.indexOf(r.EntityId)) > -1 && (this.D_i.splice(n, 1), this.R_i.splice(n, 1)), r.EntityId = t, r.CurrentDistance = i, 0) : t !== r.EntityId || (r.CurrentDistance = i, 0) : ((n = new SameTipInteract()).EntityId = t, n.CurrentDistance = i, this.U_i.set(e.TidContent, n), 0)));
   }
-  AddInteractOption(t, e, i, r, o) {
-    var n = this.GetInteractController(t);
-    if (n) {
+  AddInteractOption(t, e, i, r, n) {
+    var o = this.GetInteractController(t);
+    if (o) {
       if (e = this.GetDynamicConfig(e)) {
-        return n.AddDynamicInteractOption(e, i, r, o);
+        return o.AddDynamicInteractOption(e, i, r, n);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Interaction", 18, "交互选项配置丢失，请确认前后端配置是否一致", ["PbDataId", t.GetComponent(0)?.GetPbDataId()]);
@@ -318,7 +333,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   GetInteractController(t) {
     if (t) {
-      t = t.GetComponent(198);
+      t = t.GetComponent(201);
       if (t) {
         return t.GetInteractController();
       }
@@ -419,7 +434,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     return this.L_i;
   }
   LockInteraction(t, e) {
-    t = t?.GetComponent(198);
+    t = t?.GetComponent(201);
     if (t && t.Valid) {
       t.SetServerLockInteract(e, "Interacting Notify");
     }
@@ -443,7 +458,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   RecoverInteractFromLock() {
     var t;
     if (this.LockInteractionEntity) {
-      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 198);
+      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 201);
       this.LockInteractionEntity = undefined;
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(1);
       t?.AfterUnlockInteractionEntity();

@@ -35,12 +35,12 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25687, this.PSi);
-    Net_1.Net.Register(26802, this.xSi);
+    Net_1.Net.Register(25080, this.PSi);
+    Net_1.Net.Register(16399, this.xSi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25687);
-    Net_1.Net.UnRegister(26802);
+    Net_1.Net.UnRegister(25080);
+    Net_1.Net.UnRegister(16399);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.$5e);
@@ -50,7 +50,7 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   }
   static async LordGymInfoRequest() {
     var e = Protocol_1.Aki.Protocol.Ass.create({});
-    var e = await Net_1.Net.CallAsync(20481, e);
+    var e = await Net_1.Net.CallAsync(22969, e);
     if (e.jxs?.length > 0) {
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym = e.jxs;
       ModelManager_1.ModelManager.LordGymModel.UnLockLordGym.sort((e, r) => e - r);
@@ -63,13 +63,13 @@ class LordGymController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.LordGymModel.LordGymRecord.set(r.y7n, r);
       }
     }
-    ModelManager_1.ModelManager.LordGymModel.PhraseEntranceInfo(e.Zrd);
+    ModelManager_1.ModelManager.LordGymModel.PhraseEntranceInfo(e.rsd);
   }
   static async LordGymBeginRequest(e) {
     var r = Protocol_1.Aki.Protocol.wss.create();
     r.y7n = e;
-    var r = await Net_1.Net.CallAsync(23323, r);
-    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 23323), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
+    var r = await Net_1.Net.CallAsync(20019, r);
+    return !!r && (r.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 20019), false) : (ModelManager_1.ModelManager.LordGymModel.CurrentChallengeLordGymId = e, ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(e) || LordGymController.ReadLordGym(e), true));
   }
   static async OpenLordGymEntrance(e, r = 0) {
     await this.LordGymInfoRequest();
@@ -89,11 +89,11 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.LordGymModel.ReadLordGym(e);
     var r = Protocol_1.Aki.Protocol.bss.create();
     r.y7n = e;
-    await Net_1.Net.CallAsync(19067, r);
+    await Net_1.Net.CallAsync(18645, r);
   }
   static IsInEntranceEntity() {
     var e = ModelManager_1.ModelManager.LordGymModel.EntranceEntityId;
-    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(120)?.IsInInteractRange ?? false);
+    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(123)?.IsInInteractRange ?? false);
   }
   static CreateLordModelByEntranceId(e) {
     UiSceneManager_1.UiSceneManager.InitLordSkeletalHandle();

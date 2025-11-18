@@ -12,23 +12,23 @@ const TsLguiEventSystemActor_1 = require("../LguiEventSystem/TsLguiEventSystemAc
 const UiInteractChatData_1 = require("./UiInteractChatData");
 const UiInteractRouletteData_1 = require("./UiInteractRouletteData");
 class UiInteractLogReport {
-  static SNd() {
+  static p7d() {
     return Info_1.Info.IsInGamepad();
   }
-  static MNd() {
+  static v7d() {
     return Info_1.Info.IsInKeyBoard() && TsLguiEventSystemActor_1.TsLguiEventSystemActor.IsInNavigationInputType();
   }
-  static ENd() {
+  static y7d() {
     return Info_1.Info.IsInKeyBoard() && TsLguiEventSystemActor_1.TsLguiEventSystemActor.IsInPointerInputType();
   }
   static ReportSpaceKeyInteract(e) {
     var t;
     if (!Info_1.Info.IsInTouch()) {
-      if (this.SNd() || this.ENd()) {
+      if (this.p7d() || this.y7d()) {
         (t = new LogReportDefine_1.UiInteractSpaceKeyLogEvent()).i_type = e;
         t.i_status = 1;
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
-      } else if (this.MNd()) {
+      } else if (this.v7d()) {
         (t = new LogReportDefine_1.UiInteractSpaceKeyLogEvent()).i_type = e;
         t.i_status = 2;
         ControllerHolder_1.ControllerHolder.LogReportController.LogReport(t);
@@ -36,43 +36,43 @@ class UiInteractLogReport {
     }
   }
   static RecordRouletteOpen() {
-    if (!this.A$d.IsStart) {
+    if (!this.orm.IsStart) {
       if (ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower()) {
-        this.A$d.TriggerOpen();
+        this.orm.TriggerOpen();
       }
     }
   }
   static RecordRouletteClose() {
     var e;
-    if (this.A$d.IsStart) {
-      this.A$d.TriggerClose();
-      (e = new LogReportDefine_1.UiInteractRouletteLogEvent()).i_old_count = this.A$d.OldRound;
-      e.i_new_count = this.A$d.NewRound;
+    if (this.orm.IsStart) {
+      this.orm.TriggerClose();
+      (e = new LogReportDefine_1.UiInteractRouletteLogEvent()).i_old_count = this.orm.OldRound;
+      e.i_new_count = this.orm.NewRound;
       e.i_inst_id = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      e.i_cost_time = this.A$d.DurationTime;
-      e.i_skill_id = this.A$d.UseSkillId;
+      e.i_cost_time = this.orm.DurationTime;
+      e.i_skill_id = this.orm.UseSkillId;
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     }
   }
   static RecordChatOpen() {
-    if (!this.D$d.IsStart) {
+    if (!this.nrm.IsStart) {
       if (ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower()) {
-        this.D$d.TriggerOpen();
+        this.nrm.TriggerOpen();
       }
     }
   }
   static RecordChatClose() {
     var e;
-    if (this.D$d.IsStart) {
-      this.D$d.TriggerClose();
-      (e = new LogReportDefine_1.UiInteractChatLogEvent()).i_old_count = this.D$d.OldRound;
-      e.i_new_count = this.D$d.NewRound;
+    if (this.nrm.IsStart) {
+      this.nrm.TriggerClose();
+      (e = new LogReportDefine_1.UiInteractChatLogEvent()).i_old_count = this.nrm.OldRound;
+      e.i_new_count = this.nrm.NewRound;
       e.i_inst_id = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      e.i_cost_time = this.D$d.DurationTime;
-      e.i_skill_id = this.D$d.UseSkillId;
+      e.i_cost_time = this.nrm.DurationTime;
+      e.i_skill_id = this.nrm.UseSkillId;
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     }
   }
 }
-(exports.UiInteractLogReport = UiInteractLogReport).A$d = new UiInteractRouletteData_1.UiInteractRouletteData();
-UiInteractLogReport.D$d = new UiInteractChatData_1.UiInteractChatData(); //# sourceMappingURL=UiInteractLogReport.js.map
+(exports.UiInteractLogReport = UiInteractLogReport).orm = new UiInteractRouletteData_1.UiInteractRouletteData();
+UiInteractLogReport.nrm = new UiInteractChatData_1.UiInteractChatData(); //# sourceMappingURL=UiInteractLogReport.js.map

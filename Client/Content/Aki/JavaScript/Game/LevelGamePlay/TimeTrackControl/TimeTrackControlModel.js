@@ -57,7 +57,7 @@ class TimeTrackControlModel extends ModelBase_1.ModelBase {
   }
   awe() {
     var t;
-    if (this.zxe && this.Zxe !== undefined && (t = this.zxe.Entity.GetComponent(135))) {
+    if (this.zxe && this.Zxe !== undefined && (t = this.zxe.Entity.GetComponent(138))) {
       this.ewe = t.GetTimeTrackControlConfig(this.Zxe);
     }
   }

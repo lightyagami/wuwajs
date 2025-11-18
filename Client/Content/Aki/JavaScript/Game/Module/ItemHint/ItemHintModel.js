@@ -243,6 +243,13 @@ class ItemHintModel extends ModelBase_1.ModelBase {
     this.Qgi.SortWaitList();
     this.Xgi.SortWaitList();
   }
+  AddItemToPriorInterfaceData(t, e, i) {
+    var r = new ItemHintDefines_1.ItemRewardInfo();
+    r.ItemId = t;
+    r.ItemCount = e;
+    r.Quality = i;
+    this.Xgi.AddItemRewardInfo(r);
+  }
   get IsMainInterfaceDataEmpty() {
     return this.Qgi.WaitList.length <= 0;
   }

@@ -2,22 +2,22 @@
 
 var SceneItemDropItemComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, o) {
-  var s;
-  var _ = arguments.length;
-  var r = _ < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var a;
+  var r = arguments.length;
+  var n = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, e, i, o);
+    n = Reflect.decorate(t, e, i, o);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (s = t[a]) {
-        r = (_ < 3 ? s(r) : _ > 3 ? s(e, i, r) : s(e, i)) || r;
+    for (var s = t.length - 1; s >= 0; s--) {
+      if (a = t[s]) {
+        n = (r < 3 ? a(n) : r > 3 ? a(e, i, n) : a(e, i)) || n;
       }
     }
   }
-  if (_ > 3 && r) {
-    Object.defineProperty(e, i, r);
+  if (r > 3 && n) {
+    Object.defineProperty(e, i, n);
   }
-  return r;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -38,6 +38,7 @@ const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const EffectContext_1 = require("../../Effect/EffectContext/EffectContext");
@@ -50,6 +51,8 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RewardController_1 = require("../../Module/Reward/RewardController");
 const ComponentForceTickController_1 = require("../../World/Controller/ComponentForceTickController");
+const FIX_SPAWN_TRACE_HEIGHT = -60;
+const PROFILE_KEY = "SceneItemDropItemComponent_FixBornLocation";
 const LINEARDAMPING = 0;
 const ANGULARDAMPING = 0;
 const CHECK_WATER_OFFSET_Z = 10;
@@ -62,6 +65,7 @@ const TRAIL_EFFECTS = ["/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sen
 const DESTROY_EFFECTS = ["/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sence_Xiaosan_001.DA_Fx_UI_Sence_Xiaosan_001", "/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sence_Xiaosan_002.DA_Fx_UI_Sence_Xiaosan_002", "/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sence_Xiaosan_003.DA_Fx_UI_Sence_Xiaosan_003", "/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sence_Xiaosan_004.DA_Fx_UI_Sence_Xiaosan_004", "/Game/Aki/Effect/DataAsset/Niagara/BigWorld/DA_Fx_UI_Sence_Xiaosan_005.DA_Fx_UI_Sence_Xiaosan_005"];
 class DropItemData {
   constructor() {
+    this.ItemType = 0;
     this.ConfigId = 0;
     this.Config = undefined;
     this.ItemCount = 0;
@@ -166,6 +170,9 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
         this.uCn();
       }
     };
+    this.ERm = () => {
+      this.FixBornLocation();
+    };
   }
   get DropItemConfig() {
     return this.fGt;
@@ -193,94 +200,105 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     return !!t && (this.pie(t.Mys), !!this.fGt) && (this.mCn(t.Mys) && (this.Jdn = true), true);
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     this.InitDropStateFunction();
     return true;
   }
   OnActivate() {
-    this.zdn = true;
+    this.zdn = this.fGt?.ItemType !== 17;
     if (this.Jdn) {
       this.dCn();
       this.Hte?.Owner?.SetActorHiddenInGame(false);
     }
-    if (!Info_1.Info.EnableForceTick && this.Active) {
+    if (this.zdn && !Info_1.Info.EnableForceTick && this.Active) {
       ComponentForceTickController_1.ComponentForceTickController.RegisterTick(this, this.KHr);
     }
+    EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted, this.ERm);
   }
   OnEnable() {
-    if (!Info_1.Info.EnableForceTick && this.Entity?.IsInit) {
+    if (this.zdn && !Info_1.Info.EnableForceTick && this.Entity?.IsInit) {
       ComponentForceTickController_1.ComponentForceTickController.RegisterTick(this, this.KHr);
     }
   }
   OnDisable(t) {
-    if (!Info_1.Info.EnableForceTick) {
+    if (this.zdn && !Info_1.Info.EnableForceTick) {
       ComponentForceTickController_1.ComponentForceTickController.UnregisterTick(this);
     }
   }
   OnEnd() {
-    if (!Info_1.Info.EnableForceTick) {
+    if (this.zdn && !Info_1.Info.EnableForceTick) {
       ComponentForceTickController_1.ComponentForceTickController.UnregisterTick(this);
     }
     return true;
   }
   pie(t) {
-    var e;
-    var i = t.L8n;
-    var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i);
-    if (o) {
-      if (o.Mesh) {
+    var e = t.L8n;
+    var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
+    if (i) {
+      var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e);
+      if (o === 17 || i.Mesh) {
         this.fGt = new DropItemData();
-        this.fGt.ConfigId = i;
-        this.fGt.Config = o;
+        this.fGt.ItemType = o;
+        this.fGt.ConfigId = e;
+        this.fGt.Config = i;
         this.fGt.ItemCount = t.n9n;
         this.fGt.ShowPlanId = t.W9n;
-        t = (e = ConfigManager_1.ConfigManager.RewardConfig).GetDropShowPlan(t.W9n);
+        var a = ConfigManager_1.ConfigManager.RewardConfig;
+        var t = a.GetDropShowPlan(t.W9n);
         this.fGt.AdsorptionType = t?.Adsorption;
-        this.fGt.StartSpeed = e.GetSpeed();
-        this.fGt.RotationProtectTime = e.GetDropRotationProtectTime();
-        if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(i) === 13) {
-          t = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(o.QualityId);
-          this.fGt.BornEffectPath = t.AbyssSpecialEffects;
-          this.fGt.TailEffectPath = t.AbyssTailEffects;
-          this.fGt.DestroyEffectPath = t.AbyssDissipateEffects;
-        } else {
-          e = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(o.QualityId).Id - 1;
-          this.fGt.BornEffectPath = BORN_EFFECTS[e];
-          this.fGt.TailEffectPath = TRAIL_EFFECTS[e];
-          this.fGt.DestroyEffectPath = DESTROY_EFFECTS[e];
+        this.fGt.StartSpeed = a.GetSpeed();
+        this.fGt.RotationProtectTime = a.GetDropRotationProtectTime();
+        switch (o) {
+          case 13:
+            var r = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(i.QualityId);
+            this.fGt.BornEffectPath = r.AbyssSpecialEffects;
+            this.fGt.TailEffectPath = r.AbyssTailEffects;
+            this.fGt.DestroyEffectPath = r.AbyssDissipateEffects;
+            break;
+          case 17:
+            r = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryQuality(i.QualityId);
+            this.fGt.BornEffectPath = r.SpecialEffects;
+            break;
+          default:
+            r = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(i.QualityId).Id - 1;
+            this.fGt.BornEffectPath = BORN_EFFECTS[r];
+            this.fGt.TailEffectPath = TRAIL_EFFECTS[r];
+            this.fGt.DestroyEffectPath = DESTROY_EFFECTS[r];
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("World", 10, "掉落配置查询Mesh字段配置为空", ["道具id", i]);
+        Log_1.Log.Error("World", 10, "掉落配置查询Mesh字段配置为空", ["道具id", e]);
       }
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("World", 10, "掉落配置查询数据为空", ["道具id", i]);
+      Log_1.Log.Error("World", 10, "掉落配置查询数据为空", ["道具id", e]);
     }
   }
   mCn(t) {
-    if (!t.A5n) {
-      return true;
-    }
-    t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.A5n);
-    if (!t) {
-      return true;
-    }
-    if (t.Entity.GetComponent(0).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Monster) {
-      return true;
-    }
-    var e = CommonParamById_1.configCommonParamById.GetFloatConfig("drop_item_show_time");
-    if (e) {
-      this.iCn = TimerSystem_1.TimerSystem.Delay(() => {
-        this.iCn = undefined;
-        this.CCn();
-      }, e * CommonDefine_1.MILLIONSECOND_PER_SECOND);
-    }
-    const i = t.Id;
-    this.tCn = t => {
-      if (i === t) {
-        this.CCn();
+    if (this.fGt?.ItemType !== 17) {
+      if (!t.A5n) {
+        return true;
       }
-    };
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DropItemStarted, this.tCn);
+      t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.A5n);
+      if (!t) {
+        return true;
+      }
+      if (t.Entity.GetComponent(0).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+        return true;
+      }
+      var e = CommonParamById_1.configCommonParamById.GetFloatConfig("drop_item_show_time");
+      if (e) {
+        this.iCn = TimerSystem_1.TimerSystem.Delay(() => {
+          this.iCn = undefined;
+          this.CCn();
+        }, e * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      }
+      const i = t.Id;
+      this.tCn = t => {
+        if (i === t) {
+          this.CCn();
+        }
+      };
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DropItemStarted, this.tCn);
+    }
     return false;
   }
   CCn() {
@@ -312,50 +330,52 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     var i = ConfigManager_1.ConfigManager.RewardConfig.GetDropChestOffsetZ();
     var t = t.Size();
     var o = ModelManager_1.ModelManager.RewardModel.CheckGroundHit(e, t, i);
-    var s = MathUtils_1.MathUtils.CommonTempVector;
-    s.FromUeVector(e);
+    var a = MathUtils_1.MathUtils.CommonTempVector;
+    a.FromUeVector(e);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("World", 7, "掉落初始位置修正前", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["EntityId", this.Entity.Id], ["Location", s], ["Radius", t]);
+      Log_1.Log.Info("World", 7, "掉落初始位置修正前", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["EntityId", this.Entity.Id], ["Location", a], ["Radius", t]);
     }
-    if (o && (s.Z += i, this.Hte.SetActorLocation(s.ToUeVector(), this.constructor.name, false), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("World", 7, "掉落初始位置修正后", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["EntityId", this.Entity.Id], ["Location", s], ["zOffset", i]);
+    if (o && (a.Z += i, this.Hte.SetActorLocation(a.ToUeVector(), this.constructor.name, false), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("World", 7, "掉落初始位置修正后", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["EntityId", this.Entity.Id], ["Location", a], ["zOffset", i]);
     }
   }
   Khn() {
-    ResourceSystem_1.ResourceSystem.LoadAsync(this.fGt.Config.Mesh, UE.Object, (t, e) => {
-      var i = this.Hte?.StaticMesh;
-      if (i?.IsValid() && t?.IsValid()) {
-        this.pCn();
-        this.fGt.MeshIsInited = true;
-        if (t instanceof UE.StaticMesh) {
-          i.SetStaticMesh(t);
-          i.SetReceivesDecals(false);
+    if (this.fGt?.Config?.Mesh) {
+      ResourceSystem_1.ResourceSystem.LoadAsync(this.fGt.Config.Mesh, UE.Object, (t, e) => {
+        var i = this.Hte?.StaticMesh;
+        if (i?.IsValid() && t?.IsValid()) {
+          this.pCn();
+          this.fGt.MeshIsInited = true;
+          if (t instanceof UE.StaticMesh) {
+            i.SetStaticMesh(t);
+            i.SetReceivesDecals(false);
+          }
+          i.SetLinearDamping(LINEARDAMPING);
+          i.SetAngularDamping(ANGULARDAMPING);
+          i.SetEnableGravity(true);
+          (t = MathUtils_1.MathUtils.CommonTempVector).Set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
+          i.SetCenterOfMass(t.ToUeVectorOld(), FNameUtil_1.FNameUtil.EMPTY);
+          i.SetCollisionEnabled(2);
+          i.SetSimulatePhysics(true);
+          i.SetCollisionProfileName(COLLISION_PROFILE_NAME);
+          t = this.Ovr.GetRotation().Yaw;
+          t = this.GetRandomForce(t);
+          i.AddImpulse(t.ToUeVectorOld(), FNameUtil_1.FNameUtil.EMPTY, true);
+          i.BodyInstance.bLockXRotation = true;
+          i.BodyInstance.bLockYRotation = true;
+          i.SetConstraintMode(6);
+          i.SetUseCCD(true);
         }
-        i.SetLinearDamping(LINEARDAMPING);
-        i.SetAngularDamping(ANGULARDAMPING);
-        i.SetEnableGravity(true);
-        (t = MathUtils_1.MathUtils.CommonTempVector).Set(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1);
-        i.SetCenterOfMass(t.ToUeVectorOld(), FNameUtil_1.FNameUtil.EMPTY);
-        i.SetCollisionEnabled(2);
-        i.SetSimulatePhysics(true);
-        i.SetCollisionProfileName(COLLISION_PROFILE_NAME);
-        t = this.Ovr.GetRotation().Yaw;
-        t = this.GetRandomForce(t);
-        i.AddImpulse(t.ToUeVectorOld(), FNameUtil_1.FNameUtil.EMPTY, true);
-        i.BodyInstance.bLockXRotation = true;
-        i.BodyInstance.bLockYRotation = true;
-        i.SetConstraintMode(6);
-        i.SetUseCCD(true);
-      }
-    });
-    ResourceSystem_1.ResourceSystem.LoadAsync(PHYSICAL_MATERIAL_PATH, UE.PhysicalMaterial, (t, e) => {
-      var i = this.Hte?.StaticMesh;
-      if (i?.IsValid() && t?.IsValid() && t instanceof UE.PhysicalMaterial) {
-        t.Restitution = ConfigManager_1.ConfigManager.RewardConfig.GetRestitution();
-        t.Friction = ConfigManager_1.ConfigManager.RewardConfig.GetFriction();
-        i.SetPhysMaterialOverride(t);
-      }
-    });
+      });
+      ResourceSystem_1.ResourceSystem.LoadAsync(PHYSICAL_MATERIAL_PATH, UE.PhysicalMaterial, (t, e) => {
+        var i = this.Hte?.StaticMesh;
+        if (i?.IsValid() && t?.IsValid() && t instanceof UE.PhysicalMaterial) {
+          t.Restitution = ConfigManager_1.ConfigManager.RewardConfig.GetRestitution();
+          t.Friction = ConfigManager_1.ConfigManager.RewardConfig.GetFriction();
+          i.SetPhysMaterialOverride(t);
+        }
+      });
+    }
   }
   gCn() {
     var t = this.Hte.StaticMesh.D_GetRelativeTransform();
@@ -366,7 +386,7 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
   }
   fCn() {
     var t;
-    var e = this.Entity.GetComponent(198);
+    var e = this.Entity.GetComponent(201);
     if (e &&= e.GetInteractController()) {
       (t = new LevelGameplayActionsDefine_1.ActionPickupDropItem()).EntityId = this.Entity.Id;
       e.AddClientInteractOption(t);
@@ -387,21 +407,21 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     var e;
     var i;
     var o;
-    var s = this.fGt.ShowPlanId;
-    var s = ConfigManager_1.ConfigManager.RewardConfig.GetDropShowPlan(s);
-    if (s) {
+    var a = this.fGt.ShowPlanId;
+    var a = ConfigManager_1.ConfigManager.RewardConfig.GetDropShowPlan(a);
+    if (a) {
       (e = MathUtils_1.MathUtils.CommonTempRotator).Pitch = 0;
-      i = s.Angle[0];
-      o = s.Angle[1];
+      i = a.Angle[0];
+      o = a.Angle[1];
       e.Roll = MathUtils_1.MathUtils.GetRandomRange(i, o);
-      i = s.VerticalAngle[0];
-      o = s.VerticalAngle[1];
+      i = a.VerticalAngle[0];
+      o = a.VerticalAngle[1];
       e.Yaw = MathUtils_1.MathUtils.GetRandomRange(i, o);
       e.Yaw += t;
       i = Vector_1.Vector.Create(Vector_1.Vector.UpVectorProxy);
       e.Quaternion().RotateVector(i, i);
-      o = s.Force[0];
-      t = s.Force[1];
+      o = a.Force[0];
+      t = a.Force[1];
       return i.MultiplyEqual(Math.random() * (t - o) + o);
     } else {
       return Vector_1.Vector.UpVectorProxy;
@@ -442,24 +462,107 @@ let SceneItemDropItemComponent = SceneItemDropItemComponent_1 = class SceneItemD
     return !!ModelManager_1.ModelManager.RewardModel.CheckWaterHit(this.oCn, t, CHECK_WATER_OFFSET_Z, e.Size()) && (this.fGt.DropFinished = true, this.fGt.DropState = 5, (t = this.Hte.StaticMesh).SetCollisionEnabled(0), t.SetConstraintMode(6), t.SetEnableGravity(false), t.SetSimulatePhysics(false), t.SetUseCCD(false), true);
   }
   DestroyWithEffect() {
-    this.Hte.StaticMesh.SetCollisionEnabled(0);
-    ModelManager_1.ModelManager.InteractionModel.HandleInteractionHint(false, this.Hte.Entity.Id);
-    if (EffectSystem_1.EffectSystem.IsValid(this.Zdn)) {
-      EffectSystem_1.EffectSystem.StopEffectById(this.Zdn, "[SceneItemDropItemComponent.DestroyWithEffect]", true);
-      this.Zdn = 0;
+    var t;
+    if (this.fGt?.ItemType === 17) {
+      this.Entity.GetComponent(137).HandleDestroyState();
+    } else {
+      this.Hte.StaticMesh.SetCollisionEnabled(0);
+      ModelManager_1.ModelManager.InteractionModel.HandleInteractionHint(false, this.Hte.Entity.Id);
+      if (EffectSystem_1.EffectSystem.IsValid(this.Zdn)) {
+        EffectSystem_1.EffectSystem.StopEffectById(this.Zdn, "[SceneItemDropItemComponent.DestroyWithEffect]", true);
+        this.Zdn = 0;
+      }
+      t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, this.fGt.DestroyEffectPath, "[SceneItemDropItemComponent.DestroyWithEffect]", new EffectContext_1.EffectContext(this.Entity.Id));
+      EffectSystem_1.EffectSystem.GetEffectActor(t)?.K2_AttachToComponent(this.Hte.StaticMesh, FNameUtil_1.FNameUtil.EMPTY, 2, 1, 0, true);
+      AudioSystem_1.AudioSystem.PostEvent(PICKUP_AUDIO_EVENT_NAME);
+      this.Entity.Disable("[SceneItemDropItemComponent.DestroyWithEffect] 播放销毁特效");
+      ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
     }
-    var t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, this.fGt.DestroyEffectPath, "[SceneItemDropItemComponent.DestroyWithEffect]", new EffectContext_1.EffectContext(this.Entity.Id));
-    EffectSystem_1.EffectSystem.GetEffectActor(t)?.K2_AttachToComponent(this.Hte.StaticMesh, FNameUtil_1.FNameUtil.EMPTY, 2, 1, 0, true);
-    AudioSystem_1.AudioSystem.PostEvent(PICKUP_AUDIO_EVENT_NAME);
-    this.Entity.Disable("[SceneItemDropItemComponent.DestroyWithEffect] 播放销毁特效");
-    ControllerHolder_1.ControllerHolder.CreatureController.DelayRemoveEntityFinished(this.Entity);
   }
   uCn() {
     this.fGt.DropState = 5;
     RewardController_1.RewardController.PickUpFightDrop(this.Ovr.GetCreatureDataId(), this.Ovr.GetPbDataId());
     this.fGt.DropFinished = true;
   }
+  FixBornLocation() {
+    var t;
+    var e;
+    return !!Global_1.Global.BaseCharacter && !!Global_1.Global.BaseCharacter.CapsuleComponent && !(t = ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.Ovr.GetEntityType()), !(e = this.IRm(-3000 + FIX_SPAWN_TRACE_HEIGHT, t))[0]) && !(this.Hte?.SetActorLocation(e[1].ToUeVector(), "SceneItemDropItemComponent.FixBornLocation"), t && Log_1.Log.CheckInfo() && Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:后", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["K2_GetActorLocation", this.Hte?.Owner?.D_K2_GetActorLocation()]), 0);
+  }
+  IRm(t, e = true) {
+    var i;
+    var o;
+    var a;
+    if (this.Hte?.Valid) {
+      i = this.Hte.ActorLocationProxy;
+      ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation.Reset();
+      ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation.Reset();
+      o = ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation;
+      a = ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation;
+      this.Hte.ActorUpProxy.Multiply(-FIX_SPAWN_TRACE_HEIGHT, o);
+      this.Hte.ActorUpProxy.Multiply(t, a);
+      o.AdditionEqual(i);
+      a.AdditionEqual(i);
+      return this.FixBornLocationInternal(i, o, a, false, e);
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] ActorComp为空。", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()]);
+      }
+      return [false, undefined];
+    }
+  }
+  FixBornLocationInternal(t, e, i, a, r = true) {
+    if (r && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:前", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["K2_GetActorLocation", this.Hte?.Owner?.D_K2_GetActorLocation()], ["ActorLocationProxy", t], ["InitLocation", this.Ovr.GetInitLocation()], ["射线开始位置", e], ["射线结束位置", i]);
+    }
+    var o = ModelManager_1.ModelManager.TraceElementModel.GetLineTrace();
+    o.WorldContextObject = this.Hte?.Owner;
+    TraceElementCommon_1.TraceElementCommon.SetStartLocation(o, e);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(o, i);
+    o.ActorsToIgnore.Empty();
+    for (const c of ModelManager_1.ModelManager.WorldModel.ActorsToIgnoreSet) {
+      o.ActorsToIgnore.Add(c);
+    }
+    var n = TraceElementCommon_1.TraceElementCommon.LineTrace(o, PROFILE_KEY);
+    var s = o.HitResult;
+    if (r && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:检测地面结果", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["isHit", n], ["hitResult.bBlockingHit", s.bBlockingHit], ["allowStartPenetrating", a], ["hitResult.bStartPenetrating", s.bStartPenetrating]);
+    }
+    if (n && s.bBlockingHit) {
+      if (!a && s.bStartPenetrating) {
+        return [false, undefined];
+      }
+      var _ = ModelManager_1.ModelManager.TraceElementModel.CommonHitLocation;
+      let e = "";
+      var h = s.Actors.Num();
+      let i = -1;
+      let o = "";
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(s, 0, _);
+      for (let t = 0; t < h; ++t) {
+        var m = s.Actors.Get(t);
+        if (m?.IsValid() && (e += m.GetName() + ", ", !m.IsA(UE.Character.StaticClass()))) {
+          if (!a && s.TimeArray.Get(t) < MathUtils_1.MathUtils.SmallNumber) {
+            if (r && Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:起始碰撞", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["isHit", n], ["hitResult.bBlockingHit", s.bBlockingHit], ["allowStartPenetrating", a], ["hitResult.bStartPenetrating", s.bStartPenetrating], ["hitResult.time", s.TimeArray.Get(t)]);
+            }
+            return [false, undefined];
+          }
+          i = t;
+          o = m.GetName();
+          TraceElementCommon_1.TraceElementCommon.GetHitLocation(s, t, _);
+          break;
+        }
+      }
+      if (r && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Entity", 18, "[SceneItemDropItemComponent.FixBornLocation] 实体地面修正:射线碰到地面", ["CreatureDataId", this.Ovr.GetCreatureDataId()], ["PbDataId", this.Ovr.GetPbDataId()], ["Actors", e], ["HitLocationIndex", i], ["HitLocationName", o], ["经过修正的位置", _]);
+      }
+      ModelManager_1.ModelManager.TraceElementModel.ClearLineTrace();
+      return [true, _];
+    }
+    ModelManager_1.ModelManager.TraceElementModel.ClearLineTrace();
+    return [false, undefined];
+  }
 };
 SceneItemDropItemComponent.cz = Vector_1.Vector.Create();
-SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(150)], SceneItemDropItemComponent);
+SceneItemDropItemComponent = SceneItemDropItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(153)], SceneItemDropItemComponent);
 exports.SceneItemDropItemComponent = SceneItemDropItemComponent; //# sourceMappingURL=SceneItemDropItemComponent.js.map

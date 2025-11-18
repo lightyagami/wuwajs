@@ -12,6 +12,13 @@ const GameModePromise_1 = require("../../World/Define/GameModePromise");
 class TeleportModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
+    this.TeleportReason = undefined;
+    this.TeleportId = undefined;
+    this.CtxType = undefined;
+    this.Option = undefined;
+    this.TeleportEntityHandle = undefined;
+    this.WaitServerResponse = true;
+    this.TargetLocation = undefined;
     this.QIo = undefined;
     this.XIo = undefined;
     this.$Io = undefined;
@@ -22,7 +29,6 @@ class TeleportModel extends ModelBase_1.ModelBase {
     this.pml = true;
     this.TeleportMode = 1;
     this.TeleportCameraFadeStatus = undefined;
-    this.CallSource = undefined;
     this.CheckStreamingCompletedTimerId = undefined;
     this.CheckPhysicsCompletedTimerId = undefined;
     this.zIo = undefined;
@@ -146,31 +152,55 @@ class TeleportModel extends ModelBase_1.ModelBase {
     this.x$s = new GameModePromise_1.GameModePromise();
     this.eTo = new GameModePromise_1.GameModePromise();
     this.tTo = new GameModePromise_1.GameModePromise();
+    this.shh = new GameModePromise_1.GameModePromise();
     this.ScreenEffectStarted = new GameModePromise_1.GameModePromise();
-    this.TreadmillLoaded = new GameModePromise_1.GameModePromise();
+    this.ScreenEffectEnded = new GameModePromise_1.GameModePromise();
+    this.SceneEffectStarted = new GameModePromise_1.GameModePromise();
+    this.SceneEffectEnded = new GameModePromise_1.GameModePromise();
     this.LeastTimeFinished = new GameModePromise_1.GameModePromise();
+    this.TreadmillLoaded = new GameModePromise_1.GameModePromise();
+    this.TreadmillAppeared = new GameModePromise_1.GameModePromise();
     this.TreadmillDisappeared = new GameModePromise_1.GameModePromise();
     this.PostProcessBlendedIn = new GameModePromise_1.GameModePromise();
     this.PostProcessBlendedOut = new GameModePromise_1.GameModePromise();
-    this.shh = new GameModePromise_1.GameModePromise();
+    this.KiteAppeared = new GameModePromise_1.GameModePromise();
   }
   ResetPromise() {
     this.zIo = undefined;
     this.x$s = undefined;
     this.eTo = undefined;
     this.tTo = undefined;
+    this.shh = undefined;
     this.ScreenEffectStarted = undefined;
-    this.TreadmillLoaded = undefined;
+    this.ScreenEffectEnded = undefined;
+    this.SceneEffectStarted = undefined;
+    this.SceneEffectEnded = undefined;
     this.LeastTimeFinished = undefined;
+    this.TreadmillLoaded = undefined;
+    this.TreadmillAppeared = undefined;
     this.TreadmillDisappeared = undefined;
     this.PostProcessBlendedIn = undefined;
     this.PostProcessBlendedOut = undefined;
-    this.shh = undefined;
+    this.KiteAppeared = undefined;
   }
   GetIsKeepingCurrentMovementMode() {
     var t;
     var i;
     return !!this.IsInSeamlessTeleport && !!this.KeepMovementMode?.IsActive && (t = (i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp?.CharacterMovement)?.MovementMode, i = i?.CustomMovementMode, t !== undefined) && i !== undefined && this.KeepMovementMode.TargetMovementMode === t && this.KeepMovementMode.TargetCustomMode === i;
+  }
+  ResetTeleportData() {
+    this.TeleportReason = undefined;
+    this.TeleportId = undefined;
+    this.CtxType = undefined;
+    this.Option = undefined;
+    this.TeleportEntityCreatureDataId = 0;
+    this.TeleportEntityHandle = undefined;
+    this.IsTeleport = false;
+    this.WaitServerResponse = true;
+    this.NeedRestoreCamera = true;
+    this.TargetLocation = undefined;
+    this.TeleportMode = 1;
+    this.ResetPromise();
   }
 }
 exports.TeleportModel = TeleportModel;

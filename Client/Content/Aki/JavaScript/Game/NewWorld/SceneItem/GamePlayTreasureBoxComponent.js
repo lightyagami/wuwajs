@@ -41,7 +41,7 @@ let SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = class Scen
     this.ucn = undefined;
     this.m1n = () => {
       this.ccn();
-      if (this.Entity.CheckGetComponent(134).IsInState(2)) {
+      if (this.Entity.CheckGetComponent(137).IsInState(2)) {
         this.mcn();
       }
     };
@@ -83,7 +83,7 @@ let SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = class Scen
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChange, this.dcn);
     }
     this.ucn = undefined;
-    if (!this.Entity.CheckGetComponent(134).IsInState(0)) {
+    if (!this.Entity.CheckGetComponent(137).IsInState(0)) {
       this.m1n();
     }
     return true;
@@ -97,13 +97,13 @@ let SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = class Scen
     return true;
   }
   ccn() {
-    var e = this.Entity.CheckGetComponent(134);
-    var t = this.Entity.CheckGetComponent(197);
+    var e = this.Entity.CheckGetComponent(137);
+    var t = this.Entity.CheckGetComponent(200);
     let n = undefined;
     let r = undefined;
     switch (e.State) {
       case 1:
-        n = this.Entity.CheckGetComponent(131).IsLocked ? (r = -1107341031, -1491083225) : (r = -1491083225, -1107341031);
+        n = this.Entity.CheckGetComponent(134).IsLocked ? (r = -1107341031, -1491083225) : (r = -1491083225, -1107341031);
         break;
       case 2:
         r = -1107341031;
@@ -125,7 +125,7 @@ let SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = class Scen
     }
   }
   CloseAllCollisions() {
-    var e = this.Entity.GetComponent(203);
+    var e = this.Entity.GetComponent(206);
     SceneItemTreasureBoxComponent_1.gcn(e.Owner);
     var n = SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionAllActorsInLevel(e.GetSceneInteractionLevelHandleId());
     if (n) {
@@ -149,5 +149,5 @@ let SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = class Scen
     }
   }
 };
-SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(142)], SceneItemTreasureBoxComponent);
+SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(145)], SceneItemTreasureBoxComponent);
 exports.SceneItemTreasureBoxComponent = SceneItemTreasureBoxComponent; //# sourceMappingURL=GamePlayTreasureBoxComponent.js.map

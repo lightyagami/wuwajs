@@ -116,6 +116,21 @@ class SilentAreaDetection {
   get PhantomFetterGroup() {
     return GameUtils_1.GameUtils.ConvertToArray(this.phantomfettergroupLength(), this.phantomfettergroup, this);
   }
+  get PeriodicityChallengeType() {
+    return this.periodicitychallengetype();
+  }
+  get DetectionTitlePanel() {
+    return this.detectiontitlepanel();
+  }
+  get LeftBgSprite() {
+    return this.leftbgsprite();
+  }
+  get RightBgSprite() {
+    return this.rightbgsprite();
+  }
+  get DungeonId() {
+    return this.dungeonid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -449,6 +464,46 @@ class SilentAreaDetection {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  periodicitychallengetype() {
+    var t = this.J7.__offset(this.z7, 66);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  detectiontitlepanel() {
+    var t = this.J7.__offset(this.z7, 68);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  leftbgsprite(t) {
+    var i = this.J7.__offset(this.z7, 70);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  rightbgsprite(t) {
+    var i = this.J7.__offset(this.z7, 72);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  dungeonid() {
+    var t = this.J7.__offset(this.z7, 74);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

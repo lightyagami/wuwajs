@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UiViewBase = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioController_1 = require("../../../Core/Audio/AudioController");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
@@ -23,6 +22,7 @@ const UiBehaviourHomeBtn_1 = require("../../Module/UiComponent/UiHomeButton/UiBe
 const UiSceneManager_1 = require("../../Module/UiComponent/UiSceneManager");
 const UiNavigationNewController_1 = require("../../Module/UiNavigation/New/UiNavigationNewController");
 const LguiUtil_1 = require("../../Module/Util/LguiUtil");
+const UiConfig_1 = require("../Define/UiConfig");
 const UiLayerType_1 = require("../Define/UiLayerType");
 const InputDistributeController_1 = require("../InputDistribute/InputDistributeController");
 const UiLayer_1 = require("../UiLayer");
@@ -31,6 +31,7 @@ const UiBehaviorAudio_1 = require("./UiAudioState/UiBehaviorAudio");
 const UiBehaviorUiBlur_1 = require("./UiBlur/UiBehaviorUiBlur");
 const UiPanelBase_1 = require("./UiPanelBase");
 const UiViewSequence_1 = require("./UiViewSequence");
+const puerts_1 = require("puerts");
 class UiViewBase extends UiPanelBase_1.UiPanelBase {
   constructor(e) {
     super();
@@ -71,6 +72,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.SkipRemoveBlackScreen = false;
     this.Info = e;
     this.MaskTag = e.Name + this.ComponentId;
+    this.MemoryTag = UiConfig_1.UiConfig.GetMemoryTag(e.Name);
   }
   get IsQueueView() {
     return this.Info !== undefined && this.Info.SortIndex >= 0;
@@ -131,7 +133,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     this.Xur();
     this.$ur();
     this.Yur();
-    this.sjd();
+    this.xem();
   }
   Jur(e, i = undefined) {
     this.PlaySequence(e, i, (this.Info.Type & UiLayerType_1.BLOCKCLICK_TYPE) > 0);
@@ -160,7 +162,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
     var e = new UiBehaviorAudio_1.UiBehaviorAudio(this);
     this.AddUiBehavior(e);
   }
-  sjd() {
+  xem() {
     var e = new UiBehaviourHomeBtn_1.UiBehaviourHomeBtn();
     (this.UiBehaviourHomeBtn = e).SetViewInfo(this);
     this.AddUiBehavior(e);
@@ -233,14 +235,14 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeShowImplementImplement() {}
   async OnBeforeShowAsyncImplement() {
-    await Promise.all([this.l5d(), this.LoadScene()]);
+    await Promise.all([this.tfm(), this.LoadScene()]);
     this.LoadScenePromise?.SetResult(undefined);
     if (this.SceneLoaded && !this.SkipRemoveBlackScreen) {
       BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", this.Info.Name);
     }
   }
   async OnBeforeShowAsyncImplementImplement() {}
-  async l5d() {
+  async tfm() {
     await this.OnBeforeShowAsyncImplementImplement();
     this.AfterOnBeforeShowAsyncImplementImplement();
   }
@@ -255,7 +257,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
         Log_1.Log.Info("UiCore", 16, "播放界面动画Start(开始)", ["ViewName", this.Info.Name], ["SequenceName", this.UiViewSequence.StartSequenceName]);
       }
       if (!!this.Info.IsPermanent || !this.IsExistInLeaveLevel) {
-        await Promise.all([this.zur(this.UiViewSequence.StartSequenceName), this.OnPlayingStartSequenceAsync(), this.y8d()]);
+        await Promise.all([this.zur(this.UiViewSequence.StartSequenceName), this.OnPlayingStartSequenceAsync(), this.a0m()]);
         this.AfterOnPlayingStartSequenceAsync();
       }
       this.OnAfterPlayStartSequence();
@@ -321,7 +323,7 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
       if (this.LastHide) {
         this.LastHide = false;
         this.OnBeforePlayCloseSequence();
-        await Promise.all([this.icr(), this.OnPlayingCloseSequenceAsync(), this.S8d()]);
+        await Promise.all([this.icr(), this.OnPlayingCloseSequenceAsync(), this.h0m()]);
         this.AfterOnPlayingCloseSequenceAsync();
       } else {
         await this.zur(this.UiViewSequence.HideSequenceName);
@@ -510,22 +512,22 @@ class UiViewBase extends UiPanelBase_1.UiPanelBase {
   AfterOnBeforeShowAsyncImplementImplement() {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsOnBeforeShowAsyncImplementImplement, this.Info.Name, this.GetViewId());
   }
-  l$d() {
+  l0m() {
     this.CsUiLife.OnPlayingStartSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
-  async y8d() {
+  async a0m() {
     if (this.IsCsViewProxy) {
-      this.l$d();
+      this.l0m();
       await this.CsUiLife.OnPlayingStartSequenceAsyncPromise.Promise;
       this.CsUiLife.OnPlayingStartSequenceAsyncPromise = undefined;
     }
   }
-  _$d() {
+  _0m() {
     this.CsUiLife.OnPlayingCloseSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
   }
-  async S8d() {
+  async h0m() {
     if (this.IsCsViewProxy) {
-      this._$d();
+      this._0m();
       await this.CsUiLife.OnPlayingCloseSequenceAsyncPromise.Promise;
       this.CsUiLife.OnPlayingCloseSequenceAsyncPromise = undefined;
     }

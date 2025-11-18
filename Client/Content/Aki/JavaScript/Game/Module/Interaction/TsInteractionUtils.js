@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TsInteractionUtils = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const TeleportInterceptByEntityConfigId_1 = require("../../../Core/Define/ConfigQuery/TeleportInterceptByEntityConfigId");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const DataTableUtil_1 = require("../../../Core/Utils/DataTableUtil");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
@@ -22,7 +24,11 @@ const UiLayerType_1 = require("../../Ui/Define/UiLayerType");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const UiManager_1 = require("../../Ui/UiManager");
 const WaitEntityTask_1 = require("../../World/Define/WaitEntityTask");
+const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const FlowController_1 = require("../Plot/Flow/FlowController");
+const ReconnectDefine_1 = require("../ReConnect/ReconnectDefine");
+const ResourceManagerController_1 = require("../ResManager/ResourceManagerController");
+const InteractConfirmController_1 = require("./SecondConfirm/InteractConfirmController");
 class TsInteractionUtils {
   static GetInteractionConfig(e) {
     return DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(9, e);
@@ -227,12 +233,12 @@ class TsInteractionUtils {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InteractionViewUpdate);
     }
   }
-  static HandleEntityInteractByServerNotify(r, a, e) {
-    WaitEntityTask_1.WaitEntityTask.Create("TsInteractionUtils.HandleEntityInteractByServerNotify", a, t => {
+  static HandleEntityInteractByServerNotify(r, o, e) {
+    WaitEntityTask_1.WaitEntityTask.Create("TsInteractionUtils.HandleEntityInteractByServerNotify", o, t => {
       if (t) {
-        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
+        t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
         if (t) {
-          t = t.Entity.GetComponent(198);
+          t = t.Entity.GetComponent(201);
           if (t) {
             t = t.GetInteractController();
             if (t) {
@@ -248,9 +254,9 @@ class TsInteractionUtils {
                   if ((e = e ? LevelGeneralContextDefine_1.GeneralContext.Copy(e) : LevelGeneralContextDefine_1.EntityContext.Create(t.EntityId)) instanceof LevelGeneralContextDefine_1.EntityContext) {
                     n = ModelManager_1.ModelManager.InteractionModel;
                     t = e.EntityId;
-                    const a = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(t);
+                    const o = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(t);
                     n.SetInteractTarget(t);
-                    n.SetInterctCreatureDataId(a);
+                    n.SetInterctCreatureDataId(o);
                   }
                   ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsByServerNotify(i.Actions, e, r.W5n, r.w5n, r.K5n, r.mvs, r.sS_);
                 }
@@ -275,21 +281,21 @@ class TsInteractionUtils {
     var n;
     var i;
     var r;
-    var a = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(e?.cvs);
-    if (a) {
+    var o = LevelGeneralContextUtil_1.LevelGeneralContextUtil.CreateByServerContext(e?.cvs);
+    if (o) {
       if (t = (n = ModelManager_1.ModelManager.InteractionModel).GetDynamicConfig(t)) {
         if (t.Type.Type !== "Actions") {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Interaction", 36, "[动态交互选项继续执行]动态交互选项不是行为");
           }
         } else {
-          if (a instanceof LevelGeneralContextDefine_1.EntityContext) {
-            i = a.EntityId;
+          if (o instanceof LevelGeneralContextDefine_1.EntityContext) {
+            i = o.EntityId;
             r = ModelManager_1.ModelManager.CreatureModel?.GetCreatureDataId(i);
             n.SetInteractTarget(i);
             n.SetInterctCreatureDataId(r);
           }
-          ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsByServerNotify(t.Type.Actions, a, e.W5n, e.w5n, e.K5n, e.mvs, e.sS_);
+          ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsByServerNotify(t.Type.Actions, o, e.W5n, e.w5n, e.K5n, e.mvs, e.sS_);
         }
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Interaction", 36, "[动态交互选项继续执行]动态交互选项为空");
@@ -297,6 +303,53 @@ class TsInteractionUtils {
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Interaction", 36, "[动态交互选项继续执行]上下文缺失");
     }
+  }
+  static HandleInteractionSecondConfirm(e, t, n) {
+    if (e) {
+      if (e.ConfirmBox) {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Interaction", 93, "[执行交互] 二次确认交互", ["EntityId", t.InteractEntity.EntityId], ["二次确认类型", e.ConfirmBox.Type]);
+        }
+        return InteractConfirmController_1.InteractConfirmController.HandleAction(e, n) || (t.OnInteractActionEnd && t.OnInteractActionEnd(), 0);
+      }
+      TsInteractionUtils.HandleInteractionOptionNew(e, t);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Interaction", 93, "[执行交互] 未提供交互选项信息", ["EntityId", t.InteractEntity.EntityId]);
+    }
+    return 0;
+  }
+  static CheckTeleportInterceptByOption(e, t) {
+    var n = t.InteractEntity?.GetEntity();
+    var i = n?.GetComponent(0);
+    if (i) {
+      t = TeleportInterceptByEntityConfigId_1.configTeleportInterceptByEntityConfigId.GetConfigList(i.GetPbDataId());
+      if (t && t.length !== 0) {
+        var r = e - 1;
+        var o = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;
+        for (const _ of t) {
+          if (r === _.OptionIndex && o === _.CurInstConfigId) {
+            var a = Vector_1.Vector.Create(_.TargetPosition[0], _.TargetPosition[1], _.TargetPosition[2]);
+            var [l, s] = ResourceManagerController_1.ResourceManagerController.IsBlockResourceDownloaded(_.TargetMapConfigId, a);
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Interaction", 93, "交互实体确认需要进行拦截检测", ["EntityId", n?.Id], ["PdDataId", i.GetPbDataId()], ["OptionIndex", r], ["CurDungeonId", o], ["TargetDungeonId", _.TargetMapConfigId], ["TargetPosition", a], ["Result", l], ["needReLogin", s]);
+            }
+            if (!l) {
+              (a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(405)).FunctionMap.set(1, () => {
+                ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+                ControllerHolder_1.ControllerHolder.ReConnectController.Logout(ReconnectDefine_1.ELogoutReason.InvalidTeleportPosition);
+              });
+              ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(a);
+              return true;
+            }
+            if (s) {
+              ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenBlockNeedReLoginConfirm();
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 }
 exports.TsInteractionUtils = TsInteractionUtils;

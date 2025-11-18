@@ -16,6 +16,9 @@ class FuncMenuReplace {
   get InstSubType() {
     return this.instsubtype();
   }
+  get InstIdList() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.instidlistLength(), this.instidlist, this);
+  }
   get FuncMenuIdList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.funcmenuidlistLength(), this.funcmenuidlist, this);
   }
@@ -43,10 +46,10 @@ class FuncMenuReplace {
       return 0;
     }
   }
-  GetFuncmenuidlistAt(t) {
-    return this.funcmenuidlist(t);
+  GetInstidlistAt(t) {
+    return this.instidlist(t);
   }
-  funcmenuidlist(t) {
+  instidlist(t) {
     var s = this.J7.__offset(this.z7, 8);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
@@ -54,7 +57,7 @@ class FuncMenuReplace {
       return 0;
     }
   }
-  funcmenuidlistLength() {
+  instidlistLength() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
@@ -62,8 +65,35 @@ class FuncMenuReplace {
       return 0;
     }
   }
-  funcmenuidlistArray() {
+  instidlistArray() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  GetFuncmenuidlistAt(t) {
+    return this.funcmenuidlist(t);
+  }
+  funcmenuidlist(t) {
+    var s = this.J7.__offset(this.z7, 10);
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  funcmenuidlistLength() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  funcmenuidlistArray() {
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

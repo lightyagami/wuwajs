@@ -30,16 +30,16 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(17233, this.Fft);
-    Net_1.Net.Register(25074, this.Vft);
-    Net_1.Net.Register(28434, this.Hft);
-    Net_1.Net.Register(25581, this.jft);
+    Net_1.Net.Register(25240, this.Fft);
+    Net_1.Net.Register(15894, this.Vft);
+    Net_1.Net.Register(26061, this.Hft);
+    Net_1.Net.Register(24902, this.jft);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17233);
-    Net_1.Net.UnRegister(25074);
-    Net_1.Net.UnRegister(28434);
-    Net_1.Net.UnRegister(25581);
+    Net_1.Net.UnRegister(25240);
+    Net_1.Net.UnRegister(15894);
+    Net_1.Net.UnRegister(26061);
+    Net_1.Net.UnRegister(24902);
   }
   static RequestMultiCalabashLevelReward(e) {
     if (Log_1.Log.CheckInfo()) {
@@ -47,9 +47,9 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     }
     var a = Protocol_1.Aki.Protocol.C8u.create();
     a.F6n = e;
-    Net_1.Net.Call(25742, a, e => {
+    Net_1.Net.Call(15448, a, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16480);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29444);
       }
     });
   }
@@ -60,10 +60,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     });
     e = Protocol_1.Aki.Protocol.Gls.create();
     e.A8n = a;
-    Net_1.Net.Call(27240, e, e => {
+    Net_1.Net.Call(17169, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22975);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20466);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRecoveryResult, e);
         }
@@ -77,10 +77,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     });
     e = Protocol_1.Aki.Protocol.$m_.create();
     e.A8n = a;
-    Net_1.Net.Call(26023, e, e => {
+    Net_1.Net.Call(23128, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25644);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19858);
         } else {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionRecoveryBatchResult, e);
         }
@@ -114,10 +114,10 @@ class CalabashController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Calabash", 75, "RequestPhantomPolishRequest", ["id", e], ["propItemId", a]);
     }
-    Net_1.Net.Call(18759, o, e => {
+    Net_1.Net.Call(28904, o, e => {
       if (e && e.xPs) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17216);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26576);
         } else {
           ModelManager_1.ModelManager.InventoryModel.UpdatePhantomItemData(e.xPs);
           ModelManager_1.ModelManager.PhantomBattleModel.UpdatePhantomBattleData(e.xPs);

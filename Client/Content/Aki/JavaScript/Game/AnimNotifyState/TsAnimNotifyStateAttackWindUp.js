@@ -27,7 +27,7 @@ class TsAnimNotifyStateAttackWindUp extends UE.KuroAnimNotifyState {
     }
     var a = s.Entity;
     var n = a.GetComponent(61);
-    var c = a.GetComponent(210);
+    var c = a.GetComponent(213);
     if (!n?.Valid) {
       return false;
     }

@@ -17,10 +17,12 @@ var ECheckPlayerCanJoinActivityType;
 var ERogueThemeType;
 var ECheckSystemStateType;
 var EShopType;
+var EInfrastructureStage;
 var ETeleControlState;
 var ECheckTargetType;
 var ESubLevelState;
 var ETargetBuffContainer;
+var EVectorSpace;
 function getExploreLevel(e) {
   if (e && e.Conditions) {
     var e = e.Conditions.filter(e => e.Type === "ExploreLevel");
@@ -60,7 +62,7 @@ function getPreChildQuests(e) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ETargetBuffContainer = exports.ESubLevelState = exports.ECheckTargetType = exports.ETeleControlState = exports.EShopType = exports.ECheckSystemStateType = exports.ERogueThemeType = exports.ECheckPlayerCanJoinActivityType = exports.EPlayerCheckType = exports.EPlayerAttributeType = exports.ETargetType = exports.EHasUpgradableVisionType = exports.EHasEquippedVisionType = exports.EWeaponLevelType = exports.ERoleLevelType = exports.EFormationRoleInfoType = exports.ECheckJigsawInfoType = exports.ESkillReadyType = exports.ELevelPlayState = exports.EAiStateType = exports.getPreChildQuests = exports.getPreQuests = exports.getExploreLevel = exports.countNameMap = exports.EConditionLogicType = undefined;
+exports.EVectorSpace = exports.ETargetBuffContainer = exports.ESubLevelState = exports.ECheckTargetType = exports.ETeleControlState = exports.EInfrastructureStage = exports.EShopType = exports.ECheckSystemStateType = exports.ERogueThemeType = exports.ECheckPlayerCanJoinActivityType = exports.EPlayerCheckType = exports.EPlayerAttributeType = exports.ETargetType = exports.EHasUpgradableVisionType = exports.EHasEquippedVisionType = exports.EWeaponLevelType = exports.ERoleLevelType = exports.EFormationRoleInfoType = exports.ECheckJigsawInfoType = exports.ESkillReadyType = exports.ELevelPlayState = exports.EAiStateType = exports.getPreChildQuests = exports.getPreQuests = exports.getExploreLevel = exports.countNameMap = exports.EConditionLogicType = undefined;
 (function (e) {
   e.BaseAccessQuest = "BaseAccessQuest";
   e.Condition2 = "Condition2";
@@ -107,16 +109,29 @@ exports.getPreChildQuests = getPreChildQuests;
 (EHasEquippedVisionType = exports.EHasEquippedVisionType ||= {}).AnyRole = "AnyRole";
 (EHasUpgradableVisionType = exports.EHasUpgradableVisionType ||= {}).AnyRole = "AnyRole";
 (ETargetType = exports.ETargetType ||= {}).Player = "Player";
-(EPlayerAttributeType = exports.EPlayerAttributeType ||= {}).Health = "Health";
-(EPlayerCheckType = exports.EPlayerCheckType ||= {}).AnyRole = "AnyRole";
+(function (e) {
+  e.Health = "Health";
+  e.StabilityPoint = "StabilityPoint";
+})(EPlayerAttributeType = exports.EPlayerAttributeType ||= {});
+(function (e) {
+  e.AnyRole = "AnyRole";
+  e.Team = "Team";
+})(EPlayerCheckType = exports.EPlayerCheckType ||= {});
 (ECheckPlayerCanJoinActivityType = exports.ECheckPlayerCanJoinActivityType ||= {}).Rogue = "Rogue";
 (ERogueThemeType = exports.ERogueThemeType ||= {}).ZhongQu = "ZhongQu";
 (function (e) {
   e.TrackMoonBuilding = "TrackMoonBuilding";
   e.CollectionShopFull = "CollectionShopFull";
   e.TrackMoonPopularity = "TrackMoonPopularity";
+  e.InfrastructureStage = "InfrastructureStage";
 })(ECheckSystemStateType = exports.ECheckSystemStateType ||= {});
 (EShopType = exports.EShopType ||= {}).ChengXiaoShan = "ChengXiaoShan";
+(function (e) {
+  e[e.StageOne = 1] = "StageOne";
+  e[e.StageTwo = 2] = "StageTwo";
+  e[e.StageThree = 3] = "StageThree";
+  e[e.StageFour = 4] = "StageFour";
+})(EInfrastructureStage = exports.EInfrastructureStage ||= {});
 (function (e) {
   e.Hold = "Hold";
   e.LetGo = "LetGo";
@@ -130,4 +145,8 @@ exports.getPreChildQuests = getPreChildQuests;
   e.Enable = "Enable";
   e.Disable = "Disable";
 })(ESubLevelState = exports.ESubLevelState ||= {});
-(ETargetBuffContainer = exports.ETargetBuffContainer ||= {}).Monster = "Monster"; //# sourceMappingURL=ICondition.js.map
+(ETargetBuffContainer = exports.ETargetBuffContainer ||= {}).Monster = "Monster";
+(function (e) {
+  e.World = "World";
+  e.Local = "Local";
+})(EVectorSpace = exports.EVectorSpace ||= {}); //# sourceMappingURL=ICondition.js.map

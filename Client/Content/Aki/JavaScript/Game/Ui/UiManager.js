@@ -42,9 +42,9 @@ class UiManager {
   static get IsInited() {
     return UiManager.Ife === 2;
   }
-  static pF_(i, e = undefined, a, r, n = true, o = 0) {
+  static pF_(i, e = undefined, a, r, n = true, o = 0, t = false) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenViewBegined, i);
-    UiManager.OpenViewAsync(i, e, a, n, o).then(e => {
+    UiManager.OpenViewAsync(i, e, a, n, o, t).then(e => {
       if (e !== undefined) {
         r?.(true, e);
         if (Log_1.Log.CheckInfo()) {
@@ -82,29 +82,30 @@ class UiManager {
       UiManager.OpenView(e, i, a);
     }
   }
-  static async OpenViewAsync(e, i = undefined, a, r = true, n = 0) {
+  static async OpenViewAsync(e, i = undefined, a, r = true, n = 0, o = false) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]请求打开界面", ["界面名称", e]);
     }
-    var o = !!i && i?.IsMultipleView;
-    if (UiManager.iVe(e, o, i)) {
-      o = UiManager.BCr(e, i, a);
+    var t = !!i && i?.IsMultipleView;
+    if (UiManager.iVe(e, t, i)) {
+      t = UiManager.BCr(e, i, a, o);
       if (r) {
-        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OpenViewRedirectToCs, e, o.GetViewId() - 1, n, a ?? 0);
+        o = t.GetViewId() - 1;
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OpenViewRedirectToCs, e, o, n, a ?? 0);
       }
-      if (o) {
-        o.OpenParam = i;
-        o.OpenPromise = new CustomPromise_1.CustomPromise();
-        r = await Promise.all([UiManager.bCr.get(o.Info.GetContainerLayerType()).OpenViewAsync(o), o.OpenPromise.Promise]);
-        o.OpenPromise = undefined;
+      if (t) {
+        t.OpenParam = i;
+        t.OpenPromise = new CustomPromise_1.CustomPromise();
+        r = await Promise.all([UiManager.bCr.get(t.Info.GetContainerLayerType()).OpenViewAsync(t), t.OpenPromise.Promise]);
+        t.OpenPromise = undefined;
         if (r[1]) {
-          o.TryEmitInterruptOpExitView();
-          if (o.Info?.IsFullScreen === true) {
-            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInFullScreen[${o.Info.Name}]`);
-          } else if (o.Info?.IsFullScreen === false) {
-            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInWindow[${o.Info.Name}]`);
+          t.TryEmitInterruptOpExitView();
+          if (t.Info?.IsFullScreen === true) {
+            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInFullScreen[${t.Info.Name}]`);
+          } else if (t.Info?.IsFullScreen === false) {
+            cpp_1.FKuroPerfSightHelper.BeginExtTag(`UiViewInWindow[${t.Info.Name}]`);
           }
-          return o.GetViewId();
+          return t.GetViewId();
         }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "[OpenViewAsync]打开界面失败, 界面在缓存队列中被清理", ["name", e]);
@@ -375,14 +376,15 @@ class UiManager {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DisActiveBattleView, UiManager.HCr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewRedirectToTs, UiManager.CsNotifyOpenTsView);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseViewRedirectToTs, UiManager.CsNotifyCloseTsView);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToTs, UiManager.f$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsViewOnCreateAsync, UiManager.g$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsBeforeStartAsync, UiManager.C$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeHideAsync, UiManager.p$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingStartSequenceAsync, UiManager.v$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingCloseSequenceAsync, UiManager.y$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeShowAsyncImplementImplement, UiManager.S$d);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsOpenView, this.M$d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HideViewRedirectToTs, UiManager.CsNotifyHideTsView);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToTs, UiManager.u0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsViewOnCreateAsync, UiManager.c0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsBeforeStartAsync, UiManager.d0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeHideAsync, UiManager.m0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingStartSequenceAsync, UiManager.f0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingCloseSequenceAsync, UiManager.g0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeShowAsyncImplementImplement, UiManager.C0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsOpenView, this.p0m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToViewRedirectToTs, this.CsNotifyResetToView);
   }
   static ResetToBattleView(e) {
@@ -460,32 +462,34 @@ class UiManager {
     }
     UiManager.jCr.delete(e);
   }
-  static BCr(e, i, a) {
-    var r;
-    var n = UiConfig_1.UiConfig.TryGetViewInfo(e);
-    if (n) {
-      n.SetContainerLayerType(a);
-      a = CsUiDefine_1.CsUiDefine.IsRedirectToCs(e);
-      r = UiConfig_1.UiConfig.GetCsViewProxyInfo();
-      r = new (a ? r : n).Ctor(n);
-      if (a) {
-        r.CsUiLife = new CsUiLife_1.CsUiLife();
-        r.IsCsViewProxy = true;
+  static BCr(i, a, r, n = false) {
+    var o = UiConfig_1.UiConfig.TryGetViewInfo(i);
+    if (o) {
+      o.SetContainerLayerType(r);
+      let e = CsUiDefine_1.CsUiDefine.IsRedirectToCs(i);
+      if (n) {
+        e = true;
       }
-      UiConfig_1.UiConfig.RewritePath(n, r, i);
-      UiConfig_1.UiConfig.RewritePopFrameType(n, r, i);
-      r.InitRootActorLoadInfo();
-      if (n.CommonPopBg > 0 && !a) {
-        i = new UiPopFrameView_1.UiPopFrameView(n);
-        r.ChildPopView = i;
-        r.AddChild(i);
+      var r = UiConfig_1.UiConfig.GetCsViewProxyInfo();
+      var n = new (e ? r : o).Ctor(o);
+      if (e) {
+        n.CsUiLife = new CsUiLife_1.CsUiLife();
+        n.IsCsViewProxy = true;
       }
-      UiManager.WCr(r);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CreateViewInstance, r);
-      return r;
+      UiConfig_1.UiConfig.RewritePath(o, n, a);
+      UiConfig_1.UiConfig.RewritePopFrameType(o, n, a);
+      n.InitRootActorLoadInfo();
+      if (o.CommonPopBg > 0 && !e) {
+        r = new UiPopFrameView_1.UiPopFrameView(o);
+        n.ChildPopView = r;
+        n.AddChild(r);
+      }
+      UiManager.WCr(n);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CreateViewInstance, n);
+      return n;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("UiCore", 16, "界面信息viewInfo获取失败", ["name", e]);
+      Log_1.Log.Error("UiCore", 16, "界面信息viewInfo获取失败", ["name", i]);
     }
   }
   static KCr() {
@@ -820,59 +824,65 @@ UiManager.NCr = new Map();
 UiManager.CsNotifyOpenTsView = e => {
   UiManager.pF_(e, undefined, undefined, undefined, false);
 };
-UiManager.f$d = e => {
+UiManager.u0m = e => {
   UiManager.PreOpenViewAsync(e, false);
 };
 UiManager.CsNotifyCloseTsView = e => {
   UiManager.CloseView(e, undefined, false);
 };
+UiManager.CsNotifyHideTsView = (e, i) => {
+  i = _a.GetView(i);
+  if (i && (i.IsCreateOrCreating || i.IsShowOrShowing || i.IsStartOrStarting)) {
+    i.HideAsync();
+  }
+};
 UiManager.CsNotifyResetToView = e => {
   UiManager.NormalResetToView(e, undefined, false);
 };
-UiManager.g$d = (e, i) => {
+UiManager.c0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnCreateAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnCreateAsyncPromise.SetResult();
   }
 };
-UiManager.C$d = (e, i) => {
+UiManager.d0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeStartAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeStartAsyncPromise.SetResult();
   }
 };
-UiManager.p$d = (e, i) => {
+UiManager.m0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeHideAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeHideAsyncPromise.SetResult();
   }
 };
-UiManager.v$d = (e, i) => {
+UiManager.f0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnPlayingStartSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnPlayingStartSequenceAsyncPromise.SetResult();
   }
 };
-UiManager.y$d = (e, i) => {
+UiManager.g0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnPlayingCloseSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnPlayingCloseSequenceAsyncPromise.SetResult();
   }
 };
-UiManager.S$d = (e, i) => {
+UiManager.C0m = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise.SetResult();
   }
 };
-UiManager.M$d = (e, i) => {
-  _a.pF_(e, undefined, undefined, undefined, true, i);
+UiManager.p0m = (e, i, a) => {
+  _a.pF_(e, undefined, undefined, undefined, true, i, a);
 };
 UiManager.FCr = () => {
   if (Log_1.Log.CheckInfo()) {

@@ -74,7 +74,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterLevelPlayNotify, this.Hpi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveLevelPlayNotify, this.jpi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
-    Net_1.Net.Register(23901, GameAudioController.UUn);
+    Net_1.Net.Register(27022, GameAudioController.UUn);
     this.bQc.Init();
     this.xq1();
     return true;
@@ -104,7 +104,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterLevelPlayNotify, this.Hpi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveLevelPlayNotify, this.jpi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.OnTeleportStart);
-    Net_1.Net.UnRegister(23901);
+    Net_1.Net.UnRegister(27022);
     this.bQc.Clear();
     return true;
   }
@@ -330,19 +330,19 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
       GameAudioController.rQl.get(e).add(t);
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Audio", 42, "[char_p1orp3] 角色语音优先级记录召唤物", ["召唤师ID", e], ["召唤物ID", t], ["actor", o.GetName()], ["update", GameAudioController.Bjd.has(t)]);
+      Log_1.Log.Debug("Audio", 42, "[char_p1orp3] 角色语音优先级记录召唤物", ["召唤师ID", e], ["召唤物ID", t], ["actor", o.GetName()], ["update", GameAudioController.Ptm.has(t)]);
     }
-    GameAudioController.Bjd.set(t, o);
+    GameAudioController.Ptm.set(t, o);
   }
   static RemoveRolePrioritySummon(e, t) {
-    if (GameAudioController.rQl.has(e) && (GameAudioController.rQl.get(e).delete(t), GameAudioController.Bjd.delete(t), GameAudioController.rQl.get(e).size === 0 && GameAudioController.rQl.delete(e), Log_1.Log.CheckDebug())) {
+    if (GameAudioController.rQl.has(e) && (GameAudioController.rQl.get(e).delete(t), GameAudioController.Ptm.delete(t), GameAudioController.rQl.get(e).size === 0 && GameAudioController.rQl.delete(e), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Audio", 42, "[char_p1orp3] 角色语音优先级移除记录的召唤物", ["召唤师ID", e], ["召唤物ID", t]);
     }
   }
   static RoleChangeController(e, t) {
     if (GameAudioController.rQl.has(e)) {
       for (const i of GameAudioController.rQl.get(e)) {
-        var o = GameAudioController.Bjd.get(i);
+        var o = GameAudioController.Ptm.get(i);
         if (o?.IsValid()) {
           GameAudioController.SetRolePriority(t ? 0 : 1, o);
         }
@@ -395,14 +395,14 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     this.bQc.RemoveEvent(e, t);
   }
   static get k6l() {
-    return this.fgd;
+    return this.kCd;
   }
   static set k6l(e) {
-    if (e !== this.fgd) {
+    if (e !== this.kCd) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Audio", 42, "[BGM] 更新怪物BGM", ["Old", this.k6l], ["New", e]);
       }
-      this.fgd = e;
+      this.kCd = e;
     }
   }
   static F21() {
@@ -437,7 +437,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
   static N21(e) {
     var t;
     var o = e.CreatureData.GetAttributeComponent();
-    var i = e.Entity.GetComponent(206);
+    var i = e.Entity.GetComponent(209);
     if (o.FightMusic) {
       this.B6l = o.FightMusic;
       this.k6l = o.FightMusic;
@@ -481,7 +481,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
   }
   static GetMonsterTypeState() {
     var e;
-    if (this.ggd && this.exl !== undefined) {
+    if (this.OCd && this.exl !== undefined) {
       if (this.k6l.length > 0) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Audio", 42, "[BGM] 使用怪物标签音乐", ["Tag", this.k6l]);
@@ -507,7 +507,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static Cgd() {
+  static qCd() {
     this.exl = undefined;
     this.k6l = "";
     this.B6l = "";
@@ -515,7 +515,7 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     this.q6l = undefined;
   }
   static get IsPlayingBattleMusic() {
-    return this.ggd;
+    return this.OCd;
   }
   static SetPlayerWwiseState(e, t) {
     if (e) {
@@ -557,8 +557,8 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnEnterBattleState() {
-    if (!this.ggd) {
-      this.ggd = true;
+    if (!this.OCd) {
+      this.OCd = true;
       this.SetPlayerWwiseState(true);
       this.uWe();
       this.EWe(true);
@@ -568,17 +568,17 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnExitBattleState() {
-    if (this.ggd) {
-      if (this.pgd?.Valid()) {
-        TimerSystem_1.TimerSystem.Remove(this.pgd);
-        this.pgd = undefined;
+    if (this.OCd) {
+      if (this.GCd?.Valid()) {
+        TimerSystem_1.TimerSystem.Remove(this.GCd);
+        this.GCd = undefined;
       }
-      if (this.U4d()) {
+      if (this.Yjd()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Audio", 42, "[AreaAudio] 没有仇恨对象，但处于无音区玩法，暂不退出战斗状态");
         }
       } else {
-        this.ggd = false;
+        this.OCd = false;
         this.EWe(false);
         this.SetPlayerWwiseState(false);
         this.uWe();
@@ -590,18 +590,18 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
   }
   static TryUpdateBattleState() {
     var e = this.oWe.size !== 0;
-    if (this.ggd !== e) {
+    if (this.OCd !== e) {
       if (e) {
-        if (this.pgd?.Valid() && (TimerSystem_1.TimerSystem.Remove(this.pgd), this.pgd = undefined, Log_1.Log.CheckInfo())) {
+        if (this.GCd?.Valid() && (TimerSystem_1.TimerSystem.Remove(this.GCd), this.GCd = undefined, Log_1.Log.CheckInfo())) {
           Log_1.Log.Info("Audio", 42, "[BGM] 离开战斗但脱战时间过短，已忽略本次脱战");
         }
         if (!this.CheckIgnoreByPlotKeep()) {
           this.OnEnterBattleState();
         }
-      } else if (!this.pgd?.Valid()) {
-        this.pgd = TimerSystem_1.TimerSystem.Delay(() => {
+      } else if (!this.GCd?.Valid()) {
+        this.GCd = TimerSystem_1.TimerSystem.Delay(() => {
           this.OnExitBattleState();
-          this.pgd = undefined;
+          this.GCd = undefined;
         }, LEAVE_BATTLE_DELAY_MS);
       }
     }
@@ -617,8 +617,8 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
       return !!this.zje && (this.zje = false, Log_1.Log.CheckInfo() && Log_1.Log.Info("Audio", 55, "[BGM] 提示: 由于先前被剧情保持了场景音乐，准备更新所有音乐状态"), this.TryUpdateBattleState(), true);
     }
   }
-  static U4d() {
-    for (const e of this.vgd) {
+  static Yjd() {
+    for (const e of this.FCd) {
       if (e[1]) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Audio", 42, "[AreaAudio] 处于激活的无音区玩法中", ["玩法ID", e[0]]);
@@ -629,8 +629,8 @@ class GameAudioController extends ControllerBase_1.ControllerBase {
     return false;
   }
   static dWl(e) {
-    for (const t of this.vgd) {
-      if (t[1] !== e && (this.vgd.set(t[0], e), Log_1.Log.CheckDebug())) {
+    for (const t of this.FCd) {
+      if (t[1] !== e && (this.FCd.set(t[0], e), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Audio", 42, "[AreaAudio] 无音区玩法状态改变", ["玩法ID", t[0]], ["state", e]);
       }
     }
@@ -710,7 +710,7 @@ GameAudioController.OnTeleportStart = () => {
   _a.dWl(false);
 };
 GameAudioController.rQl = new Map();
-GameAudioController.Bjd = new Map();
+GameAudioController.Ptm = new Map();
 GameAudioController.HUc = new Set();
 GameAudioController.jUc = (e, t) => {
   if (e !== t || _a.HUc.size !== 0) {
@@ -730,7 +730,7 @@ GameAudioController.jUc = (e, t) => {
 };
 GameAudioController.Dq1 = new Map();
 GameAudioController._7_ = (e, t, o) => {
-  var i = e.GetComponent(283);
+  var i = e.GetComponent(287);
   var a = e.EntityData?.GetActor();
   if (a && i) {
     t = i.GetMorphData(t)?.ModelId;
@@ -772,12 +772,12 @@ GameAudioController.lWe = e => {
 };
 GameAudioController.cWe = e => {
   if (_a.oWe.has(e) && (_a.oWe.delete(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[BGM] 移除仇恨", ["来源", e]), _a.oWe.size === 0)) {
-    _a.Cgd();
+    _a.qCd();
     _a.TryUpdateBattleState();
   }
 };
 GameAudioController.B6l = "";
-GameAudioController.fgd = "";
+GameAudioController.kCd = "";
 GameAudioController.exl = undefined;
 GameAudioController.q6l = undefined;
 GameAudioController.O6l = (e, t) => {
@@ -793,16 +793,16 @@ GameAudioController.O6l = (e, t) => {
   }
   _a.F6l(_a.B6l);
 };
-GameAudioController.ggd = false;
+GameAudioController.OCd = false;
 GameAudioController.Zje = "none";
-GameAudioController.pgd = undefined;
+GameAudioController.GCd = undefined;
 GameAudioController.zje = false;
 GameAudioController.hWe = () => {
   _a.CheckIgnoreByPlotKeep();
 };
-GameAudioController.vgd = new Map();
+GameAudioController.FCd = new Map();
 GameAudioController.Fpi = (e, t) => {
-  if (ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e)?.LevelPlayTypeNumber === LevelPlayDefine_1.levelPlayTypeToNumber.SilentArea && t !== 2 && t !== 1 && !(t === 2 ? _a.vgd.has(e) || _a.vgd.set(e, false) : _a.vgd.has(e) && _a.vgd.delete(e), _a.U4d())) {
+  if (ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e)?.LevelPlayTypeNumber === LevelPlayDefine_1.levelPlayTypeToNumber.SilentArea && t !== 2 && t !== 1 && !(t === 2 ? _a.FCd.has(e) || _a.FCd.set(e, false) : _a.FCd.has(e) && _a.FCd.delete(e), _a.Yjd())) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Audio", 42, "[AreaAudio] 无音区玩法关闭/完成，尝试更新战斗音乐状态", ["id", e], ["state", t]);
     }
@@ -810,17 +810,17 @@ GameAudioController.Fpi = (e, t) => {
   }
 };
 GameAudioController.Hpi = e => {
-  if (ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e)?.LevelPlayTypeNumber === LevelPlayDefine_1.levelPlayTypeToNumber.SilentArea && !_a.vgd.has(e)) {
-    _a.vgd.set(e, false);
+  if (ModelManager_1.ModelManager.LevelPlayModel.GetProcessingLevelPlayInfo(e)?.LevelPlayTypeNumber === LevelPlayDefine_1.levelPlayTypeToNumber.SilentArea && !_a.FCd.has(e)) {
+    _a.FCd.set(e, false);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Audio", 42, "[AreaAudio] 进入无音区玩法范围，记录玩法ID", ["Id", e]);
     }
   }
 };
 GameAudioController.jpi = e => {
-  if (_a.vgd.has(e)) {
-    _a.vgd.delete(e);
-    if (!_a.U4d()) {
+  if (_a.FCd.has(e)) {
+    _a.FCd.delete(e);
+    if (!_a.Yjd()) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Audio", 42, "[AreaAudio] 离开无音区玩法范围，尝试更新战斗音乐状态", ["Id", e]);
       }

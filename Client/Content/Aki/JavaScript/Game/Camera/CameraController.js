@@ -259,17 +259,34 @@ class CameraController extends ControllerBase_1.ControllerBase {
       this.PlayForceFeedbackFromCameraShake(e);
     }
   }
-  static PlayCameraShake(e, t = undefined, a = undefined, r = undefined, i = false) {
-    if (!!Global_1.Global.CharacterCameraManager?.IsValid() && !this.IsSettlementCamera() && !this.IsSequenceCameraInCinematic()) {
-      Global_1.Global.CharacterCameraManager.StartCameraShake(e, t, a, r, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+  static PlayCameraShake(e, t = undefined, a = undefined, r = undefined, i = false, s = false) {
+    if (!Global_1.Global.CharacterCameraManager?.IsValid() || this.IsSettlementCamera() || this.IsSequenceCameraInCinematic()) {
+      return -1;
+    } else {
+      t = Global_1.Global.CharacterCameraManager.StartCameraShake(e, t, a, r, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       if (i) {
         this.PlayForceFeedbackFromCameraShake(e);
       }
+      if (s && t) {
+        this.Model.CameraShakeMap.set(++this.Model.CameraShakeInstanceId, t);
+      }
+      return this.Model.CameraShakeInstanceId;
+    }
+  }
+  static StopCameraShake(e, t = false) {
+    var a;
+    if (this.Model?.CameraShakeMap.has(e) && Global_1.Global.CharacterCameraManager?.IsValid() && (a = this.Model.CameraShakeMap.get(e), this.Model.CameraShakeMap.delete(e), a?.IsValid()) && (Global_1.Global.CharacterCameraManager.StopCameraShake(a, true), t)) {
+      this.StopForceFeedbackFromCameraShake(a.GetClass());
     }
   }
   static PlayForceFeedbackFromCameraShake(e) {
     if (Info_1.Info.IsInGamepad() && e?.IsChildOf(UE.BP_CameraShakeAndForceFeedback_C.StaticClass()) && (e = UE.KuroStaticLibrary.GetDefaultObject(e).ForceFeedbackEffect) && Global_1.Global.CharacterController) {
       Global_1.Global.CharacterController.PlayKuroForceFeedback(e, undefined, false, false, false);
+    }
+  }
+  static StopForceFeedbackFromCameraShake(e) {
+    if (Info_1.Info.IsInGamepad() && e?.IsChildOf(UE.BP_CameraShakeAndForceFeedback_C.StaticClass()) && (e = UE.KuroStaticLibrary.GetDefaultObject(e).ForceFeedbackEffect) && Global_1.Global.CharacterController) {
+      Global_1.Global.CharacterController.StopKuroForceFeedback(e, undefined);
     }
   }
   static LoadCharacterCameraConfig(e) {
@@ -335,10 +352,10 @@ class CameraController extends ControllerBase_1.ControllerBase {
 }
 (exports.CameraController = CameraController).IsInCameraModeBlending = false;
 CameraController.xie = (e, t) => {
-  if (t?.Valid && (t = t.Entity.GetComponent(206))?.Valid) {
+  if (t?.Valid && (t = t.Entity.GetComponent(209))?.Valid) {
     t.RemoveTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
   }
-  if (e?.Valid && (t = e.Entity.GetComponent(206))?.Valid) {
+  if (e?.Valid && (t = e.Entity.GetComponent(209))?.Valid) {
     t.AddTagAddOrRemoveListener(constrainAspectRatioGameplayTag, CameraController.cml);
     CameraController.uml(t.HasTag(constrainAspectRatioGameplayTag));
   }

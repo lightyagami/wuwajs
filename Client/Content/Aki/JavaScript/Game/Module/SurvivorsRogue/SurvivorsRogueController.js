@@ -23,22 +23,22 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25375, this.bbd);
-    Net_1.Net.Register(26690, this.Rbd);
-    Net_1.Net.Register(17023, this.wbd);
-    Net_1.Net.Register(22312, this.Lbd);
-    Net_1.Net.Register(29076, this.Pbd);
-    Net_1.Net.Register(29883, this.bAd);
-    Net_1.Net.Register(28629, this.x9d);
+    Net_1.Net.Register(20216, this.Jwd);
+    Net_1.Net.Register(21834, this.Zwd);
+    Net_1.Net.Register(20573, this.eLd);
+    Net_1.Net.Register(15893, this.tLd);
+    Net_1.Net.Register(17462, this.iLd);
+    Net_1.Net.Register(24751, this.vxd);
+    Net_1.Net.Register(21964, this.TZd);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25375);
-    Net_1.Net.UnRegister(26690);
-    Net_1.Net.UnRegister(17023);
-    Net_1.Net.UnRegister(22312);
-    Net_1.Net.UnRegister(29076);
-    Net_1.Net.UnRegister(29883);
-    Net_1.Net.UnRegister(28629);
+    Net_1.Net.UnRegister(20216);
+    Net_1.Net.UnRegister(21834);
+    Net_1.Net.UnRegister(20573);
+    Net_1.Net.UnRegister(15893);
+    Net_1.Net.UnRegister(17462);
+    Net_1.Net.UnRegister(24751);
+    Net_1.Net.UnRegister(21964);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
@@ -47,6 +47,12 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
+  }
+  static OnAddOpenViewCheckFunction() {
+    UiManager_1.UiManager.AddOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Nwm, "SurvivorsRogueController.CanOpenSurvivorsTabMainView");
+  }
+  static OnRemoveOpenViewCheckFunction() {
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Nwm);
   }
   static tHu() {
     var e = new SplashScreenTask_1.SplashScreenTask(0, 1, () => {
@@ -58,47 +64,47 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SurvivorsRogue", 79, "RequestEnterStep", ["StepType", e]);
     }
-    var o = new Protocol_1.Aki.Protocol.rLd();
+    var r = new Protocol_1.Aki.Protocol.AAd();
     if (e === "Prepare") {
-      o.nLd = new Protocol_1.Aki.Protocol.aLd();
+      r.xAd = new Protocol_1.Aki.Protocol.kAd();
     } else if (e === "End") {
-      o.sLd = new Protocol_1.Aki.Protocol.hLd();
+      r.UAd = new Protocol_1.Aki.Protocol.BAd();
     }
-    Net_1.Net.Call(24938, o, e => {
+    Net_1.Net.Call(21153, r, e => {
       if (e && e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 21584);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29599);
       }
     });
   }
-  static RequestCommandOperation(e, o, r) {
-    var t = new Protocol_1.Aki.Protocol.ZMd();
+  static RequestCommandOperation(e, r, o) {
+    var t = new Protocol_1.Aki.Protocol.bTd();
     t.w5n = e;
-    t.iZu = o;
+    t.iZu = r;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SurvivorsRogue", 37, "[SurvivorsRogue] RequestCommandOperation", ["CommandId", e], ["IncId", o]);
+      Log_1.Log.Debug("SurvivorsRogue", 37, "[SurvivorsRogue] RequestCommandOperation", ["CommandId", e], ["IncId", r]);
     }
-    Net_1.Net.Call(20681, t, e => {
+    Net_1.Net.Call(27779, t, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 21645);
-          r?.(false);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24222);
+          o?.(false);
         } else {
-          r?.(true);
+          o?.(true);
         }
       } else {
-        r?.(false);
+        o?.(false);
       }
     });
   }
-  static RequestDataLock(e, o, r, t) {
-    var n = new Protocol_1.Aki.Protocol.tEd();
+  static RequestDataLock(e, r, o, t) {
+    var n = new Protocol_1.Aki.Protocol.wTd();
     n.w5n = e;
-    n.Y5n = r;
-    n.VB1 = o;
-    Net_1.Net.Call(19532, n, e => {
+    n.Y5n = o;
+    n.VB1 = r;
+    Net_1.Net.Call(17967, n, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 21533);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 28192);
           t?.(false);
         } else {
           t?.(true);
@@ -108,31 +114,31 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
       }
     });
   }
-  static RequestEnterInst(e, o, r, t, n) {
+  static RequestEnterInst(e, r, o, t, n) {
     var a;
     var i = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(e);
-    if (i && (a = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRole(o))) {
+    if (i && (a = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRole(r))) {
       n = {
-        fMd: n,
+        NId: n,
         gG_: e,
-        gMd: t,
-        zys: r,
-        Q6n: o
+        VId: t,
+        zys: o,
+        Q6n: r
       };
-      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.CMd = n;
+      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.jId = n;
       ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(i.InstId, [a.TrialRoleId]);
     }
   }
-  static RequestInstSettle(o) {
-    var e = new Protocol_1.Aki.Protocol.OEd();
-    Net_1.Net.Call(22097, e, e => {
+  static RequestInstSettle(r) {
+    var e = new Protocol_1.Aki.Protocol._bd();
+    Net_1.Net.Call(23111, e, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 24299);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 17805);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsInstSettle, false);
         } else {
-          if (o && e.SEd) {
-            UiManager_1.UiManager.OpenView("SurvivorsRogueSettleExternalView", e.SEd);
+          if (r && e.KTd) {
+            UiManager_1.UiManager.OpenView("SurvivorsRogueSettleExternalView", e.KTd);
             ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo = undefined;
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsInstSettle, true);
@@ -143,36 +149,36 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static async RequestWeaponInfoUpdate() {
-    var e = new Protocol_1.Aki.Protocol.MLd();
-    var o = await Net_1.Net.CallAsync(22578, e);
-    if (o) {
-      e = o.jLd;
+    var e = new Protocol_1.Aki.Protocol.hDd();
+    var r = await Net_1.Net.CallAsync(15968, e);
+    if (r) {
+      e = r.IDd;
       for (const n of Object.keys(e)) {
-        var r = Number.parseInt(n);
-        var t = o.jLd[n];
-        ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.WeaponGainMap.get(r)?.SetWeaponKillCount(t);
+        var o = Number.parseInt(n);
+        var t = r.IDd[n];
+        ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.WeaponGainMap.get(o)?.SetWeaponKillCount(t);
       }
     }
   }
   static async RequestLastFile() {
     var e = new SurvivorsActivityDefine_1.SurvivorsLevelInfo();
-    var o = new Protocol_1.Aki.Protocol.ZDd();
-    var o = await Net_1.Net.CallAsync(29015, o);
-    if (o &&= o.sUd) {
-      e.LevelId = o.gG_;
-      e.RoleId = o.Q6n;
-      e.IsEndless = o.gMd;
-      e.IsSaveFile = o.gG_ !== 0;
-      e.Batch = o.AEs;
-      e.MaxBatch = o.yqd;
+    var r = new Protocol_1.Aki.Protocol.QBd();
+    var r = await Net_1.Net.CallAsync(24980, r);
+    if (r &&= r.ekd) {
+      e.LevelId = r.gG_;
+      e.RoleId = r.Q6n;
+      e.IsEndless = r.VId;
+      e.IsSaveFile = r.gG_ !== 0;
+      e.Batch = r.AEs;
+      e.MaxBatch = r.QNd;
     }
     return e;
   }
   static RequestEnterInstByLevelInfo() {
     var e;
-    var o = ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo;
-    if (o && (e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRole(o.RoleId))) {
-      this.RequestEnterInst(o.LevelId, o.RoleId, e.InitWeapon, o.IsEndless, o.IsSaveFile);
+    var r = ModelManager_1.ModelManager.SurvivorsRogueModel.SelectLevelInfo;
+    if (r && (e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsRole(r.RoleId))) {
+      this.RequestEnterInst(r.LevelId, r.RoleId, e.InitWeapon, r.IsEndless, r.IsSaveFile);
     }
   }
   static CheckInSurvivorsRogueInstance() {
@@ -223,73 +229,77 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.SurvivorsRogueController = SurvivorsRogueController;
-(_a = SurvivorsRogueController).bbd = e => {
+(_a = SurvivorsRogueController).Nwm = (e, r) => {
+  var o = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel?.KscPlayerEntity;
+  return !!o && !!o.GetSkillComp()?.AttrSet_?.Attrs_;
+};
+SurvivorsRogueController.Jwd = e => {
   ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId = e.gG_;
-  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.R9d);
+  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.pZd);
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("SurvivorsRogue", 79, "OnSurvivorsInstGlobalDataNotify", ["CurLevelId", ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId], ["CurWaveNum", ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum]);
   }
-  ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.InitGain(e.EEd, e.GLd, e.VLd);
+  ModelManager_1.ModelManager.SurvivorsRogueModel.GainData.InitGain(e.YTd, e.yDd, e.EDd);
   ModelManager_1.ModelManager.SurvivorsRogueModel.InitCommandQueue();
-  var o = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
-  o.SetForegroundIncId(e.TEd);
-  o.InitCommands(e.bEd);
+  var r = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
+  r.SetForegroundIncId(e.JTd);
+  r.InitCommands(e.ZTd);
 };
-SurvivorsRogueController.bAd = e => {
+SurvivorsRogueController.vxd = e => {
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("SurvivorsRogue", 79, "OnSurvivorsVarRecordNotify", ["CurLevelId", ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId], ["CurWaveNum", ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum]);
   }
   ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.SetBehaviorTreeVar(e.i9u);
 };
-SurvivorsRogueController.Rbd = e => {
-  var o = ModelManager_1.ModelManager.SurvivorsRogueModel.GainData;
-  for (const r of e.gIc) {
-    o.AddGain(r);
+SurvivorsRogueController.Zwd = e => {
+  var r = ModelManager_1.ModelManager.SurvivorsRogueModel.GainData;
+  for (const o of e.gIc) {
+    r.AddGain(o);
   }
   for (const t of e.CIc) {
-    o.UpdateGain(t);
+    r.UpdateGain(t);
   }
   for (const n of e.pIc) {
-    o.RemoveGain(n);
+    r.RemoveGain(n);
   }
 };
-SurvivorsRogueController.wbd = e => {
-  var o = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
-  if (o) {
-    o.SetForegroundIncId(e.TEd);
-    for (const r of e.gIc) {
-      o.AddCommand(r);
+SurvivorsRogueController.eLd = e => {
+  var r = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
+  if (r) {
+    r.SetForegroundIncId(e.JTd);
+    for (const o of e.gIc) {
+      r.AddCommand(o);
     }
     for (const t of e.CIc) {
-      o.UpdateCommand(t);
+      r.UpdateCommand(t);
     }
     for (const n of e.pIc) {
-      o.RemoveCommand(n);
+      r.RemoveCommand(n);
     }
-    o.StartForegroundCommand();
+    r.StartForegroundCommand();
   }
 };
-SurvivorsRogueController.Lbd = e => {
-  var o = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
-  if (o) {
-    o.SetForegroundIncId(e.TEd);
-    o.StartForegroundCommand();
+SurvivorsRogueController.tLd = e => {
+  var r = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue;
+  if (r) {
+    r.SetForegroundIncId(e.JTd);
+    r.StartForegroundCommand();
   }
 };
-SurvivorsRogueController.Pbd = e => {
+SurvivorsRogueController.iLd = e => {
   if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("SurvivorsRogue", 79, "OnSurvivorsStepUpdateNotify", ["aLd", e.nLd], ["GTd", e.GTd], ["sJu", e.sJu], ["CurWaveNum", ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum]);
+    Log_1.Log.Debug("SurvivorsRogue", 79, "OnSurvivorsStepUpdateNotify", ["kAd", e.xAd], ["_wd", e._wd], ["sJu", e.sJu], ["CurWaveNum", ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum]);
   }
-  if (e.nLd) {
+  if (e.xAd) {
     ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState = 1;
-  } else if (e.GTd) {
+  } else if (e._wd) {
     ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState = 2;
-  } else if (e.sLd) {
+  } else if (e.UAd) {
     ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState = 3;
   }
 };
-SurvivorsRogueController.x9d = e => {
-  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.R9d);
+SurvivorsRogueController.TZd = e => {
+  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.pZd);
 };
 SurvivorsRogueController.nye = () => {
   var e;
@@ -300,9 +310,9 @@ SurvivorsRogueController.nye = () => {
     e.StartForegroundCommand();
   }
 };
-SurvivorsRogueController.jUc = (e, o) => {
-  o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o);
-  if (o && o.InstSubType === 41) {
+SurvivorsRogueController.jUc = (e, r) => {
+  r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(r);
+  if (r && r.InstSubType === 41) {
     ControllerHolder_1.ControllerHolder.SkillButtonUiController.AddEventInterface(ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData);
   } else {
     ControllerHolder_1.ControllerHolder.SkillButtonUiController.RemoveEventInterface(ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData);

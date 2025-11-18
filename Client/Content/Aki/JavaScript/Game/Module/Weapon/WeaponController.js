@@ -39,12 +39,12 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRemoveWeaponItem, this.Gdi);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25509, e => {
+    Net_1.Net.Register(28769, e => {
       if (e) {
         ModelManager_1.ModelManager.WeaponModel.WeaponRoleLoadEquip(e.Gxs);
       }
     });
-    Net_1.Net.Register(23987, e => {
+    Net_1.Net.Register(23037, e => {
       var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
       var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(81);
       if (o) {
@@ -53,8 +53,8 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25509);
-    Net_1.Net.UnRegister(23987);
+    Net_1.Net.UnRegister(28769);
+    Net_1.Net.UnRegister(23037);
   }
   static SendPbWeaponLevelUpRequest(e, o) {
     var t = Protocol_1.Aki.Protocol.R0s.create();
@@ -66,12 +66,12 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       r.L8n = a.ItemId;
       t.tHn.push(r);
     }
-    Net_1.Net.Call(17887, t, e => {
+    Net_1.Net.Call(21426, t, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           ModelManager_1.ModelManager.WeaponModel.WeaponLevelUpResponse(e);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29317);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20426);
         }
       }
     });
@@ -79,7 +79,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
   static SendPbWeaponBreachRequest(t, r) {
     var e = Protocol_1.Aki.Protocol.A0s.create();
     e.w5n = t;
-    Net_1.Net.Call(15518, e, e => {
+    Net_1.Net.Call(29485, e, e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -89,7 +89,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
           UiManager_1.UiManager.OpenView("WeaponBreachSuccessView", t);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeaponBreakUp);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25641);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18231);
         }
       }
     });
@@ -100,13 +100,13 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       t.w5n = o;
       t.cjn = e;
       const r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(o).GetResonanceLevel();
-      Net_1.Net.Call(24874, t, e => {
+      Net_1.Net.Call(27515, t, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.WeaponModel.SetWeaponResonanceData(e.w5n, e.hOs);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeaponResonanceSuccess, o, r);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21793);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24253);
           }
         }
       });
@@ -119,12 +119,12 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       r.R5n.mjn = e;
       r.R5n.l8n = o;
       r.R5n.djn = t;
-      Net_1.Net.Call(22701, r, e => {
+      Net_1.Net.Call(19665, r, e => {
         if (e) {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
             ModelManager_1.ModelManager.WeaponModel.WeaponRoleLoadEquip(e.Gxs);
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24022);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20521);
           }
         }
       });
@@ -153,17 +153,17 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
         _ = n.CheckGetComponent(2);
         const M = t.length === o.length ? t[0] : 0;
         _?.LoadModelByModelId(o[M], l, () => {
-          this.r4d(n, e, C);
+          this.djd(n, e, C);
           c.SetResult();
         });
-        this.o4d(c, d, n, e);
+        this.mjd(c, d, n, e);
         if (i) {
           if (e.ShowScabbard) {
             if (o.length > 1) {
               s = i.CheckGetComponent(2);
               const M = t.length === o.length ? t[1] : 1;
               s.LoadModelByModelId(o[M], false, () => {
-                this.n4d(i, e, a);
+                this.fjd(i, e, a);
                 d?.SetResult();
               });
               return;
@@ -176,7 +176,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static async o4d(e, o, t, r) {
+  static async mjd(e, o, t, r) {
     await Promise.all([e?.Promise, o?.Promise]);
     e = t.CheckGetComponent(9);
     e.SetRotateParam(r.RotateTime);
@@ -215,7 +215,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     const e = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_CharacterRenderingFunctionLibrary_C", () => {
       e.SetResult();
-    });
+    }, "Ui.WeaponUi");
     await e.Promise;
   }
   static async LoadWeaponLevelMaterialDataAsync(e) {
@@ -243,7 +243,7 @@ WeaponController.Gdi = e => {
     ModelManager_1.ModelManager.WeaponModel.RemoveWeaponData(o);
   }
 };
-WeaponController.r4d = (e, o, t) => {
+WeaponController.djd = (e, o, t) => {
   UiModelUtil_1.UiModelUtil.SetVisible(e, true);
   var r = Vector_1.Vector.Create(o.Location.X, o.Location.Y, o.Location.Z);
   var a = Rotator_1.Rotator.Create(o.Rotation.Y, o.Rotation.Z, o.Rotation.X);
@@ -255,7 +255,7 @@ WeaponController.r4d = (e, o, t) => {
   a.Set(o.AxisRotate.Y, o.AxisRotate.Z, o.AxisRotate.X);
   t?.Actor?.K2_SetActorRotation(a.ToUeRotator(), false);
 };
-WeaponController.n4d = (e, o, t) => {
+WeaponController.fjd = (e, o, t) => {
   UiModelUtil_1.UiModelUtil.SetVisible(e, true);
   var r = e.CheckGetComponent(1);
   r.SetTransformByTag(t);

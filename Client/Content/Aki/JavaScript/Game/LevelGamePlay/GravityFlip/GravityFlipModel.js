@@ -76,7 +76,7 @@ class GravityFlipModel extends ModelBase_1.ModelBase {
     return this.xY_(this.CurrentGravityDirection);
   }
   get TargetDirection() {
-    var e = this.GravityFlipEntity?.GetComponent(206);
+    var e = this.GravityFlipEntity?.GetComponent(209);
     if (!e || e.GetTagCount(-1377409745) !== 1) {
       return -1;
     } else if (e.HasTag(1937741205)) {

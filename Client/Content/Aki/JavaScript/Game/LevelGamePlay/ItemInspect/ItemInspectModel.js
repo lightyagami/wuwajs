@@ -15,16 +15,16 @@ const GAME_PAD_SENSITIVITY = 20;
 class ItemInspectModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.hfd = false;
-    this.lfd = 0;
-    this._fd = 0;
-    this.ufd = 0;
-    this.cfd = "";
-    this.dfd = "";
-    this.mfd = 0;
-    this.ffd = 0;
-    this.gfd = 0;
-    this.Cfd = 0;
+    this.c0d = false;
+    this.d0d = 0;
+    this.m0d = 0;
+    this.f0d = 0;
+    this.g0d = "";
+    this.C0d = "";
+    this.p0d = 0;
+    this.v0d = 0;
+    this.y0d = 0;
+    this.S0d = 0;
     this.hQu = new Map();
     this.lQu = new ItemInspectEffectCenter_1.ItemInspectEffectCenter();
     this.CloseSkipConfirmBox = false;
@@ -49,9 +49,9 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     this.cQu = undefined;
     this.dQu = undefined;
     this.mQu = undefined;
-    this.rmd = 0;
-    this.omd = 0;
-    this.vyd = undefined;
+    this.lmd = 0;
+    this._md = 0;
+    this.FMd = undefined;
     this.Mon = undefined;
     this.lzu = undefined;
   }
@@ -61,54 +61,54 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     return true;
   }
   InitGlobalConfig(t) {
-    this.lfd = t.输入速度限制;
-    this._fd = t.平滑插值旋转速度;
-    this.ufd = t.重置旋转速度;
-    this.cfd = t.压暗网格体.ToAssetPathName();
-    this.dfd = t.压暗材质.ToAssetPathName();
-    this.mfd = t.压暗屏幕深度;
-    this.ffd = t.压暗不透明度;
-    this.gfd = t.压暗过渡时间;
-    this.Cfd = t.压暗过渡间隔;
-    this.hfd = true;
+    this.d0d = t.输入速度限制;
+    this.m0d = t.平滑插值旋转速度;
+    this.f0d = t.重置旋转速度;
+    this.g0d = t.压暗网格体.ToAssetPathName();
+    this.C0d = t.压暗材质.ToAssetPathName();
+    this.p0d = t.压暗屏幕深度;
+    this.v0d = t.压暗不透明度;
+    this.y0d = t.压暗过渡时间;
+    this.S0d = t.压暗过渡间隔;
+    this.c0d = true;
   }
   IsInitGlobalConfig() {
-    return this.hfd;
+    return this.c0d;
   }
   GetInputSeedLimit() {
-    return this.lfd;
+    return this.d0d;
   }
   GetRotateInterpSpeed() {
-    return this._fd;
+    return this.m0d;
   }
   GetResetItemRotationSpeed() {
-    return this.ufd;
+    return this.f0d;
   }
   GetDarkStageMeshPath() {
-    return this.cfd;
+    return this.g0d;
   }
   GetDarkStageMaterialPath() {
-    return this.dfd;
+    return this.C0d;
   }
   GetDarkStageScreenDepth() {
-    return this.mfd;
+    return this.p0d;
   }
   GetDarkStageAlpha() {
-    return this.ffd;
+    return this.v0d;
   }
   GetDarkStageBlendTime() {
-    return this.gfd;
+    return this.y0d;
   }
   GetDarkStageBlendInterval() {
-    return this.Cfd;
+    return this.S0d;
   }
   InitData(t, i, e, s, h, r, o) {
     this.dQu = this.hQu.get(t);
-    this.rmd = i;
-    this.omd = i * GAME_PAD_SENSITIVITY;
+    this.lmd = i;
+    this._md = i * GAME_PAD_SENSITIVITY;
     this.cQu = e;
     this.mQu = s;
-    this.vyd = h;
+    this.FMd = h;
     this.Mon = r;
     this.lzu = o;
   }
@@ -123,10 +123,10 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     this.cQu = undefined;
     this.dQu = undefined;
     this.mQu = undefined;
-    this.vyd = undefined;
+    this.FMd = undefined;
     this.Mon = undefined;
-    this.rmd = 0;
-    this.omd = 0;
+    this.lmd = 0;
+    this._md = 0;
     this.lzu = undefined;
     this.ResettingItem = false;
     this.OnResetItemRotationFinish = undefined;
@@ -161,10 +161,10 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     return this.lQu;
   }
   GetDragSensitivity() {
-    return this.rmd;
+    return this.lmd;
   }
   GetGamePadSensitivity() {
-    return this.omd;
+    return this._md;
   }
   GetMaxValidPointCount() {
     return this.mQu?.GetMaxValidCount() ?? 0;
@@ -173,7 +173,7 @@ class ItemInspectModel extends ModelBase_1.ModelBase {
     return this.mQu?.GetCheckedValidCount() ?? 0;
   }
   GetFinishEffect() {
-    return this.vyd;
+    return this.FMd;
   }
   GetLineElement() {
     return this.Mon;

@@ -33,7 +33,7 @@ class TsAnimNotifyStateCounterAttack extends UE.KuroAnimNotifyState {
       if (!t?.Valid) {
         return false;
       }
-      var s = t.GetComponent(210);
+      var s = t.GetComponent(213);
       this.AnMessageId = s?.CreateAnimNotifyContent(i.GetName(), this.exportIndex);
       var s = t.GetComponent(40);
       var i = t.GetComponent(61);

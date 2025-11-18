@@ -20,7 +20,7 @@ class TsAnimNotifySetTransformWithModelBuffer extends UE.KuroAnimNotify {
     var o;
     var s;
     var r = r.GetOwner();
-    return r instanceof TsBaseCharacter_1.default && (o = (t = r.CharacterActorComponent).Entity, r = r.D_GetTransform(), this.LocationKey && (s = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(o.Id, this.LocationKey)) && r.SetLocation(WorldGlobal_1.WorldGlobal.ToUeVector(s)), this.RotatorKey && (s = ControllerHolder_1.ControllerHolder.BlackboardController.GetRotatorValueByEntity(o.Id, this.RotatorKey)) && r.SetRotation(WorldGlobal_1.WorldGlobal.ToUeRotator(s).Quaternion()), (s = o.GetComponent(178))?.Valid ? s.SetTransformWithModelBuffer(r, this.TimeLength) : t.SetActorTransform(r, "TsAnimNotifySetTransformWithModelBuffer", true), true);
+    return r instanceof TsBaseCharacter_1.default && (o = (t = r.CharacterActorComponent).Entity, r = r.D_GetTransform(), this.LocationKey && (s = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(o.Id, this.LocationKey)) && r.SetLocation(WorldGlobal_1.WorldGlobal.ToUeVector(s)), this.RotatorKey && (s = ControllerHolder_1.ControllerHolder.BlackboardController.GetRotatorValueByEntity(o.Id, this.RotatorKey)) && r.SetRotation(WorldGlobal_1.WorldGlobal.ToUeRotator(s).Quaternion()), (s = o.GetComponent(181))?.Valid ? s.SetTransformWithModelBuffer(r, this.TimeLength) : t.SetActorTransform(r, "TsAnimNotifySetTransformWithModelBuffer", true), true);
   }
   GetNotifyName() {
     return "怪物趴墙";

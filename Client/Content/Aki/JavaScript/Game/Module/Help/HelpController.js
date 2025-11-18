@@ -19,10 +19,10 @@ class HelpController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyOpenHelpView, this.WYd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyOpenHelpView, this.Mym);
   }
   static OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyOpenHelpView, this.WYd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyOpenHelpView, this.Mym);
   }
   static OpenHelpById(e) {
     var r = ConfigManager_1.ConfigManager.HelpConfig.GetHelpContentInfoByGroupId(e);
@@ -53,6 +53,6 @@ HelpController.uti = e => {
     _a.HelpGroupId = undefined;
   }
 };
-HelpController.WYd = e => {
+HelpController.Mym = e => {
   _a.OpenHelpById(e);
 }; //# sourceMappingURL=HelpController.js.map

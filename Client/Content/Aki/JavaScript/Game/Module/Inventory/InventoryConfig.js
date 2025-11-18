@@ -13,6 +13,8 @@ const AccessPathById_1 = require("../../../Core/Define/ConfigQuery/AccessPathByI
 const BackgroundCardById_1 = require("../../../Core/Define/ConfigQuery/BackgroundCardById");
 const CalabashSkinById_1 = require("../../../Core/Define/ConfigQuery/CalabashSkinById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
+const HonamiStoryItemById_1 = require("../../../Core/Define/ConfigQuery/HonamiStoryItemById");
+const HonamiStoryWeaponById_1 = require("../../../Core/Define/ConfigQuery/HonamiStoryWeaponById");
 const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
 const ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll");
 const ItemMainTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeById");
@@ -136,6 +138,12 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
         n = PhantomBattleBadgeById_1.configPhantomBattleBadgeById.GetConfig(e);
         break;
       case 17:
+        n = HonamiStoryItemById_1.configHonamiStoryItemById.GetConfig(e);
+        break;
+      case 19:
+        n = HonamiStoryWeaponById_1.configHonamiStoryWeaponById.GetConfig(e);
+        break;
+      case 18:
         n = CalabashSkinById_1.configCalabashSkinById.GetConfig(e);
     }
     if (n) {
@@ -181,8 +189,12 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
       return 15;
     } else if (e >= InventoryDefine_1.PhantomArenaBadgeItemRange[0] && e < InventoryDefine_1.PhantomArenaBadgeItemRange[1]) {
       return 16;
-    } else if (e >= InventoryDefine_1.calabashSkinIdRange[0] && e < InventoryDefine_1.calabashSkinIdRange[1]) {
+    } else if (e >= InventoryDefine_1.HonamiStoryItemRange[0] && e <= InventoryDefine_1.HonamiStoryItemRange[1]) {
       return 17;
+    } else if (e >= InventoryDefine_1.HonamiStoryWeaponRange[0] && e <= InventoryDefine_1.HonamiStoryWeaponRange[1]) {
+      return 19;
+    } else if (e >= InventoryDefine_1.calabashSkinIdRange[0] && e < InventoryDefine_1.calabashSkinIdRange[1]) {
+      return 18;
     } else {
       return 0;
     }
@@ -233,7 +245,22 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
     return PlayerTitleById_1.configPlayerTitleById.GetConfig(e);
   }
   GetItemQualityByItemIdAndQuality(e, n) {
-    if (e !== undefined && this.GetItemDataTypeByConfigId(e) === 13) {
+    if (e === undefined) {
+      return ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityConfig(n);
+    } else if ((e = this.GetItemDataTypeByConfigId(e)) === 17) {
+      return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryQuality(n);
+    } else if (e === 13) {
+      return ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(n);
+    } else {
+      return ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityConfig(n);
+    }
+  }
+  GetItemQualityByConfig(e) {
+    var n = e.QualityId;
+    var e = e.ItemType;
+    if (e === 28) {
+      return ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryQuality(n);
+    } else if (e === 60006) {
       return ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(n);
     } else {
       return ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityConfig(n);

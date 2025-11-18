@@ -8,6 +8,7 @@ const LguiUtil_1 = require("../../../Game/Module/Util/LguiUtil");
 const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GlobalData_1 = require("../../GlobalData");
 const InputMappingsDefine_1 = require("../InputDistribute/InputMappingsDefine");
 class LguiEventSystemManager {
   static get LguiEventSystem() {
@@ -17,16 +18,16 @@ class LguiEventSystemManager {
     var e;
     if (!LguiEventSystemManager.ZCe) {
       LguiEventSystemManager.ZCe = true;
-      e = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_LGUIEventSystem_Actor", undefined);
+      e = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_LGUIEventSystem_Actor", undefined, GlobalData_1.GlobalData.World, 100, "Ui");
       LguiEventSystemManager.Odr = e;
       LguiUtil_1.LguiUtil.SetActorIsPermanent(LguiEventSystemManager.Odr, true, true);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LoadLguiEventSystemActor);
     LguiEventSystemManager.Odr.InitializeLguiEventSystemActor();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InitializeLguiEventSystemActor);
-    this.I5d();
+    this.ffm();
   }
-  static I5d() {
+  static ffm() {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLguiEventSystemInit, LguiEventSystemManager.Odr);
   }
   static Clear() {
@@ -36,32 +37,32 @@ class LguiEventSystemManager {
   static ClickedMouse(e, t) {
     var n = LguiEventSystemManager.Odr;
     if (n?.IsValid()) {
-      var i = t === 0;
+      var a = t === 0;
       switch (e) {
         case InputMappingsDefine_1.actionMappings.Ui左键点击:
-          n.InputTrigger(i, 0);
+          n.InputTrigger(a, 0);
           break;
         case InputMappingsDefine_1.actionMappings.Ui右键点击:
-          n.InputTrigger(i, 2);
+          n.InputTrigger(a, 2);
       }
     }
   }
   static InputNavigation(e, t) {
     var n = LguiEventSystemManager.Odr;
     if (n?.IsValid()) {
-      var i = t === 0;
+      var a = t === 0;
       switch (e) {
         case InputMappingsDefine_1.actionMappings.Ui方向上:
-          n.InputNavigation(3, i);
+          n.InputNavigation(3, a);
           break;
         case InputMappingsDefine_1.actionMappings.Ui方向下:
-          n.InputNavigation(4, i);
+          n.InputNavigation(4, a);
           break;
         case InputMappingsDefine_1.actionMappings.Ui方向左:
-          n.InputNavigation(1, i);
+          n.InputNavigation(1, a);
           break;
         case InputMappingsDefine_1.actionMappings.Ui方向右:
-          n.InputNavigation(2, i);
+          n.InputNavigation(2, a);
       }
     }
   }

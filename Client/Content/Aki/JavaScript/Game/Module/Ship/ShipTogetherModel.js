@@ -10,7 +10,6 @@ const Net_1 = require("../../../Core/Net/Net");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
-const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 class ShipTogetherModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -36,7 +35,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
       this.ShipTogetherRoleId = 0;
     };
     this.IY1 = e => {
-      var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(206);
+      var t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(209);
       this.Dnu(e);
       if (e) {
         t?.AddTag(-844934933);
@@ -46,7 +45,7 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     };
     this.Bnu = () => {
       var e = Protocol_1.Aki.Protocol.xZ1.create();
-      Net_1.Net.Call(23797, e, () => {});
+      Net_1.Net.Call(24881, e, () => {});
     };
   }
   get IsShipTogether() {
@@ -85,28 +84,21 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
     }
   }
   TY1(e) {
-    if (ModelManager_1.ModelManager.ExploreModel.CheckNeedChangeSkill(1009, 1)) {
-      ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(1009, undefined, true);
-    }
-    ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1009, 1);
     var t = e?.PassengerEntity;
-    t?.GetComponent(206)?.AddTag(-1296410005);
-    e?.VehicleEntity?.GetComponent(242)?.AddTagForPassenger(t, 1, 1937468570);
+    t?.GetComponent(209)?.AddTag(-1296410005);
+    e?.VehicleEntity?.GetComponent(245)?.AddTagForPassenger(t, 1, 1937468570);
   }
   RY1(e) {
-    ModelManager_1.ModelManager.ExploreModel.ResetExplodeSkillId(1);
-    var t = ModelManager_1.ModelManager.ExploreModel.GetTopLayerExplodeSkillId();
-    ControllerHolder_1.ControllerHolder.RouletteController.ExploreSkillSetRequest(t, undefined, true);
     var t = e?.PassengerEntity;
-    t?.GetComponent(206)?.RemoveTag(-1296410005);
-    e?.VehicleEntity?.GetComponent(242)?.RemoveTagForPassenger(t, 1, 1937468570);
+    t?.GetComponent(209)?.RemoveTag(-1296410005);
+    e?.VehicleEntity?.GetComponent(245)?.RemoveTagForPassenger(t, 1, 1937468570);
   }
   bY1(e) {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCoBathSwitchFirstPlayerView, this.IY1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnScreenShotDone, this.Bnu);
   }
   LY1(e) {
-    Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(206)?.RemoveTag(-844934933);
+    Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(209)?.RemoveTag(-844934933);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCoBathSwitchFirstPlayerView, this.IY1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnScreenShotDone, this.Bnu);
     ModelManager_1.ModelManager.ShowerModel.ExitAndClear();
@@ -114,18 +106,18 @@ class ShipTogetherModel extends ModelBase_1.ModelBase {
   Dnu(e) {
     var t = Protocol_1.Aki.Protocol.AZ1.create();
     t.BZ1 = e ? Protocol_1.Aki.Protocol.kZ1.j4n : Protocol_1.Aki.Protocol.kZ1.Proto_Third;
-    Net_1.Net.Call(24219, t, () => {});
+    Net_1.Net.Call(19543, t, () => {});
   }
   $bl() {
     var e = ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.values().next().value;
     var t = e?.RoleId ?? 0;
     var e = e?.RoleCreatureId ?? 0;
-    if (e && t && Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(230)?.VehicleType === "Gongduola") {
+    if (e && t && Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(233)?.VehicleType === "Gongduola") {
       ModelManager_1.ModelManager.GameAudioModel.RegisterDriveAudioEvent(t, e);
     }
   }
   zbl() {
-    if (Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(230)?.VehicleType === "Gongduola") {
+    if (Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity.GetComponent(233)?.VehicleType === "Gongduola") {
       ModelManager_1.ModelManager.GameAudioModel.RemoveDriveAudioEvent();
     }
   }

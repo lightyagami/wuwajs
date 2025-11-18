@@ -14,33 +14,34 @@ const CommonDbData_1 = require("./CommonDbData");
 const ConfigStatementLibSync_1 = require("./ConfigStatementLibSync");
 const ConnectDbObject_1 = require("./ConnectDbObject");
 const dataRef = (0, puerts_1.$ref)(undefined);
+const dataIntRef = (0, puerts_1.$ref)(0);
 const DB_CONNECT_LRU_SIZE = 200;
 class CommonDbConnectManager {
-  static aNd() {
-    return ++CommonDbConnectManager.y0d;
+  static E7d() {
+    return ++CommonDbConnectManager.Npd;
   }
-  static hNd(n) {
+  static I7d(n) {
     var o;
-    var n = CommonDbConnectManager.lNd.get(n);
+    var n = CommonDbConnectManager.T7d.get(n);
     if (n) {
       (o = new ConnectDbObject_1.ConnectDbObject()).ConnectStatement(n);
       return o;
     }
   }
-  static _Nd(n) {
+  static b7d(n) {
     n.DisConnectStatement();
   }
-  static uNd(n) {
-    let o = this.cNd.Get(n);
-    if (o = o || this.cNd.Create(n)) {
-      this.cNd.Put(o);
+  static R7d(n) {
+    let o = this.w7d.Get(n);
+    if (o = o || this.w7d.Create(n)) {
+      this.w7d.Put(o);
     }
     return o;
   }
-  static dNd(n, o, t) {
-    var e = this.aNd();
+  static L7d(n, o, t) {
+    var e = this.E7d();
     var n = new CommonDbData_1.CommonDbData(e, n, o, t);
-    CommonDbConnectManager.lNd.set(e, n);
+    CommonDbConnectManager.T7d.set(e, n);
     return n;
   }
   static InitDataStatement(n, o, t) {
@@ -52,7 +53,7 @@ class CommonDbConnectManager {
     if (o.length <= 0 && Log_1.Log.CheckError()) {
       Log_1.Log.Error("CommonDbConnect", 10, "dbName为空！请确认该配置表在拆分Db表中是否有正确配置！");
     }
-    n = CommonDbConnectManager.dNd(o, t, "");
+    n = CommonDbConnectManager.L7d(o, t, "");
     CommonDbConnectManager.O9.Stop();
     return n.IncrementId;
   }
@@ -62,6 +63,7 @@ class CommonDbConnectManager {
       Log_1.Log.Error("CommonDbConnect", 10, "dbName为空！请确认该配置表在拆分Db表中是否有正确配置！");
     }
     e = e && e.length !== 0 ? e : LanguageSystem_1.LanguageSystem.PackageLanguage;
+    n = o + n;
     let a = CommonDbConnectManager.F9.get(n);
     if (!a) {
       a = new Map();
@@ -69,9 +71,9 @@ class CommonDbConnectManager {
     }
     let m = a.get(e);
     if (!m) {
-      n = CommonDbConnectManager.dNd(o, t, e);
+      n = CommonDbConnectManager.L7d(o, t, e);
       m = n.IncrementId;
-      n = this.uNd(n.IncrementId);
+      n = this.R7d(n.IncrementId);
       if (!n) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonDbConnect", 10, "创建Db连接对象失败", ["dbName", o]);
@@ -95,13 +97,20 @@ class CommonDbConnectManager {
     CommonDbConnectManager.k9.Stop();
     return m;
   }
+  static ClearLangAllStatementId(n, o) {
+    o += n;
+    for (const t of CommonDbConnectManager.F9.get(o)?.values() ?? []) {
+      UE.KuroPrepareStatementLib.DestroyStatement(t);
+    }
+    CommonDbConnectManager.F9.delete(o);
+  }
   static CheckStatement(n, ...o) {
     let t = "";
     let e = true;
     if (n <= CommonDbData_1.UNVALID_INCREMENT_ID) {
       t = "未调用InitDataStatement进行初始化";
     } else {
-      n = this.uNd(n);
+      n = this.R7d(n);
       if (!n) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("CommonDbConnect", 10, "[CheckStatement]未调用InitDataStatement进行初始化");
@@ -125,6 +134,7 @@ class CommonDbConnectManager {
     return e;
   }
   static BindBigInt(n, o, t, ...e) {
+    var a;
     CommonDbConnectManager.V9.Start();
     if (typeof t != "bigint") {
       if (Log_1.Log.CheckError()) {
@@ -132,15 +142,15 @@ class CommonDbConnectManager {
       }
       CommonDbConnectManager.V9.Stop();
       return false;
-    } else if (n = this.uNd(n)) {
+    } else if (n = this.R7d(n)) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueBigInt(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueBigInt(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 int64 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 int64 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.V9.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindBigInt]未调用InitDataStatement进行初始化");
@@ -151,16 +161,17 @@ class CommonDbConnectManager {
   }
   static BindInt(n, o, t, ...e) {
     CommonDbConnectManager.H9.Start();
-    var n = this.uNd(n);
+    var a;
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueInt(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueInt(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 int32 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 int32 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.H9.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindInt]未调用InitDataStatement进行初始化");
@@ -171,16 +182,17 @@ class CommonDbConnectManager {
   }
   static BindFloat(n, o, t, ...e) {
     CommonDbConnectManager.j9.Start();
-    var n = this.uNd(n);
+    var a;
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueFloat(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueFloat(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 float 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 float 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.j9.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindFloat]未调用InitDataStatement进行初始化");
@@ -191,16 +203,17 @@ class CommonDbConnectManager {
   }
   static BindFloat64(n, o, t, ...e) {
     CommonDbConnectManager.mtl.Start();
-    var n = this.uNd(n);
+    var a;
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueFloat64(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueFloat64(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 float64 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 float64 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.mtl.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindFloat64]未调用InitDataStatement进行初始化");
@@ -211,16 +224,17 @@ class CommonDbConnectManager {
   }
   static BindBool(n, o, t, ...e) {
     CommonDbConnectManager.W9.Start();
-    var n = this.uNd(n);
+    var a;
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueBool(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueBool(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 bool 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 bool 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.W9.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindBool]未调用InitDataStatement进行初始化");
@@ -231,16 +245,17 @@ class CommonDbConnectManager {
   }
   static BindString(n, o, t, ...e) {
     CommonDbConnectManager.K9.Start();
-    var n = this.uNd(n);
+    var a;
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
-      if (!(t = UE.KuroPrepareStatementLib.SetBindingValueString(n, o, t))) {
+      if (!(a = UE.KuroPrepareStatementLib.SetBindingValueString(n, o, t))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 string 失败", ["handleId", n], ["bindingIndex", o], ...e);
+          Log_1.Log.Error("CommonDbConnect", 10, "绑定参数 string 失败", ["handleId", n], ["bindingIndex", o], ["value", t], ...e);
         }
       }
       CommonDbConnectManager.K9.Stop();
-      return t;
+      return a;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[BindString]未调用InitDataStatement进行初始化");
@@ -251,7 +266,7 @@ class CommonDbConnectManager {
   }
   static Reset(n, ...o) {
     var t;
-    var n = this.uNd(n);
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
       if (!(t = UE.KuroPrepareStatementLib.Reset(n))) {
@@ -268,7 +283,7 @@ class CommonDbConnectManager {
     }
   }
   static Step(n, o = false, ...t) {
-    n = this.uNd(n);
+    n = this.R7d(n);
     if (!n) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonDbConnect", 10, "[Step]未调用InitDataStatement进行初始化");
@@ -301,7 +316,7 @@ class CommonDbConnectManager {
   }
   static GetValue(n, o, ...t) {
     CommonDbConnectManager.Q9.Start();
-    var n = this.uNd(n);
+    var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
       if (!(o = UE.KuroPrepareStatementLib.GetColumnValueBytes(n, o, dataRef))) {
@@ -319,8 +334,28 @@ class CommonDbConnectManager {
       return [false, undefined];
     }
   }
+  static GetValueInt(n, o, ...t) {
+    CommonDbConnectManager.rhm.Start();
+    var n = this.R7d(n);
+    if (n) {
+      n = n.HandleId;
+      if (!(o = UE.KuroPrepareStatementLib.GetColumnValueInt32(n, o, dataIntRef))) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("CommonDbConnect", 62, "获取配置表int字段数值出错", ["handleId", n], ...t);
+        }
+      }
+      n = o ? (0, puerts_1.$unref)(dataIntRef) : 0;
+      CommonDbConnectManager.rhm.Stop();
+      return [o, n];
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("CommonDbConnect", 10, "[GetValueInt]未调用InitDataStatement进行初始化");
+      }
+      return [false, undefined];
+    }
+  }
   static ClearBind(n) {
-    n = this.cNd.Get(n);
+    n = this.w7d.Get(n);
     if (n) {
       n.DisConnectStatement();
     } else if (Log_1.Log.CheckError()) {
@@ -331,19 +366,19 @@ class CommonDbConnectManager {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("CommonDbConnect", 10, "[CloseAllConnection]关闭所有Db连接");
     }
-    this.cNd.Clear();
+    this.w7d.Clear();
     this.F9.clear();
-    this.lNd.clear();
+    this.T7d.clear();
     ConfigStatementLibSync_1.ConfigStatementLibSync.CloseAllConnection();
   }
   static LogConnection() {
-    var n = this.cNd.Size;
+    var n = this.w7d.Size;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("CommonDbConnect", 10, "[LogConnection]连接Db数量", ["connectionCount", n]);
     }
   }
   static DynamicChangeLruCapacity(n) {
-    this.cNd.Capacity = n;
+    this.w7d.Capacity = n;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("CommonDbConnect", 10, "[DynamicChangeLruCapacity]修改Db连接LRU容量", ["capacity", n]);
     }
@@ -358,9 +393,10 @@ CommonDbConnectManager.W9 = Stats_1.Stat.Create("CommonDbConnectManager.BindBool
 CommonDbConnectManager.K9 = Stats_1.Stat.Create("CommonDbConnectManager.BindString");
 CommonDbConnectManager.mtl = Stats_1.Stat.Create("CommonDbConnectManager.BindFloat64Stat");
 CommonDbConnectManager.Q9 = Stats_1.Stat.Create("CommonDbConnectManager.GetValue");
-CommonDbConnectManager.y0d = CommonDbData_1.UNVALID_INCREMENT_ID;
+CommonDbConnectManager.rhm = Stats_1.Stat.Create("CommonDbConnectManager.GetValueInt");
+CommonDbConnectManager.Npd = CommonDbData_1.UNVALID_INCREMENT_ID;
 CommonDbConnectManager.F9 = new Map();
-CommonDbConnectManager.lNd = new Map();
-CommonDbConnectManager.cNd = new Lru_1.Lru(DB_CONNECT_LRU_SIZE, n => CommonDbConnectManager.hNd(n), n => {
-  CommonDbConnectManager._Nd(n);
+CommonDbConnectManager.T7d = new Map();
+CommonDbConnectManager.w7d = new Lru_1.Lru(DB_CONNECT_LRU_SIZE, n => CommonDbConnectManager.I7d(n), n => {
+  CommonDbConnectManager.b7d(n);
 }); //# sourceMappingURL=CommonDbConnectManager.js.map

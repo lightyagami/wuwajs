@@ -36,11 +36,7 @@ const MenuDefine_1 = require("./MenuDefine");
 const REPORT_IMAGE_QUALITY_VALUE_FOR_CUSTOM = 99;
 class MenuController extends UiControllerBase_1.UiControllerBase {
   static get aOc() {
-    if (Info_1.Info.IsMacPlatform()) {
-      return MenuDefine_1.makeImageQualityCustomSetForMac;
-    } else {
-      return MenuDefine_1.makeImageQualityCustomSet;
-    }
+    return MenuDefine_1.makeImageQualityCustomSet;
   }
   static OnInit() {
     MenuController.MFe();
@@ -82,7 +78,11 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     } else if (this.aOc.has(n)) {
       ModelManager_1.ModelManager.MenuModel.IsImageQualityCustom = true;
     }
-    GameSettingsManager_1.GameSettingsManager.HandleValueChange(n, t, 1);
+    if (e.IsDataCache) {
+      ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(n, t);
+    } else {
+      GameSettingsManager_1.GameSettingsManager.HandleValueChange(n, t, 1);
+    }
     this.fac(e);
     this.KNa(e);
     this.pMa(e, t);
@@ -95,41 +95,44 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     }
     ModelManager_1.ModelManager.MenuModel.IsEdited = true;
   }
-  static jWd(e) {
+  static csm(e) {
     if (GameSettingsManager_1.GameSettingsManager.IsValid(GameSettingsDefine_1.EFunction.RayTracedGI)) {
-      GameSettingsManager_1.GameSettingsManager.HandleValueChange(GameSettingsDefine_1.EFunction.RayTracedGI, e > 0 ? 1 : 0, 1);
+      ModelManager_1.ModelManager.MenuModel.AddDataToTempOrSetValue(GameSettingsDefine_1.EFunction.RayTracedGI, e > 0 ? 1 : 0);
     } else {
       GameSettingsManager_1.GameSettingsManager.ForceSaveValue(GameSettingsDefine_1.EFunction.RayTracedGI, e > 0 ? 1 : 0);
     }
     if (GameSettingsManager_1.GameSettingsManager.IsValid(GameSettingsDefine_1.EFunction.RayTracedReflection)) {
-      GameSettingsManager_1.GameSettingsManager.HandleValueChange(GameSettingsDefine_1.EFunction.RayTracedReflection, e > 0 ? 1 : 0, 1);
+      ModelManager_1.ModelManager.MenuModel.AddDataToTempOrSetValue(GameSettingsDefine_1.EFunction.RayTracedReflection, e > 0 ? 1 : 0);
     } else {
       GameSettingsManager_1.GameSettingsManager.ForceSaveValue(GameSettingsDefine_1.EFunction.RayTracedReflection, e > 0 ? 1 : 0);
     }
-    if (GameSettingsManager_1.GameSettingsManager.IsValid(GameSettingsDefine_1.EFunction.RayTracedGI)) {
-      GameSettingsManager_1.GameSettingsManager.HandleValueChange(GameSettingsDefine_1.EFunction.RayTracedShadow, e > 0 ? 1 : 0, 1);
+    if (GameSettingsManager_1.GameSettingsManager.IsValid(GameSettingsDefine_1.EFunction.RayTracedShadow)) {
+      ModelManager_1.ModelManager.MenuModel.AddDataToTempOrSetValue(GameSettingsDefine_1.EFunction.RayTracedShadow, e > 0 ? 1 : 0);
     } else {
       GameSettingsManager_1.GameSettingsManager.ForceSaveValue(GameSettingsDefine_1.EFunction.RayTracedShadow, e > 0 ? 1 : 0);
     }
   }
   static fac(e) {
+    var t = ModelManager_1.ModelManager.MenuModel;
     const n = e.FunctionId;
     if (n === GameSettingsDefine_1.EFunction.IMAGEQUALITY) {
-      var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(n);
-      if (t === undefined) {
+      var i = t.GetDataCacheOrCurValue(n);
+      if (i === undefined) {
         return;
       }
-      var i;
-      var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(t);
-      if (t !== undefined) {
-        for (const [n, a] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(t)) {
-          if ((n !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (n !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && n !== GameSettingsDefine_1.EFunction.RayTracing && (n !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice())) {
+      var a;
+      var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(i);
+      if (i !== undefined) {
+        for (const [n, r] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(i)) {
+          if ((n !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (n !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (n !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice()) && n !== GameSettingsDefine_1.EFunction.RayTracing) {
             let e = n;
-            let t = a;
-            if (n === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && Info_1.Info.IsPcPlatform() && (i = n, [i, e, t] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(i, e, a), GameSettingsManager_1.GameSettingsManager.HandleValueChange(i, 1, 1), i === GameSettingsDefine_1.EFunction.NVIDIADLSS)) {
-              t = 99;
+            let t = r;
+            if (n === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && Info_1.Info.IsPcPlatform()) {
+              a = n;
+              [a, e, t] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, e, r);
+              ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(a, 1);
             }
-            GameSettingsManager_1.GameSettingsManager.HandleValueChange(e, t, 1);
+            ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(e, t);
           }
         }
       }
@@ -137,17 +140,17 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     if (this.aOc.has(n)) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMenuSetting, GameSettingsDefine_1.EFunction.IMAGEQUALITY);
     }
-    if (n === GameSettingsDefine_1.EFunction.RayTracing && (t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing)) !== undefined && ModelManager_1.ModelManager.MenuModel.NeedRayTracingSubChange) {
-      this.jWd(t);
+    if (n === GameSettingsDefine_1.EFunction.RayTracing && (i = t.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RayTracing)) !== undefined && ModelManager_1.ModelManager.MenuModel.NeedRayTracingSubChange) {
+      this.csm(i);
     }
-    if (n === GameSettingsDefine_1.EFunction.NVIDIADLSS && (t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(n)) !== undefined && t === 0) {
-      GameSettingsManager_1.GameSettingsManager.HandleValueChange(GameSettingsDefine_1.EFunction.NVIDIADLSSFG, 0, 1);
+    if (n === GameSettingsDefine_1.EFunction.NVIDIADLSS && (i = t.GetDataCacheOrCurValue(n)) !== undefined && i === 0) {
+      ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(GameSettingsDefine_1.EFunction.NVIDIADLSSFG, 0);
     }
-    const a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(n);
-    if (a !== undefined && e.CanAffectedFunction(a)) {
-      for (var [r, o] of e.AffectedFunction) {
-        if (GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap.has(r)) {
-          GameSettingsManager_1.GameSettingsManager.HandleValueChange(r, o, 1);
+    const r = t.GetDataCacheOrCurValue(n);
+    if (r !== undefined && e.CanAffectedFunction(r)) {
+      for (var [o, s] of e.AffectedFunction) {
+        if (GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap.has(o)) {
+          ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(o, s);
         }
       }
     }
@@ -297,13 +300,13 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     var t = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingId) ?? -1;
     var n = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues)?.get(t);
     e.i_filter_list = `id:${t}-intense:${n ? n[2] : -1}-x:${n ? n[0] : -1}-y:${n ? n[1] : -1}-SharpenIntensity:${n ? n[3] : -1}-Brightness:${n ? n[4] : -1}-Contrast:${n ? n[5] : -1}-ColorTemperature:${n ? n[6] : -1}-Saturation:${n ? n[7] : -1}-Bloom:${n ? n[8] : -1}-Gamma:${n ? n[9] : -1}-ShadowIntensity:${n ? n[10] : -1}-NoiseIntensity:${n ? n[11] : -1}-Halation:${n ? n[12] : -1}`;
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Menu", 64, "上报设置系统埋点数据[Data Collect Done]");
-    }
     e.i_image_mode = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.ImageDisplayMode);
     e.eyeprotect_mode = GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionMode);
     if (e.eyeprotect_mode === 2) {
       e.eyeprotect_list = `temp:${GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTemp)}-strength:${GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionStrength)}-brightness:${GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionBrightness)}-texture:${GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.EyeProtectionTexture)}`;
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Menu", 64, "上报设置系统埋点数据[Data Collect Done]");
     }
     LogReportController_1.LogReportController.LogReport(e);
   }
@@ -314,10 +317,11 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     this.OpenViewFuncMap.set("LogUploadView", this.ewi);
     this.OpenViewFuncMap.set("CdKeyInputView", this.twi);
     this.OpenViewFuncMap.set("MobileSwitchInputView", this._Wa);
-    this.OpenViewFuncMap.set("ResDownLoadView", this.UF1);
+    this.OpenViewFuncMap.set("SubPackageDownLoadView", this.UF1);
+    this.OpenViewFuncMap.set("SubPackageDownLoadClearTipsView", this.eTm);
     this.OpenViewFuncMap.set("FilterSettingView", this.OpenFilterSettingView);
     this.OpenViewFuncMap.set("EyeProtectView", this.OpenEyeProtectView);
-    this.OpenViewFuncMap.set("VersionCheckView", this.A6d);
+    this.OpenViewFuncMap.set("VersionCheckView", this.$Kd);
   }
   static IsInputControllerTypeIncludeKey(e, t) {
     switch (e) {
@@ -386,7 +390,7 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OpenImageOverloadConfirmBox() {
-    var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.AutoAdjustImageQuality);
+    var e = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.AutoAdjustImageQuality);
     if (e !== undefined) {
       if (e === 1) {
         this.OpenImageQualityOverloadConfirmBox();
@@ -451,14 +455,17 @@ MenuController.ewi = () => {
 MenuController.twi = () => {
   CommonInputViewController_1.CommonInputViewController.OpenCdKeyInputView();
 };
-MenuController.A6d = () => {
+MenuController.$Kd = () => {
   PackageUpdateController_1.PackageUpdateController.TryOpenParallelPackageUpdateUrl();
 };
 MenuController._Wa = () => {
   MobileSwitchInputController_1.MobileSwitchInputController.SwitchToGamepadByMenuSetting();
 };
 MenuController.UF1 = () => {
-  UiManager_1.UiManager.OpenView("ResDownLoadView", 2);
+  UiManager_1.UiManager.OpenView("SubPackageDownLoadView");
+};
+MenuController.eTm = () => {
+  UiManager_1.UiManager.OpenView("SubPackageDownLoadClearTipsView");
 };
 MenuController.ita = e => {
   for (var [t, n] of e) {

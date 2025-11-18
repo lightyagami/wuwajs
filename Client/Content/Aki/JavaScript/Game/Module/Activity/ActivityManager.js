@@ -9,6 +9,7 @@ const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const DreamLinkController_1 = require("../DreamLink/DreamLinkController");
 const FloroRanchController_1 = require("../FloroBranch/FloroRanchController");
 const FragmentMemoryActivityController_1 = require("../FragmentMemory/FragmentMemoryActivityController");
+const HonamiStoryController_1 = require("../HonamiStory/HonamiStoryController");
 const ActivityPermanentRogueController_1 = require("../PermanentRogue/ActivityPermanentRogueController");
 const PhantomArenaController_1 = require("../PhantomArena/PhantomArenaController");
 const RacingBetsController_1 = require("../RacingBets/RacingBetsController");
@@ -16,6 +17,7 @@ const SurvivorsActivityController_1 = require("../SurvivorsRogue/Activity/Surviv
 const TowerDefenceController_1 = require("../TowerDefence/TowerDefenceController");
 const WeeklyRogueController_1 = require("../WeeklyRogue/WeeklyRogueController");
 const ActivityLinkageController_1 = require("./ActivityContent/ActivityLinkPage/ActivityLinkageController");
+const AdvanceNoticeController_1 = require("./ActivityContent/AdvanceNotice/AdvanceNoticeController");
 const AvignonController_1 = require("./ActivityContent/Avignon/Controller/AvignonController");
 const BabelTowerController_1 = require("./ActivityContent/BabelTower/BabelTowerController");
 const ActivityBeginnerBookController_1 = require("./ActivityContent/BeginnerBook/ActivityBeginnerBookController");
@@ -51,6 +53,8 @@ const ActivityMowingRiskController_1 = require("./ActivityContent/MowingRisk/Con
 const MowingTowerController_1 = require("./ActivityContent/MowingTower/MowingTowerController");
 const ActivityNoviceJourneyController_1 = require("./ActivityContent/NoviceJourney/ActivityNoviceJourneyController");
 const ActivityPhantomCollectController_1 = require("./ActivityContent/PhantomCollect/ActivityPhantomCollectController");
+const ActivityPreWarmController_1 = require("./ActivityContent/PreWarm/ActivityPreWarmController");
+const ActivityPrizeDrawingController_1 = require("./ActivityContent/PrizeDrawing/ActivityPrizeDrawingController");
 const ActivityRegressController_1 = require("./ActivityContent/Regress/ActivityRegressController");
 const ActivityRoleGiveController_1 = require("./ActivityContent/RoleGive/ActivityRoleGiveController");
 const ActivityRoleGuideController_1 = require("./ActivityContent/RoleGuide/ActivityRoleGuideController");
@@ -152,6 +156,9 @@ class ActivityManager {
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_ConsumptiveActivity, new CumulativeShopController_1.CumulativeShopController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle, new PhantomArenaController_1.PhantomArenaController());
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityInviteNewbieController = t;
+    var t = new HonamiStoryController_1.HonamiStoryController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_HonamiStory, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.HonamiStoryController = t;
     var t = new LifePointDrawActivityController_1.LifePointDrawActivityController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.iAu, t);
     ActivityControllerHolder_1.ActivityControllerHolder.LifePointDrawActivityController = t;
@@ -173,6 +180,15 @@ class ActivityManager {
     var t = new FightPhotoController_1.FightPhotoController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhotoFight, t);
     ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController = t;
+    var t = new ActivityPrizeDrawingController_1.ActivityPrizeDrawingController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_WuWuKuji, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.PrizeDrawingController = t;
+    var t = new ActivityPreWarmController_1.ActivityPreWarmController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PreHeatTaskActivity, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityPreWarmController = t;
+    var t = new AdvanceNoticeController_1.AdvanceNoticeController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_AdvanceNoticeActivity, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.AdvanceNoticeController = t;
   }
   static O4e() {
     this.N4e.forEach((t, o) => {

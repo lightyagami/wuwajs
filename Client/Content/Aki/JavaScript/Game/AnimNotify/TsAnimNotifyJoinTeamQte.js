@@ -22,7 +22,7 @@ class TsAnimNotifyJoinTeamQte extends UE.KuroAnimNotify {
       if (t instanceof TsBaseCharacter_1.default) {
         t = t.CharacterActorComponent?.Entity;
         if (t) {
-          t = t.GetComponent(210).CreateAnimNotifyContent(r.GetName(), this.exportIndex);
+          t = t.GetComponent(213).CreateAnimNotifyContent(r.GetName(), this.exportIndex);
           r = PanelQteController_1.PanelQteController.StartAnimNotifyQte(this.QteId, e, t);
           if (!(r <= 0)) {
             var o = [];

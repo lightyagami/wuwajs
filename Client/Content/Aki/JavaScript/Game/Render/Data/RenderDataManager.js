@@ -39,6 +39,7 @@ class RenderDataManager {
     this.CurrentCharacterPosition = undefined;
     this.PreviousCharacterPositionWithOffset = undefined;
     this.CurrentCharacterPositionWithOffset = undefined;
+    this.CurrentCharacterWeaponPositionWithOffset = undefined;
     this.CurrentCharacterForward = undefined;
     this.CurrentCameraPosition = undefined;
     this.CurrentCameraPositionWithOffset = undefined;
@@ -88,6 +89,7 @@ class RenderDataManager {
     this.CurrentCharacterPosition = Vector_1.Vector.Create();
     this.PreviousCharacterPositionWithOffset = Vector_1.Vector.Create();
     this.CurrentCharacterPositionWithOffset = Vector_1.Vector.Create();
+    this.CurrentCharacterWeaponPositionWithOffset = Vector_1.Vector.Create();
     this.CurrentCharacterForward = Vector_1.Vector.Create();
     this.CurrentCameraPosition = Vector_1.Vector.Create();
     this.CurrentCameraPositionWithOffset = Vector_1.Vector.Create();
@@ -152,6 +154,9 @@ class RenderDataManager {
   }
   GetCurrentCharacterPositionWithOffset() {
     return this.CurrentCharacterPositionWithOffset;
+  }
+  GetCurrentCharacterWeaponPositionWithOffset() {
+    return this.CurrentCharacterWeaponPositionWithOffset;
   }
   GetPreviousCharacterPositionWithOffset() {
     return this.PreviousCharacterPositionWithOffset;
@@ -232,42 +237,57 @@ class RenderDataManager {
     }
   }
   Tick(t) {
-    var e;
-    var i;
-    var r;
-    var s;
     if (this.Valid) {
       RenderModuleConfig_1.RenderStats.StatRenderDataManagerTick.Start();
-      t = t * TimeUtil_1.TimeUtil.Millisecond;
-      e = GlobalData_1.GlobalData.World;
-      if ((i = Global_1.Global.PawnOrSpectator) && i.IsValid()) {
-        r = i.D_K2_GetActorLocation();
-        s = i.K2_GetActorLocation();
-        i = i.GetActorForwardVector();
+      var t = t * TimeUtil_1.TimeUtil.Millisecond;
+      var e = GlobalData_1.GlobalData.World;
+      var i = Global_1.Global.PawnOrSpectator;
+      if (i && i.IsValid()) {
+        var r = i.D_K2_GetActorLocation();
+        var s = i.K2_GetActorLocation();
+        var o = i.GetActorForwardVector();
+        var i = i.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
+        if (i && i.Num() > 0) {
+          i = i.Get(0);
+          if (i && i.IsValid()) {
+            try {
+              var h = new UE.FName("WeaponProp05");
+              var a = i.GetSocketLocation(h);
+              this.CurrentCharacterWeaponPositionWithOffset.FromUeVector(a);
+            } catch (t) {
+              this.CurrentCharacterWeaponPositionWithOffset.FromUeVector(s);
+            }
+          }
+        } else {
+          this.CurrentCharacterWeaponPositionWithOffset.FromUeVector(s);
+        }
         this.PreviousCharacterPosition.Set(this.CurrentCharacterPosition.X, this.CurrentCharacterPosition.Y, this.CurrentCharacterPosition.Z);
         this.PreviousCharacterPositionWithOffset.Set(this.CurrentCharacterPositionWithOffset.X, this.CurrentCharacterPositionWithOffset.Y, this.CurrentCharacterPositionWithOffset.Z);
         this.CurrentCharacterPosition.FromUeVector(r);
         this.CurrentCharacterPositionWithOffset.FromUeVector(s);
-        this.CurrentCharacterForward.FromUeVector(i);
-        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(176);
-        this.CurrentPlayerMoveState = r?.MoveState;
-        s = this.CurrentPlayerMoveState && this.CurrentPlayerMoveState < CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb;
-        UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterOnGround, s ? 1 : 0);
+        this.CurrentCharacterForward.FromUeVector(o);
+        i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(179);
+        this.CurrentPlayerMoveState = i?.MoveState;
+        h = this.CurrentPlayerMoveState && this.CurrentPlayerMoveState < CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb;
+        UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterOnGround, h ? 1 : 0);
         this.Jlr(this.PreviousCharacterPositionWithOffset);
         UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterPreviousWP, this.TempColor);
         this.Jlr(this.CurrentCharacterPositionWithOffset);
         UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterWorldPosition, this.TempColor);
         this.Jlr(this.CurrentCharacterForward);
         UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterWorldForwardDirection, this.TempColor);
+        this.Jlr(this.CurrentCharacterWeaponPositionWithOffset);
+        UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterWeaponPosition, this.TempColor);
         if (ModelManager_1.ModelManager.GameModeModel.InstanceType === Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance) {
           this.SceneTime = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Minute;
         }
         if (this.WriteTimeToCollection) {
-          i = Math.floor(this.SceneTime / this.Xlr);
-          UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeHour, i);
-          UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeMinutes, this.SceneTime - i * this.Xlr);
+          a = Math.floor(this.SceneTime / this.Xlr);
+          UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeHour, a);
+          UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeMinutes, this.SceneTime - a * this.Xlr);
         }
-        if ((r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(45)) && !(s = r.GravityDirect).Equals(this.CachedGravityDirect)) {
+        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(45);
+        if (r && !(s = r.GravityDirect).Equals(this.CachedGravityDirect)) {
           this.Jlr(s);
           UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GravityDirection, this.TempColor);
           this.CachedGravityDirect.DeepCopy(s);

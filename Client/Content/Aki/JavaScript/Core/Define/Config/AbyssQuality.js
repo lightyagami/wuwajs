@@ -31,6 +31,9 @@ class AbyssQuality {
   get AbyssItemFormationBgColor() {
     return this.abyssitemformationbgcolor();
   }
+  get InteractionHintColor() {
+    return this.interactionhintcolor();
+  }
   get Mesh() {
     return this.mesh();
   }
@@ -69,6 +72,9 @@ class AbyssQuality {
   }
   get TextColor() {
     return this.textcolor();
+  }
+  get AcquireNewItemQualityTexPath() {
+    return this.acquirenewitemqualitytexpath();
   }
   get AcquireQualitySpritePath() {
     return this.acquirequalityspritepath();
@@ -146,7 +152,7 @@ class AbyssQuality {
     }
     return s;
   }
-  mesh(t) {
+  interactionhintcolor(t) {
     var s = this.J7.__offset(this.z7, 18);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -154,7 +160,7 @@ class AbyssQuality {
     }
     return s;
   }
-  payshopqualitysprite(t) {
+  mesh(t) {
     var s = this.J7.__offset(this.z7, 20);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -162,7 +168,7 @@ class AbyssQuality {
     }
     return s;
   }
-  abysspassiveitembg(t) {
+  payshopqualitysprite(t) {
     var s = this.J7.__offset(this.z7, 22);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -170,7 +176,7 @@ class AbyssQuality {
     }
     return s;
   }
-  abyssspecialeffects(t) {
+  abysspassiveitembg(t) {
     var s = this.J7.__offset(this.z7, 24);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -178,7 +184,7 @@ class AbyssQuality {
     }
     return s;
   }
-  abysstaileffects(t) {
+  abyssspecialeffects(t) {
     var s = this.J7.__offset(this.z7, 26);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -186,7 +192,7 @@ class AbyssQuality {
     }
     return s;
   }
-  abyssdissipateeffects(t) {
+  abysstaileffects(t) {
     var s = this.J7.__offset(this.z7, 28);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -194,7 +200,7 @@ class AbyssQuality {
     }
     return s;
   }
-  mediumitemgridqualityspritepath(t) {
+  abyssdissipateeffects(t) {
     var s = this.J7.__offset(this.z7, 30);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -202,7 +208,7 @@ class AbyssQuality {
     }
     return s;
   }
-  qualitycolor(t) {
+  mediumitemgridqualityspritepath(t) {
     var s = this.J7.__offset(this.z7, 32);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -210,7 +216,7 @@ class AbyssQuality {
     }
     return s;
   }
-  dropcolor(t) {
+  qualitycolor(t) {
     var s = this.J7.__offset(this.z7, 34);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -218,7 +224,7 @@ class AbyssQuality {
     }
     return s;
   }
-  tipsqualitytexturepath(t) {
+  dropcolor(t) {
     var s = this.J7.__offset(this.z7, 36);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -226,8 +232,16 @@ class AbyssQuality {
     }
     return s;
   }
+  tipsqualitytexturepath(t) {
+    var s = this.J7.__offset(this.z7, 38);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
   recoveryrewarditem() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -235,14 +249,6 @@ class AbyssQuality {
     }
   }
   acquirequalitytexpath(t) {
-    var s = this.J7.__offset(this.z7, 40);
-    var s = s ? this.J7.__string(this.z7 + s, t) : null;
-    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(s);
-    }
-    return s;
-  }
-  textcolor(t) {
     var s = this.J7.__offset(this.z7, 42);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -250,7 +256,7 @@ class AbyssQuality {
     }
     return s;
   }
-  acquirequalityspritepath(t) {
+  textcolor(t) {
     var s = this.J7.__offset(this.z7, 44);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -258,7 +264,7 @@ class AbyssQuality {
     }
     return s;
   }
-  name(t) {
+  acquirenewitemqualitytexpath(t) {
     var s = this.J7.__offset(this.z7, 46);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -266,7 +272,7 @@ class AbyssQuality {
     }
     return s;
   }
-  backgroundsprite(t) {
+  acquirequalityspritepath(t) {
     var s = this.J7.__offset(this.z7, 48);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -274,8 +280,24 @@ class AbyssQuality {
     }
     return s;
   }
-  filtericonpath(t) {
+  name(t) {
     var s = this.J7.__offset(this.z7, 50);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  backgroundsprite(t) {
+    var s = this.J7.__offset(this.z7, 52);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  filtericonpath(t) {
+    var s = this.J7.__offset(this.z7, 54);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);

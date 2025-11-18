@@ -30,6 +30,8 @@ var EBackLoginViewReason;
   e[e.SdkRenewAccessTokenFailed = 6] = "SdkRenewAccessTokenFailed";
   e[e.PsnUnAvailable = 7] = "PsnUnAvailable";
   e[e.ResetTime = 8] = "ResetTime";
+  e[e.InvalidTeleportPosition = 9] = "InvalidTeleportPosition";
+  e[e.SubPackageNeedReLogin = 10] = "SubPackageNeedReLogin";
 })(ELogoutReason = exports.ELogoutReason ||= {});
 (function (e) {
   e[e.Logout = 0] = "Logout";

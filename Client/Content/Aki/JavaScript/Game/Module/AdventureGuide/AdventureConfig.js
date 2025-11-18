@@ -10,6 +10,7 @@ const AdventureTaskById_1 = require("../../../Core/Define/ConfigQuery/AdventureT
 const AdventureTaskChapterAll_1 = require("../../../Core/Define/ConfigQuery/AdventureTaskChapterAll");
 const AdventureTaskChapterById_1 = require("../../../Core/Define/ConfigQuery/AdventureTaskChapterById");
 const DetectionDropDownTypeById_1 = require("../../../Core/Define/ConfigQuery/DetectionDropDownTypeById");
+const DetectionTitlePanelById_1 = require("../../../Core/Define/ConfigQuery/DetectionTitlePanelById");
 const DropPackageById_1 = require("../../../Core/Define/ConfigQuery/DropPackageById");
 const DungeonDetectionAll_1 = require("../../../Core/Define/ConfigQuery/DungeonDetectionAll");
 const DungeonDetectionById_1 = require("../../../Core/Define/ConfigQuery/DungeonDetectionById");
@@ -197,6 +198,9 @@ class AdventureGuideConfig extends ConfigBase_1.ConfigBase {
   }
   GetLevelPlayNightMareConfig(e) {
     return this.UDu.get(e);
+  }
+  GetDetectionTitlePanelConfig(e) {
+    return DetectionTitlePanelById_1.configDetectionTitlePanelById.GetConfig(e);
   }
 }
 exports.AdventureGuideConfig = AdventureGuideConfig;

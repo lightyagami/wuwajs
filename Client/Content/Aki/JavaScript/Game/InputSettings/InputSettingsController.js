@@ -19,16 +19,15 @@ const GameSettingsUtils_1 = require("../GameSettings/GameSettingsUtils");
 const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
-const InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine");
 const InputSettingsManager_1 = require("./InputSettingsManager");
 class InputSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(25496, InputSettingsController.zih);
+    Net_1.Net.Register(27225, InputSettingsController.zih);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(25496);
+    Net_1.Net.UnRegister(27225);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetPlayerBasicInfo, this.Wvi);
     return true;
   }
@@ -46,28 +45,48 @@ class InputSettingsController extends ControllerBase_1.ControllerBase {
   }
   static InputSettingRequest() {
     var t = new Protocol_1.Aki.Protocol.jf_();
-    Net_1.Net.Call(19804, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
+    Net_1.Net.Call(20959, Protocol_1.Aki.Protocol.jf_.create(t), this.Jih);
   }
   static InputSettingUpdateRequest(t) {
     var e = new Protocol_1.Aki.Protocol.$f_();
     e.Zih = this.Ttl(t);
-    Net_1.Net.Call(26982, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
+    Net_1.Net.Call(29543, Protocol_1.Aki.Protocol.$f_.create(e), this.erh);
   }
   static aY1() {
-    for (const a of KeySettingAll_1.configKeySettingAll.GetConfigList()) {
-      if (a.ActionOrAxisName === InputMappingsDefine_1.actionMappings.切换角色4) {
-        for (const r of a.ConnectedKeySettingIdList) {
-          var t = KeySettingById_1.configKeySettingById.GetConfig(r);
-          var e = a.ActionOrAxisName;
-          var n = InputSettingsManager_1.InputSettingsManager.GetActionBinding(e);
-          var t = t.ActionOrAxisName;
-          var o = InputSettingsManager_1.InputSettingsManager.GetActionBinding(t);
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("InputSettings", 10, "处理键位联动问题", ["ActionName", e], ["LinkActionName", t]);
+    for (const s of KeySettingAll_1.configKeySettingAll.GetConfigList()) {
+      var t = s.ConnectedKeySettingIdList;
+      if (!(t.length <= 0)) {
+        for (const u of t) {
+          var e = KeySettingById_1.configKeySettingById.GetConfig(u);
+          var n = s.ActionOrAxisName;
+          var o = InputSettingsManager_1.InputSettingsManager.GetActionBinding(n);
+          var a = InputSettingsManager_1.InputSettingsManager.TryGetCombinationActionBinding(n);
+          var r = e.ActionOrAxisName;
+          var i = InputSettingsManager_1.InputSettingsManager.GetActionBinding(r);
+          var g = [];
+          var _ = new Map();
+          switch (s.InputControllerType) {
+            case 1:
+              o.GetPcKeyNameList(g);
+              i?.SetKeyboardKeys(g);
+              a?.GetPcKeyNameMap(_);
+              InputSettingsManager_1.InputSettingsManager.SetOrAddCombinationActionKeyboardKeys(r, _);
+              break;
+            case 2:
+              o.GetGamepadKeyNameList(g);
+              i?.SetGamepadKeys(g);
+              a?.GetGamepadKeyNameMap(_);
+              InputSettingsManager_1.InputSettingsManager.SetOrAddCombinationActionGamepadKeys(r, _);
+              break;
+            default:
+              o.GetKeyNameList(g);
+              i?.SetKeys(g);
           }
-          var e = [];
-          n.GetPcKeyNameList(e);
-          o?.SetKeyboardKeys(e);
+          e = [];
+          i?.GetKeyNameList(e);
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("InputSettings", 10, "处理键位联动问题", ["ActionName", n], ["Type", s.InputControllerType], ["LinkActionName", r], ["KeyNames", g], ["after", e]);
+          }
         }
       }
     }
@@ -498,6 +517,6 @@ InputSettingsController.Jih = t => {
 };
 InputSettingsController.erh = t => {
   if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27541);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26345);
   }
 }; //# sourceMappingURL=InputSettingsController.js.map

@@ -32,44 +32,44 @@ const TDPlayerController_1 = require("./TD/TDPlayer/TDPlayerController");
 const TowerDefenseSubController_1 = require("./TD/TowerDefenseSubController");
 class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   static get MapInit() {
-    return this.sgd;
+    return this.ECd;
   }
   static get WorldInit() {
-    return this.agd;
+    return this.ICd;
   }
   static get CurSubModel() {
     return this.CurSubController?.Model;
   }
   static GetSubController(t) {
-    return this.uvd.get(t);
+    return this.DSd.get(t);
   }
   static GetSubModel(t) {
     return this.GetSubController(t)?.Model;
   }
   static OnInit() {
     this.PauseTick();
-    for (var [t, e] of this.uvd) {
+    for (var [t, e] of this.DSd) {
       e.Init(t);
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetGameModeDataDone, KuroSimpleCombatController.dYc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AfterLoadMap, KuroSimpleCombatController.k2a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, KuroSimpleCombatController.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, KuroSimpleCombatController.mYc);
-    Net_1.Net.Register(17219, KuroSimpleCombatController.GKu);
-    Net_1.Net.Register(19930, KuroSimpleCombatController.Cvd);
-    Net_1.Net.Register(19123, KuroSimpleCombatController.aMd);
+    Net_1.Net.Register(25191, KuroSimpleCombatController.GKu);
+    Net_1.Net.Register(26617, KuroSimpleCombatController.qSd);
+    Net_1.Net.Register(28487, KuroSimpleCombatController.wId);
     return true;
   }
   static OnClear() {
-    for (const t of this.uvd.values()) {
+    for (const t of this.DSd.values()) {
       t.Clear();
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetGameModeDataDone, KuroSimpleCombatController.dYc);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AfterLoadMap, KuroSimpleCombatController.k2a);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, KuroSimpleCombatController.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ClearWorld, KuroSimpleCombatController.mYc);
-    Net_1.Net.UnRegister(17219);
-    Net_1.Net.UnRegister(19930);
+    Net_1.Net.UnRegister(25191);
+    Net_1.Net.UnRegister(26617);
     this.StopKscHeadStateManager();
     return true;
   }
@@ -84,7 +84,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     var e = KscEnv_1.KscEnv.KscWorld;
     if (e) {
       this.CurSubController?.Tick(t);
-      e.GetEntityPositionsEx(this.QEd);
+      e.GetEntityPositionsEx(this.vbd);
       TDPlayerController_1.TowerDefensePlayerController.SyncMainLocations(t);
     }
   }
@@ -211,7 +211,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
         Path: s,
         NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedEntityDa,
         Callback: t => {
-          if (this.agd) {
+          if (this.ICd) {
             if (t && t?.IsValid()) {
               KscLog_1.KscLog.Info("Load", 84, KscEnv_1.KscEnv.KscWorld, "从Dt加入战斗实体时加载成功", ["Path", s]);
               if ((t = this.AddEntityImpl(t, {
@@ -238,7 +238,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   static _Wu(e) {
     var t = Protocol_1.Aki.Protocol.Cwu.create();
     t.pWc = e;
-    Net_1.Net.Call(25112, t, t => {
+    Net_1.Net.Call(24110, t, t => {
       if (!t || t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         KscLog_1.KscLog.Warn("Common", 84, KscEnv_1.KscEnv.KscWorld, "请求实体死亡异常", ["requestInfos", e], ["error", t?.Q4n]);
       }
@@ -249,8 +249,8 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     if (o !== 0) {
       var r = {};
       for (let t = 0; t < o; ++t) {
-        this.Cod.InitFromRemoveContext(e.Get(t), this.CurSubModel.KscEntities);
-        this.uWu(this.Cod, r, true);
+        this.Qod.InitFromRemoveContext(e.Get(t), this.CurSubModel.KscEntities);
+        this.uWu(this.Qod, r, true);
       }
       if (Object.keys(r).length > 0) {
         this._Wu(r);
@@ -262,8 +262,8 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     if (o !== 0) {
       var r = {};
       for (let t = 0; t < o; ++t) {
-        this.Cod.InitFromLandFireContext(e.Get(t), this.CurSubModel.KscEntities);
-        this.uWu(this.Cod, r);
+        this.Qod.InitFromLandFireContext(e.Get(t), this.CurSubModel.KscEntities);
+        this.uWu(this.Qod, r);
       }
       if (Object.keys(r).length > 0) {
         this._Wu(r);
@@ -302,7 +302,7 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   static GetEntityPositions() {
     if (KscEnv_1.KscEnv.KscWorld) {
       var e = [];
-      var o = (0, puerts_1.$unref)(this.QEd);
+      var o = (0, puerts_1.$unref)(this.vbd);
       for (let t = 0; t < o.Num(); t++) {
         var r = o.Get(t);
         e.push(r);
@@ -311,17 +311,17 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     }
   }
   static PushSimpleCombatEntityHp(t, e, o) {
-    var r = Protocol_1.Aki.Protocol.e2d.create();
+    var r = Protocol_1.Aki.Protocol.pGd.create();
     var i = {};
-    var s = Protocol_1.Aki.Protocol.o2d.create();
+    var s = Protocol_1.Aki.Protocol.MGd.create();
     var n = {
       3: e,
       2: o
     };
-    s.t2d = n;
+    s.vGd = n;
     i[t] = s;
-    r.i2d = i;
-    Net_1.Net.Send(26235, r);
+    r.yGd = i;
+    Net_1.Net.Send(28355, r);
   }
   static SetDebugOn(t) {
     this.IsDebug = t;
@@ -333,15 +333,15 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     this.IsDebug = !this.IsDebug;
   }
   static get KscHeadStateManager() {
-    return this.P4d;
+    return this.Qjd;
   }
   static StartKscHeadStateManager() {
-    this.P4d ||= UE.KSC_HeadStateManager.CreateInstance(GlobalData_1.GlobalData.World);
+    this.Qjd ||= UE.KSC_HeadStateManager.CreateInstance(GlobalData_1.GlobalData.World);
   }
   static StopKscHeadStateManager() {
-    if (this.P4d) {
+    if (this.Qjd) {
       UE.KSC_HeadStateManager.DestroyInstance();
-      this.P4d = undefined;
+      this.Qjd = undefined;
     }
   }
   static GmAddBuff(t, e) {
@@ -371,17 +371,17 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.KuroSimpleCombatController = KuroSimpleCombatController;
-(_a = KuroSimpleCombatController).uvd = new Map([[0, new TowerDefenseSubController_1.TowerDefenseSubController()], [1, new SurvivorsRogueSubController_1.SurvivorsRogueSubController()]]);
+(_a = KuroSimpleCombatController).DSd = new Map([[0, new TowerDefenseSubController_1.TowerDefenseSubController()], [1, new SurvivorsRogueSubController_1.SurvivorsRogueSubController()]]);
 KuroSimpleCombatController.CurSubController = undefined;
-KuroSimpleCombatController.QEd = (0, puerts_1.$ref)(UE.NewArray(UE.KSC_MiniMapContext));
-KuroSimpleCombatController.sgd = false;
-KuroSimpleCombatController.agd = false;
+KuroSimpleCombatController.vbd = (0, puerts_1.$ref)(UE.NewArray(UE.KSC_MiniMapContext));
+KuroSimpleCombatController.ECd = false;
+KuroSimpleCombatController.ICd = false;
 KuroSimpleCombatController.dYc = () => {
   _a.CurSubController = undefined;
   if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
     var t = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.InstSubType;
     if (t) {
-      for (const e of _a.uvd.values()) {
+      for (const e of _a.DSd.values()) {
         if (e.IsTargetMap(t)) {
           _a.CurSubController = e;
           break;
@@ -389,13 +389,13 @@ KuroSimpleCombatController.dYc = () => {
       }
     }
     if (_a.CurSubController) {
-      _a.sgd = true;
+      _a.ECd = true;
       _a.CurSubController.InitMap();
     }
   }
 };
 KuroSimpleCombatController.k2a = () => {
-  _a.agd = true;
+  _a.ICd = true;
   if (_a.CurSubController) {
     _a.CurSubController.MapLoaded();
   }
@@ -407,20 +407,20 @@ KuroSimpleCombatController.nye = () => {
   }
 };
 KuroSimpleCombatController.mYc = () => {
-  if (_a.agd) {
-    _a.agd = false;
+  if (_a.ICd) {
+    _a.ICd = false;
     _a.CurSubModel?.EntityProcessMgr.CancelAllTask();
     _a.CurSubController?.WorldReset();
   }
-  if (_a.sgd) {
-    _a.sgd = false;
+  if (_a.ECd) {
+    _a.ECd = false;
     _a.CurSubController?.ClearMap();
   }
-  (0, puerts_1.$unref)(_a.QEd).Empty();
+  (0, puerts_1.$unref)(_a.vbd).Empty();
   _a.CurSubController = undefined;
   _a.PauseTick();
 };
-KuroSimpleCombatController.Cod = new KscData_1.KscRemoveContext();
+KuroSimpleCombatController.Qod = new KscData_1.KscRemoveContext();
 KuroSimpleCombatController.GKu = t => {
   if (t.b6n) {
     if (t.F4n) {
@@ -433,7 +433,7 @@ KuroSimpleCombatController.GKu = t => {
     KscLog_1.KscLog.Warn("Skill", 38, KscEnv_1.KscEnv.KscWorld, "刷新buff时 BuffId 为空");
   }
 };
-KuroSimpleCombatController.Cvd = t => {
+KuroSimpleCombatController.qSd = t => {
   if (t.b6n) {
     if (t.F4n) {
       t = new KscActionBuffLayoutUpdate_1.KscActionBuffLayoutUpdate(t);
@@ -445,7 +445,7 @@ KuroSimpleCombatController.Cvd = t => {
     KscLog_1.KscLog.Warn("Skill", 38, KscEnv_1.KscEnv.KscWorld, "刷新buff Layer时 BuffId 为空");
   }
 };
-KuroSimpleCombatController.aMd = t => {
+KuroSimpleCombatController.wId = t => {
   var e;
   if (t.F4n) {
     if (!!(e = t.Uzc?.JHu) && !(Object.keys(e).length <= 0)) {
@@ -457,4 +457,4 @@ KuroSimpleCombatController.aMd = t => {
   }
 };
 KuroSimpleCombatController.IsDebug = false;
-KuroSimpleCombatController.P4d = undefined; //# sourceMappingURL=KscController.js.map
+KuroSimpleCombatController.Qjd = undefined; //# sourceMappingURL=KscController.js.map

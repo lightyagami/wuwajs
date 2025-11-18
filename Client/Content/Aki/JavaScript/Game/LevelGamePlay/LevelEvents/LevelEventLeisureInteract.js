@@ -31,7 +31,7 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
       if (Global_1.Global.BaseCharacter) {
         var s = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity;
         var _ = s.GetComponent(29);
-        const a = s.GetComponent(194);
+        const r = s.GetComponent(197);
         var n = s.GetComponent(59);
         switch (o.Option.Type) {
           case IAction_1.ELeisureInteract.SitDown:
@@ -49,8 +49,8 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
                 this.FinishExecute(false);
                 return;
               }
-              var r = this.Kul(o.Option.Type);
-              _.EnterSitDownAction(c, r, e);
+              var a = this.Kul(o.Option.Type);
+              _.EnterSitDownAction(c, a, e);
               this.FinishExecute(true);
             }
             break;
@@ -84,22 +84,22 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.StandControl2:
-            a.AddTag(1334991742);
+            r.AddTag(1334991742);
             _.PlayCustomCommonSkill(400202);
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.Soar:
-            var r = s.GetComponent(40);
+            var a = s.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              a.TagContainer.UpdateExactTag(2, 283451623, -1);
+              r.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             ModelManager_1.ModelManager.ExploreModel.SetExploreSkillId(1015);
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
-            r.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
+            a.BeginSkillAsync(SKILL_ID_XA_CHARACTER_DIR, {
               Reason: "LeisureInteract行为触发翱翔"
             }).then(() => {
               if (this.BaseContext?.Type === 9) {
-                a.TagContainer.UpdateExactTag(2, 283451623, 1);
+                r.TagContainer.UpdateExactTag(2, 283451623, 1);
               }
               this.FinishExecute(true);
             });
@@ -107,7 +107,7 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
           case IAction_1.ELeisureInteract.Soar2:
             c = s.GetComponent(40);
             if (this.BaseContext?.Type === 9) {
-              a.TagContainer.UpdateExactTag(2, 283451623, -1);
+              r.TagContainer.UpdateExactTag(2, 283451623, -1);
             }
             RouletteController_1.RouletteController.ExploreSkillSetRequest(1015);
             n?.SwitchCurrentSoarType(1);
@@ -115,19 +115,19 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
               Reason: "LeisureInteract行为触发遨游"
             }).then(() => {
               if (this.BaseContext?.Type === 9) {
-                a.TagContainer.UpdateExactTag(2, 283451623, 1);
+                r.TagContainer.UpdateExactTag(2, 283451623, 1);
               }
               this.FinishExecute(true);
             });
             break;
           case IAction_1.ELeisureInteract.Glide:
-            s.GetComponent(179).TrySetGlide();
+            s.GetComponent(182).TrySetGlide();
             this.FinishExecute(true);
             break;
           case IAction_1.ELeisureInteract.HookLock:
-            if (s.GetComponent(100)?.CanActivateFixHook()) {
-              r = a.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
-              s.GetComponent(40).BeginSkillAsync(r, {
+            if (s.GetComponent(102)?.CanActivateFixHook()) {
+              a = r.HasTag(-1958756056) ? SKILL_ID_FIX_HOOK_2 : SKILL_ID_FIX_HOOK_1;
+              s.GetComponent(40).BeginSkillAsync(a, {
                 Reason: "LeisureInteract行为触发定点钩锁"
               }).then(() => {
                 this.FinishExecute(true);
@@ -140,7 +140,7 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             }
             break;
           case IAction_1.ELeisureInteract.KiteHook:
-            if (a.HasTag(-1526637662)) {
+            if (r.HasTag(-1526637662)) {
               s.GetComponent(40).BeginSkillAsync(SKILL_ID_XA_KITE, {
                 Reason: "LeisureInteract行为触发风筝钩锁"
               }).then(() => {
@@ -192,6 +192,14 @@ class LevelEventLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
             break;
           case IAction_1.ELeisureInteract.FaithJump:
             _.PlayFaithJumpSkill();
+            this.FinishExecute(true);
+            break;
+          case IAction_1.ELeisureInteract.Swing:
+            s.GetComponent(306)?.StartRoleSwing(o.Option.SwingDa, o.Option.EntityId);
+            this.FinishExecute(true);
+            break;
+          case IAction_1.ELeisureInteract.SwingGetUp:
+            s?.GetComponent(306)?.ExitLoopSwing();
             this.FinishExecute(true);
         }
         this.QYs = undefined;

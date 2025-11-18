@@ -48,7 +48,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
               i.push(a.EntityId);
               var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
               if (a.BeforeHide) {
-                o?.Entity?.GetComponent(206)?.AddTag(447365096);
+                o?.Entity?.GetComponent(209)?.AddTag(447365096);
               }
             }
             this.CreateWaitEntityTask(i);
@@ -123,7 +123,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(206);
+    e = e.Entity.GetComponent(209);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState AddTagByName", ["EntityId", t], ["TagName", i]);
@@ -141,7 +141,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTag", ["EntityId", t], ["TagName", i]);
     }
-    e = e.Entity.GetComponent(206);
+    e = e.Entity.GetComponent(209);
     if (e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Event", 33, "LevelEventSetBattleState RemoveTagByName", ["EntityId", t], ["TagName", i]);
@@ -239,7 +239,7 @@ class LevelEventSetBattleState extends LevelGeneralBase_1.LevelEventBase {
           a.u5n = e.GetCurrentPatrolSplineId();
           a.c5n = e.GetLastPointRawIndex();
           a.m5n = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.StandbyTags[i]);
-          Net_1.Net.Call(19464, a, t => {
+          Net_1.Net.Call(17752, a, t => {
             if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && Log_1.Log.CheckWarn()) {
               Log_1.Log.Warn("AI", 50, "请求状态机切换生态表演失败", ["CreatureId", a.F4n], ["PbDataId", o.CreatureData.GetPbDataId()], ["SplineId", a.u5n], ["Index", a.c5n], ["Tag", a.m5n]);
             }

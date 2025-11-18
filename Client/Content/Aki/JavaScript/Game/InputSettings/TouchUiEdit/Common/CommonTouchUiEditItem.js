@@ -30,7 +30,7 @@ class CommonTouchUiEditItem {
           this.vgt.X += s;
           this.vgt.Y += t;
           this.vgt.Z = 0;
-          this.Yfd(this.vgt);
+          this.tCd(this.vgt);
           this.pgt = i;
         }
       }
@@ -110,7 +110,7 @@ class CommonTouchUiEditItem {
       this.vgt.X += t;
       this.vgt.Y += i;
       this.vgt.Z = 0;
-      this.Yfd(this.vgt);
+      this.tCd(this.vgt);
     }
   }
   SetScale(t) {
@@ -169,7 +169,7 @@ class CommonTouchUiEditItem {
     t.Y = MathUtils_1.MathUtils.Clamp(t.Y, r, s);
     return t;
   }
-  Yfd(t) {
+  tCd(t) {
     var t = this.t0t(t);
     var i = this.RootItem.GetAnchorOffsetX();
     var s = this.RootItem.GetAnchorOffsetY();

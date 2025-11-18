@@ -14,7 +14,7 @@ class TsAnimNotifyChangeAcceleration extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, t) {
     var e = e.GetOwner();
-    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity?.GetComponent(179))) {
+    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity?.GetComponent(182))) {
       e.AccelerationLerpTime = this.Time;
       e.AccelerationChangeMoveState = this.MoveState;
     }

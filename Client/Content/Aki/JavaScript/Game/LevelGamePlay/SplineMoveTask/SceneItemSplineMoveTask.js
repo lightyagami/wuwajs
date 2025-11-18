@@ -113,7 +113,7 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     var e;
     if (!(this.aYu >= 1)) {
       this.aYu = 1;
-      if ((e = this.EntityHandle.Entity?.GetComponent(129))?.Valid) {
+      if ((e = this.EntityHandle.Entity?.GetComponent(132))?.Valid) {
         if (this.Oih() && this.pi1() && this.vi1()) {
           if (this.IsEnableSplineMoveSync && e.ActorComp?.IsMoveAutonomousProxy) {
             ControllerHolder_1.ControllerHolder.SyncSplineMoveController.SendSyncSceneItemSplineMoveRunning(this.EntityHandle.CreatureDataId, this.SplineId, this.ui1.DistanceAloneSpline, this.ui1.CurPos, this.ui1.CurRot);
@@ -142,10 +142,10 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
       }
       this.enh?.clear();
       EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-      const i = this.EntityHandle.Entity?.GetComponent(129);
+      const i = this.EntityHandle.Entity?.GetComponent(132);
       i?.StopMove();
       if (this.IsEnableSplineMoveSync) {
-        const i = this.EntityHandle.Entity?.GetComponent(129);
+        const i = this.EntityHandle.Entity?.GetComponent(132);
         if (i?.ActorComp?.IsMoveAutonomousProxy) {
           this.lYu();
         }
@@ -174,7 +174,7 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
   }
   _Yu() {
     var e;
-    var t = this.EntityHandle.Entity?.GetComponent(129);
+    var t = this.EntityHandle.Entity?.GetComponent(132);
     var i = this.EntityHandle.Entity?.GetComponent(1);
     if (i?.IsMoveAutonomousProxy && t?.IsSplineMoving() && this.ui1) {
       t = t.GetDistanceAloneSpline();
@@ -242,7 +242,7 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     if (!(this.aYu >= 2)) {
       this.aYu = 2;
       if (this.EntityHandle?.Valid) {
-        const n = this.EntityHandle.Entity.GetComponent(129);
+        const n = this.EntityHandle.Entity.GetComponent(132);
         if (n?.Valid) {
           if (this.ICl) {
             this.enh = new Map();
@@ -306,7 +306,7 @@ class SceneItemSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     var t;
     if (!(this.aYu >= 4)) {
       this.aYu = 4;
-      if ((e = this.EntityHandle.Entity.GetComponent(129))?.Valid) {
+      if ((e = this.EntityHandle.Entity.GetComponent(132))?.Valid) {
         if (t = this.Ei1(this.SplineComp, this.ci1, this.ui1)) {
           if (e.IsMoving) {
             e.StopMove();

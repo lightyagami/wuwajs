@@ -128,12 +128,12 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     if (this.Hte) {
       this.Mne = this.Hte.CreatureData.GetPbDataId();
-      this.wsn = this.Entity.GetComponent(197);
+      this.wsn = this.Entity.GetComponent(200);
       if (this.wsn) {
-        this.mBe = this.Entity.GetComponent(134);
+        this.mBe = this.Entity.GetComponent(137);
         if (this.mBe) {
           this.b1n = true;
           this._Mr = true;
@@ -223,12 +223,12 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
       return false;
     }
     var t = t.CharacterActorComponent.Entity;
-    var e = t.CheckGetComponent(175);
+    var e = t.CheckGetComponent(178);
     if (!e) {
       return false;
     }
     let i = e.GetBuffTotalStackById(this.eHr) > 0;
-    e = t.CheckGetComponent(191);
+    e = t.CheckGetComponent(194);
     if (e) {
       i ||= (e.GetFormationBuffComp()?.GetBuffTotalStackById(this.eHr) ?? 0) > 0;
     }
@@ -289,5 +289,5 @@ let SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = class Sc
     }
   }
 };
-SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(146)], SceneItemBuffProducerComponent);
+SceneItemBuffProducerComponent = SceneItemBuffProducerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(149)], SceneItemBuffProducerComponent);
 exports.SceneItemBuffProducerComponent = SceneItemBuffProducerComponent; //# sourceMappingURL=SceneItemBuffProducerComponent.js.map

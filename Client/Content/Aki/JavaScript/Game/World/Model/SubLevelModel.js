@@ -15,8 +15,8 @@ class SubLevelModel extends ModelBase_1.ModelBase {
     this.SW_ = new Map();
     this.da = new Map();
     this.MW_ = new Map();
-    this.fXd = false;
-    this.gXd = false;
+    this.Ogm = false;
+    this.Ggm = false;
   }
   OnLeaveLevel() {
     var e;
@@ -32,22 +32,22 @@ class SubLevelModel extends ModelBase_1.ModelBase {
       this.RemoveSubLevel(r, true);
     }
     l.length = 0;
-    this.fXd = false;
-    return !(this.gXd = false);
+    this.Ogm = false;
+    return !(this.Ggm = false);
   }
   SetSubLevelSwitching(e) {
-    this.fXd = true;
-    this.gXd = e;
+    this.Ogm = true;
+    this.Ggm = e;
   }
   UnsetSubLevelSwitching() {
-    this.fXd = false;
-    this.gXd = false;
+    this.Ogm = false;
+    this.Ggm = false;
   }
   IsInSubLevelSwitching() {
-    return this.fXd;
+    return this.Ogm;
   }
   IsInSubLevelSwitchingAndBlockingInput() {
-    return this.fXd && this.gXd;
+    return this.Ogm && this.Ggm;
   }
   GetAllPreloadSubLevels() {
     return this.SW_;

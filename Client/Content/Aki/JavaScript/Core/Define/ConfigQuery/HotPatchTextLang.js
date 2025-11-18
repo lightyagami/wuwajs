@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.configHotPatchTextLang = undefined;
+exports.ClearHotPatchTextLangStatementIdsAndCache = exports.configHotPatchTextLang = undefined;
 const LanguageSystem_1 = require("../../Common/LanguageSystem");
 const Stats_1 = require("../../Common/Stats");
 const ConfigCommon_1 = require("../../Config/ConfigCommon");
@@ -20,56 +20,60 @@ const langCache = new Map();
 const initStat = Stats_1.Stat.CreateNoFlameGraph("configHotPatchTextLang.Init");
 const getLocalTextStat = Stats_1.Stat.CreateNoFlameGraph("configHotPatchTextLang.GetLocalTextNew");
 const LOCAL_TEXT_STAT_PREFIX = "configHotPatchTextLang.GetLocalTextNew(";
+function ClearHotPatchTextLangStatementIdsAndCache() {
+  ConfigCommon_1.ConfigCommon.ClearLangAllStatementId(TABLE, DB);
+  langCache.clear();
+}
 exports.configHotPatchTextLang = {
   Init: () => {
     initStat?.Start();
     ConfigCommon_1.ConfigCommon.GetLangStatementId(TABLE, DB, COMMAND);
     initStat?.Stop();
   },
-  GetLocalText: (o, t = 0) => {},
-  GetLocalTextNew: (o, t = undefined) => {
+  GetLocalText: (t, o = 0) => {},
+  GetLocalTextNew: (t, o = undefined) => {
     if (LanguageSystem_1.LanguageSystem.GmShowLanguageKey) {
-      e = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(t);
-      return `${TABLE}|${o}|${e}`;
+      e = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(o);
+      return `${TABLE}|${t}|${e}`;
     }
     ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Start();
     getLocalTextStat?.Start();
-    var e = Stats_1.Stat.CreateNoFlameGraph(`${"" + LOCAL_TEXT_STAT_PREFIX + o}, ${t})`);
+    var e = Stats_1.Stat.CreateNoFlameGraph(`${"" + LOCAL_TEXT_STAT_PREFIX + t}, ${o})`);
     e?.Start();
-    let n = langCache.get(o);
+    let n = langCache.get(t);
     if (!n) {
       n = new Map();
-      langCache.set(o, n);
+      langCache.set(t, n);
     }
-    var i = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(t);
-    let a = n.get(i);
-    if (a) {
+    var a = LanguageSystem_1.LanguageSystem.GetCultureOrDefault(o);
+    let i = n.get(a);
+    if (i) {
       e?.Stop();
       getLocalTextStat?.Stop();
       ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
-      return a;
+      return i;
     }
-    var g = ConfigCommon_1.ConfigCommon.GetLangStatementId(TABLE, DB, COMMAND, i);
-    if (C = ConfigCommon_1.ConfigCommon.CheckStatement(g) && ConfigCommon_1.ConfigCommon.BindString(g, 1, o, ...logPair, ["Id", o]) && ConfigCommon_1.ConfigCommon.Step(g, true, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]) > 0) {
-      var r = undefined;
-      [C, r] = ConfigCommon_1.ConfigCommon.GetValue(g, 0, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]);
-      if (C) {
-        var C = DeserializeConfig_1.DeserializeConfig.ParseStringRange(r, 0, r.byteLength, ...logPair, ["传入语言", t], ["查询语言", i], ["文本Id", o]);
-        if (C.Success) {
-          a = C.Value;
+    var g = ConfigCommon_1.ConfigCommon.GetLangStatementId(TABLE, DB, COMMAND, a);
+    if (r = ConfigCommon_1.ConfigCommon.CheckStatement(g) && ConfigCommon_1.ConfigCommon.BindString(g, 1, t, ...logPair, ["Id", t]) && ConfigCommon_1.ConfigCommon.Step(g, true, ...logPair, ["传入语言", o], ["查询语言", a], ["文本Id", t]) > 0) {
+      var C = undefined;
+      [r, C] = ConfigCommon_1.ConfigCommon.GetValue(g, 0, ...logPair, ["传入语言", o], ["查询语言", a], ["文本Id", t]);
+      if (r) {
+        var r = DeserializeConfig_1.DeserializeConfig.ParseStringRange(C, 0, C.byteLength, ...logPair, ["传入语言", o], ["查询语言", a], ["文本Id", t]);
+        if (r.Success) {
+          i = r.Value;
           ConfigCommon_1.ConfigCommon.Reset(g);
           e?.Stop();
           getLocalTextStat?.Stop();
           ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
-          if (StringUtils_1.StringUtils.IsEmpty(a) && t !== CommonDefine_1.CHS) {
-            r = exports.configHotPatchTextLang.GetLocalTextNew(o, CommonDefine_1.CHS);
-            if (!StringUtils_1.StringUtils.IsEmpty(r)) {
-              C = t === undefined ? "" : "|" + t;
-              a = TEXTNOTFOUNT + "|" + o + C;
+          if (StringUtils_1.StringUtils.IsEmpty(i) && o !== CommonDefine_1.CHS) {
+            C = exports.configHotPatchTextLang.GetLocalTextNew(t, CommonDefine_1.CHS);
+            if (!StringUtils_1.StringUtils.IsEmpty(C)) {
+              r = o === undefined ? "" : "|" + o;
+              i = TEXTNOTFOUNT + "|" + t + r;
             }
           }
-          n.set(i, a);
-          return a;
+          n.set(a, i);
+          return i;
         }
       }
     }
@@ -79,4 +83,4 @@ exports.configHotPatchTextLang = {
     ConfigCommon_1.ConfigCommon.AllConfigStatementStat.Stop();
   }
 };
-//# sourceMappingURL=HotPatchTextLang.js.map
+exports.ClearHotPatchTextLangStatementIdsAndCache = ClearHotPatchTextLangStatementIdsAndCache; //# sourceMappingURL=HotPatchTextLang.js.map

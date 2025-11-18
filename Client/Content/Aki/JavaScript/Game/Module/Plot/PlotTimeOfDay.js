@@ -28,8 +28,8 @@ class PlotTimeOfDay {
         this._zi = true;
         this.p51 = ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockState;
         ModelManager_1.ModelManager.TimeOfDayModel.SetUseClientLockState(true);
-        ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = true;
-        ModelManager_1.ModelManager.TimeOfDayModel.TimeSyncLockStateClient = true;
+        ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(true);
+        ModelManager_1.ModelManager.TimeOfDayModel.SetTimeSyncLockStateClient(true);
         this.czi = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second;
       }
     }
@@ -41,7 +41,7 @@ class PlotTimeOfDay {
   }
   OnSeqEnd() {
     this.gzi();
-    ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = this._zi;
+    ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(this._zi);
     if (this.Uk && this.mzi !== 0 && this.mzi !== ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second) {
       TimeOfDayController_1.TimeOfDayController.AdjustTime(this.mzi, Protocol_1.Aki.Protocol.C4s.Proto_LevelPlayAuto);
     }
@@ -51,8 +51,8 @@ class PlotTimeOfDay {
   OnPlotEnd() {
     if (this.uzi) {
       ModelManager_1.ModelManager.TimeOfDayModel.SetUseClientLockState(false);
-      ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = false;
-      ModelManager_1.ModelManager.TimeOfDayModel.TimeSyncLockStateClient = false;
+      ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(false);
+      ModelManager_1.ModelManager.TimeOfDayModel.SetTimeSyncLockStateClient(false);
       if (this.p51 && this.czi !== ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second) {
         TimeOfDayController_1.TimeOfDayController.AdjustTime(this.czi, Protocol_1.Aki.Protocol.C4s.Proto_LevelPlayAuto);
       }
@@ -63,7 +63,7 @@ class PlotTimeOfDay {
   }
   PauseTime() {
     if (!this._zi) {
-      ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = true;
+      ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(true);
       this._zi = true;
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("TimeOfDay", 26, "[TimeRunLockState] 剧情行为锁定时间");
@@ -72,7 +72,7 @@ class PlotTimeOfDay {
   }
   ResumeTime() {
     if (this._zi) {
-      ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = false;
+      ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(false);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("TimeOfDay", 26, "[TimeRunLockState] 剧情行为解锁时间");
       }
@@ -101,7 +101,7 @@ class PlotTimeOfDay {
       if (o > 0) {
         i = (e - a) / o;
       }
-      ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = false;
+      ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(false);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("TimeOfDay", 26, "[TimeRunLockState] Seq解锁时间");
       }
@@ -111,7 +111,7 @@ class PlotTimeOfDay {
         TimeOfDayController_1.TimeOfDayController.AdjustTime(t, Protocol_1.Aki.Protocol.C4s.Proto_LevelPlayAuto);
         this.IRe = undefined;
         TimeOfDayController_1.TimeOfDayController.ResumeTimeScale();
-        ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient = this._zi;
+        ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(this._zi);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("TimeOfDay", 26, "[TimeRunLockState] Seq恢复时间锁定", ["IsPauseInPlot", this._zi]);
         }

@@ -46,18 +46,27 @@ class LoginServerController extends UiControllerBase_1.UiControllerBase {
       });
     }
   }
-  static GetLoginPlayerInfo(e, r, o, n, t) {
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("KuroSdk", 27, "获得GetLoginPlayerInfo");
+  static TryGetServerPlayerInfo() {
+    var e = ModelManager_1.ModelManager.LoginServerModel;
+    var r = ModelManager_1.ModelManager.LoginModel;
+    if (ControllerHolder_1.ControllerHolder.LoginController.IsGlobalSdkLoginMode()) {
+      LoginServerController.GetLoginPlayerInfo(1, r.GetSdkLoginConfig()?.Uid ?? "", r.GetSdkLoginConfig()?.UserName ?? "", r.GetSdkLoginConfig()?.Token ?? "", e.GetCurrentArea());
     }
-    e = PublicUtil_1.PublicUtil.GetGARUrl(e, r, o, n, t);
-    if (e) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Login", 8, "获得登录玩家数据", ["http", e]);
+  }
+  static GetLoginPlayerInfo(e, r, o, n, t) {
+    if (r !== "" && n !== "") {
+      e = PublicUtil_1.PublicUtil.GetGARUrl(e, r, o, n, t);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "获得GetLoginPlayerInfo", ["url", e]);
       }
-      Http_1.Http.Get(e, undefined, this.LEi);
-    } else if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("KuroSdk", 27, "没有GetLoginPlayerInfo");
+      if (e) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Login", 8, "获得登录玩家数据", ["http", e]);
+        }
+        Http_1.Http.Get(e, undefined, this.LEi);
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("KuroSdk", 27, "没有GetLoginPlayerInfo");
+      }
     }
   }
   static OnClear() {

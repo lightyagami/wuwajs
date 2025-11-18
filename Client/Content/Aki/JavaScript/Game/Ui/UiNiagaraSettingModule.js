@@ -5,13 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.UiNiagaraSettingModule = undefined;
 const UE = require("ue");
+const CustomPromise_1 = require("../../Core/Common/CustomPromise");
 const Log_1 = require("../../Core/Common/Log");
 const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
 const GlobalData_1 = require("../GlobalData");
 const UiResourceLoadModule_1 = require("./UiResourceLoadModule");
-const CustomPromise_1 = require("../../Core/Common/CustomPromise");
 class UiNiagaraSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
-  SetNiagaraByPath(e, o, t = undefined) {
+  SetNiagaraByPath(e, o, i = undefined, a = "js_undefined") {
     if (GlobalData_1.GlobalData.World && o && o.IsValid()) {
       this.CancelResource(o);
       e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.NiagaraSystem, (e, a) => {
@@ -19,24 +19,24 @@ class UiNiagaraSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule
         if (o.IsValid()) {
           if (e && e.IsValid()) {
             o.SetNiagaraSystem(e);
-            t?.(true);
+            i?.(true);
           } else {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiImageSetting", 37, `设置NiagaraSystem失败，Niagara资源加载失败，资源路径：${a}}`);
             }
-            t?.(false);
+            i?.(false);
           }
         }
-      });
+      }, 100, a);
       this.SetResourceId(o, e);
     }
   }
-  async SetNiagaraByPathAsync(e, o) {
+  async SetNiagaraByPathAsync(e, o, a = "js_undefined") {
     if (GlobalData_1.GlobalData.World && o && o.IsValid()) {
       this.CancelResource(o);
-      const t = new CustomPromise_1.CustomPromise();
+      const i = new CustomPromise_1.CustomPromise();
       e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.NiagaraSystem, (e, a) => {
-        t.SetResult();
+        i.SetResult();
         this.DeleteResourceHandle(o);
         if (o.IsValid()) {
           if (e && e.IsValid()) {
@@ -45,9 +45,9 @@ class UiNiagaraSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule
             Log_1.Log.Error("UiImageSetting", 37, `设置NiagaraSystem失败，Niagara资源加载失败，资源路径：${a}}`);
           }
         }
-      });
+      }, 100, a);
       this.SetResourceId(o, e);
-      await t.Promise;
+      await i.Promise;
     }
   }
 }

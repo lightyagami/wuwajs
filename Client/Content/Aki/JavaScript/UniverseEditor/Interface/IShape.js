@@ -8,9 +8,9 @@ function checkInBox(p, e, o, r) {
   var p = r.Y ?? 0;
   var r = r.Z ?? 0;
   var i = o.X ?? 0;
-  var c = o.Y ?? 0;
+  var y = o.Y ?? 0;
   var o = o.Z ?? 0;
-  return !(T - e > i) && !(T + e < i) && !(t - p > c) && !(t + p < c) && !(s - r > o) && !(s + r < o);
+  return !(T - e > i) && !(T + e < i) && !(t - p > y) && !(t + p < y) && !(s - r > o) && !(s + r < o);
 }
 function checkInSphere(p, e, o, r) {
   const T = (e.X ?? 0) + (p.X ?? 0);
@@ -51,6 +51,7 @@ exports.checkInSphere = checkInSphere;
   p[p.Laser = 8] = "Laser";
   p[p.Spline = 9] = "Spline";
   p[p.SplineEffect = 10] = "SplineEffect";
+  p[p.Track = 11] = "Track";
 })(ETipsActorType = exports.ETipsActorType ||= {});
 (function (p) {
   p[p.Inner = 0] = "Inner";
@@ -123,6 +124,11 @@ exports.shapeStructTemplates = {
   [ETipsActorType.SplineEffect]: {
     Type: ETipsActorType.SplineEffect,
     EntityId: 0
+  },
+  [ETipsActorType.Track]: {
+    Type: ETipsActorType.Track,
+    EntityId: 0,
+    Width: 250
   }
 };
 exports.pickShapeParam = pickShapeParam; //# sourceMappingURL=IShape.js.map

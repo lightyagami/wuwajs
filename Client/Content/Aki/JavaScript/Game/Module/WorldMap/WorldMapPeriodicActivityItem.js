@@ -10,16 +10,28 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
-    super();
+    super(...arguments);
     this.aPi = false;
-    this.Gvd = () => {};
+    this.ShowMode = 1;
+    this.krh = false;
+    this.sMd = undefined;
     this.YP = () => {
-      this.Gvd?.();
+      this.sMd?.();
     };
-    this.b$d = () => {
+    this.Kim = () => {
       ModelManager_1.ModelManager.WorldMapModel.ActivityListData[0].OnClickCb();
       ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData(false);
       this.RefreshRedPoint();
+    };
+    this.RefreshWorldMapSelfShow = e => {
+      if (e === 1) {
+        this.RefreshView();
+      } else {
+        this.SetUiActive(false);
+      }
+    };
+    this.SetWorldMapSelfShow = e => {
+      this.ShowMode = e;
     };
   }
   async Init(e) {
@@ -27,7 +39,7 @@ class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[7, UE.UISprite], [3, UE.UIButtonComponent], [2, UE.UIButtonComponent], [1, UE.UIText], [9, UE.UIItem]];
-    this.BtnBindInfo = [[3, this.b$d], [2, this.YP]];
+    this.BtnBindInfo = [[3, this.Kim], [2, this.YP]];
   }
   SetShowState(e) {
     this.aPi = e;
@@ -35,25 +47,27 @@ class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
   GetCurrentShowState() {
     return this.aPi;
   }
-  Refresh(e, t) {
-    this.Gvd = t;
-    this.RefreshView(e);
-    this.RefreshRedPoint();
+  Refresh(e) {
+    this.krh = e;
+    this.RefreshView();
   }
-  RefreshView(e) {
-    var t = ModelManager_1.ModelManager.WorldMapModel.ActivityListData;
-    if (t.length === 0) {
+  SetOnClickBtnCb(e) {
+    this.sMd = e;
+  }
+  RefreshView() {
+    var e = ModelManager_1.ModelManager.WorldMapModel.ActivityListData;
+    if (e.length === 0) {
       this.GetRootItem().SetUIActive(false);
     } else {
-      if (e) {
+      if (this.krh) {
         this.GetRootItem().SetUIActive(true);
       } else {
         this.GetRootItem().SetUIActive(false);
       }
-      e = t[0];
+      e = e[0];
       this.GetText(1).SetText(e.CurrentNum + "/" + e.TotalNum);
-      t = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(e.Id);
-      this.SetSpriteByPath(t.IconPath, this.GetSprite(7), false);
+      e = ConfigManager_1.ConfigManager.MapConfig.GetMapPeriodicActivityConfig(e.Id);
+      this.SetSpriteByPath(e.IconPath, this.GetSprite(7), false);
       this.RefreshRedPoint();
     }
   }

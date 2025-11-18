@@ -363,6 +363,25 @@ class PublicUtil {
     i.SetScale3D(r);
     return i;
   }
+  static GetFiles(t, e) {
+    var r = UE.KuroStaticLibrary.GetFilesRecursive(t, "*", true, false);
+    var i = r.Num();
+    var o = new Array();
+    for (let t = 0; t < i; ++t) {
+      var a = r.Get(t);
+      var l = this.GetFileNameWithoutExtension(a);
+      if (!e || !!l.startsWith(e)) {
+        o.push(a);
+      }
+    }
+    return o;
+  }
+  static GetFileNameWithExtension(t) {
+    return UE.BlueprintPathsLibrary.GetCleanFilename(t);
+  }
+  static GetFileNameWithoutExtension(t) {
+    return UE.BlueprintPathsLibrary.GetBaseFilename(t);
+  }
 }
 (exports.PublicUtil = PublicUtil).wde = undefined;
 PublicUtil.bde = undefined;

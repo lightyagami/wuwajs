@@ -17,7 +17,7 @@ class LevelConditionMoveStateCheck extends LevelGeneralBase_1.LevelConditionBase
     if (!r) {
       return false;
     }
-    r = r.CharacterActorComponent.Entity.GetComponent(176);
+    r = r.CharacterActorComponent.Entity.GetComponent(179);
     if (!r) {
       return false;
     }

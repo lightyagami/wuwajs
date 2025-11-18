@@ -174,15 +174,15 @@ class AssetElement {
     this.LoadedSet = new Set();
     this.AddObjectCallback = undefined;
     this.LoadPriority = 100;
-    this.ReplaceEffectMap = new Map();
-    this.ReplaceMontageMap = new Map();
+    this.tFr = new Map();
+    this.POr = new Map();
     this.gF1 = undefined;
     this.B7 = undefined;
-    if ((this.XJr = t)?.MainAsset?.ReplaceEffectMap) {
-      this.ReplaceEffectMap = t?.MainAsset.ReplaceEffectMap;
+    if ((this.XJr = t)?.MainAsset?.tFr) {
+      this.tFr = t?.MainAsset.tFr;
     }
-    if (t?.MainAsset?.ReplaceMontageMap) {
-      this.ReplaceMontageMap = t?.MainAsset.ReplaceMontageMap;
+    if (t?.MainAsset?.POr) {
+      this.POr = t?.MainAsset.POr;
     }
   }
   SetupReplaceEffect(t) {
@@ -197,10 +197,11 @@ class AssetElement {
             s = s.concat("_C");
             t = t.concat("_C");
           }
-          this.ReplaceEffectMap.set(t, s);
+          this.tFr.set(t, s);
         }
       }
     }
+    return this.tFr;
   }
   SetupReplaceMontage(t) {
     t = ResourceSystem_1.ResourceSystem.Load(t, UE.DataTable);
@@ -209,10 +210,11 @@ class AssetElement {
       for (const e of t) {
         var s = e.NewMontage?.ToAssetPathName();
         if (s?.length && s !== "None") {
-          this.ReplaceMontageMap.set(e.OldMontage.ToAssetPathName(), e.NewMontage.ToAssetPathName());
+          this.POr.set(e.OldMontage.ToAssetPathName(), e.NewMontage.ToAssetPathName());
         }
       }
     }
+    return this.POr;
   }
   GetEntityAssetElement() {
     return this.XJr;
@@ -267,10 +269,10 @@ class AssetElement {
     return !!this.CheckPath(t) && !!this.AddPath(t) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(0), true);
   }
   AddAnimation(t) {
-    return !!this.CheckPath(t) && (t = this.ReplaceMontageMap.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(1), true);
+    return !!this.CheckPath(t) && (t = this.POr.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(1), true);
   }
   AddEffect(t) {
-    return !!this.CheckPath(t) && (t = this.ReplaceEffectMap.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(2), true);
+    return !!this.CheckPath(t) && (t = this.tFr.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(2), true);
   }
   AddAudio(t) {
     return !!this.CheckPath(t) && !!this.AddPath(t) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(3), true);
@@ -282,7 +284,7 @@ class AssetElement {
     return !!this.CheckPath(t) && !!this.AddPath(t) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(5), true);
   }
   AddOther(t) {
-    return !!this.CheckPath(t) && (t = this.ReplaceEffectMap.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(7), true);
+    return !!this.CheckPath(t) && (t = this.tFr.get(t) ?? t, !!this.AddPath(t)) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(7), true);
   }
   AddAnimationBlueprint(t) {
     return !!this.CheckPath(t) && !!this.AddPath(t) && (this.NeedLoadAssets.push(t), this.NeedLoadAssetTypes.push(6), true);
@@ -368,18 +370,31 @@ class SkillAssetManager {
     this.V$a = undefined;
     this.SkillAssetMap = new Map();
     this._ar = undefined;
-    this.LoadTypeList = undefined;
   }
   GetEntitySkillPreload(t) {
-    var s;
     if (!this.V$a) {
       this.V$a = new Map();
-      if ((s = this.FightAssetManager.EntityAssetElement.BlueprintClassPath)?.length) {
+      var s = this.FightAssetManager.EntityAssetElement.BlueprintClassPath;
+      if (s?.length) {
         ModelManager_1.ModelManager.PreloadModelNew.GetSkillPreloadData(s)?.forEach(t => {
-          if (this.LoadTypeList?.includes(t.LoadType) || t.LoadType === 0 && !this.V$a.has(t.SkillId)) {
-            this.V$a.set(t.SkillId, t);
+          let s = this.V$a.get(t.SkillId);
+          if (!s) {
+            this.V$a.set(t.SkillId, s = []);
           }
+          s.push(t);
         });
+      }
+      var s = this.FightAssetManager.EntityAssetElement;
+      if (s instanceof EntityAssetElement && s.HasMorphAssets && s.MorphAssetsPaths) {
+        for (const e of s.MorphAssetsPaths) {
+          ModelManager_1.ModelManager.PreloadModelNew.GetSkillPreloadData(e)?.forEach(t => {
+            let s = this.V$a.get(t.SkillId);
+            if (!s) {
+              this.V$a.set(t.SkillId, s = []);
+            }
+            s.push(t);
+          });
+        }
       }
     }
     return this.V$a.get(t);
@@ -569,6 +584,8 @@ class EntityAssetElement {
     this.CreatureDataComponent = undefined;
     this.Callbacks = undefined;
     this.LoadPriority = 100;
+    this.HasMorphAssets = false;
+    this.MorphAssetsPaths = undefined;
     this.uar = 0;
     this.car = false;
     this.mar = undefined;
@@ -843,6 +860,7 @@ class PlotAssetManager {
   RemovePending(t) {
     if (this.IdPendingMap.has(t)) {
       this.PendingList.Remove(this.IdPendingMap.get(t));
+      this.IdPendingMap.delete(t);
     }
   }
   CheckAndGetPendingPreload() {
@@ -850,6 +868,7 @@ class PlotAssetManager {
     if (this.PendingList.Size !== 0) {
       t = this.PendingList.Top;
       if (this.CheckCanLoad(t.Id, t.Priority)) {
+        this.IdPendingMap.delete(t.Id);
         return this.PendingList.Pop();
       } else {
         return undefined;

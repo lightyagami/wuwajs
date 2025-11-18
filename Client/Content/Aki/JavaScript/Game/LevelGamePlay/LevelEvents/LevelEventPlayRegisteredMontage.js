@@ -31,7 +31,7 @@ class LevelEventPlayRegisteredMontage extends LevelGeneralBase_1.LevelEventBase 
       if (EventSystem_1.EventSystem.HasWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
         EventSystem_1.EventSystem.RemoveWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
       }
-      this.sDe?.Entity?.GetComponent(188)?.ResumeAi(KEY);
+      this.sDe?.Entity?.GetComponent(191)?.ResumeAi(KEY);
       this.FinishExecute(true);
     };
   }
@@ -59,7 +59,7 @@ class LevelEventPlayRegisteredMontage extends LevelGeneralBase_1.LevelEventBase 
             InitStateName: e?.InitState,
             EndStateName: e?.EndState
           };
-          const v = t.Entity?.GetComponent(188);
+          const v = t.Entity?.GetComponent(191);
           v?.PauseAi(KEY);
           if (this.IsAsync) {
             s.VolatileMontagePlayByLoad(2, i, n, undefined, () => {

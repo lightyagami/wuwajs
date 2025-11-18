@@ -181,7 +181,7 @@ class UiLoginSceneManager {
         }
         a?.();
       }
-    });
+    }, 100, "Ui.LoginUi");
   }
   static PlayLoginLoopSequence() {
     const i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("LevelSequence_Login");
@@ -202,7 +202,7 @@ class UiLoginSceneManager {
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("UiLoginSceneManager", 10, "登录场景Sequence异步加载失败", ["path", i]);
       }
-    });
+    }, 100, "Ui.LoginUi");
   }
   static uxo() {
     var e;

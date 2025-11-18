@@ -18,6 +18,7 @@ const FogBlockAll_1 = require("../../../Core/Define/ConfigQuery/FogBlockAll");
 const FogBlockByBlockAndMapId_1 = require("../../../Core/Define/ConfigQuery/FogBlockByBlockAndMapId");
 const FogTextureConfigAll_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigAll");
 const FogTextureConfigByMapId_1 = require("../../../Core/Define/ConfigQuery/FogTextureConfigByMapId");
+const InstEntityTeleporterById_1 = require("../../../Core/Define/ConfigQuery/InstEntityTeleporterById");
 const LevelEntityConfigByMapIdAndEntityId_1 = require("../../../Core/Define/ConfigQuery/LevelEntityConfigByMapIdAndEntityId");
 const MapBorderAll_1 = require("../../../Core/Define/ConfigQuery/MapBorderAll");
 const MapMarkAll_1 = require("../../../Core/Define/ConfigQuery/MapMarkAll");
@@ -133,12 +134,8 @@ class MapConfig extends ConfigBase_1.ConfigBase {
   SYa() {
     this.vYa = new Map();
     this.MYa = new Map();
-    var e = AreaByLevel_1.configAreaByLevel.GetConfigList(2);
-    if (e) {
-      this.yYa(e);
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Map", 63, "[地图系统]->不存在1级区域配置，请联系策划检查q.区域配置!");
-    }
+    var e = AreaByLevel_1.configAreaByLevel.GetConfigList(2) ?? [];
+    this.yYa(e);
   }
   zt1() {
     var e = this.GetAllTileConfig();
@@ -283,6 +280,15 @@ class MapConfig extends ConfigBase_1.ConfigBase {
     if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Map", 18, "找不到Teleporter表的配置,Id = ", ["teleportId", e]);
+      }
+    }
+    return r;
+  }
+  GetInstEntityTeleportConfigById(e) {
+    var r = InstEntityTeleporterById_1.configInstEntityTeleporterById.GetConfig(e);
+    if (!r) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Map", 86, "找不到InstEntityTeleporter表的配置,EntityId = ", ["InstEntityTeleportId", e]);
       }
     }
     return r;

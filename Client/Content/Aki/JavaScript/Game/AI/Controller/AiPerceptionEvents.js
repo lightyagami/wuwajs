@@ -61,7 +61,7 @@ class AiPerceptionEvents {
     this.sre.Empty();
     this.are.Empty();
     if (t && (this.hre.splice(0, this.hre.length), this.lre.splice(0, this.lre.length), this._re.splice(0, this._re.length), this.dre)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
       this.dre = undefined;
       this.gre.clear();
     }
@@ -376,13 +376,13 @@ class AiPerceptionEvents {
   }
   AddSceneItemDestroyEvent(t, i) {
     if (!this.dre) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
     }
     this.dre = i;
     this.Cre = t * t;
   }
   RemoveSceneItemDestroyEvent(t) {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDestroy, this.uie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.uie);
     this.dre = undefined;
     this.gre.clear();
   }
@@ -393,7 +393,7 @@ class AiPerceptionEvents {
   }
   OnSenseSceneItem(t) {
     var i;
-    if (this.dre && !this.gre.has(t.Entity.Id) && (i = t.Entity.GetComponent(103))?.Valid && i.IsDestroyed) {
+    if (this.dre && !this.gre.has(t.Entity.Id) && (i = t.Entity.GetComponent(105))?.Valid && i.IsDestroyed) {
       this.gre.add(t.Entity.Id);
       this.dre.Callback.Broadcast(t.Owner, true);
     }

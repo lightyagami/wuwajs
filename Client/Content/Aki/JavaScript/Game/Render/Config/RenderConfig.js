@@ -158,6 +158,7 @@ RenderConfig.GlobalMainLightVector = new UE.FName("GlobalSceneMainLightDirection
 RenderConfig.GlobalLensFlareColorTint = new UE.FName("GlobalLensFlareColorTint");
 RenderConfig.GlobalCharacterPreviousWP = new UE.FName("GlobalCharacterPreviousWP");
 RenderConfig.GlobalCharacterWorldPosition = new UE.FName("GlobalCharacterWorldPosition");
+RenderConfig.GlobalCharacterWeaponPosition = new UE.FName("GlobalCharacterWeaponPosition");
 RenderConfig.GlobalCharacterWorldForwardDirection = new UE.FName("GlobalCharacterWorldForwardDirection");
 RenderConfig.GlobalCharacterOnGround = new UE.FName("GlobalCharacterOnGround");
 RenderConfig.GlobalCameraPosAndRadius = new UE.FName("GlobalCameraPosAndRadius");

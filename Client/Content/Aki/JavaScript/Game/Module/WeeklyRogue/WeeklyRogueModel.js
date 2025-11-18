@@ -45,7 +45,10 @@ class WeeklyRogueModel extends ModelBase_1.ModelBase {
   }
   get ActivityDataNew() {
     if (this.CurrentActivityId !== 0) {
-      return ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.CurrentActivityId);
+      var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.CurrentActivityId);
+      if (e.CheckIfInShowTime()) {
+        return e;
+      }
     }
   }
   get ActivityData() {

@@ -38,7 +38,7 @@ class TsAnimNotifyStateInteractionRotateToLocation extends UE.KuroAnimNotifyStat
   }
   K2_NotifyTick(t, e, r) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity?.GetComponent(179)) && (t.SmoothCharacterRotationByValue(0, this.Rotator, 0, this.RotateSpeed, r, "TsAnimNotifyStateInteractionRotateToLocation"), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.CharacterActorComponent?.Entity?.GetComponent(182)) && (t.SmoothCharacterRotationByValue(0, this.Rotator, 0, this.RotateSpeed, r, "TsAnimNotifyStateInteractionRotateToLocation"), true);
   }
   GetNotifyName() {
     return "设置交互动作旋转和位置";

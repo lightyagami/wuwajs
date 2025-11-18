@@ -78,7 +78,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForArray(t, e, i) {
     if (e.length !== 0) {
       for (const r of e) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(239);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);
@@ -93,7 +93,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForSet(t, e, i) {
     if (e.size !== 0) {
       for (const r of e) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(239);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);
@@ -108,7 +108,7 @@ class UpdateRateOptimizeController extends ControllerBase_1.ControllerBase {
   static EnableUpdateRateOptimizationForMap(t, e, i) {
     if (e.size !== 0) {
       for (const r of e.keys()) {
-        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(236);
+        var a = r.EntityType !== Protocol_1.Aki.Protocol.kks.HI_ ? r.Entity?.GetComponent(44) : r.Entity?.GetComponent(239);
         if (a) {
           if (t) {
             a.CancelForceDisableAnimOptimization(5);

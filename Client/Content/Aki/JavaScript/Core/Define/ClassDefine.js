@@ -218,10 +218,14 @@ const classDefined = {
   TsSeqAnimNotifyPlayPlot_C: ["/Game/Aki/TypeScript/Game/AnimNotify/TsSeqAnimNotifyPlayPlot.TsSeqAnimNotifyPlayPlot_C", 0],
   TsSeqAnimNotifyStateAudioEvent_C: ["/Game/Aki/TypeScript/Game/AnimNotifyState/TsSeqAnimNotifyStateAudioEvent.TsSeqAnimNotifyStateAudioEvent_C", 0],
   BP_SeqSkeletal_C: ["/Game/Aki/Sequence/Seq_BP/BP_SeqSkeletal.BP_SeqSkeletal_C", 0],
+  BP_SeqCustom_C: ["/Game/Aki/Sequence/Seq_BP/BpSeqCustom/BP_SeqCustom.BP_SeqCustom", 0],
   BP_ItemInspectGlobalConfig_C: ["/Game/Aki/Data/Level/ItemInspect/BP_ItemInspectGlobalConfig.BP_ItemInspectGlobalConfig_C", 1],
   BP_FirstPersonConfig_C: ["/Game/Aki/Character/Role/Common/Data/Structure/BP_FirstPersonConfig.BP_FirstPersonConfig_C", 1],
   BP_SplineClimbConfig_C: ["/Game/Aki/Data/Level/SplineClimb/BP_SplineClimbConfig.BP_SplineClimbConfig_C", 0],
-  TsUiHomeHelper_C: ["/Game/Aki/TypeScript/Game/Module/UiComponent/UiHomeButton/TsUiHomeHelper.TsUiHomeHelper_C", 0]
+  TsUiHomeHelper_C: ["/Game/Aki/TypeScript/Game/Module/UiComponent/UiHomeButton/TsUiHomeHelper.TsUiHomeHelper_C", 0],
+  BP_RoleSwingConfig_C: ["/Game/Aki/Data/Level/Swing/BP_RoleSwingConfig.BP_RoleSwingConfig_C", 1],
+  BP_CharacterSwingConfig_C: ["/Game/Aki/Data/Level/Swing/BP_CharacterSwingConfig.BP_CharacterSwingConfig_C", 1],
+  BP_PhysicInteractProxy_C: ["/Game/Aki/GamePlay/InteractiveObject/BP_PhysicInteractProxy.BP_PhysicInteractProxy_C", 0]
 };
 const structDefined = {
   SModelConfig: ["/Game/Aki/Data/Entity/Struct/SModelConfig.SModelConfig", 0],
@@ -252,7 +256,8 @@ const structDefined = {
   BvbPlayerItemData: ["/Game/Aki/UI/Module/ActiveDebug/BvbPlayerItemData.BvbPlayerItemData", 0],
   BvbCardItemData: ["/Game/Aki/UI/Module/ActiveDebug/BvbCardItemData.BvbCardItemData", 0],
   BvbEffectItemData: ["/Game/Aki/UI/Module/ActiveDebug/BvbEffectItemData.BvbEffectItemData", 0],
-  SEntityTimeDilation: ["/Game/Aki/Data/Entity/Struct/SEntityTimeDilation.SEntityTimeDilation", 0]
+  SEntityTimeDilation: ["/Game/Aki/Data/Entity/Struct/SEntityTimeDilation.SEntityTimeDilation", 0],
+  SGravityHookLockInfo: ["/Game/Aki/Data/Fight/Struct/SGravityHookLockInfo.SGravityHookLockInfo", 0]
 };
 const enumDefined = {};
 function add(e, a, t, i) {

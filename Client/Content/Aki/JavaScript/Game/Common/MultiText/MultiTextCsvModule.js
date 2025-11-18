@@ -34,7 +34,7 @@ class MultiTextCsvModule {
       }
     }
   }
-  Jvd(t, e, i, r) {
+  vMd(t, e, i, r) {
     var s = StringUtils_1.StringUtils.ParseCsvContent(t);
     const o = s[e];
     for (let t = i; t < s.length; t++) {
@@ -71,7 +71,7 @@ class MultiTextCsvModule {
       o = (e = undefined, puerts_1.$ref)(undefined);
       UE.KuroStaticLibrary.LoadFileToString(o, t);
       e = (0, puerts_1.$unref)(o);
-      this.Jvd(e, i, r, s);
+      this.vMd(e, i, r, s);
     }
   }
   GetLocalText(t) {

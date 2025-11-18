@@ -30,7 +30,7 @@ class WorldNavigation {
       Z: e.DestPosition.Z
     };
     o.w7n = e.MapId;
-    Net_1.Net.Call(15718, o, o => {
+    Net_1.Net.Call(27173, o, o => {
       var a = o?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
       if (a) {
         WorldNavigation.OQ1(o, e);

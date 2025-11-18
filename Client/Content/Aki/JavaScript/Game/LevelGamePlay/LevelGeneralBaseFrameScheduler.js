@@ -18,11 +18,11 @@ const FRAME_LIMIT_LEVEL_2 = 60;
 const MAX_ACTION_QUEUE_LENGTH = 100;
 const LOW_PRIORITY_ACTION_ALIVE_FRAME = 30;
 class LevelGeneralBaseFrameScheduler {
-  static get lYd() {
-    if (this._Yd === 0) {
+  static get jpm() {
+    if (this.Hpm === 0) {
       this.OnSettingFrameRateChanged(UE.GameUserSettings.GetGameUserSettings().GetFrameRateLimit());
     }
-    return this._Yd;
+    return this.Hpm;
   }
   static PushActionToFrameScheduler(e, t, i, _) {
     if (!this.FrameSchedulerEnabled) {
@@ -33,9 +33,9 @@ class LevelGeneralBaseFrameScheduler {
     }
     var n = i.GetContextByType(10)?.EventName;
     if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为是否分帧", ["EventName", n], ["是否分帧", n && this.uYd.has(n)], ["普通分帧任务队列长度", this.cYd.length], ["低优先级分帧队列长度", this.dYd.length]);
+      Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为是否分帧", ["EventName", n], ["是否分帧", n && this.$pm.has(n)], ["普通分帧任务队列长度", this.Wpm.length], ["低优先级分帧队列长度", this.Qpm.length]);
     }
-    if (!n || !this.uYd.has(n)) {
+    if (!n || !this.$pm.has(n)) {
       return false;
     }
     const r = i.GetContextByType(1);
@@ -46,49 +46,49 @@ class LevelGeneralBaseFrameScheduler {
       return false;
     }
     if (r.EntityId && EntitySystem_1.EntitySystem.GetComponent(r.EntityId, 0)?.GetPbModelConfig()?.EntityType === "MusicListener") {
-      if (this.dYd.length > this.GYd) {
+      if (this.Qpm.length > this.xvm) {
         if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("LevelEvent", 79, "LevelEvent分帧任务超过最大容量, 需要关注", ["EventName", n]);
         }
         return false;
       } else {
-        this.dYd.push({
+        this.Qpm.push({
           FrameEnqueued: Time_1.Time.Frame,
           Action: () => {
             e.ExecuteNew(t, r, _);
           }
         });
         if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为进入低优先级分帧队列", ["EventName", n], ["低优先级分帧队列长度", this.dYd.length]);
+          Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为进入低优先级分帧队列", ["EventName", n], ["低优先级分帧队列长度", this.Qpm.length]);
         }
         return true;
       }
     }
-    if (this.cYd.length > MAX_ACTION_QUEUE_LENGTH) {
+    if (this.Wpm.length > MAX_ACTION_QUEUE_LENGTH) {
       if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelEvent", 79, "LevelEvent分帧任务超过最大容量, 需要关注", ["EventName", n]);
       }
       return false;
     } else {
-      this.cYd.push(() => {
+      this.Wpm.push(() => {
         e.ExecuteNew(t, r, _);
       });
       if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为进入普通分帧队列", ["EventName", n], ["分帧队列长度", this.cYd.length]);
+        Log_1.Log.Info("LevelEvent", 79, "LevelEvent行为进入普通分帧队列", ["EventName", n], ["分帧队列长度", this.Wpm.length]);
       }
       return true;
     }
   }
   static UpdateActionFrameScheduler() {
-    while (this.cYd.length > 0 && this.mYd < this.lYd) {
-      this.cYd.shift()?.();
-      this.mYd++;
+    while (this.Wpm.length > 0 && this.Kpm < this.jpm) {
+      this.Wpm.shift()?.();
+      this.Kpm++;
       if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("LevelEvent", 79, "执行普通分帧队列任务LevelEvent行为", ["当前帧已执行任务数", this.mYd], ["每帧最大任务数", this.lYd]);
+        Log_1.Log.Info("LevelEvent", 79, "执行普通分帧队列任务LevelEvent行为", ["当前帧已执行任务数", this.Kpm], ["每帧最大任务数", this.jpm]);
       }
     }
-    while (this.dYd.length > 0 && this.mYd < this.lYd) {
-      var e = this.dYd.shift();
+    while (this.Qpm.length > 0 && this.Kpm < this.jpm) {
+      var e = this.Qpm.shift();
       if (!e) {
         return;
       }
@@ -98,42 +98,42 @@ class LevelGeneralBaseFrameScheduler {
         }
       } else {
         e.Action?.();
-        this.mYd++;
+        this.Kpm++;
         if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 79, "执行低优先级分帧队列任务LevelEvent行为", ["当前帧已执行任务数", this.mYd], ["每帧最大任务数", this.lYd]);
+          Log_1.Log.Info("LevelEvent", 79, "执行低优先级分帧队列任务LevelEvent行为", ["当前帧已执行任务数", this.Kpm], ["每帧最大任务数", this.jpm]);
         }
       }
     }
-    this.mYd = 0;
+    this.Kpm = 0;
   }
   static ClearActionFrameScheduler() {
     if (this.FrameSchedulerLogEnabled && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("LevelEvent", 79, "离开场景前清理积压的LevelEvent分帧任务", ["分帧任务队列长度", this.cYd.length]);
+      Log_1.Log.Info("LevelEvent", 79, "离开场景前清理积压的LevelEvent分帧任务", ["分帧任务队列长度", this.Wpm.length]);
     }
-    this.mYd = 0;
-    this.cYd.length = 0;
+    this.Kpm = 0;
+    this.Wpm.length = 0;
   }
   static OnSettingFrameRateChanged(e) {
     if (e <= FRAME_LIMIT_LEVEL_1) {
-      this._Yd = MAX_ACTION_PER_FRAME_LEVEL_1;
+      this.Hpm = MAX_ACTION_PER_FRAME_LEVEL_1;
     } else if (e <= FRAME_LIMIT_LEVEL_2) {
-      this._Yd = MAX_ACTION_PER_FRAME_LEVEL_2;
+      this.Hpm = MAX_ACTION_PER_FRAME_LEVEL_2;
     } else {
-      this._Yd = MAX_ACTION_PER_FRAME_LEVEL_3;
+      this.Hpm = MAX_ACTION_PER_FRAME_LEVEL_3;
     }
   }
   static UpdateMaxActionPerFrame(e) {
-    this._Yd = e;
+    this.Hpm = e;
   }
   static UpdateMaxActionQueueLength(e) {
-    this.GYd = e;
+    this.xvm = e;
   }
 }
-(exports.LevelGeneralBaseFrameScheduler = LevelGeneralBaseFrameScheduler).uYd = new Set([EventDefine_1.EEventName.CheckMusicBeatsEvent]);
-LevelGeneralBaseFrameScheduler.cYd = [];
-LevelGeneralBaseFrameScheduler.dYd = [];
-LevelGeneralBaseFrameScheduler._Yd = 0;
-LevelGeneralBaseFrameScheduler.GYd = MAX_ACTION_QUEUE_LENGTH;
-LevelGeneralBaseFrameScheduler.mYd = 0;
+(exports.LevelGeneralBaseFrameScheduler = LevelGeneralBaseFrameScheduler).$pm = new Set([EventDefine_1.EEventName.CheckMusicBeatsEvent]);
+LevelGeneralBaseFrameScheduler.Wpm = [];
+LevelGeneralBaseFrameScheduler.Qpm = [];
+LevelGeneralBaseFrameScheduler.Hpm = 0;
+LevelGeneralBaseFrameScheduler.xvm = MAX_ACTION_QUEUE_LENGTH;
+LevelGeneralBaseFrameScheduler.Kpm = 0;
 LevelGeneralBaseFrameScheduler.FrameSchedulerLogEnabled = false;
 LevelGeneralBaseFrameScheduler.FrameSchedulerEnabled = true; //# sourceMappingURL=LevelGeneralBaseFrameScheduler.js.map

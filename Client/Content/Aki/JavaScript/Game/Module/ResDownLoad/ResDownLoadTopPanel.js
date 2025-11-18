@@ -17,16 +17,20 @@ class ResDownLoadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildVie
     super(...arguments);
     this.TDe = undefined;
     this.jF1 = () => {
-      if (!UiManager_1.UiManager.IsViewOpen("ResDownLoadView")) {
-        UiManager_1.UiManager.OpenView("ResDownLoadView");
+      if (!UiManager_1.UiManager.IsViewOpen("SubPackageDownLoadView")) {
+        UiManager_1.UiManager.OpenView("SubPackageDownLoadView");
       }
     };
-    this.AF1 = e => {
-      this.Update();
+    this.AF1 = () => {
+      if (ModelManager_1.ModelManager.SubPackageDownLoadModel.NeedShowBattleViewButton()) {
+        this.Update();
+      } else {
+        this.EndShow();
+      }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent], [2, UE.UIText]];
     this.BtnBindInfo = [[1, this.jF1]];
   }
   Initialize(e) {
@@ -38,22 +42,27 @@ class ResDownLoadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildVie
     super.Reset();
   }
   LZs() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.AF1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.AF1);
   }
   DZs() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.AF1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.AF1);
   }
   Update() {
     this.Refresh();
   }
   Refresh() {
+    this.GetText(2).SetUIActive(true);
     var e = this.GetTexture(0);
-    var i = ModelManager_1.ModelManager.ResDownLoadModel.DownLoadPercentage();
+    var i = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadPercentage();
     e.SetFillAmount(i[0]);
     if (i[1] === 1) {
       this.GetTexture(0).SetChangeColor(false, e.changeColor);
+      this.GetText(2).SetText(ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadSpeed()) + "/s");
     } else {
       this.GetTexture(0).SetChangeColor(true, e.changeColor);
+      this.GetText(2).SetText(Math.floor(i[0] * 100) + "%");
     }
   }
   StartShow() {
@@ -73,6 +82,9 @@ class ResDownLoadTopPanel extends BattleVisibleChildView_1.BattleVisibleChildVie
       TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
       this.TDe = undefined;
     }
+  }
+  SetOtherHide(e) {
+    this.SetVisible(2, !e);
   }
   OnBeforeDestroy() {
     if (this.TDe) {

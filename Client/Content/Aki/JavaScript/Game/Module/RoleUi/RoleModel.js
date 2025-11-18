@@ -65,9 +65,9 @@ class RoleModel extends ModelBase_1.ModelBase {
     this.zyn = false;
     this.xie = (e, t) => {
       if (t) {
-        (t.Entity?.GetComponent(194)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
+        (t.Entity?.GetComponent(197)).RemoveTagAddOrRemoveListener(1733479717, this.Zyn);
       }
-      if (e && ((t = e.Entity?.GetComponent(194)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
+      if (e && ((t = e.Entity?.GetComponent(197)).AddTagAddOrRemoveListener(1733479717, this.Zyn), this.zyn !== t.HasTag(1733479717))) {
         this.zyn = !this.zyn;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterOrExitUltraSkill, this.zyn);
       }
@@ -779,6 +779,21 @@ class RoleModel extends ModelBase_1.ModelBase {
       }
     }
   }
+  GetCorrectMainRoleConfig(e) {
+    if (this.IsMainRole(e)) {
+      var t = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(e);
+      var r = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
+      var o = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
+      if (t.Gender !== r) {
+        for (const n of ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleByGender(r)) {
+          if (ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(n.Id).ElementId === o.ElementId) {
+            return n;
+          }
+        }
+      }
+      return t;
+    }
+  }
   GetRoleLevelUpExp(e, t) {
     e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
     e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleLevelConsume(e.LevelConsumeId, t);
@@ -981,24 +996,24 @@ class RoleModel extends ModelBase_1.ModelBase {
         }
       }
     }
-    this.NVd(o);
+    this.PWd(o);
     return o;
   }
   SortRoleDataList(e) {
-    e.sort((e, t) => this.gwd(e, t));
+    e.sort((e, t) => this.HPd(e, t));
   }
-  NVd(e) {
+  PWd(e) {
     e.sort((e, t) => {
       e = this.GetRoleDataByIdOrCreateDefault(e);
       t = this.GetRoleDataByIdOrCreateDefault(t);
       if (e && t) {
-        return this.gwd(e, t);
+        return this.HPd(e, t);
       } else {
         return 0;
       }
     });
   }
-  gwd(e, t) {
+  HPd(e, t) {
     var r = this.XRt(e, t);
     if (r !== 0 || (r = this.oRt(e, t)) !== 0) {
       return r;

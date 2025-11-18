@@ -19,9 +19,9 @@ const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const TimeUtil_1 = require("../Common/TimeUtil");
 const GlobalData_1 = require("../GlobalData");
-const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
+const LguiUtil_1 = require("../Module/Util/LguiUtil");
 const UiLayer_1 = require("../Ui/UiLayer");
 const KscEnv_1 = require("./KscEnv");
 const KscLog_1 = require("./KscLog");
@@ -34,23 +34,23 @@ class KscEntityRedirectFilter {
     this.TryCreateEntity = e => {
       var t = KscEntityRedirectFilter.KNu;
       t.clear();
-      for (const o of e.zEs) {
-        var r = o.C3s;
-        t.set(r, o);
+      for (const s of e.zEs) {
+        var i = s.C3s;
+        t.set(i, s);
       }
-      var s = t.has("sEu");
+      var r = t.has("sEu");
       if (t.get("WVu")?.WVu?.KVu?.GNc !== undefined) {
         Info_1.Info.IsBuildDevelopmentOrDebug;
         return false;
       } else {
-        if (s) {
+        if (r) {
           this.lYc.add(MathUtils_1.MathUtils.LongToNumber(e.s5n));
           if (!this.OnCreateEntity(e, t)) {
             KscLog_1.KscLog.Error("Common", 60, undefined, "创建KSC实体数据失败", ["CreatureDataId", e.s5n]);
           }
         }
         t.clear();
-        return s;
+        return r;
       }
     };
     this.InstantiateEntities = () => {
@@ -72,7 +72,7 @@ class KscEntityRedirectFilter {
 (exports.KscEntityRedirectFilter = KscEntityRedirectFilter).KNu = new Map();
 class KscSubControllerBase {
   constructor() {
-    this.iLd = 1;
+    this.PAd = 1;
     this.SubModel = undefined;
     this.RedirectFilter = undefined;
     this.HeadInfos = (0, puerts_1.$ref)(UE.NewArray(UE.KSC_HeadHpContext));
@@ -117,7 +117,7 @@ class KscSubControllerBase {
   }
   MapLoaded() {
     this.vYc();
-    this.iLd = 1;
+    this.PAd = 1;
     this.InitDamageConfigs();
     this.OnMapLoaded();
   }
@@ -139,9 +139,9 @@ class KscSubControllerBase {
     this.Model.Clear();
   }
   Tick(e) {
-    if (Time_1.Time.TimeDilation !== this.iLd) {
-      this.iLd = Time_1.Time.TimeDilation;
-      KscEnv_1.KscEnv.KscWorld?.SetWorldTimeDilation(this.iLd);
+    if (Time_1.Time.TimeDilation !== this.PAd) {
+      this.PAd = Time_1.Time.TimeDilation;
+      KscEnv_1.KscEnv.KscWorld?.SetWorldTimeDilation(this.PAd);
     }
     this.SyncPlayerTransform();
     this.HandleHeadHpInfos(e);
@@ -182,28 +182,28 @@ class KscSubControllerBase {
       }
     }
   }
-  SetAttrs(e, t, r) {
+  SetAttrs(e, t, i) {
     if (e) {
-      var s = this.GetAttrsDefault(t);
-      if (!s || s.size <= 0) {
+      var r = this.GetAttrsDefault(t);
+      if (!r || r.size <= 0) {
         KscLog_1.KscLog.Warn("Attr", 17, KscEnv_1.KscEnv.KscWorld, "塔防属性设置失败:异常配置", ["entityId", e.EntityId_], ["propertyId", t]);
       } else {
         Info_1.Info.IsBuildDevelopmentOrDebug;
-        if (r) {
-          for (var [o, i] of s) {
-            i = r[o] ?? i;
-            if (o === 3) {
-              var n = r[2] ?? s.get(2);
-              if (n && n < i) {
-                e.SetAttr(o, n);
+        if (i) {
+          for (var [s, o] of r) {
+            o = i[s] ?? o;
+            if (s === 3) {
+              var n = i[2] ?? r.get(2);
+              if (n && n < o) {
+                e.SetAttr(s, n);
                 continue;
               }
             }
-            e.SetAttr(o, i);
+            e.SetAttr(s, o);
           }
         } else {
-          for (var [a, _] of s) {
-            e.SetAttr(a, _);
+          for (var [a, l] of r) {
+            e.SetAttr(a, l);
           }
         }
       }
@@ -228,9 +228,9 @@ class KscSubControllerBase {
     if (!t || !t.IsValid()) {
       KscLog_1.KscLog.Error("Load", 85, KscEnv_1.KscEnv.KscWorld, "塔防InitDamageIdConfig failed");
     }
-    for (const s of KSCDamageByKscGameplayType_1.configKSCDamageByKscGameplayType.GetConfigList(this.Model.GameplayType)) {
-      var r = new UE.KSCDamage(s.CalculateType, s.Element, s.Amplify * DIVIDED_TEN_THOUSAND, s.RelatedProperty);
-      t.AddDamageData(s.Id, r);
+    for (const r of KSCDamageByKscGameplayType_1.configKSCDamageByKscGameplayType.GetConfigList(this.Model.GameplayType)) {
+      var i = new UE.KSCDamage(r.CalculateType, r.Element, r.Amplify * DIVIDED_TEN_THOUSAND, r.RelatedProperty);
+      t.AddDamageData(r.Id, i);
     }
   }
   InitEntityAndSkillDt() {
@@ -273,16 +273,16 @@ class KscSubControllerBase {
   AddInputLayer() {}
   RemoveInputLayer() {}
   SyncPlayerTransform() {
-    this.NSd()?.SyncEntityLocation();
+    this.lId()?.SyncEntityLocation();
   }
-  NSd() {
+  lId() {
     var e = this.Model?.KscPlayerEntity;
     if (e) {
       return this.Model?.KscEntities.get(e.EntityId_);
     }
   }
   GetPossessedPlayerEntity() {
-    var e = this.NSd();
+    var e = this.lId();
     var t = e?.CreatureDataId;
     if (t && e.Valid) {
       return ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
@@ -309,30 +309,10 @@ class KscSubControllerBase {
     return t.Promise;
   }
   async LoadHeadStateDynamicBatchActor() {
-    const t = new CustomPromise_1.CustomPromise();
-    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_TowerDefenseHPDynamicBatch");
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.PrefabAsset, e => {
-      if (e) {
-        this.HeadStateDynamicBatchActor = UE.LGUIBPLibrary.LoadPrefabWithAsset(GlobalData_1.GlobalData.World, e, UiLayer_1.UiLayer.WorldSpaceUiRootItem);
-      } else {
-        KscLog_1.KscLog.Error("Common", 17, KscEnv_1.KscEnv.KscWorld, "LoadHeadStateDynamicBatchActor失败");
-      }
-      t.SetResult();
-    });
-    return t.Promise;
+    this.HeadStateDynamicBatchActor = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_TowerDefenseHPDynamicBatch", UiLayer_1.UiLayer.WorldSpaceUiRootItem, GlobalData_1.GlobalData.World, 100, "Ui.HeadStateUi");
   }
   async LoadHeadStateViewActor() {
-    const t = new CustomPromise_1.CustomPromise();
-    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_TowerDefenseHP");
-    ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.PrefabAsset, e => {
-      if (e) {
-        this.HeadStateViewActor = UE.LGUIBPLibrary.LoadPrefabWithAsset(GlobalData_1.GlobalData.World, e, UiLayer_1.UiLayer.WorldSpaceUiRootItem);
-      } else {
-        KscLog_1.KscLog.Error("Common", 17, KscEnv_1.KscEnv.KscWorld, "LoadHeadStateViewActor失败");
-      }
-      t.SetResult();
-    });
-    return t.Promise;
+    this.HeadStateViewActor = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_TowerDefenseHP", UiLayer_1.UiLayer.WorldSpaceUiRootItem, GlobalData_1.GlobalData.World, 100, "Ui.HeadStateUi");
   }
   InitHeadStateManagerRes() {
     if (this.HeadStateScaleCurve && this.HeadStateViewActor && this.HeadStateDynamicBatchActor) {
@@ -348,22 +328,22 @@ class KscSubControllerBase {
     var e = KscEnv_1.KscEnv.KscWorld;
     if (e) {
       e.GetHeadHpInfos(this.HeadInfos);
-      var r = (0, puerts_1.$unref)(this.HeadInfos);
-      var s = r.Num();
-      var o = this.Model?.KscPlayerHeadStateData;
-      if (o) {
-        for (let e = 0; e < s; e++) {
-          var i = r.Get(e);
-          if (i.EntityId === o.EntityId) {
+      var i = (0, puerts_1.$unref)(this.HeadInfos);
+      var r = i.Num();
+      var s = this.Model?.KscPlayerHeadStateData;
+      if (s) {
+        for (let e = 0; e < r; e++) {
+          var o = i.Get(e);
+          if (o.EntityId === s.EntityId) {
             this.SubModel.IsHpModify = true;
-            this.OnHandlePlayerHeadHpInfo(o, i);
+            this.OnHandlePlayerHeadHpInfo(s, o);
           } else {
-            this.OnHandleHeadHpInfo(i);
+            this.OnHandleHeadHpInfo(o);
           }
         }
       } else {
-        for (let e = 0; e < s; e++) {
-          var n = r.Get(e);
+        for (let e = 0; e < r; e++) {
+          var n = i.Get(e);
           this.OnHandleHeadHpInfo(n);
         }
       }

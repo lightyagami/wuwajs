@@ -9,8 +9,6 @@ const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
-const LordGymEntranceSetAll_1 = require("../../../Core/Define/ConfigQuery/LordGymEntranceSetAll");
-const MapNoteById_1 = require("../../../Core/Define/ConfigQuery/MapNoteById");
 const Net_1 = require("../../../Core/Net/Net");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
@@ -23,8 +21,6 @@ const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const RedDotController_1 = require("../../RedDot/RedDotController");
-const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 const UiTickViewBase_1 = require("../../Ui/Base/UiTickViewBase");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDefine");
@@ -32,6 +28,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const UiModel_1 = require("../../Ui/UiModel");
 const LevelSequencePlayer_1 = require("../Common/LevelSequencePlayer");
 const WorldNavigation_1 = require("../Common/WorldNavigation");
+const HonamiStoryUtil_1 = require("../HonamiStory/HonamiStoryUtil");
 const ItemDefines_1 = require("../Item/Data/ItemDefines");
 const MapController_1 = require("../Map/Controller/MapController");
 const MapDefine_1 = require("../Map/MapDefine");
@@ -41,22 +38,20 @@ const MapDebugger_1 = require("../Map/Mark/Debug/MapDebugger");
 const MapLogger_1 = require("../Map/Misc/MapLogger");
 const MapLifeEventDispatcher_1 = require("../Map/View/BaseMap/Assistant/MapLifeEvent/MapLifeEventDispatcher");
 const Map_1 = require("../Map/View/BaseMap/Map");
-const MingSuDefine_1 = require("../MingSu/MingSuDefine");
-const PowerController_1 = require("../Power/PowerController");
 const PowerCurrencyItem_1 = require("../Power/SubViews/PowerCurrencyItem");
-const QuestController_1 = require("../QuestNew/Controller/QuestController");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const LongPressButton_1 = require("../Util/LongPressButton");
+const ExploreInfoItem_1 = require("./SubItems/ExploreInfoItem");
+const HandleCursorButton_1 = require("./SubItems/HandleCursorButton");
+const HonamiMarkSelectPanel_1 = require("./SubItems/HonamiMarkSelectPanel");
 const WorldMapChangeGravityButtonItem_1 = require("./SubViews/Common/WorldMapChangeGravityButtonItem");
 const UnderseaOverviewItem_1 = require("./SubViews/UnderseaExperimentField/UnderseaOverviewItem");
 const WorldMapUiEntity_1 = require("./ViewComponent/WorldMapUiEntity");
 const WorldMapController_1 = require("./WorldMapController");
 const WorldMapDefine_1 = require("./WorldMapDefine");
-const WorldMapNoteItem_1 = require("./WorldMapNoteItem");
 const WorldMapPeriodicActivityItem_1 = require("./WorldMapPeriodicActivityItem");
-const WorldMapPlayPointItem_1 = require("./WorldMapPlayPointItem");
 const WorldMapSubMapItem_1 = require("./WorldMapSubMapItem");
 const WorldMapUtil_1 = require("./WorldMapUtil");
 const SCALE_STEP = 0.1;
@@ -70,20 +65,19 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.v3o = undefined;
     this.BFo = undefined;
     this.M3o = undefined;
+    this.zAd = 1;
     this.R3o = undefined;
-    this.NXs = undefined;
-    this.fea = undefined;
-    this.P3o = false;
-    this.x3o = undefined;
-    this.e2l = undefined;
+    this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem();
+    this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
     this.w3o = undefined;
     this.B3o = new Vector2D_1.Vector2D();
     this.b3o = undefined;
     this.q3o = undefined;
     this.G3o = [0, undefined];
-    this.N3o = undefined;
-    this.k3o = undefined;
-    this.Fvd = undefined;
+    this.JAd = new HandleCursorButton_1.HandleCursorButton();
+    this.ZAd = new ExploreInfoItem_1.ExploreInfoItem();
+    this.aMd = new WorldMapPeriodicActivityItem_1.WorldMapPeriodicActivityItem();
+    this.Vmm = new HonamiMarkSelectPanel_1.HonamiMarkSelectPanel();
     this.uwu = undefined;
     this.H3o = undefined;
     this.j3o = new Map();
@@ -92,19 +86,21 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.K3o = undefined;
     this.Q3o = undefined;
     this.Twl = 0;
+    this.CMm = false;
+    this.pMm = false;
     this.$Ya = 0;
     this.z3o = false;
-    this.qfc = undefined;
     this.tKl = false;
     this.Gfc = undefined;
     this.e4o = () => {
       var t;
       if (!(this.Twl <= 0)) {
         this.Twl = 0;
+        this.CMm = false;
         if (t = this.v3o.SelfPlayerNode?.GetLGUISpaceAbsolutePosition()) {
           this.H3o?.SetLGUISpaceAbsolutePosition(t);
         }
-        this.H3o?.SetUIActive(true);
+        this.H3o?.SetUIActive(!this.pMm);
         this.Q3o?.PlayLevelSequenceByName("Start", true);
         this.v3o.HandleMapTileDelegate();
       }
@@ -125,9 +121,29 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
+    this.u4o = (t, e = true) => {
+      if (this.WorldMapUiEntity.ClickedItem && this.WorldMapUiEntity.ClickedItem.IsIgnoreScaleShow) {
+        this.WorldMapUiEntity.ClickedItem.IsIgnoreScaleShow = false;
+        this.WorldMapUiEntity.ClickedItem.SetSelected(false);
+        this.WorldMapUiEntity.UpdateSingleMarkItem(this.WorldMapUiEntity.ClickedItem, true);
+      }
+      if (this.WorldMapUiEntity.SecondaryUiComponent.ExtraSecondaryUiOpen) {
+        this.Shl.forEach(t => {
+          if (UiManager_1.UiManager.IsViewOpen(t)) {
+            UiManager_1.UiManager.CloseView(t);
+          }
+        });
+      }
+      if (this.WorldMapUiEntity.SecondaryUiComponent.IsInternalSecondaryUiOpen()) {
+        this.WorldMapUiEntity.MultiFloorComponent.UpdateMultiMap();
+        this.WorldMapUiEntity.SecondaryUiComponent.CloseUi(t, e);
+      } else if (t) {
+        t();
+      }
+    };
     this.Ili = () => {
       this.u4o(() => {
-        PowerController_1.PowerController.OpenPowerView();
+        ControllerHolder_1.ControllerHolder.PowerController.OpenPowerView();
       });
     };
     this._4o = () => {
@@ -139,36 +155,36 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         this.WorldMapUiEntity.ClickedItem = undefined;
       }
       this.WorldMapUiEntity.UpdateMarkItems();
-      this.c4o(true);
+      this.ZAd.SetMapNotesState(true);
       if (!this.z3o) {
         this.K3o.StopCurrentSequence();
-        this.GetItem(17).SetUIActive(true);
+        this.GetItem(14).SetUIActive(true);
         this.K3o.PlayLevelSequenceByName("Show");
       }
       this.m4o(Info_1.Info.IsInGamepad());
-      this.N3o.SetCursorActive(true);
+      this.JAd.SetCursorActive(true);
       this.iKl();
     };
     this.iKl = () => {
       if (this.tKl && !this.WorldMapUiEntity.SecondaryUiComponent.IsSecondaryUiOpening) {
         this.tKl = false;
-        this.M2l();
+        this.ZAd.UpdateNoteOrPlayProgress();
         this.bQl(500);
       }
     };
     this.d4o = () => {
-      this.c4o(false);
+      this.ZAd.SetMapNotesState(false);
       if (this.z3o) {
         this.z3o = false;
       } else {
         this.K3o.StopCurrentSequence();
         this.K3o.PlayLevelSequenceByName("Hide");
       }
-      this.N3o.SetCursorActive(false);
+      this.JAd.SetCursorActive(false);
     };
     this.Ceh = t => {
       if (t === "Hide") {
-        this.GetItem(17).SetUIActive(false);
+        this.GetItem(14).SetUIActive(false);
       }
     };
     this.vKe = t => {
@@ -195,50 +211,50 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         if (this.WorldMapUiEntity.IsInPlayerMap && this.WorldMapUiEntity.PlayerComponent.PlayerOutOfBound && this.C4o(_, this.v3o.SelfPlayerNode, true)[0]) {
           this.WorldMapUiEntity.MoveComponent.FocusPlayer(this.WorldMapUiEntity.PlayerComponent.PlayerUiPosition, true, 1);
         } else {
-          const M = [];
+          const l = [];
           var e = Vector_1.Vector.Create(t.X, t.Y, t.Z);
           var s = [];
-          var a = [];
-          var r = async t => {
+          var r = [];
+          var h = async t => {
             var e = await t.GetRootItemAsync();
             return [t, e];
           };
-          for (const l of this.v3o.GetMarkItemsByClickPosition(e)) {
-            if (l.View && l.GetInteractiveFlag() && !l.IsOutOfBound) {
-              s.push(r(l));
+          for (const M of this.v3o.GetMarkItemsByClickPosition(e)) {
+            if (M.View && M.GetInteractiveFlag() && !M.IsOutOfBound) {
+              s.push(h(M));
             }
           }
           let i = s.length <= 1;
-          var h;
+          var a;
           var n = Promise.all(s).then(t => {
             for (const e of t) {
               if (this.C4o(_, e[1], i)[0]) {
-                M.push(e[0]);
+                l.push(e[0]);
               }
             }
           });
-          for ([, h] of this.v3o.GetAllMarkItems()) {
-            for (var [, o] of h) {
+          for ([, a] of this.v3o.GetAllMarkItems()) {
+            for (var [, o] of a) {
               if (o.IsOutOfBound) {
-                a.push(r(o));
+                r.push(h(o));
               }
             }
           }
-          i = a.length <= 1;
-          t = Promise.all(a).then(t => {
+          i = r.length <= 1;
+          t = Promise.all(r).then(t => {
             for (const e of t) {
               if (this.C4o(_, e[1], i)[0]) {
-                M.push(e[0]);
+                l.push(e[0]);
               }
             }
           });
           Promise.all([t, n]).then(() => {
-            if (M.length === 0) {
+            if (l.length === 0) {
               this.g4o(_);
-            } else if (M.length === 1) {
-              this.f4o(M[0]);
-            } else if (M.length > 1) {
-              this.p4o(M, _);
+            } else if (l.length === 1) {
+              this.f4o(l[0]);
+            } else if (l.length > 1) {
+              this.p4o(l, _);
             }
           });
         }
@@ -247,7 +263,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.f4o = (t, e) => {
       this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(t.MarkId, t.MarkType, true);
     };
-    this.viu = (s, a) => {
+    this.viu = (s, r) => {
       if (!this.WorldMapUiEntity.ClickedItem || this.WorldMapUiEntity.ClickedItem.MarkId !== s.MarkId) {
         var e = ModelManager_1.ModelManager.WorldMapModel;
         e.CurrentFocalMarkType = s.MarkType;
@@ -257,7 +273,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         }
         let t = true;
         if (this.WorldMapUiEntity.SecondaryUiComponent.IsInternalSecondaryUiOpen()) {
-          if (!s.IsOutOfBound || a) {
+          if (!s.IsOutOfBound || r) {
             this.z3o = true;
           } else {
             this.z3o = false;
@@ -268,7 +284,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
           var t;
           var e;
           var i;
-          if (!s.IsOutOfBound || !(this.WorldMapUiEntity.MoveComponent.SetMapPosition(s, true, 1, undefined, undefined, true, true), !a)) {
+          if (!s.IsOutOfBound || !(this.WorldMapUiEntity.MoveComponent.SetMapPosition(s, true, 1, undefined, undefined, true, true), !r)) {
             if (this.R3o && !this.R3o.IsDestroy) {
               this.R3o.GetRootItemAsync().then(t => {
                 if (t) {
@@ -300,29 +316,29 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.E4o = async (i, s) => {
-      var a = i.filter(t => t.IsOutOfBound);
-      if (a.length === 0) {
+      var r = i.filter(t => t.IsOutOfBound);
+      if (r.length === 0) {
         this.WorldMapUiEntity.SecondaryUiComponent.ShowMarkMenu(this.RootItem, i);
         this.v3o.SetClickRangeVisible(true, s);
       } else {
-        let t = a[0];
+        let t = r[0];
         i = await t.GetRootItemAsync();
         let e = Vector2D_1.Vector2D.Distance(s, Vector2D_1.Vector2D.Create(i.GetAnchorOffset()));
-        var r = [];
-        for (const o of a) {
+        var h = [];
+        for (const o of r) {
           if (o.View) {
-            r.push((async t => {
+            h.push((async t => {
               var e = await t.GetRootItemAsync();
               return [t, e];
             })(o));
           }
         }
-        for (const _ of await Promise.all(r)) {
-          var h = _[0];
+        for (const _ of await Promise.all(h)) {
+          var a = _[0];
           var n = _[1];
           var n = Vector2D_1.Vector2D.Distance(s, Vector2D_1.Vector2D.Create(n.GetAnchorOffset()));
           if (e > n) {
-            t = h;
+            t = a;
             e = n;
           }
         }
@@ -356,15 +372,15 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.R4o = (t, e) => {
       this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(e, t, true);
     };
-    this.XYa = (t, e, i, s, a) => {
-      if (a && !this.v3o.GetMarkItem(e, t)) {
+    this.XYa = (t, e, i, s, r) => {
+      if (r && !this.v3o.GetMarkItem(e, t)) {
         ModelManager_1.ModelManager.MapModel.CreateTempMapMark(t);
       }
-      a = this.v3o.GetMarkItem(e, t);
-      if (a) {
-        this.WorldMapUiEntity.MoveComponent.PushMap(a, s);
-        if (i && a.MarkType !== 1) {
-          this.U4o(a.MarkType, t);
+      r = this.v3o.GetMarkItem(e, t);
+      if (r) {
+        this.WorldMapUiEntity.MoveComponent.PushMap(r, s);
+        if (i && r.MarkType !== 1) {
+          this.U4o(r.MarkType, t);
         }
       } else {
         MapLogger_1.MapLogger.Warn(63, "聚焦了不存在的标记", ["地图标记类型:", e], ["地图标记Id", t]);
@@ -399,8 +415,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
     };
-    this.Nvd = () => {
-      this.Fvd?.RefreshView(this.krh());
+    this.hMd = () => {
+      this.aMd.Refresh(this.krh());
     };
     this.P4o = () => {
       AudioSystem_1.AudioSystem.PostEvent("play_ui_com_slider_tick");
@@ -421,267 +437,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         this.WorldMapUiEntity.ScaleComponent.AddMapScale(t, e);
       }
     };
-    this.B4o = (t, e) => e.MapNoteConfig.Rank - t.MapNoteConfig.Rank;
-    this.b4o = t => {
-      this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(t, 0, true);
-    };
-    this.bsa = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(9);
-      if (t && this.YYa(t) && ModelManager_1.ModelManager.RoguelikeModel?.GetMapNoteShowState() && t) {
-        return {
-          MapNoteId: 9,
-          ClickCallBack: this.b4o,
-          MapNoteConfig: t,
-          MapMarkId: t.MarkIdMap.get(1)
-        };
-      } else {
-        return undefined;
-      }
-    };
-    this.NB1 = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(13);
-      if (t) {
-        var e = this.YYa(t);
-        if (e) {
-          if (ModelManager_1.ModelManager.ActivityPermanentRogueModel?.GetMapNoteShowState()) {
-            return {
-              MapNoteId: 13,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(1)
-            };
-          }
-        }
-      }
-    };
-    this.H3u = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(14);
-      if (t) {
-        var e = this.YYa(t);
-        if (e) {
-          if (ModelManager_1.ModelManager.WeeklyRogueModel.GetMapNoteShowState()) {
-            return {
-              MapNoteId: 14,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: ModelManager_1.ModelManager.WeeklyRogueModel.ActivityDataNew?.GetCycleConfig()?.MapMark
-            };
-          }
-        }
-      }
-    };
-    this.yKa = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(10);
-      if (t && this.YYa(t)) {
-        var e;
-        var i = ModelManager_1.ModelManager.MingSuModel;
-        var s = i.GetDragonPoolInstanceById(MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID);
-        if (s) {
-          e = s.GetDragonPoolLevel();
-          e = s.GetNeedCoreCount(e) - s.GetHadCoreCount();
-          s = i.GetTargetDragonPoolCoreById(MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID);
-          if (e <= i.GetItemCount(s) && t) {
-            return {
-              MapNoteId: 10,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(MingSuDefine_1.DARK_COAST_POOL_CONFIG_ID)
-            };
-          } else {
-            return undefined;
-          }
-        }
-      }
-    };
-    this.q4o = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(2);
-      if (t && this.YYa(t)) {
-        var e;
-        var i = ModelManager_1.ModelManager.MingSuModel;
-        var s = i.GetDragonPoolInstanceById(MingSuDefine_1.MING_SU_POOL_CONFIG_ID);
-        if (s) {
-          e = s.GetDragonPoolLevel();
-          e = s.GetNeedCoreCount(e) - s.GetHadCoreCount();
-          s = i.GetTargetDragonPoolCoreById(MingSuDefine_1.MING_SU_POOL_CONFIG_ID);
-          if (e <= i.GetItemCount(s) && t) {
-            return {
-              MapNoteId: 2,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(MingSuDefine_1.MING_SU_POOL_CONFIG_ID)
-            };
-          } else {
-            return undefined;
-          }
-        }
-      }
-    };
-    this.PQl = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(12);
-      if (t && this.YYa(t)) {
-        var e;
-        var i = ModelManager_1.ModelManager.MingSuModel;
-        var s = i.GetDragonPoolInstanceById(MingSuDefine_1.PUPU_VILLAGE_POOL_CONFIG_ID);
-        if (s) {
-          e = s.GetDragonPoolLevel();
-          e = s.GetNeedCoreCount(e) - s.GetHadCoreCount();
-          s = i.GetTargetDragonPoolCoreById(MingSuDefine_1.PUPU_VILLAGE_POOL_CONFIG_ID);
-          if (e <= i.GetItemCount(s) && t) {
-            return {
-              MapNoteId: 12,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(MingSuDefine_1.PUPU_VILLAGE_POOL_CONFIG_ID)
-            };
-          } else {
-            return undefined;
-          }
-        }
-      }
-    };
-    this.B$d = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(15);
-      if (t && this.YYa(t)) {
-        var e;
-        var i = ModelManager_1.ModelManager.MingSuModel;
-        var s = i.GetDragonPoolInstanceById(MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID);
-        if (s) {
-          e = s.GetDragonPoolLevel();
-          e = s.GetNeedCoreCount(e) - s.GetHadCoreCount();
-          s = i.GetTargetDragonPoolCoreById(MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID);
-          if (e <= i.GetItemCount(s) && t) {
-            return {
-              MapNoteId: 15,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(MingSuDefine_1.PUPU_VILLAGE_QIQIU_POOL_CONFIG_ID)
-            };
-          } else {
-            return undefined;
-          }
-        }
-      }
-    };
-    this.G4o = () => {
-      var t = MapNoteById_1.configMapNoteById.GetConfig(3);
-      if (t && this.krh() && ModelManager_1.ModelManager.TowerModel.CanGetRewardAllDifficulties() && t) {
-        return {
-          MapNoteId: 3,
-          ClickCallBack: this.b4o,
-          MapNoteConfig: t,
-          MapMarkId: t.MarkIdMap.get(1)
-        };
-      } else {
-        return undefined;
-      }
-    };
-    this.N4o = () => {
-      var t = ModelManager_1.ModelManager.ExploreLevelModel.GetCountryExploreLevelData(WorldMapDefine_1.HUANG_LONG_COUNTRY_ID);
-      if (t && t.CanLevelUp()) {
-        t = MapNoteById_1.configMapNoteById.GetConfig(5);
-        if (t) {
-          if (this.YYa(t)) {
-            return {
-              MapNoteId: 5,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: t,
-              MapMarkId: t.MarkIdMap.get(1)
-            };
-          }
-        }
-      }
-    };
-    this.O4o = () => {
-      var t = ModelManager_1.ModelManager.LordGymModel.GetCanFightLordGym();
-      if (t !== 0) {
-        var e = MapNoteById_1.configMapNoteById.GetConfig(8);
-        if (e) {
-          if (this.YYa(e)) {
-            t = ModelManager_1.ModelManager.LordGymModel.GetMarkIdByLordGymId(t);
-            return {
-              MapNoteId: 8,
-              ClickCallBack: this.b4o,
-              MapNoteConfig: e,
-              MapMarkId: t
-            };
-          }
-        }
-      }
-    };
-    this.uql = () => {
-      var e = MapNoteById_1.configMapNoteById.GetConfig(11);
-      if (e && this.YYa(e)) {
-        var i;
-        var s = ModelManager_1.ModelManager.LordGymModel;
-        let t = 0;
-        for (const r of LordGymEntranceSetAll_1.configLordGymEntranceSetAll.GetConfigList()) {
-          var a = r.MapNoteUnlockCondition;
-          if (a) {
-            if (!ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(a.toString(), undefined, false)) {
-              continue;
-            }
-          }
-          for (const h of r.LordEntranceList) {
-            if (!s.IsNewLordGymEntranceRecord(h) && !s.GetGymEntranceAllFinish(h)) {
-              t = h;
-              break;
-            }
-          }
-          if (t > 0) {
-            break;
-          }
-        }
-        if (!(t <= 0)) {
-          i = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(t).MarkId;
-          return {
-            MapNoteId: 11,
-            ClickCallBack: this.b4o,
-            MapNoteConfig: e,
-            MapMarkId: i
-          };
-        }
-      }
-    };
-    this.k4o = () => {
-      var e = MapNoteById_1.configMapNoteById.GetConfig(4);
-      if (this.YYa(e)) {
-        var s = e.QuestIdList;
-        let i = 0;
-        let t = false;
-        for (const r of s) {
-          var a = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(r);
-          if (a === 2 || a === 1) {
-            i = r;
-            t = true;
-            break;
-          }
-        }
-        if (t && e) {
-          return {
-            MapNoteId: 4,
-            ClickCallBack: t => {
-              var e = () => {
-                var t;
-                var e = ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest().Id;
-                if (e === i && (t = ModelManager_1.ModelManager.QuestNewModel.TryGetMapMarkIdByQuestId(e)) !== undefined && (this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(t, 12, true), Log_1.Log.CheckInfo())) {
-                  Log_1.Log.Info("Quest", 37, "选中鸣域等阶升级任务", ["QuestId", e], ["MarkID", t]);
-                }
-              };
-              if (ModelManager_1.ModelManager.QuestNewModel.IsTrackingQuest(i)) {
-                e();
-              } else {
-                QuestController_1.QuestNewController.RequestTrackQuest(i, true, 2, 0, e);
-              }
-            },
-            MapNoteConfig: e
-          };
-        } else {
-          return undefined;
-        }
-      }
-    };
     this.XBo = () => {
-      this.N3o.SetCursorActive(!this.WorldMapUiEntity.SecondaryUiComponent.IsSecondaryUiOpening);
+      this.JAd.SetCursorActive(!this.WorldMapUiEntity.SecondaryUiComponent.IsSecondaryUiOpening);
     };
     this.F4o = () => {
       if (Info_1.Info.IsInGamepad()) {
@@ -731,30 +488,14 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         }
       });
     };
-    this.H4o = () => {
-      var t = MapUtil_1.MapUtil.GetWorldMapLevelOneAreaId();
-      if (t) {
-        this.k3o.SetActive(true);
-        this.k3o.Update(t);
-      } else {
-        this.k3o.SetActive(false);
-      }
+    this.eDd = () => {
+      this.ZAd.UpdateAreaProgress();
     };
     this.zYa = () => {
       this.$lh();
       this.u4o(() => {
         this.WorldMapUiEntity.MultiFloorComponent.DeSelectMultiMapFloor();
         this.WorldMapUiEntity.SecondaryUiComponent.ShowQuickNavigate(this.RootItem, this.v3o.GetNavigateMarkList());
-      });
-    };
-    this.g2l = () => {
-      this.u4o(() => {
-        var t = this.p2l();
-        t.forEach(t => {
-          ModelManager_1.ModelManager.ExploreProgressModel.SetLocalShowNoteIdMap(t.MapNoteId);
-        });
-        this.WorldMapUiEntity?.SecondaryUiComponent.ShowWorldMapNotePanel(this.RootItem, t);
-        this.U2l();
       });
     };
     this.f2l = () => {
@@ -787,8 +528,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       var e = ModelManager_1.ModelManager.WorldMapModel.GetDebugMapPath();
       e.Empty();
       var i = new Vector2D_1.Vector2D();
-      for (const a of t.rS_) {
-        var s = Vector_1.Vector.Create(a);
+      for (const r of t.rS_) {
+        var s = Vector_1.Vector.Create(r);
         MapUtil_1.MapUtil.WorldPosition2UiPosition2D(Vector2D_1.Vector2D.Create(s.X, s.Y), i);
         e.Add(i.ToUeVector2D());
       }
@@ -799,26 +540,28 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     return this.$Ya === MapDefine_1.BIG_WORLD_MAP_ID;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISliderComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UINiagara], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIVerticalLayout], [19, UE.UIItem], [20, UE.UIButtonComponent], [21, UE.UIText], [22, UE.UIButtonComponent], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIButtonComponent], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIText], [29, UE.UIItem]];
-    this.BtnBindInfo = [[5, this.AMo], [20, this.zYa], [22, this.g2l], [6, this.f2l]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISliderComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIItem], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UINiagara], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIVerticalLayout], [16, UE.UIItem], [17, UE.UIButtonComponent], [18, UE.UIText], [19, UE.UIButtonComponent], [20, UE.UIItem], [21, UE.UIText], [22, UE.UIItem], [23, UE.UIItem]];
+    this.BtnBindInfo = [[5, this.AMo], [17, this.zYa], [6, this.f2l]];
   }
   async OnBeforeStartAsync() {
-    this.GetItem(14)?.SetUIActive(false);
-    this.GetItem(23)?.SetUIActive(false);
-    this.GetText(21)?.ShowTextNew("ChangeMapBtn_Text");
-    this.Vfc(false, false);
-    this.M3o = this.OpenParam;
-    this.iZa();
-    this.BFo = this.GetItem(13).GetOwner().GetComponentByClass(UE.KuroWorldMapUIParams.StaticClass());
-    ControllerHolder_1.ControllerHolder.LevelPlayReportController.RequestSimpleTrackReportAsync();
-    this.Gfc = new WorldMapChangeGravityButtonItem_1.WorldMapChangeGravityButtonItem();
-    await this.Gfc.CreateThenShowByActorAsync(this.GetButton(25).GetOwner());
-    this.Gfc.SetFunction(this.Ffc);
-    await this.j4o();
-    await this.W3o.OnWorldMapBeforeStartAsync();
-    this.X3o = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(18), () => new WorldMapSubMapItem_1.WorldMapSubMapItem());
     ModelManager_1.ModelManager.ExploreProgressModel.LoadLocalShowNoteIdMap();
-    this.GetText(28).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.EnableDebug);
+    this.M3o = this.OpenParam;
+    this.jmm();
+    this.iZa();
+    this.BFo = this.GetItem(12).GetOwner().GetComponentByClass(UE.KuroWorldMapUIParams.StaticClass());
+    await this.tDd();
+    ControllerHolder_1.ControllerHolder.PowerController.SendUpdatePowerRequest([ItemDefines_1.EItemId.Power, ItemDefines_1.EItemId.OverPower]);
+    await Promise.all([this.W3o.OnWorldMapBeforeStartAsync(), ControllerHolder_1.ControllerHolder.LevelPlayReportController.RequestSimpleTrackReportAsync()]);
+  }
+  jmm() {
+    this.zAd = 1;
+    if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
+      this.zAd = 2;
+    }
+    this.NXs.SetWorldMapSelfShow(this.zAd);
+    this.fea.SetWorldMapSelfShow(this.zAd);
+    this.aMd.SetWorldMapSelfShow(this.zAd);
+    this.ZAd.SetWorldMapSelfShow(this.zAd);
   }
   iZa() {
     var t;
@@ -841,6 +584,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       this.Sdl();
     }
     ModelManager_1.ModelManager.WorldMapModel.WorldMapId = this.$Ya;
+    ModelManager_1.ModelManager.WorldMapModel.ResetMapScale();
   }
   Sdl() {
     var t = ModelManager_1.ModelManager.MapModel;
@@ -857,10 +601,11 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       MapLogger_1.MapLogger.Error(63, "[地图系统]->获取上一次大世界区域配置失败", ["MapId:", this.$Ya], ["lastBigSceneMiniMapInfo", s]);
     }
   }
-  async j4o() {
+  async tDd() {
     await Promise.all([ControllerHolder_1.ControllerHolder.ExploreProgressController.AllExploreProgressAsyncRequest(), ControllerHolder_1.ControllerHolder.LordGymController.LordGymInfoRequest(), ControllerHolder_1.ControllerHolder.TowerController.RefreshTower(), ControllerHolder_1.ControllerHolder.MingSuController.SendDarkCoastDeliveryRequestAsync()]);
-    await Promise.all([this.Gkn(), this.Q4o(), this.X4o(), this.$4o(), this.rYs(), this.Y4o(), this.J4o(), this.cwu(), this.q7l()]);
+    await Promise.all([this.Gkn(), this.Q4o(), this.X4o(), this.iDd(), this.rYs(), this.Y4o(), this.J4o(), this.rDd(), this.oDd(), this.Hmm()]);
     this.z4o();
+    this.nDd();
   }
   async Gkn() {
     var t = ModelManager_1.ModelManager.MapModel.GetInstanceIdByWorldMapId(this.$Ya);
@@ -882,7 +627,6 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     await this.v3o.CreateThenShowByResourceIdAsync("UiItem_Map_Prefab", this.GetItem(9), true);
   }
   async Y4o() {
-    this.NXs = new PowerCurrencyItem_1.PowerCurrencyItem();
     await this.NXs.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.GetItem(10).GetParentAsUIItem());
     this.NXs.ShowWithoutText(ItemDefines_1.EItemId.Power);
     this.NXs.SetButtonFunction(this.Ili);
@@ -890,28 +634,24 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
   }
   async rYs() {
     this.GetItem(10)?.SetUIActive(false);
-    this.fea = new PowerCurrencyItem_1.PowerCurrencyItem();
     await this.fea.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.GetItem(10).GetParentAsUIItem());
     this.fea.ShowWithoutText(ItemDefines_1.EItemId.OverPower);
     this.fea.RefreshAddButtonActive();
     this.fea.SetActive(ModelManager_1.ModelManager.FunctionModel.IsOpen(10066));
   }
   async Q4o() {
-    var t = this.GetItem(12);
-    this.N3o = new HandleCursorBotton();
-    await this.N3o.Initialize(t, this.F4o);
-    this.N3o.SetCursorActive(true);
+    await this.JAd.Initialize(this.GetItem(11), this.F4o);
+    this.JAd.SetCursorActive(true);
   }
   async X4o() {
-    this.k3o = new ExploreItem();
-    await this.k3o.Init(this.GetItem(15), this);
+    await this.ZAd.Init(this.GetItem(23), this.M3o?.FocusExplorePlayPoint?.[0]);
   }
-  async $4o() {
+  async iDd() {
     ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData();
-    var t = this.GetItem(16);
-    this.Fvd = new WorldMapPeriodicActivityItem_1.WorldMapPeriodicActivityItem();
-    await this.Fvd.CreateThenShowByActorAsync(t.GetOwner());
-    this.Fvd.Refresh(this.krh(), () => {
+    var t = this.GetItem(13);
+    await this.aMd.CreateThenShowByActorAsync(t.GetOwner());
+    this.aMd.Refresh(this.krh());
+    this.aMd.SetOnClickBtnCb(() => {
       this.u4o(() => {
         this.WorldMapUiEntity?.SecondaryUiComponent.ShowMapPeriodicActivityPanel(this.RootItem);
       });
@@ -920,6 +660,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
   async J4o() {
     var t = this.OpenParam;
     this.Twl = t?.OpenFogId ?? 0;
+    this.CMm = t?.ShowFogEffectInstant ?? false;
+    this.pMm = t?.IsNotNeedUnLockEffect ?? false;
     if (this.Twl > 0) {
       t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_MapUnlock", this.RootItem);
       this.H3o = t.GetComponentByClass(UE.UIItem.StaticClass());
@@ -927,8 +669,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       this.Q3o = new LevelSequencePlayer_1.LevelSequencePlayer(this.H3o);
     }
   }
-  async cwu() {
-    var t = this.GetItem(29);
+  async rDd() {
+    var t = this.GetItem(22);
     this.uwu = new UnderseaOverviewItem_1.UnderseaOverviewItem();
     await this.uwu.Initialize(t, t => {
       t = this.v3o.GetMarkItem(0, t);
@@ -938,17 +680,22 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       }
     });
   }
+  async oDd() {
+    this.Gfc = new WorldMapChangeGravityButtonItem_1.WorldMapChangeGravityButtonItem();
+    await this.Gfc.CreateThenShowByActorAsync(this.GetButton(19).GetOwner());
+    this.Gfc.SetFunction(this.Ffc);
+  }
   z4o() {
     this.b3o = new LongPressButton_1.LongPressButton(this.GetButton(2), this.P4o);
     this.q3o = new LongPressButton_1.LongPressButton(this.GetButton(3), this.w4o);
   }
-  e5o() {
-    this.WorldMapUiEntity.PlayerComponent.PlayerRotation = 0;
-    var t = this.GetItem(8).GetWidth() / this.RootItem.GetWidth();
-    var e = this.GetItem(8).GetHeight() / this.RootItem.GetHeight();
-    var i = WorldMapUtil_1.WorldMapUtil.GetViewportSizeByPool();
-    this.WorldMapUiEntity.MarkEdgeSize = new UE.Vector2D(i.X / 2 * t - MARKICON_HALFSIZE, i.Y / 2 * e - MARKICON_HALFSIZE);
-    this.WorldMapUiEntity.OutOfViewPortSize = Vector2D_1.Vector2D.Create((i.X / 2 + VIEW_PORT_BUFFER_REGION) * t, (i.Y / 2 + VIEW_PORT_BUFFER_REGION) * e);
+  nDd() {
+    this.X3o = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(15), () => new WorldMapSubMapItem_1.WorldMapSubMapItem());
+  }
+  async Hmm() {
+    if (this.zAd === 2) {
+      await this.Vmm.CreateThenShowByResourceIdAsync("UiItem_HonamiActiveExplore", this.GetItem(14));
+    }
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MarkMenuClickItem, this.f4o);
@@ -965,7 +712,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapFocusPlayer, this._2l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapShowTrackList, this.m2l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMenuClickItem, this.C2l);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GetAreaProgress, this.H4o);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GetAreaProgress, this.eDd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnWorldMapTrackMarkItem, this.R4o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CreateMapMark, this.I4o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddMapMark, this.mdl);
@@ -978,10 +725,10 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.NavigateMarkAndShowRange, this.s2l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenExploreAreaDetailViewFromMap, this.A8l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MapOpenFogChange, this.Vhl);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.Nvd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.hMd);
     if (!Info_1.Info.IsBuildShipping) {
       InputDistributeController_1.InputDistributeController.BindKey(InputMappingsDefine_1.keyMappings.C, this.V61);
-      Net_1.Net.Register(23224, this.F61);
+      Net_1.Net.Register(20699, this.F61);
     }
   }
   OnRemoveEventListener() {
@@ -999,7 +746,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapFocusPlayer, this._2l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapShowTrackList, this.m2l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMenuClickItem, this.C2l);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GetAreaProgress, this.H4o);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GetAreaProgress, this.eDd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnWorldMapTrackMarkItem, this.R4o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CreateMapMark, this.I4o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddMapMark, this.mdl);
@@ -1012,27 +759,36 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.NavigateMarkAndShowRange, this.s2l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenExploreAreaDetailViewFromMap, this.A8l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MapOpenFogChange, this.Vhl);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.Nvd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapActivityListDataUpdate, this.hMd);
     if (!Info_1.Info.IsBuildShipping) {
       InputDistributeController_1.InputDistributeController.UnBindKey(InputMappingsDefine_1.keyMappings.C, this.V61);
-      Net_1.Net.UnRegister(23224);
+      Net_1.Net.UnRegister(20699);
     }
   }
   OnStart() {
-    this.x3o = [];
-    this.e2l = [];
     this.i5o();
-    this.K3o = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(17));
+    this.Tka();
+    this.K3o = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(14));
     this.K3o.BindSequenceCloseEvent(this.Ceh);
-    PowerController_1.PowerController.SendUpdatePowerRequest([ItemDefines_1.EItemId.Power, ItemDefines_1.EItemId.OverPower]);
+    this.GetText(18).ShowTextNew("ChangeMapBtn_Text");
+    this.ZAd.SetInfo(this.WorldMapUiEntity, this.u4o);
+    this.ZAd.UpdateBtnRedOrNew(false, false);
+    this.GetText(21).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.EnableDebug);
+    this.sDd();
+  }
+  sDd() {
+    this.NXs?.RefreshWorldMapSelfShow(this.zAd);
+    this.fea?.RefreshWorldMapSelfShow(this.zAd);
+    this.aMd?.RefreshWorldMapSelfShow(this.zAd);
+    this.ZAd?.RefreshWorldMapSelfShow(this.zAd);
+    this.GetButton(17).RootUIComp.SetUIActive(this.zAd === 1);
   }
   OnBeforeShow() {
     this.e5o();
     this.WorldMapUiEntity.Init();
-    this.WorldMapUiEntity.MultiFloorComponent.MultiMapFloorContainer = this.GetItem(19);
-    this.c4o(true);
-    this.H4o();
-    this.Tka();
+    this.WorldMapUiEntity.MultiFloorComponent.MultiMapFloorContainer = this.GetItem(16);
+    this.ZAd.SetMapNotesState(true);
+    this.eDd();
     this.Nfc();
     this.dwu();
     if (this.Twl > 0) {
@@ -1042,36 +798,31 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
     this.WorldMapUiEntity.UpdateMarkItems();
     var t;
     var e = this.M3o;
-    if (e) {
-      if (t = this.v3o.GetMarkItem(e.MarkType, e.MarkId)) {
-        MapHelper_1.MapHelper.CheckAndShowCrossMapTips(e.MarkId, e.MarkType, t.TrackAreaId, t.WorldPosition);
-        this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(e.MarkId, e.MarkType, true, !e.IsNotFocusTween);
-      }
-      if (e.FocusExplorePlayPoint) {
-        t = e.FocusExplorePlayPoint[0];
-        e = e.FocusExplorePlayPoint[1];
-        ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(t, e);
-        ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData();
-      }
-      if (this.M3o?.SkipToExploreAreaDetailView) {
-        t = this.M3o.SkipToExploreAreaDetailView[0];
-        e = this.M3o.SkipToExploreAreaDetailView[1];
-        this.OpenMapExploreAreaDetailView(t, e);
-      }
-    } else {
+    if (!e || !((t = this.v3o.GetMarkItem(e.MarkType, e.MarkId)) && (MapHelper_1.MapHelper.CheckAndShowCrossMapTips(e.MarkId, e.MarkType, t.TrackAreaId, t.WorldPosition), this.WorldMapUiEntity.QuickNavigateComponent.NavigateTo(e.MarkId, e.MarkType, !e.IsNotFocal, !e.IsNotFocusTween)), e.FocusExplorePlayPoint && (t = e.FocusExplorePlayPoint[0], e = e.FocusExplorePlayPoint[1], ModelManager_1.ModelManager.ExploreProgressModel.SetTrackExploreAreaItemData(t, e), ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData()), this.M3o?.SkipToExploreAreaDetailView && (t = this.M3o.SkipToExploreAreaDetailView[0], e = this.M3o.SkipToExploreAreaDetailView[1], this.OpenMapExploreAreaDetailView(t, e)), !this.M3o?.NeedRefreshMultiFloor)) {
       this.WorldMapUiEntity.MultiFloorComponent.InitMultiMap();
     }
     this.rKl();
     this.tKl = this.WorldMapUiEntity.SecondaryUiComponent.IsSecondaryUiOpening;
     if (!this.tKl) {
-      this.M2l();
+      this.ZAd.UpdateNoteOrPlayProgress();
     }
+  }
+  e5o() {
+    this.WorldMapUiEntity.PlayerComponent.PlayerRotation = 0;
+    var t = this.GetItem(8).GetWidth() / this.RootItem.GetWidth();
+    var e = this.GetItem(8).GetHeight() / this.RootItem.GetHeight();
+    var i = WorldMapUtil_1.WorldMapUtil.GetViewportSizeByPool();
+    this.WorldMapUiEntity.MarkEdgeSize = new UE.Vector2D(i.X / 2 * t - MARKICON_HALFSIZE, i.Y / 2 * e - MARKICON_HALFSIZE);
+    this.WorldMapUiEntity.OutOfViewPortSize = Vector2D_1.Vector2D.Create((i.X / 2 + VIEW_PORT_BUFFER_REGION) * t, (i.Y / 2 + VIEW_PORT_BUFFER_REGION) * e);
   }
   OnAfterShow() {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapViewOpened);
     this.M3o = undefined;
     this.W3o.OnWorldMapAfterShow();
     ModelManager_1.ModelManager.ExploreProgressModel.CheckTrackExploreAreaItemData();
+    if (this.CMm) {
+      this.e4o();
+    }
   }
   OnAfterPlayStartSequence() {
     if (!this.tKl) {
@@ -1083,8 +834,8 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
       await TimerSystem_1.GameplayTimerSystem.Wait(t);
     }
     if (!this.IsDestroyOrDestroying) {
-      this.k7l();
-      this.G7l();
+      this.ZAd.ResumeMapNoteSequence();
+      this.ZAd.ResumeRecommendSequence();
     }
   }
   OnBeforeHide() {
@@ -1102,7 +853,7 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
   }
   IJo() {
     if (!Info_1.Info.IsBuildShipping) {
-      this.GetText(28).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.EnableDebug);
+      this.GetText(21).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.EnableDebug);
     }
     if (ModelManager_1.ModelManager.WorldMapModel.EnableDebug) {
       var e = this.WorldMapUiEntity.Map.GetRootItem().GetAnchorOffset();
@@ -1122,13 +873,13 @@ class WorldMapView extends UiTickViewBase_1.UiTickViewBase {
         t = `${t}
 ${i}`;
       }
-      this.GetText(28).SetText(t);
+      this.GetText(21).SetText(t);
     }
   }
   r5o() {
     if (Info_1.Info.IsInGamepad()) {
       var t;
-      var e = this.N3o.GetRootItem().D_K2_GetComponentLocation();
+      var e = this.JAd.GetRootItem().D_K2_GetComponentLocation();
       var i = this.v3o.MapRootItem.D_K2_GetComponentToWorld();
       var i = UE.KismetMathLibrary.D_InverseTransformLocation(i, e);
       this.B3o.Set(i.X, i.Y);
@@ -1137,19 +888,19 @@ ${i}`;
       var e = this.v3o.GetAllMarkItems();
       var s = e.size <= 1;
       for ([, t] of e) {
-        for (var [, a] of t) {
-          var [r, h] = this.y2l(this.B3o, Vector2D_1.Vector2D.Create(a.UiPosition.X, a.UiPosition.Y), s, true);
-          var n = a.GetInteractiveFlag();
-          if (r && n) {
-            if (this.G3o[0] > h) {
-              this.G3o[0] = h;
-              this.G3o[1] = a;
+        for (var [, r] of t) {
+          var [h, a] = this.y2l(this.B3o, Vector2D_1.Vector2D.Create(r.UiPosition.X, r.UiPosition.Y), s, true);
+          var n = r.GetInteractiveFlag();
+          if (h && n) {
+            if (this.G3o[0] > a) {
+              this.G3o[0] = a;
+              this.G3o[1] = r;
             }
-            this.w3o.push(a);
+            this.w3o.push(r);
           }
         }
       }
-      this.N3o.SetSelected(false);
+      this.JAd.SetSelected(false);
     }
   }
   n5o(t = false) {
@@ -1168,7 +919,7 @@ ${i}`;
         this.r5o();
       }
       if (this.w3o.length > 0 && this.WorldMapUiEntity.ClickedItem === undefined) {
-        this.N3o.SetSelected(true);
+        this.JAd.SetSelected(true);
         this.WorldMapUiEntity.MoveComponent.SetMapPosition(this.G3o[1], true, 0, this.BFo.TweenTypeEase, this.BFo.GamePadTweenTime);
       }
     }
@@ -1180,8 +931,8 @@ ${i}`;
   OnBeforeDestroy() {
     this.u4o();
     this.h5o();
-    this.a5o();
-    this.E2l();
+    this.ZAd.DestroyMapNotes();
+    this.ZAd.DestroyMapPlayPoints();
     WorldMapController_1.WorldMapController.ClearFocalMarkItem();
     this.b3o.OnDestroy();
     this.q3o.OnDestroy();
@@ -1191,7 +942,7 @@ ${i}`;
     this.NXs.Destroy();
     this.fea.Destroy();
     this.v3o.Destroy();
-    this.N3o.Destroy();
+    this.JAd.Destroy();
     ModelManager_1.ModelManager.WorldMapModel.WorldMapAxisInteractValidation.Reset();
     ModelManager_1.ModelManager.WorldMapModel.WorldMapId = undefined;
     ModelManager_1.ModelManager.WorldMapModel.WorldMapCurrentMultiMapId = undefined;
@@ -1206,7 +957,7 @@ ${i}`;
   }
   async I2l(t) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapBeforeChangeMap);
-    this.a5o();
+    this.ZAd.DestroyMapNotes();
     await this.WorldMapUiEntity.WorldMapAlterMapComponent.ChangeMapAsync(t.MapId, t.Gravity);
     this.M3o = {
       MarkId: t.MarkId,
@@ -1214,15 +965,16 @@ ${i}`;
       MapId: t.MapId
     };
     this.iZa();
-    var t = this.GetItem(16);
+    var t = this.GetItem(13);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10055) && this.krh();
     t.SetUIActive(e);
     this.WorldMapUiEntity.UiParams = this.BFo;
     this.WorldMapUiEntity.OpenParams = this.M3o;
     this.WorldMapUiEntity.MapId = this.$Ya;
-    this.c4o(true);
-    this.H4o();
-    this.M2l();
+    this.WorldMapUiEntity.ScaleComponent.Initialize();
+    this.ZAd.SetMapNotesState(true);
+    this.eDd();
+    this.ZAd.UpdateNoteOrPlayProgress();
     this.Nfc();
     this.dwu();
     this.W3o.OnWorldMapBeforeShow();
@@ -1260,15 +1012,12 @@ ${i}`;
     };
     this.WorldMapUiEntity.MultiFloorComponent.WorldMapViewPlaySequenceFunction = t;
     this.WorldMapUiEntity.WorldMapAlterMapComponent.WorldMapViewPlaySequenceFunction = t;
-    this.WorldMapUiEntity.WorldMapAlterMapComponent.InverTowerCtrlRoot = this.GetItem(27);
-    this.WorldMapUiEntity.WorldMapAlterMapComponent.InverTowerCtrlRoot.SetUIActive(false);
+    this.WorldMapUiEntity.WorldMapAlterMapComponent.InverseTowerCtrlRoot = this.GetItem(20);
+    this.WorldMapUiEntity.WorldMapAlterMapComponent.InverseTowerCtrlRoot.SetUIActive(false);
   }
   h5o() {
     this.WorldMapUiEntity.Dispose();
     this.WorldMapUiEntity = undefined;
-  }
-  get MapScale() {
-    return ModelManager_1.ModelManager.WorldMapModel.MapScale;
   }
   M4o(t, e = 1) {
     if (Info_1.Info.IsInGamepad()) {
@@ -1288,36 +1037,19 @@ ${i}`;
     }
     this.WorldMapUiEntity.SecondaryUiComponent.ExtraSecondaryUiOpen = t;
   }
-  u4o(t, e = true) {
-    if (this.WorldMapUiEntity.ClickedItem && this.WorldMapUiEntity.ClickedItem.IsIgnoreScaleShow) {
-      this.WorldMapUiEntity.ClickedItem.IsIgnoreScaleShow = false;
-      this.WorldMapUiEntity.ClickedItem.SetSelected(false);
-      this.WorldMapUiEntity.UpdateSingleMarkItem(this.WorldMapUiEntity.ClickedItem, true);
-    }
-    if (this.WorldMapUiEntity.SecondaryUiComponent.ExtraSecondaryUiOpen) {
-      this.Shl.forEach(t => {
-        if (UiManager_1.UiManager.IsViewOpen(t)) {
-          UiManager_1.UiManager.CloseView(t);
-        }
-      });
-    }
-    if (this.WorldMapUiEntity.SecondaryUiComponent.IsInternalSecondaryUiOpen()) {
-      this.WorldMapUiEntity.MultiFloorComponent.UpdateMultiMap();
-      this.WorldMapUiEntity.SecondaryUiComponent.CloseUi(t, e);
-    } else if (t) {
-      t();
-    }
+  get MapScale() {
+    return ModelManager_1.ModelManager.WorldMapModel.MapScale;
   }
   C4o(t, e, i) {
     return this.y2l(t, Vector2D_1.Vector2D.Create(e?.GetAnchorOffset()), i);
   }
   y2l(t, e, i, s) {
     t = Vector2D_1.Vector2D.Distance(t, e);
-    let a = i ? WorldMapDefine_1.MARK_CLICK_RANGE : this.BFo.MarkMenuRectSize;
+    let r = i ? WorldMapDefine_1.MARK_CLICK_RANGE : this.BFo.MarkMenuRectSize;
     if (s) {
-      a *= ModelManager_1.ModelManager.WorldMapModel.JoystickClickMultiplier;
+      r *= ModelManager_1.ModelManager.WorldMapModel.JoystickClickMultiplier;
     }
-    return [t * this.MapScale <= a, t];
+    return [t * this.MapScale <= r, t];
   }
   g4o(t) {
     if (this.WorldMapUiEntity.MoveComponent.IsTweeningMove) {
@@ -1419,13 +1151,13 @@ ${i}`;
     }
     var e = this.v3o.GetMarkItem(t.MarkType, t.MarkId);
     var s = t.FocusTween ?? true;
-    var a = Vector2D_1.Vector2D.Create(i);
+    var r = Vector2D_1.Vector2D.Create(i);
     if (e) {
       this.WorldMapUiEntity.MoveComponent.PushMap(e, s);
     } else {
       this.WorldMapUiEntity.MoveComponent.PushMapByUiPosition(i, s);
     }
-    await this.WorldMapUiEntity?.Map?.MapRangePanel.SetRangeComponentShow(a, t.Width, t.Height);
+    await this.WorldMapUiEntity?.Map?.MapRangePanel.SetRangeComponentShow(r, t.Width, t.Height);
     if (t.Tips) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(t.Tips);
     }
@@ -1435,20 +1167,20 @@ ${i}`;
     if (i) {
       if (i.GetIsStrictConfigMark()) {
         var s;
-        var a = i;
-        if (!a.IsFogUnlock) {
-          s = a.MarkConfig.FogHide;
+        var r = i;
+        if (!r.IsFogUnlock) {
+          s = r.MarkConfig.FogHide;
           s = ConfigManager_1.ConfigManager.WorldMapConfig.GetMapFogConfig(s);
           this.u7c(s?.UnlockCondition ?? 0);
           return;
         }
-        if (!a.IsConditionShouldShow && !i.MarkItemEntity.IsTempMapMark) {
-          if (a.MarkType !== 29 && a.MarkType !== 28) {
-            this.u7c(a.MarkConfig.ShowCondition);
+        if (!r.IsConditionShouldShow && !i.MarkItemEntity.IsTempMapMark) {
+          if (r.MarkType !== 29 && r.MarkType !== 28) {
+            this.u7c(r.MarkConfig.ShowCondition);
             return;
           }
-          if (!a.IsConditionShouldShowWithoutServerState && !i.MarkItemEntity.IsTempMapMark) {
-            this.u7c(a.MarkConfig.ShowCondition);
+          if (!r.IsConditionShouldShowWithoutServerState && !i.MarkItemEntity.IsTempMapMark) {
+            this.u7c(r.MarkConfig.ShowCondition);
             return;
           }
         }
@@ -1468,183 +1200,6 @@ ${i}`;
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("UnlockCondition", t);
     } else {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MapAreaIsLock");
-    }
-  }
-  M2l() {
-    this.T2l();
-    this.L2l();
-    if (ModelManager_1.ModelManager.AreaModel.IsExistRecommendPlayPoint()) {
-      this.n2l();
-      this.U2l();
-      this.SKl(true);
-    } else {
-      this.o5o();
-      this.LQl(false);
-    }
-  }
-  LQl(t) {
-    this.GetButton(22)?.RootUIComp.SetUIActive(t);
-  }
-  SKl(t) {
-    this.GetButton(22)?.RootUIComp.GetParentAsUIItem()?.SetUIActive(t);
-  }
-  U2l() {
-    var t = this.A2l();
-    var e = ModelManager_1.ModelManager.ExploreProgressModel.GetLocalShowNoteIdMap();
-    let i = false;
-    let s = false;
-    let a = false;
-    for (const h of t) {
-      var r = h();
-      if (r && this.D2l(r.MapNoteConfig) && (i = true, e.has(r.MapNoteConfig.Id) || (a = true), r.MapNoteConfig.Style === 1)) {
-        s = true;
-        break;
-      }
-    }
-    this.Vfc(s, a);
-    this.LQl(i);
-  }
-  Vfc(t, e) {
-    this.GetItem(26)?.SetUIActive(t);
-    this.jfc(!t && e);
-  }
-  A2l() {
-    return [this.q4o, this.G4o, this.k4o, this.N4o, this.O4o, this.uql, this.bsa, this.NB1, this.H3u, this.yKa, this.PQl, this.B$d];
-  }
-  D2l(t) {
-    t = t.ConditionId;
-    return t === 0 || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(t.toString(), undefined);
-  }
-  jfc(t) {
-    if (this.qfc !== t) {
-      this.qfc = t;
-      this.GetItem(24)?.SetUIActive(t);
-    }
-  }
-  n2l() {
-    var t = this.k3o?.ExploreData;
-    this.O7l(t?.GetShowRecommendExploreItemDataList());
-  }
-  O7l(t) {
-    t?.forEach((t, e) => {
-      t.LogInfo();
-      let i = this.e2l[e];
-      if (i) {
-        i.UpdateAreaItemData(t);
-      } else {
-        e = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(23), this.GetItem(11));
-        (i = new WorldMapPlayPointItem_1.WorldMapPlayPointItem()).Init(e, t);
-        this.e2l.push(i);
-      }
-    });
-  }
-  async G7l() {
-    if (this.e2l?.length) {
-      this.k3o?.ExploreData?.SaveLocalAreaExplorePlayState();
-      await Promise.all(this.e2l.map(async t => t.CheckFinish()));
-      let e = 0;
-      await Promise.all(this.e2l.map(async t => {
-        t.CheckPlayPointStateSequence();
-        if (t.ExploreData?.IsNewRecommendPlay) {
-          await t.ResumeSequence(++e);
-        }
-      }));
-    }
-  }
-  async q7l() {
-    var t = MapUtil_1.MapUtil.GetWorldMapLevelOneAreaId();
-    if (t) {
-      await ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t)?.CheckUpdatePlayPointData();
-    }
-    var e = this.M3o?.FocusExplorePlayPoint?.[0];
-    if (e && e !== t) {
-      await ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(e)?.CheckUpdatePlayPointData();
-    }
-  }
-  T2l() {
-    for (const t of this.x3o) {
-      t.GetRootItem().SetUIActive(false);
-    }
-  }
-  L2l() {
-    for (const t of this.e2l) {
-      t.HideMe();
-    }
-  }
-  o5o() {
-    var e = this.p2l();
-    for (let t = 0; t < e.length; t++) {
-      var i = e[t];
-      this.m5o(i, t);
-      ModelManager_1.ModelManager.ExploreProgressModel.SetLocalShowNoteIdMap(i.MapNoteConfig.Id);
-    }
-    var t = e.length > 0;
-    if (t) {
-      this.F7l();
-    }
-    this.SKl(t);
-  }
-  N7l() {
-    this.x3o?.forEach(t => {
-      t.PlayStartToPause();
-    });
-  }
-  F7l() {
-    var t = this.k3o?.ExploreData?.GetLocalFinishRecommendExploreItems();
-    if (t?.length) {
-      this.O7l(t);
-      this.N7l();
-    }
-  }
-  async k7l() {
-    if (this.x3o?.length && this.e2l?.length) {
-      this.k3o?.ExploreData?.ClearLocalAreaExplorePlayState();
-      await Promise.all(this.e2l.map(async t => t.CheckFinish()));
-      await Promise.all(this.x3o.map(async (t, e) => t.ResumeSequence(e)));
-    }
-  }
-  p2l() {
-    var t = [];
-    for (const i of this.A2l()) {
-      var e = i();
-      if (e && this.D2l(e.MapNoteConfig)) {
-        t.push(e);
-      }
-    }
-    t.sort(this.B4o);
-    return t;
-  }
-  YYa(t) {
-    t = t.MapId;
-    return t === 0 || t === this.WorldMapUiEntity.MapId;
-  }
-  m5o(t, e) {
-    if (this.x3o.length > e) {
-      this.x3o[e].UpdateNoteItem(t.MapNoteId, t.ClickCallBack, t.MapMarkId);
-      this.x3o[e].GetRootItem().SetUIActive(true);
-    } else {
-      e = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(14), this.GetItem(11));
-      e = new WorldMapNoteItem_1.WorldMapNoteItem(e);
-      this.x3o.push(e);
-      e.UpdateNoteItem(t.MapNoteId, t.ClickCallBack, t.MapMarkId);
-    }
-  }
-  a5o() {
-    for (const t of this.x3o) {
-      t.Destroy();
-    }
-    this.x3o.length = 0;
-  }
-  E2l() {
-    for (const t of this.e2l) {
-      t.Destroy();
-    }
-    this.e2l.length = 0;
-  }
-  c4o(t) {
-    if (t !== this.P3o) {
-      this.P3o = t;
-      this.GetItem(11).SetUIActive(t);
     }
   }
   d2l() {
@@ -1727,7 +1282,7 @@ ${i}`;
   }
   dwu() {
     var t = ModelManager_1.ModelManager.MapModel.GetAllUnlockedAreas()?.get(CommonParamById_1.configCommonParamById.GetIntConfig("UnderseaOverviewUnlockAreaId")) ?? false;
-    this.GetItem(29).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.IsNeedCustomizedThumbnail(this.v3o.MapId) && t);
+    this.GetItem(22).SetUIActive(ModelManager_1.ModelManager.WorldMapModel.IsNeedCustomizedThumbnail(this.v3o.MapId) && t);
   }
   j61() {
     var t;
@@ -1737,96 +1292,4 @@ ${i}`;
   }
 }
 exports.WorldMapView = WorldMapView;
-class ExploreItem extends UiPanelBase_1.UiPanelBase {
-  constructor() {
-    super();
-    this.ExploreData = undefined;
-    this.AreaId = 0;
-    this.ParentView = undefined;
-    this.eTt = () => {
-      if (this.ExploreData) {
-        this.ParentView?.OpenMapExploreAreaDetailView(this.AreaId);
-      } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ExploreProgress", 69, "ExploreItem Click, ExploreData is null");
-      }
-    };
-  }
-  async Init(t, e) {
-    await this.CreateThenShowByActorAsync(t.GetOwner());
-    this.GetText(2)?.SetRichText(true);
-    this.ParentView = e;
-  }
-  OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite], [6, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.eTt]];
-  }
-  Update(t) {
-    this.AreaId = t;
-    var e = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(t);
-    var t = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(t);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.Title);
-    var t = e?.GetProgress() ?? 0;
-    let i = t + "%";
-    if (e?.IsReachMaxProgress) {
-      i = StringUtils_1.StringUtils.Format("<color=#ffd12f>{0}%</color>", t.toString());
-    }
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), "Text_ExploreRate", i);
-    this.ExploreData = e;
-    this.GetItem(3).SetUIActive(!e?.IsReachMaxProgress);
-    if (!e?.IsReachMaxProgress) {
-      t = e?.GetNextStageNeedProgress() ?? 0;
-      e = e?.GetStageProgress() ?? 0;
-      this.GetText(4).SetText(t + "%");
-      this.GetSprite(5).SetFillAmount(e);
-    }
-  }
-  OnBeforeShow() {
-    this.K8e();
-  }
-  OnBeforeHide() {
-    this.Ovt();
-  }
-  K8e() {
-    RedDotController_1.RedDotController.BindRedDot("MapAreaExplore", this.GetItem(6));
-  }
-  Ovt() {
-    RedDotController_1.RedDotController.UnBindRedDot("MapAreaExplore");
-  }
-}
-class HandleCursorBotton extends UiPanelBase_1.UiPanelBase {
-  constructor() {
-    super(...arguments);
-    this.d5o = false;
-    this.e0t = undefined;
-    this.C5o = undefined;
-  }
-  async Initialize(t, e) {
-    this.C5o = e;
-    await this.CreateThenShowByActorAsync(t.GetOwner());
-  }
-  OnStart() {
-    this.RootItem?.SetRaycastTarget(false);
-    this.e0t = this.GetRootActor().GetComponentByClass(UE.UIButtonComponent.StaticClass());
-    this.e0t.OnClickCallBack.Bind(this.C5o);
-  }
-  OnBeforeDestroy() {
-    this.e0t.OnClickCallBack.Unbind();
-  }
-  SetSelected(t) {
-    if (Info_1.Info.IsInGamepad() && this.d5o !== t) {
-      if (this.d5o = t) {
-        this.e0t.SetSelectionState(1);
-      } else {
-        this.e0t.SetSelectionState(0);
-      }
-    }
-  }
-  SetCursorActive(t) {
-    if (Info_1.Info.IsInGamepad() && t) {
-      this.SetActive(true);
-    } else {
-      this.SetActive(false);
-    }
-  }
-}
 //# sourceMappingURL=WorldMapView.js.map

@@ -23,7 +23,7 @@ class TsAnimNotifyWeaponHide extends UE.KuroAnimNotify {
         return false;
       }
       if (this.ActivateTag.TagName !== "None") {
-        var s = t.GetComponent(206);
+        var s = t.GetComponent(209);
         if (s && !s.HasTag(this.ActivateTag.TagId)) {
           return false;
         }

@@ -23,7 +23,7 @@ class LevelEventLockEntity extends LevelGeneralBase_1.LevelEventBase {
     for (const t of this.Lo.EntityIds) {
       var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
       if (e?.IsInit) {
-        e.Entity.GetComponent(197)?.AddServerTagByIdLocal(-662723379, "LevelEventLockEntity");
+        e.Entity.GetComponent(200)?.AddServerTagByIdLocal(-662723379, "LevelEventLockEntity");
       }
     }
     this.FinishExecute(true);

@@ -41,11 +41,11 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     this.SortTaskData = (e, t) => e.Status === t.Status ? e.Id - t.Id : this.kB1(e.Status) - this.kB1(t.Status);
   }
   OnInit() {
-    UiManager_1.UiManager.AddOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.cvd, "ActivityPermanentRogueModel.CanOpenTaskView");
+    UiManager_1.UiManager.AddOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.xSd, "ActivityPermanentRogueModel.CanOpenTaskView");
     return true;
   }
   OnClear() {
-    UiManager_1.UiManager.RemoveOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.cvd);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("RogueTaskView", ActivityPermanentRogueModel.xSd);
     return true;
   }
   GetActivityData() {
@@ -670,5 +670,5 @@ class ActivityPermanentRogueModel extends ModelBase_1.ModelBase {
     return this.GetCacheTrailOpen(e) <= t;
   }
 }
-(exports.ActivityPermanentRogueModel = ActivityPermanentRogueModel).cvd = (e, t) => !ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd();
+(exports.ActivityPermanentRogueModel = ActivityPermanentRogueModel).xSd = (e, t) => !ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd();
 //# sourceMappingURL=ActivityPermanentRogueModel.js.map

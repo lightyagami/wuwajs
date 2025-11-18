@@ -120,29 +120,32 @@ class UiModelUtil {
     e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleMorphConfigList(e, t);
     if (e && e.length !== 0) {
       var a;
-      var r = new Map();
-      for (const o of e) {
-        if (o.Morph !== 0 && o.UiMeshId !== 0) {
+      var r;
+      var o = new Map();
+      for (const i of e) {
+        if (i.Morph !== 0 && i.UiMeshId !== 0) {
           a = {
-            MainMeshPath: ModelUtil_1.ModelUtil.GetModelConfig(o.UiMeshId).网格体.ToAssetPathName(),
-            AnimPath: o.UiScenePerformanceABP,
-            ChildMeshPathList: this.l51(o.UiMeshId),
-            RoleBody: o.RoleBody
+            MainMeshPath: (a = ModelUtil_1.ModelUtil.GetModelConfig(i.UiMeshId)).网格体.ToAssetPathName(),
+            AnimPath: i.UiScenePerformanceABP,
+            ChildMeshPathList: this.l51(i.UiMeshId),
+            DecorationMeshConfigArray: a.UiModelDecorationArray,
+            RoleBody: i.RoleBody
           };
-          r.set(o.Morph, a);
+          o.set(i.Morph, a);
         }
       }
-      if (r.size > 0 && (e = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(t))) {
+      if (o.size > 0 && (e = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(t))) {
         t = e.GetUiMeshId();
         t = {
-          MainMeshPath: ModelUtil_1.ModelUtil.GetModelConfig(t).网格体.ToAssetPathName(),
+          MainMeshPath: (r = ModelUtil_1.ModelUtil.GetModelConfig(t)).网格体.ToAssetPathName(),
           AnimPath: e.GetRoleSkinConfig().UiScenePerformanceABP,
           ChildMeshPathList: this.l51(t),
-          RoleBody: e.GetRoleSkinConfig().RoleBody
+          RoleBody: e.GetRoleSkinConfig().RoleBody,
+          DecorationMeshConfigArray: r.UiModelDecorationArray
         };
-        r.set(0, t);
+        o.set(0, t);
       }
-      return r;
+      return o;
     }
   }
   static l51(e) {

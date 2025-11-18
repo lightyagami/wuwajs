@@ -16,7 +16,7 @@ const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const KscLog_1 = require("./KscLog");
 class KscUtil {
   static SetKscWorldHandle(e) {
-    this.t4d = e;
+    this.ujd = e;
   }
   static GetDtRows(e) {
     var r = new Array();
@@ -49,8 +49,8 @@ class KscUtil {
   static AsyncLoadKscAsset(s) {
     ResourceSystem_1.ResourceSystem.LoadAsync(s.Path, UE.Object, (e, r) => {
       if (e?.IsValid()) {
-        if (s.KscWorldHandle !== this.t4d) {
-          var t = `[加载Ksc资产] 场景不一致, ${s.Path}, LoadHandle: ${s.KscWorldHandle}, CurHandle: ${this.t4d}`;
+        if (s.KscWorldHandle !== this.ujd) {
+          var t = `[加载Ksc资产] 场景不一致, ${s.Path}, LoadHandle: ${s.KscWorldHandle}, CurHandle: ${this.ujd}`;
           KscLog_1.KscLog.Info("Load", 69, s.Context, t);
           const o = e;
           s.NativeContainer?.Add(o, s.Id);
@@ -82,7 +82,7 @@ class KscUtil {
             Id: t,
             Path: o,
             NativeContainer: l,
-            KscWorldHandle: this.t4d
+            KscWorldHandle: this.ujd
           });
         }
       } else {
@@ -193,5 +193,5 @@ class KscUtil {
     return r;
   }
 }
-(exports.KscUtil = KscUtil).t4d = 0;
+(exports.KscUtil = KscUtil).ujd = 0;
 //# sourceMappingURL=KscUtil.js.map

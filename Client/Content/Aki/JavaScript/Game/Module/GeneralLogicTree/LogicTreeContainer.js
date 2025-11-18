@@ -115,10 +115,36 @@ class LogicTreeContainer {
     return this.BehaviorTree !== undefined;
   }
   CanShowGuideLine() {
-    return this.GetCurrentActiveChildQuestNode()?.ContainTag(4) ?? false;
+    var e = this.GetCurrentActiveChildQuestNodes();
+    if (e) {
+      for (const t of e) {
+        if (t?.ContainTag(4)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   IsAlwaysShowGuideLine() {
-    return this.GetCurrentActiveChildQuestNode()?.ContainTag(5) ?? false;
+    var e = this.GetCurrentActiveChildQuestNodes();
+    if (e) {
+      for (const t of e) {
+        if (t?.ContainTag(5)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  GetShowGuideLineNode() {
+    var e = this.GetCurrentActiveChildQuestNodes();
+    if (e) {
+      for (const t of e) {
+        if (t?.ContainTag(4)) {
+          return t;
+        }
+      }
+    }
   }
 }
 exports.LogicTreeContainer = LogicTreeContainer;

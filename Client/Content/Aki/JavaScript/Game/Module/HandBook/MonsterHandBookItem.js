@@ -17,8 +17,8 @@ class MonsterHandBookItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickCallBack = undefined;
-    this.nsd = undefined;
-    this.ssd = undefined;
+    this.chd = undefined;
+    this.dhd = undefined;
   }
   async Init(t) {
     await super.CreateByActorAsync(t.GetOwner(), undefined, true);
@@ -28,16 +28,16 @@ class MonsterHandBookItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
   async WZt() {
-    this.nsd = new MonsterHandBookTitleItem();
-    this.AddChild(this.nsd);
-    this.ssd = new MonsterHandBookLayoutItem();
-    this.AddChild(this.ssd);
+    this.chd = new MonsterHandBookTitleItem();
+    this.AddChild(this.chd);
+    this.dhd = new MonsterHandBookLayoutItem();
+    this.AddChild(this.dhd);
     var t = this.GetItem(0);
     t.SetUIActive(false);
     var e = this.GetItem(1);
     e.SetUIActive(false);
-    await Promise.all([this.nsd.CreateByActorAsync(t.GetOwner()), this.ssd.CreateByActorAsync(e.GetOwner())]);
-    this.ssd.OnClickCallBack = this.OnClickCallBack;
+    await Promise.all([this.chd.CreateByActorAsync(t.GetOwner()), this.dhd.CreateByActorAsync(e.GetOwner())]);
+    this.dhd.OnClickCallBack = this.OnClickCallBack;
   }
   GetUsingItem(t) {
     return (t.TitleId ? this.GetItem(0) : this.GetItem(1)).GetOwner();
@@ -46,14 +46,14 @@ class MonsterHandBookItem extends UiPanelBase_1.UiPanelBase {
     this.Destroy();
   }
   Update(t, e) {
-    this.nsd?.SetUiActive(false);
-    this.ssd?.SetUiActive(false);
+    this.chd?.SetUiActive(false);
+    this.dhd?.SetUiActive(false);
     if (t.TitleId) {
-      this.nsd?.SetUiActive(true);
-      this.nsd?.Update(t.TitleId);
+      this.chd?.SetUiActive(true);
+      this.chd?.Update(t.TitleId);
     } else if (t.MonsterList) {
-      this.ssd?.SetUiActive(true);
-      this.ssd?.Update(t.MonsterList);
+      this.dhd?.SetUiActive(true);
+      this.dhd?.Update(t.MonsterList);
     }
   }
 }
@@ -146,13 +146,13 @@ class MonsterHandBookMonsterItem extends LoopScrollMediumItemGrid_1.LoopScrollMe
     }
   }
   OnSelected(t) {
-    this.SetSelected(true);
+    this.SetSelected(true, true);
     if (t) {
       this.OnExtendToggleStateChanged(1);
     }
   }
   OnDeselected(t) {
-    this.SetSelected(false, false);
+    this.SetSelected(false, true);
   }
   OnExtendToggleStateChanged(t) {
     if (t === 1) {

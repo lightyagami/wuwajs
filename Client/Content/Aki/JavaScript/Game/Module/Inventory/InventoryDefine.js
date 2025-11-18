@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PhantomArenaBadgeItemRange = exports.PhantomArenaCardItemRange = exports.calabashSkinIdRange = exports.DangoRoleItemRange = exports.flySkinIdRange = exports.DangoAbyssItemRange = exports.playerHeadRange = exports.roleSkinIdRange = exports.weaponSkinIdRange = exports.rogueResCurrencyIdRange = exports.rogueCurrencyIdRange = exports.previewItemIdRange = exports.cardIdRange = exports.virtualIdRange = exports.roleIdRange = exports.phantomSpecificIdRange = exports.phantomIdRange = exports.weaponIdRange = exports.recFilterRuleToGirdType = exports.MANAGE_CONFIG_MAX_COUNT = exports.EMPTY_CHECK_TEXT_ID = exports.EMPTY_RULE_TEXT_ID = exports.EMPTY_CONFIG_TEXT_ID = exports.MANAGE_CONFIG_HELP_ID = exports.MANAGE_CONFIG_FUNCTION_ID = exports.WAVEPLATE_CRYSTAL_COIN = exports.WAVEPLATE_COIN = exports.ADVANCED_COIN = exports.COMMON_COIN = exports.UNIQUE_ID = exports.SORT_INDEX = exports.COUNT = exports.QUALITY_ID = exports.LEVEL = exports.CONFIG_ID = undefined;
+exports.HonamiStoryWeaponRange = exports.HonamiStoryItemRange = exports.PhantomArenaBadgeItemRange = exports.PhantomArenaCardItemRange = exports.calabashSkinIdRange = exports.flySkinIdRange = exports.DangoAbyssItemRange = exports.playerTitleRange = exports.playerHeadRange = exports.roleSkinIdRange = exports.weaponSkinIdRange = exports.rogueResCurrencyIdRange = exports.rogueCurrencyIdRange = exports.previewItemIdRange = exports.cardIdRange = exports.virtualIdRange = exports.roleIdRange = exports.phantomSpecificIdRange = exports.phantomIdRange = exports.weaponIdRange = exports.recFilterRuleToGirdType = exports.MANAGE_CONFIG_MAX_COUNT = exports.EMPTY_CHECK_TEXT_ID = exports.EMPTY_RULE_TEXT_ID = exports.EMPTY_CONFIG_TEXT_ID = exports.MANAGE_CONFIG_HELP_ID = exports.MANAGE_CONFIG_FUNCTION_ID = exports.WAVEPLATE_CRYSTAL_COIN = exports.WAVEPLATE_COIN = exports.ADVANCED_COIN = exports.COMMON_COIN = exports.UNIQUE_ID = exports.SORT_INDEX = exports.COUNT = exports.QUALITY_ID = exports.LEVEL = exports.CONFIG_ID = undefined;
 exports.CONFIG_ID = 1;
 exports.LEVEL = 2;
 exports.QUALITY_ID = 3;
@@ -38,9 +38,11 @@ exports.rogueResCurrencyIdRange = [80100100, 80109999];
 exports.weaponSkinIdRange = [80080000, 80089999];
 exports.roleSkinIdRange = [81000000, 81999999];
 exports.playerHeadRange = [82000000, 82999999];
+exports.playerTitleRange = [82000000, 82999999];
 exports.DangoAbyssItemRange = [83000000, 83999999];
 exports.flySkinIdRange = [84000000, 84999999];
-exports.DangoRoleItemRange = [85000000, 85999999];
 exports.calabashSkinIdRange = [86000000, 86099999];
 exports.PhantomArenaCardItemRange = [700000, 750000];
-exports.PhantomArenaBadgeItemRange = [75001, 80000]; //# sourceMappingURL=InventoryDefine.js.map
+exports.PhantomArenaBadgeItemRange = [75001, 80000];
+exports.HonamiStoryItemRange = [87000000, 87999999];
+exports.HonamiStoryWeaponRange = [88000000, 88999999]; //# sourceMappingURL=InventoryDefine.js.map

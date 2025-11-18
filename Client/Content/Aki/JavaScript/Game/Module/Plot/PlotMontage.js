@@ -23,7 +23,7 @@ class PlotMontage {
   StopAllMontage() {
     for (const e of this.tj_) {
       if (e.Valid) {
-        var o = e.Entity.GetComponent(188);
+        var o = e.Entity.GetComponent(191);
         if (!o) {
           return;
         }

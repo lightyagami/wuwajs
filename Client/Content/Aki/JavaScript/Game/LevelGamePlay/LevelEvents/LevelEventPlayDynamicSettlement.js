@@ -161,7 +161,7 @@ class LevelEventPlayDynamicSettlement extends LevelGeneralBase_1.LevelEventBase 
   iRe(e, t, i, o, r, n, a) {
     var l;
     var s;
-    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(123)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
+    if (e?.Valid && (s = e.Entity)?.IsInit && (l = s.GetComponent(126)) && (s = s.GetComponent(1)?.ActorLocationProxy) && Math.abs(s.X - t.X) <= i && Math.abs(s.Y - t.Y) <= i && Math.abs(s.Z - t.Z) <= i) {
       s = l.SetTimeScale(o, r, n, a, 5);
       this.$De.set(e, s);
     }

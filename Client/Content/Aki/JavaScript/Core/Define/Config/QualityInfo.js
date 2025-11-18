@@ -31,6 +31,9 @@ class QualityInfo {
   get PhantomColor() {
     return this.phantomcolor();
   }
+  get InteractionHintColor() {
+    return this.interactionhintcolor();
+  }
   get GachaQualityNiagara() {
     return this.gachaqualityniagara();
   }
@@ -203,7 +206,7 @@ class QualityInfo {
     }
     return i;
   }
-  gachaqualityniagara(t) {
+  interactionhintcolor(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -211,7 +214,7 @@ class QualityInfo {
     }
     return i;
   }
-  tipqualitytexture(t) {
+  gachaqualityniagara(t) {
     var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -219,7 +222,7 @@ class QualityInfo {
     }
     return i;
   }
-  gachaqualitytexture(t) {
+  tipqualitytexture(t) {
     var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -227,7 +230,7 @@ class QualityInfo {
     }
     return i;
   }
-  gachabgtexture(t) {
+  gachaqualitytexture(t) {
     var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -235,7 +238,7 @@ class QualityInfo {
     }
     return i;
   }
-  backgroundsprite(t) {
+  gachabgtexture(t) {
     var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -243,7 +246,7 @@ class QualityInfo {
     }
     return i;
   }
-  verticalgradientsprite(t) {
+  backgroundsprite(t) {
     var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -251,7 +254,7 @@ class QualityInfo {
     }
     return i;
   }
-  tipssprite(t) {
+  verticalgradientsprite(t) {
     var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -259,7 +262,7 @@ class QualityInfo {
     }
     return i;
   }
-  specialeffects(t) {
+  tipssprite(t) {
     var i = this.J7.__offset(this.z7, 32);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -267,7 +270,7 @@ class QualityInfo {
     }
     return i;
   }
-  dissipateeffects(t) {
+  specialeffects(t) {
     var i = this.J7.__offset(this.z7, 34);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -275,7 +278,7 @@ class QualityInfo {
     }
     return i;
   }
-  newitemgeteffects(t) {
+  dissipateeffects(t) {
     var i = this.J7.__offset(this.z7, 36);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -283,7 +286,7 @@ class QualityInfo {
     }
     return i;
   }
-  consumefiltertext(t) {
+  newitemgeteffects(t) {
     var i = this.J7.__offset(this.z7, 38);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -291,7 +294,7 @@ class QualityInfo {
     }
     return i;
   }
-  payshoptexture(t) {
+  consumefiltertext(t) {
     var i = this.J7.__offset(this.z7, 40);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -299,7 +302,7 @@ class QualityInfo {
     }
     return i;
   }
-  newpayshoptexture(t) {
+  payshoptexture(t) {
     var i = this.J7.__offset(this.z7, 42);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -307,7 +310,7 @@ class QualityInfo {
     }
     return i;
   }
-  payshopqualitysprite(t) {
+  newpayshoptexture(t) {
     var i = this.J7.__offset(this.z7, 44);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -315,7 +318,7 @@ class QualityInfo {
     }
     return i;
   }
-  phantomsprite(t) {
+  payshopqualitysprite(t) {
     var i = this.J7.__offset(this.z7, 46);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -323,7 +326,7 @@ class QualityInfo {
     }
     return i;
   }
-  dropitemqualityniagarapath(t) {
+  phantomsprite(t) {
     var i = this.J7.__offset(this.z7, 48);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -331,7 +334,7 @@ class QualityInfo {
     }
     return i;
   }
-  mediumitemgridqualityspritepath(t) {
+  dropitemqualityniagarapath(t) {
     var i = this.J7.__offset(this.z7, 50);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -339,7 +342,7 @@ class QualityInfo {
     }
     return i;
   }
-  qualitycolor(t) {
+  mediumitemgridqualityspritepath(t) {
     var i = this.J7.__offset(this.z7, 52);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -347,7 +350,7 @@ class QualityInfo {
     }
     return i;
   }
-  roulettetipsqualitytexpath(t) {
+  qualitycolor(t) {
     var i = this.J7.__offset(this.z7, 54);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -355,7 +358,7 @@ class QualityInfo {
     }
     return i;
   }
-  acquirequalitytexpath(t) {
+  roulettetipsqualitytexpath(t) {
     var i = this.J7.__offset(this.z7, 56);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -363,7 +366,7 @@ class QualityInfo {
     }
     return i;
   }
-  acquirenewitemqualitytexpath(t) {
+  acquirequalitytexpath(t) {
     var i = this.J7.__offset(this.z7, 58);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -371,7 +374,7 @@ class QualityInfo {
     }
     return i;
   }
-  acquirequalityspritepath(t) {
+  acquirenewitemqualitytexpath(t) {
     var i = this.J7.__offset(this.z7, 60);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -379,7 +382,7 @@ class QualityInfo {
     }
     return i;
   }
-  filtericonpath(t) {
+  acquirequalityspritepath(t) {
     var i = this.J7.__offset(this.z7, 62);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -387,7 +390,7 @@ class QualityInfo {
     }
     return i;
   }
-  calabashlevelupviewshowtext(t) {
+  filtericonpath(t) {
     var i = this.J7.__offset(this.z7, 64);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -395,7 +398,7 @@ class QualityInfo {
     }
     return i;
   }
-  unlockvisionquality(t) {
+  calabashlevelupviewshowtext(t) {
     var i = this.J7.__offset(this.z7, 66);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -403,7 +406,7 @@ class QualityInfo {
     }
     return i;
   }
-  unlockvisionqualitycolor(t) {
+  unlockvisionquality(t) {
     var i = this.J7.__offset(this.z7, 68);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -411,8 +414,16 @@ class QualityInfo {
     }
     return i;
   }
+  unlockvisionqualitycolor(t) {
+    var i = this.J7.__offset(this.z7, 70);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   trainingweight() {
-    var t = this.J7.__offset(this.z7, 70);
+    var t = this.J7.__offset(this.z7, 72);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -420,14 +431,6 @@ class QualityInfo {
     }
   }
   roletrialqualitycolor(t) {
-    var i = this.J7.__offset(this.z7, 72);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  skinquality(t) {
     var i = this.J7.__offset(this.z7, 74);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -435,7 +438,7 @@ class QualityInfo {
     }
     return i;
   }
-  skinqualityitema(t) {
+  skinquality(t) {
     var i = this.J7.__offset(this.z7, 76);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -443,7 +446,7 @@ class QualityInfo {
     }
     return i;
   }
-  skinitemcolor(t) {
+  skinqualityitema(t) {
     var i = this.J7.__offset(this.z7, 78);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -451,7 +454,7 @@ class QualityInfo {
     }
     return i;
   }
-  skinitembg(t) {
+  skinitemcolor(t) {
     var i = this.J7.__offset(this.z7, 80);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -459,7 +462,7 @@ class QualityInfo {
     }
     return i;
   }
-  roleskinqualitybg(t) {
+  skinitembg(t) {
     var i = this.J7.__offset(this.z7, 82);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -467,7 +470,7 @@ class QualityInfo {
     }
     return i;
   }
-  weaponskinqualitybg(t) {
+  roleskinqualitybg(t) {
     var i = this.J7.__offset(this.z7, 84);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -475,7 +478,7 @@ class QualityInfo {
     }
     return i;
   }
-  composequalitybg(t) {
+  weaponskinqualitybg(t) {
     var i = this.J7.__offset(this.z7, 86);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -483,8 +486,16 @@ class QualityInfo {
     }
     return i;
   }
-  payshopqualitytexture(t) {
+  composequalitybg(t) {
     var i = this.J7.__offset(this.z7, 88);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  payshopqualitytexture(t) {
+    var i = this.J7.__offset(this.z7, 90);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

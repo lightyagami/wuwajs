@@ -19,20 +19,20 @@ const WeatherController_1 = require("../Weather/WeatherController");
 const WeatherModel_1 = require("../Weather/WeatherModel");
 class RogueBattleController extends UiControllerBase_1.UiControllerBase {
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29286, RogueBattleController.OnRogueRoomInfoNotify);
-    Net_1.Net.Register(20346, RogueBattleController.OnRogueResInstOptionsUpdateNotify);
-    Net_1.Net.Register(29198, RogueBattleController.OnRogueResGainDataUpdateNotify);
-    Net_1.Net.Register(29905, RogueBattleController.OnRogueResElementUpdateNotify);
-    Net_1.Net.Register(28695, RogueBattleController.OnRogueResRoleBondUpdateNotify);
-    Net_1.Net.Register(29201, RogueBattleController.OnRogueResFormationUpdateNotify);
+    Net_1.Net.Register(15369, RogueBattleController.OnRogueRoomInfoNotify);
+    Net_1.Net.Register(23703, RogueBattleController.OnRogueResInstOptionsUpdateNotify);
+    Net_1.Net.Register(21932, RogueBattleController.OnRogueResGainDataUpdateNotify);
+    Net_1.Net.Register(20068, RogueBattleController.OnRogueResElementUpdateNotify);
+    Net_1.Net.Register(16404, RogueBattleController.OnRogueResRoleBondUpdateNotify);
+    Net_1.Net.Register(21715, RogueBattleController.OnRogueResFormationUpdateNotify);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29286);
-    Net_1.Net.UnRegister(20346);
-    Net_1.Net.UnRegister(29198);
-    Net_1.Net.UnRegister(29905);
-    Net_1.Net.UnRegister(28695);
-    Net_1.Net.UnRegister(29201);
+    Net_1.Net.UnRegister(15369);
+    Net_1.Net.UnRegister(23703);
+    Net_1.Net.UnRegister(21932);
+    Net_1.Net.UnRegister(20068);
+    Net_1.Net.UnRegister(16404);
+    Net_1.Net.UnRegister(21715);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeon, this.OnLeaveInstanceDungeon);
@@ -42,10 +42,10 @@ class RogueBattleController extends UiControllerBase_1.UiControllerBase {
   }
   static async GotoNextRoomRequest() {
     var e = new Protocol_1.Aki.Protocol.UBc();
-    var e = await Net_1.Net.CallAsync(29705, e);
+    var e = await Net_1.Net.CallAsync(25757, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26306);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28133);
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("RogueBattle", 34, "进入下一层成功");
       }
@@ -54,9 +54,9 @@ class RogueBattleController extends UiControllerBase_1.UiControllerBase {
   static async SwitchFormationRequest(e) {
     var o = new Protocol_1.Aki.Protocol.El1();
     o.c5n = e;
-    var e = await Net_1.Net.CallAsync(19281, o);
+    var e = await Net_1.Net.CallAsync(19651, o);
     if (e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e?.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
-      ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19281);
+      ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19651);
     }
   }
   static async ChangeFormationAllListRequest(e, o) {
@@ -64,10 +64,10 @@ class RogueBattleController extends UiControllerBase_1.UiControllerBase {
     t.do1 = new Protocol_1.Aki.Protocol.do1();
     t.do1.Q6n = o.filter(e => e !== 0);
     t.c5n = e;
-    var o = await Net_1.Net.CallAsync(22499, t);
+    var o = await Net_1.Net.CallAsync(18726, t);
     if (o) {
       if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22499);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 18726);
       } else {
         ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.do1);
       }
@@ -86,9 +86,9 @@ class RogueBattleController extends UiControllerBase_1.UiControllerBase {
       r.do1 = new Protocol_1.Aki.Protocol.do1();
       r.do1.Q6n = a.Q6n.filter(e => e !== 0);
       r.c5n = e;
-      if (o = await Net_1.Net.CallAsync(22499, r)) {
+      if (o = await Net_1.Net.CallAsync(18726, r)) {
         if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && o.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrUpdateFightRoleRepeated) {
-          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22499);
+          ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 18726);
         } else {
           ModelManager_1.ModelManager.RogueBattleModel.UpdateFormationData(e, o.do1);
         }
@@ -100,10 +100,10 @@ class RogueBattleController extends UiControllerBase_1.UiControllerBase {
   static async SelectTokenRequest(e) {
     var o = new Protocol_1.Aki.Protocol.yEc();
     o.VB1 = e;
-    var e = await Net_1.Net.CallAsync(16691, o);
+    var e = await Net_1.Net.CallAsync(19869, o);
     if (e) {
       if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 16691);
+        ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19869);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RogueBattleSelectOption);
     }

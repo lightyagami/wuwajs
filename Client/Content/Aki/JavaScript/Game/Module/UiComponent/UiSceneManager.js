@@ -198,21 +198,21 @@ class UiSceneManager {
     }
   }
   static InitHuluObserver() {
-    UiSceneManager.KDd = UiSceneManager.fxo(6);
-    return UiSceneManager.KDd;
+    UiSceneManager.VBd = UiSceneManager.fxo(6);
+    return UiSceneManager.VBd;
   }
   static GetHuluObserver() {
-    if (UiSceneManager.KDd) {
-      return UiSceneManager.KDd;
+    if (UiSceneManager.VBd) {
+      return UiSceneManager.VBd;
     }
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("UiSceneManager", 16, "[HuluObserver]未初始化");
     }
   }
   static DestroyHuluObserver() {
-    if (UiSceneManager.KDd) {
-      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.KDd);
-      UiSceneManager.KDd = undefined;
+    if (UiSceneManager.VBd) {
+      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.VBd);
+      UiSceneManager.VBd = undefined;
     }
   }
   static InitHandBookObserver() {
@@ -674,7 +674,7 @@ UiSceneManager.fWi = () => {
 UiSceneManager.pxo = new Stack_1.Stack();
 UiSceneManager.vxo = new Stack_1.Stack();
 UiSceneManager.Mxo = undefined;
-UiSceneManager.KDd = undefined;
+UiSceneManager.VBd = undefined;
 UiSceneManager.Exo = undefined;
 UiSceneManager.Sxo = new Stack_1.Stack();
 UiSceneManager.MKt = undefined;

@@ -35,6 +35,7 @@ class SeamlessTravelSceneEffect {
       if (this.IsInit) {
         t(true);
       } else {
+        UE.KuroRenderingRuntimeBPPluginBPLibrary.StartSceneColorShotBeforeTonemap(0);
         this.vpu = this.nx.SceneEffectDaPath;
         this.Epu(e => {
           this.cl1 = true;
@@ -62,7 +63,7 @@ class SeamlessTravelSceneEffect {
           }
           i(false);
         }
-      });
+      }, 100, "SeamlessTravel.SceneEffect");
     } else {
       i(true);
     }
@@ -75,12 +76,14 @@ class SeamlessTravelSceneEffect {
     this.ege = undefined;
     this.rvi = undefined;
     this.ypu = undefined;
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.KuroCaptureSceneColor.Release");
   }
   AppearEffect(t) {
     if (this.IsInit && this.Hte?.Actor?.IsValid() && this.ypu?.IsValid()) {
       this.rvi = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, this.vpu, "[SeamlessTravelSceneEffect] AppearEffect", new EffectContext_1.EffectContext(undefined, this.Hte.Actor), 0, undefined, undefined, e => {
         e = EffectSystem_1.EffectSystem.GetSureEffectActor(e);
         if (e?.IsValid()) {
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.StopSceneColorShotBeforeTonemap(0, 0);
           if (this.Hte?.Actor.IsValid()) {
             e.K2_AttachToActor(this.Hte.Actor, undefined, 2, 2, 2, false);
           }

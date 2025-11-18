@@ -260,7 +260,7 @@ class AiPerception {
     if ((this.Uoe || this.Aoe) && (this.Lz.FromUeVector(this.Bte.CharActorComp.ActorRotation.UnrotateVectorDouble(this.Lz.ToUeVector())), this.Uoe && (a = MathUtils_1.MathUtils.RadToDeg * Math.atan2(this.Lz.Y, this.Lz.X)), this.Aoe)) {
       f = MathUtils_1.MathUtils.RadToDeg * Math.asin(this.Lz.Z / Math.sqrt(o));
     }
-    var e = t.GetComponent(102);
+    var e = t.GetComponent(104);
     var _ = e?.Valid ? e.PositionState : CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
     var c = e?.Valid ? e.MoveState : CharacterUnifiedStateTypes_1.ECharMoveState.Other;
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.uoe, h);

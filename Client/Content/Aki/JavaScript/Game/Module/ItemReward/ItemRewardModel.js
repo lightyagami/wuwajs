@@ -218,6 +218,9 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
       if (e.DangoAbyssSuccessData) {
         this.q0i.SetDangoAbyssSuccessData(e.DangoAbyssSuccessData);
       }
+      if (e.HonamiTowerSuccessData) {
+        this.q0i.SetHonamiTowerSuccessData(e.HonamiTowerSuccessData);
+      }
       return this.q0i;
     }
   }

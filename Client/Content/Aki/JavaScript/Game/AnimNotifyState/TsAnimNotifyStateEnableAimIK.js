@@ -27,7 +27,7 @@ class TsAnimNotifyStateEnableAimIK extends UE.KuroAnimNotifyState {
     if (t instanceof TsBaseCharacter_1.default) {
       var s = t.CharacterActorComponent?.Entity;
       if (s) {
-        var s = s.GetComponent(178).MainAnimInstance;
+        var s = s.GetComponent(181).MainAnimInstance;
         if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_MONSTERCOMMON)) {
           this.OldSightBoneName = (s = s)["Sight Bone Name"];
           this.OldBeginBoneName = s["Begin Bone Name"];
@@ -56,7 +56,7 @@ class TsAnimNotifyStateEnableAimIK extends UE.KuroAnimNotifyState {
     if (t instanceof TsBaseCharacter_1.default) {
       var i = t.CharacterActorComponent?.Entity;
       if (i) {
-        var i = i.GetComponent(178).MainAnimInstance;
+        var i = i.GetComponent(181).MainAnimInstance;
         if (UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_MONSTERCOMMON)) {
           (i = i)["Sight Bone Name"] = this.OldSightBoneName;
           i["Begin Bone Name"] = this.OldBeginBoneName;

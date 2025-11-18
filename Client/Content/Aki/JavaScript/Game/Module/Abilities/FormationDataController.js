@@ -26,21 +26,21 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.FormationDataModel;
   }
   static OnInit() {
-    Net_1.Net.Register(19615, FormationDataController.BHa);
+    Net_1.Net.Register(25249, FormationDataController.BHa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.Djd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeModeFinish, this.Djd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Djd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Djd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.Etm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ChangeModeFinish, this.Etm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Etm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Etm);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(19615);
+    Net_1.Net.UnRegister(25249);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.lqt);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.Djd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.Djd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Djd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Djd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.Etm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ChangeModeFinish, this.Etm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.Etm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshOnlineTeamList, this.Etm);
     return true;
   }
   static OnTick(t) {
@@ -92,7 +92,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
   static ZBe() {
     if (this.tbe) {
       this.tbe = false;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(176)?.GetAggroSet();
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(179)?.GetAggroSet();
       const r = this.Model.PlayerAggroSet;
       this.ibe.length = 0;
       this.bie.length = 0;
@@ -136,7 +136,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static AddPlayerTag(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(201);
+    var a = this.GetPlayerEntity(t)?.GetComponent(204);
     if (a) {
       a?.AddTag(e);
     } else if (Log_1.Log.CheckError()) {
@@ -144,7 +144,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static RemovePlayerTag(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(201);
+    var a = this.GetPlayerEntity(t)?.GetComponent(204);
     if (a) {
       a?.RemoveTag(e);
     } else if (Log_1.Log.CheckInfo()) {
@@ -152,7 +152,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetPlayerTagCount(t, e) {
-    var a = this.GetPlayerEntity(t)?.GetComponent(201);
+    var a = this.GetPlayerEntity(t)?.GetComponent(204);
     if (a) {
       return a?.GetTagCount(e) ?? 0;
     } else {
@@ -163,7 +163,7 @@ class FormationDataController extends ControllerBase_1.ControllerBase {
     }
   }
   static HasPlayerTag(t, e, a = false) {
-    var r = this.GetPlayerEntity(t)?.GetComponent(201);
+    var r = this.GetPlayerEntity(t)?.GetComponent(204);
     if (r) {
       return a && r?.TagContainerHasTag(e) || r?.HasTag(e);
     } else {
@@ -214,7 +214,7 @@ exports.FormationDataController = FormationDataController;
 FormationDataController.ebe = new Map();
 FormationDataController.BHa = t => {
   var e = t.W5n;
-  var a = _a.GetPlayerEntity(e)?.GetComponent(225);
+  var a = _a.GetPlayerEntity(e)?.GetComponent(228);
   if (a) {
     a.UpdateFollowers(t.OI_);
   } else if (Log_1.Log.CheckWarn()) {
@@ -225,7 +225,7 @@ FormationDataController.ibe = [];
 FormationDataController.bie = [];
 FormationDataController.tbe = false;
 FormationDataController.wK = false;
-FormationDataController.Djd = () => {
+FormationDataController.Etm = () => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
   var e = 547720200;
   if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {

@@ -21,7 +21,7 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
     this.cWl = new Map();
     this.Ox_ = new Map();
     this.Op1 = new Map();
-    this.Lvd = new Map();
+    this.WSd = new Map();
   }
   HasRequestDetail(e, t) {
     e = this.vLl(e, t);
@@ -56,14 +56,14 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
         this.cWl.delete(i);
         this.Ox_.delete(i);
         this.Op1.delete(i);
-        this.Lvd.delete(i);
+        this.WSd.delete(i);
       }
     }
     for (const u of t) {
       var s = u.qb_;
       var a = u.Ob_;
       var o = u.X4_;
-      var n = u._vd;
+      var n = u.ASd;
       for (const f of new Set(Array.from(Object.keys(s).concat(Object.keys(a)).concat(Object.keys(o)).concat(Object.keys(n))))) {
         var l = Number(f);
         var h = o[l] ? 5 : s[l];
@@ -80,9 +80,9 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
           this.Op1.delete(v);
         }
         if (n[l] !== undefined) {
-          this.Lvd.set(v, n[l]);
+          this.WSd.set(v, n[l]);
         } else {
-          this.Lvd.delete(v);
+          this.WSd.delete(v);
         }
       }
     }
@@ -100,7 +100,7 @@ class LevelPlayReportModel extends ModelBase_1.ModelBase {
   }
   GetLevelPlayIsUnlock(e, t) {
     e = this.vLl(e, t);
-    return this.Lvd.get(e) ?? false;
+    return this.WSd.get(e) ?? false;
   }
   IsCommonLevelPlayComplete(e, t) {
     var r = this.vLl(e, t);

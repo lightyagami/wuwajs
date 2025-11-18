@@ -18,7 +18,6 @@ const Global_1 = require("../../Global");
 const GlobalData_1 = require("../../GlobalData");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const TeleportDefine_1 = require("../../Module/Teleport/TeleportDefine");
 const GravityUtils_1 = require("../../Utils/GravityUtils");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const LevelGeneralContextDefine_1 = require("../LevelGeneralContextDefine");
@@ -36,18 +35,18 @@ class LevelEventClientSetPlayerPos extends LevelGeneralBase_1.LevelEventBase {
       var l;
       var i;
       var a;
-      var s;
-      if (this.OPt && Global_1.Global.BaseCharacter?.IsValid() && (i = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.OPt.TelePortConfig.SourcePosEntityId), t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.OPt.TelePortConfig.TargetPosEntityId), i) && t && (r = Global_1.Global.BaseCharacter.CharacterActorComponent, (l = Rotator_1.Rotator.Create()).Set(i.Transform.Rot?.X ?? 0, i.Transform.Rot?.Y ?? 0, i.Transform.Rot?.Z ?? 0), (o = Vector_1.Vector.Create()).Set(i.Transform.Pos.X, i.Transform.Pos.Y, i.Transform.Pos.Z), (i = Rotator_1.Rotator.Create()).Set(t.Transform.Rot?.X ?? 0, t.Transform.Rot?.Y ?? 0, t.Transform.Rot?.Z ?? 0), (s = Vector_1.Vector.Create()).Set(t.Transform.Pos.X, t.Transform.Pos.Y, t.Transform.Pos.Z), t = GravityUtils_1.GravityUtils.GetGravityDirectByEntityData(t), l.Quaternion().Inverse(MathUtils_1.MathUtils.CommonTempQuat), l = Quat_1.Quat.Create(), MathUtils_1.MathUtils.CommonTempQuat.Multiply(r.ActorQuatProxy, l), a = Vector_1.Vector.Create(), r.ActorLocationProxy.Subtraction(o, a), MathUtils_1.MathUtils.CommonTempQuat.RotateVector(a, a), r = Quat_1.Quat.Create(), i.Quaternion().Multiply(l, r), o = Vector_1.Vector.Create(), i.Quaternion().RotateVector(a, o), o.AdditionEqual(s), l = t.Multiply(-1, Vector_1.Vector.Create()), r.GetForwardVector(MathUtils_1.MathUtils.CommonTempVector), MathUtils_1.MathUtils.LookRotationUpFirst(MathUtils_1.MathUtils.CommonTempVector, l, r), (i = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(67)) && (i.CollectSampleAndSend(true), a = i.GetEnableMovementSync(), this.hpl = a) && i.SetEnableMovementSync(false), this.upl(o, r.Rotator(), e))) {
+      var n;
+      if (this.OPt && Global_1.Global.BaseCharacter?.IsValid() && (a = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.OPt.TelePortConfig.SourcePosEntityId), r = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.OPt.TelePortConfig.TargetPosEntityId), a) && r && (o = Global_1.Global.BaseCharacter.CharacterActorComponent, (i = Rotator_1.Rotator.Create()).Set(a.Transform.Rot?.Y ?? 0, a.Transform.Rot?.Z ?? 0, a.Transform.Rot?.X ?? 0), (l = Vector_1.Vector.Create()).Set(a.Transform.Pos.X, a.Transform.Pos.Y, a.Transform.Pos.Z), (a = Rotator_1.Rotator.Create()).Set(r.Transform.Rot?.Y ?? 0, r.Transform.Rot?.Z ?? 0, r.Transform.Rot?.X ?? 0), (t = Vector_1.Vector.Create()).Set(r.Transform.Pos.X, r.Transform.Pos.Y, r.Transform.Pos.Z), r = GravityUtils_1.GravityUtils.GetGravityDirectByEntityData(r), i.Quaternion().Inverse(MathUtils_1.MathUtils.CommonTempQuat), i = Quat_1.Quat.Create(), MathUtils_1.MathUtils.CommonTempQuat.Multiply(o.ActorQuatProxy, i), n = Vector_1.Vector.Create(), o.ActorLocationProxy.Subtraction(l, n), MathUtils_1.MathUtils.CommonTempQuat.RotateVector(n, n), o = Quat_1.Quat.Create(), a.Quaternion().Multiply(i, o), l = Vector_1.Vector.Create(), a.Quaternion().RotateVector(n, l), l.AdditionEqual(t), i = r.Multiply(-1, Vector_1.Vector.Create()), o.GetForwardVector(MathUtils_1.MathUtils.CommonTempVector), MathUtils_1.MathUtils.LookRotationUpFirst(MathUtils_1.MathUtils.CommonTempVector, i, o), (a = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(67)) && (a.CollectSampleAndSend(true), n = a.GetEnableMovementSync(), this.hpl = n) && a.SetEnableMovementSync(false), this.upl(l, o.Rotator(), e))) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelEvent", 50, "开始客户端传送", ["开始位置", Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorLocationProxy], ["目标位置", o], ["开始旋转", Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorRotationProxy], ["目标旋转", r.Rotator()], ["原因", "ClientSetPlayerPos"]);
+          Log_1.Log.Info("LevelEvent", 50, "开始客户端传送", ["开始位置", Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorLocationProxy], ["目标位置", l], ["开始旋转", Global_1.Global.BaseCharacter.CharacterActorComponent?.ActorRotationProxy], ["目标旋转", o.Rotator()], ["原因", "ClientSetPlayerPos"]);
         }
-        if (ControllerHolder_1.ControllerHolder.TeleportController.QueryCanTeleportNoLoading(o.ToUeVector())) {
+        if (ControllerHolder_1.ControllerHolder.TeleportController.QueryCanTeleportNoLoading(l.ToUeVector())) {
           ModelManager_1.ModelManager.TeleportModel.TeleportMode = 4;
-          ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPositionWithGravityNoLoading(o.ToUeVector(), r.Rotator(), t, "ClientSetPlayerPos").finally(this.cpl);
+          ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPositionWithGravityNoLoading(l.ToUeVector(), o.Rotator(), r, "ClientSetPlayerPos").finally(this.cpl);
         } else {
           ModelManager_1.ModelManager.TeleportModel.TeleportMode = 1;
-          s = new TeleportDefine_1.TeleportContext(Protocol_1.Aki.Protocol.v4s.Xvs, undefined, undefined, undefined, undefined);
-          ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPositionNoSync(o.ToUeVector(), r.Rotator(), t, "ClientSetPlayerPos", s).finally(this.cpl);
+          ModelManager_1.ModelManager.TeleportModel.TeleportReason = Protocol_1.Aki.Protocol.v4s.Xvs;
+          (ControllerHolder_1.ControllerHolder.TeleportController.UseNewTeleport ? (ModelManager_1.ModelManager.TeleportModel.WaitServerResponse = false, ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayer("LevenEvent.ClientSetPlayerPos", l.ToUeVector(), o.Rotator(), r, 0)) : ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPositionNoSync(l.ToUeVector(), o.Rotator(), r, "ClientSetPlayerPos")).finally(this.cpl);
           ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
         }
       } else {

@@ -12,6 +12,7 @@ const Time_1 = require("../../../Core/Common/Time");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
@@ -33,6 +34,13 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LoginSuccess, this.gSe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BeforeLoadMap, this.SYi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.FWe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.Ovm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAdjustTime, this.Gvm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSetTimeScale, this.Fvm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.Nvm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.Vvm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.jvm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.Hvm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnterGameSuccess, this.nTo);
@@ -40,18 +48,25 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LoginSuccess, this.gSe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BeforeLoadMap, this.SYi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.FWe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncTsTimeModelParam, this.Ovm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAdjustTime, this.Gvm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSetTimeScale, this.Fvm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeRunStateClient, this.Nvm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestLockTimeSyncLockStateClient, this.Vvm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTimeCanOpenViewState, this.jvm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSyncServerGameTime, this.Hvm);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24699, TimeOfDayController.sTo);
-    Net_1.Net.Register(28441, TimeOfDayController.aTo);
-    Net_1.Net.Register(21602, TimeOfDayController.hTo);
-    Net_1.Net.Register(16340, TimeOfDayController.Awa);
+    Net_1.Net.Register(20510, TimeOfDayController.sTo);
+    Net_1.Net.Register(20598, TimeOfDayController.aTo);
+    Net_1.Net.Register(18985, TimeOfDayController.hTo);
+    Net_1.Net.Register(15912, TimeOfDayController.Awa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(24699);
-    Net_1.Net.UnRegister(28441);
-    Net_1.Net.UnRegister(21602);
-    Net_1.Net.UnRegister(16340);
+    Net_1.Net.UnRegister(20510);
+    Net_1.Net.UnRegister(20598);
+    Net_1.Net.UnRegister(18985);
+    Net_1.Net.UnRegister(15912);
   }
   static OnTick(e) {
     if (!!TimeOfDayController.lTo && !!TimeOfDayController._To && !TimeOfDayController.uTo && !TimeOfDayController.cTo && !ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockState) {
@@ -61,8 +76,8 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static dTo(e) {
-    var i = ModelManager_1.ModelManager.GameModeModel.IsMulti ? 1 : ModelManager_1.ModelManager.TimeOfDayModel.TimeScale;
-    var e = TimeOfDayModel_1.TodDayTime.ConvertFromRealTimeSecond(e / TimeOfDayDefine_1.TOD_MILLIONSECOND_PER_SECOND * i);
+    var t = ModelManager_1.ModelManager.GameModeModel.IsMulti ? 1 : ModelManager_1.ModelManager.TimeOfDayModel.TimeScale;
+    var e = TimeOfDayModel_1.TodDayTime.ConvertFromRealTimeSecond(e / TimeOfDayDefine_1.TOD_MILLIONSECOND_PER_SECOND * t);
     if (!(e <= 0)) {
       this.CTo(ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second + e);
     }
@@ -87,7 +102,7 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
       return false;
     }
     for (const e of ConfigManager_1.ConfigManager.TimeOfDayConfig.GetBanGamePlayTags()) {
-      if (e && Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(206)?.HasTag(e.TagId)) {
+      if (e && Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(209)?.HasTag(e.TagId)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("TimeOfDay", 27, "时间在BanTag");
         }
@@ -96,47 +111,47 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     }
     return !ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockState || (Log_1.Log.CheckInfo() && Log_1.Log.Info("TimeOfDay", 26, "时间被锁定"), false);
   }
-  static CTo(e, i = true) {
-    let t = e;
-    while (t > TimeOfDayDefine_1.TOD_SECOND_PER_DAY) {
-      t -= TimeOfDayDefine_1.TOD_SECOND_PER_DAY;
+  static CTo(e, t = true) {
+    let i = e;
+    while (i > TimeOfDayDefine_1.TOD_SECOND_PER_DAY) {
+      i -= TimeOfDayDefine_1.TOD_SECOND_PER_DAY;
     }
-    ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second = t;
-    this.SyncGlobalGameTime(t);
-    this.fTo(t);
+    ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second = i;
+    this.SyncGlobalGameTime(i);
+    this.fTo(i);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TodTimeChange);
-    if (i && !ModelManager_1.ModelManager.TimeOfDayModel.TimeSynLockState) {
+    if (t && !ModelManager_1.ModelManager.TimeOfDayModel.TimeSynLockState) {
       this.pTo(e);
     }
   }
   static pTo(e) {
-    let i = e;
-    if (i > TimeOfDayDefine_1.TOD_SECOND_PER_DAY) {
-      i = 0;
+    let t = e;
+    if (t > TimeOfDayDefine_1.TOD_SECOND_PER_DAY) {
+      t = 0;
     }
-    var t = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.DayState;
-    if (this.vTo !== t) {
-      this.vTo = t;
+    var i = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.DayState;
+    if (this.vTo !== i) {
+      this.vTo = i;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DayStateChange);
     }
-    var t = Time_1.Time.Now - this.MTo;
-    if (t > SENDTIMEGAP && i - this.ETo > TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE || this.ETo > i) {
-      this.SyncServerGameTime(i);
+    var i = Time_1.Time.Now - this.MTo;
+    if (i > SENDTIMEGAP && t - this.ETo > TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE || this.ETo > t) {
+      this.SyncServerGameTime(t);
     }
-    var t = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_HOUR);
-    if (t < this.STo) {
-      e = Math.floor((e - t * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
-      this.yTo(1, t, e, Protocol_1.Aki.Protocol.C4s.Proto_TimeFlowAuto);
+    var i = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_HOUR);
+    if (i < this.STo) {
+      e = Math.floor((e - i * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
+      this.yTo(1, i, e, Protocol_1.Aki.Protocol.C4s.Proto_TimeFlowAuto);
     }
-    this.RecordLastHour(t);
+    this.RecordLastHour(i);
   }
   static SyncServerGameTime(e) {
-    var i;
     var t;
+    var i;
     if (!!GlobalData_1.GlobalData.World && (!ModelManager_1.ModelManager.GameModeModel.IsMulti || !!ModelManager_1.ModelManager.CreatureModel.IsMyWorld())) {
-      i = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_HOUR);
-      t = Math.floor((e - i * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
-      this.yTo(0, i, t, Protocol_1.Aki.Protocol.C4s.Proto_TimeFlowAuto);
+      t = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_HOUR);
+      i = Math.floor((e - t * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
+      this.yTo(0, t, i, Protocol_1.Aki.Protocol.C4s.Proto_TimeFlowAuto);
       this.ETo = e;
       this.MTo = Time_1.Time.Now;
     }
@@ -149,21 +164,21 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static fTo(e) {
-    var i;
-    if (GlobalData_1.GlobalData.World && ((i = TimeOfDayController.ITo - e) > TimeOfDayController.TTo || i < -TimeOfDayController.TTo)) {
+    var t;
+    if (GlobalData_1.GlobalData.World && ((t = TimeOfDayController.ITo - e) > TimeOfDayController.TTo || t < -TimeOfDayController.TTo)) {
       AudioSystem_1.AudioSystem.SetRtpcValue("time", TimeOfDayModel_1.TodDayTime.ConvertToHour(e));
       AudioSystem_1.AudioSystem.SetRtpcValue("time_local", TimeUtil_1.TimeUtil.GetHoursFloat());
       TimeOfDayController.ITo = e;
     }
   }
   static ChangeTimeScale(e) {
-    ModelManager_1.ModelManager.TimeOfDayModel.TimeScale = e;
+    ModelManager_1.ModelManager.TimeOfDayModel.SetTimeScale(e);
   }
   static PauseTime() {
-    ModelManager_1.ModelManager.TimeOfDayModel.TimeScale = 0;
+    ModelManager_1.ModelManager.TimeOfDayModel.SetTimeScale(0);
   }
   static ResumeTimeScale(e = true) {
-    ModelManager_1.ModelManager.TimeOfDayModel.TimeScale = e ? 1 : ModelManager_1.ModelManager.TimeOfDayModel.OldTimeScale;
+    ModelManager_1.ModelManager.TimeOfDayModel.SetTimeScale(e ? 1 : ModelManager_1.ModelManager.TimeOfDayModel.OldTimeScale);
   }
   static ForcePauseTime() {
     TimeOfDayController.PauseTime();
@@ -179,17 +194,17 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
   static OnRemoveOpenViewCheckFunction() {
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("TimeOfDaySecondView", TimeOfDayController.iVe);
   }
-  static SyncSceneTime(i, t, a, o = false) {
+  static SyncSceneTime(t, i, a, n = false) {
     ModelManager_1.ModelManager.TimeOfDayModel.SetPassSceneTime(ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second);
-    if (i !== undefined && t !== undefined) {
-      i = i * TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE * TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR + TimeOfDayModel_1.TodDayTime.ConvertFromMinute(t);
+    if (t !== undefined && i !== undefined) {
+      t = t * TimeOfDayDefine_1.TOD_SECOND_PER_MINUTE * TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR + TimeOfDayModel_1.TodDayTime.ConvertFromMinute(i);
       let e = 0;
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
         e = TimeOfDayModel_1.TodDayTime.ConvertFromRealTimeSecond(Number(MathUtils_1.MathUtils.LongToBigInt(a) / BigInt(TimeOfDayDefine_1.TOD_MILLIONSECOND_PER_SECOND)) * ModelManager_1.ModelManager.TimeOfDayModel.TimeScale);
       }
       TimeOfDayController.lTo = true;
-      const r = i + e;
-      if (o) {
+      const r = t + e;
+      if (n) {
         UiManager_1.UiManager.ResetToBattleView(e => {
           if (e) {
             e = {
@@ -208,49 +223,51 @@ class TimeOfDayController extends UiControllerBase_1.UiControllerBase {
         this.CTo(r, false);
       }
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("TimeOfDay", 26, "服务器同步Tod时间", ["second", r], ["showUi", o]);
+        Log_1.Log.Info("TimeOfDay", 26, "服务器同步Tod时间", ["second", r], ["showUi", n]);
       }
     }
   }
-  static AdjustTime(e, i, t = 0) {
+  static AdjustTime(e, t, i = 0) {
     var a;
-    var o;
+    var n;
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestAdjustTime, e, t, i);
     if (!!GlobalData_1.GlobalData.World && (!ModelManager_1.ModelManager.GameModeModel.IsMulti || !!ModelManager_1.ModelManager.CreatureModel.IsMyWorld())) {
       ModelManager_1.ModelManager.TimeOfDayModel.CacheTimeRecords();
       a = Math.floor(e / TimeOfDayDefine_1.TOD_SECOND_PER_HOUR);
-      o = Math.floor((e - a * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
-      this.yTo(t, a, o, i);
+      n = Math.floor((e - a * TimeOfDayDefine_1.TOD_SECOND_PER_HOUR) / TimeOfDayDefine_1.TOD_MINUTE_PER_HOUR);
+      this.yTo(i, a, n, t);
       this.CTo(e, false);
       this.ETo = e;
       this.RecordLastHour(a);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdjustTime);
     }
   }
-  static yTo(e, i, t, a) {
-    var o;
+  static yTo(e, t, i, a) {
+    var n;
     if (!!GlobalData_1.GlobalData.World && (!ModelManager_1.ModelManager.GameModeModel.IsMulti || !!ModelManager_1.ModelManager.CreatureModel.IsMyWorld())) {
-      (o = Protocol_1.Aki.Protocol.Qcs.create()).rjn = i;
-      o.ojn = t;
-      o.x9n = a;
-      o.njn = e;
-      Net_1.Net.Call(19344, o, e => {
+      (n = Protocol_1.Aki.Protocol.Qcs.create()).rjn = t;
+      n.ojn = i;
+      n.x9n = a;
+      n.njn = e;
+      Net_1.Net.Call(15890, n, e => {
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18601);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25511);
           } else {
             ModelManager_1.ModelManager.TimeOfDayModel.SetCurrentDay(e.aDs);
+            EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseSyncServerGameTime, e.aDs);
           }
         }
       });
     }
   }
-  static CheckInMinuteSpan(e, i) {
-    e = [e, i];
-    i = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Minute;
-    return TimeOfDayModel_1.TodDayTime.CheckInMinuteSpan(i, e);
+  static CheckInMinuteSpan(e, t) {
+    e = [e, t];
+    t = ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Minute;
+    return TimeOfDayModel_1.TodDayTime.CheckInMinuteSpan(t, e);
   }
-  static AdjustTimeByMinute(e, i) {
-    this.AdjustTime(TimeOfDayModel_1.TodDayTime.ConvertFromMinute(e), i);
+  static AdjustTimeByMinute(e, t) {
+    this.AdjustTime(TimeOfDayModel_1.TodDayTime.ConvertFromMinute(e), t);
   }
   static SetUiAnimFlag(e) {
     TimeOfDayController.cTo = e;
@@ -280,13 +297,16 @@ TimeOfDayController.lTo = false;
 TimeOfDayController.TTo = TimeOfDayDefine_1.TOD_SECOND_PER_HOUR * 0.1;
 TimeOfDayController.nTo = () => {
   TimeOfDayController._To = true;
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnTimeEnterGame);
 };
 TimeOfDayController.SYi = () => {
   TimeOfDayController.uTo = true;
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnTimeBeforeLoadMap);
 };
 TimeOfDayController.FWe = () => {
   TimeOfDayController.uTo = false;
   TimeOfDayController.SyncGlobalGameTime(ModelManager_1.ModelManager.TimeOfDayModel.GameTime.Second);
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnTimeWorldDone);
 };
 TimeOfDayController.LZe = e => {
   if (e === 1) {
@@ -303,8 +323,8 @@ TimeOfDayController.sTo = e => {
   ModelManager_1.ModelManager.TimeOfDayModel.SetCurrentDay(e.aDs);
 };
 TimeOfDayController.aTo = e => {
-  var i = e.ARs;
-  TimeOfDayController.SyncSceneTime(i.rjn, i.ojn, i.FRs, e.lZ_);
+  var t = e.ARs;
+  TimeOfDayController.SyncSceneTime(t.rjn, t.ojn, t.FRs, e.lZ_);
 };
 TimeOfDayController.hTo = e => {
   if (e.Y5n) {
@@ -320,11 +340,11 @@ TimeOfDayController.hTo = e => {
       Log_1.Log.Info("TimeOfDay", 26, "[TimeRunLockState] 服务器通知解锁时间");
     }
   }
-  var i = MathUtils_1.MathUtils.LongToNumber(e.rjn);
+  var t = MathUtils_1.MathUtils.LongToNumber(e.rjn);
   var e = MathUtils_1.MathUtils.LongToNumber(e.ojn);
-  if (i !== -1 && e !== -1) {
-    i = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(i, e);
-    _a.CTo(i, false);
+  if (t !== -1 && e !== -1) {
+    t = TimeOfDayModel_1.TodDayTime.ConvertFromHourMinute(t, e);
+    _a.CTo(t, false);
   }
 };
 TimeOfDayController.Awa = e => {
@@ -339,4 +359,31 @@ TimeOfDayController.Awa = e => {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CrossDayZone);
   }
+};
+TimeOfDayController.Ovm = () => {
+  var e = ModelManager_1.ModelManager.TimeOfDayModel.FreezeTimeScale;
+  var t = ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateClient;
+  var i = ModelManager_1.ModelManager.TimeOfDayModel.TimeRunLockStateServer;
+  var a = ModelManager_1.ModelManager.TimeOfDayModel.TimeSyncLockStateClient;
+  var n = ModelManager_1.ModelManager.TimeOfDayModel.TimeSyncLockStateServer;
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseSyncToCsTimeModelParam, e, t, i, a, n);
+};
+TimeOfDayController.Gvm = (e, t, i) => {
+  _a.AdjustTime(e, t, i);
+};
+TimeOfDayController.Fvm = e => {
+  ModelManager_1.ModelManager.TimeOfDayModel.SetTimeScale(e, false);
+};
+TimeOfDayController.Nvm = e => {
+  ModelManager_1.ModelManager.TimeOfDayModel.SetTimeRunLockStateClient(e, false);
+};
+TimeOfDayController.Vvm = e => {
+  ModelManager_1.ModelManager.TimeOfDayModel.SetTimeSyncLockStateClient(e, false);
+};
+TimeOfDayController.jvm = () => {
+  var e = _a.gTo();
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsResponseTimeCanOpenViewState, e);
+};
+TimeOfDayController.Hvm = (e, t, i, a) => {
+  _a.yTo(e, t, i, a);
 }; //# sourceMappingURL=TimeOfDayController.js.map

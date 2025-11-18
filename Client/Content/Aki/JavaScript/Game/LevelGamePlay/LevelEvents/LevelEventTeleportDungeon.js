@@ -14,6 +14,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ConfirmBoxDefine_1 = require("../../Module/ConfirmBox/ConfirmBoxDefine");
 const SeamlessTravelDefine_1 = require("../../Module/SeamlessTravel/SeamlessTravelDefine");
+const TeleportTransitionHelper_1 = require("../../Module/Teleport/TeleportTransitionHelper");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelEventTeleportDungeon extends LevelGeneralBase_1.LevelEventBase {
   constructor() {
@@ -61,7 +62,7 @@ class LevelEventTeleportDungeon extends LevelGeneralBase_1.LevelEventBase {
               } else {
                 if (o.TransitionOption?.Type === IAction_1.ETeleportTransitionType.Seamless && o.TransitionOption.KeepMovementStates?.includes("Kite")) {
                   const r = new SeamlessTravelDefine_1.SeamlessTravelContext();
-                  r.ParseConfig(ControllerHolder_1.ControllerHolder.TeleportController.ParseTeleportTransitionOptionToPb(o.TransitionOption));
+                  r.ParseConfig(TeleportTransitionHelper_1.TeleportTransitionHelper.ParseTeleportTransitionOptionToPb(o.TransitionOption));
                   ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(r, true);
                 }
                 this.$Re(o);
@@ -113,7 +114,7 @@ class LevelEventTeleportDungeon extends LevelGeneralBase_1.LevelEventBase {
   }
   XRe(e) {
     var e = e.TransitionOption;
-    var r = ControllerHolder_1.ControllerHolder.TeleportController.ParseTeleportTransitionOptionToPb(e);
+    var r = TeleportTransitionHelper_1.TeleportTransitionHelper.ParseTeleportTransitionOptionToPb(e);
     if (e?.Type === IAction_1.ETeleportTransitionType.PlayMp4 && e.IsFadeInScreenAfterTeleport) {
       ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(0, 3, undefined, 1);
     }

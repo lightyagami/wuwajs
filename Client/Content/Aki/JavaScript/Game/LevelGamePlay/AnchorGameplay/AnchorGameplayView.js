@@ -39,10 +39,10 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     this.NHc = undefined;
     this.VHc = 100;
     this.jHc = -0.05;
-    this.Wmd = 500;
-    this.Qmd = -1;
-    this.Kmd = false;
-    this.Xmd = undefined;
+    this.zgd = 500;
+    this.Jgd = -1;
+    this.Zgd = false;
+    this.e0d = undefined;
     this.vKe = t => {
       var e;
       var i;
@@ -177,8 +177,8 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     this.NHc = ResourceSystem_1.ResourceSystem.Load(t, UE.CurveVector);
     this.VHc = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorBtnDetachOffset");
     this.jHc = CommonParamById_1.configCommonParamById.GetFloatConfig("AnchorGamepadBtnMovementFactor");
-    this.Wmd = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorEndAnimTime");
-    this.Qmd = 1 / this.Wmd;
+    this.zgd = CommonParamById_1.configCommonParamById.GetIntConfig("AnchorEndAnimTime");
+    this.Jgd = 1 / this.zgd;
   }
   OnStart() {
     super.OnStart();
@@ -211,8 +211,8 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
       this.IsQteEnd = true;
       if (this.FHc !== 1) {
         this.SPe?.StopCurrentSequence();
-        this.Kmd = true;
-        this.Xmd = () => {
+        this.Zgd = true;
+        this.e0d = () => {
           this.SPe?.PlayLevelSequenceByName("Success");
         };
       }
@@ -234,8 +234,8 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
     }
   }
   OnTick(t) {
-    if (this.Kmd) {
-      this.Ymd(t);
+    if (this.Zgd) {
+      this.t0d(t);
     } else if (!!this.IsQteStart && !this.IsQteEnd && !this.IsQtePause) {
       if (!this.fS1 || this.fS1.IsInvalid()) {
         if (Log_1.Log.CheckInfo()) {
@@ -250,13 +250,13 @@ class AnchorGameplayView extends CommonQteViewBase_1.CommonQteViewBase {
       }
     }
   }
-  Ymd(t) {
-    this.FHc += t * this.Qmd;
+  t0d(t) {
+    this.FHc += t * this.Jgd;
     this.FHc = MathUtils_1.MathUtils.Clamp(this.FHc, 0, 1);
     t = this.NHc.GetVectorValue(this.FHc);
     this.OHc.SetUIRelativeLocation(t);
-    if (this.FHc === 1 && (this.Kmd = false, this.Xmd)) {
-      this.Xmd();
+    if (this.FHc === 1 && (this.Zgd = false, this.e0d)) {
+      this.e0d();
     }
   }
   PlayQteStart() {

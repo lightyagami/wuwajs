@@ -37,8 +37,9 @@ class RouletteModel extends ModelBase_1.ModelBase {
     this.mB_ = [];
     this.Bcc = undefined;
     this.kcc = [];
+    this.Xpm = new Map();
     this.qcc = [];
-    this.CYd = 0;
+    this.Epm = 0;
     this.H0o = 0;
     this.j0o = 0;
     this.fB_ = [];
@@ -61,7 +62,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
       }
     };
     this.zJu = new Map();
-    this.pYd = 0;
+    this.Ipm = 0;
     this.XPn = new InputKeyDisplayData_1.InputKeyDisplayData();
     this.GetRouletteActionName = {
       [1]: InputMappingsDefine_1.actionMappings.幻象探索选择界面,
@@ -69,7 +70,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
     };
   }
   IsExploreRouletteOpen(e = false) {
-    if (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)?.HasAnyTag(this.GetExploreRouletteBanTagIds()) && ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1)) {
+    if (!ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)?.HasAnyTag(this.GetExploreRouletteBanTagIds()) && ModelManager_1.ModelManager.LevelFuncFlagModel.GetFuncFlagEnable(1)) {
       return ModelManager_1.ModelManager.FunctionModel.IsOpen(10026);
     } else {
       if (e) {
@@ -160,7 +161,7 @@ class RouletteModel extends ModelBase_1.ModelBase {
         if (!!e && !(ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) > 0)) {
           e = 0;
         }
-        this.CYd = e;
+        this.Epm = e;
         if (this.ExploreSkillIdListServer.includes(this.H0o)) {
           this.dB_ = this.H0o;
         } else {
@@ -195,23 +196,38 @@ class RouletteModel extends ModelBase_1.ModelBase {
   }
   Gcc() {
     this.kcc.length = 0;
+    this.Xpm.clear();
     for (const e of ConfigManager_1.ConfigManager.RouletteConfig.GetAllFuncReplaceConfig()) {
-      this.kcc.push(e.InstSubType);
+      if (e.InstIdList.length > 0) {
+        for (const t of e.InstIdList) {
+          this.Xpm.set(t, e.Id);
+        }
+      } else if (e.InstSubType !== 0) {
+        this.kcc.push(e.InstSubType);
+      }
     }
   }
-  TryActiveFunctionRouletteReplaceConfig(e) {
-    var t;
-    if (this.kcc.includes(e)) {
-      t = (e = ConfigManager_1.ConfigManager.RouletteConfig.GetFuncReplaceConfig(e)).Id;
-      if (this.Bcc !== t) {
-        this.Bcc = t;
-        if (e.FuncMenuIdList.length !== RouletteDefine_1.ROULETTE_FUNCTION_IN_USE) {
+  TryActiveFunctionRouletteReplaceConfig(e, t) {
+    let i = undefined;
+    let r = 0;
+    e = this.Xpm.get(e);
+    if (e) {
+      i = ConfigManager_1.ConfigManager.RouletteConfig.GetFuncReplaceConfigById(e);
+      r = e;
+    } else if (this.kcc.includes(t)) {
+      i = ConfigManager_1.ConfigManager.RouletteConfig.GetFuncReplaceConfig(t);
+      r = i?.Id ?? 0;
+    }
+    if (r !== 0 && i) {
+      if (this.Bcc !== r) {
+        this.Bcc = r;
+        if (i.FuncMenuIdList.length !== RouletteDefine_1.ROULETTE_FUNCTION_IN_USE) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Phantom", 37, "[FunctionRoulette] 替换配置功能轮盘Id数量错误", ["ReplaceId", t]);
+            Log_1.Log.Error("Phantom", 37, "[FunctionRoulette] 替换配置功能轮盘Id数量错误", ["ReplaceId", r]);
           }
         } else {
           this.qcc.length = 0;
-          this.qcc.push(...e.FuncMenuIdList);
+          this.qcc.push(...i.FuncMenuIdList);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Phantom", 37, "[FunctionRoulette] 功能轮盘进入替换模式", ["ReplaceId", this.Bcc]);
           }
@@ -412,17 +428,17 @@ class RouletteModel extends ModelBase_1.ModelBase {
   }
   get CurrentEquipItemId() {
     if (this.IsExploreRouletteReplace()) {
-      return this.CYd;
+      return this.Epm;
     } else {
-      return this.pYd;
+      return this.Ipm;
     }
   }
   get CurrentEquipItemIdServer() {
-    return this.pYd;
+    return this.Ipm;
   }
   CB_(e) {
     var t = this.rfo();
-    this.pYd = e;
+    this.Ipm = e;
     var e = this.rfo();
     if (e) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSpecialItemUpdate, this.CurrentEquipItemId);

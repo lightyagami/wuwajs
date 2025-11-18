@@ -32,6 +32,7 @@ const RedDotActivityRegressCultivate_1 = require("./RedDots/Activity/Recall/RedD
 const RedDotActivityRegressDoubleDrop_1 = require("./RedDots/Activity/Recall/RedDotActivityRegressDoubleDrop");
 const RedDotActivityRegressQuestionnaire_1 = require("./RedDots/Activity/Recall/RedDotActivityRegressQuestionnaire");
 const RedDotActivityRegressShopDiscount_1 = require("./RedDots/Activity/Recall/RedDotActivityRegressShopDiscount");
+const AdventurePeriodicityTab_1 = require("./RedDots/AdventureGuideSystem/AdventurePeriodicityTab");
 const RedDotAdventureBattleButton_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureBattleButton");
 const RedDotAdventureChallengeTab_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureChallengeTab");
 const RedDotAdventureDailyActivityTab_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureDailyActivityTab");
@@ -41,7 +42,6 @@ const RedDotAdventureFirstAwardResult_1 = require("./RedDots/AdventureGuideSyste
 const RedDotAdventureManual_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureManual");
 const RedDotAdventureNewSoundAreaGeneral_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureNewSoundAreaGeneral");
 const RedDotAdventureNewSoundAreaTab_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureNewSoundAreaTab");
-const RedDotAdventureWeeklyRogueSubTab_1 = require("./RedDots/AdventureGuideSystem/RedDotAdventureWeeklyRogueSubTab");
 const BabelTowerDifficultyRedDot_1 = require("./RedDots/BabelTower/BabelTowerDifficultyRedDot");
 const BabelTowerLevelRedDot_1 = require("./RedDots/BabelTower/BabelTowerLevelRedDot");
 const BabelTowerQuestRedDot_1 = require("./RedDots/BabelTower/BabelTowerQuestRedDot");
@@ -140,8 +140,8 @@ const RedDotMoraleScoreBox_1 = require("./RedDots/Morale/RedDotMoraleScoreBox");
 const MowingRiskRedDot_1 = require("./RedDots/MowingRisk/MowingRiskRedDot");
 const MowingTowerRewardRedDot_1 = require("./RedDots/MowingTower/MowingTowerRewardRedDot");
 const PersonalBirthdayRedDot_1 = require("./RedDots/Personal/PersonalBirthdayRedDot");
-const PersonalImageBookRedDot_1 = require("./RedDots/Personal/PersonalImageBookRedDot");
 const PersonalCardRedDot_1 = require("./RedDots/Personal/PersonalCardRedDot");
+const PersonalImageBookRedDot_1 = require("./RedDots/Personal/PersonalImageBookRedDot");
 const PersonalizeInfoRedDot_1 = require("./RedDots/Personal/PersonalizeInfoRedDot");
 const PersonalTitleRedDot_1 = require("./RedDots/Personal/PersonalTitleRedDot");
 const RedDotPhantomArenaActivity_1 = require("./RedDots/PhantomArena/RedDotPhantomArenaActivity");
@@ -267,8 +267,8 @@ class RedDotModel extends ModelBase_1.ModelBase {
     this.qp("AdventureDailyActivityTab", new RedDotAdventureDailyActivityTab_1.RedDotAdventureDailyActivityTab());
     this.qp("AdventureNewSoundAreaTab", new RedDotAdventureNewSoundAreaTab_1.RedDotAdventureNewSoundAreaTab());
     this.qp("AdventureChallengeTab", new RedDotAdventureChallengeTab_1.RedDotAdventureChallengeTab());
+    this.qp("AdventurePeriodicityTab", new AdventurePeriodicityTab_1.AdventurePeriodicityTab());
     this.qp("AdventureNewSoundAreaGeneral", new RedDotAdventureNewSoundAreaGeneral_1.RedDotAdventureNewSoundAreaGeneral());
-    this.qp("AdventureWeeklyRogueSubTab", new RedDotAdventureWeeklyRogueSubTab_1.RedDotAdventureWeeklyRogueSubTab());
     this.qp("FunctionCalabash", new RedDotCalabash_1.RedDotCalabashUpdate());
     this.qp("CalabashTab", new RedDotCalabashTab_1.RedDotCalabashTab());
     this.qp("VisionRecovery", new RedDotVisionRecovery_1.RedDotVisionRecovery());

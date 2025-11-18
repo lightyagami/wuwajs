@@ -14,6 +14,7 @@ class ItemConfig {
     this.Name = "";
     this.TypeDescription = undefined;
     this.AttributesDescription = "";
+    this.AttributesDescriptionArgs = [];
     this.ObtainedShowDescription = "";
     this.BgDescription = undefined;
     this.ShowInBag = false;
@@ -82,7 +83,13 @@ class ItemConfig {
         this.umu(i);
         break;
       case 17:
-        this.EDd(i);
+        this.IQd(i);
+        break;
+      case 19:
+        this.TQd(i);
+        break;
+      case 18:
+        this.IBd(i);
     }
   }
   Cmi(i) {
@@ -369,8 +376,34 @@ class ItemConfig {
     this.ObtainedShowDescription = "";
     this.AttributesDescription = i.AttributesDescription;
   }
-  EDd(i) {
+  IQd(i) {
     this.ItemDataType = 17;
+    this.ItemType = 28;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.TypeDescription = i.TypeDescription;
+    this.BgDescription = i.BgDescription;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.ItemAccess = undefined;
+    this.Parameters.clear();
+    this.SortIndex = 0;
+    this.RedDotDisableRule = 0;
+    this.ShowInBag = true;
+    this.ObtainedShowDescription = "";
+    this.AttributesDescription = i.AttributesDescription;
+    this.Mesh = i.Mesh;
+  }
+  TQd(i) {
+    this.ItemDataType = 19;
+    this.ItemType = 29;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.AttributesDescriptionArgs = i.AttributesDescriptionArgs;
+    this.TypeDescription = i.TypeDescription;
+  }
+  IBd(i) {
+    this.ItemDataType = 18;
     this.ItemType = 60015;
     this.MainTypeId = 1;
     this.Name = i.Name;

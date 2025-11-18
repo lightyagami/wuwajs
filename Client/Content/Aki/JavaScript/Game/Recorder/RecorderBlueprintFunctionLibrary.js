@@ -88,7 +88,7 @@ class CharacterRecorderObject {
     };
     this.G5u = () => {
       var r = this.Tae.GetEntityNoBlueprint();
-      var e = r.GetComponent(123);
+      var e = r.GetComponent(126);
       this.Recorder.TickRecorder(Time_1.Time.DeltaTimeSeconds * r.TimeDilation * (e ? e.CurrentTimeScale : 1));
     };
     this.E0 = r.GetEntityIdNoBlueprint();
@@ -579,7 +579,7 @@ class RecorderBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (RecorderBlueprintFunctionLibrary.EnableSceneItemRecord) {
       for (const a of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
         if (a.Valid && a.Entity && (t = a.Entity).Active && !RecorderBlueprintFunctionLibrary.SceneItemRecorders.has(a.Entity.Id) && (i = t.GetComponent(0)) && RecorderBlueprintFunctionLibrary.SceneItemTypes.has(i.GetEntityType())) {
-          if (!!(i = t.GetComponent(203)).GetIsSceneInteractionLoadCompleted() && !(Vector_1.Vector.DistSquared(i.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
+          if (!!(i = t.GetComponent(206)).GetIsSceneInteractionLoadCompleted() && !(Vector_1.Vector.DistSquared(i.ActorLocationProxy, r) > RecorderBlueprintFunctionLibrary.RecordDistSquared)) {
             i = new SceneItemRecorderObject(i, RecorderBlueprintFunctionLibrary.OutputSequence, RecorderBlueprintFunctionLibrary.RecordingTimeInternal);
             RecorderBlueprintFunctionLibrary.SceneItemRecorders.set(t.Id, i);
             e = true;

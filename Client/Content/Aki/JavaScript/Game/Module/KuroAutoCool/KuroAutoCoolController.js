@@ -141,34 +141,34 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
       this.ReduceImageQualityAndFrameRate(e);
     }
   }
-  static q9d(e) {
+  static UZd(e) {
     if (!(e <= 0)) {
       var i = 1000 / e;
-      this.G9d.push(i);
-      this.F9d.push(e);
-      if (this.F9d.length > 3) {
-        this.F9d.shift();
+      this.xZd.push(i);
+      this.BZd.push(e);
+      if (this.BZd.length > 3) {
+        this.BZd.shift();
       }
-      if (this.F9d.length === 3 && (r = (this.F9d[0] + this.F9d[1] + this.F9d[2]) / 3, this.N9d.push((o = r * 2 < e && e > 84) ? 1 : 0), o) && this.RKo && Log_1.Log.CheckInfo()) {
+      if (this.BZd.length === 3 && (r = (this.BZd[0] + this.BZd[1] + this.BZd[2]) / 3, this.kZd.push((o = r * 2 < e && e > 84) ? 1 : 0), o) && this.RKo && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Render", 92, "检测到Jank帧", ["CurrentFrameTime", e], ["AvgLast3FrameTime", r]);
       }
       var o = Date.now();
-      if (o - this.V9d >= this.j9d) {
-        var r = this.N9d.reduce((t, e) => t + e, 0);
-        var s = this.G9d.length > 0 ? this.G9d.reduce((t, e) => t + e, 0) / this.G9d.length : 0;
-        this.V9d = o;
-        this.N9d = [];
-        this.G9d = [];
+      if (o - this.qZd >= this.OZd) {
+        var r = this.kZd.reduce((t, e) => t + e, 0);
+        var s = this.xZd.length > 0 ? this.xZd.reduce((t, e) => t + e, 0) / this.xZd.length : 0;
+        this.qZd = o;
+        this.kZd = [];
+        this.xZd = [];
         if (r >= 2) {
-          this.H9d++;
-          this.$9d = 0;
+          this.GZd++;
+          this.FZd = 0;
         } else if (r >= 1) {
-          this.$9d = 0;
+          this.FZd = 0;
         } else {
-          this.$9d++;
-          this.H9d = 0;
+          this.FZd++;
+          this.GZd = 0;
         }
-        let t = this.W9d;
+        let t = this.NZd;
         var o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
         if (o !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(o)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(o).get(GameSettingsDefine_1.EFunction.HIGHESTFPS)) !== undefined && (o = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(o)) < 0) {
           t = o * 0.9;
@@ -176,7 +176,7 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
         if (this.RKo && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Render", 92, "5秒窗口统计", ["JankCount", r], ["CurrentFrameTime", e], ["FpsThreshold", t], ["AvgFPS", s]);
         }
-        if (!this.cZa && (this.H9d >= 2 || s < t)) {
+        if (!this.cZa && (this.GZd >= 2 || s < t)) {
           if (this.RKo && Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Render", 92, "触发降画质");
           }
@@ -185,7 +185,7 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
           if (this.RKo && Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Render", 92, "维持降画质状态");
           }
-        } else if (this.cZa && this.$9d >= 3 && s >= t) {
+        } else if (this.cZa && this.FZd >= 3 && s >= t) {
           if (this.RKo && Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Render", 92, "恢复升画质");
           }
@@ -214,7 +214,7 @@ class KuroAutoCoolController extends ControllerBase_1.ControllerBase {
             this.ltl();
           }
         } else if (Platform_1.Platform.IsPcPlatform()) {
-          this.q9d(t);
+          this.UZd(t);
         }
         this.$Xr = 0;
       }
@@ -225,7 +225,7 @@ exports.KuroAutoCoolController = KuroAutoCoolController;
 (_a = KuroAutoCoolController).uZa = 10000;
 KuroAutoCoolController.RKo = true;
 KuroAutoCoolController.a_l = 65;
-KuroAutoCoolController.W9d = 50;
+KuroAutoCoolController.NZd = 50;
 KuroAutoCoolController.$Xr = 0;
 KuroAutoCoolController.cZa = false;
 KuroAutoCoolController.sMl = 1;
@@ -246,10 +246,10 @@ KuroAutoCoolController.htl = (t, e, i) => {
     _a.RestoreImageQualityAndFrameRate(e);
   }
 };
-KuroAutoCoolController.F9d = [];
-KuroAutoCoolController.N9d = [];
-KuroAutoCoolController.G9d = [];
-KuroAutoCoolController.V9d = 0;
-KuroAutoCoolController.H9d = 0;
-KuroAutoCoolController.$9d = 0;
-KuroAutoCoolController.j9d = 5000; //# sourceMappingURL=KuroAutoCoolController.js.map
+KuroAutoCoolController.BZd = [];
+KuroAutoCoolController.kZd = [];
+KuroAutoCoolController.xZd = [];
+KuroAutoCoolController.qZd = 0;
+KuroAutoCoolController.GZd = 0;
+KuroAutoCoolController.FZd = 0;
+KuroAutoCoolController.OZd = 5000; //# sourceMappingURL=KuroAutoCoolController.js.map

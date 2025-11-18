@@ -38,12 +38,12 @@ class LevelConditionCheckMusicBeatsEvent extends LevelGeneralBase_1.LevelConditi
             }
             switch (r.BeatConfigType) {
               case "LoopBeat":
-                if (this.a2d(i, r)) {
+                if (this.tFd(i, r)) {
                   return true;
                 }
                 break;
               case "SpecialBeat":
-                if (this.h2d(i, r)) {
+                if (this.iFd(i, r)) {
                   return true;
                 }
                 break;
@@ -58,7 +58,7 @@ class LevelConditionCheckMusicBeatsEvent extends LevelGeneralBase_1.LevelConditi
     }
     return false;
   }
-  a2d(e, t) {
+  tFd(e, t) {
     var n;
     var o = t.BeatConfig;
     if (o.length !== 2) {
@@ -72,7 +72,7 @@ class LevelConditionCheckMusicBeatsEvent extends LevelGeneralBase_1.LevelConditi
       return n <= e && (e - n) % o == 0 && (LevelConditionCenter_1.LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 触发节拍行为", ["MusicType", t.MusicType], ["BeatType", t.BeatType], ["StartBeatIndex", n], ["BeatInterval", o], ["BeatCount", e]), true);
     }
   }
-  h2d(e, t) {
+  iFd(e, t) {
     for (const n of t.BeatConfig) {
       if (e === n) {
         if (LevelConditionCenter_1.LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo()) {

@@ -30,7 +30,7 @@ class UiBehaviorGachaSequence {
     this.Kma = undefined;
     this.Qma = undefined;
     this.cVi = new Map();
-    this.v0d = new Map();
+    this.Fpd = new Map();
   }
   OnAfterUiStart() {
     this.C4_ = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.SkyBlending.AllowSettingLerpPerFrame") === 0;
@@ -74,7 +74,7 @@ class UiBehaviorGachaSequence {
         Log_1.Log.Error("GachaSequencePlayer", 58, "LevelSequenceActor already cached", ["roleId", e]);
       }
     } else {
-      await PersonalUtil_1.PersonalUtil.PreloadRoleSequence(e, this.cVi, this.v0d);
+      await PersonalUtil_1.PersonalUtil.PreloadRoleSequence(e, this.cVi, this.Fpd);
     }
   }
   PlayRoleSequence(r) {
@@ -168,10 +168,10 @@ class UiBehaviorGachaSequence {
       UE.KuroActorManager.DestroyActor(e);
     }
     this.cVi.clear();
-    for (const r of this.v0d.values()) {
+    for (const r of this.Fpd.values()) {
       ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(r);
     }
-    this.v0d.clear();
+    this.Fpd.clear();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("PlaySequence");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     if (this.C4_) {

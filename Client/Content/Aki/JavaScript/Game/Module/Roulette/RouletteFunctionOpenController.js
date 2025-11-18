@@ -9,6 +9,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
+const HonamiStoryUtil_1 = require("../HonamiStory/HonamiStoryUtil");
 class RouletteFunctionOpenController {
   static OpenRelateView(e) {
     var o = this.Ucc.get(e);
@@ -30,9 +31,14 @@ RouletteFunctionOpenController.Hw1 = () => {
     UiManager_1.UiManager.OpenView("RogueBattleSummary");
   }
 };
-RouletteFunctionOpenController.R6d = () => {
+RouletteFunctionOpenController.AKd = () => {
   if (ControllerHolder_1.ControllerHolder.SurvivorsRogueController.CheckInSurvivorsRogueInstance()) {
     UiManager_1.UiManager.OpenView("SurvivorsTabMainView");
   }
 };
-RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.R6d]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map
+RouletteFunctionOpenController.Jwm = () => {
+  if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryAreaDungeon()) {
+    UiManager_1.UiManager.OpenView("HonamiStoryQuestView");
+  }
+};
+RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.AKd], [20007, _a.Jwm]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map

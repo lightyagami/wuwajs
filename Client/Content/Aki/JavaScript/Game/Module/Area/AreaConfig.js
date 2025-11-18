@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AreaConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const AreaAll_1 = require("../../../Core/Define/ConfigQuery/AreaAll");
 const AreaAtmosphereInfoById_1 = require("../../../Core/Define/ConfigQuery/AreaAtmosphereInfoById");
 const AreaByAreaId_1 = require("../../../Core/Define/ConfigQuery/AreaByAreaId");
 const AreaByCountryAndLevel_1 = require("../../../Core/Define/ConfigQuery/AreaByCountryAndLevel");
@@ -13,6 +14,7 @@ const AreaReportByAreaIdAndStage_1 = require("../../../Core/Define/ConfigQuery/A
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 const ExploreProgressDefine_1 = require("../ExploreProgress/ExploreProgressDefine");
+const AreaByLevel_1 = require("../../../Core/Define/ConfigQuery/AreaByLevel");
 class AreaConfig extends ConfigBase_1.ConfigBase {
   GetAreaLocalName(e) {
     let r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e);
@@ -32,11 +34,17 @@ class AreaConfig extends ConfigBase_1.ConfigBase {
       return e[0];
     }
   }
+  GetAllAreaInfo() {
+    return AreaAll_1.configAreaAll.GetConfigList();
+  }
   GetAreaAtmosphereInfo(e) {
     return AreaAtmosphereInfoById_1.configAreaAtmosphereInfoById.GetConfig(e);
   }
   GetAreaConfigByCountryAndLevel(e, r) {
     return AreaByCountryAndLevel_1.configAreaByCountryAndLevel.GetConfigList(e, r);
+  }
+  GetAreaConfigByLevel(e) {
+    return AreaByLevel_1.configAreaByLevel.GetConfigList(e);
   }
   GetLevelOneAreaId(o) {
     var a = this.GetAreaInfo(o);

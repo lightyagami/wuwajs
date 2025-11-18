@@ -83,19 +83,20 @@ class AudioSystem {
           CallbackHandler: r
         } = i;
         var n = n | 1;
-        var r = this.c8(r);
+        var a = t.toLowerCase();
+        var r = this.c8(a, r);
         let e = undefined;
         if (o === undefined) {
           e = s.PostOnActor(undefined, r, n, false);
         } else if (o instanceof UE.TransformDouble) {
-          var a = o.GetLocation();
-          var u = o.GetRotation().Rotator();
-          e = s.D_PostAtLocation(a, u, r, n, Info_1.Info.World);
+          var u = o.GetLocation();
+          var d = o.GetRotation().Rotator();
+          e = s.D_PostAtLocation(u, d, r, n, Info_1.Info.World);
         } else if (instanceOf(o, UE.Actor)) {
           var {
-            StopWhenOwnerDestroyed: a = false
+            StopWhenOwnerDestroyed: u = false
           } = i;
-          e = s.PostOnActor(o, r, n, a);
+          e = s.PostOnActor(o, r, n, u);
         } else {
           if (!instanceOf(o, UE.AkComponent)) {
             if (Log_1.Log.CheckWarn()) {
@@ -104,11 +105,14 @@ class AudioSystem {
             return;
           }
           var {
-            StopWhenOwnerDestroyed: u = false
+            StopWhenOwnerDestroyed: d = false
           } = i;
-          e = s.PostOnComponent(o, r, n, u);
+          e = s.PostOnComponent(o, r, n, d);
         }
         if (e !== INVALID_PLAYING_ID) {
+          if (a === "play_external_vo_subtitle_assist" && Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调注册", ["PlayingId", e], ["Event", t]);
+          }
           return e;
         }
         if (Log_1.Log.CheckError()) {
@@ -117,15 +121,14 @@ class AudioSystem {
       }
     }
   }
-  static c8(o) {
-    const i = (e, t) => {
-      o?.(e, t);
-      if (e === 0 && ((0, puerts_1.releaseManualReleaseDelegate)(i), e = t.PlayingID, t = this.u8.get(e))) {
-        this.u8.delete(e);
-        this._8.delete(t);
+  static c8(o, i) {
+    const s = (e, t) => {
+      i?.(e, t);
+      if (e === 0 && ((0, puerts_1.releaseManualReleaseDelegate)(s), e = t.PlayingID, (t = this.u8.get(e)) && (this.u8.delete(e), this._8.delete(t)), o === "play_external_vo_subtitle_assist") && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调执行", ["PlayingId", e], ["Event", o]);
       }
     };
-    return (0, puerts_1.toManualReleaseDelegate)(i);
+    return (0, puerts_1.toManualReleaseDelegate)(s);
   }
   static ExecuteAction(...e) {
     if (typeof e[0] == "string") {

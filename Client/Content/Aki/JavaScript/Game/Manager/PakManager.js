@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PakManager = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const MultiTextLang_1 = require("../../Core/Define/ConfigQuery/MultiTextLang");
@@ -20,8 +21,16 @@ class PakManager {
       TimerSystem_1.GameplayTimerSystem.Remove(PakManager.xBe);
       PakManager.xBe = undefined;
     }
+    UE.KuroPakKeyLibrary.BindPakMountedCallback((0, puerts_1.toManualReleaseDelegate)(PakManager.Kdm));
     PakManager.vih();
     PakManager.Mih();
+  }
+  static TestPakMounted() {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Event", 21, "测试Pak挂载");
+    }
+    var e = UE.KuroLauncherLibrary.GameSavedDir() + "Saved/Paks/pakchunk103-WindowsNoEditor.pak";
+    UE.KuroPakMountStatic.MountPak(e, 9999);
   }
   static vih() {
     var e;
@@ -75,8 +84,16 @@ class PakManager {
       TimerSystem_1.GameplayTimerSystem.Remove(PakManager.Sih);
       PakManager.Sih = undefined;
     }
+    (0, puerts_1.releaseManualReleaseDelegate)(PakManager.Kdm);
+    UE.KuroPakKeyLibrary.UnbindPakMountedCallback();
   }
 }
 (exports.PakManager = PakManager).xBe = undefined;
 PakManager.Sih = undefined;
-PakManager.yih = 60000; //# sourceMappingURL=PakManager.js.map
+PakManager.yih = 60000;
+PakManager.Kdm = e => {
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("Event", 21, "Pak挂载", ["Filename", e]);
+  }
+  (0, MultiTextLang_1.ClearMultiTextLangStatementIdsAndCache)();
+}; //# sourceMappingURL=PakManager.js.map

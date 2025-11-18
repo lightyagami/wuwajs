@@ -24,12 +24,12 @@ class UiInteractRouletteData {
     this.Reset();
     this.IsStart = true;
     this.APu = Time_1.Time.ServerTimeStamp;
-    this.OldRound = this.L$d();
-    this.UseSkillId = this.P$d();
+    this.OldRound = this.irm();
+    this.UseSkillId = this.rrm();
   }
   TriggerClose() {
     this.tEt = Time_1.Time.ServerTimeStamp;
-    this.NewRound = this.L$d();
+    this.NewRound = this.irm();
     this.IsStart = false;
   }
   Reset() {
@@ -40,7 +40,7 @@ class UiInteractRouletteData {
     this.UseSkillId = 0;
     this.IsStart = false;
   }
-  L$d() {
+  irm() {
     var t = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
     if (t && t.Tree && (t = t.Tree.GetTreeVarByKey(IQuest_1.EGradingSystemVarType.Wave))) {
       return MathUtils_1.MathUtils.LongToNumber(t.oTs);
@@ -48,7 +48,7 @@ class UiInteractRouletteData {
       return 0;
     }
   }
-  P$d() {
+  rrm() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(39);
     if (t && t.CurrentSkill) {
       return t.CurrentSkill.SkillId;

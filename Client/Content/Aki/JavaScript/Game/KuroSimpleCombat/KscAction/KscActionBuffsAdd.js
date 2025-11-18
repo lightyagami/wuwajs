@@ -18,11 +18,11 @@ class KscActionBuffsAdd extends KscActionBase_1.KscActionBase {
       this.Warn("Skill", "刷新buff时找不到Id", ["EntityId", this.EntityId], ["Params", this.Params]);
       this.SetResult();
     } else {
-      await this.lMd(s);
+      await this.PId(s);
       await this.Promise?.Promise;
     }
   }
-  async lMd(s) {
+  async PId(s) {
     var t = this.KscCtrl.CurSubModel.KscEntities.get(s);
     if (t && t.Valid) {
       var i = Object.keys(this.Params.Uzc.JHu);

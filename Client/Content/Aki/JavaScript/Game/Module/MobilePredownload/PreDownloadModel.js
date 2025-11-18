@@ -12,6 +12,7 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const NetworkDefine_1 = require("../../../Launcher/NetworkDefine");
 const PreDownloadManager_1 = require("../../../Launcher/PreDownload/PreDownloadManager");
 const LauncherLog_1 = require("../../../Launcher/Util/LauncherLog");
+const LauncherTextLib_1 = require("../../../Launcher/Util/LauncherTextLib");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -21,25 +22,25 @@ const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 const PreDownloadDefine_1 = require("./PreDownloadDefine");
 class PreDownloadNoView {
-  async UpdatePatchDownProgress(e, r, o, n, t, i) {
-    ModelManager_1.ModelManager.PreDownloadModel?.OnUpdateDownData(e, r, o, n, t, i);
+  async UpdatePatchDownProgress(e, r, n, o, t, i) {
+    ModelManager_1.ModelManager.PreDownloadModel?.OnUpdateDownData(e, r, n, o, t, i);
     return new Promise(e => {
       e();
     });
   }
-  async BinPatchProgress(e, r, o, ...n) {
-    ModelManager_1.ModelManager.PreDownloadModel?.OnBinPatch(e, r, o, ...n);
+  async BinPatchProgress(e, r, n, ...o) {
+    ModelManager_1.ModelManager.PreDownloadModel?.OnBinPatch(e, r, n, ...o);
     return new Promise(e => {
       e();
     });
   }
-  async ShowDialog(e, r, o, n, t, i, ...a) {
+  async ShowDialog(e, r, n, o, t, i, ...a) {
     r = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(r);
-    o = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(o, ...a);
+    n = ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(n, ...a);
     const s = new CustomPromise_1.CustomPromise();
     if (i) {
       (a = new ConfirmBoxDefine_1.ConfirmBoxDataNew(274)).SetTitle(r);
-      a.SetTextArgs(o);
+      a.SetTextArgs(n);
       a.SetBtnText(1, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(i));
       a.FunctionMap.set(1, () => {
         s.SetResult(true);
@@ -47,8 +48,8 @@ class PreDownloadNoView {
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(a);
     } else {
       (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(275)).SetTitle(r);
-      i.SetTextArgs(o);
-      i.SetBtnText(1, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(n));
+      i.SetTextArgs(n);
+      i.SetBtnText(1, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(o));
       i.SetBtnText(2, ControllerHolder_1.ControllerHolder.PreDownloadController.GetLocalText(t));
       i.FunctionMap.set(1, () => {
         s.SetResult(false);
@@ -79,7 +80,10 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
       }
     };
     this.DCc = () => {
-      this.PausePreDownload(2);
+      var e = PreDownloadManager_1.PreDownloadManager.Get();
+      if (this.IsPreDownloadAvailable() && e.IsDownloading()) {
+        this.PausePreDownload(2);
+      }
     };
     this.UCc = () => {
       var e = new LogReportDefine_1.PreDownloadDownloadModeSuccessRecord(this.xCc === 1 ? 1 : 2);
@@ -147,6 +151,10 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreDownloadStateUpdate);
       e.Start(0);
     } else {
+      r = e.GetDownloadSize() / BigInt(LauncherTextLib_1.NUMBER_MB);
+      e = e.GetNeedSpace() / BigInt(LauncherTextLib_1.NUMBER_MB);
+      e = new LogReportDefine_1.PreDownloadDownloadNoSpaceBeforeStartRecord(e + r);
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
       this.kCc();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PreDownloadStateUpdate);
     }
@@ -197,20 +205,20 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
   BCc() {
     var e = PreDownloadManager_1.PreDownloadManager.Get();
     var r = UE.KuroLauncherLibrary.GameSavedDir();
-    var o = (0, puerts_1.$ref)(0n);
-    UE.KuroLauncherLibrary.GetTotalAndFreeSpace(r, o);
-    var r = (0, puerts_1.$unref)(o);
+    var n = (0, puerts_1.$ref)(0n);
+    UE.KuroLauncherLibrary.GetTotalAndFreeSpace(r, n);
+    var r = (0, puerts_1.$unref)(n);
     return e.GetNeedSpace() + 10n * 1024n * 1024n <= r;
   }
   kCc() {
     var e;
     var r;
-    var o = PreDownloadManager_1.PreDownloadManager.Get();
+    var n = PreDownloadManager_1.PreDownloadManager.Get();
     if (UiManager_1.UiManager.IsViewShow("PreDownloadView")) {
       e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(268);
-      r = (o.GetDownloadSize() / BigInt(1048576)).toString() + "MB";
-      o = (o.GetNeedSpace() / BigInt(1048576)).toString() + "MB";
-      e.SetTextArgs(r, o);
+      r = (n.GetDownloadSize() / BigInt(1048576)).toString() + "MB";
+      n = (n.GetNeedSpace() / BigInt(1048576)).toString() + "MB";
+      e.SetTextArgs(r, n);
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
     } else {
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("PreDownload_NoSpace");
@@ -222,22 +230,22 @@ class PreDownloadModel extends ModelBase_1.ModelBase {
   ClearView() {
     PreDownloadManager_1.PreDownloadManager.Get().SetView(this.Cbc);
   }
-  OnUpdateDownData(e, r, o, n, t, i) {
+  OnUpdateDownData(e, r, n, o, t, i) {
     this.HCc = false;
     this.UpdateData ||= new PreDownloadDefine_1.UpdateDownData();
     this.UpdateData.NeedWait = e;
     this.UpdateData.Rate = r;
-    this.UpdateData.FileName = o;
-    this.UpdateData.SpeedText = n;
+    this.UpdateData.FileName = n;
+    this.UpdateData.SpeedText = o;
     this.UpdateData.SizeCurrent = t;
     this.UpdateData.SizeTotal = i;
   }
-  OnBinPatch(e, r, o, ...n) {
+  OnBinPatch(e, r, n, ...o) {
     this.BinPatch ||= new PreDownloadDefine_1.BinPatchData();
     this.BinPatch.NeedWait = e;
     this.BinPatch.Rate = r;
-    this.BinPatch.TextId = o;
-    this.BinPatch.Args = n;
+    this.BinPatch.TextId = n;
+    this.BinPatch.Args = o;
     this.HCc = true;
   }
   AddEnableCheck() {

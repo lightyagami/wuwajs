@@ -212,6 +212,8 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.HasSetRender = false;
     this.HasSetGameBudget = false;
     this.CurTalkItem = undefined;
+    this.InOptions = false;
+    this.TimeLimitedOptionTag = false;
     this.CurShowTalk = undefined;
     this.GoBattleMaterial = undefined;
     this.InSeamlessFormation = false;
@@ -268,14 +270,14 @@ class PlotModel extends ModelBase_1.ModelBase {
           }
         }
       } else {
-        this.Gqd(t);
+        this.c3d(t);
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Plot", 7, "[PlotModel.PlotSetupHandle] 无法找到对应剧情状态", ["PlotStateId", t.StateId]);
     }
     return false;
   }
-  Gqd(t) {
+  c3d(t) {
     var e;
     var i;
     if (t.BlockAudio) {
@@ -449,7 +451,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   HYi() {
     var t;
     var e;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(298)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(302)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
       e.CanSkillInterrupt = true;
     }
   }
@@ -518,11 +520,14 @@ class PlotModel extends ModelBase_1.ModelBase {
     return !!this.GrayOptionMap.has(t) && !!this.GrayOptionMap.get(t).has(e);
   }
   CheckOptionCondition(t, e) {
+    if (t.HiddenOption) {
+      return false;
+    }
     if (!t.PreCondition) {
       return true;
     }
     let i = false;
-    var o = this.CurContext.Type === 13 ? this.CurContext.FinalContext : this.CurContext;
+    var o = this.CurContext?.Type === 13 ? this.CurContext.FinalContext : this.CurContext;
     switch (t.PreCondition.Type) {
       case "PreOption":
         i = this.YYi(t, e);
@@ -545,7 +550,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   SaveCharacterLockOn() {
     var t;
-    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(206)?.HasTag(-1150819426))) {
+    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209)?.HasTag(-1150819426))) {
       this.GYi = true;
     }
   }

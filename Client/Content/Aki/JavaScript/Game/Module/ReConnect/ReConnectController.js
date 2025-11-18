@@ -195,7 +195,7 @@ class ReConnectController extends UiControllerBase_1.UiControllerBase {
     o.Title.SetText(e.LoadingTitle);
     o.Tips.SetText(e.LoadingTips);
     o.SetProgress(e.Progress, o.FirstProgressRatio, true);
-    n = ResourceSystem_1.ResourceSystem.Load(e.LoadingTexturePath, UE.Texture2D);
+    n = ResourceSystem_1.ResourceSystem.Load(e.LoadingTexturePath, UE.Texture2D, "Ui.NetUi");
     o.Image_Background?.SetBrushFromTexture(n);
     UE.KuroStaticLibrary.SynchronizeProperties(o.Title);
     UE.KuroStaticLibrary.SynchronizeProperties(o.Tips);
@@ -432,7 +432,6 @@ ReConnectController.Cso = () => {
     cpp_1.FuncOpenLibrary.SetFirstTimestamp(0);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DoLeaveLevel);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ClearSceneBegin);
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsClearSceneBegin);
     await GlobalData_1.GlobalData.ClearSceneDone?.Promise;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LogOut);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ExitGamePush);

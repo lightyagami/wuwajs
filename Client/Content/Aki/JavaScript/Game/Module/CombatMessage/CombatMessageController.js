@@ -4,20 +4,20 @@ var _a;
 var __decorate = this && this.__decorate || function (e, o, t, a) {
   var r;
   var s = arguments.length;
-  var n = s < 3 ? o : a === null ? a = Object.getOwnPropertyDescriptor(o, t) : a;
+  var l = s < 3 ? o : a === null ? a = Object.getOwnPropertyDescriptor(o, t) : a;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, o, t, a);
+    l = Reflect.decorate(e, o, t, a);
   } else {
-    for (var l = e.length - 1; l >= 0; l--) {
-      if (r = e[l]) {
-        n = (s < 3 ? r(n) : s > 3 ? r(o, t, n) : r(o, t)) || n;
+    for (var n = e.length - 1; n >= 0; n--) {
+      if (r = e[n]) {
+        l = (s < 3 ? r(l) : s > 3 ? r(o, t, l) : r(o, t)) || l;
       }
     }
   }
-  if (s > 3 && n) {
-    Object.defineProperty(o, t, n);
+  if (s > 3 && l) {
+    Object.defineProperty(o, t, l);
   }
-  return n;
+  return l;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -50,7 +50,6 @@ const WorldGlobal_1 = require("../../World/WorldGlobal");
 const CombatMessage_1 = require("./CombatMessage");
 const CharacterActorComponent_1 = require("../../NewWorld/Character/Common/Component/CharacterActorComponent");
 const VehicleActorComponent_1 = require("../../NewWorld/Vehicle/Common/VehicleActorComponent");
-const notifyMessageCacheSet = new Set([NetDefine_1.ECombatNotifyDataMessage.DFn, NetDefine_1.ECombatNotifyDataMessage.LFn, NetDefine_1.ECombatNotifyDataMessage.AFn, NetDefine_1.ECombatNotifyDataMessage.wFn, NetDefine_1.ECombatNotifyDataMessage.PFn, NetDefine_1.ECombatNotifyDataMessage.BFn, NetDefine_1.ECombatNotifyDataMessage.p3n]);
 const MAX_AI_INFO_COUNT = 100;
 const IS_WITH_EDITOR = cpp_1.KuroApplication.IsWithEditor() ? 1 : undefined;
 class CombatMessageController extends ControllerBase_1.ControllerBase {
@@ -58,26 +57,26 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.CombatMessageModel;
   }
   static OnInit() {
-    Net_1.Net.Register(16726, CombatMessageController.Zyt);
-    Net_1.Net.Register(27082, CombatMessageController.eIt);
-    Net_1.Net.Register(20450, CombatMessageController.tIt);
-    Net_1.Net.Register(17060, CombatMessageController.sMa);
-    Net_1.Net.Register(15540, CombatMessageController.oIt);
-    Net_1.Net.Register(20267, CombatMessageController.PreAiControlSwitchNotify);
-    Net_1.Net.Register(20640, this.rIt);
-    Net_1.Net.Register(29065, CombatMessageController.Ei_);
+    Net_1.Net.Register(17271, CombatMessageController.Zyt);
+    Net_1.Net.Register(17075, CombatMessageController.eIt);
+    Net_1.Net.Register(18553, CombatMessageController.tIt);
+    Net_1.Net.Register(18298, CombatMessageController.sMa);
+    Net_1.Net.Register(15408, CombatMessageController.oIt);
+    Net_1.Net.Register(22664, CombatMessageController.PreAiControlSwitchNotify);
+    Net_1.Net.Register(21308, this.rIt);
+    Net_1.Net.Register(19070, CombatMessageController.Ei_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AddEntity, this.RegisterAiHateEntity);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(16726);
-    Net_1.Net.UnRegister(27082);
-    Net_1.Net.UnRegister(20450);
-    Net_1.Net.UnRegister(17060);
-    Net_1.Net.UnRegister(15540);
-    Net_1.Net.UnRegister(20267);
-    Net_1.Net.UnRegister(20640);
-    Net_1.Net.UnRegister(29065);
+    Net_1.Net.UnRegister(17271);
+    Net_1.Net.UnRegister(17075);
+    Net_1.Net.UnRegister(18553);
+    Net_1.Net.UnRegister(18298);
+    Net_1.Net.UnRegister(15408);
+    Net_1.Net.UnRegister(22664);
+    Net_1.Net.UnRegister(21308);
+    Net_1.Net.UnRegister(19070);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.RegisterAiHateEntity);
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     return true;
@@ -96,39 +95,35 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
       var a = o[o.kFs];
       var r = NetDefine_1.ECombatNotifyDataMessage[o.kFs];
       if (a && r) {
-        const C = MathUtils_1.MathUtils.LongToNumber(e.F4n);
-        var s = ModelManager_1.ModelManager.CreatureModel.GetEntity(C);
-        if (!s || s.IsInit || notifyMessageCacheSet.has(r)) {
-          CombatDebugController_1.CombatDebugController.CombatInfoMessage("Notify", o.kFs, e);
-          var n = s?.Entity;
-          if (n) {
-            var l = CombatMessage_1.CombatNet.NotifyMap.get(r);
-            if (l) {
-              switch (l.Type) {
-                case 0:
-                  {
-                    const C = MathUtils_1.MathUtils.LongToNumber(e.Y8n);
-                    var i = CombatMessageController.Model?.GetMessageBuffer(C);
-                    var _ = l.Preprocessor;
-                    if (_ && !_(n, a, e)) {
-                      break;
-                    }
-                    if (l.IsSync && i && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
-                      i.AddToQueue(r, n, e, a);
-                    } else {
-                      l?.Listener?.(n, a, e);
-                    }
-                    break;
-                  }
-              }
-            } else if (Log_1.Log.CheckError()) {
+        CombatDebugController_1.CombatDebugController.CombatInfoMessage("Notify", o.kFs, e);
+        var s = MathUtils_1.MathUtils.LongToNumber(e.F4n);
+        var l = ModelManager_1.ModelManager.CreatureModel.GetEntity(s);
+        var n = l?.Entity;
+        if (n) {
+          var i = CombatMessage_1.CombatNet.NotifyMap.get(r);
+          if (!i) {
+            if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("MultiplayerCombat", 19, "协议找不到对应的监听器", ...t);
             }
-          } else {
-            CombatLog_1.CombatLog.Warn("Notify", C, "服务器下发打包协议找不到实体", ...t, ["msg", o]);
+          }
+          var _ = MathUtils_1.MathUtils.LongToNumber(e.Y8n);
+          var _ = CombatMessageController.Model?.GetMessageBuffer(_);
+          if (l && !l.IsInit && i) {
+            if (!_ || !i.IsCache) {
+              CombatLog_1.CombatLog.Warn("Notify", s, "协议丢弃，实体未加载完成", ...t);
+              return;
+            }
+            _.AddToQueue(r, n, e, a);
+          }
+          if (!!i && i.Type === 0 && (!(l = i.Preprocessor) || !!l(n, a, e))) {
+            if (i.IsSync && _ && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
+              _.AddToQueue(r, n, e, a);
+            } else {
+              i?.Listener?.(n, a, e);
+            }
           }
         } else {
-          CombatLog_1.CombatLog.Warn("Notify", C, "协议丢弃，实体未加载完成", ...t);
+          CombatLog_1.CombatLog.Warn("Notify", s, "服务器下发打包协议找不到实体", ...t, ["msg", o]);
         }
       } else {
         CombatLog_1.CombatLog.Error("Message", undefined, "无法解析协议数据", ...t);
@@ -230,26 +225,26 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         for (const m of this.WC1) {
           if (m.IsInit) {
             if (!e) {
-              n = m.Entity.GetComponent(176);
-              e = n?.IsInFightState();
+              l = m.Entity.GetComponent(179);
+              e = l?.IsInFightState();
             }
             var a;
             var r;
             var s = Protocol_1.Aki.Protocol.Ai.Te_.create();
-            var n = ModelManager_1.ModelManager.GameModeModel.IsMulti || this.Model.AnyHateChange;
-            if (n) {
+            var l = ModelManager_1.ModelManager.GameModeModel.IsMulti || this.Model.AnyHateChange;
+            if (l) {
               for ([a, r] of m.Entity.GetComponent(47).AiController.AiHateList.GetHatredMap()) {
-                var l = Protocol_1.Aki.Protocol.Ai.eNs.create();
-                l.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a));
-                l.Z8n = r.HatredValue;
-                s.ISs.push(l);
+                var n = Protocol_1.Aki.Protocol.Ai.eNs.create();
+                n.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a));
+                n.Z8n = r.HatredValue;
+                s.ISs.push(n);
               }
             }
             if (s.ISs.length > MAX_AI_INFO_COUNT && Log_1.Log.CheckError()) {
               Log_1.Log.Error("MultiplayerCombat", 19, "仇恨数据过大", ["CreatureData", m.CreatureDataId], ["HateList", s.ISs.length]);
             }
-            if (n) {
-              CombatMessage_1.CombatNet.Send(19592, m.Entity, s);
+            if (l) {
+              CombatMessage_1.CombatNet.Send(21579, m.Entity, s);
             }
           }
         }
@@ -261,7 +256,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         for (const c of this.WC1) {
           var i;
           var _;
-          if (c.IsInit && (i = Protocol_1.Aki.Protocol.Ai.Ee_.create(), (_ = BlackboardController_1.BlackboardController.PendingBlackboardParams.get(c.CreatureDataId)) && (i.eVn = [..._.values()], CombatMessage_1.CombatNet.Send(26827, c.Entity, i)), i.eVn.length > MAX_AI_INFO_COUNT) && Log_1.Log.CheckError()) {
+          if (c.IsInit && (i = Protocol_1.Aki.Protocol.Ai.Ee_.create(), (_ = BlackboardController_1.BlackboardController.PendingBlackboardParams.get(c.CreatureDataId)) && (i.eVn = [..._.values()], CombatMessage_1.CombatNet.Send(20623, c.Entity, i)), i.eVn.length > MAX_AI_INFO_COUNT) && Log_1.Log.CheckError()) {
             Log_1.Log.Error("MultiplayerCombat", 19, "黑板数据过大", ["CreatureData", c.CreatureDataId], ["AiBlackboards", i.eVn.length]);
           }
         }
@@ -278,13 +273,13 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
           }
         }
         if (g.WRs.length > 0) {
-          Net_1.Net.Send(22129, g);
+          Net_1.Net.Send(18891, g);
         }
         if (Info_1.Info.IsBuildDevelopmentOrDebug) {
           C = {
             scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
             instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-            msg_id: 22129,
+            msg_id: 18891,
             sub_count: g.WRs.length,
             is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
             ed: IS_WITH_EDITOR,
@@ -318,7 +313,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
               e.push(t.kFs);
             }
           }
-          Net_1.Net.Call(27742, o, e => {
+          Net_1.Net.Call(28427, o, e => {
             if (e.XLs) {
               this.rIt(e.XLs);
             }
@@ -327,7 +322,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
             o = {
               scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
               instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-              msg_id: 27742,
+              msg_id: 28427,
               sub_count: o.R5n.length,
               is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
               sub_msg: e,
@@ -351,25 +346,25 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     var a;
     var r = Vector_1.Vector.Create(o.ADs);
     var s = e.Entity.GetComponent(0);
-    var n = e.Entity.GetComponent(1);
+    var l = e.Entity.GetComponent(1);
     if (e.IsInit) {
-      if (n instanceof CharacterActorComponent_1.CharacterActorComponent) {
-        n.FixBornLocation("ResetLocationForZRangeNotify", true, r, false, true);
-      } else if (n instanceof VehicleActorComponent_1.VehicleActorComponent) {
-        n.FixBornLocation(r, "ResetLocationForZRangeNotify");
+      if (l instanceof CharacterActorComponent_1.CharacterActorComponent) {
+        l.FixBornLocation("ResetLocationForZRangeNotify", true, r, false, true);
+      } else if (l instanceof VehicleActorComponent_1.VehicleActorComponent) {
+        l.FixBornLocation(r, "ResetLocationForZRangeNotify");
       } else {
-        n.SetActorLocation(r.ToUeVector(), "ResetLocationForZRangeNotify", false);
+        l.SetActorLocation(r.ToUeVector(), "ResetLocationForZRangeNotify", false);
       }
       if (o.PDs) {
         a = WorldGlobal_1.WorldGlobal.ToUeRotator(o.g8n);
-        n.SetActorRotation(a, "ResetLocationForZRangeNotify");
+        l.SetActorRotation(a, "ResetLocationForZRangeNotify");
       }
-      a = e.Entity.GetComponent(179);
-      t = e.Entity.GetComponent(237);
+      a = e.Entity.GetComponent(182);
+      t = e.Entity.GetComponent(240);
       a?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
       t?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
       e.Entity.GetComponent(67)?.ClearReplaySamples();
-      e.Entity.GetComponent(157)?.ResetManipulatableState();
+      e.Entity.GetComponent(160)?.ResetManipulatableState();
     } else {
       s.SetLocation(r);
       if (o.PDs) {
@@ -382,7 +377,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
       e.Entity.GetComponent(3)?.SetInitLocation(r);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Entity", 14, "ResetLocationForZRangeNotify 重置实体位置", ["CreatureDataId", e.CreatureDataId], ["PbDataId", e.PbDataId], ["EntityId", e.Entity.Id], ["ChangeInitPos", o.UDs], ["IsInit", e.IsInit], ["Location", r.ToString()], ["FinalLocation", n?.ActorLocationProxy]);
+      Log_1.Log.Info("Entity", 14, "ResetLocationForZRangeNotify 重置实体位置", ["CreatureDataId", e.CreatureDataId], ["PbDataId", e.PbDataId], ["EntityId", e.Entity.Id], ["ChangeInitPos", o.UDs], ["IsInit", e.IsInit], ["Location", r.ToString()], ["FinalLocation", l?.ActorLocationProxy]);
     }
   }
   static gIt(e) {
@@ -402,13 +397,13 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         if (t.Entity.Active) {
           var s = CombatMessageController.Model.GetMessageBuffer(a);
           if (s) {
-            n = t.Entity.GetComponent(0);
+            l = t.Entity.GetComponent(0);
             CombatMessageController.Model.SetEntityMap(t.Id, a);
-            s.RecordMessageTime(r, n.GetPbDataId(), true);
+            s.RecordMessageTime(r, l.GetPbDataId(), true);
           }
-          const l = t.Entity.GetComponent(67);
-          if (l) {
-            l.ReceiveMoveInfos(e.iVn, Number(a), r);
+          const n = t.Entity.GetComponent(67);
+          if (n) {
+            n.ReceiveMoveInfos(e.iVn, Number(a), r);
           } else {
             CombatLog_1.CombatLog.Warn("Move", t.Entity, "entity不存在组件CharacterMovementSyncComponent", ["creatureDataId", o]);
           }
@@ -416,16 +411,16 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
           if (!t.IsInit) {
             return;
           }
-          const l = t.Entity.GetComponent(67);
-          var n;
-          var s = t.Entity.GetComponent(230);
+          const n = t.Entity.GetComponent(67);
+          var l;
+          var s = t.Entity.GetComponent(233);
           if (!s || !(s.Seat >= 0)) {
-            n = e.iVn[e.iVn.length - 1];
-            CombatMessageController.fIt(n.P5n, CombatMessageController.pIt);
-            CombatMessageController.vIt(n.g8n, CombatMessageController.MIt);
+            l = e.iVn[e.iVn.length - 1];
+            CombatMessageController.fIt(l.P5n, CombatMessageController.pIt);
+            CombatMessageController.vIt(l.g8n, CombatMessageController.MIt);
             t.Entity.GetComponent(3)?.SetActorLocationAndRotation(CombatMessageController.pIt, CombatMessageController.MIt, "MoveInfosHandle", false);
           }
-          l?.ClearReplaySamples();
+          n?.ClearReplaySamples();
         }
       }
     }
@@ -624,7 +619,7 @@ CombatMessageController.tIt = e => {
 CombatMessageController.sMa = e => {
   var o = MathUtils_1.MathUtils.LongToNumber(e.M0a.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
-  if (o &&= o.Entity.GetComponent(129)) {
+  if (o &&= o.Entity.GetComponent(132)) {
     o.HandleMoveToTarget(e);
   }
 };
@@ -649,7 +644,7 @@ CombatMessageController.PreAiControlSwitchNotify = e => {
 CombatMessageController.Ei_ = e => {
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
   if (o?.IsInit) {
-    if (o = o.Entity.GetComponent(244)) {
+    if (o = o.Entity.GetComponent(247)) {
       o.HandleSplineMoveNotify(e.Ii_, e.Ti_);
     }
   } else {
@@ -658,9 +653,9 @@ CombatMessageController.Ei_ = e => {
 };
 CombatMessageController.pIt = new UE.VectorDouble();
 CombatMessageController.MIt = new UE.Rotator();
-__decorate([CombatMessage_1.CombatNet.Listen("BFn", true)], CombatMessageController, "EntityIsVisibleNotify", null);
-__decorate([CombatMessage_1.CombatNet.Listen("p3n", true)], CombatMessageController, "ActorIsVisibleNotify", null);
+__decorate([CombatMessage_1.CombatNet.Listen("BFn", true, true)], CombatMessageController, "EntityIsVisibleNotify", null);
+__decorate([CombatMessage_1.CombatNet.Listen("p3n", true, true)], CombatMessageController, "ActorIsVisibleNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("UFn", false)], CombatMessageController, "EntityLoadCompleteNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("bFn", false)], CombatMessageController, "PlayerRebackSceneNotify", null);
-__decorate([CombatMessage_1.CombatNet.Listen("PFn", true)], CombatMessageController, "MaterialNotify", null);
+__decorate([CombatMessage_1.CombatNet.Listen("PFn", true, true)], CombatMessageController, "MaterialNotify", null);
 exports.CombatMessageController = CombatMessageController; //# sourceMappingURL=CombatMessageController.js.map

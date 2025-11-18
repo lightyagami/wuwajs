@@ -50,16 +50,16 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LogOut, this.bBu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.eVd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.tVd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.SHd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.MHd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LogOut, this.bBu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.eVd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.tVd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.SHd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.MHd);
     if (this.CameraComponent) {
       this.CameraComponent?.RemoveEntityEvents();
     }
@@ -94,7 +94,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       r.HorizontalNormalized = this.GetFilterDefaultValue(n, 0);
       r.VerticalNormalized = this.GetFilterDefaultValue(n, 1);
       r.IsSeniorParamRefresh = true;
-      this.oqd(r, n, e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], e[11], e[12]);
+      this.ANd(r, n, e[0], e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9], e[10], e[11], e[12]);
       ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("GlobalFilterFeatureResetTips");
       r.IsFilterChanged = true;
     };
@@ -146,7 +146,7 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
       var n = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(i);
       if (n) {
         n[e] = t;
-        this.oqd(r, i, n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9], n[10], n[11], n[12]);
+        this.ANd(r, i, n[0], n[1], n[2], n[3], n[4], n[5], n[6], n[7], n[8], n[9], n[10], n[11], n[12]);
         r.IsFilterChanged = true;
       }
     };
@@ -252,12 +252,12 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
   static pmu(e, t, i, n, r) {
     var a = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(t);
     if (a) {
-      this.oqd(e, t, i, n, r, a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12]);
+      this.ANd(e, t, i, n, r, a[3], a[4], a[5], a[6], a[7], a[8], a[9], a[10], a[11], a[12]);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("GameSettings", 71, "未找到当前滤镜id相关的参数值", ["filterId", t]);
     }
   }
-  static oqd(e, t, i, n, r, a, o, l, _, s, g, M, u, S, f) {
+  static ANd(e, t, i, n, r, a, o, l, _, s, g, M, u, S, f) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("GameSettings", 71, "设置全局滤镜值", ["filterId", t], ["horizontalNormalized", i], ["verticalNormalized", n], ["intensityNormalized", r], ["sharpenIntensity", a], ["brightness", o], ["contrast", l], ["colorTemperature", _], ["saturation", s], ["bloom", g], ["gamma", M], ["shadowIntensity", u], ["noiseIntensity", S], ["halation", f]);
     }
@@ -331,14 +331,14 @@ FilterSettingController.Jze = e => {
     UiManager_1.UiManager.CloseView("FilterSettingView");
   }
 };
-FilterSettingController.eVd = () => {
+FilterSettingController.SHd = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInOverLevel("LevelC")) {
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroEnableScreenFilter 0");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Tonemapper.BrightnessAndTextureDisable 1");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.BlueLightFilter.Disable 1");
   }
 };
-FilterSettingController.tVd = () => {
+FilterSettingController.MHd = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInOverLevel("LevelC")) {
     _a.SwitchFilter(true);
   }

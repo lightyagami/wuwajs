@@ -151,7 +151,7 @@ class UiActorFactory {
       if (this.Ydr) {
         var t = [];
         for (let o = 0; o < e; o++) {
-          t.push(this.GetAsync(this.Xdr, this.Ydr));
+          t.push(this.GetAsync(this.Xdr, this.Ydr, "UiActorPool"));
         }
         (await Promise.all(t)).forEach(o => {
           this.mp.Push(o);
@@ -214,34 +214,34 @@ class UiActorFactory {
       Log_1.Log.Debug("Pool", 16, "清除操作", ["资源路径", this.Xdr]);
     }
   }
-  async Zdr() {
+  async Zdr(o = "js_undefined") {
     if (this.Ydr) {
       const e = new CustomPromise_1.CustomPromise();
       this.zdr = LguiResourceManager_1.LguiResourceManager.LoadPrefab(this.Xdr, this.Ydr, o => {
         this.zdr = LguiResourceManager_1.LguiResourceManager.InvalidId;
         e.SetResult(o);
-      });
+      }, o);
       return e.Promise;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Pool", 10, "[UiActorFactory:TemplateActor]初始化缓存池有问题,缓存池挂载根节点为空");
     }
   }
-  async GetAsync(o, e) {
-    var t = this.mp.Empty ? this.a7() : this.mp.Pop();
-    if (!t.IsValid) {
-      t.Actor = await this.Zdr();
+  async GetAsync(o, e, t = "js_undefined") {
+    var r = this.mp.Empty ? this.a7() : this.mp.Pop();
+    if (!r.IsValid) {
+      r.Actor = await this.Zdr(t);
     }
-    var r = t.UiItem;
-    if (r) {
+    var t = r.UiItem;
+    if (t) {
       if (e) {
-        r?.SetUIParent(e);
+        t?.SetUIParent(e);
       }
-      r?.SetUIActive(true);
+      t?.SetUIActive(true);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Pool", 16, "获取UiPoolActor对象", ["资源路径", o]);
       }
-      return t;
+      return r;
     }
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Pool", 16, "获取UiPoolActor对象失败, 未成功加载Actor", ["资源路径", o]);
@@ -304,21 +304,21 @@ class UiActorPool {
       o.IsKeepWhileCleaning = e;
     }
   }
-  static async GetAsync(o, e) {
+  static async GetAsync(o, e, t = "UiActorPool") {
     if (this.IsOpenPool) {
-      return UiActorPool.eCr(o).GetAsync(o, e);
+      return UiActorPool.eCr(o).GetAsync(o, e, t);
     } else {
-      return UiActorPool.rCr(o, e);
+      return UiActorPool.rCr(o, e, t);
     }
   }
-  static async rCr(t, o) {
+  static async rCr(t, o, e = "UiActorPool") {
     const r = new CustomPromise_1.CustomPromise();
     LguiResourceManager_1.LguiResourceManager.LoadPrefab(t, o, o => {
       var e = new UiPoolActor(t);
       e.EndTime = Time_1.Time.Now + CACHE_TIME;
       e.Actor = o;
       r.SetResult(e);
-    });
+    }, e);
     return r.Promise;
   }
   static RecycleAsync(o, e) {

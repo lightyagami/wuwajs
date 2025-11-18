@@ -46,7 +46,7 @@ class LevelEventSettlementDungeon extends LevelGeneralBase_1.LevelEventBase {
           } else {
             t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(_);
             g = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivity(t.CustomTypes);
-            [_, o, n, l, a] = ModelManager_1.ModelManager.ActivityRegressModel.GetDungeonDoubleDropTuple(_);
+            [_, o, n, l, a] = ModelManager_1.ModelManager.ActivityRegressModel.GetRegressDoubleDropTuple(_);
             i = g && g.LeftUpCount > 0;
             if (!_ && !i && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeInstType")?.includes(t.InstSubType)) {
               t = {

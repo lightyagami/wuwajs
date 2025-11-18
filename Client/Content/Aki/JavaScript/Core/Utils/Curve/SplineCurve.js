@@ -134,23 +134,47 @@ class SplineCurve {
     this.yXs = e;
     this.SplineTransform.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.IdentityProxy, Vector_1.Vector.OneVectorProxy);
   }
-  InitPoints(t) {
+  InitPoints(t, i) {
     this.SplineTransform.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.IdentityProxy, Vector_1.Vector.OneVectorProxy);
-    for (let e = this.vXs.length = 0; e < t.length; e++) {
-      var i = t[e];
-      if (i instanceof InterpCurvePointVector) {
-        this.vXs[e] = new InterpCurvePointVector(i.InterpMode);
-        this.vXs[e].OutVal.FromConfigVector(i.OutVal);
+    for (let e = this.vXs.length; e < t.length; e++) {
+      this.vXs[e] = new InterpCurvePointVector(3);
+    }
+    for (let e = t.length; e < this.vXs.length; e++) {
+      this.vXs.pop();
+    }
+    for (let e = 0; e < t.length; e++) {
+      var r = t[e];
+      if (r instanceof InterpCurvePointVector) {
+        this.vXs[e].InterpMode = r.InterpMode;
+        this.vXs[e].OutVal.FromConfigVector(r.OutVal);
       } else {
-        this.vXs[e] = new InterpCurvePointVector(fromConfigCurveMode(i.LineType));
-        this.vXs[e].OutVal.FromConfigVector(i.Position);
+        this.vXs[e].InterpMode = fromConfigCurveMode(r.LineType);
+        this.vXs[e].OutVal.FromConfigVector(r.Position);
       }
       this.vXs[e].InVal = e;
-      this.vXs[e].ArriveTangent.FromConfigVector(i.ArriveTangent);
-      this.vXs[e].LeaveTangent.FromConfigVector(i.LeaveTangent);
+      this.vXs[e].ArriveTangent.FromConfigVector(r.ArriveTangent);
+      this.vXs[e].LeaveTangent.FromConfigVector(r.LeaveTangent);
+    }
+    if (i) {
+      this.SXs ||= [];
+      for (let e = this.SXs.length; e < i.length; e++) {
+        this.SXs[e] = new InterpCurvePointQuat(1);
+      }
+      for (let e = i.length; e < this.SXs.length; e++) {
+        this.SXs.pop();
+      }
+      for (let e = 0; e < i.length; e++) {
+        var n = i[e];
+        this.SXs[e].InterpMode = n.InterpMode;
+        this.SXs[e].OutVal.FromUeQuat(n.OutVal);
+        this.SXs[e].InVal = e;
+        this.SXs[e].ArriveTangent.FromUeQuat(n.ArriveTangent);
+        this.SXs[e].LeaveTangent.FromUeQuat(n.LeaveTangent);
+      }
+    } else {
+      this.SXs = undefined;
     }
     this.UpdateSplineCurves();
-    this.SXs = undefined;
     this.EXs = undefined;
   }
   Init(t, i, r, n) {
@@ -197,7 +221,7 @@ class SplineCurve {
         this.SXs[e] = new InterpCurvePointQuat(1);
       }
       for (let e = r.Points.Num(); e < this.SXs.length; e++) {
-        this.MXs.pop();
+        this.SXs.pop();
       }
       for (let e = 0; e < r.Points.Num(); e++) {
         this.SXs[e].DeepCopy(r.Points.Get(e));
@@ -211,7 +235,7 @@ class SplineCurve {
         this.EXs[e] = new InterpCurvePointVector(1);
       }
       for (let e = n.Points.Num(); e < this.EXs.length; e++) {
-        this.MXs.pop();
+        this.EXs.pop();
       }
       for (let e = 0; e < n.Points.Num(); e++) {
         this.EXs[e].DeepCopy(n.Points.Get(e));
@@ -234,16 +258,16 @@ class SplineCurve {
         var s = this.GetDistanceAlongSplineAtSplinePoint(e + 1);
         for (let e = n + SAMPLE_STEP_DIST; e < s; e += SAMPLE_STEP_DIST) {
           this.GetDirectionAtDistanceAlongSpline(e, 0, SplineCurve.RTe);
-          var u = SplineCurve.RTe;
-          if (!(MathUtils_1.MathUtils.GetAngleByVectorDot(t, u) < SAMPLE_ANGLE_LIMIT)) {
-            t = u;
-            u = new InterpCurvePointVector(3);
+          var o = SplineCurve.RTe;
+          if (!(MathUtils_1.MathUtils.GetAngleByVectorDot(t, o) < SAMPLE_ANGLE_LIMIT)) {
+            t = o;
+            o = new InterpCurvePointVector(3);
             this.GetLocationAtDistanceAlongSpline(e, 0, SplineCurve.sqn);
-            u.InVal = r.length;
-            u.ArriveTangent.DeepCopy(SplineCurve.RTe);
-            u.LeaveTangent.DeepCopy(SplineCurve.RTe);
-            u.OutVal.DeepCopy(SplineCurve.sqn);
-            r.push(u);
+            o.InVal = r.length;
+            o.ArriveTangent.DeepCopy(SplineCurve.RTe);
+            o.LeaveTangent.DeepCopy(SplineCurve.RTe);
+            o.OutVal.DeepCopy(SplineCurve.sqn);
+            r.push(o);
           }
         }
       }
@@ -299,8 +323,12 @@ class SplineCurve {
   UpdateSplineCurves(e = 0) {
     var t = this.Position.length;
     var i = t - 1;
-    for (let e = this.ReparamTable.length; e < i * this.yXs + 1; e++) {
-      this.ReparamTable.push(new InterpCurvePointNumber(0));
+    var r = i * this.yXs + 1;
+    for (let e = this.MXs.length; e < r; e++) {
+      this.MXs[e] = new InterpCurvePointNumber(0);
+    }
+    for (let e = r; e < this.MXs.length; e++) {
+      this.MXs.pop();
     }
     for (let e = 1; e < t; e++) {
       if (this.Position[e - 1].InVal >= this.Position[e].InVal) {
@@ -310,26 +338,26 @@ class SplineCurve {
         return false;
       }
     }
-    let r = -0;
-    let n = 0;
+    let n = -0;
+    let s = 0;
     if (e > 0) {
-      n = e * this.yXs;
-      r += this.ReparamTable[n].InVal;
+      s = e * this.yXs;
+      n += this.ReparamTable[s].InVal;
     }
     for (let t = e; t < i; t++) {
       for (let e = 0; e < this.yXs; e++) {
-        var s = e / this.yXs;
-        var u = e === 0 ? 0 : this.IXs(t, s);
-        const o = this.ReparamTable[n];
-        o.InVal = u + r;
-        o.OutVal = t + s;
-        n++;
+        var o = e / this.yXs;
+        var u = e === 0 ? 0 : this.IXs(t, o);
+        const h = this.ReparamTable[s];
+        h.InVal = u + n;
+        h.OutVal = t + o;
+        s++;
       }
-      r += this.IXs(t, 1);
+      n += this.IXs(t, 1);
     }
-    const o = this.ReparamTable[n];
-    o.InVal = r;
-    o.OutVal = i;
+    const h = this.ReparamTable[s];
+    h.InVal = n;
+    h.OutVal = i;
     return true;
   }
   IXs(e, t) {
@@ -366,18 +394,18 @@ class SplineCurve {
     SplineCurve.gXs.MultiplyEqual(6);
     SplineCurve.gXs.SubtractionEqual(SplineCurve.Lz);
     SplineCurve.gXs.SubtractionEqual(SplineCurve.Tz);
-    var u = t * 0.5;
-    let o = -0;
-    for (const l of LegendreGaussCoefficients) {
-      var v = u * (1 + l[0]);
+    var o = t * 0.5;
+    let u = -0;
+    for (const v of LegendreGaussCoefficients) {
+      var h = o * (1 + v[0]);
       SplineCurve.Lz.DeepCopy(SplineCurve.CXs);
-      SplineCurve.Lz.MultiplyEqual(v);
+      SplineCurve.Lz.MultiplyEqual(h);
       SplineCurve.Lz.AdditionEqual(SplineCurve.gXs);
-      SplineCurve.Lz.MultiplyEqual(v);
+      SplineCurve.Lz.MultiplyEqual(h);
       SplineCurve.Lz.AdditionEqual(SplineCurve.pHo);
-      o += SplineCurve.Lz.Size() * l[1];
+      u += SplineCurve.Lz.Size() * v[1];
     }
-    return o *= u;
+    return u *= o;
   }
   GetSplineLength() {
     var e;
@@ -553,32 +581,32 @@ class SplineCurve {
     if (n === 0) {
       i.DeepCopy(r);
     } else {
-      var u;
       var o;
+      var u;
       var n = this.PXs(e, t);
       if (n < 0) {
         i.DeepCopy(e[0].OutVal);
       } else {
         if (n !== s) {
           r = e[n];
-          if ((o = (u = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
-            if ((t = (t - r.InVal) / o) < 0 || t > 1) {
+          if ((u = (o = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
+            if ((t = (t - r.InVal) / u) < 0 || t > 1) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Movement", 42, "TsAnimNotifyStateCurveMove.InterpVectorEvalDerivative计算Alpha异常");
               }
               return;
             } else if (r.InterpMode === 0) {
               SplineCurve.az.DeepCopy(r.OutVal);
-              SplineCurve.KJ.DeepCopy(u.OutVal);
+              SplineCurve.KJ.DeepCopy(o.OutVal);
               Quat_1.Quat.Slerp(SplineCurve.az, SplineCurve.KJ, t, i);
               return;
             } else {
               SplineCurve.az.DeepCopy(r.OutVal);
               SplineCurve.KJ.DeepCopy(r.LeaveTangent);
-              SplineCurve.KJ.Multiply(o, SplineCurve.KJ);
-              SplineCurve.QJ.DeepCopy(u.OutVal);
-              SplineCurve.fXs.DeepCopy(u.ArriveTangent);
-              SplineCurve.fXs.Multiply(o, SplineCurve.KJ);
+              SplineCurve.KJ.Multiply(u, SplineCurve.KJ);
+              SplineCurve.QJ.DeepCopy(o.OutVal);
+              SplineCurve.fXs.DeepCopy(o.ArriveTangent);
+              SplineCurve.fXs.Multiply(u, SplineCurve.KJ);
               Quat_1.Quat.Squad(SplineCurve.az, SplineCurve.KJ, SplineCurve.QJ, SplineCurve.fXs, t, i);
               return;
             }
@@ -597,32 +625,32 @@ class SplineCurve {
     if (n === 0) {
       i.DeepCopy(r);
     } else {
-      var u;
       var o;
+      var u;
       var n = this.PXs(e, t);
       if (n < 0) {
         i.DeepCopy(e[0].OutVal);
       } else {
         if (n !== s) {
           r = e[n];
-          if ((o = (u = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
-            if ((t = (t - r.InVal) / o) < 0 || t > 1) {
+          if ((u = (o = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
+            if ((t = (t - r.InVal) / u) < 0 || t > 1) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Movement", 42, "TsAnimNotifyStateCurveMove.InterpVectorEvalDerivative计算Alpha异常");
               }
               return;
             } else if (r.InterpMode === 0) {
               SplineCurve.Lz.DeepCopy(r.OutVal);
-              SplineCurve.Tz.DeepCopy(u.OutVal);
+              SplineCurve.Tz.DeepCopy(o.OutVal);
               Vector_1.Vector.Lerp(SplineCurve.Lz, SplineCurve.Tz, t, i);
               return;
             } else {
               SplineCurve.Lz.DeepCopy(r.OutVal);
               SplineCurve.Tz.DeepCopy(r.LeaveTangent);
-              SplineCurve.Tz.MultiplyEqual(o);
-              SplineCurve.fHo.DeepCopy(u.OutVal);
-              SplineCurve.pHo.DeepCopy(u.ArriveTangent);
-              SplineCurve.pHo.MultiplyEqual(o);
+              SplineCurve.Tz.MultiplyEqual(u);
+              SplineCurve.fHo.DeepCopy(o.OutVal);
+              SplineCurve.pHo.DeepCopy(o.ArriveTangent);
+              SplineCurve.pHo.MultiplyEqual(u);
               Vector_1.Vector.LerpCubic(SplineCurve.Lz, SplineCurve.Tz, SplineCurve.fHo, SplineCurve.pHo, t, i);
               return;
             }
@@ -639,25 +667,25 @@ class SplineCurve {
     var r;
     var n;
     var s = e.length;
-    var u = s - 1;
+    var o = s - 1;
     if (s === 0) {
       return i;
     } else if ((s = this.PXs(e, t)) < 0) {
       return e[0].OutVal;
-    } else if (s === u) {
-      return e[u].OutVal;
+    } else if (s === o) {
+      return e[o].OutVal;
     } else {
-      u = e[s];
-      if ((n = (r = e[s + 1]).InVal - u.InVal) > 0 && u.InterpMode !== 2) {
-        if ((t = (t - u.InVal) / n) < 0 || t > 1) {
+      o = e[s];
+      if ((n = (r = e[s + 1]).InVal - o.InVal) > 0 && o.InterpMode !== 2) {
+        if ((t = (t - o.InVal) / n) < 0 || t > 1) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Movement", 42, "TsAnimNotifyStateCurveMove.InterpVectorEvalDerivative计算Alpha异常");
           }
           return i;
-        } else if (u.InterpMode === 0) {
-          return MathUtils_1.MathUtils.Lerp(u.OutVal, r.OutVal, t);
+        } else if (o.InterpMode === 0) {
+          return MathUtils_1.MathUtils.Lerp(o.OutVal, r.OutVal, t);
         } else {
-          return MathUtils_1.MathUtils.LerpCubic(u.OutVal, u.LeaveTangent * n, r.OutVal, r.ArriveTangent * n, t);
+          return MathUtils_1.MathUtils.LerpCubic(o.OutVal, o.LeaveTangent * n, r.OutVal, r.ArriveTangent * n, t);
         }
       } else {
         return e[s].OutVal;
@@ -670,22 +698,22 @@ class SplineCurve {
     if (n === 0) {
       i.DeepCopy(r);
     } else {
-      var u;
       var o;
+      var u;
       var n = this.PXs(e, t);
       if (n < 0) {
         i.DeepCopy(e[0].LeaveTangent);
       } else {
         if (n !== s) {
           r = e[n];
-          if ((o = (u = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
+          if ((u = (o = e[n + 1]).InVal - r.InVal) > 0 && r.InterpMode !== 2) {
             if (r.InterpMode === 0) {
               SplineCurve.Lz.DeepCopy(r.OutVal);
-              i.DeepCopy(u.OutVal);
+              i.DeepCopy(o.OutVal);
               i.SubtractionEqual(SplineCurve.Lz);
-              i.DivisionEqual(o);
+              i.DivisionEqual(u);
               return;
-            } else if ((t = (t - r.InVal) / o) < 0 || t > 1) {
+            } else if ((t = (t - r.InVal) / u) < 0 || t > 1) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Movement", 42, "TsAnimNotifyStateCurveMove.InterpVectorEvalDerivative计算Alpha异常");
               }
@@ -693,12 +721,12 @@ class SplineCurve {
             } else {
               SplineCurve.Lz.DeepCopy(r.OutVal);
               SplineCurve.Tz.DeepCopy(r.LeaveTangent);
-              SplineCurve.Tz.MultiplyEqual(o);
-              SplineCurve.fHo.DeepCopy(u.OutVal);
-              SplineCurve.pHo.DeepCopy(u.ArriveTangent);
-              SplineCurve.pHo.MultiplyEqual(o);
+              SplineCurve.Tz.MultiplyEqual(u);
+              SplineCurve.fHo.DeepCopy(o.OutVal);
+              SplineCurve.pHo.DeepCopy(o.ArriveTangent);
+              SplineCurve.pHo.MultiplyEqual(u);
               Vector_1.Vector.LerpCubicDerivative(SplineCurve.Lz, SplineCurve.Tz, SplineCurve.fHo, SplineCurve.pHo, t, i);
-              i.DivisionEqual(o);
+              i.DivisionEqual(u);
               return;
             }
           } else {
@@ -721,12 +749,12 @@ class SplineCurve {
     }
     let n = 0;
     let s = i;
-    var u;
+    var o;
     for (Math.floor((n + s) / 2); s - n > 1;) {
-      if (e[u = Math.floor((n + s) / 2)].InVal <= t) {
-        n = u;
+      if (e[o = Math.floor((n + s) / 2)].InVal <= t) {
+        n = o;
       } else {
-        s = u;
+        s = o;
       }
     }
     return n;

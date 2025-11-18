@@ -36,6 +36,7 @@ const CHARCTER_RENDER_ENABLE_MAX_RANGE = 18000;
 const COLLISION_PLANT_RANGE = 1000;
 const SCENE_BLUEPRINT_ACTOR_RANGE = 10000;
 const FAR_BLUEPRINT_ACTOR_RANGE = 28000;
+const HIGH_PRIORITY_PHYSICS_INTERACTION_ACTOR_RANGE = 5000;
 const DYNAMIC_PHYSICS_INTERACTION_ACTOR_RANGE = 2500;
 const STATIC_PHYSICS_INTERACTION_ACTOR_RANGE = 1500;
 class GameBudgetAllocatorConfigCreator {
@@ -70,7 +71,7 @@ class GameBudgetAllocatorConfigCreator {
     return this.Mvr;
   }
   static get TsNormalEntityAlwaysTickConfig() {
-    return this.Wvd;
+    return this.dMd;
   }
   static get TsIdleExecConfig() {
     return this.Evr;
@@ -85,7 +86,7 @@ class GameBudgetAllocatorConfigCreator {
     return this.n3a;
   }
   static get TsNpcRenderConfig() {
-    return this.O3d;
+    return this.z9d;
   }
   static get TsStabilizeLowEntityGroupConfig() {
     return this.Jia;
@@ -106,22 +107,25 @@ class GameBudgetAllocatorConfigCreator {
     return this.w01;
   }
   static get TsBlueprintSingletonConfig() {
-    return this.KQd;
+    return this.mdm;
   }
   static get TsSceneBlueprintActorConfig() {
-    return this.XQd;
+    return this.fdm;
   }
   static get TsFarBlueprintActorConfig() {
-    return this.IYd;
+    return this.Ppm;
   }
   static get TsSuperFarBlueprintActorConfig() {
-    return this.YQd;
+    return this.gdm;
   }
   static get TsDynamicPhysicsInteractionActorConfig() {
-    return this.gWd;
+    return this.hom;
   }
   static get TsStaticPhysicsInteractionActorConfig() {
-    return this.CWd;
+    return this.lom;
+  }
+  static get TsHighPriorityPhysicsInteractionActorConfig() {
+    return this.fwm;
   }
   static CreateCharacterEntityConfigOnly() {
     this.DOn = this.Tvr(new GameBudgetAllocatorConfigMobileCreator_1.GameBudgetAllocatorConfigMobileCreator(), false);
@@ -141,7 +145,7 @@ class GameBudgetAllocatorConfigCreator {
     this.eWa(t);
     this.G4u(t);
     this.Rvr(t);
-    this.Xfd(t);
+    this.eCd(t);
     this.Uvr(t);
     this.Avr(t);
     this.Pvr(t);
@@ -150,12 +154,13 @@ class GameBudgetAllocatorConfigCreator {
     this.CreateNpcRenderConfig(t);
     this.fka(t);
     this.A01(t);
-    this.zQd(t);
-    this.JQd(t);
-    this.TYd(t);
-    this.ZQd(t);
-    this.pWd(t);
-    this.vWd(t);
+    this.Cdm(t);
+    this.pdm(t);
+    this.Apm(t);
+    this.vdm(t);
+    this._om(t);
+    this.uom(t);
+    this.gwm(t);
   }
   static UpdateGroupConfigTickStrategy(t, e, i) {
     t.ueGroupConfig.DisableActorTickStrategy = e;
@@ -325,14 +330,14 @@ class GameBudgetAllocatorConfigCreator {
     cpp_1.FKuroGameBudgetAllocatorInterface.SetDefaultTickIntervalDetailConfig(i, t.MaxInterval, t.TickReductionStartSize, t.TickReductionIntervalSize);
     cpp_1.FKuroGameBudgetAllocatorInterface.SetGroupConfig(e.GroupName, e);
   }
-  static Xfd(t) {
+  static eCd(t) {
     var t = t.CreateNormalEntityAlwaysTickConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("NormalEntityAlwaysTickGroup");
     e.SignificanceGroup = 3;
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 0;
-    this.Wvd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.dMd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
   static Uvr(t) {
@@ -402,7 +407,7 @@ class GameBudgetAllocatorConfigCreator {
     e.TickPriority = SIMPLE_NPC_PRIORITY;
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = CHARCTER_RENDER_ENABLE_MAX_RANGE;
-    this.O3d = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.z9d = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
   static A01(t) {
@@ -416,19 +421,19 @@ class GameBudgetAllocatorConfigCreator {
     this.w01 = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static zQd(t) {
+  static Cdm(t) {
     var t = t.CreateBlueprintSingletonConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.BlueprintSingleton");
     e.SignificanceGroup = 2;
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 0;
-    this.KQd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.mdm = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     var i = (0, puerts_1.$ref)(e);
     cpp_1.FKuroGameBudgetAllocatorInterface.SetDefaultTickIntervalDetailConfig(i, t.MaxInterval, t.TickReductionStartSize, t.TickReductionIntervalSize);
     cpp_1.FKuroGameBudgetAllocatorInterface.SetGroupConfig(e.GroupName, e);
   }
-  static JQd(t) {
+  static pdm(t) {
     var t = t.CreateSceneBlueprintActorConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SceneBlueprintActor");
@@ -436,10 +441,10 @@ class GameBudgetAllocatorConfigCreator {
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = SCENE_BLUEPRINT_ACTOR_RANGE;
-    this.XQd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.fdm = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static TYd(t) {
+  static Apm(t) {
     var t = t.CreateFarBlueprintActorConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.FarBlueprintActor");
@@ -447,20 +452,20 @@ class GameBudgetAllocatorConfigCreator {
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = FAR_BLUEPRINT_ACTOR_RANGE;
-    this.IYd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.Ppm = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static ZQd(t) {
+  static vdm(t) {
     var t = t.CreateSuperFarBlueprintActorConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.SuperFarBlueprintActor");
     e.SignificanceGroup = 2;
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 0;
-    this.YQd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.gdm = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static pWd(t) {
+  static _om(t) {
     var t = t.CreateDynamicPhysicsInteractionActorConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.DynamicPhysicsInteractionActor");
@@ -468,10 +473,10 @@ class GameBudgetAllocatorConfigCreator {
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = DYNAMIC_PHYSICS_INTERACTION_ACTOR_RANGE;
-    this.gWd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.hom = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
-  static vWd(t) {
+  static uom(t) {
     var t = t.CreateStaticPhysicsInteractionActorConfig();
     var e = new UE.GameBudgetAllocatorGroupConfig();
     e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.StaticPhysicsInteractionActor");
@@ -479,7 +484,18 @@ class GameBudgetAllocatorConfigCreator {
     e.TickPriority = OTHER_PRIORITY;
     e.DisableActorTickStrategy = 1;
     e.DisableActorTickDistance = STATIC_PHYSICS_INTERACTION_ACTOR_RANGE;
-    this.CWd = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.lom = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
+    this.wvr(e, t);
+  }
+  static gwm(t) {
+    var t = t.CreateHighPriorityPhysicsInteractionActorConfig();
+    var e = new UE.GameBudgetAllocatorGroupConfig();
+    e.GroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.HighPriorityPhysicsInteractionActor");
+    e.SignificanceGroup = 2;
+    e.TickPriority = OTHER_PRIORITY;
+    e.DisableActorTickStrategy = 1;
+    e.DisableActorTickDistance = HIGH_PRIORITY_PHYSICS_INTERACTION_ACTOR_RANGE;
+    this.fwm = new GameBudgetAllocatorConfig_1.TsGameBudgetGroupConfigCache(e);
     this.wvr(e, t);
   }
   static GetEffectDynamicGroup(t) {

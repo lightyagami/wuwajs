@@ -68,8 +68,17 @@ class FormationProperty {
   get Condition() {
     return this.condition();
   }
-  get PropertyIndex() {
-    return this.propertyindex();
+  get Name() {
+    return this.name();
+  }
+  get Icon() {
+    return this.icon();
+  }
+  get Dec() {
+    return this.dec();
+  }
+  get Priority() {
+    return this.priority();
   }
   __init(t, r) {
     this.z7 = t;
@@ -310,8 +319,32 @@ class FormationProperty {
       return 0;
     }
   }
-  propertyindex() {
-    var t = this.J7.__offset(this.z7, 42);
+  name(t) {
+    var r = this.J7.__offset(this.z7, 42);
+    var r = r ? this.J7.__string(this.z7 + r, t) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  icon(t) {
+    var r = this.J7.__offset(this.z7, 44);
+    var r = r ? this.J7.__string(this.z7 + r, t) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  dec(t) {
+    var r = this.J7.__offset(this.z7, 46);
+    var r = r ? this.J7.__string(this.z7 + r, t) : null;
+    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(r);
+    }
+    return r;
+  }
+  priority() {
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

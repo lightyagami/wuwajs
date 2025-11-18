@@ -10,6 +10,7 @@ class TsAnimNotifyStateTimeStopRequest extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(e, t, r) {
     e = e?.GetOwner();
+    this.bRestartWithReplay = true;
     return e instanceof TsBaseCharacter_1.default && (SkillUtils_1.SkillUtils.BeginTimeStopRequest(e.EntityId, r), true);
   }
   K2_NotifyEnd(e, t) {

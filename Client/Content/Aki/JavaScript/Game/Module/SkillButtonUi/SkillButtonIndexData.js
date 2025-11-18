@@ -22,7 +22,7 @@ class SkillButtonIndexData {
     this.IsNormalButtonTypeList = false;
     var i;
     var s;
-    var h = t.Entity.GetComponent(206);
+    var h = t.Entity.GetComponent(209);
     let o = 0;
     for (const e of this.ButtonIndexTagIdList) {
       let t = true;

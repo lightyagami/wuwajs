@@ -13,31 +13,31 @@ const QuestTreeMainViewModel_1 = require("./ViewModel/QuestTreeMainViewModel");
 class QuestTreeModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.byd = new Map();
+    this.QMd = new Map();
     this.ViewModelMain = QuestTreeMainViewModel_1.QuestTreeMainViewModel.Create();
     this.ViewModelChapter = QuestTreeChapterViewModel_1.QuestTreeChapterViewModel.Create();
-    this.xGd = undefined;
+    this.VVd = undefined;
   }
   OnInit() {
     for (const t of ConfigManager_1.ConfigManager.QuestTreeConfig.GetAllChapters()) {
       var e = QuestTreeChapterData_1.QuestTreeChapterData.Create(t);
-      this.byd.set(e.Id, e);
+      this.QMd.set(e.Id, e);
     }
     return true;
   }
   OnClear() {
-    for (const e of this.byd.values()) {
+    for (const e of this.QMd.values()) {
       e.Clear();
     }
-    this.byd.clear();
+    this.QMd.clear();
     this.ViewModelMain.Clear();
     return true;
   }
   GetChapterDataById(e) {
-    return this.byd.get(e);
+    return this.QMd.get(e);
   }
   GetAllChapterData() {
-    return Array.from(this.byd.values());
+    return Array.from(this.QMd.values());
   }
   GetVisibleChapterDataList() {
     var e = [];
@@ -59,7 +59,7 @@ class QuestTreeModel extends ModelBase_1.ModelBase {
   }
   GetAllAcceptableNodeList() {
     var e = [];
-    for (const t of this.byd.values()) {
+    for (const t of this.QMd.values()) {
       for (const r of t.GetAcceptableNodeList()) {
         e.push(r);
       }
@@ -67,18 +67,18 @@ class QuestTreeModel extends ModelBase_1.ModelBase {
     return e;
   }
   GetCurTrackingChapterData() {
-    for (const e of this.byd.values()) {
+    for (const e of this.QMd.values()) {
       if (e.IsTracking) {
         return e;
       }
     }
   }
   GetOrCreateDummyQuestTreeNodeData(e) {
-    this.xGd ||= QuestTreeNodeData_1.QuestTreeNodeData.CreateDummyNode(e);
-    return this.xGd;
+    this.VVd ||= QuestTreeNodeData_1.QuestTreeNodeData.CreateDummyNode(e);
+    return this.VVd;
   }
   GetNodeDataFromQuestId(e) {
-    for (const t of this.byd.values()) {
+    for (const t of this.QMd.values()) {
       for (const r of t.NodeMap.values()) {
         if (r.Config.NodeType !== 3 && r.Config.QuestArray.includes(e)) {
           return r;
@@ -87,7 +87,7 @@ class QuestTreeModel extends ModelBase_1.ModelBase {
     }
   }
   GetNodeDataFromNodeId(e) {
-    for (const r of this.byd.values()) {
+    for (const r of this.QMd.values()) {
       var t = r.NodeMap.get(e);
       if (t) {
         return t;

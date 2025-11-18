@@ -194,22 +194,22 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSelectInstanceIdChallenge, TowerDefenseController.y1l);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(22300, this.tZs);
-    Net_1.Net.Register(21596, this.iZs);
-    Net_1.Net.Register(29713, this.rZs);
-    Net_1.Net.Register(16407, this.ECa);
-    Net_1.Net.Register(18364, this.Zra);
-    Net_1.Net.Register(20809, this.tQa);
-    Net_1.Net.Register(20820, this.iQa);
+    Net_1.Net.Register(18539, this.tZs);
+    Net_1.Net.Register(22299, this.iZs);
+    Net_1.Net.Register(23341, this.rZs);
+    Net_1.Net.Register(22880, this.ECa);
+    Net_1.Net.Register(27614, this.Zra);
+    Net_1.Net.Register(16498, this.tQa);
+    Net_1.Net.Register(28597, this.iQa);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22300);
-    Net_1.Net.UnRegister(21596);
-    Net_1.Net.UnRegister(29713);
-    Net_1.Net.UnRegister(16407);
-    Net_1.Net.UnRegister(18364);
-    Net_1.Net.UnRegister(20809);
-    Net_1.Net.UnRegister(20820);
+    Net_1.Net.UnRegister(18539);
+    Net_1.Net.UnRegister(22299);
+    Net_1.Net.UnRegister(23341);
+    Net_1.Net.UnRegister(22880);
+    Net_1.Net.UnRegister(27614);
+    Net_1.Net.UnRegister(16498);
+    Net_1.Net.UnRegister(28597);
   }
   GetActivityLevelUnlockState(e) {
     return TowerDefenseController.CheckIsInstanceUnlock(e);
@@ -444,7 +444,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     var e = Protocol_1.Aki.Protocol.gzs.create();
     const t = ModelManager_1.ModelManager.TowerDefenseModel;
     e.BVn = [n];
-    Net_1.Net.CallAsync(23348, e).then(e => {
+    Net_1.Net.CallAsync(18055, e).then(e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefense", 64, "塔防积分奖励的response", ["response", e], ["rewardId", n]);
       }
@@ -459,7 +459,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
     var e = Protocol_1.Aki.Protocol.mzs.create();
     const t = ModelManager_1.ModelManager.TowerDefenseModel;
     e.BVn = [n];
-    Net_1.Net.CallAsync(17037, e).then(e => {
+    Net_1.Net.CallAsync(20322, e).then(e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefense", 64, "塔防关卡奖励的response", ["response", e], ["instanceId", n]);
       }
@@ -473,7 +473,7 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static async RequestSelfRankData(e) {
     var n = Protocol_1.Aki.Protocol.Nhc.create();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(15270, n);
+    var e = await Net_1.Net.CallAsync(20720, n);
     if (e) {
       ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
     }
@@ -481,13 +481,13 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static async RequestRankList(e) {
     var n = Protocol_1.Aki.Protocol.nnc.create();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(24281, n);
+    var e = await Net_1.Net.CallAsync(19270, n);
     if (e) {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrTowerDefenceRankCd) {
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetIsOpenAnonymousName(!e.lnc);
       } else if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17573);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23020);
       } else {
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetFriendServerData(e.dnc);
         ModelManager_1.ModelManager.TowerDefenseModel.RankData.SetSelfServerData(e.mnc);
@@ -498,10 +498,10 @@ class TowerDefenseController extends ActivityControllerBase_1.ActivityController
   static RequestRankShowName(e, n) {
     var t = Protocol_1.Aki.Protocol.anc.create();
     t.lnc = e;
-    Net_1.Net.Call(22551, t, e => {
+    Net_1.Net.Call(20282, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17573);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23020);
         } else {
           n?.();
         }

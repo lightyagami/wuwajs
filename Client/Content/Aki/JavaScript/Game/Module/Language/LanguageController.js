@@ -29,9 +29,9 @@ class LanguageController extends ControllerBase_1.ControllerBase {
   static RequestSetLanguage(e) {
     var t = new Protocol_1.Aki.Protocol.Gms();
     t.r9n = e;
-    Net_1.Net.Call(26006, t, e => {
+    Net_1.Net.Call(24865, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23831);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16639);
       }
     });
   }

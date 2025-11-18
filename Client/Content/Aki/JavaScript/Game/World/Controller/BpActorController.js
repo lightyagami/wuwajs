@@ -40,12 +40,16 @@ class BpActorController extends ControllerBase_1.ControllerBase {
     var l = new UE.GameBudgetBlueprintGroupConfig();
     l.Group = 6;
     l.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.StaticPhysicsInteractionActor");
+    var c = new UE.GameBudgetBlueprintGroupConfig();
+    c.Group = 8;
+    c.GameBudgetGroupName = FNameUtil_1.FNameUtil.GetDynamicFName("BlueprintTick.HighPriorityPhysicsInteractionActor");
     t.Add(r);
     t.Add(o);
     t.Add(e);
     t.Add(i);
     t.Add(_);
     t.Add(l);
+    t.Add(c);
     UE.KuroGameBudgetBlueprintDefine.Initialize(t);
     return true;
   }

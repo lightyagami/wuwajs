@@ -57,7 +57,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.H6 = 0;
     this.p_e = 0;
     this.FN1 = false;
-    this.NXd = false;
+    this.q0m = false;
     this.v_e = Vector_1.Vector.Create();
     this.Ldc = Vector_1.Vector.Create();
     this.M_e = DEFAULT_VALUE;
@@ -181,8 +181,8 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         this.IsCameraSpecificArmLengthEnabled = false;
       }
       this.GN1.DeepCopy(t);
-      this.NXd = n;
-      if (this.NXd) {
+      this.q0m = n;
+      if (this.q0m) {
         this.g_e.Reset();
       } else if (e) {
         this.g_e.DeepCopy(e);
@@ -232,7 +232,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, this.C_e, t);
     }
     Vector_1.Vector.LerpSin(this.B1e, this.g_e, t, this.CurrentCameraArmOffset);
-    if (this.FN1 && !this.NXd) {
+    if (this.FN1 && !this.q0m) {
       this.Lz.DeepCopy(this.Camera.PlayerLocation);
       this.Lz.SubtractionEqual(this.GN1);
       this.CurrentCameraArmOffset.SubtractionEqual(this.Lz);
@@ -253,7 +253,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, 0, t);
     }
     this.Lz.DeepCopy(this.B1e);
-    if (this.FN1 && !this.NXd) {
+    if (this.FN1 && !this.q0m) {
       this.Lz.AdditionEqual(this.GN1);
       this.Lz.SubtractionEqual(this.Camera.PlayerLocation);
     }
@@ -279,7 +279,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         }
         break;
       case 2:
-        if (this.FN1 && !this.NXd) {
+        if (this.FN1 && !this.q0m) {
           this.Lz.DeepCopy(this.Camera.PlayerLocation);
           this.Lz.SubtractionEqual(this.GN1);
           this.CurrentCameraArmOffset.DeepCopy(this.g_e);

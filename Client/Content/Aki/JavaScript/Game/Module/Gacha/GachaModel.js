@@ -234,7 +234,7 @@ class GachaModel extends ModelBase_1.ModelBase {
       this.UWt.set(t.SequencePath, e);
       UE.KuroSequenceRuntimeFunctionLibrary.HandleSeqTexStreaming(e, true);
       r.SetResult(true);
-    }, 102);
+    }, 100, "Ui.GachaUi");
     this.RWt.push(o);
     await r.Promise;
     o = ConfigManager_1.ConfigManager.GachaConfig.GetItemIdType(e);

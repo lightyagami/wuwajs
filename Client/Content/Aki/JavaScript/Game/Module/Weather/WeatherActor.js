@@ -121,7 +121,7 @@ class WeatherActor {
             this.wta = 0;
             this.Bko.Component.WeatherDataAsset = t;
           }
-        });
+        }, 100, "Ui.WeatherUi");
         if (i === 0) {
           this.Fko(0);
           this.Vko(1);

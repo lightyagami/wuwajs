@@ -20,7 +20,7 @@ class LevelGeneralContextUtil {
           e = LevelGeneralContextUtil.UUe(t.fvs, t.Mvs.eps);
           break;
         case Protocol_1.Aki.Protocol.TOs.Svs:
-          e = LevelGeneralContextUtil.Igd(t.fvs, t.Svs.eps, t.Svs.ifd);
+          e = LevelGeneralContextUtil.$Cd(t.fvs, t.Svs.eps, t.Svs.s0d);
           break;
         case Protocol_1.Aki.Protocol.TOs.Evs:
           e = LevelGeneralContextUtil.UUe(t.fvs, t.Evs.eps);
@@ -100,7 +100,7 @@ class LevelGeneralContextUtil {
     t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
     return LevelGeneralContextDefine_1.EntityContext.Create(t?.Id, e);
   }
-  static Igd(e, t, o) {
+  static $Cd(e, t, o) {
     t = MathUtils_1.MathUtils.LongToNumber(t.w5n);
     t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
     o = o.fvs !== Protocol_1.Aki.Protocol.TOs.Svs ? LevelGeneralContextUtil.CreateByServerContext(o) : undefined;

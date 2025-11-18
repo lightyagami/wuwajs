@@ -16,70 +16,70 @@ const LevelListenerUtils_1 = require("./LevelListenerUtils");
 const INVALID_LISTENER_ID = 0;
 class LevelListenerCenter {
   static Init() {
-    this.NBd = new Map();
-    this.VBd = new Map();
-    this.jBd = new Map();
-    this.HBd = new Map();
-    this.$Bd = new Map();
-    this.WBd = INVALID_LISTENER_ID;
-    this.QBd();
+    this.nqd = new Map();
+    this.sqd = new Map();
+    this.aqd = new Map();
+    this.hqd = new Map();
+    this.lqd = new Map();
+    this._qd = INVALID_LISTENER_ID;
+    this.uqd();
   }
   static Clear() {
-    if (this.$Bd) {
-      for (const e of Array.from(this.$Bd.keys())) {
+    if (this.lqd) {
+      for (const e of Array.from(this.lqd.keys())) {
         if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("LevelListener", 39, "检测到有监听器未取消监听, 保底取消", ["ListenerId", e], ["Listener", this.$Bd.get(e)?.constructor.name]);
+          Log_1.Log.Warn("LevelListener", 39, "检测到有监听器未取消监听, 保底取消", ["ListenerId", e], ["Listener", this.lqd.get(e)?.constructor.name]);
         }
         this.UnListenTo(e);
       }
     }
-    this.NBd = undefined;
-    this.VBd = undefined;
-    this.jBd = undefined;
-    this.HBd = undefined;
-    this.$Bd = undefined;
-    this.WBd = INVALID_LISTENER_ID;
+    this.nqd = undefined;
+    this.sqd = undefined;
+    this.aqd = undefined;
+    this.hqd = undefined;
+    this.lqd = undefined;
+    this._qd = INVALID_LISTENER_ID;
   }
-  static QBd() {
-    this.KBd(0, LevelConditionListenerCheckClientEvent_1.LevelConditionListenerCheckClientEvent);
-    this.KBd(1, LevelConditionListenerCheckMusicBeatsEvent_1.LevelConditionListenerCheckMusicBeatsEvent);
-    this.KBd(2, LevelConditionListenerCheckSceneItemDirection_1.LevelConditionListenerCheckSceneItemDirection);
-    this.KBd(3, LevelConditionListenerCompareEntityState_1.LevelConditionListenerCompareEntityState);
-    this.KBd(4, LevelConditionListenerCompareVar_1.LevelConditionListenerCompareVar);
-    this.KBd(5, LevelConditionListenerCheckEntitiesExist_1.LevelConditionListenerCheckEntitiesExist);
-    this.KBd(6, LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1.LevelConditionListenerCheckEntityHasSceneItemAttributeTag);
-    this.XBd("CheckClientEvent", 0);
-    this.XBd("CheckMusicBeatsEvent", 1);
-    this.XBd("CheckSceneItemDirection", 2);
-    this.XBd("CompareEntityState", 3);
-    this.XBd("CompareEntitySelfState", 3);
-    this.XBd("CompareVar", 4);
-    this.XBd("CheckEntitesExist", 5);
-    this.XBd("CheckEntityHasSceneItemAttributeTag", 6);
+  static uqd() {
+    this.cqd(0, LevelConditionListenerCheckClientEvent_1.LevelConditionListenerCheckClientEvent);
+    this.cqd(1, LevelConditionListenerCheckMusicBeatsEvent_1.LevelConditionListenerCheckMusicBeatsEvent);
+    this.cqd(2, LevelConditionListenerCheckSceneItemDirection_1.LevelConditionListenerCheckSceneItemDirection);
+    this.cqd(3, LevelConditionListenerCompareEntityState_1.LevelConditionListenerCompareEntityState);
+    this.cqd(4, LevelConditionListenerCompareVar_1.LevelConditionListenerCompareVar);
+    this.cqd(5, LevelConditionListenerCheckEntitiesExist_1.LevelConditionListenerCheckEntitiesExist);
+    this.cqd(6, LevelConditionListenerCheckEntityHasSceneItemAttributeTag_1.LevelConditionListenerCheckEntityHasSceneItemAttributeTag);
+    this.dqd("CheckClientEvent", 0);
+    this.dqd("CheckMusicBeatsEvent", 1);
+    this.dqd("CheckSceneItemDirection", 2);
+    this.dqd("CompareEntityState", 3);
+    this.dqd("CompareEntitySelfState", 3);
+    this.dqd("CompareVar", 4);
+    this.dqd("CheckEntitesExist", 5);
+    this.dqd("CheckEntityHasSceneItemAttributeTag", 6);
   }
-  static KBd(e, t) {
-    if (this.NBd && this.jBd) {
-      if (this.NBd.has(e)) {
+  static cqd(e, t) {
+    if (this.nqd && this.aqd) {
+      if (this.nqd.has(e)) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("LevelListener", 39, "注册监听失败: 监听已注册过", ["ListenerType", e]);
         }
       } else {
-        this.NBd.set(e, t);
-        this.jBd.set(t.name, new t());
+        this.nqd.set(e, t);
+        this.aqd.set(t.name, new t());
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("LevelListener", 39, "注册监听失败: 容器未初始化", ["ListenerType", e]);
     }
   }
-  static XBd(e, t) {
-    if (this.NBd && this.VBd) {
-      if (this.NBd.has(t)) {
-        if (this.VBd.has(e)) {
+  static dqd(e, t) {
+    if (this.nqd && this.sqd) {
+      if (this.nqd.has(t)) {
+        if (this.sqd.has(e)) {
           if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("LevelListener", 39, "关联条件与监听失败: 条件已关联过监听", ["ConditionType", e], ["ListenerType", t], ["ExistedListenerType", this.VBd.get(e)]);
+            Log_1.Log.Warn("LevelListener", 39, "关联条件与监听失败: 条件已关联过监听", ["ConditionType", e], ["ListenerType", t], ["ExistedListenerType", this.sqd.get(e)]);
           }
         } else {
-          this.VBd.set(e, t);
+          this.sqd.set(e, t);
         }
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "关联条件与监听失败: 监听本身尚未注册", ["ConditionType", e], ["ListenerType", t]);
@@ -88,12 +88,12 @@ class LevelListenerCenter {
       Log_1.Log.Warn("LevelListener", 39, "关联条件与监听失败: 容器未初始化", ["ConditionType", e], ["ListenerType", t]);
     }
   }
-  static YBd(e) {
-    if (this.NBd && this.HBd) {
-      var t = this.NBd.get(e);
+  static mqd(e) {
+    if (this.nqd && this.hqd) {
+      var t = this.nqd.get(e);
       if (t) {
         let e = undefined;
-        var i = this.HBd.get(t.name);
+        var i = this.hqd.get(t.name);
         if (i) {
           while (i.length > 0 && !e) {
             e = i.pop();
@@ -108,11 +108,11 @@ class LevelListenerCenter {
       Log_1.Log.Warn("LevelListener", 39, "获取监听器失败: 容器未初始化", ["ListenerType", e]);
     }
   }
-  static zBd(e) {
-    if (this.VBd) {
-      var t = this.VBd?.get(e);
+  static fqd(e) {
+    if (this.sqd) {
+      var t = this.sqd?.get(e);
       if (t !== undefined) {
-        return this.YBd(t);
+        return this.mqd(t);
       }
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "获取条件对应的监听器失败: 条件未注册监听器", ["ConditionType", e]);
@@ -121,7 +121,7 @@ class LevelListenerCenter {
       Log_1.Log.Warn("LevelListener", 39, "获取条件对应的监听器失败: 容器未初始化", ["ConditionType", e]);
     }
   }
-  static JBd(t) {
+  static gqd(t) {
     if (t) {
       if (t.IsListening) {
         if (Log_1.Log.CheckWarn()) {
@@ -129,12 +129,12 @@ class LevelListenerCenter {
         }
         t.UnListen();
       }
-      if (this.ZBd(t)) {
-        if (this.HBd) {
-          let e = this.HBd.get(t.constructor.name);
+      if (this.Cqd(t)) {
+        if (this.hqd) {
+          let e = this.hqd.get(t.constructor.name);
           if (!e) {
             e = [];
-            this.HBd.set(t.constructor.name, e);
+            this.hqd.set(t.constructor.name, e);
           }
           e.push(t);
         }
@@ -145,10 +145,10 @@ class LevelListenerCenter {
       Log_1.Log.Warn("LevelListener", 39, "释放监听器失败: 监听器不合法");
     }
   }
-  static ZBd(e) {
+  static Cqd(e) {
     var t;
-    if (this.jBd) {
-      if (t = this.jBd.get(e.constructor.name)) {
+    if (this.aqd) {
+      if (t = this.aqd.get(e.constructor.name)) {
         return LevelListenerUtils_1.LevelListenerUtils.ClearListener(e, t);
       } else {
         if (Log_1.Log.CheckWarn()) {
@@ -164,13 +164,13 @@ class LevelListenerCenter {
     }
   }
   static ListenTo(e, ...t) {
-    if (!this.$Bd) {
+    if (!this.lqd) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "开始监听失败: 容器未初始化", ["ListenerType", e]);
       }
       return INVALID_LISTENER_ID;
     }
-    var i = this.YBd(e);
+    var i = this.mqd(e);
     if (!i) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "开始监听失败: 获取监听器出错", ["ListenerType", e]);
@@ -178,18 +178,18 @@ class LevelListenerCenter {
       return INVALID_LISTENER_ID;
     }
     i.Listen(...t);
-    e = ++this.WBd;
-    this.$Bd.set(e, i);
+    e = ++this._qd;
+    this.lqd.set(e, i);
     return e;
   }
   static ListenToCondition(e, ...t) {
-    if (!this.$Bd) {
+    if (!this.lqd) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "开始监听失败: 容器未初始化", ["ConditionType", e]);
       }
       return INVALID_LISTENER_ID;
     }
-    var i = this.zBd(e);
+    var i = this.fqd(e);
     if (!i) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelListener", 39, "开始监听失败: 获取监听器出错", ["ConditionType", e]);
@@ -197,24 +197,24 @@ class LevelListenerCenter {
       return INVALID_LISTENER_ID;
     }
     i.Listen(...t);
-    e = ++this.WBd;
-    this.$Bd.set(e, i);
+    e = ++this._qd;
+    this.lqd.set(e, i);
     return e;
   }
   static UnListenTo(e) {
-    var t = this.$Bd?.get(e);
-    this.$Bd?.delete(e);
+    var t = this.lqd?.get(e);
+    this.lqd?.delete(e);
     if (t) {
       t.UnListen();
-      this.JBd(t);
+      this.gqd(t);
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("LevelListener", 39, "取消监听失败: 获取监听器出错", ["ListenerId", e]);
     }
   }
 }
-(exports.LevelListenerCenter = LevelListenerCenter).NBd = undefined;
-LevelListenerCenter.VBd = undefined;
-LevelListenerCenter.jBd = undefined;
-LevelListenerCenter.HBd = undefined;
-LevelListenerCenter.$Bd = undefined;
-LevelListenerCenter.WBd = INVALID_LISTENER_ID; //# sourceMappingURL=LevelListenerCenter.js.map
+(exports.LevelListenerCenter = LevelListenerCenter).nqd = undefined;
+LevelListenerCenter.sqd = undefined;
+LevelListenerCenter.aqd = undefined;
+LevelListenerCenter.hqd = undefined;
+LevelListenerCenter.lqd = undefined;
+LevelListenerCenter._qd = INVALID_LISTENER_ID; //# sourceMappingURL=LevelListenerCenter.js.map

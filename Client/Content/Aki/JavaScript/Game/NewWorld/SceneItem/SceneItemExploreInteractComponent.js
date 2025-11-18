@@ -198,10 +198,10 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     this.EIe = this.Entity.GetComponent(0);
-    this.Oln = this.Entity.GetComponent(131);
-    this.Lie = this.Entity.GetComponent(197);
+    this.Oln = this.Entity.GetComponent(134);
+    this.Lie = this.Entity.GetComponent(200);
     EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     if (this.Lo.Option.Type !== IComponent_1.EExploreSkillInteractType.PullStatue) {
       this.Disable("非拉取雕像类型不用tick");
@@ -222,7 +222,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         }
         break;
       case IComponent_1.EExploreSkillInteractType.PullStatue:
-        this.Gce = this.Entity.GetComponent(129);
+        this.Gce = this.Entity.GetComponent(132);
     }
     this.p4l();
     return true;
@@ -324,7 +324,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     var t;
     if (this.Lo && this.Lo.Option.Type === IComponent_1.EExploreSkillInteractType.PullStatue) {
       if ((t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Lo.Option.StatueInteractPointId)) && t.Entity) {
-        this.Oal = t.Entity.GetComponent(151);
+        this.Oal = t.Entity.GetComponent(154);
         (this.Oal.AttachParent = this).eJl();
       } else {
         this.Gal = this.Lo.Option.StatueInteractPointId;
@@ -513,7 +513,7 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
         var n = this.Bi_.HitResult.Actors.Get(t);
         if (n !== undefined) {
           let t = undefined;
-          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(268);
+          n = (t = (UE.KuroStaticLibrary.IsImplementInterface(n.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(n))?.Entity?.GetComponent(272);
           if (!t || !n) {
             return true;
           }
@@ -563,15 +563,15 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     if (this.Lie?.HasTag(-709838471)) {
       return false;
     }
-    var t = this.AttachParent.Entity.GetComponent(131);
+    var t = this.AttachParent.Entity.GetComponent(134);
     if (t === undefined || t.IsLocked) {
       return false;
     }
-    t = this.AttachParent.Entity.GetComponent(197);
+    t = this.AttachParent.Entity.GetComponent(200);
     if (t === undefined || t.HasTag(-709838471)) {
       return false;
     }
-    t = this.AttachParent.Entity.GetComponent(203);
+    t = this.AttachParent.Entity.GetComponent(206);
     if (t === undefined) {
       return false;
     }
@@ -594,9 +594,9 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
     n.Normalize();
     let o = MathUtils_1.MathUtils.MaxFloat;
     for (const _ of this.DKo) {
-      var r = _.Entity?.GetComponent(268);
+      var r = _.Entity?.GetComponent(272);
       if (r !== undefined && !r.EntityInSocket && r.TryMatch(this.AttachParent.Entity)) {
-        var s = _.Entity?.GetComponent(203);
+        var s = _.Entity?.GetComponent(206);
         if (s !== undefined) {
           var a = Vector_1.Vector.Create(s.ActorLocationProxy);
           a.SubtractionEqual(i);
@@ -616,5 +616,5 @@ let SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = cl
   }
 };
 SceneItemExploreInteractComponent.StatueTraceDebug = false;
-SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(151)], SceneItemExploreInteractComponent);
+SceneItemExploreInteractComponent = SceneItemExploreInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(154)], SceneItemExploreInteractComponent);
 exports.SceneItemExploreInteractComponent = SceneItemExploreInteractComponent; //# sourceMappingURL=SceneItemExploreInteractComponent.js.map

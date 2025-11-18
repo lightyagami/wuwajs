@@ -116,7 +116,7 @@ class SceneTeamPlayer {
                 a = u === s || u === o || n;
                 this.wvl(h, a);
                 if (n) {
-                  h.GetComponent(94)?.OutOfControl();
+                  h.GetComponent(96)?.OutOfControl();
                 }
               }
             } else {
@@ -144,7 +144,7 @@ class SceneTeamPlayer {
       t.EnableByKey(1, true);
     } else {
       t.DisableByKey(1, true);
-      t.GetComponent(94)?.SetTeamTag(2);
+      t.GetComponent(96)?.SetTeamTag(2);
     }
   }
 }

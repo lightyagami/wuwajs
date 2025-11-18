@@ -68,20 +68,20 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
     this.inn = undefined;
     this.Hte = undefined;
     this.Ifn = undefined;
-    this.Jud = undefined;
-    this.Zud = new Array();
-    this.ecd = new Map();
+    this.Dcd = undefined;
+    this.xcd = new Array();
+    this.Ucd = new Map();
     this.Ufn = undefined;
     this.Afn = Rotator_1.Rotator.Create();
     this.w0n = 0;
     this.AimParts = new Array();
-    this.tcd = new Map();
-    this.icd = 0;
+    this.Bcd = new Map();
+    this.kcd = 0;
   }
   OnStart() {
-    this.inn = this.Entity.GetComponent(197);
-    this.Ifn = this.Entity.GetComponent(131);
-    this.Hte = this.Entity.GetComponent(203);
+    this.inn = this.Entity.GetComponent(200);
+    this.Ifn = this.Entity.GetComponent(134);
+    this.Hte = this.Entity.GetComponent(206);
     this.w0n = this.Entity.GetComponent(0).GetEntityOnlineInteractType();
     var t = this.Hte?.CreatureData;
     if (t) {
@@ -92,7 +92,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         }
         e = (0, IComponent_1.getComponent)(e.ComponentsData, "HitComponent");
         if (e) {
-          this.Jud = e;
+          this.Dcd = e;
         }
       } else if (t.GetEntityConfigType() === Protocol_1.Aki.Protocol.rLs.Proto_Template) {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(this.Hte.CreatureData.GetPbDataId());
@@ -101,22 +101,22 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         }
         t = (0, IComponent_1.getComponent)(e.ComponentsData, "HitComponent");
         if (t) {
-          this.Jud = t;
+          this.Dcd = t;
         }
       }
     }
-    this.rcd(this.Jud);
+    this.Ocd(this.Dcd);
     return true;
   }
-  rcd(t) {
+  Ocd(t) {
     var e = new BulletHitReg();
     e.SetupConfig(t?.HitBullet, t?.AttackerHitTimeScaleRatio, t?.VictimHitTimeScaleRatio);
-    this.Zud.push(e);
+    this.xcd.push(e);
     if (t?.BulletHitConfigs?.length) {
       for (const r of t.BulletHitConfigs) {
         var i = new BulletHitReg();
         i.SetupConfig(r.HitBullet, r.AttackerHitTimeScaleRatio, r.VictimHitTimeScaleRatio);
-        this.Zud.push(i);
+        this.xcd.push(i);
       }
     }
     if (t?.AimParts && this.Hte) {
@@ -127,22 +127,22 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
       }
     }
   }
-  ocd(e, t = false) {
-    if (this.icd === Time_1.Time.Frame) {
+  qcd(e, t = false) {
+    if (this.kcd === Time_1.Time.Frame) {
       if (!t) {
-        t = this.tcd.get(e);
+        t = this.Bcd.get(e);
         if (t) {
           return t;
         }
       }
     } else {
-      this.tcd.clear();
-      this.icd = Time_1.Time.Frame;
+      this.Bcd.clear();
+      this.kcd = Time_1.Time.Frame;
     }
     let i = undefined;
-    for (let t = this.Zud.length - 1; t >= 0; t--) {
-      var n = this.Zud[t];
-      if ((!this.ncd(e) || n.HitBullet?.Type === IComponent_1.EHitBulletType.FixedBulletId) && (!n.HitBullet || SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(n.HitBullet, e, this.Entity))) {
+    for (let t = this.xcd.length - 1; t >= 0; t--) {
+      var n = this.xcd[t];
+      if ((!this.Gcd(e) || n.HitBullet?.Type === IComponent_1.EHitBulletType.FixedBulletId) && (!n.HitBullet || SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(n.HitBullet, e, this.Entity))) {
         let t = true;
         for (const r of n.HitConditionCheck) {
           if (!(t &&= r(e))) {
@@ -155,14 +155,14 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         }
       }
     }
-    this.tcd.set(e, i);
+    this.Bcd.set(e, i);
     return i;
   }
   Pfn(t) {
-    return !this.inn.HasTag(-1431780499) && !this.Ifn?.IsLocked && !this.Entity.GetComponent(0)?.IsConcealed && this.ocd(t, true) !== undefined;
+    return !this.inn.HasTag(-1431780499) && !this.Ifn?.IsLocked && !this.Entity.GetComponent(0)?.IsConcealed && this.qcd(t, true) !== undefined;
   }
   xfn(t, e) {
-    t = this.ecd.get(t)?.ComponentHitConditionCheck;
+    t = this.Ucd.get(t)?.ComponentHitConditionCheck;
     if (t === undefined) {
       return true;
     }
@@ -177,7 +177,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
     return i;
   }
   wfn(t, e) {
-    t = this.ecd.get(t)?.HitCompConfig?.HitBullet;
+    t = this.Ucd.get(t)?.HitCompConfig?.HitBullet;
     return !t || SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchBulletType(t, e, this.Entity);
   }
   OnSceneItemHit(t, e) {
@@ -187,11 +187,11 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
     }
     var i = EntitySystem_1.EntitySystem.Get(t.BulletEntityId)?.GetBulletInfo();
     if (i) {
-      if (this.Entity.GetComponent(163)?.ReboundBullet(t, i)) {
+      if (this.Entity.GetComponent(166)?.ReboundBullet(t, i)) {
         return false;
       }
-      if (this.ncd(t)) {
-        this.scd(t);
+      if (this.Gcd(t)) {
+        this.Fcd(t);
         return false;
       }
       if (t.CalculateType !== 0) {
@@ -202,7 +202,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         this.WVr(t, i.EffectInfo.DisablePostProcess);
         this.Bfn(t, e);
         this.iwr(t);
-        for (var [n] of this.ecd) {
+        for (var [n] of this.Ucd) {
           if (this.wfn(n, t) && this.xfn(n, t)) {
             this.qfn(n, t);
           }
@@ -224,13 +224,13 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
   WVr(t, e) {
     let i = undefined;
     var n = t.ReBulletData.Render.EffectOnHit.get(12);
-    if ((i = n && n.length > 0 && t.Attacker.GetComponent(206)?.HasTag(412116357) ? n : i) || (i = t.ReBulletData.Render.EffectOnHit.get(4)) && i.length !== 0) {
+    if ((i = n && n.length > 0 && t.Attacker.GetComponent(209)?.HasTag(412116357) ? n : i) || (i = t.ReBulletData.Render.EffectOnHit.get(4)) && i.length !== 0) {
       n = new UE.TransformDouble(t.HitEffectRotation.ToUeRotator(), t.HitPosition.ToUeVector(), Vector_1.Vector.OneVectorDouble);
       BulletCollisionUtil_1.BulletCollisionUtil.PlaySceneItemHitEffect(t.Attacker, i, n, t.ReBulletData.Render.AudioOnHit, e);
     }
   }
   Bfn(e, i) {
-    var n = this.Entity.GetComponent(197);
+    var n = this.Entity.GetComponent(200);
     if (n) {
       var r = SceneInteractionManager_1.SceneInteractionManager.Get().GetPartCollisionActorsNum(this.Hte.GetSceneInteractionLevelHandleId());
       let t = undefined;
@@ -273,7 +273,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
   Nfn(e) {
     var t = e.ReBulletData.TimeScale;
     var i = t.TimeScaleOnAttack;
-    var n = this.ocd(e);
+    var n = this.qcd(e);
     var r = n?.AttackerHitTimeScaleRatio?.ValueRatio ?? 1;
     var o = n?.AttackerHitTimeScaleRatio?.TimeRatio ?? 1;
     var s = n?.AttackerHitTimeScaleRatio?.MaxExtraTime ?? 0;
@@ -283,7 +283,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         BulletUtil_1.BulletUtil.SetTimeScale(n, i.优先级, i.时间膨胀值 * r, i.时间膨胀变化曲线, Math.min(i.时间膨胀时长 * o, i.时间膨胀时长 + s), 1);
       }
     } else if (i.时间膨胀时长 > 0) {
-      e.Attacker.GetComponent(123)?.SetTimeScale(i.优先级 - 1, i.时间膨胀值 * r, i.时间膨胀变化曲线, Math.min(i.时间膨胀时长 * o, i.时间膨胀时长 + s), 1);
+      e.Attacker.GetComponent(126)?.SetTimeScale(i.优先级 - 1, i.时间膨胀值 * r, i.时间膨胀变化曲线, Math.min(i.时间膨胀时长 * o, i.时间膨胀时长 + s), 1);
       var a = t.CharacterCustomKeyTimeScale;
       var l = a?.length ?? 0;
       for (let t = 0; t < l; t++) {
@@ -291,7 +291,7 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
         if (!h) {
           return;
         }
-        EntitySystem_1.EntitySystem.Get(h)?.GetComponent(123)?.SetTimeScale(i.优先级, i.时间膨胀值 * r, i.时间膨胀变化曲线, Math.min(i.时间膨胀时长 * o, i.时间膨胀时长 + s), 1);
+        EntitySystem_1.EntitySystem.Get(h)?.GetComponent(126)?.SetTimeScale(i.优先级, i.时间膨胀值 * r, i.时间膨胀变化曲线, Math.min(i.时间膨胀时长 * o, i.时间膨胀时长 + s), 1);
       }
     }
   }
@@ -304,29 +304,29 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
     var s;
     var a;
     if (!t.ReBulletData.Base.ContinuesCollision) {
-      if ((e = this.Entity.GetComponent(123)) && (i = this.ncd(t), r = (n = t.ReBulletData.TimeScale).TimeScaleOnHit, o = (a = this.ocd(t))?.VictimHitTimeScaleRatio?.ValueRatio ?? 1, s = a?.VictimHitTimeScaleRatio?.TimeRatio ?? 1, a = a?.VictimHitTimeScaleRatio?.MaxExtraTime ?? 0, r.时间膨胀时长 > 0)) {
+      if ((e = this.Entity.GetComponent(126)) && (i = this.Gcd(t), r = (n = t.ReBulletData.TimeScale).TimeScaleOnHit, o = (a = this.qcd(t))?.VictimHitTimeScaleRatio?.ValueRatio ?? 1, s = a?.VictimHitTimeScaleRatio?.TimeRatio ?? 1, a = a?.VictimHitTimeScaleRatio?.MaxExtraTime ?? 0, r.时间膨胀时长 > 0)) {
         BulletUtil_1.BulletUtil.SetVictimTimeScale(t.BulletEntityId, this.Entity.Id, e, r.优先级, r.时间膨胀值 * o, r.时间膨胀变化曲线, Math.min(r.时间膨胀时长 * s, r.时间膨胀时长 + a), 2, n.RemoveHitTimeScaleOnDestroy, i);
       }
     }
   }
-  ncd(t) {
-    return t.CalculateType !== 0 && !!t.ReBulletData.TimeScale.TimeScaleOnHit;
+  Gcd(t) {
+    return t.CalculateType !== 0 && t.ReBulletData.TimeScale.TimeScaleOnHit.时间膨胀时长 > 0;
   }
-  scd(t) {
+  Fcd(t) {
     this.Ofn(t);
   }
   RegisterComponent(t, e) {
-    if (this.ecd.has(t)) {
+    if (this.Ucd.has(t)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneGameplay", 39, "[SceneItemHitComponent] RegisterComponent Failed: Already registered", ["EntityId", this.Entity.Id]);
       }
     } else {
       var i = new ComponentHitReg();
-      this.ecd.set(t, i);
+      this.Ucd.set(t, i);
       if (i.HitCompConfig = e) {
         t = new BulletHitReg();
         t.SetupConfig(e.HitBullet, e.AttackerHitTimeScaleRatio, e.VictimHitTimeScaleRatio);
-        this.Zud.push(t);
+        this.xcd.push(t);
         if (e.AimParts && this.Hte) {
           for (const r of e.AimParts) {
             var n = new AimPartUtils_1.AimPart(this.Hte);
@@ -339,14 +339,14 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
   }
   AddComponentHitCondition(t, e) {
     var i;
-    if (!this.ecd.has(t)) {
+    if (!this.Ucd.has(t)) {
       i = new ComponentHitReg();
-      this.ecd.set(t, i);
+      this.Ucd.set(t, i);
     }
-    this.ecd.get(t).ComponentHitConditionCheck.push(e);
+    this.Ucd.get(t).ComponentHitConditionCheck.push(e);
   }
   RemoveComponentHitCondition(t, e) {
-    t = this.ecd.get(t)?.ComponentHitConditionCheck;
+    t = this.Ucd.get(t)?.ComponentHitConditionCheck;
     if (t !== undefined && (e = t.indexOf(e)) !== -1) {
       t.splice(e, 1);
     }
@@ -356,5 +356,5 @@ let SceneItemHitComponent = SceneItemHitComponent_1 = class SceneItemHitComponen
   }
 };
 SceneItemHitComponent.kfn = new Map([[8, 631236362], [1, -40693742], [9, 1688432695], [0, 178446985], [10, -1474770640], [3, -1876401816], [11, -350051159], [2, -2061161961]]);
-SceneItemHitComponent = SceneItemHitComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(155)], SceneItemHitComponent);
+SceneItemHitComponent = SceneItemHitComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(158)], SceneItemHitComponent);
 exports.SceneItemHitComponent = SceneItemHitComponent; //# sourceMappingURL=SceneItemHitComponent.js.map

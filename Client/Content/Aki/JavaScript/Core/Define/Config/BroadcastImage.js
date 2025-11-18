@@ -19,6 +19,12 @@ class BroadcastImage {
   get Image() {
     return this.image();
   }
+  get ImageM() {
+    return this.imagem();
+  }
+  get ImageF() {
+    return this.imagef();
+  }
   get UmgIcon() {
     return this.umgicon();
   }
@@ -54,8 +60,24 @@ class BroadcastImage {
     }
     return s;
   }
-  umgicon(t) {
+  imagem(t) {
     var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  imagef(t) {
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  umgicon(t) {
+    var s = this.J7.__offset(this.z7, 14);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);

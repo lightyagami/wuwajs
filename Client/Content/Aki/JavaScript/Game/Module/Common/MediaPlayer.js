@@ -66,7 +66,7 @@ class MediaPlayer {
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Video", 37, "[MediaPlayer] mediaSource加载失败", ["配置名称", e], ["视频路径", s]);
       }
-    }), this.MUe < 0) && Log_1.Log.CheckError()) {
+    }, 100, "Ui.UiVideo"), this.MUe < 0) && Log_1.Log.CheckError()) {
       Log_1.Log.Error("Video", 37, "[MediaPlayer] mediaSource加载失败", ["配置名称", e], ["视频路径", s]);
     }
   }
@@ -89,7 +89,7 @@ class MediaPlayer {
           Log_1.Log.Error("Video", 37, "[MediaPlayer] mediaSource加载失败", ["配置名称", e], ["视频路径", s]);
         }
         o.SetResult();
-      });
+      }, 100, "Ui.UiVideo");
       await o.Promise;
     }
   }

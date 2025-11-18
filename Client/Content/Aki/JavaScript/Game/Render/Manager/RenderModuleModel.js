@@ -38,14 +38,14 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     this.K1r = 5;
     this.Q1r = false;
     this.X1r = false;
-    this.Qvd = undefined;
-    this.Kvd = 16;
-    this.Xvd = -this.Kvd;
-    this.Yvd = false;
+    this.mMd = undefined;
+    this.fMd = 16;
+    this.gMd = -this.fMd;
+    this.CMd = false;
     this.$1r = 0;
-    this.PAd = false;
+    this.Ixd = false;
     this.imc = e => {
-      if (!e && this.PAd) {
+      if (!e && this.Ixd) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Render", 36, "退出真时停时仍然开启CharRenderShell的强制Tick");
         }
@@ -73,8 +73,8 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
           Global_1.Global.BaseCharacter?.CharRenderingComponent?.RefreshMaterialController();
         });
       }
-      this.Yvd = e;
-      this.Xvd = 0;
+      this.CMd = e;
+      this.gMd = 0;
     };
     this.BPr = e => {
       if (!e && this.cKl && (UE.KuroRenderingRuntimeBPPluginBPLibrary.SetDisableEffectPostProcessVolume(GlobalData_1.GlobalData.World, false, 1), this.cKl = false, Log_1.Log.CheckInfo())) {
@@ -237,20 +237,20 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     return this.V1r.delete(e);
   }
   get ForceTickCharRenderShell() {
-    return this.PAd;
+    return this.Ixd;
   }
   DisableForceTickCharRenderShell(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Render", 36, "关闭CharRenderShell的强制Tick", ["Reason", e]);
     }
-    this.PAd = false;
+    this.Ixd = false;
   }
   EnableForceTickCharRenderShell(e) {
     if (TickSystem_1.TickSystem.IsPaused) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Render", 36, "开启CharRenderShell的强制Tick", ["Reason", e]);
       }
-      this.PAd = true;
+      this.Ixd = true;
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Render", 36, "只有真时停环境下才能开启CharRenderShell的强制Tick", ["Reason", e]);
     }
@@ -268,7 +268,7 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
       }
     });
     RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickTickable?.Stop();
-    if (!CharRenderShell_1.CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || this.PAd) {
+    if (!CharRenderShell_1.CharRenderShell.CharRenderShellGameBudgetOptimize || Info_1.Info.IsInEditorTick() || this.Ixd) {
       RenderModuleConfig_1.RenderStats.StatRenderModuleModelTickRenderShell?.Start();
       this.V1r.forEach(e => {
         try {
@@ -353,9 +353,9 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
       }
     }
     try {
-      if (Info_1.Info.IsGameRunning() && this.Xvd > -this.Kvd && this.Xvd < this.Kvd) {
-        this.Xvd += this.Yvd ? t : -t;
-        UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, this.Qvd, mpcForGameplayNameBurstTime, this.Xvd);
+      if (Info_1.Info.IsGameRunning() && this.gMd > -this.fMd && this.gMd < this.fMd) {
+        this.gMd += this.CMd ? t : -t;
+        UE.KismetMaterialLibrary.SetScalarParameterValue(GlobalData_1.GlobalData.World, this.mMd, mpcForGameplayNameBurstTime, this.gMd);
       }
     } catch (e) {
       if (e instanceof Error && Log_1.Log.CheckError()) {
@@ -385,7 +385,7 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraModeChanged, this.cdu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetGamePaused, this.imc);
     ResourceSystem_1.ResourceSystem.LoadAsync("/Game/Aki/Render/Shaders/PostProcess/DistortionWave/MPC_ForGamePlay.MPC_ForGamePlay", UE.MaterialParameterCollection, e => {
-      this.Qvd = e;
+      this.mMd = e;
     });
     return true;
   }

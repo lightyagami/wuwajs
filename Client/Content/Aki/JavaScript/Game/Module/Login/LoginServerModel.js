@@ -270,11 +270,11 @@ class LoginServerModel extends ModelBase_1.ModelBase {
   SetPlayerLoginInfo(e, r) {
     this.DEi.set(e, r);
   }
-  FindIpServerData(r) {
+  cRm(r) {
     var o = Array.from(this.REi.keys());
     var t = o.length;
     for (let e = 0; e < t; e++) {
-      if (o[e].ip === r.Ip && o[e].Region === r.Region) {
+      if (o[e].Region === r.Region) {
         return o[e];
       }
     }
@@ -282,7 +282,7 @@ class LoginServerModel extends ModelBase_1.ModelBase {
   InitSuggestData(e, r) {
     this.CurrentSelectServerData = undefined;
     var e = this.UEi(e);
-    this.CurrentSelectServerData = this.FindIpServerData(e);
+    this.CurrentSelectServerData = this.cRm(e);
     this.OnBeginSuggestServerData = this.CurrentSelectServerData;
     if (!this.OnBeginSuggestServerData) {
       if ((e = this.GetLoginServersByClientRegion()) && e.length > 0) {
@@ -438,10 +438,10 @@ class LoginServerModel extends ModelBase_1.ModelBase {
   GetCurrentArea() {
     var e = UE.KuroStaticLibrary.GetCultureRegion().split("-");
     var r = e.length;
-    if (r > 1) {
-      return e[r - 1];
-    } else {
+    if (!(r > 1) || e[r - 1] === "") {
       return "US";
+    } else {
+      return e[r - 1];
     }
   }
   SaveLocalRegionLevel(e, r, o) {

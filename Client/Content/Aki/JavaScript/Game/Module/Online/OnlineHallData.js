@@ -70,7 +70,7 @@ class OnlineHallData {
     return this.kGi.uSs;
   }
   get Deactivation() {
-    return this.kGi.jSd;
+    return this.kGi.cId;
   }
   get PlayerLastOfflineTime() {
     return MathUtils_1.MathUtils.LongToNumber(this.kGi.fSs);
@@ -120,7 +120,7 @@ class OnlineTeamData {
     this.Ru1 = 0;
     this.CardUnlockList = [];
     this.WGi = 0;
-    this.$Md = 1;
+    this.CTd = 1;
     this.FGi = t;
     this.VGi = e;
     this.jGi = r;
@@ -132,7 +132,7 @@ class OnlineTeamData {
     this.Jmc = l;
     this.Zmc = o;
     this.Ru1 = u;
-    this.$Md = g;
+    this.CTd = g;
     for (const d of a.SSs) {
       this.CardUnlockList.push(new PersonalDefine_1.PersonalCardData(d, true, true));
     }
@@ -171,7 +171,7 @@ class OnlineTeamData {
     this.Ru1 = t;
   }
   get WorldLevel() {
-    return this.$Md;
+    return this.CTd;
   }
   SetPlayerTitleInfo(t) {
     if (t.length !== 0) {

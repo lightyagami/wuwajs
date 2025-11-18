@@ -79,7 +79,7 @@ class BulletUtil {
     }
   }
   static DoesEntityContainsTag(t, e) {
-    return !!t && (!!t.GetComponent(197)?.HasTag(e) || !!(t = t.GetComponent(206)) && t.HasTag(e));
+    return !!t && (!!t.GetComponent(200)?.HasTag(e) || !!(t = t.GetComponent(209)) && t.HasTag(e));
   }
   static GetCurrentRole(t) {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -159,7 +159,7 @@ class BulletUtil {
   static BulletUnfrozen(t) {
     t.IsFrozen = false;
     var e = t.ActorComponent;
-    var o = t.Attacker?.GetComponent(123)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
+    var o = t.Attacker?.GetComponent(126)?.GetTopForeverTimeScale(0) ?? ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation;
     e.SetBulletCustomTimeDilation(o);
     BulletStaticFunction_1.BulletStaticFunction.SetBulletEffectTimeScale(t.EffectInfo, 1);
   }
@@ -224,7 +224,7 @@ class BulletUtil {
     if (l === 3) {
       return false;
     }
-    if ((0, RegisterComponent_1.isComponentInstance)(e, 3) && e.Entity.GetComponent(206)?.HasTag(855966206)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(e, 3) && e.Entity.GetComponent(209)?.HasTag(855966206)) {
       return false;
     }
     var r = t.AttackerActorComp;
@@ -271,14 +271,14 @@ class BulletUtil {
     return true;
   }
   static SetHitRotator(t, e, o) {
-    if (BulletUtil.GetHitRotator(t, e, this.TmpRotator) && !e.Entity.GetComponent(206)?.HasTag(1447214865) && (this.TmpRotator2.Set(0, o, 0), this.TmpRotator.Quaternion(this.TmpQuat), this.TmpRotator2.Quaternion(this.TmpQuat2), this.TmpQuat.Multiply(this.TmpQuat2, this.TmpQuat), this.TmpQuat.Rotator(this.TmpRotator), e.SetActorRotation(this.TmpRotator.ToUeRotator(), this.constructor.name, false), (0, RegisterComponent_1.isComponentInstance)(e, 3))) {
+    if (BulletUtil.GetHitRotator(t, e, this.TmpRotator) && !e.Entity.GetComponent(209)?.HasTag(1447214865) && (this.TmpRotator2.Set(0, o, 0), this.TmpRotator.Quaternion(this.TmpQuat), this.TmpRotator2.Quaternion(this.TmpQuat2), this.TmpQuat.Multiply(this.TmpQuat2, this.TmpQuat), this.TmpQuat.Rotator(this.TmpRotator), e.SetActorRotation(this.TmpRotator.ToUeRotator(), this.constructor.name, false), (0, RegisterComponent_1.isComponentInstance)(e, 3))) {
       e.SetInputRotator(this.TmpRotator);
     }
     return this.TmpRotator.ToUeRotator();
   }
   static GetOverrideHitAnimByAngle(t, e, o) {
     let l = e;
-    var e = (0, RegisterComponent_1.isComponentInstance)(t, 203);
+    var e = (0, RegisterComponent_1.isComponentInstance)(t, 206);
     var r = ModelManager_1.ModelManager.BulletModel;
     var a = r.SelfAdaptBeHitAnim.has(l);
     if (a || e) {

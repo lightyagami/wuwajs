@@ -21,13 +21,11 @@ class ItemController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItem, ItemController.KCi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddWeaponItem, ItemController.QCi);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifySimplyOpenItemTipsView, this.JWd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItem, ItemController.KCi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddWeaponItem, ItemController.QCi);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifySimplyOpenItemTipsView, this.JWd);
   }
   static OpenItemTipsByItemId(e, t = true, i = undefined) {
     var n = new ItemDefine_1.ItemTipsParam();
@@ -123,7 +121,4 @@ ItemController.QCi = (e, t, i) => {
     }
     n.AddGetItemConfigIdList(e);
   }
-};
-ItemController.JWd = (e, t) => {
-  ItemController.OpenItemTipsByItemId(e, t);
 }; //# sourceMappingURL=ItemController.js.map

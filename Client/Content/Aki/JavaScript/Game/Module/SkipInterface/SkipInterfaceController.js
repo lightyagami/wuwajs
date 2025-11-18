@@ -32,7 +32,7 @@ class SkipInterfaceController extends ControllerBase_1.ControllerBase {
   }
   static async gFl() {
     var e = Protocol_1.Aki.Protocol.pv_.create();
-    var e = await Net_1.Net.CallAsync(22144, e);
+    var e = await Net_1.Net.CallAsync(28538, e);
     if (e) {
       ModelManager_1.ModelManager.SkipInterfaceModel.FullUpdateAccessPathTimeServerConfig(e.Pb_);
     }

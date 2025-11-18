@@ -42,9 +42,6 @@ class ComponentAction {
     });
     this.ComponentId = ++ComponentAction.f_r;
   }
-  static GetIncrementId() {
-    return this.f_r;
-  }
   get IsRegister() {
     return this.C_r === EComponentState.Register;
   }
@@ -322,45 +319,10 @@ class ComponentAction {
   p_r(t) {
     var e;
     var n;
-    if (ComponentAction.SwitchCheckSameTypeLogic || this.T_r() !== t) {
-      if ((n = (e = this.g_r.TailNode).Element.ActionCommand) === t) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("UiCore", 16, "[TryCacheAction] is same with tail action", ["actionType", EActionCommandType[t]], ["ComponentState", EComponentState[n]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-        }
-        return false;
-      } else if (n === EActionCommandType.Destroy) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("UiCore", 16, "[TryCacheAction] tailActionType is Destroy, not allow to cache any action", ["actionType", EActionCommandType[t]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-        }
-        return false;
-      } else if (ComponentAction.I_r(n, t)) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("UiCore", 16, "[TryCacheAction] remove tail action which is pair with this action", ["actionType", EActionCommandType[t]], ["tailActionType", EActionCommandType[n]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-        }
-        this.AIc(n, t);
-        this.g_r.RemoveNode(e);
-        return false;
-      } else if (ComponentAction.SwitchCheckSameTypeLogic && this.T_r() === t) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("UiCore", 16, "[TryCacheAction] is same with current action", ["actionType", EActionCommandType[t]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-        }
-        return false;
-      } else {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiCore", 16, "[TryCacheAction] done", ["actionType", EActionCommandType[t]], ["tailActionType", EActionCommandType[this.g_r.TailNode.Element.ActionCommand]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-        }
-        this.g_r.AddTail({
-          ActionCommand: t,
-          Processed: false
-        });
-        return true;
-      }
-    } else {
-      if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("UiCore", 16, "[TryCacheAction] is same with current action", ["actionType", EActionCommandType[t]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]);
-      }
-      return false;
-    }
+    return (!!ComponentAction.SwitchCheckSameTypeLogic || this.T_r() !== t) && (n = (e = this.g_r.TailNode).Element.ActionCommand) !== t && n !== EActionCommandType.Destroy && !(ComponentAction.I_r(n, t) ? (this.AIc(n, t), this.g_r.RemoveNode(e), 1) : ComponentAction.SwitchCheckSameTypeLogic && this.T_r() === t || (Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCore", 16, "[TryCacheAction] done", ["actionType", EActionCommandType[t]], ["tailActionType", EActionCommandType[this.g_r.TailNode.Element.ActionCommand]], ["ComponentState", EComponentState[this.C_r]], ["ComponentName", this.constructor.name], ["ComponentId", this.ComponentId]), this.g_r.AddTail({
+      ActionCommand: t,
+      Processed: false
+    }), 0));
   }
   async M_r() {
     let t = this.g_r.GetHeadNextNode();

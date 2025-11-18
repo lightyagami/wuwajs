@@ -57,7 +57,7 @@ class SeamlessTravelScreenEffect {
           }
           r(false);
         }
-      }, 102);
+      }, 102, "SeamlessTravel.ScreenEffect");
     } else {
       r(true);
     }

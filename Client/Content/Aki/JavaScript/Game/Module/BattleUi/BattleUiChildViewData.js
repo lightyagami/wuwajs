@@ -105,7 +105,7 @@ class BattleUiChildViewData {
   DebugLogAllChildState() {
     for (let i = 0; i < 38; i++) {
       if (this.EQe[i] !== 0) {
-        for (let t = 0; t < 14; t++) {
+        for (let t = 0; t < 15; t++) {
           if (!VisibleStateUtil_1.VisibleStateUtil.GetVisibleByType(this.EQe[i], t)) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 17, "界面被隐藏", ["编号", i], ["原因", t]);

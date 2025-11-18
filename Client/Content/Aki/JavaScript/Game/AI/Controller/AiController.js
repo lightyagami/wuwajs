@@ -128,7 +128,7 @@ class AiController {
     var t;
     var i;
     var o;
-    if (this.CharAiDesignComp?.Valid && (t = this.CharAiDesignComp.Entity, this.CharActorComp = t.GetComponent(3), i = this.CharActorComp.CreatureData, this.fie = this.CharActorComp.CreatureData.GetEntityType(), this.YZa = this.CharActorComp.CreatureData.IsAutoRole(), this.CharSkillComp = t.GetComponent(40), (o = i.ComponentDataMap.get("oI_"))?.oI_?.fI_ && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.oI_?._Vn)), (o = i.ComponentDataMap.get("fys"))?.fys?.Zys && (this.Cie = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.Zys)), o?.fys?.tIs && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.tIs)), i = o?.fys?.eIs ?? 0, this.gie = i, ModelManager_1.ModelManager.AiModel.AddActiveAiController(this), this.AiHateList.RefreshAbilityComp(), this.AiTaunt.Init(this.AiHateList), this.AiPatrol.Init(this.CharActorComp), this.AiAlert.Init(this.CharActorComp), this.AiPerception) && (o = t.GetComponent(122))) {
+    if (this.CharAiDesignComp?.Valid && (t = this.CharAiDesignComp.Entity, this.CharActorComp = t.GetComponent(3), i = this.CharActorComp.CreatureData, this.fie = this.CharActorComp.CreatureData.GetEntityType(), this.YZa = this.CharActorComp.CreatureData.IsAutoRole(), this.CharSkillComp = t.GetComponent(40), (o = i.ComponentDataMap.get("oI_"))?.oI_?.fI_ && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.oI_?._Vn)), (o = i.ComponentDataMap.get("fys"))?.fys?.Zys && (this.Cie = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.Zys)), o?.fys?.tIs && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.tIs)), i = o?.fys?.eIs ?? 0, this.gie = i, ModelManager_1.ModelManager.AiModel.AddActiveAiController(this), this.AiHateList.RefreshAbilityComp(), this.AiTaunt.Init(this.AiHateList), this.AiPatrol.Init(this.CharActorComp), this.AiAlert.Init(this.CharActorComp), this.AiPerception) && (o = t.GetComponent(125))) {
       o.SetLogicRange(this.AiPerception.MaxSenseRange);
     }
     this.cY = !!this.CharAiDesignComp && this.CharAiDesignComp.Active;
@@ -284,7 +284,7 @@ class AiController {
         j4n: t,
         W4n: true
       })];
-      CombatMessage_1.CombatNet.Send(15441, this.CharAiDesignComp.Entity, o);
+      CombatMessage_1.CombatNet.Send(28235, this.CharAiDesignComp.Entity, o);
     }
     if (e !== undefined && s && s.IsValid()) {
       s.Callback.Broadcast(true);
@@ -318,7 +318,7 @@ class AiController {
           j4n: t,
           W4n: false
         })];
-        CombatMessage_1.CombatNet.Send(15441, this.CharAiDesignComp.Entity, e);
+        CombatMessage_1.CombatNet.Send(28235, this.CharAiDesignComp.Entity, e);
       }
     }
   }
@@ -366,7 +366,7 @@ class AiController {
     var o = Protocol_1.Aki.Protocol.Ai.zXn.create();
     const e = t.GetComponent(0).GetCreatureDataId();
     o.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(15425, o, t => {
+    Net_1.Net.Call(17770, o, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AI", 14, "AiControlSwitchRequest返回错误", ["EntityId", e], ["ErrorCode", t.Q4n]);

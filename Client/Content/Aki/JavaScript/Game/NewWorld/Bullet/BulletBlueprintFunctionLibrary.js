@@ -56,7 +56,7 @@ class BulletBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetBulletActorById(t) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t?.Valid) {
-      return t.GetComponent(170).Owner;
+      return t.GetComponent(173).Owner;
     }
   }
   static DestroyBullet(t, e, r = false) {

@@ -20,6 +20,7 @@ const LevelEventAddInputTag_1 = require("./LevelEventAddInputTag");
 const LevelEventAddTrialCharacter_1 = require("./LevelEventAddTrialCharacter");
 const LevelEventAdjustPlayerCamera_1 = require("./LevelEventAdjustPlayerCamera");
 const LevelEventAdjustTodTime_1 = require("./LevelEventAdjustTodTime");
+const LevelEventBreakWeakness_1 = require("./LevelEventBreakWeakness");
 const LevelEventBvbPlayDialog_1 = require("./LevelEventBvbPlayDialog");
 const LevelEventBvbPlayerOperationConstraint_1 = require("./LevelEventBvbPlayerOperationConstraint");
 const LevelEventCameraLookAtPosition_1 = require("./LevelEventCameraLookAtPosition");
@@ -34,6 +35,8 @@ const LevelEventCheckBattleState_1 = require("./LevelEventCheckBattleState");
 const LevelEventClaimDungeonReward_1 = require("./LevelEventClaimDungeonReward");
 const LevelEventClaimLevelPlayReward_1 = require("./LevelEventClaimLevelPlayReward");
 const LevelEventClientChangeTeamPosition_1 = require("./LevelEventClientChangeTeamPosition");
+const LevelEventClientModifyTargetTag_1 = require("./LevelEventClientModifyTargetTag");
+const LevelEventClientPlayFlow_1 = require("./LevelEventClientPlayFlow");
 const LevelEventClientSetPlayerPos_1 = require("./LevelEventClientSetPlayerPos");
 const LevelEventCloseWalkingOverlayMontage_1 = require("./LevelEventCloseWalkingOverlayMontage");
 const LevelEventCollect_1 = require("./LevelEventCollect");
@@ -65,6 +68,7 @@ const LevelEventForceLockOnSpecialTagTarget_1 = require("./LevelEventForceLockOn
 const LevelEventGuideTrigger_1 = require("./LevelEventGuideTrigger");
 const LevelEventHideTargetRange_1 = require("./LevelEventHideTargetRange");
 const LevelEventHighlightExploreUi_1 = require("./LevelEventHighlightExploreUi");
+const LevelEventHonamiStoryInteractPickUp_1 = require("./LevelEventHonamiStoryInteractPickUp");
 const LevelEventInteractFan_1 = require("./LevelEventInteractFan");
 const LevelEventInteractGravityFlip_1 = require("./LevelEventInteractGravityFlip");
 const LevelEventInterludeActions_1 = require("./LevelEventInterludeActions");
@@ -74,6 +78,7 @@ const LevelEventLog_1 = require("./LevelEventLog");
 const LevelEventModifyActorMaterial_1 = require("./LevelEventModifyActorMaterial");
 const LevelEventMoveJigsawItem_1 = require("./LevelEventMoveJigsawItem");
 const LevelEventMoveWithSpline_1 = require("./LevelEventMoveWithSpline");
+const LevelEventNpcLeisureInteract_1 = require("./LevelEventNpcLeisureInteract");
 const LevelEventOpenChapterUi_1 = require("./LevelEventOpenChapterUi");
 const LevelEventOpenQte_1 = require("./LevelEventOpenQte");
 const LevelEventOpenSimpleGameplay_1 = require("./LevelEventOpenSimpleGameplay");
@@ -104,6 +109,7 @@ const LevelEventRogueReceiveReward_1 = require("./LevelEventRogueReceiveReward")
 const LevelEventRunAction_1 = require("./LevelEventRunAction");
 const LevelEventSceneItemMove_1 = require("./LevelEventSceneItemMove");
 const LevelEventSendAiEvent_1 = require("./LevelEventSendAiEvent");
+const LevelEventSendClientEvent_1 = require("./LevelEventSendClientEvent");
 const LevelEventSendGameplayEventToPlayer_1 = require("./LevelEventSendGameplayEventToPlayer");
 const LevelEventSetActorVisible_1 = require("./LevelEventSetActorVisible");
 const LevelEventSetAiBehaviorTree_1 = require("./LevelEventSetAiBehaviorTree");
@@ -111,6 +117,7 @@ const LevelEventSetBattleState_1 = require("./LevelEventSetBattleState");
 const LevelEventSetClientEntityVisible_1 = require("./LevelEventSetClientEntityVisible");
 const LevelEventSetExploreState_1 = require("./LevelEventSetExploreState");
 const LevelEventSetInteractionLockState_1 = require("./LevelEventSetInteractionLockState");
+const LevelEventSetMotorSpeed_1 = require("./LevelEventSetMotorSpeed");
 const LevelEventSetNpcGroupPerform_1 = require("./LevelEventSetNpcGroupPerform");
 const LevelEventSetNpcPosition_1 = require("./LevelEventSetNpcPosition");
 const LevelEventSetPlayerMoveControl_1 = require("./LevelEventSetPlayerMoveControl");
@@ -145,6 +152,7 @@ const LevelEventTrapDefenseChangeMiniMap_1 = require("./LevelEventTrapDefenseCha
 const LevelEventTrapDefensePlayerOperationConstraint_1 = require("./LevelEventTrapDefensePlayerOperationConstraint");
 const LevelEventTriggerCameraShake_1 = require("./LevelEventTriggerCameraShake");
 const LevelEventTriggerSpecificScanEffect_1 = require("./LevelEventTriggerSpecificScanEffect");
+const LevelEventTriggerSystemRandomPlot_1 = require("./LevelEventTriggerSystemRandomPlot");
 const LevelEventUnlockDungeonEntry_1 = require("./LevelEventUnlockDungeonEntry");
 const LevelEventUnlockEntity_1 = require("./LevelEventUnlockEntity");
 const LevelEventUsePhantomSkill_1 = require("./LevelEventUsePhantomSkill");
@@ -175,6 +183,7 @@ class LevelEventCenter {
     e("StopCameraLookAt", LevelEventRestoreCameraLookAtPosition_1.LevelEventRestoreCameraLookAtPosition);
     e(LevelGameplayActionsDefine_1.ActionCaptureRequest.name, LevelEventCaptureRequest_1.LevelEventCaptureRequest, LEVEL_2);
     e(LevelGameplayActionsDefine_1.ActionExecution.name, LevelEventExecution_1.LevelEventExecution, LEVEL_2);
+    e(LevelGameplayActionsDefine_1.BreakWeakness.name, LevelEventBreakWeakness_1.LevelEventBreakWeakness, LEVEL_2);
     e(LevelGameplayActionsDefine_1.ActionSendGameplayEvent.name, LevelEventSendGameplayEventToPlayer_1.LevelEventSendGameplayEventToPlayer);
     e(LevelGameplayActionsDefine_1.ActionSubmitQuestBehavior.name, LevelEventSubmitQuestBehavior_1.LevelEventSubmitQuestBehavior);
     e(LevelGameplayActionsDefine_1.ActionDeliverQuestBehavior.name, LevelEventDeliverQuestBehavior_1.LevelEventDeliverQuestBehavior);
@@ -216,6 +225,7 @@ class LevelEventCenter {
     e("TeleportDungeon", LevelEventTeleportDungeon_1.LevelEventTeleportDungeon, DEFAULT);
     e("LimitPlayerOperation", LevelEventAddInputTag_1.LevelEventAddInputTag);
     e("UnLimitPlayerOperation", LevelEventRefreshInputTag_1.LevelEventRefreshInputTag);
+    e("ClientModifyTargetTag", LevelEventClientModifyTargetTag_1.LevelEventClientModifyTargetTag);
     e("FadeInScreen", LevelEventFadeInScreen_1.LevelEventFadeInScreen, LEVEL_1);
     e("FadeOutScreen", LevelEventFadeOutScreen_1.LevelEventFadeOutScreen, LEVEL_1);
     e("ChangePhantom", LevelEventChangeToVision_1.LevelEventChangeToVision);
@@ -269,6 +279,7 @@ class LevelEventCenter {
     e("OpenSystemFunction", LevelEventSystemFunction_1.LevelEventSystemFunction);
     e("StopUiScreenEffect", LevelEventStopUiScreenEffect_1.LevelEventStopUiScreenEffect, LEVEL_1);
     e("EnableKey4Func", LevelEventEnableKey4Func_1.LevelEventEnableKey4Func);
+    e("TriggerSystemRandomPlot", LevelEventTriggerSystemRandomPlot_1.LevelEventTriggerSystemRandomPlot);
     e("SetEntityClientVisible", LevelEventSetClientEntityVisible_1.LevelEventSetClientEntityVisible);
     e("ClientSetPlayerPos", LevelEventClientSetPlayerPos_1.LevelEventClientSetPlayerPos);
     e("LockEntity", LevelEventLockEntity_1.LevelEventLockEntity, LEVEL_1);
@@ -283,11 +294,14 @@ class LevelEventCenter {
     e("DisableEntityLookAt", LevelEventDisableEntityLookAt_1.LevelEventDisableEntityLookAt);
     e("PlayWalkingOverlayMontage", LevelEventPlayWalkingOverlayMontage_1.LevelEventPlayWalkingOverlayMontage);
     e("CloseWalkingOverlayMontage", LevelEventCloseWalkingOverlayMontage_1.LevelEventCloseWalkingOverlayMontage);
+    e("NpcLeisureInteract", LevelEventNpcLeisureInteract_1.LevelEventNpcLeisureInteract);
+    e("PlayFlow", LevelEventClientPlayFlow_1.LevelEventClientPlayFlow, LEVEL_1);
     e("ChangeEntityState", LevelEventChangeEntityState_1.LevelEventChangeEntityState, LEVEL_1, true);
     e("ChangeSelfEntityState", LevelEventChangeSelfEntityState_1.LevelEventChangeSelfEntityState);
     e("ChangeNpcPerformState", LevelEventChangeNpcPerformState_1.LevelEventChangeNpcPerformState);
     e("SwitchDataLayers", LevelEventSwitchDataLayers_1.LevelEventSwitchDataLayers);
     e("WaitUntilLevelSequenceReachMark", LevelEventWaitSceneRefEntityPlaySequence_1.LevelEventWaitSceneRefEntityPlaySequence, LEVEL_1);
+    e("SendClientEvent", LevelEventSendClientEvent_1.LevelEventSendClientEvent);
     e(LevelGameplayActionsDefine_1.ActionSetNpcPosition.name, LevelEventSetNpcPosition_1.LevelEventSetNpcPosition);
     e(LevelGameplayActionsDefine_1.ActionPlotInterludeAction.name, LevelEventPlotInterludeAction_1.LevelEventPlotInterludeAction, LEVEL_1);
     e(LevelGameplayActionsDefine_1.ActionSetSeqCameraTransform.name, LevelEventSetupSeqCamera_1.LevelEventSetupSeqCamera);
@@ -305,6 +319,7 @@ class LevelEventCenter {
     e("VehiclePlayPassengerVoice", LevelEventVehiclePlayPassengerVoice_1.LevelEventVehiclePlayPassengerVoice);
     e("VehicleMoveWithPathLine", LevelEventVehicleMoveWithPathLine_1.LevelEventVehicleMoveWithPathLine);
     e("VehicleSprint", LevelEventVehicleSprint_1.LevelEventVehicleSprint);
+    e("SetMotorSpeed", LevelEventSetMotorSpeed_1.LevelEventSetMotorSpeed);
     if (Info_1.Info.IsPlayInEditor) {
       e("SetActorVar", LevelEventSetDemoActorVar_1.LevelEventSetDemoActorVar);
       e("RunActorCustomEvent", LevelEventRunDemoActorCustomEvent_1.LevelEventRunDemoActorCustomEvent);
@@ -319,6 +334,7 @@ class LevelEventCenter {
     e("SetSkillButtonEffect", LevelEventSetSkillButtonEffect_1.LevelEventSetSkillButtonEffect);
     e("SetNpcGroupPerform", LevelEventSetNpcGroupPerform_1.LevelEventSetNpcGroupPerform);
     e("RemoveNpcGroupPerform", LevelEventRemoveNpcGroupPerform_1.LevelEventRemoveNpcGroupPerform);
+    e("HonamiStoryInteractPickUp", LevelEventHonamiStoryInteractPickUp_1.LevelEventHonamiStoryInteractPickUp);
   }
   static GetEvent(t) {
     var n = this.HLe.get(t);

@@ -11,17 +11,17 @@ const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const Global_1 = require("../../Global");
 class GamepadPsFeedbackModule {
   constructor() {
-    this.K_d = ResourceSystem_1.ResourceSystem.InvalidId;
+    this.e1d = ResourceSystem_1.ResourceSystem.InvalidId;
   }
-  X_d() {
-    if (this.K_d !== ResourceSystem_1.ResourceSystem.InvalidId && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.K_d), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("PsGamepadFeedback", 10, "资源加载取消", ["路径", this.K_d]);
+  t1d() {
+    if (this.e1d !== ResourceSystem_1.ResourceSystem.InvalidId && (ResourceSystem_1.ResourceSystem.CancelAsyncLoad(this.e1d), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("PsGamepadFeedback", 10, "资源加载取消", ["路径", this.e1d]);
     }
   }
   async PlayFeedback(o, e) {
     if (Global_1.Global.CharacterController) {
-      this.X_d();
-      const t = new CustomPromise_1.CustomPromise();
+      this.t1d();
+      const a = new CustomPromise_1.CustomPromise();
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PsGamepadFeedback", 10, "资源加载开始", ["路径", e]);
       }
@@ -30,22 +30,22 @@ class GamepadPsFeedbackModule {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("PsGamepadFeedback", 10, "资源加载完成", ["路径", s]);
         }
-        this.K_d = ResourceSystem_1.ResourceSystem.InvalidId;
-        t.SetResult();
-      }, 102);
+        this.e1d = ResourceSystem_1.ResourceSystem.InvalidId;
+        a.SetResult();
+      }, 102, "Ui.GamepadUi");
       if (e !== ResourceSystem_1.ResourceSystem.InvalidId) {
-        this.K_d = e;
+        this.e1d = e;
       }
-      await t.Promise;
-      this.K_d = ResourceSystem_1.ResourceSystem.InvalidId;
+      await a.Promise;
+      this.e1d = ResourceSystem_1.ResourceSystem.InvalidId;
     }
   }
   StopFeedback() {
-    this.X_d();
+    this.t1d();
     UE.TriggerEffectBPLibrary.TriggerEffectSetOffMode(Global_1.Global.CharacterController, 2, 0);
   }
   Clear() {
-    this.X_d();
+    this.t1d();
     UE.TriggerEffectBPLibrary.TriggerEffectSetOffMode(Global_1.Global.CharacterController, 2, 0);
   }
 }

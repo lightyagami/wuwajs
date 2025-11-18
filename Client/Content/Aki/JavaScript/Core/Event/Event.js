@@ -148,7 +148,7 @@ class Event {
       var o = v[0];
       var h = o.deref();
       if (h) {
-        if (i ? !i.IsInPendingRemove(o, n[0]) : !this.RCu(e, o)) {
+        if (i ? !i.IsInPendingRemove(n[0], o) : !this.RCu(e, o)) {
           if (v[1] === 1) {
             if (i) {
               this.xCu(e, o, n[0]);

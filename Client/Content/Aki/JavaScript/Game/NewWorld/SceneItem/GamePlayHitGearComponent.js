@@ -120,7 +120,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     };
     this.Zln = t => {
       if (this.lcn(t) && t.DamageId !== 0) {
-        var e = this.Entity.GetComponent(134);
+        var e = this.Entity.GetComponent(137);
         if (!e.IsInState(3)) {
           if (this.Etd(t)) {
             this._pn?.CollectSampleAndSend(true);
@@ -186,7 +186,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         case IComponent_1.EHitBulletType.FixedBulletId:
       }
     }
-    this.Entity.GetComponent(122).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
+    this.Entity.GetComponent(125).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
     t = this.Lo?.Patrol?.StateConditions;
     if (t && t.length > 0) {
       this._Pl = new Map();
@@ -216,17 +216,17 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     if (!this.Hte) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneGameplay", 29, "[SceneItemPatrolComponent.OnInit] SceneItemPatrolComponent初始化失败 Actor Component Undefined");
       }
       return false;
     }
-    this.Jun = this.Entity.GetComponent(155);
+    this.Jun = this.Entity.GetComponent(158);
     this.Jun.RegisterComponent(this, this.Lo);
     this._pn = this.Entity.GetComponent(67);
-    this.Gce = this.Entity.GetComponent(129);
+    this.Gce = this.Entity.GetComponent(132);
     this._pn?.SetEnableMovementSync(false, "GamePlayHitGearComponent OnStart默认关闭");
     if (this.icn && this.zun) {
       var t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(this.zun);
@@ -288,7 +288,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
       } else {
         for (var [i, o] of this._Pl) {
           var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
-          var n = i.Entity?.GetComponent(206);
+          var n = i.Entity?.GetComponent(209);
           if (n) {
             for (var [s, r] of o.TagListeners) {
               if (!r) {
@@ -428,7 +428,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
               if (t.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrOnlineInteractNoPermission) {
                 return undefined;
               } else {
-                ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16215);
+                ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22388);
                 return;
               }
             } else {
@@ -446,7 +446,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     });
   }
   IsCanBeManipulateLock() {
-    var t = this.Entity.GetComponent(197);
+    var t = this.Entity.GetComponent(200);
     return this.scn === -1590436469 && t.HasTag(-3775711);
   }
   GetHitPoint() {
@@ -469,7 +469,7 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
         if (!t?.Valid) {
           return false;
         }
-        t = t.Entity?.GetComponent(206);
+        t = t.Entity?.GetComponent(209);
         if (!t) {
           return false;
         }
@@ -486,5 +486,5 @@ let GamePlayHitGearComponent = GamePlayHitGearComponent_1 = class GamePlayHitGea
     }
   }
 };
-GamePlayHitGearComponent = GamePlayHitGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(141)], GamePlayHitGearComponent);
+GamePlayHitGearComponent = GamePlayHitGearComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(144)], GamePlayHitGearComponent);
 exports.GamePlayHitGearComponent = GamePlayHitGearComponent; //# sourceMappingURL=GamePlayHitGearComponent.js.map

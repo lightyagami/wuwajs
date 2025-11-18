@@ -148,6 +148,7 @@ const LevelConditionGuideCommon_1 = require("./LevelConditionGuideCommon");
 const LevelConditionHasBuff_1 = require("./LevelConditionHasBuff");
 const LevelConditionHasNotInvitedRoleInSpring25_1 = require("./LevelConditionHasNotInvitedRoleInSpring25");
 const LevelConditionHideSettingInCloudGame_1 = require("./LevelConditionHideSettingInCloudGame");
+const LevelConditionHonamiStoryGuide_1 = require("./LevelConditionHonamiStoryGuide");
 const LevelConditionInTowerDefenceBattle_1 = require("./LevelConditionInTowerDefenceBattle");
 const LevelConditionInvokeCheckedByEvent_1 = require("./LevelConditionInvokeCheckedByEvent");
 const LevelConditionIsPlayer_1 = require("./LevelConditionIsPlayer");
@@ -161,12 +162,16 @@ const LevelConditionMovieRogueGuide_1 = require("./LevelConditionMovieRogueGuide
 const LevelConditionOnActivitySubViewDone_1 = require("./LevelConditionOnActivitySubViewDone");
 const LevelConditionOnChangeBossRushBuff_1 = require("./LevelConditionOnChangeBossRushBuff");
 const LevelConditionOnCostInsufficient_1 = require("./LevelConditionOnCostInsufficient");
+const LevelConditionOnEnterOrExitBattle_1 = require("./LevelConditionOnEnterOrExitBattle");
 const LevelConditionOnFishingBackpackBtnStateChange_1 = require("./LevelConditionOnFishingBackpackBtnStateChange");
 const LevelConditionOnFishingBackpackQuickSellToggleShow_1 = require("./LevelConditionOnFishingBackpackQuickSellToggleShow");
 const LevelConditionOnFishingQteScoreReachedMaximum_1 = require("./LevelConditionOnFishingQteScoreReachedMaximum");
+const LevelConditionOnHonamiStoryLifeSupportChange_1 = require("./LevelConditionOnHonamiStoryLifeSupportChange");
+const LevelConditionOnPickUpHonamiStoryItem_1 = require("./LevelConditionOnPickUpHonamiStoryItem");
 const LevelConditionOnPlayerRevive_1 = require("./LevelConditionOnPlayerRevive");
 const LevelConditionOnPlayerTitleUnlock_1 = require("./LevelConditionOnPlayerTitleUnlock");
 const LevelConditionOnPlayerUseSkill_1 = require("./LevelConditionOnPlayerUseSkill");
+const LevelConditionOnSceneItemDurabilityEmpty_1 = require("./LevelConditionOnSceneItemDurabilityEmpty");
 const LevelConditionOnShowPhantomInFormation_1 = require("./LevelConditionOnShowPhantomInFormation");
 const LevelConditionOnSkillButtonDataRefresh_1 = require("./LevelConditionOnSkillButtonDataRefresh");
 const LevelConditionOnTakingPhoto_1 = require("./LevelConditionOnTakingPhoto");
@@ -204,10 +209,10 @@ class LevelConditionCenter {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 音乐节拍开始计数", ["MusicEventType", e]);
     }
-    this.Imd.set(e, 0);
+    this.Lgd.set(e, 0);
   }
   static AddMusicBeatCounter(e) {
-    var i = this.Imd.get(e);
+    var i = this.Lgd.get(e);
     if (i === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 79, "[音乐节拍] 添加音乐节拍计数失败, 音乐类型计数器不存在", ["EMusicEventType", e]);
@@ -216,11 +221,11 @@ class LevelConditionCenter {
       if (LevelConditionCenter.MusicBeatLogOpen && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelCondition", 79, "[音乐节拍] 音乐节拍增加计数", ["MusicEventType", e], ["BeatCount", i + 1]);
       }
-      this.Imd.set(e, i + 1);
+      this.Lgd.set(e, i + 1);
     }
   }
   static GetMusicBeatCounter(e) {
-    return this.Imd.get(e);
+    return this.Lgd.get(e);
   }
   static RegistConditions() {
     this.$Te(E_LGC.DistanceLess, LevelConditionDistanceLess_1.LevelConditionDistanceLess);
@@ -432,6 +437,11 @@ class LevelConditionCenter {
     this.$Te(E_LGC.CheckFightPhotoHasTarget, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoHasTarget);
     this.$Te(E_LGC.CheckFightPhotoLevelFinished, LevelConditionFightPhotoGuide_1.LevelConditionCheckFightPhotoLevelFinished);
     this.$Te(E_LGC.CheckCalabashChildFunctionOpen, LevelConditionCalabashGuide_1.LevelConditionCheckCalabashChildFunctionOpen);
+    this.$Te(E_LGC.OnEnterOrExitBattle, LevelConditionOnEnterOrExitBattle_1.LevelConditionOnEnterOrExitBattle, [EventDefine_1.EEventName.OnBattleStateChanged]);
+    this.$Te(E_LGC.OnHonamiStoryLifeSupportChange, LevelConditionOnHonamiStoryLifeSupportChange_1.LevelConditionOnHonamiStoryLifeSupportChange, [EventDefine_1.EEventName.OnHonamiStoryLifeSupportChanged]);
+    this.$Te(E_LGC.OnPickUpHonamiStoryItem, LevelConditionOnPickUpHonamiStoryItem_1.LevelConditionOnPickUpHonamiStoryItem, [EventDefine_1.EEventName.OnPickUpHonamiStoryItem]);
+    this.$Te(E_LGC.OnSceneItemDurabilityEmpty, LevelConditionOnSceneItemDurabilityEmpty_1.LevelConditionOnSceneItemDurabilityEmpty, [EventDefine_1.EEventName.OnSceneItemDurabilityEmpty]);
+    this.$Te(E_LGC.CheckPickUpHonamiStoryItemType, LevelConditionHonamiStoryGuide_1.LevelConditionCheckPickUpHonamiStoryItemType, [EventDefine_1.EEventName.OnPickUpHonamiStoryItem]);
     this.$Te("CheckChildQuestFinished", LevelConditionQuestStepState_1.LevelConditionQuestStepState);
     this.$Te("CompareQuestState", LevelConditionQuestState_1.LevelConditionQuestState);
     this.$Te("CompareEntityState", LevelConditionEntityState_1.LevelConditionEntityState);
@@ -537,4 +547,4 @@ LevelConditionCenter.zTe = new Map();
 LevelConditionCenter.eLe = undefined;
 LevelConditionCenter.ZTe = new Map();
 LevelConditionCenter.MusicBeatLogOpen = false;
-LevelConditionCenter.Imd = new Map(); //# sourceMappingURL=LevelConditionCenter.js.map
+LevelConditionCenter.Lgd = new Map(); //# sourceMappingURL=LevelConditionCenter.js.map

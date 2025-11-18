@@ -15,7 +15,7 @@ class LevelEventPlayWalkingOverlayMontage extends LevelGeneralBase_1.LevelEventB
     super(...arguments);
     this.gLe = undefined;
     this.sDe = undefined;
-    this.bud = 0;
+    this.Dud = 0;
     this.zpe = (e, t) => {
       if (this.sDe === t) {
         if (Log_1.Log.CheckInfo()) {
@@ -24,8 +24,8 @@ class LevelEventPlayWalkingOverlayMontage extends LevelGeneralBase_1.LevelEventB
         if (EventSystem_1.EventSystem.HasWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
           EventSystem_1.EventSystem.RemoveWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
         }
-        if (this.bud) {
-          PlayMontageUtils_1.PlayMontageUtils.ClearAndStopMontage(this.bud);
+        if (this.Dud) {
+          PlayMontageUtils_1.PlayMontageUtils.ClearAndStopMontage(this.Dud);
         }
         this.FinishExecute(true);
       }
@@ -38,18 +38,18 @@ class LevelEventPlayWalkingOverlayMontage extends LevelGeneralBase_1.LevelEventB
   ExecuteWhenEntitiesReady() {
     var e;
     var t;
-    if (this.gLe && (e = (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.gLe.EntityId))?.Entity?.GetComponent(178), t) && e && (this.sDe = t, t = new PlayMontageUtils_1.PlayMontageConfig(this.gLe.RepeatTimes, this.gLe.LoopDuration), this.bud = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(e, this.gLe.OverlapMontageId, t), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("LevelEvent", 42, "[OverlayMontage] 开始播放", ["PbDataId", this.gLe.EntityId], ["Uid", this.bud]);
+    if (this.gLe && (e = (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.gLe.EntityId))?.Entity?.GetComponent(181), t) && e && (this.sDe = t, t = new PlayMontageUtils_1.PlayMontageConfig(this.gLe.RepeatTimes, this.gLe.LoopDuration), this.Dud = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(e, this.gLe.OverlapMontageId, t), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("LevelEvent", 42, "[OverlayMontage] 开始播放", ["PbDataId", this.gLe.EntityId], ["Uid", this.Dud]);
     }
     this.FinishExecute(true);
   }
   OnReset() {
-    if (this.bud) {
-      PlayMontageUtils_1.PlayMontageUtils.ClearAndEndMontage(this.bud);
+    if (this.Dud) {
+      PlayMontageUtils_1.PlayMontageUtils.ClearAndEndMontage(this.Dud);
     }
     this.gLe = undefined;
     this.sDe = undefined;
-    this.bud = 0;
+    this.Dud = 0;
   }
 }
 exports.LevelEventPlayWalkingOverlayMontage = LevelEventPlayWalkingOverlayMontage;

@@ -49,7 +49,6 @@ const MIN_DELTA = 0;
 const MAX_DELTA = 0;
 const SCHEDULER_MINUS_FRAME_COUNT = 5;
 const DEFAULT_ENVIRONMENTTYPE = 255;
-const WP_WORLD_ID = 8;
 const IOS_STREAMING_POOL_SIZE = 250;
 const IOS_STREAMING_POOL_SIZE_FOR_MESHES = 250;
 const IOS_STREAMING_POOL_SIZE_IN_LOADING = 90;
@@ -74,7 +73,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.Register(25035, WorldController.RBn);
+    Net_1.Net.Register(17058, WorldController.RBn);
     TickSystem_1.TickSystem.Add(this.k1r.bind(this), "WorldController", 2);
     TickSystem_1.TickSystem.Add(this.Bbl.bind(this), "WorldController", 5, true);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wo.ParallelOffset 1");
@@ -91,7 +90,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-    Net_1.Net.UnRegister(25035);
+    Net_1.Net.UnRegister(17058);
     ModelManager_1.ModelManager.WorldModel.ControlPlayerLastLocation = undefined;
     if (this.LTl) {
       TimerSystem_1.GameplayTimerSystem.Remove(this.LTl);
@@ -186,22 +185,22 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
     if (this.Kr_()) {
       this.$r_ = 0;
-      this.Q5d();
-      let e = this.K5d;
+      this.zQd();
+      let e = this.JQd;
       while (e-- > 0) {
         this.Npr();
         this.Opr();
       }
     }
   }
-  static Q5d() {
+  static zQd() {
     if ((Info_1.Info.IsLowMemoryDevice ? LOW_MEMORY_PENDING_REMOVE_COUNT : MAX_PENDING_REMOVE_COUNT) < ModelManager_1.ModelManager.CreatureModel.PendingRemoveEntitySize()) {
-      this.K5d++;
+      this.JQd++;
     } else {
-      this.K5d--;
+      this.JQd--;
     }
-    if (this.K5d < 1) {
-      this.K5d = 1;
+    if (this.JQd < 1) {
+      this.JQd = 1;
     }
   }
   static Kr_() {
@@ -284,21 +283,21 @@ class WorldController extends ControllerBase_1.ControllerBase {
   static Fpr(e) {
     var t = e.Entity;
     var r = e.GetEntityType();
-    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(223)) {
+    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(226)) {
       e = e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId() || r === Protocol_1.Aki.Protocol.kks.Proto_Npc;
-      r = (r = t.GetComponent(159)) ? r.HasMoveAuthority() : e;
+      r = (r = t.GetComponent(162)) ? r.HasMoveAuthority() : e;
       t.GetComponent(1).SetAutonomous(e, r);
     }
   }
   static SetActorGravityDirection(e, t) {
-    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(237))) {
+    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(240))) {
       t.SetGravityDirect(e);
     }
   }
   static SetActorLocationAndRotation(e, t) {
     var r;
-    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(179)?.CharacterMovement)) {
-      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(179).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
+    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(182)?.CharacterMovement)) {
+      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(182).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
     }
   }
   static Vpr(e, t) {
@@ -473,9 +472,6 @@ class WorldController extends ControllerBase_1.ControllerBase {
     if (!l?.IsValid()) {
       return false;
     }
-    if (ModelManager_1.ModelManager.GameModeModel.MapId !== WP_WORLD_ID) {
-      return false;
-    }
     if (r === Protocol_1.Aki.Protocol.kks.Proto_Player || r === Protocol_1.Aki.Protocol.kks.Proto_Vision || i) {
       return false;
     }
@@ -500,9 +496,9 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
   }
   static RequestToNearestTeleport() {
-    Net_1.Net.Call(20179, Protocol_1.Aki.Protocol.ECs.create(), e => {
+    Net_1.Net.Call(16437, Protocol_1.Aki.Protocol.ECs.create(), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20896);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26433);
       }
     });
   }
@@ -734,7 +730,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
   }
   static Fbl(e) {
     this.p8l++;
-    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(206))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
+    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(209))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
   }
   static kbl(e, t) {
     if (this.mTl !== Time_1.Time.Frame) {
@@ -781,7 +777,7 @@ WorldController.mea = 0;
 WorldController.AK = false;
 WorldController.Xr_ = 0;
 WorldController.$r_ = 0;
-WorldController.K5d = 1;
+WorldController.JQd = 1;
 WorldController.RBn = e => {
   cpp_1.FuncOpenLibrary.TryOpen(e.KEs);
 };

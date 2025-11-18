@@ -68,14 +68,14 @@ class GameSettingsDeviceRender {
   static get PhysicalGBRam() {
     return this.ANa;
   }
-  static xYd(e, t) {
-    if (this.BYd === undefined) {
-      this.BYd = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileProfileName();
+  static cvm(e, t) {
+    if (this.dvm === undefined) {
+      this.dvm = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceProfileProfileName();
     }
     if (t) {
-      return e === this.BYd;
+      return e === this.dvm;
     } else {
-      return this.BYd.includes(e);
+      return this.dvm.includes(e);
     }
   }
   static IsTargetBaseProfile(e, t) {
@@ -94,10 +94,10 @@ class GameSettingsDeviceRender {
     this.xNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName();
     this.PNa = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetDeviceHardwareLevel();
     this.DriverDate = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIDriverDate();
-    this.IsAdreno = this.xYd("Adreno", false);
-    this.IsXuanJie = this.xYd("Xiaomi_O1", true);
+    this.IsAdreno = this.cvm("Adreno", false);
+    this.IsXuanJie = this.cvm("Xiaomi_O1", true);
     this.HU1 = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceModel();
-    this.Nud = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceMake();
+    this.Qud = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetMobileDeviceMake();
     this.CPUFrequency = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUFrequency();
     this.CPUCores = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUCores();
     this.CPUCoresIncludingHyperthreads = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetCPUCoresIncludingHyperthreads();
@@ -110,8 +110,8 @@ class GameSettingsDeviceRender {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkStart, GameSettingsDeviceRender.TempDisableFFXFIWhenSeqC);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, GameSettingsDeviceRender.RecoverFFXFITempStateFromSeqC);
     }
-    if (Info_1.Info.IsMobilePlatform() && !this.IsVulkanRHI() && this.Nud.includes("Xiaomi")) {
-      this.Vud = true;
+    if (Info_1.Info.IsMobilePlatform() && !this.IsVulkanRHI() && this.Qud.includes("Xiaomi")) {
+      this.Kud = true;
     }
     if (Platform_1.Platform.IsMobilePlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.UseClusteredDeferredShading -1");
@@ -203,7 +203,18 @@ class GameSettingsDeviceRender {
       case 12:
         break;
       case 15:
-        this.rml = 4;
+        if (GameSettingsManager_1.GameSettingsManager.IsPcHighestDevice()) {
+          this.rml = 5;
+        } else {
+          this.rml = 4;
+        }
+        break;
+      case 14:
+        if (GameSettingsManager_1.GameSettingsManager.IsPcVeryHighDevice()) {
+          this.rml = 4;
+        } else {
+          this.rml = 1;
+        }
         break;
       case 21:
       case 22:
@@ -211,7 +222,6 @@ class GameSettingsDeviceRender {
       case 32:
         break;
       case 13:
-      case 14:
       case 23:
       case 24:
       case 33:
@@ -250,10 +260,11 @@ class GameSettingsDeviceRender {
     if (this.IsDlssGpuDevice()) {
       e = GameSettingsDefine_1.EFunction.NVIDIADLSS;
       t = GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY;
+      i = 99;
     } else if (this.IsXess2Supported()) {
       e = GameSettingsDefine_1.EFunction.XESS2;
       t = GameSettingsDefine_1.EFunction.XESS2_QUALITY;
-    } else if (this.IsFsr3Supported()) {
+    } else if (this.IsFsr3Supported() && !this.IsFsr3FallbackToFsr()) {
       e = GameSettingsDefine_1.EFunction.FSR3;
       t = GameSettingsDefine_1.EFunction.FSR3_QUALITY;
     } else {
@@ -349,9 +360,6 @@ class GameSettingsDeviceRender {
       return false;
     }
   }
-  static IsAMD() {
-    return this.DNa === "AMD";
-  }
   static IsNvidia4060() {
     return this.DNa === "NVIDIA" && this.RNa.includes("4060");
   }
@@ -377,14 +385,14 @@ class GameSettingsDeviceRender {
   static KOu() {
     return Info_1.Info.PlatformType === 4 && this.DeviceScore > 500;
   }
-  static Zfd() {
+  static oCd() {
     return !!this.CPUBrand.includes("AMD") && !!this.CPUBrand.includes("X3D");
   }
   static WOu() {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Render", 68, "判断IsFrameRate120Device", ["this.CPUFrequency", this.CPUFrequency], ["this.CPUCoresIncludingHyperthreads", this.CPUCoresIncludingHyperthreads], ["this.AMDX3DCPU", this.Zfd()], ["this.IsLaptopCPU", this.IsLaptopCPU()], ["this.Is120FrameGPU", this.Is120FrameGPU()]);
+      Log_1.Log.Info("Render", 68, "判断IsFrameRate120Device", ["this.CPUFrequency", this.CPUFrequency], ["this.CPUCoresIncludingHyperthreads", this.CPUCoresIncludingHyperthreads], ["this.AMDX3DCPU", this.oCd()], ["this.IsLaptopCPU", this.IsLaptopCPU()], ["this.Is120FrameGPU", this.Is120FrameGPU()]);
     }
-    return (!!(this.CPUFrequency >= 3000) && !!(this.CPUCoresIncludingHyperthreads >= 16) || !!this.Zfd() || !!this.IsLaptopCPU()) && !!this.Is120FrameGPU();
+    return (!!(this.CPUFrequency >= 3000) && !!(this.CPUCoresIncludingHyperthreads >= 16) || !!this.oCd() || !!this.IsLaptopCPU()) && !!this.Is120FrameGPU();
   }
   static IsAndroidHighestResolutionDevice() {
     return this.DeviceType === 24;
@@ -501,6 +509,9 @@ class GameSettingsDeviceRender {
       return false;
     }
   }
+  static IsDlssSupported() {
+    return GameSettingsDeviceRender.IsNvidiaDlssPluginLoaded() && UE.DLSSLibrary.IsDLSSSupported();
+  }
   static IsDlss3GpuDevice() {
     if (this.DNa) {
       return this.DNa === "NVIDIA" && (!!this.RNa.includes("RTX 40") || !!this.RNa.includes("RTX 50"));
@@ -529,6 +540,9 @@ class GameSettingsDeviceRender {
   }
   static IsFFXFISupported() {
     return UE.KuroFFXFSR3BlueprintLibrary.IsSupported() && UE.KuroFFXFSR3BlueprintLibrary.SupportFI();
+  }
+  static IsFsr3FallbackToFsr() {
+    return this.IsFsr3Supported() && !(GameSettingsDeviceRender.GetD3D12Type() > 0);
   }
   static IsVulkanDevice() {
     var e = UE.KismetSystemLibrary.IsVulkanAutoDetectMode();
@@ -708,12 +722,12 @@ class GameSettingsDeviceRender {
         Log_1.Log.Info("Game", 47, "EnableDLSSG 0");
       }
     } else if (this.Xn_ && (this.ApplyFrameRate(0), this.IsRTX50() ? e === 1 ? UE.StreamlineLibraryDLSSG.SetDLSSGMode(17) : e === 2 ? UE.StreamlineLibraryDLSSG.SetDLSSGMode(23) : e === 3 && UE.StreamlineLibraryDLSSG.SetDLSSGMode(31) : UE.StreamlineLibraryDLSSG.SetDLSSGMode(251), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Game", 47, "EnableDLSSG", ["Mode", this.uLd]);
+      Log_1.Log.Info("Game", 47, "EnableDLSSG", ["Mode", this.GAd]);
     }
   }
   static EnableDLSSG(e) {
     this.Xn_ = e !== 0;
-    if ((this.uLd = e) === 0) {
+    if ((this.GAd = e) === 0) {
       UE.StreamlineLibraryReflex.SetReflexMode(0);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 47, "SetReflexMode 0");
@@ -734,7 +748,7 @@ class GameSettingsDeviceRender {
     }
   }
   static CancelTemporaryDisableDLSSG(e) {
-    if (GameSettingsDeviceRender.IsDlss3GpuDevice() && GameSettingsDeviceRender.IsNvidiaStreamlinePluginLoaded() && (this.cZ_.delete(e), this.cZ_.size === 0 && GameSettingsDeviceRender.IsEnableDLSSG() && GameSettingsDeviceRender.ApplyDLSSG(this.uLd), Log_1.Log.CheckInfo())) {
+    if (GameSettingsDeviceRender.IsDlss3GpuDevice() && GameSettingsDeviceRender.IsNvidiaStreamlinePluginLoaded() && (this.cZ_.delete(e), this.cZ_.size === 0 && GameSettingsDeviceRender.IsEnableDLSSG() && GameSettingsDeviceRender.ApplyDLSSG(this.GAd), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Functional", 47, "recover DLSSG", ["key", e], ["num", this.cZ_.size]);
     }
   }
@@ -813,43 +827,43 @@ class GameSettingsDeviceRender {
   }
   static EnableXeSS(e) {
     if (e) {
-      this.wVd += 1;
+      this.MWd += 1;
     } else {
-      --this.wVd;
+      --this.MWd;
     }
-    if (this.wVd > 0) {
+    if (this.MWd > 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeSS.Enabled 1");
     } else {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeSS.Enabled 0");
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 0, "EnableXeSS", ["XessEnabled", this.wVd]);
+      Log_1.Log.Debug("Game", 0, "EnableXeSS", ["XessEnabled", this.MWd]);
     }
   }
   static EnableXeFG(e) {
     if (e) {
-      this.LVd += 1;
+      this.EWd += 1;
     } else {
-      --this.LVd;
+      --this.EWd;
     }
-    if (this.LVd > 0) {
+    if (this.EWd > 0) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeFG.Enabled 1");
     } else {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.XeFG.Enabled 0");
     }
-    GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.wVd > 0 && this.LVd > 0);
+    GameSettingsDeviceRender.ApplyUnlimitedFrameRate(this.MWd > 0 && this.EWd > 0);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Game", 0, "EnableXeFG", ["XefgEnabled", this.LVd]);
+      Log_1.Log.Debug("Game", 0, "EnableXeFG", ["XefgEnabled", this.EWd]);
     }
   }
   static TemporaryDisableXefg(e) {
-    if (GameSettingsDeviceRender.IsXess2Supported() && (this.PVd.size == 0 && this.EnableXeFG(false), this.PVd.set(e, 1), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Functional", 47, "disable XeFG temploary", ["key", e], ["num", this.PVd.size]);
+    if (GameSettingsDeviceRender.IsXess2Supported() && (this.IWd.size == 0 && this.EnableXeFG(false), this.IWd.set(e, 1), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Functional", 47, "disable XeFG temploary", ["key", e], ["num", this.IWd.size]);
     }
   }
   static CancelTemporaryDisableXefg(e) {
-    if (this.PVd.has(e) && GameSettingsDeviceRender.IsXess2Supported() && (this.PVd.delete(e), this.PVd.size == 0 && this.EnableXeFG(true), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Functional", 47, "enable XeFG temploary", ["key", e], ["num", this.PVd.size]);
+    if (this.IWd.has(e) && GameSettingsDeviceRender.IsXess2Supported() && (this.IWd.delete(e), this.IWd.size == 0 && this.EnableXeFG(true), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Functional", 47, "enable XeFG temploary", ["key", e], ["num", this.IWd.size]);
     }
   }
   static TemporaryDisableFrameGeneration(e) {
@@ -889,16 +903,35 @@ class GameSettingsDeviceRender {
   static ApplyFrameRate(e) {
     let t = 0;
     let i = 0;
-    if (e > 0 && (this.BNa = MathUtils_1.MathUtils.Clamp(e, 24, 120), this.bNa = 1 / this.BNa, t = this.BNa, this.yve > 0 && (t = this.yve), i = t, Info_1.Info.IsMobilePlatform()) && (s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSupportedRefreshRates(), this.Nxu && (t *= 2), t < s.Get(0))) {
-      t = s.Get(0);
+    if (e > 0) {
+      this.BNa = MathUtils_1.MathUtils.Clamp(e, 24, 120);
+      this.bNa = 1 / this.BNa;
+      t = this.BNa;
+      if (this.yve > 0) {
+        t = this.yve;
+      }
+      i = t;
+      if (Info_1.Info.IsMobilePlatform()) {
+        if (this.Nxu) {
+          t *= 2;
+        }
+        var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSupportedRefreshRates();
+        var a = [];
+        for (let e = 0; e < s.Num(); e++) {
+          a.push(s.Get(e));
+        }
+        a.sort((e, t) => e - t);
+        var r = a.find(e => e >= t);
+        t = r !== undefined ? r : a[a.length - 1];
+      }
     }
-    if (this.Vud) {
+    if (this.Kud) {
       t = 60;
     }
-    var s = UE.GameUserSettings.GetGameUserSettings();
-    s.SetFrameRateLimit(i);
-    s.SetFramePace(t);
-    s.ApplySettings(true);
+    r = UE.GameUserSettings.GetGameUserSettings();
+    r.SetFrameRateLimit(i);
+    r.SetFramePace(t);
+    r.ApplySettings(true);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Render", 91, "ApplyFrameRate", ["InputFrameRate", e]);
     }
@@ -1093,8 +1126,8 @@ GameSettingsDeviceRender.RNa = "";
 GameSettingsDeviceRender.UNa = "";
 GameSettingsDeviceRender.DeviceScore = 0;
 GameSettingsDeviceRender.LowMemoryDeviceMark = 0;
-GameSettingsDeviceRender.Nud = "";
-GameSettingsDeviceRender.Vud = false;
+GameSettingsDeviceRender.Qud = "";
+GameSettingsDeviceRender.Kud = false;
 GameSettingsDeviceRender.xNa = "";
 GameSettingsDeviceRender.PNa = 0;
 GameSettingsDeviceRender.DeviceType = 14;
@@ -1105,17 +1138,17 @@ GameSettingsDeviceRender.Vve = undefined;
 GameSettingsDeviceRender.yve = 0;
 GameSettingsDeviceRender.BNa = 0;
 GameSettingsDeviceRender.Xn_ = false;
-GameSettingsDeviceRender.uLd = 0;
+GameSettingsDeviceRender.GAd = 0;
 GameSettingsDeviceRender.NQ1 = false;
 GameSettingsDeviceRender.Nxu = false;
 GameSettingsDeviceRender.bNa = -0;
 GameSettingsDeviceRender.Tve = new Set();
 GameSettingsDeviceRender.PerformanceLimitRunning = new Map();
 GameSettingsDeviceRender.InCacheSceneColorMode = 0;
-GameSettingsDeviceRender.BYd = undefined;
+GameSettingsDeviceRender.dvm = undefined;
 GameSettingsDeviceRender.Gsc = new Map();
 GameSettingsDeviceRender.cZ_ = new Map();
 GameSettingsDeviceRender.VQ1 = new Map();
-GameSettingsDeviceRender.wVd = 0;
-GameSettingsDeviceRender.LVd = 0;
-GameSettingsDeviceRender.PVd = new Map(); //# sourceMappingURL=GameSettingsDeviceRender.js.map
+GameSettingsDeviceRender.MWd = 0;
+GameSettingsDeviceRender.EWd = 0;
+GameSettingsDeviceRender.IWd = new Map(); //# sourceMappingURL=GameSettingsDeviceRender.js.map

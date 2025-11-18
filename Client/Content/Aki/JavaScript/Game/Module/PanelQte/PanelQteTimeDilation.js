@@ -33,7 +33,7 @@ class PanelQteTimeDilation {
       this.UOi = this.ROi;
       this.ROi = 1;
       this.sDe = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
-      if (this.sDe?.IsInit && (t = this.sDe.Entity.GetComponent(123))) {
+      if (this.sDe?.IsInit && (t = this.sDe.Entity.GetComponent(126))) {
         this.Hhn = t.SetTimeScale(TIME_SCALE_PRIORITY, this.UOi, undefined, MAX_TIME_SCALE_TIME, 7);
       }
     } else {
@@ -57,7 +57,7 @@ class PanelQteTimeDilation {
         Log_1.Log.Debug("PanelQte", 17, "联机下界面QTE时停结束");
       }
       this.UOi = 1;
-      if (this.sDe?.IsInit && this.Hhn > 0 && (t = this.sDe.Entity.GetComponent(123))) {
+      if (this.sDe?.IsInit && this.Hhn > 0 && (t = this.sDe.Entity.GetComponent(126))) {
         t.RemoveTimeScale(this.Hhn);
       }
       this.sDe = undefined;

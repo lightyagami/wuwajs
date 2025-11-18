@@ -21,7 +21,7 @@ class PhonographController extends UiControllerBase_1.UiControllerBase {
   static async UnlockMusicRequest(e) {
     var r = new Protocol_1.Aki.Protocol._p_();
     r.bMs = e;
-    var e = await Net_1.Net.CallAsync(15988, r);
+    var e = await Net_1.Net.CallAsync(19309, r);
     if (!e) {
       return false;
     }
@@ -36,7 +36,7 @@ class PhonographController extends UiControllerBase_1.UiControllerBase {
   static SwitchMusicRequest(r, o) {
     var e = new Protocol_1.Aki.Protocol.mp_();
     e.SPl = r;
-    Net_1.Net.Call(21808, e, e => {
+    Net_1.Net.Call(17716, e, e => {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhonographSwitchMusicSuccess");
         ModelManager_1.ModelManager.PhonographModel.RecordMusicId = r;
@@ -46,12 +46,12 @@ class PhonographController extends UiControllerBase_1.UiControllerBase {
   }
   static async GetMusicInfoRequest() {
     var e = new Protocol_1.Aki.Protocol.up_();
-    var e = await Net_1.Net.CallAsync(21429, e);
+    var e = await Net_1.Net.CallAsync(26661, e);
     if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
       ModelManager_1.ModelManager.PhonographModel.UnlockMusicIds = e.tL_;
       return e;
     }
-    ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21429);
+    ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26661);
   }
   static PlayMusic(e, r = true) {
     var o = ModelManager_1.ModelManager.PhonographModel?.EntityActor;

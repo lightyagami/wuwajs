@@ -54,7 +54,7 @@ class SkillButtonUiGamepadData {
     this.Fyo = undefined;
     this.Vyo = undefined;
     this.Hyo = undefined;
-    this.l4d = undefined;
+    this.vjd = undefined;
     this.jyo = false;
     this.IsShowCombineButton = false;
     this.VRn = false;
@@ -172,9 +172,9 @@ class SkillButtonUiGamepadData {
     if (this.Oyo === InputMappingsDefine_1.actionMappings.攻击) {
       s = [];
       InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.攀爬)?.GetKeyNameList(s);
-      this.l4d = s;
+      this.vjd = s;
     } else {
-      this.l4d = undefined;
+      this.vjd = undefined;
     }
     this.Gyo.clear();
     for (const g of initActionNames) {
@@ -427,7 +427,7 @@ class SkillButtonUiGamepadData {
   rIo() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t?.Valid) {
-      var i = t.Entity.CheckGetComponent(206);
+      var i = t.Entity.CheckGetComponent(209);
       this.Climbing = i.HasTag(504239013);
       this.CurStateTagId = 0;
       this.StateButtonTypeList = undefined;
@@ -491,7 +491,7 @@ class SkillButtonUiGamepadData {
     var t;
     var i;
     var e = this.GetBehaviorButtonDataByButtonType(101);
-    return !!e && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(176).DirectionState, i = e.State, t === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? e.State = 1 : e.State = 0, i !== e.State);
+    return !!e && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && (t = t.Entity.GetComponent(179).DirectionState, i = e.State, t === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? e.State = 1 : e.State = 0, i !== e.State);
   }
   vEa() {
     var t = ModelManager_1.ModelManager.BattleUiModel.FormationData.GetFollowerAiming();
@@ -527,8 +527,8 @@ class SkillButtonUiGamepadData {
             }
             t.SetCustomAction("Gamepad_RightThumbstick", InputMappingsDefine_1.actionMappings.攻击);
             t.SetActionEnable(InputMappingsDefine_1.actionMappings.攀爬, false);
-            if (this.l4d) {
-              for (const e of this.l4d) {
+            if (this.vjd) {
+              for (const e of this.vjd) {
                 if (e !== "Gamepad_RightTrigger") {
                   t.SetCustomAction(e, InputMappingsDefine_1.actionMappings.攀爬);
                 }
@@ -562,8 +562,8 @@ class SkillButtonUiGamepadData {
         for (const a of this.Hyo) {
           t.ResetAllCustomAction(a);
         }
-        if (this.l4d) {
-          for (const h of this.l4d) {
+        if (this.vjd) {
+          for (const h of this.vjd) {
             if (h !== "Gamepad_RightTrigger") {
               t.ResetAllCustomAction(h);
             }

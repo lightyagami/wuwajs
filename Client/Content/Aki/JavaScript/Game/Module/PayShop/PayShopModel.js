@@ -13,6 +13,7 @@ const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const HonamiStoryUtil_1 = require("../HonamiStory/HonamiStoryUtil");
 const PayShopGoods_1 = require("./PayShopData/PayShopGoods");
 const PayShopGoodsData_1 = require("./PayShopData/PayShopGoodsData");
 const PayShopInfoData_1 = require("./PayShopData/PayShopInfoData");
@@ -23,15 +24,16 @@ const DEFAULTTAB = 1;
 class PayShopModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.dxd = new Map();
+    this.m2d = new Map();
     this.DFi = new Map();
     this.uFi = new Map();
-    this.mxd = new Array();
-    this.fxd = new Map();
+    this.f2d = new Array();
+    this.g2d = new Map();
     this.UFi = "";
     this.AFi = 0;
     this.PFi = false;
     this.xFi = new Array();
+    this.BusinessCompliance = false;
     this.L4a = (e, t) => e.GetGoodsData().GetSortValue() !== t.GetGoodsData().GetSortValue() ? e.GetGoodsData().GetSortValue() - t.GetGoodsData().GetSortValue() : e.GetGoodsId() - t.GetGoodsId();
     this.A4a = (e, t) => e.GetItemData().Quality !== t.GetItemData().Quality ? t.GetItemData().Quality - e.GetItemData().Quality : e.GetGoodsData().GetSortValue() !== t.GetGoodsData().GetSortValue() ? e.GetGoodsData().GetSortValue() - t.GetGoodsData().GetSortValue() : e.GetGoodsId() - t.GetGoodsId();
     this.Qjs = (e, t) => {
@@ -116,22 +118,22 @@ class PayShopModel extends ModelBase_1.ModelBase {
   SetPayShopRecommendData(e) {
     for (const a of e) {
       var t = a.s5n;
-      var o = this.fxd.get(t);
+      var o = this.g2d.get(t);
       if (o) {
         o.Phrase(a);
       } else {
         (o = new PayShopRecommendData_1.PayShopRecommendData()).Phrase(a);
-        this.fxd.set(t, o);
+        this.g2d.set(t, o);
       }
     }
   }
   SetPayShopTabData(e) {
     if (e.length !== 0) {
-      this.mxd = [];
+      this.f2d = [];
       for (const o of e) {
         var t = new PayShopTabData_1.PayShopTabData();
         t.Phrase(o);
-        this.mxd.push(t);
+        this.f2d.push(t);
       }
     }
   }
@@ -158,8 +160,8 @@ class PayShopModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshGoodsList, a);
   }
   GetPayShopInfoById(e) {
-    if (this.dxd.get(e)) {
-      return this.dxd.get(e);
+    if (this.m2d.get(e)) {
+      return this.m2d.get(e);
     }
   }
   BFi(e) {
@@ -171,9 +173,9 @@ class PayShopModel extends ModelBase_1.ModelBase {
       this.qFi(r, t);
     }
     this.DFi.set(t, a);
-    o = this.dxd.get(t) ?? new PayShopInfoData_1.PayShopInfoData();
+    o = this.m2d.get(t) ?? new PayShopInfoData_1.PayShopInfoData();
     o.Phrase(e);
-    this.dxd.set(t, o);
+    this.m2d.set(t, o);
     this.PFi = true;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Shop", 10, "PayShop:Root 刷新商城数据", ["ShopId", t], ["goodsLength", a.size]);
@@ -478,7 +480,8 @@ class PayShopModel extends ModelBase_1.ModelBase {
     return false;
   }
   GetPayShopItemQualitySpriteByItemIdAndQuality(e, t) {
-    return (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 13 ? ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(t) : ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(t)).PayShopQualitySprite;
+    var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e);
+    return (o === 13 ? ConfigManager_1.ConfigManager.DangoAbyssConfig.GetAbyssQualityById(t) : o === 17 || HonamiStoryUtil_1.HonamiStoryUtil.CheckIsPluginBoxItem(e) ? ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryQuality(t) : ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(t)).PayShopQualitySprite;
   }
   GetPayShopInfoTabViewType(e) {
     e = this.GetPayShopInfoById(e);
@@ -522,7 +525,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   }
   GetPayShopTableList(e) {
     var t = new Array();
-    for (const a of this.mxd) {
+    for (const a of this.f2d) {
       if (a.ShopId === e) {
         t.push(a);
       }
@@ -537,7 +540,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
     return o;
   }
   GetPayShopTabDataByPayShopIdAndTabId(e, t) {
-    for (const o of this.mxd) {
+    for (const o of this.f2d) {
       if (o.ShopId === e && o.TabId === t) {
         return o;
       }
@@ -546,7 +549,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   GetRecommendData() {
     var e;
     var t = new Array();
-    for ([, e] of this.fxd) {
+    for ([, e] of this.g2d) {
       t.push(e);
     }
     return t;
@@ -554,7 +557,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   GetNeedShowRecommendData() {
     var e;
     var t = new Array();
-    for ([, e] of this.fxd) {
+    for ([, e] of this.g2d) {
       if (e.Show) {
         t.push(e);
       }
@@ -562,7 +565,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
     return t;
   }
   GetRecommendDataById(e) {
-    return this.fxd.get(e);
+    return this.g2d.get(e);
   }
   ClearData() {
     this.DFi.clear();

@@ -43,7 +43,7 @@ class LevelEventPreload extends LevelGeneralBase_1.LevelEventBase {
         this.ZE1(e);
       }
       if (e.PreloadObjectType.Type === "PreloadLinkResource") {
-        this.uRd(e);
+        this.yLd(e);
       }
     }
   }
@@ -88,7 +88,7 @@ class LevelEventPreload extends LevelGeneralBase_1.LevelEventBase {
       }, WAITE_ENTITY_PRELOAD_TIME);
     }
   }
-  uRd(e) {
+  yLd(e) {
     const o = e.PreloadObjectType;
     ControllerHolder_1.ControllerHolder.BattleLinkController.PreloadRes(o.LinkResourceId).then(() => {
       if (Log_1.Log.CheckInfo()) {

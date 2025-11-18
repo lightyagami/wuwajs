@@ -89,7 +89,7 @@ class TsAnimNotifyStateDetectBox extends UE.KuroAnimNotifyState {
           }
           r.SendGameplayEventToActor(this.TagOnHit);
         } else {
-          r = t.Entity.GetComponent(206);
+          r = t.Entity.GetComponent(209);
           if (!r) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("AnimNotify", 20, "使用DetectBoxANS的角色没有BaseTagComponent", ["Owner", t.Owner?.GetName()], ["蒙太奇路径", UE.KismetSystemLibrary.GetPathName(e)]);
@@ -117,7 +117,7 @@ class TsAnimNotifyStateDetectBox extends UE.KuroAnimNotifyState {
       r.BoxElement.Dispose();
       detectStateMap.delete(i);
       if (t && !this.SendGamePlayEvent) {
-        r = t.Entity.GetComponent(206);
+        r = t.Entity.GetComponent(209);
         if (!r) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("AnimNotify", 20, "使用DetectSphereANS的角色没有BaseTagComponent", ["Owner", t.Owner?.GetName()], ["蒙太奇路径", UE.KismetSystemLibrary.GetPathName(e)]);

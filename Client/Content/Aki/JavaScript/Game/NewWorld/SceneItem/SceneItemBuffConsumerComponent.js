@@ -99,18 +99,18 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     if (this.Hte) {
-      this.wsn = this.Entity.GetComponent(197);
+      this.wsn = this.Entity.GetComponent(200);
       if (this.wsn) {
-        this.mBe = this.Entity.GetComponent(134);
+        this.mBe = this.Entity.GetComponent(137);
         if (this.mBe) {
           this.vtn = this.Entity.GetComponent(86);
           if (this.vtn) {
             if (!ModelManager_1.ModelManager.GameModeModel.IsMulti || ModelManager_1.ModelManager.PlayerInfoModel.GetId() === ModelManager_1.ModelManager.CreatureModel.GetWorldOwner()) {
               this.Wpo = this.Hte.CreatureData.GetCreatureDataId();
               this.wsn.AddTag(HIT_CONDITION_TAGID);
-              this.Xln = this.Entity.GetComponent(155);
+              this.Xln = this.Entity.GetComponent(158);
               this.Xln.RegisterComponent(this);
               this.vtn.AddOnPlayerOverlapCallback(this.Q1n);
             }
@@ -156,12 +156,12 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
       return false;
     }
     var e = e.CharacterActorComponent.Entity;
-    var t = e.CheckGetComponent(175);
+    var t = e.CheckGetComponent(178);
     if (!t) {
       return false;
     }
     let o = t.GetBuffTotalStackById(this.eHr) > 0;
-    t = e.CheckGetComponent(191);
+    t = e.CheckGetComponent(194);
     if (t) {
       o ||= (t.GetFormationBuffComp()?.GetBuffTotalStackById(this.eHr) ?? 0) > 0;
     }
@@ -191,5 +191,5 @@ let SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = class Sc
     });
   }
 };
-SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(204)], SceneItemBuffConsumerComponent);
+SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(207)], SceneItemBuffConsumerComponent);
 exports.SceneItemBuffConsumerComponent = SceneItemBuffConsumerComponent; //# sourceMappingURL=SceneItemBuffConsumerComponent.js.map

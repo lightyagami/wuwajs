@@ -22,7 +22,6 @@ const BuffItemControl_1 = require("../BuffItem/BuffItemControl");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const SceneTeamController_1 = require("../SceneTeam/SceneTeamController");
 const TeleportController_1 = require("../Teleport/TeleportController");
-const TeleportDefine_1 = require("../Teleport/TeleportDefine");
 const TowerDefenceController_1 = require("../TowerDefence/TowerDefenceController");
 const DeadReviveDefine_1 = require("./DeadReviveDefine");
 const TIME_TO_REVIVE = 3000;
@@ -35,22 +34,22 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnAddEvents() {
-    Net_1.Net.Register(26322, e => {
+    Net_1.Net.Register(17798, e => {
       DeadReviveController.r0a(e);
     });
-    Net_1.Net.Register(16490, e => {
+    Net_1.Net.Register(20498, e => {
       DeadReviveController.o0a(e);
     });
-    Net_1.Net.Register(20830, DeadReviveController.PLc);
-    Net_1.Net.Register(29861, DeadReviveController.RBc);
+    Net_1.Net.Register(18168, DeadReviveController.PLc);
+    Net_1.Net.Register(17707, DeadReviveController.RBc);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, DeadReviveController.hWe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRevive, DeadReviveController.g7r);
   }
   static OnRemoveEvents() {
-    Net_1.Net.UnRegister(26322);
-    Net_1.Net.UnRegister(16490);
-    Net_1.Net.UnRegister(20830);
-    Net_1.Net.UnRegister(29861);
+    Net_1.Net.UnRegister(17798);
+    Net_1.Net.UnRegister(20498);
+    Net_1.Net.UnRegister(18168);
+    Net_1.Net.UnRegister(17707);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, DeadReviveController.hWe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRevive, DeadReviveController.g7r);
   }
@@ -59,11 +58,11 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     if (!DeadReviveController.n0a) {
       (o = new Protocol_1.Aki.Protocol.z1s()).bVn = e;
       DeadReviveController.n0a = true;
-      Net_1.Net.Call(24790, o, e => {
+      Net_1.Net.Call(17060, o, e => {
         DeadReviveController.n0a = false;
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21637);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20168);
             r?.(false);
           } else {
             r?.(true);
@@ -154,25 +153,23 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
       l?.SetInputRotator(o);
       l?.SetActorLocationAndRotation(r, o, "复活流程", false);
     }
+    var t;
+    var n;
+    var i;
     DeadReviveController.i0a();
     ModelManager_1.ModelManager.DeadReviveModel.ClearReviveData();
-    if (e.R2s <= 0) {
-      TimerSystem_1.GameplayTimerSystem.Delay(DeadReviveController.PlayerReviveEnded, LOGIN_REVIVE);
-    } else {
-      var t;
-      var n;
-      var i;
+    if (!(e.R2s <= 0)) {
       if (DeadReviveController.xFt(r)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("World", 48, "播放剧情并进行无加载传送");
         }
-        if ((t = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig?.ReviveSequencePath) && t !== "") {
-          n = (t = t.split(","))[0];
-          i = Number(t[1]);
-          t = Number(t[2]);
+        if ((n = ModelManager_1.ModelManager.DeadReviveModel.ReviveConfig?.ReviveSequencePath) && n !== "") {
+          i = (n = n.split(","))[0];
+          t = Number(n[1]);
+          n = Number(n[2]);
           ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(0, 3, undefined, OPEN_FADE_DURATION);
-          n = ControllerHolder_1.ControllerHolder.FlowController.StartFlow(n, i, t);
-          ModelManager_1.ModelManager.DeadReviveModel.ReviveFlowIncId = n;
+          i = ControllerHolder_1.ControllerHolder.FlowController.StartFlow(i, t, n);
+          ModelManager_1.ModelManager.DeadReviveModel.ReviveFlowIncId = i;
           ModelManager_1.ModelManager.DeadReviveModel.RevivePosition = r;
           ModelManager_1.ModelManager.DeadReviveModel.ReviveRotator = o;
           ModelManager_1.ModelManager.DeadReviveModel.ReviveGravity = a;
@@ -181,22 +178,34 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
           DeadReviveController.fFn(r, o, a, "RevivePerform");
           return;
         }
-      }
-      if (e.ZCa) {
-        i = new TeleportDefine_1.TeleportContext(undefined, e.w2s, 1);
-        if (!(await TeleportController_1.TeleportController.TeleportToPosition(r, o, a, "SelfRevive", i))) {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("World", 48, "复活传送失败，复活结束");
-          }
-          DeadReviveController.PlayerReviveEnded();
-        }
       } else {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("World", 48, "复活执行无加载传送");
+        if (e.ZCa) {
+          ModelManager_1.ModelManager.TeleportModel.TeleportId = e.w2s;
+          if (ControllerHolder_1.ControllerHolder.TeleportController.UseNewTeleport) {
+            await ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayer("SelfRevive", r, o, a, 0).finally(() => {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("World", 79, "复活传送完成，复活结束");
+              }
+              DeadReviveController.PlayerReviveEnded();
+            });
+          } else {
+            await ControllerHolder_1.ControllerHolder.TeleportController.TeleportToPosition(r, o, a, "SelfRevive").finally(() => {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("World", 79, "复活传送完成，复活结束");
+              }
+              DeadReviveController.PlayerReviveEnded();
+            });
+          }
+        } else {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("World", 48, "复活执行无加载传送");
+          }
+          DeadReviveController.fFn(r, o, a, "NoLoadingRevive");
         }
-        DeadReviveController.fFn(r, o, a, "NoLoadingRevive");
+        return;
       }
     }
+    TimerSystem_1.GameplayTimerSystem.Delay(DeadReviveController.PlayerReviveEnded, LOGIN_REVIVE);
   }
   static xFt(e) {
     if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
@@ -207,7 +216,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     }
     let r = false;
     for (const o of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (o.Entity?.GetComponent(206)?.HasTag(-58810558)) {
+      if (o.Entity?.GetComponent(209)?.HasTag(-58810558)) {
         r = true;
         break;
       }
@@ -296,7 +305,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
     TeleportController_1.TeleportController.TeleportToPositionWithGravityNoLoading(e, r, o, a).finally(() => {
       SceneTeamController_1.SceneTeamController.ShowControlledRole(ModelManager_1.ModelManager.PlayerInfoModel.GetId());
       var e = new Protocol_1.Aki.Protocol.pCs();
-      Net_1.Net.Call(15195, e, () => {});
+      Net_1.Net.Call(21130, e, () => {});
       var e = ModelManager_1.ModelManager.DeadReviveModel.ChangeRoleIdAfterRevive;
       if (e && (e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e, {
         ParamType: 0,
@@ -334,7 +343,7 @@ class DeadReviveController extends UiControllerBase_1.UiControllerBase {
   static DLc(e) {
     var r = new Protocol_1.Aki.Protocol.Cec();
     r.Q6n = e;
-    Net_1.Net.Call(18770, r, () => {});
+    Net_1.Net.Call(16833, r, () => {});
   }
 }
 (exports.DeadReviveController = DeadReviveController).n0a = false;

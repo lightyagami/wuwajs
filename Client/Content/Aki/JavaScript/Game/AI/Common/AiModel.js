@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.AiModel = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const AiBehaviorTreeById_1 = require("../../../Core/Define/ConfigQuery/AiBehaviorTreeById");
-const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -39,8 +38,8 @@ class AiModel extends ModelBase_1.ModelBase {
     this.e$u = new Map();
     this.WZc = new Map();
     this.QZc = new Map();
-    this.Mud = new Map();
-    this.Eud = new Map();
+    this.wud = new Map();
+    this.Lud = new Map();
     this.KZc = new Map();
     this.XZc = new Map();
   }
@@ -109,21 +108,25 @@ class AiModel extends ModelBase_1.ModelBase {
   }
   SetAiBehaviorTree(e) {
     if (this.ZHu.has(e.Key) && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 覆盖AI行为树标识被覆盖", ["Key", e.Key]);
+      Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 覆盖AI行为树标识被覆盖", ["Key", e.Key], ["CurEntityIds", this.ZHu.get(e.Key)?.EntityIds], ["CurBehaviorTree", this.ZHu.get(e.Key)?.BehaviorTree], ["NewEntityIds", e?.EntityIds], ["NewBehaviorTree", e?.BehaviorTree]);
     }
     var t = AiBehaviorTreeById_1.configAiBehaviorTreeById.GetConfig(e.BehaviorTree);
     if (t) {
-      if (LevelGeneralController_1.LevelGeneralController.CheckConditionNew(e.RemoveCondition, undefined)) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发覆盖AI行为树时，满足移除条件，不处理", ["Entities", e.EntityIds], ["Id", e.BehaviorTree]);
-        }
-      } else {
-        this.ZHu.set(e.Key, e);
-        for (const o of e.EntityIds) {
-          var i = EntitySystem_1.EntitySystem.Get(o);
-          if (i?.Valid) {
-            i.GetComponent(47)?.ChangeAiBehaviorTree(t.BtPath);
+      if (e.RemoveCondition) {
+        if (LevelGeneralController_1.LevelGeneralController.CheckConditionNew(e.RemoveCondition, undefined)) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发覆盖AI行为树时，满足移除条件，不处理", ["Entities", e.EntityIds], ["Id", e.BehaviorTree]);
           }
+          return;
+        }
+      }
+      this.ZHu.set(e.Key, e);
+      for (const o of e.EntityIds) {
+        var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(o)?.Entity;
+        if (i?.Valid) {
+          i.GetComponent(47)?.ChangeAiBehaviorTree(t.BtPath);
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发覆盖AI行为树时，没找到实体", ["Key", e.Key], ["PbDataId", o]);
         }
       }
     } else if (Log_1.Log.CheckError()) {
@@ -132,13 +135,21 @@ class AiModel extends ModelBase_1.ModelBase {
   }
   ResetAiBehaviorTree(e) {
     if (this.ZHu.has(e)) {
-      for (const i of this.ZHu.get(e).EntityIds) {
-        var t = EntitySystem_1.EntitySystem.Get(i);
-        if (t?.Valid) {
-          t.GetComponent(47)?.ResetAiBehaviorTree();
+      var t = this.ZHu.get(e);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 重置AI行为树", ["Key", e], ["EntityIds", t.EntityIds], ["BehaviorTree", t.BehaviorTree]);
+      }
+      for (const o of t.EntityIds) {
+        var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(o)?.Entity;
+        if (i?.Valid) {
+          i.GetComponent(47)?.ResetAiBehaviorTree();
+        } else if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发重置AI行为树时，没找到实体", ["Key", t.Key], ["PbDataId", o]);
         }
       }
       this.ZHu.delete(e);
+    } else if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("AI", 42, "[AiBehaviorTree] 重置AI行为树，没有指定标识", ["Key", e]);
     }
   }
   UpdateEntityLookAt() {
@@ -154,14 +165,14 @@ class AiModel extends ModelBase_1.ModelBase {
             let e = false;
             if (this.WZc.get(o.Id) !== t.Target.Id) {
               this.WZc.set(o.Id, t.Target.Id);
-              this.Iud(o.Id, t.Perform);
+              this.Pud(o.Id, t.Perform);
               e = true;
             }
             this.JZc(o, t.Target, true, e);
           } else if (this.WZc.has(o.Id)) {
             this.JZc(o, undefined, false, true);
             this.WZc.delete(o.Id);
-            this.Tud(o.Id);
+            this.Aud(o.Id);
           }
         }
       }
@@ -199,30 +210,32 @@ class AiModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  Iud(e, t) {
+  Pud(e, t) {
     var i;
     var o;
     var r;
-    var s;
-    if (t && !this.Mud.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(188), r = o?.Entity?.GetComponent(178), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.Mud.set(e, r), t.FaceExpressionId) && (s = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
-      this.Eud.set(e, s);
+    var a;
+    if (t && !this.wud.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(191), r = o?.Entity?.GetComponent(181), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.wud.set(e, r), t.FaceExpressionId) && (a = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
+      this.Lud.set(e, a);
     }
   }
-  Tud(e) {
+  Aud(e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    var i = t?.Entity?.GetComponent(188);
-    var o = t?.Entity?.GetComponent(178);
-    if (t?.Valid && i && o && (this.Eud.has(e) && (t = this.Eud.get(e), i?.ExpressionController?.ResetFaceForExpressionFromAnimNotify(t)), this.Mud.has(e))) {
-      o = this.Mud.get(e);
+    var i = t?.Entity?.GetComponent(191);
+    var o = t?.Entity?.GetComponent(181);
+    if (t?.Valid && i && o && (this.Lud.has(e) && (t = this.Lud.get(e), i?.ExpressionController?.ResetFaceForExpressionFromAnimNotify(t)), this.wud.has(e))) {
+      o = this.wud.get(e);
       PlayMontageUtils_1.PlayMontageUtils.ClearAndEndMontage(o, true);
     }
-    this.Mud.delete(e);
-    this.Eud.delete(e);
+    this.wud.delete(e);
+    this.Lud.delete(e);
   }
   JZc(e, t, i, o) {
     var r;
+    var a;
     if (e.Entity?.Valid) {
-      r = e.Entity.GetComponent(178);
+      r = e.Entity.GetComponent(181);
+      a = e.Entity.GetComponent(191);
       if (i && t?.Entity && r) {
         if (o) {
           if (Log_1.Log.CheckDebug()) {
@@ -231,12 +244,21 @@ class AiModel extends ModelBase_1.ModelBase {
           r.SetBlendSpaceLookAt(true);
           r.SetSightLimit([-40, 40], [-18, 31]);
         }
-        r.SetSightTargetItem(t.Entity.GetComponent(1));
+        i = t.Entity.GetComponent(1);
+        if (a) {
+          a.SightTarget(i, 2);
+        } else {
+          r.SetSightTargetItem(i);
+        }
       } else {
         if (o && (r?.ResetSightLimit(), r?.SetBlendSpaceLookAt(false), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("AI", 42, "[AiEntityLookAt] 清空实体看向", ["Key", e?.Id]);
         }
-        r?.SetSightTargetItem(undefined);
+        if (a) {
+          a.SightTarget(undefined, 2);
+        } else {
+          r?.SetSightTargetItem(undefined);
+        }
       }
     }
   }
@@ -304,17 +326,17 @@ class AiModel extends ModelBase_1.ModelBase {
       } else {
         this.XZc.set(e.Key, []);
       }
-      for (const s of e.DefaultLookAtType.BubbleEntityConfig) {
+      for (const a of e.DefaultLookAtType.BubbleEntityConfig) {
         var i = new RangeCheck_1.RangeCheck();
         this.XZc.get(e.Key).push({
-          Target: s.BubbleEntity,
+          Target: a.BubbleEntity,
           RangeCheck: i,
-          Perform: s.EntityLookAtPerform
+          Perform: a.EntityLookAtPerform
         });
-        for (const a of s.RangeEntities) {
-          if (!i.MakeRange(a)) {
+        for (const s of a.RangeEntities) {
+          if (!i.MakeRange(s)) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("AI", 42, "[AiEntityLookAt] 区域检测MakeRange失败", ["Key", e.Key], ["RangeId", a]);
+              Log_1.Log.Error("AI", 42, "[AiEntityLookAt] 区域检测MakeRange失败", ["Key", e.Key], ["RangeId", s]);
             }
           }
         }

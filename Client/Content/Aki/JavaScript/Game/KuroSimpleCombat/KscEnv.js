@@ -16,10 +16,10 @@ const KscLog_1 = require("./KscLog");
 const KscUtil_1 = require("./KscUtil");
 class KscEnv {
   static get KscWorld() {
-    return this.lLd;
+    return this.OAd;
   }
   static get KscWorldHandle() {
-    return this.Z3d;
+    return this.ljd;
   }
   static get KscSubsystem() {
     var s = UE.KuroSimpleCombatSubsystem.StaticClass();
@@ -30,52 +30,52 @@ class KscEnv {
       this.Started = true;
       KscLog_1.KscLog.Info("Common", 84, this.KscWorld, "KscEnv启动");
       if (KscEnv.KscSubsystem?.GetKSCWorld()) {
-        this.lLd = KscEnv.KscSubsystem?.GetKSCWorld();
+        this.OAd = KscEnv.KscSubsystem?.GetKSCWorld();
       } else {
         KscEnv.KscSubsystem?.CreateWorld();
-        KscUtil_1.KscUtil.SetKscWorldHandle(++this.Z3d);
-        this.lLd = KscEnv.KscSubsystem?.GetKSCWorld();
-        KscEnv.CNd();
+        KscUtil_1.KscUtil.SetKscWorldHandle(++this.ljd);
+        this.OAd = KscEnv.KscSubsystem?.GetKSCWorld();
+        KscEnv.R8d();
       }
       this.Mve();
-      if (this.bfd) {
-        this.KscWorld?.SetWorldAttr(1, this.bfd);
-        this.bfd = undefined;
+      if (this.P0d) {
+        this.KscWorld?.SetWorldAttr(1, this.P0d);
+        this.P0d = undefined;
       }
-      if (this.E8d) {
-        this.KscWorld?.SetObstacleSegments(this.E8d);
-        this.E8d = undefined;
+      if (this.NXd) {
+        this.KscWorld?.SetObstacleSegments(this.NXd);
+        this.NXd = undefined;
       }
     }
   }
-  static CNd() {
+  static R8d() {
     var s;
     var e;
     var t;
-    if (KscEnv.lLd) {
+    if (KscEnv.OAd) {
       if (s = ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId) {
         if (e = ConfigManager_1.ConfigManager.SurvivorsRogueConfig.GetSurvivorsLevel(s)) {
           if (e.BoundsPath) {
             if ((t = ResourceSystem_1.ResourceSystem.Load(e.BoundsPath, UE.KSC_DA_WorldBounds))?.IsValid) {
-              KscEnv.lLd.SetWorldBounds(t);
+              KscEnv.OAd.SetWorldBounds(t);
             } else {
-              KscLog_1.KscLog.Error("Load", 20, KscEnv.lLd, "加载不到对应的DA", ["Path", e.BoundsPath], ["LevelId", s]);
-              KscEnv.lLd.SetWorldBounds(undefined);
+              KscLog_1.KscLog.Error("Load", 20, KscEnv.OAd, "加载不到对应的DA", ["Path", e.BoundsPath], ["LevelId", s]);
+              KscEnv.OAd.SetWorldBounds(undefined);
             }
           } else {
-            KscLog_1.KscLog.Info("Load", 20, KscEnv.lLd, "BoundsPath 为空", ["LevelId", s]);
-            KscEnv.lLd.SetWorldBounds(undefined);
+            KscLog_1.KscLog.Info("Load", 20, KscEnv.OAd, "BoundsPath 为空", ["LevelId", s]);
+            KscEnv.OAd.SetWorldBounds(undefined);
           }
         } else {
-          KscLog_1.KscLog.Error("Load", 20, KscEnv.lLd, "找不到对应的关卡配置", ["LevelId", s]);
-          KscEnv.lLd.SetWorldBounds(undefined);
+          KscLog_1.KscLog.Error("Load", 20, KscEnv.OAd, "找不到对应的关卡配置", ["LevelId", s]);
+          KscEnv.OAd.SetWorldBounds(undefined);
         }
       } else {
-        KscLog_1.KscLog.Info("Load", 20, KscEnv.lLd, "不在幸存者关卡内", ["LevelId", s]);
-        KscEnv.lLd.SetWorldBounds(undefined);
+        KscLog_1.KscLog.Info("Load", 20, KscEnv.OAd, "不在幸存者关卡内", ["LevelId", s]);
+        KscEnv.OAd.SetWorldBounds(undefined);
       }
     } else {
-      KscLog_1.KscLog.Info("Load", 20, KscEnv.lLd, "KscWorld 为空");
+      KscLog_1.KscLog.Info("Load", 20, KscEnv.OAd, "KscWorld 为空");
     }
   }
   static Mve() {
@@ -88,8 +88,8 @@ class KscEnv {
       KscLog_1.KscLog.Info("Common", 84, this.KscWorld, "KscEnv停止");
       KscEnv.mYi();
       KscEnv.KscSubsystem?.DestroyWorld();
-      KscUtil_1.KscUtil.SetKscWorldHandle(++this.Z3d);
-      this.lLd = undefined;
+      KscUtil_1.KscUtil.SetKscWorldHandle(++this.ljd);
+      this.OAd = undefined;
     }
   }
   static mYi() {
@@ -97,17 +97,17 @@ class KscEnv {
     (0, puerts_1.releaseManualReleaseDelegate)(KscEnv.LandFireSpawn);
   }
   static CacheWorldKillZ(s) {
-    KscEnv.bfd = s;
+    KscEnv.P0d = s;
   }
   static CacheObstacleSegments(s) {
-    KscEnv.E8d = s;
+    KscEnv.NXd = s;
   }
 }
 (exports.KscEnv = KscEnv).Started = false;
-KscEnv.bfd = undefined;
-KscEnv.E8d = undefined;
-KscEnv.lLd = undefined;
-KscEnv.Z3d = 0;
+KscEnv.P0d = undefined;
+KscEnv.NXd = undefined;
+KscEnv.OAd = undefined;
+KscEnv.ljd = 0;
 KscEnv.BatchRemove = s => {
   ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.BatchRemove(s);
 };

@@ -570,7 +570,7 @@ class Net {
   static YX(e) {
     return e === 111;
   }
-  static n2d(e) {
+  static IGd(e) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Net", 63, "KcpRecvError", ["ErrorCode", e]);
     }
@@ -688,7 +688,7 @@ class Net {
   }
   static ZX(e, t, N, o) {
     var i;
-    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 19344) && e !== 22129 && e !== 27082 && e !== 29546 && e !== 20450 && e !== 22643 && e !== 26611 && e !== 17714 && e !== 29004 && e !== 23682 && (Net.dX || e !== 17966 && e !== 20623 && e !== 16481 && e !== 17737 && e !== 23259 && e !== 27791 && e !== 27742 && e !== 20640 && e !== 18601) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
+    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 15890) && e !== 18891 && e !== 17075 && e !== 29961 && e !== 18553 && e !== 19055 && e !== 22908 && e !== 21575 && e !== 17745 && e !== 18032 && (Net.dX || e !== 15580 && e !== 28129 && e !== 23556 && e !== 23760 && e !== 15593 && e !== 18718 && e !== 28427 && e !== 21308 && e !== 25511) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", i ? this.tY(o) : ""]);
     }
   }
@@ -848,7 +848,7 @@ Net.nX = (e, t, N, o, i) => {
       }
       break;
     case 4:
-      _a.n2d(t);
+      _a.IGd(t);
   }
 };
 Net.iX = (e, t, N, o) => {
@@ -880,7 +880,7 @@ Net.ovu = () => {
     e.oHn = NetInfo_1.NetInfo.DeviceId ?? "";
     e.Tgu = NetInfo_1.NetInfo.UdpPort;
     e.$9n = NetInfo_1.NetInfo.Token ?? "";
-    e.yxd = NetInfo_1.NetInfo.DisableCrc;
+    e.S2d = NetInfo_1.NetInfo.DisableCrc;
     e = NetDefine_1.messageDefine[3728].encode(e).finish();
     Net.gX.SendTcpMessage(0, 3728, e);
   } else if (Log_1.Log.CheckError()) {

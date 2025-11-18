@@ -21,124 +21,144 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
         var a = EntitySystem_1.EntitySystem.Get(e.EntityId);
         if (a?.Valid) {
           if (o.Targets && o.Targets.length !== 0) {
-            if (a.GetComponent(203)?.Owner) {
-              var n = a.GetComponent(164);
+            if (a.GetComponent(206)?.Owner) {
+              var n = a.GetComponent(167);
               if (n) {
-                var r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
-                var s = o.SyncChildActor || false;
+                var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
+                var c = o.SyncChildActor || false;
                 for (const E of o.Targets) {
-                  var c = E.PathName;
-                  var i = c.split(".");
+                  var r = E.PathName;
+                  var i = r.split(".");
                   if (i.length < PATH_LENGTH) {
                     if (Log_1.Log.CheckError()) {
-                      Log_1.Log.Error("LevelEvent", 7, "[SetActorVisible]actor路径错误", ["RefPath", c]);
+                      Log_1.Log.Error("LevelEvent", 7, "[SetActorVisible]actor路径错误", ["RefPath", r]);
                     }
                   } else {
                     i = i[1] + "." + i[2];
                     if (n.IsValidPlatFormPath(i)) {
                       i = new UE.FName(i);
-                      const L = r.GetActor(i);
-                      if (L?.IsValid()) {
+                      const f = s.GetActor(i);
+                      if (f?.IsValid()) {
                         i = a.GetComponent(0).GetPbDataId();
                         if (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel("SceneItemReferenceComponent_" + i) && Log_1.Log.CheckInfo()) {
-                          Log_1.Log.Info("LevelEvent", 39, "[SetActorVisible] [疑难杂症] 行为开关Actor", ["RefEntityPbDataId", a.GetComponent(0)?.GetPbDataId()], ["TargetPath", c], ["ActorType", o.ActorType], ["Enable", o.Enable], ["ActionGuid", this.ActionGuid], ["Context", t]);
+                          Log_1.Log.Info("LevelEvent", 39, "[SetActorVisible] [疑难杂症] 行为开关Actor", ["RefEntityPbDataId", a.GetComponent(0)?.GetPbDataId()], ["TargetPath", r], ["ActorType", o.ActorType], ["Enable", o.Enable], ["ActionGuid", this.ActionGuid], ["Context", t]);
                         }
                         if (o.CollisionEnabled !== undefined) {
-                          L.SetActorEnableCollision(o.CollisionEnabled);
+                          f.SetActorEnableCollision(o.CollisionEnabled);
                         } else {
-                          L.SetActorEnableCollision(o.Enable);
+                          f.SetActorEnableCollision(o.Enable);
                         }
                         switch (o.ActorType) {
                           case "MeshActor":
-                            L.SetActorHiddenInGame(!o.Enable);
+                            f.SetActorHiddenInGame(!o.Enable);
                             var l = o.Enable ? 3 : 0;
-                            if (L instanceof UE.StaticMeshActor) {
+                            if (f instanceof UE.StaticMeshActor) {
                               if (o.Enable) {
-                                L.SetLogicallyShow(3);
+                                f.SetLogicallyShow(3);
                               } else {
-                                L.SetLogicallyHidden();
+                                f.SetLogicallyHidden();
                               }
                             }
-                            if (L instanceof UE.BP_KuroISMGroup_C) {
+                            if (f instanceof UE.BP_KuroISMGroup_C) {
                               if (o.Enable) {
-                                L.SeyLogicallyShowForAllChildren();
+                                f.SeyLogicallyShowForAllChildren();
                               } else {
-                                L.SeyLogicallyHiddenForAllChildren();
+                                f.SeyLogicallyHiddenForAllChildren();
                               }
                             }
-                            if (L.RootComponent?.IsValid() && L.RootComponent instanceof UE.MeshComponent) {
-                              L.RootComponent.SetVisibility(o.Enable, s);
+                            if (f.RootComponent?.IsValid() && f.RootComponent instanceof UE.MeshComponent) {
+                              f.RootComponent.SetVisibility(o.Enable, c);
                             }
-                            if (L.RootComponent?.IsValid() && L.RootComponent instanceof UE.PrimitiveComponent) {
-                              L.RootComponent.SetCollisionEnabled(l);
-                              L.RootComponent.SetHiddenInGame(!o.Enable, s);
+                            if (f.RootComponent?.IsValid() && f.RootComponent instanceof UE.PrimitiveComponent) {
+                              f.RootComponent.SetCollisionEnabled(l);
+                              f.RootComponent.SetHiddenInGame(!o.Enable, c);
                             }
                             break;
                           case "SoundActor":
-                            if (L instanceof UE.KuroAmbientSoundActor && L.RootComponent instanceof UE.KuroAmbientSoundComponent) {
+                            if (f instanceof UE.KuroAmbientSoundActor && f.RootComponent instanceof UE.KuroAmbientSoundComponent) {
                               if (o.Enable) {
-                                L.RootComponent.PlaySound();
+                                f.RootComponent.PlaySound();
                               } else {
-                                L.RootComponent.StopSound();
+                                f.RootComponent.StopSound();
                               }
                             }
                             break;
                           case "EffectActor":
-                            if (L instanceof UE.BP_EffectActor_C) {
+                            if (f instanceof UE.BP_EffectActor_C) {
                               if (o.Enable) {
-                                L.Play("[SetActorVisible]SceneEffectPlay");
+                                f.Play("[SetActorVisible]SceneEffectPlay");
                               } else {
-                                L.Stop("[SetActorVisible]SceneEffectStop", false);
+                                f.Stop("[SetActorVisible]SceneEffectStop", false);
                               }
                             }
                             break;
                           case "LightsGroup":
-                            if (L instanceof UE.BP_LightsGroup_C) {
-                              L.ToggleLights(o.Enable);
+                            if (f instanceof UE.BP_LightsGroup_C) {
+                              f.ToggleLights(o.Enable);
                             }
                             break;
                           case "PPVolume":
-                            if (L instanceof UE.KuroPostProcessVolume) {
-                              L.bEnabled = o.Enable;
+                            if (f instanceof UE.KuroPostProcessVolume) {
+                              f.bEnabled = o.Enable;
                             }
                             break;
                           case "CullDistanceVolume":
-                            if (L instanceof UE.CullDistanceVolume) {
-                              L.bEnabled = o.Enable;
+                            if (f instanceof UE.CullDistanceVolume) {
+                              f.bEnabled = o.Enable;
                             }
                             break;
                           case "Skybox":
                             ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_CloudFuBen_C", () => {
-                              if (L instanceof UE.BP_CloudFuBen_C) {
-                                L.SetActorHiddenInGame(!o.Enable);
+                              if (f instanceof UE.BP_CloudFuBen_C) {
+                                f.SetActorHiddenInGame(!o.Enable);
                               }
                             });
                             break;
                           case "FloatingActor":
-                            if (L instanceof UE.KuroFloatingStaticMesh) {
+                            if (f instanceof UE.KuroFloatingStaticMesh) {
                               if (o.Enable) {
-                                L.SetLogicallyShow(3);
+                                f.SetLogicallyShow(3);
                               } else {
-                                L.SetLogicallyHidden();
+                                f.SetLogicallyHidden();
                               }
                             }
                             break;
                           case "GpuNpc":
-                            if (L instanceof UE.BakedBoneMeshActor) {
-                              L.SetActorHiddenInGame(!o.Enable);
+                            if (f instanceof UE.BakedBoneMeshActor) {
+                              f.SetActorHiddenInGame(!o.Enable);
                             }
                             break;
                           case "ToonDepth":
-                            if (L instanceof UE.BP_CustomDepthForToon_C) {
+                            if (f instanceof UE.BP_CustomDepthForToon_C) {
                               if (o.Enable) {
                                 UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.CustomDepthForToonRimDrawDistance 5000");
                               } else {
                                 UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.CustomDepthForToonRimDrawDistance 800");
                               }
                             }
+                            break;
+                          case "DecalActor":
+                            if (f instanceof UE.DecalActor) {
+                              f.SetActorHiddenInGame(!o.Enable);
+                            }
+                            break;
+                          case "NvClothPlacement":
+                            if (f instanceof UE.KuroNvClothPlacement) {
+                              f.SetActorHiddenInGame(!o.Enable);
+                              f.SetEnabled(o.Enable);
+                            }
+                            if (f.RootComponent?.IsValid()) {
+                              f.RootComponent.SetVisibility(o.Enable, c);
+                            }
+                            break;
+                          case "PhysicalActor":
+                            if (f instanceof UE.BP_QiuQian_C) {
+                              f.SetActorHiddenInGame(!o.Enable);
+                              f.SetActorTickEnabled(o.Enable);
+                            }
                         }
                       } else if (Log_1.Log.CheckWarn()) {
-                        Log_1.Log.Warn("LevelEvent", 7, "[SetActorVisible]目标actor不存在", ["RefPath", c]);
+                        Log_1.Log.Warn("LevelEvent", 7, "[SetActorVisible]目标actor不存在", ["RefPath", r]);
                       }
                     }
                   }

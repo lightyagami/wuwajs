@@ -25,15 +25,15 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
     return (0, puerts_1.$unref)(e);
   }
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.hjd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ljd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.MXd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.MCm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ECm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.ICm);
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.hjd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ljd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.MXd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.MCm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ECm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.ICm);
     return true;
   }
   static OpenMainView() {
@@ -163,7 +163,7 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
           break;
         case 2:
           ControllerHolder_1.ControllerHolder.QuestNewController.SetVideoResourceDownloadTriggerId(o.Id);
-          UiManager_1.UiManager.OpenView("ResDownLoadView");
+          ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageByQuest(o.Id);
           break;
         case 3:
           ControllerHolder_1.ControllerHolder.QuestNewController.ConfirmQuestResourceRequest(o.Id, () => {
@@ -249,18 +249,18 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.QuestTreeController = QuestTreeController;
-(_a = QuestTreeController).hjd = (e, r, t, o) => {
+(_a = QuestTreeController).MCm = (e, r, t, o) => {
   ControllerHolder_1.ControllerHolder.QuestNewController.RequestTrackQuest(e, r, t, o, () => {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsTrackQuestResponse);
   });
 };
-QuestTreeController.ljd = e => {
+QuestTreeController.ECm = e => {
   e = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromNodeId(e);
   if (e) {
     _a.GotoNode(e);
   }
 };
-QuestTreeController.MXd = e => {
+QuestTreeController.ICm = e => {
   e = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromNodeId(e);
   if (e) {
     _a.TrackOrGotoNode(e);

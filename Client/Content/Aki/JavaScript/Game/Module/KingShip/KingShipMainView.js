@@ -61,7 +61,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.SMu = 0;
     this.MMu = 0;
     this.BFu = false;
-    this.Nsd = true;
+    this.Hod = true;
     this.kFu = 0;
     this.uCa = undefined;
     this.B9e = undefined;
@@ -78,7 +78,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.G$c = undefined;
     this.F$c = undefined;
     this._zc = undefined;
-    this.efd = false;
+    this.n0d = false;
     this.ZXc = false;
     this.x8i = undefined;
     this.B8i = i => {
@@ -333,7 +333,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this.q$c = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(25));
     this._zc = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this.UiViewSequence?.AddSequenceFinishEvent("Start", () => {
-      this.Nsd = false;
+      this.Hod = false;
     });
   }
   OnStart() {
@@ -460,7 +460,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   Og() {
     this.cHt();
     this.X7e();
-    this.Rdd();
+    this.Udd();
   }
   cHt() {
     var i = this.FMu(this.vMu);
@@ -481,7 +481,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       i.SetText(t);
     }
   }
-  Rdd() {
+  Udd() {
     if (this.vMu === SKIP_SHOW_TALK_ID) {
       this.GetButton(20).RootUIComp.SetUIActive(true);
     }
@@ -598,20 +598,20 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
       const e = i.Params;
       if (e.ChangeMode === 2) {
         this._zc?.PlayLevelSequenceByName("Switch");
-        this.efd = true;
+        this.n0d = true;
       } else if (e.ChangeMode === 1) {
-        if (this.efd) {
+        if (this.n0d) {
           this.WMu(e.Background, "SwitchB");
         } else {
           this.WMu(e.Background, "SwitchA");
         }
-        this.efd = false;
+        this.n0d = false;
       } else if (e.ChangeMode === 0) {
-        this.q_d(e.Background).finally(() => {
-          if (this.efd) {
+        this.H_d(e.Background).finally(() => {
+          if (this.n0d) {
             this.WMu(e.Background, "SwitchB");
           }
-          this.efd = false;
+          this.n0d = false;
         });
       }
     }
@@ -652,11 +652,11 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
     this._zc?.PlayLevelSequenceByName("Title");
   }
   WMu(i, t) {
-    this.q_d(i).finally(() => {
+    this.H_d(i).finally(() => {
       this._zc?.PlayLevelSequenceByName(t);
     });
   }
-  async q_d(i) {
+  async H_d(i) {
     var t = [];
     t.push(this.SetTextureAsync(i, this.GetTexture(19)));
     t.push(this.SetTextureAsync(i, this.GetTexture(26)));
@@ -974,7 +974,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   OFu() {
     var i;
-    if (this.BFu || this.kFu > 0 || this.Nsd || this.Wud()) {
+    if (this.BFu || this.kFu > 0 || this.Hod || this.Jud()) {
       this.mMu = false;
       return this.fMu = false;
     } else {
@@ -993,7 +993,7 @@ class KingShipMainView extends UiTickViewBase_1.UiTickViewBase {
   NZc() {
     this.GetItem(25).SetUIActive(true);
   }
-  Wud() {
+  Jud() {
     var i = ModelManager_1.ModelManager.GuideModel.GetRunningWithoutPendingGroupIdList().length > 0;
     if (i) {
       this.eVi?.PlayReSetSequence();

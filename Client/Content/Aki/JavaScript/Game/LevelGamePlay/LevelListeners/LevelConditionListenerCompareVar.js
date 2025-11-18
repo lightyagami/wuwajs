@@ -15,12 +15,12 @@ const LevelListenerBase_1 = require("./LevelListenerBase");
 class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListenerBase {
   constructor() {
     super(...arguments);
-    this.bBd = (...t) => {
+    this.HOd = (...t) => {
       var i = t?.[0];
       if (i !== undefined) {
         let e = false;
         for (const n of Object.keys(i)) {
-          if (this.RBd.has(n)) {
+          if (this.$Od.has(n)) {
             e = true;
             break;
           }
@@ -30,48 +30,48 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
         }
       }
     };
-    this.wBd = () => {
+    this.WOd = () => {
       this.Callback?.();
     };
-    this.LBd = (e, ...t) => {
+    this.QOd = (e, ...t) => {
       var i = t?.[0];
-      if (i !== undefined && this.PBd.get(e)?.has(i)) {
+      if (i !== undefined && this.KOd.get(e)?.has(i)) {
         this.Callback?.(LevelGeneralContextDefine_1.ClientEventContext.Create(EventDefine_1.EEventName.EntityVarUpdate, ...t));
       }
     };
-    this.RBd = new Set();
-    this.ABd = new Map();
-    this.PBd = new Map();
+    this.$Od = new Set();
+    this.XOd = new Map();
+    this.KOd = new Map();
     this.kHa = undefined;
   }
   OnListen(e, t, i) {
-    this.DBd(e.Var1);
-    this.DBd(e.Var2);
+    this.YOd(e.Var1);
+    this.YOd(e.Var2);
   }
   OnUnListen() {
-    this.UBd();
-    this.xBd();
-    this.BBd();
+    this.zOd();
+    this.JOd();
+    this.ZOd();
     if (this.kHa) {
       this.kHa.Cancel();
     }
     this.kHa = undefined;
   }
-  DBd(e) {
+  YOd(e) {
     switch (e.Source) {
       case "Constant":
         break;
       case "Self":
-        this.kBd(e);
+        this.eqd(e);
         break;
       case "Other":
-        this.OBd(e);
+        this.tqd(e);
         break;
       case "Global":
-        this.qBd(e.Keyword);
+        this.iqd(e.Keyword);
     }
   }
-  OBd(t) {
+  tqd(t) {
     if (t.Source === "Other") {
       switch (t.RefType) {
         case "Entity":
@@ -79,7 +79,7 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
             this.kHa = undefined;
             var e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(t.RefId)?.Entity;
             if (e?.Valid) {
-              this.GBd(e, t.Name);
+              this.rqd(e, t.Name);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 实体无效");
             }
@@ -88,7 +88,7 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
         case "Quest":
           var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t.RefId)?.Tree;
           if (e) {
-            this.FBd(e, t.Name);
+            this.oqd(e, t.Name);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 任务无效");
           }
@@ -96,21 +96,21 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
         case "LevelPlay":
           e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t.RefId)?.Tree;
           if (e) {
-            this.FBd(e, t.Name);
+            this.oqd(e, t.Name);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 玩法无效");
           }
       }
     }
   }
-  kBd(e) {
+  eqd(e) {
     if (e.Source === "Self" && this.Context) {
       switch (this.Context.Type) {
         case 1:
         case 5:
           var t = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandle(undefined, this.Context)?.Entity;
           if (t?.Valid) {
-            this.GBd(t, e.Name);
+            this.rqd(t, e.Name);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 实体无效");
           }
@@ -118,62 +118,62 @@ class LevelConditionListenerCompareVar extends LevelListenerBase_1.LevelListener
         case 6:
           t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.Context.TreeIncId, true);
           if (t) {
-            this.FBd(t, e.Name);
+            this.oqd(t, e.Name);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("LevelCondition", 39, "实体变量条件监听失败: 行为树无效");
           }
       }
     }
   }
-  qBd(e) {
-    this.RBd.add(e);
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnReceivePlayerVar, this.bBd)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnReceivePlayerVar, this.bBd);
+  iqd(e) {
+    this.$Od.add(e);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnReceivePlayerVar, this.HOd)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnReceivePlayerVar, this.HOd);
     }
   }
-  UBd() {
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnReceivePlayerVar, this.bBd)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnReceivePlayerVar, this.bBd);
+  zOd() {
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnReceivePlayerVar, this.HOd)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnReceivePlayerVar, this.HOd);
     }
-    this.RBd.clear();
+    this.$Od.clear();
   }
-  FBd(e, t) {
-    let i = this.ABd.get(e);
+  oqd(e, t) {
+    let i = this.XOd.get(e);
     if (!i) {
       i = new Set();
-      this.ABd.set(e, i);
+      this.XOd.set(e, i);
     }
     if (!i.has(t)) {
       i.add(t);
-      e.AddTreeVarUpdateDelegate(t, this.wBd);
+      e.AddTreeVarUpdateDelegate(t, this.WOd);
     }
   }
-  xBd() {
-    for (var [e, t] of this.ABd) {
+  JOd() {
+    for (var [e, t] of this.XOd) {
       if (e) {
         for (const i in t) {
-          e.RemoveTreeVarUpdateDelegate(i, this.wBd);
+          e.RemoveTreeVarUpdateDelegate(i, this.WOd);
         }
       }
     }
-    this.ABd.clear();
+    this.XOd.clear();
   }
-  GBd(t, i) {
+  rqd(t, i) {
     if (t?.Valid) {
-      let e = this.PBd.get(t);
+      let e = this.KOd.get(t);
       if (!e) {
         e = new Set();
-        this.PBd.set(t, e);
+        this.KOd.set(t, e);
       }
-      if (!e.has(i) && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.EntityVarUpdate, this.LBd.bind(this, t))) {
+      if (!e.has(i) && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.EntityVarUpdate, this.QOd.bind(this, t))) {
         e.add(i);
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.EntityVarUpdate, this.LBd.bind(this, t));
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t, EventDefine_1.EEventName.EntityVarUpdate, this.QOd.bind(this, t));
       }
     }
   }
-  BBd() {
+  ZOd() {
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
-    this.PBd.clear();
+    this.KOd.clear();
   }
 }
 exports.LevelConditionListenerCompareVar = LevelConditionListenerCompareVar;

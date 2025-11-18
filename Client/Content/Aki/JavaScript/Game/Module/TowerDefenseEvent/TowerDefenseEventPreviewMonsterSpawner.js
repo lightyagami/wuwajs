@@ -25,7 +25,7 @@ class TowerDefenseEventSplineMonsterSpawner {
   constructor() {
     this.OQt = undefined;
     this.Htn = 0;
-    this.Jhd = 0;
+    this.Yod = 0;
     this._0e = 0;
     this.yYu = [];
     this.SYu = new Map();
@@ -35,9 +35,9 @@ class TowerDefenseEventSplineMonsterSpawner {
   Init(e, t, r) {
     this.OQt = e;
     this.Htn = t;
-    this.Jhd = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.pid);
+    this.Yod = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.pid);
     this._0e = TimeUtil_1.TimeUtil.SetTimeMillisecond(r.vid);
-    this.EYu = this.Jhd;
+    this.EYu = this.Yod;
     this.IYu = 0;
     for (const o of r.TKu) {
       var s = TowerDefenseEventEntityModel_1.TowerDefenseEventMonsterModel.InitFromConfigId(o);
@@ -118,7 +118,7 @@ class TowerDefenseEventSplineMonsterSpawner {
 class TowerDefenseEventPreviewMonsterSpawner {
   constructor() {
     this.MYu = 1;
-    this.Zhd = new Map();
+    this.zod = new Map();
     this.ked = [];
     this.Oed = new Map();
   }
@@ -174,9 +174,9 @@ class TowerDefenseEventPreviewMonsterSpawner {
             Log_1.Log.Error("TowerDefenseEvent", 60, "预览怪物组样条线ID无效", ["splineId", s]);
           }
         } else {
-          let e = TowerDefenseEventPreviewMonsterSpawner.eld.Get();
-          (e = e || TowerDefenseEventPreviewMonsterSpawner.eld.Create()).Init(this, r, t);
-          this.Zhd.set(r, e);
+          let e = TowerDefenseEventPreviewMonsterSpawner.Jod.Get();
+          (e = e || TowerDefenseEventPreviewMonsterSpawner.Jod.Create()).Init(this, r, t);
+          this.zod.set(r, e);
         }
       }
     }
@@ -186,33 +186,33 @@ class TowerDefenseEventPreviewMonsterSpawner {
     return this.MYu;
   }
   OnTick(e) {
-    if (this.Zhd.size !== 0) {
-      for (const t of this.Zhd.values()) {
+    if (this.zod.size !== 0) {
+      for (const t of this.zod.values()) {
         t.OnTick(e);
       }
     }
   }
-  tld() {
-    this.Zhd.forEach(e => {
+  Zod() {
+    this.zod.forEach(e => {
       e.Reset();
-      TowerDefenseEventPreviewMonsterSpawner.eld.Put(e);
+      TowerDefenseEventPreviewMonsterSpawner.Jod.Put(e);
     });
-    this.Zhd.clear();
+    this.zod.clear();
   }
   RemovePreviewMonster(e) {
-    for (const t of this.Zhd.values()) {
+    for (const t of this.zod.values()) {
       t.RemovePreviewMonster(e);
     }
   }
   Reset() {
     this.MYu = 1;
     this.Fed();
-    this.tld();
+    this.Zod();
   }
   Clear() {
     this.Reset();
-    TowerDefenseEventPreviewMonsterSpawner.eld.Clear();
+    TowerDefenseEventPreviewMonsterSpawner.Jod.Clear();
   }
 }
-(exports.TowerDefenseEventPreviewMonsterSpawner = TowerDefenseEventPreviewMonsterSpawner).eld = new Pool_1.Pool(SPLINE_POOL_SIZE, () => new TowerDefenseEventSplineMonsterSpawner());
+(exports.TowerDefenseEventPreviewMonsterSpawner = TowerDefenseEventPreviewMonsterSpawner).Jod = new Pool_1.Pool(SPLINE_POOL_SIZE, () => new TowerDefenseEventSplineMonsterSpawner());
 //# sourceMappingURL=TowerDefenseEventPreviewMonsterSpawner.js.map

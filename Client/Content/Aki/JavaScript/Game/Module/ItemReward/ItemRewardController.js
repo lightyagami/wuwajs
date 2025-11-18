@@ -10,6 +10,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const Queue_1 = require("../../../Core/Container/Queue");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
+const FormationPropertyById_1 = require("../../../Core/Define/ConfigQuery/FormationPropertyById");
 const PropRewardConfById_1 = require("../../../Core/Define/ConfigQuery/PropRewardConfById");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
@@ -26,29 +27,31 @@ const UiModel_1 = require("../../Ui/UiModel");
 const ActivityDoubleRewardController_1 = require("../Activity/ActivityContent/DoubleReward/ActivityDoubleRewardController");
 const FriendController_1 = require("../Friend/FriendController");
 const GachaController_1 = require("../Gacha/GachaController");
+const ItemDefine_1 = require("../Item/ItemDefine");
 const ItemExchangeController_1 = require("../ItemExchange/ItemExchangeController");
 const RoleLevelUpSuccessController_1 = require("../RoleUi/RoleLevel/RoleLevelUpSuccessController");
 const ItemRewardDefine_1 = require("./ItemRewardDefine");
 const RewardItemData_1 = require("./RewardData/RewardItemData");
-const FLY_STRENGTH_MAX_ATTRIBUTE_INDEX = 138;
 class ItemRewardController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
     this.qKl = CommonParamById_1.configCommonParamById.GetIntConfig("FlyStrengthItemId");
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(22293, this.mMa);
+    Net_1.Net.Register(25880, this.mMa);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(22293);
+    Net_1.Net.UnRegister(25880);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnItemRewardNotify, this.b0i);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExploreRewardShowEnd, this.F8u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsSyncItemTipsData, this.$wm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnItemRewardNotify, this.b0i);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExploreRewardShowEnd, this.F8u);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsSyncItemTipsData, this.$wm);
   }
   static GetRewardViewReasonArray() {
     if (!this.RewardViewReasonArray) {
@@ -59,14 +62,14 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
     }
     return this.RewardViewReasonArray;
   }
-  static OpenCommonRewardView(e, r, o) {
-    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "CommonRewardView", r, o);
+  static OpenCommonRewardView(e, r, t) {
+    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "CommonRewardView", r, t);
     if (e) {
       this.Open(e);
     }
   }
-  static OpenQuestRewardView(e, r, o) {
-    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "QuestRewardView", r, o);
+  static OpenQuestRewardView(e, r, t) {
+    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(e, "QuestRewardView", r, t);
     if (e) {
       this.Open(e);
     }
@@ -77,14 +80,14 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
       this.V8u();
     }
   }
-  static OpenCompositeRewardView(e, r = true, o, t) {
-    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCompositeRewardDataFromConfig(e, r, o, t);
+  static OpenCompositeRewardView(e, r = true, t, o) {
+    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCompositeRewardDataFromConfig(e, r, t, o);
     if (e) {
       this.Open(e);
     }
   }
-  static OpenExploreRewardView(e, r = true, o, t, a, n, i, l, d, _, s, C, m, g, w, I, f) {
-    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshExploreRewardDataFromConfig(e, r, o, t, a, n, i, l, d, _, C, m, g, w, I, f);
+  static OpenExploreRewardView(e, r = true, t, o, a, n, i, l, d, _, s, C, m, g, w, f, I) {
+    e = ModelManager_1.ModelManager.ItemRewardModel.RefreshExploreRewardDataFromConfig(e, r, t, o, a, n, i, l, d, _, C, m, g, w, f, I);
     return !!e && (this.Open(e, s), true);
   }
   static OpenExploreRewardViewNew(e) {
@@ -96,7 +99,7 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
     this.Open(e, e.GetRewardInfo().FinishCallback);
     return true;
   }
-  static Open(e, o) {
+  static Open(e, t) {
     var r;
     if (!UiManager_1.UiManager.IsViewOpen("DrawMainView")) {
       r = e.GetRewardInfo();
@@ -105,7 +108,7 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
       } else {
         r = r.ViewName;
         UiManager_1.UiManager.OpenView(r, e, (e, r) => {
-          o?.(e);
+          t?.(e);
           if (e) {
             UiModel_1.UiModel.NormalStack.Peek().AddChildViewById(r);
           }
@@ -155,29 +158,29 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
   static BuildExploreFriendDataList() {
     var e;
     var r;
-    var o;
     var t;
+    var o;
     var a = [];
     var n = ModelManager_1.ModelManager.FriendModel;
     var i = ModelManager_1.ModelManager.OnlineModel;
     for (const l of i.GetTeamList()) {
       if (!l.IsSelf) {
-        t = l.PlayerId;
-        r = (e = i.GetCurrentTeamListById(t)) ? ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(l.HeadId, false).GetRoleHeadIconCircle() : "";
-        o = e ? ItemRewardController.$zs(e.PlayerNumber) : "";
-        t = {
-          PlayerId: t,
+        o = l.PlayerId;
+        r = (e = i.GetCurrentTeamListById(o)) ? ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(l.HeadId, false).GetRoleHeadIconCircle() : "";
+        t = e ? ItemRewardController.$zs(e.PlayerNumber) : "";
+        o = {
+          PlayerId: o,
           PlayerLevel: l.Level,
-          IsMyFriend: n.IsMyFriend(t),
+          IsMyFriend: n.IsMyFriend(o),
           PlayerName: e?.PlayerName ?? "",
           PlayerDesc: e?.Signature ?? "",
           PlayerIconPath: r,
-          PlayerIndexPath: o,
+          PlayerIndexPath: t,
           OnClickCallback: e => {
             FriendController_1.FriendController.RequestFriendApplyAddSend(e, Protocol_1.Aki.Protocol.D6s.Proto_RecentlyTeam);
           }
         };
-        a.push(t);
+        a.push(o);
       }
     }
     return a;
@@ -196,27 +199,27 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
     return e;
   }
   static PlayAudio(e, r) {
-    var o;
+    var t;
     if (!StringUtils_1.StringUtils.IsEmpty(e)) {
-      if ((o = ConfigManager_1.ConfigManager.AudioConfig.GetAudioPath(e)) && (AudioController_1.AudioController.PostEventByUi(o.Path, r), Log_1.Log.CheckDebug())) {
+      if ((t = ConfigManager_1.ConfigManager.AudioConfig.GetAudioPath(e)) && (AudioController_1.AudioController.PostEventByUi(t.Path, r), Log_1.Log.CheckDebug())) {
         Log_1.Log.Debug("Test", 37, "[ItemReward]播放结算音频", ["audioId", e]);
       }
     }
   }
   static OpenSoarStrengthUpView(r) {
-    var o = CommonParamById_1.configCommonParamById.GetIntConfig("FlyStrengthItemId");
-    var o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(o);
-    if (o && o.Parameters) {
+    var t = CommonParamById_1.configCommonParamById.GetIntConfig("FlyStrengthItemId");
+    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(t);
+    if (t && t.Parameters) {
       let e = 0;
-      for (var [, t] of o.Parameters) {
-        e = t;
+      for (var [, o] of t.Parameters) {
+        e = o;
         break;
       }
       if (e !== 0) {
-        var o = PropRewardConfById_1.configPropRewardConfById.GetConfig(e);
-        if (o) {
+        var t = PropRewardConfById_1.configPropRewardConfById.GetConfig(e);
+        if (t) {
           let e = 0;
-          for (const a of o.Props) {
+          for (const a of t.Props) {
             if (a.Id === 10) {
               e = a.Value;
               break;
@@ -224,25 +227,25 @@ class ItemRewardController extends UiControllerBase_1.UiControllerBase {
           }
           if (e !== 0) {
             e *= r;
-            o = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(10);
+            t = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetMax(10);
             r = {
-              Name: (r = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(FLY_STRENGTH_MAX_ATTRIBUTE_INDEX)).Name,
+              Name: (r = FormationPropertyById_1.configFormationPropertyById.GetConfig(10)).Name,
               IconPath: r.Icon,
               ShowArrow: true,
-              PreText: Math.floor((o - e) / 100).toString(),
-              CurText: Math.floor(o / 100).toString()
+              PreText: Math.floor((t - e) / 100).toString(),
+              CurText: Math.floor(t / 100).toString()
             };
-            o = {
+            t = {
               Title: "Flying_EnergyUp",
               StrengthUpgradeData: {
                 AttributeId: 10,
                 SingleStrengthValue: CommonParamById_1.configCommonParamById.GetIntConfig("FlySingleStrengthValue"),
                 MaxSingleStrengthItemCount: CommonParamById_1.configCommonParamById.GetIntConfig("FlyMaxSingleStrengthItemCount"),
-                MaxStrength: o
+                MaxStrength: t
               },
               AttributeInfo: [r]
             };
-            RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(o);
+            RoleLevelUpSuccessController_1.RoleLevelUpSuccessController.OpenSuccessAttributeView(t);
           }
         }
       }
@@ -254,102 +257,110 @@ exports.ItemRewardController = ItemRewardController;
 ItemRewardController.qKl = 0;
 ItemRewardController.N8u = new Queue_1.Queue();
 ItemRewardController.b0i = r => {
-  var o = r.gws;
-  var t = Object.keys(o);
-  if (o && t) {
-    var a = [];
-    var n = [];
-    var i = [];
-    let e = 0;
-    for (const f of t) {
-      var l = o[f]?.O9n;
-      if (l && l.length !== 0) {
-        var d = Number(f);
-        for (const M of l) {
-          var _ = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(M.L8n);
-          var s = new RewardItemData_1.RewardItemData(M.L8n, M.m9n, M.b9n, d);
-          if (M.L8n === _a.qKl) {
-            e += M.m9n;
+  var t = r.gws;
+  var o = Object.keys(t);
+  if (t && o) {
+    var a = r.x9n;
+    var n = _a.GetRewardViewReasonArray().includes(a) ? ConfigManager_1.ConfigManager.ItemRewardConfig.GetRewardViewFromSourceConfig(a) : undefined;
+    if (n && n.RewardNotifyNotTrick) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Reward", 5, "[ItemRewardController]当掉落协议通知时,配置上不触发后续处理", ["rewardViewConfig", n.Id]);
+      }
+    } else {
+      var i = [];
+      var l = [];
+      var d = [];
+      let e = 0;
+      for (const R of o) {
+        var _ = t[R]?.O9n;
+        if (_ && _.length !== 0) {
+          var s = Number(R);
+          for (const v of _) {
+            var C = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(v.L8n);
+            var m = new RewardItemData_1.RewardItemData(v.L8n, v.m9n, v.b9n, s);
+            if (v.L8n === _a.qKl) {
+              e += v.m9n;
+            }
+            (C === 11 ? l : C === 14 && FlySkinConfigById_1.configFlySkinConfigById.GetConfig(v.L8n).IsSpecialViewAfterObtain ? d : i).push(m);
           }
-          (_ === 11 ? n : _ === 14 && FlySkinConfigById_1.configFlySkinConfigById.GetConfig(M.L8n).IsSpecialViewAfterObtain ? i : a).push(s);
         }
       }
-    }
-    var t = ModelManager_1.ModelManager.ItemRewardModel;
-    var C = r.x9n;
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Test", 37, "[ItemRewardController]当掉落协议通知时", ["reasonId", C]);
-    }
-    if (t.CurrentReasonId !== C) {
-      t.ClearCurrentRewardData();
-    }
-    t.CurrentReasonId = C;
-    if (!ItemRewardDefine_1.blockReasonIdList.includes(C)) {
-      if (C === ItemRewardDefine_1.EXPLORE_LEVEL_RESON) {
-        ItemRewardController.OpenExploreLevelRewardView(a);
-      } else if (C === ItemRewardDefine_1.ROGUE_INST_FIRST_REWARD) {
-        ModelManager_1.ModelManager.RoguelikeModel.ShowRewardList = a;
-        KuroSdkReport_1.KuroSdkReport.OnRougeFinish();
-      } else if (C === ItemRewardDefine_1.BLACK_STONE_RESON) {
-        t = [];
-        t.push({
-          ButtonTextId: "ConfirmBox_45_ButtonText_1",
-          DescriptionTextId: undefined,
-          DescriptionArgs: undefined,
-          IsTimeDownCloseView: false,
-          IsClickedCloseView: false,
-          OnClickedCallback: e => {
-            if (UiManager_1.UiManager.IsViewShow("ExploreRewardView")) {
-              UiManager_1.UiManager.CloseView("ExploreRewardView");
+      o = ModelManager_1.ModelManager.ItemRewardModel;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Test", 37, "[ItemRewardController]当掉落协议通知时", ["reasonId", a]);
+      }
+      if (o.CurrentReasonId !== a) {
+        o.ClearCurrentRewardData();
+      }
+      o.CurrentReasonId = a;
+      if (!ItemRewardDefine_1.blockReasonIdList.includes(a)) {
+        if (a === ItemRewardDefine_1.EXPLORE_LEVEL_RESON) {
+          ItemRewardController.OpenExploreLevelRewardView(i);
+        } else if (a === ItemRewardDefine_1.ROGUE_INST_FIRST_REWARD) {
+          ModelManager_1.ModelManager.RoguelikeModel.ShowRewardList = i;
+          KuroSdkReport_1.KuroSdkReport.OnRougeFinish();
+        } else if (a === ItemRewardDefine_1.BLACK_STONE_RESON) {
+          o = [];
+          o.push({
+            ButtonTextId: "ConfirmBox_45_ButtonText_1",
+            DescriptionTextId: undefined,
+            DescriptionArgs: undefined,
+            IsTimeDownCloseView: false,
+            IsClickedCloseView: false,
+            OnClickedCallback: e => {
+              if (UiManager_1.UiManager.IsViewShow("ExploreRewardView")) {
+                UiManager_1.UiManager.CloseView("ExploreRewardView");
+              }
+            }
+          });
+          let e = undefined;
+          if (r.B9n > 1) {
+            switch (r.dsm) {
+              case Protocol_1.Aki.Protocol.msm.Proto_DoubleActivity:
+                e = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivityFullTip([3], false);
+                break;
+              case Protocol_1.Aki.Protocol.msm.Proto_FromRegress:
+                var g;
+                var w;
+                var f;
+                var I;
+                var M = ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId;
+                if (M !== 0 && (ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = 0, [M, g, w, f, I] = ModelManager_1.ModelManager.ActivityRegressModel.GetLevelPlayDoubleDropTuple(M), M)) {
+                  M = ConfigManager_1.ConfigManager.TextConfig.GetMultiText(I);
+                  I = ConfigManager_1.ConfigManager.TextConfig.GetMultiText(f, g, w);
+                  e = "" + M + I;
+                }
             }
           }
-        });
-        let e = r.B9n > 1 ? ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivityFullTip([3], false) : undefined;
-        var m;
-        var g;
-        var r = ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId;
-        if (r !== 0) {
-          [r, m, g, I, w] = ModelManager_1.ModelManager.ActivityRegressModel.GetLevelPlayDoubleDropTuple(r);
-          e = r ? "" + ConfigManager_1.ConfigManager.TextConfig.GetMultiText(w) + ConfigManager_1.ConfigManager.TextConfig.GetMultiText(I, m, g) : undefined;
-          ModelManager_1.ModelManager.ActivityRegressModel.LastUnGetRewardLevelPlayId = 0;
-        }
-        ItemRewardController.OpenExploreRewardView(ItemRewardDefine_1.BLACK_STONE_CONFIG, true, a, undefined, undefined, t, undefined, undefined, undefined, e, undefined, undefined, undefined, undefined, true);
-      } else {
-        var w;
-        var I;
-        var r = _a.GetRewardViewReasonArray().includes(C) ? ConfigManager_1.ConfigManager.ItemRewardConfig.GetRewardViewFromSourceConfig(C) : undefined;
-        if (C !== ItemRewardDefine_1.QUEST_SPECIAL_REWARD || !r) {
-          if (r) {
-            if (n.length > 0) {
-              ControllerHolder_1.ControllerHolder.SkinController.OpenObtainSkinView(n, a);
-              return;
-            } else if (i.length > 0) {
-              ControllerHolder_1.ControllerHolder.SkinController.OpenObtainFlySkinView(i, a);
-              return;
-            } else {
-              w = r.RewardViewId;
-              if (e > 0) {
-                ItemRewardController.OpenCommonRewardView(w, a, () => {
-                  _a.OpenSoarStrengthUpView(e);
-                });
+          ItemRewardController.OpenExploreRewardView(ItemRewardDefine_1.BLACK_STONE_CONFIG, true, i, undefined, undefined, o, undefined, undefined, undefined, e, undefined, undefined, undefined, undefined, true);
+        } else {
+          if (a !== ItemRewardDefine_1.QUEST_SPECIAL_REWARD || !n) {
+            if (n) {
+              if (l.length > 0) {
+                ControllerHolder_1.ControllerHolder.SkinController.OpenObtainSkinView(l, i);
+                return;
+              } else if (d.length > 0) {
+                ControllerHolder_1.ControllerHolder.SkinController.OpenObtainFlySkinView(d, i);
                 return;
               } else {
-                ItemRewardController.OpenCommonRewardView(w, a);
-                return;
-              }
-            }
-          } else {
-            if (C > ItemRewardDefine_1.DEFAULT_REWARD_UI) {
-              if (I = CommonParamById_1.configCommonParamById.GetIntConfig("DefaultConfigId")) {
-                ItemRewardController.OpenCommonRewardView(I, a);
+                r = n.RewardViewId;
+                if (e > 0) {
+                  ItemRewardController.OpenCommonRewardView(r, i, () => {
+                    _a.OpenSoarStrengthUpView(e);
+                  });
+                  return;
+                } else {
+                  ItemRewardController.OpenCommonRewardView(r, i);
+                  return;
+                }
               }
             } else {
-              ItemRewardController.AddItemList(a);
+              ItemRewardController.AddItemList(i);
+              return;
             }
-            return;
           }
+          ItemRewardController.OpenQuestRewardView(n.RewardViewId, i);
         }
-        ItemRewardController.OpenQuestRewardView(r.RewardViewId, a);
       }
     }
   }
@@ -357,15 +368,15 @@ ItemRewardController.b0i = r => {
 ItemRewardController.mMa = e => {
   _a.OnItemObtainNotify(e);
 };
-ItemRewardController.OnItemObtainNotify = (r, o) => {
-  var t = r.Rb_;
-  if (!(t.length <= 0)) {
+ItemRewardController.OnItemObtainNotify = (r, t) => {
+  var o = r.Rb_;
+  if (!(o.length <= 0)) {
     var a = [];
     var n = [];
     var i = [];
     const C = [];
     let e = 0;
-    for (const m of t) {
+    for (const m of o) {
       var l;
       var d = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(m.wb_.s5n);
       if (d === 1) {
@@ -384,31 +395,31 @@ ItemRewardController.OnItemObtainNotify = (r, o) => {
         a.push(d);
       }
     }
-    var t = ModelManager_1.ModelManager.ItemRewardModel;
+    var o = ModelManager_1.ModelManager.ItemRewardModel;
     var _ = r.x9n;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Test", 37, "[ItemRewardController]当服务端通知奖励获得时", ["reasonId", _]);
     }
-    if (t.CurrentReasonId !== _) {
-      t.ClearCurrentRewardData();
+    if (o.CurrentReasonId !== _) {
+      o.ClearCurrentRewardData();
     }
-    t.CurrentReasonId = _;
-    var t = _a.GetRewardViewReasonArray().includes(_) ? ConfigManager_1.ConfigManager.ItemRewardConfig.GetRewardViewFromSourceConfig(_) : undefined;
-    if (t) {
-      var s = t.RewardViewId;
-      var t = t.RewardSourceId;
-      if (t !== ItemRewardDefine_1.ITEM_EXCHANGE_RESON || ItemExchangeController_1.ItemExchangeController.NeedPop) {
-        if (t === ItemRewardDefine_1.QUEST_SPECIAL_REWARD) {
-          ItemRewardController.OpenQuestRewardView(s, a, o);
-        } else if (t === ItemRewardDefine_1.FISHING_ITEM_AUTO_CONVERT) {
+    o.CurrentReasonId = _;
+    var o = _a.GetRewardViewReasonArray().includes(_) ? ConfigManager_1.ConfigManager.ItemRewardConfig.GetRewardViewFromSourceConfig(_) : undefined;
+    if (o) {
+      var s = o.RewardViewId;
+      var o = o.RewardSourceId;
+      if (o !== ItemRewardDefine_1.ITEM_EXCHANGE_RESON || ItemExchangeController_1.ItemExchangeController.NeedPop) {
+        if (o === ItemRewardDefine_1.QUEST_SPECIAL_REWARD) {
+          ItemRewardController.OpenQuestRewardView(s, a, t);
+        } else if (o === ItemRewardDefine_1.FISHING_ITEM_AUTO_CONVERT) {
           ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Fishing_AutoMaterial");
         } else if (e > 0) {
           ItemRewardController.OpenCommonRewardView(s, a, () => {
             _a.OpenSoarStrengthUpView(e);
           });
-        } else if (t !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON && t !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON1 && t !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON2 || !ControllerHolder_1.ControllerHolder.BattlePassController.IsNeedExtraRewardView()) {
+        } else if (o !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON && o !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON1 && o !== ItemRewardDefine_1.BATTLE_PASS_REWARD_REASON2 || !ControllerHolder_1.ControllerHolder.BattlePassController.IsNeedExtraRewardView()) {
           if (C.length === 0 && n.length === 0 && i.length === 0) {
-            ItemRewardController.OpenCommonRewardView(s, a, o);
+            ItemRewardController.OpenCommonRewardView(s, a, t);
           } else if (a.length === 0 && C.length > 0) {
             for (const g of C) {
               GachaController_1.GachaController.CommonShowRoleResult(g, true, false);
@@ -422,7 +433,7 @@ ItemRewardController.OnItemObtainNotify = (r, o) => {
               for (const e of C) {
                 GachaController_1.GachaController.CommonShowRoleResult(e, true, false);
               }
-              o?.();
+              t?.();
             });
           }
         } else {
@@ -430,12 +441,12 @@ ItemRewardController.OnItemObtainNotify = (r, o) => {
         }
       }
     } else if (_ > ItemRewardDefine_1.DEFAULT_REWARD_UI) {
-      if (t = CommonParamById_1.configCommonParamById.GetIntConfig("DefaultConfigId")) {
-        ItemRewardController.OpenCommonRewardView(t, a, o);
+      if (o = CommonParamById_1.configCommonParamById.GetIntConfig("DefaultConfigId")) {
+        ItemRewardController.OpenCommonRewardView(o, a, t);
       }
     } else {
       ItemRewardController.AddItemList(a);
-      if (o !== undefined && Log_1.Log.CheckError()) {
+      if (t !== undefined && Log_1.Log.CheckError()) {
         Log_1.Log.Error("Reward", 8, "OnItemObtainNotify err", ["notify", r]);
       }
     }
@@ -444,6 +455,12 @@ ItemRewardController.OnItemObtainNotify = (r, o) => {
 ItemRewardController.F8u = () => {
   _a.N8u.Pop();
   _a.V8u();
+};
+ItemRewardController.$wm = (e, r) => {
+  var t = new ItemDefine_1.ItemTipsParam();
+  t.ItemId = e;
+  t.CanSkip = r;
+  ModelManager_1.ModelManager.ItemTipsModel.SharpTempOpenParam = t;
 };
 ItemRewardController.V8u = () => {
   var e;

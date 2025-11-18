@@ -352,7 +352,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   OnStart() {
     var t;
-    if ((this.Entity.GetComponent(157) !== undefined || this.Entity.GetComponent(222) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
+    if ((this.Entity.GetComponent(160) !== undefined || this.Entity.GetComponent(225) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
       t.bLockXRotation = false;
       t.bLockYRotation = false;
       t.bLockZRotation = false;
@@ -552,7 +552,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.fmn();
       this.RefreshShowActor();
       this.kMl();
-      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(205)?.CurrentTimeScale ?? 1);
+      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(208)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted);
@@ -897,7 +897,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   OnChangeTimeDilation(t) {
-    var t = t * (this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1);
+    var t = t * (this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1);
     this.ActorInternal.CustomTimeDilation = t;
     var e = this.GetInteractionMainActor();
     if (e?.IsValid()) {
@@ -975,5 +975,5 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
 };
 SceneItemActorComponent.Zsh = undefined;
-SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], SceneItemActorComponent);
+SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(206)], SceneItemActorComponent);
 exports.SceneItemActorComponent = SceneItemActorComponent; //# sourceMappingURL=SceneItemActorComponent.js.map

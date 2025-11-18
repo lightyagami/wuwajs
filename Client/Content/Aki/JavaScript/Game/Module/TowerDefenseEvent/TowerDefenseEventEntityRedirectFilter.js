@@ -113,7 +113,7 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("TowerDefenseEvent", 31, "创建特殊地块失败，找不到目标网格", ["creatureId", s.Uid], ["templateId", s.TemplateId], ["gridId", s.GridId], ["coords", s.Coords]);
         }
-        e = this.Qcd(t);
+        e = this.Zcd(t);
       }
     }
     var l = this.IYc.get(t.Uid);
@@ -199,10 +199,10 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
     if (i) {
       t = i;
       if ((0, TowerDefenseEventEntityModel_1.isTypeOfConfigInfo)(t)) {
-        if (r = (t = e.Uzc).QVu?.v9n ?? t.SKu?.v9n ?? t.bWc?.v9n ?? t.Wrd?.v9n) {
+        if (r = (t = e.Uzc).QVu?.v9n ?? t.SKu?.v9n ?? t.bWc?.v9n ?? t.nld?.v9n) {
           (o = i.Clone()).ConfigId = r;
           if (t.QVu && (0, TowerDefenseEventEntityModel_1.isTypeOfTrapBaseInfo)(o)) {
-            (n = o).Level = t.QVu.a0d;
+            (n = o).Level = t.QVu.wpd;
             n.DeconstructReturn = t.QVu.AJc;
           }
           if (n = TowerDefenseEventConfig_1.TowerDefenseEventConfig.FillUpModelInfo(o, true)) {
@@ -225,15 +225,15 @@ class TowerDefenseEventEntityRedirectFilter extends KscSubControllerBase_1.KscEn
       Log_1.Log.Error("TowerDefenseEvent", 60, "塔防实体数据变更失败: 未找到实体模型", ["entityId", e.F4n]);
     }
   }
-  Qcd(e) {
+  Zcd(e) {
     var t = e;
     if ((0, TowerDefenseEventEntityModel_1.isTypeOfSpecialCellBaseInfo)(t) && t.CellType === 1) {
-      return this.Kcd(e);
+      return this.edd(e);
     } else {
       return undefined;
     }
   }
-  Kcd(e) {
+  edd(e) {
     var t = ModelManager_1.ModelManager.TowerDefenseEventModel?.GetEntity(e.OwnerId)?.ExtraInfo;
     e.ExtraInfo = t;
     return t => {

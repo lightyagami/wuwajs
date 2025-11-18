@@ -66,6 +66,27 @@ class UiAudioModel {
       this.LastLoopAudio = [0, ""];
     }
   }
+  static KeepLoopAudioEventShow(i, e) {
+    var o;
+    if (this.LastLoopAudio[0] !== 0) {
+      o = this.LastLoopAudio[1];
+      UiAudioModel.SetLoopAudioEventShow(i, e, o);
+    }
+  }
+  static KeepLoopAudioEventHide(i, e) {
+    var o;
+    if (this.LastLoopAudio[0] === i) {
+      o = this.LastLoopAudio[1];
+      UiAudioModel.SetLoopAudioEventHide(i, e, o);
+    }
+  }
+  static KeepLoopAudioEventDestroy(i, e) {
+    var o;
+    if (this.LastLoopAudio[0] === i) {
+      o = this.LastLoopAudio[1];
+      UiAudioModel.SetLoopAudioEventDestroy(i, e, o);
+    }
+  }
   static SetRtpcLevelOpening(i) {
     AudioSystem_1.AudioSystem.SetRtpcValue(AudioDefine_1.RPTC_COVER_LEVEL_OPENING, i);
     if (Log_1.Log.CheckInfo()) {

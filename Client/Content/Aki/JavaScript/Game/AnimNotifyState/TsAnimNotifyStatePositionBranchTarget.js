@@ -212,7 +212,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     }
     let a = paramMap.get(t.Entity.Id);
     (a = a || (paramPool.length ? paramPool.pop() : new PositionBranchTargetParams())).CharActorComp = t;
-    a.CharUnifiedComp = t.Entity.GetComponent(176);
+    a.CharUnifiedComp = t.Entity.GetComponent(179);
     a.CharSkillComp = e;
     a.NowTime = 0;
     a.TotalTime = s;

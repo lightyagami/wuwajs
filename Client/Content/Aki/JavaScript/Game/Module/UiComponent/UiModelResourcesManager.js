@@ -40,7 +40,7 @@ class UiModelResourcesManager {
         if (t.length === r.length && (UiModelResourcesManager.dxo.delete(l), s.length !== t.length ? a?.(3) : a?.(2, i), ResourceSystem_1.ResourceSystem.IsLoadingReasonNotEmpty(LOADMODE_REASON_STRING))) {
           ResourceSystem_1.ResourceSystem.SetLoadModeInGame(GlobalData_1.GlobalData.World, LOADMODE_REASON_STRING);
         }
-      });
+      }, 100, "Ui.UiSceneModel");
       if (UiModelResourcesManager.dxo.has(l)) {
         UiModelResourcesManager.dxo.get(l).push(e);
       }

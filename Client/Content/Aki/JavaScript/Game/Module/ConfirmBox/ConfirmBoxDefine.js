@@ -30,6 +30,7 @@ class ConfirmBoxDataNew extends UiPopViewData_1.UiPopViewData {
     this.Tip = undefined;
     this.TextArgs = undefined;
     this.TableTxtArgNew = undefined;
+    this.SetTipsBgRed = false;
     this.CanClickDuringTimer = true;
     this.IsEscViewTriggerCallBack = true;
     this.ShowPowerItem = false;

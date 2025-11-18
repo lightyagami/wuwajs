@@ -44,6 +44,15 @@ class PayItemModel extends ModelBase_1.ModelBase {
       return undefined;
     }
   }
+  GetProductPriceByGoodsId(e) {
+    var e = this.cFa.get(e);
+    var e = e && e.Price ? e.Price : undefined;
+    if (e = e && /^[\d,.]+/.exec(e)) {
+      return e[0];
+    } else {
+      return undefined;
+    }
+  }
   GetDataList() {
     return this.YOi;
   }
@@ -89,16 +98,16 @@ class PayItemModel extends ModelBase_1.ModelBase {
   }
   CreateSdkPayment(e, t, r) {
     var e = ConfigManager_1.ConfigManager.PayItemConfig.GetPayItem(e);
-    var a = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
-    var o = ConfigManager_1.ConfigManager.ItemConfig.GetItemDesc(e.ItemId);
-    var n = e.PayId;
-    var i = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(n);
+    var o = ConfigManager_1.ConfigManager.ItemConfig.GetItemName(e.ItemId);
+    var a = ConfigManager_1.ConfigManager.ItemConfig.GetItemDesc(e.ItemId);
+    var i = e.PayId;
+    var n = ModelManager_1.ModelManager.RechargeModel.GetPayIdAmount(i);
     return {
-      product_id: ModelManager_1.ModelManager.RechargeModel.GetPayIdProductId(n),
+      product_id: ModelManager_1.ModelManager.RechargeModel.GetPayIdProductId(i),
       cpOrderId: t,
-      price: i,
-      goodsName: "" + a + e.ItemCount,
-      goodsDesc: "" + o + e.ItemCount,
+      price: n,
+      goodsName: "" + o + e.ItemCount,
+      goodsDesc: "" + a + e.ItemCount,
       extraParams: " ",
       callbackUrl: r,
       currency: ""

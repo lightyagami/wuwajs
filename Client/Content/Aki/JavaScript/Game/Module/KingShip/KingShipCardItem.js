@@ -84,49 +84,49 @@ class KingShipCardItem extends UiPanelBase_1.UiPanelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveVector, t => {
       this.L$c = t;
       s.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(s);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReignsCardMouseMoveCurve");
     const h = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.sMu = t;
       h.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(h);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsCard_Offset");
     const e = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.A$c = t;
       e.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(e);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_Alpha");
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.fWc = t;
       o.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(o);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_OffsetA");
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.mWc = t;
       r.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(r);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsSelect_OffsetB");
     const a = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.gWc = t;
       a.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(a);
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("ReginsCard_YAxial");
     const _ = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.CurveFloat, t => {
       this.tMu = t?.GetFloatValue(0) ?? 10;
       _.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     t.push(_);
     await Promise.all(t);
   }

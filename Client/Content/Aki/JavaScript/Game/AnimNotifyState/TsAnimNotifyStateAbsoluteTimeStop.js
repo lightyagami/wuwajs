@@ -17,6 +17,7 @@ class TsAnimNotifyStateAbsoluteTimeStop extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     t = t.GetOwner();
+    this.bRestartWithReplay = true;
     return t instanceof TsBaseCharacter_1.default && (SkillUtils_1.SkillUtils.BeginAbsoluteTimeStop(t.EntityId, s, this.是否冻结移动效果), true);
   }
   K2_NotifyEnd(t, e) {

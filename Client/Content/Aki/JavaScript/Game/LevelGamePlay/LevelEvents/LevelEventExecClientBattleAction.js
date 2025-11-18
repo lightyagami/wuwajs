@@ -33,7 +33,7 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
             if (Log_1.Log.CheckInfo()) {
               Log_1.Log.Info("LevelEvent", 31, "[LevelEventExecClientBattleAction.UseHookSkill] 技能释放失败", ["SkillId", l]);
             }
-            e?.GetComponent(100)?.ClearForceTarget();
+            e?.GetComponent(102)?.ClearForceTarget();
           }
           this.FinishExecute(true);
         });
@@ -63,7 +63,7 @@ class LevelEventExecClientBattleAction extends LevelGeneralBase_1.LevelEventBase
       }
       this.FinishExecute(false);
     }
-    var n = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(100);
+    var n = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.GetComponent(102);
     if (!n) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 31, "[LevelEventExecClientBattleAction] 未找到角色场景交互组件");

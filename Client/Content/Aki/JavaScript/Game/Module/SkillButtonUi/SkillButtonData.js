@@ -42,7 +42,7 @@ class SkillButtonData {
     this.gSo = [];
     this.pri = [];
     this.fSo = new Map();
-    this.pQd = [];
+    this.dlm = [];
     this.mEa = 0;
     this.pSo = [];
     this.DY_ = [];
@@ -150,7 +150,7 @@ class SkillButtonData {
     }
     if (this.ConfigRole) {
       this.kY_(this.ConfigRole);
-      this.e8d(this.ConfigRole);
+      this.mXd(this.ConfigRole);
       this.DefaultHidden = this.ConfigRole.VisibleTags.length > 0;
     }
     if (this.ConfigFollower) {
@@ -159,15 +159,15 @@ class SkillButtonData {
     }
     this.vSo = i.IsLongPressControlCamera;
     this.TSo = t.GetComponent(39);
-    this.LSo = t.GetComponent(208);
-    this.GameplayTagComponent = t.GetComponent(206);
-    this.BuffComponent = t.GetComponent(210);
+    this.LSo = t.GetComponent(211);
+    this.GameplayTagComponent = t.GetComponent(209);
+    this.BuffComponent = t.GetComponent(213);
     this.u1t = t.GetComponent(0);
     this.RSo = t.GetComponent(62);
-    this.$te = t.GetComponent(174);
+    this.$te = t.GetComponent(177);
     this.USo = t.GetComponent(43);
-    this.Cvl = t.GetComponent(230);
-    this.pWu = t.GetComponent(298);
+    this.Cvl = t.GetComponent(233);
+    this.pWu = t.GetComponent(302);
     this.InitCustomHandle();
     this.InitVehicleHandle();
     this.qSo();
@@ -255,7 +255,7 @@ class SkillButtonData {
       }
     }
   }
-  e8d(t) {
+  mXd(t) {
     for (var [i, s] of t.FormationAttributeIdTagMap) {
       this.FormationAttributeIdTagMap.set(i, s);
     }
@@ -269,7 +269,7 @@ class SkillButtonData {
     this.gSo.length = 0;
     this.pri.length = 0;
     this.fSo.clear();
-    this.pQd.length = 0;
+    this.dlm.length = 0;
     this.pSo.length = 0;
     this.DY_.length = 0;
     this.ConfigShowLongPressTagIds.length = 0;
@@ -295,7 +295,7 @@ class SkillButtonData {
         this.pSo.push(f);
       }
       for (const d of h.VisibleTags) {
-        this.pQd.push(d);
+        this.dlm.push(d);
       }
       for (const v of h.ShowLongPressTags) {
         this.ConfigShowLongPressTagIds.push(v);
@@ -356,7 +356,7 @@ class SkillButtonData {
     return this.fSo;
   }
   GetVisibleTagIds() {
-    return this.pQd;
+    return this.dlm;
   }
   GetHiddenTagIds() {
     return this.pSo;
@@ -836,7 +836,7 @@ class SkillButtonData {
       if (this.FormationData?.IgnoreDefaultHidden) {
         t = true;
       } else {
-        for (const i of this.pQd) {
+        for (const i of this.dlm) {
           if (this.mSo(i)) {
             t = true;
             break;
@@ -949,14 +949,14 @@ class SkillButtonData {
     return [0, 0];
   }
   IsVehicleSkillInCd() {
-    if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && this.Cvl.VehicleEntity?.GetComponent(246)?.IsSprintSkillInCd()) {
+    if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && this.Cvl.VehicleEntity?.GetComponent(249)?.IsSprintSkillInCd()) {
       return true;
     }
     return false;
   }
   GetVehicleSkillCd() {
     if (this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola")) {
-      var t = this.Cvl.VehicleEntity?.GetComponent(246)?.GetSprintSkillRemainingCd();
+      var t = this.Cvl.VehicleEntity?.GetComponent(249)?.GetSprintSkillRemainingCd();
       if (t) {
         return t;
       }
@@ -979,7 +979,7 @@ class SkillButtonData {
     var t;
     this.IsLimitCountVehicleSkill = false;
     this.RemainingCountVehicleSkill = 0;
-    if (this.CSo === 5 && this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && (this.IsLimitCountVehicleSkill = true, t = this.Cvl.VehicleEntity?.GetComponent(246))) {
+    if (this.CSo === 5 && this.Cvl?.IsOnVehicle && this.Cvl.IsVehicleType("Gongduola") && (this.IsLimitCountVehicleSkill = true, t = this.Cvl.VehicleEntity?.GetComponent(249))) {
       this.RemainingCountVehicleSkill = t.GetSprintSkillUsableCount();
     }
   }
@@ -1029,7 +1029,7 @@ class SkillButtonData {
       t = this.Cvl?.VehicleEntity;
     }
     if (t) {
-      i = t?.GetComponent(241)?.GetHoldConfig(this.RO);
+      i = t?.GetComponent(244)?.GetHoldConfig(this.RO);
       this.fvl = i ? i[1] : 0;
     }
     if (this.pWu && (i = this.pWu.GetLongPressDuration(this.RO)) > 0) {
@@ -1061,7 +1061,7 @@ class SkillButtonData {
     } else if (this.Cvl?.IsOnVehicle) {
       t = this.Cvl?.VehicleEntity;
     }
-    var i = !!t?.GetComponent(241)?.IsHoldingAction(this.RO);
+    var i = !!t?.GetComponent(244)?.IsHoldingAction(this.RO);
     var s = !!this.pWu?.IsHoldingAction(this.RO);
     return i || s;
   }

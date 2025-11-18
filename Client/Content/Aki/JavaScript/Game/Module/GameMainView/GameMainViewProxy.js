@@ -42,9 +42,9 @@ class GameMainViewProxy {
     await Promise.all([this.T6u(), this.OnBeforeStartAsync()]);
   }
   Start() {
-    this.iqd();
+    this.LNd();
     this.OnStart();
-    this.RGd();
+    this.LVd();
   }
   BeforeShow() {
     for (const t of this.ChildPanelMap.values()) {
@@ -56,7 +56,7 @@ class GameMainViewProxy {
     this.IsFirstShow = true;
   }
   AfterShow() {
-    this.dgd();
+    this.RCd();
     this.OnAfterShow();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActiveBattleView);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotStart);
@@ -72,11 +72,11 @@ class GameMainViewProxy {
     }
     this.OnAfterHide();
   }
-  RGd() {
+  LVd() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRouletteViewVisibleChanged, this.FJe);
     this.OnAddEventListenerByStart();
   }
-  wGd() {
+  PVd() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRouletteViewVisibleChanged, this.FJe);
     this.OnRemoveEventListenerForStart();
   }
@@ -89,7 +89,7 @@ class GameMainViewProxy {
     this.OnRemoveEventListener();
   }
   BeforeDestroy() {
-    this.wGd();
+    this.PVd();
     this.mrt();
     this.PanelResIdMap.clear();
     this.OnBeforeDestroy();
@@ -111,9 +111,9 @@ class GameMainViewProxy {
     this.OnAfterTick(t);
   }
   async T6u() {
-    await Promise.all([this.I6u(), this.Cwd()]);
+    await Promise.all([this.I6u(), this.$Pd()]);
   }
-  iqd() {
+  LNd() {
     if (this.JoystickPanel) {
       this.JoystickPanel.GetOriginalItem().SetAsFirstHierarchy();
     }
@@ -126,7 +126,7 @@ class GameMainViewProxy {
   async A6u() {
     this.JoystickPanel = await this.CreateChildPanel("PnlJoystick", this.View.GetContentPanel(), JoystickPanel_1.JoystickPanel, true, true, 27);
   }
-  async Cwd() {
+  async $Pd() {
     this.PositionPanel = await this.CreateChildPanel("PnlPosition", this.View.GetContentPanel(), PositionPanel_1.PositionPanel, true, true, 37);
   }
   mrt() {
@@ -138,7 +138,7 @@ class GameMainViewProxy {
     this.ChildPanelMap.clear();
     this.TickPanelList.length = 0;
   }
-  dgd() {
+  RCd() {
     if (this.TouchUiEditGroup !== undefined && Info_1.Info.IsInTouch()) {
       for (var [t, e] of this.PanelResIdMap.entries()) {
         TouchUiEditApplyHelper_1.TouchUiEditApplyHelper.ApplyCommonTouchUiEditData(this.TouchUiEditGroup, e, t);

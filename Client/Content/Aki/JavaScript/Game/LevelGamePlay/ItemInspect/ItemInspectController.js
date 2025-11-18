@@ -72,7 +72,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
               ModelManager_1.ModelManager.ItemInspectModel.OpenViewReady();
             }
           });
-          this.afd(() => {
+          this.u0d(() => {
             var e;
             var a;
             var r = ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor;
@@ -80,7 +80,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
               e = r.D_K2_GetActorLocation();
               a = 0;
               a = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(t.PrefabPath, 0, e, r.K2_GetActorRotation(), () => {
-                this.ZSd(true);
+                this.EId(true);
                 ModelManager_1.ModelManager.ItemInspectModel.LoadPrefabReady();
                 TimerSystem_1.TimerSystem.Next(() => {
                   var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
@@ -98,10 +98,10 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
               if (GlobalData_1.GlobalData.IsPlayInEditor) {
                 a.SetActorLabel("ItemInspectDarkStage");
               }
-              this.zmd().finally(() => {
+              this.i0d().finally(() => {
                 var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageAlpha();
                 var a = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageBlendTime();
-                this.Jmd(0, e, a);
+                this.r0d(0, e, a);
               });
             }
           });
@@ -131,11 +131,11 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     }
     var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageAlpha();
     var r = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageBlendTime();
-    this.Jmd(e, 0, r, () => {
+    this.r0d(e, 0, r, () => {
       var e = ModelManager_1.ModelManager.ItemInspectModel.CurItemId;
       SceneInteractionManager_1.SceneInteractionManager.Get().ToggleSceneInteractionVisible(e, false, true, undefined, "FinishItemInspect");
       SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(e);
-      this.ZSd(false);
+      this.EId(false);
       ModelManager_1.ModelManager.ItemInspectModel.GetFinishCallback()?.(a);
       ModelManager_1.ModelManager.ItemInspectModel.ClearData();
       ControllerHolder_1.ControllerHolder.SequenceController.ResumeSequence("ItemInspect");
@@ -154,12 +154,12 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       SceneInteractionManager_1.SceneInteractionManager.Get().ToggleSceneInteractionVisible(e, false, true, undefined, "FinishItemInspect");
       SceneInteractionManager_1.SceneInteractionManager.Get().DestroySceneInteraction(e);
     }
-    this.ZSd(false);
+    this.EId(false);
     ModelManager_1.ModelManager.ItemInspectModel.GetFinishCallback()?.(true);
     ModelManager_1.ModelManager.ItemInspectModel.ClearData();
     ControllerHolder_1.ControllerHolder.SequenceController.ResumeSequence("ItemInspect");
   }
-  static ZSd(a) {
+  static EId(a) {
     var e = ModelManager_1.ModelManager.ItemInspectModel.OriginItemActor;
     if (e?.IsValid()) {
       e.SetActorHiddenInGame(a);
@@ -175,7 +175,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static afd(a) {
+  static u0d(a) {
     if (ModelManager_1.ModelManager.ItemInspectModel.IsInitGlobalConfig()) {
       a();
     } else {
@@ -189,7 +189,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static async zmd() {
+  static async i0d() {
     var e = ModelManager_1.ModelManager.ItemInspectModel.GetDarkStageMeshPath();
     if (e !== "") {
       const r = new CustomPromise_1.CustomPromise();
@@ -225,7 +225,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static Jmd(o, n, M, _) {
+  static r0d(o, n, M, _) {
     if (ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer) {
       ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer.Remove();
       ModelManager_1.ModelManager.ItemInspectModel.DarkStageBlendTimer = undefined;
@@ -295,7 +295,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
     var a;
     if (!!ModelManager_1.ModelManager.ItemInspectModel.IsInspectReady() && !((a = ModelManager_1.ModelManager.ItemInspectModel.CurItemId) <= 0)) {
       if (GlobalData_1.GlobalData.IsPlayInEditor && ModelManager_1.ModelManager.ItemInspectModel.OpenRangeDebug) {
-        this.svd();
+        this.RSd();
       }
       if (ModelManager_1.ModelManager.ItemInspectModel.ResettingItem) {
         this.JWc(a, e);
@@ -305,7 +305,7 @@ class ItemInspectController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static svd() {
+  static RSd() {
     ModelManager_1.ModelManager.ItemInspectModel.GetRangeChecker()?.DebugDraw();
   }
   static aQu(e, r) {

@@ -45,6 +45,9 @@ class MonsterPropertyGrowth {
   get RageRecoverRatio() {
     return this.ragerecoverratio();
   }
+  get WeaknessBuildUpMaxRatio() {
+    return this.weaknessbuildupmaxratio();
+  }
   __init(t, r) {
     this.z7 = t;
     this.J7 = r;
@@ -143,6 +146,14 @@ class MonsterPropertyGrowth {
   }
   ragerecoverratio() {
     var t = this.J7.__offset(this.z7, 26);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  weaknessbuildupmaxratio() {
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

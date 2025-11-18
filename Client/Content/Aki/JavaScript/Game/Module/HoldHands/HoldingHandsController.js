@@ -22,11 +22,11 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     return ModelManager_1.ModelManager.HoldingHandsModel;
   }
   static OnInit() {
-    Net_1.Net.Register(19817, this.C7u);
+    Net_1.Net.Register(21418, this.C7u);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(19817);
+    Net_1.Net.UnRegister(21418);
     return true;
   }
   static TickPriority2(e) {
@@ -44,7 +44,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static M3d(e, o, t, r) {
+  static b9d(e, o, t, r) {
     var n = new HoldingHandsUtils_1.Invitation();
     n.Key = e;
     n.Leader = o;
@@ -87,7 +87,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     }
     return d;
   }
-  static E3d(e, o = false) {
+  static R9d(e, o = false) {
     var t = this.Model?.GetRelation(e);
     if (t) {
       t.Leader?.OnDeleteRelation(t.LeaderHandType, true, o);
@@ -102,8 +102,8 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     var l;
     var s;
     var d;
-    var g = o.Entity?.GetComponent(298);
-    var t = t.Entity?.GetComponent(298);
+    var g = o.Entity?.GetComponent(302);
+    var t = t.Entity?.GetComponent(302);
     if (g) {
       if (t) {
         s = g.GetRelationByHand(r);
@@ -144,16 +144,16 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     } else {
       a = this.bWu(t, r, n, true);
       if (e) {
-        Net_1.Net.Call(20651, a, e => {
+        Net_1.Net.Call(15620, a, e => {
           if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-            this.M3d(o, t, r, n);
+            this.b9d(o, t, r, n);
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Character", 82, "[HoldingHandsController.RequestInvitation] HoldHandRequest返回错误", ["ErrorCode", e.Q4n]);
           }
         });
       } else {
-        this.M3d(o, t, r, n);
-        Net_1.Net.Call(20651, a, () => {});
+        this.b9d(o, t, r, n);
+        Net_1.Net.Call(15620, a, () => {});
       }
     }
   }
@@ -171,7 +171,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     };
     var l = this.bWu(t, r, n, true);
     if (e) {
-      Net_1.Net.Call(20651, l, e => {
+      Net_1.Net.Call(15620, l, e => {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           i();
         } else if (Log_1.Log.CheckWarn()) {
@@ -180,7 +180,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
       });
     } else {
       i();
-      Net_1.Net.Call(20651, l, () => {});
+      Net_1.Net.Call(15620, l, () => {});
     }
   }
   static RequestReleaseHands(e, o = "", t = false, r = true) {
@@ -190,7 +190,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     if (i) {
       n = i.Leader;
       a = i.Follower;
-      if (n && a && (this.E3d(e, t), r && (t = this.bWu(n, a, i.LeaderHandType, false), Net_1.Net.Call(20651, t, () => {}), i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity, n.Entity.Id === i?.Id) && ((t = new LogReportDefine_1.HoldHandExitLogEvent()).reason = o, LogReportController_1.LogReportController.LogReport(t)), Log_1.Log.CheckInfo())) {
+      if (n && a && (this.R9d(e, t), r && (t = this.bWu(n, a, i.LeaderHandType, false), Net_1.Net.Call(15620, t, () => {}), i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity, n.Entity.Id === i?.Id) && ((t = new LogReportDefine_1.HoldHandExitLogEvent()).reason = o, LogReportController_1.LogReportController.LogReport(t)), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Character", 82, "[HoldingHandsController.RequestReleaseHands]", ["key", e], ["reason", o], ["sendRequest", r], ["leader", n.Entity.Id], ["follower", a.Entity.Id]);
       }
     } else if (Log_1.Log.CheckWarn()) {
@@ -207,7 +207,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     return n;
   }
   static SitOnCharCheckHoldHands(r, n) {
-    r = r.GetComponent(298);
+    r = r.GetComponent(302);
     if (n && r?.ActorComp) {
       var a = r?.OnLeaderSitDown();
       var i = a?.Follower;
@@ -234,7 +234,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
         }
         for (const c of _) {
           ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(c, this.t$u);
-          var H = this.t$u[0]?.Entity?.GetComponent(198);
+          var H = this.t$u[0]?.Entity?.GetComponent(201);
           var C = H?.GetInteractPoint();
           if (C && H?.HasSitDownAction() && H.Entity.Id !== n.Entity.Id && (H = Vector_1.Vector.DistSquared(C, l) + Vector_1.Vector.DistSquared(C, s)) < t) {
             t = H;
@@ -242,7 +242,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
           }
         }
         if (o > 0) {
-          this.Umd(r, o, i);
+          this.Ggd(r, o, i);
         }
         d = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
         if (r.Entity.Id === d?.Id) {
@@ -255,16 +255,18 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static Umd(e, o, t) {
+  static Ggd(e, o, t) {
     ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(o, this.t$u);
     var r = this.t$u[0];
     if (r) {
-      r = r.Entity?.GetComponent(198);
+      r = r.Entity?.GetComponent(201);
       if (r && r.HasSitDownAction()) {
         var r = () => {
-          e.OnLeaderStandUp();
+          if (!e.IsSitDown()) {
+            e.OnLeaderAndFollowerStandUp();
+          }
         };
-        var n = t?.Entity.GetComponent(91);
+        var n = t?.Entity.GetComponent(93);
         var a = t?.KeepFollowingConfig?.传送特效buffID;
         var i = [];
         if (a?.Num()) {
@@ -288,10 +290,10 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     }
   }
   static ForceNoLerpNextUpdate(e) {
-    e.Entity?.GetComponent(298)?.SetBindingsNoLerp();
+    e.Entity?.GetComponent(302)?.SetBindingsNoLerp();
   }
   static GetFollowers(o) {
-    var t = o.Entity?.GetComponent(298);
+    var t = o.Entity?.GetComponent(302);
     if (t) {
       var r = [];
       for (let e = 0; e <= 1; e++) {
@@ -308,7 +310,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
   var e = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e);
   if (o?.Valid) {
-    if (o = o.Entity?.GetComponent(298)) {
+    if (o = o.Entity?.GetComponent(302)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Character", 82, "[HoldingHandsController.OnStopHoldHandNotify]", ["leader", o.Entity.Id]);
       }

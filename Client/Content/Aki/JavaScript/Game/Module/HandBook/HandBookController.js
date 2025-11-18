@@ -29,7 +29,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(24421, e => {
+    Net_1.Net.Register(21693, e => {
       ModelManager_1.ModelManager.HandBookModel.UpdateHandBookActiveStateMap(e.h5n, e.cws);
       if (e.dws && (this.Aei(e.h5n, e.cws), e.h5n === ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(2))) {
         e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n);
@@ -77,7 +77,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   }
   static async SendIllustratedRedDotRequest() {
     var e = Protocol_1.Aki.Protocol.pos.create();
-    var e = await Net_1.Net.CallAsync(25161, e);
+    var e = await Net_1.Net.CallAsync(29427, e);
     if (e) {
       ModelManager_1.ModelManager.HandBookModel.InitHandBookRedDotList(e._ws);
     }
@@ -85,7 +85,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   static async SendIllustratedInfoRequestAsync(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    var a = await Net_1.Net.CallAsync(24217, t);
+    var a = await Net_1.Net.CallAsync(16357, t);
     if (a) {
       ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
       var o = a.uws.length;
@@ -99,7 +99,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
   static async SendIllustratedInfoRequest(e) {
     var t = Protocol_1.Aki.Protocol.Sos.create();
     t.E9n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookTypeList(e);
-    var a = await Net_1.Net.CallAsync(24217, t);
+    var a = await Net_1.Net.CallAsync(16357, t);
     if (a) {
       ModelManager_1.ModelManager.HandBookModel.ClearHandBookActiveStateMap();
       var o = a.uws.length;
@@ -113,10 +113,10 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     const a = Protocol_1.Aki.Protocol.Los.create();
     a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(t);
     a.s5n = e;
-    Net_1.Net.Call(27024, a, e => {
+    Net_1.Net.Call(18465, a, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19462, e.lvs);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17286, e.lvs);
         } else {
           ModelManager_1.ModelManager.HandBookModel.UpdateRedDot(t, a.s5n);
         }
@@ -127,9 +127,9 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     var a = Protocol_1.Aki.Protocol.yos.create();
     a.h5n = ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(e);
     a.s5n = t;
-    Net_1.Net.Call(26765, a, e => {
+    Net_1.Net.Call(29853, a, e => {
       if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17895, e.lvs);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28542, e.lvs);
       }
     });
   }
@@ -148,7 +148,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static GetCollectProgressMax(e) {
-    let t = this.osd.get(e);
+    let t = this.uhd.get(e);
     if (t) {
       return t;
     }
@@ -183,7 +183,7 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
       default:
         return 0;
     }
-    this.osd.set(e, t ?? 0);
+    this.uhd.set(e, t ?? 0);
     return t ?? 0;
   }
   static OnAddEvents() {
@@ -197,16 +197,16 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     return !!e && !ModelManager_1.ModelManager.HandBookModel.GetHandBookInfo(4, e.Id);
   }
   static async RoleIllustratedInfoRequest() {
-    var e = Protocol_1.Aki.Protocol.Drd.create();
-    var e = await Net_1.Net.CallAsync(21376, e);
+    var e = Protocol_1.Aki.Protocol.Xad.create();
+    var e = await Net_1.Net.CallAsync(27633, e);
     if (e) {
-      ModelManager_1.ModelManager.HandBookModel.RefreshRoleHandBookOpenTime(e.Yrd);
-      ModelManager_1.ModelManager.HandBookModel.RefreshWeaponHandBookOpenTime(e.zrd);
+      ModelManager_1.ModelManager.HandBookModel.RefreshRoleHandBookOpenTime(e.zad);
+      ModelManager_1.ModelManager.HandBookModel.RefreshWeaponHandBookOpenTime(e.Jad);
     }
   }
 }
 (exports.HandBookController = HandBookController).Uei = 0;
-HandBookController.osd = new Map();
+HandBookController.uhd = new Map();
 HandBookController.xei = e => {
   var e = EntitySystem_1.EntitySystem.Get(e);
   if ((e &&= e.GetComponent(0)) && e.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Animal && (e = e.GetModelId(), HandBookController.wei(e))) {

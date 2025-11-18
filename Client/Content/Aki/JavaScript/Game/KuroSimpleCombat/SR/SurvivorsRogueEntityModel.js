@@ -53,7 +53,7 @@ class SurvivorsRogueEntityModel extends SurvivorsRogueEntityBaseModel {
     this.PropertyId = 0;
     this.SplineId = i.eKn;
     this.BuffIdLayers = i.JHu;
-    this.AttributeMap = i.t2d;
+    this.AttributeMap = i.vGd;
     i = t.l8n;
     if (i) {
       this.Position.Set(i.X, i.Y, i.Z);
@@ -118,36 +118,36 @@ class SurvivorsRogueActivityEntityModel extends SurvivorsRogueEntityModel {
     this.PolluteRadius = 0;
   }
   static InitFromConfigId(t) {
-    let i = this.Nwd.Get();
-    (i = i || this.Nwd.Create()).ConfigId = t;
+    let i = this.fAd.Get();
+    (i = i || this.fAd.Create()).ConfigId = t;
     return i;
   }
   static BuildModel(i, s) {
-    if (s.has("sEu") && s.has("OTd") && s.get("OTd").OTd) {
-      let t = this.Nwd.Get();
-      (t = t || this.Nwd.Create()).InitFromProto(i, s);
+    if (s.has("sEu") && s.has("hwd") && s.get("hwd").hwd) {
+      let t = this.fAd.Get();
+      (t = t || this.fAd.Create()).InitFromProto(i, s);
       return t;
     }
   }
   static Clear() {
-    this.Nwd.Clear();
+    this.fAd.Clear();
   }
   InitFromProto(t, i) {
     super.InitFromProto(t, i);
-    t = i.get("OTd").OTd;
+    t = i.get("hwd").hwd;
     this.ConfigId = t.v9n;
-    if (t.NTd) {
+    if (t.dwd) {
       this.EntityType = 1;
       this.DeathType = 0;
       this.BuffRadius = 0;
       this.BuffIds = undefined;
       this.SpawnIds = undefined;
       this.PolluteRadius = 0;
-    } else if (t.vwd) {
+    } else if (t.QPd) {
       this.EntityType = 2;
-    } else if (t.pwd) {
+    } else if (t.WPd) {
       this.EntityType = 3;
-    } else if (t.YUd) {
+    } else if (t.zkd) {
       this.EntityType = 4;
     }
   }
@@ -171,15 +171,15 @@ class SurvivorsRogueActivityEntityModel extends SurvivorsRogueEntityModel {
   }
   Release() {
     this.Reset();
-    SurvivorsRogueActivityEntityModel.Nwd.Put(this);
+    SurvivorsRogueActivityEntityModel.fAd.Put(this);
   }
   Clone() {
-    let t = SurvivorsRogueActivityEntityModel.Nwd.Get();
-    (t = t || SurvivorsRogueActivityEntityModel.Nwd.Create()).Update(this);
+    let t = SurvivorsRogueActivityEntityModel.fAd.Get();
+    (t = t || SurvivorsRogueActivityEntityModel.fAd.Create()).Update(this);
     return t;
   }
 }
-(exports.SurvivorsRogueActivityEntityModel = SurvivorsRogueActivityEntityModel).Nwd = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new SurvivorsRogueActivityEntityModel());
+(exports.SurvivorsRogueActivityEntityModel = SurvivorsRogueActivityEntityModel).fAd = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new SurvivorsRogueActivityEntityModel());
 class SurvivorsRogueEntityModelBuilder {
   static Get(t, i) {
     for (const o of this.jNu) {

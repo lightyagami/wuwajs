@@ -11,8 +11,11 @@ const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const Stats_1 = require("../../../Core/Common/Stats");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const MathCommon_1 = require("../../../Core/Utils/Math/MathCommon");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../Core/Utils/Math/Vector2D");
+const StringBuilder_1 = require("../../../Core/Utils/StringBuilder");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const GlobalData_1 = require("../../GlobalData");
 const InputKeyUtils_1 = require("../../InputSettings/InputKeyUtils");
@@ -59,17 +62,19 @@ class TableTextArgNew {
 }
 exports.TableTextArgNew = TableTextArgNew;
 class LguiUtil {
-  static async LoadPrefabByResourceIdAsync(t, e, r = GlobalData_1.GlobalData.World) {
+  static async LoadPrefabByResourceIdAsync(t, e, r = GlobalData_1.GlobalData.World, i = 100, o = "js_undefined") {
     t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(t);
-    return LguiUtil.LoadPrefabByAsync(t, e, r);
+    return LguiUtil.LoadPrefabByAsync(t, e, r, i, o);
   }
-  static async LoadPrefabByAsync(t, r, i = GlobalData_1.GlobalData.World) {
-    const o = new CustomPromise_1.CustomPromise();
+  static async LoadPrefabByAsync(t, r, i = GlobalData_1.GlobalData.World, e = 100, o = "js_undefined") {
+    const a = LguiUtil.GetRootActorMemoryTag(r, o);
+    const _ = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.PrefabAsset, (t, e) => {
       t = UE.LGUIBPLibrary.LoadPrefabWithAsset(i, t, r);
-      o.SetResult(t);
-    });
-    return o.Promise;
+      LguiUtil.SetRootActorMemoryTag(t, a);
+      _.SetResult(t);
+    }, e, a);
+    return _.Promise;
   }
   static CopyItem(t, e) {
     return this.DuplicateActor(t.GetOwner(), e).GetComponentByClass(UE.UIItem.StaticClass());
@@ -373,25 +378,27 @@ class LguiUtil {
       UE.LGUIBPLibrary.DeleteActor(e.AttachChildren.Get(t).GetOwner());
     }
   }
-  static LoadAndSetText(i, o, a, _) {
-    LguiUtil.ClearAttachChildren(i);
-    const n = new Array(a.length);
-    const g = new Array(a.length);
-    let s = 0;
-    a.forEach((t, r) => {
+  static LoadAndSetText(o, a, _, n, e = "js_undefined") {
+    LguiUtil.ClearAttachChildren(o);
+    const g = new Array(_.length);
+    const s = new Array(_.length);
+    let l = 0;
+    _.forEach((t, r) => {
+      const i = LguiUtil.GetRootActorMemoryTag(o, e);
       ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.PrefabAsset, (t, e) => {
-        g[r] = t;
-        if ((++s >= a.length || s >= a.length) && (g.forEach((t, e) => {
-          var t = UE.LGUIBPLibrary.LoadPrefabWithAsset(GlobalData_1.GlobalData.World, t, i);
+        s[r] = t;
+        if ((++l >= _.length || l >= _.length) && (s.forEach((t, e) => {
+          var t = UE.LGUIBPLibrary.LoadPrefabWithAsset(GlobalData_1.GlobalData.World, t, o);
+          LguiUtil.SetRootActorMemoryTag(t, i);
           var r = t.GetComponentByClass(UE.UIItem.StaticClass());
           if (r) {
             r.SetPivot(Vector2D_1.Vector2D.ZeroVector);
-            n[e] = t;
+            g[e] = t;
           }
-        }), i.SetText(o), _)) {
-          _(n);
+        }), o.SetText(a), n)) {
+          n(g);
         }
-      });
+      }, 100, i);
     });
   }
   static SetActorIsPermanent(t, e, r) {
@@ -413,6 +420,25 @@ class LguiUtil {
   }
   static GetComponentsRegistry(t) {
     return t?.GetComponentByClass(UE.LGUIComponentsRegistry.StaticClass());
+  }
+  static GetRootActorMemoryTag(t, e = "js_undefined") {
+    let r = e;
+    var i;
+    if (ResourceSystem_1.ResourceSystem.IsMemoryTagOpen() && t) {
+      t = UE.LGUIBPLibrary.GetRootActorMemoryTag(t).toString();
+      if (!StringUtils_1.StringUtils.IsBlank(t)) {
+        i = t.split(".");
+        r = i.length > 0 && i[i.length - 1] === e ? t : (this.Tsm.Clear(), this.Tsm.Append(t), this.Tsm.Append("."), this.Tsm.Append(e), this.Tsm.ToString());
+      }
+    }
+    return r;
+  }
+  static SetRootActorMemoryTag(t, e) {
+    if (t && ResourceSystem_1.ResourceSystem.IsMemoryTagOpen() && t.IsA(UE.UIBaseActor.StaticClass())) {
+      e = FNameUtil_1.FNameUtil.GetDynamicFName(e);
+      t = t;
+      UE.LGUIBPLibrary.SetRootActorMemoryTag(t.GetUIItem(), e);
+    }
   }
   static ConvertPointerPositionToLguiCenterPosition(t, e) {
     var r;
@@ -444,6 +470,23 @@ class LguiUtil {
       e.Y = MathCommon_1.MathCommon.Clamp(e.Y, 0, i);
     }
   }
+  static GetAdaptiveTipsPosition(t, e) {
+    var r = t.GetUIWorldPosition();
+    var i = e.GetUIWorldPosition();
+    var o = e.Width;
+    var e = e.Height;
+    var a = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
+    var _ = UE.WidgetLayoutLibrary.GetViewportScale(GlobalData_1.GlobalData.World);
+    var n = a.X / _;
+    var a = a.Y / _ / 2;
+    var _ = r.X + t.Width / 2;
+    var g = r.Z;
+    let s = 0;
+    let l = 0;
+    s = _ + o < n / 2 ? _ + o / 2 : r.X - t.Width / 2 - o / 2;
+    l = 10 - a < g - e ? g : -a + e;
+    return Vector_1.Vector.Create(s, i.Y, l);
+  }
 }
-exports.LguiUtil = LguiUtil;
+(exports.LguiUtil = LguiUtil).Tsm = new StringBuilder_1.StringBuilder();
 //# sourceMappingURL=LguiUtil.js.map

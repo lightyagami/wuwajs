@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WorldMapSubMapItem = undefined;
 const UE = require("ue");
-const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -30,30 +29,19 @@ class WorldMapSubMapItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.GridIndex = i;
     this.GetExtendToggle(3)?.SetToggleState(t ? 1 : 0, false);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.FloorName);
-    i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
-    t = ConfigManager_1.ConfigManager.MapConfig?.GetSubMapConfigByAreaId(i);
+    var i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
+    var t = ConfigManager_1.ConfigManager.MapConfig?.GetSubMapConfigByAreaId(i);
     if (e.Area.includes(i) || !e.Area.includes(i) && e.Floor === 0 && !t) {
       i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_MultiMapCurrentAreaIcon");
       if (!StringUtils_1.StringUtils.IsEmpty(i)) {
-        const r = this.GetSprite(0)?.GetOwner()?.GetComponentByClass(UE.UIExtendToggleSpriteTransition.StaticClass());
-        ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.LGUISpriteData_BaseObject, e => {
-          if (e && r) {
-            r.SetAllStateSprite(e);
-          }
-        });
+        t = this.GetSprite(0)?.GetOwner()?.GetComponentByClass(UE.UIExtendToggleSpriteTransition.StaticClass());
+        this.SetExtendToggleSpriteTransitionByPath(i, t);
         this.SetSpriteByPath(i, this.GetSprite(1), false);
       }
-    } else if (!StringUtils_1.StringUtils.IsEmpty(e.FloorIcon)) {
-      t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.FloorIcon);
-      if (!StringUtils_1.StringUtils.IsEmpty(t)) {
-        const s = this.GetSprite(0)?.GetOwner()?.GetComponentByClass(UE.UIExtendToggleSpriteTransition.StaticClass());
-        ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.LGUISpriteData_BaseObject, e => {
-          if (e && s) {
-            s.SetAllStateSprite(e);
-          }
-        });
-        this.SetSpriteByPath(t, this.GetSprite(1), false);
-      }
+    } else if (!StringUtils_1.StringUtils.IsEmpty(e.FloorIcon) && !(t = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.FloorIcon), StringUtils_1.StringUtils.IsEmpty(t))) {
+      i = this.GetSprite(0)?.GetOwner()?.GetComponentByClass(UE.UIExtendToggleSpriteTransition.StaticClass());
+      this.SetExtendToggleSpriteTransitionByPath(t, i);
+      this.SetSpriteByPath(t, this.GetSprite(1), false);
     }
   }
   OnRegisterComponent() {

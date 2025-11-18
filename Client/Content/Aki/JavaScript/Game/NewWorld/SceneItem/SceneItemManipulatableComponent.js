@@ -185,7 +185,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
       var s = e.Entity.GetComponent(0);
       if (this.u1t?.RelationId === s.GetPbDataId()) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ipn);
-        if (e.Entity.GetComponent(203).GetIsSceneInteractionLoadCompleted()) {
+        if (e.Entity.GetComponent(206).GetIsSceneInteractionLoadCompleted()) {
           this.Tpn(e, this.u1t.PbRelationMatchCfgIndex);
           this.Lpn(e);
         } else {
@@ -373,7 +373,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     this.jCn = Rotator_1.Rotator.Create();
     this.Wnr = Vector_1.Vector.Create();
     this.qHr = Rotator_1.Rotator.Create();
-    this.Entity.GetComponent(155).AddComponentHitCondition(this, this.kpn);
+    this.Entity.GetComponent(158).AddComponentHitCondition(this, this.kpn);
     t = this.Config.DestroyCfg;
     if (t) {
       for (const e of t.Conditions) {
@@ -407,15 +407,15 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     var i = this.u1t.GetPbDataId();
     if (e.OccupiedGridInfo.has(i)) {
       e = e.OccupiedGridInfo.get(i);
-      (i = this.Entity.GetComponent(139)).PutDownIndex = new SceneItemJigsawBaseComponent_1.JigsawIndex(e.l8n.N5n, e.l8n.F5n);
+      (i = this.Entity.GetComponent(142)).PutDownIndex = new SceneItemJigsawBaseComponent_1.JigsawIndex(e.l8n.N5n, e.l8n.F5n);
       i.Rotation = e.l8n.V5n;
-      i = t.Entity.GetComponent(162).GetSocketRotator(this.Entity);
+      i = t.Entity.GetComponent(165).GetSocketRotator(this.Entity);
       this.ActorComp.SetActorRotation(i.ToUeRotator());
     }
   }
   Tpn(t, e) {
     this.TargetActorComponent = t.Entity.GetComponent(1);
-    t = t.Entity.GetComponent(162);
+    t = t.Entity.GetComponent(165);
     if (t) {
       this.ActivatedOutlet = t;
       (this.ActivatedOutlet.EntityInSocket = this).ActivatedOutlet.MatchCfgIndex = e;
@@ -430,19 +430,19 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     }
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(203);
+    this.ActorComp = this.Entity.GetComponent(206);
     this.ActorComp.Owner.Tags.Add(CONTROL_OBJECT_TAG);
     this.ActorComp.Owner.Tags.Add(CharacterNameDefines_1.CharacterNameDefines.NO_SLIDE);
     this.ActorComp.GetPrimitiveComponent().SetUseCCD(true);
-    this.inn = this.Entity.GetComponent(197);
+    this.inn = this.Entity.GetComponent(200);
     this.inn.AddTag(-1299967416);
     this.TargetActorComponent = undefined;
     this.TargetOutletComponent = undefined;
     this.jCn.DeepCopy(this.ActorComp.ActorRotationProxy);
     this.Wnr.DeepCopy(this.ActorComp.ActorLocationProxy);
-    this.mBe = this.Entity.GetComponent(134);
-    this.PropComp = this.Entity.GetComponent(131);
-    this._pn = this.Entity.GetComponent(159);
+    this.mBe = this.Entity.GetComponent(137);
+    this.PropComp = this.Entity.GetComponent(134);
+    this._pn = this.Entity.GetComponent(162);
     this.epn = this.u1t.ControllerId;
     if (this.epn !== INVALID_ID && this.u1t.IsShowingHandFx) {
       this.Fpn(this.epn, true);
@@ -479,7 +479,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
         this.LoadingBaseConfigFinish = true;
         this.ManipulateBaseConfig = t;
         this.j1l = this.ManipulateBaseConfig.未锁定目标时不可投掷;
-        this.Entity.GetComponent(122).SetLogicRange(this.ManipulateBaseConfig.被感知范围);
+        this.Entity.GetComponent(125).SetLogicRange(this.ManipulateBaseConfig.被感知范围);
         this.IsHoldingUsePhysics = this.ManipulateBaseConfig.控物保持使用物理;
         var t = this.ActorComp.GetPrimitiveComponent();
         var e = this.ManipulateBaseConfig.物体质量;
@@ -540,7 +540,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
             this.CastFreeState = i;
             this.jDl = new SceneItemManipulableCastProjectileState_1.SceneItemManipulatableCastProjectileState(this, undefined);
         }
-        t = this.Entity.GetComponent(139);
+        t = this.Entity.GetComponent(142);
         if (t?.Valid) {
           this.WDl = new SceneItemManipulableMatchJigsawBaseState_1.SceneItemManipulableMatchJigsawBaseState(this);
         } else {
@@ -631,7 +631,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     var e;
     this.ActivatedOutlet = undefined;
     if (this.u1t.RelationId) {
-      e = (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.u1t.RelationId))?.Entity?.GetComponent(203);
+      e = (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.u1t.RelationId))?.Entity?.GetComponent(206);
       if (t?.IsInit && e?.GetIsSceneInteractionLoadCompleted()) {
         this.Tpn(t, this.u1t.PbRelationMatchCfgIndex);
         this.Lpn(t);
@@ -649,7 +649,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
   }
   jpn() {
     var t;
-    var e = this.Entity.GetComponent(126);
+    var e = this.Entity.GetComponent(129);
     if (!this.FinishCheckInitAttach) {
       if (e && this.CurrentState === this.Sbo) {
         (t = new SceneItemDynamicAttachTargetComponent_1.AttachParam()).PosAttachType = 2;
@@ -753,7 +753,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     }
   }
   Wpn(t) {
-    if (this.GetState() === 10 && (this.TargetActorComponent = undefined, this.TargetOutletComponent = undefined, this.ActivatedOutlet = t.GetComponent(162), this.ActorComp?.Valid)) {
+    if (this.GetState() === 10 && (this.TargetActorComponent = undefined, this.TargetOutletComponent = undefined, this.ActivatedOutlet = t.GetComponent(165), this.ActorComp?.Valid)) {
       this.ActorComp.PhysicsMode = 0;
     }
   }
@@ -776,7 +776,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     var e;
     var i;
     var s;
-    var t = t.GetComponent(162);
+    var t = t.GetComponent(165);
     var h = t.GetMismatchSequence(this.Entity);
     if (h !== undefined && t?.Valid && (this.PlayingMatchSequence = true, this.upn === undefined && this.Qpn(), t = this.upn.DefaultInstanceData, e = this.ActorComp.ActorLocationProxy, s = this.ActorComp.ActorRotationProxy, i = this.ActorComp.ActorScale, s = Transform_1.Transform.Create(s.Quaternion(undefined), e, i), t.TransformOrigin = s.ToUeTransformOld(), this.upn)) {
       this.IsCanBeHeld = false;
@@ -785,7 +785,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     }
   }
   ShouldPlayMismatchSequence(t) {
-    t = t.GetComponent(162);
+    t = t.GetComponent(165);
     return t.GetMismatchSequence(this.Entity) !== undefined && !!t?.Valid;
   }
   Xpn(t) {
@@ -850,13 +850,13 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     if (e) {
       (h = Protocol_1.Aki.Protocol.ums.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.u1t.GetCreatureDataId());
       h.cKn = MathUtils_1.MathUtils.NumberToLong(t);
-      Net_1.Net.Call(24703, h, t => {
+      Net_1.Net.Call(19591, h, t => {
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21037);
         }
       });
     }
@@ -892,14 +892,14 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
       }
     }
     var t = ModelManager_1.ModelManager.ManipulaterModel.GetTargetPartLocation();
-    var e = this.TargetActorComponent?.Entity.GetComponent(149);
+    var e = this.TargetActorComponent?.Entity.GetComponent(152);
     let i = Vector_1.Vector.Create();
-    i = this.TargetOutletComponent?.Valid ? this.TargetActorComponent.Entity.GetComponent(138)?.Valid ? this.TargetOutletComponent.GetCurrentLockLocation() : this.TargetOutletComponent.GetSocketLocation(this.Entity) : e?.Valid ? e.GetHitPoint() : t !== Vector_1.Vector.ZeroVectorProxy ? t : this.TargetActorComponent.ActorLocationProxy;
+    i = this.TargetOutletComponent?.Valid ? this.TargetActorComponent.Entity.GetComponent(141)?.Valid ? this.TargetOutletComponent.GetCurrentLockLocation() : this.TargetOutletComponent.GetSocketLocation(this.Entity) : e?.Valid ? e.GetHitPoint() : t !== Vector_1.Vector.ZeroVectorProxy ? t : this.TargetActorComponent.ActorLocationProxy;
     this.CastTargetLocation = i;
   }
   CalcCastTargetPointWithEntity(t) {
     var e = t.GetComponent(1);
-    var t = t.GetComponent(162);
+    var t = t.GetComponent(165);
     if (t) {
       return t.GetSocketLocation(this.Entity);
     } else {
@@ -1042,7 +1042,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
         Log_1.Log.Info("SceneItem", 31, "[Manipulate] RequestRemoveControllerId", ["location", this.ActorComp?.ActorLocationProxy], ["id", this.u1t?.GetPbDataId()]);
       }
       this.IsRequestingRemoveControllerId = true;
-      Net_1.Net.Call(16465, e, t => {
+      Net_1.Net.Call(23788, e, t => {
         this.IsRequestingRemoveControllerId = false;
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
@@ -1054,7 +1054,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
             this.IsCanBeHeld = true;
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28494);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21037);
         }
       });
     }
@@ -1234,7 +1234,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     if (this.Config?.DestroyCfg?.StopPhysicAfterDestroyed) {
       this.ActorComp.GetPrimitiveComponent()?.SetSimulatePhysics(false);
     }
-    Net_1.Net.Call(17558, e, t => {
+    Net_1.Net.Call(24600, e, t => {
       switch (t.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
@@ -1244,7 +1244,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
           }
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18694);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 27896);
       }
     });
   }
@@ -1299,7 +1299,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
   }
   TryAddSpecLockTag() {
     var t;
-    if (this.Entity.GetComponent(139)) {
+    if (this.Entity.GetComponent(142)) {
       t = this.ActivatedOutlet !== undefined ? 2142861976 : -628734864;
       if (!this.inn.HasTag(t)) {
         this.inn.AddTag(t);
@@ -1308,12 +1308,12 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
   }
   TryRemoveSpecLockTag() {
     var t;
-    if (this.Entity.GetComponent(139) && (this.inn.HasTag(t = 2142861976) && this.inn.RemoveTag(t), this.inn.HasTag(t = -628734864))) {
+    if (this.Entity.GetComponent(142) && (this.inn.HasTag(t = 2142861976) && this.inn.RemoveTag(t), this.inn.HasTag(t = -628734864))) {
       this.inn.RemoveTag(t);
     }
   }
   TryReqAttachToFloor() {
-    var t = this.Entity.GetComponent(126);
+    var t = this.Entity.GetComponent(129);
     if (t && this.ActorComp?.Owner?.IsValid() && this.ActorComp.GetIsSceneInteractionLoadCompleted() && !t.IsRegTarget()) {
       var e;
       var i;
@@ -1334,7 +1334,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
           }
         } else {
           [i, e] = this.zpn(h);
-          if (i && (s = i.GetComponent(203), i = i.GetComponent(0).GetPbDataId(), s) && i) {
+          if (i && (s = i.GetComponent(206), i = i.GetComponent(0).GetPbDataId(), s) && i) {
             h = e ? h : s.Owner;
             this.ActorComp.ResetAllCachedTime();
             h = (s = this.ActorComp.ActorTransform.GetRelativeTransform(h.D_GetTransform())).GetLocation();
@@ -1418,7 +1418,7 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
   }
   zpn(e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByChildActor(e);
-    var i = t?.Entity?.GetComponent(203);
+    var i = t?.Entity?.GetComponent(206);
     if (!i?.Owner?.IsValid()) {
       return [undefined, undefined];
     }
@@ -1452,5 +1452,5 @@ let SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = class 
     return !this.Oc1 || !t?.MoveComp || (t.MoveComp.IsStandardGravity ? this.Oc1.Equals(Vector_1.Vector.DownVectorProxy) : this.Oc1.Equals(t.ActorGravityDirectProxy));
   }
 };
-SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(157)], SceneItemManipulatableComponent);
+SceneItemManipulatableComponent = SceneItemManipulatableComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(160)], SceneItemManipulatableComponent);
 exports.SceneItemManipulatableComponent = SceneItemManipulatableComponent; //# sourceMappingURL=SceneItemManipulatableComponent.js.map

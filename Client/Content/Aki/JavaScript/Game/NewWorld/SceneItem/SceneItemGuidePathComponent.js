@@ -172,7 +172,7 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
   }
   OnActivate() {
     this.Hte = this.Entity.GetComponent(1);
-    this.Lie = this.Entity.GetComponent(197);
+    this.Lie = this.Entity.GetComponent(200);
     this.sxr = this.Disable("[SceneItemGuidePathComponent.OnActivate] 默认Disable");
     if (!Info_1.Info.EnableForceTick) {
       this.tfn = this.Hte.Owner.GetComponentByClass(UE.KuroSceneItemGuidePathComponent.StaticClass());
@@ -273,9 +273,9 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
   dfn(e = false, i = undefined) {
     var t = Protocol_1.Aki.Protocol.Ems.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
-    Net_1.Net.Call(16870, t, t => {
+    Net_1.Net.Call(15560, t, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 21449);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 26801);
       }
       this.ofn = t.ZLs;
       if (Log_1.Log.CheckInfo()) {
@@ -359,5 +359,5 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
     return this.Lo.ColorChangeOption !== undefined;
   }
 };
-SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(154)], SceneItemGuidePathComponent);
+SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(157)], SceneItemGuidePathComponent);
 exports.SceneItemGuidePathComponent = SceneItemGuidePathComponent; //# sourceMappingURL=SceneItemGuidePathComponent.js.map

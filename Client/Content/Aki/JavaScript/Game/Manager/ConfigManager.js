@@ -187,6 +187,7 @@ ConfigManager.DangoAbyssConfig = undefined;
 ConfigManager.AvignonConfig = undefined;
 ConfigManager.DangoConfig = undefined;
 ConfigManager.MapRogueConfig = undefined;
+ConfigManager.HonamiStoryConfig = undefined;
 ConfigManager.ActivityDangoMonopolyConfig = undefined;
 ConfigManager.CumulativeShopConfig = undefined;
 ConfigManager.PhantomArenaConfig = undefined;
@@ -204,4 +205,9 @@ ConfigManager.MoonSignInConfig = undefined;
 ConfigManager.RoleDevConfig = undefined;
 ConfigManager.QuestTreeConfig = undefined;
 ConfigManager.ImmersiveMouseConfig = undefined;
-ConfigManager.MusicBeatTypeConfig = undefined; //# sourceMappingURL=ConfigManager.js.map
+ConfigManager.MusicBeatTypeConfig = undefined;
+ConfigManager.AnimalStandbyMontageConfig = undefined;
+ConfigManager.PrizeDrawingConfig = undefined;
+ConfigManager.ActivityPreWarmConfig = undefined;
+ConfigManager.AdvanceNoticeConfig = undefined;
+ConfigManager.SubPackageConfig = undefined; //# sourceMappingURL=ConfigManager.js.map

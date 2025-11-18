@@ -137,15 +137,28 @@ class AreaModel extends ModelBase_1.ModelBase {
       t?.ToggleArea(r);
     }
   }
-  InitAreaStates(e) {
-    for (const r of e) {
-      this.xWe.set(r.p6n, r.Y4n);
-    }
-    e = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(6);
+  InitAreaStates(e, r) {
+    this.xWe.clear();
     if (e) {
-      this.SetAreaInfo(e);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, undefined, e);
+      for (const t of e) {
+        this.xWe.set(t.AreaId, t.IsInitActived);
+      }
     }
+    for (const i of r) {
+      this.xWe.set(i.p6n, i.Y4n);
+    }
+  }
+  InitArea(e) {
+    var r = ConfigManager_1.ConfigManager.AreaConfig?.GetAllAreaInfo() ?? [];
+    this.InitAreaStates(r, e);
+    var r = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(6);
+    if (r) {
+      this.SetAreaInfo(r);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, undefined, r);
+    }
+  }
+  GetAreaStates() {
+    return this.xWe;
   }
   GetAreaCountryId() {
     if (this.UWe) {

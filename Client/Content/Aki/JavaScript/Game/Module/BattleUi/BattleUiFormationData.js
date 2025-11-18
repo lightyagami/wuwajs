@@ -65,7 +65,7 @@ class BattleUiFormationData {
   AddFollower(e) {
     if (e !== this.ORn) {
       this.FRn();
-      var i = (this.ORn = e).Entity.GetComponent(223);
+      var i = (this.ORn = e).Entity.GetComponent(226);
       let t = i?.AimType;
       t = t || (followerMap.get(e.PbDataId) ?? 0);
       this.doh = t;

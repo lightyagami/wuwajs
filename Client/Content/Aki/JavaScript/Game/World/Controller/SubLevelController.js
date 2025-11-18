@@ -42,12 +42,12 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
   }
   static OnRegisterNetEvent() {
     super.OnRegisterNetEvent();
-    Net_1.Net.Register(28871, SubLevelController.b0r);
-    Net_1.Net.Register(26243, SubLevelController.q0r);
+    Net_1.Net.Register(17238, SubLevelController.b0r);
+    Net_1.Net.Register(15180, SubLevelController.q0r);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28871);
-    Net_1.Net.UnRegister(26243);
+    Net_1.Net.UnRegister(17238);
+    Net_1.Net.UnRegister(15180);
     super.OnUnRegisterNetEvent();
   }
   static RegisterAssistant() {
@@ -115,7 +115,7 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     e = new LoadLevelDefine_1.SwitchSubLevelProcess(o);
     if (this.$Er.Empty) {
       this.$Er.Push(e);
-      this.e9d();
+      this.vJd();
     } else {
       this.$Er.Push(e);
     }
@@ -136,6 +136,9 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     i.LoadSubLevelPromise = new GameModePromise_1.GameModePromise();
     if ((ModelManager_1.ModelManager.SubLevelLoadingModel.ScreenEffect = r) !== 0 && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(开始)"), await ControllerHolder_1.ControllerHolder.LevelLoadingController.WaitOpenLoading(14, 3), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:打开黑幕Loading界面(完成)");
+    }
+    if (l && ControllerHolder_1.ControllerHolder.TeleportControllerNew.BackToGameIfTargetPositionInvalid(l, "SubLevelController.ChangeSubLevelInternal")) {
+      return false;
     }
     let L = false;
     for ([t] of o) {
@@ -210,7 +213,7 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
         Log_1.Log.Info("GameMode", 3, "SubLevelController:等待加载编队(完成)");
       }
     }
-    if (e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:设置玩家位置、地面修正(开始)", ["Location", e]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportStart, true), EventSystem_1.EventSystem.EmitWithTarget(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, EventDefine_1.EEventName.TeleportStartEntity, true), ControllerHolder_1.ControllerHolder.GameModeController.FixBornLocation(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BeforeTeleportComplete), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportComplete, 0), Log_1.Log.CheckInfo())) {
+    if (e && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:设置玩家位置、地面修正(开始)", ["Location", e]), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportStart, true), EventSystem_1.EventSystem.EmitWithTarget(Global_1.Global.BaseCharacter.CharacterActorComponent.Entity, EventDefine_1.EEventName.TeleportStartEntity, true), ControllerHolder_1.ControllerHolder.GameModeController.FixBornLocation(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BeforeTeleportComplete), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TeleportComplete), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:设置玩家位置、地面修正(结束)", ["修正后的Location", Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy]);
     }
     if (o && (Log_1.Log.CheckInfo() && Log_1.Log.Info("GameMode", 3, "SubLevelController.切换子关卡:设置玩家旋转(开始)", ["Rotator", o]), Global_1.Global.BaseCharacter.CharacterActorComponent.SetInputRotator(o), Global_1.Global.BaseCharacter.CharacterActorComponent.SetActorRotation(WorldGlobal_1.WorldGlobal.ToUeRotator(o), "SubLevelController.切换子关卡:设置玩家旋转", false), ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.SetRotation(CameraUtility_1.CameraUtility.GetCameraDefaultFocusUeRotator()), Log_1.Log.CheckInfo())) {
@@ -406,14 +409,14 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
       Log_1.Log.Warn("GameMode", 3, "SubLevelController.切换子关卡:卸载的子关卡不存在", ["LinkId", e], ["Level", o]);
     }
   }
-  static e9d() {
+  static vJd() {
     var e;
     if (this.$Er && !this.$Er.Empty) {
       e = this.$Er.Front;
-      this.t9d(e);
+      this.yJd(e);
     }
   }
-  static async t9d(e) {
+  static async yJd(e) {
     let o = false;
     switch (e.Type) {
       case 0:
@@ -428,7 +431,7 @@ class SubLevelController extends ControllerWithAssistantBase_1.ControllerWithAss
     e = new LoadLevelDefine_1.SetSubLevelVisibleProcess(e);
     if (this.$Er.Empty) {
       this.$Er.Push(e);
-      this.e9d();
+      this.vJd();
     } else {
       this.$Er.Push(e);
     }
@@ -501,5 +504,5 @@ SubLevelController.q0r = e => {
 };
 SubLevelController.mj1 = e => {
   _a.$Er?.Pop()?.Params.FinishCallback?.(e);
-  _a.e9d();
+  _a.vJd();
 }; //# sourceMappingURL=SubLevelController.js.map

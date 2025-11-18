@@ -41,7 +41,7 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, this.CycleId, 0, 0) === 1 || (ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, this.CycleId, 0, 0, 1), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.Id), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRedDotInfoRefresh), false);
   }
   HasNewCycle() {
-    return !!this.GetPreGuideQuestFinishState() && !ModelManager_1.ModelManager.ActivityModel?.GetActivityCacheData(this.Id, 0, this.CycleId, 0, 0);
+    return !!this.GetPreGuideQuestFinishState() && !this.IsScoreRewardAllReceive() && !ModelManager_1.ModelManager.ActivityModel?.GetActivityCacheData(this.Id, 0, this.CycleId, 0, 0);
   }
   HasScoreRewardEnable() {
     return this.AwardsInfoList?.some(e => e.zps === Protocol_1.Aki.Protocol.zps.CMs) ?? false;

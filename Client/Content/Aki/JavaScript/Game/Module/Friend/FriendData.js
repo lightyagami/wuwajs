@@ -156,7 +156,7 @@ class FriendData {
     });
     this.Birthday = e.ZVn;
     this.IsBirthdayDisplay = e.ySs;
-    this.Deactivation = e.jSd;
+    this.Deactivation = e.cId;
     if (e.Jxa) {
       this.$xa = e.Jxa;
       this.Xxa = e.Qxa;

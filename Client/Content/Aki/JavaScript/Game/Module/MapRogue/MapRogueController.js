@@ -21,22 +21,22 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(23881, this.VGc);
-    Net_1.Net.Register(25977, this.jGc);
-    Net_1.Net.Register(24494, this.HGc);
-    Net_1.Net.Register(17756, this.$Gc);
-    Net_1.Net.Register(20737, this.A3c);
-    Net_1.Net.Register(26549, this.To1);
-    Net_1.Net.Register(19451, this.$N1);
+    Net_1.Net.Register(17330, this.VGc);
+    Net_1.Net.Register(26192, this.jGc);
+    Net_1.Net.Register(17594, this.HGc);
+    Net_1.Net.Register(28443, this.$Gc);
+    Net_1.Net.Register(18046, this.A3c);
+    Net_1.Net.Register(27295, this.To1);
+    Net_1.Net.Register(29514, this.$N1);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23881);
-    Net_1.Net.UnRegister(25977);
-    Net_1.Net.UnRegister(24494);
-    Net_1.Net.UnRegister(17756);
-    Net_1.Net.UnRegister(20737);
-    Net_1.Net.UnRegister(26549);
-    Net_1.Net.UnRegister(19451);
+    Net_1.Net.UnRegister(17330);
+    Net_1.Net.UnRegister(26192);
+    Net_1.Net.UnRegister(17594);
+    Net_1.Net.UnRegister(28443);
+    Net_1.Net.UnRegister(18046);
+    Net_1.Net.UnRegister(27295);
+    Net_1.Net.UnRegister(29514);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
@@ -54,9 +54,9 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
       e.IsEnd = true;
     }
     var o = new Protocol_1.Aki.Protocol.TEc();
-    var o = await Net_1.Net.CallAsync(25050, o);
+    var o = await Net_1.Net.CallAsync(21735, o);
     if (o.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 27706);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 22972);
       if (e) {
         e.IsEnd = false;
       }
@@ -87,10 +87,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
   }
   static RequestBackToMap(o) {
     var e = new Protocol_1.Aki.Protocol.CEc();
-    Net_1.Net.Call(20288, e, e => {
+    Net_1.Net.Call(22268, e, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 27176);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25207);
           o?.(false);
         } else {
           o?.(true);
@@ -106,10 +106,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
       NEc: e,
       VEc: []
     };
-    Net_1.Net.Call(18207, a, e => {
+    Net_1.Net.Call(21753, a, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25627);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 29910);
           o?.(false);
         } else {
           o?.(true);
@@ -123,10 +123,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
     var r = new Protocol_1.Aki.Protocol.yEc();
     r.w5n = e;
     r.VB1 = o;
-    Net_1.Net.Call(16691, r, e => {
+    Net_1.Net.Call(19869, r, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25902);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19965);
           a?.(false);
         }
         a?.(true);
@@ -140,10 +140,10 @@ class MapRogueController extends UiControllerBase_1.UiControllerBase {
     var r = new Protocol_1.Aki.Protocol.yEc();
     r.w5n = e;
     r.iZu = o;
-    Net_1.Net.Call(16691, r, e => {
+    Net_1.Net.Call(19869, r, e => {
       if (e) {
         if (e.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 25902);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.G9n, 19965);
           a?.(false);
         }
         a?.(true);

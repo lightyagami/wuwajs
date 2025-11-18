@@ -17,7 +17,7 @@ class SpecialTransitionView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.pDe = undefined;
-    this.oBd = undefined;
+    this.nOd = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, UE.UIItem], [2, UE.UITexture], [3, UE.UIItem]];
@@ -46,9 +46,9 @@ class SpecialTransitionView extends UiViewBase_1.UiViewBase {
       let e = undefined;
       e = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 1 ? (i = StringUtils_1.StringUtils.IsEmpty(a.UiPrefabIdMaleVariant) ? a.UiPrefabId : a.UiPrefabIdMaleVariant, StringUtils_1.StringUtils.IsEmpty(a.AnimationNameMaleVariant) ? a.AnimationName : a.AnimationNameMaleVariant) : (i = a.UiPrefabId, a.AnimationName);
       a = this.GetItem(1);
-      this.oBd = new ChildSpineView();
+      this.nOd = new ChildSpineView();
       try {
-        await this.oBd.CreateThenShowByResourceIdAsync(i, a);
+        await this.nOd.CreateThenShowByResourceIdAsync(i, a);
       } catch (i) {
         if (i instanceof Error) {
           if (Log_1.Log.CheckError()) {
@@ -58,7 +58,7 @@ class SpecialTransitionView extends UiViewBase_1.UiViewBase {
           Log_1.Log.Error("Loading", 87, "SpecialTransitionView LoadSpine 异常", ["error", i]);
         }
       }
-      this.oBd.PlaySpineAnimation(e, r);
+      this.nOd.PlaySpineAnimation(e, r);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Loading", 87, "SpecialTransitionView LoadSpine 配置不存在", ["id", i]);
     }

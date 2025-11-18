@@ -28,6 +28,9 @@ class FloroRanchTask {
   get LimitTime() {
     return this.limittime();
   }
+  get DelayTime() {
+    return this.delaytime();
+  }
   get DropId() {
     return this.dropid();
   }
@@ -86,7 +89,7 @@ class FloroRanchTask {
     var t = this.J7.__offset(this.z7, 14);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  dropid() {
+  delaytime() {
     var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -94,8 +97,16 @@ class FloroRanchTask {
       return 0;
     }
   }
-  jumpid() {
+  dropid() {
     var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  jumpid() {
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

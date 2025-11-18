@@ -11,14 +11,14 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
   constructor(t) {
     super(t.CreatureId);
     this.Params = undefined;
-    this.z3d = t => {
+    this.ajd = t => {
       if (this.KscCtrl.WorldInit) {
         if (t?.IsValid()) {
           if (this.IsCancel) {
             this.Warn("Load", "战斗实体加载完成任务被取消", ["Id", this.EntityId], ["Class", this.constructor.name]);
             this.SetResult();
           } else {
-            this.ogd(t, this.Params).then(t => {
+            this.SCd(t, this.Params).then(t => {
               if (this.Params.FinishCallback && t) {
                 this.Params.FinishCallback(t);
               }
@@ -37,7 +37,7 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
         this.SetResult();
       }
     };
-    this.J3d = () => {
+    this.hjd = () => {
       this.SetResult();
     };
     this.Params = t;
@@ -48,13 +48,13 @@ class KscActionEntityAdd extends KscActionBase_1.KscActionBase {
       Id: this.Params.SimpleCombatId,
       Path: this.Params.AssetPath,
       NativeContainer: KscEnv_1.KscEnv.KscWorld?.LoadedEntityDa,
-      Callback: this.z3d,
-      FailCallback: this.J3d,
+      Callback: this.ajd,
+      FailCallback: this.hjd,
       KscWorldHandle: KscEnv_1.KscEnv.KscWorldHandle
     });
     await this.Promise?.Promise;
   }
-  async ogd(t, s) {
+  async SCd(t, s) {
     try {
       if (!s.Buffs || s.Buffs.length === 0) {
         return this.KscCtrl.AddEntityImpl(t, s);

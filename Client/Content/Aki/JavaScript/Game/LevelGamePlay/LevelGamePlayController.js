@@ -60,11 +60,11 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     }
   }
   static OnInit() {
-    Net_1.Net.Register(25479, LevelGamePlayController._Ue);
-    Net_1.Net.Register(22646, LevelGamePlayController.uUe);
-    Net_1.Net.Register(27564, LevelGamePlayController.cUe);
-    Net_1.Net.Register(27587, LevelGamePlayController.dUe);
-    Net_1.Net.Register(24823, LevelGamePlayController.OnEnableNearbyTrackingNotify);
+    Net_1.Net.Register(27083, LevelGamePlayController._Ue);
+    Net_1.Net.Register(16532, LevelGamePlayController.uUe);
+    Net_1.Net.Register(26965, LevelGamePlayController.cUe);
+    Net_1.Net.Register(15456, LevelGamePlayController.dUe);
+    Net_1.Net.Register(29213, LevelGamePlayController.OnEnableNearbyTrackingNotify);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
@@ -72,11 +72,11 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(25479);
-    Net_1.Net.UnRegister(22646);
-    Net_1.Net.UnRegister(27564);
-    Net_1.Net.UnRegister(27587);
-    Net_1.Net.UnRegister(24823);
+    Net_1.Net.UnRegister(27083);
+    Net_1.Net.UnRegister(16532);
+    Net_1.Net.UnRegister(26965);
+    Net_1.Net.UnRegister(15456);
+    Net_1.Net.UnRegister(29213);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAdd, this.Rku);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureRemove, this.aXt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSceneItemVisionCaptureAddFinish, this.wku);
@@ -86,14 +86,14 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     var r = Protocol_1.Aki.Protocol.Dms.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     r.I5n = MathUtils_1.MathUtils.NumberToLong(t);
-    Net_1.Net.Call(20435, r, e => {
+    Net_1.Net.Call(24784, r, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageEntityNotExit:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrThrowDamageReqEntityIsAlreadyDead:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18452);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27580);
       }
     });
   }
@@ -101,13 +101,13 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     var r = Protocol_1.Aki.Protocol.Uds.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     r.vul = t;
-    Net_1.Net.Call(28817, r, e => {
+    Net_1.Net.Call(26442, r, e => {
       switch (e.Q4n) {
         case Protocol_1.Aki.Protocol.Q4n.KRs:
         case Protocol_1.Aki.Protocol.Q4n.Proto_ErrBeControlledEntityNotExist:
           break;
         default:
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18452);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27580);
       }
     });
   }
@@ -118,16 +118,16 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     this.fUe.set(e, true);
     var t = Protocol_1.Aki.Protocol.wms.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
-    var t = await Net_1.Net.CallAsync(25189, t);
+    var t = await Net_1.Net.CallAsync(20784, t);
     this.fUe.delete(e);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 17339), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28868), false) : (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenTreasureBox, e), true));
   }
   static ElevatorStateChangeRequest(e, t, r, o) {
     var a = Protocol_1.Aki.Protocol.WZn.create();
     a.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e));
     a.L5n = t;
     a.Y4n = r;
-    Net_1.Net.Call(29036, a, e => {
+    Net_1.Net.Call(18123, a, e => {
       o();
       if (e) {
         switch (e.Q4n) {
@@ -135,7 +135,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
           case Protocol_1.Aki.Protocol.Q4n.Proto_ErrElevatorLocked:
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15629);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25895);
         }
       }
     });
@@ -146,14 +146,14 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     var l;
     var n = e instanceof EntityHandle_1.EntityHandle ? e.Entity : e;
     if (e && n) {
-      a = n.GetComponent(203);
-      l = n.GetComponent(159);
-      if (!(o = n.GetComponent(157))) {
+      a = n.GetComponent(206);
+      l = n.GetComponent(162);
+      if (!(o = n.GetComponent(160))) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 31, "[Manipulate] 重置控物对象实体时找不到对应的控物组件");
         }
       }
-      if (a && l && l.HasMoveAuthority() && (o?.ResetItemLocationAndRotation(r, true), a = n.GetComponent(167))) {
+      if (a && l && l.HasMoveAuthority() && (o?.ResetItemLocationAndRotation(r, true), a = n.GetComponent(170))) {
         a.StopTimerOnResetPos();
       }
       if (o && o.ControlledByLocalPlayer() && (l = t ?? "ResetPositionTip", ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(l), r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity) && (n = r.GetComponent(65)) && e.Id === n.GetHoldingEntity()?.Id) {
@@ -166,12 +166,12 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static EntityFollowTrackRequest(e, t) {
     var r = Protocol_1.Aki.Protocol.Nds.create();
     r.F4n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(26422, r, t);
+    Net_1.Net.Call(18201, r, t);
   }
   static EntityBuffProducerRequest(e, t) {
     var r = Protocol_1.Aki.Protocol._es.create();
     r.D5n = MathUtils_1.MathUtils.NumberToLong(e);
-    Net_1.Net.Call(16648, r, t);
+    Net_1.Net.Call(20960, r, t);
   }
   static ShootTargetHitGearStateChangeRequest(e, t, r, o, a) {
     var l = Protocol_1.Aki.Protocol.Lms.create();
@@ -181,13 +181,13 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     if (o) {
       l.Ced = o;
     }
-    Net_1.Net.Call(25084, l, a);
+    Net_1.Net.Call(23053, l, a);
   }
   static OnEnableNearbyTrackingNotify(t) {
     for (const e of t.PSs) {
       const r = MathUtils_1.MathUtils.LongToNumber(e);
       WaitEntityTask_1.WaitEntityTask.Create("LevelGamePlayController.OnEnableNearbyTrackingNotify", r, e => {
-        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(r)) && (e = e.Entity.GetComponent(161))) {
+        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(r)) && (e = e.Entity.GetComponent(164))) {
           e.EnableTracking = t.yIs;
         }
       }, 60000, true, true);
@@ -196,7 +196,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static EntityAdsorbRequest(e, t) {
     var r = Protocol_1.Aki.Protocol.Fes.create();
     r.F4n = e;
-    Net_1.Net.Call(19951, r, t);
+    Net_1.Net.Call(21060, r, t);
   }
   static RequestChairSit(e, t, r) {
     var o = Protocol_1.Aki.Protocol.rms.create();
@@ -207,9 +207,18 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
       o.R5n = CombatMessage_1.CombatNet.CreateCombatCommon(e);
     }
     o.x5n = r;
-    Net_1.Net.Call(24825, o, e => {
+    Net_1.Net.Call(23875, o, e => {
       Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(29)?.OnResponseSit(t, e.Q4n);
     });
+  }
+  static ClientAddTagToTarget(e, t) {
+    ModelManager_1.ModelManager.ClientTagModel.ClientAddTagToTarget(e.Id, t);
+    EventSystem_1.EventSystem.OnceWithTarget(e, EventDefine_1.EEventName.RemoveEntity, () => {
+      ModelManager_1.ModelManager.ClientTagModel.ClearTargetTagAdded(e.Id);
+    });
+  }
+  static ClientRemoveTagFromTarget(e, t) {
+    return ModelManager_1.ModelManager.ClientTagModel.ClientRemoveTagFromTarget(e, t);
   }
 }
 (exports.LevelGamePlayController = LevelGamePlayController).fUe = undefined;
@@ -235,14 +244,14 @@ LevelGamePlayController._Ue = e => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
     t.Entity.GetComponent(0).UpdateEntityCommonTags(e.aSs);
-    t.Entity.GetComponent(197).SyncTagsFromServer(e.aSs);
+    t.Entity.GetComponent(200).SyncTagsFromServer(e.aSs);
   }
 };
 LevelGamePlayController.dUe = e => {
   var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
-    var r = t.Entity.GetComponent(140);
+    var r = t.Entity.GetComponent(143);
     if (r) {
       switch (e.Pmu?.h5n) {
         case Protocol_1.Aki.Protocol.Gmu.dm1:
@@ -253,15 +262,15 @@ LevelGamePlayController.dUe = e => {
             Log_1.Log.Error("SceneItem", 79, "SetTargetFloorTeleport Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
           }
           break;
-        case Protocol_1.Aki.Protocol.Gmu.Qrd:
-          o = e.Pmu.Qrd;
+        case Protocol_1.Aki.Protocol.Gmu.Krd:
+          o = e.Pmu.Krd;
           if (!o) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("SceneItem", 79, "SetTargetFloorPathMove Failed, Proto_MoveTeleport is undefined", ["EntityId", e.F4n]);
             }
             return;
           }
-          r.SetTargetFloorPathMove(e.P5n, o.Xrd, o.Krd);
+          r.SetTargetFloorPathMove(e.P5n, o.Yrd, o.Xrd);
           break;
         default:
           Protocol_1.Aki.Protocol.Gmu.Proto_Default;

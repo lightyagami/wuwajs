@@ -44,6 +44,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.XMr = undefined;
     this.$Mr = 0;
     this.YMr = undefined;
+    this.rtm = Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.JMr = false;
     this.zMr = false;
     this.QIo = false;
@@ -60,11 +61,11 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.R3c = false;
     this.sIl = undefined;
     this.aIl = undefined;
-    this.IGd = undefined;
+    this.bVd = undefined;
     this.LZu = undefined;
     this.AZu = undefined;
-    this.qwd = undefined;
-    this.Gwd = undefined;
+    this.cAd = undefined;
+    this.dAd = undefined;
     this.ForceDisableGamePaused = false;
     this.PreAwakeEntityDuringLoad = true;
     this.GamePausedReasons = new Set();
@@ -76,8 +77,9 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.pr_ = false;
     this.S5u = new Map();
     this.P5u = new Map();
-    this.sBd = undefined;
+    this.aOd = undefined;
     this.nEr = 0;
+    this.IsSameMapTraveling = false;
     this.LoadWorldProfiler = new LogProfiler_1.LogProfiler("加载世界");
     this.OpenLoadingProfiler = this.LoadWorldProfiler.CreateChild("打开Loading");
     this.OpenLevelProfiler = this.LoadWorldProfiler.CreateChild("加载主Level");
@@ -121,6 +123,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.O5u = false;
     this.LoadMapControllerEnableWorldPartition = false;
     this.OK1 = undefined;
+    this.Nur = undefined;
   }
   get JoinSceneInfo() {
     return this.rEr;
@@ -239,6 +242,9 @@ class GameModeModel extends ModelBase_1.ModelBase {
   set InstanceType(e) {
     this.YMr = e;
   }
+  get LastInstanceType() {
+    return this.rtm;
+  }
   get IsMulti() {
     return this.JMr;
   }
@@ -325,7 +331,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.aIl?.SetResult(true);
   }
   get ChangeSceneModePromise() {
-    return this.IGd;
+    return this.bVd;
   }
   get ChangeSceneModeVoxelPromise() {
     return this.LZu;
@@ -334,10 +340,10 @@ class GameModeModel extends ModelBase_1.ModelBase {
     return this.AZu;
   }
   get SwitchDataLayerWithSequencePromise() {
-    return this.Gwd;
+    return this.dAd;
   }
   get LoadSwitchDataLayerSequencePromise() {
-    return this.qwd;
+    return this.cAd;
   }
   AddPlayerStart(e) {
     this.WMr.push(e);
@@ -373,10 +379,10 @@ class GameModeModel extends ModelBase_1.ModelBase {
     return this.hEr;
   }
   get SpecialTransitionPb() {
-    return this.sBd;
+    return this.aOd;
   }
   set SpecialTransitionPb(e) {
-    this.sBd = e;
+    this.aOd = e;
   }
   CreateShapedStreamingSource(e, t = 100, i = 1) {
     i = [new UE.StreamingSourceShape(true, i, 0, true, t, undefined, undefined)];
@@ -489,7 +495,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
       this.x5u(true);
     }
   }
-  Y4d() {
+  dHd() {
     let t = 2;
     this.P5u.forEach(e => {
       if (e < t) {
@@ -507,7 +513,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
           var s = t.TargetGrids.Get(e);
           i.add(FNameUtil_1.FNameUtil.GetDynamicFName(s.toString()));
         }
-        e = this.Y4d();
+        e = this.dHd();
         if (e > 1) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 60, "重置HLOD流送", ["Level", e]);
@@ -747,24 +753,24 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   CreateChangeModePromise() {
     this.ETn = new GameModePromise_1.GameModePromise();
-    this.IGd = new CustomPromise_1.CustomPromise();
+    this.bVd = new CustomPromise_1.CustomPromise();
     this.LZu = new CustomPromise_1.CustomPromise();
     this.AZu = new CustomPromise_1.CustomPromise();
   }
   ResetChangeModePromise() {
     this.ETn = undefined;
-    this.IGd = undefined;
+    this.bVd = undefined;
     this.LZu = undefined;
     this.AZu = undefined;
   }
   SkipChangeSceneModeWait() {
-    this.IGd?.SetResult(true);
+    this.bVd?.SetResult(true);
     this.LZu?.SetResult(true);
     this.AZu?.SetResult(true);
   }
   CreateSwitchDataLayerWithSequencePromise() {
-    this.qwd = new CustomPromise_1.CustomPromise();
-    this.Gwd = new CustomPromise_1.CustomPromise();
+    this.cAd = new CustomPromise_1.CustomPromise();
+    this.dAd = new CustomPromise_1.CustomPromise();
   }
   OnLeaveLevel() {
     this.TempDataLayer.length = 0;
@@ -785,6 +791,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.jMr = "";
     this.$Mr = 0;
     this.JMr = false;
+    this.rtm = this.YMr ?? Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.YMr = Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.QMr = undefined;
     this.XMr = undefined;
@@ -799,6 +806,17 @@ class GameModeModel extends ModelBase_1.ModelBase {
   OnChangeMode() {
     this.ResetPromise();
     return true;
+  }
+  SetCacheTimeDilationValue(e) {
+    this.Nur = {
+      TimeDilation: e
+    };
+  }
+  GetCacheTimeDilationValue() {
+    return this.Nur;
+  }
+  ClearCacheTimeDilationValue() {
+    this.Nur = undefined;
   }
 }
 (exports.GameModeModel = GameModeModel).EnableLoadMapMode = true;

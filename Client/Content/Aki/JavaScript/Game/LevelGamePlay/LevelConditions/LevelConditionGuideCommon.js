@@ -3,19 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LevelConditionCheckClientQuestNodeStatus = exports.LevelConditionOnNewViewCovered = undefined;
+exports.LevelConditionCheckUiItemShow = exports.LevelConditionCheckClientQuestNodeStatus = exports.LevelConditionOnNewViewCovered = undefined;
+const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
 const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionOnNewViewCovered extends LevelGeneralBase_1.LevelConditionBase {
-  Check(e, o, ...r) {
+  Check(e, o, ...i) {
     var e = e.LimitParams.get("FocusView");
-    var [r] = r;
+    var [i] = i;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Guide", 74, "LevelConditionOnNewViewCovered", ["聚焦界面", e], ["新界面", r]);
+      Log_1.Log.Debug("Guide", 74, "LevelConditionOnNewViewCovered", ["聚焦界面", e], ["新界面", i]);
     }
-    return e !== r && !LevelConditionOnNewViewCovered.L9s.has(r);
+    return e !== i && !LevelConditionOnNewViewCovered.L9s.has(i);
   }
 }
 (exports.LevelConditionOnNewViewCovered = LevelConditionOnNewViewCovered).L9s = new Set(["GuideFocusView", "GuideTipsView", "GuideTutorialView", "GuideTutorialPopView", "GuideTutorialTipsView", "NetWorkMaskView"]);
@@ -27,45 +29,60 @@ class LevelConditionCheckClientQuestNodeStatus extends LevelGeneralBase_1.LevelC
       }
       return false;
     }
-    var r = Number(e.LimitParams.get("任务Id"));
-    var i = Number(e.LimitParams.get("步骤Id"));
-    var n = Number(e.LimitParams.get("状态"));
+    var i = Number(e.LimitParams.get("任务Id"));
+    var n = Number(e.LimitParams.get("步骤Id"));
+    var r = Number(e.LimitParams.get("状态"));
     var t = e.LimitParamsOpe.get("状态") ?? "";
-    if (isNaN(r) || isNaN(n) || isNaN(i)) {
+    if (isNaN(i) || isNaN(r) || isNaN(n)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 16, "配置错误！条件的参数不合法", ["inConditionInfo.Id", e.Id]);
       }
       return false;
     }
     let a = 0;
-    e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(r);
+    e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(i);
     if (e) {
-      e = e.GetNode(i);
+      e = e.GetNode(n);
       if (!e) {
         return false;
       }
       a = e.Status;
     } else {
-      i = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(r);
-      a = i === 3 ? Protocol_1.Aki.Protocol.BNs.Proto_CompletedSuccess : Protocol_1.Aki.Protocol.BNs.Proto_NotActive;
+      n = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(i);
+      a = n === 3 ? Protocol_1.Aki.Protocol.BNs.Proto_CompletedSuccess : Protocol_1.Aki.Protocol.BNs.Proto_NotActive;
     }
     switch (t) {
       case "":
-        return n === a;
+        return r === a;
       case "<":
-        return n < a;
+        return r < a;
       case "<=":
-        return n <= a;
+        return r <= a;
       case ">":
-        return n > a;
+        return r > a;
       case ">=":
-        return n >= a;
+        return r >= a;
       case "!=":
-        return n !== a;
+        return r !== a;
       default:
         return false;
     }
   }
 }
 exports.LevelConditionCheckClientQuestNodeStatus = LevelConditionCheckClientQuestNodeStatus;
+class LevelConditionCheckUiItemShow extends LevelGeneralBase_1.LevelConditionBase {
+  Check(e, o) {
+    var i = e.LimitParams.get("ViewName");
+    var n = e.LimitParams.get("MarkName");
+    if (i && n) {
+      return !!(i = UiManager_1.UiManager.GetViewByName(i)) && !!i.IsShowOrShowing && ((i = i.GetRootActor()?.GetComponentByClass(UE.UIGuideMarkComponent.StaticClass())) ? (i = i.Children.Get(n)) ? !!(i = i.GetUIItem()) && i.IsUIActiveInHierarchy() : (Log_1.Log.CheckInfo() && Log_1.Log.Info("LevelCondition", 74, "LevelConditionCheckUiItemShow: 没有找到对应的引导标记", ["MarkName", n]), false) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("Guide", 74, "LevelConditionCheckUiItemShow: 没有挂载UIGuideMarkComponent组件"), false));
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 74, "LevelConditionCheckUiItemShow: 配置错误，参数不能为空", ["inConditionInfo.Id", e.Id]);
+      }
+      return false;
+    }
+  }
+}
+exports.LevelConditionCheckUiItemShow = LevelConditionCheckUiItemShow;
 //# sourceMappingURL=LevelConditionGuideCommon.js.map

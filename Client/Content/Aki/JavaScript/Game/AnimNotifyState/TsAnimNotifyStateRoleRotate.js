@@ -31,11 +31,11 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
         return false;
       }
       if (this.在横板模式中禁用) {
-        if (t.GetComponent(109)?.Active) {
+        if (t.GetComponent(111)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!t.GetComponent(109)?.Active) {
+        if (!t.GetComponent(111)?.Active) {
           return false;
         }
       }
@@ -55,11 +55,11 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
         return false;
       }
       if (this.在横板模式中禁用) {
-        if (r.GetComponent(109)?.Active) {
+        if (r.GetComponent(111)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!r.GetComponent(109)?.Active) {
+        if (!r.GetComponent(111)?.Active) {
           return false;
         }
       }
@@ -67,7 +67,7 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
       if (!s?.Valid) {
         return false;
       }
-      if (r?.GetComponent(176)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ride) {
+      if (r?.GetComponent(179)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ride) {
         return false;
       }
       if (this.是否自动朝向目标) {

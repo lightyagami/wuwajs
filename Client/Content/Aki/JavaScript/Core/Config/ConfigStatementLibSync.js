@@ -7,7 +7,7 @@ exports.ConfigStatementLibSync = undefined;
 const UE = require("ue");
 class ConfigStatementLibSync {
   static CreateStatement(t, e) {
-    if (ConfigStatementLibSync.AXd) {
+    if (ConfigStatementLibSync.w0m) {
       return UE.KuroPrepareStatementLib.GetOrCreateStatement(t, e);
     } else {
       return UE.KuroPrepareStatementLib.CreateStatement(t, e);
@@ -16,9 +16,6 @@ class ConfigStatementLibSync {
   static CloseAllConnection() {
     UE.KuroPrepareStatementLib.CloseAllConnection();
   }
-  static IsHandleHoldingByCs(t) {
-    return ConfigStatementLibSync.DbHandleSync?.IsHolding(t) ?? false;
-  }
 }
-(exports.ConfigStatementLibSync = ConfigStatementLibSync).AXd = true;
-ConfigStatementLibSync.DbHandleSync = undefined; //# sourceMappingURL=ConfigStatementLibSync.js.map
+(exports.ConfigStatementLibSync = ConfigStatementLibSync).w0m = true;
+//# sourceMappingURL=ConfigStatementLibSync.js.map

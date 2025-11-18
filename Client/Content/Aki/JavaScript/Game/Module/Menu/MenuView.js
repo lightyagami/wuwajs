@@ -16,7 +16,9 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsController_1 = require("../../GameSettings/GameSettingsController");
 const CloudGameManager_1 = require("../../Manager/CloudGameManager");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiSequencePlayer_1 = require("../../Ui/Base/UiSequencePlayer");
 const UiViewBase_1 = require("../../Ui/Base/UiViewBase");
 const MobileSwitchInputController_1 = require("../../Ui/Input/Moblie/MobileSwitchInputController");
 const UiManager_1 = require("../../Ui/UiManager");
@@ -26,6 +28,7 @@ const CommonTabTitleData_1 = require("../Common/TabComponent/CommonTabTitleData"
 const TabComponentWithCaptionItem_1 = require("../Common/TabComponent/TabComponentWithCaptionItem");
 const CommonTabItem_1 = require("../Common/TabComponent/TabItem/CommonTabItem");
 const CommonTabItemBase_1 = require("../Common/TabComponent/TabItem/CommonTabItemBase");
+const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const DynScrollView_1 = require("../Util/ScrollView/DynScrollView");
 const PcAndGamepadKeySettingPanel_1 = require("./KeySettingsView/PcAndGamepadKeySettingPanel");
@@ -81,6 +84,8 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Xpt = undefined;
     this.lHa = undefined;
     this.feh = undefined;
+    this._hm = undefined;
+    this.kQ_ = false;
     this.Ivt = undefined;
     this.xqe = undefined;
     this.Nwi = undefined;
@@ -125,10 +130,10 @@ class MenuView extends UiViewBase_1.UiViewBase {
       } else {
         var i;
         var n;
-        var o = Number(t[1]);
+        var r = Number(t[1]);
         let e = 0;
         for ([i, n] of this.Bwi.entries()) {
-          if (n === o) {
+          if (n === r) {
             e = i;
             break;
           }
@@ -202,7 +207,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
       var i;
       if (e.Type !== 0 && (i = e.GetMenuData())) {
         if (t === 0) {
-          this.uHa();
+          this.uHa(e);
         } else {
           this.peh();
           if (this.Xpt?.GetMenuData()?.GetEnable()) {
@@ -225,7 +230,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.R6e = (e, t) => {
       return new CommonTabItem_1.CommonTabItem();
     };
-    this.U6d = () => {
+    this.QKd = () => {
       var t = new Array();
       for (let e = 0; e < this.Bwi.length; e++) {
         var i = new CommonTabItemBase_1.CommonTabItemData();
@@ -277,7 +282,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
             i.SetUIActive(false);
             n.SetUIActive(false);
         }
-        this.uHa();
+        this.uHa(this.Xpt);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FinishGuideStepByEvent, MenuDefine_1.STOP_GUIDE_TAG);
       } else {
         i.SetUIActive(false);
@@ -294,15 +299,18 @@ class MenuView extends UiViewBase_1.UiViewBase {
       this.xqe.UnBindLateUpdate();
     };
     this.$Ge = () => {
-      MenuController_1.MenuController.BeforeViewClose();
-      UiManager_1.UiManager.CloseView("MenuView");
+      if (ModelManager_1.ModelManager.MenuModel?.GetGameQualityLoadInfo()?.Desc === MenuDefine_1.SEETING_LOAD_OVER && ModelManager_1.ModelManager.MenuModel?.HasDataCache()) {
+        this.OpenConfirmBox();
+      } else {
+        this.J6d();
+      }
     };
   }
   get MenuViewDataExternal() {
     return this.Gwi;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIDynScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIDynScrollViewComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIText]];
     this.BtnBindInfo = [[6, this.uWa]];
   }
   OnStart() {
@@ -335,7 +343,11 @@ class MenuView extends UiViewBase_1.UiViewBase {
     ModelManager_1.ModelManager.MenuModel.ClearMenuDataMap();
   }
   async OnBeforeStartAsync() {
-    ModelManager_1.ModelManager.MenuModel.CreateConfigByBaseConfig();
+    var e = ModelManager_1.ModelManager.MenuModel;
+    e.CreateConfigByBaseConfig();
+    e.InitDataCache();
+    this._hm = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(7));
+    LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(8), "Settings_Applied_Tips");
     GameSettingsController_1.GameSettingsController.OnUEGameUserSettingsUpdate();
     this.qwi = new MenuScrollSettingContainerDynItem_1.MenuScrollSettingContainerDynItem();
     this.xqe = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(0), this.GetItem(2), this.qwi, this.Wwi);
@@ -381,9 +393,8 @@ class MenuView extends UiViewBase_1.UiViewBase {
     }
     this.feh = undefined;
   }
-  uHa() {
-    this.Xpt?.SetDetailVisible(false);
-    this.Xpt?.SetSelected(false);
+  uHa(e) {
+    (e !== this.Xpt ? (e?.SetDetailVisible(false), e) : (this.Xpt?.SetDetailVisible(false), this.Xpt))?.SetSelected(false);
     this.lHa?.SetDetailTextVisible(false);
     this.Xpt = undefined;
     this.lHa = undefined;
@@ -392,7 +403,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Bwi = MenuController_1.MenuController.GetMainTypeList();
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.Kwi, this.yqe);
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(1), e, this.$Ge);
-    await this.Ivt.RefreshTabItemAsync(this.U6d());
+    await this.Ivt.RefreshTabItemAsync(this.QKd());
   }
   Qwi() {
     this.Fwi();
@@ -433,40 +444,40 @@ class MenuView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(3);
     var n = i?.GetAttachUIChildren().Get(3);
     if (n) {
-      var o = n.GetAttachUIChildren();
+      var r = n.GetAttachUIChildren();
       var n = i?.GetAttachUIChildren().Get(4);
       if (n) {
-        var r = n.Width;
+        var o = n.Width;
         var s = [0, 0, 0, 0, 0];
         if (e >= 100) {
-          for (let e = 0; e < o.Num(); e++) {
-            s[e] = r;
+          for (let e = 0; e < r.Num(); e++) {
+            s[e] = o;
           }
         } else if (e >= 80) {
-          for (let e = 0; e < o.Num() - 1; e++) {
-            s[e] = r;
+          for (let e = 0; e < r.Num() - 1; e++) {
+            s[e] = o;
           }
-          s[4] = r * ((e - 80) * 5 / 100);
+          s[4] = o * ((e - 80) * 5 / 100);
         } else if (e >= 60) {
-          for (let e = 0; e < o.Num() - 2; e++) {
-            s[e] = r;
+          for (let e = 0; e < r.Num() - 2; e++) {
+            s[e] = o;
           }
-          s[3] = r * ((e - 60) * 5 / 100);
+          s[3] = o * ((e - 60) * 5 / 100);
         } else if (e >= 40) {
-          for (let e = 0; e < o.Num() - 3; e++) {
-            s[e] = r;
+          for (let e = 0; e < r.Num() - 3; e++) {
+            s[e] = o;
           }
-          s[2] = r * ((e - 40) * 5 / 100);
+          s[2] = o * ((e - 40) * 5 / 100);
         } else if (e >= 20) {
-          for (let e = 0; e < o.Num() - 4; e++) {
-            s[e] = r;
+          for (let e = 0; e < r.Num() - 4; e++) {
+            s[e] = o;
           }
-          s[1] = r * ((e - 20) * 5 / 100);
+          s[1] = o * ((e - 20) * 5 / 100);
         } else {
-          s[0] = r * (e * 5 / 100);
+          s[0] = o * (e * 5 / 100);
         }
-        for (let e = 0; e < o.Num(); e++) {
-          var a = o.Get(e);
+        for (let e = 0; e < r.Num(); e++) {
+          var a = r.Get(e);
           a.SetWidth(s[e]);
           this.SetSpriteByPath(t, a, false);
         }
@@ -495,6 +506,37 @@ class MenuView extends UiViewBase_1.UiViewBase {
     }
     this.xqe.RefreshByData(this.bwi, false, true);
     this.xqe.BindLateUpdate(this.$wi);
+  }
+  OpenConfirmBox() {
+    var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(388);
+    e.FunctionMap.set(1, () => {
+      this.J6d();
+    });
+    e.FunctionMap.set(2, () => {
+      this.Ivt.SelectToggleByIndex(1);
+    });
+    e.IsEscViewTriggerCallBack = false;
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+  }
+  async J6d() {
+    var e;
+    if (ModelManager_1.ModelManager.MenuModel?.HasDataCache()) {
+      this.GetItem(7)?.SetUIActive(true);
+      this.Ivt?.SetCloseBtnShowState(false);
+      this.GetButton(6)?.RootUIComp.SetUIActive(false);
+      this._hm?.PlaySequence("Progressing");
+      if (!this.kQ_) {
+        this.kQ_ = true;
+        if ((e = await ModelManager_1.ModelManager.MenuModel.ApplyDataCache()) < 500) {
+          await TimerSystem_1.GameplayTimerSystem.Wait(500 - e);
+        }
+        MenuController_1.MenuController.BeforeViewClose();
+        UiManager_1.UiManager.CloseView("MenuView");
+      }
+    } else {
+      MenuController_1.MenuController.BeforeViewClose();
+      UiManager_1.UiManager.CloseView("MenuView");
+    }
   }
 }
 exports.MenuView = MenuView;

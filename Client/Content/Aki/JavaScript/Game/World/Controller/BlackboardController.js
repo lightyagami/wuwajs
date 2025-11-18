@@ -18,21 +18,21 @@ const CombatLog_1 = require("../../Utils/CombatLog");
 const BlackboardMap_1 = require("../Define/BlackboardMap");
 class BlackboardController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(15351, BlackboardController.g0r);
-    Net_1.Net.Register(28973, BlackboardController.f0r);
+    Net_1.Net.Register(18589, BlackboardController.g0r);
+    Net_1.Net.Register(16649, BlackboardController.f0r);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveCreatureDataComponentCache, this.p0r);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(15351);
-    Net_1.Net.UnRegister(28973);
+    Net_1.Net.UnRegister(18589);
+    Net_1.Net.UnRegister(16649);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveCreatureDataComponentCache, this.p0r);
     return true;
   }
   static v0r(t) {
     var o = Protocol_1.Aki.Protocol.OJn.create();
     o.C6n = t;
-    Net_1.Net.Call(20367, o, t => {});
+    Net_1.Net.Call(19849, o, t => {});
   }
   static M0r(t, o) {
     var r;

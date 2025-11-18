@@ -77,7 +77,7 @@ class TowerModel extends ModelBase_1.ModelBase {
     this.TowerBeginTime = t.cps;
     this.TowerEndTime = t.dps;
     this.MaxUnlockDifficulty = t.wGs;
-    this.QuickPassId = t.eod;
+    this.QuickPassId = t.qod;
     if (this.CurrentSeason !== t.EGs) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, exports.TOWER_LOOP_ACTIVITY_ID);
     }

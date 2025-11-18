@@ -17,7 +17,7 @@ class LevelEventTriggerSpecificScanEffect extends LevelGeneralBase_1.LevelEventB
   }
   ExecuteNew(e, r, o) {
     if (e) {
-      this.iQ1 = this.fFd(e.ScanEffect);
+      this.iQ1 = this.yjd(e.ScanEffect);
       if (this.iQ1 === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 31, "获取ChargeSlash扫描特效的触发位置失败");
@@ -37,7 +37,7 @@ class LevelEventTriggerSpecificScanEffect extends LevelGeneralBase_1.LevelEventB
       this.Finish();
     }
   }
-  fFd(e) {
+  yjd(e) {
     var r;
     var e = e.TriggerPosEntityId;
     var o = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e);

@@ -16,6 +16,9 @@ class RacingBetsSeason {
   get MoneyId() {
     return this.moneyid();
   }
+  get MoneyUpperLimitCount() {
+    return this.moneyupperlimitcount();
+  }
   get EndReward() {
     return this.endreward();
   }
@@ -73,8 +76,16 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  endreward() {
+  moneyupperlimitcount() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  endreward() {
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -85,7 +96,7 @@ class RacingBetsSeason {
     return this.groupmatches(t);
   }
   groupmatches(t) {
-    var s = this.J7.__offset(this.z7, 10);
+    var s = this.J7.__offset(this.z7, 12);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -93,7 +104,7 @@ class RacingBetsSeason {
     }
   }
   groupmatchesLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -101,7 +112,7 @@ class RacingBetsSeason {
     }
   }
   groupmatchesArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -112,7 +123,7 @@ class RacingBetsSeason {
     return this.oddsupdate(t);
   }
   oddsupdate(t) {
-    var s = this.J7.__offset(this.z7, 12);
+    var s = this.J7.__offset(this.z7, 14);
     if (s) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
@@ -120,7 +131,7 @@ class RacingBetsSeason {
     }
   }
   oddsupdateLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -128,7 +139,7 @@ class RacingBetsSeason {
     }
   }
   oddsupdateArray() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -136,14 +147,6 @@ class RacingBetsSeason {
     }
   }
   gearnum() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  legmatchroundmintime() {
     var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -151,7 +154,7 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  dungeoninstanceid() {
+  legmatchroundmintime() {
     var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -159,7 +162,7 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  dungeonentranceid() {
+  dungeoninstanceid() {
     var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -167,7 +170,7 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  buttlescreencd() {
+  dungeonentranceid() {
     var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -175,7 +178,7 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  randomseedindex() {
+  buttlescreencd() {
     var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -183,7 +186,7 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  endmailid() {
+  randomseedindex() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -191,8 +194,16 @@ class RacingBetsSeason {
       return 0;
     }
   }
-  calcrankdelay() {
+  endmailid() {
     var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  calcrankdelay() {
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

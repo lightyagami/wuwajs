@@ -217,4 +217,9 @@ exports.ELevelGeneralCondition = undefined;
   e.CheckSurvivorRogueHasWeaponBond = "CheckSurvivorRogueHasWeaponBond";
   e.OnSurvivorsRogueWeaponDetailTabViewShow = "OnSurvivorsRogueWeaponDetailTabViewShow";
   e.AlwaysFalse = "AlwaysFalse";
+  e.OnEnterOrExitBattle = "OnEnterOrExitBattle";
+  e.OnHonamiStoryLifeSupportChange = "OnHonamiStoryLifeSupportChange";
+  e.OnPickUpHonamiStoryItem = "OnPickUpHonamiStoryItem";
+  e.OnSceneItemDurabilityEmpty = "OnSceneItemDurabilityEmpty";
+  e.CheckPickUpHonamiStoryItemType = "CheckPickUpHonamiStoryItemType";
 })(ELevelGeneralCondition = exports.ELevelGeneralCondition ||= {}); //# sourceMappingURL=LevelGeneralDefine.js.map

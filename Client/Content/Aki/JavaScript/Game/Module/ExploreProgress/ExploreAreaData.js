@@ -262,7 +262,7 @@ class ExploreAreaData {
           PlayState: r ?? 0,
           IsClear: !!t.Y4_,
           ClearInfo: t.Y4_,
-          LevelPlayMarkUnlock: t.C7d,
+          LevelPlayMarkUnlock: t.azd,
           IsUnlock: t.K6n
         });
       });

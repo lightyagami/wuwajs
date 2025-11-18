@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.asyncWithLogDecorator = exports.Log = exports.levelName = undefined;
+exports.logDecorator = exports.asyncWithLogDecorator = exports.Log = exports.levelName = undefined;
 const cpp_1 = require("cpp");
 const puerts_1 = require("puerts");
 const UE = require("ue");
@@ -63,46 +63,46 @@ class Log {
   static CheckDebug() {
     return Log.B8 >= 3;
   }
-  static Error(r, t, o, ...e) {
-    Log.b8(0, r, t, o, e, levelTrace[0]);
+  static Error(r, o, t, ...e) {
+    Log.b8(0, r, o, t, e, levelTrace[0]);
   }
-  static ErrorWithStack(r, t, o, e, ...i) {
-    Log.b8(0, r, t, o, i, levelTrace[0], e);
+  static ErrorWithStack(r, o, t, e, ...i) {
+    Log.b8(0, r, o, t, i, levelTrace[0], e);
   }
-  static Warn(r, t, o, ...e) {
-    Log.b8(1, r, t, o, e, levelTrace[1]);
+  static Warn(r, o, t, ...e) {
+    Log.b8(1, r, o, t, e, levelTrace[1]);
   }
-  static Info(r, t, o, ...e) {
-    Log.b8(2, r, t, o, e, levelTrace[2]);
+  static Info(r, o, t, ...e) {
+    Log.b8(2, r, o, t, e, levelTrace[2]);
   }
-  static Debug(r, t, o, ...e) {
-    Log.b8(3, r, t, o, e, levelTrace[3]);
+  static Debug(r, o, t, ...e) {
+    Log.b8(3, r, o, t, e, levelTrace[3]);
   }
-  static b8(o, e, i, g, n, a, L) {
+  static b8(t, e, i, g, n, a, L) {
     Log.o6 += 1;
-    if (!(o > Log.B8)) {
+    if (!(t > Log.B8)) {
       var [c, r] = LogDefine_1.logAuthorInfo[i];
       if (Log.q8 || r) {
         Log.A8?.Start();
-        let r = `[${Log.o6}][${exports.levelName[o]}][${e}][${c}][${Time_1.Time.Frame}][${Log.ke()}] ${g}`;
-        var s = {};
+        let r = `[${Log.o6}][${exports.levelName[t]}][${e}][${c}][${Time_1.Time.Frame}][${Log.ke()}] ${g}`;
+        var u = {};
         if (n.length > 0) {
           r += " ";
           for (const f of n) {
-            var u = f[0];
+            var s = f[0];
             var l = Log.G8(f[1]);
-            s[u] = l;
-            r += `[${u}: ${l}]`;
+            u[s] = l;
+            r += `[${s}: ${l}]`;
           }
         }
-        let t = undefined;
-        if (t = a ? Log.N8(L, L ? 0 : DEFAULT_SKIP_INDEX) : t) {
-          r = (r += "\n") + t;
+        let o = undefined;
+        if (o = a ? Log.N8(L, L ? 0 : DEFAULT_SKIP_INDEX) : o) {
+          r = (r += "\n") + o;
         }
-        Log.Delegate?.(Log.o6, o, e, i, g, s, t);
-        logProxy[o](r);
-        if (Info_1.Info.IsBuildDevelopmentOrDebug && LogCaptureController_1.LogCaptureController.RegisterCapture[o]) {
-          LogCaptureController_1.LogCaptureController.LogCapture(o, e, i, r, t ?? "");
+        Log.Delegate?.(Log.o6, t, e, i, g, u, o);
+        logProxy[t](r);
+        if (Info_1.Info.IsBuildDevelopmentOrDebug && LogCaptureController_1.LogCaptureController.RegisterCapture[t]) {
+          LogCaptureController_1.LogCaptureController.LogCapture(t, e, i, r, o ?? "");
         }
         Log.A8?.Stop();
       }
@@ -113,10 +113,10 @@ class Log {
     return `${r.getHours()}.${r.getMinutes()}.${r.getSeconds()}:${r.getMilliseconds()}`;
   }
   static O8(r) {
-    let t = undefined;
+    let o = undefined;
     try {
       this.xau();
-      t = Log.DHa(r);
+      o = Log.DHa(r);
     } catch (r) {
       if (r instanceof Error) {
         if (Log.CheckError()) {
@@ -128,7 +128,7 @@ class Log {
     } finally {
       this.xau();
     }
-    return t;
+    return o;
   }
   static DHa(r) {
     if (typeof r == "object" && r !== null) {
@@ -170,33 +170,33 @@ class Log {
     }
     Error.prepareStackTrace = r;
     if (g && Array.isArray(g)) {
-      let t = "";
       let o = "";
+      let t = "";
       for (let r = i; r < g.length; ++r) {
         var n;
         var a;
         var L;
         var c;
-        var s = g[r];
-        if (s && (n = ((n = s.getTypeName()) ? n + "." : "") + (s.getFunctionName() ?? ""), c = s.getFileName() ?? undefined, a = s.getLineNumber() ?? -1, s = s.getColumnNumber() ?? -1, L = Log.H8(c, "JavaScript", 1), t += `	${n} (${L}:${a}:${s})
+        var u = g[r];
+        if (u && (n = ((n = u.getTypeName()) ? n + "." : "") + (u.getFunctionName() ?? ""), c = u.getFileName() ?? undefined, a = u.getLineNumber() ?? -1, u = u.getColumnNumber() ?? -1, L = Log.H8(c, "JavaScript", 1), o += `	${n} (${L}:${a}:${u})
 `, puerts_1.convertSourceMap) && c && c.length !== 0) {
           Log.x8?.Start();
-          L = (0, puerts_1.convertSourceMap)(c + ".map", a, s);
+          L = (0, puerts_1.convertSourceMap)(c + ".map", a, u);
           Log.x8?.Stop();
           if (L) {
             c = Log.H8(L.source, "Src", 1);
-            o += `	${n} (${c}:${L.line}:${L.column})
+            t += `	${n} (${c}:${L.line}:${L.column})
 `;
           } else {
-            o += "\tconvert source map fail\n";
+            t += "\tconvert source map fail\n";
           }
         }
       }
       let r = `JS 堆栈${Log.U8}:
 `;
-      r += t;
-      if (o.length > 0) {
-        r = (r += "TS 堆栈:a\n") + o;
+      r += o;
+      if (t.length > 0) {
+        r = (r += "TS 堆栈:a\n") + t;
       }
       if (UE.KuroStaticLibrary.GetBlueprintCallstack && (Log.w8?.Start(), e = UE.KuroStaticLibrary.GetBlueprintCallstack(), Log.w8?.Stop(), e) && e.length > 0) {
         r = r + "BP 堆栈:\n" + e;
@@ -206,11 +206,11 @@ class Log {
     }
     Log.P8?.Stop();
   }
-  static H8(r, t, o) {
+  static H8(r, o, t) {
     var e;
     if (r && r.length !== 0) {
-      if ((e = r.indexOf(t)) > 0) {
-        return r.substring(e + t.length + o);
+      if ((e = r.indexOf(o)) > 0) {
+        return r.substring(e + o.length + t);
       } else {
         return r;
       }
@@ -223,18 +223,18 @@ class Log {
   }
 }
 function asyncWithLogDecorator(g, n, a) {
-  return (r, o, t) => {
-    const e = t.value;
+  return (r, t, o) => {
+    const e = o.value;
     async function i(...r) {
       if (Log.CheckInfo()) {
-        Log.Info(g, n, a + " 开始执行 " + o);
+        Log.Info(g, n, a + " 开始执行 " + t);
       }
       try {
-        var t = await e.call(this, ...r);
+        var o = await e.call(this, ...r);
         if (Log.CheckInfo()) {
-          Log.Info(g, n, a + " 执行完成 " + o);
+          Log.Info(g, n, a + " 执行完成 " + t);
         }
-        return t;
+        return o;
       } catch (r) {
         throw r instanceof Error ? (Log.CheckError() && Log.ErrorWithStack(g, n, a + " 执行异常", r, ["error", r.message]), r) : (Log.CheckError() && Log.Error(g, n, a + " 执行异常", ["error", r]), new Error(a));
       }
@@ -244,8 +244,35 @@ function asyncWithLogDecorator(g, n, a) {
       writable: false,
       configurable: true
     });
-    t.value = i;
-    return t;
+    o.value = i;
+    return o;
+  };
+}
+function logDecorator(g, n, a) {
+  return (r, e, o) => {
+    const i = o.value;
+    function t(...r) {
+      var o = String(e);
+      if (Log.CheckInfo()) {
+        Log.Info(g, n, a + " 开始执行 " + o);
+      }
+      try {
+        var t = i.apply(this, r);
+        if (Log.CheckInfo()) {
+          Log.Info(g, n, a + " 执行完成 " + o);
+        }
+        return t;
+      } catch (r) {
+        throw r instanceof Error ? (Log.CheckError() && Log.ErrorWithStack(g, n, a + " 执行异常", r, ["error", r.message]), r) : (Log.CheckError() && Log.Error(g, n, a + " 执行异常", ["error", r]), new Error(a));
+      }
+    }
+    Object.defineProperty(t, "name", {
+      value: i.name,
+      writable: false,
+      configurable: true
+    });
+    o.value = t;
+    return o;
   };
 }
 (exports.Log = Log).B8 = 3;
@@ -260,35 +287,35 @@ Log.w8 = undefined;
 Log.Uau = new Set();
 Log.Dau = new Set();
 Log.U8 = "";
-Log.RHa = (r, o) => {
-  if (o === undefined) {
+Log.RHa = (r, t) => {
+  if (t === undefined) {
     return "undefined";
   }
-  switch (typeof o) {
+  switch (typeof t) {
     case "bigint":
-      return o.toString() + "n";
+      return t.toString() + "n";
     case "function":
-      return o.toString();
+      return t.toString();
     case "object":
-      if (o === null) {
+      if (t === null) {
         return "null";
       }
-      if (Log.Dau.has(o)) {
+      if (Log.Dau.has(t)) {
         return "[Circular]";
       }
-      Log.Dau.add(o);
-      var t = o;
-      if (typeof t.ToString == "function") {
-        return t.ToString();
+      Log.Dau.add(t);
+      var o = t;
+      if (typeof o.ToString == "function") {
+        return o.ToString();
       }
-      t = o.__proto__;
-      if (!(o instanceof Array) || t.toString !== Array.prototype.toString) {
-        if (t.toString !== Object.prototype.toString) {
-          return o.toString();
+      o = t.__proto__;
+      if (!(t instanceof Array) || o.toString !== Array.prototype.toString) {
+        if (o.toString !== Object.prototype.toString) {
+          return t.toString();
         }
-        if (o instanceof Set) {
+        if (t instanceof Set) {
           let r = "Set(";
-          for (const i of o) {
+          for (const i of t) {
             if (r.length > 0) {
               r += ",";
             }
@@ -296,9 +323,9 @@ Log.RHa = (r, o) => {
           }
           return r += ")";
         }
-        if (o instanceof Map) {
+        if (t instanceof Map) {
           let r = "Map(";
-          for (const g of o) {
+          for (const g of t) {
             if (r.length > 0) {
               r += ",";
             }
@@ -306,51 +333,52 @@ Log.RHa = (r, o) => {
           }
           return r += ")";
         }
-        if (o instanceof UE.TMap) {
-          let t = "";
-          for (let r = 0; r < o.Num(); r++) {
-            if (t.length === 0) {
-              t += "TMap(";
+        if (t instanceof UE.TMap) {
+          let o = "";
+          for (let r = 0; r < t.Num(); r++) {
+            if (o.length === 0) {
+              o += "TMap(";
             } else {
-              t += ",";
+              o += ",";
             }
-            var e = o.GetKey(r);
-            t += `[${Log.DHa(e)}, ${Log.DHa(o.Get(e))}]`;
+            var e = t.GetKey(r);
+            o += `[${Log.DHa(e)}, ${Log.DHa(t.Get(e))}]`;
           }
-          return t += ")";
+          return o += ")";
         }
-        if (o instanceof UE.TArray) {
-          let t = "";
-          for (let r = 0; r < o.Num(); r++) {
-            if (t.length === 0) {
-              t += "TArray(";
+        if (t instanceof UE.TArray) {
+          let o = "";
+          for (let r = 0; r < t.Num(); r++) {
+            if (o.length === 0) {
+              o += "TArray(";
             } else {
-              t += ",";
+              o += ",";
             }
-            t += `[${Log.DHa(o.Get(r))}]`;
+            o += `[${Log.DHa(t.Get(r))}]`;
           }
-          return t += ")";
+          return o += ")";
         }
-        if (o instanceof UE.TSet) {
-          let t = "";
-          for (let r = 0; r < o.Num(); r++) {
-            if (t.length === 0) {
-              t += "TSet(";
+        if (t instanceof UE.TSet) {
+          let o = "";
+          for (let r = 0; r < t.Num(); r++) {
+            if (o.length === 0) {
+              o += "TSet(";
             } else {
-              t += ",";
+              o += ",";
             }
-            t += `[${Log.DHa(o.Get(r))}]`;
+            o += `[${Log.DHa(t.Get(r))}]`;
           }
-          return t += ")";
+          return o += ")";
         }
       }
-      return o;
+      return t;
     default:
-      return o;
+      return t;
   }
 };
-Log.F8 = (r, t) => t;
+Log.F8 = (r, o) => o;
 Log.V8 = {
   stack: undefined
 };
-exports.asyncWithLogDecorator = asyncWithLogDecorator; //# sourceMappingURL=Log.js.map
+exports.asyncWithLogDecorator = asyncWithLogDecorator;
+exports.logDecorator = logDecorator; //# sourceMappingURL=Log.js.map

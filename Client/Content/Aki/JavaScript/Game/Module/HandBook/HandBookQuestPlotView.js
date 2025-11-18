@@ -90,7 +90,7 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         this.fje();
       });
     };
-    this.i6d = new Map();
+    this.sKd = new Map();
     this.Z9s = [];
     this.Zu = (i, t, e, o) => {
       let s = this.BPn.get(i);
@@ -275,15 +275,15 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         var s;
         var n = l.Params.TalkItems;
         let i = 0;
-        this.i6d.clear();
+        this.sKd.clear();
         for (const _ of n) {
-          this.i6d.set(_.Id, i++);
+          this.sKd.set(_.Id, i++);
           if (this.GPn < 0) {
             return;
           }
           if (this.GPn) {
-            var h = this.i6d.get(this.GPn);
-            var r = this.i6d.get(_.Id);
+            var h = this.sKd.get(this.GPn);
+            var r = this.sKd.get(_.Id);
             if (!h || r < h) {
               continue;
             }
@@ -342,8 +342,8 @@ class HandBookQuestPlotView extends UiViewBase_1.UiViewBase {
         }
         if (n.Name === "JumpTalk") {
           var e = n.Params.TalkId;
-          var o = this.i6d.get(e);
-          var s = this.i6d.get(t);
+          var o = this.sKd.get(e);
+          var s = this.sKd.get(t);
           if (o && o <= s) {
             this.GPn = -1;
             break;

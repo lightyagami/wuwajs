@@ -278,6 +278,19 @@ class GameBudgetAllocatorConfigMobileCreator {
       Cutscene_NotRendered: undefined
     };
   }
+  CreateHighPriorityPhysicsInteractionActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 2000, 300),
+      Normal_Render: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 10, 2000, 300),
+      Normal_NotRendered: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 1, 60, 300, 25),
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
 }
 exports.GameBudgetAllocatorConfigMobileCreator = GameBudgetAllocatorConfigMobileCreator;
 //# sourceMappingURL=GameBudgetAllocatorConfigMobileCreator.js.map

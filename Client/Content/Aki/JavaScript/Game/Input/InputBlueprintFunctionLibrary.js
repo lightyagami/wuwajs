@@ -12,6 +12,7 @@ const ModelManager_1 = require("../Manager/ModelManager");
 const InputFunctionAttack_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionAttack");
 const InputFunctionCommon_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionCommon");
 const InputFunctionFishingBoat_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionFishingBoat");
+const InputFunctionMotorcycle_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionMotorcycle");
 const InputFunctionVisionSkill1_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionVisionSkill1");
 const InputFunctionVisionSkill2_1 = require("../NewWorld/Character/Common/Component/Input/InputLayerFunction/InputFunctionVisionSkill2");
 const InputDistributeDefine_1 = require("../Ui/InputDistribute/InputDistributeDefine");
@@ -102,6 +103,14 @@ class InputBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static CreateFishingBoatSprintCommand(t) {
     return (0, InputFunctionFishingBoat_1.createFishingBoatSprintCommand)(t);
+  }
+  static MotorcycleVisionSkill1OnPress(t, n) {
+    t = (0, InputFunctionMotorcycle_1.motorcycleVisionSkill1OnPress)(t);
+    return t || n;
+  }
+  static MotorcycleVisionSkill1OnRelease(t, n) {
+    t = (0, InputFunctionMotorcycle_1.motorcycleVisionSkill1OnRelease)(t);
+    return t || n;
   }
 }
 exports.default = InputBlueprintFunctionLibrary;

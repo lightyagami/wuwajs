@@ -52,7 +52,7 @@ class BattleUiRoleData {
     this.Trc = (t, i, s) => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
     };
-    this.Rmd = (t, i) => {
+    this.Dgd = (t, i) => {
       if (this.HasEnergyTag !== i) {
         this.HasEnergyTag = i;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiEnergyChanged, this.EntityHandle.Id);
@@ -113,12 +113,12 @@ class BattleUiRoleData {
   Init(t, i) {
     this.EntityHandle = t;
     this.IsCurEntity = i;
-    this.AttributeComponent = t.Entity.GetComponent(174);
-    this.GameplayTagComponent = t.Entity.GetComponent(206);
-    this.RoleElementComponent = t.Entity.GetComponent(92);
-    this.BuffComponent = t.Entity.GetComponent(175);
+    this.AttributeComponent = t.Entity.GetComponent(177);
+    this.GameplayTagComponent = t.Entity.GetComponent(209);
+    this.RoleElementComponent = t.Entity.GetComponent(94);
+    this.BuffComponent = t.Entity.GetComponent(178);
     this.ShieldComponent = t.Entity.GetComponent(75);
-    this.RoleQteComponent = t.Entity.GetComponent(99);
+    this.RoleQteComponent = t.Entity.GetComponent(101);
     this.CreatureDataComponent = t.Entity.GetComponent(0);
     this.BaseDeathComponent = t.Entity.GetComponent(15);
     this.ActorComp = t.Entity.GetComponent(3);
@@ -142,7 +142,7 @@ class BattleUiRoleData {
     }
     if (this.CreatureRoleId === 1608) {
       this.CheckEnergyTag = true;
-      this.d$e(414280119, this.Rmd, true);
+      this.d$e(414280119, this.Dgd, true);
     }
     this.c$e();
   }

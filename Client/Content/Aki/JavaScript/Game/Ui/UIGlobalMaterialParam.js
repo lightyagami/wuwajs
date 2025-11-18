@@ -15,7 +15,7 @@ class UiGlobalMaterialParam {
     const a = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_CharacterRenderingFunctionLibrary_C", () => {
       a.SetResult();
-    });
+    }, "Ui");
     await a.Promise;
     UiGlobalMaterialParam.Kdr();
     Application_1.Application.AddApplicationHandler(1, UiGlobalMaterialParam.Qdr);

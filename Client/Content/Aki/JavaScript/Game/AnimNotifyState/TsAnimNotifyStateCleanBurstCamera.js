@@ -46,7 +46,7 @@ class TsAnimNotifyStateCleanBurstCamera extends UE.KuroAnimNotifyState {
     }
     if (this.TsNoHitEffect) {
       if (t = a.GetEntityNoBlueprint()) {
-        if (t = t.GetComponent(206)) {
+        if (t = t.GetComponent(209)) {
           t.TagContainer.UpdateExactTag(2, -1728163740, 1);
         }
       } else if (Log_1.Log.CheckWarn()) {
@@ -69,7 +69,7 @@ class TsAnimNotifyStateCleanBurstCamera extends UE.KuroAnimNotifyState {
     var e;
     if (this.TsNoHitEffect && (t = t.GetOwner()) instanceof TsBaseCharacter_1.default) {
       if (e = t.GetEntityNoBlueprint()) {
-        if (e = e.GetComponent(206)) {
+        if (e = e.GetComponent(209)) {
           e.TagContainer.UpdateExactTag(2, -1728163740, -1);
         }
       } else if (Log_1.Log.CheckWarn()) {

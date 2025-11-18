@@ -23,10 +23,10 @@ class TutorialController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, this.Q5e);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(16727, this.PRo);
+    Net_1.Net.Register(20559, this.PRo);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16727);
+    Net_1.Net.UnRegister(20559);
   }
   static OpenExclusiveTutorial(e) {
     e = {
@@ -46,7 +46,7 @@ class TutorialController extends UiControllerBase_1.UiControllerBase {
   static GmUnlockOneTutorial(e) {
     var r = Protocol_1.Aki.Protocol.E0s.create();
     r.s5n = e;
-    Net_1.Net.Call(24545, r, e => {
+    Net_1.Net.Call(27404, r, e => {
       if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ModelManager_1.ModelManager.TutorialModel.UpdateUnlockTutorials(e.aOs);
       }
@@ -68,7 +68,7 @@ class TutorialController extends UiControllerBase_1.UiControllerBase {
     var r;
     if (ConfigManager_1.ConfigManager.TutorialConfig.HasUnlockReward(e)) {
       (r = Protocol_1.Aki.Protocol.E0s.create()).s5n = e;
-      Net_1.Net.Call(29487, r, e => {
+      Net_1.Net.Call(29992, r, e => {
         if (e && e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           var r = Number(Object.keys(e._vs)[0]);
           var t = e._vs[r];
@@ -107,7 +107,7 @@ class TutorialController extends UiControllerBase_1.UiControllerBase {
       r(true);
     } else {
       (e = Protocol_1.Aki.Protocol.E0s.create()).s5n = o;
-      Net_1.Net.Call(24545, e, e => {
+      Net_1.Net.Call(27404, e, e => {
         if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           r(false);
         } else {
@@ -130,7 +130,7 @@ class TutorialController extends UiControllerBase_1.UiControllerBase {
 TutorialController.Q5e = () => {
   ModelManager_1.ModelManager.TutorialModel.InitDefaultUnlockTutorials();
   var e = Protocol_1.Aki.Protocol.p0s.create();
-  Net_1.Net.Call(24246, e, e => {
+  Net_1.Net.Call(16696, e, e => {
     if (e) {
       ModelManager_1.ModelManager.TutorialModel.InitUnlockTutorials(e.sOs);
       if ((e = ModelManager_1.ModelManager.TutorialModel.GetUnlockedTutorialDataByType(TutorialDefine_1.ETutorialType.All))?.length) {

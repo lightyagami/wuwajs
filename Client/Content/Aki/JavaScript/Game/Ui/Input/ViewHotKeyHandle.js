@@ -18,7 +18,7 @@ class ViewHotKeyHandle {
     this.ConfigId = undefined;
     this.ActionName = undefined;
     this.InputControllerType = 0;
-    this.ViewName = undefined;
+    this.DefaultViewName = undefined;
     this.ViewParam = [];
     this.IsPressTrigger = true;
     this.PressStartTime = 0;
@@ -49,7 +49,7 @@ class ViewHotKeyHandle {
     this.ConfigId = i.ConfigId;
     this.ActionName = i.ActionName;
     this.InputControllerType = i.InputControllerType;
-    this.ViewName = i.ViewName;
+    this.DefaultViewName = i.ViewName;
     this.ViewParam = i.ViewParam;
     this.IsPressTrigger = i.IsPressTrigger;
     this.PressStartTime = i.PressStartTime;
@@ -62,6 +62,9 @@ class ViewHotKeyHandle {
     this.Xya = i.CloseViewCallback;
     this.Smr = i.IsAllowOpenViewByShortcutKey;
     this.gJa = i.IsAllowCloseViewByShortcutKey;
+  }
+  get ViewName() {
+    return this.DefaultViewName;
   }
   Destroy() {
     this.UnBind();

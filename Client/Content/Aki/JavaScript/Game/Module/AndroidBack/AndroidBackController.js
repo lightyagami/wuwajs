@@ -72,7 +72,7 @@ class AndroidBackController extends UiControllerBase_1.UiControllerBase {
     if (this.Rje) {
       this.Uje();
     } else {
-      e = ResourceSystem_1.ResourceSystem.Load("/Game/Aki/UI/UIResources/Common/Prefabs/UiItem_BackBtn1.UiItem_BackBtn1", UE.PrefabAsset);
+      e = ResourceSystem_1.ResourceSystem.Load("/Game/Aki/UI/UIResources/Common/Prefabs/UiItem_BackBtn1.UiItem_BackBtn1", UE.PrefabAsset, "Debug");
       this.Rje = UE.LGUIBPLibrary.LoadPrefabWithAsset(GlobalData_1.GlobalData.World, e, UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Debug));
       (e = this.Rje.GetComponentByClass(UE.UIItem.StaticClass())).SetDisplayName("GmTestAndroidBack");
       e.SetAnchorAlign(2, 2);

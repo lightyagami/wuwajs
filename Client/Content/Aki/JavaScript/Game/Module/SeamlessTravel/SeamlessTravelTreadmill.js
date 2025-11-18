@@ -184,7 +184,7 @@ class SeamlessTravelTreadmill {
       } else {
         this.HandleFalseInit(h);
       }
-    });
+    }, 100, "SeamlessTravel");
   }
   LoadFloorMaterial(s) {
     if (this.Context.FloorParams?.FloorMaterialPath) {
@@ -202,7 +202,7 @@ class SeamlessTravelTreadmill {
         } else {
           this.HandleFalseInit(s);
         }
-      });
+      }, 100, "SeamlessTravel.Treadmill");
     } else {
       this.HandleFalseInit(s);
       if (Log_1.Log.CheckInfo()) {

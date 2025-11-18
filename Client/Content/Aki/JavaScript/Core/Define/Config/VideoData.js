@@ -13,6 +13,9 @@ class VideoData {
   get CgId() {
     return this.cgid();
   }
+  get BelongBranch() {
+    return this.belongbranch();
+  }
   get CgName() {
     return this.cgname();
   }
@@ -44,8 +47,16 @@ class VideoData {
       return 0;
     }
   }
+  belongbranch() {
+    var t = this.J7.__offset(this.z7, 6);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
   cgname(t) {
-    var i = this.J7.__offset(this.z7, 6);
+    var i = this.J7.__offset(this.z7, 8);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -53,7 +64,7 @@ class VideoData {
     return i;
   }
   girlorboy() {
-    var t = this.J7.__offset(this.z7, 8);
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -61,7 +72,7 @@ class VideoData {
     }
   }
   cgfile(t) {
-    var i = this.J7.__offset(this.z7, 10);
+    var i = this.J7.__offset(this.z7, 12);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -69,11 +80,11 @@ class VideoData {
     return i;
   }
   canskip() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   aspect() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readFloat32(this.z7 + t);
     } else {

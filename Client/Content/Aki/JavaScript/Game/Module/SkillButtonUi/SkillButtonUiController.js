@@ -45,7 +45,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideLimitActionInput, this.bYd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideLimitActionInput, this.Npm);
     InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
@@ -71,7 +71,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideLimitActionInput, this.bYd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideLimitActionInput, this.Npm);
     InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
@@ -197,7 +197,7 @@ SkillButtonUiController.$Ge = e => {
     ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.RefreshSwitchInteractOpen();
   }
 };
-SkillButtonUiController.bYd = (e, t) => {
+SkillButtonUiController.Npm = (e, t) => {
   if (e === InputMappingsDefine_1.actionMappings.组合主键) {
     _a.RZe(e, t ? 0 : 1);
   }

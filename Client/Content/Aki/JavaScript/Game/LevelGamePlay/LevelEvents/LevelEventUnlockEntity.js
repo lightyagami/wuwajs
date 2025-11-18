@@ -11,7 +11,7 @@ class LevelEventUnlockEntity extends LevelGeneralBase_1.LevelEventBase {
   ExecuteAction(e, o, t) {
     if (o.Type === 1 && o.ClientExecuteActions) {
       for (const l of e.EntityIds) {
-        var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l)?.Entity?.GetComponent(197);
+        var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l)?.Entity?.GetComponent(200);
         if (n) {
           n.RemoveServerTagByIdLocal(-662723379, "LevelEventUnlockEntity");
         } else if (Log_1.Log.CheckWarn()) {

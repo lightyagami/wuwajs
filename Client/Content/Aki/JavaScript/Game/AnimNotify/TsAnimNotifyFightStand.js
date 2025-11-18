@@ -15,7 +15,7 @@ class TsAnimNotifyFightStand extends UE.KuroAnimNotify {
   K2_Notify(t, e) {
     t = t.GetOwner();
     if (t instanceof TsBaseCharacter_1.default) {
-      t?.CharacterActorComponent?.Entity?.GetComponent(178)?.EnterBattleIdle(this.BattleIdleTime);
+      t?.CharacterActorComponent?.Entity?.GetComponent(181)?.EnterBattleIdle(this.BattleIdleTime);
     }
     return true;
   }

@@ -73,7 +73,7 @@ class SeamlessTravelPostProcess {
             }
             i(false);
           }
-        });
+        }, 100, "SeamlessTravel.PostProcess");
       } else {
         i(true);
       }

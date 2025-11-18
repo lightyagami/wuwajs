@@ -183,9 +183,9 @@ class LevelConditionRegistry {
     if (i) {
       t = i.GetPbDataId();
       if (this.cLe.has(t)) {
-        e?.GetComponent(120)?.SetGuideRange(this.cLe.get(t));
+        e?.GetComponent(123)?.SetGuideRange(this.cLe.get(t));
       } else if ((t = i.GetPbEntityInitData()?.BlueprintType) && this.uLe.has(t)) {
-        e?.GetComponent(120)?.SetGuideRange(this.uLe.get(t));
+        e?.GetComponent(123)?.SetGuideRange(this.uLe.get(t));
       }
     }
   }

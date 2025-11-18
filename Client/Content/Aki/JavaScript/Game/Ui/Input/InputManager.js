@@ -300,7 +300,7 @@ class InputManager {
   static MoveCursorToCenter() {
     var e;
     if (this.IsAutoMoveCursorToCenter && (e = this.Bmr())) {
-      InputManager.rSd(e);
+      InputManager.IEd(e);
     }
   }
   static aX1() {
@@ -330,7 +330,7 @@ class InputManager {
     var e = Global_1.Global.CharacterController;
     return !!e && !!e.IsValid();
   }
-  static rSd(e) {
+  static IEd(e) {
     Global_1.Global.CharacterController.SetMouseLocation(e.X, e.Y);
     InputManager.SetEventDataPrevPosition(e);
   }
@@ -442,7 +442,7 @@ InputManager.umr = () => {
 InputManager.sX1 = () => {
   var e = _a.aX1();
   if (e) {
-    InputManager.rSd(e);
+    InputManager.IEd(e);
   }
 };
 InputManager.nye = () => {

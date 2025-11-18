@@ -83,10 +83,10 @@ let SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = class Scen
     return true;
   }
   OnStart() {
-    this.Lie = this.Entity.GetComponent(206);
-    this.Hte = this.Entity.GetComponent(203);
+    this.Lie = this.Entity.GetComponent(209);
+    this.Hte = this.Entity.GetComponent(206);
     this.Rne = this.Disable("SceneItemInhaledItemComponent 默认关闭Tick");
-    this.Entity.GetComponent(122).SetLogicRange(SENSORY_RANGE);
+    this.Entity.GetComponent(125).SetLogicRange(SENSORY_RANGE);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.g_n);
     var t = this.Hte.CreatureData.GetBaseInfo();
     switch (t.Category.InhaledItemType) {
@@ -182,9 +182,9 @@ let SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = class Scen
       t.i_l = MathUtils_1.MathUtils.NumberToLong(this.e_l);
       t.r5n = this.wmo;
       t.r_l = [MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId())];
-      Net_1.Net.Call(20089, t, t => {
+      Net_1.Net.Call(29183, t, t => {
         if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28582);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20666);
         }
       });
       if (Log_1.Log.CheckInfo()) {
@@ -203,5 +203,5 @@ let SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = class Scen
     }
   }
 };
-SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(265)], SceneItemInhaledItemComponent);
+SceneItemInhaledItemComponent = SceneItemInhaledItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(269)], SceneItemInhaledItemComponent);
 exports.SceneItemInhaledItemComponent = SceneItemInhaledItemComponent; //# sourceMappingURL=SceneItemInhaledItemComponent.js.map

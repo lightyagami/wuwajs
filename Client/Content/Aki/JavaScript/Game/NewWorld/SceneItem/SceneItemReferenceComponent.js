@@ -54,7 +54,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     this.ILr = new Map();
     this.rMn = undefined;
     this.Xvn = new Set();
-    this.qEd = [];
+    this.MTd = [];
     this.wWa = false;
     this.BWa = undefined;
     this.ze_ = new Queue_1.Queue();
@@ -123,13 +123,13 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
       }
     };
     this.hMn = e => {
-      var t = this.qEd.indexOf(e.toString());
+      var t = this.MTd.indexOf(e.toString());
       if (!(t < 0)) {
-        this.qEd.splice(t, 1);
+        this.MTd.splice(t, 1);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorAdd", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.qEd.length]);
+          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorAdd", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.MTd.length]);
         }
-        if (this.qEd.length <= 0) {
+        if (this.MTd.length <= 0) {
           this.aMn(4);
         }
         t = this.aln.GetActor(e);
@@ -143,9 +143,9 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     };
     this.lMn = e => {
       if (this.Xvn.has(e.toString())) {
-        this.qEd.push(e.toString());
+        this.MTd.push(e.toString());
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorRemove", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.qEd.length]);
+          Log_1.Log.Debug("SceneItem", 18, "[RefComp] OnActorRemove", ["PbDataId", this.EIe?.GetPbDataId()], ["actorKey", e], ["CurStreamingOutActorCount", this.MTd.length]);
         }
         this.UU_(0).OnActorRemove();
         this.rMn?.RemoveVolume(e.toString());
@@ -153,34 +153,35 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     };
   }
   get NQc() {
-    return this.qEd.length === 0;
+    return this.MTd.length === 0;
   }
   static get Dependencies() {
-    return [203, 197];
+    return [206, 200];
   }
   OnInitData(e) {
     e = e.GetParam(SceneItemReferenceComponent_1)[0];
     this.Lo = e;
-    this.mBe = this.Entity.CheckGetComponent(134);
+    this.mBe = this.Entity.CheckGetComponent(137);
     this.BWa = this.mBe.StateTagId;
     return true;
   }
   OnStart() {
     this.aln = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
-    this.Hte = this.Entity.GetComponent(203);
-    this.Xte = this.Entity.GetComponent(197);
+    this.Hte = this.Entity.GetComponent(206);
+    this.Xte = this.Entity.GetComponent(200);
     this.EIe = this.Entity.GetComponent(0);
     this.wWa = this.mBe.StateTagId === this.BWa;
     this.VQc();
+    for (var [, e] of this.ILr) {
+      e.OnStart();
+    }
     this._Mn();
     this.uMn();
     this.aln.OnAddToSubsystem.Add(this.hMn);
     this.aln.OnRemoveFromSubsystem.Add(this.lMn);
+    this.aln.RecordEntityModifiedActor(this.EIe.GetPbDataId());
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.den);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChangeInSequence, this.Je_);
-    for (var [, e] of this.ILr) {
-      e.OnStart();
-    }
     return true;
   }
   OnEnd() {
@@ -236,7 +237,7 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     }
   }
   uMn() {
-    this.qEd.length = 0;
+    this.MTd.length = 0;
     for (const t of this.Xvn) {
       var e = this.aln.GetActor(new UE.FName(t));
       if (e) {
@@ -246,10 +247,10 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
           e.Tags.Add(CharacterNameDefines_1.CharacterNameDefines.INVALID_POS);
         }
       } else {
-        this.qEd.push(t);
+        this.MTd.push(t);
       }
     }
-    if (this.qEd.length <= 0) {
+    if (this.MTd.length <= 0) {
       this.aMn(0);
     }
   }
@@ -279,11 +280,11 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
       }
     } else {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 开始", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.qEd]);
+        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 开始", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.MTd]);
       }
       this.uMn();
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 结束", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.qEd]);
+        Log_1.Log.Debug("SceneItem", 39, "尝试重新InitRefActor: 结束", ["pbDataId", this.Hte.CreatureData.GetPbDataId()], ["IsReady", this.NQc], ["actorList", this.MTd]);
       }
     }
   }
@@ -373,12 +374,12 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     return !!this.rMn?.IsPlayerOverlapped();
   }
   OnChangeTimeDilation(e) {
-    e *= this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    e *= this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
     this.UU_(0).OnChangeTimeDilation(e);
   }
   IsValidPlatFormPath(e) {
     return this.Xvn.has(e);
   }
 };
-SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(164)], SceneItemReferenceComponent);
+SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(167)], SceneItemReferenceComponent);
 exports.SceneItemReferenceComponent = SceneItemReferenceComponent; //# sourceMappingURL=SceneItemReferenceComponent.js.map

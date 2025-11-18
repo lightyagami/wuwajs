@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.LevelSequencePlayer = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const UiLayer_1 = require("../../Ui/UiLayer");
@@ -179,28 +180,28 @@ class LevelSequencePlayer {
     await t?.Promise;
   }
   PlaySequencePurely(e, t = false, i = false, s = undefined, h = undefined) {
-    var o = this.GetSequencePlayContext(e);
-    var r = this.Xxt.displayName;
+    var r = this.GetSequencePlayContext(e);
+    var o = this.Xxt.displayName;
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("UiCore", 10, "播放的关卡序列", ["播放节点", r], ["关卡序列", e]);
+      Log_1.Log.Debug("UiCore", 10, "播放的关卡序列", ["播放节点", o], ["关卡序列", e]);
     }
     this.Jxt = e;
-    var t = new SequenceData(e, t, r, s);
+    var t = new SequenceData(e, t, o, s);
     this.zxt.set(e, t);
     LevelSequencePlayer.ewt.add(this);
     if (LevelSequencePlayer.iwt) {
       this.owt(e);
       this.vxe(e);
-    } else if (o) {
-      o.bReverse = i;
+    } else if (r) {
+      r.bReverse = i;
       if (h !== undefined) {
-        o.PlayInfo.PlaySetting.PlayRate = h;
+        r.PlayInfo.PlaySetting.PlayRate = h;
       }
-      o.ExecutePlay();
+      r.ExecutePlay();
       this.owt(e);
     } else {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("UiCore", 10, "关卡序列不存在", ["播放节点", r], ["关卡序列", e]);
+        Log_1.Log.Debug("UiCore", 10, "关卡序列不存在", ["播放节点", o], ["关卡序列", e]);
       }
       this.vxe(e);
     }
@@ -310,6 +311,10 @@ class LevelSequencePlayer {
       LevelSequencePlayer.iwt = false;
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LevelSequencePlayerBandStateChange, e);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyLevelSequencePlayerBannedState, e);
+  }
+  static GetBanned() {
+    return this.iwt;
   }
 }
 (exports.LevelSequencePlayer = LevelSequencePlayer).ewt = new Set();

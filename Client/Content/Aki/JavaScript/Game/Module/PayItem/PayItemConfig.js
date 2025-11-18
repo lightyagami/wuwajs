@@ -79,6 +79,21 @@ class PayItemConfig extends ConfigBase_1.ConfigBase {
       }
     }
   }
+  GetRechargeItemRate() {
+    return CommonParamById_1.configCommonParamById.GetIntConfig("RechargeItemRate") ?? 0;
+  }
+  GetRegionMainCurrency() {
+    var r = CommonParamById_1.configCommonParamById.GetStringArrayConfig("RegionMainCurrency") ?? [];
+    var a = ModelManager_1.ModelManager.LoginServerModel.GetCurrentSelectPayServerName();
+    var n = r.length;
+    for (let e = 0; e < n; e++) {
+      var o = r[e].split(":");
+      if (o.length === 2 && o[0] === a) {
+        return o[1];
+      }
+    }
+    return "";
+  }
 }
 exports.PayItemConfig = PayItemConfig;
 //# sourceMappingURL=PayItemConfig.js.map

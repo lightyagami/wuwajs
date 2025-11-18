@@ -14,7 +14,7 @@ class FollowShooterHackController extends ControllerBase_1.ControllerBase {
       this.TW_.set(e, new Set());
     }
     if (!this.TW_.get(e).has(o)) {
-      if ((r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && r.Entity?.Valid && (r = r.Entity.GetComponent(226))) {
+      if ((r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o)) && r.Entity?.Valid && (r = r.Entity.GetComponent(229))) {
         r = r.AddCue(GAMEPLAY_CUE_ID);
         this.bW_.set(o, r);
         this.TW_.get(e).add(o);
@@ -31,7 +31,7 @@ class FollowShooterHackController extends ControllerBase_1.ControllerBase {
           if (!t || !t.Entity?.Valid) {
             return;
           }
-          t = t.Entity.GetComponent(226);
+          t = t.Entity.GetComponent(229);
           if (!t) {
             return;
           }

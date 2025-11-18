@@ -27,6 +27,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.bxo = undefined;
     this.ParentUiItem = undefined;
     this.UsePool = false;
+    this.MemoryTag = "js_undefined";
     this.SkipDestroyActor = false;
     this.N_r = false;
     this.OpenParam = undefined;
@@ -69,6 +70,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.QXe = new UiPrefabLoadModule_1.UiPrefabLoadModule();
     this.TaskManager = undefined;
     this.OnSequenceEvent = (t, i) => {};
+    this.MemoryTag = this.constructor.name;
   }
   OnRegisterComponent() {}
   OnBeforeCreate() {}
@@ -292,6 +294,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
             Log_1.Log.Error("UiCore", 10, "当前Actor创建完成,界面已经处于销毁状态", ["path", i]);
           }
           this.oL(t);
+          this.bsm();
         }
       }
     }
@@ -316,6 +319,11 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       return false;
     }
   }
+  bsm() {
+    if (this.bxo?.IsValid()) {
+      this.MemoryTag = LguiUtil_1.LguiUtil.GetRootActorMemoryTag(this.bxo);
+    }
+  }
   X_r() {
     this.OnRegisterComponent();
     this.RootActor = this.Y_r() ?? this.G_r;
@@ -332,14 +340,14 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     }
     if (i) {
       var s = i.Components.Num();
-      for (const o of this.ComponentRegisterInfos) {
-        var n = o[0];
+      for (const h of this.ComponentRegisterInfos) {
+        var n = h[0];
         if (!(s <= n)) {
-          if (n = i.Components.Get(n)?.GetComponentByClass(o[1].StaticClass())) {
-            this.F_r.set(o[0], [o[1], n]);
-            this.J_r(o[1], n);
+          if (n = i.Components.Get(n)?.GetComponentByClass(h[1].StaticClass())) {
+            this.F_r.set(h[0], [h[1], n]);
+            this.J_r(h[1], n);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("UiCore", 16, "[FindInitedComponentRegistryActor]请该UI负责人和程序检查以下路径的LGUIComponentsRegistry组件, 检查是否缺失以下类型的组件", ["节点全路径为", LguiUtil_1.LguiUtil.GetActorFullPath(e)], ["缺失组件的索引为", o[0]], ["缺失的组件类型为", o[1].StaticClass().GetName()]);
+            Log_1.Log.Error("UiCore", 16, "[FindInitedComponentRegistryActor]请该UI负责人和程序检查以下路径的LGUIComponentsRegistry组件, 检查是否缺失以下类型的组件", ["节点全路径为", LguiUtil_1.LguiUtil.GetActorFullPath(e)], ["缺失组件的索引为", h[0]], ["缺失的组件类型为", h[1].StaticClass().GetName()]);
           }
         }
       }
@@ -575,6 +583,12 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       return t[1];
     }
   }
+  GetMultiTemplateScrollViewComponent(t) {
+    t = this.F_r.get(t);
+    if (t && t[0] === UE.UIMultiTemplateScrollViewComponent) {
+      return t[1];
+    }
+  }
   GetDropdown(t) {
     t = this.F_r.get(t);
     if (t && t[0] === UE.UIDropdownComponent) {
@@ -704,7 +718,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   }
   SetSpriteByPath(t, i, e, s = undefined, n = undefined) {
     if (s) {
-      this.j_r.SetSpriteByPathSync(t, i, e, s, n);
+      this.j_r.SetSpriteByPathSync(t, i, e, s, n, this.MemoryTag);
     } else {
       this.j_r.SetSpriteByPathAsync(t, i, e, n);
     }
@@ -718,13 +732,13 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     }
   }
   async SetSpriteTransitionByPath(t, i, e = 5) {
-    await this.j_r.SetSpriteTransitionByPath(t, i, e);
+    await this.j_r.SetSpriteTransitionByPath(t, i, e, this.MemoryTag);
   }
   SetTextureByPath(t, i, e = undefined, s = undefined) {
     if (e) {
-      this.j_r.SetTextureByPathSync(t, i, e, s);
+      this.j_r.SetTextureByPathSync(t, i, e, s, this.MemoryTag);
     } else {
-      this.j_r.SetTextureByPathAsync(t, i, s);
+      this.j_r.SetTextureByPathAsync(t, i, s, this.MemoryTag);
     }
   }
   TrySetTextureByPath(t, i, e = undefined, s = undefined) {
@@ -736,19 +750,19 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     }
   }
   async SetTextureTransitionByPath(t, i, e = 5) {
-    await this.j_r.SetTextureTransitionByPath(t, i, e);
+    await this.j_r.SetTextureTransitionByPath(t, i, e, this.MemoryTag);
   }
   async SetExtendToggleTextureTransitionByPath(t, i, e = 9) {
-    await this.j_r.SetExtendToggleTextureTransitionByPath(t, i, e);
+    await this.j_r.SetExtendToggleTextureTransitionByPath(t, i, e, this.MemoryTag);
   }
   async SetExtendToggleSpriteTransitionByPath(t, i, e = 9) {
-    await this.j_r.SetExtendToggleSpriteTransitionByPath(t, i, e);
+    await this.j_r.SetExtendToggleSpriteTransitionByPath(t, i, e, this.MemoryTag);
   }
   async SetTextureAsync(t, i) {
-    await this.j_r.SetTextureAsync(t, i);
+    await this.j_r.SetTextureAsync(t, i, this.MemoryTag);
   }
   async SetSpriteAsync(t, i, e) {
-    await this.j_r.SetSpriteAsync(t, i, e);
+    await this.j_r.SetSpriteAsync(t, i, e, this.MemoryTag);
   }
   SetTextureShowUntilLoaded(t, i, e = undefined) {
     if (i) {
@@ -758,80 +772,80 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
         if (e) {
           e(t);
         }
-      });
+      }, this.MemoryTag);
     }
   }
   SetItemIcon(t, i, e = undefined, s = undefined) {
     if (e) {
-      this.j_r.SetItemIconSync(t, i, e, s);
+      this.j_r.SetItemIconSync(t, i, e, s, this.MemoryTag);
     } else {
-      this.j_r.SetItemIconAsync(t, i, s);
+      this.j_r.SetItemIconAsync(t, i, s, this.MemoryTag);
     }
   }
   async SetItemIconAsync(t, i) {
-    await this.j_r.SetItemIconTextureAsync(t, i);
+    await this.j_r.SetItemIconTextureAsync(t, i, this.MemoryTag);
   }
   SetQualityIconById(t, i, e = undefined, s = "BackgroundSprite", n = undefined) {
     if (e) {
-      this.j_r.SetQualityIconByIdSync(t, i, e, s, n);
+      this.j_r.SetQualityIconByIdSync(t, i, e, s, n, this.MemoryTag);
     } else {
-      this.j_r.SetQualityIconByIdAsync(t, i, s, n);
+      this.j_r.SetQualityIconByIdAsync(t, i, s, n, this.MemoryTag);
     }
   }
   SetItemQualityIcon(t, i, e = undefined, s = "BackgroundSprite", n = undefined) {
     if (e) {
-      this.j_r.SetItemQualityIconSync(t, i, e, s, n);
+      this.j_r.SetItemQualityIconSync(t, i, e, s, n, this.MemoryTag);
     } else {
-      this.j_r.SetItemQualityIconAsync(t, i, s, n);
+      this.j_r.SetItemQualityIconAsync(t, i, s, n, this.MemoryTag);
     }
   }
   SetRoleIcon(t, i, e, s = undefined, n) {
     if (s) {
-      this.j_r.SetRoleIconSync(t, i, e, s, n);
+      this.j_r.SetRoleIconSync(t, i, e, s, n, this.MemoryTag);
     } else {
-      this.j_r.SetRoleIconAsync(t, i, e, n);
+      this.j_r.SetRoleIconAsync(t, i, e, n, this.MemoryTag);
     }
   }
   SetRoleSkinIcon(t, i, e, s = undefined, n) {
     if (s) {
-      this.j_r.SetRoleSkinIconSync(t, i, e, s, n);
+      this.j_r.SetRoleSkinIconSync(t, i, e, s, n, this.MemoryTag);
     } else {
-      this.j_r.SetRoleSkinIconAsync(t, i, e, n);
+      this.j_r.SetRoleSkinIconAsync(t, i, e, n, this.MemoryTag);
     }
   }
-  SetRoleIconByRoleIdOrSkinId(t, i, e, s, n, o = undefined) {
+  SetRoleIconByRoleIdOrSkinId(t, i, e, s, n, h = undefined) {
     if (!s || s <= 0) {
-      this.SetRoleIcon(t, i, e, o, n);
+      this.SetRoleIcon(t, i, e, h, n);
     } else {
-      this.SetRoleSkinIcon(t, i, s, o, n);
+      this.SetRoleSkinIcon(t, i, s, h, n);
     }
   }
   SetElementIcon(t, i, e, s = undefined) {
     if (s) {
-      this.j_r.SetElementIconSync(t, i, e, s);
+      this.j_r.SetElementIconSync(t, i, e, s, this.MemoryTag);
     } else {
-      this.j_r.SetElementIcon(t, i, e);
+      this.j_r.SetElementIcon(t, i, e, this.MemoryTag);
     }
   }
   SetMonsterIcon(t, i, e, s = undefined) {
     if (s) {
-      this.j_r.SetMonsterIconSync(t, i, e, s);
+      this.j_r.SetMonsterIconSync(t, i, e, s, this.MemoryTag);
     } else {
-      this.j_r.SetMonsterIconAsync(t, i, e);
+      this.j_r.SetMonsterIconAsync(t, i, e, this.MemoryTag);
     }
   }
   SetDungeonEntranceIconSync(t, i, e, s = undefined) {
     if (s) {
-      this.j_r.SetDungeonEntranceIconSync(t, i, e, s);
+      this.j_r.SetDungeonEntranceIconSync(t, i, e, s, this.MemoryTag);
     } else {
-      this.j_r.SetDungeonEntranceIconAsync(t, i, e);
+      this.j_r.SetDungeonEntranceIconAsync(t, i, e, this.MemoryTag);
     }
   }
-  SetNiagaraTextureByPath(t, i, e, s, n = undefined, o = undefined) {
+  SetNiagaraTextureByPath(t, i, e, s, n = undefined, h = undefined) {
     if (n) {
-      this.j_r.SetNiagaraTextureSync(t, i, e, s, n, o);
+      this.j_r.SetNiagaraTextureSync(t, i, e, s, n, h, this.MemoryTag);
     } else {
-      this.j_r.SetNiagaraTextureAsync(t, i, e, s, o);
+      this.j_r.SetNiagaraTextureAsync(t, i, e, s, h, this.MemoryTag);
     }
   }
   SetNiagaraSystemByPath(t, i, e = undefined) {
@@ -841,7 +855,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     await this.W_r.SetNiagaraByPathAsync(t, i);
   }
   async SetSpineAssetByPath(t, i, e) {
-    await this.wAr.LoadSpineAssetAsync(t, i, e);
+    await this.wAr.LoadSpineAssetAsync(t, i, e, this.MemoryTag);
   }
   Z_r() {
     this.j_r.Clear();
@@ -849,7 +863,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     this.wAr.Clear();
   }
   async LoadPrefabAsync(t, i) {
-    return this.QXe.LoadPrefabAsync(t, i);
+    return this.QXe.LoadPrefabAsync(t, i, this.MemoryTag);
   }
   ClearUiPrefabLoadModule() {
     this.QXe.Clear();

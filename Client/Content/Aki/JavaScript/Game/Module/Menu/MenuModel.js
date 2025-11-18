@@ -6,14 +6,18 @@ Object.defineProperty(exports, "__esModule", {
 exports.MenuModel = undefined;
 const UE = require("ue");
 const Application_1 = require("../../../Core/Application/Application");
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const FilterSettingAll_1 = require("../../../Core/Define/ConfigQuery/FilterSettingAll");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
 const Platform_1 = require("../../../Launcher/Platform/Platform");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
@@ -21,6 +25,7 @@ const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDevic
 const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../Manager/ModelManager");
 const FeatureRestrictionTemplate_1 = require("../Common/FeatureRestrictionTemplate");
 const MenuData_1 = require("./MenuData");
 const MenuDefine_1 = require("./MenuDefine");
@@ -30,7 +35,9 @@ class MenuModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.YNa = new Map();
     this.zNa = new Map();
+    this.Rom = new Map();
     this.ywi = undefined;
+    this.wom = new Map();
     this.IsEdited = false;
     this.Cac = undefined;
     this.KeySettingInputControllerType = 0;
@@ -55,17 +62,42 @@ class MenuModel extends ModelBase_1.ModelBase {
       this.Cac = false;
       var e;
       var t;
-      var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
-      var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(n);
-      for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(n)) {
+      var i = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
+      var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDeviceRenderFeature(i);
+      for ([e, t] of GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(i)) {
         if ((e !== GameSettingsDefine_1.EFunction.MOBILERESOLUTION || Info_1.Info.IsMobilePlatform()) && (e !== GameSettingsDefine_1.EFunction.PCVSYNC || Info_1.Info.IsPcOrGamepadPlatform()) && (e !== GameSettingsDefine_1.EFunction.VOLUMEFOG || !Info_1.Info.IsMacPlatform()) && (e !== GameSettingsDefine_1.EFunction.NPCDENSITY || !UE.KuroStaticLibrary.IsLowMemoryDevice()) && e !== GameSettingsDefine_1.EFunction.RayTracing) {
-          var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
-          if (i !== undefined && t !== i) {
-            if (Log_1.Log.CheckDebug()) {
-              Log_1.Log.Debug("Menu", 64, "画质相关项被手动修改过", ["functionId", e], ["target value", t]);
+          if (e === GameSettingsDefine_1.EFunction.SUPERRESOLUTION) {
+            if (Info_1.Info.IsWindowsPlatform()) {
+              var n = GameSettingsDefine_1.EFunction.SUPERRESOLUTION;
+              var a = GameSettingsDefine_1.EFunction.SUPERRESOLUTION;
+              var r = t;
+              [n, a, r] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(n, a, r);
+              var s = this.GetDataCacheOrCurValue(n) ?? 0;
+              if (s === 0) {
+                if (Log_1.Log.CheckInfo()) {
+                  Log_1.Log.Info("Menu", 92, "画质相关项被手动修改过：未开启超级分辨率", ["superResolutionId", n]);
+                }
+                this.Cac = true;
+                break;
+              }
+              s = this.GetDataCacheOrCurValue(a) ?? 0;
+              if (r !== s) {
+                if (Log_1.Log.CheckInfo()) {
+                  Log_1.Log.Info("Menu", 92, "画质相关项被手动修改过：超级分辨率质量档位", ["superResolutionId", n], ["qualityId", a], ["target value", r], ["current value", s]);
+                }
+                this.Cac = true;
+                break;
+              }
             }
-            this.Cac = true;
-            break;
+          } else {
+            n = this.GetDataCacheOrCurValue(e);
+            if (n !== undefined && t !== n) {
+              if (Log_1.Log.CheckInfo()) {
+                Log_1.Log.Info("Menu", 64, "画质相关项被手动修改过", ["functionId", e], ["target value", t]);
+              }
+              this.Cac = true;
+              break;
+            }
           }
         }
       }
@@ -79,12 +111,12 @@ class MenuModel extends ModelBase_1.ModelBase {
     if (this.ktu === undefined) {
       var e = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.FilterSettingValues);
       this.ktu = new Map();
-      for (const n of FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? []) {
+      for (const i of FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? []) {
         var t = [];
-        for (const i of MenuDefine_1.filterSettingParams) {
-          t[i] = e?.get(n.Id)?.[i] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(n.Id, i);
+        for (const n of MenuDefine_1.filterSettingParams) {
+          t[n] = e?.get(i.Id)?.[n] ?? ControllerHolder_1.ControllerHolder.FilterSettingController.GetFilterDefaultValue(i.Id, n);
         }
-        this.ktu.set(n.Id, t);
+        this.ktu.set(i.Id, t);
       }
     }
     return this.ktu;
@@ -129,40 +161,40 @@ class MenuModel extends ModelBase_1.ModelBase {
   CreateConfigByBaseConfig() {
     var e;
     var t;
-    var n;
     var i;
+    var n;
     var a;
     var r;
-    var o;
+    var s;
     for ([e, t] of GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap) {
       if (this.pac(t)) {
-        n = t.MainType;
-        i = this.D6d(t);
-        this.zNa.set(e, i);
-        if ((a = this.YNa.get(n)) && a.length > 0) {
-          a.push(i);
+        i = t.MainType;
+        n = this.WKd(t);
+        this.zNa.set(e, n);
+        if ((a = this.YNa.get(i)) && a.length > 0) {
+          a.push(n);
         } else {
-          this.YNa.set(n, [i]);
+          this.YNa.set(i, [n]);
         }
       }
     }
-    for ([r, o] of this.zNa) {
-      for (const _ of o.DisableFunction) {
-        var s = this.zNa.get(_);
-        if (s === undefined) {
+    for ([r, s] of this.zNa) {
+      for (const _ of s.DisableFunction) {
+        var o = this.zNa.get(_);
+        if (o === undefined) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Menu", 64, "目标设置项并未在UI中开启", ["target functionId", _]);
           }
         } else {
-          s.CacheDisableState(r, o.DisableValue);
+          o.CacheDisableState(r, s.DisableValue);
         }
       }
     }
-    for (const g of this.YNa.keys()) {
-      this.Rwi(g);
+    for (const f of this.YNa.keys()) {
+      this.Rwi(f);
     }
   }
-  D6d(e) {
+  WKd(e) {
     return new (e.FunctionId === GameSettingsDefine_1.EFunction.VersionCheck ? MenuVersionCheckData_1.MenuVersionCheckData : MenuData_1.MenuData)(e);
   }
   pac(e) {
@@ -196,7 +228,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.ywi = ConfigManager_1.ConfigManager.MenuBaseConfig.GetMainConfig();
     var e;
     var t;
-    var n = new Array();
+    var i = new Array();
     for ([e, t] of this.YNa) {
       if (!(t.length <= 0)) {
         if (this.ywi?.get(e) === undefined) {
@@ -204,16 +236,16 @@ class MenuModel extends ModelBase_1.ModelBase {
             Log_1.Log.Error("Menu", 64, "未能获得主类型配置（MainType）", ["main type id", e], ["MainConfigs", this.ywi]);
           }
         } else {
-          n.push(e);
+          i.push(e);
         }
       }
     }
-    n.sort((e, t) => {
+    i.sort((e, t) => {
       e = this.ywi.get(e);
       t = this.ywi.get(t);
       return e.MainSort - t.MainSort;
     });
-    return n;
+    return i;
   }
   GetTargetConfigData(e) {
     return this.YNa.get(e);
@@ -227,12 +259,12 @@ class MenuModel extends ModelBase_1.ModelBase {
   IsInMenuDataByFunctionId(e) {
     return this.zNa.has(e);
   }
-  dMd(e, t, n) {
-    e = MathUtils_1.MathUtils.Clamp(e, 0, n.length - 1);
-    t = MathUtils_1.MathUtils.Clamp(t, 0, n.length - 1);
-    return n[e] - n[t];
+  GId(e, t, i) {
+    e = MathUtils_1.MathUtils.Clamp(e, 0, i.length - 1);
+    t = MathUtils_1.MathUtils.Clamp(t, 0, i.length - 1);
+    return i[e] - i[t];
   }
-  B7d(e) {
+  Jzd(e) {
     var t = [{
       FunctionId: GameSettingsDefine_1.EFunction.SHADOWQUALITY,
       Key: "ShadowQuality",
@@ -294,7 +326,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       Key: "RayTracedShadow",
       ScoreTable: MenuDefine_1.rayTracedShadowScores
     }];
-    var n = {
+    var i = {
       ShadowQuality: 0,
       NiagaraQuality: 0,
       ImageDetail: 0,
@@ -312,17 +344,17 @@ class MenuModel extends ModelBase_1.ModelBase {
       RayTracedShadow: 0
     };
     for (const [a, r] of e) {
-      var i = t.find(e => e.FunctionId === a);
-      if (i) {
-        n[i.Key] = r;
+      var n = t.find(e => e.FunctionId === a);
+      if (n) {
+        i[n.Key] = r;
       }
     }
     return {
-      recommended: n,
+      recommended: i,
       fieldMappings: t
     };
   }
-  mMd() {
+  FId() {
     var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
     if (e === undefined) {
       return 0;
@@ -333,73 +365,105 @@ class MenuModel extends ModelBase_1.ModelBase {
     }
     var e = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetOtherChangedValue(e);
     var {
-      recommended: n,
+      recommended: i,
       fieldMappings: e
-    } = this.B7d(e);
-    let i = 0;
+    } = this.Jzd(e);
+    let n = 0;
     for (const g of e) {
       var a;
       var r;
+      var s;
       var o;
-      var s = g.FunctionId;
-      let e = n[g.Key];
-      let t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(g.FunctionId) ?? 0;
-      if (s === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && (r = a = s, [a, r, e] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, r, e), o = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(a) ?? 0, r = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(r) ?? 0, a === GameSettingsDefine_1.EFunction.FSR ? (e = MenuDefine_1.superResolutionScores.length - 2, o === 1 && (t = MenuDefine_1.superResolutionScores.length - 2)) : (e += 2, t = r === 99 ? 2 : r + 2), o === 0)) {
+      var _ = g.FunctionId;
+      let e = i[g.Key];
+      let t = this.GetDataCacheOrCurValue(g.FunctionId) ?? 0;
+      if (_ === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && (r = a = _, [a, r, e] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, r, e), s = this.GetDataCacheOrCurValue(a) ?? 0, r = this.GetDataCacheOrCurValue(r) ?? 0, a === GameSettingsDefine_1.EFunction.FSR ? (e = MenuDefine_1.superResolutionScores.length - 2, s === 1 && (t = MenuDefine_1.superResolutionScores.length - 2)) : (e === 99 ? e = 2 : e += 2, t = r === 99 ? 2 : r + 2), s === 0)) {
         t = MenuDefine_1.superResolutionScores.length - 1;
       }
-      if ((s === GameSettingsDefine_1.EFunction.RayTracedGI || s === GameSettingsDefine_1.EFunction.RayTracedReflection || s === GameSettingsDefine_1.EFunction.RayTracedShadow) && t > 0) {
-        t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
+      if ((_ === GameSettingsDefine_1.EFunction.RayTracedGI || _ === GameSettingsDefine_1.EFunction.RayTracedReflection || _ === GameSettingsDefine_1.EFunction.RayTracedShadow) && t > 0) {
+        t = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
         a = 4000 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
         r = MathUtils_1.MathUtils.Clamp(a, 0.6, 3);
-        o = this.dMd(t, e, g.ScoreTable) * r;
-        i += o;
+        s = this.GId(t, e, g.ScoreTable) * r;
+        n += s;
+        this.wom?.set(_, s);
       } else {
-        i += this.dMd(t, e, g.ScoreTable);
+        o = this.GId(t, e, g.ScoreTable);
+        n += o;
+        this.wom?.set(_, o);
       }
     }
-    var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 0;
+    var e = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 0;
     var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv() ?? 0;
-    var e = this.dMd(e, t, MenuDefine_1.pcQualityLevelScores);
-    var t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RESOLUTION) ?? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX;
+    var e = this.GId(e, t, MenuDefine_1.pcQualityLevelScores);
+    var t = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RESOLUTION) ?? GameSettingsDefine_1.WINDOWS_RESOLUTION_INDEX;
     var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
     var t = (t.X * t.Y / 3686400 - 1) * 40;
-    var _ = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate ?? 60;
-    return i += e + t + (_ - 60) / 60 * 40;
+    var f = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.HIGHESTFPS) ?? 0;
+    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(f);
+    return n += e + t + (f - 60) / 60 * 40;
   }
   GetQualitySettingScoreMobilePlatform() {
-    var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION) ?? 0;
+    var e = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.MOBILERESOLUTION) ?? 0;
     var e = MenuDefine_1.mobileResolutionScores[e];
-    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.FrameRate / 30;
-    var n = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY) ?? 0;
-    var i = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY) ?? 0;
-    var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL) ?? 0;
-    var r = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.SCENEAO) ?? 0;
-    var o = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.ANTIALISING) ?? 0;
-    var s = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMEFOG) ?? 0;
-    var _ = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT) ?? 0;
-    var g = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.MOTIONBLUR) ?? 0;
-    var f = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
-    var u = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
-    var l = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.BLOOM) ?? 0;
-    var m = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
-    return (MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel] + MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.shadowQualityScores.length - 1)] + MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.niagaraQualityScores.length - 1)] + MenuDefine_1.imageDetailScores[MathUtils_1.MathUtils.Clamp(a, 0, MenuDefine_1.imageDetailScores.length - 1)] + MenuDefine_1.sceneAoScores[MathUtils_1.MathUtils.Clamp(r, 0, MenuDefine_1.sceneAoScores.length - 1)] + MenuDefine_1.antiAliasingScores[MathUtils_1.MathUtils.Clamp(o, 0, MenuDefine_1.antiAliasingScores.length - 1)] + MenuDefine_1.volumeFogScores[MathUtils_1.MathUtils.Clamp(s, 0, MenuDefine_1.volumeFogScores.length - 1)] + MenuDefine_1.volumeLightScores[MathUtils_1.MathUtils.Clamp(_, 0, MenuDefine_1.volumeLightScores.length - 1)] + MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.motionBlurScores.length - 1)] + MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.amdFsrScores.length - 1)] + MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)] + MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(l, 0, MenuDefine_1.bloomScores.length - 1)] + MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.npcDensityScores.length - 1)]) * e * t;
+    var t = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.HIGHESTFPS) ?? 0;
+    var t = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameByList(t) / 30;
+    var i = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.SHADOWQUALITY) ?? 0;
+    var n = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.NIAGARAQUALITY) ?? 0;
+    var a = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.IMAGEDETAIL) ?? 0;
+    var r = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.SCENEAO) ?? 0;
+    var s = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.ANTIALISING) ?? 0;
+    var o = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMEFOG) ?? 0;
+    var _ = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT) ?? 0;
+    var f = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.MOTIONBLUR) ?? 0;
+    var g = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
+    var u = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
+    var m = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.BLOOM) ?? 0;
+    var h = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
+    var D = MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel];
+    var i = MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.shadowQualityScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.SHADOWQUALITY, i);
+    var n = MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.niagaraQualityScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, n);
+    var a = MenuDefine_1.imageDetailScores[MathUtils_1.MathUtils.Clamp(a, 0, MenuDefine_1.imageDetailScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.IMAGEDETAIL, a);
+    var r = MenuDefine_1.sceneAoScores[MathUtils_1.MathUtils.Clamp(r, 0, MenuDefine_1.sceneAoScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.SCENEAO, r);
+    var s = MenuDefine_1.antiAliasingScores[MathUtils_1.MathUtils.Clamp(s, 0, MenuDefine_1.antiAliasingScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.ANTIALISING, s);
+    var o = MenuDefine_1.volumeFogScores[MathUtils_1.MathUtils.Clamp(o, 0, MenuDefine_1.volumeFogScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.VOLUMEFOG, o);
+    var _ = MenuDefine_1.volumeLightScores[MathUtils_1.MathUtils.Clamp(_, 0, MenuDefine_1.volumeLightScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.VOLUMELIGHT, _);
+    var f = MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.motionBlurScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.MOTIONBLUR, f);
+    var g = MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.amdFsrScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.FSR, g);
+    var u = MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.METALFX, u);
+    var m = MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.bloomScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.BLOOM, m);
+    var h = MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.npcDensityScores.length - 1)];
+    this.wom.set(GameSettingsDefine_1.EFunction.NPCDENSITY, h);
+    var D = D + i + n + a + r + s + o + _ + f + g + u + m + h;
+    return D * e * t;
   }
   GetLoadPercentage() {
     if (Info_1.Info.IsMobilePlatform()) {
       return this.GetQualitySettingScoreMobilePlatform() * 100 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
     }
     if (Info_1.Info.IsPcPlatform()) {
-      var t = this.mMd();
+      var t = this.FId();
       let e = 0;
-      var n = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
-      if (n !== undefined) {
-        e = n;
+      var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetRecommendQualityLv();
+      if (i !== undefined) {
+        e = i;
       }
-      var n = MenuDefine_1.pcQualityLevelWeights[MathUtils_1.MathUtils.Clamp(e, 0, MenuDefine_1.pcQualityLevelWeights.length - 1)];
-      var i = n * 0.25;
-      var a = 60 + t * i;
+      var i = MenuDefine_1.pcQualityLevelWeights[MathUtils_1.MathUtils.Clamp(e, 0, MenuDefine_1.pcQualityLevelWeights.length - 1)];
+      var n = i * 0.25;
+      var a = 60 + t * n;
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Render", 92, "负载条评估", ["deviceWeight", n], ["deltaScore", t], ["scaleFactor", i], ["finalLoad", a]);
+        Log_1.Log.Info("Render", 92, "负载条评估", ["deviceWeight", i], ["deltaScore", t], ["scaleFactor", n], ["finalLoad", a]);
       }
       return a;
     }
@@ -438,15 +502,61 @@ class MenuModel extends ModelBase_1.ModelBase {
     this.Otu = undefined;
   }
   GetFilterIndexByConfigId(t) {
-    var n = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
-    if (n !== undefined) {
-      for (let e = 0; e < n.length; e++) {
-        if (t === n[e].Id) {
+    var i = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
+    if (i !== undefined) {
+      for (let e = 0; e < i.length; e++) {
+        if (t === i[e].Id) {
           return e;
         }
       }
     }
     return 0;
+  }
+  GetDataCacheOrCurValue(e) {
+    return this.Rom.get(e) ?? GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
+  }
+  IsDataCacheContains(e) {
+    return this.Rom.has(e);
+  }
+  HasDataCache() {
+    return this.Rom.size > 0;
+  }
+  AddDataToTempCache(e, t) {
+    this.Rom.set(e, t);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMenuSetting, e);
+  }
+  AddDataToTempOrSetValue(e, t) {
+    if (this.GetMenuDataByFunctionId(e)?.IsDataCache) {
+      this.AddDataToTempCache(e, t);
+    } else {
+      GameSettingsManager_1.GameSettingsManager.HandleValueChange(e, t, 1);
+    }
+  }
+  InitDataCache() {
+    this.Rom.clear();
+  }
+  async ApplyDataCache() {
+    let n = 0;
+    let a = 0;
+    const r = new CustomPromise_1.CustomPromise();
+    const s = Array.from(this.Rom.entries());
+    this.Rom.clear();
+    const o = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      a++;
+      let e = 0;
+      while (n < s.length && e < 3) {
+        var [t, i] = s[n];
+        GameSettingsManager_1.GameSettingsManager.HandleValueChange(t, i, 1);
+        n++;
+        e++;
+      }
+      if (n >= s.length && TimerSystem_1.GameplayTimerSystem.Has(o)) {
+        r.SetResult(true);
+        TimerSystem_1.GameplayTimerSystem.Remove(o);
+      }
+    }, 30);
+    await r.Promise;
+    return a * 30;
   }
   GetFilterConfigIdByIndex(e) {
     var t = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
@@ -454,6 +564,13 @@ class MenuModel extends ModelBase_1.ModelBase {
       return 1;
     } else {
       return t[e]?.Id ?? 1;
+    }
+  }
+  GetTopLoadImpactSettings(e = 4) {
+    if (this.wom && this.wom.size !== 0) {
+      return Array.from(this.wom.entries()).sort((e, t) => t[1] - e[1]).slice(0, e).map(([e]) => this.zNa.get(e)?.FunctionName ?? "");
+    } else {
+      return [];
     }
   }
 }

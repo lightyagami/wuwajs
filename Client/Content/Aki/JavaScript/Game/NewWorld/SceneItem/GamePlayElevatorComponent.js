@@ -3,21 +3,21 @@
 var GamePlayElevatorComponent_1;
 var __decorate = this && this.__decorate || function (t, i, e, s) {
   var h;
-  var r = arguments.length;
-  var o = r < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+  var o = arguments.length;
+  var r = o < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, i, e, s);
+    r = Reflect.decorate(t, i, e, s);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (h = t[a]) {
-        o = (r < 3 ? h(o) : r > 3 ? h(i, e, o) : h(i, e)) || o;
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (h = t[n]) {
+        r = (o < 3 ? h(r) : o > 3 ? h(i, e, r) : h(i, e)) || r;
       }
     }
   }
-  if (r > 3 && o) {
-    Object.defineProperty(i, e, o);
+  if (o > 3 && r) {
+    Object.defineProperty(i, e, r);
   }
-  return o;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -26,6 +26,7 @@ exports.GamePlayElevatorComponent = undefined;
 const UE = require("ue");
 const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
@@ -47,7 +48,6 @@ const LevelGamePlayController_1 = require("../../LevelGamePlay/LevelGamePlayCont
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const LogReportDefine_1 = require("../../Module/LogReport/LogReportDefine");
-const TeleportController_1 = require("../../Module/Teleport/TeleportController");
 const SceneInteractionManager_1 = require("../../Render/Scene/Interaction/SceneInteractionManager");
 const ActorUtils_1 = require("../../Utils/ActorUtils");
 const TraceUtils_1 = require("../../Utils/TraceUtils");
@@ -55,12 +55,8 @@ const ComponentForceTickController_1 = require("../../World/Controller/Component
 const LogController_1 = require("../../World/Controller/LogController");
 const CharacterBuffIds_1 = require("../Character/Common/Component/Abilities/CharacterBuffIds");
 const MIN_SPEED = 1;
-const MTOCM = 100;
 const NORMALIZE = 0.01;
-const FOUR = 4;
-const THOUSAND = 1000;
 const DELTATIMECHANGEVALUE = 10;
-const NEGATIVEONE = -1;
 const ACCELERATETIMERADIO = 1.5;
 let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElevatorComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -89,6 +85,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.lun = -0;
     this.vtn = undefined;
     this._un = undefined;
+    this.EIe = undefined;
     this.uun = -0;
     this.cun = -0;
     this.mun = undefined;
@@ -135,14 +132,14 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.xun = (t, i) => {
       var e;
       var i = i.Entity;
-      if (i.GetComponent(157) && (i = i.GetComponent(1), e = this.yun.indexOf(i.Owner), t ? e === -1 && this.yun.push(i.Owner) : e !== -1 && this.yun.splice(e, 1), (e = this.Sun.indexOf(i.Owner)) !== -1)) {
+      if (i.GetComponent(160) && (i = i.GetComponent(1), e = this.yun.indexOf(i.Owner), t ? e === -1 && this.yun.push(i.Owner) : e !== -1 && this.yun.splice(e, 1), (e = this.Sun.indexOf(i.Owner)) !== -1)) {
         this.Sun.splice(e, 1);
       }
     };
     this.wun = t => {
       var i;
       var e;
-      if (this.IsMovingOrTeleporting() && (e = undefined, i = Global_1.Global.BaseCharacter) && (e = i.CharacterActorComponent.Entity.GetComponent(175))) {
+      if (this.IsMovingOrTeleporting() && (e = undefined, i = Global_1.Global.BaseCharacter) && (e = i.CharacterActorComponent.Entity.GetComponent(178))) {
         if (t) {
           t = i.D_K2_GetActorLocation().Z;
           if (this.Hte.ActorLocationProxy.Z < t) {
@@ -160,7 +157,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     };
     this.bun = (t, i) => {
       var e = ActorUtils_1.ActorUtils.GetEntityByActor(i);
-      if (e && e.Entity.GetComponent(157) && this.Sun.indexOf(i) === -1) {
+      if (e && e.Entity.GetComponent(160) && this.Sun.indexOf(i) === -1) {
         if (this.IsMovingOrTeleporting() && this.yun.indexOf(i) !== -1) {
           this.qun(i);
         }
@@ -168,7 +165,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       }
     };
     this.OnSceneInteractionLoadCompleted = () => {
-      var t = this.Entity.GetComponent(203);
+      var t = this.Entity.GetComponent(206);
       var t = SceneInteractionManager_1.SceneInteractionManager.Get().GetMainCollisionActor(t.GetSceneInteractionLevelHandleId());
       this.Iun = t?.GetComponentByClass(UE.PrimitiveComponent.StaticClass());
       if (this.Iun) {
@@ -197,18 +194,18 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.oun = Vector_1.Vector.Create(0, 0, 0);
     this.Sun = [];
     this.yun = [];
-    var i = this.Entity.GetComponent(0);
-    var e = i.GetInitLocation();
-    var s = e.X || 0;
-    var h = e.Y || 0;
-    var r = e.Z || 0;
+    this.EIe = this.Entity.GetComponent(0);
+    var i = this.EIe.GetInitLocation();
+    var e = i.X || 0;
+    var s = i.Y || 0;
+    var h = i.Z || 0;
     this.mun = [];
     if (t.StayPositions) {
       for (const o of t.StayPositions) {
-        this.mun.push(Vector_1.Vector.Create(o.X ? s + o.X : s, o.Y ? h + o.Y : h, o.Z ? r + o.Z : r));
+        this.mun.push(Vector_1.Vector.Create(o.X ? e + o.X : e, o.Y ? s + o.Y : s, o.Z ? h + o.Z : h));
       }
     }
-    this.dun = i.LiftFloor ?? 1;
+    this.dun = this.EIe.LiftFloor ?? 1;
     this.Cun = 0;
     this.Igo = Vector_1.Vector.Create(0, 0, 0);
     this.J_n = Vector_1.Vector.Create(0, 0, 0);
@@ -234,7 +231,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       this.vtn.AddOnPlayerOverlapCallback(this.wun);
       this.vtn.AddOnEntityOverlapCallback(this.xun);
     }
-    this._un = this.Entity.GetComponent(131);
+    this._un = this.Entity.GetComponent(134);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.OnSceneInteractionLoadCompleted);
     return true;
   }
@@ -280,10 +277,16 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
         this.ouu(6);
         break;
       case 6:
-        TeleportController_1.TeleportController.TeleportElevator(this.Entity.Id, this.Kun(), this.Q1u.ToUeVector()).finally(() => {
+        if (this.Kun()) {
+          ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportElevatorAndPlayerSeparately(this.EIe.GetCreatureDataId(), this.Q1u.ToUeVector(), "TeleportElevator").finally(() => {
+            this.ouu(2);
+            this.oFe(i, t);
+          });
+        } else {
+          this.Entity.GetComponent(1).SetActorLocation(this.Q1u.ToUeVector());
           this.ouu(2);
           this.oFe(i, t);
-        });
+        }
         return;
     }
     this.oFe(i, t);
@@ -321,7 +324,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
   huu(t) {
-    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(175);
+    var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(178);
     if (i && this.Kun()) {
       if (t) {
         i.AddBuff(CharacterBuffIds_1.buffId.ElevatorBuff, {
@@ -425,13 +428,13 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     var s = this.sun;
     const h = Vector_1.Vector.DistSquared(e, t);
     t = MathUtils_1.MathUtils.Bisection(t => t * t > h, 0, h, 1);
-    const r = Vector_1.Vector.DistSquared(e, i);
-    e = MathUtils_1.MathUtils.Bisection(t => t * t > r, 0, r, 1);
-    if (this.run.SizeSquared() !== 0 && t > 1 / FOUR * s && e > 1 / FOUR * s) {
+    const o = Vector_1.Vector.DistSquared(e, i);
+    e = MathUtils_1.MathUtils.Bisection(t => t * t > o, 0, o, 1);
+    if (this.run.SizeSquared() !== 0 && t > 1 / CommonDefine_1.FOUR * s && e > 1 / CommonDefine_1.FOUR * s) {
       this.run.DeepCopy(Vector_1.Vector.ZeroVectorProxy);
     }
-    if (this.run.SizeSquared() === 0 && e < 1 / FOUR * s) {
-      this.run.DeepCopy(this.jun().MultiplyEqual(NEGATIVEONE));
+    if (this.run.SizeSquared() === 0 && e < 1 / CommonDefine_1.FOUR * s) {
+      this.run.DeepCopy(this.jun().MultiplyEqual(CommonDefine_1.NEGATIVEONE));
     }
   }
   iuu() {
@@ -486,7 +489,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   Wun() {
     this.J_n.Subtraction(this.Igo, this.cz);
     this.cz.Normalize(NORMALIZE);
-    this.cz.MultiplyEqual(this.nun * MTOCM);
+    this.cz.MultiplyEqual(this.nun * CommonDefine_1.MTOCM);
     return this.cz;
   }
   jun() {
@@ -494,7 +497,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.J_n.Subtraction(t, this.cz);
     var t = this.cz.Size();
     this.cz.Normalize(NORMALIZE);
-    this.cz.MultiplyEqual(this.nun * MTOCM * this.nun * MTOCM * 2 / t);
+    this.cz.MultiplyEqual(this.nun * CommonDefine_1.MTOCM * this.nun * CommonDefine_1.MTOCM * 2 / t);
     return this.cz;
   }
   IsMovingOrTeleporting() {
@@ -519,7 +522,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
       if (!this.vun) {
         if (i = Global_1.Global.BaseCharacter) {
           i = i.CharacterActorComponent.ActorLocationProxy;
-          (e = new LogReportDefine_1.ElevatorUsedRecord()).i_config_id = this.Entity.GetComponent(0)?.GetPbDataId().toString() ?? "";
+          (e = new LogReportDefine_1.ElevatorUsedRecord()).i_config_id = this.EIe.GetPbDataId().toString() ?? "";
           e.i_area_id = ModelManager_1.ModelManager.AreaModel.AreaInfo.AreaId.toString();
           e.i_state_id = t.toString();
           e.f_player_pos_x = i.X.toFixed(2);
@@ -549,7 +552,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   Hid(t) {
     return !this.Tun() && (t < 1 || t > this.mun.length || this.Cun === t ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "CheckTargetFloorValid Failed, Wrong Floor", ["CreatureId", ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id)], ["TargetFloor", t]), false) : this.Cun === 0 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("SceneItem", 79, "Elevator Running"), this.u6a = t, false));
   }
-  $id(t, i, e = false, s = 0, h = 0, r = 0) {
+  $id(t, i, e = false, s = 0, h = 0, o = 0) {
     this.Cun = t;
     this.Y1u = i;
     this.X1u = e;
@@ -557,14 +560,14 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.J1u = e;
     this.QEo = s;
     this.Z1u = h;
-    this.euu = r;
+    this.euu = o;
   }
   uuu() {
     if (this.tun) {
       this.xOi = TimerSystem_1.TimerSystem.Delay(t => {
         this.cuu();
         this.xOi = undefined;
-      }, this.tun * THOUSAND);
+      }, this.tun * CommonDefine_1.THOUSAND);
     } else {
       this.cuu();
     }
@@ -601,8 +604,8 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     if (this.Y1u !== "CustomSpeed") {
       this.cz.DeepCopy(this.iun);
       this.cz.Normalize(NORMALIZE);
-      this.cz.Multiply(this.nun * MTOCM, this.z_n);
-      this.cz.Multiply(MIN_SPEED * MTOCM, this.Z_n);
+      this.cz.Multiply(this.nun * CommonDefine_1.MTOCM, this.z_n);
+      this.cz.Multiply(MIN_SPEED * CommonDefine_1.MTOCM, this.Z_n);
       if (this.eun) {
         this.oun.DeepCopy(this.Wun());
       } else {
@@ -611,7 +614,7 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
   Tun() {
-    return this.Entity.GetComponent(197).HasTag(-662723379);
+    return this.Entity.GetComponent(200).HasTag(-662723379);
   }
   Dun() {
     if (!this.vtn) {
@@ -625,17 +628,17 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     if (!h) {
       return false;
     }
-    let r = false;
-    for (const o of h.values()) {
-      if (o?.Valid && o.Entity !== this.Entity && (t = o.Entity.GetComponent(1)?.ActorLocationProxy, i = o.Entity.GetComponent(1)?.HasMesh(), e = (e = o.Entity.GetComponent(0)?.GetSummonerId()) !== undefined && e !== 0, s = this.Entity.GetComponent(1)?.ActorLocationProxy, i) && t && t.Z < s.Z - 100 && !e) {
-        if (o.Entity === Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity) {
-          o.Entity?.GetComponent(65)?.StopManipulate();
+    let o = false;
+    for (const r of h.values()) {
+      if (r?.Valid && r.Entity !== this.Entity && (t = r.Entity.GetComponent(1)?.ActorLocationProxy, i = r.Entity.GetComponent(1)?.HasMesh(), e = (e = r.Entity.GetComponent(0)?.GetSummonerId()) !== undefined && e !== 0, s = this.Entity.GetComponent(1)?.ActorLocationProxy, i) && t && t.Z < s.Z - 100 && !e) {
+        if (r.Entity === Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity) {
+          r.Entity?.GetComponent(65)?.StopManipulate();
         }
-        this.Yun(o.Entity);
-        r = true;
+        this.Yun(r.Entity);
+        o = true;
       }
     }
-    return r;
+    return o;
   }
   Yun(i) {
     var e = i.GetComponent(1)?.ActorLocationProxy;
@@ -646,10 +649,10 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
         var s;
         var h = l.GetRadius();
         var h = Vector_1.Vector.Create(t.X + this.aun.X, t.Y + this.aun.Y, t.Z + this.aun.Z + h);
-        var r = i.GetComponent(3);
-        if (r) {
+        var o = i.GetComponent(3);
+        if (o) {
           s = l.DisableCollision("[GamePlayElevatorComponent.SetEntitySafePos]");
-          r.TeleportAndFindStandLocation(h);
+          o.TeleportAndFindStandLocation(h);
           l.EnableCollision(s);
         } else {
           l.SetActorLocation(h.ToUeVector(), this.constructor.name, false);
@@ -662,23 +665,23 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
           this.kRe.X = e.X + this.cz.X * (t / 3);
           this.kRe.Y = e.Y + this.cz.Y * (t / 3);
           this.kRe.Z = e.Z;
-          var [o, a] = TraceUtils_1.TraceUtils.LineTraceWithLocation(this.kRe, 2000, 0);
-          if (o && !a.bStartPenetrating) {
-            var n;
-            var o = ModelManager_1.ModelManager.TraceElementModel.CommonHitLocation;
-            TraceElementCommon_1.TraceElementCommon.GetImpactPoint(a, 0, o);
-            var a = l.GetRadius();
-            o.Z += a;
-            var a = i.GetComponent(3);
-            if (a) {
-              n = l.DisableCollision("[GamePlayElevatorComponent.SetEntitySafePos]");
-              a.TeleportAndFindStandLocation(o);
-              l.EnableCollision(n);
+          var [r, n] = TraceUtils_1.TraceUtils.LineTraceWithLocation(this.kRe, 2000, 0);
+          if (r && !n.bStartPenetrating) {
+            var a;
+            var r = ModelManager_1.ModelManager.TraceElementModel.CommonHitLocation;
+            TraceElementCommon_1.TraceElementCommon.GetImpactPoint(n, 0, r);
+            var n = l.GetRadius();
+            r.Z += n;
+            var n = i.GetComponent(3);
+            if (n) {
+              a = l.DisableCollision("[GamePlayElevatorComponent.SetEntitySafePos]");
+              n.TeleportAndFindStandLocation(r);
+              l.EnableCollision(a);
             } else {
-              if (a = i.GetComponent(157)) {
-                a.TryEnableTick(true);
+              if (n = i.GetComponent(160)) {
+                n.TryEnableTick(true);
               }
-              l.SetActorLocation(o.ToUeVector(), this.constructor.name, false);
+              l.SetActorLocation(r.ToUeVector(), this.constructor.name, false);
             }
             break;
           }
@@ -705,10 +708,10 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     this.Igo.Subtraction(this.J_n, this.cz);
     var t = this.cz.Size();
     let i = 0;
-    if ((i = this.Y1u === "CustomSpeed" ? this.Vid - UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) + this.Nid : this.eun ? t / MTOCM / this.nun : ACCELERATETIMERADIO * t / MTOCM / this.nun) < 0) {
+    if ((i = this.Y1u === "CustomSpeed" ? this.Vid - UE.GameplayStatics.GetTimeSeconds(this.Hte.Owner) + this.Nid : this.eun ? t / CommonDefine_1.MTOCM / this.nun : ACCELERATETIMERADIO * t / CommonDefine_1.MTOCM / this.nun) < 0) {
       return 0;
-    } else if (i > THOUSAND) {
-      return THOUSAND;
+    } else if (i > CommonDefine_1.THOUSAND) {
+      return CommonDefine_1.THOUSAND;
     } else {
       return i;
     }
@@ -730,16 +733,16 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
   }
   qun(t) {
     var i = ActorUtils_1.ActorUtils.GetEntityByActor(t);
-    if (i &&= i.Entity.GetComponent(157)) {
+    if (i &&= i.Entity.GetComponent(160)) {
       i.TryDisableTick("[GamePlayElevator.AttachToElevator] 上电梯关闭Tick");
-      i = this.Entity.GetComponent(203);
+      i = this.Entity.GetComponent(206);
       ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(t, i.Owner, 2, "GamePlayElevatorComponent.AttachToElevator", undefined, 1, 1, 1, false);
     }
   }
   Qun(t) {
     ControllerHolder_1.ControllerHolder.AttachToActorController.DetachActor(t, false, "GamePlayElevatorComponent.DetachFromElevator", 1, 1, 1);
     var t = ActorUtils_1.ActorUtils.GetEntityByActor(t);
-    if (t &&= t.Entity.GetComponent(157)) {
+    if (t &&= t.Entity.GetComponent(160)) {
       t.TryEnableTick(true);
     }
   }
@@ -765,5 +768,5 @@ let GamePlayElevatorComponent = GamePlayElevatorComponent_1 = class GamePlayElev
     }
   }
 };
-GamePlayElevatorComponent = GamePlayElevatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], GamePlayElevatorComponent);
+GamePlayElevatorComponent = GamePlayElevatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(143)], GamePlayElevatorComponent);
 exports.GamePlayElevatorComponent = GamePlayElevatorComponent; //# sourceMappingURL=GamePlayElevatorComponent.js.map

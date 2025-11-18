@@ -85,6 +85,7 @@ const TouchFingerManager_1 = require("./Ui/TouchFinger/TouchFingerManager");
 const UiManager_1 = require("./Ui/UiManager");
 const RichTextUtils_1 = require("./Utils/RichTextUtils");
 const ComponentForceTickController_1 = require("./World/Controller/ComponentForceTickController");
+const GameModeController_1 = require("./World/Controller/GameModeController");
 const GameBudgetAllocatorConfigCreator_1 = require("./World/Define/GameBudgetAllocatorConfigCreator");
 const EnvironmentalPerceptionController_1 = require("./World/Enviroment/EnvironmentalPerceptionController");
 const TaskSystem_1 = require("./World/Task/TaskSystem");
@@ -99,6 +100,9 @@ class Game {
     EnvironmentalPerceptionController_1.EnvironmentalPerceptionController.InitializeEnvironment();
     InputController_1.InputController.InitializeEnvironment();
     EventCSharpBridge_1.EventCSharpBridge.InitializeEnvironment();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Game", 70, "Game Http线程睡眠时间调整");
+    }
     Http_1.Http.SetHttpThreadActiveMinimumSleepTimeInSeconds(0.005);
     Http_1.Http.SetHttpThreadIdleMinimumSleepTimeInSeconds(0.033);
     ThinkingAnalyticsReporter_1.ThinkingAnalyticsReporter.Init();
@@ -341,7 +345,6 @@ Game.lve = () => {
   Game.Shutdown();
 };
 Game._ve = () => {
-  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsOnPreEndPIE);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreEndPIE);
   Game.Shutdown();
 };
@@ -350,6 +353,7 @@ Game.cve = () => {
   Game.UnlockLoad();
 };
 Game.ora = async () => {
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsClearSceneBegin);
   if (GlobalData_1.GlobalData.IsSceneClearing) {
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Game", 16, "[Game.ClearSceneAsync]: Duplicate ClearSceneAsync");
@@ -494,6 +498,7 @@ Game.AfterTick = e => {
   EffectSystem_1.EffectSystem.AfterTick(e);
   CombatMessageController_1.CombatMessageController.AfterTick(e);
   PlotController_1.PlotController.AfterTick(e);
+  GameModeController_1.GameModeController.AfterTick(e);
 };
 Game.AfterCameraTick = e => {
   UiManager_1.UiManager.AfterTick(e);

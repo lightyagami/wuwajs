@@ -102,12 +102,12 @@ class AcquireView extends UiViewBase_1.UiViewBase {
       GetExchangeTableText: this.KGe,
       ValueChangeFunction: this.QGe
     };
-    if (this.x$d()) {
+    if (this.frm()) {
       this.WGe.SetLimitMaxValue(ConfigManager_1.ConfigManager.CommonConfig.GetGiftMaxNineNineNine());
     }
     this.WGe.Init(i);
   }
-  x$d() {
+  frm() {
     var i = this.jGe.GetConfigId();
     return i !== 0 && ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i).ItemType === 11;
   }

@@ -155,6 +155,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   }
   static OnLeaveLevel() {
     this.ResetPhotograph();
+    this.mWi?.ActorsToIgnore?.Empty();
     return true;
   }
   static OnAddEvents() {
@@ -168,6 +169,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SpawnPlayer, this.QFa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleTriggerInit, this.Woh);
     InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiMoveForward, this.vWi);
     InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiMoveRight, this.MWi);
     InputDistributeController_1.InputDistributeController.BindAxis(InputMappingsDefine_1.axisMappings.UiLookUp, this.q8i);
@@ -184,6 +186,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SpawnPlayer, this.QFa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleTriggerInit, this.Woh);
     InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiMoveForward, this.vWi);
     InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiMoveRight, this.MWi);
     InputDistributeController_1.InputDistributeController.UnBindAxis(InputMappingsDefine_1.axisMappings.UiLookUp, this.q8i);
@@ -267,17 +270,17 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     return TimeUtil_1.TimeUtil.GetServerTime() > LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.RequestPhotoPermissionMinTime, 0);
   }
   static TryOpenPhotograph(t) {
-    return !!this.$ha(t) && (t === 3 ? this.Qyd(t) : this.c7t(t), true);
+    return !!this.$ha(t) && (t === 3 ? this.mEd(t) : this.c7t(t), true);
   }
-  static async TryOpenTogetherPhotograph() {
-    return !!this.$ha(2) && (await this.c7t(2), true);
+  static async TryOpenTogetherPhotograph(t) {
+    return !!this.$ha(2) && (this.PhotoTargets = t.PhotographConfig?.PhotoTargets, this.thm = t.FadeInScreenWhenClose ?? false, ModelManager_1.ModelManager.PhotographModel.PlayerActionSortId = t.PhotographConfig?.PlayerPerform?.MontageId, this.ihm = t.PhotographConfig?.CameraParams?.CameraTransform, this.TogetherCameraFov = t.PhotographConfig?.CameraParams?.Fov, await this.c7t(2), true);
   }
   static $ha(t) {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!e?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在剧情中"), 1) : t !== 3 && !this.mKa() || (t !== 1 || UiManager_1.UiManager.IsViewOpen(UiModel_1.UiModel.MainViewName) ? UiManager_1.UiManager.IsViewOpen("PhotographView") ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:已经在拍照界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在声骸编队"), 1) : !e.Entity.GetComponent(178)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:实体状态机找不到"), 1) : (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:不在BattleView中"), 1)));
+    return !!e?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在剧情中"), 1) : t !== 3 && !this.mKa() || (t !== 1 || UiManager_1.UiManager.IsViewOpen(UiModel_1.UiModel.MainViewName) ? UiManager_1.UiManager.IsViewOpen("PhotographView") ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:已经在拍照界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在声骸编队"), 1) : !e.Entity.GetComponent(181)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:实体状态机找不到"), 1) : (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:不在BattleView中"), 1)));
   }
   static mKa() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209);
     return !!t && !(t.HasTag(40422668) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在空中"), 1) : t.HasTag(855966206) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在水中"), 1) : t.HasTag(504239013) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在攀爬"), 1) : t.HasTag(1996802261) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在战斗中"), 1) : t.HasTag(-1371021686) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在技能中"), 1) : t.HasTag(525255941) && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在驾驶载具"), 1));
   }
   static BMa(t, e, o) {
@@ -300,33 +303,48 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static InitPhotographRelativeContent() {
-    var t;
-    var e;
-    var o;
-    var i;
     this.EWi = this.yWi();
     if (this.EWi && (this.IWi = this.GetFightCameraActor(), this.IWi)) {
       this.TWi = this.LWi();
-      (t = this.DWi()).SetIsDitherEffectEnable(false);
-      (e = Global_1.Global.BaseCharacter)?.SetDitherEffect(1, 1);
-      e = e?.Mesh.D_GetSocketLocation(FNameUtil_1.FNameUtil.GetDynamicFName("CameraPosition"));
-      i = ModelManager_1.ModelManager.PhotographModel;
-      o = this.IWi.D_GetTransform();
-      i = i.SpawnPhotographerStructure(e, o.GetRotation(), o.GetScale3D(), o.GetLocation());
+      var e;
+      var o;
+      var i = this.DWi();
+      i.SetIsDitherEffectEnable(false);
+      var r = Global_1.Global.BaseCharacter;
+      r?.SetDitherEffect(1, 1);
+      var r = r?.Mesh.D_GetSocketLocation(FNameUtil_1.FNameUtil.GetDynamicFName("CameraPosition"));
+      var a = ModelManager_1.ModelManager.PhotographModel;
+      var s = this.IWi.D_GetTransform();
+      let t = undefined;
+      if (this.CheckIfInTogetherCamera()) {
+        if (this.ihm) {
+          e = new UE.VectorDouble(this.ihm.CameraPos?.X ?? r.X, this.ihm.CameraPos?.Y ?? r.Y, this.ihm.CameraPos?.Z ?? r.Z);
+          (t = a.SpawnPhotographerStructure(e, new UE.Rotator(this.ihm.CameraRot?.Y ?? 0, this.ihm.CameraRot?.Z ?? 0, this.ihm.CameraRot?.X ?? 0).Quaternion(), s.GetScale3D(), s.GetLocation()))?.SetPlayerSourceLocation(e);
+          t?.SetCameraInitializeTransform(new UE.TransformDouble(new UE.Rotator(this.ihm.CameraRot?.Y ?? 0, this.ihm.CameraRot?.Z ?? 0, this.ihm.CameraRot?.X ?? 0).Quaternion(), new UE.VectorDouble(this.ihm.CameraPos?.X ?? r.X, this.ihm.CameraPos?.Y ?? r.Y, this.ihm.CameraPos?.Z ?? r.Z), s.GetScale3D()));
+        } else {
+          (t = a.SpawnPhotographerStructure(r, s.GetRotation(), s.GetScale3D(), s.GetLocation()))?.SetCameraInitializeTransform(s);
+        }
+        if (this.TogetherCameraFov) {
+          t.SetCameraInitializeFov(this.TogetherCameraFov);
+          PhotographController.SetFov(this.TogetherCameraFov);
+        }
+        t?.ResetCamera();
+        if (ModelManager_1.ModelManager.PhotographModel.PlayerActionSortId && (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && (o = e.Entity.GetComponent(3)?.CreatureData?.GetRoleId()) && (o = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(o), o = ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigByRoleId(o, ModelManager_1.ModelManager.PhotographModel.PlayerActionSortId)) && o.length > 0) {
+          PhotographController.PlayPhotoMontage(e, o[0]?.Id ?? 0);
+        }
+      } else {
+        (t = a.SpawnPhotographerStructure(r, s.GetRotation(), s.GetScale3D(), s.GetLocation()))?.SetCameraInitializeTransform(s);
+        t?.SetPlayerSourceLocation(r);
+      }
       if (this.CheckIfInFightPhotographCamera()) {
-        this.rwd = false;
-        this.hzd = false;
-        i.SetCameraInitializeFov(t.Fov);
+        this.DPd = false;
+        this.IMm = false;
+        t.SetCameraInitializeFov(i.Fov);
         this.SetTargetActorAndSkeletalMesh();
         this.InitFightPhotoTask();
       }
       this.TWi.FocusSettings.ManualFocusDistance = PhotographDefine_1.DEFAULT_MANUAL_FOCUS_DISTANCE;
-      i?.SetPlayerSourceLocation(e);
-      i?.SetCameraInitializeTransform(o);
-      if (this.CameraCaptureType === 2) {
-        i?.ResetCamera();
-      }
-      UiCameraManager_1.UiCameraManager.Get().Enter(0.5);
+      UiCameraManager_1.UiCameraManager.Get().Enter(this.CheckIfInTogetherCamera() ? 0 : 0.5);
       this.InitializeDefaultPhotographOption();
     }
   }
@@ -360,7 +378,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
     return e.Promise;
   }
-  static Qyd(t) {
+  static mEd(t) {
     this.EWi = this.yWi();
     if (this.EWi && (this.IWi = this.GetFightCameraActor(), this.IWi)) {
       this.js1();
@@ -397,7 +415,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Debug("Photo", 45, "拍照:NinjaLive_C加载完成");
       }
       t.SetResult();
-    });
+    }, "Ui.PhotographUi");
     await t.Promise;
   }
   static PMa() {
@@ -439,8 +457,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       this.qMa(a, 0);
     }
     if (i) {
-      for (const n of i) {
-        if (n instanceof EntityPhotoBehaviorNode_1.EntityPhotoBehaviorNode && (t = n) && t.TakePlace && this.BMa(t.TakePlace.RangeEntity, t, 1)) {
+      for (const h of i) {
+        if (h instanceof EntityPhotoBehaviorNode_1.EntityPhotoBehaviorNode && (t = h) && t.TakePlace && this.BMa(t.TakePlace.RangeEntity, t, 1)) {
           e = true;
           a.push(t.TakePlace.RangeEntity);
         }
@@ -448,8 +466,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       this.qMa(a, 1);
     }
     if (r) {
-      for (const h of r) {
-        if (h instanceof EntityPhotoBehaviorNode_1.EntityPhotoBehaviorNode && (t = h) && t.TakePlace && this.BMa(t.TakePlace.RangeEntity, t, 2)) {
+      for (const n of r) {
+        if (n instanceof EntityPhotoBehaviorNode_1.EntityPhotoBehaviorNode && (t = n) && t.TakePlace && this.BMa(t.TakePlace.RangeEntity, t, 2)) {
           e = true;
           a.push(t.TakePlace.RangeEntity);
         }
@@ -494,11 +512,20 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {
         UiManager_1.UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName);
         this.CloseBlackScreen();
+        this.thm = false;
       } else if (UiManager_1.UiManager.GetViewByName("ReviveView")) {
         this.CloseBlackScreen();
+        this.thm = false;
       } else {
         UiManager_1.UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName, () => {
-          this.CloseBlackScreen();
+          if (this.thm) {
+            LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, undefined, 0);
+            LevelLoadingController_1.LevelLoadingController.CloseLoading(11);
+            this.thm = false;
+            this.XTn = true;
+          } else {
+            this.CloseBlackScreen();
+          }
         });
       }
     }
@@ -526,6 +553,9 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     this.SetNpcFocusPhotograph(false);
     this.IsLastChecked = false;
     this.SetIsLineTraceBlock(false);
+    this.PhotoTargets = undefined;
+    this.TogetherCameraFov = undefined;
+    this.ihm = undefined;
   }
   static Dh1(t) {
     this.uWi?.Remove(t);
@@ -547,24 +577,24 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     var i = i.GetCurrentEntity.Entity.GetComponent(0).GetRoleId();
     var a = o.GetPhotographOption(0);
     var s = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.PhotoAndShareShowPlayerName, true);
-    var n = o.GetPhotographOption(3);
-    var h = o.GetPhotographFilter();
-    var _ = new LogReportDefine_1.PhotographerLogData();
-    _.event_id = "1009";
-    _.i_area_id = r.AreaInfo.AreaId;
-    _.i_father_area_id = r.AreaInfo.Father;
-    _.f_pos_x = e.X;
-    _.f_pos_y = e.Y;
-    _.f_pos_z = e.Z;
-    _.i_motion = o.MontageId;
-    _.i_expression = 0;
-    _.i_role_id = i;
-    _.i_shot_option = o.GetPhotographOption(2);
-    _.i_self_option = a ? 0 : 1;
-    _.i_info_option = s ? 0 : 1;
-    _.i_dof_option = n ? 1 : 0;
-    _.i_filter_id = h;
-    LogReportController_1.LogReportController.LogReport(_);
+    var h = o.GetPhotographOption(3);
+    var n = o.GetPhotographFilter();
+    var l = new LogReportDefine_1.PhotographerLogData();
+    l.event_id = "1009";
+    l.i_area_id = r.AreaInfo.AreaId;
+    l.i_father_area_id = r.AreaInfo.Father;
+    l.f_pos_x = e.X;
+    l.f_pos_y = e.Y;
+    l.f_pos_z = e.Z;
+    l.i_motion = o.MontageId;
+    l.i_expression = 0;
+    l.i_role_id = i;
+    l.i_shot_option = o.GetPhotographOption(2);
+    l.i_self_option = a ? 0 : 1;
+    l.i_info_option = s ? 0 : 1;
+    l.i_dof_option = h ? 1 : 0;
+    l.i_filter_id = n;
+    LogReportController_1.LogReportController.LogReport(l);
     if (this.CheckIfInFightPhotographCamera()) {
       UiManager_1.UiManager.OpenView("FightPhotoSaveView");
     } else {
@@ -591,7 +621,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       t.trace_id = ModelManager_1.ModelManager.CreatureModel.GetSceneTraceId().toString();
       t.filter_id = ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId;
       if (this.CurrentBtNode) {
-        t.photo_num = this.rwd ? this.owd.length : this.owd.length + 1;
+        t.photo_num = this.DPd ? this.xPd.length : this.xPd.length + 1;
       } else {
         t.photo_num = 0;
       }
@@ -613,7 +643,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   static RWi(t, e) {
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (o?.Valid && o.Entity?.Valid) {
-      o = o.Entity.GetComponent(206).ListenForTagAddOrRemove(t, e);
+      o = o.Entity.GetComponent(209).ListenForTagAddOrRemove(t, e);
       this.AWi.push(o);
     }
   }
@@ -684,8 +714,16 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   static ResetCamera() {
     var t = ModelManager_1.ModelManager.PhotographModel;
     var e = t.GetPhotographerStructure();
-    if (e && (this.PWi(t.PlayMontageEntity), e.ResetCamera(), ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid)) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnResetPhotographCamera);
+    if (e) {
+      if (this.CheckIfInTogetherCamera) {
+        e.ResetCamera();
+      } else {
+        this.PWi(t.PlayMontageEntity);
+        e.ResetCamera();
+        if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Valid) {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnResetPhotographCamera);
+        }
+      }
     }
   }
   static PlayPhotoMontage(e, t) {
@@ -705,7 +743,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
             t.PreLeaveSitDownAction();
             this.RWi(-2104691392, (t, e) => {
               if (!e) {
-                e = i.GetComponent(178).MainAnimInstance;
+                e = i.GetComponent(181).MainAnimInstance;
                 if (r) {
                   e.OnMontageEnded.Add(this.Kue);
                 }
@@ -713,19 +751,19 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
               }
             });
           } else {
-            t = i.GetComponent(178).MainAnimInstance;
+            t = i.GetComponent(181).MainAnimInstance;
             if (r) {
               t.OnMontageEnded.Add(this.Kue);
             }
             t.Montage_Play(o);
           }
         }
-      });
+      }, 100, "Ui.PhotographUi");
     }
   }
   static PWi(t) {
     if (ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure() && t?.Valid) {
-      t.Entity.GetComponent(178).MainAnimInstance?.Montage_Stop(0);
+      t.Entity.GetComponent(181).MainAnimInstance?.Montage_Stop(0);
       ModelManager_1.ModelManager.PhotographModel.MontageId = 0;
     }
   }
@@ -733,9 +771,10 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     var t = ModelManager_1.ModelManager.PhotographModel;
     this.PWi(t.PlayMontageEntity);
     t.PlayMontageEntity = undefined;
+    t.PlayerActionSortId = undefined;
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Id;
     if (t && (t = EntitySystem_1.EntitySystem.Get(t))?.Valid && this.GetRoleMainAnimInstanceType() === 0) {
-      t.GetComponent(178).MainAnimInstance.设置头部转向状态(1);
+      t.GetComponent(181).MainAnimInstance.设置头部转向状态(1);
     }
   }
   static InitializeDefaultPhotographOption() {
@@ -806,7 +845,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         if (this.GetRoleMainAnimInstanceType() !== 0) {
           return;
         }
-        r.GetComponent(178).MainAnimInstance.设置头部转向状态(1);
+        r.GetComponent(181).MainAnimInstance.设置头部转向状态(1);
     }
   }
   static IsPlayerLookAtCamera() {
@@ -816,8 +855,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     if (this.PhotoTargets && !(this.PhotoTargets.length <= 0)) {
       for (const o of this.PhotoTargets) {
         var e = o;
-        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(e), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (e = e.GetComponent(188))) {
-          e.NeedLookAtCamera = t;
+        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(e), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (e = e.GetComponent(191))) {
+          e.SightTarget(t ? CameraController_1.CameraController.WidgetCamera.DisplayComponent.CineCamera : undefined, 6);
         }
       }
     }
@@ -919,8 +958,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
           break;
         }
         let t = true;
-        for (const n of a) {
-          if (!this.CheckInUi(n) || !this.CheckLineTrace(n.ToUeVectorOld(), r)) {
+        for (const h of a) {
+          if (!this.CheckInUi(h) || !this.CheckLineTrace(h.ToUeVectorOld(), r)) {
             this.GWi(e, 1, s.EntityId, false);
             t = false;
             if (!this.Ihl(s.EntityId)) {
@@ -1244,7 +1283,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
           e.C9n = MathUtils_1.MathUtils.BigIntToLong(t?.TreeIncId);
           e.b5n = t?.NodeId;
           e.PSs = o;
-          Net_1.Net.Call(28936, e, t => {
+          Net_1.Net.Call(15587, e, t => {
             if (!t || t.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
               if (i) {
                 i(false);
@@ -1283,7 +1322,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   }
   static GetRoleMainAnimInstanceType() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (t?.Valid && (t = t.Entity.GetComponent(178)?.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
+    if (t?.Valid && (t = t.Entity.GetComponent(181)?.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
       return 0;
     } else {
       return 1;
@@ -1327,8 +1366,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     var i = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure();
     if (i) {
       t = ConfigManager_1.ConfigManager.PhotographConfig.GetUiCameraFightPhotographConfig(t.toString());
-      e = this.Kyd(t.Location);
-      o = this.Xyd(t.Rotation);
+      e = this.fEd(t.Location);
+      o = this.gEd(t.Rotation);
       if (e && o) {
         i.SetActorRotation(o);
         i.SetCameraArmTargetOffset(e);
@@ -1338,7 +1377,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static Kyd(t) {
+  static fEd(t) {
     if (this.VPo) {
       var e = this.VPo.D_K2_GetComponentToWorld();
       if (e) {
@@ -1350,7 +1389,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static Xyd(t) {
+  static gEd(t) {
     var e;
     if (this.FPo) {
       e = this.FPo.D_GetTransform();
@@ -1360,11 +1399,11 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static CloseFightPhotographMode() {
-    if (!this.hzd) {
-      this.hzd = true;
+    if (!this.IMm) {
+      this.IMm = true;
       this.ResetCamera();
       ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId = 0;
-      this.rwd = false;
+      this.DPd = false;
       TimerSystem_1.TimerSystem.Delay(() => {
         var t = new SeamlessTravelDefine_1.SeamlessTravelContext();
         ControllerHolder_1.ControllerHolder.SeamlessTravelController.EnableSeamlessTravel(t, true);
@@ -1374,7 +1413,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         }
         UiManager_1.UiManager.CloseView("FightPhotographView", () => {
           ControllerHolder_1.ControllerHolder.SeamlessTravelController.EndSeamlessTravel();
-          this.hzd = false;
+          this.IMm = false;
         });
       }, 200);
     }
@@ -1401,13 +1440,13 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TrySaveFightPhotoFromBuffer(t, e, o, i) {
-    if (this.pzd()) {
+    if (this.hbm()) {
       if (t = ScreenShotManager_1.ScreenShotManager.CreateTextureFromBuffer(t, e, o, i)) {
-        this.owd.push(t);
+        this.xPd.push(t);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("FightPhotograph", 71, "保存战斗拍照截图成功", ["任务", this.owd.length]);
+          Log_1.Log.Info("FightPhotograph", 71, "保存战斗拍照截图成功", ["任务", this.xPd.length]);
         }
-        this.rwd = true;
+        this.DPd = true;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBtFightPhotoTaskFinish);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FightPhotograph", 71, "战斗拍照截图生成texture失败");
@@ -1415,36 +1454,36 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TrySaveFightPhoto(t, e, o) {
-    if (this.pzd()) {
+    if (this.hbm()) {
       if (t = UE.LGUIBPLibrary.CreateTexture2DFromColors(t, e, o)) {
-        this.owd.push(t);
+        this.xPd.push(t);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("FightPhotograph", 71, "保存战斗拍照截图成功", ["任务", this.owd.length]);
+          Log_1.Log.Info("FightPhotograph", 71, "保存战斗拍照截图成功", ["任务", this.xPd.length]);
         }
-        this.rwd = true;
+        this.DPd = true;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NotifyBtFightPhotoTaskFinish);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FightPhotograph", 71, "战斗拍照截图生成texture失败");
       }
     }
   }
-  static pzd() {
-    return !!this.CheckIfInFightPhotographCamera() && !this.rwd && !!this.IsSatisfyAllConditions();
+  static hbm() {
+    return !!this.CheckIfInFightPhotographCamera() && !this.DPd && !!this.IsSatisfyAllConditions();
   }
   static IsSatisfyAllConditions() {
     return !!this.CurrentBtNode && (!!this.IsIgnoreAllCondition || !!this.CurrentBtNode.InProgress && !!this.CurrentBtNode.CheckRoleInCamera() && !!this.CurrentBtNode.CheckCameraCondition() && !!this.CurrentBtNode.CheckPhotographCondition());
   }
   static IsFinishCurrentBtNode() {
-    return !!this.CheckIfInFightPhotographCamera() && this.rwd;
+    return !!this.CheckIfInFightPhotographCamera() && this.DPd;
   }
   static GetSavedFightPhotos() {
-    return this.owd;
+    return this.xPd;
   }
   static ClearAllSavedFightPhotos() {
-    this.owd = [];
+    this.xPd = [];
   }
   static IsFightPhotoCanSettle() {
-    return !!this.CheckIfInFightPhotographCamera() && this.owd.length === 3;
+    return !!this.CheckIfInFightPhotographCamera() && this.xPd.length === 3;
   }
   static Ah1(t, e) {
     if (!t || !e) {
@@ -1499,6 +1538,9 @@ PhotographController.tdu = false;
 PhotographController.WFa = false;
 PhotographController.NWi = new UE.FName("EntityPhotoIgnore");
 PhotographController.PhotoTargets = undefined;
+PhotographController.thm = false;
+PhotographController.ihm = undefined;
+PhotographController.TogetherCameraFov = undefined;
 PhotographController.$Ct = () => {
   _a.V01();
 };
@@ -1567,17 +1609,23 @@ PhotographController.UWi = (t, e) => {
     _a.ClosePhotograph();
   }
 };
+PhotographController.Woh = () => {
+  var t;
+  if (_a.mWi?.IsValid() && (_a.mWi.ActorsToIgnore.Empty(), (t = ControllerHolder_1.ControllerHolder.RoleTriggerController.GetMyRolePhysicInteract())?.IsValid())) {
+    _a.mWi.ActorsToIgnore.Add(t);
+  }
+};
 PhotographController.Kue = (t, e) => {
   if (!e) {
     if ((e = ModelManager_1.ModelManager.PhotographModel.PlayMontageEntity)?.Valid) {
-      e.Entity.GetComponent(178).MainAnimInstance.Montage_Play(t);
+      e.Entity.GetComponent(181).MainAnimInstance.Montage_Play(t);
     }
   }
 };
 PhotographController.FPo = undefined;
 PhotographController.VPo = undefined;
-PhotographController.hzd = false;
-PhotographController.owd = [];
-PhotographController.rwd = false;
+PhotographController.IMm = false;
+PhotographController.xPd = [];
+PhotographController.DPd = false;
 PhotographController.CurrentBtNode = undefined;
 PhotographController.IsIgnoreAllCondition = false; //# sourceMappingURL=PhotographController.js.map

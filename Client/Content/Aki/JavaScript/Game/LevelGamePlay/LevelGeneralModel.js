@@ -17,7 +17,7 @@ class LevelGeneralModel extends ModelBase_1.ModelBase {
     this.CreatureGenAddTagList = undefined;
     this.InteractionDebug = false;
     this.KUe = undefined;
-    this.W2d = new Map();
+    this.uFd = new Map();
     this.gdc = -1;
   }
   OnInit() {
@@ -34,7 +34,7 @@ class LevelGeneralModel extends ModelBase_1.ModelBase {
     this.CreatureGenAddTagList = undefined;
     this.InteractionDebug = false;
     this.KUe = undefined;
-    this.W2d.clear();
+    this.uFd.clear();
     LevelListenerCenter_1.LevelListenerCenter.Clear();
     return true;
   }
@@ -65,25 +65,25 @@ class LevelGeneralModel extends ModelBase_1.ModelBase {
   }
   AddEntityGuaranteeActionInfo(e, t) {
     if (e && (e = ModelManager_1.ModelManager.CharacterModel.GetHandle(e))?.Valid) {
-      if (!this.W2d.has(e)) {
-        this.W2d.set(e, new Array());
+      if (!this.uFd.has(e)) {
+        this.uFd.set(e, new Array());
       }
-      this.W2d.get(e).push(t);
+      this.uFd.get(e).push(t);
     }
   }
   PopEntityGuaranteeActionInfo(e, t) {
     if (e) {
       var n = ModelManager_1.ModelManager.CharacterModel.GetHandle(e);
-      if (n?.Valid && this.W2d.has(n)) {
-        var r = this.W2d.get(n);
+      if (n?.Valid && this.uFd.has(n)) {
+        var r = this.uFd.get(n);
         for (let e = r.length - 1; e >= 0; e--) {
           var i = r[e];
           if (i.Name === t.Name) {
             r.splice(e, 1);
             if (r.length === 0) {
-              this.W2d.delete(n);
+              this.uFd.delete(n);
             } else {
-              this.W2d.set(n, r);
+              this.uFd.set(n, r);
             }
             return i;
           }
@@ -92,23 +92,23 @@ class LevelGeneralModel extends ModelBase_1.ModelBase {
     }
   }
   HasEntityGuaranteeActionInfo(e, t, n) {
-    return !!e && n !== 0 && !!(e = ModelManager_1.ModelManager.CharacterModel.GetHandle(e))?.Valid && !!this.W2d.has(e) && this.W2d.get(e).some(e => n === 1 ? e.Name === t.Name : e.Name === t.Name && (0, IUtil_1.deepEquals)(e, t));
+    return !!e && n !== 0 && !!(e = ModelManager_1.ModelManager.CharacterModel.GetHandle(e))?.Valid && !!this.uFd.has(e) && this.uFd.get(e).some(e => n === 1 ? e.Name === t.Name : e.Name === t.Name && (0, IUtil_1.deepEquals)(e, t));
   }
   RemoveEntityGuaranteeActionInfos(t) {
-    if (this.W2d.has(t)) {
+    if (this.uFd.has(t)) {
       let e = undefined;
       if (t?.Valid) {
-        e = this.W2d.get(t);
+        e = this.uFd.get(t);
       }
-      this.W2d.delete(t);
+      this.uFd.delete(t);
       return e;
     }
   }
   GetEntityGuaranteeActionInfos() {
-    return this.W2d;
+    return this.uFd;
   }
   ClearEntityGuaranteeActionInfos() {
-    this.W2d.clear();
+    this.uFd.clear();
   }
 }
 exports.LevelGeneralModel = LevelGeneralModel;

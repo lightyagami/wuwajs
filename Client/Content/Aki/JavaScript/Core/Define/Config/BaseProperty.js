@@ -381,6 +381,15 @@ class BaseProperty {
   get ElementEfficiency() {
     return this.elementefficiency();
   }
+  get WeaknessBuildUp() {
+    return this.weaknessbuildup();
+  }
+  get WeaknessBuildUpMax() {
+    return this.weaknessbuildupmax();
+  }
+  get WeaknessTotalBonus() {
+    return this.weaknesstotalbonus();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -1379,6 +1388,30 @@ class BaseProperty {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 10000;
+    }
+  }
+  weaknessbuildup() {
+    var t = this.J7.__offset(this.z7, 252);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  weaknessbuildupmax() {
+    var t = this.J7.__offset(this.z7, 254);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 10000;
+    }
+  }
+  weaknesstotalbonus() {
+    var t = this.J7.__offset(this.z7, 256);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

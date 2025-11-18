@@ -23,7 +23,7 @@ const TICK_TOTAL_TIME = 500;
 class RedDotSystem {
   static PushToEventQueue(t, e, s) {
     var i = s + e;
-    if (!this.iQd.has(i)) {
+    if (!this.whm.has(i)) {
       if (this.zah?.RedDotName === s && this.zah?.Id === e) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RedDot", 69, "红点处理存在循环调用, 详情见堆栈", ["红点名", s]);
@@ -31,20 +31,20 @@ class RedDotSystem {
       } else {
         t = this.GetRedDotEventData(t, e, s);
         e = this.xrl.AddTail(t);
-        this.iQd.set(i, e);
+        this.whm.set(i, e);
       }
     }
   }
   static PopRedDotEventData(t, e) {
     var s = e + t;
-    if (this.iQd.has(s)) {
+    if (this.whm.has(s)) {
       if (this.zah?.RedDotName === e && this.zah?.Id === t) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("RedDot", 10, "红点处理存在在当前事件中移除自身", ["红点名", e]);
         }
-      } else if (t = this.iQd.get(s)) {
+      } else if (t = this.whm.get(s)) {
         this.xrl.RemoveNode(t);
-        this.iQd.delete(s);
+        this.whm.delete(s);
         this.Jah.push(t.Element);
       }
     }
@@ -54,7 +54,7 @@ class RedDotSystem {
     var e = t.Element;
     this.zah = e;
     this.xrl.RemoveNode(t);
-    this.iQd.delete(e.RedDotName + e.Id);
+    this.whm.delete(e.RedDotName + e.Id);
     e.HandleEvent();
     this.zah = undefined;
     this.Jah.push(e);
@@ -90,7 +90,7 @@ class RedDotSystem {
 }
 (exports.RedDotSystem = RedDotSystem).xrl = new List_1.default(new RedDotEventData(t => {}, 0, ""));
 RedDotSystem.Jah = [];
-RedDotSystem.iQd = new Map();
+RedDotSystem.whm = new Map();
 RedDotSystem.zah = undefined;
 RedDotSystem.wrl = TICK_TOTAL_TIME;
 RedDotSystem.IsOpenLogCallTime = false; //# sourceMappingURL=RedDotSystem.js.map

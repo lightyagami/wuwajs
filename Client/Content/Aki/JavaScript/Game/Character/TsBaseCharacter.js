@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Queue_1 = require("../../Core/Container/Queue");
@@ -44,6 +45,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
     this.OnMovementModeChanged = false;
     this.CharacterActorComponent = undefined;
     this.SimpleNpcActorComponent = undefined;
+    this.AbpGameplayEnableState = undefined;
     this.DitherEffectControllerInternal = undefined;
     this.MovementModeInfoUid = 0;
     this.Count = 0;
@@ -55,6 +57,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
     this.OnMovementModeChanged = false;
     this.CharacterActorComponent = undefined;
     this.SimpleNpcActorComponent = undefined;
+    this.AbpGameplayEnableState = undefined;
     this.DitherEffectControllerInternal = undefined;
     this.MovementModeInfoUid = 0;
     this.Count = 0;
@@ -77,6 +80,14 @@ class TsBaseCharacter extends UE.BaseCharacter {
       this.OnMovementModeChanged = true;
       EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.CharacterActorComponent.Entity.Id, e, t, i, s);
       this.OnMovementModeChanged = false;
+    }
+  }
+  BindGameplayEnableState(e) {
+    this.AbpGameplayEnableState = e;
+  }
+  SetGameplayEnableState(e) {
+    if (this.AbpGameplayEnableState !== undefined) {
+      (0, puerts_1.$set)(this.AbpGameplayEnableState, e);
     }
   }
   ReceivePossessed(e) {

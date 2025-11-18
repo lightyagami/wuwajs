@@ -24,7 +24,7 @@ class LoadAsyncPromise {
   zPo(e, s, t = 100) {
     this.YPo = ResourceSystem_1.ResourceSystem.LoadAsync(e, s, (e, s) => {
       this.CustomPromise.SetResult(e);
-    }, t);
+    }, t, "Ui.LoadAsync");
   }
   CancelAsyncLoad() {
     if (this.HandleId !== ResourceSystem_1.ResourceSystem.InvalidId) {

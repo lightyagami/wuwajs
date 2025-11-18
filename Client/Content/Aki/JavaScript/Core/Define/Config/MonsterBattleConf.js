@@ -34,6 +34,9 @@ class MonsterBattleConf {
   get FixedLocation() {
     return this.fixedlocation();
   }
+  get WeaknessExploitWeapon() {
+    return this.weaknessexploitweapon();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -120,6 +123,14 @@ class MonsterBattleConf {
   fixedlocation() {
     var t = this.J7.__offset(this.z7, 18);
     return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  weaknessexploitweapon() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.MonsterBattleConf = MonsterBattleConf;

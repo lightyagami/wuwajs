@@ -23,10 +23,10 @@ class UnopenedAreaCheck {
     this.Vj = new Map();
   }
   AreaInit(t) {
-    for (const e of t) {
-      this.Jwe(e.p6n, e.Y4n ?? false);
+    for (var [e, r] of t) {
+      this.Jwe(e, r);
     }
-    if (t.length === 0 && Log_1.Log.CheckInfo()) {
+    if (t.size === 0 && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Map", 42, "初始化区域数量为零");
     }
     this.Xwe = 0;
@@ -39,11 +39,11 @@ class UnopenedAreaCheck {
     }
   }
   Jwe(e, t) {
-    var i = AreaByAreaId_1.configAreaByAreaId.GetConfigList(e);
-    if (i && i.length !== 0 && i[0].EdgeWallName) {
-      const s = i[0].EdgeWallName + "_C";
-      var r = i[0].MapConfigId;
-      var i = i[0].DungeonId;
+    var r = AreaByAreaId_1.configAreaByAreaId.GetConfigList(e);
+    if (r && r.length !== 0 && r[0].EdgeWallName) {
+      const s = r[0].EdgeWallName + "_C";
+      var i = r[0].MapConfigId;
+      var r = r[0].DungeonId;
       if (t) {
         if (!this.Ywe.has(s)) {
           this.Ywe.set(s, new Set());
@@ -56,8 +56,8 @@ class UnopenedAreaCheck {
         }
         if (!this.$we.has(s)) {
           const o = new BinItem();
-          o.MapId = r;
-          o.DungeonId = i;
+          o.MapId = i;
+          o.DungeonId = r;
           o.InitCallback = () => {
             if (o && o.BinSet && o.TestPoints) {
               this.$we.set(s, o);
@@ -70,10 +70,10 @@ class UnopenedAreaCheck {
           };
           o.Init(s);
         }
-        let t = this.Vj.get(i);
+        let t = this.Vj.get(r);
         if (!t) {
           t = new Set();
-          this.Vj.set(i, t);
+          this.Vj.set(r, t);
         }
         t.add(s);
       } else {
@@ -87,14 +87,14 @@ class UnopenedAreaCheck {
             Log_1.Log.Info("Map", 42, "BinMap移除边界", ["Path", s]);
           }
         }
-        r = this.Vj.get(i);
-        if (r && r.delete(s) && r.size === 0) {
-          this.Vj.delete(i);
+        i = this.Vj.get(r);
+        if (i && i.delete(s) && i.size === 0) {
+          this.Vj.delete(r);
         }
       }
     }
   }
-  BinTest(t, e, i) {
+  BinTest(t, e, r) {
     if (!this.IsSplineInit || this.$we.size === 0) {
       if (this.Xwe <= FAILURE_COUNT && (this.Xwe++, Log_1.Log.CheckInfo() && Log_1.Log.Info("Map", 42, "检测是否进入未开放区域，检测失败", ["IsSplineInit", this.IsSplineInit], ["BinMap.size", this.$we.size]), this.Xwe === FAILURE_COUNT) && Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Map", 42, "检测是否进入未开放区域一直失败，不报Log了");
@@ -104,25 +104,25 @@ class UnopenedAreaCheck {
     if (this.Xwe !== 0 && (this.Xwe = 0, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Map", 42, "检测是否进入未开放区域，恢复正常检测");
     }
-    let r = false;
-    i = this.Vj.get(i);
-    if (i && i.size > 0) {
-      for (const o of i) {
+    let i = false;
+    r = this.Vj.get(r);
+    if (r && r.size > 0) {
+      for (const o of r) {
         var s = this.$we.get(o);
-        if (s && (r = true, s.BinTest(t))) {
+        if (s && (i = true, s.BinTest(t))) {
           return true;
         }
       }
     }
-    if (r) {
+    if (i) {
       return false;
     }
     for (const a of this.$we) {
-      if (e === a[1].MapId && (r = true, a[1].BinTest(t))) {
+      if (e === a[1].MapId && (i = true, a[1].BinTest(t))) {
         return true;
       }
     }
-    return !r;
+    return !i;
   }
   Clear() {
     this.IsSplineInit = false;
@@ -156,25 +156,25 @@ class BinItem {
     if (!t.IsA(UE.BP_BasePathLine_Edgewall_C.StaticClass())) {
       return false;
     }
-    var i = (e = t).OriginalLocation;
-    var i = UE.KismetMathLibrary.Conv_VectorToVectorDouble(i);
-    t.D_K2_SetActorLocationAndRotation(i, Rotator_1.Rotator.ZeroRotator, false, undefined, false);
-    var r = e.Spline;
-    var i = r.GetNumberOfSplinePoints();
-    this.TestPoints.slice(0, i);
-    for (let t = 0, e = i; t < e; t++) {
-      var s = r.D_GetLocationAtSplinePoint(t, 1);
+    var r = (e = t).OriginalLocation;
+    var r = UE.KismetMathLibrary.Conv_VectorToVectorDouble(r);
+    t.D_K2_SetActorLocationAndRotation(r, Rotator_1.Rotator.ZeroRotator, false, undefined, false);
+    var i = e.Spline;
+    var r = i.GetNumberOfSplinePoints();
+    this.TestPoints.slice(0, r);
+    for (let t = 0, e = r; t < e; t++) {
+      var s = i.D_GetLocationAtSplinePoint(t, 1);
       this.TestPoints.push(new Vector2D_1.Vector2D(s.X, s.Y));
     }
     t.K2_DestroyActor();
     return true;
   }
-  eBe(t, e, i, r, s) {
-    let o = i;
-    let a = r;
-    if (r < i) {
-      o = r;
-      a = i;
+  eBe(t, e, r, i, s) {
+    let o = r;
+    let a = i;
+    if (i < r) {
+      o = i;
+      a = r;
     }
     if (s.Bins[t].MinX > o) {
       s.Bins[t].MinX = o;
@@ -188,12 +188,12 @@ class BinItem {
   BinTest(t) {
     var e = new Vector2D_1.Vector2D(t.X, t.Y);
     var t = this.BinSet;
-    var i = this.TestPoints;
+    var r = this.TestPoints;
     if (e.Y < t.MinY || e.Y >= t.MaxY || e.X < t.MinX || e.X >= t.MaxX) {
       return false;
     }
-    var r = Math.floor((e.Y - t.MinY) * t.ReciprocalDeltaY);
-    var t = t.Bins[r];
+    var i = Math.floor((e.Y - t.MinY) * t.ReciprocalDeltaY);
+    var t = t.Bins[i];
     if (e.X < t.MinX || e.X > t.MaxX) {
       return false;
     }
@@ -207,36 +207,36 @@ class BinItem {
     for (let t = 0; t < n; t++, _++) {
       if (e.X < h[_].MinX) {
         do {
-          if (!!h[_].FullCross || !(s = h[_].Id, e.Y <= i[s].Y == e.Y <= i[(s + 1) % i.length].Y)) {
+          if (!!h[_].FullCross || !(s = h[_].Id, e.Y <= r[s].Y == e.Y <= r[(s + 1) % r.length].Y)) {
             l = !l;
           }
           _ += 1;
         } while (++t < n);
         return l;
       }
-      if (e.X < h[_].MaxX && (o = i[a = h[_].Id], a = i[(a + 1) % i.length], h[_].FullCross || e.Y <= o.Y != e.Y <= a.Y) && o.X - (o.Y - e.Y) * (a.X - o.X) / (a.Y - o.Y) >= e.X) {
+      if (e.X < h[_].MaxX && (o = r[a = h[_].Id], a = r[(a + 1) % r.length], h[_].FullCross || e.Y <= o.Y != e.Y <= a.Y) && o.X - (o.Y - e.Y) * (a.X - o.X) / (a.Y - o.Y) >= e.X) {
         l = !l;
       }
     }
     return l;
   }
   Zwe(e, t, o) {
-    var i = new Array(t);
+    var r = new Array(t);
     o.BinNum = t;
     o.Bins = new Array(t);
     o.MinX = o.MaxX = e[0].X;
     o.MinY = o.MaxY = e[0].Y;
     for (let t = 1; t < e.length; t++) {
-      var r = e[t];
-      if (o.MinX > r.X) {
-        o.MinX = r.X;
-      } else if (o.MaxX < r.X) {
-        o.MaxX = r.X;
+      var i = e[t];
+      if (o.MinX > i.X) {
+        o.MinX = i.X;
+      } else if (o.MaxX < i.X) {
+        o.MaxX = i.X;
       }
-      if (o.MinY > r.Y) {
-        o.MinY = r.Y;
-      } else if (o.MaxY < r.Y) {
-        o.MaxY = r.Y;
+      if (o.MinY > i.Y) {
+        o.MinY = i.Y;
+      } else if (o.MaxY < i.Y) {
+        o.MaxY = i.Y;
       }
     }
     o.MinY -= MathUtils_1.MathUtils.SmallNumber * (o.MaxY - o.MinY);
@@ -257,15 +257,15 @@ class BinItem {
           e -= 1;
         }
         for (let t = s; t <= e; t++) {
-          i[t] = (i[t] ?? 0) + 1;
+          r[t] = (r[t] ?? 0) + 1;
         }
       }
       a = h;
     }
     for (let e = 0; e < t; e++) {
       o.Bins[e] = new Bin();
-      var c = new Array(i[e]);
-      for (let t = 0; t < i[e]; t++) {
+      var c = new Array(r[e]);
+      for (let t = 0; t < r[e]; t++) {
         c[t] = new Edge();
       }
       o.Bins[e].EdgeSet = c;
@@ -285,25 +285,25 @@ class BinItem {
         if (f - e == 0) {
           e -= 1;
         }
-        let i = _.X;
+        let r = _.X;
         var M = o.DeltaY * (n.X - _.X) / (n.Y - _.Y);
-        let r = i;
+        let i = r;
         let s = false;
-        for (let t = p; t < e; t++, i = r) {
-          r = _.X + (t + 1 - u) * M;
+        for (let t = p; t < e; t++, r = i) {
+          i = _.X + (t + 1 - u) * M;
           var g = o.Bins[t].Count;
           o.Bins[t].Count++;
           o.Bins[t].EdgeSet[g].Id = A;
           o.Bins[t].EdgeSet[g].FullCross = s;
-          this.eBe(t, g, i, r, o);
+          this.eBe(t, g, r, i, o);
           s = true;
         }
-        i = r;
-        r = n.X;
+        r = i;
+        i = n.X;
         f = o.Bins[e].Count++;
         o.Bins[e].EdgeSet[f].Id = A;
         o.Bins[e].EdgeSet[f].FullCross = false;
-        this.eBe(e, f, i, r, o);
+        this.eBe(e, f, r, i, o);
       }
       a = h;
       A = t;

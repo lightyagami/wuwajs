@@ -21,45 +21,53 @@ const GameSettingsDeviceRenderDefine_1 = require("./GameSettingsDeviceRenderDefi
 const GameSettingsLevelRender_1 = require("./GameSettingsLevelRender");
 const GameSettingsManager_1 = require("./GameSettingsManager");
 const GameSettingsUtils_1 = require("./GameSettingsUtils");
+const AudioSystem_1 = require("../../Core/Audio/AudioSystem");
+const Application_1 = require("../../Core/Application/Application");
 class GameSettingsController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Render", 40, "GameSettingsController-OnInit");
     }
     this.Ore();
-    this.x2d = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetEngineSubsystem(UE.KuroRenderQualityVolumeManager.StaticClass());
-    this.B2d();
+    this.zGd = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetEngineSubsystem(UE.KuroRenderQualityVolumeManager.StaticClass());
+    this.JGd();
     return true;
   }
   static OnClear() {
     this.kre();
-    this.k2d();
+    this.ZGd();
     return true;
   }
-  static O2d() {
+  static eFd() {
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
-    GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.RayTracing, 0, false);
+    GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, 0, false);
   }
-  static B2d() {
-    this.x2d.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
-      this.KuroRenderQualityLocalIndex = e;
-      this.O2d();
+  static JGd() {
+    this.zGd.OnEnterVolumeBlueprintEvent.Add(() => {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Render", 92, "进入局部性能盒子，应用索引", ["LocalIndex:", e]);
+        Log_1.Log.Info("Render", 92, "进入局部性能盒子");
       }
     });
-    this.x2d.OnLeaveVolumeBlueprintEvent.Add(() => {
+    this.zGd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Add(e => {
+      this.KuroRenderQualityLocalIndex = e;
+      this.eFd();
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Render", 92, "局部性能盒子应用索引", ["LocalIndex:", e]);
+      }
+    });
+    this.zGd.OnLeaveVolumeBlueprintEvent.Add(() => {
       this.KuroRenderQualityLocalIndex = -1;
-      this.O2d();
+      this.eFd();
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Render", 92, "离开局部性能盒子");
       }
     });
   }
-  static k2d() {
-    this.x2d.OnApplyKuroRenderLocalSettingsBlueprintEvent.Clear();
-    this.x2d.OnLeaveVolumeBlueprintEvent.Clear();
+  static ZGd() {
+    this.zGd.OnEnterVolumeBlueprintEvent.Clear();
+    this.zGd.OnApplyKuroRenderLocalSettingsBlueprintEvent.Clear();
+    this.zGd.OnLeaveVolumeBlueprintEvent.Clear();
   }
   static Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnStartLoadingState, this.hMe);
@@ -67,6 +75,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSubLevelAdded, this.XGa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
+    Application_1.Application.AddWindowActivationHandler(this.enm);
   }
   static kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnStartLoadingState, this.hMe);
@@ -74,6 +83,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSubLevelAdded, this.XGa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
+    Application_1.Application.RemoveWindowActivationHandler(this.enm);
   }
   static kot() {
     this.IRe = TimerSystem_1.GameplayTimerSystem.Delay(this.q7e, GameSettingsDeviceRenderDefine_1.WHOLE_SHADOW_CACHE_DELAY_TIME);
@@ -90,7 +100,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
 exports.GameSettingsController = GameSettingsController;
 (_a = GameSettingsController).IRe = undefined;
 GameSettingsController.IsGameSettingsAppliedOnOpenLoading = false;
-GameSettingsController.x2d = undefined;
+GameSettingsController.zGd = undefined;
 GameSettingsController.KuroRenderQualityLocalIndex = -1;
 GameSettingsController.hMe = () => {
   var e;
@@ -244,6 +254,15 @@ GameSettingsController.q7e = () => {
 GameSettingsController.Etl = (e, a) => {
   if (e === 2 || a === 2) {
     GameSettingsUtils_1.GameSettingsUtils.RefreshViewRevertState(a);
+  }
+};
+GameSettingsController.enm = e => {
+  if (GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.BackendVolume) === 1) {
+    if (e) {
+      AudioSystem_1.AudioSystem.SetState("master_bus_by_focus_state", "none");
+    } else {
+      AudioSystem_1.AudioSystem.SetState("master_bus_by_focus_state", "mute_all_sound");
+    }
   }
 };
 GameSettingsController.OnGameUserSettingsUINeedsUpdate = () => {

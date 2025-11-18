@@ -451,7 +451,7 @@ class CameraCollision {
     return t.Subtraction(i, this.Lz).SizeSquared() < s * s;
   }
   hhe(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(206)?.HasTag(-1151151013);
+    return !!t.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(-1151151013);
   }
   nhe() {
     var t;
@@ -498,7 +498,7 @@ class CameraCollision {
         h = r.StartHideDistance;
         e = r.StartDitherValue;
       }
-    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (r = t.GetEntityNoBlueprint()?.GetComponent(235)) && r.StartHideDistance > 0) {
+    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (r = t.GetEntityNoBlueprint()?.GetComponent(238)) && r.StartHideDistance > 0) {
       s = r.CompleteHideDistance;
       h = r.StartHideDistance;
       e = r.StartDitherValue;

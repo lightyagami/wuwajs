@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CameraModel = exports.CameraSpecificLockEntity = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
+exports.CameraModel = exports.CameraSpecificLocLocation = exports.CameraSpecificLockEntity = exports.CameraSpecificLockTarget = exports.SeqCameraThings = exports.cameraModeFree = exports.cameraModeOrbital = exports.cameraModeScene = exports.cameraModeSequence = exports.cameraModeWidget = exports.cameraModeLockOn = exports.cameraModeDefault = exports.CAMER_DEFAULT_NEAR_CLIP = undefined;
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
@@ -68,15 +68,38 @@ class SeqCameraThings {
   }
 }
 exports.SeqCameraThings = SeqCameraThings;
-class CameraSpecificLockEntity {
+class CameraSpecificLockTarget {
   constructor(t, e, i) {
+    this.Type = t;
+    this.Id = e;
+    this.Priority = i;
+    this.MarkDelete = false;
+  }
+  IsValid() {
+    return true;
+  }
+}
+class CameraSpecificLockEntity extends (exports.CameraSpecificLockTarget = CameraSpecificLockTarget) {
+  constructor(t, e, i) {
+    super(0, i, e);
     this.EntityId = t;
     this.Priority = e;
     this.Id = i;
-    this.MarkDelete = false;
+  }
+  IsValid() {
+    return ModelManager_1.ModelManager.CharacterModel.GetHandle(this.EntityId)?.Valid ?? false;
   }
 }
 exports.CameraSpecificLockEntity = CameraSpecificLockEntity;
+class CameraSpecificLocLocation extends CameraSpecificLockTarget {
+  constructor(t, e, i) {
+    super(1, i, e);
+    this.Location = t;
+    this.Priority = e;
+    this.Id = i;
+  }
+}
+exports.CameraSpecificLocLocation = CameraSpecificLocLocation;
 class CameraModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -115,6 +138,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.rwa = 1;
     this.owa = new Map();
     this.nwa = this.rwa;
+    this.CameraShakeInstanceId = -1;
+    this.CameraShakeMap = new Map();
     this.Rhe = CAMERA_DEFAULT_SENSITIVITY;
     this.Uhe = CAMERA_DEFAULT_SENSITIVITY;
     this.Ahe = CAMERA_DEFAULT_SENSITIVITY;
@@ -139,8 +164,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.Ohe = true;
     this.l6a = new Set();
     this.WWu = 0;
-    this.QWu = new Map();
-    this.KWu = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
+    this.xQd = new Map();
+    this.BQd = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
     this.sZc = new Set();
   }
   get CameraBaseYawSensitivity() {
@@ -415,28 +440,33 @@ class CameraModel extends ModelBase_1.ModelBase {
   }
   EnableCameraSpecificLockEntity(t, e) {
     t = new CameraSpecificLockEntity(t, e, ++this.WWu);
-    this.KWu.Push(t);
-    this.QWu.set(t.Id, t);
+    this.BQd.Push(t);
+    this.xQd.set(t.Id, t);
     return t.Id;
   }
-  DisableCameraSpecificLockEntity(t) {
-    t = this.QWu.get(t);
+  EnableCameraSpecificLockLocation(t, e) {
+    t = new CameraSpecificLocLocation(t, e, ++this.WWu);
+    this.BQd.Push(t);
+    this.xQd.set(t.Id, t);
+    return t.Id;
+  }
+  DisableCameraSpecificLockTarget(t) {
+    t = this.xQd.get(t);
     if (t) {
       t.MarkDelete = true;
     }
   }
-  GetCameraSpecificLockEntity() {
-    while (!this.KWu.Empty) {
-      var t = this.KWu.Top;
+  GetCameraSpecificLockTarget() {
+    while (!this.BQd.Empty) {
+      var t = this.BQd.Top;
       if (!t) {
         return;
       }
-      var e = ModelManager_1.ModelManager.CharacterModel.GetHandle(t.EntityId);
-      if (!t.MarkDelete && e?.Valid) {
+      if (!t.MarkDelete && t.IsValid()) {
         return t;
       }
-      this.KWu.Pop();
-      this.QWu.delete(t.Id);
+      this.BQd.Pop();
+      this.xQd.delete(t.Id);
     }
   }
   OnInit() {
@@ -490,8 +520,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     return this.dhe.Valid && this.Che.Valid && this.fhe.Valid && this.phe.Valid && this.vhe.Valid;
   }
   OnClear() {
-    this.KWu.Clear();
-    this.QWu.clear();
+    this.BQd.Clear();
+    this.xQd.clear();
     Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = 1;
     var t = EntitySystem_1.EntitySystem.Destroy(this.dhe);
     this.dhe = undefined;

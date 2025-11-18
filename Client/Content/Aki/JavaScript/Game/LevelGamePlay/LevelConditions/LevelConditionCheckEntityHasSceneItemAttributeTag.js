@@ -9,7 +9,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 class LevelConditionCheckEntityHasSceneItemAttributeTag extends LevelGeneralBase_1.LevelConditionBase {
   CheckNew(e, t) {
     var r = e;
-    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.EntityId)?.Entity?.GetComponent(206);
+    var a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.EntityId)?.Entity?.GetComponent(209);
     if (a) {
       switch (r.CheckType) {
         case 0:

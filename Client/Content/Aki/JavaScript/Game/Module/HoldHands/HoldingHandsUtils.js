@@ -168,25 +168,25 @@ class HoldingHandsUtils {
         var o = s.Leader.Params.ReachableExtraAngle;
         var _ = s.Follower.Params.ReachableExtraAngle;
         let i = s.Reachable;
-        this.xsd(a, s.Leader.Params.PitchRange, s.Leader.Params.YawRange, s.LastReachable, o);
+        this.y_d(a, s.Leader.Params.PitchRange, s.Leader.Params.YawRange, s.LastReachable, o);
         this.GX1(a, s.Leader.Params.ShoulderPitchRange, s.Leader.Params.ShoulderYawRange, s.LastReachable, o);
-        this.Dsd(a.BindDirSmooth, a.BindDir, s.BindDirDamping, t);
+        this.v_d(a.BindDirSmooth, a.BindDir, s.BindDirDamping, t);
         a.BindDirSmooth.Multiply(a.BendLength, a.BindVec);
         a.Shoulder.GetLocation().Addition(a.BindVec, a.BindPos);
         a.BindPos.Subtraction(r.Shoulder.GetLocation(), r.BindVec);
         r.BindVec.GetUnsafeNormal(r.BindDir);
         r.BendLength = Math.min(r.MaxBendLength, r.BindVec.Size());
-        i = (i &&= this.xsd(r, s.Follower.Params.PitchRange, s.Follower.Params.YawRange, s.LastReachable, _)) && this.GX1(r, s.Follower.Params.ShoulderPitchRange, s.Follower.Params.ShoulderYawRange, s.LastReachable, _);
+        i = (i &&= this.y_d(r, s.Follower.Params.PitchRange, s.Follower.Params.YawRange, s.LastReachable, _)) && this.GX1(r, s.Follower.Params.ShoulderPitchRange, s.Follower.Params.ShoulderYawRange, s.LastReachable, _);
         r.BindDir.Multiply(r.BendLength, r.BindVec);
         r.Shoulder.GetLocation().Addition(r.BindVec, r.BindPos);
         if (!i) {
           r.BindPos.Subtraction(a.Shoulder.GetLocation(), a.BindVec);
           a.BindVec.GetUnsafeNormal(a.BindDir);
-          i = this.xsd(a, s.Leader.Params.PitchRange, s.Leader.Params.YawRange, s.LastReachable, o);
+          i = this.y_d(a, s.Leader.Params.PitchRange, s.Leader.Params.YawRange, s.LastReachable, o);
           if (!(i &&= this.GX1(a, s.Leader.Params.ShoulderPitchRange, s.Leader.Params.ShoulderYawRange, s.LastReachable, o))) {
             a.BendLength = MathUtils_1.MathUtils.InterpTo(a.BendLength, Math.min(a.MaxBendLength, a.BindVec.Size()), e, 0.005);
           }
-          this.Dsd(a.BindDirSmooth, a.BindDir, s.BindDirDamping, t);
+          this.v_d(a.BindDirSmooth, a.BindDir, s.BindDirDamping, t);
           a.BindDirSmooth.Multiply(a.BendLength, a.BindVec);
           a.Shoulder.GetLocation().Addition(a.BindVec, a.BindPos);
         }
@@ -198,7 +198,7 @@ class HoldingHandsUtils {
         this.NX1(r, a, h.BindPosDistance, h.HandMinAngle);
         _ = this.RTu(s);
         s.Reachable &&= !_;
-        o = this.LRd(s);
+        o = this.iPd(s);
         s.Reachable &&= o;
         if (s.Reachable && (this.Debug || s.Leader.Params.Debug)) {
           UE.KismetSystemLibrary.DrawDebugLine(GlobalData_1.GlobalData.World, a.BindPos.ToUeVectorOld(), a.HandPosTarget.ToUeVectorOld(), ColorUtils_1.ColorUtils.LinearRed, 0, 1);
@@ -348,7 +348,7 @@ class HoldingHandsUtils {
   static OX1(t, i, s, e, a, r) {
     return !(s + e < i) && !(e = MathUtils_1.MathUtils.Clamp((s * s + i * i - e * e) / (s * 2 * i), -1, 1), i = Math.sqrt(1 - e * e), Vector_1.Vector.CrossProduct(t, a, this.TempVector), Vector_1.Vector.CrossProduct(t, this.TempVector, this.TempVector), this.TempVector.Normalize(), this.TempVector.Multiply(-i * s, this.TempVector), t.Multiply(e * s, this.TempVector2), this.TempVector2.Addition(this.TempVector, r), 0);
   }
-  static Dsd(t, i, s, e) {
+  static v_d(t, i, s, e) {
     if (t.IsZero() || s === 0) {
       t.DeepCopy(i);
     } else {
@@ -358,7 +358,7 @@ class HoldingHandsUtils {
       t.Normalize();
     }
   }
-  static xsd(t, i, s, e, a) {
+  static y_d(t, i, s, e, a) {
     let r = i.Min;
     let h = i.Max;
     let o = s.Min;
@@ -506,7 +506,7 @@ class HoldingHandsUtils {
     }
     return e;
   }
-  static LRd(t) {
+  static iPd(t) {
     var i = t.Leader.ActorComp;
     var s = t.Follower.ActorComp;
     var e = i.ActorLocationProxy;

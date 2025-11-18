@@ -31,11 +31,14 @@ class SeamlessTravelContext {
     if (s.PG1.length) {
       this.KeepMovementStateFeatures = new KeepMovementStateFeatures();
       for (const t of s.PG1) {
-        if (t === Protocol_1.Aki.Protocol.xG1.Proto_Kite) {
-          this.KeepMovementStateFeatures.KeepKite = true;
+        switch (t) {
+          case Protocol_1.Aki.Protocol.xG1.Proto_Kite:
+            this.KeepMovementStateFeatures.KeepKite = true;
+            break;
+          case Protocol_1.Aki.Protocol.xG1.Proto_Soar:
+            this.KeepMovementStateFeatures.KeepSoar = true;
         }
       }
-      this.KeepMovementStateFeatures.KeepSoar = true;
     }
     if (s.cta) {
       this.FloorParams = new SeamlessTravelFloorParams();

@@ -182,6 +182,7 @@ const CommonQteController_1 = require("../Module/Qte/CommonQte/CommonQteControll
 const QuestController_1 = require("../Module/QuestNew/Controller/QuestController");
 const QuestReviewController_1 = require("../Module/QuestReview/QuestReviewController");
 const QuestTreeController_1 = require("../Module/QuestTree/QuestTreeController");
+const RandomPlotController_1 = require("../Module/RandomPlot/RandomPlotController");
 const ReConnectController_1 = require("../Module/ReConnect/ReConnectController");
 const ReportController_1 = require("../Module/Report/ReportController");
 const RewardController_1 = require("../Module/Reward/RewardController");
@@ -209,8 +210,10 @@ const SkipInterfaceController_1 = require("../Module/SkipInterface/SkipInterface
 const SoundAreaPlayTipsController_1 = require("../Module/SoundArea/SoundAreaPlayTipsController");
 const SpecialTransitionController_1 = require("../Module/SpecialTransition/SpecialTransitionController");
 const SplashScreenController_1 = require("../Module/SplashScreen/SplashScreenController");
+const SubPackageController_1 = require("../Module/SubPackage/SubPackageController");
 const SurvivorsRogueController_1 = require("../Module/SurvivorsRogue/SurvivorsRogueController");
 const TeleportController_1 = require("../Module/Teleport/TeleportController");
+const TeleportControllerNew_1 = require("../Module/Teleport/TeleportControllerNew");
 const TermExplanationController_1 = require("../Module/TermExplanation/TermExplanationController");
 const TimeOfDayController_1 = require("../Module/TimeOfDay/TimeOfDayController");
 const TowerDefenseEventController_1 = require("../Module/TowerDefenseEvent/TowerDefenseEventController");
@@ -270,6 +273,7 @@ const LoadMapController_1 = require("../World/Controller/LoadMapController");
 const LogController_1 = require("../World/Controller/LogController");
 const MultiInteractionActorController_1 = require("../World/Controller/MultiInteractionActorController");
 const PlayerSoarMonitorController_1 = require("../World/Controller/PlayerSoarMonitorController");
+const ResourceManagerController_1 = require("../Module/ResManager/ResourceManagerController");
 const PlayerVelocityController_1 = require("../World/Controller/PlayerVelocityController");
 const PreloadController_1 = require("../World/Controller/PreloadController");
 const PreloadControllerNew_1 = require("../World/Controller/PreloadControllerNew");
@@ -586,6 +590,8 @@ class ControllerRegisterManager {
     this.qp(ActivityController_1.ActivityController);
     ControllerHolder_1.ControllerHolder.TeleportController = TeleportController_1.TeleportController;
     this.qp(TeleportController_1.TeleportController);
+    ControllerHolder_1.ControllerHolder.TeleportControllerNew = TeleportControllerNew_1.TeleportControllerNew;
+    this.qp(TeleportControllerNew_1.TeleportControllerNew);
     ControllerHolder_1.ControllerHolder.InteractionController = InteractionController_1.InteractionController;
     this.qp(InteractionController_1.InteractionController);
     ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController = GameBudgetInterfaceController_1.GameBudgetInterfaceController;
@@ -686,6 +692,8 @@ class ControllerRegisterManager {
     this.qp(PlayerVelocityController_1.PlayerVelocityController);
     ControllerHolder_1.ControllerHolder.PlayerSoarMonitorController = PlayerSoarMonitorController_1.PlayerSoarMonitorController;
     this.qp(PlayerSoarMonitorController_1.PlayerSoarMonitorController);
+    ControllerHolder_1.ControllerHolder.ResourceManagerController = ResourceManagerController_1.ResourceManagerController;
+    this.qp(ResourceManagerController_1.ResourceManagerController);
     ControllerHolder_1.ControllerHolder.SceneItemMoveController = SecenItemMoveController_1.SceneItemMoveController;
     this.qp(SecenItemMoveController_1.SceneItemMoveController);
     this.qp(ServerGmController_1.ServerGmController);
@@ -851,12 +859,16 @@ class ControllerRegisterManager {
     this.qp(RoleDevController_1.RoleDevController);
     ControllerHolder_1.ControllerHolder.SpecialTransitionController = SpecialTransitionController_1.SpecialTransitionController;
     this.qp(SpecialTransitionController_1.SpecialTransitionController);
-    ControllerHolder_1.ControllerHolder.FlyingFeatherController = FlyingFeatherController_1.FlyingFeatherController;
-    this.qp(FlyingFeatherController_1.FlyingFeatherController);
     ControllerHolder_1.ControllerHolder.HomeBtnController = HomeBtnController_1.HomeBtnController;
     this.qp(HomeBtnController_1.HomeBtnController);
+    ControllerHolder_1.ControllerHolder.FlyingFeatherController = FlyingFeatherController_1.FlyingFeatherController;
+    this.qp(FlyingFeatherController_1.FlyingFeatherController);
+    ControllerHolder_1.ControllerHolder.RandomPlotController = RandomPlotController_1.RandomPlotController;
+    this.qp(RandomPlotController_1.RandomPlotController);
     ControllerHolder_1.ControllerHolder.InputCSharpProxyController = InputCSharpProxyController_1.InputCSharpProxyController;
     this.qp(InputCSharpProxyController_1.InputCSharpProxyController);
+    ControllerHolder_1.ControllerHolder.SubPackageController = SubPackageController_1.SubPackageController;
+    this.qp(SubPackageController_1.SubPackageController);
     return true;
   }
   static RegisterTick() {
@@ -907,6 +919,7 @@ class ControllerRegisterManager {
     this.PBe(GameAudioController_1.GameAudioController);
     this.PBe(PlayerVelocityController_1.PlayerVelocityController);
     this.PBe(PlayerSoarMonitorController_1.PlayerSoarMonitorController);
+    this.PBe(ResourceManagerController_1.ResourceManagerController);
     this.PBe(LevelPickInteractController_1.LevelPickInteractController);
     this.PBe(MonsterGroupPatrolController_1.MonsterGroupPatrolController);
     this.PBe(VehicleController_1.VehicleController);

@@ -94,14 +94,14 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         });
       }
     };
-    this.OnSelectRoleTabOutside = e => {
+    this.OnSelectRoleTabOutside = (e, t) => {
       this.Ujt();
-      this.SelectRoleTabOutSide(e).finally(() => {
+      this.SelectRoleTabOutSide(e, t).finally(() => {
         this.Jft();
       });
     };
     this.CanToggleChange = (e, t) => {
-      return !!t || (this.gUd(e) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_RoleInformalTrialTips_Text"), false) : !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t);
+      return !!t || (this.Ckd(e) ? (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Text_RoleInformalTrialTips_Text"), false) : !!Info_1.Info.IsInGamepad() || (t = CommonParamById_1.configCommonParamById.GetIntConfig("panel_interval_time"), !this.L6e) || Time_1.Time.Now - this.L6e >= t);
     };
     this.R6e = (e, t) => {
       return new RoleTabItem_1.RoleTabItem();
@@ -119,7 +119,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.U8i = this.P8i();
       this.nn_(i);
       this.RefreshRoleBackgroundMusicSwitchItem();
-      this.kMd(i);
+      this.hTd(i);
     };
     this.q8i = e => {
       if (e !== 0 && this.U8i && Info_1.Info.IsInGamepad()) {
@@ -246,7 +246,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         this.RHt.SetPlaybackPosition(e);
       }
     };
-    this.C3d = () => {
+    this.S9d = () => {
       var e = ModelManager_1.ModelManager.RoleDevModel.DevTargetRoleId;
       const t = this.GetTexture(12);
       e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
@@ -284,10 +284,10 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.RoleListClick], [10, this.RoleDevClick], [11, this.RoleDevMarkClick]];
   }
   OnAddListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.S9d);
   }
   OnRemoveListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.C3d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleDevTargetRoleIdChange, this.S9d);
   }
   async OnBeforeStartAsync() {
     this.d1o = this.OpenParam;
@@ -321,6 +321,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.GetButton(10).RootUIComp.SetUIActive(true);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectRoleTabOutside, this.OnSelectRoleTabOutside);
   }
   OnBeforeShow() {
     this.ADn();
@@ -339,12 +340,14 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     }
   }
   async RefreshRoleListAsync() {
+    await this.vRm(this.d1o.GetCurSelectRoleId());
+  }
+  async vRm(i) {
     UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", true);
-    const i = this.d1o.GetRoleIdList();
-    const s = this.d1o.GetCurSelectRoleId();
-    await this.RoleListComponent.UpdateComponent(i).finally(() => {
+    const s = this.d1o.GetRoleIdList();
+    await this.RoleListComponent.UpdateComponent(s).finally(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", false);
-      var e = i.indexOf(s);
+      var e = s.indexOf(i);
       const t = this.RoleListComponent?.GetSelfScrollView()?.GetScrollItemByIndex(e);
       if (t) {
         TimerSystem_1.TimerSystem.Next(() => {
@@ -352,7 +355,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
         });
       }
     });
-    this.RoleListComponent?.SetCurSelection(s);
+    this.RoleListComponent?.SetCurSelection(i);
   }
   RefreshTabList() {
     var e;
@@ -404,8 +407,8 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   async OnRoleSelectAsync() {
     var e;
     UiLayer_1.UiLayer.SetShowMaskLayer("SelectRoleByDataIdAsync", true);
-    if (this.gUd(this.I6e)) {
-      e = this.TabDataList.findIndex((e, t) => !this.gUd(t));
+    if (this.Ckd(this.I6e)) {
+      e = this.TabDataList.findIndex((e, t) => !this.Ckd(t));
       this.TabComponent.SelectToggleByIndex(e);
     }
     this.RefreshUiMode();
@@ -413,12 +416,17 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       UiLayer_1.UiLayer.SetShowMaskLayer("SelectRoleByDataIdAsync", false);
     });
   }
-  async SelectRoleTabOutSide(t) {
-    var e = new CustomPromise_1.CustomPromise();
-    await Promise.all([this.UiViewSequence.PlaySequenceAsync("RoleListStart", e), this.TabComponent.ShowItemAsync()]);
+  async SelectRoleTabOutSide(t, e) {
+    var i = new CustomPromise_1.CustomPromise();
+    await Promise.all([this.UiViewSequence.PlaySequenceAsync("RoleListStart", i), this.SelectRoleOutside(e), this.TabComponent.ShowItemAsync()]);
     this.d1o.RoleViewState = 0;
-    var e = this.TabDataList.findIndex(e => e.ChildViewName === t);
-    this.TabComponent.SelectToggleByIndex(e);
+    var i = this.TabDataList.findIndex(e => e.ChildViewName === t);
+    this.TabComponent.SelectToggleByIndex(i);
+  }
+  async SelectRoleOutside(e) {
+    if (e && e !== this.d1o.GetCurSelectRoleId()) {
+      await this.vRm(e);
+    }
   }
   InitTabComponent() {
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.pqe, this.yqe);
@@ -427,38 +435,38 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     this.TabComponent.SetCanChange(this.CanToggleChange);
     this.TabViewComponent = new TabViewComponent_1.TabViewComponent(this.GetItem(4));
   }
-  gUd(e) {
+  Ckd(e) {
     var t;
     return !(this.TabDataList.length <= 0) && (t = this.d1o.GetCurSelectRoleId(), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t), this.d1o.GetRoleSystemMode() === 0) && t.RoleType === 5 && this.TabDataList[e].ChildViewName !== "RoleAttributeTabView" && this.TabDataList[e].ChildViewName !== "RolePhantomTabView" && this.TabDataList[e].ChildViewName !== "RolePreviewAttributeTabView";
   }
-  kMd(e) {
+  hTd(e) {
     var t = ModelManager_1.ModelManager.FunctionModel?.IsOpen(10097) ?? false;
     var e = e === "RoleAttributeTabView";
     var i = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId !== 0;
     var s = this.d1o?.GetCurSelectRoleData()?.IsTrialRole() ?? false;
-    this.qWd(e, t, s);
-    this.GWd(e, t, i, s);
-    this.FWd(i, s);
+    this.wnm(e, t, s);
+    this.Lnm(e, t, i, s);
+    this.Pnm(i, s);
   }
-  qWd(e, t, i) {
+  wnm(e, t, i) {
     var s = this.GetButton(10);
     if (s?.RootUIComp) {
       s.RootUIComp.SetUIActive(e && t && !i);
     }
   }
-  GWd(e, t, i, s) {
+  Lnm(e, t, i, s) {
     var n = this.GetButton(11);
     if (n) {
       n.RootUIComp.SetUIActive(false);
     }
   }
-  FWd(e, t) {
+  Pnm(e, t) {
     var i;
     if (e && !t && (e = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId ?? 0, t = this.GetTexture(12)) && (i = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e))) {
-      this.NWd(i.RoleHeadIconCircle, t);
+      this.Anm(i.RoleHeadIconCircle, t);
     }
   }
-  NWd(e, t) {
+  Anm(e, t) {
     this.SetTextureShowUntilLoaded(e, t, () => {
       if (t) {
         t.SetUIActive(true);
@@ -517,7 +525,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
           Log_1.Log.Error("Role", 43, "加载level sequence失败:", ["sequencePath", n]);
         }
         this.amo.set(s, 0);
-      });
+      }, 100, this.MemoryTag);
     }
   }
   Egt() {
@@ -621,7 +629,6 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.AttributeComponentEvent, this.gmo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiRoleSequenceEndKeyFrame, this.fmo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectRoleTab, this.pqe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SelectRoleTabOutside, this.OnSelectRoleTabOutside);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleInternalViewEnter, this.OnInternalViewEnter);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.OnInternalViewQuit);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayCameraAnimationStart, this.cmo);
@@ -643,7 +650,6 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AttributeComponentEvent, this.gmo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiRoleSequenceEndKeyFrame, this.fmo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SelectRoleTab, this.pqe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SelectRoleTabOutside, this.OnSelectRoleTabOutside);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleInternalViewEnter, this.OnInternalViewEnter);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleInternalViewQuit, this.OnInternalViewQuit);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleSystemChangeRole, this.OnRoleSelect);
@@ -762,6 +768,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeDestroy() {
     this.UnBindRedDot();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SelectRoleTabOutside, this.OnSelectRoleTabOutside);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Role", 43, "角色界面关闭");
     }

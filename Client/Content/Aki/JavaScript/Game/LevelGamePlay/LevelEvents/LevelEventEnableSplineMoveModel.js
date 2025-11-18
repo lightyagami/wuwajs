@@ -70,7 +70,7 @@ class LevelEventEnableSplineMoveModel extends LevelGeneralBase_1.LevelEventBase 
           this.FinishExecute(false);
           return;
       }
-      var r = e?.GetComponent(108);
+      var r = e?.GetComponent(110);
       if (r?.Valid) {
         if (o.Type === "Open") {
           r.StartSplineMove(o.SplineEntityId, o.Pattern, t);

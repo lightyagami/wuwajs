@@ -17,7 +17,7 @@ const VISION_COMMON_SKILLINFO_PATH = "/Game/Aki/Data/Fight/DT_Common_Vision_Skil
 const COMMON_BULLET_PATH = "/Game/Aki/Data/Fight/CDT_CommonBulletData.CDT_CommonBulletData";
 const COMMON_HIT_EFFECT_PATH = "/Game/Aki/Data/Fight/DT_CommonHitEffect.DT_CommonHitEffect";
 const CAUGHT_DATA_PATH = "/Game/Aki/Data/Fight/DT_CaughtInfo.DT_CaughtInfo";
-const CHARACTERFIGHTINFO_DATA_PATH = "/Game/Aki/Data/Fight/DT_CharacterFightInfo.DT_CharacterFightInfo";
+const CHARACTERFIGHTINFO_DATA_PATH = "/Game/Aki/Data/Fight/CDT_CharacterFightInfo.CDT_CharacterFightInfo";
 const QTE_TAG_DATA_PATH = "/Game/Aki/Data/Fight/DT_QteTag.DT_QteTag";
 class WorldConfig extends ConfigBase_1.ConfigBase {
   constructor() {

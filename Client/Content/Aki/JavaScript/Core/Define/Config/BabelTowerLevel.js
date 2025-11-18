@@ -19,6 +19,9 @@ class BabelTowerLevel {
   get InstId() {
     return this.instid();
   }
+  get DifficultyType() {
+    return this.difficultytype();
+  }
   get IsDifficult() {
     return this.isdifficult();
   }
@@ -67,13 +70,13 @@ class BabelTowerLevel {
   get RecommendBuff() {
     return GameUtils_1.GameUtils.ConvertToArray(this.recommendbuffLength(), this.recommendbuff, this);
   }
-  __init(t, e) {
+  __init(t, i) {
     this.z7 = t;
-    this.J7 = e;
+    this.J7 = i;
     return this;
   }
-  static getRootAsBabelTowerLevel(t, e) {
-    return (e || new BabelTowerLevel()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsBabelTowerLevel(t, i) {
+    return (i || new BabelTowerLevel()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -99,52 +102,60 @@ class BabelTowerLevel {
       return 0;
     }
   }
-  isdifficult() {
+  difficultytype() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  isdifficult() {
+    var t = this.J7.__offset(this.z7, 12);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   nametext(t) {
-    var e = this.J7.__offset(this.z7, 12);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   destext(t) {
-    var e = this.J7.__offset(this.z7, 14);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   leveldestext(t) {
-    var e = this.J7.__offset(this.z7, 16);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   texture(t) {
-    var e = this.J7.__offset(this.z7, 18);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   bosstexture(t) {
-    var e = this.J7.__offset(this.z7, 20);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   openday() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -155,15 +166,15 @@ class BabelTowerLevel {
     return this.fixbabeldetermds(t);
   }
   fixbabeldetermds(t) {
-    var e = this.J7.__offset(this.z7, 24);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 26);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   fixbabeldetermdsLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -171,7 +182,7 @@ class BabelTowerLevel {
     }
   }
   fixbabeldetermdsArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -182,15 +193,15 @@ class BabelTowerLevel {
     return this.optionalbabelbuff(t);
   }
   optionalbabelbuff(t) {
-    var e = this.J7.__offset(this.z7, 26);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 28);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   optionalbabelbuffLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -198,7 +209,7 @@ class BabelTowerLevel {
     }
   }
   optionalbabelbuffArray() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -206,14 +217,6 @@ class BabelTowerLevel {
     }
   }
   optionalbabelbuffnum() {
-    var t = this.J7.__offset(this.z7, 28);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  passstar() {
     var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -221,7 +224,7 @@ class BabelTowerLevel {
       return 0;
     }
   }
-  revivestar() {
+  passstar() {
     var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -229,8 +232,16 @@ class BabelTowerLevel {
       return 0;
     }
   }
-  revivebuffid() {
+  revivestar() {
     var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  revivebuffid() {
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -241,15 +252,15 @@ class BabelTowerLevel {
     return this.babeltowerdetermmutexarray(t);
   }
   babeltowerdetermmutexarray(t) {
-    var e = this.J7.__offset(this.z7, 36);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 38);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   babeltowerdetermmutexarrayLength() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -257,7 +268,7 @@ class BabelTowerLevel {
     }
   }
   babeltowerdetermmutexarrayArray() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -268,15 +279,15 @@ class BabelTowerLevel {
     return this.unrecommendrolelist(t);
   }
   unrecommendrolelist(t) {
-    var e = this.J7.__offset(this.z7, 38);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 40);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   unrecommendrolelistLength() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -284,7 +295,7 @@ class BabelTowerLevel {
     }
   }
   unrecommendrolelistArray() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -295,15 +306,15 @@ class BabelTowerLevel {
     return this.recommendbuff(t);
   }
   recommendbuff(t) {
-    var e = this.J7.__offset(this.z7, 40);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 42);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
   }
   recommendbuffLength() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -311,7 +322,7 @@ class BabelTowerLevel {
     }
   }
   recommendbuffArray() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

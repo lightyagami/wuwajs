@@ -5,11 +5,19 @@ var ELevelPlayInteractResetTime;
 var ELevelPlayInfoMappingType;
 var ETrapDefenseSpawnMonsterCondition;
 var EMonsterSourceType;
+var ERollBlockGridType;
+var ERollBlockBlockType;
+var ERollBlockItemType;
+var ERollBlockLayType;
 var ERollBlockType;
+var ERollBlockHintStepType;
+function isRollBlockWalkableGrid(e) {
+  return [ERollBlockGridType.Floor, ERollBlockGridType.Goal, ERollBlockGridType.LinkGoal, ERollBlockGridType.JumpFloor, ERollBlockGridType.FallFloor, ERollBlockGridType.BreakTrigger].includes(e);
+}
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ERollBlockType = exports.EMonsterSourceType = exports.ETrapDefenseSpawnMonsterCondition = exports.ELevelPlayInfoMappingType = exports.decisionBtTypeNameMap = exports.levelPlayTypeNameMap = exports.ELevelPlayInteractResetTime = exports.ELevelPlayExploratoryCheckTiming = undefined;
+exports.ERollBlockHintStepType = exports.ERollBlockType = exports.ERollBlockLayType = exports.ERollBlockItemType = exports.ERollBlockBlockType = exports.isRollBlockWalkableGrid = exports.ERollBlockGridType = exports.EMonsterSourceType = exports.ETrapDefenseSpawnMonsterCondition = exports.ELevelPlayInfoMappingType = exports.decisionBtTypeNameMap = exports.levelPlayTypeNameMap = exports.ELevelPlayInteractResetTime = exports.ELevelPlayExploratoryCheckTiming = undefined;
 (function (e) {
   e[e.OnCompletion = 0] = "OnCompletion";
 })(ELevelPlayExploratoryCheckTiming = exports.ELevelPlayExploratoryCheckTiming ||= {});
@@ -54,10 +62,38 @@ exports.decisionBtTypeNameMap = {
   e.Empty = "Empty";
   e.Floor = "Floor";
   e.Goal = "Goal";
+  e.LinkGoal = "LinkGoal";
+  e.JumpFloor = "JumpFloor";
+  e.FallFloor = "FallFloor";
+  e.BreakTrigger = "BreakTrigger";
+})(ERollBlockGridType = exports.ERollBlockGridType ||= {});
+exports.isRollBlockWalkableGrid = isRollBlockWalkableGrid;
+(function (e) {
+  e.Block1 = "Block1";
+  e.Block2 = "Block2";
+})(ERollBlockBlockType = exports.ERollBlockBlockType ||= {});
+(function (e) {
+  e.BreakableObstacle = "BreakableObstacle";
+  e.QuantumObstacle = "QuantumObstacle";
+})(ERollBlockItemType = exports.ERollBlockItemType ||= {});
+(function (e) {
+  e.Left = "Left";
+  e.Right = "Right";
+  e.Forward = "Forward";
+  e.Backward = "Backward";
+})(ERollBlockLayType = exports.ERollBlockLayType ||= {});
+(function (e) {
+  e.Empty = "Empty";
+  e.Floor = "Floor";
+  e.Goal = "Goal";
   e.Block1 = "Block1";
   e.Block2 = "Block2";
   e.Block2Left = "Block2Left";
   e.Block2Right = "Block2Right";
   e.Block2Up = "Block2Up";
   e.Block2Down = "Block2Down";
-})(ERollBlockType = exports.ERollBlockType ||= {}); //# sourceMappingURL=ILevelPlay.js.map
+})(ERollBlockType = exports.ERollBlockType ||= {});
+(function (e) {
+  e.Roll = "Roll";
+  e.Operation = "Operation";
+})(ERollBlockHintStepType = exports.ERollBlockHintStepType ||= {}); //# sourceMappingURL=ILevelPlay.js.map

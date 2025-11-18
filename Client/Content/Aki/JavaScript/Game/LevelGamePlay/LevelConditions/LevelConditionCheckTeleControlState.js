@@ -17,7 +17,7 @@ class LevelConditionCheckTeleControlState extends LevelGeneralBase_1.LevelCondit
     if (!(e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n.EntityId))?.Valid) {
       return false;
     }
-    e = e.Entity.GetComponent(157);
+    e = e.Entity.GetComponent(160);
     if (!e) {
       return false;
     }

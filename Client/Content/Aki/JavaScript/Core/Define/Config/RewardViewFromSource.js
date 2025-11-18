@@ -18,37 +18,44 @@ class RewardViewFromSource {
   get RewardViewId() {
     return this.rewardviewid();
   }
-  __init(r, t) {
-    this.z7 = r;
-    this.J7 = t;
+  get RewardNotifyNotTrick() {
+    return this.rewardnotifynottrick();
+  }
+  __init(t, r) {
+    this.z7 = t;
+    this.J7 = r;
     return this;
   }
-  static getRootAsRewardViewFromSource(r, t) {
-    return (t || new RewardViewFromSource()).__init(r.readInt32(r.position()) + r.position(), r);
+  static getRootAsRewardViewFromSource(t, r) {
+    return (r || new RewardViewFromSource()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
-    var r = this.J7.__offset(this.z7, 4);
-    if (r) {
-      return this.J7.readInt32(this.z7 + r);
+    var t = this.J7.__offset(this.z7, 4);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
   rewardsourceid() {
-    var r = this.J7.__offset(this.z7, 6);
-    if (r) {
-      return this.J7.readInt32(this.z7 + r);
+    var t = this.J7.__offset(this.z7, 6);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
   rewardviewid() {
-    var r = this.J7.__offset(this.z7, 8);
-    if (r) {
-      return this.J7.readInt32(this.z7 + r);
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
+  }
+  rewardnotifynottrick() {
+    var t = this.J7.__offset(this.z7, 10);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.RewardViewFromSource = RewardViewFromSource;

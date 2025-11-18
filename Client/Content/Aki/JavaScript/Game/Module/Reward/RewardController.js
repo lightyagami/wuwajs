@@ -32,10 +32,10 @@ class RewardController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15151, this.fao);
+    Net_1.Net.Register(21126, this.fao);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15151);
+    Net_1.Net.UnRegister(21126);
   }
   static PickUpFightDrop(o, t, n) {
     var e;
@@ -47,14 +47,14 @@ class RewardController extends UiControllerBase_1.UiControllerBase {
     } else {
       (e = Protocol_1.Aki.Protocol.HZn.create()).DHn = MathUtils_1.MathUtils.NumberToLong(o);
       RewardController.pao.add(o);
-      Net_1.Net.Call(19438, Protocol_1.Aki.Protocol.HZn.create(e), e => {
+      Net_1.Net.Call(27920, Protocol_1.Aki.Protocol.HZn.create(e), e => {
         RewardController.pao.delete(o);
         if (e) {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
             if (n) {
               n(false);
             }
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15471);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15198);
             if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrPkgCapacityNotEnough) {
               AudioSystem_1.AudioSystem.PostEvent("ui_pickup_capacity_full");
             }

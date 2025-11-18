@@ -34,7 +34,7 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
       if (!(e = o.CharacterActorComponent?.Entity)?.Valid) {
         return false;
       }
-      var l = e.GetComponent(210)?.CreateAnimNotifyContent(s.GetName(), this.exportIndex);
+      var l = e.GetComponent(213)?.CreateAnimNotifyContent(s.GetName(), this.exportIndex);
       var h = this.GetInitTransform(o);
       if (this.使用召唤者子弹) {
         var t = e.GetComponent(0).GetSummonerId();
@@ -56,36 +56,37 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
       }
       var i = t.GetCurrentMontageCorrespondingSkillId();
       var n = i !== 0 ? i : t.GetSkillIdWithGroupId(BaseSkillComponent_1.SKILL_GROUP_MAIN);
+      var a = t.GetExtraTargetLocation(n);
       if (this.使用子弹id数组) {
-        var a = this.子弹id数组.Num();
+        var u = this.子弹id数组.Num();
         var i = this.GetRandomIndex();
-        var u = this.子弹出生位置偏移数组.Num();
-        var f = this.子弹初速度偏移数组.Num();
-        if (i >= 0 && i < a) {
+        var f = this.子弹出生位置偏移数组.Num();
+        var v = this.子弹初速度偏移数组.Num();
+        if (i >= 0 && i < u) {
           if (!this.CanCreateBullet(o, s, i)) {
             return false;
           }
           let e = undefined;
           let t = undefined;
-          if (i < u) {
+          if (i < f) {
             e = this.子弹出生位置偏移数组.Get(i);
           }
-          if (i < f) {
+          if (i < v) {
             t = this.子弹初速度偏移数组.Get(i);
           }
-          BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, undefined, e, t);
+          BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, a, e, t);
         } else {
-          for (let i = 0; i < a; i++) {
+          for (let i = 0; i < u; i++) {
             if (this.CanCreateBullet(o, s, i)) {
               let e = undefined;
               let t = undefined;
-              if (u > i) {
+              if (f > i) {
                 e = this.子弹出生位置偏移数组.Get(i);
               }
-              if (f > i) {
+              if (v > i) {
                 t = this.子弹初速度偏移数组.Get(i);
               }
-              BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, undefined, e, t);
+              BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹id数组.Get(i), h, n, false, l, a, e, t);
             }
           }
         }
@@ -93,7 +94,7 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
         if (!this.CanCreateBullet(o, s, 0)) {
           return false;
         }
-        BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹数据名.toString(), h, n, false, l, undefined, this.子弹出生位置偏移, this.子弹初速度偏移);
+        BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.子弹数据名.toString(), h, n, false, l, a, this.子弹出生位置偏移, this.子弹初速度偏移);
       }
       return true;
     }
@@ -101,21 +102,21 @@ class TsAnimNotifyReSkillEvent extends UE.KuroAnimNotify {
       t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(o.GetWorld());
       if (t === 2 || t === 4) {
         i = UE.KismetSystemLibrary.GetOuterObject(this);
-        const v = UE.KismetSystemLibrary.GetPathName(i);
+        const d = UE.KismetSystemLibrary.GetPathName(i);
         ResourceSystem_1.ResourceSystem.LoadTypeAsync("BPL_BulletPreview_C", () => {
           if (this.使用子弹id数组) {
             var t = this.子弹id数组;
             var i = t.Num();
             var e = this.GetRandomIndex();
             if (e >= 0 && e < i) {
-              UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
+              UE.BPL_BulletPreview_C.ShowBulletPreview(d, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
             } else {
               for (let e = 0; e < i; e++) {
-                UE.BPL_BulletPreview_C.ShowBulletPreview(v, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
+                UE.BPL_BulletPreview_C.ShowBulletPreview(d, new UE.FName(t.Get(e)), o, r, o.GetWorld(), undefined);
               }
             }
           } else {
-            UE.BPL_BulletPreview_C.ShowBulletPreview(v, this.子弹数据名, o, r, o.GetWorld(), undefined);
+            UE.BPL_BulletPreview_C.ShowBulletPreview(d, this.子弹数据名, o, r, o.GetWorld(), undefined);
           }
         });
       }

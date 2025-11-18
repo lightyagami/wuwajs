@@ -381,7 +381,7 @@ class MoraleModel extends ModelBase_1.ModelBase {
     };
   }
   GetBattleIsShowBuff() {
-    return !!FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(200)?.HasBuff(this.GamePlayFinishTeamBuffId);
+    return !!FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(203)?.HasBuff(this.GamePlayFinishTeamBuffId);
   }
   CheckSumLevelChanged(e, t) {
     e = this.GetBuffActiveTipsInfoListByLv(e, t);

@@ -178,7 +178,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     this.ModifyCameraOffsetLagSpeed = 0;
     this.ModifyArmRotationLagSpeed = 0;
     this.ModifyFovLagSpeed = 0;
-    this.A7d = 0;
+    this.ModifyInstance = 0;
     this._ue = -0;
     this.uue = undefined;
     this.cue = -0;
@@ -234,6 +234,8 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     this.az = Quat_1.Quat.Create();
     this.KJ = Quat_1.Quat.Create();
     this.Lz = Vector_1.Vector.Create();
+    this.eIm = true;
+    this.tIm = true;
     this.Gjs = () => {
       if (this.ModifyMontage && this.ModifyMontage !== this.Eue?.GetCurrentActiveMontage()) {
         this.EndModify(true, true);
@@ -315,7 +317,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
   get IsModified() {
     return !!this.ModifySettings;
   }
-  ApplyCameraModify(t, i, s, h, e, r, a, _, o, l, v, M) {
+  ApplyCameraModify(t, i, s, h, e, r, a, o, _, l, M, n) {
     if (!super.IsActivate && !r.IsForcePlayModify) {
       return INVALID_MODIFY_INSTANCE;
     }
@@ -325,17 +327,17 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     if (r.Priority < this.Jue) {
       return INVALID_MODIFY_INSTANCE;
     }
-    ++this.A7d;
+    ++this.ModifyInstance;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Camera", 57, "ApplyCameraModify", ["tag", t?.TagName], ["montage", a?.GetName()], ["ArmLengthAddition", r.CameraOffsetAdditional], ["ModifyInstance", this.A7d]);
+      Log_1.Log.Info("Camera", 57, "ApplyCameraModify", ["tag", t?.TagName], ["montage", a?.GetName()], ["ArmLengthAddition", r.CameraOffsetAdditional], ["ModifyInstance", this.ModifyInstance]);
     }
-    var n = this.IsModified || this.IsModifyFadeOut;
+    var v = this.IsModified || this.IsModifyFadeOut;
     var U = this.IsModified && (this.ModifyArmLength || !!this.ModifySettings?.IsModifiedArmLength);
-    var c = this.IsModified && (this.ModifyArmOffset || !!this.ModifySettings?.IsModifiedArmOffset);
-    var L = n && this.Iue;
-    var d = this.IsModified && (this.Uue || !!this.ModifySettings?.IsModifiedCameraFov);
+    var d = this.IsModified && (this.ModifyArmOffset || !!this.ModifySettings?.IsModifiedArmOffset);
+    var L = v && this.Iue;
+    var c = this.IsModified && (this.Uue || !!this.ModifySettings?.IsModifiedCameraFov);
     var u = this.IsModified && (this.Sue || !!this.ModifySettings?.IsModifiedCameraOffset);
-    this.EndModify(!n, false);
+    this.EndModify(!v, false);
     this.gue = L;
     this.Jue = r.Priority;
     if (t && t.TagName !== "None") {
@@ -344,40 +346,40 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     this.Camera.CameraAdjustController.Lock(this);
     this.Camera.CameraGuideController.Lock(this);
     this.Camera.CopyVirtualCamera(this.Hue, this.Camera.CurrentCamera);
-    if (!n) {
+    if (!v) {
       this.Camera.CopyVirtualCamera(this.Vue, this.Hue);
     }
     this.cue = i;
     this.mue = s;
     this.due = h;
     this.Cue = e;
-    this.fue = _ instanceof CurveBase_1.CurveBase ? _ : CurveUtils_1.CurveUtils.CreateCurveByStruct(_);
-    this.pue = o instanceof CurveBase_1.CurveBase ? o : CurveUtils_1.CurveUtils.CreateCurveByStruct(o);
+    this.fue = o instanceof CurveBase_1.CurveBase ? o : CurveUtils_1.CurveUtils.CreateCurveByStruct(o);
+    this.pue = _ instanceof CurveBase_1.CurveBase ? _ : CurveUtils_1.CurveUtils.CreateCurveByStruct(_);
     this._ue = 0;
     this.ModifySettings = new CameraModify(r);
     this.j1_ = a;
     if (this.ModifySettings.StopModifyOnMontageEnd && a instanceof UE.AnimMontage) {
       this.ModifyMontage = a;
-      this.Eue = this.Gqn(l, M);
+      this.Eue = this.Gqn(l, n);
       this.Eue?.OnMontageStarted.Add(this.Xue);
       this.Eue?.OnMontageEnded.Add(this.Kue);
       this.Eue?.OnAllMontageInstancesEnded.Add(this.Gjs);
     }
     this.ModifyArmLength = U || !MathUtils_1.MathUtils.IsNearlyEqual(this.ModifySettings.ArmLengthAdditional, 0);
-    this.ModifyArmOffset = c;
+    this.ModifyArmOffset = d;
     this.Sue = u || !this.ModifySettings.CameraOffsetAdditional.IsNearlyZero(MathUtils_1.MathUtils.KindaSmallNumber);
     this.cpa = !MathUtils_1.MathUtils.IsNearlyZero(this.ModifySettings.ArmRotationAdditional.Pitch, MathUtils_1.MathUtils.KindaSmallNumber);
     this.mpa = !MathUtils_1.MathUtils.IsNearlyZero(this.ModifySettings.ArmRotationAdditional.Yaw, MathUtils_1.MathUtils.KindaSmallNumber);
     this.dpa = !MathUtils_1.MathUtils.IsNearlyZero(this.ModifySettings.ArmRotationAdditional.Roll, MathUtils_1.MathUtils.KindaSmallNumber);
     this.Iue = !!l;
     this.Tue = l;
-    this.Lue = v;
+    this.Lue = M;
     if (this.Iue) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.$ue);
     }
     this.jue = this.Camera.CameraAutoController.CurrentAutoCameraArmLengthAddition;
     this.Wue.DeepCopy(this.Camera.CameraAutoController.CurrentAutoCameraArmOffset);
-    this.Uue = d || this.ModifySettings.IsModifiedCameraFov;
+    this.Uue = c || this.ModifySettings.IsModifiedCameraFov;
     this.Aue = this.ModifySettings.IsModifiedCameraLens;
     if (this.ModifySettings.OverrideCameraInput && ((this.cpa || this.ModifySettings.IsModifiedArmRotation && this.ModifySettings.IsModifiedArmRotationPitch) && this.Camera.CameraInputController.LockArmRotationPitch(this), (this.mpa || this.ModifySettings.IsModifiedArmRotation && this.ModifySettings.IsModifiedArmRotationYaw) && this.Camera.CameraInputController.LockArmRotationYaw(this), this.ModifyArmLength || this.ModifySettings.IsModifiedArmLength)) {
       this.Camera.CameraInputController.LockArmLength(this);
@@ -392,7 +394,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     this.Cpa = true;
     this.gpa = true;
     this.fpa = true;
-    return this.A7d;
+    return this.ModifyInstance;
   }
   Zue(e) {
     if (this.IsModified) {
@@ -492,7 +494,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     }
   }
   oce(s, h, e) {
-    if (!this.Camera.IsModifiedArmLength && (this.ModifySettings.IsModifiedArmLength || this.ModifyArmLength)) {
+    if (this.ModifySettings.IsModifiedArmLength || this.ModifyArmLength) {
       let t = h;
       let i = 0;
       var r = this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
@@ -525,10 +527,13 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
       }
       this.Camera.IsModifiedArmLength = true;
       this.Camera.IsModifiedZoomModifier = true;
+      if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.eIm && (this.eIm = false, Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Camera", 57, "[DebugZoomModifier UpdateArmLengthModifier]", ["state", s], ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["this.StartVirtualCamera.ZoomModifier", this.Hue.ZoomModifier], ["targetZoomModifier", i], ["ratio", t], ["Anim", this.j1_?.GetName() ?? "None"], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
+      }
     }
   }
   Vra(i, s, h) {
-    if (!this.Camera.IsModifiedArmOffset && (this.ModifySettings.IsModifiedArmOffset || this.ModifyArmOffset)) {
+    if (this.ModifySettings.IsModifiedArmOffset || this.ModifyArmOffset) {
       this.Fra.DeepCopy(this.ModifySettings.ArmOffset);
       let t = s;
       switch (i) {
@@ -549,7 +554,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     }
   }
   rce(i, s, h) {
-    if (!this.Camera.IsModifiedCameraOffset && (this.ModifySettings.IsModifiedCameraOffset || this.Sue)) {
+    if (this.ModifySettings.IsModifiedCameraOffset || this.Sue) {
       var e = Vector_1.Vector.Create();
       if (this.ModifySettings.IsModifiedCameraOffset) {
         e.FromUeVector(this.ModifySettings.CameraOffset);
@@ -559,7 +564,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
         e.Y = this.Camera.CameraOffsetY;
         e.Z = this.Camera.CameraOffsetZ;
       }
-      if (this.Sue && e) {
+      if (this.Sue) {
         e.AdditionEqual(Vector_1.Vector.Create(this.ModifySettings.CameraOffsetAdditional));
       }
       let t = s;
@@ -832,7 +837,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     return t;
   }
   sce(i, s, h) {
-    if (!this.Camera.IsModifiedFov && this.Uue) {
+    if (this.Uue) {
       let t = s;
       var e = this.ModifySettings.IsModifiedCameraFov ? this.ModifySettings.CameraFov : this.Vue.Fov;
       switch (i) {
@@ -1029,6 +1034,9 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
           [i.ModifyZoomModifier, r] = i.UseFadeOutTimeLerp ? this.FloatLerp(i.StartFinalArmLength, i.FinalArmLength, e, MathUtils_1.MathUtils.KindaSmallNumber) : this.FloatInterpTo(this.Camera.GetArmLengthWithSettingAndZoom(this.Camera.CurrentCamera, false), i.FinalArmLength, t, this.ModifyArmLengthLagSpeed, MODIFY_SMALL_LENGTH);
           h.ZoomModifier = r / this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
           this.Camera.IsModifiedZoomModifier = true;
+          if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.tIm && (this.tIm = false, Log_1.Log.CheckInfo())) {
+            Log_1.Log.Info("Camera", 57, "[DebugZoomModifier UpdateModifyFadeOut]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["finalArmLength", r], ["ArmLength", this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera)], ["Anim", this.j1_?.GetName() ?? "None"], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
+          }
         }
       }
       if (i.ModifyArmOffset) {
@@ -1113,7 +1121,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
   }
   Gqn(t, i) {
     let s = undefined;
-    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(178)?.MainAnimInstance;
+    return (s = t ? t.GetEntityNoBlueprint() : (t = i?.GetEntityNoBlueprint()?.GetComponent(0))?.IsVision() || t?.IsMonster() ? i?.GetEntityNoBlueprint() : this.Camera.CharacterEntityHandle.Entity)?.GetComponent(181)?.MainAnimInstance;
   }
   FloatInterpTo(t, i, s, h, e) {
     s = MathUtils_1.MathUtils.InterpTo(t, i, s, h);
@@ -1190,7 +1198,7 @@ class CameraModifyController extends CameraControllerBase_1.CameraControllerBase
     }
   }
   StopCameraModify(t, i) {
-    if (this.j1_ === t && this.A7d === i) {
+    if (this.j1_ === t && this.ModifyInstance === i) {
       this.EndModify(true, true);
     }
   }

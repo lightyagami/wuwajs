@@ -34,6 +34,12 @@ class InfoDisplay {
   get Background() {
     return this.background();
   }
+  get EntryAudio() {
+    return this.entryaudio();
+  }
+  get ExitAudio() {
+    return this.exitaudio();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -100,6 +106,22 @@ class InfoDisplay {
   }
   background(t) {
     var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  entryaudio(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  exitaudio(t) {
+    var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
