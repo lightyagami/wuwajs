@@ -186,7 +186,7 @@ class GuideLineAssistant extends ControllerAssistantBase_1.ControllerAssistantBa
     if (this._ro) {
       var e = this.lzs();
       if (e) {
-        var t = e.GetCurrentActiveChildQuestNode();
+        var t = e.GetShowGuideLineNode();
         if (t) {
           var i = e.GetNodeTrackPosition(t.NodeId);
           var s = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();

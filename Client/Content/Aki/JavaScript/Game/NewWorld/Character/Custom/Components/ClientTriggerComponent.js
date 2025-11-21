@@ -126,7 +126,7 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     var t;
     var i;
     var r = this.EIe.GetPbEntityInitData()?.ComponentsData;
-    return !!r && !(t = (0, IComponent_1.getComponent)(r, "ClientTriggerComponent"), r = (0, IComponent_1.getComponent)(r, "TriggerComponent"), t || r ? t && r?.ClientPrePerformance ? (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[ClientTriggerComponent] 配置出错！客户端触发器配置和触发器预表现配置同时存在", ["ConfigId", this.HYo]), 1) : ((i = this.Entity.GetComponent(122)) && !i.LogicRange && i.SetLogicRange(300), this.Lo = t, this.HYo = this.EIe.GetPbDataId(), this.wS = new Map(), this.BAa = this.Lo?.TriggerMatch?.EntityMatchCount || 0, this.h11 = this.Lo?.OnTriggerEnter.MaxTriggerTimes, this.l11 = this.Lo?.OnTriggerExit.MaxTriggerTimes, r?.ClientPrePerformance && (this.Cwl = r, this.dwl = true, this.h11 = r?.MaxTriggerTimes, (i = this.EIe.ComponentDataMap.get("hys")) ? this.ClientPrePerformancePreMessageId = MathUtils_1.MathUtils.LongToBigInt(i.hys._Vn) : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 72, "[ClientTriggerComponent] 触发器客户端预表现的情况下，没有拿到TriggerComponentPb的ContextId")), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[ClientTriggerComponent] 配置出错！客户端触发器配置和触发器配置都缺失", ["ConfigId", this.HYo]), 1));
+    return !!r && !(t = (0, IComponent_1.getComponent)(r, "ClientTriggerComponent"), r = (0, IComponent_1.getComponent)(r, "TriggerComponent"), t || r ? t && r?.ClientPrePerformance ? (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[ClientTriggerComponent] 配置出错！客户端触发器配置和触发器预表现配置同时存在", ["ConfigId", this.HYo]), 1) : ((i = this.Entity.GetComponent(125)) && !i.LogicRange && i.SetLogicRange(300), this.Lo = t, this.HYo = this.EIe.GetPbDataId(), this.wS = new Map(), this.BAa = this.Lo?.TriggerMatch?.EntityMatchCount || 0, this.h11 = this.Lo?.OnTriggerEnter.MaxTriggerTimes, this.l11 = this.Lo?.OnTriggerExit.MaxTriggerTimes, r?.ClientPrePerformance && (this.Cwl = r, this.dwl = true, this.h11 = r?.MaxTriggerTimes, (i = this.EIe.ComponentDataMap.get("hys")) ? this.ClientPrePerformancePreMessageId = MathUtils_1.MathUtils.LongToBigInt(i.hys._Vn) : Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 72, "[ClientTriggerComponent] 触发器客户端预表现的情况下，没有拿到TriggerComponentPb的ContextId")), 0) : (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[ClientTriggerComponent] 配置出错！客户端触发器配置和触发器配置都缺失", ["ConfigId", this.HYo]), 1));
   }
   OnStart() {
     this.vtn = this.Entity.GetComponent(86);
@@ -137,7 +137,7 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Znn);
     } else if (this.Lo) {
       var e = this.Lo.TriggerMatch.EntityMatch;
-      this._un = this.Entity.GetComponent(131);
+      this._un = this.Entity.GetComponent(134);
       switch (e.Type) {
         case "AllCharacter":
           this.wAa = true;
@@ -170,8 +170,8 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     }
     return !(this.Lo = undefined);
   }
-  CreateTriggerContext(e, t, i) {
-    return LevelGeneralContextDefine_1.TriggerContext.Create(this.Entity.Id, e, undefined, t, i);
+  CreateTriggerContext(e, t) {
+    return LevelGeneralContextDefine_1.TriggerContext.Create(this.Entity.Id, e, undefined, t, true);
   }
   _11(e) {
     if (this.h11 === undefined) {
@@ -190,17 +190,18 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     }
   }
   jAa(e) {
-    return !!e?.Valid && !this._un?.IsLocked && (!this.Lo?.OnTriggerEnter?.Condition || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Lo.OnTriggerEnter.Condition, undefined, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
+    return !!e?.Valid && !this._un?.IsLocked && (!this.Lo?.OnTriggerEnter?.Condition || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(this.Lo.OnTriggerEnter.Condition, undefined, this.CreateTriggerContext(e.Id, 1)));
   }
   WAa(e) {
-    return !!e?.Valid && !this._un?.IsLocked && (!(e = this.Lo?.OnTriggerExit?.Condition) || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(e, undefined, LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id)));
+    var t;
+    return !!e?.Valid && !this._un?.IsLocked && (!(t = this.Lo?.OnTriggerExit?.Condition) || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t, undefined, this.CreateTriggerContext(e.Id, 2)));
   }
   NAa(e) {
     if (e?.Valid && this.Utc(this.Lo?.OnTriggerEnter.OnlineDisableTip ?? false)) {
       if (this.jAa(e)) {
         if (e.Entity.GetComponent(0)?.GetCreatureDataId()) {
           if (this.Actions) {
-            LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.Actions, this.CreateTriggerContext(e.Id, 1, this.dwl));
+            LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.Actions, this.CreateTriggerContext(e.Id, 1));
             this.wS.delete(e.Id);
           } else if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("SceneItem", 31, "[ClientTriggerComponent] 没有配置触发行为");
@@ -218,7 +219,7 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     if (e?.Valid && (this.wS.delete(e.Id), this.Utc(this.Lo?.OnTriggerExit.OnlineDisableTip ?? false)) && this.WAa(e)) {
       if (e.Entity.GetComponent(0)?.GetCreatureDataId()) {
         if (this.ExitActions) {
-          LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.ExitActions, this.CreateTriggerContext(e.Id, 2, this.dwl));
+          LevelGeneralController_1.LevelGeneralController.ExecuteActionsNew(this.ExitActions, this.CreateTriggerContext(e.Id, 2));
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("SceneItem", 7, "[ClientTriggerComponent] 没有配置触发行为");
         }
@@ -251,5 +252,5 @@ let ClientTriggerComponent = class ClientTriggerComponent extends EntityComponen
     return LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(this.EIe.GetEntityOnlineInteractType(), e);
   }
 };
-ClientTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(252)], ClientTriggerComponent);
+ClientTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(257)], ClientTriggerComponent);
 exports.ClientTriggerComponent = ClientTriggerComponent; //# sourceMappingURL=ClientTriggerComponent.js.map

@@ -22,6 +22,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.MotorcycleMoveComponent = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
@@ -42,6 +43,14 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
   set BackBraking(t) {
     this.rCu = t;
   }
+  OnStart() {
+    var t = super.OnStart();
+    this.VehicleMovement?.ResetMotorcycle();
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Movement", 6, "Motorcycle Move OnStart", ["Result", t]);
+    }
+    return t;
+  }
   SetInputOrder() {
     var t;
     var e;
@@ -51,6 +60,10 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
         this.Ydl.DeepCopy(this.ActorComp.InputDirectProxy);
         this.Ydl.X = 0;
         o.SetMotorInput(this.ActorComp.InputDirect, 0, 1);
+      } else if (this.TagComponent?.HasTag(-595765206)) {
+        this.Ydl.DeepCopy(this.ActorComp.InputDirectProxy);
+        this.Ydl.X = 1;
+        o.SetMotorInput(this.Ydl.ToUeVectorOld());
       } else if (this.ActorComp.InputDirect.X >= 0) {
         o.SetMotorInput(this.ActorComp.InputDirect);
         this.iCu = 0;
@@ -73,6 +86,9 @@ let MotorcycleMoveComponent = class MotorcycleMoveComponent extends VehicleMoveC
       }
     }
   }
+  OnTick(t) {
+    super.OnTick(t);
+  }
 };
-MotorcycleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(250)], MotorcycleMoveComponent);
+MotorcycleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(253)], MotorcycleMoveComponent);
 exports.MotorcycleMoveComponent = MotorcycleMoveComponent; //# sourceMappingURL=MotorcycleMoveComponent.js.map

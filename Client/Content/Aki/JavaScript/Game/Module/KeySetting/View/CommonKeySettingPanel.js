@@ -31,8 +31,8 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
     this.vxi = undefined;
     this.pxi = undefined;
     this.Mxi = undefined;
-    this.CJu = undefined;
-    this.pJu = undefined;
+    this.rzu = undefined;
+    this.ozu = undefined;
     this.m2n = undefined;
     this.Exi = () => {
       if (KeySettingViewModel_1.KeySettingViewModel.InputControllerType === 1) {
@@ -80,13 +80,13 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
   async OnBeforeStartAsync() {
     this.vxi = new PsGamepadItem_1.PsGamepadItem();
     this.pxi = new XboxGamepadItem_1.XboxGamepadItem();
-    this.CJu = new CommonKeySettingRowsPanel_1.CommonKeySettingRowsPanel();
-    this.pJu = new CommonKeySettingRowsPanel_1.CommonKeySettingRowsPanel();
+    this.rzu = new CommonKeySettingRowsPanel_1.CommonKeySettingRowsPanel();
+    this.ozu = new CommonKeySettingRowsPanel_1.CommonKeySettingRowsPanel();
     var e = [];
     e.push(this.vxi.CreateByResourceIdAsync("UiItem_HandleSetPs", this.GetItem(10)));
     e.push(this.pxi.CreateByResourceIdAsync("UiItem_HandleSetXBox", this.GetItem(10)));
-    e.push(this.CJu.CreateByActorAsync(this.GetItem(6).GetOwner()));
-    e.push(this.pJu.CreateByActorAsync(this.GetItem(5).GetOwner()));
+    e.push(this.rzu.CreateByActorAsync(this.GetItem(6).GetOwner()));
+    e.push(this.ozu.CreateByActorAsync(this.GetItem(5).GetOwner()));
     this.m2n = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(7));
     await Promise.all(e);
   }
@@ -101,8 +101,8 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
   }
   OnWaitKeySetting() {}
   OnBeforeBeginEditKey() {
-    this.CJu?.StopScroll();
-    this.pJu?.StopScroll();
+    this.rzu?.StopScroll();
+    this.ozu?.StopScroll();
   }
   OnBeginEditKey() {
     this.vIa?.SetAllKeyDisable();
@@ -158,9 +158,9 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
     (KeySettingViewModel_1.KeySettingViewModel.InputControllerType === 2 ? (e = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum(), Info_1.Info.CheckIsPsGamepad(e) ? (this.vIa = this.vxi, this.vxi?.SetActive(true), this.pxi) : (this.vIa = this.pxi, this.pxi?.SetActive(true), this.vxi)) : (this.vIa = undefined, this.vxi?.SetActive(false), this.pxi))?.SetActive(false);
   }
   Pn1() {
-    this.CJu?.Refresh(KeySettingViewModel_1.KeySettingViewModel.GetKeySettingDataList(), KeySettingViewModel_1.KeySettingViewModel.InputControllerType);
-    this.CJu?.SetActive(true);
-    this.pJu?.SetActive(false);
+    this.rzu?.Refresh(KeySettingViewModel_1.KeySettingViewModel.GetKeySettingDataList(), KeySettingViewModel_1.KeySettingViewModel.InputControllerType);
+    this.rzu?.SetActive(true);
+    this.ozu?.SetActive(false);
     this.GetItem(4)?.SetUIActive(true);
     this.GetItem(3)?.SetUIActive(false);
     this.GetButton(9)?.RootUIComp.SetUIActive(true);
@@ -169,9 +169,9 @@ class CommonKeySettingPanel extends KeySettingPanelBase_1.KeySettingPanelBase {
     this.GetItem(13)?.SetUIActive(false);
   }
   xn1() {
-    this.pJu?.Refresh(KeySettingViewModel_1.KeySettingViewModel.GetKeySettingDataList(), KeySettingViewModel_1.KeySettingViewModel.InputControllerType);
-    this.pJu?.SetActive(true);
-    this.CJu?.SetActive(false);
+    this.ozu?.Refresh(KeySettingViewModel_1.KeySettingViewModel.GetKeySettingDataList(), KeySettingViewModel_1.KeySettingViewModel.InputControllerType);
+    this.ozu?.SetActive(true);
+    this.rzu?.SetActive(false);
     var e = Platform_1.Platform.IsPs5Platform();
     var t = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum();
     var t = Info_1.Info.CheckIsBackBoneGamepad(t);

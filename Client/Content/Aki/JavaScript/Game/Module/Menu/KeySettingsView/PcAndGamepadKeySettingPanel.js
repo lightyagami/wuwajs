@@ -42,7 +42,9 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.axi = undefined;
     this.hxi = undefined;
     this.lxi = [];
+    this.Vdm = [];
     this.bAn = [];
+    this.jdm = [];
     this.Lkn = new Map();
     this.wd1 = new Map();
     this.oxi = 0;
@@ -75,8 +77,14 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
         for (const t of this.lxi) {
           t.ResetKey(1);
         }
+        for (const i of this.Vdm) {
+          i.ResetKey(1);
+        }
         for (const e of this.bAn) {
           e.ResetKey(2);
+        }
+        for (const s of this.jdm) {
+          s.ResetKey(2);
         }
         InputSettingsController_1.InputSettingsController.InputSettingUpdateRequest(false);
         this.Refresh(this.oxi);
@@ -86,11 +94,11 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.Prh = () => {
       UiManager_1.UiManager.OpenView("OperationPreferencesView");
     };
-    this.Txi = (t, e, i) => {
-      this.axi?.SelectKeySettingRow(i);
-      var i = t.OpenViewType;
-      if (i !== 0) {
-        switch (i) {
+    this.Txi = (t, i, e) => {
+      this.axi?.SelectKeySettingRow(e);
+      var e = t.OpenViewType;
+      if (e !== 0) {
+        switch (e) {
           case 1:
             RouletteController_1.RouletteController.OpenAssemblyView(1);
             break;
@@ -103,14 +111,14 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
         this.Lxi();
       } else {
         this.cxi = t;
-        this.mxi = e;
+        this.mxi = i;
         if (t.BothActionName.length === 2) {
-          i = {
+          e = {
             InputControllerType: this.oxi,
             KeySettingRowData: t,
             OnConfirmCallback: this.Dxi
           };
-          UiManager_1.UiManager.OpenView("ChangeActionTipsView", i);
+          UiManager_1.UiManager.OpenView("ChangeActionTipsView", e);
           this.Lxi();
         } else {
           this.Rxi();
@@ -129,11 +137,11 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
         this.GamepadItem?.SetAllKeyDisable();
       }
     };
-    this.Pxi = (t, e, i) => {
-      this.hxi?.SelectKeySettingRow(i);
-      var i = t.OpenViewType;
-      if (i !== 0) {
-        switch (i) {
+    this.Pxi = (t, i, e) => {
+      this.hxi?.SelectKeySettingRow(e);
+      var e = t.OpenViewType;
+      if (e !== 0) {
+        switch (e) {
           case 1:
             RouletteController_1.RouletteController.OpenAssemblyView(1);
             break;
@@ -146,14 +154,14 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
         this.Lxi();
       } else {
         this.cxi = t;
-        this.mxi = e;
+        this.mxi = i;
         if (t.BothActionName.length === 2) {
-          i = {
+          e = {
             InputControllerType: this.oxi,
             KeySettingRowData: t,
             OnConfirmCallback: this.Dxi
           };
-          UiManager_1.UiManager.OpenView("ChangeActionTipsView", i);
+          UiManager_1.UiManager.OpenView("ChangeActionTipsView", e);
           this.Lxi();
         } else {
           this.Rxi();
@@ -169,18 +177,18 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       }
       this.Lxi();
     };
-    this.rAt = (e, i) => {
+    this.rAt = (i, e) => {
       if (!UiManager_1.UiManager.IsViewOpen("RepeatKeyTipsView") && ModelManager_1.ModelManager.MenuModel.IsWaitForKeyInput) {
-        var i = i.KeyName.toString();
+        var e = e.KeyName.toString();
         var s = InputSettingsManager_1.InputSettingsManager.GetActionBinding(InputMappingsDefine_1.actionMappings.放弃改键);
-        if (s && s.HasKey(i)) {
+        if (s && s.HasKey(e)) {
           this.Lxi();
         } else if (this.cxi) {
           if (this.cxi.IsLock) {
             GenericPromptController_1.GenericPromptController.ShowPromptByCode("KeyLock");
             this.Lxi();
-          } else if (e) {
-            this.xxi(i);
+          } else if (i) {
+            this.xxi(e);
           } else {
             if (this.fxi.length > 1) {
               if (!this.cxi.CanCombination) {
@@ -215,7 +223,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
               }
             }
             let t = this.bAn;
-            if (InputSettings_1.InputSettings.IsKeyboardKey(i) || InputSettings_1.InputSettings.IsMouseButton(i)) {
+            if (InputSettings_1.InputSettings.IsKeyboardKey(e) || InputSettings_1.InputSettings.IsMouseButton(e)) {
               t = this.lxi;
             }
             const h = this.Bxi(t, this.fxi, this.cxi);
@@ -225,13 +233,13 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
               if (s) {
                 o.push(s);
               }
-              e = {
+              i = {
                 InputControllerType: this.oxi,
                 CurrentKeySettingRowData: this.cxi,
                 RepeatKeySettingRowData: h,
                 OnCloseCallback: t => {
-                  var e;
                   var i;
+                  var e;
                   var s;
                   var n;
                   var r;
@@ -242,17 +250,17 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
                       h.SetKey(t, this.oxi);
                       this.cxi.SetKey(o, this.oxi);
                     } else {
-                      e = this.cxi.GetAxisKeyScaleMap();
+                      i = this.cxi.GetAxisKeyScaleMap();
                       r = o[0];
-                      i = t[0];
-                      s = e.get(r);
-                      if (n = e.get(i)) {
-                        e.set(r, n);
+                      e = t[0];
+                      s = i.get(r);
+                      if (n = i.get(e)) {
+                        i.set(r, n);
                       }
                       if (s) {
-                        e.set(i, s);
+                        i.set(e, s);
                       }
-                      this.cxi.SetAxisBindingKeys(e);
+                      this.cxi.SetAxisBindingKeys(i);
                     }
                     (r = this.bxi())?.RefreshRow(this.cxi);
                     r?.RefreshRow(h);
@@ -266,7 +274,7 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
                 }
               };
               this.qxi(false);
-              UiManager_1.UiManager.OpenView("RepeatKeyTipsView", e);
+              UiManager_1.UiManager.OpenView("RepeatKeyTipsView", i);
             } else if (this.fxi.length > 0) {
               this.cxi.SetKey(this.fxi, this.oxi);
               this.mxi?.Refresh(this.cxi, this.oxi);
@@ -304,13 +312,13 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.hxi.BindOnWaitInput(this.Pxi);
     this.hxi.BindOnHover(this.Uxi);
     this.hxi.BindOnUnHover(this.Axi);
-    var e = this.hxi.CreateByActorAsync(this.GetItem(5).GetOwner());
+    var i = this.hxi.CreateByActorAsync(this.GetItem(5).GetOwner());
     this.pxi = new XboxGamepadItem_1.XboxGamepadItem();
-    var i = this.pxi.CreateByResourceIdAsync("UiItem_HandleSetXBox", this.GetItem(10));
+    var e = this.pxi.CreateByResourceIdAsync("UiItem_HandleSetXBox", this.GetItem(10));
     this.vxi = new PsGamepadItem_1.PsGamepadItem();
     var s = this.vxi.CreateByResourceIdAsync("UiItem_HandleSetPs", this.GetItem(10));
     this.m2n = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(7));
-    await Promise.all([t, e, i, s]);
+    await Promise.all([t, i, e, s]);
   }
   OnStart() {
     var t = ConfigManager_1.ConfigManager.MenuBaseConfig.GetAllKeyTypeConfig();
@@ -347,23 +355,23 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputAnyKey, this.rAt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnDeviceLangChange, this.TZa);
   }
-  Akn(t, e) {
-    var i = [];
+  Akn(t, i) {
+    var e = [];
     for (const n of t.ConnectedKeySettingIdList) {
       let t = undefined;
       var s = KeySettingById_1.configKeySettingById.GetConfig(n);
       if (t = s && s.OnlyWorkNotShow ? this.Ad1(n) : this.Ukn(n)) {
-        t.SetKey(e, this.oxi);
-        i.push(t);
+        t.SetKey(i, this.oxi);
+        e.push(t);
       }
     }
-    return i;
+    return e;
   }
-  Dkn(t, e) {
-    var t = this.Akn(t, e);
-    var i = this.bxi();
+  Dkn(t, i) {
+    var t = this.Akn(t, i);
+    var e = this.bxi();
     for (const s of t) {
-      i?.RefreshRow(s);
+      e?.RefreshRow(s);
     }
   }
   Gxi() {
@@ -378,60 +386,60 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
   }
   Nxi(t) {
     this.lxi.length = 0;
-    var e = ConfigManager_1.ConfigManager.MenuBaseConfig;
+    var i = ConfigManager_1.ConfigManager.MenuBaseConfig;
     for (const r of t) {
-      var i = r.TypeId;
-      var s = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 1, 0) ?? [];
-      var i = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 0, 0) ?? [];
-      var s = s.concat(i);
+      var e = r.TypeId;
+      var s = i.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, 1, 0) ?? [];
+      var e = i.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, 0, 0) ?? [];
+      var s = s.concat(e);
       if (!(s.length <= 0)) {
-        i = new KeySettingRowData_1.KeySettingRowData();
-        i.InitializeKeyType(r);
-        this.lxi.push(i);
-        s.sort((t, e) => t.SortId === e.SortId ? t.Id - e.Id : t.SortId - e.SortId);
+        e = new KeySettingRowData_1.KeySettingRowData();
+        e.InitializeKeyType(r);
+        this.lxi.push(e);
+        s.sort((t, i) => t.SortId === i.SortId ? t.Id - i.Id : t.SortId - i.SortId);
         for (const h of s) {
           var n = new KeySettingRowData_1.KeySettingRowData();
           n.InitializeKeySetting(h);
-          (h.OnlyWorkNotShow ? this.wd1 : (this.lxi.push(n), this.Lkn)).set(h.Id, n);
+          (h.OnlyWorkNotShow ? (this.Vdm.push(n), this.wd1) : (this.lxi.push(n), this.Lkn)).set(h.Id, n);
         }
       }
     }
   }
   Oxi(t) {
     this.bAn.length = 0;
-    var e = ConfigManager_1.ConfigManager.MenuBaseConfig;
+    var i = ConfigManager_1.ConfigManager.MenuBaseConfig;
     for (const r of t) {
-      var i = r.TypeId;
-      var s = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 2, 0) ?? [];
-      var i = e.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(i, 0, 0) ?? [];
-      var s = s.concat(i);
+      var e = r.TypeId;
+      var s = i.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, 2, 0) ?? [];
+      var e = i.GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, 0, 0) ?? [];
+      var s = s.concat(e);
       if (!(s.length <= 0)) {
-        i = new KeySettingRowData_1.KeySettingRowData();
-        i.InitializeKeyType(r);
-        this.bAn.push(i);
-        s.sort((t, e) => t.SortId === e.SortId ? t.Id - e.Id : t.SortId - e.SortId);
+        e = new KeySettingRowData_1.KeySettingRowData();
+        e.InitializeKeyType(r);
+        this.bAn.push(e);
+        s.sort((t, i) => t.SortId === i.SortId ? t.Id - i.Id : t.SortId - i.SortId);
         for (const h of s) {
           var n = new KeySettingRowData_1.KeySettingRowData();
           n.InitializeKeySetting(h);
-          (h.OnlyWorkNotShow ? this.wd1 : (this.bAn.push(n), this.Lkn)).set(h.Id, n);
+          (h.OnlyWorkNotShow ? (this.jdm.push(n), this.wd1) : (this.bAn.push(n), this.Lkn)).set(h.Id, n);
         }
       }
     }
   }
   Rka() {
     var t = Platform_1.Platform.IsPs5Platform();
-    var e = Info_1.Info.IsMobileInputModel() && Info_1.Info.IsInGamepad();
-    this.GetButton(0)?.RootUIComp.SetUIActive(!t && !e);
-    this.GetButton(1)?.RootUIComp.SetUIActive(!t && !e);
-    var e = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum();
-    var e = Info_1.Info.IsInGamepad() && Info_1.Info.CheckIsBackBoneGamepad(e);
-    var t = t || e;
+    var i = Info_1.Info.IsMobileInputModel() && Info_1.Info.IsInGamepad();
+    this.GetButton(0)?.RootUIComp.SetUIActive(!t && !i);
+    this.GetButton(1)?.RootUIComp.SetUIActive(!t && !i);
+    var i = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum();
+    var i = Info_1.Info.IsInGamepad() && Info_1.Info.CheckIsBackBoneGamepad(i);
+    var t = t || i;
     this.GetItem(12)?.SetUIActive(!t);
   }
   Refresh(t) {
     this.oxi = t;
-    var e = this.Hxi(t);
-    this.jxi(e);
+    var i = this.Hxi(t);
+    this.jxi(i);
     this.Wxi(t);
     this.Kxi(t);
   }
@@ -462,19 +470,19 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
     this.GetItem(13)?.SetUIActive(false);
   }
   xn1(t) {
-    var e = Platform_1.Platform.IsPs5Platform();
-    var i = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum();
-    var i = Info_1.Info.CheckIsBackBoneGamepad(i);
-    var e = e || i;
+    var i = Platform_1.Platform.IsPs5Platform();
+    var e = InputKeyUtils_1.InputKeyUtils.GetLastGamepadEnum();
+    var e = Info_1.Info.CheckIsBackBoneGamepad(e);
+    var i = i || e;
     this.hxi?.Refresh(this.bAn, t);
     this.hxi?.SetActive(true);
     this.axi?.SetActive(false);
     this.GetItem(4)?.SetUIActive(false);
     this.GetItem(3)?.SetUIActive(true);
-    this.GetButton(9)?.RootUIComp.SetUIActive(!e);
-    this.GetButton(15)?.RootUIComp.SetUIActive(!e);
-    this.GetButton(16)?.RootUIComp.SetUIActive(e);
-    this.GetItem(13)?.SetUIActive(e);
+    this.GetButton(9)?.RootUIComp.SetUIActive(!i);
+    this.GetButton(15)?.RootUIComp.SetUIActive(!i);
+    this.GetButton(16)?.RootUIComp.SetUIActive(i);
+    this.GetItem(13)?.SetUIActive(i);
   }
   Wxi(t) {
     switch (t) {
@@ -504,10 +512,10 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
       return 2;
     }
   }
-  Bxi(t, e, i) {
-    if (!(e.length <= 0)) {
+  Bxi(t, i, e) {
+    if (!(i.length <= 0)) {
       for (const s of t) {
-        if (s !== i && s.HasKey(e, this.oxi)) {
+        if (s !== e && s.HasKey(i, this.oxi)) {
           return s;
         }
       }
@@ -587,11 +595,11 @@ class PcAndGamepadKeySettingPanel extends UiPanelBase_1.UiPanelBase {
         return this.hxi;
     }
   }
-  GetGuideItemByKeySettingId(t, e) {
-    var i = this.bxi();
+  GetGuideItemByKeySettingId(t, i) {
+    var e = this.bxi();
     var t = this.Ukn(t);
-    if (i && t) {
-      return i.GetRowByData(t, e)?.GetRootItem();
+    if (e && t) {
+      return e.GetRowByData(t, i)?.GetRootItem();
     }
   }
 }

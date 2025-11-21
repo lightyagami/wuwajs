@@ -34,7 +34,7 @@ let BaseSkillCdComponent = class BaseSkillCdComponent extends EntityComponent_1.
     this.bzr = undefined;
   }
   OnInit() {
-    this.BuffComp = this.Entity.CheckGetComponent(210);
+    this.BuffComp = this.Entity.CheckGetComponent(213);
     this.Gzr = new Map();
     this.bzr = ModelManager_1.ModelManager.SkillCdModel.GetCurWorldPassiveSkillCdData();
     return true;
@@ -73,17 +73,17 @@ let BaseSkillCdComponent = class BaseSkillCdComponent extends EntityComponent_1.
     }
     return i;
   }
-  IsPassiveSkillInCd(t) {
+  IsPassiveSkillInCd(t, e) {
     t = this.Gzr.get(t);
-    return !!t && t.IsInCd();
+    return !!t && t.IsInCd(e);
   }
-  StartPassiveCd(t, e = -1) {
-    var i = this.Gzr.get(t);
-    return !!i && (i.StartCd(t, e), true);
+  StartPassiveCd(t, e, i = -1) {
+    var s = this.Gzr.get(t);
+    return !!s && (s.StartCd(t, e, i), true);
   }
   GetPassiveSkillCdInfo(t) {
     return this.Gzr.get(t);
   }
 };
-BaseSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(207)], BaseSkillCdComponent);
+BaseSkillCdComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(210)], BaseSkillCdComponent);
 exports.BaseSkillCdComponent = BaseSkillCdComponent; //# sourceMappingURL=BaseSkillCdComponent.js.map

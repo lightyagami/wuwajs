@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.PhotographSetupView = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
 const ConfigCommon_1 = require("../../../../Core/Config/ConfigCommon");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -27,12 +28,14 @@ const PhotographValueSetup_1 = require("./PhotographValueSetup");
 class PhotographSetupView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.BIl = 0;
+    this.l_m = 1;
+    this.__m = 1;
     this.qKi = new Set();
     this.GKi = new Map();
     this.M1_ = new Map();
     this.E1_ = undefined;
     this.c4_ = undefined;
-    this.PhotoSetupMode = undefined;
     this.NKi = undefined;
     this.OKi = undefined;
     this.I1_ = undefined;
@@ -139,15 +142,23 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[0, this.HKi], [1, this.oHe], [2, this.jKi], [9, this.T1_], [7, this.Vgt]];
   }
   async OnBeforeStartAsync() {
-    this.tQi();
-    await this.iQi();
-    await this.oQi();
-    await this.rQi();
-    await this.R1_();
+    var t = this.OpenParam;
+    if (t) {
+      this.l_m = t.PhotoSetupMode;
+      this.BIl = t.SkinId;
+      this.__m = t.RoleAnimType;
+      this.tQi();
+      await this.iQi();
+      await this.oQi();
+      await this.rQi();
+      await this.R1_();
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Photograph", 58, "Invalid OpenParam");
+    }
   }
   OnStart() {
     this.Xva = this.GetItem(3).GetOwner().GetComponentByClass(UE.UIInturnAnimController.StaticClass());
-    this.nQi(this.OpenParam ?? 1, true, true);
+    this.nQi(this.l_m, true, true);
     this.eQi();
     this.UiScrollView = this.GetScrollViewWithScrollbar(12);
   }
@@ -205,16 +216,14 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     }
   }
   lQi(t) {
-    this.PhotoSetupMode = t;
+    this.l_m = t;
     this._Qi(t === 1);
     this.uQi(t === 0);
     this.cQi(t === 2);
     this.w1_(t === 3);
   }
   async iQi() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetRoleId();
-    var i = PhotographController_1.PhotographController.GetRoleMainAnimInstanceType();
-    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListByRoleIdAndMainAnim(t, i));
+    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.__m));
     if (t) {
       t.sort((t, i) => t.Sort - i.Sort);
       var i = this.GetItem(4);
@@ -284,22 +293,20 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     }
   }
   async rQi() {
-    var t = [];
-    var i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(0).GetRoleId();
-    t.push(this.dQi());
-    var e = PhotographController_1.PhotographController.GetRoleMainAnimInstanceType();
-    var i = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListByRoleIdAndMainAnim(i, e));
-    if (i) {
-      i.sort((t, i) => t.Sort - i.Sort);
-      e = this.GetItem(4);
-      e.SetUIActive(true);
-      for (const s of i) {
+    var t = ConfigCommon_1.ConfigCommon.ToList(ConfigManager_1.ConfigManager.PhotographConfig.GetPhotoMontageConfigListBySkinIdAndMainAnim(this.BIl, this.__m));
+    if (t) {
+      t.sort((t, i) => t.Sort - i.Sort);
+      var i = this.GetItem(4);
+      i.SetUIActive(true);
+      var e = [];
+      e.push(this.dQi());
+      for (const s of t) {
         if (s.MotionType === 0) {
-          t.push(this.CQi(s.Id));
+          e.push(this.CQi(s.Id));
         }
       }
-      await Promise.all(t);
-      e.SetUIActive(false);
+      await Promise.all(e);
+      i.SetUIActive(false);
       if (this.GKi.size !== 0) {
         this.FKi.get(2)?.RootUIComp.SetUIActive(true);
       }
@@ -367,7 +374,7 @@ class PhotographSetupView extends UiViewBase_1.UiViewBase {
     e.SetUIActive(true);
     var s = [];
     for (const h of t) {
-      if (h.ValueType !== 2 || PhotographController_1.PhotographController.GetRoleMainAnimInstanceType() === 0) {
+      if (h.ValueType !== 2 || this.__m === 0) {
         s.push(this.gQi(h.ValueType, h.Type));
       }
     }

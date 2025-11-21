@@ -50,24 +50,24 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     return true;
   }
-  PlayScreenEffect(e) {
-    let t = this.PathToHandleMap.get(e);
-    if (!t) {
-      (t = this.GetHandle()).Path = e;
-      this.PathToHandleMap.set(e, t);
+  PlayScreenEffect(e, t) {
+    let r = this.PathToHandleMap.get(e);
+    if (!r) {
+      (r = this.GetHandle()).Path = e;
+      this.PathToHandleMap.set(e, r);
     }
-    var r = this.HandleIdGenerator++;
-    t.HandleIds.add(r);
-    this.HandleMap.set(r, t);
+    var i = this.HandleIdGenerator++;
+    r.HandleIds.add(i);
+    this.HandleMap.set(i, r);
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("RenderEffect", 17, "调用播放镜头特效接口", ["handleId", r], ["path", e]);
+      Log_1.Log.Debug("RenderEffect", 17, "调用播放镜头特效接口", ["handleId", i], ["path", e]);
     }
-    if (t.HandleIds.size === 1) {
-      t.LoadResId = this.uTa(e);
+    if (r.HandleIds.size === 1) {
+      r.LoadResId = this.uTa(e, t);
     }
-    return r;
+    return i;
   }
-  uTa(r) {
+  uTa(r, e) {
     return ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.EffectScreenPlayData_C, e => {
       var t = this.PathToHandleMap.get(r);
       if (t && t.HandleIds.size !== 0 && e) {
@@ -96,7 +96,7 @@ class ScreenEffectModel extends ModelBase_1.ModelBase {
         }
         ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(e);
       }
-    });
+    }, 102, e);
   }
   EndScreenEffectByPath(e) {
     if (Log_1.Log.CheckDebug()) {

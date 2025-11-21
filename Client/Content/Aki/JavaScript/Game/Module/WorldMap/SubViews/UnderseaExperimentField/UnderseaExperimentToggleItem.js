@@ -8,7 +8,6 @@ const UE = require("ue");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
-const ExploreProgressDefine_1 = require("../../../ExploreProgress/ExploreProgressDefine");
 class UnderseaExperimentToggleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -17,15 +16,15 @@ class UnderseaExperimentToggleItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
   }
-  async Initialize(e, r) {
+  async Initialize(e, a) {
     this.awu = e;
-    await this.CreateThenShowByActorAsync(r.GetOwner());
+    await this.CreateThenShowByActorAsync(a.GetOwner());
     this.RefreshPlayerIcon();
   }
   RefreshPlayerIcon() {
     var e = ConfigManager_1.ConfigManager.WorldMapConfig?.GetCustomizedThumbnailConfig(this.awu);
-    var r = ModelManager_1.ModelManager.AreaModel?.GetCurrentAreaId(ExploreProgressDefine_1.AREA_LEVEL) ?? 0;
-    this.GetItem(1).SetUIActive(r === e?.AreaId);
+    var a = ModelManager_1.ModelManager.AreaModel?.GetCurrentAreaId(2) ?? 0;
+    this.GetItem(1).SetUIActive(a === e?.AreaId);
   }
 }
 exports.UnderseaExperimentToggleItem = UnderseaExperimentToggleItem;

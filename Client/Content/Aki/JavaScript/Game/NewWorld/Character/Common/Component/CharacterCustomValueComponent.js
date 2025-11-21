@@ -72,7 +72,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
           Log_1.Log.Debug("Battle", 20, "[自定义值]加载配置完成，设置固定值", ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()], ["固定值", this.Yre]);
         }
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 20, "[自定义值]DT_CharacterFightInfo中的路径配置的表路径找不到资源", ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()], ["Path", e]);
+        Log_1.Log.Error("Battle", 20, "[自定义值]CDT_CharacterFightInfo中的路径配置的表路径找不到资源", ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()], ["Path", e]);
       }
     };
     this.Yre = new Map();
@@ -86,7 +86,7 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
       ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.DataTable, this.$4_);
       this.W4_();
     } else if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Battle", 20, "[自定义值]DT_CharacterFightInfo中的路径配置的表路径为空", ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
+      Log_1.Log.Debug("Battle", 20, "[自定义值]CDT_CharacterFightInfo中的路径配置的表路径为空", ["Actor", this.Entity.GetComponent(1)?.Owner?.GetName()]);
     }
     return true;
   }
@@ -423,5 +423,5 @@ let CharacterCustomValueComponent = CharacterCustomValueComponent_1 = class Char
   }
 };
 CharacterCustomValueComponent.Q4_ = new Map();
-CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], CharacterCustomValueComponent);
+CharacterCustomValueComponent = CharacterCustomValueComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(286)], CharacterCustomValueComponent);
 exports.CharacterCustomValueComponent = CharacterCustomValueComponent; //# sourceMappingURL=CharacterCustomValueComponent.js.map

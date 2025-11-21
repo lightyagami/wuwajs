@@ -16,7 +16,7 @@ class ItemPriorHintItem extends ItemHintItem_1.ItemHintItem {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [3, UE.UIText], [2, UE.UIText], [4, UE.UITexture], [5, UE.UISprite], [6, UE.UINiagara]];
   }
   async AsyncLoadUiResource() {
-    this.Data = ModelManager_1.ModelManager.ItemHintModel.ShiftPriorInterfaceData();
+    this.Data = this.ShiftData?.() ?? ModelManager_1.ModelManager.ItemHintModel.ShiftPriorInterfaceData();
     var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityByItemIdAndQuality(this.Data.ItemId, this.Data.Quality);
     this.SetTextureByPath(e.AcquireQualityTexPath, this.GetTexture(4));
     const i = new CustomPromise_1.CustomPromise();
@@ -26,13 +26,13 @@ class ItemPriorHintItem extends ItemHintItem_1.ItemHintItem {
     ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.NiagaraSystem, e => {
       var t;
       i.SetResult(undefined);
-      if (e && UiManager_1.UiManager.IsViewOpen("ItemHintView") && this.RootItem) {
+      if (e && (UiManager_1.UiManager.IsViewOpen("ItemHintView") || UiManager_1.UiManager.IsViewOpen("ItemHintViewNew")) && this.RootItem) {
         (t = this.GetUiNiagara(6)).SetNiagaraSystem(e);
         if (!r) {
           t.ColorParameter.Get("Color").Constant = UE.LinearColor.FromSRGBColor(s);
         }
       }
-    });
+    }, 100, this.MemoryTag);
     this.SetSpriteByPath(e.AcquireQualitySpritePath, this.GetSprite(5), false);
     const o = new CustomPromise_1.CustomPromise();
     this.SetItemIcon(this.GetTexture(0), this.Data.ItemId, undefined, () => {

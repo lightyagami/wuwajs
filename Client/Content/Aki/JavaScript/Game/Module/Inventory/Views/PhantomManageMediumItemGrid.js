@@ -13,7 +13,7 @@ const RED_TICK_ALPHA = 0.9;
 class PhantomManageMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
-    this.Fzu = () => {
+    this.VJu = () => {
       if (this.Data && PhantomManageMediumItemGrid.CallbackListenerFocus) {
         PhantomManageMediumItemGrid.CallbackListenerFocus(this.Data);
       }
@@ -21,7 +21,7 @@ class PhantomManageMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
   }
   OnStart() {
     super.OnStart();
-    this.GetItemGridExtendToggle().FocusListenerDelegate.Bind(this.Fzu);
+    this.GetItemGridExtendToggle().FocusListenerDelegate.Bind(this.VJu);
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
@@ -36,8 +36,8 @@ class PhantomManageMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
     var r = e.GetUniqueId();
     var t = t.QualityId;
     var i = ModelManager_1.ModelManager.InventoryModel;
-    var a = this.Hqu(e);
-    var o = this.YGu(e);
+    var a = this.Oqu(e);
+    var o = this.Y3u(e);
     var d = {
       Type: 4,
       Data: e,
@@ -88,10 +88,10 @@ class PhantomManageMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollM
   RefreshByView(e) {
     this.MRu(e);
   }
-  YGu(e) {
+  Y3u(e) {
     return !!PhantomManageMediumItemGrid.CallbackCheckTips && PhantomManageMediumItemGrid.CallbackCheckTips(e);
   }
-  Hqu(e) {
+  Oqu(e) {
     return !!PhantomManageMediumItemGrid.CallbackCheckSelect && PhantomManageMediumItemGrid.CallbackCheckSelect(e);
   }
   GetKey(e, t) {

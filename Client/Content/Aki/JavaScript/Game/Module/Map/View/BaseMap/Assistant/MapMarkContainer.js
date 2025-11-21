@@ -328,7 +328,11 @@ class MapMarkContainer {
       if (i || s !== a) {
         if (a) {
           if (M) {
-            i = M.MarkItemEntity.GetComponent(15)?.Config;
+            let e = M.MarkItemEntity.GetComponent(15)?.Config;
+            if (M.MarkType === 40) {
+              i = M;
+              e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(i.ConfigId);
+            }
             TrackController_1.TrackController.StartTrack({
               TrackSource: M.TrackSource,
               Id: t,
@@ -336,8 +340,8 @@ class MapMarkContainer {
               IconPath: M.IconPath,
               TrackTarget: M.TrackTarget,
               TrackInstanceId: M.RelativeInstanceDungeonId,
-              TrackHudEnable: i?.TrackHudEnable === 1,
-              TrackAutoCancelDistance: i?.TrackAutoCancelDistance
+              TrackHudEnable: e?.TrackHudEnable === 1,
+              TrackAutoCancelDistance: e?.TrackAutoCancelDistance
             });
             this.sUi.add(M);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnMarkItemTrackStateChange, M);

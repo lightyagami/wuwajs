@@ -61,7 +61,7 @@ class BattleLinkEnergyButton extends FormationExtraButton_1.FormationExtraButton
     this.AAe = 0;
     this.eL1 = 0;
     this.U8c = (t, i) => {
-      if (this.GetActive() && i === 0) {
+      if (this.IsUiActiveInHierarchy() && i === 0) {
         this.B8c();
       }
     };
@@ -393,6 +393,15 @@ class BattleLinkEnergyButton extends FormationExtraButton_1.FormationExtraButton
     }
   }
   OnShowBattleChildView() {}
+  GetResourceId() {
+    if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInNewBattleLink()) {
+      return "UiItem_RogueScoreE";
+    } else if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInSpecialBattleLink()) {
+      return "UiItem_FightLinkBurst";
+    } else {
+      return "";
+    }
+  }
 }
 (exports.BattleLinkEnergyButton = BattleLinkEnergyButton).Ult = Stats_1.Stat.Create("[BattleView]BattleLinkEnergyButtonTick");
 //# sourceMappingURL=BattleLinkEnergyButton.js.map

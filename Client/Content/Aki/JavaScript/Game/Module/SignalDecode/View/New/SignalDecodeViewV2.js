@@ -209,7 +209,7 @@ class SignalDecodeViewV2 extends UiTickViewBase_1.UiTickViewBase {
         } else {
           i.SetResult(undefined);
         }
-      });
+      }, 100, this.MemoryTag);
       return await i.Promise;
     }
   }

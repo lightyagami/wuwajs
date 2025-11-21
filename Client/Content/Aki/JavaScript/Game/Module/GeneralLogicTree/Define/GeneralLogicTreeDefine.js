@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PunishReportSettlementViewParams = exports.FlySettlementViewParams = exports.ChallengeCountDownViewParams = exports.SilentAreaShowInfo = exports.TreeTrackTextExpressionInfo = exports.BtCustomUiConfig = exports.btChildQuestNodeStatusLogString = exports.btNodeStatusLogString = exports.btTypeLogString = exports.NodeInfo = exports.NPCFARAWAY_TIMERTYPE = exports.OUTRANGEFAILED_TIMERTYPE = exports.CHALLENGELEVELPLAY_TRACKICONID = exports.COMMONLEVELPLAY_TRACKICONID = exports.INVALID_INTERACTOPTION_ID = undefined;
+exports.PunishReportSettlementViewParams = exports.FlySettlementViewParams = exports.ChallengeCountDownViewParams = exports.ModifyTrackAreaConfig = exports.SilentAreaShowInfo = exports.TreeTrackTextExpressionInfo = exports.BtCustomUiConfig = exports.btChildQuestNodeStatusLogString = exports.btNodeStatusLogString = exports.btTypeLogString = exports.NodeInfo = exports.NPCFARAWAY_TIMERTYPE = exports.OUTRANGEFAILED_TIMERTYPE = exports.CHALLENGELEVELPLAY_TRACKICONID = exports.COMMONLEVELPLAY_TRACKICONID = exports.INVALID_INTERACTOPTION_ID = undefined;
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
+const PublicUtil_1 = require("../../../Common/PublicUtil");
 const MissionViewDefine_1 = require("../../BattleUi/Views/MissionView/MissionViewDefine");
 exports.INVALID_INTERACTOPTION_ID = -1;
 exports.COMMONLEVELPLAY_TRACKICONID = 8;
@@ -37,8 +38,7 @@ exports.btChildQuestNodeStatusLogString = {
   [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Enter]: "1-进入",
   [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_EnterAction]: "2-执行进入行为中",
   [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress]: "3-进行中",
-  [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished]: "4-完成",
-  [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_FinishAction]: "5-完成行为"
+  [Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished]: "4-完成"
 };
 class BtCustomUiConfig {
   constructor(o, t) {
@@ -88,6 +88,15 @@ class SilentAreaShowInfo {
   }
 }
 exports.SilentAreaShowInfo = SilentAreaShowInfo;
+class ModifyTrackAreaConfig {
+  constructor(o, t) {
+    this.SourceOfAdd = o;
+    this.TrackConfig = t;
+    this.ModifyTrackAreaText = "";
+    this.ModifyTrackAreaText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackConfig.Tid);
+  }
+}
+exports.ModifyTrackAreaConfig = ModifyTrackAreaConfig;
 class ChallengeCountDownViewParams {
   constructor(o, t) {
     this.TimerEndTime = o;

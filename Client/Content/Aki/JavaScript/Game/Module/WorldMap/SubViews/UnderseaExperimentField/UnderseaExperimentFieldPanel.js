@@ -13,7 +13,7 @@ class UnderseaExperimentFieldPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.YUi = 0;
-    this.eWc = new Map([[1, 0], [2, 1], [3, 2], [4, 3], [5, 4]]);
+    this.DXu = new Map([[1, 0], [2, 1], [3, 2], [4, 3], [5, 4]]);
     this.owu = new Map();
     this.nwu = undefined;
     this.aLn = e => {
@@ -34,7 +34,7 @@ class UnderseaExperimentFieldPanel extends UiPanelBase_1.UiPanelBase {
     var s;
     var a = ModelManager_1.ModelManager.AreaModel?.GetCurrentAreaId(3) ?? 0;
     var r = [];
-    for ([t, s] of this.eWc) {
+    for ([t, s] of this.DXu) {
       var n = this.GetExtendToggle(s);
       r.push(this.swu(t, n));
       var n = ConfigManager_1.ConfigManager.WorldMapConfig.GetCustomizedThumbnailConfig(t);
@@ -57,7 +57,7 @@ class UnderseaExperimentFieldPanel extends UiPanelBase_1.UiPanelBase {
     this.owu.set(e, t);
   }
   Oqe() {
-    for (var [e, i] of this.eWc) {
+    for (var [e, i] of this.DXu) {
       this.GetExtendToggle(i).SetToggleState(this.YUi === e ? 1 : 0);
     }
   }

@@ -69,7 +69,7 @@ class BulletLogicCreateBulletController extends BulletLogicController_1.BulletLo
           o = r.AttachToBoneName;
           if ((l = this.l7o(r.AttachToActor, t)) && o !== StringUtils_1.NONE_STRING) {
             e = FNameUtil_1.FNameUtil.GetDynamicFName(o);
-            r = i.GetComponent(170);
+            r = i.GetComponent(173);
             o = l.Mesh;
             r.SetActorLocation(o.D_GetSocketLocation(e));
             r.SetAttachToComponent(o, e, 1, 0, 0, false);

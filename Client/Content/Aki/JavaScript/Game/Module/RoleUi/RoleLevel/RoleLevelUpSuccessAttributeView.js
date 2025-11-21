@@ -6,12 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleAttributeItem = exports.RoleLevelUpSuccessAttributeView = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const Vector2D_1 = require("../../../../Core/Utils/Math/Vector2D");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
-const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
+const DynScrollView_1 = require("../../Util/ScrollView/DynScrollView");
 const StrengthUpgradeBarItem_1 = require("./StrengthUpgradeBarItem");
 class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
   constructor() {
@@ -19,7 +19,8 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
     this.Pe = undefined;
     this.Ouo = undefined;
     this.XHi = undefined;
-    this.kuo = undefined;
+    this.h_d = undefined;
+    this.l_d = undefined;
     this.nqe = () => {
       var t = this.Pe.ClickFunction;
       if (t) {
@@ -29,7 +30,7 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UILoopScrollViewComponent], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIDynScrollViewComponent], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem]];
     this.BtnBindInfo = [[2, this.nqe], [7, this.nqe]];
   }
   OnBeforeCreate() {
@@ -67,12 +68,14 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
     this.GetItem(9).SetUIActive(t);
     this.GetItem(3).SetUIActive(!t);
     var t = t ? this.GetItem(9) : this.GetItem(3);
-    var e = this.GetLoopScrollViewComponent(6);
+    var e = this.GetUIDynScrollViewComponent(6);
     e.RootUIComp.SetWidth(t.GetWidth());
     this.GetItem(8).SetWidth(t.GetWidth());
-    this.kuo = new LoopScrollView_1.LoopScrollView(e, t.GetOwner(), () => {
-      return new AttributeSlotItem();
+    this.l_d = new AttributeSlotDynItem();
+    this.h_d = new DynScrollView_1.DynamicScrollView(e, t, this.l_d, () => {
+      return new AttributeDynScrollItem();
     });
+    this.h_d.Init();
   }
   OnBeforeShow() {
     this.Refresh();
@@ -80,8 +83,8 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
   OnBeforeDestroy() {
     this.Ouo.Destroy();
     this.Ouo = undefined;
-    this.kuo.ClearGridProxies();
-    this.kuo = undefined;
+    this.h_d.ClearChildren();
+    this.h_d = undefined;
   }
   Dbt() {
     var t = this.Pe.AudioId;
@@ -123,7 +126,7 @@ class RoleLevelUpSuccessAttributeView extends UiViewBase_1.UiViewBase {
     if (this.Pe.AttributeInfo === undefined || this.Pe.AttributeInfo.length === 0) {
       this.GetLoopScrollViewComponent(6).RootUIComp.SetUIActive(false);
     } else {
-      this.kuo.ReloadData(this.Pe.AttributeInfo);
+      this.h_d.RefreshByData(this.Pe.AttributeInfo);
     }
   }
   juo() {
@@ -142,28 +145,64 @@ class LevelShowItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(2).SetUIActive(s ?? false);
   }
 }
-class AttributeSlotItem extends GridProxyAbstract_1.GridProxyAbstract {
+class AttributeDynScrollItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Wuo = undefined;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
   }
   OnStart() {
     this.Wuo = new RoleAttributeItem();
     this.Wuo.CreateThenShowByActor(this.GetItem(0).GetOwner());
   }
   OnBeforeDestroy() {}
-  Refresh(t, e, i) {
-    this.Wuo.Refresh(t);
-    this.WNe(t.IsNormalBg);
+  Update(t, e) {
+    var i;
+    if (t.IsLine ?? false) {
+      this.GetItem(1).SetUIActive(false);
+      this.GetItem(2).SetUIActive(false);
+      this.GetItem(0).SetUIActive(false);
+      (i = this.GetItem(3)).SetUIActive(true);
+      this.GetRootItem().SetHeight(i.GetHeight());
+    } else {
+      this.Wuo.Refresh(t);
+      this.WNe(t.IsNormalBg);
+    }
   }
   WNe(t) {
     t = t ?? true;
     this.GetItem(1).SetUIActive(!t);
     this.GetItem(2).SetUIActive(t);
   }
+  GetUsingItem(t) {
+    return this.GetRootItem().GetOwner();
+  }
+  async Init(t) {
+    await super.CreateByActorAsync(t.GetOwner(), undefined, true);
+  }
+  ClearItem() {
+    this.Destroy();
+  }
+}
+class AttributeSlotDynItem extends UiPanelBase_1.UiPanelBase {
+  constructor() {
+    super(...arguments);
+    this.eqe = undefined;
+  }
+  async Init(t) {
+    await super.CreateByActorAsync(t.GetOwner(), undefined, true);
+  }
+  GetItemSize(t) {
+    if (this.eqe === undefined) {
+      this.eqe = Vector2D_1.Vector2D.Create();
+    }
+    var e = this.GetRootItem();
+    this.eqe.Set(e.GetWidth(), e.GetHeight());
+    return this.eqe.ToUeVector2D(true);
+  }
+  ClearItem() {}
 }
 class RoleAttributeItem extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {

@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.SequenceQteSelectOption = undefined;
 const SequenceQteHandleBase_1 = require("./SequenceQteHandleBase");
 class SequenceQteSelectOption extends SequenceQteHandleBase_1.SequenceQteHandleBase {
-  OnFinishQte() {
+  OnCommonQteFinished() {
     this.OptionIndex = this.Context.SelectOption;
-    super.OnFinishQte();
+    super.OnCommonQteFinished();
   }
 }
 exports.SequenceQteSelectOption = SequenceQteSelectOption;

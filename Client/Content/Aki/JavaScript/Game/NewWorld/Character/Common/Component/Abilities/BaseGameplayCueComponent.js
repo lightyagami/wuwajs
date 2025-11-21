@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (e, a, t, r) {
   var u;
   var l = arguments.length;
-  var i = l < 3 ? a : r === null ? r = Object.getOwnPropertyDescriptor(a, t) : r;
+  var C = l < 3 ? a : r === null ? r = Object.getOwnPropertyDescriptor(a, t) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    i = Reflect.decorate(e, a, t, r);
+    C = Reflect.decorate(e, a, t, r);
   } else {
-    for (var C = e.length - 1; C >= 0; C--) {
-      if (u = e[C]) {
-        i = (l < 3 ? u(i) : l > 3 ? u(a, t, i) : u(a, t)) || i;
+    for (var i = e.length - 1; i >= 0; i--) {
+      if (u = e[i]) {
+        C = (l < 3 ? u(C) : l > 3 ? u(a, t, C) : u(a, t)) || C;
       }
     }
   }
-  if (l > 3 && i) {
-    Object.defineProperty(a, t, i);
+  if (l > 3 && C) {
+    Object.defineProperty(a, t, C);
   }
-  return i;
+  return C;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -34,11 +34,13 @@ const GameplayCueAnimBeam_1 = require("./GameplayCueSFX/GameplayCueAnimBeam");
 const GameplayCueAudioEvent_1 = require("./GameplayCueSFX/GameplayCueAudioEvent");
 const GameplayCueBeam_1 = require("./GameplayCueSFX/GameplayCueBeam");
 const GameplayCueCameraEffect_1 = require("./GameplayCueSFX/GameplayCueCameraEffect");
+const GameplayCueCharacterAudioEvent_1 = require("./GameplayCueSFX/GameplayCueCharacterAudioEvent");
 const GameplayCueEffect_1 = require("./GameplayCueSFX/GameplayCueEffect");
 const GamePlayCueEffectNiagara_1 = require("./GameplayCueSFX/GamePlayCueEffectNiagara");
 const GameplayCueFixHook_1 = require("./GameplayCueSFX/GameplayCueFixHook");
 const GameplayCueFollow_1 = require("./GameplayCueSFX/GameplayCueFollow");
 const GameplayCueFromSummoned_1 = require("./GameplayCueSFX/GameplayCueFromSummoned");
+const GameplayCueGhost_1 = require("./GameplayCueSFX/GameplayCueGhost");
 const GameplayCueHideBone_1 = require("./GameplayCueSFX/GameplayCueHideBone");
 const GameplayCueHideMesh_1 = require("./GameplayCueSFX/GameplayCueHideMesh");
 const GameplayCueHitEffect_1 = require("./GameplayCueSFX/GameplayCueHitEffect");
@@ -117,6 +119,10 @@ function getGameplayCueClass(e, a) {
       return GameplayCueAudioEvent_1.GameplayCueAudioEvent;
     case 23:
       return GamePlayCueEffectNiagara_1.GamePlayCueEffectNiagara;
+    case 25:
+      return GameplayCueCharacterAudioEvent_1.GameplayCueCharacterAudioEvent;
+    case 26:
+      return GameplayCueGhost_1.GameplayCueGhost;
     default:
       return;
   }
@@ -188,10 +194,16 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   GetCueByHandle(e) {
     return this.Sau.get(e);
   }
+  ChangeBuffHandle(e, a) {
+    e = this.Sau.get(e);
+    if (e) {
+      e.ChangeBuffHandle(a.Handle);
+    }
+  }
   xJs(e) {
     var a = Protocol_1.Aki.Protocol.he_.create();
     a.TJs = MathUtils_1.MathUtils.NumberToLong(e);
-    CombatMessage_1.CombatNet.Send(29861, this.GetEntityHandle().Entity, a);
+    CombatMessage_1.CombatNet.Send(16635, this.GetEntityHandle().Entity, a);
   }
   static GameplayCueNotify(e, a) {
     e = e?.GetComponent(21);
@@ -224,11 +236,11 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
       if (this.Lau(r)) {
         var u = t.Buff;
         var l = t.Instant ?? false;
-        var i = getGameplayCueClass(r, l);
-        if (i) {
+        var C = getGameplayCueClass(r, l);
+        if (C) {
           let e = this.wlu(a);
-          if (!e || !i.IsSingleInstance()) {
-            e = i.Spawn({
+          if (!e || !C.IsSingleInstance()) {
+            e = C.Spawn({
               CueConfig: r,
               EntityHandle: this.GetEntityHandle(),
               CueComp: this,
@@ -278,5 +290,5 @@ let BaseGameplayCueComponent = class BaseGameplayCueComponent extends EntityComp
   }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("EJs", true)], BaseGameplayCueComponent, "GameplayCueNotify", null);
-BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], BaseGameplayCueComponent);
+BaseGameplayCueComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(229)], BaseGameplayCueComponent);
 exports.BaseGameplayCueComponent = BaseGameplayCueComponent; //# sourceMappingURL=BaseGameplayCueComponent.js.map

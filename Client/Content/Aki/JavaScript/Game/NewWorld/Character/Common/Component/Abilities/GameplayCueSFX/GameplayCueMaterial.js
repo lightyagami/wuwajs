@@ -16,9 +16,9 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     this.rKt = -1;
     this.aYo = 0;
     this.Mgc = undefined;
-    this.Otd = false;
+    this.$rd = false;
     this.hYo = e => {
-      if (e === this.rKt && this.EndCallback && !this.Otd) {
+      if (e === this.rKt && this.EndCallback && !this.$rd) {
         this.EAl();
         e = this.EndCallback;
         this.EndCallback = undefined;
@@ -38,7 +38,7 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
       if (this.IsActive) {
         this.BeginCallback?.();
         this.Mgc = e;
-        this.qtd();
+        this.Wrd();
         this.I$o();
         super.OnCreate();
       }
@@ -47,10 +47,10 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
   OnDestroy() {
     this.Mgc = undefined;
     super.OnDestroy();
-    this.Gtd();
+    this.Qrd();
     this.hYo(this.rKt);
   }
-  Gtd() {
+  Qrd() {
     switch (this.aYo) {
       case 1:
         this.ActorInternal.CharRenderingComponent.RemoveMaterialControllerDataWithEnding(this.rKt);
@@ -63,16 +63,16 @@ class GameplayCueMaterial extends GameplayCueMagnitude_1.GameplayCueMagnitude {
     this.ActorInternal.CharRenderingComponent.SetEffectProgress(e, this.rKt);
   }
   OnChangeRole(e) {
-    this.Otd = true;
+    this.$rd = true;
     if (this.Mgc && this.rKt !== -1) {
-      this.Gtd();
+      this.Qrd();
       this.rKt = -1;
     }
-    this.Otd = false;
+    this.$rd = false;
     super.OnChangeRole(e);
-    this.qtd();
+    this.Wrd();
   }
-  qtd() {
+  Wrd() {
     if (this.ActorInternal?.IsValid() && this.Mgc !== undefined) {
       var e = this.Mgc;
       switch (this.lYo(e)) {

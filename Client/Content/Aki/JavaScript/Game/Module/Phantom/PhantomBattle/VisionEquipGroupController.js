@@ -25,15 +25,15 @@ class VisionEquipGroupController extends UiControllerBase_1.UiControllerBase {
   }
   static async RequestVisionEquipGroupInfo() {
     var e = new Protocol_1.Aki.Protocol.Dv_();
-    var e = await Net_1.Net.CallAsync(19015, e);
+    var e = await Net_1.Net.CallAsync(23978, e);
     ModelManager_1.ModelManager.VisionEquipGroupModel.RefreshVisionEquipGroupData(e.Zb_);
   }
   static RequestDeleteVisionEquipGroup(e) {
     var o = new Protocol_1.Aki.Protocol.Ov_();
     o.c5n = e;
-    Net_1.Net.Call(25817, Protocol_1.Aki.Protocol.Ov_.create(o), e => {
+    Net_1.Net.Call(24012, Protocol_1.Aki.Protocol.Ov_.create(o), e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21560);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18029);
       } else {
         ModelManager_1.ModelManager.VisionEquipGroupModel.RefreshVisionEquipGroupData(e.Zb_);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionGroupDataDelete);
@@ -46,9 +46,9 @@ class VisionEquipGroupController extends UiControllerBase_1.UiControllerBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionGroupDataToTop);
     } else {
       (o = new Protocol_1.Aki.Protocol.Fv_()).c5n = e;
-      Net_1.Net.Call(17905, Protocol_1.Aki.Protocol.Fv_.create(o), e => {
+      Net_1.Net.Call(28248, Protocol_1.Aki.Protocol.Fv_.create(o), e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15600);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19570);
         } else {
           ModelManager_1.ModelManager.VisionEquipGroupModel.RefreshVisionEquipGroupData(e.Zb_);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionGroupDataToTop);
@@ -57,7 +57,7 @@ class VisionEquipGroupController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static RequestApplyVisionGroup(o, r) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
     } else {
       let e = false;
@@ -68,9 +68,9 @@ class VisionEquipGroupController extends UiControllerBase_1.UiControllerBase {
       } else if (!RoleController_1.RoleController.CheckCharacterInBattleTagAndShowTips()) {
         (t = new Protocol_1.Aki.Protocol.xy_()).c5n = o;
         t.Q6n = r;
-        Net_1.Net.Call(28773, Protocol_1.Aki.Protocol.xy_.create(t), e => {
+        Net_1.Net.Call(27442, Protocol_1.Aki.Protocol.xy_.create(t), e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23095);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26588);
           } else {
             for (const o of e.UBs) {
               ModelManager_1.ModelManager.PhantomBattleModel.UpdateRoleEquipmentData(o);
@@ -92,9 +92,9 @@ VisionEquipGroupController.RequestAddVisionEquipGroup = async (e, o) => {
   var r = new Protocol_1.Aki.Protocol.kv_();
   r.Q6n = e;
   r.H8n = o;
-  var e = await Net_1.Net.CallAsync(18402, r);
+  var e = await Net_1.Net.CallAsync(22419, r);
   if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19397);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20842);
   } else {
     ModelManager_1.ModelManager.VisionEquipGroupModel.RefreshVisionEquipGroupData(e.Zb_);
     o = ModelManager_1.ModelManager.VisionEquipGroupModel.GetVisionEquipGroupList().length;
@@ -108,9 +108,9 @@ VisionEquipGroupController.RequestChangeVisionGroupName = async (e, o) => {
   var r = new Protocol_1.Aki.Protocol.Nv_();
   r.c5n = e;
   r.H8n = o;
-  var e = await Net_1.Net.CallAsync(17596, r);
+  var e = await Net_1.Net.CallAsync(24318, r);
   if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15600);
+    ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19570);
   } else {
     ModelManager_1.ModelManager.VisionEquipGroupModel.RefreshVisionEquipGroupData(e.Zb_);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionGroupDataChangeName);

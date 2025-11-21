@@ -35,7 +35,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.jFo = undefined;
     this.WFo = undefined;
     this.cTu = 0;
-    this.PZu = undefined;
+    this.d7u = undefined;
     this.CTu = () => {
       this.gTu();
       var e = this.GetItem(13).GetAnchorOffset();
@@ -68,7 +68,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
         this.gIu = false;
         this.XW1.RefreshBg(false, this.KW1);
       } else if (e === "Start") {
-        this.TNu();
+        this.Iqu();
       }
     };
     this.ZW1 = () => {
@@ -105,7 +105,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
       e = Vector2D_1.Vector2D.Create(e);
       this.SetPosition(e, false);
     };
-    this.bNu = () => {
+    this.e5u = () => {
       for (const e of this.EPu.values()) {
         e.RefreshRedDot();
       }
@@ -174,17 +174,17 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.CTu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.e5u);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.CTu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.bNu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate, this.e5u);
   }
   OnBeforeDestroy() {
     (0, puerts_1.releaseManualReleaseDelegate)(this.YFo);
-    if (this.PZu && TimerSystem_1.TimerSystem.Has(this.PZu)) {
-      TimerSystem_1.TimerSystem.Remove(this.PZu);
-      this.PZu = undefined;
+    if (this.d7u && TimerSystem_1.TimerSystem.Has(this.d7u)) {
+      TimerSystem_1.TimerSystem.Remove(this.d7u);
+      this.d7u = undefined;
     }
   }
   zW1() {
@@ -204,7 +204,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
     this.SetButtonUiActive(11, i);
     this.GetSprite(15).SetUIActive(e || t || i);
   }
-  TNu() {
+  Iqu() {
     for (const e of this.EPu.values()) {
       e.PlayUnlock();
     }
@@ -271,7 +271,7 @@ class PhantomArenaEntranceGymTabView extends PhantomArenaChildViewBase_1.Phantom
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     var t;
-    if (e && e.length !== 0 && e[0] === "GuideHook" && !(e.length < 2) && (e = e[1], t = this.GetGuideUiItem(e), e === "1" && (this.PZu = TimerSystem_1.TimerSystem.Delay(() => {
+    if (e && e.length !== 0 && e[0] === "GuideHook" && !(e.length < 2) && (e = e[1], t = this.GetGuideUiItem(e), e === "1" && (this.d7u = TimerSystem_1.TimerSystem.Delay(() => {
       this.IPu(PhantomArenaDefine_1.GYM_MAX_LEVEL);
     }, 1000)), t)) {
       return [t, t];

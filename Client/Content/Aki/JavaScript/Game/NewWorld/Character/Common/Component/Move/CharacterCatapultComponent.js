@@ -63,7 +63,7 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     };
   }
   static get Dependencies() {
-    return [3, 179];
+    return [3, 182];
   }
   OnInitData() {
     this.x$r = new BigJumpUnit_1.BigJumpUnit();
@@ -71,7 +71,7 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(179);
+    this.Gce = this.Entity.GetComponent(182);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveCatapult, this.B$r);
     return true;
   }
@@ -79,10 +79,10 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveCatapult, this.B$r);
     return true;
   }
-  SetConfig(t, e, i, n, o = "", a = BigJumpUnit_1.DEFAULT_GRAVITY, r = undefined, s = false) {
-    this.w$r = s;
+  SetConfig(t, e, i, n, o = "", a = BigJumpUnit_1.DEFAULT_GRAVITY, r = undefined, s, C = false) {
+    this.w$r = C;
     this.LockRotator = a > 0;
-    this.x$r.SetAll(t, e, i, n, o, a, r);
+    this.x$r.SetAll(t, e, i, n, o, a, r, s);
   }
   StartCatapult() {
     this.x$r.SetStartPoint(this.Hte.ActorLocationProxy);
@@ -95,7 +95,7 @@ let CharacterCatapultComponent = CharacterCatapultComponent_1 = class CharacterC
     });
     var t;
     var e;
-    var i = this.Entity.GetComponent(178);
+    var i = this.Entity.GetComponent(181);
     if (i) {
       i.SetLocationAndRotatorWithModelBuffer(this.Hte.ActorLocationProxy.ToUeVector(), this.x$r.Rotator.ToUeRotator(), MODEL_BUFFER_TIME_LENGTH, "Catapult Start");
     }

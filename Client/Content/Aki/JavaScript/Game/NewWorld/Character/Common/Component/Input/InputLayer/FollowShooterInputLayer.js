@@ -38,7 +38,7 @@ class FollowShooterInputLayer extends InputLayer_1.InputLayer {
         this.Aia.OwnerActor = s;
       });
     }
-    var e = t.GetComponent(206);
+    var e = t.GetComponent(209);
     if (e) {
       for (var [n, u] of blockInputTagToActionMap) {
         if (e.HasTag(n)) {
@@ -60,7 +60,7 @@ class FollowShooterInputLayer extends InputLayer_1.InputLayer {
     this.nrl.clear();
   }
   GetLayerType() {
-    return 3;
+    return 4;
   }
   HandlePress(s, e) {
     if (this.srl(s, 1)) {

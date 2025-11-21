@@ -55,7 +55,7 @@ class DangoMonopolyBuffActiveView extends DangoMonopolyViewBase_1.DangoMonopolyV
   }
   async InitDangoActorList() {
     var o = {
-      UiModelUseWay: 13,
+      UiModelUseWay: 14,
       DangoId: this.ct1(),
       Odds: 0,
       DangoPointCase: "DangoMonopolyMeet",

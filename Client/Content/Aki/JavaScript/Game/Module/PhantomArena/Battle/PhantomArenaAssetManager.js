@@ -59,18 +59,6 @@ class PhantomArenaAssetManager {
       }
     };
     var A = ModelUtil_1.ModelUtil.GetModelConfig(r);
-    if (A && A.特效替换表 && A.蒙太奇替换表) {
-      if ((l = A.特效替换表.ToAssetPathName()).length > 0) {
-        m?.MainAsset.SetupReplaceEffect(l);
-      }
-      if ((l = A.蒙太奇替换表.ToAssetPathName()).length > 0) {
-        m?.MainAsset.SetupReplaceMontage(l);
-      }
-    } else if (!A) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 10, "[预加载] ModelConfig为空", ["ModelId", r]);
-      }
-    }
     if (!ControllerHolder_1.ControllerHolder.PreloadControllerNew.CollectAssetByModelId(m, r)) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PhantomArena", 10, "[预加载]预加载收集模型资源失败", ["modelId", r]);
@@ -121,19 +109,19 @@ class PhantomArenaAssetManager {
       n.Stop();
       return 4;
     }
-    var d = new Map();
+    var i = new Map();
     if (m.SkillAssetManager.SkillAssetMap.size) {
-      for (var [i, P] of m.SkillAssetManager.SkillAssetMap) {
-        d.set(i, P);
+      for (var [d, P] of m.SkillAssetManager.SkillAssetMap) {
+        i.set(d, P);
       }
     }
     if (m.BulletAssetManager.AssetMap.size) {
       for (var [M, h] of m.BulletAssetManager.AssetMap) {
-        d.set(M, h);
+        i.set(M, h);
       }
     }
-    let L = d.size;
-    for (const [C, c] of d) {
+    let L = i.size;
+    for (const [C, c] of i) {
       if (ModelManager_1.ModelManager.PreloadModelNew?.EnablePreloadLog && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("PhantomArena", 10, "[预加载] 开始预加载其他资源", ["modelId", r], ["id", C], ["\nAssets", "\n" + Array.from(c.AssetPathSet).map(e => "" + e).join("\n")]);
       }

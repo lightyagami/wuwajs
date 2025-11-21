@@ -31,23 +31,23 @@ class DangoAbyssActorManager {
       r = DangoAbyssActorManager.hs1.get(e);
     }
     if (r) {
-      var t = r.Model;
+      var o = r.Model;
       const n = a.MeshId;
-      var o = t.CheckGetComponent(0);
-      if (o?.ModelConfigId === n) {
-        if (o.GetModelLoadState() === 2) {
+      var t = o.CheckGetComponent(0);
+      if (t?.ModelConfigId === n) {
+        if (t.GetModelLoadState() === 2) {
           s?.();
         }
       } else if (ConfigManager_1.ConfigManager.SkeletalObserverConfig.GetMeshConfig(n)) {
-        const i = t.CheckGetComponent(1);
-        const g = t.CheckGetComponent(10);
+        const i = o.CheckGetComponent(1);
+        const g = o.CheckGetComponent(10);
         g.StopAnimation();
-        o = a.DangoPointCase;
-        i.SetTransformByTag(o);
-        const l = t.CheckGetComponent(28);
+        t = a.DangoPointCase;
+        i.SetTransformByTag(t);
+        const l = o.CheckGetComponent(28);
         g.SetAnimationMode(1);
-        o = a.StandAnimationName;
-        ResourceSystem_1.ResourceSystem.LoadAsync(o, UE.AnimationAsset, r => {
+        t = a.StandAnimationName;
+        ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimationAsset, r => {
           if (r) {
             l.LoadModelByDangoId(a.DangoId, n, true, () => {
               var e = r;
@@ -58,7 +58,7 @@ class DangoAbyssActorManager {
               s?.();
             });
           }
-        });
+        }, 100, "Ui.DangoUi");
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Activity", 27, "没有初始化index observer", ["index", e]);
@@ -67,13 +67,13 @@ class DangoAbyssActorManager {
   static RefreshSkeletalObserverAnimation(e, r, a) {
     var s = DangoAbyssActorManager.hs1.get(e);
     if (s) {
-      const t = s.Model.CheckGetComponent(10);
-      t.StopAnimation();
+      const o = s.Model.CheckGetComponent(10);
+      o.StopAnimation();
       ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.AnimationAsset, e => {
         if (e) {
-          t.PlayAnimation(e, a);
+          o.PlayAnimation(e, a);
         }
-      });
+      }, 100, "Ui.DangoUi");
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Activity", 27, "没有初始化index observer", ["index", e]);
     }
@@ -95,5 +95,5 @@ class DangoAbyssActorManager {
     }
   }
 }
-(exports.DangoAbyssActorManager = DangoAbyssActorManager).ls1 = 15;
+(exports.DangoAbyssActorManager = DangoAbyssActorManager).ls1 = 16;
 DangoAbyssActorManager.hs1 = new Map(); //# sourceMappingURL=DangoAbyssActorManager.js.map

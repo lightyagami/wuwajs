@@ -29,11 +29,11 @@ class CharRenderShell {
     this.veh = false;
     this.hen = 0;
     this.sva = undefined;
-    this.O6d = e => {
+    this.zKd = e => {
       var t;
       var i;
       if (this.hen === 0 && ((t = (i = this.RenderingComponent?.GetCachedOwnerEntity())?.GetComponent(56)?.GetAttributeHolder()) !== i && (i = t?.CheckGetComponent(43)) && (this.hen = i.GetVisionId()), this.hen === 0)) {
-        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
+        EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
       }
       if (this.hen === e) {
         this.RenderingComponent?.CleanOriginEffect();
@@ -141,9 +141,9 @@ class CharRenderShell {
       }
       e = this.RenderingComponent.GetCachedOwnerEntity();
       if (e?.GetComponent(0)?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
+        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
       }
-      this.sva = e?.GetComponent(187);
+      this.sva = e?.GetComponent(190);
       this.A4i();
     }
   }
@@ -167,8 +167,8 @@ class CharRenderShell {
       }
       this.OtherRoleEntityId = 0;
     }
-    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.O6d)) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.O6d);
+    if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.EndVisionSkill, this.zKd)) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EndVisionSkill, this.zKd);
     }
   }
   A4i() {

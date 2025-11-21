@@ -20,7 +20,7 @@ class NpcPerformUnderAttackState extends NpcPerformBaseState_1.NpcPerformBaseSta
     this.Gtr = undefined;
   }
   CanChangeFrom(e) {
-    var t = this.Owner.Entity.GetComponent(188);
+    var t = this.Owner.Entity.GetComponent(191);
     return this.pir && e === 1 && !t.IsInPlot;
   }
   SetDefaultDirect(e) {
@@ -38,7 +38,7 @@ class NpcPerformUnderAttackState extends NpcPerformBaseState_1.NpcPerformBaseSta
   }
   OnEnter(e) {
     this.Gtr = e;
-    e = this.Owner.Entity.GetComponent(188);
+    e = this.Owner.Entity.GetComponent(191);
     if (e?.HasBrain) {
       this.Owner.Entity.GetComponent(45)?.StopMove(false);
     }

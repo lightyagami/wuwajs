@@ -30,7 +30,7 @@ class RoleNewJoinView extends UiViewBase_1.UiViewBase {
     this.exe = undefined;
     this.hKt = undefined;
     this.$be = undefined;
-    this.eQu = undefined;
+    this.FQc = undefined;
     this.lKt = 0;
     this.l0o = false;
     this.OnSequenceEventByStringParam = i => {
@@ -85,14 +85,14 @@ class RoleNewJoinView extends UiViewBase_1.UiViewBase {
   OnBeforeCreate() {
     this.dFe = this.OpenParam;
     this.lKt = ConfigManager_1.ConfigManager.GachaConfig.GetRoleInfoById(this.dFe).QualityId;
-    this.eQu = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
-    this.AddUiBehavior(this.eQu);
+    this.FQc = new UiBehaviorGachaSequence_1.UiBehaviorGachaSequence();
+    this.AddUiBehavior(this.FQc);
   }
   async OnCreateAsync() {
     await Promise.all([BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", "RoleNewJoinView")]);
   }
   async OnBeforeStartAsync() {
-    await this.eQu.PreLoadLevelSequence(this.dFe);
+    await this.FQc.PreLoadLevelSequence(this.dFe);
   }
   OnStart() {
     this.$be = new SimpleGenericLayout_1.SimpleGenericLayout(this.GetHorizontalLayout(4));
@@ -103,14 +103,14 @@ class RoleNewJoinView extends UiViewBase_1.UiViewBase {
   }
   OnHandleLoadScene() {
     this.exe = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("SceneCamera1"), 0);
-    this.eQu.BindSceneSequenceCamera(this.exe);
+    this.FQc.BindSceneSequenceCamera(this.exe);
     this.eKt = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("Flash1"), 0);
     this.tKt = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("BurstGold"), 0);
     this.iKt = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("BurstPurple"), 0);
     this.oKt = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("BurstWhite"), 0);
     this.hKt = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("UpdateInteractBP"), 0);
     this.hKt.SetTickableWhenPaused(true);
-    this.eQu.BindUpdateInteractBp(this.hKt);
+    this.FQc.BindUpdateInteractBp(this.hKt);
     this.eKt.K2_AttachToActor(this.exe, undefined, 2, 2, 2, false);
     this.tKt.K2_AttachToActor(this.exe, undefined, 2, 2, 2, false);
     this.iKt.K2_AttachToActor(this.exe, undefined, 2, 2, 2, false);
@@ -167,8 +167,8 @@ class RoleNewJoinView extends UiViewBase_1.UiViewBase {
     var i = new UE.MovieSceneSequencePlaybackSettings();
     i.bRestoreState = true;
     i.bPauseAtEnd = true;
-    this.eQu.SetSequencePlayBackSetting(this.dFe, i);
-    this.eQu.PlayRoleSequence(this.dFe);
+    this.FQc.SetSequencePlayBackSetting(this.dFe, i);
+    this.FQc.PlayRoleSequence(this.dFe);
     this.RKt();
   }
   RKt() {

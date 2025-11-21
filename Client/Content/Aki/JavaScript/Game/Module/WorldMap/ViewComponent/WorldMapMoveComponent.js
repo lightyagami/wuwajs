@@ -325,7 +325,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     var e = Vector2D_1.Vector2D.Create(this.MapUiPosition);
     this.SetMapPosition(e.AdditionEqual(t), false, 2);
   }
-  Sld() {
+  C_d() {
     var t = ModelManager_1.ModelManager.WorldMapModel;
     var e = CommonParamById_1.configCommonParamById.GetFloatConfig("MapDragSpeedMultiplier") ?? 1;
     var i = t.MapScaleMax - t.MapScaleMin;
@@ -340,7 +340,7 @@ class WorldMapMoveComponent extends MapComponent_1.MapComponent {
     var e;
     if (this.e3o || this.t3o) {
       t = Vector2D_1.Vector2D.Create(this.MapUiPosition);
-      e = this.Sld();
+      e = this.C_d();
       if (this.e3o) {
         t.AdditionEqual(this.QFo.MultiplyEqual(e));
         this.e3o = false;

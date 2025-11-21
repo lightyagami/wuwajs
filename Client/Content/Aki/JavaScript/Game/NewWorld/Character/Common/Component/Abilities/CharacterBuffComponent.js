@@ -103,11 +103,11 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnInit() {
     super.OnInit();
     this.ActorComponent = this.Entity.CheckGetComponent(1);
-    this.AttributeComponent = this.Entity.CheckGetComponent(174);
-    this.TagComponent = this.Entity.CheckGetComponent(206);
+    this.AttributeComponent = this.Entity.CheckGetComponent(177);
+    this.TagComponent = this.Entity.CheckGetComponent(209);
     this.CueComponent = this.Entity.GetComponent(21);
     this.DeathComponent = this.Entity.GetComponent(15);
-    this.TimeScaleComponent = this.Entity.GetComponent(123);
+    this.TimeScaleComponent = this.Entity.GetComponent(126);
     return true;
   }
   OnStart() {
@@ -172,8 +172,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
           this.BuffContainer.get(h)?.SetRemainDuration(s.QEs);
         }
       }
-      var t = e.Zzc;
-      var C = MathUtils_1.MathUtils.LongToBigInt(e.Znd);
+      var t = e.ned;
+      var C = MathUtils_1.MathUtils.LongToBigInt(e.Dld);
       if (t) {
         for (const d of t) {
           var c = MathUtils_1.MathUtils.LongToNumber(d ?? -1);
@@ -203,6 +203,11 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     this.Vbr = true;
     this.InitBornBuff();
   }
+  OnAnyBuffInhibitionChanged(t) {
+    if (this.Vbr) {
+      super.OnAnyBuffInhibitionChanged(t);
+    }
+  }
   HasBuffAuthority() {
     var t;
     return !this.CreatureDataComponent || this.CreatureDataComponent.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster && !!this.DeathComponent?.IsDead() || (t = this.CreatureDataComponent?.GetSummonerPlayerId(), ModelManager_1.ModelManager.PlayerInfoModel.GetId() === t);
@@ -228,20 +233,6 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       }
     }
   }
-  RemoveBuffByServerIdLocal(t, e) {
-    if (this.HasBuffAuthority()) {
-      for (const r of [...this.BuffContainer.values()]) {
-        var o = r.Handle;
-        if (!this.BuffGarbageSet.has(o)) {
-          if (r.ServerId === t) {
-            this.RemoveBuffInner(o, -1, true, e);
-          }
-        }
-      }
-    } else {
-      CombatLog_1.CombatLog.Error("Buff", this.Entity, "[buffComp] 服务端通知移除非本客户端控制角色持有的系统Buff，需要服务端检查协议是否下发正确", ["buffId", t], ["持有者", this.GetDebugName()]);
-    }
-  }
   RemoveBuffByTagName(t, e = undefined) {
     t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t);
     if (t !== undefined) {
@@ -255,7 +246,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
         this.RemoveBuffByTagLocal(r, f);
       } else {
         (t = Protocol_1.Aki.Protocol.Y3n.create()).bjn = [r];
-        CombatMessage_1.CombatNet.Call(15831, this.Entity, t, t => {
+        CombatMessage_1.CombatNet.Call(17628, this.Entity, t, t => {
           if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist) {
             var e = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(r);
             for (const o of this.BuffContainer.values()) {
@@ -311,7 +302,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     }
   }
   GetBuffLevel(t) {
-    var e = this.Entity.GetComponent(96)?.GetSkillLevelByBuffId(t);
+    var e = this.Entity.GetComponent(98)?.GetSkillLevelByBuffId(t);
     if (e !== undefined && e > 0 || (e = this.Entity.GetComponent(43)?.GetVisionLevelByBuffId(t)) !== undefined && e > 0) {
       return e;
     } else {
@@ -333,9 +324,6 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
           this.TagComponent.RemoveTag(c);
         }
       }
-      if (this.Vbr) {
-        this.CreateGameplayCueByBuff(t);
-      }
       if (n) {
         this.ShareApplyBuffInner(t, e, o, t.MessageId, f, a);
       }
@@ -346,7 +334,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     var a;
     var s;
     var n;
-    if (this.HasBuffAuthority() && (a = this.CreatureDataComponent?.GetSummonerId()) && t.Config?.FormationPolicy === 4 && (a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity?.GetComponent(175))) {
+    if (this.HasBuffAuthority() && (a = this.CreatureDataComponent?.GetSummonerId()) && t.Config?.FormationPolicy === 4 && (a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a)?.Entity?.GetComponent(178))) {
       s = t.Id;
       n = t.Handle;
       a.AddBuffLocal(s, {
@@ -380,8 +368,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnBuffStackIncreased(t, e, o, r, f, i, a, s, n, u, h, C, c, _ = 0, B = 0) {
     if (t) {
       CharacterBuffComponent_1.L__.Start();
-      this.BroadcastBuffStackChanged(t, e, o, false, _, B, c, r);
       super.OnBuffStackIncreased(t, e, o, r, f, i, a, s, n, u, h, C, c, _, B);
+      this.BroadcastBuffStackChanged(t, e, o, false, _, B, c, r);
       if (this.HasBuffAuthority() && h) {
         this.ShareApplyBuffInner(t, i, a, t.MessageId, n, u);
       }
@@ -391,8 +379,8 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   OnBuffStackDecreased(t, e, o, r, f, i = 0) {
     if (t) {
       CharacterBuffComponent_1.A__.Start();
-      this.BroadcastBuffStackChanged(t, e, o, r, 0, i, f);
       super.OnBuffStackDecreased(t, e, o, r, f, i);
+      this.BroadcastBuffStackChanged(t, e, o, r, 0, i, f);
       CharacterBuffComponent_1.A__.Stop();
     }
   }
@@ -416,7 +404,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       r.n5n = t.GetRemainDuration();
       r.wjn = t.ServerId;
       r.Bjn = t.StackCount;
-      CombatMessage_1.CombatNet.Send(17778, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), t.PreMessageId, t.MessageId, o);
+      CombatMessage_1.CombatNet.Send(29439, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), t.PreMessageId, t.MessageId, o);
     }
   }
   BroadcastActivateBuff(t, e) {
@@ -425,7 +413,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
       (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = t.Handle;
       o.qjn = e;
-      CombatMessage_1.CombatNet.Send(22908, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(28202, this.Entity, o);
     }
     CharacterBuffComponent_1.R__.Stop();
   }
@@ -438,7 +426,10 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       n.Rjn = s ?? 0;
       n.$L1 = f === 1;
       n.WL1 = i === 1;
-      CombatMessage_1.CombatNet.Send(29370, this.Entity, n);
+      if ((o = t.GetRemainDuration()) > 0) {
+        n.n5n = o;
+      }
+      CombatMessage_1.CombatNet.Send(20056, this.Entity, n);
     }
   }
   BroadcastRemoveBuff(t, e, o, r) {
@@ -447,7 +438,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       (f = Protocol_1.Aki.Protocol.re_.create()).uVn = t.Handle;
       f.F4n = MathUtils_1.MathUtils.NumberToLong(this.CreatureDataId);
       f.Ojn = e;
-      CombatMessage_1.CombatNet.Send(25163, this.Entity, f, r, undefined, o);
+      CombatMessage_1.CombatNet.Send(29211, this.Entity, f, r, undefined, o);
     }
   }
   RemoveBuffOrder(e, o, r) {
@@ -456,7 +447,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
       CharacterBuffController_1.default.GetBuffDefinition(e);
       (t = Protocol_1.Aki.Protocol.X3n.create()).s5n = MathUtils_1.MathUtils.NumberToLong(e);
       t.Bjn = o;
-      CombatMessage_1.CombatNet.Call(29323, this.Entity, t, t => {
+      CombatMessage_1.CombatNet.Call(20643, this.Entity, t, t => {
         if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && (t = this.GetBuffById(e))) {
           this.RemoveBuffInner(t.Handle, o, true, r, undefined, false);
         }
@@ -490,7 +481,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
           JG1: MathUtils_1.MathUtils.BigIntToLong(c)
         };
       }
-      CombatMessage_1.CombatNet.Call(17316, this.Entity, t, t => {
+      CombatMessage_1.CombatNet.Call(26161, this.Entity, t, t => {
         var e;
         if (t?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist) {
           this.AddBuffInner(o, CharacterBuffController_1.default.GetBuffDefinition(o), r, f, i, a, s, undefined, n, undefined, u ?? 0, C, h, false, false, undefined, c);
@@ -504,7 +495,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
   RefreshBuffDurationOrder(t, e) {
     var o = Protocol_1.Aki.Protocol.GG1.create();
     o.$As = t;
-    CombatMessage_1.CombatNet.Send(23237, this.Entity, o);
+    CombatMessage_1.CombatNet.Send(18507, this.Entity, o);
   }
   UpdateSysGrowBuff(t) {
     CharacterBuffComponent_1.Kbr.Start();
@@ -574,7 +565,7 @@ let CharacterBuffComponent = CharacterBuffComponent_1 = class CharacterBuffCompo
     if (this.HasBuffAuthority() && t !== ActiveBuffConfigs_1.INVALID_BUFF_HANDLE && o > NO_BROADCAST_CD_THRESHOLD) {
       (o = Protocol_1.Aki.Protocol.Ge_.create()).cVn = t;
       o.c5n = e;
-      CombatMessage_1.CombatNet.Send(28496, this.Entity, o);
+      CombatMessage_1.CombatNet.Send(22201, this.Entity, o);
     }
   }
   GetDebugBuffString(t = "") {
@@ -617,5 +608,5 @@ CharacterBuffComponent.R__ = Stats_1.Stat.Create("CharacterBuffComponent.Broadca
 CharacterBuffComponent.Kbr = Stats_1.Stat.Create("AddBuff_SysGrow");
 CharacterBuffComponent.Qbr = Stats_1.Stat.Create("AddBuff_AttributeRateModifier");
 CharacterBuffComponent.Xbr = Stats_1.Stat.Create("AddBuff_AddTag");
-CharacterBuffComponent = CharacterBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(175)], CharacterBuffComponent);
+CharacterBuffComponent = CharacterBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(178)], CharacterBuffComponent);
 exports.CharacterBuffComponent = CharacterBuffComponent; //# sourceMappingURL=CharacterBuffComponent.js.map

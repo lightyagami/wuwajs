@@ -9,30 +9,30 @@ const TrapDefenseRewardTabItem_1 = require("../View/Reward/TrapDefenseRewardTabI
 class TrapDefenseRewardViewModel {
   constructor() {
     this.CurSelectRewardType = 0;
-    this.G$c = [];
+    this.l9u = [];
   }
   static Create() {
     return new TrapDefenseRewardViewModel();
   }
   Clear() {
     this.CurSelectRewardType = 0;
-    this.G$c.length = 0;
+    this.l9u.length = 0;
   }
   RegisterOnSelectRewardTypeChange(e) {
-    if (!this.G$c.includes(e)) {
-      this.G$c.push(e);
+    if (!this.l9u.includes(e)) {
+      this.l9u.push(e);
     }
   }
   UnregisterOnSelectRewardTypeChange(e) {
-    e = this.G$c.indexOf(e);
+    e = this.l9u.indexOf(e);
     if (e >= 0) {
-      this.G$c.splice(e, 1);
+      this.l9u.splice(e, 1);
     }
   }
   SetCurSelectRewardType(e) {
     if (this.CurSelectRewardType !== e) {
       this.CurSelectRewardType = e;
-      this.F$c(e);
+      this._9u(e);
     }
   }
   GetRewardTypeDataList() {
@@ -45,8 +45,8 @@ class TrapDefenseRewardViewModel {
     }
     return r;
   }
-  F$c(e) {
-    for (const r of this.G$c) {
+  _9u(e) {
+    for (const r of this.l9u) {
       r(e);
     }
   }

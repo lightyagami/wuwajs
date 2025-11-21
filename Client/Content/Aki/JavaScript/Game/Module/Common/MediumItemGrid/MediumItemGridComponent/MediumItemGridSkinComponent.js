@@ -31,8 +31,10 @@ class MediumItemGridSkinComponent extends MediumItemGridComponent_1.MediumItemGr
         return "T_IconFilterSkin2";
       }
     } else if (n === 14) {
-      n = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
-      return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(n.SkinType);
+      e = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
+      return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(e.SkinType);
+    } else if (n === 18) {
+      return "T_IconFilterSkin6";
     } else {
       return "";
     }

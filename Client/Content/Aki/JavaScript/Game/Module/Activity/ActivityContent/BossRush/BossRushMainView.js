@@ -74,6 +74,8 @@ class BossRushMainView extends UiViewBase_1.UiViewBase {
   OnBeforeDestroy() {
     this.TabViewComponent?.DestroyTabViewComponent();
     this.TabViewComponent = undefined;
+    ModelManager_1.ModelManager.BossRushModel.OnlyOpenRewardView = false;
+    ModelManager_1.ModelManager.BossRushModel.PlayBackAnimation = false;
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RequestChangeBossRushView, this.hyn);

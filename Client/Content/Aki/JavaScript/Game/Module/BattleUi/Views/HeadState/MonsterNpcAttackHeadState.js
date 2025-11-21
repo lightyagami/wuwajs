@@ -25,10 +25,10 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.HeadStateData = undefined;
     this.SPe = undefined;
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
-    this.i1d = new MonsterNpcAttackMachine_1.MonsterNpcAttackMachine();
+    this.YCd = new MonsterNpcAttackMachine_1.MonsterNpcAttackMachine();
     this.nnt = 0;
     this.pnt = 0;
-    this.r1d = 0;
+    this.zCd = 0;
     this.OnAddOrRemoveBuff = (t, e, i, s) => {
       if (this.HeadStateData.GetEntityId() === t) {
         if (i) {
@@ -50,26 +50,26 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.OnChangeTeam = () => {
       this.Olt();
     };
-    this.o1d = (t, e, i) => {
-      this.n1d(true);
+    this.JCd = (t, e, i) => {
+      this.ZCd(true);
     };
-    this.s1d = (t, e) => {
-      this.a1d(e);
+    this.epd = (t, e) => {
+      this.tpd(e);
     };
-    this.h1d = (t, e) => {
-      this.l1d(e);
+    this.ipd = (t, e) => {
+      this.rpd(e);
     };
-    this._1d = (t, e) => {
-      this.u1d(e);
+    this.opd = (t, e) => {
+      this.npd(e);
     };
-    this.c1d = (t, e) => {
-      this.d1d(e);
+    this.spd = (t, e) => {
+      this.apd(e);
     };
-    this.m1d = (t, e) => {
-      this.f1d(e);
+    this.hpd = (t, e) => {
+      this.lpd(e);
     };
-    this.g1d = (t, e) => {
-      this.C1d(e);
+    this._pd = (t, e) => {
+      this.upd(e);
     };
     this.Hnt = new Map();
   }
@@ -91,13 +91,13 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
     this.Vlt();
     this.tst();
     this.Hlt();
-    this.n1d(false);
-    this.a1d();
-    this.l1d();
-    this.u1d();
-    this.d1d();
-    this.f1d();
-    this.C1d();
+    this.ZCd(false);
+    this.tpd();
+    this.rpd();
+    this.npd();
+    this.apd();
+    this.lpd();
+    this.upd();
   }
   OnStart() {
     this.Qnt();
@@ -132,7 +132,7 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.Flt();
       this.Vlt();
       this.jlt(i);
-      this.p1d(i);
+      this.cpd(i);
     }
   }
   tst() {
@@ -161,10 +161,10 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.mkn.Tick(t);
     }
   }
-  p1d(t) {
-    this.i1d.UpdatePercent(t);
-    if (this.i1d.HasUpdate()) {
-      this.Mic(this.i1d.CurrentPercent);
+  cpd(t) {
+    this.YCd.UpdatePercent(t);
+    if (this.YCd.HasUpdate()) {
+      this.Mic(this.YCd.CurrentPercent);
     }
   }
   o1t() {
@@ -219,13 +219,13 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   }
   BindCallback() {
     super.BindCallback();
-    this.HeadStateData.BindOnSpecialEnergy4Changed(this.o1d);
-    this.HeadStateData.BindOnSlowChargeStateChanged(this.s1d);
-    this.HeadStateData.BindOnFastChargeStateChanged(this.h1d);
-    this.HeadStateData.BindOnAttackReadyStateChanged(this._1d);
-    this.HeadStateData.BindOnAttackBeginStateChanged(this.c1d);
-    this.HeadStateData.BindOnAttackEndStateChanged(this.m1d);
-    this.HeadStateData.BindOnAttackBrokenStateChanged(this.g1d);
+    this.HeadStateData.BindOnSpecialEnergy4Changed(this.JCd);
+    this.HeadStateData.BindOnSlowChargeStateChanged(this.epd);
+    this.HeadStateData.BindOnFastChargeStateChanged(this.ipd);
+    this.HeadStateData.BindOnAttackReadyStateChanged(this.opd);
+    this.HeadStateData.BindOnAttackBeginStateChanged(this.spd);
+    this.HeadStateData.BindOnAttackEndStateChanged(this.hpd);
+    this.HeadStateData.BindOnAttackBrokenStateChanged(this._pd);
   }
   OnHealthChanged() {
     this.RefreshHpAndShield(true);
@@ -260,7 +260,7 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.GetItem(21)?.SetUIActive(true);
       this.GetSlider(10)?.SetValue(t);
       this.GetSlider(12)?.SetValue(t);
-      if (this.r1d >= 1) {
+      if (this.zCd >= 1) {
         this.GetUiNiagara(16)?.SetUIActive(false);
         this.GetUiNiagara(18)?.SetUIActive(false);
         this.GetUiNiagara(17)?.SetUIActive(false);
@@ -268,18 +268,18 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       }
     }
   }
-  n1d(t) {
+  ZCd(t) {
     var e = this.HeadStateData.GetAttributeCurrentValueById(EAttributeId.Proto_SpecialEnergy4);
     var i = this.HeadStateData.GetAttributeCurrentValueById(EAttributeId.Proto_SpecialEnergy4Max);
     var e = i === 0 ? 0 : e / i;
-    if (e !== this.r1d) {
-      this.r1d = e;
-      this.i1d.SetTargetPercent(e, t ? LERP_ANIM_TIME : 0);
+    if (e !== this.zCd) {
+      this.zCd = e;
+      this.YCd.SetTargetPercent(e, t ? LERP_ANIM_TIME : 0);
     }
   }
-  a1d(t) {
+  tpd(t) {
     if (t ?? this.HeadStateData.ContainsTagById(792676641)) {
-      if (!this.v1d()) {
+      if (!this.dpd()) {
         this.GetUiNiagara(16)?.SetUIActive(true);
         this.GetUiNiagara(18)?.SetUIActive(true);
       }
@@ -288,9 +288,9 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.GetUiNiagara(18)?.SetUIActive(false);
     }
   }
-  l1d(t) {
+  rpd(t) {
     if (t ?? this.HeadStateData.ContainsTagById(-325960901)) {
-      if (!this.v1d()) {
+      if (!this.dpd()) {
         this.GetUiNiagara(17)?.SetUIActive(true);
         this.GetUiNiagara(19)?.SetUIActive(true);
       }
@@ -299,7 +299,7 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.GetUiNiagara(19)?.SetUIActive(false);
     }
   }
-  u1d(t) {
+  npd(t) {
     t = t ?? this.HeadStateData.ContainsTagById(314261857);
     this.GetItem(20)?.SetUIActive(t);
     if (t) {
@@ -309,29 +309,29 @@ class MonsterNpcAttackHeadState extends HeadStateViewBase_1.HeadStateViewBase {
       this.bnt(26);
     }
   }
-  d1d(t) {
+  apd(t) {
     if (t ?? this.HeadStateData.ContainsTagById(1921770646)) {
       this.bnt(22);
     } else {
       this.Gnt(22);
     }
   }
-  f1d(t) {
+  lpd(t) {
     if (t ?? this.HeadStateData.ContainsTagById(897633166)) {
       this.bnt(23);
     } else {
       this.Gnt(23);
     }
   }
-  C1d(t) {
+  upd(t) {
     if (t ?? this.HeadStateData.ContainsTagById(-1737347985)) {
       this.bnt(24);
     } else {
       this.Gnt(24);
     }
   }
-  v1d() {
-    return this.r1d >= 1;
+  dpd() {
+    return this.zCd >= 1;
   }
   Qnt() {
     this.Est(22);

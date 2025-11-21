@@ -8,8 +8,8 @@ const TrapDefenseMarkItem_1 = require("./TrapDefenseMarkItem");
 class TrapDefenseMonsterMarkItem extends TrapDefenseMarkItem_1.TrapDefenseMarkItem {
   constructor(e, t) {
     super(e, t);
-    this.H9c = 1;
-    this.H9c = t ?? 1;
+    this.tJu = 1;
+    this.tJu = t ?? 1;
   }
   get MarkType() {
     return 3;
@@ -18,10 +18,10 @@ class TrapDefenseMonsterMarkItem extends TrapDefenseMarkItem_1.TrapDefenseMarkIt
     return this.WorldPositionVector;
   }
   get EnemyType() {
-    return this.H9c;
+    return this.tJu;
   }
   set EnemyType(e) {
-    this.H9c = e;
+    this.tJu = e;
   }
   OnInitialize() {
     this.EnableCachePosition = false;

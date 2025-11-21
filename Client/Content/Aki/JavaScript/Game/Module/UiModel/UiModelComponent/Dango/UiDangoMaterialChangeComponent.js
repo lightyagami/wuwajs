@@ -47,7 +47,7 @@ let UiDangoMaterialChangeComponent = class UiDangoMaterialChangeComponent extend
       if (e && e.IsValid()) {
         this.MDc = e;
       }
-    });
+    }, 100, "Ui.UiSceneModel");
   }
   OnStart() {
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelLoadComplete, this.Fwr);

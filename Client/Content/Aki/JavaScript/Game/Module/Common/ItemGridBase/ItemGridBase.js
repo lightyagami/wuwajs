@@ -92,7 +92,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.CanItemLongPressClick = () => !this.RPt || this.RPt(this, this.Data);
-    this.sKu = (t, i) => {
+    this.RYu = (t, i) => {
       if (i) {
         this.CPt.add(t);
       } else {
@@ -305,7 +305,7 @@ class ItemGridBase extends UiPanelBase_1.UiPanelBase {
           i.Initialize(this.dh1, this.UseFixedAsync);
       }
       if (this.UseFixedAsync) {
-        i.OnComponentVisibleChanged = this.sKu;
+        i.OnComponentVisibleChanged = this.RYu;
       }
       this.mPt.set(t, i);
       this.dPt.add(i);

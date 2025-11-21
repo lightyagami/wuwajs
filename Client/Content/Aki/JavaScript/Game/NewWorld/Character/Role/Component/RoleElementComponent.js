@@ -79,9 +79,9 @@ let RoleElementComponent = class RoleElementComponent extends EntityComponent_1.
   }
   OnStart() {
     this.n$t = this.Entity.GetComponent(3);
-    this.$te = this.Entity.GetComponent(174);
-    this.m1t = this.Entity.GetComponent(175);
-    this.Xte = this.Entity.CheckGetComponent(206);
+    this.$te = this.Entity.GetComponent(177);
+    this.m1t = this.Entity.GetComponent(178);
+    this.Xte = this.Entity.CheckGetComponent(209);
     this.$te.AddListener(EAttributeId.Proto_ElementEnergy, this.o$e, "RoleElementComponent");
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRevive, this.g7r);
@@ -113,7 +113,7 @@ let RoleElementComponent = class RoleElementComponent extends EntityComponent_1.
   set kin(t) {
     if (this.kin !== t && this.n$t?.IsAutonomousProxy) {
       if (t) {
-        t = (0, RoleQteComponent_1.isMultiQte)();
+        t = (0, FormationDataController_1.isBattleMulti)();
         this.jAl = t ? CharacterBuffIds_1.buffId.ActivateMultiQte : CharacterBuffIds_1.buffId.ActivateQte;
         this.m1t.AddBuff(this.jAl, {
           InstigatorId: this.m1t.CreatureDataId,
@@ -155,7 +155,7 @@ let RoleElementComponent = class RoleElementComponent extends EntityComponent_1.
     }
   }
   TriggerEvents(t) {
-    var t = t.GetComponent(92);
+    var t = t.GetComponent(94);
     var e = {
       ElementType: this.RoleElementType,
       ElementType2: t
@@ -171,12 +171,12 @@ let RoleElementComponent = class RoleElementComponent extends EntityComponent_1.
   }
   JPa() {
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsInRange(this.n$t.ActorLocationProxy, RoleQteComponent_1.MAX_MULTI_QTE_DISTANCE).filter(t => !t.IsMyRole())) {
-      t.EntityHandle?.Entity?.GetComponent(175)?.AddBuff(CharacterBuffIds_1.buffId.MultiQteGuide, {
+      t.EntityHandle?.Entity?.GetComponent(178)?.AddBuff(CharacterBuffIds_1.buffId.MultiQteGuide, {
         InstigatorId: this.m1t.CreatureDataId,
         Reason: "用于联机QTE引导提示"
       });
     }
   }
 };
-RoleElementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], RoleElementComponent);
+RoleElementComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(94)], RoleElementComponent);
 exports.RoleElementComponent = RoleElementComponent; //# sourceMappingURL=RoleElementComponent.js.map

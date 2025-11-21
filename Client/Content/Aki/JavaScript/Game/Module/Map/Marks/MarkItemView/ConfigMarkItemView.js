@@ -17,16 +17,18 @@ class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
   get MarkConfig() {
     return this.Holder.MarkConfig;
   }
-  OnInitialize() {
-    super.OnInitialize();
-    this.CRi = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+  OnDataInitialized(e) {
+    this.CRi &&= new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+  }
+  OnViewInitialize() {
+    this.OnIconPathChanged(this.Holder.IconPath);
   }
   async PlayUnlockSequence() {
     await this.LoadingPromise;
     if (!this.dRi) {
-      var t = await this.LoadPrefabAsync(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Prefab_Effect"), this.RootItem);
-      this.dRi = t.GetComponentByClass(UE.UIItem.StaticClass());
-      let e = t.GetComponentByClass(UE.UINiagara.StaticClass());
+      var i = await this.LoadPrefabAsync(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("UiItem_Mark_Prefab_Effect"), this.RootItem);
+      this.dRi = i.GetComponentByClass(UE.UIItem.StaticClass());
+      let e = i.GetComponentByClass(UE.UINiagara.StaticClass());
       if (e = e || this.dRi.GetAttachUIChild(0)?.GetOwner()?.GetComponentByClass(UE.UINiagara.StaticClass())) {
         if (this.Holder?.MapType === 2) {
           e.bAdaptPosAndSizeChanged = false;
@@ -35,7 +37,7 @@ class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
         }
       }
     }
-    this.CRi.PlayLevelSequenceByName("Start");
+    this.CRi?.PlayLevelSequenceByName("Start");
   }
   OnBeforeDestroy() {
     if (this.dRi) {
@@ -44,10 +46,10 @@ class ConfigMarkItemView extends MarkItemView_1.MarkItemView {
     super.OnBeforeDestroy();
   }
   OnIconPathChanged(e) {
-    var t;
+    var i;
     if (this.IsViewReady) {
-      t = this.GetSprite(1);
-      this.LoadIcon(t, e);
+      i = this.GetSprite(1);
+      this.LoadIcon(i, e);
       this.MarkItemChildIconHandle.Update();
       this.MarkItemChildIconHandle.ApplyModified();
     }

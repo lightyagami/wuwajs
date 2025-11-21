@@ -33,7 +33,8 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     RenderUtil_1.RenderUtil.OpenMobileSpotLightShadow();
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.SetSequenceFrameRateLimit();
     if (Info_1.Info.IsLowMemoryDevice) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274432");
+      e = UE.StreamableRenderAsset.GetKuroStreamingRuntimeLODBiasDeviceMappingIndices(0, 0, 0, 3, 3, 4);
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices " + e);
     }
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.AutoExposure 0");
@@ -52,7 +53,6 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     if (PerfSightController_1.PerfSightController.IsEnable) {
       UE.PerfSightHelper.PostEvent(819, UE.KuroSequencePerformanceManager.GetPerformanceMode().toString());
     }
-    RenderUtil_1.RenderUtil.BeginPSOSyncMode();
     this.cio = true;
     var e = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.METALFX);
     if (this.Model.GetType() === 0 && GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsMetalFxDevice() && e !== undefined && e > 0) {
@@ -67,10 +67,12 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
     this.uio = false;
   }
   AllStop() {
+    var e;
     RenderUtil_1.RenderUtil.OpenToonSceneShadow();
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Mobile.EnableKuroSpotlightsShadow " + this.dio);
     if (Info_1.Info.IsLowMemoryDevice) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices 274960");
+      e = UE.StreamableRenderAsset.GetKuroStreamingRuntimeLODBiasDeviceMappingIndices();
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.Streaming.RuntimeLODBiasDeviceMappingIndices " + e);
     }
     GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancleSequenceFrameRateLimit();
     if (Info_1.Info.IsPcOrGamepadPlatform()) {
@@ -87,7 +89,6 @@ class RenderAssistant extends SeqBaseAssistant_1.SeqBaseAssistant {
       UE.PerfSightHelper.PostEvent(819, UE.KuroSequencePerformanceManager.GetPerformanceMode().toString());
     }
     this.ReleaseSeqStreamingData();
-    RenderUtil_1.RenderUtil.EndPSOSyncMode();
     if (this.LSl) {
       this.LSl = false;
       GameSettingsUtils_1.GameSettingsUtils.ApplyMetalFxEnable(1);

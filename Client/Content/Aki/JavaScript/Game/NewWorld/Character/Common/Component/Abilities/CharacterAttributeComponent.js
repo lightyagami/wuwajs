@@ -29,6 +29,7 @@ const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
+const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeamController");
 const BaseAttributeComponent_1 = require("./BaseAttributeComponent");
 const CharacterAttributeTypes_1 = require("./CharacterAttributeTypes");
 let CharacterAttributeComponent = class CharacterAttributeComponent extends BaseAttributeComponent_1.BaseAttributeComponent {
@@ -65,30 +66,37 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   Koa() {
     var t = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("sys")?.sys?.Mna;
     if (t !== undefined) {
-      var e = new Map();
-      var r = [];
-      var i = this.Init();
-      for (const a of t) {
-        var s = a.tSs;
-        var o = a.vna;
-        var n = a.pna ?? 0;
-        if (n !== 0) {
-          e.set(s, n);
-        } else {
-          r.push(s);
+      var e = [];
+      var r = this.Init();
+      for (const n of t) {
+        var i = n.tSs;
+        var s = n.vna;
+        var o = n.pna ?? 0;
+        if (o === 0) {
+          e.push(i);
         }
-        this.BaseValues[s] = o;
-        this.CurrentValues[s] = o + n;
+        this.BaseValues[i] = s;
+        this.CurrentValues[i] = s + o;
       }
-      if (i) {
-        for (const h of r) {
-          this.UpdateCurrentValue(h);
+      if (r) {
+        for (const a of e) {
+          this.UpdateCurrentValue(a);
         }
       }
     }
   }
+  SeamlessTravelingRefresh() {
+    var t = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("sys")?.sys?.Mna;
+    if (t !== undefined) {
+      for (const i of t) {
+        var e = i.vna;
+        var r = i.pna ?? 0;
+        this.SyncValueFromServer(i.tSs, e, e + r);
+      }
+    }
+  }
   static AttributeChangedNotify(t, e) {
-    var r = t?.GetComponent(174);
+    var r = t?.GetComponent(177);
     if (t && r) {
       for (const i of e.GSs) {
         if (CharacterAttributeTypes_1.stateAttributeIds.has(i.tSs)) {
@@ -102,7 +110,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
     }
   }
   static RecoverPropChangedNotify(t, e) {
-    var r = t?.GetComponent(174);
+    var r = t?.GetComponent(177);
     if (r) {
       var i = Time_1.Time.ServerCombatStopTime - Number(MathUtils_1.MathUtils.LongToBigInt(e.S6n));
       for (const s of e.GSs) {
@@ -112,7 +120,7 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
   }
   OnInit() {
     super.OnInit();
-    this.BuffComponent = this.Entity.CheckGetComponent(175);
+    this.BuffComponent = this.Entity.CheckGetComponent(178);
     return true;
   }
   OnStart() {
@@ -146,8 +154,12 @@ let CharacterAttributeComponent = class CharacterAttributeComponent extends Base
       }
     }
   }
+  DispatchCurrentValueEventImplement(t, e, r) {
+    super.DispatchCurrentValueEventImplement(t, e, r);
+    SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 5, t, t, this.Entity, e, r);
+  }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("OFn", true)], CharacterAttributeComponent, "AttributeChangedNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("v3n", true)], CharacterAttributeComponent, "RecoverPropChangedNotify", null);
-CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(174)], CharacterAttributeComponent);
+CharacterAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(177)], CharacterAttributeComponent);
 exports.CharacterAttributeComponent = CharacterAttributeComponent; //# sourceMappingURL=CharacterAttributeComponent.js.map

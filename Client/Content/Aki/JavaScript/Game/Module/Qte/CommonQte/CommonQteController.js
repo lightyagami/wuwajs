@@ -44,6 +44,14 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
     this.qFt();
     return true;
   }
+  static RecoverTimeDilationAfterTeleport() {
+    if (this.IsInQte() && this.nx?.IsActive() && this.nx?.IsPending()) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("CommonQte", 67, "传送状态结束, 尝试恢复Qte时停", ["QteId", this.nx.QteId]);
+      }
+      this.SetQteTimeDilation(this.nx.Config.BaseConfig.TimeDilation);
+    }
+  }
   static qFt() {
     if (this.IsInQte()) {
       this.ResetQteTimeDilation();
@@ -164,7 +172,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("CommonQte", 67, "通用QteGroup开始", ["HandleId", e.HandleId], ["QteGroupId", e.QteGroupId], ["Source", o]);
         }
-        if (this.had(e)) {
+        if (this.Had(e)) {
           return e;
         } else {
           return undefined;
@@ -175,7 +183,7 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       }
     }
   }
-  static had(r) {
+  static Had(r) {
     const a = r.ContextMap;
     if (!a || a.size === 0) {
       if (Log_1.Log.CheckDebug()) {
@@ -395,27 +403,27 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.SetChildrenVisible(6, t, true);
       this.yIl = undefined;
     }
-    this.lad();
-    this._ad();
+    this.Tod();
+    this.bod();
   }
-  static lad() {
-    if (this.uad) {
-      TimerSystem_1.TimerSystem.Remove(this.uad);
-      this.uad = undefined;
+  static Tod() {
+    if (this.Rod) {
+      TimerSystem_1.TimerSystem.Remove(this.Rod);
+      this.Rod = undefined;
     }
-    if (this.cad) {
-      ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(this.cad);
-      this.cad = undefined;
+    if (this.wod) {
+      ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(this.wod);
+      this.wod = undefined;
     }
-    if (this.dad !== -1) {
-      EffectSystem_1.EffectSystem.StopEffectById(this.dad, "[CommonQteController.RemoveScreenEffect]", true);
-      this.dad = -1;
+    if (this.Lod !== -1) {
+      EffectSystem_1.EffectSystem.StopEffectById(this.Lod, "[CommonQteController.RemoveScreenEffect]", true);
+      this.Lod = -1;
     }
   }
-  static _ad(t = true) {
-    if (this.mad) {
-      TimerSystem_1.TimerSystem.Remove(this.mad);
-      this.mad = undefined;
+  static bod(t = true) {
+    if (this.Pod) {
+      TimerSystem_1.TimerSystem.Remove(this.Pod);
+      this.Pod = undefined;
     }
     if (this.pYi) {
       Global_1.Global.CharacterCameraManager.StopCameraShake(this.pYi, t);
@@ -428,42 +436,42 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
       var t;
       var e;
       if (i) {
-        this.fad = 1;
-        this.cad = i;
+        this.Aod = 1;
+        this.wod = i;
         ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().PlayScreenEffect(i);
         if (i.Loop === 0) {
           t = (i.Start + i.End) * TimeUtil_1.TimeUtil.InverseMillisecond;
-          this.uad = TimerSystem_1.TimerSystem.Delay(() => {
+          this.Rod = TimerSystem_1.TimerSystem.Delay(() => {
             ScreenEffectSystem_1.ScreenEffectSystem.GetInstance().EndScreenEffect(i);
-            this.cad = undefined;
-            this.uad = undefined;
+            this.wod = undefined;
+            this.Rod = undefined;
           }, MathUtils_1.MathUtils.Clamp(t, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
         }
-      } else if ((t = this.nx.Resource?.ScreenEffect2) && (e = ModelManager_1.ModelManager.CommonQteModel?.GetQteScreenEffectPath(this.nx.QteId, 2)) && (this.fad = 2, this.dad = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Transform_1.Transform.Create().ToUeTransform(), e, "[CommonQteController.PlayScreenEffect]", undefined, 3, undefined), t.LoopTime === 0)) {
+      } else if ((t = this.nx.Resource?.ScreenEffect2) && (e = ModelManager_1.ModelManager.CommonQteModel?.GetQteScreenEffectPath(this.nx.QteId, 2)) && (this.Aod = 2, this.Lod = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, Transform_1.Transform.Create().ToUeTransform(), e, "[CommonQteController.PlayScreenEffect]", undefined, 3, undefined), t.LoopTime === 0)) {
         e = (t.StartTime + t.EndTime) * TimeUtil_1.TimeUtil.InverseMillisecond;
-        this.uad = TimerSystem_1.TimerSystem.Delay(() => {
-          EffectSystem_1.EffectSystem.StopEffectById(this.dad, "[CommonQteController.ScreenEffectTimer]", true);
-          this.dad = -1;
-          this.uad = undefined;
+        this.Rod = TimerSystem_1.TimerSystem.Delay(() => {
+          EffectSystem_1.EffectSystem.StopEffectById(this.Lod, "[CommonQteController.ScreenEffectTimer]", true);
+          this.Lod = -1;
+          this.Rod = undefined;
         }, MathUtils_1.MathUtils.Clamp(e, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
       }
     }
   }
   static IsPlayingScreenEffect() {
-    if (this.fad === 1) {
-      return this.cad !== undefined;
+    if (this.Aod === 1) {
+      return this.wod !== undefined;
     } else {
-      return this.fad === 2 && this.dad !== -1;
+      return this.Aod === 2 && this.Lod !== -1;
     }
   }
   static PlayCameraShake() {
     var t;
     if (this.nx && !this.pYi && (t = this.nx.Resource?.CameraShake) && (this.pYi = Global_1.Global.CharacterCameraManager.StartMatineeCameraShake(t), this.pYi)) {
       t = this.pYi.OscillatorTimeRemaining * TimeUtil_1.TimeUtil.InverseMillisecond;
-      this.mad = TimerSystem_1.TimerSystem.Delay(() => {
+      this.Pod = TimerSystem_1.TimerSystem.Delay(() => {
         Global_1.Global.CharacterCameraManager.StopCameraShake(this.pYi, false);
         this.pYi = undefined;
-        this.mad = undefined;
+        this.Pod = undefined;
       }, MathUtils_1.MathUtils.Clamp(t, TimerSystem_1.MIN_TIME, TimerSystem_1.MAX_TIME));
     }
   }
@@ -475,8 +483,8 @@ class CommonQteController extends ControllerBase_1.ControllerBase {
   }
   static StopExtraEffect(t) {
     if (this.nx && t === this.nx.HandleId) {
-      this.lad();
-      this._ad(false);
+      this.Tod();
+      this.bod(false);
     }
   }
   static PlayQteAudio(t, e) {
@@ -636,12 +644,12 @@ CommonQteController.sS1 = new Map();
 CommonQteController.NXu = new Map();
 CommonQteController.fk1 = undefined;
 CommonQteController.yVu = false;
-CommonQteController.fad = 0;
-CommonQteController.cad = undefined;
-CommonQteController.dad = -1;
-CommonQteController.uad = undefined;
+CommonQteController.Aod = 0;
+CommonQteController.wod = undefined;
+CommonQteController.Lod = -1;
+CommonQteController.Rod = undefined;
 CommonQteController.pYi = undefined;
-CommonQteController.mad = undefined;
+CommonQteController.Pod = undefined;
 CommonQteController.CommonQteViewMapDebug = undefined;
 CommonQteController.CommonQteItemMapDebug = undefined;
 CommonQteController.V3u = () => {

@@ -35,7 +35,7 @@ let VehicleAudioComponent = class VehicleAudioComponent extends BaseAudioCompone
   }
   OnInit() {
     super.OnInit();
-    this.ActorComp = this.Entity.CheckGetComponent(235);
+    this.ActorComp = this.Entity.CheckGetComponent(238);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnVehicleBeenEntered);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnVehicleBeenLeaved);
     return true;
@@ -53,5 +53,5 @@ let VehicleAudioComponent = class VehicleAudioComponent extends BaseAudioCompone
   b2l() {}
   UpdateVehicleMoveSound(e, t) {}
 };
-VehicleAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(243)], VehicleAudioComponent);
+VehicleAudioComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(246)], VehicleAudioComponent);
 exports.VehicleAudioComponent = VehicleAudioComponent; //# sourceMappingURL=VehicleAudioComponent.js.map

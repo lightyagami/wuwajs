@@ -42,8 +42,8 @@ class PatrolMoveLogic {
   Init(t) {
     this.Entity = t;
     this.Hte = t.CheckGetComponent(3);
-    this.oRe = t.CheckGetComponent(178);
-    this.mBe = t.GetComponent(102);
+    this.oRe = t.CheckGetComponent(181);
+    this.mBe = t.GetComponent(104);
   }
   GetMovePoint(t) {
     if (t >= 0 && t < this.YJo.length) {

@@ -10,26 +10,29 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
-const UiManager_1 = require("../../../Ui/UiManager");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const PersonalController_1 = require("../Controller/PersonalController");
 const PersonalCardItem_1 = require("./PersonalCardItem");
 class PersonalCardComponent extends UiPanelBase_1.UiPanelBase {
-  constructor(e, t, i) {
+  constructor(e, t, r) {
     super();
     this.xqe = undefined;
     this.L0 = false;
     this.bha = undefined;
     this.P7e = undefined;
     this.uHt = () => {
+      var e;
       if (!this.L0) {
         this.uGe(this.bha);
+        e = this.fwd();
+        this.xqe.RefreshByData(e);
+        this.xqe.SelectGridProxy(0);
+        this.xqe.ScrollToGridIndex(0);
+        ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(this.xqe.GetGridByDisplayIndex(0), true);
       }
     };
     this.OnClickConfirm = () => {
       PersonalController_1.PersonalController.SendChangeCardRequest(this.bha.CardId);
-      UiManager_1.UiManager.CloseView("PersonalEditView");
-      UiManager_1.UiManager.CloseView("PersonalOptionView");
     };
     this.qha = () => {
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.bha.CardId);
@@ -41,10 +44,10 @@ class PersonalCardComponent extends UiPanelBase_1.UiPanelBase {
     };
     this.J5i = (e, t) => {
       this.bha = t;
-      var i = this.p5i.CardDataList;
-      var r = i.length;
-      for (let e = 0; e < r; e++) {
-        var s = i[e];
+      var r = this.p5i.CardDataList;
+      var i = r.length;
+      for (let e = 0; e < i; e++) {
+        var s = r[e];
         if (s.CardId === t.CardId && s.IsUnLock && !s.IsRead) {
           PersonalController_1.PersonalController.SendReadCardRequest(t.CardId);
           break;
@@ -57,7 +60,7 @@ class PersonalCardComponent extends UiPanelBase_1.UiPanelBase {
       this.xqe.SelectGridProxy(e);
     };
     this.L0 = t;
-    this.p5i = i;
+    this.p5i = r;
     if (e) {
       this.CreateThenShowByActor(e.GetOwner());
     }
@@ -73,20 +76,30 @@ class PersonalCardComponent extends UiPanelBase_1.UiPanelBase {
     this.AddEventListener();
   }
   async OnBeforeShowAsyncImplement() {
-    var e = this.p5i.GetCardList(true);
+    var e = this.fwd();
     await this.xqe.RefreshByDataAsync(e);
     if (e.length > 0) {
-      const i = this.p5i.CurCardId;
-      var t = e.findIndex(e => e.CardId === i);
-      this.bha = e[t = t < 0 ? 0 : t];
-      this.xqe.SelectGridProxy(t);
-      this.xqe.ScrollToGridIndex(t);
+      this.bha = e[0];
+      this.xqe.SelectGridProxy(0);
+      this.xqe.ScrollToGridIndex(0);
       this.RefreshCardInfo(this.bha);
       this.uGe(this.bha);
     }
     this.GetItem(6).SetUIActive(e.length > 0);
   }
   OnShowUiTabViewFromToggle() {}
+  fwd() {
+    var t = [...this.p5i.GetCardList(true)];
+    var r = t.findIndex(e => e.CardId === this.p5i.CurCardId);
+    if (!(r <= 0) && !(t.length <= r)) {
+      var e = t[r];
+      for (let e = r; e > 0; e--) {
+        t[e] = t[e - 1];
+      }
+      t[0] = e;
+    }
+    return t;
+  }
   AddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCardChange, this.uHt);
   }
@@ -105,10 +118,10 @@ class PersonalCardComponent extends UiPanelBase_1.UiPanelBase {
   }
   uGe(e) {
     var t = this.p5i.CurCardId;
-    var i = e.IsUnLock;
-    var i = t !== e.CardId && i;
+    var r = e.IsUnLock;
+    var r = t !== e.CardId && r;
     if (this.P7e) {
-      this.P7e(i, t === e.CardId);
+      this.P7e(r, t === e.CardId);
     }
   }
   OnBeforeDestroy() {

@@ -16,7 +16,7 @@ class TowerDefenseInputController {
     this.RemoveInputLayer();
     return true;
   }
-  static myd() {
+  static BMd() {
     var r = TDPlayerController_1.TowerDefensePlayerController.GetPossessedPlayerEntity();
     if (r) {
       return InputController_1.InputController.GetInputLayer(r.Id, 6);
@@ -25,7 +25,7 @@ class TowerDefenseInputController {
   static AddInputLayer() {
     var r;
     var t;
-    if (this.myd()) {
+    if (this.BMd()) {
       this.RemoveInputLayer();
     }
     if (r = InputController_1.InputController.CreateInputLayer(6)) {
@@ -41,7 +41,7 @@ class TowerDefenseInputController {
     }
   }
   static RemoveInputLayer() {
-    var r = this.myd();
+    var r = this.BMd();
     if (r) {
       InputController_1.InputController.RemoveInputLayer(r);
       r.Clear();

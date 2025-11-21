@@ -25,8 +25,8 @@ class LockExecutionHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.v$e = false;
     this.dce = false;
     this.Foi = 0;
-    this.VJe = (t, e) => {
-      if (t) {
+    this.VJe = (t, e, i) => {
+      if (t && i === 1) {
         this.Voi(e);
       } else {
         this.Hoi(e);

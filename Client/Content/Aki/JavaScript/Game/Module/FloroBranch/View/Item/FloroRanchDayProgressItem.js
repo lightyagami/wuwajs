@@ -44,17 +44,17 @@ class PointItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.SPe = undefined;
-    this.KKu = false;
+    this.cju = false;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite]];
   }
   Refresh(e, t, s) {
     this.GetSprite(0)?.SetUIActive(!e.IsPassed);
-    if (!this.KKu && e.IsPassed) {
+    if (!this.cju && e.IsPassed) {
       this.ShowPassAnim();
     }
-    this.KKu = e.IsPassed;
+    this.cju = e.IsPassed;
   }
   ShowPassAnim() {
     this.SPe ||= new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());

@@ -49,7 +49,7 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
     this.OnEntityBudgetTickEnableChange = t => {};
   }
   static get Dependencies() {
-    return [235];
+    return [238];
   }
   get ForbiddenTickPose() {
     return this.ForbiddenTickPoseInternal;
@@ -64,12 +64,12 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(235);
-    this.VehicleMoveComp = this.Entity.GetComponent(237);
-    this.AnimComp = this.Entity.GetComponent(236);
-    this.VehiclePerformComp = this.Entity.GetComponent(234);
+    this.ActorComp = this.Entity.GetComponent(238);
+    this.VehicleMoveComp = this.Entity.GetComponent(240);
+    this.AnimComp = this.Entity.GetComponent(239);
+    this.VehiclePerformComp = this.Entity.GetComponent(237);
     this.DebugComp = this.Entity.GetComponent(30);
-    this.SkelTickMgr = this.Entity.GetComponent(115);
+    this.SkelTickMgr = this.Entity.GetComponent(118);
     this.VehicleMovement = this.ActorComp.Owner.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
     if (!this.VehicleMovement) {
       return false;
@@ -141,5 +141,5 @@ let UeVehicleMovementTickManageComponent = class UeVehicleMovementTickManageComp
     }
   }
 };
-UeVehicleMovementTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(245)], UeVehicleMovementTickManageComponent);
+UeVehicleMovementTickManageComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(248)], UeVehicleMovementTickManageComponent);
 exports.UeVehicleMovementTickManageComponent = UeVehicleMovementTickManageComponent; //# sourceMappingURL=UeVehicleMovementTickManageComponent.js.map

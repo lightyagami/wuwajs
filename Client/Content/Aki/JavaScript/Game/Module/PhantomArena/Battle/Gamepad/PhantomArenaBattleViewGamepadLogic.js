@@ -11,7 +11,7 @@ class PhantomArenaBattleViewGamepadLogic {
     this.SelectedCard = undefined;
     this.SlotIndex = PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
     this.HandIndex = -1;
-    this.nNu = false;
+    this.u3u = false;
   }
   get IsInHandCardSelectState() {
     return this.SelectedCard !== undefined && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX;
@@ -81,13 +81,13 @@ class PhantomArenaBattleViewGamepadLogic {
     return !this.Proxy.InCantDragState() && !!(i = this.Proxy.OwnArea.FunctionalArea.GetCardProxyByIndex(t)) && !!i.Card && !(await this.M7c(i.Card, t), 0);
   }
   async MoveHandCardToFunctional(t) {
-    if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.nNu) {
+    if (!!this.SelectedCard && this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.u3u) {
       this.SlotIndex = t;
       await this.Proxy.OwnArea.HandCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, false);
     }
   }
   async MoveBattleCardToFunctional(t) {
-    if (!!this.SelectedCard && this.SelectedCard.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.nNu) {
+    if (!!this.SelectedCard && this.SelectedCard.Data.Index !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX && this.SlotIndex !== t && !this.u3u) {
       this.SlotIndex = t;
       await this.Proxy.OwnArea.BattleCardBeginDragByGamepad(this.SelectedCard, this.SlotIndex, false);
     }
@@ -95,10 +95,10 @@ class PhantomArenaBattleViewGamepadLogic {
   async PutDownCardToFunctional() {
     let t = false;
     if (this.SelectedCard) {
-      this.nNu = true;
+      this.u3u = true;
       t = this.SelectedCard.Data.Index === PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX ? await this.Proxy.OwnArea.CardEndDragByHand(this.SelectedCard) : await this.Proxy.OwnArea.CardEndDragByFunctional(this.SelectedCard, this.SelectedCard.Data.Index);
       this.y7c();
-      this.nNu = false;
+      this.u3u = false;
     }
     return t;
   }

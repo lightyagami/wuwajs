@@ -13,6 +13,7 @@ const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const RoleDefine_1 = require("../../../RoleUi/RoleDefine");
 const ActivityCommonDefine_1 = require("../../ActivityCommonDefine");
 const ActivityData_1 = require("../../ActivityData");
 const BossRushController_1 = require("./BossRushController");
@@ -66,19 +67,19 @@ class BossRushLevelDetailInfo {
       n.ChangeAble = true;
       this.ISn.push(n);
     }
-    let a = 1;
+    let o = 1;
     for (const d of e.Zal) {
-      var o = new BossRushModel_1.BossRushBuffInfo();
-      o.BuffId = d;
-      o.Slot = a++;
-      o.ChangeAble = true;
-      o.State = Protocol_1.Aki.Protocol.Iks.Proto_BuffSelected;
-      this.tll.push(o);
+      var a = new BossRushModel_1.BossRushBuffInfo();
+      a.BuffId = d;
+      a.Slot = o++;
+      a.ChangeAble = true;
+      a.State = Protocol_1.Aki.Protocol.Iks.Proto_BuffSelected;
+      this.tll.push(a);
     }
-    for (let t = a; t <= 2; t++) {
+    for (let t = o; t <= 2; t++) {
       var h = new BossRushModel_1.BossRushBuffInfo();
       h.BuffId = 0;
-      h.Slot = a++;
+      h.Slot = o++;
       h.ChangeAble = this.GetConfig().ScoreBuffCount >= t;
       h.State = this.GetConfig().ScoreBuffCount >= t ? Protocol_1.Aki.Protocol.Iks.Proto_BuffEmpty : Protocol_1.Aki.Protocol.Iks.Proto_BuffInactive;
       this.tll.push(h);
@@ -180,8 +181,16 @@ class BossRushLevelDetailInfo {
     var t = new BossRushModel_1.BossRushTeamInfo();
     t.SetCurrentSelectLevel(this);
     var e = [];
-    for (const s of this.TSn) {
-      e.push(s.RoleId);
+    for (const r of this.TSn) {
+      var s;
+      var i = r.RoleId;
+      if (i >= RoleDefine_1.ROBOT_DATA_MIN_ID) {
+        s = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(i);
+        s = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfigByGroupId(s.GroupId);
+        e.push(s.Id);
+      } else {
+        e.push(i);
+      }
     }
     t.SetCurrentTeamMembers(e);
     t.LevelInfo = this;
@@ -523,19 +532,19 @@ class BossRushData extends ActivityData_1.ActivityBaseData {
     var r = [];
     for (let t = 0; t < s.YM_.length; t++) {
       var n = s.YM_[t];
-      var a = i.LevelScoreRewardList[t];
-      var a = {
+      var o = i.LevelScoreRewardList[t];
+      var o = {
         Id: e.GetId(),
         NameText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.LevelRewardDesc),
-        NameTextArgs: ["" + a?.Item1, "" + s.SMs],
+        NameTextArgs: ["" + o?.Item1, "" + s.SMs],
         RewardState: Number(n),
         ClickFunction: () => {
           BossRushController_1.BossRushController.RequestGetBossRushLevelReward(this.Id, i.Id, i.InstId, t++);
         },
-        RewardList: this.I2e(a.Item2),
+        RewardList: this.I2e(o.Item2),
         RewardButtonText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.kbn(Number(n)))
       };
-      r.push(a);
+      r.push(o);
     }
     return r;
   }
@@ -543,14 +552,14 @@ class BossRushData extends ActivityData_1.ActivityBaseData {
     var e = t.Status;
     var s = t.Current;
     var i = t.Target;
-    var r = ConfigManager_1.ConfigManager.BossRushConfig.GetBossRushTaskConfig(t.Id);
+    const r = ConfigManager_1.ConfigManager.BossRushConfig.GetBossRushTaskConfig(t.Id);
     return {
       Id: t.Id,
       NameText: StringUtils_1.StringUtils.Format(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.Title), i.toString()),
       NameTextArgs: ["" + s, "" + i],
       RewardState: ActivityCommonDefine_1.taskStateToRewardStateResolver[e],
       ClickFunction: () => {
-        BossRushController_1.BossRushController.RequestBossRushTaskReward(t.Id);
+        BossRushController_1.BossRushController.RequestBossRushTaskReward(r.ActivityId);
       },
       RewardList: this.I2e(r.DropId),
       RewardButtonText: MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.kbn(ActivityCommonDefine_1.taskStateToRewardStateResolver[e]))
@@ -579,6 +588,23 @@ class BossRushData extends ActivityData_1.ActivityBaseData {
     if (t &&= t[e]) {
       t.RewardState = 2;
     }
+  }
+  GetExDataFinishShowState() {
+    for (const t of this.sOn.values()) {
+      if (t.Status !== 2) {
+        return false;
+      }
+    }
+    return true;
+  }
+  GetFinishAndUnclaimedTaskList() {
+    var t = [];
+    for (const e of this.sOn.values()) {
+      if (e.Status === 0) {
+        t.push(e.Id);
+      }
+    }
+    return t;
   }
 }
 exports.BossRushData = BossRushData;

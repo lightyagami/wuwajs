@@ -37,6 +37,11 @@ class UiNavigationJoystickInput {
       }
     }
   }
+  static uZd(i) {
+    if (this.cZd && (UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(this.dd_, this.dZd), this.cZd = false, this.dZd === 1)) {
+      this.dd_ = "";
+    }
+  }
   static ud_(i) {
     if (this.cd_) {
       this.Dwo(this.dd_, i);
@@ -44,6 +49,7 @@ class UiNavigationJoystickInput {
   }
   static Tick(i) {
     this._d_(i);
+    this.uZd(i);
     this.ud_(i);
   }
   static Lwo(i, t) {
@@ -140,15 +146,17 @@ class UiNavigationJoystickInput {
   static TriggerActionInputTick(i, t) {
     if (!this.wut && (!!StringUtils_1.StringUtils.IsBlank(this.dd_) || this.dd_ === i)) {
       if (t === 0) {
-        UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(i, 0);
         this.dd_ = i;
+        this.dZd = t;
+        this.cZd = true;
         this.cd_ = true;
         this.Gwo = 1;
         this.Bwo = 0;
         this.bwo = this.qwo;
       } else {
-        UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(i, 1);
-        this.dd_ = "";
+        this.dd_ = i;
+        this.dZd = t;
+        this.cZd = true;
         this.cd_ = false;
         this.Gwo = 0;
       }
@@ -162,6 +170,8 @@ class UiNavigationJoystickInput {
       UiNavigationLogic_1.UiNavigationLogic.ExecuteInputNavigation(this.dd_, 1);
       this.dd_ = "";
       this.cd_ = false;
+      this.dZd = undefined;
+      this.cZd = false;
       this.Gwo = 0;
     }
   }
@@ -179,7 +189,9 @@ UiNavigationJoystickInput.Gwo = undefined;
 UiNavigationJoystickInput.cz = Vector_1.Vector.Create();
 UiNavigationJoystickInput.wut = false;
 UiNavigationJoystickInput.dd_ = "";
+UiNavigationJoystickInput.dZd = undefined;
 UiNavigationJoystickInput.cd_ = false;
+UiNavigationJoystickInput.cZd = false;
 UiNavigationJoystickInput.Fwo = new Map([[InputMappingsDefine_1.actionMappings.Ui方向下, 0], [InputMappingsDefine_1.actionMappings.Ui方向右, 3], [InputMappingsDefine_1.actionMappings.Ui方向上, 1], [InputMappingsDefine_1.actionMappings.Ui方向左, 2]]);
 UiNavigationJoystickInput.Vwo = new Map();
 UiNavigationJoystickInput.Rwo = 0;

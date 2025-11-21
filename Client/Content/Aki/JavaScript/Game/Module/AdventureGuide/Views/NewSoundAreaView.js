@@ -50,6 +50,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.u8e = 0;
     this.t5e = 0;
     this.i7i = new Array();
+    this.Anl = false;
     this.si_ = i => {
       if (this.s8e) {
         for (let e = 0; e < this.s8e.length; e++) {
@@ -65,7 +66,11 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     this.jDu = e => {
       return new NewSoundSuitDropDownItem_1.NewSoundSuitDropDownItem(e);
     };
-    this.Bed = e => {
+    this.Pnl = () => {
+      this.wnl();
+      this.n8e?.SetAnimFinishDelegate(undefined);
+    };
+    this.Wid = e => {
       ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel = e;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.NewSoundAreaRefreshReward, e);
       if (this._8e?.GetCurrentSequence()) {
@@ -74,7 +79,7 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         this._8e?.PlayLevelSequenceByName("Switch");
       }
     };
-    this.ked = e => {
+    this.Qid = e => {
       ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex = e;
       this.HDu();
       if (this._8e?.GetCurrentSequence()) {
@@ -83,11 +88,11 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         this._8e?.PlayLevelSequenceByName("Switch");
       }
     };
-    this.Oed = (e, i) => {
-      this.Bed(i);
+    this.Kid = (e, i) => {
+      this.Wid(i);
     };
-    this.qed = (e, i) => {
-      this.ked(i);
+    this.Xid = (e, i) => {
+      this.Qid(i);
     };
     this.$Du = e => {
       var i = e === ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel ? "Text_WorldCurrentLevelTag_Text" : "Text_WorldLevelTag_Text";
@@ -121,9 +126,6 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
   async OnBeforeStartAsync() {
     this.ODu = new CommonDropDown_1.CommonDropDown(this.GetItem(17), this.NDu, this.FDu);
     await this.ODu.Init();
-    if (ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().RemainingTime < 2) {
-      await ControllerHolder_1.ControllerHolder.TowerController.RefreshTower();
-    }
     this.qDu = new CommonDropDown_1.CommonDropDown(this.GetItem(29), this.jDu, this.VDu);
     await this.qDu.Init();
   }
@@ -156,13 +158,13 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
         this.p8e();
       }
       if (this.GDu === 1) {
-        this.Bed(ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel);
+        this.Wid(ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel);
       } else if (this.GDu === 2) {
         if (ModelManager_1.ModelManager.AdventureGuideModel.HandleShowNightMareParam) {
           ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex = 0;
           this.qDu?.SetSelectedIndex(0);
         }
-        this.ked(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex);
+        this.Qid(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex);
       }
       if (this._8e?.GetCurrentSequence()) {
         this._8e?.ReplaySequenceByKey("Switch");
@@ -193,13 +195,14 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
       return e;
     });
     this.n8e = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(3), this.GetItem(2).GetOwner(), () => new NewSoundDetectItem_1.NewSoundDetectItem(), true);
+    this.n8e.SetAnimFinishDelegate(this.Pnl);
     this.hY1 = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(26), () => new NewSoundDetectTabItem_1.NewSoundDetectTabItem());
     ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupArray().forEach(e => {
       this.i7i.push(e.Id);
     });
     this.i7i.sort((e, i) => e - i);
     this.i7i.unshift(0);
-    this.qDu.SetOnSelectCall(this.qed);
+    this.qDu.SetOnSelectCall(this.Xid);
     this.qDu.SetShowType(0);
     this.qDu.InitScroll(this.i7i, this.WDu, this.i7i.indexOf(ModelManager_1.ModelManager.AdventureGuideModel.CurrentSelectSuitIndex));
     this.u8e = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel - 1;
@@ -207,13 +210,27 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     for (let e = AdventureDefine_1.WORLD_LEVEL_MIN; e <= AdventureDefine_1.WORLD_LEVEL_MAX; e++) {
       r.push(e);
     }
-    this.ODu.SetOnSelectCall(this.Oed);
+    this.ODu.SetOnSelectCall(this.Kid);
     this.ODu.SetShowType(0);
     this.ODu.InitScroll(r, this.$Du, this.u8e);
     var e = ModelManager_1.ModelManager.AdventureGuideModel.GetAllCanShowDungeonTypeList();
     this.s8e = e;
     this.l8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     this._8e = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    this.Bnl();
+  }
+  Bnl() {
+    var e = this.ExtraParams;
+    var e = e.OpenTabViewName === "NewSoundAreaView" ? Number(e.OpenParam) : undefined;
+    if (e !== undefined && e > 0) {
+      this.Anl = true;
+    }
+  }
+  wnl() {
+    var e;
+    if (this.Anl && (this.Anl = false, e = this.n8e.UnsafeGetGridProxy(0))) {
+      ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForViewByRootItem(e.GetRootItem(), "Group3", true);
+    }
   }
   p8e() {
     var [e, i] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(this.a8e);
@@ -301,9 +318,11 @@ class NewSoundAreaView extends UiTabViewBase_1.UiTabViewBase {
     }
     e = Array.from(i.values()).sort((e, i) => i.Sort - e.Sort);
     this.hY1?.RefreshByData(e, () => {
-      var e = this.hY1?.GetItemByIndex(0);
-      if (e) {
-        this.hY1?.LateScrollTo(e);
+      if (this.hY1?.GetItemByIndex(0)) {
+        this.hY1?.BindLateUpdate(() => {
+          this.hY1?.ScrollToTop(0);
+          this.hY1?.UnBindLateUpdate();
+        });
       }
     });
   }

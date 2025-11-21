@@ -16,29 +16,25 @@ class EnrichmentAreaItemView extends ServerMarkItemView_1.ServerMarkItemView {
       t.IsSelectThisFloor = t.GetMultiMapId() === e;
       this.OnIconPathChanged(t.IconPath);
     };
+    this.KRm = () => {
+      var e = this.Holder;
+      this.OnIconPathChanged(e.IconPath);
+    };
   }
-  OnInitialize() {
-    super.OnInitialize();
+  OnViewRefresh() {
     this.Holder.MarkItemEntity.ViewLifeCircle.EnableVerticalPointer = false;
     var e = this.Holder.CheckCanShowView();
     this.MarkItemRangeHandle.SetVisible(e);
-  }
-  OnReset() {
-    super.OnReset();
-    this.Holder.MarkItemEntity.ViewLifeCircle.EnableVerticalPointer = false;
-    var e = this.Holder.CheckCanShowView();
-    this.MarkItemRangeHandle.SetVisible(e);
+    this.UpdateMultiMapFloorSelectedState();
+    this.OnIconPathChanged(this.Holder.IconPath);
   }
   RegisterEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldMapSelectMultiMap, this.Zbn);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrackMapMark, this.KRm);
   }
   UnRegisterEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldMapSelectMultiMap, this.Zbn);
-  }
-  OnAfterShow() {
-    super.OnAfterShow();
-    this.UpdateMultiMapFloorSelectedState();
-    this.OnIconPathChanged(this.Holder.IconPath);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrackMapMark, this.KRm);
   }
   OnIconPathChanged(e) {
     var t = this.Holder.CheckCanShowIcon();

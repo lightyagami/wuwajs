@@ -42,7 +42,10 @@ class RoleVisionInfoPanel extends UiPanelBase_1.UiPanelBase {
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
     };
     this.HCo = () => {
-      var e = this.d1o.GetCurSelectRoleId();
+      var e = {
+        RoleId: this.d1o.GetCurSelectRoleId(),
+        IsFromRoleDev: false
+      };
       UiManager_1.UiManager.OpenView("VisionRecommendView", e);
     };
     this.D3e = () => {
@@ -131,25 +134,25 @@ class RoleVisionInfoPanel extends UiPanelBase_1.UiPanelBase {
   fvt() {
     let i;
     var e = this.d1o.GetCurSelectRoleData();
-    const n = (i = ModelManager_1.ModelManager.PhantomBattleModel.GetShowAttrList(e.GetDataId())).length;
+    const o = (i = ModelManager_1.ModelManager.PhantomBattleModel.GetShowAttrList(e.GetDataId())).length;
     e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("VisionMainViewShowAttribute");
-    const o = [];
+    const n = [];
     let r = false;
     e.forEach(t => {
       var e = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(t);
       r = false;
-      for (let e = 0; e < n; e++) {
+      for (let e = 0; e < o; e++) {
         if (i[e].Id === t) {
-          o.push(i[e]);
+          n.push(i[e]);
           r = true;
           break;
         }
       }
       if (!r) {
-        o.push(new AttrListScrollData_1.AttrListScrollData(t, 0, 0, e.Priority, false, 1));
+        n.push(new AttrListScrollData_1.AttrListScrollData(t, 0, 0, e.Priority, false, 1));
       }
     });
-    this.u9i.Refresh(o, true);
+    this.u9i.Refresh(n, true);
   }
   KCo() {
     var e = this.d1o.GetCurSelectRoleData();

@@ -16,13 +16,13 @@ class RoleSkillChainItem extends UiPanelBase_1.UiPanelBase {
   Update(a, e) {
     this.SkillNodeItemList[0].Update(a, e);
     let r = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e).NodeIndex;
-    let i = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(a);
-    var s = (i = i || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(a)).GetRoleSkillTreeConfig();
+    let t = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(a);
+    var i = (t = t || ModelManager_1.ModelManager.RoleModel.GetRoleDataById(a)).GetRoleSkillTreeConfig();
     for (let e = 1; e < this.SkillNodeItemList.length; e++) {
-      for (const t of s) {
-        if (t.ParentNodes.length === 1 && t.ParentNodes[0] === r) {
-          this.SkillNodeItemList[e].Update(a, t.Id);
-          r = t.NodeIndex;
+      for (const s of i) {
+        if (s.ParentNodes.length === 1 && s.ParentNodes[0] === r) {
+          this.SkillNodeItemList[e].Update(a, s.Id);
+          r = s.NodeIndex;
           break;
         }
       }
@@ -48,6 +48,9 @@ class RoleSkillChainItem extends UiPanelBase_1.UiPanelBase {
       a.OnNodeLevelChange(e);
     }
     this.RefreshLine();
+  }
+  GetSkillNodeItems() {
+    return this.SkillNodeItemList;
   }
 }
 exports.RoleSkillChainItem = RoleSkillChainItem;

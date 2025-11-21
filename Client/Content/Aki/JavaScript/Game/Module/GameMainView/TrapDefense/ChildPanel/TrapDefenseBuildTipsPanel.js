@@ -12,6 +12,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../../../Ui/Base/UiSequencePlayer");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
 const BattleChildViewPanel_1 = require("../../../BattleUi/Views/BattleChildViewPanel/BattleChildViewPanel");
+const TowerDefenseEventController_1 = require("../../../TowerDefenseEvent/TowerDefenseEventController");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const TrapDefenseRecyclePriceItem_1 = require("../ChildItem/TrapDefenseRecyclePriceItem");
 const TrapDefenseBattleDefine_1 = require("../TrapDefenseBattleDefine");
@@ -26,11 +27,11 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
     this.IsInSelectBuild = false;
     this.NeedShowBtnSequence = false;
     this.E9 = 0;
-    this.SXu = false;
-    this.nYc = undefined;
-    this.sYc = undefined;
-    this.aYc = 0;
-    this.fud = undefined;
+    this.zju = false;
+    this.sJc = undefined;
+    this.aJc = undefined;
+    this.hJc = 0;
+    this.uMd = undefined;
     this.Sequence = undefined;
     this.CostNumText = undefined;
     this.EnoughItem = undefined;
@@ -41,39 +42,39 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
       } else if (e === "CloseDisable") {
         this.GetItem(3)?.SetUIActive(false);
       } else if (e === "CloseWarn") {
-        this.nYc?.SetUIActive(false);
+        this.sJc?.SetUIActive(false);
       }
     };
-    this.MXu = (e, t) => {
-      if (this.EXu && t === 0) {
+    this.x6u = (e, t) => {
+      if (this.ljc && t === 0) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("TowerDefenseBattle", 10, "触发旋转机关");
         }
-        ControllerHolder_1.ControllerHolder.TowerDefenseEventController.ExecuteRotateTrap();
+        TowerDefenseEventController_1.TowerDefenseEventController.ExecuteRotateTrap();
       }
     };
-    this.IXu = (e, t) => {
-      if (this.TXu && t === 0) {
+    this.D6u = (e, t) => {
+      if (this.X$u && t === 0) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("TowerDefenseBattle", 10, "触发回收机关");
         }
-        ControllerHolder_1.ControllerHolder.TowerDefenseEventController.ExecuteUnOccupyTrap();
+        TowerDefenseEventController_1.TowerDefenseEventController.ExecuteUnOccupyTrap();
       }
     };
   }
-  get bXu() {
+  get Y$u() {
     return (this.E9 & 1) > 0 && this.IsInSelectBuild;
   }
-  get TXu() {
+  get X$u() {
     return (this.E9 & 4) > 0;
   }
-  get RXu() {
+  get kJu() {
     return (this.E9 & 8) > 0 && this.IsInSelectBuild;
   }
-  get EXu() {
-    return (this.E9 & 2) > 0 && this.bXu;
+  get ljc() {
+    return (this.E9 & 2) > 0 && this.Y$u;
   }
-  get wXu() {
+  get sWc() {
     return (this.E9 & 16) > 0 && this.IsInSelectBuild;
   }
   OnRegisterComponent() {
@@ -83,8 +84,8 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
     var e;
     if (!Info_1.Info.IsInTouch()) {
       e = this.GetItem(2);
-      this.fud = new TrapDefenseRecyclePriceItem_1.TrapDefenseRecyclePriceItem();
-      await this.fud.CreateThenShowByResourceIdAsync("UiItem_CoinItem", e);
+      this.uMd = new TrapDefenseRecyclePriceItem_1.TrapDefenseRecyclePriceItem();
+      await this.uMd.CreateThenShowByResourceIdAsync("UiItem_CoinItem", e);
     }
     this.CostNumText = this.GetText(5);
     this.EnoughItem = this.GetItem(7);
@@ -93,11 +94,11 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
   InitializeTemp() {
     this.Sequence = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
     this.Sequence.BindOnEndSequenceEvent(this.vK1);
-    this.E9 = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.BuildTipsType;
-    this.nYc = this.GetItem(9);
-    this.sYc = this.GetText(10);
+    this.E9 = TowerDefenseEventController_1.TowerDefenseEventController.BuildTipsType;
+    this.sJc = this.GetItem(9);
+    this.aJc = this.GetText(10);
     this._Oe();
-    this.LXu();
+    this.uzc();
     this.GetItem(4)?.SetUIActive(false);
   }
   OnShowBattleChildViewPanel(e) {
@@ -107,58 +108,58 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
     this.jQa();
   }
   OnTickBattleChildViewPanel(e) {
-    if (this.hYc()) {
-      this.LXu();
+    if (this.lJc()) {
+      this.uzc();
     }
-    this.Omd();
+    this.aVd();
   }
   OnBeforeDestroy() {
     this.Sequence.Clear();
   }
   HQa() {
-    if (!this.SXu) {
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.塔防旋转, this.MXu);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.塔防回收机关, this.IXu);
-      this.SXu = true;
+    if (!this.zju) {
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.塔防旋转, this.x6u);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.塔防回收机关, this.D6u);
+      this.zju = true;
     }
   }
   jQa() {
-    if (this.SXu) {
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.塔防旋转, this.MXu);
-      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.塔防回收机关, this.IXu);
-      this.SXu = false;
+    if (this.zju) {
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.塔防旋转, this.x6u);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.塔防回收机关, this.D6u);
+      this.zju = false;
     }
   }
   _Oe() {
     var e;
-    this.Rtd();
-    this.AXu();
+    this.Grd();
+    this.OJu();
     if (Info_1.Info.IsInTouch()) {
       this.GetItem(1)?.SetUIActive(false);
       this.GetItem(2)?.SetUIActive(false);
       this.GetItem(0)?.SetUIActive(false);
       this.NeedShowBtnSequence = false;
     } else {
-      e = this.xod();
-      this.GetItem(1)?.SetUIActive(this.EXu);
-      this.GetItem(2)?.SetUIActive(this.TXu);
+      e = this.thd();
+      this.GetItem(1)?.SetUIActive(this.ljc);
+      this.GetItem(2)?.SetUIActive(this.X$u);
       this.GetItem(0)?.SetUIActive(e);
-      if ((e = this.EXu || this.TXu || e) !== this.NeedShowBtnSequence) {
+      if ((e = this.ljc || this.X$u || e) !== this.NeedShowBtnSequence) {
         this.NeedShowBtnSequence = e;
-        this.Uod(e);
+        this.ihd(e);
       }
     }
   }
-  DXu(e) {
+  u7u(e) {
     if (this.E9 !== e) {
       this.E9 = e;
       this._Oe();
     }
   }
-  xod() {
-    return !Info_1.Info.IsInTouch() && !!this.bXu && (!this.RXu || ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsPurificationItemEnough);
+  thd() {
+    return !Info_1.Info.IsInTouch() && !!this.Y$u && (!this.kJu || ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsPurificationItemEnough);
   }
-  Uod(e) {
+  ihd(e) {
     if (e) {
       this.Sequence.StopSequenceByKey("CloseBtn", false, true);
       this.Sequence.PlaySequencePurely("StartBtn");
@@ -167,12 +168,12 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
       this.Sequence.PlaySequencePurely("CloseBtn");
     }
   }
-  AXu() {
+  OJu() {
     var e;
     var t = this.GetItem(4);
     var i = this.GetTexture(6);
-    if (this.RXu) {
-      this.Omd();
+    if (this.kJu) {
+      this.aVd();
       if ((e = ModelManager_1.ModelManager.TrapDefenseModel?.BattleInventoryData.GetItemData(TrapDefenseBattleDefine_1.TRAPDEFENSE_PURIFICATION_ID)) && e.Icon) {
         this.SetTextureByPath(e.Icon, i);
       }
@@ -184,11 +185,11 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
       this.Sequence.PlayOrReplaySequenceByName("CloseTip");
     }
   }
-  Omd() {
+  aVd() {
     var e;
     var t;
     var i;
-    if (this.RXu) {
+    if (this.kJu) {
       e = (i = ModelManager_1.ModelManager.TrapDefenseModel.BattleData).IsPurificationItemEnough;
       t = i.GetCurrentPurificationItemCount();
       i = i.GetPurificationItemConsume();
@@ -201,9 +202,9 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
       }
     }
   }
-  Rtd() {
+  Grd() {
     var e = this.GetItem(3);
-    if (this.wXu) {
+    if (this.sWc) {
       e?.SetUIActive(true);
       this.Sequence.StopSequenceByKey("CloseDisable", false, true);
       this.Sequence.PlaySequencePurely("StartDisable");
@@ -212,30 +213,30 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
       this.Sequence.PlaySequencePurely("CloseDisable");
     }
   }
-  LXu() {
+  uzc() {
     var e;
-    if (this.aYc === 1 || this.aYc === 0 || this.aYc === 7) {
+    if (this.hJc === 1 || this.hJc === 0 || this.hJc === 7) {
       this.Sequence.StopSequenceByKey("StartWarn", false, true);
       this.Sequence.PlaySequencePurely("CloseWarn");
     } else {
-      if (this.aYc === 2 || this.aYc === 3 || this.aYc === 4) {
-        e = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.RaycastResult;
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.sYc, cannotPlaceTextMap[e.PlacementType]);
-      } else if (this.aYc === 5) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.sYc, "TowerDefense_Battle_Numlimit");
-      } else if (this.aYc === 6) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.sYc, "TowerDefense_Battle_Coinlimit");
+      if (this.hJc === 2 || this.hJc === 3 || this.hJc === 4) {
+        e = TowerDefenseEventController_1.TowerDefenseEventController.RaycastResult;
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.aJc, cannotPlaceTextMap[e.PlacementType]);
+      } else if (this.hJc === 5) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.aJc, "TowerDefense_Battle_Numlimit");
+      } else if (this.hJc === 6) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.aJc, "TowerDefense_Battle_Coinlimit");
       }
-      this.nYc?.SetUIActive(true);
+      this.sJc?.SetUIActive(true);
       this.Sequence.StopSequenceByKey("CloseWarn", false, true);
       this.Sequence.PlaySequencePurely("StartWarn");
     }
   }
-  hYc() {
+  lJc() {
     let e = 0;
     var t;
-    if (this.wXu) {
-      if ((t = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.RaycastResult).IsInvalidPlacement) {
+    if (this.sWc) {
+      if ((t = TowerDefenseEventController_1.TowerDefenseEventController.RaycastResult).IsInvalidPlacement) {
         if (t.PlacementType === 1) {
           e = 2;
         } else if (t.PlacementType === 2) {
@@ -244,23 +245,23 @@ class TrapDefenseBuildTipsPanel extends BattleChildViewPanel_1.BattleChildViewPa
           e = 4;
         }
       } else {
-        e = ModelManager_1.ModelManager.TowerDefenseEventModel.HasPlaceToBuildTrap() ? ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsEnoughGoldToBuildTrap() ? 1 : 6 : 5;
+        e = ModelManager_1.ModelManager.TowerDefenseEventModel.HasPlaceToBuildTrap() ? TowerDefenseEventController_1.TowerDefenseEventController.IsEnoughGoldToBuildTrap() ? 1 : 6 : 5;
       }
     } else if (!this.IsInSelectBuild) {
       e = 7;
     }
-    return e !== this.aYc && (this.aYc = e, true);
+    return e !== this.hJc && (this.hJc = e, true);
   }
   SetRecyclePrice(e) {
-    if (this.fud) {
-      this.fud.UpdatePrice(e);
+    if (this.uMd) {
+      this.uMd.UpdatePrice(e);
     }
   }
   SetTipsType(e) {
-    this.DXu(e);
+    this.u7u(e);
   }
   ResetCannotMode() {
-    this.aYc = 0;
+    this.hJc = 0;
   }
   SetIsInSelectBuild(e) {
     this.IsInSelectBuild = e;

@@ -35,7 +35,7 @@ class TemporaryTeleportMarkItem extends ServerMarkItem_1.ServerMarkItem {
   }
   _il() {
     var e;
-    if (this.InnerView && (e = this.InnerView)) {
+    if (this.InnerView && !this.IsDestroy && (e = this.InnerView)) {
       e.UpdateIcon();
     }
   }

@@ -20,29 +20,32 @@ class ActivityRewardList extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIHorizontalLayout], [3, UE.UIItem]];
   }
-  InitGridLayout(e) {
-    this.a4e = e;
+  InitGridLayout(t) {
+    this.a4e = t;
     if (this.s4e === undefined) {
       this.s4e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.a4e);
     }
   }
-  SetTitleByTextId(e) {
-    this.GetText(1).ShowTextNew(e);
+  SetCommonTitle() {
+    this.GetText(1).ShowTextNew("CollectActivity_reward");
   }
-  SetTitleByText(e) {
-    this.GetText(1).SetText(e);
+  SetTitleByTextId(t) {
+    this.GetText(1).ShowTextNew(t);
+  }
+  SetTitleByText(t) {
+    this.GetText(1).SetText(t);
   }
   GetBgTexture() {
     return this.GetTexture(0);
   }
-  RefreshItemLayout(e, t) {
-    this.s4e.RefreshByData(e, t);
+  RefreshItemLayout(t, e) {
+    this.s4e.RefreshByData(t, e);
   }
   GetLayoutItemList() {
     return this.s4e.GetLayoutItemList();
   }
-  SetItemLayoutVisible(e) {
-    this.s4e.SetActive(e);
+  SetItemLayoutVisible(t) {
+    this.s4e.SetActive(t);
   }
 }
 exports.ActivityRewardList = ActivityRewardList;

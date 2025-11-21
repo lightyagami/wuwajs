@@ -106,7 +106,7 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
     this.CanExecuteChangeFunction = (e, i, t) => {
       return !!ModelManager_1.ModelManager.ShipTowerModel.IsOtherTeamRoleData(e.GetDataId()) || t !== 0 || !this.t7_() || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull"), false);
     };
-    this.Mzc = () => {
+    this.bZc = () => {
       EditFormationController_1.EditFormationController.OpenEditFormationView(false);
     };
   }
@@ -116,7 +116,7 @@ class ShipTowerTeamPanel extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIItem], [4, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[4, this.Mzc]];
+    this.BtnBindInfo = [[4, this.bZc]];
   }
   async OnBeforeStartAsync() {
     this.Ivt = new TabComponent_1.TabComponent(this.GetItem(0), this.fqe, this.KOl, undefined);

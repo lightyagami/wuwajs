@@ -44,52 +44,68 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
       if (!this.ShowData || !this.Config || this.ShowData.DataSource !== 0 || this.Config.ShowSource !== 0) {
         return false;
       }
-      var t = this.ShowData.Id;
-      if (!GeneralLogicTreeController_1.GeneralLogicTreeController.IsShowTrackDistance(t, this.Config.QuestScheduleType)) {
+      var i = this.ShowData.Id;
+      if (!GeneralLogicTreeController_1.GeneralLogicTreeController.IsShowTrackDistance(i, this.Config.QuestScheduleType)) {
         return false;
       }
-      t = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-      if (!t) {
+      i = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(i);
+      if (!i) {
         return false;
       }
-      if (t.IsInTrackRange()) {
+      if (i.IsInTrackRange()) {
         return false;
       }
-      var i = GeneralLogicTreeController_1.GeneralLogicTreeController.GetTitleTrackNodeId(this.Config.QuestScheduleType);
-      var s = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      var s = MapUtil_1.MapUtil.GetDungeonsRelation(s, t.DungeonId);
-      if (s === 3 || s !== 1 && !this.DescribeTextVisible) {
-        if (t.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
+      var s = i.GetModifyTrackAreaConfig();
+      var r = GeneralLogicTreeController_1.GeneralLogicTreeController.GetTitleTrackNodeId(this.Config.QuestScheduleType);
+      var n = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+      var n = MapUtil_1.MapUtil.GetDungeonsRelation(n, i.DungeonId);
+      if (n === 3 || n !== 1 && !this.DescribeTextVisible) {
+        if (i.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
           return false;
         }
-        s = t.GetTrackAreaInfo(i);
+        n = i.GetTrackAreaInfo(r);
         let e = "";
-        if (s) {
-          var r = ConfigManager_1.ConfigManager.AreaConfig.GetLevelOneAreaId(s);
-          var r = r !== 0 ? r : s;
-          var s = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(r);
-          if (!s) {
+        if (n) {
+          var o = ConfigManager_1.ConfigManager.AreaConfig.GetLevelOneAreaId(n);
+          var o = o !== 0 ? o : n;
+          var n = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(o);
+          if (!n) {
             return false;
           }
-          e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s.Title) ?? s.Title;
+          e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Title) ?? n.Title;
         } else {
-          r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t.DungeonId);
-          if (!r) {
+          o = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i.DungeonId);
+          if (!o) {
             return false;
           }
-          e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r.MapName) ?? r.MapName;
+          if (o.InstSubType === 12) {
+            if ((n = o.EntranceEntities)?.length && (h = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(n[0].DungeonId)) && (n = ModelManager_1.ModelManager.CreatureModel.GetEntityData(n[0].EntranceEntityId, h.MapConfigId)?.AreaId ?? 0, h = (h = ConfigManager_1.ConfigManager.AreaConfig.GetLevelOneAreaId(n)) !== 0 ? h : n, n = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(h))) {
+              e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Title) ?? n.Title;
+            }
+          } else {
+            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o.MapName) ?? o.MapName;
+          }
         }
-        s = t.GetNode(i);
-        if (this.DescribeTextVisible || s?.NodeType !== "ChildQuest" || s.ChildQuestType !== IQuest_1.EChildQuest.PlayFlow) {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.DistanceTextComp, "CrossMapMissionTips", e);
+        var h = i.GetNode(r);
+        let t = "CrossMapMissionTips";
+        if (s) {
+          e = s.ModifyTrackAreaText;
+          t = undefined;
+        }
+        if (this.DescribeTextVisible || h?.NodeType !== "ChildQuest" || h.ChildQuestType !== IQuest_1.EChildQuest.PlayFlow) {
+          this.QRm(this.DistanceTextComp, t, e);
           return true;
         } else {
-          LguiUtil_1.LguiUtil.SetLocalTextNew(this.DescribeTextComp, "CrossMapMissionTips", e);
+          this.QRm(this.DescribeTextComp, t, e);
           return !(this.DescribeTextVisible = true);
         }
       }
-      r = t.GetNodeTrackPosition(i);
-      return !!r && QuestUtil_1.QuestUtil.SetTrackDistanceText(this.DistanceTextComp, r);
+      n = i.GetNodeTrackPosition(r);
+      if (n) {
+        return QuestUtil_1.QuestUtil.SetTrackDistanceText(this.DistanceTextComp, n);
+      } else {
+        return !!s && (this.QRm(this.DistanceTextComp, undefined, s.ModifyTrackAreaText), true);
+      }
     };
   }
   get IsDescribeTextVisible() {
@@ -230,6 +246,13 @@ class StepBaseItem extends UiPanelBase_1.UiPanelBase {
   }
   async OnReset() {
     await this.Refresh(undefined, undefined);
+  }
+  QRm(e, t, i) {
+    if (t) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(e, t, i);
+    } else {
+      e.SetText(i);
+    }
   }
 }
 exports.StepBaseItem = StepBaseItem;

@@ -173,10 +173,10 @@ class BatchBulletPositionSpline {
     this.r1t = 0;
     this._cu = 0;
     this.ucu = 0;
-    this.Nfd = undefined;
-    this.Vfd = undefined;
-    this.jfd = undefined;
-    this.Hfd = undefined;
+    this.W0d = undefined;
+    this.Q0d = undefined;
+    this.K0d = undefined;
+    this.X0d = undefined;
     this.nx = undefined;
     this.mcu = false;
     this.zDl = false;
@@ -198,11 +198,11 @@ class BatchBulletPositionSpline {
     }
     this.r1t = t.GetBlackboard(i.DurationKey);
     this._cu = i.Delay;
-    this.Nfd = i.EffectOfEnd.ToAssetPathName();
-    this.Vfd = i.BulletIdOfEnd;
+    this.W0d = i.EffectOfEnd.ToAssetPathName();
+    this.Q0d = i.BulletIdOfEnd;
     this.mcu = i.DestroyAllOnEnd;
-    this.Hfd = i.BulletIdOnBreak;
-    this.jfd = i.EffectOnBreak.ToAssetPathName();
+    this.X0d = i.BulletIdOnBreak;
+    this.K0d = i.EffectOnBreak.ToAssetPathName();
     this.zDl = i.DestroySummonBullet;
   }
   async Load() {
@@ -235,12 +235,12 @@ class BatchBulletPositionSpline {
     });
   }
   OnBreak() {
-    this.$fd(this.jfd, this.Hfd);
+    this.Y0d(this.K0d, this.X0d);
   }
   OnEnd() {
-    this.$fd(this.Nfd, this.Vfd);
+    this.Y0d(this.W0d, this.Q0d);
   }
-  $fd(t, i) {
+  Y0d(t, i) {
     var s;
     var e = StringUtils_1.StringUtils.IsBlank(t);
     var r = StringUtils_1.StringUtils.IsBlank(i);
@@ -345,11 +345,11 @@ class SkillBehaviorBatchBulletTask {
     r.wmo = s;
     r.OQt = t.GetComponent(3)?.Actor;
     if (StringUtils_1.NONE_STRING !== e.ContinueWithTag.TagName) {
-      r.Xte = t.GetComponent(206);
+      r.Xte = t.GetComponent(209);
     }
     r.tRr = t.GetComponent(39);
     r.Hhc = e.StopOnSkillEnd;
-    var s = t.GetComponent(282);
+    var s = t.GetComponent(286);
     r.IQ_ = e.ContinueWithTag.TagId;
     r.xe = new Array();
     var h = e.Id.Num();

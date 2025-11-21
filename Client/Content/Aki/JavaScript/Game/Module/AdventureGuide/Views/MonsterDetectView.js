@@ -72,8 +72,8 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
       this.H6e = i;
       this.F6e = e;
       var i = ModelManager_1.ModelManager.AdventureGuideModel.GetMonsterDetectData(e);
-      var t = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterInfoConfig(i.Conf.MonsterInfoId).Name;
-      var r = {
+      var e = ConfigManager_1.ConfigManager.MonsterInfoConfig.GetMonsterInfoConfig(i.Conf.MonsterInfoId).Name;
+      var t = {
         Data: [{
           IncId: 0,
           ItemId: i.Conf.MonsterInfoId
@@ -86,31 +86,30 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
         IsQualityHidden: true,
         IconHidden: i.IsLock
       };
-      this.$6e?.Apply(r);
+      this.$6e?.Apply(t);
       this.$6e?.SetToggleInteractive(false);
-      var r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(TextById_1.configTextById.GetConfig(AdventureGuideController_1.DETECT).TextContent);
-      this.j6e.SetText(r);
+      var t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(TextById_1.configTextById.GetConfig(AdventureGuideController_1.DETECT).TextContent);
+      this.j6e.SetText(t);
       if (i.IsLock) {
         LguiUtil_1.LguiUtil.SetLocalText(this.GetText(4), AdventureGuideController_1.UNKNOWNTEXT);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), i.Conf.AttributesDescriptionLock);
       } else {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), i.Conf.AttributesDescriptionUnlock);
         this.J6e();
       }
-      var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(i.Conf.DangerType);
+      var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataConf(i.Conf.DangerType);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(11), ConfigManager_1.ConfigManager.AdventureModuleConfig.GetSecondaryGuideDataTextById(i.Conf.DangerType));
-      this.SetSpriteByPath(r.Icon, this.GetSprite(6), false);
+      this.SetSpriteByPath(t.Icon, this.GetSprite(6), false);
       if (i.Conf.ShowReward) {
         this.GetItem(9).SetUIActive(true);
         this.z6e(i.Conf.ShowReward, false);
       } else {
         this.GetItem(9).SetUIActive(false);
       }
-      ControllerHolder_1.ControllerHolder.AdventureGuideController.NormalMonsterManualInfoRequest(e);
-      var t = CommonParamById_1.configCommonParamById.GetIntArrayConfig("CanUpAbsorbDangerTypeList");
-      var r = CommonParamById_1.configCommonParamById.GetIntArrayConfig("CanUpAbsorbTypeDescription2List");
-      var e = t.includes(i.Conf.DangerType) && r.includes(i.Conf.TypeDescription2);
+      var e = CommonParamById_1.configCommonParamById.GetIntArrayConfig("CanUpAbsorbDangerTypeList");
+      var t = CommonParamById_1.configCommonParamById.GetIntArrayConfig("CanUpAbsorbTypeDescription2List");
+      var e = e.includes(i.Conf.DangerType) && t.includes(i.Conf.TypeDescription2);
       this.GetText(15)?.SetUIActive(e);
       this.GetButton(16)?.RootUIComp.SetUIActive(e);
     };
@@ -126,7 +125,7 @@ class MonsterDetectView extends UiTabViewBase_1.UiTabViewBase {
       this.dqe.ResetSearch(true);
     };
     this.t8e = () => {
-      if (!(Time_1.Time.Now - this.L6e <= TimeUtil_1.TimeUtil.InverseMillisecond)) {
+      if (!(Time_1.Time.Now - this.L6e <= TimeUtil_1.TimeUtil.InverseMillisecond * 2)) {
         this.L6e = Time_1.Time.Now;
         if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("DungeonDetection");

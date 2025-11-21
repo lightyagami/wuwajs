@@ -1,21 +1,21 @@
 "use strict";
 
 var CreatureDataComponent_1;
-var __decorate = this && this.__decorate || function (t, i, e, s) {
-  var o;
+var __decorate = this && this.__decorate || function (t, e, i, o) {
+  var s;
   var r = arguments.length;
-  var n = r < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
+  var n = r < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(t, i, e, s);
+    n = Reflect.decorate(t, e, i, o);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
-      if (o = t[h]) {
-        n = (r < 3 ? o(n) : r > 3 ? o(i, e, n) : o(i, e)) || n;
+      if (s = t[h]) {
+        n = (r < 3 ? s(n) : r > 3 ? s(e, i, n) : s(e, i)) || n;
       }
     }
   }
   if (r > 3 && n) {
-    Object.defineProperty(i, e, n);
+    Object.defineProperty(e, i, n);
   }
   return n;
 };
@@ -129,6 +129,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.PbMoveSplineId = 0;
     this.PbMoveSplineConfig = undefined;
     this.PbMoveSplineSceneItemRuntimeData = undefined;
+    this.PbMoveToPointConfig = undefined;
     this.ZS1 = 1;
     this.eM1 = 0;
     this.SpawnedEntityInfos = [];
@@ -136,6 +137,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.HoldHandTargetEntityId = 0;
     this.HoldHandType = 0;
     this.HoldHandIsFollow = false;
+    this.HonamiStoryItemInfo = undefined;
+    this.HonamiStoryLevel = 0;
+    this.HuluSkinId = 0;
     this.wDe = 0;
     this.vH = 0;
     this.mXr = false;
@@ -165,6 +169,7 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.LXr = 0;
     this.DXr = 0;
     this.RXr = new Array();
+    this.Grm = 0;
     this.UXr = new Array();
     this.xRn = new Map();
     this.ComponentsKey = 0n;
@@ -175,9 +180,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.ad1 = () => {
       var t = ModelManager_1.ModelManager.TraceElementModel.GetTraceTypeElement(UE.TraceSphereElement.StaticClass(), QueryTypeDefine_1.KuroTraceTypeQuery.IkGround, GlobalData_1.GlobalData.World);
       t.Radius = IK_GROUND_TRACE_RADIUS;
-      var i = this.GetPbLocation();
-      ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation.DeepCopy(i);
-      ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation.DeepCopy(i);
+      var e = this.GetPbLocation();
+      ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation.DeepCopy(e);
+      ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation.DeepCopy(e);
       MathUtils_1.MathUtils.CommonTempVector.DeepCopy(this.PIl);
       MathUtils_1.MathUtils.CommonTempVector.Normalize();
       MathUtils_1.MathUtils.CommonTempVector.MultiplyEqual(IK_GROUND_TRACE_HEIGHT);
@@ -185,18 +190,18 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(t, ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(t, ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation);
       if (TraceElementCommon_1.TraceElementCommon.SphereTrace(t, PROFILE_IK_GROUND_TRACE)) {
-        i = t.HitResult;
-        if (i?.bBlockingHit) {
-          TraceElementCommon_1.TraceElementCommon.GetImpactPoint(i, 0, MathUtils_1.MathUtils.CommonTempVector);
+        e = t.HitResult;
+        if (e?.bBlockingHit) {
+          TraceElementCommon_1.TraceElementCommon.GetImpactPoint(e, 0, MathUtils_1.MathUtils.CommonTempVector);
           return MathUtils_1.MathUtils.CommonTempVector.ToUeVector();
         }
       }
     };
     this.hd1 = () => {
       var t = ModelManager_1.ModelManager.TraceElementModel.GetTraceTypeElement(UE.TraceLineElement.StaticClass(), QueryTypeDefine_1.KuroTraceTypeQuery.Water, GlobalData_1.GlobalData.World);
-      var i = this.GetPbLocation();
-      ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation.DeepCopy(i);
-      ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation.DeepCopy(i);
+      var e = this.GetPbLocation();
+      ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation.DeepCopy(e);
+      ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation.DeepCopy(e);
       MathUtils_1.MathUtils.CommonTempVector.DeepCopy(this.PIl);
       MathUtils_1.MathUtils.CommonTempVector.Normalize();
       MathUtils_1.MathUtils.CommonTempVector.MultiplyEqual(WATER_TRACE_HEIGHT);
@@ -205,9 +210,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
       TraceElementCommon_1.TraceElementCommon.SetStartLocation(t, ModelManager_1.ModelManager.TraceElementModel.CommonStartLocation);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(t, ModelManager_1.ModelManager.TraceElementModel.CommonEndLocation);
       if (TraceElementCommon_1.TraceElementCommon.LineTrace(t, PROFILE_WATER_TRACE)) {
-        i = t.HitResult;
-        if (i?.bBlockingHit) {
-          TraceElementCommon_1.TraceElementCommon.GetHitLocation(i, 0, MathUtils_1.MathUtils.CommonTempVector);
+        e = t.HitResult;
+        if (e?.bBlockingHit) {
+          TraceElementCommon_1.TraceElementCommon.GetHitLocation(e, 0, MathUtils_1.MathUtils.CommonTempVector);
           return MathUtils_1.MathUtils.CommonTempVector.ToUeVector();
         }
       }
@@ -219,35 +224,34 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     return true;
   }
   OnInitData(t) {
-    var i;
-    var e = t;
-    var s = e.ComponentsKey;
-    if (e instanceof CreateEntityData_1.CreateEntityData) {
-      e = e.EntityData;
+    var e;
+    var i = t;
+    var o = i.ComponentsKey;
+    if (i instanceof CreateEntityData_1.CreateEntityData) {
+      i = i.EntityData;
       this.E0 = this.Entity.Id;
-      this.ComponentsKey = s;
-      s = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
-      i = t.CreatureDataId;
-      this.SetCreatureDataId(i);
-      s.CreatureDataId = i;
-      this.SetPbDataId(e.v9n);
-      s.PbDataId = e.v9n;
-      this.SetPrefabId(e.LEs);
-      this.SetOwnerIncId(MathUtils_1.MathUtils.LongToNumber(e.JE_));
-      this.SetEntityConfigType(e.ZHn);
-      s.ConfigType = e.ZHn;
+      this.ComponentsKey = o;
+      o = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
+      e = t.CreatureDataId;
+      this.SetCreatureDataId(e);
+      o.CreatureDataId = e;
+      o.PbDataId = i.v9n;
+      this.SetPrefabId(i.LEs);
+      this.SetOwnerIncId(MathUtils_1.MathUtils.LongToNumber(i.JE_));
+      this.SetEntityConfigType(i.ZHn);
+      o.ConfigType = i.ZHn;
       this.SetComponentKey(t.ComponentsKey);
-      s.EntityType = e.zHn;
+      o.EntityType = i.zHn;
       this.dXr = t.PbEntityInitData;
       this.d7a = t.TemplateData;
       this.gXr = t.PbModelConfigId ?? "";
       this.IsConcealed = t.IsConcealed;
-      this.SetPbDataByProtocol(e);
+      this.SetPbDataByProtocol(i);
       this.Yre = new BlackboardMap_1.BlackboardMap();
       this.IsConcealed = t.IsConcealed;
       this.nTa();
-      if (i = this.Entity?.EntityData?.GetCreatureDataComponent()) {
-        i.EntityType = this.fie;
+      if (e = this.Entity?.EntityData?.GetCreatureDataComponent()) {
+        e.EntityType = this.fie;
       }
       return true;
     } else {
@@ -313,6 +317,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   get CustomServerEntityIds() {
     return this.RXr;
+  }
+  get BossRushCreatureDataId() {
+    return this.Grm;
   }
   get SummonEntityIds() {
     return this.UXr;
@@ -548,13 +555,13 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   GetPbLocation() {
     var t;
-    var i;
     var e;
+    var i;
     if (this.eXr?.P5n) {
-      t = (e = this.eXr.P5n).X || 0;
-      i = e.Y || 0;
-      e = e.Z || 0;
-      return new UE.VectorDouble(t, i, e);
+      t = (i = this.eXr.P5n).X || 0;
+      e = i.Y || 0;
+      i = i.Z || 0;
+      return new UE.VectorDouble(t, e, i);
     } else {
       return Vector_1.Vector.ZeroVectorDouble;
     }
@@ -572,8 +579,8 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     return this.GetPbLocation();
   }
   D_GetLocationIsSnap() {
-    for (const i of [this.ad1, this.hd1]) {
-      var t = i();
+    for (const e of [this.ad1, this.hd1]) {
+      var t = e();
       if (t) {
         return t;
       }
@@ -590,13 +597,13 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   GetRotation() {
     var t;
-    var i;
     var e;
+    var i;
     if (this.eXr?.g8n) {
-      t = (e = this.eXr.g8n).Pitch || 0;
-      i = e.Yaw || 0;
-      e = e.Roll || 0;
-      return new UE.Rotator(t, i, e);
+      t = (i = this.eXr.g8n).Pitch || 0;
+      e = i.Yaw || 0;
+      i = i.Roll || 0;
+      return new UE.Rotator(t, e, i);
     } else {
       return new UE.Rotator(0, 0, 0);
     }
@@ -610,16 +617,16 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   D_GetTransform() {
     var t = this.GetLocation();
-    var i = this.GetRotation();
-    return UE.KismetMathLibrary.MakeTransformDouble(t, i, Vector_1.Vector.OneVector);
+    var e = this.GetRotation();
+    return UE.KismetMathLibrary.MakeTransformDouble(t, e, Vector_1.Vector.OneVector);
   }
   GetBlackboard() {
     return this.Yre;
   }
   SetBlackboardsByProtocol(t) {
     if (t !== undefined) {
-      for (const i of t) {
-        this.SetBlackboardByProtocol(i);
+      for (const e of t) {
+        this.SetBlackboardByProtocol(e);
       }
     }
   }
@@ -630,10 +637,10 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   SetBlackboardsByConfig(t) {
     if (t !== undefined) {
-      for (const e of t) {
-        var i = BlackboardMap_1.BlackboardParam.CreateByConfig(e);
-        if (i) {
-          this.Yre.SetValue(i.GetKey(), i);
+      for (const i of t) {
+        var e = BlackboardMap_1.BlackboardParam.CreateByConfig(i);
+        if (e) {
+          this.Yre.SetValue(e.GetKey(), e);
         }
       }
     }
@@ -641,9 +648,9 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   GetBlackboardByKey(t) {
     return this.Yre.GetValue(t);
   }
-  SetBlackboard(t, i) {
-    if (i !== undefined) {
-      this.Yre.SetValue(t, i);
+  SetBlackboard(t, e) {
+    if (e !== undefined) {
+      this.Yre.SetValue(t, e);
     }
   }
   RemoveBlackboard(t) {
@@ -654,10 +661,10 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   SetPublicTags(t) {
     this.tXr.length = 0;
-    for (const i of t) {
-      this.AddPublicTags(i);
-      if (!this.mQt.has(i)) {
-        this.mQt.add(i);
+    for (const e of t) {
+      this.AddPublicTags(e);
+      if (!this.mQt.has(e)) {
+        this.mQt.add(e);
       }
     }
   }
@@ -666,11 +673,11 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
       this.mQt.add(t);
     }
   }
-  RemovePublicTag(i) {
+  RemovePublicTag(e) {
     for (let t = 0; t < this.tXr.length; ++t) {
-      if (this.tXr[t] === i) {
+      if (this.tXr[t] === e) {
         this.tXr.splice(t, 1);
-        this.mQt.delete(i);
+        this.mQt.delete(e);
         return true;
       }
     }
@@ -680,8 +687,8 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.tXr.length = 0;
   }
   ContainsPublicTag(t) {
-    for (const i of this.tXr) {
-      if (i === t) {
+    for (const e of this.tXr) {
+      if (e === t) {
         return true;
       }
     }
@@ -716,29 +723,29 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
   }
   SetEntityCommonTags(t) {
     this.EntityCommonTags.clear();
-    for (const i of t) {
-      this.EntityCommonTags.add(i);
+    for (const e of t) {
+      this.EntityCommonTags.add(e);
     }
   }
   UpdateEntityCommonTags(t) {
     if (t.length !== 0) {
-      for (const i of t) {
-        if (this.EntityCommonTags.has(i.m5n)) {
-          if (!i.lWn) {
-            this.EntityCommonTags.delete(i.m5n);
+      for (const e of t) {
+        if (this.EntityCommonTags.has(e.m5n)) {
+          if (!e.lWn) {
+            this.EntityCommonTags.delete(e.m5n);
           }
-        } else if (i.lWn) {
-          this.EntityCommonTags.add(i.m5n);
+        } else if (e.lWn) {
+          this.EntityCommonTags.add(e.m5n);
         }
       }
     }
   }
   SetModelConfig(t) {
-    var i;
+    var e;
     if (this.rXr !== t) {
       this.rXr = t;
-      if (i = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, t.toString())) {
-        this.nXr = i;
+      if (e = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(0, t.toString())) {
+        this.nXr = e;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 6, "模型配置不存在", ["ModelConfigId", t]);
       }
@@ -756,18 +763,18 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
         }
       }
       var t = this.GetRoleConfig();
-      var i = this.GetSkinModelId();
-      if (i > 0) {
-        return i;
+      var e = this.GetSkinModelId();
+      if (e > 0) {
+        return e;
       } else if (t) {
         return t.MeshId;
       } else {
         return 0;
       }
     }
-    i = this.GetPbModelConfig();
-    if (i) {
-      return i.ModelId;
+    e = this.GetPbModelConfig();
+    if (e) {
+      return e.ModelId;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 28, "[清理CDT_EntityConfig]该实体没有对应的Pb表信息", ["CreatureDataId", this.GetCreatureDataId()], ["TidName", this.GetEntityTidName()], ["PbDataId", this.GetPbDataId()]);
@@ -792,11 +799,11 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
         this.nXr = new UE.SModelConfig();
         this.sXr = IComponent_1.levelPrefabBpPathConfig[t.BlueprintPath];
         this.nXr.场景交互物 = new UE.SoftObjectPath(FNameUtil_1.FNameUtil.GetDynamicFName(t.PrefabPath), "");
-        for (const s of t.PrefabStateList) {
-          this.nXr.场景交互物状态列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(s.LevelTag), s.SceneInteractionState);
+        for (const o of t.PrefabStateList) {
+          this.nXr.场景交互物状态列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(o.LevelTag), o.SceneInteractionState);
         }
-        for (const o of t.EffectStateList) {
-          this.nXr.场景交互物特效列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(o.LevelTag), o.SceneInteractionEffectState);
+        for (const s of t.EffectStateList) {
+          this.nXr.场景交互物特效列表.Add(GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(s.LevelTag), s.SceneInteractionEffectState);
         }
         if (t.NameOffsetZ) {
           this.nXr.名字Z偏移 = t.NameOffsetZ;
@@ -808,22 +815,22 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
       case "Npc":
         this.nXr = new UE.SModelConfig();
         this.sXr = t.BlueprintPath;
-        var i = UE.KismetSystemLibrary.MakeSoftClassPath(t.BlueprintPath);
-        var i = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(i);
-        this.nXr.蓝图 = i;
-        var i = UE.KismetSystemLibrary.MakeSoftClassPath(t.Abp);
-        var i = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(i);
-        this.nXr.动画蓝图 = i;
+        var e = UE.KismetSystemLibrary.MakeSoftClassPath(t.BlueprintPath);
+        var e = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(e);
+        this.nXr.蓝图 = e;
+        var e = UE.KismetSystemLibrary.MakeSoftClassPath(t.Abp);
+        var e = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(e);
+        this.nXr.动画蓝图 = e;
         if (t.NpcModel) {
           switch (t.NpcModel.Type) {
             case "Da":
-              var e = UE.KismetSystemLibrary.MakeSoftClassPath(t.NpcModel.Da);
-              this.nXr.DA = e;
+              var i = UE.KismetSystemLibrary.MakeSoftClassPath(t.NpcModel.Da);
+              this.nXr.DA = i;
               break;
             case "Mesh":
-              e = UE.KismetSystemLibrary.MakeSoftObjectPath(t.NpcModel.Mesh);
-              e = UE.KismetSystemLibrary.Conv_SoftObjPathToSoftObjRef(e);
-              this.nXr.网格体 = e;
+              i = UE.KismetSystemLibrary.MakeSoftObjectPath(t.NpcModel.Mesh);
+              i = UE.KismetSystemLibrary.Conv_SoftObjPathToSoftObjRef(i);
+              this.nXr.网格体 = i;
           }
         }
         if (t.BattleSockets) {
@@ -849,16 +856,16 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
       case "Animal":
         this.nXr = new UE.SModelConfig();
         this.sXr = t.BlueprintPath;
-        i = UE.KismetSystemLibrary.MakeSoftClassPath(t.BlueprintPath);
-        i = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(i);
-        this.nXr.蓝图 = i;
-        i = UE.KismetSystemLibrary.MakeSoftClassPath(t.Abp);
-        i = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(i);
-        this.nXr.动画蓝图 = i;
+        e = UE.KismetSystemLibrary.MakeSoftClassPath(t.BlueprintPath);
+        e = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(e);
+        this.nXr.蓝图 = e;
+        e = UE.KismetSystemLibrary.MakeSoftClassPath(t.Abp);
+        e = UE.KismetSystemLibrary.Conv_SoftClassPathToSoftClassRef(e);
+        this.nXr.动画蓝图 = e;
         if (t.AnimalModel && t.AnimalModel.Type === "Mesh") {
-          i = UE.KismetSystemLibrary.MakeSoftObjectPath(t.AnimalModel.Mesh);
-          i = UE.KismetSystemLibrary.Conv_SoftObjPathToSoftObjRef(i);
-          this.nXr.网格体 = i;
+          e = UE.KismetSystemLibrary.MakeSoftObjectPath(t.AnimalModel.Mesh);
+          e = UE.KismetSystemLibrary.Conv_SoftObjPathToSoftObjRef(e);
+          this.nXr.网格体 = e;
         }
     }
   }
@@ -868,16 +875,16 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     }
     let t = "";
     if (this.fie === Protocol_1.Aki.Protocol.kks.Proto_Player) {
-      i = this.GetRoleConfig();
-      t = i.EntityProperty.toString();
-    } else if ((i = this.GetBaseInfo())?.EntityPropertyId) {
-      t = i.EntityPropertyId.toString();
+      e = this.GetRoleConfig();
+      t = e.EntityProperty.toString();
+    } else if ((e = this.GetBaseInfo())?.EntityPropertyId) {
+      t = e.EntityPropertyId.toString();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 28, "[清理CDT_EntityConfig]该实体没有对应的Pb表信息EntityPropertyId", ["CreatureDataId", this.GetCreatureDataId()], ["TidName", this.GetEntityTidName()], ["PbDataId", this.GetPbDataId()]);
     }
-    var i = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(1, t);
-    if (i) {
-      this.t4r = i;
+    var e = DataTableUtil_1.DataTableUtil.GetDataTableRowFromName(1, t);
+    if (e) {
+      this.t4r = e;
       return this.t4r;
     }
     if (Log_1.Log.CheckError()) {
@@ -915,9 +922,6 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     this.fie = Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.nXr = undefined;
   }
-  SetPbDataId(t) {
-    this.wDe = t;
-  }
   GetPbDataId() {
     return this.wDe;
   }
@@ -939,11 +943,11 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     }
   }
   SetPbDataByProtocol(t) {
-    var i = t;
-    this.wDe = i.v9n;
-    this.vH = i.LEs;
-    this.mXr = i.iys;
-    this.SetOwnerIncId(MathUtils_1.MathUtils.LongToNumber(i.JE_));
+    var e = t;
+    this.wDe = e.v9n;
+    this.vH = e.LEs;
+    this.mXr = e.iys;
+    this.SetOwnerIncId(MathUtils_1.MathUtils.LongToNumber(e.JE_));
     if (this.XQr === Protocol_1.Aki.Protocol.rLs.Proto_Character) {
       this.SetRoleId(t.v9n);
     } else if (this.XQr !== Protocol_1.Aki.Protocol.rLs.Proto_OldEntity) {
@@ -959,190 +963,206 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
         }
         return false;
       }
-      var e = this.GetBaseInfo();
-      if (!e) {
+      var i = this.GetBaseInfo();
+      if (!i) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Entity", 3, "[CreatureData.SetPbDataByProtocol] 实体的BaseInfoComponent空。", ["EntityConfigType", this.XQr], ["PbDataId", this.wDe]);
         }
         return false;
       }
-      if (e.Category?.EntityPlotBindingType) {
-        this.AddPublicTags(e.Category.EntityPlotBindingType);
+      if (i.Category?.EntityPlotBindingType) {
+        this.AddPublicTags(i.Category.EntityPlotBindingType);
       }
     }
-    this.SetEntityType(i.zHn);
-    this.SetSubEntityType(i.oys);
-    this.SetPlayerId(i.W5n);
-    this.SetVisible(i.rVn);
-    this.LivingStatus = i.JEs;
-    this.PIl = i.ZE_;
-    var e = i.l8n;
-    this.SetLocation(e);
-    this.sd1 = i.gu1;
-    this.SetRotation(i._8n);
-    this.SetDurabilityValue(i.ZEs);
+    this.SetEntityType(e.zHn);
+    this.SetSubEntityType(e.oys);
+    this.SetPlayerId(e.W5n);
+    this.SetVisible(e.rVn);
+    this.LivingStatus = e.JEs;
+    this.PIl = e.ZE_;
+    var i = e.l8n;
+    this.SetLocation(i);
+    this.sd1 = e.gu1;
+    this.SetRotation(e._8n);
+    this.SetDurabilityValue(e.ZEs);
     this.qne = t.YEs;
     this.hXr = t.tys;
     this.lXr = t.eys;
     if (typeof t.nys == "number") {
       this._Xr = t.nys;
     }
-    this.wXr(i.zEs);
-    if (i.eI_ > 0) {
-      e = ModelManager_1.ModelManager.RoleSkinModel?.GetRoleSkinData(i.eI_);
-      this.nGl = e?.GetRoleMeshId() ?? 0;
-      this.BIl = i.eI_;
+    this.wXr(e.zEs);
+    if (e.eI_ > 0) {
+      i = ModelManager_1.ModelManager.RoleSkinModel?.GetRoleSkinData(e.eI_);
+      this.nGl = i?.GetRoleMeshId() ?? 0;
+      this.BIl = e.eI_;
     }
-    if (i.rCc > 0) {
-      this.mNc = i.rCc;
+    if (e.rCc > 0) {
+      this.mNc = e.rCc;
     }
-    if (i.iCc > 0) {
-      this.fNc = i.iCc;
+    if (e.iCc > 0) {
+      this.fNc = e.iCc;
     }
-    this.ActorVisible = i.oVn;
+    this.ActorVisible = e.oVn;
     return true;
   }
   wXr(t) {
     this.ComponentDataMap.clear();
-    for (const l of t) {
-      var i = l.C3s;
-      this.ComponentDataMap.set(i, l);
-      switch (i) {
+    for (const d of t) {
+      var e = d.C3s;
+      this.ComponentDataMap.set(e, d);
+      switch (e) {
         case "sys":
-          this.SetHardnessModeId(l.sys.$Wn);
+          this.SetHardnessModeId(d.sys.$Wn);
           break;
         case "ays":
-          this.SetEntityCommonTags(l.ays.lIs);
+          this.SetEntityCommonTags(d.ays.lIs);
           break;
         case "dys":
-          this.SetBlackboardsByProtocol(l.dys.pIs);
+          this.SetBlackboardsByProtocol(d.dys.pIs);
           break;
         case "pys":
-          this.CXr = l.pys.yIs;
+          this.CXr = d.pys.yIs;
           break;
         case "lys":
-          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(l.lys.YWn));
-          this.SetSummonerPlayerId(l.lys.W5n);
-          this.SummonType = l.lys.h5n;
-          this.SummonCfgId = l.lys.dIs;
+          this.SetSummonerId(MathUtils_1.MathUtils.LongToNumber(d.lys.YWn));
+          this.SetSummonerPlayerId(d.lys.W5n);
+          this.SummonType = d.lys.h5n;
+          this.SummonCfgId = d.lys.dIs;
           break;
         case "yys":
-          this.PXr(l.yys);
+          this.PXr(d.yys);
           break;
         case "Iys":
-          this.fXr = l.Iys.P5n ?? 1;
+          this.fXr = d.Iys.P5n ?? 1;
           break;
         case "Rys":
-          this.RelationId = l.Rys.bIs;
-          this.PbRelationMatchCfgIndex = l.Rys.BIs - 1;
-          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(l.Rys.xIs);
-          this.IsShowingHandFx = l.Rys.q5n;
+          this.RelationId = d.Rys.bIs;
+          this.PbRelationMatchCfgIndex = d.Rys.BIs - 1;
+          this.ControllerId = MathUtils_1.MathUtils.LongToNumber(d.Rys.xIs);
+          this.IsShowingHandFx = d.Rys.q5n;
           break;
         case "Yys":
-          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(l.Yys.wIs);
+          this.AutonomousId = MathUtils_1.MathUtils.LongToNumber(d.Yys.wIs);
           break;
         case "Dys":
-          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(l.Dys.Z5n);
+          this.VisionSkillServerEntityId = MathUtils_1.MathUtils.LongToNumber(d.Dys.Z5n);
           this.RXr.length = 0;
-          for (const u of l.Dys.OIs) {
-            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(u));
+          for (const C of d.Dys.OIs) {
+            this.RXr.push(MathUtils_1.MathUtils.LongToNumber(C));
           }
-          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(l.Dys.kIs);
+          this.VisionControlCreatureDataId = MathUtils_1.MathUtils.LongToNumber(d.Dys.kIs);
+          this.Grm = MathUtils_1.MathUtils.LongToNumber(d.Dys.Ktm);
           break;
         case "wys":
-          for (const d of l.wys.FIs) {
-            this.OccupiedGridInfo.set(d.iLs, d);
+          for (const c of d.wys.FIs) {
+            this.OccupiedGridInfo.set(c.iLs, c);
           }
-          for (const C of l.wys.VIs) {
-            this.DynamicGridInfo.push(C);
+          for (const m of d.wys.VIs) {
+            this.DynamicGridInfo.push(m);
           }
-          this.BoardCanMove = l.wys.gI_;
+          this.BoardCanMove = d.wys.gI_;
           break;
         case "Nys":
-          this.PbInRangeEntityCreatureDataIds = l.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
-          this.PbInRangePlayerIds = l.Nys.iIs;
+          this.PbInRangeEntityCreatureDataIds = d.Nys.rIs.flatMap(t => MathUtils_1.MathUtils.LongToNumber(t));
+          this.PbInRangePlayerIds = d.Nys.iIs;
           break;
         case "$ys":
-          var e = l.$ys;
-          this.PbDynAttachEntityConfigId = e.qIs;
-          this.PbDynAttachEntityActorKey = e.GIs;
-          this.PbDynAttachRefActorKey = e._6n;
-          this.PbDynAttachRelPos.Set(e.o6n?.X ?? 0, e.o6n?.Y ?? 0, e.o6n?.Z ?? 0);
+          var i = d.$ys;
+          this.PbDynAttachEntityConfigId = i.qIs;
+          this.PbDynAttachEntityActorKey = i.GIs;
+          this.PbDynAttachRefActorKey = i._6n;
+          this.PbDynAttachRelPos.Set(i.o6n?.X ?? 0, i.o6n?.Y ?? 0, i.o6n?.Z ?? 0);
           break;
         case "Hys":
-          e = l.Hys?.hEs;
-          if (e) {
-            this.sQt(e);
+          i = d.Hys?.hEs;
+          if (i) {
+            this.sQt(i);
           }
           break;
         case "oI_":
-          this.zZa = l.oI_?.fI_ ?? false;
+          this.zZa = d.oI_?.fI_ ?? false;
           break;
         case "lI_":
-          var s = l.lI_;
-          this.nxl = s.yI_;
+          var o = d.lI_;
+          this.nxl = o.yI_;
           break;
         case "sI_":
-          s = l.sI_;
-          this.PbSceneItemAttributeIds = s.II_;
+          o = d.sI_;
+          this.PbSceneItemAttributeIds = o.II_;
           break;
         case "aI_":
-          var o = l.aI_;
-          this.PbPullingFoundationEntityId = o.bIs;
+          var s = d.aI_;
+          this.PbPullingFoundationEntityId = s.bIs;
           break;
         case "cI_":
-          o = l.cI_;
-          this.PbSceneAiEnabled = o.tWn;
-          this.PbPatrolInfoPb = o.tVn?.RI_;
+          s = d.cI_;
+          this.PbSceneAiEnabled = s.tWn;
+          this.PbPatrolInfoPb = s.tVn?.RI_;
           break;
         case "uI_":
-          var r = l.uI_;
+          var r = d.uI_;
           this.PbAnimalInitialPartIds = r.PI_;
           break;
         case "_I_":
-          r = l._I_;
+          r = d._I_;
           this.PbCombinePartInfoList = r.SI_;
           this.PbCombineTargetServerId = MathUtils_1.MathUtils.LongToNumber(r.TVn);
           break;
         case "mI_":
-          var n = l.mI_;
+          var n = d.mI_;
           this.PbHookLockPointDisabled = n.UI_;
           break;
         case "Tx_":
-          n = l.Tx_;
+          n = d.Tx_;
           this.PbHackingEntities = n.PSs;
           break;
         case "N7_":
-          var h = l.N7_;
+          var h = d.N7_;
           this.PbHackedByEntities = MathUtils_1.MathUtils.LongToNumber(h.V7_);
           break;
         case "TY_":
-          h = l.TY_;
+          h = d.TY_;
           this.PbGravityFlipDirection = h.RY_;
           break;
         case "pAc":
-          var a = l.pAc;
+          var a = d.pAc;
           this.PbMoveSplineId = a.dTs;
           this.PbMoveSplineConfig = a.vAc;
           this.PbMoveSplineSceneItemRuntimeData = a.yAc;
           break;
         case "Fp1":
-          this.UpdateRewardState(l.Fp1);
+          this.UpdateRewardState(d.Fp1);
           break;
         case "Av1":
-          a = l.Av1;
+          a = d.Av1;
           this.SpawnedEntityInfos = a.Pv1;
           this.TemplateSpawnerType = a.MS1;
           break;
-        case "XBu":
-          var _ = l.XBu;
-          this.TrapAuxiliaryConfigIds = _.JBu?.GNc;
+        case "WVu":
+          var _ = d.WVu;
+          this.TrapAuxiliaryConfigIds = _.KVu?.GNc;
           break;
-        case "_ju":
-          _ = l._ju;
-          this.HoldHandType = _.wju;
-          this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(_.TVn);
-          this.HoldHandIsFollow = _.Aju;
+        case "uUd":
+          _ = d.uUd;
+          this.HuluSkinId = _.cUd;
+          break;
+        case "t7u":
+          var l = d.t7u;
+          this.HoldHandType = l.i7u;
+          this.HoldHandTargetEntityId = MathUtils_1.MathUtils.LongToNumber(l.TVn);
+          this.HoldHandIsFollow = l.o7u;
+          break;
+        case "kjd":
+          l = d.kjd;
+          this.PbMoveToPointConfig = l?.V41;
+          break;
+        case "j$d":
+          var u = d.j$d;
+          this.HonamiStoryItemInfo = u.P$d;
+          break;
+        case "H$d":
+          this.HonamiStoryLevel = d.H$d.F6n;
       }
     }
   }
@@ -1246,13 +1266,13 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     var t = Protocol_1.Aki.Protocol.kes.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.Wpo);
     t.JWn = true;
-    Net_1.Net.Call(29413, t, () => {});
+    Net_1.Net.Call(17583, t, () => {});
   }
   IsRealMonster() {
     var t = this.fie === Protocol_1.Aki.Protocol.kks.Proto_Monster;
-    var i = this.GetMonsterComponent() === undefined;
-    var e = this.GetMonsterComponent()?.FightConfigId === 0;
-    return t && !i && !e;
+    var e = this.GetMonsterComponent() === undefined;
+    var i = this.GetMonsterComponent()?.FightConfigId === 0;
+    return t && !e && !i;
   }
   IsCharacterMonster() {
     var t;
@@ -1288,28 +1308,29 @@ let CreatureDataComponent = CreatureDataComponent_1 = class CreatureDataComponen
     return this.uXr;
   }
   bXr(t) {
-    var i;
+    var e;
     if (CreatureDataComponent_1.qXr.has(t)) {
       return CreatureDataComponent_1.qXr.get(t);
     } else {
-      i = t.split("_");
-      i = parseInt(i[2]);
-      CreatureDataComponent_1.qXr.set(t, i);
-      return i;
+      e = t.split("_");
+      e = parseInt(e[2]);
+      CreatureDataComponent_1.qXr.set(t, e);
+      return e;
     }
   }
   BXr(t) {
     return t.split("_")[0] === "e";
   }
   sQt(t) {
-    for (const e of Object.keys(t)) {
-      var i = t[e];
-      this.xRn.set(e, i);
+    for (const i of Object.keys(t)) {
+      var e = t[i];
+      this.xRn.set(i, e);
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.EntityVarUpdate, i, e);
     }
   }
-  UpdateVar(t, i) {
-    this.xRn.set(t, i);
-    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.EntityVarUpdate, t, i);
+  UpdateVar(t, e) {
+    this.xRn.set(t, e);
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.EntityVarUpdate, t, e);
   }
   nTa() {
     this.CustomServerEntityIds.forEach(t => {

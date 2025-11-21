@@ -195,7 +195,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
         this.seh = UE.KuroRenderingRuntimeBPPluginBPLibrary.AddPostprocessMaterial(this.RootActor, this.neh, 1, true);
         i.SetResult(true);
       }
-    });
+    }, 100, this.MemoryTag);
     const s = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(SHAKE_CAMERA_SEQUENCE, UE.LevelSequence, e => {
       var i;
@@ -213,7 +213,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
         this.xtl = i;
         s.SetResult(true);
       }
-    });
+    }, 100, this.MemoryTag);
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(SWITCH_SEQUENCE, UE.LevelSequence, e => {
       var i;
@@ -233,7 +233,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
         this.wcl = i;
         r.SetResult(true);
       }
-    });
+    }, 100, this.MemoryTag);
     const o = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(UNLICK_SEQUNECE, UE.LevelSequence, e => {
       var i;
@@ -253,14 +253,14 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
         this.aPl = i;
         o.SetResult(true);
       }
-    });
+    }, 100, this.MemoryTag);
     const t = new CustomPromise_1.CustomPromise();
     var e = EffectUtil_1.EffectUtil.GetEffectPath("DreamLinkLockMaterialController");
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.PD_CharacterControllerData_C, e => {
       if (e) {
         t.SetResult(true);
       }
-    });
+    }, 100, this.MemoryTag);
     await Promise.all([r.Promise, t.Promise, o.Promise, i.Promise, s.Promise]);
   }
   OnBeforeShow() {
@@ -560,7 +560,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
             });
           }
         }
-      });
+      }, 100, this.MemoryTag);
     }
   }
   LoadItemModel(e) {
@@ -612,7 +612,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
               }
             });
           }
-        });
+        }, 100, this.MemoryTag);
       });
     }
   }
@@ -650,7 +650,7 @@ class DreamLinkDungeonView extends UiTickViewBase_1.UiTickViewBase {
         this.RHt = i.SequencePlayer;
         this.gTl = i;
       }
-    });
+    }, 100, this.MemoryTag);
   }
   PlaySelectWaveEffect() {
     var e;

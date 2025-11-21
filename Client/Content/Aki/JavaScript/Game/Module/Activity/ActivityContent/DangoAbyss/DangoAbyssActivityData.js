@@ -19,7 +19,6 @@ const AttrListScrollData_1 = require("../../../RoleUi/View/ViewData/AttrListScro
 const ActivityCommonDefine_1 = require("../../ActivityCommonDefine");
 const ActivityData_1 = require("../../ActivityData");
 const DangoAbyssActivityController_1 = require("./DangoAbyssActivityController");
-const OPENTIPKEY = 1;
 class AbyssDangoRoleSlotData {
   constructor() {
     this.wVi = -1;
@@ -418,6 +417,7 @@ class AbyssPluginItemInfo extends AttributeItemData_1.AttributeItemData {
       return [];
     }
   }
+  GetItemViewDataInfo(t) {}
 }
 exports.AbyssPluginItemInfo = AbyssPluginItemInfo;
 class AbyssRewardInfo {
@@ -1005,12 +1005,6 @@ class DangoAbyssActivityData extends ActivityData_1.ActivityBaseData {
   }
   GetAbyssChallengeDataById(t) {
     return this.n6c.get(t);
-  }
-  GetActivityTipNeedShowState() {
-    return !!this.CheckIfInOpenTime() && !!this.CheckIfInShowTime() && ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, OPENTIPKEY, 0, 0) === 0;
-  }
-  CacheActivityTipShowState() {
-    ModelManager_1.ModelManager.ActivityModel.SaveActivityData(this.Id, OPENTIPKEY, 0, 0, 1);
   }
 }
 exports.DangoAbyssActivityData = DangoAbyssActivityData;

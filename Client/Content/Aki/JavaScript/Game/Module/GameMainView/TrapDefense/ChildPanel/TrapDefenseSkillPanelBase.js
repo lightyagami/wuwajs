@@ -26,10 +26,10 @@ class TrapDefenseSkillPanelBase extends BattleChildViewPanel_1.BattleChildViewPa
       }
     };
     this.EZe = e => {
-      this.TYu(e);
+      this.mXc(e);
     };
     this.TZe = e => {
-      this.TYu(e);
+      this.mXc(e);
     };
   }
   OnStart() {
@@ -82,7 +82,7 @@ class TrapDefenseSkillPanelBase extends BattleChildViewPanel_1.BattleChildViewPa
       this.DataMap.set(e, i);
     }
   }
-  TYu(e) {
+  mXc(e) {
     var t;
     var i = this.GetActionNameList();
     for (const s of this.DataMap.values()) {

@@ -22,7 +22,7 @@ class TrapDefenseBuildingDevelopBranchSelectView extends UiViewBase_1.UiViewBase
     this.DataList = [];
     this.Layout = undefined;
     this.IsInDungeon = false;
-    this.lGu = () => {
+    this.iGu = () => {
       if (this.CurSelectedId !== -1) {
         ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseDevelopBranch(this.CurSelectedId).then(i => {
           if (i) {
@@ -47,7 +47,7 @@ class TrapDefenseBuildingDevelopBranchSelectView extends UiViewBase_1.UiViewBase
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIVerticalLayout], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[6, this.lGu]];
+    this.BtnBindInfo = [[6, this.iGu]];
   }
   OnStart() {
     var i = this.OpenParam;
@@ -113,7 +113,7 @@ class TrapDefenseBuildingDevelopBranchSelectItem extends GridProxyAbstract_1.Gri
     super(...arguments);
     this.Data = undefined;
     this.OnClickCb = undefined;
-    this.YHc = () => {
+    this.EXu = () => {
       if (this.OnClickCb) {
         this.OnClickCb(this.Data.Id);
       }
@@ -121,7 +121,7 @@ class TrapDefenseBuildingDevelopBranchSelectItem extends GridProxyAbstract_1.Gri
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIExtendToggle], [2, UE.UIText]];
-    this.BtnBindInfo = [[1, this.YHc]];
+    this.BtnBindInfo = [[1, this.EXu]];
   }
   Refresh(i, t, e) {
     this.Data = i;

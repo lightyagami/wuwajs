@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ExecutionPanel = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
@@ -15,7 +16,6 @@ const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const InputDistributeController_1 = require("../../../../Ui/InputDistribute/InputDistributeController");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
 const ExecutionItem_1 = require("./ExecutionItem");
-const Info_1 = require("../../../../../Core/Common/Info");
 const CLOSE_ANIM_TIME = 300;
 const childType = 17;
 class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
@@ -28,6 +28,7 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
     this.uat = undefined;
     this.cat = undefined;
     this.mat = true;
+    this.fzi = 1;
     this.dat = () => {
       this._at = undefined;
       this.uat.SetResult();
@@ -42,7 +43,7 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
       var t;
       if (this.sDe?.Valid) {
         this.lat?.OnInputAction();
-        if ((t = this.sDe.Entity.GetComponent(119))?.IsPawnInteractive()) {
+        if ((t = this.sDe.Entity.GetComponent(122))?.IsPawnInteractive()) {
           t.InteractPawn();
         }
       } else {
@@ -96,7 +97,11 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
     await t.NewByRootActorAsync(i);
     (this.lat = t).Init(this.Cat);
     t.RefreshKeyByActionName(InputMappingsDefine_1.actionMappings.通用交互);
-    t.RefreshSkillIconByResId("SP_IconPutDeath");
+    if (this.fzi === 1) {
+      t.RefreshSkillIconByResId("SP_IconPutDeath");
+    } else if (this.fzi === 3) {
+      t.RefreshSkillIconByResId("T_MstSkil_1002_UI");
+    }
     return true;
   }
   OnStart() {
@@ -168,11 +173,19 @@ class ExecutionPanel extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  ShowByEntity(t) {
+  ShowByEntity(t, i) {
+    if (this.fzi !== i) {
+      this.fzi = i;
+      if (this.fzi === 1) {
+        this.lat?.RefreshSkillIconByResId("SP_IconPutDeath");
+      } else if (this.fzi === 3) {
+        this.lat?.RefreshSkillIconByResId("T_MstSkil_1002_UI");
+      }
+    }
     if (this.sDe?.Id !== t) {
-      if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t)) {
+      if (i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t)) {
         this.m$e();
-        this.sDe = t;
+        this.sDe = i;
         this._o();
       } else {
         this.fat();

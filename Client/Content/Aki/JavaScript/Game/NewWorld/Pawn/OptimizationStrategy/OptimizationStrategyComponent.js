@@ -149,5 +149,5 @@ let OptimizationStrategyComponent = OptimizationStrategyComponent_1 = class Opti
     return true;
   }
 };
-OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(219)], OptimizationStrategyComponent);
+OptimizationStrategyComponent = OptimizationStrategyComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(222)], OptimizationStrategyComponent);
 exports.OptimizationStrategyComponent = OptimizationStrategyComponent; //# sourceMappingURL=OptimizationStrategyComponent.js.map

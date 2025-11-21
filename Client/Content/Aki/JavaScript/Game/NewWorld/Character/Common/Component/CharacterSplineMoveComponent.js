@@ -8,8 +8,8 @@ var __decorate = this && this.__decorate || function (t, i, s, h) {
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     r = Reflect.decorate(t, i, s, h);
   } else {
-    for (var o = t.length - 1; o >= 0; o--) {
-      if (e = t[o]) {
+    for (var n = t.length - 1; n >= 0; n--) {
+      if (e = t[n]) {
         r = (a < 3 ? e(r) : a > 3 ? e(i, s, r) : e(i, s)) || r;
       }
     }
@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.CharacterSplineMoveComponent = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
-const Time_1 = require("../../../../../Core/Common/Time");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
@@ -66,7 +65,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.LocalQuat = Quat_1.Quat.Create();
     this.DebugMode = false;
     this.I3r = (t, i) => {
-      var s = t.GetComponent(109);
+      var s = t.GetComponent(111);
       if (s?.Active) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Movement", 50, "[CharacterSplineMoveComp] 轨道模式继承", ["LastEntity", t.Id], ["CurEntity", this.Entity.Id]);
@@ -102,31 +101,12 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     if ((0, RegisterComponent_1.isComponentInstance)(this.ActorComp, 3)) {
       this.isn = this.ActorComp;
     }
-    this.Gce = this.Entity.GetComponent(179);
-    this.oRe = this.Entity.GetComponent(178);
-    this.rJo = this.Entity.GetComponent(176);
-    this.osn = this.Entity.GetComponent(174);
+    this.Gce = this.Entity.GetComponent(182);
+    this.oRe = this.Entity.GetComponent(181);
+    this.rJo = this.Entity.GetComponent(179);
+    this.osn = this.Entity.GetComponent(177);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
     return true;
-  }
-  OnTick(t) {
-    var i = this.CurrentSplineMoveParams;
-    if (i) {
-      if (!!this.SplineMoveParamsMap.has(i.Id) || !(i.EarliestLeaveTime <= Time_1.Time.NowSeconds) || !!this.SelectNextSplineMove()) {
-        this.UpdateSplineLocationAndDirection();
-        this.UpdateLastSplineLocationAndDirection();
-        i = t * MathUtils_1.MathUtils.MillisecondToSecond;
-        this.PositionAdjust(this.SplineTimeKey, i);
-        this.Csn();
-        this.LastLocation.DeepCopy(this.TargetLocation);
-        this.LastTimeKey = this.SplineTimeKey;
-      }
-    } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Movement", 6, "Tick in No SplineMove!");
-      }
-      this.DisableKey = this.Disable("[SplineMoveComponent.OnTick] this.CurrentSplineMoveParams为false");
-    }
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
@@ -186,12 +166,12 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     this.TmpQuat1.RotateVector(this.ActorComp.ActorForwardProxy, this.TmpVector1);
     var t = this.TmpVector1.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg;
     this.TmpQuat1.RotateVector(this.SplineDirection, this.TmpVector1);
-    var o = this.TmpVector1.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg;
-    var n = o + h;
-    var _ = o + e;
-    if (!this.InAngleRange(t, n, _)) {
-      n = this.ClampAngle(t, n, _);
-      _ = this.LerpAngle(t, n, s);
+    var n = this.TmpVector1.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg;
+    var o = n + h;
+    var _ = n + e;
+    if (!this.InAngleRange(t, o, _)) {
+      o = this.ClampAngle(t, o, _);
+      _ = this.LerpAngle(t, o, s);
       _ = MathUtils_1.MathUtils.WrapAngle(_ - t);
       this.TmpRotator.Set(0, _, 0);
       this.ActorComp?.AddActorLocalRotation(this.TmpRotator.ToUeRotator(), "轨道模式修正", true);
@@ -200,7 +180,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       this.TmpQuat.RotateVector(this.TmpVector, this.TmpVector1);
       this.ActorComp?.MoveComp?.SetForceSpeed(this.TmpVector1);
       if (this.DebugMode && (this.TmpQuat1.RotateVector(this.ActorComp.ActorForwardProxy, this.TmpVector1), l = this.TmpVector1.HeadingAngle() * MathUtils_1.MathUtils.RadToDeg, Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("Test", 50, "[CharSplineMoveComp] 修改Yaw", ["cur", t], ["target", n], ["Spline", o], ["add", _], ["after", l], ["min", h], ["max", e], ["rate", s]);
+        Log_1.Log.Debug("Test", 50, "[CharSplineMoveComp] 修改Yaw", ["cur", t], ["target", o], ["Spline", n], ["add", _], ["after", l], ["min", h], ["max", e], ["rate", s]);
       }
     }
     if (this.LocalOffset.Z < 0) {
@@ -210,23 +190,23 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     }
     this.isn.ActorVelocityProxy.GetSafeNormal(this.TmpVector1);
     var t = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.ActorComp, this.TmpVector1);
-    var n = Math.asin(MathUtils_1.MathUtils.Clamp(t, -1, 1)) * MathUtils_1.MathUtils.RadToDeg;
-    var o = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.ActorComp, this.SplineDirection);
-    var _ = Math.asin(MathUtils_1.MathUtils.Clamp(o, -1, 1)) * MathUtils_1.MathUtils.RadToDeg;
+    var o = Math.asin(MathUtils_1.MathUtils.Clamp(t, -1, 1)) * MathUtils_1.MathUtils.RadToDeg;
+    var n = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.ActorComp, this.SplineDirection);
+    var _ = Math.asin(MathUtils_1.MathUtils.Clamp(n, -1, 1)) * MathUtils_1.MathUtils.RadToDeg;
     var l = _ + a;
     var s = _ + r;
-    if (!this.InAngleRange(n, l, s)) {
-      t = this.ClampAngle(n, l, s);
-      o = this.LerpAngle(n, t, i);
-      l = MathUtils_1.MathUtils.WrapAngle(o - n);
+    if (!this.InAngleRange(o, l, s)) {
+      t = this.ClampAngle(o, l, s);
+      n = this.LerpAngle(o, t, i);
+      l = MathUtils_1.MathUtils.WrapAngle(n - o);
       s = this.isn.ActorVelocityProxy.Size();
-      this.TmpRotator.Set(o, 0, 0);
+      this.TmpRotator.Set(n, 0, 0);
       this.ActorComp.ActorQuatProxy.Multiply(this.TmpRotator.Quaternion(), this.TmpQuat1);
       this.TmpQuat1.GetForwardVector(this.TmpVector1);
       this.TmpVector1.MultiplyEqual(s);
       this.ActorComp.MoveComp.SetForceSpeed(this.TmpVector1);
       if (this.DebugMode && Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Test", 50, "[CharSplineMoveComp] 修改Pitch", ["cur", n], ["target", t], ["Spline", _], ["add", l], ["after", this.TmpQuat1.Rotator().Pitch], ["min", a], ["max", r], ["rate", i]);
+        Log_1.Log.Debug("Test", 50, "[CharSplineMoveComp] 修改Pitch", ["cur", o], ["target", t], ["Spline", _], ["add", l], ["after", this.TmpQuat1.Rotator().Pitch], ["min", a], ["max", r], ["rate", i]);
       }
     }
   }
@@ -365,7 +345,7 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
       this.LastRightSpeed = i;
     }
   }
-  Csn() {
+  InputAdjust() {
     if (this.isn && this.CurrentSplineMoveType !== "AirPassage") {
       if (this.rJo?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
         this.O_c();
@@ -528,19 +508,34 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
     return this.CurrentSplineMoveType !== "AirPassage";
   }
   ApplySplineMoveDaConfig(t) {
-    if (t.Type !== "SlideTrack" && (this.Gce?.SetTurnRate(CharacterSplineMoveComponent_1.SplineMoveConfig.TurnRate), this.Gce?.SetAirControl(CharacterSplineMoveComponent_1.SplineMoveConfig.AirControl), this.Gce?.SetOverrideMaxFallingSpeed(CharacterSplineMoveComponent_1.SplineMoveConfig.MaxFlySpeed), this.TagComp?.AddTag(-451106150), this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate), t = this.oRe?.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
-      t.设置跳跃速率(CharacterSplineMoveComponent_1.SplineMoveConfig.JumpTimeScale);
+    if (t.Type !== "SlideTrack" && t.Type !== "AirPassage") {
+      this.V0m(true);
     }
   }
   ResetSplineMoveDaConfig() {
-    this.Gce?.ResetTurnRate();
-    this.Gce?.ResetAirControl();
-    this.Gce?.ResetOverrideMaxFallingSpeed();
-    this.TagComp?.RemoveTag(-451106150);
-    this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
-    var t = this.oRe?.MainAnimInstance;
-    if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
-      t.设置跳跃速率(1);
+    this.V0m(false);
+  }
+  V0m(t) {
+    if (t) {
+      this.Gce?.SetTurnRate(CharacterSplineMoveComponent_1.SplineMoveConfig.TurnRate);
+      this.Gce?.SetAirControl(CharacterSplineMoveComponent_1.SplineMoveConfig.AirControl);
+      this.Gce?.SetOverrideMaxFallingSpeed(CharacterSplineMoveComponent_1.SplineMoveConfig.MaxFlySpeed);
+      this.TagComp?.AddTag(-451106150);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND * CharacterSplineMoveComponent_1.SplineMoveConfig.JumpHeightRate);
+      t = this.oRe?.MainAnimInstance;
+      if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
+        t.设置跳跃速率(CharacterSplineMoveComponent_1.SplineMoveConfig.JumpTimeScale);
+      }
+    } else {
+      this.Gce?.ResetTurnRate();
+      this.Gce?.ResetAirControl();
+      this.Gce?.ResetOverrideMaxFallingSpeed();
+      this.TagComp?.RemoveTag(-451106150);
+      this.osn?.SetBaseValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump, CharacterAttributeTypes_1.PER_TEN_THOUSAND);
+      t = this.oRe?.MainAnimInstance;
+      if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
+        t.设置跳跃速率(1);
+      }
     }
   }
   OnSplineMoveEnable(t, i) {
@@ -567,5 +562,5 @@ let CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = class Charac
 };
 CharacterSplineMoveComponent.DaPath = "/Game/Aki/Data/Fight/DA_SplineMoveConfig.DA_SplineMoveConfig";
 CharacterSplineMoveComponent.msn = undefined;
-CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(109)], CharacterSplineMoveComponent);
+CharacterSplineMoveComponent = CharacterSplineMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(111)], CharacterSplineMoveComponent);
 exports.CharacterSplineMoveComponent = CharacterSplineMoveComponent; //# sourceMappingURL=CharacterSplineMoveComponent.js.map

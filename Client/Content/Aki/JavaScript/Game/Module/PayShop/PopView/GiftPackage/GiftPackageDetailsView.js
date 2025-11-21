@@ -30,7 +30,6 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this._yl = undefined;
     this.uyl = undefined;
-    this.Data = undefined;
     this.Goods = undefined;
     this.GoodsData = undefined;
     this.ResellTimerId = undefined;
@@ -69,22 +68,22 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
       var e = this.Goods.GetExchangePopViewResellText();
       if (this.Goods.GetIfNeedExtraLimitText()) {
         if (i = this.Goods.GetExtraLimitText()) {
-          this.GetItem(7).SetUIActive(true);
+          this.Xhm(true);
           this.GetText(8).ShowTextNew(i);
         }
       } else if (this.Goods.GetPriceData().Enough) {
         if ((i = this.Goods.GetCountDownData())[0] !== 2) {
-          this.GetItem(7).SetUIActive(false);
+          this.Xhm(false);
           this.GetText(8).SetUIActive(false);
         } else {
-          this.GetItem(7).SetUIActive(true);
+          this.Xhm(true);
           if (!StringUtils_1.StringUtils.IsEmpty(e)) {
             this.GetText(8).ShowTextNew(e);
           }
           this.ResellTimerId = TimerSystem_1.RealTimeTimerSystem.Delay(this.P3i, i[2] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
         }
       } else if (StringUtils_1.StringUtils.IsEmpty(e)) {
-        this.GetItem(7).SetUIActive(true);
+        this.Xhm(true);
         if (i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Goods.GetPriceData().CurrencyId)) {
           i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.Name);
           LguiUtil_1.LguiUtil.SetLocalText(this.GetText(8), "CurrencyNotEnough", i);
@@ -95,7 +94,7 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIInteractionGroup], [8, UE.UIText], [7, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UITexture], [11, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIInteractionGroup], [8, UE.UIText], [7, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [12, UE.UITexture], [11, UE.UIText], [13, UE.UIItem], [14, UE.UIText]];
     this.BtnBindInfo = [[4, this.bAt], [5, this.qAt]];
   }
   OnBeforeCreate() {
@@ -246,6 +245,18 @@ class GiftPackageDetailsView extends UiViewBase_1.UiViewBase {
     if (this.ResellTimerId !== undefined) {
       TimerSystem_1.RealTimeTimerSystem.Remove(this.ResellTimerId);
       this.ResellTimerId = undefined;
+    }
+  }
+  Xhm(i) {
+    this.GetItem(7).SetUIActive(i);
+    this.Gzd(i);
+  }
+  Gzd(i) {
+    var e = this.GoodsData?.DisclaimerText;
+    var i = !StringUtils_1.StringUtils.IsEmpty(e) && !i;
+    this.GetItem(13).SetUIActive(i);
+    if (i) {
+      this.GetText(14).SetText(e);
     }
   }
   IsEnoughMoney() {

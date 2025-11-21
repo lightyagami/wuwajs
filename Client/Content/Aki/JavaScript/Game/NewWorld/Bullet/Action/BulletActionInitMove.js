@@ -783,7 +783,7 @@ class BulletActionInitMove extends BulletActionBase_1.BulletActionBase {
             if (e !== 0) {
               t = u.Actor.CapsuleComponent.CapsuleHalfHeight * e;
             }
-            if (l && (m = u.Entity?.GetComponent(179))) {
+            if (l && (m = u.Entity?.GetComponent(182))) {
               t -= m.GetHeightAboveGround();
             }
             var m = a.Target?.GetComponent(45);
@@ -933,7 +933,7 @@ class BulletActionInitMove extends BulletActionBase_1.BulletActionBase {
             if (t !== 0) {
               B.Z += h.Actor.CapsuleComponent.CapsuleHalfHeight * t;
             }
-            if (e && (m = h.Entity?.GetComponent(179))) {
+            if (e && (m = h.Entity?.GetComponent(182))) {
               B.Z -= m.GetHeightAboveGround();
             }
           } else {

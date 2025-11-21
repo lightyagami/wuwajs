@@ -5,99 +5,137 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FormationUnitNodeHandle = undefined;
 const Info_1 = require("../../../../../Core/Common/Info");
+const GlobalData_1 = require("../../../../GlobalData");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BattleLinkEnergyButton_1 = require("../BattleChildView/BattleLinkEnergyButton");
+const BattleTimeDilationButton_1 = require("./BattleTimeDilationButton");
 const BattleWeeklyRogueButton_1 = require("./BattleWeeklyRogueButton");
+const BATTLE_TIME_DILATION_UI = "UiItem_BattlePhotoHourglass";
 class FormationUnitNodeHandle {
   constructor() {
-    this.D2u = undefined;
-    this.U2u = undefined;
+    this.gNu = undefined;
+    this.CNu = undefined;
     this.O8c = undefined;
-    this.B2u = undefined;
+    this.pNu = undefined;
+    this.c2d = undefined;
   }
   async InitializeAsync(t) {
-    await this.d2u(t);
+    await this.rNu(t);
   }
   Init(t, i) {
-    this.k2u(t, i);
+    this.vNu(t, i);
     this.q8c();
-    this.O2u();
+    this.yNu();
+    this.d2d();
   }
   Destroy() {
-    if (this.U2u) {
-      this.U2u.Destroy();
-      this.U2u = undefined;
+    if (this.CNu) {
+      this.CNu.Destroy();
+      this.CNu = undefined;
       this.O8c = undefined;
-      this.B2u = undefined;
+      this.pNu = undefined;
     }
   }
   Tick(t) {
-    this.U2u?.Tick(t);
+    this.CNu?.Tick(t);
   }
   OnInputControllerChange(t, i) {
-    this.k2u(t, i);
+    this.vNu(t, i);
   }
-  async d2u(t) {
-    t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", t);
-    this.D2u = t.RootComponent;
-    this.D2u.SetAnchorAlign(2, 2);
-    this.D2u.SetWidth(340);
-    this.D2u.SetHeight(170);
-    this.D2u.SetUIActive(false);
+  async rNu(t) {
+    t = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_BattleViewUnitNode_Prefab", t, GlobalData_1.GlobalData.World, 100, "BattleUi");
+    this.gNu = t.RootComponent;
+    this.gNu.SetAnchorAlign(2, 2);
+    this.gNu.SetWidth(340);
+    this.gNu.SetHeight(170);
+    this.gNu.SetUIActive(false);
   }
   GetRootItem() {
-    return this.D2u;
+    return this.gNu;
   }
   SetNodeVisible(t) {
-    this.D2u?.SetUIActive(t);
+    this.gNu?.SetUIActive(t);
   }
-  k2u(t, i) {
-    if (this.D2u) {
-      (Info_1.Info.IsInGamepad() ? i : t)?.AddChildToRoleHeadPanel(this.D2u);
+  vNu(t, i) {
+    if (this.gNu) {
+      (Info_1.Info.IsInGamepad() ? i : t)?.AddChildToRoleHeadPanel(this.gNu);
     }
   }
   GetLinkEnergyButton() {
     return this.O8c;
   }
   q8c() {
+    var t;
+    var i;
     if (!this.O8c) {
-      if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInNewBattleLink()) {
-        this.O8c = new BattleLinkEnergyButton_1.BattleLinkEnergyButton();
+      if ((ModelManager_1.ModelManager.BattleLinkModel?.CheckInNewBattleLink() || ModelManager_1.ModelManager.BattleLinkModel?.CheckInSpecialBattleLink()) && (i = (t = new BattleLinkEnergyButton_1.BattleLinkEnergyButton()).GetResourceId())) {
+        this.O8c = t;
         this.O8c.InitHandle(this);
-        this.O8c.CreateByResourceIdAsync("UiItem_RogueScoreE", this.D2u);
-        this.U2u = this.O8c;
+        this.O8c.CreateByResourceIdAsync(i, this.gNu);
+        this.CNu = this.O8c;
       }
     }
   }
   ShowLinkButton(t) {
+    var i;
     if (t) {
       if (this.O8c) {
         this.O8c?.SetVisible(true);
-      } else {
-        this.O8c = new BattleLinkEnergyButton_1.BattleLinkEnergyButton();
+      } else if (i = (t = new BattleLinkEnergyButton_1.BattleLinkEnergyButton()).GetResourceId()) {
+        this.O8c = t;
         this.O8c.InitHandle(this);
-        this.O8c.CreateByResourceIdAsync("UiItem_RogueScoreE", this.D2u).then(() => {
+        this.O8c.CreateByResourceIdAsync(i, this.gNu).then(() => {
           this.O8c?.SetVisible(true);
         });
-        this.U2u = this.O8c;
+        this.CNu = this.O8c;
       }
     } else {
       this.O8c?.SetVisible(false);
     }
   }
   GetWeeklyRogueButton() {
-    return this.B2u;
+    return this.pNu;
   }
-  O2u() {
-    if (!this.B2u) {
+  yNu() {
+    if (!this.pNu) {
       if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue()) {
-        this.B2u = new BattleWeeklyRogueButton_1.BattleWeeklyRogueButton();
-        this.B2u.InitHandle(this);
-        this.B2u.CreateByResourceIdAsync("UiItem_WeeklyRogueButton", this.D2u);
-        this.U2u = this.B2u;
-        this.B2u.SetVisible(true);
+        this.pNu = new BattleWeeklyRogueButton_1.BattleWeeklyRogueButton();
+        this.pNu.InitHandle(this);
+        this.pNu.CreateByResourceIdAsync("UiItem_WeeklyRogueButton", this.gNu);
+        this.CNu = this.pNu;
+        this.pNu.SetVisible(true);
       }
+    }
+  }
+  GetBattleTimeDilationButton() {
+    return this.c2d;
+  }
+  d2d() {
+    if (!this.c2d) {
+      if (ModelManager_1.ModelManager.BattleUiModel?.IsTimeDilationSkillButtonEnable()) {
+        this.c2d = new BattleTimeDilationButton_1.BattleTimeDilationButton();
+        this.c2d.InitHandle(this);
+        this.c2d.CreateByResourceIdAsync(BATTLE_TIME_DILATION_UI, this.gNu);
+        this.CNu = this.c2d;
+        this.c2d.SetVisible(true);
+      }
+    }
+  }
+  UpdateTimeDilationButton() {
+    if (ModelManager_1.ModelManager.BattleUiModel?.IsTimeDilationSkillButtonEnable() ?? false) {
+      if (this.c2d) {
+        this.c2d?.SetVisible(true);
+      } else {
+        this.c2d = new BattleTimeDilationButton_1.BattleTimeDilationButton();
+        this.c2d.InitHandle(this);
+        this.c2d.CreateByResourceIdAsync(BATTLE_TIME_DILATION_UI, this.gNu).then(() => {
+          this.c2d?.SetVisible(ModelManager_1.ModelManager.BattleUiModel?.IsTimeDilationSkillButtonEnable() ?? false);
+        });
+        this.CNu = this.c2d;
+      }
+    } else {
+      this.c2d?.SetVisible(false);
     }
   }
 }

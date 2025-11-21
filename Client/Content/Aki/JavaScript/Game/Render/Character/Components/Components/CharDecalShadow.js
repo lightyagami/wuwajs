@@ -19,9 +19,9 @@ const materialParameterNameOpacity = new UE.FName("Opacity");
 class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
   constructor() {
     super(...arguments);
-    this.Mjd = true;
-    this.Ejd = false;
-    this.Ijd = true;
+    this.Qem = true;
+    this.Kem = false;
+    this.Xem = true;
     this.thr = undefined;
     this.Lo = undefined;
     this.ihr = new Map();
@@ -73,7 +73,7 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
     if (t.CastShadow) {
       this.RemovePrimitiveComponent(e);
       this.ihr.set(e, t);
-      if (!this.Ijd) {
+      if (!this.Xem) {
         t.CastShadow = false;
       }
     }
@@ -86,14 +86,14 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
     }
   }
   EnableDecalShadow() {
-    if (!this.Ejd) {
-      if (this.Lo && (this.Ejd = true, this.Mjd)) {
+    if (!this.Kem) {
+      if (this.Lo && (this.Kem = true, this.Qem)) {
         this.UpdateDecalShadow(true);
       }
     }
   }
   DisableDecalShadow() {
-    if (this.Ejd && (this.Ejd = false, this.Mjd)) {
+    if (this.Kem && (this.Kem = false, this.Qem)) {
       this.UpdateDecalShadow(false);
     }
   }
@@ -133,15 +133,15 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
     this.SetDecalShadowOpacity(this.shr);
   }
   EnableRealTimeShadow() {
-    if (!this.Ijd) {
-      this.Ijd = true;
-      if (this.Mjd) {
+    if (!this.Xem) {
+      this.Xem = true;
+      if (this.Qem) {
         this.UpdateRealTimeShadow(true);
       }
     }
   }
   DisableRealTimeShadow() {
-    if (this.Ijd && (this.Ijd = false, this.Mjd)) {
+    if (this.Xem && (this.Xem = false, this.Qem)) {
       this.UpdateRealTimeShadow(false);
     }
   }
@@ -175,13 +175,13 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
     this.DisableRealTimeShadow();
   }
   SetShouldCastShadow(e) {
-    if (e !== this.Mjd) {
+    if (e !== this.Qem) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("RenderCharacter", 25, "CharDecalShadow SetShouldCastShadow", ["castShadow", e], ["name", this.GetRenderingComponent()?.GetCachedOwnerName()]);
       }
-      if (this.Mjd = e) {
-        this.UpdateDecalShadow(this.Ejd);
-        this.UpdateRealTimeShadow(this.Ijd);
+      if (this.Qem = e) {
+        this.UpdateDecalShadow(this.Kem);
+        this.UpdateRealTimeShadow(this.Xem);
       } else {
         this.UpdateDecalShadow(false);
         this.UpdateRealTimeShadow(false);
@@ -190,7 +190,7 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
   }
   SetDecalShadowOpacity(e) {
     this.shr = e;
-    if (this.Ejd && this.Mjd) {
+    if (this.Kem && this.Qem) {
       if (e < MathUtils_1.MathUtils.KindaSmallNumber) {
         this.rhr.SetVisibility(false);
       } else {
@@ -201,7 +201,7 @@ class CharDecalShadow extends CharRenderBase_1.CharRenderBase {
   }
   SetRealTimeShadowOpacity(e) {
     this.shr = e;
-    if (this.Ijd && this.GetRenderingComponent().RenderType === 3 && this.Mjd) {
+    if (this.Xem && this.GetRenderingComponent().RenderType === 3 && this.Qem) {
       var t = e > CharDecalShadow.chr;
       for (const i of this.ihr.values()) {
         i.SetCastShadow(t);

@@ -57,8 +57,8 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   OnBeforeShow() {
     super.OnBeforeShow();
     var t = this.GetItem(7);
-    if (this.MoraleLevelItem) {
-      this.MoraleLevelItem.GetRootItem().SetUIParent(t);
+    if (this.ExtraItem) {
+      this.ExtraItem.GetRootItem().SetUIParent(t);
       t?.SetUIActive(true);
     } else {
       t?.SetUIActive(false);
@@ -99,7 +99,7 @@ class CommonHeadState extends HeadStateViewBase_1.HeadStateViewBase {
   klt() {
     var t = this.IsDetailVisible();
     this.GetItem(4).SetUIActive(t);
-    this.MoraleLevelItem?.SetUiActive(t);
+    this.ExtraItem?.SetUiActive(t);
   }
   Flt() {
     var t = this.IsLevelTextVisible();

@@ -42,68 +42,68 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     this.EndlessWaveTips = undefined;
     this.CountDownTips = undefined;
     this.WaveCompleteTips = undefined;
-    this.Cqd = new Map();
-    this.pqd = undefined;
+    this.HNd = new Map();
+    this.$Nd = undefined;
     this.Uht = undefined;
-    this.ajd = 0;
-    this.hAd = (e, i) => {
+    this.Bem = 0;
+    this.jUd = (e, i) => {
       i = MathUtils_1.MathUtils.LongToNumber(i.oTs);
       this.FightInfoPanel.RefreshCurrencyNum(i);
     };
-    this.lAd = (e, i) => {
+    this.HUd = (e, i) => {
       i = MathUtils_1.MathUtils.LongToNumber(i.oTs);
       this.FightInfoPanel.RefreshComboNum(i);
     };
-    this._Ad = (e, i) => {
+    this.$Ud = (e, i) => {
       i = MathUtils_1.MathUtils.LongToNumber(i.oTs);
       this.FightInfoPanel.RefreshChestNum(i);
     };
-    this.uAd = (e, i) => {
+    this.WUd = (e, i) => {
       i = MathUtils_1.MathUtils.LongToNumber(i.oTs);
       this.FightInfoPanel.RefreshPositiveArea(i);
     };
-    this.AId = e => {
+    this.rRd = e => {
       this.UpdateWaveTipsByState(e);
     };
-    this.DId = () => {
+    this.oRd = () => {
       this.BonusWaveTips.ShowTips();
     };
-    this.hYd = () => {
+    this.zCm = () => {
       this.EndlessWaveTips.ShowTips();
     };
-    this.vqd = (e, i) => {
+    this.WNd = (e, i) => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SurvivorsRogue", 79, "OnBossTrackedMarkerUpdate", ["EntityId", e], ["IsAdd", i]);
       }
       if (i) {
-        this.QId(e);
+        this.pRd(e);
       } else {
-        i = this.Cqd.get(e);
-        this.Cqd.delete(e);
+        i = this.HNd.get(e);
+        this.HNd.delete(e);
         i?.DelayRecycle();
       }
     };
-    this.gqd = () => {
-      this.pqd.ShowTips();
+    this.jNd = () => {
+      this.$Nd.ShowTips();
     };
   }
   async OnBeforeStartAsync() {
     this.Oht();
-    await Promise.all([this.GId(), this.FId(), this.cAd(), this.dAd(), this.NId(), this.VId(), this.rXc(), this.oXc(), this.$Id(), this.WId(), this.KId()]);
+    await Promise.all([this._Rd(), this.uRd(), this.QUd(), this.KUd(), this.cRd(), this.dRd(), this.rXc(), this.oXc(), this.gRd(), this.CRd(), this.vRd()]);
   }
   OnBeforeDestroy() {
     this.kht();
-    this.zHd();
+    this.gim();
   }
   OnAfterShow() {
     for (const e of this.SurvivorsRogueChildPanelMap.values()) {
       e.Show();
     }
-    for (const i of this.Cqd.values()) {
+    for (const i of this.HNd.values()) {
       i.Show();
     }
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.AddBattleUiCommonChildVisibleReason(3);
-    if (this.ajd !== ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState) {
+    if (this.Bem !== ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState) {
       this.UpdateWaveTipsByState(ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState);
     }
   }
@@ -111,7 +111,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     for (const e of this.SurvivorsRogueChildPanelMap.values()) {
       e.Hide();
     }
-    for (const i of this.Cqd.values()) {
+    for (const i of this.HNd.values()) {
       i.Hide();
     }
     ModelManager_1.ModelManager.BattleUiModel.ChildViewData.RemoveBattleUiCommonChildVisibleReason(3);
@@ -119,41 +119,41 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   OnTick(e) {
     var i = e * (Time_1.Time.TimeDilation ?? 1);
     super.OnTick(i);
-    if (this.ajd === 2) {
+    if (this.Bem === 2) {
       this.CountDownTips.OnTick(i);
-    } else if (this.ajd === 1) {
+    } else if (this.Bem === 1) {
       this.PopUpWaveTips.OnTick(i);
     }
     this.FightInfoPanel.OnTick(i);
-    this.pqd.OnTick(i);
+    this.$Nd.OnTick(i);
     this.RoleStatePanel.OnTick(i);
-    for (const t of this.Cqd) {
+    for (const t of this.HNd) {
       t[1].OnTick(i);
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.AId);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.DId);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.hYd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.vqd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.gqd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.rRd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.oRd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.zCm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.WNd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
-    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.hAd);
-    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.lAd);
-    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.TreasureBoxCount, this._Ad);
-    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.GoldGainEfficiency, this.uAd);
+    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.jUd);
+    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.HUd);
+    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.TreasureBoxCount, this.$Ud);
+    e.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.GoldGainEfficiency, this.WUd);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.AId);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.DId);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.hYd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.vqd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.gqd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, this.rRd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowBonusWaveTips, this.oRd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueShowEndlessWaveTips, this.zCm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueBossTrackedMarkerUpdate, this.WNd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRoguePlayerEntityCreated, this.jNd);
     var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate;
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.hAd);
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.lAd);
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.TreasureBoxCount, this._Ad);
-    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.GoldGainEfficiency, this.uAd);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.jUd);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.ConsecutiveKillCount, this.HUd);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.TreasureBoxCount, this.$Ud);
+    e.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.GoldGainEfficiency, this.WUd);
   }
   async CreateSurvivorsRogueChildPanel(e, i, t, s = true) {
     var r = new t();
@@ -183,49 +183,49 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
     this.Uht = undefined;
     ModelManager_1.ModelManager.ScreenEffectModel?.SetFightRootInited(false);
   }
-  async dAd() {
+  async KUd() {
     var e = new SurvivorsRogueResidentWaveTipsPanel_1.SurvivorsRogueResidentWaveTipsPanel();
     await e.CreateByResourceIdAsync("DynSurvivorAround", this.View.GetContentPanel());
     this.ResidentWaveTips = e;
     this.PanelResIdMap.set("DynSurvivorAround", e);
   }
-  async $Id() {
+  async gRd() {
     var e = new SurvivorsRogueCountDownTipsPanel_1.SurvivorsRogueCountDownTipsPanel();
     await e.CreateByResourceIdAsync("UiView_CountDownChallenge", this.View.GetContentPanel());
     this.CountDownTips = e;
     this.PanelResIdMap.set("UiView_CountDownChallenge", e);
   }
-  async NId() {
+  async cRd() {
     var e = new SurvivorsRogueTipsPanelBase_1.SurvivorsRogueTipsPanelBase();
     await e.CreateByResourceIdAsync("DynTreasureChestTips", this.View.GetContentPanel());
     this.BonusWaveTips = e;
     this.PanelResIdMap.set("DynTreasureChestTips", e);
   }
-  async WId() {
+  async CRd() {
     var e = new SurvivorsRogueTipsPanelBase_1.SurvivorsRogueTipsPanelBase();
     await e.CreateByResourceIdAsync("DynInfinitelyOpenTips", this.View.GetContentPanel());
     this.EndlessWaveTips = e;
     this.PanelResIdMap.set("DynInfinitelyOpenTips", e);
   }
-  async cAd() {
+  async QUd() {
     var e = new SurvivorsRoguePopUpWaveTipsPanel_1.SurvivorsRoguePopUpWaveTipsPanel();
     await e.CreateByResourceIdAsync("DynSurvivorAround1", this.View.GetContentPanel());
     this.PopUpWaveTips = e;
     this.PanelResIdMap.set("DynSurvivorAround1", e);
   }
-  async VId() {
+  async dRd() {
     var e = new SurvivorsRogueWaveCompleteTipsPanel_1.SurvivorsRogueWaveCompleteTipsPanel();
     await e.CreateByResourceIdAsync("UiView_Challenge_Success_Prefab", this.View.GetContentPanel());
     this.WaveCompleteTips = e;
     this.PanelResIdMap.set("UiView_Challenge_Success_Prefab", e);
   }
-  async KId() {
-    this.pqd = await this.CreateSurvivorsRogueChildPanel("DynRolePos", UiLayer_1.UiLayer.GetBattleViewUnit(1), SurvivorsRoguePlayerTrackerMarker_1.SurvivorsRoguePlayerTrackerMarker, false);
+  async vRd() {
+    this.$Nd = await this.CreateSurvivorsRogueChildPanel("DynRolePos", UiLayer_1.UiLayer.GetBattleViewUnit(1), SurvivorsRoguePlayerTrackerMarker_1.SurvivorsRoguePlayerTrackerMarker, false);
   }
-  async GId() {
+  async _Rd() {
     this.RoleStatePanel = await this.CreateSurvivorsRogueChildPanel("UiItem_SurvivorFightInfo", this.View.GetContentPanel(), SurvivorsRogueRoleStatePanel_1.SurvivorsRogueRoleStatePanel, false);
   }
-  async FId() {
+  async uRd() {
     this.FightInfoPanel = await this.CreateSurvivorsRogueChildPanel("DynSurvivorInfo", this.View.GetContentPanel(), SurvivorsRogueFightInfoPanel_1.SurvivorsRogueFightInfoPanel);
   }
   async rXc() {
@@ -244,11 +244,11 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   async sXc() {
     this.DesktopSkillPanel = await this.CreateChildPanel("PC_DynSurvivorSkill", UiLayer_1.UiLayer.GetBattleViewUnit(1), SurvivorsRogueSkillPanel_1.SurvivorsRogueSkillPanel, true, true, 35);
   }
-  async QId(e) {
+  async pRd(e) {
     var i = new SurvivorsRogueBossTrackedMarker_1.SurvivorsRogueBossTrackedMarker(e);
-    this.Cqd.set(e, i);
+    this.HNd.set(e, i);
     await i.CreateByPoolResourceIdAsync("DynBossPos", UiLayer_1.UiLayer.GetBattleViewUnit(1));
-    if (this.Cqd.has(e)) {
+    if (this.HNd.has(e)) {
       await i.ShowAsync();
     } else {
       if (Log_1.Log.CheckDebug()) {
@@ -259,9 +259,9 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
   }
   UpdateWaveTipsByState(e) {
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SurvivorsRogue", 79, "UpdateWaveTipsByState", ["CurTipsState", this.ajd], ["TargetState", e]);
+      Log_1.Log.Debug("SurvivorsRogue", 79, "UpdateWaveTipsByState", ["CurTipsState", this.Bem], ["TargetState", e]);
     }
-    switch (this.ajd = e) {
+    switch (this.Bem = e) {
       case 0:
         this.PopUpWaveTips.Hide();
         this.ResidentWaveTips.HideTips();
@@ -291,7 +291,7 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
         this.EndlessWaveTips.HideTips();
         break;
       case 3:
-        this.zHd();
+        this.gim();
         this.PopUpWaveTips.Hide();
         this.ResidentWaveTips.HideTips();
         this.CountDownTips.HideTips();
@@ -301,15 +301,15 @@ class SurvivorsRogueMainViewProxy extends GameMainViewProxy_1.GameMainViewProxy 
         this.FightInfoPanel.ResetFightInfo();
     }
   }
-  zHd() {
-    if (this.Cqd.size !== 0) {
+  gim() {
+    if (this.HNd.size !== 0) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("SurvivorsRogue", 79, "结束战斗阶段时有BOSS追踪图标残留, 强制清除");
       }
-      for (const e of this.Cqd.values()) {
+      for (const e of this.HNd.values()) {
         e.Recycle();
       }
-      this.Cqd.clear();
+      this.HNd.clear();
     }
   }
 }

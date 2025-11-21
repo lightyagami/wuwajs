@@ -44,7 +44,6 @@ class InfoDisplayTypeOneView extends UiTickViewBase_1.UiTickViewBase {
   Hxt(e) {
     this.uai(e);
     this.l7e(e);
-    this.cai(e);
     this.mai(e);
   }
   uai(e) {
@@ -59,7 +58,7 @@ class InfoDisplayTypeOneView extends UiTickViewBase_1.UiTickViewBase {
             this.GetTexture(10).SetTexture(e);
             this.GetTexture(10).SetSizeFromTexture();
           }
-        });
+        }, 100, this.MemoryTag);
       }
     }
   }
@@ -68,12 +67,6 @@ class InfoDisplayTypeOneView extends UiTickViewBase_1.UiTickViewBase {
     this.GetText(2).SetText(i);
     var i = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayDesc(e);
     this.GetText(4).SetText(i);
-  }
-  cai(e) {
-    e = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayBgStamp(e);
-    if (e !== "") {
-      this.SetTextureByPath(e, this.GetTexture(7));
-    }
   }
   mai(e) {
     if (ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayAudio(e) !== "") {

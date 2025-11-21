@@ -12,7 +12,7 @@ class AstrologyDotView extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.$pt = undefined;
     this.dce = false;
-    this.gWu = undefined;
+    this.Dzu = undefined;
     this.Nno = e => {
       if (e === "Close") {
         this.SetActive(false);
@@ -33,7 +33,7 @@ class AstrologyDotView extends UiPanelBase_1.UiPanelBase {
   SetDotActive(e, t = undefined) {
     if (e !== this.dce) {
       this.dce = e;
-      this.gWu = t;
+      this.Dzu = t;
       this.$pt.StopPrevSequence(false, true);
       if (e) {
         this.SetActive(true);
@@ -49,7 +49,7 @@ class AstrologyDotView extends UiPanelBase_1.UiPanelBase {
     this.GetItem(1).SetUIActive(e);
   }
   GetPointTagId() {
-    return this.gWu;
+    return this.Dzu;
   }
 }
 exports.AstrologyDotView = AstrologyDotView;

@@ -5,21 +5,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleBreachSuccessView = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../../Core/Common/Log");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
-const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
-const RoleController_1 = require("../RoleController");
 const StarItem_1 = require("../View/StarItem");
 class RoleBreachSuccessView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.dFe = 0;
+    this.F0m = undefined;
     this.SuccessStarItem = undefined;
     this.StarLayout = undefined;
     this.StarList = [];
-    this.MaskClick = () => {
-      RoleController_1.RoleController.SendRoleLevelUpViewRequestWithOpenView(this.dFe, "RoleBreachSuccessView");
+    this.OnMaskClickInternal = () => {
+      this.F0m?.();
     };
     this.vke = () => {
       return new StarItem_1.StarItem();
@@ -27,48 +27,48 @@ class RoleBreachSuccessView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[1, UE.UIButtonComponent], [0, UE.UIHorizontalLayout], [2, UE.UIText], [3, UE.UIText]];
-    this.BtnBindInfo = [[1, this.MaskClick]];
+    this.BtnBindInfo = [[1, this.OnMaskClickInternal]];
   }
   async OnBeforeStartAsync() {
-    this.dFe = this.OpenParam;
-    var e = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData();
-    var t = e.GetBreachLevel();
-    var r = e.GetMaxBreachLevel();
-    var i = e.GetLevel();
-    var e = e.GetCurrentMaxLevel();
-    this.GetText(2).SetText(i.toString());
-    this.GetText(3).SetText(e.toString());
-    this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.vke);
-    await this.UpdateStar(t, r);
-  }
-  OnHandleLoadScene() {
-    UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
-    var e = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-    if (e) {
-      e.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
+    var e;
+    var t;
+    var i;
+    var r = this.OpenParam;
+    if (r) {
+      this.dFe = r.RoleDataId;
+      this.F0m = r.OnMaskClick;
+      e = (r = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(this.dFe).GetLevelData()).GetBreachLevel();
+      t = r.GetMaxBreachLevel();
+      i = r.GetLevel();
+      r = r.GetCurrentMaxLevel();
+      this.GetText(2).SetText(i.toString());
+      this.GetText(3).SetText(r.toString());
+      this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.vke);
+      await this.UpdateStar(e, t);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Role", 78, "RoleBreachSuccessView OpenParam is not valid");
     }
-    RoleController_1.RoleController.PlayRoleMontage(3, true);
   }
   OnAfterPlayStartSequence() {
     this.SuccessStarItem?.PlayActiveSequence();
   }
   async UpdateStar(e, t) {
-    var r = e - 1;
-    if (!(r < 0)) {
-      var i = new Array(t);
+    var i = e - 1;
+    if (!(i < 0)) {
+      var r = new Array(t);
       for (let e = 0; e < t; ++e) {
-        var a = {
-          StarOnActive: e < r,
-          StarOffActive: e >= r,
+        var s = {
+          StarOnActive: e < i,
+          StarOffActive: e >= i,
           StarNextActive: false,
           StarLoopActive: false,
           PlayLoopSequence: false,
           PlayActivateSequence: false
         };
-        i[e] = a;
+        r[e] = s;
       }
-      await this.StarLayout.RefreshByDataAsync(i);
-      this.SuccessStarItem = this.StarLayout.GetLayoutItemByIndex(r);
+      await this.StarLayout.RefreshByDataAsync(r);
+      this.SuccessStarItem = this.StarLayout.GetLayoutItemByIndex(i);
     }
   }
 }

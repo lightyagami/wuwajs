@@ -5,14 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 const puerts_1 = require("puerts");
 const UE = require("ue");
+const Time_1 = require("../../../../../../Core/Common/Time");
 const EntitySystem_1 = require("../../../../../../Core/Entity/EntitySystem");
+const Quat_1 = require("../../../../../../Core/Utils/Math/Quat");
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiCameraAnimationManager_1 = require("../../../../../Module/UiCameraAnimation/UiCameraAnimationManager");
+const tmpQuat = Quat_1.Quat.Create();
+const tmpQuat2 = Quat_1.Quat.Create();
 class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   Constructor() {}
   static UpdateVehiclePerformData(t, e, i, r) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 238);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 241);
     if (t) {
       (0, puerts_1.$set)(e, t.IsBeingImpacted);
       (0, puerts_1.$set)(i, t.CollisionDirection);
@@ -20,7 +24,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static UpdateDrivedVehiclePerformData(t, e, i, r) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 230)?.VehicleEntity?.GetComponent(238);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 233)?.VehicleEntity?.GetComponent(241);
     if (t) {
       (0, puerts_1.$set)(e, t.IsBeingImpacted);
       (0, puerts_1.$set)(i, t.CollisionDirection);
@@ -35,8 +39,8 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var e;
     var i;
     var r;
-    var a = EntitySystem_1.EntitySystem.GetComponent(t, 236);
-    if (a?.Valid && (e = a.MainAnimInstance?.LogicParams)?.IsValid() && (a = a.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 235))?.Valid && (r = i.InputDirectProxy, a.InputDirect.Equals(r) || (a.InputDirect.DeepCopy(r), e.InputDirectRef = r.ToUeVectorOld()), r = i.InputRotatorProxy, a.InputRotator.Equals(r) || (a.InputRotator.DeepCopy(r), e.InputRotatorRef = r.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 237))?.Valid) && (r = i.Acceleration, a.Acceleration.Equals(r) || (a.Acceleration.DeepCopy(r), e.AccelerationRef = r.ToUeVectorOld()), t = i.IsMoving, a.IsMoving !== t && (a.IsMoving = t, e.IsMovingRef = t), r = i.HasMoveInput, a.HasMoveInput !== r && (a.HasMoveInput = r, e.HasMoveInputRef = r), t = i.Speed, a.Speed !== t)) {
+    var a = EntitySystem_1.EntitySystem.GetComponent(t, 239);
+    if (a?.Valid && (e = a.MainAnimInstance?.LogicParams)?.IsValid() && (a = a.AnimLogicParamsSetter, (i = EntitySystem_1.EntitySystem.GetComponent(t, 238))?.Valid && (r = i.InputDirectProxy, a.InputDirect.Equals(r) || (a.InputDirect.DeepCopy(r), e.InputDirectRef = r.ToUeVectorOld()), r = i.InputRotatorProxy, a.InputRotator.Equals(r) || (a.InputRotator.DeepCopy(r), e.InputRotatorRef = r.ToUeRotator())), (i = EntitySystem_1.EntitySystem.GetComponent(t, 240))?.Valid) && (r = i.Acceleration, a.Acceleration.Equals(r) || (a.Acceleration.DeepCopy(r), e.AccelerationRef = r.ToUeVectorOld()), t = i.IsMoving, a.IsMoving !== t && (a.IsMoving = t, e.IsMovingRef = t), r = i.HasMoveInput, a.HasMoveInput !== r && (a.HasMoveInput = r, e.HasMoveInputRef = r), t = i.Speed, a.Speed !== t)) {
       a.Speed = t;
       e.SpeedRef = t;
     }
@@ -44,7 +48,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UpdateAnimInfoUnifiedState(t) {
     var e;
     var i;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 236);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 239);
     if (t?.Valid && (e = t.MainAnimInstance?.LogicParams)?.IsValid() && (t = t.AnimLogicParamsSetter, i = ModelManager_1.ModelManager.PlotModel.IsInInteraction || ModelManager_1.ModelManager.PlotModel.IsInPlot && ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel !== "LevelD", t.IsInPerformingPlot !== i && (t.IsInPerformingPlot = i, e.bIsInPerformingPlot = i), i = ModelManager_1.ModelManager.PlotModel.IsInPlot && (ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelA" || ModelManager_1.ModelManager.PlotModel.PlotConfig.PlotLevel === "LevelB"), t.IsInSequence !== i && (t.IsInSequence = i, e.bIsInSequence = i), i = UiCameraAnimationManager_1.UiCameraAnimationManager.IsDisablePlayer(), t.IsInUiCamera !== i)) {
       t.IsInUiCamera = i;
       e.bIsInUiCamera = i;
@@ -52,11 +56,11 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetAndResetEnterSprint(t) {
     var e;
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 246);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 249);
     return !!t && (e = t.IsEnterSprint, t.IsEnterSprint = false, e);
   }
   static GetDrivedVehicleSeatRot(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 230);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 233);
     if (!t?.VehicleEntity) {
       return false;
     }
@@ -64,7 +68,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     if (i === -1) {
       return false;
     }
-    t = t.VehicleEntity.GetComponent(246);
+    t = t.VehicleEntity.GetComponent(249);
     if (!t?.IsWaterfallMove) {
       MathUtils_1.MathUtils.CommonTempRotator.Reset();
       if (!t?.GetDrivedVehicleSeatLocalRot(i, MathUtils_1.MathUtils.CommonTempRotator)) {
@@ -78,7 +82,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return true;
   }
   static ConvertAngleToPassengerSpace(t, e) {
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 230);
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 233);
     if (t?.IsOnVehicle) {
       t = -t.SeatReletiveTrans.GetRotation().Rotator().Yaw;
       return MathUtils_1.MathUtils.WrapAngle(e + t);
@@ -87,13 +91,13 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static GetVehicleVelocity(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 235);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 238);
     if (!t?.Actor?.IsValid()) {
       return false;
     }
     var i = MathUtils_1.MathUtils.CommonTempVector;
     i.Reset();
-    t.Entity.GetComponent(234)?.GetVehicleVelocity(i);
+    t.Entity.GetComponent(237)?.GetVehicleVelocity(i);
     t = (0, puerts_1.$unref)(e);
     t.X = i.X;
     t.Y = i.Y;
@@ -101,16 +105,16 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return true;
   }
   static GetDrivedVehicleVelocity(t, e) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 230);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 233);
     if (!t?.IsOnVehicle) {
       return false;
     }
-    if (!t.VehicleEntity.GetComponent(235)?.Actor?.IsValid()) {
+    if (!t.VehicleEntity.GetComponent(238)?.Actor?.IsValid()) {
       return false;
     }
     var i = MathUtils_1.MathUtils.CommonTempVector;
     i.Reset();
-    t.VehicleEntity.GetComponent(234)?.GetVehicleVelocity(i);
+    t.VehicleEntity.GetComponent(237)?.GetVehicleVelocity(i);
     t = (0, puerts_1.$unref)(e);
     t.X = i.X;
     t.Y = i.Y;
@@ -118,7 +122,7 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return true;
   }
   static GetVehicleRotiationSpeed(t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t, 235);
+    t = EntitySystem_1.EntitySystem.GetComponent(t, 238);
     if (t?.Actor?.IsValid()) {
       return t.SimulatedRotYawSpeed;
     } else {
@@ -126,12 +130,26 @@ class TsVehicleBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
   }
   static GetDrivedVehicleRotiationSpeed(t) {
-    var t = EntitySystem_1.EntitySystem.GetComponent(t, 230);
-    if (t?.IsOnVehicle && (t = t.VehicleEntity.GetComponent(235))?.Actor?.IsValid()) {
+    var t = EntitySystem_1.EntitySystem.GetComponent(t, 233);
+    if (t?.IsOnVehicle && (t = t.VehicleEntity.GetComponent(238))?.Actor?.IsValid()) {
       return t.SimulatedRotYawSpeed;
     } else {
       return 0;
     }
+  }
+  static SmoothVehicleRotation(t, e, i, r) {
+    EntitySystem_1.EntitySystem.GetComponent(t, 240)?.SmoothVehicleRotation(e, i, Time_1.Time.DeltaTimeSeconds, false, r);
+  }
+  static SlerpQuat(t, e, i, r) {
+    tmpQuat.DeepCopy(t);
+    tmpQuat2.DeepCopy(e);
+    Quat_1.Quat.Slerp(tmpQuat, tmpQuat2, i, tmpQuat);
+    t = tmpQuat;
+    e = (0, puerts_1.$unref)(r);
+    e.X = t.X;
+    e.Y = t.Y;
+    e.Z = t.Z;
+    e.W = t.W;
   }
 }
 exports.default = TsVehicleBlueprintFunctionLibrary;

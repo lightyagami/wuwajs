@@ -7,9 +7,9 @@ exports.TrapMapComponentBase = undefined;
 class TrapMapComponentBase {
   constructor(t) {
     this.Parent = t;
-    this.N9c = false;
+    this.Jzu = false;
     this.dYa = false;
-    this.V9c = false;
+    this.Zzu = false;
     this.mYa = 0;
   }
   static GenComponentId() {
@@ -26,10 +26,10 @@ class TrapMapComponentBase {
     this.mYa = t;
   }
   get Enable() {
-    return this.N9c;
+    return this.Jzu;
   }
   set Enable(t) {
-    if (this.N9c = t) {
+    if (this.Jzu = t) {
       if (this.dYa) {
         this.dYa = false;
         this.OnStart();
@@ -40,10 +40,10 @@ class TrapMapComponentBase {
     }
   }
   get EnableTick() {
-    return this.V9c;
+    return this.Zzu;
   }
   set EnableTick(t) {
-    this.V9c = t;
+    this.Zzu = t;
   }
   Init() {
     this.dYa = true;

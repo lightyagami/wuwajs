@@ -210,11 +210,11 @@ class CiacconaGalView extends UiViewBase_1.UiViewBase {
     this.GetTexture(3).SetUIActive(true);
   }
   sM1() {
-    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon01"), UE.Texture);
-    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon02"), UE.Texture);
-    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon03"), UE.Texture);
-    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon04"), UE.Texture);
-    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon05"), UE.Texture);
+    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon01"), UE.Texture, this.MemoryTag);
+    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon02"), UE.Texture, this.MemoryTag);
+    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon03"), UE.Texture, this.MemoryTag);
+    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon04"), UE.Texture, this.MemoryTag);
+    ResourceSystem_1.ResourceSystem.Load(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("T_PlotReasoningIcon05"), UE.Texture, this.MemoryTag);
   }
   G51() {
     this.O51 = false;

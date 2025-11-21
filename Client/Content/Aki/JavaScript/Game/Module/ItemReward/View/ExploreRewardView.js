@@ -23,6 +23,7 @@ const RewardExploreConfirmButton_1 = require("./RewardExploreConfirmButton");
 const RewardExploreDangoAbyssSuccessItem_1 = require("./RewardExploreDangoAbyssSuccessItem");
 const RewardExploreDescription_1 = require("./RewardExploreDescription");
 const RewardExploreFriendItem_1 = require("./RewardExploreFriendItem");
+const RewardExploreHonamiTowerSuccessItem_1 = require("./RewardExploreHonamiTowerSuccessItem");
 const RewardExploreOnlineChallengePlayer_1 = require("./RewardExploreOnlineChallengePlayer");
 const RewardExploreRecord_1 = require("./RewardExploreRecord");
 const RewardExploreScore_1 = require("./RewardExploreScore");
@@ -52,6 +53,7 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
     this.hD_ = undefined;
     this.P_c = undefined;
     this.rv1 = undefined;
+    this.Enm = undefined;
     this.Het = [];
     this.efi = () => {
       var t = this.N0i.ButtonInfoList;
@@ -159,6 +161,9 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
     }
     if (this.N0i.DangoAbyssSuccessData) {
       await this.ov1();
+    }
+    if (this.N0i.HonamiTowerSuccessData) {
+      await this.Inm();
     }
     var t = this.N0i.ButtonInfoList;
     if (t && t?.length > 0) {
@@ -411,6 +416,16 @@ class ExploreRewardView extends UiViewBase_1.UiViewBase {
       this.rv1 = new RewardExploreDangoAbyssSuccessItem_1.RewardExploreDangoAbyssSuccessItem();
       await this.rv1.CreateThenShowByResourceIdAsync("PnlCelebrationResult", e);
       this.rv1.Refresh(t);
+    }
+  }
+  async Inm() {
+    var e;
+    var t = this.N0i.HonamiTowerSuccessData;
+    if (t) {
+      e = this.GetItem(20);
+      this.Enm = new RewardExploreHonamiTowerSuccessItem_1.RewardExploreHonamiTowerSuccessItem();
+      await this.Enm.CreateThenShowByResourceIdAsync("UiItem_HonamiStoryTowerResult", e);
+      this.Enm.Refresh(t);
     }
   }
   afi(e, t) {

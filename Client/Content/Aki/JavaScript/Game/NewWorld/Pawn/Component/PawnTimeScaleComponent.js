@@ -1,16 +1,16 @@
 "use strict";
 
 var PawnTimeScaleComponent_1;
-var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var r;
+var __decorate = this && this.__decorate || function (e, t, i, r) {
+  var s;
   var o = arguments.length;
-  var n = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var n = o < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, i) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, i, s);
+    n = Reflect.decorate(e, t, i, r);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
-      if (r = e[h]) {
-        n = (o < 3 ? r(n) : o > 3 ? r(t, i, n) : r(t, i)) || n;
+      if (s = e[h]) {
+        n = (o < 3 ? s(n) : o > 3 ? s(t, i, n) : s(t, i)) || n;
       }
     }
   }
@@ -53,12 +53,12 @@ function getSourceGroup(e) {
 }
 exports.getSourceGroup = getSourceGroup;
 class TimeScale {
-  constructor(e, t, i, s, r, o, n, h, a, u = false, c = false) {
+  constructor(e, t, i, r, s, o, n, h, a, u = false, c = false) {
     this.StartTime = e;
     this.EndTime = t;
     this.Priority = i;
-    this.TimeDilation = s;
-    this.TimeCurveFloat = r;
+    this.TimeDilation = r;
+    this.TimeCurveFloat = s;
     this.Duration = o;
     this.Id = n;
     this.SourceType = h;
@@ -134,12 +134,12 @@ class TimeScale {
 }
 exports.TimeScale = TimeScale;
 class ForeverTimeScale {
-  constructor(e, t, i, s, r) {
+  constructor(e, t, i, r, s) {
     this.Priority = e;
     this.TimeDilation = t;
     this.SourceType = i;
-    this.SourceTypeGroup = s;
-    this.Id = r;
+    this.SourceTypeGroup = r;
+    this.Id = s;
     this.MarkDelete = false;
   }
   get EndTime() {
@@ -163,7 +163,6 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     this.ForeverTimeScaleViewOnly = new PriorityQueue_1.PriorityQueue(PawnTimeScaleComponent_1.CompareScalePriority);
     this.ForeverTimeScaleMap = new Map();
     this.PauseLocks = new Map();
-    this.RemoveLockTimestamp = -1;
     this.DelayLocks = new Map();
   }
   static CompareScalePriority(e, t) {
@@ -197,17 +196,17 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     return e.EndTime > e.GetCurrentTime() && !e.MarkDelete;
   }
   OnTick(e) {}
-  SetTimeScale(e, t, i, s, r, o = false, n = false) {
+  SetTimeScale(e, t, i, r, s, o = false, n = false) {
     var h;
     var a;
-    if (r === 2) {
-      s *= this.Vhn;
+    if (s === 2) {
+      r *= this.Vhn;
     }
-    if (s <= 0) {
+    if (r <= 0) {
       return -1;
     } else {
-      h = (a = n ? Time_1.Time.PlayerWorldTimeSeconds : Time_1.Time.WorldTimeSeconds) + s;
-      a = new TimeScale(a, h, e, Math.max(t, LIMIT_SCALE), i, s, this.Hhn++, r, getSourceGroup(r), o, n);
+      h = (a = n ? Time_1.Time.PlayerWorldTimeSeconds : Time_1.Time.WorldTimeSeconds) + r;
+      a = new TimeScale(a, h, e, Math.max(t, LIMIT_SCALE), i, r, this.Hhn++, s, getSourceGroup(s), o, n);
       this.TimeScaleList.Push(a);
       this.TimeScaleMap.set(a.Id, a);
       return a.Id;
@@ -224,15 +223,15 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
       e.MarkDelete = true;
     }
   }
-  SetForeverTimeScale(e, t, i = 0, s = false) {
-    var r = new ForeverTimeScale(i, t, e, getSourceGroup(e), this.Hhn++);
-    (getSourceEffectGroup(e) === 1 ? this.ForeverTimeScaleViewOnly : this.ForeverTimeScaleLogicView).Push(r);
-    this.ForeverTimeScaleMap.set(r.Id, r);
-    if (s) {
+  SetForeverTimeScale(e, t, i = 0, r = false) {
+    var s = new ForeverTimeScale(i, t, e, getSourceGroup(e), this.Hhn++);
+    (getSourceEffectGroup(e) === 1 ? this.ForeverTimeScaleViewOnly : this.ForeverTimeScaleLogicView).Push(s);
+    this.ForeverTimeScaleMap.set(s.Id, s);
+    if (r) {
       this.OnTick(0);
     }
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnForeverTimeDilationAdd, e, t, i);
-    return r.Id;
+    return s.Id;
   }
   RemoveForeverTimeScale(e, t = false) {
     e = this.ForeverTimeScaleMap.get(e);
@@ -283,7 +282,6 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
       this.RemoveTimeScale(t);
     }
     this.PauseLocks.delete(e);
-    this.RemoveLockTimestamp = Time_1.Time.NowSeconds;
   }
   ImmunePauseLock() {
     this.PauseLocks.forEach(e => {
@@ -370,5 +368,5 @@ let PawnTimeScaleComponent = PawnTimeScaleComponent_1 = class PawnTimeScaleCompo
     return e;
   }
 };
-PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(123)], PawnTimeScaleComponent);
+PawnTimeScaleComponent = PawnTimeScaleComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], PawnTimeScaleComponent);
 exports.PawnTimeScaleComponent = PawnTimeScaleComponent; //# sourceMappingURL=PawnTimeScaleComponent.js.map

@@ -87,7 +87,7 @@ class GameplayAbilityVisionSummon extends GameplayAbilityVisionBase_1.GameplayAb
   }
   HZo() {
     this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(40), this.aer = this.MZo.Entity.GetComponent(206), this.KZo = this.MZo.Entity.GetComponent(175), this.fAr = this.MZo.Entity.GetComponent(21), true);
+    return !!this.MZo.IsInit && !this.MZo.Entity.Active && (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.OZo = this.MZo.Entity.GetComponent(3), this.kZo = this.MZo.Entity.GetComponent(40), this.aer = this.MZo.Entity.GetComponent(209), this.KZo = this.MZo.Entity.GetComponent(178), this.fAr = this.MZo.Entity.GetComponent(21), true);
   }
   her() {
     return this.oMt.空中能否释放 && this.GameplayTagComponent.HasTag(40422668);

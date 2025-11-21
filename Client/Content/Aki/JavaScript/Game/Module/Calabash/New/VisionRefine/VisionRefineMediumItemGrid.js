@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.VisionRefineMediumItemGrid = undefined;
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const LoopScrollMediumItemGrid_1 = require("../../../Common/MediumItemGrid/LoopScrollMediumItemGrid");
 class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
@@ -27,17 +28,18 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
     super.OnBeforeDestroy();
     this.GetItemGridExtendToggle().FocusListenerDelegate.Unbind();
   }
-  OnRefresh(e, t, i) {
+  OnRefresh(e, t, r) {
     this.MRu(e);
   }
   MRu(e) {
-    var t;
-    var i;
-    var r = e.GetUniqueId();
-    var r = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(r);
+    var t = e.GetUniqueId();
+    var r = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(t);
     if (r) {
-      t = e.GetItemDataType();
-      i = {
+      var i;
+      var o;
+      var s;
+      var n = e.GetItemDataType();
+      var a = {
         Type: 4,
         Data: e,
         ItemConfigId: e.GetConfigId(),
@@ -45,18 +47,34 @@ class VisionRefineMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMe
         IsDeprecate: e.GetIsDeprecated(),
         StarLevel: e.GetQuality()
       };
-      if (t === 3) {
-        i.Level = r.GetCost();
-        i.IsLevelTextUseChangeColor = true;
-        i.BottomTextId = "VisionLevel";
-        i.BottomTextParameter = [r.GetPhantomLevel()];
-        i.VisionFetterGroupId = r.GetFetterGroupId();
-        i.IsOmitBottomText = true;
-        i.IsDisable = !r.GetVisionIfCanRefine();
-      } else {
-        i.BottomText = e.GetCount().toString();
+      switch (n) {
+        case 3:
+          {
+            a.ItemConfigId = r.GetConfigId(true);
+            a.Level = r.GetCost();
+            a.IsLevelTextUseChangeColor = true;
+            a.BottomTextId = "VisionLevel";
+            a.BottomTextParameter = [r.GetPhantomLevel()];
+            a.VisionFetterGroupId = r.GetFetterGroupId();
+            a.IsOmitBottomText = true;
+            a.IsDisable = !r.GetVisionIfCanRefine();
+            let e = false;
+            if (!(e = this.CheckSelectByView ? this.CheckSelectByView(this.fGt) : e) && ControllerHolder_1.ControllerHolder.PhantomBattleController.CheckIsEquip(t)) {
+              i = r.GetUniqueId();
+              o = ControllerHolder_1.ControllerHolder.PhantomBattleController.GetEquipRole(i);
+              s = ModelManager_1.ModelManager.PhantomBattleModel.CheckPhantomIsMain(i);
+              a.VisionRoleHeadInfo = {
+                RoleConfigId: o,
+                VisionUniqueId: i
+              };
+              a.IsMainVisionVisible = s;
+            }
+            break;
+          }
+        default:
+          a.BottomText = e.GetCount().toString();
       }
-      this.Apply(i);
+      this.Apply(a);
       this.ERu(e);
     }
   }

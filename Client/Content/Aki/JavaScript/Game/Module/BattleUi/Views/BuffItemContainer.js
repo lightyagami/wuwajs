@@ -24,8 +24,8 @@ class BuffItemContainer {
     this.aa = 0;
     this.rJl = false;
     this.YLe = false;
-    this.p2u = false;
-    this.v2u = undefined;
+    this.y4u = false;
+    this.S4u = undefined;
     this.m1t = undefined;
     this.vkn = undefined;
     this.PGl = 0;
@@ -35,9 +35,9 @@ class BuffItemContainer {
     this.aa = i;
     this.rJl = s;
     this.YLe = h;
-    this.p2u = e;
-    this.v2u = r;
-    this.y2u();
+    this.y4u = e;
+    this.S4u = r;
+    this.M4u();
   }
   Tick(i) {
     var t = Time_1.Time.Frame;
@@ -65,11 +65,11 @@ class BuffItemContainer {
   RefreshBuff(t) {
     this.ClearAll();
     if (t?.IsInit) {
-      this.m1t = t.Entity.GetComponent(175);
-      this.vkn = t.Entity.GetComponent(191);
+      this.m1t = t.Entity.GetComponent(178);
+      this.vkn = t.Entity.GetComponent(194);
       t = t.Entity.GetComponent(21);
       this.Fah(t);
-      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(227))) {
+      if (this.YLe && (t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(230))) {
         this.Fah(t);
       }
     } else {
@@ -88,9 +88,9 @@ class BuffItemContainer {
   AddBuffByCue(i, s, h = false) {
     var t;
     var e = i.CueType;
-    if (e !== 2 || this.p2u) {
-      if (e !== 14 || this.p2u) {
-        if (e === 24 && this.p2u && this.oJl(i) && !this.Ckn.has(s) && (e = this.Skn(s))) {
+    if (e !== 2 || this.y4u) {
+      if (e !== 14 || this.y4u) {
+        if (e === 24 && this.y4u && this.oJl(i) && !this.Ckn.has(s) && (e = this.Skn(s))) {
           (t = this.Mkn(i)).SingleBuff = e;
           this.Ckn.set(s, t);
           this.Ekn(t, h);
@@ -160,7 +160,7 @@ class BuffItemContainer {
       t.BuffItem = this.cst();
       this.mst(t, s, i);
     }
-    this.y2u();
+    this.M4u();
   }
   Tkn(i) {
     var s = this.dkn.length;
@@ -186,7 +186,7 @@ class BuffItemContainer {
         this.mst(s, this.aa - 1, false);
       }
       this.Ikn(t);
-      this.y2u();
+      this.M4u();
     }
   }
   Skn(t) {
@@ -218,9 +218,9 @@ class BuffItemContainer {
       (i ? (s.DeactivateWithCloseAnim(), this._nt) : (s.Deactivate(), s.GetRootItem().SetHierarchyIndex(this.dkn.length + this._nt.length), this.unt)).push(s);
     }
   }
-  y2u() {
-    if (this.v2u) {
-      this.v2u.SetUIActive(this.dkn.length > this.aa);
+  M4u() {
+    if (this.S4u) {
+      this.S4u.SetUIActive(this.dkn.length > this.aa);
     }
   }
   ClearAll() {

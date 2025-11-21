@@ -30,6 +30,7 @@ class BossRushLevelDetailView extends UiTabViewBase_1.UiTabViewBase {
     this.aSn = undefined;
     this.d8t = undefined;
     this.FSn = undefined;
+    this.VSn = undefined;
     this.SPe = undefined;
     this.HSn = [];
     this.pcr = () => {
@@ -37,28 +38,47 @@ class BossRushLevelDetailView extends UiTabViewBase_1.UiTabViewBase {
       UiManager_1.UiManager.OpenView("InstanceDungeonMonsterPreView", this.aSn?.GetCurrentSelectLevel()?.GetInstanceDungeonId());
     };
     this.sOt = () => {
-      var e = this.aSn.LevelInfo.GetInstanceDungeonFormationNumb();
-      let t = 0;
+      var t = this.aSn.LevelInfo.GetInstanceDungeonFormationNumb();
+      let i = 0;
       this.aSn?.GetCurrentTeamMembers().forEach(e => {
         if (e !== 0) {
-          t++;
+          i++;
         }
       });
-      if (e === 0) {
+      if (i === 0) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("BossRushAtlestOneRole");
-      } else if (e > t) {
-        (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(188)).FunctionMap.set(2, () => {
-          BossRushController_1.BossRushController.RequestStartBossRushByTeamData(this.aSn);
-        });
-        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
       } else {
-        BossRushController_1.BossRushController.RequestStartBossRushByTeamData(this.aSn);
+        let e = 0;
+        for (const s of this.HSn) {
+          if (s.HaveBuff()) {
+            e++;
+          }
+        }
+        if (e < 2) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("BossRushBuffCountTips");
+        } else if (t > i) {
+          (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(188)).FunctionMap.set(2, () => {
+            BossRushController_1.BossRushController.RequestStartBossRushByTeamData(this.aSn);
+          });
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+        } else {
+          BossRushController_1.BossRushController.RequestStartBossRushByTeamData(this.aSn);
+        }
       }
     };
     this.Xho = () => {
       this.QSn();
     };
     this.Ylo = () => {
+      var t = ModelManager_1.ModelManager.RoleModel;
+      var i = this.aSn.GetCurrentTeamMembers();
+      for (let e = 0; e < i.length; e++) {
+        var s = i[e];
+        var s = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(s)?.GetRoleId() ?? 0;
+        if (t.IsMainRole(s)) {
+          this.aSn.SetIndexTeamMembers(e, 0);
+        }
+      }
       this.XSn();
     };
     this.XSn = () => {
@@ -67,7 +87,7 @@ class BossRushLevelDetailView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIText], [9, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIText], [9, UE.UIItem]];
     this.BtnBindInfo = [[1, this.pcr], [7, this.sOt]];
   }
   async OnBeforeStartAsync() {
@@ -78,8 +98,11 @@ class BossRushLevelDetailView extends UiTabViewBase_1.UiTabViewBase {
     await this.d8t.CreateByActorAsync(this.GetItem(5).GetOwner());
     this.d8t.SetActive(true);
     this.FSn = new BuffEntry();
-    await this.FSn.CreateByActorAsync(this.GetItem(4).GetOwner());
+    await this.FSn.CreateByActorAsync(this.GetItem(3).GetOwner());
+    this.VSn = new BuffEntry();
+    await this.VSn.CreateByActorAsync(this.GetItem(4).GetOwner());
     this.HSn.push(this.FSn);
+    this.HSn.push(this.VSn);
     for (const e of this.HSn) {
       e.SlotIndex = this.HSn.indexOf(e) + 1;
       e.SetActive(true);
@@ -125,7 +148,6 @@ class BossRushLevelDetailView extends UiTabViewBase_1.UiTabViewBase {
   zSn() {
     var e = this.aSn.GetCurrentSelectLevel();
     this.SetTextureByPath(e.GetBigMonsterTexturePath(), this.GetTexture(0), "BossRushMainView");
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e.GetLevelDesc());
   }
   eyn() {
     var e = this.aSn?.GetCurrentSelectLevel()?.GetConfig()?.BossCount;
@@ -502,6 +524,9 @@ class BuffEntry extends UiPanelBase_1.UiPanelBase {
   nyn() {
     var e = ConfigManager_1.ConfigManager.BossRushConfig.GetBossRushBuffConfigById(this.tyn.BuffId);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), e.Name);
+  }
+  HaveBuff() {
+    return (this.tyn?.BuffId ?? 0) > 0;
   }
 }
 exports.BuffEntry = BuffEntry;

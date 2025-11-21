@@ -26,7 +26,7 @@ class JoystickPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.X9e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
   }
   async InitializeAsync() {
-    await Promise.all([this.nXu()]);
+    await Promise.all([this.v6u()]);
   }
   OnShowBattleChildViewPanel() {
     this.TJe?.ShowBattleVisibleChildView();
@@ -35,9 +35,9 @@ class JoystickPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.TJe?.HideBattleVisibleChildView();
   }
   OnTickBattleChildViewPanel(e) {
-    JoystickPanel.sXu.Start();
+    JoystickPanel.y6u.Start();
     this.TJe?.Tick(e);
-    JoystickPanel.sXu.Stop();
+    JoystickPanel.y6u.Stop();
   }
   Reset() {
     this.TJe = undefined;
@@ -48,7 +48,7 @@ class JoystickPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.fHe);
   }
-  async nXu() {
+  async v6u() {
     this.TJe = await this.NewStaticChildViewAsync(this.RootItem.GetOwner(), Joystick_1.Joystick, this.RootItem);
     this.jJe();
   }
@@ -62,5 +62,5 @@ class JoystickPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     }
   }
 }
-(exports.JoystickPanel = JoystickPanel).sXu = Stats_1.Stat.Create("JoystickPanelTickStats");
+(exports.JoystickPanel = JoystickPanel).y6u = Stats_1.Stat.Create("JoystickPanelTickStats");
 //# sourceMappingURL=JoystickPanel.js.map

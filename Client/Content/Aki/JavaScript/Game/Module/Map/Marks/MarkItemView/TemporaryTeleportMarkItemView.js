@@ -11,12 +11,8 @@ class TemporaryTeleportMarkItemView extends ServerMarkItemView_1.ServerMarkItemV
   constructor(e) {
     super(e);
   }
-  OnInitialize() {
-    super.OnInitialize();
-    this.iYa();
-  }
-  OnReset() {
-    super.OnReset();
+  OnViewRefresh() {
+    this.OnIconPathChanged(this.Holder.IconPath);
     this.iYa();
   }
   OnSelectedStateChange(e) {

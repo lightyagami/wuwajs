@@ -56,7 +56,7 @@ const TWO_HUNDRED_TWENTY = 220;
 let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
-    this.qWc = Vector_1.Vector.Create();
+    this.o$u = Vector_1.Vector.Create();
     this.cz = Vector_1.Vector.Create();
     this.fz = Vector_1.Vector.Create();
     this.cie = Rotator_1.Rotator.Create();
@@ -64,60 +64,60 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     this.Gce = undefined;
     this.ph_ = undefined;
     this.oRe = undefined;
-    this.GWc = false;
-    this.FWc = -1;
+    this.n$u = false;
+    this.s$u = -1;
     this.WTe = 0;
     this.Man = undefined;
     this.OPt = undefined;
-    this.edd = Vector_1.Vector.Create();
+    this.hAd = Vector_1.Vector.Create();
     this.Ry1 = false;
-    this.NWc = false;
-    this.VWc = false;
-    this.jWc = false;
-    this.HWc = false;
-    this.$Wc = false;
-    this.WWc = 0;
-    this.idd = 0;
-    this._Zc = 0;
-    this.uZc = undefined;
+    this.a$u = false;
+    this.h$u = false;
+    this.l$u = false;
+    this._$u = false;
+    this.u$u = false;
+    this.c$u = 0;
+    this.lAd = 0;
+    this.mtd = 0;
+    this.ftd = undefined;
   }
   get Phase() {
-    return this.WWc;
+    return this.c$u;
   }
   set Phase(t) {
-    if (this.WWc !== t) {
+    if (this.c$u !== t) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("NPC", 42, "[NpcSitOnChairComponent] 切换阶段", ["Phase", t]);
       }
-      this.WWc = t;
+      this.c$u = t;
     }
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
     this.Gce = this.Entity.GetComponent(45);
     this.ph_ = this.Entity.GetComponent(46);
-    this.oRe = this.Entity.GetComponent(178);
+    this.oRe = this.Entity.GetComponent(181);
     var t = this.oRe?.MainAnimInstance;
     if (t && UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC)) {
-      this.GWc = true;
+      this.n$u = true;
     }
     return true;
   }
   OnActivate() {}
   OnTick(t) {
     if (this.Ry1) {
-      this.QWc();
+      this.d$u();
     }
   }
   OnEnd() {
     this.Finish();
-    this.cZc();
+    this.gtd();
     return true;
   }
   Finish(t = false) {
-    this.idd = Time_1.Time.Now;
-    this.KWc(t);
-    this.XWc();
+    this.lAd = Time_1.Time.Now;
+    this.m$u(t);
+    this.f$u();
   }
   StartNpcSitOnChair(t) {
     if (this.Hte) {
@@ -130,7 +130,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       this.OPt = t;
       if (this.Gce?.CharacterMovement?.IsValid()) {
         t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.OPt.ChairEntityId);
-        this.Man = t?.Entity?.GetComponent(198)?.GetSubEntityInteractLogicController();
+        this.Man = t?.Entity?.GetComponent(201)?.GetSubEntityInteractLogicController();
         if (this.Man && this.Man.IsSceneInteractionLoadCompleted()) {
           if (this.OPt.MontagePath === "") {
             if (Log_1.Log.CheckError()) {
@@ -138,10 +138,10 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
             }
             this.Finish();
           } else {
-            this.rdd(() => {
+            this._Ad(() => {
               this.Phase = 1;
               this.Ry1 = true;
-            }, SIT_UP_TIME, this.idd);
+            }, SIT_UP_TIME, this.lAd);
           }
         } else {
           this.Finish();
@@ -154,16 +154,16 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       }
     }
   }
-  QWc() {
+  d$u() {
     switch (this.Phase) {
       case 1:
         this.Phase = 2;
         break;
       case 2:
-        this.YWc();
+        this.g$u();
         break;
       case 3:
-        this.zWc();
+        this.C$u();
         break;
       case 4:
         if (this.OPt?.InterruptCondition()) {
@@ -177,10 +177,10 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         }
         break;
       case 5:
-        this.JWc();
+        this.p$u();
         break;
       case 6:
-        this.ZWc();
+        this.v$u();
         break;
       case 7:
         this.OPt?.Finish?.();
@@ -195,20 +195,20 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         }
     }
   }
-  XWc() {
+  f$u() {
     this.Phase = 0;
     this.WTe = 0;
-    this.NWc = false;
-    this.VWc = false;
-    this.jWc = false;
-    this.HWc = false;
-    this.$Wc = false;
+    this.a$u = false;
+    this.h$u = false;
+    this.l$u = false;
+    this._$u = false;
+    this.u$u = false;
     this.OPt = undefined;
     this.Ry1 = false;
-    this.edd.Reset();
-    this.cZc();
+    this.hAd.Reset();
+    this.gtd();
   }
-  KWc(t = false) {
+  m$u(t = false) {
     switch (this.Phase) {
       case 2:
       case 3:
@@ -216,17 +216,17 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         break;
       case 4:
         this.Hte?.ClearInput();
-        this.tQc();
+        this.gWu();
         break;
       case 5:
-        this.cZc();
-        this.ZWc();
-        this.tQc();
-        this.odd();
+        this.gtd();
+        this.v$u();
+        this.gWu();
+        this.uAd();
         break;
       case 6:
-        this.tQc();
-        this.odd();
+        this.gWu();
+        this.uAd();
     }
     if (t) {
       if (Log_1.Log.CheckDebug()) {
@@ -235,21 +235,21 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       this.OPt?.Abort?.();
     }
   }
-  YWc() {
+  g$u() {
     var t;
-    if (!this.NWc) {
-      this.NWc = true;
+    if (!this.a$u) {
+      this.a$u = true;
       this.Man.Possess(this.Entity);
       t = this.Man.GetSitLocation();
-      this.Man.GetForwardDirection().Multiply(NEARBY_CHAIR_OFFSET, this.qWc);
-      this.qWc.AdditionEqual(t);
-      if (GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, this.qWc, this.Hte.ActorLocationProxy) < NEARBY_CHAIR_TOLERANCE_SQUARED) {
+      this.Man.GetForwardDirection().Multiply(NEARBY_CHAIR_OFFSET, this.o$u);
+      this.o$u.AdditionEqual(t);
+      if (GravityUtils_1.GravityUtils.GetDistSquared2dForActor(this.Hte, this.o$u, this.Hte.ActorLocationProxy) < NEARBY_CHAIR_TOLERANCE_SQUARED) {
         this.Phase = 3;
       } else {
         t = {
           Points: [{
             Index: 0,
-            Position: this.qWc,
+            Position: this.o$u,
             MoveState: IComponent_1.EPatrolMoveState.Walk,
             MoveSpeed: MOVE_TO_NEARBY_CHAIR_SPEED
           }],
@@ -262,14 +262,14 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
               this.Man.Possess(this.Entity);
               this.Man.IgnoreCollision();
               if (this.OPt?.TeleportEffect?.length) {
-                var i = this.Entity?.GetComponent(226);
+                var i = this.Entity?.GetComponent(229);
                 for (const e of this.OPt.TeleportEffect) {
                   i?.AddCue(e, {
                     Instant: true
                   });
                 }
               }
-              this.Hte?.SetActorLocation(this.qWc.ToUeVector(), "[NpcSitOnChairComponent] ExecuteMoveNearby", false);
+              this.Hte?.SetActorLocation(this.o$u.ToUeVector(), "[NpcSitOnChairComponent] ExecuteMoveNearby", false);
               this.Gce.StopMoveNew();
               this.Phase = 4;
             } else {
@@ -285,20 +285,20 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       }
     }
   }
-  zWc() {
+  C$u() {
     var t;
     var i;
-    if (!this.VWc) {
-      this.VWc = true;
+    if (!this.h$u) {
+      this.h$u = true;
       this.Man.Possess(this.Entity);
       this.Man.IgnoreCollision();
       t = this.Hte.ActorLocationProxy;
       i = this.Man.GetSitLocation();
-      this.edd.Set(i.X, i.Y, t.Z);
+      this.hAd.Set(i.X, i.Y, t.Z);
       i = {
         Points: [{
           Index: 0,
-          Position: this.edd,
+          Position: this.hAd,
           MoveState: IComponent_1.EPatrolMoveState.Walk,
           MoveSpeed: MOVE_TO_CHAIR_SPEED
         }],
@@ -308,7 +308,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         Loop: false,
         Callback: t => {
           if (t === 2) {
-            this.bld(this.edd, "ExecuteMoveClose.移动靠近椅子保底");
+            this.kgd(this.hAd, "ExecuteMoveClose.移动靠近椅子保底");
           }
           this.Gce.StopMoveNew();
           this.Phase = 4;
@@ -321,39 +321,39 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     }
   }
   QTe() {
-    if (!this.jWc) {
-      this.jWc = true;
+    if (!this.l$u) {
+      this.l$u = true;
       this.Man.GetForwardDirection().Multiply(200, this.cz);
-      this.cz.AdditionEqual(this.qWc);
+      this.cz.AdditionEqual(this.o$u);
       this.WTe = this.Gce.CharacterMovement.MovementMode;
       this.Gce.CharacterMovement.MovementMode = 1;
       AiContollerLibrary_1.AiControllerLibrary.TurnToTarget(this.Hte, this.cz, TURN_SPEED);
     }
   }
-  JWc() {
-    if (this.HWc) {
+  p$u() {
+    if (this._$u) {
       if (this.OPt?.InterruptCondition()) {
-        this.rdd(() => {
+        this._Ad(() => {
           if (this.Phase !== 0) {
             this.Phase = 6;
           }
-        }, SIT_DOWN_TIME, this._Zc);
+        }, SIT_DOWN_TIME, this.mtd);
       }
     } else {
-      this._Zc = Time_1.Time.Now;
-      this.HWc = true;
-      this.iQc();
+      this.mtd = Time_1.Time.Now;
+      this._$u = true;
+      this.CWu();
     }
   }
-  ZWc() {
+  v$u() {
     var t;
-    if (!this.$Wc) {
-      this.eQc();
-      this.$Wc = true;
+    if (!this.u$u) {
+      this.fWu();
+      this.u$u = true;
       t = {
         Points: [{
           Index: 0,
-          Position: this.qWc,
+          Position: this.o$u,
           MoveState: IComponent_1.EPatrolMoveState.Walk,
           MoveSpeed: MOVE_TO_CHAIR_SPEED
         }],
@@ -363,9 +363,9 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
         Loop: false,
         Callback: t => {
           if (t === 2) {
-            this.bld(this.qWc, "ExecuteMoveAway.移动离开椅子保底");
+            this.kgd(this.o$u, "ExecuteMoveAway.移动离开椅子保底");
           }
-          this.tQc();
+          this.gWu();
           this.Phase = 7;
         },
         ReturnTimeoutFailed: MOVE_TIMEOUT_2,
@@ -374,62 +374,62 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       this.Gce.MoveAlongPath(t);
     }
   }
-  tQc() {
+  gWu() {
     this.Gce.StopMoveNew();
     this.Man.ResetCollision();
     this.Man.UnPossess(this.Entity);
   }
-  odd() {
-    if (!this.edd.IsNearlyZero()) {
-      this.bld(this.edd, "SetCloseChairLocation.移动离开椅子保底");
+  uAd() {
+    if (!this.hAd.IsNearlyZero()) {
+      this.kgd(this.hAd, "SetCloseChairLocation.移动离开椅子保底");
     }
   }
-  bld(t, i) {
-    var e = this.Entity.GetComponent(178).GetMeshTransform();
+  kgd(t, i) {
+    var e = this.Entity.GetComponent(181).GetMeshTransform();
     this.Hte?.SetActorLocation(t.ToUeVector(), "[NpcSitOnChairComponent]" + i, false);
-    this.Entity.GetComponent(178)?.SetModelBuffer(e, MODEL_BUFFER_TIME);
+    this.Entity.GetComponent(181)?.SetModelBuffer(e, MODEL_BUFFER_TIME);
   }
-  rdd(t, i, e) {
-    this.cZc();
+  _Ad(t, i, e) {
+    this.gtd();
     i -= Time_1.Time.Now - e;
     if (i <= 20) {
       t();
     } else {
-      this.uZc = TimerSystem_1.TimerSystem.Delay(() => {
+      this.ftd = TimerSystem_1.TimerSystem.Delay(() => {
         t?.();
-        this.uZc = undefined;
+        this.ftd = undefined;
       }, i);
     }
   }
-  cZc() {
-    if (this.uZc && TimerSystem_1.TimerSystem.Has(this.uZc)) {
-      TimerSystem_1.TimerSystem.Remove(this.uZc);
+  gtd() {
+    if (this.ftd && TimerSystem_1.TimerSystem.Has(this.ftd)) {
+      TimerSystem_1.TimerSystem.Remove(this.ftd);
     }
-    this.uZc = undefined;
+    this.ftd = undefined;
   }
-  iQc() {
-    if (this.GWc) {
-      this.rQc();
+  CWu() {
+    if (this.n$u) {
+      this.M$u();
     } else {
-      this.oQc();
+      this.E$u();
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("BehaviorTree", 42, "[NpcSitOnChairComponent] PlaySitDownAnim");
     }
   }
-  eQc() {
-    if (this.GWc) {
-      this.nQc();
+  fWu() {
+    if (this.n$u) {
+      this.y$u();
     } else {
-      this.sQc();
+      this.S$u();
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("BehaviorTree", 42, "[NpcSitOnChairComponent] PlayStandUpAnim");
     }
   }
-  oQc() {
+  E$u() {
     if (this.OPt.MontagePath) {
-      this.FWc = this.ph_.VolatileMontagePlayByLoad(3, this.OPt.MontagePath, undefined, undefined, t => {
+      this.s$u = this.ph_.VolatileMontagePlayByLoad(3, this.OPt.MontagePath, undefined, undefined, t => {
         if (t) {
           this.Phase = 6;
         } else {
@@ -440,25 +440,25 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       Log_1.Log.Error("BehaviorTree", 42, "[NpcSitOnChairComponent] 没有MontagePath");
     }
   }
-  sQc() {
-    if (this.FWc !== -1) {
-      this.ph_?.VolatileMontageStopByLoad(3, this.FWc, 0);
-      this.FWc = -1;
+  S$u() {
+    if (this.s$u !== -1) {
+      this.ph_?.VolatileMontageStopByLoad(3, this.s$u, 0);
+      this.s$u = -1;
     }
   }
-  rQc() {
+  M$u() {
     var t = this.oRe?.MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC)) {
       this.DoSitDownAction(this.Man.Entity);
       this.FTe(this.Man.Entity);
-      t.LogicParams.SitDownDirect = this.aQc(this.Man.Entity) - 1;
+      t.LogicParams.SitDownDirect = this.I$u(this.Man.Entity) - 1;
       t.LogicParams.SitDownType = 1;
       t.LogicParams.bSitDown = true;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("BehaviorTree", 42, "[NpcSitOnChairComponent] RoleNpcSitOnChair执行异常", ["instance", t !== undefined]);
     }
   }
-  nQc() {
+  y$u() {
     var t = this.oRe?.MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC) && UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLENPC)) {
       this.ResetCollision(this.Man.Entity);
@@ -473,16 +473,16 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     if (t) {
       this.cz.Reset();
       this.Gce.SetForceSpeed(this.cz);
-      i = t.GetComponent(203);
-      t = t.GetComponent(198);
+      i = t.GetComponent(206);
+      t = t.GetComponent(201);
       this.cz.DeepCopy(t.GetInteractPoint());
       this.cz.Z += this.Hte.HalfHeight;
-      t = this.Entity.GetComponent(178).GetMeshTransform();
+      t = this.Entity.GetComponent(181).GetMeshTransform();
       this.cie.DeepCopy(i.ActorRotationProxy);
       this.cie.Yaw += 90;
       this.Hte.SetInputRotator(this.cie);
       this.Hte.SetActorLocationAndRotation(this.cz.ToUeVector(), this.cie.ToUeRotator(), "角色坐下", false);
-      this.Entity.GetComponent(178)?.SetModelBuffer(t, MODEL_BUFFER_TIME);
+      this.Entity.GetComponent(181)?.SetModelBuffer(t, MODEL_BUFFER_TIME);
     }
   }
   L2r(t) {
@@ -498,7 +498,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       return 0;
     }
     this.cz.Normalize();
-    t = t.GetComponent(198).GetInteractController().SectorRange;
+    t = t.GetComponent(201).GetInteractController().SectorRange;
     if (this.cz.DotProduct(this.Hte.ActorForwardProxy) > ZERO_EIGHT || !t) {
       return 0;
     } else {
@@ -516,8 +516,8 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
       }
     }
   }
-  aQc(t) {
-    t = t.GetComponent(203);
+  I$u(t) {
+    t = t.GetComponent(206);
     if (!t) {
       return 0;
     }
@@ -549,12 +549,12 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
   }
   ResetCollision(t) {
     this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(2, 2);
-    if ((t &&= t.GetComponent(203)) && t.Entity) {
+    if ((t &&= t.GetComponent(206)) && t.Entity) {
       this.HTe(t, false);
     }
   }
   FTe(t) {
-    t = t.GetComponent(203);
+    t = t.GetComponent(206);
     if (t && t.Entity) {
       this.HTe(t, true);
     }
@@ -564,7 +564,7 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     var e = t.Entity.GetComponent(0)?.GetPbDataId() ?? 0;
     var e = ModelManager_1.ModelManager.CreatureModel.GetOwnerEntity(e);
     let s = undefined;
-    s = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(203) : t;
+    s = e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))?.Valid ? e.Entity.GetComponent(206) : t;
     var e = (0, puerts_1.$ref)(undefined);
     s.Owner.GetAttachedActors(e);
     var h = (0, puerts_1.$unref)(e);
@@ -581,5 +581,5 @@ let NpcSitOnChairComponent = class NpcSitOnChairComponent extends EntityComponen
     }
   }
 };
-NpcSitOnChairComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(91)], NpcSitOnChairComponent);
+NpcSitOnChairComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], NpcSitOnChairComponent);
 exports.NpcSitOnChairComponent = NpcSitOnChairComponent; //# sourceMappingURL=NpcSitOnChairComponent.js.map

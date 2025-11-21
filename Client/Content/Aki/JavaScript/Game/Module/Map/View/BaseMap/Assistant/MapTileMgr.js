@@ -151,8 +151,8 @@ class MapTileMgr {
     };
     this.Ata = i.MapVersion;
     if (this.Ata === 2) {
-      this.yua = ResourceSystem_1.ResourceSystem.Load(DTPATH_AREA_ID_TO_MASK_CODE, UE.DataTable);
-      this.Iua = ResourceSystem_1.ResourceSystem.Load(DTPATH_FOG_AREA_ID, UE.DataTable);
+      this.yua = ResourceSystem_1.ResourceSystem.Load(DTPATH_AREA_ID_TO_MASK_CODE, UE.DataTable, "Ui.MapUi");
+      this.Iua = ResourceSystem_1.ResourceSystem.Load(DTPATH_FOG_AREA_ID, UE.DataTable, "Ui.MapUi");
     }
     this.kUi = i.MapRootItem;
     this.L7s = UE.NewArray(UE.UIItem);
@@ -243,6 +243,9 @@ class MapTileMgr {
       this.AUi = undefined;
     }
     this.yKs();
+    this.J__.forEach(i => {
+      i.ReleaseLoadHandle();
+    });
     this.J__.length = 0;
     this.HUi?.SetAlpha(this.SKs);
     this.HUi?.SetUIActive(false);
@@ -429,72 +432,73 @@ class MapTileMgr {
     var [, i] = this.Ifc();
     this.Abc = i;
     var t = new Map();
-    for (const _ of this.AUi) {
-      var e = this.bUi(_.MapTileName);
+    const e = this._Ui;
+    for (const r of this.AUi) {
+      var s = this.bUi(r.MapTileName);
       if (this.Ata === 2) {
-        var s = `${this._Ui}_${e.X}_${e.Y}`;
-        var s = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.Iua, s);
+        var h = `${e}_${s.X}_${s.Y}`;
+        var h = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.Iua, h);
         let i = V2FogPath;
         if (this.PUi === 1) {
           i = V2FogMiniPath;
         }
-        if (s && (s.IsFogP1 && (_.FogTilePath = `${i}/T_FogTiles_${this._Ui}_${e.X}_${e.Y}_UI_p1.T_FogTiles_${this._Ui}_${e.X}_${e.Y}_UI_p1`), s.IsFogP2)) {
-          _.FogTilePath2 = `${i}/T_FogTiles_${this._Ui}_${e.X}_${e.Y}_UI_p2.T_FogTiles_${this._Ui}_${e.X}_${e.Y}_UI_p2`;
+        if (h && (h.IsFogP1 && (r.FogTilePath = `${i}/T_FogTiles_${e}_${s.X}_${s.Y}_UI_p1.T_FogTiles_${e}_${s.X}_${s.Y}_UI_p1`), h.IsFogP2)) {
+          r.FogTilePath2 = `${i}/T_FogTiles_${e}_${s.X}_${s.Y}_UI_p2.T_FogTiles_${e}_${s.X}_${s.Y}_UI_p2`;
         }
       }
-      t.set(e.X + "_" + e.Y, _);
+      t.set(s.X + "_" + s.Y, r);
     }
-    var h;
-    var a = Vector2D_1.Vector2D.Create();
+    var a;
+    var _ = Vector2D_1.Vector2D.Create();
     for (let i = 0; i < this.qUi.length; i++) {
-      const r = this.qUi[i];
-      r.SetWidth(MapDefine_1.DETAIL_TILE_SPACE);
-      r.SetHeight(MapDefine_1.DETAIL_TILE_SPACE);
+      const n = this.qUi[i];
+      n.SetWidth(MapDefine_1.DETAIL_TILE_SPACE);
+      n.SetHeight(MapDefine_1.DETAIL_TILE_SPACE);
       if (this.PUi === 1) {
-        this.uAi(r);
+        this.uAi(n);
       } else {
-        const [n, o] = this.Pbc(i);
-        a.X = (n - 0.5) * MapDefine_1.DETAIL_TILE_SPACE;
-        a.Y = (o - 0.5) * MapDefine_1.DETAIL_TILE_SPACE;
-        r.SetAnchorOffset(a.ToUeVector2D());
+        const [o, M] = this.Pbc(i);
+        _.X = (o - 0.5) * MapDefine_1.DETAIL_TILE_SPACE;
+        _.Y = (M - 0.5) * MapDefine_1.DETAIL_TILE_SPACE;
+        n.SetAnchorOffset(_.ToUeVector2D());
         if (GlobalData_1.GlobalData.IsPlayInEditor) {
-          r.GetOwner()?.SetActorLabel(`X:${n}_Y:${o}`);
+          n.GetOwner()?.SetActorLabel(`X:${o}_Y:${M}`);
         }
-        const M = t.get(n + "_" + o);
-        if (M) {
+        const l = t.get(o + "_" + M);
+        if (l) {
           if (GlobalData_1.GlobalData.IsPlayInEditor) {
-            r.GetOwner()?.SetActorLabel(M.MapTileName);
+            n.GetOwner()?.SetActorLabel(l.MapTileName);
           }
-          r.SetCustomMaterialScalarParameter(HD_SCALAR_NAME, 0);
-          h = {
-            TileX: n,
-            TileY: o,
-            AnchorOffset: a,
+          n.SetCustomMaterialScalarParameter(HD_SCALAR_NAME, 0);
+          a = {
+            TileX: o,
+            TileY: M,
+            AnchorOffset: _,
             LoadMapTileCallBack: i => {
               var t;
-              r.SetTexture(i);
+              n.SetTexture(i);
               if (this.Ata === 2) {
-                t = `${this._Ui}_${n}_${o}`;
-                if ((t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.Iua, t)) && (t.IsFogP1 && this.gil(r, M.FogTilePath, 1), t.IsFogP2)) {
-                  this.gil(r, M.FogTilePath2, 2);
+                t = `${e}_${o}_${M}`;
+                if ((t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.Iua, t)) && (t.IsFogP1 && this.gil(n, l.FogTilePath, 1), t.IsFogP2)) {
+                  this.gil(n, l.FogTilePath2, 2);
                 }
-              } else if (StringUtils_1.StringUtils.IsEmpty(M.FogTilePath)) {
-                r.SetColor(this.WUi);
+              } else if (StringUtils_1.StringUtils.IsEmpty(l.FogTilePath)) {
+                n.SetColor(this.WUi);
               } else {
                 if (i === undefined && Log_1.Log.CheckError()) {
-                  Log_1.Log.Error("Map", 63, "[地图系统]->loadCallback 切块贴图为空", ["MapId", this._Ui], ["TileX", n], ["TileY", o], ["assetData", M]);
+                  Log_1.Log.Error("Map", 63, "[地图系统]->loadCallback 切块贴图为空", ["MapId", e], ["TileX", o], ["TileY", M], ["assetData", l]);
                 }
-                this.cAi(r, M.FogTilePath);
+                this.cAi(n, l.FogTilePath);
               }
             },
-            AssetData: M,
+            AssetData: l,
             FogDefaultColor: this.WUi,
             MapType: this.PUi,
-            MapTile: r,
-            MapId: this._Ui
+            MapTile: n,
+            MapId: e
           };
-          h = new MapTileItem_1.MapTileItem(h);
-          this.J__.push(h);
+          a = new MapTileItem_1.MapTileItem(a);
+          this.J__.push(a);
         }
       }
     }
@@ -557,7 +561,7 @@ class MapTileMgr {
     if (e) {
       t(e);
     } else {
-      ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.Texture, t, 102);
+      ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.Texture, t, 102, "Ui.MapUi");
     }
   }
   async LoadMapBorder() {
@@ -665,7 +669,7 @@ class MapTileMgr {
                   e.SetColor(this.WUi);
                 }
               }
-            });
+            }, 100, "Ui.MapUi");
           } else {
             t = ConfigManager_1.ConfigManager.MapConfig.GetUiResourcePathById(a.MiniFogTilePath);
             i = ConfigManager_1.ConfigManager.MapConfig.GetUiResourcePathById(a.FogTilePath);
@@ -679,7 +683,7 @@ class MapTileMgr {
                   this.osh(e, n, undefined);
                 }
               }
-            });
+            }, 100, "Ui.MapUi");
           }
         } else {
           e.SetColor(this.ish);
@@ -715,7 +719,7 @@ class MapTileMgr {
               this.gil(e, t, 2);
             }
           }
-        });
+        }, 100, "Ui.MapUi");
       } else {
         r = ConfigManager_1.ConfigManager.MapConfig.GetUiResourcePathById(a.FogTilePath);
         a = ConfigManager_1.ConfigManager.MapConfig.GetUiResourcePathById(a.MiniFogTilePath);
@@ -729,7 +733,7 @@ class MapTileMgr {
               this.cAi(e, o);
             }
           }
-        });
+        }, 100, "Ui.MapUi");
       }
     }
   }
@@ -922,7 +926,7 @@ class MapTileMgr {
               this.TKs(o, true);
             }
             this.vKs.push(o);
-          });
+          }, 100, "Ui.MapUi");
         }
       }
       for (let i = t; i < this.GUi.length; i++) {
@@ -1186,7 +1190,7 @@ class MapTileMgr {
         }
       });
     }
-    if (ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark) {
+    if (ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark && this._Ui !== MapDefine_1.HONAMI_MAP_ID) {
       for (let i = 0; i < s.length; i++) {
         s[i] = 1;
       }

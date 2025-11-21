@@ -7,7 +7,6 @@ exports.MissionPanel = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../Core/Common/Stats");
-const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
@@ -26,33 +25,23 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     super(...arguments);
     this.ILr = new Map();
     this.LU_ = new Map();
-    this.WZe = [];
+    this.d_m = new Map();
     this.PFc = undefined;
     this.wU_ = () => !this.GetActive();
     this.RU_ = async e => {
       var i = e.ShowData;
-      let t = undefined;
-      switch (i.DataSource) {
-        case 0:
-          var s = i.Id;
-          var s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(s);
-          if (!s || s.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeInvalid) {
-            return true;
-          }
-          t = s.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest || e.Reason === 1 ? 1 : 0;
-          break;
-        case 1:
-          t = 1;
-      }
-      if (t !== undefined) {
-        switch (t) {
+      var t = e.Reason;
+      var s = ModelManager_1.ModelManager.BattleUiModel.CheckMissionViewItem(i, t);
+      if (s !== undefined) {
+        switch (s) {
           case 0:
             if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
               break;
             }
-            return this.LU_.get(t).StartShow(e.ProcessId, i, e.IsSkipAnim);
+            return this.LU_.get(s).StartShow(e.ProcessId, i, e.IsSkipAnim);
           case 1:
-            return this.iet(e.ProcessId, i, e.IsSkipAnim);
+          case 2:
+            return this.m_m(s, e.ProcessId, i, e.IsSkipAnim);
         }
       }
       return true;
@@ -68,11 +57,10 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     this.PU_ = async e => {
       var i = this.LU_.get(0);
-      var t = e.Id;
-      if (t === i.ShowDataId) {
+      if (e.Id === i.ShowDataId) {
         return i.EndShow(e.ProcessId, e.IsSkipAnim, e.Reason);
       } else {
-        return (i = this.ret(t)) < 0 || (t = this.LU_.get(1), this.WZe.splice(i, 1), await t.EndShow(e.ProcessId, e.IsSkipAnim), this.WZe.length === 0) || this.net(e.ProcessId, e.IsSkipAnim);
+        return !(await this.f_m(1, e)) || this.f_m(2, e);
       }
     };
     this.xU_ = async e => this.UU_(1).ShowQuestUpdateTipsHandle(e);
@@ -102,6 +90,12 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         Log_1.Log.Error("Quest", 18, "MissionPanel:任务更新提示结束动画开始时找不到当前正在处理的操作");
       }
     };
+    this.Ldm = () => {
+      this.sY_();
+    };
+    this.FWe = () => {
+      ModelManager_1.ModelManager.BattleUiModel.CheckAndUpdateRule();
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem]];
@@ -109,18 +103,25 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   async InitializeAsync() {
     await this.kU_();
     await Promise.all([this.xFc()]);
+    await this.g_m();
+    this.sY_();
+    this.RootItem.SetAnchorOffsetX(0);
+    this.GetItem(1)?.SetUIActive(false);
+    this.GetItem(2).SetUIActive(true);
+  }
+  async g_m() {
     var e = this.GetItem(0);
     var i = LguiUtil_1.LguiUtil.CopyItem(e, e.GetParentAsUIItem());
+    var t = LguiUtil_1.LguiUtil.CopyItem(i, i.GetParentAsUIItem());
     var e = await this.NewDynamicChildViewAsync(e.GetOwner(), MissionViewItem_1.MissionViewItem, 0);
     await e.HideAsync();
     this.LU_.set(0, e);
     var e = await this.NewDynamicChildViewAsync(i.GetOwner(), MissionViewItem_1.MissionViewItem, 1);
     await e.HideAsync();
     this.LU_.set(1, e);
-    this.sY_();
-    this.RootItem.SetAnchorOffsetX(0);
-    this.GetItem(1)?.SetUIActive(false);
-    this.GetItem(2).SetUIActive(true);
+    var i = await this.NewDynamicChildViewAsync(t.GetOwner(), MissionViewItem_1.MissionViewItem, 2);
+    await i.HideAsync();
+    this.LU_.set(2, i);
   }
   sY_() {
     var e = ModelManager_1.ModelManager.BattleUiModel.GetAllMissionViewData();
@@ -152,7 +153,7 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     return this.ILr.get(e);
   }
   Reset() {
-    this.WZe.length = 0;
+    this.d_m.clear();
     for (var [, e] of this.LU_) {
       e.Destroy();
     }
@@ -179,12 +180,16 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       e.AddEvents();
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.QuestUpdateTipsEndSequenceStart, this.BU_);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MissionTrackRuleChange, this.Ldm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   RemoveEvents() {
     for (var [, e] of this.ILr) {
       e.RemoveEvents();
     }
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.QuestUpdateTipsEndSequenceStart, this.BU_);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MissionTrackRuleChange, this.Ldm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   OnTickBattleChildViewPanel(e) {
     if (ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
@@ -203,31 +208,57 @@ class MissionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       }
     }
   }
+  async f_m(e, i) {
+    var t;
+    var s;
+    var n = this.C_m(e, i.Id);
+    return n < 0 || !(t = this.LU_.get(e)) || !(s = this.d_m.get(e)) || (s.splice(n, 1), await t.EndShow(i.ProcessId, i.IsSkipAnim), s.length === 0) || this.p_m(e, i.ProcessId, i.IsSkipAnim);
+  }
   aet(e) {
-    var i = this.ret(e.Id);
-    if (!(i < 1)) {
-      this.WZe[i] = e;
+    for (var [i, t] of this.d_m) {
+      i = this.C_m(i, e.Id);
+      if (i >= 1) {
+        t[i] = e;
+      }
     }
   }
-  ret(i) {
-    return this.WZe.findIndex(e => e.Id === i);
+  C_m(e, i) {
+    e = this.d_m.get(e);
+    if (e) {
+      return e.findIndex(e => e.Id === i);
+    } else {
+      return -1;
+    }
   }
-  async iet(e, i, t) {
-    var s = this.ret(i.Id);
-    if (s >= 0) {
-      this.WZe[s] = i;
-      if (this.LU_.get(1).ShowDataId !== i.Id) {
+  async m_m(e, i, t, s) {
+    let n = this.d_m.get(e);
+    if (!n) {
+      n = [];
+      this.d_m.set(e, n);
+    }
+    var r = this.C_m(e, t.Id);
+    if (r >= 0) {
+      n[r] = t;
+      if (this.LU_.get(1).ShowDataId !== t.Id) {
         return true;
       }
     } else {
-      this.WZe.push(i);
+      n.push(t);
     }
-    return this.net(e, t);
+    return this.p_m(e, i, s);
   }
-  async net(e, i) {
-    this.WZe.sort((e, i) => e.DataSource !== i.DataSource ? e.DataSource - i.DataSource : e.ShowPriority - i.ShowPriority);
-    var t = this.WZe[this.WZe.length - 1];
-    return this.LU_.get(1).StartShow(e, t, i);
+  async p_m(e, i, t) {
+    var s = this.LU_.get(e);
+    if (!s) {
+      return true;
+    }
+    e = this.d_m.get(e);
+    if (!e) {
+      return true;
+    }
+    ModelManager_1.ModelManager.BattleUiModel.SortMissionViewItem(e);
+    e = e[e.length - 1];
+    return s.StartShow(i, e, t);
   }
   async xFc() {
     var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();

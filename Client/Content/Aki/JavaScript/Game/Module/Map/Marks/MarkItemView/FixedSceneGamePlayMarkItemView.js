@@ -10,11 +10,10 @@ class FixedSceneGamePlayMarkItemView extends ConfigMarkItemView_1.ConfigMarkItem
   constructor(e) {
     super(e);
   }
-  OnAfterShow() {
-    super.OnAfterShow();
+  OnViewRefresh() {
     this.UpdateIcon();
   }
-  OnSafeUpdate(e, r, a) {
+  OnSafeUpdate(e, a, r) {
     var t = this.Holder;
     var i = t.IconPath;
     var s = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t.MarkConfig.RelativeId);

@@ -86,7 +86,7 @@ class CountDownChallengeView extends UiViewBase_1.UiViewBase {
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("UiImageSetting", 18, "CountDownChallengeView找不到artTextData：TextData_NumB1");
       }
-    });
+    }, 100, this.MemoryTag);
   }
   OnAddEventListener() {
     super.OnAddEventListener();

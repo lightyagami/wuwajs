@@ -86,7 +86,7 @@ class BlackCoastActivityTaskView extends UiViewBase_1.UiViewBase {
     this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(i, UE.MaterialInterface, i => {
       this.GetTexture(9).SetCustomUIMaterial(i);
       t.SetResult();
-    }, 102);
+    }, 102, this.MemoryTag);
     await t.Promise;
   }
   OnBeforeShow() {

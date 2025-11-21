@@ -40,6 +40,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     this.Actor = undefined;
     this.MainMeshComponent = undefined;
     this.ChildMeshComponentList = undefined;
+    this.DecorationMeshComponentList = undefined;
     this.CharRenderingComponent = undefined;
     this.ywr = undefined;
     this.D_r = undefined;
@@ -56,6 +57,11 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
       if (this.ChildMeshComponentList && this.ChildMeshComponentList.length > 0) {
         for (const i of this.ChildMeshComponentList) {
           this.Lwr(i, e);
+        }
+      }
+      if (this.DecorationMeshComponentList && this.DecorationMeshComponentList.length > 0) {
+        for (const s of this.DecorationMeshComponentList) {
+          this.Lwr(s, e);
         }
       }
     };
@@ -83,8 +89,8 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.Dwr);
   }
-  Uwr() {
-    var e = this.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false);
+  Uwr(e) {
+    e = this.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, e ?? MathUtils_1.MathUtils.DefaultTransform, false);
     e.KuroMaterialControllerUpdateGroupMode = 1;
     e.SetTickableWhenPaused(true);
     this.Lwr(e, this.ywr.GetVisible());
@@ -118,19 +124,19 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
         this.CharRenderingComponent.AddComponentByCase(7, this.MainMeshComponent);
     }
   }
-  ChangeMesh(e, t, i, s = 0) {
+  ChangeMesh(e, t, i, s, o = 0) {
     switch (this.ywr.ModelType) {
       case 0:
-        this.Pwr(e, t, i, s);
+        this.Pwr(e, t, i, s, o);
         break;
       case 2:
-        this.xwr(e, t, i, s);
+        this.xwr(e, t, i, o);
         break;
       case 1:
       case 3:
       case 4:
       case 5:
-        this.xwr(e, t, undefined, s);
+        this.xwr(e, t, undefined, o);
     }
   }
   xwr(e, t, i, s = 0) {
@@ -160,7 +166,7 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     e.SetSkeletalMesh(t);
     e.SetForcedLOD(i);
   }
-  Pwr(i, e, s, o = 0) {
+  Pwr(i, e, s, o, h = 0) {
     if (this.ywr?.ModelActorType !== 0) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 43, "actor类型必须为TsUiSceneRoleActor");
@@ -168,30 +174,36 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     } else {
       this.CharRenderingComponent.ResetAllRenderingState();
       this.wwr();
+      this.Cym();
       this.D_r?.DestroyAllEffect();
-      var h = this.MainMeshComponent;
+      var n = this.MainMeshComponent;
       let t = undefined;
-      if (h && h.GetAnimationMode() === 0 && (t = this.GetAnimInstanceFromSkeletalMesh(h))) {
+      if (n && n.GetAnimationMode() === 0 && (t = this.GetAnimInstanceFromSkeletalMesh(n))) {
         UE.KuroAnimLibrary.EndAnimNotifyStates(t);
       }
-      var n = this.Uwr();
-      this.QN1(n, i, o);
-      n?.SetAnimClass(e);
-      var i = this.GetAnimInstanceFromSkeletalMesh(n);
+      var r = this.Uwr();
+      this.QN1(r, i, h);
+      r?.SetAnimClass(e);
+      var i = this.GetAnimInstanceFromSkeletalMesh(r);
       if (t) {
         let e = false;
-        o = t.StateInternal;
-        if ((e = o && (o >= 13 && o <= 15 || o === 7) ? true : e) && i) {
+        h = t.StateInternal;
+        if ((e = h && (h >= 13 && h <= 15 || h === 7) ? true : e) && i) {
           i.SyncAnimInstance(t);
         }
       }
-      this.MainMeshComponent = n;
-      if (h) {
-        this.Bwr(h);
+      this.MainMeshComponent = r;
+      if (n) {
+        this.Bwr(n);
       }
       if (s && s.length > 0) {
-        for (const r of s) {
-          this.bwr(r);
+        for (const a of s) {
+          this.bwr(a);
+        }
+      }
+      if (o && o.length > 0) {
+        for (const _ of o) {
+          this.pym(_);
         }
       }
       this.Awr();
@@ -207,12 +219,28 @@ let UiModelActorComponent = class UiModelActorComponent extends UiModelComponent
     this.CharRenderingComponent.AddComponent("OtherCase" + e, t);
     return t;
   }
+  pym(e) {
+    this.DecorationMeshComponentList ||= [];
+    var t = this.Uwr(e.Transform);
+    this.QN1(t, e.SkeletalMesh);
+    t.K2_AttachToComponent(this.MainMeshComponent, FNameUtil_1.FNameUtil.GetDynamicFName(e.SocketName), 0, 0, 0, false);
+    this.CharRenderingComponent.AddComponentByCase(7, t);
+    this.DecorationMeshComponentList.push(t);
+  }
   wwr() {
     if (this.ChildMeshComponentList) {
       for (const e of this.ChildMeshComponentList) {
         this.Bwr(e);
       }
       this.ChildMeshComponentList.length = 0;
+    }
+  }
+  Cym() {
+    if (this.DecorationMeshComponentList) {
+      for (const e of this.DecorationMeshComponentList) {
+        this.Bwr(e);
+      }
+      this.DecorationMeshComponentList.length = 0;
     }
   }
   Bwr(e) {

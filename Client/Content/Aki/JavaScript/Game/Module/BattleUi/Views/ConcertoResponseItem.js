@@ -11,6 +11,7 @@ const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const BattleUiRoleData_1 = require("../BattleUiRoleData");
 const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
+const BattleSkillExtraEffectRhythmItem_1 = require("./BattleSkillExtraEffectRhythmItem");
 class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
     super(...arguments);
@@ -20,22 +21,27 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
     this.Qst = undefined;
     this.Xst = undefined;
     this.hJ = 0;
-    this.o$e = e => {
-      if (e === this.E0) {
+    this.Yzd = undefined;
+    this.ufe = 0;
+    this.o$e = t => {
+      if (t === this.E0) {
         this.yTa();
       }
     };
-    this.Yst = (e, t, i) => {
-      if (e === this.E0) {
+    this.Yst = (t, e, i) => {
+      if (t === this.E0) {
         this.RefreshVisible();
       }
+    };
+    this.zzd = (t, e) => {
+      this.RefreshExtraEffect(t, e);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UITexture]];
   }
-  Initialize(e) {
-    super.Initialize(e);
+  Initialize(t) {
+    super.Initialize(t);
     this.InitChildType(37);
     this.Ore();
   }
@@ -44,12 +50,17 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   Reset() {
     this.kre();
+    if (this.Yzd) {
+      this.Yzd.Stop();
+      this.Yzd.Destroy();
+      this.Yzd = undefined;
+    }
     super.Reset();
   }
-  Refresh(e) {
-    if (e && e.RoleConfig?.RoleType !== 2) {
-      this.Wst = e;
-      this.E0 = e?.EntityHandle?.Id;
+  Refresh(t) {
+    if (t && t.RoleConfig?.RoleType !== 2) {
+      this.Wst = t;
+      this.E0 = t?.EntityHandle?.Id;
       this.Kst = this.Wst.GameplayTagComponent;
       this.Qst = this.Wst.ElementConfig;
       if (this.hJ !== 0) {
@@ -74,16 +85,18 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
   Ore() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.o$e);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.Yst);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.zzd);
   }
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiElementEnergyChanged, this.o$e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiElementHideTagChanged, this.Yst);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiConcertoExtraEffectRefresh, this.zzd);
   }
   RefreshVisible() {
     if (this.Wst) {
       if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10036)) {
-        for (const e of BattleUiRoleData_1.BattleUiRoleData.HideElementTagList) {
-          if (this.Kst.HasTag(e)) {
+        for (const t of BattleUiRoleData_1.BattleUiRoleData.HideElementTagList) {
+          if (this.Kst.HasTag(t)) {
             this.SetVisible(1, false);
             return;
           }
@@ -94,18 +107,42 @@ class ConcertoResponseItem extends BattleVisibleChildView_1.BattleVisibleChildVi
       }
     }
   }
-  Jst(e) {
-    var t;
+  RefreshExtraEffect(t, e) {
+    if (t === 0) {
+      if (this.Yzd) {
+        this.Yzd.SetComponentActive(false);
+      }
+    } else {
+      if (this.Yzd) {
+        if (this.Yzd.GetEffectType() === this.ufe) {
+          this.Yzd.SetComponentActive(true);
+          this.Yzd.Refresh(e);
+          return;
+        }
+        this.Yzd.Destroy();
+        this.Yzd = undefined;
+      }
+      if ((this.ufe = t) === 1) {
+        this.Yzd = new BattleSkillExtraEffectRhythmItem_1.BattleSkillExtraEffectRhythmItem();
+        this.Yzd.Init(this.RootItem);
+        this.Yzd.SetComponentActive(true);
+        this.Yzd.Refresh(e);
+      }
+      this.Yzd?.SetEffectType(t);
+    }
+  }
+  Jst(t) {
+    var e;
     var i;
     var s;
-    if (this.Xst !== e) {
-      t = this.Qst.Icon5;
+    if (this.Xst !== t) {
+      e = this.Qst.Icon5;
       i = this.GetTexture(1);
       s = this.GetSprite(0);
-      this.SetElementIcon(t, i, this.Xst);
+      this.SetElementIcon(e, i, this.Xst);
       i.SetColor(this.Wst.ElementColor);
       s.SetColor(this.Wst.ElementColor);
-      this.Xst = e;
+      this.Xst = t;
     }
   }
   yTa() {

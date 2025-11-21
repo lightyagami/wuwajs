@@ -33,19 +33,19 @@ class BuffController extends ControllerBase_1.ControllerBase {
     return super.OnInit();
   }
   static SetHandlePrefix(e, f) {
-    var t = (1 << ActiveBuffConfigs_1.BUFF_HANDLE_PREFIX_BYTE) - 1;
-    if (e < 0 || t < e) {
+    var a = (1 << ActiveBuffConfigs_1.BUFF_HANDLE_PREFIX_BYTE) - 1;
+    if (e < 0 || a < e) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Character", 19, "Invalid Buff Handle prefix.", ["prefix", e], ["handleStart", f]);
       }
-      e &= t;
+      e &= a;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 19, "Set GameplayEffect Handle prefix.", ["prefix", e], ["handleStart", f]);
     }
-    var t = ModelManager_1.ModelManager.BuffModel;
-    t.HandlePrefix = Math.floor(e) << ActiveBuffConfigs_1.BUFF_HANDLE_ID_BYTE;
-    t.LastHandle = Math.max(f, t.LastHandle);
+    var a = ModelManager_1.ModelManager.BuffModel;
+    a.HandlePrefix = Math.floor(e) << ActiveBuffConfigs_1.BUFF_HANDLE_ID_BYTE;
+    a.LastHandle = Math.max(f, a.LastHandle);
   }
   static GenerateHandle() {
     var e = ModelManager_1.ModelManager.BuffModel;
@@ -55,147 +55,148 @@ class BuffController extends ControllerBase_1.ControllerBase {
     var f = ModelManager_1.ModelManager.BuffModel.Get(e);
     return f || ((f = BuffById_1.configBuffById.GetConfig(e)) ? BuffController.AddBuffRef(f) : void CombatLog_1.CombatLog.Error("Buff", undefined, "无法查找到对应编号的Buff。", ["BuffId", e]));
   }
-  static ParseExtraEffect(e) {
-    var f;
+  static ParseExtraEffect(e, f) {
+    var a;
     var t;
     var r;
     if (e && e.ExtraEffectID) {
-      (f = new ExtraEffectBaseTypes_1.ExtraEffectParameters()).ExtraEffectId = e.ExtraEffectID;
-      f.ExtraEffectParameters = e.ExtraEffectParameters;
-      f.ExtraEffectGrowParameters1 = e.ExtraEffectParametersGrow1;
-      f.ExtraEffectGrowParameters2 = e.ExtraEffectParametersGrow2;
-      f.ExtraEffectRequirement = e.ExtraEffectRequirements;
-      f.ExtraEffectRequirementPara = e.ExtraEffectReqPara;
-      f.ExtraEffectRequirementSetting = e.ExtraEffectReqSetting;
-      f.ExtraEffectCd = e.ExtraEffectCD;
-      f.ExtraEffectRemoveStackNum = e.ExtraEffectRemoveStackNum;
-      f.ExtraEffectProbability = e.ExtraEffectProbability;
-      t = ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(e.Id, f, 1);
+      (a = new ExtraEffectBaseTypes_1.ExtraEffectParameters()).ExtraEffectId = e.ExtraEffectID;
+      a.ExtraEffectParameters = e.ExtraEffectParameters;
+      a.ExtraEffectGrowParameters1 = e.ExtraEffectParametersGrow1;
+      a.ExtraEffectGrowParameters2 = e.ExtraEffectParametersGrow2;
+      a.ExtraEffectRequirement = e.ExtraEffectRequirements;
+      a.ExtraEffectRequirementPara = e.ExtraEffectReqPara;
+      a.ExtraEffectRequirementSetting = e.ExtraEffectReqSetting;
+      a.ExtraEffectCd = e.ExtraEffectCD;
+      a.ExtraEffectRemoveStackNum = e.ExtraEffectRemoveStackNum;
+      a.ExtraEffectProbability = e.ExtraEffectProbability;
+      t = ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(e.Id, a, 1);
       if (r = (0, ExtraEffectDefine_1.getBuffExecutionClass)(e.ExtraEffectID)) {
-        r = r.Create(e.Id, t, f);
-        f.ExecutionEffect = r;
+        r = r.Create(e.Id, f, t, a);
+        a.ExecutionEffect = r;
       }
-      return f;
+      return a;
     }
   }
   static vQo(e) {
     var f = [e];
-    for (const r of e.RelatedExtraEffectBuffId) {
-      var t = BuffById_1.configBuffById.GetConfig(r);
-      if (t) {
-        f.push(t);
+    for (const t of e.RelatedExtraEffectBuffId) {
+      var a = BuffById_1.configBuffById.GetConfig(t);
+      if (a) {
+        f.push(a);
       }
     }
     return f;
   }
   static AddBuffRef(e) {
     this.MQo.Start();
-    var f = new BuffTypes_1.BuffDefinition();
-    f.Id = e.Id;
+    var f;
+    var a;
+    var t = new BuffTypes_1.BuffDefinition();
+    t.Id = e.Id;
     if (!Info_1.Info.IsBuildShipping) {
-      f.Desc = "";
+      t.Desc = "";
     }
-    f.StackLimitCount = e.StackLimitCount;
-    f.FormationPolicy = e.FormationPolicy;
-    f.StackingType = e.StackingType;
-    f.DefaultStackCount = e.DefaultStackCount;
-    f.StackAppendCount = e.StackAppendCount;
-    f.Probability = e.Probability;
-    f.DurationMagnitude = e.DurationMagnitude;
-    f.DurationPolicy = e.DurationPolicy;
-    f.DurationMagnitude2 = e.DurationMagnitude2;
-    f.DurationCalculationPolicy = e.DurationCalculationPolicy;
-    f.DurationAffectedByBulletTime = e.bDurationAffectedByBulletTime;
-    f.Period = e.Period;
-    f.PeriodicInhibitionPolicy = e.PeriodicInhibitionPolicy;
-    f.ExecutePeriodicOnAdd = e.bExecutePeriodicEffectOnApplication;
-    f.StackDurationRefreshPolicy = e.StackDurationRefreshPolicy;
-    f.StackPeriodResetPolicy = e.StackPeriodResetPolicy;
-    f.StackExpirationRemoveNumber = e.StackExpirationRemoveNumber;
-    f.DenyOverflowAdd = e.bDenyOverflowApplication;
-    f.ClearStackOnOverflow = e.bClearStackOnOverflow;
+    t.StackLimitCount = e.StackLimitCount;
+    t.FormationPolicy = e.FormationPolicy;
+    t.StackingType = e.StackingType;
+    t.DefaultStackCount = e.DefaultStackCount;
+    t.StackAppendCount = e.StackAppendCount;
+    t.Probability = e.Probability;
+    t.DurationMagnitude = e.DurationMagnitude;
+    t.DurationPolicy = e.DurationPolicy;
+    t.DurationMagnitude2 = e.DurationMagnitude2;
+    t.DurationCalculationPolicy = e.DurationCalculationPolicy;
+    t.DurationAffectedByBulletTime = e.bDurationAffectedByBulletTime;
+    t.Period = e.Period;
+    t.PeriodicInhibitionPolicy = e.PeriodicInhibitionPolicy;
+    t.ExecutePeriodicOnAdd = e.bExecutePeriodicEffectOnApplication;
+    t.StackDurationRefreshPolicy = e.StackDurationRefreshPolicy;
+    t.StackPeriodResetPolicy = e.StackPeriodResetPolicy;
+    t.StackExpirationRemoveNumber = e.StackExpirationRemoveNumber;
+    t.DenyOverflowAdd = e.bDenyOverflowApplication;
+    t.ClearStackOnOverflow = e.bClearStackOnOverflow;
     if (e.GameAttributeID > 0) {
-      f.Modifiers.push({
+      t.Modifiers.push({
         AttributeId: e.GameAttributeID,
         Value1: e.ModifierMagnitude,
         Value2: e.ModifierMagnitude2,
         CalculationPolicy: e.CalculationPolicy
       });
     }
-    f.PrematureExpirationEffects = e.PrematureExpirationEffects;
-    f.RoutineExpirationEffects = e.RoutineExpirationEffects;
-    f.OverflowEffects = e.OverflowEffects;
-    f.GameplayCueIds = e.GameplayCueIds;
-    f.DeadRemove = e.DeadRemove;
+    t.PrematureExpirationEffects = e.PrematureExpirationEffects;
+    t.RoutineExpirationEffects = e.RoutineExpirationEffects;
+    t.OverflowEffects = e.OverflowEffects;
+    t.GameplayCueIds = e.GameplayCueIds;
+    t.DeadRemove = e.DeadRemove;
     if (e.RemoveBuffWithTags.length > 0) {
-      f.RemoveBuffWithTags = e.RemoveBuffWithTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.RemoveBuffWithTags = e.RemoveBuffWithTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.GrantedTags.length > 0) {
-      f.GrantedTags = e.GrantedTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.GrantedTags = e.GrantedTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.ApplicationSourceTagRequirements.length > 0) {
-      f.AddInstigatorTagRequirements = e.ApplicationSourceTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.AddInstigatorTagRequirements = e.ApplicationSourceTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.ApplicationSourceTagIgnores.length > 0) {
-      f.AddInstigatorTagIgnores = e.ApplicationSourceTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.AddInstigatorTagIgnores = e.ApplicationSourceTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.ApplicationTagRequirements.length > 0) {
-      f.AddTagRequirements = e.ApplicationTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.AddTagRequirements = e.ApplicationTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.ApplicationTagIgnores.length > 0) {
-      f.AddTagIgnores = e.ApplicationTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.AddTagIgnores = e.ApplicationTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.OngoingTagRequirements.length > 0) {
-      f.ActivateTagRequirements = e.OngoingTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.ActivateTagRequirements = e.OngoingTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.OngoingTagIgnores.length > 0) {
-      f.ActivateTagIgnores = e.OngoingTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.ActivateTagIgnores = e.OngoingTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.RemovalTagRequirements.length > 0) {
-      f.RemoveTagExistAll = e.RemovalTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.RemoveTagExistAll = e.RemovalTagRequirements.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.RemovalTagIgnores.length > 0) {
-      f.RemoveTagIgnores = e.RemovalTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.RemoveTagIgnores = e.RemovalTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.GrantedApplicationImmunityTags.length > 0) {
-      f.ImmuneTags = e.GrantedApplicationImmunityTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.ImmuneTags = e.GrantedApplicationImmunityTags.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
     if (e.GrantedApplicationImmunityTagIgnores.length > 0) {
-      f.ImmuneTagIgnores = e.GrantedApplicationImmunityTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
+      t.ImmuneTagIgnores = e.GrantedApplicationImmunityTagIgnores.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e)).filter(e => e !== undefined);
     }
-    var t = this.vQo(e);
-    for (const i of t) {
-      if (i && this.EQo(i)) {
-        switch (i.ExtraEffectID) {
+    for ([f, a] of this.vQo(e).entries()) {
+      if (a && this.EQo(a)) {
+        switch (a.ExtraEffectID) {
           case 43:
-            f.RemoveTagExistAny = f.RemoveTagExistAny ?? [];
-            for (const s of i.ExtraEffectParameters[0].split("#").map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e?.trim())).filter(e => e !== undefined)) {
-              f.RemoveTagExistAny.push(s);
+            t.RemoveTagExistAny = t.RemoveTagExistAny ?? [];
+            for (const s of a.ExtraEffectParameters[0].split("#").map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e?.trim())).filter(e => e !== undefined)) {
+              t.RemoveTagExistAny.push(s);
             }
             continue;
           case 57:
-            f.BuffsAddedByStackCountOnRemoved = f.BuffsAddedByStackCountOnRemoved ?? [];
-            for (const u of i.ExtraEffectParameters[0].split("#").map(e => Number(e)) ?? []) {
-              f.BuffsAddedByStackCountOnRemoved.push(u);
+            t.BuffsAddedByStackCountOnRemoved = t.BuffsAddedByStackCountOnRemoved ?? [];
+            for (const u of a.ExtraEffectParameters[0].split("#").map(e => Number(e)) ?? []) {
+              t.BuffsAddedByStackCountOnRemoved.push(u);
             }
             continue;
         }
-        var r = this.ParseExtraEffect(i);
+        var r = this.ParseExtraEffect(a, f);
         if (r) {
-          f.EffectInfos.push(r);
+          t.EffectInfos.push(r);
         }
       }
     }
     if (e.BuffAction) {
-      f.BuffAction = [];
+      t.BuffAction = [];
       for (const c of e.BuffAction ?? []) {
-        var a = c.split("#").map(e => e.trim());
+        var o = c.split("#").map(e => e.trim());
         const n = [["BuffId", e.Id], ["Action", c]];
-        if (a.length < 2) {
+        if (o.length < 2) {
           CombatLog_1.CombatLog.Error("Buff", undefined, "BuffAction参数过少", ...n);
         } else {
-          var o = Number(a[0]);
-          switch (o) {
+          var i = Number(o[0]);
+          switch (i) {
             case 9:
             case 10:
             case 11:
@@ -204,10 +205,18 @@ class BuffController extends ControllerBase_1.ControllerBase {
             case 14:
             case 15:
             case 16:
+            case 109:
+            case 110:
+            case 111:
+            case 112:
+            case 113:
+            case 114:
+            case 115:
+            case 116:
               try {
-                f.BuffAction.push({
-                  Type: o,
-                  Buffs: a.slice(1).map(e => Number(e))
+                t.BuffAction.push({
+                  Type: i,
+                  Buffs: o.slice(1).map(e => Number(e))
                 });
               } catch (e) {
                 CombatLog_1.CombatLog.ErrorWithStack("Buff", undefined, "BuffAction参数解析失败", e, ...n);
@@ -221,9 +230,17 @@ class BuffController extends ControllerBase_1.ControllerBase {
             case 6:
             case 7:
             case 8:
-              f.BuffAction.push({
-                Type: o,
-                Tags: a.slice(1).map(e => {
+            case 101:
+            case 102:
+            case 103:
+            case 104:
+            case 105:
+            case 106:
+            case 107:
+            case 108:
+              t.BuffAction.push({
+                Type: i,
+                Tags: o.slice(1).map(e => {
                   e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e);
                   if (e === undefined) {
                     CombatLog_1.CombatLog.Error("Buff", undefined, "BuffAction找不到对应的Tag", ...n);
@@ -239,11 +256,11 @@ class BuffController extends ControllerBase_1.ControllerBase {
         }
       }
     }
-    f.HasBuffEffect = this.HasBuffEffects(f.EffectInfos);
-    f.HasBuffPeriodExecution = this.HasBuffPeriodExecutions(f.EffectInfos);
-    ModelManager_1.ModelManager.BuffModel.Add(e.Id, f);
+    t.HasBuffEffect = this.HasBuffEffects(t.EffectInfos);
+    t.HasBuffPeriodExecution = this.HasBuffPeriodExecutions(t.EffectInfos);
+    ModelManager_1.ModelManager.BuffModel.Add(e.Id, t);
     this.MQo.Stop();
-    return f;
+    return t;
   }
   static CreateDynamicBuffRef() {
     var e = new BuffTypes_1.BuffDefinition();

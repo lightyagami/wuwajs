@@ -35,17 +35,17 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     this.C51 = undefined;
     this.zIu = undefined;
     this.aeu = undefined;
-    this.X4u = undefined;
-    this.Y4u = undefined;
+    this.UBu = undefined;
+    this.yqu = undefined;
     this.ZIu = undefined;
     this.eTu = undefined;
     this.EAu = undefined;
-    this.z4u = undefined;
-    this.B1d = undefined;
-    this.J4u = new Set();
+    this.wqu = undefined;
+    this.Lpd = undefined;
+    this.eNu = new Set();
     this.lF1 = (e, t) => {
-      if (e.Entity?.Id === this.SpecialSkillComponent.Entity.Id && this.zIu?.IsMorphing() && !this.X4u?.IsInQte && t?.Entity?.GetComponent(176)?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.EAu) {
-        var i = t?.Entity?.GetComponent(206);
+      if (e.Entity?.Id === this.SpecialSkillComponent.Entity.Id && this.zIu?.IsMorphing() && !this.UBu?.IsInQte && t?.Entity?.GetComponent(179)?.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground && this.EAu) {
+        var i = t?.Entity?.GetComponent(209);
         for (const s of this.EAu) {
           if (i?.HasTag(s)) {
             CombatLog_1.CombatLog.Info("Skill", this.SpecialSkillComponent.Entity, "还原形态", ["Reason", 3], ["TagId", s]);
@@ -67,7 +67,7 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
         this.rTu();
       }
     };
-    this.kWc = () => {
+    this.dHu = () => {
       if (this.zIu?.IsMorphing()) {
         CombatLog_1.CombatLog.Info("Skill", this.SpecialSkillComponent.Entity, "还原形态", ["Reason", 4]);
         this.rTu(false);
@@ -91,19 +91,19 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     this._7_ = (e, t, i) => {
       if (t === 0 && this.Hte?.IsRoleAndCtrlByMe) {
         this.jm();
-        this.z4u = TimerSystem_1.TimerSystem.Delay(() => {
-          this.Y4u?.RefreshStarScarMaterial();
-          this.z4u = undefined;
+        this.wqu = TimerSystem_1.TimerSystem.Delay(() => {
+          this.yqu?.RefreshStarScarMaterial();
+          this.wqu = undefined;
         }, UPDATE_MATERIAL_DELAY);
       }
       this.RefreshNoUpdateMeshes(t);
     };
-    this.Z4u = (e, t, i) => {
-      if (this.Hte?.IsRoleAndCtrlByMe && (this.eVu(), this.Hte.Actor.DitherEffectController?.CurrentDitherValue !== 1)) {
+    this.G5u = (e, t, i) => {
+      if (this.Hte?.IsRoleAndCtrlByMe && (this.F5u(), this.Hte.Actor.DitherEffectController?.CurrentDitherValue !== 1)) {
         this.Hte.Actor.CharRenderingComponent?.SetDitherEffect(1, 1);
       }
     };
-    this.OWc = (e, t, i, s) => {
+    this.dZu = (e, t, i, s) => {
       if (!this.Hte?.IsRoleAndCtrlByMe) {
         var a = this.cBe?.GetSkill(t);
         var h = a?.SkillInfo;
@@ -123,7 +123,7 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
         }
       }
     };
-    this.k1d = (e, t) => {
+    this.Ppd = (e, t) => {
       if (t && this.zIu?.IsMorphing() && this.SpecialSkillComponent.Entity.Id === ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity?.Id) {
         CombatLog_1.CombatLog.Info("Skill", this.SpecialSkillComponent.Entity, "还原形态", ["Reason", 6]);
         this.rTu();
@@ -134,14 +134,14 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     var e = this.SpecialSkillComponent.Entity;
     this.Hte = e.GetComponent(3);
     this.oRe = e.GetComponent(44);
-    this.Lie = e.GetComponent(206);
+    this.Lie = e.GetComponent(209);
     this.cBe = e.GetComponent(39);
-    this.$zo = e.GetComponent(210);
+    this.$zo = e.GetComponent(213);
     this.C51 = e.GetComponent(25);
-    this.zIu = e.GetComponent(282);
-    this.aeu = e.GetComponent(226);
-    this.X4u = e.GetComponent(99);
-    this.Y4u = e.GetComponent(93);
+    this.zIu = e.GetComponent(287);
+    this.aeu = e.GetComponent(229);
+    this.UBu = e.GetComponent(101);
+    this.yqu = e.GetComponent(95);
     this.EAu = [];
     var t = CommonParamById_1.configCommonParamById.GetStringArrayConfig("KatixiyaChangeRoleResetMorphTags");
     if (t) {
@@ -153,12 +153,12 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.IAu);
     EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
     EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnBeforeCharActionWithTarget, this.oTu);
-    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadEnd, this.kWc);
+    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadEnd, this.dHu);
     EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.CharOnRevive, this.g7r);
     EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
-    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
-    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnBeforeSkillSimulateMontage, this.OWc);
-    this.B1d = this.Lie?.ListenForTagAddOrRemove(262865373, this.k1d);
+    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.G5u);
+    EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.OnBeforeSkillSimulateMontage, this.dZu);
+    this.Lpd = this.Lie?.ListenForTagAddOrRemove(262865373, this.Ppd);
   }
   OnEnd() {
     var e = this.SpecialSkillComponent.Entity;
@@ -166,15 +166,15 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.IAu);
     EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.tTu);
     EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnBeforeCharActionWithTarget, this.oTu);
-    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadEnd, this.kWc);
+    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharOnRoleDeadEnd, this.dHu);
     EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.CharOnRevive, this.g7r);
     EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnCharacterMorphTypeChanged, this._7_);
-    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.Z4u);
-    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnBeforeSkillSimulateMontage, this.OWc);
-    this.B1d?.EndTask();
-    this.B1d = undefined;
+    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnBeforeCharacterMorphTypeChanged, this.G5u);
+    EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.OnBeforeSkillSimulateMontage, this.dZu);
+    this.Lpd?.EndTask();
+    this.Lpd = undefined;
     this.jm();
-    this.J4u.clear();
+    this.eNu.clear();
   }
   OnActivate() {
     var e = this.zIu?.GetMorphType();
@@ -183,9 +183,9 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
     }
   }
   jm() {
-    if (this.z4u) {
-      TimerSystem_1.TimerSystem.Remove(this.z4u);
-      this.z4u = undefined;
+    if (this.wqu) {
+      TimerSystem_1.TimerSystem.Remove(this.wqu);
+      this.wqu = undefined;
     }
   }
   rTu(e = true) {
@@ -266,24 +266,24 @@ class SpecialSkillKatixiya extends SpecialSkillBase_1.SpecialSkillBase {
   }
   RefreshNoUpdateMeshes(t) {
     if (IS_ENABLE_OPTIMIZE) {
-      this.J4u.clear();
+      this.eNu.clear();
       var i = this.Hte.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());
       for (let e = 0; e < i.Num(); e++) {
         var s = i.Get(e);
         var a = s.GetName();
         if (t === 0) {
           if (fuludelisiMeshNames.includes(a)) {
-            this.J4u.add(s);
+            this.eNu.add(s);
           }
         } else if (t === 1 && katixiyaMeshNames.includes(a)) {
-          this.J4u.add(s);
+          this.eNu.add(s);
         }
       }
-      this.oRe?.SetNoUpdateMeshes(this.J4u);
-      this.J4u.clear();
+      this.oRe?.SetNoUpdateMeshes(this.eNu);
+      this.eNu.clear();
     }
   }
-  eVu() {
+  F5u() {
     var e = this.cBe?.CurrentSkill;
     if (e) {
       e = e.GetLoadedMontages();

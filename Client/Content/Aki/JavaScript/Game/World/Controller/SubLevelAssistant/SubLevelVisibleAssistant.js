@@ -45,9 +45,9 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
     this._Dt = e.GroupId;
     this.nx = e.Context;
     this.qSr();
-    this.ZHd(e.ActionParams);
+    this.pim(e.ActionParams);
     await this.dW_(e.ActionParams);
-    this.e$d(e.ActionParams);
+    this.vim(e.ActionParams);
     this.gW_();
     this.xe = 0;
     this._Dt = 0;
@@ -61,14 +61,14 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
     this.lW_ = undefined;
     this.ap1 = undefined;
   }
-  ZHd(e) {
+  pim(e) {
     e = e.TransitionOption;
     let t = false;
     t = e?.Type !== IAction_1.EEnableSubLevelTransitionType.SceneCapture || !e.IsAllowInput;
     ModelManager_1.ModelManager.SubLevelModel.SetSubLevelSwitching(t);
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
   }
-  e$d(e) {
+  vim(e) {
     ModelManager_1.ModelManager.SubLevelModel.UnsetSubLevelSwitching();
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
   }
@@ -216,7 +216,7 @@ class SubLevelVisibleAssistant extends ControllerAssistantBase_1.ControllerAssis
       $$_: e,
       j$_: t
     });
-    Net_1.Net.Call(22492, e, e => {});
+    Net_1.Net.Call(23994, e, e => {});
   }
 }
 exports.SubLevelVisibleAssistant = SubLevelVisibleAssistant;

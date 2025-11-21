@@ -17,6 +17,7 @@ const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
 const ShipTowerDefine_1 = require("../ShipTowerDefine");
 const ShipTowerDescLeftPanel_1 = require("./ShipTowerDescLeftPanel");
@@ -50,12 +51,12 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     };
     this.ta_ = () => {
       this.Vs_?.UpdateRoleListFilter();
-      var t = this.Vs_?.GetRoleIdList();
-      if (t?.length) {
-        this.ooc = t.find(t => ModelManager_1.ModelManager.RoleModel?.IsMainRole(t));
+      var e = this.Vs_?.GetRoleIdList();
+      if (e?.length) {
+        this.ooc = e.find(e => ModelManager_1.ModelManager.RoleModel?.IsMainRole(e));
         ControllerHolder_1.ControllerHolder.RoleController.OpenRoleMainViewByParam({
           AgentType: 0,
-          RoleIdList: t,
+          RoleIdList: e,
           TeamPositionType: 1
         });
       }
@@ -66,77 +67,80 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     this.oa_ = () => {
       this.Ns_.OpenViewTeamRecommend();
     };
-    this.Czc = () => {
+    this.SZc = () => {
       this.Ns_.ExchangeTeamData();
       this.Slo();
+      var e;
       var t = this.Ns_.Id;
-      let e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId);
-      if (!e || !e.has(t)) {
-        if (e) {
-          e.add(t);
+      let i = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId);
+      if (!i || !i.has(t)) {
+        if (i) {
+          i.add(t);
         } else {
-          e = new Set([t]);
+          i = new Set([t]);
         }
-        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId, e);
+        LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerExchangeInstId, i);
+        (e = new LogReportDefine_1.ShipTowerSwitch()).i_inst_id = t;
+        ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
       }
     };
     this.na_ = () => {
-      var t = new ShipTowerDescTeamItem_1.ShipTowerDescTeamItem();
-      t.RoleClickCallBack = this.OnRoleClick;
-      t.BuffClickCallBack = this.aa_;
-      t.MechanismClickCallBack = this.vD_;
-      return t;
+      var e = new ShipTowerDescTeamItem_1.ShipTowerDescTeamItem();
+      e.RoleClickCallBack = this.OnRoleClick;
+      e.BuffClickCallBack = this.aa_;
+      e.MechanismClickCallBack = this.vD_;
+      return e;
     };
-    this.OnRoleClick = t => {
-      if (this.$s_?.Index !== t.Index) {
-        this.$s_ = t;
+    this.OnRoleClick = e => {
+      if (this.$s_?.Index !== e.Index) {
+        this.$s_ = e;
         this.noc();
       }
       this.ha_();
     };
-    this.aa_ = t => {
+    this.aa_ = e => {
       ModelManager_1.ModelManager.ShipTowerModel.OpenViewBuff({
-        BuffId: t.BuffDataEdit?.Id,
+        BuffId: e.BuffDataEdit?.Id,
         StageId: this.Ns_.Id,
         OperationType: 1,
-        TeamData: t,
+        TeamData: e,
         OnUseBuff: this.la_
       });
     };
-    this.vD_ = t => {
-      this.Ns_.OpenViewMonsterDesc(t.InstId);
+    this.vD_ = e => {
+      this.Ns_.OpenViewMonsterDesc(e.InstId);
     };
-    this.la_ = (t, e) => {
-      e?.UseBuff(t);
-      t = e?.Index ?? -1;
-      this.js_?.GetScrollItemByIndex(t)?.UpdateBuff();
+    this.la_ = (e, t) => {
+      t?.UseBuff(e);
+      e = t?.Index ?? -1;
+      this.js_?.GetScrollItemByIndex(e)?.UpdateBuff();
       UiManager_1.UiManager.CloseView("ShipTowerBuffView");
     };
-    this._a_ = t => {
-      var e;
+    this._a_ = e => {
+      var t;
       var i;
-      this.SelectedLeftRoleData = t;
+      this.SelectedLeftRoleData = e;
       if (this.$s_) {
-        e = this.$s_.Index;
-        t = t.GetDataId();
-        i = ModelManager_1.ModelManager.ShipTowerModel.IsOtherTeamRoleData(t);
+        t = this.$s_.Index;
+        e = e.GetDataId();
+        i = ModelManager_1.ModelManager.ShipTowerModel.IsOtherTeamRoleData(e);
         this.$s_.UpdateRoleListByModel();
         if (i) {
-          this.Ns_.UpdateOtherTeamRoleRepeat(e, t);
+          this.Ns_.UpdateOtherTeamRoleRepeat(t, e);
         }
         this.Ns_.UpdateAllTeamRoleToModel();
         this.js_?.RefreshByData(this.Ns_.TeamDataList);
       }
     };
-    this.ca_ = t => {
-      var e;
+    this.ca_ = e => {
+      var t;
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("ShipTower", 69, "OnRoleTeamSelect", ["formationData", t]);
+        Log_1.Log.Debug("ShipTower", 69, "OnRoleTeamSelect", ["formationData", e]);
       }
       if (this.$s_) {
-        e = this.$s_.Index;
-        this.Ns_.TeamDataList[e].UpdateRoleListByFormationData(t);
-        this.Ns_.UpdateOtherTeamRoleRepeat(e);
+        t = this.$s_.Index;
+        this.Ns_.TeamDataList[t].UpdateRoleListByFormationData(e);
+        this.Ns_.UpdateOtherTeamRoleRepeat(t);
         this.Ns_.UpdateAllTeamRoleToModel();
         this.Vs_?.OnlyUpdateTeamList();
         this.js_?.RefreshByData(this.Ns_.TeamDataList);
@@ -147,13 +151,13 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
         this.qW_();
       }
     };
-    this.FG_ = t => {
-      if (this.Ns_.Id === t) {
+    this.FG_ = e => {
+      if (this.Ns_.Id === e) {
         this.Slo();
       }
     };
-    this.J8_ = t => {
-      if (this.Ns_.Id === t) {
+    this.J8_ = e => {
+      if (this.Ns_.Id === e) {
         if (this.z8_ && this.$s_) {
           this.$s_.UpdateRoleListToRoleSelectModel();
           this.Ns_.UpdateOtherTeamRoleToModel(this.$s_.Index);
@@ -166,12 +170,12 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
   get z8_() {
     return ModelManager_1.ModelManager.ShipTowerModel.IsShowLeftTeamPanel;
   }
-  set z8_(t) {
-    ModelManager_1.ModelManager.ShipTowerModel.IsShowLeftTeamPanel = t;
+  set z8_(e) {
+    ModelManager_1.ModelManager.ShipTowerModel.IsShowLeftTeamPanel = e;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIScrollViewWithScrollbarComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this.zs_], [10, this.zs_], [6, this.oa_], [13, this.Czc]];
+    this.BtnBindInfo = [[3, this.zs_], [10, this.zs_], [6, this.oa_], [13, this.SZc]];
   }
   Es_() {
     this.Ns_ = ModelManager_1.ModelManager.ShipTowerModel.GetStageDataById(this.OpenParam.StageId);
@@ -252,8 +256,8 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     }
   }
   ua_() {
-    var t = this.Ns_.CanReset();
-    this.Ys_ = t ? 1 : 0;
+    var e = this.Ns_.CanReset();
+    this.Ys_ = e ? 1 : 0;
   }
   ha_() {
     if (!this.z8_) {
@@ -278,11 +282,11 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     this.da_(false);
     this.tH_()?.SetUIActive(false);
   }
-  da_(t) {
-    this.GetItem(8)?.SetUIActive(t);
-    this.GetItem(9)?.SetUIActive(t);
+  da_(e) {
+    this.GetItem(8)?.SetUIActive(e);
+    this.GetItem(9)?.SetUIActive(e);
     if (this.$s_) {
-      if (t) {
+      if (e) {
         this.cq_();
       } else {
         this.wA_()?.SetTeamToggleIsSelect(false);
@@ -293,17 +297,17 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
     return this.GetItem(12);
   }
   cq_() {
-    this.Ns_.TeamDataList.forEach((t, e) => {
-      if (e !== this.$s_?.Index) {
-        this.js_?.GetScrollItemByIndex(e)?.SetTeamToggleIsSelect(false);
+    this.Ns_.TeamDataList.forEach((e, t) => {
+      if (t !== this.$s_?.Index) {
+        this.js_?.GetScrollItemByIndex(t)?.SetTeamToggleIsSelect(false);
       }
     });
   }
   wA_() {
-    var t;
+    var e;
     if (this.$s_) {
-      t = this.$s_.Index;
-      return this.js_?.GetScrollItemByIndex(t);
+      e = this.$s_.Index;
+      return this.js_?.GetScrollItemByIndex(e);
     }
   }
   noc() {
@@ -314,44 +318,44 @@ class ShipTowerDescView extends UiViewBase_1.UiViewBase {
       this.Ns_.UpdateAllTeamRoleToModel();
     }
   }
-  ma_(t, e, i = true) {
-    t.SetActive(i);
+  ma_(e, t, i = true) {
+    e.SetActive(i);
     if (i) {
-      switch (e) {
+      switch (t) {
         case 3:
-          this.uq_(t, ShipTowerDefine_1.shipTowerTextKey.RoleDetail);
-          t.SetFunction(this.ta_);
+          this.uq_(e, ShipTowerDefine_1.shipTowerTextKey.RoleDetail);
+          e.SetFunction(this.ta_);
           break;
         case 0:
-          this.uq_(t, ShipTowerDefine_1.shipTowerTextKey.StartChallenge);
-          t.SetFunction(this.ea_);
+          this.uq_(e, ShipTowerDefine_1.shipTowerTextKey.StartChallenge);
+          e.SetFunction(this.ea_);
           break;
         case 2:
-          this.uq_(t, ShipTowerDefine_1.shipTowerTextKey.Reset);
-          t.SetFunction(this.Zs_);
+          this.uq_(e, ShipTowerDefine_1.shipTowerTextKey.Reset);
+          e.SetFunction(this.Zs_);
           break;
         case 1:
-          this.uq_(t, ShipTowerDefine_1.shipTowerTextKey.AgainChallenge);
-          t.SetFunction(this.ra_);
+          this.uq_(e, ShipTowerDefine_1.shipTowerTextKey.AgainChallenge);
+          e.SetFunction(this.ra_);
       }
     }
   }
-  uq_(t, e) {
-    e = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e, e);
-    t.SetText(e);
+  uq_(e, t) {
+    t = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t);
+    e.SetText(t);
   }
-  GetGuideUiItemAndUiItemForShowEx(t) {
-    switch (t[0]) {
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    switch (e[0]) {
       case "TabCompRight":
-        return this.Vs_?.GetGuideUiItemAndUiItemForShowEx(t);
+        return this.Vs_?.GetGuideUiItemAndUiItemForShowEx(e);
       case "Desc":
       case "Item":
       case "TeamAndItem":
       case "TeamAndItemOuter":
-        if (t.length !== 2 || isNaN(Number(t[1]))) {
+        if (e.length !== 2 || isNaN(Number(e[1]))) {
           return undefined;
         } else {
-          return this.js_?.GetScrollItemByIndex(Number(t[1]))?.GetGuideUiItemAndUiItemForShowEx(t);
+          return this.js_?.GetScrollItemByIndex(Number(e[1]))?.GetGuideUiItemAndUiItemForShowEx(e);
         }
     }
   }

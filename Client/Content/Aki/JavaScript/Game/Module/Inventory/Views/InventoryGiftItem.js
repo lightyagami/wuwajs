@@ -23,6 +23,7 @@ class InventoryGiftItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.$mi = undefined;
     this.Ymi = undefined;
     this.vIl = undefined;
+    this.Cbd = undefined;
     this.Jmi = () => {
       this.H5e.SetToggleState(0, false);
       this.Xmi.RootUIComp.SetUIActive(false);
@@ -30,23 +31,23 @@ class InventoryGiftItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.Ymi(this.fGt);
       }
     };
-    this.Yai = t => {
-      t = t === 1;
+    this.Yai = i => {
+      i = i === 1;
       if (this.Xmi) {
-        this.Xmi.RootUIComp.SetUIActive(t);
+        this.Xmi.RootUIComp.SetUIActive(i);
       }
       if (this.$mi) {
-        this.$mi(this.H5e, this.Xmi, t, this.fGt);
+        this.$mi(this.H5e, this.Xmi, i, this.fGt);
       }
     };
   }
-  Initialize(t) {
-    if (t) {
-      this.CreateThenShowByActor(t.GetOwner());
+  Initialize(i) {
+    if (i) {
+      this.CreateThenShowByActor(i.GetOwner());
     }
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIExtendToggle]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIExtendToggle], [5, UE.UISprite]];
     this.BtnBindInfo = [[3, this.Jmi]];
   }
   OnStart() {
@@ -60,6 +61,7 @@ class InventoryGiftItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.H5e = undefined;
     this.fGt = undefined;
     this.sft = undefined;
+    this.Cbd = undefined;
   }
   SHe() {
     this.OGe = this.GetText(1);
@@ -70,39 +72,53 @@ class InventoryGiftItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Xmi.RootUIComp.SetUIActive(false);
     this.sft = new InventoryGiftCellItem_1.InventoryGiftCellItem();
     this.sft.Initialize(this.GetItem(0).GetOwner());
+    this.Cbd = this.GetSprite(5);
+    this.Cbd.SetUIActive(false);
   }
-  Refresh(t, i, s) {
-    this.fGt = t;
-    this.RefreshItem(t);
+  Refresh(i, t, s) {
+    this.fGt = i;
+    this.RefreshItem(i);
     if (this.vIl) {
-      this.Oei(this.vIl(t));
+      this.Oei(this.vIl(i));
     }
   }
-  OnSelected(t) {
+  OnSelected(i) {
     if (this.vIl && this.fGt) {
       this.Oei(this.vIl(this.fGt));
     }
   }
-  RefreshItem(t) {
-    this.qTt = t.ItemId;
-    var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.qTt);
-    var i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(i.Name) ?? "";
-    this.OGe.SetText(i);
-    LguiUtil_1.LguiUtil.SetLocalText(this.Qmi, "Quantity", t.ItemCount);
-    this.sft.RefreshByConfigId(t);
+  RefreshItem(i) {
+    this.qTt = i.ItemId;
+    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.qTt);
+    var s = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name) ?? "";
+    this.OGe.SetText(s);
+    LguiUtil_1.LguiUtil.SetLocalText(this.Qmi, "Quantity", i.ItemCount);
+    this.sft.RefreshByConfigId(i);
+    this.Cbd.SetUIActive(false);
+    if (t.ItemType === 2) {
+      var s = ConfigManager_1.ConfigManager.MappingConfig.GetWeaponConfList();
+      var e = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponConfigByItemId(this.qTt);
+      for (const h of s) {
+        if (e.WeaponType === h.Value) {
+          this.Cbd.SetUIActive(true);
+          this.SetSpriteByPath(h.Icon, this.Cbd, false);
+          break;
+        }
+      }
+    }
   }
-  Oei(t, i = false) {
-    this.H5e.SetToggleState(t ? 1 : 0, i);
-    this.Xmi.RootUIComp.SetUIActive(t);
+  Oei(i, t = false) {
+    this.H5e.SetToggleState(i ? 1 : 0, t);
+    this.Xmi.RootUIComp.SetUIActive(i);
   }
-  SetOnToggleStateChangeFunction(t) {
-    this.$mi = t;
+  SetOnToggleStateChangeFunction(i) {
+    this.$mi = i;
   }
-  SetOnReduceFunction(t) {
-    this.Ymi = t;
+  SetOnReduceFunction(i) {
+    this.Ymi = i;
   }
-  SetIsSelectOn(t) {
-    this.vIl = t;
+  SetIsSelectOn(i) {
+    this.vIl = i;
   }
 }
 exports.InventoryGiftItem = InventoryGiftItem;

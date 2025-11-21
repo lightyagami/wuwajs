@@ -1,19 +1,19 @@
 "use strict";
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
-  var o;
-  var r = arguments.length;
-  var h = r < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var r;
+  var o = arguments.length;
+  var h = o < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     h = Reflect.decorate(e, t, i, s);
   } else {
     for (var l = e.length - 1; l >= 0; l--) {
-      if (o = e[l]) {
-        h = (r < 3 ? o(h) : r > 3 ? o(t, i, h) : o(t, i)) || h;
+      if (r = e[l]) {
+        h = (o < 3 ? r(h) : o > 3 ? r(t, i, h) : r(t, i)) || h;
       }
     }
   }
-  if (r > 3 && h) {
+  if (o > 3 && h) {
     Object.defineProperty(t, i, h);
   }
   return h;
@@ -29,6 +29,9 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const ModelUtil_1 = require("../../../../../Core/Utils/ModelUtil");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const MeshStreamDefine_1 = require("../../../MeshStream/MeshStreamDefine");
+const MeshStreamTaskContext_1 = require("../../../MeshStream/MeshStreamTaskContext");
 const UiModelResourcesManager_1 = require("../../../UiComponent/UiModelResourcesManager");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelUtil_1 = require("../../UiModelUtil");
@@ -43,83 +46,98 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.LoadHandleId = UiModelResourcesManager_1.UiModelResourcesManager.InvalidValue;
     this.ResourceLoadCache = undefined;
     this.MeshArray = UE.NewArray(UE.SkeletalMesh);
-    this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    this.MeshStreamTaskId = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     this.LoadFinishCallBack = undefined;
     this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.OnPostLoadAnimClass = (u, e, c, t, f = 0) => {
-      const p = this.GetMainMeshPath();
-      const v = this.GetChildMeshPathList();
+    this.OnPostLoadAnimClass = (v, e, C, t, p = 0) => {
+      const S = this.GetMainMeshPath();
+      const L = this.GetChildMeshPathList();
       var i = this.GetAllMorphPathList();
-      var s = this.GetEffectAssetByAssetClass(u);
+      var s = this.GetEffectAssetByAssetClass(v);
+      var r = this.GetDecorationMeshPathList();
       var o = [];
-      if (p && !StringUtils_1.StringUtils.IsEmpty(p)) {
-        o.push(p);
+      if (S && !StringUtils_1.StringUtils.IsEmpty(S)) {
+        o.push(S);
       }
-      UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, v);
+      UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, L);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, i);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, t);
       UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, s);
+      UiModelUtil_1.UiModelUtil.CheckPathListAndAdd(o, r);
       this.LoadHandleId = UiModelResourcesManager_1.UiModelResourcesManager.LoadUiModelResources(o, (e, t) => {
         this.DestroyLoadMesh();
         this.ResourceLoadCache = t;
         var i = UE.NewArray(UE.SkeletalMesh);
-        var t = this.GetLoadedResource(p);
+        var t = this.GetLoadedResource(S);
         i.Add(t);
         let s = undefined;
-        if (v) {
+        if (L) {
           s = [];
-          for (const U of v) {
-            var o = this.GetLoadedResource(U);
-            s.push(o);
-            i.Add(o);
+          for (const _ of L) {
+            var r = this.GetLoadedResource(_);
+            s.push(r);
+            i.Add(r);
           }
         }
-        let r = undefined;
+        var o = this.GetModelDecorationArray();
+        var o = this.GetModelMeshDecorationList(o);
+        for (const u of o) {
+          i.Add(u.SkeletalMesh);
+        }
         let h = undefined;
-        var l;
-        var n = [];
-        var a = this.GetSpecialMorphIdList();
-        if (a) {
-          for (const M of a) {
-            if (M.MainMeshPath) {
-              l = this.GetLoadedResource(M.MainMeshPath);
-              i.Add(l);
-              r = l;
+        let l = undefined;
+        var n;
+        var a = [];
+        var d = this.GetSpecialMorphIdList();
+        let M = [];
+        if (d) {
+          for (const f of d) {
+            if (f.MainMeshPath) {
+              n = this.GetLoadedResource(f.MainMeshPath);
+              i.Add(n);
+              h = n;
             }
-            if (M.AnimPath) {
-              h = this.GetLoadedResource(M.AnimPath);
+            if (f.AnimPath) {
+              l = this.GetLoadedResource(f.AnimPath);
             }
-            if (M.ChildMeshPathList) {
-              for (const _ of M.ChildMeshPathList) {
-                var d = this.GetLoadedResource(_);
-                i.Add(d);
-                n.push(d);
+            if (f.ChildMeshPathList) {
+              for (const c of f.ChildMeshPathList) {
+                var U = this.GetLoadedResource(c);
+                i.Add(U);
+                a.push(U);
+              }
+            }
+            if (f.DecorationMeshConfigArray) {
+              for (const m of M = this.GetModelMeshDecorationList(f.DecorationMeshConfigArray)) {
+                i.Add(m.SkeletalMesh);
               }
             }
           }
         }
         if ((this.UiModelMorphComponent?.GetMorphType() ?? 0) !== 0) {
-          if (!r) {
+          if (!h) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Character", 78, "形态mainMesh为空");
             }
           }
-          if (!h) {
+          if (!l) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Character", 78, "形态animClass为空");
             }
           }
-          this.UiModelActorComponent?.ChangeMesh(r, h, n, f);
+          this.UiModelActorComponent?.ChangeMesh(h, l, a, M, p);
         } else {
-          this.UiModelActorComponent?.ChangeMesh(t, u, s, f);
+          this.UiModelActorComponent?.ChangeMesh(t, v, s, o, p);
         }
-        if (c) {
-          this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.LoadMeshesComponentsBundleStreaming(i, undefined, () => {
+        if (C) {
+          (d = new MeshStreamTaskContext_1.MeshStreamTaskContext()).SkeletalMeshes = i;
+          d.OnTaskFinish = () => {
             this.FinishLoad();
             var e = this.UiModelDataComponent?.GetLoadingVisible() ?? true;
             this.UiModelDataComponent?.SetVisible(e);
             this.UiModelDataComponent?.ClearLoadingVisible();
-          });
+          };
+          this.MeshStreamTaskId = ControllerHolder_1.ControllerHolder.MeshStreamController.AddMeshStreamTask(d);
         } else {
           this.FinishLoad();
           this.MeshArray.Empty();
@@ -157,6 +175,22 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
       }
     }
   }
+  GetModelDecorationArray() {
+    return ModelUtil_1.ModelUtil.GetModelConfig(this.UiModelDataComponent.ModelConfigId).UiModelDecorationArray;
+  }
+  GetDecorationMeshPathList() {
+    var t = this.GetModelDecorationArray();
+    if (t) {
+      var i = t.Num();
+      if (!(i <= 0)) {
+        var s = new Array(i);
+        for (let e = 0; e < i; e++) {
+          s[e] = t.Get(e).SkeletalMesh.ToAssetPathName();
+        }
+        return s;
+      }
+    }
+  }
   GetAllMorphPathList() {
     return this.UiModelMorphComponent?.GetAllMorphPathList();
   }
@@ -171,7 +205,7 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.LoadFinishCallBack = i;
     this.LoadModel(t, s);
   }
-  LoadModel(i, s, o = 0) {
+  LoadModel(i, s, r = 0) {
     if (this.UiModelDataComponent?.GetModelLoadState() === 1 && (this.CancelLoad(), Log_1.Log.CheckWarn())) {
       Log_1.Log.Warn("Character", 43, "取消上一个模型加载");
     }
@@ -183,12 +217,12 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     this.UiModelDataComponent?.SetModelLoadState(1);
     var e = this.GetAnimClassPath();
     if (StringUtils_1.StringUtils.IsEmpty(e)) {
-      this.OnPostLoadAnimClass(undefined, e, i, s, o);
+      this.OnPostLoadAnimClass(undefined, e, i, s, r);
     } else {
       this.zY1 = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Class, (e, t) => {
         this.zY1 = ResourceSystem_1.ResourceSystem.InvalidId;
-        this.OnPostLoadAnimClass(e, t, i, s, o);
-      });
+        this.OnPostLoadAnimClass(e, t, i, s, r);
+      }, 100, "Ui.UiSceneModel");
     }
   }
   GetEffectAssetByAssetClass(e) {
@@ -200,16 +234,16 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
         var i = new Array();
         var s = t.Num();
         for (let e = 0; e < s; ++e) {
-          var o = t.Get(e);
-          if (o.IsA(UE.AnimSequence.StaticClass())) {
-            if (o) {
+          var r = t.Get(e);
+          if (r.IsA(UE.AnimSequence.StaticClass())) {
+            if (r) {
               (0, puerts_1.$unref)(this.ZY1).Empty();
-              UE.KuroStaticLibrary.GetAnimSequenceNotifies(o, this.ZY1);
-              var r = (0, puerts_1.$unref)(this.ZY1);
-              var h = r.Num();
+              UE.KuroStaticLibrary.GetAnimSequenceNotifies(r, this.ZY1);
+              var o = (0, puerts_1.$unref)(this.ZY1);
+              var h = o.Num();
               if (h !== 0) {
                 for (let e = 0; e < h; ++e) {
-                  var l = r.Get(e);
+                  var l = o.Get(e);
                   if (l.NotifyStateClass?.IsValid() && l.NotifyStateClass.IsA(UE.AnimNotifyStateEffect_C.StaticClass())) {
                     l = l.NotifyStateClass;
                     if (!FNameUtil_1.FNameUtil.IsNothing(l.EffectSlotName)) {
@@ -267,10 +301,27 @@ let UiModelLoadComponent = class UiModelLoadComponent extends UiModelComponentBa
     }
     return t;
   }
+  GetModelMeshDecorationList(t) {
+    var i = t.Num();
+    var s = [];
+    if (i > 0) {
+      for (let e = 0; e < i; e++) {
+        var r = t.Get(e);
+        var o = r.SkeletalMesh.ToAssetPathName();
+        var r = {
+          SocketName: r.SocketName,
+          Transform: r.Transform,
+          SkeletalMesh: this.GetLoadedResource(o)
+        };
+        s.push(r);
+      }
+    }
+    return s;
+  }
   DestroyLoadMesh() {
-    if (this.StreamingHandleId !== UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue) {
-      UiModelResourcesManager_1.UiModelResourcesManager.ReleaseMeshesComponentsBundleStreaming(this.StreamingHandleId);
-      this.StreamingHandleId = UiModelResourcesManager_1.UiModelResourcesManager.StreamingInvalidValue;
+    if (this.MeshStreamTaskId !== MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID) {
+      ControllerHolder_1.ControllerHolder.MeshStreamController.RemoveMeshStreamTask(this.MeshStreamTaskId);
+      this.MeshStreamTaskId = MeshStreamDefine_1.INVALID_MESH_STREAM_TASK_ID;
     }
   }
 };

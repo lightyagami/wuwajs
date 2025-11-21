@@ -18,7 +18,7 @@ class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
     this.E0 = undefined;
     this.lmt = new Map();
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
-    this.v2u = undefined;
+    this.S4u = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem]];
@@ -26,23 +26,23 @@ class RoleBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   OnStart() {
     super.OnStart();
     this.InitChildType(37);
-    this.V2u();
+    this.E4u();
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleBuffItemCount");
-    this.mkn.Init(this.GetItem(1), e, false, true, false, this.v2u.GetRootItem());
+    this.mkn.Init(this.GetItem(1), e, false, true, false, this.S4u.GetRootItem());
   }
   OnBeforeDestroy() {
     this.Refresh(undefined);
     this._mt();
-    this.j2u();
+    this.I4u();
   }
-  V2u() {
-    this.v2u = new BuffItem_1.BuffItem(this.GetItem(1));
-    this.v2u.ActivateExceedTip();
+  E4u() {
+    this.S4u = new BuffItem_1.BuffItem(this.GetItem(1));
+    this.S4u.ActivateExceedTip();
   }
-  j2u() {
-    if (this.v2u) {
-      this.v2u.DestroyCompatible();
-      this.v2u = undefined;
+  I4u() {
+    if (this.S4u) {
+      this.S4u.DestroyCompatible();
+      this.S4u = undefined;
     }
   }
   Refresh(e) {

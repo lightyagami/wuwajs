@@ -18,13 +18,17 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     this.CustomTrackIconId = 0;
     this.Submitting = false;
     this.ChildQuestStatus = undefined;
+    this.ModifyTrackAreaTextConfig = undefined;
     this.NodeType = "ChildQuest";
   }
   get CanGiveUp() {
     return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress;
   }
+  get InProgress() {
+    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Progress;
+  }
   get IsFinished() {
-    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished || this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_FinishAction;
+    return this.ChildQuestStatus === Protocol_1.Aki.Protocol.FNs.Proto_CQNS_Finished;
   }
   Init(t, e, i, s, h) {
     if (s.Type === "ChildQuest" && (super.Init(t, e, i, s, h), this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive, this.CustomTrackIconId = s.CustomIcon ?? 0, i.nEs)) {
@@ -50,6 +54,9 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   }
   OnNodeActive() {
     this.AddTag(0, this.NodeId.toString());
+    if (this.ModifyTrackAreaTextConfig) {
+      this.Blackboard?.AddModifyTrackAreaConfig(this.NodeId, this.ModifyTrackAreaTextConfig);
+    }
   }
   il(t) {
     this.AddEventsOnChildQuestStart();
@@ -63,6 +70,9 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (!t) {
       this.wXt(false);
       this.ChildQuestStatus = Protocol_1.Aki.Protocol.FNs.Proto_CQNS_NotActive;
+    }
+    if (this.ModifyTrackAreaTextConfig) {
+      this.Blackboard?.RemoveModifyTrackAreaConfig(this.NodeId);
     }
   }
   wXt(t) {
@@ -93,6 +103,7 @@ class ChildQuestNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     this.TrackTarget = t.TrackTarget;
     this.TrackTextConfig = t.TidTip;
     this.MultiTrackText = PublicUtil_1.PublicUtil.GetConfigTextByKey(this.TrackTextConfig);
+    this.ModifyTrackAreaTextConfig = t.ModifyTrackAreaText;
     this.ShowTipBeforeEnterActions = t.ShowTipBeforeEnterActions ?? false;
     return true;
   }

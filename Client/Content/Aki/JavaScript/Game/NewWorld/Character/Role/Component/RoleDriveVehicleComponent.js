@@ -52,7 +52,7 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
         ModelManager_1.ModelManager.SceneTeamModel.GetTeamItem(e, {
           ParamType: 2,
           IsControl: true
-        })?.EntityHandle?.Entity?.GetComponent(179)?.TrySetGlide();
+        })?.EntityHandle?.Entity?.GetComponent(182)?.TrySetGlide();
       }
     };
     this.GuaranteeBounceSkillEnd = () => {
@@ -124,13 +124,13 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     if (o && (o.Actor.KuroSetMovementMode({
       Mode: 3,
       Context: "[RoleDriveVehicleComponent.JumpToAirAndParagliding]"
-    }), o = e.VehicleEntity?.GetComponent(234)) && (r = (o.Config?.BounceTime ?? VehicleConfig_1.DEFAULT_BOUNCE_TIME) * MathUtils_1.MathUtils.MillisecondToSecond, s = o.Config?.BounceHeight ?? VehicleConfig_1.DEFAULT_BOUNCE_HEIGHT, t = o.Config?.BounceCurve ?? VehicleConfig_1.DEFAULT_BOUNCE_CURVE, i = this.Entity.GetComponent(29), o?.GetVehicleVelocity(this.TmpVector1), this.TmpVector1.MultiplyEqual(r * 0.5), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.TmpVector1), await i?.StartBounceWithHorizontalOffset(s, this.TmpVector1, r, t)) && this.Entity?.Valid) {
+    }), o = e.VehicleEntity?.GetComponent(237)) && (r = (o.Config?.BounceTime ?? VehicleConfig_1.DEFAULT_BOUNCE_TIME) * MathUtils_1.MathUtils.MillisecondToSecond, s = o.Config?.BounceHeight ?? VehicleConfig_1.DEFAULT_BOUNCE_HEIGHT, t = o.Config?.BounceCurve ?? VehicleConfig_1.DEFAULT_BOUNCE_CURVE, i = this.Entity.GetComponent(29), o?.GetVehicleVelocity(this.TmpVector1), this.TmpVector1.MultiplyEqual(r * 0.5), GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, this.TmpVector1), await i?.StartBounceWithHorizontalOffset(s, this.TmpVector1, r, t)) && this.Entity?.Valid) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillEnd, this.OnBounceSkillEnd);
       if (o.VehicleType === "NpcVehicle") {
         i = e.VehicleEntity?.GetComponent(3);
         this.PlatformActorToIgnore = i?.Actor;
       } else {
-        s = e.VehicleEntity?.GetComponent(235);
+        s = e.VehicleEntity?.GetComponent(238);
         this.PlatformActorToIgnore = s?.Actor.PlatformActor;
       }
       if (this.PlatformActorToIgnore?.IsValid()) {
@@ -210,5 +210,5 @@ let RoleDriveVehicleComponent = class RoleDriveVehicleComponent extends Characte
     }
   }
 };
-RoleDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(231)], RoleDriveVehicleComponent);
+RoleDriveVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(234)], RoleDriveVehicleComponent);
 exports.RoleDriveVehicleComponent = RoleDriveVehicleComponent; //# sourceMappingURL=RoleDriveVehicleComponent.js.map

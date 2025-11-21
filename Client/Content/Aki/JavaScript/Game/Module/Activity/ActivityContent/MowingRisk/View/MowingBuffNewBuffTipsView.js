@@ -43,7 +43,7 @@ class MowingBuffNewBuffTipsView extends UiTickViewBase_1.UiTickViewBase {
       if (e && UiManager_1.UiManager.IsViewOpen("NewItemTipsView") && this.RootItem && ((i = this.GetUiNiagara(5)).SetNiagaraSystem(e), !this._9a.IsGolden) && this.lRe) {
         i.ColorParameter.Get("Color").Constant = UE.LinearColor.FromSRGBColor(this.lRe);
       }
-    });
+    }, 100, this.MemoryTag);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UITexture], [3, UE.UIText], [4, UE.UITexture], [5, UE.UINiagara]];

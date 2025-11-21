@@ -21,7 +21,7 @@ class BulletLogicReboundController extends BulletLogicController_1.BulletLogicCo
     super(t, e);
     this.n$t = undefined;
     this.a7o = undefined;
-    this.n$t = e.GetComponent(170);
+    this.n$t = e.GetComponent(173);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {

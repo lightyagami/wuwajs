@@ -35,6 +35,10 @@ class PersonalRoleSmallItemGrid extends GridProxyAbstract_1.GridProxyAbstract {
     e = t ? 1 : 0;
     this.GetExtendToggle(1).SetToggleState(e);
   }
+  RefreshEquipHeadIconItem() {
+    var e = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(4);
+    this.GetItem(3).SetUIActive(this.v3l.Id === e);
+  }
   BindToggleClickCallBack(e) {
     this.AVi = e;
   }

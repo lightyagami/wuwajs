@@ -30,12 +30,12 @@ class FloroRanchEntityChangeActionData extends FloroRanchActionBase_1.FloroRanch
     if (!this.IsExit()) {
       var t = [];
       for (const o of this.aCu) {
-        t.push(this.gKu(o));
+        t.push(this.w9u(o));
       }
       await Promise.all(t);
     }
   }
-  async gKu(t) {
+  async w9u(t) {
     await t.ExecuteAction();
     FloroRanchDebugLogUtil_1.FloroRanchDebugLogUtil.LogEntityChangeActionInfo(this.CasterEntity, t.OperateType, t.EntityData);
   }

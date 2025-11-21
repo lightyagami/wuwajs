@@ -192,7 +192,7 @@ class TrackedMark extends UiPanelBase_1.UiPanelBase {
         this.IsForceHideDirection = true;
         this.jCt = true;
         this.HCt = true;
-        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(161);
+        i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.MCt)?.Entity?.GetComponent(164);
         this.KCt = (i?.AudioPointNearRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.QCt = (i?.AudioPointMiddleRadius ?? 0) * MapDefine_1.FLOAT_0_01;
         this.XCt = (i?.AudioPointFarRadius ?? 0) * MapDefine_1.FLOAT_0_01;

@@ -31,11 +31,11 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
   constructor() {
     super(...arguments);
     this.ybr = undefined;
-    this.C$u = new Map();
+    this.JWu = new Map();
   }
   OnStart() {
     super.OnStart();
-    this.ybr = this.Entity.GetComponent(123);
+    this.ybr = this.Entity.GetComponent(126);
     return true;
   }
   OnEnable() {
@@ -45,13 +45,13 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
     this.SetHidden(true);
   }
   OnChangeTimeDilation(a) {
-    this.C$u.forEach((e, t) => {
+    this.JWu.forEach((e, t) => {
       if (EffectSystem_1.EffectSystem.IsValid(t)) {
         if (this.ybr) {
           EffectUtil_1.EffectUtil.SetEffectTimeScale(t, this.ybr, a, e);
         }
       } else {
-        this.C$u.delete(t);
+        this.JWu.delete(t);
       }
     });
   }
@@ -59,9 +59,9 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
     return ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
   }
   AddCueEffectToSet(e, t) {
-    this.C$u.set(e, t);
+    this.JWu.set(e, t);
     EffectSystem_1.EffectSystem.AddFinishCallback(e, e => {
-      this.C$u.delete(e);
+      this.JWu.delete(e);
     });
     if (this.ybr) {
       EffectUtil_1.EffectUtil.SetEffectTimeScale(e, this.ybr, this.Entity.TimeDilation, t);
@@ -78,11 +78,11 @@ let CharacterGameplayCueComponent = class CharacterGameplayCueComponent extends 
         e.OnEnable();
       }
     }
-    this.C$u.forEach((e, t) => {
+    this.JWu.forEach((e, t) => {
       if (EffectSystem_1.EffectSystem.IsValid(t)) {
         EffectSystem_1.EffectSystem.SetEffectHidden(t, a, "CharacterGameplayCueComponent.SetHidden");
       } else {
-        this.C$u.delete(t);
+        this.JWu.delete(t);
       }
     });
   }

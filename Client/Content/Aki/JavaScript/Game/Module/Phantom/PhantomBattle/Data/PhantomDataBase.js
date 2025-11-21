@@ -105,7 +105,7 @@ class PhantomDataBase {
     return this.GetPhantomLevel() === 0 && this.GetExp() === 0 && !this.GetIsLock();
   }
   GetVisionIfCanRefine() {
-    return this.GetPhantomLevel() === 0 && this.GetExp() === 0 && !this.GetIsLock() && this.GetQuality() >= CalabashDefine_1.VISION_REFINE_FILTER_QUALITY;
+    return this.GetPhantomLevel() === 0 && this.GetExp() === 0 && this.GetQuality() >= CalabashDefine_1.VISION_REFINE_FILTER_QUALITY;
   }
   IsMax() {
     return this.PhantomLevel >= ControllerHolder_1.ControllerHolder.PhantomBattleController.GetMaxLevel(this.BVi);
@@ -839,6 +839,10 @@ class PhantomDataBase {
       }
     }
     return true;
+  }
+  CheckIfHaveSelectMainPhantomType() {
+    var t = ModelManager_1.ModelManager.VisionRecommendModel.CurrentMainPhantom;
+    return t === undefined || this.FetterGroupId === t.FetterGroupId && this.GetMonsterId() === t.MonsterId;
   }
   GetPropShowAttributeList(e) {
     var r = new Array();

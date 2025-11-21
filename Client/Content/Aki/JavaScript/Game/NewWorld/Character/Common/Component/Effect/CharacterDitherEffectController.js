@@ -103,7 +103,7 @@ class CharacterDitherEffectController {
             return;
           }
           this.Ane = s.DisableActor("[CharacterDitherEffectController.SetHiddenInGame]");
-          if (!s.Entity.GetComponent(187)?.IsNpcOutShowRange) {
+          if (!s.Entity.GetComponent(190)?.IsNpcOutShowRange) {
             this.Pne = s.DisableCollision("[CharacterDitherEffectController.SetHiddenInGame]");
           }
         } else {

@@ -13,6 +13,9 @@ class WeaponDataBase {
   GetModels(e) {
     return (e === WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID ? this.GetItemConfig() : ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfig(e)).Models;
   }
+  GetModelsIndex(e) {
+    return (e === WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID ? this.GetItemConfig() : ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfig(e)).ModelsIndex;
+  }
   GetTransformId(e) {
     return (e === WeaponSkinDefine_1.WEAPON_SKIN_DEFAULT_ID ? this.GetItemConfig() : ConfigManager_1.ConfigManager.SkinConfig.GetWeaponSkinConfig(e)).TransformId;
   }

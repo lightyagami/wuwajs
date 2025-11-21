@@ -196,7 +196,7 @@ class DangoAbyssEntranceView extends UiTickViewBase_1.UiTickViewBase {
           this.$pt.Play();
         }
       }
-    });
+    }, 100, this.MemoryTag);
   }
   OnBeforeHide() {
     this.W8e();

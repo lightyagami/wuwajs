@@ -52,7 +52,7 @@ let RoleInhalationComponent = class RoleInhalationComponent extends EntityCompon
     for (const r of this.DKo) {
       var i;
       var e = r.Entity;
-      if (e?.Valid && this.zel(e, false) && ((i = e.GetComponent(264)).StartInhalation(this.Entity), this.Yel.add(i), i = e.GetComponent(0))) {
+      if (e?.Valid && this.zel(e, false) && ((i = e.GetComponent(269)).StartInhalation(this.Entity), this.Yel.add(i), i = e.GetComponent(0))) {
         GlobalData_1.GlobalData.BpEventManager.开始吸取污染物.Broadcast(i.GetPbDataId());
       }
     }
@@ -68,9 +68,9 @@ let RoleInhalationComponent = class RoleInhalationComponent extends EntityCompon
     }
   }
   zel(t, i) {
-    var e = t.GetComponent(264);
-    var o = t.GetComponent(203);
-    var r = t.GetComponent(197);
+    var e = t.GetComponent(269);
+    var o = t.GetComponent(206);
+    var r = t.GetComponent(200);
     if (e === undefined || o === undefined || r === undefined) {
       return false;
     }
@@ -129,5 +129,5 @@ let RoleInhalationComponent = class RoleInhalationComponent extends EntityCompon
     }
   }
 };
-RoleInhalationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(266)], RoleInhalationComponent);
+RoleInhalationComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(271)], RoleInhalationComponent);
 exports.RoleInhalationComponent = RoleInhalationComponent; //# sourceMappingURL=RoleInhalationComponent.js.map

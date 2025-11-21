@@ -19,16 +19,16 @@ class TsDecoratorCheckAnimalMoveRange extends UE.BTDecorator_BlueprintBase {
     this.RangeInfo = undefined;
     this.IsInitTsVariables = false;
   }
-  PerformConditionCheckAI(e, r) {
-    var o;
-    var t = e.AiController;
-    if (t) {
+  PerformConditionCheckAI(e, o) {
+    var r;
+    var n = e.AiController;
+    if (n) {
       if (!this.IsInitTsVariables) {
         this.IsInitTsVariables = true;
-        o = t.CharActorComp.Entity;
-        this.InitRangeInfo(o);
+        r = n.CharActorComp.Entity;
+        this.InitRangeInfo(r);
       }
-      return !this.RangeInfo || this.RangeInfo.IsInRange(t.CharActorComp.ActorLocationProxy);
+      return !this.RangeInfo || this.RangeInfo.IsInRange(n.CharActorComp.ActorLocationProxy);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BehaviorTree", 29, "错误的Controller类型", ["Type", e.GetClass().GetName()]);
@@ -37,24 +37,38 @@ class TsDecoratorCheckAnimalMoveRange extends UE.BTDecorator_BlueprintBase {
     }
   }
   InitRangeInfo(e) {
-    e = e.GetComponent(0)?.GetPbEntityInitData();
-    if (e) {
-      e = (0, IComponent_1.getComponent)(e.ComponentsData, "AnimalComponent");
-      if (e && e.MoveRange) {
-        e = ModelManager_1.ModelManager.CreatureModel.GetEntityData(e.MoveRange);
-        if (e) {
-          var r = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(e.BlueprintType);
-          var e = (0, IEntity_1.decompressEntityData)(e, r);
-          var o = (0, IComponent_1.getComponent)(e.ComponentsData, "RangeComponent");
-          var t = e.Transform;
-          switch (o.Shape.Type) {
-            case "Box":
-              this.RangeInfo = new AiContollerLibrary_1.BoxRangeEntityInfo(o.Shape, t);
-              break;
-            case "Sphere":
-              this.RangeInfo = new AiContollerLibrary_1.SphereRangeEntityInfo(o.Shape, t);
+    var e = e.GetComponent(0);
+    var o = e?.GetPbEntityInitData();
+    if (o && e) {
+      var r = (0, IComponent_1.getComponent)(o.ComponentsData, "AnimalComponent");
+      if (r) {
+        if (r.UseRangeComponentAsMoveRange) {
+          const n = (0, IComponent_1.getComponent)(o.ComponentsData, "RangeComponent");
+          const t = {
+            Pos: e.GetInitLocation()
+          };
+          this.SetRangeInfo(n?.Shape, t);
+        } else if (r.MoveRange) {
+          o = ModelManager_1.ModelManager.CreatureModel.GetEntityData(r.MoveRange);
+          if (o) {
+            e = ModelManager_1.ModelManager.CreatureModel.GetEntityTemplate(o.BlueprintType);
+            r = (0, IEntity_1.decompressEntityData)(o, e);
+            const n = (0, IComponent_1.getComponent)(r.ComponentsData, "RangeComponent");
+            const t = r.Transform;
+            this.SetRangeInfo(n.Shape, t);
           }
         }
+      }
+    }
+  }
+  SetRangeInfo(e, o) {
+    if (e && o) {
+      switch (e.Type) {
+        case "Box":
+          this.RangeInfo = new AiContollerLibrary_1.BoxRangeEntityInfo(e, o);
+          break;
+        case "Sphere":
+          this.RangeInfo = new AiContollerLibrary_1.SphereRangeEntityInfo(e, o);
       }
     }
   }

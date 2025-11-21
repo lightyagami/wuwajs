@@ -8,6 +8,10 @@ const UE = require("ue");
 const PersonalController_1 = require("../Controller/PersonalController");
 const PersonalCardBaseItem_1 = require("./PersonalCardBaseItem");
 class PersonalCardItem extends PersonalCardBaseItem_1.PersonalCardBaseItem {
+  constructor() {
+    super(...arguments);
+    this.Wmm = false;
+  }
   OnRegisterComponent() {
     super.OnRegisterComponent();
     this.ComponentRegisterInfos.push([3, UE.UIItem], [4, UE.UIItem]);
@@ -16,9 +20,12 @@ class PersonalCardItem extends PersonalCardBaseItem_1.PersonalCardBaseItem {
     super.Refresh(e, r, s);
     var r = this.GetItem(3);
     var s = this.GetItem(4);
-    var o = PersonalController_1.PersonalController.CheckCardIsUsing(this.CardConfig.Id);
-    r.SetUIActive(o);
+    var t = PersonalController_1.PersonalController.CheckCardIsUsing(this.CardConfig.Id);
+    r.SetUIActive(t && !this.Wmm);
     s.SetUIActive(!e.IsUnLock);
+  }
+  SetIsOtherCardItem(e) {
+    this.Wmm = e;
   }
 }
 exports.PersonalCardItem = PersonalCardItem;

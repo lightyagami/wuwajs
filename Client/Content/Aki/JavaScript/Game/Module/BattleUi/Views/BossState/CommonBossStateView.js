@@ -14,13 +14,14 @@ const PublicUtil_1 = require("../../../../Common/PublicUtil");
 const GlobalData_1 = require("../../../../GlobalData");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const MoraleMonsterLevelItem_1 = require("../../../Battle/Morale/View/MoraleMonsterLevelItem");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BuffItemContainer_1 = require("../BuffItemContainer");
 const HpBufferStateMachine_1 = require("../HeadState/HpBufferStateMachine");
 const RageBufferStateMachine_1 = require("../HeadState/RageBufferStateMachine");
 const VisibleAnimMachine_1 = require("../State/VisibleAnimMachine");
+const StateExtraFunction_1 = require("../StateExtra/StateExtraFunction");
+const HeadStateWeaknessItem_1 = require("../Weakness/HeadStateWeaknessItem");
 const BossStateViewBase_1 = require("./BossStateViewBase");
 const FallDownPercentMachine_1 = require("./FallDownPercentMachine");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
@@ -63,8 +64,9 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Rnt = 0;
     this.Unt = 0;
     this.Ant = false;
-    this.NN1 = undefined;
-    this.VN1 = false;
+    this.JWt = undefined;
+    this.j9d = false;
+    this.Qti = undefined;
     this.OnBossHeathChanged = (t, i, s) => {
       this.Pnt(true);
     };
@@ -143,6 +145,10 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Vnt = () => {
       this.bnt(31);
     };
+    this.Xvm = () => {
+      this.Yvm();
+      this.zvm();
+    };
     this.Hnt = new Map();
     this.jnt = t => {
       if (!t) {
@@ -161,7 +167,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UISprite], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UINiagara], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UISprite], [19, UE.UINiagara], [20, UE.UISprite], [21, UE.UISprite], [22, UE.UIItem], [23, UE.UINiagara], [24, UE.UINiagara], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UITexture], [34, UE.UIItem], [35, UE.UIItem], [36, UE.UISprite], [37, UE.UISprite], [38, UE.UISprite], [39, UE.UINiagara], [40, UE.UIItem], [41, UE.UIItem]];
     this.fnt = CommonParamById_1.configCommonParamById.GetIntConfig("HitEffectDuration");
   }
   OnStart() {
@@ -190,6 +196,10 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       }
       this.hst(0);
     }
+    if (this.Qti) {
+      this.Qti.Destroy();
+      this.Qti = undefined;
+    }
   }
   OnActivate() {
     super.OnActivate();
@@ -211,6 +221,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Znt();
     this.est();
     this.tst();
+    this.Jvm();
     this.dnt.SetUpdateCallback(this.Nnt, this.knt, this.Vnt);
     this.ont.SetVisible(true, SHOW_VIEW_ANIM_TIME);
   }
@@ -224,6 +235,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.mkn.ClearAll();
     this.Ent = false;
     this.rnt?.Deactivate();
+    this.Qti?.Refresh(undefined);
   }
   Initialize(t) {
     super.Initialize(t);
@@ -235,6 +247,11 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       this.Cnt = t;
     }, 103);
     this.Ent = this.HasFallDownTag;
+  }
+  async InitializeAsync() {
+    this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
+    await this.Qti.InitializeAsync(this.GetItem(34));
+    this.Qti.SetStateChangeCallback(this.Xvm);
   }
   OnBossShieldChanged(t) {
     this.Pnt(true);
@@ -302,6 +319,7 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       this.ist();
     }
     this.snt = i;
+    this.Yvm();
   }
   fst(t) {
     var i;
@@ -370,27 +388,24 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     }
   }
   jN1() {
-    this.HN1();
-  }
-  HN1() {
-    var t = this.GetMoraleLevel();
+    var t = (0, StateExtraFunction_1.getExtraItemParamsByCreatureData)(this.GetCreatureDataComp());
     var i = this.GetItem(32);
     if (t) {
-      if (this.NN1) {
-        this.NN1.SetMoraleLevel(t);
-        this.NN1.SetUiActive(true);
+      if (this.JWt && this.JWt.GetExtraItemType() === t.Type) {
+        this.JWt.InitExtraParams(t);
+        this.JWt.SetUiActive(true);
         i?.SetUIActive(true);
-      } else if (!this.VN1) {
-        this.VN1 = true;
-        const s = new MoraleMonsterLevelItem_1.MoraleMonsterLevelItem();
-        s.CreateByResourceIdAsync("UiItem_MonsterMoraleLevel", i, true).then(() => {
+      } else if (!this.j9d) {
+        this.j9d = true;
+        const s = t.Creator();
+        s.CreateByResourceIdAsync(t.ResourceId, i, true).then(() => {
           if (this.IsValid()) {
-            this.NN1 = s;
-            this.HN1();
+            this.JWt = s;
+            this.jN1();
             this.xnt();
           }
         }).finally(() => {
-          this.VN1 = false;
+          this.j9d = false;
         });
       }
     } else {
@@ -541,6 +556,32 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
       }
     }
   }
+  Jvm() {
+    if (this.Qti) {
+      this.Qti.Refresh(this.GetEntity());
+    }
+    this.GetUiNiagara(39).SetUIActive(false);
+    this.Yvm();
+    this.zvm();
+  }
+  Yvm() {
+    if (this.Qti && this.Qti.IsFullState()) {
+      this.GetSprite(36).SetFillAmount(this.snt);
+      this.GetSprite(37).SetFillAmount(this.snt);
+      this.GetSprite(38).SetFillAmount(this.snt);
+    }
+  }
+  zvm() {
+    if (this.Qti.IsFullState()) {
+      this.GetItem(35).SetUIActive(true);
+      this.bnt(40);
+    } else if (this.Qti.IsBreakState()) {
+      this.GetItem(35).SetUIActive(true);
+      this.bnt(41);
+    } else {
+      this.GetItem(35).SetUIActive(false);
+    }
+  }
   Qnt() {
     this.Est(25);
     this.Est(26);
@@ -549,6 +590,8 @@ class CommonBossStateView extends BossStateViewBase_1.BossStateViewBase {
     this.Est(29);
     this.Est(30);
     this.Est(31);
+    this.Est(40);
+    this.Est(41);
   }
   Est(t) {
     var i = [];

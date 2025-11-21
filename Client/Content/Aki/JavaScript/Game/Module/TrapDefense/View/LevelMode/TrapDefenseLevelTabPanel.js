@@ -53,7 +53,7 @@ class TrapDefenseLevelTabPanel extends UiPanelBase_1.UiPanelBase {
     this.CurSelectLevel = e;
   }
   UpdateLevelDataList(e) {
-    const i = this.TYc(e);
+    const i = this.bJc(e);
     this.CurSelectLevel = e[i];
     this.ScrollLevel.SelectGridProxy(-1);
     this.ScrollLevel.RefreshByData(e, () => {
@@ -64,7 +64,7 @@ class TrapDefenseLevelTabPanel extends UiPanelBase_1.UiPanelBase {
       }
     }, true);
   }
-  TYc(e) {
+  bJc(e) {
     var i = e.findIndex(e => e.Id === this.CurSelectLevel?.Id);
     if (i >= 0) {
       return i;

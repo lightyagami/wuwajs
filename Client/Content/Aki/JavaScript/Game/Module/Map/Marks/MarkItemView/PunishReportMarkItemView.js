@@ -17,10 +17,7 @@ class PunishReportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
     };
     this.ihh = e;
   }
-  OnInitialize() {
-    super.OnInitialize();
-  }
-  OnAfterShow() {
+  OnViewRefresh() {
     this.ihh.UpdateIconPath();
     this.OnIconPathChanged(this.Holder.IconPath);
   }
@@ -33,9 +30,6 @@ class PunishReportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   OnSafeUpdate(e, t, i) {
     this.ihh.UpdateIconPath();
     this.OnIconPathChanged(this.Holder.IconPath);
-  }
-  OnIconPathChanged(e) {
-    super.OnIconPathChanged(this.Holder.IconPath);
   }
 }
 exports.PunishReportMarkItemView = PunishReportMarkItemView;

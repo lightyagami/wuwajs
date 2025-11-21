@@ -13,13 +13,13 @@ exports.MAX_SIGN_LENGTH = 40;
 exports.MAX_NAME_LENGTH = 12;
 exports.STOP_AUDIO_EVENT_NAME = "stop_gacha_role_audio";
 class PersonalCardData {
-  constructor(t, e, r) {
+  constructor(t, e, s) {
     this.CardId = 0;
     this.IsRead = false;
     this.IsUnLock = false;
     this.CardId = t;
     this.IsRead = e;
-    this.IsUnLock = r;
+    this.IsUnLock = s;
   }
   RefreshData(t, e) {
     this.IsRead = t;
@@ -33,12 +33,18 @@ class PersonalPlayerTitleData {
     this.StarLevel = undefined;
     this.IsUnLock = false;
     this.UnlockTime = undefined;
+    this.CurProgress = undefined;
+    this.TargetProgress = undefined;
     this.PlayerTitleId = t;
     this.IsUnLock = e;
     if (this.IsUnLock && (e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PlayerTitleRecord) ?? new Map()).get(t) === undefined) {
       e.set(t, true);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PlayerTitleRecord, e);
     }
+  }
+  SetUnLockProgress(t, e) {
+    this.CurProgress = t;
+    this.TargetProgress = e;
   }
   UnLock(t) {
     this.IsUnLock = true;
@@ -98,15 +104,15 @@ class PersonalInfoData {
   GetCardList(e) {
     let t = this.CardDataList;
     (t = t.filter(t => !!e || t.IsUnLock)).sort((t, e) => {
-      var r;
       var s;
+      var r;
       if (t.IsUnLock !== e.IsUnLock) {
         return Number(e.IsUnLock) - Number(t.IsUnLock);
       } else {
-        r = BackgroundCardById_1.configBackgroundCardById.GetConfig(t.CardId);
-        s = BackgroundCardById_1.configBackgroundCardById.GetConfig(e.CardId);
-        if (r.SortIndex !== s.SortIndex) {
-          return s.SortIndex - r.SortIndex;
+        s = BackgroundCardById_1.configBackgroundCardById.GetConfig(t.CardId);
+        r = BackgroundCardById_1.configBackgroundCardById.GetConfig(e.CardId);
+        if (s.SortIndex !== r.SortIndex) {
+          return r.SortIndex - s.SortIndex;
         } else {
           return e.CardId - t.CardId;
         }

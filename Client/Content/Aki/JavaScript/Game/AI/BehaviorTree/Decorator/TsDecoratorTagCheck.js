@@ -80,7 +80,7 @@ class TsDecoratorTagCheck extends UE.BTDecorator_BlueprintBase {
         return false;
       }
     }
-    var o = i.GetComponent(206);
+    var o = i.GetComponent(209);
     if (this.TsLogic === 1) {
       for (let t = this.TsCheckTags.length - 1; t >= 0; --t) {
         var s = this.TsCheckTags[t];

@@ -14,36 +14,37 @@ class AwakeAndLoadEntityNode extends TickBehaviorNode_1.TickBehaviorNode {
     super(...arguments);
     this.fLe = undefined;
     this.GAc = 0;
+    this.GYd = false;
     this.lQa = e => {
       this.GAc = e ? 2 : 0;
     };
   }
   OnCreate(e) {
-    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.AwakeAndLoadEntity && (this.fLe = e.EntityIds, this.IntervalTime = 1000, true);
+    return !!super.OnCreate(e) && (e = e.Condition).Type === IQuest_1.EChildQuest.AwakeAndLoadEntity && (this.fLe = e.EntityIds, this.IntervalTime = 1000, this.GYd = e.IsWaitForShow ?? false, true);
   }
   OnTick() {
     if (this.GAc === 0) {
       if (this.fLe && this.fLe.length !== 0) {
-        for (const t of this.fLe) {
-          if (ModelManager_1.ModelManager.CreatureModel.GetEntityData(t)) {
-            var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
+        for (const i of this.fLe) {
+          if (ModelManager_1.ModelManager.CreatureModel.GetEntityData(i)) {
+            var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
             if (e) {
               if (!e.IsInit) {
                 return;
               }
-              var r = e.Entity.GetComponent(157);
-              if (r && !r.LoadingBaseConfigFinish) {
+              var t = e.Entity.GetComponent(160);
+              if (t && !t.LoadingBaseConfigFinish) {
                 return;
               }
-              r = e.Entity.GetComponent(203);
-              if (r && r.CreatureData.GetVisible() && !r.GetIsSceneInteractionLoadCompleted()) {
+              t = e.Entity.GetComponent(206);
+              if (this.GYd && t && !t.GetIsSceneInteractionLoadCompleted()) {
                 return;
               }
             } else if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Entity", 18, "GeneralLogicTree.AwakeAndLoadEntityNode AOI范围外的实体", ["TreeConfigId", this.TreeConfigId], ["NodeId", this.NodeId], ["pbDataId", t]);
+              Log_1.Log.Info("Entity", 18, "GeneralLogicTree.AwakeAndLoadEntityNode AOI范围外的实体", ["TreeConfigId", this.TreeConfigId], ["NodeId", this.NodeId], ["pbDataId", i]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Entity", 18, "GeneralLogicTree.AwakeAndLoadEntityNode 找不到实体配置", ["entityId", t]);
+            Log_1.Log.Error("Entity", 18, "GeneralLogicTree.AwakeAndLoadEntityNode 找不到实体配置", ["entityId", i]);
           }
         }
       }

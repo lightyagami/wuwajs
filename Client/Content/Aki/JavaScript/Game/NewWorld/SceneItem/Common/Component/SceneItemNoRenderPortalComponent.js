@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SceneItemNoRenderPortalComponent = undefined;
 const UE = require("ue");
+const ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const QueryTypeDefine_1 = require("../../../../../Core/Define/QueryTypeDefine");
@@ -51,7 +52,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const ScrollingTipsController_1 = require("../../../../Module/ScrollingTips/ScrollingTipsController");
 const SeamlessTravelDefine_1 = require("../../../../Module/SeamlessTravel/SeamlessTravelDefine");
 const TeleportController_1 = require("../../../../Module/Teleport/TeleportController");
-const TeleportDefine_1 = require("../../../../Module/Teleport/TeleportDefine");
+const TeleportTransitionHelper_1 = require("../../../../Module/Teleport/TeleportTransitionHelper");
 const ActorUtils_1 = require("../../../../Utils/ActorUtils");
 const GravityUtils_1 = require("../../../../Utils/GravityUtils");
 const PortalUtils_1 = require("../../../../Utils/PortalUtils");
@@ -83,8 +84,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     this.ActorComp = undefined;
     this.Eel = undefined;
     this.Rd_ = undefined;
-    this.IsPortalPrepared = false;
-    this.IsPortalConnected = false;
+    this.Cpm = 0;
     this.R0n = undefined;
     this.Rnn = () => {
       this.xka();
@@ -99,7 +99,24 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
         this.RIl();
       }
     };
+    this.ppm = undefined;
     this.Lll = undefined;
+  }
+  get IsPortalPrepared() {
+    return this.vpm(1);
+  }
+  get IsPortalConnected() {
+    return this.vpm(2);
+  }
+  vpm(e) {
+    return !!(this.Cpm & e);
+  }
+  ypm(e, t) {
+    if (t) {
+      this.Cpm |= e;
+    } else {
+      this.Cpm &= ~e;
+    }
   }
   GetPbDataId() {
     return this.wDe;
@@ -130,7 +147,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(203);
+    this.ActorComp = this.Entity.GetComponent(206);
     return true;
   }
   OnActivate() {
@@ -160,23 +177,23 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
   }
   xka() {
     if (!!this.U6a() && !this.IsPortalPrepared) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "无画面传送门: PreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PlaneTransform", this.ActorComp?.ActorTransform]);
+      if (ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition) {
+        this.GetOrCreateWpStreamingPortal();
       }
-      this.IsPortalPrepared = true;
+      this.ypm(1, true);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("SceneItem", 39, "无画面传送门: PreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PlaneTransform", this.ActorComp?.ActorTransform], ["PortalStateFlags", this.Cpm]);
+      }
     }
   }
   R6a() {
-    if (this.IsPortalPrepared) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SceneItem", 39, "无画面传送门: UnPreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
-      }
-      this.IsPortalPrepared = false;
+    if (this.IsPortalPrepared && (ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition && this.Spm(), this.ypm(1, false), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("SceneItem", 39, "无画面传送门: UnPreparePortal Success", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["PortalStateFlags", this.Cpm]);
     }
   }
   CanConnectPortal() {
     var e;
-    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !(e = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(e, false)) && !!this.IsPortalPrepared && !!(e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity)?.GetComponent(1) && (!(e = e.GetComponent(217)) || !!e.IsPortalPrepared);
+    return !!(this.Entity.Flag & 4) && !!this.ActorComp?.GetIsSceneInteractionLoadCompleted() && !(e = this.ActorComp.CreatureData.GetEntityOnlineInteractType(), !LevelGamePlayController_1.LevelGamePlayController.MultiplayerLimitTypeCheck(e, false)) && !!this.IsPortalPrepared && !!(e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity)?.GetComponent(1) && (!(e = e.GetComponent(220)) || !!e.IsPortalPrepared);
   }
   LIl() {
     var e;
@@ -184,9 +201,11 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     var r;
     if (this.CanConnectPortal() && !this.IsPortalConnected && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl))?.Valid) {
       t = e.Entity.GetComponent(0).GetCreatureDataId();
-      r = e.Entity.GetComponent(217);
+      r = e.Entity.GetComponent(220);
       this.SetTargetCreatureDataId(t);
       r?.SetTargetCreatureDataId(this.GetCreatureDataId());
+      this.Mpm(r?.GetOrCreateWpStreamingPortal());
+      r?.Mpm(this.GetOrCreateWpStreamingPortal());
       this.AfterConnectPair();
       r?.AfterConnectPair();
       if (!EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this._ln)) {
@@ -197,9 +216,11 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
   RIl() {
     var e;
     if (this.IsPortalConnected) {
-      e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity?.GetComponent(217);
+      e = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(this.TIl)?.Entity?.GetComponent(220);
       this.SetTargetCreatureDataId(0);
       e?.SetTargetCreatureDataId(0);
+      this.Mpm(undefined);
+      e?.Mpm(undefined);
       this.AfterDisconnectPair();
       e?.AfterDisconnectPair();
     }
@@ -208,15 +229,41 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SceneItem", 39, "无画面传送门: AfterConnectPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
     }
-    this.IsPortalConnected = true;
+    this.ypm(2, true);
     this.Nla();
   }
   AfterDisconnectPair() {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SceneItem", 39, "无画面传送门: AfterDisconnectPair", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
     }
-    this.IsPortalConnected = false;
+    this.ypm(2, false);
     this.tTa();
+  }
+  GetOrCreateWpStreamingPortal() {
+    if (ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition) {
+      if (!this.ppm?.IsValid()) {
+        let e = this.GetTeleportToSelfTransformProxy();
+        e = e || Transform_1.Transform.Create(this.ActorComp?.ActorTransform);
+        this.ppm = ActorSystem_1.ActorSystem.Get(UE.WorldPartitionStreamingPortal.StaticClass(), e.ToUeTransform(), this.ActorComp?.Owner);
+      }
+      return this.ppm;
+    }
+  }
+  Spm() {
+    if (ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition) {
+      if (this.ppm?.IsValid()) {
+        if (this.ppm.GetTargetStreamingSourceComponent()?.IsValid()) {
+          this.ppm.SetTargetStreamingSourceComponent(undefined);
+        }
+        ActorSystem_1.ActorSystem.Put("SceneItemNoRenderPortalComponent.ClearWpStreamingPortal", this.ppm);
+      }
+      this.ppm = undefined;
+    }
+  }
+  Mpm(e) {
+    if (ModelManager_1.ModelManager.GameModeModel?.UseWorldPartition && this.ppm?.IsValid()) {
+      this.ppm.SetTargetStreamingSourceComponent(e?.GetStreamingSourceComponent());
+    }
   }
   GetTriggerActor() {
     if (this.Eel) {
@@ -284,7 +331,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
             if (o) {
               if (this.Dll(e, e === t)) {
                 if (r?.Valid) {
-                  o = r.Entity.GetComponent(157);
+                  o = r.Entity.GetComponent(160);
                   if (o && o.CurrentState instanceof SceneItemManipulableCastProjectileState_1.SceneItemManipulatableCastProjectileState) {
                     return;
                   }
@@ -299,7 +346,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
               Log_1.Log.Info("SceneItem", 39, "无画面传送门: 不满足过门条件组，忽略", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe]);
             }
           } else {
-            if ((o = r?.Entity?.GetComponent(157)) && o.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (t = o.CurrentState).HasHitCallback()) {
+            if ((o = r?.Entity?.GetComponent(160)) && o.CurrentState instanceof SceneItemManipulableCastState_1.SceneItemManipulableCastState && (t = o.CurrentState).HasHitCallback()) {
               t.CallHitCallback(e, this.ActorComp?.Owner);
             }
             if (Log_1.Log.CheckInfo()) {
@@ -316,7 +363,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
         Log_1.Log.Info("SceneItem", 39, "无画面传送门: BeforeTeleport", ["CreatureDataId", this.Wpo], ["PbDataId", this.wDe], ["ActorPos", Vector_1.Vector.Create(r?.D_GetTransform().GetLocation())], ["ActorRot", Rotator_1.Rotator.Create(r?.D_GetTransform().Rotator())]);
       }
       let e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity;
-      var i = (e = e || EntitySystem_1.EntitySystem.Get(this.Tln))?.GetComponent(217);
+      var i = (e = e || EntitySystem_1.EntitySystem.Get(this.Tln))?.GetComponent(220);
       var a = this.GetTriggerActor()?.D_GetTransform();
       var s = i?.GetTriggerActor()?.D_GetTransform();
       if (a && s) {
@@ -378,35 +425,37 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     }
     if (e.IsRole) {
       this.v4a(e);
-      if (TeleportController_1.TeleportController.QueryCanTeleportNoLoading(t, true)) {
+      var i = ModelManager_1.ModelManager.TeleportModel;
+      if (TeleportController_1.TeleportController.QueryCanTeleportNoLoading(t)) {
         SceneItemNoRenderPortalComponent_1.PlayNoLoadingPassPortalEffects(this.R0n?.Config.TeleportSceneEffect?.ScreenEffectPath, this.R0n?.Config.TeleportSceneEffect?.WorldEffectPath, NO_LOADING_SCREEN_EFFECT_MAX_INTERVAL);
-        ModelManager_1.ModelManager.TeleportModel.TeleportMode = 4;
-        TeleportController_1.TeleportController.TeleportToPositionWithGravityNoLoading(t, r, o, "无画面传送门传送", true, true).finally().finally(() => {
+        i.TeleportMode = 4;
+        TeleportController_1.TeleportController.TeleportToPositionWithGravityNoLoading(t, r, o, "无画面传送门传送", true).finally().finally(() => {
           this.f4a(e);
         });
       } else {
-        var i = TeleportController_1.TeleportController.ParseTeleportTransitionOptionToPb(this.R0n?.Config.TeleportLoadingEffect);
-        switch (i.p5n) {
+        var a = TeleportTransitionHelper_1.TeleportTransitionHelper.ParseTeleportTransitionOptionToPb(this.R0n?.Config.TeleportLoadingEffect);
+        switch (a.p5n) {
           case Protocol_1.Aki.Protocol.p5n.Proto_CenterText:
-            ModelManager_1.ModelManager.TeleportModel.TeleportMode = 0;
+            i.TeleportMode = 0;
             break;
           case Protocol_1.Aki.Protocol.p5n.Proto_Seamless:
-            ModelManager_1.ModelManager.TeleportModel.TeleportMode = 4;
-            if (ModelManager_1.ModelManager.TeleportModel.SeamlessEndHandle) {
-              TimerSystem_1.TimerSystem.Remove(ModelManager_1.ModelManager.TeleportModel.SeamlessEndHandle);
-              ModelManager_1.ModelManager.TeleportModel.SeamlessEndHandle = undefined;
+            i.TeleportMode = 4;
+            if (i.SeamlessEndHandle) {
+              TimerSystem_1.TimerSystem.Remove(i.SeamlessEndHandle);
+              i.SeamlessEndHandle = undefined;
             }
-            ModelManager_1.ModelManager.TeleportModel.SeamlessConfig = new SeamlessTravelDefine_1.SeamlessTravelContext();
-            ModelManager_1.ModelManager.TeleportModel.SeamlessConfig.ParseConfig(i.R$s);
+            i.SeamlessConfig = new SeamlessTravelDefine_1.SeamlessTravelContext();
+            i.SeamlessConfig.ParseConfig(a.R$s);
             break;
           case Protocol_1.Aki.Protocol.p5n.Proto_FadeInScreen:
-            ModelManager_1.ModelManager.TeleportModel.TeleportMode = 3;
+            i.TeleportMode = 3;
             break;
           default:
-            ModelManager_1.ModelManager.TeleportModel.TeleportMode = 1;
+            i.TeleportMode = 1;
         }
-        var a = new TeleportDefine_1.TeleportContext(Protocol_1.Aki.Protocol.v4s.Xvs, undefined, undefined, undefined, i);
-        TeleportController_1.TeleportController.TeleportToPositionNoSync(t, r, o, "ClientSetPlayerPos", a).finally(() => {
+        i.TeleportReason = Protocol_1.Aki.Protocol.v4s.Xvs;
+        i.Option = a;
+        (ControllerHolder_1.ControllerHolder.TeleportController.UseNewTeleport ? (ModelManager_1.ModelManager.TeleportModel.WaitServerResponse = false, ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayer("LevenEvent.ClientSetPlayerPos", t, r, o, 0)) : TeleportController_1.TeleportController.TeleportToPositionNoSync(t, r, o, "ClientSetPlayerPos")).finally(() => {
           this.f4a(e);
         });
         ModelManager_1.ModelManager.WorldMapModel.WaitToTeleportMarkConfigId = undefined;
@@ -464,7 +513,7 @@ let SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = clas
     return !!i && (o = Vector_1.Vector.Create(i.D_K2_GetActorLocation()), t = Vector_1.Vector.Create(e.ActorLocationProxy), e = Vector_1.Vector.Create(e.LastActorLocation), i = Vector_1.Vector.Create(i.D_GetActorForwardVector()), r = Vector_1.Vector.Create(), e.Subtraction(o, r), r.Normalize(), o = i.DotProduct(r) > -MathUtils_1.MathUtils.SmallNumber, e.Subtraction(t, r), r.Normalize(), e = i.DotProduct(r) > -MathUtils_1.MathUtils.SmallNumber, o) && e;
   }
   Dll(t, r) {
-    var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity?.GetComponent(217);
+    var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Tln)?.Entity?.GetComponent(220);
     if (!o) {
       return false;
     }
@@ -562,5 +611,5 @@ SceneItemNoRenderPortalComponent.DIl = undefined;
 SceneItemNoRenderPortalComponent.AIl = undefined;
 SceneItemNoRenderPortalComponent.xIl = undefined;
 SceneItemNoRenderPortalComponent.P6a = new Set();
-SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(217)], SceneItemNoRenderPortalComponent);
+SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(220)], SceneItemNoRenderPortalComponent);
 exports.SceneItemNoRenderPortalComponent = SceneItemNoRenderPortalComponent; //# sourceMappingURL=SceneItemNoRenderPortalComponent.js.map

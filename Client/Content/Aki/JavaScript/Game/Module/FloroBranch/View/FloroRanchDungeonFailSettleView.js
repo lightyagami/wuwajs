@@ -25,7 +25,7 @@ class FloroRanchDungeonFailSettleView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
-    var o = e?.KBu;
+    var o = e?.H4u;
     if (e === undefined || o === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 58, "弗洛洛牧场副本成功结算界面参数错误");

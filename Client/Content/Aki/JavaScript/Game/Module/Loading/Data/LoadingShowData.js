@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LoadingShowData = undefined;
+const Log_1 = require("../../../../Core/Common/Log");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -17,38 +18,37 @@ class LoadingShowData {
     this.PGc = 0;
     this._Ui = 0;
     this.L9e = 0;
-    this.XJc = 0;
+    this.Zed = 0;
   }
   Initialize() {
     this.Cvi();
     this.dvi = [...this.uvi];
-    this.mvi = this.dvi.reduce((t, e) => t + e.Weight, 0);
+    this.mvi = this.dvi.reduce((e, t) => e + t.Weight, 0);
   }
-  gvi(t) {
-    var e = new Set();
-    for (const i of t) {
-      e.add(i.ImageId);
+  gvi(e) {
+    e = Array.from(new Map(e.map(e => [e.ImageId, e])).values());
+    e = e[Math.floor(Math.random() * e.length)];
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("Loading", 71, "获取loading界面数据", ["id", e.LevelAreaId]);
     }
-    var t = Array.from(e.values());
-    var r = Math.random();
-    return t[Math.round(r * (t.length - 1))];
+    return e.ImageId;
   }
   Cvi() {
     this.DGc();
-    var t = [];
-    var e = ModelManager_1.ModelManager.LoadingModel.GetSpecifiedLoadingConfig();
+    var e = [];
+    var t = ModelManager_1.ModelManager.LoadingModel.GetSpecifiedLoadingConfig();
     var r = this.xGc();
-    if (e) {
-      t.push(e.Id);
+    if (t) {
+      e.push(t.Id);
       ModelManager_1.ModelManager.LoadingModel.ClearSpecifiedLoadingConfig();
-      this.XJc = e.DuringTime;
+      this.Zed = t.DuringTime;
     } else if (r && r.length !== 0) {
-      t.push(...r);
+      e.push(...r);
     } else {
-      t.push(...this.UGc());
+      e.push(...this.UGc());
     }
     var i = [];
-    for (const a of t) {
+    for (const a of e) {
       i.push(...ConfigManager_1.ConfigManager.LoadingConfig.GetLoadingTipsTextList(a));
     }
     this.cvi = this.gvi(i);
@@ -60,13 +60,13 @@ class LoadingShowData {
     }
   }
   xGc() {
-    var t = ModelManager_1.ModelManager.LoadingModel.GetLoadingConfigId();
-    if (t && t.length !== 0) {
-      var e;
+    var e = ModelManager_1.ModelManager.LoadingModel.GetLoadingConfigId();
+    if (e && e.length !== 0) {
+      var t;
       var r;
       var i = [];
       for (const a of ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea()) {
-        if (a.Type === 1 && (e = this.PGc >= a.LevelRange[0] && this.PGc <= a.LevelRange[1], r = t.includes(a.Id), e && r)) {
+        if (a.Type === 1 && (t = this.PGc >= a.LevelRange[0] && this.PGc <= a.LevelRange[1], r = e.includes(a.Id), t && r)) {
           i.push(a.Id);
         }
       }
@@ -74,50 +74,50 @@ class LoadingShowData {
     }
   }
   DGc() {
-    var t;
+    var e;
     this.PGc = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerLevel();
     this._Ui = ModelManager_1.ModelManager.GameModeModel.MapId;
     this.L9e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId();
-    if (ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== 0 && ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== undefined && (t = ConfigManager_1.ConfigManager.MapConfig.GetTeleportConfigById(ModelManager_1.ModelManager.LoadingModel.TargetTeleportId), ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = 0, t) && (t = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(t.TeleportEntityConfigId, t.MapId)) !== undefined) {
-      this.L9e = t.AreaId;
+    if (ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== 0 && ModelManager_1.ModelManager.LoadingModel.TargetTeleportId !== undefined && (e = ConfigManager_1.ConfigManager.MapConfig.GetTeleportConfigById(ModelManager_1.ModelManager.LoadingModel.TargetTeleportId), ModelManager_1.ModelManager.LoadingModel.TargetTeleportId = 0, e) && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(e.TeleportEntityConfigId, e.MapId)) !== undefined) {
+      this.L9e = e.AreaId;
     }
   }
   UGc() {
-    var t;
     var e;
+    var t;
     var r;
     var i;
     var a = ConfigManager_1.ConfigManager.LoadingConfig.GetLevelArea();
     var o = [];
-    var s = [];
-    for (const M of a) {
-      if (M.Id !== 1 && M.Type === 0 && (t = this.PGc >= M.LevelRange[0] && this.PGc <= M.LevelRange[1], e = M.MapId.includes(this._Ui), r = M.AreaId.includes(this.L9e), i = M.ConditionGroup === 0 || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(M.ConditionGroup.toString(), undefined), t && e && i && o.push(M), t && r && i)) {
-        s.push(M);
+    var n = [];
+    for (const g of a) {
+      if (g.Id !== 1 && g.Type === 0 && (e = this.PGc >= g.LevelRange[0] && this.PGc <= g.LevelRange[1], t = g.MapId.includes(this._Ui), r = g.AreaId.includes(this.L9e), i = g.ConditionGroup === 0 || ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(g.ConditionGroup.toString(), undefined), e && t && i && o.push(g), e && r && i)) {
+        n.push(g);
       }
     }
-    var n = o.length > 0 ? o : s;
-    var h = n.filter(t => t.IsLimitShow);
-    var n = n.filter(t => !t.IsLimitShow);
-    if (h.length > 0 && h.filter(t => {
-      t = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(t.ActivityId);
-      return t !== undefined && t.CheckIfInOpenTime();
+    var s = o.length > 0 ? o : n;
+    var h = s.filter(e => e.IsLimitShow);
+    var s = s.filter(e => !e.IsLimitShow);
+    if (h.length > 0 && h.filter(e => {
+      e = ModelManager_1.ModelManager.ActivityModel?.GetActivityById(e.ActivityId);
+      return e !== undefined && e.CheckIfInOpenTime();
     }).length > 0) {
-      return h.map(t => t.Id);
+      return h.map(e => e.Id);
     }
-    if (n.length === 0) {
+    if (s.length === 0) {
       return [a[0].Id];
     } else {
-      return n.map(t => t.Id);
+      return s.map(e => e.Id);
     }
   }
   pvi() {
-    let e = this.mvi * Math.random();
-    for (let t = 0; t < this.dvi.length; ++t) {
-      var r = this.dvi[t];
-      if (!(e > r.Weight)) {
-        return t;
+    let t = this.mvi * Math.random();
+    for (let e = 0; e < this.dvi.length; ++e) {
+      var r = this.dvi[e];
+      if (!(t > r.Weight)) {
+        return e;
       }
-      e -= r.Weight;
+      t -= r.Weight;
     }
     return 0;
   }
@@ -126,9 +126,9 @@ class LoadingShowData {
       if (this.uvi.length === 1) {
         return this.uvi[0];
       }
-      let t = -1;
-      while ((t = this.pvi()) === this.hLt);
-      this.hLt = t;
+      let e = -1;
+      while ((e = this.pvi()) === this.hLt);
+      this.hLt = e;
       return this.uvi[this.hLt];
     }
   }
@@ -139,7 +139,7 @@ class LoadingShowData {
     return this.uvi.length;
   }
   GetDuringTime() {
-    return this.XJc;
+    return this.Zed;
   }
 }
 exports.LoadingShowData = LoadingShowData;

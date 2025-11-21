@@ -20,7 +20,7 @@ class CommonQteDragContext extends CommonQteContextBase_1.CommonQteContextBase {
     this.wco = 0;
     this.fgt = 0;
     this.UZu = 0;
-    this.WKd = 0;
+    this.rgm = 0;
     this.IsPreSuccess = false;
     this.LerpSpeedInProgress = -1;
     this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
@@ -83,7 +83,7 @@ class CommonQteDragContext extends CommonQteContextBase_1.CommonQteContextBase {
         AudioSystem_1.AudioSystem.SetRtpcValue(QteDefine_1.QTE_PROGRESS_RTPC, this.GetProgress(), {
           Actor: this.UiActor
         });
-        if (t > this.WKd) {
+        if (t > this.rgm) {
           if (this.RegressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE) {
             ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.RegressAudioHandle);
             this.RegressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
@@ -92,11 +92,11 @@ class CommonQteDragContext extends CommonQteContextBase_1.CommonQteContextBase {
             this.ProgressAudioHandle = ControllerHolder_1.ControllerHolder.CommonQteController.PlayQteAudio(this.Config.AudioConfig.AudioEventProgress, this.UiActor);
             ControllerHolder_1.ControllerHolder.CommonQteController.SeekAudio(t, this.Config.AudioConfig.AudioEventProgress, this.UiActor, this.ProgressAudioHandle);
           }
-        } else if (t < this.WKd && (this.ProgressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE && (ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.ProgressAudioHandle), this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE), this.RegressAudioHandle === AudioSystem_1.INVALID_AUDIO_EVENT_VALUE && this.Config.AudioConfig.AudioEventRegress && (this.RegressAudioHandle = ControllerHolder_1.ControllerHolder.CommonQteController.PlayQteAudio(this.Config.AudioConfig.AudioEventRegress, this.UiActor), ControllerHolder_1.ControllerHolder.CommonQteController.SeekAudio(t, this.Config.AudioConfig.AudioEventRegress, this.UiActor, this.RegressAudioHandle)), t === 0)) {
+        } else if (t < this.rgm && (this.ProgressAudioHandle !== AudioSystem_1.INVALID_AUDIO_EVENT_VALUE && (ControllerHolder_1.ControllerHolder.CommonQteController.StopQteAudio(this.ProgressAudioHandle), this.ProgressAudioHandle = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE), this.RegressAudioHandle === AudioSystem_1.INVALID_AUDIO_EVENT_VALUE && this.Config.AudioConfig.AudioEventRegress && (this.RegressAudioHandle = ControllerHolder_1.ControllerHolder.CommonQteController.PlayQteAudio(this.Config.AudioConfig.AudioEventRegress, this.UiActor), ControllerHolder_1.ControllerHolder.CommonQteController.SeekAudio(t, this.Config.AudioConfig.AudioEventRegress, this.UiActor, this.RegressAudioHandle)), t === 0)) {
           ControllerHolder_1.ControllerHolder.CommonQteController.PlayQteAudio(this.Config.AudioConfig.AudioEventReset, this.UiActor);
         }
       }
-      this.WKd = t;
+      this.rgm = t;
       if (!this.IsPermanent && this.PassTime > this.Duration) {
         this.QteFail();
       }

@@ -35,8 +35,6 @@ const LguiUtil_1 = require("../../Util/LguiUtil");
 const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const InventoryDefine_1 = require("../InventoryDefine");
 const CommonItemData_1 = require("../ItemData/CommonItemData");
-const PhantomItemData_1 = require("../ItemData/PhantomItemData");
-const WeaponItemData_1 = require("../ItemData/WeaponItemData");
 const ItemViewData_1 = require("../ItemViewData");
 const InventoryMediumItemGrid_1 = require("./InventoryMediumItemGrid");
 const ItemViewDefine_1 = require("./ItemViewDefine");
@@ -90,33 +88,38 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       }
     };
     this.OnClickedUseItemButton = () => {
-      var t = ModelManager_1.ModelManager.InventoryModel;
-      var e = t.GetSelectedItemData();
-      if (e) {
-        this.Ddi(e);
-        if (e.GetRedDotDisableRule() === 2) {
-          this.Rdi(e);
+      var t;
+      var e = ModelManager_1.ModelManager.InventoryModel;
+      var i = e.GetSelectedItemData();
+      if (i) {
+        this.Ddi(i);
+        if (i.GetRedDotDisableRule() === 2) {
+          this.Rdi(i);
         }
-        if (e.GetItemDataType() === 0) {
-          t.SaveNewCommonItemConfigIdList();
-          t.SaveRedDotCommonItemConfigIdList();
+        if ((t = i.GetItemDataType()) === 0) {
+          e.SaveNewCommonItemConfigIdList();
+          e.SaveRedDotCommonItemConfigIdList();
         } else {
-          t.SaveNewAttributeItemUniqueIdList();
-          t.SaveRedDotAttributeItemUniqueIdList();
+          e.SaveNewAttributeItemUniqueIdList();
+          e.SaveRedDotAttributeItemUniqueIdList();
         }
-        if ((t = this.cdi.indexOf(e)) >= 0) {
-          this.JPt.RefreshGridProxy(t);
+        if ((e = this.cdi.indexOf(i)) >= 0) {
+          this.JPt.RefreshGridProxy(e);
         }
         this.Udi(0, false);
-        this.Adi(e);
-        ControllerHolder_1.ControllerHolder.InventoryController.TryUseItem(e.GetConfigId(), 1);
+        this.Adi(i);
+        if (t === 18) {
+          ControllerHolder_1.ControllerHolder.SkinController.SkipToCalabashSkinView(i.GetConfigId());
+        } else {
+          ControllerHolder_1.ControllerHolder.InventoryController.TryUseItem(i.GetConfigId(), 1);
+        }
       }
     };
     this.OnClickedSpecialItemFuncUseButton = () => {
       var t = ModelManager_1.ModelManager.InventoryModel;
       var e = t.GetSelectedItemData();
       if (e && (this.Ddi(e), e.GetRedDotDisableRule() === 2 && this.Rdi(e), e.GetItemDataType() === 0 ? (t.SaveNewCommonItemConfigIdList(), t.SaveRedDotCommonItemConfigIdList()) : (t.SaveNewAttributeItemUniqueIdList(), t.SaveRedDotAttributeItemUniqueIdList()), this.Adi(e), ControllerHolder_1.ControllerHolder.SpecialItemController.AutoEquipOrUnEquipSpecialItem(e.GetConfigId()))) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+        UiManager_1.UiManager.ResetToBattleView();
       }
     };
     this.OnClickedWeaponCultivateButton = () => {
@@ -206,7 +209,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       this.cdi = e;
       this.jNt(e);
       if (this.pdi) {
-        this.oad(e);
+        this.Eud(e);
         this.Xpt(this.Hdi());
       } else if (i === 1) {
         this.Xpt(e[0]);
@@ -273,20 +276,20 @@ class InventoryView extends UiViewBase_1.UiViewBase {
           var t;
           var n = Array.from(this.Zdi.values());
           n.sort(this.SortViewDataConfigId);
-          var o = n.length;
-          for (let e = 0; e < o; e++) {
+          var h = n.length;
+          for (let e = 0; e < h; e++) {
             let t = 0;
-            while (e + 1 < o && n[e].GetConfigId() === n[e + 1].GetConfigId() && n[e].GetUniqueId() === 0 && n[e + 1].GetUniqueId() === 0) {
+            while (e + 1 < h && n[e].GetConfigId() === n[e + 1].GetConfigId() && n[e].GetUniqueId() === 0 && n[e + 1].GetUniqueId() === 0) {
               t += n[e].GetSelectNum();
               e++;
             }
-            var h = {
+            var o = {
               L8n: n[e].GetConfigId(),
               b9n: n[e].GetUniqueId(),
               m9n: t + n[e].GetSelectNum()
             };
-            a.push(h);
-            if (h.b9n > 0 && ModelManager_1.ModelManager.VisionEquipGroupModel.CheckVisionListIfInGroup([h.b9n])) {
+            a.push(o);
+            if (o.b9n > 0 && ModelManager_1.ModelManager.VisionEquipGroupModel.CheckVisionListIfInGroup([o.b9n])) {
               i = true;
             }
             if (n[e].GetQuality() >= 4) {
@@ -344,14 +347,14 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.tGu = () => {
+    this.Kqu = () => {
       let t = this.Kci?.GetUniqueId() ?? 0;
       if (this.Kci?.GetItemDataType() !== 3) {
         t = 0;
       }
       UiManager_1.UiManager.OpenView("PhantomManageView", t);
     };
-    this.xzu = () => {
+    this.FJu = () => {
       ControllerHolder_1.ControllerHolder.InventoryController.OpenManageConfigView();
     };
     this.SortViewDataSelectOn = (t, e) => {
@@ -373,7 +376,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIText], [6, UE.UILoopScrollViewComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIItem], [13, UE.UIButtonComponent], [14, UE.UIButtonComponent], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIText], [18, UE.UIExtendToggle], [19, UE.UIItem], [20, UE.UIButtonComponent], [21, UE.UIButtonComponent], [22, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[13, this.Ldi], [14, this.Tdi], [20, this.OnClickedDestroyExecuteButton], [18, this.eCi], [21, this.tGu], [22, this.xzu]];
+    this.BtnBindInfo = [[13, this.Ldi], [14, this.Tdi], [20, this.OnClickedDestroyExecuteButton], [18, this.eCi], [21, this.Kqu], [22, this.FJu]];
   }
   iCi() {
     this.TipsButtonIndexMap = new Map();
@@ -424,8 +427,8 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     await this._di.CreateThenShowByActorAsync(t.GetOwner());
     await this.udi.CreateThenShowByActorAsync(e.GetOwner());
     await this.vxt.CreateByActorAsync(i.GetOwner());
-    this.nad();
-    this.sad();
+    this.Iud();
+    this.Tud();
     var t = ModelManager_1.ModelManager.InventoryModel;
     var e = t.GetSelectedTypeIndex();
     this.Kci = t.GetSelectedItemData();
@@ -591,15 +594,14 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     }
   }
   cCi(t) {
-    var e = t.GetConfig();
-    var i = t.GetConfigId();
-    var e = e.ShowUseButton;
-    if (e) {
+    var e = t.GetConfigId();
+    var i = t.GetIsShowUseButton();
+    if (i) {
       this.mCi([0]);
     }
-    var s = ConfigManager_1.ConfigManager.BuffItemConfig.IsBuffItem(i);
-    if (s && e) {
-      s = ModelManager_1.ModelManager.BuffItemModel.GetBuffItemRemainCdTime(i);
+    var s = t.IsBuffItem();
+    if (s && i) {
+      s = ModelManager_1.ModelManager.BuffItemModel.GetBuffItemRemainCdTime(e);
       this.kdi(0, s <= 0);
     }
     if (t.GetRedDotDisableRule() === 2) {
@@ -685,7 +687,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     this.ECi(s, e);
     this.SCi(t, e);
   }
-  Uzu(t) {
+  NJu(t) {
     this.SetButtonUiActive(21, t === 3 && this.gdi === 0);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(InventoryDefine_1.MANAGE_CONFIG_FUNCTION_ID);
     this.SetButtonUiActive(22, e && t === 3 && this.gdi === 0);
@@ -728,7 +730,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     this.udi.SetToPayShopFunction();
     this.udi.RefreshAddButtonActive();
   }
-  nad() {
+  Iud() {
     this.ddi = ModelManager_1.ModelManager.InventoryModel.GetOpenIdMainTypeConfig();
     if (!(this.ddi.length <= 0)) {
       this.ddi.sort((t, e) => t.SequenceId - e.SequenceId);
@@ -793,66 +795,26 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     this.pdi = true;
     t = this.ddi[t].Id;
     this.vCi(t);
-    this.Uzu(t);
+    this.NJu(t);
     this.Odi();
   }
   MCi(t) {
     this._Ci();
     var e;
     var i;
-    var s = ModelManager_1.ModelManager.InventoryModel;
-    for (const h of s.GetItemDataBaseByMainType(t)) {
-      if (h.GetType() !== 0) {
-        if (h instanceof CommonItemData_1.CommonItemData) {
-          var r = h.GetMaxStackCount();
-          if (r <= 0) {
-            continue;
+    var s;
+    var r = ModelManager_1.ModelManager.InventoryModel;
+    for (const n of r.GetItemDataBaseByMainType(t)) {
+      if (n.IsShowInInventory()) {
+        if (n instanceof CommonItemData_1.CommonItemData) {
+          if (!((s = n.GetMaxStackCount()) <= 0)) {
+            if (e = n.GetConfig()) {
+              i = n.GetConfigId();
+              this.DCi(e.Id, n.GetCount(), s, e.QualityId, false, false, r.IsNewCommonItem(i), r.IsCommonItemHasRedDot(i), n);
+            }
           }
-          var n = h.GetConfig();
-          if (!n) {
-            continue;
-          }
-          var o = h.GetConfigId();
-          this.DCi(n.Id, h.GetCount(), r, n.QualityId, false, false, s.IsNewCommonItem(o), s.IsCommonItemHasRedDot(o), h);
-        }
-        if (h instanceof WeaponItemData_1.WeaponItemData) {
-          if (r = h.GetConfig()) {
-            n = h.GetUniqueId();
-            o = {
-              ConfigId: r.ItemId,
-              Count: 1,
-              QualityId: r.QualityId,
-              IsLock: h.GetIsLock(),
-              IsDeprecate: h.GetIsDeprecated(),
-              IsNewItem: s.IsNewAttributeItem(n),
-              ItemDataType: 2,
-              ItemDataBase: h,
-              HasRedDot: s.IsAttributeItemHasRedDot(n),
-              ItemOperationMode: this.gdi,
-              IsSelectOn: false,
-              SelectOnNum: 0,
-              StackId: 0
-            };
-            this.RCi(o);
-          }
-        } else if (h instanceof PhantomItemData_1.PhantomItemData && (i = h.GetConfig())) {
-          e = h.GetUniqueId();
-          i = {
-            ConfigId: i.ItemId,
-            Count: 1,
-            QualityId: i.QualityId,
-            IsLock: h.GetIsLock(),
-            IsDeprecate: h.GetIsDeprecated(),
-            IsNewItem: s.IsNewAttributeItem(e),
-            ItemDataType: 3,
-            ItemDataBase: h,
-            HasRedDot: s.IsAttributeItemHasRedDot(e),
-            ItemOperationMode: this.gdi,
-            IsSelectOn: false,
-            SelectOnNum: 0,
-            StackId: 0
-          };
-          this.RCi(i);
+        } else if (s = n.GetItemViewDataInfo(this.gdi)) {
+          this.RCi(s);
         }
       }
     }
@@ -865,40 +827,34 @@ class InventoryView extends UiViewBase_1.UiViewBase {
   aCi() {
     if (this.ddi) {
       var t = [];
-      var e = [];
-      for (const a of this.ddi) {
-        var i = ModelManager_1.ModelManager.InventoryModel.GetInventoryItemGridCountByMainType(a.Id);
-        var s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemMainTypeConfig(a.Id);
-        var r = s.PackageId;
-        if (ConfigManager_1.ConfigManager.InventoryConfig.GetPackageConfig(r).Capacity <= i) {
-          r = s.Name;
-          i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r) + " ";
-          t.push(i);
-          e.push(a.Id);
+      for (const o of this.ddi) {
+        var e = ModelManager_1.ModelManager.InventoryModel.GetInventoryItemGridCountByMainType(o.Id);
+        var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemMainTypeConfig(o.Id);
+        var s = i.PackageId;
+        if (ConfigManager_1.ConfigManager.InventoryConfig.GetPackageConfig(s).Capacity <= e) {
+          s = i.Name;
+          e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(s) + " ";
+          t.push(e);
         }
       }
-      var n = t.length > 0;
-      if (n) {
-        if (e.includes(3)) {
-          ControllerHolder_1.ControllerHolder.InventoryController.TryOpenPhantomFullConfirmBox();
-        } else if (!this.vdi) {
-          var o = new StringBuilder_1.StringBuilder();
-          for (const _ of t) {
-            o.Append(_);
-          }
-          var h = new ConfirmBoxDefine_1.ConfirmBoxDataNew(173);
-          h.SetTextArgs(o.ToString());
-          this.vdi = true;
-          h.FunctionMap.set(1, () => {
-            this.vdi = false;
-          });
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(h);
+      var r = t.length > 0;
+      if (!this.vdi && r) {
+        var n = new StringBuilder_1.StringBuilder();
+        for (const a of t) {
+          n.Append(a);
         }
+        var h = new ConfirmBoxDefine_1.ConfirmBoxDataNew(173);
+        h.SetTextArgs(n.ToString());
+        this.vdi = true;
+        h.FunctionMap.set(1, () => {
+          this.vdi = false;
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(h);
       }
-      if (this.Mdi !== n) {
-        this.UCi(n);
+      if (this.Mdi !== r) {
+        this.UCi(r);
       }
-      this.Mdi = n;
+      this.Mdi = r;
     }
   }
   UCi(t) {
@@ -930,7 +886,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
   ACi(t) {
     return this.mdi.get(t);
   }
-  DCi(i, s, r, n, o, h, a, _, m) {
+  DCi(i, s, r, n, h, o, a, _, m) {
     if (!(r <= 0)) {
       let t = s;
       let e = 0;
@@ -938,8 +894,8 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         ConfigId: i,
         Count: r,
         QualityId: n,
-        IsLock: o,
-        IsDeprecate: h,
+        IsLock: h,
+        IsDeprecate: o,
         IsNewItem: a,
         ItemDataType: 0,
         ItemDataBase: m,
@@ -954,8 +910,8 @@ class InventoryView extends UiViewBase_1.UiViewBase {
           ConfigId: i,
           Count: r,
           QualityId: n,
-          IsLock: o,
-          IsDeprecate: h,
+          IsLock: h,
+          IsDeprecate: o,
           IsNewItem: a,
           ItemDataType: 0,
           ItemDataBase: m,
@@ -1105,10 +1061,10 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         this.Ydi();
       }
     } else if (e !== 9 && e !== 2) {
-      if ((i = t).IsBuffEquipItem()) {
-        this.Y4l(i);
+      if (t.IsBuffEquipItem()) {
+        this.Y4l(t);
       } else {
-        this.cCi(i);
+        this.cCi(t);
       }
     }
   }
@@ -1184,8 +1140,8 @@ class InventoryView extends UiViewBase_1.UiViewBase {
     var s = this.GetButton(20);
     var r = this.GetExtendToggle(18);
     var n = this.GetItem(15);
-    var o = this.GetText(16);
-    var h = this.GetText(17);
+    var h = this.GetText(16);
+    var o = this.GetText(17);
     if (e !== this.gdi) {
       this.pCi(e);
     }
@@ -1203,8 +1159,8 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         s.RootUIComp.SetUIActive(false);
         this.WGe.SetUiActive(false);
         n.SetUIActive(false);
-        o.SetUIActive(false);
         h.SetUIActive(false);
+        o.SetUIActive(false);
         break;
       case 1:
         this.Ivt.SetTitle(MultiTextLang_1.configMultiTextLang.GetLocalTextNew("Text_ItemRecycle_text"));
@@ -1216,7 +1172,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         s.RootUIComp.SetUIActive(true);
         n.SetUIActive(true);
         this.bCi();
-        h.SetUIActive(true);
+        o.SetUIActive(true);
     }
     if (e !== this.gdi) {
       this.UiViewSequence.PlaySequence(e === 0 ? "DestroyShow" : "DestroyHide", true);
@@ -1348,7 +1304,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       this.WGe.Init(t);
     }
   }
-  sad() {
+  Tud() {
     if (this.OpenParam) {
       if (typeof this.OpenParam != "number") {
         if (Log_1.Log.CheckError()) {
@@ -1371,7 +1327,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  oad(t) {
+  Eud(t) {
     if (this.OpenParam) {
       if (typeof this.OpenParam != "number") {
         if (Log_1.Log.CheckError()) {
@@ -1381,7 +1337,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
         const e = this.OpenParam;
         t = t.findIndex(t => t.GetUniqueId() === e);
         if (t !== -1) {
-          this.aad(t);
+          this.bud(t);
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Inventory", 87, "要定位的物品找不到对应格子", ["uniqueId", e]);
         }
@@ -1389,7 +1345,7 @@ class InventoryView extends UiViewBase_1.UiViewBase {
       }
     }
   }
-  aad(t) {
+  bud(t) {
     var e = ModelManager_1.ModelManager.InventoryModel.GetSelectedTypeIndex();
     this.Cdi[e] = t;
   }

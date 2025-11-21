@@ -110,7 +110,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return true;
   }
   OnStart() {
-    this.Xte = this.Entity.GetComponent(197);
+    this.Xte = this.Entity.GetComponent(200);
     if (this.Xte) {
       if (this.p_n) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
@@ -153,7 +153,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return true;
   }
   E_n() {
-    var t = this.Entity?.GetComponent(203);
+    var t = this.Entity?.GetComponent(206);
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("SceneItem", 39, "稷廷开门机关组件初始化错误，SceneItemActorComponent组件获取失败");
@@ -537,7 +537,7 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     var t;
     if (this.u1t) {
       (t = Protocol_1.Aki.Protocol.f0s.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.u1t.GetCreatureDataId());
-      Net_1.Net.Call(28828, t, t => {
+      Net_1.Net.Call(20949, t, t => {
         if (t?.G9n !== Protocol_1.Aki.Protocol.Q4n.KRs && t?.G9n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrStateEntityStateNoChange) {
           if (this.M_n && this.GetRotateAllowed() && this.IsBusyRotating()) {
             this.TriggerStopAllRingsRotate();
@@ -562,5 +562,5 @@ let SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponen
     return s;
   }
 };
-SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(136)], SceneItemTurntableControllerComponent);
+SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(139)], SceneItemTurntableControllerComponent);
 exports.SceneItemTurntableControllerComponent = SceneItemTurntableControllerComponent; //# sourceMappingURL=SceneItemTurntableControllerComponent.js.map

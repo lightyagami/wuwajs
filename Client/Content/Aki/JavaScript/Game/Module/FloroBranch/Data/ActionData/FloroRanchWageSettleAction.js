@@ -12,15 +12,15 @@ const FloroRanchAsyncActionBase_1 = require("./FloroRanchAsyncActionBase");
 class FloroRanchWageSettleAction extends FloroRanchAsyncActionBase_1.FloroRanchAsyncActionBase {
   constructor(e) {
     super();
-    this.iOu = undefined;
-    this.iOu = e;
+    this.i3u = undefined;
+    this.i3u = e;
   }
   async OnExecute() {
-    for (const e of this.iOu.WBu) {
-      await this.rOu(e);
+    for (const e of this.i3u.kNu) {
+      await this.r3u(e);
     }
   }
-  async rOu(e) {
+  async r3u(e) {
     var o;
     var t;
     var a = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(e.wSu);

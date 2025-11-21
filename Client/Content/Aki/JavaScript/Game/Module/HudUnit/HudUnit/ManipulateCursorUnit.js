@@ -146,7 +146,7 @@ class ManipulateCursorUnit extends HudUnitBase_1.HudUnitBase {
             this.Dmt.SetSprite(i, false);
             this.Dmt.SetUIActive(true);
           }
-        }, 103);
+        }, 103, this.MemoryTag);
       }
     }
   }

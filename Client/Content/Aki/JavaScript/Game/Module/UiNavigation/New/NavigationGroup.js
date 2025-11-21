@@ -4,29 +4,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.NavigationGroup = undefined;
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 class NavigationGroup {
   constructor(t) {
     this.Lo = undefined;
+    this.Cim = new Set();
     this.Oeh = undefined;
     this.Geh = undefined;
     this.keh = false;
     this.Neh = [];
     this.Jo1 = (t, e) => {
-      let r = 0;
       let i = 0;
+      let r = 0;
       if (t.IsValid()) {
-        r = t.RootUIComp.flattenHierarchyIndex;
+        i = t.RootUIComp.flattenHierarchyIndex;
       }
       if (e.IsValid()) {
-        i = e.RootUIComp.flattenHierarchyIndex;
+        r = e.RootUIComp.flattenHierarchyIndex;
       }
-      if (r === i || r < i) {
+      if (i === r || i < r) {
         return -1;
       } else {
         return 1;
       }
     };
     this.Lo = t;
+    if (!StringUtils_1.StringUtils.IsBlank(this.Lo.InsideGroupName)) {
+      this.Cim.add(this.Lo.InsideGroupName);
+    }
+    for (let t = 0, e = this.Lo.ExtraInsideGroupNameList.Num(); t < e; ++t) {
+      var i = this.Lo.ExtraInsideGroupNameList.Get(t);
+      if (!StringUtils_1.StringUtils.IsBlank(i)) {
+        this.Cim.add(i);
+      }
+    }
   }
   AddListener(t) {
     this.Neh.push(t);
@@ -44,35 +55,35 @@ class NavigationGroup {
   }
   get LoopScrollSortListenerList() {
     return this.ListenerList.slice().sort((t, e) => {
-      let r = 0;
       let i = 0;
-      if (t.HasLoopScrollView() && e.HasLoopScrollView() && (t.IsValid() && (r = t.LoopScrollViewGridIndex), e.IsValid() && (i = e.LoopScrollViewGridIndex), r !== i)) {
-        return r - i;
+      let r = 0;
+      if (t.HasLoopScrollView() && e.HasLoopScrollView() && (t.IsValid() && (i = t.LoopScrollViewGridIndex), e.IsValid() && (r = e.LoopScrollViewGridIndex), i !== r)) {
+        return i - r;
       } else {
         return this.Jo1(t, e);
       }
     });
   }
   get ActiveListenerList() {
-    var r = [];
+    var i = [];
     for (let t = 0, e = this.ListenerList.length; t < e; ++t) {
-      var i = this.ListenerList[t];
-      if (i.IsListenerActive()) {
-        r.push(i);
+      var r = this.ListenerList[t];
+      if (r.IsListenerActive()) {
+        i.push(r);
       }
     }
-    return r;
+    return i;
   }
-  GetOppositeListenerListByListener(r, i) {
+  GetOppositeListenerListByListener(i, r) {
     if (this.AllowNavigationInSelfDynamic) {
       return this.ListenerList;
     }
     var s = [];
     for (let t = 0, e = this.ListenerList.length; t < e; ++t) {
-      var o = this.ListenerList[t];
-      if (r !== undefined || o.ScrollViewActor !== undefined || i !== undefined || o.LayoutActor !== undefined) {
-        if (r === o.ScrollViewActor && i === o.LayoutActor) {
-          s.push(o);
+      var n = this.ListenerList[t];
+      if (i !== undefined || n.ScrollViewActor !== undefined || r !== undefined || n.LayoutActor !== undefined) {
+        if (i === n.ScrollViewActor && r === n.LayoutActor) {
+          s.push(n);
         }
       }
     }
@@ -102,8 +113,8 @@ class NavigationGroup {
   get HorizontalWrapMode() {
     return this.Lo.HorizontalWrapMode;
   }
-  get InsideGroupName() {
-    return this.Lo.InsideGroupName;
+  get InsideGroupNameSet() {
+    return this.Cim;
   }
   set LastSelectListener(t) {
     this.Geh = t;

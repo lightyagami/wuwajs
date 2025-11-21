@@ -29,6 +29,7 @@ class ComposeViewOpenData {
   constructor() {
     this.Type = 3;
     this.SelectData = undefined;
+    this.SkipSourceView = undefined;
   }
 }
 exports.ComposeViewOpenData = ComposeViewOpenData;

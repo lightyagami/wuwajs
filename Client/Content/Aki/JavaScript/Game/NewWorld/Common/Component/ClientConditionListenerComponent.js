@@ -56,11 +56,11 @@ let ClientConditionListenerComponent = ClientConditionListenerComponent_1 = clas
     return true;
   }
   OnClear() {
-    this.Rkd();
+    this.$qd();
     this.Cdc?.clear();
     return true;
   }
-  Rkd() {
+  $qd() {
     if (this.Cdc) {
       for (const e of this.Cdc.values()) {
         for (const n of e.LevelListenerIds) {
@@ -79,11 +79,11 @@ let ClientConditionListenerComponent = ClientConditionListenerComponent_1 = clas
     var i = new ConditionListenInfo(1, e, o);
     this.Cdc?.set(n, i);
     for (const l of e.Condition.Conditions) {
-      var r = LevelListenerCenter_1.LevelListenerCenter.ListenToCondition(l.Type, l, this.wkd.bind(this, n), LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
+      var r = LevelListenerCenter_1.LevelListenerCenter.ListenToCondition(l.Type, l, this.Wqd.bind(this, n), LevelGeneralContextDefine_1.EntityContext.Create(this.Entity.Id));
       i.LevelListenerIds.push(r);
     }
   }
-  wkd(e, n) {
+  Wqd(e, n) {
     var t = this.Cdc?.get(e);
     if (t) {
       var o = t.CheckResult;
@@ -125,5 +125,5 @@ let ClientConditionListenerComponent = ClientConditionListenerComponent_1 = clas
     }
   }
 };
-ClientConditionListenerComponent = ClientConditionListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(263)], ClientConditionListenerComponent);
+ClientConditionListenerComponent = ClientConditionListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(267)], ClientConditionListenerComponent);
 exports.ClientConditionListenerComponent = ClientConditionListenerComponent; //# sourceMappingURL=ClientConditionListenerComponent.js.map

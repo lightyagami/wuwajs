@@ -41,7 +41,7 @@ class TsTaskPlayWalkingOverlayMontage extends TsTaskAbortImmediatelyBase_1.defau
     this.InitTsVariables();
     var i = t.AiController;
     if (i) {
-      this.AnimComp = i.CharActorComp.Entity?.GetComponent(178);
+      this.AnimComp = i.CharActorComp.Entity?.GetComponent(181);
       if (this.AnimComp) {
         i = new PlayMontageUtils_1.PlayMontageConfig(this.TsRepeatTimes, this.TsLoopDuration);
         if (this.PlayingMontageId) {

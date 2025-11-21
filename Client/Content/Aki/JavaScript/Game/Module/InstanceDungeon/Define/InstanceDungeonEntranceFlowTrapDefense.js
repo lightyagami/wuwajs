@@ -22,9 +22,9 @@ class InstanceDungeonEntranceFlowTrapDefense extends InstanceDungeonEntranceFlow
     this.AddStep(() => {
       var e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.InstanceId;
       var e = ModelManager_1.ModelManager.TrapDefenseModel?.LevelDataFromInstIdMap.get(e)?.Config?.Id ?? 1;
-      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.iku = {
+      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.BVu = {
         v9n: e,
-        Fid: false
+        Wod: false
       };
       InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.EnterInstanceDungeon().then(e => {
         ControllerHolder_1.ControllerHolder.EditBattleTeamController.CloseEditBattleTeamView();

@@ -7,6 +7,7 @@ exports.TaskMarkItemView = undefined;
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GeneralLogicTreeUtil_1 = require("../../../GeneralLogicTree/GeneralLogicTreeUtil");
 const MapDefine_1 = require("../../MapDefine");
@@ -20,19 +21,14 @@ class TaskMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
     this.ORi = false;
     this.ige = false;
   }
-  OnInitialize() {
-    super.OnInitialize();
+  OnViewRefresh() {
+    this.GetSprite(1).SetUIActive(true);
+    this.MarkItemRangeHandle.SetVisible(false);
     this.bl();
   }
   bl() {
     this.VRi();
     this.OnIconPathChanged(this.Holder.IconPath);
-  }
-  OnReset() {
-    super.OnReset();
-    this.GetSprite(1).SetUIActive(true);
-    this.MarkItemRangeHandle.SetVisible(false);
-    this.bl();
   }
   VRi() {
     this.ORi = false;
@@ -47,22 +43,25 @@ class TaskMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
     return new TaskMarkItemRangeHandle_1.TaskMarkItemRangeHandle(e);
   }
   OnSafeUpdate(e, t = false) {
+    if (this.Holder?.MapType === 2) {
+      this.bl();
+    }
     this.HRi(e, t);
   }
   IsRangeImageActive() {
     return this.Holder.MarkItemEntity.ViewLifeCircle.IsChildViewVisible(2);
   }
-  HRi(s, e = false) {
+  HRi(r, e = false) {
     if (this.NRi) {
       if (this.Holder.IsCanShowView) {
-        var r;
-        var a = this.Holder;
-        var n = a.RangeMarkShowDis;
+        var a;
+        var s = this.Holder;
+        var n = s.RangeMarkShowDis;
         var h = n + 2;
         let e = 0;
         let t = false;
         let i = true;
-        t = a.RangeMarkShowDisUp !== 0 || a.RangeMarkShowDisDown !== 0 ? (r = (s.Z - this.Holder.WorldPosition.Z) * MapDefine_1.FLOAT_0_01, e = Vector_1.Vector.Dist2D(s, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01, i = r < a.RangeMarkShowDisUp && r > a.RangeMarkShowDisDown, e > n && r > a.RangeMarkShowDisUp && r < a.RangeMarkShowDisDown) : (e = Vector_1.Vector.Dist(s, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01) > n;
+        t = s.RangeMarkShowDisUp !== 0 || s.RangeMarkShowDisDown !== 0 ? (a = (r.Z - this.Holder.WorldPosition.Z) * MapDefine_1.FLOAT_0_01, e = Vector_1.Vector.Dist2D(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01, i = a < s.RangeMarkShowDisUp && a > s.RangeMarkShowDisDown, e > n && a > s.RangeMarkShowDisUp && a < s.RangeMarkShowDisDown) : (e = Vector_1.Vector.Dist(r, this.Holder.WorldPosition) * MapDefine_1.FLOAT_0_01) > n;
         this.MarkItemTrackHandle.SetVisible(t && this.Holder.IsTracked);
         if (this.ige) {
           this.HQl(!t);
@@ -78,7 +77,10 @@ class TaskMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
     }
   }
   HQl(e) {
-    var t = this.Holder?.RawInstanceDungeonId !== ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var t = this.Holder?.RawInstanceDungeonId;
+    let i = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    var r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(i);
+    var t = t !== (i = r.EntranceEntities.length > 0 ? r.EntranceEntities[0].DungeonId : i);
     this.jRi(e && !t);
   }
   jRi(e) {

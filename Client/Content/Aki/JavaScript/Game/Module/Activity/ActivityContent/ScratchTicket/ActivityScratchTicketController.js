@@ -45,10 +45,10 @@ class ActivityScratchTicketController extends ActivityControllerBase_1.ActivityC
     }
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15315, ActivityScratchTicketController.Iol);
+    Net_1.Net.Register(19596, ActivityScratchTicketController.Iol);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15315);
+    Net_1.Net.UnRegister(19596);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityScratchTicketController.qdi);
@@ -60,10 +60,10 @@ class ActivityScratchTicketController extends ActivityControllerBase_1.ActivityC
     var e = Protocol_1.Aki.Protocol.tC_.create();
     e.Tol = t;
     e.c5n = r;
-    Net_1.Net.Call(20094, e, e => {
+    Net_1.Net.Call(17135, e, e => {
       if (e) {
         if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 20163);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 20092);
         } else {
           ModelManager_1.ModelManager.ActivityScratchTicketModel.OnScratchCardRewardResponse(r, t, e, i);
         }
@@ -73,7 +73,7 @@ class ActivityScratchTicketController extends ActivityControllerBase_1.ActivityC
   static async SendScratchCardActivityInfoRequest() {
     var e;
     var t = ModelManager_1.ModelManager.ActivityScratchTicketModel.GetScratchTicketData();
-    return t !== undefined && ((e = Protocol_1.Aki.Protocol.mg_.create()).w6n = t.Id, !!(e = await Net_1.Net.CallAsync(29366, e))) && (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 20163), false) : e.YVn !== undefined && (t.InitData(e.YVn), true));
+    return t !== undefined && ((e = Protocol_1.Aki.Protocol.mg_.create()).w6n = t.Id, !!(e = await Net_1.Net.CallAsync(21851, e))) && (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 20092), false) : e.YVn !== undefined && (t.InitData(e.YVn), true));
   }
   static ShowScratchTicketRewardTip(e) {
     var t;

@@ -60,6 +60,30 @@ class PhantomItemData extends AttributeItemData_1.AttributeItemData {
       return undefined;
     }
   }
+  GetItemViewDataInfo(e) {
+    var t;
+    var r;
+    var a = this.GetConfig();
+    if (a) {
+      t = ModelManager_1.ModelManager.InventoryModel;
+      r = this.GetUniqueId();
+      return {
+        ConfigId: a.ItemId,
+        Count: 1,
+        QualityId: a.QualityId,
+        IsLock: this.GetIsLock(),
+        IsDeprecate: this.GetIsDeprecated(),
+        IsNewItem: t.IsNewAttributeItem(r),
+        ItemDataType: this.ItemDataType,
+        ItemDataBase: this,
+        HasRedDot: t.IsAttributeItemHasRedDot(r),
+        ItemOperationMode: e,
+        IsSelectOn: false,
+        SelectOnNum: 0,
+        StackId: 0
+      };
+    }
+  }
 }
 exports.PhantomItemData = PhantomItemData;
 //# sourceMappingURL=PhantomItemData.js.map

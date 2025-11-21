@@ -56,7 +56,7 @@ class AnimalPerformSystemUiState extends AnimalPerformStateBase_1.AnimalPerformS
       if (t === 0) {
         this.AnimalEcologicalInterface.StateMachineInitializationComplete();
       }
-      if (t = this.Owner.GetComponent(206)) {
+      if (t = this.Owner.GetComponent(209)) {
         this.mKo(t);
       }
       this.EcologicalInterface.SystemUiStart();
@@ -64,9 +64,9 @@ class AnimalPerformSystemUiState extends AnimalPerformStateBase_1.AnimalPerformS
   }
   OnExit(t) {
     if (this.EcologicalInterface?.IsValid()) {
-      this.Owner.GetComponent(198)?.SetInteractionState(true, "AnimalPerformSystemUiState OnExit");
+      this.Owner.GetComponent(201)?.SetInteractionState(true, "AnimalPerformSystemUiState OnExit");
       this.EcologicalInterface.SystemUiEnd();
-      this.Owner.GetComponent(206)?.RemoveTag(1819982634);
+      this.Owner.GetComponent(209)?.RemoveTag(1819982634);
       this._Ko = false;
       this.uKo = undefined;
     }

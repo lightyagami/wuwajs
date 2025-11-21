@@ -1,20 +1,20 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, e, i, s) {
+var __decorate = this && this.__decorate || function (t, i, e, s) {
   var h;
   var r = arguments.length;
-  var a = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var a = r < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(t, e, i, s);
+    a = Reflect.decorate(t, i, e, s);
   } else {
     for (var _ = t.length - 1; _ >= 0; _--) {
       if (h = t[_]) {
-        a = (r < 3 ? h(a) : r > 3 ? h(e, i, a) : h(e, i)) || a;
+        a = (r < 3 ? h(a) : r > 3 ? h(i, e, a) : h(i, e)) || a;
       }
     }
   }
   if (r > 3 && a) {
-    Object.defineProperty(e, i, a);
+    Object.defineProperty(i, e, a);
   }
   return a;
 };
@@ -88,9 +88,9 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     this.wDu = 0;
     this.d6a = new Set();
     this.sxr = 0;
-    this.XOr = (t, e) => {
-      if (this.WalkOnWaterStage === 1 && this.TKr(e) > 0) {
-        this.Gce.CharacterMovement.MaxCustomMovementSpeed = this.TKr(e);
+    this.XOr = (t, i) => {
+      if (this.WalkOnWaterStage === 1 && this.TKr(i) > 0) {
+        this.Gce.CharacterMovement.MaxCustomMovementSpeed = this.TKr(i);
       }
     };
     this.LKr = t => {
@@ -105,8 +105,8 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         }
       }
     };
-    this.RKr = (t, e) => {
-      if (e) {
+    this.RKr = (t, i) => {
+      if (i) {
         if (this.sxr) {
           this.Enable(this.sxr, "不会入水Tag");
           this.sxr = 0;
@@ -114,13 +114,13 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       } else {
         this.sxr ||= this.Disable("不会入水Tag");
       }
-      if (!(this.IsActive = e)) {
+      if (!(this.IsActive = i)) {
         this.DKr(0);
         this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None);
       }
     };
-    this.DVr = (t, e) => {
-      if (this.IsActive && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+    this.DVr = (t, i) => {
+      if (this.IsActive && i === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
         if (this.UKr() || this.AKr() || this._Kr()) {
           this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WaterSurface);
         } else {
@@ -131,10 +131,10 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         }
       }
     };
-    this.T1u = (t, e, i) => {
-      this.vWr = i + WALK_ON_WATER_HALF_HEIGHT_OFFSET;
+    this.T1u = (t, i, e, s) => {
+      this.vWr = e + WALK_ON_WATER_HALF_HEIGHT_OFFSET;
     };
-    this.Ilt = (t, e) => {
+    this.Ilt = t => {
       if (this.IsActive && this.mBe?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground && (this.UKr() || this.AKr() || this._Kr())) {
         this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WaterSurface);
       }
@@ -145,13 +145,13 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    var t = this.Entity.GetComponent(206);
+    var t = this.Entity.GetComponent(209);
     if (!t?.Valid) {
       return false;
     }
     this.Lie = t;
-    t = this.Entity.GetComponent(179);
-    return !!t?.Valid && (this.WalkOnWaterStage = 0, this.Gce = t, this.mBe = this.Entity.GetComponent(176), this.vWr = this.Hte.HalfHeight + WALK_ON_WATER_HALF_HEIGHT_OFFSET, this.qWr(), this.k_(), this.ewr(), this.IKr = this.Hte.Actor.CapsuleComponent.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater), true);
+    t = this.Entity.GetComponent(182);
+    return !!t?.Valid && (this.WalkOnWaterStage = 0, this.Gce = t, this.mBe = this.Entity.GetComponent(179), this.vWr = this.Hte.HalfHeight + WALK_ON_WATER_HALF_HEIGHT_OFFSET, this.qWr(), this.k_(), this.ewr(), this.IKr = this.Hte.Actor.CapsuleComponent.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater), true);
   }
   OnEnd() {
     this.BKr();
@@ -197,7 +197,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     this.yKr = undefined;
   }
   static get Dependencies() {
-    return [3, 179, 206];
+    return [3, 182, 209];
   }
   ewr() {
     this.Mao = UE.NewObject(UE.TraceSphereElement.StaticClass());
@@ -252,85 +252,84 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     return !this.Lie.HasTag(-1523054094) && t.MovementMode === 6 && t.CustomMovementMode === CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_UP_TO_WALK_ON_WATER;
   }
   rKr(t) {
-    return MathUtils_1.MathUtils.DotProduct(t, Vector_1.Vector.ZAxisVector) > COS_EIGHTY;
-  }
-  JWr(t) {
-    t.Z = Math.abs(t.Z);
+    return Math.abs(MathUtils_1.MathUtils.DotProduct(t, this.Hte.ActorUpProxy)) > COS_EIGHTY;
   }
   _Kr() {
     var t = this.UWr;
-    t.X = 0;
-    t.Y = 0;
-    t.Z = FIVE_HUNDRED_TO_FIND_SURFACE;
+    this.Hte.ActorUpProxy.Multiply(FIVE_HUNDRED_TO_FIND_SURFACE, t);
     this.Hte.ActorLocationProxy.Addition(t, t);
-    var e = this.AWr;
-    this.Hte.ActorUpProxy.Multiply(-this.vWr, e);
-    this.Hte.ActorLocationProxy.Subtraction(e, e);
-    var i = this.nKr(t, e);
-    if (i) {
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Pq1, e);
+    var i = this.AWr;
+    this.Hte.ActorUpProxy.Multiply(-this.vWr, i);
+    this.Hte.ActorLocationProxy.Subtraction(i, i);
+    var e = this.nKr(t, i);
+    if (e) {
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Pq1, i);
       TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Pq1, t);
-      e = this.cz;
+      i = this.cz;
       t = TraceElementCommon_1.TraceElementCommon.LineTrace(this.Pq1, PROFILE_DETECT_WATER_UP_BLOCK);
       if (t && this.Pq1.HitResult.bBlockingHit) {
-        TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Pq1.HitResult, 0, e);
-        this.wDu = e.Z;
-        if (e.Z - (this.Hte.ActorLocationProxy.Z - this.Hte.HalfHeight) < this.MKr) {
+        TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Pq1.HitResult, 0, i);
+        this.wDu = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, i);
+        if (this.wDu - GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.FloorLocation) < this.MKr) {
           return false;
         }
       }
     }
-    return i;
+    return e;
   }
   UKr() {
     var t = this.UWr;
-    var e = this.AWr;
+    var i = this.AWr;
     if (this.SKr && this.WalkOnWaterStage === 0 && Vector_1.Vector.Dist(this.SKr, this.Hte.ActorLocationProxy) < PRE_FRAME_POSITION_MAX_DISTANCE) {
       const s = this.cz;
       this.Hte.ActorUpProxy.Multiply(this.vWr - WALK_ON_WATER_HALF_HEIGHT_OFFSET, s);
-      var i = this.fz;
-      this.Hte.ActorLocationProxy.Subtraction(this.SKr, i);
-      i.Normalize();
-      i.Multiply(WALK_ON_WATER_MOVEDIR_OFFSET, i);
+      var e = this.fz;
+      this.Hte.ActorLocationProxy.Subtraction(this.SKr, e);
+      e.Normalize();
+      e.Multiply(WALK_ON_WATER_MOVEDIR_OFFSET, e);
       this.SKr.Subtraction(s, t);
-      t.SubtractionEqual(i);
-      this.Hte.ActorLocationProxy.Subtraction(s, e);
-      e.AdditionEqual(i);
+      t.SubtractionEqual(e);
+      this.Hte.ActorLocationProxy.Subtraction(s, i);
+      i.AdditionEqual(e);
     } else {
       const s = this.cz;
       this.Hte.ActorUpProxy.Multiply(this.vWr, s);
       this.Hte.ActorLocationProxy.Addition(s, t);
-      this.Hte.ActorLocationProxy.Subtraction(s, e);
+      this.Hte.ActorLocationProxy.Subtraction(s, i);
     }
-    return this.nKr(t, e);
+    return this.nKr(t, i);
   }
   AKr() {
     var t = this.cz;
     this.Hte.ActorUpProxy.Multiply(this.vWr, t);
-    var e = this.UWr;
-    this.Hte.ActorLocationProxy.Addition(t, e);
-    var i = this.AWr;
-    this.Hte.ActorLocationProxy.Subtraction(t, i);
-    return this.bKr(e, i);
+    var i = this.UWr;
+    this.Hte.ActorLocationProxy.Addition(t, i);
+    var e = this.AWr;
+    this.Hte.ActorLocationProxy.Subtraction(t, e);
+    return this.bKr(i, e);
   }
-  nKr(t, e) {
-    this.MKr = this.YWr(t, e);
-    return this.MKr !== 0 && (TraceElementCommon_1.TraceElementCommon.GetImpactNormal(this.Mao.HitResult, 0, this.yKr), this.JWr(this.yKr), !!this.rKr(this.yKr));
+  nKr(t, i) {
+    this.MKr = this.YWr(t, i);
+    return this.MKr !== 0 && (TraceElementCommon_1.TraceElementCommon.GetImpactNormal(this.Mao.HitResult, 0, this.yKr), !!this.rKr(this.yKr));
   }
-  YWr(t, e) {
-    var t = this.tKr(t, e);
-    var e = this.cz;
-    if (t && this.Mao.HitResult.bBlockingHit && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Mao.HitResult, 0, e), this.wDu = e.Z, (t = e.Z - (this.Hte.ActorLocationProxy.Z - this.Hte.HalfHeight)) > 0)) {
+  YWr(t, i) {
+    var t = this.tKr(t, i);
+    var i = this.cz;
+    if (t && this.Mao.HitResult.bBlockingHit && (TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.Mao.HitResult, 0, i), this.wDu = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, i), (t = this.wDu - GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.FloorLocation)) > 0)) {
       return t;
     } else {
       return 0;
     }
   }
   qKr(t) {
+    var i;
+    var e;
     if (!(this.MKr < ENTER_WALK_ON_WATER_DEPTH)) {
       this.xKr += t * TimeUtil_1.TimeUtil.Millisecond;
       (t = this.cz).DeepCopy(this.Hte.ActorLocationProxy);
-      t.Z = MathUtils_1.MathUtils.Clamp(this.PKr + this.xKr * UP_TO_WATER_SURFACE_SPEED, this.PKr, this.Hte.ActorLocationProxy.Z + this.MKr - 1);
+      i = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.ActorLocationProxy);
+      e = MathUtils_1.MathUtils.Clamp(this.PKr + this.xKr * UP_TO_WATER_SURFACE_SPEED, this.PKr, i + this.MKr - 1);
+      t.AdditionEqual(this.Hte.ActorUpProxy.Multiply(e - i, this.fz));
       this.Hte.SetActorLocation(t.ToUeVector(), "修正在水中的Z轴");
     }
   }
@@ -347,7 +346,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       Context: "[CharacterWalkOnWaterComponent.EnterUpToWalkOnWater]"
     });
     this.xKr = 0;
-    this.PKr = this.Hte.ActorLocationProxy.Z;
+    this.PKr = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.ActorLocationProxy);
     this.EKr = this.Gce.CharacterMovement.MaxCustomMovementSpeed;
   }
   NKr() {
@@ -378,14 +377,14 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
     }
     this.EnableOrDisableWalkOnWater(false, "CharWalkOnWaterComp");
   }
-  tKr(t, e) {
+  tKr(t, i) {
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Mao, t);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Mao, e);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Mao, i);
     return TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Mao, PROFILE_DETECT_WATER_DEPTH) && this.Mao.HitResult.bBlockingHit;
   }
-  bKr(t, e) {
+  bKr(t, i) {
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.pKr, t);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.pKr, e);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.pKr, i);
     return TraceElementCommon_1.TraceElementCommon.SphereTrace(this.pKr, PROFILE_DETECT_WATER_DEPTH) && this.pKr.HitResult.bBlockingHit;
   }
   DKr(t) {
@@ -441,7 +440,7 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       this.qKr(t);
     }
   }
-  OnTick(e) {
+  OnTick(i) {
     if (this.IsActive) {
       let t = 0;
       if (this.UKr()) {
@@ -452,11 +451,11 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
         t = this.AKr() ? 2 : 0;
       }
       this.DKr(t);
-      this.jKr(e);
+      this.jKr(i);
       if (this.WalkOnWaterStage === 0) {
         this.SKr ||= Vector_1.Vector.Create(0, 0, 0);
         this.SKr.DeepCopy(this.Hte.ActorLocationProxy);
-        this.wKr -= e;
+        this.wKr -= i;
         if (this.wKr < 0 && (this.wKr = CHECK_IN_GROUND_INTERVAL, this.mBe?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) && this.mBe?.PositionSubState === CharacterUnifiedStateTypes_1.ECharPositionSubState.WaterSurface && (this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.None), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Movement", 36, "[WalkOnWater] EnterGround");
         }
@@ -468,37 +467,39 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
   PDu() {
     var t = this.UWr;
     t.DeepCopy(this.Hte.ActorLocationProxy);
-    if (this.wDu > t.Z - this.Hte.HalfHeight) {
-      t.Z = this.wDu;
+    if (this.wDu > GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, t) - this.Hte.HalfHeight) {
+      i = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, this.Hte.ActorLocationProxy);
+      t.AdditionEqual(this.Hte.ActorUpProxy.Multiply(this.wDu - i, this.fz));
     } else {
-      t.Z = t.Z - this.Hte.HalfHeight;
+      t.AdditionEqual(this.Hte.ActorUpProxy.Multiply(-this.Hte.HalfHeight, this.fz));
     }
-    var e = this.AWr;
-    var i = this.cz;
-    this.Hte.ActorUpProxy.Multiply(this.vWr * SHALLOW_WATER_THRESOLD, i);
-    t.Subtraction(i, e);
+    var i = this.AWr;
+    var e = this.cz;
+    this.Hte.ActorUpProxy.Multiply(this.vWr * SHALLOW_WATER_THRESOLD, e);
+    t.Subtraction(e, i);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.vao, t);
-    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.vao, e);
-    var i = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.vao, PROFILE_DETECT_WATER_DEPTH);
-    if (i && this.vao.HitResult.bBlockingHit) {
-      var s = this.vao.HitResult.GetHitCount();
-      let e = false;
-      let i = Number.NEGATIVE_INFINITY;
-      var h = this.vao.HitResult.Actors;
-      var r = this.vao.HitResult.Components;
-      var a = this.vao.HitResult.LocationZ_Array;
-      for (let t = 0; t < s; t++) {
-        var _ = h.Get(t);
-        var n = r.Get(t);
+    TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.vao, i);
+    var e = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.vao, PROFILE_DETECT_WATER_DEPTH);
+    var s = this.fz;
+    if (e && this.vao.HitResult.bBlockingHit) {
+      var h = this.vao.HitResult.GetHitCount();
+      let i = false;
+      let e = Number.NEGATIVE_INFINITY;
+      var r = this.vao.HitResult.Actors;
+      var a = this.vao.HitResult.Components;
+      for (let t = 0; t < h; t++) {
+        var _ = r.Get(t);
+        var n = a.Get(t);
         if (!!_ && (!_.bHidden || !!n.bCanCharacterStandOn)) {
-          e = true;
-          if (a.Get(t) > i) {
-            i = a.Get(t);
+          i = true;
+          TraceElementCommon_1.TraceElementCommon.GetHitLocation(this.vao.HitResult, t, s);
+          if ((_ = GravityUtils_1.GravityUtils.GetZnInGravityForActor(this.Hte, s)) > e) {
+            e = _;
           }
         }
       }
-      if (e) {
-        this.ADu(i > this.wDu ? 0 : 1);
+      if (i) {
+        this.ADu(e > this.wDu ? 0 : 1);
       } else {
         this.ADu(2);
       }
@@ -506,18 +507,18 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       this.ADu(2);
     }
   }
-  xDu(t, e) {
-    let i = undefined;
+  xDu(t, i) {
+    let e = undefined;
     if (t === 1) {
-      i = -1686770584;
+      e = -1686770584;
     } else if (t === 2) {
-      i = 320899740;
+      e = 320899740;
     }
-    if (i) {
-      if (e) {
-        this.Lie?.AddTag(i);
+    if (e) {
+      if (i) {
+        this.Lie?.AddTag(e);
       } else {
-        this.Lie?.RemoveTag(i);
+        this.Lie?.RemoveTag(e);
       }
     }
   }
@@ -531,20 +532,20 @@ let CharacterWalkOnWaterComponent = class CharacterWalkOnWaterComponent extends 
       this.xDu(t, true);
     }
   }
-  EnableOrDisableWalkOnWater(t, e, i = false) {
+  EnableOrDisableWalkOnWater(t, i, e = false) {
     if (t) {
-      if (!this.d6a.has(e)) {
-        if (this.d6a.size === 0 && (this.Hte.Actor.CapsuleComponent?.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater, 2), i) && ([t, i] = this.Hte.FixActorLocation(0, true, this.Hte.ActorLocationProxy, "WalkOnWater", true, false), t)) {
-          if (t = this.Entity.GetComponent(178)) {
-            t.SetLocationAndRotatorWithModelBuffer(i.ToUeVector(), this.Hte.ActorRotation, MODEL_BUFFER_TIME_LENGTH, "WalkOnWater.FixLocation", 2, false);
+      if (!this.d6a.has(i)) {
+        if (this.d6a.size === 0 && (this.Hte.Actor.CapsuleComponent?.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater, 2), e) && ([t, e] = this.Hte.FixActorLocation(0, true, this.Hte.ActorLocationProxy, "WalkOnWater", true, false), t)) {
+          if (t = this.Entity.GetComponent(181)) {
+            t.SetLocationAndRotatorWithModelBuffer(e.ToUeVector(), this.Hte.ActorRotation, MODEL_BUFFER_TIME_LENGTH, "WalkOnWater.FixLocation", 2, false);
           } else {
-            this.Hte.SetActorLocation(i.ToUeVector(), "WalkOnWater.FixLocation", false);
+            this.Hte.SetActorLocation(e.ToUeVector(), "WalkOnWater.FixLocation", false);
           }
         }
-        this.d6a.add(e);
+        this.d6a.add(i);
       }
     } else {
-      this.d6a.delete(e);
+      this.d6a.delete(i);
       if (this.d6a.size === 0) {
         this.Hte.Actor.CapsuleComponent.SetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.KuroWater, this.IKr ?? 1);
       }

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TabComponentWithCaptionItem = undefined;
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../Core/Common/CustomPromise");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const LevelSequencePlayer_1 = require("../LevelSequencePlayer");
@@ -110,6 +111,15 @@ class TabComponentWithCaptionItem extends UiPanelBase_1.UiPanelBase {
     t = this.TabComponent.GetTabItemByIndex(t);
     this.xqe.ScrollTo(t.GetRootItem());
   }
+  LateScrollToToggleByIndex(t) {
+    const e = this.TabComponent.GetTabItemByIndex(t);
+    this.xqe.OnLateUpdate.Bind(() => {
+      TimerSystem_1.GameplayTimerSystem.Next(() => {
+        this.xqe.ScrollTo(e.GetRootItem());
+      });
+      this.xqe.OnLateUpdate.Unbind();
+    });
+  }
   GetTabItemByIndex(t) {
     return this.TabComponent.GetTabItemByIndex(t);
   }
@@ -174,6 +184,9 @@ class TabComponentWithCaptionItem extends UiPanelBase_1.UiPanelBase {
   }
   GetCostContent() {
     return this.lqe?.GetCostContent();
+  }
+  GetScrollView() {
+    return this.xqe;
   }
   SetScrollViewVisible(t) {
     this.GetScrollViewWithScrollbar(1).RootUIComp.SetUIActive(t);

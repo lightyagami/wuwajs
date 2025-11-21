@@ -48,7 +48,7 @@ class ConfirmBoxView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIExtendToggle], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIExtendToggle], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UISprite]];
     this.BtnBindInfo = [[6, this.Bke]];
   }
   GetExtraPopFrameType(t) {
@@ -93,9 +93,16 @@ class ConfirmBoxView extends UiViewBase_1.UiViewBase {
     this.GetText(0).SetText(i);
     var i = t.TextArgs || [];
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Config.Content, ...i);
-    this.GetItem(8).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(t.Tip));
+    var i = !StringUtils_1.StringUtils.IsEmpty(t.Tip) || t.TableTxtArgNew !== undefined;
+    this.GetItem(8).SetUIActive(i);
+    if (t.SetTipsBgRed) {
+      (i = this.GetSprite(10)).SetChangeColor(true, i.changeColor);
+    }
     if (t.Tip) {
       this.GetText(9).SetText(t.Tip);
+    }
+    if (t.TableTxtArgNew) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), t.TableTxtArgNew.TextKey, ...t.TableTxtArgNew.Params);
     }
     await this.InitButton();
     this.InitPropItem();

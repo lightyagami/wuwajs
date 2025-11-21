@@ -6,10 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.SkillBehaviorCondition = undefined;
 const Stats_1 = require("../../../../../../../Core/Common/Stats");
 const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
+const MathCommon_1 = require("../../../../../../../Core/Utils/Math/MathCommon");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../../../Core/Utils/MathUtils");
+const InputEnums_1 = require("../../../../../../Input/InputEnums");
+const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const CharacterAttributeTypes_1 = require("../../Abilities/CharacterAttributeTypes");
+const SkillUtils_1 = require("../SkillUtils");
 const SkillBehaviorMisc_1 = require("./SkillBehaviorMisc");
 const SkillConditionParser_1 = require("./SkillConditionParser");
 class SkillBehaviorCondition {
@@ -61,8 +65,21 @@ class SkillBehaviorCondition {
         break;
       case 5:
         r = "空中高度检测";
+        e = this.$Bd(t, i);
+        break;
+      case 6:
+        r = "与技能目标锁定点高度";
         e = this.gZo(t, i);
+        break;
+      case 7:
+        r = "是否有技能目标和是否战斗单位";
+        e = this.fcm(t, i);
+        break;
+      case 8:
+        r = "是否有摇杆输入";
+        e = this.DLm(t, i);
     }
+    SkillUtils_1.SkillUtils.Log(1, 1, i.Entity, "SkillBehaviorCondition.Satisfy技能行为条件判断", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName], ["条件", r], ["结果", e]);
     return e;
   }
   static uZo(t, i) {
@@ -95,18 +112,15 @@ class SkillBehaviorCondition {
     let e = false;
     var r;
     var a;
-    var o;
     if (i.SkillComponent.SkillTarget) {
-      a = (r = i.Entity.GetComponent(1)).ActorLocationProxy;
-      i = Vector_1.Vector.Create(i.SkillComponent.GetTargetTransform().GetLocation());
-      o = Vector_1.Vector.Create();
-      i.Subtraction(a, o);
+      a = (r = i.Entity.GetComponent(1)).ActorLocation;
+      i = i.SkillComponent.GetTargetTransform().GetLocation().op_Subtraction(a);
       if (t.IgnoreZ) {
-        o.Z = 0;
+        i.Z = 0;
       }
-      o.Normalize();
-      i = t.Sign ? MathUtils_1.MathUtils.GetAngleByVectorDotWithSign(r.ActorForwardProxy, o) : MathUtils_1.MathUtils.GetAngleByVectorDot(r.ActorForwardProxy, o);
-      e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, i, t.Value, t.RangeL, t.RangeR);
+      i.Normalize(MathCommon_1.MathCommon.SmallNumber);
+      a = t.Sign ? MathUtils_1.MathUtils.SignedAngleOnPlaneDeg(r.ActorForwardProxy, i, Vector_1.Vector.UpVectorDouble) : MathUtils_1.MathUtils.GetAngleByVectorDot(r.ActorForwardProxy, i);
+      e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, a, t.Value, t.RangeL, t.RangeR);
     }
     if (t.Reverse) {
       return !e;
@@ -115,7 +129,7 @@ class SkillBehaviorCondition {
     }
   }
   static dZo(t, i) {
-    i = i.Entity.GetComponent(206);
+    i = i.Entity.GetComponent(209);
     i = t.AnyTag ? i.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck)) : i.HasAllTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(t.TagToCheck));
     if (t.Reverse) {
       return !i;
@@ -124,7 +138,7 @@ class SkillBehaviorCondition {
     }
   }
   static CZo(t, i) {
-    var i = i.Entity.GetComponent(174);
+    var i = i.Entity.GetComponent(177);
     var e = i.GetCurrentValue(t.AttributeId1);
     var i = t.AttributeId2 > 0 ? i.GetCurrentValue(t.AttributeId2) : 0;
     var e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, e, t.Value + i * t.AttributeRate * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, t.RangeL, t.RangeR);
@@ -134,13 +148,51 @@ class SkillBehaviorCondition {
       return e;
     }
   }
-  static gZo(t, i) {
-    i = i.Entity.GetComponent(179).GetHeightAboveGround();
+  static $Bd(t, i) {
+    i = i.Entity.GetComponent(182).GetHeightAboveGround();
     i = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, i, t.Value, t.RangeL, t.RangeR);
     if (t.Reverse) {
       return !i;
     } else {
       return i;
+    }
+  }
+  static gZo(t, i) {
+    let e = false;
+    var r;
+    if (i.SkillComponent.SkillTarget) {
+      r = i.Entity.GetComponent(1).ActorLocationProxy;
+      i = Vector_1.Vector.Create(i.SkillComponent.GetTargetTransform().GetLocation());
+      r = r.Z - i.Z;
+      e = (0, SkillBehaviorMisc_1.compare)(t.ComparisonLogic, r, t.Value, t.RangeL, t.RangeR);
+    }
+    if (t.Reverse) {
+      return !e;
+    } else {
+      return e;
+    }
+  }
+  static fcm(t, i) {
+    let e = false;
+    if (SkillUtils_1.SkillUtils.IsTsActor(i.SkillComponent.SkillTarget)) {
+      e = true;
+    }
+    if (t.Reverse) {
+      return !e;
+    } else {
+      return e;
+    }
+  }
+  static DLm(t, i) {
+    let e = false;
+    var r = ModelManager_1.ModelManager.InputModel?.GetAxisValues();
+    if (r && (r.get(InputEnums_1.EInputAxis.MoveForward) || r.get(InputEnums_1.EInputAxis.MoveRight))) {
+      e = true;
+    }
+    if (t.Reverse) {
+      return !e;
+    } else {
+      return e;
     }
   }
 }

@@ -42,7 +42,7 @@ const PreloadDefine_1 = require("../../../../Preload/PreloadDefine");
 const CombatLog_1 = require("../../../../Utils/CombatLog");
 const PreloadControllerNew_1 = require("../../../../World/Controller/PreloadControllerNew");
 const GameModePromise_1 = require("../../../../World/Define/GameModePromise");
-const characterCommonSkillSet = new Set([100001, 100002, 100003, 100004, 100005, 100006, 100007, 210001, 200001, 200002]);
+const characterCommonSkillSet = new Set([100001, 100002, 100003, 100004, 100005, 100006, 100007, 210001, 200001, 200002, 210030]);
 const TIME_LIMIT_MICRO_SECOND = 5000;
 let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -69,7 +69,7 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     if (PreloadDefine_1.PreloadSetting.UseNewPreload) {
       this.tRr = this.Entity.GetComponent(39);
       this.u1t = this.Entity.GetComponent(0);
-      this.Entity.GetComponent(206).ListenForTagAddOrRemove(1996802261, this.YJr);
+      this.Entity.GetComponent(209).ListenForTagAddOrRemove(1996802261, this.YJr);
     }
     return true;
   }
@@ -102,6 +102,7 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
       RolePreloadComponent_1.uH1.Start();
       this.SGn();
       this.EGn();
+      this.PreInitMorph();
       this.zJr();
       this.ZJr();
       RolePreloadComponent_1.uH1.Stop();
@@ -175,15 +176,15 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     RolePreloadComponent_1.r31.Stop();
   }
   tzr() {
+    this.MGn();
     var e = new Array();
     DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.tRr.DtSkillInfo, e);
     for (const t of e) {
       this.kk_(Number(t));
     }
-    this.MGn();
     for (const r of ConfigManager_1.ConfigManager.WorldConfig.GetRoleCommonSkillRowNames()) {
       var o = Number(r);
-      if (characterCommonSkillSet.has(o) && !this.PreloadSkillIds.has(o)) {
+      if (characterCommonSkillSet.has(o)) {
         this.kk_(o);
       }
     }
@@ -257,14 +258,15 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     }
   }
   qHl() {
+    this.MGn();
     var e = new Array();
     DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.tRr.DtSkillInfo, e);
     for (const o of e) {
       this.kk_(Number(o));
     }
-    this.MGn();
   }
   izr() {
+    this.MGn();
     var e = new Array();
     if (this.tRr.DtSkillInfo) {
       DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.tRr.DtSkillInfo, e);
@@ -275,7 +277,6 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     for (const t of ConfigManager_1.ConfigManager.WorldConfig.GetVisionCommonSkillRowNames()) {
       this.kk_(Number(t));
     }
-    this.MGn();
   }
   MGn() {
     var e = this.tRr.DtSkillInfoExtraList;
@@ -361,87 +362,98 @@ let RolePreloadComponent = RolePreloadComponent_1 = class RolePreloadComponent e
     RolePreloadComponent_1.cH1.Stop();
   }
   kk_(e) {
-    var o = PreloadControllerNew_1.PreloadControllerNew.CollectAssetBySkillId(this.XJr, e, false);
-    if (o) {
-      this.PreloadSkillIds.add(e);
+    var o;
+    if (!this.PreloadSkillIds.has(e)) {
+      if (o = PreloadControllerNew_1.PreloadControllerNew.CollectAssetBySkillId(this.XJr, e, false)) {
+        this.PreloadSkillIds.add(e);
+      }
+      return o;
     }
-    return o;
   }
   s31(e) {
     return PreloadControllerNew_1.PreloadControllerNew.CollectAssetByBulletId(this.XJr, e);
   }
-  IsEnableInitMorph() {
-    var e = this.fGn?.MorphModelInfoMap;
-    return !!e && e.Num() !== 0;
-  }
-  async InitMorph() {
-    if (this.XJr) {
-      var o = this.fGn?.MorphModelInfoMap;
-      if (o) {
-        var t = [];
-        var r = this.XJr;
-        const P = this.u1t?.GetCreatureDataId() ?? 0;
-        var i = this.Entity.GetComponent(282);
+  PreInitMorph() {
+    if (this.XJr && this.fGn) {
+      var o = this.fGn.MorphModelInfoMap;
+      if (o.Num() > 0) {
+        this.XJr.HasMorphAssets = true;
+        this.Entity.GetComponent(25)?.SetHasMorphMontage(true);
+        var t = this.Entity.GetComponent(287);
+        var r = ResourceSystem_1.ResourceSystem.Load(DataTableUtil_1.dataTablePaths.get(0), UE.DataTable);
+        var i = new Set();
+        this.XJr.MorphAssetsPaths = i;
         for (let e = 0; e < o.Num(); e++) {
           var l = o.GetKey(e);
           var a = o.Get(l);
           if (a && a.ModelId !== 0) {
-            var n = ModelUtil_1.ModelUtil.GetModelConfig(a.ModelId);
-            if (n && n.特效替换表 && n.蒙太奇替换表) {
-              if ((_ = n.特效替换表.ToAssetPathName()).length > 0) {
-                r?.MainAsset.SetupReplaceEffect(_);
-                this.Entity.GetComponent(3).SetReplaceEffect(r?.MainAsset.ReplaceEffectMap);
-              }
-              if ((_ = n.蒙太奇替换表.ToAssetPathName()).length > 0) {
-                r?.MainAsset.SetupReplaceMontage(_);
-                this.Entity.GetComponent(3).SetReplaceMontage(r?.MainAsset.ReplaceMontageMap);
-              }
-            } else if (!n) {
-              if (Log_1.Log.CheckError()) {
-                Log_1.Log.Error("Preload", 67, "[预加载] 多形态预加载 ModelConfig为空", ["CreatureDataId", P], ["EntityId", this.Entity?.Id], ["ModelId", a.ModelId]);
-              }
+            var n = DataTableUtil_1.DataTableUtil.GetDataTableRow(r, a.ModelId.toString())?.蓝图.ToAssetPathName();
+            if (n?.length) {
+              i.add(n);
             }
-            RolePreloadComponent_1.yRc.Start();
-            var s = new PreloadDefine_1.AssetElement(r);
-            var _ = PreloadControllerNew_1.PreloadControllerNew.CollectAssetByModelId(r, a.ModelId, s);
-            RolePreloadComponent_1.yRc.Stop();
-            if (_) {
-              t.push(s);
-              var h = s.NeedLoadAssets.length;
-              for (let e = 0; e < h; e++) {
-                if (s.NeedLoadAssetTypes[e] === 1) {
-                  i?.AddMorphMontagePath(s.NeedLoadAssets[e], l);
-                }
-              }
-              this.Entity.GetComponent(25)?.SetHasMorphMontage(true);
+            for (let e = 0; e < a.MontageSubPathNames.Num(); e++) {
+              var s = a.MontageSubPathNames.Get(e);
+              t?.SetMontageSubPathMorphType(s, l);
             }
           }
         }
-        RolePreloadComponent_1.SRc.Start();
-        var e = [];
-        const C = ModelManager_1.ModelManager.PreloadModelNew;
-        for (const m of t) {
-          m.AddObjectCallback = (e, o) => {
-            C.HoldPreloadObject.AddEntityAsset(P, e);
-          };
-          var d = new GameModePromise_1.GameModePromise();
-          PreloadControllerNew_1.PreloadControllerNew.LoadAssetAsync(m, this.XJr.LoadPriority, false, d);
-          e.push(d);
+      }
+    }
+  }
+  async InitMorph() {
+    if (this.XJr) {
+      var o = this.fGn?.MorphModelInfoMap;
+      if (o && o.Num() !== 0) {
+        var t = [];
+        var r = this.XJr;
+        const _ = this.u1t?.GetCreatureDataId() ?? 0;
+        var e = r.BlueprintClassPath;
+        for (let e = 0; e < o.Num(); e++) {
+          var i;
+          var l;
+          var a = o.GetKey(e);
+          var a = o.Get(a);
+          if (a && a.ModelId !== 0) {
+            l = this.Entity.GetComponent(3);
+            i = ModelUtil_1.ModelUtil.GetModelConfig(a.ModelId);
+            l?.SetupReplacement(i, r);
+            RolePreloadComponent_1.yRc.Start();
+            l = new PreloadDefine_1.AssetElement(r);
+            if (PreloadControllerNew_1.PreloadControllerNew.CollectAssetByModelId(r, a.ModelId, l)) {
+              t.push(l);
+            }
+            RolePreloadComponent_1.yRc.Stop();
+          }
         }
-        await Promise.all(e);
+        r.BlueprintClassPath = e;
+        RolePreloadComponent_1.SRc.Start();
+        var n = [];
+        const h = ModelManager_1.ModelManager.PreloadModelNew;
+        for (const d of t) {
+          d.AddObjectCallback = (e, o) => {
+            h.HoldPreloadObject.AddEntityAsset(_, e);
+          };
+          var s = new GameModePromise_1.GameModePromise();
+          PreloadControllerNew_1.PreloadControllerNew.LoadAssetAsync(d, this.XJr.LoadPriority, false, s);
+          n.push(s);
+        }
+        await Promise.all(n);
         RolePreloadComponent_1.SRc.Stop();
       }
     }
   }
   ZN1() {
-    for (const e of this.tRr.GetAllBulletData()) {
+    for (const e of this.tRr.GetAllBulletId()) {
       this.JN1.push(e);
     }
   }
   e31() {
-    for (const e of this.tRr.GetAllSkillData(5)) {
+    for (const e of this.tRr.GetAllSkillId(5)) {
       this.zN1.push(e);
     }
+  }
+  GetCharacterLoadTypeList() {
+    return this.T8_;
   }
 };
 RolePreloadComponent.t31 = new TimeLimit_1.TimeLimit(TIME_LIMIT_MICRO_SECOND);
@@ -455,5 +467,5 @@ RolePreloadComponent.o31 = Stats_1.Stat.Create("Preload.LoadSkillAsync");
 RolePreloadComponent.cH1 = Stats_1.Stat.Create("Preload.PreloadHitEffect");
 RolePreloadComponent.yRc = Stats_1.Stat.Create("Preload.PreloadMorphCollectAssetByModelId");
 RolePreloadComponent.SRc = Stats_1.Stat.Create("Preload.PreloadMorphLoadAssetAsync");
-RolePreloadComponent = RolePreloadComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(220)], RolePreloadComponent);
+RolePreloadComponent = RolePreloadComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(223)], RolePreloadComponent);
 exports.RolePreloadComponent = RolePreloadComponent; //# sourceMappingURL=RolePreloadComponent.js.map

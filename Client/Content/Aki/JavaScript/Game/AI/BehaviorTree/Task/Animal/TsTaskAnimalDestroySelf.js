@@ -17,7 +17,7 @@ class TsTaskAnimalDestroySelf extends TsTaskAbortImmediatelyBase_1.default {
       if (o = (s = s.CharActorComp.Entity).GetComponent(47)) {
         o.DisableAi("动物销毁");
       }
-      if (o = s.GetComponent(172)) {
+      if (o = s.GetComponent(175)) {
         o.PendingDestroy = false;
       }
       o = s.GetComponent(0);

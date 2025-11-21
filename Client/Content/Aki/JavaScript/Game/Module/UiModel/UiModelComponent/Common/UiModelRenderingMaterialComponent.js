@@ -115,7 +115,7 @@ let UiModelRenderingMaterialComponent = class UiModelRenderingMaterialComponent 
       e = EffectUtil_1.EffectUtil.GetEffectPath(t.EffectId);
       t.HandleId = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Object, e => {
         t.RenderingId = i.AddMaterialControllerData(e);
-      });
+      }, 100, "Ui.UiSceneModel");
     }
     if (t.MaterialAssetData) {
       if (t.WithAnimObject) {

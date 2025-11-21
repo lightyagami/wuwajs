@@ -12,11 +12,14 @@ const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../../Ui/Base/UiPanelBase");
 const FilterSortController_1 = require("../../FilterSortController");
+const FilterSortDefine_1 = require("../../FilterSortDefine");
 const FilterViewData_1 = require("../Model/FilterViewData");
 class FilterEntrance extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
     this.UpdateDataListFunction = i;
+    this.hdm = new Map();
+    this.rRt = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
     this.hDt = undefined;
     this.ypt = [];
     this.lDt = [];
@@ -24,8 +27,9 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     this.Mne = 0;
     this.$Fa = undefined;
     this._7c = "";
+    this.OnBtnClearClickCallback = undefined;
     this.uDt = () => {
-      var t = new FilterViewData_1.FilterViewData(this.Mne, this.vTt);
+      var t = new FilterViewData_1.FilterViewData(this.hDt.UniqueId, this.vTt);
       FilterSortController_1.FilterSortController.OpenFilterView(t);
     };
     this.vTt = () => {
@@ -33,8 +37,12 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
       this.P5e();
       this.qpt(false);
     };
+    this.qhm = () => {
+      this.OnBtnClearClickCallback?.();
+      this.gPe();
+    };
     this.gPe = () => {
-      ModelManager_1.ModelManager.FilterModel.ClearData(this.Mne);
+      ModelManager_1.ModelManager.FilterModel.ClearData(this.hDt.UniqueId);
       this.GetItem(1).SetUIActive(false);
       this.XFa();
       this.qpt(false);
@@ -49,19 +57,21 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this.uDt], [3, this.gPe]];
+    this.BtnBindInfo = [[0, this.uDt], [3, this.qhm]];
   }
   TryClearData() {
     var t;
     return !(this.Mne <= 0) && !(t = this.hDt.ShowAllFilterContent(), StringUtils_1.StringUtils.IsBlank(t)) && !(this.gPe(), 0);
   }
   OnStart() {
-    this.hDt = new FilterViewData_1.FilterResultData();
     this.GetItem(1).SetUIActive(false);
     this.AddEventListener();
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.FilterModel.DeleteFilterResultData(this.Mne);
+    for (const t of this.hdm.values()) {
+      ModelManager_1.ModelManager.FilterModel.DeleteFilterResultData(t);
+    }
+    this.hdm.clear();
     this.RemoveEventListener();
   }
   AddEventListener() {
@@ -81,14 +91,15 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     }
   }
   qpt(t) {
-    var i = this.hDt.GetSelectRuleData();
-    var i = ModelManager_1.ModelManager.FilterModel.GetFilterList(this.ypt, this.Mne, i);
-    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt);
-    var s = ModelManager_1.ModelManager.SortModel.GetSortResultData(e);
+    var i;
+    var e = this.hDt.GetSelectRuleData();
+    var e = ModelManager_1.ModelManager.FilterModel.GetFilterList(this.ypt, this.Mne, e);
+    var s = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.rRt);
     if (s) {
-      ModelManager_1.ModelManager.SortModel.SortDataList(i, e, s, ...this.lDt);
+      i = ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt);
+      ModelManager_1.ModelManager.SortModel.SortDataList(e, i, s, ...this.lDt);
     }
-    this.UpdateDataListFunction?.(i, t, 0);
+    this.UpdateDataListFunction?.(e, t, 0);
   }
   GetSelectRuleDataMap() {
     return this.hDt.GetSelectRuleData();
@@ -107,22 +118,22 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
     }
   }
   dDt(t) {
-    this.hDt = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.Mne);
+    var i = this.GetUniqueIdByGroupId(this._Dt);
+    this.hDt = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(i);
     if (!this.hDt) {
-      if (this.hDt === undefined) {
-        this.hDt = new FilterViewData_1.FilterResultData();
-        const s = new Map();
-        t?.SelectRuleMap.forEach((t, i) => {
-          const e = new Map();
-          ModelManager_1.ModelManager.FilterModel.GetFilterDataFuncByFilterType(i)(t).forEach(t => {
-            e.set(t.FilterId, t.Content);
-          });
-          s.set(i, e);
-        });
-        this.hDt.SetRuleData(s);
-      }
+      this.hDt = new FilterViewData_1.FilterResultData();
       this.hDt.SetConfigId(this.Mne);
-      ModelManager_1.ModelManager.FilterModel.SetFilterResultData(this.Mne, this.hDt);
+      const s = new Map();
+      t?.SelectRuleMap.forEach((t, i) => {
+        const e = new Map();
+        ModelManager_1.ModelManager.FilterModel.GetFilterDataFuncByFilterType(i)(t).forEach(t => {
+          e.set(t.FilterId, t.Content);
+        });
+        s.set(i, e);
+      });
+      this.hDt.SetRuleData(s);
+      ModelManager_1.ModelManager.FilterModel.SetFilterResultData(this.hDt);
+      this.hdm.set(this._Dt, this.hDt.UniqueId);
     }
   }
   CDt() {
@@ -141,25 +152,44 @@ class FilterEntrance extends UiPanelBase_1.UiPanelBase {
       }
     }
   }
-  UpdateDataWithConfig(t, i, e, s = "", ...a) {
-    var r = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
-    if (r.SaveMode === 1 || r.SaveMode === 3) {
-      this.UpdateData(t, e, ...a);
+  UpdateDataWithConfig(t, i, e, s = "", ...r) {
+    var h = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
+    if (h.SaveMode === 1 || h.SaveMode === 3) {
+      this.UpdateData(t, e, ...r);
     } else {
       this.XFa();
       this.mDt(t, i, s);
       this.CDt();
       if (!(this.Mne <= 0)) {
         this.ypt = e;
-        this.lDt = a;
-        r = ModelManager_1.ModelManager.FilterModel.GetFilterConfigData(i, this._Dt, s);
-        this.dDt(r);
+        this.lDt = r;
+        h = ModelManager_1.ModelManager.FilterModel.GetFilterConfigData(i, this._Dt, s);
+        this.dDt(h);
         this.P5e();
         if (ConfigManager_1.ConfigManager.SortConfig.GetSortId(this._Dt) === 0) {
           this.qpt(true);
         }
       }
     }
+  }
+  SelectSingleById(i) {
+    this.hDt?.ClearSelectRuleData();
+    for (const s of ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.Mne).RuleList) {
+      var t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(s).FilterType;
+      var e = ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(s, this.Mne).find(t => t.FilterId === i);
+      if (e) {
+        this.hDt.AddSingleRuleData(t, i, e.Content ?? "");
+        this.vTt();
+        return true;
+      }
+    }
+    return false;
+  }
+  GetUniqueIdByGroupId(t) {
+    return this.hdm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+  }
+  SetSortUniqueId(t) {
+    this.rRt = t;
   }
 }
 exports.FilterEntrance = FilterEntrance;

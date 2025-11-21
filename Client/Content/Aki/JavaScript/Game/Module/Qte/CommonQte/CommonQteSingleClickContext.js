@@ -33,8 +33,10 @@ class CommonQteSingleClickContext extends CommonQteContextBase_1.CommonQteContex
   OnUpdateTime(t) {
     if (this.Config) {
       this.PassTime += t;
-      if (!this.IsPermanent && this.PassTime > this.Duration) {
-        this.QteFail();
+      if (!this.CheckQteConditionAndDoSuccess()) {
+        if (!this.IsPermanent && this.PassTime > this.Duration) {
+          this.QteFail();
+        }
       }
     } else {
       if (Log_1.Log.CheckError()) {

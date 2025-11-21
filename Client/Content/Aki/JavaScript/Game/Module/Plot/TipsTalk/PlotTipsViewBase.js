@@ -34,10 +34,10 @@ const BREAK_TIME = 1000;
 class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.Nqd = undefined;
+    this.m3d = undefined;
     this.Ebn = undefined;
     this.ybn = undefined;
-    this.vto = false;
+    this.DRm = false;
     this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
     this.Ybn = 0;
     this.Lbn = new Map();
@@ -82,8 +82,8 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
       this.SetUiActive(!e);
     };
     this.Eto = (e = false, t = true) => {
-      if (this.vto !== e && (!!e || !this.IsHideOrHiding)) {
-        if (this.vto = e) {
+      if (this.DRm !== e && (!!e || !this.IsHideOrHiding)) {
+        if (this.DRm = e) {
           if (t) {
             this.SetUiActive(false);
           }
@@ -112,12 +112,12 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
     };
   }
   async OpenAsync(e) {
-    if (!(this.Nqd = e)?.ViewName) {
+    if (!(this.m3d = e)?.ViewName) {
       return false;
     }
     this.FirstShow = true;
     await this.CreateThenShowByResourceIdAsync(this.ResourceId, this.GetParentItem(), true);
-    if (this.Nqd?.ViewName) {
+    if (this.m3d?.ViewName) {
       var t = UiManager_1.UiManager.GetViewByName(e.ViewName);
       if (!t) {
         if (Log_1.Log.CheckWarn()) {
@@ -145,13 +145,13 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
     await this.DestroyAsync();
   }
   OnInit() {}
-  Vqd() {
+  f3d() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UpdatePlotSubtitle, this.Mto);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HidePlotUi, this.Qzi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HangPlotViewHud, this.Eto);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearPlotSubtitle, this.rto);
   }
-  jqd() {
+  g3d() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UpdatePlotSubtitle, this.Mto);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HidePlotUi, this.Qzi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.HangPlotViewHud, this.Eto);
@@ -159,8 +159,8 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
   }
   async OnCreateAsync() {
     var e = new Array();
-    if (this.Nqd?.TipsTalkTexturePaths) {
-      for (const t of this.Nqd.TipsTalkTexturePaths) {
+    if (this.m3d?.TipsTalkTexturePaths) {
+      for (const t of this.m3d.TipsTalkTexturePaths) {
         const i = new CustomPromise_1.CustomPromise();
         e.push(i.Promise);
         ResourceSystem_1.ResourceSystem.LoadAsync(t[1], UE.Texture, e => {
@@ -182,11 +182,11 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
     this.$bn = LanguageSystem_1.LanguageSystem.PackageAudio;
   }
   OnAfterShow() {
-    this.Vqd();
+    this.f3d();
     this.Eto(ModelManager_1.ModelManager.PlotModel.HangViewHud, false);
   }
   OnBeforeHide() {
-    this.jqd();
+    this.g3d();
     if (!this.LastHide) {
       this.Eto(true, false);
     }
@@ -254,7 +254,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
       }
       this.Ybn++;
       const s = this.Ybn;
-      this.lZi = AudioSystem_1.AudioSystem.PostEvent(this.OverrideAudioEventName ?? e, this.Nqd?.AudioAttachActor, {
+      this.lZi = AudioSystem_1.AudioSystem.PostEvent(this.OverrideAudioEventName ?? e, this.m3d?.AudioAttachActor, {
         ExternalSourceName: this.OverrideAudioSrcName ?? t.SubtitleSrc,
         ExternalSourceMediaName: i,
         CallbackMask: 1,
@@ -264,7 +264,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
           }
           if (e === 0 && s === this.Ybn) {
             this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
-            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.vto);
+            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.DRm);
           }
         }
       });
@@ -311,7 +311,7 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
           }
           if (e === 0 && o === this.Ybn) {
             this.lZi = AudioSystem_1.INVALID_AUDIO_EVENT_VALUE;
-            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.vto);
+            this.Rbn(this.Ebn.CaptionParams?.IntervalTime || ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.AudioEndWaitTimePrompt, this.DRm);
           }
         }
       });
@@ -342,6 +342,12 @@ class PlotTipsViewBase extends UiPanelBase_1.UiPanelBase {
         }
       }
     }
+  }
+  get IsHang() {
+    return this.DRm;
+  }
+  GetViewName() {
+    return this.m3d?.ViewName;
   }
 }
 exports.PlotTipsViewBase = PlotTipsViewBase;

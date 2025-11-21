@@ -58,7 +58,7 @@ let CharacterLevelShootComponent = CharacterLevelShootComponent_1 = class Charac
   }
   OnInitData() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Lie = this.Entity.GetComponent(209);
     this._9r = new Array();
     this.u9r = Vector_1.Vector.Create();
     this.c9r = Vector_1.Vector.Create();
@@ -170,7 +170,7 @@ let CharacterLevelShootComponent = CharacterLevelShootComponent_1 = class Charac
           i = true;
           break;
         }
-        var a = n.Entity.GetComponent(163);
+        var a = n.Entity.GetComponent(166);
         if (!a) {
           i = true;
           break;

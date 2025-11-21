@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RewardExploreScore = undefined;
 const UE = require("ue");
+const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -51,7 +52,7 @@ class ScoreItem extends UiPanelBase_1.UiPanelBase {
     this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText]];
     this.BtnBindInfo = [];
   }
-  Refresh(e, t, s) {
+  Refresh(e, t, i) {
     this.P5e(e);
     this.Pqe(e);
   }
@@ -73,7 +74,9 @@ class NewRecordItem extends UiPanelBase_1.UiPanelBase {
     this.Dfi(e.IfNewRecord);
   }
   mGe(e) {
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.RecordTextId);
+    if (!StringUtils_1.StringUtils.IsEmpty(e.RecordTextId)) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.RecordTextId);
+    }
   }
   Dyn(e) {
     this.GetText(1)?.SetText(e.FullScore.toString());

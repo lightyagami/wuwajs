@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, i, l, a) {
+var __decorate = this && this.__decorate || function (i, e, l, a) {
   var t;
-  var o = arguments.length;
-  var S = o < 3 ? i : a === null ? a = Object.getOwnPropertyDescriptor(i, l) : a;
+  var S = arguments.length;
+  var n = S < 3 ? e : a === null ? a = Object.getOwnPropertyDescriptor(e, l) : a;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    S = Reflect.decorate(e, i, l, a);
+    n = Reflect.decorate(i, e, l, a);
   } else {
-    for (var n = e.length - 1; n >= 0; n--) {
-      if (t = e[n]) {
-        S = (o < 3 ? t(S) : o > 3 ? t(i, l, S) : t(i, l)) || S;
+    for (var r = i.length - 1; r >= 0; r--) {
+      if (t = i[r]) {
+        n = (S < 3 ? t(n) : S > 3 ? t(e, l, n) : t(e, l)) || n;
       }
     }
   }
-  if (o > 3 && S) {
-    Object.defineProperty(i, l, S);
+  if (S > 3 && n) {
+    Object.defineProperty(e, l, n);
   }
-  return S;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,31 +28,33 @@ const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterCompo
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
 const RoleDefine_1 = require("../../../../../Module/RoleUi/RoleDefine");
 const SpecialSkillAogusita_1 = require("./SpecialSkill/SpecialSkillAogusita");
+const SpecialSkillBuling_1 = require("./SpecialSkill/SpecialSkillBuling");
 const SpecialSkillFuLuoLuo_1 = require("./SpecialSkill/SpecialSkillFuLuoLuo");
+const SpecialSkillJiabeilina_1 = require("./SpecialSkill/SpecialSkillJiabeilina");
 const SpecialSkillKanteleila_1 = require("./SpecialSkill/SpecialSkillKanteleila");
 const SpecialSkillKatixiya_1 = require("./SpecialSkill/SpecialSkillKatixiya");
 const SpecialSkillLuPa_1 = require("./SpecialSkill/SpecialSkillLuPa");
 const SpecialSkillXiaKong_1 = require("./SpecialSkill/SpecialSkillXiaKong");
 const SpecialSkillZheZhi_1 = require("./SpecialSkill/SpecialSkillZheZhi");
-const specialSkillTypes = new Map([[1105, SpecialSkillZheZhi_1.SpecialSkillZheZhi], [1607, SpecialSkillKanteleila_1.SpecialSkillKanteleila], [1407, SpecialSkillXiaKong_1.SpecialSkillXiaKong], [1207, SpecialSkillLuPa_1.SpecialSkillLuPa], [1409, SpecialSkillKatixiya_1.SpecialSkillKatixiya], [1608, SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo], [1306, SpecialSkillAogusita_1.SpecialSkillAogusita]]);
+const specialSkillTypes = new Map([[1105, SpecialSkillZheZhi_1.SpecialSkillZheZhi], [1607, SpecialSkillKanteleila_1.SpecialSkillKanteleila], [1407, SpecialSkillXiaKong_1.SpecialSkillXiaKong], [1207, SpecialSkillLuPa_1.SpecialSkillLuPa], [1409, SpecialSkillKatixiya_1.SpecialSkillKatixiya], [1608, SpecialSkillFuLuoLuo_1.SpecialSkillFuLuoLuo], [1306, SpecialSkillAogusita_1.SpecialSkillAogusita], [1208, SpecialSkillJiabeilina_1.SpecialSkillJiabeilina], [1307, SpecialSkillBuling_1.SpecialSkillBuling]]);
 let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
     this.SpecialSkill = undefined;
   }
   OnStart() {
-    var e = this.Entity.GetComponent(0);
-    let i = e.GetPbDataId();
-    if (e?.IsRole() && i && i > RoleDefine_1.ROBOT_DATA_MIN_ID && ConfigManager_1.ConfigManager.RoleConfig) {
-      if (e = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(i)) {
-        i = e.ParentId;
+    var i = this.Entity.GetComponent(0);
+    let e = i.GetPbDataId();
+    if (i?.IsRole() && e && e > RoleDefine_1.ROBOT_DATA_MIN_ID && ConfigManager_1.ConfigManager.RoleConfig) {
+      if (i = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(e)) {
+        e = i.ParentId;
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 4, "无法找到试用角色数据", ["pbDataId", i]);
+        Log_1.Log.Debug("Battle", 4, "无法找到试用角色数据", ["pbDataId", e]);
       }
     }
-    e = specialSkillTypes.get(i);
-    if (e) {
-      this.SpecialSkill = e.Spawn(this);
+    i = specialSkillTypes.get(e);
+    if (i) {
+      this.SpecialSkill = i.Spawn(this);
       this.SpecialSkill.OnStart();
     }
     return true;
@@ -64,8 +66,8 @@ let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extend
     this.SpecialSkill?.OnEnd();
     return true;
   }
-  OnTick(e) {
-    this.SpecialSkill?.OnTick(e);
+  OnTick(i) {
+    this.SpecialSkill?.OnTick(i);
   }
   OnEnable() {
     this.SpecialSkill?.OnEnable();
@@ -73,6 +75,9 @@ let CharacterSpecialSkillComponent = class CharacterSpecialSkillComponent extend
   OnDisable() {
     this.SpecialSkill?.OnDisable();
   }
+  static SetOptimizeEnable(i, e) {
+    specialSkillTypes.get(i)?.SetOptimizeEnable(e);
+  }
 };
-CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(255)], CharacterSpecialSkillComponent);
+CharacterSpecialSkillComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(260)], CharacterSpecialSkillComponent);
 exports.CharacterSpecialSkillComponent = CharacterSpecialSkillComponent; //# sourceMappingURL=CharacterSpecialSkillComponent.js.map

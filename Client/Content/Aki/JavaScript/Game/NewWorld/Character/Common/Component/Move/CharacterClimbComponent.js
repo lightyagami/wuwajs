@@ -287,7 +287,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     this.jYr = Stats_1.Stat.Create("ClimbingExitPositionFix3");
   }
   static get Dependencies() {
-    return [3, 179];
+    return [3, 182];
   }
   get ClimbBlocking() {
     return this.lYr;
@@ -321,14 +321,14 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     return true;
   }
   OnInit() {
-    this.Xte = this.Entity.GetComponent(206);
+    this.Xte = this.Entity.GetComponent(209);
     return true;
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Gce = this.Entity.CheckGetComponent(179);
-    this.oRe = this.Entity.GetComponent(178);
-    this.HBr = this.Entity.CheckGetComponent(176);
+    this.Gce = this.Entity.CheckGetComponent(182);
+    this.oRe = this.Entity.GetComponent(181);
+    this.HBr = this.Entity.CheckGetComponent(179);
     this.k$r = true;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveClimb, this.b$r);
@@ -1022,7 +1022,7 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
     if (this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
       if (this.G$r.X < THREAHOLD_JUMP_LEAVE) {
         this.KickWallExit();
-      } else if ((t = this.Entity.GetComponent(178)).Valid) {
+      } else if ((t = this.Entity.GetComponent(181)).Valid) {
         t.ClimbDash();
       }
     }
@@ -1097,8 +1097,11 @@ let CharacterClimbComponent = CharacterClimbComponent_1 = class CharacterClimbCo
   QYr() {
     return this.Xte.HasTag(388142570) && !this.Xte.HasTag(1098729489);
   }
+  SetLastSafeLocation(t) {
+    this.y5a.DeepCopy(t);
+  }
   foc() {
-    var s = this.Entity.GetComponent(178).MainAnimInstance;
+    var s = this.Entity.GetComponent(181).MainAnimInstance;
     if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
       var h = s.LogicParams.ClimbInfoRef.ClimbInput;
       let t = 180 / Math.PI * Math.atan2(h.Y, h.X);

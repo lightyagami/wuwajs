@@ -63,7 +63,7 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
   OnStart() {
     super.OnStart();
     this.ActorComp = this.Entity.GetComponent(1);
-    this.PerformComp = this.Entity.GetComponent(234);
+    this.PerformComp = this.Entity.GetComponent(237);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenEntered, this.OnEnterVehicle);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnVehicleBeenLeaved, this.OnLeaveVehicle);
     return true;
@@ -107,19 +107,19 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
   }
   AddTagForPassenger(e, t, s) {
     if (e && this.PassengerTagMap.has(e)) {
-      e.GetComponent(206)?.TagContainer.AddExactTag(t, s);
+      e.GetComponent(209)?.TagContainer.AddExactTag(t, s);
       this.PassengerTagMap.get(e).add(s);
     }
   }
   RemoveTagForPassenger(e, t, s) {
     if (e && this.PassengerTagMap.get(e)?.has(s)) {
-      e.GetComponent(206)?.TagContainer.RemoveExactTag(t, s);
+      e.GetComponent(209)?.TagContainer.RemoveExactTag(t, s);
       this.PassengerTagMap.get(e).delete(s);
     }
   }
   RemoveAllTagsForPassenger(e) {
     if (e) {
-      const s = e.GetComponent(206);
+      const s = e.GetComponent(209);
       var t = this.PassengerTagMap.get(e);
       if (t && s) {
         t.forEach(e => {
@@ -130,5 +130,5 @@ let VehicleTagComponent = class VehicleTagComponent extends BaseTagComponent_1.B
     }
   }
 };
-VehicleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(242)], VehicleTagComponent);
+VehicleTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(245)], VehicleTagComponent);
 exports.VehicleTagComponent = VehicleTagComponent; //# sourceMappingURL=VehicleTagComponent.js.map

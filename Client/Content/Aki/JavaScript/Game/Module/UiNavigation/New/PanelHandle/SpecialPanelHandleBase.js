@@ -17,9 +17,9 @@ class SpecialPanelHandleBase {
     this.E9 = t;
   }
   SetNavigationGroupDefaultListener(t) {
-    var e = this.GetNavigationGroup(t.GroupName);
-    if (e) {
-      e.DefaultListener ||= t;
+    var i = this.GetNavigationGroup(t.GroupName);
+    if (i) {
+      i.DefaultListener ||= t;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("UiNavigation", 10, "找不到导航组信息", ["导航组名字", t.GroupName], ["导航监听对象", t.RootUIComp.displayName]);
     }
@@ -42,13 +42,13 @@ class SpecialPanelHandleBase {
     this.hBo.delete(t);
   }
   GetListenerListByTag(t) {
-    var e = [];
-    for (const i of this.hBo) {
-      if (i.TagArray.Contains(t)) {
-        e.push(i);
+    var i = [];
+    for (const e of this.hBo) {
+      if (e.TagArray.Contains(t)) {
+        i.push(e);
       }
     }
-    return e;
+    return i;
   }
   GetListenerSet() {
     return this.hBo;
@@ -56,11 +56,11 @@ class SpecialPanelHandleBase {
   SetDefaultNavigationListenerList(t) {
     this.OnDefaultNavigationListenerList(t);
   }
-  ReplaceDefaultNavigationListener(t, e) {
-    if (this.DefaultNavigationListener.length <= e) {
+  ReplaceDefaultNavigationListener(t, i) {
+    if (this.DefaultNavigationListener.length <= i) {
       this.DefaultNavigationListener.push(t);
     } else {
-      this.DefaultNavigationListener[e] = t;
+      this.DefaultNavigationListener[i] = t;
     }
     this.SetNavigationGroupDefaultListener(t);
   }
@@ -87,16 +87,25 @@ class SpecialPanelHandleBase {
   IsFirstFindFromSubPanel() {
     return this.OnIsFirstFindFromSubPanel();
   }
+  CanOverrideFindNavigation(t, i, e) {
+    return this.OnCanOverrideFindNavigation(t, i, e);
+  }
+  HandleOverrideFindNavigation(t, i, e) {
+    return this.OnHandleOverrideFindNavigation(t, i, e);
+  }
+  HandleAfterFindOpposite(t, i, e, r) {
+    return this.OnHandleAfterFindOpposite(t, i, e, r);
+  }
   OnGetSuitableNavigationListenerList(t) {
     return this.DefaultNavigationListener;
   }
-  OnDefaultNavigationListenerList(i) {
+  OnDefaultNavigationListenerList(e) {
     var r = [];
-    for (let t = 0, e = i.Num(); t < e; ++t) {
-      var s = i.Get(t)?.GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass());
-      r.push(s);
-      if (s) {
-        this.SetNavigationGroupDefaultListener(s);
+    for (let t = 0, i = e.Num(); t < i; ++t) {
+      var n = e.Get(t)?.GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass());
+      r.push(n);
+      if (n) {
+        this.SetNavigationGroupDefaultListener(n);
       }
     }
     this.DefaultNavigationListener = r;
@@ -108,6 +117,13 @@ class SpecialPanelHandleBase {
   OnNotifyFindResult(t) {}
   OnIsFirstFindFromSubPanel() {
     return false;
+  }
+  OnCanOverrideFindNavigation(t, i, e) {
+    return false;
+  }
+  OnHandleOverrideFindNavigation(t, i, e) {}
+  OnHandleAfterFindOpposite(t, i, e, r) {
+    return e;
   }
   Clear() {
     this.OnClear();

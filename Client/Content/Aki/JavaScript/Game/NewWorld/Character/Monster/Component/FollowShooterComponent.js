@@ -93,7 +93,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
         var e = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItem(this.j8, {
           ParamType: 2,
           IsControl: true
-        })?.EntityHandle?.Entity?.GetComponent(206);
+        })?.EntityHandle?.Entity?.GetComponent(209);
         var t = this.ez_.get(t);
         if (t) {
           for (const s of t) {
@@ -120,7 +120,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
     this.IsAutonomousProxy = this.j8 === ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
     if (this.IsAutonomousProxy && (e = e?.GetPbEntityInitData())?.ComponentsData && (e = (0, IComponent_1.getComponent)(e.ComponentsData, "FollowShooterComponent"))) {
       this.LockableCategories = e.LockableCategories;
-      this.Bhh = InputController_1.InputController.CreateInputLayer(3);
+      this.Bhh = InputController_1.InputController.CreateInputLayer(4);
       this.LoadConfigPromise = new CustomPromise_1.CustomPromise();
       ResourceSystem_1.ResourceSystem.LoadAsync(e.Config, UE.BP_FollowShooterConfig_C, t => {
         if (t?.IsValid) {
@@ -189,10 +189,10 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
   }
   OnStart() {
     var t = this.Entity.GetComponent(0).GetCreatureDataId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(this.j8)?.GetComponent(225)?.OnFollowerAdd(t);
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(this.j8)?.GetComponent(228)?.OnFollowerAdd(t);
     if (this.IsAutonomousProxy) {
       this.tRr = this.Entity.GetComponent(40);
-      this.Xte = this.Entity.GetComponent(206);
+      this.Xte = this.Entity.GetComponent(209);
       this.n$t = this.Entity.GetComponent(1);
       this.Bhh?.Start(this);
     }
@@ -367,7 +367,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
   }
   NUa() {
     var t;
-    return ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 1 && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)) && !t.HasAnyTag(this.Bia);
+    return ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 1 && !!(t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)) && !t.HasAnyTag(this.Bia);
   }
   rz_() {
     if (this.Xte) {
@@ -376,7 +376,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
       var i = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItem(this.j8, {
         ParamType: 2,
         IsControl: true
-      })?.EntityHandle?.Entity?.GetComponent(206);
+      })?.EntityHandle?.Entity?.GetComponent(209);
       for ([t, e] of this.ZY_) {
         if (i?.HasAnyTag(e)) {
           if (!this.Xte.HasExactTag(t)) {
@@ -393,7 +393,7 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItem(this.j8, {
       ParamType: 2,
       IsControl: true
-    })?.EntityHandle?.Entity?.GetComponent(206);
+    })?.EntityHandle?.Entity?.GetComponent(209);
     if (t) {
       for (const s of this.Bia) {
         var e = t.ListenForTagAddOrRemove(s, this.kUa);
@@ -458,5 +458,5 @@ let FollowShooterComponent = class FollowShooterComponent extends EntityComponen
     }
   }
 };
-FollowShooterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(223)], FollowShooterComponent);
+FollowShooterComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(226)], FollowShooterComponent);
 exports.FollowShooterComponent = FollowShooterComponent; //# sourceMappingURL=FollowShooterComponent.js.map

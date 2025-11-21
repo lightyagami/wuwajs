@@ -52,7 +52,7 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     this.tu = undefined;
     this.jnr = undefined;
     this.JLe = undefined;
-    this.nVu = undefined;
+    this.SBu = undefined;
     this.lf1 = false;
     this.Ktn = Vector_1.Vector.Create();
     this._f1 = DEFAULT_EXCEPTION_COUNTER_TIME;
@@ -103,7 +103,7 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     if (this.sH1 && this.Hte?.Actor.IsA(UE.BP_BaseNPC_C.StaticClass())) {
       this.Hte.Owner.IsEnableIK = true;
     }
-    this.nVu = i.NpcMaterialDa;
+    this.SBu = i.NpcMaterialDa;
     t = this.Hte.Actor.CharacterMovement;
     t.KuroSetPredictionDataMaxMoveDeltaTime(1);
     t.MaxSimulationTimeStep = 1;
@@ -198,9 +198,9 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     if (!this.cf1) {
       this.cf1 = true;
       (t = Protocol_1.Aki.Protocol.Zes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
-      Net_1.Net.Call(27858, t, t => {
+      Net_1.Net.Call(22398, t, t => {
         if (t && t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 18281);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 19959);
         }
       });
     }
@@ -211,10 +211,10 @@ let NpcPasserbyComponent = class NpcPasserbyComponent extends EntityComponent_1.
     }
   }
   InitMatFromGenerator() {
-    if (this.nVu) {
-      this.Entity.GetComponent(187)?.MaterialController?.ApplyMaterialEffect(this.nVu);
+    if (this.SBu) {
+      this.Entity.GetComponent(190)?.MaterialController?.ApplyMaterialEffect(this.SBu);
     }
   }
 };
-NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(90)], NpcPasserbyComponent);
+NpcPasserbyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(92)], NpcPasserbyComponent);
 exports.NpcPasserbyComponent = NpcPasserbyComponent; //# sourceMappingURL=NpcPasserbyComponent.js.map

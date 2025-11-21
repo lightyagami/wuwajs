@@ -16,6 +16,9 @@ class ActivityShipTowerData extends ActivityData_1.ActivityBaseData {
     var e = ModelManager_1.ModelManager.ShipTowerModel.CurSeason;
     return !(e <= 0) && (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShipTowerSeason) ?? 0) < e;
   }
+  GetExDataFinishShowState() {
+    return ModelManager_1.ModelManager.ShipTowerModel.IsRewardAllReceived;
+  }
 }
 exports.ActivityShipTowerData = ActivityShipTowerData;
 //# sourceMappingURL=ActivityShipTowerData.js.map

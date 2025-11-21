@@ -242,7 +242,7 @@ class SceneCharacterWaterEffect {
     }
   }
   Enable() {
-    if (this.IsReady && (this.OwnerStateComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(176), this.IsEnabled = true, this.ShoreTraceElement = UE.NewObject(UE.TraceSphereElement.StaticClass()), this.ShoreTraceElement.bIsSingle = true, this.ShoreTraceElement.bTraceComplex = false, this.ShoreTraceElement.bIgnoreSelf = true, this.ShoreTraceElement.WorldContextObject = this.Owner, this.ShoreTraceElement.Radius = 50, this.ShoreTraceElement.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Water), UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.Kuro.InteractionEffect.IESystemDebugDraw") > 0 && (this.ShoreTraceElement.SetDrawDebugTrace(1), TraceElementCommon_1.TraceElementCommon.SetTraceColor(this.ShoreTraceElement, new UE.LinearColor(255, 255, 0, 1)), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.ShoreTraceElement, new UE.LinearColor(0, 255, 0, 1))), this.ShoreTraceDelegate = (0, puerts_1.toManualReleaseDelegate)(this.W61), Log_1.Log.CheckInfo())) {
+    if (this.IsReady && (this.OwnerStateComponent = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179), this.IsEnabled = true, this.ShoreTraceElement = UE.NewObject(UE.TraceSphereElement.StaticClass()), this.ShoreTraceElement.bIsSingle = true, this.ShoreTraceElement.bTraceComplex = false, this.ShoreTraceElement.bIgnoreSelf = true, this.ShoreTraceElement.WorldContextObject = this.Owner, this.ShoreTraceElement.Radius = 50, this.ShoreTraceElement.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Water), UE.KismetSystemLibrary.GetConsoleVariableFloatValue("r.Kuro.InteractionEffect.IESystemDebugDraw") > 0 && (this.ShoreTraceElement.SetDrawDebugTrace(1), TraceElementCommon_1.TraceElementCommon.SetTraceColor(this.ShoreTraceElement, new UE.LinearColor(255, 255, 0, 1)), TraceElementCommon_1.TraceElementCommon.SetTraceHitColor(this.ShoreTraceElement, new UE.LinearColor(0, 255, 0, 1))), this.ShoreTraceDelegate = (0, puerts_1.toManualReleaseDelegate)(this.W61), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("RenderEffect", 25, "WaterEffect Enabled", ["Owner", this.Owner.GetName()]);
     }
   }
@@ -255,14 +255,14 @@ class SceneCharacterWaterEffect {
     if (this.IsEnabled) {
       var t;
       var e;
-      var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(179);
+      var i = this.Owner.CharacterActorComponent?.Entity?.GetComponent(182);
       if (i) {
         var s = Vector_1.Vector.Create(this.CurrentWaterNormal.X, this.CurrentWaterNormal.Y, -this.CurrentWaterNormal.Z);
         if (i.GravityDirect.DotProduct(s) < WATER_NORMAL_DOT_CHECK) {
           return;
         }
       }
-      if (this.Owner.CharacterActorComponent?.Entity?.GetComponent(175)?.GetBuffById(CharacterBuffIds_1.buffId.ElevatorBuff) === undefined && !this.Owner.CharacterActorComponent?.Entity?.GetComponent(206)?.HasTag(-1921814084)) {
+      if (this.Owner.CharacterActorComponent?.Entity?.GetComponent(178)?.GetBuffById(CharacterBuffIds_1.buffId.ElevatorBuff) === undefined && !this.Owner.CharacterActorComponent?.Entity?.GetComponent(209)?.HasTag(-1921814084)) {
         if (EffectSystem_1.EffectSystem.IsValid(this.Handle) && !this.IsBlackWave && (EffectSystem_1.EffectSystem.HandleSeekToTime(this.Handle, this.CurrentSpeed, false), i = EffectSystem_1.EffectSystem.GetEffectActor(this.Handle), (s = this.CurrentWaterLocation).X = this.Owner.D_K2_GetActorLocation().X, s.Y = this.Owner.D_K2_GetActorLocation().Y, i.D_K2_SetActorLocation(s.ToUeVector(true), false, undefined, true), s = this.CurrentWaterNormal.ToUeVector(true), e = this.Owner.D_GetActorForwardVector(), t = UE.KismetMathLibrary.D_Cross_VectorVector(s, e), e = UE.KismetMathLibrary.D_Cross_VectorVector(t, s), i.K2_SetActorRotation(UE.KismetMathLibrary.D_MakeRotationFromAxes(e, t, s), true), EffectSystem_1.EffectSystem.IsValid(this.AudioEffectHandle))) {
           EffectSystem_1.EffectSystem.GetEffectActor(this.AudioEffectHandle).D_K2_SetActorLocation(this.CurrentWaterLocation.ToUeVector(true), false, undefined, true);
         }
@@ -291,7 +291,7 @@ class SceneCharacterWaterEffect {
   SetStateInWater(t, e, i, s, h) {
     var r;
     if (this.IsEnabled) {
-      if ((r = this.Owner.CharacterActorComponent?.Entity?.GetComponent(230)) && r.IsOnVehicle) {
+      if ((r = this.Owner.CharacterActorComponent?.Entity?.GetComponent(233)) && r.IsOnVehicle) {
         this.SetStateNone(i);
       } else {
         this.CurrentWaterDepth = t;
@@ -321,7 +321,7 @@ class SceneCharacterWaterEffect {
   SetStateInWaterEnviData(t, e, i) {
     var s;
     if (this.IsEnabled && t) {
-      if ((s = this.Owner.CharacterActorComponent?.Entity?.GetComponent(230)) && s.IsOnVehicle) {
+      if ((s = this.Owner.CharacterActorComponent?.Entity?.GetComponent(233)) && s.IsOnVehicle) {
         this.SetStateNone(e);
       } else {
         this.CurrentWaterDepth = t.WaterDepth;
@@ -460,7 +460,7 @@ class SceneCharacterWaterEffect {
     if (!t || this.IsBlackWave) {
       return -1;
     }
-    var h = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(179);
+    var h = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(182);
     if (h) {
       var r = Vector_1.Vector.Create(this.CurrentWaterNormal.X, this.CurrentWaterNormal.Y, -this.CurrentWaterNormal.Z);
       if (h.GravityDirect.DotProduct(r) < WATER_NORMAL_DOT_CHECK) {
@@ -482,7 +482,7 @@ class SceneCharacterWaterEffect {
     if (this.IsEnabled && !(this.CurrentToWaterHeight > i.FlyEffectHeightThreshold)) {
       var t = i.FindFlyEffectAtSpeed(this.VelocityHistory.GetMaxVelocity());
       if (t) {
-        var s = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(179);
+        var s = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(182);
         if (s) {
           var h = Vector_1.Vector.Create(this.CurrentWaterNormal.X, this.CurrentWaterNormal.Y, -this.CurrentWaterNormal.Z);
           if (s.GravityDirect.DotProduct(h) < WATER_NORMAL_DOT_CHECK) {
@@ -536,7 +536,7 @@ class SceneCharacterWaterEffect {
     }
   }
   Q61(t) {
-    var e = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(179);
+    var e = this.Owner?.CharacterActorComponent?.Entity?.GetComponent(182);
     var i = Vector_1.Vector.Create(-FLYEFFECT_SHORE_TRACE_START_OFFSET * e.GravityDirect.X + t.X, -FLYEFFECT_SHORE_TRACE_START_OFFSET * e.GravityDirect.Y + t.Y, -FLYEFFECT_SHORE_TRACE_START_OFFSET * e.GravityDirect.Z + t.Z);
     var e = Vector_1.Vector.Create(-FLYEFFECT_SHORE_TRACE_END_OFFSET * e.GravityDirect.X + t.X, -FLYEFFECT_SHORE_TRACE_END_OFFSET * e.GravityDirect.Y + t.Y, -FLYEFFECT_SHORE_TRACE_END_OFFSET * e.GravityDirect.Z + t.Z);
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.ShoreTraceElement, i);

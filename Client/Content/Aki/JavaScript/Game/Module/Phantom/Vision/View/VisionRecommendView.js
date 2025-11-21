@@ -12,6 +12,7 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const ButtonItem_1 = require("../../../Common/Button/ButtonItem");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
@@ -20,10 +21,14 @@ const VisionFetterSuitItem_1 = require("./VisionFetterSuitItem");
 class VisionRecommendView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
+    this.kEd = undefined;
     this.b9i = 0;
     this.zo_ = 0;
     this.Jo_ = undefined;
     this.eGe = undefined;
+    this.OEd = false;
+    this.Ypm = undefined;
+    this.zpm = undefined;
     this.sGe = () => {
       return new VisionFetterDescItem_1.VisionFetterDescItem();
     };
@@ -59,16 +64,47 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
       this.en_();
       this.tn_(this.b9i);
       this.in_();
+      this.qEd();
+    };
+    this.GEd = () => {
+      var e;
+      if (this.OEd && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
+        e = e[this.b9i];
+        this.Ypm?.(this.zo_, e.GetRecommendFetterGroupId());
+        this.CloseMe();
+      }
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIVerticalLayout], [5, UE.UIItem], [6, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIVerticalLayout], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIButtonComponent], [4, UE.UIVerticalLayout], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIItem]];
     this.BtnBindInfo = [[3, this.OnClickGoFetterGroupDetailViewBtn], [6, this.OnClickConfirmBoxBtn]];
   }
   OnStart() {
-    this.zo_ = this.OpenParam;
+    var e = this.OpenParam;
+    this.zo_ = e.RoleId;
+    this.OEd = e.IsFromRoleDev;
+    this.Ypm = e.SuccessCallBack;
+    this.zpm = e.GetSelectedFetterGroupIdCallBack;
     this.Jo_ = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(0), this.W2e);
     this.eGe = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(4), this.sGe);
+    this.FEd();
+    this.NEd();
+  }
+  FEd() {
+    this.kEd = new ButtonItem_1.ButtonItem(this.GetItem(7));
+    this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
+    this.kEd.SetFunction(this.GEd);
+  }
+  NEd() {
+    var e = this.GetButton(6);
+    var t = this.GetItem(7);
+    if (this.OEd) {
+      e?.RootUIComp.SetUIActive(false);
+      t?.SetUIActive(true);
+    } else {
+      e?.RootUIComp.SetUIActive(true);
+      t?.SetUIActive(false);
+    }
   }
   Qji() {
     const t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)[this.b9i];
@@ -90,6 +126,8 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
     this.en_();
     this.tn_(this.b9i);
     this.in_();
+    this.qEd();
+    this.NEd();
   }
   en_() {
     var t = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_);
@@ -123,6 +161,19 @@ class VisionRecommendView extends UiViewBase_1.UiViewBase {
       e = e[this.b9i];
       e = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetFetterGroupById(e.GetRecommendFetterGroupId());
       this.GetText(2).ShowTextNew(e.FetterGroupName);
+    }
+  }
+  qEd() {
+    var e;
+    if (this.OEd && this.zpm && (e = ModelManager_1.ModelManager.VisionRecommendModel.GetRoleFetterRecommendInfo(this.zo_)) && e.length !== 0) {
+      e = e[this.b9i];
+      if (this.zpm(this.zo_) === e.GetRecommendFetterGroupId()) {
+        this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Tips01");
+        this.kEd.SetEnableClick(false);
+      } else {
+        this.kEd.SetLocalTextNew("RoleProject_PhantomRecommend_Button01");
+        this.kEd.SetEnableClick(true);
+      }
     }
   }
 }

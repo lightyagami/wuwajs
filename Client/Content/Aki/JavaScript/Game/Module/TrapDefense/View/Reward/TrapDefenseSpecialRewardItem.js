@@ -15,13 +15,13 @@ class TrapDefenseSpecialRewardItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Pe = undefined;
     this.sft = undefined;
-    this.SHc = () => {
+    this.s9u = () => {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseSpecialRewardClaim(this.Pe.Id);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIText], [5, UE.UISprite], [6, UE.UIButtonComponent], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[9, this.SHc]];
+    this.BtnBindInfo = [[9, this.s9u]];
   }
   async OnBeforeStartAsync() {
     this.sft = new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();

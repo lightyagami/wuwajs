@@ -165,7 +165,7 @@ class FreeRunningQteView extends PanelQteView_1.PanelQteView {
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("PanelQte", 67, `QTE加载图标失败, iconPath[${i}]`);
         }
-      }, 100);
+      }, 100, this.MemoryTag);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("PanelQte", 67, "QTE图标路径不存在");
@@ -245,7 +245,7 @@ class FreeRunningQteView extends PanelQteView_1.PanelQteView {
       if (!e) {
         return false;
       }
-      if (!e.GetComponent(100)?.CanActivateFixHook()) {
+      if (!e.GetComponent(102)?.CanActivateFixHook()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("PanelQte", 67, "[FreeRunningQteView]Fix hook target not exist");
         }

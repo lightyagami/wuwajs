@@ -22,7 +22,7 @@ class VisionInputLayer extends InputLayer_1.InputLayer {
     this.pZo = undefined;
   }
   GetLayerType() {
-    return 2;
+    return 3;
   }
   HandlePress(t, e) {
     switch (t) {

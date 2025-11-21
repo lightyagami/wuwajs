@@ -24,6 +24,8 @@ const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const Global_1 = require("../../../../Global");
 const GlobalData_1 = require("../../../../GlobalData");
+const KscEnv_1 = require("../../../../KuroSimpleCombat/KscEnv");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const FeatureRestrictionTemplate_1 = require("../../../Common/FeatureRestrictionTemplate");
 const BattleChildViewPanel_1 = require("./BattleChildViewPanel");
@@ -62,7 +64,7 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       this.lhh();
       this.wac();
     };
-    this.yQu = () => {
+    this.Kju = () => {
       this.lhh();
     };
     this.ShowPlayerPosition = () => {
@@ -100,12 +102,12 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   AddEvents() {
     this.ChildViewData.AddCallback(0, this.wQe);
-    this.ChildViewData.AddCallback(25, this.yQu);
+    this.ChildViewData.AddCallback(25, this.Kju);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ShowPlayerPosition, this.ShowPlayerPosition);
   }
   RemoveEvents() {
     this.ChildViewData.RemoveCallback(0, this.wQe);
-    this.ChildViewData.RemoveCallback(25, this.yQu);
+    this.ChildViewData.RemoveCallback(25, this.Kju);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ShowPlayerPosition, this.ShowPlayerPosition);
   }
   lhh() {
@@ -141,41 +143,49 @@ class PositionPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     var t = TimeUtil_1.TimeUtil.DateFormat8(this.Lac, this.Hwu);
     this.bac.SetText(t);
   }
-  Iet(e, t) {
-    var i = e.X.toFixed(0);
-    var s = e.Y.toFixed(0);
+  Iet(e, i) {
+    var t = e.X.toFixed(0);
+    var r = e.Y.toFixed(0);
     var e = e.Z.toFixed(0);
     this.eMa += this.rMa;
     this.tMa++;
-    var r = TimeUtil_1.TimeUtil.DateFormat2(new Date());
+    var s = TimeUtil_1.TimeUtil.DateFormat2(new Date());
     var o = TimeUtil_1.TimeUtil.DateFormat2(new Date(TimeUtil_1.TimeUtil.GetServerTimeStamp()));
     var a = Net_1.Net.GetUnVerifiedMessageCount();
     var a = a > 10 ? `
 协议缓存队列长度:${a}` : "";
-    var l = (1000 / t).toFixed(0);
-    var h = ActorSystem_1.ActorSystem.Size;
-    var n = ActorSystem_1.ActorSystem.Capacity;
+    var l = (1000 / i).toFixed(0);
+    var n = ActorSystem_1.ActorSystem.Size;
+    var h = ActorSystem_1.ActorSystem.Capacity;
     var _ = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("Stream");
     var c = ModelManager_1.ModelManager.BulletModel?.GetBulletEntityMap().size;
-    this.pk += t;
+    this.pk += i;
     if (this.pk > this.yet) {
       this.pk = 0;
       this.UpdateEffectState();
       this.oMa();
     }
-    let m = `Fps:${l} Pos: (${i},${s},${e})`;
-    m = `${m = !this.ola && this.SH.size > 0 ? m + "  " + this.Zva : m} 
-CTime:${r}${this.Hwu}
+    var i = [];
+    i.push(`Fps:${l} Pos: (${t},${r},${e})`);
+    if (!this.ola && this.SH.size > 0) {
+      i.push("  " + this.Zva);
+    }
+    i.push(` 
+CTime:${s}${this.Hwu}
 STime:${o}
-GTime:${ModelManager_1.ModelManager.TimeOfDayModel.GameTime.HourMinuteString}`;
+GTime:${ModelManager_1.ModelManager.TimeOfDayModel.GameTime.HourMinuteString}`);
     if (!this.ola) {
-      if (t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp) {
-        m = m + "  Gravity:" + t.GravityDirect.ToString();
+      if (l = Global_1.Global.BaseCharacter?.CharacterActorComponent?.MoveComp) {
+        i.push("  Gravity:" + l.GravityDirect.ToString());
       }
     }
     if (!this.ola) {
-      m = `${m = (m = m + " ServerIp:" + ModelManager_1.ModelManager.LoginModel.Platform + a + this.Eet) + " Bullet:" + c}
-Actor:${h}/${n} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLoadMode()]} Budge:${budgetName[GameBudgetInterfaceController_1.GameBudgetInterfaceController.CurrentGlobalMode]}`;
+      t = KscEnv_1.KscEnv.KscWorld?.Entities_.Num() ?? 0;
+      r = ControllerHolder_1.ControllerHolder.BulletController.KuroBulletWorld?.BulletEntityMap.Num() ?? 0;
+      e = t > 0 || r > 0 ? `
+Ksc:Entity${t},Bullet${r}` : "";
+      i.push(` ServerIp:${ModelManager_1.ModelManager.LoginModel.Platform}${a}${e}${this.Eet}  Bullet:${c}
+Actor:${n}/${h} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLoadMode()]} Budge:${budgetName[GameBudgetInterfaceController_1.GameBudgetInterfaceController.CurrentGlobalMode]}`);
     }
     if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingSupportedType() === 0 && UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.RayTracing.Enable")) {
       let e = "";
@@ -201,57 +211,60 @@ Actor:${h}/${n} (${_}) Load:${loadModeName[ResourceSystem_1.ResourceSystem.GetLo
       if (!t) {
         e = "off";
       }
-      m = `${m}\n RayTracing Feature: <color=green>${e}</color>`;
+      i.push(`
+ RayTracing Feature: <color=green>${e}</color>`);
     }
-    l = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
-    i = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
-    if (l > 0 && (i.X > 0 || i.Z > 0) && (s = i.X < i.Y ? "green" : "#ff0000ff", e = i.Z < i.W ? "green" : "#ff0000ff", r = l > 1, o = l < 3 ? 6 : (l - 1) * 6, t = i.X < i.Y ? 0 : o, a = i.Z < i.W ? 0 : o, m += `
-StreamingPool: `, c = r ? "Require " : "", h = r ? "Budget " : "", i.W > 0 ? (i.X > 0 && (m = `${m}<color=${s}><size=+${t}> Texture ${c}${i.X}/${h}${i.Y}, </size></color>`), i.Z > 0 && (m = `${m}<color=${e}><size=+${a}> Mesh ${c}${i.Z}/${h}${i.W}</size></color>`)) : i.X > 0 && (m = `${m}<color=${s}><size=+${t}> Texture + Mesh ${c}${i.X}/${h}${i.Y}</size></color>`), r)) {
-      n = UE.StreamableRenderAsset.GetStreamingRenderAssetsInfo();
-      m = `${m = `${m}
-RenderAssetNum: Texture ${n.X} Mesh ${n.Y}`}
-CurrentTextureMem:${n.Z} RTMem:${n.W}`;
-      _ = UE.StreamableRenderAsset.GetStreamingPoolInfo();
-      m = `${m}
-TextureStreamingPoolSize:${_.X} NonStreaming:${_.Y}`;
-      if (_.Z > 0) {
-        m = `${m}\nAvailableStreamingVRAM:${_.Z} UsableVRAM:${_.W})`;
+    var s = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Streaming.DetailPanel");
+    var o = UE.StreamableRenderAsset.GetStreamingBudgetInfo();
+    if (s > 0 && (o.X > 0 || o.Z > 0) && (l = o.X < o.Y ? "green" : "#ff0000ff", t = o.Z < o.W ? "green" : "#ff0000ff", r = s > 1, a = s < 3 ? 6 : (s - 1) * 6, e = o.X < o.Y ? 0 : a, c = o.Z < o.W ? 0 : a, i.push(`
+StreamingPool: `), n = r ? "Require " : "", h = r ? "Budget " : "", o.W > 0 ? (o.X > 0 && i.push(`<color=${l}><size=+${e}> Texture ${n}${o.X}/${h}${o.Y}, </size></color>`), o.Z > 0 && i.push(`<color=${t}><size=+${c}> Mesh ${n}${o.Z}/${h}${o.W}</size></color>`)) : o.X > 0 && i.push(`<color=${l}><size=+${e}> Texture + Mesh ${n}${o.X}/${h}${o.Y}</size></color>`), r)) {
+      _ = UE.StreamableRenderAsset.GetStreamingRenderAssetsInfo();
+      i.push(`
+RenderAssetNum: Texture ${_.X} Mesh ${_.Y}`);
+      i.push(`
+CurrentTextureMem:${_.Z} RTMem:${_.W}`);
+      s = UE.StreamableRenderAsset.GetStreamingPoolInfo();
+      i.push(`
+TextureStreamingPoolSize:${s.X} NonStreaming:${s.Y}`);
+      if (s.Z > 0) {
+        i.push(`
+AvailableStreamingVRAM:${s.Z} UsableVRAM:${s.W})`);
       }
-      m += `
+      i.push(`
 
-`;
+`);
     }
-    this.pet.SetText(m);
+    this.pet.SetText(i.join(""));
   }
   UpdateNiagaraGlobalWindow() {
     let e = "";
     let t = false;
     var i = UE.NiagaraFunctionLibrary.GetGlobalInfo();
-    var s = i.GlobalTotalActive;
-    var r = i.GlobalTotalScalability;
+    var r = i.GlobalTotalActive;
+    var s = i.GlobalTotalScalability;
     var o = i.GlobalTotalParticles;
     var i = i.GlobalTotalEmitters;
     let a = 1;
     let l = 1;
-    let h = 1;
     let n = 1;
-    n = Platform_1.Platform.IsPcPlatform() || Platform_1.Platform.IsPs5Platform() ? (a = 1000, l = 1000, h = 4000, 600) : (a = 1000, l = 1000, h = 4000, 400);
-    if (s > a) {
-      e += ` TotalActive超标,当前值是:${s}
+    let h = 1;
+    h = Platform_1.Platform.IsPcPlatform() || Platform_1.Platform.IsPs5Platform() ? (a = 1000, l = 1000, n = 4000, 600) : (a = 1000, l = 1000, n = 4000, 400);
+    if (r > a) {
+      e += ` TotalActive超标,当前值是:${r}
 `;
       t = true;
     }
-    if (r > l) {
-      e += ` TotalScalability超标,当前值是:${r}
+    if (s > l) {
+      e += ` TotalScalability超标,当前值是:${s}
 `;
       t = true;
     }
-    if (o > h) {
+    if (o > n) {
       e += ` TotalParticles超标,当前值是:${o}
 `;
       t = true;
     }
-    if (i > n) {
+    if (i > h) {
       e += ` TotalEmitters超标,当前值是:${i}
 `;
       t = true;
@@ -275,39 +288,39 @@ TextureStreamingPoolSize:${_.X} NonStreaming:${_.Y}`;
     var e = EffectSystem_1.EffectSystem.GetEffectCount();
     var t = EffectSystem_1.EffectSystem.GetActiveEffectCount();
     var i = EffectSystem_1.EffectSystem.GetEffectLruSize();
-    var s = EffectSystem_1.EffectSystem.GetEffectLruCapacity();
-    var r = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(0);
+    var r = EffectSystem_1.EffectSystem.GetEffectLruCapacity();
+    var s = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(0);
     var o = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(1);
     var a = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(2);
     var l = EffectSystem_1.EffectSystem.GetPlayerEffectLruSize(3);
     this.Eet = `
-Effect: ${e}(${t}) Pool:${i}/${s}(${r})(${o})(${a})(${l})`;
+Effect: ${e}(${t}) Pool:${i}/${r}(${s})(${o})(${a})(${l})`;
   }
   oMa() {
     if (this.SH.size !== 0) {
-      var s = Math.floor(this.eMa / this.tMa);
+      var r = Math.floor(this.eMa / this.tMa);
       let e = WARNING_COLOR;
       let t = "";
       let i = "";
       this.zva.SetUIActive(false);
-      if (s < LOW_SCORE_THRESHOLD) {
+      if (r < LOW_SCORE_THRESHOLD) {
         e = LOW_SCORE_COLOR;
-      } else if (s < MID_SCORE_THRESHOLD) {
+      } else if (r < MID_SCORE_THRESHOLD) {
         e = MID_SCORE_COLOR;
         t = "<b>";
         i = "</b>";
-      } else if (s < HIGH_SCORE_THRESHOLD) {
+      } else if (r < HIGH_SCORE_THRESHOLD) {
         e = HIGH_SCORE_COLOR;
         t = "<size=+6><b>";
         i = "</b></size>";
-      } else if (s >= HIGH_SCORE_THRESHOLD) {
+      } else if (r >= HIGH_SCORE_THRESHOLD) {
         e = WARNING_COLOR;
         t = "<size=+18><b>";
         i = "</b></size>";
         this.zva.SetUIActive(true);
-        this.zva.SetText(`<size=+28><b><color=red>Warning!!!此处Aoi范围内可Tick实体过多，有性能问题。TickScore:${s}</color></b></size>`);
+        this.zva.SetText(`<size=+28><b><color=red>Warning!!!此处Aoi范围内可Tick实体过多，有性能问题。TickScore:${r}</color></b></size>`);
       }
-      this.Zva = `<color=${e}>${t}TickScore:${s}${i}</color>`;
+      this.Zva = `<color=${e}>${t}TickScore:${r}${i}</color>`;
       this.eMa = 0;
       this.tMa = 0;
     }

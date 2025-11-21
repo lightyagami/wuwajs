@@ -63,8 +63,8 @@ class MoveToLocation {
   Init(t) {
     this.Jh = t;
     this.Hte = this.Jh.GetComponent(3);
-    this.mBe = this.Jh.GetComponent(102);
-    this.oRe = this.Jh.GetComponent(178);
+    this.mBe = this.Jh.GetComponent(104);
+    this.oRe = this.Jh.GetComponent(181);
     this.wDe = this.Hte.CreatureData.GetPbDataId();
   }
   SetMoveToLocation(t) {

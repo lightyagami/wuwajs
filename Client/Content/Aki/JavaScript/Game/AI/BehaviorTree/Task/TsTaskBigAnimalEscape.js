@@ -234,7 +234,7 @@ class TsTaskBigAnimalEscape extends TsTaskAbortImmediatelyBase_1.default {
       if (Time_1.Time.WorldTime > this.EscapeEndTime) {
         this.Finish(true);
       } else {
-        t = this.ActorComp.Entity.GetComponent(102);
+        t = this.ActorComp.Entity.GetComponent(104);
         (h = Vector_1.Vector.Create(this.MovePath[this.CurrentMoveIndex])).SubtractionEqual(this.ActorComp.ActorLocationProxy);
         GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.ActorComp, h);
         e = h.SizeSquared();

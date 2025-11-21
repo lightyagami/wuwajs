@@ -7,6 +7,8 @@ exports.UiViewFloatContainer = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../../Game/Manager/ConfigManager");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiLayerType_1 = require("../../Define/UiLayerType");
 const UiLayer_1 = require("../../UiLayer");
@@ -47,6 +49,7 @@ class UiViewFloatContainer extends UiViewContainer_1.UiViewContainer {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("UiFloatContainer", 10, "界面关闭成功,队列中关闭", ["区域", r], ["当前界面", t]);
           }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FloatQueueCloseView, t, i);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("UiFloatContainer", 10, "界面关闭失败", ["区域", r], ["当前界面", t]);
         }

@@ -19,8 +19,8 @@ class RoleLoadingView extends LoadingViewBase_1.LoadingViewBase {
   Ovi() {
     var e = ModelManager_1.ModelManager.LoadingModel?.RoleLoading;
     if (e) {
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e?.Description);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), e?.CharacterName);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), `CharacterDisplayStyle_${e?.Id}_Desc`);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), `CharacterDisplayStyle_${e?.Id}_Name`);
       this.SetTextureByPath(e.IllustrationAsset, this.GetTexture(3), this.Info.Name);
       ModelManager_1.ModelManager.LoadingModel?.ClearRoleLoadingInfo();
     }

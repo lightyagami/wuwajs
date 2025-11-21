@@ -39,10 +39,10 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
     return "UiItem_AbnormalData";
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(15136, this.vSn);
+    Net_1.Net.Register(18080, this.vSn);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15136);
+    Net_1.Net.UnRegister(18080);
   }
   OnCreateSubPageComponent(e) {
     return new ActivitySubViewCorniceMeeting_1.ActivitySubViewCorniceMeeting();
@@ -57,26 +57,39 @@ class ActivityCorniceMeetingController extends ActivityControllerBase_1.Activity
   static GetCurrentActivityData() {
     return ModelManager_1.ModelManager.ActivityModel?.GetActivityById(ActivityCorniceMeetingController.ActivityId);
   }
-  static CorniceMeetingRewardRequest(t, r, i) {
-    var e = new Protocol_1.Aki.Protocol.ym_();
-    e._ps = t;
-    e.t8n = r;
-    Net_1.Net.Call(17119, e, e => {
+  static MultiCorniceMeetingRewardRequest(e, o, a) {
+    const r = {};
+    o.forEach((e, t) => {
+      r[t] = {
+        DJd: e
+      };
+    });
+    var t = new Protocol_1.Aki.Protocol.LJd();
+    t.w6n = e;
+    t.AJd = r;
+    Net_1.Net.Call(29384, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17119);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29384);
       } else {
-        this.GetCurrentActivityData().UpdateRewarded(t, r);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
-        i();
+        var t;
+        var r;
+        var i = this.GetCurrentActivityData();
+        for ([t, r] of o) {
+          for (const n of r) {
+            i.UpdateRewarded(t, n);
+          }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCorniceMeetingRedDot, t);
+        }
+        a();
       }
     });
   }
   static CorniceMeetingChallengeTransRequest(e) {
     var t = new Protocol_1.Aki.Protocol.Cf_();
     t._ps = e;
-    Net_1.Net.Call(19212, t, e => {
+    Net_1.Net.Call(29883, t, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPlayerIsTeleportCanNotDoTeleport) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19212);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29883);
       }
     });
   }

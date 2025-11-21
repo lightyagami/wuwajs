@@ -109,7 +109,7 @@ class PhantomManageConfigViewModel extends ViewModelBase {
   }
   SetEditDataById(t, e, i, s) {
     let r = this.GetEditDataByRuleId(t).get(t) ?? [];
-    r = i ? this.KGu(r, e) : this.XGu(r, e);
+    r = i ? this.OGu(r, e) : this.qGu(r, e);
     var h;
     var o = this.GetData(4);
     for ([h] of o) {
@@ -133,10 +133,10 @@ class PhantomManageConfigViewModel extends ViewModelBase {
       this.Notify(4);
     }
   }
-  XGu(t, e) {
+  qGu(t, e) {
     return t.filter(t => t !== e);
   }
-  KGu(t, e) {
+  OGu(t, e) {
     if (new Set(t).has(e)) {
       return t;
     } else {

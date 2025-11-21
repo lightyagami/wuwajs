@@ -18,8 +18,8 @@ const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsCont
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleController_1 = require("../RoleController");
 class ResonanceChainInfoItem extends UiPanelBase_1.UiPanelBase {
-  constructor(e) {
-    super();
+  constructor() {
+    super(...arguments);
     this.dFe = 0;
     this.Aco = undefined;
     this.p9t = undefined;
@@ -43,7 +43,6 @@ class ResonanceChainInfoItem extends UiPanelBase_1.UiPanelBase {
     this.xpt = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleInternalViewQuit);
     };
-    this.LoadPromise = this.CreateThenShowByResourceIdAsync("UIItem_ResonanceChainInfo", e);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIScrollViewWithScrollbarComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [10, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIButtonComponent]];
@@ -60,16 +59,13 @@ class ResonanceChainInfoItem extends UiPanelBase_1.UiPanelBase {
   OnBeforeDestroy() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(2));
   }
-  async ShowItem() {
-    await this.LoadPromise;
-    this.$pt.PlayLevelSequenceByName("Start");
+  ShowItem() {
+    this.$pt.PlayOrReplaySequenceByName("Start");
   }
-  async HideItem() {
-    await this.LoadPromise;
-    this.$pt.PlayLevelSequenceByName("Close");
+  HideItem() {
+    this.$pt.PlayOrReplaySequenceByName("Close");
   }
-  async Refresh(e = false) {
-    await this.LoadPromise;
+  Refresh(e = false) {
     var t;
     var i = ConfigManager_1.ConfigManager.RoleResonanceConfig.GetRoleResonanceById(this.Aco);
     if (i) {

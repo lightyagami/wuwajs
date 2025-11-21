@@ -38,8 +38,8 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     if (!(await this.GJ1(e))) {
       this.rmu();
     }
-    if (!this.xYc(e)) {
-      this.UYc();
+    if (!this.UJc(e)) {
+      this.BJc();
     }
   }
   SetupWorldMapSecondaryUiLayout() {
@@ -113,12 +113,12 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.MapMoraleWarnItem?.SetActive(false);
     this.UiBgItem?.ShowMoraleBg(false);
   }
-  UYc() {
+  BJc() {
     this.O2o?.SetUiActive(false);
     this.k2o?.SetUiActive(false);
     this.hDu(false);
   }
-  xYc(e) {
+  UJc(e) {
     return !!e.IsNightMareFlag() && (this.Ymt = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt || (this.Ymt = new LevelPlay_1.LevelPlayInfo(e.MarkConfig.RelativeId), this.Ymt.InitConfig()), this.InitNightMareRewards(e), true);
   }
   async CreateRewardItemBar() {
@@ -152,13 +152,13 @@ class CommonGamePlayPanel extends WorldMapSecondaryUiLayoutA_1.WorldMapSecondary
     this.V2o = this.Ymt.FirstRewardId ? ConfigManager_1.ConfigManager.ExchangeRewardConfig.GetExchangeRewardConfig(this.Ymt.FirstRewardId) : undefined;
     var a = this.Ymt.IsFirstPass;
     if (a) {
-      this.BYc(this.k2o, undefined, "");
+      this.kJc(this.k2o, undefined, "");
     } else {
-      this.BYc(this.k2o, this.V2o, "FirstReward");
+      this.kJc(this.k2o, this.V2o, "FirstReward");
     }
-    this.BYc(this.O2o, this.F2o, "ProbReward", i);
+    this.kJc(this.O2o, this.F2o, "ProbReward", i);
   }
-  BYc(e, i, t, a = false) {
+  kJc(e, i, t, a = false) {
     var r;
     if (i) {
       if (r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(i.RewardIdCalabash)) {

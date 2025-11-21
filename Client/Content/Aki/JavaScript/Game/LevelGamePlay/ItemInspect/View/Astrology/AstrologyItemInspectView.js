@@ -33,95 +33,95 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
   constructor() {
     super(...arguments);
     this.$pt = undefined;
-    this.F$u = [];
-    this.N$u = [];
-    this.eod = [];
-    this.V$u = false;
-    this.tod = new Set();
-    this.iod = new Set();
-    this.H$u = (0, puerts_1.$ref)(undefined);
-    this.$$u = (0, puerts_1.$ref)(undefined);
-    this.W$u = (0, puerts_1.$ref)(undefined);
+    this._zu = [];
+    this.uzu = [];
+    this.Ead = [];
+    this.czu = false;
+    this.Iad = new Set();
+    this.Tad = new Set();
+    this.mzu = (0, puerts_1.$ref)(undefined);
+    this.fzu = (0, puerts_1.$ref)(undefined);
+    this.gzu = (0, puerts_1.$ref)(undefined);
     this.cz = Vector_1.Vector.Create();
     this.fz = Vector_1.Vector.Create();
     this.cie = Rotator_1.Rotator.Create();
-    this.Q$u = Vector2D_1.Vector2D.Create();
+    this.Czu = Vector2D_1.Vector2D.Create();
     this.A$e = Vector2D_1.Vector2D.Create(1, -1);
-    this.K$u = Vector2D_1.Vector2D.Create();
-    this.X$u = false;
-    this.Y$u = 0;
-    this.z$u = 0;
-    this.J$u = undefined;
-    this.Z$u = undefined;
-    this.eWu = [];
-    this.tWu = undefined;
-    this.rod = false;
-    this.Bsd = false;
-    this.Dud = "";
-    this.xud = false;
-    this.bfd = undefined;
-    this.ood = () => {
-      this.rWu(false);
+    this.ZWc = Vector2D_1.Vector2D.Create();
+    this.ZZu = false;
+    this.X7c = 0;
+    this.Y7c = 0;
+    this.z7c = undefined;
+    this.J7c = undefined;
+    this.pzu = [];
+    this.vzu = undefined;
+    this.bad = false;
+    this.$_d = false;
+    this.NMd = "";
+    this.VMd = false;
+    this.X9d = undefined;
+    this.Rad = () => {
+      this.eQc(false);
       this.GetButton(12).RootUIComp.SetUIActive(false);
     };
-    this.fWu = t => {
-      this.ysd(false);
+    this.xzu = t => {
+      this.R_d(false);
       ControllerHolder_1.ControllerHolder.ItemInspectController.InteractPoint(t, () => {
-        this.oWu();
+        this.Mzu();
       });
     };
-    this.Ssd = () => this.rod;
-    this.nWu = () => {
+    this.w_d = () => this.bad;
+    this.Ezu = () => {
       this.CloseMe();
       ControllerHolder_1.ControllerHolder.ItemInspectController.FinishItemInspect(true);
     };
-    this.sWu = () => {
-      if (this.X$u || this.Z$u.GetSelectorOffset() === 0) {
-        this.aWu();
+    this.Izu = () => {
+      if (this.ZZu || this.J7c.GetSelectorOffset() === 0) {
+        this.Tzu();
       } else {
-        this.hWu();
+        this.Z7c();
       }
     };
     this.jtu = () => {
-      if (this.rod) {
-        this.ysd(false);
+      if (this.bad) {
+        this.R_d(false);
         ControllerHolder_1.ControllerHolder.ItemInspectController.ResetItemRotation(() => {
-          this.ysd(true);
+          this.R_d(true);
         });
       }
     };
-    this.Uud = () => {
+    this.jMd = () => {
       var t;
       if (ModelManager_1.ModelManager.ItemInspectModel.CloseSkipConfirmBox) {
-        this.nWu();
+        this.Ezu();
       } else {
-        this.xud = false;
+        this.VMd = false;
         (t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(369)).HasToggle = true;
-        t.ToggleText = this.Dud;
-        t.SetToggleFunction(this.Bud);
+        t.ToggleText = this.NMd;
+        t.SetToggleFunction(this.HMd);
         t.FunctionMap.set(2, () => {
-          ModelManager_1.ModelManager.ItemInspectModel.CloseSkipConfirmBox = this.xud;
-          this.nWu();
+          ModelManager_1.ModelManager.ItemInspectModel.CloseSkipConfirmBox = this.VMd;
+          this.Ezu();
         });
         ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
       }
     };
-    this.Bud = t => {
-      this.xud = t;
+    this.HMd = t => {
+      this.VMd = t;
     };
     this.Fbn = 0;
     this.Vbn = 0;
     this.Hbn = undefined;
     this.jbn = undefined;
-    this.lWu = () => {
+    this.ojc = () => {
       this.Kbn();
       var e = this.GetScrollView(17);
       if (e) {
         var h = this.GetText(15);
         var r = h.GetTextRenderSize().Y;
         var e = e.GetRootComponent();
-        if (r <= this.z$u) {
-          e.SetHeight(this.z$u);
+        if (r <= this.Y7c) {
+          e.SetHeight(this.Y7c);
         } else {
           var o = h.GetRenderLineNum();
           var _ = h.GetFontSpaceFinal().Y;
@@ -162,7 +162,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIDraggableComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [10, UE.UIText], [9, UE.UIText], [11, UE.UIItem], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIButtonComponent], [15, UE.UIText], [16, UE.UIText], [17, UE.UIScrollViewComponent], [18, UE.UIButtonComponent], [19, UE.UIButtonComponent], [20, UE.UIItem], [22, UE.UIItem], [21, UE.UIItem], [23, UE.UIText], [24, UE.UIText]];
-    this.BtnBindInfo = [[12, this.nWu], [14, this.sWu], [18, this.jtu], [19, this.Uud]];
+    this.BtnBindInfo = [[12, this.Ezu], [14, this.Izu], [18, this.jtu], [19, this.jMd]];
   }
   async OnBeforeStartAsync() {
     var t = [this.GetItem(1), this.GetItem(2), this.GetItem(3), this.GetItem(4)];
@@ -175,25 +175,25 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     var r = [];
     for (const a of t) {
       var o = new AstrologyPointView_1.AstrologyPointView();
-      o.Init(this.ood, this.fWu, this.Ssd);
-      this.F$u.push(o);
+      o.Init(this.Rad, this.xzu, this.w_d);
+      this._zu.push(o);
       r.push(o.CreateByActorAsync(a.GetOwner()));
       var o = LguiUtil_1.LguiUtil.CopyItem(s, i);
       var _ = new AstrologyLineView_1.AstrologyLineView();
-      this.eod.push(_);
+      this.Ead.push(_);
       r.push(_.CreateByActorAsync(o.GetOwner()));
       var _ = LguiUtil_1.LguiUtil.CopyItem(h, e);
       var o = new AstrologyDotView_1.AstrologyDotView();
-      this.N$u.push(o);
+      this.uzu.push(o);
       r.push(o.CreateByActorAsync(_.GetOwner()));
     }
     await Promise.all(r);
   }
   OnStart() {
     this.$pt = new UiSequencePlayer_1.UiSequencePlayer(this.RootItem);
-    this.Dud = ConfigManager_1.ConfigManager.TextConfig?.GetTextById("PlotSkipConfirmToggle") ?? "";
+    this.NMd = ConfigManager_1.ConfigManager.TextConfig?.GetTextById("PlotSkipConfirmToggle") ?? "";
     this.InitDrag(this.GetDraggable(0));
-    this.oWu();
+    this.Mzu();
     var t = this.OpenParam;
     var i = t.ProgressTipText;
     if (i) {
@@ -209,19 +209,19 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     }
     this.GetItem(22).SetUIActive(false);
     this.GetItem(21).SetUIActive(false);
-    this.J$u = this.GetText(15).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
-    this.Z$u = this.GetText(15).GetOwner().GetComponentByClass(UE.UIEffectTextAnimation.StaticClass());
+    this.z7c = this.GetText(15).GetOwner().GetComponentByClass(UE.LGUIPlayTweenComponent.StaticClass());
+    this.J7c = this.GetText(15).GetOwner().GetComponentByClass(UE.UIEffectTextAnimation.StaticClass());
     var i = this.GetScrollView(17);
     i?.SetCanScroll(false);
     i?.SetRayCastTargetForScrollView(false);
-    this.z$u = i?.GetRootComponent()?.GetHeight() ?? DEFAULT_TIP_SCROLL_HEIGHT;
+    this.Y7c = i?.GetRootComponent()?.GetHeight() ?? DEFAULT_TIP_SCROLL_HEIGHT;
     var i = () => {
-      this.ysd(true);
+      this.R_d(true);
     };
     var t = t.InitDialogues;
     if (t && t.length > 0) {
-      this.ysd(false);
-      this._Wu(t, i);
+      this.R_d(false);
+      this.Rzu(t, i);
     } else {
       i();
     }
@@ -229,12 +229,12 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
   OnBeforeDestroy() {
     this.ClearDrag();
     this.Kbn();
-    this.bfd?.Remove();
-    this.bfd = undefined;
+    this.X9d?.Remove();
+    this.X9d = undefined;
   }
   OnTick(t) {
     super.OnTick(t);
-    if (this.V$u) {
+    if (this.czu) {
       var i = Global_1.Global.CharacterController;
       if (i) {
         var s;
@@ -245,45 +245,45 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
         var _;
         var t = this.RootItem.GetWidth();
         var a = this.RootItem.GetHeight();
-        this.K$u.Set(-t * 0.5, -a * 0.5);
-        i.GetViewportSize(this.H$u, this.$$u);
-        var l = (0, puerts_1.$unref)(this.H$u);
+        this.ZWc.Set(-t * 0.5, -a * 0.5);
+        i.GetViewportSize(this.mzu, this.fzu);
+        var l = (0, puerts_1.$unref)(this.mzu);
         var n = l / 2;
-        var u = (0, puerts_1.$unref)(this.$$u);
+        var u = (0, puerts_1.$unref)(this.fzu);
         var m = u / 2;
         var U = t / l;
         var g = a / u;
         for (const d of ModelManager_1.ModelManager.ItemInspectModel.VisiblePoints) {
           if (!d.IsChecked) {
             e = d.Location;
-            if (UE.GameplayStatics.D_ProjectWorldToScreen(i, e.ToUeVector(), this.W$u) && (s = (e = (0, puerts_1.$unref)(this.W$u)).X, e = e.Y, h = this.uWu(n, m, s, e), !this.iod.has(h)) && (r = d.TagId, o = this.nod(r))) {
-              (_ = this.Q$u).Set(s * U, e * g);
-              _.AdditionEqual(this.K$u).MultiplyEqual(this.A$e);
-              this.sod(o, h, _, r, d.IsChecked);
-              this.iod.add(h);
-              this.tod.add(r);
+            if (UE.GameplayStatics.D_ProjectWorldToScreen(i, e.ToUeVector(), this.gzu) && (s = (e = (0, puerts_1.$unref)(this.gzu)).X, e = e.Y, h = this.wzu(n, m, s, e), !this.Tad.has(h)) && (r = d.TagId, o = this.wad(r))) {
+              (_ = this.Czu).Set(s * U, e * g);
+              _.AdditionEqual(this.ZWc).MultiplyEqual(this.A$e);
+              this.Lad(o, h, _, r, d.IsChecked);
+              this.Tad.add(h);
+              this.Iad.add(r);
             }
           }
         }
-        for (let t = 0; t < this.F$u.length; t++) {
-          if (!this.iod.has(t)) {
-            this.F$u[t].SetPointActive(false);
-            this.eod[t].SetLineActive(false);
+        for (let t = 0; t < this._zu.length; t++) {
+          if (!this.Tad.has(t)) {
+            this._zu[t].SetPointActive(false);
+            this.Ead[t].SetLineActive(false);
           }
-          var v = this.N$u[t];
+          var v = this.uzu[t];
           var E = v.GetPointTagId();
-          if (E !== undefined && !this.tod.has(E)) {
+          if (E !== undefined && !this.Iad.has(E)) {
             v.SetDotActive(false);
           }
         }
-        this.iod.clear();
-        this.tod.clear();
+        this.Tad.clear();
+        this.Iad.clear();
       }
     }
   }
-  nod(t) {
+  wad(t) {
     let i = undefined;
-    for (const e of this.N$u) {
+    for (const e of this.uzu) {
       var s = e.GetPointTagId();
       if (s === t) {
         return e;
@@ -294,7 +294,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     }
     return i;
   }
-  uWu(t, i, s, e) {
+  wzu(t, i, s, e) {
     if (t < s) {
       if (i < e) {
         return 3;
@@ -307,14 +307,14 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
       return 0;
     }
   }
-  sod(t, i, s, e, h) {
-    var r = this.F$u[i];
+  Lad(t, i, s, e, h) {
+    var r = this._zu[i];
     r.BindPoint(e, h);
     t.SetChecked(h);
     var h = t.GetRootItem();
     h.SetAnchorOffset(s.ToUeVector2D());
     t.SetDotActive(true, e);
-    var s = this.eod[i];
+    var s = this.Ead[i];
     var t = s.GetRootItem();
     var e = h.Width / 2;
     var i = h.GetUIWorldPosition();
@@ -344,22 +344,22 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     s.SetLineActive(o);
     r.SetPointActive(o);
   }
-  ysd(t) {
-    this.rWu(t);
-    if (!(this.V$u = t)) {
-      for (let t = 0; t < this.F$u.length; t++) {
-        this.N$u[t].SetDotActive(false);
-        this.F$u[t].SetPointActive(false);
-        this.eod[t].SetLineActive(false);
+  R_d(t) {
+    this.eQc(t);
+    if (!(this.czu = t)) {
+      for (let t = 0; t < this._zu.length; t++) {
+        this.uzu[t].SetDotActive(false);
+        this._zu[t].SetPointActive(false);
+        this.Ead[t].SetLineActive(false);
       }
     }
   }
-  rWu(t) {
-    this.rod = t;
+  eQc(t) {
+    this.bad = t;
     this.SetInputEnable(t);
     this.GetItem(20).SetUIActive(t);
   }
-  oWu() {
+  Mzu() {
     var t = ModelManager_1.ModelManager.ItemInspectModel.GetMaxValidPointCount();
     this.GetText(10).SetText("/" + t);
     var i = ModelManager_1.ModelManager.ItemInspectModel.GetCheckedValidPointCount();
@@ -367,7 +367,7 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     var t = t <= i;
     this.GetItem(11).SetUIActive(t);
     this.GetButton(18).RootUIComp.SetUIActive(!t);
-    this.ysd(!t);
+    this.R_d(!t);
     if (t) {
       this.$pt.PlaySequencePurely("Start");
       ControllerHolder_1.ControllerHolder.ItemInspectController.ResetItemRotation(() => {
@@ -380,72 +380,72 @@ class AstrologyItemInspectView extends ItemInspectViewBase_1.ItemInspectViewBase
     }
   }
   ExecuteTriggerDialogues(t, i) {
-    this._Wu(t, i);
+    this.Rzu(t, i);
   }
-  _Wu(t, i) {
-    if (t.length <= 0 || this.Bsd) {
+  Rzu(t, i) {
+    if (t.length <= 0 || this.$_d) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelPlay", 48, "物品检视，对话框效果无对话或重复执行");
       }
       i();
     } else {
-      this.Bsd = true;
+      this.$_d = true;
       for (const s of t) {
-        this.eWu.push(s);
+        this.pzu.push(s);
       }
-      this.tWu = i;
+      this.vzu = i;
       this.GetItem(13).SetUIActive(true);
-      this.aWu();
+      this.Tzu();
     }
   }
-  aWu() {
+  Tzu() {
     var t;
     var i;
-    if (!(this.Y$u > TimeUtil_1.TimeUtil.GetServerTimeStamp())) {
-      if (t = this.eWu.pop()) {
-        this.X$u = false;
+    if (!(this.X7c > TimeUtil_1.TimeUtil.GetServerTimeStamp())) {
+      if (t = this.pzu.pop()) {
+        this.ZZu = false;
         (i = this.GetText(15)).SetGameRichText(true);
         i.SetText(this.iIr(t));
         t = i.GetDisplayCharLength();
-        if (this.J$u) {
+        if (this.z7c) {
           i = t / ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.TextAnimSpeedSeq;
-          this.Z$u.SetSelectorOffset(1);
-          this.J$u.GetPlayTween().duration = i;
-          this.J$u.Play();
+          this.J7c.SetSelectorOffset(1);
+          this.z7c.GetPlayTween().duration = i;
+          this.z7c.Play();
           this.GetItem(22).SetUIActive(false);
           this.GetItem(21).SetUIActive(true);
-          this.bfd?.Remove();
-          this.bfd = TimerSystem_1.TimerSystem.Delay(() => {
+          this.X9d?.Remove();
+          this.X9d = TimerSystem_1.TimerSystem.Delay(() => {
             this.GetItem(22).SetUIActive(true);
             this.GetItem(21).SetUIActive(false);
-            this.bfd = undefined;
+            this.X9d = undefined;
           }, i * MathUtils_1.MathUtils.SecondToMillisecond);
         }
-        TimerSystem_1.TimerSystem.Next(this.lWu);
+        TimerSystem_1.TimerSystem.Next(this.ojc);
       } else {
-        this.mWu();
+        this.Pzu();
       }
     }
   }
-  hWu() {
+  Z7c() {
     this.Kbn();
-    this.J$u.Stop();
-    this.Z$u.SetSelectorOffset(0);
-    this.Y$u = TimeUtil_1.TimeUtil.GetServerTimeStamp() + NEXT_PAGE_DELAY_TIME;
-    this.X$u = true;
+    this.z7c.Stop();
+    this.J7c.SetSelectorOffset(0);
+    this.X7c = TimeUtil_1.TimeUtil.GetServerTimeStamp() + NEXT_PAGE_DELAY_TIME;
+    this.ZZu = true;
     this.GetItem(22).SetUIActive(true);
     this.GetItem(21).SetUIActive(false);
-    this.bfd?.Remove();
-    this.bfd = undefined;
+    this.X9d?.Remove();
+    this.X9d = undefined;
   }
-  mWu() {
+  Pzu() {
     this.GetItem(22).SetUIActive(false);
     this.GetItem(21).SetUIActive(false);
     this.GetItem(13).SetUIActive(false);
-    this.eWu.length = 0;
-    this.tWu?.();
-    this.tWu = undefined;
-    this.Bsd = false;
+    this.pzu.length = 0;
+    this.vzu?.();
+    this.vzu = undefined;
+    this.$_d = false;
   }
   Kbn() {
     if (TimerSystem_1.TimerSystem.Has(this.Hbn)) {

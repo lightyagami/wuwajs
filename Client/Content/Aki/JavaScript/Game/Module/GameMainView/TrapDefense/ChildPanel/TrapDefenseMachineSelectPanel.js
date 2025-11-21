@@ -10,12 +10,14 @@ const Log_1 = require("../../../../../Core/Common/Log");
 const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const TDPlayerController_1 = require("../../../../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiSequencePlayer_1 = require("../../../../Ui/Base/UiSequencePlayer");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const BattleChildViewPanel_1 = require("../../../BattleUi/Views/BattleChildViewPanel/BattleChildViewPanel");
+const TowerDefenseEventController_1 = require("../../../TowerDefenseEvent/TowerDefenseEventController");
 const LguiIntTween_1 = require("../../../Util/LguiIntTween");
 const TrapDefenseMachineSelectItem_1 = require("../ChildItem/TrapDefenseMachineSelectItem");
 const TrapDefenseMachineSelectSlider_1 = require("../ChildItem/TrapDefenseMachineSelectSlider");
@@ -36,8 +38,8 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     this.Sequence = undefined;
     this.IsInPlotHud = false;
     this.IsInitialized = false;
-    this.K9c = () => {
-      this.Imd();
+    this.c9u = () => {
+      this.PNd();
     };
     this.RefreshMoneyText = () => {
       var e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetGoldNum();
@@ -61,14 +63,14 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     this.N8e = e => {
       if (!e.Data && ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsCanBuildMachine) {
         e.SetToggleState(0);
-        this.zud(e);
+        this.aId(e);
       } else {
-        this.NXu(e);
+        this.NQu(e);
         e = this.ItemList.indexOf(e);
         this.TouchSlider?.SetSliderValue(e, false);
       }
     };
-    this.VXu = () => {
+    this.DQc = () => {
       this.SliderRecordLastSelectItem = this.CurrentSelectItem;
       this.SliderRecordDragSelectItem = this.CurrentSelectItem;
       this.MachineSelectInterface?.SliderPointerDown();
@@ -80,7 +82,7 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
       this.SliderRecordDragSelectItem = e;
       this.MachineSelectInterface?.SliderValueChange(e.Data);
     };
-    this.HXu = () => {
+    this.UQc = () => {
       var e;
       if (this.SliderRecordDragSelectItem) {
         if (this.SliderRecordDragSelectItem.Data) {
@@ -88,13 +90,13 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
         } else {
           this.SliderRecordDragSelectItem.SetToggleState(0);
           if (ModelManager_1.ModelManager.TrapDefenseModel.BattleData.IsCanBuildMachine) {
-            this.zud(this.SliderRecordDragSelectItem);
+            this.aId(this.SliderRecordDragSelectItem);
           }
         }
       }
       if (this.SliderRecordLastSelectItem) {
         if (this.SliderRecordLastSelectItem !== this.CurrentSelectItem) {
-          this.NXu(this.SliderRecordLastSelectItem);
+          this.NQu(this.SliderRecordLastSelectItem);
         } else {
           this.SliderRecordLastSelectItem.SetToggleState(1);
           e = this.ItemList.indexOf(this.SliderRecordLastSelectItem);
@@ -105,7 +107,7 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
       this.SliderRecordLastSelectItem = undefined;
       this.MachineSelectInterface?.SliderDragEnd();
     };
-    this.jJc = e => {
+    this.Xed = e => {
       this.MoneyText.SetText(e.toString());
       this.LastMoneyNum = e;
     };
@@ -113,35 +115,35 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIText], [3, UE.UITexture], [4, UE.UIItem]];
   }
-  async WXu(e) {
+  async T$u(e) {
     var t = new TrapDefenseMachineSelectItem_1.TrapDefenseMachineSelectItem();
     t.ToggleClick = this.N8e;
     t.Index = this.ItemList.length;
     this.ItemList.push(t);
     await t.CreateThenShowByActorAsync(e.GetOwner());
   }
-  async QXu() {
+  async b$u() {
     var i = this.GetItem(0).GetAttachUIChildren();
     var s = [];
     for (let e = 0, t = i.Num(); e < t; e++) {
-      var h = i.Get(e);
-      s.push(this.WXu(h));
+      var r = i.Get(e);
+      s.push(this.T$u(r));
     }
     await Promise.all(s);
   }
-  async KXu() {
+  async R$u() {
     var e = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBattleGoldToItemId();
     var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(e);
     await this.SetTextureAsync(e.IconSmall, this.GetTexture(3));
   }
-  async XXu() {
+  async jQu() {
     if (Info_1.Info.IsInTouch()) {
       this.TouchSlider = new TrapDefenseMachineSelectSlider_1.TrapDefenseMachineSelectSlider();
-      this.TouchSlider.SliderPointerDownNotify = this.VXu;
+      this.TouchSlider.SliderPointerDownNotify = this.DQc;
       this.TouchSlider.SliderValueChangeNotify = this.CHs;
-      this.TouchSlider.SliderEndDragNotify = this.HXu;
+      this.TouchSlider.SliderEndDragNotify = this.UQc;
       await this.TouchSlider.CreateThenShowByActorAsync(this.GetItem(4).GetOwner());
-      this.Imd();
+      this.PNd();
     } else {
       this.GetItem(4)?.SetUIActive(false);
     }
@@ -151,24 +153,24 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     this.LastMoneyNum = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetGoldNum();
     this.MoneyText = this.GetText(1);
     this.MoneyTween = new LguiIntTween_1.LguiIntTween();
-    this.MoneyTween.UpdateTween = this.jJc;
+    this.MoneyTween.UpdateTween = this.Xed;
   }
   async InitializeAsync() {
-    await Promise.all([this.QXu(), this.KXu(), this.XXu()]);
+    await Promise.all([this.b$u(), this.R$u(), this.jQu()]);
   }
   AddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.K9c);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.c9u);
   }
   RemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.K9c);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.c9u);
   }
   OnShowBattleChildViewPanel(e) {
     this.RefreshMachineState();
-    this.YXu();
-    this.Zcd();
+    this._Hu();
+    this.aAd();
   }
   OnHideBattleChildViewPanel() {
-    this.zXu();
+    this.uHu();
   }
   OnTickBattleChildViewPanel(e) {
     for (const t of this.ItemList) {
@@ -179,21 +181,21 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     this.MoneyTween.Destroy();
     this.Sequence.Clear();
   }
-  YXu() {
+  _Hu() {
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.AddTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Gold, this.RefreshMoneyText);
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.AddTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.TrapCount, this.RefreshBuildText);
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.AddTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.MaxTrapCount, this.RefreshBuildText);
   }
-  zXu() {
+  uHu() {
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.RemoveTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.Gold, this.RefreshMoneyText);
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.RemoveTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.TrapCount, this.RefreshBuildText);
     ModelManager_1.ModelManager.TrapDefenseModel.BattleData.RemoveTreeVarUpdateDelegate(IQuest_1.ETrapDefenseSystemVarType.MaxTrapCount, this.RefreshBuildText);
   }
-  NXu(e) {
-    this.jXu(e);
-    this.$Xu();
+  NQu(e) {
+    this.xQc(e);
+    this.BQc();
   }
-  jXu(e) {
+  xQc(e) {
     if (e.Data && this.CurrentSelectItem !== e) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("TowerDefenseBattle", 10, "触发机关键位输入", ["Pos", e.Index]);
@@ -204,26 +206,26 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
       this.CurrentSelectItem = e;
     }
   }
-  $Xu() {
+  BQc() {
     if (this.CurrentSelectItem && this.CurrentSelectItem.Data) {
       if (this.CurrentSelectItem.Data.IsBuilding) {
-        ControllerHolder_1.ControllerHolder.TowerDefenseEventController.HandleTowerDefenseSelect(this.CurrentSelectItem.Index);
+        TowerDefenseEventController_1.TowerDefenseEventController.HandleTowerDefenseSelect(this.CurrentSelectItem.Index);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, false);
       } else {
-        ControllerHolder_1.ControllerHolder.TowerDefensePlayerController.HandleTowerFollowerSelect(this.CurrentSelectItem.Data.Id);
+        TDPlayerController_1.TowerDefensePlayerController.HandleTowerFollowerSelect(this.CurrentSelectItem.Data.Id);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, true);
       }
       this.MachineSelectInterface?.SelectMachine(this.CurrentSelectItem.Data);
     }
   }
-  zud(e) {
+  aId(e) {
     ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenOrganDevelop(true, undefined, e.Index);
   }
-  Zcd() {
+  aAd() {
     var e = UiManager_1.UiManager.IsViewShow("PlotViewHUD");
     this.SetMachineSelectCollapse(e);
   }
-  Imd() {
+  PNd() {
     var e;
     if (this.TouchSlider && (e = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData()).length > 0) {
       this.TouchSlider.RefreshSliderMaxValue(e.length - 1);
@@ -234,7 +236,7 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
   }
   OnTowerDefenseStepUpdate(e) {
     if (e === 2) {
-      this.qmd();
+      this.nVd();
     } else if (e !== 1 || this.IsInitialized) {
       if (this.CurrentSelectItem) {
         this.RefreshSlotState();
@@ -243,7 +245,7 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
       }
     } else {
       this.IsInitialized = true;
-      this.qmd();
+      this.nVd();
     }
   }
   RefreshMachineState() {
@@ -253,10 +255,10 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     if (s.length > 0) {
       let e = -1;
       let t = -1;
-      for (const a of s) {
-        var h = a.GetSlotData();
-        if (h && (h.IsBuilding || e !== -1 || (e = a.GetIndex()), h.Id === i)) {
-          t = a.GetIndex();
+      for (const h of s) {
+        var r = h.GetSlotData();
+        if (r && (r.IsBuilding || e !== -1 || (e = h.GetIndex()), r.Id === i)) {
+          t = h.GetIndex();
           break;
         }
       }
@@ -269,17 +271,17 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     this.RefreshMoneyText();
     this.RefreshBuildText();
   }
-  qmd() {
+  nVd() {
     this.RefreshSlotState();
     var i = this.CurrentSelectItem?.Data?.Id ?? 0;
     var s = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData();
     if (s.length > 0) {
       let e = -1;
       let t = -1;
-      for (const a of s) {
-        var h = a.GetSlotData();
-        if (h && !h.IsBuilding && (h.IsBuilding || e !== -1 || (e = a.GetIndex()), h.Id === i)) {
-          t = a.GetIndex();
+      for (const h of s) {
+        var r = h.GetSlotData();
+        if (r && !r.IsBuilding && (r.IsBuilding || e !== -1 || (e = h.GetIndex()), r.Id === i)) {
+          t = h.GetIndex();
           break;
         }
       }
@@ -301,14 +303,14 @@ class TrapDefenseMachineSelectPanel extends BattleChildViewPanel_1.BattleChildVi
     var i = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData();
     for (let e = 0, t = this.ItemList.length; e < t; e++) {
       var s;
-      var h = this.ItemList[e];
+      var r = this.ItemList[e];
       if (e < i.length) {
         s = i[e];
-        h.SetActive(true);
-        h.Refresh(s.GetSlotData());
+        r.SetActive(true);
+        r.Refresh(s.GetSlotData());
       } else {
-        h.SetActive(false);
-        h.Refresh(undefined);
+        r.SetActive(false);
+        r.Refresh(undefined);
       }
     }
   }

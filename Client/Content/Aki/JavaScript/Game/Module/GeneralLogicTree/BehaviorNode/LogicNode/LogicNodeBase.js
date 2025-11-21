@@ -7,6 +7,7 @@ exports.LogicNodeBase = undefined;
 const UE = require("ue");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
 const PublicUtil_1 = require("../../../../Common/PublicUtil");
 const GlobalData_1 = require("../../../../GlobalData");
 const LevelGeneralController_1 = require("../../../../LevelGamePlay/LevelGeneralController");
@@ -25,6 +26,9 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
   }
   get SilentAreaInfoViewConfig() {
     return this.Config?.InformationView?.InformationView;
+  }
+  get ModifyTrackAreaTextConfig() {
+    return this.Config?.ModifyTrackAreaText;
   }
   OnCreate(t) {
     this.Config = t;
@@ -47,11 +51,17 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (i.DisableSkeletalAnimationCheck) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck false");
     }
+    if (this.Config.LogicProgramSpecialProcess) {
+      this.mrm(true);
+    }
     if (this.CustomUiConfig) {
       this.AddTag(0);
     }
     if (this.SilentAreaInfoViewConfig) {
       this.Blackboard?.AddSilentShowInfo(this.NodeId, this.SilentAreaInfoViewConfig);
+    }
+    if (this.ModifyTrackAreaTextConfig) {
+      this.Blackboard?.AddModifyTrackAreaConfig(this.NodeId, this.ModifyTrackAreaTextConfig);
     }
     if (i.CompositeTrackViewMode) {
       this.Blackboard.TrackViewModel = i.CompositeTrackViewMode;
@@ -73,6 +83,9 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     this.Blackboard?.RemoveTag(16, this.NodeId.toString());
     if (this.SilentAreaInfoViewConfig) {
       this.Blackboard?.RemoveSilentShowInfo(this.NodeId);
+    }
+    if (this.ModifyTrackAreaTextConfig) {
+      this.Blackboard?.RemoveModifyTrackAreaConfig(this.NodeId);
     }
     if (this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest && (i = ModelManager_1.ModelManager.QuestNewModel, this.Config.TidQuestAliasName && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasName)) && i.SetQuestStageName(this.TreeConfigId, ""), this.Config.TidQuestAliasDesc && !StringUtils_1.StringUtils.IsEmpty(PublicUtil_1.PublicUtil.GetConfigTextByKey(this.Config.TidQuestAliasDesc)) && i.SetQuestStageDesc(this.TreeConfigId, ""), this.Config.RewardConfig?.RewardId)) {
       i.SetQuestStageReward(this.TreeConfigId, 0);
@@ -99,7 +112,27 @@ class LogicNodeBase extends BehaviorNodeBase_1.BehaviorNodeBase {
     if (this.Config.DisableSkeletalAnimationCheck) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "a.Animation.AnimSeqSkeletonCheck true");
     }
+    if (this.Config.LogicProgramSpecialProcess) {
+      this.mrm(false);
+    }
     super.OnNodeDeActive(t);
+  }
+  mrm(t) {
+    for (const e of this.Config.LogicProgramSpecialProcess.SpecialProcessList) {
+      if (e.Type === IQuest_1.ELogicProgramSpecialProcess.DisableURO) {
+        for (const s of e.EntityIds) {
+          var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s)?.Entity;
+          if (i?.Valid) {
+            i = i.GetComponent(44);
+            if (t) {
+              i?.StartForceDisableAnimOptimization(0, false);
+            } else {
+              i?.CancelForceDisableAnimOptimization(0);
+            }
+          }
+        }
+      }
+    }
   }
   L$t(t) {
     switch (this.BtType) {

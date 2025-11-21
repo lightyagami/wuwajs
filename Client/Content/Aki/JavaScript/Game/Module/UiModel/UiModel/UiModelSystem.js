@@ -12,22 +12,22 @@ class UiModelSystem {
     return this.CreateUiModelByCreateData(t, i, e);
   }
   static CreateUiModelByCreateData(e, i, t) {
-    var o = new UiModelBase_1.UiModelBase(t);
-    for (const s of e.Components) {
-      o.AddComponent(s);
+    var s = new UiModelBase_1.UiModelBase(this.kvm++, t);
+    for (const o of e.Components) {
+      s.AddComponent(o);
     }
-    t = o.CheckGetComponent(0);
+    t = s.CheckGetComponent(0);
     if (t) {
       t.ModelType = e.ModelType;
       t.ModelActorType = e.ModelActorType;
       t.ModelUseWay = e.ModelUseWay;
     }
-    t = o.CheckGetComponent(1);
+    t = s.CheckGetComponent(1);
     if (t) {
       t.Actor = i;
     }
-    return o;
+    return s;
   }
 }
-exports.UiModelSystem = UiModelSystem;
+(exports.UiModelSystem = UiModelSystem).kvm = 0;
 //# sourceMappingURL=UiModelSystem.js.map

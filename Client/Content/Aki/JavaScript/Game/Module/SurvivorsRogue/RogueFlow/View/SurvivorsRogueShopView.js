@@ -1,0 +1,208 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SurvivorsRogueShopView = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
+const IQuest_1 = require("../../../../../UniverseEditor/Interface/IQuest");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const UiAsyncTask_1 = require("../../../../Ui/Base/UiAsyncTask");
+const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
+const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
+const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
+const SurvivorsRogueCardShopItem_1 = require("../../Card/SurvivorsRogueCardShopItem");
+const SurvivorsRogueViewBase_1 = require("./Components/SurvivorsRogueViewBase");
+class SurvivorsRogueShopView extends UiViewBase_1.UiViewBase {
+  constructor() {
+    super(...arguments);
+    this.CommandIncId = 0;
+    this.Command = undefined;
+    this.qwd = undefined;
+    this.Qwd = undefined;
+    this.Kwd = true;
+    this.c6d = undefined;
+    this.fJd = 0;
+    this.Xwd = e => {
+      if (!this.Command.IsFinished) {
+        this.Command.RequestCommand([e.VTd.w5n]);
+      }
+    };
+    this.Ywd = (i, t) => {
+      this.Command.RequestLock(i.VTd.w5n, t, e => {
+        if (e) {
+          i.Y5n = t;
+          this.Qwd?.GetLayoutItemByKey(i.VTd.w5n)?.CardItem?.SetLock(t);
+        }
+      });
+    };
+    this.zwd = () => {
+      var e = this.Command.GetViewInfo();
+      if (ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.GetCurrencyCount() >= e.RefreshCost) {
+        this.Kwd = true;
+        this.Command.RequestCommand([Protocol_1.Aki.Protocol.tbd.Proto_Refresh]);
+      } else {
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("SurvivorsStore_InsufficientCurrencyTips");
+      }
+    };
+    this.L1i = () => {
+      var e;
+      if (!ModelManager_1.ModelManager.SurvivorsRogueModel.NotTipsShopPurchaseAvailable && this.Command.IsShopPurchaseAvailable()) {
+        (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(385)).HasToggle = true;
+        e.ToggleTextKey = "SurvivorsShopConfirmationDialog_PrompText";
+        e.FunctionMap.set(2, () => {
+          this.Command.Execute();
+        });
+        e.SetToggleFunction(e => {
+          ModelManager_1.ModelManager.SurvivorsRogueModel.NotTipsShopPurchaseAvailable = e;
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+      } else {
+        this.Command.Execute();
+      }
+    };
+    this.Y5i = () => {
+      var e = new SurvivorsRogueCardShopItem_1.SurvivorsRogueCardShopItem();
+      e.OnPurchaseBtnClickCallback = this.Xwd;
+      e.OnClickLockCallback = this.Ywd;
+      e.OnStateChangeCallback = this.Nwd;
+      return e;
+    };
+    this.Nwd = (e, i) => {
+      this.Qwd.DeselectCurrentGridProxy();
+      this.d6d(false);
+      if (i) {
+        this.Qwd.SelectGridProxy(e.c5n);
+        this.c6d = e;
+        this.d6d(true);
+      }
+    };
+    this.ITt = () => {
+      var e = ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.GetCurrencyCount() >= this.fJd;
+      var i = this.GetText(6);
+      i.SetChangeColor(!e, i.changeColor);
+    };
+    this.vAd = () => {
+      this.qwd.RoleStatePanel.RoleGrid?.SetLevelUp();
+    };
+    this.yAd = (e, i) => {
+      if (i) {
+        this.qwd.RoleStatePanel.GetWeaponGrid(e)?.SetLevelUp();
+      }
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIHorizontalLayout], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UITexture], [6, UE.UIText]];
+    this.BtnBindInfo = [[3, this.zwd], [4, this.L1i]];
+  }
+  CloseView() {
+    this.CloseMe();
+  }
+  OnAddEventListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueRoleGainUpdate, this.vAd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRogueWeaponGainUpdate, this.yAd);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.AddTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.ITt);
+  }
+  OnRemoveEventListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueRoleGainUpdate, this.vAd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRogueWeaponGainUpdate, this.yAd);
+    ModelManager_1.ModelManager.SurvivorsRogueModel.BattleData.BehaviorDelegate.RemoveTreeVarUpdateDelegate(IQuest_1.ESurvivorsRougeSystemVarType.Gold, this.ITt);
+  }
+  async OnBeforeStartAsync() {
+    var e;
+    this.CommandIncId = this.OpenParam.CommandIncId;
+    if (this.CommandIncId) {
+      if (!(e = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(this.CommandIncId)) || (this.Command = e, e = [], this.Qwd = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.Y5i, undefined, true), this.qwd = new SurvivorsRogueViewBase_1.SurvivorsRogueViewBase(), e.push(this.qwd.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())), await Promise.all(e), this.qwd.SetMainTitleVisible(false), await this.Z$1(), this.Command.AfterDelete)) {
+        this.CloseMe();
+      } else {
+        this.Command.BindView(this);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("SurvivorsRogue", 37, "[SurvivorsRogue] 界面打开时缺少CommandIncId");
+    }
+  }
+  OnBeforeDestroy() {
+    this.Command?.BindView(undefined);
+  }
+  Refresh() {
+    var e = new UiAsyncTask_1.UiAsyncTask("SurvivorsRogueShopView.Refresh", async () => {
+      await this.Z$1();
+    });
+    this.RunAsyncTask(e);
+  }
+  async Z$1() {
+    var e;
+    var i = this.Command.GetViewInfo();
+    if (i) {
+      this.fJd = i.RefreshCost;
+      this.GetText(6).SetText(this.fJd.toString());
+      this.ITt();
+      this.Qwd.DeselectCurrentGridProxy();
+      this.d6d(false);
+      e = this.Kwd;
+      this.Kwd = false;
+      await this.Qwd.RefreshByDataAsync(i.DataList, e);
+    }
+  }
+  d6d(e) {
+    if (this.c6d) {
+      var i = this.c6d.VTd;
+      switch (i.R5n) {
+        case "kTd":
+          var t = i.kTd.DTd;
+          if (e && (t.F6n === t.wJs || this.c6d.O2s)) {
+            return;
+          }
+          this.qwd.RoleStatePanel.RoleGrid?.SetSelectOn(e);
+          break;
+        case "qTd":
+          var t = i.qTd.zys;
+          var r = i.qTd.xTd;
+          if (e && (r.F6n === r.wJs || this.c6d.O2s)) {
+            return;
+          }
+          this.qwd.RoleStatePanel.GetWeaponGrid(t)?.SetSelectOn(e);
+      }
+    }
+  }
+  GetGuideUiItemAndUiItemForShowEx(e) {
+    if (!(e.length <= 0)) {
+      var i = e[0];
+      if (i === "ShopCardLock") {
+        if (t = this.Qwd?.GetLayoutItemByIndex(0)?.CardItem?.GetGuideUiItem("0")) {
+          return [t, t];
+        } else {
+          return undefined;
+        }
+      }
+      if (i === "SurvivorFightInfo") {
+        if (e.length < 3) {
+          return;
+        }
+        var t = e[2];
+        if (t === "FirstWeapon") {
+          return this.qwd?.RoleStatePanel?.GetGuideUiItemAndUiItemForShowEx(e);
+        }
+        if (t === "FirstTwoWeapon") {
+          if (t = this.GetGuideUiItem("3")) {
+            return [t, t];
+          } else {
+            return undefined;
+          }
+        }
+      }
+      if (i === "EvolveBar") {
+        return this.Qwd?.GetLayoutItemByIndex(0)?.GetGuideUiItemAndUiItemForShowEx(e);
+      } else {
+        return undefined;
+      }
+    }
+  }
+}
+exports.SurvivorsRogueShopView = SurvivorsRogueShopView;
+//# sourceMappingURL=SurvivorsRogueShopView.js.map

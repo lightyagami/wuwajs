@@ -19,7 +19,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.OVc = undefined;
     this.bOl = undefined;
-    this.yqu = 0;
+    this.I3u = 0;
     this.CNe = undefined;
     this.TermGroup = 0;
     this.gDo = () => {
@@ -31,7 +31,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
         var t;
         var i;
         if (e) {
-          if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData.GetAmount() < this.yqu) {
+          if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData.GetAmount() < this.I3u) {
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_MoneyNotEnough");
           } else {
             t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
@@ -54,20 +54,20 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     this.OVc = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(12), this.gDo);
     this.GetExtendToggle(24).SetToggleStateForce(2);
-    this.vOu();
+    this.$Fu();
   }
   OnBeforeDestroy() {
-    this.yOu();
+    this.WFu();
   }
   RefreshInfoTipByParam(t) {
     this.bOl = t;
     this.Tfl();
     switch (t.TipType) {
       case 0:
-        this.Squ();
+        this.kOu();
         break;
       case 1:
-        this.Mqu();
+        this.OOu();
         break;
       case 2:
         this.rLu(t.ToyData);
@@ -87,7 +87,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(20)?.SetUIActive(false);
     this.GetItem(21)?.SetUIActive(false);
   }
-  Mqu() {
+  OOu() {
     var t = this.bOl.CurrencyData;
     if (t) {
       this.GetText(1)?.ShowTextNew(t.ConfigData.GetName());
@@ -96,12 +96,12 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
       t = t.ConfigData.GetQualityData();
       this.SetTextureShowUntilLoaded(t.GetRarityDetailCardBigBg(), this.GetTexture(18));
       this.SetTextureShowUntilLoaded(t.GetRarityDetailCardSmallBg(), this.GetTexture(19));
-      this.yqu = 0;
+      this.I3u = 0;
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("FloroRanchGamePlay", 78, "currencyData为空");
     }
   }
-  Squ() {
+  kOu() {
     var t;
     var i;
     var e;
@@ -151,7 +151,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
     this.SetTextureShowUntilLoaded(i.GetRarityDetailCardSmallBg(), this.GetTexture(19));
     var i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData;
     var s = t.GetDeleteCost();
-    this.yqu = s;
+    this.I3u = s;
     var r = this.GetText(16);
     r.SetText("-" + s);
     var h = i.GetAmount();
@@ -179,7 +179,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(21)?.SetUIActive(true);
       this.SetTextureShowUntilLoaded(e.SmallIcon, this.GetTexture(22));
     }
-    this.yqu = 0;
+    this.I3u = 0;
   }
   qSo(t) {
     if (t.TagId <= 0) {
@@ -196,7 +196,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
       this.GetItem(11)?.SetUIActive(true);
     }
   }
-  vOu() {
+  $Fu() {
     var t = {
       UiText: this.GetText(10),
       ViewType: 0,
@@ -206,7 +206,7 @@ class FloroRanchCommonTipItem extends UiPanelBase_1.UiPanelBase {
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(t);
   }
-  yOu() {
+  WFu() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(10));
   }
 }

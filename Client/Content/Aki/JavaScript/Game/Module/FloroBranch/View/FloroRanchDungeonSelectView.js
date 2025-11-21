@@ -27,14 +27,14 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
     this.XAu = 0;
     this.wmo = 0;
     this.YAu = [];
-    this.PKu = undefined;
+    this.aHu = undefined;
     this.JAu = undefined;
     this.wVl = undefined;
     this.lat = undefined;
-    this.G1d = false;
+    this.xpd = false;
     this.Og = (e, i) => {
-      this.PKu.LateScrollTo(this.PKu.GetItemByKey(e.Id));
-      this.PKu.SelectGridProxy(this.PKu.GetScrollItemByKey(e.Id)?.GridIndex);
+      this.aHu.LateScrollTo(this.aHu.GetItemByKey(e.Id));
+      this.aHu.SelectGridProxy(this.aHu.GetScrollItemByKey(e.Id)?.GridIndex);
       this.GetItem(4)?.SetUIActive(e.IsUnLock);
       this.JAu?.RefreshDungeonInfo(e, i);
       this.GetButton(2)?.RootUIComp.SetUIActive(e.IsUnLock);
@@ -68,12 +68,12 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
       return e;
     };
     this.AMo = () => {
-      if (!this.G1d) {
+      if (!this.xpd) {
         this.CloseMe();
       }
     };
     this.tPu = () => {
-      if (!this.G1d) {
+      if (!this.xpd) {
         if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ConnectBan");
         } else if (this.YAu.includes(0)) {
@@ -81,11 +81,11 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
         } else if (this.wmo === 0) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_ChooseSkill");
         } else {
-          this.G1d = true;
+          this.xpd = true;
           this.GetButton(2)?.RootUIComp.SetUIActive(false);
           this.GetItem(11)?.SetUIActive(true);
           FloroRanchController_1.FloroRanchController.SendFloroRanchStartPlayRequest(this.CNe.Id, this.XAu, this.YAu, this.wmo, () => {
-            this.G1d = false;
+            this.xpd = false;
             this.GetButton(2)?.RootUIComp.SetUIActive(true);
             this.GetItem(11)?.SetUIActive(false);
             this.CloseMe();
@@ -101,9 +101,9 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
   async OnBeforeStartAsync() {
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     var e = [];
-    this.PKu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(9), this.ePu);
+    this.aHu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(9), this.ePu);
     var i = this.CNe.GetFloroRanchDungeonDataList();
-    e.push(this.PKu.RefreshByDataAsync(i, true));
+    e.push(this.aHu.RefreshByDataAsync(i, true));
     this.JAu = new FloroRanchDungeonSelectRightPanel_1.FloroRanchDungeonSelectRightPanel();
     this.JAu.OnSelectDifficultyCallBack = this.ZAu;
     e.push(this.JAu.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
@@ -119,7 +119,7 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
     this.RefreshSkillItem(e);
     this.GetSpine(7)?.SetAnimation(0, "idle", true);
     this.GetItem(11)?.SetUIActive(false);
-    this.G1d = false;
+    this.xpd = false;
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchRaceRedDot, this.RefreshRaceList);
@@ -135,7 +135,7 @@ class FloroRanchDungeonSelectView extends UiViewBase_1.UiViewBase {
     this.lat?.RefreshRedDot();
   }
   OnBeforeDestroy() {
-    this.G1d = false;
+    this.xpd = false;
   }
 }
 exports.FloroRanchDungeonSelectView = FloroRanchDungeonSelectView;

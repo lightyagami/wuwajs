@@ -17,6 +17,14 @@ class TrapDefenseMonsterItem extends LoopScrollMediumItemGrid_1.LoopScrollMedium
     this.OnClickMonsterItemCallback = undefined;
     this.CanExecuteChangeCallback = undefined;
     this.OnShowNumCallback = undefined;
+    this.r5d = () => {
+      if (this.BdBuffData !== this.Data) {
+        this.UpdateBuffInfo();
+      }
+    };
+  }
+  OnStart() {
+    this.AllComponentLoadedCallback = this.r5d;
   }
   OnRefresh(e) {
     this.BdBuffData = e;

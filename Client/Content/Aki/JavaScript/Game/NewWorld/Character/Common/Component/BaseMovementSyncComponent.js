@@ -179,7 +179,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TimeScaleComp = this.Entity.GetComponent(180);
+    this.TimeScaleComp = this.Entity.GetComponent(183);
     this.MoveComp = this.Entity.GetComponent(45);
     this.CreatureDataComp = this.Entity.GetComponent(0);
     if (!ModelManager_1.ModelManager.CombatMessageModel.AddMoveSync(this)) {
@@ -267,7 +267,7 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
   }
   CustomPreTickInternal(t) {
     var e;
-    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(206).HasTag(-648310348)) {
+    if (!this.ActorComp.IsMoveAutonomousProxy && !this.Entity.GetComponent(209).HasTag(-648310348)) {
       this.IsPending = false;
       this.PendingMoveInfos.length = 0;
       this.TickReplaySamples();
@@ -369,12 +369,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
     if (t) {
       (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       e.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(23287, e);
+      Net_1.Net.Send(18891, e);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 23287,
+          msg_id: 18891,
           immediately: true,
           sub_count: e.WRs.length,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
@@ -401,12 +401,12 @@ let BaseMovementSyncComponent = BaseMovementSyncComponent_1 = class BaseMovement
       var t = Protocol_1.Aki.Protocol.zus.create();
       t.uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
       t.WRs.push(this.CollectPendingMoveInfos());
-      Net_1.Net.Send(24484, t);
+      Net_1.Net.Send(29961, t);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
         t = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
-          msg_id: 24484,
+          msg_id: 29961,
           immediately: true,
           is_multi: ModelManager_1.ModelManager.GameModeModel.IsMulti,
           ed: IS_WITH_EDITOR,

@@ -13,33 +13,33 @@ class TowerDefenseHeadStateDynamicBatchView extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.vq = false;
-    this.o9c = undefined;
+    this.eYu = undefined;
     this.t7c = undefined;
-    this.n9c = undefined;
-    this.s9c = undefined;
+    this.tYu = undefined;
+    this.iYu = undefined;
     this.Dgn = Rotator_1.Rotator.Create();
-    this.a9c = Vector_1.Vector.Create();
+    this.rYu = Vector_1.Vector.Create();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIDynamicBatchMesh], [1, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.o9c = new TowerDefenseHeadStateView_1.TowerDefenseHeadStateView();
-    await this.o9c.CreateByResourceIdAsync("UiItem_TowerDefenseHP", this.GetItem(1));
+    this.eYu = new TowerDefenseHeadStateView_1.TowerDefenseHeadStateView();
+    await this.eYu.CreateByResourceIdAsync("UiItem_TowerDefenseHP", this.GetItem(1));
   }
   OnStart() {
     this.vq = true;
     this.t7c = this.GetDynamicBatchMesh(0);
-    this.n9c = this.GetItem(1);
-    this.s9c = this.o9c.GetRootItem();
-    this.a9c.FromUeVector(this.s9c.GetUIWorldPosition());
-    this.n9c.SetUIActive(true);
+    this.tYu = this.GetItem(1);
+    this.iYu = this.eYu.GetRootItem();
+    this.rYu.FromUeVector(this.iYu.GetUIWorldPosition());
+    this.tYu.SetUIActive(true);
   }
   OnBeforeDestroy() {
     this.vq = false;
-    if (this.o9c) {
-      this.o9c.Destroy();
-      this.o9c = undefined;
+    if (this.eYu) {
+      this.eYu.Destroy();
+      this.eYu = undefined;
     }
   }
   GetIsEnable() {
@@ -49,11 +49,11 @@ class TowerDefenseHeadStateDynamicBatchView extends UiPanelBase_1.UiPanelBase {
     this.Dgn.Yaw = e.Yaw + 90;
     this.Dgn.Roll = e.Pitch - 90;
     this.Dgn.Pitch = 0;
-    this.n9c.K2_SetWorldRotation(this.Dgn.ToUeRotator(), false, undefined, true);
+    this.tYu.K2_SetWorldRotation(this.Dgn.ToUeRotator(), false, undefined, true);
   }
   AddToDynamicBatchMesh(e) {
-    this.o9c.Refresh(e, this.a9c);
-    this.t7c.AddContainerNode(this.s9c, true);
+    this.eYu.Refresh(e, this.rYu);
+    this.t7c.AddContainerNode(this.iYu, true);
   }
   ClearDynamicBatchMesh() {
     this.t7c.ClearAllGeometries();

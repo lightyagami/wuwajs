@@ -55,7 +55,7 @@ let AnimalStateMachineComponent = AnimalStateMachineComponent_1 = class AnimalSt
   OnStart() {
     var t = this.Entity.GetComponent(0);
     this.Mne = t.GetPbDataId();
-    this.oRe = this.Entity.GetComponent(178);
+    this.oRe = this.Entity.GetComponent(181);
     var t = this.oRe?.MainAnimInstance;
     if (t && UE.KuroStaticLibrary.IsImplementInterface(t.GetClass(), UE.BPI_AnimalEcological_C.StaticClass())) {
       this.ubr = t;
@@ -68,7 +68,6 @@ let AnimalStateMachineComponent = AnimalStateMachineComponent_1 = class AnimalSt
         this.Lle.AddState(6, AnimalPerformAlertState_1.AnimalPerformAlertState, this.ubr);
         this.Lle.AddState(5, AnimalPerformTakeOffState_1.AnimalPerformTakeOffState, this.ubr);
         this.Lle.AddState(7, AnimalPerformSystemUiState_1.AnimalPerformSystemUiState, this.ubr);
-        this.StartStateMachine();
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Animal", 29, "动画蓝图不符合规范，不是ABP_BaseAnimal的实例，不能开启状态机", ["ConfigID", this.Mne], ["ABP", t?.GetName()]);
       }
@@ -76,6 +75,9 @@ let AnimalStateMachineComponent = AnimalStateMachineComponent_1 = class AnimalSt
       Log_1.Log.Debug("Animal", 29, "动画蓝图不符合规范，缺少AnimalEcological接口，不能开启状态机", ["ConfigID", this.Mne], ["ABP", t?.GetName()]);
     }
     return true;
+  }
+  OnActivate() {
+    this.StartStateMachine();
   }
   OnTick(t) {
     if (this.aGe) {
@@ -93,6 +95,9 @@ let AnimalStateMachineComponent = AnimalStateMachineComponent_1 = class AnimalSt
   }
   CurrentState() {
     return AnimalStateMachineComponent_1.GetUeState(this.Lle.CurrentState);
+  }
+  CurrentTsState() {
+    return this.Lle.CurrentState;
   }
   SwitchState(t) {
     if (this.aGe) {

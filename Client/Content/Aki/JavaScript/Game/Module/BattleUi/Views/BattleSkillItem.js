@@ -64,7 +64,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.vit = 0;
     this.zQ_ = undefined;
     this.Wtt = undefined;
-    this.z9d = 1;
+    this.Mem = 1;
     this.Mit = undefined;
     this.Eit = 0;
     this.yit = undefined;
@@ -98,7 +98,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.SkillNameText = undefined;
     this.UltraComponentVisibleState = 0;
     this.XGu = 0;
-    this.XHd = undefined;
+    this.uim = undefined;
     this.UltraComponent = undefined;
     this.NumComponent = undefined;
     this.SwitchComponent = undefined;
@@ -228,6 +228,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   Refresh(t) {
     if (this.SkillButtonData !== t) {
       this.TryReleaseButton();
+      this.ClickEffect?.Stop();
       this.ExtraEffectComponent?.Stop();
     }
     if (t && (this.SkillButtonData = t, this.InitVehicleHandle(), this.RefreshVisible(), this.RefreshSkillIcon(), this.RefreshSkillName(), this.RefreshCdCompletedEffect(), this.RefreshDynamicEffect(), this.RefreshKey(), this.RefreshTimeDilation(), this.RefreshSkillCoolDown(), this.RefreshLimitCount(true), this.RefreshAttribute(false), this.Fit() && this.RefreshEquipExplore(), this.RefreshSkillButtonLongPress(), this.RefreshConfigLongPress(), this.Qel)) {
@@ -311,7 +312,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
     this.Uit = undefined;
     this.Ait = undefined;
     this.Pit = undefined;
-    this.XHd = undefined;
+    this.uim = undefined;
     super.Reset();
   }
   Tick(t) {
@@ -788,12 +789,12 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
       if (!this.IsShowOrShowing) {
         this.Show();
         this.RefreshEnable(true);
-        this.XHd?.();
+        this.uim?.();
       }
     } else if (!this.IsHideOrHiding) {
       this.TryReleaseButton();
       this.Hide();
-      this.XHd?.();
+      this.uim?.();
     }
   }
   GetGuideItem() {
@@ -907,8 +908,8 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   }
   RefreshDynamicEffectScale(t) {
     t = t?.Scale ?? 1;
-    if (this.z9d !== t) {
-      this.z9d = t;
+    if (this.Mem !== t) {
+      this.Mem = t;
       this.GetUiNiagara(7)?.SetUIItemScale(t === 1 ? Vector_1.Vector.OneVector : new UE.Vector(t, t, t));
     }
   }
@@ -1302,7 +1303,7 @@ class BattleSkillItem extends BattleChildView_1.BattleChildView {
   }
   OnDeactivate() {}
   SetOnVisibleChangedCallback(t) {
-    this.XHd = t;
+    this.uim = t;
   }
   SetSkillItemLayout(t) {
     var i;

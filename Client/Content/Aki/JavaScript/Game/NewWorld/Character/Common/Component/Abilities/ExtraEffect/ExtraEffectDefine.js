@@ -106,8 +106,6 @@ function getBuffEffectClass(e) {
       return ExtraEffectAddBuffOnChangeTeam_1.BindBuffToTeam;
     case 55:
       return ExtraEffectAttributeEvent_1.AttributeConvert;
-    case 1002:
-      return ExtraEffectAbnormal_1.AbnormalThunder;
     case 1003:
       return ExtraEffectAbnormal_1.AbnormalIce;
     case 1004:
@@ -154,6 +152,8 @@ function getBuffEffectClass(e) {
       return ExtraEffectMisc_1.ForeverTimeScaleEffect;
     case 85:
       return ExtraEffectMisc_1.SyncTimeScaleEffect;
+    case 87:
+      return ExtraEffectMisc_1.SpecialEnergyModifier;
     default:
       return;
   }
@@ -204,8 +204,12 @@ function getBuffExecutionClass(e) {
       return ExtraExecutionEffect_1.ChangeBuffStackCount;
     case 84:
       return ExtraExecutionEffect_1.ModifyFuLuoLuoSpecialEnergy;
+    case 88:
+      return ExtraExecutionEffect_1.ModifySlotSpecialEnergy;
     case 104:
       return ExtraExecutionEffect_1.RemoveBuffByFilter;
+    case 1002:
+      return ExtraEffectAbnormal_1.AbnormalThunder;
     default:
       return;
   }

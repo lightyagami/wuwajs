@@ -121,6 +121,8 @@ class Trigger {
         return BuffAddFailureTrigger;
       case TriggerType_1.ETriggerEvent.ShieldTrigger:
         return ShieldTrigger;
+      case TriggerType_1.ETriggerEvent.ShowTargetTrigger:
+        return ShowTargetTrigger;
     }
   }
   EvaluateAndExecute(t) {
@@ -133,6 +135,7 @@ class Trigger {
           CombatLog_1.CombatLog.Error("PassiveSkill", this.OwnerTriggerComp?.Entity, "被动技能不能在同一个调用栈中递归触发", ["触发器", ""], ["Formula", ""]);
         }
       } catch (t) {
+        this.Unlock();
         if (t instanceof Error) {
           CombatLog_1.CombatLog.ErrorWithStack("PassiveSkill", this.OwnerTriggerComp?.Entity, "触发器回调函数执行错误", t, ["触发器", ""], ["Formula", ""], ["错误信息", t.message]);
         } else {
@@ -287,11 +290,12 @@ class AttributeChangedTrigger extends Trigger {
     super(...arguments);
     this.TargetType = 0;
     this.AttributeId = CharacterAttributeTypes_1.EAttributeId.Proto_EAttributeType_None;
-    this.OnEvent = (t, e, i) => {
+    this.OnEvent = (t, e, i, s) => {
       if (!this.Checker || !!this.Checker()) {
         this.EvaluateAndExecute({
-          NewValue: e,
-          OldValue: i
+          NewValue: i,
+          OldValue: s,
+          Target: e
         });
       }
     };
@@ -301,17 +305,33 @@ class AttributeChangedTrigger extends Trigger {
     this.AttributeId = Number(t[1] ?? 0);
   }
   OnActive() {
-    var t;
-    var e;
-    if (this.TargetType === 0 && (t = this.OwnerTriggerComp?.Entity.GetComponent(174))) {
-      e = t.GetCurrentValue(this.AttributeId);
-      this.OnEvent(this.AttributeId, e, e);
-      t.AddListener(this.AttributeId, this.OnEvent);
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t) {
+      AbilityEvent_1.AbilityEvent.Add(t, 5, this.AttributeId, this.OnEvent);
+    }
+    switch (this.TargetType) {
+      case 0:
+        this.vym(this.OwnerTriggerComp?.Entity);
+        break;
+      case 1:
+      case 2:
+        var e = this.TargetType === 1;
+        for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(e)) {
+          this.vym(i.Entity);
+        }
     }
   }
   OnInactive() {
-    if (this.TargetType === 0) {
-      this.OwnerTriggerComp?.Entity.GetComponent(174)?.RemoveListener(this.AttributeId, this.OnEvent);
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t) {
+      AbilityEvent_1.AbilityEvent.Remove(t, 5, this.AttributeId, this.OnEvent);
+    }
+  }
+  vym(t) {
+    var e = t?.GetComponent(177);
+    if (e) {
+      e = e.GetCurrentValue(this.AttributeId);
+      this.OnEvent(this.AttributeId, t, e, e);
     }
   }
 }
@@ -368,7 +388,7 @@ class TagTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(206);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(209);
       if (t) {
         switch (this.InitBehavior) {
           case 1:
@@ -387,7 +407,7 @@ class TagTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(206)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(209)?.RemoveTagAddOrRemoveListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -418,7 +438,7 @@ class TagStackTrigger extends Trigger {
   }
   OnActive() {
     if (this.TagId !== undefined) {
-      var t = this.OwnerTriggerComp?.Entity.GetComponent(206);
+      var t = this.OwnerTriggerComp?.Entity.GetComponent(209);
       if (t) {
         var e = t.GetTagCount(this.TagId);
         switch (this.InitBehavior) {
@@ -439,7 +459,7 @@ class TagStackTrigger extends Trigger {
   }
   OnInactive() {
     if (this.TagId !== undefined) {
-      this.OwnerTriggerComp?.Entity.GetComponent(206)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
+      this.OwnerTriggerComp?.Entity.GetComponent(209)?.RemoveTagChangedListener(this.TagId, this.OnEvent);
     }
   }
 }
@@ -1207,6 +1227,37 @@ class ShieldTrigger extends Trigger {
     var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
     if (t) {
       AbilityEvent_1.AbilityEvent.Remove(t, 4, AbilityEvent_1.DEFAULT_KEY, this.OnEvent);
+    }
+  }
+}
+class ShowTargetTrigger extends Trigger {
+  constructor() {
+    super(...arguments);
+    this.TargetType = 0;
+    this.OnEvent = (t, e, i) => {
+      if (!this.Checker || !!this.Checker()) {
+        t = EntitySystem_1.EntitySystem.Get(t);
+        this.EvaluateAndExecute({
+          ShowTarget: t,
+          TargetSocket: e,
+          IsHardLock: i
+        });
+      }
+    };
+  }
+  OnInitParams(t) {
+    this.TargetType = Number(t[0] ?? 0);
+  }
+  OnActive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t && !EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent)) {
+      EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent);
+    }
+  }
+  OnInactive() {
+    var t = getTarget(this.OwnerTriggerComp?.Entity, this.TargetType);
+    if (t && EventSystem_1.EventSystem.HasWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent)) {
+      EventSystem_1.EventSystem.RemoveWithTarget(t, EventDefine_1.EEventName.CharSetShowTarget, this.OnEvent);
     }
   }
 }

@@ -31,7 +31,7 @@ class InfoDisplayImgView extends UiViewBase_1.UiViewBase {
         r.SetHeight(e.GetTextureSizeY());
         r.SetWidth(e.GetTextureSizeX());
       }
-    });
+    }, 100, this.MemoryTag);
   }
 }
 exports.InfoDisplayImgView = InfoDisplayImgView;

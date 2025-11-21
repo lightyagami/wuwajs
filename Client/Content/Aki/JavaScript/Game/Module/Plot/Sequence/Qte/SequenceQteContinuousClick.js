@@ -4,40 +4,26 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SequenceQteContinuousClick = undefined;
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const SequenceQteHandleBase_1 = require("./SequenceQteHandleBase");
 class SequenceQteContinuousClick extends SequenceQteHandleBase_1.SequenceQteHandleBase {
   constructor() {
     super(...arguments);
-    this.xXt = 0;
     this.J6 = 0;
-    this.Und = false;
-    this.Bnd = 200;
+    this.mld = 200;
+  }
+  OnBegin() {
+    super.OnBegin();
+    this.MarkSequenceQtePending = true;
   }
   OnReceiveTick(e) {
-    super.OnReceiveTick(e);
     this.J6 += e;
-    if (!(this.J6 < this.Bnd)) {
+    if (!(this.J6 < this.mld)) {
       this.J6 = 0;
-      e = this.xXt;
-      this.xXt = this.Context.CurrentEnergyPercent;
-      if (this.xXt > e) {
-        this.QteManager.ForwardQte(this.Context.QteId, this.Context.CurrentEnergyPercent, this.SequenceQteEndRange);
-      } else if (this.xXt < e) {
-        this.Und = false;
-        this.QteManager.BackwardQte(this.Context.QteId, this.Context.CurrentEnergyPercent, this.SequenceQteStartRange);
-      } else if (this.sZc()) {
-        this.Und = false;
-        this.QteManager.PauseQte(this.Context.QteId);
-      }
+      this.Progress = MathUtils_1.MathUtils.Clamp(this.Context.CurrentEnergyPercent * SequenceQteHandleBase_1.PERCENT, 0, 1);
     }
   }
-  CheckQteFinish() {
-    return !!this.Context.IsFail() || !!this.Context.IsSuccess() && !!this.Und;
-  }
-  OnSequenceQteStop() {
-    this.Und = true;
-  }
-  sZc() {
+  CanProgressFreeze() {
     return this.Context.DeltaEnergyPercentPerMs < 0;
   }
 }

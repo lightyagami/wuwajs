@@ -2,19 +2,19 @@
 
 var SceneItemAttachTargetComponent_1;
 var __decorate = this && this.__decorate || function (t, e, n, i) {
-  var a;
-  var s = arguments.length;
-  var o = s < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, n) : i;
+  var s;
+  var a = arguments.length;
+  var o = a < 3 ? e : i === null ? i = Object.getOwnPropertyDescriptor(e, n) : i;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     o = Reflect.decorate(t, e, n, i);
   } else {
-    for (var c = t.length - 1; c >= 0; c--) {
-      if (a = t[c]) {
-        o = (s < 3 ? a(o) : s > 3 ? a(e, n, o) : a(e, n)) || o;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (s = t[h]) {
+        o = (a < 3 ? s(o) : a > 3 ? s(e, n, o) : s(e, n)) || o;
       }
     }
   }
-  if (s > 3 && o) {
+  if (a > 3 && o) {
     Object.defineProperty(e, n, o);
   }
   return o;
@@ -26,6 +26,7 @@ exports.SceneItemAttachTargetComponent = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const SceneItemDynamicAttachTargetComponent_1 = require("./SceneItemDynamicAttachTargetComponent");
 let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class SceneItemAttachTargetComponent extends EntityComponent_1.EntityComponent {
@@ -40,7 +41,7 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     this.zOc = undefined;
   }
   static get Dependencies() {
-    return [203, 0];
+    return [206, 0];
   }
   OnInitData(t) {
     t = t.GetParam(SceneItemAttachTargetComponent_1)[0];
@@ -78,6 +79,10 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
         case "Entity":
           this.oln = this.Lo.AttachTarget.EntityId;
           this.rln = this.Lo.AttachTarget.AttachPoint;
+          if (this.Lo.AttachTarget?.PosOffset) {
+            this.Iln.PosAttachType = 2;
+            this.Iln.PosAttachOffset = Vector_1.Vector.Create(this.Lo.AttachTarget.PosOffset.X ?? 0, this.Lo.AttachTarget.PosOffset.Y ?? 0, this.Lo.AttachTarget.PosOffset.Z ?? 0);
+          }
           break;
         case "Actor":
           var e = this.Lo.AttachTarget.ActorRef.PathName.split(".");
@@ -95,7 +100,7 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.zOc = this.Entity.GetComponent(126);
+    this.zOc = this.Entity.GetComponent(129);
     return !!this.zOc || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 7, "[SceneItemAttachTargetComponent] Invalid DynamicAttachComp", ["PbDataId:", this.EIe?.GetPbDataId()]), false);
   }
   OnActivate() {
@@ -123,5 +128,5 @@ let SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = class Sc
     }
   }
 };
-SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(125)], SceneItemAttachTargetComponent);
+SceneItemAttachTargetComponent = SceneItemAttachTargetComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(128)], SceneItemAttachTargetComponent);
 exports.SceneItemAttachTargetComponent = SceneItemAttachTargetComponent; //# sourceMappingURL=SceneItemAttachTargetComponent.js.map

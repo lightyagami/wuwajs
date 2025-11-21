@@ -26,11 +26,11 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
     this.CNe = undefined;
     this.fs1 = undefined;
     this.Zmu = undefined;
-    this.uqu = undefined;
+    this.HOu = undefined;
     this.iPu = undefined;
     this.rPu = undefined;
     this.TDe = undefined;
-    this.cqu = () => {
+    this.$Ou = () => {
       this.bNe();
     };
     this.JSi = () => {
@@ -98,20 +98,20 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
     this.GetItem(1)?.SetUIActive(this.CNe.IsInLimitTime());
     this.Zmu = new ButtonItem_1.ButtonItem(this.GetItem(2));
     this.Zmu.SetFunction(this.tfu);
-    this.uqu = new ButtonItem_1.ButtonItem(this.GetItem(3));
-    this.uqu.SetFunction(this.WEu);
+    this.HOu = new ButtonItem_1.ButtonItem(this.GetItem(3));
+    this.HOu.SetFunction(this.WEu);
     this.iPu = new ButtonItem_1.ButtonItem(this.GetItem(4));
     this.iPu.SetFunction(this.QEu);
     this.rPu = new ButtonItem_1.ButtonItem(this.GetItem(5));
     this.rPu.SetFunction(this.KEu);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchDataRedDot, this.cqu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchDataRedDot, this.$Ou);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FloroRanchSettlement, this.JSi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.JSi);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchDataRedDot, this.cqu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchDataRedDot, this.$Ou);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FloroRanchSettlement, this.JSi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.JSi);
   }
@@ -125,7 +125,7 @@ class FloroRanchMainView extends UiViewBase_1.UiViewBase {
   }
   bNe() {
     var e = this.CNe.IsSkillHasRedDot();
-    this.uqu?.SetRedDotVisible(e);
+    this.HOu?.SetRedDotVisible(e);
     this.iPu?.SetRedDotVisible(this.CNe.IsHandBookHasRedDot());
     var e = this.CNe.GetTechnologyProgress();
     this.rPu?.SetText(e);

@@ -45,7 +45,7 @@ class Cursor {
           this.Bxo = i.GetComponentByClass(UE.UIItem.StaticClass());
           this.bxo = this.Bxo.UIChildren.Get(0);
           this.bxo.SetUIActive(false);
-        });
+        }, "Ui.CommonUi");
       }
     }
   }
@@ -82,7 +82,7 @@ class Cursor {
   }
   vX1() {
     if (this.qxo) {
-      if (UiManager_1.UiManager.IsViewOpen("VideoView") || UiManager_1.UiManager.IsViewOpen("NetWorkConfirmBoxView")) {
+      if (UiManager_1.UiManager.IsViewOpen("VideoView") || UiManager_1.UiManager.IsViewOpen("NetWorkConfirmBoxView") || UiManager_1.UiManager.IsViewOpen("SubPackageDownLoadView")) {
         if (this.pX1) {
           this.qxo.SetUIParent(UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.Mask));
           this.pX1 = false;

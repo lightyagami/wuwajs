@@ -226,5 +226,5 @@ let LevelTagComponent = class LevelTagComponent extends BaseTagComponent_1.BaseT
     return false;
   }
 };
-LevelTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(197)], LevelTagComponent);
+LevelTagComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(200)], LevelTagComponent);
 exports.LevelTagComponent = LevelTagComponent; //# sourceMappingURL=LevelTagComponent.js.map

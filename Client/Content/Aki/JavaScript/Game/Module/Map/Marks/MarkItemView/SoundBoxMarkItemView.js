@@ -22,9 +22,12 @@ class SoundBoxMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
       r.bResetNiagara = true;
     }
   }
-  OnInitialize() {
-    super.OnInitialize();
-    this.GRi?.SetUIParent(this.GetRootItem());
+  OnStart() {
+    this.GRi.SetUIParent(this.GetRootItem());
+    super.OnStart();
+  }
+  OnViewRefresh() {
+    this.OnIconPathChanged(this.Holder.IconPath);
   }
   OnSafeUpdate(e, r, t) {
     var i = this.Holder.GetSoundBoxEntityId();

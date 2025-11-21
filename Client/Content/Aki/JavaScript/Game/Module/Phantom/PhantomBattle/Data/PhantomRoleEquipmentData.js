@@ -8,7 +8,7 @@ const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/Commo
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
-const AttrListScrollData_1 = require("../../../RoleUi/View/ViewData/AttrListScrollData");
+const RoleAttrListScrollData_1 = require("../../../RoleUi/View/ViewData/RoleAttrListScrollData");
 class PhantomRoleEquipmentData {
   constructor() {
     this.dFe = 0;
@@ -129,7 +129,7 @@ class PhantomRoleEquipmentData {
       var t;
       if (!n) {
         t = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(r);
-        i.push(new AttrListScrollData_1.AttrListScrollData(r, 0, 0, t.Priority, false, 1));
+        i.push(new RoleAttrListScrollData_1.RoleAttrListScrollData(r, 0, 0, t.Priority, false, 1));
       }
     });
     return i;
@@ -151,7 +151,7 @@ class PhantomRoleEquipmentData {
     var n = i.length;
     for (let t = 0; t < n; t++) {
       var a = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(i[t]);
-      r.push(new AttrListScrollData_1.AttrListScrollData(i[t], e.get(i[t]), o.get(i[t]) ?? 0, a.Priority, false, 1));
+      r.push(new RoleAttrListScrollData_1.RoleAttrListScrollData(i[t], e.get(i[t]), o.get(i[t]) ?? 0, a.Priority, false, 1));
     }
     return r;
   }

@@ -138,16 +138,23 @@ class MontageManager {
             Log_1.Log.Debug("BasePerform", 26, "[Montage] PlayMontage找不到片段", ["montage", t.GetName()], ["section", a.InSectionToStartMontageAt]);
           }
         }
-        this.cj_.Montage_Play(this.sj_, undefined, undefined, e, !a.KeepOtherMontage);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("BasePerform", 26, "[Montage] 实体播放蒙太奇", ["pbDataId", this.sDe.PbDataId], ["handle", n], ["startTime", e], ["isLoop", a.IsLoop], ["path", this.aj_]);
         }
-        this.mj_(a.Duration);
-        this.fj_(a.IsLoop);
-        if (!o) {
-          this.cj_.OnMontageEnded.Add(this._j_.bind(this));
+        if (this.cj_.Montage_Play(this.sj_, undefined, undefined, e, !a.KeepOtherMontage)) {
+          this.mj_(a.Duration);
+          this.fj_(a.IsLoop);
+          if (!o) {
+            this.cj_.OnMontageEnded.Add(this._j_.bind(this));
+          }
+          this.nj_?.(this.sj_);
+        } else {
+          this.nj_?.(this.sj_);
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("BasePerform", 26, "[Montage] 蒙太奇播放失败", ["pbDataId", this.sDe.PbDataId], ["handle", n], ["startTime", e], ["isLoop", a.IsLoop], ["path", this.aj_]);
+          }
+          this._j_(this.sj_, true);
         }
-        this.nj_?.(this.sj_);
       } else {
         this.uj_();
       }

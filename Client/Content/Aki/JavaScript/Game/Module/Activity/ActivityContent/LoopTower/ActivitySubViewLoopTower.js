@@ -86,7 +86,7 @@ class ActivitySubViewLoopTower extends ActivitySubViewBase_1.ActivitySubViewBase
   }
   OnBeforeShow() {
     this.OnRefreshView();
-    this.KYc();
+    this.XJc();
     ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY;
     RedDotController_1.RedDotController.BindRedDot("TowerReward", this.GetItem(8));
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotTowerReward);
@@ -122,7 +122,7 @@ class ActivitySubViewLoopTower extends ActivitySubViewBase_1.ActivitySubViewBase
     this.ANe.FunctionButton.SetText(e);
     this.ANe.FunctionButton.SetFunction(this.ONe);
   }
-  KYc() {
+  XJc() {
     var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.LoopTowerSeason) ?? -1;
     var t = ModelManager_1.ModelManager.TowerModel.CurrentSeason;
     var e = e !== t;

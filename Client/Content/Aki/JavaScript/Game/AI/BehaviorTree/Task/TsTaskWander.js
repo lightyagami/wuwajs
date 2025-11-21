@@ -150,7 +150,7 @@ class TsTaskWander extends TsTaskAbortImmediatelyBase_1.default {
         case 1:
         case 2:
           this.NavigationPath ||= new Array();
-          if (r.Entity.GetComponent(102)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+          if (r.Entity.GetComponent(104)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
             this.CacheVector.DeepCopy(r.FloorLocation);
           } else {
             this.CacheVector.DeepCopy(r.ActorLocationProxy);
@@ -170,7 +170,7 @@ class TsTaskWander extends TsTaskAbortImmediatelyBase_1.default {
           }
           this.CurrentNavigationIndex = 1;
           this.NavigationEndTime = Time_1.Time.WorldTime + this.TsMaxNavigationMillisecond;
-          var a = r.Entity.CheckGetComponent(102);
+          var a = r.Entity.CheckGetComponent(104);
           if (a.Valid) {
             switch (this.MoveStateActural) {
               case 1:

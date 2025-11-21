@@ -12,6 +12,7 @@ const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLa
 const SynthesisFormulaByFormulaItemId_1 = require("../../../../Core/Define/ConfigQuery/SynthesisFormulaByFormulaItemId");
 const SynthesisFormulaByFormulaType_1 = require("../../../../Core/Define/ConfigQuery/SynthesisFormulaByFormulaType");
 const SynthesisFormulaById_1 = require("../../../../Core/Define/ConfigQuery/SynthesisFormulaById");
+const SynthesisFormulaByItemId_1 = require("../../../../Core/Define/ConfigQuery/SynthesisFormulaByItemId");
 const SynthesisLevelAll_1 = require("../../../../Core/Define/ConfigQuery/SynthesisLevelAll");
 const ConfigBase_1 = require("../../../../Core/Framework/ConfigBase");
 class ComposeConfig extends ConfigBase_1.ConfigBase {
@@ -19,31 +20,34 @@ class ComposeConfig extends ConfigBase_1.ConfigBase {
     return MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e) ?? "";
   }
   GetSynthesisFormulaByFormulaItemId(e) {
-    var o = SynthesisFormulaByFormulaItemId_1.configSynthesisFormulaByFormulaItemId.GetConfig(e);
-    if (!o) {
+    var r = SynthesisFormulaByFormulaItemId_1.configSynthesisFormulaByFormulaItemId.GetConfig(e);
+    if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Compose", 49, "合成配方获取失败，请检查合成配方配置表是否正确", ["FormulaItemId=", e]);
       }
     }
-    return o;
+    return r;
+  }
+  GetSynthesisFormulaByItemId(e) {
+    return SynthesisFormulaByItemId_1.configSynthesisFormulaByItemId.GetConfig(e);
   }
   GetSynthesisFormulaById(e) {
-    var o = SynthesisFormulaById_1.configSynthesisFormulaById.GetConfig(e);
-    if (!o) {
+    var r = SynthesisFormulaById_1.configSynthesisFormulaById.GetConfig(e);
+    if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Compose", 49, "合成配方获取失败，请检查合成配方配置表是否正确", ["Id=", e]);
       }
     }
-    return o;
+    return r;
   }
   GetComposeListByType(e) {
-    var o = SynthesisFormulaByFormulaType_1.configSynthesisFormulaByFormulaType.GetConfigList(e);
-    if (!o) {
+    var r = SynthesisFormulaByFormulaType_1.configSynthesisFormulaByFormulaType.GetConfigList(e);
+    if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Compose", 49, "获取对应类型合成数据失败，请检查合成配方配置表是否正确", ["FormulaType=", e]);
       }
     }
-    return o;
+    return r;
   }
   GetExchangeList() {
     var e = MaterialReplaceAll_1.configMaterialReplaceAll.GetConfigList();

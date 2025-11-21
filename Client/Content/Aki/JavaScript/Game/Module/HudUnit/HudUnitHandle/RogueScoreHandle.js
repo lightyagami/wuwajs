@@ -23,13 +23,13 @@ class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.SBn = undefined;
     this.IBn = undefined;
     this.TBn = undefined;
-    this.oTn = (t, e) => {
+    this.oTn = (t, i) => {
       if (this.zIn) {
         t = ModelManager_1.ModelManager.BattleScoreModel?.GetScoreConfig(t);
         if (t && t.Type === 1) {
           t = t.LevelGroupId;
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Battle", 17, "肉鸽战斗评分变化", ["scoreActionId", t], ["score", e]);
+            Log_1.Log.Debug("Battle", 17, "肉鸽战斗评分变化", ["scoreActionId", t], ["score", i]);
           }
           if (this.EBn !== t) {
             this.EBn = t;
@@ -37,7 +37,7 @@ class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
             this.rTn();
           }
           if (this.yBn && this.yBn.length !== 0) {
-            this.IIn = e;
+            this.IIn = i;
             if (this.IIn < this.IBn.LowerUpperLimits[0]) {
               this.SBn = undefined;
             } else if (this.IIn >= this.TBn.LowerUpperLimits[1]) {
@@ -45,8 +45,8 @@ class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
             } else {
               this.SBn = undefined;
               for (const s of this.yBn) {
-                var i = s.LowerUpperLimits;
-                if (!(i.length < 2) && this.IIn >= i[0] && this.IIn < i[1]) {
+                var e = s.LowerUpperLimits;
+                if (!(e.length < 2) && this.IIn >= e[0] && this.IIn < e[1]) {
                   this.SBn = s;
                   break;
                 }
@@ -63,11 +63,11 @@ class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     };
   }
   OnInitialize() {
-    this.zIn = ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.CreatureModel.GetInstanceId() === 1 || ModelManager_1.ModelManager.BossRushModel.CheckInBossRush();
+    this.zIn = ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.CreatureModel.GetInstanceId() === 1;
     if (this.zIn) {
-      for (var [t, e] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreMap()) {
-        if (e > 0) {
-          this.oTn(t, e);
+      for (var [t, i] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreMap()) {
+        if (i > 0) {
+          this.oTn(t, i);
         }
       }
     }
@@ -87,15 +87,15 @@ class RogueScoreHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
     this.TBn = undefined;
     if (this.yBn) {
       let t = MathUtils_1.MathUtils.Int32Max;
-      let e = 0;
+      let i = 0;
       for (const s of this.yBn) {
-        var i = s.Level;
-        if (t > i) {
-          t = i;
+        var e = s.Level;
+        if (t > e) {
+          t = e;
           this.IBn = s;
         }
-        if (e < i) {
-          e = i;
+        if (i < e) {
+          i = e;
           this.TBn = s;
         }
       }

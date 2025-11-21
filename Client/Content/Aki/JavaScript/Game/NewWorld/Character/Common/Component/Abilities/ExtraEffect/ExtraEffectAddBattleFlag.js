@@ -13,8 +13,8 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
     this.LNc = 1;
     this.KXo = [];
     this.wNc = [];
-    this.xzc = undefined;
-    this.Did = true;
+    this.OZc = undefined;
+    this.God = true;
     this.RNc = "";
   }
   InitParameters(e) {
@@ -29,12 +29,12 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
     }
     var t = e.ExtraEffectParameters[3];
     if (t) {
-      this.xzc = new Set(t.split("#").map(e => Number(e)));
+      this.OZc = new Set(t.split("#").map(e => Number(e)));
     }
-    this.Did = Number(e.ExtraEffectParameters[4] ?? 1) === 1;
+    this.God = Number(e.ExtraEffectParameters[4] ?? 1) === 1;
   }
   OnExecute(e) {
-    if (!e || this.Did) {
+    if (!e || this.God) {
       return this.RNc;
     }
   }
@@ -55,12 +55,12 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
   CheckExecutable() {
     return this.OwnerBuffComponent?.HasBuffAuthority() ?? false;
   }
-  static xid(e, t, s) {
-    var r = e.GetComponent(175);
+  static Fod(e, t, s) {
+    var r = e.GetComponent(178);
     var e = r?.BuffEffectManager;
     if (e) {
       for (const a of e.FilterById(76)) {
-        if (a.Check({}, r) && !a.xzc?.has(t.SkillId)) {
+        if (a.Check({}, r) && !a.OZc?.has(t.SkillId)) {
           let e = undefined;
           switch (a.LNc) {
             case 1:
@@ -85,12 +85,12 @@ class AddBattleFlag extends ExtraEffectBase_1.BuffEffect {
   }
   static ApplyEffects(e, t) {
     t.BattleFlags = [];
-    this.xid(e, t, false);
+    this.Fod(e, t, false);
     var e = e.GetComponent(0);
     var s = e?.IsVision();
     var e = e?.GetSummonerId();
     if (s && e && (s = ModelManager_1.ModelManager.CreatureModel.GetEntity(e)?.Entity)) {
-      this.xid(s, t, true);
+      this.Fod(s, t, true);
     }
     t.BattleFlags.length;
   }

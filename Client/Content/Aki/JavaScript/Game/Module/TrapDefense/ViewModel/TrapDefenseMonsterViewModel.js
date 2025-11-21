@@ -13,11 +13,11 @@ class TrapDefenseMonsterViewModel {
   constructor() {
     this.Model = undefined;
     this.JumpTabType = undefined;
-    this.B$c = [];
+    this.Hjc = [];
     this.MonsterTypeDataMap = new Map();
-    this.k$c = new Map();
-    this.O$c = new Map();
-    this.q$c = undefined;
+    this.$jc = new Map();
+    this.Wjc = new Map();
+    this.Qjc = undefined;
     this.kGr = new Map();
     this.LevelData = undefined;
     this.IsInstance = false;
@@ -30,7 +30,7 @@ class TrapDefenseMonsterViewModel {
     return t;
   }
   OnViewClose() {
-    this.q$c = undefined;
+    this.Qjc = undefined;
   }
   GetTabList() {
     return [{
@@ -51,37 +51,37 @@ class TrapDefenseMonsterViewModel {
     return this.kGr;
   }
   GetMonsterBodyMap() {
-    if (this.k$c.size <= 0) {
+    if (this.$jc.size <= 0) {
       ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAllMonsterBodyList().forEach(e => {
-        this.k$c.set(e.Id, e);
+        this.$jc.set(e.Id, e);
       });
     }
-    return this.k$c;
+    return this.$jc;
   }
   GetMonsterTagMap() {
-    if (this.O$c.size <= 0) {
+    if (this.Wjc.size <= 0) {
       ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAllMonsterTagList().forEach(e => {
-        this.O$c.set(e.Id, e);
+        this.Wjc.set(e.Id, e);
       });
     }
-    return this.O$c;
+    return this.Wjc;
   }
   GetMonsterTypeDataList(e = true) {
-    if (this.B$c.length <= 0) {
+    if (this.Hjc.length <= 0) {
       ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAllMonsterRiskList().forEach(e => {
         e = TrapDefenseMonsterTypeData_1.TrapDefenseMonsterTypeData.Create(e);
-        this.B$c.push(e);
+        this.Hjc.push(e);
         this.MonsterTypeDataMap.set(e.Id, e);
       });
-      this.B$c.sort((e, t) => t.Id - e.Id);
+      this.Hjc.sort((e, t) => t.Id - e.Id);
     }
     if (e) {
-      return this.Gid();
+      return this.jod();
     } else {
-      return this.B$c;
+      return this.Hjc;
     }
   }
-  Gid() {
+  jod() {
     const s = new Set();
     this.GetMonsterWaveDataList().forEach(e => {
       e.GetMonsterDataList().forEach(e => {
@@ -89,7 +89,7 @@ class TrapDefenseMonsterViewModel {
       });
     });
     const t = [];
-    this.B$c.forEach(e => {
+    this.Hjc.forEach(e => {
       let a = false;
       e.GetMonsterDataList(false).forEach(e => {
         var t = s.has(e);
@@ -103,12 +103,12 @@ class TrapDefenseMonsterViewModel {
     return t;
   }
   GetMonsterWaveDataList() {
-    if (this.q$c === undefined) {
+    if (this.Qjc === undefined) {
       this.GetMonsterMap();
       const s = this.LevelData;
       const r = new Map();
       if (s) {
-        this.q$c = [];
+        this.Qjc = [];
         const n = [];
         n.push(...ConfigManager_1.ConfigManager.TrapDefenseConfig.GetWaveListByLevelId(s.Id));
         n.sort((e, t) => e.WaveId - t.WaveId);
@@ -125,21 +125,21 @@ class TrapDefenseMonsterViewModel {
               t = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetCsvWaveConfigByWaveId(e);
               r.set(t.Id, t);
             }
-            if ((i <= 0 || a < i) && (t = TrapDefenseMonsterWaveData_1.TrapDefenseMonsterWaveData.Create(r.get(e), ++a), e = a === i, t.SetWaveConfig(n[a - 1]), this.q$c.push(t), t.SetIsEndlessStart(e), e)) {
+            if ((i <= 0 || a < i) && (t = TrapDefenseMonsterWaveData_1.TrapDefenseMonsterWaveData.Create(r.get(e), ++a), e = a === i, t.SetWaveConfig(n[a - 1]), this.Qjc.push(t), t.SetIsEndlessStart(e), e)) {
               t.SetEndlessWaveDesc(s.Config.LoopStartWaveDesc);
             }
           });
         });
       }
     }
-    return this.q$c ?? [];
+    return this.Qjc ?? [];
   }
   SetJumpTabType(e) {
     this.JumpTabType = e;
   }
   SetSelectLevelData(e) {
     this.LevelData = e ?? ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData();
-    this.q$c = undefined;
+    this.Qjc = undefined;
     this.WaveSelectMonsterData = undefined;
     this.WaveSelectWaveData = undefined;
   }

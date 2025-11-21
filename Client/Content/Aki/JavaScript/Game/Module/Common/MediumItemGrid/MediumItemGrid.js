@@ -38,7 +38,10 @@ const MediumItemGridRedDotComponent_1 = require("./MediumItemGridComponent/Mediu
 const MediumItemGridReduceButtonComponent_1 = require("./MediumItemGridComponent/MediumItemGridReduceButtonComponent");
 const MediumItemGridRightTopValueComponent_1 = require("./MediumItemGridComponent/MediumItemGridRightTopValueComponent");
 const MediumItemGridRogueFinishComponent_1 = require("./MediumItemGridComponent/MediumItemGridRogueFinishComponent");
+const MediumItemGridRoleDevelopTagMarkComponent_1 = require("./MediumItemGridComponent/MediumItemGridRoleDevelopTagMarkComponent");
+const MediumItemGridRoleDevTagComponent_1 = require("./MediumItemGridComponent/MediumItemGridRoleDevTagComponent");
 const MediumItemGridRoleHeadComponent_1 = require("./MediumItemGridComponent/MediumItemGridRoleHeadComponent");
+const MediumItemGridRoleRightBottomTag_1 = require("./MediumItemGridComponent/MediumItemGridRoleRightBottomTag");
 const MediumItemGridSkinComponent_1 = require("./MediumItemGridComponent/MediumItemGridSkinComponent");
 const MediumItemGridSortHighlightIndexComponent_1 = require("./MediumItemGridComponent/MediumItemGridSortHighlightIndexComponent");
 const MediumItemGridSortIndexComponent_1 = require("./MediumItemGridComponent/MediumItemGridSortIndexComponent");
@@ -112,7 +115,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     if (e.Type === 1) {
       this._wt(e);
     }
-    if (e.Type === 5) {
+    if (e.Type === 6) {
       this.xV_(e);
     }
     if (e.Type === 4) {
@@ -123,6 +126,9 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     }
     if (e.Type === 2) {
       this.mwt(e);
+    }
+    if (e.Type === 5) {
+      this.dzd(e);
     }
     this.RefreshComponentVisible();
     this.RefreshComponentHierarchyIndex();
@@ -160,55 +166,55 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var h = e.TotalCoolDown;
     var p = e.IsProhibit;
     var I = e.ReduceButtonInfo;
-    var C = e.IsGreenSelected;
-    var a = e.IsCheckTick;
+    var a = e.IsGreenSelected;
+    var C = e.IsCheckTick;
     var M = e.IsTimeFlagVisible;
     var G = e.IsReceivedFlagVisible;
     var l = e.RoleHeadInfo;
     var _ = e.SortIndex;
-    var S = e.IsDisable;
-    var g = e.IsMainVisionVisible;
+    var g = e.IsDisable;
+    var S = e.IsMainVisionVisible;
     var v = e.VisionFetterGroupId;
     var c = e.VisionRoleHeadInfo;
     var R = e.DangoRoleHeadInfo;
-    var q = e.ComposeIconTag;
-    var T = e.ChangeAble;
+    var T = e.ComposeIconTag;
+    var q = e.ChangeAble;
     var U = e.IsUpGrade;
     var y = e.TagPathList;
-    var b = e.SubIconPath;
-    var k = e.RightTopValue;
-    var B = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
-    var V = e.IsBranchUpgrade;
+    var D = e.SubIconPath;
+    var B = e.RightTopValue;
+    var k = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemConfigId) === 3;
+    var b = e.IsBranchUpgrade;
     var f = e.IsRecommendVisible;
     this.SetStartLevel(i);
     this.SetBuffSprite(m);
     this.SetRedDotVisible(o);
-    this.SetLevelAndLock(r, n, s, B, d);
+    this.SetLevelAndLock(r, n, s, k, d);
     this.SetRecommendVisible(f);
     this.SetItemPrice(e.ItemPrice);
     this.SetCoolDown(u, h);
     this.SetIsProhibit(p);
     this.SetReduceButton(I);
-    this.SetGreenSelected(C);
-    this.SetCheckTickVisible(a);
+    this.SetGreenSelected(a);
+    this.SetCheckTickVisible(C);
     this.SetTimeFlagVisible(M);
     this.SetReceivedFlagVisible(G);
     this.SetRoleHead(l);
     this.SetSortIndex(_);
-    this.SetIsDisable(S);
+    this.SetIsDisable(g);
     this.SetRogueFinish(e.IsRogueFinish);
-    this.SetIsMainVision(g);
+    this.SetIsMainVision(S);
     this.SetNewVisible(!o && t);
     this.SetVisionFetterGroup(v);
     this.SetVisionRoleHead(c);
-    this.SetComposeIcon(q);
-    this.SetComposeChangeAble(T);
+    this.SetComposeIcon(T);
+    this.SetComposeChangeAble(q);
     this.SetDangoRoleHead(R);
     this.SetUpGradeVisible(U);
     this.SetTagsInfo(y);
-    this.SetSubIconPath(b);
-    this.SetRightTopValueInfo(k);
-    this.SetIsBranchUpgrade(V);
+    this.SetSubIconPath(D);
+    this.SetRightTopValueInfo(B);
+    this.SetIsBranchUpgrade(b);
     this.ApplyPropBaseDisplay(e);
   }
   cwt(e) {
@@ -224,7 +230,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     var h = e.Level;
     var p = e.IsLevelTextUseChangeColor;
     var I = e.FetterGroupId;
-    var C = e.VisionRoleHeadInfo;
+    var a = e.VisionRoleHeadInfo;
     this.SetStartLevel(i);
     this.SetRedDotVisible(u);
     this.SetIsMainVision(t);
@@ -234,7 +240,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetDevelopRewardInfo(s);
     this.SetNewVisible(o);
     this.SetVisionFetterGroup(I);
-    this.SetVisionRoleHead(C);
+    this.SetVisionRoleHead(a);
     this.ApplyPhantomBaseDisplay(e);
   }
   mwt(e) {
@@ -245,14 +251,26 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     this.SetRecommendVisible(e.IsRecommendVisible);
     this.SetUnRecommendVisible(e.IsUnRecommendVisible);
     this.SetIsDisable(e.IsDisable);
-    this.SetTrialRoleVisible(e.IsTrialRoleVisible);
+    let i = undefined;
+    if (e.IsTrialRoleVisible || e.IsRecommendBottomVisible) {
+      i = {
+        IsTrialRole: e.IsTrialRoleVisible ?? false,
+        IsRecommendRole: e.IsRecommendBottomVisible ?? false
+      };
+    }
+    this.SetRoleRightBottomTagVisible(i);
     this.SetLevelAndLock(e.Level, e.IsShowLock, e.IsLevelTextUseChangeColor);
     this.SetNewVisible(e.IsNewVisible);
     this.fwt(e.IsShowCost, e.ItemConfigId);
     this.SetHalfAreaInfo(e.HalfAreaInfo);
     this.SetWeeklyRogueTag(e.IsShowWeeklyRogueTag);
     this.SetLevelAndStar(e.LvAndStar);
+    this.SetRoleDevTag(e.RoleDevTag);
+    this.SetRoleDevelopTagMark(e.IsRoleDevelopTagMark);
     this.ApplyCharacterBaseDisplay(e);
+  }
+  dzd(e) {
+    this.ApplyForecastCharacterBaseDisplay(e);
   }
   SetWeeklyRogueTag(e) {
     this.RefreshComponent(MediumItemGridWeeklyRogueTagComponent_1.MediumItemGridWeeklyRogueTagComponent, e, e);
@@ -427,12 +445,26 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   SetTrialRoleVisible(e) {
     this.RefreshComponent(MediumItemGridTimeFlagComponent_1.MediumItemGridTimeFlagComponent, e, e);
   }
+  SetRoleRightBottomTagVisible(e) {
+    this.RefreshComponent(MediumItemGridRoleRightBottomTag_1.MediumItemGridRoleRightBottomTag, e !== undefined, e);
+  }
   SetIconSprite(e) {
     this.RefreshComponent(MediumItemGridSpriteIconComponent_1.MediumItemGridSpriteIconComponent, e !== undefined && e !== "", e);
   }
   SetSkinIcon(e) {
     if (e !== undefined) {
       this.RefreshComponent(MediumItemGridSkinComponent_1.MediumItemGridSkinComponent, true, e);
+    }
+  }
+  fOt(e) {
+    var i = this.GetTexture(1);
+    if (i) {
+      if (e && e !== "") {
+        i.SetUIActive(true);
+        this.SetTextureByPath(e, i);
+      } else {
+        i.SetUIActive(false);
+      }
     }
   }
   ApplyEmptyDisplay(e) {
@@ -472,7 +504,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
     if (e.QualityId) {
       this.SetQualityIconById(this.GetSprite(0), e.QualityId, undefined, e.QualityType);
     } else if (e.QualityIcon) {
-      this.hKu(e.QualityIcon);
+      this.Bjc(e.QualityIcon);
     } else {
       this.dwt(i);
     }
@@ -516,27 +548,49 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   ApplyCharacterBaseDisplay(e) {
     let i = e.ItemConfigId;
-    var t = e.BottomTextId;
-    var m = e.BottomText;
-    var o = e.BottomTextParameter;
-    var n = e.SkinId;
+    var t;
+    var m = e.BottomTextId;
+    var o = e.BottomText;
+    var n = e.BottomTextParameter;
+    var d = e.SkinId;
     this.Data = e.Data;
     var e = this.GetTexture(1);
     if (i > TRIAL_ROLE_ID) {
-      d = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(i);
-      i = d.ParentId;
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetTrialRoleConfig(i);
+      i = t.ParentId;
     }
-    var d = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(n);
-    var d = d.RoleHeadIconLarge;
-    this.SetRoleSkinIcon(d, e, n);
+    if (d) {
+      t = ConfigManager_1.ConfigManager.SkinConfig.GetRoleSkinConfig(d).RoleHeadIconLarge;
+      this.SetRoleSkinIcon(t, e, d);
+    } else {
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i).RoleHeadIconBig;
+      this.SetRoleIcon(t, e, i);
+    }
     this.dwt(i);
     e?.SetUIActive(true);
-    var d = !StringUtils_1.StringUtils.IsEmpty(t) || !StringUtils_1.StringUtils.IsEmpty(m);
+    var d = !StringUtils_1.StringUtils.IsEmpty(m) || !StringUtils_1.StringUtils.IsEmpty(o);
     this.SetBottomTextVisible(d);
     if (d) {
-      this.SetBottomTextId(t, o);
-      this.SetBottomText(m);
+      this.SetBottomTextId(m, n);
+      this.SetBottomText(o);
     }
+    this.SetExtendToggleEnable(true);
+    this.Cwt(true);
+  }
+  ApplyForecastCharacterBaseDisplay(e) {
+    this.Data = e.Data;
+    var i = e.Data;
+    var t = ConfigManager_1.ConfigManager.RoleDevConfig.GetRoleDevProsProjectConfig(i.Id).RoleHeadIcon;
+    this.fOt(t);
+    this.SetElement(i.ElementId);
+    this.SetBottomText(e.BottomText);
+    var t = !StringUtils_1.StringUtils.IsEmpty(e.BottomTextId) || !StringUtils_1.StringUtils.IsEmpty(e.BottomText);
+    this.SetBottomTextVisible(t);
+    if (t) {
+      this.SetBottomTextId(e.BottomTextId, e.BottomTextParameter);
+      this.SetBottomText(e.BottomText);
+    }
+    this.SetRoleDevTag(e.RoleDevTag);
     this.SetExtendToggleEnable(true);
     this.Cwt(true);
   }
@@ -608,7 +662,7 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
       i.SetUIActive(true);
     }
   }
-  hKu(e) {
+  Bjc(e) {
     var i = this.GetSprite(0);
     var t = !!e;
     i.SetUIActive(t);
@@ -694,6 +748,12 @@ class MediumItemGrid extends ItemGridBase_1.ItemGridBase {
   }
   SetSubIconPath(e) {
     this.RefreshComponent(MediumItemGridSubIconComponent_1.MediumItemGridSubIconComponent, !!e, e);
+  }
+  SetRoleDevTag(e) {
+    this.RefreshComponent(MediumItemGridRoleDevTagComponent_1.MediumItemGridRoleDevTagComponent, e !== undefined, e);
+  }
+  SetRoleDevelopTagMark(e) {
+    this.RefreshComponent(MediumItemGridRoleDevelopTagMarkComponent_1.MediumItemGridRoleDevelopTagMarkComponent, e, e);
   }
 }
 exports.MediumItemGrid = MediumItemGrid;

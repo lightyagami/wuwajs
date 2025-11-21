@@ -68,6 +68,11 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     this.TDe = undefined;
     this.fjt = new Queue_1.Queue();
     this.pjt = false;
+    this.E5e = e => {
+      if (e === "ListAni") {
+        this.GetUiInturnAnimController(30).Play();
+      }
+    };
     this._Mo = () => {
       var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(68);
       e.FunctionMap.set(0, () => {
@@ -242,8 +247,13 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     };
     this.Bpt = e => e !== this._jt?.GetGenericLayout()?.GetSelectedGridIndex();
     this.Njt = () => {
-      var e = this.vjt;
-      ControllerHolder_1.ControllerHolder.ItemExchangeController.OpenExchangeViewByItemId(e.ItemId);
+      var e = this.vjt?.ItemId;
+      if (!!e && !(e <= 0) && !!(e = ConfigManager_1.ConfigManager.GachaConfig.GetShopIdByGachaItemId(e)) && !(e <= 0)) {
+        ControllerHolder_1.ControllerHolder.PayShopController.OpenExchangePopView(e);
+      }
+    };
+    this.ffd = () => {
+      ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopViewToRecharge();
     };
     this.Ojt = () => {
       var e = ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency();
@@ -348,6 +358,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GachaPoolSelectResponse, this.Pjt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CrossDay, this._Mo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GachaNewNotify, this._Mo);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ItemExChangeResponse, this.Djt);
@@ -355,9 +366,10 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GachaPoolSelectResponse, this.Pjt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this._Mo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GachaNewNotify, this._Mo);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlaySequenceEventByStringParam, this.E5e);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIText], [14, UE.UIVerticalLayout], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIHorizontalLayout], [18, UE.UIButtonComponent], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UIButtonComponent], [24, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIText], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIText], [14, UE.UIVerticalLayout], [15, UE.UIItem], [16, UE.UIText], [17, UE.UIHorizontalLayout], [18, UE.UIButtonComponent], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UIButtonComponent], [24, UE.UIText], [25, UE.UIItem], [26, UE.UIText], [27, UE.UIText], [28, UE.UIText], [29, UE.UIScrollViewWithScrollbarComponent], [30, UE.UIInturnAnimController]];
     this.BtnBindInfo = [[3, this.dpt], [1, this.Sjt], [4, this.yjt], [2, this.Ijt], [18, this.Tjt], [23, this.Tjt]];
   }
   async OnBeforeStartAsync() {
@@ -384,7 +396,7 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(68);
       ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(e);
     }
-    this.gjt?.PlayStartSeqAsync();
+    this.gjt?.PlayStartSeq();
   }
   OnTick(e) {
     if (Time_1.Time.ServerTimeStamp - this._Ma >= CommonDefine_1.SECOND_PER_MINUTE * 5 * CommonDefine_1.MILLIONSECOND_PER_SECOND) {
@@ -408,10 +420,11 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
   }
   async ITt() {
     var e;
-    if (this.vjt && (await this.lqe.SetCurrencyItemList([ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency(), this.vjt.ItemId]), e = this.lqe.GetCurrencyItemList())) {
-      e[0]?.SetButtonFunction(this.Ojt);
-      (e = e[1]).SetButtonFunction(this.Njt);
-      e.SetButtonActive(false);
+    if (this.vjt && (await this.lqe.SetCurrencyItemList([ConfigManager_1.ConfigManager.GachaConfig.PrimaryCurrency(), ConfigManager_1.ConfigManager.GachaConfig.SecondCurrency(), this.vjt.ItemId]), e = this.lqe.GetCurrencyItemList())) {
+      e[0]?.SetButtonFunction(this.ffd);
+      e[1]?.SetButtonFunction(this.Ojt);
+      (e = e[2]).SetButtonFunction(this.Njt);
+      e.SetButtonActive(true);
     }
   }
   jjt() {
@@ -549,6 +562,9 @@ class GachaMainView extends UiTickViewBase_1.UiTickViewBase {
       }
       this.GetText(10).SetText(this.Mjt.Title);
       this.GetText(13).SetText(this.Mjt.Description);
+      this.GetText(28).SetText(this.Mjt.ComplianceDetail);
+      this.GetText(28).SetUIActive(!StringUtils_1.StringUtils.IsEmpty(this.Mjt.ComplianceDetail));
+      this.GetScrollViewWithScrollbar(29)?.SetScrollProgress(0);
     }
   }
   Ljt() {

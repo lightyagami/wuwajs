@@ -62,19 +62,21 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     this.CRc = undefined;
     this.pRc = undefined;
     this.vRc = undefined;
+    this.bRm = undefined;
     this.EIe = undefined;
     this.C6_ = undefined;
     this.Hte = undefined;
     this.Gce = undefined;
     this.Lie = undefined;
+    this.cwm = undefined;
     this.HIu = undefined;
     this.$Iu = false;
     this.WIu = undefined;
     this.Aia = undefined;
-    this.f4u = false;
+    this.JFu = false;
     this.cz = undefined;
-    this.g4u = 0;
-    this.C4u = 0;
+    this.D3u = 0;
+    this.U3u = 0;
     this.QIu = (t, e) => {
       if (e) {
         this.SetMorphType(1);
@@ -88,17 +90,18 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
-    this.C6_ = this.Entity.GetComponent(220);
+    this.C6_ = this.Entity.GetComponent(223);
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(179);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Gce = this.Entity.GetComponent(182);
+    this.Lie = this.Entity.GetComponent(209);
+    this.cwm = this.Entity.GetComponent(181);
     this.p6_();
     if (this.qQ_) {
       if (this.Lie) {
         this.HIu = this.Lie.ListenForTagAddOrRemove(-1867735064, this.QIu);
       }
       if (this.Hte?.IsRoleAndCtrlByMe) {
-        this.p4u();
+        this.ZFu();
       }
       this.cz = Vector_1.Vector.Create();
     }
@@ -119,7 +122,7 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       this.pRc = undefined;
       this.vRc = undefined;
       this.Aia = undefined;
-      this.f4u = false;
+      this.JFu = false;
       this.cz = undefined;
       this.qQ_ = false;
     }
@@ -344,8 +347,19 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
     }
     this.vRc.set(t, e);
   }
-  IsMorphMontage(t) {
-    return !!this.vRc?.has(t);
+  SetMontageSubPathMorphType(t, e) {
+    this.bRm ||= new Map();
+    this.bRm.set(t, e);
+  }
+  GetMontagePathMorphType(t) {
+    if (this.bRm) {
+      for (var [e, i] of this.bRm.entries()) {
+        if (t.includes(e)) {
+          return i;
+        }
+      }
+    }
+    return 0;
   }
   GetMontageByName(t) {
     return this.CRc?.get(this.m6_)?.get(t);
@@ -415,9 +429,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
   }
   gZ_() {
     var t;
-    var e = this.Hte?.Actor.Mesh;
-    if (e && (t = this.CW_?.ComponentVectorParams?.get(MESH_COMPONENT)?.get(MESH_LOCATION))) {
-      e.K2_SetRelativeLocation(t.ToUeVectorOld(), false, undefined, false);
+    if (this.Hte?.Actor.Mesh && (t = this.CW_?.ComponentVectorParams?.get(MESH_COMPONENT)?.get(MESH_LOCATION))) {
+      this.cwm?.SetOriginLocation(t);
     }
   }
   vW_() {
@@ -430,10 +443,10 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       var h;
       var s = e.IsRoleAndCtrlByMe;
       if (this.m6_ === 0) {
-        t = this.C4u - e.HalfHeight;
-        e.SetDefaultRadiusAndHalfHeight(this.g4u, this.C4u);
+        t = this.U3u - e.HalfHeight;
+        e.SetDefaultRadiusAndHalfHeight(this.D3u, this.U3u);
         if (IS_ENABLE_OPTIMIZE) {
-          e.SetRadiusAndHalfHeight(this.g4u, this.C4u, false, false);
+          e.SetRadiusAndHalfHeight(this.D3u, this.U3u, false, false);
         } else {
           e.ResetCapsuleRadiusAndHeight(true);
         }
@@ -457,8 +470,8 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
               this.WIu ||= Vector_1.Vector.Create(0, 0, -(o + r - h - i));
               ControllerHolder_1.ControllerHolder.GameBudgetInterfaceController.SetCenterActorLocationOffset(this.WIu.ToUeVector());
             }
-            this.C4u = e.DefaultHalfHeight;
-            this.g4u = e.DefaultRadius;
+            this.U3u = e.DefaultHalfHeight;
+            this.D3u = e.DefaultRadius;
             e.SetDefaultRadiusAndHalfHeight(r, o);
           } else if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 67, "[CharacterMorphComponent]更新胶囊体失败, 参数非法", ["Radius", r], ["HalfHeight", o]);
@@ -500,22 +513,22 @@ let CharacterMorphComponent = CharacterMorphComponent_1 = class CharacterMorphCo
       }
     }
   }
-  p4u() {
+  ZFu() {
     var t;
-    if (!this.Aia && !this.f4u) {
+    if (!this.Aia && !this.JFu) {
       if (t = this.GetMorphData(1)?.InputComponentClass?.AssetPathName.toString()) {
-        this.f4u = true;
+        this.JFu = true;
         ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.Class, t => {
           var e = this.Hte?.Actor;
           if (e && ((t = e.AddComponentByClass(t, false, MathUtils_1.MathUtils.DefaultTransform, false)).OwnerActor = e, this.Aia = t, this.m6_ === 1) && this.Entity.GetComponent(62)) {
             ControllerHolder_1.ControllerHolder.InputController.GetInputLayer(this.Entity.Id, 1)?.SetBpInputComp(t);
           }
-          this.f4u = false;
+          this.JFu = false;
         });
       }
     }
   }
 };
 CharacterMorphComponent.KIu = Stats_1.Stat.Create("[CharacterMorphComponent]SetMorphType");
-CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(282)], CharacterMorphComponent);
+CharacterMorphComponent = CharacterMorphComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(287)], CharacterMorphComponent);
 exports.CharacterMorphComponent = CharacterMorphComponent; //# sourceMappingURL=CharacterMorphComponent.js.map

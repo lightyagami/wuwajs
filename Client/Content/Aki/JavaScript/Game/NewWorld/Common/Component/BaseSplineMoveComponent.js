@@ -84,7 +84,7 @@ class SplineMoveParams {
             this.AdjustFacingYaw = i.FacingConfig.Yaw ?? 0;
         }
       }
-    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(264)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
+    } else if (i.Type === "AirPassage" && ((s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(268)) ? (this.MaxSoarSplineSpeed = s.SplineData.SpeedLimit, this.MaxOffsetDist = s.SplineData.MovableRadius, this.SoarFriction = s.SplineData.Resistance, this.SoarSprintLimit = s.SplineData.SprintSpeedLimit) : (this.MaxSoarSplineSpeed = 3000, this.SoarFriction = 0.5, this.SoarSprintLimit = 0), this.NeedLimitSoarTransform = !!i.Limit, i.Limit)) {
       this.InputLimitAngle = i.Limit.DirectionAngleLimit;
       this.EdgeLimitCurve = new PowerCurve3_1.PowerCurve3(i.Limit.EdgeLimitCurveFactor);
     }
@@ -148,7 +148,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
   OnStart() {
     this.DisableKey = this.Disable("[SplineMoveComponent.OnStart] 默认Disable");
     this.ActorComp = this.Entity.GetComponent(1);
-    this.TagComp = this.Entity.GetComponent(206);
+    this.TagComp = this.Entity.GetComponent(209);
     return true;
   }
   OnTick(t) {
@@ -159,6 +159,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
         this.UpdateLastSplineLocationAndDirection();
         i = t * MathUtils_1.MathUtils.MillisecondToSecond;
         this.PositionAdjust(this.SplineTimeKey, i);
+        this.InputAdjust();
         this.LastLocation.DeepCopy(this.TargetLocation);
         this.LastTimeKey = this.SplineTimeKey;
       }
@@ -232,6 +233,7 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     this.TargetLocation.AdditionEqual(this.TmpVector);
     return true;
   }
+  InputAdjust() {}
   StartSplineMove(t, i, s = false) {
     if (this.StartMoveConditionCheck(t, i)) {
       (i = new SplineMoveParams(t, i, this.Entity)).AllowInherit = s;
@@ -350,5 +352,5 @@ let BaseSplineMoveComponent = class BaseSplineMoveComponent extends EntityCompon
     }
   }
 };
-BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(108)], BaseSplineMoveComponent);
+BaseSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(110)], BaseSplineMoveComponent);
 exports.BaseSplineMoveComponent = BaseSplineMoveComponent; //# sourceMappingURL=BaseSplineMoveComponent.js.map

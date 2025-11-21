@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.RoleSkinRecommendItem = exports.RoleSkinItemContent = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
@@ -60,7 +59,7 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
     this.s4e = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.W2e);
   }
   Refresh(i) {
-    this.A6i = ConfigManager_1.ConfigManager.PayShopConfig.GetRecommendDataById(i);
+    this.A6i = ModelManager_1.ModelManager.PayShopModel.GetRecommendDataById(i);
     var e = ModelManager_1.ModelManager.PayShopModel.GetPayShopGoods(this.A6i.RecommendId);
     if (e) {
       this.Kyl = ShopSkinData_1.ShopSkinData.Create(e);
@@ -177,11 +176,11 @@ class RoleSkinRecommendItem extends UiPanelBase_1.UiPanelBase {
   v4e(i) {
     if (i) {
       var e = [];
-      for (const r of i.GetAllReward()) {
+      for (const h of i.GetAllReward()) {
         var t = new SkinRewardItemGrid_1.SkinRewardData();
         var s = [{
-          IncId: r[0].IncId,
-          ItemId: r[0].ItemId
+          IncId: h[0].IncId,
+          ItemId: h[0].ItemId
         }, 0];
         t.ItemData = s;
         t.FinishState = i.GetCurrentGoodsData().IsSoldOut();

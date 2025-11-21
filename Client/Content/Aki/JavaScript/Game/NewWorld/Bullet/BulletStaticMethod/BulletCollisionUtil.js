@@ -191,7 +191,7 @@ class BulletCollisionUtil {
       const n = e.Entity;
       var o = t.BulletDataMain.Execution.TagIdOnVictimEnter;
       if (o) {
-        var i = n.GetComponent(206);
+        var i = n.GetComponent(209);
         var a = o.length;
         if (a > 0 && i?.Valid) {
           for (let t = 0; t < a; t++) {
@@ -204,7 +204,7 @@ class BulletCollisionUtil {
         var s;
         var e = t.CollisionInfo;
         var _ = e.CharacterEntityMap.get(n);
-        if (_ !== undefined && !((s = n.GetComponent(3)) && (this.tHo(t, n, s.IsRoleAndCtrlByMe), _ > 0) && n.GetComponent(123)?.RemoveTimeScale(_), e.CharacterEntityMap.delete(n), t.CollisionInfo.IntervalMs <= 0 && e.ObjectsHitCurrent.delete(n.Id), e.CharacterEntityMap.size)) {
+        if (_ !== undefined && !((s = n.GetComponent(3)) && (this.tHo(t, n, s.IsRoleAndCtrlByMe), _ > 0) && n.GetComponent(126)?.RemoveTimeScale(_), e.CharacterEntityMap.delete(n), t.CollisionInfo.IntervalMs <= 0 && e.ObjectsHitCurrent.delete(n.Id), e.CharacterEntityMap.size)) {
           e.HaveCharacterInBullet = false;
         }
       } else if (l.Type === 2) {
@@ -221,7 +221,7 @@ class BulletCollisionUtil {
   static EntityEnter(t, l) {
     var e = t.BulletDataMain.Execution.TagIdOnVictimEnter;
     if (e) {
-      var o = l.GetComponent(206);
+      var o = l.GetComponent(209);
       var i = e.length;
       if (i > 0 && o?.Valid) {
         for (let t = 0; t < i; t++) {
@@ -237,7 +237,7 @@ class BulletCollisionUtil {
     e = l.GetComponent(0)?.IsRole() && !e;
     t = t.BulletDataMain;
     if (!e && t.Execution.GeIdApplyToVictim) {
-      var o = l.GetComponent(175);
+      var o = l.GetComponent(178);
       if (o) {
         for (const i of t.Execution.GeIdApplyToVictim) {
           o.RemoveBuff(i, -1, "BulletCollisionUtil.CharacterLeaveBulletUseBuff");
@@ -299,7 +299,7 @@ class BulletCollisionUtil {
       return i;
     } else {
       e = t.EffectOnHit.get(12);
-      if (!StringUtils_1.StringUtils.IsBlank(e) && o?.GetComponent(206)?.HasTag(412116357)) {
+      if (!StringUtils_1.StringUtils.IsBlank(e) && o?.GetComponent(209)?.HasTag(412116357)) {
         return e;
       } else {
         return t.EffectOnHit.get(l ? 7 : 4);
@@ -328,7 +328,7 @@ class BulletCollisionUtil {
     var s = l.BulletDataMain;
     var _ = s.Render;
     var n = l.CollisionInfo.DamageId > 0;
-    var u = e.Entity.GetComponent(206);
+    var u = e.Entity.GetComponent(209);
     var i = BulletCollisionUtil.GetHitEffects(e, _, i, o, n, s.Base.EnablePartHitAudio, t, u, l.Attacker);
     if (i.size > 0) {
       o = _.EffectOnHitConf.get(0);
@@ -343,7 +343,7 @@ class BulletCollisionUtil {
       var B = l.Attacker?.GetComponent(3);
       var n = l.Attacker?.GetComponent(51);
       let e = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(n, 190)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(n, 193)) {
         e = n.CurrentPriority;
       }
       var U = BulletStaticFunction_1.HitStaticFunction.CreateEffectContext(l.Attacker, l.EffectInfo.DisablePostProcess);
@@ -381,7 +381,7 @@ class BulletCollisionUtil {
     } else if (l.Attacker?.GetComponent(61)?.ShouldOptimize) {
       s = l.Attacker.GetComponent(51);
       let t = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(s, 190)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(s, 193)) {
         t = s.CurrentPriority;
       }
       BulletStaticFunction_1.HitStaticFunction.PlayHitAudioByActor(e.Actor, _.AudioOnHit, t);
@@ -423,7 +423,7 @@ class BulletCollisionUtil {
     var s = a.get(l);
     var _ = t?.GetComponent(51);
     let n = 2;
-    if ((0, RegisterComponent_1.isComponentInstance)(_, 190)) {
+    if ((0, RegisterComponent_1.isComponentInstance)(_, 193)) {
       n = _.CurrentPriority;
     }
     if (s && s.Size >= CharacterHitComponent_1.MAX_HIT_EFFECT_COUNT && (r = s.Pop(), EffectSystem_1.EffectSystem.IsValid(r))) {
@@ -455,7 +455,7 @@ class BulletCollisionUtil {
       a = i.Attacker?.GetComponent(3);
       r = i.Attacker?.GetComponent(51);
       let e = 2;
-      if ((0, RegisterComponent_1.isComponentInstance)(r, 190)) {
+      if ((0, RegisterComponent_1.isComponentInstance)(r, 193)) {
         e = r.CurrentPriority;
       }
       r = BulletStaticFunction_1.HitStaticFunction.CreateEffectContext(i.Attacker, i.EffectInfo.DisablePostProcess);

@@ -10,7 +10,7 @@ const TrapDefenseBattleGuideData_1 = require("./TrapDefenseBattleGuideData");
 class TrapDefenseBattleGuideManager {
   static Initialize() {}
   static Clear() {
-    this.ksd.clear();
+    this.W_d.clear();
   }
   static RegisterBehaviorTreeGuideData(e) {
     var t;
@@ -20,17 +20,17 @@ class TrapDefenseBattleGuideManager {
       }
       (t = new TrapDefenseBattleGuideData_1.TrapDefenseBattleGuideData()).BanType = e.DisableOperation.Type;
       t.Tips = e.TidPromptTxt;
-      this.ksd.set(e.DisableOperation.Type, t);
+      this.W_d.set(e.DisableOperation.Type, t);
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("TowerDefenseBattle", 10, "删除塔防行为约束", ["Type", e.DisableOperation.Type]);
       }
-      this.ksd.delete(e.DisableOperation.Type);
+      this.W_d.delete(e.DisableOperation.Type);
     }
   }
   static CheckCanExecuteAndShowFailTips(e) {
-    return this.ksd.size <= 0 || !(e = this.ksd.get(e)) || (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(e.Tips), false);
+    return this.W_d.size <= 0 || !(e = this.W_d.get(e)) || (ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(e.Tips), false);
   }
 }
-(exports.TrapDefenseBattleGuideManager = TrapDefenseBattleGuideManager).ksd = new Map();
+(exports.TrapDefenseBattleGuideManager = TrapDefenseBattleGuideManager).W_d = new Map();
 //# sourceMappingURL=TrapDefenseBattleGuideManager.js.map

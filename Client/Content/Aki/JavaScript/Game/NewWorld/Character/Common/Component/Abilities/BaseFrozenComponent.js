@@ -41,14 +41,14 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     };
     this.Dbr = new Map();
     this.mdu = new Map();
-    this.F3u = 0;
-    this.N3u = 0;
+    this.DBu = 0;
+    this.BBu = 0;
     this.FrozenLockSet = new Set();
   }
   OnStart() {
     this.ActorComponent = this.Entity.CheckGetComponent(3);
     this.$br = this.Entity.CheckGetComponent(61);
-    this.ybr = this.Entity.CheckGetComponent(123);
+    this.ybr = this.Entity.CheckGetComponent(126);
     this.Ubr();
     return true;
   }
@@ -64,7 +64,7 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     return true;
   }
   Ubr() {
-    var t = this.Entity.CheckGetComponent(206);
+    var t = this.Entity.CheckGetComponent(209);
     this.Ibr = t.ListenForTagAddOrRemove(2118071836, this.Lbr);
   }
   AddTimeScaleByBuff(t, e, i, s, o) {
@@ -82,9 +82,9 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
   }
   SetForeverTimeScale(t, e, i) {
     this.RemoveForeverTimeScale(t);
-    let s = i + this.F3u;
+    let s = i + this.DBu;
     if (s < 0) {
-      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "buff额外效果83设置时间碰撞系数小于0,强制设置为0", ["BuffHandleId", t], ["timeDilation", i], ["BaseBuffForeverTimeScale", this.F3u]);
+      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "buff额外效果83设置时间碰撞系数小于0,强制设置为0", ["BuffHandleId", t], ["timeDilation", i], ["BaseBuffForeverTimeScale", this.DBu]);
       s = 0;
     }
     i = this.ybr.SetForeverTimeScale(6, s, e);
@@ -98,8 +98,8 @@ let BaseFrozenComponent = class BaseFrozenComponent extends EntityComponent_1.En
     }
   }
   SetBuffBaseForeverTimeScale(t) {
-    if (this.F3u !== t && (this.F3u = t, this.N3u && (this.ybr.RemoveForeverTimeScale(this.N3u), this.N3u = 0), t > 0)) {
-      this.N3u = this.ybr.SetForeverTimeScale(6, t);
+    if (this.DBu !== t && (this.DBu = t, this.BBu && (this.ybr.RemoveForeverTimeScale(this.BBu), this.BBu = 0), t > 0)) {
+      this.BBu = this.ybr.SetForeverTimeScale(6, t);
     }
   }
   IsFrozen() {

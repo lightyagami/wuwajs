@@ -65,7 +65,7 @@ let UiModelMorphComponent = class UiModelMorphComponent extends UiModelComponent
         return false;
       } else {
         this.MorphType = e;
-        return !!this.MorphDataMap && ((o = this.MorphDataMap?.get(e)) ? (this.UiModelActorComponent?.ChangeMesh(o.MainSkeletalMesh, o.AnimClass, o.ChildSkeletalMesh), EventSystem_1.EventSystem.EmitWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete), true) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiModelMorph", 78, "[UiModelMorphComponent]初始化获取morphData有误", ["MorphType", e]), false));
+        return !!this.MorphDataMap && ((o = this.MorphDataMap?.get(e)) ? (this.UiModelActorComponent?.ChangeMesh(o.MainSkeletalMesh, o.AnimClass, o.ChildSkeletalMesh, o.DecorationParamList), EventSystem_1.EventSystem.EmitWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetMorphTypeComplete), true) : (Log_1.Log.CheckInfo() && Log_1.Log.Info("UiModelMorph", 78, "[UiModelMorphComponent]初始化获取morphData有误", ["MorphType", e]), false));
       }
     } else {
       if (Log_1.Log.CheckInfo()) {
@@ -96,8 +96,9 @@ let UiModelMorphComponent = class UiModelMorphComponent extends UiModelComponent
           var s = t.MainMeshPath;
           var r = t.AnimPath;
           var h = t.ChildMeshPathList;
-          var n = ResourceSystem_1.ResourceSystem.GetLoadedAsset(s, UE.SkeletalMesh);
-          if (!n) {
+          var n = t.DecorationMeshConfigArray;
+          var l = ResourceSystem_1.ResourceSystem.GetLoadedAsset(s, UE.SkeletalMesh);
+          if (!l) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiModelMorph", 78, "[UiRoleMorphComponent]获取mainMesh失败", ["MainMeshPath", s]);
             }
@@ -112,18 +113,19 @@ let UiModelMorphComponent = class UiModelMorphComponent extends UiModelComponent
           if (h) {
             e = [];
             for (const p of h) {
-              var l = ResourceSystem_1.ResourceSystem.GetLoadedAsset(p, UE.SkeletalMesh);
-              if (l) {
-                e.push(l);
+              var M = ResourceSystem_1.ResourceSystem.GetLoadedAsset(p, UE.SkeletalMesh);
+              if (M) {
+                e.push(M);
               } else if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("UiModelMorph", 78, "[UiRoleMorphComponent]获取childMesh失败", ["ChildMeshPath", p]);
               }
             }
           }
           r = {
-            MainSkeletalMesh: n,
+            MainSkeletalMesh: l,
             AnimClass: s,
             ChildSkeletalMesh: e,
+            DecorationParamList: this.GetModelMeshDecorationList(n),
             RoleBody: t.RoleBody
           };
           i.set(o, r);
@@ -144,6 +146,28 @@ let UiModelMorphComponent = class UiModelMorphComponent extends UiModelComponent
     }
     this.MorphDataMap = undefined;
     this.MorphIdMap = undefined;
+  }
+  GetModelMeshDecorationList(o) {
+    var t = o.Num();
+    var i = [];
+    if (t > 0) {
+      for (let e = 0; e < t; e++) {
+        var s = o.Get(e);
+        var r = s.SkeletalMesh.ToAssetPathName();
+        var h = ResourceSystem_1.ResourceSystem.GetLoadedAsset(r, UE.SkeletalMesh);
+        if (h) {
+          s = {
+            SocketName: s.SocketName,
+            Transform: s.Transform,
+            SkeletalMesh: h
+          };
+          i.push(s);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiModelMorph", 58, "[UiRoleMorphComponent]获取decorationMesh失败", ["DecorationMeshPath", r]);
+        }
+      }
+    }
+    return i;
   }
 };
 UiModelMorphComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(12)], UiModelMorphComponent);

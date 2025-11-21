@@ -20,6 +20,7 @@ const MapController_1 = require("../../Controller/MapController");
 const MapDefine_1 = require("../../MapDefine");
 const DynamicEntityMarkItem_1 = require("../../Marks/MarkItem/DynamicEntityMarkItem");
 const FixedSceneGamePlayMarkItem_1 = require("../../Marks/MarkItem/FixedSceneGamePlayMarkItem");
+const HonamiScanMarkItem_1 = require("../../Marks/MarkItem/HonamiScanMarkItem");
 const SceneGameplayMarkItem_1 = require("../../Marks/MarkItem/SceneGameplayMarkItem");
 const TaskMarkItem_1 = require("../../Marks/MarkItem/TaskMarkItem");
 const TeleportMarkItem_1 = require("../../Marks/MarkItem/TeleportMarkItem");
@@ -27,6 +28,9 @@ const TemporaryTeleportMarkItem_1 = require("../../Marks/MarkItem/TemporaryTelep
 class MarkUiUtils {
   static IsShowGoto(e) {
     if (e instanceof TeleportMarkItem_1.TeleportMarkItem && !e.IsActivity) {
+      return e.IsLocked;
+    }
+    if (e instanceof HonamiScanMarkItem_1.HonamiScanMarkItem) {
       return e.IsLocked;
     }
     if (e.MarkType !== 24) {

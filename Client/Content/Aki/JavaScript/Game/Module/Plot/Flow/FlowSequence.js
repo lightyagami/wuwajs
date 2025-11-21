@@ -40,16 +40,16 @@ class FlowSequence {
     this.OptionActionPromise = undefined;
     this.fkl = new Map();
     this.L9_ = new Map();
-    this.DZu = undefined;
-    this.xZu = new Array();
+    this.Q9u = undefined;
+    this.njc = new Array();
     this.U$i = -1;
     this.A$i = false;
     this.owt = t => {
       t *= 1000;
       if (t > TimerSystem_1.MIN_TIME && t < TimerSystem_1.MAX_TIME) {
-        this.DZu = TimerSystem_1.TimerSystem.Delay(() => {
+        this.Q9u = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
-          this.DZu = undefined;
+          this.Q9u = undefined;
         }, t);
       } else {
         ControllerHolder_1.ControllerHolder.FlowController.EnableSkip(true);
@@ -147,9 +147,9 @@ class FlowSequence {
     this.A$i = false;
     this.fkl.clear();
     this.L9_.clear();
-    this.DZu?.Remove();
-    this.DZu = undefined;
-    this.xZu.length = 0;
+    this.Q9u?.Remove();
+    this.Q9u = undefined;
+    this.njc.length = 0;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Plot", 38, "清理引用数据-FlowSequence");
     }
@@ -260,7 +260,7 @@ class FlowSequence {
           Log_1.Log.Warn("Plot", 26, "剧情SeqDA的FinalPos未配置，跳过时最终位置将不准确，联系策划修改");
         }
       }
-      for (const o of this.xZu) {
+      for (const o of this.njc) {
         var e;
         var i;
         var s = ModelManager_1.ModelManager.HoldingHandsModel.GetRelation(o.toString());
@@ -297,7 +297,7 @@ class FlowSequence {
       var t;
       ModelManager_1.ModelManager.SequenceModel.NeedHideNpcSet.clear();
       for (const i of ModelManager_1.ModelManager.SequenceModel.NpcGroupPerform) {
-        this.xZu.push(i);
+        this.njc.push(i);
       }
       SequenceController_1.SequenceController.ManualFinish();
       this.p$i = false;
@@ -387,8 +387,7 @@ class FlowSequence {
   }
   OnQteExecute(e, i) {
     var s = this.fkl.get(e);
-    if (s && s.Options) {
-      this.L9_.set(e, -1);
+    if (s && (this.L9_.set(e, -1), s.Options) && s.Options.length !== 0) {
       for (let t = 0; t < s.Options.length; t++) {
         var o = s.Options[t];
         if (o.TypeParams) {
@@ -433,7 +432,7 @@ class FlowSequence {
       this.L9_.delete(t);
       this.fkl.delete(t);
       if (i !== -1 && (this.w9_(e, i), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", t], ["delay option index", i]);
+        Log_1.Log.Info("Plot", 26, "[FlowSequence][Subtitle] Qte关闭", ["id", t], ["delay option index", i], ["delay no more", this.T$i]);
       }
     }
   }
@@ -463,8 +462,10 @@ class FlowSequence {
     }
   }
   w9_(t, e) {
-    ControllerHolder_1.ControllerHolder.FlowController.SelectOption(t.Id, e);
-    this.G$i(t.Options[e].Actions, undefined, true);
+    if (t.Options && t.Options.length !== 0) {
+      ControllerHolder_1.ControllerHolder.FlowController.SelectOption(t.Id, e);
+      this.G$i(t.Options[e].Actions, undefined, true);
+    }
   }
   G$i(t, e, i = false) {
     ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(t, t => {

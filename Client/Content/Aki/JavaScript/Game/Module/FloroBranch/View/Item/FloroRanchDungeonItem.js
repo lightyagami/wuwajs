@@ -77,7 +77,7 @@ class FloroRanchDungeonItem extends GridProxyAbstract_1.GridProxyAbstract {
     r?.SetUIActive(s.IsUnLock);
     this.GetItem(9)?.SetUIActive(s.HasRedDot);
   }
-  old() {
+  hmd() {
     if (this.Pe.IsUnLock) {
       this.sbi(this.Pe);
     }
@@ -85,7 +85,7 @@ class FloroRanchDungeonItem extends GridProxyAbstract_1.GridProxyAbstract {
   kot() {
     this.xHe();
     this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
-      this.old();
+      this.hmd();
     }, 1000);
   }
   xHe() {

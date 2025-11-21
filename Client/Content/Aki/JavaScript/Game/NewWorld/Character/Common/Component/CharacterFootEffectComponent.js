@@ -1,16 +1,16 @@
 "use strict";
 
 var CharacterFootEffectComponent_1;
-var __decorate = this && this.__decorate || function (t, e, i, o) {
-  var r;
+var __decorate = this && this.__decorate || function (t, e, i, r) {
+  var o;
   var s = arguments.length;
-  var h = s < 3 ? e : o === null ? o = Object.getOwnPropertyDescriptor(e, i) : o;
+  var h = s < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, i) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, o);
+    h = Reflect.decorate(t, e, i, r);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (r = t[n]) {
-        h = (s < 3 ? r(h) : s > 3 ? r(e, i, h) : r(e, i)) || h;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (o = t[a]) {
+        h = (s < 3 ? o(h) : s > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
@@ -60,6 +60,15 @@ class CharacterFootEffectConfig {
     this.PriorToGlobal = false;
   }
 }
+class CharacterSpecialFootEffectConfig {
+  constructor() {
+    this.Tag = new UE.GameplayTag();
+    this.SortId = 1;
+    this.OverrideGlobalFootEffect = 0;
+    this.OverrideOtherCharacterFootEffect = 0;
+    this.EffectPath = undefined;
+  }
+}
 let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class CharacterFootEffectComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -74,8 +83,9 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.Tz = Vector_1.Vector.Create();
     this.fHo = Vector_1.Vector.Create();
     this.Gue = Rotator_1.Rotator.Create();
-    this.fWc = Vector_1.Vector.Create();
+    this.XQc = Vector_1.Vector.Create();
     this.w5r = new Map();
+    this.FYd = new Map();
     this.B5r = 0;
     this.e0u = 0;
     this.b5r = Vector_1.Vector.Create();
@@ -83,8 +93,8 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.Rq_ = undefined;
     this.t0u = undefined;
     this.Dq_ = undefined;
-    this.Bq_ = (t, e, i, o) => {
-      if ((!this.Dq_ || !(i < this.Dq_.Frame)) && (!this.Dq_ || i !== this.Dq_.Frame || !(o < this.Dq_.Index))) {
+    this.Bq_ = (t, e, i, r) => {
+      if ((!this.Dq_ || !(i < this.Dq_.Frame)) && (!this.Dq_ || i !== this.Dq_.Frame || !(r < this.Dq_.Index))) {
         if (t) {
           TraceElementCommon_1.TraceElementCommon.GetHitLocation(e.HitResult, 0, this.kTn);
           this.VTn(e.HitResult);
@@ -100,8 +110,8 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       }
     };
     this.kq_ = undefined;
-    this.qq_ = (t, e, i, o) => {
-      if ((!this.kq_ || !(i < this.kq_.Frame)) && (!this.kq_ || i !== this.kq_.Frame || !(o < this.kq_.Index))) {
+    this.qq_ = (t, e, i, r) => {
+      if ((!this.kq_ || !(i < this.kq_.Frame)) && (!this.kq_ || i !== this.kq_.Frame || !(r < this.kq_.Index))) {
         if (t) {
           TraceElementCommon_1.TraceElementCommon.GetHitLocation(e.HitResult, 0, this.kTn);
           this.VTn(e.HitResult);
@@ -117,8 +127,8 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       }
     };
     this.i0u = undefined;
-    this.r0u = (t, e, i, o) => {
-      if (this.i0u && i < this.i0u.Frame || this.i0u && i === this.i0u.Frame && o < this.i0u.Index) {
+    this.r0u = (t, e, i, r) => {
+      if (this.i0u && i < this.i0u.Frame || this.i0u && i === this.i0u.Frame && r < this.i0u.Index) {
         this.o0u();
       } else if (t) {
         TraceElementCommon_1.TraceElementCommon.GetHitLocation(e.HitResult, 0, this.kTn);
@@ -129,7 +139,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     };
   }
   static get Dependencies() {
-    return [3, 51, 178, 176, 0];
+    return [3, 51, 181, 179, 0];
   }
   OnInit(t) {
     super.OnInit(t);
@@ -141,7 +151,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     if (!t?.Valid) {
       return false;
     }
-    if (!this.Entity.GetComponent(178)?.Valid) {
+    if (!this.Entity.GetComponent(181)?.Valid) {
       return false;
     }
     if (!this.Entity.GetComponent(51)?.Valid) {
@@ -150,7 +160,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     if (!this.Entity.GetComponent(0)?.Valid) {
       return false;
     }
-    var e = this.Entity.GetComponent(176);
+    var e = this.Entity.GetComponent(179);
     if (!e?.Valid) {
       return false;
     }
@@ -168,11 +178,26 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.R5r.Radius = 10;
     this.R5r.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
     e = DataTableUtil_1.DataTableUtil.GetDataTableAllRow(6);
-    for (const o of e) {
+    for (const h of e) {
       var i = new CharacterFootEffectConfig();
-      i.EffectPath = o.Effect;
-      i.PriorToGlobal = o.PriorToGlobal;
-      this.w5r.set(o.SurfaceType, i);
+      i.EffectPath = h.Effect;
+      i.PriorToGlobal = h.PriorToGlobal;
+      this.w5r.set(h.SurfaceType, i);
+    }
+    var r = DataTableUtil_1.DataTableUtil.GetDataTableAllRow(7);
+    for (let t = 0; t < r.length; t++) {
+      var o = r[t];
+      var s = new CharacterSpecialFootEffectConfig();
+      s.Tag = o.Tag;
+      s.EffectPath = o.Effect;
+      s.SortId = o.SortID;
+      s.OverrideGlobalFootEffect = o.OverrideGlobalFootEffect;
+      s.OverrideOtherCharacterFootEffect = o.OverrideOtherCharacterFootEffect;
+      var o = o.Tag.TagId;
+      if (!this.FYd.has(o)) {
+        this.FYd.set(o, []);
+      }
+      this.FYd.get(o).push(s);
     }
     this.wq_ = (0, puerts_1.toManualReleaseDelegate)(this.Bq_);
     this.Rq_ = (0, puerts_1.toManualReleaseDelegate)(this.qq_);
@@ -184,6 +209,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     this.R5r?.Dispose();
     this.R5r = undefined;
     this.w5r.clear();
+    this.FYd.clear();
     (0, puerts_1.releaseManualReleaseDelegate)(this.Bq_);
     (0, puerts_1.releaseManualReleaseDelegate)(this.qq_);
     this.wq_ = undefined;
@@ -209,25 +235,25 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     }
     var e;
     var i;
-    var o = this.Hte?.Actor;
-    if (!o?.IsValid()) {
+    var r = this.Hte?.Actor;
+    if (!r?.IsValid()) {
       return "DirtSurface";
     }
-    let r = false;
-    if (r = !!o.CharRenderingComponent?.GetInWater() || !(o = t.Components.Get(0), !(o = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(o))?.IsValid() || o.GetName() !== "WaterLightLand") || r) {
+    let o = false;
+    if (o = !!r.CharRenderingComponent?.GetInWater() || !(r = t.Components.Get(0), !(r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(r))?.IsValid() || r.GetName() !== "WaterLightLand") || o) {
       return this.uQ_();
     } else {
-      o = this.kTn;
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(t, 0, o);
-      t = o.ToUeVector();
-      o = this.Hte.ScaledHalfHeight;
+      r = this.kTn;
+      TraceElementCommon_1.TraceElementCommon.GetHitLocation(t, 0, r);
+      t = r.ToUeVector();
+      r = this.Hte.ScaledHalfHeight;
       e = (0, puerts_1.$ref)(undefined);
       i = (0, puerts_1.$ref)(undefined);
-      if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(GlobalData_1.GlobalData.World, t, e, o, i)) {
-        if ((o = (0, puerts_1.$unref)(e)).MtlID === MATERIAL_ID_WAT || o.MtlID === MATERIAL_ID_SHR) {
+      if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(GlobalData_1.GlobalData.World, t, e, r, i)) {
+        if ((r = (0, puerts_1.$unref)(e)).MtlID === MATERIAL_ID_WAT || r.MtlID === MATERIAL_ID_SHR) {
           return "DirtSurface";
         } else {
-          return UE.KuroVoxelSystem.GetMtlNameByID(o.MtlID);
+          return UE.KuroVoxelSystem.GetMtlNameByID(r.MtlID);
         }
       } else {
         if (Log_1.Log.CheckWarn()) {
@@ -250,26 +276,79 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
       this.i0u = TraceElementCommon_1.TraceElementCommon.AsyncSphereTrace(this.R5r, PROFILE_KEY, this.t0u);
     }
   }
-  gWc(t) {
+  YQc(t) {
     var e = ModelManager_1.ModelManager.SceneTeamModel?.GetPhysMaterial;
     var t = this.w5r.get(t.SurfaceType);
     let i = undefined;
     return i = !(i = !e || !(e = this.w5r.get(e.SurfaceType)) || t && t.PriorToGlobal ? i : e.EffectPath?.ToAssetPathName()) && t ? t.EffectPath?.ToAssetPathName() : i;
   }
-  CWc(t, e, i, o) {
+  VYd(t) {
+    var t = this.YQc(t);
+    var e = this.jYd();
+    if (e) {
+      return this.HYd(e, t);
+    } else if (t) {
+      return [t];
+    } else {
+      return [];
+    }
+  }
+  jYd() {
+    var i = this.Entity?.GetComponent(209);
+    if (i) {
+      let t = undefined;
+      let e = Number.MIN_SAFE_INTEGER;
+      for (var [r, o] of this.FYd) {
+        if (i.HasTag(r)) {
+          for (const s of o) {
+            if (s.SortId > e) {
+              e = s.SortId;
+              t = s;
+            }
+          }
+        }
+      }
+      return t;
+    }
+  }
+  HYd(t, e) {
+    var i = t.EffectPath?.ToAssetPathName();
+    var r = [];
+    switch (t.OverrideGlobalFootEffect) {
+      case 2:
+        if (i) {
+          r.push(i);
+        }
+        break;
+      case 1:
+        if (i) {
+          r.push(i);
+        }
+        if (e) {
+          r.push(e);
+        }
+        break;
+      default:
+        if (e) {
+          r.push(e);
+        }
+    }
+    return r;
+  }
+  zQc(t, e, i, r) {
     this.Hte.ActorForwardProxy.Multiply(FOOTPRINT_FORWARD_OFFSET, this.Lz);
     TraceElementCommon_1.TraceElementCommon.GetImpactNormal(t, 0, this.Tz);
     Vector_1.Vector.VectorPlaneProject(this.Lz, this.Tz, this.fHo);
     this.fHo.AdditionEqual(e);
     i.DeepCopy(this.fHo);
-    MathUtils_1.MathUtils.LookRotationUpFirst(this.Hte.ActorForwardProxy, this.Tz, o);
+    MathUtils_1.MathUtils.LookRotationUpFirst(this.Hte.ActorForwardProxy, this.Tz, r);
   }
-  pWc(t, e, i) {
-    var o;
+  JQc(t, e, i) {
+    var r;
     if (i && this.EK1 && this.Hte && this.EK1 && i.SurfaceType !== 10 && this.EK1.GetRainWalkOcclusionParam() < 1 - MathCommon_1.MathCommon.ThreshPointOnPlane && (i = this.EK1.GetEnviInteractionData()) && !i.bInWater) {
       i = this.fHo;
-      if (this.Hte && this.Hte.Owner && this.Hte.Owner.IsA(UE.TsBaseCharacter_C.StaticClass()) && (o = this.Hte.Owner) && o.Mesh) {
-        i.Z = o.Mesh.D_K2_GetComponentLocation().Z;
+      if (this.Hte && this.Hte.Owner && this.Hte.Owner.IsA(UE.TsBaseCharacter_C.StaticClass()) && (r = this.Hte.Owner) && r.Mesh) {
+        i.Z = r.Mesh.D_K2_GetComponentLocation().Z;
       }
       EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, new UE.TransformDouble(this.Gue.ToUeRotator(), this.fHo.ToUeVector(), Vector_1.Vector.OneVectorProxy.ToUeVector()), RAIN_FOOT_EFFCT, "[SceneCharacterFootprintEffect.SpawnRainFootEffect]");
     }
@@ -279,22 +358,24 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
     var i;
     if (!!t?.bBlockingHit && !(Time_1.Time.Now - this.B5r < FOOTPRINT_SPAWN_DURATION) && !(e = this.kTn, TraceElementCommon_1.TraceElementCommon.GetHitLocation(t, 0, e), Vector_1.Vector.DistSquared(e, this.b5r) < FOOTPRINT_SPAWN_MIN_DISTANCE_SQUARED) && !!t.PhysMaterials && !(t.PhysMaterials.Num() <= 0)) {
       if (i = t.PhysMaterials.Get(0)) {
-        this.CWc(t, e, this.fHo, this.Gue);
-        this.pWc(this.fHo, this.Gue, i);
+        this.zQc(t, e, this.fHo, this.Gue);
+        this.JQc(this.fHo, this.Gue, i);
         this.B5r = Time_1.Time.Now;
         this.b5r.DeepCopy(e);
       }
     }
   }
   TriggerFootprint(t) {
-    var e;
-    if (!!this.R5r?.HitResult?.bBlockingHit && !(Time_1.Time.Now - this.B5r < FOOTPRINT_SPAWN_DURATION) && !(t ? this.fWc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.LeftFootSocketName)) : this.fWc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.RightFootSocketName)), Vector_1.Vector.DistSquared(this.fWc, this.b5r) < FOOTPRINT_SPAWN_MIN_DISTANCE_SQUARED)) {
-      e = this.R5r.HitResult.PhysMaterials?.Get(0);
-      e = this.gWc(e);
-      this.CWc(this.R5r.HitResult, this.fWc, this.fHo, this.Gue);
-      if (e) {
-        EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, new UE.TransformDouble(this.Gue.ToUeRotator(), this.fHo.ToUeVector(), Vector_1.Vector.OneVectorProxy.ToUeVector()), e, "[SceneCharacterFootprintEffect.SpawnEffect]");
-      }
+    if (this.R5r?.HitResult?.bBlockingHit && !(Time_1.Time.Now - this.B5r < FOOTPRINT_SPAWN_DURATION) && !(t ? this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.LeftFootSocketName)) : this.XQc.FromUeVector(this.Hte.Actor.Mesh.D_GetSocketLocation(CharacterFootEffectComponent_1.RightFootSocketName)), Vector_1.Vector.DistSquared(this.XQc, this.b5r) < FOOTPRINT_SPAWN_MIN_DISTANCE_SQUARED)) {
+      var e = this.R5r.HitResult.PhysMaterials?.Get(0);
+      const i = this.VYd(e);
+      this.zQc(this.R5r.HitResult, this.XQc, this.fHo, this.Gue);
+      i.forEach((t, e) => {
+        if (t) {
+          e = i.length === 1 ? "[SceneCharacterFootprintEffect.SpawnEffect]" : `[SceneCharacterFootprintEffect.SpawnEffect.${e}]`;
+          EffectSystem_1.EffectSystem.SpawnUnloopedEffect(GlobalData_1.GlobalData.World, new UE.TransformDouble(this.Gue.ToUeRotator(), this.fHo.ToUeVector(), Vector_1.Vector.OneVectorProxy.ToUeVector()), t, e);
+        }
+      });
       if (t) {
         this.Dq_ = this.FTn(CharacterFootEffectComponent_1.LeftFootSocketName, this.wq_);
       } else {
@@ -304,7 +385,7 @@ let CharacterFootEffectComponent = CharacterFootEffectComponent_1 = class Charac
   }
   o0u() {
     var t = this.n0u();
-    this.Entity.GetComponent(190)?.PostFootstepAudio(t);
+    this.Entity.GetComponent(193)?.PostFootstepAudio(t);
   }
   k5r() {
     if (!ModelManager_1.ModelManager.TeleportModel.IsTeleport && this.Hte.EnableVoxelDetection && this.Hte && this.I5r && this.I5r.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Stand) {

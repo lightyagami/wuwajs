@@ -65,12 +65,12 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
     };
     this.Bxn = (e, _) => !!ModelManager_1.ModelManager.AutoRunModel.IsInLogicTreeGmMode() || ModelManager_1.ModelManager.SceneTeamModel.IsTeamReady;
     this.bxn = (e, _) => {
-      return !!ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode() || _.PlotLevel !== "LevelC" && !_.IsWaitAnim || !(this.i$i > ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.WaitCalmTime ? this.i$i = 0 : (_ = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.CheckGetComponent(206))?.Valid ? _.HasTag(-1371021686) ? (this.i$i += e, 1) : this.i$i = 0 : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "开始剧情检查人物站立时拿不到BaseTagComponent"), this.i$i = 0));
+      return !!ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode() || _.PlotLevel !== "LevelC" && !_.IsWaitAnim || !(this.i$i > ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.WaitCalmTime ? this.i$i = 0 : (_ = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.CheckGetComponent(209))?.Valid ? _.HasTag(-1371021686) ? (this.i$i += e, 1) : this.i$i = 0 : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Plot", 26, "开始剧情检查人物站立时拿不到BaseTagComponent"), this.i$i = 0));
     };
     this.eI1 = (e, _) => !_.CheckPreload || !ModelManager_1.ModelManager.PreloadModelNew.PlotAssetManager.CheckIsLoading(_.FormatId);
-    this.bmd = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1"]);
-    this.wzd = new Set(["剧情_2_7_狄斯台地主线_上半_巡游天国,33,1", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,2", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,3", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,4", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,5", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,6", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,7", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,8", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,9", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,11", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,12", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,13", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,14", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,15", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,16", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,17", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,18", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,22", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,23", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,24", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,25", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,26", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,27"]);
-    this.Lzd = undefined;
+    this.Agd = new Set(["剧情_2_6_狄斯台地主线_上半_1,25,1"]);
+    this.Jbm = new Set(["剧情_2_7_狄斯台地主线_上半_巡游天国,33,1", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,2", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,3", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,4", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,5", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,6", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,7", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,8", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,9", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,11", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,12", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,13", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,14", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,15", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,16", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,17", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,18", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,22", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,23", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,24", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,25", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,26", "剧情_2_7_狄斯台地主线_上半_巡游天国,33,27"]);
+    this.Zbm = undefined;
   }
   OnDestroy() {}
   OnInit() {
@@ -173,24 +173,24 @@ class FlowLaunchCenter extends ControllerAssistantBase_1.ControllerAssistantBase
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Plot", 26, "剧情行为组开始", ["id", o.FormatId], ["num", e.StateActions.length]);
       }
-      if (this.bmd.has(o.FormatId)) {
+      if (this.Agd.has(o.FormatId)) {
         ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(true);
       }
-      if (this.wzd.has(o.FormatId)) {
+      if (this.Jbm.has(o.FormatId)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "DebugProtectedPlot", ["id", o.FormatId]);
         }
-        this.Lzd = TimerSystem_1.TimerSystem.Delay(() => {
+        this.Zbm = TimerSystem_1.TimerSystem.Delay(() => {
           ControllerHolder_1.ControllerHolder.PlotController.CloseAllUi();
           ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("DebugProtectedPlot");
         }, 30000);
       }
       ControllerHolder_1.ControllerHolder.FlowController.ExecuteActions(e.StateActions, o, () => {
-        if (this.bmd.has(o.FormatId)) {
+        if (this.Agd.has(o.FormatId)) {
           ControllerHolder_1.ControllerHolder.PlotController.TogglePlotStreamingSource(false);
         }
-        this.Lzd?.Remove();
-        this.Lzd = undefined;
+        this.Zbm?.Remove();
+        this.Zbm = undefined;
         ControllerHolder_1.ControllerHolder.PlotController.OnEndPlotNetwork();
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "EndFlow", ["incId", o.FlowIncId], ["id", o.FormatId], ["IsSkip", o.IsBackground]);

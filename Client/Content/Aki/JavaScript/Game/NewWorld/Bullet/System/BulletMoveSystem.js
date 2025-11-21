@@ -190,7 +190,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
     if (a?.Valid) {
       e = BulletPool_1.BulletPool.CreateVector();
       if (r.FollowTargetBottom) {
-        l = (o = a.Entity.GetComponent(179)).ActorComp.ActorLocation;
+        l = (o = a.Entity.GetComponent(182)).ActorComp.ActorLocation;
         e.Set(l.X, l.Y, l.Z - o.GetHeightAboveGround(Math.min(r.MinFollowHeight, MIN_HEIGHT_FOLLOW_TARGET)) - o.ActorComp.HalfHeight);
       } else {
         l = t.BulletDataMain?.Move.TrackTargetBone;
@@ -220,7 +220,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
       var r = this.KWo(e);
       let t = undefined;
       if (o > 1) {
-        o = r?.Entity?.GetComponent(179);
+        o = r?.Entity?.GetComponent(182);
         if (!o?.Valid) {
           return;
         }
@@ -246,7 +246,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
         t = BulletUtil_1.BulletUtil.GetTargetLocation(r, StringUtils_1.StringUtils.IsNothing(o) ? e.SkillBoneName : FNameUtil_1.FNameUtil.GetDynamicFName(o), e);
       }
       if (t) {
-        if (r?.Entity.GetComponent(206)?.HasTag(1008164187)) {
+        if (r?.Entity.GetComponent(209)?.HasTag(1008164187)) {
           e.OnTargetInValid();
         } else if (l.TrackParams[0].X !== 0) {
           this.XWo(e, t);
@@ -576,7 +576,7 @@ class BulletMoveSystem extends BulletSystemBase_1.BulletSystemBase {
           K8n: undefined,
           uVn: l,
           CVn: MathUtils_1.MathUtils.NumberToLong(o)
-        }, CombatMessage_1.CombatNet.Send(23923, t.Attacker, r), Log_1.Log.CheckDebug())) {
+        }, CombatMessage_1.CombatNet.Send(29377, t.Attacker, r), Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("Bullet", 20, "修改子弹目标请求", ["新的目标id", e], ["CreatureId", o]);
         }
         t.TargetIdLast = e;

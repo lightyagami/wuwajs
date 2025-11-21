@@ -17,11 +17,11 @@ class FunctionResDownLoadItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.TDe = undefined;
     this.jF1 = () => {
-      if (!UiManager_1.UiManager.IsViewOpen("ResDownLoadView")) {
-        UiManager_1.UiManager.OpenView("ResDownLoadView");
+      if (!UiManager_1.UiManager.IsViewOpen("SubPackageDownLoadView")) {
+        UiManager_1.UiManager.OpenView("SubPackageDownLoadView");
       }
     };
-    this.AF1 = e => {
+    this.AF1 = () => {
       this.Update();
     };
   }
@@ -40,17 +40,17 @@ class FunctionResDownLoadItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   LZs() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.AF1);
   }
   DZs() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResDownLoadStateRefresh, this.AF1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.AF1);
   }
   Update() {
     this.Refresh();
   }
   Refresh() {
     var e = this.GetTexture(0);
-    var t = ModelManager_1.ModelManager.ResDownLoadModel.DownLoadPercentage();
+    var t = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadPercentage();
     e.SetFillAmount(t[0]);
     if (t[1] === 1) {
       this.GetTexture(0).SetChangeColor(false, e.changeColor);

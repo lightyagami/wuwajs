@@ -27,7 +27,7 @@ class FilterView extends UiViewBase_1.UiViewBase {
     this.xDt = () => {
       var e;
       var i;
-      var r = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.ConfigId);
+      var r = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
       for ([e, i] of this.Scroll.GetScrollItemMap()) {
         var t = i.GetTempFilterDataMap();
         r.SetSelectRuleData(e, t);
@@ -37,7 +37,7 @@ class FilterView extends UiViewBase_1.UiViewBase {
     };
     this.wDt = (e, i, r) => {
       i = new FilterGroup_1.FilterGroup(i);
-      i.ShowTemp(e, this.C0t.ConfigId);
+      i.ShowTemp(e, this.C0t.UniqueId);
       e = i.GetFilterType();
       return {
         Key: e,
@@ -53,13 +53,14 @@ class FilterView extends UiViewBase_1.UiViewBase {
     this.C0t = this.OpenParam;
   }
   async OnCreateAsync() {
-    var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.C0t.ConfigId);
-    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e.GridType);
-    var i = await this.LoadPrefabAsync(e, undefined);
-    if (i?.IsValid()) {
-      this.PDt = i.GetUIItem();
+    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
+    var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(e.ConfigId);
+    var i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i.GridType);
+    var r = await this.LoadPrefabAsync(i, undefined);
+    if (r?.IsValid()) {
+      this.PDt = r.GetUIItem();
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Filter", 10, "动态加载筛选格子失败", ["配置项id", this.C0t.ConfigId], ["路径", e]);
+      Log_1.Log.Error("Filter", 10, "动态加载筛选格子失败", ["配置项id", e.ConfigId], ["路径", i]);
     }
   }
   OnStart() {
@@ -71,7 +72,8 @@ class FilterView extends UiViewBase_1.UiViewBase {
   }
   UDt() {
     this.Scroll = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(0), this.wDt, this.PDt);
-    var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.C0t.ConfigId);
+    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
+    var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(e.ConfigId);
     this.Scroll.RefreshByData(e.RuleList);
   }
 }

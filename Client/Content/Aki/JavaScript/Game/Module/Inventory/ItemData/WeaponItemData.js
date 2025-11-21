@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.WeaponItemData = undefined;
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const AttributeItemData_1 = require("./AttributeItemData");
 class WeaponItemData extends AttributeItemData_1.AttributeItemData {
   GetConfig() {
@@ -35,6 +36,30 @@ class WeaponItemData extends AttributeItemData_1.AttributeItemData {
   }
   GetRedDotDisableRule() {
     return this.GetConfig().RedDotDisableRule;
+  }
+  GetItemViewDataInfo(e) {
+    var t;
+    var a;
+    var r = this.GetConfig();
+    if (r) {
+      t = ModelManager_1.ModelManager.InventoryModel;
+      a = this.GetUniqueId();
+      return {
+        ConfigId: r.ItemId,
+        Count: 1,
+        QualityId: r.QualityId,
+        IsLock: this.GetIsLock(),
+        IsDeprecate: this.GetIsDeprecated(),
+        IsNewItem: t.IsNewAttributeItem(a),
+        ItemDataType: this.ItemDataType,
+        ItemDataBase: this,
+        HasRedDot: t.IsAttributeItemHasRedDot(a),
+        ItemOperationMode: e,
+        IsSelectOn: false,
+        SelectOnNum: 0,
+        StackId: 0
+      };
+    }
   }
 }
 exports.WeaponItemData = WeaponItemData;

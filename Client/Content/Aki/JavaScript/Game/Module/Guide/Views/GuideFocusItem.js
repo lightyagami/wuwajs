@@ -36,6 +36,8 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
     this.Gzt = undefined;
     this.Nzt = undefined;
     this.Ozt = undefined;
+    this.hvm = new UE.Vector2D(0, 0);
+    this.lvm = new UE.Vector(0, 0, 0);
     this.Fr = () => {
       if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Guide", 16, "OnButtonClick enter");
@@ -85,6 +87,12 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
             }
           } else if (t.GetToggleState() === 0) {
             t.SetToggleState(1, true);
+          }
+          if (t.GetToggleState() === 2 && t.OnUndeterminedClicked && GuideFocusItem.IsOpenLog) {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Guide", 95, "OnButtonClick execute parent OnUndeterminedClicked UIExtendToggle");
+            }
+            t.OnUndeterminedClicked.Broadcast();
           }
         } else if (e.IsA(UE.UISliderComponent.StaticClass()) && (t = e).OnValueChangeCb.IsBound()) {
           if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
@@ -167,11 +175,12 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
             }
             e.OnPointEnterCallBack.Execute();
           }
-        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && (e = t).OnHover) {
+        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && ((e = t).OnHover && (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 74, "OnButtonHover execute parent UIExtendToggle"), e.OnHover.Broadcast()), e.OnPointEnterCallBack)) {
           if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("Guide", 74, "OnButtonHover execute parent UIExtendToggle");
           }
-          e.OnHover.Broadcast();
+          t = e.GetToggleState();
+          e.OnPointEnterCallBack.Execute(t);
         }
       }
     };
@@ -192,11 +201,12 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
             }
             e.OnPointExitCallBack.Execute();
           }
-        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && (e = t).OnUnHover) {
+        } else if (t.IsA(UE.UIExtendToggle.StaticClass()) && ((e = t).OnUnHover && (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 74, "OnButtonUnHover execute parent UIExtendToggle"), e.OnUnHover.Broadcast()), e.OnPointExitCallBack.IsBound())) {
           if (GuideFocusItem.IsOpenLog && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Guide", 74, "OnButtonUnHover execute parent UIExtendToggle");
+            Log_1.Log.Warn("Guide", 74, "OnButtonUnHover execute parent UIButtonComponent");
           }
-          e.OnUnHover.Broadcast();
+          t = e.GetToggleState();
+          e.OnPointExitCallBack.Execute(t);
         }
       }
     };
@@ -428,29 +438,47 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
   ApplyButtonFollow() {
     var e = this.wzt;
     var t = e.D_K2_GetComponentScale();
-    this.RootItem.D_K2_SetWorldLocation(e.D_K2_GetComponentLocation(), false, undefined, false);
-    this.RootItem.SetPivot(e.GetPivot());
-    this.RootItem.SetHeight(e.Height * t.Y);
-    this.RootItem.SetWidth(e.Width * t.X);
-    var t = this.xzt;
-    var i = this.GetButton(0).RootUIComp;
-    if (this.Config.ClickAnywhere) {
-      i.D_K2_SetWorldLocation(UiLayer_1.UiLayer.UiRootItem.D_K2_GetComponentLocation(), false, undefined, false);
-      i.SetPivot(UiLayer_1.UiLayer.UiRootItem.GetPivot());
-      i.SetHeight(UiLayer_1.UiLayer.UiRootItem.Height);
-      i.SetWidth(UiLayer_1.UiLayer.UiRootItem.Width);
-    } else if (this.Config.ExpandClickArea) {
-      i.SetPivot(e.GetPivot());
-      i.SetHeight(e.Height);
-      i.SetWidth(e.Width);
-      i.D_SetRelativeScale3D(e.D_K2_GetComponentScale());
-      i.D_K2_SetWorldLocation(e.D_K2_GetComponentLocation(), false, undefined, false);
+    if (this.Owner.GetGuideStepInfo().ViewData.IsMultiAttach) {
+      var i = [10000, 10000];
+      var o = [0, 0];
+      for (const g of this.Owner.GetGuideStepInfo().ViewData.GetMultiAttachItems() ?? []) {
+        var [n, s, u, a] = this._vm(g);
+        i[0] = Math.min(i[0], n);
+        i[1] = Math.min(i[1], s);
+        o[0] = Math.max(o[0], u);
+        o[1] = Math.max(o[1], a);
+      }
+      this.RootItem.SetPivot(this.hvm);
+      this.lvm.X = i[1];
+      this.lvm.Y = i[0];
+      this.RootItem.SetLGUISpaceAbsolutePosition(this.lvm);
+      this.RootItem.SetHeight(o[0] - i[0]);
+      this.RootItem.SetWidth(o[1] - i[1]);
     } else {
-      i.SetPivot(t.GetPivot());
-      i.SetHeight(t.Height);
-      i.SetWidth(t.Width);
-      i.D_SetRelativeScale3D(t.D_K2_GetComponentScale());
-      i.D_K2_SetWorldLocation(t.D_K2_GetComponentLocation(), false, undefined, false);
+      this.RootItem.D_K2_SetWorldLocation(e.D_K2_GetComponentLocation(), false, undefined, false);
+      this.RootItem.SetPivot(e.GetPivot());
+      this.RootItem.SetHeight(e.Height * t.Y);
+      this.RootItem.SetWidth(e.Width * t.X);
+    }
+    var t = this.xzt;
+    var r = this.GetButton(0).RootUIComp;
+    if (this.Config.ClickAnywhere) {
+      r.D_K2_SetWorldLocation(UiLayer_1.UiLayer.UiRootItem.D_K2_GetComponentLocation(), false, undefined, false);
+      r.SetPivot(UiLayer_1.UiLayer.UiRootItem.GetPivot());
+      r.SetHeight(UiLayer_1.UiLayer.UiRootItem.Height);
+      r.SetWidth(UiLayer_1.UiLayer.UiRootItem.Width);
+    } else if (this.Config.ExpandClickArea) {
+      r.SetPivot(e.GetPivot());
+      r.SetHeight(e.Height);
+      r.SetWidth(e.Width);
+      r.D_SetRelativeScale3D(e.D_K2_GetComponentScale());
+      r.D_K2_SetWorldLocation(e.D_K2_GetComponentLocation(), false, undefined, false);
+    } else {
+      r.SetPivot(t.GetPivot());
+      r.SetHeight(t.Height);
+      r.SetWidth(t.Width);
+      r.D_SetRelativeScale3D(t.D_K2_GetComponentScale());
+      r.D_K2_SetWorldLocation(t.D_K2_GetComponentLocation(), false, undefined, false);
     }
   }
   ApplyBgFollow() {
@@ -461,6 +489,15 @@ class GuideFocusItem extends UiPanelBase_1.UiPanelBase {
       e.SetHeight(UiLayer_1.UiLayer.UiRootItem.Height);
       e.SetWidth(UiLayer_1.UiLayer.UiRootItem.Width);
     }
+  }
+  _vm(e) {
+    var t = e.GetLGUISpaceCenterAbsolutePosition();
+    var i = e.D_K2_GetComponentScale();
+    var o = e.Width * i.X;
+    var e = e.Height * i.Y;
+    var i = t.Y - e / 2;
+    var e = t.Y + e / 2;
+    return [i, t.X - o / 2, e, t.X + o / 2];
   }
 }
 (exports.GuideFocusItem = GuideFocusItem).IsOpenLog = false;

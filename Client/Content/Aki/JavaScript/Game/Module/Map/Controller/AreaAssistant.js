@@ -28,23 +28,23 @@ class AreaAssistant extends ControllerAssistantBase_1.ControllerAssistantBase {
   }
   OnDestroy() {}
   OnRegisterNetEvent() {
-    Net_1.Net.Register(23201, this.GLi);
-    Net_1.Net.Register(29089, this.qLi);
-    Net_1.Net.Register(24571, this.bLi);
-    Net_1.Net.Register(26878, this.BLi);
+    Net_1.Net.Register(25600, this.GLi);
+    Net_1.Net.Register(27610, this.qLi);
+    Net_1.Net.Register(20348, this.bLi);
+    Net_1.Net.Register(27850, this.BLi);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23201);
-    Net_1.Net.UnRegister(29089);
-    Net_1.Net.UnRegister(24571);
-    Net_1.Net.UnRegister(26878);
+    Net_1.Net.UnRegister(25600);
+    Net_1.Net.UnRegister(27610);
+    Net_1.Net.UnRegister(20348);
+    Net_1.Net.UnRegister(27850);
   }
   async RequestUnlockedAreaInfo() {
     var e = Protocol_1.Aki.Protocol.Qss.create();
-    var e = await Net_1.Net.CallAsync(19518, e);
+    var e = await Net_1.Net.CallAsync(18412, e);
     if (e) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26888);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23544);
       } else {
         ModelManager_1.ModelManager.MapModel.FullUpdateUnlockedFogs(e.mbs);
       }

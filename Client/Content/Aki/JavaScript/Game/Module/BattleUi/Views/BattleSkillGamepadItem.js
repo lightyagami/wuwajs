@@ -136,6 +136,9 @@ class BattleSkillGamepadItem extends BattleSkillItem_1.BattleSkillItem {
       if (this.ConfigLongPressComponent) {
         this.ConfigLongPressComponent.SetComponentActive(false);
       }
+      if (this.ExtraEffectComponent) {
+        this.ExtraEffectComponent.SetComponentActive(false);
+      }
       if (!this.IsShowOrShowing) {
         this.Show();
       }

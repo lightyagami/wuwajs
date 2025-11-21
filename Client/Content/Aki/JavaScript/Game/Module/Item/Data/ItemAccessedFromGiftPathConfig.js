@@ -14,28 +14,30 @@ class ItemAccessedFromGiftPathConfig extends ConfigBase_1.ConfigBase {
   GetItemAccessedFromGiftPathConfig(e) {
     return ItemAccessedPathById_1.configItemAccessedPathById.GetConfig(e);
   }
-  GetGiftItemGroupById(e) {
-    var t = new Array();
-    var r = ItemAccessedPathById_1.configItemAccessedPathById.GetConfig(e);
-    if (r) {
-      for (const I of r.GiftItemGroup) {
-        var o;
-        var i = ItemInfoById_1.configItemInfoById.GetConfig(I);
-        if (i && i.ItemType === 11 && i.Parameters.has(ItemDefines_1.EItemFunctionType.ManualOpenGift)) {
-          i = i.Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift);
-          if ((o = ConfigManager_1.ConfigManager.GiftPackageConfig?.GetGiftPackageConfig(i)) && o.Content.has(e)) {
-            t.push(I);
+  GetGiftItemGroupById(e, t = false) {
+    var r = new Array();
+    var o = ItemAccessedPathById_1.configItemAccessedPathById.GetConfig(e);
+    if (o) {
+      for (const n of o.GiftItemGroup) {
+        var i;
+        var I = ItemInfoById_1.configItemInfoById.GetConfig(n);
+        if (I && I.ItemType === 11 && I.Parameters.has(ItemDefines_1.EItemFunctionType.ManualOpenGift)) {
+          I = I.Parameters.get(ItemDefines_1.EItemFunctionType.ManualOpenGift);
+          if ((i = ConfigManager_1.ConfigManager.GiftPackageConfig?.GetGiftPackageConfig(I)) && i.Content.has(e)) {
+            r.push(n);
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]礼包内不存在对应道具 ", ["itemID: ", e], ["giftItemID: ", I], ["giftID", i]);
+            Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]礼包内不存在对应道具 ", ["itemID: ", e], ["giftItemID: ", n], ["giftID", I]);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]道具存在异常 ", ["giftItemID: ", I]);
+          Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]道具存在异常 ", ["giftItemID: ", n]);
         }
       }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]道具ID不存在，找不到ItemAccessedPath配置", ["itemID: ", e]);
+    } else if (!t) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SkipInterface", 77, "[SkipInterface]道具ID不存在，找不到ItemAccessedPath配置", ["itemID: ", e]);
+      }
     }
-    return t;
+    return r;
   }
 }
 exports.ItemAccessedFromGiftPathConfig = ItemAccessedFromGiftPathConfig;

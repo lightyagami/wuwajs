@@ -96,7 +96,7 @@ class MoraleAreaSumView extends UiTickViewBase_1.UiTickViewBase {
     const e = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("BP_MoraleEffectConfig_C", () => {
       e.SetResult();
-    });
+    }, this.MemoryTag);
     await e.Promise;
     this.EnterConfig = await this.Dvr("MoraleEffectConfig");
     this.LoopConfig = await this.Dvr("MoraleLoopEffectConfig");

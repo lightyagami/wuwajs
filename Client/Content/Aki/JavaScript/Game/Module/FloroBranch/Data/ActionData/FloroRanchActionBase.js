@@ -12,15 +12,15 @@ class FloroRanchActionDataBase extends FloroRanchAsyncActionBase_1.FloroRanchAsy
     super();
     this.ActionType = Protocol_1.Aki.Protocol.kSu.Proto_OpBuff;
     this.IsIgnoreCasterAnim = false;
-    this.J2u = 0;
+    this.gFu = 0;
     this.ActionType = e.ASu;
-    this.J2u = e.Vru;
+    this.gFu = e.Vru;
   }
   SetIgnoreCasterEntityAnim(e) {
     this.IsIgnoreCasterAnim = e === this.CasterEntity.EntityId;
   }
   get CasterEntity() {
-    return ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.J2u);
+    return ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetEntity(this.gFu);
   }
 }
 exports.FloroRanchActionDataBase = FloroRanchActionDataBase;

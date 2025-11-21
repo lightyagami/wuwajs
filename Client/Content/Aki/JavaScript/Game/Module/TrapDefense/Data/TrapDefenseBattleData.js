@@ -10,18 +10,18 @@ const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
-const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../Ui/InputDistribute/InputMappingsDefine");
 const TrapDefenseBattleExploreSkillData_1 = require("../../GameMainView/TrapDefense/Data/TrapDefenseBattleExploreSkillData");
 const TrapDefenseBattleSkillData_1 = require("../../GameMainView/TrapDefense/Data/TrapDefenseBattleSkillData");
 const TrapDefenseBattleDefine_1 = require("../../GameMainView/TrapDefense/TrapDefenseBattleDefine");
+const TowerDefenseEventController_1 = require("../../TowerDefenseEvent/TowerDefenseEventController");
 class TrapDefenseBattleData {
   constructor() {
-    this.E9c = new Map();
-    this.Gdd = new Map();
-    this.I9c = new Map();
-    this.T9c = new Map();
+    this.u9u = new Map();
+    this.Mkd = new Map();
+    this.cQc = new Map();
+    this.fXc = new Map();
     this.IsShopOpen = false;
     this.IsSpecialShow = false;
     this.PreviewCountDown = 0;
@@ -34,37 +34,37 @@ class TrapDefenseBattleData {
     return e;
   }
   AU() {}
-  Fdd(e, t) {
-    let r = this.Gdd.get(e);
+  Ekd(e, t) {
+    let r = this.Mkd.get(e);
     if (!r) {
       r = new Set();
-      this.Gdd.set(e, r);
+      this.Mkd.set(e, r);
     }
     r.add(t);
   }
-  Ndd(e, t) {
-    e = this.Gdd.get(e);
+  Ikd(e, t) {
+    e = this.Mkd.get(e);
     if (e) {
       e.delete(t);
     }
   }
-  Vdd() {
-    this.Gdd.clear();
+  Tkd() {
+    this.Mkd.clear();
   }
   Clear() {
-    this.E9c.clear();
-    this.I9c.clear();
-    this.T9c.clear();
-    this.Vdd();
+    this.u9u.clear();
+    this.cQc.clear();
+    this.fXc.clear();
+    this.Tkd();
   }
   AddTreeVarUpdateDelegate(e, t) {
     var r;
     var a = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
     if (a && a.Tree) {
-      if (r = this.E9c.get(e)) {
+      if (r = this.u9u.get(e)) {
         a.Tree.AddTreeVarUpdateDelegate(r, t);
       } else {
-        this.Fdd(e, t);
+        this.Ekd(e, t);
       }
     }
   }
@@ -72,33 +72,33 @@ class TrapDefenseBattleData {
     var r;
     var a = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
     if (a && a.Tree) {
-      if (r = this.E9c.get(e)) {
+      if (r = this.u9u.get(e)) {
         a.Tree.RemoveTreeVarUpdateDelegate(r, t);
       } else {
-        this.Ndd(e, t);
+        this.Ikd(e, t);
       }
     }
   }
   SetBehaviorTreeVar(e) {
-    this.E9c.clear();
+    this.u9u.clear();
     var t;
     var r;
     var a = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
     for ([t, r] of Object.entries(e)) {
       var i = t;
-      this.E9c.set(i, r);
-      var n = this.Gdd.get(i);
+      this.u9u.set(i, r);
+      var n = this.Mkd.get(i);
       if (n && a && a.Tree) {
         for (const s of n) {
           a.Tree.AddTreeVarUpdateDelegate(r, s);
           s(undefined, a.Tree.GetTreeVarByKey(r));
         }
-        this.Gdd.delete(i);
+        this.Mkd.delete(i);
       }
     }
   }
-  jdd(e) {
-    e = this.E9c.get(e);
+  bkd(e) {
+    e = this.u9u.get(e);
     if (e) {
       var t = ModelManager_1.ModelManager.InstanceDungeonModel.GetInstanceDungeonInfo();
       if (t) {
@@ -107,7 +107,7 @@ class TrapDefenseBattleData {
     }
   }
   GetBehaviorTreeVarToNumber(e) {
-    e = this.jdd(e);
+    e = this.bkd(e);
     return MathUtils_1.MathUtils.LongToNumber(e?.oTs ?? 0);
   }
   GetGoldNum() {
@@ -137,29 +137,29 @@ class TrapDefenseBattleData {
     }
   }
   GetPurificationItemConsume() {
-    return ControllerHolder_1.ControllerHolder.TowerDefenseEventController.RaycastResult.PollutedNum;
+    return TowerDefenseEventController_1.TowerDefenseEventController.RaycastResult.PollutedNum;
   }
   get IsPurificationItemEnough() {
     return this.GetCurrentPurificationItemCount() >= this.GetPurificationItemConsume();
   }
   SetTechParamMapVar(e) {
     if (e !== undefined) {
-      this.I9c.clear();
+      this.cQc.clear();
       for (var [t, r] of Object.entries(e)) {
-        this.I9c.set(Number(t), r);
+        this.cQc.set(Number(t), r);
       }
     }
   }
   GetSlotCount() {
-    return this.I9c.get(Protocol_1.Aki.Protocol.f9u.Proto_SlotCount) ?? 0;
+    return this.cQc.get(Protocol_1.Aki.Protocol.xHc.Proto_SlotCount) ?? 0;
   }
   GetAuxiliaryLimit() {
-    return this.I9c.get(Protocol_1.Aki.Protocol.f9u.Proto_AuxiliaryCount) ?? 1;
+    return this.cQc.get(Protocol_1.Aki.Protocol.xHc.Proto_AuxiliaryCount) ?? 1;
   }
   get IsCanBuildMachine() {
     var e;
     var t = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
-    return !!t && (e = ControllerHolder_1.ControllerHolder.TowerDefenseEventController.IsInPreview(), t.CanBuildMachine) && e;
+    return !!t && (e = TowerDefenseEventController_1.TowerDefenseEventController.IsInPreview(), t.CanBuildMachine) && e;
   }
   SetShopOpen(e) {
     this.IsShopOpen = e;
@@ -175,10 +175,10 @@ class TrapDefenseBattleData {
     this.IsSpecialShow = e;
   }
   GetSkillData(e) {
-    let t = this.T9c.get(e);
+    let t = this.fXc.get(e);
     if (!t) {
       (t = new (e === InputMappingsDefine_1.actionMappings.塔防道具 ? TrapDefenseBattleExploreSkillData_1.TrapDefenseBattleExploreSkillData : TrapDefenseBattleSkillData_1.TrapDefenseBattleSkillData)()).InitData(e);
-      this.T9c.set(e, t);
+      this.fXc.set(e, t);
     }
     return t;
   }
@@ -194,9 +194,9 @@ class TrapDefenseBattleData {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonSkillIdRefresh, r.GetButtonType());
     }
   }
-  w9c(e) {
+  nYc(e) {
     for (const t of e.SkillCdInfoMap.keys()) {
-      for (const r of this.T9c.values()) {
+      for (const r of this.fXc.values()) {
         if (r.GetSkillId() === t) {
           r.RefreshSkillCd();
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSkillButtonCdRefresh, r.GetButtonType());
@@ -208,10 +208,10 @@ class TrapDefenseBattleData {
     this.RefreshExploreSkillData();
   }
   SkillCountChanged(e) {
-    this.w9c(e);
+    this.nYc(e);
   }
   SkillRemainCdChanged(e) {
-    this.w9c(e);
+    this.nYc(e);
   }
   GetExploreSkillId() {
     return this.GetSkillData(InputMappingsDefine_1.actionMappings.塔防道具).GetSkillId();

@@ -24,7 +24,7 @@ class DangoGlobalController extends ControllerBase_1.ControllerBase {
       } else {
         o?.(false);
       }
-    });
+    }, 100, "Ui.DangoUi");
   }
   static ApplyDangoMoveCamera(e) {
     var o = ModelManager_1.ModelManager.DangoGlobalModel.Config;

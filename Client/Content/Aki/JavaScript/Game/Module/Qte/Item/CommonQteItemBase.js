@@ -52,7 +52,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
     this.ScaleCurve = undefined;
     this.ScaleVector = undefined;
     this.TargetLocation = undefined;
-    this.q6d = undefined;
+    this.JKd = undefined;
     this.oIl = t => {
       this.CommonQteEnd(t);
     };
@@ -89,11 +89,11 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TriggerUiTimeDilation, this.esh);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CommonQteEnd, this.oIl);
     this.ClearTickTimer();
-    if (this.q6d !== undefined) {
+    if (this.JKd !== undefined) {
       if (t = UiLayer_1.UiLayer.WorldSpaceUiRoot?.GetComponentByClass(UE.LGUIWorldSpaceInteraction.StaticClass())) {
-        t.depth = this.q6d;
+        t.depth = this.JKd;
       }
-      this.q6d = undefined;
+      this.JKd = undefined;
     }
   }
   OnAfterShow() {
@@ -197,7 +197,7 @@ class CommonQteItemBase extends UiPanelBase_1.UiPanelBase {
       this.IsAttaching = true;
       this.SetUiActive(true);
       if (t.Source === 2 && (i = UiLayer_1.UiLayer.UiRoot?.GetComponentByClass(UE.LGUIScreenSpaceInteraction.StaticClass()), t = UiLayer_1.UiLayer.WorldSpaceUiRoot?.GetComponentByClass(UE.LGUIWorldSpaceInteraction.StaticClass()), i) && t) {
-        this.q6d = t.depth;
+        this.JKd = t.depth;
         t.depth = i.depth + 1;
       }
     } else if (Log_1.Log.CheckDebug()) {

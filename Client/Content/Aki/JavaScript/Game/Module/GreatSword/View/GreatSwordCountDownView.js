@@ -18,22 +18,22 @@ class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
     this.mNe = 0;
     this.MYt = 0;
     this.f6a = 0;
-    this.qdd = 10;
+    this.gkd = 10;
     this.AYt = undefined;
-    this.JYu = undefined;
+    this.hQc = undefined;
     this.Nqa = undefined;
     this.Fqa = undefined;
-    this.ZYu = undefined;
-    this.ezu = (e, i) => {
+    this.QWc = undefined;
+    this.KWc = (e, i) => {
       this.f6a = this.mNe;
       this.mNe = e;
       if (this.mNe <= 0) {
-        this.NZc();
+        this.Qtd();
       } else {
-        this.tzu();
-        this.VZc();
+        this.XWc();
+        this.Ktd();
         if (i) {
-          this.jZc(i);
+          this.Xtd(i);
         }
       }
     };
@@ -43,25 +43,25 @@ class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
   }
   OnAddEventListener() {
     super.OnAddEventListener();
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGamePlayCdChanged, this.ezu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGamePlayCdChanged, this.KWc);
   }
   OnRemoveEventListener() {
     super.OnRemoveEventListener();
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGamePlayCdChanged, this.ezu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGamePlayCdChanged, this.KWc);
   }
   OnStart() {
     this.AYt = this.GetArtText(0);
-    this.JYu = this.GetArtText(3);
+    this.hQc = this.GetArtText(3);
     this.Nqa = this.AYt.GetArtTextData();
     var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("TextData_NumB1");
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUIArtTextData, (e, i) => {
       if (e && e.IsValid()) {
         this.Fqa = e;
       }
-    });
-    this.ZYu = this.GetTexture(2);
+    }, 100, this.MemoryTag);
+    this.QWc = this.GetTexture(2);
   }
-  NZc() {
+  Qtd() {
     ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing = true;
     this.CloseMe(e => {
       if (e) {
@@ -69,9 +69,9 @@ class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
       }
     });
   }
-  VZc() {
-    var e = this.mNe >= this.qdd;
-    var i = this.f6a >= this.qdd;
+  Ktd() {
+    var e = this.mNe >= this.gkd;
+    var i = this.f6a >= this.gkd;
     if (i && !e) {
       this.UiViewSequence?.PlaySequence("ColorChange");
       this.AYt?.SetArtTextData(this.Fqa);
@@ -80,7 +80,7 @@ class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
       this.AYt?.SetArtTextData(this.Nqa);
     }
   }
-  jZc(e) {
+  Xtd(e) {
     var i;
     if (this.MYt === 0) {
       this.MYt = e;
@@ -88,31 +88,31 @@ class GreatSwordCountDownView extends UiViewBase_1.UiViewBase {
       i = Math.round((e - this.MYt) / 1000);
       this.MYt = e;
       if (i !== 0) {
-        this.HZc(i);
+        this.Ytd(i);
       }
     }
   }
-  HZc(e) {
-    this.JYu?.SetText((e > 0 ? "+" : "-") + Math.abs(e) + "s");
+  Ytd(e) {
+    this.hQc?.SetText((e > 0 ? "+" : "-") + Math.abs(e) + "s");
     e = e < 0;
-    this.JYu?.SetArtTextData(e ? this.Fqa : this.Nqa);
-    this.izu(e);
+    this.hQc?.SetArtTextData(e ? this.Fqa : this.Nqa);
+    this.YWc(e);
     if (this.UiViewSequence?.HasSequenceNameInPlaying("TimeIn")) {
       this.UiViewSequence?.StopSequenceByKey("TimeIn", false, true);
     }
     this.UiViewSequence?.PlaySequence("TimeIn");
   }
-  tzu() {
+  XWc() {
     var e = TimeUtil_1.TimeUtil.GetRemainTimeDataFormat5(this.mNe);
     this.AYt?.SetText(e);
   }
-  izu(e) {
-    if (this.ZYu) {
-      this.ZYu.SetUIActive(false);
+  YWc(e) {
+    if (this.QWc) {
+      this.QWc.SetUIActive(false);
       e = e ? "T_BlackBladeCountDownBgRed" : "T_BlackBladeCountDownBgGreen";
       e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
-      this.SetTextureByPath(e, this.ZYu, undefined, () => {
-        this.ZYu?.SetUIActive(true);
+      this.SetTextureByPath(e, this.QWc, undefined, () => {
+        this.QWc?.SetUIActive(true);
       });
     }
   }

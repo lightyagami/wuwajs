@@ -36,54 +36,54 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.AddEntity, this.Ecu);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26980, PhantomArenaBattleController.OD1);
-    Net_1.Net.Register(26449, PhantomArenaBattleController.qD1);
-    Net_1.Net.Register(24369, PhantomArenaBattleController.GD1);
-    Net_1.Net.Register(26016, PhantomArenaBattleController.FD1);
-    Net_1.Net.Register(25139, PhantomArenaBattleController.ND1);
-    Net_1.Net.Register(20333, PhantomArenaBattleController.VD1);
-    Net_1.Net.Register(18819, PhantomArenaBattleController.jD1);
-    Net_1.Net.Register(25641, PhantomArenaBattleController.PhantomBattleDealCardNotify);
-    Net_1.Net.Register(16964, PhantomArenaBattleController.$D1);
-    Net_1.Net.Register(21006, PhantomArenaBattleController.WD1);
-    Net_1.Net.Register(16992, PhantomArenaBattleController.q31);
-    Net_1.Net.Register(21174, PhantomArenaBattleController.G31);
-    Net_1.Net.Register(26023, PhantomArenaBattleController.KD1);
-    Net_1.Net.Register(19157, PhantomArenaBattleController.XD1);
-    Net_1.Net.Register(16841, PhantomArenaBattleController.YD1);
-    Net_1.Net.Register(18067, PhantomArenaBattleController.PhantomBattleBoardSettleNotify);
-    Net_1.Net.Register(25073, PhantomArenaBattleController._G1);
-    Net_1.Net.Register(22172, PhantomArenaBattleController.uG1);
-    Net_1.Net.Register(26208, PhantomArenaBattleController.cG1);
-    Net_1.Net.Register(17958, PhantomArenaBattleController.a41);
-    Net_1.Net.Register(24486, PhantomArenaBattleController.uY1);
-    Net_1.Net.Register(17370, PhantomArenaBattleController.vhu);
-    Net_1.Net.Register(16781, PhantomArenaBattleController.Hhu);
+    Net_1.Net.Register(27549, PhantomArenaBattleController.OD1);
+    Net_1.Net.Register(16322, PhantomArenaBattleController.qD1);
+    Net_1.Net.Register(23003, PhantomArenaBattleController.GD1);
+    Net_1.Net.Register(29772, PhantomArenaBattleController.FD1);
+    Net_1.Net.Register(15578, PhantomArenaBattleController.ND1);
+    Net_1.Net.Register(28072, PhantomArenaBattleController.VD1);
+    Net_1.Net.Register(18094, PhantomArenaBattleController.jD1);
+    Net_1.Net.Register(28785, PhantomArenaBattleController.PhantomBattleDealCardNotify);
+    Net_1.Net.Register(20319, PhantomArenaBattleController.$D1);
+    Net_1.Net.Register(26777, PhantomArenaBattleController.WD1);
+    Net_1.Net.Register(23422, PhantomArenaBattleController.q31);
+    Net_1.Net.Register(27764, PhantomArenaBattleController.G31);
+    Net_1.Net.Register(16084, PhantomArenaBattleController.KD1);
+    Net_1.Net.Register(24738, PhantomArenaBattleController.XD1);
+    Net_1.Net.Register(23923, PhantomArenaBattleController.YD1);
+    Net_1.Net.Register(24175, PhantomArenaBattleController.PhantomBattleBoardSettleNotify);
+    Net_1.Net.Register(19442, PhantomArenaBattleController._G1);
+    Net_1.Net.Register(16340, PhantomArenaBattleController.uG1);
+    Net_1.Net.Register(28525, PhantomArenaBattleController.cG1);
+    Net_1.Net.Register(26840, PhantomArenaBattleController.a41);
+    Net_1.Net.Register(18271, PhantomArenaBattleController.uY1);
+    Net_1.Net.Register(29780, PhantomArenaBattleController.vhu);
+    Net_1.Net.Register(15454, PhantomArenaBattleController.Hhu);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26980);
-    Net_1.Net.UnRegister(26449);
-    Net_1.Net.UnRegister(24369);
-    Net_1.Net.UnRegister(26016);
-    Net_1.Net.UnRegister(25139);
-    Net_1.Net.UnRegister(20333);
-    Net_1.Net.UnRegister(18819);
-    Net_1.Net.UnRegister(25641);
-    Net_1.Net.UnRegister(16964);
-    Net_1.Net.UnRegister(21006);
-    Net_1.Net.UnRegister(16992);
-    Net_1.Net.UnRegister(21174);
-    Net_1.Net.UnRegister(26023);
-    Net_1.Net.UnRegister(19157);
-    Net_1.Net.UnRegister(16841);
-    Net_1.Net.UnRegister(18067);
-    Net_1.Net.UnRegister(25073);
-    Net_1.Net.UnRegister(22172);
-    Net_1.Net.UnRegister(26208);
-    Net_1.Net.UnRegister(17958);
-    Net_1.Net.UnRegister(24486);
-    Net_1.Net.UnRegister(17370);
-    Net_1.Net.UnRegister(16781);
+    Net_1.Net.UnRegister(27549);
+    Net_1.Net.UnRegister(16322);
+    Net_1.Net.UnRegister(23003);
+    Net_1.Net.UnRegister(29772);
+    Net_1.Net.UnRegister(15578);
+    Net_1.Net.UnRegister(28072);
+    Net_1.Net.UnRegister(18094);
+    Net_1.Net.UnRegister(28785);
+    Net_1.Net.UnRegister(20319);
+    Net_1.Net.UnRegister(26777);
+    Net_1.Net.UnRegister(23422);
+    Net_1.Net.UnRegister(27764);
+    Net_1.Net.UnRegister(16084);
+    Net_1.Net.UnRegister(24738);
+    Net_1.Net.UnRegister(23923);
+    Net_1.Net.UnRegister(24175);
+    Net_1.Net.UnRegister(19442);
+    Net_1.Net.UnRegister(16340);
+    Net_1.Net.UnRegister(28525);
+    Net_1.Net.UnRegister(26840);
+    Net_1.Net.UnRegister(18271);
+    Net_1.Net.UnRegister(29780);
+    Net_1.Net.UnRegister(15454);
   }
   static OnLeaveLevel() {
     PhantomArenaAssetManager_1.PhantomArenaAssetManager.Clear();
@@ -92,10 +92,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
   static OnClear() {
     return true;
   }
-  static aNu() {
+  static s2u() {
     var e = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
     if (e) {
-      for (const t of [35, 77, 18, 189, 178, 81, 32, 65, 57, 220, 115]) {
+      for (const t of [35, 77, 18, 192, 181, 81, 32, 65, 57, 223, 118]) {
         e.GetComponent(t)?.Disable(PhantomArenaDefine_2.ENTITY_COMPONENT_DISABLE_KEY);
       }
       var o = Global_1.Global.BaseCharacter.CharacterActorComponent.Actor;
@@ -109,19 +109,19 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PhantomArenaBattleModel.SetTurnCountResultEnd(true);
     this.PhantomBattleBoardSettleNotify(e);
   }
-  static hNu(e, o) {
+  static G3u(e, o) {
     return o === 0 && e === 2 || o === 1 && e === 1;
   }
-  static lNu(e) {
+  static F3u(e) {
     var o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(e);
     var t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    if (!this.hNu(o.Type, t)) {
+    if (!this.G3u(o.Type, t)) {
       o = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData();
       if (o) {
         o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleActivityConfig(o.Id).MainRoleSexChange.get(e);
         if (o !== undefined) {
           var a = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(o);
-          if (this.hNu(a.Type, t)) {
+          if (this.G3u(a.Type, t)) {
             return o;
           }
         }
@@ -135,7 +135,7 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       let e = t;
       t = {
         e8n: o,
-        Ng1: e = r.CardGroupId > 0 ? this.lNu(r.CardRoleId) : e,
+        Ng1: e = r.CardGroupId > 0 ? this.F3u(r.CardRoleId) : e,
         wC1: a
       };
       ModelManager_1.ModelManager.PhantomArenaBattleModel.InitData();
@@ -191,10 +191,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场开始对局");
     }
-    Net_1.Net.Call(25375, e, e => {
+    Net_1.Net.Call(20998, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27373);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21523);
         } else if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("PhantomArena", 10, "声骸竞技场开始对局返回成功");
         }
@@ -207,10 +207,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场手牌替换选择", ["卡牌id", e]);
     }
-    Net_1.Net.Call(26874, o, e => {
+    Net_1.Net.Call(20910, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24987);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26282);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.SetReplaceCardToHandCard(e);
           if (Log_1.Log.CheckInfo()) {
@@ -231,10 +231,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场手牌上阵", ["卡牌id", e], ["位置", o]);
     }
     const n = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(18691, t, e => {
+    Net_1.Net.Call(15534, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24760);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21347);
           n.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.HandCardToFightCard(r, e.cC1);
@@ -256,10 +256,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场手牌下阵", ["位置", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(22391, o, e => {
+    Net_1.Net.Call(17019, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16280);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29849);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FightCardToHandCard(e.tC1);
           if (Log_1.Log.CheckInfo()) {
@@ -279,10 +279,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场卡牌替换交换", ["位置A", e], ["位置B", o]);
     }
     const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(22058, t, e => {
+    Net_1.Net.Call(20081, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26427);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20082);
           a.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.ExchangeBattleCardData(e._E1, e.lE1);
@@ -308,10 +308,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场手牌进化", ["卡牌id", e], ["位置", o]);
     }
     const n = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(24923, t, e => {
+    Net_1.Net.Call(23855, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21638);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19594);
           n.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.EvolveBattleCardData(r, e);
@@ -333,10 +333,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场选择目标", ["目标id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(24099, o, e => {
+    Net_1.Net.Call(20203, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20401);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21503);
           t.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -357,11 +357,11 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场手牌放回牌库", ["卡牌id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(19258, o, e => {
+    Net_1.Net.Call(25326, o, e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26281);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23096);
           t.SetResult(false);
         } else {
           (o = ModelManager_1.ModelManager.PhantomArenaBattleModel).OwnData.RefreshCardLibraryNum(e.aE1);
@@ -385,10 +385,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场上阵卡牌放回牌库", ["卡牌id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(23126, o, e => {
+    Net_1.Net.Call(24932, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28098);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23663);
           t.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData.FightCardToRecycle(e);
@@ -409,10 +409,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场结束回合请求");
     }
     const o = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(19748, e, e => {
+    Net_1.Net.Call(21569, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21325);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24022);
           o.SetResult(false);
         } else {
           (e = ModelManager_1.ModelManager.PhantomArenaBattleModel).IsBattleLoading = true;
@@ -437,10 +437,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场Npc战报播放完成请求");
     }
     const o = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(24208, e, e => {
+    Net_1.Net.Call(17111, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22748);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28120);
         } else if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("PhantomArena", 10, "声骸竞技场Npc战报播放完成请求返回成功");
         }
@@ -454,10 +454,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场Bvb战斗请求");
     }
-    Net_1.Net.Call(19894, e, e => {
+    Net_1.Net.Call(23062, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26899);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18160);
         } else if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("PhantomArena", 10, "声骸竞技场Bvb战斗请求返回成功");
         }
@@ -472,10 +472,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "使用角色技能请求", ["技能id", e], ["目标id", o]);
     }
     const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(26600, t, e => {
+    Net_1.Net.Call(16188, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21739);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23596);
           a.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -498,10 +498,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "卡牌技能效果选择对象", ["卡牌id", o], ["目标id", e]);
     }
     const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(22287, t, e => {
+    Net_1.Net.Call(17043, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25833);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16026);
           a.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -525,11 +525,11 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "声骸竞技场弃牌请求", ["卡牌id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(28403, o, e => {
+    Net_1.Net.Call(23423, o, e => {
       var o;
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21356);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23594);
           t.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -552,10 +552,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "获取技能目标信息", ["卡牌id", e]);
     }
     const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(27007, t, e => {
+    Net_1.Net.Call(26604, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21711);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19198);
           a.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.SetCardSkillTriggerInfo(e.eF1, e.uE1, e.D8n, e.uC1, o);
@@ -577,10 +577,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "获取角色技能目标信息", ["技能id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(24206, o, e => {
+    Net_1.Net.Call(16328, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16693);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23420);
           t.SetResult(false);
         } else {
           ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.SetRoleSkillTriggerInfo(e.eF1, e.uE1, e.D8n, e.r5n);
@@ -602,11 +602,11 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "选择卡牌请求", ["卡牌id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(18495, o, e => {
+    Net_1.Net.Call(21937, o, e => {
       var o;
       if (e) {
         if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 24073);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 29489);
           t.SetResult(false);
         } else {
           (o = ModelManager_1.ModelManager.PhantomArenaBattleModel.OwnData).RefreshCardLibraryNum(e.aE1);
@@ -629,10 +629,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "选择保留卡牌请求", ["卡牌id", e]);
     }
     const t = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(15036, o, e => {
+    Net_1.Net.Call(27219, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15642);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19557);
           t.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -654,10 +654,10 @@ class PhantomArenaBattleController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("PhantomArena", 10, "卡牌技能效果选择对象", ["卡牌id", o], ["目标id", e]);
     }
     const a = new CustomPromise_1.CustomPromise();
-    Net_1.Net.Call(20830, t, e => {
+    Net_1.Net.Call(29615, t, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16415);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23250);
           a.SetResult(false);
         } else {
           if (Log_1.Log.CheckInfo()) {
@@ -682,7 +682,7 @@ exports.PhantomArenaBattleController = PhantomArenaBattleController;
     if (e = UiManager_1.UiManager.GetViewByName("PhantomArenaBattleView")) {
       e.OpenParam.RefreshByWorldDone();
     }
-    _a.aNu();
+    _a.s2u();
   }
 };
 PhantomArenaBattleController.OD1 = e => {
@@ -805,13 +805,13 @@ PhantomArenaBattleController.q31 = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("PhantomArena", 10, "声骸竞技场被动技能触发通知");
   }
-  ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataBySkillList(e.dE1, 16992);
+  ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataBySkillList(e.dE1, 23422);
 };
 PhantomArenaBattleController.G31 = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("PhantomArena", 10, "声骸竞技场卡牌buff触发通知");
   }
-  ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByEffectList(e.pC1, 21174);
+  ModelManager_1.ModelManager.PhantomArenaBattleModel.BuffEffectData.PushBuffEffectDataByEffectList(e.pC1, 27764);
 };
 PhantomArenaBattleController.KD1 = e => {
   if (Log_1.Log.CheckInfo()) {

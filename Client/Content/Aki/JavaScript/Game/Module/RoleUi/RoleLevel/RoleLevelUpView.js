@@ -15,6 +15,7 @@ const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
 const AttributeItem_1 = require("../../Common/AttributeItem");
@@ -26,11 +27,11 @@ const ItemRewardController_1 = require("../../ItemReward/ItemRewardController");
 const RewardItemData_1 = require("../../ItemReward/RewardData/RewardItemData");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiRoleUtils_1 = require("../../UiComponent/UiRoleUtils");
-const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
 const RoleController_1 = require("../RoleController");
 const RoleDefine_1 = require("../RoleDefine");
 const AttrListScrollData_1 = require("../View/ViewData/AttrListScrollData");
+const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 const RoleExpItemGridComponent_1 = require("./RoleExpItemGridComponent");
 const RoleLevelUpSuccessController_1 = require("./RoleLevelUpSuccessController");
 class RoleLevelUpView extends UiViewBase_1.UiViewBase {
@@ -43,8 +44,8 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
     this.vji = new SelectableExpData_1.SelectableExpData();
     this.dji = undefined;
     this.zuo = undefined;
-    this.dVi = undefined;
     this.lqe = undefined;
+    this.yil = undefined;
     this.CloseClick = () => {
       UiManager_1.UiManager.CloseView("RoleLevelUpView");
     };
@@ -133,6 +134,7 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
       this.Aji();
     };
     this.ico = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(2);
       var e = [];
       for (const r of this.zuo) {
         var t = r[0];
@@ -140,9 +142,10 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
         var i = new RewardItemData_1.RewardItemData(t.ItemId, i, t.IncId);
         e.push(i);
       }
-      ItemRewardController_1.ItemRewardController.OpenCommonRewardView(1010, e, this.oco);
+      ItemRewardController_1.ItemRewardController.OpenCommonRewardView(1010, e, this.g7d);
     };
     this.rco = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(3);
       var e = [];
       for (const r of this.zuo) {
         var t = r[0];
@@ -150,14 +153,30 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
         var i = new RewardItemData_1.RewardItemData(t.ItemId, i, t.IncId);
         e.push(i);
       }
-      ItemRewardController_1.ItemRewardController.OpenCommonRewardView(1010, e, this.nco);
+      ItemRewardController_1.ItemRewardController.OpenCommonRewardView(1010, e, this.C7d);
     };
     this.qji = e => ModelManager_1.ModelManager.RoleModel.GetRoleLevelUpExp(this.RoleInstance.GetRoleId(), e + 1);
-    this.oco = () => {
+    this.g7d = () => {
       UiManager_1.UiManager.CloseView("RoleLevelUpView");
     };
+    this.oco = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(2);
+      UiManager_1.UiManager.CloseView("RoleLevelUpView");
+    };
+    this.C7d = () => {
+      var e = new RoleViewViewModel_1.RoleViewViewModel(this.RoleInstance.GetRoleId(), false);
+      e.FadeInCurveId = this.yil.FadeInCurveId;
+      e.NeedHideOnViewPlayingCloseSequence = this.yil.NeedHideOnViewPlayingCloseSequence;
+      this.yil.NeedHideOnViewPlayingCloseSequence = false;
+      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", e);
+    };
     this.nco = () => {
-      RoleController_1.RoleController.SendRoleBreakThroughViewRequest(this.RoleInstance.GetRoleId(), this.Info.Name);
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(3);
+      var e = new RoleViewViewModel_1.RoleViewViewModel(this.RoleInstance.GetRoleId(), false);
+      e.FadeInCurveId = this.yil.FadeInCurveId;
+      e.NeedHideOnViewPlayingCloseSequence = this.yil.NeedHideOnViewPlayingCloseSequence;
+      this.yil.NeedHideOnViewPlayingCloseSequence = false;
+      RoleController_1.RoleController.CloseAndOpenRoleViewByViewModel("RoleLevelUpView", "RoleBreachView", e);
     };
     this.sco = () => {
       this.aco();
@@ -195,13 +214,13 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
             (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(24)).ItemIdMap = e;
             i.FunctionMap.set(2, () => {
               RoleController_1.RoleController.SendPbUpLevelRoleRequest(this.RoleInstance.GetRoleId(), o, () => {
-                UiRoleUtils_1.UiRoleUtils.PlayRoleLevelUpEffect(this.dVi);
+                UiRoleUtils_1.UiRoleUtils.PlayRoleLevelUpEffect(this.yil.TsUiSceneRoleActor);
               });
             });
             ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
           } else {
             RoleController_1.RoleController.SendPbUpLevelRoleRequest(this.RoleInstance.GetRoleId(), o, () => {
-              UiRoleUtils_1.UiRoleUtils.PlayRoleLevelUpEffect(this.dVi);
+              UiRoleUtils_1.UiRoleUtils.PlayRoleLevelUpEffect(this.yil.TsUiSceneRoleActor);
             });
           }
         } else {
@@ -240,43 +259,56 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIGridLayout], [4, UE.UIItem]];
   }
-  OnStart() {
-    this.dVi = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-  }
   async OnBeforeStartAsync() {
     var e = this.OpenParam;
-    this.RoleInstance = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
-    if (this.RoleInstance === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Role", 58, "无效的roleId", ["界面名称", "RoleLevelUpView"]);
+    if (e) {
+      this.yil = e;
+      e = this.yil.RoleId;
+      this.RoleInstance = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
+      if (this.RoleInstance === undefined) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Role", 58, "无效的roleId", ["界面名称", "RoleLevelUpView"]);
+        }
+      } else {
+        this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.G1o);
+        this.Juo = new RoleExpItemGridComponent_1.RoleExpItemGridComponent(this.Dji, this.Pji, this.OnClickItemAdd, this.OnClickItemReduce, this.Ruo, this.Uuo, "RoleLevelUpView");
+        await this.Juo.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
+        this.Juo.SetButtonItemText("RoleLevelUp");
+        this.vji.SetMaxExpFunction(this.qji);
+        this.dji = new ExpComponent_1.ExpComponent(this.GetItem(0), false);
+        this.dji.Init();
+        this.dji.BindPlayCompleteCallBack(this.tco);
+        this.dji.SetLevelFormatText("LevelNumber");
+        this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(4));
+        this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]);
+        this.lqe.SetCloseCallBack(this.CloseClick);
+        await this.AU();
+        this.Cl();
+        await this.yil.InitRoleActor();
       }
-    } else {
-      this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.G1o);
-      this.Juo = new RoleExpItemGridComponent_1.RoleExpItemGridComponent(this.Dji, this.Pji, this.OnClickItemAdd, this.OnClickItemReduce, this.Ruo, this.Uuo, "RoleLevelUpView");
-      await this.Juo.CreateThenShowByActorAsync(this.GetItem(1).GetOwner());
-      this.Juo.SetButtonItemText("RoleLevelUp");
-      this.vji.SetMaxExpFunction(this.qji);
-      this.dji = new ExpComponent_1.ExpComponent(this.GetItem(0), false);
-      this.dji.Init();
-      this.dji.BindPlayCompleteCallBack(this.tco);
-      this.dji.SetLevelFormatText("LevelNumber");
-      this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(4));
-      this.lqe.SetCurrencyItemList([ItemDefines_1.EItemId.Gold]);
-      this.lqe.SetCloseCallBack(this.CloseClick);
-      await this.AU();
-      this.Cl();
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Role", 88, "进入角色升级界面未传参");
     }
+  }
+  async OnPlayingStartSequenceAsync() {
+    if (this.yil?.NeedShowOnViewPlayingStartSequence) {
+      this.yil.ShowActor();
+    }
+    return Promise.resolve();
+  }
+  async OnPlayingCloseSequenceAsync() {
+    if (this.yil?.NeedHideOnViewPlayingCloseSequence) {
+      this.yil.HideActor();
+    }
+    return Promise.resolve();
   }
   OnHandleLoadScene() {
-    UiSceneManager_1.UiSceneManager.ShowRoleSystemRoleActor();
-    var e = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-    if (e) {
-      e?.Model?.CheckGetComponent(1)?.SetTransformByTag("RoleCase");
-    }
-    RoleController_1.RoleController.PlayRoleMontage(3, false, true);
+    this.yil.HandleLoadScene(() => {
+      RoleController_1.RoleController.PlayRoleMontage(3, false, true);
+    });
   }
   OnHandleReleaseScene() {
-    UiSceneManager_1.UiSceneManager.HideRoleSystemRoleActor();
+    this.yil.HandleReleaseScene();
   }
   lco() {
     this.ypt = [];
@@ -294,6 +326,9 @@ class RoleLevelUpView extends UiViewBase_1.UiViewBase {
   Aji() {
     let t = 0;
     var e = this.ypt;
+    e?.forEach(e => {
+      e.Count = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e.ItemId);
+    });
     this.Juo.UpdateByDataList(e);
     e.forEach(e => {
       t += this.eco(e) * e.SelectedCount;

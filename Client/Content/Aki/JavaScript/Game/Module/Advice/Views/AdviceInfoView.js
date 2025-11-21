@@ -115,7 +115,7 @@ class AdviceInfoView extends UiViewBase_1.UiViewBase {
     var e;
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t.Valid) {
-      e = t.Entity.GetComponent(206);
+      e = t.Entity.GetComponent(209);
       this.p7e = e.HasTag(1996802261);
       this.N7e();
       if (this.p7e) {
@@ -126,7 +126,7 @@ class AdviceInfoView extends UiViewBase_1.UiViewBase {
     }
   }
   O7e(e) {
-    e = e.Entity.GetComponent(206);
+    e = e.Entity.GetComponent(209);
     this.f7e = e.ListenForTagAddOrRemove(1996802261, this.v7e);
   }
   N7e() {

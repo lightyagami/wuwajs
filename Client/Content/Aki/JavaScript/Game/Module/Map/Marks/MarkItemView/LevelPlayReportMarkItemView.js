@@ -11,13 +11,8 @@ class LevelPlayReportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemVie
   constructor(e) {
     super(e);
     this.it_ = () => {
-      if (this.MarkItemTopRightIconHandle) {
-        this.MarkItemTopRightIconHandle.Update();
-      }
+      this.MarkItemTopRightIconHandle.Update();
     };
-  }
-  OnInitialize() {
-    super.OnInitialize();
   }
   RegisterEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_);
@@ -25,7 +20,7 @@ class LevelPlayReportMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemVie
   UnRegisterEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LevelPlayStateDetailUpdate, this.it_);
   }
-  OnAfterShow() {
+  OnViewRefresh() {
     this.UpdateIcon();
   }
   UpdateIcon() {

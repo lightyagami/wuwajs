@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActivityDirectTrainSubView = undefined;
 const UE = require("ue");
 const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
-const EventDefine_1 = require("../../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../../Common/TimeUtil");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
@@ -59,7 +57,7 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
               },
               SkipCallBack: () => {
                 ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.RequestThroughTrain(() => {
-                  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+                  UiManager_1.UiManager.ResetToBattleView();
                 });
               }
             };
@@ -182,15 +180,23 @@ class ActivityDirectTrainSubView extends ActivitySubViewBase_1.ActivitySubViewBa
     var e = i.IsUnLock();
     var t = ModelManager_1.ModelManager.ActivityDirectTrainModel.GetSkipQuestId();
     var t = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t);
+    var r = ModelManager_1.ModelManager.SubPackageDownLoadModel.CheckActivityTeleportHaveSubPackage(i.Id);
     if (e) {
-      this.uxl.FunctionButton.SetLocalTextNew(t === 0 ? "DirectTrainActivity_Button_Unlock" : "DirectTrainActivity_Button_Goto");
+      if (r) {
+        this.uxl.FunctionButton.SetLocalTextNew(t === 0 ? "DirectTrainActivity_Button_Unlock" : "DirectTrainActivity_Button_Goto");
+      } else {
+        this.uxl.SetPerformanceSubPackageLock(i.LocalConfig.AreaTips, i.LocalConfig.AreaList);
+      }
     } else {
       this.uxl.SetPerformanceConditionLock(i.ConditionGroupId, i.Id);
     }
-    this.uxl.SetPanelConditionVisible(!e);
+    this.uxl.SetPanelConditionVisible(!e || !r);
     var i = t === 3;
-    this.uxl.FunctionButton.SetUiActive(e && !i);
-    this.uxl.PanelActivate.SetUiActive(e && i);
+    this.uxl.FunctionButton.SetUiActive(e && !i && r);
+    this.uxl.PanelActivate.SetUiActive(e && i && r);
+    if (!r) {
+      this.uxl.SetLockTextByTextId("SubPackageDownLoad_ActivityLock_Des");
+    }
     if (i) {
       this.uxl.PanelActivate.SetTextByTextId("DirectTrainActivity_Finish");
     }

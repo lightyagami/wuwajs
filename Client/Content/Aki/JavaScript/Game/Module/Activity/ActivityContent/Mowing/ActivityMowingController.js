@@ -37,9 +37,9 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
       var o = Protocol_1.Aki.Protocol.P$n.create();
       o.w6n = t;
       o.r6n = n;
-      Net_1.Net.Call(22246, o, e => {
+      Net_1.Net.Call(28147, o, e => {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23711);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16254);
         } else {
           (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).SetLevelRewardStateToGot(n);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewRefreshCurrent, t);
@@ -63,7 +63,7 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     this.g2e = e => {
       var t = e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs;
       if (t) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26032);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25586);
       }
       var n = {
         ButtonTextId: "ConfirmBox_133_ButtonText_0",
@@ -81,14 +81,7 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
         IsTimeDownCloseView: false,
         IsClickedCloseView: false,
         OnClickedCallback: function () {
-          var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true);
-          if (e.length !== 0) {
-            var t = [];
-            for (const n of e) {
-              t.push(n.GetConfigId);
-            }
-            InstanceDungeonController_1.InstanceDungeonController.SingleInstReChallengeRequest(t);
-          }
+          InstanceDungeonController_1.InstanceDungeonController.SingleInstReChallengeRequest();
         }
       };
       var i = {
@@ -100,14 +93,14 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(23304, this.d2e);
-    Net_1.Net.Register(28413, this.C2e);
-    Net_1.Net.Register(26032, this.g2e);
+    Net_1.Net.Register(16667, this.d2e);
+    Net_1.Net.Register(17675, this.C2e);
+    Net_1.Net.Register(25586, this.g2e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(23304);
-    Net_1.Net.UnRegister(28413);
-    Net_1.Net.UnRegister(26032);
+    Net_1.Net.UnRegister(16667);
+    Net_1.Net.UnRegister(17675);
+    Net_1.Net.UnRegister(25586);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
@@ -135,9 +128,9 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
     var e = Protocol_1.Aki.Protocol.D$n.create();
     e.w6n = t;
     e.s5n = n;
-    Net_1.Net.Call(28321, e, e => {
+    Net_1.Net.Call(20838, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21514);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20339);
       } else {
         (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)).SetPointRewardState(n);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewRefreshCurrent, t);
@@ -155,7 +148,7 @@ class ActivityMowingController extends ActivityControllerBase_1.ActivityControll
   }
   static RequestExitDungeon() {
     var e = new Protocol_1.Aki.Protocol.q$n();
-    Net_1.Net.Call(28784, e, e => {
+    Net_1.Net.Call(23076, e, e => {
       if (!e) {
         InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
       }
@@ -177,10 +170,10 @@ ActivityMowingController.RequestSetDifficulty = (n, o) => {
   var e = Protocol_1.Aki.Protocol.w$n.create();
   e.w6n = n;
   e.z6n = o;
-  Net_1.Net.Call(17924, e, e => {
+  Net_1.Net.Call(21996, e, e => {
     var t;
     if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18425);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17074);
     }
     for ([, t] of ModelManager_1.ModelManager.ActivityModel.GetActivityById(n).MowingLevelInfoDict) {
       t.z6n = o;

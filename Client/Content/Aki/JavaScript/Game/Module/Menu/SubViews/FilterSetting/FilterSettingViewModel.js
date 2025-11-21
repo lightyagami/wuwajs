@@ -25,8 +25,9 @@ class FilterSettingViewModel {
     this.zcu = false;
     this.Jcu = false;
     this.Zgu = true;
+    this.GNd = false;
     this.IsApplyClicked = false;
-    this.zFu = false;
+    this.LBu = false;
     this.IsLeftStickHorizontalMoved = false;
     this.IsLeftStickVerticalMoved = false;
     this.LastMoveVector = undefined;
@@ -40,7 +41,7 @@ class FilterSettingViewModel {
     this.CameraRotationLock = false;
     this.PadLock = false;
     this.InitFilterIndex = 0;
-    this.ppu = undefined;
+    this.FNd = undefined;
     this.OnHideClick = undefined;
     this.OnResetClick = undefined;
     this.OnConfirmClick = undefined;
@@ -48,6 +49,7 @@ class FilterSettingViewModel {
     this.OnPadChanged = undefined;
     this.OnPadChangeStop = undefined;
     this.OnSliderChanged = undefined;
+    this.OnSeniorSliderChanged = undefined;
     this.OnViewBeforeCreate = undefined;
     this.OnViewBeforeStart = undefined;
     this.OnViewBeforeShow = undefined;
@@ -220,24 +222,30 @@ class FilterSettingViewModel {
       this.Qtu |= FilterSettingViewModel.Flags.IsSliderActive;
     }
   }
+  get IsSeniorParamRefresh() {
+    return this.GNd;
+  }
+  set IsSeniorParamRefresh(i) {
+    if (this.GNd = i) {
+      this.Qtu |= FilterSettingViewModel.Flags.IsSeniorParamRefresh;
+    }
+  }
   get IsFilterChanged() {
-    return this.zFu;
+    return this.LBu;
   }
   set IsFilterChanged(i) {
-    if (this.zFu = i) {
+    if (this.LBu = i) {
       this.IsApplyClicked = false;
     }
   }
   get IsOtherViewOpen() {
     return UiManager_1.UiManager.IsViewOpen("HelpView");
   }
-  get TexturePathList() {
-    var i;
-    if (this.ppu === undefined) {
-      i = FilterSettingAll_1.configFilterSettingAll.GetConfigList();
-      this.ppu = i === undefined ? [] : i.map(i => i.SpritePath);
+  get FilterList() {
+    if (this.FNd === undefined) {
+      this.FNd = [...(FilterSettingAll_1.configFilterSettingAll.GetConfigList() ?? [])];
     }
-    return this.ppu;
+    return this.FNd;
   }
   get IsDirty() {
     return this.Qtu !== 0;
@@ -258,6 +266,7 @@ class FilterSettingViewModel {
   FilterPadTexturePath: 32,
   IsHideByPad: 64,
   IsHideByClick: 128,
-  IsSliderActive: 256
+  IsSliderActive: 256,
+  IsSeniorParamRefresh: 512
 };
 //# sourceMappingURL=FilterSettingViewModel.js.map

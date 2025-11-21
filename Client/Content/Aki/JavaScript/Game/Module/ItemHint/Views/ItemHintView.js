@@ -17,6 +17,8 @@ class ItemHintView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.e0i = undefined;
     this.t0i = undefined;
+    this.Qld = () => new ItemHintItem_1.ItemHintItem();
+    this.Kld = () => new ItemPriorHintItem_1.ItemPriorHintItem();
     this.i0i = () => ConfigManager_1.ConfigManager.ItemConfig.GetItemListMaxSize();
     this.o0i = () => ConfigManager_1.ConfigManager.ItemConfig.GetPriorItemListMaxSize();
     this.r0i = () => !ModelManager_1.ModelManager.ItemHintModel.IsMainInterfaceDataEmpty;
@@ -42,12 +44,38 @@ class ItemHintView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   OnStart() {
+    var i;
+    var e;
     if (this.r0i() || this.n0i()) {
-      this.e0i = new ListSliderControl_1.ListSliderControl(ItemHintItem_1.ItemHintItem, this.GetItem(1), this.i0i, this.r0i, this.s0i, this.HDe, 0);
-      this.e0i.SetDynamicLoadResourceId("UiItem_ItemListB");
+      i = this.GetItem(1);
+      e = this.GetItem(0);
+      i.SetUIActive(false);
+      e.SetUIActive(false);
+      this.e0i = new ListSliderControl_1.ListSliderControl({
+        CreateProxyFunction: this.Qld,
+        ParentUi: i.GetParentAsUIItem(),
+        CheckNext: this.r0i,
+        MaxShowCount: this.i0i(),
+        AddItemTime: this.s0i(),
+        ItemSliderTime: ConfigManager_1.ConfigManager.RewardConfig.GetSliderTime(),
+        ItemShowTime: ConfigManager_1.ConfigManager.RewardConfig.GetShowTime(),
+        FinishCallback: this.HDe,
+        SliderMode: 0,
+        ChildResourceId: "UiItem_ItemListB"
+      });
       this.e0i.DisEnableParentLayout();
-      this.t0i = new ListSliderControl_1.ListSliderControl(ItemPriorHintItem_1.ItemPriorHintItem, this.GetItem(0), this.o0i, this.n0i, this.s0i, this.HDe, 0);
-      this.t0i.SetDynamicLoadResourceId("UiItem_ItemListA");
+      this.t0i = new ListSliderControl_1.ListSliderControl({
+        CreateProxyFunction: this.Kld,
+        ParentUi: e.GetParentAsUIItem(),
+        CheckNext: this.n0i,
+        MaxShowCount: this.o0i(),
+        AddItemTime: this.s0i(),
+        ItemSliderTime: ConfigManager_1.ConfigManager.RewardConfig.GetSliderTime(),
+        ItemShowTime: ConfigManager_1.ConfigManager.RewardConfig.GetShowTime(),
+        FinishCallback: this.HDe,
+        SliderMode: 0,
+        ChildResourceId: "UiItem_ItemListA"
+      });
       this.t0i.DisEnableParentLayout();
     } else {
       if (Log_1.Log.CheckWarn()) {

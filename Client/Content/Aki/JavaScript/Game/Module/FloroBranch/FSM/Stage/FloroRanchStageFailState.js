@@ -12,7 +12,7 @@ class FloroRanchStageFailState extends FloroRanchStateBase_1.FloroRanchStateBase
     var e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
     var a = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
     FloroRanchController_1.FloroRanchController.SendFloroRanchSettleDataRequest(e.Id, a, e => {
-      if (e?.g7u) {
+      if (e?.yQu) {
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.OpenAndRecordView("FloroRanchDungeonFailSettleView", e);
       } else {
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.ExitGame(true);

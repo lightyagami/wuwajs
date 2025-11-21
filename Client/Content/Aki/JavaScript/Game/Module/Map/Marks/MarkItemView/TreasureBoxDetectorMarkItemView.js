@@ -4,22 +4,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TreasureBoxDetectorMarkItemView = undefined;
-const UE = require("ue");
+const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const TreasureBoxDetectorItemRangeHandle_1 = require("./Handles/TreasureBoxDetectorItemRangeHandle");
 const ServerMarkItemView_1 = require("./ServerMarkItemView");
 class TreasureBoxDetectorMarkItemView extends ServerMarkItemView_1.ServerMarkItemView {
   constructor(e) {
     super(e);
-    this.KRi = undefined;
+    this.KRi = Vector_1.Vector.Create();
     this.kh_ = undefined;
-    this.KRi = new UE.VectorDouble();
   }
-  OnInitialize() {
-    super.OnInitialize();
-    this.kh_.SetVisible(true);
-  }
-  OnReset() {
-    super.OnReset();
+  OnViewRefresh() {
     this.kh_.SetVisible(true);
   }
   CreateComponentHandles() {
@@ -33,7 +27,7 @@ class TreasureBoxDetectorMarkItemView extends ServerMarkItemView_1.ServerMarkIte
   SetScale(e) {
     if (this.IsHolderValid()) {
       this.KRi.Set(e, e, e);
-      this.RootItem.D_SetWorldScale3D(this.KRi);
+      this.RootItem.D_SetWorldScale3D(this.KRi.ToUeVector());
       this.kh_?.UpdateRangeScale();
     }
   }

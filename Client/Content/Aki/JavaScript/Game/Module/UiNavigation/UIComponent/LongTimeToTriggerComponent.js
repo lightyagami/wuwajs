@@ -18,30 +18,35 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
     this.Sqo = () => {
       this.vqo += TimerSystem_1.MIN_TIME;
       var e;
-      var i = this.GetHotKeyConfig();
-      let t = 0;
-      if (this.vqo > i.ReleaseFailureTime) {
+      var t = this.GetHotKeyConfig();
+      let i = 0;
+      if (this.vqo > t.ReleaseFailureTime) {
         this.yqo();
-        e = i.LongPressTime;
-        t = (this.vqo - i.ReleaseFailureTime) / e;
+        e = t.LongPressTime;
+        i = (this.vqo - t.ReleaseFailureTime) / e;
       }
-      if (t >= 1) {
+      if (i >= 1) {
+        this.OnHandleLongPressRefresh(i);
         this.ReleaseWithoutCheck();
       } else {
-        this.CurComponent.SetLongPressState(t);
+        this.zym(i);
+        this.yzd(i > 0 ? 1 : 0);
       }
     };
   }
   OnPress(e) {
     this.Iqo();
     this.Tqo();
+    this.OnPressAction();
   }
   OnRelease(e) {
     if (this.vqo >= e.LongPressTime + e.ReleaseFailureTime) {
       this.ClickButton(e.BindButtonTag);
     }
-    this.CurComponent.SetLongPressState(0);
+    this.zym(0);
+    this.yzd(0);
     this.Iqo();
+    this.OnReleaseAction();
     this.Eqo = false;
   }
   ClickButton(e) {
@@ -64,17 +69,29 @@ class LongTimeToTriggerComponent extends HotKeyComponent_1.HotKeyComponent {
   Tqo() {
     this.Mqo = TimerSystem_1.GameplayTimerSystem.Forever(this.Sqo, TimerSystem_1.MIN_TIME);
   }
+  zym(e) {
+    this.CurComponent.SetLongPressState(e);
+    this.OnHandleLongPressRefresh(e);
+  }
+  yzd(e) {
+    if (this.GetHotKeyConfig().ApplicableType === 6) {
+      this.CurComponent.SetLongPressItemAlpha(e);
+    }
+  }
   yqo() {
     if (!this.Eqo) {
       this.Eqo = true;
       var e = ModelManager_1.ModelManager.UiNavigationModel;
       if (e) {
-        for (const i of e.GetActionHotKeyComponentSet(this.GetActionName())) {
-          i.ResetPressState();
+        for (const t of e.GetActionHotKeyComponentSet(this.GetActionName())) {
+          t.ResetPressState();
         }
       }
     }
   }
+  OnPressAction() {}
+  OnReleaseAction() {}
+  OnHandleLongPressRefresh(e) {}
 }
 exports.LongTimeToTriggerComponent = LongTimeToTriggerComponent;
 //# sourceMappingURL=LongTimeToTriggerComponent.js.map

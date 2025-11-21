@@ -7,6 +7,7 @@ exports.TrapDefenseBuildingUpgradeItem = exports.TrapDefenseBuildingDevelopDetai
 const UE = require("ue");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const Info_1 = require("../../../../../Core/Common/Info");
+const Log_1 = require("../../../../../Core/Common/Log");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
@@ -21,32 +22,32 @@ const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
 const GenericLayout_1 = require("../../../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 class TrapDefenseBuildingDevelopDetailItem extends UiPanelBase_1.UiPanelBase {
-  constructor(e, i) {
+  constructor(e, t) {
     super();
     this.IsInDungeon = e;
-    this.ParentView = i;
+    this.ParentView = t;
     this.InfoItem = undefined;
     this.BtnUpgrade = undefined;
     this.BtnSelect = undefined;
     this.CurData = undefined;
     this.CanLevelUp = true;
-    this.dHc = () => {
+    this.gXu = () => {
       var e = {
         IsInDungeon: this.IsInDungeon,
         Data: this.CurData
       };
       UiManager_1.UiManager.OpenView("TrapDefenseBuildingDevelopBranchSelectView", e);
     };
-    this.mHc = () => {
+    this.CXu = () => {
       var e = {
         IsInDungeon: this.IsInDungeon,
         Data: this.CurData
       };
-      UiManager_1.UiManager.OpenView("TrapDefenseBuildingDevelopPreviewView", e, (e, i) => {
-        this.ParentView.AddChildViewById(i);
+      UiManager_1.UiManager.OpenView("TrapDefenseBuildingDevelopPreviewView", e, (e, t) => {
+        this.ParentView.AddChildViewById(t);
       });
     };
-    this.fHc = () => {
+    this.pXu = () => {
       if (this.CurData) {
         if (this.CanLevelUp) {
           ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseDevelopLevelUp(this.CurData.Id);
@@ -58,16 +59,16 @@ class TrapDefenseBuildingDevelopDetailItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem]];
-    this.BtnBindInfo = [[4, this.mHc]];
+    this.BtnBindInfo = [[4, this.CXu]];
   }
   async OnBeforeStartAsync() {
     this.InfoItem = new TrapDefenseBuildingDevelopDetailInfoItem(!this.IsInDungeon);
     await this.InfoItem.CreateThenShowByActorAsync(this.GetItem(0).GetOwner());
     this.BtnUpgrade = new TrapDefenseBuildingUpgradeItem();
     await this.BtnUpgrade.CreateThenShowByActorAsync(this.GetItem(5).GetOwner());
-    this.BtnUpgrade.OnClickCb = this.fHc;
+    this.BtnUpgrade.OnClickCb = this.pXu;
     this.BtnSelect = new TrapDefenseBuildingBranchSelectBtnItem();
-    this.BtnSelect.OnClickCb = this.dHc;
+    this.BtnSelect.OnClickCb = this.gXu;
     await this.BtnSelect.CreateThenShowByActorAsync(this.GetItem(2).GetOwner());
     this.BtnSelect.SetUiActive(true);
   }
@@ -82,19 +83,19 @@ class TrapDefenseBuildingDevelopDetailItem extends UiPanelBase_1.UiPanelBase {
   UpdateDetail(e) {
     this.CurData = e;
     this.InfoItem.UpdateDetail(e);
-    var i;
-    var t = e.GetHasBranch() && e.GetIsUnlock();
+    var t;
+    var i = e.GetHasBranch() && e.GetIsUnlock();
     if (this.IsInDungeon) {
       this.CanLevelUp = false;
-      i = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(e.Id);
-      this.GetItem(1)?.SetUIActive(t && i.Branch > 0);
-      if (t && i.Branch > 0) {
+      t = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(e.Id);
+      this.GetItem(1)?.SetUIActive(i && t.Branch > 0);
+      if (i && t.Branch > 0) {
         this.BtnSelect?.RefreshButton(e);
       }
     } else {
       this.CanLevelUp = this.BtnUpgrade.RefreshButton(e);
-      this.GetItem(1)?.SetUIActive(t);
-      if (t) {
+      this.GetItem(1)?.SetUIActive(i);
+      if (i) {
         this.BtnSelect?.RefreshButton(e);
       }
     }
@@ -110,7 +111,7 @@ class TrapDefenseBuildingDevelopDetailInfoItem extends UiPanelBase_1.UiPanelBase
     this.Data = undefined;
     this.wNo = undefined;
     this.hJ = ResourceSystem_1.ResourceSystem.InvalidId;
-    this.gHc = () => {
+    this.vXu = () => {
       var e;
       if (this.IsNeedResetBtn) {
         (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(368)).FunctionMap.set(2, () => {
@@ -125,7 +126,7 @@ class TrapDefenseBuildingDevelopDetailInfoItem extends UiPanelBase_1.UiPanelBase
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIScrollViewWithScrollbarComponent], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UITexture]];
-    this.BtnBindInfo = [[2, this.gHc]];
+    this.BtnBindInfo = [[2, this.vXu]];
   }
   async OnBeforeStartAsync() {
     if (Info_1.Info.PlatformType === 2) {
@@ -144,14 +145,23 @@ class TrapDefenseBuildingDevelopDetailInfoItem extends UiPanelBase_1.UiPanelBase
     this.X3i();
   }
   async pah() {
-    const i = new CustomPromise_1.CustomPromise();
+    const t = new CustomPromise_1.CustomPromise();
     this.X3i();
-    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("M_VideoTexture");
-    this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.MaterialInterface, e => {
-      this.GetTexture(7).SetCustomUIMaterial(e);
-      i.SetResult();
-    }, 102);
-    await i.Promise;
+    var e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("M_VideoTextureMat_RectClip");
+    if (UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName().includes("Vulkan")) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("TextLanguageSearch", 47, "[not] switch material to M_VideoTextureMat_RectClip_InvY", ["GetRHIName()", UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName()], ["SupportVulkan()", UE.KuroRenderingRuntimeBPPluginBPLibrary.SupportVulkan()]);
+      }
+    } else {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("TextLanguageSearch", 47, "switch material to M_VideoTextureMat_RectClip", ["GetRHIName()", UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRHIName()], ["SupportVulkan()", UE.KuroRenderingRuntimeBPPluginBPLibrary.SupportVulkan()]);
+      }
+      this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.MaterialInterface, e => {
+        this.GetTexture(7).SetCustomUIMaterial(e);
+        t.SetResult();
+      }, 102, "Ui.TrapDefenseUi");
+      await t.Promise;
+    }
   }
   X3i() {
     if (this.hJ !== ResourceSystem_1.ResourceSystem.InvalidId) {
@@ -160,17 +170,17 @@ class TrapDefenseBuildingDevelopDetailInfoItem extends UiPanelBase_1.UiPanelBase
     }
   }
   UpdateDetail(e) {
-    var i = e !== this.Data;
+    var t = e !== this.Data;
     this.Data = e;
-    var t = this.IsNeedResetBtn && e.GetLevel() > 1;
-    this.GetButton(2)?.RootUIComp.SetUIActive(t);
+    var i = this.IsNeedResetBtn && e.GetLevel() > 1;
+    this.GetButton(2)?.RootUIComp.SetUIActive(i);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), e.GetName());
-    var [t, s] = e.GetDesc();
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), t, ...s);
+    var [i, s] = e.GetDesc();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i, ...s);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "TowerDefense_BuildingLv_Text", e.GetLevel());
-    var [t, s] = e.GetVideo();
-    if (i) {
-      this.wNo.PlayVideo(t, s, true);
+    var [i, s] = e.GetVideo();
+    if (t) {
+      this.wNo.PlayVideo(i, s, true);
     }
     this.RefreshAttrList();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseBuildingDevelopDetailInfoItemUpdate, this.IsNeedResetBtn);
@@ -189,11 +199,15 @@ class TrapDefenseBuildingDevelopAttrItem extends GridProxyAbstract_1.GridProxyAb
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UIText]];
   }
-  Refresh(e, i, t) {
+  Refresh(e, t, i) {
     this.Data = e;
     this.SetTextureByPath(e.Icon, this.GetTexture(0));
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.Name);
-    this.GetText(2)?.SetText(String(e.Value));
+    if (e.MultiTxt === true) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), e.Value);
+    } else {
+      this.GetText(2)?.SetText(String(e.Value));
+    }
   }
 }
 class TrapDefenseBuildingUpgradeItem extends UiPanelBase_1.UiPanelBase {
@@ -212,21 +226,21 @@ class TrapDefenseBuildingUpgradeItem extends UiPanelBase_1.UiPanelBase {
         if (!e) {
           return;
         }
-        var i = ModelManager_1.ModelManager.TrapDefenseModel.LevelDataFromIdMap.get(e);
-        if (!i) {
+        var t = ModelManager_1.ModelManager.TrapDefenseModel.LevelDataFromIdMap.get(e);
+        if (!t) {
           return;
         }
-        if (i.Config.ModeType === 1) {
-          ModelManager_1.ModelManager.TrapDefenseModel.OpenViewMainLevelMode(e, i.Config.Difficulty);
+        if (t.Config.ModeType === 1) {
+          ModelManager_1.ModelManager.TrapDefenseModel.OpenViewMainLevelMode(e, t.Config.Difficulty);
         } else {
           ModelManager_1.ModelManager.TrapDefenseModel.OpenViewRougeLevelMode(e);
         }
       }
       if (this.Pe.GetIsMaxLevel(true) || this.Pe.GetIsMaxLevel(false)) {
-        i = {
+        t = {
           TalentFuncType: this.Pe.IsBuilding ? 6 : 7
         };
-        ModelManager_1.ModelManager.TrapDefenseModel.OpenViewTalentTree(i);
+        ModelManager_1.ModelManager.TrapDefenseModel.OpenViewTalentTree(t);
       }
     };
   }
@@ -235,7 +249,11 @@ class TrapDefenseBuildingUpgradeItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.jYe], [6, this.IOe]];
   }
   RefreshButton(e) {
-    var i = (this.Pe = e).GetIsMaxLevel(false);
+    this.Pe = e;
+    var t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CurRecommendLevel !== undefined;
+    var i = this.Pe.GetIsUnlock();
+    this.GetButton(6).RootUIComp.SetUIActive(i || !t);
+    var i = e.GetIsMaxLevel(false);
     var t = e.GetIsMaxLevel(true) && !i;
     this.GetButton(0)?.RootUIComp.SetUIActive(e.GetIsUnlock() && !e.GetIsMaxLevel(true));
     this.GetItem(3)?.SetUIActive(!e.GetIsUnlock() || t);
@@ -264,7 +282,7 @@ class TrapDefenseBuildingBranchSelectBtnItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickCb = undefined;
-    this.CHc = () => {
+    this.yXu = () => {
       if (this.OnClickCb) {
         this.OnClickCb();
       }
@@ -272,15 +290,15 @@ class TrapDefenseBuildingBranchSelectBtnItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.CHc]];
+    this.BtnBindInfo = [[0, this.yXu]];
   }
   RefreshButton(e) {
-    var i = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(e.Id);
-    this.GetItem(3)?.SetUIActive(i.Branch === 0);
-    this.GetItem(1)?.SetUIActive(i.Branch > 0);
-    var i = i.Branch > 0 ? e.GetBranchDesc() : "TowerDefense_Building_BranchSelection_Text";
+    var t = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(e.Id);
+    this.GetItem(3)?.SetUIActive(t.Branch === 0);
+    this.GetItem(1)?.SetUIActive(t.Branch > 0);
+    var t = t.Branch > 0 ? e.GetBranchDesc() : "TowerDefense_Building_BranchSelection_Text";
     var e = e.GetBranchDescArgs();
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i, ...e);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t, ...e);
   }
 }
 //# sourceMappingURL=TrapDefenseBuildingDevelopDetailItem.js.map

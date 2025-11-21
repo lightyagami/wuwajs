@@ -81,8 +81,8 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   SetToggleCallBack(e) {
     this.pdo.SetToggleCallBack(e);
   }
-  SetToggleState(e) {
-    this.pdo.SetToggleState(e);
+  SetToggleState(e, t = false) {
+    this.pdo.SetToggleState(e, t);
   }
   RefreshState() {
     var e;
@@ -125,6 +125,9 @@ class RoleSkillTreeSkillItemBase extends UiPanelBase_1.UiPanelBase {
   }
   GetState() {
     return this.ac;
+  }
+  TriggerToggle() {
+    this.N8e();
   }
 }
 exports.RoleSkillTreeSkillItemBase = RoleSkillTreeSkillItemBase;

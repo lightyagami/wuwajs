@@ -15,7 +15,7 @@ class TrapDefenseBattleExploreSkillData extends TrapDefenseBattleSkillData_1.Tra
     super(...arguments);
     this.ExploreSkillId = undefined;
   }
-  get bYu() {
+  get cWc() {
     return ModelManager_1.ModelManager.RouletteModel.IsEquipItemSelectOn;
   }
   RefreshSkillTexturePath() {
@@ -41,16 +41,16 @@ class TrapDefenseBattleExploreSkillData extends TrapDefenseBattleSkillData_1.Tra
     return this.IsEnableInternal;
   }
   IsEquippedItemBanReqUse() {
-    return !!this.bYu && ModelManager_1.ModelManager.RouletteModel.IsEquippedItemBanReqUse();
+    return !!this.cWc && ModelManager_1.ModelManager.RouletteModel.IsEquippedItemBanReqUse();
   }
   IsSkillInItemUseCd() {
     return this.IsSkillInItemUseBuffCd() || this.IsSkillInItemUseSkillCd();
   }
   IsSkillInItemUseBuffCd() {
-    return !!this.bYu && !this.IsExploreAsFight && ModelManager_1.ModelManager.RouletteModel.IsEquipItemInBuffCd();
+    return !!this.cWc && !this.IsExploreAsFight && ModelManager_1.ModelManager.RouletteModel.IsEquipItemInBuffCd();
   }
   IsSkillInItemUseSkillCd() {
-    if (this.bYu && this.CharacterSkillCdComponent && !this.IsExploreAsFight) {
+    if (this.cWc && this.CharacterSkillCdComponent && !this.IsExploreAsFight) {
       var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId)?.Parameters.get(ItemDefines_1.EItemFunctionType.UseExploreSkill);
       if (e) {
         return this.CharacterSkillCdComponent.GetGroupSkillCdInfo(e)?.CurRemainingCd - TimeUtil_1.TimeUtil.TimeDeviation > 0;
@@ -61,7 +61,7 @@ class TrapDefenseBattleExploreSkillData extends TrapDefenseBattleSkillData_1.Tra
   GetEquippedItemUsingBuffCd() {
     var e;
     var t;
-    if (this.bYu) {
+    if (this.cWc) {
       e = ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId;
       return [(t = ModelManager_1.ModelManager.BuffItemModel).GetBuffItemRemainCdTime(e), t.GetBuffItemTotalCdTime(e)];
     } else {
@@ -69,7 +69,7 @@ class TrapDefenseBattleExploreSkillData extends TrapDefenseBattleSkillData_1.Tra
     }
   }
   GetEquippedItemUsingSkillCd() {
-    if (this.bYu && this.CharacterSkillCdComponent) {
+    if (this.cWc && this.CharacterSkillCdComponent) {
       var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(ModelManager_1.ModelManager.RouletteModel.CurrentEquipItemId)?.Parameters.get(ItemDefines_1.EItemFunctionType.UseExploreSkill);
       if (e) {
         return [(e = this.CharacterSkillCdComponent.GetGroupSkillCdInfo(e)).CurRemainingCd, e.CurMaxCd];
@@ -87,7 +87,7 @@ class TrapDefenseBattleExploreSkillData extends TrapDefenseBattleSkillData_1.Tra
     this.RefreshSkillTexturePath();
   }
   RefreshSkillCd() {
-    if (this.bYu && !this.IsExploreAsFight && (this.IsEquippedItemBanReqUse() || this.IsSkillInItemUseCd())) {
+    if (this.cWc && !this.IsExploreAsFight && (this.IsEquippedItemBanReqUse() || this.IsSkillInItemUseCd())) {
       this.IsEnableInternal = false;
     } else {
       super.RefreshSkillCd();

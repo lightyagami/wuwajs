@@ -13,6 +13,7 @@ const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
+const UiManager_1 = require("../../../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../../../ConfirmBox/ConfirmBoxDefine");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../../Util/ScrollView/GenericScrollViewNew");
@@ -61,7 +62,7 @@ class BeginnerCarnivalTaskView extends UiViewBase_1.UiViewBase {
       var i;
       if (e.has(BeginnerCarnivalController_1.BeginnerCarnivalController.ActivityId)) {
         e = () => {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+          UiManager_1.UiManager.ResetToBattleView();
         };
         (i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115)).FunctionMap.set(1, e);
         i.FunctionMap.set(0, e);

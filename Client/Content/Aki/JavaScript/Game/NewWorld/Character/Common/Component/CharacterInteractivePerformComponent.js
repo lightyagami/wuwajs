@@ -21,7 +21,7 @@ var __decorate = this && this.__decorate || function (t, e, i, s) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CharacterInteractivePerformComponent = undefined;
+exports.CharacterInteractivePerformComponent = exports.animationList = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../../Core/Common/Log");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
@@ -32,6 +32,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
+exports.animationList = ["/Game/Aki/Character/Role/MaleM/BaseAnim/AM_Sit_1_Stand.AM_Sit_1_Stand", "/Game/Aki/Character/Role/FemaleM/BaseAnim/AM_Sit_1_Stand.AM_Sit_1_Stand"];
 let CharacterInteractivePerformComponent = class CharacterInteractivePerformComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -81,6 +82,7 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("BasePerform", 50, "[InteractivePerform] 响应Montage播放完成", ["PbDataId", this.ActorComp?.CreatureData.GetPbDataId()], ["Signal", this.CurHandleRequest?.Signal], ["Montage", t?.GetName()]);
         }
+        this.TagComp?.RemoveTag(241043321);
         this.TagComp?.RemoveTag(-275469498);
         this.AnimComp?.MainAnimInstance?.OnMontageEnded.Remove(this.OnResponseMontageEnd);
         this.CurResponseMontage = undefined;
@@ -90,8 +92,8 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
   }
   OnStart() {
     this.ActorComp = this.Entity.GetComponent(3);
-    this.AnimComp = this.Entity.GetComponent(178);
-    this.TagComp = this.Entity.GetComponent(206);
+    this.AnimComp = this.Entity.GetComponent(181);
+    this.TagComp = this.Entity.GetComponent(209);
     return true;
   }
   OnEnd() {
@@ -136,7 +138,7 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
     }
   }
   CanResponseForHandInSeat() {
-    return !!this.Entity.GetComponent(29)?.IsSitDown && !!this.Entity.GetComponent(297)?.IsSitDownWithHoldingHands();
+    return !!this.Entity.GetComponent(29)?.IsSitDown && !!this.Entity.GetComponent(302)?.IsSitDownWithHoldingHands();
   }
   AddRequestSignal(t) {
     this.RequestCacheList.set(t.Signal, t);
@@ -212,6 +214,7 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
     this.AnimComp?.MainAnimInstance?.Montage_Play(t);
     this.AnimComp?.MainAnimInstance?.OnMontageEnded.Add(this.OnResponseMontageEnd);
     this.TagComp?.AddTag(-275469498);
+    this.TagComp?.AddTag(241043321);
     this.CurResponseMontage = t;
   }
   GetRoleMontagePathFromName(t) {
@@ -223,5 +226,5 @@ let CharacterInteractivePerformComponent = class CharacterInteractivePerformComp
     }
   }
 };
-CharacterInteractivePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(299)], CharacterInteractivePerformComponent);
+CharacterInteractivePerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(304)], CharacterInteractivePerformComponent);
 exports.CharacterInteractivePerformComponent = CharacterInteractivePerformComponent; //# sourceMappingURL=CharacterInteractivePerformComponent.js.map

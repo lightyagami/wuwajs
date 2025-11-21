@@ -29,16 +29,16 @@ class SettingGridLayout extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
     this.pDt = 0;
-    this.Wqu = undefined;
+    this.Gqu = undefined;
     this.Tei = undefined;
     this.CallbackOnClicked = undefined;
     this.Oho = () => {
       let t = new SettingGridSmall();
-      (t = this.Wqu !== 1 ? new SettingGridBig() : t).CallbackOnClicked = this.CallbackOnClicked;
+      (t = this.Gqu !== 1 ? new SettingGridBig() : t).CallbackOnClicked = this.CallbackOnClicked;
       return t;
     };
     this.pDt = t;
-    this.Wqu = i;
+    this.Gqu = i;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIGridLayout], [1, UE.UIItem]];
@@ -60,7 +60,7 @@ class SettingGridSmall extends SettingGridBase {
     super(...arguments);
     this.Pe = undefined;
     this.Ewu = () => this.Pe !== undefined && this.Pe.IsEditing;
-    this.Qqu = t => {
+    this.Fqu = t => {
       if (this.CallbackOnClicked) {
         this.CallbackOnClicked(this.Pe, t === 1);
       }
@@ -68,27 +68,27 @@ class SettingGridSmall extends SettingGridBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIExtendToggle]];
-    this.BtnBindInfo = [[1, this.Qqu]];
+    this.BtnBindInfo = [[1, this.Fqu]];
   }
   OnStart() {
     this.GetExtendToggle(1).CanExecuteChange.Bind(this.Ewu);
   }
   Refresh(t, i, e) {
     this.Pe = t;
-    if (this.Kqu()) {
+    if (this.Nqu()) {
       this.SetUiActive(true);
       this.GetExtendToggle(1).SetSelfInteractive(t.IsEditing);
       if (t.IsEmpty) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), InventoryDefine_1.EMPTY_RULE_TEXT_ID);
         this.GetExtendToggle(1).SetToggleStateForce(2);
       } else {
-        this.Xqu();
+        this.Vqu();
       }
     } else {
       this.SetUiActive(false);
     }
   }
-  Kqu() {
+  Nqu() {
     var t = this.Pe;
     if (t.IsFirst) {
       return t.IsEmpty && !t.IsEditing;
@@ -96,7 +96,7 @@ class SettingGridSmall extends SettingGridBase {
       return !!t.IsEditing || !!t.IsSelect;
     }
   }
-  Xqu() {
+  Vqu() {
     var t = this.Pe;
     var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(t.RuleId).FilterType;
     var i = ModelManager_1.ModelManager.FilterModel.GetFilterDataFuncByFilterType(i)([t.Value])[0];
@@ -110,7 +110,7 @@ class SettingGridBig extends SettingGridBase {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.Qqu = t => {
+    this.Fqu = t => {
       if (this.CallbackOnClicked && this.Pe) {
         this.CallbackOnClicked(this.Pe, this.Pe.IsAdd);
       }
@@ -118,27 +118,27 @@ class SettingGridBig extends SettingGridBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UITexture], [1, UE.UIText], [2, UE.UITexture], [3, UE.UITexture], [4, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[4, this.Qqu]];
+    this.BtnBindInfo = [[4, this.Fqu]];
   }
   Refresh(t, i, e) {
     this.Pe = t;
-    if (this.Kqu()) {
+    if (this.Nqu()) {
       this.SetUiActive(true);
       if (t.IsEmpty) {
         this.U$l();
       } else {
         this.GetButton(4).SetSelfInteractive(t.IsEditing);
         if (t.IsAdd) {
-          this.Yqu();
+          this.jqu();
         } else {
-          this.Xqu();
+          this.Vqu();
         }
       }
     } else {
       this.SetUiActive(false);
     }
   }
-  Kqu() {
+  Nqu() {
     var t = this.Pe;
     if (t.IsFirst) {
       return t.IsEditing || t.IsEmpty && !t.IsEditing;
@@ -153,13 +153,13 @@ class SettingGridBig extends SettingGridBase {
     this.GetButton(4).SetSelfInteractive(false);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), InventoryDefine_1.EMPTY_RULE_TEXT_ID);
   }
-  Yqu() {
+  jqu() {
     this.GetTexture(2).SetUIActive(true);
     this.GetTexture(3).SetUIActive(false);
     this.GetTexture(0).SetUIActive(false);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "PhantomProject_AddChose");
   }
-  Xqu() {
+  Vqu() {
     var t = this.Pe;
     this.GetTexture(2).SetUIActive(false);
     this.GetTexture(3).SetUIActive(t.IsEditing);

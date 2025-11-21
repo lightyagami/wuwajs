@@ -12,13 +12,13 @@ class FloroRanchSubDungeonData {
     this.Lo = undefined;
     this.P4e = false;
     this.jqc = false;
-    this.aOu = false;
+    this.FOu = false;
     this.Ghi = 0;
     this.Qmu = 0;
     this.Snu = false;
     this.Enu = 0;
     this.Inu = 0;
-    this.SKu = true;
+    this.Mjc = true;
     this.Lo = t;
   }
   UpdateUnLockState(t) {
@@ -45,10 +45,10 @@ class FloroRanchSubDungeonData {
     return this.Ghi;
   }
   set IsInstanceUnlock(t) {
-    this.aOu = t;
+    this.FOu = t;
   }
   get IsInstanceUnlock() {
-    return this.aOu;
+    return this.FOu;
   }
   set ConditionId(t) {
     this.Qmu = t;
@@ -88,10 +88,10 @@ class FloroRanchSubDungeonData {
     return this.Lo.EndlessMode;
   }
   set HasRedDot(t) {
-    this.SKu = t;
+    this.Mjc = t;
   }
   get HasRedDot() {
-    return !!this.IsUnLock && !!this.aOu && this.SKu;
+    return !!this.IsUnLock && !!this.FOu && this.Mjc;
   }
   get SelectedRaceIds() {
     var t = this.RaceList;

@@ -5,11 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ActivityMapTravelController = undefined;
 const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const FormationPropertyById_1 = require("../../../../../Core/Define/ConfigQuery/FormationPropertyById");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../../../Core/Net/Net");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
-const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiManager_1 = require("../../../../Ui/UiManager");
@@ -17,7 +17,6 @@ const RoleLevelUpSuccessController_1 = require("../../../RoleUi/RoleLevel/RoleLe
 const ActivityControllerBase_1 = require("../../ActivityControllerBase");
 const ActivityMapTravelData_1 = require("./ActivityMapTravelData");
 const ActivitySubViewMapTravel_1 = require("./View/ActivitySubViewMapTravel");
-const FLY_STRENGTH_MAX_ATTRIBUTE_INDEX = 138;
 class ActivityMapTravelController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
@@ -48,10 +47,10 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(19047, this.uFl);
+    Net_1.Net.Register(15045, this.uFl);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(19047);
+    Net_1.Net.UnRegister(15045);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
@@ -81,10 +80,10 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
   }
   static RequestMapTravelLevelUp(t) {
     var e = Protocol_1.Aki.Protocol.Bp_.create();
-    Net_1.Net.Call(23116, e, e => {
+    Net_1.Net.Call(20967, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18074);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21087);
           t?.(false);
         } else if (e = ActivityMapTravelController.GetMapTravelData()) {
           e.TravelLevel++;
@@ -100,12 +99,12 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
     });
   }
   static RequestMultiMapTravelTaskReward(r) {
-    var e = Protocol_1.Aki.Protocol.h6u.create();
+    var e = Protocol_1.Aki.Protocol.E8u.create();
     e.gps = r;
-    Net_1.Net.Call(21127, e, e => {
+    Net_1.Net.Call(15087, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22570);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15076);
         } else {
           const t = ActivityMapTravelController.GetMapTravelData();
           if (t) {
@@ -121,10 +120,10 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
   }
   static RequestTakeTaskFinalReward() {
     var e = Protocol_1.Aki.Protocol.Up_.create();
-    Net_1.Net.Call(20617, e, e => {
+    Net_1.Net.Call(24756, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26422);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28220);
         } else if (e = ActivityMapTravelController.GetMapTravelData()) {
           e.TaskFinalRewardData.IsReceived = true;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, e.Id);
@@ -134,12 +133,12 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
     });
   }
   static RequestMultiTakeSoarChallengeReward(r) {
-    var e = Protocol_1.Aki.Protocol.f8u.create();
+    var e = Protocol_1.Aki.Protocol.zHc.create();
     e.B6n = r;
-    Net_1.Net.Call(23793, e, e => {
+    Net_1.Net.Call(15048, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 20418);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18956);
         } else {
           const t = ActivityMapTravelController.GetMapTravelData();
           if (t) {
@@ -158,12 +157,12 @@ class ActivityMapTravelController extends ActivityControllerBase_1.ActivityContr
       UiManager_1.UiManager.OpenView("TravelLevelTipsView", e);
     }
   }
-  OnActivityFirstUnlock(e) {
+  OnShowActivityFirstUnlockView(e) {
     UiManager_1.UiManager.OpenView("ActivityUnlockTipMapTravelView");
   }
   static OpenSoarStrengthView(e) {
     var t = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetBaseMax(10);
-    var r = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(FLY_STRENGTH_MAX_ATTRIBUTE_INDEX);
+    var r = FormationPropertyById_1.configFormationPropertyById.GetConfig(10);
     var r = {
       Name: r.Name,
       IconPath: r.Icon,

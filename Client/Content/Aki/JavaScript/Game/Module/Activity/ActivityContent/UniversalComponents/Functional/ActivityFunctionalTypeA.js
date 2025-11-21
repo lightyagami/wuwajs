@@ -185,6 +185,14 @@ class ActivityFunctionalTypeA extends UiPanelBase_1.UiPanelBase {
       ControllerHolder_1.ControllerHolder.ActivityController.OpenActivityConditionView(e);
     };
   }
+  SetPerformanceSubPackageLock(t, e) {
+    this.SetPanelConditionVisible(true);
+    this.SetActivatePanelConditionVisible(false);
+    this.SetLockConditionButtonVisible(true);
+    this.PanelLock.ButtonCallBack = () => {
+      ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageDownLoadConfirm(t, e);
+    };
+  }
 }
 exports.ActivityFunctionalTypeA = ActivityFunctionalTypeA;
 class FunctionalPanelConditionLock extends UiPanelBase_1.UiPanelBase {

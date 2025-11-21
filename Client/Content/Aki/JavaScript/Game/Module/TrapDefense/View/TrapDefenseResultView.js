@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TrapDefenseResultView = undefined;
 const UE = require("ue");
+const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -34,16 +35,17 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
     this.PassTime = "";
     this.ResultData = undefined;
     this.NeedShowViewAnim = false;
-    this.E$c = () => {
+    this.CJu = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.OpenViewTalentTree();
     };
-    this.I$c = () => {
+    this.pJu = () => {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenOrganDevelop(false, this);
     };
-    this.T$c = () => {
+    this.vJu = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.OpenViewBdSum();
     };
-    this.b$c = () => {
+    this.yJu = () => {
+      AudioSystem_1.AudioSystem.ExecuteAction("play_2_6_tower_defence_music_ingame", 0);
       const e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData();
       var t;
       if (e) {
@@ -61,19 +63,20 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.R$c = () => {
+    this.SJu = () => {
+      AudioSystem_1.AudioSystem.ExecuteAction("play_2_6_tower_defence_music_ingame", 0);
       ModelManager_1.ModelManager.TrapDefenseModel.NeedOpenMainView = true;
       ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
     };
-    this.w$c = () => {
+    this.MJu = () => {
       this.b_c();
     };
     this.Bqe = () => {
       return new TrapDefensePauseView_1.TrapDefenseResultInfoItem();
     };
-    this.L$c = () => new TrapDefenseResultItem_1.TrapDefenseResultResultItem();
-    this.A$c = () => new TrapDefenseResultItem_1.TrapDefenseResultUnlockTab();
-    this.Z_d = e => {
+    this.EJu = () => new TrapDefenseResultItem_1.TrapDefenseResultResultItem();
+    this.IJu = () => new TrapDefenseResultItem_1.TrapDefenseResultUnlockTab();
+    this.QCd = e => {
       if (e === "Start") {
         for (const t of this.ExpLayout.GetLayoutItemList()) {
           t.PlayStarIn();
@@ -85,31 +88,38 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
         }, 500);
       }
     };
+    this.llm = () => {
+      this.nsd();
+    };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIHorizontalLayout], [8, UE.UIItem], [9, UE.UIVerticalLayout], [10, UE.UIItem], [11, UE.UIVerticalLayout], [12, UE.UIItem], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UITexture], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIText]];
-    this.BtnBindInfo = [[15, this.R$c], [16, this.w$c]];
+    this.BtnBindInfo = [[15, this.SJu], [16, this.MJu]];
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Z_d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.QCd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.llm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.llm);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Z_d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.QCd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify, this.llm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseBdBuffAllUpdate, this.llm);
   }
   async OnBeforeStartAsync() {
     var e = [];
     this.PassTime = TimeUtil_1.TimeUtil.DateFormat2(new Date(TimeUtil_1.TimeUtil.GetServerTimeStamp()));
     this.BtnSkill = new TrapDefenseResultItem_1.TrapDefenseResultButton();
     e.push(this.BtnSkill.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
-    this.BtnSkill.OnClickCb = this.E$c;
+    this.BtnSkill.OnClickCb = this.CJu;
     this.BtnOrgan = new TrapDefenseResultItem_1.TrapDefenseResultButton();
     e.push(this.BtnOrgan.CreateThenShowByActorAsync(this.GetItem(2).GetOwner()));
-    this.BtnOrgan.OnClickCb = this.I$c;
+    this.BtnOrgan.OnClickCb = this.pJu;
     this.BtnGain = new TrapDefenseResultItem_1.TrapDefenseResultButton();
     e.push(this.BtnGain.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
-    this.BtnGain.OnClickCb = this.T$c;
+    this.BtnGain.OnClickCb = this.vJu;
     this.BtnContinue = new TrapDefenseResultItem_1.TrapDefenseResultContinueButton();
-    this.BtnContinue.OnClickCb = this.b$c;
+    this.BtnContinue.OnClickCb = this.yJu;
     e.push(this.BtnContinue.CreateThenShowByActorAsync(this.GetItem(14).GetOwner()));
     this.ShareItem = new TrapDefenseResultItem_1.TrapDefenseShareTips();
     e.push(this.ShareItem.CreateThenShowByActorAsync(this.GetItem(17).GetOwner()));
@@ -126,8 +136,8 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.BattleResultInfo = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(7), this.Bqe, this.GetItem(8).GetOwner());
-    this.ExpLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.L$c);
-    this.UnlockLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(11), this.A$c);
+    this.ExpLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(9), this.EJu);
+    this.UnlockLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(11), this.IJu);
   }
   OnBeforeShow() {
     this.BindRedDot();
@@ -137,8 +147,8 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
     var i = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(e.Config.Name, e.Config.Name);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), t, i);
     this.OnSuccessResult(this.ResultData.KRs || e?.Config.ModeType === 3);
-    this.P$c();
-    this.frd();
+    this.hzc();
+    this.nsd();
     this.BtnContinue.SetUiActive(true);
     var i = ModelManager_1.ModelManager.TrapDefenseModel.GetNextLevelData(e);
     if (i && i.IsUnlock && this.ResultData.KRs) {
@@ -149,12 +159,12 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
     var e = [];
     e.push({
       Type: 0,
-      Value: this.ResultData.Hcd
+      Value: this.ResultData.RLd
     });
     e.push({
       Type: 2,
-      Value: this.ResultData.jcd,
-      MaxBatch: this.ResultData.oYc
+      Value: this.ResultData.bLd,
+      MaxBatch: this.ResultData.nJc
     });
     this.BattleResultInfo.RefreshByData(e, undefined, true);
   }
@@ -199,7 +209,7 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
     this.GetItem(18)?.SetUIActive(i && e);
   }
   async b_c() {
-    this.x$c(false);
+    this.TJu(false);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, false);
     try {
       await this.c2a();
@@ -229,7 +239,7 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
       }
     } finally {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, false);
-      this.x$c(true);
+      this.TJu(true);
     }
   }
   async c2a() {
@@ -239,45 +249,45 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
       });
     });
   }
-  x$c(e) {
+  TJu(e) {
     this.GetItem(0)?.SetUIActive(e);
     this.GetItem(13)?.SetUIActive(e);
     this.GetVerticalLayout(9)?.RootUIComp.SetUIActive(e);
     this.GetItem(18)?.SetUIActive(false);
-    this.D$c(e);
+    this.lzc(e);
   }
-  P$c() {
+  hzc() {
     var e = [];
     var t = {
       Type: 0,
       Value: ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData().Config.StarRatingConditions.length,
-      History: (this.NeedShowViewAnim ? this.ResultData.Gld : this.ResultData.qld).length,
-      Total: this.ResultData.Gld.length
+      History: (this.NeedShowViewAnim ? this.ResultData.Ygd : this.ResultData.Xgd).length,
+      Total: this.ResultData.Ygd.length
     };
     e.push(t);
-    if (this.ResultData.Ghd > 0) {
+    if (this.ResultData.Odd > 0) {
       t = {
         Type: 1,
-        Value: this.ResultData.Ghd
+        Value: this.ResultData.Odd
       };
       e.push(t);
     }
     this.ExpLayout?.RefreshByData(e, undefined, true);
   }
-  frd() {
-    var e = this.grd();
-    var t = this.Crd();
+  nsd() {
+    var e = this.ssd();
+    var t = this.asd();
     var e = [...e, ...t];
     this.UnlockLayout?.RefreshByData(e, () => {
-      this.D$c(true);
+      this.lzc(true);
     }, true);
   }
-  grd() {
+  ssd() {
     var e = [];
     var t = [];
     var i = [];
     var s = !this.NeedShowViewAnim || undefined;
-    for (const o of this.ResultData.z7u) {
+    for (const o of this.ResultData.IHc) {
       var r = {
         MachineType: 2,
         DataType: o,
@@ -291,7 +301,7 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
       };
       t.push(r);
     }
-    for (const h of this.ResultData.Y7u) {
+    for (const h of this.ResultData.EHc) {
       var a = {
         MachineType: 1,
         DataType: h,
@@ -311,10 +321,10 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
         DataList: t
       });
     }
-    for (const l of this.ResultData.j7u) {
+    for (const _ of this.ResultData.pHc) {
       var n = {
         Type: 1,
-        Id: l,
+        Id: _,
         IsNewUnlock: s
       };
       i.push(n);
@@ -327,54 +337,57 @@ class TrapDefenseResultView extends UiViewBase_1.UiViewBase {
     }
     return e;
   }
-  Crd() {
+  asd() {
     var e;
     var t;
-    var i;
+    var i = [];
     var s = [];
     var r = [];
-    var a = [];
     for (const o of ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData()) {
-      var n = o.GetSlotData();
-      if (n) {
-        n = {
-          MachineType: n.IsBuilding ? 1 : 2,
-          DataType: n.GetDataType(),
-          Level: n.GetLevel(),
-          Branch: n.GetBranch()
+      var a = o.GetSlotData();
+      if (a) {
+        a = {
+          MachineType: a.IsBuilding ? 1 : 2,
+          DataType: a.GetDataType(),
+          Level: a.GetLevel(),
+          Branch: a.GetBranch()
         };
-        n = {
+        a = {
           Type: 2,
-          Id: ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(n)
+          Id: ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(a)
         };
-        r.push(n);
+        s.push(a);
       }
     }
-    if (r.length > 0) {
-      s.push({
+    if (s.length > 0) {
+      i.push({
         Type: 2,
-        DataList: r
+        DataList: s
       });
     }
     for ([e, t] of ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.BdDataMap) {
-      if (t.GetCurrentActiveProgressNum() !== 0) {
-        i = {
+      if (t.GetCurrentActiveProgressNum() !== 0 && !t.IsZeroBdType()) {
+        var n = {
           Type: 3,
           Id: e,
-          NeedUnlockBar: true
+          NeedUnlockBar: false,
+          ForShare: true
         };
-        a.push(i);
+        r.push(n);
+        if (r.length >= 4) {
+          break;
+        }
       }
     }
-    if (a.length > 0) {
-      s.push({
+    if (r.length > 0) {
+      i.push({
         Type: 3,
-        DataList: a
+        DataList: r
       });
     }
-    return s;
+    return i;
   }
-  D$c(e) {
+  lzc(e) {
     for (const t of this.UnlockLayout.GetLayoutItemList()) {
       t.SetUiActive(t.IsShared !== e);
     }

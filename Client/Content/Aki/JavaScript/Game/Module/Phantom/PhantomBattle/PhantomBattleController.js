@@ -45,20 +45,20 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     return ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(e);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(26722, this.XVi);
-    Net_1.Net.Register(24158, this.$Vi);
-    Net_1.Net.Register(17954, this.YVi);
-    Net_1.Net.Register(20866, this.JVi);
-    Net_1.Net.Register(28637, this.zVi);
-    Net_1.Net.Register(22417, this.ZVi);
+    Net_1.Net.Register(21259, this.XVi);
+    Net_1.Net.Register(28617, this.$Vi);
+    Net_1.Net.Register(17907, this.YVi);
+    Net_1.Net.Register(23205, this.JVi);
+    Net_1.Net.Register(21910, this.zVi);
+    Net_1.Net.Register(29453, this.ZVi);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26722);
-    Net_1.Net.UnRegister(24158);
-    Net_1.Net.UnRegister(17954);
-    Net_1.Net.UnRegister(20866);
-    Net_1.Net.UnRegister(28637);
-    Net_1.Net.UnRegister(22417);
+    Net_1.Net.UnRegister(21259);
+    Net_1.Net.UnRegister(28617);
+    Net_1.Net.UnRegister(17907);
+    Net_1.Net.UnRegister(23205);
+    Net_1.Net.UnRegister(21910);
+    Net_1.Net.UnRegister(29453);
   }
   static SendPhantomLevelUpRequest(n, e, t) {
     var o = new Protocol_1.Aki.Protocol.Cls();
@@ -66,14 +66,14 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     o.tHn = e;
     o.wxu = t;
     const r = ModelManager_1.ModelManager.PhantomBattleModel.CreatePhantomLevelCacheData(n);
-    Net_1.Net.Call(18392, Protocol_1.Aki.Protocol.Cls.create(o), e => {
+    Net_1.Net.Call(26336, Protocol_1.Aki.Protocol.Cls.create(o), e => {
       var t;
       var o = ModelManager_1.ModelManager.PhantomBattleModel;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Phantom", 27, "9903_返回请求幻象升级!!!!");
       }
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17371);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29966);
       } else {
         o.ResetLevelUpItemData();
         if (t = PhantomBattleController.GetPhantomItemDataByUniqueId(e.xPs.b9n)) {
@@ -106,7 +106,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static SendPhantomPutOnRequest(e, t, n, r = -1, a = false) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipError);
     } else {
@@ -136,7 +136,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
         (s = new Protocol_1.Aki.Protocol.vls()).w5n = e;
         s.Q6n = t;
         s.l8n = n;
-        Net_1.Net.Call(29599, Protocol_1.Aki.Protocol.vls.create(s), e => {
+        Net_1.Net.Call(29278, Protocol_1.Aki.Protocol.vls.create(s), e => {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Phantom", 27, "9908_返回角色幻象装备信息!!!!");
           }
@@ -153,29 +153,29 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
               Log_1.Log.Error("Phantom", 27, "角色幻象装备数据异常");
             }
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23035);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 25853);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipError);
           }
         });
       }
     }
   }
-  static SendPhantomAutoPutRequest(t, o) {
+  static SendPhantomAutoPutRequest(t, o, n) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Phantom", 27, "10014_角色幻象一键装配请求!!!!");
     }
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
     } else {
       let e = false;
-      var n = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Id);
-      var n = PhantomUtil_1.PhantomUtil.GetSummonedEntity(n, Number(Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision));
-      if (e = n && n.Entity.Active ? true : e) {
+      var r = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Id);
+      var r = PhantomUtil_1.PhantomUtil.GetSummonedEntity(r, Number(Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision));
+      if (e = r && r.Entity.Active ? true : e) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       } else if (!RoleController_1.RoleController.CheckCharacterInBattleTagAndShowTips()) {
-        (n = new Protocol_1.Aki.Protocol.Lls()).Q6n = t;
-        n.eHn = o;
-        Net_1.Net.Call(22055, Protocol_1.Aki.Protocol.Lls.create(n), e => {
+        (r = new Protocol_1.Aki.Protocol.Lls()).Q6n = t;
+        r.eHn = o;
+        Net_1.Net.Call(20430, Protocol_1.Aki.Protocol.Lls.create(r), e => {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Phantom", 27, "10014_角色幻象一键装配返回!!!!");
           }
@@ -186,13 +186,14 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
                 ModelManager_1.ModelManager.PhantomBattleModel.UpdateRoleEquipmentData(o);
                 ModelManager_1.ModelManager.PhantomBattleModel.UpdateFetterList(o.Q6n);
               }
+              n?.();
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquip);
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipWithSourceAndTargetPos, 0, 0, false);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("Phantom", 27, "角色幻象装备数据异常!!!!");
             }
           } else {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26059);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26460);
           }
         });
       }
@@ -206,8 +207,8 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
       (o = new Protocol_1.Aki.Protocol.Pls()).b9n = e;
       o.m9n = t;
       t = this.GetPhantomItemDataByUniqueId(e).GetPhantomSubProp();
-      if ((o = await Net_1.Net.CallAsync(15397, o)).Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 24762);
+      if ((o = await Net_1.Net.CallAsync(28975, o)).Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Q4n, 20979);
       } else {
         PhantomBattleController.GetPhantomItemDataByUniqueId(o.xPs.b9n).SetData(o.xPs);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnVisionIdentify);
@@ -217,7 +218,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static PhantomSkinChangeRequest(t, o, n) {
-    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(206).HasTag(-1720844833)) {
+    if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209).HasTag(-1720844833)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("VisionSkilling");
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PhantomEquipError);
     } else {
@@ -231,9 +232,9 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
         (r = new Protocol_1.Aki.Protocol.bls()).b9n = t;
         r.Z7n = o;
         r.iHn = n;
-        Net_1.Net.Call(21734, r, e => {
+        Net_1.Net.Call(25332, r, e => {
           if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26323);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28383);
           } else {
             (e = PhantomBattleController.GetPhantomItemDataByUniqueId(t)).SetSkinId(o);
             if (n) {
@@ -335,7 +336,7 @@ class PhantomBattleController extends UiControllerBase_1.UiControllerBase {
             n?.();
           }, undefined);
         }
-      });
+      }, 100, "Ui.PhantomUi");
     }
   }
   static SetMeshTransform(e) {

@@ -17,7 +17,6 @@ const GlobalData_1 = require("../../../GlobalData");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const CharacterBuffIds_1 = require("../../../NewWorld/Character/Common/Component/Abilities/CharacterBuffIds");
-const RoleQteComponent_1 = require("../../../NewWorld/Character/Role/Component/RoleQteComponent");
 const CooperationController_1 = require("../../Battle/Cooperation/CooperationController");
 const RoleDefine_1 = require("../../RoleUi/RoleDefine");
 const BattleUiDefine_1 = require("../BattleUiDefine");
@@ -28,6 +27,7 @@ const FormationOnlineItem_1 = require("./FormationOnlineItem");
 const FormationTrialItem_1 = require("./FormationTrialItem");
 const CombineKeyItem_1 = require("./KeyItem/CombineKeyItem");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
+const FormationDataController_1 = require("../../Abilities/FormationDataController");
 const REFRESH_COOLDOWN_INTERVAL = 100;
 const CURE_DELAY = 1000;
 const LOW_HP_PERCENT = 0.2;
@@ -46,8 +46,8 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this.RoleConfig = undefined;
     this.RoleSkinConfig = undefined;
     this.i$e = [];
+    this.Lwm = 0;
     this.vat = 0;
-    this.Eat = 0;
     this.Sat = 0;
     this.yat = undefined;
     this.Iat = undefined;
@@ -83,7 +83,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
     };
     this.s$e = (t, i, e) => {
-      if (!(0, RoleQteComponent_1.isMultiQte)()) {
+      if (!(0, FormationDataController_1.isBattleMulti)()) {
         this.kat();
       }
     };
@@ -100,7 +100,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
     };
     this.RefreshQteActive = () => {
-      if ((0, RoleQteComponent_1.isMultiQte)()) {
+      if ((0, FormationDataController_1.isBattleMulti)()) {
         this.Hat();
       } else {
         this.kat();
@@ -267,11 +267,11 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     var i;
     EventSystem_1.EventSystem.AddWithTarget(t, EventDefine_1.EEventName.OnChangeRoleCoolDownChanged, this.qat);
     if (this.IsMyRole) {
-      i = t.GetComponent(206);
+      i = t.GetComponent(209);
       this.d$e(i, 1414093614, this.jat);
       this.d$e(i, -2107968822, this.f51);
     } else {
-      i = t.GetComponent(206);
+      i = t.GetComponent(209);
       this.d$e(i, 166024319, this.Vat);
     }
   }
@@ -320,18 +320,17 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     super.Reset();
   }
   OnTick(t) {
+    var i;
     if (this.vat > 0) {
-      this.Eat -= t * Time_1.Time.TimeDilation;
-      if (this.Eat <= 0) {
-        this.Eat = 0;
+      if ((i = this.Lwm - Time_1.Time.PlayerWorldTime) <= 0) {
         this.vat = 0;
         this.nht();
       } else {
-        if (Math.abs(this.Sat - this.Eat) > BattleUiDefine_1.CHANGE_COOLDOWN_INTERVAL) {
+        if (Math.abs(this.Sat - i) > BattleUiDefine_1.CHANGE_COOLDOWN_INTERVAL) {
           this.Sat -= REFRESH_COOLDOWN_INTERVAL;
           this.sht();
         }
-        this.aht();
+        this.aht(i);
       }
     }
   }
@@ -363,7 +362,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       var i = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.EntityHandle;
       var e = this.RoleData.EntityHandle;
       if (i && e?.IsInit) {
-        t = i.Entity.GetComponent(99).IsQteReady(e);
+        t = i.Entity.GetComponent(101).IsQteReady(e);
       }
       this.hht(t, false);
     }
@@ -387,7 +386,7 @@ class FormationItem extends BattleChildView_1.BattleChildView {
     this._ht();
   }
   tht() {
-    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(94);
+    var t = this.RoleData?.EntityHandle?.Entity?.GetComponent(96);
     if (!!t && !((t = t.GetChangeRoleCoolDown()) <= 0)) {
       this.Gat(t, t);
     }
@@ -522,18 +521,17 @@ class FormationItem extends BattleChildView_1.BattleChildView {
       }
       this.nht();
     } else {
+      this.Lwm = Time_1.Time.PlayerWorldTime + i;
       this.vat = t;
-      this.Eat = i;
-      this.Sat = this.Eat;
+      this.Sat = i;
       this.sht();
-      this.aht();
+      this.aht(i);
       this.rht(true);
     }
   }
-  aht() {
-    var t;
-    if (!this.Znh && !(this.vat <= 0)) {
-      t = this.Eat / this.vat;
+  aht(t) {
+    if (!this.Znh && !(t <= 0)) {
+      t = t / this.vat;
       this.GetTexture(2).SetFillAmount(t);
     }
   }

@@ -32,45 +32,52 @@ class TipsMaterialComponent extends ItemTipsBaseSubComponent_1.TipsBaseSubCompon
     }
   }
   Refresh(i) {
-    var e = () => {
+    var t = () => {
       var i = this.Pe;
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.MaterialType);
+      var t = !StringUtils_1.StringUtils.IsEmpty(i.MaterialType);
+      if (t) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), i.MaterialType);
+      }
+      this.GetText(0).SetUIActive(t);
       this.GetSprite(1).SetUIActive(i.FunctionSpritePath !== undefined);
       if (i.FunctionSpritePath) {
         this.SetSpriteByPath(i.FunctionSpritePath, this.GetSprite(1), false);
       }
-      var e = !StringUtils_1.StringUtils.IsEmpty(i.TxtEffect);
-      if (e) {
-        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i.TxtEffect);
+      var t = !StringUtils_1.StringUtils.IsEmpty(i.TxtEffect);
+      if (t) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i.TxtEffect, ...i.TxtEffectArgs);
       }
-      this.GetText(4).SetUIActive(e);
-      var e = !StringUtils_1.StringUtils.IsEmpty(i.TxtDescription);
-      if (e) {
+      this.GetText(4).SetUIActive(t);
+      var t = !StringUtils_1.StringUtils.IsEmpty(i.TxtDescription);
+      if (t) {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), i.TxtDescription);
       }
-      this.GetText(5).SetUIActive(e);
+      this.GetText(5).SetUIActive(t);
       this.xxt(i.LimitTimeTxt);
-      var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i.ConfigId);
-      var t = e?.ItemType === 60000 || e?.ItemType === 60002 || e?.ItemType === 60005 || e?.ItemType === 60003 || e?.ItemType === 22;
-      this.SetPanelNumVisible(!t);
-      this.Pxt(this.GetWayDataList(i, e?.ItemType));
-      if (!t) {
-        e = i.Num;
-        this.GetText(3).SetText(e.toString());
-        this.GetText(3).useChangeColor = e === 0;
+      var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i.ConfigId);
+      let e = false;
+      if (t?.ItemType !== undefined && ConfigManager_1.ConfigManager.InventoryConfig.GetItemTypeConfig(t.ItemType)?.ShowStock === false) {
+        e = true;
+      }
+      this.SetPanelNumVisible(!e);
+      this.Pxt(this.GetWayDataList(i, t?.ItemType));
+      if (!e) {
+        t = i.Num;
+        this.GetText(3).SetText(t.toString());
+        this.GetText(3).useChangeColor = t === 0;
       }
     };
     this.Pe = i;
     ModelManager_1.ModelManager.ItemTipsModel.SetCurrentItemTipsData(i);
     if (this.InAsyncLoading()) {
-      this.OperationMap.set("Refresh", e);
+      this.OperationMap.set("Refresh", t);
     } else {
-      e();
+      t();
     }
   }
-  GetWayDataList(i, e) {
-    var t = i.Num > 0;
-    if (e === 60005 && t) {
+  GetWayDataList(i, t) {
+    var e = i.Num > 0;
+    if (t === 60005 && e) {
       return [];
     } else {
       return i.GetWayData ?? [];
@@ -89,13 +96,13 @@ class TipsMaterialComponent extends ItemTipsBaseSubComponent_1.TipsBaseSubCompon
     }
   }
   SetPanelNumVisible(i) {
-    var e = () => {
+    var t = () => {
       this.GetItem(2).SetUIActive(i);
     };
     if (this.InAsyncLoading()) {
-      this.OperationMap.set("SetPanelNumVisible", e);
+      this.OperationMap.set("SetPanelNumVisible", t);
     } else {
-      e();
+      t();
     }
   }
 }

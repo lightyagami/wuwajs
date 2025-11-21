@@ -6,22 +6,28 @@ Object.defineProperty(exports, "__esModule", {
 exports.SortResultData = exports.SortViewData = undefined;
 const StringBuilder_1 = require("../../../../../../Core/Utils/StringBuilder");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const FilterSortDefine_1 = require("../../FilterSortDefine");
 class SortViewData {
   constructor(t, e) {
-    this.ConfigId = t;
+    this.UniqueId = t;
     this.ConfirmFunction = e;
   }
 }
 exports.SortViewData = SortViewData;
 class SortResultData {
   constructor() {
-    this.Mne = 0;
+    this.B0h = 0;
     this.gUt = undefined;
     this.fUt = undefined;
     this.pUt = false;
+    this.UniqueId = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+    this.UniqueId = ++SortResultData.Npd;
+  }
+  get ConfigId() {
+    return this.B0h;
   }
   SetConfigId(t) {
-    this.Mne = t;
+    this.B0h = t;
   }
   SetSelectBaseSort(t) {
     this.gUt = t;
@@ -43,18 +49,18 @@ class SortResultData {
   }
   GetAllSelectRuleSet() {
     var t = new Set();
-    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(this.Mne);
+    var e = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(this.ConfigId);
     for (const r of e.FrontSortList) {
       t.add(r);
     }
     t.add(this.gUt[0]);
     if (this.fUt) {
-      for (const s of this.fUt.keys()) {
-        t.add(s);
+      for (const i of this.fUt.keys()) {
+        t.add(i);
       }
     }
-    for (const i of e.LastSortList) {
-      t.add(i);
+    for (const s of e.LastSortList) {
+      t.add(s);
     }
     return t;
   }
@@ -73,7 +79,7 @@ class SortResultData {
   }
   ConvertToStorageData() {
     var t = {
-      ConfigId: this.Mne,
+      ConfigId: this.ConfigId,
       IsAscending: this.pUt
     };
     var e = this.GetSelectBaseSort();
@@ -88,5 +94,5 @@ class SortResultData {
     return t;
   }
 }
-exports.SortResultData = SortResultData;
+(exports.SortResultData = SortResultData).Npd = 0;
 //# sourceMappingURL=SortViewData.js.map

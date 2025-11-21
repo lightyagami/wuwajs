@@ -282,12 +282,12 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AnyCharGravityDirectChanged, this.Entity, this.GravityDirect, this.IsStandardGravity);
     }
   }
-  SetGravityDirectByNumber(t, i, e, s = true) {
+  SetGravityDirectByNumber(t, i, e, s = true, h = -1) {
     this.TmpVector.X = t;
     this.TmpVector.Y = i;
     this.TmpVector.Z = e;
     if (this.TmpVector.Normalize() && !this.GravityDirectInternal.Equals(this.TmpVector)) {
-      t = Math.acos(Vector_1.Vector.DotProduct(this.GravityDirectInternal, this.TmpVector)) / Math.PI * 500;
+      t = h > 0 ? h : Math.acos(Vector_1.Vector.DotProduct(this.GravityDirectInternal, this.TmpVector)) / Math.PI * 500;
       Quat_1.Quat.FindBetween(this.GravityDirectInternal, this.TmpVector, this.TmpQuat);
       this.IsStandardGravityInternal = MathUtils_1.MathUtils.IsNearlyEqual(this.TmpVector.Z, -1);
       if (this.IsStandardGravityInternal) {
@@ -355,7 +355,7 @@ let BaseMoveComponent = BaseMoveComponent_1 = class BaseMoveComponent extends En
   }
   OnStart() {
     this.InitGravityDirect();
-    this.TimeScaleComp = this.Entity.GetComponent(123);
+    this.TimeScaleComp = this.Entity.GetComponent(126);
     return true;
   }
   SetUseDebugMovementSetting(t) {

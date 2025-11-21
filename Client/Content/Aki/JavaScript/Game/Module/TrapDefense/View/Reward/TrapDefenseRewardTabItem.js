@@ -38,12 +38,12 @@ class TrapDefenseRewardTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.eTt = () => {
       this.OnSelected(false);
     };
-    this.MHc = e => {
+    this.a9u = e => {
       if (this.Pe && e !== this.Pe.Type) {
         this.OnDeselected(false);
       }
     };
-    this.ocd = () => {
+    this.RId = () => {
       if (this.Pe) {
         this.GetItem(4)?.SetUIActive(this.Pe.HasRedDot());
       }
@@ -54,12 +54,12 @@ class TrapDefenseRewardTabItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[0, this.eTt]];
   }
   OnStart() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelReward.RegisterOnSelectRewardTypeChange(this.MHc);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RedDotUpdateTrapDefenseLimitReward, this.ocd);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelReward.RegisterOnSelectRewardTypeChange(this.a9u);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RedDotUpdateTrapDefenseLimitReward, this.RId);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RedDotUpdateTrapDefenseLimitReward, this.ocd);
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelReward.UnregisterOnSelectRewardTypeChange(this.MHc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RedDotUpdateTrapDefenseLimitReward, this.RId);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelReward.UnregisterOnSelectRewardTypeChange(this.a9u);
   }
   Refresh(e, t, r) {
     if (e) {

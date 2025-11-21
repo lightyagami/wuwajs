@@ -719,7 +719,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
     if (t?.IsInit && (t = t.Entity) && (i = t.GetComponent(0))) {
       if ((i = i.GetEntityType()) === Protocol_1.Aki.Protocol.kks.Proto_Player || i === Protocol_1.Aki.Protocol.kks.Proto_Monster || i === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
         return this.aIa(1);
-      } else if (e && i === Protocol_1.Aki.Protocol.kks.Proto_SceneItem && t.GetComponent(155)) {
+      } else if (e && i === Protocol_1.Aki.Protocol.kks.Proto_SceneItem && t.GetComponent(158)) {
         return this.aIa(3);
       } else {
         return 0;
@@ -975,7 +975,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
   hWo(e, t, i, l) {
     if (this.Bjo.HasObstaclesCollision && !this.a7o.NeedDestroy && this.a7o.BulletDataMain.Move.FollowType !== 2) {
       var o = ModelManager_1.ModelManager.SceneInteractionModel.GetEntityByActor(e);
-      if (!(o?.Entity?.GetComponent(155) ?? o?.Entity?.GetComponent(163)) && (!e || !(e instanceof UE.KuroEntityActor) && !UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass())) && !(e instanceof UE.TriggerVolume)) {
+      if (!(o?.Entity?.GetComponent(158) ?? o?.Entity?.GetComponent(166)) && (!e || !(e instanceof UE.KuroEntityActor) && !UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass())) && !(e instanceof UE.TriggerVolume)) {
         o = this.Bjo.MapHitActorData.get(e);
         if (!o) {
           o = this.MWo(e);
@@ -1372,9 +1372,9 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
       var i = this.a7o.BulletDataMain;
       if (i.Base.ContinuesCollision && (this.Bjo.HaveCharacterInBullet = true, BulletUtil_1.BulletUtil.SummonBullet(this.a7o, 1, e, true), BulletCollisionUtil_1.BulletCollisionUtil.EntityEnter(this.a7o, e), i.Execution.GeIdApplyToVictim)) {
         var l;
-        var o = this.a7o.Attacker.CheckGetComponent(175);
-        var s = e.CheckGetComponent(175);
-        var r = e.CheckGetComponent(206);
+        var o = this.a7o.Attacker.CheckGetComponent(178);
+        var s = e.CheckGetComponent(178);
+        var r = e.CheckGetComponent(209);
         let t = true;
         if (t = e.GetComponent(0).IsRole() && !e.GetComponent(3).IsRoleAndCtrlByMe ? false : t) {
           for (const n of i.Execution.GeIdApplyToVictim) {
@@ -1393,7 +1393,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
           r = i.TimeScale.TimeScaleOnHit;
           if (i.TimeScale.AreaTimeScale) {
             if (!(this.Bjo.CharacterEntityMap.get(e) > 0)) {
-              if (l = e.GetComponent(123)) {
+              if (l = e.GetComponent(126)) {
                 l = l.SetTimeScale(r.优先级, r.时间膨胀值, r.时间膨胀变化曲线, this.a7o.Duration, 2);
                 this.Bjo.CharacterEntityMap.set(e, l);
               } else {
@@ -1502,7 +1502,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
     if (l.TagName !== StringUtils_1.NONE_STRING) {
       t.Entity.GetComponent(17).SendGameplayEventToActor(l);
     }
-    var E = _.Entity.CheckGetComponent(175);
+    var E = _.Entity.CheckGetComponent(178);
     var s = m.ReBulletData.Execution;
     for (const P of s.SendGeIdToAttacker) {
       E.AddBuff(P, {
@@ -1513,7 +1513,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
         BulletMessageId: h.ContextId
       });
     }
-    var d = u.Entity.GetComponent(175);
+    var d = u.Entity.GetComponent(178);
     if (d?.Valid) {
       for (const g of s.SendGeIdToVictim) {
         d.AddBuff(g, {
@@ -1556,7 +1556,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
       B.AllowedEnergy = false;
     }
     if (s.SendGeIdToRoleInGame) {
-      var U = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.CheckGetComponent(175);
+      var U = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.CheckGetComponent(178);
       if (U) {
         for (const T of s.SendGeIdToRoleInGame) {
           U.AddBuff(T, {
@@ -1603,7 +1603,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
   }
   dtd(t, e) {
     if (t && e) {
-      t = t.GetComponent(203)?.GetInteractionMainActor();
+      t = t.GetComponent(206)?.GetInteractionMainActor();
       if (t) {
         var i = t.ReferenceActors;
         if (i) {
@@ -1721,13 +1721,13 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
           Log_1.Log.Debug("Bullet", 20, "HitSceneItem", ["BulletId", l.BulletRowName], ["EntityId", c], ["VitimEntityId", _]);
         }
         let t = IMatch_1.EBulletPenetrationType.Penetrable;
-        u = s.GetComponent(155);
+        u = s.GetComponent(158);
         if (u) {
           BulletCollisionUtil_1.BulletCollisionUtil.EntityEnter(this.a7o, e.Entity);
           C = u.OnSceneItemHit(B, e);
           v = (t = (t = u.GetPenetrationType()) === undefined ? IMatch_1.EBulletPenetrationType.Penetrable : t) === IMatch_1.EBulletPenetrationType.Penetrable ? o.Logic.DestroyOnHitCharacter : o.Logic.DestroyOnHitObstacle;
           if (C) {
-            BulletUtil_1.BulletUtil.SummonBullet(l, t === IMatch_1.EBulletPenetrationType.Penetrable ? 2 : 1, e.Entity, false);
+            BulletUtil_1.BulletUtil.SummonBullet(l, t === IMatch_1.EBulletPenetrationType.Penetrable ? 1 : 2, e.Entity, false);
             if (v) {
               BulletController_1.BulletController.DestroyBullet(l.BulletEntityId, false);
             }
@@ -1796,7 +1796,7 @@ class BulletCollisionSystem extends BulletSystemBase_1.BulletSystemBase {
         BulletPool_1.BulletPool.RecycleVector(a);
         this.Bjo.ObjectsHitCurrent.set(o, l.LiveTimeCurHit);
         BulletCollisionUtil_1.BulletCollisionUtil.PlayVehicleHitEffect(l, r.HitPosition, r.HitEffectRotation);
-        i.GetComponent(276).OnHit(r, l);
+        i.GetComponent(280).OnHit(r, l);
         BulletUtil_1.BulletUtil.SummonBullet(this.a7o, 1, e.Entity, false, a, l.CollisionInfo.LastFramePosition, false);
         this.$ba(n.Logic.DestroyOnHitCharacter, l.BulletEntityId, "结算时");
       }

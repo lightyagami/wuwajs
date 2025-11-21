@@ -18,7 +18,7 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.Gca = undefined;
     this.OTu = undefined;
     this.kG = new UE.Vector(1, 1, 1);
-    this.Mzu = false;
+    this.IWu = false;
     this.uat = undefined;
     this.j3 = undefined;
     this.Nml = false;
@@ -32,7 +32,7 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.Pst = this.GetSprite(2);
     this.Gca = this.GetItem(5);
     this.OTu = this.GetItem(1);
-    this.SetTranslucence(this.Mzu);
+    this.SetTranslucence(this.IWu);
     this.InitTweenAnim(6);
   }
   OnBeforeDestroy() {
@@ -42,7 +42,7 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     this.SPe = undefined;
     this.Pst = undefined;
     this.OTu = undefined;
-    this.Ezu();
+    this.XWu();
     this.BCe();
   }
   OnBeforeShow() {
@@ -51,16 +51,16 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
   async OnBeforeHideAsync() {
     this.SPe.StopCurrentSequence();
     this.SPe.PlaySequencePurely("Close");
-    this.Ezu();
+    this.XWu();
     this.BCe();
     this.uat = new CustomPromise_1.CustomPromise();
     this.j3 = TimerSystem_1.TimerSystem.Delay(() => {
       this.j3 = undefined;
-      this.Ezu();
+      this.XWu();
     }, CLOSE_ANIM_TIME);
     await this.uat.Promise;
   }
-  Ezu() {
+  XWu() {
     if (this.uat) {
       this.uat.SetResult();
       this.uat = undefined;
@@ -73,17 +73,17 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
     }
   }
   SetTranslucence(i) {
-    this.Mzu = i;
+    this.IWu = i;
     if (this.OTu) {
       if (i) {
         this.bMc(false);
       }
-      this.Izu();
+      this.wZu();
       this.Pst?.SetUIActive(i);
     }
   }
-  Izu() {
-    this.OTu?.SetAlpha(this.Mzu ? 0.5 : 1);
+  wZu() {
+    this.OTu?.SetAlpha(this.IWu ? 0.5 : 1);
   }
   UpdateProgress(i, s) {
     if (this.Pst) {
@@ -92,9 +92,9 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
       this.Gca.SetUIItemScale(this.kG);
       this.GetUiNiagara(3).SetNiagaraVarFloat("Dissolve", i);
       this.GetUiNiagara(4).SetNiagaraVarFloat("Dissolve", i);
-      s = i != 0 && i != 1 && !this.Mzu;
+      s = i != 0 && i != 1 && !this.IWu;
       this.Gca.SetUIActive(s);
-      this.bMc(i < 0.3 && !this.Mzu);
+      this.bMc(i < 0.3 && !this.IWu);
     }
   }
   bMc(i) {
@@ -103,7 +103,7 @@ class SlowTimeUnit extends HudUnitBase_1.HudUnitBase {
         this.PlayTweenAnim(6);
       } else {
         this.StopTweenAnim(6);
-        this.Izu();
+        this.wZu();
       }
     }
   }

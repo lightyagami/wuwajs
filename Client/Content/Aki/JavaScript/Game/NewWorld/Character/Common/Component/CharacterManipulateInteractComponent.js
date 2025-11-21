@@ -136,8 +136,8 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(206);
-    this.$zo = this.Entity.GetComponent(175);
+    this.Lie = this.Entity.GetComponent(209);
+    this.$zo = this.Entity.GetComponent(178);
     this.EIe = this.Entity.GetComponent(0);
     this.gri = CameraController_1.CameraController.FightCamera.GetComponent(5);
     this.tat = CommonParamById_1.configCommonParamById.GetStringConfig("ManipulateInteractEffectPath");
@@ -440,10 +440,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Mts.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(18720, t, t => {
+        Net_1.Net.Call(17926, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 17079);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 20666);
           }
         });
       }
@@ -459,10 +459,10 @@ let CharacterManipulateInteractComponent = CharacterManipulateInteractComponent_
         }
       } else {
         (t = Protocol_1.Aki.Protocol.Dg_.create()).F4n = MathUtils_1.MathUtils.NumberToLong(e);
-        Net_1.Net.Call(27055, t, t => {
+        Net_1.Net.Call(22456, t, t => {
           this.J7r = undefined;
           if (t.Cvs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 21631);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 26359);
           }
         });
       }

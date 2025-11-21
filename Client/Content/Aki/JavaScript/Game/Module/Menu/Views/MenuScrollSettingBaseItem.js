@@ -38,7 +38,7 @@ class MenuScrollSettingBaseItem extends UiPanelBase_1.UiPanelBase {
   OnRemoveEvents() {}
   PlaySequenceFromName(e) {}
   GetItemClickLimit(e) {
-    return !e.GetSelfInteractive() && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotModify"), true);
+    return !e.GetSelfInteractive() && (this.Data?.BtnDisableTipsEnable || (this.Data && this.Data.BtnDisableTips ? ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(this.Data.BtnDisableTips) : ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotModify")), true);
   }
   ExecuteUpdate(e, t) {
     this.Data = e;

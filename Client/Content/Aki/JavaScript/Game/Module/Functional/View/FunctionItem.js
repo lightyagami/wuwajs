@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FunctionItem = undefined;
 const UE = require("ue");
-const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const RedDotController_1 = require("../../../RedDot/RedDotController");
@@ -37,12 +36,8 @@ class FunctionItem extends UiPanelBase_1.UiPanelBase {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), t.FunctionName);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(e);
     this.GetItem(0).SetUIActive(!e);
-    const i = this.GetUiSpriteTransition(3);
-    ResourceSystem_1.ResourceSystem.LoadAsync(t.FunctionIcon, UE.LGUISpriteData_BaseObject, (e, t) => {
-      if (e.IsValid() && i.IsValid()) {
-        i.SetAllTransitionSprite(e);
-      }
-    }, 102);
+    var e = this.GetUiSpriteTransition(3);
+    this.SetSpriteTransitionByPath(t.FunctionIcon, e);
     this.K8e();
   }
   K8e() {

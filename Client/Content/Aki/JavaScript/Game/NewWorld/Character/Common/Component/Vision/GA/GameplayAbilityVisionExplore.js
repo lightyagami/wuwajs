@@ -49,7 +49,6 @@ class GameplayAbilityVisionExplore extends GameplayAbilityVisionBase_1.GameplayA
     this.OZo.SetActorLocationAndRotation(i.op_Addition(e), this.ActorComponent.ActorRotation, "召唤展示生成位置");
     PhantomUtil_1.PhantomUtil.SetVisionEnable(this.VisionComponent.Entity, true, "GameplayAbilityVisionExplore.SetVisionEnable");
     this.aZo(true);
-    this.kZo.SetSkillAcceptInput(true);
     this.kZo.BeginSkill(GameplayAbilityVisionMisc_1.EXPLORE_SKILL_ID, {
       Reason: "GameplayAbilityVisionExplore.PostSummon"
     });

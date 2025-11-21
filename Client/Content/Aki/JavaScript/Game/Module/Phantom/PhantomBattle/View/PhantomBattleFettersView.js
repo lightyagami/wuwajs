@@ -12,6 +12,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../../Ui/UiManager");
+const PhantomUtil_1 = require("../../PhantomUtil");
 const PhantomBattleFettersViewItem_1 = require("./PhantomBattleFettersViewItem");
 class PhantomBattleFettersView extends UiViewBase_1.UiViewBase {
   constructor() {
@@ -28,7 +29,7 @@ class PhantomBattleFettersView extends UiViewBase_1.UiViewBase {
         e.SetActive(true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionFilterMonster);
       } else {
-        UiManager_1.UiManager.CloseAndOpenView(this.Info.Name, "VisionEquipmentView", this.dFe);
+        PhantomUtil_1.PhantomUtil.CloseAndOpenVisionEquipmentView(this.Info.Name, this.dFe);
       }
     };
   }

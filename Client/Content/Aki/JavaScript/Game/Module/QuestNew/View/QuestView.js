@@ -24,12 +24,12 @@ const CommonItemSmallItemGrid_1 = require("../../Common/ItemGrid/CommonItemSmall
 const CommonTabComponentData_1 = require("../../Common/TabComponent/CommonTabComponentData");
 const CommonTabData_1 = require("../../Common/TabComponent/CommonTabData");
 const CommonTabTitleData_1 = require("../../Common/TabComponent/CommonTabTitleData");
-const TabComponentWithTitle_1 = require("../../Common/TabComponent/TabComponentWithTitle");
+const TabComponentWithCaptionItem_1 = require("../../Common/TabComponent/TabComponentWithCaptionItem");
 const CommonTabItem_1 = require("../../Common/TabComponent/TabItem/CommonTabItem");
-const CommonTabItemBase_1 = require("../../Common/TabComponent/TabItem/CommonTabItemBase");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const GeneralLogicTreeController_1 = require("../../GeneralLogicTree/GeneralLogicTreeController");
 const HelpController_1 = require("../../Help/HelpController");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
 const MapUtil_1 = require("../../Map/MapUtil");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiNavigationNewController_1 = require("../../UiNavigation/New/UiNavigationNewController");
@@ -64,7 +64,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       var e;
       if (this.kno) {
         e = ModelManager_1.ModelManager.QuestNewModel.GetQuestDetails(this.kno);
-        this.GetText(9).SetText(e);
+        this.GetText(8).SetText(e);
       }
     };
     this.Oei = t => {
@@ -127,8 +127,18 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         this.zno(0);
       }
     };
+    this.FTm = () => {
+      if (this.kno > 0) {
+        this.Xno(this.kno, false);
+      }
+      if (this.Hno) {
+        for (const e of this.Hno) {
+          e.UpdateAllItem();
+        }
+      }
+    };
     this.Jno = () => {
-      this.GetItem(1).SetUIActive(true);
+      this.GetItem(0).SetUIActive(true);
       this.AH1.Show();
     };
     this.OnStartSequenceEvent = () => {
@@ -174,9 +184,9 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           i = n;
         }
       }
-      this.GetItem(15).SetUIActive(!t);
-      this.GetItem(13).SetUIActive(t);
-      this.GetItem(13).SetAnchorOffset(Vector2D_1.Vector2D.ZeroVector);
+      this.GetItem(14).SetUIActive(!t);
+      this.GetItem(12).SetUIActive(t);
+      this.GetItem(12).SetAnchorOffset(Vector2D_1.Vector2D.ZeroVector);
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Quest", 18, "任务界面是否为空", ["是否为空", t]);
       }
@@ -187,8 +197,8 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         }
       } else {
         this.Ono = false;
-        this.UiViewSequence.StopSequenceByKey("Sle");
-        this.GetItem(1).SetUIActive(false);
+        this.UiViewSequence?.StopSequenceByKey("Sle");
+        this.GetItem(0).SetUIActive(false);
       }
     };
     this.yqe = e => {
@@ -222,7 +232,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this._5e = () => {
-      UiManager_1.UiManager.CloseView(this.Info.Name);
+      this.CloseMe();
     };
     this.OW1 = () => {
       if (this.Fno) {
@@ -247,7 +257,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         switch (i) {
           case 2:
             QuestController_1.QuestNewController.SetVideoResourceDownloadTriggerId(this.kno);
-            UiManager_1.UiManager.OpenView("ResDownLoadView");
+            ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenSubPackageByQuest(this.kno);
             break;
           case 3:
             QuestController_1.QuestNewController.ConfirmQuestResourceRequest(t.Id, () => {
@@ -423,6 +433,9 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         ControllerHolder_1.ControllerHolder.QuestReviewController.OpenQuestReview(e.Id);
       }
     };
+    this.xDd = () => {
+      ControllerHolder_1.ControllerHolder.QuestTreeController.OpenMainView();
+    };
     this.Xno = (e, t) => {
       QuestController_1.QuestNewController.RedDotRequest(e, 0);
       this.kno = e;
@@ -430,28 +443,29 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
         this.UiViewSequence.PlaySequencePurely("Sle");
       }
       t = ModelManager_1.ModelManager.QuestNewModel;
-      this.GetText(7).SetText(t.GetQuestName(e));
-      this.GetText(9).SetText(t.GetQuestDetails(e));
+      this.GetText(6).SetText(t.GetQuestName(e));
+      this.GetText(8).SetText(t.GetQuestDetails(e));
       this.Wmu(e);
       this.oso(e);
       this.rso(e);
       this.$Ma(e);
       this.AH1.SetToggleState(t.IsInFocusOnQuest(this.kno));
       t = ModelManager_1.ModelManager.QuestReviewModel.GetQuestEntryDataByQuestId(e);
-      this.GetButton(30).RootUIComp.SetUIActive(!!t && t.ShouldShow);
+      this.GetButton(29).RootUIComp.SetUIActive(!!t && t.ShouldShow);
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIItem], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIScrollViewWithScrollbarComponent], [19, UE.UIItem], [20, UE.UISprite], [21, UE.UIItem], [22, UE.UISprite], [23, UE.UISprite], [24, UE.UIItem], [25, UE.UISprite], [26, UE.UIText], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[0, this._5e], [16, this.tso], [30, this.XJ1]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIItem], [17, UE.UIScrollViewWithScrollbarComponent], [18, UE.UIItem], [19, UE.UISprite], [20, UE.UIItem], [21, UE.UISprite], [22, UE.UISprite], [23, UE.UIItem], [24, UE.UISprite], [25, UE.UIText], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIButtonComponent], [30, UE.UIButtonComponent]];
+    this.BtnBindInfo = [[15, this.tso], [29, this.XJ1], [30, this.xDd]];
   }
   async OnBeforeStartAsync() {
-    this.GetItem(4).SetUIActive(false);
-    this.GetItem(11).SetUIActive(false);
-    this.GetItem(6).SetUIActive(false);
-    this.GetText(14).SetUIActive(true);
-    this.GetItem(1).SetUIActive(false);
-    this.GetItem(17).SetUIActive(false);
+    this.GetItem(3).SetUIActive(false);
+    this.GetItem(10).SetUIActive(false);
+    this.GetItem(5).SetUIActive(false);
+    this.GetText(13).SetUIActive(true);
+    this.GetItem(0).SetUIActive(false);
+    this.GetItem(16).SetUIActive(false);
+    this.GetButton(30).GetRootComponent().SetUIActive(true);
     this.UiViewSequence.AddSequenceStartEvent("Start", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("ShowView", this.OnStartSequenceEvent);
     this.UiViewSequence.AddSequenceStartEvent("Sle", this.Jno);
@@ -461,14 +475,19 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnQuestRedDotStateChange, 0);
     this.nso();
     await this.sso();
-    await this.Hmu.CreateByActorAsync(this.GetItem(28).GetOwner(), this.OW1);
+    await this.Hmu.CreateByActorAsync(this.GetItem(27).GetOwner(), this.OW1);
     this.Hmu.SetButtonText("InstanceDungeonEntranceCancelTrack", true);
     this.Hmu.Hide();
-    await this.$mu.CreateByActorAsync(this.GetItem(2).GetOwner(), this.qW1);
+    await this.$mu.CreateByActorAsync(this.GetItem(1).GetOwner(), this.qW1);
     this.$mu.Hide();
-    await this.AH1.CreateByActorAsync(this.GetItem(29).GetOwner());
+    await this.AH1.CreateByActorAsync(this.GetItem(28).GetOwner());
     this.AH1.BindToggleCallback(this.PH1, this.xH1);
     this.AH1.Hide();
+    var e = new LogReportDefine_1.QuestViewEnterLogEvent();
+    ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
+  }
+  OnAfterShow() {
+    this.qF1(0);
   }
   OnBeforeDestroy() {
     if (this.Ivt) {
@@ -521,7 +540,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
       var s;
       var o;
       var r = n.MainId;
-      if (!i.get(r) && !(i.set(r, true), s = this.GetItem(10), s = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(17), s), (o = new QuestTypeItem_1.QuestTypeItem()).Init(s, r, this.Oei), this.Hno.push(o), r === 7 && o.IsQuestEmpty())) {
+      if (!i.get(r) && !(i.set(r, true), s = this.GetItem(9), s = LguiUtil_1.LguiUtil.CopyItem(this.GetItem(16), s), (o = new QuestTypeItem_1.QuestTypeItem()).Init(s, r, this.Oei), this.Hno.push(o), r === 7 && o.IsQuestEmpty())) {
         this.Vno.push(n);
       }
     }
@@ -536,7 +555,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
           const i = e.GetQuestItem(t.Id);
           if (i) {
             this.HGn = true;
-            const s = this.GetScrollViewWithScrollbar(18);
+            const s = this.GetScrollViewWithScrollbar(17);
             if (s) {
               s.OnLateUpdate.Bind(e => {
                 TimerSystem_1.GameplayTimerSystem.Next(() => {
@@ -568,8 +587,9 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    this.GetText(9).OnSelfLanguageChange.Bind(this.QuestDescChangeLang);
-    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(9), 1, 3, 1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    this.GetText(8).OnSelfLanguageChange.Bind(this.QuestDescChangeLang);
+    ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlink(this.GetText(8), 1, 3, 1);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UpdateQuestDetails, this.Xno);
@@ -578,22 +598,20 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeCancelSuspend, this.Qno);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnNavigationQuest, this.$no);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ActivityQuestCountdownEnd, this.OGn);
-    this.GetText(9).OnSelfLanguageChange.Unbind();
-    ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(9));
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    this.GetText(8).OnSelfLanguageChange.Unbind();
+    ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(8));
   }
   async sso() {
     const t = new CommonTabComponentData_1.CommonTabComponentData(this.jdi, this.zno, this.yqe);
-    this.Ivt = new TabComponentWithTitle_1.TabComponentWithTitle(this.GetItem(8), t);
-    var i = new Array();
-    for (let e = 0; e < this.Vno.length; e++) {
-      const t = new CommonTabItemBase_1.CommonTabItemData();
-      t.Index = e;
-      t.Data = this.Ivt.GetTabComponentData(e);
+    this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(7), t, this._5e);
+    var i = this.Ivt.CreateTabItemDataByLength(this.Vno.length);
+    for (let e = 0; e < i.length; e++) {
+      const t = i[e];
       t.RedDotName = "QuestTab";
       t.RedDotUid = this.Vno[e].MainId;
-      i.push(t);
     }
-    await this.Ivt.RefreshTabItemByDataAsync(i);
+    await this.Ivt.RefreshTabItemAsync(i);
     this.Ivt.SelectToggleByIndex(ALL_QUEST_TYPE);
   }
   Wfu() {
@@ -615,11 +633,11 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     var s = ModelManager_1.ModelManager.QuestNewModel;
     var o = s.GetQuest(i);
     if (o) {
-      var r = this.GetText(14);
-      var n = this.GetItem(21);
-      var e = this.GetSprite(20);
-      var a = this.GetButton(16);
-      var h = this.GetSprite(22);
+      var r = this.GetText(13);
+      var n = this.GetItem(20);
+      var e = this.GetSprite(19);
+      var a = this.GetButton(15);
+      var h = this.GetSprite(21);
       var _ = (o.FocusSetting?.CanOpenFocusMode ?? false) && o.IsProgressing;
       let t = undefined;
       this.Fno = this.kno === ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id;
@@ -746,7 +764,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   aso(e) {
-    var t = this.GetSprite(23);
+    var t = this.GetSprite(22);
     if (t) {
       const i = t.GetOwner().GetComponentByClass(UE.UISpriteTransition.StaticClass());
       ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
@@ -759,7 +777,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   async oso(e) {
-    var t = this.GetItem(6);
+    var t = this.GetItem(5);
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e);
     if (e && e.HasBehaviorTree()) {
       t.SetUIActive(true);
@@ -777,13 +795,13 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
   rso(e) {
     this.Wno.splice(0, this.Wno.length);
     var e = ModelManager_1.ModelManager.QuestNewModel.GetDisplayRewardInfo(e);
-    var t = this.GetItem(19);
+    var t = this.GetItem(18);
     if (e && e.length !== 0) {
       t.SetUIActive(true);
       if (e) {
         this.Wno = e;
       }
-      const o = this.GetItem(4);
+      const o = this.GetItem(3);
       for (const i of this.sOe) {
         i.SetActive(false);
       }
@@ -809,14 +827,14 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     var i;
     var s;
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuest(e);
-    if (e && (t = this.GetItem(24))) {
+    if (e && (t = this.GetItem(23))) {
       if (e.TagId) {
         if (i = QuestTagById_1.configQuestTagById.GetConfig(e.TagId)) {
-          if (s = this.GetSprite(25)) {
+          if (s = this.GetSprite(24)) {
             this.SetSpriteByPath(i.BgSpritePath, s, false);
             s.SetUIActive(true);
           }
-          if (s = this.GetText(26)) {
+          if (s = this.GetText(25)) {
             LguiUtil_1.LguiUtil.SetLocalTextNew(s, i.Text);
             s.SetUIActive(true);
           }
@@ -844,7 +862,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
               i.GetDefaultItem().SetSelected(false);
             }
             i.GetQuestItem(t).SetSelected(true);
-            this.GetScrollViewWithScrollbar(18).ScrollTo(i.GetRootItem());
+            this.GetScrollViewWithScrollbar(17).ScrollTo(i.GetRootItem());
             this.HGn = false;
             return [t = s.GetTaskToggleItem(), t];
           }
@@ -856,7 +874,7 @@ class QuestView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   GetGuideScrollViewToLock() {
-    return this.GetScrollViewWithScrollbar(18);
+    return this.GetScrollViewWithScrollbar(17);
   }
 }
 exports.QuestView = QuestView;

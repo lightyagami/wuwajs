@@ -118,12 +118,12 @@ class SkillUtils {
       return undefined;
     }
   }
-  static oId(e) {
+  static Pbd(e) {
     if (!EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
       EventSystem_1.EventSystem.AddWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
   }
-  static nId(e) {
+  static Abd(e) {
     if (EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
       EventSystem_1.EventSystem.RemoveWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.zpe);
     }
@@ -138,13 +138,13 @@ class SkillUtils {
           if (skillAbsoluteTimeStopSet.has(e)) {
             CombatLog_1.CombatLog.Error("Skill", i, "重复调用动画和子弹冻结功能，将不做处理");
           } else {
-            this.oId(l);
+            this.Pbd(l);
             skillAbsoluteTimeStopSet.add(e);
             CombatLog_1.CombatLog.Info("Skill", i, "开启大招时停");
             ControllerHolder_1.ControllerHolder.TimeController.AddLock(e, o);
             (r = Protocol_1.Aki.Protocol.Qe_.create()).o5n = true;
             r.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(25343, i, r);
+            CombatMessage_1.CombatNet.Send(16854, i, r);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
             EventSystem_1.EventSystem.EmitWithTarget(i, EventDefine_1.EEventName.OnAbsoluteTimeStop, true, t);
           }
@@ -159,10 +159,10 @@ class SkillUtils {
     if (skillAbsoluteTimeStopSet.has(e) && (skillAbsoluteTimeStopSet.delete(e), ControllerHolder_1.ControllerHolder.TimeController.RemoveLock(e), (e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid)) {
       t = e.Entity;
       CombatLog_1.CombatLog.Info("Skill", t, "结束大招时停");
-      this.nId(e);
+      this.Abd(e);
       (e = Protocol_1.Aki.Protocol.Qe_.create()).o5n = false;
       e.n5n = 0;
-      CombatMessage_1.CombatNet.Send(25343, t, e);
+      CombatMessage_1.CombatNet.Send(16854, t, e);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
       EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnAbsoluteTimeStop, false, 0);
     }
@@ -179,12 +179,12 @@ class SkillUtils {
             CombatLog_1.CombatLog.Error("Skill", l, "重复调用时停请求，将不做处理");
           } else {
             skillTimeStopRequestSet.add(e);
-            this.oId(o);
+            this.Pbd(o);
             CombatLog_1.CombatLog.Info("Skill", l, "开启副本时停");
             Time_1.Time.SetFlowTimeDilation(0);
             for (const i of ModelManager_1.ModelManager.CreatureModel?.GetAllEntities() ?? []) {
               if (i.IsInit) {
-                i.Entity?.GetComponent(175)?.AddPauseLock("ANS AbsoluteTimeStop");
+                i.Entity?.GetComponent(178)?.AddPauseLock("ANS AbsoluteTimeStop");
                 ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet.add(i);
               }
             }
@@ -193,7 +193,7 @@ class SkillUtils {
             e = Protocol_1.Aki.Protocol.Fe_.create();
             e.o5n = true;
             e.n5n = t * TimeUtil_1.TimeUtil.InverseMillisecond;
-            CombatMessage_1.CombatNet.Send(24961, l, e);
+            CombatMessage_1.CombatNet.Send(27239, l, e);
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, true, t);
             EventSystem_1.EventSystem.EmitWithTarget(l, EventDefine_1.EEventName.OnTimeStopRequest, true, t);
           }
@@ -206,7 +206,7 @@ class SkillUtils {
       skillTimeStopRequestSet.delete(e);
       Time_1.Time.SetFlowTimeDilation(ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       for (const o of ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet) {
-        o.Entity?.GetComponent(175)?.RemovePauseLock("ANS AbsoluteTimeStop");
+        o.Entity?.GetComponent(178)?.RemovePauseLock("ANS AbsoluteTimeStop");
       }
       ControllerHolder_1.ControllerHolder.TimeController.TimeStopBuffEntitySet.clear();
       ControllerHolder_1.ControllerHolder.FormationAttributeController.RemovePauseLock("ANS AbsoluteTimeStop");
@@ -216,10 +216,10 @@ class SkillUtils {
       if (e?.Valid) {
         t = e.Entity;
         CombatLog_1.CombatLog.Info("Skill", t, "结束副本时停");
-        this.nId(e);
+        this.Abd(e);
         (e = Protocol_1.Aki.Protocol.Fe_.create()).o5n = false;
         e.n5n = 0;
-        CombatMessage_1.CombatNet.Send(24961, t, e);
+        CombatMessage_1.CombatNet.Send(27239, t, e);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
         EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnTimeStopRequest, false, 0);
       }
@@ -230,7 +230,7 @@ class SkillUtils {
     return e === Protocol_1.Aki.Protocol.kks.Proto_Player || e === Protocol_1.Aki.Protocol.kks.Proto_Npc || e === Protocol_1.Aki.Protocol.kks.Proto_Monster || e === Protocol_1.Aki.Protocol.kks.Proto_Vision;
   }
   static Log(e, t, o, l, ...i) {
-    if (Info_1.Info.IsBuildDevelopmentOrDebug) {
+    if (Info_1.Info.IsPlayInEditor) {
       var r = o.GetComponent(22);
       if (r?.Valid) {
         switch (t) {

@@ -149,12 +149,12 @@ class AdventureGuideView extends UiViewBase_1.UiViewBase {
       h.SetUiActive(false);
     }
     ModelManager_1.ModelManager.AdventureGuideModel.CurrentGuideTabName = this.TabDataList[this.I6e].ChildViewName;
-    var s;
     var a;
+    var s;
     var [, o] = ModelManager_1.ModelManager.AdventureGuideModel.GetCanShowDungeonRecordsByType(63);
     for (const m of o) {
-      if (m.SilentAreaDetectionRecord && (s = m.SilentAreaDetectionRecord.Conf.MapId, a = m.SilentAreaDetectionRecord.Conf.LevelPlayList[0], ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(s, a))) {
-        n.push(ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(s, a));
+      if (m.SilentAreaDetectionRecord && (a = m.SilentAreaDetectionRecord.Conf.MapId, s = m.SilentAreaDetectionRecord.Conf.LevelPlayList[0], ModelManager_1.ModelManager.AdventureGuideModel.IsNightMareHaveConfig(a, s))) {
+        n.push(ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestLevelPlayVarAsync(a, s));
       }
     }
     await Promise.all(n);
@@ -193,6 +193,8 @@ class AdventureGuideView extends UiViewBase_1.UiViewBase {
         i[e].RedDotName = "AdventureNewSoundAreaTab";
       } else if (n === "DisposableChallengeView") {
         i[e].RedDotName = "AdventureChallengeTab";
+      } else if (n === "PeriodicityChallengeView") {
+        i[e].RedDotName = "AdventurePeriodicityTab";
       }
     }
     await this.TabComponent.RefreshTabItemAsync(i);

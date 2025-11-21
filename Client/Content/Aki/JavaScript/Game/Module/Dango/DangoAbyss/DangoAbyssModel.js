@@ -20,6 +20,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const AttributeModel_1 = require("../../Attribute/AttributeModel");
 const ItemDefine_1 = require("../../Item/ItemDefine");
 const AttrListScrollData_1 = require("../../RoleUi/View/ViewData/AttrListScrollData");
+const RoleAttrListScrollData_1 = require("../../RoleUi/View/ViewData/RoleAttrListScrollData");
 const DangoAbyssData_1 = require("./DangoAbyssData");
 const DangoAbyssDefine_1 = require("./DangoAbyssDefine");
 class DangoAbyssModel extends ModelBase_1.ModelBase {
@@ -862,7 +863,7 @@ class DangoAbyssModel extends ModelBase_1.ModelBase {
     var e = this.GetDangoAddPropData(e);
     t.forEach(e => {
       var t = AttributeModel_1.TipsDataTool.GetPropRatioValue(e.Value, e.IsRatio);
-      o.push(new AttrListScrollData_1.AttrListScrollData(e.Id, t, 0, 0, e.IsRatio, 0));
+      o.push(new RoleAttrListScrollData_1.RoleAttrListScrollData(e.Id, t, 0, 0, e.IsRatio, 0));
     });
     e.forEach((e, t) => {
       let r = false;
@@ -874,7 +875,7 @@ class DangoAbyssModel extends ModelBase_1.ModelBase {
         }
       }
       if (!r) {
-        o.push(new AttrListScrollData_1.AttrListScrollData(e.Id, 0, a, 0, e.IsRatio, 0));
+        o.push(new RoleAttrListScrollData_1.RoleAttrListScrollData(e.Id, 0, a, 0, e.IsRatio, 0));
       }
     });
     return o;

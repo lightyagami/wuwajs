@@ -25,7 +25,7 @@ class SpecificScanEffectData {
     this.nQ1 = undefined;
     this.zZt = 0;
     this.sQ1 = 0;
-    this.PFd = 1;
+    this.Ejd = 1;
     this.aQ1 = new Set();
     this.hQ1 = new Set();
     this.Id = e;
@@ -33,7 +33,7 @@ class SpecificScanEffectData {
     this.nQ1 = i;
     this.zZt = 0;
     this.sQ1 = 0;
-    this.PFd = a;
+    this.Ejd = a;
   }
   Update(e) {
     this.zZt += e * TimeUtil_1.TimeUtil.Millisecond;
@@ -55,9 +55,9 @@ class SpecificScanEffectData {
       var i = SpecificScanEffectData.bsr.HitResult.Actors;
       for (let e = 0; e < i.Num(); e++) {
         var a = i.Get(e);
-        if (a !== undefined && a !== t && !this.aQ1.has(a) && !(ControllerHolder_1.ControllerHolder.LevelGamePlayController.HandleScanResponse(a, this.PFd) && this.aQ1.add(a), !a.IsA(TsBaseCharacter_1.default.StaticClass())) && (a = a).Camp !== 0 && !this.hQ1.has(a)) {
+        if (a !== undefined && a !== t && !this.aQ1.has(a) && !(ControllerHolder_1.ControllerHolder.LevelGamePlayController.HandleScanResponse(a, this.Ejd) && this.aQ1.add(a), !a.IsA(TsBaseCharacter_1.default.StaticClass())) && (a = a).Camp !== 0 && !this.hQ1.has(a)) {
           this.hQ1.add(a);
-          if ((a = EntitySystem_1.EntitySystem.GetComponent(a.EntityId, 206))?.Valid) {
+          if ((a = EntitySystem_1.EntitySystem.GetComponent(a.EntityId, 209))?.Valid) {
             a.AddTag(184255089);
           }
         }

@@ -17,6 +17,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiLayer_1 = require("../../../Ui/UiLayer");
 const UiManager_1 = require("../../../Ui/UiManager");
+const PhantomUtil_1 = require("../../Phantom/PhantomUtil");
 const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const RoleController_1 = require("../RoleController");
@@ -100,7 +101,7 @@ class RoleVisionTabView extends UiTabViewBase_1.UiTabViewBase {
           this.uHi();
           this.I7i();
           AudioSystem_1.AudioSystem.PostEvent("ui_vision_item_click");
-          UiManager_1.UiManager.OpenView("VisionEquipmentView", t.GetRoleId());
+          PhantomUtil_1.PhantomUtil.OpenVisionEquipmentView(t.GetRoleId());
           this.UiViewSequence.PlaySequencePurely("HideView");
         }
       }

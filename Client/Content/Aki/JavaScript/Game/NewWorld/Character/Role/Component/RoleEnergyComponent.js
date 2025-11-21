@@ -32,14 +32,14 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
     super(...arguments);
     this.n$t = undefined;
     this.$te = undefined;
-    this.had = true;
+    this.Rud = true;
     this.Qin = (t, e, r) => {
       this.RefreshStarScarMaterial();
     };
   }
   OnStart() {
     this.n$t = this.Entity.CheckGetComponent(3);
-    this.$te = this.Entity.CheckGetComponent(174);
+    this.$te = this.Entity.CheckGetComponent(177);
     this.$te.AddListeners(energyAttrIds, this.Qin, "RoleEnergyComponent");
     this.Qin();
     return true;
@@ -51,15 +51,15 @@ let RoleEnergyComponent = class RoleEnergyComponent extends EntityComponent_1.En
   RefreshStarScarMaterial() {
     var t;
     var e;
-    if (this.had) {
+    if (this.Rud) {
       t = this.$te.GetCurrentValue(EAttributeId.Proto_Energy);
       e = this.$te.GetCurrentValue(EAttributeId.Proto_EnergyMax);
       this.n$t.Actor?.CharRenderingComponent.SetStarScarEnergy(t / e);
     }
   }
   SetEnableRefreshStarScarByEnergy(t) {
-    this.had = t;
+    this.Rud = t;
   }
 };
-RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(93)], RoleEnergyComponent);
+RoleEnergyComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(95)], RoleEnergyComponent);
 exports.RoleEnergyComponent = RoleEnergyComponent; //# sourceMappingURL=RoleEnergyComponent.js.map

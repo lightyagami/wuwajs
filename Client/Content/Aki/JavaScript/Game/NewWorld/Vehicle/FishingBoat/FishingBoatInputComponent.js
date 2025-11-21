@@ -52,5 +52,5 @@ let FishingBoatInputComponent = class FishingBoatInputComponent extends Gongduol
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
   }
 };
-FishingBoatInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(248)], FishingBoatInputComponent);
+FishingBoatInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(251)], FishingBoatInputComponent);
 exports.FishingBoatInputComponent = FishingBoatInputComponent; //# sourceMappingURL=FishingBoatInputComponent.js.map

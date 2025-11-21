@@ -46,6 +46,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t = undefined;
     this.V7t = undefined;
     this._4_ = undefined;
+    this.HKd = undefined;
     this.gLt = undefined;
     this.TCc = undefined;
     this.P31 = undefined;
@@ -96,6 +97,10 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     };
     this.oHt = () => {
       CommonInputViewController_1.CommonInputViewController.OpenSetRoleNameInputView();
+    };
+    this.UEd = () => {
+      UiManager_1.UiManager.OpenView("PersonalEditView", 2);
+      this.gLt?.SetToggleState();
     };
     this.rHt = () => {
       var e;
@@ -182,6 +187,8 @@ class FunctionView extends UiViewBase_1.UiViewBase {
   }
   async OnBeforeStartAsync() {
     this.gLt = new PlayerTitleItem_1.PlayerTitleItem();
+    this.gLt.CallBack = this.UEd;
+    this.gLt.CanShowTip = false;
     await this.gLt.CreateThenShowByActorAsync(this.GetItem(38).GetOwner());
     this.Gac();
     this.P31 = new FunctionResDownLoadItem_1.FunctionResDownLoadItem();
@@ -196,6 +203,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.ovt = new NoCircleAttachView_1.NoCircleAttachView(this.GetItem(10).GetOwner());
     var e = this.GetItem(29);
     e.SetUIActive(false);
+    this.mKu();
     this.ovt.CreateItems(e.GetOwner(), 0, this.CHt);
     this.ovt.SetDragBeginCallback(this.sHt);
     this.ovt.SetMoveMultiFactor(50);
@@ -203,10 +211,11 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(8).RootUIComp, "FunctionMail");
     this.V7t = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(15).RootUIComp, "FunctionNotice");
     this._4_ = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(20).RootUIComp, "FunctionPhotograph");
+    this.HKd = new FunctionBottomButtonItem_1.FunctionBottomButtonItem(this.GetButton(13).RootUIComp, "FunctionSetting");
     this.TCc = new PreDownloadButton_1.PreDownloadButtonItemB(this.GetButton(37).RootUIComp);
     var e = ModelManager_1.ModelManager.FunctionModel.IsOpen(10060);
     this.GetButton(21).RootUIComp.SetRaycastTarget(e);
-    this.Aqu();
+    this.$Vu();
     this.gHt();
     var e = this.ovt.GetCurrentSelectIndex();
     this.BNe(e);
@@ -215,6 +224,14 @@ class FunctionView extends UiViewBase_1.UiViewBase {
       this.GetButton(14)?.SetSelfInteractive(false);
       this.GetSprite(36)?.SetUIActive(false);
     }
+  }
+  mKu() {
+    var e = this.GetGridLayout(30);
+    var t = e.GetCellSize();
+    var e = e.GetSpacing();
+    var t = t.X + e.X;
+    var e = this.THt().HorizontalGridNum * t;
+    this.GetItem(10)?.SetWidth(e);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CurWorldLevelChange, this.aHt);
@@ -247,7 +264,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.O7t.SetUIActive(this.fHt(e));
     this.k7t.SetUIActive(this.pHt(e));
   }
-  Aqu() {
+  $Vu() {
     let e = true;
     if (CloudGameManager_1.CloudGameManager.IsCloudGame || Info_1.Info.IsPs5Platform()) {
       e = false;
@@ -296,6 +313,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
   }
   OnAfterShow() {
     this.EHt();
+    this.DUd();
   }
   OnAfterHide() {
     this.Ovt();
@@ -308,6 +326,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.Destroy();
     this.V7t.Destroy();
     this._4_.Destroy();
+    this.HKd.Destroy();
     this.gLt.Destroy();
     this.TCc.Destroy();
     this.P31.EndShow();
@@ -317,6 +336,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.BindRedDot();
     this.V7t.BindRedDot();
     this._4_.BindRedDot();
+    this.HKd.BindRedDot();
     this.TCc.BindRedDot();
     RedDotController_1.RedDotController.BindRedDot("PersonalInfo", this.GetItem(34));
   }
@@ -324,6 +344,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     this.F7t.UnBindRedDot();
     this.V7t.UnBindRedDot();
     this._4_.UnBindRedDot();
+    this.HKd.UnBindRedDot();
     this.TCc.UnBindRedDot();
     RedDotController_1.RedDotController.UnBindGivenUi("PersonalInfo", this.GetItem(34));
   }
@@ -495,6 +516,9 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.PreDownloadModel.IsPreDownloadAvailable() || ModelManager_1.ModelManager.PreDownloadModel.IsComplete();
     this.GetButton(37)?.RootUIComp.SetUIActive(e);
   }
+  DUd() {
+    ControllerHolder_1.ControllerHolder.ParallelPackageController.TryShowParallelPackageUpdateConfirmBox(0);
+  }
   EHt() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Functional", 10, "功能开启界面Start阶段计算数据输出", ["剩余宽度", this.j7t.OffsetWidth], ["显示数量", this.j7t.TotalGridNumber]);
@@ -525,7 +549,7 @@ class FunctionView extends UiViewBase_1.UiViewBase {
     };
   }
   PF1() {
-    if (ModelManager_1.ModelManager.ResDownLoadModel.NeedShowBattleViewButton()) {
+    if (ModelManager_1.ModelManager.SubPackageDownLoadModel.NeedShowBattleViewButton()) {
       this.P31?.SetUiActive(true);
       this.P31?.StartShow();
     } else {

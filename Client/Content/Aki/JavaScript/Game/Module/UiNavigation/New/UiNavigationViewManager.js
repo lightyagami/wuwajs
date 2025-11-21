@@ -11,6 +11,7 @@ const Log_1 = require("../../../../Core/Common/Log");
 const TickSystem_1 = require("../../../../Core/Tick/TickSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiNavigationDefine_1 = require("./UiNavigationDefine");
 const UiNavigationGlobalData_1 = require("./UiNavigationGlobalData");
@@ -270,6 +271,21 @@ class UiNavigationViewManager {
   static CanFocusViewHandle(i) {
     return !this.Xbo?.HasGamepadControlMouse() || this.Xbo === i;
   }
+  static gEm(i, a = false) {
+    if (!Info_1.Info.IsInTouch()) {
+      if (i?.IsValid()) {
+        ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(i, a);
+        this.CacheUiItem = undefined;
+        this.CacheCheckDirty = false;
+      }
+    }
+  }
+  static SetNavigationFocusForView(i, a = false) {
+    if (!Info_1.Info.IsInTouch()) {
+      this.CacheUiItem = i;
+      this.CacheCheckDirty = a;
+    }
+  }
 }
 exports.UiNavigationViewManager = UiNavigationViewManager;
 (_a = UiNavigationViewManager).Xbo = undefined;
@@ -288,6 +304,7 @@ UiNavigationViewManager.l4_ = i => {
   UiNavigationViewManager.$bo();
   UiNavigationViewManager.eqo();
   UiNavigationViewManager.tqo();
+  UiNavigationViewManager.gEm(_a.CacheUiItem, _a.CacheCheckDirty);
 };
 UiNavigationViewManager.Bbo = (i, a) => {
   a = a.GetComponentByClass(UE.TsUiNavigationPanelConfig_C.StaticClass());
@@ -316,4 +333,6 @@ UiNavigationViewManager.qbo = () => {
     _a.Xbo.ResetNavigationListener();
     ModelManager_1.ModelManager.UiNavigationModel.MarkMoveInstantly();
   }
-}; //# sourceMappingURL=UiNavigationViewManager.js.map
+};
+UiNavigationViewManager.CacheUiItem = undefined;
+UiNavigationViewManager.CacheCheckDirty = false; //# sourceMappingURL=UiNavigationViewManager.js.map

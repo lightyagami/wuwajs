@@ -16,7 +16,7 @@ class FloroRanchTechDetailPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.Data = undefined;
-    this.bqu = undefined;
+    this.zFu = undefined;
     this.UnlockSuccessCallback = e => {};
     this.YUu = () => {
       if (ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().GetTechnologyCoinNum() < this.Data.Cost) {
@@ -42,8 +42,8 @@ class FloroRanchTechDetailPanel extends UiPanelBase_1.UiPanelBase {
       ReportType: 8
     };
     ControllerHolder_1.ControllerHolder.TermExplanationController.RegisterTextHyperlinkByParam(e);
-    this.bqu = new ButtonItem_1.ButtonItem(this.GetItem(4));
-    this.bqu.SetFunction(this.YUu);
+    this.zFu = new ButtonItem_1.ButtonItem(this.GetItem(4));
+    this.zFu.SetFunction(this.YUu);
   }
   OnBeforeDestroy() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(2));
@@ -62,8 +62,8 @@ class FloroRanchTechDetailPanel extends UiPanelBase_1.UiPanelBase {
     i.SetChangeColor(r < e.Cost, i.changeColor);
     this.GetItem(7).SetUIActive(!e.IsUnLock);
     var i = t.IsPreNodeAllUnlock(e);
-    this.bqu?.SetUiActive(!e.IsUnLock && i);
-    this.bqu?.SetRedDotVisible(r >= e.Cost && !e.IsUnLock && i);
+    this.zFu?.SetUiActive(!e.IsUnLock && i);
+    this.zFu?.SetRedDotVisible(r >= e.Cost && !e.IsUnLock && i);
     this.GetItem(6).SetUIActive(!i);
     this.GetItem(5).SetUIActive(e.IsUnLock);
     this.GetSprite(8)?.SetUIActive(e.IsUnLock);

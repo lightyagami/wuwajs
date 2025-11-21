@@ -17,22 +17,22 @@ class SpecialEnergyBarYouNuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
     super(...arguments);
     this.Rdt = undefined;
     this.DP_ = false;
-    this.Icd = false;
-    this.Tcd = false;
-    this.udd = false;
+    this.Ebd = false;
+    this.Ibd = false;
+    this.FAd = false;
     this.ac = 0;
-    this.bcd = -1;
-    this.Rcd = (t, s) => {
-      this.Icd = s;
+    this.Tbd = -1;
+    this.bbd = (t, s) => {
+      this.Ebd = s;
       this._Oe();
     };
-    this.wcd = (t, s) => {
-      this.Tcd = s;
+    this.Rbd = (t, s) => {
+      this.Ibd = s;
       this._Oe();
     };
-    this.cdd = (t, s) => {
-      this.udd = s;
-      this.Rdt.SetKeyItemEnable(0, this.udd, true);
+    this.NAd = (t, s) => {
+      this.FAd = s;
+      this.Rdt.SetKeyItemEnable(0, this.FAd, true);
     };
   }
   OnRegisterComponent() {
@@ -55,17 +55,17 @@ class SpecialEnergyBarYouNuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
     this.InitTweenAnim(6);
     this.InitTweenAnim(7);
     this.InitTweenAnim(8);
-    this.Icd = this.TagComponent?.HasTag(quarterMoonTag) ?? false;
-    this.Tcd = this.TagComponent?.HasTag(newMoonTag) ?? false;
-    this.udd = this.TagComponent?.HasTag(normalSkillEnableTag) ?? false;
+    this.Ebd = this.TagComponent?.HasTag(quarterMoonTag) ?? false;
+    this.Ibd = this.TagComponent?.HasTag(newMoonTag) ?? false;
+    this.FAd = this.TagComponent?.HasTag(normalSkillEnableTag) ?? false;
     this.Gdl(true);
-    this.Rdt.SetKeyItemEnable(0, this.udd, true);
+    this.Rdt.SetKeyItemEnable(0, this.FAd, true);
   }
   AddEvents() {
     super.AddEvents();
-    this.ListenForTagAddOrRemoveChanged(quarterMoonTag, this.Rcd);
-    this.ListenForTagAddOrRemoveChanged(newMoonTag, this.wcd);
-    this.ListenForTagAddOrRemoveChanged(normalSkillEnableTag, this.cdd);
+    this.ListenForTagAddOrRemoveChanged(quarterMoonTag, this.bbd);
+    this.ListenForTagAddOrRemoveChanged(newMoonTag, this.Rbd);
+    this.ListenForTagAddOrRemoveChanged(normalSkillEnableTag, this.NAd);
   }
   OnBarPercentChanged() {
     this.Gdl();
@@ -76,10 +76,10 @@ class SpecialEnergyBarYouNuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
   Gdl(t = false) {
     var s = this.PercentMachine.GetCurPercent();
     this.DP_ = s >= 1;
-    this.tmd(s);
+    this.$2d(s);
     this._Oe(t);
   }
-  tmd(t) {
+  $2d(t) {
     if (this.ac === 3) {
       this.GetUiNiagara(9).SetNiagaraVarFloat("Dissolve", Math.min(t * 2, 1));
       this.GetUiNiagara(10).SetNiagaraVarFloat("Dissolve", Math.max(t * 2 - 1, 0));
@@ -87,9 +87,9 @@ class SpecialEnergyBarYouNuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
   }
   _Oe(t = false) {
     let e = 0;
-    if (this.Icd) {
+    if (this.Ebd) {
       e = 2;
-    } else if (this.Tcd) {
+    } else if (this.Ibd) {
       e = 3;
     } else if (this.DP_) {
       e = 1;
@@ -99,34 +99,34 @@ class SpecialEnergyBarYouNuo extends SpecialEnergyBarBase_1.SpecialEnergyBarBase
         Log_1.Log.Debug("Battle", 17, "尤诺能量条状态改变", ["[1满,2弦月,3新月]", e]);
       }
       this.ac = e;
-      if (this.bcd >= 0) {
-        this.StopTweenAnim(this.bcd);
-        this.bcd = -1;
+      if (this.Tbd >= 0) {
+        this.StopTweenAnim(this.Tbd);
+        this.Tbd = -1;
       }
       let t = 1.1;
       let s = 0;
       let i = 0;
       switch (this.ac) {
         case 0:
-          this.bcd = 8;
+          this.Tbd = 8;
           break;
         case 1:
-          this.bcd = 5;
+          this.Tbd = 5;
           break;
         case 2:
           s = 1;
           i = 1;
-          this.bcd = 6;
+          this.Tbd = 6;
           break;
         case 3:
           s = 2;
           i = 2;
-          this.bcd = 7;
+          this.Tbd = 7;
           t = 0;
-          this.tmd(this.PercentMachine.GetCurPercent());
+          this.$2d(this.PercentMachine.GetCurPercent());
       }
-      if (this.bcd >= 0) {
-        this.PlayTweenAnim(this.bcd);
+      if (this.Tbd >= 0) {
+        this.PlayTweenAnim(this.Tbd);
       }
       if (this.Rdt) {
         this.Rdt.SetKeyItemType(s);

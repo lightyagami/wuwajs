@@ -28,6 +28,7 @@ const FlowActionJumpTalk_1 = require("../FlowActions/FlowActionJumpTalk");
 const FlowActionLeisureInteract_1 = require("../FlowActions/FlowActionLeisureInteract");
 const FlowActionLevelSyncAction_1 = require("../FlowActions/FlowActionLevelSyncAction");
 const FlowActionLockTodTime_1 = require("../FlowActions/FlowActionLockTodTime");
+const FlowActionNpcLeisureInteract_1 = require("../FlowActions/FlowActionNpcLeisureInteract");
 const FlowActionOpenQuestChapterView_1 = require("../FlowActions/FlowActionOpenQuestChapterView");
 const FlowActionOpenSimpleGameplay_1 = require("../FlowActions/FlowActionOpenSimpleGameplay");
 const FlowActionOpenSystemBoard_1 = require("../FlowActions/FlowActionOpenSystemBoard");
@@ -121,6 +122,7 @@ class FlowActionCenter extends ControllerAssistantBase_1.ControllerAssistantBase
     this.SXi("FlowDefineNpcGroupPerform", FlowActionSetNpcGroupPerform_1.FlowActionSetNpcGroupPerform);
     this.SXi("TrapDefenseChangeMiniMap", FlowActionChangeTrapDefenseMiniMap_1.FlowActionChangeTrapDefenseMiniMap, true);
     this.SXi("ClientPreEnableSubLevels", FlowActionPreEnableSubLevel_1.FlowActionPreEnableSubLevel);
+    this.SXi("NpcLeisureInteract", FlowActionNpcLeisureInteract_1.FlowActionNpcLeisureInteract, true);
   }
   SXi(t, o, e = false) {
     var i;

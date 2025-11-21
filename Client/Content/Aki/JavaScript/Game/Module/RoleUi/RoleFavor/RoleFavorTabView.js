@@ -16,7 +16,6 @@ const UiManager_1 = require("../../../Ui/UiManager");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const RoleController_1 = require("../RoleController");
-const RoleFavorDefine_1 = require("./RoleFavorDefine");
 class RoleFavorTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -25,80 +24,90 @@ class RoleFavorTabView extends UiTabViewBase_1.UiTabViewBase {
       var e = this.d1o.GetCurSelectRoleId();
       var i = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(e);
       var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e);
-      var r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(e.Name);
+      var o = ConfigManager_1.ConfigManager.RoleConfig.GetRoleName(e.Name);
       var t = this.GetText(1);
-      var o = this.GetText(2);
+      var r = this.GetText(2);
       var a = this.GetText(0);
       var e = e.PartyId !== 9;
       t.SetUIActive(e);
-      o.SetUIActive(e);
+      r.SetUIActive(e);
       this.GetButton(6).RootUIComp.SetUIActive(e);
       this.GetButton(3).RootUIComp.SetUIActive(e);
       if (e) {
-        a.SetText(r);
+        a.SetText(o);
       } else {
         a.SetText(i.GetName());
       }
       var e = i.GetFavorData();
-      var r = e.GetFavorLevel();
-      LguiUtil_1.LguiUtil.SetLocalText(t, "FavorLevel", r);
-      var a = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorLevelConfig(r);
+      var o = e.GetFavorLevel();
+      LguiUtil_1.LguiUtil.SetLocalText(t, "FavorLevel", o);
+      var a = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorLevelConfig(o);
       var i = e.GetFavorExp();
       if (a) {
-        LguiUtil_1.LguiUtil.SetLocalText(o, "RoleExp", i, a.LevelUpExp);
+        LguiUtil_1.LguiUtil.SetLocalText(r, "RoleExp", i, a.LevelUpExp);
       } else {
-        t = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorLevelConfig(r - 1).LevelUpExp;
-        LguiUtil_1.LguiUtil.SetLocalText(o, "RoleExp", t, t);
+        t = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorLevelConfig(o - 1).LevelUpExp;
+        LguiUtil_1.LguiUtil.SetLocalText(r, "RoleExp", t, t);
       }
       this.BNe();
     };
     this.BNe = () => {
       var e = this.d1o.GetCurSelectRoleData().GetFavorData();
-      this.GetItem(7).SetUIActive(e.IsFavorItemCanUnlock(1));
+      this.GetItem(7).SetUIActive(e.IsFavorItemCanUnlock(2));
       this.GetItem(8).SetUIActive(e.IsFavorItemCanUnlock(0));
-      this.GetItem(9).SetUIActive(e.IsFavorItemCanUnlock(2));
-      this.GetItem(10).SetUIActive(e.IsFavorItemCanUnlock(3));
+      this.GetItem(9).SetUIActive(e.IsFavorItemCanUnlock(3));
+      this.GetItem(10).SetUIActive(e.IsFavorItemCanUnlock(4));
     };
     this.OnClickExperienceButton = () => {
       var e = this.d1o.GetCurSelectRoleId();
-      var i = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorRoleInfoConfig(e);
-      if (i) {
-        i = new RoleFavorDefine_1.ContentItemData(1, e, i, 1);
-        UiManager_1.UiManager.OpenView("RoleFavorInfoView", i);
+      if (ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorRoleInfoConfig(e)) {
+        UiManager_1.UiManager.OpenView("RoleFavorInfoView", {
+          RoleId: e,
+          FavorTabType: 1
+        });
       } else if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorRoleInfo找不到！！！", ["角色Id", e]);
+        Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorRoleInfo找不到!!!", ["角色Id", e]);
       }
     };
     this.OnClickVoiceButton = () => {
-      var e = this.BuildContentItemData(0, 1);
-      if (e.Config) {
-        UiManager_1.UiManager.OpenView("RoleFavorInfoView", e);
+      const e = this.d1o.GetCurSelectRoleId();
+      if (ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorWordConfig(e, 1)[0]) {
+        UiManager_1.UiManager.OpenView("RoleFavorInfoView", {
+          RoleId: e,
+          FavorTabType: 0
+        });
       } else {
-        e = this.d1o.GetCurSelectRoleId();
+        const e = this.d1o.GetCurSelectRoleId();
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorWord找不到！！！", ["角色Id", e]);
+          Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorWord找不到!!!", ["角色Id", e]);
         }
       }
     };
     this.OnClickActionButton = () => {
-      var e = this.BuildContentItemData(2, 1);
-      if (e.Config) {
-        UiManager_1.UiManager.OpenView("RoleFavorInfoView", e);
+      const e = this.d1o.GetCurSelectRoleId();
+      if (ConfigManager_1.ConfigManager.MotionConfig.GetRoleMotionByType(e, 1)[0]) {
+        UiManager_1.UiManager.OpenView("RoleFavorInfoView", {
+          RoleId: e,
+          FavorTabType: 2
+        });
       } else {
-        e = this.d1o.GetCurSelectRoleId();
+        const e = this.d1o.GetCurSelectRoleId();
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Role", 43, "该角色的好感度配置Motion找不到！！！", ["角色Id", e]);
+          Log_1.Log.Error("Role", 43, "该角色的好感度配置Motion找不到!!!", ["角色Id", e]);
         }
       }
     };
     this.OnClickPreciousItemButton = () => {
-      var e = this.BuildContentItemData(3, undefined);
-      if (e.Config) {
-        UiManager_1.UiManager.OpenView("RoleFavorInfoView", e);
+      const e = this.d1o.GetCurSelectRoleId();
+      if (ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorGoodsConfig(e)[0]) {
+        UiManager_1.UiManager.OpenView("RoleFavorInfoView", {
+          RoleId: e,
+          FavorTabType: 3
+        });
       } else {
-        e = this.d1o.GetCurSelectRoleId();
+        const e = this.d1o.GetCurSelectRoleId();
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorGoods找不到！！！", ["角色Id", e]);
+          Log_1.Log.Error("Role", 43, "该角色的好感度配置FavorGoods找不到!!!", ["角色Id", e]);
         }
       }
     };
@@ -151,29 +160,6 @@ class RoleFavorTabView extends UiTabViewBase_1.UiTabViewBase {
     if (e) {
       return e.GetAnimInstance().GetLinkedAnimGraphInstanceByTag(CharacterNameDefines_1.CharacterNameDefines.ABP_BASE);
     }
-  }
-  BuildContentItemData(e, i) {
-    var r = this.d1o.GetCurSelectRoleId();
-    var t = this.GetConfigByFavorTabType(e);
-    return new RoleFavorDefine_1.ContentItemData(e, r, t, i);
-  }
-  GetConfigByFavorTabType(e) {
-    var i = this.d1o.GetCurSelectRoleId();
-    let r = undefined;
-    switch (e) {
-      case 2:
-        r = ConfigManager_1.ConfigManager.MotionConfig.GetRoleMotionByType(i, 1)[0];
-        break;
-      case 1:
-        r = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorRoleInfoConfig(i);
-        break;
-      case 3:
-        r = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorGoodsConfig(i)[0];
-        break;
-      case 0:
-        r = ConfigManager_1.ConfigManager.RoleFavorConfig.GetFavorWordConfig(i, 1)[0];
-    }
-    return r;
   }
 }
 exports.RoleFavorTabView = RoleFavorTabView;

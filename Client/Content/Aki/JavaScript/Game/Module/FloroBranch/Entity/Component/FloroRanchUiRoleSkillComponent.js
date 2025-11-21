@@ -29,20 +29,20 @@ const FloroRanchUiItemBaseComponent_1 = require("./FloroRanchUiItemBaseComponent
 let FloroRanchUiRoleSkillComponent = class FloroRanchUiRoleSkillComponent extends FloroRanchUiItemBaseComponent_1.FloroRanchUiItemBaseComponent {
   constructor() {
     super(...arguments);
-    this.hOu = undefined;
+    this.hqu = undefined;
   }
   GetUiItem() {
-    if (!this.hOu) {
+    if (!this.hqu) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("FloroRanchGamePlay", 78, "FloroRanchUiRoleSkillComponent GetUiItem 实体不存在", ["entityId", this.OwnerEntity.EntityId]);
       }
     }
-    return this.hOu;
+    return this.hqu;
   }
   async PlayShowAnim() {
-    this.hOu ||= await this.CreateUiItem();
-    await this.hOu.PlayShowAnim();
-    return this.hOu;
+    this.hqu ||= await this.CreateUiItem();
+    await this.hqu.PlayShowAnim();
+    return this.hqu;
   }
   async CreateUiItem() {
     var e = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
@@ -51,30 +51,30 @@ let FloroRanchUiRoleSkillComponent = class FloroRanchUiRoleSkillComponent extend
     }
   }
   async PlayHideAnim() {
-    if (this.hOu) {
-      await this.hOu.PlayHideAnim();
-      this.hOu.UnbindData();
-      this.hOu = undefined;
+    if (this.hqu) {
+      await this.hqu.PlayHideAnim();
+      this.hqu.UnbindData();
+      this.hqu = undefined;
     }
   }
   async PlayNormalAnim() {
-    if (this.hOu) {
-      await this.hOu.PlayNormalAnim();
+    if (this.hqu) {
+      await this.hqu.PlayNormalAnim();
     }
   }
   async PlaySkillAnim() {
-    if (this.hOu) {
-      await this.hOu.PlaySkillAnim();
+    if (this.hqu) {
+      await this.hqu.PlaySkillAnim();
     }
   }
   Pause() {
-    if (this.hOu) {
-      this.hOu.Pause();
+    if (this.hqu) {
+      this.hqu.Pause();
     }
   }
   Resume() {
-    if (this.hOu) {
-      this.hOu.Resume();
+    if (this.hqu) {
+      this.hqu.Resume();
     }
   }
 };

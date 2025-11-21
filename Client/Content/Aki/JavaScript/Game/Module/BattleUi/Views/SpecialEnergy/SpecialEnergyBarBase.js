@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SpecialEnergyBarBase = undefined;
 const UE = require("ue");
+const ActorSystem_1 = require("../../../../../Core/Actor/ActorSystem");
 const CustomPromise_1 = require("../../../../../Core/Common/CustomPromise");
 const Info_1 = require("../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../Core/Common/Log");
@@ -56,9 +57,9 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
       Log_1.Log.Debug("Battle", 17, "加载特殊能量条", ["path", i]);
     }
     this.PrefabPath = i;
-    i = await BattleUiControl_1.BattleUiControl.Pool.LoadActor(i, t);
+    i = await BattleUiControl_1.BattleUiControl.Pool.LoadActorNoCache(i, t);
     if (this.Destroyed) {
-      BattleUiControl_1.BattleUiControl.Pool.RecycleSingleActor(i);
+      ActorSystem_1.ActorSystem.Put("SpecialEnergyBar Has Destroyed", i);
     } else {
       await this.CreateByActorAsync(i);
       this.AddEvents();
@@ -167,17 +168,21 @@ class SpecialEnergyBarBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBarPercentChanged() {}
   ListenForAttributeChanged(t, i) {
-    var e = this.RoleData?.AttributeComponent;
-    if (e) {
-      e.AddListener(t, i);
-      this.GYe.set(t, i);
+    var e;
+    if (!(t <= 0)) {
+      if (e = this.RoleData?.AttributeComponent) {
+        e.AddListener(t, i);
+        this.GYe.set(t, i);
+      }
     }
   }
   RemoveListenAttributeChanged(t, i) {
-    var e = this.AttributeComponent;
-    if (e) {
-      e.RemoveListener(t, i);
-      this.GYe.delete(t);
+    var e;
+    if (!(t <= 0)) {
+      if (e = this.AttributeComponent) {
+        e.RemoveListener(t, i);
+        this.GYe.delete(t);
+      }
     }
   }
   kYe() {

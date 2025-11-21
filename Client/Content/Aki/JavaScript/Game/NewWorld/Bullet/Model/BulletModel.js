@@ -113,13 +113,13 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.IsSceneBulletOwnerCreated = false;
     this.ala = undefined;
     this.Aal = undefined;
-    this.a$d = undefined;
-    this.h$d = undefined;
+    this.Iim = undefined;
+    this.Tim = undefined;
     this.zpe = (t, e) => {
       var l;
       var e = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(e.Id);
-      if (this.h$d.has(e) && (l = this.h$d.get(e), this.h$d.delete(e), this.a$d.has(l))) {
-        this.a$d.get(l).delete(e);
+      if (this.Tim.has(e) && (l = this.Tim.get(e), this.Tim.delete(e), this.Iim.has(l))) {
+        this.Iim.get(l).delete(e);
       }
     };
   }
@@ -166,8 +166,8 @@ class BulletModel extends ModelBase_1.ModelBase {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BulletHit, this.sjo);
     }
     this.gjo();
-    this.a$d = new Map();
-    this.h$d = new Map();
+    this.Iim = new Map();
+    this.Tim = new Map();
     return true;
   }
   IsBulletHit(t) {
@@ -219,10 +219,10 @@ class BulletModel extends ModelBase_1.ModelBase {
     this.pjo();
     this.SceneBulletOwnerId = 0;
     this.hla();
-    this.a$d?.clear();
-    this.a$d = undefined;
-    this.h$d?.clear();
-    return !(this.h$d = undefined);
+    this.Iim?.clear();
+    this.Iim = undefined;
+    this.Tim?.clear();
+    return !(this.Tim = undefined);
   }
   CreateBullet(t, e, l, i, o = 0, s, r = false, n = 0, u, h, a, _, B = 0, d = undefined, v = undefined, f = Protocol_1.Aki.Protocol.E4s.Proto_NormalSource, c = undefined, m = undefined, g = -1, M = undefined, y = undefined, S = undefined, C = undefined, E = 0) {
     var L = this.vjo(e);
@@ -231,7 +231,7 @@ class BulletModel extends ModelBase_1.ModelBase {
         _ = _ ?? ConfigManager_1.ConfigManager.BulletConfig.GetBulletData(t, e, true, g);
         if (_) {
           if (!r) {
-            var I = t.GetComponent(206);
+            var I = t.GetComponent(209);
             var p = _.Base.BornForbidTagIds;
             if (p) {
               for (const P of p) {
@@ -311,7 +311,7 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   rMc(s, r, n) {
-    s = s.GetComponent(175)?.BuffEffectManager;
+    s = s.GetComponent(178)?.BuffEffectManager;
     if (s) {
       let t = 0;
       let e = 0;
@@ -402,7 +402,7 @@ class BulletModel extends ModelBase_1.ModelBase {
         }
         if (e = this.GetBulletHandleById(o)) {
           (l = Protocol_1.Aki.Protocol.te_.create()).uVn = e;
-          CombatMessage_1.CombatNet.Send(24734, t.Attacker, l);
+          CombatMessage_1.CombatNet.Send(18449, t.Attacker, l);
           if (BulletConstant_1.BulletConstant.OpenCreateLog && Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Bullet", 20, "销毁子弹 发送协议", ...BulletLog_1.BulletLog.ToPairs(t));
           }
@@ -661,16 +661,16 @@ class BulletModel extends ModelBase_1.ModelBase {
     }
   }
   SummonerSummon(t, e) {
-    if (!this.a$d.has(t)) {
-      this.a$d.set(t, new Set());
+    if (!this.Iim.has(t)) {
+      this.Iim.set(t, new Set());
     }
-    this.a$d.get(t).add(e);
-    this.h$d.set(e, t);
+    this.Iim.get(t).add(e);
+    this.Tim.set(e, t);
   }
   GetSummonEntityIds(t) {
     const l = [];
-    if (this.a$d.has(t)) {
-      this.a$d.get(t).forEach(t => {
+    if (this.Iim.has(t)) {
+      this.Iim.get(t).forEach(t => {
         var e = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t);
         if (e) {
           l.push(e);

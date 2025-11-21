@@ -97,6 +97,12 @@ class WeaponSkinModel extends ModelBase_1.ModelBase {
       Log_1.Log.Info("WeaponSkin,", 10, "武器皮肤添加", ["skinIdList", e]);
     }
   }
+  RefreshUnlockSkinData(e) {
+    this.Kil.clear();
+    for (const n of e) {
+      this.Kil.set(n, 1);
+    }
+  }
   GetSkinCountById(e) {
     return this.Kil.get(e) ?? 0;
   }

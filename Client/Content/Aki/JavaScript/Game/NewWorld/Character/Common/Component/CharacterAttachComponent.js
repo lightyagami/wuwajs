@@ -66,8 +66,8 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     this.h4a = undefined;
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(3);
-    this.Gce = this.Entity.GetComponent(179);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Gce = this.Entity.GetComponent(182);
+    this.Lie = this.Entity.GetComponent(209);
     this.lpu = true;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.hJl);
     return true;
@@ -81,7 +81,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     var e;
     var i;
     var a;
-    if (this.EIe?.Valid && this.EIe.PbCombineTargetServerId && (i = this.EIe.PbCombineTargetServerId, e = ModelManager_1.ModelManager.CreatureModel.GetEntityId(i), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(e), (e = e.GetComponent(181))?.Valid) && !e.HasFollower(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity)) && (e = e.GetFollowerAttachInfo(i)) && (i = t.Entity.GetComponent(69))?.Valid && (i = i.GetPartByIndex(e.jjn)) && !FNameUtil_1.FNameUtil.IsNothing(i.CombinePartSocketName)) {
+    if (this.EIe?.Valid && this.EIe.PbCombineTargetServerId && (i = this.EIe.PbCombineTargetServerId, e = ModelManager_1.ModelManager.CreatureModel.GetEntityId(i), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(e), (e = e.GetComponent(184))?.Valid) && !e.HasFollower(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity)) && (e = e.GetFollowerAttachInfo(i)) && (i = t.Entity.GetComponent(69))?.Valid && (i = i.GetPartByIndex(e.jjn)) && !FNameUtil_1.FNameUtil.IsNothing(i.CombinePartSocketName)) {
       a = new UE.Vector(e.Iql?.X ?? 0, e.Iql?.Y ?? 0, e.Iql?.Z ?? 0);
       this.StartAttachToTarget(t, i.CombinePartSocketName, a, e.jjn, undefined);
       this.AttachToTarget(t, undefined, false);
@@ -97,7 +97,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
           var r = EntitySystem_1.EntitySystem.Get(r);
           if (r?.Valid) {
             var h = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity);
-            var o = r.GetComponent(181);
+            var o = r.GetComponent(184);
             if (o?.Valid && !this.HasFollower(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(r))) {
               r = r.GetComponent(69);
               if (!r?.Valid) {
@@ -159,7 +159,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
   u4a(e, i, a = undefined) {
     for (let t = this.l4a.length - 1; t >= 0; --t) {
       var r = this.l4a[t];
-      if (r.Entity?.Valid && (r = r.Entity.GetComponent(181))?.Valid) {
+      if (r.Entity?.Valid && (r = r.Entity.GetComponent(184))?.Valid) {
         r.DetachFromHost(e, e, i, a);
       }
     }
@@ -167,13 +167,13 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
   }
   _4a() {
     var t;
-    if (this.r4a?.Valid && (t = this.r4a.Entity.GetComponent(181))?.Valid) {
+    if (this.r4a?.Valid && (t = this.r4a.Entity.GetComponent(184))?.Valid) {
       t.d4a(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity));
     }
   }
   m4a() {
     var t;
-    if (this.r4a?.Valid && (t = this.r4a.Entity.GetComponent(181))?.Valid) {
+    if (this.r4a?.Valid && (t = this.r4a.Entity.GetComponent(184))?.Valid) {
       t.C4a(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity));
     }
   }
@@ -224,7 +224,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     i.jjn = this.Mql;
     e.Dql = i;
     e.Pql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.r4a.Id));
-    CombatMessage_1.CombatNet.Call(19439, this.Entity, e, t => {
+    CombatMessage_1.CombatNet.Call(18042, this.Entity, e, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (CharacterAttachComponent_1.Lql) {
           if (Log_1.Log.CheckDebug()) {
@@ -247,7 +247,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     if (CharacterAttachComponent_1.Lql && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 57, "[CharacterAttach]同步请求合体：开始合体", ["EntityId", t?.Id], ["TargetEntityId", MathUtils_1.MathUtils.LongToNumber(e.Pql ?? 0)]);
     }
-    if (t && (i = t.GetComponent(181))?.Valid && (a = e.Dql)) {
+    if (t && (i = t.GetComponent(184))?.Valid && (a = e.Dql)) {
       r = ModelManager_1.ModelManager.CreatureModel.GetEntityId(MathUtils_1.MathUtils.LongToNumber(e.Pql));
       if ((r = EntitySystem_1.EntitySystem.Get(r))?.Valid) {
         if ((h = (r = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(r)).Entity.GetComponent(69))?.Valid && (h = h.GetPartByIndex(a.jjn)) && !FNameUtil_1.FNameUtil.IsNothing(h.CombinePartSocketName) && (o = new UE.Vector(a.Iql?.X ?? 0, a.Iql?.Y ?? 0, a.Iql?.Z ?? 0), i.StartAttachToTarget(r, h.CombinePartSocketName, o, a?.jjn, undefined), i.AttachToTarget(r, undefined, false), CharacterAttachComponent_1.Lql) && Log_1.Log.CheckDebug()) {
@@ -265,7 +265,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     var e = Protocol_1.Aki.Protocol.tfl.create();
     e.xql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.Entity.Id));
     e.wql = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(this.r4a.Id));
-    CombatMessage_1.CombatNet.Call(25525, this.Entity, e, t => {
+    CombatMessage_1.CombatNet.Call(16671, this.Entity, e, t => {
       if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         if (CharacterAttachComponent_1.Lql && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Character", 57, "[CharacterAttach]发起请求解体：解体失败", ["ErrorCode", t.Q4n], ["EntityId", this.Entity.Id], ["TargetEntityId", this.r4a?.Id]);
@@ -281,7 +281,7 @@ let CharacterAttachComponent = CharacterAttachComponent_1 = class CharacterAttac
     if (CharacterAttachComponent_1.Lql && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 57, "[CharacterAttach]同步请求解体：开始解体", ["EntityId", t?.Id], ["TargetEntityId", MathUtils_1.MathUtils.LongToNumber(e.Pql ?? 0)]);
     }
-    if (t && (i = t.GetComponent(181))?.Valid && (i.DetachFromHost(false, false, false), CharacterAttachComponent_1.Lql) && Log_1.Log.CheckDebug()) {
+    if (t && (i = t.GetComponent(184))?.Valid && (i.DetachFromHost(false, false, false), CharacterAttachComponent_1.Lql) && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Character", 57, "[CharacterAttach]同步请求解体：解体成功", ["EntityId", t?.Id], ["TargetEntityId", MathUtils_1.MathUtils.LongToNumber(e.Pql ?? 0)]);
     }
   }
@@ -319,5 +319,5 @@ CharacterAttachComponent.Lql = false;
 CharacterAttachComponent.Gue = new UE.Rotator();
 __decorate([CombatMessage_1.CombatNet.Listen("Jpl", true)], CharacterAttachComponent, "AddCombineEntitiesRelationNotify", null);
 __decorate([CombatMessage_1.CombatNet.Listen("Zpl", true)], CharacterAttachComponent, "RemoveCombineRelationNotify", null);
-CharacterAttachComponent = CharacterAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(181)], CharacterAttachComponent);
+CharacterAttachComponent = CharacterAttachComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(184)], CharacterAttachComponent);
 exports.CharacterAttachComponent = CharacterAttachComponent; //# sourceMappingURL=CharacterAttachComponent.js.map

@@ -29,7 +29,7 @@ class WeeklyRogueSettleInfoPanel extends UiPanelBase_1.UiPanelBase {
       Content: e.iqs + "/" + e.rqs,
       IsScoreUp: false
     });
-    if (e.z8u !== 0) {
+    if (e.v9u !== 0) {
       t.push({
         Title: "WeRogueNewSettleScore",
         Content: e.SMs.toString(),
@@ -37,14 +37,14 @@ class WeeklyRogueSettleInfoPanel extends UiPanelBase_1.UiPanelBase {
       });
       t.push({
         Title: "WeRogueNewSettleExtraRoomScore",
-        Content: e.z8u.toString(),
+        Content: e.v9u.toString(),
         IsScoreUp: false
       });
     }
     t.push({
       Title: "WeRogueNewSettleTotalScore",
-      Content: (e.SMs + e.z8u).toString(),
-      IsScoreUp: e.J8u
+      Content: (e.SMs + e.v9u).toString(),
+      IsScoreUp: e.y9u
     });
     e = new UiAsyncTask_1.UiAsyncTask("WeeklyRogueSettleInfoPanel.UpdateData", async () => {
       await this.eGe?.RefreshByDataAsync(t);

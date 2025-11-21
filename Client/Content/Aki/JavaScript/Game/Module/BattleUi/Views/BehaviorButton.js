@@ -29,6 +29,7 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     this.Mrt = undefined;
     this.qit = 1;
     this.Git = 1;
+    this.uim = undefined;
     this.Ert = () => {
       var t;
       if (this.qit !== 0) {
@@ -79,6 +80,7 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
     }
     this.kre();
     this.Mrt = undefined;
+    this.uim = undefined;
   }
   Ore() {
     var t = this.GetButton(0);
@@ -145,16 +147,17 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
   }
   RefreshVisible() {
     var t;
-    if (this.RootItem?.IsValid() && (t = this.Lrt()) !== this.RootItem.bIsUIActive) {
+    if (this.RootItem?.IsValid() && (t = this.IsVisible()) !== this.RootItem.bIsUIActive) {
       if (t) {
         this.Show();
         this.RefreshEnable(true);
       } else {
         this.Hide();
       }
+      this.uim?.();
     }
   }
-  Lrt() {
+  IsVisible() {
     return !!this.tit && (this.BehaviorType !== 102 || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10031)) && this.tit.IsVisible;
   }
   RefreshEnable(t) {}
@@ -184,6 +187,9 @@ class BehaviorButton extends BattleChildView_1.BattleChildView {
         this.RootItem.SetAlpha(this.qit);
       }
     }
+  }
+  SetOnVisibleChangedCallback(t) {
+    this.uim = t;
   }
 }
 exports.BehaviorButton = BehaviorButton;

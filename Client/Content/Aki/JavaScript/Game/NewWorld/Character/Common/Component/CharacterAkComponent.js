@@ -111,7 +111,7 @@ let CharacterAkComponent = class CharacterAkComponent extends EntityComponent_1.
     if (this.IsRole && this.Hte?.IsAutonomousProxy || this.Ovr?.IsConcomitantEntity && (t = this.Ovr.GetSummonerId(), t = ModelManager_1.ModelManager.CreatureModel?.GetEntityId(t)) && EntitySystem_1.EntitySystem.GetComponent(t, 49)?.IsP1) {
       this.IsP1 = true;
     }
-    if (this.IsRole && (this.Lie = this.Entity.GetComponent(206), this.IsP1)) {
+    if (this.IsRole && (this.Lie = this.Entity.GetComponent(209), this.IsP1)) {
       this.WFr = new FoleySynthController_1.FoleySynthController(this.Hte, this, this.Lie);
       this.WFr.Init(this.HFr);
     }

@@ -103,7 +103,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         Log_1.Log.Info("BattleUiSet", 37, "轮盘界面显隐，设置CenterPanel遮罩", ["bVisible", t]);
       }
     };
-    this.VJe = (t, e) => {
+    this.VJe = (t, e, i) => {
       if (t) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "进入处决范围");
@@ -112,7 +112,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           this.UJe = new ExecutionPanel_1.ExecutionPanel();
           this.UJe.Init(this.RootItem);
         }
-        this.UJe.ShowByEntity(e);
+        this.UJe.ShowByEntity(e, i);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "离开处决范围");
@@ -128,7 +128,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.fHe = () => {
       var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
       this.X9e = t.EntityHandle;
-      this.AJe = this.X9e.Entity.GetComponent(100);
+      this.AJe = this.X9e.Entity.GetComponent(102);
       this.jJe();
     };
   }
@@ -144,7 +144,7 @@ class CenterPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.kJe();
     this.X9e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.X9e?.Valid) {
-      this.AJe = this.X9e.Entity.GetComponent(100);
+      this.AJe = this.X9e.Entity.GetComponent(102);
     }
   }
   async InitializeAsync() {

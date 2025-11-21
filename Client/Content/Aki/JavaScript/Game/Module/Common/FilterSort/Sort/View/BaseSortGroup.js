@@ -76,6 +76,7 @@ class BaseSortGroup extends UiPanelBase_1.UiPanelBase {
     this.eGe = undefined;
     this.PUt = undefined;
     this.Mne = 0;
+    this.wTt = 0;
     this.vUt = 1;
     this.IUt = (t, i, e) => {
       i = new SortItem(i);
@@ -104,8 +105,12 @@ class BaseSortGroup extends UiPanelBase_1.UiPanelBase {
   xUt() {
     this.eGe.GetLayoutItemByKey(this.PUt[0]).SetToggleStateForce(false);
   }
+  mDt() {
+    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.wTt);
+    this.Mne = t.ConfigId;
+  }
   wUt() {
-    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.Mne);
+    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.wTt);
     this.PUt = t.GetSelectBaseSort();
   }
   AUt() {
@@ -114,7 +119,8 @@ class BaseSortGroup extends UiPanelBase_1.UiPanelBase {
     this.eGe.RebuildLayoutByDataNew(t.BaseSortList);
   }
   Init(t) {
-    this.Mne = t;
+    this.wTt = t;
+    this.mDt();
     this.wUt();
     this.AUt();
   }

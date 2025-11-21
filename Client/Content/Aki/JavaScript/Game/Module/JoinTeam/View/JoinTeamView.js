@@ -12,8 +12,8 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const MiniElementItem_1 = require("../../Common/MiniElementItem");
-const JoinTeamController_1 = require("../JoinTeamController");
 const RoleController_1 = require("../../RoleUi/RoleController");
+const JoinTeamController_1 = require("../JoinTeamController");
 class JoinTeamView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -90,7 +90,7 @@ class JoinTeamView extends UiViewBase_1.UiViewBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, e => {
       this.GetTexture(1)?.SetTexture(e);
       this.GetTexture(1)?.SetUIActive(true);
-    });
+    }, 100, this.MemoryTag);
   }
   Yfi(e) {
     this.GetText(3).ShowTextNew(e);

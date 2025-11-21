@@ -82,7 +82,7 @@ class TsTaskTeamWander extends TsTaskAbortImmediatelyBase_1.default {
       if (!this.TsWalkOff) {
         t.CharActorComp.Entity.GetComponent(45)?.SetWalkOffLedgeRecord(false);
       }
-      t.CharActorComp.Entity.CheckGetComponent(176).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
+      t.CharActorComp.Entity.CheckGetComponent(179).SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Walk);
       if (!this.Destination) {
         this.Destination = Vector_1.Vector.Create();
         this.LastDestination = Vector_1.Vector.Create();
@@ -249,7 +249,7 @@ class TsTaskTeamWander extends TsTaskAbortImmediatelyBase_1.default {
     } else {
       this.TmpVector.DeepCopy(s);
       GravityUtils_1.GravityUtils.TurnVectorByDirectionInGravityForActor(t, this.TmpVector, this.CurrentMoveDirect);
-      if (t.Entity.GetComponent(102)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+      if (t.Entity.GetComponent(104)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
         AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(t, this.TmpVector, this.TsTurnSpeed);
         t.SetInputDirect(t.ActorForwardProxy);
       } else {

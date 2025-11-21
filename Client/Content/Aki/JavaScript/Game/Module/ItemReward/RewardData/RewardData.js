@@ -94,6 +94,9 @@ class RewardData {
   SetDangoAbyssSuccessData(t) {
     this.N0i.DangoAbyssSuccessData = t;
   }
+  SetHonamiTowerSuccessData(t) {
+    this.N0i.HonamiTowerSuccessData = t;
+  }
   SetScoreReached(t) {
     this.N0i.ScoreReached = t;
   }

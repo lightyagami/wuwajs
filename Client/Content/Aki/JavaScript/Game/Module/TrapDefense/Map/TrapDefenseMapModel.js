@@ -25,12 +25,13 @@ const towerMapMarkConstructors = {
 class TrapDefenseMapModel {
   constructor() {
     this.Z3_ = 0;
+    this.Mim = false;
     this.EDi = new Map();
-    this.Q9c = new Map();
+    this.iJu = new Map();
     this.PhantomRoutes = new Map();
     this.SplineComMap = new Map();
-    this.iYu = new Map();
-    this.rYu = 0;
+    this.bKc = new Map();
+    this.RKc = 0;
   }
   get MapId() {
     return this.Z3_;
@@ -53,24 +54,24 @@ class TrapDefenseMapModel {
     return this.EDi.get(e);
   }
   GetDynamicMarksByMarkType(e) {
-    return this.Q9c.get(e) ?? [];
+    return this.iJu.get(e) ?? [];
   }
   GetAllDynamicMarkInfo() {
     return this.EDi;
   }
   SetDynamicMarkInfoByMarkId(e) {
     this.EDi.set(e.MarkId, e);
-    if (!this.Q9c.has(e.MarkType)) {
-      this.Q9c.set(e.MarkType, []);
+    if (!this.iJu.has(e.MarkType)) {
+      this.iJu.set(e.MarkType, []);
     }
-    this.Q9c.get(e.MarkType)?.push(e);
+    this.iJu.get(e.MarkType)?.push(e);
   }
   RemoveDynamicMarkInfoByMarkId(e) {
     var r;
     var t = this.EDi.get(e);
     if (t) {
       this.EDi.delete(e);
-      if ((r = this.Q9c.get(t.MarkType)) && (t = r.indexOf(t)) !== -1) {
+      if ((r = this.iJu.get(t.MarkType)) && (t = r.indexOf(t)) !== -1) {
         r.splice(t, 1);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseMapMarkRemoved, e);
@@ -78,17 +79,17 @@ class TrapDefenseMapModel {
   }
   ClearDynamicMarks() {
     this.EDi.clear();
-    this.Q9c.clear();
+    this.iJu.clear();
   }
   AddMark(e) {
     var r = towerMapMarkConstructors[e.MarkType];
     if (!this.EDi.has(e.MarkId)) {
       r = new r(e.MarkId, e.ExtraParam);
       this.EDi.set(e.MarkId, r);
-      if (!this.Q9c.has(e.MarkType)) {
-        this.Q9c.set(e.MarkType, []);
+      if (!this.iJu.has(e.MarkType)) {
+        this.iJu.set(e.MarkType, []);
       }
-      this.Q9c.get(e.MarkType)?.push(r);
+      this.iJu.get(e.MarkType)?.push(r);
     }
   }
   CreateMarks() {
@@ -107,39 +108,43 @@ class TrapDefenseMapModel {
     });
   }
   InitMapData() {
-    var e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData();
-    if (e !== undefined) {
-      if (e.Config.WorldKillZ) {
+    var e;
+    var r = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData();
+    if (r !== undefined) {
+      if (r.Config.WorldKillZ) {
         if (KscEnv_1.KscEnv.KscWorld) {
-          KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(1, e.Config.WorldKillZ);
+          KscEnv_1.KscEnv.KscWorld?.SetWorldAttr(1, r.Config.WorldKillZ);
         } else {
-          KscEnv_1.KscEnv.CacheWorldKillZ(e.Config.WorldKillZ);
+          KscEnv_1.KscEnv.CacheWorldKillZ(r.Config.WorldKillZ);
         }
       }
-      if (e.Config.ObstacleSegments) {
-        var r = UE.NewArray(UE.KSC_Segment);
-        for (const a of e.Config.ObstacleSegments) {
+      if (r.Config.ObstacleSegments) {
+        var t = UE.NewArray(UE.KSC_Segment);
+        for (const a of r.Config.ObstacleSegments) {
           if (a.ArrayInt && a.ArrayInt.length === 4) {
-            r.Add(new UE.KSC_Segment(new UE.Vector(a.ArrayInt[0], a.ArrayInt[1], 0), new UE.Vector(a.ArrayInt[2], a.ArrayInt[3], 0)));
+            t.Add(new UE.KSC_Segment(new UE.Vector(a.ArrayInt[0], a.ArrayInt[1], 0), new UE.Vector(a.ArrayInt[2], a.ArrayInt[3], 0)));
           } else if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("TowerDefense", 38, "[塔防地图] 初始化障碍物配置错误", ["Name", e.Config.Name]);
+            Log_1.Log.Warn("TowerDefense", 38, "[塔防地图] 初始化障碍物配置错误", ["Name", r.Config.Name]);
           }
         }
         if (KscEnv_1.KscEnv.KscWorld) {
-          KscEnv_1.KscEnv.KscWorld?.SetObstacleSegments(r);
+          KscEnv_1.KscEnv.KscWorld?.SetObstacleSegments(t);
         } else {
-          KscEnv_1.KscEnv.CacheObstacleSegments(r);
+          KscEnv_1.KscEnv.CacheObstacleSegments(t);
         }
       }
       this.InitSplineData();
-      var t = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
-      this.MapId = t.MapId;
+      if (!this.Mim) {
+        e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurrentBatchData();
+        this.MapId = e.MapId;
+      }
       this.ClearDynamicMarks();
       this.CreateMarks();
     }
   }
   ChangeMap(e) {
     this.MapId = e;
+    this.Mim = true;
   }
   InitSplineData() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData()?.Config.SplineList ?? [];
@@ -178,29 +183,32 @@ class TrapDefenseMapModel {
   }
   GetSplineComponent(e) {
     if (!this.SplineComMap.has(e)) {
-      this.gYu(e);
+      this.UKc(e);
     }
     return this.SplineComMap.get(e);
   }
   GetAllSplineComponent() {
     return this.SplineComMap;
   }
-  gYu(e) {
+  UKc(e) {
     var r;
     if (!this.SplineComMap.has(e)) {
-      r = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(e, this.rYu, 3);
+      r = ModelManager_1.ModelManager.GameSplineModel.LoadAndGetSplineComponent(e, this.RKc, 3);
       this.SplineComMap.set(e, r);
-      this.iYu.set(e, this.rYu);
-      this.rYu++;
+      this.bKc.set(e, this.RKc);
+      this.RKc++;
     }
   }
   ClearAllSpline() {
     this.SplineComMap.forEach((e, r) => {
-      ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(r, this.iYu.get(r) ?? 0, 3);
+      ModelManager_1.ModelManager.GameSplineModel.ReleaseSpline(r, this.bKc.get(r) ?? 0, 3);
     });
     this.SplineComMap.clear();
-    this.iYu.clear();
-    this.rYu = 0;
+    this.bKc.clear();
+    this.RKc = 0;
+  }
+  ClearMapChanged() {
+    this.Mim = false;
   }
 }
 exports.TrapDefenseMapModel = TrapDefenseMapModel;

@@ -9,13 +9,15 @@ const CommonSort_1 = require("./CommonSort");
 class MonsterHandBookSort extends CommonSort_1.CommonSort {
   constructor() {
     super(...arguments);
-    this.VDt = (o, r, n) => {
-      var e = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetMonsterDetectionConfById(o)?.DangerType ?? 0;
-      var t = ConfigManager_1.ConfigManager.AdventureModuleConfig?.GetMonsterDetectionConfById(r)?.DangerType ?? 0;
-      if (e !== t) {
-        return (e - t) * (n ? 1 : -1);
-      } else if ((e = ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(o)?.SortId ?? 0) !== (t = ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(r)?.SortId ?? 0)) {
-        return (t - e) * (n ? 1 : -1);
+    this.VDt = (o, r, e) => {
+      var o = ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(o);
+      var r = ConfigManager_1.ConfigManager.HandBookConfig?.GetMonsterHandBookConfigById(r);
+      var t = o?.Type ?? 0;
+      var n = r?.Type ?? 0;
+      if (t !== n) {
+        return (t - n) * (e ? 1 : -1);
+      } else if ((t = o?.SortId ?? 0) !== (n = r?.SortId ?? 0)) {
+        return (n - t) * (e ? 1 : -1);
       } else {
         return 0;
       }

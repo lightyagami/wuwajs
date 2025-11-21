@@ -347,8 +347,9 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
     }
   }
   OnEnter(t) {
+    this.Owner?.Entity?.GetComponent(191)?.SightTarget(ControllerHolder_1.ControllerHolder.CameraController.WidgetCamera.DisplayComponent.CineCamera, 4);
     if (this.uKo && this.uKo !== "ForgingRootView") {
-      this.sva = this.Owner?.Entity?.GetComponent(187);
+      this.sva = this.Owner?.Entity?.GetComponent(190);
       this.eir = undefined;
       this.iir = undefined;
       this.ShopSuccessMontage = undefined;
@@ -398,6 +399,7 @@ class NpcPerformSystemUiState extends NpcPerformBaseState_1.NpcPerformBaseState 
   OnExit(t) {
     this.gir(false);
     this.SetNpcAndChildEnable();
+    this.Owner?.Entity?.GetComponent(191)?.SightTarget(undefined, 4);
   }
   CanChangeFrom(t) {
     return t !== 9;

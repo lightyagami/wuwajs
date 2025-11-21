@@ -38,10 +38,10 @@ class NewItemTipsView extends UiTickViewBase_1.UiTickViewBase {
         }
         this.CloseMe();
       } else {
-        var t = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(i.QualityId);
+        var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemQualityByConfig(i);
         const s = UE.Color.FromHex(t.TextColor);
         this.GetText(1).SetColor(s);
-        this.rgi = t?.Id === 5;
+        this.rgi = (t?.Id ?? 0) >= 5;
         var r = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(this.rgi ? "NS_Fx_LGUI_Item_Golden" : "NS_Fx_LGUI_Item_Other");
         ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.NiagaraSystem, e => {
           var i;
@@ -51,7 +51,7 @@ class NewItemTipsView extends UiTickViewBase_1.UiTickViewBase {
               i.ColorParameter.Get("Color").Constant = UE.LinearColor.FromSRGBColor(s);
             }
           }
-        });
+        }, 100, this.MemoryTag);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), i.Name);
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), i.ObtainedShowDescription);
         this.SetItemIcon(this.GetTexture(2), e);

@@ -25,12 +25,12 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     super(...arguments);
     this.eet = (e, t) => {
       if (e) {
-        TreeExpressAssistant.Dqu(e.BtType, e.Id, e.IsInChallenge);
+        TreeExpressAssistant.Pku(e.BtType, e.Id, e.IsInChallenge);
       }
     };
     this.aYt = e => {
       if (e) {
-        TreeExpressAssistant.Dqu(e.BtType, e.Id, e.IsInChallenge);
+        TreeExpressAssistant.Pku(e.BtType, e.Id, e.IsInChallenge);
       }
     };
   }
@@ -64,8 +64,9 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     return r = t && t.Type === IQuest_1.EQuestScheduleType.ChildQuestCompleted ? !!this.IsShowNodeTrackDistance(e, t.ChildQuestId) && t.ShowTracking : r;
   }
   static IsShowNodeTrackDistance(e, t) {
-    e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
-    return !!e && (e.GetNode(t)?.ContainTag(0) ?? false);
+    var r;
+    var e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(e);
+    return !!e && (!(r = e.GetModifyTrackAreaConfig()) || !!r.TrackConfig.Show) && (e.GetNode(t)?.ContainTag(0) ?? false);
   }
   static GetQCount(e, t) {
     let r = 0;
@@ -94,7 +95,7 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
         case IQuest_1.EQuestScheduleType.EntityHP:
           var i;
           var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId);
-          if (s &&= s.Entity.GetComponent(174)) {
+          if (s &&= s.Entity.GetComponent(177)) {
             i = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
             s = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n);
             r = Math.floor(i / s * ONE_HUNDRED);
@@ -175,7 +176,7 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
         case IQuest_1.EQuestScheduleType.ProgressValue:
           var l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i.TargetProgressEntity);
           if (l) {
-            o = l.Entity.GetComponent(130);
+            o = l.Entity.GetComponent(133);
             s = o ? (c = o.GetProgressData()?.CurrentValue ?? 0, o = (l = o.GetProgressData()?.MaxValue ?? 0) === 0 ? 0 : Math.round(c / l * 100), l = Math.round(c), (s = (s = PublicUtil_1.PublicUtil.GetConfigTextByKey(r)).replace("{percent}", o + "%")).replace("{real_progress}", "" + l)) : "";
           } else {
             s = "";
@@ -281,7 +282,7 @@ class TreeExpressAssistant extends ControllerAssistantBase_1.ControllerAssistant
     }
     return t;
   }
-  static Dqu(e, t, r) {
+  static Pku(e, t, r) {
     switch (e) {
       case Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest:
         break;

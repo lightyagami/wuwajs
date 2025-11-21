@@ -10,6 +10,7 @@ const Log_1 = require("../../../../../../../Core/Common/Log");
 const Vector_1 = require("../../../../../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../../../../../Core/Utils/TraceElementCommon");
 const Global_1 = require("../../../../../../Global");
+const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const UiBlueprintFunctionLibrary_1 = require("../../../../../../Module/BpBridge/UiBlueprintFunctionLibrary");
@@ -22,6 +23,7 @@ const InputDefine_1 = require("./InputDefine");
 const InputFunctionCommon_1 = require("./InputFunctionCommon");
 const SOAR_HEIGHT_LIMIT = 650;
 const soarLandDetectOffset = new UE.VectorDouble(1100, 0, -500);
+const ROLE_ID_CALBRENA = 1208;
 const PROFILE_KEY = "SoarEnterDetect";
 const tmpVector = Vector_1.Vector.Create();
 function visionSkill1TraceDetectHasGround(e) {
@@ -37,14 +39,14 @@ function visionSkill1Function(e) {
   if (r) {
     var i = r.CharacterActorComponent?.Entity;
     if (i) {
-      var o = i.GetComponent(206);
+      var o = i.GetComponent(209);
       if (o && o.Valid && i.GetComponent(45)?.CanResponseInput() && !o.HasTag(-2100129479)) {
         var t = (0, InputFunctionCommon_1.createInputCommandFromDataTable)(i.Id, 7, 1);
         if (t) {
           return t;
         }
         if (o.HasTag(-376090703)) {
-          if (i.GetComponent(179)?.IsOnGroundOrOnWater()) {
+          if (i.GetComponent(182)?.IsOnGroundOrOnWater()) {
             return (0, InputFunctionCommon_1.createSkillCommand)(i, InputDefine_1.SKILL_ID_YUANNIAOZE_TORNADO);
           }
         } else {
@@ -78,11 +80,14 @@ function visionSkill1Function(e) {
           }
         }
         if (n === InputDefine_1.SKILL_ID_HOOK) {
-          if (o.HasTag(-1526637662)) {
+          t = r.CharacterActorComponent.CreatureData.GetPbDataId();
+          if (ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t) === ROLE_ID_CALBRENA && o.HasTag(-869438579)) {
+            n = InputDefine_1.SKILL_ID_FLYING_FEATHER;
+          } else if (o.HasTag(-1526637662)) {
             n = InputDefine_1.SKILL_ID_XA_KITE;
           } else if (o.HasTag(-1771378495)) {
             n = InputDefine_1.SKILL_ID_XA_MOVABLE;
-          } else if (i.GetComponent(100)?.CanActivateFixHook()) {
+          } else if (i.GetComponent(102)?.CanActivateFixHook()) {
             n = o.HasTag(-1958756056) ? InputDefine_1.SKILL_ID_FIX_HOOK_2 : InputDefine_1.SKILL_ID_FIX_HOOK_1;
           } else {
             if (o.HasTag(-1009010563)) {
@@ -145,7 +150,7 @@ function visionSkill1Function(e) {
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Flying_Tip_002");
             return;
           }
-          r = i.GetComponent(102)?.PositionState;
+          r = i.GetComponent(104)?.PositionState;
           if (r === CharacterUnifiedStateTypes_1.ECharPositionState.Air) {
             t = i.GetComponent(45)?.GetHeightAboveGround(SOAR_HEIGHT_LIMIT);
             if ((!t || t < SOAR_HEIGHT_LIMIT) && visionSkill1TraceDetectHasGround(i)) {

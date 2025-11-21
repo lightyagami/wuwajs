@@ -23,7 +23,7 @@ class TrapDefenseResultButton extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.OnClickCb = undefined;
     this.l4e = undefined;
-    this.CHc = () => {
+    this.yXu = () => {
       if (this.OnClickCb) {
         this.OnClickCb();
       }
@@ -31,7 +31,7 @@ class TrapDefenseResultButton extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.CHc]];
+    this.BtnBindInfo = [[0, this.yXu]];
   }
   BindRedDot(e, t) {
     this.l4e = e;
@@ -51,7 +51,7 @@ class TrapDefenseResultContinueButton extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickCb = undefined;
-    this.CHc = () => {
+    this.yXu = () => {
       if (this.OnClickCb) {
         this.OnClickCb();
       }
@@ -59,7 +59,7 @@ class TrapDefenseResultContinueButton extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.CHc]];
+    this.BtnBindInfo = [[0, this.yXu]];
   }
   ShowText(e) {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e);
@@ -106,13 +106,13 @@ class TrapDefenseResultResultItem extends GridProxyAbstract_1.GridProxyAbstract 
     this.eGe = undefined;
     this.Pe = undefined;
     this.FA_ = [];
-    this.M_d = () => new TrapDefenseResultStarItem();
+    this.z0d = () => new TrapDefenseResultStarItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UITexture], [3, UE.UIHorizontalLayout], [4, UE.UIItem], [5, UE.UIItem]];
   }
   OnStart() {
-    this.eGe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.M_d);
+    this.eGe = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(3), this.z0d);
   }
   Refresh(t, e, s) {
     this.Pe = t;
@@ -126,7 +126,7 @@ class TrapDefenseResultResultItem extends GridProxyAbstract_1.GridProxyAbstract 
             IsAchieve: e <= t.Total,
             IsNew: e <= t.Total && e > t.History,
             HasPlayed: false,
-            PlayDelay: e <= t.Total && e > t.History ? this.J_d(e - t.History, t.Total - t.History) : 0
+            PlayDelay: e <= t.Total && e > t.History ? this.WCd(e - t.History, t.Total - t.History) : 0
           };
           this.FA_.push(i);
         }
@@ -149,7 +149,7 @@ class TrapDefenseResultResultItem extends GridProxyAbstract_1.GridProxyAbstract 
       e.HasPlayed = true;
     }
   }
-  J_d(e, t) {
+  WCd(e, t) {
     if (t <= 1 || e <= 1) {
       return 0;
     } else {
@@ -181,30 +181,30 @@ class TrapDefenseResultUnlockTab extends GridProxyAbstract_1.GridProxyAbstract {
     this.OrganLayout = undefined;
     this.BdLayout = undefined;
     this.IsShared = false;
-    this.hmd = false;
-    this.NYc = () => new TrapDefenseResultOrganUnlockItem();
-    this.VYc = () => new TrapDefenseResultBdUnlockItem();
+    this.Qqd = false;
+    this.VJc = () => new TrapDefenseResultOrganUnlockItem();
+    this.jJc = () => new TrapDefenseResultBdUnlockItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIGridLayout], [2, UE.UIItem], [3, UE.UIGridLayout], [4, UE.UIItem]];
   }
   OnStart() {
-    this.OrganLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.NYc, this.GetItem(2).GetOwner());
-    this.BdLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(3), this.VYc, this.GetItem(4).GetOwner());
+    this.OrganLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(1), this.VJc, this.GetItem(2).GetOwner());
+    this.BdLayout = new GenericLayout_1.GenericLayout(this.GetGridLayout(3), this.jJc, this.GetItem(4).GetOwner());
   }
   Refresh(e, t, s) {
     var i = e.Type;
     var r = tabTypeTxtMap.get(i);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r);
     var r = i === 0 || i === 2;
-    this.hmd = i === 0 || i === 1;
+    this.Qqd = i === 0 || i === 1;
     this.GetGridLayout(1).RootUIComp.SetUIActive(r);
     this.GetGridLayout(3).RootUIComp.SetUIActive(!r);
     this.IsShared = i === 2 || i === 3;
     (r ? this.OrganLayout : this.BdLayout).RefreshByData(e.DataList, undefined, true);
   }
   PlayUnlockAnim() {
-    if (this.hmd) {
+    if (this.Qqd) {
       for (const e of this.OrganLayout.GetLayoutItemList()) {
         e.PlayUnlockAnim();
       }
@@ -280,7 +280,7 @@ class TrapDefenseResultBdUnlockItem extends GridProxyAbstract_1.GridProxyAbstrac
       i = ModelManager_1.ModelManager.TrapDefenseModel.RougeModeData.BdDataMap.get(e.Id);
       r = !!e.NeedUnlockBar;
       this.SetTextureByPath(i.Config.Icon, this.GetTexture(5));
-      this.GetText(6)?.SetUIActive(r);
+      this.GetText(6)?.SetUIActive(r || e.ForShare === true);
       this.GetItem(7)?.SetUIActive(!!e.IsFinish);
       this.GetItem(8)?.SetUIActive(e.IsNewUnlock === true);
       this.Data.IsNewUnlock = undefined;
@@ -289,8 +289,12 @@ class TrapDefenseResultBdUnlockItem extends GridProxyAbstract_1.GridProxyAbstrac
           this.x_t(i);
         }
       } else {
-        this.Snd(false);
-        this.Mnd(false);
+        this.ild(false);
+        this.rld(false);
+        if (i && e.ForShare === true) {
+          r = i.GetCurrentActiveProgressNum();
+          this.GetText(6)?.SetText("" + r);
+        }
       }
     }
   }
@@ -299,19 +303,23 @@ class TrapDefenseResultBdUnlockItem extends GridProxyAbstract_1.GridProxyAbstrac
     var s = e.GetSumProgressForStageMode();
     var e = e.GetCurActiveQualityPool();
     var i = s === 0 ? 0 : t / s;
-    this.GetText(6)?.SetText(t + "/" + s);
+    if (this.Data.ForShare) {
+      this.GetText(6)?.SetText("" + t);
+    } else {
+      this.GetText(6)?.SetText(t + "/" + s);
+    }
     switch (e) {
       case 5:
-        this.Snd(true, i);
+        this.ild(true, i);
         break;
       case 4:
-        this.Mnd(true, i, false);
+        this.rld(true, i, false);
         break;
       default:
-        this.Mnd(true, i, true);
+        this.rld(true, i, true);
     }
   }
-  Snd(e, t) {
+  ild(e, t) {
     var s = this.GetSprite(1);
     this.GetSprite(4)?.SetUIActive(e);
     s?.SetUIActive(e);
@@ -319,7 +327,7 @@ class TrapDefenseResultBdUnlockItem extends GridProxyAbstract_1.GridProxyAbstrac
       s?.SetFillAmount(t);
     }
   }
-  Mnd(e, t, s) {
+  rld(e, t, s) {
     var i = this.GetSprite(2);
     this.GetSprite(3)?.SetUIActive(e);
     i?.SetUIActive(e);

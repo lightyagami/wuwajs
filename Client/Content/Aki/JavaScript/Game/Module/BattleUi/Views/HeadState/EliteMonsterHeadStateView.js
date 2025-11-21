@@ -15,6 +15,7 @@ const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
 const BuffItemContainer_1 = require("../BuffItemContainer");
 const VisibleAnimMachine_1 = require("../State/VisibleAnimMachine");
+const HeadStateWeaknessItem_1 = require("../Weakness/HeadStateWeaknessItem");
 const HeadStateViewBase_1 = require("./HeadStateViewBase");
 const RageBufferStateMachine_1 = require("./RageBufferStateMachine");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
@@ -45,6 +46,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Dnt = false;
     this.Rnt = 0;
     this.Unt = 0;
+    this.Qti = undefined;
     this.OnFallDownVisibleChange = () => {
       if (this.HeadStateData.HasFallDownTag) {
         this.t1t.GetHit(0, this.i1t);
@@ -53,6 +55,10 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
       } else {
         this.sst(false);
       }
+    };
+    this.Xvm = () => {
+      this.Yvm();
+      this.zvm();
     };
     this.OnAddOrRemoveBuff = (t, i, e, s) => {
       if (this.HeadStateData.GetEntityId() === t) {
@@ -154,8 +160,13 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Hnt = new Map();
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIText], [5, UE.UIItem], [6, UE.UINiagara], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UISprite], [13, UE.UINiagara], [14, UE.UISprite], [15, UE.UISprite], [16, UE.UIItem], [17, UE.UINiagara], [18, UE.UINiagara], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite], [1, UE.UISprite], [2, UE.UISprite], [3, UE.UISprite], [4, UE.UIText], [5, UE.UIItem], [6, UE.UINiagara], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UIItem], [12, UE.UISprite], [13, UE.UINiagara], [14, UE.UISprite], [15, UE.UISprite], [16, UE.UIItem], [17, UE.UINiagara], [18, UE.UINiagara], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UISprite], [29, UE.UISprite], [30, UE.UISprite], [31, UE.UINiagara], [32, UE.UIItem], [33, UE.UIItem]];
     this.ScaleToleration = SCALE_TOLERATION;
+  }
+  async OnBeforeStartAsync() {
+    this.Qti = new HeadStateWeaknessItem_1.HeadStateWeaknessItem();
+    await this.Qti.InitializeAsync(this.GetItem(26));
+    this.Qti.SetStateChangeCallback(this.Xvm);
   }
   ActiveBattleHeadState(t) {
     if (Log_1.Log.CheckDebug()) {
@@ -167,6 +178,8 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Snt = this.GetSprite(12).bIsUIActive;
     this.rnt.InitVisible(this.Mnt);
     this.GetItem(8).SetAlpha(1);
+    this.Dnt = t.HasTag(242005298);
+    this.GetSprite(15).SetUIActive(this.Dnt);
     this.Ent = t.HasFallDownTag;
     this.o1t();
     this.RefreshHpAndShield();
@@ -182,6 +195,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.est();
     this.tst();
     this.Hlt();
+    this.Jvm();
   }
   OnStart() {
     this.Qnt();
@@ -205,12 +219,16 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.t1t.Reset();
     this.rnt.Deactivate();
     this.rnt = undefined;
+    if (this.Qti) {
+      this.Qti.Destroy();
+      this.Qti = undefined;
+    }
   }
   OnBeforeShow() {
     super.OnBeforeShow();
     var t = this.GetItem(25);
-    if (this.MoraleLevelItem) {
-      this.MoraleLevelItem.GetRootItem().SetUIParent(t);
+    if (this.ExtraItem) {
+      this.ExtraItem.GetRootItem().SetUIParent(t);
       t?.SetUIActive(true);
     } else {
       t?.SetUIActive(false);
@@ -218,7 +236,31 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
   }
   ResetBattleHeadState() {
     this.mkn.ClearAll();
+    this.Qti?.Refresh(undefined);
     super.ResetBattleHeadState();
+  }
+  Jvm() {
+    if (this.Qti) {
+      this.Qti.Refresh(this.HeadStateData?.GetEntity());
+    }
+  }
+  Yvm() {
+    if (this.Qti && this.Qti.IsFullState()) {
+      this.GetSprite(28).SetFillAmount(this.CurrentBarPercent);
+      this.GetSprite(29).SetFillAmount(this.CurrentBarPercent);
+      this.GetSprite(30).SetFillAmount(this.CurrentBarPercent);
+    }
+  }
+  zvm() {
+    if (this.Qti.IsFullState()) {
+      this.GetItem(27).SetUIActive(true);
+      this.bnt(32);
+    } else if (this.Qti.IsBreakState()) {
+      this.GetItem(27).SetUIActive(true);
+      this.bnt(33);
+    } else {
+      this.GetItem(27).SetUIActive(false);
+    }
   }
   GetResourceId() {
     return "UiItem_EliteMonsterState_Prefab";
@@ -246,7 +288,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
   klt() {
     var t = this.IsDetailVisible();
     this.GetItem(7).SetUIActive(t);
-    this.MoraleLevelItem?.SetUiActive(t);
+    this.ExtraItem?.SetUiActive(t);
   }
   Flt() {
     var t = this.IsLevelTextVisible();
@@ -287,6 +329,7 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     } else {
       this.StopBarLerpAnimation();
     }
+    this.Yvm();
   }
   OnBeginBarAnimation(t) {
     this.ast(t);
@@ -453,6 +496,8 @@ class EliteMonsterHeadStateView extends HeadStateViewBase_1.HeadStateViewBase {
     this.Est(22);
     this.Est(23);
     this.Est(24);
+    this.Est(32);
+    this.Est(33);
   }
   Est(t) {
     var i = [];

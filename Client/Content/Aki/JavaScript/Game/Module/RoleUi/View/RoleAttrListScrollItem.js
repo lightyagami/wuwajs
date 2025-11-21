@@ -5,9 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoleAttrListScrollItem = undefined;
 const UE = require("ue");
-const Log_1 = require("../../../../Core/Common/Log");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
-const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
@@ -17,9 +15,7 @@ class RoleAttrListScrollItem extends UiPanelBase_1.UiPanelBase {
     super();
     this.SPe = undefined;
     this.Pe = undefined;
-    this.pHe = () => {
-      return !!ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(this.Pe.Id).Dec;
-    };
+    this.pHe = () => !!this.Pe?.GetDesc();
     this.ToggleEvent = e => {
       e = e === 1;
       this.GetText(8).SetUIActive(e);
@@ -56,18 +52,14 @@ class RoleAttrListScrollItem extends UiPanelBase_1.UiPanelBase {
     i = e;
     this.Pe = i;
     this.SetAttrValue(i);
-    e = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(i.Id);
+    this.GetText(3).ShowTextNew(i.GetName());
+    this.SetTextureByPath(i.GetIcon(), this.GetTexture(2));
+    e = i.GetDesc();
     if (e) {
-      this.GetText(3).ShowTextNew(e.Name);
-      this.SetTextureByPath(e.Icon, this.GetTexture(2));
-      if (e.Dec) {
-        this.GetItem(6).SetUIActive(true);
-        this.GetText(8).ShowTextNew(e.Dec);
-      } else {
-        this.GetItem(6).SetUIActive(false);
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Role", 37, "属性表中找不到对应的属性ID配置数据");
+      this.GetItem(6).SetUIActive(true);
+      this.GetText(8).ShowTextNew(e);
+    } else {
+      this.GetItem(6).SetUIActive(false);
     }
   }
   SetAttrValue(e) {

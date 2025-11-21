@@ -59,12 +59,15 @@ class AiStateMachineTaskBeHitMontage extends AiStateMachineTask_1.AiStateMachine
           break;
         case 7:
           this.Node.UnifiedStateComponent.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.Parry);
+          break;
+        case 12:
+          this.Node.UnifiedStateComponent.SetMoveState(CharacterUnifiedStateTypes_1.ECharMoveState.BreakWeakness);
       }
     }
   }
   OnEnter(t) {
     var i;
-    if (!this.Node.TagComponent.HasTag(1008164187) && (i = this.Node.HitComponent.BeHitAnim, this.D6r(i), this.ise = this.F$.get(i), this.ise ||= this.vtl, this.ise || (i = this.Node.Entity.GetComponent(0), Log_1.Log.CheckError() && Log_1.Log.Error("Resource", 14, "受击动画播放失败，MontageName为空", ["actorName", this.Node.ActorComponent?.Actor.GetName()], ["pbDataId", i.GetPbDataId()], ["nodeName", this.Node?.Name])), this.Node.SkillComponent.StopGroup1Skill("AiStateMachineTaskMontage.OnEnter"), this.Node.TaskFinished = false, this.Playing = false, i = this.Node.MontageComponent, this.rse || (this.rse = i.CreateTaskWithName(this.ise, undefined, this.nse, this.ose), this.rse) || this.ise === this.vtl || (this.vtl || CombatLog_1.CombatLog.Error("StateMachine", this.Node.Entity, "播放空白蒙太奇路径", ["MontageName", this.ise], ["DefaultMontageName", this.vtl]), this.ise = this.vtl, this.rse = i.CreateTaskWithName(this.ise, undefined, this.nse, this.ose)), this.rse)) {
+    if (!this.Node.TagComponent.HasTag(1008164187) && (i = this.Node.HitComponent.BeHitAnim, this.D6r(i), this.ise = this.F$.get(i), this.ise ||= this.vtl, this.ise || (i = this.Node.Entity.GetComponent(0), Log_1.Log.CheckError() && Log_1.Log.Error("Resource", 14, "受击动画播放失败，MontageName为空", ["actorName", this.Node.ActorComponent?.Actor.GetName()], ["pbDataId", i.GetPbDataId()], ["nodeName", this.Node?.Name])), this.Node.SkillComponent.StopGroup1Skill("AiStateMachineTaskBeHitMontage.OnEnter"), this.Node.TaskFinished = false, this.Playing = false, i = this.Node.MontageComponent, this.rse || (this.rse = i.CreateTaskWithName(this.ise, undefined, this.nse, this.ose), this.rse) || this.ise === this.vtl || (this.vtl || CombatLog_1.CombatLog.Error("StateMachine", this.Node.Entity, "播放空白蒙太奇路径", ["MontageName", this.ise], ["DefaultMontageName", this.vtl]), this.ise = this.vtl, this.rse = i.CreateTaskWithName(this.ise, undefined, this.nse, this.ose)), this.rse)) {
       this.Node.HitComponent?.ConfirmExecutedBeHitState();
       this.Playing = true;
       i.PlayMontageTaskWhenReady(this.rse, this.Node.ElapseTime * TimeUtil_1.TimeUtil.Millisecond, t);

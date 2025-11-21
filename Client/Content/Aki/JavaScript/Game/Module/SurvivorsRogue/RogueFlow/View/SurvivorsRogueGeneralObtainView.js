@@ -21,46 +21,46 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
     this.CommandIncId = 0;
     this.Command = undefined;
     this.CardList = undefined;
-    this.cbd = undefined;
-    this.dbd = undefined;
-    this.mbd = 0;
+    this.qwd = undefined;
+    this.Gwd = undefined;
+    this.Fwd = 0;
     this.OnGoodsSelected = undefined;
     this.OnSeqStartFinished = undefined;
     this.L1i = () => {
-      if (this.dbd) {
-        switch (this.dbd.ChooseData.ObtainMode) {
+      if (this.Gwd) {
+        switch (this.Gwd.ChooseData.ObtainMode) {
           case 0:
-            this.Command.SelectIds = [this.mbd];
+            this.Command.SelectIds = [this.Fwd];
             break;
           case 1:
-            var i = this.dbd.GoodsList.map(i => i.fEd.w5n);
+            var i = this.Gwd.GoodsList.map(i => i.VTd.w5n);
             this.Command.SelectIds = i;
         }
         this.Command.Execute();
       }
     };
-    this.TFd = () => {
+    this.u6d = () => {
       this.OnSeqStartFinished?.();
     };
     this.Y5i = () => {
       var i = new SurvivorsRogueCardObtainItem_1.SurvivorsRogueCardObtainItem();
-      i.BindOnStateChangeCallback(this.fbd);
+      i.BindOnStateChangeCallback(this.Nwd);
       i.BindOnCanExecuteChangeCallback(this.LPt);
       return i;
     };
-    this.fbd = (i, e) => {
+    this.Nwd = (i, e) => {
       if (e === 1) {
-        this.gbd(true);
+        this.Vwd(true);
       }
-      this.Cbd();
-      if (this.dbd.ChooseData.ObtainMode === 0) {
-        this.mbd = i.IncId ?? 0;
-        this.OnGoodsSelected?.(this.mbd, true);
+      this.jwd();
+      if (this.Gwd.ChooseData.ObtainMode === 0) {
+        this.Fwd = i.IncId ?? 0;
+        this.OnGoodsSelected?.(this.Fwd, true);
       }
     };
     this.LPt = (i, e) => {
-      if (this.dbd) {
-        switch (this.dbd.ChooseData.ObtainMode) {
+      if (this.Gwd) {
+        switch (this.Gwd.ChooseData.ObtainMode) {
           case 0:
             return e !== 1;
           case 1:
@@ -69,7 +69,7 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
       }
       return false;
     };
-    this.pbd = i => {
+    this.Hwd = i => {
       var e = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(i);
       if (e) {
         switch (e.Type) {
@@ -104,38 +104,38 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
     var i;
     this.CommandIncId = this.OpenParam.CommandIncId;
     if (this.CommandIncId) {
-      if (!(i = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(this.CommandIncId)) || (this.Command = i, i = [], this.CardList = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.Y5i, undefined, true), this.cbd = new SurvivorsRogueViewBase_1.SurvivorsRogueViewBase(), i.push(this.cbd.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())), await Promise.all(i), await this.Z$1(), this.Command.AfterDelete)) {
+      if (!(i = ModelManager_1.ModelManager.SurvivorsRogueModel.CommandQueue.GetCommandByIncId(this.CommandIncId)) || (this.Command = i, i = [], this.CardList = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(1), this.Y5i, undefined, true), this.qwd = new SurvivorsRogueViewBase_1.SurvivorsRogueViewBase(), i.push(this.qwd.CreateThenShowByActorAsync(this.GetItem(0).GetOwner())), await Promise.all(i), await this.Z$1(), this.Command.AfterDelete)) {
         this.CloseMe();
       } else {
         this.Command.BindView(this);
-        this.UiViewSequence.AddSequenceFinishEvent("Start", this.TFd);
+        this.UiViewSequence.AddSequenceFinishEvent("Start", this.u6d);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("SurvivorsRogue", 37, "[SurvivorsRogue] 界面打开时缺少CommandIncId");
     }
   }
   OnBeforeCreate() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.pbd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.Hwd);
   }
   OnAddEventListener() {
-    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.pbd)) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.pbd);
+    if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.Hwd)) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.Hwd);
     }
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.pbd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SurvivorsRebindCommandView, this.Hwd);
   }
   OnBeforeDestroy() {
     this.Command?.BindView(undefined);
   }
-  Cbd() {
-    if (this.mbd) {
-      this.CardList.GetLayoutItemByKey(this.mbd)?.SetSelected(false, false, true);
-      this.OnGoodsSelected?.(this.mbd, false);
+  jwd() {
+    if (this.Fwd) {
+      this.CardList.GetLayoutItemByKey(this.Fwd)?.SetSelected(false, false, true);
+      this.OnGoodsSelected?.(this.Fwd, false);
     }
-    this.mbd = 0;
+    this.Fwd = 0;
   }
-  gbd(i) {
+  Vwd(i) {
     this.GetButton(3).SetSelfInteractive(i);
   }
   Refresh() {
@@ -146,22 +146,22 @@ class SurvivorsRogueGeneralObtainView extends UiViewBase_1.UiViewBase {
     this.RunAsyncTask(i);
   }
   GetRoleStatePanel() {
-    return this.cbd.RoleStatePanel;
+    return this.qwd.RoleStatePanel;
   }
   async Z$1() {
     var i = this.Command.GetViewInfo();
     if (i) {
-      this.dbd = i;
-      this.cbd.CaptionItem?.SetTitleByTextIdAndArgNew(i.CaptionId);
-      this.cbd.SetMainTitle(i.TitleId);
+      this.Gwd = i;
+      this.qwd.CaptionItem?.SetTitleByTextIdAndArgNew(i.CaptionId);
+      this.qwd.SetMainTitle(i.TitleId);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(4), i.ButtonId);
       await this.CardList.RefreshByDataAsync(i.GoodsList);
-      switch (this.dbd.ChooseData.ObtainMode) {
+      switch (this.Gwd.ChooseData.ObtainMode) {
         case 0:
-          this.gbd(false);
+          this.Vwd(false);
           break;
         case 1:
-          this.gbd(true);
+          this.Vwd(true);
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRoguePopViewRefresh, this.Command.Type);
     }

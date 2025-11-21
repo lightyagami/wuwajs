@@ -9,6 +9,8 @@ const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
 const UiManager_1 = require("../../../Ui/UiManager");
 const RoleSkillInputPanel_1 = require("./RoleSkillInputPanel");
+const LogReportDefine_1 = require("../../LogReport/LogReportDefine");
+const LogReportController_1 = require("../../LogReport/LogReportController");
 class RoleSkillInputView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -29,6 +31,8 @@ class RoleSkillInputView extends UiViewBase_1.UiViewBase {
     await this.Dmo.RefreshUiAsync(e.GetRoleId(), e.IsTrialRole(), true);
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.lqe.SetCloseCallBack(this.pFe);
+    var i = new LogReportDefine_1.RoleSkillInputLogEvent();
+    LogReportController_1.LogReportController.LogReport(i);
   }
 }
 exports.RoleSkillInputView = RoleSkillInputView;

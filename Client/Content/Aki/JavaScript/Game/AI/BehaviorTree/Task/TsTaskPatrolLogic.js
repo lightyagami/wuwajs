@@ -114,8 +114,8 @@ class TsTaskPatrolLogic extends TsTaskAbortImmediatelyBase_1.default {
           Context: "[TsTaskPatrolLogic.InitComp]"
         });
       }
-      this.StateComp = this.Entity.GetComponent(102);
-      this.AnimComp = this.Entity.GetComponent(178);
+      this.StateComp = this.Entity.GetComponent(104);
+      this.AnimComp = this.Entity.GetComponent(181);
       if (!this.PatrolLogic.IsInitialized) {
         this.PatrolLogic.GeneratePatrol(false);
       }

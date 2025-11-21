@@ -42,6 +42,7 @@ const SimpleGenericLayout_1 = require("../../Util/Layout/SimpleGenericLayout");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GachaDefine_1 = require("../GachaDefine");
 const GachaSceneView_1 = require("../GachaUiSceneManager/GachaSceneView");
+const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
 exports.SCENE_CAMERA_TAG = new UE.FName("SequenceCamera");
 exports.SCENE_ROLE_TAG = new UE.FName("Role");
 class GachaScanView extends GachaSceneView_1.GachaSceneView {
@@ -77,7 +78,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     this.CKt = false;
     this.gKt = undefined;
     this.C4_ = false;
-    this.oXu = 0;
+    this.NHu = 0;
     this.OWt = () => {
       var e;
       var i = this.lKt >= 5 && ChannelController_1.ChannelController.CouldShare();
@@ -169,7 +170,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 1");
     }
-    if (Info_1.Info.IsLowMemoryDevice && (this.oXu = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.oXu !== 0)) {
+    if (Info_1.Info.IsLowMemoryDevice && (this.NHu = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.DepthOfFieldQuality"), this.NHu !== 0)) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality 0");
     }
     var e = this.OpenParam;
@@ -386,6 +387,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
       var s = ConfigManager_1.ConfigManager.GachaConfig.GetGachaSequenceConfigById(e.ShowSequence);
       var r = ConfigManager_1.ConfigManager.GachaConfig.GetItemIdType(t);
       var s = ModelManager_1.ModelManager.GachaModel.GetLoadedSequence(s.SequencePath);
+      GameSettingsDeviceRender_1.GameSettingsDeviceRender.TemporaryDisableFrameGeneration("RefreshModel");
       UE.KuroSequencePerformanceManager.OpenKuroPerformanceMode(s);
       this.DKt();
       CameraController_1.CameraController.SetViewTarget(this.exe, "GachaScanView.RefreshModel");
@@ -618,7 +620,7 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
       e.WhiteScreenOff();
     }
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroBloomEnable 1");
-    this.uKt = ResourceSystem_1.ResourceSystem.Load("/Game/Aki/Data/GaCha/GachaWeaponTransform.GachaWeaponTransform", UE.DataTable);
+    this.uKt = ResourceSystem_1.ResourceSystem.Load("/Game/Aki/Data/GaCha/GachaWeaponTransform.GachaWeaponTransform", UE.DataTable, this.MemoryTag);
     this.IKt();
     var e = this.OpenParam;
     this._Kt = e && e.IsOnlyShowGold;
@@ -658,12 +660,13 @@ class GachaScanView extends GachaSceneView_1.GachaSceneView {
     this.AddChild(this.JWt);
     this.TKt();
     ModelManager_1.ModelManager.GachaModel.ReleaseLoadGachaSequence();
+    GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelTemporaryDisableFrameGeneration("RefreshModel");
     UE.KuroSequencePerformanceManager.CloseKuroPerformanceMode();
     if (this.C4_) {
       UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.SkyBlending.AllowSettingLerpPerFrame 0");
     }
-    if (Info_1.Info.IsLowMemoryDevice && this.oXu !== 0) {
-      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.oXu);
+    if (Info_1.Info.IsLowMemoryDevice && this.NHu !== 0) {
+      UE.KuroSequencePerformanceManager.SimpleExecuteCommand("r.DepthOfFieldQuality " + this.NHu);
     }
     if (Info_1.Info.IsMacPlatform()) {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.AllowHardwareOcclusion 1");

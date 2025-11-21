@@ -30,19 +30,25 @@ class FlowShowTalk {
     this.F$i = t => {
       var e;
       if (t) {
-        if ((t = this.CurShowTalk.TalkItems[this.CurTalkItemIndex]).Type === "SystemOption") {
-          this.fjs = true;
-          ControllerHolder_1.ControllerHolder.PlotController.ShowSystemOption(t, (t, e) => {
-            this.SelectOption(t, e);
-          });
-        } else if (t.Options && t.Options.length > 0) {
-          this.Context.CurOptionId = -1;
-          this.fjs = true;
-          if (this.Context.IsBackground) {
-            e = ControllerHolder_1.ControllerHolder.FlowController.GetRecommendedOption(t);
-            this.HandleShowTalkItemOption(e, t.Options[e].Actions);
+        t = this.CurShowTalk.TalkItems[this.CurTalkItemIndex];
+        if (this.B8 !== "Prompt" && (this.B8 !== "LevelD" || t.TimeLimitOptionGroup)) {
+          if (t.Type === "SystemOption") {
+            this.fjs = true;
+            ControllerHolder_1.ControllerHolder.PlotController.ShowSystemOption(t, (t, e) => {
+              this.SelectOption(t, e);
+            });
+          } else if (t.Options && t.Options.length > 0) {
+            this.Context.CurOptionId = -1;
+            this.fjs = true;
+            if (this.Context.IsBackground) {
+              e = ControllerHolder_1.ControllerHolder.FlowController.GetRecommendedOption(t);
+              this.HandleShowTalkItemOption(e, t.Options[e].Actions);
+            } else {
+              ControllerHolder_1.ControllerHolder.PlotController.PlotViewManager.OnShowOptions();
+              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowPlotSubtitleOptions);
+            }
           } else {
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ShowPlotSubtitleOptions);
+            this.V$i();
           }
         } else {
           this.V$i();
@@ -125,10 +131,10 @@ class FlowShowTalk {
   SwitchTalkItem(e) {
     var i = this.CurShowTalk.TalkItems.length;
     for (let t = 0; t < i; t++) {
-      var s = this.CurShowTalk.TalkItems[t];
-      if (s.Id === e) {
+      var o = this.CurShowTalk.TalkItems[t];
+      if (o.Id === e) {
         this.CurTalkItemIndex = t;
-        this.j$i(s);
+        this.j$i(o);
         return;
       }
     }
@@ -175,6 +181,7 @@ class FlowShowTalk {
       }
       this.Context.CurOptionId = t;
       this.fjs = false;
+      ControllerHolder_1.ControllerHolder.PlotController.PlotViewManager.OnSelectedOptions();
       ControllerHolder_1.ControllerHolder.FlowController.SelectOption(this.Context.CurTalkId, t);
       ControllerHolder_1.ControllerHolder.FlowController.ExecuteSubActions(e, this.OnOptionActionCompleted);
     }
@@ -214,32 +221,32 @@ class FlowShowTalk {
     var t = this.S$i?.BackgroundConfig;
     var e = UiManager_1.UiManager.GetViewByName("PlotView");
     if (t && this.B8 === "LevelC" && !this.Context.IsBackground && e) {
-      const o = new CustomPromise_1.CustomPromise();
+      const s = new CustomPromise_1.CustomPromise();
       var i = () => {
-        o.SetResult();
+        s.SetResult();
       };
       switch (t.Type) {
         case "Clean":
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, false, true, undefined, i);
-          if (!o.IsFulfilled()) {
-            await o.Promise;
+          if (!s.IsFulfilled()) {
+            await s.Promise;
           }
           await e.CloseChildView();
           break;
         case "Image":
-          var s = t;
+          var o = t;
           PlotController_1.PlotController.UpdateViewControl(false);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, s?.ImageAsset, i);
-          if (!o.IsFulfilled()) {
-            await o.Promise;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, o?.ImageAsset, i);
+          if (!s.IsFulfilled()) {
+            await s.Promise;
           }
           break;
         case "Icon":
-          s = t;
+          o = t;
           PlotController_1.PlotController.UpdateViewControl(false);
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, false, s?.ImageAsset, i);
-          if (!o.IsFulfilled()) {
-            await o.Promise;
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, false, o?.ImageAsset, i);
+          if (!s.IsFulfilled()) {
+            await s.Promise;
           }
           break;
         case "ImageByMcGender":
@@ -249,8 +256,8 @@ class FlowShowTalk {
           } else if (ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() === 0) {
             EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadePhoto, true, true, t.ImageAssetFemale, i);
           }
-          if (!o.IsFulfilled()) {
-            await o.Promise;
+          if (!s.IsFulfilled()) {
+            await s.Promise;
           }
           break;
         case "SpineImage":
@@ -284,6 +291,7 @@ class FlowShowTalk {
       if (this.B8 === "LevelC" && this.S$i?.Type === "CenterText") {
         ModelManager_1.ModelManager.PlotModel.ShowTalkCenterText(this.S$i, this.SubmitSubtitle);
       } else {
+        ControllerHolder_1.ControllerHolder.PlotController.PlotViewManager.OnUpdateSubtitle(this.S$i);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdatePlotSubtitle, this.S$i);
       }
     }

@@ -55,11 +55,11 @@ class FlowActionAwakeEntity extends FlowActionServerAction_1.FlowActionServerAct
           }
         }
         if (t) {
-          this.wtd(e);
+          this.Frd(e);
           this.RequestServerAction(false);
           this.FinishExecute(true);
         } else {
-          this.wtd(o.EntityIds);
+          this.Frd(o.EntityIds);
         }
       } else {
         this.FinishExecute(true);
@@ -68,7 +68,7 @@ class FlowActionAwakeEntity extends FlowActionServerAction_1.FlowActionServerAct
       this.FinishExecute(true);
     }
   }
-  wtd(t) {
+  Frd(t) {
     if (t) {
       for (const o of t) {
         ControllerHolder_1.ControllerHolder.CreatureController.RecoverDensityEntity(o, "Plot");

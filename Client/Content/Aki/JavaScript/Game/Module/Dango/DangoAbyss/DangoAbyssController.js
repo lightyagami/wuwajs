@@ -47,7 +47,6 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, DangoAbyssController.sZs);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAbyssDangoSelect, DangoAbyssController.X2c);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivityOpen, DangoAbyssController.nd1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, DangoAbyssController.Ja1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, DangoAbyssController.p5a);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, DangoAbyssController.Ilt);
@@ -57,7 +56,6 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshEditBattleRoleSlotData, DangoAbyssController.sZs);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAbyssDangoSelect, DangoAbyssController.X2c);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityOpen, DangoAbyssController.nd1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeonConfirm, DangoAbyssController.Ja1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, DangoAbyssController.p5a);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, DangoAbyssController.Ilt);
@@ -65,20 +63,20 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAbyssFirstRoomEnter, DangoAbyssController.PreloadRoomMonsterEntitiesOnEnter);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(15238, this.Vvc);
-    Net_1.Net.Register(20635, this.jvc);
-    Net_1.Net.Register(19136, this.Hvc);
-    Net_1.Net.Register(18951, this.$vc);
-    Net_1.Net.Register(16250, this.Wvc);
-    Net_1.Net.Register(20115, this.gvc);
+    Net_1.Net.Register(20171, this.Vvc);
+    Net_1.Net.Register(28944, this.jvc);
+    Net_1.Net.Register(18137, this.Hvc);
+    Net_1.Net.Register(23836, this.$vc);
+    Net_1.Net.Register(15927, this.Wvc);
+    Net_1.Net.Register(19427, this.gvc);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(15238);
-    Net_1.Net.UnRegister(20635);
-    Net_1.Net.UnRegister(19136);
-    Net_1.Net.UnRegister(18951);
-    Net_1.Net.UnRegister(16250);
-    Net_1.Net.UnRegister(20115);
+    Net_1.Net.UnRegister(20171);
+    Net_1.Net.UnRegister(28944);
+    Net_1.Net.UnRegister(18137);
+    Net_1.Net.UnRegister(23836);
+    Net_1.Net.UnRegister(15927);
+    Net_1.Net.UnRegister(19427);
   }
   static OpenAbyssSelectViewByActivityId(e) {
     var n = new DangoAbyssData_1.DangoAbyssInsSelectViewData();
@@ -100,7 +98,7 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Info("Activity", 27, "当前处于loading状态，不打开团子解锁界面");
       }
     } else {
-      const o = new Array();
+      const a = new Array();
       e.forEach((e, n) => {
         var t = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(n).GetName();
         var n = {
@@ -112,10 +110,10 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
           DetailName: ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(t, t),
           DetailDialog: ""
         };
-        o.push(n);
+        a.push(n);
       });
       e = {
-        DataList: o,
+        DataList: a,
         ShowTime: 1000
       };
       UiManager_1.UiManager.OpenView("DangoAbyssGetDangoView", e);
@@ -194,24 +192,24 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
     if (t) {
       n = n.GetLevelPlayAllEntities(t);
       const r = new Set();
-      const s = e => {
+      const i = e => {
         e = BlueprintConfigByBlueprintType_1.configBlueprintConfigByBlueprintType.GetConfig(e.BlueprintType);
         return !!e && e.EntityType === S_ENTITY_TYPE_MONSTER;
       };
       n.forEach(e => {
         var n = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(e);
         if (n) {
-          if (s(n)) {
+          if (i(n)) {
             r.add(e);
           } else {
             e = n.ComponentsData;
             n = (0, IComponent_1.getComponent)(e, "SpawnMonsterComponent");
             if (n && n.SpawnMonsterConfigs) {
-              for (const o of n.SpawnMonsterConfigs) {
-                for (const a of o.TargetsToAwake ?? []) {
-                  var t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(a);
-                  if (t && s(t)) {
-                    r.add(a);
+              for (const a of n.SpawnMonsterConfigs) {
+                for (const o of a.TargetsToAwake ?? []) {
+                  var t = ModelManager_1.ModelManager.CreatureModel.GetCompleteEntityData(o);
+                  if (t && i(t)) {
+                    r.add(o);
                   }
                 }
               }
@@ -248,17 +246,17 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
         await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(17, 3);
       } else {
         var e = Vector_1.Vector.Create(r.iPs, r.rPs, r.gqs);
-        var o = new UE.Rotator(0, r.fqs, 0);
+        var a = new UE.Rotator(0, r.fqs, 0);
         await LevelLoadingController_1.LevelLoadingController.WaitOpenLoading(17, 3);
-        const a = new CustomPromise_1.CustomPromise();
-        ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(n, t, 0, e, o, e => {
+        const o = new CustomPromise_1.CustomPromise();
+        ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(n, t, 0, e, a, e => {
           if (e) {
-            a.SetResult(true);
+            o.SetResult(true);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Activity", 27, "团子深渊子关卡加载失败", ["unloads", n], ["newLoads", t]);
           }
         });
-        await a.Promise;
+        await o.Promise;
       }
       await this.Qvc(r.Vy_);
       await this.PreloadRoomMonsterEntities();
@@ -271,7 +269,7 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static async Qvc(e) {
     var n = Protocol_1.Aki.Protocol.v0c.create();
     n.Vy_ = e;
-    var e = await Net_1.Net.CallAsync(16197, n);
+    var e = await Net_1.Net.CallAsync(18540, n);
     if (!e || e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Activity", 27, "团子深渊进入下个房间失败");
@@ -293,43 +291,37 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
     };
     var t = ModelManager_1.ModelManager.DangoAbyssModel.GetCurrentChallengeId();
     var t = !ConfigManager_1.ConfigManager.DangoAbyssConfig.GetDangoAbyssInstById(t).IfStoryChallenge;
-    var o = [];
-    o.push(n);
+    var a = [];
+    a.push(n);
     if (t) {
-      o.push({
+      a.push({
         ButtonTextId: "ConfirmBox_133_ButtonText_1",
         IsTimeDownCloseView: false,
         IsClickedCloseView: false,
         OnClickedCallback: function () {
-          var e;
-          var n;
           if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
             ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.SettleViewButtonSuccessOnMultiCallBack(0);
           } else {
-            e = {
-              opc: ModelManager_1.ModelManager.DangoAbyssModel.GetRoleSelectDangoMap()
-            };
-            (n = new Protocol_1.Aki.Protocol.$ah()).spc = e;
-            ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon(n);
+            ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon();
           }
         },
         DescriptionTextId: undefined
       });
     }
-    const a = [];
+    const o = [];
     e.j7n.gws.forEach(e => {
       e = new RewardItemData_1.RewardItemData(e.s5n, e.m9n, undefined);
-      a.push(e);
+      o.push(e);
     });
     n = ModelManager_1.ModelManager.DangoAbyssModel.GetInstanceProgress();
     t = {
-      RewardItemData: a,
+      RewardItemData: o,
       Progress: n
     };
     e = {
       ConfigId: ItemRewardDefine_1.ABYSS_SUCCESS,
       IsSuccess: true,
-      ButtonInfoList: o,
+      ButtonInfoList: a,
       DangoAbyssSuccessData: t,
       IsBagFull: false
     };
@@ -339,19 +331,19 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static AbyssLikePlayer(e) {
     var n = new Protocol_1.Aki.Protocol.f0c();
     n.W5n = e;
-    Net_1.Net.Call(17625, n, e => {
+    Net_1.Net.Call(26815, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29525);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 27969);
       }
     });
   }
   static async RequestAbyssRankList(e) {
     var n = new Protocol_1.Aki.Protocol.A0c();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(16007, n);
+    var e = await Net_1.Net.CallAsync(23298, n);
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrAbyssRankListCd) {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26152);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21894);
       }
       ModelManager_1.ModelManager.DangoAbyssModel.OnAbyssChallegenRankUpdate(e);
     }
@@ -359,15 +351,15 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static async RequestAbyssSelfRank(e) {
     var n = new Protocol_1.Aki.Protocol.B0c();
     n.s5n = e;
-    var e = await Net_1.Net.CallAsync(16330, n);
+    var e = await Net_1.Net.CallAsync(22615, n);
     ModelManager_1.ModelManager.DangoAbyssModel.OnAbyssChallengeSelfRankUpdate(e);
   }
   static async RequestSetAbyssShowName(e, n) {
     var t = new Protocol_1.Aki.Protocol.x0c();
     t.e8n = e;
     t.lnc = n;
-    var t = await Net_1.Net.CallAsync(23228, t);
-    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19610), false) : (ModelManager_1.ModelManager.DangoAbyssModel.OnAnonymousNameStateChange(e, n), true));
+    var t = await Net_1.Net.CallAsync(19672, t);
+    return !!t && (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 22919), false) : (ModelManager_1.ModelManager.DangoAbyssModel.OnAnonymousNameStateChange(e, n), true));
   }
   static StartAbyssChallenge(e) {
     e = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetDangoAbyssInstById(e);
@@ -397,47 +389,47 @@ class DangoAbyssController extends UiControllerBase_1.UiControllerBase {
   static RefreshAbyssDangoAnimation(e, n, t) {
     DangoAbyssActorManager_1.DangoAbyssActorManager.RefreshSkeletalObserverAnimation(e, n, t);
   }
-  static RefreshAbyssDangoModel(e, n, t, o) {
-    let a = undefined;
+  static RefreshAbyssDangoModel(e, n, t, a) {
+    let o = undefined;
     let r = 0;
-    let s = "";
+    let i = "";
     if (n === DangoAbyssDefine_1.BADDANGOID) {
-      a = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetBadDangoTransform();
+      o = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetBadDangoTransform();
       r = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetBadDangoMeshId();
-      s = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetBadDangoStandAni();
+      i = ConfigManager_1.ConfigManager.DangoAbyssConfig.GetBadDangoStandAni();
     } else {
-      l = (i = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(n)).GetPhantomId();
-      a = ModelManager_1.ModelManager.PhantomBattleModel.GetMeshTransform(l);
-      s = ModelManager_1.ModelManager.PhantomBattleModel.GetStandAnim(l);
-      r = i.GetMeshId();
+      l = (s = ModelManager_1.ModelManager.DangoAbyssModel.GetDangoAbyssRoleData(n)).GetPhantomId();
+      o = ModelManager_1.ModelManager.PhantomBattleModel.GetMeshTransform(l);
+      i = ModelManager_1.ModelManager.PhantomBattleModel.GetStandAnim(l);
+      r = s.GetMeshId();
     }
-    var i;
+    var s;
     var l = {
       DangoId: n,
       MeshId: r,
       DangoPointCase: t,
-      Transform: a,
-      StandAnimationName: s
+      Transform: o,
+      StandAnimationName: i
     };
-    DangoAbyssActorManager_1.DangoAbyssActorManager.RefreshDangoSkeletalObserverHandle(e, l, o);
+    DangoAbyssActorManager_1.DangoAbyssActorManager.RefreshDangoSkeletalObserverHandle(e, l, a);
   }
   static DestroyAbyssDangoObserver(e) {
     DangoAbyssActorManager_1.DangoAbyssActorManager.DestroyDangoSkeletalObserverHandle(e);
   }
   static RequestQuitChallenge() {
     var e = new Protocol_1.Aki.Protocol.u0c();
-    Net_1.Net.Call(28289, e, e => {
+    Net_1.Net.Call(23216, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15748);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16708);
       }
     });
   }
   static RequestChallengeUnlock(e) {
     var n = new Protocol_1.Aki.Protocol._0c();
     n.e8n = e;
-    Net_1.Net.Call(23301, n, e => {
+    Net_1.Net.Call(23246, n, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19657);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19123);
       }
     });
   }
@@ -469,26 +461,26 @@ DangoAbyssController.Hvc = n => {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAbyssChallengeResult);
     if (e) {
       var t = [];
-      var o = n.j7n.TRs.length;
-      for (let e = 0; e < o; e++) {
-        var a = n.j7n.TRs[e];
-        var r = a.W5n;
-        var s = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(r);
-        var i = s?.PlayerTitleId ?? 0;
-        var l = s?.PlayerTitleStarLevel ?? 0;
-        var _ = s?.Sex ?? 0;
-        var g = s?.IsSelf ?? false;
+      var a = n.j7n.TRs.length;
+      for (let e = 0; e < a; e++) {
+        var o = n.j7n.TRs[e];
+        var r = o.W5n;
+        var i = ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamListById(r);
+        var s = i?.PlayerTitleId ?? 0;
+        var l = i?.PlayerTitleStarLevel ?? 0;
+        var _ = i?.Sex ?? 0;
+        var g = i?.IsSelf ?? false;
         const M = [];
         var y = [];
-        var D = a.dUs.length > 0 ? 1 : 0;
-        for (let e = 0; e < D; e++) {
-          var d = a.dUs[e];
+        var d = o.dUs.length > 0 ? 1 : 0;
+        for (let e = 0; e < d; e++) {
+          var D = o.dUs[e];
           var c = {
-            Id: d.K0c?.h5n ?? 0,
-            Count: d.K0c?.e5n ?? 0
+            Id: D.K0c?.h5n ?? 0,
+            Count: D.K0c?.e5n ?? 0
           };
           y.push(c);
-          d.X0c.forEach(e => {
+          D.X0c.forEach(e => {
             e = {
               Id: e.h5n,
               Count: e.e5n
@@ -506,17 +498,17 @@ DangoAbyssController.Hvc = n => {
           MedalColorHex: SolarSpeedDefine_1.medalColorHex[v],
           FxColorHex: SolarSpeedDefine_1.fxColorHex[v],
           PlayerIndexIconPath: (g ? SolarSpeedDefine_1.playerIndexSelfIconMap : SolarSpeedDefine_1.playerIndexIconMap)[e],
-          NameText: s?.PlayerName ?? "",
+          NameText: i?.PlayerName ?? "",
           IconData: {
-            IconPath: s === undefined ? "" : ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(s.HeadId, false).GetRoleHeadIconCircle()
+            IconPath: i === undefined ? "" : ModelManager_1.ModelManager.PersonalModel.GetPlayerHeadData(i.HeadId, false).GetRoleHeadIconCircle()
           },
-          LikeCount: a.V0c,
+          LikeCount: o.V0c,
           SubDescData: M,
           MainDescData: y,
           AvatarTexturePath: SolarSpeedDefine_1.avatarPattern[v],
           LineTexturePath: SolarSpeedDefine_1.linePattern[v],
           BgTexturePath: SolarSpeedDefine_1.bgPattern[v],
-          PlayerTitle: i,
+          PlayerTitle: s,
           PlayerTitleStarLevel: l,
           Sex: _
         };
@@ -567,13 +559,6 @@ DangoAbyssController.p5a = () => {
         e.SetActorHiddenInGame(false);
       }
     });
-  }
-};
-DangoAbyssController.nd1 = () => {
-  var e = _a.pUc();
-  if (e !== 0 && (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)).GetActivityTipNeedShowState()) {
-    ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(28);
-    e.CacheActivityTipShowState();
   }
 };
 DangoAbyssController.X2c = n => {

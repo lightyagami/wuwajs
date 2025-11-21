@@ -100,7 +100,7 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
   }
   OnParentShow() {
     super.OnParentShow();
-    this.oCa?.PlayStartSeqAsync();
+    this.oCa?.PlayStartSeq();
   }
   async YQl(i, e) {
     var t;
@@ -127,7 +127,7 @@ class ActivityRegressRoleSubView extends ActivityRegressMainSubViewBase_1.Activi
     }
     this.oCa.SetDescUiActive(false);
     this.oCa.Update(i);
-    this.oCa.PlayStartSeqAsync();
+    this.oCa.PlayStartSeq();
   }
 }
 exports.ActivityRegressRoleSubView = ActivityRegressRoleSubView;

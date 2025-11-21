@@ -11,14 +11,14 @@ const ScrollingTipsController_1 = require("../../../ScrollingTips/ScrollingTipsC
 class SceneTeamCooperationHandler {
   Trigger(e, r) {
     var o = r.EntityHandle;
-    var n = o.Entity.GetComponent(99).IsInQte;
-    var o = o.Entity.CheckGetComponent(94).IsChangeRoleCoolDown();
+    var n = o.Entity.GetComponent(101).IsInQte;
+    var o = o.Entity.CheckGetComponent(96).IsChangeRoleCoolDown();
     if (!n) {
       if (o) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamInCD");
         return false;
       }
-      n = e.EntityHandle.Entity.GetComponent(206);
+      n = e.EntityHandle.Entity.GetComponent(209);
       if (n.HasTag(-2044964178) && n.HasAnyTag(SceneTeamDefine_1.beHitTagList)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "被击硬直时间无法换人", ["roleId", e.GetConfigId]);

@@ -19,7 +19,7 @@ class TrapDefenseRewardData {
     this.FixedRewardDataList = [];
     this.LimitBeginTime = 0;
     this.LimitEndTime = 0;
-    this.p9c = (e, t) => e.State !== t.State ? e.State < t.State ? 1 : -1 : e.Id > t.Id ? 1 : -1;
+    this.r9u = (e, t) => e.State !== t.State ? e.State < t.State ? 1 : -1 : e.Id > t.Id ? 1 : -1;
   }
   static Create(e) {
     var t = new TrapDefenseRewardData();
@@ -38,7 +38,7 @@ class TrapDefenseRewardData {
   }
   GetRewardListByType(e) {
     e = this.RewardTypeMap.get(e);
-    e?.sort(this.p9c);
+    e?.sort(this.r9u);
     return e ?? [];
   }
   GetRewardProgressByType(e) {
@@ -100,7 +100,7 @@ class TrapDefenseRewardData {
       }
     }
     for (const a of this.RewardTypeMap.values()) {
-      a.sort(this.p9c);
+      a.sort(this.r9u);
     }
     var r = ConfigManager_1.ConfigManager.TrapDefenseConfig?.GetSpecialRewardByActivityId(this.LOe);
     if (r && r.length > 0) {
@@ -108,7 +108,7 @@ class TrapDefenseRewardData {
     }
   }
   SortFixedRewardList() {
-    this.FixedRewardDataList.sort(this.p9c);
+    this.FixedRewardDataList.sort(this.r9u);
   }
   GetFixedRewardTotalProgress() {
     return [this.FixedRewardDataList.filter(e => e.State === 1).length, this.FixedRewardDataList.length];

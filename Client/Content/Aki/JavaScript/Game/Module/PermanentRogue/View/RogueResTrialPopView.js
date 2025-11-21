@@ -18,15 +18,15 @@ const tabColor = new Map([[1, "#ab9664"], [0, "#323232"]]);
 const txtColor = new Map([[1, "#FFFFFF"], [0, "#f4f0e5"]]);
 const tabText = new Map([[1, "Rogue_Trial_Role_Limit"], [0, "Rogue_Trial_Role_Resident"]]);
 class RogueResTrialRoleItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
-  OnRefresh(e, t, i) {
-    var r = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e);
+  OnRefresh(e, r, t) {
+    var i = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e);
     var e = {
       Type: 2,
       ItemConfigId: e,
-      SkinId: r.SkinId,
-      BottomTextId: r.Name,
-      ElementId: r.ElementId,
-      Data: r
+      SkinId: i.SkinId,
+      BottomTextId: i.Name,
+      ElementId: i.ElementId,
+      Data: i
     };
     this.Apply(e);
   }
@@ -45,27 +45,23 @@ class RogueResTrialTabItem extends GridProxyAbstract_1.GridProxyAbstract {
   OnStart() {
     this.eGe = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.HB_);
   }
-  Refresh(e, t, i) {
-    var r = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(this.SeasonId, e);
+  Refresh(e, r, t) {
+    var i = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRole(this.SeasonId, e);
     const o = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    var r = r.filter(e => {
+    var i = i.filter(e => {
       e = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(e);
       return !ModelManager_1.ModelManager.RoleModel.IsMainRole(e) || ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(e).Gender === o;
     });
-    this.eGe?.RefreshByData(r);
-    var r = UE.Color.FromHex(tabColor.get(e));
-    this.GetSprite(4)?.SetColor(r);
-    var r = UE.Color.FromHex(txtColor.get(e));
-    this.GetText(1).SetColor(r);
+    this.eGe?.RefreshByData(i);
+    var i = UE.Color.FromHex(tabColor.get(e));
+    this.GetSprite(4)?.SetColor(i);
+    var i = UE.Color.FromHex(txtColor.get(e));
+    this.GetText(1).SetColor(i);
+    this.GetItem(6)?.SetUIActive(false);
+    this.GetText(5)?.SetUIActive(false);
     if (e === 1) {
-      this.GetItem(6)?.SetUIActive(true);
-      this.GetText(5).SetColor(r);
-      this.GetText(5)?.SetUIActive(true);
-      r = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRemainTime(this.SeasonId);
-      this.GetText(5)?.SetText(r);
-    } else {
-      this.GetItem(6)?.SetUIActive(false);
-      this.GetText(5)?.SetUIActive(false);
+      i = ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTrailRemainTime(this.SeasonId);
+      this.GetText(5)?.SetText(i);
     }
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), tabText.get(e));
   }

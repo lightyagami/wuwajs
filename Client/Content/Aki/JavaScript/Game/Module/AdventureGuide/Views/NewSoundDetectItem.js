@@ -22,7 +22,6 @@ const InstanceDungeonController_1 = require("../../InstanceDungeon/InstanceDunge
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const GenericScrollViewNew_1 = require("../../Util/ScrollView/GenericScrollViewNew");
-const WorldMapController_1 = require("../../WorldMap/WorldMapController");
 const NewSoundDetectRewardItem_1 = require("./NewSoundDetectRewardItem");
 const NewSoundLordItem_1 = require("./NewSoundLordItem");
 const NewSoundNormalItem_1 = require("./NewSoundNormalItem");
@@ -204,7 +203,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
         this.L8e = this.R8e;
     }
     this.L8e?.Update(e);
-    var n = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(o);
+    var n = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(o);
     var s = n || !o.IsLock;
     var a = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionNewContentOpen(o);
     this.GetItem(9).SetUIActive(n);
@@ -229,7 +228,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
         LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(8), o.Conf.NewContent);
       }
     }
-    let l = 0;
+    let h = 0;
     if (o.Type === 0) {
       s = o.Conf;
       if (s.SubDungeonId && !ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(s.SubDungeonId) && o.Conf.Secondary === 6) {
@@ -238,26 +237,26 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     } else {
       n = o.Conf;
       if (o.Conf.Secondary === 61) {
-        l = n.AdditionalId;
+        h = n.AdditionalId;
       }
     }
-    let h = 0;
-    if (l) {
-      a = ModelManager_1.ModelManager.LordGymModel.GetHasFinishLord(l);
-      h = a + 1;
+    let l = 0;
+    if (h) {
+      a = ModelManager_1.ModelManager.LordGymModel.GetHasFinishLord(h);
+      l = a + 1;
     }
-    h = h !== 0 ? h : ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel;
-    var d = this.Pe.Conf.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(this.Pe.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(o.Conf.ShowRewardMap, h);
-    if (d) {
-      var _ = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
+    l = l !== 0 ? l : ModelManager_1.ModelManager.AdventureGuideModel.CurrentShowLevel;
+    var _ = this.Pe.Conf.Secondary === 63 ? ConfigManager_1.ConfigManager.AdventureModuleConfig.GetNightMareShowReward(this.Pe.Conf.ShowRewardMapCalabash) : ConfigManager_1.ConfigManager.AdventureModuleConfig.GetShowReward(o.Conf.ShowRewardMap, l);
+    if (_) {
+      var d = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionFinished(this.Pe);
       var u = new Array();
-      for (const g of d.keys()) {
+      for (const g of _.keys()) {
         const o = {
           ItemData: [{
             IncId: 0,
             ItemId: g
-          }, d.get(g)],
-          HaveFinish: _
+          }, _.get(g)],
+          HaveFinish: d
         };
         u.push(o);
       }
@@ -271,7 +270,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
   iql() {
     var e;
     var t;
-    if (ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(this.Pe)) {
+    if (ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(this.Pe)) {
       this.oql();
     } else {
       e = ModelManager_1.ModelManager.AdventureGuideModel.GetSoundAreaDetectData(this.Pe.Conf.Id);
@@ -300,7 +299,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   rql() {
     var e;
-    if (ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(this.Pe)) {
+    if (ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(this.Pe)) {
       this.oql();
     } else {
       e = ModelManager_1.ModelManager.AdventureGuideModel.GetSilentAreaDetectData(this.Pe.Conf.Id);
@@ -311,31 +310,7 @@ class NewSoundDetectItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   nql() {
-    var e = ModelManager_1.ModelManager.AdventureGuideModel.GetPreOpenDetectionConf(this.Pe.Conf.Id, this.Pe.Type, this.Pe.Conf.PreOpenId);
-    var t = e.TeleportEntityId;
-    if (t) {
-      WorldMapController_1.WorldMapController.TryTeleport(t);
-    } else {
-      t = e.DungeonEntranceId;
-      if (t) {
-        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(t);
-      } else {
-        t = e.InstanceID;
-        if (t) {
-          var i = {
-            v9n: e.Id
-          };
-          ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.m1c = i;
-          var o = [];
-          for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems()) {
-            o.push(r.GetConfigId);
-          }
-          InstanceDungeonController_1.InstanceDungeonController.PrewarTeamFightRequest(t, o, 0, 0);
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("AdventureGuide", 63, "未配置预开放检测的传送点或副本入口", ["detectionId", this.Pe.Conf.Id], ["preOpenDetectionId", e?.Id]);
-        }
-      }
-    }
+    ControllerHolder_1.ControllerHolder.AdventureGuideController.HandlePreOpenDetection(this.Pe.Conf.Id, this.Pe.Type, this.Pe.Conf.PreOpenId);
   }
   OnBeforeDestroy() {
     this.D8e?.Destroy();

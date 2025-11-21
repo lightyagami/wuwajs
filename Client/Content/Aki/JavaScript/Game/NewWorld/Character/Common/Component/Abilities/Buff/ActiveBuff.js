@@ -92,7 +92,7 @@ class ActiveBuffInternal {
   }
   Destroy() {
     if (this.IsActive()) {
-      const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(206);
+      const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
       if (i?.Valid) {
         this.Config.GrantedTags?.forEach(t => {
           i.TagContainer.UpdateExactTag(2, t, -this.StackCount);
@@ -103,7 +103,7 @@ class ActiveBuffInternal {
     this.CQo();
     this.gQo();
     this.ClearModifiers();
-    this.rWc();
+    this.gHu();
     this.StackCountInternal = 0;
   }
   IsValid() {
@@ -136,7 +136,7 @@ class ActiveBuffInternal {
   }
   GetInstigatorBuffComponent() {
     if (this.InstigatorId) {
-      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(175);
+      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(178);
     }
   }
   GetInstigatorActorComponent() {
@@ -146,11 +146,11 @@ class ActiveBuffInternal {
   }
   GetInstigatorAttributeSet() {
     if (this.InstigatorId) {
-      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(174);
+      return ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.InstigatorId)?.Entity?.GetComponent(177);
     }
   }
   GetOwnerAttributeSet() {
-    return this.oQo?.GetEntity()?.GetComponent(174);
+    return this.oQo?.GetEntity()?.GetComponent(177);
   }
   get Id() {
     return this.Config.Id ?? ActiveBuffConfigs_1.NULL_BUFF_ID;
@@ -185,7 +185,7 @@ class ActiveBuffInternal {
       this.OnTimeScaleChanged(i, e);
     }
   }
-  rWc() {
+  gHu() {
     this.BuffTimeScale = 1;
     this.BuffTimeScaleMap.clear();
   }
@@ -352,7 +352,7 @@ class ActiveBuffInternal {
       return false;
     }
     this.mQo = t;
-    const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(206);
+    const i = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
     if (!i) {
       CombatLog_1.CombatLog.Error("Buff", this.GetOwner(), "buff更改激活状态时无法获取到持有者", ["handle", this.Handle], ["buffId", this.Id], ["持有者", this.oQo?.GetDebugName()]);
       return false;
@@ -394,17 +394,19 @@ class ActiveBuffInternal {
     var e = this.Config;
     const s = this.StackCountInternal;
     this.StackCountInternal = i;
-    const h = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(206);
+    const h = this.GetOwnerBuffComponent()?.GetExactEntity()?.CheckGetComponent(209);
     if (h) {
       if (t === 0 && e.StackPeriodResetPolicy === 0) {
         this.SetPeriod();
       }
       this.ResetModifiers();
-      e.GrantedTags?.forEach(t => {
-        if (GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t)) {
-          h.TagContainer.UpdateExactTag(2, t, i - s);
-        }
-      });
+      if (this.mQo) {
+        e.GrantedTags?.forEach(t => {
+          if (GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t)) {
+            h.TagContainer.UpdateExactTag(2, t, i - s);
+          }
+        });
+      }
     } else {
       CombatLog_1.CombatLog.Error("Buff", this.GetOwner(), "buff更改层数时无法获取到持有者", ["handle", this.Handle], ["buffId", this.Id], ["持有者", this.oQo?.GetDebugName()]);
     }
@@ -415,7 +417,7 @@ class ActiveBuffInternal {
   ClearModifiers() {
     ActiveBuffInternal.y__.Start();
     this.StateModifiers.length = 0;
-    var t = this.GetOwner()?.GetComponent(173);
+    var t = this.GetOwner()?.GetComponent(176);
     if (this.dQo.length > 0 && t) {
       for (const i of this.dQo) {
         t.RemoveModifier(i[0], i[1]);
@@ -461,7 +463,7 @@ class ActiveBuffInternal {
   p__(i) {
     ActiveBuffInternal.E__.Start();
     var e = this.StackCountInternal ?? 1;
-    var s = this.GetOwner()?.GetComponent(173);
+    var s = this.GetOwner()?.GetComponent(176);
     if (s) {
       let t = 0;
       var h = i.AttributeId;

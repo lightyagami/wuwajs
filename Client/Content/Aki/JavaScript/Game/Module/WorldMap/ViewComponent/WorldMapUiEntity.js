@@ -157,20 +157,28 @@ class WorldMapUiEntity extends MapEntity_1.MapEntity {
   get IsInPlayerMap() {
     var t = ModelManager_1.ModelManager.MapModel;
     var e = ConfigManager_1.ConfigManager.AreaConfig;
-    var i = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(2);
-    if (i !== 0) {
-      const s = e.GetAreaInfo(i);
-      if (s) {
-        return s.MapConfigId === this.MapId;
+    var i = ModelManager_1.ModelManager.AreaModel;
+    var s = i.GetCurrentAreaId(5);
+    if (s !== 0) {
+      s = e.GetAreaInfo(s);
+      if (s?.IsPlayerPosNeedCheck && s.MapConfigId === this.MapId) {
+        return true;
+      }
+    }
+    s = i.GetCurrentAreaId(2);
+    if (s !== 0) {
+      const r = e.GetAreaInfo(s);
+      if (r) {
+        return r.MapConfigId === this.MapId;
       }
     }
     i = t.LastHighLevelArea;
     if (!i) {
       return t.CurrentWorldMapConfigId === this.MapId;
     }
-    const s = e.GetAreaInfo(e.GetLevelOneAreaId(i));
-    if (s) {
-      return s.MapConfigId === this.MapId;
+    const r = e.GetAreaInfo(e.GetLevelOneAreaId(i));
+    if (r) {
+      return r.MapConfigId === this.MapId;
     } else {
       return t.CurrentWorldMapConfigId === this.MapId;
     }

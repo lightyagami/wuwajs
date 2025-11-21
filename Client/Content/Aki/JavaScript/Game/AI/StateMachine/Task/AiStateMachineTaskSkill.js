@@ -78,7 +78,7 @@ class AiStateMachineTaskSkill extends AiStateMachineTask_1.AiStateMachineTask {
       } else {
         CombatLog_1.CombatLog.Info("StateMachineNew", this.Node.Entity, `状态机技能释放失败 节点[${this.Node.Name}]，技能名[${this.SkillName}]`);
         (s = Protocol_1.Aki.Protocol.we_.create()).r5n = this.SkillId;
-        CombatMessage_1.CombatNet.Send(23933, this.Node.Entity, s, i);
+        CombatMessage_1.CombatNet.Send(19674, this.Node.Entity, s, i);
         this.Node.TaskFinished = true;
         this.Done = true;
       }

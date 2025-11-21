@@ -35,10 +35,10 @@ class MapTravelSubViewSoarChallenge extends UiPanelBase_1.UiPanelBase {
     };
     this.sGe = () => {
       var e = new SoarChallengeItem(this.ActivityBaseData);
-      e.SetClickRewardCb(this.aQu);
+      e.SetClickRewardCb(this.GKc);
       return e;
     };
-    this.aQu = () => {
+    this.GKc = () => {
       var e = this.ActivityBaseData.GetAllSoarTabData()[this.fVl];
       var e = this.ActivityBaseData.GetSoarItemDataList(e.RewardIds).filter(e => e.Status === 0).map(e => e.Id);
       ActivityMapTravelController_1.ActivityMapTravelController.RequestMultiTakeSoarChallengeReward(e);
@@ -123,9 +123,9 @@ class SoarChallengeItem extends MapTravelTaskItem_1.TaskItemBase {
   constructor() {
     super(...arguments);
     this.TaskData = undefined;
-    this.aQu = undefined;
+    this.GKc = undefined;
     this.OnClickedRewardButton = () => {
-      this.aQu?.();
+      this.GKc?.();
     };
   }
   Refresh(e) {
@@ -140,7 +140,7 @@ class SoarChallengeItem extends MapTravelTaskItem_1.TaskItemBase {
     this.GetItem(5).SetUIActive(t);
   }
   SetClickRewardCb(e) {
-    this.aQu = e;
+    this.GKc = e;
   }
   SVl(e) {
     var i = [];

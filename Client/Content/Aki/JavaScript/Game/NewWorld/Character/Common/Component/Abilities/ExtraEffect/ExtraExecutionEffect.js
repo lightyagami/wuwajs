@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RemoveBuffByFilter = exports.ModifyFuLuoLuoSpecialEnergy = exports.ChangeBuffStackCount = exports.StartBattleQte = exports.InvokePeriod = exports.ConvertBuffToAnother = exports.PeriodAddBuffToAdjacentEntity = exports.QteExecution = exports.ExecuteAddBulletByTagStackCount = exports.ExecuteAddBulletByStackCount = exports.ExecuteAddBuffByStackCount = exports.ExecuteBulletOrBuff = exports.PhantomAssistExecution = exports.AddBuffToAdjacentRoleExecution = exports.ExtendBuffDurationExecution = exports.CdReduceExecution = exports.DamageExecution = exports.AddEnergyExecution = exports.AddFormationAttributeExecution = exports.ReviveExecution = exports.InitExecution = exports.PeriodExecution = exports.BuffExecution = undefined;
+exports.RemoveBuffByFilter = exports.ModifySlotSpecialEnergy = exports.ModifyFuLuoLuoSpecialEnergy = exports.ChangeBuffStackCount = exports.StartBattleQte = exports.InvokePeriod = exports.ConvertBuffToAnother = exports.PeriodAddBuffToAdjacentEntity = exports.QteExecution = exports.ExecuteAddBulletByTagStackCount = exports.ExecuteAddBulletByStackCount = exports.ExecuteAddBuffByStackCount = exports.ExecuteBulletOrBuff = exports.PhantomAssistExecution = exports.AddBuffToAdjacentRoleExecution = exports.ExtendBuffDurationExecution = exports.CdReduceExecution = exports.DamageExecution = exports.AddEnergyExecution = exports.AddFormationAttributeExecution = exports.ReviveExecution = exports.InitExecution = exports.PeriodExecution = exports.BuffExecution = undefined;
 const Log_1 = require("../../../../../../../Core/Common/Log");
+const Time_1 = require("../../../../../../../Core/Common/Time");
 const Protocol_1 = require("../../../../../../../Core/Define/Net/Protocol");
 const RegisterComponent_1 = require("../../../../../../../Core/Entity/RegisterComponent");
 const GameplayTagUtils_1 = require("../../../../../../../Core/Utils/GameplayTagUtils");
@@ -14,6 +15,7 @@ const ControllerHolder_1 = require("../../../../../../Manager/ControllerHolder")
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const FormationAttributeController_1 = require("../../../../../../Module/Abilities/FormationAttributeController");
 const CooperationController_1 = require("../../../../../../Module/Battle/Cooperation/CooperationController");
+const CombatMessage_1 = require("../../../../../../Module/CombatMessage/CombatMessage");
 const PhantomUtil_1 = require("../../../../../../Module/Phantom/PhantomUtil");
 const CombatLog_1 = require("../../../../../../Utils/CombatLog");
 const CampUtils_1 = require("../../../Blueprint/Utils/CampUtils");
@@ -26,27 +28,46 @@ class BuffExecution extends ExtraEffectBase_1.BuffEffectBase {
   constructor() {
     super(...arguments);
     this.Buff = undefined;
+    this.Index = 0;
     this.TargetType = 0;
   }
-  static Create(t, e, i) {
-    e = new this(e);
-    e.BuffId = t;
-    if (i) {
-      e.InitParameters(i);
+  static Create(t, e, i, s) {
+    i = new this(i);
+    i.BuffId = t;
+    i.Index = e;
+    if (s) {
+      i.InitParameters(s);
     }
-    return e;
+    return i;
   }
   CheckExecutable() {
     return !!this.OwnerBuffComponent?.HasBuffAuthority();
   }
   Check(t) {
-    return !!this.CheckExecutable() && (this.OpponentEntityId = this.OwnerBuffComponent.GetEntity()?.Id ?? 0, !!this.CheckLoop()) && !!this.CheckRequirements(t);
+    return !!this.CheckExecutable() && (this.OpponentEntityId = this.OwnerBuffComponent.GetEntity()?.Id ?? 0, !!this.CheckRequirements(t));
+  }
+  SetExecuteContext(t) {
+    this.Level = t.Level;
+    var e;
+    var i = (this.Buff = t).GetOwnerBuffComponent();
+    if (i) {
+      e = t.GetInstigatorBuffComponent();
+      this.OwnerBuffComponent = i;
+      if (e) {
+        this.InstigatorEntityId = t.GetInstigator().Id;
+      }
+      return true;
+    } else {
+      CombatLog_1.CombatLog.Warn("Buff", undefined, "设置执行效果上下文失败", ["handle", t?.Handle], ["buffId", t?.Id]);
+      return false;
+    }
+  }
+  ClearExecuteContext() {
+    this.OwnerBuffComponent = undefined;
+    this.Buff = undefined;
   }
   TryExecute(t, ...e) {
-    this.Level = t.Level;
-    var i;
-    var s = (this.Buff = t).GetOwnerBuffComponent();
-    return !!s && !(i = t.GetInstigatorBuffComponent(), this.OwnerBuffComponent = s, i && (this.InstigatorEntityId = t.GetInstigator().Id), !this.Check({})) && !(this.IsInLoop = true, this.OnExecute(...e), this.IsInLoop = false, this.OwnerBuffComponent = undefined, this.Buff = undefined);
+    return !!this.CheckLoop() && !!this.SetExecuteContext(t) && !!this.Check({}) && !(this.LoopLock = Time_1.Time.Frame, this.OnExecute(...e), this.LoopLock = -1, this.ClearExecuteContext(), 0);
   }
   GetEffectTarget() {
     switch (this.TargetType) {
@@ -60,6 +81,23 @@ class BuffExecution extends ExtraEffectBase_1.BuffEffectBase {
   }
   OnBuffAddedCallback(t, e) {}
   OnPeriodCallback(t) {}
+  OnBuffStackOverflow(t, e, i, s) {
+    if (this.SetExecuteContext(t)) {
+      this.DoBuffStackOverflow(e, i, s);
+      this.ClearExecuteContext();
+    }
+  }
+  BuffEffectExecutePush() {
+    var t;
+    var e = this.ExactOwnerEntity;
+    if (e) {
+      (t = Protocol_1.Aki.Protocol.hzd.create()).cVn = this.Buff.Handle;
+      t.c5n = this.Index;
+      CombatMessage_1.CombatNet.Send(15781, e, t);
+    } else {
+      CombatLog_1.CombatLog.Warn("Buff", undefined, "[Buff]EffectExecutePush失败", ["buffId", this.BuffId]);
+    }
+  }
 }
 class PeriodExecution extends (exports.BuffExecution = BuffExecution) {
   OnPeriodCallback(t) {
@@ -87,7 +125,7 @@ class ReviveExecution extends PeriodExecution {
     var t = this.OwnerBuffComponent?.GetEntity();
     var e = t?.GetComponent(0).GetPlayerId() ?? 0;
     if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentGroupLivingState(e) !== 2) {
-      t?.CheckGetComponent(192)?.ExecuteRevive();
+      t?.CheckGetComponent(195)?.ExecuteRevive();
     }
   }
 }
@@ -126,11 +164,11 @@ class AddEnergyExecution extends PeriodExecution {
       var i = this.AddValue;
       const a = i * u;
       t.AddBaseValue(e, a);
-      if (t.Entity?.CheckGetComponent(176)?.IsInGame) {
+      if (t.Entity?.CheckGetComponent(179)?.IsInGame) {
         var s = CharacterDamageCalculations_1.ENERGY_SHARE_RATE / CharacterAttributeTypes_1.PER_TEN_THOUSAND;
         for (const h of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-          var r = h?.Entity?.CheckGetComponent(176);
-          var o = h?.Entity?.CheckGetComponent(174);
+          var r = h?.Entity?.CheckGetComponent(179);
+          var o = h?.Entity?.CheckGetComponent(177);
           if (r && !r.IsInGame && o) {
             const u = o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_EnergyEfficiency) / CharacterAttributeTypes_1.PER_TEN_THOUSAND;
             const a = i * u;
@@ -160,7 +198,7 @@ class DamageExecution extends PeriodExecution {
       var e = this.OwnerBuffComponent.GetEntity()?.CheckGetComponent(19);
       var i = this.OwnerBuffComponent.GetActorComponent()?.ActorLocation;
       var s = this.InstigatorEntity?.Valid ? this.InstigatorEntity.Entity : this.OwnerEntity;
-      if (e && i && s) {
+      if (e && i && s && s.IsInit) {
         for (const r of t) {
           e.ExecuteBuffDamage({
             DamageDataId: r,
@@ -170,7 +208,11 @@ class DamageExecution extends PeriodExecution {
             BuffId: this.BuffId
           }, {}, this.Buff.MessageId);
         }
+      } else {
+        CombatLog_1.CombatLog.Warn("Buff", this.OwnerEntity, "结算触发异常", ["handle", this.Buff?.Handle], ["buffId", this.BuffId], ["damageComponent", !e], ["hitPosition", !i], ["attacker", !s], ["IsInit", s?.IsInit]);
       }
+    } else {
+      CombatLog_1.CombatLog.Warn("Buff", this.OwnerEntity, "触发结算异常,OwnerBuffComponent为空", ["handle", this.Buff?.Handle], ["buffId", this.BuffId]);
     }
   }
 }
@@ -191,7 +233,7 @@ class CdReduceExecution extends PeriodExecution {
     this.$Xo = t.ExtraEffectGrowParameters2;
   }
   OnExecute() {
-    var t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(208);
+    var t = this.OwnerBuffComponent?.GetEntity()?.GetComponent(211);
     if (t) {
       var e = AbilityUtils_1.AbilityUtils.GetLevelValue(this.XXo, this.Level, 0) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
       var i = AbilityUtils_1.AbilityUtils.GetLevelValue(this.$Xo, this.Level, 0);
@@ -273,7 +315,7 @@ class AddBuffToAdjacentRoleExecution extends InitExecution {
             var s = r.EntityHandle;
             if (s && s.Entity.GetComponent(0).IsRole() && s.Id !== e.Id) {
               for (const o of this.ApplyBuffId) {
-                s.Entity.GetComponent(175).AddIterativeBuff(o, this.Buff, undefined, false, `Buff${this.BuffId}的额外效果导致的共享添加`);
+                s.Entity.GetComponent(178).AddIterativeBuff(o, this.Buff, undefined, false, `Buff${this.BuffId}的额外效果导致的共享添加`);
               }
             }
           }
@@ -305,7 +347,7 @@ class PhantomAssistExecution extends InitExecution {
     var e = this.OwnerBuffComponent.GetEntity();
     var e = e ? PhantomUtil_1.PhantomUtil.GetSummonedEntity(e, this.ZXo, this.e$o) : undefined;
     if (e) {
-      e.Entity.GetComponent(40).BeginSkill(this.wmo, {
+      e.Entity.GetComponent(40).BeginSkillAsync(this.wmo, {
         Target: this.i$o()?.Entity,
         Reason: "PhantomAssistExecution.OnExecute"
       });
@@ -397,7 +439,7 @@ class ExecuteBulletOrBuff extends PeriodExecution {
   GetBuffHolderSkillTarget() {
     var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(40)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(210);
+      return t.Entity.CheckGetComponent(213);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -405,7 +447,7 @@ class ExecuteBulletOrBuff extends PeriodExecution {
   ExecutePerId(i) {
     for (let e = 0; e < this.Ids.length; e++) {
       let t = this.GetEffectTarget();
-      if (t = (0, RegisterComponent_1.isComponentInstance)(t, 200) ? t.GetCurrentBuffComponent() : t) {
+      if (t = (0, RegisterComponent_1.isComponentInstance)(t, 203) ? t.GetCurrentBuffComponent() : t) {
         i(this.Ids[e], this.n$o(e), t);
       }
     }
@@ -500,7 +542,7 @@ class ExecuteAddBulletByStackCount extends PeriodExecution {
   GetBuffHolderSkillTarget() {
     var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(40)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(210);
+      return t.Entity.CheckGetComponent(213);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -532,7 +574,7 @@ class ExecuteAddBulletByTagStackCount extends PeriodExecution {
     }
   }
   OnExecute() {
-    var t = this.OwnerEntity?.GetComponent(206)?.GetTagCount(this.TagIdGetStackCount);
+    var t = this.OwnerEntity?.GetComponent(209)?.GetTagCount(this.TagIdGetStackCount);
     if (!t || t < 0) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("BuffItem", 20, "ExecuteAddBulletByTagStackCount指定的Tag在持有者身上不存在", ["BuffId", this.BuffId], ["持有者", this.Buff.GetOwnerDebugName()], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(this.TagIdGetStackCount)], ["StackCount", t]);
@@ -597,7 +639,7 @@ class ExecuteAddBulletByTagStackCount extends PeriodExecution {
   GetBuffHolderSkillTarget() {
     var t = this.OwnerBuffComponent?.GetEntity()?.CheckGetComponent(40)?.SkillTarget;
     if (t) {
-      return t.Entity.CheckGetComponent(210);
+      return t.Entity.CheckGetComponent(213);
     } else {
       return this.OwnerBuffComponent;
     }
@@ -627,11 +669,11 @@ class QteExecution extends InitExecution {
         var r = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
         if (r?.Valid && r?.IsInit) {
           if (i !== r.Id) {
-            i = e.GetComponent(99)?.GetQteTagData();
+            i = e.GetComponent(101)?.GetQteTagData();
             if (i) {
               if (this.xtc || !i.ChangeRole && !i.ChangeRoleOnQte) {
                 e = this.$fa > 0;
-                i = r.GetComponent(206);
+                i = r.GetComponent(209);
                 if (!e) {
                   i.TagContainer.UpdateExactTag(2, 2014048239, 1);
                 }
@@ -709,7 +751,7 @@ class PeriodAddBuffToAdjacentEntity extends PeriodExecution {
           var a = f.Entity;
           if (a && a.Valid && a.IsInit) {
             var h = a?.GetComponent(0);
-            var n = a?.GetComponent(175);
+            var n = a?.GetComponent(178);
             if (a && h && n) {
               var c = h.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player ? 0 : h.GetEntityCamp();
               for (const l of this.axl) {
@@ -888,23 +930,44 @@ class ModifyFuLuoLuoSpecialEnergy extends PeriodExecution {
   }
 }
 exports.ModifyFuLuoLuoSpecialEnergy = ModifyFuLuoLuoSpecialEnergy;
+class ModifySlotSpecialEnergy extends PeriodExecution {
+  constructor() {
+    super(...arguments);
+    this.mwu = [];
+  }
+  InitParameters(t) {
+    this.mwu = t.ExtraEffectParameters.map(t => Number(t));
+  }
+  OnExecute() {
+    var t;
+    if (!!this.OwnerEntity && (t = this.mwu[0]) !== undefined && !(t <= -1) && !(t >= 1)) {
+      if (t = this.OwnerEntity.GetComponent(260)?.SpecialSkill) {
+        t.ModifySlotSpecialEnergy?.(this.mwu);
+      }
+    }
+  }
+  GetDebugEffectString() {
+    return `buff${this.BuffId} 修改槽位型特殊能量 ${this.mwu}`;
+  }
+}
+exports.ModifySlotSpecialEnergy = ModifySlotSpecialEnergy;
 class RemoveBuffByFilter extends PeriodExecution {
   constructor() {
     super(...arguments);
     this.vDt = 0;
-    this.Pdd = undefined;
+    this.PUd = undefined;
   }
   InitParameters(t) {
     this.vDt = Number(t.ExtraEffectParameters[0]);
     if (this.vDt === 0) {
-      this.Pdd = new Set(t.ExtraEffectParameters[1].split("#").map(t => Number(t)));
+      this.PUd = new Set(t.ExtraEffectParameters[1].split("#").map(t => Number(t)));
     }
   }
   OnExecute() {
     if (this.OwnerBuffComponent) {
       if (this.vDt === 0) {
         for (const t of this.OwnerBuffComponent.GetAllBuffs()) {
-          if (!this.Pdd.has(t.Id)) {
+          if (!this.PUd.has(t.Id)) {
             this.OwnerBuffComponent.RemoveBuff(t.Id, -1, "RemoveBuffsOutsideList");
           }
         }
@@ -914,7 +977,7 @@ class RemoveBuffByFilter extends PeriodExecution {
     }
   }
   GetDebugEffectString() {
-    return `buff${this.BuffId} 移除列表外的其他buff${this.Pdd}`;
+    return `buff${this.BuffId} 移除列表外的其他buff${this.PUd}`;
   }
 }
 exports.RemoveBuffByFilter = RemoveBuffByFilter;

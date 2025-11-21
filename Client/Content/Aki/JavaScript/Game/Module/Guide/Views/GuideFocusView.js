@@ -24,7 +24,7 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     this.rZt = 4000;
     this.nZt = undefined;
     this.sZt = undefined;
-    this.YYc = undefined;
+    this.zJc = undefined;
     this.aZt = () => {
       var t;
       if (!!this.hZt && (!(t = UiManager_1.UiManager.GetViewByName("BattleView")?.GetGuideUiItemAndUiItemForShowEx(this.Config.ExtraParam)) || t[0] !== this.GuideStepInfo?.ViewData?.GetAttachedUiItem())) {
@@ -45,25 +45,28 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     this.cZt = () => {
       this.UiViewSequence.PlaySequence("AutoLoopManual");
     };
-    this.mZt = (t, i) => {
-      if ((!this.RootItem || !!this.RootItem.bIsUIActive) && (!t || !(this.CombineInputMap.set(t, i), !this.IsAllCombineInputPass()))) {
-        i = this.Config.InputEnums;
-        this.UnbindInput(this.Config.InputEnums, i);
+    this.mZt = (t, e) => {
+      if ((!this.RootItem || !!this.RootItem.bIsUIActive) && (!t || !(this.CombineInputMap.set(t, e), !this.IsAllCombineInputPass()))) {
+        e = this.Config.InputEnums;
+        this.UnbindInput(this.Config.InputEnums, e);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Guide", 53, "聚焦监听按键完成引导", ["最后按键", t]);
         }
         this.DoCloseByFinished();
       }
     };
-    this.zYc = (t, i) => {
-      if (i.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
-        this.YYc = t;
+    this.JJc = (t, e) => {
+      if (e.Info?.GetContainerLayerType() === UiLayerType_1.ELayerType.Pop && this.Config?.ViewName !== t) {
+        this.zJc = t;
       }
     };
-    this.JYc = t => {
-      if (this.YYc === t) {
-        this.YYc = undefined;
+    this.ZJc = t => {
+      if (this.zJc === t) {
+        this.zJc = undefined;
       }
+    };
+    this.ASm = t => {
+      this.GetRootItem()?.SetUIActive(t);
     };
   }
   OnBeforeGuideBaseViewCreate() {
@@ -90,15 +93,17 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       this.UiViewSequence.AddSequenceFinishEvent(this.sZt, this.cZt);
     }
     if (this.Config?.HideWhenOtherPopViewOccur) {
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnViewDone, this.zYc);
-      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.JYc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnViewDone, this.JJc);
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.ZJc);
     }
   }
   OnGuideBaseViewAddEvent() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.ASm);
   }
   OnGuideBaseViewRemoveEvent() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIndexRefresh, this.aZt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPreparePhotoScreenShot, this.ASm);
   }
   OnGuideViewAfterShow() {
     this.RootItem.SetRaycastTarget(false);
@@ -118,8 +123,8 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
       this.nZt = undefined;
     }
     if (this.Config?.HideWhenOtherPopViewOccur) {
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnViewDone, this.zYc);
-      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.JYc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnViewDone, this.JJc);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.ZJc);
     }
   }
   get hZt() {
@@ -144,18 +149,30 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
   }
   _Zt() {
     var t = this.GuideStepInfo.ViewData.GetAttachedView();
-    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition() || this.YYc !== undefined) {
+    if (!t || !t.GetRootActor() || !t.IsUiActiveInHierarchy() || !t.IsShow || this.HasConflictView() || !this.CheckTickCondition() || this.zJc !== undefined) {
       return this.oZt = false;
     }
     this.oZt = true;
-    t = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow();
-    return !!ObjectUtils_1.ObjectUtils.IsValid(t) && !!t.IsUIActiveInHierarchy();
+    if (this.GuideStepInfo.ViewData.IsMultiAttach) {
+      t = this.GuideStepInfo.ViewData.GetMultiAttachItems();
+      if (!t || t.length === 0) {
+        return false;
+      }
+      for (const e of t) {
+        if (!ObjectUtils_1.ObjectUtils.IsValid(e) || !e.IsUIActiveInHierarchy()) {
+          return false;
+        }
+      }
+      return true;
+    }
+    const e = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow();
+    return !!ObjectUtils_1.ObjectUtils.IsValid(e) && !!e.IsUIActiveInHierarchy();
   }
   uZt() {
     var t;
-    var i = this.GuideStepInfo.ViewData.GetAttachedUiItem();
-    if (i?.IsValid() && (t = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow(), this.nZt = this.CZt(i, t), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Guide", 16, "[聚焦引导界面:InitFocusItem 初始化附着UI对象管理类成功]", ["引导步骤", this.GuideStepInfo.Id], ["框住的按钮名称", i.GetDisplayName()], ["框住的显示节点名称", t.GetDisplayName()]);
+    var e = this.GuideStepInfo.ViewData.GetAttachedUiItem();
+    if (e?.IsValid() && (t = this.GuideStepInfo.ViewData.GetAttachedUiItemForShow(), this.nZt = this.CZt(e, t), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Guide", 16, "[聚焦引导界面:InitFocusItem 初始化附着UI对象管理类成功]", ["引导步骤", this.GuideStepInfo.Id], ["框住的按钮名称", e.GetDisplayName()], ["框住的显示节点名称", t.GetDisplayName()]);
     }
   }
   dZt() {
@@ -182,11 +199,11 @@ class GuideFocusView extends GuideBaseView_1.GuideBaseView {
     }
     this.nZt?.OnBaseViewCloseWhenFinish();
   }
-  CZt(t, i) {
-    var e = this.GetItem(0);
-    e.SetActive(false);
-    var t = new GuideFocusItem_1.GuideFocusItem(t, i, this);
-    t.Init(e);
+  CZt(t, e) {
+    var i = this.GetItem(0);
+    i.SetActive(false);
+    var t = new GuideFocusItem_1.GuideFocusItem(t, e, this);
+    t.Init(i);
     return t;
   }
 }

@@ -18,6 +18,9 @@ class FindNavigationResult {
   IsNotFindNavigation() {
     return this.Result === 2;
   }
+  IsFinishFind() {
+    return this.Result === 1 || this.Result === 2;
+  }
 }
 exports.FindNavigationResult = FindNavigationResult;
 //# sourceMappingURL=FindNavigationResult.js.map

@@ -103,7 +103,7 @@ let GongduolaSplineMoveComponent = class GongduolaSplineMoveComponent extends Ve
   }
   ApplySplineMoveDaConfig() {
     var t;
-    if (this.ExtraMoveParams && (t = this.Entity.GetComponent(246))?.Config instanceof GongduolaConfig_1.GongduolaConfig) {
+    if (this.ExtraMoveParams && (t = this.Entity.GetComponent(249))?.Config instanceof GongduolaConfig_1.GongduolaConfig) {
       t.Config.BaseMaxSpeed = this.ExtraMoveParams.ForwardSpeed;
       t.Config.BaseMaxAcceleration = this.ExtraMoveParams.ForwardAcceleration;
       t.RefreshMoveConfigFromVehicleConfig();
@@ -111,10 +111,10 @@ let GongduolaSplineMoveComponent = class GongduolaSplineMoveComponent extends Ve
     }
   }
   ResetSplineMoveDaConfig() {
-    var t = this.Entity.GetComponent(246);
+    var t = this.Entity.GetComponent(249);
     t?.ResetVehicleConfig(true);
     t?.SetEnableInputSprint(true);
   }
 };
-GongduolaSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(111)], GongduolaSplineMoveComponent);
+GongduolaSplineMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(113)], GongduolaSplineMoveComponent);
 exports.GongduolaSplineMoveComponent = GongduolaSplineMoveComponent; //# sourceMappingURL=GongduolaSplineMoveComponent.js.map

@@ -12,7 +12,7 @@ class PhantomArenaBattleDetailsViewProxy {
     this.Nj1 = new Map();
     this.Vj1 = new Map();
     this.DialogManager = new PhantomArenaBattleDialog_1.PhantomArenaBattleDialog();
-    this.cNu = false;
+    this.aqu = false;
   }
   RegisterView(t) {
     this.Yzt = t;
@@ -34,10 +34,10 @@ class PhantomArenaBattleDetailsViewProxy {
     this.Yzt.SetOpponentSettlePoint(o);
   }
   get IsInGamepadNavigation() {
-    return this.cNu;
+    return this.aqu;
   }
   SetIsInGamepadNavigation(t) {
-    this.cNu = t;
+    this.aqu = t;
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
   }
 }

@@ -28,19 +28,21 @@ const WorldGlobal_1 = require("../../../../../../World/WorldGlobal");
 const SkillBehaviorBatchBulletTask_1 = require("../../../../../Bullet/BulletStaticMethod/SkillBehaviorBatchBulletTask");
 const BulletUtil_1 = require("../../../../../Bullet/BulletUtil");
 const RefCompAirWallController_1 = require("../../../../../SceneItem/RefCompController/RefCompAirWallController");
+const SkillUtils_1 = require("../SkillUtils");
 const SkillBehaviorMisc_1 = require("./SkillBehaviorMisc");
 const tmpVector = Vector_1.Vector.Create();
 const tmpQuat = Quat_1.Quat.Create();
 const tmpRotator = Rotator_1.Rotator.Create();
 class SkillBehaviorAction {
-  static BeginGroup(t, a) {
-    if (a.Entity.GetComponent(3).IsAutonomousProxy) {
+  static BeginGroup(t, i) {
+    if (i.Entity.GetComponent(3).IsAutonomousProxy) {
       for (let e = 0; e < t.Num(); e++) {
-        this.Begin(t.Get(e), a);
+        this.Begin(t.Get(e), i);
       }
     }
   }
   static Begin(e, t) {
+    SkillUtils_1.SkillUtils.Log(1, 1, t.Entity, "SkillBehaviorAction.Begin", ["技能Id", t.Skill.SkillId], ["技能名", t.Skill.SkillName], ["技能行为", e.ActionType]);
     try {
       switch (e.ActionType) {
         case 0:
@@ -92,11 +94,9 @@ class SkillBehaviorAction {
       CombatLog_1.CombatLog.ErrorWithStack("Skill", t.Entity, "SkillBehaviorAction.Begin异常", e, ["技能Id", t.Skill.SkillId], ["技能名", t.Skill.SkillName]);
     }
   }
-  static LQ_(e, t, a) {
-    SkillBehaviorBatchBulletTask_1.SkillBehaviorBatchBulletTask.Create(e, t, a).StartAsync();
-  }
-  static End(a) {
-    SkillBehaviorMisc_1.paramMap.get(a)?.forEach(t => {
+  static End(i) {
+    SkillBehaviorMisc_1.paramMap.get(i)?.forEach(t => {
+      SkillUtils_1.SkillUtils.Log(1, 1, t.Entity, "SkillBehaviorAction.End", ["技能Id", i.SkillId], ["技能名", i.SkillName], ["技能行为", t.ActionType]);
       try {
         switch (t.ActionType) {
           case 2:
@@ -115,34 +115,34 @@ class SkillBehaviorAction {
             t.SummonSkillComponent.EndSkill(t.SummonSkillId, "SkillBehaviorAction.End");
         }
       } catch (e) {
-        CombatLog_1.CombatLog.ErrorWithStack("Skill", t.Entity, "SkillBehaviorAction.End异常", e, ["技能Id", a.SkillId], ["技能名", a.SkillName], ["技能行为", t.ActionType]);
+        CombatLog_1.CombatLog.ErrorWithStack("Skill", t.Entity, "SkillBehaviorAction.End异常", e, ["技能Id", i.SkillId], ["技能名", i.SkillName], ["技能行为", t.ActionType]);
       }
     });
-    SkillBehaviorMisc_1.paramMap.delete(a);
+    SkillBehaviorMisc_1.paramMap.delete(i);
   }
-  static CalculateLocation(t, a) {
-    var i = a.Entity.GetComponent(3);
-    let r = i.ActorLocation;
-    let e = i.ActorForward;
-    let o = Vector_1.Vector.ZeroVectorDouble;
+  static CalculateLocation(t, i) {
+    var a = i.Entity.GetComponent(3);
+    let r = a.ActorLocation;
+    let e = a.ActorForward;
+    let l = Vector_1.Vector.ZeroVectorDouble;
     switch (t.LocationType) {
       case 0:
         if (!FNameUtil_1.FNameUtil.IsNothing(t.BoneName)) {
-          const n = i.GetSocketTransform(t.BoneName);
+          const n = a.GetSocketTransform(t.BoneName);
           r = n.GetLocation();
           e = n.GetRotation().GetForwardVectorDouble();
         }
         break;
       case 1:
-        if (a.SkillComponent.SkillTarget) {
-          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(a.SkillComponent.SkillTarget.Entity.GetComponent(1).Owner);
-          var l = a.SkillComponent.GetTargetTransform().GetLocation();
-          var c = (0, SkillBehaviorMisc_1.traceWall)(i, Vector_1.Vector.Create(r), Vector_1.Vector.Create(l), t.DebugTrace);
+        if (i.SkillComponent.SkillTarget) {
+          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(i.SkillComponent.SkillTarget.Entity.GetComponent(1).Owner);
+          var o = i.SkillComponent.GetTargetTransform().GetLocation();
+          var c = (0, SkillBehaviorMisc_1.traceWall)(a, Vector_1.Vector.Create(r), Vector_1.Vector.Create(o), t.DebugTrace);
           if (c && c[0]) {
-            CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation技能目标胶囊体中心和技能目标锁定点之间有阻挡，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
+            SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation技能目标胶囊体中心和技能目标锁定点之间有阻挡，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
             break;
           }
-          r = l;
+          r = o;
         }
         break;
       case 2:
@@ -155,27 +155,27 @@ class SkillBehaviorAction {
         [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(Global_1.Global.BaseCharacter);
         break;
       case 4:
-        l = ModelManager_1.ModelManager.CreatureModel.GetEntity(a.Entity.GetComponent(0).GetSummonerId())?.Entity?.GetComponent(1);
-        [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(l.Owner);
+        o = ModelManager_1.ModelManager.CreatureModel.GetEntity(i.Entity.GetComponent(0).GetSummonerId())?.Entity?.GetComponent(1);
+        [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(o.Owner);
         break;
       case 5:
         [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor);
         break;
       case 6:
-        c = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(a.Entity.Id, t.BlackboardKey);
+        c = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(i.Entity.Id, t.BlackboardKey);
         r = WorldGlobal_1.WorldGlobal.ToUeVector(c);
         break;
       case 7:
-        l = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(a.Entity.Id, t.BlackboardKey);
-        c = EntitySystem_1.EntitySystem.Get(l);
+        o = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(i.Entity.Id, t.BlackboardKey);
+        c = EntitySystem_1.EntitySystem.Get(o);
         if (c?.Valid) {
-          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(170).Owner);
+          [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.GetComponent(173).Owner);
         }
         break;
       case 8:
-        l = PhantomUtil_1.PhantomUtil.GetSummonedEntity(a.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t.FollowIndex);
-        if (l?.Valid) {
-          c = l.Entity?.GetComponent(1);
+        o = PhantomUtil_1.PhantomUtil.GetSummonedEntity(i.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, t.FollowIndex);
+        if (o?.Valid) {
+          c = o.Entity?.GetComponent(1);
           if (c) {
             if (FNameUtil_1.FNameUtil.IsNothing(t.BoneName)) {
               [r, e] = (0, SkillBehaviorMisc_1.getLocationAndDirection)(c.Owner);
@@ -191,10 +191,10 @@ class SkillBehaviorAction {
       case 0:
         break;
       case 1:
-        e = i.Actor.D_GetActorForwardVector();
+        e = a.Actor.D_GetActorForwardVector();
         break;
       case 2:
-        var s = i.ActorLocation.op_Subtraction(r);
+        var s = a.ActorLocation.op_Subtraction(r);
         e.Set(s.X, s.Y, 0);
         break;
       case 3:
@@ -205,22 +205,22 @@ class SkillBehaviorAction {
         (e = Global_1.Global.BaseCharacter.D_K2_GetActorLocation().op_Subtraction(r)).Set(e.X, e.Y, 0);
     }
     if (t.BestSpot && t.Strategy === 4) {
-      v = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
-      S = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(a.Entity);
-      if ((v = v.indexOf(S)) + 1 > t.AngleOffsets.Num()) {
-        CombatLog_1.CombatLog.Error("Skill", a.Entity, "SkillBehaviorAction.SetLocation当前施法者所处编队位置大于配置数组", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName], ["index", v]);
+      S = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
+      v = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(i.Entity);
+      if ((S = S.indexOf(v)) + 1 > t.AngleOffsets.Num()) {
+        SkillUtils_1.SkillUtils.Log(3, 1, i.Entity, "SkillBehaviorAction.SetLocation当前施法者所处编队位置大于配置数组", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName], ["index", S]);
       } else {
-        S = t.AngleOffsets.Get(v);
-        e = e.RotateAngleAxis(S, Vector_1.Vector.UpVectorDouble);
+        v = t.AngleOffsets.Get(S);
+        e = e.RotateAngleAxis(v, Vector_1.Vector.UpVectorDouble);
       }
     }
     var _ = Vector_1.Vector.Create(r);
     const n = new UE.TransformDouble(e.Rotation(), r, Vector_1.Vector.OneVectorDouble);
     var k;
-    var v = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.LocationOffset);
-    r = n.TransformPositionNoScale(v);
+    var S = UE.KismetMathLibrary.Conv_VectorToVectorDouble(t.LocationOffset);
+    r = n.TransformPositionNoScale(S);
     if (t.Restrict) {
-      let e = i.ActorLocation;
+      let e = a.ActorLocation;
       switch (t.RestrictType) {
         case 0:
           e = Global_1.Global.BaseCharacter.D_K2_GetActorLocation();
@@ -228,60 +228,60 @@ class SkillBehaviorAction {
         case 1:
           break;
         case 2:
-          if (a.Entity.GetComponent(0).IsMonster()) {
-            k = i.GetInitLocation();
+          if (i.Entity.GetComponent(0).IsMonster()) {
+            k = a.GetInitLocation();
             e.Set(k.X, k.Y, k.Z);
           }
       }
-      var S = r.op_Subtraction(e).Size2D();
-      if (S > t.RestrictDistance) {
-        v = t.RestrictDistance / S;
-        MathUtils_1.MathUtils.LerpVector(e, r, v, r);
+      var v = r.op_Subtraction(e).Size2D();
+      if (v > t.RestrictDistance) {
+        S = t.RestrictDistance / v;
+        MathUtils_1.MathUtils.LerpVector(e, r, S, r);
       }
     }
     let h = Vector_1.Vector.Create(r);
     if (t.BestSpot) {
       if (t.Strategy === 3) {
-        o = Global_1.Global.BaseCharacter.D_K2_GetActorLocation();
+        l = Global_1.Global.BaseCharacter.D_K2_GetActorLocation();
       }
       if (!_.Equals(h)) {
         switch (t.Strategy) {
           case 4:
           case 0:
-            var m = (0, SkillBehaviorMisc_1.traceWall)(i, _, h, t.DebugTrace);
-            if (!m) {
-              CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation撞墙停止射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-              return o;
+            var u = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
+            if (!u) {
+              SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation撞墙停止射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+              return l;
             }
-            h = m[1];
+            h = u[1];
             break;
           case 1:
           case 2:
           case 3:
             {
               let e = false;
-              var b = Vector_1.Vector.Create();
-              var u = Vector_1.Vector.Create();
-              h.Subtraction(_, b);
-              for (const g of SkillBehaviorMisc_1.angles) {
-                b.RotateAngleAxis(g, Vector_1.Vector.UpVectorProxy, u);
-                _.Addition(u, h);
-                var M = (0, SkillBehaviorMisc_1.traceWall)(i, _, h, t.DebugTrace);
-                if (!M) {
-                  CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation四向查询射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-                  return o;
+              var M = Vector_1.Vector.Create();
+              var B = Vector_1.Vector.Create();
+              h.Subtraction(_, M);
+              for (const f of SkillBehaviorMisc_1.angles) {
+                M.RotateAngleAxis(f, Vector_1.Vector.UpVectorProxy, B);
+                _.Addition(B, h);
+                var d = (0, SkillBehaviorMisc_1.traceWall)(a, _, h, t.DebugTrace);
+                if (!d) {
+                  SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation四向查询射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+                  return l;
                 }
-                if (!M[0]) {
+                if (!d[0]) {
                   e = true;
-                  h = M[1];
+                  h = d[1];
                   break;
                 }
               }
               if (e) {
                 break;
               }
-              CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation四个方向都撞墙了，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-              return o;
+              SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation四个方向都撞墙了，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+              return l;
             }
         }
       }
@@ -289,27 +289,27 @@ class SkillBehaviorAction {
         let e = undefined;
         if (t.Strategy === 2) {
           if (t.LocationType !== 0) {
-            e = Vector_1.Vector.Create(i.ActorLocation);
+            e = Vector_1.Vector.Create(a.ActorLocation);
           }
         } else if (t.Strategy === 3) {
           e = Vector_1.Vector.Create(Global_1.Global.BaseCharacter.D_K2_GetActorLocation());
         }
         if (e) {
-          var S = Vector_1.Vector.Create(h);
-          var d = (0, SkillBehaviorMisc_1.traceWall)(i, e, S, t.DebugTrace);
-          if (!d) {
-            CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测空气墙射线起点和终点位置相同，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-            return o;
+          var v = Vector_1.Vector.Create(h);
+          var m = (0, SkillBehaviorMisc_1.traceWall)(a, e, v, t.DebugTrace);
+          if (!m) {
+            SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation检测空气墙射线起点和终点位置相同，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+            return l;
           }
-          var B = d[0];
-          if (B) {
-            var C = B.GetHitCount();
+          var b = m[0];
+          if (b) {
+            var C = b.GetHitCount();
             for (let e = 0; e < C; e++) {
-              var p = B.Actors.Get(e);
+              var p = b.Actors.Get(e);
               if (ObjectUtils_1.ObjectUtils.IsValid(p)) {
                 if (p.Tags.FindIndex(RefCompAirWallController_1.AIR_WALL) !== -1) {
-                  CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-                  h = d[1];
+                  SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation检测到空气墙", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+                  h = m[1];
                   break;
                 }
               }
@@ -318,78 +318,78 @@ class SkillBehaviorAction {
         }
       }
       if (t.OnGround) {
-        v = (0, SkillBehaviorMisc_1.traceGroundWithGravity)(i, h, t.DebugTrace);
-        if (!v[0]) {
-          CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation贴地没有找到合法的落脚点，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-          return o;
+        S = (0, SkillBehaviorMisc_1.traceGroundWithGravity)(a, h, t.DebugTrace);
+        if (!S[0]) {
+          SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation贴地没有找到合法的落脚点，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+          return l;
         }
-        (h = v[1]).Z += t.GroundOffset;
+        (h = S[1]).Z += t.GroundOffset;
       }
     }
     r = h.ToUeVector();
-    S = t.Navigation;
-    if (S > 0) {
-      var v = a.Entity.GetComponent(179);
-      var f = Vector_1.Vector.Create();
-      v.GravityUp.Multiply(S, f);
-      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, f.ToUeVector(), S)) {
-        v = (0, puerts_1.$ref)(undefined);
-        if (!UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, r, v, S)) {
-          CombatLog_1.CombatLog.Info("Skill", a.Entity, "SkillBehaviorAction.SetLocation没有找到合法的导航网格落点，设置位置失败", ["技能Id", a.Skill.SkillId], ["技能名", a.Skill.SkillName]);
-          return o;
+    v = t.Navigation;
+    if (v > 0) {
+      var S = i.Entity.GetComponent(182);
+      var U = Vector_1.Vector.Create();
+      S.GravityUp.Multiply(v, U);
+      if (!UE.NavigationSystemV1.D_K2_ProjectPointToNavigation(GlobalData_1.GlobalData.World, r, undefined, undefined, undefined, U.ToUeVector(), v)) {
+        S = (0, puerts_1.$ref)(undefined);
+        if (!UE.NavigationSystemV1.D_K2_GetRandomLocationInNavigableRadius(GlobalData_1.GlobalData.World, r, S, v)) {
+          SkillUtils_1.SkillUtils.Log(0, 1, i.Entity, "SkillBehaviorAction.SetLocation没有找到合法的导航网格落点，设置位置失败", ["技能Id", i.Skill.SkillId], ["技能名", i.Skill.SkillName]);
+          return l;
         }
-        r = (0, puerts_1.$unref)(v);
+        r = (0, puerts_1.$unref)(S);
       }
     }
     return r;
   }
   static tZo(e, t) {
-    var a;
+    var i;
     var e = SkillBehaviorAction.CalculateLocation(e, t);
     if (!e.Equals(Vector_1.Vector.ZeroVectorDouble, MathCommon_1.MathCommon.KindaSmallNumber)) {
-      a = t.Entity.GetComponent(3);
-      CombatLog_1.CombatLog.Info("Skill", t.Entity, "SkillBehaviorAction.SetLocation最终点", ["位置", e]);
-      a.SetActorLocation(e, SkillBehaviorMisc_1.CONTEXT + ".Final", false);
+      i = t.Entity.GetComponent(3);
+      SkillUtils_1.SkillUtils.Log(0, 1, t.Entity, "SkillBehaviorAction.SetLocation最终点", ["位置", e.ToString()]);
+      i.SetActorLocation(e, SkillBehaviorMisc_1.CONTEXT + ".Final", false);
     }
   }
   static CalculateRotation(e, t) {
-    let a = undefined;
     let i = undefined;
+    let a = undefined;
     switch (e.RotationType) {
       case 0:
-        i = t.SkillComponent.SkillTarget;
+        a = t.SkillComponent.SkillTarget;
         break;
       case 1:
-        i = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+        a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
         break;
       case 2:
         var r = t.Entity.GetComponent(0);
-        i = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId());
+        a = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId());
         break;
       case 3:
-        (a = tmpVector).FromUeVector(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation());
+        (i = tmpVector).FromUeVector(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation());
         break;
       case 4:
         if (t.SkillComponent.SkillTarget === ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) {
-          (a = tmpVector).FromUeVector(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation());
+          (i = tmpVector).FromUeVector(ModelManager_1.ModelManager.CameraModel.FightCamera.GetComponent(4).CameraActor.D_K2_GetActorLocation());
         } else {
-          i = t.SkillComponent.SkillTarget;
+          a = t.SkillComponent.SkillTarget;
         }
         break;
       case 5:
         break;
       default:
-        i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.Entity);
+        a = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.Entity);
     }
-    if (i && i.Entity !== t.Entity) {
-      a = i.Entity.GetComponent(1).ActorLocationProxy;
+    if (a && a.Entity !== t.Entity) {
+      i = a.Entity.GetComponent(1).ActorLocationProxy;
     }
-    var o = t.Entity.GetComponent(3);
-    if (a) {
-      a.Subtraction(o.ActorLocationProxy, tmpVector);
-      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, o.MoveComp.GravityUp, tmpQuat);
+    var l = t.Entity.GetComponent(3);
+    if (i) {
+      i.Subtraction(l.ActorLocationProxy, tmpVector);
+      MathUtils_1.MathUtils.LookRotationUpFirst(tmpVector, l.MoveComp.GravityUp, tmpQuat);
     } else {
-      tmpQuat.DeepCopy(o.ActorQuatProxy);
+      tmpQuat.DeepCopy(l.ActorQuatProxy);
     }
     if (e.DirectionOffset !== 0) {
       tmpRotator.Set(0, e.DirectionOffset, 0);
@@ -399,46 +399,48 @@ class SkillBehaviorAction {
     return tmpRotator.ToUeRotator();
   }
   static bd(e, t) {
-    var a = t.Entity.GetComponent(3);
+    var i = t.Entity.GetComponent(3);
     var e = SkillBehaviorAction.CalculateRotation(e, t);
-    a.SetActorRotation(e, "SkillBehaviorAction.SetDirection");
+    SkillUtils_1.SkillUtils.Log(0, 1, t.Entity, "SkillBehaviorAction.SetRotation", ["朝向", e]);
+    i.SetActorRotation(e, "SkillBehaviorAction.SetDirection");
   }
-  static iZo(t, a) {
-    var i = a.Entity.GetComponent(21);
+  static iZo(t, i) {
+    var a = i.Entity.GetComponent(21);
     for (let e = 0; e < t.Cues.Num(); e++) {
       var r = t.Cues.Get(e);
-      var o = i.AddCue(Number(r.CueId), {
+      var l = a.AddCue(Number(r.CueId), {
         Sync: true
       });
       if (r.Stop) {
-        (0, SkillBehaviorMisc_1.getEndSkillBehaviorParamList)(a.Skill).push({
-          Entity: a.Entity,
+        (0, SkillBehaviorMisc_1.getEndSkillBehaviorParamList)(i.Skill).push({
+          Entity: i.Entity,
           ActionType: t.ActionType,
-          GameplayCue: o
+          GameplayCue: l
         });
       }
     }
   }
-  static oZo(t, a) {
+  static oZo(t, i) {
     for (let e = 0; e < t.Bullets.Num(); e++) {
-      var i;
+      var a;
       var r = t.Bullets.Get(e);
       for (let e = 0; e < r.bulletCount; e++) {
         let e = -1;
-        if (a.Skill.SkillBehaviorAnimNotifyMessageId) {
-          if ((i = a.Entity.GetComponent(3).Actor) instanceof TsBaseCharacter_1.default) {
-            e = BulletUtil_1.BulletUtil.CreateBulletFromAN(i, r.bulletRowName, a.Entity.GetComponent(3).ActorTransform, a.Skill.SkillId, true, a.Skill.SkillBehaviorAnimNotifyMessageId);
+        if (i.Skill.SkillBehaviorAnimNotifyMessageId) {
+          if ((a = i.Entity.GetComponent(3).Actor) instanceof TsBaseCharacter_1.default) {
+            e = BulletUtil_1.BulletUtil.CreateBulletFromAN(a, r.bulletRowName, i.Entity.GetComponent(3).ActorTransform, i.Skill.SkillId, true, i.Skill.SkillBehaviorAnimNotifyMessageId, i.Skill.ExtraTargetLocation);
           }
         } else {
-          e = ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(a.Entity, r.bulletRowName, a.Entity.GetComponent(3).ActorTransform, {
-            SkillId: a.Skill.SkillId,
-            SkillContextId: a.Skill.MNc,
+          e = ControllerHolder_1.ControllerHolder.BulletController.CreateBulletCustomTarget(i.Entity, r.bulletRowName, i.Entity.GetComponent(3).ActorTransform, {
+            SkillId: i.Skill.SkillId,
+            SkillContextId: i.Skill.MNc,
             SyncType: 1,
-            BattleFlags: a.Skill.BattleFlags
-          }, a.Skill.MNc).Id;
+            BattleFlags: i.Skill.BattleFlags,
+            InitTargetLocation: i.Skill.ExtraTargetLocation
+          }, i.Skill.MNc).Id;
         }
         if (r.BlackboardKey) {
-          ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByEntity(a.Entity.Id, r.BlackboardKey, e);
+          ControllerHolder_1.ControllerHolder.BlackboardController.SetIntValueByEntity(i.Entity.Id, r.BlackboardKey, e);
         }
       }
     }
@@ -464,61 +466,61 @@ class SkillBehaviorAction {
     });
   }
   static aZo(e, t) {
-    var a = t.Entity.GetComponent(3).Actor.CapsuleComponent;
+    var i = t.Entity.GetComponent(3).Actor.CapsuleComponent;
     if (e.CollisionRestore) {
       (0, SkillBehaviorMisc_1.getEndSkillBehaviorParamList)(t.Skill).push({
         Entity: t.Entity,
         ActionType: e.ActionType,
         CollisionChannel: e.CollisionChannel,
-        CollisionResponse: a.GetCollisionResponseToChannel(e.CollisionChannel)
+        CollisionResponse: i.GetCollisionResponseToChannel(e.CollisionChannel)
       });
     }
-    a.SetCollisionResponseToChannel(e.CollisionChannel, e.CollisionResponse);
+    i.SetCollisionResponseToChannel(e.CollisionChannel, e.CollisionResponse);
   }
   static hZo(e, t) {
-    var a = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, e.FollowIndex);
-    if (a) {
-      a = a.Entity.GetComponent(40);
+    var i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, e.FollowIndex);
+    if (i) {
+      i = i.Entity.GetComponent(39);
       if (e.StopSummonSkill) {
         (0, SkillBehaviorMisc_1.getEndSkillBehaviorParamList)(t.Skill).push({
           Entity: t.Entity,
           ActionType: e.ActionType,
-          SummonSkillComponent: a,
+          SummonSkillComponent: i,
           SummonSkillId: e.SummonSkillId
         });
       }
-      a.BeginSkill(e.SummonSkillId, {
+      i.BeginSkill(e.SummonSkillId, {
         Target: t.SkillComponent.SkillTarget?.Entity,
         Reason: "SkillBehaviorAction.UseSummonSkill"
       });
     }
   }
   static bst(e, t) {
-    let a = undefined;
+    let i = undefined;
     switch (e.BuffTarget) {
       case 0:
-        a = t.Entity.GetComponent(175);
+        i = t.Entity.GetComponent(178);
         break;
       case 1:
-        a = t.SkillComponent.SkillTarget?.Entity?.GetComponent(175);
+        i = t.SkillComponent.SkillTarget?.Entity?.GetComponent(178);
     }
-    var i;
-    if (a) {
+    var a;
+    if (i) {
       if (e.Add) {
-        i = t.Skill.SkillBehaviorAnimNotifyMessageId || t.Skill.MNc;
-        i = {
+        a = t.Skill.SkillBehaviorAnimNotifyMessageId || t.Skill.MNc;
+        a = {
           InstigatorId: ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(t.Entity.Id),
           Reason: "从技能行为添加Buff",
-          PreMessageId: i
+          PreMessageId: a
         };
-        a.AddBuff(Number(e.BuffId), i);
+        i.AddBuff(Number(e.BuffId), a);
       } else {
-        a.RemoveBuff(Number(e.BuffId), -1, "从技能行为移除Buff");
+        i.RemoveBuff(Number(e.BuffId), -1, "从技能行为移除Buff");
       }
     }
   }
   static lZo(e, t) {
-    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 206);
+    t = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 209);
     if (t?.Valid && e.Tag.TagName !== "None") {
       if (e.Add) {
         t.AddTag(e.Tag.TagId);
@@ -534,21 +536,24 @@ class SkillBehaviorAction {
     }
   }
   static Kpl(e, t) {
-    var a = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 40);
-    if (a?.Valid) {
-      a.PlaySkillMontageWithEndAbility(t.Skill, e.MontageIndex, e.StartSection, e.StartTime);
+    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 39);
+    if (i?.Valid) {
+      i.PlaySkillMontageWithEndAbility(t.Skill, e.MontageIndex, e.StartSection, e.StartTime);
     }
   }
   static K4_(e, t) {
-    var a = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 281);
-    if (a?.Valid) {
-      var i = e.UpdateCustomValue.ValueName;
-      var r = i.Num();
+    var i = EntitySystem_1.EntitySystem.GetComponent(t.Entity.Id, 286);
+    if (i?.Valid) {
+      var a = e.UpdateCustomValue.ValueName;
+      var r = a.Num();
       for (let e = 0; e < r; e++) {
-        var o = i.Get(e);
-        a.UpdateCustomValue(o);
+        var l = a.Get(e);
+        i.UpdateCustomValue(l);
       }
     }
+  }
+  static LQ_(e, t, i) {
+    SkillBehaviorBatchBulletTask_1.SkillBehaviorBatchBulletTask.Create(e, t, i).StartAsync();
   }
 }
 exports.SkillBehaviorAction = SkillBehaviorAction;

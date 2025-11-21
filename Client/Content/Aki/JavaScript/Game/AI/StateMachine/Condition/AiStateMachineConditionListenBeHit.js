@@ -50,6 +50,9 @@ class AiStateMachineConditionListenBeHit extends AiStateMachineCondition_1.AiSta
     if (t.CondListenBeHit.Parry) {
       this.dne.add(7);
     }
+    if (t.CondListenBeHit.BreakWeakness) {
+      this.dne.add(12);
+    }
     this.Cne = t.CondListenBeHit.VisionCounterAttackId;
     return true;
   }

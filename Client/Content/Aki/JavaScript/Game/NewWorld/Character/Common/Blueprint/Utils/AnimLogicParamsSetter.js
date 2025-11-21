@@ -72,6 +72,7 @@ class AnimLogicParamsSetter {
     this.IsAcceptingInvitation = false;
     this.LeftHandIkTarget = new HoldingHandsUtils_1.IkTarget();
     this.RightHandIkTarget = new HoldingHandsUtils_1.IkTarget();
+    this.DisableBlink = false;
   }
 }
 exports.AnimLogicParamsSetter = AnimLogicParamsSetter;

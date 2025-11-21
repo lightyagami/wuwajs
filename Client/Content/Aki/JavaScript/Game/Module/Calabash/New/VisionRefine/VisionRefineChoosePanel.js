@@ -58,14 +58,9 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
       }
     };
     this.OnItemFuncValueChange = e => {
-      var t = ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(e);
-      if (t) {
-        var s = this.A1c.GetSelectedGridIndex();
+      if (ModelManager_1.ModelManager.InventoryModel.GetAttributeItemData(e)) {
         for (let i = 0; i < this.w1c.length; i++) {
           if (this.w1c[i].GetUniqueId() === e) {
-            if (t.GetIsLock() && i === s) {
-              this.ClearSelection();
-            }
             this.A1c.RefreshGridProxy(i);
             break;
           }
@@ -74,8 +69,7 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
     };
     this.X8a = (i, e, t) => {
       var s = i.GetUniqueId();
-      var s = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(s);
-      return !!s.GetVisionIfCanRefine() || (s.GetIsLock() ? ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponLockTipsText") : ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineChooseCheck"), this.ShowTipsComponent(i), false);
+      return !!ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(s).GetVisionIfCanRefine() || (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("VisionRefineChooseCheck"), this.ShowTipsComponent(i), false);
     };
     this.FNt = i => {
       this.w1c = i;
@@ -116,6 +110,9 @@ class VisionRefineChoosePanel extends UiPanelBase_1.UiPanelBase {
   }
   GetSelection() {
     return this.ys_;
+  }
+  SetSelection(i) {
+    this.ys_ = i;
   }
   RefreshList(i) {
     this.Mpt.SetSortToggleState(false);

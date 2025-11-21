@@ -39,7 +39,7 @@ let DungeonEntranceComponent = class DungeonEntranceComponent extends EntityComp
     };
   }
   OnStart() {
-    this.cen = this.Entity.GetComponent(134);
+    this.cen = this.Entity.GetComponent(137);
     this.men = new Array();
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.den);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStatePreChangeInSequence, this.gen);

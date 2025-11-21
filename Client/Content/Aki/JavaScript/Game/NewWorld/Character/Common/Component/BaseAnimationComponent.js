@@ -34,6 +34,8 @@ const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const GlobalData_1 = require("../../../../GlobalData");
 const CharacterAnimOptimizationSetting_1 = require("../../../Setting/CharacterAnimOptimizationSetting");
 const CharacterNameDefines_1 = require("../CharacterNameDefines");
@@ -55,7 +57,9 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.ActorComp = undefined;
     this.SightTargetItemId = 0;
     this.SightTargetPoint = undefined;
+    this.SightTargetActor = undefined;
     this.EnableSightDirectInternal = false;
+    this.DisableBlink = false;
     this.R2r = [...xAngleLimits];
     this.U2r = [...yAngleLimits];
     this.SightDirect = Vector_1.Vector.Create();
@@ -105,6 +109,12 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     this.NoUpdateMeshes?.clear();
     return true;
   }
+  OnEnable() {
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, true);
+  }
+  OnDisable(t) {
+    EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, false);
+  }
   SetSightLimit(t, e) {
     this.R2r = [t[0] * MathUtils_1.MathUtils.DegToRad, t[1] * MathUtils_1.MathUtils.DegToRad];
     this.U2r = [e[0] * MathUtils_1.MathUtils.DegToRad, e[1] * MathUtils_1.MathUtils.DegToRad];
@@ -115,6 +125,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
   }
   SetSightTargetItem(t) {
     this.SightTargetPoint = undefined;
+    this.SightTargetActor = undefined;
     this.SightTargetItemId = t ? t.Entity.Id : 0;
   }
   GetSightTargetItem() {
@@ -128,10 +139,22 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
   }
   SetSightTargetPoint(t) {
     this.SightTargetItemId = 0;
+    this.SightTargetActor = undefined;
     this.SightTargetPoint = t;
   }
   GetSightTargetPoint() {
     return this.SightTargetPoint;
+  }
+  SetSightTargetActor(t) {
+    this.SightTargetPoint = undefined;
+    this.SightTargetItemId = 0;
+    this.SightTargetActor = t?.IsValid() ? t : undefined;
+  }
+  GetSightTargetActor() {
+    if (this.SightTargetActor?.IsValid()) {
+      return this.SightTargetActor;
+    }
+    this.SightTargetActor = undefined;
   }
   GetSightDirect() {
     return this.SightDirect.ToUeVectorOld();
@@ -291,7 +314,7 @@ let BaseAnimationComponent = class BaseAnimationComponent extends EntityComponen
     }
   }
   RefreshAnimOptimization() {
-    var t = this.Entity.GetComponent(176)?.IsInFighting ?? false;
+    var t = this.Entity.GetComponent(179)?.IsInFighting ?? false;
     var e = this.ForceDisableAnimOptimizationSet.size > 0;
     var i = e || t;
     var s = this.Actor.K2_GetComponentsByClass(UE.SkeletalMeshComponent.StaticClass());

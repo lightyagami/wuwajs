@@ -131,6 +131,9 @@ class CommonConfig extends ConfigBase_1.ConfigBase {
   GetPhantomArenaBattleSpeed() {
     return CommonParamById_1.configCommonParamById.GetFloatArrayConfig("PhantomArenaBattleSpeed") ?? [1, 1.5, 2];
   }
+  GetGiftMaxNineNineNine() {
+    return CommonParamById_1.configCommonParamById.GetIntConfig("GiftMaxNineNineNine") ?? 0;
+  }
 }
 exports.CommonConfig = CommonConfig;
 //# sourceMappingURL=CommonConfig.js.map

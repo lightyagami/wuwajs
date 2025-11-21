@@ -12,6 +12,7 @@ const DynamicMaskButton_1 = require("../../../../DynamicMask/DynamicMaskButton")
 const GridProxyAbstract_1 = require("../../../../Util/Grid/GridProxyAbstract");
 const GenericScrollViewNew_1 = require("../../../../Util/ScrollView/GenericScrollViewNew");
 const FilterSortController_1 = require("../../FilterSortController");
+const FilterSortDefine_1 = require("../../FilterSortDefine");
 const SortViewData_1 = require("../Model/SortViewData");
 class SortItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
@@ -63,6 +64,8 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
   constructor(t, i) {
     super();
     this.UpdateDataListFunction = i;
+    this.hdm = new Map();
+    this._dm = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
     this.hDt = undefined;
     this.Ufa = false;
     this._Dt = 1;
@@ -79,7 +82,7 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
       var t;
       if (this.GUt) {
         this.GetExtendToggle(0).SetToggleState(0);
-        t = new SortViewData_1.SortViewData(this.Mne, this.vTt);
+        t = new SortViewData_1.SortViewData(this.hDt.UniqueId, this.vTt);
         FilterSortController_1.FilterSortController.OpenSortView(t);
       } else {
         t = this.GetScrollViewWithScrollbar(3).RootUIComp.bIsUIActive;
@@ -120,14 +123,16 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[0, this.NUt], [2, this.BUt]];
   }
   OnStart() {
-    this.hDt = new SortViewData_1.SortResultData();
     this.qUt = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(3), this.IUt, this.GetItem(4).GetOwner());
     this.GetExtendToggle(0).SetToggleStateForce(0, false);
   }
   OnBeforeDestroy() {
     this.lLt?.Destroy();
     this.XFa();
-    ModelManager_1.ModelManager.SortModel.DeleteSortResultData(this.Mne);
+    for (const t of this.hdm.values()) {
+      ModelManager_1.ModelManager.SortModel.DeleteSortResultData(t);
+    }
+    this.hdm.clear();
   }
   XFa() {
     var t;
@@ -151,11 +156,12 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     this.vUt = t.DataId;
   }
   dDt(t) {
-    this.hDt = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.Mne);
+    var i = this.GetUniqueIdByGroupId(this._Dt);
+    this.hDt = ModelManager_1.ModelManager.SortModel.GetSortResultData(i);
     if (!this.hDt || this.Ufa) {
-      var i = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(this.Mne);
-      var i = t?.SelectBaseSort ?? i.BaseSortList[0];
-      if (this.hDt === undefined) {
+      if (!this.hDt) {
+        var i = ConfigManager_1.ConfigManager.SortConfig.GetSortConfig(this.Mne);
+        var i = t?.SelectBaseSort ?? i.BaseSortList[0];
         var s = ConfigManager_1.ConfigManager.SortConfig.GetSortRuleName(i, this.vUt);
         this.hDt = new SortViewData_1.SortResultData();
         this.hDt.SetConfigId(this.Mne);
@@ -168,13 +174,14 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
         }
         if (t?.SelectAttributeSort && t.SelectAttributeSort.length > 0) {
           var e = new Map();
-          for (const a of t.SelectAttributeSort) {
-            var h = ConfigManager_1.ConfigManager.SortConfig.GetSortRuleName(a, this.vUt);
-            e.set(a, h);
+          for (const r of t.SelectAttributeSort) {
+            var h = ConfigManager_1.ConfigManager.SortConfig.GetSortRuleName(r, this.vUt);
+            e.set(r, h);
           }
           this.hDt.SetSelectAttributeSort(e);
         }
-        ModelManager_1.ModelManager.SortModel.SetSortResultData(this.Mne, this.hDt);
+        ModelManager_1.ModelManager.SortModel.SetSortResultData(this.hDt);
+        this.hdm.set(this._Dt, this.hDt.UniqueId);
       }
       if (this.Ufa) {
         if (s = this.hDt.GetSelectBaseSort()) {
@@ -223,15 +230,16 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     this.GetText(1).SetText(t);
   }
   qpt(t) {
-    var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(this._Dt);
-    let s = this.ypt;
-    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(i);
+    let i = this.ypt;
+    var s;
+    var e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this._dm);
     if (e) {
+      s = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(this._Dt);
       e = e.GetSelectRuleData();
-      s = ModelManager_1.ModelManager.FilterModel.GetFilterList(s, i, e);
+      i = ModelManager_1.ModelManager.FilterModel.GetFilterList(i, s, e);
     }
-    ModelManager_1.ModelManager.SortModel.SortDataList(s, this.Mne, this.hDt, ...this.lDt);
-    this.UpdateDataListFunction?.(s, t, 1);
+    ModelManager_1.ModelManager.SortModel.SortDataList(i, this.Mne, this.hDt, ...this.lDt);
+    this.UpdateDataListFunction?.(i, t, 1);
   }
   async MLt() {
     if (!this.lLt) {
@@ -267,8 +275,8 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
     }
   }
   UpdateDataWithConfig(t, i, s, e = "", ...h) {
-    var a = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
-    if (a.SaveMode === 2 || a.SaveMode === 3) {
+    var r = ConfigManager_1.ConfigManager.SortConfig.GetSortFilterConfig(i);
+    if (r.SaveMode === 2 || r.SaveMode === 3) {
       this.UpdateData(t, s, ...h);
     } else {
       this.XFa();
@@ -277,10 +285,10 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
       if (!(this.Mne <= 0)) {
         this.ypt = s;
         this.lDt = h;
-        a = ModelManager_1.ModelManager.SortModel.GetSortConfigData(i, this._Dt, e);
+        r = ModelManager_1.ModelManager.SortModel.GetSortConfigData(i, this._Dt, e);
         this.VUt();
         this.HUt();
-        this.dDt(a);
+        this.dDt(r);
         this.AUt();
         this.jUt();
         this.kUt();
@@ -294,6 +302,19 @@ class SortEntrance extends UiPanelBase_1.UiPanelBase {
   SetSortToggleState(t) {
     t = t ? 1 : 0;
     this.GetExtendToggle(2).SetToggleStateForce(t);
+  }
+  GetUniqueIdByGroupId(t) {
+    return this.hdm.get(t) ?? FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+  }
+  DeleteUniqueIdByGroupId(t) {
+    var i = this.hdm.get(t);
+    if (i) {
+      ModelManager_1.ModelManager.SortModel.DeleteSortResultData(i);
+      this.hdm.delete(t);
+    }
+  }
+  SetFilterUniqueId(t) {
+    this._dm = t;
   }
 }
 exports.SortEntrance = SortEntrance;

@@ -107,8 +107,8 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.Nln = undefined;
     this.Oln = undefined;
     this.EIe = undefined;
-    this.IVu = undefined;
-    this.fQc = 0;
+    this.U4u = undefined;
+    this.CZu = 0;
     this.kln = false;
     this.ZPl = false;
     this.Anr = Vector_1.Vector.Create();
@@ -120,8 +120,8 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.Hln = -0;
     this.jln = false;
     this.Wln = false;
-    this.TVu = false;
-    this.sJc = () => {
+    this.H7u = false;
+    this.ued = () => {
       if (this.o4o?.IsValid() && this.o4o.IsMoving(true)) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("SceneItem", 39, "当前SceneItem移动时被删除，保底停止移动", ["EntityId", this.Entity.Id], ["PbDataId", this.EIe?.GetPbDataId()]);
@@ -129,33 +129,33 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
         this.StopMove(true);
       }
     };
-    this.gQc = e => {
-      this.CQc(e);
+    this.pZu = e => {
+      this.vZu(e);
     };
     this.Xd_ = [];
-    this.pQc = () => {
-      var e = this.fQc;
-      this.fQc = 0;
+    this.yZu = () => {
+      var e = this.CZu;
+      this.CZu = 0;
       if (e === 1) {
-        this.vQc();
+        this.SZu();
       } else if (e === 2) {
-        this.yQc();
+        this.MZu();
       }
     };
-    this.vQc = () => {
+    this.SZu = () => {
       this.ActorComp?.ResetAllCachedTime();
-      this.SQc();
-      this.MQc();
+      this.EZu();
+      this.IZu();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveStopped, this.Entity);
     };
-    this.yQc = () => {
+    this.MZu = () => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 39, "SceneItemMoveComponent 样条移动停止", ["EntityId", this.Entity.Id]);
       }
       this.ActorComp?.ResetAllCachedTime();
       this.jln = false;
-      this.SQc();
-      this.MQc();
+      this.EZu();
+      this.IZu();
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemMoveStopped, this.Entity);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemSplineMoveStopped, this.Entity);
     };
@@ -163,7 +163,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.Fbu = [];
   }
   static get Dependencies() {
-    return [203, 0];
+    return [206, 0];
   }
   get IsMovingPrepareCompleted() {
     return this.Wln;
@@ -202,14 +202,14 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   }
   OnStart() {
     var e;
-    this.ActorComp = this.Entity.GetComponent(203);
-    this.Nln = this.Entity.GetComponent(159);
-    this.Oln = this.Entity.GetComponent(131);
-    this.IVu = this.Entity.GetComponent(298);
+    this.ActorComp = this.Entity.GetComponent(206);
+    this.Nln = this.Entity.GetComponent(162);
+    this.Oln = this.Entity.GetComponent(134);
+    this.U4u = this.Entity.GetComponent(303);
     this.Nln?.SetEnableMovementSync(false, "SceneItemMoveComponent OnStart");
     if (this.EIe && this.EIe.GetPbEntityInitData()) {
       if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
-        this.TVu = true;
+        this.H7u = true;
       }
       if (!Info_1.Info.EnableForceTick) {
         this.o4o = this.ActorComp.Owner.GetComponentByClass(UE.KuroSceneItemMoveComponent.StaticClass());
@@ -218,13 +218,13 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
         }
         this.o4o.Kuro_SetGravityDirect(this.ActorComp.ActorGravityDirectProxy.ToUeVectorOld());
         this.o4o.SetTickingMoveEnable(false);
-        this.EQc(this.gQc);
-        this.Qbu(this.pQc);
-        if (this.TVu) {
+        this.TZu(this.pZu);
+        this.Qbu(this.yZu);
+        if (this.H7u) {
           this.o4o.SetKuroOnlyTickOutside(true);
         }
-        if ((e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id)) && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.sJc)) {
-          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.sJc);
+        if ((e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id)) && !EventSystem_1.EventSystem.HasWithTarget(e, EventDefine_1.EEventName.RemoveEntity, this.ued)) {
+          EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, e, EventDefine_1.EEventName.RemoveEntity, this.ued);
         }
         if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance) {
           this.o4o.SetAvoidanceGroupMask(ModelManager_1.ModelManager.AvoidanceModel.SceneItemAvoidanceGroupMask);
@@ -238,8 +238,8 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   }
   OnEnd() {
     if (this.o4o?.IsValid()) {
-      this.IQc(this.gQc);
-      this.jbu(this.pQc);
+      this.bZu(this.pZu);
+      this.jbu(this.yZu);
     }
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
     return true;
@@ -249,7 +249,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       for (const e of this.Fln) {
         this.o4o.AddMoveTarget(new UE.VectorDouble(e.TargetPosData.X ?? 0, e.TargetPosData.Y ?? 0, e.TargetPosData.Z ?? 0), e.MoveTime, e.StayTime);
       }
-      this.fQc = 1;
+      this.CZu = 1;
       this.Fln = [];
       this.o4o.SetTickingMoveEnable(true);
       this.Oln.IsMoving = true;
@@ -263,8 +263,8 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     return Vector_1.Vector.DistSquared(this._ae, this.Vln) >= this.Hln;
   }
   OnTick(e) {
-    if (this.TVu) {
-      this.IVu?.TickMovement(e);
+    if (this.H7u) {
+      this.U4u?.TickMovement(e);
     }
     if (this.Oln.IsMoving) {
       if (!this.IsMoving || this.o4o.GetSimpleRunState() === 2) {
@@ -319,7 +319,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     if (!Info_1.Info.EnableForceTick && this.IsMovingPrepareCompleted) {
       t = Vector_1.Vector.Create(e.TargetPosData.X ?? 0, e.TargetPosData.Y ?? 0, e.TargetPosData.Z ?? 0);
       this.o4o.AddMoveTarget(t.ToUeVector(), e.MoveTime, e.StayTime, e.MaxSpeed, e.Acceleration);
-      this.fQc = 1;
+      this.CZu = 1;
       this.o4o.SetTickingMoveEnable(true);
       t = Vector_1.Vector.Dist(t, this.ActorComp.ActorLocationProxy);
       if (this.o4o.GetSimpleRunState() === 0 && t > OFFSET) {
@@ -382,7 +382,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     t.M0a.f0a = e.StayTime;
     t.M0a.v0a = e.MaxSpeed;
     t.M0a.p0a = e.Acceleration;
-    Net_1.Net.Call(21344, t, e => {});
+    Net_1.Net.Call(16737, t, e => {});
   }
   HandleMoveToTarget(e) {
     e = new MoveTarget({
@@ -424,7 +424,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.jln = true;
     this.kln = i;
     this.Nln?.SetEnableMovementSync(i, "SceneItemMoveComponent StartPatrolAtConstantTime");
-    this.fQc = 2;
+    this.CZu = 2;
     if (t) {
       const n = () => {
         this.RemoveStopMoveCallback(n);
@@ -454,7 +454,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     this.jln = true;
     this.kln = i;
     this.Nln?.SetEnableMovementSync(i, "SceneItemMoveComponent StartPatrolAtDynamicSpeed");
-    this.fQc = 2;
+    this.CZu = 2;
     if (t) {
       const n = () => {
         this.RemoveStopMoveCallback(n);
@@ -549,7 +549,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
               }
               n = false;
               if (n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t)) || this.UpdateSplineMoveRotationByRuntimeData(t)) {
-                this.IVu?.TickMovement(0, true);
+                this.U4u?.TickMovement(0, true);
               }
             } else {
               if (Log_1.Log.CheckInfo()) {
@@ -611,7 +611,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
         if (i = this.GetCurSplineMoveTask()) {
           if (i.CheckSplineMoveConfigEqual(s)) {
             if (this.o4o && this.IsSplineMoving() && (n = false, n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t, 0)) || this.UpdateSplineMoveRotationByRuntimeData(t, 0))) {
-              this.IVu?.TickMovement(0, true);
+              this.U4u?.TickMovement(0, true);
             }
             i.EndTask(true);
           } else if (Log_1.Log.CheckError()) {
@@ -639,7 +639,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
         if (i = this.GetCurSplineMoveTask()) {
           if (i.CheckSplineMoveConfigEqual(s)) {
             if (this.o4o && this.IsSplineMoving() && (n = false, n = (n ||= this.UpdateSplineMoveDistanceByRuntimeData(t, 0)) || this.UpdateSplineMoveRotationByRuntimeData(t, 0))) {
-              this.IVu?.TickMovement(0, true);
+              this.U4u?.TickMovement(0, true);
             }
             i?.EndTask(false);
           } else if (Log_1.Log.CheckError()) {
@@ -682,10 +682,10 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
       this.Fln = [];
     }
   }
-  EQc(e) {
+  TZu(e) {
     this.o4o.OnArrivePointCallback.Add(e);
   }
-  IQc(e) {
+  bZu(e) {
     this.o4o.OnArrivePointCallback.Remove(e);
   }
   AddOnArrivePointCallback(e) {
@@ -702,7 +702,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   ClearOnArrivePointCallbacks() {
     this.Xd_.length = 0;
   }
-  CQc(e) {
+  vZu(e) {
     for (const t of Array.from(this.Xd_)) {
       t(e);
     }
@@ -727,7 +727,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   ClearStopMoveCallback() {
     this.Nbu.length = 0;
   }
-  MQc() {
+  IZu() {
     for (const e of Array.from(this.Nbu)) {
       e();
     }
@@ -746,7 +746,7 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
   ClearStopMoveCallbacksWithEntity() {
     this.Fbu.length = 0;
   }
-  SQc() {
+  EZu() {
     for (const e of Array.from(this.Fbu)) {
       e(this.Entity);
     }
@@ -773,5 +773,5 @@ let SceneItemMoveComponent = class SceneItemMoveComponent extends EntityComponen
     return e;
   }
 };
-SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(129)], SceneItemMoveComponent);
+SceneItemMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(132)], SceneItemMoveComponent);
 exports.SceneItemMoveComponent = SceneItemMoveComponent; //# sourceMappingURL=SceneItemMoveComponent.js.map

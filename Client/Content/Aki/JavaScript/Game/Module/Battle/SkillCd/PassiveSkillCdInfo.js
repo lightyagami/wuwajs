@@ -7,6 +7,7 @@ exports.PassiveSkillCdInfo = undefined;
 const Log_1 = require("../../../../Core/Common/Log");
 const Time_1 = require("../../../../Core/Common/Time");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
+const MAX_CD_COUNT = 20;
 class PassiveSkillCdInfo {
   constructor() {
     this.SkillId = 0;
@@ -15,27 +16,43 @@ class PassiveSkillCdInfo {
     this.IsShareAllCdSkill = false;
     this.EntityIds = new Set();
     this.CurMaxCd = 0;
-    this.SkillCdFinishStamp = 0;
+    this.SkillCdFinishStampMap = new Map();
   }
-  get CurRemainingCd() {
-    if (this.SkillCdFinishStamp === 0) {
+  GetCurRemainingCd(t) {
+    t = this.SkillCdFinishStampMap.get(t) ?? 0;
+    if (t === 0) {
       return 0;
     } else {
-      return (this.SkillCdFinishStamp - Time_1.Time.FlowTime) * TimeUtil_1.TimeUtil.Millisecond;
+      return (t - Time_1.Time.FlowTime) * TimeUtil_1.TimeUtil.Millisecond;
     }
   }
-  IsInCd() {
-    return this.CurRemainingCd > Math.max(this.Threshold, 0);
+  IsInCd(t) {
+    return this.GetCurRemainingCd(t) > Math.max(this.Threshold, 0);
   }
-  StartCd(i, t = -1) {
-    if (this.IsInCd()) {
+  PSm() {
+    for (var [t] of this.SkillCdFinishStampMap) {
+      if (this.IsInCd(t)) {
+        break;
+      }
+      this.SkillCdFinishStampMap.delete(t);
+    }
+    var i;
+    if (this.SkillCdFinishStampMap.size >= MAX_CD_COUNT && (i = this.EntityIds.keys().next().value, Log_1.Log.CheckInfo() && Log_1.Log.Info("Battle", 85, "被动技能CD数量超上限,移除最先的entityCD", ["skillId", this.SkillId], ["firstEntityId", i]), i)) {
+      this.SkillCdFinishStampMap.delete(i);
+    }
+  }
+  StartCd(t, i, e = -1) {
+    if (this.IsInCd(i)) {
       return false;
     }
-    let s = t;
+    let s = e;
     if (!((s = s === -1 ? this.SkillCd : s) <= 0)) {
       this.CurMaxCd = s;
-      t = Time_1.Time.FlowTime > this.SkillCdFinishStamp ? Time_1.Time.FlowTime : this.SkillCdFinishStamp;
-      this.SkillCdFinishStamp = t + s * TimeUtil_1.TimeUtil.InverseMillisecond;
+      e = this.SkillCdFinishStampMap.get(i) ?? 0;
+      e = (Time_1.Time.FlowTime > e ? Time_1.Time.FlowTime : e) + s * TimeUtil_1.TimeUtil.InverseMillisecond;
+      this.PSm();
+      this.SkillCdFinishStampMap.delete(i);
+      this.SkillCdFinishStampMap.set(i, e);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "被动技能CD开始", ["skillId", this.SkillId], ["cd", s]);
       }
@@ -43,23 +60,9 @@ class PassiveSkillCdInfo {
     return true;
   }
   ResetAllCd() {
-    this.SkillCdFinishStamp = 0;
+    this.SkillCdFinishStampMap.clear();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "重置被动技能CD", ["skillId", this.SkillId]);
-    }
-  }
-  ModifyRemainingCd(i, t) {
-    if (this.IsInCd()) {
-      i = this.CurRemainingCd + i + this.CurMaxCd * t;
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Battle", 17, "被动技能CD修改剩余CD", ["skillId", this.SkillId], ["cd", i]);
-      }
-      if (i <= 0) {
-        this.SkillCdFinishStamp = 0;
-      } else {
-        t = this.SkillCdFinishStamp - this.CurMaxCd * TimeUtil_1.TimeUtil.InverseMillisecond;
-        this.SkillCdFinishStamp = t + i;
-      }
     }
   }
 }

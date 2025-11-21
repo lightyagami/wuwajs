@@ -16,9 +16,9 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
+const MediumItemGrid_1 = require("../../Common/MediumItemGrid/MediumItemGrid");
 const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
-const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const UiModelUtil_1 = require("../../UiModel/UiModelUtil");
 const LguiUtil_1 = require("../../Util/LguiUtil");
@@ -33,21 +33,27 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
     this.DOo = 0;
     this.N2i = undefined;
     this.O2i = undefined;
-    this.ZOo = (e, i) => {
-      var t;
+    this.EHd = false;
+    this.IHd = undefined;
+    this.ZOo = (e, t) => {
+      var i;
       if (e === this.DOo) {
         this.N2i = UiSceneManager_1.UiSceneManager.GetWeaponObserver();
         this.O2i = UiSceneManager_1.UiSceneManager.GetWeaponScabbardObserver();
         WeaponController_1.WeaponController.PlayWeaponRenderingMaterial("WeaponResonanceUpMaterialController", this.N2i, this.O2i);
-        t = this.N2i.Model;
-        UiModelUtil_1.UiModelUtil.PlayEffectAtRootComponent(t, "WeaponResonanceUpEffect");
-        this.zOo.ClearSelectData();
+        i = this.N2i.Model;
+        UiModelUtil_1.UiModelUtil.PlayEffectAtRootComponent(i, "WeaponResonanceUpEffect");
+        if (this.EHd) {
+          this.THd();
+        } else {
+          this.zOo.ClearSelectData();
+        }
         this.pmt();
-        t = {
+        i = {
           WeaponIncId: e,
-          LastLevel: i
+          LastLevel: t
         };
-        UiManager_1.UiManager.OpenView("WeaponResonanceSuccessView", t);
+        UiManager_1.UiManager.OpenView("WeaponResonanceSuccessView", i);
       }
     };
     this.LNt = () => ModelManager_1.ModelManager.WeaponModel.GetResonanceMaterialList(this.DOo);
@@ -55,47 +61,51 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
       this.pmt();
     };
     this.eko = () => {
-      const t = this.zOo.GetCurrentSelectedData();
-      if (t) {
+      const i = this.bHd();
+      if (i) {
         if (this.B1o) {
-          var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
-          let e = 21;
-          var n = t.IncId;
-          if (n > 0) {
-            r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(n);
-            o = ModelManager_1.ModelManager.WeaponModel.IsWeaponHighLevel(r);
-            r = ModelManager_1.ModelManager.WeaponModel.HasWeaponResonance(r);
-            if (o && r) {
-              e = 27;
-            } else if (r) {
-              e = 25;
-            } else if (o) {
-              e = 26;
+          var t = i.IncId;
+          if (t <= 0 && ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(i.ItemId) === 0) {
+            ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("ResonanceItemNotEnough");
+          } else {
+            var n = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
+            let e = 21;
+            if (t > 0) {
+              r = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(t);
+              o = ModelManager_1.ModelManager.WeaponModel.IsWeaponHighLevel(r);
+              r = ModelManager_1.ModelManager.WeaponModel.HasWeaponResonance(r);
+              if (o && r) {
+                e = 27;
+              } else if (r) {
+                e = 25;
+              } else if (o) {
+                e = 26;
+              }
             }
+            var r = ConfigManager_1.ConfigManager.WeaponConfig;
+            var o = t > 0 ? r.GetWeaponName(r.GetWeaponConfigByItemId(i.ItemId).WeaponName) : MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.ItemConfig.GetConfig(i.ItemId).Name);
+            var t = r.GetWeaponName(n.GetWeaponConfig().WeaponName);
+            var r = this.tko();
+            const a = n.GetIncId();
+            n = new ConfirmBoxDefine_1.ConfirmBoxDataNew(e);
+            n.SetTextArgs(o, t, r.toString());
+            n.FunctionMap.set(2, () => {
+              var e = [];
+              var t = {
+                w5n: i.IncId,
+                m9n: 1,
+                L8n: i.ItemId
+              };
+              e.push(t);
+              WeaponController_1.WeaponController.SendPbResonUpRequest(a, e);
+            });
+            ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(n);
           }
-          var r = ConfigManager_1.ConfigManager.WeaponConfig;
-          var o = n > 0 ? r.GetWeaponName(r.GetWeaponConfigByItemId(t.ItemId).WeaponName) : MultiTextLang_1.configMultiTextLang.GetLocalTextNew(ConfigManager_1.ConfigManager.ItemConfig.GetConfig(t.ItemId).Name);
-          var n = r.GetWeaponName(i.GetWeaponConfig().WeaponName);
-          var r = this.tko();
-          const a = i.GetIncId();
-          i = new ConfirmBoxDefine_1.ConfirmBoxDataNew(e);
-          i.SetTextArgs(o, n, r.toString());
-          i.FunctionMap.set(2, () => {
-            var e = [];
-            var i = {
-              w5n: t.IncId,
-              m9n: 1,
-              L8n: t.ItemId
-            };
-            e.push(i);
-            WeaponController_1.WeaponController.SendPbResonUpRequest(a, e);
-          });
-          ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
         } else {
-          ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponResonanceNoEnoughMoneyText");
+          ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("WeaponResonanceNoEnoughMoneyText");
         }
       } else {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponSelectMaterialTipsText");
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsById("WeaponSelectMaterialTipsText");
       }
     };
   }
@@ -104,9 +114,18 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnStart() {
     this.DOo = this.ExtraParams;
+    if (this.RHd().MaterialPlaceType === 1) {
+      this.EHd = true;
+    }
+    if (this.EHd) {
+      this.IHd = new MediumItemGrid_1.MediumItemGrid();
+      this.IHd.Initialize(this.GetItem(5).GetOwner());
+      this.THd();
+    } else {
+      this.iko();
+    }
     this.p9t = new ButtonItem_1.ButtonItem(this.GetItem(6));
     this.p9t.SetFunction(this.eko);
-    this.iko();
     this.oko();
   }
   AddEventListener() {
@@ -126,48 +145,48 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   oko() {
     this.SetItemIcon(this.GetTexture(7), ItemDefines_1.EItemId.Gold);
   }
-  rko(e, i) {
-    let t = 0;
-    if (this.zOo.GetCurrentSelectedData()) {
+  rko(e, t) {
+    let i = 0;
+    if (this.EHd || this.zOo.GetCurrentSelectedData()) {
       n = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo).GetWeaponConfig();
-      t = ModelManager_1.ModelManager.WeaponModel.GetResonanceNeedMoney(n.ResonId, e, i);
+      i = ModelManager_1.ModelManager.WeaponModel.GetResonanceNeedMoney(n.ResonId, e, t);
     }
     var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold);
-    this.GetText(8).SetText(t.toString());
-    this.B1o = n >= t;
+    this.GetText(8).SetText(i.toString());
+    this.B1o = n >= i;
     this.GetText(8).useChangeColor = !this.B1o;
   }
   pmt() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
-    var i = e.GetWeaponConfig();
+    var t = e.GetWeaponConfig();
     var e = e.GetResonanceLevel();
-    var t = this.tko();
-    var n = e === i.ResonLevelLimit;
-    this.GetItem(3).SetUIActive(!n);
-    this.GetText(1).SetUIActive(!n);
-    this.GetItem(10).SetUIActive(!n);
-    this.GetItem(4).SetUIActive(!n);
-    this.p9t.GetRootItem().SetUIActive(!n);
-    this.GetItem(9).SetUIActive(n);
+    var i = e === t.ResonLevelLimit;
+    this.GetItem(3).SetUIActive(!i);
+    this.GetText(1).SetUIActive(!i);
+    this.GetItem(10).SetUIActive(!i);
+    this.GetItem(4).SetUIActive(!i);
+    this.p9t.GetRootItem().SetUIActive(!i);
+    this.GetItem(9).SetUIActive(i);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(0), "WeaponResonanceLevelText", e);
-    var r = ModelManager_1.ModelManager.WeaponModel.GetWeaponConfigDescParams(i, e);
-    let o = undefined;
-    if (!n) {
-      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), "WeaponResonanceLevelText", t);
-      this.rko(e, t);
-      var a = ModelManager_1.ModelManager.WeaponModel.GetWeaponConfigDescParams(i, t);
-      o = [];
-      var s = CommonParamById_1.configCommonParamById.GetStringConfig("HighlightColor");
-      for (let i = 0; i < r.length; i++) {
-        var l = r[i];
-        var h = a[i];
+    var n = ModelManager_1.ModelManager.WeaponModel.GetWeaponConfigDescParams(t, e);
+    let r = undefined;
+    if (!i) {
+      var i = this.tko();
+      LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), "WeaponResonanceLevelText", i);
+      this.rko(e, i);
+      var o = ModelManager_1.ModelManager.WeaponModel.GetWeaponConfigDescParams(t, i);
+      r = [];
+      var a = CommonParamById_1.configCommonParamById.GetStringConfig("HighlightColor");
+      for (let t = 0; t < n.length; t++) {
+        var s = n[t];
+        var h = o[t];
         let e = undefined;
-        e = l === h ? l.toString() : StringUtils_1.StringUtils.Format("{0}-><color=#{1}>{2}</color>", l, s, h);
-        o.push(e);
+        e = s === h ? s.toString() : StringUtils_1.StringUtils.Format("{0}-><color=#{1}>{2}</color>", s, a, h);
+        r.push(e);
       }
     }
-    o = o ?? r;
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), i.Desc, ...o);
+    r = r ?? n;
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(2), t.Desc, ...r);
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.WeaponModel.SetCurSelectViewName(3);
@@ -179,32 +198,68 @@ class WeaponResonanceView extends UiTabViewBase_1.UiTabViewBase {
   }
   RefreshName() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
-    var i = e.GetWeaponConfig();
-    var t = i.WeaponName;
-    var n = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(i.QualityId);
+    var t = e.GetWeaponConfig();
+    var i = t.WeaponName;
+    var n = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(t.QualityId);
     var n = UE.Color.FromHex(n.DropColor);
     this.GetText(12).SetColor(n);
-    this.GetText(12).ShowTextNew(t);
+    this.GetText(12).ShowTextNew(i);
     var n = e.GetResonanceLevel();
-    var t = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceConfig(i.ResonId, n);
-    if (t) {
-      this.GetText(13).SetText(ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceDesc(t.Name));
+    var i = ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceConfig(t.ResonId, n);
+    if (i) {
+      this.GetText(13).SetText(ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceDesc(i.Name));
     }
   }
   tko() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
-    var i = e.GetResonanceLevel();
-    var t = this.zOo.GetCurrentSelectedData();
-    if (t && t.IncId !== 0) {
-      t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(t.IncId).GetResonanceLevel() + e.GetResonanceLevel();
-      if ((e = e.GetWeaponConfig().ResonLevelLimit) < t) {
-        return e;
+    var t = e.GetResonanceLevel();
+    var i = this.bHd();
+    if (this.EHd || !i || i.IncId === 0) {
+      return t + 1;
+    } else {
+      t = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(i.IncId).GetResonanceLevel() + e.GetResonanceLevel();
+      if ((i = e.GetWeaponConfig().ResonLevelLimit) < t) {
+        return i;
       } else {
         return t;
       }
-    } else {
-      return i + 1;
     }
+  }
+  bHd() {
+    var e;
+    if (this.EHd) {
+      return {
+        ItemId: e = this.RHd().AlternativeConsume[0],
+        IncId: 0,
+        Count: ModelManager_1.ModelManager.InventoryModel?.GetCommonItemCount(e) ?? 0,
+        SelectedCount: 1
+      };
+    } else {
+      return this.zOo.GetCurrentSelectedData();
+    }
+  }
+  RHd() {
+    var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo);
+    var t = e.GetWeaponConfig();
+    return ConfigManager_1.ConfigManager.WeaponConfig.GetWeaponResonanceConfig(t.ResonId, e.GetResonanceLevel());
+  }
+  THd() {
+    const e = this.bHd().ItemId;
+    var t = {
+      Type: 4,
+      ItemConfigId: e
+    };
+    var i = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(e);
+    t.BottomTextId = "Text_ItemEnoughText_Text";
+    if (i < 1) {
+      t.BottomTextId = "Text_ItemNotEnoughText_Text";
+    }
+    t.BottomTextParameter = [i, 1];
+    this.IHd.Apply(t);
+    this.IHd.BindOnCanExecuteChange(() => false);
+    this.IHd.BindOnExtendToggleClicked(() => {
+      ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(e);
+    });
   }
 }
 exports.WeaponResonanceView = WeaponResonanceView;

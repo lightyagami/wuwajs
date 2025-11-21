@@ -14,7 +14,7 @@ class WorldMapAlterMapComponent extends MapComponent_1.MapComponent {
   constructor() {
     super(...arguments);
     this.WorldMapViewPlaySequenceFunction = undefined;
-    this.InverTowerCtrlRoot = undefined;
+    this.InverseTowerCtrlRoot = undefined;
     this.AUc = undefined;
     this.$An = e => {
       if (e === "Invert") {
@@ -51,11 +51,11 @@ class WorldMapAlterMapComponent extends MapComponent_1.MapComponent {
     this.NYa.CancelAllTasks();
     this.NYa.ReloadComponent(8);
     if (t !== undefined && e === i.MapId) {
-      this.InverTowerCtrlRoot.SetUIActive(true);
+      this.InverseTowerCtrlRoot.SetUIActive(true);
       this.PUc();
       this.AUc = new CustomPromise_1.CustomPromise();
       this.WorldMapViewPlaySequenceFunction?.("InverTower", true).then(() => {
-        this.InverTowerCtrlRoot.SetUIActive(false);
+        this.InverseTowerCtrlRoot.SetUIActive(false);
       });
     }
     await this.xUc(e, t);

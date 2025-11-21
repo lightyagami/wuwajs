@@ -15,15 +15,15 @@ const CharacterNameDefines_1 = require("../../Common/CharacterNameDefines");
 const CharacterAnimationComponent_1 = require("../../Common/Component/CharacterAnimationComponent");
 const SECOND_TO_MILLISECOND = 1000;
 class PlayMontageUtils {
-  static yad() {
-    return ++this.Sad;
+  static qud() {
+    return ++this.Gud;
   }
   static IsPlayingMontage(t) {
     return this.G2r.has(t);
   }
   static EntityIsPlayingMontage(t) {
-    if (this.Mad.has(t)) {
-      return this.Mad.get(t);
+    if (this.Fud.has(t)) {
+      return this.Fud.get(t);
     } else {
       return 0;
     }
@@ -45,7 +45,7 @@ class PlayMontageUtils {
       n = this.LoadAndPlayMontage(t, n.ActionMontage, e, s, a, o);
       if (t instanceof CharacterAnimationComponent_1.CharacterAnimationComponent && !t.EnableLowerBlend) {
         t.EnableLowerBlend = true;
-        this.Tmd.add(n);
+        this.o3d.add(n);
       }
       return n;
     } else {
@@ -56,13 +56,13 @@ class PlayMontageUtils {
     }
   }
   static LoadAndPlayMontage(e, t, i, s = undefined, a = undefined, o = undefined) {
-    if (this.Mad.has(e.Entity.Id) && (n = this.Mad.get(e.Entity.Id), this.ClearAndStopMontage(n), Log_1.Log.CheckWarn())) {
+    if (this.Fud.has(e.Entity.Id) && (n = this.Fud.get(e.Entity.Id), this.ClearAndStopMontage(n), Log_1.Log.CheckWarn())) {
       Log_1.Log.Warn("NPC", 42, "[NpcMontage] 当前正在播放该蒙太奇动画,停止当前动画", ["EntityId", e.Actor.EntityId], ["PlayMontageUid", n]);
     }
-    var n = this.yad();
+    var n = this.qud();
     const h = new PlayingMontageInfo(e, n, t, i, s, a, o);
     this.G2r.set(n, h);
-    this.Mad.set(e.Entity.Id, n);
+    this.Fud.set(e.Entity.Id, n);
     if (ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.AnimMontage, (t, i) => {
       if (t?.IsValid() && h.CheckPlayCondition()) {
         t = (h.BodyMontage = t).SequenceLength * SECOND_TO_MILLISECOND;
@@ -90,7 +90,7 @@ class PlayMontageUtils {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("NPC", 42, "[NpcMontage] 直接混出结束蒙太奇", ["Uid", t.Uid], ["EntityId", t.EntityId], ["MontagePath", t.MontagePath]);
       }
-      this.Ead(t);
+      this.Nud(t);
     }
   }
   static ClearAndEndMontage(t, i = true, e) {
@@ -102,12 +102,12 @@ class PlayMontageUtils {
         }
         this.O2r(s, t, i, e);
       } else {
-        this.Ead(t);
+        this.Nud(t);
       }
     }
   }
-  static Ead(t) {
-    if (t && (t.OnClearInfo(), this.Mad.delete(t.EntityId), this.G2r.delete(t.Uid), this.Tmd.has(t.Uid) && (t.AnimComp && (t.AnimComp.EnableLowerBlend = false), this.Tmd.delete(t.Uid)), Log_1.Log.CheckDebug())) {
+  static Nud(t) {
+    if (t && (t.OnClearInfo(), this.Fud.delete(t.EntityId), this.G2r.delete(t.Uid), this.o3d.has(t.Uid) && (t.AnimComp && (t.AnimComp.EnableLowerBlend = false), this.o3d.delete(t.Uid)), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("NPC", 42, "[NpcMontage] 结束蒙太奇 RemoveMontageInfo", ["Uid", t.Uid]);
     }
   }
@@ -190,15 +190,15 @@ class PlayMontageUtils {
   }
 }
 exports.PlayMontageUtils = PlayMontageUtils;
-(_a = PlayMontageUtils).Sad = 0;
+(_a = PlayMontageUtils).Gud = 0;
 PlayMontageUtils.G2r = new Map();
-PlayMontageUtils.Mad = new Map();
-PlayMontageUtils.Tmd = new Set();
+PlayMontageUtils.Fud = new Map();
+PlayMontageUtils.o3d = new Set();
 PlayMontageUtils.O2r = (e, s, t, a) => {
   const o = (t, i) => {
     if (t === s.BodyMontage) {
       _a.RemoveOnMontageEnded(e, o);
-      _a.Ead(s);
+      _a.Nud(s);
       a?.(t, i);
     }
   };
@@ -207,7 +207,7 @@ PlayMontageUtils.O2r = (e, s, t, a) => {
     _a.Stop(e, t, s.BodyMontage);
   } else {
     _a.ForceStop(e, 0.5, s.BodyMontage);
-    _a.Ead(s);
+    _a.Nud(s);
   }
 };
 class PlayMontageConfig {

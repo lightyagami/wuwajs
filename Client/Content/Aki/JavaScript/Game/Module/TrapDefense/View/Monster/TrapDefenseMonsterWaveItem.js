@@ -23,11 +23,11 @@ class TrapDefenseMonsterWaveItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.IsFireForBuffClick = false;
     this.CreateItemMonster = () => {
       var t = new TrapDefenseMonsterItem_1.TrapDefenseMonsterItem(true);
-      t.OnSelectMonsterItemCallback = this.vHc;
+      t.OnSelectMonsterItemCallback = this.jjc;
       t.OnShowNumCallback = this.GetMonsterInTheWaveShowNum;
       return t;
     };
-    this.vHc = t => {
+    this.jjc = t => {
       this.IsFireForBuffClick = true;
       this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
       this.OnSelectMonsterCallBack?.(t, this.ItemData);

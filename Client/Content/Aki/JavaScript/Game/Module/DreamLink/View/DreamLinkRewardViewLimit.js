@@ -192,7 +192,7 @@ class DreamLinkRewardViewLimit extends UiTickViewBase_1.UiTickViewBase {
         this.$pt.PlayTo(new UE.MovieSceneSequencePlaybackParams(this.$pt.GetEndTime().Time, 0, "A", 2, 0));
         r?.();
       }
-    });
+    }, 100, this.MemoryTag);
   }
 }
 exports.DreamLinkRewardViewLimit = DreamLinkRewardViewLimit;

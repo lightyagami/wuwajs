@@ -44,7 +44,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
           this.xoi = true;
         }
       }
-      if (this.Poi && !ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206)?.HasTag(-2140742267)) {
+      if (this.Poi && !ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209)?.HasTag(-2140742267)) {
         if (i === 0) {
           this.qoi();
         } else {
@@ -117,7 +117,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   Ooi() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t?.Valid && t.Entity.GetComponent(176)?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
+    return !!t?.Valid && t.Entity.GetComponent(179)?.DirectionState === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection;
   }
   Activate() {
     if (this.Poi) {
@@ -149,7 +149,7 @@ class LockCursorHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
         this.yG_ = i.SocketName;
         this.SG_ = t;
         this.MG_ = true;
-      } else if (t.Entity.GetComponent(206)?.HasTag(-2100129479)) {
+      } else if (t.Entity.GetComponent(209)?.HasTag(-2100129479)) {
         i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
         if (i?.Valid) {
           const e = i.Entity.CheckGetComponent(32);

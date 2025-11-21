@@ -41,8 +41,8 @@ class HeadIconEnergyBarCommon extends HeadIconEnergyBarBase_1.HeadIconEnergyBarB
     this.hB1(t >= 1, e);
   }
   aB1() {
-    var e = Time_1.Time.NowSeconds;
-    if (!(e <= this.sB1)) {
+    var e;
+    if (!!this.PlayIncreaseEffect && !((e = Time_1.Time.NowSeconds) <= this.sB1)) {
       this.sB1 = e + this.Config.EffectCd;
       this.PlayTweenAnim(5);
     }

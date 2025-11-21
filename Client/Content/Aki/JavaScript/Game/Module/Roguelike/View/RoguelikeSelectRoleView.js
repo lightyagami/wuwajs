@@ -134,7 +134,7 @@ class RoguelikeSelectRoleView extends UiViewBase_1.UiViewBase {
     };
   }
   OnBeforeCreate() {
-    this.xVi = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(8);
+    this.xVi = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(9);
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIDynScrollViewComponent], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIText], [8, UE.UIButtonComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIText], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIText]];

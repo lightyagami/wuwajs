@@ -8,6 +8,8 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
+const TickProcessSystem_1 = require("../../../../Core/Tick/TickProcessSystem");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
@@ -27,8 +29,22 @@ class SceneInteractionManager {
     this.WaterObjects = undefined;
     this.AirWallObjects = undefined;
     this.TempVector = undefined;
+    this.B$a = 0;
+    this.TDe = undefined;
     this.xie = () => {
-      this.Bkn();
+      if (this.B$a === 0) {
+        if (this.TDe) {
+          this.TDe.Remove();
+          this.TDe = undefined;
+        }
+        this.B$a = TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, () => {
+          this.B$a = 0;
+          this.TDe = TimerSystem_1.TimerSystem.Next(() => {
+            this.TDe = undefined;
+            this.Bkn();
+          });
+        });
+      }
     };
   }
   static Get() {
@@ -78,9 +94,9 @@ class SceneInteractionManager {
       this.xie();
     });
   }
-  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false, a = 0) {
-    var c = GlobalData_1.GlobalData.World;
-    if (!c) {
+  CreateSceneInteractionLevel(e, t, i, r, n, s = true, o = false, c = 0) {
+    var a = GlobalData_1.GlobalData.World;
+    if (!a) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("RenderScene", 11, "错误，获取不到World");
       }
@@ -93,9 +109,9 @@ class SceneInteractionManager {
     var e = this.UniqueLevelInstanceId;
     var l = (0, puerts_1.$ref)(false);
     var f = "KuroSceneInteraction_" + e;
-    var c = UE.LevelStreamingDynamic.LoadLevelInstance(c, h, i.op_ToVector(), r, l, f);
-    if ((0, puerts_1.$unref)(l) && c) {
-      (f = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(c, h, i, r, e, t, n, s, o, a);
+    var a = UE.LevelStreamingDynamic.LoadLevelInstance(a, h, i.op_ToVector(), r, l, f);
+    if ((0, puerts_1.$unref)(l) && a) {
+      (f = new SceneInteractionLevel_1.SceneInteractionLevel()).Init(a, h, i, r, e, t, n, s, o, c);
       this.UniqueLevelInstanceId++;
       this.AllSceneInteractionInfos.set(e, f);
       return e;

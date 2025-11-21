@@ -9,6 +9,7 @@ const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLa
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 const UiManager_1 = require("../../../Ui/UiManager");
@@ -22,7 +23,12 @@ class LockReasonItem extends UiPanelBase_1.UiPanelBase {
     this.YP = () => {
       var e = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(this.$mt);
       if (e) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNavigationQuest, e.TreeConfigId);
+        if (ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.OverrideLockReasonGoto) {
+          ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.SetOverrideLockReasonGoto(false);
+          ControllerHolder_1.ControllerHolder.QuestTreeController.JumpToQuest(e.TreeConfigId);
+        } else {
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnNavigationQuest, e.TreeConfigId);
+        }
         UiManager_1.UiManager.CloseView("QuestLockPreview");
       }
     };

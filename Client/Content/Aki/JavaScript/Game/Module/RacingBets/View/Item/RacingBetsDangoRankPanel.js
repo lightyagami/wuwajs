@@ -10,8 +10,8 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const LguiUtil_1 = require("../../../Util/LguiUtil");
-const RacingBetsDangoRankItem_1 = require("./RacingBetsDangoRankItem");
 const RacingBetsDefine_1 = require("../../RacingBetsDefine");
+const RacingBetsDangoRankItem_1 = require("./RacingBetsDangoRankItem");
 class RacingBetsDangoRankPanel extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
@@ -31,7 +31,7 @@ class RacingBetsDangoRankPanel extends UiPanelBase_1.UiPanelBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
       this.ST1 = e;
       t.SetResult(undefined);
-    });
+    }, 100, this.MemoryTag);
     await t.Promise;
   }
   OnStart() {

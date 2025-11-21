@@ -136,8 +136,13 @@ class ConfigMarkItem extends MarkItem_1.MarkItem {
     return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(this.MarkConfig.MarkTitle);
   }
   GetAreaText() {
+    var t;
     if (typeof this.TrackTarget == "number") {
-      return ModelManager_1.ModelManager.MapModel.GetMarkAreaText(this.MapId, this.TrackTarget);
+      if ((t = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(this.MarkId)?.AreaShowText ?? []).length > 0) {
+        return t.map(t => ConfigManager_1.ConfigManager.MapConfig.GetLocalText(t)).join("-");
+      } else {
+        return ModelManager_1.ModelManager.MapModel.GetMarkAreaText(this.MapId, this.TrackTarget);
+      }
     }
   }
   GDi(t) {
@@ -202,7 +207,7 @@ class ConfigMarkItem extends MarkItem_1.MarkItem {
   }
   UpdateViewIcon() {
     var t;
-    if (this.InnerView && (t = this.InnerView)) {
+    if (this.InnerView && !this.IsDestroy && (t = this.InnerView)) {
       t.UpdateIcon();
     }
   }

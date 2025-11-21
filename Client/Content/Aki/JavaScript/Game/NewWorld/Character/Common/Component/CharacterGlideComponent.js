@@ -302,7 +302,7 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
     };
     this.KQc = () => {
       var t = ModelManager_1.ModelManager.RouletteModel.CurrentExploreSkillId === 1015;
-      var e = this.Entity.GetComponent(176).PositionState;
+      var e = this.Entity.GetComponent(179).PositionState;
       if (t && e === CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
         if (!this.Xte?.HasTag(1340982160)) {
           this.Xte?.AddTag(1340982160);
@@ -446,11 +446,11 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.o4o = this.Entity.CheckGetComponent(179);
+    this.o4o = this.Entity.CheckGetComponent(182);
     this.H5r = this.Entity.CheckGetComponent(81);
-    this.Xte = this.Entity.CheckGetComponent(206);
-    this.oRe = this.Entity.CheckGetComponent(178);
-    this.Xdl = this.Entity.GetComponent(109);
+    this.Xte = this.Entity.CheckGetComponent(209);
+    this.oRe = this.Entity.CheckGetComponent(181);
+    this.Xdl = this.Entity.GetComponent(111);
     this.Hkl = SoarConfigParams.SoarConfigBase;
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.hUe);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
@@ -751,8 +751,8 @@ let CharacterGlideComponent = CharacterGlideComponent_1 = class CharacterGlideCo
   }
   $7c() {
     var t = this.Hte?.CreatureData.GetPbDataId();
-    var e = this.Entity.GetComponent(175);
-    if (this.Entity.GetComponent(176)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
+    var e = this.Entity.GetComponent(178);
+    if (this.Entity.GetComponent(179)?.MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar && this.CurrentSoarType === 1) {
       this.Xte?.AddTag(1850415886);
       e?.AddBuff(ROAM_EFFECT_BUFF_ID, {
         InstigatorId: e.CreatureDataId,

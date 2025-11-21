@@ -86,18 +86,18 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.RWr = undefined;
     this.Lie = undefined;
     this.Gce = undefined;
-    this.Axd = undefined;
-    this.Dxd = undefined;
-    this.Uxd = Vector_1.Vector.Create();
+    this.D2d = undefined;
+    this.U2d = undefined;
+    this.x2d = Vector_1.Vector.Create();
     this.rRe = undefined;
-    this.xxd = 0;
+    this.B2d = 0;
     this.mWi = undefined;
-    this.Bxd = false;
-    this.w6d = 0;
-    this.i9d = false;
-    this.gzd = false;
+    this.k2d = false;
+    this.DKd = 0;
+    this.SJd = false;
+    this.jIm = false;
     this.ZQl = Transform_1.Transform.Create();
-    this.kxd = Vector_1.Vector.Create();
+    this.O2d = Vector_1.Vector.Create();
     this.Due = Vector_1.Vector.Create();
     this.Ele = Rotator_1.Rotator.Create();
     this.Mme = Transform_1.Transform.Create();
@@ -105,7 +105,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     this.fz = Vector_1.Vector.Create();
     this.pz = Vector_1.Vector.Create();
     this.e7o = Quat_1.Quat.Create();
-    this.Oxd = t => {
+    this.q2d = t => {
       this.SRa(t);
     };
     this.bpr = () => {
@@ -125,7 +125,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       }
     };
     this.xsa = (t, i) => {
-      this.i9d = true;
+      this.SJd = true;
     };
   }
   get OPt() {
@@ -135,9 +135,9 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
     this.RWr = this.Entity.CheckGetComponent(34);
-    this.oRe = this.Entity.CheckGetComponent(178);
-    this.Lie = this.Entity.CheckGetComponent(206);
-    this.Gce = this.Entity.CheckGetComponent(179);
+    this.oRe = this.Entity.CheckGetComponent(181);
+    this.Lie = this.Entity.CheckGetComponent(209);
+    this.Gce = this.Entity.CheckGetComponent(182);
     this.rRe = this.oRe?.MainAnimInstance;
     return true;
   }
@@ -146,19 +146,19 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     return true;
   }
   OnTick() {
-    if (this.i9d) {
+    if (this.SJd) {
       this.ExitSplineClimb("位置状态改变", true, false);
-      this.i9d = false;
+      this.SJd = false;
     }
   }
   EnterSplineClimb(t, i, e) {
-    if (this.Bxd) {
+    if (this.k2d) {
       this.ExitSplineClimb("重复进入", false);
     }
-    this.Uxd.DeepCopy(i);
-    this.qxd(t);
-    this.Gxd();
-    this.xxd = 0;
+    this.x2d.DeepCopy(i);
+    this.G2d(t);
+    this.F2d();
+    this.B2d = 0;
     this.Hte?.Actor.KuroSetMovementMode({
       Mode: 6,
       CustomMode: CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_SPLINE_CLIMB,
@@ -173,8 +173,8 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       i.StopAllSkills("开始样条跑墙");
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForceReleaseInput, "[CharacterSplineClimbComponent] 开始样条跑墙");
-    this.Axd = e;
-    this.Bxd = true;
+    this.D2d = e;
+    this.k2d = true;
     if (GlobalData_1.GlobalData.IsPlayInEditor) {
       CharacterSplineClimbComponent_1.wX1();
     }
@@ -182,21 +182,21 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
       this.Gce?.SetLockedRotation(false);
     }
     if (this.RWr) {
-      this.w6d = this.RWr.Disable("样条跑墙开始");
+      this.DKd = this.RWr.Disable("样条跑墙开始");
     }
     this.Due.DeepCopy(this.Hte.ActorLocationProxy);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 82, "开始样条跑墙", ["SourceLength", this.Dxd?.SourceSpline.GetSplineLength()], ["DistanceInSource", this.Dxd?.DistanceInSource], ["SourceLengthUe", this.Dxd?.SourceSplineUe?.GetSplineLength()], ["SplineLocation", this.Dxd?.SourceSpline.SplineTransform.GetLocation()]);
+      Log_1.Log.Info("Movement", 82, "开始样条跑墙", ["SourceLength", this.U2d?.SourceSpline.GetSplineLength()], ["DistanceInSource", this.U2d?.DistanceInSource], ["SourceLengthUe", this.U2d?.SourceSplineUe?.GetSplineLength()], ["SplineLocation", this.U2d?.SourceSpline.SplineTransform.GetLocation()]);
     }
   }
   ExitSplineClimb(t, i = true, e = true) {
     this.kre();
     if (this.RWr) {
-      this.RWr.Enable(this.w6d, "样条跑墙结束");
-      this.w6d = 0;
+      this.RWr.Enable(this.DKd, "样条跑墙结束");
+      this.DKd = 0;
     }
     var s;
-    var h = this.Entity.GetComponent(176).PositionState;
+    var h = this.Entity.GetComponent(179).PositionState;
     var e = !e || this.nz1();
     var n = i && e && (h === CharacterUnifiedStateTypes_1.ECharPositionState.Air || h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb);
     var i = i && h === CharacterUnifiedStateTypes_1.ECharPositionState.Climb;
@@ -206,7 +206,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
         GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(this.Hte, this.cz);
         this.Gce.SetForceSpeed(this.cz);
       }
-      (h = this.cz).DeepCopy(this.kxd);
+      (h = this.cz).DeepCopy(this.O2d);
       if (!h.IsNearlyZero()) {
         if (Math.abs(h.Y) > MathUtils_1.MathUtils.SmallNumber) {
           n = Vector_1.Vector.DotProduct(h, this.Gce.GravityUp);
@@ -237,51 +237,51 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     for (const r of this.OPt.Tags) {
       this.Lie?.RemoveTag(r);
     }
-    this.Bxd = false;
-    this.i9d = false;
+    this.k2d = false;
+    this.SJd = false;
     if (this.nz1()) {
       this.Gce?.SetLockedRotation(true);
     }
-    this.Axd?.(true);
+    this.D2d?.(true);
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Movement", 82, "退出样条跑墙", ["reason", t], ["DistanceInSource", this.Dxd?.DistanceInSource], ["WallSplineLength", this.Dxd?.WallSpline?.GetSplineLength()], ["DistanceOnWall", this.Dxd?.DistanceInWallSpline], ["bChangeState", i]);
+      Log_1.Log.Info("Movement", 82, "退出样条跑墙", ["reason", t], ["DistanceInSource", this.U2d?.DistanceInSource], ["WallSplineLength", this.U2d?.WallSpline?.GetSplineLength()], ["DistanceOnWall", this.U2d?.DistanceInWallSpline], ["bChangeState", i]);
     }
   }
-  qxd(t) {
-    this.Dxd = new SplineRuntime();
-    this.Dxd.SourceSplineUe = t;
-    var i = this.Dxd.SourceSpline;
+  G2d(t) {
+    this.U2d = new SplineRuntime();
+    this.U2d.SourceSplineUe = t;
+    var i = this.U2d.SourceSpline;
     i.Init(t.SplineCurves.Position, t.SplineCurves.ReparamTable.Points, t.SplineCurves.Rotation, t.SplineCurves.Scale);
     i.SetSplineTransform(Transform_1.Transform.Create(t.D_K2_GetComponentToWorld()), false);
   }
-  Gxd() {
-    var t = this.Dxd.SourceSplineUe.D_FindInputKeyClosestToWorldLocationInGravity(this.Hte.ActorLocation, this.Hte.ActorGravityDirectProxy.ToUeVectorOld(), 800);
-    var t = this.Dxd.SourceSplineUe.GetDistanceAlongSplineAtSplineInputKey(t);
-    this.Dxd.DistanceInSource = t;
+  F2d() {
+    var t = this.U2d.SourceSplineUe.D_FindInputKeyClosestToWorldLocationInGravity(this.Hte.ActorLocation, this.Hte.ActorGravityDirectProxy.ToUeVectorOld(), 800);
+    var t = this.U2d.SourceSplineUe.GetDistanceAlongSplineAtSplineInputKey(t);
+    this.U2d.DistanceInSource = t;
   }
   Ore() {
-    if (!this.gzd) {
+    if (!this.jIm) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.ero);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.Oxd);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.q2d);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa);
-      this.gzd = true;
+      this.jIm = true;
     }
   }
   kre() {
-    if (this.gzd) {
+    if (this.jIm) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharUseSkill, this.ero);
-      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.Oxd);
+      EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveSplineClimb, this.q2d);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadTargetSelf, this.Jze);
       EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.xsa);
-      this.gzd = false;
+      this.jIm = false;
     }
   }
   SRa(e) {
-    if (this.Bxd && this.Dxd && this.Dxd.SourceSpline) {
-      var s = this.Dxd;
+    var s = this.U2d;
+    if (this.k2d && s && s.SourceSpline) {
       let i = s.WallSpline.GetSplineLength();
       var h = s.SourceSpline.GetSplineLength();
       if (!s.InitialUpdate && s.DistanceInSource >= h && s.DistanceInWallSpline >= i - 0.1) {
@@ -290,7 +290,7 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
         if (s.InitialUpdate || s.DistanceInWallSpline >= i - 0.1) {
           var n = s.DistanceInWallSpline - i;
           var r = this.OPt.SampleLength;
-          if (!this.Fxd(s.SourceSpline, s.WallSpline, s.DistanceInSource, Math.min(h, s.DistanceInSource + r), this.Uxd)) {
+          if (!this.N2d(s.SourceSpline, s.WallSpline, s.DistanceInSource, Math.min(h, s.DistanceInSource + r), this.x2d)) {
             this.ExitSplineClimb("无法投影");
             return;
           }
@@ -298,107 +298,108 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
           s.DistanceInWallSpline = n;
           i = s.WallSpline.GetSplineLength();
         }
-        this.Dxd.WallSpline.GetTransformAtDistanceAlongSpline(this.Dxd.DistanceInWallSpline, 1, this.ZQl);
+        s.WallSpline.GetTransformAtDistanceAlongSpline(s.DistanceInWallSpline, 1, this.ZQl);
         let t = this.Gce.CharacterMovement.AnimRootMotionVelocity.Size();
         if (t <= 100) {
           t = 500;
         }
         s.DistanceInWallSpline = Math.min(s.DistanceInWallSpline + t * e, i - 0.1);
         this.Due.DeepCopy(this.ZQl.GetLocation());
-        this.Due.Subtraction(this.Hte.ActorLocationProxy, this.kxd);
-        this.Hte.AddActorWorldOffset(this.kxd.ToUeVector(), "[CharacterSplineClimbComponent] 沿样条跑墙", true);
-        this.Nxd(this.Uxd, this.ZQl, this.Ele);
+        this.Due.Subtraction(this.Hte.ActorLocationProxy, this.O2d);
+        this.Hte.AddActorWorldOffset(this.O2d.ToUeVector(), "[CharacterSplineClimbComponent] 沿样条跑墙", true);
+        this.V2d(this.ZQl, this.Ele);
         this.Gce.SmoothCharacterRotation(this.Ele, 800, e, false, "[SplineClimb] 沿样条跑墙");
-        this.Vxd(this.ZQl, e);
+        this.j2d(this.ZQl, e);
         this.oRe?.ConsumeRootMotion();
         this.RWr?.SetLastSafeLocation(this.Hte.ActorLocationProxy);
         s.InitialUpdate = false;
       }
     }
   }
-  Nxd(t, i, e) {
-    var i = i.GetRotation();
-    var s = this.cz;
-    i.GetForwardVector(s);
-    var i = Vector_1.Vector.DotProduct(s, this.Hte.ActorGravityDirectProxy);
-    var h = this.fz;
-    this.Hte.ActorGravityDirectProxy.Multiply(i, h);
-    s.SubtractionEqual(h);
-    s.Normalize();
-    var i = Vector_1.Vector.DotProduct(t, s);
-    var h = this.fz;
-    s.Multiply(i, h);
-    var s = this.pz;
-    t.Subtraction(h, s);
-    s.Normalize();
-    s.ToOrientationRotator(e);
+  V2d(t, i) {
+    this.pz.DeepCopy(this.Hte.ActorGravityDirectProxy);
+    this.pz.UnaryNegation(this.pz);
+    t.GetRotation().GetUpVector(this.fz);
+    this.fz.UnaryNegation(this.fz);
+    if (this.nz1()) {
+      MathUtils_1.MathUtils.LookRotationUpFirst(this.fz, this.pz, i);
+    } else {
+      MathUtils_1.MathUtils.LookRotationForwardFirst(this.fz, this.pz, i);
+    }
   }
-  Fxd(i, t, e, s, h) {
+  N2d(i, t, e, s, h) {
     var n = [];
-    var r = i.GetSplineLength();
+    var r = [];
+    var o = i.GetSplineLength();
     var s = s - e;
     if (s < 10) {
       t.InitPoints(n);
     }
-    var o = this.OPt.SampleInterval;
-    var a = s / o;
-    var l = this.RWr.GetClimbRadius();
-    var m = this.OPt.TraceStartOffset;
-    var _ = this.OPt.TraceLength;
-    var C = this.OPt.ExtraWallRadius;
-    for (let t = 0; t <= a; t++) {
-      var p = e + t * o;
-      var v = Math.min(p, r - 0.1);
-      var c = this.Mme;
-      i.GetTransformAtDistanceAlongSpline(v, 1, c);
+    var a = this.OPt.SampleInterval;
+    var l = s / a;
+    var m = this.RWr.GetClimbRadius();
+    var _ = this.OPt.TraceStartOffset;
+    var C = this.OPt.TraceLength;
+    var p = this.OPt.ExtraWallRadius;
+    for (let t = 0; t <= l; t++) {
+      var v = e + t * a;
+      var c = Math.min(v, o - 0.1);
+      var S = this.Mme;
+      i.GetTransformAtDistanceAlongSpline(c, 1, S);
       this.mWi ||= this.wTu();
-      this.mWi.Radius = l;
-      var S = this.cz;
-      h.GetSafeNormal(S);
-      S.MultiplyEqual(m);
-      S.AdditionEqual(c.GetLocation());
-      var u = this.fz;
+      this.mWi.Radius = m;
+      var u = this.cz;
       h.GetSafeNormal(u);
       u.MultiplyEqual(_);
-      u.AdditionEqual(c.GetLocation());
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.mWi, S);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.mWi, u);
-      var S = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.mWi, "CharacterSplineClimbComponent.BuildWallSpline");
-      if (S && this.mWi.HitResult) {
-        var u = this.cz;
-        TraceElementCommon_1.TraceElementCommon.GetImpactPoint(this.mWi.HitResult, 0, u);
-        var S = this.fz;
-        TraceElementCommon_1.TraceElementCommon.GetImpactNormal(this.mWi.HitResult, 0, S);
-        var E = new SplineCurve_1.InterpCurvePointVector(5);
-        E.InVal = p;
-        S.MultiplyEqual(l + C);
-        u.AdditionEqual(S);
-        S.Normalize();
-        E.OutVal.DeepCopy(u);
-        var u = this.cz;
-        i.GetDirectionAtDistanceAlongSpline(v, 1, u);
-        var v = Vector_1.Vector.DotProduct(u, S);
-        S.MultiplyEqual(v);
-        u.SubtractionEqual(S);
+      u.AdditionEqual(S.GetLocation());
+      var E = this.fz;
+      h.GetSafeNormal(E);
+      E.MultiplyEqual(C);
+      E.AdditionEqual(S.GetLocation());
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.mWi, u);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.mWi, E);
+      var u = TraceElementCommon_1.TraceElementCommon.SphereTrace(this.mWi, "CharacterSplineClimbComponent.BuildWallSpline");
+      if (u && this.mWi.HitResult) {
+        var E = this.cz;
+        TraceElementCommon_1.TraceElementCommon.GetImpactPoint(this.mWi.HitResult, 0, E);
+        var u = this.fz;
+        TraceElementCommon_1.TraceElementCommon.GetImpactNormal(this.mWi.HitResult, 0, u);
+        var f = new SplineCurve_1.InterpCurvePointVector(5);
+        f.InVal = t;
+        u.MultiplyEqual(m + p);
+        E.AdditionEqual(u);
         u.Normalize();
-        E.ArriveTangent.DeepCopy(u);
-        E.LeaveTangent.DeepCopy(u);
-        n.push(E);
+        f.OutVal.DeepCopy(E);
+        var E = this.cz;
+        i.GetDirectionAtDistanceAlongSpline(c, 1, E);
+        var c = new SplineCurve_1.InterpCurvePointQuat(0);
+        c.InVal = t;
+        MathUtils_1.MathUtils.LookRotationUpFirst(E, u, c.OutVal);
+        c.LeaveTangent.DeepCopy(c.OutVal);
+        c.ArriveTangent.DeepCopy(c.OutVal);
+        var b = Vector_1.Vector.DotProduct(E, u);
+        u.MultiplyEqual(b);
+        E.SubtractionEqual(u);
+        E.Normalize();
+        f.ArriveTangent.DeepCopy(E);
+        f.LeaveTangent.DeepCopy(E);
+        n.push(f);
+        r.push(c);
         if (GlobalData_1.GlobalData.IsPlayInEditor && this.OPt.DebugDraw) {
-          v = E.OutVal.ToUeVector();
-          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, v, 5, 12, ColorUtils_1.ColorUtils.LinearYellow, 5);
-          const h = E.ArriveTangent.ToUeVector();
-          UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, v, v.op_Addition(h.op_Multiply(20)), ColorUtils_1.ColorUtils.LinearRed, 5);
-          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, c.GetLocation().ToUeVector(), 2, 12, ColorUtils_1.ColorUtils.LinearBlue, 5);
+          b = f.OutVal.ToUeVector();
+          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, b, 5, 12, ColorUtils_1.ColorUtils.LinearYellow, 5);
+          const h = f.ArriveTangent.ToUeVector();
+          UE.KismetSystemLibrary.D_DrawDebugLine(GlobalData_1.GlobalData.World, b, b.op_Addition(h.op_Multiply(20)), ColorUtils_1.ColorUtils.LinearRed, 5);
+          UE.KismetSystemLibrary.D_DrawDebugSphere(GlobalData_1.GlobalData.World, S.GetLocation().ToUeVector(), 2, 12, ColorUtils_1.ColorUtils.LinearBlue, 5);
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Movement", 82, "[CharacterSplineClimbComponent] 未检测到墙壁", ["distance", p], ["maxDistance", r]);
+        Log_1.Log.Warn("Movement", 82, "[CharacterSplineClimbComponent] 未检测到墙壁", ["distance", v], ["maxDistance", o]);
       }
-      if (r <= p) {
+      if (o <= v) {
         break;
       }
     }
-    t.InitPoints(n);
+    t.InitPoints(n, r);
     return !(n.length < 1);
   }
   wTu() {
@@ -412,15 +413,15 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
     t.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.WorldStaticIgnoreBullet);
     return t;
   }
-  Vxd(t, i) {
+  j2d(t, i) {
     var t = t.GetRotation();
     var e = this.cz;
     t.GetForwardVector(e);
-    var t = this.jxd(e);
-    this.xxd = MathUtils_1.MathUtils.InterpTo(this.xxd, t, i, 4);
-    this.rRe.FastClimbMix = this.xxd;
+    var t = this.H2d(e);
+    this.B2d = MathUtils_1.MathUtils.InterpTo(this.B2d, t, i, 4);
+    this.rRe.FastClimbMix = this.B2d;
   }
-  jxd(t) {
+  H2d(t) {
     var i = this.Hte.ActorRightProxy;
     let e = Vector_1.Vector.DotProduct(t, i);
     i = -Vector_1.Vector.DotProduct(t, this.Hte.ActorGravityDirectProxy);
@@ -444,5 +445,5 @@ let CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = class Char
   }
 };
 CharacterSplineClimbComponent.k2u = undefined;
-CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(302)], CharacterSplineClimbComponent);
+CharacterSplineClimbComponent = CharacterSplineClimbComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(307)], CharacterSplineClimbComponent);
 exports.CharacterSplineClimbComponent = CharacterSplineClimbComponent; //# sourceMappingURL=CharacterSplineClimbComponent.js.map

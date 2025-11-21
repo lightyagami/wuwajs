@@ -256,5 +256,5 @@ let PostProcessBridgeComponent = PostProcessBridgeComponent_1 = class PostProces
     return true;
   }
 };
-PostProcessBridgeComponent = PostProcessBridgeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(107)], PostProcessBridgeComponent);
+PostProcessBridgeComponent = PostProcessBridgeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(109)], PostProcessBridgeComponent);
 exports.PostProcessBridgeComponent = PostProcessBridgeComponent; //# sourceMappingURL=PostProcessBridgeComponent.js.map

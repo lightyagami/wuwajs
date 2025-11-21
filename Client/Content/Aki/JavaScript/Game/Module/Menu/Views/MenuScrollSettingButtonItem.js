@@ -8,8 +8,10 @@ const UE = require("ue");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine");
 const GameSettingsDeviceRender_1 = require("../../../GameSettings/GameSettingsDeviceRender");
+const GlobalData_1 = require("../../../GlobalData");
 const UiManager_1 = require("../../../Ui/UiManager");
 const ChannelController_1 = require("../../Channel/ChannelController");
+const ButtonItem_1 = require("../../Common/Button/ButtonItem");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const MenuController_1 = require("../MenuController");
 const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
@@ -18,10 +20,11 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     super(...arguments);
     this.HBi = "{0}x{1}";
     this.jBi = "Account,";
+    this.p4e = undefined;
     this.KBi = () => {
       var t;
       var e;
-      if (!this.GetItemClickLimit(this.GetButton(1))) {
+      if (!this.GetItemClickLimit(this.p4e.GetBtn())) {
         if ((t = this.Data.ButtonViewName).includes(this.jBi)) {
           if ((e = Number(t.substring(this.jBi.length))) !== undefined) {
             ChannelController_1.ChannelController.ProcessAccountSetting(e);
@@ -46,17 +49,15 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite]];
-    this.BtnBindInfo = [[1, this.KBi]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIText], [5, UE.UISprite]];
   }
   OnStart() {
-    this.GetButton(1).SetCanClickWhenDisable(true);
+    this.p4e = new ButtonItem_1.ButtonItem(this.GetItem(1));
+    this.p4e.GetBtn().SetCanClickWhenDisable(true);
+    this.p4e.SetFunction(this.KBi);
   }
   OnBeforeDestroy() {
     this.Data &&= undefined;
-  }
-  OnClear() {
-    this.GetButton(1)?.OnClickCallBack.Unbind();
   }
   Update(t) {
     this.Data = t;
@@ -65,9 +66,11 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     this.sxi();
     this.cHa();
     this.SetInteractionActive(t.GetEnable());
+    this.Data.OnRefresh();
+    this.BNe();
   }
   RefreshTitle() {
-    this.GetText(0).ShowTextNew(this.Data.FunctionName ?? "");
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), this.Data.FunctionName, ...(this.Data.CustomTitleArgs ?? []));
   }
   ZGe() {
     this.GetRootItem().SetUIActive(true);
@@ -93,8 +96,10 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     }
   }
   XBi(t, e = false) {
-    var i = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t);
-    this.GetText(2).SetText(StringUtils_1.StringUtils.FormatStaticBuilder(this.HBi, i.X, i.Y));
+    let i = "";
+    var s = MenuController_1.MenuController.GetTargetConfig(GameSettingsDefine_1.EFunction.DISPLAYMODE);
+    i = s === 0 ? (s = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World), StringUtils_1.StringUtils.FormatStaticBuilder(this.HBi, s.X, s.Y)) : (s = GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetResolutionByList(t), StringUtils_1.StringUtils.FormatStaticBuilder(this.HBi, s.X, s.Y));
+    this.GetText(2).SetText(i);
     if (e) {
       this.FireSaveMenuChange(t);
     }
@@ -112,10 +117,13 @@ class MenuScrollSettingButtonItem extends MenuScrollSettingBaseItem_1.MenuScroll
     }
   }
   SetInteractionActive(t) {
-    this.GetButton(1).SetSelfInteractive(t);
+    this.p4e.SetEnableClick(t && this.Data.GetButtonEnable());
   }
   OnSetDetailVisible(t) {
     this.GetItem(3)?.SetUIActive(t);
+  }
+  BNe() {
+    this.p4e?.SetRedDotVisible(this.Data.EnableRedDot);
   }
 }
 exports.MenuScrollSettingButtonItem = MenuScrollSettingButtonItem;

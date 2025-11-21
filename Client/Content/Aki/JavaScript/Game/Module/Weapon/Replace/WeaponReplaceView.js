@@ -78,7 +78,7 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
       var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
       const r = t.GetRoleId();
       var o;
-      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(206);
+      var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(209);
       if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentTeamItem?.GetConfigId === r && t?.Valid && t.HasTag(202314845)) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("TagCantSwitchWeapon");
       } else if (i.HasRole()) {
@@ -177,7 +177,7 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
     return Promise.resolve();
   }
   OnBeforeDestroy() {
-    this.Jkd();
+    this.gGd();
     this.nko.Destroy();
     this.sko.Destroy();
     this.SortComponent.Destroy();
@@ -190,7 +190,7 @@ class WeaponReplaceView extends UiViewBase_1.UiViewBase {
   OnHandleReleaseScene() {
     this.yil.HandleReleaseScene();
   }
-  Jkd() {
+  gGd() {
     try {
       var e;
       var t = ModelManager_1.ModelManager.RoleModel.GetRoleDataById(this.RoleDataId).GetRoleId();

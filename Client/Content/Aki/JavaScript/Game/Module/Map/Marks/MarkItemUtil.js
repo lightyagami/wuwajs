@@ -22,6 +22,8 @@ const FishingPointMarkItem_1 = require("./MarkItem/FishingPointMarkItem");
 const FishingShipMarkItem_1 = require("./MarkItem/FishingShipMarkItem");
 const FixedSceneGamePlayMarkItem_1 = require("./MarkItem/FixedSceneGamePlayMarkItem");
 const GreatSwordChallengeMarkItem_1 = require("./MarkItem/GreatSwordChallengeMarkItem");
+const HonamiScanItemMarkItem_1 = require("./MarkItem/HonamiScanItemMarkItem");
+const HonamiScanMarkItem_1 = require("./MarkItem/HonamiScanMarkItem");
 const LandscapeMark_1 = require("./MarkItem/LandscapeMark");
 const LevelPlayReportMarkItem_1 = require("./MarkItem/LevelPlayReportMarkItem");
 const MingSuNpcMarkItem_1 = require("./MarkItem/MingSuNpcMarkItem");
@@ -105,6 +107,9 @@ class MarkItemUtil {
         case 42:
           e = new GreatSwordChallengeMarkItem_1.GreatSwordChallengeMarkItem(r, a, i, t, k);
           break;
+        case 39:
+          e = new HonamiScanMarkItem_1.HonamiScanMarkItem(r, a, i, t, k);
+          break;
         default:
           e = new ConfigMarkItem_1.ConfigMarkItem(r, a, i, t, k);
       }
@@ -157,6 +162,9 @@ class MarkItemUtil {
         case 38:
           e = new TraceExploreEntityMarkItem_1.TraceExploreEntityMarkItem(r, k, a, t);
           break;
+        case 40:
+          e = new HonamiScanItemMarkItem_1.HonamiScanItemMarkItem(r, k, a, t);
+          break;
         default:
           e = new ServerMarkItem_1.ServerMarkItem(r, k, a, t);
       }
@@ -181,14 +189,21 @@ class MarkItemUtil {
       if (k = ModelManager_1.ModelManager.MapModel.GetMark(r.ObjectType, e)) {
         a.OverrideMapId = k.MapId;
       }
-      this.eZu(a, k?.MapGravity ?? 0, t);
+      this.kQu(a, k?.MapGravity ?? 0, t);
       return a;
     }
   }
   static IsTrackPointedMarkInCurrentDungeon(e, r = false) {
-    if (e.TrackSource !== 1) {
-      return true;
+    switch (e.TrackSource) {
+      case 1:
+        return this.bwm(e, r);
+      case 2:
+        return this.Rwm(e);
+      default:
+        return true;
     }
+  }
+  static bwm(e, r = false) {
     var a = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.MapConfigId;
     if (e.Id <= 0) {
       const t = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e.Id);
@@ -206,6 +221,11 @@ class MarkItemUtil {
     } else {
       return r;
     }
+  }
+  static Rwm(e) {
+    var r;
+    var a = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.Id;
+    return !a || !e.TrackInstanceId || !!(r = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e.Id)) && !!r.InstanceDungeonId && r.MarkType === 12 || a === e.TrackInstanceId;
   }
   static IsHideTrackInView(e) {
     return e.MarkType !== 12 && (e.TrackHudEnable !== undefined ? !e.TrackHudEnable : e.TrackSource === 1);
@@ -243,7 +263,7 @@ class MarkItemUtil {
     });
     e.Initialize();
   }
-  static eZu(e, r, a) {
+  static kQu(e, r, a) {
     e.MarkItemEntity = MarkFactory_1.MarkFactory.CreateAndAssembleDynamicConfigMark({
       MarkId: e.MarkId,
       MarkType: e.MarkType,

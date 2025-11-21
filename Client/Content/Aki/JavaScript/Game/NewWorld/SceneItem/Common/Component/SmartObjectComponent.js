@@ -117,7 +117,7 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.EIe = this.Entity.GetComponent(0);
     this.Hte = this.Entity.GetComponent(1);
     this.vtn = this.Entity.GetComponent(86);
-    this.Gce = this.Entity.GetComponent(129);
+    this.Gce = this.Entity.GetComponent(132);
     if (this.Hte && (t = this.Hte.CreatureData?.GetPbEntityInitData()?.ComponentsData) && (this.k_n = (0, IComponent_1.getComponent)(t, "AiAlertNotifyComponent"), this.k_n && this.Q_n(), this.aEl = (0, IComponent_1.getComponent)(t, "SceneItemAiComponent"), this.aEl)) {
       this.pEl();
     }
@@ -281,5 +281,5 @@ let SmartObjectComponent = class SmartObjectComponent extends EntityComponent_1.
     this.mEl = t;
   }
 };
-SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SmartObjectComponent);
+SmartObjectComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(140)], SmartObjectComponent);
 exports.SmartObjectComponent = SmartObjectComponent; //# sourceMappingURL=SmartObjectComponent.js.map

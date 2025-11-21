@@ -18,6 +18,9 @@ class InventoryMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediu
     this.rdi = undefined;
     this.ndi = undefined;
   }
+  OnStart() {
+    this.SetUseFixedAsync(true);
+  }
   OnRefresh(e, t, i) {
     var r = (this.rdi = e).GetItemViewInfo();
     var o = r.ItemDataType;
@@ -66,6 +69,7 @@ class InventoryMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediu
         var d = this.rdi.GetItemDataBase().GetUniqueId();
         var n = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(d);
         var h = n.GetCurrentSlotData();
+        a.ItemConfigId = n.GetConfigId(true);
         a.Level = n.GetCost();
         a.IsLevelTextUseChangeColor = true;
         a.BottomText = "+" + n.GetPhantomLevel().toString();

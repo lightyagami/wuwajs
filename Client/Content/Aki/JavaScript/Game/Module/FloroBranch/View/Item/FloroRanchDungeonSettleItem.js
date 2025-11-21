@@ -18,9 +18,9 @@ class FloroRanchDungeonSettleItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.H3e = undefined;
-    this.XKu = undefined;
+    this.vKu = undefined;
     this.Ucu = e => {
-      if (e === "TagShow" && (this.XKu.q1u && new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(4)).PlayLevelSequenceByName("Start"), this.XKu.G1u && new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(6)).PlayLevelSequenceByName("Start"), this.XKu.k1u)) {
+      if (e === "TagShow" && (this.vKu.q1u && new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(4)).PlayLevelSequenceByName("Start"), this.vKu.G1u && new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(6)).PlayLevelSequenceByName("Start"), this.vKu.k1u)) {
         new LevelSequencePlayer_1.LevelSequencePlayer(this.GetItem(9)).PlayLevelSequenceByName("Start");
       }
     };
@@ -43,7 +43,7 @@ class FloroRanchDungeonSettleItem extends UiPanelBase_1.UiPanelBase {
     this.OnRemoveEventListener();
   }
   async RefreshAsync(e) {
-    this.XKu = e;
+    this.vKu = e;
     this.GetItem(4).SetAlpha(0);
     this.GetItem(6).SetAlpha(0);
     this.GetItem(9).SetAlpha(0);
@@ -64,7 +64,7 @@ class FloroRanchDungeonSettleItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(4).SetUIActive(e.q1u);
     this.GetItem(6).SetUIActive(e.G1u);
     this.GetItem(9).SetUIActive(e.k1u);
-    t = e.ild;
+    t = e.Jdd;
     if (t && t !== "") {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(t);
     }

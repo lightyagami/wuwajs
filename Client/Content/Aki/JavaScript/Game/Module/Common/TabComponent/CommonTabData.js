@@ -5,9 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CommonTabData = undefined;
 class CommonTabData {
-  constructor(t, s) {
+  constructor(t, e, s) {
     this.xbt = t;
-    this.wbt = s;
+    this.wbt = e;
+    this.TSm = s;
     this.Bbt = "";
   }
   SetSmallIcon(t) {
@@ -21,6 +22,9 @@ class CommonTabData {
   }
   GetTitleData() {
     return this.wbt;
+  }
+  GetTabItemTitleData() {
+    return this.TSm;
   }
 }
 exports.CommonTabData = CommonTabData;

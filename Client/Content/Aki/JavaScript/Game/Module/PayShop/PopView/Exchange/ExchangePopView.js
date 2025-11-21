@@ -36,39 +36,42 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
       this.CloseMe();
     };
     this.qAt = () => {
+      var t;
       var e = this.Goods.GetGoodsData();
       if (this.IsEnoughMoney()) {
-        ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopBuy(e.Id, this.s4i);
+        if (!(t = this.OpenParam).CheckIfCanBuy || !!t.CheckIfCanBuy()) {
+          ControllerHolder_1.ControllerHolder.PayShopController.SendRequestPayShopBuy(e.Id, this.s4i);
+        }
       } else {
-        e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.Price.Id);
-        e = new LguiUtil_1.TableTextArgNew(e.Name);
+        t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.Price.Id);
+        e = new LguiUtil_1.TableTextArgNew(t.Name);
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ShopResourceNotEnough", e);
       }
     };
     this.R3i = () => {
       this.Og();
     };
-    this.KGe = e => {
-      var t = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("BugCount");
-      return new LguiUtil_1.TableTextArgNew(t, e);
+    this.KGe = t => {
+      var e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("BugCount");
+      return new LguiUtil_1.TableTextArgNew(e, t);
     };
-    this.QGe = e => {
+    this.QGe = t => {
       this.SetPrice();
     };
     this.Pgi = () => {
       this.CloseMe();
     };
     this.SetEndTime = () => {
-      var e;
-      var t = this.Goods.GetCountDownData();
-      if (t[2] !== 0 && (e = this.Goods.GetCountDownData()[1], this.GetText(14).SetUIActive(t[0] === 3), t[0] === 3 ? this.GetText(14).ShowTextNew("DownShopItem") : t[0] === 2 ? this.GetText(14).ShowTextNew("ReUpShopItem") : t[0] === 1 && this.GetText(14).ShowTextNew("DiscountItem"), e)) {
+      var t;
+      var e = this.Goods.GetCountDownData();
+      if (e[2] !== 0 && (t = this.Goods.GetCountDownData()[1], this.GetText(14).SetUIActive(e[0] === 3), e[0] === 3 ? this.GetText(14).ShowTextNew("DownShopItem") : e[0] === 2 ? this.GetText(14).ShowTextNew("ReUpShopItem") : e[0] === 1 && this.GetText(14).ShowTextNew("DiscountItem"), t)) {
         this.GetItem(15).SetUIActive(true);
         this.o4i = true;
-        t = this.GetText(1);
-        if (typeof e == "string") {
-          t.SetText(e);
+        e = this.GetText(1);
+        if (typeof t == "string") {
+          e.SetText(t);
         } else {
-          LguiUtil_1.LguiUtil.SetLocalText(t, e.TextId, e.TimeValue);
+          LguiUtil_1.LguiUtil.SetLocalText(e, t.TextId, t.TimeValue);
         }
       } else {
         this.GetItem(15).SetUIActive(false);
@@ -77,30 +80,30 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     };
     this.P3i = () => {
       this.RemoveResellTimer();
-      var e = this.Goods.GetExchangePopViewResellText();
+      var t = this.Goods.GetExchangePopViewResellText();
       if (this.Goods.GetIfNeedExtraLimitText()) {
         if (i = this.Goods.GetExtraLimitText()) {
           this.GetItem(11).SetUIActive(true);
           this.GetText(12).ShowTextNew(i);
         }
       } else if (this.Goods.GetPriceData().Enough) {
-        var t;
+        var e;
         var i = this.Goods.GetCountDownData();
         if (i[0] !== 2) {
           if (!this.Goods.GetPriceData().Enough) {
             this.GetItem(11).SetUIActive(true);
-            t = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(this.Goods.GetPriceData().CurrencyId);
-            t = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
-            LguiUtil_1.LguiUtil.SetLocalText(this.GetText(12), "CurrencyNotEnough", t);
+            e = ConfigManager_1.ConfigManager.ItemConfig.GetConfig(this.Goods.GetPriceData().CurrencyId);
+            e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name);
+            LguiUtil_1.LguiUtil.SetLocalText(this.GetText(12), "CurrencyNotEnough", e);
             return;
           }
         }
         if (i[1]) {
-          if (StringUtils_1.StringUtils.IsEmpty(e)) {
+          if (StringUtils_1.StringUtils.IsEmpty(t)) {
             this.GetItem(11).SetUIActive(false);
           } else {
             this.GetItem(11).SetUIActive(true);
-            this.GetText(12).ShowTextNew(e);
+            this.GetText(12).ShowTextNew(t);
           }
           if (i[2] > 0) {
             this.ResellTimerId = TimerSystem_1.RealTimeTimerSystem.Delay(this.P3i, i[2] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
@@ -111,12 +114,12 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
         }
       } else {
         this.GetItem(11).SetUIActive(true);
-        if (StringUtils_1.StringUtils.IsEmpty(e)) {
-          t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Goods.GetPriceData().CurrencyId);
-          i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(t.Name);
+        if (StringUtils_1.StringUtils.IsEmpty(t)) {
+          e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(this.Goods.GetPriceData().CurrencyId);
+          i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e.Name);
           LguiUtil_1.LguiUtil.SetLocalText(this.GetText(12), "CurrencyNotEnough", i);
         } else {
-          this.GetText(12).ShowTextNew(e);
+          this.GetText(12).ShowTextNew(t);
         }
       }
     };
@@ -129,18 +132,18 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[6, this.bAt], [7, this.qAt]];
   }
   OnBeforeCreate() {
-    var e = this.OpenParam;
-    this.Goods = e.PayShopGoods;
+    var t = this.OpenParam;
+    this.Goods = t.PayShopGoods;
   }
   async OnCreateAsync() {
-    var e = this.OpenParam;
-    const t = new CustomPromise_1.CustomPromise();
-    LguiResourceManager_1.LguiResourceManager.LoadPrefabByResourceId(e.ShopItemResource, undefined, e => {
+    var t = this.OpenParam;
+    const e = new CustomPromise_1.CustomPromise();
+    LguiResourceManager_1.LguiResourceManager.LoadPrefabByResourceId(t.ShopItemResource, undefined, t => {
       this.i4i = new PayShopItem_1.PayShopItem();
-      this.i4i.CreateThenShowByActor(e);
-      t.SetResult(true);
+      this.i4i.CreateThenShowByActor(t);
+      e.SetResult(true);
     });
-    await t.Promise;
+    await e.Promise;
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PayShopGoodsBuy, this.bAt);
@@ -154,12 +157,12 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     this.SetMaxCanBuyCount();
     this.r4i = this.GetButton(7).GetOwner().GetComponentByClass(UE.UIInteractionGroup.StaticClass());
     this.WGe = new NumberSelectComponent_1.NumberSelectComponent(this.GetItem(9));
-    var e = {
+    var t = {
       MaxNumber: this.n4i,
       GetExchangeTableText: this.KGe,
       ValueChangeFunction: this.QGe
     };
-    this.WGe.Init(e);
+    this.WGe.Init(t);
     this.a4i();
     this.GetItem(13).SetUIActive(true);
   }
@@ -177,8 +180,8 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     this.ITt();
   }
   Og() {
-    var e = this.GetItem(2);
-    this.i4i.GetOriginalItem().SetUIParent(e);
+    var t = this.GetItem(2);
+    this.i4i.GetOriginalItem().SetUIParent(t);
     this.i4i.HideExchangePopViewElement();
     this.i4i.Refresh(this.Goods, false, 0);
     this.SetEndTime();
@@ -189,12 +192,12 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     this.h4i();
   }
   async ITt() {
-    var e = [this.Goods.GetPriceData().CurrencyId];
-    var t = this.ChildPopView.PopItem;
-    await t.SetCurrencyItemList(e);
-    var e = t.GetCurrencyComponent().GetCurrencyItemList()[0];
-    e.SetBeforeButtonFunction(this.Pgi);
-    e.SetToPayShopFunction();
+    var t = [this.Goods.GetPriceData().CurrencyId];
+    var e = this.ChildPopView.PopItem;
+    await e.SetCurrencyItemList(t);
+    var t = e.GetCurrencyComponent().GetCurrencyItemList()[0];
+    t.SetBeforeButtonFunction(this.Pgi);
+    t.SetToPayShopFunction();
   }
   OnBeforeDestroy() {
     this.WGe.Destroy();
@@ -202,24 +205,30 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     this.RemoveResellTimer();
   }
   SetMaxCanBuyCount() {
-    var e = this.Goods.GetGoodsData();
-    var t = e.Price.Id;
-    var t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t);
-    var t = Math.trunc(t / e.GetNowPrice());
-    if (e.HasBuyLimit()) {
-      this.n4i = Math.min(e.GetRemainingCount(), t);
+    var t;
+    var e;
+    var i = this.OpenParam;
+    if (i.GetMaxBuyCount) {
+      this.n4i = i.GetMaxBuyCount();
     } else {
-      this.n4i = t;
-    }
-    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.ItemId);
-    var i = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemId);
-    if (t && i === 1 && t.ShowTypes.includes(30)) {
-      this.n4i = 1;
-    }
-    if (t.ShowTypes.includes(30)) {
-      i = ModelManager_1.ModelManager.RoleModel.GetResonantItemRoleId(e.ItemId);
-      t = ModelManager_1.ModelManager.RoleModel.GetRoleLeftResonantCountWithInventoryItem(i[0]);
-      this.n4i = this.n4i > (t = t === 0 ? 1 : t) ? t : this.n4i;
+      e = (i = this.Goods.GetGoodsData()).Price.Id;
+      e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e);
+      e = Math.trunc(e / i.GetNowPrice());
+      if (i.HasBuyLimit()) {
+        this.n4i = Math.min(i.GetRemainingCount(), e);
+      } else {
+        this.n4i = e;
+      }
+      e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i.ItemId);
+      t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(i.ItemId);
+      if (e && t === 1 && e.ShowTypes.includes(30)) {
+        this.n4i = 1;
+      }
+      if (e.ShowTypes.includes(30)) {
+        t = ModelManager_1.ModelManager.RoleModel.GetResonantItemRoleId(i.ItemId);
+        e = ModelManager_1.ModelManager.RoleModel.GetRoleLeftResonantCountWithInventoryItem(t[0]);
+        this.n4i = this.n4i > (e = e === 0 ? 1 : e) ? e : this.n4i;
+      }
     }
   }
   SetInteractionGroup() {
@@ -230,52 +239,52 @@ class ExchangePopView extends UiViewBase_1.UiViewBase {
     }
   }
   SetPriceIcon() {
-    var e = this.Goods.GetGoodsData();
-    var t = this.GetTexture(3);
-    this.SetItemIcon(t, e.Price.Id);
-    var t = this.GetText(4);
-    var e = this.s4i * e.GetNowPrice();
-    t.SetText(e.toString());
+    var t = this.Goods.GetGoodsData();
+    var e = this.GetTexture(3);
+    this.SetItemIcon(e, t.Price.Id);
+    var e = this.GetText(4);
+    var t = this.s4i * t.GetNowPrice();
+    e.SetText(t.toString());
   }
   SetPrice() {
-    var e = this.Goods.GetGoodsData();
-    var t = this.GetText(4);
-    var e = this.s4i * e.GetNowPrice();
+    var t = this.Goods.GetGoodsData();
+    var e = this.GetText(4);
+    var t = this.s4i * t.GetNowPrice();
     var i = this.IsEnoughMoney();
-    t.SetChangeColor(!i, t.changeColor);
-    t.SetText(e.toString());
+    e.SetChangeColor(!i, e.changeColor);
+    e.SetText(t.toString());
   }
   SetNameAndDescribe() {
-    var e = this.Goods.GetGoodsData();
-    var t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e.ItemId);
+    var t = this.Goods.GetGoodsData();
+    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(t.ItemId);
     let i = "";
-    i = t === 1 ? ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(e.ItemId).Introduction : ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e.ItemId).AttributesDescription;
+    i = e === 1 ? ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.ItemId).Introduction : ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t.ItemId).AttributesDescription;
     this.GetText(5).ShowTextNew(i);
   }
   IsEnoughMoney() {
-    var e = this.Goods.GetGoodsData().GetItemConfig();
-    if (e && e.ShowTypes?.includes(30)) {
-      e = ModelManager_1.ModelManager.RoleModel.GetResonantItemRoleId(this.Goods.GetGoodsData().ItemId)[0];
-      e = ModelManager_1.ModelManager.RoleModel.GetRoleLeftResonantCountWithInventoryItem(e);
-      if (this.s4i > e) {
+    var t = this.Goods.GetGoodsData().GetItemConfig();
+    if (t && t.ShowTypes?.includes(30)) {
+      t = ModelManager_1.ModelManager.RoleModel.GetResonantItemRoleId(this.Goods.GetGoodsData().ItemId)[0];
+      t = ModelManager_1.ModelManager.RoleModel.GetRoleLeftResonantCountWithInventoryItem(t);
+      if (this.s4i > t) {
         return false;
       }
     }
-    var e = this.Goods.GetGoodsData();
-    var t = e.Price.Id;
-    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t) >= e.GetNowPrice() * this.s4i;
+    var t = this.Goods.GetGoodsData();
+    var e = t.Price.Id;
+    return ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e) >= t.GetNowPrice() * this.s4i;
   }
   h4i() {
-    var e = this.Goods.GetBuyLimitText();
-    var e = this.o4i || !StringUtils_1.StringUtils.IsEmpty(e);
-    this.GetItem(8).SetUIActive(e);
+    var t = this.Goods.GetBuyLimitText();
+    var t = this.o4i || !StringUtils_1.StringUtils.IsEmpty(t);
+    this.GetItem(8).SetUIActive(t);
   }
   K3i() {
-    var e = this.Goods.GetExchangeViewShopTipsText();
-    let t = undefined;
-    (t = this.o4i ? this.GetText(10) : this.GetText(16)).SetUIActive(e !== "");
-    t.SetText(e);
-    t?.SetColor(UE.Color.FromHex(COLOR));
+    var t = this.Goods.GetExchangeViewShopTipsText();
+    let e = undefined;
+    (e = this.o4i ? this.GetText(10) : this.GetText(16)).SetUIActive(t !== "");
+    e.SetText(t);
+    e?.SetColor(UE.Color.FromHex(COLOR));
   }
   RemoveResellTimer() {
     if (this.ResellTimerId !== undefined) {

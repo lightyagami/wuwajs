@@ -9,122 +9,122 @@ const HeadStateData_1 = require("./HeadStateData");
 class MonsterNpcAttackHeadStateData extends HeadStateData_1.HeadStateData {
   constructor() {
     super(...arguments);
-    this.y1d = undefined;
-    this.S1d = undefined;
-    this.M1d = undefined;
-    this.E1d = undefined;
-    this.I1d = undefined;
-    this.T1d = undefined;
-    this.b1d = undefined;
-    this.R1d = undefined;
-    this.w1d = undefined;
-    this.L1d = undefined;
-    this.P1d = undefined;
-    this.A1d = undefined;
-    this.D1d = undefined;
-    this.o1d = (t, i, s) => {
-      if (this.b1d) {
-        this.b1d(t, i, s);
+    this.mpd = undefined;
+    this.fpd = undefined;
+    this.gpd = undefined;
+    this.Cpd = undefined;
+    this.ppd = undefined;
+    this.vpd = undefined;
+    this.ypd = undefined;
+    this.Spd = undefined;
+    this.Mpd = undefined;
+    this.Epd = undefined;
+    this.Ipd = undefined;
+    this.Tpd = undefined;
+    this.bpd = undefined;
+    this.JCd = (t, i, s) => {
+      if (this.ypd) {
+        this.ypd(t, i, s);
       }
     };
-    this.s1d = (t, i) => {
-      if (this.R1d) {
-        this.R1d(t, i);
+    this.epd = (t, i) => {
+      if (this.Spd) {
+        this.Spd(t, i);
       }
     };
-    this.h1d = (t, i) => {
-      if (this.w1d) {
-        this.w1d(t, i);
+    this.ipd = (t, i) => {
+      if (this.Mpd) {
+        this.Mpd(t, i);
       }
     };
-    this._1d = (t, i) => {
-      if (this.L1d) {
-        this.L1d(t, i);
+    this.opd = (t, i) => {
+      if (this.Epd) {
+        this.Epd(t, i);
       }
     };
-    this.c1d = (t, i) => {
-      if (this.P1d) {
-        this.P1d(t, i);
+    this.spd = (t, i) => {
+      if (this.Ipd) {
+        this.Ipd(t, i);
       }
     };
-    this.m1d = (t, i) => {
-      if (this.A1d) {
-        this.A1d(t, i);
+    this.hpd = (t, i) => {
+      if (this.Tpd) {
+        this.Tpd(t, i);
       }
     };
-    this.g1d = (t, i) => {
-      if (this.D1d) {
-        this.D1d(t, i);
+    this._pd = (t, i) => {
+      if (this.bpd) {
+        this.bpd(t, i);
       }
     };
   }
   UnBindAllCallback() {
     super.UnBindAllCallback();
-    this.b1d = undefined;
-    this.R1d = undefined;
-    this.w1d = undefined;
-    this.L1d = undefined;
-    this.P1d = undefined;
-    this.A1d = undefined;
-    this.D1d = undefined;
+    this.ypd = undefined;
+    this.Spd = undefined;
+    this.Mpd = undefined;
+    this.Epd = undefined;
+    this.Ipd = undefined;
+    this.Tpd = undefined;
+    this.bpd = undefined;
   }
   AddEntityEvents() {
     super.AddEntityEvents();
-    var t = this.Entity?.GetComponent(174);
+    var t = this.Entity?.GetComponent(177);
     if (t?.Valid) {
-      t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.o1d, "SpecialEnergy4.MonsterNpcAttackHeadState");
-      t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.o1d, "SpecialEnergy4Max.HeadState");
+      t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.JCd, "SpecialEnergy4.MonsterNpcAttackHeadState");
+      t.AddListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.JCd, "SpecialEnergy4Max.HeadState");
     }
-    var t = this.Entity?.GetComponent(206);
+    var t = this.Entity?.GetComponent(209);
     if (t?.Valid) {
-      this.y1d = t.ListenForTagAddOrRemove(792676641, this.s1d);
-      this.S1d = t.ListenForTagAddOrRemove(-325960901, this.h1d);
-      this.M1d = t.ListenForTagAddOrRemove(314261857, this._1d);
-      this.E1d = t.ListenForTagAddOrRemove(1921770646, this.c1d);
-      this.I1d = t.ListenForTagAddOrRemove(897633166, this.m1d);
-      this.T1d = t.ListenForTagAddOrRemove(-1737347985, this.g1d);
+      this.mpd = t.ListenForTagAddOrRemove(792676641, this.epd);
+      this.fpd = t.ListenForTagAddOrRemove(-325960901, this.ipd);
+      this.gpd = t.ListenForTagAddOrRemove(314261857, this.opd);
+      this.Cpd = t.ListenForTagAddOrRemove(1921770646, this.spd);
+      this.ppd = t.ListenForTagAddOrRemove(897633166, this.hpd);
+      this.vpd = t.ListenForTagAddOrRemove(-1737347985, this._pd);
     }
   }
   RemoveEntityEvents() {
     super.RemoveEntityEvents();
-    var t = this.Entity?.GetComponent(174);
+    var t = this.Entity?.GetComponent(177);
     if (t?.Valid) {
-      t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.o1d);
-      t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.o1d);
+      t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4, this.JCd);
+      t.RemoveListener(CharacterAttributeTypes_1.EAttributeId.Proto_SpecialEnergy4Max, this.JCd);
     }
-    this.S1d?.EndTask();
-    this.S1d = undefined;
-    this.y1d?.EndTask();
-    this.y1d = undefined;
-    this.M1d?.EndTask();
-    this.M1d = undefined;
-    this.E1d?.EndTask();
-    this.E1d = undefined;
-    this.I1d?.EndTask();
-    this.I1d = undefined;
-    this.T1d?.EndTask();
-    this.T1d = undefined;
+    this.fpd?.EndTask();
+    this.fpd = undefined;
+    this.mpd?.EndTask();
+    this.mpd = undefined;
+    this.gpd?.EndTask();
+    this.gpd = undefined;
+    this.Cpd?.EndTask();
+    this.Cpd = undefined;
+    this.ppd?.EndTask();
+    this.ppd = undefined;
+    this.vpd?.EndTask();
+    this.vpd = undefined;
   }
   BindOnSpecialEnergy4Changed(t) {
-    this.b1d = t;
+    this.ypd = t;
   }
   BindOnSlowChargeStateChanged(t) {
-    this.R1d = t;
+    this.Spd = t;
   }
   BindOnFastChargeStateChanged(t) {
-    this.w1d = t;
+    this.Mpd = t;
   }
   BindOnAttackReadyStateChanged(t) {
-    this.L1d = t;
+    this.Epd = t;
   }
   BindOnAttackBeginStateChanged(t) {
-    this.P1d = t;
+    this.Ipd = t;
   }
   BindOnAttackEndStateChanged(t) {
-    this.A1d = t;
+    this.Tpd = t;
   }
   BindOnAttackBrokenStateChanged(t) {
-    this.D1d = t;
+    this.bpd = t;
   }
 }
 exports.MonsterNpcAttackHeadStateData = MonsterNpcAttackHeadStateData;

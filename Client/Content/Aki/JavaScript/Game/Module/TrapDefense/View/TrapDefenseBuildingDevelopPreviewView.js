@@ -28,7 +28,7 @@ class TrapDefenseBuildingDevelopPreviewView extends UiViewBase_1.UiViewBase {
     this.CurData = undefined;
     this.CanLevelUp = false;
     this.SPe = undefined;
-    this.r$c = () => {
+    this.TXu = () => {
       if (this.CurData) {
         this.SPe?.StopCurrentSequence();
         this.SPe?.PlayLevelSequenceByName("SwitchL");
@@ -40,7 +40,7 @@ class TrapDefenseBuildingDevelopPreviewView extends UiViewBase_1.UiViewBase {
         this.UpdateDetailPanel();
       }
     };
-    this.o$c = () => {
+    this.bXu = () => {
       if (this.CurData) {
         this.SPe?.StopCurrentSequence();
         this.SPe?.PlayLevelSequenceByName("SwitchR");
@@ -55,7 +55,7 @@ class TrapDefenseBuildingDevelopPreviewView extends UiViewBase_1.UiViewBase {
     this.J2i = () => {
       this.CloseMe();
     };
-    this.fHc = () => {
+    this.pXu = () => {
       if (this.CurData) {
         if (this.CanLevelUp) {
           ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseDevelopLevelUp(this.CurData.Id);
@@ -64,20 +64,20 @@ class TrapDefenseBuildingDevelopPreviewView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.n$c = e => {
+    this.azc = e => {
       if (e === this.CurData) {
         this.UpdateDetailPanel();
       }
     };
-    this.c_d = () => {
+    this.k0d = () => {
       this.CanLevelUp = this.BtnUpgrade.RefreshButton(this.CurData);
     };
-    this.s$c = () => new TrapDefenseBuildingDevelopPreviewItem_1.TrapDefenseDevelopPreviewLevelPointItem();
+    this.RXu = () => new TrapDefenseBuildingDevelopPreviewItem_1.TrapDefenseDevelopPreviewLevelPointItem();
     this.abi = () => new TrapDefenseBuildingDevelopPreviewItem_1.TrapDefenseDevelopPreviewLevelInfoItem();
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIArtText], [5, UE.UIHorizontalLayout], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewWithScrollbarComponent], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[10, this.r$c], [11, this.o$c]];
+    this.BtnBindInfo = [[10, this.TXu], [11, this.bXu]];
   }
   async OnBeforeStartAsync() {
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
@@ -96,21 +96,21 @@ class TrapDefenseBuildingDevelopPreviewView extends UiViewBase_1.UiViewBase {
     } else {
       this.BtnUpgrade = new TrapDefenseBuildingDevelopDetailItem_1.TrapDefenseBuildingUpgradeItem();
       await this.BtnUpgrade.CreateThenShowByActorAsync(this.GetItem(7).GetOwner());
-      this.BtnUpgrade.OnClickCb = this.fHc;
+      this.BtnUpgrade.OnClickCb = this.pXu;
     }
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnDevelopUpdate, this.n$c);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate, this.c_d);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnDevelopUpdate, this.azc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate, this.k0d);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnDevelopUpdate, this.n$c);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate, this.c_d);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnDevelopUpdate, this.azc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate, this.k0d);
   }
   OnStart() {
     this.CaptionItem = new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0));
     this.CaptionItem.SetCloseCallBack(this.J2i);
-    this.LevelLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.s$c);
+    this.LevelLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(5), this.RXu);
     this.ScrollView = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), this.abi);
   }
   OnBeforeShow() {

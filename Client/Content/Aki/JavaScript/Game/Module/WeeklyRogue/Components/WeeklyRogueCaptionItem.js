@@ -15,10 +15,10 @@ class WeeklyRogueCaptionItem extends UiPanelBase_1.UiPanelBase {
     super();
     this.NeedCurrency = e;
     this.lqe = undefined;
-    this.W$c = () => {};
+    this.Y9u = () => {};
     this.tlo = () => {
-      if (this.W$c) {
-        this.W$c();
+      if (this.Y9u) {
+        this.Y9u();
       }
     };
     this.Mlo = () => {
@@ -41,7 +41,7 @@ class WeeklyRogueCaptionItem extends UiPanelBase_1.UiPanelBase {
     this.Oqe();
   }
   SetCloseCallBack(e) {
-    this.W$c = e;
+    this.Y9u = e;
   }
   Oqe() {
     var e = ModelManager_1.ModelManager.WeeklyRogueModel.DescMode === 0 ? 1 : 0;

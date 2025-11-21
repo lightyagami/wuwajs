@@ -87,6 +87,7 @@ class AttributeSortGroup extends UiPanelBase_1.UiPanelBase {
     this.eGe = undefined;
     this.SUt = new Map();
     this.Mne = 0;
+    this.wTt = 0;
     this.vUt = 1;
     this.yUt = 0;
     this.IUt = (t, i, e) => {
@@ -140,8 +141,12 @@ class AttributeSortGroup extends UiPanelBase_1.UiPanelBase {
       t++;
     }
   }
+  mDt() {
+    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.wTt);
+    this.Mne = t.ConfigId;
+  }
   UUt() {
-    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.Mne).GetSelectAttributeSort();
+    var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.wTt).GetSelectAttributeSort();
     if (t) {
       for (var [i, e] of t) {
         this.SUt.set(i, e);
@@ -163,7 +168,8 @@ class AttributeSortGroup extends UiPanelBase_1.UiPanelBase {
     }
   }
   Init(t) {
-    this.Mne = t;
+    this.wTt = t;
+    this.mDt();
     this.UUt();
     this.AUt();
     this.RDt();

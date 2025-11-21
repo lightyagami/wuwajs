@@ -50,11 +50,11 @@ class StepProgressBarController extends StepControllerBase_1.StepControllerBase 
             }
           } else {
             s = LevelGeneralController_1.LevelGeneralController.CheckConditionNew(r, undefined, s);
-            this.G2u(i && s, e / o);
+            this.Aku(i && s, e / o);
           }
         }
       } else {
-        this.G2u(false, 0);
+        this.Aku(false, 0);
       }
     }
   }
@@ -63,9 +63,9 @@ class StepProgressBarController extends StepControllerBase_1.StepControllerBase 
     this.ComponentRegisterInfos = [[0, UE.UISliderComponent]];
   }
   OnStart() {
-    this.G2u(false, 0);
+    this.Aku(false, 0);
   }
-  G2u(e, t) {
+  Aku(e, t) {
     if (this.UiParent.IsUIActiveInHierarchy() !== e) {
       this.UiParent.SetUIActive(e);
     }

@@ -9,29 +9,20 @@ const CaveHoleMarkItemChildIconHandle_1 = require("./Handles/CaveHoleMarkItemChi
 class CaveHoleMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
   constructor(e) {
     super(e);
-    this.cil = undefined;
-    this.cil = e;
-  }
-  OnBeforeDestroy() {
-    super.OnBeforeDestroy();
-    this.cil = undefined;
   }
   UpdateIcon() {
     var e = this.MarkConfig.UnlockMarkPic;
     this.OnIconPathChanged(e);
   }
-  OnAfterShow() {
-    super.OnAfterShow();
+  OnViewRefresh() {
     this.UpdateIcon();
   }
   OnIconPathChanged(e) {
-    var t;
-    if (this.cil !== undefined) {
-      (t = this.GetSprite(1)).SetUIActive(true);
-      this.LoadIcon(t, e);
-      this.MarkItemChildIconHandle.Update();
-      this.MarkItemChildIconHandle.ApplyModified();
-    }
+    var t = this.GetSprite(1);
+    t.SetUIActive(true);
+    this.LoadIcon(t, e);
+    this.MarkItemChildIconHandle.Update();
+    this.MarkItemChildIconHandle.ApplyModified();
   }
   CreateChildIconHandle(e) {
     return new CaveHoleMarkItemChildIconHandle_1.CaveHoleMarkItemChildIconHandle(e);

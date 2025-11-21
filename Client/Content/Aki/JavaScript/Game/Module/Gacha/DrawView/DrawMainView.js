@@ -118,7 +118,7 @@ class DrawMainView extends GachaSceneView_1.GachaSceneView {
       e.OnPointerDragCallBack.Bind(this.OnDragCallBack);
       e.OnPointerBeginDragCallBack.Bind(this.OnDragBeginCallBack);
       e.OnPointerEndDragCallBack.Bind(this.OnDragEndCallBack);
-    });
+    }, 100, this.MemoryTag);
     GachaController_1.GachaController.PreloadGachaResultResource(e => {
       this.HHt = true;
       if (this.jHt || this.WHt) {
@@ -153,7 +153,7 @@ class DrawMainView extends GachaSceneView_1.GachaSceneView {
           }
         });
       }
-    });
+    }, 100, this.MemoryTag);
   }
   OnStart() {
     this.InitLevelSequence();

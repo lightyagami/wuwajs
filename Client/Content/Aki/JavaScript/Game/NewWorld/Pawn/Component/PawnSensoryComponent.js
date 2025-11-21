@@ -84,5 +84,5 @@ let PawnSensoryComponent = class PawnSensoryComponent extends EntityComponent_1.
     return true;
   }
 };
-PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(121)], PawnSensoryComponent);
+PawnSensoryComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(124)], PawnSensoryComponent);
 exports.PawnSensoryComponent = PawnSensoryComponent; //# sourceMappingURL=PawnSensoryComponent.js.map

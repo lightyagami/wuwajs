@@ -13,7 +13,6 @@ const GeneralLogicTreeUtil_1 = require("../../../GeneralLogicTree/GeneralLogicTr
 const WorldMapDefine_1 = require("../../../WorldMap/WorldMapDefine");
 const WorldMapSecondaryUiDefine_1 = require("../../../WorldMap/WorldMapSecondaryUiDefine");
 const MarkPanelPoolFactory_1 = require("../../Container/MarkPanelPoolFactory");
-const MarkSpritePool_1 = require("../../Container/MarkSpritePool");
 const MapController_1 = require("../../Controller/MapController");
 const MapDefine_1 = require("../../MapDefine");
 const MapUtil_1 = require("../../MapUtil");
@@ -197,7 +196,9 @@ class MarkItem {
   async ViewUpdateAsync(t, i = false, e = false) {
     this.CreateOrCycleView();
     await this.View?.LoadingPromise;
-    this.InnerView?.OnUpdate(t, i, e);
+    if (!this.IsDestroy) {
+      this.InnerView?.OnUpdate(t, i, e);
+    }
   }
   Destroy(t = true) {
     MapLogger_1.MapLogger.Debug(63, "标记系统->MarkItem.Destroy", ["markType", this.MarkType], ["MarkId", this.MarkId], ["InstanceDungeonId", this.InstanceDungeonId], ["MapId", this.MapId]);
@@ -219,36 +220,43 @@ class MarkItem {
       t = this.GetMarkItemViewType();
       if ((t = MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Get(t + "_" + this.MapType)) !== undefined) {
         this.InnerView = t;
-        this.ZJu();
+        this.UYc();
       } else {
         this.InnerView = this.CreateView();
-        this.InnerView.InitializeMarkItemViewAsync().then(() => {
-          this.ZJu();
-        });
+        t = this.InnerView;
+        this.WRm(t);
       }
     } else {
-      this.ZJu();
+      this.UYc();
     }
   }
-  ZJu() {
-    if (this.InnerView !== undefined && !this.InnerView.LoadingPromise) {
-      (this.InnerView.Holder = this).MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
-      this.InnerView.Reset();
-      this.InnerView.SetUiActive(true);
-      this.InnerView.RegisterEvents();
+  async WRm(t) {
+    await this.InnerView.InitializeMarkItemViewNewAsync(() => {
+      if (this.InnerView === t) {
+        this.UYc();
+      }
+    });
+  }
+  UYc() {
+    if (this.InnerView !== undefined && !this.InnerView.LoadingPromise && !this.IsDestroy) {
+      this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
+      this.InnerView.InitializeData(this);
+      this.InnerView.InitializeView();
+      this.InnerView.RefreshView();
     }
   }
   Ah_(t = false) {
+    var i;
     if (this.InnerView) {
       this.MarkItemEntity.ViewLifeCircle.SetAllChildViewStateDirty();
-      if (this.InnerView.IsRegister || (this.InnerView.UnRegisterEvents(), t)) {
-        this.InnerView.RecycleToPool();
+      i = this.GetMarkItemViewType();
+      if (this.InnerView.ViewInitialized) {
+        this.InnerView.RecycleView(t);
+        if (!t) {
+          MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(i + "_" + this.MapType, this.InnerView);
+        }
       } else {
-        this.InnerView.SetVisible(false);
-        MarkSpritePool_1.MarkSpritePool.UnRef(this.InnerView.ComponentId);
-        this.InnerView.OnRecycle();
-        t = this.GetMarkItemViewType();
-        MarkPanelPoolFactory_1.MarkItemViewPoolFactory.Recycle(t + "_" + this.MapType, this.InnerView);
+        this.InnerView.RecycleToPool();
       }
       this.InnerView = undefined;
     }
@@ -258,6 +266,7 @@ class MarkItem {
   }
   set TrackTarget(t) {
     this.gql = t;
+    this.FDi = undefined;
     this.WorldPositionVector = undefined;
     this.h5l = undefined;
   }
@@ -352,7 +361,7 @@ class MarkItem {
   }
   SetSelected(t) {
     this.MarkItemEntity.ViewLifeCircle.IsSelected = t;
-    if (this.InnerView) {
+    if (this.InnerView && !this.IsDestroy) {
       this.View.IsSelected = t;
     }
   }

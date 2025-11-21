@@ -7,10 +7,12 @@ exports.TopBuffItem = undefined;
 const Log_1 = require("../../../../../Core/Common/Log");
 const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
 const VisibleStateUtil_1 = require("../../VisibleStateUtil");
+const BattleUiTweenAnimPlayer_1 = require("../BattleUiTweenAnimPlayer");
 class TopBuffItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.InnerVisibleState = 0;
+    this.InnerVisibleState = 1;
+    this.TweenAnimPlayer = undefined;
   }
   SetActive(e) {
     if (this.GetVisible() !== e) {
@@ -21,19 +23,35 @@ class TopBuffItem extends UiPanelBase_1.UiPanelBase {
       super.SetActive(e);
     }
   }
-  SetVisible(e, t) {
-    var i = this.GetVisible();
-    this.rJe(e, t);
+  SetVisible(e, i) {
+    var t = this.GetVisible();
+    this.rJe(e, i);
     var e = this.GetVisible();
-    if (i !== e) {
+    if (t !== e) {
       this.SetActive(e);
     }
   }
-  rJe(e, t) {
-    this.InnerVisibleState = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.InnerVisibleState, t, e);
+  rJe(e, i) {
+    this.InnerVisibleState = VisibleStateUtil_1.VisibleStateUtil.SetVisible(this.InnerVisibleState, i, e);
   }
   GetVisible() {
     return this.InnerVisibleState === 0;
+  }
+  InitTweenAnim(e) {
+    this.TweenAnimPlayer ||= new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
+    this.TweenAnimPlayer.InitTweenAnim(e, this.GetItem(e));
+  }
+  PlayTweenAnim(e) {
+    this.TweenAnimPlayer?.PlayTweenAnim(e);
+  }
+  StopTweenAnim(e) {
+    this.TweenAnimPlayer?.StopTweenAnim(e);
+  }
+  ClearAllTweenAnim() {
+    this.TweenAnimPlayer?.Clear();
+  }
+  SetTweenTimeScale(e, i) {
+    this.TweenAnimPlayer?.SetTweenTimeScale(e, i);
   }
 }
 exports.TopBuffItem = TopBuffItem;

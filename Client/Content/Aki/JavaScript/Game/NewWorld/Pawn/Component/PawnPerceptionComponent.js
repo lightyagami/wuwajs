@@ -146,7 +146,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
     return true;
   }
   OnInit() {
-    this.rzr = this.Entity.GetComponent(122);
+    this.rzr = this.Entity.GetComponent(125);
     return true;
   }
   OnStart() {
@@ -167,7 +167,7 @@ let PawnPerceptionComponent = class PawnPerceptionComponent extends EntityCompon
   OnActivate() {
     var t;
     var e;
-    var i = this.Entity.GetComponent(161);
+    var i = this.Entity.GetComponent(164);
     if (i) {
       t = i.ShowRange;
       e = i.HideRange;
@@ -214,5 +214,5 @@ InteractRangeInfo:
     return t;
   }
 };
-PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(120)], PawnPerceptionComponent);
+PawnPerceptionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(123)], PawnPerceptionComponent);
 exports.PawnPerceptionComponent = PawnPerceptionComponent; //# sourceMappingURL=PawnPerceptionComponent.js.map

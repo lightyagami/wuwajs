@@ -62,7 +62,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
   OnInit() {
     super.OnInit();
     this.CreatureDataComponent = this.Entity.CheckGetComponent(0);
-    this.BuffComponent = this.Entity.GetComponent(210);
+    this.BuffComponent = this.Entity.GetComponent(213);
     return true;
   }
   OnCreate() {
@@ -234,7 +234,7 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
           {
             let t = n.SnapshotSource;
             if (t === undefined) {
-              t = AbilityUtils_1.AbilityUtils.GetAttrValue(n.SourceEntity === 0 ? this : ModelManager_1.ModelManager.CreatureModel.GetEntity(n.SourceEntity)?.Entity?.GetComponent(174), n.SourceAttributeId, n.SourceCalculationType);
+              t = AbilityUtils_1.AbilityUtils.GetAttrValue(n.SourceEntity === 0 ? this : ModelManager_1.ModelManager.CreatureModel.GetEntity(n.SourceEntity)?.Entity?.GetComponent(177), n.SourceAttributeId, n.SourceCalculationType);
             }
             var o = n.Min;
             if (o && (t -= o) <= 0) {
@@ -321,6 +321,10 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
   RemoveBoundsLocker(t, e) {
     var r = this.BoundsLockerMap.get(t);
     return !!r && !!r.delete(e) && (this.SetBaseValue(t, this.BaseValues[t]), true);
+  }
+  UpdateBoundsLocker(t, e, r, i, s) {
+    var a = this.BoundsLockerMap.get(r);
+    return !!a && !!(a = a.get(e)) && (t === 0 ? (a.LockUpperBounds = true, a.LockLowerBounds = false, a.UpperPercent = i * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, a.UpperOffset = s, a.LowerPercent = 0, a.LowerOffset = 0) : (a.LockUpperBounds = false, a.LockLowerBounds = true, a.UpperPercent = 1, a.UpperOffset = 0, a.LowerPercent = i * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, a.LowerOffset = s), this.SetBaseValue(r, this.BaseValues[r]), true);
   }
   *GetAllBoundsLocker(t) {
     t = this.BoundsLockerMap.get(t);
@@ -417,34 +421,37 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
   RemoveGeneralListener(t) {
     this.AnyCurrentValueListenerSet.delete(t);
   }
-  DispatchCurrentValueEvent(e, r, i) {
+  DispatchCurrentValueEvent(t, e, r) {
+    if (r !== e) {
+      this.DispatchCurrentValueEventImplement(t, e, r);
+    }
+  }
+  DispatchCurrentValueEventImplement(e, r, i) {
     BaseAttributeComponent_1.c__.Start();
-    if (i !== r) {
-      var s = this.CurrentValueListenerMap.get(e);
-      if (s) {
-        let t = BaseAttributeComponent_1.pbr.get(e);
-        if (!t) {
-          BaseAttributeComponent_1.pbr.set(e, t = Stats_1.Stat.CreateNoFlameGraph(`CurrentAttr#${e} event`, StatDefine_1.BATTLESTAT_GROUP));
-        }
-        for (const a of s) {
-          t?.Start();
-          try {
-            a(e, r, i);
-          } catch (t) {
-            CombatLog_1.CombatLog.ErrorWithStack("Attribute", this.Entity, "属性回调异常", t, ["属性", e]);
-          }
-          t?.Stop();
-        }
+    var s = this.CurrentValueListenerMap.get(e);
+    if (s) {
+      let t = BaseAttributeComponent_1.pbr.get(e);
+      if (!t) {
+        BaseAttributeComponent_1.pbr.set(e, t = Stats_1.Stat.CreateNoFlameGraph(`CurrentAttr#${e} event`, StatDefine_1.BATTLESTAT_GROUP));
       }
-      for (const t of this.AnyCurrentValueListenerSet) {
-        BaseAttributeComponent_1.vbr.Start();
+      for (const a of s) {
+        t?.Start();
         try {
-          t(e, r, i);
+          a(e, r, i);
         } catch (t) {
-          CombatLog_1.CombatLog.ErrorWithStack("Attribute", this.Entity, "全局属性回调异常", t, ["属性", e]);
+          CombatLog_1.CombatLog.ErrorWithStack("Attribute", this.Entity, "属性回调异常", t, ["属性", e]);
         }
-        BaseAttributeComponent_1.vbr.Stop();
+        t?.Stop();
       }
+    }
+    for (const t of this.AnyCurrentValueListenerSet) {
+      BaseAttributeComponent_1.vbr.Start();
+      try {
+        t(e, r, i);
+      } catch (t) {
+        CombatLog_1.CombatLog.ErrorWithStack("Attribute", this.Entity, "全局属性回调异常", t, ["属性", e]);
+      }
+      BaseAttributeComponent_1.vbr.Stop();
     }
     BaseAttributeComponent_1.c__.Stop();
   }
@@ -471,21 +478,23 @@ let BaseAttributeComponent = BaseAttributeComponent_1 = class BaseAttributeCompo
     }
     return e.join("|");
   }
-  GetLockDebugString() {
-    let i = "";
+  GetLockDebugString(i) {
+    let s = "";
     this.BoundsLockerMap.forEach((t, r) => {
       t.forEach((t, e) => {
-        if (t.LockLowerBounds) {
-          i += `属性:${r} 下限:${t.LowerPercent * 100}%+${t.LowerOffset} handle:${e}
+        if (!(i.length > 0) || !!i.some(t => String(r).startsWith(t))) {
+          if (t.LockLowerBounds) {
+            s += `属性:${r} 下限:${t.LowerPercent * 100}%+${t.LowerOffset} handle:${e}
 `;
-        }
-        if (t.LockUpperBounds) {
-          i += `属性:${r} 上限:${t.UpperPercent * 100}%+${t.UpperOffset} handle:${e}
+          }
+          if (t.LockUpperBounds) {
+            s += `属性:${r} 上限:${t.UpperPercent * 100}%+${t.UpperOffset} handle:${e}
 `;
+          }
         }
       });
     });
-    return i;
+    return s;
   }
 };
 BaseAttributeComponent.ModifierHandleGenerator = 100;
@@ -497,5 +506,5 @@ BaseAttributeComponent.___ = Stats_1.Stat.Create("BaseAttributeComponent.AutoRec
 BaseAttributeComponent.c__ = Stats_1.Stat.Create("BaseAttributeComponent.DispatchCurrentValueEvent", StatDefine_1.BATTLESTAT_GROUP);
 BaseAttributeComponent.pbr = new Map();
 BaseAttributeComponent.vbr = Stats_1.Stat.Create("AnyCurrentAttr event", StatDefine_1.BATTLESTAT_GROUP);
-BaseAttributeComponent = BaseAttributeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(173)], BaseAttributeComponent);
+BaseAttributeComponent = BaseAttributeComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(176)], BaseAttributeComponent);
 exports.BaseAttributeComponent = BaseAttributeComponent; //# sourceMappingURL=BaseAttributeComponent.js.map

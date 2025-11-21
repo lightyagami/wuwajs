@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (e, t, i, s) {
   var o;
-  var r = arguments.length;
-  var n = r < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var n = arguments.length;
+  var r = n < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, i, s);
+    r = Reflect.decorate(e, t, i, s);
   } else {
     for (var h = e.length - 1; h >= 0; h--) {
       if (o = e[h]) {
-        n = (r < 3 ? o(n) : r > 3 ? o(t, i, n) : o(t, i)) || n;
+        r = (n < 3 ? o(r) : n > 3 ? o(t, i, r) : o(t, i)) || r;
       }
     }
   }
-  if (r > 3 && n) {
-    Object.defineProperty(t, i, n);
+  if (n > 3 && r) {
+    Object.defineProperty(t, i, r);
   }
-  return n;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -60,7 +60,7 @@ let UiRoleHuluLightSequenceComponent = class UiRoleHuluLightSequenceComponent ex
       if (ObjectUtils_1.ObjectUtils.IsValid(e) && ((t = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = true, t.bPauseAtEnd = true, this.b2t = ActorSystem_1.ActorSystem.Spawn(UE.LevelSequenceActor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble, undefined), this.b2t.PlaybackSettings = t, this.b2t.SetSequence(e), this.SPe = this.b2t.SequencePlayer, this.SPe)) {
         this.PlayLightSequence();
       }
-    });
+    }, 100, "Ui.UiSceneModel");
   }
   PlayLightSequence() {
     var e;

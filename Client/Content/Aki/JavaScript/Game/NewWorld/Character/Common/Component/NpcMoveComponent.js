@@ -3,21 +3,21 @@
 var NpcMoveComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var h;
-  var n = arguments.length;
-  var r = n < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var r = arguments.length;
+  var n = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, e, i, s);
+    n = Reflect.decorate(t, e, i, s);
   } else {
     for (var o = t.length - 1; o >= 0; o--) {
       if (h = t[o]) {
-        r = (n < 3 ? h(r) : n > 3 ? h(e, i, r) : h(e, i)) || r;
+        n = (r < 3 ? h(n) : r > 3 ? h(e, i, n) : h(e, i)) || n;
       }
     }
   }
-  if (n > 3 && r) {
-    Object.defineProperty(e, i, r);
+  if (r > 3 && n) {
+    Object.defineProperty(e, i, n);
   }
-  return r;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -33,6 +33,7 @@ const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const LevelGeneralNetworks_1 = require("../../../../LevelGamePlay/LevelGeneralNetworks");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const PreloadConstants_1 = require("../../../../World/Controller/PreloadConstants");
 const CharacterNameDefines_1 = require("../CharacterNameDefines");
@@ -122,7 +123,7 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
     }
     this.AccelerationChangeMoveState = CharacterUnifiedStateTypes_1.ECharMoveState.Other;
     var t = this.Entity.GetComponent(3);
-    return !!t.Valid && (this.IsHidden = false, this.ActorComp = t, this.CharacterMovement = t.Actor.CharacterMovement, this.CharacterMovement.GravityScale = 2, this.CharacterMovement.bRotationFollowBaseMovement = true, this.AnimComp = this.Entity.GetComponent(178), this.UnifiedStateComponent = this.Entity.GetComponent(102), this.CapsuleOffset = Vector_1.Vector.Create(0, 0, this.ActorComp.Radius - this.ActorComp.HalfHeight), this.InitCreatureProperty(), this.MovementData = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.ActorComp.Actor.DtBaseMovementSetting, CharacterNameDefines_1.CharacterNameDefines.NORMAL.toString()), this.CharacterMovement?.SetWalkableFloorAngle(this.MovementData.WalkableFloorAngle), this.ActorComp.Actor.DtBaseMovementSetting && this.MovementData || Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, "以下BP_{Character}没有在蓝图中配置Dt_BaseMovementSetting找对应的蓝图负责人处理", ["Character", this.ActorComp.Actor.GetName()]), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this.OnDirectionStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.OnPositionStateChanged), this.IsStopInternal = false, this.InitBaseState(), this.InitTraceInfo(), true);
+    return !!t.Valid && (this.IsHidden = false, this.ActorComp = t, this.CharacterMovement = t.Actor.CharacterMovement, this.CharacterMovement.GravityScale = 2, this.CharacterMovement.bRotationFollowBaseMovement = true, this.AnimComp = this.Entity.GetComponent(181), this.UnifiedStateComponent = this.Entity.GetComponent(104), this.CapsuleOffset = Vector_1.Vector.Create(0, 0, this.ActorComp.Radius - this.ActorComp.HalfHeight), this.InitCreatureProperty(), this.MovementData = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.ActorComp.Actor.DtBaseMovementSetting, CharacterNameDefines_1.CharacterNameDefines.NORMAL.toString()), this.CharacterMovement?.SetWalkableFloorAngle(this.MovementData.WalkableFloorAngle), this.ActorComp.Actor.DtBaseMovementSetting && this.MovementData || Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, "以下BP_{Character}没有在蓝图中配置Dt_BaseMovementSetting找对应的蓝图负责人处理", ["Character", this.ActorComp.Actor.GetName()]), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnDirectionStateChanged, this.OnDirectionStateChange), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.OnPositionStateChanged), this.IsStopInternal = false, this.InitBaseState(), this.InitTraceInfo(), true);
   }
   static get BaseMoveInheritCurve() {
     this.BaseMoveInheritCurveInternal ||= ResourceSystem_1.ResourceSystem.GetLoadedAsset(PreloadConstants_1.BASE_MOVE_INHERIT_CURVE_PATH, UE.CurveFloat);
@@ -139,7 +140,6 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
     return !(this.IsHidden = false);
   }
   OnActivate() {
-    var t;
     this.OnMoveStateChange(CharacterUnifiedStateTypes_1.ECharMoveState.Stand, CharacterUnifiedStateTypes_1.ECharMoveState.Run);
     this.OnPositionStateChanged(CharacterUnifiedStateTypes_1.ECharPositionState.Air, CharacterUnifiedStateTypes_1.ECharPositionState.Ground);
     if (this.CharacterMovement.MovementMode !== this.CharacterMovement.DefaultLandMovementMode) {
@@ -155,6 +155,10 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
           Context: "[NpcMoveComponent.OnActivate]"
         });
       }
+    }
+    var t = this.Entity.GetComponent(0);
+    if (t?.PbMoveToPointConfig?.CIl) {
+      LevelGeneralNetworks_1.LevelGeneralNetworks.HandleRecvCharacterMoveToPoint(this.Entity, t.PbMoveToPointConfig);
     }
   }
   OnTick(i) {
@@ -274,5 +278,5 @@ let NpcMoveComponent = NpcMoveComponent_1 = class NpcMoveComponent extends BaseM
     }
   }
 };
-NpcMoveComponent = NpcMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(182)], NpcMoveComponent);
+NpcMoveComponent = NpcMoveComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(185)], NpcMoveComponent);
 exports.NpcMoveComponent = NpcMoveComponent; //# sourceMappingURL=NpcMoveComponent.js.map

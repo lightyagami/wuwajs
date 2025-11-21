@@ -34,7 +34,7 @@ let CharacterMontageComponent = class CharacterMontageComponent extends BaseMont
     this.$Rc = false;
   }
   OnStart() {
-    this.AnimationComponent = this.Entity.CheckGetComponent(178);
+    this.AnimationComponent = this.Entity.CheckGetComponent(181);
     return !!super.OnStart();
   }
   GetMainAnimInstance() {
@@ -42,18 +42,22 @@ let CharacterMontageComponent = class CharacterMontageComponent extends BaseMont
   }
   AddMontage(e, t, o) {
     if (this.$Rc) {
-      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(282);
+      this.MorphComponent = this.MorphComponent ?? this.Entity.GetComponent(287);
       var r = this.MorphComponent;
-      if (r?.IsMorphMontage(o)) {
-        if (t) {
-          r.AddMontage(e, t, o);
-          UE.KuroStaticLibrary.SetMontageANIndex(t);
-          return;
-        } else {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Battle", 67, "添加的多形态蒙太奇不存在", ["Name", e]);
+      if (r) {
+        var n = r.GetMontagePathMorphType(o);
+        if (n !== 0) {
+          r.AddMorphMontagePath(o, n);
+          if (t) {
+            r.AddMontage(e, t, o);
+            UE.KuroStaticLibrary.SetMontageANIndex(t);
+            return;
+          } else {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("Battle", 67, "添加的多形态蒙太奇不存在", ["Name", e]);
+            }
+            return;
           }
-          return;
         }
       }
     }

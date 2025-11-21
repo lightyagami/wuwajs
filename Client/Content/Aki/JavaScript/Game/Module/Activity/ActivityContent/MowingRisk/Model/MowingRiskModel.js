@@ -26,7 +26,7 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     this.UVa = undefined;
     this.xVa = undefined;
     this.PVa = undefined;
-    this.Nmd = false;
+    this.RVd = false;
     this.wVa = () => {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRewardPopUpView, this.BuildActivityRewardViewData());
     };
@@ -34,8 +34,8 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     this.InstanceSubViewResourceId = "UiItem_CheckpointsMowing";
   }
   InitContext() {
-    if (!this.Nmd) {
-      this.Nmd = true;
+    if (!this.RVd) {
+      this.RVd = true;
       this.UVa = new MowingRiskConfigContext_1.MowingRiskConfigContext();
       this.xVa = new MowingRiskProtocolContext_1.MowingRiskProtocolContext();
       this.PVa = new MowingRiskUiContext_1.MowingRiskUiContext(this);
@@ -697,7 +697,7 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     if (!t || !(t.length > 0)) {
       t = this.GetSuperBuffConfigsAfterSort();
     }
-    return this.Vmd(t);
+    return this.wVd(t);
   }
   GetBasicBuffConfigsAfterSort() {
     var t = this.CurrentBuffViewUsage === 1 ? this.GetBasicBuffConfigListInBattle() : this.GetBasicBuffConfigListBeforeBattle();
@@ -709,7 +709,7 @@ class MowingRiskModel extends ModelBase_1.ModelBase {
     t.sort(this.oth);
     return t;
   }
-  Vmd(t) {
+  wVd(t) {
     if (t.length === 0) {
       return 0;
     }

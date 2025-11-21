@@ -9,7 +9,6 @@ const Log_1 = require("../../../../Core/Common/Log");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
-const LevelGeneralCommons_1 = require("../../../LevelGamePlay/LevelGeneralCommons");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -50,10 +49,10 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     this.c6e = () => false;
     this.m6e = () => {
       var e = new AdventureTargetItem_1.AdventureTargetItem();
-      e.SetClickGetButtonCb(this.uQu);
+      e.SetClickGetButtonCb(this.k8u);
       return e;
     };
-    this.uQu = e => {
+    this.k8u = e => {
       var t;
       if (!this.JVe) {
         this.JVe = true;
@@ -61,6 +60,14 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
         ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestMultiForAdventureReward(t).finally(() => {
           this.JVe = false;
         });
+      }
+    };
+    this.U1m = () => {
+      if (ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(this.n6e)) {
+        var e = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
+        for (const t of this.H3e?.GetLayoutItemList() ?? []) {
+          t.SetReceivedFlagVisible(e.includes(this.n6e));
+        }
       }
     };
     this.d6e = () => {
@@ -84,13 +91,17 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
       this.SPe?.PlayLevelSequenceByName("Switch");
     };
     this.g6e = () => {
-      var e = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterProgress(this.n6e);
-      if (e.Received === e.Total) {
-        ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForChapterReward(this.n6e);
-        this.s6e.SetSelfInteractive(false);
-      } else {
-        e = ConfigManager_1.ConfigManager.TextConfig.GetTextById(NOT_FINISH_TIP);
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(e);
+      var e;
+      var t = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(this.n6e);
+      if (t) {
+        e = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterReceivedCount(this.n6e);
+        if (t.RewardUnlockCount <= e) {
+          ControllerHolder_1.ControllerHolder.AdventureGuideController.RequestForChapterReward(this.n6e);
+          this.s6e.SetSelfInteractive(false);
+        } else {
+          t = ConfigManager_1.ConfigManager.TextConfig.GetTextById(NOT_FINISH_TIP);
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(t);
+        }
       }
     };
     this.f6e = e => {
@@ -98,6 +109,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
         this.SetAdventureTargetInfoByChapter(e, false);
         this.GetItem(9).SetUIActive(false);
         this.C6e();
+        this.U1m();
       }
     };
     this.p6e = e => {
@@ -109,7 +121,6 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
         }
       }
       if (t) {
-        this._6e = true;
         e = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterTasks(this.n6e);
         this.SetAdventureTargetInfoByChapter(this.n6e, false);
         e = ModelManager_1.ModelManager.AdventureGuideModel.SortChapterTasks(this.n6e);
@@ -121,7 +132,7 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UILayoutBase], [8, UE.UISprite], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIScrollViewWithScrollbarComponent], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIText]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UILayoutBase], [8, UE.UISprite], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIItem], [12, UE.UIScrollViewWithScrollbarComponent], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIText], [19, UE.UIText], [20, UE.UIText]];
     this.BtnBindInfo = [[0, this.g6e], [3, this.d6e], [4, this.C6e]];
   }
   AddEventListener() {
@@ -143,8 +154,8 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   OnStart() {
+    this.GetText(1).SetUIActive(false);
     this.h6e = this.GetSprite(8);
-    this.h6e.SetFillAmount(0);
     this.GetItem(14).SetUIActive(true);
     this.s6e = this.GetButton(0);
     this.GetItem(5).SetUIActive(false);
@@ -172,11 +183,33 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     }
   }
   OnBeforeShow() {
-    var e = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
+    this.h6e.SetFillAmount(0);
+    var e = ModelManager_1.ModelManager.AdventureGuideModel.GetUnLockChaptersList();
     let t = 1;
-    var i = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetMaxChapter();
-    for (; e.length && e.includes(t); t++);
-    this.SetAdventureTargetInfoByChapter(Math.min(t, i));
+    var i = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
+    let r = 1;
+    let s = false;
+    let n = 1;
+    let a = false;
+    let o = 1;
+    let h = false;
+    for (; t <= e.length; t++) {
+      var _;
+      var l = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(t);
+      if (l && (_ = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterReceivedCount(t), l = l.RewardUnlockCount, !i.includes(t) && l <= _ && r <= t && (r = t, s = true), ModelManager_1.ModelManager.AdventureGuideModel.HaveChapterTasksFinish(t) && n <= t && (n = t, a = true), ModelManager_1.ModelManager.AdventureGuideModel.HaveChapterTasksUnFinish(t)) && o <= t) {
+        o = t;
+        h = true;
+      }
+    }
+    var g = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetMaxChapter();
+    if (s) {
+      t = r;
+    } else if (a) {
+      t = n;
+    } else if (h) {
+      t = o;
+    }
+    this.SetAdventureTargetInfoByChapter(Math.min(t, g));
     this.SPe?.StopCurrentSequence();
     this.SPe?.PlayLevelSequenceByName("Start");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.AdventureHelpBtn, 0);
@@ -197,8 +230,8 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
     var r = new Array();
     var s = ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList();
     var n = ModelManager_1.ModelManager.AdventureGuideModel.GetUnLockChaptersList();
-    var o = this.GetItem(11);
-    var a = this.GetScrollViewWithScrollbar(12).GetRootComponent();
+    var a = this.GetItem(11);
+    var o = this.GetScrollViewWithScrollbar(12).GetRootComponent();
     var h = this.GetItem(13);
     var _ = this.GetText(10);
     for (const d of i.keys()) {
@@ -208,41 +241,55 @@ class AdventureTargetView extends UiTabViewBase_1.UiTabViewBase {
       }, i.get(d)];
       r.push(l);
     }
-    this.H3e.RefreshByData(r);
-    const v = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterProgress(e);
+    this.H3e.RefreshByData(r, this.U1m);
+    var g = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterReceivedCount(e);
+    var v = t.RewardUnlockCount;
     this.s6e?.RootUIComp.SetUIActive(n.includes(e));
-    this.s6e.SetSelfInteractive(v.Received === v.Total && !s.includes(e));
+    this.s6e.SetSelfInteractive(v <= g && !s.includes(e));
     if (n.includes(e)) {
       if (s.includes(e)) {
         LguiUtil_1.LguiUtil.SetLocalText(_, REWARD_RECEIVED);
+      } else if (v <= g) {
+        LguiUtil_1.LguiUtil.SetLocalText(_, GET_REWARD);
       } else {
-        const v = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterProgress(e);
-        if (v.Total === v.Received) {
-          LguiUtil_1.LguiUtil.SetLocalText(_, GET_REWARD);
-        } else {
-          LguiUtil_1.LguiUtil.SetLocalText(_, AdventureGuideController_1.DOING);
-        }
+        LguiUtil_1.LguiUtil.SetLocalText(_, AdventureGuideController_1.DOING);
       }
-      o.SetUIActive(true);
       a.SetUIActive(true);
+      o.SetUIActive(true);
       h.SetUIActive(false);
     } else {
-      a.SetUIActive(false);
+      o.SetUIActive(false);
       h.SetUIActive(true);
-      n = LevelGeneralCommons_1.LevelGeneralCommons.GetConditionGroupHintText(t.UnLockCondition) ?? "";
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), n);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), "Adventure_Taget_UnlockTips", e - 1, t?.LevelUnlockCount);
     }
   }
   E6e(e) {
     this.a6e?.RefreshByData(e);
   }
   S6e(e) {
-    var t = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterProgress(e);
-    this.GetText(6).SetText(t.Received + "/" + t.Total);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), "Adventure_Taget_State_Number", e);
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "Adventure_Taget_State");
-    this.l6e = t.Received / t.Total;
-    this.GetItem(9).SetUIActive(t.Total === t.Received && !ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList().includes(e));
+    var t;
+    var i;
+    var r = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(e);
+    if (r) {
+      i = e >= ConfigManager_1.ConfigManager.AdventureModuleConfig.GetMaxChapter();
+      t = ModelManager_1.ModelManager.AdventureGuideModel.GetChapterReceivedCount(e);
+      r = r.RewardUnlockCount;
+      if (i) {
+        this.GetText(6).SetText(t + "/" + r);
+        this.l6e = Math.min(1, t / r);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), "Adventure_Taget_LastLevel");
+      } else {
+        i = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetChapterAdventureConfig(e + 1).LevelUnlockCount;
+        this.GetText(6).SetText(t + "/" + i);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), t < i ? "Adventure_Taget_NextLevelLock" : "Adventure_Taget_NextLevelUnlock", e + 1);
+        this.l6e = Math.min(1, t / i);
+      }
+      i = ModelManager_1.ModelManager.AdventureGuideModel.GetUnLockChaptersList().includes(e);
+      this.GetText(19).SetUIActive(i);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), "Adventure_Taget_State_Number", e);
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(20), "Adventure_Taget_RewardUnlock", Math.min(t, r), r);
+      this.GetItem(9).SetUIActive(r <= t && !ModelManager_1.ModelManager.AdventureGuideModel.GetRewardChaptersList().includes(e));
+    }
   }
   GetGuideUiItemAndUiItemForShowEx(e) {
     var t = Number(e[0]);

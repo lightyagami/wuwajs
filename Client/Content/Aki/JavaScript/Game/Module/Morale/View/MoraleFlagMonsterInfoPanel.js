@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.MoraleFlagMonsterInfoPanel = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
+const UiManager_1 = require("../../../Ui/UiManager");
 const ActivityDescriptionTypeA_1 = require("../../Activity/ActivityContent/UniversalComponents/Content/ActivityDescriptionTypeA");
 const ActivityRewardList_1 = require("../../Activity/ActivityContent/UniversalComponents/Content/ActivityRewardList");
 const ButtonItem_1 = require("../../Common/Button/ButtonItem");
@@ -45,7 +44,7 @@ class MoraleFlagMonsterInfoPanel extends UiPanelBase_1.UiPanelBase {
     };
     this.OnBtnTeleport = () => {
       ControllerHolder_1.ControllerHolder.WorldMapController.TryTeleport(this.FlagData.Config.MarkId, () => {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
+        UiManager_1.UiManager.ResetToBattleView();
       });
     };
     this.emu = () => {
@@ -147,12 +146,11 @@ class MoraleFlagMonsterInfoPanel extends UiPanelBase_1.UiPanelBase {
   }
   UpdateTrackOrTeleport() {
     var e = ModelManager_1.ModelManager.MoraleModel?.IsMoraleGameOver();
-    this.BtnTrackOrTeleportComponent.SetActive(!e);
-    if (!e) {
-      e = this.FlagMarkIsCanTeleport();
-      this.BtnTrackOrTeleportComponent.SetFunction(e ? this.OnBtnTeleport : this.OnBtnTrack);
-      this.BtnTrackOrTeleportComponent.SetShowText(e ? "Text_TeleportFastMove_Text" : "Morale_title_6");
-    }
+    var t = this.FlagData.IsGetBox;
+    this.BtnTrackOrTeleportComponent.SetActive(!e || !t);
+    var e = this.FlagMarkIsCanTeleport();
+    this.BtnTrackOrTeleportComponent.SetFunction(e ? this.OnBtnTeleport : this.OnBtnTrack);
+    this.BtnTrackOrTeleportComponent.SetShowText(e ? "Text_TeleportFastMove_Text" : "Morale_title_6");
   }
   FlagMarkIsCanTeleport() {
     var e = this.FlagData.Config.MarkId;

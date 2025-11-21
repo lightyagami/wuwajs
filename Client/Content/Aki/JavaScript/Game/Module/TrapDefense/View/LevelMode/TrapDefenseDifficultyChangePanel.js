@@ -47,9 +47,9 @@ class TrapDefenseDifficultyChangePanel extends UiPanelBase_1.UiPanelBase {
   UpdateDataList(e, t = 0) {
     this.DataList = e;
     this.SelectIndex = t;
-    this.yYc();
+    this.SJc();
   }
-  yYc() {
+  SJc() {
     var e = this.DataList[this.SelectIndex];
     this.GetText(1).ShowTextNew(e.NameKey);
     var t = this.GetSprite(0);
@@ -61,7 +61,7 @@ class TrapDefenseDifficultyChangePanel extends UiPanelBase_1.UiPanelBase {
   }
   ChangeDifficultyAdd(e) {
     this.SelectIndex = this.GetAddAfterIndex(this.SelectIndex, e);
-    this.yYc();
+    this.SJc();
     ModelManager_1.ModelManager.GuideModel.FinishFocusGuideGroupOnView("TrapDefenseMainLevelView");
   }
   GetAddAfterIndex(e, t) {

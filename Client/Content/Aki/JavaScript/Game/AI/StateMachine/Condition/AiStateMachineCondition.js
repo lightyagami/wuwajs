@@ -63,13 +63,13 @@ class AiStateMachineCondition {
     return !this.Node.RootNode.IsAnimStateMachine && this.CheckForClient && this.Result !== this.LastResult;
   }
   ReqFsmConditionPass() {
-    var t = Protocol_1.Aki.Protocol.s0d.create();
+    var t = Protocol_1.Aki.Protocol.Rpd.create();
     t.$4n = this.Node.RootNode.Uuid;
     t.J4n = this.Transition.From;
     t.z4n = this.Transition.To;
     t.t5n = this.Index;
     t.e5n = this.Result;
-    CombatMessage_1.CombatNet.Send(23570, this.Node.Entity, t);
+    CombatMessage_1.CombatNet.Send(22264, this.Node.Entity, t);
   }
   OnTick() {}
   Clear() {

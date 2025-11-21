@@ -8,95 +8,42 @@ const ActiveBuffConfigs_1 = require("../Buff/ActiveBuffConfigs");
 const CharacterAttributeTypes_1 = require("../CharacterAttributeTypes");
 const ExtraEffectBase_1 = require("./ExtraEffectBase");
 const ExtraExecutionEffect_1 = require("./ExtraExecutionEffect");
-class AbnormalThunder extends ExtraEffectBase_1.BuffEffect {
+class AbnormalThunder extends ExtraExecutionEffect_1.PeriodExecution {
   constructor() {
     super(...arguments);
-    this.OQo = 0;
-    this.kQo = 0;
-    this.FQo = new Array();
-    this.VQo = new Map();
+    this.ReductionRateThunder = 0;
+    this.ReductionRateExplode = 0;
+    this.ExplodeBuffId = 0;
+    this.ExecuteAddBuffId = 0;
   }
   InitParameters(t) {
-    this.FQo.length = 0;
     if (t.ExtraEffectParameters) {
-      for (const i of t.ExtraEffectParameters[0]?.split("|") ?? []) {
-        var e = i.trim().split("#");
-        this.FQo.push(e.map(t => Number(t.trim())));
-      }
-      for (const s of t.ExtraEffectParameters[1]?.split("|") ?? []) {
-        var r = s.trim().split("#");
-        this.VQo.set(Number(r[0].trim()), Number(r[1].trim()));
-      }
+      this.ReductionRateThunder = Number(t.ExtraEffectParameters[0] ?? 0) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
+      this.ReductionRateExplode = Number(t.ExtraEffectParameters[1] ?? 0) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND;
+      this.ExplodeBuffId = Number(t.ExtraEffectParameters[2] ?? 0);
+      this.ExecuteAddBuffId = Number(t.ExtraEffectParameters[5] ?? 0);
     }
   }
-  OnPeriodCallback() {}
-  OnExecute() {}
-  OnCreated() {
-    this.RefreshModifier(this.Buff?.StackCount ?? 0);
-    this.RefreshCue(this.Buff?.StackCount ?? 0);
-  }
-  OnRemoved() {
-    this.ClearModifier();
-    this.ClearCue();
-  }
-  OnStackIncreased(t, e, r) {
-    this.RefreshModifier(t);
-    this.RefreshCue(t);
-  }
-  OnStackDecreased(t, e, r) {
-    this.RefreshModifier(t);
-    this.RefreshCue(t);
-  }
-  ClearModifier() {
-    var t = this.ExactOwnerEntity?.GetComponent(173);
-    if (this.OQo) {
-      t?.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.Proto_Atk, this.OQo);
-      this.OQo = 0;
+  OnExecute() {
+    this.BuffEffectExecutePush();
+    var t = this.OwnerBuffComponent;
+    var e = Math.ceil(this.Buff.StackCount * this.ReductionRateThunder);
+    if (e > 0) {
+      t.RemoveBuff(this.BuffId, e, "电磁效应触发时移除buff");
     }
-  }
-  ClearCue() {
-    var t = this.ExactOwnerEntity?.GetComponent(226);
-    if (this.kQo) {
-      t?.RemoveCueByHandle(this.kQo);
-      this.kQo = 0;
-    }
-  }
-  RefreshModifier(r) {
-    this.ClearModifier();
-    var t = this.ExactOwnerEntity?.GetComponent(173);
-    if (t) {
-      let e = 0;
-      for (let t = this.FQo.length - 1; t >= 0; t--) {
-        var [i, s] = this.FQo[t];
-        if (i <= r) {
-          e = s;
-          break;
-        }
-      }
-      this.OQo = t.AddModifier(CharacterAttributeTypes_1.EAttributeId.Proto_Atk, {
-        Type: 2,
-        Value1: e,
-        Value2: 0,
-        SourceAttributeId: CharacterAttributeTypes_1.EAttributeId.vVn,
-        SourceCalculationType: 0,
-        SourceEntity: this.Buff?.InstigatorId ?? ActiveBuffConfigs_1.NULL_INSTIGATOR_ID
-      });
-    }
-  }
-  RefreshCue(e) {
-    this.ClearCue();
-    var r = this.ExactOwnerEntity?.GetComponent(226);
+    var r = t.GetBuffById(this.ExplodeBuffId);
     if (r) {
-      let t = undefined;
-      for (var [i, s] of this.VQo) {
-        if (e >= i) {
-          t = s;
-          break;
-        }
-      }
-      if (t !== undefined) {
-        this.kQo = r.AddCue(t);
-      }
+      e = Math.ceil(r.StackCount * this.ReductionRateExplode);
+      t.RemoveBuff(this.ExplodeBuffId, e, "电磁效应触发时移除buff");
+    }
+    if (this.ExecuteAddBuffId > 0) {
+      this.OwnerBuffComponent?.AddIterativeBuff(this.ExecuteAddBuffId, this.Buff, undefined, true, "电磁效应触发时buff添加");
+    }
+  }
+  DoBuffStackOverflow(t, e, r) {
+    e -= r;
+    if (e > 0 && this.ExplodeBuffId > 0) {
+      this.OwnerBuffComponent?.AddIterativeBuff(this.ExplodeBuffId, this.Buff, e, true, "电磁效应叠层溢出添加");
     }
   }
 }
@@ -130,7 +77,7 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
     this.RefreshModifier(t);
   }
   ClearModifier() {
-    var t = this.ExactOwnerEntity?.GetComponent(173);
+    var t = this.ExactOwnerEntity?.GetComponent(176);
     if (this.OQo) {
       t?.RemoveModifier(CharacterAttributeTypes_1.EAttributeId.vVn, this.OQo);
       this.OQo = 0;
@@ -138,13 +85,13 @@ class AbnormalIce extends ExtraEffectBase_1.BuffEffect {
   }
   RefreshModifier(r) {
     this.ClearModifier();
-    var t = this.ExactOwnerEntity?.GetComponent(173);
+    var t = this.ExactOwnerEntity?.GetComponent(176);
     if (t) {
       let e = 0;
       for (let t = this.HQo.length - 1; t >= 0; t--) {
-        var [i, s] = this.HQo[t];
-        if (i <= r) {
-          e = s;
+        var [s, i] = this.HQo[t];
+        if (s <= r) {
+          e = i;
           break;
         }
       }
@@ -197,24 +144,24 @@ class ConvertAbnormalLight extends ExtraExecutionEffect_1.PeriodExecution {
     var t = this.OwnerBuffComponent;
     if (t) {
       let r = 0;
-      var i = t.GetBuffHandleByEffectId(this.Sx1);
-      if (i) {
-        for (const h of i) {
-          var s = t.GetBuffByHandle(h);
-          if (s) {
-            if (!((r += s.StackCount) <= this.Mx1) && this.Mx1 !== 0) {
-              t.RemoveBuffByHandle(h, s.StackCount - (r - this.Mx1), ConvertAbnormalLight.pLe);
+      var s = t.GetBuffHandleByEffectId(this.Sx1);
+      if (s) {
+        for (const o of s) {
+          var i = t.GetBuffByHandle(o);
+          if (i) {
+            if (!((r += i.StackCount) <= this.Mx1) && this.Mx1 !== 0) {
+              t.RemoveBuffByHandle(o, i.StackCount - (r - this.Mx1), ConvertAbnormalLight.pLe);
               r = this.Mx1;
               break;
             }
-            t.RemoveBuffByHandle(h, -1, ConvertAbnormalLight.pLe);
+            t.RemoveBuffByHandle(o, -1, ConvertAbnormalLight.pLe);
           }
         }
         let e = 0;
         for (let t = this.Id_.length - 1; t >= 0; t--) {
-          var [a, o] = this.Id_[t];
+          var [a, h] = this.Id_[t];
           if (r >= a) {
-            e = o;
+            e = h;
             break;
           }
         }

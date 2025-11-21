@@ -1,22 +1,22 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (t, i, e, n) {
-  var o;
-  var r = arguments.length;
-  var s = r < 3 ? i : n === null ? n = Object.getOwnPropertyDescriptor(i, e) : n;
+var __decorate = this && this.__decorate || function (i, t, e, o) {
+  var n;
+  var s = arguments.length;
+  var r = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, e) : o;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    s = Reflect.decorate(t, i, e, n);
+    r = Reflect.decorate(i, t, e, o);
   } else {
-    for (var l = t.length - 1; l >= 0; l--) {
-      if (o = t[l]) {
-        s = (r < 3 ? o(s) : r > 3 ? o(i, e, s) : o(i, e)) || s;
+    for (var a = i.length - 1; a >= 0; a--) {
+      if (n = i[a]) {
+        r = (s < 3 ? n(r) : s > 3 ? n(t, e, r) : n(t, e)) || r;
       }
     }
   }
-  if (r > 3 && s) {
-    Object.defineProperty(i, e, s);
+  if (s > 3 && r) {
+    Object.defineProperty(t, e, r);
   }
-  return s;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -27,13 +27,16 @@ const SummonCfgById_1 = require("../../../../../../Core/Define/ConfigQuery/Summo
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../../Core/Entity/RegisterComponent");
+const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const InputController_1 = require("../../../../../Input/InputController");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
+const CombatMessage_1 = require("../../../../../Module/CombatMessage/CombatMessage");
 const PhantomUtil_1 = require("../../../../../Module/Phantom/PhantomUtil");
 const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeamController");
 const BaseAbilityComponent_1 = require("../Abilities/BaseAbilityComponent");
+const GameplayAbilityVisionBossRush_1 = require("./GA/GameplayAbilityVisionBossRush");
 const GameplayAbilityVisionControl_1 = require("./GA/GameplayAbilityVisionControl");
 const GameplayAbilityVisionExplore_1 = require("./GA/GameplayAbilityVisionExplore");
 const GameplayAbilityVisionMorph_1 = require("./GA/GameplayAbilityVisionMorph");
@@ -45,7 +48,8 @@ const visionTypes = {
   1: GameplayAbilityVisionMorph_1.GameplayAbilityVisionMorph,
   2: GameplayAbilityVisionExplore_1.GameplayAbilityVisionExplore,
   3: GameplayAbilityVisionControl_1.GameplayAbilityVisionControl,
-  4: GameplayAbilityVisionPresent_1.GameplayAbilityVisionPresent
+  4: GameplayAbilityVisionPresent_1.GameplayAbilityVisionPresent,
+  5: GameplayAbilityVisionBossRush_1.GameplayAbilityVisionBossRush
 };
 let CharacterVisionComponent = class CharacterVisionComponent extends EntityComponent_1.EntityComponent {
   constructor() {
@@ -58,49 +62,49 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     this.rXt = false;
     this.Bhh = undefined;
     this.YTc = undefined;
-    this.bpr = t => {
-      for (const i of this.aen.values()) {
-        i.TeleportStart();
+    this.bpr = i => {
+      for (const t of this.aen.values()) {
+        t.TeleportStart();
       }
-      if (t) {
+      if (i) {
         PhantomUtil_1.PhantomUtil.SetVisionEnable(this.Entity, false, "OnTeleportStart.SetVisionEnable", false);
       }
     };
     this.Ilt = () => {
-      var t = PhantomUtil_1.PhantomUtil.GetVisionData(this.GetVisionId());
-      if (t && t.类型 === 4 && (t = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision)?.Entity?.GetComponent(0)) && SummonCfgById_1.configSummonCfgById.GetConfig(t.SummonCfgId)?.InitVisiable) {
+      var i = PhantomUtil_1.PhantomUtil.GetVisionData(this.GetVisionId());
+      if (i && i.类型 === 4 && (i = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision)?.Entity?.GetComponent(0)) && SummonCfgById_1.configSummonCfgById.GetConfig(i.SummonCfgId)?.InitVisiable) {
         PhantomUtil_1.PhantomUtil.SetVisionEnable(this.Entity, true, "OnTeleportComplete.SetVisionEnable", false);
       }
     };
-    this.Nca = (t, i) => {
+    this.Nca = (i, t) => {
       var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision)?.Entity?.GetComponent(40);
       if (e?.Valid) {
-        e.SkillTarget = t;
-        e.SkillTargetSocket = i;
+        e.SkillTarget = i;
+        e.SkillTargetSocket = t;
       }
     };
   }
   OnStart() {
-    var t = this.Entity.GetComponent(0);
-    this.len = t.VisionSkillServerEntityId;
+    var i = this.Entity.GetComponent(0);
+    this.len = i.VisionSkillServerEntityId;
     if (this._en) {
       this.uen(this._en);
       this._en = undefined;
-    } else if (t = t.ComponentDataMap.get("uys")?.uys?.CIs) {
-      this.uen(t);
+    } else if (i = i.ComponentDataMap.get("uys")?.uys?.CIs) {
+      this.uen(i);
     }
-    var t = this.Entity.GetComponent(206);
-    if (t) {
-      this.YTc = t.ListenForTagAnyCountChanged(visionTriggerTag, (t, i, e, n) => {
-        if (n < t) {
+    var i = this.Entity.GetComponent(209);
+    if (i) {
+      this.YTc = i.ListenForTagAnyCountChanged(visionTriggerTag, (i, t, e, o) => {
+        if (o < i) {
           SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, e);
         }
       });
     }
     for (const e of Object.keys(visionTypes)) {
-      var i = Number(e);
-      if (i !== 5) {
-        this.aen.set(i, visionTypes[i].Spawn(this));
+      var t = Number(e);
+      if (t !== 6) {
+        this.aen.set(t, visionTypes[t].Spawn(this));
       }
     }
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
@@ -110,8 +114,8 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     return this.rXt = true;
   }
   OnEnd() {
-    for (const t of this.aen.values()) {
-      t.Destroy();
+    for (const i of this.aen.values()) {
+      i.Destroy();
     }
     if (this.YTc) {
       this.YTc.EndTask();
@@ -122,99 +126,108 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
     this.khh();
     return true;
   }
-  OnTick(t) {
-    for (const i of this.aen.values()) {
-      i.Tick(t);
+  OnTick(i) {
+    for (const t of this.aen.values()) {
+      t.Tick(i);
     }
   }
-  SetVisionSkillInformationList(t, i) {
+  SetVisionSkillInformationList(i, t) {
     var e = this.len;
-    this.len = i;
+    this.len = t;
     if (this.rXt) {
-      this.uen(t);
+      this.uen(i);
       if (this.len !== e) {
-        for (const n of this.aen.values()) {
-          n.ChangeVision();
+        for (const o of this.aen.values()) {
+          o.ChangeVision();
         }
       }
     } else {
-      this._en = t;
-    }
-  }
-  uen(t) {
-    this.sen.clear();
-    this.hen = 0;
-    if (t) {
-      var i = this.Entity.GetComponent(208);
-      for (const n of t) {
-        var e = PhantomUtil_1.PhantomUtil.GetVisionData(n.r5n);
-        if (e && (e = e.类型, this.sen.set(e, n), [0, 1, 4].includes(e))) {
-          i?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(n.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(n.r5n));
-          this.hen = n.r5n;
-        }
-      }
+      this._en = i;
     }
   }
   GetVisionIdList() {
-    var t = UE.NewArray(UE.BuiltinInt);
-    for (const i of this.sen.values()) {
-      t.Add(i.r5n);
-    }
-    return t;
-  }
-  GetVisionLevelList() {
-    var t = UE.NewArray(UE.BuiltinInt);
-    for (const i of this.sen.values()) {
-      t.Add(i.ATs);
-    }
-    return t;
-  }
-  GetVisionLevelByBuffId(t) {
-    for (const i of this.sen.values()) {
-      if (i.ATs > 0) {
-        if (PhantomUtil_1.PhantomUtil.GetSkillBuffIds(i.r5n).includes(t)) {
-          return i.ATs;
-        }
-      }
-    }
-    return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
-  }
-  GetVisionLevelByDamageId(t) {
-    for (const i of this.sen.values()) {
-      if (i.ATs > 0) {
-        if (PhantomUtil_1.PhantomUtil.GetSkillSettleIds(i.r5n).includes(t)) {
-          return i.ATs;
-        }
-      }
-    }
-    return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
-  }
-  GetVisionData(i) {
-    if ([...this.sen.values()].some(t => t.r5n === i)) {
-      return PhantomUtil_1.PhantomUtil.GetVisionData(i);
-    }
-  }
-  ActivateAbilityVision(t) {
-    var i = this.aen.get(t)?.ActivateAbility() ?? false;
-    if (i && [0, 1, 4].includes(t)) {
-      SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, this.GetVisionId());
+    var i = UE.NewArray(UE.BuiltinInt);
+    for (const t of this.sen.values()) {
+      i.Add(t.r5n);
     }
     return i;
   }
-  EndAbilityVision(t) {
-    return this.aen.get(t)?.EndAbility() ?? false;
+  GetVisionLevelList() {
+    var i = UE.NewArray(UE.BuiltinInt);
+    for (const t of this.sen.values()) {
+      i.Add(t.ATs);
+    }
+    return i;
+  }
+  GetVisionLevelByBuffId(i) {
+    for (const t of this.sen.values()) {
+      if (t.ATs > 0) {
+        if (PhantomUtil_1.PhantomUtil.GetSkillBuffIds(t.r5n).includes(i)) {
+          return t.ATs;
+        }
+      }
+    }
+    return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
+  }
+  GetVisionLevelByDamageId(i) {
+    for (const t of this.sen.values()) {
+      if (t.ATs > 0) {
+        if (PhantomUtil_1.PhantomUtil.GetSkillSettleIds(t.r5n).includes(i)) {
+          return t.ATs;
+        }
+      }
+    }
+    return BaseAbilityComponent_1.DEFAULT_SOURCE_SKILL_LEVEL_NOT_FOUND;
+  }
+  GetVisionData(t) {
+    if ([...this.sen.values()].some(i => i.r5n === t)) {
+      return PhantomUtil_1.PhantomUtil.GetVisionData(t);
+    }
+  }
+  ActivateAbilityVision(i) {
+    var t = this.aen.get(i)?.ActivateAbility() ?? false;
+    if (t && [0, 1, 4].includes(i)) {
+      SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.ActivateAbilityVision, this.GetVisionId());
+      this.e1m(this.GetVisionId());
+    }
+    return t;
+  }
+  EndAbilityVision(i) {
+    return this.aen.get(i)?.EndAbility() ?? false;
   }
   GetVisionId() {
     return this.hen;
   }
-  GetVisionSkillInformation(t) {
-    return this.sen.get(t);
+  GetVisionSkillInformation(i) {
+    return this.sen.get(i);
+  }
+  HandlePress(i, t) {
+    for (const e of this.aen.values()) {
+      if (e.HandlePress(i, t)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  uen(i) {
+    this.sen.clear();
+    this.hen = 0;
+    if (i) {
+      var t = this.Entity.GetComponent(211);
+      for (const o of i) {
+        var e = PhantomUtil_1.PhantomUtil.GetVisionData(o.r5n);
+        if (e && (e = e.类型, this.sen.set(e, o), [0, 1, 4].includes(e))) {
+          t?.ModifyCdInfo(PhantomUtil_1.PhantomUtil.GetSkillGroupId(o.r5n), PhantomUtil_1.PhantomUtil.GetSkillCd(o.r5n));
+          this.hen = o.r5n;
+        }
+      }
+    }
   }
   Fhh() {
-    var t;
-    this.Bhh = InputController_1.InputController.CreateInputLayer(2);
-    if (this.Bhh && (t = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity))) {
-      this.Bhh.Init(t);
+    var i;
+    this.Bhh = InputController_1.InputController.CreateInputLayer(3);
+    if (this.Bhh && (i = ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity))) {
+      this.Bhh.Init(i);
       InputController_1.InputController.AddInputLayer(this.Entity.Id, this.Bhh);
     }
   }
@@ -225,14 +238,18 @@ let CharacterVisionComponent = class CharacterVisionComponent extends EntityComp
       this.Bhh = undefined;
     }
   }
-  HandlePress(t, i) {
-    for (const e of this.aen.values()) {
-      if (e.HandlePress(t, i)) {
-        return true;
-      }
+  e1m(i) {
+    var t = Protocol_1.Aki.Protocol.ylm.create();
+    t.Slm = i;
+    CombatMessage_1.CombatNet.Send(18994, this.Entity, t);
+  }
+  static VisionTriggerNotify(i, t) {
+    if (i) {
+      t = MathUtils_1.MathUtils.LongToNumber(t.Slm);
+      SceneTeamController_1.SceneTeamController.EmitEvent(i, EventDefine_1.EEventName.ActivateAbilityVision, t);
     }
-    return false;
   }
 };
+__decorate([CombatMessage_1.CombatNet.Listen("vlm", true)], CharacterVisionComponent, "VisionTriggerNotify", null);
 CharacterVisionComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(43)], CharacterVisionComponent);
 exports.CharacterVisionComponent = CharacterVisionComponent; //# sourceMappingURL=CharacterVisionComponent.js.map

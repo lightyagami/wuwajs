@@ -31,7 +31,7 @@ let RoleAttributeComponent = class RoleAttributeComponent extends CharacterAttri
     for (const o of super.GetAllBoundsLocker(e)) {
       yield o;
     }
-    var t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(199);
+    var t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(202);
     if (t) {
       for (const r of t.GetAllBoundsLocker(e)) {
         yield r;
@@ -42,7 +42,7 @@ let RoleAttributeComponent = class RoleAttributeComponent extends CharacterAttri
     for (const o of super.GetAllModifiers(e)) {
       yield o;
     }
-    var t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(199);
+    var t = FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.GetComponent(202);
     if (t) {
       for (const r of t.GetAllModifiers(e)) {
         yield r;
@@ -50,5 +50,5 @@ let RoleAttributeComponent = class RoleAttributeComponent extends CharacterAttri
     }
   }
 };
-RoleAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(189)], RoleAttributeComponent);
+RoleAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(192)], RoleAttributeComponent);
 exports.RoleAttributeComponent = RoleAttributeComponent; //# sourceMappingURL=RoleAttributeComponent.js.map

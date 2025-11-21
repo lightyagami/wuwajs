@@ -74,7 +74,7 @@ class RoleExpItemGridComponent extends UiPanelBase_1.UiPanelBase {
     t.SetText(this.w1o.toString());
     e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.x1o);
     this.B1o = e >= this.w1o;
-    t.useChangeColor = !this.B1o;
+    t.SetChangeColor(!this.B1o, t.changeColor);
   }
   GetIsMoneyEnough() {
     return this.B1o;

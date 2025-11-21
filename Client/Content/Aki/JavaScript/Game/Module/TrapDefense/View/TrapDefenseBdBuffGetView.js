@@ -46,10 +46,10 @@ class TrapDefenseBdBuffGetView extends UiViewBase_1.UiViewBase {
     if (this.BdBuffData) {
       this.PanelBdBuffDesc.SetActive(true);
       this.PanelBdBuffDesc.UpdateDataGetMode(this.BdBuffData);
-      this.NHc();
+      this.VHu();
     }
   }
-  NHc() {
+  VHu() {
     var e = this.BdBuffData.GetBelongBdData();
     var t = !e.IsZeroBdType();
     this.BdProgressItem.SetActive(t);

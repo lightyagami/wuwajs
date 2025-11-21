@@ -25,8 +25,8 @@ const GameplayAbilityVisionMisc_1 = require("./GameplayAbilityVisionMisc");
 class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbilityVisionBase {
   constructor() {
     super(...arguments);
-    this.MZo = undefined;
-    this.oMt = undefined;
+    this.VisionEntity = undefined;
+    this.VisionData = undefined;
     this.VisionActorComponent = undefined;
     this.g6c = undefined;
     this.VisionBuffComponent = undefined;
@@ -85,7 +85,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     }
   }
   OnActivateAbility() {
-    return !this.pAr && !!this.AU() && !(this.pAr = true, this.oMt.空中能否释放 || this.SkillComponent.PlaySkillMontage(0, "", 0), this.aZo(false), this.GameplayTagComponent.AddTag(GameplayAbilityVisionMisc_1.invincibleTag), this.BuffComponent.RemoveBuff(GameplayAbilityVisionMisc_1.ROLE_DODGE_FORBID_BUFF_ID, -1, "幻象变身技能激活时移除角色禁止闪避的Buff"), this.CueComponent.AddCue(GameplayAbilityVisionMisc_1.ROLE_HIDE_CUE_ID, {
+    return !this.pAr && !!this.AU() && !(this.pAr = true, this.VisionData.空中能否释放 || this.SkillComponent.PlaySkillMontage(0, "", 0), this.aZo(false), this.GameplayTagComponent.AddTag(GameplayAbilityVisionMisc_1.invincibleTag), this.BuffComponent.RemoveBuff(GameplayAbilityVisionMisc_1.ROLE_DODGE_FORBID_BUFF_ID, -1, "幻象变身技能激活时移除角色禁止闪避的Buff"), this.CueComponent.AddCue(GameplayAbilityVisionMisc_1.ROLE_HIDE_CUE_ID, {
       Sync: true,
       Instant: true
     }), this.rta = TimerSystem_1.TimerSystem.Delay(() => {
@@ -109,8 +109,8 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     return !!this.VisionSkillComponent && this.VisionSkillComponent.HandlePress(i, t);
   }
   AU() {
-    this.MZo = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    return !!this.MZo.IsInit && (!this.NeedNoActive() || !this.MZo.Entity.Active) && !(this.NeedNoAi() && this.MZo.Entity.GetComponent(47)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.MZo.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.oMt = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId()), this.VisionActorComponent = this.MZo.Entity.GetComponent(3), this.g6c = this.MZo.Entity.GetComponent(206), this.VisionBuffComponent = this.MZo.Entity.GetComponent(175), this.fAr = this.MZo.Entity.GetComponent(21), this.TSa = this.MZo.Entity.GetComponent(179), this.VisionSkillComponent = this.MZo.Entity.GetComponent(42), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
+    this.PreInit();
+    return !!this.VisionEntity.IsInit && (!this.NeedNoActive() || !this.VisionEntity.Entity.Active) && !(this.NeedNoAi() && this.VisionEntity.Entity.GetComponent(47)?.IsEnabled() ? (CombatLog_1.CombatLog.Error("Skill", this.VisionEntity.Entity, "变身幻象不能配置AI，请检查一下AI配置"), 1) : (this.VisionActorComponent = this.VisionEntity.Entity.GetComponent(3), this.g6c = this.VisionEntity.Entity.GetComponent(209), this.VisionBuffComponent = this.VisionEntity.Entity.GetComponent(178), this.fAr = this.VisionEntity.Entity.GetComponent(21), this.TSa = this.VisionEntity.Entity.GetComponent(182), this.VisionSkillComponent = this.VisionEntity.Entity.GetComponent(42), this.VisionSkillComponent.InitVisionSkill(this.EntityHandle, true), 0));
   }
   aZo(i) {
     CollisionUtils_1.CollisionUtils.SetCollisionResponseToPawn(this.VisionActorComponent.Actor.CapsuleComponent, 2, i ? 2 : 0);
@@ -139,7 +139,7 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
       InstigatorId: this.VisionBuffComponent.CreatureDataId,
       Reason: "开始幻象变身时幻象自身的材质和粒子"
     });
-    var i = this.oMt.技能ID;
+    var i = this.VisionData.技能ID;
     if (i > 0) {
       this.VisionSkillComponent.BeginSkill(i, {
         Target: this.SkillComponent.SkillTarget?.Entity,
@@ -151,8 +151,8 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
       this.SkillComponent.SkillTargetSocket = this.VisionSkillComponent.SkillTargetSocket;
     }
     RoleAudioController_1.RoleAudioController.PlayRoleAudio(this.Entity, 2001);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionMorphBegin, this.MZo, this.EntityHandle);
-    EventSystem_1.EventSystem.EmitWithTargets([this.EntityHandle.Entity, this.MZo.Entity], EventDefine_1.EEventName.VisionMorphBegin, this.MZo, this.EntityHandle);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionMorphBegin, this.VisionEntity, this.EntityHandle);
+    EventSystem_1.EventSystem.EmitWithTargets([this.EntityHandle.Entity, this.VisionEntity.Entity], EventDefine_1.EEventName.VisionMorphBegin, this.VisionEntity, this.EntityHandle);
   }
   ner(i) {
     var t;
@@ -173,8 +173,8 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
         s();
       }
       this.VisionSkillComponent.OnMorphEnd();
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionMorphEnd, this.EntityHandle, this.MZo);
-      EventSystem_1.EventSystem.EmitWithTargets([this.EntityHandle.Entity, this.MZo.Entity], EventDefine_1.EEventName.VisionMorphEnd, this.EntityHandle, this.MZo);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionMorphEnd, this.EntityHandle, this.VisionEntity);
+      EventSystem_1.EventSystem.EmitWithTargets([this.EntityHandle.Entity, this.VisionEntity.Entity], EventDefine_1.EEventName.VisionMorphEnd, this.EntityHandle, this.VisionEntity);
     }
   }
   ier(i) {
@@ -244,8 +244,8 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
     if (this.pAr) {
       this.GameplayTagComponent.RemoveTag(GameplayAbilityVisionMisc_1.invincibleTag);
     }
-    if (this.MZo?.Valid) {
-      BulletController_1.BulletController.CreateBulletCustomTarget(this.MZo.Entity, GameplayAbilityVisionMisc_1.VISION_END_BULLET, undefined);
+    if (this.VisionEntity?.Valid) {
+      BulletController_1.BulletController.CreateBulletCustomTarget(this.VisionEntity.Entity, GameplayAbilityVisionMisc_1.VISION_END_BULLET, undefined);
       this.fAr?.RemoveCueByHandle(this.kQo);
       this.SetVisionEnable(false);
       this.aZo(true);
@@ -259,6 +259,10 @@ class GameplayAbilityVisionMorph extends GameplayAbilityVisionBase_1.GameplayAbi
   }
   NeedNoActive() {
     return true;
+  }
+  PreInit() {
+    this.VisionEntity = PhantomUtil_1.PhantomUtil.GetSummonedEntity(this.VisionComponent.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
+    this.VisionData = PhantomUtil_1.PhantomUtil.GetVisionData(this.VisionComponent.GetVisionId());
   }
 }
 exports.GameplayAbilityVisionMorph = GameplayAbilityVisionMorph;

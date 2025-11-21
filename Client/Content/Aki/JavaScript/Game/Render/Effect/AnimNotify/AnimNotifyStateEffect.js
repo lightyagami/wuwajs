@@ -154,6 +154,9 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     } else {
       n = EffectUtil_1.EffectUtil.GetPreviewReplaceEffectPath(e);
     }
+    if (this.SyncEventTimeToEffectTime && e?.includes("QianxiaoReadNovelLoop")) {
+      r = 0;
+    }
     let a = 0;
     a = i ? EffectSystem_1.EffectSystem.SpawnUnloopedEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r) : EffectSystem_1.EffectSystem.SpawnEffect(s, new UE.TransformDouble(), n || e, "[AnimNotifyStateEffect.SpawnEffectInternal]", f, r);
     EffectSystem_1.EffectSystem.SetEffectNotRecord(a, true);
@@ -200,7 +203,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
       if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(289))?.Valid) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(293))?.Valid) {
           i.AddEffect(e);
         }
       }
@@ -250,7 +253,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
         return false;
       }
       if (i instanceof TsBaseCharacter_1.default) {
-        if (!i.CharacterActorComponent?.Entity?.GetComponent(206)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
+        if (!i.CharacterActorComponent?.Entity?.GetComponent(209)?.HasAnyTag(GameplayTagUtils_1.GameplayTagUtils.ConvertFromUeContainer(this.WithOutTag))) {
           return this.SpawnEffectInternal(t, e, true) !== 0;
         }
       }
@@ -259,7 +262,7 @@ class AnimNotifyStateEffect extends UE.KuroEffectMakerANS {
     return !!f && (this.ParamsMap.delete(t), f.EffectHandle && EffectSystem_1.EffectSystem.StopEffectById(f.EffectHandle, `[动画:${e.GetName()}，AnimNotifyStateEffect.K2_NotifyEnd]`, this.FasterStop), true);
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(206);
+    var e = t.CharacterActorComponent?.Entity?.GetComponent(209);
     if (e) {
       var i = this.PlayNeedTags.Num();
       if (this.NeedAnyTag) {

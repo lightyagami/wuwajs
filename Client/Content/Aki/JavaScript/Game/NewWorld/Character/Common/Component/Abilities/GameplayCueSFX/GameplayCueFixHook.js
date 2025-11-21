@@ -47,16 +47,16 @@ class GameplayCueFixHook extends GameplayCueBase_1.GameplayCueBase {
     this.VWs = undefined;
   }
   STl() {
-    return this.EntityHandle.Entity.GetComponent(100).GetCurrentTargetLocation().ToUeVector();
+    return this.EntityHandle.Entity.GetComponent(102).GetCurrentTargetLocation().ToUeVector();
   }
   MTl() {
-    return this.EntityHandle.Entity.GetComponent(100).GetCurrentPathwayEndLocation().ToUeVector();
+    return this.EntityHandle.Entity.GetComponent(102).GetCurrentPathwayEndLocation().ToUeVector();
   }
   yTl() {
-    return this.EntityHandle.Entity.GetComponent(100).GetIsInLastPathway();
+    return this.EntityHandle.Entity.GetComponent(102).GetIsInLastPathway();
   }
   ETl() {
-    return this.EntityHandle.Entity.GetComponent(100).GetCurrentTargetEnterPortalCapture();
+    return this.EntityHandle.Entity.GetComponent(102).GetCurrentTargetEnterPortalCapture();
   }
 }
 exports.GameplayCueFixHook = GameplayCueFixHook;

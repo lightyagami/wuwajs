@@ -12,21 +12,21 @@ class PhantomManageConfigData {
   constructor(t) {
     this.E9 = Protocol_1.Aki.Protocol.Oxu.Proto_AutoLock;
     this.Xy = -1;
-    this.iGu = false;
+    this.Xqu = false;
     this.he = ConfigManager_1.ConfigManager.TextConfig.GetMultiText(InventoryDefine_1.EMPTY_CONFIG_TEXT_ID);
-    this.rGu = new Map();
-    this.Fhd = -1;
+    this.Yqu = new Map();
+    this.qdd = -1;
     this.Xy = t;
     t = ModelManager_1.ModelManager.InventoryModel.GetFilterIdConst();
     for (const e of ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(t).RuleList) {
-      this.rGu.set(e, []);
+      this.Yqu.set(e, []);
     }
   }
   SetDisplayIndex(t) {
-    this.Fhd = t;
+    this.qdd = t;
   }
   GetDisplayIndex() {
-    return this.Fhd;
+    return this.qdd;
   }
   GetIndex() {
     return this.Xy;
@@ -40,10 +40,10 @@ class PhantomManageConfigData {
     }
   }
   GetIsOn() {
-    return this.iGu;
+    return this.Xqu;
   }
   SetIsOn(t) {
-    this.iGu = t;
+    this.Xqu = t;
   }
   GetName() {
     return this.he;
@@ -55,24 +55,24 @@ class PhantomManageConfigData {
     return this.E9;
   }
   GetValueListByRuleId(t) {
-    return this.rGu.get(t) ?? [];
+    return this.Yqu.get(t) ?? [];
   }
   GetRuleIdMapValueList() {
-    return new Map(this.rGu);
+    return new Map(this.Yqu);
   }
   SetRuleIdMapValueList(t) {
-    this.rGu.clear();
+    this.Yqu.clear();
     var e = ModelManager_1.ModelManager.InventoryModel.GetFilterIdConst();
     for (const r of ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(e).RuleList) {
-      this.rGu.set(r, t.get(r) ?? []);
+      this.Yqu.set(r, t.get(r) ?? []);
     }
   }
   SetType(t) {
     this.E9 = t;
   }
   IsEmpty() {
-    if (this.rGu.size !== 0) {
-      for (const t of this.rGu.values()) {
+    if (this.Yqu.size !== 0) {
+      for (const t of this.Yqu.values()) {
         if (t.length !== 0) {
           return false;
         }
@@ -81,10 +81,10 @@ class PhantomManageConfigData {
     return true;
   }
   IsEqual(t, e) {
-    if (!e || t !== this.iGu) {
+    if (!e || t !== this.Xqu) {
       return false;
     }
-    for (const [i, n] of this.rGu) {
+    for (const [i, n] of this.Yqu) {
       var r = e.get(i);
       if (!r || r.length !== n.length || !r.every((t, e) => t === n[e])) {
         return false;
@@ -94,18 +94,18 @@ class PhantomManageConfigData {
   }
   Parse(t) {
     this.Reset(true, true);
-    this.iGu = t.qjn;
+    this.Xqu = t.qjn;
     this.he = t.H8n;
     this.Xy = t.c5n;
     for (const e of t.Dxu) {
-      this.rGu.set(e.Bxu, e.kxu);
+      this.Yqu.set(e.Bxu, e.kxu);
     }
   }
   Integrate() {
     var t;
     var e;
     var r = [];
-    for ([t, e] of this.rGu) {
+    for ([t, e] of this.Yqu) {
       r.push({
         Bxu: t,
         kxu: e
@@ -113,27 +113,27 @@ class PhantomManageConfigData {
     }
     return {
       c5n: this.Xy,
-      qjn: this.iGu,
+      qjn: this.Xqu,
       H8n: this.he,
       Dxu: r
     };
   }
   Reset(t, e) {
     this.Xy = t ? -1 : this.Xy;
-    this.iGu = false;
+    this.Xqu = false;
     this.he = e ? ConfigManager_1.ConfigManager.TextConfig.GetMultiText(InventoryDefine_1.EMPTY_CONFIG_TEXT_ID) : this.he;
-    this.rGu.clear();
+    this.Yqu.clear();
     t = ModelManager_1.ModelManager.InventoryModel.GetFilterIdConst();
     for (const r of ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(t).RuleList) {
-      this.rGu.set(r, []);
+      this.Yqu.set(r, []);
     }
   }
   Clone() {
     var t = new PhantomManageConfigData(this.Xy);
-    t.iGu = this.iGu;
+    t.Xqu = this.Xqu;
     t.he = this.he;
     t.E9 = this.E9;
-    t.rGu = new Map(this.rGu);
+    t.Yqu = new Map(this.Yqu);
     return t;
   }
 }

@@ -41,7 +41,7 @@ let CharacterSkillTriggerComponent = class CharacterSkillTriggerComponent extend
     return true;
   }
   OnActivate() {
-    for (const t of this.cBe.GetAllSkillData()) {
+    for (const t of this.cBe.GetAllSkillId()) {
       var e = this.cBe.GetSkillInfo(t);
       this.pVs(t, e);
     }
@@ -87,5 +87,5 @@ let CharacterSkillTriggerComponent = class CharacterSkillTriggerComponent extend
     this.pVs(e, t);
   }
 };
-CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], CharacterSkillTriggerComponent);
+CharacterSkillTriggerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(212)], CharacterSkillTriggerComponent);
 exports.CharacterSkillTriggerComponent = CharacterSkillTriggerComponent; //# sourceMappingURL=CharacterSkillTriggerComponent.js.map

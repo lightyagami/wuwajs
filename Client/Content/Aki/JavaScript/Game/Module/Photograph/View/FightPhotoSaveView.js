@@ -185,16 +185,16 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     e.SetHeight(t.Y / (i * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
   }
   OnAfterShow() {
-    this.X6d();
+    this.lXd();
   }
-  async X6d() {
+  async lXd() {
     this.D4_(true);
     this.v5_(true);
-    await this.Y6d();
-    await this.z6d(true);
+    await this._Xd();
+    await this.uXd(true);
     this.v5_(false);
-    await this.Y6d();
-    await this.z6d(false);
+    await this._Xd();
+    await this.uXd(false);
     this.D4_(false);
     this.UiViewSequence?.PlaySequence("ScreenShot", true);
   }
@@ -205,26 +205,26 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     if (e) {
       t.SetWidth(i.X / r);
       t.SetHeight(i.Y / r);
-      this.X8d(true);
+      this.xYd(true);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, false);
     } else {
       t.SetWidth(i.X / (r * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
       t.SetHeight(i.Y / (r * PhotographDefine_1.SCREEN_SHOT_TEXTURE_SCALE));
-      this.X8d(false);
+      this.xYd(false);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPreparePhotoScreenShot, true);
     }
   }
-  X8d(e) {
+  xYd(e) {
     this.GetTexture(9)?.SetUIActive(!e);
     this.GetItem(10)?.SetUIActive(!e);
     this.GetItem(11)?.SetUIActive(!e);
   }
-  async vzd() {
+  async lbm() {
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Float, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Pop, false, "ScreenShot");
     UiLayer_1.UiLayer.SetLayerRenderable(UiLayerType_1.ELayerType.Normal, false, "ScreenShot");
-    await this.Y6d();
-    await this.Y6d();
+    await this._Xd();
+    await this._Xd();
     var e = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
     ControllerHolder_1.ControllerHolder.PhotographController.TrySaveFightPhotoFromBuffer(0, 0, e.X, e.Y);
     ControllerHolder_1.ControllerHolder.PhotographController.FightPhotoLogReport();
@@ -237,7 +237,7 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     const o = this.p5_ && e || !this.p5_ && !e;
     if (Info_1.Info.IsPs5Platform()) {
       if (o) {
-        this.vzd();
+        this.lbm();
       }
       r();
     } else if (e = ScreenShotManager_1.ScreenShotManager.PrepareTakeScreenshot("", t[0], t[1], t[2], t[3], false)) {
@@ -265,7 +265,23 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
     var e = e.GetPositionInViewPort(true);
     var t = t.GetPositionInViewPort(true);
     var i = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
-    return [e.X < 0 ? 0 : e.X, e.Y < 0 ? 0 : e.Y, (t.X < i.X ? t : i).X, (t.Y < i.Y ? t : i).Y];
+    let r = e.X < 0 ? 0 : e.X;
+    let o = e.Y < 0 ? 0 : e.Y;
+    let h = (t.X < i.X ? t : i).X;
+    let a = (t.Y < i.Y ? t : i).Y;
+    if (r > h) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Photograph", 71, "截图时最小X值大于最大X值");
+      }
+      [r, h] = [h, r];
+    }
+    if (o > a) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Photograph", 71, "截图时最小Y值大于最大Y值");
+      }
+      [o, a] = [a, o];
+    }
+    return [r, o, h, a];
   }
   v5_(e) {
     if (e) {
@@ -305,14 +321,14 @@ class FightPhotoSaveView extends UiViewBase_1.UiViewBase {
   oKi() {
     this.CloseMe();
   }
-  async Y6d() {
+  async _Xd() {
     return new Promise(e => {
       TimerSystem_1.GameplayTimerSystem.Next(() => {
         e();
       });
     });
   }
-  async z6d(t) {
+  async uXd(t) {
     return new Promise(e => {
       this.B4_(t, e);
     });

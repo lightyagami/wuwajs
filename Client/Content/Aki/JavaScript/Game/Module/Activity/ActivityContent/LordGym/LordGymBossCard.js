@@ -16,22 +16,22 @@ class LordGymBossCard extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Iye = undefined;
     this.tPe = undefined;
-    this.kod = undefined;
-    this.Ood = undefined;
-    this.qod = () => {
-      this.Ood?.SetUIActive(false);
-      this.kod?.SetUIActive(false);
+    this.ohd = undefined;
+    this.nhd = undefined;
+    this.shd = () => {
+      this.nhd?.SetUIActive(false);
+      this.ohd?.SetUIActive(false);
     };
     this.HOe = () => new LordGymPageDot();
     this.uvt = (t, s, i) => {
       t = new LordGymBossCardItem_1.LordGymBossCardItem(t);
-      t.BindOnSelected(this.God);
+      t.BindOnSelected(this.ahd);
       return t;
     };
-    this.God = t => {
+    this.ahd = t => {
       this.tPe?.SelectGridProxy(t, true);
-      this.Ood?.SetUIActive(true);
-      this.kod?.SetUIActive(true);
+      this.nhd?.SetUIActive(true);
+      this.ohd?.SetUIActive(true);
     };
     this.rHt = () => {
       this.Iye?.MoveToNextItem(-1);
@@ -45,11 +45,11 @@ class LordGymBossCard extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[4, this.rHt], [5, this.nHt]];
   }
   OnStart() {
-    this.kod = this.GetButton(4).RootUIComp;
-    this.Ood = this.GetButton(5).RootUIComp;
+    this.ohd = this.GetButton(4).RootUIComp;
+    this.nhd = this.GetButton(5).RootUIComp;
     this.Iye = new CircleAttachView_1.CircleAttachView(this.GetItem(0).GetOwner());
     this.Iye.CreateItems(this.GetItem(1).GetOwner(), SHOW_GAP, this.uvt);
-    this.Iye.SetDragBeginCallback(this.qod);
+    this.Iye.SetDragBeginCallback(this.shd);
     this.Iye.SetPageLimitState(true);
     this.Iye.SetMoveMultiFactor(50);
     this.tPe = new GenericLayout_1.GenericLayout(this.GetGridLayout(8), this.HOe);

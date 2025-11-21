@@ -279,7 +279,7 @@ class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
       this.Pe.HasRedDot = false;
       this.hsu.SetUIActive(false);
     };
-    this.xNu = t => {
+    this.m2u = t => {
       if (this.Pe?.Id === t) {
         this.hsu.SetUIActive(false);
       }
@@ -290,10 +290,10 @@ class QuestReviewNodeNormalItem extends QuestReviewNodeItemBase {
     this.BtnBindInfo = [[13, this.tW1]];
   }
   OnStart() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.xNu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.m2u);
   }
   OnBeforeDestroy() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.xNu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnOpenQuestReviewDetail, this.m2u);
   }
   Refresh(t) {
     this.Pe = t.Data;

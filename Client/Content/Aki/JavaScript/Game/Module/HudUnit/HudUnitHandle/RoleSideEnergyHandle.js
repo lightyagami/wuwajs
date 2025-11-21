@@ -42,6 +42,10 @@ class RoleSideEnergyHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
       this.bl();
       this.Sic();
     };
+    this.u8t = () => {
+      this.bl();
+      this.Sic();
+    };
     this.zpe = e => {
       for (var [t, i] of this.mic) {
         if (i.RoleSideEnergyUnit) {
@@ -57,11 +61,13 @@ class RoleSideEnergyHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnBuffAddRoleSideEnergyBar, this.Cic);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.u8t);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRemoveRoleData, this.zpe);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnBuffAddRoleSideEnergyBar, this.Cic);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.u8t);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRemoveRoleData, this.zpe);
   }
   Sic() {

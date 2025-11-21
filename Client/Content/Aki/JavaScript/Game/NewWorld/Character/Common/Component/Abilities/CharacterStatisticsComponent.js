@@ -197,7 +197,7 @@ class CombatDataDamage extends CombatDataBase {
     var [t, i] = CombatDataBase.GetEntityConfigNameAndSkillName(this.AttackerId, this.DamageId, this.SkillId);
     var e = CombatDataBase.GetEntityConfigName(this.TargetId);
     var a = 0;
-    var a = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(174).GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
+    var a = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(177).GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
     return StringUtils_1.StringUtils.Format("<Date>[{0}]</><Atk>{1}</>施放了<Skill>{2}</>对<Victim>{3}</>造成<NumDmg>{4}</>点伤害<Change>{5}</>", this.DateCreate, t ?? "", i ?? "", e ?? "", this.DamageValue.toString(), a <= 0 ? "(死亡)" : StringUtils_1.StringUtils.Format("({0}->{1})", (a + this.DamageValue).toString(), a.toString()));
   }
 }
@@ -212,7 +212,7 @@ class CombatDataHeal extends CombatDataBase {
     var [t, i] = CombatDataBase.GetEntityConfigNameAndSkillName(this.AttackerId, this.HealId, this.SkillId);
     var e = CombatDataBase.GetEntityConfigName(this.TargetId);
     var a = 0;
-    var s = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(174);
+    var s = EntitySystem_1.EntitySystem.Get(this.TargetId).GetComponent(177);
     var a = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life);
     var s = s.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n);
     return StringUtils_1.StringUtils.Format("<Date>[{0}]</><Atk>{1}</>施放了<Skill>{2}</>使<Victim>{3}</>恢复<NumDmg>{4}</>点生命<Change>{5}</>", this.DateCreate, t ?? "", i ?? "", e ?? "", this.HealValue.toString(), a === s ? "(满血)" : StringUtils_1.StringUtils.Format("({0}->{1})", a.toString(), (a - this.HealValue).toString()));
@@ -614,12 +614,12 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.ZOr);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.XOr);
       var t;
-      var i = this.Entity.GetComponent(176);
+      var i = this.Entity.GetComponent(179);
       if (i?.Valid) {
         i = i.MoveState;
         this.JOr(i);
       }
-      var e = this.Entity.CheckGetComponent(206);
+      var e = this.Entity.CheckGetComponent(209);
       if (e?.Valid) {
         this.QOr.push(e.ListenForTagAddOrRemove(-2044964178, this.UWi));
       }
@@ -629,7 +629,7 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
         }
       }
     } else {
-      var a = this.Entity.CheckGetComponent(206);
+      var a = this.Entity.CheckGetComponent(209);
       if (a?.Valid) {
         CharacterStatisticsComponent_1.Skr.push(this.Entity.Id);
         this.QOr.push(a.ListenForTagAddOrRemove(-1112841587, this.UWi));
@@ -703,7 +703,7 @@ let CharacterStatisticsComponent = CharacterStatisticsComponent_1 = class Charac
   }
   akr() {
     if (CharacterStatisticsComponent_1.$Or) {
-      var t = this.Entity.GetComponent(206);
+      var t = this.Entity.GetComponent(209);
       if (t) {
         var i = this.Entity.GetComponent(0).GetEntityType();
         var i = CharacterStatisticsComponent_1.StageInfo(i);

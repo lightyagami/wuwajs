@@ -36,12 +36,12 @@ class ManufactureMaterialItem extends LoopScrollMediumItemGrid_1.LoopScrollMediu
       this.SetSelected(false);
     }
   }
-  bIi() {
+  bIi(t) {
     if (!this.fGt) {
       return "";
     }
     if (this.fGt.K6n) {
-      var t = this.fGt.UVn * this.BIi;
+      var t = t ?? this.fGt.UVn * this.BIi;
       var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.fGt.L8n);
       let e = "";
       return e = i < t ? StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_NOT_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString()) : StringUtils_1.StringUtils.Format(CommonDefine_1.MATERIAL_ENOUGHT_TEXT_PATTERN, i.toString(), t.toString());
@@ -51,6 +51,9 @@ class ManufactureMaterialItem extends LoopScrollMediumItemGrid_1.LoopScrollMediu
   SetTimes(e) {
     this.BIi = e;
     this.SetBottomText(this.bIi());
+  }
+  SetNeedNum(e) {
+    this.SetBottomText(this.bIi(e));
   }
   OnSelected(e) {
     this.SetSelected(true);

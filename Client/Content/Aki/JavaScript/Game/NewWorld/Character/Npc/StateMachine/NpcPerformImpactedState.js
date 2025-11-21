@@ -7,7 +7,7 @@ exports.NpcPerformImpactedState = undefined;
 const NpcPerformBaseState_1 = require("./NpcPerformBaseState");
 class NpcPerformImpactedState extends NpcPerformBaseState_1.NpcPerformBaseState {
   OnEnter(e) {
-    this.Owner.Entity.GetComponent(188)?.StopPerformMontage(3, {
+    this.Owner.Entity.GetComponent(191)?.StopPerformMontage(3, {
       Method: 0,
       BlendOutTime: 0
     });

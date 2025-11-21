@@ -31,7 +31,7 @@ class RefCompLevelSequenceController extends RefCompControllerBase_1.RefCompCont
     this.O2_ = undefined;
   }
   OnStart() {
-    this.aRl = this.Entity.GetComponent(165);
+    this.aRl = this.Entity.GetComponent(168);
   }
   OnEnd() {
     while (this.O2_ && !this.O2_.Empty) {

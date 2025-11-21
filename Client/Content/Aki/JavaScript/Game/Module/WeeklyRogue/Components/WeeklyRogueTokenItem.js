@@ -39,7 +39,7 @@ class WeeklyRogueTokenItem extends GridProxyAbstract_1.GridProxyAbstract {
         }
       }
     };
-    this.$$c = () => {
+    this.X9u = () => {
       return new WeeklyRogueTagItem_1.WeeklyRogueTagItem();
     };
   }
@@ -48,7 +48,7 @@ class WeeklyRogueTokenItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.BtnBindInfo = [[4, this.eTt]];
   }
   OnStart() {
-    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.$$c);
+    this.ESc = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(9), this.X9u);
     this.GetItem(11).SetUIActive(false);
   }
   OnBeforeShow() {
@@ -60,7 +60,7 @@ class WeeklyRogueTokenItem extends GridProxyAbstract_1.GridProxyAbstract {
   Refresh(e, t, i) {
     this.Pe = e;
     this.UpdateByConfigId(e.v9n);
-    this.GetItem(11).SetUIActive(e.Z8u);
+    this.GetItem(11).SetUIActive(e.S9u);
   }
   OnSelected(e) {
     this.GetExtendToggle(4).SetToggleState(1);

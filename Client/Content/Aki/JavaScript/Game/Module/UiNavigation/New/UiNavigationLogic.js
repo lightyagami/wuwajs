@@ -38,20 +38,37 @@ class UiNavigationLogic {
   static oj1(i, e) {
     return !!e && (!!e.SlideToRightOrDown && !!i || !!e.SlideToLeftOrTop && !i);
   }
-  static TBo(i, e, t) {
-    var a;
-    var n;
-    if (i?.HasNormalScrollView() && !e && (a = i.ScrollView, i = i.GetNavigationGroup(), this.oj1(n = t === 2 || t === 4, i)) && this.efc(a, t)) {
-      a?.SetScrollProgress(!n ? 0 : 1);
-      ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
-      UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
+  static QMm(i, e, a) {
+    var t = i.ScrollView;
+    var i = i.GetNavigationGroup();
+    var n = a === 2 || a === 4;
+    if (this.oj1(n, i) && this.efc(t, a)) {
+      if (e) {
+        if (!UiNavigationModeModule_1.UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive) {
+          t?.SetScrollProgress(n ? 0 : 1);
+          ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
+          UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
+        }
+      } else {
+        t?.SetScrollProgress(!n ? 0 : 1);
+        ModelManager_1.ModelManager.UiNavigationModel?.RepeatMove();
+        UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
+      }
+    }
+  }
+  static KMm(i, e, a) {
+    var t = e.GetNavigationGroup();
+    var t = e.ScrollView.Horizontal ? t.HorizontalWrapMode : t.VerticalWrapMode;
+    var n = e.ScrollView;
+    var a = (a === 2 || a === 4) !== UiNavigationModeModule_1.UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive;
+    n.NavigateScrollToUIItem(e?.GetRootComponent(), a, t);
+  }
+  static TBo(i, e, a) {
+    if (i?.HasNormalScrollView()) {
+      UiNavigationLogic.QMm(i, e, a);
     }
     if (e?.HasDynamicScrollView()) {
-      i = e.GetNavigationGroup();
-      a = e.ScrollView.Horizontal ? i.HorizontalWrapMode : i.VerticalWrapMode;
-      n = e.ScrollView;
-      i = (t === 2 || t === 4) !== UiNavigationModeModule_1.UiNavigationModeModule.FindOppositeNavigationResult.IsOppositeNavigationPositive;
-      n.NavigateScrollToUIItem(e?.GetRootComponent(), i, a);
+      UiNavigationLogic.KMm(i, e, a);
     }
   }
   static LBo(i) {
@@ -59,20 +76,20 @@ class UiNavigationLogic {
       AudioSystem_1.AudioSystem.PostEvent("play_ui_gamepad_navigation_common");
     }
   }
-  static DBo(e, t) {
+  static DBo(e, a) {
     if (e && e.PanelConfig?.IsAllowNavigate() && e.GetNavigationComponent().CheckFindNavigationBefore()) {
       let i = undefined;
-      var a = e.GetNavigationGroup();
-      i = a?.GroupType === 0 ? UiNavigationLogic.RBo(e, t, a.AllowNavigationInSelfDynamic) : e.FindNavigation(t);
-      var a = UiNavigationLogic.UBo(i);
-      if (e.GetNavigationComponent().CheckFindNavigationAfter(a)) {
-        return a;
+      var t = e.GetNavigationGroup();
+      i = t?.GroupType === 0 ? UiNavigationLogic.RBo(e, a, t.AllowNavigationInSelfDynamic) : e.FindNavigation(a);
+      var t = UiNavigationLogic.UBo(i);
+      if (e.GetNavigationComponent().CheckFindNavigationAfter(t)) {
+        return t;
       }
     }
   }
-  static RBo(i, e, t) {
+  static RBo(i, e, a) {
     e = i.FindNavigation(e);
-    if (!t && (t = this.UBo(e)) && (i.ScrollViewActor === undefined && t.ScrollViewActor === undefined && i.LayoutActor === undefined && t.LayoutActor === undefined || i.ScrollViewActor !== t.ScrollViewActor || i.LayoutActor !== t.LayoutActor)) {
+    if (!a && (a = this.UBo(e)) && (i.ScrollViewActor === undefined && a.ScrollViewActor === undefined && i.LayoutActor === undefined && a.LayoutActor === undefined || i.ScrollViewActor !== a.ScrollViewActor || i.LayoutActor !== a.LayoutActor)) {
       return i.GetSceneComponent();
     } else {
       return e;
@@ -83,70 +100,70 @@ class UiNavigationLogic {
   }
   static FindUiNavigationPanelConfig(i) {
     let e = i.GetAttachParentActor();
-    let t = undefined;
-    while (e !== undefined && !(t = e.GetComponentByClass(UE.TsUiNavigationPanelConfig_C.StaticClass()))) {
+    let a = undefined;
+    while (e !== undefined && !(a = e.GetComponentByClass(UE.TsUiNavigationPanelConfig_C.StaticClass()))) {
       e = e.GetAttachParentActor();
     }
-    return t;
+    return a;
   }
   static FindUpNavigationListener(i) {
     let e = i.GetAttachParentActor();
-    let t = undefined;
+    let a = undefined;
     while (e !== undefined) {
       if (e.GetComponentByClass(UE.TsUiNavigationPanelConfig_C.StaticClass())) {
         break;
       }
-      if (t = e.GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass())) {
+      if (a = e.GetComponentByClass(UE.TsUiNavigationBehaviorListener_C.StaticClass())) {
         break;
       }
       e = e.GetAttachParentActor();
     }
-    return t;
+    return a;
   }
   static BindHotKeyComponentAction(i, e) {
-    var t;
-    var a = ModelManager_1.ModelManager.UiNavigationModel;
-    if (a && (t = i.GetActionName())) {
-      a = a.GetOrAddActionHotKeyComponentSet(t);
+    var a;
+    var t = ModelManager_1.ModelManager.UiNavigationModel;
+    if (t && (a = i.GetActionName())) {
+      t = t.GetOrAddActionHotKeyComponentSet(a);
       if (e) {
-        if (a.size <= 0) {
-          InputDistributeController_1.InputDistributeController.BindAction(t, UiNavigationLogic.bMe);
+        if (t.size <= 0) {
+          InputDistributeController_1.InputDistributeController.BindAction(a, UiNavigationLogic.bMe);
         }
-        if (!a.has(i)) {
-          a.add(i);
+        if (!t.has(i)) {
+          t.add(i);
         }
-      } else if (!(a.size <= 0)) {
-        a.delete(i);
-        if (a.size <= 0) {
-          InputDistributeController_1.InputDistributeController.UnBindAction(t, UiNavigationLogic.bMe);
+      } else if (!(t.size <= 0)) {
+        t.delete(i);
+        if (t.size <= 0) {
+          InputDistributeController_1.InputDistributeController.UnBindAction(a, UiNavigationLogic.bMe);
         }
       }
     }
   }
   static BindHotKeyComponentAxis(i, e) {
-    var t;
-    var a = ModelManager_1.ModelManager.UiNavigationModel;
-    if (a && (t = i.GetAxisName())) {
-      a = a.GetOrAddAxisHotKeyComponentsSet(t);
+    var a;
+    var t = ModelManager_1.ModelManager.UiNavigationModel;
+    if (t && (a = i.GetAxisName())) {
+      t = t.GetOrAddAxisHotKeyComponentsSet(a);
       if (e) {
-        if (a.size <= 0) {
-          InputDistributeController_1.InputDistributeController.BindAxis(t, UiNavigationLogic.ABo);
+        if (t.size <= 0) {
+          InputDistributeController_1.InputDistributeController.BindAxis(a, UiNavigationLogic.ABo);
         }
-        if (!a.has(i)) {
-          a.add(i);
+        if (!t.has(i)) {
+          t.add(i);
         }
-      } else if (!(a.size <= 0)) {
-        a.delete(i);
-        if (a.size <= 0) {
-          InputDistributeController_1.InputDistributeController.UnBindAxis(t, UiNavigationLogic.ABo);
+      } else if (!(t.size <= 0)) {
+        t.delete(i);
+        if (t.size <= 0) {
+          InputDistributeController_1.InputDistributeController.UnBindAxis(a, UiNavigationLogic.ABo);
         }
       }
     }
   }
-  static HasActiveListenerInGroup(t) {
-    if (t) {
-      for (let i = 0, e = t.ListenerList.length; i < e; ++i) {
-        if (t.ListenerList[i].IsListenerActive()) {
+  static HasActiveListenerInGroup(a) {
+    if (a) {
+      for (let i = 0, e = a.ListenerList.length; i < e; ++i) {
+        if (a.ListenerList[i].IsListenerActive()) {
           return true;
         }
       }
@@ -185,13 +202,13 @@ class UiNavigationLogic {
   static HandleInputControllerTypeChange() {
     var i;
     var e = Info_1.Info.IsInGamepad();
-    var t = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor;
-    if (t && t.GetPointerEventData(0)) {
+    var a = LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystemActor;
+    if (a && a.GetPointerEventData(0)) {
       i = !(i = UiNavigationViewManager_1.UiNavigationViewManager.GetCurrentViewHandle()) || i.GetCurrentPanel()?.AllowNavigateInKeyBoard;
       if (e) {
-        t.SetIsUseMouse(false);
-        t.SwitchToNavigationInputType();
-        t.UpdateNavigationListener(undefined);
+        a.SetIsUseMouse(false);
+        a.SwitchToNavigationInputType();
+        a.UpdateNavigationListener(undefined);
         ModelManager_1.ModelManager.UiNavigationModel.SetIsUseMouse(false);
         if (!i) {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetNavigationListener);
@@ -223,50 +240,50 @@ class UiNavigationLogic {
       LguiEventSystemManager_1.LguiEventSystemManager.InputNavigation(i, 0);
     }
   }
-  static ExecuteInterfaceMethod(i, e, ...t) {
+  static ExecuteInterfaceMethod(i, e, ...a) {
     if (e in i && typeof i[e] == "function") {
-      i[e](...t);
+      i[e](...a);
     }
   }
 }
 exports.UiNavigationLogic = UiNavigationLogic;
 (_a = UiNavigationLogic).TryFindNavigationDelegate = (i, e) => {
-  var t;
+  var a;
   if (i !== 0 || e) {
     if (UiNavigationGlobalData_1.UiNavigationGlobalData.IsBlockNavigation) {
       return undefined;
     } else {
       e = e ? e.GetRootComponent() : LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystem.navigationComponent;
       e = UiNavigationLogic.UBo(e);
-      t = UiNavigationLogic.DBo(e, i);
-      _a.TBo(e, t, i);
-      _a.LBo(t);
-      return t?.GetSceneComponent();
+      a = UiNavigationLogic.DBo(e, i);
+      return (e.PanelConfig?.CanOverrideFindNavigation(i, e, a) ? e.PanelConfig?.HandleOverrideFindNavigation(i, e, a) : (_a.TBo(e, a, i), _a.LBo(a), a))?.GetSceneComponent();
     }
   } else {
     return LguiEventSystemManager_1.LguiEventSystemManager.LguiEventSystem.navigationComponent;
   }
 };
 UiNavigationLogic.bMe = (i, e) => {
-  var t = ModelManager_1.ModelManager.UiNavigationModel;
-  if (t) {
-    for (const a of t.GetActionHotKeyComponentSet(i)) {
-      if (a.IsHotKeyActive()) {
+  var a = ModelManager_1.ModelManager.UiNavigationModel;
+  if (a) {
+    a = a.GetActionHotKeyComponentSet(i);
+    for (const t of new Set(a)) {
+      if (t.IsHotKeyActive()) {
         if (e === 0) {
-          a.Press();
+          t.Press();
         } else {
-          a.Release();
+          t.Release();
         }
       }
     }
   }
 };
 UiNavigationLogic.ABo = (i, e) => {
-  var t = ModelManager_1.ModelManager.UiNavigationModel;
-  if (t) {
-    for (const a of t.GetAxisHotKeyComponentSet(i)) {
-      if (a.IsAllowTickContinue()) {
-        a.InputAxis(i, e);
+  var a = ModelManager_1.ModelManager.UiNavigationModel;
+  if (a) {
+    a = a.GetAxisHotKeyComponentSet(i);
+    for (const t of new Set(a)) {
+      if (t.IsAllowTickContinue()) {
+        t.InputAxis(i, e);
       }
     }
   }

@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BaseSkillComponent = exports.SkillRotateTarget = exports.SKILL_GROUP_MAIN = undefined;
 const UE = require("ue");
+const Info_1 = require("../../../../../../Core/Common/Info");
 const Log_1 = require("../../../../../../Core/Common/Log");
 const Stats_1 = require("../../../../../../Core/Common/Stats");
 const Protocol_1 = require("../../../../../../Core/Define/Net/Protocol");
@@ -47,7 +48,9 @@ const SceneTeamController_1 = require("../../../../../Module/SceneTeam/SceneTeam
 const PreloadDefine_1 = require("../../../../../Preload/PreloadDefine");
 const ActorUtils_1 = require("../../../../../Utils/ActorUtils");
 const CombatLog_1 = require("../../../../../Utils/CombatLog");
+const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
 const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
+const FightDebugUtil_1 = require("../../../FightDebugUtil");
 const BaseAbilityComponent_1 = require("../Abilities/BaseAbilityComponent");
 const CharacterBuffIds_1 = require("../Abilities/CharacterBuffIds");
 const Skill_1 = require("./Skill");
@@ -55,7 +58,6 @@ const SkillBehaviorAction_1 = require("./SkillBehavior/SkillBehaviorAction");
 const SkillBehaviorCondition_1 = require("./SkillBehavior/SkillBehaviorCondition");
 const SkillUtils_1 = require("./SkillUtils");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
-const EffectUtil_1 = require("../../../../../Utils/EffectUtil");
 exports.SKILL_GROUP_MAIN = 1;
 const HIT_CASE_SOCKET_NAME = "HitCase";
 const SKILL_GROUP_INDEX = 0;
@@ -100,6 +102,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     this.w6a = new Map();
     this.DtSkillInfoExtraList = undefined;
     this.DtSkillInfoMapForDebug = new Map();
+    this.rbm = false;
     this.DtBulletInfo = undefined;
     this.DtBulletInfoExtraList = undefined;
     this.DtHitEffect = undefined;
@@ -145,6 +148,9 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     };
     this.gZr = () => {
       this.StopGroup1Skill("受击打断技能");
+    };
+    this.obm = () => {
+      this.rbm = true;
     };
     this.OnSwitchControl = t => {
       for (var [i, e] of this.LoadedSkills) {
@@ -231,14 +237,16 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
       var l = e.toString();
       let i = DataTableUtil_1.DataTableUtil.GetDataTableRow(this._Zr, l);
-      if (!i && this.DtSkillInfoExtraList) {
-        for (const t of this.DtSkillInfoExtraList) {
-          if (i = DataTableUtil_1.DataTableUtil.GetDataTableRow(t, l)) {
+      if (this.DtSkillInfoExtraList) {
+        for (const n of this.DtSkillInfoExtraList) {
+          var t = DataTableUtil_1.DataTableUtil.GetDataTableRow(n, l);
+          if (t) {
+            i = t;
             break;
           }
         }
       }
-      if (!i) {
+      if (!(i = this.DtSkillInfoMapForDebug && (s = this.DtSkillInfoMapForDebug.get(FightDebugUtil_1.FightDebugUtil.DtSkillTypeForDebug), s = DataTableUtil_1.DataTableUtil.GetDataTableRow(s, l)) ? s : i)) {
         let t = undefined;
         var s = this.EIe.GetEntityType();
         if (s === Protocol_1.Aki.Protocol.kks.Proto_Player) {
@@ -311,6 +319,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.obm);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.gZr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.AiHateTargetChanged, this.MZr);
@@ -319,20 +328,20 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     return true;
   }
   OnInit() {
-    this.Bzr = this.Entity.CheckGetComponent(173);
-    this.TagComp = this.Entity.CheckGetComponent(206);
+    this.Bzr = this.Entity.CheckGetComponent(176);
+    this.TagComp = this.Entity.CheckGetComponent(209);
     this.AbilityComp = this.Entity.CheckGetComponent(17);
-    this.BuffComp = this.Entity.GetComponent(175);
+    this.BuffComp = this.Entity.GetComponent(178);
     this.uZr = this.Entity.GetComponent(16);
     this.LockOnComp = this.Entity.GetComponent(32);
     this.bre = this.Entity.GetComponent(47);
-    this.mZr = this.Entity.GetComponent(96);
-    this.vHr = this.Entity.GetComponent(123);
-    this.dZr = this.Entity.GetComponent(208);
+    this.mZr = this.Entity.GetComponent(98);
+    this.vHr = this.Entity.GetComponent(126);
+    this.dZr = this.Entity.GetComponent(211);
     this.FightStateComp = this.Entity.GetComponent(55);
     this.StateMachineComp = this.Entity.GetComponent(76);
     this.MontageComp = this.Entity.GetComponent(24);
-    this.qk_ = this.Entity.GetComponent(220);
+    this.qk_ = this.Entity.GetComponent(223);
     return true;
   }
   OnDisable(t) {
@@ -357,7 +366,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         this.OZr(t, i);
       }
     });
-    for (const i of this.GetAllSkillData(5)) {
+    for (const i of this.GetAllSkillId(5)) {
       var t = this.GetSkillInfo(i);
       if (t) {
         this.w6a.set(t.SkillName.toString(), i);
@@ -365,7 +374,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   OZr(i, e) {
-    if (!this.LoadedSkills.has(i)) {
+    if (!this.LoadedSkills.has(i) || this.rbm) {
       try {
         var t = new Skill_1.Skill();
         this.LoadedSkills.set(i, t);
@@ -419,6 +428,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveEntity, this.zpe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportStart, this.bpr);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportOpenLoadingEnd, this.Oul);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetFightDtTypeForDebug, this.obm);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitAnim, this.gZr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharSwitchControl, this.OnSwitchControl);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.AiHateTargetChanged, this.MZr);
@@ -587,7 +597,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
   }
   VZr(t, i) {
     BaseSkillComponent_1.Zzr.Start();
-    CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.RequestEndSkill", ["结束技能ID", t.SkillId], ["结束技能名称", t.SkillName], ["Reason", i], ["CanInterrupt", this.vZr], ["ReadyEnd", this.IsMainSkillReadyEnd], ["InterruptLevel", t.InterruptLevel]);
+    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.RequestEndSkill", ["结束技能ID", t.SkillId], ["结束技能名称", t.SkillName], ["Reason", i], ["CanInterrupt", this.vZr], ["ReadyEnd", this.IsMainSkillReadyEnd], ["InterruptLevel", t.InterruptLevel]);
     this.dZr?.ResetMultiSkills(t.SkillId);
     this.dZr?.ResetCdDelayTime(t.SkillId);
     i = t.SkillInfo.SkillMode;
@@ -668,7 +678,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   KZr(t) {
-    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload) {
+    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.rbm) {
       this.qk_.LoadSkillAsync(t);
       this.qk_.FlushSkill(t);
       var i = this.GetSkillInfo(t);
@@ -676,19 +686,22 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         return;
       }
       this.OZr(t, i);
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.TryGetSkill", ["技能Id", t], ["技能名", i.SkillName.toString()]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.TryGetSkill", ["技能Id", t], ["技能名", i.SkillName.toString()]);
     }
     return this.LoadedSkills.get(t);
   }
   async qj1(t) {
-    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload) {
-      await this.qk_.LoadSkillAsync(t, 105);
-      var i = this.GetSkillInfo(t);
+    if (!this.LoadedSkills.has(t) && PreloadDefine_1.PreloadSetting.UseNewPreload || this.rbm) {
+      var i = await this.qk_.LoadSkillAsync(t, 105);
+      if (i !== 3 && (CombatLog_1.CombatLog.Error("Skill", this.Entity, "没有预加载数据", ["技能Id", t]), !Info_1.Info.IsPlayInEditor)) {
+        return;
+      }
+      i = this.GetSkillInfo(t);
       if (!i) {
         return;
       }
       this.OZr(t, i);
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.TryGetSkillAsync", ["技能Id", t], ["技能名", i.SkillName.toString()]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.TryGetSkillAsync", ["技能Id", t], ["技能名", i.SkillName.toString()]);
     }
     return this.LoadedSkills.get(t);
   }
@@ -736,16 +749,17 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
+    l.ExtraTargetLocation = i.ExtraTargetLocation;
     if (this.Vh_(t)) {
       CombatLog_1.CombatLog.Error("Skill", this.Entity, "技能打断的过程中不能新开技能", ["技能Id", t], ["技能名", l.SkillName], ["原因", i.Reason]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
-    CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent." + (i.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", t], ["技能名", l.SkillName], ["技能目标", (i.Target instanceof Entity_1.Entity ? i.Target.GetComponent(1)?.Owner : i.Target)?.GetName()], ["原因", i.Reason]);
+    SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent." + (i.IsAsync ? "BeginSkillAsync" : "BeginSkill"), ["技能Id", t], ["技能名", l.SkillName], ["技能目标", (i.Target instanceof Entity_1.Entity ? i.Target.GetComponent(1)?.Owner : i.Target)?.GetName()], ["原因", i.Reason]);
     var e = [];
     var n = this.WZr(l, e);
     if (n) {
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", t], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.CheckSkillCanBegin条件不满足", ["技能Id", t], ["技能名", l.SkillName], ["当前技能", this.CurrentSkill?.SkillId], ["当前技能名", this.CurrentSkill?.SkillName], ["原因", n]);
       BaseSkillComponent_1.kzr.Stop();
       return false;
     }
@@ -785,7 +799,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         if (this.AbilityComp.TryActivateAbilityByClass(l.AbilityClass, true)) {
           break;
         }
-        CombatLog_1.CombatLog.Error("Skill", this.Entity, "BaseSkillComponent.执行GA失败!", ["技能Id", l.SkillId], ["技能名", l.SkillName], ["GaClass", l.AbilityClass?.GetName()]);
+        SkillUtils_1.SkillUtils.Log(3, 0, this.Entity, "BaseSkillComponent.执行GA失败!", ["技能Id", l.SkillId], ["技能名", l.SkillName], ["GaClass", l.AbilityClass?.GetName()]);
         this.lZr = undefined;
         this.SkillTarget = undefined;
         this.SkillTargetSocket = "";
@@ -849,7 +863,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
       }
       this.ActorComp.SetMoveControlled(false, s, "远端特殊技能");
     }
-    this.Entity.GetComponent(176).ExitHitState("远端释放技能");
+    this.Entity.GetComponent(179).ExitHitState("远端释放技能");
     SceneTeamController_1.SceneTeamController.EmitEvent(this.Entity, EventDefine_1.EEventName.CharUseSkillRemote, this.Entity.Id, n.SkillId);
     this.YZr(o.GroupId, n);
     n.SimulatedBeginSkill(l);
@@ -949,6 +963,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     BaseSkillComponent_1.Wzr.Start();
     if (!this.hZr.has(t.SkillId)) {
       this.hZr.add(t.SkillId);
+      SkillUtils_1.SkillUtils.Log(1, 0, this.Entity, "BaseSkillComponent.DoSkillBegin", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
       i = this.GetSkillInfo(t.SkillId);
       t.BeginSkill();
       ModelManager_1.ModelManager.CombatMessageModel?.AddSkillRefCount(t.MNc);
@@ -988,7 +1003,7 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     if (!this.hZr.has(t.SkillId)) {
       this.hZr.add(t.SkillId);
       BaseSkillComponent_1.eZr.Start();
-      CombatLog_1.CombatLog.Info("Skill", this.Entity, "BaseSkillComponent.DoSkillEnd", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
+      SkillUtils_1.SkillUtils.Log(0, 0, this.Entity, "BaseSkillComponent.DoSkillEnd", ["技能Id", t.SkillId], ["技能名", t.SkillName]);
       ModelManager_1.ModelManager.CombatMessageModel?.RemoveSkillRefCount(t.MNc);
       i = t.SkillInfo;
       BaseSkillComponent_1.tZr.Start();
@@ -1101,15 +1116,12 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
   }
   GetTargetTransform() {
-    var t = this.SkillTarget.Entity.GetComponent(0).GetEntityType();
-    if (t !== Protocol_1.Aki.Protocol.kks.Proto_Player && t !== Protocol_1.Aki.Protocol.kks.Proto_Npc && t !== Protocol_1.Aki.Protocol.kks.Proto_Monster && t !== Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-      return this.SkillTarget.Entity.GetComponent(1).ActorTransform;
-    }
-    {
+    if (SkillUtils_1.SkillUtils.IsTsActor(this.SkillTarget)) {
       let t = this.SkillTargetSocket;
       t = t || HIT_CASE_SOCKET_NAME;
       return SkillUtils_1.SkillUtils.GetTargetSocketTransform(this.SkillTarget.Entity, t, 0, "技能", 1);
     }
+    return this.SkillTarget.Entity.GetComponent(1).ActorTransform;
   }
   GetTargetDistance() {
     var t;
@@ -1315,16 +1327,29 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
     }
     return i;
   }
-  *GetAllSkillData(t = 7) {
+  *GetAllSkillId(t = 7) {
     var i = new Set();
+    if (this.DtSkillInfoExtraList && t & 4) {
+      for (const h of this.DtSkillInfoExtraList) {
+        var e = new Array();
+        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(h, e);
+        for (const r of e) {
+          var s = Number(r);
+          if (!i.has(s)) {
+            i.add(s);
+            yield s;
+          }
+        }
+      }
+    }
     if (this._Zr && t & 1) {
-      var e = new Array();
-      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this._Zr, e);
-      for (const h of e) {
-        var s = Number(h);
-        if (!i.has(s)) {
-          i.add(s);
-          yield s;
+      var l = new Array();
+      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this._Zr, l);
+      for (const a of l) {
+        var n = Number(a);
+        if (!i.has(n)) {
+          i.add(n);
+          yield n;
         }
       }
     }
@@ -1340,54 +1365,44 @@ let BaseSkillComponent = BaseSkillComponent_1 = class BaseSkillComponent extends
         case Protocol_1.Aki.Protocol.kks.Proto_Vision:
           t = ConfigManager_1.ConfigManager.WorldConfig.GetVisionCommonSkillRowNames();
       }
-      for (const r of t) {
-        var l = Number(r);
+      for (const S of t) {
+        var o = Number(S);
+        if (!i.has(o)) {
+          i.add(o);
+          yield o;
+        }
+      }
+    }
+  }
+  *GetAllBulletId(t = 7) {
+    var i = new Set();
+    if (this.DtBulletInfoExtraList && t & 4) {
+      for (const n of this.DtBulletInfoExtraList) {
+        var e = new Array();
+        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(n, e);
+        for (const o of e) {
+          var s = BigInt(o);
+          if (!i.has(s)) {
+            i.add(s);
+            yield s;
+          }
+        }
+      }
+    }
+    if (this.DtBulletInfo && t & 1) {
+      t = new Array();
+      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.DtBulletInfo, t);
+      for (const h of t) {
+        var l = BigInt(h);
         if (!i.has(l)) {
           i.add(l);
           yield l;
         }
       }
     }
-    if (this.DtSkillInfoExtraList && t & 4) {
-      for (const a of this.DtSkillInfoExtraList) {
-        var n = new Array();
-        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(a, n);
-        for (const S of n) {
-          var o = Number(S);
-          if (!i.has(o)) {
-            i.add(o);
-            yield o;
-          }
-        }
-      }
-    }
   }
-  *GetAllBulletData(t = 7) {
-    var i = new Set();
-    if (this.DtBulletInfo && t & 1) {
-      var e = new Array();
-      DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(this.DtBulletInfo, e);
-      for (const o of e) {
-        var s = BigInt(o);
-        if (!i.has(s)) {
-          i.add(s);
-          yield s;
-        }
-      }
-    }
-    if (this.DtBulletInfoExtraList && t & 4) {
-      for (const h of this.DtBulletInfoExtraList) {
-        var l = new Array();
-        DataTableUtil_1.DataTableUtil.GetDataTableAllRowNamesFromTable(h, l);
-        for (const r of l) {
-          var n = BigInt(r);
-          if (!i.has(n)) {
-            i.add(n);
-            yield n;
-          }
-        }
-      }
-    }
+  GetExtraTargetLocation(t) {
+    return this.GetSkill(t)?.ExtraTargetLocation;
   }
 };
 BaseSkillComponent.Ozr = Stats_1.Stat.Create("BeginSkill");

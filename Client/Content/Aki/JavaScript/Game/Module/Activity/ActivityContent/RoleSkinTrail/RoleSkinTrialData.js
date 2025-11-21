@@ -142,6 +142,14 @@ class RoleSkinTrialData extends ActivityData_1.ActivityBaseData {
     }
     return false;
   }
+  GetExDataFinishShowState() {
+    for (const t of this.S7l) {
+      if (t.ChallengeState !== Protocol_1.Aki.Protocol.Lps.a3_) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 exports.RoleSkinTrialData = RoleSkinTrialData;
 //# sourceMappingURL=RoleSkinTrialData.js.map

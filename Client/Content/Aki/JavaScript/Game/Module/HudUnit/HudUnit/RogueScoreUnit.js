@@ -99,7 +99,7 @@ class RogueScoreUnit extends HudUnitBase_1.HudUnitBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, e => {
       i[t] = e;
       s.SetResult();
-    }, 103);
+    }, 103, this.MemoryTag);
     return s.Promise;
   }
   async YIn(e, t, i) {
@@ -107,7 +107,7 @@ class RogueScoreUnit extends HudUnitBase_1.HudUnitBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.NiagaraSystem, e => {
       i[t] = e;
       s.SetResult();
-    }, 103);
+    }, 103, this.MemoryTag);
     return s.Promise;
   }
   async eUn(e) {
@@ -115,7 +115,7 @@ class RogueScoreUnit extends HudUnitBase_1.HudUnitBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.MaterialParameterCollection, e => {
       this.Cnt = e;
       t.SetResult();
-    }, 103);
+    }, 103, this.MemoryTag);
     return t.Promise;
   }
   OnStart() {

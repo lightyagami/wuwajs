@@ -39,7 +39,7 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
   }
   OnStart() {
     this.MontageComponent = this.Entity.GetComponent(24);
-    this.TimeScaleComponent = this.Entity.GetComponent(123);
+    this.TimeScaleComponent = this.Entity.GetComponent(126);
     this.d2c();
     return true;
   }
@@ -70,27 +70,30 @@ let BaseDeathComponent = class BaseDeathComponent extends EntityComponent_1.Enti
   GetDeathMontageName(t) {
     return deathMontagePathMap.get(t);
   }
-  PlayDeathMontageWithType(t, e, o) {
-    let a = undefined;
-    var i = this.u2c.get(t);
-    if (i && i.size > 0) {
+  PlayDeathMontageWithType(t, e, o, a) {
+    let i = undefined;
+    var n = this.u2c.get(t);
+    if (n && n.size > 0) {
       let t = undefined;
-      for (t of i.values());
+      for (t of n.values());
       if (t) {
-        a = this.MontageComponent?.CreateTaskWithName(t, undefined, e);
+        i = this.MontageComponent?.CreateTaskWithName(t, undefined, e);
       }
     } else {
-      var i = this.GetDeathMontage(t);
-      if (i) {
-        a = this.MontageComponent?.CreateTaskWithMontage(i, undefined, e);
+      var n = this.GetDeathMontage(t);
+      if (n) {
+        i = this.MontageComponent?.CreateTaskWithMontage(n, undefined, e);
       }
     }
-    if (a === undefined) {
-      i = deathMontagePathMap.get(t);
-      CombatLog_1.CombatLog.Warn("Animation", this.Entity, "蒙太奇播放失败", ["montageType", t], ["path", i]);
+    if (i === undefined) {
+      n = deathMontagePathMap.get(t);
+      CombatLog_1.CombatLog.Warn("Animation", this.Entity, "蒙太奇播放失败", ["montageType", t], ["path", n]);
       e?.(true);
     } else {
-      this.MontageComponent?.PlayMontageTaskWhenReady(a, 0, o);
+      if (a) {
+        this.Entity.GetComponent(44)?.StartForceDisableAnimOptimization(6, false);
+      }
+      this.MontageComponent?.PlayMontageTaskWhenReady(i, 0, o);
     }
   }
   ReplaceDeathMontage(t, e) {

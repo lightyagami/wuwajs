@@ -27,6 +27,7 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const ChildQuestNodeBase_1 = require("../../../Module/GeneralLogicTree/BehaviorNode/ChildQuestNode/ChildQuestNodeBase");
 const GeneralLogicTreeUtil_1 = require("../../../Module/GeneralLogicTree/GeneralLogicTreeUtil");
 const InteractionModel_1 = require("../../../Module/Interaction/InteractionModel");
+const InteractConfirmController_1 = require("../../../Module/Interaction/SecondConfirm/InteractConfirmController");
 const TsInteractionUtils_1 = require("../../../Module/Interaction/TsInteractionUtils");
 const PlotController_1 = require("../../../Module/Plot/PlotController");
 const SceneTeamController_1 = require("../../../Module/SceneTeam/SceneTeamController");
@@ -99,9 +100,9 @@ class PawnInteractController {
     this.IsTurnAround = false;
     this.IsTurnRecoveryImmediately = false;
     this.IsWaitTurnComplete = false;
-    this.qld = "Dialog";
-    this.Gld = undefined;
-    this.Fld = undefined;
+    this.A_d = "Dialog";
+    this.D_d = undefined;
+    this.x_d = undefined;
     this.PreTalkConfigs = undefined;
     this.PlayerInteractiveRange = undefined;
     this.IsPlayerTurnAround = false;
@@ -117,6 +118,7 @@ class PawnInteractController {
     this.OnInteractionUpdate = undefined;
     this.OnInteractActionEnd = undefined;
     this.rOu = new Set();
+    this.SecondConfirmHandle = 0;
     this.InteractEntity = new InteractEntity(t.Entity);
     this.frr = t;
     this.Hte = t.Entity.GetComponent(1);
@@ -137,6 +139,10 @@ class PawnInteractController {
     this.SectorRange = undefined;
     this.OnInteractionUpdate = undefined;
     this.OnInteractActionEnd = undefined;
+    if (InteractConfirmController_1.InteractConfirmController.CheckHandleValid(this.SecondConfirmHandle)) {
+      InteractConfirmController_1.InteractConfirmController.CancelAction(this.SecondConfirmHandle);
+    }
+    this.SecondConfirmHandle = 0;
   }
   get DefaultShowOption() {
     var t = this.GetInteractiveOption();
@@ -152,10 +158,10 @@ class PawnInteractController {
     return this.Drr;
   }
   GetInteractIcon() {
-    if (this.Gld && this.Fld) {
-      return this.Fld;
+    if (this.D_d && this.x_d) {
+      return this.x_d;
     } else {
-      return this.qld;
+      return this.A_d;
     }
   }
   wrr() {
@@ -278,7 +284,7 @@ class PawnInteractController {
         if (a.DoIntactType !== "Direct") {
           s = true;
         } else if (!r || a.Type.Type === "Flow") {
-          if (a.CustomOptionType !== 1 && this.Nrr(a) && this.oOu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
+          if (a.CustomOptionType !== 1 && a.CustomOptionType !== 3 && this.Nrr(a) && this.oOu(a, e) && !!this.InteractEntity.EntityId && ModelManager_1.ModelManager.InteractionModel.CheckOptionUniqueness(this.InteractEntity.EntityId, a, t)) {
             this.TempDirectOptionInstances.push(a);
             this.InteractEntity.DirectOptionInstanceIds.push(a.InstanceId);
             if ((n = a.TidContent ? PublicUtil_1.PublicUtil.GetConfigTextByKey(a.TidContent) : undefined) && !a.ConditionCheck && a.LockTips?.TidAppendText) {
@@ -336,11 +342,11 @@ class PawnInteractController {
   }
   Brr(e) {
     if (e.InteractIcon) {
-      this.qld = e.InteractIcon;
+      this.A_d = e.InteractIcon;
     } else if (e.InteractDefaultIcon) {
-      this.qld = e.InteractDefaultIcon;
+      this.A_d = e.InteractDefaultIcon;
     } else {
-      this.qld = "Dialog";
+      this.A_d = "Dialog";
     }
     if (e.Options?.length > 0) {
       for (let t = 0, i = e.Options.length; t < i; t++) {
@@ -619,8 +625,8 @@ class PawnInteractController {
       r.TidContent = e;
     }
     if (t.DoIntactType === "Direct") {
-      this.Gld = t.Guid;
-      this.Fld = t.Icon;
+      this.D_d = t.Guid;
+      this.x_d = t.Icon;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 36, "AddDynamicInteractOption success", ["PbDataId", this.GetPbDataId()]);
@@ -695,9 +701,9 @@ class PawnInteractController {
     if (this.frr?.Entity.Valid) {
       EventSystem_1.EventSystem.EmitWithTarget(this.frr.Entity, EventDefine_1.EEventName.OnRemoveDynamicOption);
     }
-    if (this.Gld === i) {
-      this.Gld = undefined;
-      this.Fld = undefined;
+    if (this.D_d === i) {
+      this.D_d = undefined;
+      this.x_d = undefined;
     }
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 36, "RemoveDynamicInteractOption success", ["PbDataId", this.GetPbDataId()], ["IsMatch", n]);
@@ -774,6 +780,13 @@ class PawnInteractController {
     var e;
     if (this.prr && (e = this.prr.find(t => t.InstanceId === i))) {
       e.SetDisable(t);
+    }
+  }
+  ChangeOptiontRange(i, t, e = 0) {
+    var r;
+    if (this.prr && (r = this.prr.find(t => t.InstanceId === i))) {
+      r.Range = t;
+      this.Grr();
     }
   }
   ChangeInteractOption(t) {
@@ -1015,13 +1028,13 @@ class PawnInteractController {
       }
       this.frr.SetServerLockInteract(false, "交互失败");
       if (t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrSceneEntityNotExist && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractRange && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractCd && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrPreCondition && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractOptionGuidInvalid && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteractIsNotParticipant && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrInteracTreeSuspend && t !== Protocol_1.Aki.Protocol.Q4n.Proto_ErrorBanInteractEntity) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 20334);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t, 21923);
       }
       if (!ModelManager_1.ModelManager.PlotModel.IsInPlot && UiManager_1.UiManager.IsViewShow("PlotView")) {
         PlotController_1.PlotController.EndInteraction(false, true);
       }
     } else {
-      if (i = this.Hte?.Entity?.GetComponent(142)) {
+      if (i = this.Hte?.Entity?.GetComponent(145)) {
         i.CloseAllCollisions();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInteractDropItemSuccess);

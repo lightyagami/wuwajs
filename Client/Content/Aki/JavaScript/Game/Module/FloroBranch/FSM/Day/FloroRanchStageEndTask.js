@@ -19,7 +19,7 @@ class FloroRanchStageEndTask extends FloroRanchDailyTaskBase_1.FloroRanchDailyTa
       CloseCallback: a => {
         this.Complete(() => {
           if (a) {
-            if (this.Xmu.ulu || this.Xmu.$Bu) {
+            if (this.Xmu.ulu || this.Xmu.AVu) {
               ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(4);
             } else {
               ModelManager_1.ModelManager.FloroRanchGamePlayModel.ChangeState(3);

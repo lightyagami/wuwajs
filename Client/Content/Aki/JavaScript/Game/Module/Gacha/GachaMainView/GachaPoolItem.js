@@ -21,18 +21,24 @@ class GachaPoolItem extends UiPanelBase_1.UiPanelBase {
     this.LevelSequencePlayer = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
   async PlayStartSeqAsync() {
+    this.OnPlayStartSeq();
     await this.LevelSequencePlayer?.PlaySequenceAsync("Start", new CustomPromise_1.CustomPromise(), false);
   }
+  PlayStartSeq() {
+    this.OnPlayStartSeq();
+    this.LevelSequencePlayer?.PlayOrReplaySequenceByName("Start");
+  }
+  OnPlayStartSeq() {}
   PlaySwitchSeq() {
-    if (this.LevelSequencePlayer.CheckSeqActorIsSeqPlaying("Switch")) {
-      this.LevelSequencePlayer.ReplaySequenceByKey("Switch");
-    } else {
-      this.LevelSequencePlayer.PlayLevelSequenceByName("Switch");
-    }
+    this.OnPlaySwitchSeq();
+    this.LevelSequencePlayer.PlayOrReplaySequenceByName("Switch");
   }
   async PlaySwitchSeqAsync() {
+    this.OnPlaySwitchSeq();
     await this.LevelSequencePlayer?.PlaySequenceAsync("Switch", new CustomPromise_1.CustomPromise());
   }
+  OnPlaySwitchSeq() {}
+  async OnPlayingSwitchSeqAsync() {}
   Update(e) {
     this.GachaPoolData = e;
     if (this.GachaPoolData) {

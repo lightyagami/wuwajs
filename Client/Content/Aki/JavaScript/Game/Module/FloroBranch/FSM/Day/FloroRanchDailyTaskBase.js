@@ -10,7 +10,7 @@ class FloroRanchDailyTaskBase {
     this.TaskId = 0;
     this.c_u = false;
     this.at_ = false;
-    this.eud = false;
+    this.TSd = false;
     this.d_u = undefined;
     this.TaskId = FloroRanchDailyTaskBase.f_r++;
   }
@@ -42,7 +42,7 @@ class FloroRanchDailyTaskBase {
     }
   }
   AsyncComplete(s) {
-    this.eud = true;
+    this.TSd = true;
     if (this.c_u && !this.at_) {
       this.Complete(s);
     }
@@ -53,8 +53,8 @@ class FloroRanchDailyTaskBase {
       this.OnRemoveEventListener();
     }
   }
-  tud() {
-    return this.c_u && !this.at_ && this.eud;
+  bSd() {
+    return this.c_u && !this.at_ && this.TSd;
   }
   Pause() {
     if (this.c_u) {
@@ -68,7 +68,7 @@ class FloroRanchDailyTaskBase {
     if (this.at_) {
       this.c_u = true;
       this.at_ = false;
-      if (this.tud()) {
+      if (this.bSd()) {
         this.Complete();
       }
     } else if (Log_1.Log.CheckError()) {

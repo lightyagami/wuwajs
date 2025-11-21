@@ -23,6 +23,7 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
     super(...arguments);
     this.Uhr = undefined;
     this.vel = new Map();
+    this.HZd = new Set();
   }
   GetStatName() {
     return "CharMaterialControllerV2";
@@ -48,23 +49,34 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
   AddMaterialControllerData(e, t, r) {
     var a = Stats_1.Stat.CreateNoFlameGraph("CharMaterialControllerV2_AddData_" + e.GetName());
     a.Start();
-    var n = new CharMaterialControllerHandle();
-    var i = e.DataType === 1;
-    var s = e.DataType === 2;
+    var i = new CharMaterialControllerHandle();
+    var s = e.DataType === 1;
+    var n = e.DataType === 2;
     var o = e.HiddenAfterEffect;
-    var i = this.Uhr.AddEffect(e, i, s, r, o);
-    n.HandleId = i;
-    n.UserData = t;
-    n.AssetData = e;
-    this.vel.set(i, n);
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()], ["Handle", i]);
+    var s = this.Uhr.AddEffect(e, s, n, r, o);
+    if (s < 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("RenderCharacter", 25, "添加材质控制器失败", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()]);
+      }
+      a.Stop();
+    } else {
+      i.HandleId = s;
+      i.UserData = t;
+      i.AssetData = e;
+      this.vel.set(s, i);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()], ["Handle", s]);
+      }
+      if (e.ForceBattleMask) {
+        this.HZd.add(s);
+        this.Uhr.AddBattleMaskCount(0);
+      }
+      if (e.ForceUpdateOnAdd && (this.Uhr.UpdateEffectsOnly(), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器时立刻更新材质", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()], ["Handle", s]);
+      }
+      a.Stop();
     }
-    if (e.ForceUpdateOnAdd && (this.Uhr.UpdateEffectsOnly(), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("RenderCharacter", 25, "添加材质控制器时立刻更新材质", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", e.GetName()], ["Handle", i]);
-    }
-    a.Stop();
-    return i;
+    return s;
   }
   RemoveMaterialControllerData(e) {
     var t = this.vel.get(e);
@@ -80,6 +92,11 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
       this.RenderComponent.OnRemoveMaterialController(e);
     }
     this.vel.clear();
+    var t = this.HZd.size;
+    for (let e = 0; e < t; ++e) {
+      this.Uhr.RemoveBattleMaskCount(0);
+    }
+    this.HZd.clear();
   }
   CleanOriginEffectByOtherData() {
     for (const t of this.vel.keys()) {
@@ -91,8 +108,9 @@ class CharMaterialControllerV2 extends CharRenderBase_1.CharRenderBase {
   }
   Mel(e) {
     var t = this.vel.get(e);
-    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), this.RenderComponent.OnRemoveMaterialController(e), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]);
+    if (t && (this.vel.delete(e), EventSystem_1.EventSystem.EmitWithTarget(this.RenderComponent, EventDefine_1.EEventName.OnRemoveMaterialController, e), this.RenderComponent.OnRemoveMaterialController(e), Log_1.Log.CheckDebug() && Log_1.Log.Debug("RenderCharacter", 25, "自动移除材质控制器", ["IdentifyName", this.Uhr.IdentifyName], ["AssetData", t.AssetData?.GetName()], ["Handle", e]), this.HZd.has(e))) {
+      this.Uhr.RemoveBattleMaskCount(0);
+      this.HZd.delete(e);
     }
   }
   Update() {}

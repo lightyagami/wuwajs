@@ -32,6 +32,7 @@ const MainRoleController_1 = require("../MainRoleController");
 const RoleController_1 = require("../RoleController");
 const RoleTagSmallIconItem_1 = require("../RoleTag/RoleTagSmallIconItem");
 const StarItem_1 = require("../View/StarItem");
+const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -48,10 +49,14 @@ class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
       this.Fdo();
     };
     this.LevelUpClick = () => {
-      RoleController_1.RoleController.SendRoleLevelUpViewRequestWithOpenView(this.RoleInstance.GetRoleId());
+      var e = this.RoleInstance.GetRoleId();
+      var e = new RoleViewViewModel_1.RoleViewViewModel(e, false);
+      RoleController_1.RoleController.OpenRoleViewByViewModel("RoleLevelUpView", e);
     };
     this.BreakthroughClick = () => {
-      RoleController_1.RoleController.SendRoleBreakThroughViewRequest(this.RoleInstance.GetRoleId());
+      var e = this.RoleInstance.GetRoleId();
+      var e = new RoleViewViewModel_1.RoleViewViewModel(e, false);
+      RoleController_1.RoleController.OpenRoleViewByViewModel("RoleBreachView", e);
     };
     this.RoleChangeClick = () => {
       if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
@@ -164,16 +169,16 @@ class RoleAttributeTabView extends UiTabViewBase_1.UiTabViewBase {
     var n = t.length;
     for (let e = 0; e < n; ++e) {
       r = e === 0 ? o : LguiUtil_1.LguiUtil.CopyItem(o, i);
-      var s = t[e];
-      var a = new AttributeItem_1.AttributeItem();
-      a.CreateThenShowByActor(r.GetOwner());
-      a.UpdateParam(s, false);
+      var a = t[e];
+      var l = new AttributeItem_1.AttributeItem();
+      l.CreateThenShowByActor(r.GetOwner());
+      l.UpdateParam(a, false);
       if (n > 2 && e % 2 == 0) {
-        a.SetBgActive(true);
+        l.SetBgActive(true);
       } else {
-        a.SetBgActive(false);
+        l.SetBgActive(false);
       }
-      this.AttributeItemList.push(a);
+      this.AttributeItemList.push(l);
     }
   }
   AddEventListener() {

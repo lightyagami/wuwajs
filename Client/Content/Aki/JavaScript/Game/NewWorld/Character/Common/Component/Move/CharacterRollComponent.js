@@ -45,13 +45,13 @@ let CharacterRollComponent = class CharacterRollComponent extends EntityComponen
     };
   }
   static get Dependencies() {
-    return [179];
+    return [182];
   }
   OnInit(e) {
     return true;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(179);
+    this.Gce = this.Entity.GetComponent(182);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CustomMoveRoll, this.Uxa);
     return true;
   }

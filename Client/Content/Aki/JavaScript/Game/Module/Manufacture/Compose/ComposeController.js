@@ -64,14 +64,14 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(29394, e => {
+    Net_1.Net.Register(28667, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10277_服务端主动推送合成数据更新");
       }
       ModelManager_1.ModelManager.ComposeModel.UpdateComposeDataList(e.nGs);
       ModelManager_1.ModelManager.ComposeModel.HideComposeDataList(e._Gs);
     });
-    Net_1.Net.Register(16074, e => {
+    Net_1.Net.Register(29395, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10280_服务端主动推送合成等级数据更新");
       }
@@ -80,8 +80,8 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(29394);
-    Net_1.Net.UnRegister(16074);
+    Net_1.Net.UnRegister(28667);
+    Net_1.Net.UnRegister(29395);
   }
   static JIi(e) {
     ModelManager_1.ModelManager.ComposeModel.CreateComposeDataList(e.nGs);
@@ -94,109 +94,178 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Compose", 49, "10273_客户端请求合成系统相关数据(异步刷新)");
     }
     var e = new Protocol_1.Aki.Protocol.tCs();
-    var e = await Net_1.Net.CallAsync(18782, e);
+    var e = await Net_1.Net.CallAsync(27547, e);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 49, "10273_返回请求合成系统相关数据(异步刷新)");
     }
     if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
       ComposeController.JIi(e);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 29075, undefined, true, false);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 24340, undefined, true, false);
       if (UiManager_1.UiManager.IsViewShow("ComposeCarryOnView")) {
         UiManager_1.UiManager.CloseView("ComposeCarryOnView");
       }
     }
   }
-  static async SendSynthesisItemRequest(t, r, n) {
-    var a = new Protocol_1.Aki.Protocol.rCs();
-    a.s5n = t;
-    a.Q6n = r;
-    a.m9n = n;
-    a.AVn = ModelManager_1.ModelManager.ComposeModel.CurrentInteractCreatureDataLongId;
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Compose", 49, "10275_请求合成道具");
+  static async SendSynthesisItemRequestBatchNew(e, o) {
+    var t = new Protocol_1.Aki.Protocol.t1m();
+    for (const a of e) {
+      var r = a.Item.Count - a.Item.SelectedCount;
+      if (!(r <= 0)) {
+        var n = [];
+        for (const s of a.ComposeList) {
+          n.push({
+            L8n: s.ItemId,
+            UVn: s.Count
+          });
+        }
+        t.o1m.push({
+          s5n: a.Item.ItemId,
+          m9n: r,
+          r1m: n
+        });
+      }
     }
-    var t = await Net_1.Net.CallAsync(17657, Protocol_1.Aki.Protocol.rCs.create(a));
-    if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Compose", 49, "10275_请求合成道具返回");
-    }
-    if (t.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
-      let e = undefined;
-      if (e = (e = (e = e || ModelManager_1.ModelManager.ComposeModel.GetStructureDataById(t.s5n)) || ModelManager_1.ModelManager.ComposeModel.GetReagentProductionDataById(t.s5n)) || ModelManager_1.ModelManager.ComposeModel.GetPurificationDataById(t.s5n)) {
-        e.LastRoleId = t.Q6n;
-      }
-      var r = t.MPs;
-      if (t.EPs.length !== 0) {
-        r.push(...t.EPs);
-      }
-      var n = ModelManager_1.ModelManager.ComposeModel;
-      var a = n.GetComposeInfo();
-      var s = a.ComposeLevel;
-      var i = n.GetComposeMaxLevel();
-      var l = n.GetComposeLevelByLevel(i);
-      var a = a.TotalProficiency;
-      var l = l.Completeness;
-      let o = undefined;
-      if (n.CurrentComposeListType === 1 && (n.LastExp < l || s < i && a < l)) {
-        l = n.GetComposeLevelByLevel(Math.min(i, s + 1));
-        i = {
-          FromProgress: n.LastExp,
-          ToProgress: a,
-          MaxProgress: l.Completeness
-        };
-        o = [i];
-      }
-      n.LastExp = a;
-      const m = [];
-      for (const g of r) {
-        var _ = g.L8n;
-        var C = g.UVn;
-        var _ = new RewardItemData_1.RewardItemData(_, C);
-        m.push(_);
-      }
-      if (!ComposeController.PlayCompositeWorkingDisplay(() => {
-        ComposeController.ZIi(SUCCESS_AUDIO_ID);
-        ComposeController.PlayCompositeLoopDisplay();
-        ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, m, o);
-      })) {
-        ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, m, o);
-      }
-      ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList(r);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSuccess);
+    if (t.o1m.length <= 0) {
+      o?.();
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Cvs, 16562);
+      const i = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.t1m.create(t));
+      if (i.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
+        const l = [];
+        Object.keys(i.bMs).forEach(e => {
+          l.push({
+            L8n: Number(e),
+            UVn: i.bMs[e]
+          });
+        });
+        ComposeController.k_m(l, o);
+      } else {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(i.Cvs, 29114);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
+      }
+    }
+  }
+  static async SendSynthesisItemRequestNew(e, o, t, r) {
+    var n = new Protocol_1.Aki.Protocol.t1m();
+    n.o1m = [{
+      s5n: e,
+      m9n: o,
+      r1m: t.filter(e => e.UVn > 0)
+    }];
+    const a = await Net_1.Net.CallAsync(20420, Protocol_1.Aki.Protocol.t1m.create(n));
+    if (a.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
+      const s = [];
+      Object.keys(a.bMs).forEach(e => {
+        s.push({
+          L8n: Number(e),
+          UVn: a.bMs[e]
+        });
+      });
+      ComposeController.k_m(s, r);
+    } else {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(a.Cvs, 29114);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
     }
   }
-  static async SendExchangeItemRequest(e, o, t) {
-    var r;
+  static async SendSynthesisItemRequest(o, t, e) {
+    var r = new Protocol_1.Aki.Protocol.rCs();
+    r.s5n = o;
+    r.Q6n = t;
+    r.m9n = e;
+    r.AVn = ModelManager_1.ModelManager.ComposeModel.CurrentInteractCreatureDataLongId;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Compose", 49, "10275_请求合成道具");
+    }
+    var o = await Net_1.Net.CallAsync(23848, Protocol_1.Aki.Protocol.rCs.create(r));
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Compose", 49, "10275_请求合成道具返回");
+    }
+    if (o.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
+      let e = undefined;
+      if (e = (e = (e = e || ModelManager_1.ModelManager.ComposeModel.GetStructureDataById(o.s5n)) || ModelManager_1.ModelManager.ComposeModel.GetReagentProductionDataById(o.s5n)) || ModelManager_1.ModelManager.ComposeModel.GetPurificationDataById(o.s5n)) {
+        e.LastRoleId = o.Q6n;
+      }
+      t = o.MPs;
+      if (o.EPs.length !== 0) {
+        t.push(...o.EPs);
+      }
+      ComposeController.k_m(t);
+    } else {
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 21127);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
+    }
+  }
+  static k_m(e, o) {
+    var t = ModelManager_1.ModelManager.ComposeModel;
+    var r = t.GetComposeInfo();
+    var n = r.ComposeLevel;
+    var a = t.GetComposeMaxLevel();
+    var s = t.GetComposeLevelByLevel(a);
+    var r = r.TotalProficiency;
+    var s = s.Completeness;
+    let i = undefined;
+    if (t.CurrentComposeListType === 1 && (t.LastExp < s || n < a && r < s)) {
+      s = t.GetComposeLevelByLevel(Math.min(a, n + 1));
+      a = {
+        FromProgress: t.LastExp,
+        ToProgress: r,
+        MaxProgress: s.Completeness
+      };
+      i = [a];
+    }
+    t.LastExp = r;
+    const l = [];
+    for (const m of e) {
+      var _ = m.L8n;
+      var C = m.UVn;
+      var _ = new RewardItemData_1.RewardItemData(_, C);
+      l.push(_);
+    }
+    if (o) {
+      o();
+    } else if (!ComposeController.PlayCompositeWorkingDisplay(() => {
+      ComposeController.ZIi(SUCCESS_AUDIO_ID);
+      ComposeController.PlayCompositeLoopDisplay();
+      ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, l, i);
+    })) {
+      ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, l, i);
+    }
+    ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList(e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSuccess);
+  }
+  static async SendExchangeItemRequest(e, o, t, r) {
     var n;
-    var a = new Protocol_1.Aki.Protocol.Np_();
-    a.Mjl = e;
-    a.Ejl = o;
-    a.Ijl = t;
+    var a;
+    var s = new Protocol_1.Aki.Protocol.Np_();
+    s.Mjl = e;
+    s.Ejl = o;
+    s.Ijl = t;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 5, "请求置换");
     }
-    var o = await Net_1.Net.CallAsync(26099, Protocol_1.Aki.Protocol.Np_.create(a));
+    var o = await Net_1.Net.CallAsync(29877, Protocol_1.Aki.Protocol.Np_.create(s));
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Compose", 5, "请求置换返回");
     }
     if (o.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
-      a = [];
-      r = e;
-      n = t / ComposeDefine_1.EXCHANGE_COUNT;
-      r = new RewardItemData_1.RewardItemData(r, n);
-      a.push(r);
-      ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, a, undefined);
-      n = {
+      s = [];
+      n = e;
+      a = t / ComposeDefine_1.EXCHANGE_COUNT;
+      n = new RewardItemData_1.RewardItemData(n, a);
+      s.push(n);
+      if (r) {
+        r();
+      } else {
+        ItemRewardController_1.ItemRewardController.OpenCompositeRewardView(2004, true, s, undefined);
+      }
+      a = {
         L8n: e,
         UVn: t / ComposeDefine_1.EXCHANGE_COUNT
       };
-      ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList([n]);
+      ModelManager_1.ModelManager.ComposeModel.UpdateComposeItemList([a]);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeSuccess);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 16562);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(o.Cvs, 21127);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ComposeFail);
     }
   }
@@ -209,7 +278,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     } else {
       e = new Protocol_1.Aki.Protocol.sCs();
       ComposeController.eTi = true;
-      Net_1.Net.Call(20046, Protocol_1.Aki.Protocol.sCs.create(e), e => {
+      Net_1.Net.Call(27017, Protocol_1.Aki.Protocol.sCs.create(e), e => {
         ComposeController.eTi = false;
         if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (Log_1.Log.CheckDebug()) {
@@ -217,7 +286,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpgradeComposeLevel);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 25584);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 17484);
         }
       });
     }
@@ -225,7 +294,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
   static SendSynthesisFormulaUnlockRequest(t) {
     var e = new Protocol_1.Aki.Protocol.lCs();
     e.s5n = t;
-    Net_1.Net.Call(19837, Protocol_1.Aki.Protocol.lCs.create(e), e => {
+    Net_1.Net.Call(22866, Protocol_1.Aki.Protocol.lCs.create(e), e => {
       var o;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Compose", 49, "10281_制药配方解锁请求返回");
@@ -238,7 +307,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ComposeStudy", o);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateComposeFormula);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 28536);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20823);
       }
     });
   }
@@ -312,13 +381,17 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static GetMaxCreateCount(e, o) {
-    e = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(e);
-    e = ComposeController.Hqt(e.ConsumeItems, e.LimitCount);
-    if (!o || o.TotalMakeCountInLimitTime <= 0) {
-      return e;
+    if (ModelManager_1.ModelManager.ComposeModel?.IsInPurificationList()) {
+      return ModelManager_1.ModelManager.ComposeModel.GetMaxCreateCountPurification(e, o);
     } else {
-      o = o.TotalMakeCountInLimitTime - o.MadeCountInLimitTime;
-      return Math.min(e, o);
+      e = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(e);
+      e = ComposeController.Hqt(e.ConsumeItems, e.LimitCount);
+      if (!o || o.TotalMakeCountInLimitTime <= 0) {
+        return e;
+      } else {
+        o = o.TotalMakeCountInLimitTime - o.MadeCountInLimitTime;
+        return Math.min(e, o);
+      }
     }
   }
   static Hqt(e, o) {
@@ -336,24 +409,33 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     return t;
   }
   static async SendManufacture(e, o) {
+    var t;
+    var r;
     if (ModelManager_1.ModelManager.ComposeModel.CheckComposeMaterialEnough(e)) {
       if (ModelManager_1.ModelManager.ComposeModel.CurrentComposeListType === 1) {
         ModelManager_1.ModelManager.ComposeModel.CleanAddExp();
       }
-      await ComposeController.SendSynthesisItemRequest(e, ComposeController.GetCurrentRoleId(), o);
+      if (ModelManager_1.ModelManager.ComposeModel?.IsInPurificationList()) {
+        t = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(e).ItemId;
+        r = [...ModelManager_1.ModelManager.ComposeModel.PurificationComposeMaterialList];
+        ModelManager_1.ModelManager.ComposeModel.PurificationComposeMaterialList = undefined;
+        await ComposeController.SendSynthesisItemRequestNew(t, o, r);
+      } else {
+        await ComposeController.SendSynthesisItemRequest(e, ComposeController.GetCurrentRoleId(), o);
+      }
     } else {
       ComposeController.PlayCompositeFailDisplay(() => {
         ComposeController.PlayCompositeLoopDisplay();
       });
     }
   }
-  static async SendExchangeRequest(e, o, t) {
+  static async SendExchangeRequest(e, o, t, r) {
     if (ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(o) < t) {
       ComposeController.PlayCompositeFailDisplay(() => {
         ComposeController.PlayCompositeLoopDisplay();
       });
     } else {
-      await this.SendExchangeItemRequest(e, o, t);
+      await this.SendExchangeItemRequest(e, o, t, r);
     }
   }
   static GetCurrentRoleId() {
@@ -502,7 +584,7 @@ class ComposeController extends UiControllerBase_1.UiControllerBase {
     if (this.YIi) {
       var e = EntitySystem_1.EntitySystem.Get(this.YIi);
       if (e) {
-        return e.GetComponent(197);
+        return e.GetComponent(200);
       }
     }
   }

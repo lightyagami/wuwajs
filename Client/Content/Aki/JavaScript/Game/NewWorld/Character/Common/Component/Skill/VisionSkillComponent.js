@@ -78,21 +78,22 @@ let VisionSkillComponent = class VisionSkillComponent extends CharacterSkillComp
       s = t.NextSkillId;
     }
     var e;
-    var t = this.GetSkill(s);
+    var t = this.GetSkillInfo(s);
     if (t) {
-      if (e = this.EZo.IsMultiSkill(t.SkillInfo)) {
+      if (e = this.EZo.IsMultiSkill(t)) {
         this.GJa = s;
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "使用幻象技能", ["skillId", s]);
       }
       if (super.BeginSkill(s, i)) {
-        if (e && this.GJa === s && (this.Bjs(true, true), this.EZo.StartMultiSkill(t, false))) {
+        i = this.GetSkill(s);
+        if (e && this.GJa === s && (this.Bjs(true, true), this.EZo.StartMultiSkill(i, false))) {
           this.SZo = s;
         }
         return this.yZo = true;
       } else {
-        CombatLog_1.CombatLog.Warn("Skill", this.vZo?.Entity, "角色开始幻象变身技能失败", ["技能Id", t?.SkillId], ["技能名", t?.SkillName]);
+        CombatLog_1.CombatLog.Warn("Skill", this.vZo?.Entity, "角色开始幻象变身技能失败", ["技能Id", s], ["技能名", t?.SkillName]);
         return false;
       }
     } else {

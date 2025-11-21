@@ -47,8 +47,8 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
     this.Hte = undefined;
     this.Lie = undefined;
     this.Sz1 = undefined;
-    this.s4u = undefined;
-    this.RWc = undefined;
+    this.CVu = undefined;
+    this.BWc = undefined;
     this.dce = false;
     this.Mz1 = false;
     this.Ez1 = [];
@@ -59,7 +59,7 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
     this.Iz1 = undefined;
     this.mBe = undefined;
     this.ohu = 0;
-    this.wWc = (t, i) => {
+    this.kWc = (t, i) => {
       if (i && this.Mz1) {
         this.Tz1(false);
       }
@@ -70,7 +70,7 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
         this.Tz1(false);
       }
     };
-    this.a4u = (t, i) => {
+    this.pVu = (t, i) => {
       if (!i) {
         this.Tz1(false);
       }
@@ -88,7 +88,7 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
         }
       }
     };
-    this.Ilt = (t, i) => {
+    this.Ilt = t => {
       if (this.dce && this.Mz1) {
         this.mBe.SetPositionSubState(CharacterUnifiedStateTypes_1.ECharPositionSubState.WalkOnAir);
       }
@@ -107,13 +107,13 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    var t = this.Entity.GetComponent(206);
-    return !!t?.Valid && (this.Iz1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(179)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(176), true);
+    var t = this.Entity.GetComponent(209);
+    return !!t?.Valid && (this.Iz1 = this.Hte.Actor, this.Lie = t, !!this.Entity.GetComponent(182)?.Valid) && (this.k_(), this.mBe = this.Entity.GetComponent(179), true);
   }
   k_() {
     this.Sz1 = this.Lie.ListenForTagAddOrRemove(1970009389, this.RKr);
-    this.s4u = this.Lie.ListenForTagAddOrRemove(-1384309247, this.a4u);
-    this.RWc = this.Lie.ListenForTagAddOrRemove(-1371021686, this.wWc);
+    this.CVu = this.Lie.ListenForTagAddOrRemove(-1384309247, this.pVu);
+    this.BWc = this.Lie.ListenForTagAddOrRemove(-1371021686, this.kWc);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);
@@ -121,8 +121,8 @@ let CharacterWalkOnAirComponent = CharacterWalkOnAirComponent_1 = class Characte
   }
   BKr() {
     this.Sz1?.EndTask();
-    this.s4u?.EndTask();
-    this.RWc?.EndTask();
+    this.CVu?.EndTask();
+    this.BWc?.EndTask();
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharOnPositionStateChanged, this.DVr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharMovementModeChanged, this.Hqr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.RoleOnStateInherit, this.I3r);

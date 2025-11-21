@@ -98,7 +98,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.l_n = true;
       var e = t.GetPbEntityInitData();
       if (e) {
-        this.Xte = this.Entity?.GetComponent(197);
+        this.Xte = this.Entity?.GetComponent(200);
         this.Wpo = t.GetCreatureDataId();
         this.r_n = (0, IComponent_1.getComponent)(e.ComponentsData, "SceneItemLifeCycleComponent");
         this.StateConfig = (0, IComponent_1.getComponent)(e.ComponentsData, "EntityStateComponent");
@@ -175,7 +175,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this.UpdateState(-1278190765, true);
     }
     if (this._ii !== 3 || !this.r_n) {
-      if (e = this.Entity.GetComponent(164)) {
+      if (e = this.Entity.GetComponent(167)) {
         t = (t = this.StateConfig?.State) ? GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t) : undefined;
         if (this.W1n !== t) {
           e.ResetToInitState(this.StateConfig.State, this.u_n);
@@ -227,7 +227,7 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
       this._ii = 0;
       i = this.r_n?.CreateStageConfig.PerformDuration;
       t = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(-991879492);
-      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(203).GetIsSceneInteractionLoadCompleted())) {
+      if (this.nXr?.场景交互物状态列表.Get(t) !== undefined && (this.Xte.AddTag(-991879492), !this.Entity.GetComponent(206).GetIsSceneInteractionLoadCompleted())) {
         EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
       } else if (i >= MIN_DELAY_THRESHOLD) {
         this.I5a = TimerSystem_1.FlowTimeTimerSystem.Delay(() => {
@@ -298,5 +298,5 @@ let SceneItemStateComponent = class SceneItemStateComponent extends EntityCompon
     this.I5a = undefined;
   }
 };
-SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(134)], SceneItemStateComponent);
+SceneItemStateComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(137)], SceneItemStateComponent);
 exports.SceneItemStateComponent = SceneItemStateComponent; //# sourceMappingURL=SceneItemStateComponent.js.map

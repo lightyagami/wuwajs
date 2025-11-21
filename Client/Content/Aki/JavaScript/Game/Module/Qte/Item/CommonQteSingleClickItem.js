@@ -24,8 +24,8 @@ class CommonQteSingleClickItem extends CommonQteItemBase_1.CommonQteItemBase {
     this.NQa = false;
     this.fS1 = undefined;
     this.SPe = undefined;
-    this.$Zu = undefined;
-    this.WZu = undefined;
+    this.$Xu = undefined;
+    this.gQc = undefined;
     this.Qtt = undefined;
     this.$xt = t => {
       if (t === "Start") {
@@ -70,13 +70,13 @@ class CommonQteSingleClickItem extends CommonQteItemBase_1.CommonQteItemBase {
   OnStart() {
     var t;
     super.OnStart();
-    this.$Zu = this.GetButton(0);
-    this.WZu = this.GetSlider(3);
-    this.WZu?.SetValue(1);
-    this.WZu?.SetSelfInteractive(false);
+    this.$Xu = this.GetButton(0);
+    this.gQc = this.GetSlider(3);
+    this.gQc?.SetValue(1);
+    this.gQc?.SetSelfInteractive(false);
     this.GetItem(2)?.SetUIActive(false);
     this.GetText(1)?.SetUIActive(false);
-    this.$Zu?.OnPointDownCallBack.Bind(() => {
+    this.$Xu?.OnPointDownCallBack.Bind(() => {
       this.OnPress();
     });
     if (this.Qtt) {
@@ -100,7 +100,7 @@ class CommonQteSingleClickItem extends CommonQteItemBase_1.CommonQteItemBase {
       ControllerHolder_1.ControllerHolder.CommonQteController.StopQte(this.fS1.HandleId);
     }
     this.jQa();
-    this.$Zu?.OnPointDownCallBack.Unbind();
+    this.$Xu?.OnPointDownCallBack.Unbind();
     this.SPe?.Clear();
     this.fS1 = undefined;
     this.iIl = -1;
@@ -232,7 +232,7 @@ class CommonQteSingleClickItem extends CommonQteItemBase_1.CommonQteItemBase {
         } else {
           this.fS1.UpdateTime(t);
           if (!this.fS1.IsPermanent) {
-            this.WZu?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
+            this.gQc?.SetValue(this.fS1?.GetRemainingTimeProgress() ?? 1);
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {
             this.Bfc();

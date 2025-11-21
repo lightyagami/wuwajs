@@ -38,12 +38,12 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
     this.d$t = undefined;
     this.C$t = undefined;
     this.g$t = Vector_1.Vector.Create();
-    this.Pqu = undefined;
+    this.pFu = undefined;
     this.f$t = undefined;
     this.p$t = 0;
     this.v$t = 0;
     this.OJa = false;
-    this.xqu = undefined;
+    this.vFu = undefined;
     this.IRe = undefined;
     this.OnTick = () => {
       this.IRe = undefined;
@@ -68,9 +68,9 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
     var i = t.RangeEntities;
     this.OJa = i !== undefined && i.length > 0;
     if (this.OJa) {
-      this.xqu = [];
+      this.vFu = [];
       for (const l of i) {
-        this.xqu.push(l);
+        this.vFu.push(l);
       }
     }
     if (e) {
@@ -192,8 +192,8 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
   }
   GetRangePbDataIds() {
     var t = [];
-    if (this.xqu) {
-      for (const e of this.xqu) {
+    if (this.vFu) {
+      for (const e of this.vFu) {
         t.push(e);
       }
     }
@@ -214,13 +214,13 @@ class ReachAreaBehaviorNode extends ChildQuestNodeBase_1.ChildQuestNodeBase {
       case "Cylinder":
         var s;
         if (this.f$t) {
-          this.Pqu ||= Vector_1.Vector.Create();
+          this.pFu ||= Vector_1.Vector.Create();
           s = this.v$t / 2;
           this.g$t.DeepCopy(this.f$t);
-          this.Pqu.DeepCopy(this.f$t);
+          this.pFu.DeepCopy(this.f$t);
           this.g$t.Z += s;
-          this.Pqu.Z -= s;
-          UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.World, this.g$t.ToUeVector(), this.Pqu.ToUeVector(), this.p$t, i, t, e);
+          this.pFu.Z -= s;
+          UE.KismetSystemLibrary.D_DrawDebugCylinder(GlobalData_1.GlobalData.World, this.g$t.ToUeVector(), this.pFu.ToUeVector(), this.p$t, i, t, e);
         }
     }
   }

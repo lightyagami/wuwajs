@@ -8,6 +8,13 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CaveHoleMarkItemView_1 = require("../MarkItemView/CaveHoleMarkItemView");
 const ConfigMarkItem_1 = require("./ConfigMarkItem");
 class CaveHoleMarkItem extends ConfigMarkItem_1.ConfigMarkItem {
+  constructor(e, t, r, i, a, s = 1) {
+    if (t.InstanceDungeonId !== 0) {
+      super(e, t, r, i, a, 2);
+    } else {
+      super(e, t, r, i, a, s);
+    }
+  }
   OnInitialize() {
     this.uil();
     super.OnInitialize();

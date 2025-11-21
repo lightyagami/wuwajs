@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.TrapDefenseBattleSkillData = undefined;
 const CommonDefine_1 = require("../../../../../Core/Define/CommonDefine");
 const InputEnums_1 = require("../../../../Input/InputEnums");
+const TDPlayerController_1 = require("../../../../KuroSimpleCombat/TD/TDPlayer/TDPlayerController");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../../../../Ui/InputDistribute/InputMappingsDefine");
@@ -20,7 +21,7 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.CharacterSkillCdComponent = undefined;
     this.SkillTexturePath = undefined;
     this.IsEnableInternal = true;
-    this.Vod = false;
+    this._hd = false;
   }
   OnInitData() {
     var t;
@@ -28,8 +29,8 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.EntityHandle = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (this.EntityHandle) {
       t = this.EntityHandle.Entity;
-      this.GameplayTagComponent = t.GetComponent(206);
-      this.CharacterSkillCdComponent = t.GetComponent(208);
+      this.GameplayTagComponent = t.GetComponent(209);
+      this.CharacterSkillCdComponent = t.GetComponent(211);
     }
     if (this.Config) {
       this.InitSkill();
@@ -101,14 +102,14 @@ class TrapDefenseBattleSkillData extends BattleSkillDataBase_1.BattleSkillDataBa
     this.IsEnableInternal = true;
   }
   SetIsBuilding(t) {
-    this.Vod = t;
+    this._hd = t;
   }
   IsCdVisible() {
     var t;
-    return !this.Vod && !!(t = ModelManager_1.ModelManager.TowerDefensePlayerModel?.CurrentFollowerProxyId) && ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(t)?.CDSkill === 1;
+    return !this._hd && !!(t = TDPlayerController_1.TowerDefensePlayerController.GetFollowerProxyId()) && ConfigManager_1.ConfigManager.TrapDefenseConfig.GetAuxiliaryById(t)?.CDSkill === 1;
   }
   GetSkillIconName() {
-    if (this.Config && (this.GetActionName() !== InputMappingsDefine_1.actionMappings.塔防射击 || this.Vod)) {
+    if (this.Config && (this.GetActionName() !== InputMappingsDefine_1.actionMappings.塔防射击 || this._hd)) {
       return this.Config.Name;
     }
   }

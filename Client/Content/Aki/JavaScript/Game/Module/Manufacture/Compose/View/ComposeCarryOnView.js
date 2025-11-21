@@ -49,6 +49,7 @@ const ComposeCircleItem_1 = require("./ComposeCircleItem");
 const ComposeExchangeItem_1 = require("./ComposeExchangeItem");
 const GAP = 112;
 const TIMERGAP = 1000;
+const skipViewPrefixMap = new Map([["RoleBreachView", "AutoSynthesis_ResonatorsAscendMaterial_Num"], ["WeaponRootView", "AutoSynthesis_WeaponAscendMaterial_Num"], ["RoleSkillTreeInfoView", "AutoSynthesis_ForteUpgradeMaterial_Num"]]);
 class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
@@ -83,6 +84,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     this.Kti = 0;
     this.L6e = 0;
     this.D8l = [];
+    this._um = undefined;
     this.LGt = t => {
       var i;
       this.t6 = t;
@@ -194,7 +196,10 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     };
     this.qdi = () => {
       if (ModelManager_1.ModelManager.ComposeModel.CurrentComposeListType !== 4) {
-        this.MLi();
+        this.Kti = this.xuo;
+        this.GTi();
+        this.OTi();
+        this.Kti = 0;
       }
     };
     this.HTi = t => {
@@ -361,7 +366,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIText], [14, UE.UIText], [15, UE.UIText], [16, UE.UIItem], [17, UE.UIScrollViewWithScrollbarComponent], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIText], [21, UE.UIText], [22, UE.UIText], [23, UE.UIText], [24, UE.UIButtonComponent], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIButtonComponent], [28, UE.UILoopScrollViewComponent], [29, UE.UIItem], [30, UE.UIText], [31, UE.UIText], [32, UE.UITexture], [33, UE.UIItem], [34, UE.UIItem], [35, UE.UISprite], [36, UE.UIHorizontalLayout], [37, UE.UIItem], [38, UE.UIText], [39, UE.UIItem], [40, UE.UIItem], [41, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UISprite], [11, UE.UITexture], [12, UE.UIText], [13, UE.UIText], [14, UE.UIText], [15, UE.UIText], [16, UE.UIItem], [17, UE.UIScrollViewWithScrollbarComponent], [18, UE.UIItem], [19, UE.UIItem], [20, UE.UIText], [21, UE.UIText], [22, UE.UIText], [23, UE.UIText], [24, UE.UIButtonComponent], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIButtonComponent], [28, UE.UILoopScrollViewComponent], [29, UE.UIItem], [30, UE.UIText], [31, UE.UIText], [32, UE.UITexture], [33, UE.UIItem], [34, UE.UIItem], [35, UE.UISprite], [36, UE.UIHorizontalLayout], [37, UE.UIItem], [38, UE.UIText], [39, UE.UIItem], [40, UE.UIItem], [41, UE.UIItem], [42, UE.UISprite], [43, UE.UIText]];
     this.BtnBindInfo = [[4, this.Vjl], [24, this.L3e], [27, this.jjl]];
   }
   OnAddEventListener() {
@@ -427,6 +432,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     this.ovt.SetControllerItem(this.GetItem(41));
     this.bjl = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(28), this.GetItem(29).GetOwner(), this.Ujl);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(43), "ComposeExchangeTips");
   }
   OnStart() {
     CommonManager_1.CommonManager.SetCurrentSystem(1);
@@ -434,6 +440,7 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
   OnBeforeShow() {
     var t = this.OpenParam;
     this.v5l = t?.SelectData;
+    this._um = t?.SkipSourceView;
     this.Kti = this.v5l?.ItemId ?? 0;
     this.qTi(t ? this.mFi.indexOf(t.Type) : 0);
     this.Kti = 0;
@@ -468,10 +475,29 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
   }
   DGt() {
     this.RGt(this.SGt, this.yGt * this.t6);
-    var t = this.EGt?.GetScrollItemList();
-    if (t) {
-      for (const i of t) {
-        i.SetTimes(this.t6);
+    if (this.fGt && ModelManager_1.ModelManager.ComposeModel?.IsInPurificationList()) {
+      var t = ModelManager_1.ModelManager.ComposeModel.CalculateNeedComposeMaterialList(this.fGt.ConfigId, this.t6);
+      ModelManager_1.ModelManager.ComposeModel.PurificationComposeMaterialList = t.map(t => ({
+        L8n: t.ItemId,
+        UVn: t.RequiredNum
+      }));
+      const e = t.reverse();
+      this.EGt?.RefreshByData(e.map(t => ({
+        L8n: t.ItemId,
+        UVn: t.RequiredNum,
+        K6n: true
+      })), () => {
+        this.EGt?.GetScrollItemList().forEach((t, i) => {
+          t.SetNeedNum(e[i].RequiredNum);
+        });
+      });
+    } else {
+      t = this.EGt?.GetScrollItemList();
+      if (t) {
+        for (const i of t) {
+          i.SetUiActive(true);
+          i.SetTimes(this.t6);
+        }
       }
     }
   }
@@ -579,6 +605,16 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       this.EGt.SetActive(true);
       t = ModelManager_1.ModelManager.ComposeModel.GetComposeMaterialList(this.fGt.ConfigId);
       [this.SGt, this.yGt, t] = this.xGt(t);
+      if (ModelManager_1.ModelManager.ComposeModel?.IsInPurificationList()) {
+        ModelManager_1.ModelManager.ComposeModel.PurificationComposeMaterialList = [];
+        t.reverse();
+        t.forEach(t => {
+          ModelManager_1.ModelManager.ComposeModel.PurificationComposeMaterialList.push({
+            L8n: t.L8n,
+            UVn: t.UVn
+          });
+        });
+      }
       this.EGt.RefreshByData(t, () => {
         this.DGt();
       });
@@ -606,11 +642,11 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     this.WGe.SetUiActive(false);
     this.WGe.SetMaxBtnShowState(true);
     this.GetText(30).SetUIActive(true);
-    this.wjl = 0;
     this.IGt.SetUiActive(false);
     this.EGt.SetActive(true);
     this.SGt = false;
     this.yGt = 0;
+    this.wjl = 0;
     this.EGt?.RefreshByData([{
       L8n: 0,
       UVn: 0,
@@ -619,15 +655,16 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
     }]);
     this.WGe.Refresh(0);
   }
-  Djl() {
-    this.EGt?.RefreshByData([{
+  Djl(t) {
+    this.EGt?.RefreshByDataAsync([{
       L8n: this.wjl,
       UVn: ComposeDefine_1.EXCHANGE_COUNT,
       K6n: true
-    }]);
+    }]).then(t);
     this.WGe?.SetUiActive(true);
-    var t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.wjl);
+    t = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.wjl);
     this.WGe?.Refresh(MathUtils_1.MathUtils.GetFloatPointFloor(t / ComposeDefine_1.EXCHANGE_COUNT));
+    this.GetText(43)?.SetUIActive(false);
   }
   xGt(t) {
     let i = false;
@@ -826,22 +863,25 @@ class ComposeCarryOnView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(21), "MakeLimit", t, i.TotalMakeCountInLimitTime);
     }
   }
+  uum() {
+    return !!this.v5l && !(this.v5l.Count <= 0) && (this.fGt.MainType === 4 ? this.fGt.ConfigId === this.v5l.ItemId : ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(this.fGt.ConfigId)?.ItemId === this.v5l.ItemId);
+  }
   Gjl() {
-    if (this.fGt.MainType === 4) {
+    if (this.uum()) {
       this.xjl = true;
       this.GetText(22)?.SetUIActive(true);
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(22), "ComposeExchangeTips");
-    } else if (this.v5l && ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(this.fGt.ConfigId)?.ItemId === this.v5l.ItemId) {
-      this.xjl = true;
-      this.GetText(22)?.SetUIActive(true);
-      var i = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(this.v5l.ItemId);
-      var e = this.v5l.Count;
+      var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemCount(this.v5l.ItemId);
+      var s = this.v5l.Count;
       let t = "";
-      t = i < e ? StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_NOT_ENOUGHT_TEXT_PATTERN_B, i.toString()) : StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_ENOUGHT_TEXT_PATTERN_B, i.toString());
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(22), "ComposeNeedTips", t, "" + e);
+      t = e < s ? StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_NOT_ENOUGHT_TEXT_PATTERN_B, e.toString()) : StringUtils_1.StringUtils.Format(ComposeDefine_1.EXCHANGE_MATERIAL_ENOUGHT_TEXT_PATTERN_B, e.toString());
+      this.GetSprite(42)?.SetUIActive(s <= e);
+      let i = undefined;
+      i = this._um ? skipViewPrefixMap.get(this._um) ?? "ComposeNeedTips" : "ComposeNeedTips";
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(22), i, t, "" + s);
     } else {
       this.GetText(22)?.SetUIActive(false);
     }
+    this.GetText(43)?.SetUIActive(this.fGt.MainType === 4 && this.wjl === 0);
   }
   dal() {
     this.GetItem(37).SetUIActive(this.xjl);

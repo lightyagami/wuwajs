@@ -32,7 +32,7 @@ const FormationAttributeController_1 = require("../../../../../Module/Abilities/
 const Trigger_1 = require("./Trigger/Trigger");
 const TriggerType_1 = require("./Trigger/TriggerType");
 function checkRoleAttr(e, r, t, o) {
-  var n = e?.GetComponent(174)?.GetCurrentValue(t);
+  var n = e?.GetComponent(177)?.GetCurrentValue(t);
   if (n) {
     if (r === 0) {
       if (n < o) {
@@ -61,19 +61,19 @@ function checkRoleAttr(e, r, t, o) {
 const builtinFunc = {
   GetTags: e => {
     var r = [];
-    for (const t of e.CheckGetComponent(206).TagContainer.GetAllExactTags() ?? []) {
+    for (const t of e.CheckGetComponent(209).TagContainer.GetAllExactTags() ?? []) {
       r.push(GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t));
     }
     return r;
   },
   GetAttributeByID(e, r) {
-    return e.CheckGetComponent(174).GetCurrentValue(r);
+    return e.CheckGetComponent(177).GetCurrentValue(r);
   },
   HasInt: (e, r) => !!r && r.length !== 0 && r.includes(e),
   MatchAnyInt: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.some(e => r.includes(e)),
   MatchAllInt: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.every(e => r.includes(e)),
-  MatchAnyTag: (e, r) => e.CheckGetComponent(206).HasAnyTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
-  MatchAllTags: (e, r) => e.CheckGetComponent(206).HasAllTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  MatchAnyTag: (e, r) => e.CheckGetComponent(209).HasAnyTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
+  MatchAllTags: (e, r) => e.CheckGetComponent(209).HasAllTag(r.map(e => GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e))),
   GetShieldValue: e => e.CheckGetComponent(75)?.ShieldTotal ?? 0,
   Distance: (e, r) => {
     var t = ModelManager_1.ModelManager.CreatureModel;
@@ -101,28 +101,28 @@ const builtinFunc = {
   },
   GetBattleScore: () => ModelManager_1.ModelManager.BattleScoreModel.GetCurScore(),
   GetBuffStack: (e, r) => {
-    var t = e.CheckGetComponent(191);
+    var t = e.CheckGetComponent(194);
     var r = Number(r);
     if (t) {
       return (t.GetFormationBuffComp()?.GetFormationBuffTotalStackById(r) ?? 0) + (t.GetBuffTotalStackById(r) ?? 0);
     } else {
-      return e.CheckGetComponent(210)?.GetBuffTotalStackById(r) ?? 0;
+      return e.CheckGetComponent(213)?.GetBuffTotalStackById(r) ?? 0;
     }
   },
   MatchAnyBattleFlags: (e, r) => !!e && !!r && e.length !== 0 && r.length !== 0 && e.some(e => r.includes(e)),
-  GetTagStackCount: (e, r) => e.GetComponent(206)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r)) ?? 0,
+  GetTagStackCount: (e, r) => e.GetComponent(209)?.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(r)) ?? 0,
   MatchAnyBuff: (e, r) => {
-    const t = e?.GetComponent(210);
+    const t = e?.GetComponent(213);
     return !!t && !!r && r.length !== 0 && r.some(e => t.HasBuff(e));
   },
   MatchAllBuff: (e, r) => {
-    const t = e?.GetComponent(210);
+    const t = e?.GetComponent(213);
     return !!t && !!r && r.length !== 0 && r.every(e => t.HasBuff(e));
   },
   GetMaxTagCountIndex: (e, r) => {
     let t = 0;
     let o = 0;
-    const n = e.GetComponent(206);
+    const n = e.GetComponent(209);
     if (n && r && r.length !== 0) {
       r.forEach((e, r) => {
         e = n.GetTagCount(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));

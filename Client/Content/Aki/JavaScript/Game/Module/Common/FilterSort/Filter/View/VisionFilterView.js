@@ -45,55 +45,55 @@ class VisionFilterView extends UiViewBase_1.UiViewBase {
     this.Tqe = () => {
       this.qDt();
     };
-    this.IDt = (i, t, e) => {
-      var t = new FilterGroup_1.FilterItem(t);
-      t.SetToggleFunction(this.TDt);
+    this.IDt = (i, e, t) => {
+      var e = new FilterGroup_1.FilterItem(e);
+      e.SetToggleFunction(this.TDt);
       var s = this.MDt.has(i.FilterId);
-      t.ShowTemp(i, s);
+      e.ShowTemp(i, s);
       return {
         Key: i,
-        Value: t
+        Value: e
       };
     };
-    this.TDt = (i, t, e) => {
+    this.TDt = (i, e, t) => {
       if (i === 1) {
-        this.MDt.set(t, e);
+        this.MDt.set(e, t);
       } else {
-        this.MDt.delete(t);
+        this.MDt.delete(e);
       }
     };
-    this.wDt = (i, t, e) => {
-      t = new FilterGroup_1.FilterGroup(t);
-      t.SetSelectedDataMap(this.MDt);
-      t.SetToggleFunction(this.TDt);
-      t.SetOnSelectAllFunction(this.TDt);
-      t.ShowTemp(i, this.C0t.ConfigId);
-      i = t.GetFilterType();
+    this.wDt = (i, e, t) => {
+      e = new FilterGroup_1.FilterGroup(e);
+      e.SetSelectedDataMap(this.MDt);
+      e.SetToggleFunction(this.TDt);
+      e.SetOnSelectAllFunction(this.TDt);
+      e.ShowTemp(i, this.C0t.UniqueId);
+      i = e.GetFilterType();
       return {
         Key: i,
-        Value: t
+        Value: e
       };
     };
     this.Z9e = () => {
+      this.MDt.clear();
       if (this.bDt) {
-        this.MDt.clear();
         for (const i of this.SearchScroll.GetScrollItemList()) {
           i.SetToggleState(false);
         }
       } else {
-        for (const t of this.Scroll.GetScrollItemList()) {
-          t.ResetTempFilterDataMap();
-          t.RefreshGroupItem();
-          t.RefreshSelectAllToggleState();
+        for (const e of this.Scroll.GetScrollItemList()) {
+          e.ResetTempFilterDataMap();
+          e.RefreshGroupItem();
+          e.RefreshSelectAllToggleState();
         }
       }
     };
     this.xDt = () => {
-      const s = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.ConfigId);
+      const s = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
       s.ClearSelectRuleData();
-      this.MDt.forEach((i, t) => {
-        var e = this.BDt.get(t);
-        s.AddSingleRuleData(e, t, i);
+      this.MDt.forEach((i, e) => {
+        var t = this.BDt.get(e);
+        s.AddSingleRuleData(t, e, i);
       });
       this.C0t.ConfirmFunction?.();
       UiManager_1.UiManager.CloseView(this.Info.Name);
@@ -113,28 +113,30 @@ class VisionFilterView extends UiViewBase_1.UiViewBase {
     this.SearchScroll = new GenericScrollView_1.GenericScrollView(this.GetScrollViewWithScrollbar(3), this.IDt);
   }
   kDt() {
-    var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.C0t.ConfigId);
+    var i = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
+    var i = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(i.ConfigId);
     this.Scroll.RefreshByData(i.RuleList);
     this.GDt(false);
   }
   FDt() {
+    const e = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
     var i;
     var t;
-    var e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.C0t.ConfigId);
-    const s = new Array();
-    e.RuleList.forEach(i => {
-      ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(i, this.C0t.ConfigId).forEach(i => {
+    var s = ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(e.ConfigId);
+    const r = new Array();
+    s.RuleList.forEach(i => {
+      ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(i, e.ConfigId).forEach(i => {
         if (i.Content.includes(this.gGe)) {
-          s.push(i);
+          r.push(i);
         }
       });
     });
-    for (const r of this.Scroll.GetScrollItemList()) {
-      for ([i, t] of r.GetTempFilterDataMap()) {
+    for (const h of this.Scroll.GetScrollItemList()) {
+      for ([i, t] of h.GetTempFilterDataMap()) {
         this.MDt.set(i, t);
       }
     }
-    this.SearchScroll.RefreshByData(s);
+    this.SearchScroll.RefreshByData(r);
     this.GDt(true);
   }
   GDt(i) {
@@ -151,18 +153,19 @@ class VisionFilterView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.BDt = new Map();
-    ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(this.C0t.ConfigId).RuleList.forEach(i => {
-      const t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(i).FilterType;
-      ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(i, this.C0t.ConfigId).forEach(i => {
-        this.BDt.set(i.FilterId, t);
+    const t = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.UniqueId);
+    ConfigManager_1.ConfigManager.FilterConfig.GetFilterConfig(t.ConfigId).RuleList.forEach(i => {
+      const e = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(i).FilterType;
+      ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(i, t.ConfigId).forEach(i => {
+        this.BDt.set(i.FilterId, e);
       });
     });
     this.MDt = new Map();
-    var i = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.C0t.ConfigId)?.GetSelectRuleData();
+    var i = t?.GetSelectRuleData();
     if (i) {
       i.forEach(i => {
-        i.forEach((i, t) => {
-          this.MDt?.set(t, i);
+        i.forEach((i, e) => {
+          this.MDt?.set(e, i);
         });
       });
     }

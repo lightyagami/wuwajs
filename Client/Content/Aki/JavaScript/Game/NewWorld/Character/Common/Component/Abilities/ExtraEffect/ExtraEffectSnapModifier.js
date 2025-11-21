@@ -32,11 +32,11 @@ class SnapModifier {
     let a = undefined;
     switch (r) {
       case 0:
-      case 2:
+      case 1:
         a = s.Target.OwnerBuffComponent;
         break;
       case 3:
-      case 1:
+      case 2:
         a = s.Attacker.OwnerBuffComponent;
     }
     for (const h of e) {
@@ -79,9 +79,9 @@ class SnapModifyBuffEffect extends ExtraEffectBase_1.BuffEffect {
   WXo(t, s) {
     switch (s) {
       case 1:
-        return this.OwnerEntity?.CheckGetComponent(174);
+        return this.OwnerEntity?.CheckGetComponent(177);
       case 0:
-        return this.InstigatorEntity?.Entity?.CheckGetComponent(174);
+        return this.InstigatorEntity?.Entity?.CheckGetComponent(177);
       case 2:
         return t.AttackerSnapshot;
       case 3:

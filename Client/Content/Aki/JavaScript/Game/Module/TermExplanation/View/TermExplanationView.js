@@ -19,9 +19,13 @@ class TermExplanationView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.xqe = undefined;
+    this.kQ_ = false;
     this.jr1 = () => new ExplanationItem();
     this.pFe = () => {
-      this.CloseMe();
+      if (!this.kQ_) {
+        this.kQ_ = true;
+        this.CloseMe();
+      }
     };
     this.x41 = () => {
       var e = this.GetScrollViewWithScrollbar(2);

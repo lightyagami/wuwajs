@@ -15,7 +15,7 @@ class LineCrossActivityData extends ActivityData_1.ActivityBaseData {
     this.LPu = new Map();
   }
   PhraseEx(e) {
-    e.CJc?.mps.forEach(e => {
+    e.Med?.mps.forEach(e => {
       var t = this.GetChallengeData(e.e8n);
       if (t) {
         t.Phrase(e);
@@ -138,7 +138,7 @@ class LineCrossActivityData extends ActivityData_1.ActivityBaseData {
     e = this.GetChallengeData(e);
     return !!e && e.GetHasGetReward();
   }
-  med() {
+  Sid() {
     for (const e of this.LPu.values()) {
       if (!e.GetHasGetReward()) {
         return false;
@@ -147,7 +147,7 @@ class LineCrossActivityData extends ActivityData_1.ActivityBaseData {
     return true;
   }
   GetExDataFinishShowState() {
-    return this.med();
+    return this.Sid();
   }
   GetExDataRedPointShowState() {
     if (this.GetPreGuideQuestFinishState()) {

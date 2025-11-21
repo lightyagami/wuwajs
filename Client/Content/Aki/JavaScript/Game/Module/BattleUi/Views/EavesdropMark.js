@@ -94,7 +94,7 @@ class EavesdropMark extends UiPanelBase_1.UiPanelBase {
       this.SetActive(false);
     };
     if (GlobalData_1.GlobalData.World && (this.E$e = t, this.A2n = i, t = EntitySystem_1.EntitySystem.Get(i))) {
-      this.U2n = t.GetComponent(206);
+      this.U2n = t.GetComponent(209);
       this.U2n.AddTagAddOrRemoveListener(normalTag, this.b2n);
       this.U2n.AddTagAddOrRemoveListener(startTakingTag, this.q2n);
       this.U2n.AddTagAddOrRemoveListener(endTag, this.G2n);

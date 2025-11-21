@@ -73,6 +73,7 @@ class FilterGroup extends UiPanelBase_1.UiPanelBase {
     this.j5e = undefined;
     this.EDt = undefined;
     this.Mne = 0;
+    this.wTt = 0;
     this.Layout = undefined;
     this.CurrentSelectedDataMap = undefined;
     this.SDt = undefined;
@@ -126,13 +127,20 @@ class FilterGroup extends UiPanelBase_1.UiPanelBase {
   SetOnSelectAllFunction(t) {
     this.EDt = t;
   }
+  mDt() {
+    var t = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.wTt);
+    this.Mne = t.ConfigId;
+  }
+  ldm() {
+    this.SDt = ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(this.pDt, this.Mne);
+  }
   LDt() {
     var t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterRuleConfig(this.pDt);
     this.vDt = t.FilterType;
   }
   DDt() {
     this.MDt = new Map();
-    var t = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.Mne).GetSelectRuleDataById(this.vDt);
+    var t = ModelManager_1.ModelManager.FilterModel.GetFilterResultData(this.wTt).GetSelectRuleDataById(this.vDt);
     if (t) {
       for (var [i, e] of t) {
         this.MDt.set(i, e);
@@ -176,8 +184,9 @@ class FilterGroup extends UiPanelBase_1.UiPanelBase {
   }
   ShowTemp(t, i) {
     this.pDt = t;
-    this.Mne = i;
-    this.SDt = ModelManager_1.ModelManager.FilterModel.GetFilterItemDataList(this.pDt, this.Mne);
+    this.wTt = i;
+    this.mDt();
+    this.ldm();
     this.LDt();
     this.InitFilterSetData();
     this.RDt();

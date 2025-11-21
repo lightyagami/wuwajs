@@ -24,7 +24,7 @@ class WeeklyRogueRolePosItem extends GridProxyAbstract_1.GridProxyAbstract {
     var i;
     var r;
     if ((this.LAe = e).Data === undefined) {
-      this.b3u(false);
+      this.JGu(false);
       this.GetItem(2).SetUIActive(false);
     } else {
       r = (i = e.Data).GetRoleConfig();
@@ -35,7 +35,7 @@ class WeeklyRogueRolePosItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     }
   }
-  b3u(e) {
+  JGu(e) {
     this.GetTexture(1).SetUIActive(e);
   }
 }

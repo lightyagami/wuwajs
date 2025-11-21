@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.UiBehaviorGuideFocus = undefined;
+const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
@@ -17,10 +18,13 @@ class UiBehaviorGuideFocus {
     this.AZt = undefined;
     this.PZt = undefined;
     this.OQt = undefined;
+    this.wmm = undefined;
     this.OQt = i;
+    this.wmm = this.OQt?.GetRootActor()?.GetComponentByClass(UE.UIGuideMarkComponent.StaticClass());
   }
   SetOwner(i) {
     this.OQt = i;
+    this.wmm = this.OQt?.GetRootActor()?.GetComponentByClass(UE.UIGuideMarkComponent.StaticClass());
   }
   SetParam(...i) {
     this.RZt = i[0];
@@ -92,43 +96,116 @@ class UiBehaviorGuideFocus {
     }
   }
   xZt() {
-    if (!this.OQt) {
+    if (this.OQt) {
+      if (this.OQt.GetRootItem() && this.OQt.GetActive()) {
+        return !!this.uvm() || !!this.Lmm() || !!this.Pmm() || !!this.Amm();
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Guide", 16, `聚焦引导 ${this.RZt.Id} 依附界面还没打开, 打开后再来`);
+        }
+        return false;
+      }
+    } else {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Guide", 16, `聚焦引导 ${this.RZt.Id} AttachedUiComponentAction为空`);
       }
       return false;
     }
-    if (!this.OQt.GetRootItem() || !this.OQt.GetActive()) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Guide", 16, `聚焦引导 ${this.RZt.Id} 依附界面还没打开, 打开后再来`);
+  }
+  uvm() {
+    var i = this.RZt;
+    var t = this.PZt.MultiGuideBox;
+    if (!t || t.length === 0) {
+      return false;
+    }
+    if (!this.wmm) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "未挂载UiGuideMark组件", ["步骤Id", i.Id]);
       }
       return false;
     }
-    var i = this.RZt;
-    var e = this.PZt.ExtraParam;
-    if (e.length > 0) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Guide", 16, "聚焦引导步骤配置了额外参数, 走扩展逻辑", ["步骤Id", i.Id]);
+    if (this.wmm.Type !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "UiGuideMark组件类型错误, 应为Parent, 请检查预制体", ["步骤Id", i.Id]);
       }
-      if ((e = this.OQt.GetGuideUiItemAndUiItemForShowEx(e))?.length !== 2) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Guide", 16, "聚焦引导  额外参数解析失败", ["stepInfo!.Id", i.Id]);
+      return false;
+    }
+    if (this.wmm.Children.Num() === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "UiGuideMark组件下节点列表为空", ["步骤Id", i.Id]);
+      }
+      return false;
+    }
+    var e = [];
+    for (const r of t) {
+      var s = this.wmm.Children.Get(r);
+      if (!s || !s.IsValid()) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Guide", 74, "UiGuideMark组件下未找到指定名称的节点", ["步骤Id", i.Id], ["节点名称", r]);
         }
         return false;
-      } else {
-        (t = i.ViewData).SetAttachedUiItem(e[0]);
-        t.SetAttachedUiItemForShow(e[1]);
-        if (e = this.OQt.GetGuideScrollViewToLock()) {
-          t.TryLockScrollView(e);
-        }
-        return true;
       }
+      s = s.GetUIItem();
+      if (!s) {
+        return false;
+      }
+      e.push(s);
     }
+    i.ViewData.SetMultiAttachItems(e);
+    i.ViewData.SetAttachedUiItem(e[0]);
+    i.ViewData.SetAttachedUiItemForShow(e[0]);
+    return true;
+  }
+  Lmm() {
+    var i = this.RZt;
+    var t = this.PZt.GuideMarkName;
+    let e = this.PZt.GuideMarkNameForShow;
+    if (!t) {
+      return false;
+    }
+    e = e || t;
+    if (!this.wmm) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "未挂载UiGuideMark组件, 尝试其他方式获取聚焦控件", ["步骤Id", i.Id]);
+      }
+      return false;
+    }
+    if (this.wmm.Type !== 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "UiGuideMark组件类型错误, 应为Parent, 请检查预制体", ["步骤Id", i.Id]);
+      }
+      return false;
+    }
+    if (this.wmm.Children.Num() === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Guide", 74, "UiGuideMark组件下节点列表为空", ["步骤Id", i.Id]);
+      }
+      return false;
+    }
+    t = this.wmm.Children.Get(t);
+    if (!t || !t.IsValid()) {
+      return false;
+    }
+    t = t.GetUIItem();
+    if (!t) {
+      return false;
+    }
+    i.ViewData.SetAttachedUiItem(t);
+    var t = this.wmm.Children.Get(e);
+    return !!t && !!t.IsValid() && !!(t = t.GetUIItem()) && !(i.ViewData.SetAttachedUiItemForShow(t), 0);
+  }
+  Pmm() {
+    var i = this.RZt;
+    var t = this.PZt.ExtraParam;
+    return t.length > 0 && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Guide", 16, "聚焦引导步骤配置了额外参数, 走扩展逻辑", ["步骤Id", i.Id]), (t = this.OQt.GetGuideUiItemAndUiItemForShowEx(t))?.length !== 2 ? (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Guide", 16, "聚焦引导  额外参数解析失败", ["stepInfo!.Id", i.Id]), false) : ((i = i.ViewData).SetAttachedUiItem(t[0]), i.SetAttachedUiItemForShow(t[1]), (t = this.OQt.GetGuideScrollViewToLock()) && i.TryLockScrollView(t), true));
+  }
+  Amm() {
+    var i = this.RZt;
     var t = this.PZt.HookName;
     var e = this.OQt.GetGuideUiItem(t);
     if (!e) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Guide", 16, "挂接组件(GuideHookRegistry)不存在该挂接点名称，请检查聚焦引导配置或挂接组件", ["当前打开的界面名称", this.AZt], ["引导应该依附的界面", this.UZt], ["引导组id", i.OwnerGroup.Id], ["聚焦引导Id", i.Id], ["出错的挂点名称", t]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Guide", 16, "挂接组件(GuideHookRegistry)未找到该挂接点名称，可能是等待出现或配置错误", ["当前打开的界面名称", this.AZt], ["引导应该依附的界面", this.UZt], ["引导组id", i.OwnerGroup.Id], ["聚焦引导Id", i.Id], ["出错的挂点名称", t]);
       }
       return false;
     }
@@ -140,8 +217,8 @@ class UiBehaviorGuideFocus {
       i.ViewData.SetAttachedUiItemForShow(t);
       return true;
     } else {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Guide", 16, "挂接组件(GuideHookRegistry)不存在该挂接点（展示用）名称，请检查聚焦引导配置或挂接组件", ["当前打开的界面名称", this.AZt], ["引导应该依附的界面", this.UZt], ["引导组id", i.OwnerGroup.Id], ["聚焦引导Id", i.Id], ["出错的挂点名称", s]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Guide", 16, "挂接组件(GuideHookRegistry)未找到该挂接点（展示用）名称，可能是等待出现或配置错误", ["当前打开的界面名称", this.AZt], ["引导应该依附的界面", this.UZt], ["引导组id", i.OwnerGroup.Id], ["聚焦引导Id", i.Id], ["出错的挂点名称", s]);
       }
       return false;
     }

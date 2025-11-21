@@ -58,7 +58,7 @@ class SpecialSkillXiaKongSummoned {
   Init(t) {
     if (t?.Valid && t.Entity !== undefined) {
       this.EntityHandle = t;
-      this.AnimComp = t.Entity.GetComponent(178);
+      this.AnimComp = t.Entity.GetComponent(181);
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.Isu);
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Tsu);
       EventSystem_1.EventSystem.AddWithTarget(this.EntityHandle, EventDefine_1.EEventName.RemoveEntity, this.zpe);
@@ -168,7 +168,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if (i === LOOP_SKILL_ID && !(s < LOOP_END_TIME)) {
         i = LOOP_END_TIME - LOOP_START_TIME;
         i = s - Math.floor((s - LOOP_START_TIME) / i) * i;
-        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 178))?.Valid) {
+        if ((h = EntitySystem_1.EntitySystem.GetComponent(t, 181))?.Valid) {
           h.MontageSetPosition(i);
         }
         if (Log_1.Log.CheckDebug()) {
@@ -200,10 +200,10 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
     var t = this.Jh.GetComponent(0);
     this.Wpo = t.GetCreatureDataId();
     this.TSo = this.Jh.GetComponent(40);
-    this.a1c = this.Jh.GetComponent(180);
-    this.Xte = this.Jh.GetComponent(194);
-    this.Wwc = this.Jh.GetComponent(173);
-    this.m1t = this.Jh.GetComponent(191);
+    this.a1c = this.Jh.GetComponent(183);
+    this.Xte = this.Jh.GetComponent(197);
+    this.Wwc = this.Jh.GetComponent(176);
+    this.m1t = this.Jh.GetComponent(194);
     this.bx1 = [undefined, undefined, undefined, undefined];
     this.aO1 = ModelManager_1.ModelManager.CreatureModel.GetPlayerId() === t.GetPlayerId();
     if (this.aO1) {
@@ -294,7 +294,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
           if (!e?.Valid) {
             return;
           }
-          if (t = e.Entity?.GetComponent(180)) {
+          if (t = e.Entity?.GetComponent(183)) {
             this.bx1[i] = t;
           }
         }
@@ -355,7 +355,7 @@ class SpecialSkillXiaKong extends SpecialSkillBase_1.SpecialSkillBase {
       if ((t = this.GetNextEndCircleAttrValue()) >= SUCC_MIN_ATTR_VALUE && t < SUCC_MAX_ATTR_VALUE) {
         this.rRc(true);
       }
-      this.Jh?.GetComponent(94)?.DisableRoleWithoutEffect();
+      this.Jh?.GetComponent(96)?.DisableRoleWithoutEffect();
     }
   }
   u1c() {

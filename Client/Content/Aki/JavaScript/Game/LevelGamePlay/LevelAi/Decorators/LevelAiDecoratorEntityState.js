@@ -4,8 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelAiDecoratorEntityState = undefined;
-const EventDefine_1 = require("../../../Common/Event/EventDefine");
-const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const GameplayTagUtils_1 = require("../../../../Core/Utils/GameplayTagUtils");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const LevelAiDecorator_1 = require("../LevelAiDecorator");
 class LevelAiDecoratorEntityState extends LevelAiDecorator_1.LevelAiDecorator {
@@ -17,21 +16,25 @@ class LevelAiDecoratorEntityState extends LevelAiDecorator_1.LevelAiDecorator {
     };
   }
   OnExecutionStart() {
-    var e = this.Params;
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId))?.Valid) {
-      EventSystem_1.EventSystem.AddWithTarget(e.Entity, EventDefine_1.EEventName.OnGameplayTagChanged, this.gIe);
+    var e;
+    var t = this.Params;
+    if (t && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Valid) {
+      t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.State);
+      e.Entity.GetComponent(200)?.AddTagAddOrRemoveListener(t, this.gIe);
     }
   }
   OnExecutionFinish() {
-    var e = this.Params;
-    if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId))?.Valid) {
-      EventSystem_1.EventSystem.RemoveWithTarget(e.Entity, EventDefine_1.EEventName.OnGameplayTagChanged, this.gIe);
+    var e;
+    var t = this.Params;
+    if (t && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Valid) {
+      t = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t.State);
+      e.Entity.GetComponent(200)?.RemoveTagAddOrRemoveListener(t, this.gIe);
     }
   }
   CheckCondition(e) {
     var t;
-    var r = this.Params;
-    return !!r && !!(t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r.EntityId))?.Valid && !!(t = t.Entity.GetComponent(197)) && (t = t.ContainsTagByName(r.State), r.Compare === "Eq" ? t : !t);
+    var a = this.Params;
+    return !!a && !!(t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a.EntityId))?.Valid && !!(t = t.Entity.GetComponent(200)) && (t = t.ContainsTagByName(a.State), a.Compare === "Eq" ? t : !t);
   }
 }
 exports.LevelAiDecoratorEntityState = LevelAiDecoratorEntityState;

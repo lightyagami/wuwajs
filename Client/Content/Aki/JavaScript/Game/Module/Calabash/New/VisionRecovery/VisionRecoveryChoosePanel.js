@@ -54,13 +54,13 @@ class VisionRecoveryChoosePanel extends UiPanelBase_1.UiPanelBase {
         this.jvt(e);
       }
     };
-    this.$2u = () => {
+    this.Aqu = () => {
       UiManager_1.UiManager.OpenView("PhantomManageView");
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIButtonComponent], [7, UE.UIExtendToggle], [9, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[2, this.OnClickMask], [6, this.OnClickCloseBtn], [7, this.OnClickSelectAllToggle], [9, this.$2u]];
+    this.BtnBindInfo = [[2, this.OnClickMask], [6, this.OnClickCloseBtn], [7, this.OnClickSelectAllToggle], [9, this.Aqu]];
   }
   OnBeforeCreateImplement() {
     this.UiViewSequence = new UiViewSequence_1.UiBehaviorLevelSequence(this);

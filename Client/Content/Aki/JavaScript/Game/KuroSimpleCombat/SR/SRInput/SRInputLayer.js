@@ -17,7 +17,7 @@ class SurvivorsRogueInputLayer extends InputLayer_1.InputLayer {
       case InputEnums_1.EInputAction.走跑切换:
         return;
       case InputEnums_1.EInputAction.技能1:
-        this.Fwd();
+        this.mAd();
         return SurvivorsRogueInputLayer.GetSwallowCommand();
     }
     return SurvivorsRogueInputLayer.GetSwallowCommand();
@@ -28,7 +28,7 @@ class SurvivorsRogueInputLayer extends InputLayer_1.InputLayer {
   HandleHold(e, r) {
     return SurvivorsRogueInputLayer.GetSwallowCommand();
   }
-  Fwd() {
+  mAd() {
     var e = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubController;
     if (e) {
       e.ExecSkillAction();

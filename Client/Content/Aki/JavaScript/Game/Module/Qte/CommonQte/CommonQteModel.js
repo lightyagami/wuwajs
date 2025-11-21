@@ -29,15 +29,17 @@ const CommonQteSelectOptionContext_1 = require("./CommonQteSelectOptionContext")
 const CommonQteSingleClickContext_1 = require("./CommonQteSingleClickContext");
 const DT_COMMON_QTE_PATH = "/Game/Aki/Data/Qte/DT_CommonQte.DT_CommonQte";
 const DT_COMMON_QTE_GROUP_PATH = "/Game/Aki/Data/Qte/DT_CommonQteGroup.DT_CommonQteGroup";
+const UI_EDITOR_PATH = "UIEditor";
+const UI_RESOURCES_PATH = "UIResources";
 class CommonQteModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.hJ = -1;
     this.ZEl = 0;
     this.tlc = undefined;
-    this.gad = undefined;
+    this.$ad = undefined;
     this.tIl = undefined;
-    this.Cad = undefined;
+    this.Dod = undefined;
     this.jXu = undefined;
     this.IsRefreshMode = false;
   }
@@ -45,7 +47,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     this.ClearPreloadCache();
     this.tIl?.clear();
     this.tlc = undefined;
-    return !(this.gad = undefined);
+    return !(this.$ad = undefined);
   }
   CreateQteContext(t, o = undefined, n = undefined, r = 0, i = undefined) {
     var m = this.GetCommonQteConfig(t);
@@ -135,7 +137,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     return t;
   }
   GetCommonQteGroupConfig(e) {
-    if (!this.gad) {
+    if (!this.$ad) {
       var t = ResourceSystem_1.ResourceSystem.Load(DT_COMMON_QTE_GROUP_PATH, UE.DataTable);
       if (!t?.IsValid()) {
         if (Log_1.Log.CheckError()) {
@@ -143,9 +145,9 @@ class CommonQteModel extends ModelBase_1.ModelBase {
         }
         return;
       }
-      this.gad = t;
+      this.$ad = t;
     }
-    t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.gad, e.toString());
+    t = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.$ad, e.toString());
     if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("CommonQte", 67, "找不到通用QTE组配置", ["QteGroupId", e]);
@@ -258,7 +260,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     e = this.tIl?.get(e)?.QteId;
     if (e) {
       this.jXu?.delete(e);
-      this.Cad?.delete(e);
+      this.Dod?.delete(e);
     }
     this.hJ = -1;
   }
@@ -267,39 +269,39 @@ class CommonQteModel extends ModelBase_1.ModelBase {
   }
   GetQteResource(e, t = false) {
     if (!t) {
-      return this.Cad?.get(e);
+      return this.Dod?.get(e);
     }
-    if (this.Cad === undefined) {
-      this.Cad = new Map();
+    if (this.Dod === undefined) {
+      this.Dod = new Map();
     }
-    let o = this.Cad.get(e);
+    let o = this.Dod.get(e);
     if (!o) {
       o = {};
-      this.Cad.set(e, o);
+      this.Dod.set(e, o);
     }
     return o;
   }
   LoadQteResource(e) {
     var t;
     var o;
-    if (this.Cad?.has(e)) {
+    if (this.Dod?.has(e)) {
       return [];
     } else {
       t = [];
       if (o = this.GetQteIconPath(e)) {
-        t.push(this.vad(e, o));
+        t.push(this.xod(e, o));
       }
       if (o = this.GetQteScreenEffectPath(e, 1)) {
-        t.push(this.yad(e, o));
+        t.push(this.Uod(e, o));
       }
       if (o = this.GetQteScreenEffectPath(e, 2)) {
-        t.push(this.Sad(e, o));
+        t.push(this.Bod(e, o));
       }
       if (o = this.GetQteCameraShakePath(e)) {
-        t.push(this.Mad(e, o));
+        t.push(this.kod(e, o));
       }
       if (o = this.GetQteScaleCurvePath(e)) {
-        t.push(this.Uqd(e, o));
+        t.push(this.s3d(e, o));
       }
       return t;
     }
@@ -316,7 +318,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
         e = t.BaseConfig.LongPressConfig.UIConfig.Icon.ToAssetPathName();
       }
       if (e && e !== "None") {
-        return e;
+        return e = e.includes(UI_EDITOR_PATH) ? e.replace(UI_EDITOR_PATH, UI_RESOURCES_PATH) : e;
       } else {
         return undefined;
       }
@@ -346,7 +348,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
       return undefined;
     }
   }
-  async vad(o, n) {
+  async xod(o, n) {
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.LGUITexturePackerSpriteData, e => {
       var t;
@@ -364,7 +366,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     }, 100);
     return r.Promise;
   }
-  async yad(o, n) {
+  async Uod(o, n) {
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectScreenPlayData_C, e => {
       var t;
@@ -382,7 +384,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     }, 100);
     return r.Promise;
   }
-  async Sad(o, n) {
+  async Bod(o, n) {
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadTypeAsync("EffectModelPostProcess_C", () => {
       ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.EffectModelPostProcess_C, e => {
@@ -402,7 +404,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     });
     return r.Promise;
   }
-  async Mad(o, n) {
+  async kod(o, n) {
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.Class, e => {
       var t;
@@ -420,7 +422,7 @@ class CommonQteModel extends ModelBase_1.ModelBase {
     }, 100);
     return r.Promise;
   }
-  async Uqd(o, n) {
+  async s3d(o, n) {
     const r = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(n, UE.CurveFloat, e => {
       var t;
@@ -441,10 +443,10 @@ class CommonQteModel extends ModelBase_1.ModelBase {
   ClearPreloadCache(e) {
     if (e !== undefined) {
       this.jXu?.delete(e);
-      this.Cad?.delete(e);
+      this.Dod?.delete(e);
     } else {
       this.jXu?.clear();
-      this.Cad?.clear();
+      this.Dod?.clear();
     }
   }
 }

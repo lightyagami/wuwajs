@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NavigationGroupInsideComponent = exports.NavigationGroupPrevComponent = exports.NavigationGroupDownNextComponent = exports.NavigationGroupUpNextComponent = exports.NavigationGroupNextComponent = undefined;
+exports.NavigationGroupInsideComponent = exports.NavigationGroupRightPrevLinkComponent = exports.NavigationGroupRightPrevComponent = exports.NavigationGroupPrevComponent = exports.NavigationGroupLeftNextComponent = exports.NavigationGroupDownNextComponent = exports.NavigationGroupUpNextComponent = exports.NavigationGroupNextComponent = undefined;
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const UiNavigationJoystickInput_1 = require("../Module/UiNavigationJoystickInput");
 const UiNavigationLogic_1 = require("../New/UiNavigationLogic");
-const UiNavigationNewController_1 = require("../New/UiNavigationNewController");
 const HotKeyComponent_1 = require("./HotKeyComponent");
 class NavigationGroupNextComponentBase extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
@@ -19,10 +19,10 @@ class NavigationGroupNextComponentBase extends HotKeyComponent_1.HotKeyComponent
     };
   }
   JumpToNextGroupListener() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(this.GetHotKeyConfig().BindButtonTag);
+    ControllerHolder_1.ControllerHolder.UiNavigationNewController.JumpNavigationGroupByTag(this.GetHotKeyConfig().BindButtonTag);
   }
   OnRelease(t) {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroupByTag(t.BindButtonTag);
+    ControllerHolder_1.ControllerHolder.UiNavigationNewController.JumpNavigationGroupByTag(t.BindButtonTag);
   }
   OnStartInputAxis(t) {
     UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Lqo);
@@ -33,16 +33,16 @@ class NavigationGroupNextComponentBase extends HotKeyComponent_1.HotKeyComponent
   OnClear() {
     UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Lqo);
   }
-  OnRefreshSelfHotKeyState(i) {
-    var o = i.GetFocusListener();
-    if (o) {
-      var o = o.GetNavigationGroup();
-      var e = this.GetBindButtonTag();
+  OnRefreshSelfHotKeyState(o) {
+    var e = o.GetFocusListener();
+    if (e) {
+      var e = e.GetNavigationGroup();
+      var i = this.GetBindButtonTag();
       let t = undefined;
-      t = e ? o.GroupNameMap.Get(e) : o.NextGroupName;
-      if (!StringUtils_1.StringUtils.IsEmpty(t) && (e = i.GetActiveNavigationGroupByNameCheckAll(t))) {
-        o = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(e);
-        this.SetVisibleMode(2, o);
+      t = i ? e.GroupNameMap.Get(i) : e.NextGroupName;
+      if (!StringUtils_1.StringUtils.IsEmpty(t) && (i = o.GetActiveNavigationGroupByNameCheckAll(t))) {
+        e = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(i);
+        this.SetVisibleMode(2, e);
       } else {
         this.SetVisibleMode(2, false);
       }
@@ -69,17 +69,23 @@ class NavigationGroupDownNextComponent extends NavigationGroupNextComponentBase 
   }
 }
 exports.NavigationGroupDownNextComponent = NavigationGroupDownNextComponent;
-class NavigationGroupPrevComponent extends HotKeyComponent_1.HotKeyComponent {
+class NavigationGroupLeftNextComponent extends NavigationGroupNextComponentBase {
+  GetDirection() {
+    return 2;
+  }
+}
+exports.NavigationGroupLeftNextComponent = NavigationGroupLeftNextComponent;
+class NavigationGroupPrevComponentBase extends HotKeyComponent_1.HotKeyComponent {
   constructor() {
     super(...arguments);
     this.Dqo = t => {
-      if (t === 2) {
-        UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6);
+      if (t === this.GetDirection()) {
+        ControllerHolder_1.ControllerHolder.UiNavigationNewController.JumpNavigationGroup(6);
       }
     };
   }
   OnPress() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpNavigationGroup(6);
+    ControllerHolder_1.ControllerHolder.UiNavigationNewController.JumpNavigationGroup(6);
   }
   OnStartInputAxis(t) {
     UiNavigationJoystickInput_1.UiNavigationJoystickInput.RegisterLeftJoystickFunction(this.Dqo);
@@ -91,23 +97,45 @@ class NavigationGroupPrevComponent extends HotKeyComponent_1.HotKeyComponent {
     UiNavigationJoystickInput_1.UiNavigationJoystickInput.UnRegisterLeftJoystickFunction(this.Dqo);
   }
   OnRefreshSelfHotKeyState(t) {
-    var i = t.GetFocusListener();
-    if (i && (i = i.GetNavigationGroup(), !StringUtils_1.StringUtils.IsEmpty(i.PrevGroupName)) && (t = t.GetActiveNavigationGroupByNameCheckAll(i.PrevGroupName))) {
-      i = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(t);
-      this.SetVisibleMode(2, i);
+    var o = t.GetFocusListener();
+    if (o && (o = o.GetNavigationGroup(), !StringUtils_1.StringUtils.IsEmpty(o.PrevGroupName)) && (t = t.GetActiveNavigationGroupByNameCheckAll(o.PrevGroupName))) {
+      o = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(t);
+      this.SetVisibleMode(2, o);
     } else {
       this.SetVisibleMode(2, false);
     }
   }
 }
+class NavigationGroupPrevComponent extends NavigationGroupPrevComponentBase {
+  GetDirection() {
+    return 2;
+  }
+}
 exports.NavigationGroupPrevComponent = NavigationGroupPrevComponent;
+class NavigationGroupRightPrevComponent extends NavigationGroupPrevComponentBase {
+  GetDirection() {
+    return 3;
+  }
+}
+class NavigationGroupRightPrevLinkComponent extends (exports.NavigationGroupRightPrevComponent = NavigationGroupRightPrevComponent) {
+  OnRefreshSelfHotKeyState(t) {
+    var o = t.GetFocusListener();
+    if (o && this.IsLinkListener(o.GetOwner()) && (o = o.GetNavigationGroup(), !StringUtils_1.StringUtils.IsEmpty(o.PrevGroupName)) && (t = t.GetActiveNavigationGroupByNameCheckAll(o.PrevGroupName))) {
+      o = UiNavigationLogic_1.UiNavigationLogic.HasActiveListenerInGroup(t);
+      this.SetVisibleMode(2, o);
+    } else {
+      this.SetVisibleMode(2, false);
+    }
+  }
+}
+exports.NavigationGroupRightPrevLinkComponent = NavigationGroupRightPrevLinkComponent;
 class NavigationGroupInsideComponent extends HotKeyComponent_1.HotKeyComponent {
   OnRelease() {
-    UiNavigationNewController_1.UiNavigationNewController.JumpInsideNavigationGroup();
+    ControllerHolder_1.ControllerHolder.UiNavigationNewController.JumpInsideNavigationGroup();
   }
   OnRefreshSelfHotKeyState(t) {
     t = t.GetFocusListener();
-    if (t && this.IsLinkListener(t.GetOwner()) && UiNavigationNewController_1.UiNavigationNewController.GetCanFocusInsideListener(t)) {
+    if (t && this.IsLinkListener(t.GetOwner()) && ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCanFocusInsideListener(t)) {
       this.SetVisibleMode(2, true);
     } else {
       this.SetVisibleMode(2, false);

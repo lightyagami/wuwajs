@@ -12,8 +12,8 @@ class TrapDefenseMonsterWaveData {
     this.Wave = 0;
     this.Config = undefined;
     this.ConfigWave = undefined;
-    this.G9c = new Map();
-    this.q9c = [];
+    this.Njc = new Map();
+    this.Fjc = [];
     this.IsEndlessStart = false;
     this.EndlessWaveDesc = undefined;
     this.Wave = e;
@@ -35,26 +35,26 @@ class TrapDefenseMonsterWaveData {
     this.EndlessWaveDesc = e;
   }
   GetMonsterDataList() {
-    if (this.q9c.length <= 0) {
-      var e = this.F9c();
+    if (this.Fjc.length <= 0) {
+      var e = this.Vjc();
       const t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelMonster.GetMonsterMap();
       e = e.map(e => t.get(e));
       e.sort((e, t) => e.SortId - t.SortId);
-      this.q9c.push(...e);
+      this.Fjc.push(...e);
     }
-    return this.q9c;
+    return this.Fjc;
   }
-  F9c() {
-    if (this.G9c.size <= 0) {
+  Vjc() {
+    if (this.Njc.size <= 0) {
       Json_1.Json.Parse(this.Config.SpawnMonsters)?.forEach(e => {
         const s = e.MonsterGroup;
         ConfigManager_1.ConfigManager.TrapDefenseConfig.GetCsvMonsterGroupConfigByMonsterId(s.Id).forEach(e => {
-          var t = this.G9c.get(e.Id) ?? 0;
-          this.G9c.set(e.Id, t + s.RepeatTimes);
+          var t = this.Njc.get(e.Id) ?? 0;
+          this.Njc.set(e.Id, t + s.RepeatTimes);
         });
       });
     }
-    return Array.from(this.G9c.keys());
+    return Array.from(this.Njc.keys());
   }
   GetWaveFormat(e = 2) {
     return this.Wave.toString().padStart(e, "0");
@@ -72,10 +72,10 @@ class TrapDefenseMonsterWaveData {
     return this.ConfigWave?.WaveEnhanceTips;
   }
   GetMonsterNum(e) {
-    if (this.G9c.size <= 0) {
-      this.F9c();
+    if (this.Njc.size <= 0) {
+      this.Vjc();
     }
-    return this.G9c.get(e.Id) ?? 0;
+    return this.Njc.get(e.Id) ?? 0;
   }
   HaveBoss() {
     return this.GetMonsterDataList().some(e => e.IsBoss());

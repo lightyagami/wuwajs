@@ -17,6 +17,7 @@ class UiBehaviorAudio {
     this.bne = undefined;
     this.OQt = undefined;
     this.LAe = undefined;
+    this.AudioFilter = undefined;
     this.OQt = i;
     if (this.OQt && this.OQt.Info) {
       this.LAe = this.OQt.Info;
@@ -26,8 +27,9 @@ class UiBehaviorAudio {
   }
   OnAfterUiStart() {
     var i = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(this.LAe.Name);
-    if (i.AudioFilter && i.AudioFilter.length > 0 && this.Dja === 0) {
-      this.Dja = AudioFilterController_1.AudioFilterController.PushUiFilterState(i.AudioFilter, this.LAe.Name);
+    this.AudioFilter = i.AudioFilter;
+    if (this.AudioFilter && this.AudioFilter.length > 0 && this.Dja === 0) {
+      this.Dja = AudioFilterController_1.AudioFilterController.PushUiFilterState(this.AudioFilter, this.LAe.Name);
     }
     this.D_r ||= this.OQt.GetUiAudioComponent();
     if (this.LAe.OpenAudioEvent) {
@@ -43,6 +45,8 @@ class UiBehaviorAudio {
     }
     if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
       UiAudioModel_1.UiAudioModel.SetLoopAudioEventShow(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    } else if (this.LAe.KeepLoopEvent) {
+      UiAudioModel_1.UiAudioModel.KeepLoopAudioEventShow(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }
   }
   OnBeforeUiHide() {
@@ -53,18 +57,21 @@ class UiBehaviorAudio {
     }
     if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
       UiAudioModel_1.UiAudioModel.SetLoopAudioEventHide(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    } else if (this.LAe.KeepLoopEvent) {
+      UiAudioModel_1.UiAudioModel.KeepLoopAudioEventHide(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }
   }
   OnBeforeDestroy() {
     this.D_r = undefined;
     if (this.LAe.LoopAudioEvent && this.OQt.GetLoopAudioEventSwitch()) {
       UiAudioModel_1.UiAudioModel.SetLoopAudioEventDestroy(this.OQt.GetViewId(), this.OQt.GetRootActor(), this.LAe.LoopAudioEvent);
+    } else if (this.LAe.KeepLoopEvent) {
+      UiAudioModel_1.UiAudioModel.KeepLoopAudioEventDestroy(this.OQt.GetViewId(), this.OQt.GetRootActor());
     }
     if (this.LAe.CloseAudioEvent) {
       AudioSystem_1.AudioSystem.PostEvent(this.LAe.CloseAudioEvent);
     }
-    var i = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(this.LAe.Name);
-    if (i.AudioFilter && i.AudioFilter.length > 0 && this.Dja !== 0) {
+    if (this.AudioFilter && this.AudioFilter.length > 0 && this.Dja !== 0) {
       AudioFilterController_1.AudioFilterController.RemoveUiFilterState(this.Dja, this.LAe.Name);
       this.Dja = 0;
     }

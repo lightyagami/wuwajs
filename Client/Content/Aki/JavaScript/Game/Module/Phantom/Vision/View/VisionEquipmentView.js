@@ -100,20 +100,34 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.s7i = false;
     this.Gsa = 0;
     this.Ko_ = undefined;
+    this.cGd = 0;
     this.JTt = i => {
       if (i === "ContrastSwitch") {
         this.GetItem(11).SetUIActive(this.o7i);
       }
     };
+    this.Ohm = () => {
+      this.Z9i = 0;
+      this.vpt?.TryClearData();
+      if (this.h8e.GetSelectedIndex() !== this.Z9i) {
+        this.h8e.SetSelectedIndex(this.Z9i);
+      }
+    };
     this.$o_ = () => {
+      var i;
       if (this.Ife) {
-        this.a7i();
+        if ((i = ModelManager_1.ModelManager.VisionRecommendModel.CurrentMainPhantom) && (this.Z9i = this.i7i.indexOf(i.FetterGroupId), this.Z9i === -1 && (this.Z9i = 0), this.OnClickVisionAndRefreshVisionView(0), this.vpt.SelectSingleById(i.MonsterId), this.h8e.GetSelectedIndex() !== this.Z9i)) {
+          this.h8e.SetSelectedIndex(this.Z9i);
+        } else {
+          this.a7i();
+        }
       }
     };
     this.C8e = i => {
+      var t;
       this.Z9i = i;
-      if (this.Ife) {
-        this.a7i();
+      if (this.Ife && (this.a7i(), i = ModelManager_1.ModelManager.VisionRecommendModel.CurrentMainPhantom) && (t = this.i7i[this.Z9i], i.FetterGroupId !== t)) {
+        this.Ko_.ClearSelectMainPhantom(false);
       }
     };
     this.g8e = i => {
@@ -186,6 +200,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     };
     this.sGe = () => {
       var i = new VisionMediumItemGrid_1.VisionMediumItemGrid();
+      i.SetUseFixedAsync(true);
       i.SetClickToggleEvent(this.g7i);
       i.SetOnRefreshEvent(this.f7i);
       i.SetOnPointDownCallBack(this.p7i);
@@ -497,16 +512,20 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     };
     this.tHi = undefined;
     this.Qvt = (i, t, s) => {
-      var e = i;
-      const h = new Array();
-      e.forEach(i => {
-        h.push(ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i.Id));
-      });
-      this.w9i = h;
-      this.F7i();
-      i = i?.length > 0;
-      this.GetLoopScrollViewComponent(6).RootUIComp.SetUIActive(i);
-      this.iHi(e, t, s);
+      if (s === 0 && !t && this.ehm()) {
+        this.Ko_.ClearSelectMainPhantom(false);
+      } else {
+        var e = i;
+        const h = new Array();
+        e.forEach(i => {
+          h.push(ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i.Id));
+        });
+        this.w9i = h;
+        this.F7i();
+        i = i?.length > 0;
+        this.GetLoopScrollViewComponent(6).RootUIComp.SetUIActive(i);
+        this.iHi(e, t, s);
+      }
     };
   }
   OnRegisterComponent() {
@@ -539,6 +558,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.GetItem(15).SetRaycastTarget(false);
     this.GetItem(9).SetUIActive(true);
     this.vpt = new FilterEntrance_1.FilterEntrance(this.GetItem(12), this.Qvt);
+    this.vpt.OnBtnClearClickCallback = () => {
+      this.Ko_.ClearSelectMainPhantom();
+    };
     this.Mpt = new SortEntrance_1.SortEntrance(this.GetItem(13), this.Qvt);
     this.LoopScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(6), this.GetItem(8).GetOwner(), this.sGe);
     this.oHi();
@@ -575,7 +597,9 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     }
   }
   async OnBeforeStartAsync() {
-    this.dFe = this.OpenParam;
+    var i = this.OpenParam;
+    this.dFe = i.RoleId;
+    this.cGd = i.SelectIndex;
     this.q9i = new VisionDetailComponent_1.VisionDetailComponent(this.GetItem(10));
     await this.q9i.Init();
     this.G9i = new VisionDetailComponent_1.VisionDetailComponent(this.GetItem(11));
@@ -585,6 +609,7 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     var i = this.GetItem(33);
     await this.Ko_.CreateByActorAsync(i.GetOwner());
     this.Ko_.BindOnChangeAttrCallBack(this.$o_);
+    this.Ko_.OnDeselectMainPhantomCallback = this.Ohm;
     this.h8e = new CommonDropDown_1.CommonDropDown(this.GetItem(22), this.m8e, this.c8e);
     await this.h8e.Init();
   }
@@ -672,7 +697,12 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.e7i.SelectToggleByIndex(0, true);
   }
   rHi() {
-    this.b9i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex;
+    if (this.cGd >= 0) {
+      this.b9i = this.cGd;
+      ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex = this.cGd;
+    } else {
+      this.b9i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentEquipmentSelectIndex;
+    }
     var i = ModelManager_1.ModelManager.PhantomBattleModel.CurrentSelectUniqueId;
     var t = ModelManager_1.ModelManager.PhantomBattleModel.GetPhantomBattleData(i);
     if (i > 0 && t) {
@@ -998,7 +1028,11 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     var i = this.i7i[this.Z9i];
     var i = ModelManager_1.ModelManager.PhantomBattleModel.GetVisionSortUseDataList(i, this.O5t);
     this.vpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString(), this.dFe);
+    var t = this.vpt.GetUniqueIdByGroupId(this.Z6i);
+    this.Mpt.SetFilterUniqueId(t);
     this.Mpt.UpdateDataWithConfig(this.Z6i, 3, i, this.dFe.toString(), this.dFe);
+    var t = this.Mpt.GetUniqueIdByGroupId(this.Z6i);
+    this.vpt.SetSortUniqueId(t);
   }
   OnAfterShow() {
     this.X9i.forEach(i => {
@@ -1189,6 +1223,12 @@ class VisionEquipmentView extends UiViewBase_1.UiViewBase {
     this.W7i();
     this.e7i.Destroy();
     this.h8e?.Destroy();
+  }
+  ehm() {
+    var i = this.vpt.GetSelectRuleDataMap();
+    var t = ModelManager_1.ModelManager.VisionRecommendModel?.CurrentMainPhantom?.MonsterId;
+    let s = false;
+    return s = t && (i === undefined || i.size !== 1 || !(i = Array.from(i.values()).shift()) || i.size > 1 || !i.has(t)) ? true : s;
   }
   iHi(s, i, e) {
     if (s?.length > 0) {

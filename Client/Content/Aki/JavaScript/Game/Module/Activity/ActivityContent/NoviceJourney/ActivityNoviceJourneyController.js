@@ -33,10 +33,10 @@ class ActivityNoviceJourneyController extends ActivityControllerBase_1.ActivityC
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerLevelChanged, this.x2e);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(16345, this.w2e);
+    Net_1.Net.Register(19602, this.w2e);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(16345);
+    Net_1.Net.UnRegister(19602);
   }
   OnOpenView(e) {}
   OnGetActivityResource(e) {
@@ -55,9 +55,9 @@ class ActivityNoviceJourneyController extends ActivityControllerBase_1.ActivityC
   RequestReward(t) {
     var e = Protocol_1.Aki.Protocol.Ahs.create();
     e.F6n = t;
-    Net_1.Net.Call(29978, e, e => {
+    Net_1.Net.Call(23701, e, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 29949);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26125);
       } else {
         ModelManager_1.ModelManager.ActivityModel.GetActivityById(this.sNe).AddReceivedData(t);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.sNe);

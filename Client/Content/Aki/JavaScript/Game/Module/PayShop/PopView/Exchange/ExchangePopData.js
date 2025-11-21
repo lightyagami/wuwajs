@@ -11,6 +11,8 @@ class ExchangePopData extends UiPopViewData_1.UiPopViewData {
     this.GoodsId = 0;
     this.PayShopGoods = undefined;
     this.ShopItemResource = "";
+    this.GetMaxBuyCount = undefined;
+    this.CheckIfCanBuy = undefined;
   }
 }
 exports.ExchangePopData = ExchangePopData;

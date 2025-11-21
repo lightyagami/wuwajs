@@ -7,6 +7,7 @@ exports.FriendItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const BackgroundCardById_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardById");
+const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const PlatformSdkManagerNew_1 = require("../../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -129,12 +130,21 @@ class FriendItem extends GridProxyAbstract_1.GridProxyAbstract {
       }
     };
     this.R8t = () => {
+      var e;
       if (!ModelManager_1.ModelManager.FriendModel.GetSelectedPlayerOrItemInstance(this.FriendInstanceId)?.Debug) {
-        if (this.f8t()) {
-          ModelManager_1.ModelManager.FriendModel.SelectedPlayerId = this.FriendInstanceId;
-          ModelManager_1.ModelManager.FriendModel.SetCurrentOperationPlayerId(this.FriendInstanceId);
-          ModelManager_1.ModelManager.FriendModel.ShowingView = this.BelongView;
-          UiManager_1.UiManager.OpenView("FriendProcessView");
+        if (e = this.f8t()) {
+          e = e.PlayerId;
+          ControllerHolder_1.ControllerHolder.FriendController.RequestPlayerCurrentDeactivationState(e, e => {
+            if (e) {
+              e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PlayerDeleteSelf");
+              ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [e]);
+            } else {
+              ModelManager_1.ModelManager.FriendModel.SelectedPlayerId = this.FriendInstanceId;
+              ModelManager_1.ModelManager.FriendModel.SetCurrentOperationPlayerId(this.FriendInstanceId);
+              ModelManager_1.ModelManager.FriendModel.ShowingView = this.BelongView;
+              UiManager_1.UiManager.OpenView("FriendProcessView");
+            }
+          });
         } else {
           this.U8t();
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateFriendViewShow);

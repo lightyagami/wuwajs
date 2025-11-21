@@ -36,10 +36,10 @@ class RoleSkillTreeItem extends UiPanelBase_1.UiPanelBase {
     this.BtnBindInfo = [[6, this.ydo]];
   }
   async OnBeforeStartAsync() {
-    await this.i5d();
+    await this.$Wd();
     this.$pt = new LevelSequencePlayer_1.LevelSequencePlayer(this.GetRootItem());
   }
-  async i5d() {
+  async $Wd() {
     this.vdo = new RoleSkillInnerPassiveSkillAndOuterPassiveSkillItem_1.RoleSkillInnerPassiveSkillAndOuterPassiveSkillItem();
     this.Edo = new RoleSkillOuterPassiveSkillItem_1.RoleSkillOuterPassiveSkillItem();
     await Promise.all([this.vdo.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()), this.Edo.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), this.Bdo()]);

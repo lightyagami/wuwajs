@@ -113,7 +113,7 @@ class CharacterWeapon {
   }
   UpdateHideEffectStateInSelfCentered() {
     var e;
-    if (this.EntityId && EffectSystem_1.EffectSystem.IsValid(this.WeaponHideEffect) && (e = EntitySystem_1.EntitySystem.GetComponent(this.EntityId, 123))?.Valid && (e = e.GetTopForeverTimeScaleConfig(0))) {
+    if (this.EntityId && EffectSystem_1.EffectSystem.IsValid(this.WeaponHideEffect) && (e = EntitySystem_1.EntitySystem.GetComponent(this.EntityId, 126))?.Valid && (e = e.GetTopForeverTimeScaleConfig(0))) {
       EffectSystem_1.EffectSystem.SetAdditionTimeScale(e.SourceType, this.WeaponHideEffect, e.TimeDilation);
     }
   }

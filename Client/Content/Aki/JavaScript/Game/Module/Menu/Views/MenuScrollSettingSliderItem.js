@@ -8,7 +8,6 @@ const UE = require("ue");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const MenuController_1 = require("../MenuController");
 const MenuTool_1 = require("../MenuTool");
 const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
 class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScrollSettingBaseItem {
@@ -64,7 +63,7 @@ class MenuScrollSettingSliderItem extends MenuScrollSettingBaseItem_1.MenuScroll
     var t = this.Data.SliderRange;
     var i = t[0];
     var t = t[1];
-    var e = MenuController_1.MenuController.GetTargetConfig(this.Data.FunctionId);
+    var e = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(this.Data.FunctionId);
     var e = MathUtils_1.MathUtils.GetFloatPointFloor(e, this.Data.SliderDigits);
     var s = this.GetSlider(1);
     s.GetRootComponent()?.SetUIActive(true);

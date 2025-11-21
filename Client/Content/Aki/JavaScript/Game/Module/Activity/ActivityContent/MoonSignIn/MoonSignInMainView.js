@@ -18,12 +18,12 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.etd = undefined;
+    this.crd = undefined;
     this.SPe = undefined;
     this._Zl = () => {
-      this.ttd();
+      this.drd();
     };
-    this.itd = () => {
+    this.mrd = () => {
       var i = MoonSignInController_1.MoonSignInController.GetData();
       if (i) {
         if (i.GetCurrentItemCount() > 0) {
@@ -33,21 +33,21 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
         }
       }
     };
-    this.rtd = () => {
+    this.frd = () => {
       this.GetItem(7).SetUIActive(true);
       this.GetButton(13)?.RootUIComp.SetUIActive(true);
     };
-    this._ud = () => {
+    this.OSd = () => {
       this.GetItem(7).SetUIActive(false);
       this.GetButton(13)?.RootUIComp.SetUIActive(false);
     };
-    this.otd = () => {
-      this.ntd(true);
+    this.grd = () => {
+      this.Crd(true);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIText], [2, UE.UIButtonComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIItem], [13, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[3, this._Zl], [4, this.itd], [2, this.rtd], [13, this._ud]];
+    this.BtnBindInfo = [[3, this._Zl], [4, this.mrd], [2, this.frd], [13, this.OSd]];
   }
   async OnBeforeStartAsync() {
     var i = [];
@@ -62,9 +62,9 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
     this.lqe.SetCloseCallBack(() => {
       this.CloseMe();
     });
-    this.etd = new MoonSignInIllustrated();
-    i.push(this.etd.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
-    this.etd.OnClickSwitchWishBtnCallBack = this.otd;
+    this.crd = new MoonSignInIllustrated();
+    i.push(this.crd.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
+    this.crd.OnClickSwitchWishBtnCallBack = this.grd;
     await Promise.all(i);
     this.SPe = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
   }
@@ -74,16 +74,16 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
         this.GetItem(6).SetUIActive(false);
       }
       if (i === "TjHideView") {
-        this.etd?.SetUiActive(false);
+        this.crd?.SetUiActive(false);
       }
     });
     this.GetButton(13).RootUIComp.SetUIActive(false);
     this.GetItem(6).SetUIActive(false);
     this.GetItem(5).SetUIActive(false);
     if ((MoonSignInController_1.MoonSignInController.GetData()?.GetCurrentItemCount() ?? 0) > 0) {
-      this.ntd();
+      this.Crd();
     } else {
-      this.ttd();
+      this.drd();
     }
   }
   OnBeforeShow() {
@@ -106,7 +106,7 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
   BNe() {
     this.GetItem(10).SetUIActive((MoonSignInController_1.MoonSignInController.GetData()?.GetCurrentItemCount() ?? 0) >= 1);
   }
-  ntd(i = false) {
+  Crd(i = false) {
     this.GetItem(6).SetUIActive(true);
     this.SPe?.PlayLevelSequenceByName("TjHideView");
     if (i) {
@@ -114,9 +114,9 @@ class MoonSignInMainView extends UiViewBase_1.UiViewBase {
     }
     this.BNe();
   }
-  ttd() {
-    this.etd?.SetUiActive(true);
-    this.etd?.RefreshPhaseView();
+  drd() {
+    this.crd?.SetUiActive(true);
+    this.crd?.RefreshPhaseView();
     this.SPe?.PlayLevelSequenceByName("TjStart", true);
     this.SPe?.PlayLevelSequenceByName("WishHideView");
   }
@@ -130,8 +130,8 @@ class MoonSignInIllustrated extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.OnClickSwitchWishBtnCallBack = undefined;
-    this.std = new Map();
-    this.atd = () => {
+    this.prd = new Map();
+    this.vrd = () => {
       this.OnClickSwitchWishBtnCallBack?.();
     };
     this.YDo = () => {
@@ -140,23 +140,23 @@ class MoonSignInIllustrated extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIButtonComponent], [11, UE.UIText], [12, UE.UIButtonComponent], [13, UE.UIItem]];
-    this.BtnBindInfo = [[12, this.atd], [10, this.YDo]];
+    this.BtnBindInfo = [[12, this.vrd], [10, this.YDo]];
   }
   async OnBeforeStartAsync() {
     var t = [];
     for (let i = 1; i <= 10; i++) {
       var e = new MoonSignInPhase();
       t.push(e.CreateThenShowByActorAsync(this.GetItem(i - 1).GetOwner()));
-      this.std.set(i, e);
+      this.prd.set(i, e);
     }
     await Promise.all(t);
     for (let i = 1; i <= 10; i++) {
-      this.std.get(i)?.RefreshItem(i);
+      this.prd.get(i)?.RefreshItem(i);
     }
   }
   RefreshPhaseView() {
     for (let i = 1; i <= 10; i++) {
-      this.std.get(i)?.RefreshItemLockState();
+      this.prd.get(i)?.RefreshItemLockState();
     }
     var i = MoonSignInController_1.MoonSignInController.GetData();
     if (i) {
@@ -168,10 +168,10 @@ class MoonSignInIllustrated extends UiPanelBase_1.UiPanelBase {
 class MoonSignInPhase extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
-    this.htd = 0;
+    this.yrd = 0;
     this.kqe = () => {
       var i = {
-        MoonId: this.htd
+        MoonId: this.yrd
       };
       UiManager_1.UiManager.OpenView("MoonSignInDetailView", i);
     };
@@ -185,15 +185,15 @@ class MoonSignInPhase extends UiPanelBase_1.UiPanelBase {
   }
   RefreshItem(i) {
     var t = ConfigManager_1.ConfigManager.MoonSignInConfig.GetPhaseOfMoonById(i);
-    if (t && (this.htd = i, this.SetTextureShowUntilLoaded(t.Texture, this.GetTexture(1)), this.SetTextureShowUntilLoaded(t.Texture, this.GetTexture(2)), i = MoonSignInController_1.MoonSignInController.GetData())) {
-      t = i.CheckPhaseLock(this.htd);
+    if (t && (this.yrd = i, this.SetTextureShowUntilLoaded(t.Texture, this.GetTexture(1)), this.SetTextureShowUntilLoaded(t.Texture, this.GetTexture(2)), i = MoonSignInController_1.MoonSignInController.GetData())) {
+      t = i.CheckPhaseLock(this.yrd);
       this.GetExtendToggle(0).SetToggleState(t ? 2 : 0);
     }
   }
   RefreshItemLockState() {
     var i;
-    if (this.htd && (i = MoonSignInController_1.MoonSignInController.GetData())) {
-      i = i.CheckPhaseLock(this.htd);
+    if (this.yrd && (i = MoonSignInController_1.MoonSignInController.GetData())) {
+      i = i.CheckPhaseLock(this.yrd);
       this.GetExtendToggle(0).SetToggleState(i ? 2 : 0);
     }
   }

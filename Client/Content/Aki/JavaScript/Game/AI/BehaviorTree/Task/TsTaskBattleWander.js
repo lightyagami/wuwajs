@@ -82,7 +82,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     if (t instanceof TsAiController_1.default) {
       t = t.AiController;
       if (!this.TsWalkOff) {
-        t.CharActorComp.Entity.GetComponent(179)?.SetWalkOffLedgeRecord(false);
+        t.CharActorComp.Entity.GetComponent(182)?.SetWalkOffLedgeRecord(false);
       }
       if (t.AiWanderInfos?.AiBattleWanderGroups?.length) {
         this.EndTime = Time_1.Time.WorldTime + t.AiWanderInfos.RandomBattleWanderEndTime();
@@ -178,7 +178,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
     this.DistanceIndex = this.FindDistanceIndexByDistance(i, e);
     this.FindDirectByWeights(i);
     this.CheckNavigationAndAllyBlock(t, this.TmpOffset, e);
-    var h = t.CharAiDesignComp.Entity.GetComponent(176);
+    var h = t.CharAiDesignComp.Entity.GetComponent(179);
     if (h.Valid) {
       switch (this.TsMoveState) {
         case 1:
@@ -252,7 +252,7 @@ class TsTaskBattleWander extends TsTaskAbortImmediatelyBase_1.default {
       this.DirectIndex = 4;
       t.ClearInput();
     } else if (!(i = t.Entity.GetComponent(45)) || !i.MoveController.IsMovingToLocation()) {
-      if (t.Entity.GetComponent(102)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
+      if (t.Entity.GetComponent(104)?.MoveState !== CharacterUnifiedStateTypes_1.ECharMoveState.Walk) {
         AiContollerLibrary_1.AiControllerLibrary.TurnToDirect(t, this.TmpOffset, s);
         t.SetInputDirect(t.ActorForwardProxy);
       } else {

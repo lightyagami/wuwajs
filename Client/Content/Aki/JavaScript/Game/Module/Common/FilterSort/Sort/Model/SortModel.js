@@ -8,6 +8,7 @@ const ModelBase_1 = require("../../../../../../Core/Framework/ModelBase");
 const LocalStorage_1 = require("../../../../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../../../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../../../../Manager/ConfigManager");
+const FilterSortDefine_1 = require("../../FilterSortDefine");
 const SortLogic_1 = require("../Logic/SortLogic");
 class SortModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -15,14 +16,18 @@ class SortModel extends ModelBase_1.ModelBase {
     this.dUt = new Map();
     this.CUt = new SortLogic_1.SortLogic();
   }
-  SetSortResultData(e, o) {
-    this.dUt.set(e, o);
+  SetSortResultData(e) {
+    this.dUt.set(e.UniqueId, e);
   }
   DeleteSortResultData(e) {
-    this.dUt.delete(e);
+    if (e !== FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID) {
+      this.dUt.delete(e);
+    }
   }
   GetSortResultData(e) {
-    return this.dUt.get(e);
+    if (e !== FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID) {
+      return this.dUt.get(e);
+    }
   }
   SortDataList(e, o, a, ...t) {
     this.CUt.SortDataList(e, o, a, ...t);

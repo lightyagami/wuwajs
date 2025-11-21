@@ -16,35 +16,35 @@ class TrapDefenseMobileSkillPanel extends TrapDefenseSkillPanelBase_1.TrapDefens
     super(...arguments);
     this.IsInBuild = false;
     this.Type = 0;
-    this.fud = undefined;
+    this.uMd = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async InitializeAsync() {
-    this.fud = new TrapDefenseRecyclePriceItem_1.TrapDefenseRecyclePriceItem();
+    this.uMd = new TrapDefenseRecyclePriceItem_1.TrapDefenseRecyclePriceItem();
     var e = this.GetItem(6);
-    await Promise.all([this.OXu(), this.fud.CreateByResourceIdAsync("UiItem_CoinItem", e)]);
-    this.fud.SetUiActive(true);
+    await Promise.all([this._Wc(), this.uMd.CreateByResourceIdAsync("UiItem_CoinItem", e)]);
+    this.uMd.SetUiActive(true);
   }
   OnChildStart() {
     var e = ModelManager_1.ModelManager.RouletteModel.IsExploreRouletteOpen(false);
     var i = ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelDataHasShop();
-    this.yYu(2, e && i);
+    this.uWc(2, e && i);
     this.BattleSkillItemList[5].SetIsBanLongPress(true);
   }
-  async OXu() {
+  async _Wc() {
     var e = new Map([[0, this.GetItem(0).GetOwner()], [1, this.GetItem(1).GetOwner()], [2, this.GetItem(2).GetOwner()], [3, this.GetItem(3).GetOwner()], [4, this.GetItem(4).GetOwner()], [5, this.GetItem(5).GetOwner()], [6, this.GetItem(6).GetOwner()]]);
     await Promise.all(Array.from(e.entries()).map(async ([e, i]) => this.NewBattleSkillItem(i, e, e === 2)));
   }
-  yYu(e, i) {
+  uWc(e, i) {
     var t = this.DataMap.get(e);
     if (t) {
       t.SetVisible(i);
     }
     this.BattleSkillItemList[e].RefreshVisible();
   }
-  SYu(e, i) {
+  TQc(e, i) {
     var t = this.DataMap.get(e);
     if (t) {
       t.SetEnable(i);
@@ -52,38 +52,38 @@ class TrapDefenseMobileSkillPanel extends TrapDefenseSkillPanelBase_1.TrapDefens
     this.BattleSkillItemList[e].RefreshEnable();
   }
   SetRecyclePrice(e) {
-    this.fud.UpdatePrice(e);
+    this.uMd.UpdatePrice(e);
   }
   RefreshButtonByTipsType(e) {
     this.Type = e;
     e = (this.Type & 4) > 0;
-    this.yYu(6, e);
-    this.qud();
+    this.uWc(6, e);
+    this.dEd();
   }
-  qud() {
+  dEd() {
     var e = !this.IsInBuild;
     var i = (this.Type & 1) > 0 && this.IsInBuild;
     var t = (this.Type & 2) > 0 && this.IsInBuild;
-    this.yYu(1, t);
-    this.yYu(5, e);
-    this.yYu(0, true);
-    this.SYu(0, e || i);
+    this.uWc(1, t);
+    this.uWc(5, e);
+    this.uWc(0, true);
+    this.TQc(0, e || i);
   }
   SetIsInBuild(e) {
     this.IsInBuild = e;
-    this.kud();
-    this.Nod();
-    this.$ud();
+    this.$Md();
+    this.lhd();
+    this.LEd();
     this.RefreshMachineCdState();
-    this.qud();
+    this.dEd();
   }
-  kud() {
+  $Md() {
     var e = this.DataMap.get(0);
     var i = this.DataMap.get(5);
     e?.SetIsBuilding(this.IsInBuild);
     i?.SetIsBuilding(this.IsInBuild);
   }
-  Nod() {
+  lhd() {
     var e = this.BattleSkillItemList[0];
     var i = this.BattleSkillItemList[5];
     if (this.IsInBuild) {
@@ -93,7 +93,7 @@ class TrapDefenseMobileSkillPanel extends TrapDefenseSkillPanelBase_1.TrapDefens
       i?.RefreshSkillIcon();
     }
   }
-  $ud() {
+  LEd() {
     var e = this.BattleSkillItemList[0];
     var i = this.BattleSkillItemList[5];
     e?.RefreshSkillName();

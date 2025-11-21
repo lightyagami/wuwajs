@@ -146,6 +146,14 @@ class TowerNormalView extends UiViewBase_1.UiViewBase {
     });
     this.gLt.RefreshText("InstanceDungeonTitle_31_CommonText");
     this.ZDo();
+    this.Pem();
+  }
+  Pem() {
+    this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
+      if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+        await TowerController_1.TowerController.LeaveTower();
+      }
+    });
   }
   OnBeforeShow() {
     RedDotController_1.RedDotController.BindRedDot("TowerReward", this.GetItem(6));

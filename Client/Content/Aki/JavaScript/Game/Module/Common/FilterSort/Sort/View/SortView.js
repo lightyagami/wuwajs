@@ -20,7 +20,7 @@ class SortView extends UiViewBase_1.UiViewBase {
       this.QUt.Reset();
     };
     this.xDt = () => {
-      var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.C0t.ConfigId);
+      var t = ModelManager_1.ModelManager.SortModel.GetSortResultData(this.C0t.UniqueId);
       t.SetSelectBaseSort(this.KUt.GetTempSelect());
       t.SetSelectAttributeSort(this.QUt.GetTempSelectMap());
       this.C0t.ConfirmFunction?.();
@@ -42,8 +42,8 @@ class SortView extends UiViewBase_1.UiViewBase {
     this.QUt.Destroy();
   }
   AUt() {
-    this.KUt.Init(this.C0t.ConfigId);
-    this.QUt.Init(this.C0t.ConfigId);
+    this.KUt.Init(this.C0t.UniqueId);
+    this.QUt.Init(this.C0t.UniqueId);
   }
 }
 exports.SortView = SortView;

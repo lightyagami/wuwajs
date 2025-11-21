@@ -13,6 +13,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const BattleUiDefine_1 = require("../../../BattleUi/BattleUiDefine");
+const HonamiStoryDefine_1 = require("../../../HonamiStory/HonamiStoryDefine");
 const LogReportController_1 = require("../../../LogReport/LogReportController");
 const LogReportDefine_1 = require("../../../LogReport/LogReportDefine");
 const TaskMarkItemView_1 = require("../MarkItemView/TaskMarkItemView");
@@ -163,7 +164,7 @@ class TaskMarkItem extends ServerMarkItem_1.ServerMarkItem {
   }
   CheckCanShowView() {
     if (this.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest) {
-      return this.MapType === 1;
+      return this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay && this.InstanceDungeonId === HonamiStoryDefine_1.HONAMI_DUNGEON_ID || this.MapType === 1;
     } else {
       return (typeof this.TrackTarget != "number" || !!ModelManager_1.ModelManager.CreatureModel.CheckEntityVisible(this.TrackTarget)) && (!!this.CanShowInDistance || !!this.IsTracked);
     }
@@ -196,6 +197,9 @@ class TaskMarkItem extends ServerMarkItem_1.ServerMarkItem {
   }
   IsBtTypeQuest() {
     return this.BtType === Protocol_1.Aki.Protocol.hps.Proto_BtTypeQuest;
+  }
+  GetInteractiveFlag() {
+    return (this.BtType !== Protocol_1.Aki.Protocol.hps.Proto_BtTypeLevelPlay || this.InstanceDungeonId !== HonamiStoryDefine_1.HONAMI_DUNGEON_ID) && super.GetInteractiveFlag();
   }
 }
 exports.TaskMarkItem = TaskMarkItem;

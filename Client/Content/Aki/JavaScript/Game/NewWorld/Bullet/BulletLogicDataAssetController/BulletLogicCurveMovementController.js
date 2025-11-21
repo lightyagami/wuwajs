@@ -35,7 +35,7 @@ class BulletLogicCurveMovementController extends BulletLogicController_1.BulletL
     this.uoe = undefined;
     this._7o = 0;
     this.u7o = 1;
-    this.Hte = this.Bullet.GetComponent(170);
+    this.Hte = this.Bullet.GetComponent(173);
     this.a7o = this.Bullet.GetBulletInfo();
   }
   OnInit() {

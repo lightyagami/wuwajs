@@ -9,7 +9,7 @@ class TrapDefenseMonsterTypeData {
   constructor(e) {
     this.Id = 0;
     this.Config = undefined;
-    this.q9c = [];
+    this.Fjc = [];
     this.Id = e;
   }
   static Create(e) {
@@ -20,18 +20,18 @@ class TrapDefenseMonsterTypeData {
   }
   AU() {}
   GetMonsterDataList(e = true) {
-    if (this.q9c.length <= 0) {
+    if (this.Fjc.length <= 0) {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelMonster.GetMonsterMap().forEach(e => {
         if (e.ConfigType.RiskType === this.Id) {
-          this.q9c.push(e);
+          this.Fjc.push(e);
         }
       });
-      this.q9c.sort((e, t) => e.SortId - t.SortId);
+      this.Fjc.sort((e, t) => e.SortId - t.SortId);
     }
     if (e) {
-      return this.q9c.filter(e => e.InTheInstance);
+      return this.Fjc.filter(e => e.InTheInstance);
     } else {
-      return this.q9c;
+      return this.Fjc;
     }
   }
 }

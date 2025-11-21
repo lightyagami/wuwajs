@@ -28,6 +28,8 @@ class PayShopItemBaseSt {
     this.IfRechargeItem = false;
     this.StageImage = "";
     this.ShowStageImage = "";
+    this.GachaAverageCount = undefined;
+    this.GachaPrice = undefined;
     this.GetShopTipsText = undefined;
     this.GetIfNeedShowDownTipsText = undefined;
     this.GetDownTipsText = undefined;
@@ -79,6 +81,8 @@ class PayShopItemBaseSt {
     }
     this.IfRechargeItem = true;
     this.xrr = LanguageSystem_1.LanguageSystem.PackageLanguage;
+    this.GachaAverageCount = () => t.GetGachaAverageCount();
+    this.GachaPrice = () => t.GetGachaAveragePriceText();
   }
 }
 exports.PayShopItemBaseSt = PayShopItemBaseSt;
@@ -197,7 +201,7 @@ class PayShopItemBase extends UiPanelBase_1.UiPanelBase {
       t = ConfigManager_1.ConfigManager.UiResourceConfig?.GetResourcePath("MI_HeadYuan");
       this.hJ = ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.MaterialInterface, t => {
         i.SetCustomUIMaterial(t);
-      }, 102);
+      }, 102, this.MemoryTag);
     } else {
       i.SetCustomUIMaterial(undefined);
     }

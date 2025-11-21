@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.InfoDisplayTypeThreeView = undefined;
 const UE = require("ue");
+const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -20,7 +21,7 @@ class InfoDisplayTypeThreeView extends UiTickViewBase_1.UiTickViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UITexture], [2, UE.UIText], [3, UE.UIText], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UITexture], [9, UE.UIItem]];
     this.BtnBindInfo = [[4, this.Jvt]];
   }
   OnStart() {
@@ -31,6 +32,20 @@ class InfoDisplayTypeThreeView extends UiTickViewBase_1.UiTickViewBase {
     var e = ModelManager_1.ModelManager.InfoDisplayModel.CurrentInformationId();
     this.Hxt(e);
     this.sai.Refresh(ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayAudio(e));
+  }
+  OnBeforeShow() {
+    var e = ModelManager_1.ModelManager.InfoDisplayModel.CurrentInformationId();
+    var e = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayEntryAudio(e);
+    if (e !== "") {
+      AudioSystem_1.AudioSystem.PostEvent(e);
+    }
+  }
+  OnBeforeHide() {
+    var e = ModelManager_1.ModelManager.InfoDisplayModel.CurrentInformationId();
+    var e = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayExitAudio(e);
+    if (e !== "") {
+      AudioSystem_1.AudioSystem.PostEvent(e);
+    }
   }
   Hxt(e) {
     this.l7e(e);
@@ -55,7 +70,14 @@ class InfoDisplayTypeThreeView extends UiTickViewBase_1.UiTickViewBase {
   cai(e) {
     e = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayBgStamp(e);
     if (e !== "") {
-      this.SetTextureByPath(e, this.GetTexture(1));
+      this.GetItem(9).SetUIActive(true);
+      const i = this.GetTexture(8);
+      this.SetTextureByPath(e, i, undefined, () => {
+        i.SetSizeFromTexture();
+        i.SetUIActive(true);
+      });
+    } else {
+      this.GetItem(9).SetUIActive(false);
     }
   }
   OnBeforeDestroy() {

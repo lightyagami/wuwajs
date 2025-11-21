@@ -112,20 +112,20 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(17002, this.gVa);
-    Net_1.Net.Register(21985, this.pVa);
-    Net_1.Net.Register(22389, this.vVa);
-    Net_1.Net.Register(25654, this.MVa);
-    Net_1.Net.Register(17473, this.yVa);
-    Net_1.Net.Register(16336, this.EVa);
+    Net_1.Net.Register(27546, this.gVa);
+    Net_1.Net.Register(26360, this.pVa);
+    Net_1.Net.Register(18221, this.vVa);
+    Net_1.Net.Register(25546, this.MVa);
+    Net_1.Net.Register(27736, this.yVa);
+    Net_1.Net.Register(18911, this.EVa);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(17002);
-    Net_1.Net.UnRegister(21985);
-    Net_1.Net.UnRegister(22389);
-    Net_1.Net.UnRegister(25654);
-    Net_1.Net.UnRegister(17473);
-    Net_1.Net.UnRegister(16336);
+    Net_1.Net.UnRegister(27546);
+    Net_1.Net.UnRegister(26360);
+    Net_1.Net.UnRegister(18221);
+    Net_1.Net.UnRegister(25546);
+    Net_1.Net.UnRegister(27736);
+    Net_1.Net.UnRegister(18911);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnterInstanceDungeon, this.lZs);
@@ -150,7 +150,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
     }
     var t = Proto_RiskHarvestInstRewardRequest.create();
     t.s5n = e;
-    var t = await Net_1.Net.CallAsync(21119, t);
+    var t = await Net_1.Net.CallAsync(22137, t);
     if (t !== undefined) {
       if (t.Q4n !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {
@@ -159,7 +159,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
         if (t.Q4n === Proto_ErrorCode.Proto_ErrRiskHarvestActivityNotOpen) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MowingRiskActivityNotOpenForReward");
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 15543);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 24982);
         }
       } else {
         if (Log_1.Log.CheckDebug()) {
@@ -177,7 +177,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
     }
     var t = Proto_RiskHarvestScoreRewardRequest.create();
     t.s5n = e;
-    var t = await Net_1.Net.CallAsync(27728, t);
+    var t = await Net_1.Net.CallAsync(16073, t);
     if (t !== undefined) {
       if (t.Q4n !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {
@@ -186,7 +186,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
         if (t.Q4n === Proto_ErrorCode.Proto_ErrRiskHarvestActivityNotOpen) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MowingRiskActivityNotOpenForReward");
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 15558);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 20214);
         }
       } else {
         if (Log_1.Log.CheckDebug()) {
@@ -205,7 +205,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
     var o = Proto_RiskHarvestStarRewardRequest.create();
     o.s5n = e;
     o.c5n = t;
-    var t = await Net_1.Net.CallAsync(24834, o);
+    var t = await Net_1.Net.CallAsync(19583, o);
     if (t !== undefined) {
       if (t.Q4n !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {
@@ -214,7 +214,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
         if (t.Q4n === Proto_ErrorCode.Proto_ErrRiskHarvestActivityNotOpen) {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("MowingRiskActivityNotOpenForReward");
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 15230);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 28042);
         }
       } else {
         if (Log_1.Log.CheckDebug()) {
@@ -231,7 +231,7 @@ class ActivityMowingRiskController extends ActivityControllerBase_1.ActivityCont
       Log_1.Log.Debug("MowingRisk", 64, "请求请求请求结算");
     }
     var e = Proto_RiskHarvestSettleRequest.create();
-    var e = await Net_1.Net.CallAsync(26287, e);
+    var e = await Net_1.Net.CallAsync(27545, e);
     if (e !== undefined) {
       if (e.Q4n !== Proto_ErrorCode.KRs) {
         if (Log_1.Log.CheckError()) {

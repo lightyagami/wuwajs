@@ -15,6 +15,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.RoleData = undefined;
     this.Config = undefined;
+    this.PlayIncreaseEffect = false;
     this.VisibleState = 0;
     this.PercentMachine = new HeadIconEnergyBarPercentMachine_1.HeadIconEnergyBarPercentMachine();
     this.AttributeId = 0;
@@ -48,6 +49,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
   InitData(t, i) {
     this.RoleData = t;
     this.Config = i;
+    this.PlayIncreaseEffect = i.PlayIncreaseEffect;
     this.AttributeComponent = this.RoleData.AttributeComponent;
     this.TagComponent = this.RoleData.GameplayTagComponent;
     this.AttributeId = i.AttributeId;
@@ -86,7 +88,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
   }
   OnBeforeDestroy() {
     this.kYe();
-    this.thd();
+    this.Xcd();
     this.ClearAllTweenAnim();
   }
   AddEvents() {
@@ -148,7 +150,7 @@ class HeadIconEnergyBarBase extends UiPanelBase_1.UiPanelBase {
     this.TagTaskMap?.get(t)?.EndTask();
     this.TagTaskMap?.delete(t);
   }
-  thd() {
+  Xcd() {
     if (this.TagTaskMap) {
       for (const t of this.TagTaskMap.values()) {
         t.EndTask();

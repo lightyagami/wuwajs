@@ -13,18 +13,18 @@ class TrapDefenseRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.Pe = undefined;
-    this.yHc = undefined;
+    this.n9u = undefined;
     this.OnClaimRewardCallback = undefined;
-    this.SHc = () => {
+    this.s9u = () => {
       this.OnClaimRewardCallback?.(this.Pe);
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIText], [2, UE.UISprite], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIScrollViewWithScrollbarComponent], [6, UE.UIItem], [7, UE.UIButtonComponent], [8, UE.UIText]];
-    this.BtnBindInfo = [[7, this.SHc]];
+    this.BtnBindInfo = [[7, this.s9u]];
   }
   OnStart() {
-    this.yHc = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(5), () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid());
+    this.n9u = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(5), () => new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid());
   }
   Refresh(e, i, t) {
     this.Pe = e;
@@ -40,7 +40,7 @@ class TrapDefenseRewardItem extends GridProxyAbstract_1.GridProxyAbstract {
       this.GetItem(3).SetUIActive(e.State === 1);
       this.GetSprite(2).SetUIActive(e.State === 1);
       this.GetText(8).SetText(e.CurProgress + "/" + e.Target);
-      this.yHc.RefreshByData(e.ItemList);
+      this.n9u.RefreshByData(e.ItemList);
     }
   }
 }

@@ -37,6 +37,7 @@ class TsUiNavigationBehaviorListener extends UE.UINavigationBehaviour {
     this.OpenAdsorbed = false;
     this.AdsorbedDistance = 0;
     this.AdsorbedPivot = new UE.Vector2D(0.5, 0.5);
+    this.IsUseDrag = false;
     this.IsUsePool = false;
     this.NavigateTolerance = 0;
     this.NavigateToleranceReverse = 0;

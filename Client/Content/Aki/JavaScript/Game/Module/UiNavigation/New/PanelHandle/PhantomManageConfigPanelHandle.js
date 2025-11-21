@@ -9,8 +9,8 @@ const SpecialPanelHandleBase_1 = require("./SpecialPanelHandleBase");
 class PhantomManageConfigPanelHandle extends SpecialPanelHandleBase_1.SpecialPanelHandleBase {
   constructor() {
     super(...arguments);
-    this.Ttd = new Map();
-    this.btd = (t, a, n, r) => {
+    this.Ord = new Map();
+    this.qrd = (t, a, n, r) => {
       for (let e = a; e !== n; e += r) {
         if (t[e]?.IsCanFocus()) {
           return t[e];
@@ -34,19 +34,19 @@ class PhantomManageConfigPanelHandle extends SpecialPanelHandleBase_1.SpecialPan
     };
   }
   AddNavigationListener(e, t, a) {
-    var n = this.Ttd.get(e) ?? [];
+    var n = this.Ord.get(e) ?? [];
     if (!n.includes(t)) {
       n.push(t);
       n.sort(this.Jo1);
-      this.Ttd.set(e, n);
+      this.Ord.set(e, n);
     }
   }
   FindNextFocusListener(t, a) {
-    t = this.Ttd.get(t) ?? [];
+    t = this.Ord.get(t) ?? [];
     a = t.indexOf(a);
     if (t.length !== 0 && !(a <= 0)) {
-      let e = this.btd(t, a + 1, t.length, 1);
-      if (e = e || this.btd(t, a - 1, -1, -1)) {
+      let e = this.qrd(t, a + 1, t.length, 1);
+      if (e = e || this.qrd(t, a - 1, -1, -1)) {
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.RootUIComp, true);
       }
     }

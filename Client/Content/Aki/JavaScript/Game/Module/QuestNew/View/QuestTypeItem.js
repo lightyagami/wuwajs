@@ -125,6 +125,13 @@ class QuestTypeItem extends UiPanelBase_1.UiPanelBase {
       t.UpdateItem(t.QuestId, t.QuestType);
     }
   }
+  UpdateAllItem() {
+    for (const t of this.xno) {
+      for (const s of t.QuestList ?? []) {
+        s.UpdateItem(s.QuestId, s.QuestType);
+      }
+    }
+  }
   OnSelect(t) {
     let e = t;
     if (!t) {

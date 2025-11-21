@@ -33,15 +33,25 @@ class BaseExtraEffectManager {
   }
   OnStackIncreased(t, f, e, r) {
     if (this.SXo(t)) {
-      for (const a of this.GetEffectsByHandle(t.Handle)) {
-        a.OnStackIncreased(f, e, r);
+      for (const s of this.GetEffectsByHandle(t.Handle)) {
+        s.OnStackIncreased(f, e, r);
       }
     }
   }
   OnStackDecreased(t, f, e, r) {
     if (this.SXo(t)) {
+      for (const s of this.GetEffectsByHandle(t.Handle)) {
+        s.OnStackDecreased(f, e, r);
+      }
+    }
+  }
+  OnBuffStackOverflow(t, f, e, r) {
+    for (const s of t.Config.EffectInfos) {
+      s.ExecutionEffect?.OnBuffStackOverflow(t, f, e, r);
+    }
+    if (this.SXo(t)) {
       for (const a of this.GetEffectsByHandle(t.Handle)) {
-        a.OnStackDecreased(f, e, r);
+        a.OnBuffStackOverflow(t, f, e, r);
       }
     }
   }
@@ -70,18 +80,18 @@ class BaseExtraEffectManager {
     if (this.ActivatedHandles.has(e)) {
       CombatLog_1.CombatLog.Error("Buff", this.BuffComponent?.Entity, "重复创建Buff额外效果", ["buffId", r], ["handle", e]);
     } else {
-      var a = f.GetInstigatorBuffComponent();
+      var s = f.GetInstigatorBuffComponent();
       this.ActivatedHandles.add(e);
-      var s = f.Config.EffectInfos?.map(t => [t, ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(r, t, f.Level)]);
+      var a = f.Config.EffectInfos?.map(t => [t, ExtraEffectLibrary_1.BuffExtraEffectLibrary.ResolveRequireAndLimits(r, t, f.Level)]);
       var t = this.BuffComponent;
-      if (s && t?.Valid) {
-        for (let t = 0; t < s.length; t++) {
-          var i = s[t][0];
-          var o = s[t][1];
+      if (a && t?.Valid) {
+        for (let t = 0; t < a.length; t++) {
+          var i = a[t][0];
+          var o = a[t][1];
           var n = i.ExtraEffectId;
           var n = (0, ExtraEffectDefine_1.getBuffEffectClass)(n);
           if (n) {
-            n = n.Create(e, t, o, this.BuffComponent, a, i);
+            n = n.Create(e, t, o, this.BuffComponent, s, i);
             this.qp(n);
             n.OnCreated();
           }
@@ -122,8 +132,8 @@ class BaseExtraEffectManager {
   *FilterById(t, f) {
     var e = [];
     if (t instanceof Array) {
-      for (const a of t) {
-        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(a);
+      for (const s of t) {
+        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(s);
         if (r) {
           e.push(r);
         }
@@ -135,9 +145,9 @@ class BaseExtraEffectManager {
       }
     }
     if (e.length >= 0) {
-      for (const s of this.EffectHolder.values()) {
-        if (s) {
-          for (const i of s) {
+      for (const a of this.EffectHolder.values()) {
+        if (a) {
+          for (const i of a) {
             for (const o of e) {
               if (i instanceof o && (!f || f(i))) {
                 yield i;
@@ -152,8 +162,8 @@ class BaseExtraEffectManager {
   FilterFirstById(t, f) {
     var e = [];
     if (t instanceof Array) {
-      for (const a of t) {
-        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(a);
+      for (const s of t) {
+        var r = (0, ExtraEffectDefine_1.getBuffEffectClass)(s);
         if (r) {
           e.push(r);
         }
@@ -165,9 +175,9 @@ class BaseExtraEffectManager {
       }
     }
     if (e.length >= 0) {
-      for (const s of this.EffectHolder.values()) {
-        if (s) {
-          for (const i of s) {
+      for (const a of this.EffectHolder.values()) {
+        if (a) {
+          for (const i of a) {
             for (const o of e) {
               if (i instanceof o && (!f || f(i))) {
                 return i;

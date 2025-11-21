@@ -62,7 +62,7 @@ class RoleElementView extends UiViewBase_1.UiViewBase {
     };
     this.OnClickSwitch = () => {
       var e;
-      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(206)?.HasTag(1996802261)) {
+      if (Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(209)?.HasTag(1996802261)) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("CanNotTransferInFight"));
       } else if (this.nVi && (e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(this.nVi))) {
         MainRoleController_1.MainRoleController.SendRoleElementChangeRequest(e.ElementId);
@@ -224,7 +224,7 @@ class RoleElementView extends UiViewBase_1.UiViewBase {
         const s = UE.LinearColor.FromSRGBColor(UE.Color.FromHex(e.ElementEffectColor));
         ResourceSystem_1.ResourceSystem.LoadAsync(e.Icon3, UE.Texture, e => {
           this.L1o(this.g1o, s, true, e);
-        });
+        }, 100, this.MemoryTag);
       } else {
         var t = this.dVi;
         var i = new UE.TransformDouble(new UE.Rotator(0, 0, 0), new UE.VectorDouble(0, 0, 0), new UE.VectorDouble(1, 1, 1));

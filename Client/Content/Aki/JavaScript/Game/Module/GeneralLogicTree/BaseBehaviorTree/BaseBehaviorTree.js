@@ -23,7 +23,7 @@ const BehaviorTreeTimerComponent_1 = require("./BehaviorTreeTimerComponent");
 const BlackBoard_1 = require("./BlackBoard");
 const BehaviorTreeExpressionComponent_1 = require("./Express/BehaviorTreeExpressionComponent");
 class BaseBehaviorTree {
-  constructor(e, t, r, i, s, o, n, h, a) {
+  constructor(e, t, r, i, s, o, n, a, h) {
     this.BlackBoard = new BlackBoard_1.Blackboard();
     this.FlowInfo = undefined;
     this.Expression = undefined;
@@ -44,8 +44,8 @@ class BaseBehaviorTree {
         GeneralLogicTreeController_1.GeneralLogicTreeController.RequestRollback(this.TreeIncId, e);
       }
     };
-    this.BlackBoard.Init(r, e, t, i, s, o, n, a ?? false);
-    if (h) {
+    this.BlackBoard.Init(r, e, t, i, s, o, n, h ?? false);
+    if (a) {
       this.BlackBoard.AddTag(8);
     }
   }
@@ -75,10 +75,10 @@ class BaseBehaviorTree {
   }
   Destroy() {
     this.iQt();
+    this.BlackBoard.Dispose();
     this.Expression?.Dispose();
     this.FlowInfo?.Dispose();
     this.TimerCenter?.Dispose();
-    this.BlackBoard.Dispose();
   }
   CreateNode(e, t) {
     if (this.BlackBoard.IsSleeping) {
@@ -357,10 +357,10 @@ class BaseBehaviorTree {
       LevelGeneralController_1.LevelGeneralController.StopActionsExecute(e);
     }
   }
-  ExecuteTreeGuaranteeActions() {
-    var e = this.BlackBoard.GetGuaranteeActions();
-    if (e.length !== 0 && (e = e.reverse(), GuaranteeController_1.GuaranteeController.ExecuteActions(e, LevelGeneralContextDefine_1.GuaranteeContext.Create()), Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("LevelEvent", 39, "树保底行为已全部完成", ["treeIncId", this.BlackBoard.TreeConfigId], ["保底行为列表", e]);
+  ExecuteTreeGuaranteeActions(e = 0) {
+    var t = this.BlackBoard.GetGuaranteeActions();
+    if (t.length !== 0 && (t = t.reverse(), e = e === 1 ? LevelGeneralContextDefine_1.GuaranteeContext.Create(undefined, 1) : LevelGeneralContextDefine_1.GuaranteeContext.Create(undefined, 2), GuaranteeController_1.GuaranteeController.ExecuteActions(t, e), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("LevelEvent", 39, "树保底行为已全部完成", ["treeIncId", this.BlackBoard.TreeConfigId], ["保底行为列表", t]);
     }
   }
   SetRollbackWaiting(e) {
@@ -408,6 +408,9 @@ class BaseBehaviorTree {
   }
   GetSilentAreaShowInfo() {
     return this.BlackBoard.GetSilentAreaShowInfo();
+  }
+  GetModifyTrackAreaConfig() {
+    return this.BlackBoard.GetModifyTrackAreaConfig();
   }
   GetTrackIconId() {
     return this.BlackBoard.TaskMarkTableId;
@@ -474,7 +477,7 @@ class BaseBehaviorTree {
   CreateMapMarks() {
     this.Expression?.CreateMapMarks();
   }
-  DoAction(t, r, i, s, o, n, h) {
+  DoAction(t, r, i, s, o, n, a) {
     if (this.BlackBoard.IsSleeping) {
       this.oQt({
         ProcessType: 5,
@@ -484,10 +487,10 @@ class BaseBehaviorTree {
         SessionId: s,
         StartIndex: o,
         EndIndex: n,
-        NeedFinishReq: h
+        NeedFinishReq: a
       });
     } else {
-      var a;
+      var h;
       var l = this.BlackBoard.GetNodeConfig(r);
       if (l) {
         let e = undefined;
@@ -507,10 +510,10 @@ class BaseBehaviorTree {
               e = l.SaveConfig?.EnterActions;
             }
             break;
-          case Protocol_1.Aki.Protocol.TOs.BBu:
+          case Protocol_1.Aki.Protocol.TOs.R3u:
             if (l.Type === "ConditionSelector" || l.Type === "ParallelSelect" || l.Type === "Select" || l.Type === "Sequence") {
-              a = t.BBu.t5n;
-              e = l.SaveConfig?.InitConditionActions?.[a].Action;
+              h = t.R3u.t5n;
+              e = l.SaveConfig?.InitConditionActions?.[h].Action;
             }
             break;
           case Protocol_1.Aki.Protocol.TOs.Gvs:
@@ -527,10 +530,15 @@ class BaseBehaviorTree {
             if (l.Type === "ChildQuest") {
               e = l.FinishActions;
             }
+            break;
+          case Protocol_1.Aki.Protocol.TOs.Proto_ChildQuestNodeStuckCheckAction:
+            if (l.Type === "ChildQuest") {
+              e = l.StuckCheck[t.IId.c5n].Actions;
+            }
         }
         if (e && e.length !== 0) {
           this.BlackBoard.AddCurrentExecuteActions(s);
-          ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsByServerNotify(e, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(this.BtType, this.TreeIncId, this.TreeConfigId, r, t.fvs), i, s, o, n, h, () => {
+          ControllerHolder_1.ControllerHolder.LevelGeneralController.ExecuteActionsByServerNotify(e, LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(this.BtType, this.TreeIncId, this.TreeConfigId, r, t.fvs), i, s, o, n, a, () => {
             this.BlackBoard.RemoveCurrentExecuteActions(s);
           });
         } else if (Log_1.Log.CheckError()) {
@@ -601,8 +609,8 @@ class BaseBehaviorTree {
   AddGuaranteeActionInfo(e, t, r, i) {
     this.BlackBoard.AddGuaranteeActionInfo(e, t, r, i);
   }
-  PopGuaranteeActionInfo(e, t) {
-    return this.BlackBoard.PopGuaranteeActionInfo(e, t);
+  PopGuaranteeActionInfo(e, t, r = 2) {
+    return this.BlackBoard.PopGuaranteeActionInfo(e, t, r);
   }
   ClearGuaranteeActions(e) {
     this.BlackBoard.ClearGuaranteeActions(e);
@@ -626,7 +634,7 @@ class DynamicFlowInfo {
   ClearDynamicFlowNpcList() {
     for (const t of this.hQt) {
       var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
-      if (e &&= e.Entity.GetComponent(186)) {
+      if (e &&= e.Entity.GetComponent(189)) {
         e.PlayDynamicFlowEnd();
       }
     }

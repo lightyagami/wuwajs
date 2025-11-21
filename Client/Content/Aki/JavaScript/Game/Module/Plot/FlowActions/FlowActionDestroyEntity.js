@@ -35,7 +35,7 @@ class FlowActionDestroyEntity extends FlowActionServerAction_1.FlowActionServerA
         var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(s);
         if (r) {
           var n = r.Entity.GetComponent(0).GetPbEntityInitData();
-          var l = r.Entity.GetComponent(134);
+          var l = r.Entity.GetComponent(137);
           let e = false;
           if (n) {
             n = (0, IComponent_1.getComponent)(n?.ComponentsData, "SceneItemLifeCycleComponent");

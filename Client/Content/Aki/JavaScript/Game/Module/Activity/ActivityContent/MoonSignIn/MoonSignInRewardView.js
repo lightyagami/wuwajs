@@ -21,19 +21,19 @@ class MoonSignInRewardView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
     this.lqe = undefined;
-    this.ltd = undefined;
-    this._td = undefined;
+    this.Srd = undefined;
+    this.Mrd = undefined;
     this.W2e = () => {
       return new NormalRewardItem();
     };
-    this.utd = () => {
+    this.Erd = () => {
       return new RewardItem();
     };
-    this.ctd = () => {
-      this.ltd?.RefreshByData(MoonSignInController_1.MoonSignInController.GetData()?.GetMoonNormalRewardData() ?? []);
-      this.dtd();
-      this.mtd();
-      this.ftd();
+    this.Ird = () => {
+      this.Srd?.RefreshByData(MoonSignInController_1.MoonSignInController.GetData()?.GetMoonNormalRewardData() ?? []);
+      this.Trd();
+      this.brd();
+      this.Rrd();
     };
     this.YDo = () => {
       var e = MoonSignInController_1.MoonSignInController.GetData();
@@ -62,17 +62,17 @@ class MoonSignInRewardView extends UiViewBase_1.UiViewBase {
     await Promise.all(e);
   }
   OnAddEventListener() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MoonSignRewardRefresh, this.ctd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.MoonSignRewardRefresh, this.Ird);
   }
   OnRemoveEventListener() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MoonSignRewardRefresh, this.ctd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.MoonSignRewardRefresh, this.Ird);
   }
   OnStart() {
-    this.ltd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.W2e);
-    this._td = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.utd);
+    this.Srd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(1), this.W2e);
+    this.Mrd = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(6), this.Erd);
     this.GetItem(12).SetUIActive(false);
     this.GetItem(13).SetUIActive(true);
-    this.ltd.BindScrollValueChange(e => {
+    this.Srd.BindScrollValueChange(e => {
       if (e) {
         this.GetItem(12).SetUIActive(e.X < 1);
         this.GetItem(13).SetUIActive(e.X > 0);
@@ -80,9 +80,9 @@ class MoonSignInRewardView extends UiViewBase_1.UiViewBase {
     });
   }
   OnBeforeShow() {
-    this.ctd();
+    this.Ird();
   }
-  dtd() {
+  Trd() {
     const e = MoonSignInController_1.MoonSignInController.GetData();
     if (e) {
       var t = ConfigManager_1.ConfigManager.MoonSignInConfig.GetMoonSignReward(e.Id);
@@ -101,12 +101,12 @@ class MoonSignInRewardView extends UiViewBase_1.UiViewBase {
             };
             n.push(e);
           }
-          this._td.RefreshByData(n);
+          this.Mrd.RefreshByData(n);
         }
       }
     }
   }
-  ftd() {
+  Rrd() {
     var e;
     var t = MoonSignInController_1.MoonSignInController.GetData();
     if (t && (e = ConfigManager_1.ConfigManager.MoonSignInConfig.GetMoonSignReward(t.Id))) {
@@ -115,7 +115,7 @@ class MoonSignInRewardView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(5), "MoonSignInGrandRewardDes", e.toString(), t.toString(), e.toString());
     }
   }
-  mtd() {
+  brd() {
     var e;
     var t = MoonSignInController_1.MoonSignInController.GetData();
     if (t) {

@@ -151,7 +151,7 @@ class BattleHeadStatePanel {
     this.Tlt = t => {
       this.Slt(t);
     };
-    this.RQu = (t, e) => {
+    this.T9c = (t, e) => {
       e = this.EO1.get(e);
       if (e) {
         e.push(t);
@@ -413,7 +413,7 @@ class BattleHeadStatePanel {
         Log_1.Log.Info("Battle", 17, "[HeadState]休眠头顶状态条", ["EntityId", t]);
       }
       if (this.EO1.has(a.HeadStateType)) {
-        a.RecycleHeadStateView(this.RQu);
+        a.RecycleHeadStateView(this.T9c);
       } else {
         a.DestroyHeadStateView();
       }
@@ -441,7 +441,7 @@ class BattleHeadStatePanel {
     return !!t?.Valid && t.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
   }
   Flh(t) {
-    return !!this.vlt(t) && !!(t = t.GetComponent(130))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
+    return !!this.vlt(t) && !!(t = t.GetComponent(133))?.Valid && !!(t = t.GetProgressData()) && t.ProgressCtrlType === "ChargingDevice";
   }
   plt(t) {
     t = EntitySystem_1.EntitySystem.Get(t).GetComponent(0);

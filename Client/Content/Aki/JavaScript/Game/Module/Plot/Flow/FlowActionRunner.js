@@ -131,7 +131,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetInteractPoint() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(198);
+      var i = t.GetComponent(201);
       if (i) {
         return i.GetInteractController()?.GetInteractPoint();
       }
@@ -140,7 +140,7 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
   GetCameraOffsetConfig() {
     let t = undefined;
     if (t = this.nx?.Context && this.nx.Context.Type === 1 ? EntitySystem_1.EntitySystem.Get(this.nx.Context.EntityId) : t) {
-      var i = t.GetComponent(198);
+      var i = t.GetComponent(201);
       if (i) {
         return i.GetInteractController()?.GetCameraOffsetConfig();
       }
@@ -443,8 +443,8 @@ class FlowActionRunner extends ControllerAssistantBase_1.ControllerAssistantBase
     }
   }
   RecordTalkItem(t) {
-    var i;
-    if (t.Type === "Talk" && (i = t.TidTalk) && (i = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(i)) !== undefined && !StringUtils_1.StringUtils.IsBlank(i)) {
+    var i = t.Type;
+    if ((!i || i === "Talk") && !!(i = t.TidTalk) && (i = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(i)) !== undefined && !StringUtils_1.StringUtils.IsBlank(i)) {
       this.nx?.TalkHistory.push({
         TalkItem: t,
         IsOption: false

@@ -160,11 +160,11 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     };
   }
   static get Dependencies() {
-    return [203, 0];
+    return [206, 0];
   }
   OnInitData(t) {
     this.EIe = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(203);
+    this.Hte = this.Entity.GetComponent(206);
     return !!this.Hte || (Log_1.Log.CheckError() && Log_1.Log.Error("SceneItem", 39, "[DynamicAttachComp] Invalid ActorComp", ["PbDataId:", this.EIe?.GetPbDataId()]), false);
   }
   OnActivate() {
@@ -227,7 +227,7 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     }
   }
   Lln(e) {
-    var i = e.Entity?.GetComponent(203);
+    var i = e.Entity?.GetComponent(206);
     if (i) {
       if (this.rln && !i?.GetIsSceneInteractionLoadCompleted()) {
         if (!EventSystem_1.EventSystem.HasWithTarget(e.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln)) {
@@ -266,7 +266,7 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
     if (t?.Entity && EventSystem_1.EventSystem.HasWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln)) {
       EventSystem_1.EventSystem.RemoveWithTarget(t.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.cln);
     }
-    var e = t?.Entity?.GetComponent(203);
+    var e = t?.Entity?.GetComponent(206);
     let i = undefined;
     i = this.rln && e?.GetIsSceneInteractionLoadCompleted() ? e?.GetActorInSceneInteraction(this.rln) : e?.Owner;
     this.gln(i);
@@ -497,7 +497,7 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
       s.n6n.Pitch = i.Pitch;
       s.n6n.Yaw = i.Yaw;
       s.n6n.Roll = i.Roll;
-      Net_1.Net.Call(16469, s, () => {});
+      Net_1.Net.Call(28932, s, () => {});
     }
   }
   RequestAttachEntity(t, e, i, s) {
@@ -517,15 +517,15 @@ let SceneItemDynamicAttachTargetComponent = class SceneItemDynamicAttachTargetCo
       h.n6n.Pitch = s.Pitch;
       h.n6n.Yaw = s.Yaw;
       h.n6n.Roll = s.Roll;
-      Net_1.Net.Call(16469, h, () => {});
+      Net_1.Net.Call(28932, h, () => {});
     }
   }
   RequestDetach() {
     var t = Protocol_1.Aki.Protocol.fgs.create();
     t.F4n = this.Hte.CreatureData.GetCreatureDataId();
     t.s6n = Protocol_1.Aki.Protocol.nFs.Proto_AttachTargetNone;
-    Net_1.Net.Call(16469, t, () => {});
+    Net_1.Net.Call(28932, t, () => {});
   }
 };
-SceneItemDynamicAttachTargetComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(126)], SceneItemDynamicAttachTargetComponent);
+SceneItemDynamicAttachTargetComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(129)], SceneItemDynamicAttachTargetComponent);
 exports.SceneItemDynamicAttachTargetComponent = SceneItemDynamicAttachTargetComponent; //# sourceMappingURL=SceneItemDynamicAttachTargetComponent.js.map

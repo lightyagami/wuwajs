@@ -64,7 +64,7 @@ class ShipTowerRoleTeamItem extends GridProxyAbstract_1.GridProxyAbstract {
       } else {
         h = false;
         e.Apply({
-          Type: 5
+          Type: 6
         });
       }
     });

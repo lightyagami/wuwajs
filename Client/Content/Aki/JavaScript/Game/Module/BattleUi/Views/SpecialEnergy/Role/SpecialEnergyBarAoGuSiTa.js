@@ -29,27 +29,27 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     super(...arguments);
     this.wZt = [];
     this.Rdt = undefined;
-    this.fdd = undefined;
-    this.gdd = undefined;
+    this.gUd = undefined;
+    this.CUd = undefined;
     this.EIu = false;
-    this.Cdd = false;
-    this.pdd = false;
-    this.vdd = 0;
+    this.pUd = false;
+    this.vUd = false;
+    this.yUd = 0;
     this.TDe = undefined;
     this.Nml = false;
-    this.ydd = 0;
-    this.Amd = undefined;
+    this.SUd = 0;
+    this.l3d = undefined;
     this.Jh = undefined;
     this.Zyn = (t, i) => {
-      this.Sdd(i);
+      this.MUd(i);
     };
-    this.Mdd = t => {
+    this.EUd = t => {
       this.OnEnergyTagChangedC(t);
     };
-    this.Edd = (t, i, e) => {
+    this.IUd = (t, i, e) => {
       this.OnAttributeChangedB();
     };
-    this.Idd = (t, i, e) => {
+    this.TUd = (t, i, e) => {
       this.OnAttributeChangedB();
     };
     this.fGr = (t, i) => {
@@ -70,10 +70,10 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.wZt.push(this.Config);
     this.wZt.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130601));
     this.wZt.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130602));
-    this.fdd = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130603);
-    this.AttributeId = this.fdd.AttributeId;
-    this.MaxAttributeId = this.fdd.MaxAttributeId;
-    this.ydd = this.fdd.ExtraFloatParams[0] * TimeUtil_1.TimeUtil.InverseMillisecond;
+    this.gUd = ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130603);
+    this.AttributeId = this.gUd.AttributeId;
+    this.MaxAttributeId = this.gUd.MaxAttributeId;
+    this.SUd = this.gUd.ExtraFloatParams[0] * TimeUtil_1.TimeUtil.InverseMillisecond;
   }
   async OnBeforeStartAsync() {
     var t = [];
@@ -92,7 +92,7 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   async InitKeyItem(t) {
     if (!Info_1.Info.IsInTouch()) {
       this.KeyItem = new SpecialEnergyBarKeyItem_1.SpecialEnergyBarKeyItem();
-      this.KeyItem.SetConfig(this.fdd);
+      this.KeyItem.SetConfig(this.gUd);
       await this.KeyItem.CreateThenShowByResourceIdAsync("UiItem_EnergyBarHotKey", t);
     }
   }
@@ -100,7 +100,7 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     const i = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(CURVE_PATH, UE.CurveFloat, t => {
       if (t) {
-        this.gdd = t;
+        this.CUd = t;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "[SpecialEnergyBarAoGuSiTa]加载曲线失败", ["path", CURVE_PATH]);
       }
@@ -112,11 +112,11 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.InitTweenAnim(14);
     this.InitTweenAnim(15);
     this.InitTweenAnim(16);
-    this.Amd = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(17));
-    this.Amd.Duration = 500;
+    this.l3d = new BattleUiNiagaraItem_1.BattleUiNiagaraItem(this.GetUiNiagara(17));
+    this.l3d.Duration = 500;
     this.GetItem(10)?.SetAlpha(1);
     var t = this.TagComponent?.HasTag(ultraTag) ?? false;
-    this.Sdd(t, true);
+    this.MUd(t, true);
     this.OnAttributeChangedB(true);
     var t = this.TagComponent?.GetTagCount(energyTag) ?? 0;
     this.OnEnergyTagChangedC(t, true);
@@ -125,9 +125,9 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.Jh = this.RoleData?.EntityHandle?.Entity;
   }
   OnBeforeDestroy() {
-    if (this.Amd) {
-      this.Amd.Stop();
-      this.Amd = undefined;
+    if (this.l3d) {
+      this.l3d.Stop();
+      this.l3d = undefined;
     }
     super.OnBeforeDestroy();
   }
@@ -138,17 +138,17 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
   AddEvents() {
     super.AddEvents();
     this.ListenForTagAddOrRemoveChanged(ultraTag, this.Zyn);
-    this.ListenForTagCountChanged(energyTag, this.Mdd);
-    this.ListenForAttributeChanged(this.wZt[1].AttributeId, this.Edd);
-    this.ListenForAttributeChanged(this.wZt[1].MaxAttributeId, this.Idd);
+    this.ListenForTagCountChanged(energyTag, this.EUd);
+    this.ListenForAttributeChanged(this.wZt[1].AttributeId, this.IUd);
+    this.ListenForAttributeChanged(this.wZt[1].MaxAttributeId, this.TUd);
     if (this.Jh) {
       EventSystem_1.EventSystem.AddWithTarget(this.Jh, EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
     }
   }
   RemoveEvents() {
     super.RemoveEvents();
-    this.RemoveListenAttributeChanged(this.wZt[1].AttributeId, this.Edd);
-    this.RemoveListenAttributeChanged(this.wZt[1].MaxAttributeId, this.Idd);
+    this.RemoveListenAttributeChanged(this.wZt[1].AttributeId, this.IUd);
+    this.RemoveListenAttributeChanged(this.wZt[1].MaxAttributeId, this.TUd);
     if (this.Jh) {
       EventSystem_1.EventSystem.RemoveWithTarget(this.Jh, EventDefine_1.EEventName.OnAbsoluteTimeStop, this.fGr);
     }
@@ -163,22 +163,22 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     var h = this.GetTexture(3);
     h?.SetFillAmount(s);
     var e = e <= i;
-    if ((this.pdd !== e || !!t) && !(this.pdd = e, h?.SetUIActive(!e), this.GetItem(9)?.SetUIActive(e), e ? (this.StopTweenAnim(15), this.PlayTweenAnim(14)) : (this.StopTweenAnim(14), this.PlayTweenAnim(15)), t)) {
+    if ((this.vUd !== e || !!t) && !(this.vUd = e, h?.SetUIActive(!e), this.GetItem(9)?.SetUIActive(e), e ? (this.StopTweenAnim(15), this.PlayTweenAnim(14)) : (this.StopTweenAnim(14), this.PlayTweenAnim(15)), t)) {
       this.eht();
     }
   }
   OnEnergyTagChangedC(t, i = false) {
-    this.Tdd(Math.min(t, 2), i);
+    this.bUd(Math.min(t, 2), i);
   }
-  Tdd(t, i = false) {
-    if ((this.vdd !== t || !!i) && !(this.vdd = t, this.GetItem(1)?.SetUIActive(t > 0), this.GetItem(2)?.SetUIActive(t > 1), i)) {
+  bUd(t, i = false) {
+    if ((this.yUd !== t || !!i) && !(this.yUd = t, this.GetItem(1)?.SetUIActive(t > 0), this.GetItem(2)?.SetUIActive(t > 1), i)) {
       this.eht();
     }
   }
   OnAttributeChanged() {
     super.OnAttributeChanged();
     if (this.PercentMachine.GetTargetPercent() > 0) {
-      this.Amd?.Play();
+      this.l3d?.Play();
     }
   }
   OnBarPercentChanged() {
@@ -189,17 +189,17 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     this.GetTexture(5).SetFillAmount(i);
     this.GetSlider(8).SetValue(i);
     var e = X_MIN + (X_MAX - X_MIN) * i;
-    var s = this.gdd?.GetFloatValue(e) ?? i;
+    var s = this.CUd?.GetFloatValue(e) ?? i;
     var h = this.GetUiNiagara(12);
     h.SetAnchorOffsetX(e);
     h.SetAnchorOffsetY(s);
-    this.Rdd(i >= 1, t);
+    this.RUd(i >= 1, t);
     var e = this.GetKeyEnable();
     this.KeyItem?.RefreshKeyEnable(e, t);
   }
-  Rdd(t, i = false) {
-    if (this.Cdd !== t || !!i) {
-      this.Cdd = t;
+  RUd(t, i = false) {
+    if (this.pUd !== t || !!i) {
+      this.pUd = t;
       this.GetTexture(5).SetUIActive(!t);
       this.GetItem(7).SetUIActive(!t);
       this.GetUiNiagara(12).SetUIActive(!t);
@@ -207,15 +207,15 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     }
   }
   eht() {
-    if (this.vdd > 1) {
+    if (this.yUd > 1) {
       this.Rdt?.SetKeyItemType(2);
-    } else if (this.pdd) {
+    } else if (this.vUd) {
       this.Rdt?.SetKeyItemType(1);
     } else {
       this.Rdt?.SetKeyItemType(0);
     }
   }
-  Sdd(t, i = false) {
+  MUd(t, i = false) {
     if (this.EIu !== t || !!i) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "奥古斯塔能量条状态改变", ["[false普通,true大招]", t]);
@@ -241,7 +241,7 @@ class SpecialEnergyBarAoGuSiTa extends SpecialEnergyBarBase_1.SpecialEnergyBarBa
     if (!this.EIu || !TimerSystem_1.TimerSystem.Has(this.TDe) || (t = TimerSystem_1.TimerSystem.GetNextRemainTime(this.TDe)) <= 0) {
       this.bMc(false);
     } else {
-      this.bMc(t < this.ydd);
+      this.bMc(t < this.SUd);
     }
   }
 }

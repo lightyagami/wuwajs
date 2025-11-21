@@ -12,6 +12,7 @@ const QuestTrackingConfigAll_1 = require("../../../../Core/Define/ConfigQuery/Qu
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
+const ResourceUpdateManager_1 = require("../../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
 const IGlobal_1 = require("../../../../UniverseEditor/Interface/IGlobal");
 const IQuest_1 = require("../../../../UniverseEditor/Interface/IQuest");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
@@ -33,7 +34,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.ino = undefined;
     this.nVa = undefined;
     this.OF1 = undefined;
-    this.cjc = new Set();
+    this.j7u = new Set();
     this.TH1 = undefined;
     this.ono = undefined;
     this.rno = undefined;
@@ -57,14 +58,14 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     };
     this.SortQuestInView = (e, t) => {
       var i = [];
-      for (const r of [e.Id, t.Id]) {
-        let e = this.GetQuestBindingActivityId(r);
+      for (const s of [e.Id, t.Id]) {
+        let e = this.GetQuestBindingActivityId(s);
         if (e === 0) {
-          e = this.GetQuestActivityId(r);
+          e = this.GetQuestActivityId(s);
         }
-        var s = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
+        var r = ModelManager_1.ModelManager.ActivityModel.GetActivityById(e);
         let t = 0;
-        t = s !== undefined ? s.LocalConfig?.IfShowQuestLeftTime && s.CheckIfInOpenTime() && s.EndOpenTime !== 0 ? 0 : 1 : 2;
+        t = r !== undefined ? r.LocalConfig?.IfShowQuestLeftTime && r.CheckIfInOpenTime() && r.EndOpenTime !== 0 ? 0 : 1 : 2;
         i.push(t);
       }
       if (i[0] !== i[1]) {
@@ -73,6 +74,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
         return e.Id - t.Id;
       }
     };
+    this.dRm = new Map();
   }
   OnInit() {
     this.eno = new Map();
@@ -225,9 +227,9 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   GetCurQuestTrackPosition(e = 0, t) {
     var i = this.GetCurTrackedQuest();
     if (i) {
-      var s = i.GetActiveChildQuestNodesId();
-      if (s.length !== 0 && !(e > s.length - 1)) {
-        return i.GetNodeTrackPosition(s[e]);
+      var r = i.GetActiveChildQuestNodesId();
+      if (r.length !== 0 && !(e > r.length - 1)) {
+        return i.GetNodeTrackPosition(r[e]);
       }
     }
   }
@@ -237,10 +239,10 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       var i = t.TreeId;
       var t = ModelManager_1.ModelManager.MapModel.GetAllDynamicMarks().get(12);
       if (t) {
-        for (const r of t.values()) {
-          var s = r;
-          if (s.TreeId === i || s.TreeId === e) {
-            return s.MarkId;
+        for (const s of t.values()) {
+          var r = s;
+          if (r.TreeId === i || r.TreeId === e) {
+            return r.MarkId;
           }
         }
       }
@@ -266,16 +268,16 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       return this.rno.get(e)?.get(t);
     }
     let i = this.rno.get(e);
-    let s = (i = i || new Map()).get(t);
-    if (!s) {
+    let r = (i = i || new Map()).get(t);
+    if (!r) {
       e = ConfigManager_1.ConfigManager.QuestNewConfig.GetQuestNodeConfig(e, t);
       if (!e) {
         return;
       }
-      s = JSON.parse(e.Data);
-      i.set(t, s);
+      r = JSON.parse(e.Data);
+      i.set(t, r);
     }
-    return s;
+    return r;
   }
   GetCurFocusQuestId() {
     return this.bH1;
@@ -345,13 +347,13 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   GetQuestsByTypeAndSubType(e, t) {
     var i;
-    var s = [];
+    var r = [];
     for ([, i] of this.eno) {
       if (i.Type === e && i.SubType === t) {
-        s.push(i);
+        r.push(i);
       }
     }
-    return s;
+    return r;
   }
   GetFirstShowQuestByType(e) {
     e = this.GetQuestsByType(e);
@@ -434,10 +436,10 @@ class QuestNewModel extends ModelBase_1.ModelBase {
         var t;
         var i = [];
         for ([t] of o.DropPreview) {
-          var s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
-          var r = o.DropPreview.get(t);
-          if (s) {
-            const o = new QuestDefine_1.QuestRewardInfo(t, r);
+          var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
+          var s = o.DropPreview.get(t);
+          if (r) {
+            const o = new QuestDefine_1.QuestRewardInfo(t, s);
             i.push(o);
           }
         }
@@ -451,18 +453,39 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       var t = ConfigManager_1.ConfigManager.QuestNewConfig.GetDropConfig(e.RewardId);
       if (t && t.DropPreview.size !== 0) {
         var i;
-        var s = [];
+        var r = [];
         for ([i] of t.DropPreview) {
-          var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i);
+          var s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i);
           var o = t.DropPreview.get(i);
-          if (r) {
-            s.push([{
+          if (s) {
+            r.push([{
               IncId: 0,
               ItemId: i
             }, o]);
           }
         }
-        return s;
+        return r;
+      }
+    }
+  }
+  GetDisplayRewardCommonInfoFromQuestConfig(e) {
+    e = this.GetQuestConfig(e);
+    if (e) {
+      var t = ConfigManager_1.ConfigManager.QuestNewConfig.GetDropConfig(e.RewardId);
+      if (t && t.DropPreview.size !== 0) {
+        var i;
+        var r = [];
+        for ([i] of t.DropPreview) {
+          var s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(i);
+          var o = t.DropPreview.get(i);
+          if (s) {
+            r.push([{
+              IncId: 0,
+              ItemId: i
+            }, o]);
+          }
+        }
+        return r;
       }
     }
   }
@@ -484,38 +507,44 @@ class QuestNewModel extends ModelBase_1.ModelBase {
   }
   GetQuestSpecialState(e) {
     let t = undefined;
-    if (t = typeof e == "number" ? this.GetQuest(e) : e) {
-      if (t.IsSuspend()) {
-        return 4;
-      } else if (t.HasRefOccupiedEntity()) {
-        return 7;
-      } else if (t.LockByLackResource && this.IsLackQuestVideoResource) {
+    if (!(t = typeof e == "number" ? this.GetQuest(e) : e)) {
+      return 0;
+    }
+    if (t.IsSuspend()) {
+      return 4;
+    }
+    if (t.HasRefOccupiedEntity()) {
+      return 7;
+    }
+    if (t.LockByLackResource) {
+      if (!this.mRm(t.Id)) {
         return 2;
-      } else if (t.SuspendByOnline) {
-        return 5;
-      } else if (t.LockByLackResource && !this.IsLackQuestVideoResource) {
+      }
+      if (!t.SuspendByOnline) {
         return 3;
-      } else if (t.IsQuestCanPreShow()) {
-        return 1;
-      } else if (t.IsQuestHasRecommendPreQuest()) {
-        return 6;
-      } else if (t.LockByFocusMode) {
-        if (this.IsInFocusMode()) {
-          return 8;
-        } else {
-          return 9;
-        }
-      } else if (this.IsInFocusMode() && !this.IsInFocusOnQuest(t.Id)) {
-        return 10;
-      } else if (this.GetQuestBindingActivityId(t.Id) !== 0) {
-        return 11;
-      } else if (ModelManager_1.ModelManager.QuestNewModel.GetQuestActivityId(t.Id) !== 0) {
-        return 12;
-      } else {
-        return 0;
       }
     }
-    return 0;
+    if (t.SuspendByOnline) {
+      return 5;
+    } else if (t.IsQuestCanPreShow()) {
+      return 1;
+    } else if (t.IsQuestHasRecommendPreQuest()) {
+      return 6;
+    } else if (t.LockByFocusMode) {
+      if (this.IsInFocusMode()) {
+        return 8;
+      } else {
+        return 9;
+      }
+    } else if (this.IsInFocusMode() && !this.IsInFocusOnQuest(t.Id)) {
+      return 10;
+    } else if (this.GetQuestBindingActivityId(t.Id) !== 0) {
+      return 11;
+    } else if (ModelManager_1.ModelManager.QuestNewModel.GetQuestActivityId(t.Id) !== 0) {
+      return 12;
+    } else {
+      return 0;
+    }
   }
   SetQuestRedDot(e, t) {
     if (t) {
@@ -589,22 +618,22 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     }
   }
   GetSuccessiveQuestId(e) {
-    var s = QuestTrackingConfigAll_1.configQuestTrackingConfigAll.GetConfigList();
-    if (e !== undefined && s) {
+    var r = QuestTrackingConfigAll_1.configQuestTrackingConfigAll.GetConfigList();
+    if (e !== undefined && r) {
       let t = -1;
       let i = undefined;
-      for (const r of s) {
-        if (r.PreQuestIds.includes(e)) {
+      for (const s of r) {
+        if (s.PreQuestIds.includes(e)) {
           let e = true;
-          for (const o of r.PreQuestIds) {
+          for (const o of s.PreQuestIds) {
             if (!this.CheckQuestFinished(o)) {
               e = false;
               break;
             }
           }
-          if (e && (r.Priority > t || r.Priority === t && r.TrackQuestId < i)) {
-            t = r.Priority;
-            i = r.TrackQuestId;
+          if (e && (s.Priority > t || s.Priority === t && s.TrackQuestId < i)) {
+            t = s.Priority;
+            i = s.TrackQuestId;
           }
         }
       }
@@ -616,9 +645,9 @@ class QuestNewModel extends ModelBase_1.ModelBase {
       let e = -1;
       let t = undefined;
       for (var [i] of this.eno) {
-        var s = this.GetQuestConfig(i);
-        if (s?.RecommendationPriority && !this.CheckQuestFinished(i) && (s?.RecommendationPriority > e || s?.RecommendationPriority === e && i < t)) {
-          e = s?.RecommendationPriority;
+        var r = this.GetQuestConfig(i);
+        if (r?.RecommendationPriority && !this.CheckQuestFinished(i) && (r?.RecommendationPriority > e || r?.RecommendationPriority === e && i < t)) {
+          e = r?.RecommendationPriority;
           t = i;
         }
       }
@@ -639,11 +668,11 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     var i = e.QuestScheduleType;
     switch (i.Type) {
       case IQuest_1.EQuestScheduleType.ChildQuestCompleted:
-        var s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-        if (s) {
-          if (!(s = s.GetNode(i.ChildQuestId)) || s.IsProcessing) {
+        var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+        if (r) {
+          if (!(r = r.GetNode(i.ChildQuestId)) || r.IsProcessing) {
             return 0;
-          } else if (s.IsSuccess) {
+          } else if (r.IsSuccess) {
             return 1;
           } else {
             return 2;
@@ -652,11 +681,11 @@ class QuestNewModel extends ModelBase_1.ModelBase {
           return 0;
         }
       case IQuest_1.EQuestScheduleType.TimeLeft:
-        var s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-        if (s) {
-          r = i.TimerType;
-          if (s = s.GetChallengeRemainTime(r)) {
-            if (i.TimeLeft <= s) {
+        var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+        if (r) {
+          s = i.TimerType;
+          if (r = r.GetChallengeRemainTime(s)) {
+            if (i.TimeLeft <= r) {
               return 1;
             } else {
               return 2;
@@ -668,11 +697,11 @@ class QuestNewModel extends ModelBase_1.ModelBase {
           return 0;
         }
       case IQuest_1.EQuestScheduleType.Condition:
-        var r = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
-        if (r) {
-          if (s = i.Condition) {
-            r = LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(r.BtType, r.TreeIncId, r.TreeConfigId);
-            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(s, undefined, r)) {
+        var s = ModelManager_1.ModelManager.GeneralLogicTreeModel.GetBehaviorTree(t);
+        if (s) {
+          if (r = i.Condition) {
+            s = LevelGeneralContextDefine_1.GeneralLogicTreeContext.Create(s.BtType, s.TreeIncId, s.TreeConfigId);
+            if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(r, undefined, s)) {
               return 1;
             } else {
               return 2;
@@ -695,7 +724,7 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     }
   }
   AddQuestLockInfo(e) {
-    this.cjc.add(e.B5n);
+    this.j7u.add(e.B5n);
     switch (e.rpu) {
       case Protocol_1.Aki.Protocol.npu.Proto_QuestResource:
       case Protocol_1.Aki.Protocol.npu.Proto_QuestResourceShow:
@@ -707,7 +736,42 @@ class QuestNewModel extends ModelBase_1.ModelBase {
     this.LockQuestSuspendByOnline(e.B5n, e.ipu);
   }
   GetAllLockQuests() {
-    return this.cjc;
+    return this.j7u;
+  }
+  mRm(e) {
+    if (!ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+      return true;
+    }
+    let t = this.dRm.get(e);
+    if (!t) {
+      var [i, r] = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetQuestRefRes(e);
+      for (const n of i) {
+        var s = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetBlockBelongToSubPackage(n);
+        if (ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(s) !== 5) {
+          t = false;
+          this.dRm.set(e, t);
+          return t;
+        }
+      }
+      for (const u of r) {
+        var o = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetVideoBelongToSubPackage(u);
+        if (o > 0 && ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(o) !== 5) {
+          t = false;
+          this.dRm.set(e, t);
+          return t;
+        }
+      }
+      t = true;
+      this.dRm.set(e, t);
+    }
+    return t;
+  }
+  GetFinishQuestList() {
+    if (this.ino) {
+      return Array.from(this.ino.keys());
+    } else {
+      return [];
+    }
   }
 }
 exports.QuestNewModel = QuestNewModel;

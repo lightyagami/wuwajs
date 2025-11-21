@@ -80,12 +80,12 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
     if (this.SceneItem.IsProjectileAimMode) {
       this.Qnr();
     }
-    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(206);
+    var t = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(209);
     t.AddTag(-1011082332);
     if (!this.SceneItem.ManipulateBaseConfig?.抛物瞄准模式开关) {
       t.AddTag(510134989);
     }
-    var e = this.SceneItem.Entity.GetComponent(139);
+    var e = this.SceneItem.Entity.GetComponent(142);
     if (e?.Valid) {
       t.AddTag(882475449);
     } else {
@@ -108,7 +108,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
       this.vsr();
     }
     this.Msr();
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(206);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(209);
     t?.RemoveTag(-1011082332);
     t?.RemoveTag(510134989);
     t?.RemoveTag(-624589333);
@@ -130,7 +130,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
     let s = UE.KismetMathLibrary.ComposeRotators(this.SceneItem.ConfigHoldRotator, e.Rotator());
     var e = new UE.Rotator(0, this.Timer * t.角速度, 0);
     s = UE.KismetMathLibrary.ComposeRotators(e, s);
-    var t = this.SceneItem.Entity.GetComponent(139);
+    var t = this.SceneItem.Entity.GetComponent(142);
     if (t?.Valid) {
       e = new UE.Rotator(0, -t.Rotation, 0);
       s = UE.KismetMathLibrary.ComposeRotators(e, s);
@@ -257,7 +257,7 @@ class SceneItemManipulableHoldState extends SceneItemManipulableBaseState_1.Scen
         do {
           var _ = this.asr.Actor;
           let t = undefined;
-          _ = (t = (UE.KuroStaticLibrary.IsImplementInterface(_.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(_))?.Entity?.GetComponent(216);
+          _ = (t = (UE.KuroStaticLibrary.IsImplementInterface(_.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) ? ActorUtils_1.ActorUtils : ModelManager_1.ModelManager.SceneInteractionModel).GetEntityByActor(_))?.Entity?.GetComponent(219);
           if (_) {
             var c = _.GetPortalModel();
             let t = _.GetCreatureDataId();

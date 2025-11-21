@@ -110,7 +110,7 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   OnStart() {
     this.EIe = this.Entity.CheckGetComponent(0);
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Lie = this.Entity.CheckGetComponent(206);
+    this.Lie = this.Entity.CheckGetComponent(209);
     this.SkinDamageType = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.q2t);
@@ -192,13 +192,15 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
     }
   }
   ResetCueSkinDamage() {
+    var t;
     if (this.CuePath) {
       this.CuePath = "";
+      t = this.IsCueIgnoreEnableSetting;
       this.IsCueIgnoreEnableSetting = false;
       if (CharacterSkinDamageComponent_1.EnableSkinDamage) {
-        this.ApplySkinDamageByType(this.SkinDamageType, true, "GameplayCueSkinDamage销毁");
+        this.ApplySkinDamageByType(this.SkinDamageType, t, "GameplayCueSkinDamage销毁");
       } else {
-        this.ApplySkinDamageByType(0, true, "GameplayCueSkinDamage销毁");
+        this.ApplySkinDamageByType(0, t, "GameplayCueSkinDamage销毁");
       }
     }
   }
@@ -212,5 +214,5 @@ let CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = class Charac
   }
 };
 CharacterSkinDamageComponent.EnableSkinDamage = true;
-CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(211)], CharacterSkinDamageComponent);
+CharacterSkinDamageComponent = CharacterSkinDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(214)], CharacterSkinDamageComponent);
 exports.CharacterSkinDamageComponent = CharacterSkinDamageComponent; //# sourceMappingURL=CharacterSkinDamageComponent.js.map

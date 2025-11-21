@@ -173,9 +173,12 @@ class CombineMeshTool {
     }
   }
   static SetFace(t, i) {
-    var t = UE.KuroMaterialControllerComponent.AddOrGetMaterialControllerComponentFromActor(t);
-    if (t && (t = t.GetRegisteredSkeletalMeshComponent(this.VKo))?.IsValid()) {
-      t.SetSkeletalMesh(i);
+    var s = UE.KuroMaterialControllerComponent.AddOrGetMaterialControllerComponentFromActor(t);
+    if (s && (s = s.GetRegisteredSkeletalMeshComponent(this.VKo))?.IsValid()) {
+      t.CharRenderingComponent?.TempRemoveDither();
+      s.SetSkeletalMesh(i);
+      t.CharRenderingComponent?.UpdateMaterialEffectsOnly();
+      t.CharRenderingComponent?.TempRecoverDither();
     }
   }
 }

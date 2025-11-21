@@ -78,7 +78,7 @@ class LockCursorUnit extends HudUnitBase_1.HudUnitBase {
   Refresh(t, e, i) {
     var s = t?.Entity?.Id ?? 0;
     this.e6a = s;
-    var s = t?.Entity?.GetComponent(206);
+    var s = t?.Entity?.GetComponent(209);
     this.Vti = s?.HasTag(-625862347) ?? false;
     this.SetVisible(!this.Vti, 2);
     var t = this.wke(e, i);
@@ -90,7 +90,7 @@ class LockCursorUnit extends HudUnitBase_1.HudUnitBase {
       return 0;
     } else if (e) {
       if (t?.Valid) {
-        if ((e = t.Entity.GetComponent(206)).HasTag(-1150819426)) {
+        if ((e = t.Entity.GetComponent(209)).HasTag(-1150819426)) {
           return 1;
         } else if (e.HasTag(1260125908)) {
           return 2;

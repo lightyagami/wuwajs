@@ -77,7 +77,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
   static get zio() {
     return this.Assistants.get(6);
   }
-  static Play(t, s, i, e = true, r = true, h = false, a = 1, n = false) {
+  static Play(t, s, i, e = true, h = true, r = false, a = 1, n = false) {
     if (this.jio.IsPlaying) {
       ControllerHolder_1.ControllerHolder.FlowController.LogError("重复播放剧情Sequence，当前一次只能播放一段");
       i(false);
@@ -89,8 +89,8 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       }
       this.jio.Config = t;
       this.jio.IsViewTargetControl = e;
-      this.jio.IsSubtitleUiUse = r;
-      this.jio.IsWaitRenderData = h;
+      this.jio.IsSubtitleUiUse = h;
+      this.jio.IsWaitRenderData = r;
       this.jio.PlayRate = a;
       this.jio.IsSeamless = n;
       this.jio.FinishCallback = i;
@@ -163,10 +163,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var t = this.zio.LoadPromise();
       var i = this.Kio.BeginLoadMouthAssetPromise();
       const e = new CustomPromise_1.CustomPromise();
-      const r = new CustomPromise_1.CustomPromise();
+      const h = new CustomPromise_1.CustomPromise();
       this.Qio.Load(t => {
         if (t) {
-          this.zio.PreloadUi(r);
+          this.zio.PreloadUi(h);
           this.Kio.Load(t => {
             if (t) {
               this.$io.Load(t => {
@@ -194,10 +194,10 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
           });
         } else {
           e.SetResult(false);
-          r.SetResult(false);
+          h.SetResult(false);
         }
       });
-      Promise.all([t, i, e.Promise, r.Promise]).then(t => {
+      Promise.all([t, i, e.Promise, h.Promise]).then(t => {
         t = t[0] && t[1] && t[2] && t[3];
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 26, "[剧情加载等待] Sequence加载-完成", ["result", t]);
@@ -212,7 +212,7 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
     this.Qio.PreAllPlay();
     this.zio.PreAllPlay();
     this.Kio.PreAllPlay(t => {
-      var s = () => {
+      const s = () => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 38, "开始演出");
         }
@@ -233,7 +233,11 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
           this.jio.HasPlayedBefore = false;
         }
       } else {
-        TimerSystem_1.TimerSystem.Next(s);
+        TimerSystem_1.TimerSystem.Next(() => {
+          this.jio.TwiceAnimFlag = true;
+          s();
+          this.jio.TwiceAnimFlag = false;
+        });
         if (this.jio.IsSeamless) {
           this.jio.HasPlayedBefore = true;
         }
@@ -299,9 +303,9 @@ class SequenceController extends ControllerWithAssistantBase_1.ControllerWithAss
       var i = s.Num();
       var e = new UE.FName("SequencePostProcess");
       for (let t = 0; t < i; t++) {
-        var r = s.Get(t);
-        if (r.ActorHasTag(e)) {
-          r.Settings = new UE.PostProcessSettings();
+        var h = s.Get(t);
+        if (h.ActorHasTag(e)) {
+          h.Settings = new UE.PostProcessSettings();
         }
       }
       this.jio.State = 0;

@@ -66,6 +66,9 @@ class VisionRefineSlotItem extends UiPanelBase_1.UiPanelBase {
       this.GetText(8).SetText(e.toString());
     });
   }
+  SetBtnInteractive(i) {
+    this.GetButton(4).SetSelfInteractive(i);
+  }
 }
 exports.VisionRefineSlotItem = VisionRefineSlotItem;
 //# sourceMappingURL=VisionRefineSlotItem.js.map

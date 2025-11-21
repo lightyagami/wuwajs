@@ -62,13 +62,13 @@ class TowerDefenseEventEntityModel extends TowerDefenseEventEntityBaseModel {
   }
   static BuildModel(t, s) {
     if (s.has("sEu")) {
-      let e = this.jNu.Get();
-      (e = e || this.jNu.Create()).InitFromProto(t, s);
+      let e = this.NNu.Get();
+      (e = e || this.NNu.Create()).InitFromProto(t, s);
       return e;
     }
   }
   static Clear() {
-    this.jNu.Clear();
+    this.NNu.Clear();
   }
   InitFromProto(e, t) {
     t = t.get("sEu").sEu;
@@ -80,9 +80,9 @@ class TowerDefenseEventEntityModel extends TowerDefenseEventEntityBaseModel {
     this.PrefabPath = undefined;
     this.AssetPath = undefined;
     this.PropertyId = 0;
-    this.BuffIdLayers = t.dju;
-    if (t.ddd) {
-      this.SplineId = t.ddd.v9n;
+    this.BuffIdLayers = t.JHu;
+    if (t.jBd) {
+      this.SplineId = t.jBd.v9n;
     }
     t = e.l8n;
     if (t) {
@@ -126,15 +126,15 @@ class TowerDefenseEventEntityModel extends TowerDefenseEventEntityBaseModel {
   }
   Release() {
     this.Reset();
-    TowerDefenseEventEntityModel.jNu.Put(this);
+    TowerDefenseEventEntityModel.NNu.Put(this);
   }
   Clone() {
-    let e = TowerDefenseEventEntityModel.jNu.Get();
-    (e = e || TowerDefenseEventEntityModel.jNu.Create()).Update(this);
+    let e = TowerDefenseEventEntityModel.NNu.Get();
+    (e = e || TowerDefenseEventEntityModel.NNu.Create()).Update(this);
     return e;
   }
 }
-(exports.TowerDefenseEventEntityModel = TowerDefenseEventEntityModel).jNu = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventEntityModel());
+(exports.TowerDefenseEventEntityModel = TowerDefenseEventEntityModel).NNu = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventEntityModel());
 class TowerDefenseEventMonsterModel extends TowerDefenseEventEntityModel {
   constructor() {
     super(...arguments);
@@ -146,24 +146,24 @@ class TowerDefenseEventMonsterModel extends TowerDefenseEventEntityModel {
     this.PolluteRadius = 0;
   }
   static InitFromConfigId(e) {
-    let t = this.Ajc.Get();
-    (t = t || this.Ajc.Create()).ConfigId = e;
+    let t = this.pYu.Get();
+    (t = t || this.pYu.Create()).ConfigId = e;
     return t;
   }
   static BuildModel(t, s) {
-    if (s.has("sEu") && s.has("XBu") && s.get("XBu").XBu.Tju) {
-      let e = this.Ajc.Get();
-      (e = e || this.Ajc.Create()).InitFromProto(t, s);
+    if (s.has("sEu") && s.has("WVu") && s.get("WVu").WVu.SKu) {
+      let e = this.pYu.Get();
+      (e = e || this.pYu.Create()).InitFromProto(t, s);
       return e;
     }
   }
   static Clear() {
-    this.Ajc.Clear();
+    this.pYu.Clear();
   }
   InitFromProto(e, t) {
     super.InitFromProto(e, t);
-    e = t.get("XBu").XBu;
-    this.ConfigId = e.Tju.v9n;
+    e = t.get("WVu").WVu;
+    this.ConfigId = e.SKu.v9n;
     this.DeathType = 0;
     this.BuffRadius = 0;
     this.BuffIds = undefined;
@@ -199,15 +199,15 @@ class TowerDefenseEventMonsterModel extends TowerDefenseEventEntityModel {
   }
   Release() {
     this.Reset();
-    TowerDefenseEventMonsterModel.Ajc.Put(this);
+    TowerDefenseEventMonsterModel.pYu.Put(this);
   }
   Clone() {
-    let e = TowerDefenseEventMonsterModel.Ajc.Get();
-    (e = e || TowerDefenseEventMonsterModel.Ajc.Create()).Update(this);
+    let e = TowerDefenseEventMonsterModel.pYu.Get();
+    (e = e || TowerDefenseEventMonsterModel.pYu.Create()).Update(this);
     return e;
   }
 }
-(exports.TowerDefenseEventMonsterModel = TowerDefenseEventMonsterModel).Ajc = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventMonsterModel());
+(exports.TowerDefenseEventMonsterModel = TowerDefenseEventMonsterModel).pYu = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventMonsterModel());
 class TowerDefenseEventTrapModel extends TowerDefenseEventEntityModel {
   constructor() {
     super(...arguments);
@@ -225,18 +225,18 @@ class TowerDefenseEventTrapModel extends TowerDefenseEventEntityModel {
     this.Degree = 0;
   }
   static BuildModel(t, s) {
-    if (s.has("sEu") && s.has("qfu") && s.has("XBu") && s.get("XBu").XBu.zBu) {
-      let e = this.HNu.Get();
-      (e = e || this.HNu.Create()).InitFromProto(t, s);
+    if (s.has("sEu") && s.has("qfu") && s.has("WVu") && s.get("WVu").WVu.QVu) {
+      let e = this.VNu.Get();
+      (e = e || this.VNu.Create()).InitFromProto(t, s);
       return e;
     }
   }
   static Clear() {
-    this.HNu.Clear();
+    this.VNu.Clear();
   }
   static GetTrapModel(e) {
-    let t = this.HNu.Get();
-    (t = t || this.HNu.Create()).Update(e);
+    let t = this.VNu.Get();
+    (t = t || this.VNu.Create()).Update(e);
     return t;
   }
   InitFromProto(e, t) {
@@ -245,13 +245,13 @@ class TowerDefenseEventTrapModel extends TowerDefenseEventEntityModel {
     this.GridId = e.Gfu.bPu;
     this.Coords.Set(e.Gfu.iPs, e.Gfu.rPs);
     this.Degree = TowerDefenseEventUtility_1.TowerDefenseEventUtility.ConvertDirection2Degree(e.Gfu.Nfu);
-    e = t.get("XBu").XBu;
-    this.ConfigId = e.zBu.v9n;
+    e = t.get("WVu").WVu;
+    this.ConfigId = e.QVu.v9n;
     this.TrapId = 0;
-    this.Level = e.zBu.U1d;
+    this.Level = e.QVu.wpd;
     this.BranchId = 0;
     this.DefaultCost = 0;
-    this.DeconstructReturn = e.zBu.LYc;
+    this.DeconstructReturn = e.QVu.AJc;
     this.GridSize.Set(0, 0);
     this.PlacementType = 1;
     this.CanRotate = true;
@@ -313,15 +313,15 @@ class TowerDefenseEventTrapModel extends TowerDefenseEventEntityModel {
   }
   Release() {
     this.Reset();
-    TowerDefenseEventTrapModel.HNu.Put(this);
+    TowerDefenseEventTrapModel.VNu.Put(this);
   }
   Clone() {
-    let e = TowerDefenseEventTrapModel.HNu.Get();
-    (e = e || TowerDefenseEventTrapModel.HNu.Create()).Update(this);
+    let e = TowerDefenseEventTrapModel.VNu.Get();
+    (e = e || TowerDefenseEventTrapModel.VNu.Create()).Update(this);
     return e;
   }
 }
-(exports.TowerDefenseEventTrapModel = TowerDefenseEventTrapModel).HNu = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventTrapModel());
+(exports.TowerDefenseEventTrapModel = TowerDefenseEventTrapModel).VNu = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventTrapModel());
 class TowerDefenseEventSpecialCellModel extends TowerDefenseEventEntityModel {
   constructor() {
     super(...arguments);
@@ -332,18 +332,18 @@ class TowerDefenseEventSpecialCellModel extends TowerDefenseEventEntityModel {
     this.Coords = new Vector2D_1.Vector2D();
   }
   static BuildModel(t, s) {
-    if (s.has("sEu") && s.has("qfu") && s.has("XBu") && s.get("XBu").XBu.Tnd) {
-      let e = this.Oad.Get();
-      (e = e || this.Oad.Create()).InitFromProto(t, s);
+    if (s.has("sEu") && s.has("qfu") && s.has("WVu") && s.get("WVu").WVu.nld) {
+      let e = this.rcd.Get();
+      (e = e || this.rcd.Create()).InitFromProto(t, s);
       return e;
     }
   }
   static Clear() {
-    this.Oad.Clear();
+    this.rcd.Clear();
   }
   static GetSpecialCellModel(e) {
-    let t = this.Oad.Get();
-    (t = t || this.Oad.Create()).Update(e);
+    let t = this.rcd.Get();
+    (t = t || this.rcd.Create()).Update(e);
     return t;
   }
   InitFromProto(e, t) {
@@ -352,8 +352,8 @@ class TowerDefenseEventSpecialCellModel extends TowerDefenseEventEntityModel {
     this.GridId = e.Gfu.bPu;
     this.Coords.Set(e.Gfu.iPs, e.Gfu.rPs);
     this.GridSize.Set(0, 0);
-    e = t.get("XBu").XBu;
-    this.ConfigId = e.Tnd.v9n;
+    e = t.get("WVu").WVu;
+    this.ConfigId = e.nld.v9n;
   }
   Update(e) {
     super.Update(e);
@@ -388,18 +388,18 @@ class TowerDefenseEventSpecialCellModel extends TowerDefenseEventEntityModel {
   }
   Release() {
     this.Reset();
-    TowerDefenseEventSpecialCellModel.Oad.Put(this);
+    TowerDefenseEventSpecialCellModel.rcd.Put(this);
   }
   Clone() {
-    let e = TowerDefenseEventSpecialCellModel.Oad.Get();
-    (e = e || TowerDefenseEventSpecialCellModel.Oad.Create()).Update(this);
+    let e = TowerDefenseEventSpecialCellModel.rcd.Get();
+    (e = e || TowerDefenseEventSpecialCellModel.rcd.Create()).Update(this);
     return e;
   }
 }
-(exports.TowerDefenseEventSpecialCellModel = TowerDefenseEventSpecialCellModel).Oad = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventSpecialCellModel());
+(exports.TowerDefenseEventSpecialCellModel = TowerDefenseEventSpecialCellModel).rcd = new Pool_1.Pool(ENTITY_POOL_SIZE, () => new TowerDefenseEventSpecialCellModel());
 class TowerDefenseEventEntityModelBuilder {
   static Get(e, t) {
-    for (const i of this.$Nu) {
+    for (const i of this.jNu) {
       var s = i.BuildModel(e, t);
       if (s) {
         return s;
@@ -407,10 +407,10 @@ class TowerDefenseEventEntityModelBuilder {
     }
   }
   static Clear() {
-    for (const e of this.$Nu) {
+    for (const e of this.jNu) {
       e.Clear();
     }
   }
 }
-(exports.TowerDefenseEventEntityModelBuilder = TowerDefenseEventEntityModelBuilder).$Nu = [TowerDefenseEventSpecialCellModel, TowerDefenseEventTrapModel, TowerDefenseEventMonsterModel, TowerDefenseEventEntityModel];
+(exports.TowerDefenseEventEntityModelBuilder = TowerDefenseEventEntityModelBuilder).jNu = [TowerDefenseEventSpecialCellModel, TowerDefenseEventTrapModel, TowerDefenseEventMonsterModel, TowerDefenseEventEntityModel];
 //# sourceMappingURL=TowerDefenseEventEntityModel.js.map

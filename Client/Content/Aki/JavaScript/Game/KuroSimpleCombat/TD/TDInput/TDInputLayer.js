@@ -14,7 +14,7 @@ const TDPlayerController_1 = require("../TDPlayer/TDPlayerController");
 class TowerDefenseInputLayer extends InputLayer_1.InputLayer {
   constructor() {
     super(...arguments);
-    this.cod = false;
+    this.qsd = false;
   }
   GetLayerType() {
     return 6;
@@ -29,7 +29,7 @@ class TowerDefenseInputLayer extends InputLayer_1.InputLayer {
       case InputEnums_1.EInputAction.闪避:
         return new UE.SInputCommand(4, 1, undefined);
       case InputEnums_1.EInputAction.幻象1:
-        this.dod();
+        this.Gsd();
         return TowerDefenseInputLayer.GetSwallowCommand();
       case InputEnums_1.EInputAction.走跑切换:
         return;
@@ -53,7 +53,7 @@ class TowerDefenseInputLayer extends InputLayer_1.InputLayer {
         this.tWu(2, r);
         return TowerDefenseInputLayer.GetSwallowCommand();
       case InputEnums_1.EInputAction.幻象1:
-        this.fod();
+        this.Fsd();
         return TowerDefenseInputLayer.GetSwallowCommand();
     }
     return TowerDefenseInputLayer.GetSwallowCommand();
@@ -62,17 +62,17 @@ class TowerDefenseInputLayer extends InputLayer_1.InputLayer {
     TDPlayerController_1.TowerDefensePlayerController.HandleTowerDefenseCommit(e, r);
   }
   cid() {
-    if (!this.cod) {
+    if (!this.qsd) {
       TDPlayerController_1.TowerDefensePlayerController.HandleUseItem();
     }
-    this.cod = false;
+    this.qsd = false;
   }
-  dod() {
-    this.cod = false;
+  Gsd() {
+    this.qsd = false;
   }
-  fod() {
+  Fsd() {
     if (Info_1.Info.IsInTouch()) {
-      this.cod = true;
+      this.qsd = true;
     }
   }
 }

@@ -12,12 +12,7 @@ class LandscapeMarkItemView extends ConfigMarkItemView_1.ConfigMarkItemView {
     super(e);
     this.gRi = undefined;
   }
-  OnInitialize() {
-    super.OnInitialize();
-    this.fRi();
-  }
-  OnReset() {
-    super.OnReset();
+  OnViewRefresh() {
     this.d8_();
     this.fRi();
   }

@@ -5,25 +5,31 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FilterResultData = exports.FilterViewData = undefined;
 const StringBuilder_1 = require("../../../../../../Core/Utils/StringBuilder");
+const FilterSortDefine_1 = require("../../FilterSortDefine");
 class FilterViewData {
   constructor(t, e) {
-    this.ConfigId = t;
+    this.UniqueId = t;
     this.ConfirmFunction = e;
   }
 }
 exports.FilterViewData = FilterViewData;
 class FilterResultData {
   constructor() {
-    this.ConfigId = 0;
+    this.B0h = 0;
     this.aDt = new Map();
+    this.UniqueId = FilterSortDefine_1.FILTER_SORT_UNVALUE_UNIQUE_ID;
+    this.UniqueId = ++FilterResultData.Npd;
+  }
+  get ConfigId() {
+    return this.B0h;
   }
   SetConfigId(t) {
-    this.ConfigId = t;
+    this.B0h = t;
   }
   AddSingleRuleData(t, e, r) {
-    let s = this.aDt.get(t);
-    (s = s || new Map()).set(e, r);
-    this.aDt.set(t, s);
+    let i = this.aDt.get(t);
+    (i = i || new Map()).set(e, r);
+    this.aDt.set(t, i);
   }
   SetSelectRuleData(t, e) {
     this.aDt.set(t, e);
@@ -52,19 +58,19 @@ class FilterResultData {
     return t.ToString();
   }
   ConvertToStorageData() {
-    const s = new Map();
+    const i = new Map();
     this.aDt.forEach((t, e) => {
       const r = [];
       t.forEach((t, e) => {
         r.push(e);
       });
-      s.set(e, r);
+      i.set(e, r);
     });
     return {
       ConfigId: this.ConfigId,
-      SelectRuleMap: s
+      SelectRuleMap: i
     };
   }
 }
-exports.FilterResultData = FilterResultData;
+(exports.FilterResultData = FilterResultData).Npd = 0;
 //# sourceMappingURL=FilterViewData.js.map

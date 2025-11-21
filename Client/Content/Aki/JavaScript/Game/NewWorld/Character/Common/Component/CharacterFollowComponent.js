@@ -59,7 +59,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
   }
   kZl(t) {
     this.RJl = t;
-    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(96))) {
+    if (this.RJl !== 0 && (t = EntitySystem_1.EntitySystem.Get(this.RJl)?.GetComponent(98))) {
       this.Entity.GetComponent(40)?.ResetRoleGrowComponent(t);
     }
   }
@@ -132,12 +132,12 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
         if ((e = this.u1t.GetVisionComponent()) && (e = PhantomUtil_1.PhantomUtil.GetVisionData(e.VisionId))) {
           this.PJl = e.类型 === 0;
         }
-        this.OZl(t);
+        this.SetRelationship(t);
       } else if (this.u1t.SummonType === EProtoSummonType.Proto_ESummonTypeConcomitantCustom && this.u1t.SummonCfgId && SummonCfgById_1.configSummonCfgById.GetConfig(this.u1t.SummonCfgId)?.ShareDamage) {
-        this.OZl(t);
+        this.SetRelationship(t);
       }
       var e;
-      var o = this.Entity.GetComponent(206);
+      var o = this.Entity.GetComponent(209);
       if (o) {
         o.RemoveTag(-1615796724);
         switch (this.u1t?.SummonType) {
@@ -166,7 +166,7 @@ let CharacterFollowComponent = class CharacterFollowComponent extends EntityComp
       this.v5r = [];
     }
   }
-  OZl(t) {
+  SetRelationship(t) {
     this.kZl(t.Id);
     t.Entity.GetComponent(56).SetFollowId(this.Entity.Id);
     EventSystem_1.EventSystem.EmitWithTarget(this, EventDefine_1.EEventName.OnCharacterSetMaster, t.Id);

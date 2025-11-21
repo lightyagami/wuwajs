@@ -111,7 +111,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
     this.MZi(t?.TalkAkEvent);
     this.xer = false;
     if (t.Montage) {
-      i.GetComponent(186)?.TryPlayMontage(t.Montage.ActionMontage.Path);
+      i.GetComponent(189)?.TryPlayMontage(t.Montage.ActionMontage.Path);
     }
     var e = t.PlayVoice ? PlotAudioById_1.configPlotAudioById.GetConfig(t.TidTalk) : undefined;
     if (e) {
@@ -119,7 +119,7 @@ class NpcFlowLogic extends CharacterFlowLogic_1.CharacterFlowLogic {
     } else {
       if (t.UniversalTone) {
         var e = t.UniversalTone.UniversalToneId;
-        var o = t.UniversalTone.TimberId || i.GetComponent(186)?.GetTimberId();
+        var o = t.UniversalTone.TimberId || i.GetComponent(189)?.GetTimberId();
         if (o && e) {
           var s = InterjectionByTimberIdAndUniversalToneId_1.configInterjectionByTimberIdAndUniversalToneId.GetConfig(o, e);
           if (s) {

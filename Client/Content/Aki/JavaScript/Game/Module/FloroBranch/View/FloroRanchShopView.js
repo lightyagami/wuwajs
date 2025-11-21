@@ -23,7 +23,7 @@ const FloroRanchToyGridItem_1 = require("./Item/FloroRanchToyGridItem");
 class FloroRanchShopView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.gOu = undefined;
+    this.MOu = undefined;
     this.KRu = undefined;
     this.TAu = undefined;
     this.CNe = undefined;
@@ -32,8 +32,8 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
     this.Juu = new Map();
     this.PNo = undefined;
     this.zqo = undefined;
-    this.RKu = undefined;
-    this.jKu = ["Farm_CardType1", "Farm_CardType3", "Farm_CardType2"];
+    this.xQu = undefined;
+    this._Xu = ["Farm_CardType1", "Farm_CardType3", "Farm_CardType2"];
     this.cV_ = () => {
       var t = new FloroRanchGoodsItem_1.FloroRanchGoodsItem();
       t.BindClickCallback(this.JRu);
@@ -49,21 +49,21 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       await i.CreateThenShowByActorAsync(e.GetOwner());
       this.Juu.set(t, i);
     };
-    this.cod = t => {
+    this.Bad = t => {
       this.GetItem(27).SetUIActive(t);
     };
-    this.HKu = t => {
-      this.$Ku(t);
+    this.R$c = t => {
+      this.jzc(t);
       this.tLu(false);
     };
     this.JRu = t => {
-      this.dqu(t);
+      this.X3u(t);
     };
     this.kdu = t => {
       UiManager_1.UiManager.OpenView("FloroRanchShopTipView", {
         ToyPoint: t,
-        SellCallback: this.HKu,
-        ShowToyListCallback: this.cod
+        SellCallback: this.R$c,
+        ShowToyListCallback: this.Bad
       });
       t = this.Juu.get(t);
       if (t) {
@@ -91,7 +91,7 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
           FloroRanchController_1.FloroRanchController.SendFloroRanchPlayShopBuyRequest(this.CNe.Id, ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId, this.TAu.w5n, i, t, this.YRu.IncId, t => {
             if (t && (this.InitShopItemDataList(t.flu), this.tLu(false), ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_BuySuccess"), t.Edu)) {
               t = t.Edu.ydu.Eps;
-              this.ced(t);
+              this.Cid(t);
             }
           });
         }
@@ -118,7 +118,7 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       ModelManager_1.ModelManager.FloroRanchGamePlayModel.HideRecordView();
     };
     this.lyt = () => {
-      this.X1d();
+      this.Xpd();
       this.CloseMe();
       this.PNo?.();
     };
@@ -136,9 +136,9 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       i.push(this.rcu(t));
     }
     await Promise.all(i);
-    this.gOu = new FloroRanchCurrencyItem_1.FloroRanchCurrencyItem();
+    this.MOu = new FloroRanchCurrencyItem_1.FloroRanchCurrencyItem();
     var t = this.GetItem(8);
-    await this.gOu.CreateThenShowByActorAsync(t.GetOwner());
+    await this.MOu.CreateThenShowByActorAsync(t.GetOwner());
     this.KRu = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(5), this.cV_);
     this.zqo = this.GetScrollViewWithScrollbar(5).Content.GetComponentByClass(UE.UIInturnAnimController.StaticClass());
     this.Qh_();
@@ -159,33 +159,33 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.tLu(true);
-    this.QKu();
+    this.$zc();
     var t = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
     if (t) {
       t.SetToyPanelActive(false);
     }
     this.zqo?.Play();
-    this.RKu.SetEnableUiBlur(true);
+    this.xQu.SetEnableUiBlur(true);
   }
   OnBeforeHide() {
     var t = UiManager_1.UiManager.GetViewByName("FloroRanchGamePlayView");
     if (t) {
       t.SetToyPanelActive(true);
     }
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu.SetEnableUiBlur(false);
   }
   OnBeforeDestroy() {
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(18));
   }
   Qh_() {
-    this.RKu = new UE.TsUiBlur_C();
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu = new UE.TsUiBlur_C();
+    this.xQu.SetEnableUiBlur(false);
   }
   tLu(t) {
     var i;
     var e;
     var o = ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData;
-    this.gOu.SetCurrencyData(o);
+    this.MOu.SetCurrencyData(o);
     var o = this.TAu.D1u;
     this.GetButton(1)?.RootUIComp.SetUIActive(o);
     if (o) {
@@ -195,13 +195,13 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       i.SetChangeColor(!e, i.changeColor);
       o = ModelManager_1.ModelManager.FloroRanchModel.GetFloroRanchCurrencyConfig(2);
       this.SetTextureByPath(o.GetSmallIcon(), this.GetTexture(2));
-      e = this.TAu.jBu;
+      e = this.TAu.JOu;
       this.GetText(4)?.ShowTextNew(e > 0 ? "Farm_Edit5" : "Farm_Edit4");
       this.GetItem(29)?.SetUIActive(e > 0);
       this.GetText(30)?.SetText("" + e);
     }
     this.KRu.RefreshByDataAsync(this.ShopItemDataList).then(() => {
-      this.Y1d(t);
+      this.Ypd(t);
       ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
     });
   }
@@ -250,7 +250,7 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       this.GetButton(22)?.RootUIComp.SetUIActive(!e);
       this.GetItem(21)?.SetUIActive(e);
       this.GetText(23)?.ShowTextNew("Farm_Edit1");
-      this.GetText(12)?.ShowTextNew(this.jKu[t]);
+      this.GetText(12)?.ShowTextNew(this._Xu[t]);
       s = this.YRu.GetQualityData();
       this.SetTextureByPath(s.GetRarityDetailCardBigBg(), this.GetTexture(19));
       this.SetTextureByPath(s.GetRarityDetailCardSmallBg(), this.GetTexture(20));
@@ -258,30 +258,30 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       Log_1.Log.Error("FloroRanchGamePlay", 78, "商店没有选中商品！");
     }
   }
-  QKu() {
+  $zc() {
     var i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.EnableToyCount;
     for (let t = 0; t < i; t++) {
       if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetToyEntityByPoint(t)) {
-        this.ced(t);
+        this.Cid(t);
       } else {
-        this.$Ku(t);
+        this.jzc(t);
       }
     }
   }
-  ced(t) {
+  Cid(t) {
     var i = this.Juu.get(t);
     if (i) {
       t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.GetToyEntityByPoint(t);
       i.PlayShowAnim(t);
     }
   }
-  $Ku(t) {
+  jzc(t) {
     t = this.Juu.get(t);
     if (t) {
       t.SetInfoPanelActive(false);
     }
   }
-  dqu(t) {
+  X3u(t) {
     if (this.YRu) {
       this.ZRu(false, this.YRu.IncId);
     }
@@ -296,7 +296,7 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
       e.SetSelectState(t);
     }
   }
-  X1d() {
+  Xpd() {
     var t;
     var i;
     if (this.TAu) {
@@ -316,19 +316,19 @@ class FloroRanchShopView extends UiViewBase_1.UiViewBase {
     }
     this.CNe = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData();
   }
-  Y1d(t) {
+  Ypd(t) {
     if (this.ShopItemDataList.length === 0) {
       this.YRu = undefined;
     } else if (t) {
       this.YRu = undefined;
-      this.dqu(this.ShopItemDataList[0]);
+      this.X3u(this.ShopItemDataList[0]);
     } else {
       const i = this.YRu?.IncId;
       if (i) {
         if (t = this.ShopItemDataList.find(t => t.IncId === i)) {
-          this.dqu(t);
+          this.X3u(t);
         } else {
-          this.dqu(this.ShopItemDataList[0]);
+          this.X3u(this.ShopItemDataList[0]);
         }
       }
     }

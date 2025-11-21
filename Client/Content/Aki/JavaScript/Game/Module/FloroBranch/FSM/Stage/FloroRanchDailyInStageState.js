@@ -47,8 +47,8 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
       this.coc(a);
       this.g_u();
     };
-    this._Ou = a => {
-      this.uOu(a);
+    this.lqu = a => {
+      this._qu(a);
       this.g_u();
     };
   }
@@ -59,7 +59,7 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.f_u);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchInsertTask, this._Ou);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFloroRanchInsertTask, this.lqu);
   }
   coc(a) {
     for (const t of a) {
@@ -67,7 +67,7 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
       this.P2i.push(e);
     }
   }
-  uOu(a) {
+  _qu(a) {
     var e = [];
     for (const o of a) {
       var t = this.mZ(o);
@@ -99,7 +99,7 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchNextDayTaskRefresh, this.f_u);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchInsertTask, this._Ou);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFloroRanchInsertTask, this.lqu);
   }
   OnExit() {
     if (this.dlh) {
@@ -134,8 +134,8 @@ class FloroRanchDailyInStageState extends FloroRanchStateBase_1.FloroRanchStateB
       case Protocol_1.Aki.Protocol.Mlu.plu:
         e = new FloroRanchStageEndTask_1.FloroRanchStageEndTask(a.plu);
         break;
-      case Protocol_1.Aki.Protocol.Mlu.QBu:
-        e = new FloroRanchDaySalarySettleTask_1.FloroRanchDaySalarySettleTask(a.QBu);
+      case Protocol_1.Aki.Protocol.Mlu.ONu:
+        e = new FloroRanchDaySalarySettleTask_1.FloroRanchDaySalarySettleTask(a.ONu);
         break;
       default:
         e = new FloroRanchDailyTaskBase_1.FloroRanchDailyTaskBase();

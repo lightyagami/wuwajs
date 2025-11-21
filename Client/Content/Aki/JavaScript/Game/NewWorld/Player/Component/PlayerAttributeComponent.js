@@ -38,9 +38,9 @@ let PlayerAttributeComponent = class PlayerAttributeComponent extends BaseAttrib
   UpdateCurrentValue(e) {
     super.UpdateCurrentValue(e);
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItemsByPlayer(this.PlayerId)) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntity(t.GetCreatureDataId())?.Entity?.GetComponent(173)?.UpdateCurrentValue(e);
+      ModelManager_1.ModelManager.CreatureModel.GetEntity(t.GetCreatureDataId())?.Entity?.GetComponent(176)?.UpdateCurrentValue(e);
     }
   }
 };
-PlayerAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(199)], PlayerAttributeComponent);
+PlayerAttributeComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(202)], PlayerAttributeComponent);
 exports.PlayerAttributeComponent = PlayerAttributeComponent; //# sourceMappingURL=PlayerAttributeComponent.js.map

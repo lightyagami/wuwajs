@@ -27,12 +27,12 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
     this.fqt = undefined;
     this.ZX1 = 0;
     this.IRe = undefined;
-    this.RKu = undefined;
-    this.dud = true;
-    this.COu = e => {
+    this.xQu = undefined;
+    this.lMd = true;
+    this.equ = e => {
       if (e) {
         this.Kmu = e.vlu;
-        this.AKu();
+        this.OWu();
         this.Og();
         this.JV1();
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.MarkViewHandleRefreshNavigationDirty();
@@ -57,17 +57,17 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
     this.ifu = () => {
       var e;
       var i;
-      if (this.dud) {
+      if (this.lMd) {
         if (this.Kmu.D1u) {
           if (ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData.GetAmount() < this.Kmu.N2s[0].m9n) {
             ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Farm_MoneyNotEnough");
           } else {
             e = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData().Id;
             i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
-            this.dud = false;
+            this.lMd = false;
             FloroRanchController_1.FloroRanchController.FloroRanchPlayRefreshGachaRequest(e, i, this.Kmu.w5n, e => {
-              this.COu(e);
-              this.dud = true;
+              this.equ(e);
+              this.lMd = true;
             });
           }
         } else if (Log_1.Log.CheckError()) {
@@ -79,7 +79,7 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
       var e;
       var i;
       var t;
-      if (this.dud) {
+      if (this.lMd) {
         e = (t = ModelManager_1.ModelManager.FloroRanchModel.GetActivityData()).Id;
         i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
         if (this.ZX1 === 0) {
@@ -91,13 +91,13 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
             t.add(this.ZX1);
             LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.FloroRanchCardInGameRedDot, t);
           }
-          this.dud = false;
+          this.lMd = false;
           FloroRanchController_1.FloroRanchController.FloroRanchPlayGachaRequest(e, i, this.ZX1, this.Kmu.w5n, () => {
             this.CloseMe();
             if (this.PNo) {
               this.PNo();
             }
-            this.dud = true;
+            this.lMd = true;
           });
         }
       }
@@ -105,17 +105,17 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
     this.$Ht = () => {
       var e;
       var i;
-      if (this.dud && (this.CloseMe(), this.PNo && this.PNo(), this.Kmu)) {
+      if (this.lMd && (this.CloseMe(), this.PNo && this.PNo(), this.Kmu)) {
         e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.ActivityId;
         i = ModelManager_1.ModelManager.FloroRanchGamePlayModel.SubInstanceId;
-        this.dud = false;
+        this.lMd = false;
         FloroRanchController_1.FloroRanchController.SendFloroRanchCloseTaskRequest(e, i, this.Kmu.w5n, e => {
-          this.dud = true;
+          this.lMd = true;
         });
       }
     };
     this.Ndu = () => {
-      if (this.dud) {
+      if (this.lMd) {
         ModelManager_1.ModelManager.FloroRanchGamePlayModel.HideRecordView();
       }
     };
@@ -138,10 +138,10 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeShow() {
     this.Og();
-    this.RKu.SetEnableUiBlur(true);
+    this.xQu.SetEnableUiBlur(true);
   }
   OnBeforeHide() {
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu.SetEnableUiBlur(false);
   }
   Og() {
     var e;
@@ -151,7 +151,7 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
     if (t) {
       t = ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData;
       this.SetTextureByPath(t.ConfigData.GetSmallIcon(), this.GetTexture(8));
-      i = this.Kmu.jBu;
+      i = this.Kmu.JOu;
       this.GetText(10)?.ShowTextNew(i > 0 ? "Farm_Edit5" : "Farm_Edit4");
       e = this.GetText(9);
       if (i > 0) {
@@ -203,10 +203,10 @@ class FloroRanchCardSelectView extends UiViewBase_1.UiViewBase {
     this.uei();
   }
   Qh_() {
-    this.RKu = this.RootActor?.GetComponentByClass(UE.TsUiBlur_C.StaticClass());
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu = this.RootActor?.GetComponentByClass(UE.TsUiBlur_C.StaticClass());
+    this.xQu.SetEnableUiBlur(false);
   }
-  AKu() {
+  OWu() {
     this.kau.DeselectCurrentGridProxy();
     this.ZX1 = 0;
     this.GetButton(3)?.SetSelfInteractive(false);

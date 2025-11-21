@@ -33,7 +33,7 @@ class BulletLogicWhirlpool extends BulletLogicController_1.BulletLogicController
     }
   }
   Z7o(t) {
-    var o = t?.GetComponent(179);
+    var o = t?.GetComponent(182);
     if (!!o?.Valid && !(this.Y7o < o.CharacterWeight)) {
       if (o.GetWhirlpoolId() !== this.xe) {
         if (!o.GetWhirlpoolEnable() || !!o.CompareWhirlpoolPriority(this.J7o)) {
@@ -49,7 +49,7 @@ class BulletLogicWhirlpool extends BulletLogicController_1.BulletLogicController
   }
   OnBulletDestroy() {
     for (const o of this.z7o) {
-      var t = o?.GetComponent(179);
+      var t = o?.GetComponent(182);
       if (t?.Valid && t.GetWhirlpoolEnable() && t.GetWhirlpoolId() === this.xe && (t.EndWhirlpool(), BulletConstant_1.BulletConstant.OpenMoveLog) && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Bullet", 20, "解除吸附", ["Entity", o.Id], ["BulletLocation", this.a7o.ActorComponent.ActorLocationProxy], ["ToLocation", t.ActorComp.ActorLocationProxy]);
       }

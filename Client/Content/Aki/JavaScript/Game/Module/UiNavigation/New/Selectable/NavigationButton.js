@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.NavigationButton = undefined;
 const puerts_1 = require("puerts");
-const StringUtils_1 = require("../../../../../Core/Utils/StringUtils");
 const UiNavigationNewController_1 = require("../UiNavigationNewController");
 const NavigationSelectableBase_1 = require("./NavigationSelectableBase");
 class NavigationButton extends NavigationSelectableBase_1.NavigationSelectableBase {
@@ -47,8 +46,7 @@ class NavigationButton extends NavigationSelectableBase_1.NavigationSelectableBa
       this.Listener.ScrollView.ScrollToSelectableComponent(this.Selectable);
     }
     var i = this.Listener.GetNavigationGroup();
-    var i = i ? i.InsideGroupName : "";
-    return !StringUtils_1.StringUtils.IsBlank(i) && (i = UiNavigationNewController_1.UiNavigationNewController.GetCurrentNavigationFocusListener(), UiNavigationNewController_1.UiNavigationNewController.IsInFocusInsideListenerList(this.Listener, i));
+    return (i ? i.InsideGroupNameSet : new Set()).size > 0 && (i = UiNavigationNewController_1.UiNavigationNewController.GetCurrentNavigationFocusListener(), UiNavigationNewController_1.UiNavigationNewController.IsInFocusInsideListenerList(this.Listener, i));
   }
 }
 exports.NavigationButton = NavigationButton;

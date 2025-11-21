@@ -97,7 +97,7 @@ class PatrolMovePointsLogic {
           }
           (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
           i.V4n = true;
-          Net_1.Net.Call(22528, i, () => {});
+          Net_1.Net.Call(23106, i, () => {});
         } else {
           t = this.TargetIndex - 1;
         }
@@ -109,7 +109,7 @@ class PatrolMovePointsLogic {
         }
         (i = Protocol_1.Aki.Protocol.Jes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId());
         i.V4n = false;
-        Net_1.Net.Call(22528, i, () => {});
+        Net_1.Net.Call(23106, i, () => {});
       } else {
         t = this.TargetIndex + 1;
       }
@@ -127,7 +127,7 @@ class PatrolMovePointsLogic {
   czo(t) {
     this.Hte.SkeletalMesh?.SetVisibility(!t.IsHide);
     var i;
-    var e = this.Hte.Entity.GetComponent(206);
+    var e = this.Hte.Entity.GetComponent(209);
     if (e) {
       i = -841499802;
       if (t.IsHide) {

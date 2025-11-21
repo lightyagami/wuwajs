@@ -53,7 +53,7 @@ class PhantomManageViewModel extends ViewModelBase {
     } else if (!e && i.has(t)) {
       i.delete(t);
     }
-    this.Z1d(i, s);
+    this.SSd(i, s);
   }
   SwitchSelectState(t, e) {
     var s = this.GetSelectSet();
@@ -62,17 +62,17 @@ class PhantomManageViewModel extends ViewModelBase {
     } else {
       s.add(t);
     }
-    this.Z1d(s, e);
+    this.SSd(s, e);
   }
   GetSelectSet() {
     return this.GetData(0);
   }
-  Z1d(t, e) {
+  SSd(t, e) {
     this.SetData(0, t, e);
     ModelManager_1.ModelManager.InventoryModel.SetPhantomManageSelectSet(t);
   }
   ClearSelectSet() {
-    this.Z1d(undefined);
+    this.SSd(undefined);
   }
   SetItemDataList(t, e) {
     this.SetData(1, t, e);

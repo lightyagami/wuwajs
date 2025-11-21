@@ -33,7 +33,7 @@ class HeadStateData {
     this.$te = undefined;
     this.l1t = undefined;
     this._1t = undefined;
-    this.u1t = undefined;
+    this.CreatureDataComponent = undefined;
     this.c1t = undefined;
     this.m1t = undefined;
     this.d1t = undefined;
@@ -158,15 +158,15 @@ class HeadStateData {
     this.E0 = t.Id;
     this.OC = t.GetComponent(1)?.Owner;
     this.ActorComponent = t.GetComponent(1);
-    this.$te = t.GetComponent(174);
-    this.Xte = t.GetComponent(206);
+    this.$te = t.GetComponent(177);
+    this.Xte = t.GetComponent(209);
     this.l1t = t.GetComponent(75);
-    this._1t = t.GetComponent(149);
-    this.u1t = t.GetComponent(0);
+    this._1t = t.GetComponent(152);
+    this.CreatureDataComponent = t.GetComponent(0);
     this.c1t = this.Entity.GetComponent(21);
-    this.m1t = this.Entity.GetComponent(175);
-    this.d1t = this.Entity.GetComponent(130);
-    var t = this.u1t.GetBaseInfo();
+    this.m1t = this.Entity.GetComponent(178);
+    this.d1t = this.Entity.GetComponent(133);
+    var t = this.CreatureDataComponent.GetBaseInfo();
     this.h1t = t?.HeadStateViewConfig;
     this.C1t = false;
     if (this.OC instanceof TsBaseCharacter_1.default) {
@@ -178,7 +178,7 @@ class HeadStateData {
     }
     this.f1t = this.h1t?.ZOffset ?? 0;
     this.p1t = this.h1t?.ForwardOffset ?? 0;
-    this.Camp = this.u1t.GetEntityCamp();
+    this.Camp = this.CreatureDataComponent.GetEntityCamp();
     this.Hlt();
     this.HasHideTag = this.Xte?.HasTag(-13489149) ?? false;
     this.HasFallDownTag = this.Xte?.HasTag(1922078392) ?? false;
@@ -190,7 +190,7 @@ class HeadStateData {
       this.k1t = t;
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Battle", 17, "[headState]该怪物阵营没有配置血条颜色", ["EntityId", this.E0], ["PbDataId", this.u1t?.GetPbDataId()], ["Camp", this.Camp], ["HpColor", this.k1t]);
+        Log_1.Log.Error("Battle", 17, "[headState]该怪物阵营没有配置血条颜色", ["EntityId", this.E0], ["PbDataId", this.CreatureDataComponent?.GetPbDataId()], ["Camp", this.Camp], ["HpColor", this.k1t]);
       }
       this.k1t = ModelManager_1.ModelManager.BattleUiModel.GetHeadStateHpColor(1);
     }
@@ -205,7 +205,7 @@ class HeadStateData {
     this.Xte = undefined;
     this.l1t = undefined;
     this._1t = undefined;
-    this.u1t = undefined;
+    this.CreatureDataComponent = undefined;
     this.h1t = undefined;
     this.HasHideTag = false;
     this.HasDeadTag = false;
@@ -230,13 +230,13 @@ class HeadStateData {
   }
   AddEntityEvents() {
     var t;
-    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), (t = this.Entity.GetComponent(206))?.Valid && (this.v1t = t.ListenForTagAddOrRemove(242005298, this.V1t), this.v1t = t.ListenForTagAddOrRemove(1261361093, this.Yrt), this.M1t = t.ListenForTagAddOrRemove(-1109506297, this.Zrt), this.E1t = t.ListenForTagAddOrRemove(-1838149281, this.ent), this.q1t = t.ListenForTagAddOrRemove(-13489149, this.Yst), this.G1t = t.ListenForTagAddOrRemove(1008164187, this.n$e), this.N1t = t.ListenForTagAddOrRemove(1996802261, this.aXe), this.O1t = t.ListenForTagAddOrRemove(1922078392, this.zrt)), (t = this.Entity.GetComponent(174))?.Valid && (t.AddListener(EAttributeId.Proto_Hardness, this.tnt, "Hardness.HeadState"), t.AddListener(EAttributeId.Proto_Rage, this.tnt, "Range.HeadState"), t.AddListener(EAttributeId.Proto_RageMax, this.tnt, "RangeMax.HeadState"), t.AddListener(EAttributeId.Proto_Lv, this.m2, "Lv.HeadState"), t.AddListener(EAttributeId.Proto_Life, this.Nbr, "Life.HeadState"), t.AddListener(EAttributeId.l5n, this.Nbr, "LifeMax.HeadState")), (t = this.Entity.GetComponent(130))?.Valid)) {
+    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) || EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), (t = this.Entity.GetComponent(209))?.Valid && (this.v1t = t.ListenForTagAddOrRemove(242005298, this.V1t), this.v1t = t.ListenForTagAddOrRemove(1261361093, this.Yrt), this.M1t = t.ListenForTagAddOrRemove(-1109506297, this.Zrt), this.E1t = t.ListenForTagAddOrRemove(-1838149281, this.ent), this.q1t = t.ListenForTagAddOrRemove(-13489149, this.Yst), this.G1t = t.ListenForTagAddOrRemove(1008164187, this.n$e), this.N1t = t.ListenForTagAddOrRemove(1996802261, this.aXe), this.O1t = t.ListenForTagAddOrRemove(1922078392, this.zrt)), (t = this.Entity.GetComponent(177))?.Valid && (t.AddListener(EAttributeId.Proto_Hardness, this.tnt, "Hardness.HeadState"), t.AddListener(EAttributeId.Proto_Rage, this.tnt, "Range.HeadState"), t.AddListener(EAttributeId.Proto_RageMax, this.tnt, "RangeMax.HeadState"), t.AddListener(EAttributeId.Proto_Lv, this.m2, "Lv.HeadState"), t.AddListener(EAttributeId.Proto_Life, this.Nbr, "Life.HeadState"), t.AddListener(EAttributeId.l5n, this.Nbr, "LifeMax.HeadState")), (t = this.Entity.GetComponent(133))?.Valid)) {
       t.AddProgressDataChangedCallback(this.H1t);
     }
   }
   RemoveEntityEvents() {
     var t;
-    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), this.v1t && (this.v1t.EndTask(), this.v1t = undefined), this.E1t && (this.E1t.EndTask(), this.E1t = undefined), this.M1t && (this.M1t.EndTask(), this.M1t = undefined), this.q1t && (this.q1t.EndTask(), this.q1t = undefined), this.G1t && (this.G1t.EndTask(), this.G1t = undefined), this.N1t && (this.N1t.EndTask(), this.N1t = undefined), this.O1t && (this.O1t.EndTask(), this.O1t = undefined), (t = this.Entity?.GetComponent(174)) && (t.RemoveListener(EAttributeId.Proto_Hardness, this.tnt), t.RemoveListener(EAttributeId.Proto_Rage, this.tnt), t.RemoveListener(EAttributeId.Proto_RageMax, this.tnt), t.RemoveListener(EAttributeId.Proto_Lv, this.m2), t.RemoveListener(EAttributeId.Proto_Life, this.Nbr), t.RemoveListener(EAttributeId.l5n, this.Nbr)), t = this.Entity?.GetComponent(130))) {
+    if (this.Entity && (EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharShieldChange, this.u$e), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeHitTimeScale, this.F1t), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemDurabilityChange, this.Qlt), EventSystem_1.EventSystem.HasWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt) && EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemEntityHit, this.Ylt), this.v1t && (this.v1t.EndTask(), this.v1t = undefined), this.E1t && (this.E1t.EndTask(), this.E1t = undefined), this.M1t && (this.M1t.EndTask(), this.M1t = undefined), this.q1t && (this.q1t.EndTask(), this.q1t = undefined), this.G1t && (this.G1t.EndTask(), this.G1t = undefined), this.N1t && (this.N1t.EndTask(), this.N1t = undefined), this.O1t && (this.O1t.EndTask(), this.O1t = undefined), (t = this.Entity?.GetComponent(177)) && (t.RemoveListener(EAttributeId.Proto_Hardness, this.tnt), t.RemoveListener(EAttributeId.Proto_Rage, this.tnt), t.RemoveListener(EAttributeId.Proto_RageMax, this.tnt), t.RemoveListener(EAttributeId.Proto_Lv, this.m2), t.RemoveListener(EAttributeId.Proto_Life, this.Nbr), t.RemoveListener(EAttributeId.l5n, this.Nbr)), t = this.Entity?.GetComponent(133))) {
       t.RemoveProgressDataChangedCallback(this.H1t);
     }
   }
@@ -340,8 +340,8 @@ class HeadStateData {
     }
   }
   GetDurable() {
-    if (this.u1t) {
-      return this.u1t.GetDurabilityValue();
+    if (this.CreatureDataComponent) {
+      return this.CreatureDataComponent.GetDurabilityValue();
     } else {
       return 0;
     }
@@ -392,7 +392,7 @@ class HeadStateData {
     return !!this.ActorComponent?.Valid && this.ActorComponent.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_SceneItem;
   }
   GetHeadStateType() {
-    if (this.u1t?.Valid) {
+    if (this.CreatureDataComponent?.Valid) {
       return this.h1t?.HeadStateViewType ?? 0;
     }
   }
@@ -402,8 +402,8 @@ class HeadStateData {
     }
   }
   GetHardnessColor() {
-    if (this.u1t) {
-      var t = this.u1t.GetAttributeComponent();
+    if (this.CreatureDataComponent) {
+      var t = this.CreatureDataComponent.GetAttributeComponent();
       if (t) {
         t = t.PropertyId;
         t = ConfigManager_1.ConfigManager.BattleUiConfig.GetPropertyType(t);
@@ -430,12 +430,8 @@ class HeadStateData {
       this.bk_?.();
     }
   }
-  GetMoraleLevel() {
-    if (this.u1t) {
-      return this.u1t.GetAttributeComponent()?.MoraleLevel ?? 0;
-    } else {
-      return 0;
-    }
+  HasTag(t) {
+    return this.Xte?.HasTag(t) ?? false;
   }
 }
 exports.HeadStateData = HeadStateData;

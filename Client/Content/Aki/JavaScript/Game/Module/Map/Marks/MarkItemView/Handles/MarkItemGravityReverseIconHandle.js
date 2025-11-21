@@ -17,7 +17,7 @@ class MarkItemGravityReverseIconHandle extends MarkItemComponentHandle_1.MarkIte
   GetOrCreateComponent() {
     if (this.ComponentInternal === undefined) {
       this.LoadComponentAsync().then(() => {
-        this.ComponentInternal?.GetRootItem().SetUIRelativeScale3D(this.Context.MarkItem.CornerScaleVector);
+        this.ComponentInternal?.GetRootItem()?.SetUIRelativeScale3D(this.Context.MarkItem.CornerScaleVector);
         this.ApplyModified();
       });
     }

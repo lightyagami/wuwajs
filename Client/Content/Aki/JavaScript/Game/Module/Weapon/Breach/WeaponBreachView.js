@@ -19,7 +19,6 @@ const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
 const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 const CostItemGridComponent_1 = require("../../RoleUi/RoleBreach/CostItemGridComponent");
 const StarItem_1 = require("../../RoleUi/View/StarItem");
-const ScrollingTipsController_1 = require("../../ScrollingTips/ScrollingTipsController");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const UiModelUtil_1 = require("../../UiModel/UiModelUtil");
 const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
@@ -37,27 +36,24 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.N2i = undefined;
     this.O2i = undefined;
     this.dmo = undefined;
+    this.owm = undefined;
     this.AOo = () => {
-      if (this.ROo === 0) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponBreachNoEnoughMaterialText");
-      } else if (this.ROo === 1) {
-        ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("WeaponBreachNoEnoughMoneyText");
-      } else {
-        this.N2i = UiSceneManager_1.UiSceneManager.GetWeaponObserver();
-        this.O2i = UiSceneManager_1.UiSceneManager.GetWeaponScabbardObserver();
-        this.dmo = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
-        const i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo)?.GetRoleId() ?? 0;
-        WeaponController_1.WeaponController.SendPbWeaponBreachRequest(this.DOo, e => {
-          var t = this.N2i.Model;
-          UiModelUtil_1.UiModelUtil.PlayEffectAtRootComponent(t, "WeaponBreachEffect");
-          WeaponController_1.WeaponController.PlayWeaponRenderingMaterial("WeaponBreachMaterialController", this.N2i, this.O2i);
-          var t = ConfigManager_1.ConfigManager.RoleConfig.GetWeaponBreachDaDelayTime();
-          TimerSystem_1.GameplayTimerSystem.Delay(() => {
-            this.N2i?.Model?.CheckGetComponent(23)?.RefreshWeaponBreachDa(e, i);
-            this.O2i?.Model?.CheckGetComponent(23)?.RefreshWeaponBreachDa(e, i);
-            this.dmo?.Model?.CheckGetComponent(17)?.RefreshWeaponDa();
-          }, t);
+      var e;
+      if (this.ROo === 0 || this.ROo === 1) {
+        e = {
+          SelectedItemList: this.cum(),
+          ClickConfirm: () => {
+            this.Cum();
+          },
+          BelongView: "WeaponRootView"
+        };
+        UiManager_1.UiManager.OpenView("SynthesisTipsInfoView", e, (e, t) => {
+          if (e) {
+            UiManager_1.UiManager.GetViewByName("WeaponRootView")?.AddChildViewById(t);
+          }
         });
+      } else {
+        this.Cum();
       }
     };
     this.LevelUpLockTipClick = () => {
@@ -92,10 +88,30 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
   }
   OnStart() {
     this.StarLayout = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.vke);
-    this.b1o = new CostItemGridComponent_1.CostItemGridComponent(this.GetItem(4), this.AOo, this.LevelUpLockTipClick);
+    this.b1o = new CostItemGridComponent_1.CostItemGridComponent(this.GetItem(4), this.AOo, this.LevelUpLockTipClick, "WeaponRootView");
     this.b1o.SetMaxItemActive(false);
     this.b1o.SetButtonItemLocalText("RoleBreakup");
     this.AttributeLayout = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(3), this.G1o, this.GetItem(5).GetOwner());
+  }
+  Cum() {
+    this.N2i = UiSceneManager_1.UiSceneManager.GetWeaponObserver();
+    this.O2i = UiSceneManager_1.UiSceneManager.GetWeaponScabbardObserver();
+    this.dmo = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
+    const i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo)?.GetRoleId() ?? 0;
+    WeaponController_1.WeaponController.SendPbWeaponBreachRequest(this.DOo, e => {
+      var t = this.N2i.Model;
+      UiModelUtil_1.UiModelUtil.PlayEffectAtRootComponent(t, "WeaponBreachEffect");
+      WeaponController_1.WeaponController.PlayWeaponRenderingMaterial("WeaponBreachMaterialController", this.N2i, this.O2i);
+      var t = ConfigManager_1.ConfigManager.RoleConfig.GetWeaponBreachDaDelayTime();
+      TimerSystem_1.GameplayTimerSystem.Delay(() => {
+        this.N2i?.Model?.CheckGetComponent(23)?.RefreshWeaponBreachDa(e, i);
+        this.O2i?.Model?.CheckGetComponent(23)?.RefreshWeaponBreachDa(e, i);
+        this.dmo?.Model?.CheckGetComponent(17)?.RefreshWeaponDa();
+      }, t);
+    });
+  }
+  cum() {
+    return this.owm ?? [];
   }
   OnBeforeShow() {
     this.DOo = this.ExtraParams;
@@ -121,29 +137,55 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
       this.b1o.SetButtonItemActive(true);
       this.b1o.SetLockItemActive(false);
     }
-    var o = [];
+    var n = [];
     var i = t.Consume;
     if (i) {
-      for (var [n, a] of i) {
-        n = {
-          ItemId: n,
+      for (var [a, o] of i) {
+        a = {
+          ItemId: a,
           IncId: 0,
-          SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(n),
-          Count: a
+          SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(a),
+          Count: o
         };
-        o.push(n);
+        n.push(a);
       }
     }
     r = t.GoldConsume;
-    this.b1o.Update(o, ItemDefines_1.EItemId.Gold, r);
+    this.owm = n.map(e => ({
+      ...e
+    }));
+    if (r > 0) {
+      this.owm.push({
+        ItemId: ItemDefines_1.EItemId.Gold,
+        IncId: 0,
+        Count: r,
+        SelectedCount: ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(ItemDefines_1.EItemId.Gold)
+      });
+    }
+    this.b1o.Update(n, ItemDefines_1.EItemId.Gold, r);
     LguiUtil_1.LguiUtil.SetLocalText(this.GetText(1), "RoleBreakUpLevel", e.GetBreachLevel() + 1);
     this.k1o();
+    this.dum();
+  }
+  dum() {
+    var e;
+    if (this.ROo === 2) {
+      this.b1o.SetButtonItemLocalText("RoleBreakup");
+      this.b1o?.SetButtonItemInteractive(true);
+    } else if (this.ROo === 0 || this.ROo === 1) {
+      if (e = ModelManager_1.ModelManager.ComposePopupModel.CheckOpenResult(this.cum())) {
+        this.b1o.SetButtonItemLocalTextNew("AutoSynthesis_MaterialReplenishBtn_Text");
+      } else {
+        this.b1o.SetButtonItemLocalTextNew("AutoSynthesis_MaterialMissingBtn_Text");
+      }
+      this.b1o?.SetButtonItemInteractive(e);
+    }
   }
   jxt(t, i) {
     this.StarLayout ||= new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(2), this.vke);
     var r = new Array(i);
     for (let e = 0; e < i; ++e) {
-      var o = {
+      var n = {
         StarOnActive: e < t,
         StarOffActive: e > t,
         StarNextActive: e === t,
@@ -151,7 +193,7 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
         PlayLoopSequence: e === t,
         PlayActivateSequence: false
       };
-      r[e] = o;
+      r[e] = n;
     }
     this.StarLayout.RefreshByData(r);
   }
@@ -161,28 +203,28 @@ class WeaponBreachView extends UiTabViewBase_1.UiTabViewBase {
     this.UOo = ModelManager_1.ModelManager.WeaponModel.GetWeaponAttributeParamList(t);
     var i = e.GetBreachLevel();
     var r = i + 1;
-    var o = e.GetLevel();
-    var n = [];
-    for (const _ of this.UOo) {
-      var a = _.CurveId;
-      var s = _.PropId;
-      var l = s.Value;
-      var h = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(a, l, o, i);
+    var n = e.GetLevel();
+    var a = [];
+    for (const l of this.UOo) {
+      var o = l.CurveId;
+      var s = l.PropId;
+      var h = s.Value;
+      var _ = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o, h, n, i);
       let e = 0;
       if (i < r) {
-        e = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(a, l, o, r);
+        e = ModelManager_1.ModelManager.WeaponModel.GetCurveValue(o, h, n, r);
       }
-      a = {
+      o = {
         Id: s.Id,
         IsRatio: s.IsRatio,
-        CurValue: h,
+        CurValue: _,
         BgActive: true,
-        ShowNext: e > h,
+        ShowNext: e > _,
         NextValue: e
       };
-      n.push(a);
+      a.push(o);
     }
-    this.AttributeLayout.RefreshByData(n);
+    this.AttributeLayout.RefreshByData(a);
   }
   P5e() {
     var e = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(this.DOo).GetWeaponConfig();

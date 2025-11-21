@@ -40,7 +40,6 @@ exports.buffId = {
   ElementClean: 3027,
   ActivateMultiQte: 3028,
   ActivateQte: 3029,
-  WaitRemoveQteInvincible: 3030,
   CounterInvincibleCommon: 3036,
   StoryInvincibleCommon: 3037,
   Invisible: 3072,
@@ -52,9 +51,10 @@ exports.buffId = {
   ElevatorBuff: 640003011,
   IgnoreHateBuff: 1103100015,
   StealthIgnoreHateBuff: 70000049,
-  ChangeRoleBuff: 70000049,
+  ChangeRoleBuff: 3118,
   ManipulateInteractBuffId: 640003012,
   ManipulateInteractBuffIdMaleX: 640003013,
+  MotorSprintBuff: 7000000204,
   HardLockCompensateBuff: 1001006001
 };
 exports.noBroadCastBuff = new Set([1201, 1202, 1203, 12021, 12022, 12023, 1204, 1205, 1206, 1207, 1209, 1210, 1211, 3009, 3010, 3011, 3015, 3023, 1101003010, 1101003012, 1101003013, 90001003, 1001006001, 613670000]);

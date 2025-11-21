@@ -63,8 +63,8 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
     return this.Qjr;
   }
   OnStart() {
-    this.m1t = this.Entity.CheckGetComponent(175);
-    this.Xte = this.Entity.CheckGetComponent(206);
+    this.m1t = this.Entity.CheckGetComponent(178);
+    this.Xte = this.Entity.CheckGetComponent(209);
     return true;
   }
   OnActivate() {
@@ -95,7 +95,7 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
       r = new CharacterShield(e, t, i);
       this.Kjr.set(e, r);
       this.Xjr(r.ShieldValue);
-      this.Ymd(0, i, o, t);
+      this.o8d(0, i, o, t);
     }
     this.m1t.TriggerEvents(7, this.m1t, {});
   }
@@ -105,7 +105,7 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
       this.Xjr(-o.ShieldValue);
       this.$jr();
       this.Kjr.delete(e);
-      this.Ymd(o.ShieldValue, 0, i, t);
+      this.o8d(o.ShieldValue, 0, i, t);
     }
   }
   ChangeValue(e, t, i, o = 2) {
@@ -115,7 +115,7 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
       r = s.ShieldValue;
       s.ShieldValue = i;
       this.Xjr(i - r);
-      this.Ymd(r, i, o, t);
+      this.o8d(r, i, o, t);
     } else {
       this.Add(e, t, i);
     }
@@ -153,7 +153,7 @@ let CharacterShieldComponent = class CharacterShieldComponent extends EntityComp
   $jr() {
     this.m1t.TriggerEvents(8, this.m1t, {});
   }
-  Ymd(e, t, i, o) {
+  o8d(e, t, i, o) {
     SceneTeamController_1.SceneTeamController.EmitAbilityEvent(this.Entity, 4, AbilityEvent_1.DEFAULT_KEY, this.Entity, e, t, i, o);
   }
   GetDebugShieldInfo() {

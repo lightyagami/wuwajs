@@ -21,7 +21,7 @@ class TsTaskChangeNpcAbpState extends TsTaskAbortImmediatelyBase_1.default {
   ReceiveExecuteAI(e, t) {
     var s = e.AiController;
     if (s) {
-      const i = s.CharActorComp?.Entity?.GetComponent(187);
+      const i = s.CharActorComp?.Entity?.GetComponent(190);
       if (i) {
         this.Handle = TimerSystem_1.TimerSystem.Delay(() => {
           this.Handle = undefined;

@@ -27,7 +27,9 @@ class FlowActionFadeInScreen extends FlowActionBase_1.FlowActionBase {
     } else {
       ModelManager_1.ModelManager.PlotModel.BlackScreenType = 0;
     }
-    if (ModelManager_1.ModelManager.PlotModel.BlackScreenType === 0) {
+    if (e.FadeBackground) {
+      ControllerHolder_1.ControllerHolder.SpecialTransitionController.OpenSpecialTransitionLoadingByFadeScreen(e.FadeBackground, e.Ease?.Duration, this.yDe);
+    } else if (ModelManager_1.ModelManager.PlotModel.BlackScreenType === 0) {
       LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, this.yDe, e?.Ease?.Duration, e?.ScreenType ? e.ScreenType : LevelLoadingController_1.LevelLoadingController.CameraFade.ColorSearch());
     } else {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlotViewBgFadeBlackScreen, true, this.yDe);

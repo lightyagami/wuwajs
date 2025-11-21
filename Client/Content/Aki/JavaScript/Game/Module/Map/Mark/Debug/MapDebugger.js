@@ -147,7 +147,7 @@ Ui坐标X:${r.UiPosition.X.toFixed(2)},Ui坐标Y:${r.UiPosition.Y.toFixed(2)},Ui
         MultiMapId:${r.MultiMapId}
 
         ------------------------追踪信息End------------------`;
-    MapLogger_1.MapLogger.Error(63, "地图调试信息->" + e, ["追踪信息", r]);
+    MapLogger_1.MapLogger.Warn(63, "地图调试信息->" + e, ["追踪信息", r]);
   }
 }
 exports.MapDebugger = MapDebugger;

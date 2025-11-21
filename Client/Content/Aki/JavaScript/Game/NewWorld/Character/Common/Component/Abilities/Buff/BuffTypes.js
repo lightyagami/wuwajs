@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.BuffDefinition = undefined;
+exports.BuffDefinition = exports.actionTagRemove = undefined;
 const CharacterAttributeTypes_1 = require("../CharacterAttributeTypes");
+exports.actionTagRemove = new Set([2, 1, 4, 3, 102, 101, 104, 103]);
 class BuffDefinition {
   constructor() {
     this.Id = undefined;

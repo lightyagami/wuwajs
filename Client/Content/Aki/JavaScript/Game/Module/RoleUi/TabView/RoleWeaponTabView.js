@@ -9,17 +9,19 @@ const Log_1 = require("../../../../Core/Common/Log");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTabViewBase_1 = require("../../../Ui/Base/UiTabViewBase");
 const UiManager_1 = require("../../../Ui/UiManager");
 const CommonEquippedItem_1 = require("../../Common/CommonEquippedItem");
+const SkinController_1 = require("../../Skin/SkinController");
 const WeaponSkinDefine_1 = require("../../Skin/Tab/Weapon/WeaponSkinDefine");
 const UiSceneManager_1 = require("../../UiComponent/UiSceneManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const WeaponController_1 = require("../../Weapon/WeaponController");
 const WeaponDetailTipsComponent_1 = require("../../Weapon/WeaponDetailTipsComponent");
 const RoleController_1 = require("../RoleController");
-const SkinController_1 = require("../../Skin/SkinController");
+const RoleViewViewModel_1 = require("../View/ViewData/RoleViewViewModel");
 class RoleWeaponTabView extends UiTabViewBase_1.UiTabViewBase {
   constructor() {
     super(...arguments);
@@ -30,11 +32,9 @@ class RoleWeaponTabView extends UiTabViewBase_1.UiTabViewBase {
       this.CCo = false;
     };
     this.TCo = e => {
-      e = {
-        RoleId: this.d1o.GetCurSelectRoleId(),
-        WeaponIncId: e
-      };
-      UiManager_1.UiManager.OpenView("WeaponReplaceView", e);
+      var i = new RoleViewViewModel_1.RoleViewViewModel(this.d1o.GetCurSelectRoleId(), false);
+      i.WeaponIncId = e;
+      ControllerHolder_1.ControllerHolder.RoleController.OpenRoleViewByViewModel("WeaponReplaceView", i);
     };
     this.LCo = e => {
       var i = ModelManager_1.ModelManager.WeaponModel.GetWeaponDataByIncId(e);
@@ -127,7 +127,8 @@ class RoleWeaponTabView extends UiTabViewBase_1.UiTabViewBase {
     } else {
       this.ICo.UpdateComponent(i);
       i = ModelManager_1.ModelManager.WeaponModel.RedDotWeaponBreachCondition(e.GetDataId());
-      this.ICo.UpdateWeaponBreachRedDot(i);
+      e = ModelManager_1.ModelManager.WeaponModel.RedDotWeaponResonanceConditionByRole(e.GetDataId());
+      this.ICo.UpdateWeaponBreachRedDot(i || e);
       this.Sil();
       this.lpl();
       this.BNe();

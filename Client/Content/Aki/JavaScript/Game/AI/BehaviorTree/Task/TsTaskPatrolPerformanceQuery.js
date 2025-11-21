@@ -15,7 +15,7 @@ class TsTaskPatrolPerformanceQuery extends TsTaskAbortImmediatelyBase_1.default 
     var s;
     var t;
     if (e instanceof TsAiController_1.default) {
-      if ((s = e.AiController?.AiPatrol) && (t = (o = e.AiController.CharActorComp.Entity).GetComponent(17), o = o.GetComponent(206), t) && o) {
+      if ((s = e.AiController?.AiPatrol) && (t = (o = e.AiController.CharActorComp.Entity).GetComponent(17), o = o.GetComponent(209), t) && o) {
         t.ClearLastPerformanceTag();
         if (s = s.GetNextPerformanceTag()) {
           t.AddPerformanceTag(s);

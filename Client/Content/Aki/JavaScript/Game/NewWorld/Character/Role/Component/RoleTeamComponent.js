@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (e, t, i, s) {
   var o;
   var a = arguments.length;
-  var h = a < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
+  var r = a < 3 ? t : s === null ? s = Object.getOwnPropertyDescriptor(t, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(e, t, i, s);
+    r = Reflect.decorate(e, t, i, s);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (o = e[r]) {
-        h = (a < 3 ? o(h) : a > 3 ? o(t, i, h) : o(t, i)) || h;
+    for (var h = e.length - 1; h >= 0; h--) {
+      if (o = e[h]) {
+        r = (a < 3 ? o(r) : a > 3 ? o(t, i, r) : o(t, i)) || r;
       }
     }
   }
-  if (a > 3 && h) {
-    Object.defineProperty(t, i, h);
+  if (a > 3 && r) {
+    Object.defineProperty(t, i, r);
   }
-  return h;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -28,6 +28,7 @@ const Time_1 = require("../../../../../Core/Common/Time");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
+const TickProcessSystem_1 = require("../../../../../Core/Tick/TickProcessSystem");
 const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../../../../Core/Utils/FNameUtil");
 const Quat_1 = require("../../../../../Core/Utils/Math/Quat");
@@ -82,27 +83,27 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this.Lrn = undefined;
     this.DSa = 0;
     this.Drn = undefined;
-    this.lQc = false;
+    this.X6u = false;
     this.cz = Vector_1.Vector.Create();
     this.cie = Rotator_1.Rotator.Create();
     this.e7o = Quat_1.Quat.Create();
   }
   OnInit(e) {
-    this.m1t = this.Entity.GetComponent(175);
-    this.Xte = this.Entity.GetComponent(206);
+    this.m1t = this.Entity.GetComponent(178);
+    this.Xte = this.Entity.GetComponent(209);
     this.Hte = this.Entity.GetComponent(3);
-    this.mBe = this.Entity.GetComponent(176);
-    this.Mrn = this.Entity.GetComponent(97);
+    this.mBe = this.Entity.GetComponent(179);
+    this.Mrn = this.Entity.GetComponent(99);
     this.cBe = this.Entity.GetComponent(40);
-    this.Ern = this.Entity.GetComponent(99);
-    this.Gce = this.Entity.GetComponent(179);
+    this.Ern = this.Entity.GetComponent(101);
+    this.Gce = this.Entity.GetComponent(182);
     this.Nce = this.Entity.GetComponent(62);
     this.cZr = this.Entity.GetComponent(32);
     this.xGl = this.Entity.GetComponent(65);
     this.wGl = this.Entity.GetComponent(66);
     this._du = this.Entity.GetComponent(54);
-    this.BGl = this.Entity.GetComponent(100);
-    this.uwl = this.Entity.GetComponent(230);
+    this.BGl = this.Entity.GetComponent(102);
+    this.uwl = this.Entity.GetComponent(233);
     this._pn = this.Entity.GetComponent(68);
     return true;
   }
@@ -136,23 +137,23 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   NeedSyncTransform() {
-    return !this.lQc;
+    return !this.X6u;
   }
-  static OnChangeRole(e, t, i, s, o, a, h) {
+  static OnChangeRole(e, t, i, s, o, a, r) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneTeam", 48, "执行战斗换人", ["Last", e?.Id], ["New", t.Id]);
     }
-    var r = e?.Entity?.GetComponent(94);
-    var t = t.Entity.GetComponent(94);
+    var h = e?.Entity?.GetComponent(96);
+    var t = t.Entity.GetComponent(96);
     var n = ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 3;
-    var _ = r?.cBe;
+    var _ = h?.cBe;
     if (o && _ && _.CurrentSkill && !_.IsMainSkillReadyEnd) {
       let e = _.SkillTarget;
       if (!e && FormationDataController_1.FormationDataController.GlobalIsInFight) {
-        (o = r.cZr)?.DetectSoftLockTarget({});
+        (o = h.cZr)?.DetectSoftLockTarget({});
         e = o?.GetCurrentTarget();
       }
-      _ = r.m1t;
+      _ = h.m1t;
       if (e && _?.HasBuffAuthority()) {
         _.AddBuff(CharacterBuffIds_1.buffId.GoDown, {
           InstigatorId: _.CreatureDataId,
@@ -162,20 +163,16 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
     let m = false;
     let l = false;
-    o = r?.Xte;
+    o = h?.Xte;
     if (o) {
       l = o.HasTag(504239013) || o.HasTag(855966206);
       m = o.HasAllTag([40422668, -959917199]);
     }
     t.Urn();
-    if (r && r !== t) {
+    if (h && h !== t) {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("SceneTeam", 48, "角色下场", ["Entity", r.Entity?.Id]);
+        Log_1.Log.Info("SceneTeam", 48, "角色下场", ["Entity", h.Entity?.Id]);
       }
-      t.m1t.AddBuff(CharacterBuffIds_1.buffId.WaitRemoveQteInvincible, {
-        InstigatorId: t.m1t.CreatureDataId,
-        Reason: "换人去除QTE无敌"
-      });
       if (GlobalData_1.GlobalData.GameInstance) {
         GlobalData_1.GlobalData.BpEventManager.当换人完成时.Broadcast();
       }
@@ -183,17 +180,17 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
       t.wGl?.SetDataFromOldRole(e);
       t._du?.SetDataFromOldRole(e);
       t.BGl?.SetDataFromOldRole(e);
-      r.wGl?.ClearTarget();
-      r.ClearMovePlatformAttach();
-      if (!!n || !r.Xte.HasTag(1144073280)) {
-        r.cBe.StopGroup1Skill("RoleTeamComponent.OnChangeRole");
+      h.wGl?.ClearTarget();
+      h.ClearMovePlatformAttach();
+      if (!!n || !h.Xte.HasTag(1144073280)) {
+        h.cBe.StopGroup1Skill("RoleTeamComponent.OnChangeRole");
       }
-      _ = r.Xte.HasTag(-1371021686) && !r.cBe.IsMainSkillReadyEnd;
-      RoleInheritComponent_1.RoleInheritComponent.StateInherit(r.Mrn, t.Mrn, t.Ern.IsInQte ? 1 : 0, _);
-      r.Arn(n);
-      r.Prn(s);
+      _ = h.Xte.HasTag(-1371021686) && !h.cBe.IsMainSkillReadyEnd;
+      RoleInheritComponent_1.RoleInheritComponent.StateInherit(h.Mrn, t.Mrn, t.Ern.IsInQte ? 1 : 0, _);
+      h.Arn(n);
+      h.Prn(s);
     }
-    o = l || h || n;
+    o = l || r || n;
     t.xrn(e, m, a, o);
     t.wrn(!l && i);
   }
@@ -210,7 +207,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   xrn(e, t, i, s) {
-    this.lQc = false;
+    this.X6u = false;
     var o = e === undefined;
     if (ModelManager_1.ModelManager.AutoRunModel?.IsInLogicTreeGmMode()) {
       if (Log_1.Log.CheckInfo()) {
@@ -227,12 +224,12 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "人物上场，角色QTE中，不更新位置");
         }
-      } else if ((i = e?.Entity?.GetComponent(206))?.HasAnyTag([-1388400236, -2100129479, 1144073280, -2044964178])) {
+      } else if ((i = e?.Entity?.GetComponent(209))?.HasAnyTag([-1388400236, -2100129479, 1144073280, -2044964178])) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SceneTeam", 48, "人物上场，上个角色还在场，进行寻点");
         }
         s = !!t || !i.HasTag(1788158005) && i.HasTag(40422668);
-        this.Entity.GetComponent(99).SetQtePosition({
+        this.Entity.GetComponent(101).SetQtePosition({
           Rotate: s ? SceneTeamDefine_1.SPECIAL_CHANGE_ANGLE_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_ANGLE_LAND,
           Length: s ? SceneTeamDefine_1.SPECIAL_CHANGE_DIS_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_DIS_LAND,
           Height: s ? SceneTeamDefine_1.SPECIAL_CHANGE_HEIGHT_AIR : SceneTeamDefine_1.SPECIAL_CHANGE_HEIGHT_LAND,
@@ -254,7 +251,7 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     }
   }
   InheritTransform(e = false) {
-    this.lQc = true;
+    this.X6u = true;
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetSpawnTransform();
     if (!t) {
       if (Log_1.Log.CheckError()) {
@@ -313,7 +310,11 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     } else {
       this.Entity.DisableByKey(1, true);
     }
-    this.brn();
+    TickProcessSystem_1.TickProcessSystem.RegisterOnceTickProcess(5, true, () => {
+      TimerSystem_1.TimerSystem.Next(() => {
+        this.brn();
+      });
+    });
     this.Hte.KuroMoveAlongFloor(Vector_1.Vector.ZeroVector, 0, "GoBattle");
     if (!UiCameraAnimationManager_1.UiCameraAnimationManager.IsActivate()) {
       CameraController_1.CameraController.ExitCameraMode(2);
@@ -327,20 +328,22 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
   brn() {
     var e;
     var t;
-    if (ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 3) {
-      t = this.Entity.GetComponent(0).GetRoleId();
-      t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t);
-      if ((e = ModelManager_1.ModelManager.PlotModel.GoBattleMaterial) && ModelManager_1.ModelManager.RoleModel.IsMainRole(t)) {
-        this.Hte.Actor.CharRenderingComponent.AddMaterialControllerData(e);
-      }
-    } else {
-      if (this.Srn) {
-        this.Hte.Actor.CharRenderingComponent.AddMaterialControllerDataGroup(this.Srn);
-      }
-      t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, SceneTeamDefine_1.GO_BATTLE_EFFECT, "[RoleTeamComponent.SpawnGoBattleMaterial]", new EffectContext_1.EffectContext(this.Entity.Id));
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
-      if (EffectSystem_1.EffectSystem.IsValid(t)) {
-        EffectSystem_1.EffectSystem.GetEffectActor(t).K2_AttachToComponent(this.Hte.SkeletalMesh, FNameUtil_1.FNameUtil.NONE, 2, 2, 2, true);
+    if (this.Entity.Active) {
+      if (ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType === 3) {
+        t = this.Entity.GetComponent(0).GetRoleId();
+        t = ConfigManager_1.ConfigManager.RoleConfig.GetBaseRoleId(t);
+        if ((e = ModelManager_1.ModelManager.PlotModel.GoBattleMaterial) && ModelManager_1.ModelManager.RoleModel.IsMainRole(t)) {
+          this.Hte.Actor.CharRenderingComponent.AddMaterialControllerData(e);
+        }
+      } else {
+        if (this.Srn) {
+          this.Hte.Actor.CharRenderingComponent.AddMaterialControllerDataGroup(this.Srn);
+        }
+        t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, this.Hte.ActorTransform, SceneTeamDefine_1.GO_BATTLE_EFFECT, "[RoleTeamComponent.SpawnGoBattleMaterial]", new EffectContext_1.EffectContext(this.Entity.Id));
+        EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, t, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+        if (EffectSystem_1.EffectSystem.IsValid(t)) {
+          EffectSystem_1.EffectSystem.GetEffectActor(t).K2_AttachToComponent(this.Hte.SkeletalMesh, FNameUtil_1.FNameUtil.NONE, 2, 2, 2, true);
+        }
       }
     }
   }
@@ -523,36 +526,36 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
   }
   static OnSimulateChangeRole(e, t, i, s = undefined, o = undefined) {
     var a;
-    var h;
+    var r;
     var e = e.Entity;
     var t = t.Entity;
     if (t && e) {
-      t.GetComponent(94).SimulateGoBattle();
+      t.GetComponent(96).SimulateGoBattle();
       a = s && o;
       if (t.IsInit) {
-        h = t.GetComponent(3);
+        r = t.GetComponent(3);
         if (a) {
-          h.SetActorLocationAndRotation(s.ToUeVector(), o.ToUeRotator(), "SwitchRoleNotify", false);
+          r.SetActorLocationAndRotation(s.ToUeVector(), o.ToUeRotator(), "SwitchRoleNotify", false);
         } else {
-          h.SetActorTransform(e.GetComponent(3).ActorTransform, "SwitchRoleNotify", false);
-          if (e.GetComponent(206).HasAnyTag(SceneTeamDefine_1.needFixLocationTagList)) {
-            h.FixSwitchLocation("模拟端换人地面修正", true, true);
+          r.SetActorTransform(e.GetComponent(3).ActorTransform, "SwitchRoleNotify", false);
+          if (e.GetComponent(209).HasAnyTag(SceneTeamDefine_1.needFixLocationTagList)) {
+            r.FixSwitchLocation("模拟端换人地面修正", true, true);
           }
         }
-        h.SetInputFacing(h.ActorForwardProxy);
+        r.SetInputFacing(r.ActorForwardProxy);
       }
-      s = t.GetComponent(178).MainAnimInstance;
-      o = e.GetComponent(178).MainAnimInstance;
+      s = t.GetComponent(181).MainAnimInstance;
+      o = e.GetComponent(181).MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE) && UE.KuroStaticLibrary.IsObjectClassByName(o, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE)) {
         s.替换角色时同步动作数据(o);
       }
       if (!a) {
-        h = t.GetComponent(68);
+        r = t.GetComponent(68);
         s = e.GetComponent(68);
-        h.CloneMoveSampleInfos(s);
+        r.CloneMoveSampleInfos(s);
       }
       if (!i) {
-        e.GetComponent(94).SimulateGoDown(false);
+        e.GetComponent(96).SimulateGoDown(false);
       }
     }
   }
@@ -576,14 +579,14 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
         }
         this.Drn = TimerSystem_1.TimerSystem.Delay(() => {
           this.Drn = undefined;
-          this._Qc();
+          this.Y6u();
         }, SceneTeamDefine_1.EFFECT_DELAY_QUIT, undefined, undefined, true, ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
       }
     } else {
-      this._Qc();
+      this.Y6u();
     }
   }
-  _Qc() {
+  Y6u() {
     this.Entity.GetComponent(0)?.SetVisible(false);
     this.Entity.DisableByKey(1, true);
     EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnOtherRoleGoDownFinish);
@@ -596,5 +599,5 @@ let RoleTeamComponent = class RoleTeamComponent extends EntityComponent_1.Entity
     this._pn?.ClearBasePlatform();
   }
 };
-RoleTeamComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(94)], RoleTeamComponent);
+RoleTeamComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(96)], RoleTeamComponent);
 exports.RoleTeamComponent = RoleTeamComponent; //# sourceMappingURL=RoleTeamComponent.js.map

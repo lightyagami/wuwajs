@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, i, s, h) {
   var e;
-  var r = arguments.length;
-  var o = r < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
+  var o = arguments.length;
+  var r = o < 3 ? i : h === null ? h = Object.getOwnPropertyDescriptor(i, s) : h;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    o = Reflect.decorate(t, i, s, h);
+    r = Reflect.decorate(t, i, s, h);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
       if (e = t[n]) {
-        o = (r < 3 ? e(o) : r > 3 ? e(i, s, o) : e(i, s)) || o;
+        r = (o < 3 ? e(r) : o > 3 ? e(i, s, r) : e(i, s)) || r;
       }
     }
   }
-  if (r > 3 && o) {
-    Object.defineProperty(i, s, o);
+  if (o > 3 && r) {
+    Object.defineProperty(i, s, r);
   }
-  return o;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -34,6 +34,7 @@ const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
 const GravityUtils_1 = require("../../../Utils/GravityUtils");
 const VehiclePathMoveController_1 = require("../Controller/VehiclePathMoveController");
 const MIN_MOVE_SPEED = 20;
@@ -127,11 +128,11 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     return true;
   }
   OnStart() {
-    this.ActorComp = this.Entity.GetComponent(235);
-    this.AnimComp = this.Entity.GetComponent(236);
-    this.TagComponent = this.Entity.GetComponent(206);
-    this.AudioComp = this.Entity.GetComponent(243);
-    this.UeMovementMgrComp = this.Entity.GetComponent(245);
+    this.ActorComp = this.Entity.GetComponent(238);
+    this.AnimComp = this.Entity.GetComponent(239);
+    this.TagComponent = this.Entity.GetComponent(209);
+    this.AudioComp = this.Entity.GetComponent(246);
+    this.UeMovementMgrComp = this.Entity.GetComponent(248);
     this.UeMovementDisableHandle = this.UeMovementMgrComp.Disable("载具出生时默认关闭移动组件");
     this.VehicleMovement = this.ActorComp.Actor.GetComponentByClass(UE.KuroVehicleMovementComponent.StaticClass());
     if (!this.VehicleMovement) {
@@ -385,17 +386,17 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
     let s = 0;
     let h = Number.MAX_VALUE;
     var e = this.ActorComp.ActorLocationProxy;
-    var r = Vector_1.Vector.Create();
     var o = Vector_1.Vector.Create();
+    var r = Vector_1.Vector.Create();
     for (let t = 0; t < i.WorldPositionList.length - 1; t++) {
-      r.DeepCopy(i.WorldPositionList[t]);
-      o.DeepCopy(i.WorldPositionList[t + 1]);
-      this.TmpVector.Set(o.X, o.Y, o.Z);
-      this.TmpVector.SubtractionEqual(r);
+      o.DeepCopy(i.WorldPositionList[t]);
+      r.DeepCopy(i.WorldPositionList[t + 1]);
+      this.TmpVector.Set(r.X, r.Y, r.Z);
+      this.TmpVector.SubtractionEqual(o);
       var n = this.TmpVector.Size();
       this.TmpVector2.Set(e.X, e.Y, e.Z);
-      this.TmpVector2.SubtractionEqual(o);
-      if (!(this.TmpVector.DotProduct(this.TmpVector2) > 0) && !(this.TmpVector2.Set(e.X, e.Y, e.Z), this.TmpVector2.SubtractionEqual(r), this.TmpVector.DotProduct(this.TmpVector2) < 0) && !(this.TmpVector.DotProduct(this.ActorComp.ActorForwardProxy) < 0)) {
+      this.TmpVector2.SubtractionEqual(r);
+      if (!(this.TmpVector.DotProduct(this.TmpVector2) > 0) && !(this.TmpVector2.Set(e.X, e.Y, e.Z), this.TmpVector2.SubtractionEqual(o), this.TmpVector.DotProduct(this.TmpVector2) < 0) && !(this.TmpVector.DotProduct(this.ActorComp.ActorForwardProxy) < 0)) {
         this.TmpVector.CrossProduct(this.TmpVector2, this.TmpVector);
         if ((n = this.TmpVector.Size() / n) < h) {
           h = n;
@@ -418,6 +419,40 @@ let VehicleMoveComponent = class VehicleMoveComponent extends EntityComponent_1.
   SetInputOrder() {
     this.ActorComp.Actor.AddMovementInput(this.ActorComp.InputDirect, 1, false);
   }
+  GetMotorSubState() {
+    if (this.VehicleMovement) {
+      return this.VehicleMovement.MotorSubState;
+    } else {
+      return 0;
+    }
+  }
+  SetMotorSubState(t) {
+    if (this.VehicleMovement) {
+      this.VehicleMovement.MotorSubState = t;
+    }
+  }
+  SmoothVehicleRotation(t, i, s, h = false, e = "Movement.SmoothCharacterRotation", o = true) {
+    var r = this.ActorComp.ActorRotationProxy;
+    if (!r.Equals2(t)) {
+      this.TmpRotator.DeepCopy(t);
+      t = (o ? this.SpeedScaled(i) : i) * this.TurnRate;
+      this.InterpRotator(r, this.TmpRotator, s, t, this.TmpRotator);
+      if (this.Entity.GetTickInterval() > 1 && this.AnimComp?.Valid && this.ActorComp.Owner.WasRecentlyRenderedOnScreen()) {
+        o = this.AnimComp.GetMeshTransform();
+        this.ActorComp.SetActorRotationWithPriority(this.TmpRotator.ToUeRotator(), e, 0, h);
+        this.AnimComp.SetModelBuffer(o, s * MathUtils_1.MathUtils.SecondToMillisecond * ModelManager_1.ModelManager.CharacterModel.InverseSelfCenteredTimeDilation);
+      } else {
+        this.ActorComp.SetActorRotationWithPriority(this.TmpRotator.ToUeRotator(), e, 0, h);
+      }
+    }
+  }
+  InterpRotator(t, i, s, h, e) {
+    if (this.IsStandardGravity) {
+      MathUtils_1.MathUtils.RotatorInterpConstantTo(t, i, s, h, e);
+    } else {
+      GravityUtils_1.GravityUtils.RotatorInterpConstantToForActor(this.ActorComp, t, i, s, h, e);
+    }
+  }
 };
-VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(237)], VehicleMoveComponent);
+VehicleMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(240)], VehicleMoveComponent);
 exports.VehicleMoveComponent = VehicleMoveComponent; //# sourceMappingURL=VehicleMoveComponent.js.map

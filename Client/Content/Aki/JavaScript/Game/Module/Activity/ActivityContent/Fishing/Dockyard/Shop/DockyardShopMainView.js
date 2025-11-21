@@ -78,8 +78,8 @@ class DockyardShopMainView extends UiViewBase_1.UiViewBase {
     if (i === "DockyardBuyTabView") {
       this.CaptionItem.SetCloseCallBack(this.Rvt);
       i = ModelManager_1.ModelManager.DockyardModel.ShopId;
-      i = ConfigManager_1.ConfigManager.PayShopConfig.GetPayShopConfig(i);
-      await this.CaptionItem.SetCurrencyItemList(i.Money);
+      i = ModelManager_1.ModelManager.PayShopModel.GetPayShopInfoMoney(i);
+      await this.CaptionItem.SetCurrencyItemList(i);
       i = this.CaptionItem.GetCurrencyItemList();
       for (const e of i) {
         e.SetTextureClickCheckFunction(this.SellViewModel.CheckCurrencyItemClick);

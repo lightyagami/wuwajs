@@ -200,7 +200,7 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     return true;
   }
   OnStart() {
-    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(241), this.VehicleMoveComp = this.Entity.GetComponent(237), this.DebugMovementComp = this.Entity.GetComponent(30), true);
+    return !!super.OnStart() && (this.InputComp = this.Entity.GetComponent(244), this.VehicleMoveComp = this.Entity.GetComponent(240), this.DebugMovementComp = this.Entity.GetComponent(30), true);
   }
   OnActivate() {
     super.OnActivate();
@@ -230,13 +230,13 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     this.ResetAllCachedTime();
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(123)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
     this.ActorInternal.CustomTimeDilation = t * e;
   }
   SetMoveAutonomous(t, e = "") {
     CombatLog_1.CombatLog.Info("Control", this.Entity, "设置移动主控", [e, t]);
     super.SetMoveAutonomous(t);
-    e = this.Entity.GetComponent(236);
+    e = this.Entity.GetComponent(239);
     if (e) {
       e.MainAnimInstance?.SetStateMachineNetMode(!t);
       e.SpecialAnimInstance?.SetStateMachineNetMode(!t);
@@ -478,10 +478,10 @@ let VehicleActorComponent = VehicleActorComponent_1 = class VehicleActorComponen
     }
   }
   FixBornLocation(t = undefined, e = "FixBornLocation") {
-    this.Entity.GetComponent(234)?.FixBornLocation(t, e);
+    this.Entity.GetComponent(237)?.FixBornLocation(t, e);
   }
 };
 VehicleActorComponent.TmpVector = Vector_1.Vector.Create(0, 0, 0);
 VehicleActorComponent.TmpQuat = Quat_1.Quat.Create();
-VehicleActorComponent = VehicleActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(235)], VehicleActorComponent);
+VehicleActorComponent = VehicleActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(238)], VehicleActorComponent);
 exports.VehicleActorComponent = VehicleActorComponent; //# sourceMappingURL=VehicleActorComponent.js.map

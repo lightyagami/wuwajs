@@ -164,9 +164,9 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
     return true;
   }
   OnStart() {
-    this.mBe = this.Entity.CheckGetComponent(134);
-    this.Lie = this.Entity.CheckGetComponent(197);
-    this.Hte = this.Entity.CheckGetComponent(203);
+    this.mBe = this.Entity.CheckGetComponent(137);
+    this.Lie = this.Entity.CheckGetComponent(200);
+    this.Hte = this.Entity.CheckGetComponent(206);
     if (!this.mBe || !this.Lie || !this.Hte) {
       return false;
     }
@@ -183,7 +183,7 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
         break;
       case "ChargingDevice":
       case "TimedStrikeDevice":
-        this.$br = this.Entity.CheckGetComponent(155);
+        this.$br = this.Entity.CheckGetComponent(158);
         if (this.$br) {
           this.$br.RegisterComponent(this, this.Lo);
         }
@@ -248,7 +248,7 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
   L1n() {
     var t = Protocol_1.Aki.Protocol.zls.create();
     t.F4n = MathUtils_1.MathUtils.NumberToLong(this.EIe.GetCreatureDataId());
-    Net_1.Net.Call(27145, t, t => {});
+    Net_1.Net.Call(21369, t, t => {});
   }
   g1n() {
     var t = this.Lo.Control;
@@ -645,5 +645,5 @@ let SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = cl
     }
   }
 };
-SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(130)], SceneItemProgressControlComponent);
+SceneItemProgressControlComponent = SceneItemProgressControlComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(133)], SceneItemProgressControlComponent);
 exports.SceneItemProgressControlComponent = SceneItemProgressControlComponent; //# sourceMappingURL=SceneItemProgressControlComponent.js.map

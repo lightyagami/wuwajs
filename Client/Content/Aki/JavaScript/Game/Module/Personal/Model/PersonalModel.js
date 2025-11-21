@@ -9,6 +9,7 @@ const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonPa
 const BackgroundCardAll_1 = require("../../../../Core/Define/ConfigQuery/BackgroundCardAll");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const PlayerTitleById_1 = require("../../../../Core/Define/ConfigQuery/PlayerTitleById");
+const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
 const ModelBase_1 = require("../../../../Core/Framework/ModelBase");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
@@ -30,6 +31,7 @@ class PersonalModel extends ModelBase_1.ModelBase {
     this.C3l = new Map();
     this.g3l = new Map();
     this.Qac = new Map();
+    this.CurrentNewUnLockTitleArray = new Array();
     this.e6l = (e, t) => {
       var r = e.Lock ? 1 : 0;
       var a = t.Lock ? 1 : 0;
@@ -282,6 +284,7 @@ class PersonalModel extends ModelBase_1.ModelBase {
   SetPersonalTipState(e) {
     if (this.CheckCanShowPersonalTip() !== e) {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.ShowPersonalTip, e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPersonalTipStateSet);
     }
   }
   GetPlayerHeadData(e, t = true) {
@@ -324,6 +327,13 @@ class PersonalModel extends ModelBase_1.ModelBase {
     for (const a of e) {
       var t;
       var r = new PersonalDefine_1.PersonalPlayerTitleData(a.tnc, a.K6n);
+      if (a.Dwu) {
+        if (a.Dwu.H6n === Protocol_1.Aki.Protocol.Bwu.Proto_ConditionTaskFinish) {
+          r.SetUnLockProgress(a.Dwu.j6n, a.Dwu.j6n);
+        } else {
+          r.SetUnLockProgress(a.Dwu.lMs, a.Dwu.j6n);
+        }
+      }
       if (a.GNs !== 0) {
         r.SetStarLevel(a.GNs);
       }
@@ -356,7 +366,15 @@ class PersonalModel extends ModelBase_1.ModelBase {
       if (a.GNs) {
         r.SetStarLevel(a.GNs);
       }
+      if (a.Dwu) {
+        if (a.Dwu.H6n === Protocol_1.Aki.Protocol.Bwu.Proto_ConditionTaskFinish) {
+          r.SetUnLockProgress(a.Dwu.j6n, a.Dwu.j6n);
+        } else {
+          r.SetUnLockProgress(a.Dwu.lMs, a.Dwu.j6n);
+        }
+      }
       if (a.K6n !== r.IsUnLock) {
+        this.CurrentNewUnLockTitleArray.push(r);
         t = MathUtils_1.MathUtils.LongToNumber(a.yzs);
         r.UnLock(t);
         (r = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.PlayerTitleRecord) ?? new Map()).set(a.tnc, true);

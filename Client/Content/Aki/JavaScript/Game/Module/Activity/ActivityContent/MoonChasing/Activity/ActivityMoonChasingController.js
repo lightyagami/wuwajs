@@ -41,7 +41,7 @@ class ActivityMoonChasingController extends ActivityControllerBase_1.ActivityCon
     }
     return new ActivityMoonChasingData_1.ActivityMoonChasingData();
   }
-  OnActivityFirstUnlock(e) {
+  OnShowActivityFirstUnlockView(e) {
     if (e.ActivityFlowState === 0) {
       UiManager_1.UiManager.OpenView("ActivityUnlockTipMoonChasingView");
     }
@@ -55,10 +55,10 @@ class ActivityMoonChasingController extends ActivityControllerBase_1.ActivityCon
     var e = new Protocol_1.Aki.Protocol.M$s();
     e.s5n = t;
     e.w6n = o;
-    Net_1.Net.Call(29478, e, e => {
+    Net_1.Net.Call(17485, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28513);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16626);
         } else if (e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(o)) {
           e.SetRewardState(t, 2);
         }

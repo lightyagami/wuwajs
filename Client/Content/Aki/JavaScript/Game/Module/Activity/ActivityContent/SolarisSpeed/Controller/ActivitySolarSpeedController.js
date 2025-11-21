@@ -79,12 +79,12 @@ class ActivitySolarSpeedController extends ActivityControllerBase_1.ActivityCont
     return false;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(18033, this.g3_);
-    Net_1.Net.Register(27265, this.C3_);
+    Net_1.Net.Register(29645, this.g3_);
+    Net_1.Net.Register(17964, this.C3_);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(18033);
-    Net_1.Net.UnRegister(27265);
+    Net_1.Net.UnRegister(29645);
+    Net_1.Net.UnRegister(17964);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSelectInstanceIdChallenge, this.U6_);
@@ -102,8 +102,8 @@ class ActivitySolarSpeedController extends ActivityControllerBase_1.ActivityCont
     var r = Proto_TeamParkourRewardRequest.create();
     r.w6n = ModelManager_1.ModelManager.SolarSpeedModel.CurrentActivityId;
     r.N6n = e;
-    var r = await Net_1.Net.CallAsync(28495, r);
-    return r !== undefined && (r.Q4n !== Proto_ErrorCode.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 28399), false) : (ModelManager_1.ModelManager.SolarSpeedModel.SyncAfterRewardedById(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SolarSpeedRewarded), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.SolarSpeedModel.CurrentActivityId), true));
+    var r = await Net_1.Net.CallAsync(21051, r);
+    return r !== undefined && (r.Q4n !== Proto_ErrorCode.KRs ? (ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(r.Q4n, 18432), false) : (ModelManager_1.ModelManager.SolarSpeedModel.SyncAfterRewardedById(e), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SolarSpeedRewarded), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, ModelManager_1.ModelManager.SolarSpeedModel.CurrentActivityId), true));
   }
   SyncCurrentChosenLevelId(e) {
     ModelManager_1.ModelManager.SolarSpeedModel.SetCurrentChosenTabInRewardView(e);

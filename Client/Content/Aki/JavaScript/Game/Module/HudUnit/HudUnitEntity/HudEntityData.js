@@ -49,7 +49,7 @@ class HudEntityData {
     return this.Jh.Id;
   }
   ListenForTagCountChanged(t, e) {
-    var r = this.GetComponent(206);
+    var r = this.GetComponent(209);
     if (r) {
       this.eoi = e;
       e = r.ListenForTagAddOrRemove(t, this.toi);
@@ -65,7 +65,7 @@ class HudEntityData {
     }
   }
   ContainsTagById(t) {
-    return this.GetComponent(206).HasTag(t);
+    return this.GetComponent(209).HasTag(t);
   }
   GetLocationProxy() {
     return this.GetComponent(1).ActorLocationProxy;

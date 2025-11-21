@@ -109,7 +109,7 @@ class TimeOfDaySecondView extends UiTickViewBase_1.UiTickViewBase {
       ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.CurveFloat, e => {
         TimeOfDaySecondCircleAttachItem_1.TimeOfDaySecondCircleAttachItem.MiddleOffsetCurve = e;
         t.SetResult();
-      });
+      }, 100, this.MemoryTag);
       i.push(t.Promise);
     }
     await Promise.all(i);

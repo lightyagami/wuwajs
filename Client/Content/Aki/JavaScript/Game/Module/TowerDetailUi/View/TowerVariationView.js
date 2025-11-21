@@ -36,7 +36,7 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
         this.AddChildViewById(r);
       });
     };
-    this.rzc = () => {
+    this.oZc = () => {
       this.YDo();
     };
     this.JDo = () => {
@@ -67,11 +67,11 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.rzc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.oZc);
   }
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerRewardReceived, this.ZDo);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.rzc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTowerReviewGoToReward, this.oZc);
   }
   OnBeforeShow() {
     ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties = TowerData_1.VARIATION_RISK_DIFFICULTY;
@@ -133,6 +133,14 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
     for (let e = 0; e < this.CRo.length; e++) {
       this.CRo[e].Refresh(r[e]);
     }
+    this.Pem();
+  }
+  Pem() {
+    this.UiBehaviourHomeBtn?.AddExtraAsyncCallback(async () => {
+      if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+        await TowerController_1.TowerController.LeaveTower();
+      }
+    });
   }
   OnBeforeHide() {
     RedDotController_1.RedDotController.UnBindGivenUi("TowerReward", this.GetItem(5));
@@ -144,22 +152,24 @@ class TowerVariationView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   B2t() {
-    var e;
-    var r = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
-    if (this.y2t !== r) {
-      this.y2t = r;
-      this.GetText(4).SetText(r);
+    var e = ModelManager_1.ModelManager.TowerModel.GetSeasonCountDownData().CountDownText;
+    if (this.y2t !== e) {
+      this.y2t = e;
+      this.GetText(4).SetText(e);
     }
     if (MathUtils_1.MathUtils.LongToNumber(ModelManager_1.ModelManager.TowerModel.TowerEndTime) - TimeUtil_1.TimeUtil.GetServerTime() <= 1) {
       this._fe = false;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ResetToBattleView);
-      (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(99)).FunctionMap.set(1, e = () => {
-        if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
-          InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
-        }
+      UiManager_1.UiManager.ResetToBattleView(() => {
+        var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(99);
+        var r = () => {
+          if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
+            InstanceDungeonEntranceController_1.InstanceDungeonEntranceController.LeaveInstanceDungeonRequest();
+          }
+        };
+        e.FunctionMap.set(1, r);
+        e.FunctionMap.set(2, r);
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
       });
-      r.FunctionMap.set(2, e);
-      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
     }
   }
 }

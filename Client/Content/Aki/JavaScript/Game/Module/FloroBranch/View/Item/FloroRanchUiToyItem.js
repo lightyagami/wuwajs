@@ -14,7 +14,7 @@ const FloroRanchUiItemBase_1 = require("./FloroRanchUiItemBase");
 class FloroRanchUiToyItem extends FloroRanchUiItemBase_1.FloroRanchUiItemBase {
   constructor() {
     super(...arguments);
-    this.eXu = undefined;
+    this.qKu = undefined;
     this.UiLevelSequence = undefined;
     this.Zqe = () => {};
     this.N8e = () => {

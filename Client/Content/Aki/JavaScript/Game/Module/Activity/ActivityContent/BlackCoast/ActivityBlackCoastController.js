@@ -25,10 +25,10 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
     };
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(20408, this.Pja);
+    Net_1.Net.Register(18477, this.Pja);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(20408);
+    Net_1.Net.UnRegister(18477);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityBlackCoastController.qdi);
@@ -54,20 +54,20 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
   OnCreateActivityData(t) {
     return new ActivityBlackCoastData_1.ActivityBlackCoastData();
   }
-  OnActivityFirstUnlock(t) {
+  OnShowActivityFirstUnlockView(t) {
     UiManager_1.UiManager.OpenView("ActivityUnlockTipBlackCoastView");
   }
   static wja() {
     return ModelManager_1.ModelManager.ActivityModel.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_BlackCoastTheme);
   }
   static RequestDataProgressReward(t, e) {
-    var r = new Protocol_1.Aki.Protocol.hf_();
-    r.w6n = t;
-    r.Bja = e;
-    Net_1.Net.Call(19882, r, t => {
+    var o = new Protocol_1.Aki.Protocol.hf_();
+    o.w6n = t;
+    o.Bja = e;
+    Net_1.Net.Call(27320, o, t => {
       if (t) {
         if (t.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 22006);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 28726);
         } else {
           for (const e of this.wja()) {
             e.SetProgressRewardDataGot(t.rM_);
@@ -76,16 +76,16 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
       }
     });
   }
-  static RequestTaskReward(r, o) {
+  static RequestTaskReward(o, r) {
     var t = new Protocol_1.Aki.Protocol.sf_();
-    t.gps = o;
-    Net_1.Net.Call(16088, t, t => {
+    t.gps = r;
+    Net_1.Net.Call(22209, t, t => {
       if (t) {
         if (t.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 22450);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.fMs, 20255);
         } else {
           for (const e of this.wja()) {
-            e.SetTaskRewardGot(r, o);
+            e.SetTaskRewardGot(o, r);
           }
         }
       }
@@ -94,11 +94,11 @@ class ActivityBlackCoastController extends ActivityControllerBase_1.ActivityCont
 }
 exports.ActivityBlackCoastController = ActivityBlackCoastController;
 (_a = ActivityBlackCoastController).qdi = (t, e) => {
-  var r = _a.wja();
-  if (r.length !== 0) {
-    for (const o of r) {
-      if (o.GetProgressItemId === t) {
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
+  var o = _a.wja();
+  if (o.length !== 0) {
+    for (const r of o) {
+      if (r.GetProgressItemId === t) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, r.Id);
       }
     }
   }

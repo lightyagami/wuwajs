@@ -29,12 +29,12 @@ class ExchangeRewardController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLoadingNetDataDone, ExchangeRewardController.RequestExchangeData);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(28903, ExchangeRewardController.wai);
-    Net_1.Net.Register(27672, ExchangeRewardController.Bai);
+    Net_1.Net.Register(18003, ExchangeRewardController.wai);
+    Net_1.Net.Register(28477, ExchangeRewardController.Bai);
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28903);
-    Net_1.Net.UnRegister(27672);
+    Net_1.Net.UnRegister(18003);
+    Net_1.Net.UnRegister(28477);
   }
 }
 exports.ExchangeRewardController = ExchangeRewardController;
@@ -46,6 +46,6 @@ ExchangeRewardController.Bai = e => {
 };
 ExchangeRewardController.RequestExchangeData = async () => {
   var e = new Protocol_1.Aki.Protocol.Jos();
-  var e = await Net_1.Net.CallAsync(16395, e);
+  var e = await Net_1.Net.CallAsync(27904, e);
   ModelManager_1.ModelManager.ExchangeRewardModel.Phrase(e);
 }; //# sourceMappingURL=ExchangeRewardController.js.map

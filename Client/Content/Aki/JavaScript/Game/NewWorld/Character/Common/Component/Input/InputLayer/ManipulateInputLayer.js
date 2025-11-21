@@ -20,7 +20,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
   }
   Init(t) {
     t = t.Entity;
-    this.Lie = t.GetComponent(194);
+    this.Lie = t.GetComponent(197);
     this.cBe = t.GetComponent(40);
   }
   Clear() {
@@ -28,7 +28,7 @@ class ManipulateInputLayer extends InputLayer_1.InputLayer {
     this.cBe = undefined;
   }
   GetLayerType() {
-    return 4;
+    return 5;
   }
   HandlePress(t, e) {
     switch (t) {

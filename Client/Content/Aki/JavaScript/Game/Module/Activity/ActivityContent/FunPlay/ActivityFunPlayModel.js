@@ -12,8 +12,8 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.bFe = undefined;
-    this.Ird = new Map();
-    this.Trd = [];
+    this.msd = new Map();
+    this.fsd = [];
   }
   CreateChallengeData(e, a) {
     if (e) {
@@ -24,8 +24,8 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
         } else {
           (r = new ActivityFunPlayChallengeData_1.ActivityFunPlayChallengeData(a)).Phrase(e);
           r.SetIndex(t);
-          this.Ird.set(e.e8n, r);
-          this.Trd.push(r);
+          this.msd.set(e.e8n, r);
+          this.fsd.push(r);
         }
       });
     }
@@ -42,11 +42,11 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  Rrd() {
-    var e = Array.from(this.Trd);
+  Csd() {
+    var e = Array.from(this.fsd);
     e.sort((e, t) => {
-      var r = e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanReward);
-      var a = t.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayCanReward);
+      var r = e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanReward);
+      var a = t.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayCanReward);
       if (r !== a) {
         if (r) {
           return -1;
@@ -56,7 +56,7 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
       } else if (r && a) {
         r = e.Index;
         return t.Index - r;
-      } else if ((a = e.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayRewarded)) !== t.CheckRewardStatus(Protocol_1.Aki.Protocol.Qju.Proto_FunPlayRewarded)) {
+      } else if ((a = e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayRewarded)) !== t.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayRewarded)) {
         if (a) {
           return 1;
         } else {
@@ -75,10 +75,10 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
     return e;
   }
   GetAllChallengeData() {
-    return this.Trd;
+    return this.fsd;
   }
   GetChallengeData(e) {
-    return this.Ird.get(e);
+    return this.msd.get(e);
   }
   SetCurrentChallengeData(e) {
     this.bFe = this.GetChallengeData(e);
@@ -87,7 +87,7 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
     return this.bFe;
   }
   GetDefaultSelectIndex() {
-    var e = this.Rrd();
+    var e = this.Csd();
     if (e.length > 0) {
       return e[0].Index;
     } else {
@@ -95,16 +95,27 @@ class ActivityFunPlayModel extends ModelBase_1.ModelBase {
     }
   }
   GetHasInternalRedDot() {
-    for (const e of this.Ird.values()) {
+    for (const e of this.msd.values()) {
       if (e.GetRedPoint()) {
         return true;
       }
     }
     return false;
   }
+  IsAllRewardClaimed() {
+    if (this.fsd.length === 0) {
+      return false;
+    }
+    for (const e of this.fsd) {
+      if (!e.CheckRewardStatus(Protocol_1.Aki.Protocol.iWc.Proto_FunPlayRewarded)) {
+        return false;
+      }
+    }
+    return true;
+  }
   OnClear() {
-    this.Ird.clear();
-    return !(this.Trd.length = 0);
+    this.msd.clear();
+    return !(this.fsd.length = 0);
   }
 }
 exports.ActivityFunPlayModel = ActivityFunPlayModel;

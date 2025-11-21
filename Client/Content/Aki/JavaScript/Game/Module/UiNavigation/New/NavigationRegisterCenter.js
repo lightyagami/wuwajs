@@ -7,6 +7,7 @@ exports.NavigationRegisterCenter = undefined;
 const BasePanelHandle_1 = require("./PanelHandle/BasePanelHandle");
 const ExploreRewardPanelHandle_1 = require("./PanelHandle/ExploreRewardPanelHandle");
 const FunctionViewPanelHandle_1 = require("./PanelHandle/FunctionViewPanelHandle");
+const HonamiStoryPanelHandle_1 = require("./PanelHandle/HonamiStoryPanelHandle");
 const InventoryViewPanelHandle_1 = require("./PanelHandle/InventoryViewPanelHandle");
 const NavigationPanelHandleCreator_1 = require("./PanelHandle/NavigationPanelHandleCreator");
 const PhantomArenaBattlePanelHandle_1 = require("./PanelHandle/PhantomArenaBattlePanelHandle");
@@ -21,6 +22,7 @@ const NavigationCommonRefreshNavigationButton_1 = require("./Selectable/Common/N
 const NavigationFunctionPageButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageButton");
 const NavigationFunctionPageLeftButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageLeftButton");
 const NavigationFunctionPageRightButton_1 = require("./Selectable/FunctionView/NavigationFunctionPageRightButton");
+const NavigationHonamiStoryGridItem_1 = require("./Selectable/HonamiStory/NavigationHonamiStoryGridItem");
 const NavigationInventoryDestroyEnterButton_1 = require("./Selectable/InventoryView/NavigationInventoryDestroyEnterButton");
 const NavigationInventoryDestroyExitButton_1 = require("./Selectable/InventoryView/NavigationInventoryDestroyExitButton");
 const NavigationInventoryItemGridToggle_1 = require("./Selectable/InventoryView/NavigationInventoryItemGridToggle");
@@ -95,7 +97,8 @@ const selectableCtorMap = {
   PhantomArenaVisionButton: NavigationPhantomArenaVisionButton_1.NavigationPhantomArenaVisionButton,
   PhantomArenaEmptyButton: NavigationPhantomArenaEmptyButton_1.NavigationPhantomArenaEmptyButton,
   PhantomArenaCardToggle: NavigationPhantomArenaCardToggle_1.NavigationPhantomArenaCardToggle,
-  PhantomManageConfigGridBig: NavigationPhantomManageConfigGridBig_1.NavigationPhantomManageConfigGridBig
+  PhantomManageConfigGridBig: NavigationPhantomManageConfigGridBig_1.NavigationPhantomManageConfigGridBig,
+  HonamiStoryGridItem: NavigationHonamiStoryGridItem_1.NavigationHonamiStoryGridItem
 };
 const panelHandleCtorMap = {
   Default: BasePanelHandle_1.BasePanelHandle,
@@ -108,7 +111,8 @@ const panelHandleCtorMap = {
   ExploreReward: ExploreRewardPanelHandle_1.ExploreRewardPanelHandle,
   VisionAssemble: VisionAssemblePanelHandle_1.VisionAssemblePanelHandle,
   PhantomArenaBattle: PhantomArenaBattlePanelHandle_1.PhantomArenaBattlePanelHandle,
-  PhantomManageConfig: PhantomManageConfigPanelHandle_1.PhantomManageConfigPanelHandle
+  PhantomManageConfig: PhantomManageConfigPanelHandle_1.PhantomManageConfigPanelHandle,
+  HonamiStoryBackpack: HonamiStoryPanelHandle_1.HonamiStoryPanelHandle
 };
 class NavigationRegisterCenter {
   static Init() {

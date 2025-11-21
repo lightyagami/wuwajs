@@ -38,7 +38,7 @@ class RogueTaskView extends UiViewBase_1.UiViewBase {
     this.GOe = undefined;
     this.Ftl = "";
     this.qKs = [];
-    this.aud = false;
+    this.USd = false;
     this.fqe = () => new RogueTaskTabItem_1.RogueTaskTabItem();
     this.ou_ = () => new RogueTaskItem_1.RogueTaskItem();
     this.l6c = i => {
@@ -157,8 +157,8 @@ class RogueTaskView extends UiViewBase_1.UiViewBase {
     var i = this.GetText(10);
     i?.SetUIActive(e !== undefined);
     i?.SetText(e ?? "0");
-    if (ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd() && !this.aud) {
-      this.aud = true;
+    if (ModelManager_1.ModelManager.ActivityPermanentRogueModel.GetTaskIsEnd() && !this.USd) {
+      this.USd = true;
       i = () => {
         UiManager_1.UiManager.ResetToBattleView();
       };

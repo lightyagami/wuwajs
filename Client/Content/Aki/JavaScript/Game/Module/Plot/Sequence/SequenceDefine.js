@@ -25,14 +25,14 @@ exports.PLOT_WAIT_ENTITY_TIME = -1;
 exports.DEFAULT_LAST_SUBTITLE_TIME = 1;
 exports.MAX_FRAME = 9999999;
 class SequenceEntityInfo {
-  constructor(t = -1, e = -1, s = 0, o = false, r = Vector_1.Vector.Create(), i = Rotator_1.Rotator.Create(), n = false) {
+  constructor(t = -1, e = -1, s = 0, o = false, r = Vector_1.Vector.Create(), i = Rotator_1.Rotator.Create(), h = false) {
     this.MoveCompDisableHandle = t;
     this.UeMoveCompDisableHandle = e;
     this.CacheMovementMode = s;
     this.CacheMovementSync = o;
     this.CacheLocation = r;
     this.CacheRotation = i;
-    this.CacheAiEnable = n;
+    this.CacheAiEnable = h;
   }
 }
 exports.SequenceEntityInfo = SequenceEntityInfo;
@@ -67,21 +67,25 @@ class SequenceRenderSettings {
     this.Znu.set(2, true);
     this.Znu.set(3, true);
     this.Znu.set(4, true);
+    this.Znu.set(5, true);
     this.esu.set(0, false);
     this.esu.set(1, true);
     this.esu.set(2, true);
     this.esu.set(3, true);
     this.esu.set(4, true);
+    this.esu.set(5, true);
     this.tsu.set(0, false);
     this.tsu.set(1, true);
     this.tsu.set(2, true);
     this.tsu.set(3, true);
     this.tsu.set(4, true);
+    this.tsu.set(5, true);
     this.isu.set(0, true);
     this.isu.set(1, true);
     this.isu.set(2, true);
     this.isu.set(3, true);
     this.isu.set(4, true);
+    this.isu.set(5, true);
   }
   static GetTexureStreamingEnable(t) {
     if (Info_1.Info.IsPcPlatform()) {

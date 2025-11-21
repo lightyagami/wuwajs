@@ -23,16 +23,18 @@ class PlotSkipComponent {
     this.iZi = undefined;
     this.uCa = undefined;
     this.ro_ = false;
+    this.Sym = false;
     this.EnableSkipButton = i => {
       if ((!i || !!ModelManager_1.ModelManager.PlotModel.PlotConfig.CanSkip) && this.dce !== i && !(this.dce = i, this.oZi.SetUIActive(this.dce), this.dce)) {
         if (this.ro_) {
           this.ro_ = false;
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
-        }
-        if (UiManager_1.UiManager.IsViewOpen("SummaryPopView")) {
+          this.rsa?.();
+        } else if (this.Sym) {
+          this.Sym = false;
           UiManager_1.UiManager.CloseView("SummaryPopView");
+          this.rsa?.();
         }
-        this.rsa?.();
       }
     };
     this.rZi = () => {
@@ -72,16 +74,19 @@ class PlotSkipComponent {
             Text: this.uCa,
             ConfirmFunc: () => {
               if (this?.dce) {
+                this.Sym = false;
                 this.dce = false;
                 this.nZi?.();
               }
             },
             CancelFunc: () => {
               if (this?.dce) {
+                this.Sym = false;
                 this.rsa?.();
               }
             }
           };
+          this.Sym = true;
           UiManager_1.UiManager.OpenView("SummaryPopView", i);
         }
       }

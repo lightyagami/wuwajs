@@ -23,11 +23,18 @@ class MarkItemDataUtil {
           } else {
             return r.UnlockMarkPic;
           }
+        case 39:
+        case 40:
+          if (ModelManager_1.ModelManager.MapModel.IsConfigMarkIdUnlock(o)) {
+            return r.UnlockMarkPic;
+          } else {
+            return r.LockMarkPic;
+          }
         default:
           return r.LockMarkPic;
       }
     }
   }
 }
-(exports.MarkItemDataUtil = MarkItemDataUtil).pNa = new Map([[Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_None, 0], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, 9], [Protocol_1.Aki.Protocol.w5s.ENUMS.aTs, 12], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TemporaryTeleport, 15], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_SoundBox, 16], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HookLockSoundBox, 16], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TreasureBoxPoint, 17], [Protocol_1.Aki.Protocol.w5s.ENUMS.O7n, 18], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_CalmingWindBell, 21], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_EnrichmentArea, 22], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_EnrichmentAreaChild, 23]]);
+(exports.MarkItemDataUtil = MarkItemDataUtil).pNa = new Map([[Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_None, 0], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_Custom, 9], [Protocol_1.Aki.Protocol.w5s.ENUMS.aTs, 12], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TemporaryTeleport, 15], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_SoundBox, 16], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HookLockSoundBox, 16], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TreasureBoxPoint, 17], [Protocol_1.Aki.Protocol.w5s.ENUMS.O7n, 18], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_CalmingWindBell, 21], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_EnrichmentArea, 22], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_EnrichmentAreaChild, 23], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStory, 39], [Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HonamiStoryChild, 40]]);
 //# sourceMappingURL=MarkItemDataUtil.js.map

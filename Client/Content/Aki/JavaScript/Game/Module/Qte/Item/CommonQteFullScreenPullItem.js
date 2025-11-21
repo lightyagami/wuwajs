@@ -27,24 +27,24 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     this.SPe = undefined;
     this.fS1 = undefined;
     this.DZu = 0;
-    this.JKd = 0;
-    this.ZKd = 0;
+    this.lgm = 0;
+    this._gm = 0;
     this.aXa = 0;
-    this.eXd = 0;
+    this.ugm = 0;
     this.NQa = false;
     this.OZu = undefined;
-    this.DWd = Vector_1.Vector.Create();
-    this.Ead = false;
-    this.Iad = false;
+    this.Kom = Vector_1.Vector.Create();
+    this.Wad = false;
+    this.Qad = false;
     this.bzt = false;
-    this.dzd = false;
+    this.EIm = false;
     this.lqt = (t, i) => {
       if (!Info_1.Info.IsInGamepad()) {
-        this.DWd.Reset();
-        this.Iad = false;
-        this.Ead = false;
+        this.Kom.Reset();
+        this.Qad = false;
+        this.Wad = false;
       }
-      this.ZKd = 0;
+      this._gm = 0;
     };
     this.$xt = t => {
       if (t === "Start") {
@@ -57,28 +57,28 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     };
     this.BZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.DWd.X = i;
-        this.Ead = i !== 0;
-        this.Tad(this.Ead || this.Iad);
+        this.Kom.X = i;
+        this.Wad = i !== 0;
+        this.Kad(this.Wad || this.Qad);
       }
     };
     this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
-        this.DWd.Y = -i;
-        this.Iad = i !== 0;
-        this.Tad(this.Ead || this.Iad);
+        this.Kom.Y = -i;
+        this.Qad = i !== 0;
+        this.Kad(this.Wad || this.Qad);
       }
     };
     this.JCo = t => {
-      this.ZKd = this.JKd;
+      this._gm = this.lgm;
     };
-    this.zKd = t => {
-      this.ZKd = 0;
+    this.hgm = t => {
+      this._gm = 0;
     };
     this.w8i = t => {
       if (this.IsValidInput() && this.NQa) {
         this.OZu = t.GetLocalPointInPlane();
-        this.Tad(true);
+        this.Kad(true);
       }
     };
     this.B8i = t => {
@@ -86,17 +86,17 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
         if (TouchFingerManager_1.TouchFingerManager.GetTouchFingerCount() > 1) {
           this.OZu = undefined;
         } else if (this.OZu && (t = t.GetLocalPointInPlane())) {
-          this.DWd.Y = t.Y - this.OZu.Y;
-          this.DWd.X = t.X - this.OZu.X;
+          this.Kom.Y = t.Y - this.OZu.Y;
+          this.Kom.X = t.X - this.OZu.X;
         }
       }
     };
     this.b8i = t => {
       if (this.IsValidInput() && this.NQa) {
-        this.ZKd = 0;
+        this._gm = 0;
         this.OZu = undefined;
-        this.DWd.Reset();
-        this.Tad(false);
+        this.Kom.Reset();
+        this.Kad(false);
       }
     };
   }
@@ -125,7 +125,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
     t.OnPointerDragCallBack.Bind(this.B8i);
     t.OnPointerEndDragCallBack.Bind(this.b8i);
     t.OnPointerDownCallBack.Bind(this.JCo);
-    t.OnPointerUpCallBack.Bind(this.zKd);
+    t.OnPointerUpCallBack.Bind(this.hgm);
   }
   OnBeforeDestroy() {
     super.OnBeforeDestroy();
@@ -148,12 +148,12 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
         this.IsQteInteractive = i.InteractiveTiming === 0;
         this.DZu = i.SlideLength;
         if (i.ViewType === 3) {
-          this.eXd = -1;
+          this.ugm = -1;
         } else if (i.ViewType === 2) {
-          this.eXd = 1;
+          this.ugm = 1;
         }
         this.aXa = i.LerpSpeed / CommonDefine_1.MILLIONSECOND_PER_SECOND;
-        this.dzd = i.CheckByRealTimeInput;
+        this.EIm = i.CheckByRealTimeInput;
       }
       this.SetQteActive(t);
     }
@@ -229,7 +229,7 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
       this.ClearTickTimer();
     }
   }
-  Tad(t) {
+  Kad(t) {
     if (t !== this.bzt) {
       if (this.bzt = t) {
         this.fS1?.Response();
@@ -249,31 +249,31 @@ class CommonQteFullScreenPullItem extends CommonQteItemBase_1.CommonQteItemBase 
         } else {
           this.fS1.UpdateTime(i);
           var s;
-          var e = this.DWd.HeadingAngle();
+          var e = this.Kom.HeadingAngle();
           let t = 0;
           if (Info_1.Info.IsInGamepad()) {
             if (this.aXa < 0) {
-              t = this.DWd.Y * GAMEPAD_ENHANCE_RATE * this.eXd * this.DZu;
-              this.JKd = t;
+              t = this.Kom.Y * GAMEPAD_ENHANCE_RATE * this.ugm * this.DZu;
+              this.lgm = t;
             } else {
-              if ((s = this.DWd.Y * this.eXd) <= MathUtils_1.MathUtils.SmallNumber) {
-                this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, 0, i, this.aXa);
+              if ((s = this.Kom.Y * this.ugm) <= MathUtils_1.MathUtils.SmallNumber) {
+                this.lgm = MathUtils_1.MathUtils.InterpConstantTo(this.lgm, 0, i, this.aXa);
               } else {
-                this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, this.DZu, i, this.aXa * s);
+                this.lgm = MathUtils_1.MathUtils.InterpConstantTo(this.lgm, this.DZu, i, this.aXa * s);
               }
-              t = this.JKd;
+              t = this.lgm;
             }
           } else {
-            t = this.DWd.Y * this.eXd + this.ZKd;
+            t = this.Kom.Y * this.ugm + this._gm;
             if (this.aXa > 0) {
-              this.JKd = MathUtils_1.MathUtils.InterpConstantTo(this.JKd, t, i, this.aXa);
+              this.lgm = MathUtils_1.MathUtils.InterpConstantTo(this.lgm, t, i, this.aXa);
             } else {
-              this.JKd = t;
+              this.lgm = t;
             }
           }
-          this.JKd = MathUtils_1.MathUtils.Clamp(this.JKd, 0, this.DZu);
-          this.fS1.SetDraggingInfo(this.JKd, e);
-          if (this.dzd && this.fS1.CheckDragComplete(t, e)) {
+          this.lgm = MathUtils_1.MathUtils.Clamp(this.lgm, 0, this.DZu);
+          this.fS1.SetDraggingInfo(this.lgm, e);
+          if (this.EIm && this.fS1.CheckDragComplete(t, e)) {
             this.fS1.IsPreSuccess = true;
           }
           if (ModelManager_1.ModelManager.CommonQteModel?.IsRefreshMode) {

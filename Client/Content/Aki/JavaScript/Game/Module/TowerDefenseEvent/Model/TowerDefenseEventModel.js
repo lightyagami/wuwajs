@@ -11,24 +11,24 @@ const TowerDefenseEventEntityModel_1 = require("./TowerDefenseEventEntityModel")
 class TowerDefenseEventModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
-    this.TJc = [];
-    this.WNu = new Map();
-    this.xjc = new Map();
+    this.Ped = [];
+    this.HNu = new Map();
+    this.MYc = new Map();
   }
   InitInstance(e) {
-    this.TJc.length = 0;
+    this.Ped.length = 0;
     if (e) {
       e = TrapDefenseWaveByTrapDefenseLevelId_1.configTrapDefenseWaveByTrapDefenseLevelId.GetConfigList(e.Id);
       if (e && e.length > 0) {
         for (const r of e) {
-          this.TJc.push(r);
+          this.Ped.push(r);
         }
-        this.TJc.sort((e, r) => e.WaveId - r.WaveId);
+        this.Ped.sort((e, r) => e.WaveId - r.WaveId);
       }
     }
   }
   get CurrentTrapCount() {
-    return this.xjc.size;
+    return this.MYc.size;
   }
   HasPlaceToBuildTrap() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetMaxTrapCount();
@@ -37,8 +37,8 @@ class TowerDefenseEventModel extends ModelBase_1.ModelBase {
   GetWaveSplineIds(e) {
     e.length = 0;
     var r = ModelManager_1.ModelManager.TrapDefenseModel.BattleData.GetBatch();
-    if (!(r < 1) && !(r > this.TJc.length)) {
-      r = this.TJc[r - 1];
+    if (!(r < 1) && !(r > this.Ped.length)) {
+      r = this.Ped[r - 1];
       e.push(...r.SplineList);
     }
   }
@@ -54,12 +54,12 @@ class TowerDefenseEventModel extends ModelBase_1.ModelBase {
     var r;
     if (e && e.IsValid()) {
       r = e.Uid;
-      if (this.WNu.has(r)) {
+      if (this.HNu.has(r)) {
         return "实体数据已存在";
       } else {
-        this.WNu.set(r, e);
+        this.HNu.set(r, e);
         if ((0, TowerDefenseEventEntityModel_1.isTypeOfTrapInfo)(e)) {
-          this.xjc.set(r, e);
+          this.MYc.set(r, e);
         }
         return;
       }
@@ -68,16 +68,16 @@ class TowerDefenseEventModel extends ModelBase_1.ModelBase {
     }
   }
   GetEntity(e) {
-    return this.WNu.get(e);
+    return this.HNu.get(e);
   }
   GetAllEntities(r) {
     r.length = 0;
-    this.WNu.forEach(e => {
+    this.HNu.forEach(e => {
       r.push(e);
     });
   }
   HasAnyTrapByType(e) {
-    for (const r of this.xjc.values()) {
+    for (const r of this.MYc.values()) {
       if (r.TrapId === e) {
         return true;
       }
@@ -85,14 +85,14 @@ class TowerDefenseEventModel extends ModelBase_1.ModelBase {
     return false;
   }
   RemoveEntity(e) {
-    var r = this.WNu.get(e);
-    if (r && (this.WNu.delete(e), this.xjc.get(e))) {
-      this.xjc.delete(e);
+    var r = this.HNu.get(e);
+    if (r && (this.HNu.delete(e), this.MYc.get(e))) {
+      this.MYc.delete(e);
     }
     return r;
   }
   HasEntity(e) {
-    return this.WNu.has(e);
+    return this.HNu.has(e);
   }
   GetMachineIdByIndex(e) {
     var r = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData();

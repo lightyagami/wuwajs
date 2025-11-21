@@ -247,7 +247,7 @@ class SceneCharacterInteraction {
       }
       var e = this.OwnerCharacter.CapsuleComponent;
       var s = e.D_K2_GetComponentLocation();
-      var h = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(179);
+      var h = this.OwnerCharacter.CharacterActorComponent?.Entity?.GetComponent(182);
       let t = new UE.VectorDouble(0, 0, e.CapsuleHalfHeight);
       let i = new UE.VectorDouble(0, 0, -e.CapsuleHalfHeight - this.Config.射线向下延长);
       if (h) {
@@ -267,7 +267,7 @@ class SceneCharacterInteraction {
         var a = r.GetHitCount();
         var o = RenderDataManager_1.RenderDataManager.Get().GetGlobalFootstepMaterial();
         for (let i = 0; i < a; ++i) {
-          if (r.Components.Get(i).BodyInstance.CollisionResponses.ResponseToChannels.GameTraceChannel2 === 2) {
+          if (UE.KuroCollisionLibrary.GetBodyInstance(r, i).CollisionResponses.ResponseToChannels.GameTraceChannel2 === 2) {
             this.WaterHeight = r.LocationZ_Array.Get(i);
             this.WaterNormal = Vector_1.Vector.Create(r.ImpactNormalX_Array.Get(i), r.ImpactNormalY_Array.Get(i), r.ImpactNormalZ_Array.Get(i));
             this.SetInWater();
@@ -279,7 +279,7 @@ class SceneCharacterInteraction {
             if (!(t = r.PhysMaterials.Get(i)) || !this.WaterEffect.IsMaterialInUse(t)) {
               t = o;
             }
-          } else if (n.BodyInstance.CollisionResponses.ResponseToChannels.WorldStatic === 2 && (!(t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(n)) || !this.WaterEffect.IsMaterialInUse(t))) {
+          } else if (UE.KuroCollisionLibrary.GetBodyInstance(r, i).CollisionResponses.ResponseToChannels.WorldStatic === 2 && (!(t = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(n)) || !this.WaterEffect.IsMaterialInUse(t))) {
             t = o;
           }
           if (t && this.WaterEffect.IsMaterialInUse(t)) {
@@ -288,7 +288,7 @@ class SceneCharacterInteraction {
             this.SetOnMaterial(t);
             return;
           }
-          if (r.Components.Get(i).BodyInstance.CollisionResponses.ResponseToChannels.WorldStatic === 2) {
+          if (UE.KuroCollisionLibrary.GetBodyInstance(r, i).CollisionResponses.ResponseToChannels.WorldStatic === 2) {
             break;
           }
         }

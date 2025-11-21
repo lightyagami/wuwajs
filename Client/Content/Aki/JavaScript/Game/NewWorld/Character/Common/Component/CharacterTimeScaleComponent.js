@@ -1,15 +1,15 @@
 "use strict";
 
-var __decorate = this && this.__decorate || function (e, t, i, o) {
-  var r;
+var __decorate = this && this.__decorate || function (e, t, i, r) {
+  var o;
   var s = arguments.length;
-  var n = s < 3 ? t : o === null ? o = Object.getOwnPropertyDescriptor(t, i) : o;
+  var n = s < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, i) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    n = Reflect.decorate(e, t, i, o);
+    n = Reflect.decorate(e, t, i, r);
   } else {
     for (var a = e.length - 1; a >= 0; a--) {
-      if (r = e[a]) {
-        n = (s < 3 ? r(n) : s > 3 ? r(t, i, n) : r(t, i)) || n;
+      if (o = e[a]) {
+        n = (s < 3 ? o(n) : s > 3 ? o(t, i, n) : o(t, i)) || n;
       }
     }
   }
@@ -25,13 +25,11 @@ exports.CharacterTimeScaleComponent = undefined;
 const AudioDefine_1 = require("../../../../../Core/Audio/AudioDefine");
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
-const Time_1 = require("../../../../../Core/Common/Time");
 const RegisterComponent_1 = require("../../../../../Core/Entity/RegisterComponent");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const CombatLog_1 = require("../../../../Utils/CombatLog");
 const PawnTimeScaleComponent_1 = require("../../../Pawn/Component/PawnTimeScaleComponent");
 let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends PawnTimeScaleComponent_1.PawnTimeScaleComponent {
   constructor() {
@@ -64,40 +62,35 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
   OnTick(e) {
     let t = 1;
     let i = 0;
-    let o = 1;
+    let r = 1;
     while (!this.TimeScaleList.Empty) {
-      var r = this.TimeScaleList.Top;
-      if (!r) {
+      var o = this.TimeScaleList.Top;
+      if (!o) {
         break;
       }
-      if (this.IsTimescaleValid(r)) {
-        t = r.CalculateTimeScale();
-        i = r.SourceType;
-        o = r.EndTime - r.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD ? t : this.CKr;
+      if (this.IsTimescaleValid(o)) {
+        t = o.CalculateTimeScale();
+        i = o.SourceType;
+        r = o.EndTime - o.StartTime >= AudioDefine_1.ENTITY_TIMESCALE_ENABLE_THRESHOLD ? t : this.CKr;
         break;
       }
-      this.TimeScaleMap.delete(r.Id);
+      this.TimeScaleMap.delete(o.Id);
       this.TimeScaleList.Pop();
     }
-    var s = this.Entity.GetComponent(15);
-    if (!!this.ActorComp && !this.ActorComp.IsMoveAutonomousProxy && (!s || !s.IsDead())) {
+    var s;
+    var n = this.Entity.GetComponent(15);
+    if (!!this.ActorComp && !this.ActorComp.IsMoveAutonomousProxy && (!n || !n.IsDead())) {
       t = this.gKr;
-      o = this.gKr;
+      r = this.gKr;
     }
     if (this.Ix1 >= 0) {
       t = this.Ix1;
-      o = this.Ix1;
+      r = this.Ix1;
     }
     this.FreezeTimeScaleInternal = t;
-    var s = this.GetTopForeverTimeScale();
-    t *= s;
-    if (this.RemoveLockTimestamp > 0 && this.Entity.GetComponent(0)?.IsMonster()) {
-      if ((n = Time_1.Time.NowSeconds - this.RemoveLockTimestamp) > 2) {
-        CombatLog_1.CombatLog.Error("Skill", this.Entity, "大招时停恢复时间过长", ["gap time", n]);
-      }
-      this.RemoveLockTimestamp = -1;
-    }
-    var n = o * this.Entity.TimeDilation * ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * s;
+    var n = this.GetTopForeverTimeScale();
+    t *= n;
+    var n = r * this.Entity.TimeDilation * ModelManager_1.ModelManager.CharacterModel.SelfCenteredTimeDilation * n;
     if (n !== this.dKr && (s = this.ActorComp?.Owner)) {
       if (!this.J81) {
         AudioSystem_1.AudioSystem.SetRtpcValue("entity_time_scale_combat", n, {
@@ -111,7 +104,7 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
       }
     }
     this.dKr = n;
-    this.CKr = o;
+    this.CKr = r;
     if (t !== this.TimeScaleInternal) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Character", 19, "实体流速变化", ["entityId", this.Entity.Id], ["newScale", t], ["oldScale", this.TimeScaleInternal], ["sourceType", i]);
@@ -136,16 +129,16 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
       this.OnTick(0);
     }
   }
-  SetTimeScale(e, t, i, o, r, s) {
-    var n = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
-    if (n) {
-      return n.SetTimeScale(e, t, i, o, r, s);
+  SetTimeScale(e, t, i, r, o, s, n = false) {
+    var a = this.Entity.GetComponent(178)?.BuffEffectManager?.FilterFirstById(85);
+    if (a) {
+      return a.SetTimeScale(e, t, i, r, o, s, n);
     } else {
-      return super.SetTimeScale(e, t, i, o, r, s);
+      return super.SetTimeScale(e, t, i, r, o, s, n);
     }
   }
   RemoveTimeScale(e) {
-    var t = this.Entity.GetComponent(175)?.BuffEffectManager?.FilterFirstById(85)?.Group;
+    var t = this.Entity.GetComponent(178)?.BuffEffectManager?.FilterFirstById(85);
     if (t) {
       t.RemoveTimeScale(e);
     } else {
@@ -153,5 +146,5 @@ let CharacterTimeScaleComponent = class CharacterTimeScaleComponent extends Pawn
     }
   }
 };
-CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(180)], CharacterTimeScaleComponent);
+CharacterTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(183)], CharacterTimeScaleComponent);
 exports.CharacterTimeScaleComponent = CharacterTimeScaleComponent; //# sourceMappingURL=CharacterTimeScaleComponent.js.map

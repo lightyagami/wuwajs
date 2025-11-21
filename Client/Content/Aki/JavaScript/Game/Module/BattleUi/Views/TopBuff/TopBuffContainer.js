@@ -30,6 +30,13 @@ class TopBuffContainer {
       this.TagTaskList.push(i);
     }
   }
+  ListenForTagAddOrRemoveChanged(t, s) {
+    var i = this.RoleData?.GameplayTagComponent;
+    if (i) {
+      i = i.ListenForTagAddOrRemove(t, s);
+      this.TagTaskList.push(i);
+    }
+  }
   FYe() {
     if (this.TagTaskList) {
       for (const t of this.TagTaskList) {

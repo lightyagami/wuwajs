@@ -12,8 +12,11 @@ const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterAttributeTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
 const MoraleTempExpView_1 = require("../../../Battle/Morale/View/MoraleTempExpView");
+const HonamiStoryUtil_1 = require("../../../HonamiStory/HonamiStoryUtil");
 const ConcertoResponseItem_1 = require("../ConcertoResponseItem");
 const FishingStateView_1 = require("../FishingStateView");
+const HonamiStoryMainQuestView_1 = require("../HonamiStory/HonamiStoryMainQuestView");
+const HonamiStoryView_1 = require("../HonamiStory/HonamiStoryView");
 const RoleBuffView_1 = require("../RoleBuffView");
 const RoleStateView_1 = require("../RoleStateView");
 const RoleUniqueBuffView_1 = require("../RoleUniqueBuffView");
@@ -26,10 +29,16 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this._Je = undefined;
     this.uJe = undefined;
     this.cJe = undefined;
-    this.a2u = undefined;
+    this.m4u = undefined;
     this.DF_ = undefined;
     this.n$1 = undefined;
+    this.eQd = undefined;
+    this.plm = undefined;
     this.s$1 = false;
+    this.oWd = () => {
+      var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+      this.f4u(e);
+    };
     this.mJe = e => {
       this.uJe?.RefreshVisible();
     };
@@ -45,7 +54,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
           this.uJe.Refresh(e);
         }
         this.cJe.OnChangeRole(e.MorphShowSpecialEnergyBar ? e : undefined);
-        this.h2u(e);
+        this.f4u(e);
         BottomPanel.kQe.Stop();
       }
     };
@@ -72,9 +81,9 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.uJe.Refresh(undefined);
       }
       if (this._Je.GetEntityId() === e.Id) {
-        this.h2u(undefined);
+        this.f4u(undefined);
       }
-      this.a2u.OnRemoveEntity(e.Id);
+      this.m4u.OnRemoveEntity(e.Id);
       this.cJe.OnRemoveEntity(e.Id);
     };
     this.dJe = (e, t) => {
@@ -91,9 +100,9 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (this._Je.GetEntityId() === e) {
         if (t.CueType === 24) {
           if (i) {
-            this.a2u.AddBuff(t, s);
+            this.m4u.AddBuff(t, s);
           } else {
-            this.a2u.RemoveBuff(t, s);
+            this.m4u.RemoveBuff(t, s);
           }
         } else if (i) {
           this._Je.AddBuff(t, s);
@@ -125,26 +134,26 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem]];
   }
   async InitializeAsync() {
-    await Promise.all([this.CJe(), this.gJe(), this.fJe(), this.pJe(), this.NXa()]);
+    await Promise.all([this.CJe(), this.gJe(), this.fJe(), this.pJe(), this.NXa(), this.tQd()]);
     var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
     this.lJe.Refresh(e);
     this.uJe.Refresh(e);
     this.cJe.OnChangeRole(e);
-    this.h2u(e);
+    this.f4u(e);
     var e = ControllerHolder_1.ControllerHolder.FishingController.IsInFishingShip();
     this.BF_(2, !e);
     this.kF_(e);
   }
-  h2u(e) {
+  f4u(e) {
     this._Je.Refresh(e);
-    this.a2u.Refresh(e);
+    this.m4u.Refresh(e);
   }
   Reset() {
     this.lJe = undefined;
     this.uJe = undefined;
     this._Je = undefined;
     this.cJe = undefined;
-    this.a2u = undefined;
+    this.m4u = undefined;
     this.kF_(false);
     super.Reset();
   }
@@ -156,7 +165,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.lJe?.Tick(e);
     this._Je?.Tick(e);
     this.cJe?.Tick(e);
-    this.a2u?.Tick(e);
+    this.m4u?.Tick(e);
     BottomPanel.vJe.Stop();
   }
   async CJe() {
@@ -181,8 +190,20 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async NXa() {
     var e = this.GetItem(5);
-    this.a2u = await this.NewStaticChildViewAsync(e.GetOwner(), RoleUniqueBuffView_1.RoleUniqueBuffView);
-    this.a2u.ShowBattleVisibleChildView();
+    this.m4u = await this.NewStaticChildViewAsync(e.GetOwner(), RoleUniqueBuffView_1.RoleUniqueBuffView);
+    this.m4u.ShowBattleVisibleChildView();
+  }
+  async tQd() {
+    var e;
+    if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
+      e = this.GetItem(6);
+      this.eQd = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainBar", HonamiStoryView_1.HonamiStoryView);
+      this.eQd.ShowBattleVisibleChildView();
+      if (!ModelManager_1.ModelManager.FunctionModel.IsOpen(10105)) {
+        this.plm = await this.NewDynamicChildViewByResourceId(e, "UiItem_HonamiStoryMainQuestBar", HonamiStoryMainQuestView_1.HonamiStoryMainQuestView);
+        this.plm.ShowBattleVisibleChildView();
+      }
+    }
   }
   AddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
@@ -194,6 +215,7 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.oWd);
   }
   RemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiCurRoleDataChangedNextTick, this.xie);
@@ -205,13 +227,14 @@ class BottomPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBattleStateChanged, this.Zpe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleActiveChanged, this.h$1);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SeamlessTravelUIRefresh, this.oWd);
   }
   BF_(e, t) {
     this.lJe?.SetVisible(e, t);
     this.uJe?.SetVisible(e, t);
     this._Je?.SetVisible(e, t);
     this.cJe?.SetVisible(e, t);
-    this.a2u?.SetVisible(e, t);
+    this.m4u?.SetVisible(e, t);
   }
   kF_(e) {
     if (e) {

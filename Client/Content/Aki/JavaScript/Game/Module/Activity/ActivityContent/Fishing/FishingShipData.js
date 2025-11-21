@@ -65,13 +65,13 @@ class FishingShipData {
       if (t?.Valid && i?.IsStart && t.Id !== this.sDe?.Id) {
         this.gh_();
         this.sDe = t;
-        this.osn = i.GetComponent(173);
+        this.osn = i.GetComponent(176);
         var r = i.GetComponent(1)?.Owner;
         if (r?.IsValid()) {
           GlobalData_1.GlobalData.BpEventManager.当捕鱼船创建时.Broadcast(r);
         }
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.FishingShipDataRefresh);
-        var r = i.GetComponent(234);
+        var r = i.GetComponent(237);
         var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity;
         let e = false;
         if (r && n) {

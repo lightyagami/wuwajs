@@ -43,7 +43,7 @@ class AnimNotifyStateGhost extends UE.KuroAnimNotifyState {
     f.GhostLifeTime = this.GhostLifeTime;
     f.SourceObject = i;
     f = EffectSystem_1.EffectSystem.SpawnEffect(i, new UE.TransformDouble(new UE.Rotator(), i.D_K2_GetActorLocation(), new UE.VectorDouble(1, 1, 1)), r, "[AnimNotifyStateGhost.K2_NotifyBegin]", f, 0);
-    if (i instanceof TsBaseCharacter_1.default && (i = i.CharacterActorComponent?.Entity?.GetComponent(289))?.Valid) {
+    if (i instanceof TsBaseCharacter_1.default && (i = i.CharacterActorComponent?.Entity?.GetComponent(293))?.Valid) {
       i.AddEffect(f);
     }
     if (f && EffectSystem_1.EffectSystem.IsValid(f)) {

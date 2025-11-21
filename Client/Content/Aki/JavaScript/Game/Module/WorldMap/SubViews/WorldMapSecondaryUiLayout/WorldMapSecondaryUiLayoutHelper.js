@@ -24,11 +24,15 @@ class WorldMapSecondaryUiLayoutHelper {
     }
   }
   static UpdateAreaTxtByServerMarkItem(t) {
-    var e = t.MarkItem;
-    var e = ModelManager_1.ModelManager.MapModel.GetMarkAreaText(e.MapId, e.EntityConfigId);
+    var e = t.MarkItem.GetAreaText();
     if (e) {
       t.AreaText.SetText(e);
     }
+  }
+  static UpdateIconAndTitleByServerMarkItem(t) {
+    var e = t.MarkItem;
+    WorldMapSecondaryUiLayoutHelper.UpdateIconByServerMarkItem(t);
+    t.Title.ShowTextNew(ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(e.ConfigId).MarkTitle);
   }
   static UpdateIconAndTitle(t) {
     var e = t.MarkItem;
@@ -39,6 +43,10 @@ class WorldMapSecondaryUiLayoutHelper {
     t.Title.SetChangeColor(e, t.Title.changeColor);
   }
   static UpdateIcon(t) {
+    var e = t.MarkItem;
+    t.SetSpriteByPathAction(e.IconPath, t.Icon, false);
+  }
+  static UpdateIconByServerMarkItem(t) {
     var e = t.MarkItem;
     t.SetSpriteByPathAction(e.IconPath, t.Icon, false);
   }

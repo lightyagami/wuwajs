@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ListSliderControl = exports.SliderItem = undefined;
+exports.ListSliderControl = exports.LIST_SLIDER_ITEM_SHOW_TIME = exports.LIST_SLIDER_ITEM_SLIDER_TIME = exports.LIST_SLIDER_ITEM_ADD_TIME = exports.LIST_SLIDER_MAX_SHOW_COUNT = exports.SliderItem = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
@@ -61,56 +61,51 @@ class SliderItem extends UiPanelBase_1.UiPanelBase {
   }
 }
 exports.SliderItem = SliderItem;
+exports.LIST_SLIDER_MAX_SHOW_COUNT = 8;
+exports.LIST_SLIDER_ITEM_ADD_TIME = 100;
+exports.LIST_SLIDER_ITEM_SLIDER_TIME = 100;
+exports.LIST_SLIDER_ITEM_SHOW_TIME = 2000;
 class ListSliderControl {
-  constructor(t, i, s, h, e, o, r = 1, a = undefined, n = undefined, d = 0) {
-    this.l0i = undefined;
+  constructor(t) {
+    this.Pe = undefined;
     this._0i = undefined;
     this.eGe = undefined;
     this.u0i = undefined;
     this.c0i = 0;
-    this.m0i = new Array();
-    this.d0i = new Array();
-    this.C0i = 0;
-    this.g0i = 0;
-    this.f0i = undefined;
-    this.zi_ = undefined;
-    this.p0i = 0;
-    this.v0i = 0;
     this.M0i = 0;
+    this.p0i = 0;
     this.E0i = false;
+    this.IsFinish = false;
+    this.hn = 0;
     this.S0i = 0;
     this.y0i = 0;
-    this.IsFinish = false;
-    this.wOt = undefined;
-    this.r0i = undefined;
-    this.s0i = undefined;
-    this.I0i = undefined;
+    this.v0i = 0;
+    this.f0i = undefined;
+    this.zi_ = undefined;
     this.T0i = undefined;
-    this.hn = 0;
     this.NPt = undefined;
+    this.m0i = new Array();
+    this.d0i = new Array();
     this.HG1 = [];
-    this.l0i = t;
-    this.u0i = i;
-    this.c0i = this.u0i.GetHeight();
-    this.u0i.SetUIActive(false);
-    this._0i = this.u0i.GetParentAsUIItem();
-    this.E0i = this._0i.IsUIActiveInHierarchy();
-    this.eGe = this._0i.GetOwner().GetComponentByClass(UE.UIVerticalLayout.StaticClass());
-    if (s === undefined) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("ItemHint", 8, "ListSliderControl错误, getMaxCount回调不能为undefined");
+    if (this.Pe = t) {
+      this._0i = t.ParentUi;
+      if (t.ChildResourceId) {
+        this.NPt = t.ChildResourceId;
+      } else if (t.ChildTemplate) {
+        this.u0i = t.ChildTemplate;
+      } else {
+        this.u0i = t.ParentUi.GetAttachUIChild(0);
       }
-    } else {
-      this.wOt = s;
-      this.r0i = h;
-      this.s0i = e;
-      this.I0i = o;
-      this.f0i = r;
-      this.zi_ = d;
+      if (this.u0i) {
+        this.u0i?.SetUIActive(false);
+        this.c0i = this.u0i.GetHeight();
+      }
+      this.E0i = t.ParentUi.IsUIActiveInHierarchy();
+      this.eGe = t.ParentUi.GetOwner().GetComponentByClass(UE.UIVerticalLayout.StaticClass());
+      this.f0i = t.SliderMode ?? 1;
+      this.zi_ = t.TickMode ?? 0;
+      this.y0i = t.MaxShowCount ?? exports.LIST_SLIDER_MAX_SHOW_COUNT;
       this.p0i = 0;
-      this.C0i = a ?? ConfigManager_1.ConfigManager.RewardConfig.GetShowTime();
-      this.g0i = n ?? ConfigManager_1.ConfigManager.RewardConfig.GetSliderTime();
-      this.y0i = s();
     }
   }
   SetDynamicLoadResourceId(t) {
@@ -127,7 +122,7 @@ class ListSliderControl {
       Log_1.Log.Error("ItemHint", 8, "ListSliderControl错误, ParentUiItem为undefined");
     }
   }
-  Tick(h) {
+  Tick(t) {
     this.L0i();
     this.D0i();
     if (this.E0i) {
@@ -136,30 +131,28 @@ class ListSliderControl {
           return undefined;
         } else {
           this.IsFinish = true;
-          this.I0i();
+          this.Pe?.FinishCallback?.();
           return;
         }
       }
       this.IsFinish &&= false;
-      let t = h;
-      if (t > TimerSystem_1.MIN_TIME) {
-        t = TimerSystem_1.MIN_TIME;
+      let s = t;
+      if (s > TimerSystem_1.MIN_TIME) {
+        s = TimerSystem_1.MIN_TIME;
       }
-      let i = 0;
-      let s = 0;
-      for (const e of this.m0i) {
-        this.R0i(e, i);
-        this.SliderItemTick(e, t, i);
-        i++;
-        if (this.f0i !== 0 || e.Status < 3) {
-          s++;
+      let h = 0;
+      this.m0i.forEach((t, i) => {
+        this.R0i(t, i);
+        this.SliderItemTick(t, s, i);
+        if (this.f0i !== 0 || t.Status < 3) {
+          h++;
         }
-      }
-      this.U0i(t);
+      });
+      this.U0i(s);
       this.A0i();
-      if (!(s > this.y0i)) {
-        if (this.S0i !== s) {
-          this.S0i = s;
+      if (!(h > this.y0i)) {
+        if (this.S0i !== h) {
+          this.S0i = h;
           this.P0i();
         }
         if (this.hn === 1 && this.v0i > LOAD_LIMIT_TIME) {
@@ -170,7 +163,7 @@ class ListSliderControl {
         }
         if (!this.r0i()) {
           if (this.hn === 1) {
-            this.v0i += t;
+            this.v0i += s;
             return;
           } else {
             if (this.hn === 2) {
@@ -186,8 +179,8 @@ class ListSliderControl {
             return;
           }
         }
-        h = this.s0i();
-        if (this.v0i >= h && this.hn === 2) {
+        t = this.CId();
+        if (this.v0i >= t && this.hn === 2) {
           if (this.T0i) {
             this.T0i.SetActive(true);
             this.T0i.Play();
@@ -217,7 +210,7 @@ class ListSliderControl {
             });
           });
         }
-        this.v0i += t;
+        this.v0i += s;
       }
     }
   }
@@ -234,8 +227,8 @@ class ListSliderControl {
     }
   }
   D0i() {
-    var t = this.wOt();
-    if (t !== this.y0i && (Log_1.Log.CheckInfo() && Log_1.Log.Info("ItemHint", 10, "[ListSliderControl::Tick]最大数量发生变化"), this.y0i = t, this.s0i() === 0)) {
+    var t = this.pId();
+    if (t !== this.y0i && (Log_1.Log.CheckInfo() && Log_1.Log.Info("ItemHint", 10, "[ListSliderControl::Tick]最大数量发生变化"), this.y0i = t, this.CId() === 0)) {
       for (const i of this.m0i) {
         i.AddShowTime = 0;
       }
@@ -251,7 +244,7 @@ class ListSliderControl {
     if ((this.zi_ !== 1 || s === 0) && !(t.Status === 2 && (t.AddShowTime += i), this.f0i !== 0 && s !== 0)) {
       if (t.Status === 4) {
         t.Status = 5;
-      } else if (t.Status === 2 && t.AddShowTime >= this.C0i && (t.Status = 3, t.PlayEnd(), this.f0i === 0)) {
+      } else if (t.Status === 2 && t.AddShowTime >= this.Wld() && (t.Status = 3, t.PlayEnd(), this.f0i === 0)) {
         this.p0i--;
         this.w0i();
       }
@@ -279,14 +272,17 @@ class ListSliderControl {
         s.UiItem.SetUIActive(false);
         this.HG1.push(s);
         t = s.UiItem;
+        if (this.c0i === 0) {
+          this.c0i = t.GetHeight();
+        }
       }
-      await (i = new this.l0i()).CreateByActorAsync(t.GetOwner());
+      await (i = this.Vld()).CreateByActorAsync(t.GetOwner());
     }
     this.m0i.push(i);
     return i;
   }
   U0i(t) {
-    if (!(this.M0i <= 0) && !(this.M0i -= this.c0i / this.g0i * t, this.M0i > 0)) {
+    if (!(this.M0i <= 0) && !(this.M0i -= this.c0i / this.$ld() * t, this.M0i > 0)) {
       this.M0i = 0;
     }
   }
@@ -321,6 +317,24 @@ class ListSliderControl {
   }
   P0i() {
     this._0i.SetHeight(this.S0i * this.c0i);
+  }
+  Vld() {
+    return this.Pe.CreateProxyFunction();
+  }
+  r0i() {
+    return this.Pe.CheckNext();
+  }
+  pId() {
+    return this.Pe?.MaxShowCount ?? exports.LIST_SLIDER_MAX_SHOW_COUNT;
+  }
+  CId() {
+    return this.Pe?.AddItemTime ?? exports.LIST_SLIDER_ITEM_ADD_TIME;
+  }
+  $ld() {
+    return this.Pe?.ItemSliderTime ?? exports.LIST_SLIDER_ITEM_SLIDER_TIME;
+  }
+  Wld() {
+    return this.Pe?.ItemShowTime ?? exports.LIST_SLIDER_ITEM_SHOW_TIME;
   }
 }
 exports.ListSliderControl = ListSliderControl;

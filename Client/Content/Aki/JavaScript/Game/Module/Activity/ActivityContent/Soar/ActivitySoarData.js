@@ -15,7 +15,7 @@ class ActivitySoarData extends ActivityData_1.ActivityBaseData {
     this.FRe = 0;
   }
   PhraseEx(t) {
-    t = t.K8u;
+    t = t.Qzc;
     if (t) {
       this.FRe = t.B5n;
     }

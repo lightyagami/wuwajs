@@ -52,7 +52,7 @@ class BattleQteContext {
   }
   jUe(a, t) {
     if (this.MessageId) {
-      var r = a.GetComponent(206);
+      var r = a.GetComponent(209);
       let e = true;
       let o = undefined;
       if (r) {
@@ -84,7 +84,7 @@ class BattleQteContext {
         let e = undefined;
         var h = t.AddBuffs;
         var v = h.Num();
-        if (v > 0 && (e = e ?? a.GetComponent(175))) {
+        if (v > 0 && (e = e ?? a.GetComponent(178))) {
           for (let t = 0; t < v; t++) {
             var g = Number(h.Get(t));
             e.AddBuff(g, {
@@ -96,7 +96,7 @@ class BattleQteContext {
         }
         var m = t.RemoveBuffs;
         var I = m.Num();
-        if (I > 0 && (e = e ?? a.GetComponent(175))) {
+        if (I > 0 && (e = e ?? a.GetComponent(178))) {
           for (let t = 0; t < I; t++) {
             var C = Number(m.Get(t));
             e.RemoveBuff(C, -1, "战斗Qte结束时移除buff", this.MessageId);

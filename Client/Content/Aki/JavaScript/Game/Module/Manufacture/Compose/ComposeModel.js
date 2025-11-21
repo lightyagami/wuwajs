@@ -31,6 +31,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
     this.Tjl = [];
     this.hTi = undefined;
     this.lTi = undefined;
+    this.PurificationComposeMaterialList = undefined;
     this.uTi = 0;
     this.cTi = undefined;
     this.mTi = undefined;
@@ -39,6 +40,7 @@ class ComposeModel extends ModelBase_1.ModelBase {
     this.gTi = undefined;
     this.fTi = (t, e) => t.IsBuff === e.IsBuff ? t.RoleId - e.RoleId : t.IsBuff ? -1 : 1;
     this.ComposeSelectItem = undefined;
+    this.ComposeSkipSourceView = undefined;
   }
   SaveLimitRefreshTime(t) {
     this.Xqt = MathUtils_1.MathUtils.LongToNumber(t) * TimeUtil_1.TimeUtil.Millisecond;
@@ -95,6 +97,9 @@ class ComposeModel extends ModelBase_1.ModelBase {
   }
   get CurrentComposeListType() {
     return this.sTi;
+  }
+  IsInPurificationList() {
+    return this.sTi === 3;
   }
   CreateComposeDataList(t) {
     this.CreateReagentProductionDataList(t);
@@ -358,6 +363,9 @@ class ComposeModel extends ModelBase_1.ModelBase {
     return t.IsUnlock > 0;
   }
   CheckComposeMaterialEnough(t) {
+    if (this.IsInPurificationList()) {
+      return this.q_m(t);
+    }
     var e = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
     if (e) {
       for (const i of e.ConsumeItems) {
@@ -656,13 +664,15 @@ class ComposeModel extends ModelBase_1.ModelBase {
     }
   }
   GetComposeMaterialList(t) {
-    var e = new Array();
-    for (const o of ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t).ConsumeItems) {
-      e.push({
-        L8n: o.ItemId,
-        UVn: o.Count,
-        K6n: true
-      });
+    let e = new Array();
+    if (!this.IsInPurificationList() || !((e = this.O_m(t)).length > 0)) {
+      for (const o of ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t).ConsumeItems) {
+        e.push({
+          L8n: o.ItemId,
+          UVn: o.Count,
+          K6n: true
+        });
+      }
     }
     return e;
   }
@@ -736,6 +746,57 @@ class ComposeModel extends ModelBase_1.ModelBase {
       }
     }
     return e.sort((t, e) => t.Quality - e.Quality);
+  }
+  CalculateNeedComposeMaterialList(t, e) {
+    var t = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
+    if (t) {
+      if (!(e = ModelManager_1.ModelManager.ComposePopupModel.CalcMaterialListPurification(t.ItemId, e, false)) || e.length <= 0) {
+        return [{
+          ItemId: (t = t.ConsumeItems[0]).ItemId,
+          RequiredNum: t.Count
+        }];
+      } else {
+        return e;
+      }
+    } else {
+      return [];
+    }
+  }
+  GetMaxCreateCountPurification(t, e) {
+    var t = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
+    if (t) {
+      t = ModelManager_1.ModelManager.ComposePopupModel.GetMaxCreateCountPurification(t.ItemId, false);
+      if (!e || e.TotalMakeCountInLimitTime <= 0) {
+        return t;
+      } else {
+        e = e.TotalMakeCountInLimitTime - e.MadeCountInLimitTime;
+        return Math.min(t, e);
+      }
+    } else {
+      return 0;
+    }
+  }
+  O_m(t) {
+    t = ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t);
+    if (t) {
+      return (ModelManager_1.ModelManager.ComposePopupModel.GetComposeMaterialListPurification(t.ItemId) ?? []).map(t => ({
+        L8n: t.ItemId,
+        UVn: t.RequiredNum,
+        K6n: true
+      }));
+    } else {
+      return [];
+    }
+  }
+  q_m(t) {
+    if (ConfigManager_1.ConfigManager.ComposeConfig.GetSynthesisFormulaById(t)) {
+      return this.GetMaxCreateCountPurification(t) > 0;
+    } else {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Compose", 74, "合成配方不存在, 跳过CheckComposeMaterialEnough检查", ["id=", t]);
+      }
+      return true;
+    }
   }
 }
 exports.ComposeModel = ComposeModel;

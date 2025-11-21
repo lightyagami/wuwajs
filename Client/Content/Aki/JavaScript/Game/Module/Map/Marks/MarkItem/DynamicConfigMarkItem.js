@@ -79,9 +79,12 @@ class DynamicConfigMarkItem extends MarkItem_1.MarkItem {
     }
   }
   GetAreaText() {
+    var t;
     if (typeof this.TrackTarget == "number") {
       if (this.TrackAreaId) {
         return ModelManager_1.ModelManager.MapModel.GetMarkAreaTextByAreaId(this.TrackAreaId);
+      } else if ((t = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(this.MarkConfigId)?.AreaShowText ?? []).length > 0) {
+        return t.map(t => ConfigManager_1.ConfigManager.MapConfig.GetLocalText(t)).join("-");
       } else {
         return ModelManager_1.ModelManager.MapModel.GetMarkAreaText(this.MapId, this.TrackTarget);
       }

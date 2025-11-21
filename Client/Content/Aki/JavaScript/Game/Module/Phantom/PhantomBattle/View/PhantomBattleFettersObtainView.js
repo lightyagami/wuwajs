@@ -13,6 +13,7 @@ const ModelManager_1 = require("../../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../../Ui/Base/UiViewBase");
 const UiManager_1 = require("../../../../Ui/UiManager");
 const GenericScrollView_1 = require("../../../Util/ScrollView/GenericScrollView");
+const PhantomUtil_1 = require("../../PhantomUtil");
 const PhantomBattleItemView_1 = require("./PhantomBattleItemView");
 class PhantomBattleFettersObtainView extends UiViewBase_1.UiViewBase {
   constructor() {
@@ -33,16 +34,15 @@ class PhantomBattleFettersObtainView extends UiViewBase_1.UiViewBase {
       ControllerHolder_1.ControllerHolder.AdventureGuideController.JumpToTargetView("MonsterDetectView", ConfigManager_1.ConfigManager.CalabashConfig.GetCalabashDevelopRewardByMonsterId(e)?.MonsterProbeId);
     };
     this.m2e = () => {
-      var e;
       ModelManager_1.ModelManager.PhantomBattleModel.CurrentSelectedFetter = this.X6i;
       this.CloseMe();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VisionFilterMonster);
-      if (!UiManager_1.UiManager.IsViewShow("VisionEquipmentView")) {
-        e = ModelManager_1.ModelManager.RoleModel.GetBattleTeamFirstRoleId();
+      var e = ModelManager_1.ModelManager.RoleModel.GetBattleTeamFirstRoleId();
+      if (e !== undefined && !UiManager_1.UiManager.IsViewShow("VisionEquipmentView")) {
         if (UiManager_1.UiManager.IsViewShow("PhantomBattleFettersView")) {
-          UiManager_1.UiManager.CloseAndOpenView("PhantomBattleFettersView", "VisionEquipmentView", e);
+          PhantomUtil_1.PhantomUtil.CloseAndOpenVisionEquipmentView("PhantomBattleFettersView", e);
         } else {
-          UiManager_1.UiManager.OpenView("VisionEquipmentView", e);
+          PhantomUtil_1.PhantomUtil.OpenVisionEquipmentView(e);
         }
       }
     };

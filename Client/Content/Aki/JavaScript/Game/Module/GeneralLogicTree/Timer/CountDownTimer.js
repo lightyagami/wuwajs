@@ -30,7 +30,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
     this.IYt = 0;
     this.I$t = 0;
     this.wqa = undefined;
-    this.Fgd = false;
+    this.Qzd = false;
     this.DYt = (e, i, t, r) => {
       if (e && e === this.TreeId && this.InnerTimerType === i) {
         var n = r * 1000;
@@ -72,23 +72,23 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
   }
   Destroy() {
     this.EndShowTimer();
-    this.Fgd = false;
+    this.Qzd = false;
     super.Destroy();
   }
   OnAddEvents() {
-    if (!this.Fgd) {
+    if (!this.Qzd) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
-      this.Fgd = true;
+      this.Qzd = true;
     }
   }
   OnRemoveEvents() {
-    if (this.Fgd) {
+    if (this.Qzd) {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeTimerInfoChanged, this.DYt);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerStartShow, this.GKa);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.FailRangeTimerEndShow, this.kKa);
-      this.Fgd = false;
+      this.Qzd = false;
     }
   }
   TYt() {
@@ -137,7 +137,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
           this.Zk_(e);
           break;
         case 4:
-          this.YYu(e);
+          this.HWc(e);
       }
     }
   }
@@ -172,7 +172,7 @@ class CountDownTimer extends LogicTreeTimerBase_1.LogicTreeTimerBase {
     }
     this.LYt(e);
   }
-  YYu(e) {
+  HWc(e) {
     var i;
     if (!UiManager_1.UiManager.GetViewByName("GreatSwordCountDownView") || !!ModelManager_1.ModelManager.GeneralLogicTreeModel.CountDownViewClosing) {
       i = new GeneralLogicTreeDefine_1.ChallengeCountDownViewParams(this.MYt, this.wqa);

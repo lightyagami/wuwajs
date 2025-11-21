@@ -27,6 +27,7 @@ const Time_1 = require("../../../../Core/Common/Time");
 const Entity_1 = require("../../../../Core/Entity/Entity");
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Quat_1 = require("../../../../Core/Utils/Math/Quat");
 const Rotator_1 = require("../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../Core/Utils/Math/Vector");
@@ -117,7 +118,6 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     this.Nrn = true;
     this.Orn = true;
     this.IsInSequenceBinding = false;
-    this.UseAnimInstanceCachePool = false;
     this.DisableActorHandle = undefined;
     this.DisableCollisionHandle = undefined;
     this.krn = undefined;
@@ -151,7 +151,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   }
   OnStart() {
     this.MoveComp = this.Entity.GetComponent(45);
-    this.VehicleMoveComp = this.Entity.GetComponent(237);
+    this.VehicleMoveComp = this.Entity.GetComponent(240);
     this.vJ = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(this.Entity.Id);
     return true;
   }
@@ -594,13 +594,24 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     if (ControllerHolder_1.ControllerHolder.CreatureController.CheckEnableEntityLog(this.CreatureData?.GetEntityType()) && Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Entity", 3, "EnableActor", ["CreatureDataId", this.CreatureData?.GetCreatureDataId()], ["PbDataId", this.CreatureData?.GetPbDataId()], ["Handle", t]);
     }
-    var i;
-    var t = this.DisableActorHandle.Enable(t, this.constructor.name);
+    t = this.DisableActorHandle.Enable(t, this.constructor.name);
     if (t && this.ActorInternal?.IsValid() && this.ActorInternal.bHidden !== !this.DisableActorHandle.Empty) {
-      i = this.DisableActorHandle.Empty;
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
-      EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, i);
-      this.ActorInternal.SetActorHiddenInGame(!i);
+      EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(this.Entity), EventDefine_1.EEventName.OnPreSetActorHidden, this.Entity.Id, this.DisableActorHandle.Empty);
+      const i = () => {
+        var t = this.DisableActorHandle.Empty;
+        this.ActorInternal.SetActorHiddenInGame(!t);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
+        EventSystem_1.EventSystem.EmitWithTarget(ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.Entity.Id), EventDefine_1.EEventName.OnSetActorHidden, this.Entity.Id, t);
+      };
+      if (this.Entity.GetComponent(118)) {
+        TimerSystem_1.TimerSystem.Next(() => {
+          if (this.ActorInternal?.IsValid()) {
+            i();
+          }
+        });
+      } else {
+        i();
+      }
     }
     return t;
   }
@@ -621,7 +632,7 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
     return this.DisableCollisionHandle.DumpDisableInfo();
   }
   DumpDisableTickInfo() {
-    var t = this.Entity.GetComponent(112);
+    var t = this.Entity.GetComponent(115);
     if (t) {
       return t.DumpDisableTickInfo();
     } else {
@@ -651,11 +662,11 @@ let BaseActorComponent = class BaseActorComponent extends EntityComponent_1.Enti
   SetTickEnable(t, i) {
     if (t) {
       if (this.Vrn) {
-        this.Entity.GetComponent(112)?.EnableTickWithLog(this.Vrn, i);
+        this.Entity.GetComponent(115)?.EnableTickWithLog(this.Vrn, i);
         this.Vrn = undefined;
       }
     } else {
-      this.Vrn ||= this.Entity.GetComponent(112)?.DisableTickWithLog(i);
+      this.Vrn ||= this.Entity.GetComponent(115)?.DisableTickWithLog(i);
     }
   }
   OnClear() {

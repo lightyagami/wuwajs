@@ -9,7 +9,6 @@ const Log_1 = require("../../../../Core/Common/Log");
 const GameSettingsDefine_1 = require("../../../GameSettings/GameSettingsDefine");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const MenuController_1 = require("../MenuController");
 const MenuDefine_1 = require("../MenuDefine");
 const MenuScrollSettingBaseItem_1 = require("./MenuScrollSettingBaseItem");
 class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScrollSettingBaseItem {
@@ -51,7 +50,7 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
   }
   Ibi() {
     this.GetRootItem().SetUIActive(true);
-    var t = this.vah();
+    var t = this.GetIndex();
     this.Sbi(t);
     this.RefreshInteractionGroup(t);
   }
@@ -60,7 +59,7 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     this.GetButton(3).OnClickCallBack.Bind(this.Mbi);
   }
   SetInteractionActive(t) {
-    var e = this.vah();
+    var e = this.GetIndex();
     this.RefreshInteractionGroup(e, t);
   }
   Sbi(t) {
@@ -81,7 +80,7 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
     }
   }
   vbi(t) {
-    var e = this.vah();
+    var e = this.GetIndex();
     let i = Math.floor(e + t);
     if (this.Sac()) {
       i = t > 0 ? 0 : this.Data.OptionsNameList.length - 1;
@@ -91,8 +90,8 @@ class MenuScrollSettingSwitchItem extends MenuScrollSettingBaseItem_1.MenuScroll
   Sac() {
     return this.Data.FunctionId === GameSettingsDefine_1.EFunction.IMAGEQUALITY && ModelManager_1.ModelManager.MenuModel.IsImageQualityCustom;
   }
-  vah() {
-    var t = MenuController_1.MenuController.GetTargetConfig(this.Data.FunctionId);
+  GetIndex() {
+    var t = ModelManager_1.ModelManager.MenuModel?.GetDataCacheOrCurValue(this.Data.FunctionId);
     var e = this.Data.OptionsValueList;
     let i = e.indexOf(t);
     if (i < 0) {

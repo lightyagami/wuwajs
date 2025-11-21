@@ -82,7 +82,7 @@ class InviteNewbieModel extends ModelBase_1.ModelBase {
     if (this.xVa) {
       this.xVa.InviteCode = e?.XRc ?? undefined;
       this.xVa.Score = e?.SMs ?? 0;
-      this.xVa.ChangeServerRedDotState(e?.e7u ?? false);
+      this.xVa.ChangeServerRedDotState(e?.qKc ?? false);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, this.CurrentActivityId);
   }

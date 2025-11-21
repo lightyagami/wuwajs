@@ -87,7 +87,7 @@ class BattlePassBackgroundPanel extends UiPanelBase_1.UiPanelBase {
         this.s2i = e;
       }
       t.SetResult(true);
-    });
+    }, 100, this.MemoryTag);
     await t.Promise;
   }
   async c2i() {
@@ -97,7 +97,7 @@ class BattlePassBackgroundPanel extends UiPanelBase_1.UiPanelBase {
         this.a2i = e;
       }
       t.SetResult(true);
-    });
+    }, 100, this.MemoryTag);
     await t.Promise;
   }
   AddEventListener() {

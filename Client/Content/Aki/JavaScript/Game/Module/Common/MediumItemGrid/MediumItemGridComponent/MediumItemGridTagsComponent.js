@@ -27,15 +27,15 @@ class MediumItemGridTagsComponent extends MediumItemGridComponent_1.MediumItemGr
     this.SetActive(e);
     if (e) {
       this.mQt = t;
-      this.lKu();
+      this.kjc();
     }
   }
-  lKu() {
+  kjc() {
     for (let t = this.mQt.length; t < this.nUc.length; t++) {
       this.nUc[t].SetUIActive(false);
     }
     this.mQt.forEach((t, e) => {
-      const i = this._Ku(e);
+      const i = this.Ojc(e);
       i.SetUIActive(true);
       i.SetAlpha(0);
       this.SetSpriteAsync(t, i, false).then(() => {
@@ -43,7 +43,7 @@ class MediumItemGridTagsComponent extends MediumItemGridComponent_1.MediumItemGr
       });
     });
   }
-  _Ku(t) {
+  Ojc(t) {
     var e;
     return this.nUc[t] || (t = this.GetSprite(1), e = this.GetLayoutBase(0).RootUIComp, t = LguiUtil_1.LguiUtil.CopyItem(t, e), this.nUc.push(t), t);
   }

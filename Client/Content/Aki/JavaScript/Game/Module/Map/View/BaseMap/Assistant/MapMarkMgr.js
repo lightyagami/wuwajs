@@ -300,36 +300,41 @@ WorldPosition:${e.WorldPosition.ToString()}
     return this.ylh.FindNearbyMarkItems(e, t, i);
   }
   SUi() {
-    var e;
-    var t = ConfigManager_1.ConfigManager.MapConfig.GetMapMarkListByInstanceDungeonId(this.z3t);
-    var i = ConfigManager_1.ConfigManager.MapConfig.GetConfigMarks(this._Ui);
-    var t = t.concat(i);
-    var i = Array.from(new Set(t));
+    var e = ConfigManager_1.ConfigManager.MapConfig.GetMapMarkListByInstanceDungeonId(this.z3t);
+    var t = ConfigManager_1.ConfigManager.MapConfig.GetConfigMarks(this._Ui);
+    var i = new Map();
+    for (const a of e.concat(t)) {
+      if (!i.has(a.MarkId)) {
+        i.set(a.MarkId, a);
+      }
+    }
+    var s;
+    var e = Array.from(i.values());
     ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark = false;
-    var s = ModelManager_1.ModelManager.WorldMapModel.IsPlayerInActivityInstanceDungeon();
-    for (const n of i) {
-      var r = ModelManager_1.ModelManager.TrackModel.IsTracking(1, n.MarkId);
-      if (n.CreateOnStart === 1 || !!r) {
-        if (s && n.InstanceDungeonId === this.z3t) {
+    var r = ModelManager_1.ModelManager.WorldMapModel.IsPlayerInActivityInstanceDungeon();
+    for (const h of e) {
+      var n = ModelManager_1.ModelManager.TrackModel.IsTracking(1, h.MarkId);
+      if (h.CreateOnStart === 1 || !!n) {
+        if (r && h.InstanceDungeonId === this.z3t) {
           ModelManager_1.ModelManager.WorldMapModel.EnableInstanceDungeonFilterMark = true;
         }
-        r = this._Ui === n.MapId;
-        this.ylh.AddCreateMarkTask(r, n.ObjectType, n.MarkId, () => {
-          var e = MarkItemUtil_1.MarkItemUtil.CreateConfigMark(n.MarkId, n, this.MapType, this.lUi, this.tUi);
-          this.AddMarkItem(n.ObjectType, e);
+        n = this._Ui === h.MapId;
+        this.ylh.AddCreateMarkTask(n, h.ObjectType, h.MarkId, () => {
+          var e = MarkItemUtil_1.MarkItemUtil.CreateConfigMark(h.MarkId, h, this.MapType, this.lUi, this.tUi);
+          this.AddMarkItem(h.ObjectType, e);
         });
       }
     }
-    for (const [a, h] of ModelManager_1.ModelManager.MapModel.GetEntityPendingList()) {
-      const _ = EntitySystem_1.EntitySystem.Get(a);
-      if (_) {
-        e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(h);
-        this.ylh.AddCreateMarkTask(true, e?.ObjectType ?? 0, h, () => {
-          var e = _.GetComponent(1)?.Owner;
-          this.EUi(h, a, e);
+    for (const [_, o] of ModelManager_1.ModelManager.MapModel.GetEntityPendingList()) {
+      const M = EntitySystem_1.EntitySystem.Get(_);
+      if (M) {
+        s = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(o);
+        this.ylh.AddCreateMarkTask(true, s?.ObjectType ?? 0, o, () => {
+          var e = M.GetComponent(1)?.Owner;
+          this.EUi(o, _, e);
         });
       } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Map", 63, "找不到实体对象", ["实体ID", a.toString()]);
+        Log_1.Log.Debug("Map", 63, "找不到实体对象", ["实体ID", _.toString()]);
       }
     }
     this.no_();
@@ -367,27 +372,28 @@ WorldPosition:${e.WorldPosition.ToString()}
   MUi() {
     if (ModelManager_1.ModelManager.OnlineModel.GetIsTeamModel()) {
       var e;
-      var t;
       for (const i of ModelManager_1.ModelManager.CreatureModel.GetAllScenePlayers()) {
         if (i.GetPlayerId() !== ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
-          e = ModelManager_1.ModelManager.OnlineModel?.GetCurrentTeamListById(i.GetPlayerId())?.PlayerNumber ?? 1;
-          e = new MapDefine_1.PlayerMarkCreateInfo(i.GetPlayerId(), e, i.GetLocation().ToUeVectorOld(), ModelManager_1.ModelManager.CreatureModel.GetInstanceId());
+          var t = ModelManager_1.ModelManager.OnlineModel?.GetCurrentTeamListById(i.GetPlayerId())?.PlayerNumber ?? 1;
+          var t = new MapDefine_1.PlayerMarkCreateInfo(i.GetPlayerId(), t, i.GetLocation().ToUeVectorOld(), ModelManager_1.ModelManager.CreatureModel.GetInstanceId());
+          const s = MarkItemUtil_1.MarkItemUtil.Create(t, this.MapType, this.lUi, this.tUi);
+          if (ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(this._Ui)) {
+            s.IsInAoiRange = true;
+          }
+          this.ylh.AddCreateMarkTask(this._Ui === s.MapId, 11, s.MarkId, () => {
+            this.AddMarkItem(11, s);
+          });
+        }
+      }
+      for (const r of ModelManager_1.ModelManager.OnlineModel.OtherScenePlayerDataList) {
+        if (r.PlayerId !== ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
+          e = ModelManager_1.ModelManager.OnlineModel?.GetCurrentTeamListById(r.PlayerId)?.PlayerNumber ?? 1;
+          e = new MapDefine_1.PlayerMarkCreateInfo(r.PlayerId, e, r.Location?.ToUeVectorOld() ?? Vector_1.Vector.ZeroVector, r.MapId);
           e = MarkItemUtil_1.MarkItemUtil.Create(e, this.MapType, this.lUi, this.tUi);
           if (ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(this._Ui)) {
             e.IsInAoiRange = true;
           }
           this.AddMarkItem(11, e);
-        }
-      }
-      for (const s of ModelManager_1.ModelManager.OnlineModel.OtherScenePlayerDataList) {
-        if (s.PlayerId !== ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
-          t = ModelManager_1.ModelManager.OnlineModel?.GetCurrentTeamListById(s.PlayerId)?.PlayerNumber ?? 1;
-          t = new MapDefine_1.PlayerMarkCreateInfo(s.PlayerId, t, s.Location?.ToUeVectorOld() ?? Vector_1.Vector.ZeroVector, s.MapId);
-          t = MarkItemUtil_1.MarkItemUtil.Create(t, this.MapType, this.lUi, this.tUi);
-          if (ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(this._Ui)) {
-            t.IsInAoiRange = true;
-          }
-          this.AddMarkItem(11, t);
         }
       }
     }

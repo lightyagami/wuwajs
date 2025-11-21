@@ -31,7 +31,7 @@ class MarkFactory {
     return r;
   }
   static CreateAndAssembleDynamicConfigMark(t) {
-    var r = this.JJu(t);
+    var r = this.BQu(t);
     this.pn_(r, t);
     return r;
   }
@@ -56,7 +56,7 @@ MarkFactory.af1 = t => {
   r.AddComponent(18).EntityId = t.EntityId;
   return r;
 };
-MarkFactory.JJu = t => {
+MarkFactory.BQu = t => {
   var r = _a.sf1(t);
   r.AddComponent(15).DynamicConfig = t.DynamicConfig;
   return r;

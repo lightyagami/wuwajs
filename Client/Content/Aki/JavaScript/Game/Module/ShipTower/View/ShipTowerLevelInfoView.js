@@ -13,26 +13,26 @@ const ShipTowerBurningTideItem_1 = require("./ShipTowerBurningTideItem");
 class ShipTowerLevelInfoView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.pzc = undefined;
+    this.MZc = undefined;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIText], [6, UE.UIText], [7, UE.UIText], [8, UE.UIText], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIText]];
   }
   async OnBeforeStartAsync() {
     new PopupCaptionItem_1.PopupCaptionItem(this.GetItem(0)).SetCloseCallBack(this.CloseMe.bind(this));
-    this.pzc = new ShipTowerBurningTideItem_1.ShipTowerBurningTideItem();
-    await this.pzc.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
+    this.MZc = new ShipTowerBurningTideItem_1.ShipTowerBurningTideItem();
+    await this.MZc.CreateThenShowByActorAsync(this.GetItem(10).GetOwner());
   }
   OnBeforeShow() {
     var e = this.OpenParam;
     if (e) {
-      this.vzc();
+      this.EZc();
       this.ryn();
-      this.yzc();
-      this.Szc(e.CurScore, e.MaxScore);
+      this.IZc();
+      this.TZc(e.CurScore, e.MaxScore);
     }
   }
-  vzc() {
+  EZc() {
     var e = ModelManager_1.ModelManager.ShipTowerModel.GetCurrentStageTeamData();
     if (e) {
       this.GetText(2).ShowTextNew("GhostShipMonster_Text1");
@@ -57,15 +57,15 @@ class ShipTowerLevelInfoView extends UiViewBase_1.UiViewBase {
       this.GetText(8)?.ShowTextNew(e.DescInfoList[0].DescKey);
     }
   }
-  yzc() {
+  IZc() {
     var e = ModelManager_1.ModelManager.ShipTowerModel.CurSeasonCfg;
     if (e) {
       this.GetText(11)?.ShowTextNew(e.HotDesc);
       this.GetText(12)?.ShowTextNew(e.BuringTideDesc);
     }
   }
-  Szc(e, i) {
-    this.pzc?.UpdateValue(e, i);
+  TZc(e, i) {
+    this.MZc?.UpdateValue(e, i);
   }
 }
 exports.ShipTowerLevelInfoView = ShipTowerLevelInfoView;

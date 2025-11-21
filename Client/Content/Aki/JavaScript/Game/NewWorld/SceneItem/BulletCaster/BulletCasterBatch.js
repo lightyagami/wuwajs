@@ -60,7 +60,7 @@ class BulletCasterBatch {
     this.cCl = undefined;
   }
   SetTimeDilationRespectOwnerEntity() {
-    var t = this.OwnerEntity.GetComponent(123);
+    var t = this.OwnerEntity.GetComponent(126);
     var t = this.OwnerEntity.TimeDilation * (t?.CurrentTimeScale ?? 1);
     this.SetTimeDilation(t);
   }

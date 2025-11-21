@@ -13,6 +13,7 @@ const Info_1 = require("../../../../Core/Common/Info");
 const Log_1 = require("../../../../Core/Common/Log");
 const Stats_1 = require("../../../../Core/Common/Stats");
 const Queue_1 = require("../../../../Core/Container/Queue");
+const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const ExternalSourceSettingById_1 = require("../../../../Core/Define/ConfigQuery/ExternalSourceSettingById");
 const PlotAudioById_1 = require("../../../../Core/Define/ConfigQuery/PlotAudioById");
@@ -53,6 +54,14 @@ const DEFAULT_PATH = "/Game/Aki/UI/UIResources/Common/Image/T_CommonDefault_UI.T
 const OPTIONHEIGHT_OFFSET = 265;
 const PAUSE_REASON_SUBTITLE = "Subtitle";
 const TIPS = "TermClickTip";
+class SpineQueueInfo {
+  constructor() {
+    this.Name = undefined;
+    this.NeedLoop = undefined;
+    this.Freeze = false;
+    this.MixDuration = 0;
+  }
+}
 class SubtitleInfo {
   constructor() {
     this.Cvo = new SequenceDefine_1.PlotSubtitleConfig();
@@ -132,6 +141,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.Lrt = true;
     this.neo = undefined;
     this.B8 = "LevelA";
+    this.mgm = "LevelA";
     this.CurOption = new Array();
     this.Reo = 0;
     this.Aeo = false;
@@ -148,20 +158,26 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.Leo = undefined;
     this.FWs = undefined;
     this.sCa = undefined;
-    this.aCa = undefined;
-    this.c31 = undefined;
+    this.SonUiInclude = undefined;
     this.ibc = undefined;
     this.QMa = undefined;
     this.hTl = undefined;
-    this.qNu = undefined;
+    this.SVu = undefined;
+    this.dMm = undefined;
+    this.YSm = 0;
+    this.zSm = 0;
+    this.JSm = -1;
+    this.ZSm = false;
     this.YZt = new PlotTextLogic_1.PlotAudioDelegate();
     this.Lvo = undefined;
     this.Qsu = undefined;
     this.Nra = 0;
     this.HasChildViewPreloaded = false;
+    this.$Rm = false;
     this.TRn = () => {
       if (!this.meo) {
         this.ceo.SetActive(false);
+        this.dMm.GetRootComponent().SetUIActive(false);
       }
     };
     this.beo = () => {
@@ -172,6 +188,13 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.qeo = t => {
       this.neo?.SetSelectedDisplay(false);
       (this.neo = t).SetSelectedDisplay(true);
+    };
+    this.CEm = t => {
+      this.HQc(t);
+      this.GetExtendToggle(0).RootUIComp.SetUIActive(t);
+      this.GetButton(16).RootUIComp.SetUIActive(t);
+      this.Fuc.EnableReviewButton(t);
+      this.GetButton(1).RootUIComp.SetUIActive(t);
     };
     this.owt = t => {
       t *= 1000;
@@ -186,10 +209,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.tu1 = () => {
-      this.qZu(true);
+      this.HQc(true);
     };
     this.EI1 = () => {
-      this.qZu(false);
+      this.HQc(false);
     };
     this.Dvo = t => {
       this.gto(false, false);
@@ -205,7 +228,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       this.GetItem(22).SetUIActive(t);
     };
     this.OnBtnSubtitleSkipClick = () => {
-      if (!!ModelManager_1.ModelManager.PlotModel.PlotConfig.CanInteractive && !!this.pvo.HasSubtitle() && this.CurrentSubtitle?.Type !== "CenterText" && !this.pvo.ShowOption && !this.pvo.Skip) {
+      if (this.mgm === "LevelB" && !!this.pvo.HasSubtitle() && this.CurrentSubtitle?.Type !== "CenterText" && !this.pvo.ShowOption && !this.pvo.Skip) {
         if (this.vvo) {
           this.Avo();
           AudioSystem_1.AudioSystem.PostEvent(CLICK_AUDIO_EVENT);
@@ -239,22 +262,22 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
     };
     this.zeo = () => {
-      this.qZu(true);
+      this.HQc(true);
       this.fha();
     };
     this.cCa = () => {
-      this.qZu(false);
+      this.HQc(false);
       this.pha();
     };
     this.Zeo = () => {
       this.fha();
       this.Lrt = false;
-      this.qZu(true);
+      this.HQc(true);
     };
     this.DZ_ = () => {
       if (ControllerHolder_1.ControllerHolder.FlowController.OpenPlotReviewView()) {
         this.fha();
-        this.qZu(true);
+        this.HQc(true);
       }
     };
     this.FQe = t => {
@@ -266,9 +289,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (t === "PlotReviewView") {
         AudioSystem_1.AudioSystem.PostEvent(PlotDefine_1.PLOT_REVIEW_EXIT_AUDIO_EVENT);
         this.Lrt = true;
-        this.qZu(false);
+        this.HQc(false);
         this.pha();
       }
+    };
+    this.iMm = () => {
+      this.rMm(false);
     };
     this.Geo = () => {
       this.neo?.SetSelectedDisplay(false);
@@ -394,7 +420,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (!this.OpenParam?.HideAllUi && !!t && !this.Lrt) {
         this.Lrt = true;
         this.pha();
-        this.qZu(false);
+        this.HQc(false);
       }
     };
     this.eto = (t, i) => {
@@ -424,7 +450,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
           this.Qsu = TimerSystem_1.TimerSystem.Delay(this.Ksu, this.pvo.CurrentAutoPlayDelayTime);
         } else {
           t = TimeUtil_1.TimeUtil.GetServerTimeStamp();
-          if (this.B8 !== "LevelA" && (!this.Bvo() || this.Lvo) && this.pvo.EnableSkipTime <= t) {
+          if (this.B8 === "LevelB" && (!this.Bvo() || this.Lvo) && this.pvo.EnableSkipTime <= t) {
             this.Fvo();
           } else {
             this.bvo();
@@ -576,7 +602,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     return this.pvo?.CurrentConfig;
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIItem], [7, UE.UILayoutBase], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UISprite], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UITexture], [24, UE.UISprite], [25, UE.UIScrollViewComponent], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIText], [6, UE.UIItem], [7, UE.UILayoutBase], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIText], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIButtonComponent], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UISprite], [20, UE.UITexture], [21, UE.UITexture], [22, UE.UIItem], [23, UE.UITexture], [24, UE.UISprite], [25, UE.UIScrollViewComponent], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem], [31, UE.UIButtonComponent], [32, UE.UISliderComponent]];
     this.BtnBindInfo = [[1, this.OnBtnSubtitleSkipClick], [0, this.OnBtnAutoClick], [16, this.Zeo], [31, this.DZ_]];
   }
   OnStart() {
@@ -595,6 +621,8 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.mZi = this.GetItem(8).GetOwner().GetComponentByClass(UE.UIEffectTextAnimation.StaticClass());
     this.GetItem(6).SetUIActive(false);
     this.GetItem(22).SetUIActive(false);
+    this.dMm = this.GetSlider(32);
+    this.dMm.GetRootComponent().SetUIActive(false);
     this.Tvo = false;
     this.GetSprite(9).SetUIActive(false);
     this._eo = this.GetItem(17);
@@ -634,13 +662,10 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     if (t?.HideAllUi) {
       this.Zeo();
     }
-    this.qNu?.Clear();
-    this.qNu = new Queue_1.Queue();
+    this.SVu?.Clear();
+    this.SVu = new Queue_1.Queue();
     this.hTl?.Clear();
     this.hTl = new Queue_1.Queue();
-    if (this.B8 === "LevelA") {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.MoveCursorToRightDown);
-    }
   }
   ResetSubtitle() {
     this.GetText(4).SetText("");
@@ -697,11 +722,11 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     this.Xvo();
     this.ibc?.clear();
     this.ibc = undefined;
-    this.aCa = undefined;
+    this.SonUiInclude = undefined;
     this.hTl?.Clear();
     this.hTl = undefined;
-    this.qNu?.Clear();
-    this.qNu = undefined;
+    this.SVu?.Clear();
+    this.SVu = undefined;
     this.sCa = undefined;
   }
   Yeo(t) {
@@ -711,18 +736,19 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
   }
   Cto(t) {
     this.GetItem(18).SetUIActive(t);
-    if (this.B8 === "LevelB") {
+    if (this.mgm === "LevelB") {
       ControllerHolder_1.ControllerHolder.TermExplanationController.SetEnableHyperLink(this.GetText(5), !t);
     }
   }
   Neo() {
     var t = ModelManager_1.ModelManager.PlotModel.PlotConfig;
     var i = t.CanPause;
+    this.mgm = t.SubtitleLevel;
+    this.B8 = t.PlotLevel;
     this.GetExtendToggle(0).RootUIComp.SetUIActive(i);
     this.GetButton(16).RootUIComp.SetUIActive(i);
     this.Fuc.EnableReviewButton(i);
-    this.GetButton(1).RootUIComp.SetUIActive(t.CanInteractive);
-    this.B8 = t.PlotLevel;
+    this.GetButton(1).RootUIComp.SetUIActive(this.mgm === "LevelB");
     this.Oeo();
     this.ResetSubtitle();
   }
@@ -747,6 +773,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewOpening, this.tu1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.EI1);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotSequencePlay, this.owt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.EnableInteractPlot, this.CEm);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.UpdateSeqSubtitle, this.keo);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.HandlePlotOptionSelected, this.Gvo);
     SequenceController_1.SequenceController.Event.Add(UiAssistant_1.ESequenceEventName.HandleSeqSubtitleEnd, this.Ovo);
@@ -770,6 +797,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewOpening, this.tu1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnTermExplanationViewClosed, this.EI1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotSequencePlay, this.owt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableInteractPlot, this.CEm);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.UpdateSeqSubtitle, this.keo);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.HandlePlotOptionSelected, this.Gvo);
     SequenceController_1.SequenceController.Event.Remove(UiAssistant_1.ESequenceEventName.HandleSeqSubtitleEnd, this.Ovo);
@@ -779,11 +807,13 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     InputDistributeController_1.InputDistributeController.UnBindTouch(InputMappingsDefine_1.touchIdMappings.Touch1, this.eto);
     ControllerHolder_1.ControllerHolder.TermExplanationController.UnRegisterTextHyperlink(this.GetText(5));
   }
-  qZu(t) {
+  HQc(t) {
     if (t) {
+      this.$Rm = true;
       ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay = false;
       this.Oeo();
     } else {
+      this.$Rm = false;
       if ((t = ModelManager_1.ModelManager.PlotModel.PlotConfig).IsAutoPlayCache) {
         t.IsAutoPlay = true;
         this.Oeo();
@@ -862,6 +892,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
           SequenceController_1.SequenceController.SelectOption(t, this.CurrentSubtitle.Id);
         });
         this.pvo.ShowOption = true;
+        this.zvo();
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Plot", 26, "显示选项", ["id", this.CurrentSubtitle?.Id]);
@@ -871,8 +902,9 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         this.SetOptionsShow(true);
         this.CurOption = this.jeo(this.CurrentSubtitle.Options);
         this.ceo.RefreshByData(this.CurOption, this.Geo);
+        this.zvo();
+        this.oMm();
       }
-      this.zvo();
     }
   }
   jeo(t) {
@@ -882,12 +914,48 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (e || s.OptionLockTip) {
         e = {
           Config: s,
-          ConditionCheck: e
+          ConditionCheck: e,
+          OnClick: this.iMm
         };
         i.push(e);
       }
     }
     return i;
+  }
+  oMm() {
+    var t;
+    if (this.CurOption && this.CurrentSubtitle?.TimeLimitOptionGroup && this.CurrentSubtitle.TimeLimitOptionGroup.Style.Type === "Default") {
+      if ((t = this.CurrentSubtitle.TimeLimitOptionGroup.Style).TimeLimit <= 0 || t.TimeoutOptionIndex >= this.CurrentSubtitle.Options.length || t.TimeoutOptionIndex < 0) {
+        ControllerHolder_1.ControllerHolder.FlowController.LogError("限时选项配置错误");
+      } else {
+        this.JSm = t.TimeoutOptionIndex;
+        this.YSm = t.TimeLimit * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+        this.zSm = 0;
+        this.dMm.GetRootComponent().SetUIActive(true);
+        this.dMm.SetValue(1);
+        this.ZSm = true;
+      }
+    }
+  }
+  rMm(t = false) {
+    var i;
+    if (this.ZSm) {
+      this.ZSm = false;
+      if (t) {
+        if (i = this.Options.find(t => t.OptionIndex === this.JSm)) {
+          i.OptionClick();
+        } else {
+          ModelManager_1.ModelManager.PlotModel.MarkGrayOption(this.CurrentSubtitle.Id, this.JSm);
+          ControllerHolder_1.ControllerHolder.SequenceController.SelectOption(this.JSm, this.CurrentSubtitle.Id);
+        }
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Plot", 26, "[Subtitle] 限时选项完成", ["id", this.CurrentSubtitle.Id], ["bSelected", t]);
+      }
+      this.YSm = 0;
+      this.zSm = 0;
+      this.JSm = -1;
+    }
   }
   eMo() {
     this.ito();
@@ -906,7 +974,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
   zvo() {
     var t;
     this.Xvo();
-    if (!ModelManager_1.ModelManager.PlotModel.PlotConfig.CanInteractive || !this.pvo.HasSubtitle() || this.pvo.ShowOption) {
+    if (this.mgm !== "LevelB" || !this.pvo.HasSubtitle() || this.pvo.ShowOption) {
       this.Yeo(false);
       this.Cto(false);
     } else if ((t = this.pvo.EnableSkipTime - TimeUtil_1.TimeUtil.GetServerTimeStamp()) < TimerSystem_1.MIN_TIME) {
@@ -983,7 +1051,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
   }
   Yvo() {
     var t = this.pvo.CurrentConfig;
-    if (this.B8 === "LevelA") {
+    if (this.mgm === "LevelA") {
       let t = PublicUtil_1.PublicUtil.GetFlowConfigLocalText(this.gvo);
       if (StringUtils_1.StringUtils.IsEmpty(t)) {
         ControllerHolder_1.ControllerHolder.FlowController.LogError("字幕为空", ["id", this.gvo]);
@@ -1070,7 +1138,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   kvo() {
-    if (this.B8 === "LevelB" && this.hMo()) {
+    if (this.mgm === "LevelB" && this.hMo()) {
       this.gto(false);
     }
     this.b1u(false);
@@ -1128,28 +1196,25 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     var i;
     var e;
     var s;
-    if (t) {
+    if (t && (i = (0, AudioSystem_1.parseAudioEventPath)(t.AkEvent))) {
       if (t.Type === IAction_1.EPostAkEvent.Global) {
-        i = t.AkEvent;
-        AudioController_1.AudioController.PostEvent(i, undefined);
+        AudioSystem_1.AudioSystem.PostEvent(i);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Event", 26, "[PlotSubtitleView][FlowAudio][Global]", ["AkEvent", t?.AkEvent]);
         }
       } else if (t.Type === IAction_1.EPostAkEvent.Target) {
-        i = t.AkEvent;
         e = t.EntityId;
-        if (!(s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e))) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", e]);
-          }
-        }
-        if ((s = s.Entity.GetComponent(1)?.Owner)?.IsValid()) {
-          AudioController_1.AudioController.PostEvent(i, s);
-          if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Event", 26, "[PlotSubtitleView][FlowAudio][Entity]", ["EntityID", e], ["AkEvent", t?.AkEvent]);
+        if (s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)) {
+          if ((s = s.Entity.GetComponent(1)?.Owner)?.IsValid()) {
+            AudioSystem_1.AudioSystem.PostEvent(i, s);
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Event", 26, "[PlotSubtitleView][FlowAudio][Entity]", ["EntityID", e], ["AkEvent", t?.AkEvent]);
+            }
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", e]);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Event", 26, "未能获取到该实体对应的有效Actor", ["entityId", e]);
+          Log_1.Log.Error("Event", 26, "实体不存在", ["entityId", e]);
         }
       }
     }
@@ -1198,7 +1263,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   Bvo() {
-    return !!this.pvo.HasSubtitle() && this.pvo.CurrentConfig.Type === "CenterText" || ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay;
+    return !!this.pvo.HasSubtitle() && this.pvo.CurrentConfig.Type === "CenterText" || this.mgm === "LevelA" || ModelManager_1.ModelManager.PlotModel.PlotConfig.IsAutoPlay;
   }
   AddScreenEffectPlotRoot() {
     var t = (0, puerts_1.$ref)(undefined);
@@ -1223,6 +1288,9 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     if (this.yNc) {
       this.Eeo.SetAlpha(this.SNc.Icon透明度);
       this.Seo.SetAlpha(this.SNc.Icon遮罩透明度);
+    }
+    if (this.ZSm && !this.$Rm && (this.zSm += t, this.dMm.SetValue(1 - this.zSm / this.YSm), this.zSm >= this.YSm)) {
+      this.rMm(true);
     }
   }
   SimulateClickSubtitle() {
@@ -1421,12 +1489,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var s = this.rbc(t);
       if (s) {
-        this.qNu?.Push(s);
+        this.SVu?.Push(s);
         await s.OpenAsync(this.sCa, t, i, e, true);
-        this.aCa = s;
+        this.SonUiInclude = s;
         var h = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var o = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var o = this.SVu.Pop();
           if (o) {
             h.push(this.CloseWhichBackgroundUi(o));
           }
@@ -1434,12 +1502,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(h);
       } else {
         var s = new PlotChildView_1.PlotChildView();
-        this.qNu?.Push(s);
+        this.SVu?.Push(s);
         await s.OpenAsync(this.sCa, t, i, e);
-        this.aCa = s;
+        this.SonUiInclude = s;
         var r = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var n = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var n = this.SVu.Pop();
           if (n) {
             r.push(this.CloseWhichBackgroundUi(n));
           }
@@ -1457,12 +1525,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     } else {
       var e = this.rbc(t);
       if (e) {
-        this.qNu?.Push(e);
+        this.SVu?.Push(e);
         await e.OpenAsyncInArray(this.sCa, t, i, true);
-        this.aCa = e;
+        this.SonUiInclude = e;
         var s = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var h = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var h = this.SVu.Pop();
           if (h) {
             s.push(this.CloseWhichBackgroundUi(h));
           }
@@ -1470,12 +1538,12 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         await Promise.all(s);
       } else {
         var e = new PlotChildView_1.PlotChildView();
-        this.qNu?.Push(e);
+        this.SVu?.Push(e);
         await e.OpenAsyncInArray(this.sCa, t, i);
-        this.aCa = e;
+        this.SonUiInclude = e;
         var o = [];
-        for (; this.qNu && this.qNu?.Size > 1;) {
-          var r = this.qNu.Pop();
+        for (; this.SVu && this.SVu?.Size > 1;) {
+          var r = this.SVu.Pop();
           if (r) {
             o.push(this.CloseWhichBackgroundUi(r));
           }
@@ -1486,29 +1554,28 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
     }
   }
   async PlayUiLevelSeq(t) {
-    if (this.aCa) {
+    if (this.SonUiInclude) {
       if (t === undefined) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 45, "Ui预览图:名字为空");
         }
       } else {
-        await this.aCa.PlayUiLevelSequence(t);
+        await this.SonUiInclude.PlayUiLevelSequence(t);
       }
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Plot", 45, "Ui预览图:不存在的PlotView子类");
+      Log_1.Log.Warn("Plot", 45, "Ui预览图:不存在的PlotView子界面");
     }
   }
   async CloseBackgroundUiThis() {
     var t = [];
-    for (; this.qNu && this.qNu?.Size > 0;) {
-      var i = this.qNu.Pop();
+    for (; this.SVu && this.SVu?.Size > 0;) {
+      var i = this.SVu.Pop();
       if (i) {
         t.push(this.CloseWhichBackgroundUi(i));
       }
     }
     await Promise.all(t);
-    this.aCa = undefined;
-    this.c31 = undefined;
+    this.SonUiInclude = undefined;
   }
   async CloseWhichBackgroundUi(t) {
     if (t) {
@@ -1520,28 +1587,31 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       }
       await t?.CloseAsync();
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Plot", 45, "Ui预览图:CloseWhichBackgroundUi,但不存在的PlotView子类");
+      Log_1.Log.Warn("Plot", 45, "Ui预览图:CloseWhichBackgroundUi,但不存在的PlotView子界面");
     }
   }
-  CloseSpineAnimation(t) {
-    if (this.c31) {
-      this.aCa.CloseSpineAnimation(t);
-    } else if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类，关闭失败");
-    }
-  }
-  PlaySonUiSpine(t, i = true) {
-    var e;
+  CloseSpineAnimation(t, i = 0) {
     if (t) {
-      if (this.aCa) {
-        this.aCa.PlaySpineAnimation(t, i);
+      if (this.SonUiInclude) {
+        this.SonUiInclude.CloseSpineAnimation(t, i);
+      } else if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面，关闭失败");
+      }
+    }
+  }
+  PlaySonUiSpine(t, i = true, e = false, s = 0) {
+    if (t) {
+      if (this.SonUiInclude) {
+        this.SonUiInclude.PlaySpineAnimation(t, i, e, s);
       } else {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类,已加入队列");
+          Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
         }
-        (e = new UE.SpineThingsInfo()).Name = t;
-        e.NeedLoop = i;
-        this.hTl?.Push(e);
+        (s = new SpineQueueInfo()).Name = t;
+        s.NeedLoop = i;
+        s.Freeze = e;
+        s.MixDuration = 0;
+        this.hTl?.Push(s);
       }
     } else if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Plot", 45, "Ui预览图:SpineName为空");
@@ -1552,21 +1622,58 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Plot", 45, "Ui预览图:spineArray为空");
       }
-    } else if (this.aCa) {
+    } else if (this.SonUiInclude) {
       for (let t = 0; t < i.Num(); t++) {
-        this.aCa.PlaySpineAnimation(i.Get(t).Name, i.Get(t).NeedLoop);
+        this.SonUiInclude.PlaySpineAnimation(i.Get(t).Name, i.Get(t).NeedLoop);
       }
     } else {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子类,已加入队列");
+        Log_1.Log.Info("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
       }
       for (let t = 0; t < i.Num(); t++) {
-        this.hTl?.Push(i.Get(t));
+        var e = i.Get(t);
+        var s = new SpineQueueInfo();
+        s.Name = e.Name;
+        s.NeedLoop = e.NeedLoop;
+        this.hTl?.Push(s);
       }
     }
   }
+  UpdateSpineForQte(t) {
+    if (!this.SonUiInclude) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
+      }
+    }
+    this.SonUiInclude?.UpdateFrozenSpine(t);
+  }
+  ManualUpdateNiagara(t, i) {
+    if (t && t.length !== 0) {
+      if (!this.SonUiInclude) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
+        }
+      }
+      this.SonUiInclude?.ManualUpdateNiagara(t, i);
+    }
+  }
+  RestoreFreezeSpine(t, i = false) {
+    if (!this.SonUiInclude) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面,已加入队列");
+      }
+    }
+    this.SonUiInclude?.RestoreFreezeSpine(t, i);
+  }
+  RegisterCallback(t) {
+    if (this.SonUiInclude) {
+      this.SonUiInclude.FiniteSpineEndCallback = t;
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Plot", 45, "Ui预览图:不存在的PlotView子界面");
+    }
+  }
   _Tl() {
-    if (this.hTl && this.aCa) {
+    if (this.hTl && this.SonUiInclude) {
       while (this.hTl.Size > 0) {
         if (!this.hTl.Front) {
           if (Log_1.Log.CheckInfo()) {
@@ -1577,7 +1684,7 @@ class PlotSubtitleView extends UiTickViewBase_1.UiTickViewBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Plot", 45, "Ui预览图:Queue播放", ["name", this.hTl.Front]);
         }
-        this.aCa.PlaySpineAnimation(this.hTl.Front.Name, this.hTl.Front.NeedLoop);
+        this.SonUiInclude.PlaySpineAnimation(this.hTl.Front.Name, this.hTl.Front.NeedLoop, this.hTl.Front.Freeze, this.hTl.Front.MixDuration);
         this.hTl.Pop();
       }
     }

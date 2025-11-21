@@ -40,12 +40,12 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink()) {
       await this.I1l();
       await this.iel();
-    } else if (ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.CreatureModel.GetInstanceId() === 1 || ModelManager_1.ModelManager.BossRushModel.CheckInBossRush() || ModelManager_1.ModelManager.BabelTowerModel.CheckInBattleBabelTower() || ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) {
+    } else if (ModelManager_1.ModelManager.RoguelikeModel.CheckInRoguelike() || ModelManager_1.ModelManager.CreatureModel.GetInstanceId() === 1 || ModelManager_1.ModelManager.BabelTowerModel.CheckInBattleBabelTower() || ControllerHolder_1.ControllerHolder.MapRogueController.CheckInMapRogueInstance()) {
       await this.ZRl(true);
     } else if (FarmGoldController_1.FarmGoldController.CheckInFarmGold()) {
       await this.Z3l();
     } else if (ModelManager_1.ModelManager.ShipTowerModel.CheckInBattleShipTower() && ModelManager_1.ModelManager.ShipTowerModel.CheckIsScoreBattle()) {
-      await this.dzc();
+      await this.CZc();
     }
     for ([e, t] of ModelManager_1.ModelManager.BattleScoreModel.GetScoreEnableMap()) {
       if (t) {
@@ -112,7 +112,7 @@ class ScorePanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.dul.set("LinkScoreItem", e);
     await e.HideAsync();
   }
-  async dzc() {
+  async CZc() {
     var e = await this.NewDynamicChildViewByResourceId(this.RootItem, "UiItem_BurningTide", ShipTowerScoreItem_1.ShipTowerScoreItem);
     this.dul.set("ShipTowerScoreItem", e);
     await e.HideAsync();

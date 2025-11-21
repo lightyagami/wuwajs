@@ -10,7 +10,7 @@ class FloroRanchChangePointActionData extends FloroRanchActionBase_1.FloroRanchA
   constructor(o) {
     super(o);
     this.Fre = undefined;
-    this.Fre = o.m7u;
+    this.Fre = o.L$u;
   }
   async OnExecute() {
     if (!this.IsIgnoreCasterAnim) {

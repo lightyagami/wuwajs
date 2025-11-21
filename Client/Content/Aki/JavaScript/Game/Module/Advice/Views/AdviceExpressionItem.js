@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.AdviceExpressionItem = undefined;
 const UE = require("ue");
-const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
@@ -32,14 +31,10 @@ class AdviceExpressionItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Refresh(e, t, s) {
     this.U9e = e.Id;
-    var r = e.ExpressionTexturePath;
-    ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.Texture, (e, t) => {
-      if (this.GetRootActor()?.IsValid()) {
-        this.GetTexture(2).SetTexture(e);
-      }
-    });
-    var r = e.Name;
-    this.GetText(1).ShowTextNew(r);
+    var i = e.ExpressionTexturePath;
+    this.SetTextureByPath(i, this.GetTexture(2));
+    var i = e.Name;
+    this.GetText(1).ShowTextNew(i);
     this.rHe();
     this.nHe();
   }

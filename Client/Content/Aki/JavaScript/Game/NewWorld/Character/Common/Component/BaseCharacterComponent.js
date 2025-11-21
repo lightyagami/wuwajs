@@ -165,7 +165,7 @@ let BaseCharacterComponent = class BaseCharacterComponent extends BaseActorCompo
       }
       if (!this.wBn) {
         this.wBn = true;
-        if ((a = this.Entity.GetComponent(178)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), n) && Log_1.Log.CheckInfo()) {
+        if ((a = this.Entity.GetComponent(181)) && a.Actor?.Mesh && (t = a.GetMeshTransform().GetLocation(), MathUtils_1.MathUtils.CommonTempVector.Set(0, 0, -FIX_LOCATION_TOLERANCE), a.AddModelLocation(MathUtils_1.MathUtils.CommonTempVector), n) && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Entity", 50, "[CharacterActorComponent.FixBornLocation] 实体地面修正:模型位置修正", ["CreatureDataId", this.CreatureDataInternal.GetCreatureDataId()], ["PbDataId", this.CreatureDataInternal.GetPbDataId()], ["OrigMeshLocation", t], ["FixMeshLocation", a.GetMeshTransform().GetLocation()], ["Context", s]);
         }
       }

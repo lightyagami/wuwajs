@@ -13,33 +13,34 @@ const ModelManager_1 = require("../../../Manager/ModelManager");
 const BattleVisibleChildView_1 = require("./BattleChildView/BattleVisibleChildView");
 const BuffItem_1 = require("./BuffItem");
 const BuffItemContainer_1 = require("./BuffItemContainer");
+const TopBuffBuLing_1 = require("./TopBuff/TopBuffBuLing");
 const TopBuffYouHu_1 = require("./TopBuff/TopBuffYouHu");
-const roleClassMap = new Map([[1106, TopBuffYouHu_1.TopBuffYouHu]]);
+const roleClassMap = new Map([[1106, TopBuffYouHu_1.TopBuffYouHu], [1307, TopBuffBuLing_1.TopBuffBuLing]]);
 class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView {
   constructor() {
     super(...arguments);
     this.mkn = new BuffItemContainer_1.BuffItemContainer();
-    this.v2u = undefined;
+    this.S4u = undefined;
     this.E0 = undefined;
     this.Edt = undefined;
     this.Sdt = new Map();
     this.FXa = new Set();
     this.kpe = () => {
-      this.xld();
-      this.Uld();
+      this.jgd();
+      this.Hgd();
     };
   }
   OnStart() {
     super.OnStart();
     this.InitChildType(37);
-    this.V2u();
+    this.E4u();
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("RoleUniqueBuffItemCount");
-    this.mkn.Init(this.RootItem, e, false, true, true, this.v2u.GetRootItem());
+    this.mkn.Init(this.RootItem, e, false, true, true, this.S4u.GetRootItem());
     this.Ore();
   }
   OnBeforeDestroy() {
     this.Refresh(undefined);
-    this.j2u();
+    this.I4u();
     this.Edt = undefined;
     for (const e of this.Sdt.values()) {
       e.Destroy();
@@ -49,14 +50,14 @@ class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView
     this.kre();
     super.Reset();
   }
-  V2u() {
-    this.v2u = new BuffItem_1.BuffItem(this.RootItem);
-    this.v2u.ActivateExceedTip();
+  E4u() {
+    this.S4u = new BuffItem_1.BuffItem(this.RootItem);
+    this.S4u.ActivateExceedTip();
   }
-  j2u() {
-    if (this.v2u) {
-      this.v2u.DestroyCompatible();
-      this.v2u = undefined;
+  I4u() {
+    if (this.S4u) {
+      this.S4u.DestroyCompatible();
+      this.S4u = undefined;
     }
   }
   Refresh(e) {
@@ -66,11 +67,11 @@ class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView
     }
     if (e) {
       this.mkn.RefreshBuff(e?.EntityHandle);
-      this.Bld(e);
+      this.$gd(e);
     } else {
       this.mkn.ClearAll();
     }
-    this.Uld();
+    this.Hgd();
   }
   Tick(e) {
     this.mkn.Tick(e);
@@ -102,15 +103,15 @@ class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView
   kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiAllRoleDataChanged, this.kpe);
   }
-  xld() {
+  jgd() {
     for (const t of ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems(true)) {
       var e = t.EntityHandle?.Id;
       if (e &&= ModelManager_1.ModelManager.BattleUiModel.GetRoleData(e)) {
-        this.Bld(e);
+        this.$gd(e);
       }
     }
   }
-  async Bld(e) {
+  async $gd(e) {
     var t;
     var i = e.EntityHandle?.Id;
     if (!!i && !this.Sdt.has(i) && !this.FXa.has(i)) {
@@ -123,7 +124,7 @@ class RoleUniqueBuffView extends BattleVisibleChildView_1.BattleVisibleChildView
       }
     }
   }
-  Uld() {
+  Hgd() {
     for (var [e, t] of this.Sdt) {
       if (e === this.E0) {
         t.SetVisible(true);

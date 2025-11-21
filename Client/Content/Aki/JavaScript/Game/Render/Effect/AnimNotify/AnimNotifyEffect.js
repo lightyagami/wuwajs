@@ -134,7 +134,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     }
   }
   GameplayTagsCheck(t) {
-    var e = t.CharacterActorComponent?.Entity?.GetComponent(206);
+    var e = t.CharacterActorComponent?.Entity?.GetComponent(209);
     if (e) {
       var i = this.PlayNeedTags.Num();
       if (this.NeedAnyTag) {
@@ -189,7 +189,7 @@ class AnimNotifyEffect extends UE.KuroEffectMakerAN {
     var i;
     if (t instanceof TsBaseCharacter_1.default) {
       if (!(i = t.CharacterActorComponent?.Entity?.GetComponent(39)) || !i.CurrentSkill) {
-        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(289))?.Valid) {
+        if ((i = t.CharacterActorComponent?.Entity?.GetComponent(293))?.Valid) {
           i.AddEffect(e);
         }
       }

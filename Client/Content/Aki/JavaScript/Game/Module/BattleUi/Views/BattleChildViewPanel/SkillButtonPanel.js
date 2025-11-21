@@ -4,11 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SkillButtonPanel = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../../../../Core/Common/Info");
 const Stats_1 = require("../../../../../Core/Common/Stats");
+const CommonParamById_1 = require("../../../../../Core/Define/ConfigCommon/CommonParamById");
+const TimerSystem_1 = require("../../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
+const Global_1 = require("../../../../Global");
 const InputEnums_1 = require("../../../../Input/InputEnums");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const CharacterUnifiedStateTypes_1 = require("../../../../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
@@ -22,14 +26,22 @@ const INIT_OFFSET_X = -86;
 const ITEM_WIDTH = 144;
 const MOBILE_INDEX_EXPLORE_ITEM = 3;
 const actionNameList = [InputMappingsDefine_1.actionMappings.攻击, InputMappingsDefine_1.actionMappings.大招, InputMappingsDefine_1.actionMappings.幻象1, InputMappingsDefine_1.actionMappings.幻象2, InputMappingsDefine_1.actionMappings.技能1, InputMappingsDefine_1.actionMappings.闪避, InputMappingsDefine_1.actionMappings.瞄准, InputMappingsDefine_1.actionMappings.锁定目标];
+const SECOND_LAYOUT_START_COUNT = 6;
 class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   constructor() {
     super(...arguments);
     this.lZe = [];
     this.Tet = new Map();
     this.Let = Stats_1.Stat.Create("[SkillButton]RefreshAllBattleSkillItem");
+    this.eim = Stats_1.Stat.Create("[SkillButton]RefreshSkillItemLayoutStat");
     this.Det = undefined;
     this.$Qe = false;
+    this.tim = [];
+    this.DXe = (0, puerts_1.$ref)(0);
+    this.RXe = (0, puerts_1.$ref)(0);
+    this.iim = 1.77778;
+    this.trm = 1.33333;
+    this.rim = undefined;
     this.Ret = t => {
       if (t) {
         for (const e of this.lZe) {
@@ -46,6 +58,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
       if (t !== 3 && t !== 2) {
         this.cZe();
         this.Aet();
+        this.nim();
       }
     };
     this.mZe = () => {
@@ -54,6 +67,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.CZe = () => {
       this.cZe();
       this.Aet();
+      this.nim();
     };
     this.gZe = (t, e) => {
       t = this.GetBattleSkillItemByButtonType(t);
@@ -68,6 +82,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshKey();
         if (!Info_1.Info.IsInTouch()) {
           this.Aet();
+          this.nim();
         }
       }
     };
@@ -116,6 +131,12 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         t.RefreshConfigLongPress();
       }
     };
+    this.dXd = t => {
+      t = this.GetBattleSkillItemByButtonType(t);
+      if (t) {
+        t.RefreshExtraEffect();
+      }
+    };
     this.DZe = t => {
       t = this.Uet(t);
       if (t) {
@@ -148,12 +169,24 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.SetVisible(5, true);
         this.cZe();
         this.Aet();
+        this.nim();
       }
     };
     this.bet = t => {
       if (ModelManager_1.ModelManager.SkillButtonUiModel.CurSkillButtonIndexData.IsNormalButtonTypeList && !ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData()?.IsPhantom() && this.$Qe !== t) {
         this.qet(t, true);
       }
+    };
+    this.xQe = () => {
+      this.oim();
+      this.nim();
+    };
+    this.aim = () => {
+      this.him();
+    };
+    this.lim = () => {
+      this.rim = undefined;
+      this.nim();
     };
     this.bMe = (t, e) => {
       if (e === 0) {
@@ -176,8 +209,6 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   OnRegisterComponent() {
     switch (this.GetOperationType()) {
       case 2:
-        this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem]];
-        break;
       case 1:
         this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem]];
     }
@@ -189,11 +220,18 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     this.wet();
     this.xet();
     this.Aet();
+    var t = CommonParamById_1.configCommonParamById.GetFloatConfig("SkillButtonLayoutAspectRatio");
+    if (t) {
+      this.trm = t;
+    }
+    this.oim();
+    this.nim();
   }
   Reset() {
     this.lZe.length = 0;
     super.Reset();
     this.Det = undefined;
+    this._im();
   }
   OnAfterShow() {
     for (const t of this.lZe) {
@@ -251,18 +289,34 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   }
   async NewAllBattleSkillItems() {
     let t = undefined;
-    var e = this.GetOperationType();
-    if (e === 2) {
-      t = [this.GetItem(0).GetOwner(), this.GetItem(1).GetOwner(), this.GetItem(2).GetOwner(), this.GetItem(3).GetOwner(), this.GetItem(4).GetOwner(), this.GetItem(5).GetOwner()];
-    } else if (e === 1) {
+    var e;
+    var i;
+    var s = this.GetOperationType();
+    if (s === 2) {
+      t = [this.GetItem(0).GetOwner(), this.GetItem(1).GetOwner(), this.GetItem(2).GetOwner(), this.GetItem(3).GetOwner(), this.GetItem(4).GetOwner(), this.GetItem(5).GetOwner(), this.GetItem(8).GetOwner()];
+      e = this.GetItem(9);
+      i = this.GetItem(10);
+      this.tim.push({
+        Item: e,
+        Index: 0
+      });
+      this.tim.push({
+        Item: i,
+        Index: 1
+      });
+      this.GetItem(8).GetParentAsUIItem()?.SetUIParent(e);
+    } else if (s === 1) {
       t = [this.GetItem(0).GetOwner(), this.GetItem(1).GetOwner(), this.GetItem(2).GetOwner(), this.GetItem(3).GetOwner(), this.GetItem(4).GetOwner(), this.GetItem(5).GetOwner(), this.GetItem(6).GetOwner(), this.GetItem(9).GetOwner(), this.GetItem(10).GetOwner()];
     }
-    const i = e === 1;
-    await Promise.all(t.map(async (t, e) => this.FZe(t, e, i)));
+    const n = s === 1;
+    await Promise.all(t.map(async (t, e) => this.FZe(t, e, n)));
   }
   async FZe(t, e, i) {
     let s = undefined;
     s = i && e === MOBILE_INDEX_EXPLORE_ITEM ? await this.NewStaticChildViewAsync(t, BattleSkillExploreItem_1.BattleSkillExploreItem, e) : await this.NewStaticChildViewAsync(t, BattleSkillItem_1.BattleSkillItem, e);
+    if (!i) {
+      s?.SetOnVisibleChangedCallback(this.aim);
+    }
     this.lZe.push(s);
     return s;
   }
@@ -297,6 +351,9 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     };
     s = await this.NewStaticChildViewAsync(t, BehaviorButton_1.BehaviorButton, i);
     this.Tet.set(e, s);
+    if (this.GetOperationType() === 2) {
+      s?.SetOnVisibleChangedCallback(this.aim);
+    }
     return s;
   }
   wet() {
@@ -309,7 +366,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
   xet() {
     var t;
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && (e = e.Entity.GetComponent(176).DirectionState, (t = this.Uet(101)) && (e === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? t.SetBehaviorToggleState(1) : t.SetBehaviorToggleState(0)), t = this.Uet(102))) {
+    if (e?.Valid && (e = e.Entity.GetComponent(179).DirectionState, (t = this.Uet(101)) && (e === CharacterUnifiedStateTypes_1.ECharDirectionState.AimDirection ? t.SetBehaviorToggleState(1) : t.SetBehaviorToggleState(0)), t = this.Uet(102))) {
       if (e === CharacterUnifiedStateTypes_1.ECharDirectionState.LockDirection) {
         t.SetBehaviorToggleState(1);
       } else {
@@ -333,6 +390,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.dXd);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAimStateChanged, this.Pet);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
@@ -344,6 +402,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
     if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.BindActions(actionNameList, this.bMe);
     }
   }
@@ -360,6 +419,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonIconPathRefresh, this.IZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonCdRefresh, this.TZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonLongPressRefresh, this.lvl);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSkillButtonExtraEffectRefresh, this.dXd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnBehaviorButtonVisibleRefresh, this.DZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAimStateChanged, this.Pet);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
@@ -371,6 +431,7 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerChange, this.XBo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiExploreModeChanged, this.bet);
     if (this.GetOperationType() === 2) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
       InputDistributeController_1.InputDistributeController.UnBindActions(actionNameList, this.bMe);
     }
   }
@@ -426,6 +487,53 @@ class SkillButtonPanel extends BattleChildViewPanel_1.BattleChildViewPanel {
         this.Det.Stop();
       }
       this.RootItem?.SetAnchorOffsetX(i);
+    }
+  }
+  oim() {
+    Global_1.Global.CharacterController.GetViewportSize(this.DXe, this.RXe);
+    var t = (0, puerts_1.$unref)(this.DXe);
+    var e = (0, puerts_1.$unref)(this.RXe);
+    if (e !== 0) {
+      this.iim = t / e;
+    }
+  }
+  nim() {
+    if (Info_1.Info.IsInKeyBoard() && this.tim.length !== 0) {
+      this.eim.Start();
+      var t = this.Tet.get(101);
+      var i = this.Tet.get(102);
+      var s = t?.IsVisible() && i?.IsVisible();
+      let e = 0;
+      for (let t = this.lZe.length - 1; t >= 0; t--) {
+        var n = this.lZe[t];
+        if (n.IsVisible()) {
+          e += 1;
+        }
+        if (e < SECOND_LAYOUT_START_COUNT) {
+          n.SetSkillItemLayout(this.tim[0]);
+        } else if (e === SECOND_LAYOUT_START_COUNT) {
+          if (this.iim <= this.trm || s) {
+            n.SetSkillItemLayout(this.tim[1]);
+          } else {
+            n.SetSkillItemLayout(this.tim[0]);
+          }
+        } else if (e > SECOND_LAYOUT_START_COUNT) {
+          n.SetSkillItemLayout(this.tim[1]);
+        }
+      }
+      this._im();
+      this.eim.Stop();
+    }
+  }
+  him() {
+    this.rim ||= TimerSystem_1.TimerSystem.Next(this.lim);
+  }
+  _im() {
+    if (this.rim) {
+      if (TimerSystem_1.TimerSystem.Has(this.rim)) {
+        TimerSystem_1.TimerSystem.Remove(this.rim);
+      }
+      this.rim = undefined;
     }
   }
 }

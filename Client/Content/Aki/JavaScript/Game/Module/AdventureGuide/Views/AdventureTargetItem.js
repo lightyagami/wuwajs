@@ -27,13 +27,13 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.AdventureId = 0;
     this.Pe = undefined;
     this.$Ve = undefined;
-    this._Qu = undefined;
+    this.B8u = undefined;
     this.YVe = () => {
       return new CommonItemSmallItemGrid_1.CommonItemSmallItemGrid();
     };
     this.qOe = () => {
       if (this.Pe.Status === Protocol_1.Aki.Protocol.Aks.a3_) {
-        this._Qu?.(this.AdventureId);
+        this.B8u?.(this.AdventureId);
       }
     };
     this.JVe = false;
@@ -103,7 +103,7 @@ class AdventureTargetItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ZVe(t.Status, !this.Pe.AdventureTaskBase.JumpTo || t.AdventureTaskBase.JumpTo?.size !== 0);
   }
   SetClickGetButtonCb(e) {
-    this._Qu = e;
+    this.B8u = e;
   }
   ZVe(e, t) {
     this.e6e(e);

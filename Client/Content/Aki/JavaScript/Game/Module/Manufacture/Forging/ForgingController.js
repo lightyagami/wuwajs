@@ -66,7 +66,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.ForgingModel.UpdateForgingByServerConfig(e.yUs);
   }
   static OnRegisterNetEvent() {
-    Net_1.Net.Register(25567, e => {
+    Net_1.Net.Register(23840, e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Forging", 49, "10270_服务端主动推送锻造数据更新");
       }
@@ -88,7 +88,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(25567);
+    Net_1.Net.UnRegister(23840);
   }
   static SendForgeInfoRequest() {
     var e;
@@ -102,7 +102,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Debug("Forging", 49, "10266_客户端请求锻造系统相关数据");
       }
       e = new Protocol_1.Aki.Protocol.srs();
-      Net_1.Net.Call(15729, Protocol_1.Aki.Protocol.srs.create(e), e => {
+      Net_1.Net.Call(18871, Protocol_1.Aki.Protocol.srs.create(e), e => {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Forging", 49, "10266_返回请求锻造系统相关数据");
         }
@@ -112,7 +112,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
           ForgingController.tLi(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.GetForgingData);
         } else {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16726, undefined, true, false);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16707, undefined, true, false);
           if (UiManager_1.UiManager.IsViewShow("ForgingRootView")) {
             UiManager_1.UiManager.CloseView("ForgingRootView");
           }
@@ -125,12 +125,12 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Debug("Forging", 49, "10266_客户端请求锻造系统相关数据(异步刷新)");
     }
     var e = new Protocol_1.Aki.Protocol.srs();
-    var e = await Net_1.Net.CallAsync(15729, e);
+    var e = await Net_1.Net.CallAsync(18871, e);
     if (e.Cvs === Protocol_1.Aki.Protocol.Q4n.KRs) {
       ModelManager_1.ModelManager.ForgingModel.SaveLimitRefreshTime(e.APs);
       ForgingController.tLi(e);
     } else {
-      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16726, undefined, true, false);
+      ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 16707, undefined, true, false);
       if (UiManager_1.UiManager.IsViewShow("ForgingRootView")) {
         UiManager_1.UiManager.CloseView("ForgingRootView");
       }
@@ -145,7 +145,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Forging", 49, "10268_请求锻造道具");
     }
-    Net_1.Net.Call(23921, Protocol_1.Aki.Protocol.hrs.create(t), e => {
+    Net_1.Net.Call(15588, Protocol_1.Aki.Protocol.hrs.create(t), e => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Forging", 49, "10268_请求锻造道具返回");
       }
@@ -172,14 +172,14 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForgingSuccess);
       } else {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ForgingFail);
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 15291);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 15314);
       }
     });
   }
   static SendForgeFormulaUnlockRequest(o) {
     var e = new Protocol_1.Aki.Protocol.urs();
     e.s5n = o;
-    Net_1.Net.Call(27868, Protocol_1.Aki.Protocol.urs.create(e), e => {
+    Net_1.Net.Call(20122, Protocol_1.Aki.Protocol.urs.create(e), e => {
       var r;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Forging", 49, "10271_请求解锁配方返回");
@@ -190,7 +190,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("ComposeStudy", r);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UpdateForgingFormula);
       } else {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 20935);
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Cvs, 22118);
       }
     });
   }
@@ -374,7 +374,7 @@ class ForgingController extends UiControllerBase_1.UiControllerBase {
     if (e) {
       e = EntitySystem_1.EntitySystem.Get(e);
       if (e) {
-        return e.GetComponent(197);
+        return e.GetComponent(200);
       }
     }
   }

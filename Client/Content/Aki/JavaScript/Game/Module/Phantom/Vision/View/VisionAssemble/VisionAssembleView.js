@@ -511,7 +511,7 @@ class VisionAssembleView extends UiViewBase_1.UiViewBase {
     }
   }
   K7_() {
-    var t = ConfigManager_1.ConfigManager.FilterConfig.GetFilterId(this.Z6i);
+    var t = this.vpt.GetUniqueIdByGroupId(this.Z6i);
     return ModelManager_1.ModelManager.FilterModel.GetFilterResultData(t);
   }
   Q7_() {

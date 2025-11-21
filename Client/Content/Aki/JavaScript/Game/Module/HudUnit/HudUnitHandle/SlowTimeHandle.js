@@ -15,18 +15,18 @@ class SlowTimeHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   constructor() {
     super(...arguments);
     this.qTu = undefined;
-    this.Tzu = false;
-    this.bzu = false;
+    this.KHu = false;
+    this.XHu = false;
     this.GTu = false;
     this.DP_ = false;
     this.MEu = (e, t) => {
-      this.Tzu = e === 5;
-      this.Rzu();
+      this.KHu = e === 5;
+      this.YHu();
     };
-    this.wzu = (e, t) => {
+    this.zHu = (e, t) => {
       if (e === 1) {
-        this.bzu = t;
-        this.Rzu();
+        this.XHu = t;
+        this.YHu();
       }
     };
     this.Pni = (e, t, i) => {
@@ -38,25 +38,25 @@ class SlowTimeHandle extends HudUnitHandleBase_1.HudUnitHandleBase {
   }
   OnInitialize() {
     super.OnInitialize();
-    this.bzu = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(1);
+    this.XHu = ModelManager_1.ModelManager.BattleUiModel.GetRoleSpecialState(1);
   }
   OnDestroyed() {
     this.jTu();
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.wzu);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.zHu);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.AddValueListener(12, this.Pni);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.AddMaxListener(12, this.Pni);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSwitchSelfCenteredMode, this.MEu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.wzu);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, this.zHu);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveValueListener(12, this.Pni);
     ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveMaxListener(12, this.Pni);
   }
-  Rzu() {
-    this.GTu = this.Tzu || this.bzu;
+  YHu() {
+    this.GTu = this.KHu || this.XHu;
     if (this.GTu) {
       this.FTu();
       this.qTu?.SetTranslucence(false);

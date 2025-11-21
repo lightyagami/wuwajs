@@ -19,6 +19,7 @@ class LogicDataForce extends LogicDataBase_1.default {
     this.ContinueTime = 0;
     this.ContinueTimeCurve = undefined;
     this.IsLaunching = false;
+    this.ForceHorizontal = false;
     this.WorkHaveTag = undefined;
     this.IsResetOnLast = false;
     this.Group = 0;

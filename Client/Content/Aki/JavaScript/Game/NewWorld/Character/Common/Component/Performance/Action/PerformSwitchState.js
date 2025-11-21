@@ -18,7 +18,7 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
     this.Mj_ = undefined;
     this.Lmu = () => {
       this.Mj_ = undefined;
-      this.PerformComp.Entity.GetComponent(187)?.SwitchAnimState(this.Param);
+      this.PerformComp.Entity.GetComponent(190)?.SwitchAnimState(this.Param);
     };
     this.wmu = () => {
       if (this.Jh?.Valid) {
@@ -34,7 +34,7 @@ class PerformSwitchState extends PerformActionBase_1.PerformActionBase {
   }
   OnExecute() {
     var t;
-    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(187)?.CanSwitchAnimState(this.Param.TargetStateName)) {
+    if (this.PerformComp.Entity.GetComponent(2) && this.PerformComp.Entity.GetComponent(190)?.CanSwitchAnimState(this.Param.TargetStateName)) {
       if ((t = this.PerformComp.Entity.GetComponent(44)).MontageManager.IsMontagePlaying()) {
         t.MontageManager.StopMontage({
           Method: 0,

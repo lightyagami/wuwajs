@@ -95,6 +95,7 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
     this.FNe();
     this.BNe();
     this._Fe();
+    this.l3e();
   }
   OnTimer(t) {
     this.FNe();
@@ -125,6 +126,10 @@ class WeeklyRogueSubView extends ActivitySubViewBase_1.ActivitySubViewBase {
       this.ANe.FunctionButton?.SetUiActive(false);
       this.ANe.SetPerformanceConditionLock(this.ActivityBaseData.ConditionGroupId, this.ActivityBaseData.Id);
     }
+  }
+  l3e() {
+    var t = this.ActivityBaseData?.GetCycleConfig();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "PrefabTextItem_1382682910_Text", this.ActivityBaseData.Score.toString(), t.MaxScore);
   }
 }
 exports.WeeklyRogueSubView = WeeklyRogueSubView;

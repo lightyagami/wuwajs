@@ -52,7 +52,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (!e.UseInMultiMode && ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       return false;
     }
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(206);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(209);
     if (!t) {
       return e.AllowTags.length === 0;
     }
@@ -74,7 +74,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     if (SpecialItemController.IsSpecialItem(e)) {
       var r = ConfigManager_1.ConfigManager.SpecialItemConfig.GetConfig(e);
       if (r) {
-        var l = t?.Entity?.GetComponent(206);
+        var l = t?.Entity?.GetComponent(209);
         SpecialItemController.StopListenSpecialItemRelatedTags();
         for (const a of r.AllowTags) {
           var o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(a);
@@ -96,7 +96,7 @@ class SpecialItemController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static StopListenSpecialItemRelatedTags() {
-    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(206);
+    var e = ModelManager_1.ModelManager.SpecialItemModel?.TagWatchedEntityHandle?.Entity?.GetComponent(209);
     if (e) {
       for (const t of ModelManager_1.ModelManager.SpecialItemModel.WatchedAllowTagIds) {
         e.RemoveTagAddOrRemoveListener(t, SpecialItemController.egi);

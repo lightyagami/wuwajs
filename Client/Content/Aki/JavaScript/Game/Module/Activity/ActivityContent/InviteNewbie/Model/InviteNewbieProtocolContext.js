@@ -16,7 +16,7 @@ class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
     super();
     this.Kk1 = undefined;
     this.wer = false;
-    this.iQu = false;
+    this.NWu = false;
     this.Score = 0;
     this.AttachedModel = undefined;
     this.AttachedModel = e;
@@ -40,7 +40,7 @@ class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
     if (e !== undefined) {
       this.InviteCode = e.XRc;
       this.Score = e.SMs;
-      this.ChangeServerRedDotState(e.e7u);
+      this.ChangeServerRedDotState(e.qKc);
     }
   }
   get BgPath() {
@@ -48,7 +48,7 @@ class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
     return H5CircumUrlById_1.configH5CircumUrlById.GetConfig(e)?.BgPath;
   }
   SetCurrentLoginClickState(e) {
-    this.iQu = e;
+    this.NWu = e;
   }
   GetClickRedDotState() {
     return ModelManager_1.ModelManager.ActivityModel.GetActivityCacheData(this.Id, 0, CLICKKEY, 0, 0) === 0;
@@ -60,7 +60,7 @@ class InviteNewbieProtocolContext extends ActivityData_1.ActivityBaseData {
     this.wer = e;
   }
   GetExDataRedPointShowState() {
-    return this.GetClickRedDotState() || this.wer && !this.iQu;
+    return this.GetClickRedDotState() || this.wer && !this.NWu;
   }
 }
 exports.InviteNewbieProtocolContext = InviteNewbieProtocolContext;

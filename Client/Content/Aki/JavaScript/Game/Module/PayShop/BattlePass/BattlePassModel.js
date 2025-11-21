@@ -589,17 +589,18 @@ class BattlePassModel extends ModelBase_1.ModelBase {
   }
   TryAssignRemindLevel(t) {
     if (!(this.PayType > Protocol_1.Aki.Protocol.PNs.Proto_NoPaid)) {
+      var e = ConfigManager_1.ConfigManager.BattlePassConfig.GetBattlePassData(this.BattlePassId)?.BattlePassRewardId ?? 0;
       if (t === undefined) {
-        for (const e of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(this.BattlePassId)) {
-          if (e.IsRemind && this.GetRewardData(e.Level).IsThisType(1)) {
+        for (const a of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(e)) {
+          if (a.IsRemind && this.GetRewardData(a.Level).IsThisType(1)) {
             this.kc1 = this.BattlePassLevel;
             return;
           }
         }
       } else if (this.GetRewardData(t)?.IsThisType(1)) {
-        for (const a of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(this.BattlePassId)) {
-          if (a.Level === t) {
-            this.kc1 = a.IsRemind ? this.BattlePassLevel : undefined;
+        for (const r of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(e)) {
+          if (r.Level === t) {
+            this.kc1 = r.IsRemind ? this.BattlePassLevel : undefined;
             return;
           }
         }
@@ -615,13 +616,14 @@ class BattlePassModel extends ModelBase_1.ModelBase {
     var e;
     var a = new Map();
     var r = [];
-    for (const o of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(this.BattlePassId)) {
-      if (o.Level <= this.kc1) {
-        for (var [i, s] of o.PayReward) {
-          if (a.has(i)) {
-            a.set(i, a.get(i) + s);
+    var i = ConfigManager_1.ConfigManager.BattlePassConfig.GetBattlePassData(this.BattlePassId)?.BattlePassRewardId ?? 0;
+    for (const n of ConfigManager_1.ConfigManager.BattlePassConfig.GetAllRewardData(i)) {
+      if (n.Level <= this.kc1) {
+        for (var [s, o] of n.PayReward) {
+          if (a.has(s)) {
+            a.set(s, a.get(s) + o);
           } else {
-            a.set(i, s);
+            a.set(s, o);
           }
         }
       }

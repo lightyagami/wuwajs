@@ -24,21 +24,21 @@ class MarkPanelBase extends UiPanelBase_1.UiPanelBase {
   }
   async CreateByPoolResourceIdAsync(i, t) {
     await this.Bh_(i, t);
-    if (!this.IsDestroyOrDestroying && !this.WaitToDestroy) {
+    if (!this.IsDestroyOrDestroying && !this.WaitToDestroy && !!t?.GetOwner()?.IsValid()) {
       await this.CreateByActorAsync(this.Dh_.Actor, t);
     }
   }
   async CreateThenShowByPoolResourceIdAsync(i, t) {
     await this.Bh_(i, t);
-    if (!this.IsDestroyOrDestroying && !this.WaitToDestroy) {
+    if (!this.IsDestroyOrDestroying && !this.WaitToDestroy && !!t?.GetOwner()?.IsValid()) {
       await this.CreateThenShowByActorAsync(this.Dh_.Actor, t);
     }
   }
   async Bh_(i, t) {
     this.NPt = i;
     i = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(i);
-    this.Dh_ = await UiActorPool_1.UiActorPool.GetAsync(i);
     if (t !== undefined) {
+      this.Dh_ = await UiActorPool_1.UiActorPool.GetAsync(i);
       this.Dh_.UiItem.SetUIParent(t);
     }
   }

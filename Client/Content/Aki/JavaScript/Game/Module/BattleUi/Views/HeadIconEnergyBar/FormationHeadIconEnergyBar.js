@@ -7,48 +7,49 @@ exports.FormationHeadIconEnergyBar = undefined;
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const HeadIconEnergyBarCommon_1 = require("./HeadIconEnergyBarCommon");
 const HeadIconEnergyBarFuLuoLuo_1 = require("./HeadIconEnergyBarFuLuoLuo");
-const energyBarClassMap = new Map([[0, HeadIconEnergyBarCommon_1.HeadIconEnergyBarCommon], [1, HeadIconEnergyBarFuLuoLuo_1.HeadIconEnergyBarFuLuoLuo]]);
+const HeadIconEnergyBarJiaBeiLiNa_1 = require("./HeadIconEnergyBarJiaBeiLiNa");
+const energyBarClassMap = new Map([[0, HeadIconEnergyBarCommon_1.HeadIconEnergyBarCommon], [1, HeadIconEnergyBarFuLuoLuo_1.HeadIconEnergyBarFuLuoLuo], [2, HeadIconEnergyBarJiaBeiLiNa_1.HeadIconEnergyBarJiaBeiLiNa]]);
 class FormationHeadIconEnergyBar {
   constructor() {
     this.Wn1 = [];
     this.hdt = new Map();
     this.Qn1 = new Set();
   }
-  InitParentItem(e, r) {
-    this.Wn1[e] = r;
+  InitParentItem(e, a) {
+    this.Wn1[e] = a;
   }
   RemoveEntity(e) {
-    var r = this.hdt.get(e);
-    if (r) {
+    var a = this.hdt.get(e);
+    if (a) {
       this.hdt.delete(e);
-      r.Destroy();
+      a.Destroy();
     } else {
       this.Qn1.delete(e);
     }
   }
-  InitData(e, r, o, a) {
-    var t;
-    var n = o?.EntityHandle?.Id;
-    if (n && !this.Qn1.has(n)) {
-      if (this.hdt.has(n)) {
-        this.RefreshVisible(n, o.IsCurEntity, a);
-      } else if ((t = o.HeadIconEnergyBarConfig) && (r = r.PlayerId === ModelManager_1.ModelManager.PlayerInfoModel.GetId(), t.FormationVisible || r)) {
-        r = a >= 0 ? this.Wn1[a] : this.Wn1[0];
-        this.cdt(r, o, n, t);
-        this.RefreshVisible(n, o.IsCurEntity);
+  InitData(e, a, r, o) {
+    var n;
+    var i = r?.EntityHandle?.Id;
+    if (i && !this.Qn1.has(i)) {
+      if (this.hdt.has(i)) {
+        this.RefreshVisible(i, r.IsCurEntity, o);
+      } else if ((n = r.HeadIconEnergyBarConfig) && (a = a.PlayerId === ModelManager_1.ModelManager.PlayerInfoModel.GetId(), n.FormationVisible || a)) {
+        a = o >= 0 ? this.Wn1[o] : this.Wn1[0];
+        this.cdt(a, r, i, n);
+        this.RefreshVisible(i, r.IsCurEntity);
       } else {
-        this.Qn1.add(n);
+        this.Qn1.add(i);
       }
     }
   }
-  RefreshVisible(e, r, o = -1) {
+  RefreshVisible(e, a, r = -1) {
     if (e &&= this.hdt.get(e)) {
-      if (r) {
+      if (a) {
         e.SetVisible(false, 1);
       } else {
         e.SetVisible(true, 1);
-        if (o >= 0 && (r = this.Wn1[o])) {
-          e.ChangeParent(r);
+        if (r >= 0 && (a = this.Wn1[r])) {
+          e.ChangeParent(a);
         }
       }
     }
@@ -61,16 +62,16 @@ class FormationHeadIconEnergyBar {
     this.Qn1.clear();
   }
   Tick(e) {
-    for (const r of this.hdt.values()) {
-      r.Tick(e);
+    for (const a of this.hdt.values()) {
+      a.Tick(e);
     }
   }
-  cdt(e, r, o, a) {
-    var t = new (energyBarClassMap.get(a.Type) ?? HeadIconEnergyBarCommon_1.HeadIconEnergyBarCommon)();
-    t.InitData(r, a);
-    this.hdt.set(o, t);
-    t.InitByPath(e, a.PrefabPath);
-    t.SetVisible(true, 0);
+  cdt(e, a, r, o) {
+    var n = new (energyBarClassMap.get(o.Type) ?? HeadIconEnergyBarCommon_1.HeadIconEnergyBarCommon)();
+    n.InitData(a, o);
+    this.hdt.set(r, n);
+    n.InitByPath(e, o.PrefabPath);
+    n.SetVisible(true, 0);
   }
 }
 exports.FormationHeadIconEnergyBar = FormationHeadIconEnergyBar;

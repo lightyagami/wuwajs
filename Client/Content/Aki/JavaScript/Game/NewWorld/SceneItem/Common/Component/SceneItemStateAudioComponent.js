@@ -128,7 +128,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     };
   }
   static get Dependencies() {
-    return [203, 0];
+    return [206, 0];
   }
   OnInitData(t) {
     var t = t.GetParam(SceneItemStateAudioComponent_1)[0];
@@ -140,7 +140,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   }
   OnStart() {
     var t;
-    this.cen = this.Entity.GetComponent(134);
+    this.cen = this.Entity.GetComponent(137);
     if (!this.cen) {
       t = this.EIe.GetPbDataId();
       if (Log_1.Log.CheckError()) {
@@ -163,7 +163,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
         this.Z1n(true);
         break;
       case IComponent_1.EAudioRangeType.SceneActorRefComp:
-        this.Men = this.Entity.GetComponent(164);
+        this.Men = this.Entity.GetComponent(167);
         if (!this.Men) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Entity", 39, "SceneItemReferenceComponent不存在", ["entityConfigId", this.EIe.GetPbDataId()]);
@@ -252,7 +252,7 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
   o_n(t, i) {
     var e;
     if (this.N1n.Type === IComponent_1.EAkEventType.Default && t) {
-      if ((e = this.Entity?.GetComponent(203)?.Owner)?.IsValid()) {
+      if ((e = this.Entity?.GetComponent(206)?.Owner)?.IsValid()) {
         t = (0, AudioSystem_1.parseAudioEventPath)(t);
         t = AudioSystem_1.AudioSystem.PostEvent(t, e);
         if (i !== 1) {
@@ -406,5 +406,5 @@ let SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = class SceneI
     }
   }
 };
-SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(132)], SceneItemStateAudioComponent);
+SceneItemStateAudioComponent = SceneItemStateAudioComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(135)], SceneItemStateAudioComponent);
 exports.SceneItemStateAudioComponent = SceneItemStateAudioComponent; //# sourceMappingURL=SceneItemStateAudioComponent.js.map

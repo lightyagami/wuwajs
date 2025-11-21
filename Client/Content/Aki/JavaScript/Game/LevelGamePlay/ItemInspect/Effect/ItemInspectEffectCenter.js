@@ -31,7 +31,7 @@ class ItemInspectEffectCenter {
     this.JWu = new Map();
     this.szu = new Set();
     this.eQu = undefined;
-    this.AGd = undefined;
+    this.GVd = undefined;
     this.iQu = (e, t) => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelPlay", 48, "物品检视效果执行完成", ["EffectType", t.GetEffectType()], ["Result", e]);
@@ -61,8 +61,8 @@ class ItemInspectEffectCenter {
       }
     }
     if (i > 0) {
-      this.AGd = TimerSystem_1.TimerSystem.Delay(() => {
-        this.AGd = undefined;
+      this.GVd = TimerSystem_1.TimerSystem.Delay(() => {
+        this.GVd = undefined;
         this.kxe();
       }, i * MathUtils_1.MathUtils.SecondToMillisecond);
     }
@@ -71,12 +71,12 @@ class ItemInspectEffectCenter {
   }
   ClearEffects() {
     this.szu.clear();
-    this.AGd?.Remove();
-    this.AGd = undefined;
+    this.GVd?.Remove();
+    this.GVd = undefined;
     this.eQu = undefined;
   }
   kxe() {
-    if (this.szu.size === 0 && !this.AGd) {
+    if (this.szu.size === 0 && !this.GVd) {
       this.eQu?.();
       this.eQu = undefined;
     }

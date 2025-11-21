@@ -27,7 +27,7 @@ class FlowActionChangeEntityPerformanceState extends FlowActionBase_1.FlowAction
           t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
       }
       if (t?.IsInit) {
-        if (a = t?.Entity?.GetComponent(134)) {
+        if (a = t?.Entity?.GetComponent(137)) {
           if (o = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i.PerformanceTag)) {
             a.ChangePerformanceState(o);
           } else if (Log_1.Log.CheckWarn()) {

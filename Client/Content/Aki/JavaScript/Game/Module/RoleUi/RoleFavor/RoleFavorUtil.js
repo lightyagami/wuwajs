@@ -9,18 +9,6 @@ const CommonDefine_1 = require("../../../../Core/Define/CommonDefine");
 const StringUtils_1 = require("../../../../Core/Utils/StringUtils");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 class RoleFavorUtil {
-  static IsRoleInfo(e) {
-    return e.FavorTabType === 1 && e.TypeParam !== 3;
-  }
-  static IsRoleBaseInfo(e) {
-    return e.FavorTabType === 1 && e.TypeParam === 1;
-  }
-  static IsRolePowerFile(e) {
-    return e.FavorTabType === 1 && e.TypeParam === 2;
-  }
-  static IsSameContentItemData(e, r) {
-    return e !== undefined && r !== undefined && e.FavorTabType === r.FavorTabType && e.RoleId === r.RoleId && e.TypeParam === r.TypeParam && e.Config.Id === r.Config.Id;
-  }
   static GetCurLanguageCvName(e) {
     var r = ConfigManager_1.ConfigManager.RoleFavorConfig?.GetFavorRoleInfoConfig(e);
     if (r === undefined) {

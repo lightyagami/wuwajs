@@ -1,23 +1,23 @@
 "use strict";
 
 var PlayerBuffComponent_1;
-var __decorate = this && this.__decorate || function (e, t, o, r) {
-  var f;
-  var n = arguments.length;
-  var a = n < 3 ? t : r === null ? r = Object.getOwnPropertyDescriptor(t, o) : r;
+var __decorate = this && this.__decorate || function (t, e, o, n) {
+  var r;
+  var f = arguments.length;
+  var i = f < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, o) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    a = Reflect.decorate(e, t, o, r);
+    i = Reflect.decorate(t, e, o, n);
   } else {
-    for (var i = e.length - 1; i >= 0; i--) {
-      if (f = e[i]) {
-        a = (n < 3 ? f(a) : n > 3 ? f(t, o, a) : f(t, o)) || a;
+    for (var a = t.length - 1; a >= 0; a--) {
+      if (r = t[a]) {
+        i = (f < 3 ? r(i) : f > 3 ? r(e, o, i) : r(e, o)) || i;
       }
     }
   }
-  if (n > 3 && a) {
-    Object.defineProperty(t, o, a);
+  if (f > 3 && i) {
+    Object.defineProperty(e, o, i);
   }
-  return a;
+  return i;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -43,26 +43,38 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     this.PlayerId = 0;
     this.BuffEffectManager = undefined;
     this.TimeScaleComponent = undefined;
+    this.RZd = undefined;
     this.xie = () => {
       this.BuffLock++;
-      var e = new Set();
-      for (const r of this.TagListenerDict.values()) {
-        for (const f of r) {
-          e.add(f);
+      var t = new Set();
+      for (const n of this.TagListenerDict.values()) {
+        for (const r of n) {
+          t.add(r);
         }
       }
-      for (const n of e) {
-        var t;
-        var o = this.GetBuffByHandle(n);
+      for (const f of t) {
+        var e;
+        var o = this.GetBuffByHandle(f);
         if (o) {
           if (this.CheckRemove(o.Config, o.GetInstigator())) {
-            this.RemoveBuffInner(n, -1, true, "因为切人导致不满足tag条件");
-          } else if ((t = this.CheckActivate(o.Config, o.GetInstigator())) !== o.IsActive()) {
-            this.OnBuffActiveChanged(o, t);
+            this.RemoveBuffInner(f, -1, true, "因为切人导致不满足tag条件");
+          } else if ((e = this.CheckActivate(o.Config, o.GetInstigator())) !== o.IsActive()) {
+            this.OnBuffActiveChanged(o, e);
           }
         }
       }
       this.BuffLock--;
+    };
+    this.dLe = () => {
+      if (this.RZd) {
+        for (const e of this.RZd) {
+          var t = this.GetBuffById(e);
+          if (t?.IsValid()) {
+            this.wZd(t);
+          }
+        }
+        this.RZd = undefined;
+      }
     };
   }
   OnCreate() {
@@ -71,16 +83,17 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   }
   OnInit() {
     super.OnInit();
-    this.TimeScaleComponent = this.Entity.GetComponent(123);
+    this.TimeScaleComponent = this.Entity.GetComponent(126);
     return true;
   }
-  OnInitData(e) {
-    var t = this.Entity.CheckGetComponent(0);
-    this.PlayerId = t?.GetPlayerId() ?? 0;
+  OnInitData(t) {
+    var e = this.Entity.CheckGetComponent(0);
+    this.PlayerId = e?.GetPlayerId() ?? 0;
     return this.PlayerId !== 0 || (CombatLog_1.CombatLog.Error("Actor", this.Entity, "PlayerId为0", ["EntityId", this.Entity.Id]), false);
   }
   OnStart() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe);
     return true;
   }
   OnActivate() {
@@ -88,62 +101,81 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
   }
   OnClear() {
     this.TriggerMap.clear();
-    for (const e of this.BuffContainer.values()) {
-      e.Destroy();
+    for (const t of this.BuffContainer.values()) {
+      t.Destroy();
     }
+    this.RZd = undefined;
     super.OnClear();
     return true;
   }
   OnEnd() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe);
     return true;
   }
   IsPaused() {
     return this.GetCurrentBuffComponent()?.IsPaused() ?? false;
   }
   InitBornBuff() {
-    var e = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("vys")?.vys;
-    if (e) {
-      var t = e.EIs;
-      if (t) {
-        for (const i of t) {
-          var o = MathUtils_1.MathUtils.LongToNumber(i.b6n);
-          for (let e = 0; e < i.GTs.length; e++) {
-            this.SetBuffEffectCd(o, e, i.GTs[e] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
+    var t = this.Entity.CheckGetComponent(0)?.ComponentDataMap.get("vys")?.vys;
+    if (t) {
+      var e = t.EIs;
+      if (e) {
+        for (const a of e) {
+          var o = MathUtils_1.MathUtils.LongToNumber(a.b6n);
+          for (let t = 0; t < a.GTs.length; t++) {
+            this.SetBuffEffectCd(o, t, a.GTs[t] * CommonDefine_1.MILLIONSECOND_PER_SECOND);
           }
         }
       }
-      t = e.SIs;
-      if (t) {
-        for (const s of t) {
-          var r = s;
-          var f = MathUtils_1.MathUtils.LongToNumber(r.b6n ?? -1);
-          var n = MathUtils_1.MathUtils.LongToNumber(r.Rjn);
-          var a = r.cVn ?? ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
-          this.AddBuffRemote(f, a, {
-            Level: r.F6n,
-            InstigatorId: n,
-            ApplyType: r.xjn,
-            Duration: r.n5n,
-            RemainDuration: r.QEs,
-            IsActive: r.WHn,
-            ServerId: r.wjn,
-            OuterStackCount: r.Bjn,
+      e = t.SIs;
+      if (e) {
+        for (const s of e) {
+          var n = s;
+          var r = MathUtils_1.MathUtils.LongToNumber(n.b6n ?? -1);
+          var f = MathUtils_1.MathUtils.LongToNumber(n.Rjn);
+          var i = n.cVn ?? ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
+          this.AddBuffRemote(r, i, {
+            Level: n.F6n,
+            InstigatorId: f,
+            ApplyType: n.xjn,
+            Duration: n.n5n,
+            RemainDuration: n.QEs,
+            IsActive: n.WHn,
+            ServerId: n.wjn,
+            OuterStackCount: n.Bjn,
             Reason: "服务器通过通知FightBuffComponent恢复PlayerBuff",
-            MessageId: MathUtils_1.MathUtils.LongToBigInt(r.$8n),
+            MessageId: MathUtils_1.MathUtils.LongToBigInt(n.$8n),
             BornBuff: true
           });
-          this.BuffContainer.get(a)?.SetRemainDuration(r.QEs);
+          this.BuffContainer.get(i)?.SetRemainDuration(n.QEs);
         }
       }
     }
+  }
+  OnAnyBuffInhibitionChanged(t) {
+    if (t.Config.FormationPolicy !== 5 || ModelManager_1.ModelManager.SceneTeamModel.IsTeamReady) {
+      this.wZd(t);
+    } else {
+      this.RZd ||= [];
+      this.RZd.push(t.Id);
+    }
+  }
+  wZd(t) {
+    PlayerBuffComponent_1.LZd.Start();
+    if (t.IsActive()) {
+      this.CreateGameplayCueByBuff(t);
+    } else {
+      this.DestroyGameplayCueByBuff(t);
+    }
+    PlayerBuffComponent_1.LZd.Stop();
   }
   GetDebugName() {
     return "player_" + this.PlayerId;
   }
   GetEntity() {
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(this.PlayerId)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
-    return ModelManager_1.ModelManager.CreatureModel.GetEntity(e ?? 0)?.Entity;
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetTeamPlayerData(this.PlayerId)?.GetCurrentGroup()?.GetCurrentRole()?.CreatureDataId;
+    return ModelManager_1.ModelManager.CreatureModel.GetEntity(t ?? 0)?.Entity;
   }
   GetTimeScale() {
     return this.Entity?.TimeDilation * (this.TimeScaleComponent?.CurrentTimeScale ?? 1);
@@ -152,65 +184,65 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
     return this.Entity.TimeDilation * (this.TimeScaleComponent?.GetTopForeverTimeScale(0) ?? 1);
   }
   GetCurrentBuffComponent() {
-    return this.GetEntity()?.GetComponent(175);
+    return this.GetEntity()?.GetComponent(178);
   }
   GetSkillComponent() {
     return this.GetEntity()?.GetComponent(39);
   }
   GetAttributeComponent() {
-    return this.GetEntity()?.GetComponent(174);
+    return this.GetEntity()?.GetComponent(177);
   }
   GetTagComponent() {
-    return this.GetEntity()?.GetComponent(206);
+    return this.GetEntity()?.GetComponent(209);
   }
-  CheckAdd(e, t, o) {
-    return !this.GetTagComponent() || super.CheckAdd(e, t, o);
+  CheckAdd(t, e, o) {
+    return !this.GetTagComponent() || super.CheckAdd(t, e, o);
   }
-  CheckActivate(e, t) {
-    return !this.GetTagComponent() || super.CheckActivate(e, t);
+  CheckActivate(t, e) {
+    return !this.GetTagComponent() || super.CheckActivate(t, e);
   }
-  HasBuffRoutineExpirationLock(e) {
-    return (this.BuffRoutineExpirationLock.get(e) ?? 0) > 0 || (this.GetCurrentBuffComponent()?.BuffRoutineExpirationLock.get(e) ?? 0) > 0;
+  HasBuffRoutineExpirationLock(t) {
+    return (this.BuffRoutineExpirationLock.get(t) ?? 0) > 0 || (this.GetCurrentBuffComponent()?.BuffRoutineExpirationLock.get(t) ?? 0) > 0;
   }
   GetActorComponent() {
     return this.GetEntity()?.GetComponent(1);
   }
-  GetBuffLevel(e) {
-    return this.GetEntity()?.GetComponent(175)?.GetBuffLevel(e);
+  GetBuffLevel(t) {
+    return this.GetEntity()?.GetComponent(178)?.GetBuffLevel(t);
   }
   GetCueComponent() {
-    return this.Entity.GetComponent(226);
+    return this.Entity.GetComponent(229);
   }
-  GetFormationBuffTotalStackById(e, t = false) {
-    return super.GetBuffTotalStackById(e, t);
+  GetFormationBuffTotalStackById(t, e = false) {
+    return super.GetBuffTotalStackById(t, e);
   }
-  GetBuffTotalStackById(e, t = false) {
-    return (this.GetCurrentBuffComponent()?.GetBuffTotalStackById(e, t) ?? 0) + super.GetBuffTotalStackById(e, t);
+  GetBuffTotalStackById(t, e = false) {
+    return (this.GetCurrentBuffComponent()?.GetBuffTotalStackById(t, e) ?? 0) + super.GetBuffTotalStackById(t, e);
   }
   HasBuffAuthority() {
     return ModelManager_1.ModelManager.PlayerInfoModel.GetId() === this.PlayerId;
   }
-  AddBuffInner(e, t, o, r, f, n, a, i, s, u, h, C, m, l, B, _, c, p) {
-    if (t.FormationPolicy !== 5 && e !== ActiveBuffConfigs_1.DYNAMIC_BUFF_ID) {
-      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持对编队实体增删非编队buff", ["buffId", e], ["reason", C]);
+  AddBuffInner(t, e, o, n, r, f, i, a, s, u, h, C, m, l, B, _, p, c) {
+    if (e.FormationPolicy !== 5 && t !== ActiveBuffConfigs_1.DYNAMIC_BUFF_ID) {
+      CombatLog_1.CombatLog.Warn("Buff", this.Entity, "暂不支持对编队实体增删非编队buff", ["buffId", t], ["reason", C]);
       return ActiveBuffConfigs_1.INVALID_BUFF_HANDLE;
     } else {
-      return super.AddBuffInner(e, t, o, r, f, n, a, i, s, u, h, C, m, l, B, _, c, p);
+      return super.AddBuffInner(t, e, o, n, r, f, i, a, s, u, h, C, m, l, B, _, p, c);
     }
   }
-  OnBuffAdded(e, t, o, r, f, n, a, i, s, u, h) {
-    if (e) {
+  OnBuffAdded(t, e, o, n, r, f, i, a, s, u, h) {
+    if (t) {
       PlayerBuffComponent_1.q__.Start();
-      this.BroadcastAddBuff(e, o, u, i, h);
-      var C = e.Config;
-      super.OnBuffAdded(e, t, o, r, f, n, a, i, s, u, h);
-      var t = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItemsByPlayer(this.PlayerId) ?? [];
-      for (const B of t) {
+      this.BroadcastAddBuff(t, o, u, a, h);
+      var C = t.Config;
+      super.OnBuffAdded(t, e, o, n, r, f, i, a, s, u, h);
+      var e = ModelManager_1.ModelManager.SceneTeamModel?.GetTeamItemsByPlayer(this.PlayerId) ?? [];
+      for (const B of e) {
         var m = B.EntityHandle?.Entity;
         if (B.EntityHandle?.Valid && m) {
-          var l = m?.GetComponent(175);
+          var l = m?.GetComponent(178);
           if (l && C.RemoveBuffWithTags && C.RemoveBuffWithTags.length > 0) {
-            const h = `因为buff${e.Id}(handle=${e.Handle})的RemoveBuffWithTags导致移除`;
+            const h = `因为buff${t.Id}(handle=${t.Handle})的RemoveBuffWithTags导致移除`;
             for (const _ of C.RemoveBuffWithTags) {
               if (l.HasBuffAuthority()) {
                 l.RemoveBuffByTag(_, h);
@@ -218,140 +250,140 @@ let PlayerBuffComponent = PlayerBuffComponent_1 = class PlayerBuffComponent exte
               l.TagComponent.RemoveTag(_);
             }
           }
-          this.CreateGameplayCueByBuff(e);
         }
       }
       PlayerBuffComponent_1.q__.Stop();
     }
   }
-  OnBuffRemoved(e, t, o, r, f) {
-    if (e) {
+  OnBuffRemoved(t, e, o, n, r) {
+    if (t) {
       PlayerBuffComponent_1.O__.Start();
-      this.BroadcastRemoveBuff(e, t, f, r);
-      super.OnBuffRemoved(e, t, o, r, f);
-      this.DestroyGameplayCueByBuff(e);
+      this.BroadcastRemoveBuff(t, e, r, n);
+      super.OnBuffRemoved(t, e, o, n, r);
+      this.DestroyGameplayCueByBuff(t);
       if (Info_1.Info.IsBuildDevelopmentOrDebug) {
-        this.Entity.GetComponent(27)?.OnBuffRemoved(e);
-        this.Entity.GetComponent(22)?.OnBuffRemoved(e);
+        this.Entity.GetComponent(27)?.OnBuffRemoved(t);
+        this.Entity.GetComponent(22)?.OnBuffRemoved(t);
       }
       PlayerBuffComponent_1.O__.Stop();
     }
   }
-  OnBuffStackIncreased(e, t, o, r, f, n, a, i, s, u, h, C, m, l = 0, B = 0) {
-    if (e) {
+  OnBuffStackIncreased(t, e, o, n, r, f, i, a, s, u, h, C, m, l = 0, B = 0) {
+    if (t) {
       PlayerBuffComponent_1.G__.Start();
-      super.OnBuffStackIncreased(e, t, o, r, f, n, a, i, s, u, h, C, m, l, B);
-      this.BroadcastBuffStackChanged(e, t, o, false, l, B, m, r);
+      super.OnBuffStackIncreased(t, e, o, n, r, f, i, a, s, u, h, C, m, l, B);
+      this.BroadcastBuffStackChanged(t, e, o, false, l, B, m, n);
       PlayerBuffComponent_1.G__.Stop();
     }
   }
-  OnBuffStackDecreased(e, t, o, r, f, n = 0) {
-    if (e) {
+  OnBuffStackDecreased(t, e, o, n, r, f = 0) {
+    if (t) {
       PlayerBuffComponent_1.F__.Start();
-      super.OnBuffStackDecreased(e, t, o, r, f, n);
-      this.BroadcastBuffStackChanged(e, t, o, r, 0, n, f);
+      super.OnBuffStackDecreased(t, e, o, n, r, f);
+      this.BroadcastBuffStackChanged(t, e, o, n, 0, f, r);
       PlayerBuffComponent_1.F__.Stop();
     }
   }
-  OnBuffActiveChanged(e, t) {
+  OnBuffActiveChanged(t, e) {
     PlayerBuffComponent_1.N__.Start();
-    if (e && e.IsActive() !== t) {
-      this.BroadcastActivateBuff(e, t);
-      super.OnBuffActiveChanged(e, t);
+    if (t && t.IsActive() !== e) {
+      this.BroadcastActivateBuff(t, e);
+      super.OnBuffActiveChanged(t, e);
     }
     PlayerBuffComponent_1.N__.Stop();
   }
-  BroadcastAddBuff(e, t, o, r, f) {
-    if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e, r) && (!!e.IsInstantBuff() || !(e.Handle < 0))) {
-      (r = Protocol_1.Aki.Protocol.ie_.create()).uVn = e.Handle;
-      r.s5n = MathUtils_1.MathUtils.NumberToLong(e.Id);
-      r.F6n = e.Level;
-      r.Rjn = e.InstigatorId ?? 0;
-      r.xjn = t;
-      r.n5n = e.Duration;
-      r.Bjn = e.StackCount;
-      r.WHn = e.IsActive();
-      CombatMessage_1.CombatNet.Send(16006, this.Entity, Protocol_1.Aki.Protocol.ie_.create(r), e.PreMessageId, e.MessageId, o);
+  BroadcastAddBuff(t, e, o, n, r) {
+    if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t, n) && (!!t.IsInstantBuff() || !(t.Handle < 0))) {
+      (n = Protocol_1.Aki.Protocol.ie_.create()).uVn = t.Handle;
+      n.s5n = MathUtils_1.MathUtils.NumberToLong(t.Id);
+      n.F6n = t.Level;
+      n.Rjn = t.InstigatorId ?? 0;
+      n.xjn = e;
+      n.n5n = t.Duration;
+      n.Bjn = t.StackCount;
+      n.WHn = t.IsActive();
+      CombatMessage_1.CombatNet.Send(29439, this.Entity, Protocol_1.Aki.Protocol.ie_.create(n), t.PreMessageId, t.MessageId, o);
     }
   }
-  BroadcastActivateBuff(e, t) {
+  BroadcastActivateBuff(t, e) {
     var o;
     PlayerBuffComponent_1.R__.Start();
-    if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e)) {
-      (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = e.Handle;
-      o.qjn = t;
-      CombatMessage_1.CombatNet.Send(17942, this.Entity, o);
+    if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
+      (o = Protocol_1.Aki.Protocol.pe_.create()).uVn = t.Handle;
+      o.qjn = e;
+      CombatMessage_1.CombatNet.Send(28202, this.Entity, o);
     }
     PlayerBuffComponent_1.R__.Stop();
   }
-  BroadcastBuffStackChanged(e, t, o, r, f, n, a, i) {
+  BroadcastBuffStackChanged(t, e, o, n, r, f, i, a) {
     var s;
-    if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e)) {
-      (s = Protocol_1.Aki.Protocol.Re_.create()).cVn = e.Handle;
+    if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
+      (s = Protocol_1.Aki.Protocol.Re_.create()).cVn = t.Handle;
       s.Gjn = o;
-      s.Ojn = r;
-      s.Rjn = i ?? 0;
-      s.$L1 = f === 1;
-      s.WL1 = n === 1;
-      if ((o = e.GetRemainDuration()) > 0) {
+      s.Ojn = n;
+      s.Rjn = a ?? 0;
+      s.$L1 = r === 1;
+      s.WL1 = f === 1;
+      if ((o = t.GetRemainDuration()) > 0) {
         s.n5n = o;
       }
-      CombatMessage_1.CombatNet.Send(25568, this.Entity, s, undefined);
+      CombatMessage_1.CombatNet.Send(20056, this.Entity, s, undefined);
     }
   }
-  BroadcastRemoveBuff(e, t, o, r) {
+  BroadcastRemoveBuff(t, e, o, n) {
+    var r;
     var f;
-    var n;
-    if (!!e && !(e.Id < 0) && !!this.NeedBroadcastBuff(e)) {
-      f = this.Entity.GetComponent(0)?.GetCreatureDataId();
-      (n = Protocol_1.Aki.Protocol.re_.create()).uVn = e.Handle;
-      n.F4n = MathUtils_1.MathUtils.NumberToLong(f);
-      n.Ojn = t;
-      CombatMessage_1.CombatNet.Send(19422, this.Entity, n, o, undefined, r);
+    if (!!t && !(t.Id < 0) && !!this.NeedBroadcastBuff(t)) {
+      r = this.Entity.GetComponent(0)?.GetCreatureDataId();
+      (f = Protocol_1.Aki.Protocol.re_.create()).uVn = t.Handle;
+      f.F4n = MathUtils_1.MathUtils.NumberToLong(r);
+      f.Ojn = e;
+      CombatMessage_1.CombatNet.Send(29211, this.Entity, f, o, undefined, n);
     }
   }
-  AddBuffOrder(e, t) {
-    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能给其它玩家添加队伍buff", ["buffId", e], ["持有者", this.GetDebugName()], ["原因", t.Reason]);
+  AddBuffOrder(t, e) {
+    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能给其它玩家添加队伍buff", ["buffId", t], ["持有者", this.GetDebugName()], ["原因", e.Reason]);
   }
-  RemoveBuffOrder(e, t, o) {
-    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能给其它玩家移除队伍buff", ["buffId", e], ["持有者", this.GetDebugName()], ["原因", o]);
+  RemoveBuffOrder(t, e, o) {
+    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能给其它玩家移除队伍buff", ["buffId", t], ["持有者", this.GetDebugName()], ["原因", o]);
   }
-  RefreshBuffDurationOrder(e, t) {
-    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能刷新其他玩家队伍buff的持续时长", ["buffId", e], ["持有者", this.GetDebugName()], ["原因", t]);
+  RefreshBuffDurationOrder(t, e) {
+    CombatLog_1.CombatLog.Warn("Buff", this.Entity, "[buffComp] 客户端暂不能刷新其他玩家队伍buff的持续时长", ["buffId", t], ["持有者", this.GetDebugName()], ["原因", e]);
   }
   FormationBuffApplyRequest() {}
-  CalculateDurationExtraRate(e, t) {
-    let o = super.CalculateDurationExtraRate(e, t);
-    var r = this.GetCurrentBuffComponent();
-    if (r) {
-      t = (t ? r.InstigatorBuffTimeModifiers : r.OwnerBuffTimeModifiers).get(e);
-      if (t) {
-        for (var [, f] of t.values()) {
-          o += f;
+  CalculateDurationExtraRate(t, e) {
+    let o = super.CalculateDurationExtraRate(t, e);
+    var n = this.GetCurrentBuffComponent();
+    if (n) {
+      e = (e ? n.InstigatorBuffTimeModifiers : n.OwnerBuffTimeModifiers).get(t);
+      if (e) {
+        for (var [, r] of e.values()) {
+          o += r;
         }
       }
     }
     return o;
   }
-  CalculatePeriodExtraRate(e, t) {
-    let o = super.CalculatePeriodExtraRate(e, t);
-    var r = this.GetCurrentBuffComponent();
-    if (r) {
-      t = (t ? r.InstigatorBuffTimeModifiers : r.OwnerBuffTimeModifiers).get(e);
-      if (t) {
-        for (var [f] of t.values()) {
-          o += f;
+  CalculatePeriodExtraRate(t, e) {
+    let o = super.CalculatePeriodExtraRate(t, e);
+    var n = this.GetCurrentBuffComponent();
+    if (n) {
+      e = (e ? n.InstigatorBuffTimeModifiers : n.OwnerBuffTimeModifiers).get(t);
+      if (e) {
+        for (var [r] of e.values()) {
+          o += r;
         }
       }
     }
     return o;
   }
 };
+PlayerBuffComponent.LZd = Stats_1.Stat.Create("PlayerBuffComponent.OnAnyBuffInhibitionChangedInternal");
 PlayerBuffComponent.q__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffAdded");
 PlayerBuffComponent.O__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffRemoved");
 PlayerBuffComponent.G__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackIncreased");
 PlayerBuffComponent.F__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffStackDecreased");
 PlayerBuffComponent.N__ = Stats_1.Stat.Create("PlayerBuffComponent.OnBuffActiveChanged");
 PlayerBuffComponent.R__ = Stats_1.Stat.Create("PlayerBuffComponent.BroadcastActivateBuff");
-PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(200)], PlayerBuffComponent);
+PlayerBuffComponent = PlayerBuffComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(203)], PlayerBuffComponent);
 exports.PlayerBuffComponent = PlayerBuffComponent; //# sourceMappingURL=PlayerBuffComponent.js.map

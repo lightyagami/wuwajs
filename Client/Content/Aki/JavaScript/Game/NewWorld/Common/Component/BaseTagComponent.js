@@ -1,23 +1,23 @@
 "use strict";
 
 var BaseTagComponent_1;
-var __decorate = this && this.__decorate || function (e, t, a, n) {
+var __decorate = this && this.__decorate || function (t, e, a, n) {
   var o;
   var s = arguments.length;
-  var i = s < 3 ? t : n === null ? n = Object.getOwnPropertyDescriptor(t, a) : n;
+  var r = s < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, a) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    i = Reflect.decorate(e, t, a, n);
+    r = Reflect.decorate(t, e, a, n);
   } else {
-    for (var r = e.length - 1; r >= 0; r--) {
-      if (o = e[r]) {
-        i = (s < 3 ? o(i) : s > 3 ? o(t, a, i) : o(t, a)) || i;
+    for (var i = t.length - 1; i >= 0; i--) {
+      if (o = t[i]) {
+        r = (s < 3 ? o(r) : s > 3 ? o(e, a, r) : o(e, a)) || r;
       }
     }
   }
-  if (s > 3 && i) {
-    Object.defineProperty(t, a, i);
+  if (s > 3 && r) {
+    Object.defineProperty(e, a, r);
   }
-  return i;
+  return r;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -38,11 +38,11 @@ class TagSwitchedTask {
     this.B7 = undefined;
     this.Xte = undefined;
   }
-  StartTask(e, t, a, n) {
-    this.Qor = e;
-    this.B7 = t;
+  StartTask(t, e, a, n) {
+    this.Qor = t;
+    this.B7 = e;
     this.Xte = a;
-    this.Xte?.AddTagAddOrRemoveListener(this.Qor, t, n);
+    this.Xte?.AddTagAddOrRemoveListener(this.Qor, e, n);
   }
   EndTask() {
     this.Xte?.RemoveTagAddOrRemoveListener(this.Qor, this.B7);
@@ -54,9 +54,9 @@ class TagChangedTask {
     this.B7 = undefined;
     this.Xte = undefined;
   }
-  StartTask(e, t, a, n) {
-    this.Qor = e;
-    this.B7 = t;
+  StartTask(t, e, a, n) {
+    this.Qor = t;
+    this.B7 = e;
     this.Xte = a;
     this.Xte?.AddTagChangedListener(this.Qor, this.B7, n);
   }
@@ -73,16 +73,16 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
     this.Ac_ = new Map();
   }
   OnInit() {
-    this.TagContainer.AddAnyTagListener((e, t, a, n) => {
-      this.OnAnyTagChanged(e, t, a, n);
+    this.TagContainer.AddAnyTagListener((t, e, a, n) => {
+      this.OnAnyTagChanged(t, e, a, n);
     });
     return true;
   }
   OnStart() {
-    var e = this.Entity.GetComponent(0);
-    let t = undefined;
-    if ((t = (e?.IsVehicle() ? this.Entity.GetComponent(235) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
-      this.TagContainer.BindTsTagContainer(t);
+    var t = this.Entity.GetComponent(0);
+    let e = undefined;
+    if ((e = (t?.IsVehicle() ? this.Entity.GetComponent(238) : this.Entity.GetComponent(3))?.Actor?.AbilitySystemComponent)?.IsValid()) {
+      this.TagContainer.BindTsTagContainer(e);
     }
     return true;
   }
@@ -90,170 +90,166 @@ let BaseTagComponent = BaseTagComponent_1 = class BaseTagComponent extends Entit
     this.TagContainer.Clear();
     return true;
   }
-  Emit(e, t, ...a) {
-    if (e !== undefined && t !== undefined) {
-      var n = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e);
-      for (const o of [...t]) {
+  Emit(t, e, ...a) {
+    if (t !== undefined && e !== undefined) {
+      var n = GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t);
+      for (const o of [...e]) {
         try {
           o(...a);
-        } catch (e) {
-          if (e instanceof Error) {
+        } catch (t) {
+          if (t instanceof Error) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.ErrorWithStack("Event", 19, "tag事件回调执行异常", e, ["tag", n], ["error", e.message]);
+              Log_1.Log.ErrorWithStack("Event", 19, "tag事件回调执行异常", t, ["tag", n], ["error", t.message]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 19, "tag事件回调执行异常", ["tag", n], ["error", e]);
+            Log_1.Log.Error("Event", 19, "tag事件回调执行异常", ["tag", n], ["error", t]);
           }
         }
       }
     }
   }
-  AddTag(e) {
-    if (e !== undefined) {
-      this.TagContainer.AddExactTag(1, e);
+  AddTag(t) {
+    if (t !== undefined) {
+      this.TagContainer.AddExactTag(1, t);
     }
   }
-  RemoveTag(e) {
-    return e !== undefined && (this.TagContainer.RemoveTag(1, e), this.TagContainer.RemoveTag(4, e), true);
+  RemoveTag(t) {
+    return t !== undefined && (this.TagContainer.RemoveTag(1, t), this.TagContainer.RemoveTag(4, t), true);
   }
-  HasTag(e) {
-    return this.TagContainer.ContainsTag(e);
+  HasTag(t) {
+    return this.TagContainer.ContainsTag(t);
   }
-  HasExactTag(e) {
-    return this.TagContainer.ContainsExactTag(e);
+  HasExactTag(t) {
+    return this.TagContainer.ContainsExactTag(t);
   }
-  HasAnyTag(e) {
-    for (const t of e) {
-      if (this.HasTag(t)) {
+  HasAnyTag(t) {
+    for (const e of t) {
+      if (this.HasTag(e)) {
         return true;
       }
     }
     return false;
   }
-  HasAllTag(e) {
-    for (const t of e) {
-      if (!this.HasTag(t)) {
+  HasAllTag(t) {
+    for (const e of t) {
+      if (!this.HasTag(e)) {
         return false;
       }
     }
     return true;
   }
-  GetTagCount(e) {
-    if (e === undefined) {
+  GetTagCount(t) {
+    if (t === undefined) {
       return 0;
     } else {
-      return this.TagContainer.GetTagCount(e);
+      return this.TagContainer.GetTagCount(t);
     }
   }
-  ListenForTagAddOrRemove(e, t, a) {
+  ListenForTagAddOrRemove(t, e, a) {
     var n;
-    if (e !== undefined && t) {
-      (n = new TagSwitchedTask()).StartTask(e, t, this, a);
+    if (t !== undefined && e) {
+      (n = new TagSwitchedTask()).StartTask(t, e, this, a);
       return n;
     }
     if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)]);
-    }
-  }
-  HasTagAddOrRemoveListener(e, t) {
-    e = this.TagSwitchedCallbacks.get(e);
-    return !!e && e?.has(t);
-  }
-  AddTagAddOrRemoveListener(t, a, e) {
-    if (t !== undefined && a) {
-      let e = this.TagSwitchedCallbacks.get(t);
-      if (!e) {
-        this.TagSwitchedCallbacks.set(t, e = new Set());
-      }
-      if (e.has(a)) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Character", 19, "重复添加回调函数", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)], ["callbackName", a.name]);
-        }
-      } else {
-        e.add(a);
-      }
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)], ["callbackName", a?.name]);
-    }
-  }
-  RemoveTagAddOrRemoveListener(e, t) {
-    e = this.TagSwitchedCallbacks.get(e);
-    if (e) {
-      e.delete(t);
-    }
-  }
-  ListenForTagAnyCountChanged(e, t) {
-    var a;
-    if (e !== undefined && t) {
-      (a = new TagChangedTask()).StartTask(e, t, this);
-      return a;
-    }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)]);
-    }
-  }
-  AddTagChangedListener(t, a, e) {
-    if (t !== undefined && a) {
-      let e = this.TagChangedCallbacks.get(t);
-      if (!e) {
-        this.TagChangedCallbacks.set(t, e = new Set());
-      }
-      if (e.has(a)) {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Character", 19, "重复添加回调函数", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)], ["callbackName", a.name]);
-        }
-      } else {
-        e.add(a);
-      }
-    } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)]);
     }
   }
-  RemoveTagChangedListener(e, t) {
-    e = this.TagChangedCallbacks.get(e);
-    if (e) {
-      e.delete(t);
+  HasTagAddOrRemoveListener(t, e) {
+    t = this.TagSwitchedCallbacks.get(t);
+    return !!t && t?.has(e);
+  }
+  AddTagAddOrRemoveListener(e, a, t) {
+    if (e !== undefined && a) {
+      let t = this.TagSwitchedCallbacks.get(e);
+      if (!t) {
+        this.TagSwitchedCallbacks.set(e, t = new Set());
+      }
+      if (t.has(a)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Character", 19, "重复添加回调函数", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)], ["callbackName", a.name]);
+        }
+      } else {
+        t.add(a);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)], ["callbackName", a?.name]);
+    }
+  }
+  RemoveTagAddOrRemoveListener(t, e) {
+    t = this.TagSwitchedCallbacks.get(t);
+    if (t) {
+      t.delete(e);
+    }
+  }
+  ListenForTagAnyCountChanged(t, e) {
+    var a;
+    if (t !== undefined && e) {
+      (a = new TagChangedTask()).StartTask(t, e, this);
+      return a;
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(t)]);
+    }
+  }
+  AddTagChangedListener(e, a, t) {
+    if (e !== undefined && a) {
+      let t = this.TagChangedCallbacks.get(e);
+      if (!t) {
+        this.TagChangedCallbacks.set(e, t = new Set());
+      }
+      if (t.has(a)) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Character", 19, "重复添加回调函数", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)], ["callbackName", a.name]);
+        }
+      } else {
+        t.add(a);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Character", 19, "回调函数添加失败", ["tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e)]);
+    }
+  }
+  RemoveTagChangedListener(t, e) {
+    t = this.TagChangedCallbacks.get(t);
+    if (t) {
+      t.delete(e);
     }
   }
   GetTagDebugStrings() {
     return this.TagContainer?.GetDebugString() ?? "";
   }
-  OnAnyTagChanged(e, t, a, n) {
+  OnAnyTagChanged(t, e, a, n) {
     var o;
     BaseTagComponent_1.Pc_.Start();
-    if (e !== undefined && a !== t) {
+    if (t !== undefined && a !== e) {
       BaseTagComponent_1.wc_.Start();
-      if (a > 0 != (o = t > 0)) {
-        this.Emit(e, this.TagSwitchedCallbacks.get(e), e, o);
+      if (a > 0 != (o = e > 0)) {
+        this.Emit(t, this.TagSwitchedCallbacks.get(t), t, o);
       }
-      this.Emit(e, this.TagChangedCallbacks.get(e), t, e, n, a);
+      this.Emit(t, this.TagChangedCallbacks.get(t), e, t, n, a);
       BaseTagComponent_1.wc_.Stop();
-      BaseTagComponent_1.Uc_.Start();
-      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnGameplayTagChanged, e, a, t);
-      BaseTagComponent_1.Uc_.Stop();
       BaseTagComponent_1.Dc_.Start();
-      if (o = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(e)) {
-        EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, e, a, t);
+      if (o = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagById(t)) {
+        EventSystem_1.EventSystem.EmitWithTarget(o, EventDefine_1.EEventName.OnGlobalGameplayTagChanged, this.Entity.Id, t, a, e);
       }
       BaseTagComponent_1.Dc_.Stop();
-      this.Entity.GetComponent(210)?.OnTagChanged(e);
+      this.Entity.GetComponent(213)?.OnTagChanged(t);
     }
     BaseTagComponent_1.Pc_.Stop();
   }
-  GetChildrenTags(e) {
-    var t = [];
+  GetChildrenTags(t) {
+    var e = [];
     for (const a of this.TagContainer.GetAllExactTags()) {
-      if (a !== e && GameplayTagUtils_1.GameplayTagUtils.IsChildTag(a, e)) {
-        t.push(a);
+      if (a !== t && GameplayTagUtils_1.GameplayTagUtils.IsChildTag(a, t)) {
+        e.push(a);
       }
     }
-    return t;
+    return e;
   }
 };
 BaseTagComponent.Rc_ = new Map();
 BaseTagComponent.Pc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged");
 BaseTagComponent.wc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.Callbacks");
-BaseTagComponent.Uc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGameplayTagChanged");
 BaseTagComponent.Dc_ = Stats_1.Stat.Create("BaseTagComponent.OnAnyTagChanged.OnGlobalGameplayTagChanged");
-BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(206)], BaseTagComponent);
+BaseTagComponent = BaseTagComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(209)], BaseTagComponent);
 exports.BaseTagComponent = BaseTagComponent; //# sourceMappingURL=BaseTagComponent.js.map

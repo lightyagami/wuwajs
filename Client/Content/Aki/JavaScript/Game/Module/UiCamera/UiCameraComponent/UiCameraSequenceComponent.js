@@ -74,7 +74,7 @@ class UiCameraSequenceComponent extends UiCameraComponent_1.UiCameraComponent {
       this.GUo = new CustomPromise_1.CustomPromise();
       this.Fbi = ResourceSystem_1.ResourceSystem.LoadAsync(e.ToAssetPathName(), UE.LevelSequence, e => {
         this.PlayUiCameraSequence(e, i, t, true, s);
-      });
+      }, 100, "Ui.UiCamera");
       return this.GUo.Promise;
     }
   }

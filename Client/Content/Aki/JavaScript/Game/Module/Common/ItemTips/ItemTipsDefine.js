@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TipsAbyssDangoData = exports.TipsCardData = exports.TipsOverPowerData = exports.TipsCharacterData = exports.TipsVisionData = exports.TipsWeaponData = exports.TipsMaterialData = exports.ItemTipsData = undefined;
+exports.TipsHonamiStoryData = exports.TipsAbyssDangoData = exports.TipsCardData = exports.TipsOverPowerData = exports.TipsCharacterData = exports.TipsVisionData = exports.TipsWeaponData = exports.TipsMaterialData = exports.ItemTipsData = undefined;
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const PhantomRarityByRare_1 = require("../../../../Core/Define/ConfigQuery/PhantomRarityByRare");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
@@ -73,6 +73,7 @@ class TipsMaterialData extends (exports.ItemTipsData = ItemTipsData) {
     var i = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.ConfigId, this.IncId);
     this.Num = i;
     this.TxtEffect = t.AttributesDescription;
+    this.TxtEffectArgs = t.AttributesDescriptionArgs;
     this.TxtDescription = t.BgDescription;
     var i = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(this.ConfigId, this.IncId);
     if (i?.IsLimitTimeItem()) {
@@ -180,6 +181,8 @@ class TipsVisionData extends ItemTipsData {
       s = s.Rarity;
       this.VisionType = PhantomRarityByRare_1.configPhantomRarityByRare.GetConfig(s).Desc;
       this.Cost = ConfigManager_1.ConfigManager.PhantomBattleConfig.GetPhantomRareConfig(s).Cost;
+      this.ConfigId = t ? t.GetConfigId(true) : this.ConfigId;
+      this.Title = t ? t.GetMonsterName() : this.Title;
       s = ConfigManager_1.ConfigManager.TextConfig.GetTextById("VisionLevel");
       this.UpgradeLevel = StringUtils_1.StringUtils.Format(s, i.toString());
       const p = new VisionDetailInfoComponent_1.VisionDetailInfoComponentData();
@@ -314,4 +317,11 @@ class TipsAbyssDangoData extends ItemTipsData {
   }
 }
 exports.TipsAbyssDangoData = TipsAbyssDangoData;
+class TipsHonamiStoryData extends ItemTipsData {
+  constructor(t) {
+    super(t);
+    this.ItemType = 7;
+  }
+}
+exports.TipsHonamiStoryData = TipsHonamiStoryData;
 //# sourceMappingURL=ItemTipsDefine.js.map

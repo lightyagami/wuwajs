@@ -311,7 +311,6 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
           }
         }
       }
-      this.DG1(21).add(9902);
     }
     e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetAllSilentAreaDetection();
     if (e) {
@@ -320,6 +319,9 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
           var r = this.oq1.get(n.Secondary) ?? new Set();
           for (const s of n.LevelPlayList) {
             r.add(s);
+          }
+          if (n.DungeonId !== 0) {
+            r.add(n.DungeonId);
           }
           this.oq1.set(n.Secondary, r);
           this.BG1(n.Id, 1, n.Secondary);
@@ -380,6 +382,19 @@ class ActivityRegressModel extends ModelBase_1.ModelBase {
     if (this.LevelPlayHasDoubleDropTimes(e, 21)) {
       return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(21);
     } else if (this.LevelPlayHasDoubleDropTimes(e, 7)) {
+      return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(7);
+    } else {
+      return [false, 0, 0, "Reward_doubling_end", "PrefabTextItem_2334179570_Text"];
+    }
+  }
+  GetRegressDoubleDropTuple(e) {
+    if (this.LevelPlayHasDoubleDropTimes(e, 21)) {
+      return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(21);
+    } else if (this.LevelPlayHasDoubleDropTimes(e, 7)) {
+      return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(7);
+    } else if (this.DungeonHasDoubleDropTimes(e, 21)) {
+      return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(21);
+    } else if (this.DungeonHasDoubleDropTimes(e, 7)) {
       return ModelManager_1.ModelManager.ActivityRegressModel.GetDetectionDoubleDropTuple(7);
     } else {
       return [false, 0, 0, "Reward_doubling_end", "PrefabTextItem_2334179570_Text"];

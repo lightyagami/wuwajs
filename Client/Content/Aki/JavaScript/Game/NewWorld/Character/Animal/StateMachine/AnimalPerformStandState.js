@@ -8,15 +8,12 @@ const AnimalPerformStateBase_1 = require("./AnimalPerformStateBase");
 class AnimalPerformStandState extends AnimalPerformStateBase_1.AnimalPerformStateBase {
   OnEnter(t) {
     if (this.EcologicalInterface?.IsValid()) {
-      if (t === 0) {
-        this.AnimalEcologicalInterface.StateMachineInitializationComplete();
-      }
       this.EcologicalInterface.NoneStateStart();
     }
   }
   OnExit(t) {
     if (this.EcologicalInterface?.IsValid()) {
-      this.Owner.GetComponent(198)?.SetInteractionState(false, "AnimalPerformStandState OnExit");
+      this.Owner.GetComponent(201)?.SetInteractionState(false, "AnimalPerformStandState OnExit");
       this.EcologicalInterface.NoneStateEnd();
     }
   }

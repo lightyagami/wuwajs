@@ -15,13 +15,13 @@ class TrapDefenseFunctionalPanel extends BattleChildViewPanel_1.BattleChildViewP
     super(...arguments);
     this.Sequence = undefined;
     this.TipsItem = undefined;
-    this.qXu = () => {
+    this.U6u = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.OpenViewBdSum();
     };
-    this.GXu = () => {
+    this.B6u = () => {
       ModelManager_1.ModelManager.TrapDefenseModel?.OpenViewMonster(undefined, 1);
     };
-    this.FXu = () => {
+    this.k6u = () => {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.OpenPauseView();
     };
     this.vK1 = e => {
@@ -32,7 +32,7 @@ class TrapDefenseFunctionalPanel extends BattleChildViewPanel_1.BattleChildViewP
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIButtonComponent], [3, UE.UIItem], [4, UE.UIText]];
-    this.BtnBindInfo = [[0, this.qXu], [1, this.GXu], [2, this.FXu]];
+    this.BtnBindInfo = [[0, this.U6u], [1, this.B6u], [2, this.k6u]];
   }
   InitializeTemp() {
     this.TipsItem = this.GetItem(3);

@@ -13,11 +13,11 @@ const SpecificScanEffectData_1 = require("../SpecificScanEffect/SpecificScanEffe
 const SCAN_EFFECT_CLASS_PATH = "/Game/Aki/Effect/BluePrint/BP_FX_Common/BP_Fx_Scanning_2_7.BP_Fx_Scanning_2_7_C";
 class FlyingFeatherController extends ControllerBase_1.ControllerBase {
   static OnTick(e) {
-    if (this.LFd.size !== 0) {
+    if (this.Mjd.size !== 0) {
       var t;
       var r;
       var o = [];
-      for ([t, r] of this.LFd) {
+      for ([t, r] of this.Mjd) {
         if (!r.Update(e)) {
           o.push(t);
         }
@@ -35,7 +35,7 @@ class FlyingFeatherController extends ControllerBase_1.ControllerBase {
     ResourceSystem_1.ResourceSystem.LoadAsync(SCAN_EFFECT_CLASS_PATH, UE.Class, e => {
       if (e) {
         (e = ActorSystem_1.ActorSystem.Spawn(e, t, undefined)).StartScanEffect();
-        this.LFd.set(this._A, new SpecificScanEffectData_1.SpecificScanEffectData(this._A, e, t.GetLocation(), 2));
+        this.Mjd.set(this._A, new SpecificScanEffectData_1.SpecificScanEffectData(this._A, e, t.GetLocation(), 2));
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 31, "加载飞雷神扫描特效失败", ["path", SCAN_EFFECT_CLASS_PATH]);
       }
@@ -43,20 +43,20 @@ class FlyingFeatherController extends ControllerBase_1.ControllerBase {
     return this._A;
   }
   static StopFlyingFeatherScanEffect(e) {
-    var t = this.LFd.get(e);
+    var t = this.Mjd.get(e);
     if (t) {
       ActorSystem_1.ActorSystem.Put("StopChargeSlashScanEffect", t.EffectActor);
-      this.LFd.delete(e);
+      this.Mjd.delete(e);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 31, "[StopFlyingFeatherScanEffect] data is null", ["id", e]);
     }
   }
   static StopAllFlyingFeatherScanEffect() {
-    for (var [, e] of this.LFd) {
+    for (var [, e] of this.Mjd) {
       ActorSystem_1.ActorSystem.Put("StopAllFlyingFeatherScanEffect", e.EffectActor);
     }
-    this.LFd.clear();
+    this.Mjd.clear();
   }
 }
 (exports.FlyingFeatherController = FlyingFeatherController)._A = -1;
-FlyingFeatherController.LFd = new Map(); //# sourceMappingURL=FlyingFeatherController.js.map
+FlyingFeatherController.Mjd = new Map(); //# sourceMappingURL=FlyingFeatherController.js.map

@@ -19,17 +19,17 @@ class ActivityFishingController extends ActivityControllerBase_1.ActivityControl
   OnGetIsOpeningActivityRelativeView() {
     return false;
   }
-  OnOpenView(t) {}
-  OnGetActivityResource(t) {
+  OnOpenView(e) {}
+  OnGetActivityResource(e) {
     return "UiItem_FishingActivity";
   }
-  OnCreateSubPageComponent(t) {
+  OnCreateSubPageComponent(e) {
     return new ActivityFishingSubView_1.ActivityFishingSubView();
   }
-  OnCreateActivityData(t) {
+  OnCreateActivityData(e) {
     return new ActivityFishingData_1.ActivityFishingData();
   }
-  OnActivityFirstUnlock(t) {
+  OnShowActivityFirstUnlockView(e) {
     UiManager_1.UiManager.OpenView("FishingActivityUnlockView");
   }
   OnAddEvents() {
@@ -41,75 +41,75 @@ class ActivityFishingController extends ActivityControllerBase_1.ActivityControl
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UnLockGoods, ActivityFishingController.y9_);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(21583, ActivityFishingController.ZP_);
-    Net_1.Net.Register(16955, ActivityFishingController.ex_);
-    Net_1.Net.Register(23358, ActivityFishingController.tx_);
+    Net_1.Net.Register(25742, ActivityFishingController.ZP_);
+    Net_1.Net.Register(22541, ActivityFishingController.ex_);
+    Net_1.Net.Register(28418, ActivityFishingController.tx_);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(21583);
-    Net_1.Net.UnRegister(16955);
-    Net_1.Net.UnRegister(23358);
+    Net_1.Net.UnRegister(25742);
+    Net_1.Net.UnRegister(22541);
+    Net_1.Net.UnRegister(28418);
   }
   static GetCurrentActivityData() {
-    var t = ModelManager_1.ModelManager.ActivityModel?.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_FishingActivity);
-    let e = undefined;
-    t?.forEach(t => {
-      e = t;
+    var e = ModelManager_1.ModelManager.ActivityModel?.GetCurrentActivitiesByType(Protocol_1.Aki.Protocol.uks.Proto_FishingActivity);
+    let t = undefined;
+    e?.forEach(e => {
+      t = e;
     });
-    return e;
+    return t;
   }
-  static FishingActivityLimitRewardRequest(t) {
-    var e = new Protocol_1.Aki.Protocol.ky_();
-    e.gps = t;
-    Net_1.Net.Call(29865, e, t => {
-      if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 15838);
+  static FishingActivityLimitRewardRequest(e) {
+    var t = new Protocol_1.Aki.Protocol.ky_();
+    t.gps = e;
+    Net_1.Net.Call(23424, t, e => {
+      if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 24928);
       }
     });
   }
-  static FishingActivityMilestoneRewardRequest(t) {
-    var e = new Protocol_1.Aki.Protocol.Oy_();
+  static FishingActivityMilestoneRewardRequest(e) {
+    var t = new Protocol_1.Aki.Protocol.Oy_();
     var i = this.GetCurrentActivityData();
     if (i) {
-      e.w6n = i.Id;
-      e.KM_ = t;
-      Net_1.Net.Call(15096, e, t => {
-        if (t && t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 16778);
+      t.w6n = i.Id;
+      t.KM_ = e;
+      Net_1.Net.Call(27900, t, e => {
+        if (e && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26042);
         }
       });
     }
   }
 }
 exports.ActivityFishingController = ActivityFishingController;
-(_a = ActivityFishingController).ZP_ = t => {
-  var e = _a.GetCurrentActivityData();
-  if (e) {
-    e.RefreshLimitTimeTaskDataList(t.E$s, true);
-    e.RefreshActivityRedDotState();
+(_a = ActivityFishingController).ZP_ = e => {
+  var t = _a.GetCurrentActivityData();
+  if (t) {
+    t.RefreshLimitTimeTaskDataList(e.E$s, true);
+    t.RefreshActivityRedDotState();
   }
 };
-ActivityFishingController.ex_ = t => {
-  var e = _a.GetCurrentActivityData();
-  if (e) {
-    e.RefreshMilestoneReward(t.WM_, true);
-    e.RefreshActivityRedDotState();
+ActivityFishingController.ex_ = e => {
+  var t = _a.GetCurrentActivityData();
+  if (t) {
+    t.RefreshMilestoneReward(e.WM_, true);
+    t.RefreshActivityRedDotState();
   }
 };
-ActivityFishingController.tx_ = t => {
-  var e = _a.GetCurrentActivityData();
-  if (e) {
-    e.MilestoneRewardItemAccumulate = t.QM_;
+ActivityFishingController.tx_ = e => {
+  var t = _a.GetCurrentActivityData();
+  if (t) {
+    t.MilestoneRewardItemAccumulate = e.QM_;
   }
 };
-ActivityFishingController.y9_ = t => {
-  if (t.has(209)) {
+ActivityFishingController.y9_ = e => {
+  if (e.has(209)) {
     _a.PWa();
   }
 };
 ActivityFishingController.PWa = () => {
-  var t = _a.GetCurrentActivityData();
-  if (t) {
-    t.RefreshActivityRedDotState();
+  var e = _a.GetCurrentActivityData();
+  if (e) {
+    e.RefreshActivityRedDotState();
   }
 }; //# sourceMappingURL=ActivityFishingController.js.map

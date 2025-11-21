@@ -71,6 +71,9 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
   }
   Refresh(t, e, i) {
     try {
+      if (this.Pe) {
+        this.Ovt();
+      }
       this.Pe = t;
       this.K8e(t);
       this.Oqe(e);
@@ -96,18 +99,16 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
   u3e() {
     var t;
     var e;
-    if (this.Pe.EndOpenTime <= 0 || !this.Pe.CheckIfInOpenTime()) {
+    if (this.Pe.CheckIfShowTabTime()) {
+      e = TimeUtil_1.TimeUtil.GetDataFromTimeStamp(this.Pe.BeginOpenTime);
+      t = TimeUtil_1.TimeUtil.GetDataFromTimeStamp(this.Pe.EndOpenTime);
+      e = StringUtils_1.StringUtils.Format("{0}/{1}-{2}/{3}", e.Month, e.Day, t.Month, t.Day);
+      this.GetText(3).SetText(e);
+      this.GetText(3).SetUIActive(true);
+      this.GetItem(4).SetUIActive(false);
+    } else {
       this.GetText(3).SetUIActive(false);
       this.GetItem(4).SetUIActive(true);
-    } else {
-      this.GetItem(4).SetUIActive(false);
-      t = TimeUtil_1.TimeUtil.GetDataFromTimeStamp(this.Pe.BeginOpenTime);
-      e = TimeUtil_1.TimeUtil.GetDataFromTimeStamp(this.Pe.EndOpenTime);
-      t = StringUtils_1.StringUtils.Format("{0}/{1}-{2}/{3}", t.Month, t.Day, e.Month, e.Day);
-      e = this.Pe.LocalConfig.ShowTabTime;
-      this.GetText(3).SetUIActive(e);
-      this.GetItem(4).SetUIActive(!e);
-      this.GetText(3).SetText(t);
     }
   }
   Kbe() {
@@ -137,7 +138,6 @@ class ActivityPageSelectContent extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   K8e(t) {
-    this.Ovt();
     RedDotController_1.RedDotController.BindRedDot("CommonActivityPage", this.GetItem(2), undefined, t.Id);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, t.Id);
     this.U5e = true;

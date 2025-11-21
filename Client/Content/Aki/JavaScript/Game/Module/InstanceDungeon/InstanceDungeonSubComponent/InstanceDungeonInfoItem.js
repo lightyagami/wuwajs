@@ -31,6 +31,7 @@ const InstanceDungeonRecommendLevelItem_1 = require("./InstanceDungeonRecommendL
 const InstanceDungeonRightTitleItem_1 = require("./InstanceDungeonRightTitleItem");
 const InstanceDungeonScoreListItem_1 = require("./InstanceDungeonScoreListItem");
 const InstanceDungeonStartButtonItem_1 = require("./InstanceDungeonStartButtonItem");
+const InstanceDungeonTimeCountAndCostItem_1 = require("./InstanceDungeonTimeCountAndCostItem");
 const InstanceDungeonTitleWidelyItem_1 = require("./InstanceDungeonTitleWidelyItem");
 class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
@@ -41,6 +42,7 @@ class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
     this.jzs = undefined;
     this.$th = undefined;
     this.Xth = undefined;
+    this.ubd = undefined;
     this.gli = undefined;
     this.Yth = undefined;
     this.zth = undefined;
@@ -195,20 +197,32 @@ class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
       this.$th?.SetActive(false);
     }
   }
-  nih() {
-    var t = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(this.NUe);
-    if (!t || t <= 0) {
-      this.Xth?.SetUiActive(false);
-    } else {
-      const e = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeNormalConsume(this.NUe);
-      if (this.Xth) {
-        this.Xth.SetActive(true);
-        this.Xth.RefreshItem(e[0]);
-      } else {
-        this.Xth = new InstanceDungeonCostItem_1.InstanceDungeonCostItem();
-        this.ct_.push(async () => this.Xth.CreateThenShowByResourceIdAsync("UiItem_InstanceDungeon_Cost", this.GetItem(1)).then(() => {
-          this.Xth.RefreshItem(e[0]);
-        }));
+  cbd() {
+    var t = ConfigManager_1.ConfigManager.InstanceDungeonConfig?.GetConfig(this.NUe);
+    if (t) {
+      var t = t.InstSubType === 4;
+      var e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetInstancePowerCost(this.NUe);
+      if (e && !(e <= 0)) {
+        const n = ModelManager_1.ModelManager.ExchangeRewardModel.GetExchangeNormalConsume(this.NUe);
+        if (t) {
+          if (this.ubd) {
+            this.ubd.SetActive(true);
+            this.ubd.RefreshItem(n[0], this.NUe);
+          } else {
+            this.ubd = new InstanceDungeonTimeCountAndCostItem_1.InstanceDungeonTimeCountAndCostItem();
+            this.ct_.push(async () => this.ubd.CreateThenShowByResourceIdAsync("UiItem_CheckpointsRCountAndCost", this.GetItem(1)).then(() => {
+              this.ubd.RefreshItem(n[0], this.NUe);
+            }));
+          }
+        } else if (this.Xth) {
+          this.Xth.SetActive(true);
+          this.Xth.RefreshItem(n[0]);
+        } else {
+          this.Xth = new InstanceDungeonCostItem_1.InstanceDungeonCostItem();
+          this.ct_.push(async () => this.Xth.CreateThenShowByResourceIdAsync("UiItem_InstanceDungeon_Cost", this.GetItem(1)).then(() => {
+            this.Xth.RefreshItem(n[0]);
+          }));
+        }
       }
     }
   }
@@ -296,10 +310,10 @@ class InstanceDungeonInfoItem extends UiPanelBase_1.UiPanelBase {
   }
   UpdateInstanceDungeonLockItemAndCostItem() {
     var t = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetMatchingState() === 1;
-    this.Xth?.SetActive(false);
+    this.ubd?.SetActive(false);
     var e = this.R$l.CheckInstanceUnlock(this.NUe);
     if (e) {
-      this.nih();
+      this.cbd();
       this.zth.SetActive(!t);
       this.Zth.SetActive(false);
       this.Jth?.SetActive(t);

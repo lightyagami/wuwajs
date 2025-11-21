@@ -10,6 +10,7 @@ const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const UiInteractLogReport_1 = require("../../../Ui/LogReport/UiInteractLogReport");
 const UiManager_1 = require("../../../Ui/UiManager");
 const LguiUtil_1 = require("../../Util/LguiUtil");
 const ItemRewardController_1 = require("../ItemRewardController");
@@ -26,6 +27,7 @@ class CommonRewardView extends UiViewBase_1.UiViewBase {
       }
     };
     this.dSt = () => {
+      UiInteractLogReport_1.UiInteractLogReport.ReportSpaceKeyInteract(10);
       UiManager_1.UiManager.CloseView("CommonRewardView");
     };
     this.BYt = e => {

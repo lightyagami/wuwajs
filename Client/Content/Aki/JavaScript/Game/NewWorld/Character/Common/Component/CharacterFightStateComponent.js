@@ -38,7 +38,7 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     this.CurrentHandle = 0;
   }
   OnStart() {
-    this.rJo = this.Entity.GetComponent(176);
+    this.rJo = this.Entity.GetComponent(179);
     return true;
   }
   PreSwitchRemoteFightState(t) {
@@ -51,6 +51,9 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     return i;
   }
   TrySwitchHitState(t, e = false) {
+    if (t === 12) {
+      return this.TrySwitchState(6, 0, e);
+    }
     if (t === 7) {
       return this.TrySwitchState(4, 0, e);
     }
@@ -77,11 +80,16 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
       return this.TrySwitchState(5, s, i);
     } else if (e.OverrideType === 3) {
       return this.TrySwitchState(7, s, i);
+    } else if (e.OverrideType === 4) {
+      return this.TrySwitchState(9, s, i);
     } else {
       return this.TrySwitchState(1, s, i);
     }
   }
   CheckSwitchHitState(t, e = false) {
+    if (t === 12) {
+      return this.CheckSwitchState(6, 0, e);
+    }
     if (t === 7) {
       return this.CheckSwitchState(4, 0, e);
     }
@@ -98,6 +106,9 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
     return this.CheckSwitchState(2, 0, e);
   }
   SwitchHitState(t, e = false) {
+    if (t === 12) {
+      return this.p5r(6, 0, e);
+    }
     if (t === 7) {
       return this.p5r(4, 0, e);
     }
@@ -128,7 +139,8 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
       switch (i) {
         case 1:
         case 2:
-        case 7:
+        case 9:
+        case 6:
           return true;
       }
     }
@@ -211,12 +223,18 @@ let CharacterFightStateComponent = class CharacterFightStateComponent extends En
         i = `覆盖被弹反技能(${t}|${e})`;
         break;
       case 6:
-        i = `抓取(${t}|${e})`;
+        i = `被破弱(${t}|${e})`;
         break;
       case 7:
-        i = `特殊技能(${t}|${e})`;
+        i = `覆盖被破弱技能(${t}|${e})`;
         break;
       case 8:
+        i = `抓取(${t}|${e})`;
+        break;
+      case 9:
+        i = `特殊技能(${t}|${e})`;
+        break;
+      case 10:
         i = `状态机主状态(${t}|${e})`;
     }
     return i;

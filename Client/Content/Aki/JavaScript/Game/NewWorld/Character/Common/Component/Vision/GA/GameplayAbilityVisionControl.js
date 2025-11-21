@@ -91,7 +91,7 @@ class GameplayAbilityVisionControl extends GameplayAbilityVisionBase_1.GameplayA
     if (!i) {
       return false;
     }
-    i.Entity.CheckGetComponent(94)?.SetTeamTag(2);
+    i.Entity.CheckGetComponent(96)?.SetTeamTag(2);
     GameplayAbilityVisionControl.VisionControlHandle = i;
     this.GZo(i);
     this.BZo = ModelManager_1.ModelManager.SceneTeamModel.CurrentGroupType;
@@ -121,7 +121,7 @@ class GameplayAbilityVisionControl extends GameplayAbilityVisionBase_1.GameplayA
   }
   GZo(i) {
     if (i.Valid) {
-      (i = i.Entity.GetComponent(175)).AddBuff(CharacterBuffIds_1.buffId.VisionControl, {
+      (i = i.Entity.GetComponent(178)).AddBuff(CharacterBuffIds_1.buffId.VisionControl, {
         InstigatorId: i.CreatureDataId,
         Reason: "操控幻象回满能量"
       });

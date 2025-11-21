@@ -96,7 +96,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
   OnEnd() {
     this.MaterialController?.Dispose();
     this.DestroyVisibleDitherEvent();
-    var t = this.Entity.GetComponent(226);
+    var t = this.Entity.GetComponent(229);
     for (const e of this.CueHandles) {
       t?.RemoveCueByHandle(e);
     }
@@ -196,8 +196,8 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
       Context: "[NpcPerformComponent.FixNpcOnInitLocation]"
     });
     this.ActorComp.SetActorLocation(MathUtils_1.MathUtils.CommonTempVector.ToUeVector(), "NPC待机表演使用固定位置", false);
-    var t = this.Entity.GetComponent(182);
-    var e = this.Entity.GetComponent(114);
+    var t = this.Entity.GetComponent(185);
+    var e = this.Entity.GetComponent(117);
     t?.Disable("NPC待机表演使用固定位置");
     e?.Disable("NPC待机表演使用固定位置");
   }
@@ -265,7 +265,7 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
         });
       }
       if (e?.DefaultPerform?.BuffEffectIds) {
-        var i = this.Entity.GetComponent(226);
+        var i = this.Entity.GetComponent(229);
         for (const r of e.DefaultPerform.BuffEffectIds) {
           this.CueHandles.add(i.AddCue(r));
         }
@@ -273,5 +273,5 @@ let NpcPerformComponent = class NpcPerformComponent extends BasePerformComponent
     }
   }
 };
-NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(187)], NpcPerformComponent);
+NpcPerformComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(190)], NpcPerformComponent);
 exports.NpcPerformComponent = NpcPerformComponent; //# sourceMappingURL=NpcPerformComponent.js.map

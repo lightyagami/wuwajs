@@ -9,6 +9,7 @@ class ItemTipsModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.gxt = undefined;
+    this.SharpTempOpenParam = undefined;
   }
   SetCurrentItemTipsData(e) {
     this.gxt = e;

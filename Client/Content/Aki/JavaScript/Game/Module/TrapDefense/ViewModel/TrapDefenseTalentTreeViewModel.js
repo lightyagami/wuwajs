@@ -24,10 +24,10 @@ class TrapDefenseTalentTreeViewModel {
   SelectNode(e, t) {
     if (!!e && (!this.SelectedNode || this.SelectedNode.Id !== e.Id)) {
       this.SelectedNode = e;
-      this.V$c(e, t);
+      this.d$c(e, t);
     }
   }
-  V$c(e, t) {
+  d$c(e, t) {
     for (const s of this.DelegatesOnNodeSelect) {
       s(e, t);
     }

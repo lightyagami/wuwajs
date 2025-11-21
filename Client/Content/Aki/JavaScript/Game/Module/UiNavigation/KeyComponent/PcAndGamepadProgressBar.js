@@ -9,10 +9,13 @@ const Info_1 = require("../../../../Core/Common/Info");
 const UiPanelBase_1 = require("../../../Ui/Base/UiPanelBase");
 class ProgressBar extends UiPanelBase_1.UiPanelBase {
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UISprite]];
+  }
+  OnStart() {
+    this.SetPercent(0);
   }
   SetPercent(s) {
-    this.GetTexture(0)?.SetFillAmount(s);
+    this.GetSprite(0)?.SetFillAmount(s);
   }
 }
 class PcAndGamepadProgressBar {

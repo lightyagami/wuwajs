@@ -9,7 +9,8 @@ const FormationPropertyById_1 = require("../../../../Core/Define/ConfigQuery/For
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
-const AttrListScrollData_1 = require("../View/ViewData/AttrListScrollData");
+const FormationAttrListScrollData_1 = require("../View/ViewData/FormationAttrListScrollData");
+const RoleAttrListScrollData_1 = require("../View/ViewData/RoleAttrListScrollData");
 const RoleAttributeData_1 = require("./Module/RoleAttributeData");
 const RoleAudioData_1 = require("./Module/RoleAudioData");
 const RoleFavorData_1 = require("./Module/RoleFavorData");
@@ -23,7 +24,7 @@ class RoleDataBase {
     this.t_o = new Map();
     this.i_o = [RoleLevelData_1.RoleLevelData, RoleAttributeData_1.RoleAttributeData, RoleSkillData_1.RoleSkillData, RoleResonanceData_1.RoleResonanceData, RolePhantomData_1.RolePhantomData, RoleAudioData_1.RoleAudioData, RoleFavorData_1.RoleFavorData];
     this.BIl = -1;
-    this.vjc = true;
+    this.CKc = true;
     this.SortAttrList = (e, t) => {
       var a = e.Priority !== 0;
       var r = t.Priority !== 0;
@@ -79,10 +80,10 @@ class RoleDataBase {
     }
   }
   SetBackgroundMusicEnabled(e) {
-    this.vjc = e;
+    this.CKc = e;
   }
   GetBackgroundMusicEnabled() {
-    return this.vjc;
+    return this.CKc;
   }
   GetElementInfo() {
     var e = this.GetRoleConfig();
@@ -112,13 +113,13 @@ class RoleDataBase {
         ParamType: 0,
         OnlyMyRole: true
       });
-      var r = t ? t.EntityHandle.Entity.GetComponent(174) : undefined;
+      var r = t ? t.EntityHandle.Entity.GetComponent(177) : undefined;
       for (const i of e) {
         if (i.IsShow) {
           let e = 0;
           let t = 0;
           t = r ? (e = r.GetBaseValue(i.Id) ?? 0, r.GetCurrentValue(i.Id) - e ?? 0) : (o = this.GetAttributeData(), e = o.GetRoleBaseAttr(i.Id), o.GetRoleAddAttr(i.Id));
-          var o = new AttrListScrollData_1.AttrListScrollData(i.Id, e, t, i.Priority, false, 0);
+          var o = new RoleAttrListScrollData_1.RoleAttrListScrollData(i.Id, e, t, i.Priority, false, 0);
           a.push(o);
         }
       }
@@ -128,21 +129,16 @@ class RoleDataBase {
     return a;
   }
   y3l() {
-    var e;
-    var t;
-    var a = FormationPropertyById_1.configFormationPropertyById.GetConfig(10);
-    if (ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(a.Condition.toString(), undefined)) {
-      e = new Array();
-      t = ModelManager_1.ModelManager.FormationAttributeModel.GetData(10);
-      a = ConfigManager_1.ConfigManager.PropertyIndexConfig.GetPropertyIndexInfo(a.PropertyIndex);
-      if (t) {
-        t = new AttrListScrollData_1.AttrListScrollData(a.Id, t.Max / 100, 0, a.Priority, false, 0);
+    var e = new Array();
+    for (const r of [10]) {
+      var t;
+      var a = FormationPropertyById_1.configFormationPropertyById.GetConfig(r);
+      if (a && ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(a.Condition.toString(), undefined) && (t = ModelManager_1.ModelManager.FormationAttributeModel.GetData(r))) {
+        t = new FormationAttrListScrollData_1.FormationAttrListScrollData(r, t.Max / 100, 0, a.Priority, false, 0);
         e.push(t);
       }
-      return e;
-    } else {
-      return [];
     }
+    return e;
   }
   GetShowAttributeValueById(e) {
     var t;
@@ -150,7 +146,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var a = a ? a.EntityHandle?.Entity?.GetComponent(174) : undefined;
+    var a = a ? a.EntityHandle?.Entity?.GetComponent(177) : undefined;
     let r = 0;
     if (a) {
       if ((r = a.GetCurrentValue(e)) === 0 && Log_1.Log.CheckWarn()) {
@@ -170,7 +166,7 @@ class RoleDataBase {
       ParamType: 0,
       OnlyMyRole: true
     });
-    var t = t ? t.EntityHandle.Entity.GetComponent(174) : undefined;
+    var t = t ? t.EntityHandle.Entity.GetComponent(177) : undefined;
     let a = 0;
     return a = t ? t.GetBaseValue(e) : this.GetAttributeData().GetRoleBaseAttr(e);
   }

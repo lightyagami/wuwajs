@@ -38,7 +38,7 @@ class NewSoundNormalItem extends UiPanelBase_1.UiPanelBase {
       }
       this.SetTextureShowUntilLoaded(t.Conf.BigIcon, i);
     } else {
-      e = ModelManager_1.ModelManager.AdventureGuideModel.IsDetectionPreOpen(t);
+      e = ModelManager_1.ModelManager.AdventureGuideModel.GetIsDetectionPreOpenByData(t);
       if (t.IsLock && !e) {
         this.SetTextureShowUntilLoaded(t.Conf.LockBigIcon, i);
         LguiUtil_1.LguiUtil.SetLocalTextNew(r, t.Conf.AttributesDescriptionUnlock);

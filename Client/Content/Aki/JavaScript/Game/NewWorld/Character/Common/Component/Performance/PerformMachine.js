@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PerformMachine = undefined;
 const Log_1 = require("../../../../../../Core/Common/Log");
+const EventDefine_1 = require("../../../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../../Manager/ModelManager");
 const PerformActionCenter_1 = require("./Action/PerformActionCenter");
 const PerformMode_1 = require("./PerformMode");
@@ -25,12 +27,18 @@ class PerformMachine {
       this.CurrentAction = undefined;
       this.bl();
     };
+    this.RRm = t => {
+      if (t) {
+        this.bl();
+      }
+    };
   }
   Init() {
     this.Modes.set(1, new PerformMode_1.PlotMode(1, this.ph_, this));
     this.Modes.set(2, new PerformMode_1.ActionMode(2, this.ph_, this));
     this.Modes.set(3, new PerformMode_1.EcologyMode(3, this.ph_, this));
     this.EntityHandle = ModelManager_1.ModelManager.CreatureModel.GetEntityById(this.ph_.Entity.Id);
+    EventSystem_1.EventSystem.AddWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.RRm);
   }
   Clear() {
     this.Modes.forEach(t => {
@@ -43,6 +51,7 @@ class PerformMachine {
     this.CurrentAction = undefined;
     this.jG1.clear();
     this.EntityHandle = undefined;
+    EventSystem_1.EventSystem.RemoveWithTarget(this.ph_.Entity, EventDefine_1.EEventName.AnimCompActiveStateChange, this.RRm);
   }
   CleanAction() {
     if (this.CurrentAction) {
@@ -59,13 +68,13 @@ class PerformMachine {
   GetCurrentMode() {
     return this.bj_;
   }
-  DoAction(t, i, e, s, r, h = false) {
+  DoAction(t, i, e, s, h, r = false) {
     this.NUe++;
     var o = this.NUe;
-    var i = PerformActionCenter_1.PerformActionPool.GetAction(i, o, e, this.ph_, this.wj_, s, r);
+    var i = PerformActionCenter_1.PerformActionPool.GetAction(i, o, e, this.ph_, this.wj_, s, h);
     i.IsValid = true;
     i.Mode = t;
-    i.IsPersistent = h;
+    i.IsPersistent = r;
     this.jG1.set(o, i);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("BasePerform", 26, "[PerformMachine] 行为入队", ["id", i.Id], ["mode", t], ["PbDataId", this.EntityHandle.PbDataId]);
@@ -83,9 +92,9 @@ class PerformMachine {
     }
   }
   bl() {
-    if (!this.CurrentAction?.IsAtomic) {
+    var i;
+    if (!this.CurrentAction?.IsAtomic && this.ph_.Entity.GetComponent(44)?.Active) {
       let t = true;
-      var i;
       if (this.bj_ !== 0 && this.Modes.get(this.bj_).CheckExit()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("BasePerform", 26, "[PerformMachine] 状态切换-退出 [1-Plot 2-Action 3-Ecology]", ["mode", this.bj_], ["PbDataId", this.EntityHandle.PbDataId]);

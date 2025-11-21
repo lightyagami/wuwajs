@@ -32,7 +32,7 @@ let VehicleSkillComponent = class VehicleSkillComponent extends BaseSkillCompone
     this.Gce = undefined;
   }
   OnInit() {
-    return !!super.OnInit() && (this.oRe = this.Entity.GetComponent(236), this.Gce = this.Entity.GetComponent(237), true);
+    return !!super.OnInit() && (this.oRe = this.Entity.GetComponent(239), this.Gce = this.Entity.GetComponent(240), true);
   }
   GetMainAnimInstance() {
     return this.oRe.MainAnimInstance;

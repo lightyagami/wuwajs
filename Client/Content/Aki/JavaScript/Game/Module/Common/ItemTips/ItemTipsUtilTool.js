@@ -49,7 +49,8 @@ class ItemTipsComponentUtilTool {
   3: ItemTipsDefine_1.TipsCharacterData,
   4: ItemTipsDefine_1.TipsOverPowerData,
   5: ItemTipsDefine_1.TipsCardData,
-  6: ItemTipsDefine_1.TipsAbyssDangoData
+  6: ItemTipsDefine_1.TipsAbyssDangoData,
+  7: ItemTipsDefine_1.TipsHonamiStoryData
 };
 ItemTipsComponentUtilTool.UDl = {
   [0]: "ItemTipsComponent",
@@ -58,7 +59,8 @@ ItemTipsComponentUtilTool.UDl = {
   3: "ItemTipsComponent",
   4: "PowerTipsItem",
   5: "PersonalCardPreviewComponent",
-  6: "ItemTipsComponent"
+  6: "ItemTipsComponent",
+  7: "HonamiStoryTipsItem"
 };
-ItemTipsComponentUtilTool.fxt = new Map([[3, 2], [2, 1], [1, 3], [6, 5], [13, 6]]);
+ItemTipsComponentUtilTool.fxt = new Map([[3, 2], [2, 1], [1, 3], [6, 5], [13, 6], [17, 7]]);
 ItemTipsComponentUtilTool.OXs = new Map([[ItemDefines_1.EItemId.OverPower, 4]]); //# sourceMappingURL=ItemTipsUtilTool.js.map

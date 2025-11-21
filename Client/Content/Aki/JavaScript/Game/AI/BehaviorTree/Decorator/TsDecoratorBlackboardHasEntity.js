@@ -51,7 +51,7 @@ class TsDecoratorBlackboardHasEntity extends UE.BTDecorator_BlueprintBase {
     if (this.TsBlackboardKey) {
       e = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(r.Entity.Id, this.TsBlackboardKey);
       if (o && (Log_1.Log.CheckInfo() && Log_1.Log.Info("AI", 6, "AnimalDebug BlackboardHasEntity2", ["value", e]), e) && (o = EntitySystem_1.EntitySystem.GetComponent(e, 3)?.CreatureData.GetEntityType(), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("AI", 6, "AnimalDebug BlackboardHasEntity3", ["entityType", o], ["Player", Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint()], ["MainAnims", r.Entity.GetComponent(178)?.MainAnimInstance?.GetMainAnimsDebugText()]);
+        Log_1.Log.Info("AI", 6, "AnimalDebug BlackboardHasEntity3", ["entityType", o], ["Player", Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint()], ["MainAnims", r.Entity.GetComponent(181)?.MainAnimInstance?.GetMainAnimsDebugText()]);
       }
       if (e && EntitySystem_1.EntitySystem.Get(e)) {
         return this.TsCompareValue;

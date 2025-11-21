@@ -32,6 +32,11 @@ class QuestItem extends UiPanelBase_1.UiPanelBase {
     this.e8 = 0;
     this.Cno = undefined;
     this.Mno = undefined;
+    this.Yai = e => {
+      if (e === 1) {
+        this.Cno(this.QuestId);
+      }
+    };
     this.Cno = e;
   }
   OnRegisterComponent() {
@@ -110,11 +115,9 @@ class QuestItem extends UiPanelBase_1.UiPanelBase {
     this.GetSprite(0).SetUIActive(this.QuestId === ModelManager_1.ModelManager.QuestNewModel.GetCurTrackedQuest()?.Id);
   }
   gno() {
-    this.GetExtendToggle(4).OnStateChange.Add(e => {
-      if (e === 1) {
-        this.Cno(this.QuestId);
-      }
-    });
+    var e = this.GetExtendToggle(4);
+    e.OnStateChange.Clear();
+    e.OnStateChange.Add(this.Yai);
   }
   lct(e) {
     this.GetText(2).SetText(e.Name);

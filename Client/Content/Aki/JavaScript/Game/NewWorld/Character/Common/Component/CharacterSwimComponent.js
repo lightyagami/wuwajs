@@ -89,7 +89,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     this.hWr = (t, i) => {
       this.Lie.RemoveTag(-104158548);
       if (this.EnterSwimFromAirBuffIndex) {
-        this.Entity.GetComponent(175)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+        this.Entity.GetComponent(178)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
         this.EnterSwimFromAirBuffIndex = 0;
       }
       if (i === CharacterUnifiedStateTypes_1.ECharMoveState.FastSwim) {
@@ -173,7 +173,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     };
   }
   static get Dependencies() {
-    return [3, 179, 206];
+    return [3, 182, 209];
   }
   get BuffIndex() {
     return this.wWr;
@@ -325,7 +325,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
             }
           } else {
             if (this.Gce.FallingIntoWater && Time_1.Time.Now > this.BWr && (this.Gce.FallingIntoWater = false, this.Lie.RemoveTag(-104158548), this.EnterSwimFromAirBuffIndex)) {
-              this.Entity.GetComponent(175)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+              this.Entity.GetComponent(178)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
               this.EnterSwimFromAirBuffIndex = 0;
             }
             this.MWr.DeepCopy(this.Hte.ActorLocation);
@@ -399,16 +399,16 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     this.Hte = this.Entity.GetComponent(3);
     var t = this.Hte.ActorLocationProxy;
     Vector_1.Vector.VectorCopy(t, this.fWr);
-    var t = this.Entity.GetComponent(206);
+    var t = this.Entity.GetComponent(209);
     if (!t?.Valid) {
       return false;
     }
     this.Lie = t;
-    this.I5r = this.Entity.GetComponent(176);
-    this.oRe = this.Entity.GetComponent(178);
+    this.I5r = this.Entity.GetComponent(179);
+    this.oRe = this.Entity.GetComponent(181);
     this.cBe = this.Entity.GetComponent(40);
     this.RWr = this.Entity.GetComponent(34);
-    t = this.Entity.GetComponent(179);
+    t = this.Entity.GetComponent(182);
     return !!t?.Valid && (this.Gce = t, this.vWr = this.Hte.HalfHeight, Vector_1.Vector.VectorCopy(this.Hte.ActorLocationProxy, this.MWr), true);
   }
   lUr() {
@@ -527,7 +527,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
     for (let i = 0; i < t; ++i) {
       var e = this.Mao.HitResult.Components.Get(i);
       let t = undefined;
-      if (t = (t = e instanceof UE.LandscapeHeightfieldCollisionComponent ? s.Get(i) : e.BodyInstance.PhysMaterialOverride) || UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(e)) {
+      if (t = (t = e instanceof UE.LandscapeHeightfieldCollisionComponent ? s.Get(i) : UE.KuroCollisionLibrary.GetBodyInstance(this.Mao.HitResult, i).PhysMaterialOverride) || UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(e)) {
         switch (t.GetName()) {
           case "CloudSeaLand":
             this.WaterType = 1;
@@ -619,7 +619,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
             this.cBe.StopAllSkills("CharacterSwimComponent.DetectEnterWaterFromAir");
             this.iKr(s, e);
             this.Lie.AddTag(-104158548);
-            if (h = this.Entity.GetComponent(175)) {
+            if (h = this.Entity.GetComponent(178)) {
               this.EnterSwimFromAirBuffIndex = h.AddBuffLocal(CharacterBuffIds_1.buffId.FallImmune, {
                 InstigatorId: this.Hte.CreatureData.GetCreatureDataId(),
                 Duration: 1,
@@ -701,7 +701,7 @@ let CharacterSwimComponent = CharacterSwimComponent_1 = class CharacterSwimCompo
   }
   VWr(t) {
     if (this.Gce.FallingIntoWater && Time_1.Time.Now > this.BWr && (this.Gce.FallingIntoWater = false, this.Lie.RemoveTag(-104158548), this.EnterSwimFromAirBuffIndex)) {
-      this.Entity.GetComponent(175)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
+      this.Entity.GetComponent(178)?.RemoveBuffByHandle(this.EnterSwimFromAirBuffIndex, -1, "空中入水结束");
       this.EnterSwimFromAirBuffIndex = 0;
     }
     let i = false;

@@ -1,0 +1,358 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SubPackageDownLoadView = undefined;
+const UE = require("ue");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const VideoResUpdate_1 = require("../../../../Launcher/DiffPatch/Update/VideoResUpdate");
+const NetworkDefine_1 = require("../../../../Launcher/NetworkDefine");
+const EventDefine_1 = require("../../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const LocalStorage_1 = require("../../../Common/LocalStorage");
+const LocalStorageDefine_1 = require("../../../Common/LocalStorageDefine");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
+const ModelManager_1 = require("../../../Manager/ModelManager");
+const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
+const PopupCaptionItem_1 = require("../../../Ui/Common/PopupCaptionItem");
+const LevelSequencePlayer_1 = require("../../Common/LevelSequencePlayer");
+const ConfirmBoxDefine_1 = require("../../ConfirmBox/ConfirmBoxDefine");
+const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
+const GenericLayout_1 = require("../../Util/Layout/GenericLayout");
+const LguiUtil_1 = require("../../Util/LguiUtil");
+const DynScrollView_1 = require("../../Util/ScrollView/DynScrollView");
+const SubPackageDefine_1 = require("../SubPackageDefine");
+const SubPackageDownLoadDynamicItem_1 = require("./SubPackageDownLoadDynamicItem");
+const SubPackageDownLoadItem_1 = require("./SubPackageDownLoadItem");
+const SubPackageDownLoadVersionTipsView_1 = require("./SubPackageDownLoadVersionTipsView");
+const startTag = new UE.FName("Start");
+const switchTag = new UE.FName("Switch");
+const closeTag = new UE.FName("Close");
+class SubPackageDownLoadView extends UiViewBase_1.UiViewBase {
+  constructor() {
+    super(...arguments);
+    this.lqe = undefined;
+    this.DTm = undefined;
+    this.UTm = undefined;
+    this.bhd = undefined;
+    this.Lhd = undefined;
+    this.xTm = undefined;
+    this.BTm = [];
+    this.qbm = 0;
+    this.Obm = [];
+    this.Gbm = [];
+    this.TDe = undefined;
+    this.Cwm = false;
+    this.hLm = undefined;
+    this.NPn = () => {
+      var e = new SubPackageDownLoadItem_1.SubPackageDownLoadItem();
+      e.OnClickCallBack = this.qTm;
+      e.OnClickHelpBtnCallBack = this.OTm;
+      e.OnClickBtnCallBack = this.lLm;
+      this.BTm.push(e);
+      return e;
+    };
+    this.C5e = () => {
+      var e = new SubPackageTab();
+      e.OnClickCallBack = this.Dhd;
+      return e;
+    };
+    this.qTm = (i, e) => {
+      var t = this.qbm === 0 ? this.Obm : this.Gbm;
+      if (e) {
+        let e = -1;
+        for (const a of t) {
+          if (a.VersionId === i) {
+            e = t.indexOf(a);
+          }
+        }
+        if (e < 0) {
+          return;
+        }
+        t[e].IsShowItem = true;
+        var r = [];
+        for (const n of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageListByVersion(i) ?? []) {
+          var o = new SubPackageDefine_1.SubPackageDownLoadDynamicData();
+          o.SubPackageId = n.Id;
+          r.push(o);
+        }
+        r.sort(this.GTm);
+        t.splice(e + 1, 0, ...r);
+      } else {
+        for (let e = 0; e < t.length; e++) {
+          if (t[e].VersionId === i) {
+            t[e].IsShowItem = false;
+          }
+          var s = t[e].SubPackageId;
+          if (s && ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(s)?.Version === i) {
+            t.splice(e, 1);
+            e--;
+          }
+        }
+      }
+      this.DTm?.RefreshByData(t, true, true);
+      this.DTm?.BindLateUpdate(() => {
+        for (const e of this.BTm) {
+          if (e.GetData()?.VersionId === i) {
+            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(e.GetInteractItem(), true, true);
+            break;
+          }
+        }
+        this.DTm?.UnBindLateUpdate();
+      });
+    };
+    this.FTm = () => {
+      var e = [];
+      for (const r of this.qbm === 0 ? this.Obm : this.Gbm) {
+        if (!r.SubPackageId && (e.push(r), r.IsShowItem)) {
+          var i = [];
+          for (const o of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageListByVersion(r.VersionId) ?? []) {
+            var t = new SubPackageDefine_1.SubPackageDownLoadDynamicData();
+            t.SubPackageId = o.Id;
+            i.push(t);
+          }
+          i.sort(this.GTm);
+          e.push(...i);
+        }
+      }
+      if (this.qbm === 0) {
+        this.Obm = e;
+        this.DTm?.RefreshByData(this.Obm, true);
+      } else {
+        this.Gbm = e;
+        this.DTm?.RefreshByData(this.Gbm, true);
+      }
+      this.DTm?.BindLateUpdate(() => {
+        for (const i of this.BTm) {
+          var e = i.GetData();
+          if (e?.VersionId && e.VersionId === this.hLm?.VersionId || e?.SubPackageId && e.SubPackageId === this.hLm?.SubPackageId) {
+            ControllerHolder_1.ControllerHolder.UiNavigationNewController.SetNavigationFocusForView(i.GetInteractItem(), true, true);
+            break;
+          }
+        }
+        this.hLm = undefined;
+        this.DTm?.UnBindLateUpdate();
+      });
+      this.Qbm();
+    };
+    this.twm = () => {
+      this.GetExtendToggle(3).SetToggleState(1, true);
+    };
+    this.GTm = (e, i) => {
+      var t = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(e.SubPackageId);
+      var r = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetSubPackageDownLoadItemStateById(i.SubPackageId);
+      if (t !== r) {
+        return t - r;
+      } else if ((t = ModelManager_1.ModelManager.SubPackageDownLoadModel.SubPackageDownLoadList.indexOf(e.SubPackageId)) === (r = ModelManager_1.ModelManager.SubPackageDownLoadModel.SubPackageDownLoadList.indexOf(i.SubPackageId)) && t === -1) {
+        return e.SubPackageId - i.SubPackageId;
+      } else if (t === r || t !== -1 && r !== -1) {
+        if (t !== r) {
+          return t - r;
+        } else {
+          return e.SubPackageId - i.SubPackageId;
+        }
+      } else {
+        return r - t;
+      }
+    };
+    this.ATm = () => {
+      this.NTm();
+      this.Qbm();
+    };
+    this.OTm = (e, i) => {
+      this.UTm?.RefreshItem(e, i.D_K2_GetComponentLocation());
+      this.UTm?.SetUiActive(true);
+    };
+    this.Dhd = (e, i) => {
+      this.Lhd?.SetToggleStateForce(0);
+      this.Lhd = e;
+      this.qbm = i;
+      this.VTm(i);
+      this.AniPlay(switchTag);
+    };
+    this.tPu = () => {
+      var e;
+      if (ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish()) {
+        this.CloseMe();
+        ControllerHolder_1.ControllerHolder.ResourceManagerController.LoginPrepareResCheckPromise?.SetResult();
+      } else {
+        (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(397)).FunctionMap.set(1, () => {
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+        });
+        e.FunctionMap.set(2, () => {
+          ControllerHolder_1.ControllerHolder.SubPackageController.RestartSubPackageDownLoading(SubPackageDefine_1.KEY_SUBPACKAGE_ID);
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
+      }
+    };
+    this.jTm = e => {
+      var e = e === 1;
+      LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData, e);
+      const i = ModelManager_1.ModelManager.SubPackageDownLoadModel.DownLoadingSubPackageId;
+      if (!e && ModelManager_1.ModelManager.SubPackageDownLoadModel.NetworkListener.GetNetworkType() === NetworkDefine_1.ENetworkType.Cell && i > 0) {
+        ControllerHolder_1.ControllerHolder.SubPackageController.StopSubPackageDownLoading(i);
+        (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(398)).FunctionMap.set(1, () => {
+          ControllerHolder_1.ControllerHolder.ConfirmBoxController.CloseConfirmBoxView();
+        });
+        e.FunctionMap.set(2, () => {
+          this.twm();
+          ControllerHolder_1.ControllerHolder.SubPackageController.RestartSubPackageDownLoading(i);
+        });
+        ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
+      }
+    };
+    this.lLm = e => {
+      this.hLm = e;
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UITexture], [2, UE.UIVerticalLayout], [3, UE.UIExtendToggle], [4, UE.UIDynScrollViewComponent], [5, UE.UIButtonComponent], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIText], [10, UE.UIItem]];
+    this.BtnBindInfo = [[5, this.tPu], [3, this.jTm]];
+  }
+  OnAddEventListener() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.ATm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshSubPackUseCellData, this.twm);
+  }
+  OnRemoveEventListener() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackageDownLoadByPriority, this.FTm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackDownLoadState, this.ATm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRefreshSubPackUseCellData, this.twm);
+  }
+  async OnBeforeStartAsync() {
+    this.Cwm = LevelSequencePlayer_1.LevelSequencePlayer.GetBanned();
+    LevelSequencePlayer_1.LevelSequencePlayer.SetBanned(false);
+    var e = [];
+    var i = this.GetItem(0);
+    this.lqe = new PopupCaptionItem_1.PopupCaptionItem();
+    e.push(this.lqe.CreateThenShowByActorAsync(i.GetOwner()));
+    this.lqe.SetCloseCallBack(() => {
+      this.CloseMe();
+    });
+    this.xTm = new SubPackageDownLoadDynamicItem_1.SubPackageDownLoadDynamicItem();
+    this.DTm = new DynScrollView_1.DynamicScrollView(this.GetUIDynScrollViewComponent(4), this.GetItem(8), this.xTm, this.NPn);
+    e.push(this.DTm.Init());
+    this.bhd = new GenericLayout_1.GenericLayout(this.GetVerticalLayout(2), this.C5e);
+    this.UTm = new SubPackageDownLoadVersionTipsView_1.SubPackageDownLoadVersionTipsView();
+    e.push(this.UTm.CreateByResourceIdAsync("UiItem_TipsInfo1", this.GetItem(7)));
+    await Promise.all(e);
+  }
+  OnStart() {
+    ControllerHolder_1.ControllerHolder.ResourceManagerController.ChangeHttpTickFrequency();
+    var e = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.SubDownLoadAgreeUseCellData) ?? false;
+    this.GetExtendToggle(3).SetToggleState(e ? 1 : 0);
+    const i = this.OpenParam;
+    const t = [];
+    for (const r of i?.SubPackageIdList ?? []) {
+      if (r) {
+        t.push(r);
+      }
+    }
+    this.bhd?.RefreshByData([0, 1], () => {
+      if (i && t.length > 0) {
+        for (const e of t) {
+          if (e) {
+            if (ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageById(e)?.Type === 4) {
+              this.bhd?.GetLayoutItemByIndex(1)?.SelectToggle();
+              return;
+            }
+          }
+        }
+      }
+      this.bhd?.GetLayoutItemByIndex(0)?.SelectToggle();
+    });
+    e = ConfigManager_1.ConfigManager.UiResourceConfig.GetLogoPathByLanguage("LoginLogo");
+    this.SetTextureByPath(e, this.GetTexture(1));
+    if (ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingNone()) {
+      ControllerHolder_1.ControllerHolder.SubPackageController.AutoDownLoadKeySubPackage();
+    } else if (ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish() && t.length > 0) {
+      ControllerHolder_1.ControllerHolder.SubPackageController.PrioritySubPackageDownLoading(t);
+    }
+    this.TDe = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+      this.WF1();
+    }, TimeUtil_1.TimeUtil.InverseMillisecond);
+    if (i) {
+      this.lqe?.SetCloseBtnActive(i.IsShowCloseBtn);
+      this.GetButton(5).RootUIComp?.SetUIActive(!i.IsShowCloseBtn);
+      this.GetText(9).SetUIActive(!i.IsShowCloseBtn);
+    } else {
+      this.lqe?.SetCloseBtnActive(true);
+      this.GetButton(5).RootUIComp?.SetUIActive(false);
+      this.GetText(9).SetUIActive(false);
+    }
+    this.NTm();
+    this.Qbm();
+    this.AniPlay(startTag);
+  }
+  WF1() {
+    for (const e of this.BTm) {
+      e.RefreshDownLoadState();
+    }
+  }
+  NTm() {
+    var e = VideoResUpdate_1.VideoResUpdate.GetFreeSpace();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(6), "SubPackageDownLoad_FreeSpace", ModelManager_1.ModelManager.SubPackageDownLoadModel.ByteConverter(e));
+  }
+  OnBeforeHide() {
+    this.AniPlay(closeTag);
+  }
+  OnBeforeDestroy() {
+    LevelSequencePlayer_1.LevelSequencePlayer.SetBanned(this.Cwm);
+    ControllerHolder_1.ControllerHolder.ResourceManagerController.RestoreHttpTickFrequency();
+    if (this.TDe) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.TDe);
+      this.TDe = undefined;
+    }
+  }
+  VTm(e) {
+    if (e === 0) {
+      if (this.Obm.length <= 0) {
+        this.Obm = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetKeySubPackageData();
+      }
+      this.DTm?.RefreshByData(this.Obm);
+    } else if (e === 1) {
+      if (this.Gbm.length <= 0) {
+        this.Gbm = ModelManager_1.ModelManager.SubPackageDownLoadModel.GetExpendSubPackageData();
+      }
+      this.DTm?.RefreshByData(this.Gbm);
+    }
+  }
+  Qbm() {
+    var e = ModelManager_1.ModelManager.SubPackageDownLoadModel.IsKeyPackageDownLoadingFinish();
+    this.GetButton(5)?.SetSelfInteractive(e);
+  }
+  AniPlay(e) {
+    this.GetItem(10)?.GetOwner()?.GetComponentsByTag(UE.UIInturnAnimController.StaticClass(), e).Get(0).Play();
+  }
+}
+exports.SubPackageDownLoadView = SubPackageDownLoadView;
+class SubPackageTab extends GridProxyAbstract_1.GridProxyAbstract {
+  constructor() {
+    super(...arguments);
+    this.a8e = 0;
+    this.OnClickCallBack = undefined;
+    this.N8e = () => {
+      this.OnClickCallBack?.(this.GetExtendToggle(0), this.a8e);
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIText]];
+    this.BtnBindInfo = [[0, this.N8e]];
+  }
+  Refresh(e, i, t) {
+    if (e === 0) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "SubPackageDownLoad_Key_Tab");
+    }
+    if (e === 1) {
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), "SubPackageDownLoad_Expend_Tab");
+    }
+    this.a8e = e;
+  }
+  SelectToggle() {
+    this.GetExtendToggle(0).SetToggleState(1, true);
+  }
+}
+//# sourceMappingURL=SubPackageDownLoadView.js.map

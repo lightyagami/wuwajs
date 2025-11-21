@@ -15,7 +15,7 @@ class RedDotRoleSkin extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.RoleSkinRedDotRefresh];
   }
   OnCheck(e) {
-    return ModelManager_1.ModelManager.RoleSkinModel.HasRoleSkinRedDotByRoleId(e) || ModelManager_1.ModelManager.FlySkinModel.CheckFlySkinHasRedDot();
+    return ModelManager_1.ModelManager.RoleSkinModel.HasRoleSkinRedDotByRoleId(e) || ModelManager_1.ModelManager.FlySkinModel.CheckFlySkinHasRedDot() || ModelManager_1.ModelManager.CalabashSkinModel.CheckCalabashSkinHasRedDotByRoleId(e);
   }
 }
 exports.RedDotRoleSkin = RedDotRoleSkin;

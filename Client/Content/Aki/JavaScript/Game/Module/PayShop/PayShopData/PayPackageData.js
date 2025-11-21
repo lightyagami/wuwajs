@@ -12,6 +12,7 @@ const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const PayShopGoods_1 = require("./PayShopGoods");
 const PayShopGoodsData_1 = require("./PayShopGoodsData");
+const DEFAULTCURRENCYKEY = "Default";
 class PayPackageData {
   constructor() {
     this.he = "";
@@ -43,6 +44,8 @@ class PayPackageData {
     this.LabelId = 0;
     this.LastUpdateTime = 0;
     this.PromotionShow = 0;
+    this.CurrencyDiscountTags = new Map();
+    this.DisclaimerText = "";
     this.vFi = new PayShopGoods_1.PayShopGoods(3);
   }
   Phrase(t) {
@@ -54,7 +57,7 @@ class PayPackageData {
     this.BuyLimit = t.dBs ?? 0;
     this.BoughtCount = t.X7n ?? 0;
     this.StageImage = t._Bs ?? "";
-    this.ShowStageImage = t.oku ?? "";
+    this.ShowStageImage = t.h2u ?? "";
     this.BeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.cps));
     this.EndTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.dps));
     this.UpdateTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.Lxs));
@@ -73,6 +76,12 @@ class PayPackageData {
     this.CloudGameDesc = t.gxs ?? "";
     this.LabelId = t.uLu ?? 0;
     this.PromotionShow = t.cLu ?? 0;
+    this.CurrencyDiscountTags.clear();
+    for (const s of Object.keys(t.rTd)) {
+      var i = t.rTd[s];
+      this.CurrencyDiscountTags.set(s, i);
+    }
+    this.DisclaimerText = t.czd;
     this.MFi();
     this.vFi.SetGoodsData(this.pql());
     this.vFi.SetPayGiftId(this.Id);
@@ -103,6 +112,19 @@ class PayPackageData {
   }
   GetPayShopGoods() {
     return this.vFi;
+  }
+  GetDiscount() {
+    var t = ModelManager_1.ModelManager.KuroSdkModel.GetQueryProductCurrency(this.PayId.toString());
+    if (this.CurrencyDiscountTags.has(t)) {
+      return this.CurrencyDiscountTags.get(t);
+    } else if (this.CurrencyDiscountTags.has(DEFAULTCURRENCYKEY)) {
+      return this.CurrencyDiscountTags.get(DEFAULTCURRENCYKEY);
+    } else {
+      return 0;
+    }
+  }
+  HasDiscount() {
+    return this.GetDiscount() > 0;
   }
   pql() {
     var t = new PayShopGoodsData_1.PayShopGoodsData();

@@ -29,13 +29,13 @@ class MapRogueGridSelectBase extends UiPanelBase_1.UiPanelBase {
     this.GetItem(1).SetUIActive(!e);
   }
   SetSequenceToStart(e) {
-    this.Udd(this.RootItem.GetOwner(), e);
+    this.uBd(this.RootItem.GetOwner(), e);
   }
   ResetAllSequence() {
     this.SetSequenceToStart("Float");
     var e = this.InteractAnimationPlayer.GetCurrentSequence();
     if (e) {
-      this.Udd(this.RootItem.GetOwner(), e);
+      this.uBd(this.RootItem.GetOwner(), e);
       this.InteractAnimationPlayer.StopPlayingSequence();
     }
     this.StateAnimationPlayer.PlayLevelSequenceByName("UnSle");
@@ -49,7 +49,7 @@ class MapRogueGridSelectBase extends UiPanelBase_1.UiPanelBase {
       case "PreUp":
         var s = this.InteractAnimationPlayer.GetCurrentSequence();
         if (s) {
-          this.Udd(this.RootItem.GetOwner(), s);
+          this.uBd(this.RootItem.GetOwner(), s);
           this.InteractAnimationPlayer.StopPlayingSequence();
         }
         if (this.vIl) {
@@ -64,13 +64,13 @@ class MapRogueGridSelectBase extends UiPanelBase_1.UiPanelBase {
           if (t && e === s) {
             return;
           }
-          this.Udd(this.RootItem.GetOwner(), s);
+          this.uBd(this.RootItem.GetOwner(), s);
           this.StateAnimationPlayer.StopPlayingSequence();
         }
         this.StateAnimationPlayer.PlayLevelSequenceByName(e);
     }
   }
-  Udd(e, t) {
+  uBd(e, t) {
     e.SequenceJumpToSecondByKey(t, new UE.FrameTime());
   }
 }

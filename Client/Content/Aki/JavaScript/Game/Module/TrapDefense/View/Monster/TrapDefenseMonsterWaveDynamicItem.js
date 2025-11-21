@@ -11,11 +11,11 @@ class TrapDefenseMonsterWaveDynamicItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);
     this.IGe = undefined;
-    this.$fd = 0;
-    this.Wfd = 0;
-    this.Qfd = 0;
-    this.Kfd = 0;
-    this.Xfd = 0;
+    this.nHd = 0;
+    this.sHd = 0;
+    this.aHd = 0;
+    this.hHd = 0;
+    this.lHd = 0;
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIArtText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIGridLayout], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem], [11, UE.UIItem], [12, UE.UIVerticalLayout]];
@@ -24,32 +24,32 @@ class TrapDefenseMonsterWaveDynamicItem extends UiPanelBase_1.UiPanelBase {
     if (this.IGe === undefined) {
       this.IGe = Vector2D_1.Vector2D.Create();
     }
-    this.Yfd();
+    this._Hd();
     var s = t.GetMonsterDataList().length;
-    var s = Math.ceil(s / this.Kfd);
-    var t = t.IsEndlessStart ? this.Qfd : 0;
-    var t = this.Wfd + t + (s - 1) * this.Xfd;
-    this.IGe.Set(this.$fd, t);
+    var s = Math.ceil(s / this.hHd);
+    var t = t.IsEndlessStart ? this.aHd : 0;
+    var t = this.sHd + t + (s - 1) * this.lHd;
+    this.IGe.Set(this.nHd, t);
     return this.IGe.ToUeVector2D(true);
   }
-  Yfd() {
+  _Hd() {
     var t;
     var s;
     var e;
     var i;
-    if (!this.$fd) {
+    if (!this.nHd) {
       s = this.GetItem(10);
       t = this.GetGridLayout(7);
       i = this.GetItem(9);
       e = this.GetVerticalLayout(12);
-      this.$fd = this.RootItem.GetWidth() - 10;
-      this.Wfd = s.GetHeight();
-      this.Qfd = e.Padding.Top + e.Padding.Bottom + i.GetHeight();
+      this.nHd = this.RootItem.GetWidth() - 10;
+      this.sHd = s.GetHeight();
+      this.aHd = e.Padding.Top + e.Padding.Bottom + i.GetHeight();
       s = t.CellSize;
       e = t.Padding;
       i = t.Spacing;
-      this.Xfd = s.Y + i.Y;
-      this.Kfd = Math.floor((this.$fd - e.Left - e.Right + i.X) / this.Xfd);
+      this.lHd = s.Y + i.Y;
+      this.hHd = Math.floor((this.nHd - e.Left - e.Right + i.X) / this.lHd);
     }
   }
   async Init(t) {

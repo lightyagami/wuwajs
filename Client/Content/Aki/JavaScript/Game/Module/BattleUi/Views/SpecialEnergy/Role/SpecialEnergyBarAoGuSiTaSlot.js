@@ -11,20 +11,20 @@ const SpecialEnergyBarSlot_1 = require("../SpecialEnergyBarSlot");
 class SpecialEnergyBarAoGuSiTaSlot extends SpecialEnergyBarSlot_1.SpecialEnergyBarSlot {
   constructor() {
     super(...arguments);
-    this.wdd = [];
+    this.wUd = [];
     this.dJs = [];
-    this.Ldd = -1;
+    this.LUd = -1;
   }
   OnInitData() {
-    this.wdd.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130601));
-    this.wdd.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130602));
+    this.wUd.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130601));
+    this.wUd.push(ModelManager_1.ModelManager.BattleUiModel.SpecialEnergyBarData.GetSpecialEnergyBarInfo(130602));
   }
   async InitKeyItem(e) {
     await super.InitKeyItem(e);
     if (!Info_1.Info.IsInTouch()) {
       this.dJs.push(this.KeyItem);
       var t = [];
-      for (const a of this.wdd) {
+      for (const a of this.wUd) {
         var r = new SpecialEnergyBarKeyItem_1.SpecialEnergyBarKeyItem();
         r.SetConfig(a);
         this.dJs.push(r);
@@ -38,8 +38,8 @@ class SpecialEnergyBarAoGuSiTaSlot extends SpecialEnergyBarSlot_1.SpecialEnergyB
     this.dJs[e].RefreshKeyEnable(t, r);
   }
   SetKeyItemType(t) {
-    if (this.Ldd !== t) {
-      this.Ldd = t;
+    if (this.LUd !== t) {
+      this.LUd = t;
       for (let e = 0; e < this.dJs.length; e++) {
         this.dJs[e].SetUiActive(t === e);
       }

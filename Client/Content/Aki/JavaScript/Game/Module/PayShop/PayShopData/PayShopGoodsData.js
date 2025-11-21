@@ -58,6 +58,7 @@ class PayShopGoodsData {
     this.CloudGameDesc = "";
     this.pk = 0;
     this.ShowStageImage = "";
+    this.DisclaimerText = "";
   }
   Phrase(t) {
     this.Id = t.s5n;
@@ -96,11 +97,12 @@ class PayShopGoodsData {
     this.LabelEndTime = Number(MathUtils_1.MathUtils.LongToBigInt(t.TBs));
     this.Sort = t.cBs;
     this.PromotionShow = t.cLu;
-    this.Kjs = t.Oju;
+    this.Kjs = t.iXc;
     this.WZa = t.zb_;
     this.StageImage = t._Bs;
-    this.ShowStageImage = t.oku;
-    this.Show = t.dYc;
+    this.ShowStageImage = t.h2u;
+    this.Show = t.mJc;
+    this.DisclaimerText = t.czd;
     this.MFi();
   }
   GetIfCanBuy() {
@@ -225,6 +227,7 @@ class PayShopGoodsData {
       this.UnFinishedCondition.push(t.BuyCondition);
     }
     this.yhh = t.ProductId;
+    this.DisclaimerText = t.DisclaimerText;
     ModelManager_1.ModelManager.RechargeModel.SetRechargeInfo(t.PayId, t.Amount, t.ProductId);
     this.he = t.GetName();
   }

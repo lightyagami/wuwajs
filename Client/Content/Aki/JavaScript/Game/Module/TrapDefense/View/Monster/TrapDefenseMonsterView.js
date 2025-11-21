@@ -21,7 +21,7 @@ const TrapDefenseMonsterWaveItem_1 = require("./TrapDefenseMonsterWaveItem");
 class TrapDefenseMonsterView extends UiViewBase_1.UiViewBase {
   constructor() {
     super(...arguments);
-    this.xcd = true;
+    this.ORd = true;
     this.PopupCaption = undefined;
     this.TabComponent = undefined;
     this.TabDataList = undefined;
@@ -141,8 +141,8 @@ class TrapDefenseMonsterView extends UiViewBase_1.UiViewBase {
     this.PanelMonsterDesc.SetActive(e);
   }
   ScrollToCheckDynamic(e) {
-    if (this.xcd) {
-      this.xcd = false;
+    if (this.ORd) {
+      this.ORd = false;
       const i = e.find(e => e.IsInTheCurrentWave());
       if (i) {
         t = e.findIndex(e => e === i);

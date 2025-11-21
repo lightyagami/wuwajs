@@ -21,7 +21,7 @@ class MapRogueGrid extends UiPanelBase_1.UiPanelBase {
     this.OnHoverFunc = undefined;
     this.OnUnHoverFunc = undefined;
     this.SelectPanel = [];
-    this.xdd = true;
+    this._Bd = true;
     this.Ngo = t => {
       this.SelectPanel.forEach(t => {
         t[0].PlaySequence("Pre");
@@ -97,7 +97,7 @@ class MapRogueGrid extends UiPanelBase_1.UiPanelBase {
   }
   SetToggleMoveEnable(i) {
     if (this.Pe.Walkable) {
-      this.xdd = i;
+      this._Bd = i;
       this.SelectPanel.forEach(t => {
         t[0].SetState(i);
         t[1].SetState(i);
@@ -114,8 +114,8 @@ class MapRogueGrid extends UiPanelBase_1.UiPanelBase {
     this.SelectPanel.forEach(t => {
       t[0].SetSelected(s);
       t[1].SetSelected(s);
-      t[0].SetState(this.xdd);
-      t[1].SetState(this.xdd);
+      t[0].SetState(this._Bd);
+      t[1].SetState(this._Bd);
     });
     t.SetUiActive(true);
     i.SetUiActive(true);
@@ -175,13 +175,13 @@ class MapRogueGrid extends UiPanelBase_1.UiPanelBase {
           });
         }
       }
-      this.xdd = this.Pe.Walkable;
+      this._Bd = this.Pe.Walkable;
       const u = this.GetExtendToggle(0).GetToggleState() === 1;
       this.SelectPanel.forEach(t => {
         t[0].SetSelected(u);
         t[1].SetSelected(u);
-        t[0].SetState(this.xdd);
-        t[1].SetState(this.xdd);
+        t[0].SetState(this._Bd);
+        t[1].SetState(this._Bd);
       });
       this.SetActive(true);
     }

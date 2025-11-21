@@ -16,12 +16,12 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
     this.$ct = InputEnums_1.EInputAxis.None;
     this.jce = 0;
     this.hgu = 0;
-    this.F2u = true;
+    this.KGu = true;
   }
   RefreshByMoveType(t, e, i = true) {
     this.$ct = t;
     this.jce = e;
-    this.F2u = i;
+    this.KGu = i;
     if (!this.IsShowOrShowing) {
       this.Show();
     }
@@ -46,15 +46,15 @@ class MoveSkillItem extends BattleSkillItem_1.BattleSkillItem {
   OnSkillButtonPressed() {
     this.wut = true;
     this.ClickEffect?.Play();
-    InputController_1.InputController.InputAxis(this.$ct, this.jce, this.F2u);
+    InputController_1.InputController.InputAxis(this.$ct, this.jce, this.KGu);
   }
   OnSkillButtonReleased() {
     this.wut = false;
-    InputController_1.InputController.InputAxis(this.$ct, 0, this.F2u);
+    InputController_1.InputController.InputAxis(this.$ct, 0, this.KGu);
   }
   Tick(t) {
     super.Tick(t);
-    if (this.wut && this.F2u) {
+    if (this.wut && this.KGu) {
       InputController_1.InputController.InputAxis(this.$ct, this.jce);
     }
   }

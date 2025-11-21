@@ -13,24 +13,24 @@ class MoonSignInData extends ActivityData_1.ActivityBaseData {
     super(...arguments);
     this.HaveSelectMoonPhaseSelectList = [];
     this.MoonGrandReward = false;
-    this.Ged = 0;
+    this.Yid = 0;
     this.SelectMoonPhaseList = [];
     this.UseItemId = 0;
     this.CurrentMoonId = 0;
   }
   PhraseEx(t) {
-    this.HaveSelectMoonPhaseSelectList = t.ZZc?.oed ?? [];
-    this.MoonGrandReward = t.ZZc?.ned ?? false;
+    this.HaveSelectMoonPhaseSelectList = t.oid?.hid ?? [];
+    this.MoonGrandReward = t.oid?.lid ?? false;
     this.SelectMoonPhaseList = [];
     for (const e of this.HaveSelectMoonPhaseSelectList) {
-      this.SelectMoonPhaseList.push(e.eed);
+      this.SelectMoonPhaseList.push(e.nid);
     }
-    this.Ged = ConfigManager_1.ConfigManager.MoonSignInConfig.GetPhaseOfMoonList()?.length ?? 0;
+    this.Yid = ConfigManager_1.ConfigManager.MoonSignInConfig.GetPhaseOfMoonList()?.length ?? 0;
     this.UseItemId = ConfigManager_1.ConfigManager.MoonSignInConfig.GetMoonSignReward(this.Id)?.ItemId ?? 0;
-    this.CurrentMoonId = t.ZZc?.lrd ?? 0;
+    this.CurrentMoonId = t.oid?.Znd ?? 0;
   }
   GetMoonPhaseProgress() {
-    return this.HaveSelectMoonPhaseSelectList.length + "/" + this.Ged;
+    return this.HaveSelectMoonPhaseSelectList.length + "/" + this.Yid;
   }
   GetExDataRedPointShowState() {
     return this.GetAnyRedDot();
@@ -47,7 +47,7 @@ class MoonSignInData extends ActivityData_1.ActivityBaseData {
   }
   CheckPhaseLock(t) {
     for (const e of this.HaveSelectMoonPhaseSelectList) {
-      if (e.eed === t) {
+      if (e.nid === t) {
         return false;
       }
     }
@@ -66,7 +66,7 @@ class MoonSignInData extends ActivityData_1.ActivityBaseData {
   }
   GetMoonPhaseSelect(t) {
     for (const e of this.HaveSelectMoonPhaseSelectList) {
-      if (e.eed === t) {
+      if (e.nid === t) {
         return e;
       }
     }

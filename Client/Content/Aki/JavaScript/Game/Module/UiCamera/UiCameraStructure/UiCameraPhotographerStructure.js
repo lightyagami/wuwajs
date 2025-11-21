@@ -76,6 +76,12 @@ class UiCameraPhotographerStructure extends UiCameraStructure_1.UiCameraStructur
   GetCameraInitializeTransform() {
     return this.$Uo.GetCameraInitializeTransform();
   }
+  SetCameraInitializeFov(t) {
+    this.$Uo.SetCameraInitializeFov(t);
+  }
+  GetCameraInitialFov() {
+    return this.$Uo.GetCameraInitializeFov();
+  }
   SetCameraTransform(t) {
     this.$Uo.SetCameraTransform(t);
   }
@@ -99,6 +105,9 @@ class UiCameraPhotographerStructure extends UiCameraStructure_1.UiCameraStructur
   }
   ResetCamera() {
     this.$Uo.ResetCamera();
+  }
+  SetCameraArmTargetOffset(t, r = false) {
+    this.$Uo.SetCameraArmTargetOffset(t, r);
   }
   SetCameraLUT(t) {
     this.$Uo.SetCameraLUT(t);

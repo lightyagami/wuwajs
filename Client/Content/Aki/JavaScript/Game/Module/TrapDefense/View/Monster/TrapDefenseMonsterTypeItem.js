@@ -20,10 +20,10 @@ class TrapDefenseMonsterTypeItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.IsFireForBuffClick = false;
     this.CreateItemMonster = () => {
       var e = new TrapDefenseMonsterItem_1.TrapDefenseMonsterItem();
-      e.OnSelectMonsterItemCallback = this.vHc;
+      e.OnSelectMonsterItemCallback = this.jjc;
       return e;
     };
-    this.vHc = e => {
+    this.jjc = e => {
       this.IsFireForBuffClick = true;
       this.ScrollViewDelegate?.SelectGridProxy(this.GridIndex, this.DisplayIndex, false);
       this.OnSelectMonsterCallBack?.(e);

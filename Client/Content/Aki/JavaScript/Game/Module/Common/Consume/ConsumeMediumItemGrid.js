@@ -27,7 +27,7 @@ class ConsumeMediumItemGrid extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
           const l = {
             Type: 4,
             Data: e,
-            ItemConfigId: r,
+            ItemConfigId: d.GetConfigId(true),
             BottomTextId: a.Name,
             StarLevel: a.QualityId,
             Level: d.GetCost(),

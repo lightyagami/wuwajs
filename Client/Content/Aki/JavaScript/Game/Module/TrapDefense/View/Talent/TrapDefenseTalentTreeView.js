@@ -29,30 +29,30 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     super(...arguments);
     this.Qyi = undefined;
     this.m8t = undefined;
-    this.UHc = undefined;
-    this.ynd = undefined;
-    this.BHc = undefined;
+    this.s$c = undefined;
+    this.Fhd = undefined;
+    this.a$c = undefined;
     this.BZa = undefined;
-    this.tad = undefined;
+    this.u1d = undefined;
     this.Hea = undefined;
-    this.Nfd = false;
-    this.kHc = () => {
+    this.jjd = false;
+    this.h$c = () => {
       var e = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode;
       if (e) {
         ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseTechUnlock(e.Id);
       }
     };
-    this.OHc = (e, t) => {
+    this.l$c = (e, t) => {
       this.Clo();
-      this.qHc();
+      this._$c();
       if (t) {
-        this.Nfd = true;
+        this.jjd = true;
       }
     };
     this.AOe = () => {
-      this.FHc();
+      this.c$c();
       this.Clo();
-      this.qHc(false);
+      this._$c(false);
       this.ITt();
     };
   }
@@ -70,36 +70,36 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
       ControllerHolder_1.ControllerHolder.HelpController.OpenHelpById(e);
     });
     this.m8t = new ButtonItem_1.ButtonItem();
-    this.m8t.SetFunction(this.kHc);
-    this.UHc = new TrapDefenseTalentTreeDetailPanel_1.TrapDefenseTalentTreeDetailPanel();
+    this.m8t.SetFunction(this.h$c);
+    this.s$c = new TrapDefenseTalentTreeDetailPanel_1.TrapDefenseTalentTreeDetailPanel();
     this.BZa = new TrapDefenseTalentLockItem_1.TrapDefenseTalentLockItem();
-    this.tad = new TrapDefenseTalentUnlockItem_1.TrapDefenseTalentUnlockItem();
+    this.u1d = new TrapDefenseTalentUnlockItem_1.TrapDefenseTalentUnlockItem();
     this.Hea = new LevelSequencePlayer_1.LevelSequencePlayer(this.RootItem);
     var e = [];
     e.push(this.Qyi.CreateThenShowByActorAsync(this.GetItem(0).GetOwner()));
     e.push(this.m8t.CreateThenShowByActorAsync(this.GetItem(3).GetOwner()));
-    e.push(this.UHc.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
+    e.push(this.s$c.CreateThenShowByActorAsync(this.GetItem(1).GetOwner()));
     e.push(this.BZa.CreateThenShowByActorAsync(this.GetItem(4).GetOwner()));
-    e.push(this.tad.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
+    e.push(this.u1d.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
     await Promise.all(e);
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(9), "TrapDefenseTalentNodeUnlock");
-    this.BHc = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), () => new TrapDefenseTalentTreeRowItem_1.TrapDefenseTalentTreeRowItem());
-    this.ynd = new CommonCurrencyItem_1.CommonCurrencyItem();
-    await this.ynd.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.Qyi.GetCostContent());
-    this.ynd.RefreshAddButtonActive();
+    this.a$c = new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(8), () => new TrapDefenseTalentTreeRowItem_1.TrapDefenseTalentTreeRowItem());
+    this.Fhd = new CommonCurrencyItem_1.CommonCurrencyItem();
+    await this.Fhd.CreateThenShowByResourceIdAsync("UIItem_CommonCurrencyItem", this.Qyi.GetCostContent());
+    this.Fhd.RefreshAddButtonActive();
     this.ITt();
-    await this.FHc();
+    await this.c$c();
   }
   Tick(e) {
     var t;
-    if (this.Nfd && (t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode) && this.Vfd(t)) {
-      this.Nfd = false;
-      this.GHc(t);
+    if (this.jjd && (t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectedNode) && this.Hjd(t)) {
+      this.jjd = false;
+      this.u$c(t);
     }
   }
   OnStart() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.AddDelegateOnNodeSelect(this.OHc);
-    var e = this.jfd();
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.AddDelegateOnNodeSelect(this.l$c);
+    var e = this.$jd();
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.SelectNode(e, true);
   }
   OnAddEventListener() {
@@ -109,12 +109,12 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TrapDefenseTalentTreeUpdate, this.AOe);
   }
   OnBeforeDestroy() {
-    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.RemoveDelegateOnNodeSelect(this.OHc);
+    ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.RemoveDelegateOnNodeSelect(this.l$c);
     ModelManager_1.ModelManager.TrapDefenseModel.ViewModelTalentTree.OnViewClose();
   }
-  async FHc() {
+  async c$c() {
     var e = ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.RowDataList;
-    await this.BHc.RefreshByDataAsync(e);
+    await this.a$c.RefreshByDataAsync(e);
   }
   Clo() {
     var e;
@@ -139,25 +139,25 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
       this.GetItem(5).SetUIActive(false);
     }
   }
-  qHc(e = true) {
+  _$c(e = true) {
     this.Hea.StopSequenceByKey("Switch");
     if (e) {
       this.Hea.PlayLevelSequenceByName("Switch");
     }
-    this.UHc.Refresh();
+    this.s$c.Refresh();
   }
   ITt() {
     var e = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetTalentTreeCurrencyItemId();
     var t = ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.RemainPoints;
-    this.ynd.RefreshTemp(e, t.toString());
+    this.Fhd.RefreshTemp(e, t.toString());
   }
-  async GHc(e, t = false) {
+  async u$c(e, t = false) {
     await TimerSystem_1.TimerSystem.Wait(TimerSystem_1.MIN_TIME);
-    var i = (0, puerts_1.$ref)(new UE.Vector2D(this.BHc.ContentItem.RelativeLocation));
-    var e = this.BHc.GetItemByKey(Math.max(e.Row - 1, 1));
+    var i = (0, puerts_1.$ref)(new UE.Vector2D(this.a$c.ContentItem.RelativeLocation));
+    var e = this.a$c.GetItemByKey(Math.max(e.Row - 1, 1));
     this.GetScrollViewWithScrollbar(8).ScrollToTop(i, e, t);
   }
-  jfd() {
+  $jd() {
     var e = this.OpenParam;
     let t = undefined;
     if (e && e.TalentFuncType) {
@@ -165,9 +165,9 @@ class TrapDefenseTalentTreeView extends UiTickViewBase_1.UiTickViewBase {
     }
     return t = e && t ? t : ModelManager_1.ModelManager.TrapDefenseModel.TalentTreeData.GetDefaultSelectNode();
   }
-  Vfd(e) {
+  Hjd(e) {
     var e = Math.max(e.Row - 1, 1);
-    var t = this.BHc.GetItemByKey(e);
+    var t = this.a$c.GetItemByKey(e);
     return !!t && !!t.IsValid() && (e <= 1 || t.RelativeLocation.Y < GRID_START_POS);
   }
 }

@@ -35,7 +35,7 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
     this.KYs = -1;
   }
   OnStart() {
-    this.Stn = this.Entity.GetComponent(122);
+    this.Stn = this.Entity.GetComponent(125);
     super.OnStart();
     return true;
   }
@@ -91,5 +91,5 @@ let NpcFlowComponent = class NpcFlowComponent extends CharacterFlowComponent_1.C
     return this.FlowData?.TimberId;
   }
 };
-NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(186)], NpcFlowComponent);
+NpcFlowComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(189)], NpcFlowComponent);
 exports.NpcFlowComponent = NpcFlowComponent; //# sourceMappingURL=NpcFlowComponent.js.map

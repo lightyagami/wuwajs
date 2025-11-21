@@ -340,14 +340,14 @@ let CharacterRailSlideComponent = CharacterRailSlideComponent_1 = class Characte
     this.leu = 0;
   }
   static get Dependencies() {
-    return [3, 179, 176];
+    return [3, 182, 179];
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
-    this.Lie = this.Entity.GetComponent(206);
-    this.mBe = this.Entity.GetComponent(176);
-    this.oRe = this.Entity.GetComponent(178);
-    this.aeu = this.Entity.GetComponent(226);
+    this.Lie = this.Entity.GetComponent(209);
+    this.mBe = this.Entity.GetComponent(179);
+    this.oRe = this.Entity.GetComponent(181);
+    this.aeu = this.Entity.GetComponent(229);
     return true;
   }
   OnEnd() {

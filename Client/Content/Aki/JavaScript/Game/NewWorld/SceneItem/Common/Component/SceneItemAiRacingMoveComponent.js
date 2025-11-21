@@ -61,7 +61,7 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
     this.pK_ = undefined;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(129);
+    this.Gce = this.Entity.GetComponent(132);
     return true;
   }
   OnActivate() {
@@ -281,5 +281,5 @@ let SceneItemAiRacingMoveComponent = class SceneItemAiRacingMoveComponent extend
 ` : t;
   }
 };
-SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(283)], SceneItemAiRacingMoveComponent);
+SceneItemAiRacingMoveComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(288)], SceneItemAiRacingMoveComponent);
 exports.SceneItemAiRacingMoveComponent = SceneItemAiRacingMoveComponent; //# sourceMappingURL=SceneItemAiRacingMoveComponent.js.map

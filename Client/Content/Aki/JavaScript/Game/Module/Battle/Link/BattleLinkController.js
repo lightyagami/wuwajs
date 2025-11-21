@@ -55,13 +55,13 @@ const seqCameraTag = new UE.FName("SequenceCamera");
 const characterTag = new UE.FName("Character");
 class BattleLinkController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    Net_1.Net.Register(24337, this.JAl);
-    Net_1.Net.Register(20168, this.ZAl);
+    Net_1.Net.Register(18163, this.JAl);
+    Net_1.Net.Register(19572, this.ZAl);
     return true;
   }
   static OnClear() {
-    Net_1.Net.UnRegister(24337);
-    Net_1.Net.UnRegister(20168);
+    Net_1.Net.UnRegister(18163);
+    Net_1.Net.UnRegister(19572);
     this.Nmt();
     return true;
   }
@@ -104,7 +104,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     this.Dsh = true;
     this.Mth = undefined;
     this.vBu = undefined;
-    return !(this.cRd = undefined);
+    return !(this.SLd = undefined);
   }
   static yWe() {
     if (!this.zHa && (this.zHa = true, ModelManager_1.ModelManager.BattleLinkModel.CheckInDreamLink() && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharUseSkill, this.BJe), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnUpdateSceneTeam, this.dLe)), ModelManager_1.ModelManager.BattleLinkModel.CheckInNewBattleLink() && (EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharOnRoleDead, this.pr1), EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRevive, this.vr1)), ModelManager_1.ModelManager.BattleLinkModel.CheckInSpecialBattleLink())) {
@@ -113,13 +113,13 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       if (t) {
         e = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(1);
         if (e) {
-          this.dRd = new Map();
+          this.MLd = new Map();
           for (var [i, a] of e.LinkBuffRoleMap.entries()) {
-            AbilityEvent_1.AbilityEvent.Add(t, 3, i, this.mRd);
-            this.dRd.set(i, a);
+            AbilityEvent_1.AbilityEvent.Add(t, 3, i, this.ELd);
+            this.MLd.set(i, a);
           }
         }
-        this.fRd = t;
+        this.ILd = t;
       }
     }
   }
@@ -138,13 +138,13 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnRevive, this.vr1)) {
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRevive, this.vr1);
       }
-      if (ModelManager_1.ModelManager.BattleLinkModel.CheckInSpecialBattleLink() && this.fRd && this.dRd) {
-        for (const e of this.dRd.keys()) {
-          AbilityEvent_1.AbilityEvent.Remove(this.fRd, 3, e, this.mRd);
+      if (ModelManager_1.ModelManager.BattleLinkModel.CheckInSpecialBattleLink() && this.ILd && this.MLd) {
+        for (const e of this.MLd.keys()) {
+          AbilityEvent_1.AbilityEvent.Remove(this.ILd, 3, e, this.ELd);
         }
       }
-      this.fRd = undefined;
-      this.dRd = undefined;
+      this.ILd = undefined;
+      this.MLd = undefined;
     }
   }
   static PJa() {
@@ -187,7 +187,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 67, "[BattleLink]触发队友大招成功", ["MessageId", this.Zqi], ["entityId", e.Id]);
           }
-          e = e.GetComponent(175);
+          e = e.GetComponent(178);
           t = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
           if (i = CommonParamById_1.configCommonParamById.GetLong54Config("LinkSkillNotifyBuff")) {
             e.AddBuff(i, {
@@ -336,7 +336,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
       var i;
       var a = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
       var n = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-      var o = n.GetComponent(175);
+      var o = n.GetComponent(178);
       let e = undefined;
       let t = undefined;
       if (ModelManager_1.ModelManager.BattleLinkModel?.CheckInDreamLink()) {
@@ -367,7 +367,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
   }
   static yBu() {
     if (this.vBu && this.vBu.length !== 0) {
-      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(175);
+      var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(178);
       if (e) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 67, "[BattleLink]离开Link爆发状态, 开始移除Link爆发Buff");
@@ -380,7 +380,7 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     }
   }
   static SetPlayerUltraSkillEnable(e) {
-    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(206);
+    var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(209);
     if (t) {
       if (e) {
         t.RemoveTag(-732810197);
@@ -450,12 +450,12 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     var t;
     if (this.Zqi !== undefined && (e = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Entity)) {
       t = MathUtils_1.MathUtils.LongToBigInt(this.Zqi);
-      CombatMessage_1.CombatNet.Send(16466, e, Protocol_1.Aki.Protocol.kn1.create(), t);
+      CombatMessage_1.CombatNet.Send(29617, e, Protocol_1.Aki.Protocol.kn1.create(), t);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 67, "[BattleLink]Link爆发请求", ["msgId", t]);
       }
-      if (this.cRd) {
-        ModelManager_1.ModelManager.BattleLinkModel.SetRoleIdList(this.cRd);
+      if (this.SLd) {
+        ModelManager_1.ModelManager.BattleLinkModel.SetRoleIdList(this.SLd);
         ModelManager_1.ModelManager.BattleLinkModel.ResetMainBp();
       } else {
         this.RefreshAliveRoleIdList();
@@ -467,9 +467,9 @@ class BattleLinkController extends ControllerBase_1.ControllerBase {
     if (!this.w8c) {
       this.w8c = true;
       this.PJa();
-      if (this.cRd) {
+      if (this.SLd) {
         await this.PreloadRes(1);
-        ModelManager_1.ModelManager.BattleLinkModel.SetRoleIdList(this.cRd);
+        ModelManager_1.ModelManager.BattleLinkModel.SetRoleIdList(this.SLd);
         ModelManager_1.ModelManager.BattleLinkModel.ResetMainBp();
       } else {
         this.RefreshAliveRoleIdList();
@@ -500,9 +500,9 @@ BattleLinkController.Dsh = true;
 BattleLinkController.dgl = false;
 BattleLinkController.Sr1 = [];
 BattleLinkController.vBu = undefined;
-BattleLinkController.fRd = undefined;
-BattleLinkController.dRd = undefined;
-BattleLinkController.cRd = undefined;
+BattleLinkController.ILd = undefined;
+BattleLinkController.MLd = undefined;
+BattleLinkController.SLd = undefined;
 BattleLinkController.w8c = false;
 BattleLinkController.BJe = (e, t, i) => {
   if (_a.Dsh && !_a.Ash.has(e)) {
@@ -545,20 +545,20 @@ BattleLinkController.pr1 = e => {
 BattleLinkController.vr1 = e => {
   _a.yr1(e.Id, false);
 };
-BattleLinkController.mRd = (t, e) => {
-  t = _a.dRd?.get(t);
-  if (t && (_a.cRd ||= [], !_a.cRd.includes(t))) {
+BattleLinkController.ELd = (t, e) => {
+  t = _a.MLd?.get(t);
+  if (t && (_a.SLd ||= [], !_a.SLd.includes(t))) {
     let e = t;
     var i;
     var a = ConfigManager_1.ConfigManager.BattleLinkConfig.GetLinkParam(1);
     if (a?.ChangeGenderMap.has(t) && (i = ConfigManager_1.ConfigManager.RoleConfig.GetMainRoleById(t)) && i.Gender !== ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender() && (i = a.ChangeGenderMap.get(t))) {
       e = i;
     }
-    if (!_a.cRd.includes(e)) {
-      _a.cRd.splice(0, 0, e);
+    if (!_a.SLd.includes(e)) {
+      _a.SLd.splice(0, 0, e);
     }
-    if (_a.cRd.length > 3) {
-      _a.cRd.length = 3;
+    if (_a.SLd.length > 3) {
+      _a.SLd.length = 3;
     }
   }
 };

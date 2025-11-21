@@ -36,7 +36,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.ckn = "";
     this.q71 = 0;
     this.R3i = () => {
-      if (this.Pe && this.IsUiActiveInHierarchy() && (this.RefreshCommonItem(), this.RefreshRechargeItem(), this.G71(), this.iFi(), this.F71(), this.RefreshRedDot(), this.Pe instanceof PayShopGoods_1.PayShopGoods) && (this.N71(this.Pe) || this.V71(this.Pe))) {
+      if (this.Pe && this.IsUiActiveInHierarchy() && (this.RefreshCommonItem(), this.RefreshRechargeItem(), this.G71(), this.iFi(), this.Ozd(), this.F71(), this.RefreshRedDot(), this.Pe instanceof PayShopGoods_1.PayShopGoods) && (this.N71(this.Pe) || this.V71(this.Pe))) {
         this.TryEmitRefreshTips();
       }
     };
@@ -67,7 +67,7 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [12, UE.UIItem], [11, UE.UIItem], [13, UE.UITexture], [14, UE.UINiagara], [15, UE.UINiagara], [16, UE.UITexture]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UITexture], [2, UE.UITexture], [3, UE.UIText], [4, UE.UIText], [5, UE.UIText], [6, UE.UIText], [7, UE.UIButtonComponent], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [12, UE.UIItem], [11, UE.UIItem], [13, UE.UITexture], [14, UE.UINiagara], [15, UE.UINiagara], [16, UE.UITexture], [17, UE.UIItem], [18, UE.UIText], [19, UE.UIText]];
     this.BtnBindInfo = [[7, this.j71], [0, this.jbe]];
   }
   OnStart() {
@@ -84,36 +84,39 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     if (t) {
       if ((this.Pe = t) instanceof PayShopGoods_1.PayShopGoods) {
         this.U71 = t.ConvertToPayShopBaseSt();
-        this.k71 = t.GetCountDownData()[2] !== 0;
+        s = t.GetCountDownData();
+        this.k71 = s[2] !== 0;
+        this.O71 = s[0];
         this.C3i = t.HasDiscount();
         this.E3i = t.GetDiscountNew();
       } else {
         this.U71 = ModelManager_1.ModelManager.PayItemModel.ConvertPayItemDataToPayShopItemBaseSt(t);
       }
       this.GetText(3).SetText(this.U71.ItemName);
-      t = this.GetTexture(2);
+      s = this.GetTexture(2);
       if (this.U71.StageImage !== "") {
-        s = this.U71.StageImage;
-        this.SetTextureByPath(s, t);
+        t = this.U71.StageImage;
+        this.SetTextureByPath(t, s);
       } else {
-        this.SetItemIcon(t, this.U71.ItemId);
+        this.SetItemIcon(s, this.U71.ItemId);
       }
-      s = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(this.U71.Quality);
-      this.SetTextureByPath(s.PayShopQualityTexture, this.GetTexture(1));
+      t = ConfigManager_1.ConfigManager.ItemConfig.GetQualityConfig(this.U71.Quality);
+      this.SetTextureByPath(t.PayShopQualityTexture, this.GetTexture(1));
       this.GetUiNiagara(14)?.SetUIActive(this.U71.Quality === PayShopDefine_1.GOLD_QUALITY);
       this.GetUiNiagara(15)?.SetUIActive(this.U71.Quality === PayShopDefine_1.GOLD_QUALITY);
-      t = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
-      this.GetButton(7).RootUIComp.SetUIActive(this.U71.Id === t);
-      s = this.GetTexture(13);
-      t = this.U71.PriceData;
-      if (this.U71.IsDirect || t.NowPrice === 0) {
-        s.SetUIActive(false);
+      s = ConfigManager_1.ConfigManager.PayShopConfig.GetMonthCardShopId();
+      this.GetButton(7).RootUIComp.SetUIActive(this.U71.Id === s);
+      t = this.GetTexture(13);
+      s = this.U71.PriceData;
+      if (this.U71.IsDirect || s.NowPrice === 0) {
+        t.SetUIActive(false);
       } else {
-        s.SetUIActive(true);
-        this.SetItemIcon(s, t.CurrencyId);
+        t.SetUIActive(true);
+        this.SetItemIcon(t, s.CurrencyId);
       }
       this.G71();
       this.iFi();
+      this.Ozd();
       this.F71();
       this.RefreshRedDot();
       this.RefreshCommonItem();
@@ -203,6 +206,20 @@ class PayShopBigItem extends GridProxyAbstract_1.GridProxyAbstract {
     this.Q71(7, i, () => {
       this.B71.get(7)?.SetTextByTextId("Text_DefaultBonus_Text", t.BonusItemCount);
     });
+  }
+  Ozd() {
+    var t;
+    var i;
+    if (ModelManager_1.ModelManager.PayShopModel.BusinessCompliance) {
+      i = (t = this.U71.GachaAverageCount ? this.U71.GachaAverageCount() : 0) > 0;
+      this.GetItem(17).SetUIActive(i);
+      if (i) {
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), "DisclaimerNumText", t.toString());
+        LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(19), "DisclaimerText", this.U71.GachaPrice ? this.U71.GachaPrice() : "");
+      }
+    } else {
+      this.GetItem(17).SetUIActive(false);
+    }
   }
   Q71(t, i, e, s = true) {
     var h;

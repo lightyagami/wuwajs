@@ -25,9 +25,9 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
     this.kau = undefined;
     this.kRu = [];
     this.ORu = [];
-    this.gOu = undefined;
+    this.MOu = undefined;
     this.IRe = undefined;
-    this.RKu = undefined;
+    this.xQu = undefined;
     this.Y5i = () => {
       var e = new FloroRanchCardItem_1.FloroRanchCardItem();
       e.SetToggleCallBack(this.CardToggleClick);
@@ -62,7 +62,7 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
     };
     this.Ucu = e => {
       if (e === "ListShow") {
-        this.wKu();
+        this.BWu();
       }
     };
     this.$Ge = () => {
@@ -77,20 +77,20 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[3, this.L3e], [4, this.$Ge], [5, this.Ndu]];
   }
   async OnBeforeStartAsync() {
-    this.gOu = new FloroRanchCurrencyItem_1.FloroRanchCurrencyItem();
+    this.MOu = new FloroRanchCurrencyItem_1.FloroRanchCurrencyItem();
     var e = this.GetItem(6);
-    await this.gOu.CreateThenShowByActorAsync(e.GetOwner());
+    await this.MOu.CreateThenShowByActorAsync(e.GetOwner());
     var e = ModelManager_1.ModelManager.FloroRanchGamePlayModel.DiamondData;
-    this.gOu.SetCurrencyData(e);
+    this.MOu.SetCurrencyData(e);
     this.kRu = this.OpenParam;
     this.kau = new GenericLayout_1.GenericLayout(this.GetHorizontalLayout(0), this.Y5i);
     this.Qh_();
   }
   OnBeforeShow() {
-    this.RKu.SetEnableUiBlur(true);
+    this.xQu.SetEnableUiBlur(true);
   }
   OnBeforeHide() {
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu.SetEnableUiBlur(false);
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Ucu);
@@ -98,9 +98,9 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
   OnRemoveEventListener() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, this.Ucu);
   }
-  wKu() {
+  BWu() {
     this.kau.RefreshByDataAsync(this.kRu).then(() => {
-      this.LKu();
+      this.kWu();
       this.ORu.push(...this.kRu);
       this.GetButton(3).SetSelfInteractive(this.ORu.length > 0);
       for (const e of this.kau.GetLayoutItemList()) {
@@ -108,7 +108,7 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
       }
     });
   }
-  LKu() {
+  kWu() {
     if (this.IRe) {
       this.uei();
     }
@@ -134,8 +134,8 @@ class FloroRanchCardGroupSelectView extends UiViewBase_1.UiViewBase {
     this.uei();
   }
   Qh_() {
-    this.RKu = this.RootActor?.GetComponentByClass(UE.TsUiBlur_C.StaticClass());
-    this.RKu.SetEnableUiBlur(false);
+    this.xQu = this.RootActor?.GetComponentByClass(UE.TsUiBlur_C.StaticClass());
+    this.xQu.SetEnableUiBlur(false);
   }
 }
 exports.FloroRanchCardGroupSelectView = FloroRanchCardGroupSelectView;

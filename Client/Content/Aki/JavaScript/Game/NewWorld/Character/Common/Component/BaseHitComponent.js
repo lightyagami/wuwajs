@@ -249,7 +249,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
       o.ptc = MathUtils_1.MathUtils.BigIntToLong(e.BulletInitParams.SkillContextId);
     }
     this.lra(o);
-    CombatMessage_1.CombatNet.Call(18078, this.Entity, o, t => {
+    CombatMessage_1.CombatNet.Call(17149, this.Entity, o, t => {
       _?.(t);
     }, t?.GetBulletInfo().ContextId);
   }
@@ -271,7 +271,7 @@ let BaseHitComponent = class BaseHitComponent extends EntityComponent_1.EntityCo
   }
   static HitEndRequest(t) {
     var e = Protocol_1.Aki.Protocol.oe_.create();
-    CombatMessage_1.CombatNet.Send(22701, t, e);
+    CombatMessage_1.CombatNet.Send(23508, t, e);
   }
   static PreHitNotify(t, e) {
     if (e.TWn?.SWn && !e.TWn.gWn && (t = t.GetComponent(55)) && !t.PreSwitchRemoteFightState(e.TWn.mVn)) {

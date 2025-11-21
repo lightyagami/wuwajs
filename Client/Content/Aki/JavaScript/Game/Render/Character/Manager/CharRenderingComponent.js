@@ -364,7 +364,7 @@ class CharRenderingComponent extends UE.KuroCharRenderingComponent {
           t = this.LogicOwner;
           e *= t.GetTimeScale();
         }
-      } else if ((t = this.CachedOwnerEntity?.GetComponent(180)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
+      } else if ((t = this.CachedOwnerEntity?.GetComponent(183)) && (t = this.CachedOwnerEntity.TimeDilation * t.CurrentTimeScale) > 1) {
         e *= t;
       }
       return e;

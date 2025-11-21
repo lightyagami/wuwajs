@@ -9,9 +9,9 @@ const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLa
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
+const SkipTaskManager_1 = require("../../SkipInterface/SkipTaskManager");
 const GridProxyAbstract_1 = require("../../Util/Grid/GridProxyAbstract");
 const LguiUtil_1 = require("../../Util/LguiUtil");
-const DailyActivityTaskController_1 = require("./DailyActivityTaskController");
 class DailyActiveTaskData {
   constructor() {
     this.RewardItemList = [];
@@ -28,20 +28,19 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   constructor() {
     super(...arguments);
     this.BOe = 0;
-    this.Wkt = 1;
-    this.Kkt = [];
     this.Qkt = false;
     this.Xkt = 0;
-    this.uKu = undefined;
+    this.Uou = 0;
+    this.O8u = undefined;
     this.$kt = () => {
       if (this.BOe) {
-        this.uKu?.();
+        this.O8u?.();
       }
     };
     this.Ykt = () => {
       if (this.BOe) {
         if (this.Qkt) {
-          DailyActivityTaskController_1.DailyActiveTaskController.TrackTaskByType(this.Wkt, this.Kkt);
+          SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.Uou);
         } else {
           ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("FunctionDisable");
         }
@@ -59,40 +58,28 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
   }
   OnStart() {}
   OnBeforeDestroy() {}
-  IsNormalTaskJumpType() {
-    return this.Wkt === 1;
-  }
   Refresh(t, i, s) {
     this.BOe = t.TaskId;
     this.Qkt = t.IsFunctionUnlock;
     this.GetText(1).SetText(t.CurrentProgress.toString() + "/" + t.TargetProgress.toString());
     var e = ConfigManager_1.ConfigManager.DailyActivityConfig.GetActivityTaskConfigById(this.BOe);
     var r = e.TaskName;
-    var h = [];
-    if (e.UpdateType === 2 && !((a = ModelManager_1.ModelManager.DailyActivityModel.AreaId) <= 0)) {
-      if ((a = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(a)) && (a = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(a.Title))) {
-        h.push(a);
+    var a = [];
+    if (e.UpdateType === 2 && !((h = ModelManager_1.ModelManager.DailyActivityModel.AreaId) <= 0)) {
+      if ((h = ConfigManager_1.ConfigManager.AreaConfig.GetAreaInfo(h)) && (h = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(h.Title))) {
+        a.push(h);
       }
     }
-    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r, ...h);
-    var a = e.TaskFunc;
-    if (a.length >= 1) {
-      this.Wkt = Number(a[0]);
-    }
-    if (a.length >= 2) {
-      this.Kkt = a.slice(1);
-    }
-    if (this.Wkt === 6) {
-      this.Kkt = [ModelManager_1.ModelManager.DailyActivityModel.AreaId.toString()];
-    }
-    var r = t.RewardItemList[0];
-    this.Xkt = r[0].ItemId;
-    this.GetText(8).SetText("+" + r[1].toString());
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(0), r, ...a);
+    this.Uou = e.AccessId;
+    var h = t.RewardItemList[0];
+    this.Xkt = h[0].ItemId;
+    this.GetText(8).SetText("+" + h[1].toString());
     switch (t.TaskState) {
       case 2:
-        var o = this.IsNormalTaskJumpType();
-        this.GetText(2).SetUIActive(o);
-        this.GetButton(5).RootUIComp.SetUIActive(!o);
+        var o = this.Uou !== 0;
+        this.GetText(2).SetUIActive(!o);
+        this.GetButton(5).RootUIComp.SetUIActive(o);
         this.GetButton(6).RootUIComp.SetUIActive(false);
         this.GetItem(3).SetUIActive(false);
         this.GetItem(7).SetUIActive(false);
@@ -113,7 +100,7 @@ class DailyActivityTaskItem extends GridProxyAbstract_1.GridProxyAbstract {
     }
   }
   SetClickReceiveCb(t) {
-    this.uKu = t;
+    this.O8u = t;
   }
 }
 exports.DailyActivityTaskItem = DailyActivityTaskItem;

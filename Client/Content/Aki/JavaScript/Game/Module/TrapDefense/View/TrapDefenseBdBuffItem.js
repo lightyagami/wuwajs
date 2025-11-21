@@ -18,7 +18,7 @@ class TrapDefenseBdBuffItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
     this.OnIsNewTagStateCallback = undefined;
     this.OnGetBdBuffConfig = undefined;
     this.o1c = false;
-    this.Xmd = () => {
+    this.r5d = () => {
       if (this.o1c) {
         this.o1c = false;
         this.UpdateBuffInfo();
@@ -27,7 +27,7 @@ class TrapDefenseBdBuffItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumI
   }
   OnStart() {
     this.SetUseFixedAsync(true);
-    this.AllComponentLoadedCallback = this.Xmd;
+    this.AllComponentLoadedCallback = this.r5d;
   }
   OnRefresh(t) {
     this.BdBuffData = t;

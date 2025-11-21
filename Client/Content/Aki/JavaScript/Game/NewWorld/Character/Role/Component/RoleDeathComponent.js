@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var o;
   var r = arguments.length;
-  var h = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var n = r < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    h = Reflect.decorate(t, e, i, s);
+    n = Reflect.decorate(t, e, i, s);
   } else {
-    for (var n = t.length - 1; n >= 0; n--) {
-      if (o = t[n]) {
-        h = (r < 3 ? o(h) : r > 3 ? o(e, i, h) : o(e, i)) || h;
+    for (var h = t.length - 1; h >= 0; h--) {
+      if (o = t[h]) {
+        n = (r < 3 ? o(n) : r > 3 ? o(e, i, n) : o(e, i)) || n;
       }
     }
   }
-  if (r > 3 && h) {
-    Object.defineProperty(e, i, h);
+  if (r > 3 && n) {
+    Object.defineProperty(e, i, n);
   }
-  return h;
+  return n;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -58,7 +58,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
         this.m1t.TriggerEvents(14, this.m1t, {});
         for (const i of e.values()) {
           if (this.Entity.Id !== i.Id && i.Valid) {
-            if (!(t = i.Entity.GetComponent(192)).IsDead()) {
+            if (!(t = i.Entity.GetComponent(195)).IsDead()) {
               t.m1t?.TriggerEvents(15, this.m1t, {});
             }
           }
@@ -67,6 +67,12 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDeadEnd);
       if (this.IsDead()) {
         ModelManager_1.ModelManager.SceneTeamModel.RoleDeathEnded(this.Entity.Id);
+      }
+    };
+    this.ResetDrowning = () => {
+      if (this.bin) {
+        this.qin();
+        this.bin = false;
       }
     };
     this.qin = () => {
@@ -93,7 +99,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
             i.Z = t.Z;
             e.rdu = i;
           }
-          CombatMessage_1.CombatNet.Send(21893, this.Entity, e);
+          CombatMessage_1.CombatNet.Send(16972, this.Entity, e);
         } else if (t) {
           TeleportController_1.TeleportController.TeleportToPositionNoLoading(t.ToUeVector(), undefined, "DrowningPunishment").finally(this.qin);
         }
@@ -101,7 +107,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       this.HBr.ResetCharState();
       var t;
       var e;
-      var i = this.Entity.CheckGetComponent(192);
+      var i = this.Entity.CheckGetComponent(195);
       if (i.IsDead()) {
         i.OnDeathEnded();
       }
@@ -110,16 +116,20 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
   OnInit() {
     this.n$t = this.Entity.GetComponent(3);
     this.u1t = this.Entity.CheckGetComponent(0);
-    this.Xte = this.Entity.GetComponent(206);
+    this.Xte = this.Entity.GetComponent(209);
     this.tRr = this.Entity.GetComponent(40);
-    this.m1t = this.Entity.GetComponent(175);
-    this.HBr = this.Entity.GetComponent(176);
-    this.$te = this.Entity.GetComponent(174);
-    this.aTu = this.Entity.GetComponent(282);
+    this.m1t = this.Entity.GetComponent(178);
+    this.HBr = this.Entity.GetComponent(179);
+    this.$te = this.Entity.GetComponent(177);
+    this.aTu = this.Entity.GetComponent(287);
     return true;
   }
   OnStart() {
-    return !!super.OnStart() && (this.u1t.GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && this.ExecuteDeath(undefined), true);
+    return !!super.OnStart() && (this.u1t.GetLivingStatus() === Protocol_1.Aki.Protocol.JEs.Proto_Dead && this.ExecuteDeath(undefined), EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.ResetDrowning), true);
+  }
+  OnEnd() {
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportChangeLocation, this.ResetDrowning);
+    return true;
   }
   OnClear() {
     this.Plr.splice(0, this.Plr.length);
@@ -216,7 +226,7 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     }
   }
   static DrownNotify(t, e) {
-    t = t?.CheckGetComponent(192);
+    t = t?.CheckGetComponent(195);
     if (t && (t.PlayDeathMontageWithType(1), t.m1t?.HasBuffAuthority())) {
       t.m1t.RemoveBuffByEffectType(36, "溺水移除冰冻buff");
     }
@@ -225,8 +235,8 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
     var t;
     var e;
     if (!this.IsDrowning()) {
-      this.Entity.CheckGetComponent(206).AddTag(191377386);
-      t = (e = this.Entity.CheckGetComponent(174)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
+      this.Entity.CheckGetComponent(209).AddTag(191377386);
+      t = (e = this.Entity.CheckGetComponent(177)).GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Life);
       this.m1t.AddBuff(CharacterBuffIds_1.buffId.DrownPunishment, {
         InstigatorId: this.m1t.CreatureDataId,
         Reason: "溺水流程添加"
@@ -239,18 +249,12 @@ let RoleDeathComponent = class RoleDeathComponent extends BaseDeathComponent_1.B
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharOnRoleDrownInjure, t > 0 && e <= 0);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharOnRoleDrown, true);
-    CombatMessage_1.CombatNet.Send(21433, this.Entity, {});
+    CombatMessage_1.CombatNet.Send(28721, this.Entity, {});
   }
   IsDrowning() {
     return this.Xte?.HasTag(191377386) ?? false;
   }
-  ResetDrowning() {
-    if (this.bin) {
-      this.qin();
-      this.bin = false;
-    }
-  }
 };
 __decorate([CombatMessage_1.CombatNet.Listen("VFn", true)], RoleDeathComponent, "DrownNotify", null);
-RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(192)], RoleDeathComponent);
+RoleDeathComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(195)], RoleDeathComponent);
 exports.RoleDeathComponent = RoleDeathComponent; //# sourceMappingURL=RoleDeathComponent.js.map

@@ -68,7 +68,7 @@ let RoleStrengthComponent = class RoleStrengthComponent extends EntityComponent_
     this.Qhc = () => {
       if (this.HBr.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Water && !this.Xte?.HasTag(400631093) && ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Id === this.Entity.Id) {
         if (FormationAttributeController_1.FormationAttributeController.GetValue(1) < exports.STRENGTH_TOLERANCE) {
-          this.Entity.CheckGetComponent(192)?.Drowning();
+          this.Entity.CheckGetComponent(195)?.Drowning();
         }
       }
     };
@@ -119,9 +119,9 @@ let RoleStrengthComponent = class RoleStrengthComponent extends EntityComponent_
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.$zo = this.Entity.CheckGetComponent(175);
-    this.Xte = this.Entity.CheckGetComponent(206);
-    this.HBr = this.Entity.CheckGetComponent(176);
+    this.$zo = this.Entity.CheckGetComponent(178);
+    this.Xte = this.Entity.CheckGetComponent(209);
+    this.HBr = this.Entity.CheckGetComponent(179);
     this.u1t = this.Entity.CheckGetComponent(0);
     this.Crn = -1;
     this.vrn();
@@ -188,5 +188,5 @@ let RoleStrengthComponent = class RoleStrengthComponent extends EntityComponent_
   }
 };
 RoleStrengthComponent.ForbidStrengthRecoveryTimeExtra = 0.5;
-RoleStrengthComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(101)], RoleStrengthComponent);
+RoleStrengthComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(103)], RoleStrengthComponent);
 exports.RoleStrengthComponent = RoleStrengthComponent; //# sourceMappingURL=RoleStrengthComponent.js.map

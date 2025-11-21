@@ -65,6 +65,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     this.TFr = undefined;
     this.LFr = new Array();
     this.DFr = new Set();
+    this.dbd = new Map();
     this.jht = false;
     this.RFr = false;
     this.Mne = 0;
@@ -72,7 +73,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     this.bJe = () => {
       this.MFr?.OnSkillEnd();
     };
-    this.dWc = undefined;
+    this.r$u = undefined;
     this.UFr = undefined;
     this.Nza = (t, e) => {
       if (this.Fza(t, e)) {
@@ -314,8 +315,8 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
   BFr() {
     var t;
     CombatLog_1.CombatLog.Info("Ai", this.Entity, "CharacterAiComponent.StartUeController");
-    if (this.dWc) {
-      this.ChangeAiBehaviorTree(this.dWc);
+    if (this.r$u) {
+      this.ChangeAiBehaviorTree(this.r$u);
     } else if (t = BehaviorTreeDefines_1.BehaviorTreeDefines.GetLevelAiBehaviorTreeAssetPath(this.Entity)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("NPC", 50, "开始加载LevelAi行为树", ["PbDataId", this.Mne], ["CreatureId", this.Hte?.CreatureData?.GetCreatureDataId()]);
@@ -409,6 +410,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     }
     this.vFr = undefined;
     this.TFr = undefined;
+    this.dbd.clear();
   }
   SetLoadCompletePlayer(t) {
     this.DFr.add(t);
@@ -431,6 +433,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
             if (this.vFr.SetupBehaviorTree(t) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("AI", 29, "开始运行行为树AI", ["Id", this.MFr.CharActorComp.CreatureData.GetPbDataId()], ["TreeName", t.GetName()]), EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnRunBehaviorTree), this.TFr = this.vFr.BrainComponent, this.TFr?.SetComponentTickEnabled(false), GlobalData_1.GlobalData.IsPlayInEditor && (e = this.MFr.CharActorComp.Actor.TsCharacterDebugComponent) && (e.BehaviorTree = t), this.jht)) {
               this.wFr();
             }
+            this.dbd.clear();
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("AI", 50, "加载行为树AI资源失败", ["PbDataId", this.MFr.CharActorComp.CreatureData.GetPbDataId()], ["Path", i]);
           }
@@ -579,7 +582,7 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     return false;
   }
   ChangeAiBehaviorTree(t) {
-    if (t && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("AI", 42, "切换AI行为树", ["Id", this.MFr?.CharActorComp?.CreatureData.GetPbDataId()], ["Path", t]), this.dWc = t, this.TsAiController)) {
+    if (t && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("AI", 42, "切换AI行为树", ["Id", this.MFr?.CharActorComp?.CreatureData.GetPbDataId()], ["Path", t]), this.r$u = t, this.TsAiController)) {
       this.OFr(t);
     }
   }
@@ -587,9 +590,56 @@ let CharacterAiComponent = CharacterAiComponent_1 = class CharacterAiComponent e
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "重置AI行为树", ["Id", this.MFr?.CharActorComp?.CreatureData.GetPbDataId()]);
     }
-    this.dWc = undefined;
+    this.r$u = undefined;
     if (this.TsAiController) {
       this.BFr();
+    }
+  }
+  ResetRandomNodes(e, i) {
+    var o = this.TFr;
+    if (o && o instanceof UE.BehaviorTreeComponent) {
+      var r = UE.KuroAILibrary.GetCurrentRootNode(o);
+      if (r) {
+        let t = this.dbd.get(r);
+        if (!t) {
+          t = new Map();
+          this.dbd.set(r, t);
+          this.mbd(r, t);
+        }
+        if (e === undefined) {
+          for (const s of t.values()) {
+            for (const n of s) {
+              UE.KuroAILibrary.ResetRandomNode(o, n, i);
+            }
+          }
+        } else {
+          r = t.get(e);
+          if (r) {
+            for (const h of r) {
+              UE.KuroAILibrary.ResetRandomNode(o, h, i);
+            }
+          }
+        }
+      }
+    }
+  }
+  mbd(e, i) {
+    if (e instanceof UE.BTComposite_Random) {
+      var o = e.Key.toString();
+      let t = i.get(o);
+      if (!t) {
+        t = new Set();
+        i.set(o, t);
+      }
+      t.add(e);
+    }
+    if (e instanceof UE.BTCompositeNode) {
+      for (let t = 0; t < e.Children.Num(); t++) {
+        var r = e.Children.Get(t);
+        if (r.ChildComposite) {
+          this.mbd(r.ChildComposite, i);
+        }
+      }
     }
   }
 };

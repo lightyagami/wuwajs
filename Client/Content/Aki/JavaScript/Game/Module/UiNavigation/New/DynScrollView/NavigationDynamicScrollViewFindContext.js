@@ -16,8 +16,11 @@ class NavigationDynamicScrollViewFindContext {
     this.ScrollView = undefined;
     this.GroupConfig = undefined;
     this.NegativeDirection = false;
+    this.Reversed = false;
     this.LastListener = undefined;
     this.NextType = 0;
+    this.NeedWaitScroll = false;
+    this.IsScrollToEdge = false;
   }
 }
 exports.NavigationDynamicScrollViewFindContext = NavigationDynamicScrollViewFindContext;

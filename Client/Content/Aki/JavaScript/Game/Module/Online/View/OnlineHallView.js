@@ -7,9 +7,11 @@ exports.OnlineHallView = undefined;
 const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
+const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const Platform_1 = require("../../../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const TimeUtil_1 = require("../../../Common/TimeUtil");
 const ControllerHolder_1 = require("../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
@@ -22,7 +24,7 @@ const LoopScrollView_1 = require("../../Util/ScrollView/LoopScrollView");
 const OnlineController_1 = require("../OnlineController");
 const OnlineHallItem_1 = require("./OnlineHallItem");
 const OnlineTeamItem_1 = require("./OnlineTeamItem");
-const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
+const REFERSH_BTN_CD = 5;
 class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
     super(...arguments);
@@ -58,7 +60,11 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
       LguiUtil_1.LguiUtil.SetLocalText(e, t);
     };
     this.WNi = () => {
-      this.kNi(ModelManager_1.ModelManager.OnlineModel.StrangerWorld);
+      if (this.GetExtendToggle(2).ToggleState === 1) {
+        this.kNi(ModelManager_1.ModelManager.OnlineModel.FriendWorld);
+      } else {
+        this.kNi(ModelManager_1.ModelManager.OnlineModel.StrangerWorld);
+      }
     };
     this.KNi = () => {
       this.QNi(ModelManager_1.ModelManager.OnlineModel.GetTeamList());
@@ -119,6 +125,7 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
       var e;
       if (ModelManager_1.ModelManager.OnlineModel.HallViewIsShowSearching) {
         ModelManager_1.ModelManager.OnlineModel.HallViewIsShowSearching = false;
+        this.GetButton(15).RootUIComp.SetUIActive(true);
         this.GetInputText(12).SetText("");
         this.h9t();
         this.IWs();
@@ -129,7 +136,35 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("OnlineUserIdIsNull");
       }
     };
+    this.pTd = 0;
+    this.vTd = undefined;
+    this.yTd = () => {
+      if (!(this.pTd > 0)) {
+        this.pTd = REFERSH_BTN_CD;
+        const e = this.GetButton(15);
+        e.SetSelfInteractive(false);
+        this.STd();
+        const t = this.GetText(16);
+        LguiUtil_1.LguiUtil.SetLocalTextNew(t, "OnlineHallViewRefreshBtnCd", this.pTd.toString());
+        this.vTd = TimerSystem_1.GameplayTimerSystem.Forever(() => {
+          this.pTd--;
+          if (this.pTd <= 0) {
+            e.SetSelfInteractive(true);
+            this.STd();
+            LguiUtil_1.LguiUtil.SetLocalTextNew(t, "OnlineHallViewRefreshBtnNormal");
+          } else {
+            LguiUtil_1.LguiUtil.SetLocalTextNew(t, "OnlineHallViewRefreshBtnCd", this.pTd.toString());
+          }
+        }, TimeUtil_1.TimeUtil.InverseMillisecond);
+        OnlineController_1.OnlineController.RefreshWorldList().then(e => {
+          if (!e) {
+            this.bNi?.GetUiAnimController()?.Play("Start");
+          }
+        });
+      }
+    };
     this.sOi = () => {
+      this.GetButton(15).RootUIComp.SetUIActive(false);
       var e = ModelManager_1.ModelManager.OnlineModel.SearchResult;
       if (e) {
         this.kNi(e);
@@ -139,8 +174,8 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIExtendToggle], [3, UE.UIButtonComponent], [4, UE.UILoopScrollViewComponent], [5, UE.UIItem], [7, UE.UIText], [6, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIItem], [12, UE.UITextInputComponent], [13, UE.UIItem], [14, UE.UIText]];
-    this.BtnBindInfo = [[0, this.Jvt], [1, this.VNi], [3, this.l9t]];
+    this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIExtendToggle], [3, UE.UIButtonComponent], [4, UE.UILoopScrollViewComponent], [5, UE.UIItem], [7, UE.UIText], [6, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIItem], [12, UE.UITextInputComponent], [13, UE.UIItem], [14, UE.UIText], [15, UE.UIButtonComponent], [16, UE.UIText]];
+    this.BtnBindInfo = [[0, this.Jvt], [1, this.VNi], [3, this.l9t], [15, this.yTd]];
   }
   async OnBeforeStartAsync() {
     if (!ModelManager_1.ModelManager.OnlineModel.GetIsTeamModel()) {
@@ -154,6 +189,7 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
   OnStart() {
     this.XNi();
     if (ModelManager_1.ModelManager.OnlineModel.GetIsTeamModel()) {
+      this.GetButton(15).RootUIComp.SetUIActive(false);
       this.QNi(ModelManager_1.ModelManager.OnlineModel.GetTeamList());
     } else {
       this.kNi(ModelManager_1.ModelManager.OnlineModel.StrangerWorld);
@@ -172,6 +208,7 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
     this.GetInputText(12).OnTextChange.Bind(this.h9t);
     this.h9t();
     this.IWs();
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(16), "OnlineHallViewRefreshBtnNormal");
   }
   OnAfterShow() {
     this.oli.BindOnStopTimer(() => ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetMatchingState() !== 1);
@@ -194,6 +231,7 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
     this.bNi = undefined;
     this.qNi = undefined;
     this.oli = undefined;
+    this.STd();
   }
   OnAddEventListener() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRefreshPermissionsSetting, this.jNi);
@@ -306,6 +344,12 @@ class OnlineHallView extends UiTickViewBase_1.UiTickViewBase {
   }
   IWs() {
     LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(14), ModelManager_1.ModelManager.OnlineModel.HallViewIsShowSearching ? "Online_ResetSearch" : "Online_Search");
+  }
+  STd() {
+    if (this.vTd) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.vTd);
+    }
+    this.vTd = undefined;
   }
 }
 exports.OnlineHallView = OnlineHallView;

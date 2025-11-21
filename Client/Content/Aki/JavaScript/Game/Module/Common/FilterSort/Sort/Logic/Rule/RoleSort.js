@@ -4,135 +4,136 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.RoleSort = undefined;
+const ConfigManager_1 = require("../../../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../../../Manager/ModelManager");
 const RoleDefine_1 = require("../../../../../RoleUi/RoleDefine");
 const CommonSort_1 = require("./CommonSort");
 class RoleSort extends CommonSort_1.CommonSort {
   constructor() {
     super(...arguments);
-    this.oRt = (e, t, i) => {
+    this.oRt = (e, i, t) => {
       e = e.GetLevelData();
-      t = t.GetLevelData();
-      if (e.GetLevel() !== t.GetLevel()) {
-        return (t.GetLevel() - e.GetLevel()) * (i ? -1 : 1);
-      } else if (e.GetBreachLevel() !== t.GetBreachLevel()) {
-        return (t.GetBreachLevel() - e.GetBreachLevel()) * (i ? -1 : 1);
+      i = i.GetLevelData();
+      if (e.GetLevel() !== i.GetLevel()) {
+        return (i.GetLevel() - e.GetLevel()) * (t ? -1 : 1);
+      } else if (e.GetBreachLevel() !== i.GetBreachLevel()) {
+        return (i.GetBreachLevel() - e.GetBreachLevel()) * (t ? -1 : 1);
       } else {
         return undefined;
       }
     };
-    this.KDt = (e, t, i) => {
+    this.KDt = (e, i, t) => {
       e = e.GetRoleConfig().QualityId;
-      t = t.GetRoleConfig().QualityId;
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetRoleConfig().QualityId;
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.XRt = (e, t, i) => {
+    this.XRt = (e, i, t) => {
       var r = e;
-      var s = t;
+      var s = i;
       let h = -1;
-      let o = -1;
-      var n = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
-      for (let e = 0; e < n.length; e++) {
-        var a = n[e];
+      let n = -1;
+      var o = ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems();
+      for (let e = 0; e < o.length; e++) {
+        var a = o[e];
         if (r.GetDataId() === a.GetConfigId) {
           h = e;
         }
         if (s.GetDataId() === a.GetConfigId) {
-          o = e;
+          n = e;
         }
       }
-      e = n[h] !== undefined;
-      t = n[o] !== undefined;
-      if (e || t) {
-        if (e != t) {
-          return (t ? 1 : 0) - (e ? 1 : 0);
+      e = o[h] !== undefined;
+      i = o[n] !== undefined;
+      if (e || i) {
+        if (e != i) {
+          return (i ? 1 : 0) - (e ? 1 : 0);
         } else {
-          return h - o;
+          return h - n;
         }
       }
     };
-    this.$Rt = (e, t, i) => {
-      if (e.GetRoleConfig().Priority !== t.GetRoleConfig().Priority) {
-        return (t.GetRoleConfig().Priority - e.GetRoleConfig().Priority) * (i ? -1 : 1);
+    this.$Rt = (e, i, t) => {
+      if (e.GetRoleConfig().Priority !== i.GetRoleConfig().Priority) {
+        return (i.GetRoleConfig().Priority - e.GetRoleConfig().Priority) * (t ? -1 : 1);
       }
     };
-    this.YRt = (e, t, i) => {
+    this.YRt = (e, i, t) => {
       e = e.GetResonanceData();
-      t = t.GetResonanceData();
+      i = i.GetResonanceData();
       e = e.GetResonantChainGroupIndex();
-      t = t.GetResonantChainGroupIndex();
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetResonantChainGroupIndex();
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.JRt = (e, t, i) => {
+    this.JRt = (e, i, t) => {
       e = e.GetResonanceData();
-      t = t.GetResonanceData();
+      i = i.GetResonanceData();
       e = e.GetResonanceIncreaseLevel();
-      t = t.GetResonanceIncreaseLevel();
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetResonanceIncreaseLevel();
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.zRt = (e, t, i) => {};
-    this.ZRt = (e, t, i) => {
+    this.zRt = (e, i, t) => {};
+    this.ZRt = (e, i, t) => {
       var e = e.GetFavorData();
-      var t = t.GetFavorData();
+      var i = i.GetFavorData();
       var r = e.GetFavorLevel();
-      var s = t.GetFavorLevel();
-      if (e && t) {
+      var s = i.GetFavorLevel();
+      if (e && i) {
         if (r !== s) {
-          return (s - r) * (i ? -1 : 1);
-        } else if ((s = e.GetFavorExp()) !== (r = t.GetFavorExp())) {
-          return (r - s) * (i ? -1 : 1);
+          return (s - r) * (t ? -1 : 1);
+        } else if ((s = e.GetFavorExp()) !== (r = i.GetFavorExp())) {
+          return (r - s) * (t ? -1 : 1);
         } else {
           return undefined;
         }
       }
     };
-    this.eUt = (e, t, i) => {
+    this.eUt = (e, i, t) => {
       e = e.GetRoleCreateTime();
-      t = t.GetRoleCreateTime();
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetRoleCreateTime();
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.tUt = (e, t, i) => {
+    this.tUt = (e, i, t) => {
       e = e.GetAttributeData();
-      t = t.GetAttributeData();
+      i = i.GetAttributeData();
       e = e.GetAttrValueById(RoleDefine_1.HP_ATTR_ID);
-      t = t.GetAttrValueById(RoleDefine_1.HP_ATTR_ID);
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetAttrValueById(RoleDefine_1.HP_ATTR_ID);
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.iUt = (e, t, i) => {
+    this.iUt = (e, i, t) => {
       e = e.GetAttributeData();
-      t = t.GetAttributeData();
+      i = i.GetAttributeData();
       e = e.GetAttrValueById(RoleDefine_1.ATTACK_ATTR_ID);
-      t = t.GetAttrValueById(RoleDefine_1.ATTACK_ATTR_ID);
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetAttrValueById(RoleDefine_1.ATTACK_ATTR_ID);
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.bua = (e, t, i) => {
+    this.bua = (e, i, t) => {
       var r;
       var s = ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewShowRoleList.includes(e.GetRoleId()) && e.GetLevelData().GetLevel() !== 0;
-      if (s !== (ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewShowRoleList.includes(t.GetRoleId()) && t.GetLevelData().GetLevel() !== 0) || (s = ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewRecommendRoleList.includes(e.GetRoleId())) !== ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewRecommendRoleList.includes(t.GetRoleId())) {
+      if (s !== (ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewShowRoleList.includes(i.GetRoleId()) && i.GetLevelData().GetLevel() !== 0) || (s = ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewRecommendRoleList.includes(e.GetRoleId())) !== ModelManager_1.ModelManager.RoguelikeModel.SelectRoleViewRecommendRoleList.includes(i.GetRoleId())) {
         if (s) {
           return -1;
         } else {
           return 1;
         }
-      } else if ((s = e.GetLevelData().GetLevel()) !== (r = t.GetLevelData().GetLevel())) {
+      } else if ((s = e.GetLevelData().GetLevel()) !== (r = i.GetLevelData().GetLevel())) {
         if (r < s) {
           return -1;
         } else {
           return 1;
         }
-      } else if ((r = e.GetRoleConfig().QualityId) !== (s = t.GetRoleConfig().QualityId)) {
+      } else if ((r = e.GetRoleConfig().QualityId) !== (s = i.GetRoleConfig().QualityId)) {
         if (s < r) {
           return -1;
         } else {
@@ -140,7 +141,7 @@ class RoleSort extends CommonSort_1.CommonSort {
         }
       } else {
         s = e.GetRoleId();
-        if ((r = t.GetRoleId()) < s) {
+        if ((r = i.GetRoleId()) < s) {
           return -1;
         } else if (s < r) {
           return 1;
@@ -149,9 +150,9 @@ class RoleSort extends CommonSort_1.CommonSort {
         }
       }
     };
-    this.GQ_ = (e, t, i) => {
+    this.GQ_ = (e, i, t) => {
       e = ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(e.GetRoleId());
-      if (e !== ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(t.GetRoleId())) {
+      if (e !== ModelManager_1.ModelManager.WeeklyRogueModel.CheckIsRecommendRole(i.GetRoleId())) {
         if (e) {
           return -1;
         } else {
@@ -159,21 +160,21 @@ class RoleSort extends CommonSort_1.CommonSort {
         }
       }
     };
-    this.oUt = (e, t, i) => {
+    this.oUt = (e, i, t) => {
       e = e.GetAttributeData();
-      t = t.GetAttributeData();
+      i = i.GetAttributeData();
       e = e.GetAttrValueById(RoleDefine_1.DEF_ATTR_ID);
-      t = t.GetAttrValueById(RoleDefine_1.DEF_ATTR_ID);
-      if (e !== t) {
-        return (t - e) * (i ? -1 : 1);
+      i = i.GetAttrValueById(RoleDefine_1.DEF_ATTR_ID);
+      if (e !== i) {
+        return (i - e) * (t ? -1 : 1);
       }
     };
-    this.rUt = (e, t, i) => {
+    this.rUt = (e, i, t) => {
       var r = ModelManager_1.ModelManager.RoleSelectModel;
       var e = e.GetDataId();
-      var t = t.GetDataId();
+      var i = i.GetDataId();
       var e = r.GetRoleIndex(e);
-      var r = r.GetRoleIndex(t);
+      var r = r.GetRoleIndex(i);
       if (e <= 0 || r <= 0) {
         return (r ? 1 : 0) - (e ? 1 : 0);
       } else if (e !== r) {
@@ -182,16 +183,27 @@ class RoleSort extends CommonSort_1.CommonSort {
         return undefined;
       }
     };
-    this.nUt = (e, t, i) => {
+    this.nUt = (e, i, t) => {
       e = e.IsTrialRole();
-      t = t.IsTrialRole();
-      if (e !== t) {
-        return ((t ? 1 : 0) - (e ? 1 : 0)) * (i ? -1 : 1);
+      i = i.IsTrialRole();
+      if (e !== i) {
+        return ((i ? 1 : 0) - (e ? 1 : 0)) * (t ? -1 : 1);
       }
     };
-    this.sUt = (e, t, i) => {
+    this.qQd = (e, i, t) => {
+      if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId) {
+        var r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.InstanceDungeonEntranceModel.SelectInstanceId);
+        var r = [...r.RecommendRoleBottom, ...r.RecommendRole];
+        var e = r.includes(e.GetRoleId()) ? 1 : 0;
+        var r = r.includes(i.GetRoleId()) ? 1 : 0;
+        if (e != r) {
+          return (r - e) * (t ? -1 : 1);
+        }
+      }
+    };
+    this.sUt = (e, i, t) => {
       var r = ModelManager_1.ModelManager.TowerModel.CurrentSelectDifficulties;
-      return (ModelManager_1.ModelManager.TowerModel.GetRoleRemainCost(e.GetRoleId(), r) - ModelManager_1.ModelManager.TowerModel.GetRoleRemainCost(t.GetRoleId(), r)) * (i ? -1 : 1);
+      return (ModelManager_1.ModelManager.TowerModel.GetRoleRemainCost(e.GetRoleId(), r) - ModelManager_1.ModelManager.TowerModel.GetRoleRemainCost(i.GetRoleId(), r)) * (t ? -1 : 1);
     };
   }
   OnInitSortMap() {
@@ -213,6 +225,7 @@ class RoleSort extends CommonSort_1.CommonSort {
     this.SortMap.set(16, this.sUt);
     this.SortMap.set(17, this.bua);
     this.SortMap.set(18, this.GQ_);
+    this.SortMap.set(19, this.qQd);
   }
 }
 exports.RoleSort = RoleSort;

@@ -20,11 +20,11 @@ const Global_1 = require("../../../../Global");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
 const GameBudgetAllocatorConfigCreator_1 = require("../../../../World/Define/GameBudgetAllocatorConfigCreator");
-const MoraleMonsterLevelItem_1 = require("../../../Battle/Morale/View/MoraleMonsterLevelItem");
 const BattleUiControl_1 = require("../../BattleUiControl");
 const BattleVisibleChildView_1 = require("../BattleChildView/BattleVisibleChildView");
 const HpBufferStateMachine_1 = require("./HpBufferStateMachine");
 var EAttributeId = Protocol_1.Aki.Protocol.Vks;
+const StateExtraFunction_1 = require("../StateExtra/StateExtraFunction");
 const UPDATE_TOLERATION = 0.1;
 const PERCENT_TOLERATION = 0.01;
 const SCALE_TOLERATION = 0.004;
@@ -112,9 +112,9 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.C_t = Vector_1.Vector.Create();
     this.g_t = Vector_1.Vector.Create();
     this.f_t = Vector_1.Vector.Create();
-    this.MoraleLevelItem = undefined;
+    this.ExtraItem = undefined;
     this.gka = new HeadStateViewNode();
-    this.wQu = undefined;
+    this.b9c = undefined;
     this.p_t = () => {
       if (this.J1t) {
         this.J1t(this.HeadStateData.GetEntity());
@@ -147,7 +147,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateView", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.LQu(e, i, s, h);
+    this.R9c(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -163,7 +163,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] CreateHeadStateViewAsync", ["headStateType", e], ["ComponentId", this.ComponentId]);
     }
-    this.LQu(e, i, s, h);
+    this.R9c(e, i, s, h);
     e = this.GetResourceId();
     i = BattleUiControl_1.BattleUiControl.Pool.GetHeadStateView(e);
     if (i) {
@@ -175,7 +175,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
       await this.CreateByPathAsync(s, t, true);
     }
   }
-  LQu(t, e, i, s) {
+  R9c(t, e, i, s) {
     var h = this.GetResourceId();
     if (!StringUtils_1.StringUtils.IsEmpty(h)) {
       this.Q1t = t;
@@ -208,7 +208,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] RecycleHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.wQu = t;
+    this.b9c = t;
     if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByRecycle", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
@@ -227,7 +227,7 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 17, "[HeadState] DestroyHeadStateView", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
     }
-    this.wQu = undefined;
+    this.b9c = undefined;
     if (this.IsActivated) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[HeadState] DeactivateByDestroy", ["EntityId", this.HeadStateData?.GetEntityId()], ["ComponentId", this.ComponentId]);
@@ -246,8 +246,9 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     this.Destroy();
   }
   async OnBeforeShowAsyncImplement() {
-    if (this.HeadStateData) {
-      await this.LoadExtraItem(this.HeadStateData);
+    var t = this.HeadStateData;
+    if (t && t.IsNormalMonster()) {
+      await this.LoadExtraItem((0, StateExtraFunction_1.getExtraItemParamsByCreatureData)(t.CreatureDataComponent));
     }
   }
   OnBeforeShow() {
@@ -262,9 +263,9 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
   }
   OnAfterHide() {
     if (!this.HeadStateData) {
-      if (this.wQu) {
-        this.wQu(this, this.HeadStateType);
-        this.wQu = undefined;
+      if (this.b9c) {
+        this.b9c(this, this.HeadStateType);
+        this.b9c = undefined;
       }
     }
   }
@@ -277,32 +278,27 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     return !!this.c_t && !!this.RootActor && !(t = this.GetResourceId(), BattleUiControl_1.BattleUiControl.Pool.RecycleHeadStateView(t, this.RootActor), 0);
   }
   async LoadExtraItem(t) {
-    await this.LoadMoraleLevelItem(t);
-  }
-  async LoadMoraleLevelItem(e) {
-    if (e.IsNormalMonster()) {
-      e = e.GetMoraleLevel();
-      if (e) {
-        let t = this.MoraleLevelItem;
-        if (!t) {
-          await (t = new MoraleMonsterLevelItem_1.MoraleMonsterLevelItem()).CreateByResourceIdAsync("UiItem_MonsterMoraleLevel", undefined, true);
-          this.MoraleLevelItem = t;
-        }
-        t.SetMoraleLevel(e);
-        return true;
-      }
+    if (!t) {
+      this.RemoveExtraItem();
+      return false;
     }
-    this.RemoveMoraleLevelItem();
-    return false;
+    var e = t.Type;
+    let i = this.ExtraItem;
+    if (i && i.GetExtraItemType() !== e) {
+      this.RemoveExtraItem();
+    }
+    if (!i) {
+      await (i = t.Creator()).CreateByResourceIdAsync(t.ResourceId, undefined, true);
+    }
+    i.InitExtraParams(t);
+    this.ExtraItem = i;
+    return true;
   }
   RemoveExtraItem() {
-    this.RemoveMoraleLevelItem();
-  }
-  RemoveMoraleLevelItem() {
-    if (this.MoraleLevelItem) {
-      this.MoraleLevelItem.GetRootItem().DetachFromParent();
-      this.MoraleLevelItem.Destroy();
-      this.MoraleLevelItem = undefined;
+    if (this.ExtraItem) {
+      this.ExtraItem.GetRootItem().DetachFromParent();
+      this.ExtraItem.Destroy();
+      this.ExtraItem = undefined;
     }
   }
   ActiveBattleHeadState(t) {
@@ -439,18 +435,17 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
   }
   OnLerpBarBufferPercent(t) {}
   PlayBarAnimation(t) {
-    var e;
-    var i = t;
-    var s = this.CurrentBarPercent;
-    if (!(s <= i)) {
-      e = this.Z1t.IsOriginState();
-      this.Z1t.GetHit(i, s);
-      this.j1t = i;
-      this.W1t = s;
-      this.CurrentBarPercent = t;
+    var e = t;
+    var i = this.CurrentBarPercent;
+    this.CurrentBarPercent = t;
+    if (!(i <= e)) {
+      t = this.Z1t.IsOriginState();
+      this.Z1t.GetHit(e, i);
+      this.j1t = e;
+      this.W1t = i;
       this.K1t = 0;
-      if (e && !this.Z1t.IsOriginState()) {
-        this.OnBeginBarAnimation(s);
+      if (t && !this.Z1t.IsOriginState()) {
+        this.OnBeginBarAnimation(i);
       }
     }
   }
@@ -520,13 +515,13 @@ class HeadStateViewBase extends BattleVisibleChildView_1.BattleVisibleChildView 
     return !(this.Distance <= this.StateViewDisplayMinDistance) && (!!this.HeadStateData.HasFightTag || this.Distance <= this.DetailHeadStateRangeInternal);
   }
   IsLevelTextVisible() {
-    return this.Distance >= this.StateViewDisplayMinDistance && this.Distance <= this.StateViewDisplayMaxDistance && !this.IsShowMoraleLevel();
+    return this.Distance >= this.StateViewDisplayMinDistance && this.Distance <= this.StateViewDisplayMaxDistance && !this.IsShowExtraItem();
   }
   IsBuffVisible() {
     return this.Distance >= this.StateViewDisplayMinDistance && this.Distance <= this.DetailHeadStateRangeInternal;
   }
-  IsShowMoraleLevel() {
-    return this.MoraleLevelItem !== undefined;
+  IsShowExtraItem() {
+    return this.ExtraItem !== undefined;
   }
   GetLevel() {
     return this.HeadStateData.GetLevel();

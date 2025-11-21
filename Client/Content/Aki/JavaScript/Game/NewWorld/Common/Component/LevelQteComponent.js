@@ -89,5 +89,5 @@ let LevelQteComponent = LevelQteComponent_1 = class LevelQteComponent extends En
     return e;
   }
 };
-LevelQteComponent = LevelQteComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(270)], LevelQteComponent);
+LevelQteComponent = LevelQteComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(274)], LevelQteComponent);
 exports.LevelQteComponent = LevelQteComponent; //# sourceMappingURL=LevelQteComponent.js.map

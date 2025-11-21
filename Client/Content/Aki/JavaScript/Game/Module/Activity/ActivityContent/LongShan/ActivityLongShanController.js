@@ -85,7 +85,7 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
   OnCreateActivityData(e) {
     return new ActivityLongShanData_1.ActivityLongShanData();
   }
-  OnActivityFirstUnlock(e) {
+  OnShowActivityFirstUnlockView(e) {
     switch (LongShanActivityConfigByActivityId_1.configLongShanActivityConfigByActivityId.GetConfig(e.Id)?.Type) {
       case 1:
         UiManager_1.UiManager.OpenView("LongShanUnlockView");
@@ -102,10 +102,10 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
     return true;
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(26117, this.TOe);
+    Net_1.Net.Register(24924, this.TOe);
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(26117);
+    Net_1.Net.UnRegister(24924);
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnCommonItemCountAnyChange, ActivityLongShanController.qdi);
@@ -126,7 +126,7 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
     if (!this.DOe.includes(t)) {
       this.DOe.push(t);
       (e = Protocol_1.Aki.Protocol.Igs.create()).B6n = [t];
-      Net_1.Net.Call(27566, e, e => {
+      Net_1.Net.Call(15545, e, e => {
         if (e) {
           this.DOe.splice(this.DOe.indexOf(t), 1);
         }
@@ -137,10 +137,10 @@ class ActivityLongShanController extends ActivityControllerBase_1.ActivityContro
     var i = Protocol_1.Aki.Protocol.rK1.create();
     i.w6n = t;
     i.BVn = e;
-    Net_1.Net.Call(15413, i, e => {
+    Net_1.Net.Call(17282, i, e => {
       if (e) {
         if (e.fMs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 20227);
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.fMs, 26276);
         } else {
           ModelManager_1.ModelManager.ActivityModel.GetActivityById(t).UpdateScoreRewardStatus(e.nK1);
         }

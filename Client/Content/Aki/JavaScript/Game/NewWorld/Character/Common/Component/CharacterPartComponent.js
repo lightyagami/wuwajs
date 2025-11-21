@@ -69,8 +69,8 @@ class CharacterPart {
     this.HitBoneName = "";
     this.BaseEntity = t;
     this.ActorComp = t.GetComponent(3);
-    this.TagComponent = t.GetComponent(206);
-    this.AttributeComp = t.GetComponent(174);
+    this.TagComponent = t.GetComponent(209);
+    this.AttributeComp = t.GetComponent(177);
     this.Index = i;
     this.PartTag = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(e.部位标签.TagName);
     this.ActiveTag = GameplayTagUtils_1.GameplayTagUtils.GetGameplayTagByName(e.部位激活标签.TagName);
@@ -199,7 +199,7 @@ let CharacterPartComponent = class CharacterPartComponent extends EntityComponen
     return true;
   }
   OnInit() {
-    this.TagComponent = this.Entity.GetComponent(206);
+    this.TagComponent = this.Entity.GetComponent(209);
     if (this.Entity.GetComponent(3).Actor?.DtCharacterPart) {
       this.ajr = true;
     }

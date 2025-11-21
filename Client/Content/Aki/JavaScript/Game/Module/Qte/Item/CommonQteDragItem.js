@@ -38,8 +38,8 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
     this.xZu = false;
     this.fgt = 0;
     this.$G = new InputHandle();
-    this.Ead = false;
-    this.Iad = false;
+    this.Wad = false;
+    this.Qad = false;
     this.bzt = false;
     this.$xt = t => {
       if (t === "Start") {
@@ -54,23 +54,23 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.$G.IsValid = true;
         this.$G.Vector.X = i * this.DZu * GAMEPAD_ENHANCE_RATE;
-        this.Ead = i !== 0;
-        this.Tad(this.Ead || this.Iad);
+        this.Wad = i !== 0;
+        this.Kad(this.Wad || this.Qad);
       }
     };
     this.kZu = (t, i) => {
       if (this.IsValidInput() && Info_1.Info.IsInGamepad()) {
         this.$G.IsValid = true;
         this.$G.Vector.Y = -i * this.DZu * GAMEPAD_ENHANCE_RATE;
-        this.Iad = i !== 0;
-        this.Tad(this.Ead || this.Iad);
+        this.Qad = i !== 0;
+        this.Kad(this.Wad || this.Qad);
       }
     };
     this.OZu = undefined;
     this.w8i = t => {
       if (this.IsValidInput() && this.NQa) {
         this.OZu = t.GetLocalPointInPlane();
-        this.Tad(true);
+        this.Kad(true);
       }
     };
     this.B8i = t => {
@@ -89,7 +89,7 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
         this.OZu = undefined;
         this.$G.IsValid = false;
         this.$G.Vector.Reset();
-        this.Tad(false);
+        this.Kad(false);
       }
     };
     this.qZu = () => {
@@ -246,7 +246,7 @@ class CommonQteDragItem extends CommonQteItemBase_1.CommonQteItemBase {
       this.ClearTickTimer();
     }
   }
-  Tad(t) {
+  Kad(t) {
     if (t !== this.bzt) {
       if (this.bzt = t) {
         this.fS1?.Response();

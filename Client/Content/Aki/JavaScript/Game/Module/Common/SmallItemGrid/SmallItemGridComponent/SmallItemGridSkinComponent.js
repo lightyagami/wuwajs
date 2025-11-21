@@ -18,58 +18,82 @@ class SmallItemGridSkinComponent extends SmallItemGridComponent_1.SmallItemGridC
   }
   OnRefresh(e) {
     this.SetActive(true);
-    var r = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(this.QSl(e));
-    this.SetTextureByPath(r, this.GetTexture(1));
-    var r = this.s5l(e);
-    this.SetSpriteByPath(r, this.GetSprite(0), false);
+    this.Aqe(e);
+    this.mFe(e);
     this.mbl(e);
     this.dbl(e);
   }
-  s5l(e) {
-    var e = e.SkinId;
-    var e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
-    if (e === undefined) {
-      return "";
+  Aqe(e) {
+    var e = this.QSl(e);
+    if (StringUtils_1.StringUtils.IsEmpty(e)) {
+      this.GetTexture(1).SetUIActive(false);
     } else {
-      e = e.QualityId;
-      return ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(e).SkinItemBg;
+      this.GetTexture(1).SetUIActive(true);
+      e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(e);
+      this.SetTextureByPath(e, this.GetTexture(1));
     }
+  }
+  mFe(e) {
+    e = this.s5l(e);
+    this.SetSpriteByPath(e, this.GetSprite(0), false);
+  }
+  s5l(e) {
+    let t = e.QualityId;
+    if (!t) {
+      e = e.SkinId;
+      e = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(e);
+      if (e === undefined) {
+        return "";
+      }
+      t = e.QualityId;
+    }
+    return ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(t).SkinItemBg;
   }
   QSl(e) {
+    var t;
     var e = e.SkinId;
-    var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e);
-    if (r === 10) {
-      return "T_IconFilterSkin3";
-    } else if (r === 11) {
-      if (ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(e).GetSuitWeaponSkinId() > 0) {
-        return "T_IconFilterSkin1";
+    if (e) {
+      if ((t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e)) === 10) {
+        return "T_IconFilterSkin3";
+      } else if (t === 11) {
+        if (ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(e).GetSuitWeaponSkinId() > 0) {
+          return "T_IconFilterSkin1";
+        } else {
+          return "T_IconFilterSkin2";
+        }
+      } else if (t === 14) {
+        e = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
+        return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(e.SkinType);
+      } else if (t === 18) {
+        return "T_IconFilterSkin6";
       } else {
-        return "T_IconFilterSkin2";
+        return "";
       }
-    } else if (r === 14) {
-      r = ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinConfig(e);
-      return ConfigManager_1.ConfigManager.SkinConfig.GetFlySkinBottomIconResourceId(r.SkinType);
     } else {
       return "";
     }
   }
-  mbl(e) {
-    var e = e.SkinId;
-    let r = false;
-    if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(e) === 11 && ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(e).GetSuitWeaponSkinId() > 0) {
-      r = true;
-    }
-    this.GetItem(2).SetUIActive(r);
-    if (r) {
-      e = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(e).GetPayShopPreviewBuyRoleSuitWeaponTexturePath();
-      this.SetTextureByPath(e, this.GetTexture(3));
+  mbl(t) {
+    var t = t.SkinId;
+    if (t) {
+      let e = false;
+      if (ConfigManager_1.ConfigManager.InventoryConfig.GetItemDataTypeByConfigId(t) === 11 && ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(t).GetSuitWeaponSkinId() > 0) {
+        e = true;
+      }
+      this.GetItem(2).SetUIActive(e);
+      if (e) {
+        t = ModelManager_1.ModelManager.RoleSkinModel.GetRoleSkinData(t).GetPayShopPreviewBuyRoleSuitWeaponTexturePath();
+        this.SetTextureByPath(t, this.GetTexture(3));
+      }
+    } else {
+      this.GetItem(2).SetUIActive(false);
     }
   }
   dbl(e) {
     var e = e.BottomText;
-    var r = !StringUtils_1.StringUtils.IsEmpty(e);
-    this.GetItem(4).SetUIActive(r);
-    if (r) {
+    var t = !StringUtils_1.StringUtils.IsEmpty(e);
+    this.GetItem(4).SetUIActive(t);
+    if (t) {
       this.GetText(5).SetText(e);
     }
   }

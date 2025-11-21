@@ -39,6 +39,8 @@ class CostItemGridComponent extends UiPanelBase_1.UiPanelBase {
       t = t.Data;
       ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(t.ItemId);
       ModelManager_1.ModelManager.ComposeModel.ComposeSelectItem = t;
+      ModelManager_1.ModelManager.ComposeModel.ComposeSkipSourceView = this.BelongView;
+      ModelManager_1.ModelManager.InventoryModel.SetItemNeedCount(t.Count - t.SelectedCount);
     };
     this.CreateThenShowByActor(t.GetOwner());
   }
@@ -71,7 +73,7 @@ class CostItemGridComponent extends UiPanelBase_1.UiPanelBase {
     t.SetText(this.w1o.toString());
     e = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(this.x1o);
     this.B1o = e >= this.w1o;
-    t.useChangeColor = !this.B1o;
+    t.SetChangeColor(!this.B1o, t.changeColor);
   }
   GetIsMoneyEnough() {
     return this.B1o;
@@ -93,6 +95,15 @@ class CostItemGridComponent extends UiPanelBase_1.UiPanelBase {
   }
   SetButtonItemLocalText(t) {
     this.p4e.SetLocalText(t);
+  }
+  SetButtonItemLocalTextNew(t) {
+    this.p4e.SetLocalTextNew(t);
+  }
+  SetButtonItemText(t) {
+    this.p4e.SetText(t);
+  }
+  SetButtonItemInteractive(t) {
+    this.p4e.GetBtn()?.SetSelfInteractive(t);
   }
 }
 exports.CostItemGridComponent = CostItemGridComponent;

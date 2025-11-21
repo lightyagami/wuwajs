@@ -60,7 +60,7 @@ let TriggerComponent = TriggerComponent_1 = class TriggerComponent extends Entit
   OnInitData(e) {
     var e = e.GetParam(TriggerComponent_1)[0];
     var e = e || undefined;
-    var t = this.Entity.GetComponent(122);
+    var t = this.Entity.GetComponent(125);
     if (t && !t.LogicRange) {
       t.SetLogicRange(300);
     }

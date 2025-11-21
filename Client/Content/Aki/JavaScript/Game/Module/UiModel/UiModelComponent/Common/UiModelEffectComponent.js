@@ -2,21 +2,21 @@
 
 var __decorate = this && this.__decorate || function (t, e, i, s) {
   var o;
-  var h = arguments.length;
-  var f = h < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
+  var f = arguments.length;
+  var h = f < 3 ? e : s === null ? s = Object.getOwnPropertyDescriptor(e, i) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    f = Reflect.decorate(t, e, i, s);
+    h = Reflect.decorate(t, e, i, s);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
       if (o = t[n]) {
-        f = (h < 3 ? o(f) : h > 3 ? o(e, i, f) : o(e, i)) || f;
+        h = (f < 3 ? o(h) : f > 3 ? o(e, i, h) : o(e, i)) || h;
       }
     }
   }
-  if (h > 3 && f) {
-    Object.defineProperty(e, i, f);
+  if (f > 3 && h) {
+    Object.defineProperty(e, i, h);
   }
-  return f;
+  return h;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -32,6 +32,7 @@ const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const EffectContext_1 = require("../../../../Effect/EffectContext/EffectContext");
 const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const GlobalData_1 = require("../../../../GlobalData");
+const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const UiModelComponentDefine_1 = require("../../Define/UiModelComponentDefine");
 const UiModelComponentBase_1 = require("../UiModelComponentBase");
 class UiModelEffectPlayContext {
@@ -74,7 +75,7 @@ exports.UiModelEffectPlayContext = UiModelEffectPlayContext;
 let UiModelEffectComponent = class UiModelEffectComponent extends UiModelComponentBase_1.UiModelComponentBase {
   constructor() {
     super(...arguments);
-    this.u1o = new Array();
+    this.led = new Set();
     this.Ywr = new Map();
     this.Jwr = undefined;
     this.rb1 = undefined;
@@ -86,12 +87,15 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       if (t && !this.Zla && e > this.e1a) {
         this.Zla = true;
         this.SetAllEffectShowState(this.Zla);
-        this.nfu(1);
       }
       if (!t && this.Zla) {
         this.Zla = false;
         this.SetAllEffectShowState(this.Zla);
-        this.nfu(0);
+      }
+      if (t) {
+        this.cdm();
+      } else {
+        this.ddm();
       }
     };
     this.i1a = t => {
@@ -109,6 +113,10 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       this.PlayEffectByAnsContext(t);
     };
     this.OnAnsEnd = t => {
+      var e = t.EffectContext.AnsSlotName;
+      if (!!e && !e.op_Equality(FNameUtil_1.FNameUtil.NONE) && !this.EBd(t)) {
+        this.HideEffectByAnsContext(t);
+      }
       this.StopEffectByAnsContext(t);
     };
   }
@@ -120,34 +128,36 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     EventSystem_1.EventSystem.AddWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.i1a);
     this.Jwr?.RegisterAnsTrigger("UiEffectAnsContext", this.OnAnsBegin, this.OnAnsEnd);
+    ControllerHolder_1.ControllerHolder.UiModelEffectController.SetEffectAdditionTimeScaleEnable(true, this.Owner.Id);
   }
   OnEnd() {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelVisibleChange, this.Twr);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Owner, EventDefine_1.EEventName.OnUiModelSetDitherEffect, this.i1a);
+    ControllerHolder_1.ControllerHolder.UiModelEffectController.SetEffectAdditionTimeScaleEnable(false, this.Owner.Id);
     this.DestroyAllEffect();
   }
   PlayEffectOnRoot(t, e, i, s) {
     this.PlayEffectByPath(t, e, i, true, false, Vector_1.Vector.ZeroVectorDouble, Rotator_1.Rotator.ZeroRotator, Vector_1.Vector.OneVectorDouble, s);
   }
-  PlayEffectByPath(t, i, s, o, h, f, n, r, c, e, a) {
+  PlayEffectByPath(t, i, s, o, f, h, n, r, a, e, c) {
     t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, t, "[RoleAnimStateEffectManager.PlayEffect]", e || new EffectContext_1.EffectContext(undefined, i), 1, t => {
       var e;
       var t = EffectSystem_1.EffectSystem.GetEffectActor(t);
       if (t && t.IsValid()) {
-        if (o && !h) {
+        if (o && !f) {
           t.K2_AttachToComponent(i, s, 0, 0, 0, false);
-          e = new UE.TransformDouble(n, f, r);
+          e = new UE.TransformDouble(n, h, r);
           t.D_K2_SetActorRelativeTransform(e, false, undefined, true);
         } else {
           e = i.D_GetSocketTransform(s, 0);
-          t.D_K2_SetActorLocationAndRotation(e.TransformPosition(f), e.TransformRotation(n.Quaternion()).Rotator(), false, undefined, true);
+          t.D_K2_SetActorLocationAndRotation(e.TransformPosition(h), e.TransformRotation(n.Quaternion()).Rotator(), false, undefined, true);
           t.D_SetActorScale3D(r);
         }
-        t.SetActorHiddenInGame(!this.Zla && !c);
+        t.SetActorHiddenInGame(!this.Zla && !a);
       }
-    }, a);
+    }, c);
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
-      this.u1o.push(t);
+      this.led.add(t);
     }
     return t;
   }
@@ -169,7 +179,7 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       }
     }, i.Callback);
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
-      this.u1o.push(t);
+      this.led.add(t);
     }
     return t;
   }
@@ -193,35 +203,58 @@ let UiModelEffectComponent = class UiModelEffectComponent extends UiModelCompone
       this.Ywr.delete(t);
     }
   }
-  AttachEffect(t) {
-    this.u1o.push(t);
+  HideEffectByAnsContext(t) {
+    t = this.Ywr.get(t);
+    if (t) {
+      EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
+    }
   }
   DestroyAllEffect() {
-    if (this.u1o && this.u1o.length !== 0) {
-      this.u1o.forEach(t => {
+    if (this.led && this.led.size !== 0) {
+      this.led.forEach(t => {
         if (EffectSystem_1.EffectSystem.IsValid(t)) {
           EffectSystem_1.EffectSystem.SetEffectHidden(t, true);
           EffectSystem_1.EffectSystem.StopEffectById(t, "[RoleAnimStateEffectManager.RecycleEffect]", true);
         }
       });
-      this.u1o.length = 0;
+      this.led.clear();
       this.Ywr.clear();
     }
   }
   SetAllEffectShowState(e) {
-    this.u1o.forEach(t => {
+    this.led.forEach(t => {
       EffectSystem_1.EffectSystem.SetEffectHidden(t, !e);
     });
   }
-  nfu(e) {
-    this.u1o.forEach(t => {
-      EffectSystem_1.EffectSystem.SetTimeScale(t, e);
+  cdm() {
+    this.led.forEach(t => {
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 1);
+    });
+  }
+  ddm() {
+    this.led.forEach(t => {
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(17, t, 0);
     });
   }
   StopEffect(t, e = true) {
     if (EffectSystem_1.EffectSystem.IsValid(t)) {
       EffectSystem_1.EffectSystem.StopEffectById(t, "[RoleAnimStateEffectManager.StopEffect]", e);
+      this.led.delete(t);
     }
+  }
+  EBd(t) {
+    var e = t.EffectContext.AnsSlotName;
+    if (e !== undefined && !e.op_Equality(FNameUtil_1.FNameUtil.NONE)) {
+      for (const s of this.Jwr.GetAnsContextSet("UiEffectAnsContext").AnsContextSet) {
+        if (s !== t) {
+          var i = s;
+          if (i.ExistCount > 0 && i.EffectContext.AnsSlotName && i.EffectContext.AnsSlotName.op_Equality(e)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 };
 UiModelEffectComponent = __decorate([(0, UiModelComponentDefine_1.RegisterUiModelComponent)(4)], UiModelEffectComponent);

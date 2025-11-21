@@ -204,7 +204,7 @@ class SceneInteractionLevel {
       this.InteractionActor.PlayIndependentEndEffect(t);
     }
   }
-  HUd(t) {
+  Dkd(t) {
     var i = ConfigManager_1.ConfigManager.RenderModuleConfig.LevelCustomPrimitiveData?.get(this.PbDataId);
     if (i && i.CustomPrimitiveDataIndex0.length > 0) {
       var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLevelActors(t);
@@ -262,7 +262,7 @@ class SceneInteractionLevel {
           }
           this.LevelStreamingDynamic?.OnLevelShown.Clear();
         });
-        this.HUd(e);
+        this.Dkd(e);
         if (SceneInteractionLevel.Xt1 && Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Interaction", 72, "[SceneInteractionLevel.OnLevelShow]", ["HandleId", this.HandleId], ["Reason", t], ["LastWorldOrigin", this.LevelStreamingDynamic?.LoadedLevel?.LastWorldOrigin], ["LevelName", this.LevelName]);
         }

@@ -45,7 +45,6 @@ class Skill {
     this.qzo = false;
     this.Gzo = false;
     this.Nzo = undefined;
-    this.GroupSkillCdInfo = undefined;
     this.kzo = [];
     this.Fzo = false;
     this.Vzo = undefined;
@@ -55,6 +54,7 @@ class Skill {
     this.Wzo = [];
     this.Kzo = new Map();
     this.oGl = 0;
+    this.ExtraTargetLocation = undefined;
     this.Xzo = 0;
     this.EndSkillInfo = undefined;
     this.cBe = undefined;
@@ -117,11 +117,11 @@ class Skill {
   }
   Initialize(t, i, s) {
     this.cBe = s;
-    this.$zo = s.Entity.GetComponent(175);
-    this.Lie = s.Entity.GetComponent(206);
+    this.$zo = s.Entity.GetComponent(178);
+    this.Lie = s.Entity.GetComponent(209);
     this.Hte = s.Entity.GetComponent(3);
     this.C51 = s.Entity.GetComponent(25);
-    this.vHr = s.Entity.GetComponent(123);
+    this.vHr = s.Entity.GetComponent(126);
     this.bzo = t;
     this.Nzo = i;
     this.qzo = false;
@@ -155,7 +155,6 @@ class Skill {
     this.ActiveAbility = undefined;
     this.wzo = undefined;
     this.qzo = false;
-    this.GroupSkillCdInfo = undefined;
     this.jzo = undefined;
     return !(this.Vzo = undefined);
   }
@@ -389,6 +388,7 @@ class Skill {
       }
       this.Pzo.Stop();
     }
+    this.SkillBehaviorAnimNotifyMessageId = undefined;
     if (this.$zo && !this.IsSimulated) {
       this.xzo.Start();
       for (let t = 0; t < this.SkillInfo.SkillEndBuff.Num(); ++t) {
@@ -420,25 +420,30 @@ class Skill {
   PlayMontage(t, i, s, e, h, r) {
     var a = this.GetMontageByIndex(t);
     if (!a?.IsValid()) {
-      CombatLog_1.CombatLog.Error("Skill", this.cBe.Entity, "播放的蒙太奇索引不存在", ["技能id:", this.SkillId], ["技能名:", this.SkillName], ["index", t]);
+      CombatLog_1.CombatLog.Error("Skill", this.cBe.Entity, "PlaySkillMontage 播放的蒙太奇索引不存在", ["技能id:", this.SkillId], ["MontageIndex", t]);
       return false;
     }
     this.CurrentMontageIndex = t;
     s = s ? FNameUtil_1.FNameUtil.GetDynamicFName(s) : FNameUtil_1.FNameUtil.EMPTY;
     this.wzo = UE.AsyncTaskPlayMontageAndWait.ListenForPlayMontage(this.cBe.GetMainAnimInstance(), a, i, e, s);
-    this.wzo.bShouldEmitOnEndedEvent = true;
-    this.wzo.EndCallback.Add(t => {
-      h?.(t);
-    });
-    this.Bzo = h;
-    this.MontageContextId = r ?? ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
-    this.cBe.MontageComp?.PushMontageInfo({
-      MontageNames: [],
-      SkillId: this.SkillId,
-      MontageIndex: t,
-      MontageTaskMessageId: this.MontageContextId
-    }, a);
-    return true;
+    if (this.wzo.MontageLength <= 0) {
+      h?.(true);
+      return false;
+    } else {
+      this.wzo.bShouldEmitOnEndedEvent = true;
+      this.wzo.EndCallback.Add(t => {
+        h?.(t);
+      });
+      this.Bzo = h;
+      this.MontageContextId = r ?? ModelManager_1.ModelManager.CombatMessageModel.GenMessageId();
+      this.cBe.MontageComp?.PushMontageInfo({
+        MontageNames: [],
+        SkillId: this.SkillId,
+        MontageIndex: t,
+        MontageTaskMessageId: this.MontageContextId
+      }, a);
+      return true;
+    }
   }
   eZo() {
     var t;

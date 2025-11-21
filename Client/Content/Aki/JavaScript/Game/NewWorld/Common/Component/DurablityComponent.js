@@ -23,9 +23,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DurabilityComponent = undefined;
 const EntityComponent_1 = require("../../../../Core/Entity/EntityComponent");
+const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const IComponent_1 = require("../../../../UniverseEditor/Interface/IComponent");
-const RegisterComponent_1 = require("../../../../Core/Entity/RegisterComponent");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../../Manager/ConfigManager");
@@ -50,7 +50,7 @@ let DurabilityComponent = class DurabilityComponent extends EntityComponent_1.En
     if (!t.DurabilityStateConfig?.NonDestructable) {
       this.DeadActions = t.DestructionActions;
     }
-    this.Entity.GetComponent(122).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
+    this.Entity.GetComponent(125).SetLogicRange(ConfigManager_1.ConfigManager.ManipulateConfig.SearchRange);
     return true;
   }
   OnStart() {
@@ -73,10 +73,10 @@ let DurabilityComponent = class DurabilityComponent extends EntityComponent_1.En
   }
   $rn() {
     if (this.ac === 0 && !(this.u1t.GetDurabilityValue() > 0)) {
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSceneItemDestroy, this.Entity);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnSceneItemDurabilityEmpty, this.Entity);
       this.ac = 1;
     }
   }
 };
-DurabilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(103)], DurabilityComponent);
+DurabilityComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(105)], DurabilityComponent);
 exports.DurabilityComponent = DurabilityComponent; //# sourceMappingURL=DurablityComponent.js.map

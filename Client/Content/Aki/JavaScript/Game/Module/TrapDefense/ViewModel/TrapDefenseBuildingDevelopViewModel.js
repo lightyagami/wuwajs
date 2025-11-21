@@ -53,17 +53,17 @@ class TrapDefenseBuildingDevelopViewModel {
   }
   GetTabList() {
     var e = [];
-    e.push(this.U$c(0));
+    e.push(this.xXu(0));
     if (this.IsInDungeon) {
       if (this.BuildingDataMap.size > 0) {
-        e.push(this.U$c(1));
+        e.push(this.xXu(1));
       }
       if (this.AuxiliaryDataMap.size > 0) {
-        e.push(this.U$c(2));
+        e.push(this.xXu(2));
       }
     } else {
-      e.push(this.U$c(1));
-      e.push(this.U$c(2));
+      e.push(this.xXu(1));
+      e.push(this.xXu(2));
     }
     return e;
   }
@@ -87,7 +87,7 @@ class TrapDefenseBuildingDevelopViewModel {
     }
     return false;
   }
-  U$c(e) {
+  xXu(e) {
     var t = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetDevelopTabConfig(e);
     var e = {
       TabType: e,
@@ -130,14 +130,14 @@ class TrapDefenseBuildingDevelopViewModel {
     }
   }
   InitDevelopInfo(e) {
-    var t = e.B7u;
-    var e = e.k7u;
+    var t = e.dHc;
+    var e = e.mHc;
     for (const i of t) {
       var o = {
         MachineType: 2,
         DataType: i.s5n,
         Level: i.F6n,
-        Branch: i.Q7u
+        Branch: i.yHc
       };
       var o = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(o);
       if (this.AuxiliaryDataMap.has(i.s5n)) {
@@ -146,14 +146,14 @@ class TrapDefenseBuildingDevelopViewModel {
         o = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(o, 2);
         this.AuxiliaryDataMap.set(i.s5n, o);
       }
-      this.AuxiliaryDataMap.get(i.s5n).SetCurMaxLevel(i.K7u);
+      this.AuxiliaryDataMap.get(i.s5n).SetCurMaxLevel(i.SHc);
     }
     for (const n of e) {
       var r = {
         MachineType: 1,
         DataType: n.s5n,
         Level: n.F6n,
-        Branch: n.Q7u
+        Branch: n.yHc
       };
       var r = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(r);
       if (this.BuildingDataMap.has(n.s5n)) {
@@ -162,20 +162,20 @@ class TrapDefenseBuildingDevelopViewModel {
         r = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(r, 1);
         this.BuildingDataMap.set(n.s5n, r);
       }
-      this.BuildingDataMap.get(n.s5n).SetCurMaxLevel(n.K7u);
-      this.BuildingDataMap.get(n.s5n).SetBuildingPrice(n.RYc, n.wYc);
+      this.BuildingDataMap.get(n.s5n).SetCurMaxLevel(n.SHc);
+      this.BuildingDataMap.get(n.s5n).SetBuildingPrice(n.wJc, n.LJc);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate);
   }
   UpdateDevelopInfo(e) {
-    var t = e.B7u;
-    var e = e.k7u;
+    var t = e.dHc;
+    var e = e.mHc;
     for (const i of t) {
       var o = {
         MachineType: 2,
         DataType: i.s5n,
         Level: i.F6n,
-        Branch: i.Q7u
+        Branch: i.yHc
       };
       var o = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(o);
       if (this.AuxiliaryDataMap.has(i.s5n)) {
@@ -184,14 +184,14 @@ class TrapDefenseBuildingDevelopViewModel {
         o = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(o, 2);
         this.AuxiliaryDataMap.set(i.s5n, o);
       }
-      this.AuxiliaryDataMap.get(i.s5n).SetCurMaxLevel(i.K7u);
+      this.AuxiliaryDataMap.get(i.s5n).SetCurMaxLevel(i.SHc);
     }
     for (const n of e) {
       var r = {
         MachineType: 1,
         DataType: n.s5n,
         Level: n.F6n,
-        Branch: n.Q7u
+        Branch: n.yHc
       };
       var r = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(r);
       if (this.BuildingDataMap.has(n.s5n)) {
@@ -200,8 +200,8 @@ class TrapDefenseBuildingDevelopViewModel {
         r = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(r, 1);
         this.BuildingDataMap.set(n.s5n, r);
       }
-      this.BuildingDataMap.get(n.s5n).SetCurMaxLevel(n.K7u);
-      this.BuildingDataMap.get(n.s5n).SetBuildingPrice(n.RYc, n.wYc);
+      this.BuildingDataMap.get(n.s5n).SetCurMaxLevel(n.SHc);
+      this.BuildingDataMap.get(n.s5n).SetBuildingPrice(n.wJc, n.LJc);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseOnBranchUpdate);
   }
@@ -294,32 +294,32 @@ class TrapDefenseBuildingDevelopViewModel {
     this.InAuxiliaryDataMap.clear();
     this.InBuildingData.length = 0;
     this.InBuildingDataMap.clear();
-    for (const r of e.B7u) {
+    for (const r of e.dHc) {
       var t = {
         MachineType: 2,
         DataType: r.s5n,
         Level: r.F6n,
-        Branch: r.Q7u
+        Branch: r.yHc
       };
       var t = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(t);
       var t = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(t, 2);
-      t.SetCurMaxLevel(r.K7u);
+      t.SetCurMaxLevel(r.SHc);
       t.IsInDungeon = true;
       this.InAuxiliaryData.push(t);
       this.InAuxiliaryDataMap.set(r.s5n, t);
     }
-    for (const i of e.k7u) {
+    for (const i of e.mHc) {
       var o = {
         MachineType: 1,
         DataType: i.s5n,
         Level: i.F6n,
-        Branch: i.Q7u
+        Branch: i.yHc
       };
       var o = ModelManager_1.ModelManager.TrapDefenseModel.ComposeMachineId(o);
       var o = TrapDefenseBuildingDevelopData_1.TrapDefenseBuildingDevelopItemData.Create(o, 1);
-      o.SetCurMaxLevel(i.K7u);
-      o.SetBuildingPrice(i.RYc, i.wYc);
-      o.SetSellPrice(i.LYc);
+      o.SetCurMaxLevel(i.SHc);
+      o.SetBuildingPrice(i.wJc, i.LJc);
+      o.SetSellPrice(i.AJc);
       o.IsInDungeon = true;
       this.InBuildingData.push(o);
       this.InBuildingDataMap.set(i.s5n, o);
@@ -337,19 +337,19 @@ class TrapDefenseBuildingDevelopViewModel {
       a.InitSlotData(undefined);
     }
     for (const s of e) {
-      if (s.x7u !== undefined) {
-        if (t = this.InAuxiliaryDataMap.get(s.x7u.s5n)) {
+      if (s.cHc !== undefined) {
+        if (t = this.InAuxiliaryDataMap.get(s.cHc.s5n)) {
           this.SlotList[s.q6n].InitSlotData(t);
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("TowerDefense", 77, "未找到对应辅助机ID", ["ID", s.x7u.s5n]);
+          Log_1.Log.Error("TowerDefense", 77, "未找到对应辅助机ID", ["ID", s.cHc.s5n]);
         }
-      } else if (s.D7u !== undefined) {
-        if (t = this.InBuildingDataMap.get(s.D7u.s5n)) {
-          t.SetBuildingPrice(s.D7u.RYc, s.D7u.wYc);
-          t.SetSellPrice(s.D7u.LYc);
+      } else if (s.uHc !== undefined) {
+        if (t = this.InBuildingDataMap.get(s.uHc.s5n)) {
+          t.SetBuildingPrice(s.uHc.wJc, s.uHc.LJc);
+          t.SetSellPrice(s.uHc.AJc);
           this.SlotList[s.q6n].InitSlotData(t);
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("TowerDefense", 77, "未找到对应建筑机关ID", ["ID", s.D7u.s5n]);
+          Log_1.Log.Error("TowerDefense", 77, "未找到对应建筑机关ID", ["ID", s.uHc.s5n]);
         }
       }
     }
@@ -455,7 +455,7 @@ class TrapDefenseBuildingDevelopViewModel {
       this.SlotList[e].SetSlotData(undefined, true);
     }
     if (e.Config.ModeType !== 3 && ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckNeedSellBuilding()) {
-      this.cHc();
+      this.tzc();
     } else {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.UploadSlotChange();
     }
@@ -475,14 +475,14 @@ class TrapDefenseBuildingDevelopViewModel {
       }
       if (e) {
         if (ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData().Config.ModeType === 1 && ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckNeedSellBuilding()) {
-          this.cHc();
+          this.tzc();
         } else {
           await ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.UploadSlotChange();
         }
       }
     }
   }
-  cHc() {
+  tzc() {
     var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(351);
     e.FunctionMap.set(1, () => {
       ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.DoSlotChange(false);
@@ -513,9 +513,11 @@ class TrapDefenseBuildingDevelopViewModel {
     return false;
   }
   UploadSlotChangeByNotify(e) {
-    this.DoSlotChange(false);
-    this.InitSlot(e);
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate);
+    if (this.InBuildingDataMap.size !== 0 || this.InAuxiliaryDataMap.size !== 0) {
+      this.DoSlotChange(false);
+      this.InitSlot(e);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseOnSlotUpdate);
+    }
   }
   async UploadSlotChange() {
     var e = this.GetUploadList();
@@ -535,27 +537,27 @@ class TrapDefenseBuildingDevelopViewModel {
     for (const n of this.SlotList) {
       var t;
       var o;
-      var r = new Protocol_1.Aki.Protocol.h9u();
+      var r = new Protocol_1.Aki.Protocol.bHc();
       var i = n.GetUploadData();
       r.q6n = n.GetIndex();
       if (i === undefined) {
-        r.l9u = undefined;
+        r.RHc = undefined;
       } else if ((t = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(i.Id)).MachineType === 2) {
-        r.l9u = "D7u";
-        (o = new Protocol_1.Aki.Protocol.u9u()).Q7u = t.Branch;
-        o.K7u = i.GetCurMaxLevel();
+        r.RHc = "uHc";
+        (o = new Protocol_1.Aki.Protocol.LHc()).yHc = t.Branch;
+        o.SHc = i.GetCurMaxLevel();
         o.s5n = t.DataType;
         o.F6n = t.Level;
-        r.x7u = o;
-        r.D7u = undefined;
+        r.cHc = o;
+        r.uHc = undefined;
       } else {
-        r.l9u = "x7u";
-        (o = new Protocol_1.Aki.Protocol._9u()).Q7u = t.Branch;
-        o.K7u = i.GetCurMaxLevel();
+        r.RHc = "cHc";
+        (o = new Protocol_1.Aki.Protocol.wHc()).yHc = t.Branch;
+        o.SHc = i.GetCurMaxLevel();
         o.s5n = t.DataType;
         o.F6n = t.Level;
-        r.x7u = undefined;
-        r.D7u = o;
+        r.cHc = undefined;
+        r.uHc = o;
       }
       e.push(r);
     }

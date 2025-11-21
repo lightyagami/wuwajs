@@ -7,8 +7,8 @@ exports.CsUiDefine = undefined;
 const UE = require("ue");
 class CsUiDefine {
   static IsRedirectToCs(e) {
-    return !!UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized() && this.E5d.has(e);
+    return !!UE.CSharpBlueprintFunctionLibrary.HasCSharpEnvironmentInitialized() && this.zum.has(e);
   }
 }
-(exports.CsUiDefine = CsUiDefine).E5d = new Set(["QuestTreeMainView", "QuestTreeAvailableListView", "QuestTreeChapterView", "QuestTreeNodeDetailView", "QuestTreeNodeImageView", "CsQuestLockPreview"]);
+(exports.CsUiDefine = CsUiDefine).zum = new Set(["QuestTreeMainView", "QuestTreeAvailableListView", "QuestTreeChapterView", "QuestTreeNodeDetailView", "QuestTreeNodeImageView", "CsQuestLockPreview", "MailBoxView", "TimeOfDaySecondView", "TimeOfDayLoadingView"]);
 //# sourceMappingURL=CsUiDefine.js.map

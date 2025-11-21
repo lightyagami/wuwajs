@@ -1,0 +1,54 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.FilterSeniorParamSliderItem = undefined;
+const UE = require("ue");
+const Log_1 = require("../../../../../Core/Common/Log");
+const MathUtils_1 = require("../../../../../Core/Utils/MathUtils");
+const ModelManager_1 = require("../../../../Manager/ModelManager");
+const GridProxyAbstract_1 = require("../../../Util/Grid/GridProxyAbstract");
+const LguiUtil_1 = require("../../../Util/LguiUtil");
+const FilterSettingViewModel_1 = require("./FilterSettingViewModel");
+class FilterSeniorParamSliderItem extends GridProxyAbstract_1.GridProxyAbstract {
+  constructor() {
+    super(...arguments);
+    this.ParentViewModel = undefined;
+    this.DNd = undefined;
+    this.$tu = (t, i = 0) => {
+      var e;
+      if (!this.ParentViewModel?.IsPropertyDirty(FilterSettingViewModel_1.FilterSettingViewModel.Flags.IsSeniorParamRefresh)) {
+        e = (t = MathUtils_1.MathUtils.RangeClamp(t, 0, 1, this.DNd.RangeMin, this.DNd.RangeMax)) / this.DNd.Ratio;
+        this.ParentViewModel?.OnSeniorSliderChanged?.(this.DNd.ParamIndex, e);
+        this.GetText(0).SetText("" + Math.round(t) + this.DNd.Unit);
+      }
+    };
+  }
+  OnRegisterComponent() {
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UISliderComponent], [3, UE.UISprite], [4, UE.UISprite], [5, UE.UIItem], [7, UE.UIText]];
+  }
+  OnStart() {
+    this.GetSlider(1).OnValueChangeCb.Bind(this.$tu);
+  }
+  Refresh(t, i, e) {
+    this.DNd = t;
+    this.GetSprite(4)?.SetUIActive(t.IsNeedSpecialBg);
+    this.GetSprite(3)?.SetUIActive(!t.IsNeedSpecialBg);
+    this.GetItem(5)?.SetUIActive(!t.IsNeedSpecialBg);
+    LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(7), t.Name);
+    var t = ModelManager_1.ModelManager.MenuModel.FilterSettingIdCache;
+    var t = ModelManager_1.ModelManager.MenuModel.FilterSettingValuesCache.get(t);
+    if (t) {
+      t = t[this.DNd.ParamIndex];
+      t = Math.round(t * this.DNd.Ratio);
+      this.GetText(0).SetText("" + t + this.DNd.Unit);
+      t = MathUtils_1.MathUtils.RangeClamp(t, this.DNd.RangeMin, this.DNd.RangeMax, 0, 1);
+      this.GetSlider(1)?.SetValue(t, false);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("GameSettings", 71, "全局滤镜高级参数未找到默认值", ["param", this.DNd.ParamIndex]);
+    }
+  }
+}
+exports.FilterSeniorParamSliderItem = FilterSeniorParamSliderItem;
+//# sourceMappingURL=FilterSeniorParamSliderItem.js.map

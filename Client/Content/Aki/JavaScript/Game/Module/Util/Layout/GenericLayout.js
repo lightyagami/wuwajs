@@ -122,6 +122,30 @@ class GenericLayout {
     }
     return true;
   }
+  RefreshByDataDirectlySync(i) {
+    var s = i.length;
+    if (s > this.mGo.length) {
+      return false;
+    }
+    this.uGo.SetData(i);
+    this.uGo.ClearSelectInfo();
+    this.gGo.clear();
+    i = this.dGo.length;
+    if (i < s) {
+      for (let t = i; t < s; t++) {
+        var e = this.mGo[t];
+        e.SetUIActive(true);
+        this.dGo.push(e);
+        this.CGo.push(this.uGo.GetGridProxy(t));
+      }
+    }
+    for (let t = s; t < this.mGo.length; t++) {
+      this.mGo[t].SetUIActive(false);
+    }
+    this.dGo.length = s;
+    this.N6_();
+    return true;
+  }
   RefreshByData(t, i, s = false) {
     var e;
     if (this.Rjt) {

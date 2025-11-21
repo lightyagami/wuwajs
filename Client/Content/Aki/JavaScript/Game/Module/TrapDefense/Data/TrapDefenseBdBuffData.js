@@ -26,9 +26,9 @@ class TrapDefenseBdBuffData {
   AU(t) {
     this.Config = t;
     this.MaxLevel = ConfigManager_1.ConfigManager.TrapDefenseConfig.GetBdBuffListByGroupId(t.Id).length;
-    this.v3u();
+    this.qVu();
   }
-  v3u() {
+  qVu() {
     var t = this.Level;
     var e = this.Config.Id;
     var i = this.BdBuffConfig;
@@ -37,7 +37,7 @@ class TrapDefenseBdBuffData {
   SetLevel(t) {
     if (this.Level !== t && !(t < 1) && !(t > this.MaxLevel)) {
       this.Level = t;
-      this.v3u();
+      this.qVu();
     }
   }
   SetActive(t) {

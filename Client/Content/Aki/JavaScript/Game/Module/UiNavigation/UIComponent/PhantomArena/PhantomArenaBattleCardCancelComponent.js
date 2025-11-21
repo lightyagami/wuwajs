@@ -18,10 +18,10 @@ class PhantomArenaBattleCardCancelComponent extends PhantomArenaBattleComponentB
       this.Proxy.GamepadLogic.CancelSelectedCard();
       UiNavigationViewManager_1.UiNavigationViewManager.RefreshCurrentHotKey();
       if (t !== PhantomArenaDefine_1.HAND_PHANTOMARENA_INDEX) {
-        t = this.S3u(t);
+        t = this.Hku(t);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SwitchNavigationFocus(t);
       } else if (e !== -1) {
-        t = this.M3u(e);
+        t = this.x2u(e);
         ControllerHolder_1.ControllerHolder.UiNavigationNewController.SwitchNavigationFocus(t);
       }
     }
@@ -33,7 +33,7 @@ class PhantomArenaBattleCardCancelComponent extends PhantomArenaBattleComponentB
       this.SetVisibleMode(2, false);
     }
   }
-  S3u(e) {
+  Hku(e) {
     var t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationGroup();
     if (t) {
       var n = [];
@@ -45,7 +45,7 @@ class PhantomArenaBattleCardCancelComponent extends PhantomArenaBattleComponentB
       return n[e];
     }
   }
-  M3u(e) {
+  x2u(e) {
     var t = ControllerHolder_1.ControllerHolder.UiNavigationNewController.GetCurrentNavigationFocusListener()?.GetNavigationGroup();
     if (t) {
       var n = [];

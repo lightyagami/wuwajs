@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ServerMarkItem = undefined;
+const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const Vector_1 = require("../../../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../../../Core/Utils/Math/Vector2D");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
@@ -82,7 +83,7 @@ class ServerMarkItem extends MarkItem_1.MarkItem {
     return this.MultiMapIdInternal;
   }
   get IsServerDisable() {
-    return this.ServerMarkInfo.IsServerDisable;
+    return this.ServerMarkInfo.ServerMarkState === Protocol_1.Aki.Protocol.htm.Proto_MarkDisable;
   }
   get MapId() {
     return this.ServerMarkInfo.MapId;
@@ -121,6 +122,14 @@ class ServerMarkItem extends MarkItem_1.MarkItem {
       this.NeedPlayShowOrHideSeq = e ? "ShowView" : "HideView";
     }
     return e;
+  }
+  GetAreaText() {
+    var e = ConfigManager_1.ConfigManager.MapConfig.GetConfigMark(this.ConfigId)?.AreaShowText ?? [];
+    if (e.length > 0) {
+      return e.map(e => ConfigManager_1.ConfigManager.MapConfig.GetLocalText(e)).join("-");
+    } else {
+      return ModelManager_1.ModelManager.MapModel.GetMarkAreaText(this.MapId, this.EntityConfigId);
+    }
   }
 }
 exports.ServerMarkItem = ServerMarkItem;

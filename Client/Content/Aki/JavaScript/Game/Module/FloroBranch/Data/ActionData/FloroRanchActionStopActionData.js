@@ -10,7 +10,7 @@ class FloroRanchActionStopActionData extends FloroRanchActionBase_1.FloroRanchAc
   constructor(o) {
     super(o);
     this.Fre = undefined;
-    this.Fre = o.psd;
+    this.Fre = o.q_d;
   }
   async OnExecute() {
     if (!this.IsIgnoreCasterAnim) {
@@ -18,7 +18,7 @@ class FloroRanchActionStopActionData extends FloroRanchActionBase_1.FloroRanchAc
     }
     await this.WaitIfPause();
     if (!this.IsExit()) {
-      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(this.Fre.Usd);
+      ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId(this.Fre.j_d);
     }
   }
 }

@@ -24,7 +24,7 @@ class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
     this.iQc = false;
     this.H_i = 0;
     this.rQc = 0;
-    this.Rod = t => {
+    this.Pad = t => {
       if (t) {
         this.Bzu.X = 0;
         this.Bzu.Y = 0;
@@ -44,7 +44,7 @@ class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
         this.Bzu.Y = t.Y;
       }
     };
-    this.wod = t => {
+    this.Aad = t => {
       this.nQc();
     };
     this.lqt = () => {
@@ -97,12 +97,12 @@ class ItemInspectViewBase extends UiTickViewBase_1.UiTickViewBase {
   kzu() {
     var t = this.YCo;
     if (t?.IsValid()) {
-      t.OnPointerBeginDragCallBack.Bind(this.Rod);
+      t.OnPointerBeginDragCallBack.Bind(this.Pad);
       t.OnPointerDragCallBack.Bind(this.B8i);
-      t.OnPointerEndDragCallBack.Bind(this.wod);
-      t.OnPointerDownCallBack.Bind(this.Rod);
-      t.OnPointerCancelCallBack.Bind(this.wod);
-      t.OnPointerUpCallBack.Bind(this.wod);
+      t.OnPointerEndDragCallBack.Bind(this.Aad);
+      t.OnPointerDownCallBack.Bind(this.Pad);
+      t.OnPointerCancelCallBack.Bind(this.Aad);
+      t.OnPointerUpCallBack.Bind(this.Aad);
     }
     this.sQc(Info_1.Info.IsInGamepad());
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerChange, this.lqt);

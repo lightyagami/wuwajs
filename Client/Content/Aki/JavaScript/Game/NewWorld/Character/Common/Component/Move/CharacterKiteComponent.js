@@ -62,7 +62,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     };
   }
   static get Dependencies() {
-    return [179];
+    return [182];
   }
   KiteMove(t) {
     var e;
@@ -74,7 +74,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     } else if (this.Die?.Valid && this.Nul === this.Die.SplineMoveEndCount) {
       if (Vector_1.Vector.DistSquared(this.znr, this.Gce.ActorComp.ActorLocationProxy) < BLOCK_DIST_THRESHOLD_SQUARED) {
         if (this.G91 > KITE_MAX_BLOCK && ++this.Nau >= KITE_BLOCK_COUNT) {
-          this.Entity.GetComponent(100)?.SetIsHookEndByInterrupt(true);
+          this.Entity.GetComponent(102)?.SetIsHookEndByInterrupt(true);
           this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
             Mode: 3,
             Context: "[CharacterKiteComponent.KiteMove.Block]"
@@ -92,7 +92,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
       this.M1l.DeepCopy(this.Die.HookLocation);
     } else {
       if (this.Cgl !== this.Die?.SplineMoveBrokenCount) {
-        this.Entity.GetComponent(100)?.SetIsHookEndByInterrupt(true);
+        this.Entity.GetComponent(102)?.SetIsHookEndByInterrupt(true);
       }
       this.Gce?.ActorComp?.Actor.KuroSetMovementMode({
         Mode: 3,
@@ -104,7 +104,7 @@ let CharacterKiteComponent = class CharacterKiteComponent extends EntityComponen
     return true;
   }
   OnStart() {
-    this.Gce = this.Entity.GetComponent(179);
+    this.Gce = this.Entity.GetComponent(182);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharOnUnifiedMoveStateChanged, this.OnMoveStateChanged);
     return true;
   }

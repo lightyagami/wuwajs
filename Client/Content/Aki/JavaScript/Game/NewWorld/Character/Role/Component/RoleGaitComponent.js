@@ -86,7 +86,7 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     };
   }
   static get Dependencies() {
-    return [3, 179];
+    return [3, 182];
   }
   OnInitData() {
     this.RoleForbidMovementHelper = new RoleForbidMovementHelper_1.RoleForbidMovementHelper();
@@ -94,11 +94,11 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.Gce = this.Entity.CheckGetComponent(179);
-    this.HBr = this.Entity.CheckGetComponent(176);
-    this.Xte = this.Entity.CheckGetComponent(206);
+    this.Gce = this.Entity.CheckGetComponent(182);
+    this.HBr = this.Entity.CheckGetComponent(179);
+    this.Xte = this.Entity.CheckGetComponent(209);
     this.Nce = this.Entity.CheckGetComponent(62);
-    this.$zo = this.Entity.CheckGetComponent(175);
+    this.$zo = this.Entity.CheckGetComponent(178);
     RoleGaitStatic_1.RoleGaitStatic.Init();
     this.InitRoleForbidMovementHelper();
     return true;
@@ -107,7 +107,7 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     this.RoleGaitUnEnableState.set(2, new Set());
     this.RoleGaitUnEnableState.set(1, new Set());
     this.RoleGaitUnEnableState.set(3, new Set());
-    this.RoleForbidMovementHelper.TagComp = this.Entity.CheckGetComponent(206);
+    this.RoleForbidMovementHelper.TagComp = this.Entity.CheckGetComponent(209);
     this.RoleForbidMovementHelper.CreateTagHandler(-63548288, 1, this.Xin);
     this.RoleForbidMovementHelper.CreateTagHandler(229513169, 1, this.Yin);
     this.RoleForbidMovementHelper.CreateTagHandler(930178923, 0, this.Jin);
@@ -219,6 +219,7 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
             case CharacterUnifiedStateTypes_1.ECharMoveState.HeavyKnock:
             case CharacterUnifiedStateTypes_1.ECharMoveState.KnockUp:
             case CharacterUnifiedStateTypes_1.ECharMoveState.Captured:
+            case CharacterUnifiedStateTypes_1.ECharMoveState.BreakWeakness:
               break;
             default:
               if (this.Gce.Speed < STOP_SPEED) {
@@ -280,5 +281,5 @@ let RoleGaitComponent = class RoleGaitComponent extends EntityComponent_1.Entity
     }
   }
 };
-RoleGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(95)], RoleGaitComponent);
+RoleGaitComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(97)], RoleGaitComponent);
 exports.RoleGaitComponent = RoleGaitComponent; //# sourceMappingURL=RoleGaitComponent.js.map

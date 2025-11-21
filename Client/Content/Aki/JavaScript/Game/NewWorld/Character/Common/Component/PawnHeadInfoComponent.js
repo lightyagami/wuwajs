@@ -155,10 +155,10 @@ let PawnHeadInfoComponent = class PawnHeadInfoComponent extends EntityComponent_
     return [1, 0];
   }
   OnStart() {
-    this.xJr = this.Entity.GetComponent(118);
+    this.xJr = this.Entity.GetComponent(121);
     this.Hte = this.Entity.GetComponent(1);
-    this.wJr = this.Entity.GetComponent(120);
-    this.BJr = this.Entity.GetComponent(198);
+    this.wJr = this.Entity.GetComponent(123);
+    this.BJr = this.Entity.GetComponent(201);
     this.bJr = Vector_1.Vector.Create();
     this.pie();
     if (this.Hte instanceof CharacterActorComponent_1.CharacterActorComponent) {

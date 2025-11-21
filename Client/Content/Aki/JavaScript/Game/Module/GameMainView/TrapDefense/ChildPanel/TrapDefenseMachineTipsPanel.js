@@ -33,10 +33,10 @@ class TrapDefenseMachineTipsPanel extends BattleChildViewPanel_1.BattleChildView
     await this.Sequence.PlaySequenceAsync("Close", e);
   }
   OnCheckBattleChildViewPanelShowCondition() {
-    return this.Xud;
+    return this.YEd;
   }
-  Yud() {
-    if (this.Xud) {
+  zEd() {
+    if (this.YEd) {
       this.ShowBattleChildViewPanel();
     } else {
       this.HideBattleChildViewPanel();
@@ -50,14 +50,14 @@ class TrapDefenseMachineTipsPanel extends BattleChildViewPanel_1.BattleChildView
         this.Sequence.PlaySequencePurely("Switch");
       }
       this.Data = e;
-      this.Yud();
+      this.zEd();
     }
   }
   RefreshMachineStateByRoulette(e) {
     this.IsMobileRouletteVisible = e;
-    this.Yud();
+    this.zEd();
   }
-  get Xud() {
+  get YEd() {
     return !this.IsMobileRouletteVisible && (this.Data?.IsBuilding ?? false);
   }
 }

@@ -16,7 +16,7 @@ class TrapDefenseBuildingDevelopBottomInfoItem extends UiPanelBase_1.UiPanelBase
     this.SPe = undefined;
     this.OnClickCb = undefined;
     this.CanExecuteChangeCb = undefined;
-    this.Pld = false;
+    this.Fgd = false;
     this.DragLogic = undefined;
     this.Lke = () => false;
     this.OnClickedItem = () => {
@@ -27,10 +27,10 @@ class TrapDefenseBuildingDevelopBottomInfoItem extends UiPanelBase_1.UiPanelBase
     this.OnItemOverlay = () => {
       this.SPe.StopPlayingSequence(false, true);
       this.SPe.PlayLevelSequenceByName("HighLight");
-      this.Pld = true;
+      this.Fgd = true;
     };
     this.OnItemUnOverlay = () => {
-      this.Pld = false;
+      this.Fgd = false;
       this.SPe.StopPlayingSequence(false, true);
       this.SPe.PlayLevelSequenceByName("Normal");
     };
@@ -97,8 +97,8 @@ class TrapDefenseBuildingDevelopBottomInfoItem extends UiPanelBase_1.UiPanelBase
     this.GetItem(4).SetUIActive(t);
     this.GetSprite(2).SetUIActive(this.SlotData.GetSlotData() === undefined);
     this.DragItem.OnEndDrag();
-    if (this.Pld) {
-      this.Pld = false;
+    if (this.Fgd) {
+      this.Fgd = false;
       this.SPe.StopPlayingSequence(false, true);
       this.SPe.PlaySequencePurely("Normal");
     }

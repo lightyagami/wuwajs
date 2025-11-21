@@ -34,87 +34,105 @@ class LevelAiTaskSitDown extends LevelAiTask_1.LevelAiTask {
   Init() {
     if (!this.gU) {
       var e = this.Params;
-      if (e && e.Option.Type === IAction_1.ENpcLeisureInteract.SitDown) {
-        var i = e.Option.PosEntityId;
-        this.jTe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
-        if (this.jTe) {
-          var t = this.jTe.Entity.GetComponent(198);
-          if (t) {
-            var t = t.GetSubEntityInteractLogicController();
-            var s = this.CreatureDataComponent.Entity.GetComponent(1);
-            var o = this.CreatureDataComponent.GetPbDataId();
-            var n = new LevelAiTaskSuccess_1.LevelAiTaskSuccess();
-            n.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description);
-            t.Possess(this.CreatureDataComponent.Entity);
-            var a = t.GetSitLocation();
-            var r = t.GetForwardDirection();
-            var _ = Vector_1.Vector.Create();
-            var l = Vector_1.Vector.Create();
-            r.Multiply(NEARBY_CHAIR_OFFSET, _);
-            a.Addition(_, l);
-            var _ = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
-            _.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move To Nearby Chair Location: " + l.ToString());
-            _.Target = Vector_1.Vector.Create();
-            _.Target.DeepCopy(l);
-            _.MoveState = 1;
-            _.MoveSpeed = MOVE_TO_NEARBY_CHAIR_SPEED;
-            n.NextNodes.push(_);
-            var h = new LevelAiTaskSetItemCollision_1.LevelAiTaskSetItemCollision();
-            h.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Ignore Actor Collision");
-            h.ItemEntity = this.jTe;
-            h.IsIgnore = true;
-            _.NextNodes.push(h);
-            var _ = s.ActorLocationProxy;
-            var s = Vector_1.Vector.Create(a.X, a.Y, _.Z);
-            var a = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
-            a.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move To Interact Location: " + s.ToString());
-            a.Target = Vector_1.Vector.Create();
-            a.Target.DeepCopy(s);
-            a.MoveState = 1;
-            a.MoveSpeed = MOVE_TO_CHAIR_SPEED;
-            h.NextNodes.push(a);
-            var _ = Vector_1.Vector.Create();
-            var s = Vector_1.Vector.Create();
-            r.Multiply(200, s);
-            l.Addition(s, _);
-            var h = {
-              EntityId: o,
-              Pos: _,
-              MontageId: e.Option.MontageId.MontageId,
-              IsAbpMontage: e.Option.MontageId.IsAbp,
-              LoopDuration: e.Option.Duration
-            };
-            var r = new LevelAiTaskTurnAndPlayMontage_1.LevelAiTaskTurnAndPlayMontage();
-            r.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Turn To Chair And Play Sit Down Montage", h);
-            a.NextNodes.push(r);
-            t.UnPossess(this.CreatureDataComponent.Entity);
-            var s = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
-            s.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move Back To Nearby Chair Location: " + l.ToString());
-            s.Target = Vector_1.Vector.Create();
-            s.Target.DeepCopy(l);
-            s.MoveState = 1;
-            s.MoveSpeed = MOVE_TO_CHAIR_SPEED;
-            r.NextNodes.push(s);
-            var A = new LevelAiTaskSetItemCollision_1.LevelAiTaskSetItemCollision();
-            A.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Reset Actor Collision");
-            A.ItemEntity = this.jTe;
-            A.IsIgnore = false;
-            s.NextNodes.push(A);
-            if (this.NextNodes.length) {
-              for (const T of this.NextNodes) {
-                A.NextNodes.push(T);
-              }
-              this.NextNodes.length = 0;
-            }
-            this.NextNodes.push(n);
-            this.gU = true;
-          } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelAi", 50, `[LevelAiTaskSitDown] Item Entity ${i} has no PawnInteractNewComponent`);
-          }
-        } else if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("LevelAi", 50, "[LevelAiTaskSitDown] Cannot Find Corresponding Item Entity for: " + i);
+      if (e) {
+        switch (e.Option.Type) {
+          case IAction_1.ENpcLeisureInteract.SitDown:
+            this.ecm(e.Option);
+            break;
+          case IAction_1.ENpcLeisureInteract.Swing:
+            this.tcm(e.Option);
+            break;
+          case IAction_1.ENpcLeisureInteract.SwingGetUp:
+            this.icm(e.Option);
         }
       }
+    }
+  }
+  tcm(e) {
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(306)?.StartSwing(e.SwingDa, e.EntityId, e.SkipSitDown);
+  }
+  icm(e) {
+    ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.TargetNpcId)?.Entity?.GetComponent(306)?.ExitLoopSwing();
+  }
+  ecm(e) {
+    var i = e.PosEntityId;
+    this.jTe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(i);
+    if (this.jTe) {
+      var t = this.jTe.Entity.GetComponent(201);
+      if (t) {
+        var t = t.GetSubEntityInteractLogicController();
+        var s = this.CreatureDataComponent.Entity.GetComponent(1);
+        var o = this.CreatureDataComponent.GetPbDataId();
+        var a = new LevelAiTaskSuccess_1.LevelAiTaskSuccess();
+        a.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description);
+        t.Possess(this.CreatureDataComponent.Entity);
+        var n = t.GetSitLocation();
+        var r = t.GetForwardDirection();
+        var _ = Vector_1.Vector.Create();
+        var h = Vector_1.Vector.Create();
+        r.Multiply(NEARBY_CHAIR_OFFSET, _);
+        n.Addition(_, h);
+        var _ = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
+        _.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move To Nearby Chair Location: " + h.ToString());
+        _.Target = Vector_1.Vector.Create();
+        _.Target.DeepCopy(h);
+        _.MoveState = 1;
+        _.MoveSpeed = MOVE_TO_NEARBY_CHAIR_SPEED;
+        a.NextNodes.push(_);
+        var l = new LevelAiTaskSetItemCollision_1.LevelAiTaskSetItemCollision();
+        l.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Ignore Actor Collision");
+        l.ItemEntity = this.jTe;
+        l.IsIgnore = true;
+        _.NextNodes.push(l);
+        var _ = s.ActorLocationProxy;
+        var s = Vector_1.Vector.Create(n.X, n.Y, _.Z);
+        var n = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
+        n.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move To Interact Location: " + s.ToString());
+        n.Target = Vector_1.Vector.Create();
+        n.Target.DeepCopy(s);
+        n.MoveState = 1;
+        n.MoveSpeed = MOVE_TO_CHAIR_SPEED;
+        l.NextNodes.push(n);
+        var _ = Vector_1.Vector.Create();
+        var s = Vector_1.Vector.Create();
+        r.Multiply(200, s);
+        h.Addition(s, _);
+        var l = {
+          EntityId: o,
+          Pos: _,
+          MontageId: e.MontageId.MontageId,
+          IsAbpMontage: e.MontageId.IsAbp,
+          LoopDuration: e.Duration
+        };
+        var r = new LevelAiTaskTurnAndPlayMontage_1.LevelAiTaskTurnAndPlayMontage();
+        r.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Turn To Chair And Play Sit Down Montage", l);
+        n.NextNodes.push(r);
+        t.UnPossess(this.CreatureDataComponent.Entity);
+        var s = new LevelAiTaskMoveTo_1.LevelAiTaskMoveTo();
+        s.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Move Back To Nearby Chair Location: " + h.ToString());
+        s.Target = Vector_1.Vector.Create();
+        s.Target.DeepCopy(h);
+        s.MoveState = 1;
+        s.MoveSpeed = MOVE_TO_CHAIR_SPEED;
+        r.NextNodes.push(s);
+        var A = new LevelAiTaskSetItemCollision_1.LevelAiTaskSetItemCollision();
+        A.Serialize(this.CharacterPlanComponent, this.CreatureDataComponent, this.Description + " Reset Actor Collision");
+        A.ItemEntity = this.jTe;
+        A.IsIgnore = false;
+        s.NextNodes.push(A);
+        if (this.NextNodes.length) {
+          for (const v of this.NextNodes) {
+            A.NextNodes.push(v);
+          }
+          this.NextNodes.length = 0;
+        }
+        this.NextNodes.push(a);
+        this.gU = true;
+      } else if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelAi", 50, `[LevelAiTaskSitDown] Item Entity ${i} has no PawnInteractNewComponent`);
+      }
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("LevelAi", 50, "[LevelAiTaskSitDown] Cannot Find Corresponding Item Entity for: " + i);
     }
   }
 }

@@ -11,6 +11,7 @@ const Time_1 = require("../../../../Core/Common/Time");
 const CommonParamById_1 = require("../../../../Core/Define/ConfigCommon/CommonParamById");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../../Manager/ConfigManager");
 const ModelManager_1 = require("../../../Manager/ModelManager");
 const UiViewBase_1 = require("../../../Ui/Base/UiViewBase");
 const CommonTabComponentData_1 = require("../../Common/TabComponent/CommonTabComponentData");
@@ -85,7 +86,10 @@ class MapAreaShowView extends UiViewBase_1.UiViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UILoopScrollViewComponent], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIHorizontalLayout], [5, UE.UIItem]];
   }
   async OnBeforeStartAsync() {
-    this.OOl = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreCountryDataList();
+    const t = ConfigManager_1.ConfigManager.AreaConfig;
+    this.OOl = ModelManager_1.ModelManager.ExploreProgressModel.GetExploreCountryDataList().filter(e => {
+      return e.GetStateDataList().filter(e => e.ExploreAreaDataList.filter(e => !t.GetAreaInfo(e.AreaId)?.IsDisableInExplore)).length > 0;
+    });
     await this.InitCommonOneTab();
   }
   OnStart() {

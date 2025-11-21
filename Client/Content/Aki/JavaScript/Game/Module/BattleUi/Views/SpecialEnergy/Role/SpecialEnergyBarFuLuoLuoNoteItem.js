@@ -12,9 +12,9 @@ class SpecialEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
     super(...arguments);
     this.Eah = new BattleUiTweenAnimPlayer_1.BattleUiTweenAnimPlayer();
     this.x5e = [];
-    this.YQu = -1;
+    this.Wju = -1;
     this.Dxt = false;
-    this.zQu = false;
+    this.Qju = false;
     this.ac = 0;
   }
   OnRegisterComponent() {
@@ -38,16 +38,16 @@ class SpecialEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetEnergyType(i) {
-    if (i !== this.YQu) {
-      var t = this.YQu;
-      this.YQu = i;
+    if (i !== this.Wju) {
+      var t = this.Wju;
+      this.Wju = i;
       for (let t = 0; t < this.x5e.length; t++) {
         this.x5e[t].SetUIActive(i === t + 1);
       }
       this._Oe();
-      if (t === 0 && this.YQu !== 0) {
+      if (t === 0 && this.Wju !== 0) {
         this.PlayTweenAnim(6);
-      } else if (t !== 0 && this.YQu === 0 && !this.zQu) {
+      } else if (t !== 0 && this.Wju === 0 && !this.Qju) {
         this.PlayTweenAnim(7);
       }
     }
@@ -59,16 +59,16 @@ class SpecialEnergyBarFuLuoLuoNoteItem extends UiPanelBase_1.UiPanelBase {
     }
   }
   SetPerformState(t) {
-    if (this.zQu !== t) {
-      this.zQu = t;
+    if (this.Qju !== t) {
+      this.Qju = t;
       this._Oe();
     }
   }
   _Oe() {
     let t = 0;
-    if (this.zQu) {
+    if (this.Qju) {
       t = 1;
-    } else if (this.Dxt && this.YQu > 0) {
+    } else if (this.Dxt && this.Wju > 0) {
       t = 2;
     }
     if (this.ac !== t) {

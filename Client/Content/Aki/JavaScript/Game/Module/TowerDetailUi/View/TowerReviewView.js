@@ -21,7 +21,7 @@ class TowerReviewView extends UiViewBase_1.UiViewBase {
     super(...arguments);
     this.ucc = undefined;
     this.HDo = undefined;
-    this.izc = false;
+    this.rZc = false;
     this.sbi = () => {
       return new TowerReviewItem_1.TowerReviewItem();
     };
@@ -44,7 +44,7 @@ class TowerReviewView extends UiViewBase_1.UiViewBase {
   }
   OnBeforeDestroy() {
     this.HDo = undefined;
-    if (this.izc) {
+    if (this.rZc) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTowerReviewGoToReward);
     }
   }
@@ -54,16 +54,16 @@ class TowerReviewView extends UiViewBase_1.UiViewBase {
     if (i) {
       this.HDo.RefreshByData(i);
       this.GetText(2).SetText(ModelManager_1.ModelManager.TowerModel.GetDifficultyMaxStars(e, true) + "/" + ModelManager_1.ModelManager.TowerModel.GetDifficultyAllStars(e, true));
-      this.izc = false;
+      this.rZc = false;
       for (const r of ModelManager_1.ModelManager.TowerModel.GetDifficultyAllFloor(e)) {
         var t = ModelManager_1.ModelManager.TowerModel.GetFloorData(r);
         if (t && t.IsQuickPass) {
-          this.izc = true;
+          this.rZc = true;
           break;
         }
       }
-      this.GetText(3).SetUIActive(this.izc);
-      if (this.izc) {
+      this.GetText(3).SetUIActive(this.rZc);
+      if (this.rZc) {
         i = ModelManager_1.ModelManager.TowerModel.QuickPassId;
         if (e = TowerQuickPassById_1.configTowerQuickPassById.GetConfig(i)) {
           LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(3), e.TipText);
@@ -71,7 +71,7 @@ class TowerReviewView extends UiViewBase_1.UiViewBase {
           Log_1.Log.Error("CycleTower", 43, "TowerReviewView: QuickPass config not found", ["QuickPassId", i]);
         }
       }
-      e = this.izc ? "CycleTowerReward" : "CycleTowerConfirm";
+      e = this.rZc ? "CycleTowerReward" : "CycleTowerConfirm";
       this.ucc.SetLocalTextNew(e);
     }
   }

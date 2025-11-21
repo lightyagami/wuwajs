@@ -24,7 +24,7 @@ class TrapDefensePauseView extends UiViewBase_1.UiViewBase {
     this.I5t = () => {
       this.CloseMe();
     };
-    this.v$c = () => {
+    this.wXu = () => {
       ModelManager_1.ModelManager.TrapDefenseModel.OpenViewKeySetting();
     };
     this.Os_ = () => {
@@ -32,20 +32,16 @@ class TrapDefensePauseView extends UiViewBase_1.UiViewBase {
         ModelManager_1.ModelManager.TrapDefenseModel.OpenViewBdSum();
       }
     };
-    this.y$c = () => {
+    this.LXu = () => {
       ModelManager_1.ModelManager.TrapDefenseModel?.OpenViewMonster(undefined, 1);
     };
-    this.S$c = () => {
+    this.AXu = () => {
       if (ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstToLevelData().Config.IsCanSave) {
         ModelManager_1.ModelManager.TrapDefenseModel.NeedOpenMainView = true;
-        ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseChallengeQuit(false).then(e => {
-          if (e) {
-            this.CloseMe();
-          }
-        });
+        ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseChallengeQuit(false);
       }
     };
-    this.M$c = () => {
+    this.PXu = () => {
       ControllerHolder_1.ControllerHolder.TrapDefenseController.RequestTrapDefenseChallengeQuit(true).then(e => {
         if (e) {
           this.CloseMe();
@@ -56,7 +52,7 @@ class TrapDefensePauseView extends UiViewBase_1.UiViewBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIHorizontalLayout], [3, UE.UIItem], [4, UE.UIText], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.I5t], [1, this.v$c]];
+    this.BtnBindInfo = [[0, this.I5t], [1, this.wXu]];
   }
   async OnBeforeStartAsync() {
     var e = [];
@@ -64,13 +60,13 @@ class TrapDefensePauseView extends UiViewBase_1.UiViewBase {
     this.BtnBuff.ClickCb = this.Os_;
     e.push(this.BtnBuff.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()));
     this.BtnMonster = new TrapDefenseResultInfoBtn();
-    this.BtnMonster.ClickCb = this.y$c;
+    this.BtnMonster.ClickCb = this.LXu;
     e.push(this.BtnMonster.CreateThenShowByActorAsync(this.GetItem(6).GetOwner()));
     this.BtnSave = new TrapDefenseResultInfoBtn();
-    this.BtnSave.ClickCb = this.S$c;
+    this.BtnSave.ClickCb = this.AXu;
     e.push(this.BtnSave.CreateThenShowByActorAsync(this.GetItem(7).GetOwner()));
     this.BtnEnd = new TrapDefenseResultInfoBtn();
-    this.BtnEnd.ClickCb = this.M$c;
+    this.BtnEnd.ClickCb = this.PXu;
     e.push(this.BtnEnd.CreateThenShowByActorAsync(this.GetItem(8).GetOwner()));
     await Promise.all(e);
     this.BtnBuff.SetUiActive(ModelManager_1.ModelManager.TrapDefenseModel.GetCurInstIsRogue());

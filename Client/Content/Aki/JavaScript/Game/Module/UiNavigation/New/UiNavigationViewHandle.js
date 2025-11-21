@@ -35,10 +35,10 @@ class UiNavigationViewHandle {
     this.vbo = false;
     this.Mbo = false;
     this.Ebo = false;
-    this.t1d = 0;
+    this.XCd = 0;
     this.Gfa = undefined;
     this.bIa = undefined;
-    this.Tad = undefined;
+    this.jud = undefined;
     this.TagId = i;
     this.ViewName = t.ViewName;
     this.MainPanel = t;
@@ -399,6 +399,7 @@ class UiNavigationViewHandle {
   ResetNavigationListener() {
     this.Sbo();
     this.MarkResetCurrentPanelDirty();
+    this.ClearDynamicScrollViewNavigationContext();
   }
   MarkResetCurrentPanelDirty() {
     this.Vgl = true;
@@ -452,11 +453,11 @@ class UiNavigationViewHandle {
     }
   }
   MarkRefreshNavigationDirty(i = 0) {
-    this.t1d = i;
+    this.XCd = i;
     this.Ebo = true;
   }
   ResetNavigationDirty(i = 0) {
-    if (this.t1d === 0 || i === 0 || this.t1d === i) {
+    if (this.XCd === 0 || i === 0 || this.XCd === i) {
       this.Ebo = false;
     }
   }
@@ -482,6 +483,24 @@ class UiNavigationViewHandle {
   HasGamepadControlMouse() {
     return this.MainPanel?.IsGamepadControlMouse ?? false;
   }
+  GetHitComponentListener() {
+    return this.bIa?.GetHitComponentListener();
+  }
+  GetGuideUiListener() {
+    return this.bIa?.GetGuideUiListener();
+  }
+  GetAdsorbedListener() {
+    return this.bIa?.GetAdsorbedListener();
+  }
+  NotifyNavigationMousePositionDragState(i) {
+    this.bIa?.NotifyNavigationMousePositionDragState(i);
+  }
+  GetMouseViewportPosition() {
+    return this.bIa?.GetMouseViewportPosition();
+  }
+  IsNavigationMousePositionDragging() {
+    return this.bIa?.IsNavigationMousePositionDragging() ?? false;
+  }
   CanOverridePositionByGamepad(i) {
     this.bIa?.CanOverridePosition(i);
   }
@@ -497,17 +516,29 @@ class UiNavigationViewHandle {
   UpdateMousePositionByItem(i) {
     this.bIa?.UpdateMousePositionByItem(i);
   }
+  UpdateMousePositionForGuide(i) {
+    this.bIa?.UpdateMousePositionForGuide(i);
+  }
+  ResetNavigationFocusForGuide() {
+    this.bIa?.ResetNavigationFocusForGuide();
+  }
+  IsGamepadHitListenerUseDrag() {
+    return this.bIa?.IsNearlyListenerUseDrag() ?? false;
+  }
+  SetLockUseDragState(i) {
+    this.bIa?.SetLockUseDragState(i);
+  }
   SetDynamicScrollViewNavigationContext(i) {
-    this.Tad ||= i;
+    this.jud ||= i;
   }
   ClearDynamicScrollViewNavigationContext() {
-    this.Tad = undefined;
+    this.jud = undefined;
   }
   get IsWaitToFindDynamicGrid() {
-    return this.Tad !== undefined;
+    return this.jud !== undefined;
   }
   GetDynamicScrollViewNavigationContext() {
-    return this.Tad;
+    return this.jud;
   }
   TickViewHandle(i) {
     this.fbo.Start();

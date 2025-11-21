@@ -30,7 +30,7 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
     this.E7o = Vector_1.Vector.Create();
     this.h7o = t;
     this.a7o = i.GetBulletInfo();
-    this.S7o = i.GetComponent(170);
+    this.S7o = i.GetComponent(173);
     this.y7o = new Map();
     this.I7o = new Map();
     this.NeedTick = true;
@@ -71,13 +71,13 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
         this.v7o.clear();
       }
       for ([i] of this.a7o.CollisionInfo.CharacterEntityMap) {
-        if (!!i && (!this.T7o || !!i.GetComponent(206).HasAnyTag(e))) {
+        if (!!i && (!this.T7o || !!i.GetComponent(209).HasAnyTag(e))) {
           this.R7o(i);
         }
       }
     } else {
       for (var [s] of this.a7o.CollisionInfo.CharacterEntityMap) {
-        var o = s.GetComponent(206);
+        var o = s.GetComponent(209);
         if (!!s && (!this.T7o || !!o.HasAnyTag(e)) && !o.HasTag(1077681329)) {
           this.U7o(s);
         }
@@ -88,11 +88,14 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
     var i;
     var e;
     var s;
-    var o = t.GetComponent(179);
+    var o = t.GetComponent(182);
     if (!!o?.Valid && !(o.CharacterWeight > this.h7o.LimitWeight) && !(s = t.GetComponent(3).ActorLocationProxy, (e = Vector_1.Vector.Dist(this.S7o.ActorLocationProxy, s)) > this.h7o.OuterRadius) && !(e < this.h7o.InnerRadius) && !(this.h7o.OuterRadius <= 0)) {
       i = Math.max(MIN_WEIGHT, o.CharacterWeight) - WEIGHT_COEFFICIENT;
       e = Math.exp(-(e / this.h7o.OuterRadius * this.h7o.ForceDampingRatio * FORCE_DAMPING_RATIO)) * this.h7o.ForceBase * FORCE_RATIO / (i * i) * LENGTH_CONVERSION;
       (i = Vector_1.Vector.Create(this.S7o.ActorLocation)).SubtractionEqual(s);
+      if (this.LogicController.ForceHorizontal) {
+        i.Z = 0;
+      }
       i.Normalize(TOLERANCE);
       i.MultiplyEqual(e);
       s = this.y7o.get(t);
@@ -104,8 +107,8 @@ class BulletLogicForceController extends BulletLogicController_1.BulletLogicCont
     }
   }
   R7o(s) {
-    var o = s.GetComponent(176);
-    var h = s.GetComponent(179);
+    var o = s.GetComponent(179);
+    var h = s.GetComponent(182);
     if (o?.Valid && h?.Valid) {
       let i = CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_GLIDE;
       if (this.p7o) {

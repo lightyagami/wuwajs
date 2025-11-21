@@ -1,16 +1,16 @@
 "use strict";
 
 var RoleSceneInteractComponent_1;
-var __decorate = this && this.__decorate || function (t, i, e, o) {
-  var s;
+var __decorate = this && this.__decorate || function (t, i, e, s) {
+  var o;
   var h = arguments.length;
-  var r = h < 3 ? i : o === null ? o = Object.getOwnPropertyDescriptor(i, e) : o;
+  var r = h < 3 ? i : s === null ? s = Object.getOwnPropertyDescriptor(i, e) : s;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, i, e, o);
+    r = Reflect.decorate(t, i, e, s);
   } else {
     for (var n = t.length - 1; n >= 0; n--) {
-      if (s = t[n]) {
-        r = (h < 3 ? s(r) : h > 3 ? s(i, e, r) : s(i, e)) || r;
+      if (o = t[n]) {
+        r = (h < 3 ? o(r) : h > 3 ? o(i, e, r) : o(i, e)) || r;
       }
     }
   }
@@ -47,7 +47,7 @@ const RoleSceneInteractController_1 = require("../../../../Module/CombatMessage/
 const SceneTeamController_1 = require("../../../../Module/SceneTeam/SceneTeamController");
 const PortalUtils_1 = require("../../../../Utils/PortalUtils");
 const GrapplingHookPointComponent_1 = require("../../Custom/Components/GrapplingHookPointComponent");
-const updateTargetSkillIds = new Set([100020, 100021, 100022, 200004, 50170004, 501700042, 501700043, 501700044, 501700045, 50170001, 501700011, 50180004, 210130, 100024, 5021005, 5021008, 5021009, 200006]);
+const updateTargetSkillIds = new Set([1208713, 100020, 100021, 100022, 200004, 50170004, 501700042, 501700043, 501700044, 501700045, 50170001, 501700011, 50180004, 210130, 100024, 5021005, 5021008, 5021009, 200006, 210032]);
 const notSendHookLockPointSkillIds = new Set([200004, 200006]);
 const TRACE_TAG_NAME = "RoleSceneInteract";
 const PROFILE_KEY = "RoleSceneInteractComponent_FindBestTarget";
@@ -75,30 +75,30 @@ class HookPointUtils {
   static HookPointEqual(t, i) {
     return t.Point === i.Point && t.PortalPairId === i.PortalPairId && t.PortalA2B === i.PortalA2B;
   }
-  static HookPointSetAdd(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, o = !(i instanceof HookPointInfo) || i.PortalA2B) {
-    var s = i instanceof HookPointInfo ? i.Point : i;
-    let h = t.get(s);
+  static HookPointSetAdd(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, s = !(i instanceof HookPointInfo) || i.PortalA2B) {
+    var o = i instanceof HookPointInfo ? i.Point : i;
+    let h = t.get(o);
     if (h) {
-      if (h.findIndex((t, i) => t[0] === e && t[1] === o) !== -1) {
+      if (h.findIndex((t, i) => t[0] === e && t[1] === s) !== -1) {
         return t;
       }
     } else {
       h = [];
-      t.set(s, h);
+      t.set(o, h);
     }
-    h.push([e, o]);
+    h.push([e, s]);
     return t;
   }
-  static HookPointSetHas(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, o = !(i instanceof HookPointInfo) || i.PortalA2B) {
-    var s = i instanceof HookPointInfo ? i.Point : i;
-    var t = t?.get(s);
-    return !!t && t.findIndex((t, i) => t[0] === e && t[1] === o) !== -1;
+  static HookPointSetHas(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, s = !(i instanceof HookPointInfo) || i.PortalA2B) {
+    var o = i instanceof HookPointInfo ? i.Point : i;
+    var t = t?.get(o);
+    return !!t && t.findIndex((t, i) => t[0] === e && t[1] === s) !== -1;
   }
-  static HookPointSetDelete(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, o = !(i instanceof HookPointInfo) || i.PortalA2B) {
-    var s;
+  static HookPointSetDelete(t, i, e = i instanceof HookPointInfo ? i.PortalPairId : 0, s = !(i instanceof HookPointInfo) || i.PortalA2B) {
+    var o;
     var h = i instanceof HookPointInfo ? i.Point : i;
     var r = t.get(h);
-    return !!r && ((s = r.findIndex((t, i) => t[0] === e && t[1] === o)) !== -1 && r.splice(s, 1), r.length === 0 && t.delete(h), s !== -1);
+    return !!r && ((o = r.findIndex((t, i) => t[0] === e && t[1] === s)) !== -1 && r.splice(o, 1), r.length === 0 && t.delete(h), o !== -1);
   }
   static HookPointSetForEach(t, e) {
     t?.forEach((t, i) => {
@@ -113,12 +113,17 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     super(...arguments);
     this.Hte = undefined;
     this.won = undefined;
+    this.uwl = undefined;
     this.jWs = Vector_1.Vector.Create();
     this.kue = Vector_1.Vector.Create();
     this.WWs = Vector_1.Vector.Create();
     this.KWs = Vector_1.Vector.Create();
     this.QWs = Vector_1.Vector.Create();
     this.$Ws = Vector_1.Vector.Create();
+    this.UVd = Vector_1.Vector.Create();
+    this.xVd = Vector_1.Vector.Create();
+    this.BVd = Vector_1.Vector.Create();
+    this.kVd = Vector_1.Vector.Create();
     this.YWs = Vector_1.Vector.Create();
     this.chh = Transform_1.Transform.Create();
     this.JWs = Vector_1.Vector.Create();
@@ -129,7 +134,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     this.Oon = undefined;
     this.Lul = false;
     this.CQ1 = false;
-    this.kon = t => {
+    this.OnFixHookSkill = t => {
       var i;
       if (this.Hte?.IsAutonomousProxy && updateTargetSkillIds.has(t)) {
         if (this.Hon === undefined || this.Hon.Point === undefined) {
@@ -138,6 +143,9 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
           }
         } else {
           this.Die = this.Hon;
+          if (this.Die.Point.GetHookInteractType() === "FlyingFeather") {
+            this.Die.Point.ChangeHookPointState(3);
+          }
           this.SimulateHookTargetEntity = undefined;
           this.SimulateHookTargetLocation = undefined;
           this.tKs.length = 0;
@@ -158,7 +166,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
         }
       }
     };
-    this.Qon = (t, i) => {
+    this.OnFixHookSkillEnd = (t, i) => {
       if (this.Hte?.IsAutonomousProxy && updateTargetSkillIds.has(i)) {
         if (this.Die === undefined || this.Die.Point === undefined) {
           if (Log_1.Log.CheckWarn()) {
@@ -201,8 +209,8 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       if (i.Id === this.Die?.Point.Entity.Id) {
         var e = this.Entity.GetComponent(40);
         this.SetIsHookEndByInterrupt(true);
-        for (const o of updateTargetSkillIds) {
-          e.EndSkill(o, "CurrentTarget is Remove");
+        for (const s of updateTargetSkillIds) {
+          e.EndSkill(s, "CurrentTarget is Remove");
         }
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 31, "钩锁点在勾的时候被删除，请检查配置", ["PbDataId", i.Entity.GetComponent(0)?.GetPbDataId()]);
@@ -266,7 +274,8 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
   OnStart() {
     this.Hte = this.Entity.GetComponent(3);
     this.won = this.Entity.GetComponent(43);
-    this.Lie = this.Entity.GetComponent(206);
+    this.Lie = this.Entity.GetComponent(209);
+    this.uwl = this.Entity.GetComponent(233);
     this.Lie.ListenForTagAddOrRemove(283451623, (t, i) => {
       if (i) {
         if (this.Hon) {
@@ -282,8 +291,8 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     this.InitTraceInfo();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.a7r);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CharInterruptSkill, this.vgl);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.kon);
-    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Qon);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.OnFixHookSkill);
+    EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.OnFixHookSkillEnd);
     return true;
   }
   InitTraceInfo() {
@@ -297,8 +306,8 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
   OnEnd() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeSelectedExploreId, this.a7r);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharInterruptSkill, this.vgl);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.kon);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.Qon);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharBeforeSkillWithTarget, this.OnFixHookSkill);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnSkillEnd, this.OnFixHookSkillEnd);
     return true;
   }
   OnTick(t) {
@@ -329,23 +338,23 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     e = this.aKs;
     this.iKs.length = 0;
     var e;
-    var o = this.iKs;
+    var s = this.iKs;
     this.iKs = this.hKs;
-    this.hKs = o;
+    this.hKs = s;
     if (t && this.won?.Valid) {
-      o = this.won.GetVisionIdList();
-      t = o.Contains(HOOK_VISION_ID);
+      s = this.won.GetVisionIdList();
+      t = s.Contains(HOOK_VISION_ID);
       i = true;
     }
     if (this.Zon !== t || this.Hon?.Point !== e?.Point || this.ern !== i) {
-      o = this.Hon;
+      s = this.Hon;
       this.Hon = e;
       this.ern = i;
       this.Zon = t;
-      if (o?.Point.Valid && o.Point !== e?.Point) {
-        o.Point.ChangeHookPointState(0);
+      if (!!s?.Point.Valid && s.Point !== e?.Point && (s.Point.GetHookInteractType() !== "FlyingFeather" || !this.Kon)) {
+        s.Point.ChangeHookPointState(0);
       }
-      this.pQ1(o);
+      this.pQ1(s);
     }
     this.crn();
   }
@@ -372,6 +381,9 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       }
     } else {
       this.rrn = false;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Character", 79, "[RoleSceneInteractComponent] TryRemoveHookTag", ["AutoResetSkillFinished", ModelManager_1.ModelManager.ExploreModel.AutoResetSkillFinished]);
+      }
       if (ModelManager_1.ModelManager.ExploreModel.AutoResetSkillFinished) {
         this.Von(false, undefined, "当前未选中点，且不需要切换技能");
       }
@@ -392,28 +404,28 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     this.ZWs.clear();
     this.nKs.clear();
     if (this.bsr) {
-      let [o, s] = this.uKs();
+      let [s, o] = this.uKs();
       let h = 0;
       let r = true;
       ModelManager_1.ModelManager.PortalModel?.GetPortals().forEach((t, i) => {
         var e = this.cKs(i, true);
         if (e[1]) {
-          o = e[0];
-          s = e[1];
+          s = e[0];
+          o = e[1];
           h = i;
           r = true;
         }
         var e = this.cKs(i, false);
         if (e[1]) {
-          o = e[0];
-          s = e[1];
+          s = e[0];
+          o = e[1];
           h = i;
           r = false;
         }
       });
-      if (s) {
-        this.sKs = o;
-        this.aKs = new HookPointInfo(s, h, r);
+      if (o) {
+        this.sKs = s;
+        this.aKs = new HookPointInfo(o, h, r);
       }
       this.oKs.clear();
       var t = this.oKs;
@@ -435,61 +447,72 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     this.kue.FromUeVector(t.GetActorForwardVector());
     this.WWs.FromUeVector(t.GetActorRightVector());
     this.KWs.FromUeVector(t.GetActorUpVector());
-    var i;
-    var e;
-    var o;
-    var s = this.jWs;
-    var h = this.kue;
-    var r = this.WWs;
-    var n = this.KWs;
-    var a = Math.tan(MathUtils_1.MathUtils.DegToRad * t.FOVAngle);
-    var _ = Math.tan(MathUtils_1.MathUtils.DegToRad * (t.FOVAngle / t.AspectRatio));
+    var i = this.jWs;
+    var e = this.kue;
+    var s = this.WWs;
+    var o = this.KWs;
+    var h = Math.tan(MathUtils_1.MathUtils.DegToRad * t.FOVAngle);
+    var r = Math.tan(MathUtils_1.MathUtils.DegToRad * (t.FOVAngle / t.AspectRatio));
     this.QWs.FromConfigVector(this.Hte.ActorLocationProxy);
-    var l = this.QWs;
-    let c = [false, undefined];
-    let v = true;
-    for (const d of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
-      if (d.Entity.GetComponent(0)?.GetRemoveState() || !d.CheckCondition()) {
-        if (d === this.Die?.Point && !this.Kon) {
-          d.ChangeHookPointState(0);
+    var n = this.QWs;
+    let a = [false, undefined];
+    var _;
+    var l;
+    var c;
+    var v;
+    var d = this.uwl?.VehicleEntity?.GetComponent(1);
+    if (d) {
+      this.UVd.FromConfigVector(d.ActorLocationProxy);
+      this.xVd.FromConfigVector(d.ActorForwardProxy);
+      t = d.ActorGravityDirectProxy;
+      _ = Vector_1.Vector.DotProduct(d.ActorForwardProxy, t);
+      t.Multiply(_, this.kVd);
+      this.xVd.Subtraction(this.kVd, this.xVd);
+    }
+    let u = true;
+    for (const I of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
+      if (I.Entity.GetComponent(0)?.GetRemoveState() || !I.CheckCondition()) {
+        if (I === this.Die?.Point && !this.Kon) {
+          I.ChangeHookPointState(0);
           this.Die = undefined;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleFindFixHook, false, undefined);
         }
-      } else if (d.WasRecentlyRenderOnScreen() && this.x1h(d.MatchRoleOption) && !d.IsInCd && !d.Entity.GetComponent(134)?.IsInState(3) && !d.IsHookDisabled && (d !== this.Die?.Point || this.Die.PortalPairId !== 0 || !this.Die.PortalA2B)) {
-        if (d.UseRangeComponent) {
-          if (!d.Entity.GetComponent(86)?.IsOverlappingPlayer()) {
+      } else if (I.WasRecentlyRenderOnScreen() && this.x1h(I.MatchRoleOption) && !I.IsInCd && !I.Entity.GetComponent(137)?.IsInState(3) && !I.IsHookDisabled && (I !== this.Die?.Point || this.Die.PortalPairId !== 0 || !this.Die.PortalA2B)) {
+        if (I.UseRangeComponent) {
+          if (!I.Entity.GetComponent(86)?.IsOverlappingPlayer()) {
+            HookPointUtils.HookPointSetDelete(this.eKs, I);
             continue;
           }
-        } else if (Vector_1.Vector.DistSquared(d.TriggerLocation, l) > d.RadiusSquared) {
-          HookPointUtils.HookPointSetDelete(this.eKs, d);
+        } else if (Vector_1.Vector.DistSquared(I.TriggerLocation, n) > I.RadiusSquared) {
+          HookPointUtils.HookPointSetDelete(this.eKs, I);
           continue;
         }
-        HookPointUtils.HookPointSetAdd(this.$on, d);
-        if (Vector_1.Vector.DistSquared(d.HookLocation, l) < MIN_DIST_SQUARED) {
-          HookPointUtils.HookPointSetDelete(this.zon, d);
+        HookPointUtils.HookPointSetAdd(this.$on, I);
+        if (Vector_1.Vector.DistSquared(I.HookLocation, n) < MIN_DIST_SQUARED) {
+          HookPointUtils.HookPointSetDelete(this.zon, I);
         } else {
-          if (d.CameraGaze && d.CameraGaze.LockPriority >= 0 && !HookPointUtils.HookPointSetHas(this.oKs, d) && !HookPointUtils.HookPointSetHas(this.eKs, d)) {
-            HookPointUtils.HookPointSetAdd(this.nKs, d);
+          if (I.CameraGaze && I.CameraGaze.LockPriority >= 0 && !HookPointUtils.HookPointSetHas(this.oKs, I) && !HookPointUtils.HookPointSetHas(this.eKs, I)) {
+            HookPointUtils.HookPointSetAdd(this.nKs, I);
           }
-          i = this.$Ws;
-          d.HookLocation.Subtraction(s, i);
-          if (!((e = i.DotProduct(h)) <= 0) && !(o = i.DotProduct(r), Math.abs(o / e) > Math.min(a, this.Gon ? MIN_LEFT_RIGHT_SCALE : MIN_LEFT_RIGHT)) && !(i = i.DotProduct(n), Math.abs(i / e) > Math.min(_, this.Gon ? MIN_UP_DOWN_SCALE : MIN_UP_DOWN)) && !(HookPointUtils.HookPointSetAdd(this.ZWs, d), e = MathUtils_1.MathUtils.Square(o * LEFT_RIGHT_SCALE) + MathUtils_1.MathUtils.Square(i), this.lKs <= e)) {
-            if (v) {
-              TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, l);
-              v = false;
+          l = this.$Ws;
+          I.HookLocation.Subtraction(i, l);
+          if (!((c = l.DotProduct(e)) <= 0) && !(v = l.DotProduct(s), Math.abs(v / c) > Math.min(h, this.Gon ? MIN_LEFT_RIGHT_SCALE : MIN_LEFT_RIGHT)) && !(l = l.DotProduct(o), Math.abs(l / c) > Math.min(r, this.Gon ? MIN_UP_DOWN_SCALE : MIN_UP_DOWN)) && (!d || !!this.OVd(I, this.UVd, this.xVd, d.ActorGravityDirectProxy)) && !(HookPointUtils.HookPointSetAdd(this.ZWs, I), c = MathUtils_1.MathUtils.Square(v * LEFT_RIGHT_SCALE) + MathUtils_1.MathUtils.Square(l), this.lKs <= c)) {
+            if (u) {
+              TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, n);
+              u = false;
             }
-            TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, d.HookLocation);
-            o = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, this.bsr, TRACE_TAG_NAME, PROFILE_KEY);
-            o = this.rAl(o, d, this.bsr.HitResult);
-            this.lKs = e;
+            TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, I.HookLocation);
+            v = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, this.bsr, TRACE_TAG_NAME, PROFILE_KEY);
+            v = this.rAl(v, I, this.bsr.HitResult);
+            this.lKs = c;
             this.hKs.length = 0;
-            this.hKs.push([this.Hte.ActorLocationProxy, d.HookLocation]);
-            c = [!o, d];
+            this.hKs.push([this.Hte.ActorLocationProxy, I.HookLocation]);
+            a = [!v, I];
           }
         }
       }
     }
-    return c;
+    return a;
   }
   cKs(t, i) {
     if (!this.bsr) {
@@ -502,96 +525,107 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     if (!t) {
       return [false, undefined];
     }
-    var o = ModelManager_1.ModelManager.PortalModel.GetPortal(t);
-    if (!o || !o.Portal1Enable || !o.Portal2Enable) {
+    var s = ModelManager_1.ModelManager.PortalModel.GetPortal(t);
+    if (!s || !s.Portal1Enable || !s.Portal2Enable) {
       return [false, undefined];
     }
-    var s = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(216);
-    if (!s) {
+    var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(t)?.Entity?.GetComponent(219);
+    if (!o) {
       return [false, undefined];
     }
-    var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(s.GetPairCreatureDataId())?.Entity?.GetComponent(216);
+    var h = ModelManager_1.ModelManager.CreatureModel?.GetEntity(o.GetPairCreatureDataId())?.Entity?.GetComponent(219);
     if (!h) {
       return [false, undefined];
     }
-    this.chh.FromUeTransform(i ? o.PortalWorldTransform1 : o.PortalWorldTransform2);
+    this.chh.FromUeTransform(i ? s.PortalWorldTransform1 : s.PortalWorldTransform2);
     var r = this.chh;
-    var n = (i ? s : h).PortalBounds;
+    var n = (i ? o : h).PortalBounds;
     var a = r.GetLocation();
     r.GetRotation().GetForwardVector(this.YWs);
     var _ = this.YWs;
-    var o = this.Hte.ActorLocationProxy;
+    var s = this.Hte.ActorLocationProxy;
     var l = this.QWs;
-    PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(o, t, i, l);
-    var s = e.D_GetTransform();
-    var h = PortalUtils_1.PortalUtils.GetMappingTransformToOtherPortal(s, t, i);
+    PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(s, t, i, l);
+    var o = e.D_GetTransform();
+    var h = PortalUtils_1.PortalUtils.GetMappingTransformToOtherPortal(o, t, i);
     var c = this.jWs;
     c.FromUeVector(h.GetLocation());
-    var o = MathUtils_1.MathUtils.CommonTempQuat;
-    o.FromUeQuat(h.GetRotation());
+    var s = MathUtils_1.MathUtils.CommonTempQuat;
+    s.FromUeQuat(h.GetRotation());
     var v = this.kue;
-    o.GetForwardVector(v);
+    s.GetForwardVector(v);
     var d = this.WWs;
-    o.GetRightVector(d);
-    var I = this.KWs;
-    o.GetUpVector(I);
-    var s = MathUtils_1.MathUtils.DegToRad * (e.FOVAngle / 2);
-    var u = Math.tan(s);
-    var E = Math.tan(s * e.AspectRatio);
+    s.GetRightVector(d);
+    var u = this.KWs;
+    s.GetUpVector(u);
+    var o = MathUtils_1.MathUtils.DegToRad * (e.FOVAngle / 2);
+    var I = Math.tan(o);
+    var E = Math.tan(o * e.AspectRatio);
+    var T = this.uwl?.VehicleEntity?.GetComponent(1);
+    if (T) {
+      h = T.ActorTransform;
+      s = PortalUtils_1.PortalUtils.GetMappingTransformToOtherPortal(h, t, i);
+      this.UVd.FromUeVector(s.GetLocation());
+      this.xVd.FromUeVector(s.GetRotation().GetForwardVector());
+      o = T.ActorGravityDirectProxy;
+      e = Vector_1.Vector.DotProduct(this.xVd, o);
+      o.Multiply(e, this.kVd);
+      this.xVd.Subtraction(this.kVd, this.xVd);
+    }
     let f = [false, undefined];
-    for (const m of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
-      if (m.Entity.GetComponent(0)?.GetRemoveState() || !m.CheckCondition()) {
-        if (m === this.Die?.Point && !this.Kon) {
-          m.ChangeHookPointState(0);
+    for (const S of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
+      if (S.Entity.GetComponent(0)?.GetRemoveState() || !S.CheckCondition()) {
+        if (S === this.Die?.Point && !this.Kon) {
+          S.ChangeHookPointState(0);
           this.Die = undefined;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleFindFixHook, false, undefined);
         }
-      } else if (m.WasRecentlyRenderOnScreen() && this.x1h(m.MatchRoleOption) && !m.IsInCd && !m.Entity.GetComponent(134)?.IsInState(3) && m.GetHookInteractType() === "FixedPointHook" && !m.IsHookDisabled && (m !== this.Die?.Point || t !== this.Die.PortalPairId || i !== this.Die.PortalA2B)) {
-        var T = Vector_1.Vector.DistSquared(m.HookLocation, l);
-        if (T > m.RadiusSquared) {
-          HookPointUtils.HookPointSetDelete(this.eKs, m, t, i);
+      } else if (S.WasRecentlyRenderOnScreen() && this.x1h(S.MatchRoleOption) && !S.IsInCd && !S.Entity.GetComponent(137)?.IsInState(3) && S.GetHookInteractType() === "FixedPointHook" && !S.IsHookDisabled && (S !== this.Die?.Point || t !== this.Die.PortalPairId || i !== this.Die.PortalA2B)) {
+        var C = Vector_1.Vector.DistSquared(S.HookLocation, l);
+        if (C > S.RadiusSquared) {
+          HookPointUtils.HookPointSetDelete(this.eKs, S, t, i);
         } else {
-          HookPointUtils.HookPointSetAdd(this.$on, m, t, i);
-          if (T < MIN_DIST_SQUARED) {
-            HookPointUtils.HookPointSetDelete(this.zon, m, t, i);
+          HookPointUtils.HookPointSetAdd(this.$on, S, t, i);
+          if (C < MIN_DIST_SQUARED) {
+            HookPointUtils.HookPointSetDelete(this.zon, S, t, i);
           } else {
-            if (m.CameraGaze && m.CameraGaze.LockPriority >= 0 && !HookPointUtils.HookPointSetHas(this.oKs, m, t, i) && !HookPointUtils.HookPointSetHas(this.eKs, m, t, i)) {
-              HookPointUtils.HookPointSetAdd(this.nKs, m, t, i);
+            if (S.CameraGaze && S.CameraGaze.LockPriority >= 0 && !HookPointUtils.HookPointSetHas(this.oKs, S, t, i) && !HookPointUtils.HookPointSetHas(this.eKs, S, t, i)) {
+              HookPointUtils.HookPointSetAdd(this.nKs, S, t, i);
             }
-            var T = this.$Ws;
-            m.HookLocation.Subtraction(c, T);
-            var C = T.DotProduct(v);
-            if (!(C <= 0)) {
-              var g = T.DotProduct(d);
-              var M = Math.abs(g / C);
-              if (!(M > Math.min(u, this.Gon ? MIN_LEFT_RIGHT_SCALE : MIN_LEFT_RIGHT))) {
-                M = T.DotProduct(I);
-                T = Math.abs(M / C);
-                if (!(T > Math.min(E, this.Gon ? MIN_UP_DOWN_SCALE : MIN_UP_DOWN))) {
-                  C = this.JWs;
-                  if (MathUtils_1.MathUtils.LinePlaneIntersectionOriginNormal(this.Hte.ActorLocationProxy, PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(m.Entity.GetComponent(1).ActorLocationProxy, t, !i, MathUtils_1.MathUtils.CommonTempVector), a, _, C)) {
-                    r.InverseTransformPosition(C, MathUtils_1.MathUtils.CommonTempVector);
-                    T = MathUtils_1.MathUtils.CommonTempVector;
-                    if (!(Math.abs(T.Y) > Math.abs(n.Y)) && !(Math.abs(T.Z) > Math.abs(n.Z))) {
-                      T = this.zWs;
-                      PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(C, t, i, T);
-                      HookPointUtils.HookPointSetAdd(this.ZWs, m, t, i);
-                      g = MathUtils_1.MathUtils.Square(g * LEFT_RIGHT_SCALE) + MathUtils_1.MathUtils.Square(M);
-                      if (!(this.lKs <= g)) {
+            var C = this.$Ws;
+            S.HookLocation.Subtraction(c, C);
+            var g = C.DotProduct(v);
+            if (!(g <= 0)) {
+              var M = C.DotProduct(d);
+              var m = Math.abs(M / g);
+              if (!(m > Math.min(I, this.Gon ? MIN_LEFT_RIGHT_SCALE : MIN_LEFT_RIGHT))) {
+                m = C.DotProduct(u);
+                C = Math.abs(m / g);
+                if (!(C > Math.min(E, this.Gon ? MIN_UP_DOWN_SCALE : MIN_UP_DOWN)) && (!T || this.OVd(S, this.UVd, this.xVd, T.ActorGravityDirectProxy))) {
+                  g = this.JWs;
+                  if (MathUtils_1.MathUtils.LinePlaneIntersectionOriginNormal(this.Hte.ActorLocationProxy, PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(S.Entity.GetComponent(1).ActorLocationProxy, t, !i, MathUtils_1.MathUtils.CommonTempVector), a, _, g)) {
+                    r.InverseTransformPosition(g, MathUtils_1.MathUtils.CommonTempVector);
+                    C = MathUtils_1.MathUtils.CommonTempVector;
+                    if (!(Math.abs(C.Y) > Math.abs(n.Y)) && !(Math.abs(C.Z) > Math.abs(n.Z))) {
+                      C = this.zWs;
+                      PortalUtils_1.PortalUtils.GetMappingPosToOtherPortal(g, t, i, C);
+                      HookPointUtils.HookPointSetAdd(this.ZWs, S, t, i);
+                      M = MathUtils_1.MathUtils.Square(M * LEFT_RIGHT_SCALE) + MathUtils_1.MathUtils.Square(m);
+                      if (!(this.lKs <= M)) {
                         TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, this.Hte.ActorLocation);
-                        TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, C);
+                        TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, g);
                         let t = false;
                         if (!(t = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, this.bsr, TRACE_TAG_NAME, PROFILE_KEY))) {
-                          TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, T);
-                          TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, m.HookLocation);
+                          TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, C);
+                          TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, S.HookLocation);
                           t = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, this.bsr, TRACE_TAG_NAME, PROFILE_KEY);
                         }
-                        t = this.rAl(t, m, this.bsr.HitResult);
-                        this.lKs = g;
+                        t = this.rAl(t, S, this.bsr.HitResult);
+                        this.lKs = M;
                         this.hKs.length = 0;
-                        this.hKs.push([this.Hte.ActorLocationProxy, Vector_1.Vector.Create(C)]);
-                        this.hKs.push([Vector_1.Vector.Create(T), m.HookLocation]);
-                        f = [!t, m];
+                        this.hKs.push([this.Hte.ActorLocationProxy, Vector_1.Vector.Create(g)]);
+                        this.hKs.push([Vector_1.Vector.Create(C), S.HookLocation]);
+                        f = [!t, S];
                       }
                     }
                   }
@@ -624,16 +658,16 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       }
     }
     if (!(this.Jon ?? this.zon.size === 0)) {
-      let s = -1;
+      let o = -1;
       const h = this.Die !== undefined;
       HookPointUtils.HookPointSetForEach(this.zon, (t, i, e) => {
-        var o = t.CameraGaze.GazeInHook;
+        var s = t.CameraGaze.GazeInHook;
         if (i === 0) {
-          if (o && !h) {
+          if (s && !h) {
             HookPointUtils.HookPointSetDelete(this.zon, t, i, e);
-          } else if (t.CameraGaze.LockPriority > s) {
+          } else if (t.CameraGaze.LockPriority > o) {
             this.Jon = new HookPointInfo(t, i, e);
-            s = t.CameraGaze.LockPriority;
+            o = t.CameraGaze.LockPriority;
           }
         }
       });
@@ -689,7 +723,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
   GetCurrentTargetEnterPortalCapture() {
     if (this.Die?.Point && this.Die.PortalPairId) {
       var t;
-      var i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Die.PortalPairId)?.Entity?.GetComponent(216);
+      var i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Die.PortalPairId)?.Entity?.GetComponent(219);
       if (i) {
         i = i?.PortalCapture;
         if (this.Die.PortalA2B) {
@@ -705,7 +739,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
   GetCurrentTargetExitPortalCapture() {
     if (this.Die?.Point && this.Die.PortalPairId) {
       var t;
-      var i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Die.PortalPairId)?.Entity?.GetComponent(216);
+      var i = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.Die.PortalPairId)?.Entity?.GetComponent(219);
       if (i) {
         i = i?.PortalCapture;
         if (this.Die.PortalA2B) {
@@ -773,21 +807,21 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     this.Jlh = t;
   }
   Von(t, i, e) {
-    var o = this.Oon;
+    var s = this.Oon;
     if (t) {
-      if (o && i !== o && this.Lie.HasTag(o) && (this.Lie.RemoveTag(o), Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Character", 31, "[RoleSceneInteractComponent] 添加定点钩索可用标签时删除旧的定点钩索标签", ["reason", e], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o)]);
+      if (s && i !== s && this.Lie.HasTag(s) && (this.Lie.RemoveTag(s), Log_1.Log.CheckInfo())) {
+        Log_1.Log.Info("Character", 79, "[RoleSceneInteractComponent] 添加定点钩索可用标签时删除旧的定点钩索标签", ["Reason", e], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(s)]);
       }
       if (i && !this.Lie.HasTag(i) && (this.Lie.AddTag(i), this.Oon = i, Log_1.Log.CheckInfo())) {
-        Log_1.Log.Info("Character", 31, "[RoleSceneInteractComponent] 添加定点钩索可用标签", ["reason", e], ["EntityId", this.Entity.Id], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(i)]);
+        Log_1.Log.Info("Character", 79, "[RoleSceneInteractComponent] 添加定点钩索可用标签", ["Reason", e], ["EntityId", this.Entity.Id], ["Tag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(i)]);
       }
     } else if (this.Oon && this.Lie.HasTag(this.Oon) && (this.Lie.RemoveTag(this.Oon), this.Oon = undefined, Log_1.Log.CheckInfo())) {
-      Log_1.Log.Info("Character", 31, "[RoleSceneInteractComponent] 删除定点钩索可用标签", ["reason", e], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(o)]);
+      Log_1.Log.Info("Character", 79, "[RoleSceneInteractComponent] 删除定点钩索可用标签", ["Reason", e], ["EntityId", this.Entity.Id], ["OldTag", GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(s)]);
     }
   }
   mqc(t) {
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Character", 31, "[RoleSceneInteractComponent]UpdateHookHighlightTag", ["add", t], ["EntityId", this.Entity.Id]);
+      Log_1.Log.Info("Character", 79, "[RoleSceneInteractComponent] UpdateHookHighlightTag", ["Add", t], ["EntityId", this.Entity.Id]);
     }
     var i = 1628786673;
     if (t) {
@@ -807,7 +841,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     var t;
     if (this.Hte.IsAutonomousProxy) {
       (t = Protocol_1.Aki.Protocol.dms.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Die.Point.Entity.GetComponent(0).GetCreatureDataId());
-      Net_1.Net.Call(18563, t, t => {
+      Net_1.Net.Call(19182, t, t => {
         switch (t.Q4n) {
           case Protocol_1.Aki.Protocol.Q4n.KRs:
           case Protocol_1.Aki.Protocol.Q4n.Proto_HookLockPointLocked:
@@ -819,7 +853,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
             }
             break;
           default:
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18450);
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 25582);
         }
         if (t?.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           var i = this.Entity.GetComponent(40);
@@ -840,11 +874,11 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       const i = Protocol_1.Aki.Protocol.DC_.create();
       i.F4n = MathUtils_1.MathUtils.NumberToLong(t);
       i.Zlh = this.Jlh ? Protocol_1.Aki.Protocol.Zlh.Proto_Midway : Protocol_1.Aki.Protocol.Zlh.Proto_Endpoint;
-      Net_1.Net.Call(23692, i, t => {});
+      Net_1.Net.Call(29303, i, t => {});
       if (this.Die?.Point.WillBeDestroyedAfterHook) {
         const i = Protocol_1.Aki.Protocol.Wgs.create();
         i.F4n = MathUtils_1.MathUtils.NumberToLong(t);
-        Net_1.Net.Call(18409, i, t => {});
+        Net_1.Net.Call(20887, i, t => {});
       } else if (this.Die?.Point.WillBeHideAfterHook) {
         t = this.Die.Point.Entity;
         ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t, false, "RoleSceneInteractComponent.SendHookDestroyRequest", true);
@@ -858,12 +892,12 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
         this.Lul = false;
         var i;
         var e = new Map();
-        var o = Quat_1.Quat.Create();
-        ModelManager_1.ModelManager.CameraModel.CameraRotator.Quaternion(o);
-        o.Inverse(o);
-        var s = t?.GazeCondition?.ScanRange?.Height ?? DEFAULT_GAZE_HEIGHT;
-        var t = (t?.GazeCondition?.ScanRange?.Radius ?? DEFAULT_GAZE_RADIUS) / s;
-        this.Uul(ModelManager_1.ModelManager.CameraModel.CameraLocation, o, s, t, t, e);
+        var s = Quat_1.Quat.Create();
+        ModelManager_1.ModelManager.CameraModel.CameraRotator.Quaternion(s);
+        s.Inverse(s);
+        var o = t?.GazeCondition?.ScanRange?.Height ?? DEFAULT_GAZE_HEIGHT;
+        var t = (t?.GazeCondition?.ScanRange?.Radius ?? DEFAULT_GAZE_RADIUS) / o;
+        this.Cfm(ModelManager_1.ModelManager.CameraModel.CameraLocation, s, o, t, t, e);
         for ([, i] of e) {
           if (i !== this.Die.Point && i.GetHookInteractType() === this.Die.Point.GetHookInteractType()) {
             CameraController_1.CameraController.FightCamera.LogicComponent.ApplyCameraHook(i, this.Die.Point);
@@ -873,24 +907,24 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       }
     }
   }
-  Uul(t, i, e, o, s, h, r = true, n = false) {
+  Cfm(t, i, e, s, o, h, r = true, n = false) {
     if (r) {
       h.clear();
     }
     var a = this.Hte.ActorLocationProxy;
-    var _ = o * o;
-    var l = s * s;
+    var _ = s * s;
+    var l = o * o;
     let c = true;
-    for (const I of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
-      if (I.Entity.GetComponent(0)?.GetRemoveState() || !I.CheckCondition()) {
-        if (I === this.Die?.Point && !this.Kon) {
-          I.ChangeHookPointState(0);
+    for (const u of GrapplingHookPointComponent_1.GrapplingHookPointComponent.AllPoints) {
+      if (u.Entity.GetComponent(0)?.GetRemoveState() || !u.CheckHookEnableCondition()) {
+        if (u === this.Die?.Point && !this.Kon) {
+          u.ChangeHookPointState(0);
           this.Die = undefined;
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RoleFindFixHook, false, undefined);
         }
-      } else if (I.WasRecentlyRenderOnScreen() && !I.IsInCd && !I.Entity.GetComponent(134)?.IsInState(3) && (I !== this.Die?.Point || this.Die.PortalPairId !== 0 || !this.Die.PortalA2B)) {
+      } else if (u.WasRecentlyRenderOnScreen() && !u.IsInCd && !u.Entity.GetComponent(137)?.IsInState(3) && (u !== this.Die?.Point || this.Die.PortalPairId !== 0 || !this.Die.PortalA2B)) {
         var v = this.$Ws;
-        I.HookLocation.Subtraction(t, v);
+        u.HookLocation.Subtraction(t, v);
         i.RotateVector(v, v);
         if (!(v.X <= 0) && !(v.X > e)) {
           var d = v.Y / v.X;
@@ -900,10 +934,10 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
               TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.bsr, a);
               c = false;
             }
-            TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, I.HookLocation);
+            TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.bsr, u.HookLocation);
             d = TraceElementCommon_1.TraceElementCommon.ShapeTrace(this.Hte.Actor.CapsuleComponent, this.bsr, TRACE_TAG_NAME, PROFILE_KEY);
-            d = this.rAl(d, I, this.bsr.HitResult);
-            if (!d && (h.set(I.Entity.Id, I), n)) {
+            d = this.rAl(d, u, this.bsr.HitResult);
+            if (!d && (h.set(u.Entity.Id, u), n)) {
               return;
             }
           }
@@ -918,17 +952,17 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
       return SceneTeamController_1.SceneTeamController.IsMatchRoleOption(t);
     }
   }
-  rAl(t, i, s) {
+  rAl(t, i, o) {
     if (t) {
-      var h = i.Entity.GetComponent(203)?.Owner;
+      var h = i.Entity.GetComponent(206)?.Owner;
       if (!h) {
         return true;
       }
       var r = i.IsIgnorePlayerCollision;
-      for (let o = 0; o < s.Actors.Num(); o++) {
-        let e = s.Actors.Get(o);
+      for (let s = 0; s < o.Actors.Num(); s++) {
+        let e = o.Actors.Get(s);
         if (e !== undefined) {
-          var n = s.Components.Get(o);
+          var n = o.Components.Get(s);
           let t = true;
           let i = 10;
           while (e && --i > 0) {
@@ -953,7 +987,7 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     return false;
   }
   SetDataFromOldRole(t) {
-    t = t.Entity.GetComponent(100);
+    t = t.Entity.GetComponent(102);
     this.Hon = t.Hon;
     this.Zon = t.Zon;
     if (this.Hon !== undefined && this.Zon) {
@@ -973,10 +1007,34 @@ let RoleSceneInteractComponent = RoleSceneInteractComponent_1 = class RoleSceneI
     var i;
     return t !== this.Die?.Point && (i = this.Hon, t ? (this.CQ1 = true, this.Hon = new HookPointInfo(t, 0, false), this.iKs.length = 0, this.iKs.push([this.Hte.ActorLocationProxy, t.HookLocation])) : (this.CQ1 = false, this.Hon = undefined), this.ern = true, this.Zon = true, i?.Point.Valid && i.Point !== t && i.Point.ChangeHookPointState(0), this.pQ1(i), true);
   }
+  ClearForceTarget() {
+    if (this.CQ1) {
+      this.CQ1 = false;
+      this.Hon = undefined;
+      this.ern = false;
+      this.Zon = false;
+      this.pQ1(undefined);
+    }
+  }
+  OVd(t, i, e, s) {
+    var o = t.MotorInteractConstraintTarget;
+    if (o) {
+      (o === t.Entity ? t.HookLocation : o.GetComponent(1).ActorLocationProxy).Subtraction(i, this.BVd);
+      o = Vector_1.Vector.DotProduct(this.BVd, s);
+      s.Multiply(o, this.kVd);
+      this.BVd.SubtractionEqual(this.kVd);
+      this.BVd.Normalize();
+      i = Vector_1.Vector.DotProduct(this.BVd, e);
+      if (Math.abs(Math.acos(i) * MathUtils_1.MathUtils.RadToDeg) > t.MotorInteractConstraintAngle) {
+        return false;
+      }
+    }
+    return true;
+  }
 };
 RoleSceneInteractComponent.f7r = false;
 RoleSceneInteractComponent.TraceDebug = false;
 RoleSceneInteractComponent.DebugLog = false;
 RoleSceneInteractComponent.dth = new Map([["FixedPointHook", 0], ["SuiGuangHook", 1], ["KiteHook", 2], ["RagDollJumpingPoint", 3], ["RagDollClimbingPoint", 4], ["MovementPointHook", 5], ["SlashHook", 6], ["ChargeSlashHook", 8]]);
-RoleSceneInteractComponent = RoleSceneInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(100)], RoleSceneInteractComponent);
+RoleSceneInteractComponent = RoleSceneInteractComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(102)], RoleSceneInteractComponent);
 exports.RoleSceneInteractComponent = RoleSceneInteractComponent; //# sourceMappingURL=RoleSceneInteractComponent.js.map

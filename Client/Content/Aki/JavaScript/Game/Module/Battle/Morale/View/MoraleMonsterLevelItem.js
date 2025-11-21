@@ -11,7 +11,7 @@ const ResourceSystem_1 = require("../../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../../Common/Event/EventSystem");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
-const UiPanelBase_1 = require("../../../../Ui/Base/UiPanelBase");
+const StateExtraItemBase_1 = require("../../../BattleUi/Views/StateExtra/StateExtraItemBase");
 const LevelSequencePlayer_1 = require("../../../Common/LevelSequencePlayer");
 const LEVEL_DIFF_SPRITE_EASY = "/Game/Aki/UI/UIResources/UiFight/Image/Flag/T_EmenyMoraleLevelGray.T_EmenyMoraleLevelGray";
 const LEVEL_DIFF_SPRITE_NORMAL = "/Game/Aki/UI/UIResources/UiFight/Image/Flag/T_EmenyMoraleLevelYellow.T_EmenyMoraleLevelYellow";
@@ -19,14 +19,14 @@ const LEVEL_DIFF_SPRITE_HARD = "/Game/Aki/UI/UIResources/UiFight/Image/Flag/T_Em
 const LEVEL_DIFF_COLOR_EASY = "#000000cc";
 const LEVEL_DIFF_COLOR_NORMAL = "#ff9517cc";
 const LEVEL_DIFF_COLOR_HARD = "#ff1e18cc";
-class MoraleMonsterLevelItem extends UiPanelBase_1.UiPanelBase {
+class MoraleMonsterLevelItem extends StateExtraItemBase_1.StateExtraItemBase {
   constructor() {
     super(...arguments);
     this.Leu = undefined;
     this.weu = undefined;
     this.Aeu = undefined;
     this.yL1 = 1;
-    this.vQu = undefined;
+    this.j8u = undefined;
     this.SPe = undefined;
     this.wgu = (e, t, s, i) => {
       this.xeu(this.yL1);
@@ -53,15 +53,19 @@ class MoraleMonsterLevelItem extends UiPanelBase_1.UiPanelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnMoraleSumLevelChanged, this.wgu);
     super.OnBeforeDestroy();
   }
-  SetMoraleLevel(e) {
+  OnInitExtraParams(e) {
+    e = e.MoraleLevel;
+    this.V9d(e);
+  }
+  V9d(e) {
     this.yL1 = e;
     this.GetArtText(0)?.SetText(e.toString());
     this.xeu(e);
   }
   xeu(e) {
     e = ModelManager_1.ModelManager.MoraleBattleModel.GetMoraleLevelDiffType(e);
-    if (e !== this.vQu) {
-      this.vQu = e;
+    if (e !== this.j8u) {
+      this.j8u = e;
       var t = this.Leu?.get(e);
       if (t) {
         this.weu?.SetTexture(t);

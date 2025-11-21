@@ -3,20 +3,20 @@
 var __decorate = this && this.__decorate || function (t, i, s, e) {
   var h;
   var o = arguments.length;
-  var r = o < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
+  var a = o < 3 ? i : e === null ? e = Object.getOwnPropertyDescriptor(i, s) : e;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
-    r = Reflect.decorate(t, i, s, e);
+    a = Reflect.decorate(t, i, s, e);
   } else {
-    for (var a = t.length - 1; a >= 0; a--) {
-      if (h = t[a]) {
-        r = (o < 3 ? h(r) : o > 3 ? h(i, s, r) : h(i, s)) || r;
+    for (var r = t.length - 1; r >= 0; r--) {
+      if (h = t[r]) {
+        a = (o < 3 ? h(a) : o > 3 ? h(i, s, a) : h(i, s)) || a;
       }
     }
   }
-  if (o > 3 && r) {
-    Object.defineProperty(i, s, r);
+  if (o > 3 && a) {
+    Object.defineProperty(i, s, a);
   }
-  return r;
+  return a;
 };
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -25,6 +25,7 @@ exports.CharacterWeaponComponent = undefined;
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../../Core/Common/Log");
+const CalabashMeshByMeshId_1 = require("../../../../../Core/Define/ConfigQuery/CalabashMeshByMeshId");
 const SoarById_1 = require("../../../../../Core/Define/ConfigQuery/SoarById");
 const Protocol_1 = require("../../../../../Core/Define/Net/Protocol");
 const EntityComponent_1 = require("../../../../../Core/Entity/EntityComponent");
@@ -42,6 +43,7 @@ const EffectSystem_1 = require("../../../../Effect/EffectSystem");
 const ConfigManager_1 = require("../../../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../../../Manager/ModelManager");
+const CharacterUtils_1 = require("../../CharacterUtils");
 const CharacterNameDefines_1 = require("../CharacterNameDefines");
 const CharacterUnifiedStateTypes_1 = require("./Abilities/CharacterUnifiedStateTypes");
 const CharacterWeaponMesh_1 = require("./Weapon/CharacterWeaponMesh");
@@ -49,8 +51,6 @@ const KEEP_WEAPON_OUT_THREADHOLD = 0.1;
 const WEAPON_IN_DELAY = 100;
 const HIDE_WEAPON_AFTER_WEAPON_IN_DELAY = 1000;
 const glideRelativeRotator = new UE.Rotator(0, 90, -90);
-const HULU_BASE_ID = 20000000;
-const HULU_PARTY_ID = 100000;
 const noHideEffectWeaponIds = new Set([21040063, 21050063]);
 const skinTag = -403067358;
 class HideWeaponOrder {
@@ -161,7 +161,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
         s = t.GetComponent(81);
         this.vQr();
         this.CheckAndHangWeapons(false);
-        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(206)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
+        (i ? (this.MQr(0), this) : (this.MQr(0), this.SyncParagliding(s), (i = t.GetComponent(209)).HasTag(this.oQr) && !this.Lie.HasTag(this.oQr) && (i.RemoveTag(this.oQr), this.Lie.AddTag(this.oQr)), s)).OpenParagliding(false);
         if (this.SoarWing && s.SoarWing) {
           this.$gl();
           this.SoarWing.GetAnimInstance()?.SyncAnimStates(s.SoarWing.GetAnimInstance());
@@ -171,7 +171,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       }
     };
     this.EQr = (t, i) => {
-      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(176).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
+      if (!!i && !this.ParaglidingIsOpen && this.Entity.GetComponent(179).MoveState === CharacterUnifiedStateTypes_1.ECharMoveState.Glide) {
         this.OpenParagliding(true);
       }
     };
@@ -314,10 +314,10 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
   }
   OnStart() {
     this.Hte = this.Entity.CheckGetComponent(3);
-    this.oRe = this.Entity.GetComponent(178);
-    this.Lie = this.Entity.GetComponent(206);
+    this.oRe = this.Entity.GetComponent(181);
+    this.Lie = this.Entity.GetComponent(209);
     this.y5r = this.Entity.GetComponent(51);
-    this.I5r = this.Entity.GetComponent(176);
+    this.I5r = this.Entity.GetComponent(179);
     this.Xjt = this.Hte.CreatureData.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player;
     this.zKr = this.Xjt || this.Hte.CreatureData.GetBaseInfo()?.Category.MonsterMatchType === 4;
     this.iQr = 0;
@@ -470,7 +470,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     var t = this.Paragliding?.GetAnimInstance();
     if (t?.DebugDestructText) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Role", 6, "Paragliding OnClear", ["DebugDesturctText", t.DebugDestructText]);
+        Log_1.Log.Debug("Role", 6, "Paragliding OnClear", ["DebugDestructText", t.DebugDestructText]);
       }
       t.DebugDestructText = "";
     }
@@ -649,39 +649,44 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     UE.KuroAnimLibrary.EndAnimNotifyStates(t);
   }
   xQr() {
-    var t;
-    var i;
     if (this.Xjt) {
       this.HuluHideEffect = 0;
       this.cQr = undefined;
-      t = this.Entity.GetComponent(0);
-      i = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.GetRoleId());
-      this.jQr(i.PartyId, 1, t.GetRoleId());
+      this.jQr(this.TVd());
     }
   }
-  jQr(t, i, s) {
-    if (this.Hulu) {
-      this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(6);
-    } else {
-      (h = this.Hte.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.HULU_MESH_COMP_NAME)).K2_AttachToComponent(this.Hte.Actor.Mesh, CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME, 0, 0, 0, true);
-      this.Hulu = h;
-      this.MQr(0);
-    }
-    const e = t * HULU_PARTY_ID + HULU_BASE_ID + i;
-    var h = ModelUtil_1.ModelUtil.GetModelConfig(e);
-    if (h) {
-      ResourceSystem_1.ResourceSystem.LoadAsync(h.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
-        if (t) {
-          this.WKr = e;
-          this.Hulu.SetSkeletalMesh(t);
-          this.Hte.Actor.CharRenderingComponent.AddComponentByCase(6, this.Hulu);
-          this.SetHuluHidden(false, true, true);
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Character", 57, "该葫芦Id没有配置网格体", ["Id", e]);
+  jQr(i) {
+    if (this.WKr !== i) {
+      if (this.Hulu) {
+        this.Hte.Actor.CharRenderingComponent.RemoveComponentByCase(6);
+      } else {
+        (t = this.Hte.Actor.AddComponentByClass(UE.SkeletalMeshComponent.StaticClass(), false, MathUtils_1.MathUtils.DefaultTransform, false, CharacterNameDefines_1.CharacterNameDefines.HULU_MESH_COMP_NAME)).K2_AttachToComponent(this.Hte.Actor.Mesh, CharacterNameDefines_1.CharacterNameDefines.HULU_SOCKET_NAME, 0, 0, 0, true);
+        this.Hulu = t;
+        this.MQr(0);
+      }
+      var t = ModelUtil_1.ModelUtil.GetModelConfig(i);
+      if (t) {
+        this.WKr = i;
+        const s = CalabashMeshByMeshId_1.configCalabashMeshByMeshId.GetConfig(this.WKr);
+        s?.OldEffects.forEach((t, i) => {
+          i = s.NewEffects[i];
+          this.Hte.ReplaceEffectMap.set(t, i);
+        });
+        ResourceSystem_1.ResourceSystem.LoadAsync(t.网格体.ToAssetPathName(), UE.SkeletalMesh, t => {
+          if (t) {
+            this.Hulu.SetSkeletalMesh(t);
+            this.Hte.Actor.CharRenderingComponent.AddComponentByCase(6, this.Hulu);
+            this.SetHuluHidden(false, true, true);
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Character", 57, "该葫芦Id没有配置网格体", ["Id", i]);
+          }
+        });
+      } else {
+        t = this.Entity.GetComponent(0);
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Character", 57, "该葫芦Id没有配置Config", ["Id", i], ["roleId", t?.GetRoleId()]);
         }
-      });
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Character", 57, "该葫芦Id没有配置Config", ["Id", e], ["partyId", t], ["quality", i], ["roleId", s]);
+      }
     }
   }
   MQr(s) {
@@ -741,6 +746,14 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       }
     }
   }
+  OnEntityHuluSkinChangeNotify(t) {
+    this.jQr(this.TVd(t));
+  }
+  TVd(t = 0) {
+    let i = 0;
+    var t = t === 0 ? this.Entity.GetComponent(0)?.HuluSkinId ?? 0 : t;
+    return i = t > 0 ? ConfigManager_1.ConfigManager.SkinConfig.GetCalabashSkinConfig(t).ModelId : (t = this.Entity.GetComponent(0), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t.GetRoleId()), CharacterUtils_1.CharacterUtils.GetHuluModelId(t.PartyId));
+  }
   VQr() {
     this.AiWeaponConfigId = 0;
   }
@@ -773,12 +786,12 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       var s = this.eQr.Meshes.Get(i);
       const h = e.Mesh;
       const o = this.eQr.WeaponEffectPath.AssetPathName?.toString();
-      const r = s.AnimInstanceSoftPtr.ToAssetPathName();
+      const a = s.AnimInstanceSoftPtr.ToAssetPathName();
       if (h instanceof UE.SkeletalMeshComponent) {
         ResourceSystem_1.ResourceSystem.LoadAsync(s.MeshSoftPtr.ToAssetPathName(), UE.SkeletalMesh, t => {
           h.SetSkeletalMesh(t);
-          if (r && r !== "") {
-            ResourceSystem_1.ResourceSystem.LoadAsync(r, UE.Class, t => {
+          if (a && a !== "") {
+            ResourceSystem_1.ResourceSystem.LoadAsync(a, UE.Class, t => {
               h.SetAnimClass(t);
             });
           }
@@ -825,15 +838,15 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
     }
     return t;
   }
-  C_l(a) {
-    if (a.length !== this.QKr.CharacterWeapons.length) {
+  C_l(r) {
+    if (r.length !== this.QKr.CharacterWeapons.length) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Character", 57, "角色配置武器失败 蓝图武器component数量与配置数量不配置", ["Id", this.tQr], ["ModelIds", a]);
+        Log_1.Log.Error("Character", 57, "角色配置武器失败 蓝图武器component数量与配置数量不配置", ["Id", this.tQr], ["ModelIds", r]);
       }
       return false;
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Character", 4, "开始设置武器模型", ["modelIds", a]);
+      Log_1.Log.Debug("Character", 4, "开始设置武器模型", ["modelIds", r]);
     }
     let n = 1;
     for (let t = 0; t < this.iQr; ++t) {
@@ -851,7 +864,7 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
       });
       this.rc_.clear();
     }
-    for (const _ of a) {
+    for (const _ of r) {
       this.Jsh = this.Jsh || noHideEffectWeaponIds.has(_);
       const f = this.QKr.CharacterWeapons[t].Mesh;
       if (f instanceof UE.SkeletalMeshComponent) {
@@ -884,17 +897,17 @@ let CharacterWeaponComponent = class CharacterWeaponComponent extends EntityComp
               const h = c.DA.AssetPathName?.toString();
               if (h && h !== "") {
                 const o = f.SkeletalMesh;
-                const r = ControllerHolder_1.ControllerHolder.WeaponController;
-                Promise.all([r.LoadCharacterRenderingFunctionLibraryAsync(), r.LoadWeaponLevelMaterialDataAsync(h)]).then(([, t]) => {
-                  if (t && f.SkeletalMesh === o && (r.ApplyWeaponLevelMaterial(f, t, this.WeaponEquipInfo.WeaponBreachLevel), Log_1.Log.CheckDebug())) {
+                const a = ControllerHolder_1.ControllerHolder.WeaponController;
+                Promise.all([a.LoadCharacterRenderingFunctionLibraryAsync(), a.LoadWeaponLevelMaterialDataAsync(h)]).then(([, t]) => {
+                  if (t && f.SkeletalMesh === o && (a.ApplyWeaponLevelMaterial(f, t, this.WeaponEquipInfo.WeaponBreachLevel), Log_1.Log.CheckDebug())) {
                     Log_1.Log.Debug("Character", 25, "设置武器换色", ["materialData", h], ["level", this.WeaponEquipInfo.WeaponBreachLevel]);
                   }
                 });
               }
               if (Log_1.Log.CheckDebug()) {
-                Log_1.Log.Debug("Character", 4, "设置武器模型完成", ["modelId", _], ["weaponCount", a.length]);
+                Log_1.Log.Debug("Character", 4, "设置武器模型完成", ["modelId", _], ["weaponCount", r.length]);
               }
-              EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharacterWeaponLoaded);
+              EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.CharacterWeaponLoaded, f.GetName());
             }
           });
           this.rc_.add(i);

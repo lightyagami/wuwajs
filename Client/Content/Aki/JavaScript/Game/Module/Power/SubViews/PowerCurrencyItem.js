@@ -13,19 +13,26 @@ const ItemDefines_1 = require("../../Item/Data/ItemDefines");
 class PowerCurrencyItem extends CommonCurrencyItem_1.CommonCurrencyItem {
   constructor() {
     super(...arguments);
+    this.ShowMode = 1;
     this.JXs = 0;
     this.zXs = e => {
       var t;
       var r;
-      var n;
+      var s;
       if (this.JXs === e) {
         t = (e = ModelManager_1.ModelManager.PowerModel.GetPowerDataById(e)).GetCurrentPower();
         r = e.GetPowerLimit();
-        n = e.GetPowerCurrencyShowTextId();
-        this.SetCountTextNew(n, t, r);
-        n = e.IfNeedShowMax() && r <= t;
-        this.RefreshMaxItem(n);
+        s = e.GetPowerCurrencyShowTextId();
+        this.SetCountTextNew(s, t, r);
+        s = e.IfNeedShowMax() && r <= t;
+        this.RefreshMaxItem(s);
       }
+    };
+    this.SetWorldMapSelfShow = e => {
+      this.ShowMode = e;
+    };
+    this.RefreshWorldMapSelfShow = e => {
+      this.SetUiActive(e === 1);
     };
   }
   OnStart() {

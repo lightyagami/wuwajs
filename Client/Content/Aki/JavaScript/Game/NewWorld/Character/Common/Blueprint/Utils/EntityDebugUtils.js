@@ -65,7 +65,7 @@ class EntityDebugUtils {
     var e = t.GetComponent(1);
     var n = t.GetComponent(0);
     var e = `[${n?.GetPbDataId() ?? "?"}] ${e?.Owner?.GetName() ?? "?"}`;
-    e += ` (${t.GetComponent(118)?.PawnName ?? n?.GetBaseInfo()?.TidName ?? "无名字"})`;
+    e += ` (${t.GetComponent(121)?.PawnName ?? n?.GetBaseInfo()?.TidName ?? "无名字"})`;
     this.$Ko.Add(e);
     this.YKo.set(e, t.Id);
     this.JKo.set(t.Id, e);
@@ -86,7 +86,7 @@ class EntityDebugUtils {
       return "实体尚未完成Init";
     }
     var r = e.GetComponent(1);
-    var i = e.GetComponent(118);
+    var i = e.GetComponent(121);
     var a = e.GameBudgetManagedToken ? cpp_1.FKuroGameBudgetAllocatorInterface.GetGameBudgetDebugString(e.GameBudgetManagedToken) : "Null";
     var o = n.GetOwnerIncId();
     var o = ModelManager_1.ModelManager.CreatureModel?.GetPbDataIdByEntity(ModelManager_1.ModelManager.CreatureModel?.GetEntity(o));
@@ -100,7 +100,7 @@ class EntityDebugUtils {
 ${a} 
 
 `;
-    var i = e.GetComponent(131);
+    var i = e.GetComponent(134);
     if (i) {
       s = `${s}SceneItemAttributeId:
 ${i.AttributeIdSet}
@@ -115,23 +115,23 @@ ${i.AttributeIdSet}
 `) + this.GetInRangeActorListDebugString(t)) + "\n\n"}范围组件内实体(服务端)列表: 
 `) + this.GetInRangeOnlineEntityListDebugString(t) + "\n\n";
     }
-    var a = e.GetComponent(122);
+    var a = e.GetComponent(125);
     if (a) {
       s = (s = (s = s + ("进入逻辑范围: " + a.IsInLogicRange) + "\t\t") + "LogicRange: " + a.LogicRange + "\t\t") + "PlayerDistance: " + a.PlayerDist + "\n\n";
     }
-    var i = e.GetComponent(131);
+    var i = e.GetComponent(134);
     if (i) {
       s = (s = (s += "SceneItem属性:\t\t") + "IsLocked: " + i.IsLocked + "\t\t") + "IsMoving: " + i.IsMoving + "\n\n";
     }
-    var o = e.GetComponent(157);
+    var o = e.GetComponent(160);
     if (o) {
       s = (s += "SceneItemManipulable属性:\t\t") + "State: " + o.GetState() + "\n\n";
     }
-    var t = e.GetComponent(198);
+    var t = e.GetComponent(201);
     if (t) {
       s = (s = s + ("启用交互: " + t.DebugInteractOpened) + "\t\t") + "定时器开启: " + t.DebugTimerRunning + "\n\n";
     }
-    var a = e.GetComponent(103);
+    var a = e.GetComponent(105);
     if (a) {
       s = (s = s + ("启用销毁: " + !!a.DeadActions) + "\t\t") + "耐久: " + n.GetDurabilityValue() + "\n\n";
     }
@@ -160,17 +160,17 @@ ${i.AttributeIdSet}
       t = o?.D_GetVelocity();
       s = (s += `Self Velocity: [${t.X.toFixed(2)}, ${t.Y.toFixed(2)}, ${t.Z.toFixed(2)}]`) + this.eQo(o) + "\n\n";
     }
-    var n = e.GetComponent(129);
+    var n = e.GetComponent(132);
     if (n) {
       s = (s += `SceneItemMove信息:
 `) + n.GetDebugString() + "\n\n";
     }
-    var a = e.GetComponent(283);
+    var a = e.GetComponent(288);
     if (a) {
       s = (s += `Ai追逐信息:
 `) + a.GetDebugString() + "\n\n";
     }
-    var i = e.GetComponent(123);
+    var i = e.GetComponent(126);
     return s = i ? (s += `TimeScale信息:
 `) + i.GetDebugString() + "\n\n" : s;
   }
@@ -197,16 +197,16 @@ ${i.AttributeIdSet}
       return "无";
     }
     let e = "";
-    var n = t.GetComponent(122);
+    var n = t.GetComponent(125);
     if (n) {
       e += n.GetDebugString();
     }
-    var n = t.GetComponent(120);
+    var n = t.GetComponent(123);
     if (n) {
       e += n.GetDebugString();
     }
     e += "\n";
-    var n = t.GetComponent(198);
+    var n = t.GetComponent(201);
     if (n && (t = n.GetInteractController())) {
       return e + t.GetInteractionDebugInfos();
     } else {
@@ -218,7 +218,7 @@ ${i.AttributeIdSet}
     if (!t) {
       return "无";
     }
-    let e = t.GetComponent(206)?.GetTagDebugStrings()?.trim();
+    let e = t.GetComponent(209)?.GetTagDebugStrings()?.trim();
     return e = e && e.length !== 0 ? e : "无";
   }
   static GetInRangeLocalEntityListDebugString(t) {
@@ -233,7 +233,7 @@ ${i.AttributeIdSet}
         var i = r.Entity?.GetComponent(1);
         var r = r.Entity?.GetComponent(0);
         var i = `[${r?.GetPbDataId() ?? "?"}] ${i?.Owner?.GetName() ?? "?"}`;
-        i += ` (${e.GetComponent(118)?.PawnName ?? r?.GetBaseInfo()?.TidName ?? "无名字"})`;
+        i += ` (${e.GetComponent(121)?.PawnName ?? r?.GetBaseInfo()?.TidName ?? "无名字"})`;
         n += `${i}
 `;
       }
@@ -253,7 +253,7 @@ ${i.AttributeIdSet}
         var i = r.Entity?.GetComponent(1);
         var r = r.Entity?.GetComponent(0);
         var i = `[${r?.GetPbDataId() ?? "?"}] ${i?.Owner?.GetName() ?? "?"}`;
-        i += ` (${e.GetComponent(118)?.PawnName ?? r?.GetBaseInfo()?.TidName ?? "无名字"})`;
+        i += ` (${e.GetComponent(121)?.PawnName ?? r?.GetBaseInfo()?.TidName ?? "无名字"})`;
         n += `${i}
 `;
       }
@@ -304,7 +304,7 @@ ${i.AttributeIdSet}
   }
   static GetEntityTimeScale(t) {
     var t = EntitySystem_1.EntitySystem.Get(t);
-    if (t = t && t.GetComponent(123)) {
+    if (t = t && t.GetComponent(126)) {
       return t.CurrentTimeScale;
     } else {
       return -1;
@@ -313,7 +313,7 @@ ${i.AttributeIdSet}
   static SetEntityTimeScale(t, e) {
     var n;
     var r = EntitySystem_1.EntitySystem.Get(t);
-    if (r &&= r.GetComponent(123)) {
+    if (r &&= r.GetComponent(126)) {
       if ((n = this.Hs1.get(t)) !== undefined) {
         r.RemoveTimeScale(n);
         this.Hs1.delete(t);

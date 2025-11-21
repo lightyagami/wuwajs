@@ -124,7 +124,7 @@ let PlayerFollowerComponent = class PlayerFollowerComponent extends EntityCompon
     }
   }
   async vGl(e, t) {
-    var o = t.Entity?.GetComponent(223);
+    var o = t.Entity?.GetComponent(226);
     if (o && (await o.LoadConfigPromise?.Promise, t.Valid) && e === this.qeh && (this.OHa = t, this.GHa = o, this.j8 === ModelManager_1.ModelManager.CreatureModel.GetPlayerId())) {
       o.Possess();
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPlayerFollowerCreate, t);
@@ -154,5 +154,5 @@ let PlayerFollowerComponent = class PlayerFollowerComponent extends EntityCompon
     return this.qHa;
   }
 };
-PlayerFollowerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(225)], PlayerFollowerComponent);
+PlayerFollowerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(228)], PlayerFollowerComponent);
 exports.PlayerFollowerComponent = PlayerFollowerComponent; //# sourceMappingURL=PlayerFollowerComponent.js.map

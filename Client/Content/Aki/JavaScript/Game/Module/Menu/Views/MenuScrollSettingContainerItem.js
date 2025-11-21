@@ -53,7 +53,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.Vulkan) {
         this.E91(e);
       } else if (this.Pe.FunctionId === GameSettingsDefine_1.EFunction.HIGHESTFPS) {
-        this.JFu(e);
+        this.sku(e);
       } else {
         ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
       }
@@ -63,7 +63,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     await super.CreateByActorAsync(e.GetOwner(), undefined, true);
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIExtendToggle], [1, UE.UIItem], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIItem]];
     this.BtnBindInfo = [];
   }
   OnStart() {
@@ -128,17 +128,17 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     }
     switch (e.Data.SetType) {
       case 1:
-        t = this.GetItem(4);
+        t = e.Data?.NeedScale ? this.GetItem(9) : this.GetItem(4);
         break;
       case 2:
-        t = this.GetItem(3);
+        t = e.Data?.NeedScale ? this.GetItem(8) : this.GetItem(3);
         break;
       case 3:
       case 4:
-        t = this.GetItem(2);
+        t = e.Data?.NeedScale ? this.GetItem(7) : this.GetItem(2);
         break;
       case 5:
-        t = this.GetItem(5);
+        t = e.Data?.NeedScale ? this.GetItem(10) : this.GetItem(5);
     }
     if (t !== undefined) {
       return t.GetOwner();
@@ -166,15 +166,8 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
   }
   sbi(e, t) {
     var i;
-    if (e) {
-      i = t.Data;
-      e.SetActive(true);
-      e.ExecuteUpdate(i, false);
-      if (t.Type !== 0) {
-        this.ZBi(i.GetEnable());
-      } else {
-        this.ZBi(false);
-      }
+    if (e && (i = t.Data, e.SetActive(true), e.ExecuteUpdate(i, false), t.Type !== 0 ? this.ZBi(i.GetEnable()) : this.ZBi(false), i.HasDetailText()) && i.GetEnable()) {
+      this.GetExtendToggle(0)?.SetToggleState(i?.GetIsDetailTextVisible() ? 1 : 0);
     }
   }
   nbi(e) {
@@ -183,13 +176,13 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     }
     switch (e.Data.SetType) {
       case 1:
-        return this.abi(4, MenuScrollSettingSliderItem_1.MenuScrollSettingSliderItem);
+        return this.abi(e.Data?.NeedScale ? 9 : 4, MenuScrollSettingSliderItem_1.MenuScrollSettingSliderItem);
       case 2:
-        return this.abi(3, MenuScrollSettingSwitchItem_1.MenuScrollSettingSwitchItem);
+        return this.abi(e.Data?.NeedScale ? 8 : 3, MenuScrollSettingSwitchItem_1.MenuScrollSettingSwitchItem);
       case 4:
-        return this.abi(2, MenuScrollSettingButtonItem_1.MenuScrollSettingButtonItem);
+        return this.abi(e.Data?.NeedScale ? 7 : 2, MenuScrollSettingButtonItem_1.MenuScrollSettingButtonItem);
       case 5:
-        return this.abi(5, MenuScrollSettingDropDown_1.MenuScrollSettingDropDown);
+        return this.abi(e.Data?.NeedScale ? 10 : 5, MenuScrollSettingDropDown_1.MenuScrollSettingDropDown);
     }
   }
   abi(e, t) {
@@ -213,6 +206,10 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     this.GetItem(3).SetUIActive(false);
     this.GetItem(2).SetUIActive(false);
     this.GetItem(5).SetUIActive(false);
+    this.GetItem(9).SetUIActive(false);
+    this.GetItem(8).SetUIActive(false);
+    this.GetItem(7).SetUIActive(false);
+    this.GetItem(10).SetUIActive(false);
   }
   ZBi(e) {
     var t = this.GetExtendToggle(0);
@@ -228,6 +225,9 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     t.SetSelfInteractive(e);
     if (this.Type !== 0 && this.YBi) {
       this.YBi.SetInteractionActive(e);
+      if (!e) {
+        this.YBi.SetDetailVisible(false);
+      }
     }
   }
   LM1(e) {
@@ -250,7 +250,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     } else if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsDriverNeedUpdateForRayTracing() && e > 0) {
       this.LM1(273);
     } else {
-      t = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(this.Pe.FunctionId);
+      t = ModelManager_1.ModelManager.MenuModel.GetDataCacheOrCurValue(this.Pe.FunctionId);
       ModelManager_1.ModelManager.MenuModel.NeedRayTracingSubChange = t + e === 1;
       if (t !== 0 || e !== 1 || ModelManager_1.ModelManager.MenuModel.IsRayTracingOpenChecked) {
         ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
@@ -289,7 +289,7 @@ class MenuScrollSettingContainerItem extends UiPanelBase_1.UiPanelBase {
     }
     ControllerHolder_1.ControllerHolder.MenuController.HandleFireSaveMenuChange(this.Pe, e);
   }
-  JFu(e) {
+  sku(e) {
     var t;
     if (ControllerHolder_1.ControllerHolder.MenuController.NeedRedMagicFpsConfirmBox(e)) {
       t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(330);

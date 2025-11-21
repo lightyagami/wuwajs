@@ -11,6 +11,7 @@ const ExploreRouletteReplaceById_1 = require("../../../../Core/Define/ConfigQuer
 const ExploreToolsAll_1 = require("../../../../Core/Define/ConfigQuery/ExploreToolsAll");
 const ExploreToolsByPhantomSkillId_1 = require("../../../../Core/Define/ConfigQuery/ExploreToolsByPhantomSkillId");
 const FuncMenuReplaceAll_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuReplaceAll");
+const FuncMenuReplaceId_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuReplaceId");
 const FuncMenuReplaceInstSubType_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuReplaceInstSubType");
 const FuncMenuWheelAll_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuWheelAll");
 const FuncMenuWheelByFuncId_1 = require("../../../../Core/Define/ConfigQuery/FuncMenuWheelByFuncId");
@@ -40,6 +41,9 @@ class RouletteConfig extends ConfigBase_1.ConfigBase {
   }
   GetFuncReplaceConfig(e) {
     return FuncMenuReplaceInstSubType_1.configFuncMenuReplaceInstSubType.GetConfig(e);
+  }
+  GetFuncReplaceConfigById(e) {
+    return FuncMenuReplaceId_1.configFuncMenuReplaceId.GetConfig(e);
   }
   GetAllFuncReplaceConfig() {
     return FuncMenuReplaceAll_1.configFuncMenuReplaceAll.GetConfigList() ?? [];

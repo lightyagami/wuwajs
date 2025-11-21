@@ -98,15 +98,15 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
     this.LastInput.DeepCopy(i);
   }
   ExecuteSprint(t) {
-    this.Entity.GetComponent(246)?.TryEnterSprint();
+    this.Entity.GetComponent(249)?.TryEnterSprint();
   }
   ExecuteSkill(t) {
     t = t.IntValue;
     if (t === 210012) {
       PhotographController_1.PhotographController.PhotographFastScreenShot();
     } else if (t === SKILL_ID_RIDER_SHARING) {
-      if (this.Entity.GetComponent(246)?.CheckIfCanRiderSharing()) {
-        if (this.Entity.GetComponent(237)?.IsMoving) {
+      if (this.Entity.GetComponent(249)?.CheckIfCanRiderSharing()) {
+        if (this.Entity.GetComponent(240)?.IsMoving) {
           ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("ShipTogetherViewCanNotOpenWhenMoving");
         } else {
           UiManager_1.UiManager.OpenView("ShipTogetherView");
@@ -125,5 +125,5 @@ let GongduolaInputComponent = class GongduolaInputComponent extends VehicleInput
     this.TagEventSprint?.EndTask();
   }
 };
-GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(247)], GongduolaInputComponent);
+GongduolaInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(250)], GongduolaInputComponent);
 exports.GongduolaInputComponent = GongduolaInputComponent; //# sourceMappingURL=GongduolaInputComponent.js.map

@@ -91,14 +91,14 @@ class PhantomArenaEntranceShopTabItem extends CommonTabItemBase_1.CommonTabItemB
           this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(1, e);
           this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(2, e);
         }
-      });
+      }, 100, this.MemoryTag);
       ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, e => {
         if (e) {
           this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(3, e);
           this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(4, e);
           this.GetUiExtendToggleSpriteTransition(2)?.SetStateSprite(5, e);
         }
-      });
+      }, 100, this.MemoryTag);
     }
   }
   UpdateTabTitle(e) {

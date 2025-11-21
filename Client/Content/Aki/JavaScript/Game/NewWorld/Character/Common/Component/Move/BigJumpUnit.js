@@ -10,6 +10,7 @@ const CurveUtils_1 = require("../../../../../../Core/Utils/Curve/CurveUtils");
 const Rotator_1 = require("../../../../../../Core/Utils/Math/Rotator");
 const Vector_1 = require("../../../../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../../../../Core/Utils/MathUtils");
+const GravityUtils_1 = require("../../../../../Utils/GravityUtils");
 exports.DEFAULT_GRAVITY = 1960;
 class BigJumpUnit {
   constructor() {
@@ -21,11 +22,12 @@ class BigJumpUnit {
     this.OJo = "";
     this.kJo = undefined;
     this.FJo = -0;
+    this.Tdc = Vector_1.Vector.Create(0, 0, -1);
     this.VJo = Vector_1.Vector.Create();
     this.HJo = Vector_1.Vector.Create();
     this.Rotator = Rotator_1.Rotator.Create();
   }
-  SetAll(t, i, s, h, e = "", r = exports.DEFAULT_GRAVITY, u = undefined) {
+  SetAll(t, i, s, h, e = "", r = exports.DEFAULT_GRAVITY, U = undefined, u) {
     this.qJo = t;
     this.dYi.DeepCopy(i);
     this.NJo.DeepCopy(s);
@@ -35,38 +37,43 @@ class BigJumpUnit {
         this.kJo = t;
       }, 104);
     }
-    this.FJo = r;
-    if (u) {
-      this.Rotator.DeepCopy(u);
+    if (U) {
+      this.Rotator.DeepCopy(U);
     }
+    this.FJo = r;
+    this.Tdc.DeepCopy(u ?? Vector_1.Vector.DownVectorProxy);
   }
   SetStartPoint(t) {
     this.dYi.DeepCopy(t);
   }
   Init() {
+    var t;
+    var i;
     if (this.FJo > 0) {
       this.fDe.Subtraction(this.dYi, BigJumpUnit.Lz);
       this.Rotator.Set(0, MathUtils_1.MathUtils.GetAngleByVector2D(BigJumpUnit.Lz), 0);
       this.NJo.Subtraction(this.dYi, BigJumpUnit.Tz);
-      BigJumpUnit.Lz.Z = 0;
-      BigJumpUnit.Tz.Z = 0;
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForDirect(this.Tdc, BigJumpUnit.Lz);
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForDirect(this.Tdc, BigJumpUnit.Tz);
       BigJumpUnit.Lz.Normalize();
       BigJumpUnit.Lz.MultiplyEqual(BigJumpUnit.Tz.DotProduct(BigJumpUnit.Lz));
       BigJumpUnit.Lz.AdditionEqual(this.dYi);
-      this.NJo.X = BigJumpUnit.Lz.X;
-      this.NJo.Y = BigJumpUnit.Lz.Y;
-      this.GJo = Math.sqrt((this.NJo.Z - this.fDe.Z) * 2 / this.FJo);
+      t = GravityUtils_1.GravityUtils.GetZnInGravityForDirect(this.Tdc, this.NJo);
+      this.NJo.DeepCopy(BigJumpUnit.Lz);
+      GravityUtils_1.GravityUtils.SetZnInGravity(this.Tdc, this.NJo, t);
+      i = GravityUtils_1.GravityUtils.GetZnInGravityForDirect(this.Tdc, this.fDe);
+      this.GJo = Math.sqrt((t - i) * 2 / this.FJo);
       this.fDe.Subtraction(this.NJo, BigJumpUnit.Lz);
-      BigJumpUnit.Lz.Z = 0;
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForDirect(this.Tdc, BigJumpUnit.Lz);
       BigJumpUnit.Lz.Division(this.GJo, this.HJo);
       this.NJo.Subtraction(this.dYi, BigJumpUnit.Lz);
-      BigJumpUnit.Lz.Z = 0;
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForDirect(this.Tdc, BigJumpUnit.Lz);
       BigJumpUnit.Lz.DivisionEqual(this.qJo);
       BigJumpUnit.Lz.MultiplyEqual(2);
       BigJumpUnit.Lz.Subtraction(this.HJo, this.VJo);
     } else {
       this.NJo.Subtraction(this.dYi, BigJumpUnit.Lz);
-      BigJumpUnit.Lz.Z = 0;
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForDirect(this.Tdc, BigJumpUnit.Lz);
       BigJumpUnit.Lz.DivisionEqual(this.qJo);
       this.VJo.DeepCopy(BigJumpUnit.Lz);
       this.HJo.DeepCopy(this.VJo);
@@ -85,17 +92,21 @@ class BigJumpUnit {
   }
   GetLocation(t, i) {
     var s;
+    var h;
+    var e;
     if (t < this.qJo) {
       Vector_1.Vector.Lerp(this.VJo, this.HJo, t / this.qJo, i);
       i.AdditionEqual(this.VJo);
       i.MultiplyEqual(t / 2);
       i.AdditionEqual(this.dYi);
       s = this.kJo ? this.kJo.GetFloatValue(t / this.qJo) : CurveUtils_1.CurveUtils.DefaultPara.GetCurrentValue(t / this.qJo);
-      i.Z = MathUtils_1.MathUtils.Lerp(this.dYi.Z, this.NJo.Z, s);
+      e = GravityUtils_1.GravityUtils.GetZnInGravityForDirect(this.Tdc, this.dYi);
+      h = GravityUtils_1.GravityUtils.GetZnInGravityForDirect(this.Tdc, this.NJo);
+      GravityUtils_1.GravityUtils.SetZnInGravity(this.Tdc, i, MathUtils_1.MathUtils.Lerp(e, h, s));
     } else {
-      s = t - this.qJo;
-      this.HJo.Multiply(s, i);
-      i.Z = -this.FJo * s * s / 2;
+      e = t - this.qJo;
+      this.HJo.Multiply(e, i);
+      GravityUtils_1.GravityUtils.SetZnInGravity(this.Tdc, i, -this.FJo * e * e / 2);
       i.AdditionEqual(this.NJo);
     }
   }
@@ -112,7 +123,7 @@ class BigJumpUnit {
     } else {
       i.DeepCopy(this.HJo);
       t = t - this.qJo;
-      i.Z = -this.FJo * t;
+      GravityUtils_1.GravityUtils.SetZnInGravity(this.Tdc, i, -this.FJo * t);
     }
   }
 }

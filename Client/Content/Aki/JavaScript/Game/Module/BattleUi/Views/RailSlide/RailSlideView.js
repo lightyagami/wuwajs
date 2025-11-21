@@ -44,7 +44,7 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
     this.ugu = (t, e) => {
       this.det[1].SetCustomDynamicEffectId(e ? EFFECT_ID : 0);
     };
-    this.N2u = (t, e) => {
+    this.GNu = (t, e) => {
       this.det[0].SetUiActive(!e);
       this.det[1].SetUiActive(!e);
     };
@@ -114,7 +114,7 @@ class RailSlideView extends UiTickViewBase_1.UiTickViewBase {
     if (this.Wst && (t = this.Wst.GameplayTagComponent)) {
       this.mdt(t, tag1, this._gu, true);
       this.mdt(t, tag2, this.ugu, true);
-      this.mdt(t, forbidMoveTagId, this.N2u, true);
+      this.mdt(t, forbidMoveTagId, this.GNu, true);
     }
   }
   m$e() {

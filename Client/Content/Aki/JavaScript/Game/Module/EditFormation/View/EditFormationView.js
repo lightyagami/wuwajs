@@ -7,7 +7,6 @@ exports.EditFormationView = undefined;
 const UE = require("ue");
 const AudioSystem_1 = require("../../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../../Core/Common/Log");
-const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../../Core/Timer/TimerSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
@@ -44,7 +43,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.m5t = false;
     this.d5t = undefined;
     this.C5t = undefined;
-    this.lod = true;
+    this.Dad = true;
     this.g5t = () => {
       if (!this.IsDestroyOrDestroying) {
         this.f5t(this._5t);
@@ -269,7 +268,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     this.BtnBindInfo = [[1, this.F4t], [6, this.p5t], [8, this.I5t], [9, this.G4t]];
   }
   async OnBeforeStartAsync() {
-    this.lod = this.OpenParam ?? true;
+    this.Dad = this.OpenParam ?? true;
     var i = ModelManager_1.ModelManager.EditFormationModel;
     var t = i.GetCurrentFormationId;
     if (t === undefined) {
@@ -369,17 +368,17 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     }
     this.C5t ||= TimerSystem_1.GameplayTimerSystem.Delay(() => {
       UiLayer_1.UiLayer.SetShowMaskLayer("EditFormationViewClosing", false);
-      this._od();
+      this.xad();
     }, EditFormationDefine_1.AUTO_CLOSE_EDIT_FORMATION);
   }
   async M5t() {
     this.m5t = true;
     await ModelManager_1.ModelManager.SceneTeamModel.LoadTeamPromise?.Promise;
     UiLayer_1.UiLayer.SetShowMaskLayer("EditFormationViewClosing", false);
-    this._od();
+    this.xad();
   }
-  _od() {
-    if (this.lod) {
+  xad() {
+    if (this.Dad) {
       UiManager_1.UiManager.ResetToBattleView();
     } else {
       this.CloseMe();
@@ -511,15 +510,15 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
   t5t(e, i = 0, t = 0, o = 0, r = "", a = 0, n = 0, s = "") {
     var e = e - 1;
     var h = this.l5t[e];
-    const l = this.GetUiSpriteTransition(this.u4t[e]);
-    let _ = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamRoleSkillNone");
+    var e = this.GetUiSpriteTransition(this.u4t[e]);
+    let l = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamRoleSkillNone");
     if (i) {
       h.Refresh(i, t, o, r, a, n, s);
-      e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i)?.SkillId;
-      if (e) {
-        for (const m of ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(e)) {
-          if (m.SkillType === EditFormationDefine_1.EXIT_SKILL_TYPE) {
-            _ = m.Icon;
+      t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i)?.SkillId;
+      if (t) {
+        for (const _ of ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(t)) {
+          if (_.SkillType === EditFormationDefine_1.EXIT_SKILL_TYPE) {
+            l = _.Icon;
             break;
           }
         }
@@ -527,9 +526,7 @@ class EditFormationView extends UiViewBase_1.UiViewBase {
     } else {
       h.ResetRole();
     }
-    ResourceSystem_1.ResourceSystem.LoadAsync(_, UE.LGUISpriteData_BaseObject, (e, i) => {
-      l.SetAllTransitionSprite(e);
-    }, 102);
+    this.SetSpriteTransitionByPath(l, e);
   }
   v5t() {
     var e = ModelManager_1.ModelManager.EditFormationModel;

@@ -8,7 +8,6 @@ const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const MultiTextLang_1 = require("../../../../Core/Define/ConfigQuery/MultiTextLang");
 const Protocol_1 = require("../../../../Core/Define/Net/Protocol");
-const ResourceSystem_1 = require("../../../../Core/Resource/ResourceSystem");
 const EventDefine_1 = require("../../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../../Common/TimeUtil");
@@ -935,15 +934,15 @@ class EditBattleTeamView extends UiViewBase_1.UiViewBase {
     var _ = t - 1;
     var t = this.Z4t(t);
     if (t) {
-      const s = this.GetUiSpriteTransition(this.u4t[_]);
+      _ = this.GetUiSpriteTransition(this.u4t[_]);
       let e = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_TeamRoleSkillNone");
       if (o) {
         t.Refresh(o, r, n, i, a, l, "");
-        _ = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o)?.SkillId;
-        if (_) {
-          for (const M of ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(_)) {
-            if (M.SkillType === EditFormationDefine_1.EXIT_SKILL_TYPE) {
-              e = M.Icon;
+        r = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(o)?.SkillId;
+        if (r) {
+          for (const s of ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(r)) {
+            if (s.SkillType === EditFormationDefine_1.EXIT_SKILL_TYPE) {
+              e = s.Icon;
               break;
             }
           }
@@ -951,9 +950,7 @@ class EditBattleTeamView extends UiViewBase_1.UiViewBase {
       } else {
         t.ResetRole();
       }
-      ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
-        s.SetAllTransitionSprite(e);
-      }, 102);
+      this.SetSpriteTransitionByPath(e, _);
     }
   }
   f4t() {

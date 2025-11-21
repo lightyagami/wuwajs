@@ -17,7 +17,7 @@ class BattleEntranceButton extends BattleVisibleChildView_1.BattleVisibleChildVi
     this.HideInGamepad = undefined;
     this.HideByRoleConfig = undefined;
     this.WYe = undefined;
-    this.KYe = () => {
+    this.OnClickedOnlineButton = () => {
       if (this.jYe) {
         this.jYe();
       }
@@ -25,7 +25,7 @@ class BattleEntranceButton extends BattleVisibleChildView_1.BattleVisibleChildVi
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIItem]];
-    this.BtnBindInfo = [[0, this.KYe]];
+    this.BtnBindInfo = [[0, this.OnClickedOnlineButton]];
   }
   Initialize(t) {
     var e;

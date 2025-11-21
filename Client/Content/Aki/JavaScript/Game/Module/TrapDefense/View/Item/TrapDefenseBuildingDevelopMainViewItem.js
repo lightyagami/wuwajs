@@ -17,16 +17,16 @@ const LguiUtil_1 = require("../../../Util/LguiUtil");
 class TrapDefenseBuildingDevelopTypeGridItem extends LoopScrollMediumItemGrid_1.LoopScrollMediumItemGrid {
   constructor() {
     super(...arguments);
-    this.pHc = undefined;
+    this.SXu = undefined;
     this.OnItemClickCallback = undefined;
     this.CanExecuteChangeCb = undefined;
     this.OnPointDownCb = undefined;
     this.OnPointUpCb = undefined;
     this.Vji = () => {
-      this.OnPointDownCb?.(this, this.pHc);
+      this.OnPointDownCb?.(this, this.SXu);
     };
     this.Hji = () => {
-      this.OnPointUpCb?.(this, this.pHc);
+      this.OnPointUpCb?.(this, this.SXu);
     };
   }
   OnStart() {
@@ -34,27 +34,27 @@ class TrapDefenseBuildingDevelopTypeGridItem extends LoopScrollMediumItemGrid_1.
     this.BindOnExtendToggleRelease(this.Hji);
   }
   OnRefresh(e, t, i) {
-    this.pHc = e;
+    this.SXu = e;
     this.SetSelected(t, true);
     this.UpdateInfo();
   }
   UpdateInfo() {
-    var e = this.pHc.GetIsUnlock() ? "TowerDefense_Building_BdLv_Text" : "TowerDefense_Building_BdLock_Text";
-    var t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckNeedOrganNew(this.pHc);
-    var i = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckSlotEquipped(this.pHc);
-    var s = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(this.pHc.Id);
+    var e = this.SXu.GetIsUnlock() ? "TowerDefense_Building_BdLv_Text" : "TowerDefense_Building_BdLock_Text";
+    var t = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckNeedOrganNew(this.SXu);
+    var i = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.CheckSlotEquipped(this.SXu);
+    var s = ModelManager_1.ModelManager.TrapDefenseModel.DecomposeMachineId(this.SXu.Id);
     var h = ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath("SP_ItemQualityNormal");
-    var r = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetIsRecommendOrgan(this.pHc);
+    var r = ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetIsRecommendOrgan(this.SXu);
     var e = {
       Type: 4,
-      Data: this.pHc,
+      Data: this.SXu,
       IsRecommendVisible: r,
       BottomTextId: e,
-      BottomTextParameter: [this.pHc?.GetIsUnlock ? this.pHc?.GetLevel() : ""],
-      IsLockVisible: !this.pHc?.GetIsUnlock(),
-      IsRedDotVisible: !this.pHc.IsInDungeon && this.pHc?.GetIsUnlock() && this.pHc?.CheckNeedRedDot(),
-      IconPath: this.pHc?.GetIconPath(),
-      IsDisable: !this.pHc?.GetIsUnlock(),
+      BottomTextParameter: [this.SXu?.GetIsUnlock ? this.SXu?.GetLevel() : ""],
+      IsLockVisible: !this.SXu?.GetIsUnlock(),
+      IsRedDotVisible: !this.SXu.IsInDungeon && this.SXu?.GetIsUnlock() && this.SXu?.CheckNeedRedDot(),
+      IconPath: this.SXu?.GetIconPath(),
+      IsDisable: !this.SXu?.GetIsUnlock(),
       IsNewVisible: r === undefined && t,
       IsReceivedFlagVisible: i ?? undefined,
       IsBranchUpgrade: s.Branch > 0 || undefined,
@@ -63,22 +63,22 @@ class TrapDefenseBuildingDevelopTypeGridItem extends LoopScrollMediumItemGrid_1.
     this.Apply(e);
   }
   OnForceSelected() {
-    if (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.SetOrganClicked(this.pHc)) {
+    if (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.SetOrganClicked(this.SXu)) {
       this.UpdateState();
     }
     this.SetSelected(true, true);
   }
   OnSelected(e) {
     this.SetSelected(true);
-    if (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.SetOrganClicked(this.pHc)) {
+    if (ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.SetOrganClicked(this.SXu)) {
       this.UpdateState();
     }
     if (e) {
-      this.OnItemClickCallback?.(this.pHc);
+      this.OnItemClickCallback?.(this.SXu);
     }
   }
   OnCanExecuteChange() {
-    return !this.CanExecuteChangeCb || this.CanExecuteChangeCb(this.pHc);
+    return !this.CanExecuteChangeCb || this.CanExecuteChangeCb(this.SXu);
   }
   OnDeselected(e) {
     this.SetSelected(false);
@@ -99,8 +99,8 @@ class TrapDefenseBuildingDevelopTypeItem extends GridProxyAbstract_1.GridProxyAb
     super(...arguments);
     this.Pe = undefined;
     this.ypt = [];
-    this.mmd = undefined;
-    this.fmd = false;
+    this.lFd = undefined;
+    this._Fd = false;
     this.OnPointerDownCb = undefined;
     this.OnPointerUpCb = undefined;
     this.Layout = undefined;
@@ -140,34 +140,34 @@ class TrapDefenseBuildingDevelopTypeItem extends GridProxyAbstract_1.GridProxyAb
     this.Layout = new GenericLayout_1.GenericLayout(this.GetGridLayout(2), this.W2e);
   }
   SetScrollParent(e) {
-    this.mmd = e;
+    this.lFd = e;
   }
   GetChildRefreshed() {
-    return this.fmd;
+    return this._Fd;
   }
   Refresh(e, t, i) {
     this.Pe = e;
     this.ypt = e.GetDataList();
     if (e.IsInDungeon && e.Type === 2) {
-      this.yld();
+      this.mfd();
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), e.GetTitleId());
     }
-    this.fmd = false;
+    this._Fd = false;
     this.Layout.RefreshByData(this.ypt, () => {
       this.SetInitSelect();
-      this.fmd = true;
-      if (this.mmd) {
+      this._Fd = true;
+      if (this.lFd) {
         TimerSystem_1.TimerSystem.Next(() => {
           TimerSystem_1.TimerSystem.Next(() => {
-            this.mmd?.ScrollToTop(undefined, this.RootItem);
-            this.mmd = undefined;
+            this.lFd?.ScrollToTop(undefined, this.RootItem);
+            this.lFd = undefined;
           });
         });
       }
     }, true);
   }
-  yld() {
+  mfd() {
     let e = 0;
     for (const s of ModelManager_1.ModelManager.TrapDefenseModel.ViewModelBuildingDevelop.GetSlotData()) {
       var t = s.GetSlotData();
@@ -180,7 +180,7 @@ class TrapDefenseBuildingDevelopTypeItem extends GridProxyAbstract_1.GridProxyAb
   }
   UpdateEquipped() {
     if (this.Pe.IsInDungeon && this.Pe.Type === 2) {
-      this.yld();
+      this.mfd();
     }
     for (const e of this.Layout.GetLayoutItemList()) {
       e.UpdateState();

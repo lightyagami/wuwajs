@@ -67,7 +67,7 @@ class GuideTutorialTipsView extends UiTickViewBase_1.UiTickViewBase {
             this.EZt = i;
           }
           t.SetResult(true);
-        });
+        }, 100, this.MemoryTag);
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Guide", 16, `图文教程引导组${this.TutorialInfo.OwnerStep.Id}的教程分类组id不合法，找不到对应图标`, ["不合法的分类组Id", i]);
       }

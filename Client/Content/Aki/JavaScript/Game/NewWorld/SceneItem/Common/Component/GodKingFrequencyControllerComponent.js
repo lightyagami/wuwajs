@@ -39,12 +39,12 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
   constructor() {
     super(...arguments);
     this.Lo = undefined;
-    this.knd = undefined;
+    this.fld = undefined;
     this.xie = (e, t) => {
-      this.Ond(true);
+      this.gld(true);
     };
   }
-  get qnd() {
+  get Cld() {
     return ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Lo.GodKingFrequencyEntity);
   }
   static get Dependencies() {
@@ -55,30 +55,30 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
     return !!t && !!(t = t.GetPbEntityInitData()) && (this.Lo = (0, IComponent_1.getComponent)(t.ComponentsData, "GodKingFrequencyControllerComponent"), !!this.Lo);
   }
   OnStart() {
-    this.Gnd();
-    this.Fnd();
-    this.Ond(true);
+    this.pld();
+    this.vld();
+    this.gld(true);
     this.Vr();
     return true;
   }
   OnEnd() {
-    this.Ond(false);
-    this.Nnd();
+    this.gld(false);
+    this.yld();
     return true;
   }
   Vr() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
   }
-  Nnd() {
+  yld() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie);
     EventSystem_1.EventSystem.RemoveAllTargetUseKey(this);
   }
   $ne() {
     this.OnEnd();
   }
-  Ond(e) {
+  gld(e) {
     var t;
-    if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t.Entity?.Valid && (t = t.Entity.CheckGetComponent(179)) && t.CharacterMovement) {
+    if (ModelManager_1.ModelManager.AvoidanceModel.UseRVOAvoidance && (t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity)?.Valid && t.Entity?.Valid && (t = t.Entity.CheckGetComponent(182)) && t.CharacterMovement) {
       t.CharacterMovement.SetAvoidanceGroupMask(ModelManager_1.ModelManager.AvoidanceModel.PlayerAvoidanceGroupMask);
       if (t.CharacterMovement.GetCharacterOwner()) {
         t.CharacterMovement.SetAvoidanceEnabled(e);
@@ -87,7 +87,7 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
       }
     }
   }
-  Vnd(e) {
+  Sld(e) {
     e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
     if (e?.Valid && e.Entity?.Valid) {
       e = e.Entity.CheckGetComponent(1);
@@ -96,34 +96,34 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
       }
     }
   }
-  jnd(n) {
-    if (!this.qnd?.Valid) {
+  Mld(n) {
+    if (!this.Cld?.Valid) {
       return false;
     }
-    const o = this.qnd.Entity?.CheckGetComponent(129);
+    const o = this.Cld.Entity?.CheckGetComponent(132);
     var e;
-    return !!o && !!(e = this.Vnd(n)) && (e = new SceneItemMoveComponent_1.MoveTarget(e, this.Lo.MaxFlyTime), o.AddStopMoveCallback(() => {
+    return !!o && !!(e = this.Sld(n)) && (e = new SceneItemMoveComponent_1.MoveTarget(e, this.Lo.MaxFlyTime), o.AddStopMoveCallback(() => {
       o.ClearStopMoveCallback();
       var e;
       var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n);
-      if (t?.Valid && this.Hnd(n, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
-        if ((e = (this.knd = t).Entity?.CheckGetComponent(86)) && e.IsOverlappingPlayer()) {
-          this.$nd(t, true);
+      if (t?.Valid && this.Eld(n, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
+        if ((e = (this.fld = t).Entity?.CheckGetComponent(86)) && e.IsOverlappingPlayer()) {
+          this.Ild(t, true);
         }
       } else if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelPlay", 72, "[GodKingFrequencyControllerComponent.TryMoveToStatue] 目标雕塑实体已经无了");
       }
-    }), this.knd = undefined, o.AddMoveTarget(e), true);
+    }), this.fld = undefined, o.AddMoveTarget(e), true);
   }
-  Hnd(e, t) {
+  Eld(e, t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    return !!e?.Valid && !!e.Entity?.Valid && !!(e = (e = e.Entity.CheckGetComponent(134)) && GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e.StateTagId)) && e !== t;
+    return !!e?.Valid && !!e.Entity?.Valid && !!(e = (e = e.Entity.CheckGetComponent(137)) && GameplayTagUtils_1.GameplayTagUtils.GetNameByTagId(e.StateTagId)) && e !== t;
   }
-  $nd(e, t) {
-    if (t && e === this.knd) {
+  Ild(e, t) {
+    if (t && e === this.fld) {
       var n = [];
       for (const o of this.Lo.StatueEntityIdList) {
-        if (o !== this.knd.PbDataId && this.Hnd(o, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
+        if (o !== this.fld.PbDataId && this.Eld(o, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
           n.push(o);
         }
       }
@@ -134,17 +134,17 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
         this.$ne();
       } else {
         t = MathUtils_1.MathUtils.GetRandomItem(n);
-        this.jnd(t);
+        this.Mld(t);
       }
     }
   }
-  Fnd() {
+  vld() {
     WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("[GodKingFrequencyControllerComponent] 等待雕像实体创建", this.Lo.StatueEntityIdList, e => {
       if (e) {
         for (const n of this.Lo.StatueEntityIdList) {
           var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(n);
           if (t && t.Entity?.Valid) {
-            EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.$nd.bind(this, t));
+            EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, t.Entity, EventDefine_1.EEventName.OnMyPlayerInOutRangeLocal, this.Ild.bind(this, t));
           }
         }
       } else if (Log_1.Log.CheckError()) {
@@ -152,17 +152,17 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
       }
     }, EACH_WAIT_ENTITY_OVER_TIME * this.Lo.StatueEntityIdList.length, false);
   }
-  Gnd() {
+  pld() {
     const t = [this.Lo.GodKingFrequencyEntity, this.Lo.InitialAttachStatue];
     WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("[GodKingFrequencyControllerComponent] 等待神王频率和初始附着雕像实体", t, e => {
       if (e) {
         e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.Lo.GodKingFrequencyEntity)?.Entity?.CheckGetComponent(1);
         if (e) {
           let t = this.Lo.InitialAttachStatue;
-          if (!this.Hnd(this.Lo.InitialAttachStatue, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
+          if (!this.Eld(this.Lo.InitialAttachStatue, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
             let e = false;
             for (const i of this.Lo.StatueEntityIdList) {
-              if (i !== this.Lo.InitialAttachStatue && this.Hnd(i, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
+              if (i !== this.Lo.InitialAttachStatue && this.Eld(i, IAction_1.entityStateConfig.呓语雕像状态.破坏阶段4)) {
                 t = i;
                 e = true;
                 break;
@@ -179,7 +179,7 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
           var o = n?.Entity?.CheckGetComponent(1);
           if (o) {
             e?.SetActorLocation(o.ActorLocation, "[GodKingFrequencyControllerComponent] 初始附着雕像");
-            this.knd = n;
+            this.fld = n;
           }
         }
       } else if (Log_1.Log.CheckError()) {
@@ -188,5 +188,5 @@ let GodKingFrequencyControllerComponent = class GodKingFrequencyControllerCompon
     }, EACH_WAIT_ENTITY_OVER_TIME * t.length, false);
   }
 };
-GodKingFrequencyControllerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(290)], GodKingFrequencyControllerComponent);
+GodKingFrequencyControllerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(295)], GodKingFrequencyControllerComponent);
 exports.GodKingFrequencyControllerComponent = GodKingFrequencyControllerComponent; //# sourceMappingURL=GodKingFrequencyControllerComponent.js.map

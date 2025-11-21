@@ -35,6 +35,12 @@ class QuestReviewMainView extends UiViewBase_1.UiViewBase {
         this.Plu();
       } else if (e !== 3 || ModelManager_1.ModelManager.QuestReviewModel.HasQuestLineFused()) {
         if (e === QuestReviewDefine_1.REFRESH_TIMING_AFTER_FUSION) {
+          for (const e of this.Pe?.Tabs ?? []) {
+            var t = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewTabDataById(e);
+            if (t) {
+              t.IsFirstTimeShow = false;
+            }
+          }
           this.e81 = ModelManager_1.ModelManager.QuestReviewModel.GetQuestReviewTabDataById(3);
           this.e81.IsFirstTimeShow = true;
           this.GetHorizontalLayout(3).RootUIComp.SetUIActive(true);

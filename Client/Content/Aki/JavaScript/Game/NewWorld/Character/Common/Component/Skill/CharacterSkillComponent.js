@@ -60,7 +60,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     return !!super.OnInitData() && (this.ActorComp = this.Entity.GetComponent(3), CharacterSkillComponent_1.AZr || (CharacterSkillComponent_1.PZr = CommonParamById_1.configCommonParamById.GetIntConfig("jump_priority"), CharacterSkillComponent_1.xZr = CommonParamById_1.configCommonParamById.GetIntConfig("fly_priority"), CharacterSkillComponent_1.AZr = true), true);
   }
   OnInit() {
-    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(179), this.mBe = this.Entity.CheckGetComponent(176), this.oRe = this.Entity.GetComponent(178), true);
+    return !!super.OnInit() && (this.Gce = this.Entity.GetComponent(182), this.mBe = this.Entity.CheckGetComponent(179), this.oRe = this.Entity.GetComponent(181), true);
   }
   OnEnd() {
     return !!super.OnEnd() && (this.DZr = 0, void (this.RZr = 0) !== this.pZr && (TimerSystem_1.TimerSystem.Remove(this.pZr), this.pZr = undefined), true);
@@ -100,7 +100,7 @@ let CharacterSkillComponent = CharacterSkillComponent_1 = class CharacterSkillCo
     }
   }
   een() {
-    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir()) {
+    if (this.ActorComp.IsAutonomousProxy && this.IsHasInputDir() && !this.Entity.GetComponent(62)?.IsLocalInput) {
       MathUtils_1.MathUtils.LookRotationUpFirst(this.ActorComp.InputDirectProxy, this.Gce.GravityUp, this.TmpRotator);
       this.TmpTransform.Set(this.ActorComp.ActorLocationProxy, this.TmpRotator.Quaternion(), this.ActorComp.ActorScaleProxy);
       this.ActorComp.SetActorTransform(this.TmpTransform.ToUeTransform(), "释放技能.转向输入方向", false, 1);

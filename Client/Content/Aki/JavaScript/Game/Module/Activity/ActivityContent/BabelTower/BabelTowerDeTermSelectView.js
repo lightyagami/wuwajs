@@ -30,7 +30,7 @@ class BabelTowerDeTermSelectView extends UiViewBase_1.UiViewBase {
     this.Uoc = undefined;
     this.tvc = [];
     this.Boc = undefined;
-    this.Yku = 0;
+    this.t2u = 0;
     this.SPe = undefined;
     this.L3e = () => {
       const e = [];
@@ -313,12 +313,12 @@ class BabelTowerDeTermSelectView extends UiViewBase_1.UiViewBase {
     var s;
     var o = ModelManager_1.ModelManager.BabelTowerModel.CalculateDifficultyConfigByStarNum(n.ActivityId, i);
     if (o) {
-      if (this.Yku < 2 && o.DifficultyId >= 2) {
+      if (this.t2u < 2 && o.DifficultyId >= 2) {
         this.SPe?.PlaySequencePurely("Highest");
-      } else if (this.Yku >= 2 && o.DifficultyId < 2) {
+      } else if (this.t2u >= 2 && o.DifficultyId < 2) {
         this.SPe?.PlaySequencePurely("HighestClose");
       }
-      this.Yku = o.DifficultyId;
+      this.t2u = o.DifficultyId;
       s = UE.Color.FromHex(o.TextBgColor);
       this.GetItem(14).SetColor(s);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), o.DifficultyTextKey);
