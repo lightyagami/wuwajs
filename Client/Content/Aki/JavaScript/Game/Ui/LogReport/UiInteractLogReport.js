@@ -36,43 +36,43 @@ class UiInteractLogReport {
     }
   }
   static RecordRouletteOpen() {
-    if (!this.orm.IsStart) {
+    if (!this.yam.IsStart) {
       if (ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower()) {
-        this.orm.TriggerOpen();
+        this.yam.TriggerOpen();
       }
     }
   }
   static RecordRouletteClose() {
     var e;
-    if (this.orm.IsStart) {
-      this.orm.TriggerClose();
-      (e = new LogReportDefine_1.UiInteractRouletteLogEvent()).i_old_count = this.orm.OldRound;
-      e.i_new_count = this.orm.NewRound;
+    if (this.yam.IsStart) {
+      this.yam.TriggerClose();
+      (e = new LogReportDefine_1.UiInteractRouletteLogEvent()).i_old_count = this.yam.OldRound;
+      e.i_new_count = this.yam.NewRound;
       e.i_inst_id = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      e.i_cost_time = this.orm.DurationTime;
-      e.i_skill_id = this.orm.UseSkillId;
+      e.i_cost_time = this.yam.DurationTime;
+      e.i_skill_id = this.yam.UseSkillId;
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     }
   }
   static RecordChatOpen() {
-    if (!this.nrm.IsStart) {
+    if (!this.Sam.IsStart) {
       if (ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower()) {
-        this.nrm.TriggerOpen();
+        this.Sam.TriggerOpen();
       }
     }
   }
   static RecordChatClose() {
     var e;
-    if (this.nrm.IsStart) {
-      this.nrm.TriggerClose();
-      (e = new LogReportDefine_1.UiInteractChatLogEvent()).i_old_count = this.nrm.OldRound;
-      e.i_new_count = this.nrm.NewRound;
+    if (this.Sam.IsStart) {
+      this.Sam.TriggerClose();
+      (e = new LogReportDefine_1.UiInteractChatLogEvent()).i_old_count = this.Sam.OldRound;
+      e.i_new_count = this.Sam.NewRound;
       e.i_inst_id = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-      e.i_cost_time = this.nrm.DurationTime;
-      e.i_skill_id = this.nrm.UseSkillId;
+      e.i_cost_time = this.Sam.DurationTime;
+      e.i_skill_id = this.Sam.UseSkillId;
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(e);
     }
   }
 }
-(exports.UiInteractLogReport = UiInteractLogReport).orm = new UiInteractRouletteData_1.UiInteractRouletteData();
-UiInteractLogReport.nrm = new UiInteractChatData_1.UiInteractChatData(); //# sourceMappingURL=UiInteractLogReport.js.map
+(exports.UiInteractLogReport = UiInteractLogReport).yam = new UiInteractRouletteData_1.UiInteractRouletteData();
+UiInteractLogReport.Sam = new UiInteractChatData_1.UiInteractChatData(); //# sourceMappingURL=UiInteractLogReport.js.map

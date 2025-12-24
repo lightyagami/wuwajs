@@ -131,7 +131,7 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
       }
       return false;
     }
-    var e = this.$Le.Entity.GetComponent(182);
+    var e = this.$Le.Entity.GetComponent(187);
     if (e.IsMovingToLocation()) {
       e.MoveToLocationEnd(1);
     }
@@ -153,7 +153,7 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
       }
       return false;
     }
-    var e = this.$Le.Entity.GetComponent(45);
+    var e = this.$Le.Entity.GetComponent(46);
     if (!this.$Le.Entity.GetComponent(0)?.IsCharacter() || !e) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelEvent", 39, "[LevelEventCharacterMove] 目标实体非可移动角色");
@@ -195,12 +195,12 @@ class LevelEventCharacterMove extends LevelGeneralBase_1.LevelEventBase {
     var o;
     var n = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
     if (n?.Valid) {
-      t = n.GetComponent(179);
-      r = n.GetComponent(40);
+      t = n.GetComponent(184);
+      r = n.GetComponent(41);
       i = n.GetComponent(3);
-      a = n.GetComponent(62);
-      o = n.GetComponent(209);
-      n = n.GetComponent(182);
+      a = n.GetComponent(65);
+      o = n.GetComponent(215);
+      n = n.GetComponent(187);
       if (e) {
         n?.StopMove(false);
         n?.ResetMaxSpeed(t?.MoveState);

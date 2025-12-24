@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CommonCurrencyItem = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -12,7 +13,6 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiPanelBase_1 = require("../../Ui/Base/UiPanelBase");
 const LguiUtil_1 = require("../Util/LguiUtil");
-const Log_1 = require("../../../Core/Common/Log");
 class CommonCurrencyItem extends UiPanelBase_1.UiPanelBase {
   constructor() {
     super(...arguments);

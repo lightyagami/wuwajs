@@ -39,13 +39,14 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleInputEnableChanged, this.Kaa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleInputVisibleChanged, this.$aa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiFollowerAimStateChanged, this.HRn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideLimitActionInput, this.Npm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideLimitActionInput, this.xbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.WVf);
     InputDistributeController_1.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.BindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
@@ -65,17 +66,18 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleInputEnableChanged, this.Kaa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleInputVisibleChanged, this.$aa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiFollowerAimStateChanged, this.HRn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this.FQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.$Ge);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideLimitActionInput, this.Npm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideLimitActionInput, this.xbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiMotorcycleStateChanged, this.WVf);
     InputDistributeController_1.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
     InputDistributeController_1.InputDistributeController.UnBindActionIgnoreLimit(InputMappingsDefine_1.actionMappings.通用交互, this.qah);
   }
-  static wyo(e, t = 4) {
+  static wyo(e, t = 5) {
     var n = Info_1.Info.OperationType === 2;
     ModelManager_1.ModelManager.SkillButtonUiModel.RefreshSkillButtonData(e, n, t);
   }
@@ -98,6 +100,31 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
       this.iYc.delete(e);
     }
   }
+  static QVf(e, t) {
+    if (e === InputMappingsDefine_1.actionMappings.组合主键) {
+      if (ModelManager_1.ModelManager.BattleUiModel.MotorcycleData?.IsDriving) {
+        this.tDf(t);
+      } else {
+        this.eZm(t);
+      }
+    }
+  }
+  static eZm(e) {
+    this.KVf = 0;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "[SkillButtonUiController] PressCombineButton", ["isPress", e]);
+    }
+    ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(0)?.SetIsPressCombineButton(e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, e);
+  }
+  static tDf(e) {
+    this.KVf = 1;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Battle", 17, "[SkillButtonUiController] PressMusicCombineButton", ["isPress", e]);
+    }
+    ModelManager_1.ModelManager.SkillButtonUiModel.GetGamepadDataByType(1)?.SetIsPressCombineButton(e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiPressMotorcycleCombineButtonChanged, e);
+  }
   static PlayExtraEffect(e, t, n = 0) {
     var i = ModelManager_1.ModelManager.SkillButtonUiModel.SkillButtonFormationData?.GetSkillButtonTypeFormationData(e);
     if (i) {
@@ -110,6 +137,7 @@ class SkillButtonUiController extends UiControllerBase_1.UiControllerBase {
 exports.SkillButtonUiController = SkillButtonUiController;
 (_a = SkillButtonUiController).kQe = Stats_1.Stat.Create("[ChangeRole]SkillButtonUiController");
 SkillButtonUiController.iYc = new Set();
+SkillButtonUiController.KVf = 0;
 SkillButtonUiController.Uyo = (e, t, n) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.ExecuteMultiSkillIdChanged(e, t, n);
 };
@@ -171,44 +199,53 @@ SkillButtonUiController.HRn = e => {
 SkillButtonUiController.$aa = (e, t) => {
   ModelManager_1.ModelManager.SkillButtonUiModel.OnInputVisibleChanged(e, t);
 };
-SkillButtonUiController.mDn = e => {
+SkillButtonUiController.CQm = e => {
   ModelManager_1.ModelManager.SkillButtonUiModel.CreateSkillButtonFollowerEntityData(e);
 };
-SkillButtonUiController.dDn = () => {
+SkillButtonUiController.pQm = () => {
   ModelManager_1.ModelManager.SkillButtonUiModel.ClearSkillButtonFollowerEntityData();
 };
 SkillButtonUiController.M6l = e => {
-  e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.VehicleEntity?.Id ?? 0);
-  if (e?.Valid) {
+  if (e.IsRolePassenger(true) && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.VehicleEntity?.Id ?? 0))?.Valid) {
     ModelManager_1.ModelManager.SkillButtonUiModel.CreateSkillButtonVehicleEntityData(e);
   }
 };
 SkillButtonUiController.E6l = e => {
-  ModelManager_1.ModelManager.SkillButtonUiModel.ClearSkillButtonVehicleEntityData();
+  if (e.IsRolePassenger(true)) {
+    ModelManager_1.ModelManager.SkillButtonUiModel.ClearSkillButtonVehicleEntityData();
+  }
 };
 SkillButtonUiController.FQe = e => {
   if (e === "MenuView") {
-    ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.AddChangeKeyReason(0);
+    for (const t of ModelManager_1.ModelManager.SkillButtonUiModel.GamepadDataMap.values()) {
+      t.AddChangeKeyReason(0);
+    }
   }
 };
 SkillButtonUiController.$Ge = e => {
   if (e === "MenuView") {
-    ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.RemoveChangeKeyReason(0);
-    ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.RefreshSwitchInteractOpen();
+    for (const t of ModelManager_1.ModelManager.SkillButtonUiModel.GamepadDataMap.values()) {
+      t.RemoveChangeKeyReason(0);
+      t.RefreshSwitchInteractOpen();
+    }
   }
 };
-SkillButtonUiController.Npm = (e, t) => {
-  if (e === InputMappingsDefine_1.actionMappings.组合主键) {
-    _a.RZe(e, t ? 0 : 1);
+SkillButtonUiController.xbm = (e, t) => {
+  _a.QVf(e, t);
+};
+SkillButtonUiController.WVf = e => {
+  if (ModelManager_1.ModelManager.InputDistributeModel.IsActionInPress(InputMappingsDefine_1.actionMappings.组合主键)) {
+    if (_a.KVf === 1) {
+      _a.tDf(false);
+      _a.eZm(true);
+    } else if (_a.KVf === 0) {
+      _a.eZm(false);
+      _a.tDf(true);
+    }
   }
 };
 SkillButtonUiController.RZe = (e, t) => {
-  if (Log_1.Log.CheckDebug()) {
-    Log_1.Log.Debug("Battle", 17, "[SkillButtonUiController] OnInputCombineButton", ["actionName", e], ["actionType", t]);
-  }
-  e = t === 0;
-  ModelManager_1.ModelManager.SkillButtonUiModel.GamepadData?.SetIsPressCombineButton(e);
-  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiPressCombineButtonChanged, e);
+  _a.QVf(e, t === 0);
 };
 SkillButtonUiController.qah = (e, t) => {
   t = t === 0;

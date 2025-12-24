@@ -16,18 +16,22 @@ const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistr
 const InputMappingsDefine_1 = require("../../Ui/InputDistribute/InputMappingsDefine");
 class GamepadSwitchInteractData {
   constructor() {
+    this.GamepadDataType = 0;
     this.IsSwitchInteractOpen = false;
     this.State = 0;
     this.Uah = new Set();
     this.SwitchTime = 0;
     this.xah = undefined;
     this.Pah = false;
+    this.F8f = InputMappingsDefine_1.actionMappings.幻象1;
     this.wah = () => {
       this.Owt(2);
       this.xah = undefined;
     };
   }
-  Init() {
+  Init(t, e) {
+    this.GamepadDataType = t;
+    this.F8f = e;
     this.SwitchTime = CommonParamById_1.configCommonParamById.GetIntConfig("SwitchInteractTime") ?? 500;
   }
   SetInteractExist(t, e) {
@@ -59,14 +63,14 @@ class GamepadSwitchInteractData {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Battle", 17, "[SwitchInteract]按下交互，同时触发按下探索工具");
         }
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, true);
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(this.F8f, true);
       }
     } else if (this.Pah) {
       this.Pah = false;
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 17, "[SwitchInteract]抬起交互，同时触发抬起探索工具");
       }
-      ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(InputMappingsDefine_1.actionMappings.幻象1, false);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(this.F8f, false);
     }
   }
   Bah(t) {

@@ -7,7 +7,8 @@ exports.VehicleAudioEventInfo = undefined;
 const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
-const GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1 = require("../../../Core/Define/ConfigQuery/GongduolaPassengerVoiceConfigByRoleIdAndTriggerType");
+const GongduolaPassengerVoiceConfigById_1 = require("../../../Core/Define/ConfigQuery/GongduolaPassengerVoiceConfigById");
+const GongduolaPassengerVoiceConfigByRoleIdAndVehicleTriggerType_1 = require("../../../Core/Define/ConfigQuery/GongduolaPassengerVoiceConfigByRoleIdAndVehicleTriggerType");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -16,6 +17,7 @@ const Global_1 = require("../../Global");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const VehicleModel_1 = require("../../NewWorld/Vehicle/Model/VehicleModel");
+const SECOND_TO_MS = 1000;
 class VehicleAudioEventInfo {
   constructor() {
     this.o6l = 0;
@@ -44,6 +46,13 @@ class VehicleAudioEventInfo {
     this.iQ_ = false;
     this.I5_ = undefined;
     this.T5_ = false;
+    this.VYm = 0;
+    this.HYm = undefined;
+    this.jYm = e => {
+      if (e.FlowIncId === this.HYm?.PlotHandle?.Handle && (this.HYm.PlotHandle = undefined, Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 摩托车角色共乘剧情播放结束");
+      }
+    };
   }
   Init() {
     this.o6l = CommonParamById_1.configCommonParamById.GetIntConfig("GondolaRideSharingAudioCoolDown") ?? 0;
@@ -167,7 +176,7 @@ class VehicleAudioEventInfo {
     }
   }
   PlayRideSharingPlotAudio(e) {
-    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this._6l?.PassengerActor?.Owner || !!(this.d6l(), this._6l?.PassengerActor)) && this.jq1(e, this._6l);
+    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this._6l?.PassengerActor?.Owner || !!(this.d6l(), this._6l?.PassengerActor)) && this.jq1(e, this._6l, "Gongduola");
   }
   d6l() {
     var e;
@@ -250,7 +259,7 @@ class VehicleAudioEventInfo {
     this.I5_ = undefined;
   }
   PlayFishingAudio(e) {
-    return !!this.I5_ && !!Global_1.Global.BaseCharacter?.CharacterActorComponent && !!this.iQ_ && this.jq1(e, this.I5_);
+    return !!this.I5_ && !!Global_1.Global.BaseCharacter?.CharacterActorComponent && !!this.iQ_ && this.jq1(e, this.I5_, "FishingBoat");
   }
   Hq1() {
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("GondolaFishingAudioKeepMove");
@@ -291,14 +300,119 @@ class VehicleAudioEventInfo {
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("FishingVoiceCondition");
     return ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), undefined, false);
   }
-  jq1(e, i) {
-    var o;
-    var t;
-    var r;
-    return !!i.PassengerActor?.Owner && !!(o = this.m6l(i.RoleId, e)) && !(t = o.PlotFlow && o.PlotFlow.length === 3, (r = this.C6l(t, o)).length === 0 ? (Log_1.Log.CheckError() && Log_1.Log.Error("Audio", 42, "[Vehicle.Audio] 贡多拉角色语音播放失败，没有对应Event配置", ["roleId", i.RoleId], ["type", this.g6l(e)], ["PlotFlow", o.PlotFlow], ["Voice", o.Voice]), 1) : this.u6l(o.Priority, i) ? ModelManager_1.ModelManager.GameAudioModel.CheckAudioProbabilityInfo(i.PassengerId, r, {
-      DefaultCooldownTime: t ? this.o6l : this.n6l,
-      DefaultProbability: 1
-    }, true, true, false) ? (t ? this.f6l(o, i) : this.p6l(o, i), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 贡多拉与角色语音播放", ["Event", r], ["roleId", i.RoleId], ["type", this.g6l(e)]), 0) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 贡多拉角色语音播放CD中"), 1) : (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 触发贡多拉角色语音失败，当前正在播放的共乘语音优先级大于或等于触发语音", ["roleId", i.RoleId], ["type", this.g6l(e)]), 1));
+  RegisterMotorDriveAudioEvent(e, i) {
+    if (this.HYm) {
+      this.RemoveMotorDriveAudioEvent();
+    }
+    this.HYm = {
+      RoleId: e,
+      RoleCreatureId: i,
+      PassengerId: 0,
+      PassengerActor: undefined
+    };
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.jYm);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 触发与角色共乘", ["roleId", this.HYm.RoleId], ["roleCreatureId", this.HYm.RoleCreatureId]);
+    }
+    this.VYm = this.$Ym(e);
+  }
+  RemoveMotorDriveAudioEvent() {
+    if (this.HYm) {
+      ModelManager_1.ModelManager.VehicleModel.RemoveKeepDrivingInfo(this.VYm);
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.jYm);
+      this.u6l(MathUtils_1.MathUtils.MaxFloat, this.HYm);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 退出摩托车与角色共乘", ["roleId", this.HYm?.RoleId], ["roleCreatureId", this.HYm?.RoleCreatureId]);
+      }
+      this.HYm = undefined;
+    }
+  }
+  PlayMotorPlotAudioDefault(e) {
+    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.HYm?.PassengerActor?.Owner || !!(this.WYm(), this.HYm?.PassengerActor)) && this.jq1(e, this.HYm, "Motorcycle");
+  }
+  PlayMotorPlotAudio(e, i) {
+    return (!!ModelManager_1.ModelManager.VehicleModel?.RideSharingInfoMap.size && !!this.HYm?.PassengerActor?.Owner || !!(this.WYm(), this.HYm?.PassengerActor)) && this.QYm(e, i, this.HYm);
+  }
+  WYm() {
+    var e;
+    var i;
+    if (this.HYm) {
+      i = (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(this.HYm.RoleCreatureId))?.Entity?.GetComponent(1);
+      if (e?.Entity && i) {
+        this.HYm.PassengerActor = i;
+        this.HYm.PassengerId = e.Entity.Id;
+      } else {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Audio", 42, "[Vehicle.Audio] 摩托车角色共乘语音事件播放,没有乘客实体", ["roleId", this.HYm.RoleId], ["roleCreatureId", this.HYm.RoleCreatureId]);
+        }
+        this.HYm = undefined;
+      }
+    }
+  }
+  CheckMotorState() {
+    return !!ModelManager_1.ModelManager.VehicleModel.IsReadyRiderSharing && !!ModelManager_1.ModelManager.VehicleModel.RideSharingInfoMap.size && !!this.HYm && (!!this.HYm.PassengerActor || !(this.WYm(), !this.HYm?.PassengerActor));
+  }
+  $Ym(e) {
+    const i = new VehicleModel_1.KeepDrivingAtSpeedCondition([1, MathUtils_1.MathUtils.MaxFloat], () => this.CheckMotorState(), e => {
+      if (this.PlayMotorPlotAudio(e, IAction_1.EGondolaVoiceTriggeredType.KeepMovingByCustomSec)) {
+        i.SetConditionTriggered(e);
+      }
+    }, this.n6l);
+    e = this.GetPassengerPlotAudioConfigList(e, IAction_1.EGondolaVoiceTriggeredType.KeepMovingByCustomSec, "Motorcycle");
+    if (!e || e.length < 1) {
+      return 0;
+    }
+    for (const o of e) {
+      i.AddCondition({
+        Id: o.Id,
+        Duration: o.ConditionParam[0] * SECOND_TO_MS,
+        Weather: o.TriggerWeatherIds,
+        Time: o.TriggerTimePeriod,
+        Triggered: false
+      });
+    }
+    return ModelManager_1.ModelManager.VehicleModel?.AddKeepDrivingInfo(i) ?? 0;
+  }
+  jq1(e, i, o) {
+    return !!i.PassengerActor?.Owner && !!(o = this.GetPassengerPlotAudioConfigList(i.RoleId, e, o)) && !(o.length < 1) && (o = o[0], this.KYm(o, e, i));
+  }
+  QYm(e, i, o) {
+    return !!o.PassengerActor?.Owner && !!(e = this.GetPassengerPlotAudioConfigById(e)) && this.KYm(e, i, o);
+  }
+  KYm(e, i, o) {
+    var t = e.PlotFlow && e.PlotFlow.length === 3;
+    var r = this.C6l(t, e);
+    if (r.length === 0) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Audio", 42, "[Vehicle.Audio] 共乘角色语音播放失败，没有对应Event配置", ["roleId", o.RoleId], ["type", this.g6l(i)], ["PlotFlow", e.PlotFlow], ["Voice", e.Voice]);
+      }
+      return false;
+    } else if (this.u6l(e.Priority, o)) {
+      if (ModelManager_1.ModelManager.GameAudioModel.CheckAudioProbabilityInfo(o.PassengerId, r, {
+        DefaultCooldownTime: t ? this.o6l : this.n6l,
+        DefaultProbability: 1
+      }, true, true, false)) {
+        if (t) {
+          this.f6l(e, o);
+        } else {
+          this.p6l(e, o);
+        }
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 共乘角色语音播放", ["Event", r], ["roleId", o.RoleId], ["type", this.g6l(i)]);
+        }
+        return true;
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 共乘角色语音播放CD中");
+        }
+        return false;
+      }
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 触发共乘角色语音失败，当前正在播放的共乘语音优先级大于或等于触发语音", ["roleId", o.RoleId], ["type", this.g6l(i)]);
+      }
+      return false;
+    }
   }
   u6l(e, i) {
     let o = true;
@@ -326,13 +440,22 @@ class VehicleAudioEventInfo {
     }
     return !!o;
   }
-  m6l(e, i) {
-    var o = GongduolaPassengerVoiceConfigByRoleIdAndTriggerType_1.configGongduolaPassengerVoiceConfigByRoleIdAndTriggerType.GetConfigList(e, i);
-    if (o && o.length !== 0) {
-      return o[0];
+  GetPassengerPlotAudioConfigById(e) {
+    var i = GongduolaPassengerVoiceConfigById_1.configGongduolaPassengerVoiceConfigById.GetConfig(e);
+    if (i) {
+      return i;
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 贡多拉与角色共乘语音播放失败，没有对应配置", ["roleId", e], ["type", this.g6l(i)]);
+      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 与角色共乘语音播放失败，没有对应配置", ["id", e]);
+    }
+  }
+  GetPassengerPlotAudioConfigList(e, i, o) {
+    var t = GongduolaPassengerVoiceConfigByRoleIdAndVehicleTriggerType_1.configGongduolaPassengerVoiceConfigByRoleIdAndVehicleTriggerType.GetConfigList(e, i, o);
+    if (t && t.length !== 0) {
+      return t;
+    }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Audio", 42, "[Vehicle.Audio] 载具角色共乘语音播放失败，没有对应配置", ["roleId", e], ["type", this.g6l(i)], ["vehicle", o]);
     }
   }
   C6l(e, i) {
@@ -386,6 +509,8 @@ class VehicleAudioEventInfo {
         return "移动N秒后停止移动";
       case IAction_1.EGondolaVoiceTriggeredType.NearFishingPoint:
         return "靠近捕鱼点";
+      case IAction_1.EGondolaVoiceTriggeredType.KeepMovingByCustomSec:
+        return "保持移动N秒";
       default:
         return "到特定区域/未知";
     }

@@ -40,7 +40,7 @@ class PayItemData {
     if (!(t instanceof PayItem_1.PayItem)) {
       this.CanSpecialBonus = t.lBs ?? undefined;
     }
-    this.DisclaimerText = t.czd ?? "";
+    this.DisclaimerText = t.Wzd ?? "";
     this.XOi = new PayShopItemBase_1.PayShopItemBaseSt();
     this.XOi.PhrasePromPayItemData(this);
   }
@@ -70,17 +70,17 @@ class PayItemData {
     if (t <= 0) {
       return 0;
     } else {
-      t = this.qzd() / t;
+      t = this.CJd() / t;
       return Math.floor(t * 10) / 10;
     }
   }
   GetGachaAveragePriceText() {
     var t = Math.floor(ConfigManager_1.ConfigManager.PayItemConfig.GetPayConf(this.$Oi).Amount * 10000) / 10000;
     var e = ConfigManager_1.ConfigManager.PayItemConfig.GetRechargeItemRate();
-    var t = t / (this.qzd() / e);
+    var t = t / (this.CJd() / e);
     return "" + Math.ceil(t * 100) / 100 + ConfigManager_1.ConfigManager.PayItemConfig.GetRegionMainCurrency();
   }
-  qzd() {
+  CJd() {
     if (this.CanSpecialBonus) {
       return this.ItemCount + this.SpecialBonusItemCount;
     } else {

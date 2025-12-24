@@ -13,6 +13,9 @@ class PhantomBattleBadgeGroup {
   get GroupId() {
     return this.groupid();
   }
+  get ActivityId() {
+    return this.activityid();
+  }
   get Name() {
     return this.name();
   }
@@ -38,8 +41,16 @@ class PhantomBattleBadgeGroup {
       return 0;
     }
   }
+  activityid() {
+    var t = this.J7.__offset(this.z7, 6);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   name(t) {
-    var i = this.J7.__offset(this.z7, 6);
+    var i = this.J7.__offset(this.z7, 8);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -47,7 +58,7 @@ class PhantomBattleBadgeGroup {
     return i;
   }
   num() {
-    var t = this.J7.__offset(this.z7, 8);
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -58,7 +69,7 @@ class PhantomBattleBadgeGroup {
     return this.phantombattleskillid(t);
   }
   phantombattleskillid(t) {
-    var i = this.J7.__offset(this.z7, 10);
+    var i = this.J7.__offset(this.z7, 12);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -66,7 +77,7 @@ class PhantomBattleBadgeGroup {
     }
   }
   phantombattleskillidLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -74,7 +85,7 @@ class PhantomBattleBadgeGroup {
     }
   }
   phantombattleskillidArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

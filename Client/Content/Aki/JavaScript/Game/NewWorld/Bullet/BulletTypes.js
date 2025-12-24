@@ -48,7 +48,7 @@ class HitInformation {
     this.ShouldOptimize = m;
   }
   static FromUeHitInformation(t) {
-    return new HitInformation(ControllerHolder_1.ControllerHolder.CharacterController.GetEntityByUeTsBaseCharacter(t.攻击者), ControllerHolder_1.ControllerHolder.CharacterController.GetEntityByUeTsBaseCharacter(t.受击者), t.被击效果, t.子弹ID, t.受击特效旋转, t.是否震动, t.受击部位, t.受击位置, t.技能等级, new BulletDataMain_1.BulletDataMain(t.重构子弹数据, ""), t.子弹表ID, Number(t.伤害ID), t.子弹逻辑预设, t.子弹ID, t.伤害类型, false);
+    return new HitInformation(ControllerHolder_1.ControllerHolder.CharacterController.GetEntityByUeTsBaseCharacter(t.攻击者), ControllerHolder_1.ControllerHolder.CharacterController.GetEntityByUeTsBaseCharacter(t.受击者), t.被击效果, t.子弹ID, t.受击特效旋转, t.是否震动, t.受击部位, t.受击位置, t.技能等级, new BulletDataMain_1.BulletDataMain(t.重构子弹数据, "", false), t.子弹表ID, Number(t.伤害ID), t.子弹逻辑预设, t.子弹ID, t.伤害类型, false);
   }
   ToUeHitInformation() {
     return new UE.SHitInformation(ControllerHolder_1.ControllerHolder.CharacterController.GetUeTsBaseCharacterByEntity(this.Attacker), ControllerHolder_1.ControllerHolder.CharacterController.GetUeTsBaseCharacterByEntity(this.Target), this.HitEffect, this.BulletId, this.HitPosition.ToUeVectorOld(), this.HitEffectRotation.ToUeRotator(), this.IsShaking, this.HitPart, this.HitPosition.ToUeVectorOld(), this.SkillLevel, this.ReBulletData.Data, this.BulletDataPreset, this.BulletRowName, this.CalculateType, BigInt(this.DamageId));

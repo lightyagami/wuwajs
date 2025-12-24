@@ -7,6 +7,7 @@ exports.UiCamera = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const Stack_1 = require("../../../Core/Container/Stack");
 const CameraController_1 = require("../../Camera/CameraController");
+const ModelManager_1 = require("../../Manager/ModelManager");
 const UiCameraPostEffectComponent_1 = require("./UiCameraComponent/UiCameraPostEffectComponent");
 const UiCameraSequenceComponent_1 = require("./UiCameraComponent/UiCameraSequenceComponent");
 class UiCamera {
@@ -64,17 +65,17 @@ class UiCamera {
       this.CameraActor.K2_SetActorRotation(e, false);
     }
   }
-  Enter(e = 0, t = 0, r = 0, i) {
+  Enter(e = 0, t = 0, r = 0, o) {
     if (this.JRo) {
       CameraController_1.CameraController.EnterCameraMode(2, e, t, r);
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCamera", 58, "进入Ui相机", ["blendTime", e], ["blendFunction", t], ["blendExp", r]);
       }
-      for (const o of this.$Ro.values()) {
-        o.Activate();
+      for (const i of this.$Ro.values()) {
+        i.Activate();
       }
-      CameraController_1.CameraController.EnterCameraMode(2, e, t, r, i);
+      CameraController_1.CameraController.EnterCameraMode(2, e, t, r, o);
       this.JRo = true;
     }
   }
@@ -83,9 +84,13 @@ class UiCamera {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCamera", 58, "退出Ui相机", ["blendTime", e], ["blendFunction", t], ["blendExp", r]);
       }
-      CameraController_1.CameraController.ExitCameraMode(2, e, t, r);
-      for (const i of this.$Ro.values()) {
-        i.Deactivate();
+      if (ModelManager_1.ModelManager.CameraModel.LogicHideHeadEnabled) {
+        CameraController_1.CameraController.ExitCameraMode(2, 0, 0, 0);
+      } else {
+        CameraController_1.CameraController.ExitCameraMode(2, e, t, r);
+      }
+      for (const o of this.$Ro.values()) {
+        o.Deactivate();
       }
       this.ClearStructure();
       this.JRo = false;

@@ -11,6 +11,12 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
+  static OnRegisterNetEvent() {
+    Net_1.Net.Register(28349, LevelPlayReportController.Nzf);
+  }
+  static OnUnRegisterNetEvent() {
+    Net_1.Net.UnRegister(28349);
+  }
   static async RequestSimpleTrackReportAsync() {
     var e = Protocol_1.Aki.Protocol.Lp_.create();
     var e = await Net_1.Net.CallAsync(19720, e);
@@ -83,6 +89,23 @@ class LevelPlayReportController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
+  static async RequestLevelPlayRewardsAsync(e, o) {
+    var t = Protocol_1.Aki.Protocol.Ndf.create();
+    t.r6n = e;
+    t._ps = o;
+    var t = await Net_1.Net.CallAsync(16546, t);
+    if (t) {
+      if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("LevelPlayReport", 86, "请求玩法点奖励返回失败:", ["ErrorCode:", t.Q4n]);
+        }
+      } else {
+        ModelManager_1.ModelManager.LevelPlayReportModel.UpdateLevelPlayRewardsMsg(e, o, t.jdf, t.$df);
+      }
+    }
+  }
 }
-exports.LevelPlayReportController = LevelPlayReportController;
+(exports.LevelPlayReportController = LevelPlayReportController).Nzf = e => {
+  ModelManager_1.ModelManager.LevelPlayReportModel.UpdateLevelPlayRewardMsgByNotify(e);
+};
 //# sourceMappingURL=LevelPlayReportController.js.map

@@ -8,6 +8,7 @@ const ModelBase_1 = require("../../Core/Framework/ModelBase");
 const DataTableUtil_1 = require("../../Core/Utils/DataTableUtil");
 const Switcher_1 = require("../Utils/Switcher");
 const NormalWorldInputData_1 = require("./BattleInputData/NormalWorldInputData");
+const NormalWorldMotorInputData_1 = require("./BattleInputData/NormalWorldMotorInputData");
 const SurvivorsRogueInputData_1 = require("./BattleInputData/SurvivorsRogueInputData");
 const TrapDefenseInputData_1 = require("./BattleInputData/TrapDefenseInputData");
 const InputLayer_1 = require("./InputLayer");
@@ -33,10 +34,14 @@ class InputModel extends ModelBase_1.ModelBase {
     this.fYu.set(0, new NormalWorldInputData_1.NormalWorldInputData(0));
     this.fYu.set(1, new TrapDefenseInputData_1.TrapDefenseInputData(1));
     this.fYu.set(2, new SurvivorsRogueInputData_1.SurvivorsRogueInputData(2));
+    this.fYu.set(3, new NormalWorldMotorInputData_1.NormalWorldMotorInputData(3, 1));
     return true;
   }
   SetCurrentInputDataType(t) {
     this.gYu = t;
+  }
+  GetCurrentInputDataType() {
+    return this.gYu;
   }
   GetCurrentInputData() {
     return this.fYu.get(this.gYu);

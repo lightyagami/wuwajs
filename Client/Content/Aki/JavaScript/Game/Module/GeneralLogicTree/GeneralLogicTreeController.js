@@ -102,8 +102,8 @@ class GeneralLogicTreeController extends ControllerWithAssistantBase_1.Controlle
   static IsShowNodeTrackDistance(e, t) {
     return TreeExpressAssistant_1.TreeExpressAssistant.IsShowNodeTrackDistance(e, t);
   }
-  static GetTitleText(e, t, r, s) {
-    return TreeExpressAssistant_1.TreeExpressAssistant.GetTitleText(e, t, r, s);
+  static GetTitleText(e, t, r, s, o) {
+    return TreeExpressAssistant_1.TreeExpressAssistant.GetTitleText(e, t, r, s, o);
   }
   static GetNodeTrackText(e, t) {
     return TreeExpressAssistant_1.TreeExpressAssistant.GetNodeTrackText(e, t);
@@ -183,6 +183,9 @@ GeneralLogicTreeController.mYt = e => {
       break;
     case Protocol_1.Aki.Protocol.TOs.Proto_ChildQuestNodeStuckCheckAction:
       o = s.IId.ups;
+      break;
+    case Protocol_1.Aki.Protocol.TOs.Proto_RollBlockGamePlayActionCtx:
+      o = s.xvf.ups;
   }
   if (o) {
     t = MathUtils_1.MathUtils.LongToBigInt(o.w5n);

@@ -21,11 +21,11 @@ class LevelEventEnableHostility extends LevelGeneralBase_1.LevelEventBase {
         var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(o);
         if (s?.Valid) {
           if (this.vq) {
-            s.Entity.GetComponent(47)?.SetAiHateConfig("");
-            s.Entity.GetComponent(47)?.SetAiTickLock(false);
+            s.Entity.GetComponent(48)?.SetAiHateConfig("");
+            s.Entity.GetComponent(48)?.SetAiTickLock(false);
           } else {
-            s.Entity.GetComponent(47)?.SetAiTickLock(true);
-            s.Entity.GetComponent(47)?.SetAiHateConfig("10");
+            s.Entity.GetComponent(48)?.SetAiTickLock(true);
+            s.Entity.GetComponent(48)?.SetAiHateConfig("10");
           }
         } else if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 33, "实体不存在 可能已被销毁", ["entityId", o]);

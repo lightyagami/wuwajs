@@ -141,13 +141,20 @@ class CalabashModel extends ModelBase_1.ModelBase {
   GetIdentifyGuaranteeCount() {
     return this.CalabashInstance.IdentifyGuaranteeCount;
   }
+  GetLowCostIdentifyGuaranteeCount() {
+    return this.CalabashInstance.LowCostIdentifyGuaranteeCount;
+  }
   GetLeftIntensifyCaptureGuarantee() {
-    var e = ConfigManager_1.ConfigManager.CalabashConfig.GetIntensifyCaptureGuarantee() - ModelManager_1.ModelManager.CalabashModel.GetIdentifyGuaranteeCount();
-    if (e <= 0) {
-      return 0;
-    } else {
-      return e;
-    }
+    var e = this.CalabashInstance.CalabashCurrentLevel;
+    var e = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(e)?.IntensifyCaptureGuarantee ?? 0;
+    var t = ModelManager_1.ModelManager.CalabashModel?.GetIdentifyGuaranteeCount() ?? 0;
+    return Math.max(e - t, 0);
+  }
+  GetLeftLowCostIntensifyCaptureGuarantee() {
+    var e = this.CalabashInstance.CalabashCurrentLevel;
+    var e = ConfigManager_1.ConfigManager.CalabashConfig?.GetCalabashConfigByLevel(e)?.LowCostIntensifyCaptureGuarantee ?? 0;
+    var t = ModelManager_1.ModelManager.CalabashModel?.GetLowCostIdentifyGuaranteeCount() ?? 0;
+    return Math.max(e - t, 0);
   }
   SetCurrentExp(e) {
     this.CalabashInstance.CalabashCurrentExp = e;

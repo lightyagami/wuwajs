@@ -34,12 +34,16 @@ class DamageInfo {
     this.Damage = 0;
     this.ElementId = 0;
     this.DamagePosition = undefined;
+    this.BaseLocation = Vector_1.Vector.Create(0, 0, 0);
     this.IsOwnPlayer = false;
     this.IsCritical = false;
     this.IsCure = false;
     this.DamageTextId = 0;
     this.DamageText = "";
+    this.DamageTextAreaId = 0;
+    this.EntityId = 0;
     this.EnableOptimization = false;
+    this.Valid = false;
   }
 }
 exports.DamageInfo = DamageInfo;
@@ -51,6 +55,9 @@ class DamageUiManager {
     this.MaxDamageOffsetDistance = CommonParamById_1.configCommonParamById.GetIntConfig("MaxDamageOffsetDistance");
     this.DamagePositionCache = Vector_1.Vector.Create();
     this.k2t = ConfigManager_1.ConfigManager.DamageUiConfig.GetAllDamageTextConfig();
+    for (const a of ConfigManager_1.ConfigManager.DamageUiConfig.GetAllDamageTextArea()) {
+      this.nqm.set(a.Id, a);
+    }
     this.InitializeDamageViewData();
   }
   static InitializeDamageViewData() {
@@ -60,10 +67,10 @@ class DamageUiManager {
       e.Initialize(i);
       this.F2t.set(i.Id, e);
       if (!StringUtils_1.StringUtils.IsEmpty(e.CriticalNiagaraPath)) {
-        if ((a = this.ZKd.get(e.CriticalNiagaraPath)) === undefined) {
-          e.CriticalNiagaraId = this.eXd;
-          this.ZKd.set(e.CriticalNiagaraPath, e.CriticalNiagaraId);
-          this.eXd++;
+        if ((a = this.rXd.get(e.CriticalNiagaraPath)) === undefined) {
+          e.CriticalNiagaraId = this.oXd;
+          this.rXd.set(e.CriticalNiagaraPath, e.CriticalNiagaraId);
+          this.oXd++;
         } else {
           e.CriticalNiagaraId = a;
         }
@@ -84,22 +91,22 @@ class DamageUiManager {
       this.V2t.push(e);
     }
   }
-  static ApplyDamage(e, i, t, r, s, g, n = -1, o = "") {
-    if (DamageUiManager.H2t && r.Active && !(n < 0) && (n !== 1 || !g || e !== 0)) {
-      var m = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-      if (m) {
-        m = m.Id === r.Id;
-        if (this.EnableOptimization || n === 2) {
-          if (this.tXd) {
-            var D;
-            var r = Math.floor(Math.abs(e));
-            var _ = DamageUiManager.Q2t(i, g, e, n);
-            let a = o;
-            if (!StringUtils_1.StringUtils.IsEmpty(o)) {
-              D = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(o);
-              a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(D) ?? " ";
+  static ApplyDamage(e, i, t, r, s, g, o = -1, n = "", m = 0) {
+    if (DamageUiManager.H2t && r.Active && !(o < 0) && (o !== 1 || !g || e !== 0)) {
+      var D = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+      if (D) {
+        var h = D.Id === r.Id;
+        if (this.EnableOptimization || o === 2) {
+          if (this.nXd) {
+            var _;
+            var U = Math.floor(Math.abs(e));
+            var l = DamageUiManager.Q2t(i, g, e, o);
+            let a = n;
+            if (!StringUtils_1.StringUtils.IsEmpty(n)) {
+              _ = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById(n);
+              a = ConfigManager_1.ConfigManager.TextConfig.GetMultiTextByKey(_) ?? " ";
             }
-            this.tXd.AddDamageInfo(new UE.DamageInfo(r, _, t, m, s, g, a));
+            this.nXd.AddDamageInfo(new UE.DamageInfo(U, l, t, h, s, g, a));
             return;
           }
           if (Log_1.Log.CheckWarn()) {
@@ -110,35 +117,51 @@ class DamageUiManager {
         (a = this.j2t.length > 0 ? this.j2t.pop() : new DamageInfo()).Damage = e;
         a.ElementId = i;
         a.DamagePosition = t;
-        a.IsOwnPlayer = m;
+        a.IsOwnPlayer = h;
         a.IsCritical = s;
         a.IsCure = g;
-        a.DamageTextId = n;
-        a.DamageText = o;
+        a.DamageTextId = o;
+        a.DamageText = n;
+        a.DamageTextAreaId = m;
+        a.EntityId = r.Id;
         a.EnableOptimization = false;
+        a.Valid = true;
+        if (h) {
+          if (_ = D.Entity.GetComponent(3).ActorLocationProxy) {
+            a.BaseLocation.FromUeVector(_);
+          } else {
+            a.BaseLocation.Reset();
+          }
+        }
         this.W2t.Push(a);
       }
     }
   }
-  static K2t(a) {
-    var e;
-    var i;
-    var t;
-    var r;
+  static K2t(e, i) {
     if (DamageUiManager.H2t) {
-      e = Math.floor(Math.abs(a.Damage));
-      if ((i = DamageUiManager.Q2t(a.ElementId, a.IsCure, a.Damage, a.DamageTextId)) < 0) {
+      var t = Math.floor(Math.abs(e.Damage));
+      var a = DamageUiManager.Q2t(e.ElementId, e.IsCure, e.Damage, e.DamageTextId);
+      if (a < 0) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Battle", 17, "[DamageText]产生伤害飘字时，伤害飘字Id无效", ["textId", i], ["elementId", a.ElementId], ["bCure", a.IsCure], ["damageTextId", a.DamageTextId]);
+          Log_1.Log.Info("Battle", 17, "[DamageText]产生伤害飘字时，伤害飘字Id无效", ["textId", a], ["elementId", e.ElementId], ["bCure", e.IsCure], ["damageTextId", e.DamageTextId]);
         }
       } else {
-        this.DamagePositionCache.DeepCopy(a.DamagePosition);
-        if (t = this.GetDamageViewData(i)) {
-          if (r = this.ProjectWorldLocationToScreenPosition(a.DamagePosition)) {
-            DamageUiManager.X2t(e, this.DamagePositionCache, r, t, a.IsCritical, a.IsCure, a.IsOwnPlayer, a.DamageText);
+        this.DamagePositionCache.DeepCopy(e.DamagePosition);
+        var r = this.GetDamageViewData(a);
+        if (r) {
+          if (this.ProjectWorldLocationToScreenPosition(e.DamagePosition)) {
+            let a = undefined;
+            if (this.V2t.length > 0) {
+              a = this.V2t.pop();
+            } else {
+              (a = new DamageView_1.DamageView()).Init();
+              this.TotalDamageViewNum++;
+            }
+            this.$2t.add(a);
+            a.InitializeData(t, this.DamagePositionCache, e.BaseLocation, r, e.IsCritical, e.IsCure, e.IsOwnPlayer, e.DamageText, e.DamageTextAreaId, i);
           }
         } else if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Battle", 17, "找不到对应的伤害飘字配置", ["伤害飘字Id", i]);
+          Log_1.Log.Warn("Battle", 17, "找不到对应的伤害飘字配置", ["伤害飘字Id", a]);
         }
       }
     }
@@ -148,20 +171,36 @@ class DamageUiManager {
     if (this.YFa) {
       var i = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity;
       if (i?.Valid) {
-        var t = i.Entity?.GetComponent(183)?.CurrentTimeScale ?? 1;
-        for (const s of DamageUiManager.$2t) {
-          s.SetTimeScale(t);
+        var t = i.Entity?.GetComponent(188)?.CurrentTimeScale ?? 1;
+        for (const o of DamageUiManager.$2t) {
+          o.SetTimeScale(t);
         }
       }
     }
     DamageUiManager.Z81.Start();
-    for (const g of DamageUiManager.$2t) {
-      g.Tick(e);
+    for (const n of DamageUiManager.$2t) {
+      n.Tick(e);
     }
     DamageUiManager.Z81.Stop();
     for (let a = 0; a < MAX_DAMAGE_PER_FRAME && !this.W2t.Empty; a++) {
       var r = this.W2t.Pop();
-      this.K2t(r);
+      if (r.Valid) {
+        if (ModelManager_1.ModelManager.CharacterModel.IsValid(r.EntityId)) {
+          this.K2t(r);
+        } else {
+          var s = [];
+          for (let a = 0; a < this.W2t.Size; a++) {
+            var g = this.W2t.Get(a);
+            if (g.EntityId === r.EntityId) {
+              s.push(g);
+              g.Valid = false;
+            }
+          }
+          this.K2t(r, s);
+        }
+      } else {
+        a--;
+      }
       this.j2t.push(r);
     }
     if (this.UeDamageUiManager) {
@@ -189,18 +228,6 @@ class DamageUiManager {
   static ScreenPositionToLguiPosition(a) {
     return UiLayer_1.UiLayer.UiRootItem.GetCanvasScaler().ConvertPositionFromViewportToLGUICanvas(a);
   }
-  static X2t(a, e, i, t, r = false, s = false, g = false, n = "", o = false) {
-    let m = undefined;
-    if (this.V2t.length > 0) {
-      m = this.V2t.pop();
-    } else {
-      (m = new DamageView_1.DamageView()).Init();
-      this.TotalDamageViewNum++;
-    }
-    this.$2t.add(m);
-    m.InitializeData(a, e, i, t, r, s, g, n, o);
-    return m;
-  }
   static RemoveDamageView(a) {
     if (this.$2t.has(a)) {
       a.ClearData();
@@ -226,10 +253,10 @@ class DamageUiManager {
   }
   static SetDamageViewVisible(a) {
     this.H2t = a;
-    if (this.tXd) {
-      this.tXd.bDamageViewVisible = this.H2t;
+    if (this.nXd) {
+      this.nXd.bDamageViewVisible = this.H2t;
       if (!a) {
-        this.tXd.ClearDamageInfo();
+        this.nXd.ClearDamageInfo();
       }
     }
   }
@@ -255,6 +282,9 @@ class DamageUiManager {
       Log_1.Log.Debug("Battle", 17, "关闭伤害飘字优化", ["id", a], ["优化是否仍然开启", e]);
     }
   }
+  static GetDamageTextAreaById(a) {
+    return this.nqm.get(a);
+  }
   static OnLeaveLevel() {
     for (const a of DamageUiManager.$2t) {
       a.ClearData();
@@ -268,8 +298,8 @@ class DamageUiManager {
     DamageUiManager.TotalDamageViewNum = 0;
     DamageUiManager.W2t.Clear();
     DamageUiManager.j2t.length = 0;
-    this.iXd.length = 0;
-    this.eXd = 0;
+    this.sXd.length = 0;
+    this.oXd = 0;
   }
   static Clear() {
     this.HVu.clear();
@@ -279,18 +309,18 @@ class DamageUiManager {
     }
   }
   static InitUeDamageUiManager(a) {
-    if (this.hZd) {
-      a.InitDamageConfig(this.hZd);
+    if (this.Bem) {
+      a.InitDamageConfig(this.Bem);
     }
-    a.InitAllRes(UiLayer_1.UiLayer.GetBattleViewUnit(0), this.rXd, this.oXd, this.HideDamageCritEffect ? 1 : 20, Info_1.Info.IsMobilePlatform());
-    for (const i of this.nXd) {
+    a.InitAllRes(UiLayer_1.UiLayer.GetBattleViewUnit(0), this.aXd, this.hXd, this.HideDamageCritEffect ? 1 : 20, Info_1.Info.IsMobilePlatform());
+    for (const i of this.lXd) {
       var e = this.F2t.get(i);
       if (e) {
         e = new UE.DamageViewData(e.ConfigId, e.MinRandomOffsetX, e.MinRandomOffsetY, e.MaxRandomOffsetX, e.MaxRandomOffsetY, e.TextColor, e.CriticalTextColor, this.HideDamageCritEffect ? -1 : e.CriticalNiagaraId, this.LFt.get(e.DamageTextConfig.OwnDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.OwnCriticalDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.MonsterDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.MonsterCriticalDamageSequence) ?? 0, this.LFt.get(e.DamageTextConfig.DamageTextSequence) ?? 0);
         a.AddDamageViewData(e);
       }
     }
-    for (const t of this.iXd) {
+    for (const t of this.sXd) {
       a.AddCritNiagara(t);
     }
     a.bDamageViewVisible = this.H2t;
@@ -299,18 +329,18 @@ class DamageUiManager {
     var a;
     var e;
     var i = [];
-    for ([a, e] of this.ZKd) {
-      i.push(this.sXd(a, e));
+    for ([a, e] of this.rXd) {
+      i.push(this._Xd(a, e));
     }
-    i.push(this.aXd());
-    i.push(this.hXd());
+    i.push(this.uXd());
+    i.push(this.cXd());
     await Promise.all(i);
   }
-  static async sXd(e, i) {
+  static async _Xd(e, i) {
     const t = new CustomPromise_1.CustomPromise();
     ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.NiagaraSystem, a => {
       if (a) {
-        this.iXd[i] = a;
+        this.sXd[i] = a;
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 17, "LoadCriticalNiagara失败", ["path", e]);
       }
@@ -318,30 +348,30 @@ class DamageUiManager {
     });
     return t.Promise;
   }
-  static async aXd() {
-    this.rXd = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_DamageView_Num_Prefab", UiLayer_1.UiLayer.GetBattleViewUnit(0), GlobalData_1.GlobalData.World, 100, "Ui.DamageUi");
+  static async uXd() {
+    this.aXd = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_DamageView_Num_Prefab", UiLayer_1.UiLayer.GetBattleViewUnit(0), GlobalData_1.GlobalData.World, 100, "Ui.DamageUi");
   }
-  static async hXd() {
-    this.oXd = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_DamageView_Sim_Prefab", UiLayer_1.UiLayer.GetBattleViewUnit(0), GlobalData_1.GlobalData.World, 100, "Ui.HeadStateUi");
+  static async cXd() {
+    this.hXd = await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_DamageView_Sim_Prefab", UiLayer_1.UiLayer.GetBattleViewUnit(0), GlobalData_1.GlobalData.World, 100, "Ui.HeadStateUi");
   }
   static get UeDamageUiManager() {
-    return this.tXd;
+    return this.nXd;
   }
   static StartUeDamageUiManager() {
-    if (!this.tXd) {
-      this.tXd = UE.DamageUiManager.CreateInstance(GlobalData_1.GlobalData.World);
-      DamageUiManager.InitUeDamageUiManager(this.tXd);
+    if (!this.nXd) {
+      this.nXd = UE.DamageUiManager.CreateInstance(GlobalData_1.GlobalData.World);
+      DamageUiManager.InitUeDamageUiManager(this.nXd);
     }
   }
   static StopUeDamageUiManager() {
-    if (this.tXd) {
+    if (this.nXd) {
       UE.DamageUiManager.DestroyInstance();
-      this.tXd = undefined;
+      this.nXd = undefined;
     }
-    this.hZd = undefined;
+    this.Bem = undefined;
     this.HideDamageCritEffect = false;
-    this.rXd = undefined;
-    this.oXd = undefined;
+    this.aXd = undefined;
+    this.hXd = undefined;
   }
   static SetUeDamageConfig(a, e = false) {
     if (this.UeDamageUiManager) {
@@ -349,7 +379,7 @@ class DamageUiManager {
         Log_1.Log.Error("Battle", 17, "UeDamageUiManager已经初始化过，此时再设置DamageConfig不会生效");
       }
     } else {
-      this.hZd = a;
+      this.Bem = a;
       this.HideDamageCritEffect = e;
     }
   }
@@ -367,19 +397,20 @@ DamageUiManager.MinDamageOffsetDistance = 0;
 DamageUiManager.MaxDamageOffsetDistance = 0;
 DamageUiManager.DamagePositionCache = undefined;
 DamageUiManager.k2t = undefined;
+DamageUiManager.nqm = new Map();
 DamageUiManager.Y2t = (0, puerts_1.$ref)(undefined);
 DamageUiManager.YFa = false;
 DamageUiManager.EnableOptimization = false;
 DamageUiManager.jVu = 0;
 DamageUiManager.HVu = new Set();
-DamageUiManager.ZKd = new Map();
-DamageUiManager.iXd = [];
-DamageUiManager.eXd = 0;
-DamageUiManager.rXd = undefined;
-DamageUiManager.oXd = undefined;
-DamageUiManager.nXd = [1, 2, 3, 4, 5, 6, 8, 9, 10, 1001, 1002, 1003, 1004, 1005, 1006, 1010];
+DamageUiManager.rXd = new Map();
+DamageUiManager.sXd = [];
+DamageUiManager.oXd = 0;
+DamageUiManager.aXd = undefined;
+DamageUiManager.hXd = undefined;
+DamageUiManager.lXd = [1, 2, 3, 4, 5, 6, 8, 9, 10, 1001, 1002, 1003, 1004, 1005, 1006, 1010];
 DamageUiManager.LFt = new Map([["", 0], ["Ani_OwnDamageSequence", 1], ["Ani_OwnCriticalDamageSequence", 2], ["Ani_MonsterDamageSequence", 3], ["Ani_MonsterCriticalDamageSequence", 4], ["Ani_BuffSequence", 5], ["Ani_SpecialDamage", 6], ["Ani_SpecialCriticalDamage", 7]]);
 DamageUiManager.Z81 = Stats_1.Stat.Create("DamageUiManager.TickStat1");
-DamageUiManager.tXd = undefined;
-DamageUiManager.hZd = undefined;
+DamageUiManager.nXd = undefined;
+DamageUiManager.Bem = undefined;
 DamageUiManager.HideDamageCritEffect = false; //# sourceMappingURL=DamageUiManager.js.map

@@ -70,9 +70,9 @@ let SceneItemResetSelfPositionComponent = SceneItemResetSelfPositionComponent_1 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.CheckGetComponent(206);
-    this.tVr = this.Entity.CheckGetComponent(162);
-    if (this.Entity.CheckGetComponent(160)) {
+    this.Hte = this.Entity.CheckGetComponent(212);
+    this.tVr = this.Entity.CheckGetComponent(167);
+    if (this.Entity.CheckGetComponent(165)) {
       this.DMn("[SceneItemResetSelfPositionComponent] 初始关闭检查距离Tick");
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnManipulatableItemStateModified, this.TMn);
       return true;
@@ -141,5 +141,5 @@ let SceneItemResetSelfPositionComponent = SceneItemResetSelfPositionComponent_1 
     }
   }
 };
-SceneItemResetSelfPositionComponent = SceneItemResetSelfPositionComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(170)], SceneItemResetSelfPositionComponent);
+SceneItemResetSelfPositionComponent = SceneItemResetSelfPositionComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(175)], SceneItemResetSelfPositionComponent);
 exports.SceneItemResetSelfPositionComponent = SceneItemResetSelfPositionComponent; //# sourceMappingURL=SceneItemResetSelfPositionComponent.js.map

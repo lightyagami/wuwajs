@@ -354,7 +354,7 @@ class TowerController extends ControllerBase_1.ControllerBase {
   }
   static ClearAllHatredInTower() {
     for (const o of ModelManager_1.ModelManager.FormationDataModel.PlayerAggroSet) {
-      var e = EntitySystem_1.EntitySystem.Get(o)?.GetComponent(47)?.AiController?.AiHateList;
+      var e = EntitySystem_1.EntitySystem.Get(o)?.GetComponent(48)?.AiController?.AiHateList;
       if (e) {
         e.ClearHatred(0);
       }

@@ -146,6 +146,19 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
             e = o.TidMainText;
             i = o.TidSubText;
             break;
+          case IAction_1.ECommonTipType.VisionSettlement:
+          case IAction_1.ECommonTipType.VisionSettlementHard:
+            r = 37;
+            e = o.TidMainText;
+            i = o.TidSubText;
+            _ = o.Type === IAction_1.ECommonTipType.VisionSettlementHard;
+            l = {
+              IsHard: _
+            };
+            e = e && PublicUtil_1.PublicUtil.GetConfigTextByKey(e);
+            i = i && PublicUtil_1.PublicUtil.GetConfigTextByKey(i);
+            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(r, n, undefined, [e], [i], a, undefined, l, t.Duration, false, t.Token);
+            return;
           case IAction_1.ECommonTipType.PhotographicTip:
             e = o.MainText;
             ActivityControllerHolder_1.ActivityControllerHolder.FightPhotoController?.ShowFightPhotoTips(e);
@@ -158,8 +171,8 @@ class LevelEventPrompt extends LevelGeneralBase_1.LevelEventBase {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(r, n, undefined, [e], [i], a, undefined, undefined, t.Duration, false, t.Token);
       } else {
         i = e.GeneralTextId;
-        t = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(i).TypeId;
-        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(t, undefined, undefined, undefined, undefined, i);
+        e = ConfigManager_1.ConfigManager.GenericPromptConfig.GetPromptInfo(i).TypeId;
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(e, undefined, undefined, undefined, undefined, i);
       }
     }
   }

@@ -100,7 +100,7 @@ class AoiController extends ControllerBase_1.ControllerBase {
   }
   static AddMonsterSizeTag(e) {
     var o = e.GetComponent(0)?.GetMonsterComponent()?.FightConfigId;
-    const r = e.GetComponent(209);
+    const r = e.GetComponent(215);
     if (o && r?.Valid && (e = MonsterBattleConfById_1.configMonsterBattleConfById?.GetConfig(o)) && (o = MonsterSizeIdById_1.configMonsterSizeIdById?.GetConfig(e.MonsterSizeId))) {
       o.MonsterSizeTag?.forEach(e => {
         r.AddTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));

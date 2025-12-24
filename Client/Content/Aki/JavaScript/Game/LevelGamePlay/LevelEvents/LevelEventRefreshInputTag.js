@@ -18,7 +18,7 @@ class LevelEventRefreshInputTag extends LevelGeneralBase_1.LevelEventBase {
     ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     var r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
     var n = 477750727;
-    if (r?.Valid && (r = r.GetComponent(209))?.HasTag(n) && (r.RemoveTag(n), Log_1.Log.CheckDebug())) {
+    if (r?.Valid && (r = r.GetComponent(215))?.HasTag(n) && (r.RemoveTag(n), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Test", 29, "[LevelEventRefreshInputTag.ExecuteNew] RemoveTag 禁止冲刺");
     }
   }

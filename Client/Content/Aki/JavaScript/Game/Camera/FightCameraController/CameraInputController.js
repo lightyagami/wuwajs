@@ -124,10 +124,14 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     this.SpecificCameraBasePitchSensitivity = -1;
     this.SpecificCameraAimingYawSensitivity = -1;
     this.SpecificCameraAimingPitchSensitivity = -1;
-    this.ZEm = true;
+    this.Akm = true;
   }
   get IsAiming() {
-    return this.Camera.ContainsTag(428837378) || this.Camera.ContainsTag(-1058855731);
+    if (ModelManager_1.ModelManager.DeadEyeModeModel.IsInDeadEyeMode) {
+      return !Info_1.Info.IsInTouch();
+    } else {
+      return this.Camera.ContainsTag(428837378) || this.Camera.ContainsTag(-1058855731);
+    }
   }
   Name() {
     return "InputController";
@@ -224,7 +228,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
           this.gUa = false;
           this.fUa = false;
           var e = this.Camera.CurrentCamera.ArmRotation;
-          let [t, i] = h.Entity.GetComponent(62).GetCameraInput();
+          let [t, i] = h.Entity.GetComponent(65).GetCameraInput();
           if (this.Nlh()) {
             t *= this.GamepadInputRate;
             i *= this.GamepadInputRate;
@@ -317,7 +321,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     var i = this.Camera.CharacterEntityHandle;
     if (i && i.IsInit) {
       if (!!this.N_e.Active && !(this.F_e.size > 0) && !this.Camera.IsModifiedArmLength && !this.Camera.IsModifiedZoomModifier) {
-        if (i = -i.Entity.GetComponent(62).GetZoomInput() * t) {
+        if (i = -i.Entity.GetComponent(65).GetZoomInput() * t) {
           t = i * (Info_1.Info.IsInGamepad() ? this.GamePadZoomSpeed : this.ZoomSpeed) / (this.Camera.DesiredCamera.MaxArmLength - this.Camera.DesiredCamera.MinArmLength);
           this.aue(this.Camera.DesiredCamera.ZoomModifier + t);
           this.Camera.IsModifiedArmLength = true;
@@ -339,7 +343,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
   aue(t) {
     var i = this.Camera.GetArmLengthWithSetting(this.Camera.CurrentCamera);
     this.Camera.DesiredCamera.ZoomModifier = MathUtils_1.MathUtils.Clamp(t * i, this.Camera.CurrentCamera.MinArmLength, this.Camera.CurrentCamera.MaxArmLength) / i;
-    if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.ZEm && (this.ZEm = false, Log_1.Log.CheckInfo())) {
+    if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Akm && (this.Akm = false, Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Camera", 57, "[DebugZoomModifier ClampZoomModifier]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["zoomModifier", t], ["currentArmLength", i], ["MinArmLength", this.Camera.CurrentCamera.MinArmLength], ["MaxArmLength", this.Camera.CurrentCamera.MaxArmLength], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     this.mae = this.Camera.CurrentCamera.ArmLength;
@@ -427,7 +431,7 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
                   this.ega(n, s, e);
                 }
               }
-              o = l.Entity.GetComponent(158);
+              o = l.Entity.GetComponent(163);
               if (o) {
                 for (const M of o.AimParts) {
                   this.ega(M, s, e);
@@ -474,17 +478,18 @@ class CameraInputController extends CameraControllerBase_1.CameraControllerBase 
     var h = this.uoe.HitResult?.GetHitCount();
     if (h) {
       var e = s.IgnoreCollisionBoneName;
+      var a = this.uoe.HitResult.Components.Get(0);
+      var r = this.uoe.HitResult.ItemArray.Get(0);
       for (let t = 0; t < h; ++t) {
-        var a = this.uoe.HitResult.Components.Get(0);
-        if (a.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.Bullet) !== 0) {
+        if (UE.KuroCollisionLibrary.GetCollisionResponseToChannel(a, QueryTypeDefine_1.KuroCollisionChannel.Bullet, r) !== 0) {
           if (s.OwnerCharacter) {
             if (a.GetOwner() === s.OwnerBase.Owner && (!e || a.GetName() === e)) {
               break;
             }
           } else if (s.SceneItemHit) {
-            var r = s.OwnerBase.Owner;
+            var _ = s.OwnerBase.Owner;
             let t = a.GetOwner();
-            while (t && t !== r) {
+            while (t && t !== _) {
               t = t.GetAttachParentActor();
             }
             if (t) {

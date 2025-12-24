@@ -23,8 +23,8 @@ class CharacterUtils {
   static Jil(r) {
     if (r?.Valid) {
       var a = r.Entity.GetComponent(0);
-      var t = r.Entity.GetComponent(40);
-      var o = r.Entity.GetComponent(209);
+      var t = r.Entity.GetComponent(41);
+      var o = r.Entity.GetComponent(215);
       let e = undefined;
       r = a.GetMonsterComponent()?.FightConfigId;
       if (r) {

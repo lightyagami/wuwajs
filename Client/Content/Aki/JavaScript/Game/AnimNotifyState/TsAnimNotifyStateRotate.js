@@ -86,15 +86,15 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
         this.ParamsMap.set(e.Id, new AnsRotateParam(s));
       }
       if (this.在横板模式中禁用) {
-        if (e.GetComponent(111)?.Active) {
+        if (e.GetComponent(116)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!e.GetComponent(111)?.Active) {
+        if (!e.GetComponent(116)?.Active) {
           return false;
         }
       }
-      s = e.GetComponent(40);
+      s = e.GetComponent(41);
       if (s?.Valid) {
         e = this.ParamsMap.get(e.Id);
         if (this.定向旋转功能) {
@@ -126,15 +126,15 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
       var o = h.NowTime;
       h.NowTime += r;
       if (this.在横板模式中禁用) {
-        if (a.GetComponent(111)?.Active) {
+        if (a.GetComponent(116)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!a.GetComponent(111)?.Active) {
+        if (!a.GetComponent(116)?.Active) {
           return false;
         }
       }
-      a = a.GetComponent(40);
+      a = a.GetComponent(41);
       if (!a?.Valid) {
         return false;
       }
@@ -168,7 +168,7 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(t, i) {
     var t = t.GetOwner();
-    if (t instanceof TsBaseCharacter_1.default && (this.ParamsMap?.delete(t.CharacterActorComponent?.Entity.Id ?? 0), (t = t.CharacterActorComponent?.Entity?.GetComponent(40))?.Valid)) {
+    if (t instanceof TsBaseCharacter_1.default && (this.ParamsMap?.delete(t.CharacterActorComponent?.Entity.Id ?? 0), (t = t.CharacterActorComponent?.Entity?.GetComponent(41))?.Valid)) {
       t.SetSkillCanRotate(false);
       t.SetRotateTarget(undefined, 0);
     }
@@ -229,7 +229,7 @@ class TsAnimNotifyStateRotate extends UE.KuroAnimNotifyState {
   }
   UpdateContinueDetection(t, i, s) {
     var e = this.TmpVector;
-    SkillUtils_1.SkillUtils.GetSkillRotateDirect(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Entity), t.SkillRotateTarget, e);
+    SkillUtils_1.SkillUtils.GetSkillRotateDirect(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(s.Entity), t.SkillRotateTarget, undefined, e);
     if (e.IsNearlyZero()) {
       t.RotateDetectionType = 0;
     } else {

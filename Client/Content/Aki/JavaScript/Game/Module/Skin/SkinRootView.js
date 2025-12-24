@@ -83,13 +83,13 @@ class SkinRootView extends UiViewBase_1.UiViewBase {
   async OnHandlePostLoadSceneAsync(e) {
     if (!this.yil.TsUiSceneRoleActor) {
       if (this.yil.NeedLoadRole) {
-        await this.Kjd();
+        await this.Jjd();
       } else {
         this.yil.TsUiSceneRoleActor = UiSceneManager_1.UiSceneManager.GetRoleSystemRoleActor();
       }
     }
   }
-  async Kjd() {
+  async Jjd() {
     var e;
     if (!this.c8l) {
       this.c8l = true;

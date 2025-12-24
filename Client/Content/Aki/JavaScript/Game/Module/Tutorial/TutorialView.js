@@ -43,7 +43,7 @@ class TutorialView extends UiViewBase_1.UiViewBase {
     this.kRo = undefined;
     this.T_u = 0;
     this.Mbe = t => {
-      var t = ModelManager_1.ModelManager.TutorialModel.MakeSearchList(t, this.GRo);
+      var t = ModelManager_1.ModelManager.TutorialModel.MakeSearchList(t, this.GRo, this.T_u);
       var i = t.ItemData;
       this.GetItem(5).SetUIActive(!i.length);
       if (!i.length) {

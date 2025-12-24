@@ -92,6 +92,7 @@ class CameraCollision {
     this.Dae.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.Pawn);
     this.Dae.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnMonster);
     this.Dae.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.PawnPlayer);
+    this.Dae.AddObjectTypeQuery(QueryTypeDefine_1.KuroObjectTypeQuery.Vehicle);
     this.Rae = UE.NewObject(UE.TraceSphereElement.StaticClass());
     this.Rae.bIsSingle = false;
     this.Rae.bTraceComplex = false;
@@ -132,7 +133,7 @@ class CameraCollision {
     this.Hse.ActorsToIgnore.Add(t);
     this.Dae.ActorsToIgnore.Add(t);
     this.Rae.ActorsToIgnore.Add(t);
-    this.Lae = t?.CharacterActorComponent?.Entity?.GetComponent(77);
+    this.Lae = t?.CharacterActorComponent?.Entity?.GetComponent(80);
   }
   SetCameraConfig(t, i) {
     this.Wae = t * t * PROBE_RATIO;
@@ -213,8 +214,9 @@ class CameraCollision {
   }
   Yae() {
     var t;
+    var i;
     this.kae = false;
-    if (this.Oae && (t = this.Fse.HitResult?.Components?.Get(this.Nae))?.IsValid() && t.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.Water) === 2) {
+    if (this.Oae && (t = this.Fse.HitResult?.Components?.Get(this.Nae), i = this.Fse.HitResult?.ItemArray?.Get(this.Nae) ?? 0, t?.IsValid()) && UE.KuroCollisionLibrary.GetCollisionResponseToChannel(t, QueryTypeDefine_1.KuroCollisionChannel.Water, i) === 2) {
       this.kae = true;
     }
   }
@@ -347,6 +349,20 @@ class CameraCollision {
       }
     }
   }
+  static Ttg(t, i) {
+    const s = t.GetEntityNoBlueprint()?.CheckGetComponent(0)?.GetCreatureDataId();
+    if (s) {
+      t = ModelManager_1.ModelManager.CameraModel.DitherEntityGroups.GetSet(s);
+      if (t && t.length !== 0) {
+        for (const s of t) {
+          var h = ModelManager_1.ModelManager.CreatureModel.GetEntity(s);
+          if (h?.Valid && h.Entity?.Valid && (h = h.Entity.CheckGetComponent(1)?.Owner) && CameraCollision.IsCharacterRenderingType(h)) {
+            h.SetDitherEffect(i, 1);
+          }
+        }
+      }
+    }
+  }
   Zae() {
     if (this.IsNpcDitherEnable) {
       this.nhe();
@@ -367,7 +383,9 @@ class CameraCollision {
               Log_1.Log.Debug("Camera", 57, `[NPC Dither] 存在忽略Tag,恢复Npc'${s?.GetName()}'Dither`);
             }
           } else {
-            s.SetDitherEffect(this.lhe(s, h), 1);
+            h = this.lhe(s, h);
+            s.SetDitherEffect(h, 1);
+            CameraCollision.Ttg(s, h);
             if (h = this.Kae.has(s)) {
               this.Kae.delete(s);
             }
@@ -382,11 +400,11 @@ class CameraCollision {
       }
       var e = this.Kae.values();
       for (let t = 0; t < this.Kae.size - i; t++) {
-        var r = e.next().value;
-        if (this.Wx_(r) && (r.SetDitherEffect(1, 1), Log_1.Log.CheckDebug())) {
-          Log_1.Log.Debug("Camera", 57, `[NPC Dither] 恢复Npc'${r?.GetName()}'Dither`);
+        var a = e.next().value;
+        if (CameraCollision.IsCharacterRenderingType(a) && (a.SetDitherEffect(1, 1), CameraCollision.Ttg(a, 1), Log_1.Log.CheckDebug())) {
+          Log_1.Log.Debug("Camera", 57, `[NPC Dither] 恢复Npc'${a?.GetName()}'Dither`);
         }
-        this.Kae.delete(r);
+        this.Kae.delete(a);
       }
     } else if (this.Kae.size > 0) {
       this.Kae.forEach(t => {
@@ -451,7 +469,7 @@ class CameraCollision {
     return t.Subtraction(i, this.Lz).SizeSquared() < s * s;
   }
   hhe(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(-1151151013);
+    return !!t.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(-1151151013);
   }
   nhe() {
     var t;
@@ -475,11 +493,23 @@ class CameraCollision {
     var s = i.GetHitCount();
     this.Qae.clear();
     for (let t = 0; t < s; ++t) {
-      var h;
-      var e = i.Actors.Get(t);
-      if (e && e instanceof UE.Object && e.IsValid() && this.Wx_(e)) {
-        if (!e.GetEntityNoBlueprint()?.GetComponent(0)?.GetModelConfig()?.主角蓝透 && !(TraceElementCommon_1.TraceElementCommon.GetImpactPoint(i, t, this.Lz), (this.Qae.get(e) ?? MAX_VALUE) <= (h = Vector_1.Vector.Dist(this.Lz, this.Pae)))) {
-          this.Qae.set(e, h);
+      var h = i.Actors.Get(t);
+      if (h && h instanceof UE.Object && h.IsValid() && CameraCollision.IsCharacterRenderingType(h)) {
+        var e = h.GetEntityNoBlueprint()?.GetComponent(0)?.GetModelConfig();
+        if (!e?.主角蓝透) {
+          if (h && h.CapsuleComponent && h.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle) {
+            e = h.GetEntityNoBlueprint();
+            if (!e || !e.GetComponent(263) || e.CheckGetComponent(215)?.HasTag(-1636232993) || ModelManager_1.ModelManager.VehicleModel.MaterialControllerHandles.size > 0) {
+              this.Kae.delete(h);
+              continue;
+            }
+          }
+          TraceElementCommon_1.TraceElementCommon.GetImpactPoint(i, t, this.Lz);
+          var e = this.Qae.get(h) ?? MAX_VALUE;
+          var a = Vector_1.Vector.Dist(this.Lz, this.Pae);
+          if (!(e <= a)) {
+            this.Qae.set(h, a);
+          }
         }
       }
     }
@@ -491,17 +521,17 @@ class CameraCollision {
     let s = this.Hh.CompleteHideDistance;
     let h = this.Hh.StartHideDistance;
     let e = this.Hh.StartDitherValue;
-    var r;
+    var a;
     if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.PawnMonster) {
-      if (r = t.GetEntityNoBlueprint()?.GetComponent(3)) {
-        s = r.CompleteHideDistance;
-        h = r.StartHideDistance;
-        e = r.StartDitherValue;
+      if (a = t.GetEntityNoBlueprint()?.GetComponent(3)) {
+        s = a.CompleteHideDistance;
+        h = a.StartHideDistance;
+        e = a.StartDitherValue;
       }
-    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (r = t.GetEntityNoBlueprint()?.GetComponent(238)) && r.StartHideDistance > 0) {
-      s = r.CompleteHideDistance;
-      h = r.StartHideDistance;
-      e = r.StartDitherValue;
+    } else if (t.CapsuleComponent.GetCollisionObjectType() === QueryTypeDefine_1.KuroCollisionChannel.Vehicle && (a = t.GetEntityNoBlueprint()?.GetComponent(247)) && a.StartHideDistance > 0) {
+      s = a.CompleteHideDistance;
+      h = a.StartHideDistance;
+      e = a.StartDitherValue;
     }
     return MathUtils_1.MathUtils.RangeClamp(i, s, h, MIN_DITHER, e);
   }
@@ -511,16 +541,18 @@ class CameraCollision {
     }
     let h = -1;
     let e = MAX_VALUE;
-    var r = s.GetHitCount();
-    for (let t = 0; t < r; ++t) {
-      var a;
-      var o = this.Fse.HitResult?.Components?.Get(t);
-      if (o?.IsValid()) {
+    var a = s.GetHitCount();
+    for (let t = 0; t < a; ++t) {
+      var r;
+      var o;
+      var n = this.Fse.HitResult?.Components?.Get(t);
+      if (n?.IsValid()) {
+        r = this.Fse.HitResult?.ItemArray?.Get(t) ?? 0;
         TraceElementCommon_1.TraceElementCommon.GetImpactPoint(s, t, this.Lz);
-        a = Vector_1.Vector.DistSquared(this.Lz, i);
-        if (o.GetCollisionResponseToChannel(QueryTypeDefine_1.KuroCollisionChannel.Water) !== 2 || !(a <= this.Wae)) {
-          if (a < e) {
-            e = a;
+        o = Vector_1.Vector.DistSquared(this.Lz, i);
+        if (UE.KuroCollisionLibrary.GetCollisionResponseToChannel(n, QueryTypeDefine_1.KuroCollisionChannel.Water, r) !== 2 || !(o <= this.Wae)) {
+          if (o < e) {
+            e = o;
             h = t;
           }
         }
@@ -533,7 +565,7 @@ class CameraCollision {
     for (let t = 0; t < s; ++t) {
       var h = i.Actors.Get(t);
       if (h) {
-        if (h instanceof UE.Object && h.IsValid() && this.Wx_(h)) {
+        if (h instanceof UE.Object && h.IsValid() && CameraCollision.IsCharacterRenderingType(h)) {
           if (h.GetEntityNoBlueprint()?.GetComponent(0)?.GetModelConfig()?.主角蓝透) {
             return true;
           }
@@ -552,7 +584,7 @@ class CameraCollision {
   SetCameraBlendPauseType(t) {
     this.Zrh = t;
   }
-  Wx_(t) {
+  static IsCharacterRenderingType(t) {
     return !!t?.IsValid() && (t instanceof TsBaseCharacter_1.default || t instanceof TsBaseVehicle_1.default) && !!ModelManager_1.ModelManager.CharacterModel.GetHandle(t.GetEntityIdNoBlueprint())?.Valid;
   }
   SetCameraCollisionEnable(t) {
@@ -560,6 +592,9 @@ class CameraCollision {
   }
   GetCameraCollisionEnable() {
     return this.bqu;
+  }
+  GetIsMiddleCollision() {
+    return this.Oae;
   }
 }
 exports.CameraCollision = CameraCollision;

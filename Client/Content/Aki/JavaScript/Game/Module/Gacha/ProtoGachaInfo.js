@@ -32,7 +32,7 @@ class ProtoGachaPoolInfo {
     this.ShowIdList = t.pb_;
     this.UpList = t.vb_;
     this.PreviewIdList = t.yb_;
-    this.ComplianceDetail = t.czd;
+    this.ComplianceDetail = t.Wzd;
     t = ConfigManager_1.ConfigManager.GachaConfig.GetGachaPoolConfig(this.Id);
     if (t) {
       this.Sort = t.Sort;
@@ -80,12 +80,9 @@ class ProtoGachaInfo {
     }
   }
   GetFirstValidPool() {
-    if (this.bKt && this.bKt.length > 0) {
-      for (const t of this.bKt) {
-        if (this.IsPoolValid(t)) {
-          return t;
-        }
-      }
+    var t = this.GetValidPoolList();
+    if (t && t.length > 0) {
+      return t[0];
     }
   }
   GetPoolInfo(t) {
@@ -126,6 +123,7 @@ class ProtoGachaInfo {
           i.push(s);
         }
       }
+      i.sort((t, i) => t.Sort - i.Sort);
       return i;
     }
   }

@@ -309,7 +309,7 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       return [false, i];
     }
     for (const n of o) {
-      if ((!t || n.DungeonDetectionRecord.Conf.MatType === t) && (!!this.GetIsDetectionPreOpenByData(n) || !n.IsLock || e === 63 || !!n.Conf.PeriodicityChallengeType)) {
+      if ((!t || n.DungeonDetectionRecord.Conf.MatType === t) && (!!this.GetIsDetectionPreOpenByData(n) || !n.IsLock || e === 63 || e === 64 || !!n.Conf.PeriodicityChallengeType)) {
         i.push(n);
       }
     }
@@ -1019,28 +1019,49 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     if (!this.IsDetectionTypeAllowPreOpen(t)) {
       return false;
     }
-    e = this.GetPreOpenDetectionConf(e, t, r);
-    if (e === undefined) {
+    var i = this.GetPreOpenDetectionConf(e, t, r);
+    if (i === undefined) {
       return false;
     }
-    r = e.ConditionGroup;
-    let i = true;
-    if (r > 0) {
-      i = !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(r.toString(), undefined);
-    }
-    var r = this.U4l.get(t)?.get(e.Id);
     let o = false;
-    if (r && (t = MathUtils_1.MathUtils.LongToNumber(r.AE_), e = MathUtils_1.MathUtils.LongToNumber(r.PE_), t <= (r = TimeUtil_1.TimeUtil.GetServerTimeStamp())) && r <= e) {
-      o = true;
+    for (const t of AdventureGuideController_1.AdventureGuideController.GetPlayerType()) {
+      if (i.PlayTypeArray.includes(t)) {
+        o = true;
+        break;
+      }
     }
-    return i && o;
+    if (!o) {
+      return false;
+    }
+    e = i.ConditionGroup;
+    let n = true;
+    if (e > 0) {
+      n = !ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckCondition(e.toString(), undefined);
+    }
+    var r = this.U4l.get(t)?.get(i.Id);
+    let a = false;
+    if (r && (e = MathUtils_1.MathUtils.LongToNumber(r.AE_), t = MathUtils_1.MathUtils.LongToNumber(r.PE_), e <= (r = TimeUtil_1.TimeUtil.GetServerTimeStamp())) && r <= t) {
+      a = true;
+    }
+    return n && a;
   }
   GetIsDetectionPreOpenByData(e) {
     return this.GetIsDetectionPreOpen(e.Conf.Id, e.Type, e.Conf.PreOpenId);
   }
+  GetIsDetectionPreOpenByRecord(e) {
+    return this.GetIsDetectionPreOpen(e.Conf.Id, e instanceof AdventureDefine_1.DungeonDetectionRecord ? 0 : 1, e.Conf.PreOpenId);
+  }
   GetIsDetectionPreOpenByPreOpenId(e) {
     e = ConfigManager_1.ConfigManager.AdventureModuleConfig.GetPreOpenDetectionConfById(e);
     return e !== undefined && this.GetIsDetectionPreOpen(e.DetectionId, e.SoundAreaType, e.Id);
+  }
+  GetIsDetectionPreOpenByDungeonType(e) {
+    for (const t of this.VVe.get(e) ?? []) {
+      if (this.GetIsDetectionPreOpen(t.Conf.Id, t.Type, t.Conf.PreOpenId)) {
+        return true;
+      }
+    }
+    return false;
   }
   IsDetectionNewContentOpen(e) {
     var t;
@@ -1101,30 +1122,35 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
     return i;
   }
   GetVar(e, t, r) {
-    e = this.BDu(e, t);
-    t = this.DDu.get(e);
-    if (t !== undefined) {
-      var i = t[r];
-      if (i !== undefined) {
-        let e = undefined;
-        switch ((0, IVar_1.getVarTypeByIndex)(i.iTs)) {
-          case "Boolean":
-            e = i.rTs;
-            break;
-          case "Float":
-            e = i.sTs;
-            break;
-          case "Int":
-            e = MathUtils_1.MathUtils.LongToNumber(i.oTs);
-            break;
-          case "String":
-            e = i.nTs;
-            break;
-          default:
-            e = undefined;
-        }
-        return e;
+    var i = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(t);
+    let o = undefined;
+    if ((o = i ? i.Tree?.GetTreeVarByKey(r) : o) === undefined) {
+      i = this.BDu(e, t);
+      e = this.DDu.get(i);
+      if (e === undefined) {
+        return;
       }
+      o = e[r];
+    }
+    if (o !== undefined) {
+      let e = undefined;
+      switch ((0, IVar_1.getVarTypeByIndex)(o.iTs)) {
+        case "Boolean":
+          e = o.rTs;
+          break;
+        case "Float":
+          e = o.sTs;
+          break;
+        case "Int":
+          e = MathUtils_1.MathUtils.LongToNumber(o.oTs);
+          break;
+        case "String":
+          e = o.nTs;
+          break;
+        default:
+          e = undefined;
+      }
+      return e;
     }
   }
   IsNightMareHaveConfig(e, t) {
@@ -1185,6 +1211,9 @@ class AdventureGuideModel extends ModelBase_1.ModelBase {
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.AdventrueWeeklyRogue, t);
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RedDotAdventurePeriodicityTabUpdate);
+  }
+  GetRecordById(e) {
+    return this.AllDungeonDetectionRecord.get(e) ?? this.AllSilentAreaDetectionRecord.get(e);
   }
 }
 exports.AdventureGuideModel = AdventureGuideModel;

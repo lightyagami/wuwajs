@@ -21,27 +21,27 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
         var a = EntitySystem_1.EntitySystem.Get(e.EntityId);
         if (a?.Valid) {
           if (o.Targets && o.Targets.length !== 0) {
-            if (a.GetComponent(206)?.Owner) {
-              var n = a.GetComponent(167);
+            if (a.GetComponent(212)?.Owner) {
+              var n = a.GetComponent(172);
               if (n) {
-                var s = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
-                var c = o.SyncChildActor || false;
+                var r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
+                var s = o.SyncChildActor || false;
                 for (const E of o.Targets) {
-                  var r = E.PathName;
-                  var i = r.split(".");
+                  var c = E.PathName;
+                  var i = c.split(".");
                   if (i.length < PATH_LENGTH) {
                     if (Log_1.Log.CheckError()) {
-                      Log_1.Log.Error("LevelEvent", 7, "[SetActorVisible]actor路径错误", ["RefPath", r]);
+                      Log_1.Log.Error("LevelEvent", 7, "[SetActorVisible]actor路径错误", ["RefPath", c]);
                     }
                   } else {
                     i = i[1] + "." + i[2];
                     if (n.IsValidPlatFormPath(i)) {
                       i = new UE.FName(i);
-                      const f = s.GetActor(i);
+                      const f = r.GetActor(i);
                       if (f?.IsValid()) {
                         i = a.GetComponent(0).GetPbDataId();
                         if (ModelManager_1.ModelManager.SundryModel?.GetModuleDebugLevel("SceneItemReferenceComponent_" + i) && Log_1.Log.CheckInfo()) {
-                          Log_1.Log.Info("LevelEvent", 39, "[SetActorVisible] [疑难杂症] 行为开关Actor", ["RefEntityPbDataId", a.GetComponent(0)?.GetPbDataId()], ["TargetPath", r], ["ActorType", o.ActorType], ["Enable", o.Enable], ["ActionGuid", this.ActionGuid], ["Context", t]);
+                          Log_1.Log.Info("LevelEvent", 39, "[SetActorVisible] [疑难杂症] 行为开关Actor", ["RefEntityPbDataId", a.GetComponent(0)?.GetPbDataId()], ["TargetPath", c], ["ActorType", o.ActorType], ["Enable", o.Enable], ["ActionGuid", this.ActionGuid], ["Context", t]);
                         }
                         if (o.CollisionEnabled !== undefined) {
                           f.SetActorEnableCollision(o.CollisionEnabled);
@@ -67,11 +67,11 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
                               }
                             }
                             if (f.RootComponent?.IsValid() && f.RootComponent instanceof UE.MeshComponent) {
-                              f.RootComponent.SetVisibility(o.Enable, c);
+                              f.RootComponent.SetVisibility(o.Enable, s);
                             }
                             if (f.RootComponent?.IsValid() && f.RootComponent instanceof UE.PrimitiveComponent) {
                               f.RootComponent.SetCollisionEnabled(l);
-                              f.RootComponent.SetHiddenInGame(!o.Enable, c);
+                              f.RootComponent.SetHiddenInGame(!o.Enable, s);
                             }
                             break;
                           case "SoundActor":
@@ -148,7 +148,7 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
                               f.SetEnabled(o.Enable);
                             }
                             if (f.RootComponent?.IsValid()) {
-                              f.RootComponent.SetVisibility(o.Enable, c);
+                              f.RootComponent.SetVisibility(o.Enable, s);
                             }
                             break;
                           case "PhysicalActor":
@@ -156,9 +156,18 @@ class LevelEventSetActorVisible extends LevelGeneralBase_1.LevelEventBase {
                               f.SetActorHiddenInGame(!o.Enable);
                               f.SetActorTickEnabled(o.Enable);
                             }
+                            break;
+                          case "WorldPartitionTriggerVolumeWrapper":
+                            if (f instanceof UE.BP_TsTransitionWorldPartitionTriggerVolumeWrapper_C) {
+                              if ((l = f.TargetVolume)?.IsValid()) {
+                                l.FunctionEnable = o.Enable;
+                              }
+                            } else if (f instanceof UE.TsTransitionWorldPartitionTriggerVolume_C && f?.IsValid()) {
+                              f.FunctionEnable = o.Enable;
+                            }
                         }
                       } else if (Log_1.Log.CheckWarn()) {
-                        Log_1.Log.Warn("LevelEvent", 7, "[SetActorVisible]目标actor不存在", ["RefPath", r]);
+                        Log_1.Log.Warn("LevelEvent", 7, "[SetActorVisible]目标actor不存在", ["RefPath", c]);
                       }
                     }
                   }

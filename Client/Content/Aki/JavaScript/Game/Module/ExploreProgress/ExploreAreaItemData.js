@@ -38,6 +38,7 @@ class ExploreAreaItemData {
     this.DescId = undefined;
     this.SubTypes = [];
     this.UnlockConditionId = undefined;
+    this.AccessPathId = undefined;
     this.SpecialPlayPointIndexMap = new Map();
     this.IsRecommend = false;
     this.Jjl = false;
@@ -83,6 +84,7 @@ class ExploreAreaItemData {
     this.IsShowTrackBtn = t.IsShowTrack;
     this.UnlockTrackType = t.UnlockTrackType;
     this.LockTrackType = t.LockTrackType;
+    this.AccessPathId = t.AccessPathId;
     this.YHs = false;
     if (this.QHs !== 0) {
       this.YHs = ModelManager_1.ModelManager.RouletteModel.UnlockExploreSkillDataMap.has(this.QHs);

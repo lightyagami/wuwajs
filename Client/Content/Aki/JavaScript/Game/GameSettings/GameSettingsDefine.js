@@ -43,6 +43,7 @@ var EFunction;
   e[e.NVIDIADLSSQUALITY = 831] = "NVIDIADLSSQUALITY";
   e[e.NVIDIADLSSSHARPNESS = 84] = "NVIDIADLSSSHARPNESS";
   e[e.NVIDIAREFLEX = 85] = "NVIDIAREFLEX";
+  e[e.HDR = 20305] = "HDR";
   e[e.FSR = 87] = "FSR";
   e[e.XESS = 125] = "XESS";
   e[e.XESS_QUALITY = 126] = "XESS_QUALITY";
@@ -135,6 +136,7 @@ var EFunction;
   e[e.ShowOtherName = 51102] = "ShowOtherName";
   e[e.WaterInteract = 20033] = "WaterInteract";
   e[e.VegetationDither = 20034] = "VegetationDither";
+  e[e.VegetationDensity = 20035] = "VegetationDensity";
   e[e.ImageDisplayMode = 20216] = "ImageDisplayMode";
   e[e.EyeProtection = 20210] = "EyeProtection";
   e[e.EyeProtectionMode = 20211] = "EyeProtectionMode";
@@ -144,6 +146,12 @@ var EFunction;
   e[e.EyeProtectionTexture = 20215] = "EyeProtectionTexture";
   e[e.AutoExposure = 20610] = "AutoExposure";
   e[e.AdjustiveGamePadTrigger = 60210] = "AdjustiveGamePadTrigger";
+  e[e.MotorMobileButtonCustom = 30201] = "MotorMobileButtonCustom";
+  e[e.MotorIsDynamicJoystick = 30202] = "MotorIsDynamicJoystick";
+  e[e.MotorAutoAcceleratorSettingEnable = 60301] = "MotorAutoAcceleratorSettingEnable";
+  e[e.MotorAutoLongPressSpeedUp = 60302] = "MotorAutoLongPressSpeedUp";
+  e[e.MotorDriftAcceleratorSettingEnable = 60303] = "MotorDriftAcceleratorSettingEnable";
+  e[e.MotorHudVisible = 51103] = "MotorHudVisible";
 })(EFunction = exports.EFunction ||= {});
 const masterVolume = {
   GameSettingId: EFunction.MASTERVOLUMEFUNCTION,
@@ -266,7 +274,7 @@ const npcDensity = {
 const nvidiaDlss = {
   GameSettingId: EFunction.NVIDIADLSS,
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaSuperSamplingEnable,
-  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingEnable(e),
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaSuperSamplingEnable(e, t),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaDlss()
 };
 const nvidiaDlssFg = {
@@ -295,6 +303,12 @@ const nvidiaReflex = {
   GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.NvidiaReflex,
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyNvidiaReflex(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpNvidiaReflex()
+};
+const hdr = {
+  GameSettingId: EFunction.HDR,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.Hdr,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyHdrEnable(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpHdr()
 };
 const fsr = {
   GameSettingId: EFunction.FSR,
@@ -953,6 +967,12 @@ const vegetationDither = {
   ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVegetationDither(e),
   DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVegetationDither()
 };
+const vegetationDensity = {
+  GameSettingId: EFunction.VegetationDensity,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.VegetationDensity,
+  ApplyCallback: (e, t) => GameSettingsUtils_1.GameSettingsUtils.ApplyVegetationDensity(e),
+  DumpCallback: () => GameSettingsDumpUtils_1.GameSettingsDumpUtils.DumpVegetationDensity()
+};
 const versionCheck = {
   GameSettingId: EFunction.VersionCheck,
   GetCallbackOrGlobalKey: () => 0,
@@ -1014,6 +1034,56 @@ const adjustiveGamePadTrigger = {
   },
   DumpCallback: () => "[AdjustiveGamePadTrigger]same to getter"
 };
+const motorAccleratePressType = {
+  GameSettingId: EFunction.MotorAutoLongPressSpeedUp,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorAutoLongPressSpeedUp,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMotorAutoLongPressSpeedUp(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorAutoLongPressSpeedUp]same to getter"
+};
+const motorAutoAcceleratorSettingEnable = {
+  GameSettingId: EFunction.MotorAutoAcceleratorSettingEnable,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorAutoAcceleratorSettingEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMotorAutoAcceleratorSettingEnable(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorAutoAcceleratorSettingEnable]same to getter"
+};
+const motorDriftAcceleratorSettingEnable = {
+  GameSettingId: EFunction.MotorDriftAcceleratorSettingEnable,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorDriftAcceleratorSettingEnable,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMotorDriftAcceleratorSettingEnable(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorDriftAcceleratorSettingEnable]same to getter"
+};
+const motorHudVisible = {
+  GameSettingId: EFunction.MotorHudVisible,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorHudVisible,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMotorHudVisible(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorHudVisible]same to getter"
+};
+const motorTouchFixedPosition = {
+  GameSettingId: EFunction.MotorIsDynamicJoystick,
+  GetCallbackOrGlobalKey: LocalStorageDefine_1.ELocalStorageGlobalKey.MotorIsDynamicJoystick,
+  ApplyCallback: (e, t) => {
+    GameSettingsUtils_1.GameSettingsUtils.ApplyMotorIsDynamicJoystick(e);
+    return true;
+  },
+  DumpCallback: () => "[MotorIsDynamicJoystick]same to getter"
+};
+const motorMobileButtonCustom = {
+  GameSettingId: EFunction.MotorMobileButtonCustom,
+  GetCallbackOrGlobalKey: () => 0,
+  DumpCallback: () => "[motorMobileButtonCustom]this is just a switch entry"
+};
 exports.function2GameSettings = {
   [EFunction.MASTERVOLUMEFUNCTION]: masterVolume,
   [EFunction.VOICEVOLUMEFUNCTION]: voiceVolume,
@@ -1038,6 +1108,7 @@ exports.function2GameSettings = {
   [EFunction.NVIDIADLSSQUALITY]: nvidiaDlssQuality,
   [EFunction.NVIDIADLSSSHARPNESS]: nvidiaDlssSharpness,
   [EFunction.NVIDIAREFLEX]: nvidiaReflex,
+  [EFunction.HDR]: hdr,
   [EFunction.FSR]: fsr,
   [EFunction.XESS]: xess,
   [EFunction.XESS_QUALITY]: xessQuality,
@@ -1129,6 +1200,7 @@ exports.function2GameSettings = {
   [EFunction.ShowOtherName]: showOtherName,
   [EFunction.WaterInteract]: waterInteract,
   [EFunction.VegetationDither]: vegetationDither,
+  [EFunction.VegetationDensity]: vegetationDensity,
   [EFunction.ImageDisplayMode]: imageDisplayMode,
   [EFunction.EyeProtection]: eyeProtection,
   [EFunction.EyeProtectionMode]: eyeProtectionMode,
@@ -1138,7 +1210,13 @@ exports.function2GameSettings = {
   [EFunction.EyeProtectionTexture]: eyeProtectionTexture,
   [EFunction.VersionCheck]: versionCheck,
   [EFunction.AutoExposure]: autoExposure,
-  [EFunction.AdjustiveGamePadTrigger]: adjustiveGamePadTrigger
+  [EFunction.AdjustiveGamePadTrigger]: adjustiveGamePadTrigger,
+  [EFunction.MotorAutoLongPressSpeedUp]: motorAccleratePressType,
+  [EFunction.MotorAutoAcceleratorSettingEnable]: motorAutoAcceleratorSettingEnable,
+  [EFunction.MotorDriftAcceleratorSettingEnable]: motorDriftAcceleratorSettingEnable,
+  [EFunction.MotorHudVisible]: motorHudVisible,
+  [EFunction.MotorIsDynamicJoystick]: motorTouchFixedPosition,
+  [EFunction.MotorMobileButtonCustom]: motorMobileButtonCustom
 };
 exports.WINDOWS_RESOLUTION_INDEX = 2;
 exports.NPC_DENSITY_THRESHOLD = 1;

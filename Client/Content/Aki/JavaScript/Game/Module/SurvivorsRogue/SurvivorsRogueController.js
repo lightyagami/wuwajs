@@ -29,7 +29,7 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Register(15893, this.tLd);
     Net_1.Net.Register(17462, this.iLd);
     Net_1.Net.Register(24751, this.vxd);
-    Net_1.Net.Register(21964, this.TZd);
+    Net_1.Net.Register(21964, this.tim);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(20216);
@@ -49,10 +49,10 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
   }
   static OnAddOpenViewCheckFunction() {
-    UiManager_1.UiManager.AddOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Nwm, "SurvivorsRogueController.CanOpenSurvivorsTabMainView");
+    UiManager_1.UiManager.AddOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Auf, "SurvivorsRogueController.CanOpenSurvivorsTabMainView");
   }
   static OnRemoveOpenViewCheckFunction() {
-    UiManager_1.UiManager.RemoveOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Nwm);
+    UiManager_1.UiManager.RemoveOpenViewCheckFunction("SurvivorsTabMainView", SurvivorsRogueController.Auf);
   }
   static tHu() {
     var e = new SplashScreenTask_1.SplashScreenTask(0, 1, () => {
@@ -229,13 +229,13 @@ class SurvivorsRogueController extends UiControllerBase_1.UiControllerBase {
   }
 }
 exports.SurvivorsRogueController = SurvivorsRogueController;
-(_a = SurvivorsRogueController).Nwm = (e, r) => {
+(_a = SurvivorsRogueController).Auf = (e, r) => {
   var o = ControllerHolder_1.ControllerHolder.KuroSimpleCombatController.CurSubModel?.KscPlayerEntity;
   return !!o && !!o.GetSkillComp()?.AttrSet_?.Attrs_;
 };
 SurvivorsRogueController.Jwd = e => {
   ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId = e.gG_;
-  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.pZd);
+  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.Ktm);
   if (Log_1.Log.CheckDebug()) {
     Log_1.Log.Debug("SurvivorsRogue", 79, "OnSurvivorsInstGlobalDataNotify", ["CurLevelId", ModelManager_1.ModelManager.SurvivorsRogueModel.CurLevelId], ["CurWaveNum", ModelManager_1.ModelManager.SurvivorsRogueModel.CurWaveNum]);
   }
@@ -298,8 +298,8 @@ SurvivorsRogueController.iLd = e => {
     ModelManager_1.ModelManager.SurvivorsRogueModel.WaveTipsState = 3;
   }
 };
-SurvivorsRogueController.TZd = e => {
-  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.pZd);
+SurvivorsRogueController.tim = e => {
+  ModelManager_1.ModelManager.SurvivorsRogueModel.InitComboEnhanceCfg(e.Ktm);
 };
 SurvivorsRogueController.nye = () => {
   var e;

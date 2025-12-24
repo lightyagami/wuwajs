@@ -10,14 +10,17 @@ const DreamLinkController_1 = require("../DreamLink/DreamLinkController");
 const FloroRanchController_1 = require("../FloroBranch/FloroRanchController");
 const FragmentMemoryActivityController_1 = require("../FragmentMemory/FragmentMemoryActivityController");
 const HonamiStoryController_1 = require("../HonamiStory/HonamiStoryController");
+const InfrastructureController_1 = require("../Infrastructure/InfrastructureController");
 const ActivityPermanentRogueController_1 = require("../PermanentRogue/ActivityPermanentRogueController");
 const PhantomArenaController_1 = require("../PhantomArena/PhantomArenaController");
+const PhantomArenaGuideController_1 = require("../PhantomArena/PhantomArenaGuideController");
 const RacingBetsController_1 = require("../RacingBets/RacingBetsController");
 const SurvivorsActivityController_1 = require("../SurvivorsRogue/Activity/SurvivorsActivityController");
 const TowerDefenceController_1 = require("../TowerDefence/TowerDefenceController");
 const WeeklyRogueController_1 = require("../WeeklyRogue/WeeklyRogueController");
 const ActivityLinkageController_1 = require("./ActivityContent/ActivityLinkPage/ActivityLinkageController");
 const AdvanceNoticeController_1 = require("./ActivityContent/AdvanceNotice/AdvanceNoticeController");
+const ArtemisActivityController_1 = require("./ActivityContent/Artemis/ArtemisActivityController");
 const AvignonController_1 = require("./ActivityContent/Avignon/Controller/AvignonController");
 const BabelTowerController_1 = require("./ActivityContent/BabelTower/BabelTowerController");
 const ActivityBeginnerBookController_1 = require("./ActivityContent/BeginnerBook/ActivityBeginnerBookController");
@@ -48,14 +51,18 @@ const ActivityMapTravelController_1 = require("./ActivityContent/MapTravel/Activ
 const ActivityMoonChasingController_1 = require("./ActivityContent/MoonChasing/Activity/ActivityMoonChasingController");
 const MoonSignInController_1 = require("./ActivityContent/MoonSignIn/MoonSignInController");
 const ActivityMoraleController_1 = require("./ActivityContent/Morale/ActivityMoraleController");
+const ActivityMotorLinkageController_1 = require("./ActivityContent/MotoLinkage/ActivityMotorLinkageController");
+const MotorParkourController_1 = require("./ActivityContent/MotorParkour/MotorParkourController");
 const ActivityMowingController_1 = require("./ActivityContent/Mowing/ActivityMowingController");
 const ActivityMowingRiskController_1 = require("./ActivityContent/MowingRisk/Controller/ActivityMowingRiskController");
 const MowingTowerController_1 = require("./ActivityContent/MowingTower/MowingTowerController");
+const ActivityNewPlayerSupportController_1 = require("./ActivityContent/NewPlayerSupport/ActivityNewPlayerSupportController");
 const ActivityNoviceJourneyController_1 = require("./ActivityContent/NoviceJourney/ActivityNoviceJourneyController");
 const ActivityPhantomCollectController_1 = require("./ActivityContent/PhantomCollect/ActivityPhantomCollectController");
 const ActivityPreWarmController_1 = require("./ActivityContent/PreWarm/ActivityPreWarmController");
 const ActivityPrizeDrawingController_1 = require("./ActivityContent/PrizeDrawing/ActivityPrizeDrawingController");
 const ActivityRegressController_1 = require("./ActivityContent/Regress/ActivityRegressController");
+const ActivityRoadBookController_1 = require("./ActivityContent/RoadBook/ActivityRoadBookController");
 const ActivityRoleGiveController_1 = require("./ActivityContent/RoleGive/ActivityRoleGiveController");
 const ActivityRoleGuideController_1 = require("./ActivityContent/RoleGuide/ActivityRoleGuideController");
 const RoleSkinTrialController_1 = require("./ActivityContent/RoleSkinTrail/RoleSkinTrialController");
@@ -74,6 +81,7 @@ const ActivityTrapDefenseController_1 = require("./ActivityContent/TrapDefense/A
 const ActivityTurntableController_1 = require("./ActivityContent/Turntable/ActivityTurntableController");
 const ActivityUniversalController_1 = require("./ActivityContent/UniversalActivity/ActivityUniversalController");
 const ActivityVersionPreheatController_1 = require("./ActivityContent/VersionPreheat/Controller/ActivityVersionPreheatController");
+const WheelTowerController_1 = require("./ActivityContent/WheelTower/WheelTowerController");
 const ActivityControllerHolder_1 = require("./ActivityControllerHolder");
 class ActivityManager {
   constructor() {}
@@ -126,6 +134,7 @@ class ActivityManager {
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_RiskHarvest, new ActivityMowingRiskController_1.ActivityMowingRiskController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_BlackCoastTheme, new ActivityBlackCoastController_1.ActivityBlackCoastController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_RogueWhiteCat, new DreamLinkController_1.DreamLinkController());
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_ArtemisActivity, new ArtemisActivityController_1.ArtemisActivityController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_ScratchCard, new ActivityScratchTicketController_1.ActivityScratchTicketController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PreheatSign, new ActivityVersionPreheatController_1.ActivityVersionPreheatController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MowTower, new MowingTowerController_1.MowingTowerController());
@@ -154,7 +163,8 @@ class ActivityManager {
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_H5CircumFluence, t);
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_ActivityLinkage, new ActivityLinkageController_1.ActivityLinkageController());
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_ConsumptiveActivity, new CumulativeShopController_1.CumulativeShopController());
-    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle, new PhantomArenaController_1.PhantomArenaController());
+    var o = new PhantomArenaController_1.PhantomArenaController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattle, o);
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityInviteNewbieController = t;
     var t = new HonamiStoryController_1.HonamiStoryController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_HonamiStory, t);
@@ -183,12 +193,29 @@ class ActivityManager {
     var t = new ActivityPrizeDrawingController_1.ActivityPrizeDrawingController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_WuWuKuji, t);
     ActivityControllerHolder_1.ActivityControllerHolder.PrizeDrawingController = t;
+    var t = new InfrastructureController_1.InfrastructureController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_InfrTheme, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.InfrastructureController = t;
     var t = new ActivityPreWarmController_1.ActivityPreWarmController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PreHeatTaskActivity, t);
     ActivityControllerHolder_1.ActivityControllerHolder.ActivityPreWarmController = t;
     var t = new AdvanceNoticeController_1.AdvanceNoticeController();
     this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_AdvanceNoticeActivity, t);
     ActivityControllerHolder_1.ActivityControllerHolder.AdvanceNoticeController = t;
+    var t = new ActivityMotorLinkageController_1.ActivityMotorLinkageController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MotorcycleIpLink, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityMotorLinkageController = t;
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattleRecord, o);
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_RoadBookActivity, new ActivityRoadBookController_1.ActivityRoadBookController());
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_PhantomBattleRecordGuide, new PhantomArenaGuideController_1.PhantomArenaGuideController());
+    ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController = new WheelTowerController_1.WheelTowerController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_NewTowerClimbing, ActivityControllerHolder_1.ActivityControllerHolder.WheelTowerController);
+    var t = new MotorParkourController_1.MotorParkourController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_MotorParkourActivity, t);
+    ActivityControllerHolder_1.ActivityControllerHolder.MotorParkourController = t;
+    var o = new ActivityNewPlayerSupportController_1.ActivityNewPlayerSupportController();
+    this.N4e.set(Protocol_1.Aki.Protocol.uks.Proto_NewPlayerSupportActivity, o);
+    ActivityControllerHolder_1.ActivityControllerHolder.ActivityNewPlayerSupportController = o;
   }
   static O4e() {
     this.N4e.forEach((t, o) => {

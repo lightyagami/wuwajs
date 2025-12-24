@@ -88,7 +88,7 @@ class BigStuffedDollView extends UiTickViewBase_1.UiTickViewBase {
             this.GetButton(1)?.SetSelfInteractive(true);
             if (this.E0 !== -1) {
               ControllerHolder_1.ControllerHolder.BigStuffedDollController.SetBooleanValueThenSendEvent(this.E0, COUNTDOWNOVER, true);
-              a = s.Entity.GetComponent(40);
+              a = s.Entity.GetComponent(41);
               if (!a) {
                 break;
               }
@@ -266,7 +266,7 @@ class BigStuffedDollView extends UiTickViewBase_1.UiTickViewBase {
     ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(this.E0, PRESS_PERFECTAREA_SUCCESS_COUNT);
     ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(this.E0, PRESS_BONUSAREA_SUCCESS_COUNT);
     ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(this.E0, FINISH_SKILL_OVER);
-    var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(40);
+    var e = EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(41);
     if (e) {
       e.EndSkill(ModelManager_1.ModelManager.BigStuffedDollModel.Config.NormalSkill, "BigStuffedDollView.OnBeforeDestroy");
     }
@@ -363,7 +363,7 @@ class BigStuffedDollView extends UiTickViewBase_1.UiTickViewBase {
       this.HDe = this.OpenParam;
       this.GetItem(0)?.SetUIActive(false);
       ControllerHolder_1.ControllerHolder.BigStuffedDollController.SetBooleanValueThenSendEvent(this.E0, GAMEOVER, true);
-      EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(40)?.BeginSkill(ModelManager_1.ModelManager.BigStuffedDollModel.Config.FinishSkill);
+      EntitySystem_1.EntitySystem.Get(this.E0)?.GetComponent(41)?.BeginSkill(ModelManager_1.ModelManager.BigStuffedDollModel.Config.FinishSkill);
       this.ufl.Hide(() => {
         ModelManager_1.ModelManager.BigStuffedDollModel.EnterNextGameStage();
       });

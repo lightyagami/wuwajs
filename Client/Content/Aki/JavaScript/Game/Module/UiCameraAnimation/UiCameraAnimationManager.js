@@ -32,10 +32,11 @@ const UiCameraTargetTypeNpc_1 = require("./UiCameraTargetType/UiCameraTargetType
 const UiCameraTargetTypePlayer_1 = require("./UiCameraTargetType/UiCameraTargetTypePlayer");
 const UiCameraTargetTypeSailDock_1 = require("./UiCameraTargetType/UiCameraTargetTypeSailDock");
 const UiCameraTargetTypeUiGlider_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiGlider");
+const UiCameraTargetTypeUiSceneHulu_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneHulu");
+const UiCameraTargetTypeUiSceneInfr_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneInfr");
 const UiCameraTargetTypeUiSceneRole_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneRole");
 const UiCameraTargetTypeUiSceneSkeletal_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneSkeletal");
 const UiCameraTargetTypeUiVisionHandBook_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiVisionHandBook");
-const UiCameraTargetTypeUiSceneHulu_1 = require("./UiCameraTargetType/UiCameraTargetTypeUiSceneHulu");
 class UiCameraAnimationManager {
   static Initialize() {
     this.LoadingViewCameraAnimationLength = CommonParamById_1.configCommonParamById.GetIntConfig("LoadingViewCameraAnimationLength");
@@ -68,6 +69,7 @@ class UiCameraAnimationManager {
     this.Mxd.set(6, new UiCameraTargetTypeUiGlider_1.UiCameraTargetTypeUiGlider());
     this.Mxd.set(7, new UiCameraTargetTypeSailDock_1.UiCameraTargetTypeSailDock());
     this.Mxd.set(8, new UiCameraTargetTypeUiSceneHulu_1.UiCameraTargetTypeUiSceneHulu());
+    this.Mxd.set(9, new UiCameraTargetTypeUiSceneInfr_1.UiCameraTargetTypeUiSceneInfr());
   }
   static SetDynamicDisablePushCamera(a, e) {
     if (e) {
@@ -225,11 +227,12 @@ class UiCameraAnimationManager {
     }
   }
   static PopCameraHandleByCloseView(a, e, i, t = true) {
+    var r;
     if (UiCameraAnimationManager.CanPushCameraHandle(a)) {
-      if (t) {
+      r = this.mPo(i);
+      if (t || r && this.lPo.Size <= 1) {
         t = this.GetBlendName(a, e);
-        e = this.mPo(i);
-        this.PopCameraHandle(e, t);
+        this.PopCameraHandle(r, t);
       } else {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("CameraAnimation", 58, "仅删除镜头状态，不做任何表现", ["closeViewName", a], ["closeViewId", i]);

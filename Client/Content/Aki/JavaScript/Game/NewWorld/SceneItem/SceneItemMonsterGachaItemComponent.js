@@ -54,10 +54,10 @@ let SceneItemMonsterGachaItemComponent = SceneItemMonsterGachaItemComponent_1 = 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(212);
     EventSystem_1.EventSystem.OnceWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
   }
 };
-SceneItemMonsterGachaItemComponent = SceneItemMonsterGachaItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(161)], SceneItemMonsterGachaItemComponent);
+SceneItemMonsterGachaItemComponent = SceneItemMonsterGachaItemComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(166)], SceneItemMonsterGachaItemComponent);
 exports.SceneItemMonsterGachaItemComponent = SceneItemMonsterGachaItemComponent; //# sourceMappingURL=SceneItemMonsterGachaItemComponent.js.map

@@ -142,10 +142,10 @@ class UiLayer {
       await Promise.all([this.ICr(), this.TCr()]);
       await this.LCr();
       await Promise.all([this.DCr(), this.vCr(UiLayerType_1.ELayerType.BattleFloat), this.vCr(UiLayerType_1.ELayerType.Float), this.pGl(UiLayerType_1.ELayerType.BattleFloat)]);
-      this.gfm();
+      this.Iym();
     }
   }
-  static gfm() {
+  static Iym() {
     var i;
     var e = [];
     e.push(this.CCr);
@@ -163,7 +163,7 @@ class UiLayer {
     var a = new Map();
     var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
     a.set(UiLayerType_1.ELayerType.BattleFloat, r);
-    var r = this.MCr.get(UiLayerType_1.ELayerType.BattleFloat);
+    var r = this.MCr.get(UiLayerType_1.ELayerType.Float);
     a.set(UiLayerType_1.ELayerType.Float, r);
     var r = this.fGl.get(UiLayerType_1.ELayerType.BattleFloat);
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLayerInit, e, t, a, r);

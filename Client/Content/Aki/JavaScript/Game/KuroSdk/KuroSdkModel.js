@@ -31,6 +31,7 @@ const LAGUSANSBOLD = "LaguSansBold.otf";
 const MOTOYTA = "MotoyaAporoStdW5.otf";
 const SUITEBOLD = "SUITE-Bold.otf";
 const H7GBKHEAVY = "H7GBKHeavy.TTF";
+const KANIT = "Kanit-Medium.ttf";
 const DEFAULTEMPTY = " ";
 class KuroSdkModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -295,8 +296,9 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
       case "id":
       case "fr":
       case "vi":
-      case "th":
         return LAGUSANSBOLD;
+      case "th":
+        return KANIT;
       default:
         return H7GBKHEAVY;
     }
@@ -311,6 +313,8 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
         return "MotoyaAporoStd-W5.otf";
       } else if (e === SUITEBOLD) {
         return "SUITE-Bold.otf";
+      } else if (e === KANIT) {
+        return "Kanit-Medium.ttf";
       } else {
         return e;
       }
@@ -328,6 +332,8 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
         return "Motoya Aporo Std W5";
       case SUITEBOLD:
         return "SUITE";
+      case KANIT:
+        return "Kanit Medium";
       default:
         return "文鼎方新书H7GBK_H";
     }
@@ -475,9 +481,16 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
       return "";
     }
   }
-  GetQueryNoticeReadStateUrl() {
+  GetQueryNoticeReadStateUrl(e = 0) {
     if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
-      return `${ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData().apiUrl}/notice/read-ids/list?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}`;
+      return `${this.nHm(e)}/notice/read-ids/list?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}`;
+    } else {
+      return "";
+    }
+  }
+  GetQueryNoticeRedDotStateUrl(e = 0) {
+    if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
+      return `${this.nHm(e)}/notice/red-dot/get?uid=${ModelManager_1.ModelManager.PlayerInfoModel.GetId() === undefined ? "0" : ModelManager_1.ModelManager.PlayerInfoModel.GetId().toString()}&sign=${ModelManager_1.ModelManager.KuroSdkModel.NoticeSign}&serverId=${ModelManager_1.ModelManager.LoginServerModel.GetCurrentLoginServerId()}&language=${LanguageSystem_1.LanguageSystem.PackageLanguage}&channel=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()}&platform=${this.GetPlatformStr()}&gameId=${PublicUtil_1.PublicUtil.GetGameId()}&svrArea=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetIfGlobalSdk() ? "global" : "cn"}`;
     } else {
       return "";
     }
@@ -493,6 +506,18 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
         return t.h5AppUrl[e - 1];
       } else {
         return t.h5AppUrl[e];
+      }
+    } else {
+      return "";
+    }
+  }
+  nHm(e = 0) {
+    var t;
+    if (ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()) {
+      if (e >= (t = ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData()).apiUrls.length) {
+        return t.apiUrls[e - 1];
+      } else {
+        return t.apiUrls[e];
       }
     } else {
       return "";
@@ -524,8 +549,8 @@ class KuroSdkModel extends ModelBase_1.ModelBase {
     var l = this.GetPlatformStr();
     var u = ModelManager_1.ModelManager.LoginModel.GetSdkLoginInfo()?.Uid;
     var _ = ModelManager_1.ModelManager.KuroSdkModel.NoticeSign;
-    var h = PublicUtil_1.PublicUtil.GetPublicInfo();
-    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${a}&svr_area=${o}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${_}&login_info=${UE.KuroStaticLibrary.Base64Encode(h)}`;
+    var d = PublicUtil_1.PublicUtil.GetPublicInfo();
+    return `${e}?server_id=${t}&lang=${r}&did=${i}&role_id=${a}&svr_area=${o}&game_id=${n}&channel=${s}&platform=${l}&user_id=${u}&sign=${_}&login_info=${UE.KuroStaticLibrary.Base64Encode(d)}`;
   }
   GetIntroductionVersionUrl() {
     let e = "";

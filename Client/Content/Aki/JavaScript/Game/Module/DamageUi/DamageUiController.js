@@ -142,17 +142,17 @@ DamageUiController.O2t = (e, t, a, n, i) => {
   switch (o.CalculateType) {
     case 0:
       ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.BeHit(t);
-      DamageUiManager_1.DamageUiManager.ApplyDamage(n.Damage, n.Element, i, t, a.IsCritical, false, o.DamageTextType, a.IsImmune ? BattleUiDefine_1.IMMUNITY_DAMAGE_TEXT : "");
+      DamageUiManager_1.DamageUiManager.ApplyDamage(n.Damage, n.Element, i, t, a.IsCritical, false, o.DamageTextType, a.IsImmune ? BattleUiDefine_1.IMMUNITY_DAMAGE_TEXT : "", o.DamageTextAreaId);
       break;
     case 1:
       var s = t.GetComponent(3);
-      DamageUiManager_1.DamageUiManager.ApplyDamage(-r, 0, s.ActorLocation, t, false, true, o.DamageTextType);
+      DamageUiManager_1.DamageUiManager.ApplyDamage(-r, 0, s.ActorLocation, t, false, true, o.DamageTextType, undefined, o.DamageTextAreaId);
   }
 };
 DamageUiController.G2t = (e, t, a) => {
   if (a) {
     e = (a = EntitySystem_1.EntitySystem.Get(e)).GetComponent(3);
-    DamageUiManager_1.DamageUiManager.ApplyDamage(-1, 0, e.ActorLocation, a, false, true, Number(t.Parameters[0]), t.Parameters[1]);
+    DamageUiManager_1.DamageUiManager.ApplyDamage(-1, 0, e.ActorLocation, a, false, true, Number(t.Parameters[0]), t.Parameters[1], Number(t.Parameters[2] ?? 0));
   }
 };
 DamageUiController.XBo = () => {

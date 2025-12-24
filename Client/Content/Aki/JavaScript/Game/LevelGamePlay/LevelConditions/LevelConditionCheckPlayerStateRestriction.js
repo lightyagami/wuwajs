@@ -21,7 +21,7 @@ class LevelConditionCheckPlayerStateRestriction extends LevelGeneralBase_1.Level
       }
       return false;
     }
-    var a = t.Entity.GetComponent(209);
+    var a = t.Entity.GetComponent(215);
     if (!a) {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("LevelCondition", 36, "[CheckPlayerStateRestriction]无法获取当前角色BaseTagComponent组件");

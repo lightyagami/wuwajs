@@ -10,7 +10,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const EventSystem_1 = require("./EventSystem");
 class EventCSharpBridge {
   static InitializeEnvironment() {
-    cpp_1.FEventSystem.Init(this.Yum);
+    cpp_1.FEventSystem.Init(this.y0m);
   }
   static DestroyEnvironment() {
     cpp_1.FEventSystem.Clear();
@@ -49,7 +49,7 @@ class EventCSharpBridge {
     }
     return true;
   }
-  static Yum(t, e, ...p) {
+  static y0m(t, e, ...p) {
     if (e === 0) {
       EventSystem_1.EventSystem.Emit(t, ...p);
     } else if ((e = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(e))?.Entity) {

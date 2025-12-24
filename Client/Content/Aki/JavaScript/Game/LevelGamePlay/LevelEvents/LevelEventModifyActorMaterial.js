@@ -13,8 +13,8 @@ class LevelEventModifyActorMaterial extends LevelGeneralBase_1.LevelEventBase {
     if (e) {
       if (t = t) {
         if ((o = EntitySystem_1.EntitySystem.Get(t.EntityId))?.Valid) {
-          if (o.GetComponent(206)?.Owner) {
-            if (o = o.GetComponent(167)) {
+          if (o.GetComponent(212)?.Owner) {
+            if (o = o.GetComponent(172)) {
               o.HandleActorMaterial(e);
             }
           } else if (Log_1.Log.CheckError()) {

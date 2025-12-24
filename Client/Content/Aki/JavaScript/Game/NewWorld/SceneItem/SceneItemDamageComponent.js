@@ -60,7 +60,7 @@ let SceneItemDamageComponent = SceneItemDamageComponent_1 = class SceneItemDamag
     return true;
   }
   OnStart() {
-    this.Xln = this.Entity.GetComponent(158);
+    this.Xln = this.Entity.GetComponent(163);
     this.Xln.RegisterComponent(this, this.Lo);
     this.$dn = e => {
       this.Zln(e);
@@ -93,7 +93,7 @@ let SceneItemDamageComponent = SceneItemDamageComponent_1 = class SceneItemDamag
     } else if (ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam) {
       return;
     }
-    var t = e.Attacker.GetComponent(3);
+    var t = e.Attacker.GetComponent(1);
     var i = SceneItemHitUtils_1.SceneItemHitUtils.CheckHitDataMatchPlayerAttack(e);
     if (t?.Valid && i) {
       if (!(this.Xdn <= 0) && !(e.DamageId <= 0)) {
@@ -123,5 +123,5 @@ let SceneItemDamageComponent = SceneItemDamageComponent_1 = class SceneItemDamag
     return this.Qdn;
   }
 };
-SceneItemDamageComponent = SceneItemDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(152)], SceneItemDamageComponent);
+SceneItemDamageComponent = SceneItemDamageComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(157)], SceneItemDamageComponent);
 exports.SceneItemDamageComponent = SceneItemDamageComponent; //# sourceMappingURL=SceneItemDamageComponent.js.map

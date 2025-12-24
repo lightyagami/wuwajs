@@ -32,7 +32,7 @@ class LevelEventResetPlayerCameraFocus extends LevelGeneralBase_1.LevelEventBase
             CameraController_1.CameraController.FightCamera.LogicComponent.PlayCameraEulerRotatorWithCurve(LevelEventResetPlayerCameraFocus.mce, o, undefined, t, l);
         }
         if (Global_1.Global.BaseCharacter) {
-          ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(62)?.InterruptAutoMoving("进入相机调整ResetPlayerCameraFocus", true);
+          ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(65)?.InterruptAutoMoving("进入相机调整ResetPlayerCameraFocus", true);
         }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Event", 57, "结束恢复相机调整");

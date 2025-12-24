@@ -33,9 +33,9 @@ const HonamiStoryActivityView_1 = require("./View/HonamiStoryActivityView");
 class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
     super(...arguments);
-    this.iwm = (e, t) => {
+    this.gef = (e, t) => {
       if (e === 10124 && t) {
-        e = Protocol_1.Aki.Protocol.XRm.create();
+        e = Protocol_1.Aki.Protocol.zZm.create();
         t = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetAllActivityConfig();
         let o = 0;
         for (const r of t) {
@@ -44,8 +44,8 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
         if (o !== 0) {
           e.w6n = o;
           Net_1.Net.Call(24170, e, e => {
-            if (e && e.y$d) {
-              ModelManager_1.ModelManager.HonamiStoryModel.InitActivityInfo(o, e.y$d);
+            if (e && e.I$d) {
+              ModelManager_1.ModelManager.HonamiStoryModel.InitActivityInfo(o, e.I$d);
             }
           });
         }
@@ -72,41 +72,41 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LeaveInstanceDungeon, HonamiStoryController.Ja1);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, HonamiStoryController.Aom);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, HonamiStoryController.o1m);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, HonamiStoryController.FWe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, this.iwm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.iwm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenSet, this.gef);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.gef);
   }
   OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LeaveInstanceDungeon, HonamiStoryController.Ja1);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, HonamiStoryController.Aom);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, HonamiStoryController.o1m);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, HonamiStoryController.FWe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, this.iwm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.iwm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenSet, this.gef);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.gef);
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(24415, HonamiStoryController._Qd);
+    Net_1.Net.Register(24415, HonamiStoryController.mQd);
     Net_1.Net.Register(17565, HonamiStoryController.OnHonamiStoryInstInfoNotify);
-    Net_1.Net.Register(26023, HonamiStoryController.cQd);
-    Net_1.Net.Register(15730, HonamiStoryController.dQd);
-    Net_1.Net.Register(15621, HonamiStoryController.mQd);
-    Net_1.Net.Register(23463, HonamiStoryController.rvm);
-    Net_1.Net.Register(25446, HonamiStoryController.fQd);
+    Net_1.Net.Register(26023, HonamiStoryController.gQd);
+    Net_1.Net.Register(15730, HonamiStoryController.CQd);
+    Net_1.Net.Register(15621, HonamiStoryController.pQd);
+    Net_1.Net.Register(23463, HonamiStoryController.iwm);
+    Net_1.Net.Register(25446, HonamiStoryController.vQd);
     Net_1.Net.Register(18872, HonamiStoryController.OnHonamiStoryScoreRewardInfoUpdateNotify);
-    Net_1.Net.Register(19355, HonamiStoryController.gQd);
-    Net_1.Net.Register(27116, HonamiStoryController.CQd);
-    Net_1.Net.Register(15606, HonamiStoryController.pQd);
-    Net_1.Net.Register(29317, HonamiStoryController.vQd);
-    Net_1.Net.Register(22660, HonamiStoryController.yQd);
-    Net_1.Net.Register(20536, HonamiStoryController.eZd);
-    Net_1.Net.Register(25791, HonamiStoryController.Jtm);
-    Net_1.Net.Register(28981, HonamiStoryController.Gim);
-    Net_1.Net.Register(20486, HonamiStoryController.Mnm);
-    Net_1.Net.Register(19650, HonamiStoryController.wvm);
-    Net_1.Net.Register(17825, HonamiStoryController.Lvm);
-    Net_1.Net.Register(25645, HonamiStoryController.Pvm);
-    Net_1.Net.Register(16679, HonamiStoryController.lRm);
-    Net_1.Net.Register(29192, HonamiStoryController.Pwm);
+    Net_1.Net.Register(19355, HonamiStoryController.yQd);
+    Net_1.Net.Register(27116, HonamiStoryController.SQd);
+    Net_1.Net.Register(15606, HonamiStoryController.MQd);
+    Net_1.Net.Register(29317, HonamiStoryController.EQd);
+    Net_1.Net.Register(22660, HonamiStoryController.IQd);
+    Net_1.Net.Register(20536, HonamiStoryController.Rem);
+    Net_1.Net.Register(25791, HonamiStoryController.wnm);
+    Net_1.Net.Register(28981, HonamiStoryController.tam);
+    Net_1.Net.Register(20486, HonamiStoryController.Elm);
+    Net_1.Net.Register(19650, HonamiStoryController.qwm);
+    Net_1.Net.Register(17825, HonamiStoryController.Owm);
+    Net_1.Net.Register(25645, HonamiStoryController.Gwm);
+    Net_1.Net.Register(16679, HonamiStoryController.E$m);
+    Net_1.Net.Register(29192, HonamiStoryController.lhf);
   }
   OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(24415);
@@ -136,7 +136,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
       LeaveType: ModelManager_1.ModelManager.HonamiStoryModel.CanSafeLeave ? 0 : 1,
       ShowSafeLeaveUpdate: e,
       ConfirmCallback: () => {
-        var e = new Protocol_1.Aki.Protocol.f$d();
+        var e = new Protocol_1.Aki.Protocol.v$d();
         Net_1.Net.Call(17471, e, () => {});
       }
     };
@@ -197,7 +197,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     };
     ModelManager_1.ModelManager.HonamiStoryModel.SetGamePlayLoadingData(e);
   }
-  static Dwm(e, o) {
+  static Ghf(e, o) {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("HonamiStory", 48, "穗波安全撤离更新", ["Safe", e]);
     }
@@ -222,8 +222,8 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     }
   }
   static SendHonamiStoryMascotRewardRequest(o, t) {
-    var e = new Protocol_1.Aki.Protocol.JHd();
-    e.F$d = o;
+    var e = new Protocol_1.Aki.Protocol.i$d();
+    e.H$d = o;
     Net_1.Net.Call(28966, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -237,7 +237,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static SendHonamiStoryAreaSecretRewardRequest(o, t) {
-    var e = new Protocol_1.Aki.Protocol.t$d();
+    var e = new Protocol_1.Aki.Protocol.n$d();
     e.k4d = o;
     Net_1.Net.Call(16920, e, e => {
       if (e) {
@@ -253,20 +253,20 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   static async LeaveHonamiDungeon() {
     var e = await ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
-    ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
+    ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty(false);
     return e;
   }
   static async SendHonamiStoryBagOperateRequest(e) {
-    var o = new Protocol_1.Aki.Protocol.DHd();
-    o.q$d = e;
+    var o = new Protocol_1.Aki.Protocol.kHd();
+    o.V$d = e;
     o.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var e = await Net_1.Net.CallAsync(21361, o);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17697)) {
       return false;
     }
-    ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(o.q$d);
+    ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(o.V$d);
     let t = false;
-    for (const e of o.q$d) {
+    for (const e of o.V$d) {
       if (e.Qmd === 3) {
         t = true;
       }
@@ -278,7 +278,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   static RequestHonamiStoryEquipRole(e) {
-    var o = new Protocol_1.Aki.Protocol.BHd();
+    var o = new Protocol_1.Aki.Protocol.GHd();
     o.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     o.Q6n = e;
     Net_1.Net.Call(26719, o, e => {
@@ -295,8 +295,8 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static async SendHonamiStoryPickUpItemRequest(e, o, t) {
-    var r = new Protocol_1.Aki.Protocol.a$d();
-    r.B$d = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(o, t);
+    var r = new Protocol_1.Aki.Protocol.u$d();
+    r.G$d = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(o, t);
     var a = await Net_1.Net.CallAsync(29385, r);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(a, 21231)) {
       if (Log_1.Log.CheckDebug()) {
@@ -304,31 +304,31 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
       }
       return false;
     } else {
-      ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(e).UpdateByContext([r.B$d]);
+      ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(e).UpdateByContext([r.G$d]);
       return true;
     }
   }
   static async HonamiStoryPickAndEquipRequest(e, o) {
-    var t = new Protocol_1.Aki.Protocol.DHd();
+    var t = new Protocol_1.Aki.Protocol.kHd();
     var r = [];
-    var a = new Protocol_1.Aki.Protocol.q$d();
+    var a = new Protocol_1.Aki.Protocol.V$d();
     a.Qmd = 3;
-    var n = new Protocol_1.Aki.Protocol.q$d();
+    var n = new Protocol_1.Aki.Protocol.V$d();
     n.Qmd = 4;
     var l = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(e);
-    a.B$d.push(l);
+    a.G$d.push(l);
     var l = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(e, o);
-    n.B$d.push(l);
+    n.G$d.push(l);
     r.push(a);
     r.push(n);
-    t.q$d = r;
+    t.V$d = r;
     t.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var e = await Net_1.Net.CallAsync(21361, t);
-    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17697) && (ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(t.q$d), ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty(), true);
+    return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17697) && (ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(t.V$d), ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty(), true);
   }
   static SendHonamiStoryDiscardItemRequest(l) {
-    const i = new Protocol_1.Aki.Protocol.l$d();
-    i.q$d = l;
+    const i = new Protocol_1.Aki.Protocol.d$d();
+    i.V$d = l;
     Net_1.Net.Call(25658, i, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -336,7 +336,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
         } else {
           let e = l.Qmd === 4;
           if (e || l.Qmd === 3) {
-            for (const a of l.B$d) {
+            for (const a of l.G$d) {
               var o = ModelManager_1.ModelManager.HonamiStoryModel.GetEquipItemDataByIncId(a.Xmd);
               if (o) {
                 ModelManager_1.ModelManager.HonamiStoryModel.ShowDiscardTips(o);
@@ -344,7 +344,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
             }
           } else {
             var t = ModelManager_1.ModelManager.HonamiStoryModel.GetBackPackData(2);
-            for (const n of l.B$d) {
+            for (const n of l.G$d) {
               var r = t?.GetItemDataByInstanceId(n.Xmd);
               if (r && (ModelManager_1.ModelManager.HonamiStoryModel.ShowDiscardTips(r), r.GetItemType() === 1)) {
                 e = true;
@@ -352,7 +352,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
               }
             }
           }
-          ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext([i.q$d]);
+          ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext([i.V$d]);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, l);
           if (e) {
             ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
@@ -362,7 +362,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static async RequestHonamiStoryUnlockSlot(e, o) {
-    var t = new Protocol_1.Aki.Protocol.OHd();
+    var t = new Protocol_1.Aki.Protocol.NHd();
     var r = e.GetSlotId();
     t.b4d = o;
     t.T4d = r;
@@ -379,24 +379,24 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   static async RequestHonamiStoryQuickUnloadAll(e, o, t) {
-    var r = new Protocol_1.Aki.Protocol.DHd();
+    var r = new Protocol_1.Aki.Protocol.kHd();
     var a = [];
-    var n = new Protocol_1.Aki.Protocol.q$d();
+    var n = new Protocol_1.Aki.Protocol.V$d();
     n.Qmd = 4;
-    var l = new Protocol_1.Aki.Protocol.q$d();
+    var l = new Protocol_1.Aki.Protocol.V$d();
     l.Qmd = t;
     let i = 0;
     for (const M of o) {
       var _ = e[i];
       var m = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(_);
-      n.B$d.push(m);
+      n.G$d.push(m);
       var m = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(_, M);
-      l.B$d.push(m);
+      l.G$d.push(m);
       i++;
     }
     a.push(n);
     a.push(l);
-    r.q$d = a;
+    r.V$d = a;
     r.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     t = await Net_1.Net.CallAsync(21361, r);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(t, 17697)) {
@@ -410,9 +410,9 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   static SendHonamiStoryPermanentTaskRewardRequest(t, r) {
     const a = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    var e = new Protocol_1.Aki.Protocol.apm();
+    var e = new Protocol_1.Aki.Protocol.NTm();
     e.w6n = a.Id;
-    e.cpm = t;
+    e.WTm = t;
     Net_1.Net.Call(28478, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -428,9 +428,9 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   static SendHonamiStoryLimitTaskRewardRequest(t, r) {
     const a = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    var e = new Protocol_1.Aki.Protocol.r$d();
+    var e = new Protocol_1.Aki.Protocol.a$d();
     e.w6n = a.Id;
-    e.dpm = t;
+    e.QTm = t;
     Net_1.Net.Call(27575, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
@@ -446,7 +446,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   static SendHonamiStoryScoreRewardRequest(r, a) {
     var e = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    var o = new Protocol_1.Aki.Protocol.n$d();
+    var o = new Protocol_1.Aki.Protocol.l$d();
     o.w6n = e.Id;
     o.q4d = r;
     Net_1.Net.Call(23924, o, e => {
@@ -464,7 +464,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static SendHonamiStoryWeaponDressRequest(e, o, a) {
-    var t = new Protocol_1.Aki.Protocol.FHd();
+    var t = new Protocol_1.Aki.Protocol.HHd();
     t.w4d = e;
     t.b4d = o;
     t.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
@@ -500,10 +500,10 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
       a = {
         $4d: e,
         G4d: o,
-        Pom: t,
+        Zhm: t,
         w6n: r.Id
       };
-      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.$$d = a;
+      ModelManager_1.ModelManager.InstanceDungeonModel.InstanceEnterContentText.X$d = a;
       e = ModelManager_1.ModelManager.HonamiStoryModel.GetAllRoleIdList();
       o = r.AreaInstId;
       ControllerHolder_1.ControllerHolder.InstanceDungeonController.PrewarTeamFightRequest(o, e).then(e => {
@@ -513,15 +513,15 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
   }
   SendHonamiStoryItemCollectionRequest(e) {
     const t = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-    var o = new Protocol_1.Aki.Protocol.XHd();
-    o.G$d = e;
+    var o = new Protocol_1.Aki.Protocol.ZHd();
+    o.j$d = e;
     o.w6n = t.Id;
     Net_1.Net.Call(26645, o, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17007);
-        } else if (!(e.G$d.length <= 0)) {
-          for (const o of e.G$d) {
+        } else if (!(e.j$d.length <= 0)) {
+          for (const o of e.j$d) {
             t.GetItemCollectionData(o).UpdateState(2);
           }
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryItemCollectGetReward);
@@ -530,7 +530,7 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static SendHonamiStoryActivateTalentRequest(e, o) {
-    var t = new Protocol_1.Aki.Protocol.WHd();
+    var t = new Protocol_1.Aki.Protocol.YHd();
     t.P4d = e;
     Net_1.Net.Call(28744, t, e => {
       if (e) {
@@ -543,31 +543,31 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     });
   }
   static async RequestHonamiStoryLifeSupportUp() {
-    var e = new Protocol_1.Aki.Protocol.HHd();
+    var e = new Protocol_1.Aki.Protocol.KHd();
     e.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var e = await Net_1.Net.CallAsync(25748, e);
     return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 24666) && (ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().SetLifeSupportLevel(e.y4d), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp), true);
   }
   static async RequestSwitchItem(e, o, t, r, a, n) {
-    var l = new Protocol_1.Aki.Protocol.DHd();
+    var l = new Protocol_1.Aki.Protocol.kHd();
     var i = [];
-    var _ = new Protocol_1.Aki.Protocol.q$d();
+    var _ = new Protocol_1.Aki.Protocol.V$d();
     _.Qmd = a;
-    var m = new Protocol_1.Aki.Protocol.q$d();
+    var m = new Protocol_1.Aki.Protocol.V$d();
     m.Qmd = n;
     var M = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(e);
-    _.B$d.push(M);
+    _.G$d.push(M);
     var M = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(e, r);
-    m.B$d.push(M);
+    m.G$d.push(M);
     if (o) {
       e = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(o);
-      m.B$d.push(e);
+      m.G$d.push(e);
       r = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(o, t);
-      _.B$d.push(r);
+      _.G$d.push(r);
     }
     i.push(_);
     i.push(m);
-    l.q$d = i;
+    l.V$d = i;
     l.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var M = await Net_1.Net.CallAsync(21361, l);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(M, 17697)) {
@@ -583,14 +583,14 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   static async RequestSwitchInSameBag(e, o, t) {
-    var r = new Protocol_1.Aki.Protocol.DHd();
+    var r = new Protocol_1.Aki.Protocol.kHd();
     var a = [];
-    var n = new Protocol_1.Aki.Protocol.q$d();
+    var n = new Protocol_1.Aki.Protocol.V$d();
     n.Qmd = t;
     var t = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(e, o);
-    n.B$d.push(t);
+    n.G$d.push(t);
     a.push(n);
-    r.q$d = a;
+    r.V$d = a;
     r.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var e = await Net_1.Net.CallAsync(21361, r);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(e, 17697)) {
@@ -603,47 +603,47 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   static async RequestEquipFromPickUpBox(e, o, t, r) {
-    var a = new Protocol_1.Aki.Protocol.DHd();
+    var a = new Protocol_1.Aki.Protocol.kHd();
     var n = [];
-    var l = new Protocol_1.Aki.Protocol.q$d();
+    var l = new Protocol_1.Aki.Protocol.V$d();
     l.Qmd = 3;
-    var i = new Protocol_1.Aki.Protocol.q$d();
+    var i = new Protocol_1.Aki.Protocol.V$d();
     i.Qmd = 4;
-    var _ = new Protocol_1.Aki.Protocol.q$d();
+    var _ = new Protocol_1.Aki.Protocol.V$d();
     _.Qmd = 2;
     var m = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(e);
-    l.B$d.push(m);
+    l.G$d.push(m);
     var m = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(e, t);
-    i.B$d.push(m);
+    i.G$d.push(m);
     var e = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(o);
-    i.B$d.push(e);
+    i.G$d.push(e);
     var t = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemAddInfo(o, r);
-    _.B$d.push(t);
+    _.G$d.push(t);
     n.push(l);
     n.push(i);
     n.push(_);
-    a.q$d = n;
+    a.V$d = n;
     a.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var m = await Net_1.Net.CallAsync(21361, a);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(m, 17697)) {
       return false;
     }
-    ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(a.q$d);
-    for (const M of a.q$d) {
+    ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackPackContext(a.V$d);
+    for (const M of a.V$d) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryBackpackUpdate, M);
     }
     ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
     return true;
   }
   static RequestDiscardItem(e, o) {
-    var t = new Protocol_1.Aki.Protocol.q$d();
+    var t = new Protocol_1.Aki.Protocol.V$d();
     t.Qmd = o;
     var o = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(e);
-    t.B$d.push(o);
+    t.G$d.push(o);
     HonamiStoryController.SendHonamiStoryDiscardItemRequest(t);
   }
   static async RequestHonamiStorySellItem(e) {
-    var o = new Protocol_1.Aki.Protocol.VHd();
+    var o = new Protocol_1.Aki.Protocol.WHd();
     o.w6n = ModelManager_1.ModelManager.HonamiStoryModel.ActivityId;
     var t = {};
     var r = new Map();
@@ -651,17 +651,17 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     for (const d of e) {
       var n = d.BackpackType;
       if (!r.has(n)) {
-        (l = new Protocol_1.Aki.Protocol.q$d()).Qmd = n;
+        (l = new Protocol_1.Aki.Protocol.V$d()).Qmd = n;
         r.set(n, l);
-        t[String(n)] = new Protocol_1.Aki.Protocol.qXd();
+        t[String(n)] = new Protocol_1.Aki.Protocol.gYd();
         a.push(l);
       }
       var l = r.get(n);
       var i = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemRemoveInfo(d.ItemData);
-      l.B$d.push(i);
+      l.G$d.push(i);
       t[String(n)].L4d.push(d.ItemData.GetIncId());
     }
-    o.kXd = t;
+    o.mYd = t;
     o = await Net_1.Net.CallAsync(25304, o);
     if (ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(o, 17735)) {
       return false;
@@ -690,14 +690,14 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
     return true;
   }
   static async RequestHonamiStoryLockItem(e, o, t) {
-    var r = new Protocol_1.Aki.Protocol.DXd();
-    r.xXd = o;
+    var r = new Protocol_1.Aki.Protocol._Yd();
+    r.cYd = o;
     r.Y5n = t;
-    r.BXd = e;
+    r.dYd = e;
     var o = await Net_1.Net.CallAsync(22602, r);
     return !ControllerHolder_1.ControllerHolder.ErrorCodeController.CheckErrorCode(o, 29741) && (e = t ? "HonamiStory_ItemLocked" : "HonamiStory_ItemUnLocked", ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(e), true);
   }
-  static zRm(e) {
+  static gZm(e) {
     e = ModelManager_1.ModelManager.ItemRewardModel.RefreshCommonRewardDataFromConfig(1009, "HonamiWeaponRewardView", e, undefined);
     if (e) {
       UiManager_1.UiManager.OpenView("HonamiWeaponRewardView", e);
@@ -707,64 +707,67 @@ class HonamiStoryController extends ActivityControllerBase_1.ActivityControllerB
 exports.HonamiStoryController = HonamiStoryController;
 (_a = HonamiStoryController).OnHonamiStoryInstInfoNotify = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.SetIsLastPickUpViewDirty(false);
-  ModelManager_1.ModelManager.HonamiStoryModel.InitBackPackInfoList(e.O$d);
+  ModelManager_1.ModelManager.HonamiStoryModel.InitBackPackInfoList(e.N$d);
   ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
-  _a.Dwm(e.v4d, false);
-  var o = HonamiStoryDangerLevelById_1.configHonamiStoryDangerLevelById.GetConfig(e.smm);
-  if (o) {
-    ModelManager_1.ModelManager.HonamiStoryModel.MonsterBaseEnhanceLevel = o.MonsterEnhanceLevel;
-    ModelManager_1.ModelManager.HonamiStoryModel.DangerLevel = o.Level;
-  }
-  ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel = e.F4d;
-  ModelManager_1.ModelManager.HonamiStoryModel.PollutionStarTime = MathUtils_1.MathUtils.LongToNumber(e.OXd);
-  let t = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap;
-  if (t) {
-    t?.clear();
-  } else {
-    t = new Map();
-    ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap = t;
-  }
-  var r = e.mpm;
-  var o = HonamiStoryPollutionStageById_1.configHonamiStoryPollutionStageById.GetConfig(r);
-  if (o) {
-    ModelManager_1.ModelManager.HonamiStoryModel.PollutionWarningLevel = o.WarningLevel;
-    ModelManager_1.ModelManager.HonamiStoryModel.PollutionDangerLevel = o.DangerLevel;
-  }
-  var o = HonamiStoryPollutionByActivityId_1.configHonamiStoryPollutionByActivityId.GetConfigList(e.w6n);
-  if (o) {
-    var a = [];
-    for (const n of o) {
-      if (n.Group === r) {
-        a.push({
-          PollutionLevel: n.Level,
-          PersistMilliseconds: n.PersistSecond * MathUtils_1.MathUtils.SecondToMillisecond,
-          MonsterEnhanceLevel: n.MonsterEnhanceLevel
-        });
-      }
+  _a.Ghf(e.v4d, false);
+  var t = e.$pm;
+  if (t > 0) {
+    t = HonamiStoryDangerLevelById_1.configHonamiStoryDangerLevelById.GetConfig(t);
+    if (t) {
+      ModelManager_1.ModelManager.HonamiStoryModel.MonsterBaseEnhanceLevel = t.MonsterEnhanceLevel;
+      ModelManager_1.ModelManager.HonamiStoryModel.DangerLevel = t.Level;
     }
-    a.sort((e, o) => e.PollutionLevel - o.PollutionLevel);
-    let e = undefined;
-    for (const l of a) {
-      if (e) {
-        l.MonsterEnhanceLevel += e.MonsterEnhanceLevel;
-      }
-      t.set(l.PollutionLevel, l);
-      e = l;
+    ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel = e.F4d;
+    ModelManager_1.ModelManager.HonamiStoryModel.PollutionStarTime = MathUtils_1.MathUtils.LongToNumber(e.fYd);
+    let o = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap;
+    if (o) {
+      o?.clear();
+    } else {
+      o = new Map();
+      ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap = o;
     }
-    ModelManager_1.ModelManager.HonamiStoryModel.PollutionMaxLevel = a[a.length - 1].PollutionLevel;
+    var r = e.KTm;
+    var t = HonamiStoryPollutionStageById_1.configHonamiStoryPollutionStageById.GetConfig(r);
+    if (t) {
+      ModelManager_1.ModelManager.HonamiStoryModel.PollutionWarningLevel = t.WarningLevel;
+      ModelManager_1.ModelManager.HonamiStoryModel.PollutionDangerLevel = t.DangerLevel;
+    }
+    var t = HonamiStoryPollutionByActivityId_1.configHonamiStoryPollutionByActivityId.GetConfigList(e.w6n);
+    if (t) {
+      var a = [];
+      for (const n of t) {
+        if (n.Group === r) {
+          a.push({
+            PollutionLevel: n.Level,
+            PersistMilliseconds: n.PersistSecond * MathUtils_1.MathUtils.SecondToMillisecond,
+            MonsterEnhanceLevel: n.MonsterEnhanceLevel
+          });
+        }
+      }
+      a.sort((e, o) => e.PollutionLevel - o.PollutionLevel);
+      let e = undefined;
+      for (const l of a) {
+        if (e) {
+          l.MonsterEnhanceLevel += e.MonsterEnhanceLevel;
+        }
+        o.set(l.PollutionLevel, l);
+        e = l;
+      }
+      ModelManager_1.ModelManager.HonamiStoryModel.PollutionMaxLevel = a[a.length - 1].PollutionLevel;
+    }
   }
   ModelManager_1.ModelManager.HonamiStoryModel.MonsterLevelSafeOffset = CommonParamById_1.configCommonParamById.GetIntConfig("HonamiStorySafeLevelOffset") ?? 0;
   ModelManager_1.ModelManager.HonamiStoryModel.MonsterLevelDangerOffset = -(CommonParamById_1.configCommonParamById.GetIntConfig("HonamiStoryDangerLevelOffset") ?? 0);
-  ModelManager_1.ModelManager.HonamiStoryModel.CurAreaId = e.N$d;
+  ModelManager_1.ModelManager.HonamiStoryModel.CurAreaId = e.$$d;
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryInstInfoUpdate);
 };
-HonamiStoryController.cQd = e => {
-  _a.Dwm(e.v4d, true);
+HonamiStoryController.gQd = e => {
+  _a.Ghf(e.v4d, true);
 };
-HonamiStoryController.eZd = e => {
+HonamiStoryController.Rem = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel;
   var t = e.F4d;
-  var e = MathUtils_1.MathUtils.LongToNumber(e.OXd);
+  var e = MathUtils_1.MathUtils.LongToNumber(e.fYd);
   ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevel = t;
   ModelManager_1.ModelManager.HonamiStoryModel.PollutionStarTime = e;
   var r = ModelManager_1.ModelManager.HonamiStoryModel.PollutionLevelMap;
@@ -778,7 +781,7 @@ HonamiStoryController.eZd = e => {
   }
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryPollutionUpdate, a);
 };
-HonamiStoryController.yQd = e => {
+HonamiStoryController.IQd = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
   var o = [];
   o.push({
@@ -787,7 +790,7 @@ HonamiStoryController.yQd = e => {
   });
   o.push({
     Name: "HonamiStory_EvacuationInterface_8",
-    Value: e.fpm.toString()
+    Value: e.XTm.toString()
   });
   o.push({
     Name: "HonamiStory_EvacuationInterface_1",
@@ -815,7 +818,7 @@ HonamiStoryController.yQd = e => {
       IsNewRecord: e.A9d,
       FailAddProportion: Math.round(e.U9d / 100)
     };
-    if (e.R_m) {
+    if (e.Vfm) {
       UiManager_1.UiManager.ResetToBattleView();
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
         UiManager_1.UiManager.ResetToBattleView(() => {
@@ -827,7 +830,7 @@ HonamiStoryController.yQd = e => {
     }
   }
 };
-HonamiStoryController.Mnm = e => {
+HonamiStoryController.Elm = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
   let o = 0;
   let t = 0;
@@ -928,12 +931,12 @@ HonamiStoryController.Ja1 = () => {
     }
     ModelManager_1.ModelManager.HonamiStoryModel.RemoveBackPack(2);
     ModelManager_1.ModelManager.HonamiStoryModel.RemoveBackPack(3);
-    ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveValueListener(13, HonamiStoryController.Dom);
+    ControllerHolder_1.ControllerHolder.FormationAttributeController.RemoveValueListener(13, HonamiStoryController.n1m);
   }
 };
-HonamiStoryController.Aom = () => {
+HonamiStoryController.o1m = () => {
   if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon()) {
-    ControllerHolder_1.ControllerHolder.FormationAttributeController.AddValueListener(13, HonamiStoryController.Dom);
+    ControllerHolder_1.ControllerHolder.FormationAttributeController.AddValueListener(13, HonamiStoryController.n1m);
   }
 };
 HonamiStoryController.FWe = () => {
@@ -947,54 +950,55 @@ HonamiStoryController.FWe = () => {
     ModelManager_1.ModelManager.HonamiStoryModel.InitSubQuestTrack();
   }
 };
-HonamiStoryController.Dom = (e, o, t) => {
+HonamiStoryController.n1m = (e, o, t) => {
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryLifeSupportChanged, t, o);
 };
-HonamiStoryController.dQd = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateHonamiStoryMascotDataList(e.E$d);
+HonamiStoryController.CQd = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateHonamiStoryMascotDataList(e.R$d);
   var o = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMascotUnlockSet) ?? new Set();
-  for (const t of e.E$d) {
+  for (const t of e.R$d) {
     if (t.H6n === 1) {
-      o.add(t.F$d);
+      o.add(t.H$d);
     }
   }
   LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryMascotUnlockSet, o);
 };
-HonamiStoryController.mQd = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateHonamiStoryAreaDataList(e.V$d);
+HonamiStoryController.pQd = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateHonamiStoryAreaDataList(e.W$d);
 };
 HonamiStoryController.CanOpenBackpack = e => ModelManager_1.ModelManager.FunctionModel.IsOpen(10102);
-HonamiStoryController.wvm = e => {
+HonamiStoryController.qwm = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerBackpackData();
-  o.RefreshEquipInfo(e.U$d);
+  o.RefreshEquipInfo(e.O$d);
   if (e.Wmd) {
-    o.RefreshGridItemInfo(e.Wmd.D$d);
+    o.RefreshGridItemInfo(e.Wmd.k$d);
   }
+  ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
 };
-HonamiStoryController._Qd = e => {
+HonamiStoryController.mQd = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackpackInfo(e);
   ModelManager_1.ModelManager.HonamiStoryModel.SetQuickAllDirty();
 };
-HonamiStoryController.Jtm = e => {
-  e = e.Iem;
+HonamiStoryController.wnm = e => {
+  e = e.rrm;
   ModelManager_1.ModelManager.HonamiStoryModel.UpdateBackpackSize(e);
 };
-HonamiStoryController.rvm = e => {
+HonamiStoryController.iwm = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
   o.UpdatePermanentTaskDataList(e.nAu);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
 };
-HonamiStoryController.fQd = e => {
+HonamiStoryController.vQd = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
   o.UpdateLimitTaskDataList(e.nAu);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
 };
 HonamiStoryController.OnHonamiStoryScoreRewardInfoUpdateNotify = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
-  o.UpdateScoreRewardDataList(e.b$d);
+  o.UpdateScoreRewardDataList(e.P$d);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshCommonActivityRedDot, o.Id);
 };
-HonamiStoryController.Gim = e => {
+HonamiStoryController.tam = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.UpdateWeaponDataList(e.R4d);
   var o = [];
   for (const r of e.R4d) {
@@ -1008,23 +1012,23 @@ HonamiStoryController.Gim = e => {
     }
   }
   if (o.length > 0) {
-    HonamiStoryController.zRm(o);
+    HonamiStoryController.gZm(o);
   }
 };
-HonamiStoryController.gQd = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateItemCollectionDataList(e.M$d);
+HonamiStoryController.yQd = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().UpdateItemCollectionDataList(e.b$d);
 };
-HonamiStoryController.Lvm = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.RefreshTalentInfos(e.e0m);
+HonamiStoryController.Owm = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.RefreshTalentInfos(e.UMm);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryTechNodeLevelUpdate);
 };
-HonamiStoryController.Pvm = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.SetTotalRevenueInternal(e.upm);
+HonamiStoryController.Gwm = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.SetTotalRevenueInternal(e.$Tm);
 };
-HonamiStoryController.CQd = e => {
+HonamiStoryController.SQd = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().InitSubQuestTaskDataList(e.nAu);
 };
-HonamiStoryController.pQd = e => {
+HonamiStoryController.MQd = e => {
   var o = ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData();
   o.UpdateSubQuestTaskDataList(e.nAu);
   for (const r of e.nAu) {
@@ -1035,13 +1039,13 @@ HonamiStoryController.pQd = e => {
     }
   }
 };
-HonamiStoryController.vQd = e => {
+HonamiStoryController.EQd = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerBackpackData().RefreshRoleInfo(e.Q6n);
 };
-HonamiStoryController.lRm = e => {
+HonamiStoryController.E$m = e => {
   ModelManager_1.ModelManager.HonamiStoryModel.GetPlayerData().SetLifeSupportLevel(e.y4d);
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryLifeSupportLevelUp);
 };
-HonamiStoryController.Pwm = e => {
-  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().RefreshTowerData(e.xnm);
+HonamiStoryController.lhf = e => {
+  ModelManager_1.ModelManager.HonamiStoryModel.GetActivityData().RefreshTowerData(e.i1m);
 }; //# sourceMappingURL=HonamiStoryController.js.map

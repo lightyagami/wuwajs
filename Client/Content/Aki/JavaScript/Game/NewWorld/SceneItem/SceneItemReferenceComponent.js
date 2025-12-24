@@ -156,19 +156,19 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     return this.MTd.length === 0;
   }
   static get Dependencies() {
-    return [206, 200];
+    return [212, 206];
   }
   OnInitData(e) {
     e = e.GetParam(SceneItemReferenceComponent_1)[0];
     this.Lo = e;
-    this.mBe = this.Entity.CheckGetComponent(137);
+    this.mBe = this.Entity.CheckGetComponent(142);
     this.BWa = this.mBe.StateTagId;
     return true;
   }
   OnStart() {
     this.aln = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroActorSubsystem.StaticClass());
-    this.Hte = this.Entity.GetComponent(206);
-    this.Xte = this.Entity.GetComponent(200);
+    this.Hte = this.Entity.GetComponent(212);
+    this.Xte = this.Entity.GetComponent(206);
     this.EIe = this.Entity.GetComponent(0);
     this.wWa = this.mBe.StateTagId === this.BWa;
     this.VQc();
@@ -374,12 +374,12 @@ let SceneItemReferenceComponent = SceneItemReferenceComponent_1 = class SceneIte
     return !!this.rMn?.IsPlayerOverlapped();
   }
   OnChangeTimeDilation(e) {
-    e *= this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+    e *= this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
     this.UU_(0).OnChangeTimeDilation(e);
   }
   IsValidPlatFormPath(e) {
     return this.Xvn.has(e);
   }
 };
-SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(167)], SceneItemReferenceComponent);
+SceneItemReferenceComponent = SceneItemReferenceComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(172)], SceneItemReferenceComponent);
 exports.SceneItemReferenceComponent = SceneItemReferenceComponent; //# sourceMappingURL=SceneItemReferenceComponent.js.map

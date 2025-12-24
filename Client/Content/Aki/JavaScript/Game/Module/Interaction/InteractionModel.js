@@ -144,14 +144,14 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   RefreshInteractEntities(e) {
     let t = 0;
-    for (const n of this.R_i) {
-      if (n) {
-        var i = n.GetEntity();
+    for (const o of this.R_i) {
+      if (o) {
+        var i = o.GetEntity();
         if (i?.Valid) {
           if (SceneItemCaptureComponent_1.VISION_CAPTURE_WITH_RANGE) {
             let t = false;
-            for (const o of e) {
-              if (o.GetComponent(121)?.GetPawnNameKey() === SceneItemCaptureComponent_1.ABSORB_PAWN_NAME_KEY) {
+            for (const n of e) {
+              if (n.GetComponent(126)?.GetPawnNameKey() === SceneItemCaptureComponent_1.ABSORB_PAWN_NAME_KEY) {
                 t = true;
               }
             }
@@ -159,7 +159,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
               continue;
             }
           }
-          var r = n.DirectOptionInstanceIds.length;
+          var r = o.DirectOptionInstanceIds.length;
           if (r <= 0) {
             e.push(i);
             if (this.CanAutoPickUp(i)) {
@@ -178,8 +178,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
     }
     this.x_i = e.length;
     e.sort((t, e) => {
-      t = t.GetComponent(201);
-      e = e.GetComponent(201);
+      t = t.GetComponent(207);
+      e = e.GetComponent(207);
       t = t.GetInteractController().InteractEntity.Priority;
       return e.GetInteractController().InteractEntity.Priority - t;
     });
@@ -190,7 +190,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CanAutoPickUp(t) {
     var e;
-    return !!t?.Valid && !t.GetComponent(258)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(201))?.IsPawnInteractive() && (!!t.GetComponent(121)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
+    return !!t?.Valid && !t.GetComponent(276)?.GetIsDisableOneClickCollection() && !!(e = t.GetComponent(207))?.IsPawnInteractive() && (!!t.GetComponent(126)?.IsDropItem() || !!e.IsCollection() || !!e.IsAnimationItem() && !!(e = t.GetComponent(0))?.Valid && !!(t = e.GetPbEntityInitData()) && !!(e = t.ComponentsData) && !e.CollectComponent.Disabled);
   }
   GetOptionInstanceIdByIndex(t) {
     let e = t;
@@ -300,14 +300,14 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   CheckOptionUniqueness(t, e = undefined, i = -1) {
     var r;
-    var n;
-    return e.CustomOptionType !== 1 && e.CustomOptionType !== 3 && (!e.IsUniqueness || e.UniequenessType !== IAction_1.EInteractUniqueness.Closest || e.TidContent === "" || i === -1 || !((r = this.U_i.get(e.TidContent)) ? r.CurrentDistance > i && t !== r.EntityId ? ((n = this.D_i.indexOf(r.EntityId)) > -1 && (this.D_i.splice(n, 1), this.R_i.splice(n, 1)), r.EntityId = t, r.CurrentDistance = i, 0) : t !== r.EntityId || (r.CurrentDistance = i, 0) : ((n = new SameTipInteract()).EntityId = t, n.CurrentDistance = i, this.U_i.set(e.TidContent, n), 0)));
+    var o;
+    return e.CustomOptionType !== 1 && e.CustomOptionType !== 3 && (!e.IsUniqueness || e.UniequenessType !== IAction_1.EInteractUniqueness.Closest || e.TidContent === "" || i === -1 || !((r = this.U_i.get(e.TidContent)) ? r.CurrentDistance > i && t !== r.EntityId ? ((o = this.D_i.indexOf(r.EntityId)) > -1 && (this.D_i.splice(o, 1), this.R_i.splice(o, 1)), r.EntityId = t, r.CurrentDistance = i, 0) : t !== r.EntityId || (r.CurrentDistance = i, 0) : ((o = new SameTipInteract()).EntityId = t, o.CurrentDistance = i, this.U_i.set(e.TidContent, o), 0)));
   }
-  AddInteractOption(t, e, i, r, n) {
-    var o = this.GetInteractController(t);
-    if (o) {
+  AddInteractOption(t, e, i, r, o) {
+    var n = this.GetInteractController(t);
+    if (n) {
       if (e = this.GetDynamicConfig(e)) {
-        return o.AddDynamicInteractOption(e, i, r, n);
+        return n.AddDynamicInteractOption(e, i, r, o);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Interaction", 18, "交互选项配置丢失，请确认前后端配置是否一致", ["PbDataId", t.GetComponent(0)?.GetPbDataId()]);
@@ -333,7 +333,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   }
   GetInteractController(t) {
     if (t) {
-      t = t.GetComponent(201);
+      t = t.GetComponent(207);
       if (t) {
         return t.GetInteractController();
       }
@@ -409,7 +409,8 @@ class InteractionModel extends ModelBase_1.ModelBase {
           UniquenessTest: e.UniquenessTest !== "" ? e.UniquenessTest : undefined,
           DoIntactType: e.DoIntactType !== "" ? e.DoIntactType : undefined,
           Range: e.Range || undefined,
-          Duration: undefined
+          Duration: undefined,
+          OptionLockTypeList: e.OptionLockTypeList ? JSON.parse(e.OptionLockTypeList) : undefined
         };
         if (e.Condition && e.Condition !== "") {
           i.Condition = JSON.parse(e.Condition);
@@ -434,7 +435,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
     return this.L_i;
   }
   LockInteraction(t, e) {
-    t = t?.GetComponent(201);
+    t = t?.GetComponent(207);
     if (t && t.Valid) {
       t.SetServerLockInteract(e, "Interacting Notify");
     }
@@ -458,7 +459,7 @@ class InteractionModel extends ModelBase_1.ModelBase {
   RecoverInteractFromLock() {
     var t;
     if (this.LockInteractionEntity) {
-      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 201);
+      t = EntitySystem_1.EntitySystem.GetComponent(this.LockInteractionEntity, 207);
       this.LockInteractionEntity = undefined;
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(1);
       t?.AfterUnlockInteractionEntity();

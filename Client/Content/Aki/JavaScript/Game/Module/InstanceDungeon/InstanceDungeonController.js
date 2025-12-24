@@ -136,7 +136,8 @@ class InstanceDungeonController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static NeedOpenReChallengeConfirmBox() {
-    return ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.CreatureModel.GetInstanceId()).InstSubType === 4 && !ModelManager_1.ModelManager.GameModeModel.IsMulti;
+    var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(ModelManager_1.ModelManager.CreatureModel.GetInstanceId()).InstSubType;
+    return (e === 4 || e === 43) && !ModelManager_1.ModelManager.GameModeModel.IsMulti;
   }
   static GetExitConfirmBoxConfigId() {
     let e = undefined;

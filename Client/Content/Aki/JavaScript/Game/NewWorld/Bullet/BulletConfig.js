@@ -62,8 +62,8 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
     BulletConfig.k9o.clear();
     BulletConfig.N9o.clear();
   }
-  GetBulletData(t, e, l = true, a = -1) {
-    var o = t.GetComponent(40);
+  GetBulletData(t, e, l = true, o = -1) {
+    var a = t.GetComponent(40);
     var i = t.Id;
     let n = BulletConfig.N9o.get(i);
     let r = true;
@@ -73,18 +73,18 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
     }
     let u = BulletConfig.O9o.get(n);
     if (u) {
-      var s = u.BulletDataMap.get(e);
-      if (s) {
+      var f = u.BulletDataMap.get(e);
+      if (f) {
         if (!r) {
           BulletConfig.N9o.set(i, n);
           u.EntityCount++;
         }
-        return s;
+        return f;
       }
     }
-    let f = this.F9o(a, e);
-    if (f) {
-      return f;
+    let s = this.F9o(o, e);
+    if (s) {
+      return s;
     }
     let C = undefined;
     let g = undefined;
@@ -92,10 +92,10 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       C = u.DataTable;
       g = u.DataTableExtraList;
     } else {
-      C = o?.DtBulletInfo;
-      if (o?.DtBulletInfoExtraList && o?.DtBulletInfoExtraList.length > 0) {
+      C = a?.DtBulletInfo;
+      if (a?.DtBulletInfoExtraList && a?.DtBulletInfoExtraList.length > 0) {
         g = [];
-        for (const _ of o.DtBulletInfoExtraList) {
+        for (const _ of a.DtBulletInfoExtraList) {
           g.push(_);
         }
       }
@@ -109,56 +109,59 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       }
     }
     if (B) {
-      const f = new BulletDataMain_1.BulletDataMain(B, e);
-      if (f.CheckValid()) {
-        if (!GlobalData_1.GlobalData.IsPlayInEditor && !(u || ((u = new BulletDataCacheInfo()).DataTable = C, u.DataTableExtraList = g, u.EntityCount = 0, BulletConfig.O9o.set(n, u)), u.BulletDataMap.set(e, f), r)) {
+      const s = new BulletDataMain_1.BulletDataMain(B, e, BulletConfig.PQf(n, e));
+      if (s.CheckValid()) {
+        if (!GlobalData_1.GlobalData.IsPlayInEditor && !(u || ((u = new BulletDataCacheInfo()).DataTable = C, u.DataTableExtraList = g, u.EntityCount = 0, BulletConfig.O9o.set(n, u)), u.BulletDataMap.set(e, s), r)) {
           BulletConfig.N9o.set(i, n);
           u.EntityCount++;
         }
-        return f;
+        return s;
       } else {
         CombatLog_1.CombatLog.Error("Bullet", undefined, "子弹配置非法", ["", e]);
         return;
       }
     }
-    if (f = this.V9o(a, e)) {
-      return f;
+    if (s = this.V9o(o, e, n)) {
+      return s;
     }
-    if (l && (s = t.CheckGetComponent(3).Actor, Log_1.Log.CheckError())) {
-      Log_1.Log.Error("Bullet", 17, "子弹数据未找到!", ["角色:", s.GetName()], ["子弹名称:", e], ["dtType", a]);
+    if (l && (f = t.CheckGetComponent(1).Owner, Log_1.Log.CheckError())) {
+      Log_1.Log.Error("Bullet", 17, "子弹数据未找到!", ["角色:", f?.GetName()], ["子弹名称:", e], ["dtType", o]);
     }
+  }
+  static PQf(t, e) {
+    return t === BulletConfig.AQf && BulletConfig.DQf.has(e);
   }
   F9o(t, e) {
     if (t === -1) {
-      for (const o of BulletConfig.k9o.values()) {
-        var l = o.BulletDataMap.get(e);
+      for (const a of BulletConfig.k9o.values()) {
+        var l = a.BulletDataMap.get(e);
         if (l) {
           return l;
         }
       }
     } else if (t !== 0) {
-      const o = BulletConfig.k9o.get(t);
-      if (o) {
-        var a = o.BulletDataMap.get(e);
-        if (a) {
-          return a;
+      const a = BulletConfig.k9o.get(t);
+      if (a) {
+        var o = a.BulletDataMap.get(e);
+        if (o) {
+          return o;
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Bullet", 17, "该子弹的DT表没有加载，请检查触发子弹的玩法是否正确", ["bulletDataName", e], ["dtType", t]);
       }
     }
   }
-  V9o(t, e) {
+  V9o(t, e, l) {
     if (t === -1) {
       for (const a of BulletConfig.k9o.values()) {
-        const o = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
-        var l;
-        if (o) {
-          if ((l = new BulletDataMain_1.BulletDataMain(o, e)).CheckValid()) {
+        const i = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
+        var o;
+        if (i) {
+          if ((o = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.PQf(l, e))).CheckValid()) {
             if (!GlobalData_1.GlobalData.IsPlayInEditor) {
-              a.BulletDataMap.set(e, l);
+              a.BulletDataMap.set(e, o);
             }
-            return l;
+            return o;
           } else {
             CombatLog_1.CombatLog.Error("Bullet", undefined, "子弹配置非法", ["", e]);
             return;
@@ -168,9 +171,9 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
     } else {
       const a = BulletConfig.k9o.get(t);
       if (a) {
-        const o = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
-        if (o) {
-          if ((t = new BulletDataMain_1.BulletDataMain(o, e)).CheckValid()) {
+        const i = DataTableUtil_1.DataTableUtil.GetDataTableRow(a.DataTable, e);
+        if (i) {
+          if ((t = new BulletDataMain_1.BulletDataMain(i, e, BulletConfig.PQf(l, e))).CheckValid()) {
             if (!GlobalData_1.GlobalData.IsPlayInEditor) {
               a.BulletDataMap.set(e, t);
             }
@@ -188,16 +191,16 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
   GetBulletHitData(e, l) {
     if (!FNameUtil_1.FNameUtil.IsNothing(l)) {
       var e = e.GetComponent(40);
-      var a = l.toString();
+      var o = l.toString();
       let t = undefined;
-      if (e && !(t = DataTableUtil_1.DataTableUtil.GetDataTableRow(e.DtHitEffect, a)) && e.DtHitEffectExtraList) {
-        for (const o of e.DtHitEffectExtraList) {
-          if (t = DataTableUtil_1.DataTableUtil.GetDataTableRow(o, a)) {
+      if (e && !(t = DataTableUtil_1.DataTableUtil.GetDataTableRow(e.DtHitEffect, o)) && e.DtHitEffectExtraList) {
+        for (const a of e.DtHitEffectExtraList) {
+          if (t = DataTableUtil_1.DataTableUtil.GetDataTableRow(a, o)) {
             break;
           }
         }
       }
-      return t = t || DataTableUtil_1.DataTableUtil.GetDataTableRow(ConfigManager_1.ConfigManager.WorldConfig.GetCommonHitEffectData(), a);
+      return t = t || DataTableUtil_1.DataTableUtil.GetDataTableRow(ConfigManager_1.ConfigManager.WorldConfig.GetCommonHitEffectData(), o);
     }
   }
   PreloadCommonBulletData() {
@@ -213,15 +216,15 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
   }
   H9o(e) {
     var l;
-    var a = BulletConfig.k9o.get(e);
-    if (!a) {
+    var o = BulletConfig.k9o.get(e);
+    if (!o) {
       let t = undefined;
       if (e === 1) {
         t = ConfigManager_1.ConfigManager.WorldConfig.GetCommonBulletData();
       } else if (l = bulletDtPath[e]) {
         t = ResourceSystem_1.ResourceSystem.Load(l, UE.DataTable);
       }
-      if (t && ((a = new BulletDataCacheInfo()).DataTable = t, BulletConfig.k9o.set(e, a), Log_1.Log.CheckInfo())) {
+      if (t && ((o = new BulletDataCacheInfo()).DataTable = t, BulletConfig.k9o.set(e, o), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Bullet", 17, "预加载通用子弹DT", ["dtType", e]);
       }
     }
@@ -237,8 +240,8 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       BulletConfig.j9o.Stop();
     }
   }
-  W9o(e, l, a, o, i = undefined) {
-    if (!GlobalData_1.GlobalData.IsPlayInEditor && e && a !== undefined && !BulletConfig.O9o.has(a)) {
+  W9o(e, l, o, a, i = undefined) {
+    if (!GlobalData_1.GlobalData.IsPlayInEditor && e && o !== undefined && !BulletConfig.O9o.has(o)) {
       let t = i;
       if (!t) {
         t = [];
@@ -256,13 +259,13 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
           n.DataTableExtraList.push(u);
         }
       }
-      if (ModelManager_1.ModelManager.CharacterModel.IsValid(o)) {
+      if (ModelManager_1.ModelManager.CharacterModel.IsValid(a)) {
         n.EntityCount = 1;
-        BulletConfig.N9o.set(o, a);
+        BulletConfig.N9o.set(a, o);
       }
-      BulletConfig.O9o.set(a, n);
+      BulletConfig.O9o.set(o, n);
       i = new PreloadBulletConfig();
-      i.ModelId = a;
+      i.ModelId = o;
       i.DataTable = e;
       i.CurIndex = 0;
       i.RowNames = t;
@@ -292,7 +295,7 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
       if (l) {
         t = this.G9o.RowNames[this.G9o.CurIndex];
         if (e = DataTableUtil_1.DataTableUtil.GetDataTableRow(this.G9o.DataTable, t)) {
-          if ((e = new BulletDataMain_1.BulletDataMain(e, t)).CheckValid()) {
+          if ((e = new BulletDataMain_1.BulletDataMain(e, t, BulletConfig.PQf(this.G9o.ModelId, t))).CheckValid()) {
             e.Preload();
             l.BulletDataMap.set(t, e);
           } else {
@@ -317,4 +320,6 @@ class BulletConfig extends ConfigBase_1.ConfigBase {
 BulletConfig.K9o = Stats_1.Stat.Create("BulletConfigTickPreload");
 BulletConfig.O9o = new Map();
 BulletConfig.k9o = new Map();
-BulletConfig.N9o = new Map(); //# sourceMappingURL=BulletConfig.js.map
+BulletConfig.N9o = new Map();
+BulletConfig.AQf = 391336;
+BulletConfig.DQf = new Set(["80037001002", "80037103005", "80037103006", "80037103007", "80037103008", "80037103009", "80037103010", "80037103011", "80037103012", "80037103013", "80037103014", "80037103015", "80037103016", "80037103017", "80037103018", "80037103019", "80037103020", "80037103021", "80037103022", "80037103023", "80037103024", "80037103025", "80037103026", "80037103027", "80037103028", "80037103029", "80037103030", "80037103031", "80037103032", "80037103033", "80037103034", "80037103035", "80037103036", "80037103037", "80037103038", "80037103039", "80037103040", "80037103041", "80037103042", "80037103043", "80037103044", "80037001001", "80037001103"]); //# sourceMappingURL=BulletConfig.js.map

@@ -18,27 +18,27 @@ class LevelConditionListenerCompareEntityState extends LevelListenerBase_1.Level
     this.Zge = (...e) => {
       this.Callback?.(LevelGeneralContextDefine_1.ClientEventContext.Create(EventDefine_1.EEventName.OnSceneItemStateChange, ...e));
     };
-    this.Dgm = undefined;
+    this.cMm = undefined;
     this.kHa = undefined;
   }
   OnListen(t, e, i) {
     if (t.Type === "CompareEntitySelfState") {
-      this.Dgm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandle(undefined, i)?.Entity;
-      this.kgm();
+      this.cMm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandle(undefined, i)?.Entity;
+      this.fMm();
     } else if (t.Type === "CompareEntityState") {
       this.kHa = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelConditionListenerCompareEntityState", t.EntityId, e => {
         this.kHa = undefined;
-        this.Dgm = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity;
-        this.kgm();
+        this.cMm = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity;
+        this.fMm();
       }, undefined, false, true);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelCondition", 39, "实体状态条件监听失败: 未知条件类型");
     }
   }
-  kgm() {
-    if (this.Dgm?.Valid) {
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Dgm, EventDefine_1.EEventName.OnSceneItemStateChange, this.Zge)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Dgm, EventDefine_1.EEventName.OnSceneItemStateChange, this.Zge);
+  fMm() {
+    if (this.cMm?.Valid) {
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.cMm, EventDefine_1.EEventName.OnSceneItemStateChange, this.Zge)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.cMm, EventDefine_1.EEventName.OnSceneItemStateChange, this.Zge);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelCondition", 39, "实体状态条件监听失败: 实体无效");

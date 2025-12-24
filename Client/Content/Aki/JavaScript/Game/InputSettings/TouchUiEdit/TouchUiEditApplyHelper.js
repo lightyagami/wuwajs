@@ -10,26 +10,29 @@ const Log_1 = require("../../../Core/Common/Log");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const CommonTouchUiEditDataFacade_1 = require("./Common/CommonTouchUiEditDataFacade");
 class TouchUiEditApplyHelper {
-  static $ra(o, e, r) {
-    o = o.GetRootActor();
-    if (o && o.IsValid()) {
-      var t = o.GetComponentByClass(UE.LGUIComponentsRegistry.StaticClass());
-      if (t) {
-        for (let o = 0; o < t.Components.Num(); o++) {
-          var i;
-          var a;
-          var l = t.Components.Get(o);
-          if (l && (l = l.GetComponentByClass(UE.UIItem.StaticClass()), i = r.GetStorageId(e, o), l) && i && (this.bCd.has(i) || this.bCd.set(i, [l.GetAnchorOffsetX(), l.GetAnchorOffsetY()]), (a = r.GetData(e, o)).Editable)) {
-            l.SetUIItemScale(new UE.Vector(a.Scale, a.Scale, a.Scale));
-            l.SetAnchorOffsetX(this.bCd.get(i)[0] + a.OffsetX);
-            l.SetAnchorOffsetY(this.bCd.get(i)[1] + a.OffsetY);
-            l.SetUIItemAlpha(a.Alpha);
-            l.SetHierarchyIndex(a.HierarchyIndex);
+  static $ra(o, r, t) {
+    var i = o.GetRootActor();
+    if (i && i.IsValid()) {
+      var a = i.GetComponentByClass(UE.LGUIComponentsRegistry.StaticClass());
+      if (a) {
+        for (let e = -1; e < a.Components.Num(); e++) {
+          var l;
+          var n;
+          var s = t.GetStorageId(r, e);
+          if (s !== 0) {
+            let o = undefined;
+            if ((o = e === -1 ? i : a.Components.Get(e)) && (l = o.GetComponentByClass(UE.UIItem.StaticClass())) && s && (this.bCd.has(s) || this.bCd.set(s, [l.GetAnchorOffsetX(), l.GetAnchorOffsetY()]), (n = t.GetData(r, e)).Editable)) {
+              l.SetUIItemScale(new UE.Vector(n.Scale, n.Scale, n.Scale));
+              l.SetAnchorOffsetX(this.bCd.get(s)[0] + n.OffsetX);
+              l.SetAnchorOffsetY(this.bCd.get(s)[1] + n.OffsetY);
+              l.SetUIItemAlpha(n.Alpha);
+              l.SetHierarchyIndex(n.HierarchyIndex);
+            }
           }
         }
       }
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("TouchUiEdit", 74, "设置触屏键位失败, 传入的Panel可能已经销毁, 请检查调用时机", ["Panel", e]);
+      Log_1.Log.Warn("TouchUiEdit", 74, "设置触屏键位失败, 传入的Panel可能已经销毁, 请检查调用时机", ["Panel", r]);
     }
   }
   static ApplyCommonTouchUiEditData(o, e, r) {

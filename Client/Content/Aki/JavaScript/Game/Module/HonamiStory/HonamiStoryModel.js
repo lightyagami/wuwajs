@@ -43,7 +43,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     this.ActivityId = 0;
     this.QuickAllManager = new HonamiStoryQuickEquipAllManager_1.HonamiStoryQuickEquipAllManager();
     this.CurBackpackLogicController = undefined;
-    this.nEm = undefined;
+    this.f2m = undefined;
     this.PickUpItemDataQueue = [];
     this.PickUpTime = 0;
     this.IsPickingUp = false;
@@ -67,17 +67,17 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     this.ScanMarkItemIds = new Set();
     this.CurrentUnlockFogId = 0;
     this.CurAreaId = 0;
-    this.ovm = undefined;
-    this.nvm = undefined;
+    this.rwm = undefined;
+    this.owm = undefined;
     this.CNe = undefined;
     this.PlayerData = HonamiStoryPlayerData_1.HonamiStoryPlayerData.Create();
     this.gfd = undefined;
     this.Lko = new Map();
     this.LastRecordRevenue = 0;
-    this.Rvm = 0;
-    this.Lhm = undefined;
+    this.kwm = 0;
+    this.Ccm = undefined;
     this._5d = new Map();
-    this.qYd = new Map();
+    this.gzd = new Map();
     this.CurrentSelectNode = undefined;
     this.CurrentSelectNodeItem = undefined;
     this.RoleParentMap = new Map();
@@ -85,9 +85,9 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     this.WeaponSuitMap = new Map();
     this.AddLevel = [-1, -1];
     this.CurTrackTaskData = undefined;
-    this.tSm = new Map();
+    this.aDm = new Map();
     this.Cfd = new Map();
-    this.pum = (t, o) => {
+    this.Ugm = (t, o) => {
       var i;
       var e;
       if (t.IsLock() !== o.IsLock()) {
@@ -108,7 +108,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
         return t.GetIncId() - o.GetIncId();
       }
     };
-    this.vum = (t, o) => t.IsLock() !== o.IsLock() ? t.IsLock() ? -1 : 1 : t.GetSubType() !== o.GetSubType() ? o.GetSubType() - t.GetSubType() : t.GetQuality() !== o.GetQuality() ? o.GetQuality() - t.GetQuality() : t.GetItemId() !== o.GetItemId() ? t.GetItemId() - o.GetItemId() : t.GetIncId() - o.GetIncId();
+    this.xgm = (t, o) => t.IsLock() !== o.IsLock() ? t.IsLock() ? -1 : 1 : t.GetSubType() !== o.GetSubType() ? o.GetSubType() - t.GetSubType() : t.GetQuality() !== o.GetQuality() ? o.GetQuality() - t.GetQuality() : t.GetItemId() !== o.GetItemId() ? t.GetItemId() - o.GetItemId() : t.GetIncId() - o.GetIncId();
   }
   OnInit() {
     this.CNe = undefined;
@@ -117,7 +117,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnClear() {
-    this.GMm();
+    this.PBm();
     return true;
   }
   vJc() {
@@ -125,7 +125,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     UiManager_1.UiManager.AddOpenViewCheckFunction("HonamiStoryPickUpBackpackView", HonamiStoryController_1.HonamiStoryController.CanOpenBackpack, "HonamiStoryController.CanOpenView");
     UiManager_1.UiManager.AddOpenViewCheckFunction("HonamiStoryPickUpMobileView", HonamiStoryController_1.HonamiStoryController.CanOpenBackpack, "HonamiStoryController.CanOpenView");
   }
-  GMm() {
+  PBm() {
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("HonamiStoryBackpackView", HonamiStoryController_1.HonamiStoryController.CanOpenBackpack);
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("HonamiStoryPickUpBackpackView", HonamiStoryController_1.HonamiStoryController.CanOpenBackpack);
     UiManager_1.UiManager.RemoveOpenViewCheckFunction("HonamiStoryPickUpMobileView", HonamiStoryController_1.HonamiStoryController.CanOpenBackpack);
@@ -162,20 +162,19 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   }
   InitActivityInfo(t, o) {
     this.ActivityId = t;
-    this.Uan(t, o.S$d);
-    this.InitBackPackInfo(o.S$d.$md);
+    this.Uan(t, o.T$d);
+    this.InitBackPackInfo(o.T$d.$md);
     this.f5d();
-    this.RefreshTalentInfos(o.e0m);
-    this.Snm(o.y4d);
+    this.RefreshTalentInfos(o.UMm);
+    this.Klm(o.y4d);
   }
   UpdateActivityInfo(t, o) {
-    this.Xwm(t, o.S$d);
-    this.UpdateBackPackInfo(o.S$d.$md);
-    this.f5d();
-    this.RefreshTalentInfos(o.e0m);
-    this.Snm(o.y4d);
+    this.bdf(t, o.T$d);
+    this.UpdateBackPackInfo(o.T$d.$md);
+    this.RefreshTalentInfos(o.UMm);
+    this.Klm(o.y4d);
   }
-  Snm(t) {
+  Klm(t) {
     this.PlayerData.SetLifeSupportLevel(t);
   }
   Uan(t, o) {
@@ -193,15 +192,15 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
       this.UpdateWeaponDataList(o.M4d);
     }
   }
-  Xwm(t, o) {
+  bdf(t, o) {
     if (o === undefined) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("HonamiStory", 58, "InitPlayerBagInfo 无效playerInfo");
       }
     } else {
-      this.gfd.RefreshEquipInfo(o.U$d);
+      this.gfd.RefreshEquipInfo(o.O$d);
       if (o.Wmd) {
-        this.gfd.RefreshGridItemInfo(o.Wmd.D$d);
+        this.gfd.RefreshGridItemInfo(o.Wmd.k$d);
       }
       for (const e of ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryWeaponConfigList(t)) {
         var i = new HonamiStoryWeaponData_1.HonamiStoryWeaponData(e.Id);
@@ -220,7 +219,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     this.gfd.RefreshWeaponInfoByPosition(t, o);
   }
   UpdatePlayerBackPack(t) {
-    this.gfd.UpdateByContext(t.B$d);
+    this.gfd.UpdateByContext(t.G$d);
   }
   GetPlayerBackpackData() {
     return this.gfd;
@@ -304,37 +303,37 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("HonamiStory", 78, "SetTotalRevenueInternal", ["value", t]);
     }
-    this.Rvm = t;
+    this.kwm = t;
   }
   get TotalRevenue() {
-    if (this.Rvm >= HonamiStoryDefine_1.HONAMI_MAX_SHOW_REVENUE) {
+    if (this.kwm >= HonamiStoryDefine_1.HONAMI_MAX_SHOW_REVENUE) {
       return HonamiStoryDefine_1.HONAMI_MAX_SHOW_REVENUE;
     } else {
-      return this.Rvm;
+      return this.kwm;
     }
   }
   GetInventory() {
-    return this.Lhm;
+    return this.Ccm;
   }
   SetInventory(t) {
-    this.Lhm = t;
+    this.Ccm = t;
   }
   CheckIsNewInInventory() {
-    return this.Lhm !== undefined && (!!this.Lhm.CheckIsNewInBackpack() || (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryWeaponUnlockSet) ?? new Set()).size > 0);
+    return this.Ccm !== undefined && (!!this.Ccm.CheckIsNewInBackpack() || (LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.HonamiStoryWeaponUnlockSet) ?? new Set()).size > 0);
   }
   f5d() {
     this._5d.clear();
-    this.qYd.clear();
+    this.gzd.clear();
     for (const i of ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryTalentConfigList(this.ActivityId)) {
       var o = new HonamiStoryTechNodeData_1.HonamiStoryTechNodeData(i);
       this._5d.set(i.Id, o);
-      let t = this.qYd.get(i.Area);
+      let t = this.gzd.get(i.Area);
       if (!t) {
         (t = new HonamiStoryTechAreaData_1.HonamiStoryTechAreaData()).AreaId = i.Area;
         t.NodeIds = new Array();
       }
       t.NodeIds.push(i.Id);
-      this.qYd.set(t.AreaId, t);
+      this.gzd.set(t.AreaId, t);
     }
   }
   CheckNodeCanActiveAndIsEnough(t) {
@@ -373,7 +372,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     }
   }
   GetTechAreaData(t) {
-    var o = this.qYd.get(t);
+    var o = this.gzd.get(t);
     if (o !== undefined) {
       return o;
     }
@@ -383,7 +382,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   }
   get GetTechAreaDataList() {
     const i = [];
-    this.qYd.forEach((t, o) => {
+    this.gzd.forEach((t, o) => {
       if (o !== 0) {
         i.push(t);
       }
@@ -435,7 +434,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     return Array.from(this._5d.values());
   }
   GetAllTechAreaDataList() {
-    return Array.from(this.qYd.values());
+    return Array.from(this.gzd.values());
   }
   GetAllActiveTechNodeDataList() {
     var t = [];
@@ -498,11 +497,11 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   CheckItemPlayerAlreadyPick(t) {
     var o = this.GetBackPackData(2);
     var i = this.GetPlayerBackpackData();
-    return o.GetItemDataByInstanceId(t) !== undefined || i.CheckItemByIncId(t);
+    return o.GetItemDataByInstanceId(t, false) !== undefined || i.CheckItemByIncId(t);
   }
   CreateHonamiStoryItemData(t, o = undefined) {
     let i = this.ItemDataMap.get(t.b9n);
-    (i = i || this.Pfd(t.R$d)).Init(t);
+    (i = i || this.Pfd(t.A$d)).Init(t);
     i.UpdatePositionInfo(o);
     this.ItemDataMap.set(i.GetIncId(), i);
     return i;
@@ -529,16 +528,16 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   GetQuestDataListByQuestType(t) {
     var o;
     if (this.CNe) {
-      if (!this.tSm.has(t)) {
+      if (!this.aDm.has(t)) {
         if (t === 1) {
           (o = []).push(new HonamiStoryQuestData_1.HonamiStoryMainQuestData());
-          this.tSm.set(t, o);
+          this.aDm.set(t, o);
         } else if (t === 2) {
           o = this.CNe.GetSubQuestTaskDataList();
-          this.tSm.set(t, o);
+          this.aDm.set(t, o);
         }
       }
-      return this.tSm.get(t);
+      return this.aDm.get(t);
     } else {
       return [];
     }
@@ -557,8 +556,8 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     } else {
       o = this.CurTrackTaskData?.Id === t.Id;
       i = this.CurTrackTaskData?.DoMapTrack(false);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("HonamiStory", 78, `SetSubQuestTrack 取消追踪任务${i ? "成功" : "失败"}: ${MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.CurTrackTaskData?.GetNameKey() ?? "")}`);
+      if (this.CurTrackTaskData && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("HonamiStory", 78, `SetSubQuestTrack 取消追踪任务${i ? "成功" : "失败"}: ${MultiTextLang_1.configMultiTextLang.GetLocalTextNew(this.CurTrackTaskData.GetNameKey())}`);
       }
       if (i) {
         this.CurTrackTaskData = undefined;
@@ -618,12 +617,12 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
         Log_1.Log.Error("HonamiStory", 58, "InitBackPackInfo 无效bagInfo");
       }
     } else if (o.Vmd === 1) {
-      if (this.Lhm === undefined) {
+      if (this.Ccm === undefined) {
         const t = new HonamiStoryBackpackData_1.HonamiStoryBackpackData();
         this.SetInventory(t);
         t.Init(o);
       } else {
-        this.Lhm.Init(o);
+        this.Ccm.Init(o);
       }
     } else {
       let t = this.GetBackPackData(o.Vmd, true);
@@ -655,10 +654,10 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     }
   }
   UpdateBackpackInfo(t) {
-    for (const i of t.O$d) {
+    for (const i of t.N$d) {
       var o = this.GetBackPackData(i.Vmd);
-      o.SetCapacity(i.Iem);
-      o.Update(i.D$d);
+      o.SetCapacity(i.rrm);
+      o.Update(i.k$d);
     }
   }
   UpdateBackpackSize(t) {
@@ -674,7 +673,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
       if (i === 4) {
         this.UpdatePlayerBackPack(e);
       } else {
-        o = e.B$d;
+        o = e.G$d;
         if (i === 1) {
           this.GetInventory()?.UpdateByContext(o);
         } else {
@@ -712,10 +711,10 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     t.SetBackpackWidth(i.GetWidthCount());
     if (this.IsPickUpViewOpened()) {
       this.IsPickingUp = false;
-      if (i = o.CheckGetComponent(201)) {
+      if (i = o.CheckGetComponent(207)) {
         i.SetInteractionState(true, "HonamiStoryPickUp");
       }
-      this.FMm();
+      this.ABm();
       this.PickedEntityId.clear();
     } else if (this.IsPickingUp) {
       for (const e of this.PickUpItemDataQueue) {
@@ -743,7 +742,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   OnPickUpEnd() {
     if (this.PickUpItemDataQueue.length === 0) {
       this.IsPickingUp = false;
-      this.FMm();
+      this.ABm();
     } else {
       const o = this.PickUpItemDataQueue.shift();
       var t;
@@ -751,22 +750,22 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
         if ((t = Time_1.Time.Now) - this.PickUpTime < 200) {
           t = Math.max(200 - (t - this.PickUpTime), TimerSystem_1.MIN_TIME);
           TimerSystem_1.TimerSystem.Delay(() => {
-            this.NMm(o);
+            this.DBm(o);
           }, t);
         } else {
-          this.NMm(o);
+          this.DBm(o);
         }
       } else {
         this.IsPickingUp = false;
-        this.FMm();
+        this.ABm();
       }
     }
   }
-  async NMm(t) {
+  async DBm(t) {
     var o = await this.DoPickUpLogic(t);
     this.PickUpTime = Time_1.Time.Now;
     if (!o) {
-      if (o = t.EntitySelf.CheckGetComponent(201)) {
+      if (o = t.EntitySelf.CheckGetComponent(207)) {
         o.SetInteractionState(true, "HonamiStoryPickUp");
       }
       this.PickUpItemDataQueue.unshift(t);
@@ -783,19 +782,19 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     if (i.Position >= 0) {
       i = await this.PickUpFromWorld(o, i.Position);
       o.SetNewInBackpack(true);
-      this.fym(o);
+      this.YLm(o);
       this.PickedEntityId.add(t.Id);
       return i;
     } else {
       if (o.GetItemType() === 1 && (await this.TryQuickEquipOnEmpty(o))) {
         o.SetNewInBackpack(true);
-        this.fym(o);
+        this.YLm(o);
         this.PickedEntityId.add(t.Id);
       } else {
-        if (i = t.CheckGetComponent(201)) {
+        if (i = t.CheckGetComponent(207)) {
           i.SetInteractionState(true, "HonamiStoryPickUp");
         }
-        this.FMm();
+        this.ABm();
         if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10102)) {
           ControllerHolder_1.ControllerHolder.FunctionController.OpenFunctionRelateView(10102);
         }
@@ -804,16 +803,16 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
       return true;
     }
   }
-  FMm() {
+  ABm() {
     for (const o of this.PickUpItemDataQueue) {
-      var t = o.EntitySelf.CheckGetComponent(201);
+      var t = o.EntitySelf.CheckGetComponent(207);
       if (t) {
         t.SetInteractionState(true, "HonamiStoryPickUp");
       }
     }
     this.PickUpItemDataQueue.length = 0;
   }
-  fym(o) {
+  YLm(o) {
     var i = o.GetItemId();
     var e = ConfigManager_1.ConfigManager.HonamiStoryConfig.GetHonamiStoryItem(i);
     if (e) {
@@ -961,7 +960,7 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     var [e, r] = this.CheckCanEquipInstead(t);
     var a = this.GetBackPackData(3);
     let n = false;
-    if (e !== -1 && ((i = new Protocol_1.Aki.Protocol.A$d()).l9_ = 0, i.Gmd = false, t.UpdatePositionInfo(i), a.PushItemData(t), n = await HonamiStoryController_1.HonamiStoryController.RequestEquipFromPickUpBox(t, r, e, o))) {
+    if (e !== -1 && ((i = new Protocol_1.Aki.Protocol.B$d()).l9_ = 0, i.Gmd = false, t.UpdatePositionInfo(i), a.PushItemData(t), n = await HonamiStoryController_1.HonamiStoryController.RequestEquipFromPickUpBox(t, r, e, o))) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiStoryPickUpAutoEquip, e);
     }
     return n;
@@ -1014,9 +1013,9 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
   GetIsLastPickUpViewDirty() {
     return !!HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryDungeon() && this.IsLastPickUpViewDirty;
   }
-  SetQuickAllDirty() {
+  SetQuickAllDirty(t = true) {
     this.QuickAllManager.SetDirty();
-    if (this.GetBackpackLogic() !== undefined) {
+    if (t && this.GetBackpackLogic() !== undefined) {
       this.QuickAllRefresh();
       this.GetBackpackLogic().RefreshNeedQuickAll();
     }
@@ -1079,16 +1078,16 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     var i;
     var e;
     var r;
-    var a = new Protocol_1.Aki.Protocol.q$d();
+    var a = new Protocol_1.Aki.Protocol.V$d();
     a.Qmd = t;
     for ([i, e] of o) {
       if (i.GetPosition() !== e.Position || e.IsCross !== i.GetIsCross()) {
         i.SetIsDragCross(e.IsCross);
         r = HonamiStoryUtil_1.HonamiStoryUtil.GetHonamiStoryItemSwapInfo(i, e.Position);
-        a.B$d.push(r);
+        a.G$d.push(r);
       }
     }
-    if (a.B$d.length !== 0) {
+    if (a.G$d.length !== 0) {
       return a;
     }
   }
@@ -1123,8 +1122,8 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     for (const h of i.GetItemDataList()) {
       (h.GetItemType() === 2 ? n : a).push(h);
     }
-    a.sort(this.vum);
-    n.sort(this.pum);
+    a.sort(this.xgm);
+    n.sort(this.Ugm);
     var [i, s] = this.FirstSortBackpack(t, a, n, r, e);
     if (i) {
       return [false, s];
@@ -1230,24 +1229,24 @@ class HonamiStoryModel extends ModelBase_1.ModelBase {
     return [this.GetSortContext(t, n), 0];
   }
   GetGamepadLogic() {
-    this.nEm ||= new HonamiStoryGamepadLogicController_1.HonamiStoryGamepadLogicController();
-    return this.nEm;
+    this.f2m ||= new HonamiStoryGamepadLogicController_1.HonamiStoryGamepadLogicController();
+    return this.f2m;
   }
   SetGamepadLogic(t) {
-    this.nEm = t;
+    this.f2m = t;
   }
   SetMainTaskLoadingData(t) {
-    this.ovm = t;
+    this.rwm = t;
   }
   SetGamePlayLoadingData(t) {
-    this.nvm = t;
+    this.owm = t;
   }
   ClearCurLoadingData() {
-    this.ovm = undefined;
-    this.nvm = undefined;
+    this.rwm = undefined;
+    this.owm = undefined;
   }
   GetCurLoadingData() {
-    return this.ovm ?? this.nvm;
+    return this.rwm ?? this.owm;
   }
   GetCurLoadViewName() {
     var o = this.GetCurLoadingData();

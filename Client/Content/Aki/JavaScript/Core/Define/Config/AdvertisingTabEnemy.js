@@ -44,6 +44,12 @@ class AdvertisingTabEnemy {
   get VisionFetterList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.visionfetterlistLength(), this.visionfetterlist, this);
   }
+  get VisionFetterColorList() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.visionfettercolorlistLength(), this.visionfettercolorlist, this);
+  }
+  get VisionFetterIconList() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.visionfettericonlistLength(), this.visionfettericonlist, this);
+  }
   get VisionEffectMap() {
     return GameUtils_1.GameUtils.ConvertToMap(this.visioneffectmapLength(), this.visioneffectmapKey, this.visioneffectmapValue, this);
   }
@@ -180,18 +186,18 @@ class AdvertisingTabEnemy {
       return null;
     }
   }
-  GetVisioneffectmapAt(t, i) {
-    return this.visioneffectmap(t);
+  GetVisionfettercolorlistAt(t) {
+    return this.visionfettercolorlist(t);
   }
-  visioneffectmap(t, i) {
+  visionfettercolorlist(t, i) {
     var s = this.J7.__offset(this.z7, 26);
-    if (s) {
-      return (i || new DicIntString_1.DicIntString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
-    } else {
-      return null;
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
+    return s;
   }
-  visioneffectmapLength() {
+  visionfettercolorlistLength() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
@@ -199,23 +205,45 @@ class AdvertisingTabEnemy {
       return 0;
     }
   }
+  GetVisionfettericonlistAt(t) {
+    return this.visionfettericonlist(t);
+  }
+  visionfettericonlist(t, i) {
+    var s = this.J7.__offset(this.z7, 28);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  visionfettericonlistLength() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetVisioneffectmapAt(t, i) {
+    return this.visioneffectmap(t);
+  }
+  visioneffectmap(t, i) {
+    var s = this.J7.__offset(this.z7, 30);
+    if (s) {
+      return (i || new DicIntString_1.DicIntString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  visioneffectmapLength() {
+    var t = this.J7.__offset(this.z7, 30);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   suitcoresprite(t) {
-    var i = this.J7.__offset(this.z7, 28);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  suitcorebgsprite(t) {
-    var i = this.J7.__offset(this.z7, 30);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  suitouterbgtexture(t) {
     var i = this.J7.__offset(this.z7, 32);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -223,8 +251,24 @@ class AdvertisingTabEnemy {
     }
     return i;
   }
-  suitniagaracolor(t) {
+  suitcorebgsprite(t) {
     var i = this.J7.__offset(this.z7, 34);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  suitouterbgtexture(t) {
+    var i = this.J7.__offset(this.z7, 36);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  suitniagaracolor(t) {
+    var i = this.J7.__offset(this.z7, 38);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

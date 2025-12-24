@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CHANGING_ROLE_TIMEOUT = exports.AUTO_ROLE_OFFSET_DISTANCE = exports.needFixLocationTagList = exports.innerGroupType = exports.beHitTagList = exports.CHECK_ROLE_INTERVAL = exports.EFFECT_DELAY_QUIT = exports.EFFECT_DELAY = exports.GO_DOWN_MATERIAL = exports.GO_BATTLE_EFFECT = exports.GO_BATTLE_MATERIAL = exports.SPECIAL_CHANGE_HEIGHT_AIR = exports.SPECIAL_CHANGE_HEIGHT_LAND = exports.SPECIAL_CHANGE_ANGLE_AIR = exports.SPECIAL_CHANGE_ANGLE_LAND = exports.SPECIAL_CHANGE_DIS_AIR = exports.SPECIAL_CHANGE_DIS_LAND = exports.DATA_LAYER_CHANGE_RADIUS = exports.SCENE_TEAM_MAX_NUM = undefined;
+exports.CHANGING_ROLE_TIMEOUT = exports.AUTO_ROLE_OFFSET_DISTANCE = exports.needFixLocationTagList = exports.innerGroupType = exports.needInheritTypeSet = exports.beHitTagList = exports.CHECK_ROLE_INTERVAL = exports.EFFECT_DELAY_QUIT = exports.EFFECT_DELAY = exports.GO_DOWN_MATERIAL = exports.GO_BATTLE_EFFECT = exports.GO_BATTLE_MATERIAL = exports.SPECIAL_CHANGE_HEIGHT_AIR = exports.SPECIAL_CHANGE_HEIGHT_LAND = exports.SPECIAL_CHANGE_ANGLE_AIR = exports.SPECIAL_CHANGE_ANGLE_LAND = exports.SPECIAL_CHANGE_DIS_AIR = exports.SPECIAL_CHANGE_DIS_LAND = exports.DATA_LAYER_CHANGE_RADIUS = exports.SCENE_TEAM_MAX_NUM = undefined;
 exports.SCENE_TEAM_MAX_NUM = 4;
 exports.DATA_LAYER_CHANGE_RADIUS = 20000;
 exports.SPECIAL_CHANGE_DIS_LAND = 200;
@@ -19,6 +19,7 @@ exports.EFFECT_DELAY = 100;
 exports.EFFECT_DELAY_QUIT = 300;
 exports.CHECK_ROLE_INTERVAL = 30000;
 exports.beHitTagList = [-1989694637, -648310348, -1654460638, 2060652336, 31862857];
+exports.needInheritTypeSet = new Set([-1, 3, 4]);
 exports.innerGroupType = [-1, 3];
 exports.needFixLocationTagList = [-1898186757, 457513750, 1502279607];
 exports.AUTO_ROLE_OFFSET_DISTANCE = 150;

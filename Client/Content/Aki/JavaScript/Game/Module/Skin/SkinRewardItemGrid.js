@@ -43,7 +43,7 @@ class SkinRewardItemGrid extends LoopScrollSmallItemGrid_1.LoopScrollSmallItemGr
     return false;
   }
   OnExtendToggleClicked() {
-    ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.Mne);
+    ControllerHolder_1.ControllerHolder.ItemController.OpenItemTipsByItemId(this.Mne, false);
   }
 }
 exports.SkinRewardItemGrid = SkinRewardItemGrid;

@@ -31,13 +31,16 @@ class LevelEventCompleteGuide extends LevelGeneralBase_1.LevelEventBase {
   }
   CDe(e) {
     if (ControllerHolder_1.ControllerHolder.GuideController.TryFinishGuide(e)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Guide", 95, "行为完成的引导组执行完毕 [成功完成]", ["组Id", e]);
+      }
       this.mDe = e;
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupFinished, this.dDe);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupBreak, this.dDe);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupRest, this.dDe);
     } else {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Guide", 16, "行为完成的引导组执行完毕[跳过完成]", ["组Id", e]);
+        Log_1.Log.Info("Guide", 16, "行为完成的引导组执行完毕 [执行前已经完成]", ["组Id", e]);
       }
       this.FinishExecute(true);
     }

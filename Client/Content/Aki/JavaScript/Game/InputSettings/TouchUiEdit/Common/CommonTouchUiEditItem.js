@@ -103,9 +103,8 @@ class CommonTouchUiEditItem {
     this.k$u();
   }
   SetOffset(t, i) {
-    var s = this.RootItem.GetOwner().D_GetActorScale3D();
-    var t = (t - this.Data.OffsetX) * s.X;
-    var i = (i - this.Data.OffsetY) * s.Y;
+    t -= this.Data.OffsetX;
+    i -= this.Data.OffsetY;
     if (t != 0 || i != 0) {
       this.vgt.X += t;
       this.vgt.Y += i;

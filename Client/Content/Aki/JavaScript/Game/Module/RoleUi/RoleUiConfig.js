@@ -24,11 +24,14 @@ const RoleQualityInfoById_1 = require("../../../Core/Define/ConfigQuery/RoleQual
 const RoleTagAll_1 = require("../../../Core/Define/ConfigQuery/RoleTagAll");
 const RoleTagById_1 = require("../../../Core/Define/ConfigQuery/RoleTagById");
 const RoleTrainingDegreeByDifficultyLevel_1 = require("../../../Core/Define/ConfigQuery/RoleTrainingDegreeByDifficultyLevel");
+const SkillBranchById_1 = require("../../../Core/Define/ConfigQuery/SkillBranchById");
 const TrialRoleInfoByGroupId_1 = require("../../../Core/Define/ConfigQuery/TrialRoleInfoByGroupId");
 const TrialRoleInfoById_1 = require("../../../Core/Define/ConfigQuery/TrialRoleInfoById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RoleDefine_1 = require("./RoleDefine");
+const RoleUtils_1 = require("./RoleUtils");
 class RoleConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
@@ -49,56 +52,56 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
       return RoleInfoById_1.configRoleInfoById.GetConfig(e);
     }
   }
-  GetRoleMorphConfig(e, o, r) {
+  GetRoleMorphConfig(e, r, o) {
     e = RoleMorphByRoleId_1.configRoleMorphByRoleId.GetConfigList(e);
     if (e && !(e.length <= 0)) {
-      return e.find(e => e.Morph === r && e.SkinId === o);
+      return e.find(e => e.Morph === o && e.SkinId === r);
     }
   }
-  GetRoleMorphConfigList(e, o) {
+  GetRoleMorphConfigList(e, r) {
     e = RoleMorphByRoleId_1.configRoleMorphByRoleId.GetConfigList(e);
     if (e && !(e.length <= 0)) {
-      return e.filter(e => e.SkinId === o);
+      return e.filter(e => e.SkinId === r);
     }
   }
   GetAutoRoleConfig(e) {
     e = this.GetBaseRoleId(e);
     return AutoRoleById_1.configAutoRoleById.GetConfig(e);
   }
-  GetBaseRoleId(o) {
-    let r = o;
-    if (this.IsTrialRole(o)) {
-      let e = this.GetTrialRoleConfigByGroupId(o);
-      e = e || this.GetTrialRoleConfig(o);
-      r = e?.ParentId ?? 0;
+  GetBaseRoleId(r) {
+    let o = r;
+    if (this.IsTrialRole(r)) {
+      let e = this.GetTrialRoleConfigByGroupId(r);
+      e = e || this.GetTrialRoleConfig(r);
+      o = e?.ParentId ?? 0;
     }
-    return r;
+    return o;
   }
   IsTrialRole(e) {
     return e > RoleDefine_1.ROBOT_DATA_MIN_ID;
   }
-  GetRoleHeadIcon(e, o = false) {
+  GetRoleHeadIcon(e, r = false) {
     e = this.GetRoleConfig(e);
-    if (o) {
+    if (r) {
       return e.RoleHeadIconBig;
     } else {
       return e.RoleHeadIcon;
     }
   }
-  GetRoleTrialGroupId(r) {
-    r = TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.GetConfigList(r);
-    if (r && !(r.length <= 0)) {
+  GetRoleTrialGroupId(o) {
+    o = TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.GetConfigList(o);
+    if (o && !(o.length <= 0)) {
       var n;
       var l = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
       let e = undefined;
-      let o = l - r[0].WorldLevel;
-      for (const i of r) {
+      let r = l - o[0].WorldLevel;
+      for (const i of o) {
         if (i.WorldLevel === l) {
           return i;
         }
         if (!(i.WorldLevel > l)) {
-          if ((n = l - i.WorldLevel) <= o) {
-            o = n;
+          if ((n = l - i.WorldLevel) <= r) {
+            r = n;
             e = i;
           }
         }
@@ -106,22 +109,22 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
       return e;
     }
   }
-  GetGenderRoleTrialByGroupId(r) {
-    r = TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.GetConfigList(r);
-    if (r && !(r.length <= 0)) {
+  GetGenderRoleTrialByGroupId(o) {
+    o = TrialRoleInfoByGroupId_1.configTrialRoleInfoByGroupId.GetConfigList(o);
+    if (o && !(o.length <= 0)) {
       var n = this.ar1();
       var l = ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel;
       let e = undefined;
-      let o = l - r[0].WorldLevel;
-      for (const t of r) {
+      let r = l - o[0].WorldLevel;
+      for (const t of o) {
         var i = t.Gender;
         if (!(i >= 0) || n === i) {
           if (t.WorldLevel === l) {
             return t;
           }
           if (!(t.WorldLevel > l)) {
-            if ((i = l - t.WorldLevel) <= o) {
-              o = i;
+            if ((i = l - t.WorldLevel) <= r) {
+              r = i;
               e = t;
             }
           }
@@ -136,8 +139,8 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
   GetRoleBreachList(e) {
     return RoleBreachByBreachGroupId_1.configRoleBreachByBreachGroupId.GetConfigList(e);
   }
-  GetRoleBreachConfig(e, o) {
-    return RoleBreachByBreachGroupIdAndBreachLevel_1.configRoleBreachByBreachGroupIdAndBreachLevel.GetConfig(e, o);
+  GetRoleBreachConfig(e, r) {
+    return RoleBreachByBreachGroupIdAndBreachLevel_1.configRoleBreachByBreachGroupIdAndBreachLevel.GetConfig(e, r);
   }
   GetRoleExpItemList() {
     return RoleExpItemAll_1.configRoleExpItemAll.GetConfigList();
@@ -184,8 +187,8 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
   GetRoleGenderSwitchDelayTime() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("RoleGenderSwitchDelayTime");
   }
-  GetRoleLevelConsume(e, o) {
-    return RoleLevelConsumeByConsumeGroupIdAndLevel_1.configRoleLevelConsumeByConsumeGroupIdAndLevel.GetConfig(e, o);
+  GetRoleLevelConsume(e, r) {
+    return RoleLevelConsumeByConsumeGroupIdAndLevel_1.configRoleLevelConsumeByConsumeGroupIdAndLevel.GetConfig(e, r);
   }
   GetRoleQualityInfo(e) {
     return RoleQualityInfoById_1.configRoleQualityInfoById.GetConfig(e);
@@ -197,9 +200,9 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
     return this.GetGenderRoleTrialByGroupId(e);
   }
   GetTrialRoleIdConfigByGroupId(e) {
-    var o = this.GetGenderRoleTrialByGroupId(e);
-    if (o) {
-      return o.Id;
+    var r = this.GetGenderRoleTrialByGroupId(e);
+    if (r) {
+      return r.Id;
     } else {
       return e;
     }
@@ -220,17 +223,17 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
     return RoleTagById_1.configRoleTagById.GetConfig(e);
   }
   GetAllRoleTagList() {
-    const o = [];
-    var e = this.GetAllRoleTagConfig();
     const r = [];
+    var e = this.GetAllRoleTagConfig();
+    const o = [];
     e.forEach(e => {
-      r.push(e);
+      o.push(e);
     });
-    r.sort((e, o) => e.SortId - o.SortId);
-    r.forEach(e => {
-      o.push(e.Id);
+    o.sort((e, r) => e.SortId - r.SortId);
+    o.forEach(e => {
+      r.push(e.Id);
     });
-    return o;
+    return r;
   }
   GetAllRoleTagConfig() {
     return RoleTagAll_1.configRoleTagAll.GetConfigList();
@@ -238,6 +241,51 @@ class RoleConfig extends ConfigBase_1.ConfigBase {
   OnClear() {
     this.Gdo.clear();
     return true;
+  }
+  GetSkillBranchConfigById(e) {
+    return SkillBranchById_1.configSkillBranchById.GetConfig(e);
+  }
+  GetRoleBranchIds(e) {
+    e = RoleUtils_1.RoleUtils.IsTrialRole(e) ? RoleUtils_1.RoleUtils.GetTrailRoleRealRoleId(e) : e;
+    return this.GetRoleConfig(e).SkillBranchIds;
+  }
+  GetRoleBranchList(e) {
+    var r = [];
+    for (const n of this.GetRoleBranchIds(e)) {
+      var o = this.GetSkillBranchConfigById(n);
+      if (o) {
+        r.push(o);
+      }
+    }
+    return r;
+  }
+  GetRoleDefaultBranch(e) {
+    if (RoleUtils_1.RoleUtils.IsTrialRole(e)) {
+      var r = this.GetTrialRoleConfig(e);
+      if (r.DefaultSkillBranchId) {
+        return r.DefaultSkillBranchId;
+      }
+    }
+    return this.GetRoleConfig(e).DefaultSkillBranchId;
+  }
+  GetSkillBranchSwitchSuccessKey() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("SkillBranchSwitchSuccessTipsKey");
+  }
+  GetSkillNodeBranchIds(e) {
+    return ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillTreeNode(e).SkillBranchIds;
+  }
+  GetSkillNodeBranchList(e) {
+    var r = [];
+    for (const n of this.GetSkillNodeBranchIds(e)) {
+      var o = this.GetSkillBranchConfigById(n);
+      if (o) {
+        r.push(o);
+      }
+    }
+    return r;
+  }
+  GetSkillBranchActivatedDescKey() {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("SkillBranchActivatedDescKey");
   }
   ar1() {
     var e = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();

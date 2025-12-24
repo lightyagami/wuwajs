@@ -9,6 +9,7 @@ const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParam
 const DropPackageById_1 = require("../../../Core/Define/ConfigQuery/DropPackageById");
 const DropShowPlanById_1 = require("../../../Core/Define/ConfigQuery/DropShowPlanById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 class RewardConfig extends ConfigBase_1.ConfigBase {
   constructor() {
     super(...arguments);
@@ -45,6 +46,31 @@ class RewardConfig extends ConfigBase_1.ConfigBase {
       }, e]);
     }
     return i;
+  }
+  GetDropPackagePreviewItemListByIdList(t) {
+    var o = new Map();
+    for (const e of t) {
+      for (const i of this.GetDropPackagePreviewItemList(e)) {
+        if (o.has(i[0].ItemId)) {
+          o.set(i[0].ItemId, o.get(i[0].ItemId) + i[1]);
+        } else {
+          o.set(i[0].ItemId, i[1]);
+        }
+      }
+    }
+    const r = ConfigManager_1.ConfigManager.ItemConfig;
+    return Array.from(o).map(([t, o]) => [{
+      ItemId: t,
+      IncId: 0
+    }, o]).sort((t, o) => {
+      var e = r.GetConfig(t[0].ItemId);
+      var i = r.GetConfig(o[0].ItemId);
+      if (e && i && e.QualityId !== i.QualityId) {
+        return i.QualityId - e.QualityId;
+      } else {
+        return t[0].ItemId - o[0].ItemId;
+      }
+    });
   }
   GetDropShowPlan(t) {
     return DropShowPlanById_1.configDropShowPlanById.GetConfig(t);

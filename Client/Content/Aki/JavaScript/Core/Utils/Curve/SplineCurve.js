@@ -177,6 +177,33 @@ class SplineCurve {
     this.UpdateSplineCurves();
     this.EXs = undefined;
   }
+  InitPointsWithRotation(t, e) {
+    this.SplineTransform.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.IdentityProxy, Vector_1.Vector.OneVectorProxy);
+    if (this.SXs === undefined) {
+      this.SXs = [];
+    }
+    for (let e = this.vXs.length = 0; e < t.length; e++) {
+      var i = t[e];
+      this.vXs[e] = new InterpCurvePointVector(fromConfigCurveMode(i.LineType));
+      this.vXs[e].OutVal.FromConfigVector(i.Position);
+      this.vXs[e].InVal = e;
+      this.vXs[e].ArriveTangent.FromConfigVector(i.ArriveTangent);
+      this.vXs[e].LeaveTangent.FromConfigVector(i.LeaveTangent);
+      var r = new InterpCurvePointQuat(1);
+      r.InVal = e;
+      SplineCurve.Gue.Reset();
+      if (i.Rotation) {
+        SplineCurve.Gue.Set(i.Rotation.Y ?? 0, i.Rotation.Z ?? 0, i.Rotation.X ?? 0);
+      }
+      var i = SplineCurve.Gue.ToUeRotator().Quaternion();
+      r.OutVal.DeepCopy(i);
+      r.ArriveTangent.Set(0, 0, 0, 1);
+      r.LeaveTangent.Set(0, 0, 0, 1);
+      this.SXs[e] = r;
+    }
+    this.UpdateSplineCurves();
+    this.EXs = undefined;
+  }
   Init(t, i, r, n) {
     this.SplineTransform.Set(Vector_1.Vector.ZeroVectorProxy, Quat_1.Quat.IdentityProxy, Vector_1.Vector.OneVectorProxy);
     if (t instanceof UE.InterpCurveVector) {
@@ -348,16 +375,16 @@ class SplineCurve {
       for (let e = 0; e < this.yXs; e++) {
         var o = e / this.yXs;
         var u = e === 0 ? 0 : this.IXs(t, o);
-        const h = this.ReparamTable[s];
-        h.InVal = u + n;
-        h.OutVal = t + o;
+        const l = this.ReparamTable[s];
+        l.InVal = u + n;
+        l.OutVal = t + o;
         s++;
       }
       n += this.IXs(t, 1);
     }
-    const h = this.ReparamTable[s];
-    h.InVal = n;
-    h.OutVal = i;
+    const l = this.ReparamTable[s];
+    l.InVal = n;
+    l.OutVal = i;
     return true;
   }
   IXs(e, t) {
@@ -396,14 +423,14 @@ class SplineCurve {
     SplineCurve.gXs.SubtractionEqual(SplineCurve.Tz);
     var o = t * 0.5;
     let u = -0;
-    for (const v of LegendreGaussCoefficients) {
-      var h = o * (1 + v[0]);
+    for (const h of LegendreGaussCoefficients) {
+      var l = o * (1 + h[0]);
       SplineCurve.Lz.DeepCopy(SplineCurve.CXs);
-      SplineCurve.Lz.MultiplyEqual(h);
+      SplineCurve.Lz.MultiplyEqual(l);
       SplineCurve.Lz.AdditionEqual(SplineCurve.gXs);
-      SplineCurve.Lz.MultiplyEqual(h);
+      SplineCurve.Lz.MultiplyEqual(l);
       SplineCurve.Lz.AdditionEqual(SplineCurve.pHo);
-      u += SplineCurve.Lz.Size() * v[1];
+      u += SplineCurve.Lz.Size() * h[1];
     }
     return u *= o;
   }
@@ -440,7 +467,7 @@ class SplineCurve {
   }
   GetWorldLocationAtDistanceAlongSpline(e, t) {
     e = this.TXs(this.ReparamTable, e);
-    this.LXs(e, 1, t);
+    this.GetLocationAtSplineInputKey(e, 1, t);
   }
   GetLocationAtSplinePoint(e, t, i) {
     e = this.Position[e];
@@ -453,7 +480,7 @@ class SplineCurve {
   }
   GetLocationAtDistanceAlongSpline(e, t, i) {
     e = this.TXs(this.ReparamTable, e);
-    this.LXs(e, t, i);
+    this.GetLocationAtSplineInputKey(e, t, i);
   }
   SetLocationAtSplinePoint(e, t, i, r) {
     var n = this.Position.length;
@@ -492,7 +519,7 @@ class SplineCurve {
     return this.PXs(this.Position, e);
   }
   fih(e, t, i) {
-    this.LXs(e, 0, SplineCurve.jye);
+    this.GetLocationAtSplineInputKey(e, 0, SplineCurve.jye);
     this.AXs(e, 0, SplineCurve.RTe);
     this.DXs(e, 0, SplineCurve.jJo);
     SplineCurve.Z_e.SetLocation(SplineCurve.jye);
@@ -533,16 +560,25 @@ class SplineCurve {
   }
   GetDirectionAtDistanceAlongSpline(e, t, i) {
     e = this.TXs(this.ReparamTable, e);
-    this.pih(e, t, i);
+    this.GetDirectionAtSplineInputKey(e, t, i);
   }
-  pih(e, t, i) {
+  GetDirectionAtRateAlongSpline(e, t, i) {
+    var r = this.ReparamTable[this.ReparamTable.length - 1].InVal;
+    var r = this.TXs(this.ReparamTable, r * e);
+    this.GetDirectionAtSplineInputKey(r, t, i);
+  }
+  GetDirectionAtSplineInputKey(e, t, i) {
     this.xXs(this.Position, e, i);
     if (t === 1) {
       this.SplineTransform.TransformVector(i, i);
     }
-    i.Normalize();
+    if (!i.Normalize()) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 39, "SplineCurve.GetDirectionAtSplineInputKey计算归一异常，请检查样条Tangent是否有异常", ["SplineLoc", this.SplineTransform.GetLocation()]);
+      }
+    }
   }
-  LXs(e, t, i) {
+  GetLocationAtSplineInputKey(e, t, i) {
     this.UXs(this.Position, e, i);
     if (t === 1) {
       this.SplineTransform.TransformPosition(i, i);
@@ -557,6 +593,19 @@ class SplineCurve {
     if (t === 1) {
       this.SplineTransform.TransformPosition(i, i);
     }
+  }
+  GetQuaternionAtDistanceAlongSpline(e, t, i) {
+    e = this.TXs(this.ReparamTable, e);
+    this.DXs(e, t, i);
+  }
+  GetRotationAtDistanceAlongSpline(e, t, i) {
+    e = this.TXs(this.ReparamTable, e);
+    this.GetRotationAtSplineInputKey(e, t, i);
+  }
+  GetQuaternionAtRateAlongSpline(e, t, i) {
+    var r = this.ReparamTable[this.ReparamTable.length - 1].InVal;
+    var r = this.TXs(this.ReparamTable, r * e);
+    this.DXs(r, t, i);
   }
   DXs(e, t, i) {
     this.xXs(this.Position, e, SplineCurve.sqn);
@@ -574,6 +623,10 @@ class SplineCurve {
     if (t === 1) {
       this.SplineTransform.GetRotation().Multiply(i, i);
     }
+  }
+  GetRotationAtSplineInputKey(e, t, i) {
+    this.DXs(e, t, SplineCurve._Rm);
+    SplineCurve._Rm.Rotator(i);
   }
   RXs(e, t, i, r = Quat_1.Quat.IdentityProxy) {
     var n = e.length;
@@ -759,6 +812,108 @@ class SplineCurve {
     }
     return n;
   }
+  FindInputKeyClosestToWorldLocation(e) {
+    this.SplineTransform.InverseTransformPosition(e, SplineCurve.jye);
+    var [e] = this.$Kf(this.Position, SplineCurve.jye);
+    return e;
+  }
+  $Kf(n, s) {
+    let e = 0;
+    let o = 0;
+    var t = n.length;
+    var u = t - 1;
+    if (t > 1) {
+      let [t, i] = this.InterpVectorInaccurateFindNearestOnSegment(n, s, 0);
+      let r = 0;
+      for (let e = 1; e < u; ++e) {
+        var [l, h] = this.InterpVectorInaccurateFindNearestOnSegment(n, s, e);
+        if (h < i) {
+          i = h;
+          t = l;
+          r = e;
+        }
+      }
+      e = i;
+      o = r;
+      return [t, e, o];
+    }
+    if (t === 1) {
+      e = Vector_1.Vector.DistSquared(s, n[0].OutVal);
+      return [n[o = 0].InVal, e, o];
+    } else {
+      return [0, e, o];
+    }
+  }
+  InterpVectorInaccurateFindNearestOnSegment(r, n, s) {
+    let e = 0;
+    var t = r.length;
+    var o = s + 1;
+    if (s < 0 || t - 1 <= s) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Movement", 39, "SplineCurve.InterpVectorInaccurateFindNearestOnSegment检查ptIdx异常");
+      }
+      return [0, MathUtils_1.MathUtils.MaxFloat];
+    }
+    t = r[o].InVal;
+    if (r[s].InterpMode === 2) {
+      if ((i = Vector_1.Vector.DistSquared(r[s].OutVal, n)) < (u = Vector_1.Vector.DistSquared(r[o].OutVal, n))) {
+        e = i;
+        return [r[s].InVal, e];
+      } else {
+        return [t, e = u];
+      }
+    }
+    var i;
+    var u;
+    var l = t - r[s].InVal;
+    if (r[s].InterpMode === 0) {
+      r[s].OutVal.Subtraction(n, SplineCurve.Lz);
+      r[o].OutVal.Subtraction(r[s].OutVal, SplineCurve.Tz);
+      i = SplineCurve.Lz.DotProduct(SplineCurve.Tz);
+      u = Vector_1.Vector.DistSquared(r[o].OutVal, r[s].OutVal);
+      t = MathUtils_1.MathUtils.Clamp(-i / u, 0, 1);
+      Vector_1.Vector.Lerp(r[s].OutVal, r[o].OutVal, t, SplineCurve.Lz);
+      e = Vector_1.Vector.DistSquared(SplineCurve.Lz, n);
+      return [t * l + r[s].InVal, e];
+    }
+    var h = [0, 0.5, 1];
+    var v = [r[s].OutVal, SplineCurve.Lz, r[o].OutVal];
+    var p = SplineCurve.Tz;
+    r[s].LeaveTangent.Multiply(l, p);
+    var S = SplineCurve.fHo;
+    r[o].ArriveTangent.Multiply(l, S);
+    Vector_1.Vector.LerpCubic(r[s].OutVal, p, r[o].OutVal, S, h[1], SplineCurve.Lz);
+    var C = [0, 0, 0];
+    for (let i = 0; i < 3; ++i) {
+      var a = SplineCurve.pHo;
+      a.DeepCopy(v[i]);
+      let t = 1;
+      for (let e = 0; e < 3; ++e) {
+        var c = SplineCurve.vHo;
+        Vector_1.Vector.LerpCubicDerivative(r[s].OutVal, p, r[o].OutVal, S, h[i], c);
+        var _ = SplineCurve.CXs;
+        n.Subtraction(a, _);
+        var _ = c.DotProduct(_) / c.SizeSquared();
+        var _ = MathUtils_1.MathUtils.Clamp(_, -t * 0.75, t * 0.75);
+        h[i] += _;
+        h[i] = MathUtils_1.MathUtils.Clamp(h[i], 0, 1);
+        t = Math.abs(_);
+        Vector_1.Vector.LerpCubic(r[s].OutVal, p, r[o].OutVal, S, h[i], a);
+      }
+      C[i] = Vector_1.Vector.DistSquared(a, n);
+      h[i] = h[i] * l + r[s].InVal;
+    }
+    if (C[0] <= C[1] && C[0] <= C[2]) {
+      e = C[0];
+      return [h[0], e];
+    } else if (C[1] <= C[2]) {
+      e = C[1];
+      return [h[1], e];
+    } else {
+      e = C[2];
+      return [h[2], e];
+    }
+  }
 }
 (exports.SplineCurve = SplineCurve).jye = Vector_1.Vector.Create();
 SplineCurve.RTe = Vector_1.Vector.Create();
@@ -776,4 +931,6 @@ SplineCurve.KJ = Quat_1.Quat.Create();
 SplineCurve.QJ = Quat_1.Quat.Create();
 SplineCurve.fXs = Quat_1.Quat.Create();
 SplineCurve.pXs = Quat_1.Quat.Create();
+SplineCurve._Rm = Quat_1.Quat.Create();
+SplineCurve.Gue = Rotator_1.Rotator.Create();
 SplineCurve.Z_e = Transform_1.Transform.Create(); //# sourceMappingURL=SplineCurve.js.map

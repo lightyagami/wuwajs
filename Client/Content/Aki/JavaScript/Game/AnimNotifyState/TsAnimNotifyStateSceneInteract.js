@@ -10,6 +10,7 @@ const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const GameSettingsDefine_1 = require("../GameSettings/GameSettingsDefine");
 const GameSettingsManager_1 = require("../GameSettings/GameSettingsManager");
 const ModelManager_1 = require("../Manager/ModelManager");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 const MAX_ENABLE_TIME = 20000;
 class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
   constructor() {
@@ -24,51 +25,51 @@ class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
   Constructor() {
     this.HandleMap = new Map();
   }
-  K2_NotifyBegin(e, t, r) {
+  K2_NotifyBegin(e, t, i) {
     if (this.DataAssetRef) {
-      var i = e.GetOwner();
-      if (i instanceof TsBaseCharacter_1.default) {
+      var r = e.GetOwner();
+      var a = r instanceof TsBaseCharacter_1.default;
+      var s = r instanceof TsBaseVehicle_1.default;
+      if (a || s) {
         if (!ModelManager_1.ModelManager.SceneBattleInteractModel?.Open) {
           return false;
         }
         if (this.QualityRequire > 0) {
-          var a = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
-          if (!a || a < 3) {
+          s = GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY);
+          if (!s || s < 3) {
             return false;
           }
         }
-        a = ResourceSystem_1.ResourceSystem.Load(this.DataAssetRef.ToAssetPathName(), UE.BP_SceneBattleInteract_C);
-        if (!a) {
+        s = ResourceSystem_1.ResourceSystem.Load(this.DataAssetRef.ToAssetPathName(), UE.BP_SceneBattleInteract_C);
+        if (!s) {
           return false;
         }
-        var s = ModelManager_1.ModelManager.SceneBattleInteractModel.CreateSceneBattleInteract(a);
-        if (s) {
-          var n;
-          var o = s.Id;
-          s.SetDispatchWeaponEventEnable(true);
-          s.SetUpdateLocationSocket(e, this.SocketName ?? FNameUtil_1.FNameUtil.EMPTY);
-          s.SetEnable(true, MAX_ENABLE_TIME);
-          s.SetIgnoreCommonWeapon(this.IgnoreCommonWeapon);
-          var a = a.EntityType;
-          if (a === 0 || a === 1) {
-            if ((n = i.CharacterActorComponent?.Entity)?.Valid) {
-              if (a === 1) {
-                if (a = n.GetComponent(0)?.GetSummonerId()) {
-                  a = ModelManager_1.ModelManager.CreatureModel.GetEntityId(a);
-                  s.BindEntityId(a);
+        var n = ModelManager_1.ModelManager.SceneBattleInteractModel.CreateSceneBattleInteract(s);
+        if (n) {
+          var o = n.Id;
+          n.SetDispatchWeaponEventEnable(true);
+          n.SetUpdateLocationSocket(e, this.SocketName ?? FNameUtil_1.FNameUtil.EMPTY);
+          n.SetEnable(true, MAX_ENABLE_TIME);
+          n.SetIgnoreCommonWeapon(this.IgnoreCommonWeapon);
+          this.HandleMap.set(e, o);
+          if (!!a && ((e = s.EntityType) === 0 || e === 1)) {
+            if ((o = r.CharacterActorComponent?.Entity)?.Valid) {
+              if (e === 1) {
+                if (a = o.GetComponent(0)?.GetSummonerId()) {
+                  s = ModelManager_1.ModelManager.CreatureModel.GetEntityId(a);
+                  n.BindEntityId(s);
                 }
               } else {
-                s.BindEntityId(n.Id);
+                n.BindEntityId(o.Id);
               }
             }
           }
-          this.HandleMap.set(e, o);
           if (this.ShieldWaterMoveEffect) {
-            a = i.CharacterActorComponent?.Entity;
-            if (a?.Valid) {
-              s = a.GetComponent(209);
-              if (s) {
-                s.TagContainer.UpdateExactTag(4, -1921814084, 1);
+            e = r.GetEntityNoBlueprint();
+            if (e?.Valid) {
+              a = e.GetComponent(215);
+              if (a) {
+                a.TagContainer.UpdateExactTag(4, -1921814084, 1);
               }
             }
           }
@@ -80,18 +81,18 @@ class TsAnimNotifyStateSceneInteract extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(e, t) {
     if (this.DataAssetRef) {
-      var r = e.GetOwner();
-      if (r instanceof TsBaseCharacter_1.default) {
-        var i = this.HandleMap.get(e);
-        if (i) {
+      var i = e.GetOwner();
+      if (i instanceof TsBaseCharacter_1.default) {
+        var r = this.HandleMap.get(e);
+        if (r) {
           if (ModelManager_1.ModelManager.SceneBattleInteractModel?.Open) {
-            ModelManager_1.ModelManager.SceneBattleInteractModel.DestroySceneBattleInteract(i);
+            ModelManager_1.ModelManager.SceneBattleInteractModel.DestroySceneBattleInteract(r);
           }
           this.HandleMap.delete(e);
           if (this.ShieldWaterMoveEffect) {
-            i = r.CharacterActorComponent?.Entity;
-            if (i?.Valid) {
-              e = i.GetComponent(209);
+            r = i.CharacterActorComponent?.Entity;
+            if (r?.Valid) {
+              e = r.GetComponent(215);
               if (e) {
                 e.TagContainer.UpdateExactTag(4, -1921814084, -1);
               }

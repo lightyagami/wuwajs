@@ -22,23 +22,22 @@ class TsAnimNotifyStateEnableAimIK extends UE.KuroAnimNotifyState {
     this.OldAssistLimit = -0;
   }
   Constructor() {}
-  K2_NotifyBegin(t, e, i) {
-    t = t.GetOwner();
-    if (t instanceof TsBaseCharacter_1.default) {
-      var s = t.CharacterActorComponent?.Entity;
+  K2_NotifyBegin(e, t, i) {
+    e = e.GetOwner();
+    if (e instanceof TsBaseCharacter_1.default) {
+      var s = e.CharacterActorComponent?.Entity;
       if (s) {
-        var s = s.GetComponent(181).MainAnimInstance;
+        var s = s.GetComponent(186).MainAnimInstance;
         if (UE.KuroStaticLibrary.IsObjectClassByName(s, CharacterNameDefines_1.CharacterNameDefines.ABP_MONSTERCOMMON)) {
           this.OldSightBoneName = (s = s)["Sight Bone Name"];
           this.OldBeginBoneName = s["Begin Bone Name"];
           this.OldEndBoneName = s["End Bone Name"];
-          this.OldCameraMode = s.CameraMode;
+          this.OldCameraMode = s.SightLockMode;
           this.OldAssistLimit = s["Assist Limit"];
           s["Sight Bone Name"] = this.SightBoneName;
           s["Begin Bone Name"] = this.BeginBoneName;
           s["End Bone Name"] = this.EndBoneName;
-          s.CameraMode = 3;
-          s.CameraModeType = 3;
+          s.SightLockMode = 3;
           s["Assist Limit"] = this.AssistLimit;
           if (this.SkeletonChange) {
             s.Increment += 1;
@@ -46,28 +45,27 @@ class TsAnimNotifyStateEnableAimIK extends UE.KuroAnimNotifyState {
           return true;
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 57, "No Entity for TsBaseCharacter ", ["Name", t.GetName()], ["location", t.D_K2_GetActorLocation()]);
+        Log_1.Log.Warn("Test", 57, "No Entity for TsBaseCharacter ", ["Name", e.GetName()], ["location", e.D_K2_GetActorLocation()]);
       }
     }
     return false;
   }
-  K2_NotifyEnd(t, e) {
-    t = t.GetOwner();
-    if (t instanceof TsBaseCharacter_1.default) {
-      var i = t.CharacterActorComponent?.Entity;
+  K2_NotifyEnd(e, t) {
+    e = e.GetOwner();
+    if (e instanceof TsBaseCharacter_1.default) {
+      var i = e.CharacterActorComponent?.Entity;
       if (i) {
-        var i = i.GetComponent(181).MainAnimInstance;
+        var i = i.GetComponent(186).MainAnimInstance;
         if (UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ABP_MONSTERCOMMON)) {
           (i = i)["Sight Bone Name"] = this.OldSightBoneName;
           i["Begin Bone Name"] = this.OldBeginBoneName;
           i["End Bone Name"] = this.OldEndBoneName;
-          i.CameraMode = this.OldCameraMode;
-          i.CameraModeType = this.OldCameraMode;
+          i.SightLockMode = this.OldCameraMode;
           i["Assist Limit"] = this.OldAssistLimit;
           return true;
         }
       } else if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 57, "No Entity for TsBaseCharacter", ["Name", t.GetName()], ["location", t.D_K2_GetActorLocation()]);
+        Log_1.Log.Warn("Test", 57, "No Entity for TsBaseCharacter", ["Name", e.GetName()], ["location", e.D_K2_GetActorLocation()]);
       }
     }
     return false;

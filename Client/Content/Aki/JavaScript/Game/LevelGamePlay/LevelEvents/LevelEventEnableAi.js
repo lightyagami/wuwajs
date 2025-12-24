@@ -15,7 +15,7 @@ class LevelEventEnableAi extends LevelGeneralBase_1.LevelEventBase {
         for (const a of n.EntityIds) {
           var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(a);
           if (o) {
-            if ((o = o.Entity.GetComponent(45)) && o.Valid) {
+            if ((o = o.Entity.GetComponent(46)) && o.Valid) {
               o.StopMove(!n.IsEnable);
             } else if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("LevelEvent", 18, "LevelEventEnableAi行为执行时,实体不存在CharacterMoveComponent", ["实体Id", a]);

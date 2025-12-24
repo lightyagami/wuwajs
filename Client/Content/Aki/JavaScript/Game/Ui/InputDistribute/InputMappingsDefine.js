@@ -102,6 +102,10 @@ exports.actionMappings = {
   UI鼠标侧键前: "UI鼠标侧键前",
   UI鼠标侧键后: "UI鼠标侧键后",
   UI键盘V手柄特左: "UI键盘V手柄特左",
+  UI键盘子弹跳: "UI键盘子弹跳",
+  UI键盘交互: "UI键盘交互",
+  UI手柄退场技: "UI手柄退场技",
+  UI手柄漂移: "UI手柄漂移",
   激活聊天: "激活聊天",
   QTE数字1: "QTE数字1",
   QTE数字2: "QTE数字2",
@@ -162,7 +166,21 @@ exports.actionMappings = {
   QTE_R2攻击: "QTE-R2攻击",
   QTE_空格A: "QTE-空格和A键",
   D级限时选项_1: "D级限时选项-1",
-  D级限时选项_2: "D级限时选项-2"
+  D级限时选项_2: "D级限时选项-2",
+  载具漂移: "载具漂移",
+  载具子弹跳: "载具子弹跳",
+  载具子弹跳1: "载具子弹跳1",
+  载具退场技和下车: "载具退场技和下车",
+  载具探索工具: "载具探索工具",
+  载具氮气: "载具氮气",
+  载具视角切换: "载具视角切换",
+  载具空中抬升: "载具空中抬升",
+  载具音乐上一首: "载具音乐上一首",
+  载具音乐下一首: "载具音乐下一首",
+  载具音乐播放暂停: "载具音乐播放暂停",
+  载具锁定目标: "载具锁定目标",
+  载具辅助机攻击: "载具辅助机攻击",
+  飞讯: "飞讯"
 };
 exports.axisMappings = {
   LookUp: "LookUp",
@@ -207,7 +225,9 @@ exports.axisMappings = {
   RoleReduce: "RoleReduce",
   TrapDefenseMoveForward: "TrapDefenseMoveForward",
   TrapDefenseMoveRight: "TrapDefenseMoveRight",
-  TrapDefenseZoom: "TrapDefenseZoom"
+  TrapDefenseZoom: "TrapDefenseZoom",
+  MotorMoveForward: "MotorMoveForward",
+  MotorMoveRight: "MotorMoveRight"
 };
 exports.touchIdMappings = {
   Touch1: 0,

@@ -50,7 +50,7 @@ class BattleLogicController extends ControllerBase_1.ControllerBase {
             t.aRs.forEach(t => {
               if (t.hRs && t.W5n === ModelManager_1.ModelManager.PlayerInfoModel.GetId()) {
                 this.u0r.Start();
-                o.GetComponent(184)?.DetachFromHost(true, false, false);
+                o.GetComponent(189)?.DetachFromHost(true, false, false);
                 o.Disable("[BattleLogicController.BattleLogicController] 被收服的Entity先隐藏");
                 this.u0r.Stop();
                 e = true;
@@ -87,7 +87,7 @@ class BattleLogicController extends ControllerBase_1.ControllerBase {
   static d0r(t) {
     if (t?.Valid) {
       if (t.IsInit) {
-        t?.Entity?.GetComponent(195)?.ExecuteRevive();
+        t?.Entity?.GetComponent(201)?.ExecuteRevive();
       } else {
         t.Entity?.GetComponent(0)?.SetLivingStatus(Protocol_1.Aki.Protocol.JEs.Proto_Alive);
       }

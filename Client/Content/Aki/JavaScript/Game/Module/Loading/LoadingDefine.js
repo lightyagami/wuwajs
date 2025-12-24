@@ -17,4 +17,6 @@ exports.dungeonToLoadingViewMap = new Map([[31, {
 }], [36, {
   View: "PhantomArenaCardBattleLoadingView",
   IgnoreExitLoading: true
+}], [48, {
+  View: "LordGymLoadingView"
 }]]); //# sourceMappingURL=LoadingDefine.js.map

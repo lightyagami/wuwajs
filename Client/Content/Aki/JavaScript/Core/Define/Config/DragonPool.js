@@ -28,6 +28,9 @@ class DragonPool {
   get AutoTake() {
     return this.autotake();
   }
+  get CanLevelUpTips() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.canleveluptipsLength(), this.canleveluptips, this);
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -136,6 +139,25 @@ class DragonPool {
   autotake() {
     var t = this.J7.__offset(this.z7, 14);
     return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  GetCanleveluptipsAt(t) {
+    return this.canleveluptips(t);
+  }
+  canleveluptips(t, s) {
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.J7.__vector(this.z7 + i) + t * 4, s) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  canleveluptipsLength() {
+    var t = this.J7.__offset(this.z7, 16);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
   }
 }
 exports.DragonPool = DragonPool;

@@ -39,8 +39,8 @@ class LevelEventVehicleWaterfallMove extends LevelGeneralBase_1.LevelEventBase {
     var s;
     var o;
     var r = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    var l = r?.Entity.GetComponent(233);
-    var n = l?.VehicleEntity?.GetComponent(249);
+    var l = r?.Entity.GetComponent(242);
+    var n = l?.VehicleEntity?.GetComponent(260);
     if (n) {
       if ((s = new GameSplineComponent_1.GameSplineComponent(e.SplineEntityId)).Initialize()) {
         if ((i = s.GetNumberOfSplinePoints()) < 2) {

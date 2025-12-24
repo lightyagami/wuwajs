@@ -179,22 +179,6 @@ class TsPhotographer extends UE.Actor {
       this.CompleteHideSizeInFrame = t.Get(14);
       this.StartDitherValue = s ? t.Get(4) : t.Get(12);
       this.IsLoadingConfigCompleted = true;
-    });
-    ResourceSystem_1.ResourceSystem.LoadAsync(t, UE.BP_FightCameraConfig_C, t => {
-      var t = t.基础;
-      this.StartHidePitch = s ? t.Get(94) : t.Get(42);
-      var i = s ? t.Get(96) : t.Get(40);
-      var h = s ? t.Get(97) : t.Get(41);
-      this.StartHideDistance = Math.max(i, h) + HIDE_DISTANCE_OFFSET;
-      this.CompleteHideDistance = Math.min(i, h) + HIDE_DISTANCE_OFFSET;
-      var i = t.Get(99);
-      var h = t.Get(100);
-      this.NpcStartHideDistance = Math.max(i, h) + HIDE_DISTANCE_OFFSET;
-      this.NpcCompleteHideDistance = Math.min(i, h) + HIDE_DISTANCE_OFFSET;
-      this.NpcStartDitherValue = t.Get(101);
-      this.CompleteHidePitch = s ? t.Get(95) : t.Get(43);
-      this.StartDitherValue = s ? t.Get(98) : t.Get(44);
-      this.IsLoadingConfigCompleted = true;
     }, 100, "Ui.PhotographUi");
     this.RefreshDitherEffect();
   }
@@ -463,7 +447,7 @@ class TsPhotographer extends UE.Actor {
     this.CameraLocation.Addition(this.TmpVector, this.CameraCollisionLocation);
   }
   IsCharacterIgnoreNpcDither(t) {
-    return !!t.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(-1151151013);
+    return !!t.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(-1151151013);
   }
   UpdateDitheredNpcDistance(i) {
     var h = i.GetHitCount();

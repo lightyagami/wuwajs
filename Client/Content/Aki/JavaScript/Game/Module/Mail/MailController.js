@@ -29,15 +29,15 @@ class MailController extends UiControllerBase_1.UiControllerBase {
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSelectMail, this.xpm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Bpm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestDeleteMail, this.kpm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSelectMail, this.bbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Rbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestDeleteMail, this.wbm);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.dyi);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSelectMail, this.xpm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Bpm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestDeleteMail, this.kpm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSelectMail, this.bbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestPickMailAttachment, this.Rbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestDeleteMail, this.wbm);
   }
   static OnRegisterNetEvent() {
     Net_1.Net.Register(24551, this.Cyi);
@@ -218,12 +218,12 @@ MailController.dyi = (e = "NewMail") => {
     }
   }
 };
-MailController.xpm = (e, o) => {
+MailController.bbm = (e, o) => {
   _a.SelectedMail(ModelManager_1.ModelManager.MailModel.GetMailInstanceById(e));
 };
-MailController.Bpm = (e, o) => {
+MailController.Rbm = (e, o) => {
   _a.RequestPickAttachment(e, o);
 };
-MailController.kpm = e => {
+MailController.wbm = e => {
   _a.RequestDeleteMail(e);
 }; //# sourceMappingURL=MailController.js.map

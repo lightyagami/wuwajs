@@ -111,8 +111,8 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
       var o = i?.CreatureData.GetEntityType();
       if (o === Protocol_1.Aki.Protocol.kks.Proto_Player) {
         if (this.kdn = t) {
-          this.qdn = e.GetComponent(182);
-          this.Gdn = e.GetComponent(104);
+          this.qdn = e.GetComponent(187);
+          this.Gdn = e.GetComponent(109);
           this.qdn.DeltaConveyBeltSpeed = this.iun.ToUeVector();
         } else {
           this.qdn.DeltaConveyBeltSpeed = undefined;
@@ -120,7 +120,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
           this.Gdn = undefined;
         }
       } else if (o === Protocol_1.Aki.Protocol.kks.Proto_Npc || o === Protocol_1.Aki.Protocol.kks.Proto_Monster || o === Protocol_1.Aki.Protocol.kks.Proto_Animal || o === Protocol_1.Aki.Protocol.kks.Proto_Vision) {
-        var s = e.GetComponent(45);
+        var s = e.GetComponent(46);
         if (s) {
           n = this.Odn.get(s);
           if (t) {
@@ -132,7 +132,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
           }
         }
       } else if (o === Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
-        if (e.GetComponent(160)) {
+        if (e.GetComponent(165)) {
           const i = e.GetComponent(1);
           var n = this.Ndn.indexOf(i);
           if (t) {
@@ -171,7 +171,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
     return true;
   }
   OnStart() {
-    this.vtn = this.Entity.GetComponent(86);
+    this.vtn = this.Entity.GetComponent(89);
     if (this.vtn) {
       this.vtn.AddOnEntityOverlapCallback(this.Vdn);
     }
@@ -218,7 +218,7 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
   }
   Kdn() {
     this.Bdn = undefined;
-    var t = this.Entity.GetComponent(137).State;
+    var t = this.Entity.GetComponent(142).State;
     let e = "";
     if (t === 1) {
       e = "常态";
@@ -257,5 +257,5 @@ let SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = class Sc
     }
   }
 };
-SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(151)], SceneItemConveyorBeltComponent);
+SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(156)], SceneItemConveyorBeltComponent);
 exports.SceneItemConveyorBeltComponent = SceneItemConveyorBeltComponent; //# sourceMappingURL=SceneItemConveyorBeltComponent.js.map

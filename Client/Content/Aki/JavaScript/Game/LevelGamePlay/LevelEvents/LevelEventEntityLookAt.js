@@ -43,7 +43,7 @@ class LevelEventEntityLookAt extends LevelGeneralBase_1.LevelEventBase {
     var o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.pDe.EntityId);
     if (o) {
       e = (this.sDe = o).Entity.GetComponent(3);
-      i = o.Entity.GetComponent(45)?.CharacterMovement;
+      i = o.Entity.GetComponent(46)?.CharacterMovement;
       if (ObjectUtils_1.ObjectUtils.IsValid(i)) {
         this.WTe = i.MovementMode;
         i.MovementMode = 1;
@@ -81,7 +81,7 @@ class LevelEventEntityLookAt extends LevelGeneralBase_1.LevelEventBase {
     if (this.vDe) {
       if (this.sDe?.IsInit) {
         if ((t = this.sDe.Entity?.GetComponent(3)).InputRotatorProxy.Equals(t.ActorRotationProxy, TOLERANCE)) {
-          t.Entity.GetComponent(45).CharacterMovement.MovementMode = this.WTe;
+          t.Entity.GetComponent(46).CharacterMovement.MovementMode = this.WTe;
           this.FinishExecute(true);
         }
       } else {

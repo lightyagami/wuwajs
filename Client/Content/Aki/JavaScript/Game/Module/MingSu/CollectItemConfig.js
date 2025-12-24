@@ -7,6 +7,7 @@ exports.CollectItemConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const DarkCoastDeliveryById_1 = require("../../../Core/Define/ConfigQuery/DarkCoastDeliveryById");
 const DragonPoolAll_1 = require("../../../Core/Define/ConfigQuery/DragonPoolAll");
+const DragonPoolByCoreId_1 = require("../../../Core/Define/ConfigQuery/DragonPoolByCoreId");
 const DragonPoolById_1 = require("../../../Core/Define/ConfigQuery/DragonPoolById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 class CollectItemConfig extends ConfigBase_1.ConfigBase {
@@ -15,6 +16,9 @@ class CollectItemConfig extends ConfigBase_1.ConfigBase {
   }
   GetDragonPoolConfigById(o) {
     return DragonPoolById_1.configDragonPoolById.GetConfig(o);
+  }
+  GetDragonPoolConfigByCoreId(o) {
+    return DragonPoolByCoreId_1.configDragonPoolByCoreId.GetConfig(o);
   }
   GetDarkCoastDeliveryById(o) {
     var e = DarkCoastDeliveryById_1.configDarkCoastDeliveryById.GetConfig(o);

@@ -14,7 +14,11 @@ const ChipTypeAll_1 = require("../../../Core/Define/ConfigQuery/ChipTypeAll");
 const ChipTypeById_1 = require("../../../Core/Define/ConfigQuery/ChipTypeById");
 const GeographyHandBookAll_1 = require("../../../Core/Define/ConfigQuery/GeographyHandBookAll");
 const GeographyHandBookById_1 = require("../../../Core/Define/ConfigQuery/GeographyHandBookById");
+const GeographyHandBookByTabType_1 = require("../../../Core/Define/ConfigQuery/GeographyHandBookByTabType");
+const GeographyHandBookByTabTypeAndType_1 = require("../../../Core/Define/ConfigQuery/GeographyHandBookByTabTypeAndType");
 const GeographyHandBookByType_1 = require("../../../Core/Define/ConfigQuery/GeographyHandBookByType");
+const GeographyTabTypeAll_1 = require("../../../Core/Define/ConfigQuery/GeographyTabTypeAll");
+const GeographyTabTypeById_1 = require("../../../Core/Define/ConfigQuery/GeographyTabTypeById");
 const GeographyTypeAll_1 = require("../../../Core/Define/ConfigQuery/GeographyTypeAll");
 const GeographyTypeById_1 = require("../../../Core/Define/ConfigQuery/GeographyTypeById");
 const HandBookEntranceAll_1 = require("../../../Core/Define/ConfigQuery/HandBookEntranceAll");
@@ -60,130 +64,142 @@ class HandBookConfig extends ConfigBase_1.ConfigBase {
   GetPhantomFetterHandBookConfig() {
     return PhantomFetterHandBookAll_1.configPhantomFetterHandBookAll.GetConfigList();
   }
-  GetPhantomHandBookConfigById(o) {
-    return PhantomHandBookById_1.configPhantomHandBookById.GetConfig(o);
+  GetPhantomHandBookConfigById(e) {
+    return PhantomHandBookById_1.configPhantomHandBookById.GetConfig(e);
   }
   GetPhantomHandBookPageConfig() {
     return PhantomHandBookPageAll_1.configPhantomHandBookPageAll.GetConfigList();
   }
-  GetHandBookEntranceConfig(o) {
-    return HandBookEntranceById_1.configHandBookEntranceById.GetConfig(o);
+  GetHandBookEntranceConfig(e) {
+    return HandBookEntranceById_1.configHandBookEntranceById.GetConfig(e);
   }
   GetHandBookEntranceConfigList() {
     return HandBookEntranceAll_1.configHandBookEntranceAll.GetConfigList();
   }
-  GetWeaponHandBookConfig(o) {
-    return WeaponHandBookById_1.configWeaponHandBookById.GetConfig(o);
+  GetWeaponHandBookConfig(e) {
+    return WeaponHandBookById_1.configWeaponHandBookById.GetConfig(e);
   }
   GetWeaponHandBookConfigList() {
     return WeaponHandBookAll_1.configWeaponHandBookAll.GetConfigList();
   }
-  GetMonsterHandBookConfigById(o) {
-    return MonsterHandBookById_1.configMonsterHandBookById.GetConfig(o);
+  GetMonsterHandBookConfigById(e) {
+    return MonsterHandBookById_1.configMonsterHandBookById.GetConfig(e);
   }
-  GetMonsterHandBookConfigByMonsterId(o) {
-    return MonsterHandBookByMonsterId_1.configMonsterHandBookByMonsterId.GetConfig(o);
+  GetMonsterHandBookConfigByMonsterId(e) {
+    return MonsterHandBookByMonsterId_1.configMonsterHandBookByMonsterId.GetConfig(e);
   }
-  GetMonsterHandBookConfigByType(o) {
-    return MonsterHandBookByType_1.configMonsterHandBookByType.GetConfigList(o);
+  GetMonsterHandBookConfigByType(e) {
+    return MonsterHandBookByType_1.configMonsterHandBookByType.GetConfigList(e);
   }
   GetMonsterHandBookTypeConfig() {
     return MonsterHandBookTypeAll_1.configMonsterHandBookTypeAll.GetConfigList();
   }
-  GetMonsterHandBookTypeConfigById(o) {
-    return MonsterHandBookTypeById_1.configMonsterHandBookTypeById.GetConfig(o);
+  GetMonsterHandBookTypeConfigById(e) {
+    return MonsterHandBookTypeById_1.configMonsterHandBookTypeById.GetConfig(e);
   }
   GetMonsterHandBookConfigList() {
     return MonsterHandBookAll_1.configMonsterHandBookAll.GetConfigList();
   }
-  GetItemHandBookConfigById(o) {
-    return ItemHandBookById_1.configItemHandBookById.GetConfig(o);
+  GetItemHandBookConfigById(e) {
+    return ItemHandBookById_1.configItemHandBookById.GetConfig(e);
   }
   GetItemHandBookConfigList() {
     return ItemHandBookAll_1.configItemHandBookAll.GetConfigList();
   }
-  GetItemHandBookConfigByType(o) {
-    return ItemHandBookByType_1.configItemHandBookByType.GetConfigList(o);
+  GetItemHandBookConfigByType(e) {
+    return ItemHandBookByType_1.configItemHandBookByType.GetConfigList(e);
   }
   GetItemHandBookTypeConfigList() {
     return ItemHandBookTypeAll_1.configItemHandBookTypeAll.GetConfigList();
   }
-  GetItemHandBookTypeConfig(o) {
-    return ItemHandBookTypeById_1.configItemHandBookTypeById.GetConfig(o);
+  GetItemHandBookTypeConfig(e) {
+    return ItemHandBookTypeById_1.configItemHandBookTypeById.GetConfig(e);
   }
   GetAnimalHandBookConfigList() {
     return AnimalHandBookAll_1.configAnimalHandBookAll.GetConfigList();
   }
-  GetAnimalHandBookConfigById(o) {
-    return AnimalHandBookById_1.configAnimalHandBookById.GetConfig(o);
+  GetAnimalHandBookConfigById(e) {
+    return AnimalHandBookById_1.configAnimalHandBookById.GetConfig(e);
   }
-  GetAnimalHandBookConfigByMeshId(o) {
+  GetAnimalHandBookConfigByMeshId(e) {
     if (!this.Rei) {
       this.Rei = new Map();
-      for (const e of AnimalHandBookAll_1.configAnimalHandBookAll.GetConfigList()) {
-        this.Rei.set(e.MeshId, e.Id);
+      for (const o of AnimalHandBookAll_1.configAnimalHandBookAll.GetConfigList()) {
+        this.Rei.set(o.MeshId, o.Id);
       }
     }
-    if (this.Rei.get(o)) {
-      return AnimalHandBookByMeshId_1.configAnimalHandBookByMeshId.GetConfig(o);
+    if (this.Rei.get(e)) {
+      return AnimalHandBookByMeshId_1.configAnimalHandBookByMeshId.GetConfig(e);
     }
   }
   GetAllChipHandBookConfig() {
     return ChipHandBookAll_1.configChipHandBookAll.GetConfigList();
   }
-  GetChipHandBookConfigList(o) {
-    return ChipHandBookByType_1.configChipHandBookByType.GetConfigList(o);
+  GetChipHandBookConfigList(e) {
+    return ChipHandBookByType_1.configChipHandBookByType.GetConfigList(e);
   }
-  GetChipHandBookConfig(o) {
-    return ChipHandBookById_1.configChipHandBookById.GetConfig(o);
+  GetChipHandBookConfig(e) {
+    return ChipHandBookById_1.configChipHandBookById.GetConfig(e);
   }
   GetChipTypeConfigList() {
     return ChipTypeAll_1.configChipTypeAll.GetConfigList();
   }
-  GetChipTypeConfig(o) {
-    return ChipTypeById_1.configChipTypeById.GetConfig(o);
+  GetChipTypeConfig(e) {
+    return ChipTypeById_1.configChipTypeById.GetConfig(e);
   }
-  GetNounHandBookConfig(o) {
-    return NounHandBookById_1.configNounHandBookById.GetConfig(o);
+  GetNounHandBookConfig(e) {
+    return NounHandBookById_1.configNounHandBookById.GetConfig(e);
   }
-  GetNounHandBookConfigList(o) {
-    return NounHandBookByType_1.configNounHandBookByType.GetConfigList(o);
+  GetNounHandBookConfigList(e) {
+    return NounHandBookByType_1.configNounHandBookByType.GetConfigList(e);
   }
   GetNounTypeConfigList() {
     return NounTypeAll_1.configNounTypeAll.GetConfigList();
   }
-  GetNounTypeConfig(o) {
-    return NounTypeById_1.configNounTypeById.GetConfig(o);
+  GetNounTypeConfig(e) {
+    return NounTypeById_1.configNounTypeById.GetConfig(e);
   }
   GetNounTypeConfigAll() {
     return NounHandBookAll_1.configNounHandBookAll.GetConfigList();
   }
-  GetGeographyHandBookConfig(o) {
-    return GeographyHandBookById_1.configGeographyHandBookById.GetConfig(o);
+  GetGeographyHandBookConfig(e) {
+    return GeographyHandBookById_1.configGeographyHandBookById.GetConfig(e);
   }
   GetAllGeographyHandBookConfig() {
     return GeographyHandBookAll_1.configGeographyHandBookAll.GetConfigList();
   }
-  GetGeographyHandBookConfigByType(o) {
-    return GeographyHandBookByType_1.configGeographyHandBookByType.GetConfigList(o);
+  GetGeographyHandBookConfigByType(e) {
+    return GeographyHandBookByType_1.configGeographyHandBookByType.GetConfigList(e);
   }
-  GetGeographyTypeConfig(o) {
-    return GeographyTypeById_1.configGeographyTypeById.GetConfig(o);
+  GetGeographyHandBookConfigByTabType(e) {
+    return GeographyHandBookByTabType_1.configGeographyHandBookByTabType.GetConfigList(e);
+  }
+  GetGeographyHandBookConfigByTabTypeAndType(e, o) {
+    return GeographyHandBookByTabTypeAndType_1.configGeographyHandBookByTabTypeAndType.GetConfigList(e, o);
+  }
+  GetGeographyTypeConfig(e) {
+    return GeographyTypeById_1.configGeographyTypeById.GetConfig(e);
   }
   GetGeographyTypeConfigList() {
     return GeographyTypeAll_1.configGeographyTypeAll.GetConfigList();
   }
+  GetGeographyTabList() {
+    return GeographyTabTypeAll_1.configGeographyTabTypeAll.GetConfigList();
+  }
+  GetGeographyTabTypeById(e) {
+    return GeographyTabTypeById_1.configGeographyTabTypeById.GetConfig(e);
+  }
   GetAllPlotHandBookConfig() {
     return PhotographHandBookAll_1.configPhotographHandBookAll.GetConfigList();
   }
-  GetPlotHandBookConfig(o) {
-    return PhotographHandBookById_1.configPhotographHandBookById.GetConfig(o);
+  GetPlotHandBookConfig(e) {
+    return PhotographHandBookById_1.configPhotographHandBookById.GetConfig(e);
   }
-  GetPlotHandBookConfigByType(o) {
-    return PhotographHandBookByType_1.configPhotographHandBookByType.GetConfigList(o);
+  GetPlotHandBookConfigByType(e) {
+    return PhotographHandBookByType_1.configPhotographHandBookByType.GetConfigList(e);
   }
-  GetPlotTypeConfig(o) {
-    return PlotTypeById_1.configPlotTypeById.GetConfig(o);
+  GetPlotTypeConfig(e) {
+    return PlotTypeById_1.configPlotTypeById.GetConfig(e);
   }
   GetPlotTypeConfigList() {
     return PlotTypeAll_1.configPlotTypeAll.GetConfigList();
@@ -191,15 +207,15 @@ class HandBookConfig extends ConfigBase_1.ConfigBase {
   GetQuestTabList() {
     return HandBookQuestTabAll_1.configHandBookQuestTabAll.GetConfigList();
   }
-  GetQuestTab(o) {
-    for (const e of HandBookQuestTabAll_1.configHandBookQuestTabAll.GetConfigList()) {
-      if (e.Type === o) {
-        return e;
+  GetQuestTab(e) {
+    for (const o of HandBookQuestTabAll_1.configHandBookQuestTabAll.GetConfigList()) {
+      if (o.Type === e) {
+        return o;
       }
     }
   }
-  GetQuestPlotConfig(o) {
-    return PlotHandBookConfigByQuestId_1.configPlotHandBookConfigByQuestId.GetConfig(o);
+  GetQuestPlotConfig(e) {
+    return PlotHandBookConfigByQuestId_1.configPlotHandBookConfigByQuestId.GetConfig(e);
   }
 }
 exports.HandBookConfig = HandBookConfig;

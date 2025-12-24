@@ -7,6 +7,10 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const GameplayTagUtils_1 = require("../../../Core/Utils/GameplayTagUtils");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
+const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
@@ -39,49 +43,49 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static TriggerBlackSequence() {
     PlotController_1.PlotController.TriggerBlackSequence();
   }
-  static ChangePlotWeather(e, r, t) {
-    PlotController_1.PlotController.ChangeWeather(e, r, t);
+  static ChangePlotWeather(e, t, r) {
+    PlotController_1.PlotController.ChangeWeather(e, t, r);
   }
-  static ChangePlotTimeOfDay(e, r, t, a) {
-    PlotController_1.PlotController.ChangePlotTimeOfDay(e, r, t, a / FRAME_PER_SECOND);
+  static ChangePlotTimeOfDay(e, t, r, a) {
+    PlotController_1.PlotController.ChangePlotTimeOfDay(e, t, r, a / FRAME_PER_SECOND);
   }
   static ExecuteSequenceEvents(e) {
     SequenceController_1.SequenceController.RunSequenceFrameEvents(e);
   }
-  static ExecuteEntitySequenceEvents(e, r) {
-    var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
-    if (t?.IsInit) {
-      t.Entity?.GetComponent(168)?.ExecuteEvent(e);
+  static ExecuteEntitySequenceEvents(e, t) {
+    var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
+    if (r?.IsInit) {
+      r.Entity?.GetComponent(173)?.ExecuteEvent(e);
     } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("LevelPlay", 26, "场景引用Sequence帧事件找不到实体", ["key", e], ["id", r]);
+      Log_1.Log.Error("LevelPlay", 26, "场景引用Sequence帧事件找不到实体", ["key", e], ["id", t]);
     }
   }
   static TriggerCutChange() {
     SequenceController_1.SequenceController.TriggerCutChange();
   }
-  static OpenChapterUi(e, r) {
-    GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.OpenChapterViewV2(e, r, true);
+  static OpenChapterUi(e, t) {
+    GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.OpenChapterViewV2(e, t, true);
   }
   static ShowLogo(e) {
     SequenceController_1.SequenceController.ShowLogo(e);
   }
-  static OpenUiView(e, r, t, a, n = true) {
+  static OpenUiView(e, t, r, a, n = true) {
     switch (ModelManager_1.ModelManager.WorldLevelModel.Sex) {
       case 0:
-        SequenceController_1.SequenceController.OpenUiView(r, a, n);
+        SequenceController_1.SequenceController.OpenUiView(t, a, n);
         break;
       case 1:
-        SequenceController_1.SequenceController.OpenUiView(e, t, n);
+        SequenceController_1.SequenceController.OpenUiView(e, r, n);
     }
   }
-  static OpenUiViewInArray(e, r, t, a) {
+  static OpenUiViewInArray(e, t, r, a) {
     switch (ModelManager_1.ModelManager.WorldLevelModel.Sex) {
       case 0:
         var n = (0, puerts_1.$unref)(a);
-        SequenceController_1.SequenceController.OpenUiViewForArray(r, n);
+        SequenceController_1.SequenceController.OpenUiViewForArray(t, n);
         break;
       case 1:
-        n = (0, puerts_1.$unref)(t);
+        n = (0, puerts_1.$unref)(r);
         SequenceController_1.SequenceController.OpenUiViewForArray(e, n);
     }
   }
@@ -91,27 +95,27 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static CloseUiView() {
     SequenceController_1.SequenceController.CloseUiView();
   }
-  static PlaySpineAnim(e, r = true) {
-    SequenceController_1.SequenceController.PlaySpineAnim(e, r);
+  static PlaySpineAnim(e, t = true) {
+    SequenceController_1.SequenceController.PlaySpineAnim(e, t);
   }
-  static PlaySpineAnimForGender(e, r, t = true) {
+  static PlaySpineAnimForGender(e, t, r = true) {
     switch (ModelManager_1.ModelManager.WorldLevelModel.Sex) {
       case 0:
-        SequenceController_1.SequenceController.PlaySpineAnim(r, t);
+        SequenceController_1.SequenceController.PlaySpineAnim(t, r);
         break;
       case 1:
-        SequenceController_1.SequenceController.PlaySpineAnim(e, t);
+        SequenceController_1.SequenceController.PlaySpineAnim(e, r);
     }
   }
-  static PlaySpineAnimForGenderInArray(e, r) {
+  static PlaySpineAnimForGenderInArray(e, t) {
     switch (ModelManager_1.ModelManager.WorldLevelModel.Sex) {
       case 0:
-        var t = (0, puerts_1.$unref)(r);
-        SequenceController_1.SequenceController.PlaySpineAnimInArray(t);
+        var r = (0, puerts_1.$unref)(t);
+        SequenceController_1.SequenceController.PlaySpineAnimInArray(r);
         break;
       case 1:
-        t = (0, puerts_1.$unref)(e);
-        SequenceController_1.SequenceController.PlaySpineAnimInArray(t);
+        r = (0, puerts_1.$unref)(e);
+        SequenceController_1.SequenceController.PlaySpineAnimInArray(r);
     }
   }
   static CloseSpineAnim(e) {
@@ -121,9 +125,9 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     e = (0, puerts_1.$unref)(e);
     SequenceController_1.SequenceController.CloseSpineAnimInArray(e);
   }
-  static AdditionSeqPlay(e, r, t, a) {
+  static AdditionSeqPlay(e, t, r, a) {
     if (e) {
-      SequenceController_1.SequenceController.AdditionSeqPlay(e, r, t, a);
+      SequenceController_1.SequenceController.AdditionSeqPlay(e, t, r, a);
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 45, "AdditionSeqPlay 没找到LevelSequence");
     }
@@ -147,21 +151,30 @@ class PlotBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     ModelManager_1.ModelManager.GravityFlipModel.GravityFlipComp?.RemoveInteractTag();
   }
   static TriggerTagToInteractingGravityMachine(e) {
-    var r = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(209);
+    var t = ModelManager_1.ModelManager.GravityFlipModel.GravityFlipEntity?.GetComponent(215);
     var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.TagName);
-    if (r?.HasTag(e)) {
-      r?.RemoveTag(e);
+    if (t?.HasTag(e)) {
+      t?.RemoveTag(e);
     }
-    r?.AddTag(e);
+    t?.AddTag(e);
   }
-  static ShowBgIcon(e, r, t) {
-    UiManager_1.UiManager.GetViewByName("PlotSubtitleView")?.SetIconBySequence(e, r, t);
+  static ShowBgIcon(e, t, r) {
+    UiManager_1.UiManager.GetViewByName("PlotSubtitleView")?.SetIconBySequence(e, t, r);
   }
   static BindItemInspectActor(e) {
-    var r = ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor;
-    if (r?.IsValid() && (r = r.SequencePlayer.GetSpawnedActorByGuid(e.Guid, true))?.IsValid()) {
-      ControllerHolder_1.ControllerHolder.ItemInspectController.BindItemInspectActor(r);
+    var t = ModelManager_1.ModelManager.SequenceModel.CurLevelSeqActor;
+    if (t?.IsValid() && (t = t.SequencePlayer.GetSpawnedActorByGuid(e.Guid, true))?.IsValid()) {
+      ControllerHolder_1.ControllerHolder.ItemInspectController.BindItemInspectActor(t);
     }
+  }
+  static EnablePlotInteract(e) {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.EnableInteractPlot, e, false);
+  }
+  static EnableCameraShake(e, t) {
+    ControllerHolder_1.ControllerHolder.SequenceController.EnableCameraShake(e, t);
+  }
+  static NeedFlowAdaption() {
+    return !!GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.FlowAdaptation);
   }
 }
 exports.default = PlotBlueprintFunctionLibrary;

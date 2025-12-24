@@ -24,7 +24,7 @@ const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
 const MapLogger_1 = require("../Map/Misc/MapLogger");
 const QuestController_1 = require("../QuestNew/Controller/QuestController");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
-const TeleportController_1 = require("../Teleport/TeleportController");
+const TeleportMisc_1 = require("../Teleport/TeleportMisc");
 const WorldMapDefine_1 = require("./WorldMapDefine");
 class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static OnInit() {
@@ -41,27 +41,29 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.nkf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OpenView, this._3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.u3o);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsOpenWorldMapView, this.nkf);
   }
   static TryTeleport(e, r) {
     var o;
-    if (TeleportController_1.TeleportController.CheckCanTeleport()) {
+    if (ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi) {
       if ((o = ConfigManager_1.ConfigManager.MapConfig.GetTeleportConfigById(e)) === undefined) {
         MapLogger_1.MapLogger.Error(63, "[地图系统]传送失败,找不到传送配置", ["teleportId", e]);
       } else {
         o = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(o.TeleportEntityConfigId, o.MapId);
         if (QuestController_1.QuestNewController.IsTrackPositionOutFailRange(o)) {
           (o = new ConfirmBoxDefine_1.ConfirmBoxDataNew(220)).FunctionMap.set(2, () => {
-            TeleportController_1.TeleportController.SendTeleportTransferRequest(e);
+            TeleportMisc_1.TeleportMisc.SendTeleportTransferRequest(e);
             r?.();
           });
           ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(o);
         } else {
-          TeleportController_1.TeleportController.SendTeleportTransferRequest(e);
+          TeleportMisc_1.TeleportMisc.SendTeleportTransferRequest(e);
           r?.();
         }
       }
@@ -70,11 +72,11 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TryTeleportByEntityId(e, r) {
-    if (TeleportController_1.TeleportController.CheckCanTeleport()) {
+    if (ModelManager_1.ModelManager.TeleportModel.AllowTeleportByUi) {
       if (ConfigManager_1.ConfigManager.MapConfig.GetInstEntityTeleportConfigById(e) === undefined) {
         MapLogger_1.MapLogger.Error(86, "[地图系统]传送失败,找不到传送配置", ["InstEntityTeleportId", e]);
       } else {
-        TeleportController_1.TeleportController.SendTeleportTransferRequestByEntityId(e);
+        TeleportMisc_1.TeleportMisc.SendTeleportTransferRequestByEntityId(e);
         r?.();
       }
     } else {
@@ -94,7 +96,7 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.WorldMapModel.PendingOpenWorldMapQuestId = undefined;
     }
     ModelManager_1.ModelManager.WorldMapModel.IsBattleViewOpen = e;
-    const n = () => {
+    const a = () => {
       UiManager_1.UiManager.OpenView("WorldMapView", r, (e, r) => {
         if (e) {
           WorldMapController.MapOpenPush(o);
@@ -105,17 +107,17 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
     };
     if (UiManager_1.UiManager.IsViewOpen("WorldMapView") || UiManager_1.UiManager.IsViewHide("WorldMapView")) {
       UiManager_1.UiManager.CloseViewAsync("WorldMapView").then(() => {
-        n();
+        a();
       });
     } else {
-      n();
+      a();
     }
   }
   static FocalMarkItem(e, r) {
     var o = ModelManager_1.ModelManager.WorldMapModel;
     var t = o.CurrentFocalMarkType;
-    var n = o.CurrentFocalMarkId;
-    if (t !== e || n !== r) {
+    var a = o.CurrentFocalMarkId;
+    if (t !== e || a !== r) {
       if (UiManager_1.UiManager.IsViewShow("ItemTipsView")) {
         UiManager_1.UiManager.CloseView("ItemTipsView");
       }
@@ -232,6 +234,18 @@ class WorldMapController extends UiControllerBase_1.UiControllerBase {
   static EnableWorldNavigationDebug(e) {
     WorldNavigation_1.WorldNavigation.SetEnableDebug(e);
   }
+  static OpenExtraUi(e, r, o) {
+    if (UiManager_1.UiManager.IsViewShow("WorldMapView")) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WorldMapNavigate, {
+        MarkId: r.MarkId,
+        MarkType: r.MarkType,
+        Focal: false
+      });
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenExtraUiFromMap, e, o);
+    } else {
+      this.OpenView(2, false, r);
+    }
+  }
 }
 exports.WorldMapController = WorldMapController;
 (_a = WorldMapController).l3o = undefined;
@@ -315,4 +329,13 @@ WorldMapController.Uct = e => {
       });
     }
   }
+};
+WorldMapController.nkf = (e, r, o) => {
+  e = {
+    MarkType: e,
+    MarkId: r,
+    OpenFogId: 0,
+    IsNotFocusTween: o
+  };
+  UiManager_1.UiManager.OpenView("WorldMapView", e);
 }; //# sourceMappingURL=WorldMapController.js.map

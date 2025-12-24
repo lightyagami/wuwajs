@@ -95,34 +95,56 @@ class LevelEventPlayMontage extends LevelGeneralBase_1.LevelEventBase {
   zCa() {
     var e;
     var t;
+    var i;
     this.sDe = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.E0);
     if (this.sDe?.Valid) {
-      if (this.sDe.Entity.GetComponent(47)?.IsAiDriver) {
+      if (this.sDe.Entity.GetComponent(48)?.IsAiDriver) {
         e = this.sDe.Entity.GetComponent(1);
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelEvent", 7, "当前实体正在由行为树AI驱动，请检查需求设计是否合理（播放蒙太奇动画）", ["PbDataId", this.E0], ["Name", e.Owner.GetName()]);
         }
         this.FinishExecute(true);
-      } else if (e = this.sDe.Entity?.GetComponent(46)) {
-        t = this.gLe.Duration === undefined || this.gLe.Duration >= 0 && this.gLe.Duration < TimerSystem_1.MIN_TIME;
-        if (this.IsAsync) {
-          e.PlayPerformMontage(2, {
-            MontagePath: this.gLe.ActionMontage.Path,
-            IsLoop: !t,
-            Duration: this.gLe.Duration
-          });
-          this.FinishExecute(true);
-        } else {
-          EventSystem_1.EventSystem.AddWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
-          e.PlayPerformMontage(2, {
-            MontagePath: this.gLe.ActionMontage.Path,
-            IsLoop: !t,
-            Duration: this.gLe.Duration,
-            OnEndCallback: this.ej_
-          });
-        }
       } else {
-        this.FinishExecute(true);
+        e = this.sDe.Entity?.GetComponent(47);
+        t = this.sDe.Entity?.GetComponent(45);
+        if (e || t) {
+          i = this.gLe.Duration === undefined || this.gLe.Duration >= 0 && this.gLe.Duration < TimerSystem_1.MIN_TIME;
+          if (this.IsAsync) {
+            if (e) {
+              e.PlayPerformMontage(2, {
+                MontagePath: this.gLe.ActionMontage.Path,
+                IsLoop: !i,
+                Duration: this.gLe.Duration
+              });
+            } else {
+              t.MontageManager.PlayMontage({
+                MontagePath: this.gLe.ActionMontage.Path,
+                IsLoop: !i,
+                Duration: this.gLe.Duration
+              });
+            }
+            this.FinishExecute(true);
+          } else {
+            EventSystem_1.EventSystem.AddWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
+            if (e) {
+              e.PlayPerformMontage(2, {
+                MontagePath: this.gLe.ActionMontage.Path,
+                IsLoop: !i,
+                Duration: this.gLe.Duration,
+                OnEndCallback: this.ej_
+              });
+            } else {
+              t.MontageManager.PlayMontage({
+                MontagePath: this.gLe.ActionMontage.Path,
+                IsLoop: !i,
+                Duration: this.gLe.Duration,
+                OnEndCallback: this.ej_
+              });
+            }
+          }
+        } else {
+          this.FinishExecute(true);
+        }
       }
     } else {
       if (Log_1.Log.CheckError()) {

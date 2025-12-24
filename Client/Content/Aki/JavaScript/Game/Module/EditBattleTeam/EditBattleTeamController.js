@@ -36,23 +36,30 @@ class EditBattleTeamController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RoleLevelUp, this.TQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleSkinChange, this.A$_);
   }
-  static PlayerOpenEditBattleTeamView(e, t = false, n = true) {
+  static PlayerOpenEditBattleTeamView(e, t = false, n = true, a = false, o = undefined) {
     if (!t) {
       ModelManager_1.ModelManager.EditBattleTeamModel.NeedEntrance = n;
     }
-    this.OpenEditBattleTeamView(e, t);
+    if (o === undefined) {
+      o = ModelManager_1.ModelManager.RoleModel.CanUseSpecialTrialRole(e);
+    }
+    this.OpenEditBattleTeamView(e, t, a, o);
   }
-  static OpenEditBattleTeamView(e, t = 0) {
-    var n = ModelManager_1.ModelManager.EditBattleTeamModel;
+  static OpenEditBattleTeamView(e, t = 0, n = false, a = false) {
+    var o = ModelManager_1.ModelManager.EditBattleTeamModel;
     if (InstanceDungeonById_1.configInstanceDungeonById.GetConfig(e)) {
-      n.SetInstanceDungeonId(e);
+      o.SetInstanceDungeonId(e);
       if (ModelManager_1.ModelManager.EditBattleTeamModel.IsMultiInstanceDungeon && ModelManager_1.ModelManager.InstanceDungeonModel.MatchingPlayerCount() <= 0) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Formation", 5, "打开战前编队时，数据已经被清理，操作中止");
         }
-        n.SetInstanceDungeonId(undefined);
+        o.SetInstanceDungeonId(undefined);
       } else {
-        UiManager_1.UiManager.OpenView("EditBattleTeamView");
+        e = {
+          IsHideTitle: n,
+          CanUseSpecialTrailRole: a
+        };
+        UiManager_1.UiManager.OpenView("EditBattleTeamView", e);
       }
     } else if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "[EditBattleTeam]找不到副本数据，不能打开战前编队");

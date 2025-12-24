@@ -27,6 +27,7 @@ const ActivityCache_1 = require("./ActivityCache");
 const ActivityCommonDefine_1 = require("./ActivityCommonDefine");
 const ActivityMowingController_1 = require("./ActivityContent/Mowing/ActivityMowingController");
 const ActivityController_1 = require("./ActivityController");
+const ActivityDefine_1 = require("./ActivityDefine");
 const ActivityManager_1 = require("./ActivityManager");
 const ACTIVITY_TIME_REASON = "活动开启关闭时间倒计时 [ActivityId:{0}, IsOpen:{1}]";
 class ActivityModel extends ModelBase_1.ModelBase {
@@ -41,13 +42,15 @@ class ActivityModel extends ModelBase_1.ModelBase {
     this.G5e = "";
     this.N5e = "";
     this.O5e = "";
+    this.ykf = "";
     this.KPd = ActivityCommonDefine_1.ACTIVITY_FILTER_ALL_ID;
-    this._lm = false;
+    this.vdm = false;
     this.OnLanguageChange = () => {
       this.q5e = "";
       this.G5e = "";
       this.N5e = "";
       this.O5e = "";
+      this.ykf = "";
       this.Lma();
     };
     this.W4e = new Map();
@@ -110,6 +113,9 @@ class ActivityModel extends ModelBase_1.ModelBase {
     }
     if (StringUtils_1.StringUtils.IsEmpty(this.O5e)) {
       this.O5e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime");
+    }
+    if (StringUtils_1.StringUtils.IsEmpty(this.ykf)) {
+      this.ykf = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("ActivityRemainingTime_Reward_Text");
     }
   }
   OnReceiveMessageData(t) {
@@ -283,6 +289,14 @@ class ActivityModel extends ModelBase_1.ModelBase {
   GetCurrentShowingActivities() {
     return Array.from(this.W4e.values()).sort(ActivityModel.SortFunc);
   }
+  IsHasShowingRecommendRecActivity() {
+    for (const t of this.hMc()) {
+      if (t.LocalConfig?.IsTabEffectNotice) {
+        return true;
+      }
+    }
+    return false;
+  }
   hMc() {
     let t = Array.from(this.W4e.values());
     return t = this.iec ? t.filter(t => this.rec.includes(t.Id)) : t;
@@ -364,6 +378,16 @@ class ActivityModel extends ModelBase_1.ModelBase {
     e.i_activity_type = t.Type;
     e.i_time_left = Math.round(i);
     e.i_unlock = t.IsUnLock() ? 1 : 0;
+    if (t.TimeType === 1) {
+      e.i_type = 3;
+    } else if ((i = ConfigManager_1.ConfigManager.ActivityConfig.GetActivityConfig(t.Id))?.FilterTabType === 1) {
+      e.i_type = 1;
+    } else if (i?.FilterTabType === 3) {
+      e.i_type = 2;
+    }
+    if (e.i_type === 0 && Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Activity", 43, "[活动埋点] 活动类型未定义，埋点记录为0. 活动Id: " + t.Id);
+    }
     LogReportController_1.LogReportController.LogReport(e);
   }
   SendActivityViewJumpClickLogData(t) {
@@ -415,25 +439,36 @@ class ActivityModel extends ModelBase_1.ModelBase {
     var e = t.CheckIfInShowTime();
     var i = t.CheckIfInOpenTime();
     if (!i && !e) {
-      e = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("ActiveClose");
-      return [false, MultiTextLang_1.configMultiTextLang.GetLocalTextNew(e)];
+      r = ConfigManager_1.ConfigManager.TextConfig.GetTextContentIdById("ActiveClose");
+      return [false, MultiTextLang_1.configMultiTextLang.GetLocalTextNew(r), -1];
     }
-    var r;
-    var e = t.EndOpenTime;
+    var r = t.EndOpenTime;
     var n = t.EndShowTime;
-    let o = "";
-    let s = true;
-    let a = 0;
-    if (e === 0 && n === 0) {
-      r = t.LocalConfig;
-      s = !!r && r.TimeIsDisplay === 1;
-      o = this.q5e;
-    } else {
-      o = t.EndOpenTime === 0 ? (a = n, this.N5e) : (a = i ? e : n, i ? this.O5e : this.N5e);
-      s = true;
-      o = this.GetRemainTimeText(a, o) ?? "";
+    var o = t.EndLimitTime;
+    let s = "";
+    let a = true;
+    let h = 0;
+    var v = t.LocalConfig;
+    var _ = v ? v.TimeIsDisplay : 0;
+    if (v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_LimitToPermanent) {
+      t = t.CheckIfInLimitTime();
+      if (a = e && t) {
+        if (_ === 1) {
+          h = 0;
+          s = this.q5e;
+        } else if (_ === 0) {
+          h = o;
+          s = this.ykf;
+        }
+      }
+    } else if (v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_Permanent || v?.OpenType === Protocol_1.Aki.Protocol.OS_.Proto_TimeLimited && (r !== 0 && n !== 0 && (a = true, h = i ? r : n, s = i ? this.O5e : this.N5e), r === 0 && n !== 0 && (a = true, h = n, s = this.N5e), r === 0) && n === 0) {
+      a = _ === 1;
+      s = this.q5e;
     }
-    return [s, o];
+    if (a && h > 0) {
+      s = this.GetRemainTimeText(h, s) ?? "";
+    }
+    return [a, s, h];
   }
   GetRemainTimeText(t, e) {
     var i = TimeUtil_1.TimeUtil.GetServerTime();
@@ -476,6 +511,26 @@ class ActivityModel extends ModelBase_1.ModelBase {
     i.sort(this.u8a);
     return i;
   }
+  CheckBubbleHasClicked(t, e) {
+    return this.GetActivityCacheData(t, 0, ActivityDefine_1.ACTIVITY_BUBBLE_CACHE_KEY, e, 0) === 1;
+  }
+  SetBubbleHasClicked(t, e) {
+    this.SaveActivityData(t, ActivityDefine_1.ACTIVITY_BUBBLE_CACHE_KEY, e, 0, 1);
+  }
+  e6m(t, e) {
+    return t !== undefined && e >= t[0] && e < t[1];
+  }
+  GetBubbleTypeByTimeInterval(t, e) {
+    if (this.e6m(t.WhiteInterval, e)) {
+      return 1;
+    } else if (this.e6m(t.YellowInterval, e)) {
+      return 2;
+    } else if (this.e6m(t.RedInterval, e)) {
+      return 3;
+    } else {
+      return 0;
+    }
+  }
   SetForceHideActivityTimeTextFlag(t) {
     this.Apl = t;
   }
@@ -495,10 +550,10 @@ class ActivityModel extends ModelBase_1.ModelBase {
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(i);
   }
   SetDebugPermanentFilterVisible(t) {
-    this._lm = t;
+    this.vdm = t;
   }
   GetDebugPermanentFilterVisible() {
-    return this._lm;
+    return this.vdm;
   }
 }
 (exports.ActivityModel = ActivityModel).SortFunc = (t, e) => t.FinishSinkState !== e.FinishSinkState ? t.FinishSinkState ? 1 : -1 : t.Sort !== e.Sort ? t.Sort - e.Sort : t.BeginOpenTime !== e.BeginOpenTime ? t.BeginOpenTime - e.BeginOpenTime : t.Id - e.Id;

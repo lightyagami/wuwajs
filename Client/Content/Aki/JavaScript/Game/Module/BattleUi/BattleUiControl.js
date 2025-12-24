@@ -59,12 +59,15 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetResolution, this.xQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.SetDisplayMode, this.xQe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.SQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.BattleUiSpecialSkillEnableChanged, this.Dwc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     var e = ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.GetActionNames();
     InputDistributeController_1.InputDistributeController.BindActions(e, this.bMe);
     var e = ModelManager_1.ModelManager.BattleUiModel.FormationPanelData;
@@ -93,12 +96,15 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetResolution, this.xQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetDisplayMode, this.xQe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UIViewPortSizeChanged, this.xQe);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerEnableChange, this.xrh);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerConfigChanged, this.SQm);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GuideGroupOpening, this.IJt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.DriveFishingShipStateChanged, this.Gd_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.BattleUiSpecialSkillEnableChanged, this.Dwc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterVehicle, this.M6l);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveVehicle, this.E6l);
     var e = ModelManager_1.ModelManager.BattleUiModel.ExploreModeData.GetActionNames();
     InputDistributeController_1.InputDistributeController.UnBindActions(e, this.bMe);
     InputDistributeController_1.InputDistributeController.UnBindActions(ModelManager_1.ModelManager.BattleUiModel.FormationPanelData.GetActionNames(), this.gTn);
@@ -227,7 +233,7 @@ class BattleUiControl extends UiControllerBase_1.UiControllerBase {
   static ResetFocus() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (e?.Valid) {
-      e.Entity.GetComponent(32).ResetFocus();
+      e.Entity.GetComponent(33).ResetFocus();
     }
   }
   static TryOpenPureMode() {
@@ -344,10 +350,13 @@ BattleUiControl.PQe = (e, t, n) => {
 BattleUiControl.xQe = () => {
   ModelManager_1.ModelManager.BattleUiModel.UpdateViewPortSize();
 };
-BattleUiControl.mDn = e => {
+BattleUiControl.SQm = e => {
+  ModelManager_1.ModelManager.BattleUiModel.FormationData.RefreshFollowerConfig(e);
+};
+BattleUiControl.CQm = e => {
   ModelManager_1.ModelManager.BattleUiModel.FormationData.AddFollower(e);
 };
-BattleUiControl.dDn = () => {
+BattleUiControl.pQm = () => {
   ModelManager_1.ModelManager.BattleUiModel.FormationData.RemoveFollower();
 };
 BattleUiControl.xrh = e => {
@@ -399,4 +408,14 @@ BattleUiControl.Omc = e => {
 };
 BattleUiControl.qmc = e => {
   ModelManager_1.ModelManager.BattleUiModel.RemoveGuest(e.hdc);
+};
+BattleUiControl.M6l = e => {
+  if (e.IsRolePassenger(true) && e.VehicleType === "Motorcycle") {
+    ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.EnterVehicle(e);
+  }
+};
+BattleUiControl.E6l = e => {
+  if (e.IsRolePassenger(true)) {
+    ModelManager_1.ModelManager.BattleUiModel.MotorcycleData.LeaveVehicle(e);
+  }
 }; //# sourceMappingURL=BattleUiControl.js.map

@@ -69,7 +69,7 @@ class GameSplineUtils {
           o.D_K2_SetActorLocationAndRotation(i.ToUeVector(), a.ToUeRotator(), false, undefined, false);
           i = r.Option;
           e.ClearSplinePoints();
-          a = this.Zye(i.Points);
+          a = this.CreateCommonPoints(i.Points);
           e.AddPoints(a);
           o.SplineData = r.Option;
           e.UpdateSpline();
@@ -83,7 +83,7 @@ class GameSplineUtils {
       }
     }
   }
-  static Zye(t) {
+  static CreateCommonPoints(t) {
     var o = UE.NewArray(UE.SplinePoint);
     if (t.length > 0) {
       var r = [];
@@ -91,16 +91,16 @@ class GameSplineUtils {
       var a = [];
       var n = [];
       var l = [];
-      for (const _ of t) {
-        var e = Vector_1.Vector.Create(_.Position.X ?? 0, _.Position.Y ?? 0, _.Position.Z ?? 0);
+      for (const c of t) {
+        var e = Vector_1.Vector.Create(c.Position.X ?? 0, c.Position.Y ?? 0, c.Position.Z ?? 0);
         r.push(e);
-        var e = Rotator_1.Rotator.Create(_.Rotation?.Y ?? 0, _.Rotation?.Z ?? 0, _.Rotation?.X ?? 0);
+        var e = Rotator_1.Rotator.Create(c.Rotation?.Y ?? 0, c.Rotation?.Z ?? 0, c.Rotation?.X ?? 0);
         i.push(e);
-        var e = Vector_1.Vector.Create(_.ArriveTangent.X ?? 0, _.ArriveTangent.Y ?? 0, _.ArriveTangent.Z ?? 0);
+        var e = Vector_1.Vector.Create(c.ArriveTangent.X ?? 0, c.ArriveTangent.Y ?? 0, c.ArriveTangent.Z ?? 0);
         a.push(e);
-        var e = Vector_1.Vector.Create(_.LeaveTangent.X ?? 0, _.LeaveTangent.Y ?? 0, _.LeaveTangent.Z ?? 0);
+        var e = Vector_1.Vector.Create(c.LeaveTangent.X ?? 0, c.LeaveTangent.Y ?? 0, c.LeaveTangent.Z ?? 0);
         n.push(e);
-        switch (_.LineType) {
+        switch (c.LineType) {
           case IComponent_1.ESplineLine.Linear:
             l.push(0);
             break;
@@ -141,7 +141,7 @@ class GameSplineUtils {
       var e = ActorSystem_1.ActorSystem.Get(UE.BP_BasePathLine_C.StaticClass(), e);
       var r = e.GetComponentByClass(UE.SplineComponent.StaticClass());
       r.ClearSplinePoints();
-      var t = this.Zye(t);
+      var t = this.CreateCommonPoints(t);
       r.AddPoints(t);
       var t = EffectSystem_1.EffectSystem.SpawnEffect(GlobalData_1.GlobalData.World, MathUtils_1.MathUtils.DefaultTransformDouble, o, "[GameSplineUtils.GenerateEffectHandle]", new EffectContext_1.EffectContext(undefined, e));
       if (EffectSystem_1.EffectSystem.IsValid(t)) {

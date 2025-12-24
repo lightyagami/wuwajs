@@ -23,13 +23,13 @@ class GongduolaSummonController extends ControllerBase_1.ControllerBase {
       if (o) {
         this.hvc();
         this.Plc = o;
-        this.xlc = n.GetComponent(239);
+        this.xlc = n.GetComponent(248);
         if (this.xlc) {
-          this.Dlc = n.GetComponent(240);
+          this.Dlc = n.GetComponent(249);
           if (this.Dlc) {
-            this.PIc = n.GetComponent(118);
+            this.PIc = n.GetComponent(123);
             if (this.PIc) {
-              this.Qd1 = n.GetComponent(209);
+              this.Qd1 = n.GetComponent(215);
               if (this.Qd1) {
                 this.xlc.StartForceDisableAnimOptimization(3, false);
                 this.PIc.StartForceDisableAnimDelay(0);
@@ -69,15 +69,15 @@ class GongduolaSummonController extends ControllerBase_1.ControllerBase {
         ModelManager_1.ModelManager.GongduolaSummonModel.SummonLocation = e;
         ModelManager_1.ModelManager.GongduolaSummonModel.SummonRotation = t;
         ModelManager_1.ModelManager.GongduolaSummonModel.SummonGravityDir = m;
-        this.xlc = n.GetComponent(239);
+        this.xlc = n.GetComponent(248);
         if (this.xlc) {
-          this.Dlc = n.GetComponent(240);
+          this.Dlc = n.GetComponent(249);
           if (this.Dlc) {
             this.klc = n.GetComponent(1);
             if (this.klc) {
-              this.PIc = n.GetComponent(118);
+              this.PIc = n.GetComponent(123);
               if (this.PIc) {
-                this.Qd1 = n.GetComponent(209);
+                this.Qd1 = n.GetComponent(215);
                 if (this.Qd1) {
                   this.Dlc.IsSummoningPerform = true;
                   this.PIc.StartForceDisableAnimDelay(0);
@@ -111,7 +111,7 @@ class GongduolaSummonController extends ControllerBase_1.ControllerBase {
     });
   }
   static StopCancelSummonAnim(o) {
-    o = o.GetComponent(239);
+    o = o.GetComponent(248);
     if (o) {
       o.StopMontage();
       o.StopModelBuffer();

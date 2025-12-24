@@ -16,6 +16,7 @@ const LevelGeneralBase_1 = require("../LevelGeneralBase");
 const OpenSystemActivity_1 = require("./OpenSystem/OpenSystemActivity");
 const OpenSystemActivityFunPlay_1 = require("./OpenSystem/OpenSystemActivityFunPlay");
 const OpenSystemActivitySubView_1 = require("./OpenSystem/OpenSystemActivitySubView");
+const OpenSystemAdmissionStudentCard_1 = require("./OpenSystem/OpenSystemAdmissionStudentCard");
 const OpenSystemBossRushBuff_1 = require("./OpenSystem/OpenSystemBossRushBuff");
 const OpenSystemChasingMoonMain_1 = require("./OpenSystem/OpenSystemChasingMoonMain");
 const OpenSystemCiacconaChapterEntry_1 = require("./OpenSystem/OpenSystemCiacconaChapterEntry");
@@ -44,6 +45,7 @@ const OpenSystemHonamiMascotView_1 = require("./OpenSystem/OpenSystemHonamiMasco
 const OpenSystemHonamiShop_1 = require("./OpenSystem/OpenSystemHonamiShop");
 const OpenSystemHonamiTalentTreeView_1 = require("./OpenSystem/OpenSystemHonamiTalentTreeView");
 const OpenSystemInformationView_1 = require("./OpenSystem/OpenSystemInformationView");
+const OpenSystemInfrBuildSuccessView_1 = require("./OpenSystem/OpenSystemInfrBuildSuccessView");
 const OpenSystemInstanceEntrance_1 = require("./OpenSystem/OpenSystemInstanceEntrance");
 const OpenSystemInstanceFailure_1 = require("./OpenSystem/OpenSystemInstanceFailure");
 const OpenSystemLifePointDraw_1 = require("./OpenSystem/OpenSystemLifePointDraw");
@@ -51,6 +53,7 @@ const OpenSystemLordGym_1 = require("./OpenSystem/OpenSystemLordGym");
 const OpenSystemLordGymLordEntranceSelectView_1 = require("./OpenSystem/OpenSystemLordGymLordEntranceSelectView");
 const OpenSystemMingSuTi_1 = require("./OpenSystem/OpenSystemMingSuTi");
 const OpenSystemMoraleAreaSum_1 = require("./OpenSystem/OpenSystemMoraleAreaSum");
+const OpenSystemMotorcycleDevelop_1 = require("./OpenSystem/OpenSystemMotorcycleDevelop");
 const OpenSystemMowBuffDistribute_1 = require("./OpenSystem/OpenSystemMowBuffDistribute");
 const OpenSystemMowingTower_1 = require("./OpenSystem/OpenSystemMowingTower");
 const OpenSystemPhantomArenaChallengeView_1 = require("./OpenSystem/OpenSystemPhantomArenaChallengeView");
@@ -58,6 +61,7 @@ const OpenSystemPhonograph_1 = require("./OpenSystem/OpenSystemPhonograph");
 const OpenSystemPhotographView_1 = require("./OpenSystem/OpenSystemPhotographView");
 const OpenSystemPunishReportSettlement_1 = require("./OpenSystem/OpenSystemPunishReportSettlement");
 const OpenSystemQuestReview_1 = require("./OpenSystem/OpenSystemQuestReview");
+const OpenSystemRegionalTerminal_1 = require("./OpenSystem/OpenSystemRegionalTerminal");
 const OpenSystemRegionQuest_1 = require("./OpenSystem/OpenSystemRegionQuest");
 const OpenSystemRogueAbilitySelect_1 = require("./OpenSystem/OpenSystemRogueAbilitySelect");
 const OpenSystemRogueBattle_1 = require("./OpenSystem/OpenSystemRogueBattle");
@@ -77,6 +81,7 @@ const OpenSystemTrialRoleDescription_1 = require("./OpenSystem/OpenSystemTrialRo
 const OpenSystemTurntableControl_1 = require("./OpenSystem/OpenSystemTurntableControl");
 const OpenSystemVersionPreheat_1 = require("./OpenSystem/OpenSystemVersionPreheat");
 const OpenSystemWeeklyRogueTokenSelect_1 = require("./OpenSystem/OpenSystemWeeklyRogueTokenSelect");
+const OpenSystemWorldMap_1 = require("./OpenSystem/OpenSystemWorldMap");
 class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
   constructor(e) {
     super(e);
@@ -93,6 +98,11 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       if (e === this.WDe) {
         this.FinishExecute(true);
         EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.QDe);
+      }
+    };
+    this.lLf = e => {
+      if (e === this.WDe) {
+        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
       }
     };
     this.KDe = new Map();
@@ -164,7 +174,12 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
     this.KDe.set("HonamiStoryMascot", new OpenSystemHonamiMascotView_1.OpenSystemHonamiMascotView(this));
     this.KDe.set("HonamiStoryTalentTree", new OpenSystemHonamiTalentTreeView_1.OpenSystemHonamiTalentTreeView(this));
     this.KDe.set("HonamiStoryChooseLevel", new OpenSystemHonamiChooseLevelView_1.OpenSystemHonamiChooseLevelView(this));
+    this.KDe.set("Enrollment", new OpenSystemAdmissionStudentCard_1.OpenSystemAdmissionStudentCard(this));
     this.KDe.set("TransitionPopup", new OpenSystemTransitionPopupView_1.OpenSystemTransitionPopupView(this));
+    this.KDe.set("InfrActivityFinishInfrastructure", new OpenSystemInfrBuildSuccessView_1.OpenSystemInfrBuildSuccessView(this));
+    this.KDe.set("Map", new OpenSystemWorldMap_1.OpenSystemWorldMap(this));
+    this.KDe.set("AreaTerminalGamePlay", new OpenSystemRegionalTerminal_1.OpenSystemRegionalTerminal(this));
+    this.KDe.set("Motorcycle", new OpenSystemMotorcycleDevelop_1.OpenSystemMotorcycleDevelop(this));
   }
   OnReset() {
     if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.CloseView, this.QDe)) {
@@ -193,16 +208,22 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
         }
       }
       var i = s.GetViewName(t, n);
+      this.WDe = i;
       let e = false;
       var o = n;
       if (o?.EntityId && i) {
-        if (!EntitySystem_1.EntitySystem.GetComponent(o.EntityId, 201)?.CanInteraction) {
+        if (!EntitySystem_1.EntitySystem.GetComponent(o.EntityId, 207)?.CanInteraction) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterWaitOpenViewName(i);
           e = true;
         }
       }
       if (this.IsAsync) {
-        s.ExecuteOpenView(t, n);
+        EventSystem_1.EventSystem.Once(EventDefine_1.EEventName.OpenView, this.lLf);
+        s.ExecuteOpenView(t, n).then(e => {
+          if (!e) {
+            ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
+          }
+        });
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("LevelEvent", 36, "[LevelEventOpenSystem]行为打开界面,异步", ["SystemType", t.SystemType]);
         }
@@ -223,7 +244,6 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           return;
         }
       }
-      this.WDe = i;
       if (this.WDe) {
         this.XDe(t, s, n);
         if (this.IsAsync) {
@@ -233,7 +253,6 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
           if (e) {
             TsInteractionUtils_1.TsInteractionUtils.ClearCurrentOpenViewName();
           }
-          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
           this.FinishExecute(true);
         } else {
           ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(0);
@@ -284,7 +303,7 @@ class LevelEventOpenSystem extends LevelGeneralBase_1.LevelEventBase {
       } else {
         let e = undefined;
         s = s?.EntityId;
-        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(191) : e) {
+        if (e = s ? EntitySystem_1.EntitySystem.Get(s)?.GetComponent(197) : e) {
           TsInteractionUtils_1.TsInteractionUtils.RegisterOpenViewName(n);
           e.SetUiOpenPerformance(n, t.BoardId);
         }

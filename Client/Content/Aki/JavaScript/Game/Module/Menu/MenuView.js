@@ -84,7 +84,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Xpt = undefined;
     this.lHa = undefined;
     this.feh = undefined;
-    this._hm = undefined;
+    this.Jum = undefined;
     this.kQ_ = false;
     this.Ivt = undefined;
     this.xqe = undefined;
@@ -230,7 +230,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.R6e = (e, t) => {
       return new CommonTabItem_1.CommonTabItem();
     };
-    this.QKd = () => {
+    this.zKd = () => {
       var t = new Array();
       for (let e = 0; e < this.Bwi.length; e++) {
         var i = new CommonTabItemBase_1.CommonTabItemData();
@@ -346,7 +346,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     var e = ModelManager_1.ModelManager.MenuModel;
     e.CreateConfigByBaseConfig();
     e.InitDataCache();
-    this._hm = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(7));
+    this.Jum = new UiSequencePlayer_1.UiSequencePlayer(this.GetItem(7));
     LguiUtil_1.LguiUtil.TrySetLocalTextNew(this.GetText(8), "Settings_Applied_Tips");
     GameSettingsController_1.GameSettingsController.OnUEGameUserSettingsUpdate();
     this.qwi = new MenuScrollSettingContainerDynItem_1.MenuScrollSettingContainerDynItem();
@@ -403,7 +403,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
     this.Bwi = MenuController_1.MenuController.GetMainTypeList();
     var e = new CommonTabComponentData_1.CommonTabComponentData(this.R6e, this.Kwi, this.yqe);
     this.Ivt = new TabComponentWithCaptionItem_1.TabComponentWithCaptionItem(this.GetItem(1), e, this.$Ge);
-    await this.Ivt.RefreshTabItemAsync(this.QKd());
+    await this.Ivt.RefreshTabItemAsync(this.zKd());
   }
   Qwi() {
     this.Fwi();
@@ -524,7 +524,7 @@ class MenuView extends UiViewBase_1.UiViewBase {
       this.GetItem(7)?.SetUIActive(true);
       this.Ivt?.SetCloseBtnShowState(false);
       this.GetButton(6)?.RootUIComp.SetUIActive(false);
-      this._hm?.PlaySequence("Progressing");
+      this.Jum?.PlaySequence("Progressing");
       if (!this.kQ_) {
         this.kQ_ = true;
         if ((e = await ModelManager_1.ModelManager.MenuModel.ApplyDataCache()) < 500) {

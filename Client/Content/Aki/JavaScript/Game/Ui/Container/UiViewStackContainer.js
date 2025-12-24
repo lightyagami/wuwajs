@@ -155,6 +155,9 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
         Log_1.Log.Warn("UiCore", 16, "[PreOpenViewAsync] CreateAsync failed", ["ViewName", e.Info.Name]);
       }
     }
+    if (e.WaitToDestroy) {
+      e.Destroy();
+    }
   }
   async OpenViewAfterPreOpenedAsync(e) {
     if (this.Rjt) {
@@ -204,7 +207,8 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
     }
     var t = e.WillLoadScene();
     if (t) {
-      await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", e.Info.Name);
+      o = e.GetBlackScreenTypeOnOpenViewLoadScene();
+      await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync(o, e.Info.Name);
     }
     var o = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e.Info.Name);
     if (o.StartBlackScreen && !StringUtils_1.StringUtils.IsBlank(o.StartBlackScreen.ShowAnimName)) {
@@ -219,7 +223,8 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
         BlackScreenController_1.BlackScreenController.RemoveBlackScreen(o.StartBlackScreen.HideAnimName, e.Info.Name);
       }
       if (i?.WillReleaseScene() || t) {
-        await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", e.Info.Name);
+        o = e.GetBlackScreenTypeOnShowViewLoadScene();
+        await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync(o, e.Info.Name);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "OpenViewImplement 上个界面Hide", ["LastViewName", i?.Info?.Name]);
         }
@@ -305,7 +310,7 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
           return;
         }
         await i.StartAsync();
-        await this.gpi(e, i);
+        await this.gpi(e, i, true);
       } else {
         if (this.Mcr(e)) {
           await this.gpi(e, undefined);
@@ -387,32 +392,32 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
       }
     }
   }
-  async gpi(i, e) {
-    var t = this.Fcr.get(i);
-    if (t) {
-      this.$cr(t);
+  async gpi(i, e, t = false) {
+    var o = this.Fcr.get(i);
+    if (o) {
+      this.$cr(o);
     }
-    var t = this.Ocr.findIndex(e => e.View === i && e.PendingType === 1);
-    if (t >= 0) {
-      this.Ocr.splice(t, 1);
+    var o = this.Ocr.findIndex(e => e.View === i && e.PendingType === 1);
+    if (o >= 0) {
+      this.Ocr.splice(o, 1);
     }
     if (e !== undefined) {
-      t = e?.Info.ScenePath;
-      if (t && i.Info.ScenePath === t) {
+      o = e?.Info.ScenePath;
+      if (o && i.Info.ScenePath === o) {
         i.SkipReleaseScene = true;
         e.SkipLoadScene = true;
       }
-      const a = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(i.Info.Name);
-      const s = e?.WillLoadScene();
-      const r = i.WillReleaseScene();
-      const n = a.CloseBlackScreen && !StringUtils_1.StringUtils.IsBlank(a.CloseBlackScreen.ShowAnimName);
-      const _ = async () => {
+      const s = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(i.Info.Name);
+      const r = e?.WillLoadScene();
+      const n = i.WillReleaseScene();
+      const _ = s.CloseBlackScreen && !StringUtils_1.StringUtils.IsBlank(s.CloseBlackScreen.ShowAnimName);
+      const h = async () => {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "CloseViewImplement 界面Destroy", ["ViewName", i.Info?.Name]);
         }
         await i.DestroyAsync();
       };
-      const h = async () => {
+      const w = async () => {
         if (i.IsShowOrShowing) {
           i.LastHide = true;
           if (Log_1.Log.CheckInfo()) {
@@ -421,11 +426,11 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
           await i.HideAsync();
         }
       };
-      var t = async () => {
-        await h();
-        await _();
-      };
       var o = async () => {
+        await w();
+        await h();
+      };
+      var a = async () => {
         if (!e.IsShowOrShowing) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("UiCore", 16, "CloseViewImplement 下个界面Show", ["NextViewName", e.Info?.Name]);
@@ -433,34 +438,36 @@ class UiViewStackContainer extends UiViewContainer_1.UiViewContainer {
           await e.ShowAsync();
         }
       };
-      if (s || r || n) {
+      if (r || n || _) {
         await Promise.all([(async () => {
-          if (n) {
-            await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync(a.CloseBlackScreen.ShowAnimName, i.Info.Name);
-          } else if (r) {
+          if (_) {
+            await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync(s.CloseBlackScreen.ShowAnimName, i.Info.Name);
+          } else if (n) {
             await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", i.Info.Name);
-          } else if (s) {
+          } else if (r) {
             await BlackScreenController_1.BlackScreenController.AddBlackScreenAsync("Start", e.Info.Name);
           }
-        })(), t()]);
+        })(), o()]);
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("UiCore", 16, "#######黑屏+销毁", ["ViewName", i.Info.Name]);
         }
-        this.wDc(i, undefined);
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiCore", 16, "#######镜头Pop", ["ViewName", i.Info.Name]);
+        if (t) {
+          this.wDc(i, undefined);
+          this.LDc(e, false);
+        } else {
+          this.wDc(i, undefined);
         }
-        this.LDc(e, false);
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiCore", 16, "#######镜头Push", ["ViewName", i.Info.Name]);
-        }
-        if (e && (e.ShowPromise = new CustomPromise_1.CustomPromise(), s && (e.LoadScenePromise = new CustomPromise_1.CustomPromise(), e.SkipRemoveBlackScreen = true), o(), await e?.LoadScenePromise?.Promise, e.SkipRemoveBlackScreen = false, Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCore", 16, "#######加载场景", ["ViewName", i.Info.Name]), n ? BlackScreenController_1.BlackScreenController.RemoveBlackScreen(a.CloseBlackScreen.HideAnimName, i.Info.Name) : r ? BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", i.Info.Name) : s && BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", e.Info.Name), Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCore", 16, "#######黑屏移除", ["ViewName", i.Info.Name]), await e.ShowPromise?.Promise, e.ShowPromise = undefined, Log_1.Log.CheckDebug())) {
+        if (e && (e.ShowPromise = new CustomPromise_1.CustomPromise(), r && (e.LoadScenePromise = new CustomPromise_1.CustomPromise(), e.SkipRemoveBlackScreen = true), a(), await e?.LoadScenePromise?.Promise, e.SkipRemoveBlackScreen = false, Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCore", 16, "#######加载场景", ["ViewName", i.Info.Name]), _ ? BlackScreenController_1.BlackScreenController.RemoveBlackScreen(s.CloseBlackScreen.HideAnimName, i.Info.Name) : n ? BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", i.Info.Name) : r && BlackScreenController_1.BlackScreenController.RemoveBlackScreen("Close", e.Info.Name), Log_1.Log.CheckDebug() && Log_1.Log.Debug("UiCore", 16, "#######黑屏移除", ["ViewName", i.Info.Name]), await e.ShowPromise?.Promise, e.ShowPromise = undefined, Log_1.Log.CheckDebug())) {
           Log_1.Log.Debug("UiCore", 16, "#######界面显示", ["ViewName", e?.Info.Name]);
         }
       } else {
-        this.wDc(i, e?.Info);
-        this.LDc(e);
-        await Promise.all([t(), o()]);
+        if (t) {
+          this.wDc(i, e?.Info);
+          this.LDc(e);
+        } else {
+          this.wDc(i, e?.Info);
+        }
+        await Promise.all([o(), a()]);
       }
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiCore", 16, "CloseViewImplement 界面关闭完成", ["ViewName", i.Info?.Name], ["path", i.Info.UiPath], ["NextViewName", e.Info?.Name]);

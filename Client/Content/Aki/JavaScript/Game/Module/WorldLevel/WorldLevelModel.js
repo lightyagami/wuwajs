@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WorldLevelModel = undefined;
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -38,6 +39,7 @@ class WorldLevelModel extends ModelBase_1.ModelBase {
     if (t) {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OriginWorldLevelUp);
     }
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncWorldLevel, e);
   }
   get Sex() {
     return this._2o;

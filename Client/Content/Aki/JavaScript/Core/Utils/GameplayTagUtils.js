@@ -96,6 +96,9 @@ class GameplayTagUtils {
     }
     return e;
   }
+  static IsValidTag(a) {
+    return !!a && a.TagName !== "None";
+  }
 }
 (exports.GameplayTagUtils = GameplayTagUtils).GJ = new Set();
 GameplayTagUtils.MJ = Stats_1.Stat.Create("GameplayTagUtils.FnvHash");

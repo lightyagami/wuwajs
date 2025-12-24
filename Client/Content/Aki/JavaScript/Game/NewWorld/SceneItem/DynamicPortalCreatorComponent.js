@@ -72,7 +72,7 @@ let DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = class Dyna
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
     if (this.Lo.Model.Type === "Bullet") {
-      this.Xln = this.Entity.GetComponent(158);
+      this.Xln = this.Entity.GetComponent(163);
     }
     return true;
   }
@@ -102,5 +102,5 @@ let DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = class Dyna
     }
   }
 };
-DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(232)], DynamicPortalCreatorComponent);
+DynamicPortalCreatorComponent = DynamicPortalCreatorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(241)], DynamicPortalCreatorComponent);
 exports.DynamicPortalCreatorComponent = DynamicPortalCreatorComponent; //# sourceMappingURL=DynamicPortalCreatorComponent.js.map

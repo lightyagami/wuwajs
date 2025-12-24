@@ -11,8 +11,11 @@ class RedDotPhantomArenaLevelReward extends RedDotBase_1.RedDotBase {
   OnGetEvents() {
     return [EventDefine_1.EEventName.OnPhantomArenaMasterInfoUpdate];
   }
-  OnCheck() {
-    return ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardRedDot();
+  IsMultiple() {
+    return true;
+  }
+  OnCheck(e) {
+    return e !== 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetMasterLevelRewardRedDot(e);
   }
 }
 exports.RedDotPhantomArenaLevelReward = RedDotPhantomArenaLevelReward;

@@ -27,7 +27,7 @@ class LevelEventSwitchDataLayers extends LevelGeneralBase_1.LevelEventBase {
             Log_1.Log.Error("InstanceDungeon", 18, "切换DataLayer失败", ["unloads", t.join()], ["newLoads", l.join()]);
           }
         }
-      }, e.TransitionOption?.SequencePath);
+      }, e.TransitionOption?.SequencePath, e.TransitionOption?.SeqMarkBeforeModifyMat, e.MaterialDataForLoadedLayers, e.MaterialDataForUnloadLayers);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 18, "执行行为LevelEventSwitchDataLayers失败，参数错误");
     }

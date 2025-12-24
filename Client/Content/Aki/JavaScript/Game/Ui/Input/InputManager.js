@@ -50,7 +50,15 @@ class InputManager {
         IsPressClose: e.IsPressClose,
         IsReleaseClose: e.IsReleaseClose,
         IsAllowOpenViewByShortcutKey: () => this.IsAllowOpenViewByShortcutKey(),
-        IsAllowCloseViewByShortcutKey: () => this.IsAllowCloseViewByShortcutKey()
+        IsAllowCloseViewByShortcutKey: () => this.IsAllowCloseViewByShortcutKey(),
+        IsLockShortcutKey: (e, t) => {
+          for (const n of InputManager.c7m.values()) {
+            if (n(e, t)) {
+              return true;
+            }
+          }
+          return false;
+        }
       };
       (t = ViewHotKeyHandleDefine_1.ViewHotKeyHandleFactory.CreateViewHotKeyHandle(t, e.HandleType)).Bind();
       this.$ya.Add(t);
@@ -65,19 +73,35 @@ class InputManager {
     }
   }
   static AddViewHotKeyActionByType(e) {
-    e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
-    if (e) {
-      for (const t of e) {
-        this.VZc(t);
+    var t = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetAllOpenAndCloseViewHotKeyConfig();
+    if (t) {
+      for (const n of t) {
+        if (n.EffectiveTypeList.includes(e)) {
+          this.VZc(n);
+        }
       }
     }
   }
   static RemoveViewHotKeyActionByType(e) {
-    e = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetConfigListByEffectiveType(e);
-    if (e) {
-      for (const t of e) {
-        this.jZc(t);
+    var t = ConfigManager_1.ConfigManager.ViewHotKeyConfig.GetAllOpenAndCloseViewHotKeyConfig();
+    if (t) {
+      for (const n of t) {
+        if (n.EffectiveTypeList.includes(e)) {
+          this.jZc(n);
+        }
       }
+    }
+  }
+  static RegisterLockShortcutKeyReason(e, t = InputManager.d7m) {
+    InputManager.c7m.set(e, t);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("InputManager", 10, "锁定快捷键输入的原因", ["reason", e]);
+    }
+  }
+  static RemoveLockShortcutKeyReason(e) {
+    InputManager.c7m.delete(e);
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("InputManager", 10, "解锁快捷键输入的原因", ["reason", e]);
     }
   }
   static RegisterOpenViewFunc(e, t) {
@@ -371,6 +395,7 @@ InputManager.$ya = new ViewHotKeyHandleContainer_1.ViewHotKeyHandleContainer();
 InputManager.IsAutoMoveCursorToCenter = true;
 InputManager.IsAltPress = false;
 InputManager.ImmersiveMouseModule = undefined;
+InputManager.c7m = new Map();
 InputManager.il = () => {
   if (!InputManager.gU) {
     InputManager.smr();
@@ -395,6 +420,7 @@ InputManager.ht = () => {
     InputManager.IsAltPress = false;
   }
 };
+InputManager.d7m = (e, t) => true;
 InputManager.amr = (e, t) => {
   if (t === 1 && ModelManager_1.ModelManager.SundryModel.GmBlueprintGmIsOpen && ModelManager_1.ModelManager.SundryModel.CanOpenGmView) {
     if (UiManager_1.UiManager.IsViewOpen("GmView")) {

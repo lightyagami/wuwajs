@@ -180,13 +180,13 @@ class MonsterHandBookView extends UiViewBase_1.UiViewBase {
         this.vhd();
       }
     };
-    this.VXd = () => {
+    this.yYd = () => {
       this.wpt();
     };
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UIItem], [2, UE.UIText], [3, UE.UIText], [4, UE.UIDynScrollViewComponent], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIText], [8, UE.UIText], [9, UE.UIHorizontalLayout], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIButtonComponent], [13, UE.UIButtonComponent], [14, UE.UIHorizontalLayout], [15, UE.UIItem], [16, UE.UIItem], [17, UE.UIItem], [18, UE.UIItem], [19, UE.UIText], [20, UE.UIText], [21, UE.UIButtonComponent]];
-    this.BtnBindInfo = [[12, this.Npt], [13, this.Cpt], [21, this.VXd]];
+    this.BtnBindInfo = [[12, this.Npt], [13, this.Cpt], [21, this.yYd]];
   }
   async OnBeforeStartAsync() {
     this.lqe = new PopupCaptionItem_1.PopupCaptionItem();

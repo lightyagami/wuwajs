@@ -540,13 +540,13 @@ class CookController extends UiControllerBase_1.UiControllerBase {
     if (e) {
       e = EntitySystem_1.EntitySystem.Get(e);
       if (e) {
-        return e.GetComponent(200);
+        return e.GetComponent(206);
       }
     }
   }
   static TryRequestChangeEntityStateByEvent(e, o) {
     var t;
-    if (o.Info.Name === "CookMechanismRootView") {
+    if (CookDefine_1.cookEntityCanChangeList.includes(o.Info.Name)) {
       if ((o = ModelManager_1.ModelManager.InteractionModel.CurrentInteractEntityId) === undefined) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Cook", 64, "当前无法获取交互实体的id");

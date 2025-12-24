@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TowerFloorInfo = exports.TOWER_TEAM_MAX_NUMBER = exports.TowerReward = exports.HIGH_COST = exports.noneColor = exports.lowColor = exports.highColor = exports.NONE_COLOR = exports.LOW_COLOR = exports.HIGH_COLOR = exports.OVERLOCK_RISK_DIFFICULTY = exports.VARIATION_RISK_DIFFICULTY = exports.HIGH_RISK_DIFFICULTY = exports.LOW_RISK_DIFFICULTY = undefined;
+exports.TowerFloorInfo = exports.TOWER_TEAM_MAX_NUMBER = exports.TowerReward = exports.HIGH_COST = exports.redColor = exports.noneColor = exports.lowColor = exports.highColor = exports.RED_COLOR = exports.NONE_COLOR = exports.LOW_COLOR = exports.HIGH_COLOR = exports.OVERLOCK_RISK_DIFFICULTY = exports.VARIATION_RISK_DIFFICULTY = exports.HIGH_RISK_DIFFICULTY = exports.LOW_RISK_DIFFICULTY = undefined;
 const UE = require("ue");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 exports.LOW_RISK_DIFFICULTY = 1;
@@ -13,9 +13,11 @@ exports.OVERLOCK_RISK_DIFFICULTY = 4;
 exports.HIGH_COLOR = "FFE361";
 exports.LOW_COLOR = "FFBD77";
 exports.NONE_COLOR = "B11515";
+exports.RED_COLOR = "E2524C";
 exports.highColor = UE.Color.FromHex(exports.HIGH_COLOR);
 exports.lowColor = UE.Color.FromHex(exports.LOW_COLOR);
 exports.noneColor = UE.Color.FromHex(exports.NONE_COLOR);
+exports.redColor = UE.Color.FromHex(exports.RED_COLOR);
 exports.HIGH_COST = 4;
 class TowerReward {
   constructor(s, t, r) {

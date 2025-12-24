@@ -9,6 +9,7 @@ class ActivityControllerHolder {
     this.ActivitySolarSpeedController = undefined;
     this.ActivityInviteNewbieController = undefined;
     this.HonamiStoryController = undefined;
+    this.InfrastructureController = undefined;
     this.ActivityRegressController = undefined;
     this.LifePointDrawActivityController = undefined;
     this.ActivityTrapDefenseController = undefined;
@@ -19,6 +20,9 @@ class ActivityControllerHolder {
     this.PrizeDrawingController = undefined;
     this.ActivityPreWarmController = undefined;
     this.AdvanceNoticeController = undefined;
+    this.ActivityMotorLinkageController = undefined;
+    this.WheelTowerController = undefined;
+    this.ActivityNewPlayerSupportController = undefined;
   }
 }
 (exports.ActivityControllerHolder = ActivityControllerHolder).ActivitySolarSpeedController = undefined;
@@ -28,10 +32,15 @@ ActivityControllerHolder.HonamiStoryController = undefined;
 ActivityControllerHolder.ActivityRegressController = undefined;
 ActivityControllerHolder.LifePointDrawActivityController = undefined;
 ActivityControllerHolder.ActivityTrapDefenseController = undefined;
+ActivityControllerHolder.InfrastructureController = undefined;
 ActivityControllerHolder.ActivityFunPlayController = undefined;
 ActivityControllerHolder.LineCrossActivityController = undefined;
 ActivityControllerHolder.ActivityShipTowerController = undefined;
 ActivityControllerHolder.FightPhotoController = undefined;
 ActivityControllerHolder.PrizeDrawingController = undefined;
 ActivityControllerHolder.ActivityPreWarmController = undefined;
-ActivityControllerHolder.AdvanceNoticeController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map
+ActivityControllerHolder.AdvanceNoticeController = undefined;
+ActivityControllerHolder.ActivityMotorLinkageController = undefined;
+ActivityControllerHolder.MotorParkourController = undefined;
+ActivityControllerHolder.WheelTowerController = undefined;
+ActivityControllerHolder.ActivityNewPlayerSupportController = undefined; //# sourceMappingURL=ActivityControllerHolder.js.map

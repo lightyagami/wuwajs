@@ -253,6 +253,7 @@ class PlayerInfoModel extends ModelBase_1.ModelBase {
     this.tMi = e;
     this.N3a = t;
     this.F3a = r;
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsSyncThirdPartyInfo, e, t, r);
   }
   GetThirdPartyUserId() {
     return this.tMi;

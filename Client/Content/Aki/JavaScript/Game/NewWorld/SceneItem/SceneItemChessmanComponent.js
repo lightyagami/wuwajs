@@ -89,10 +89,10 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     return true;
   }
   OnStart() {
-    this.DGa = this.Entity.GetComponent(142);
-    this.o4o = this.Entity.GetComponent(132);
-    this.n$t = this.Entity.GetComponent(206);
-    this.Xte = this.Entity.GetComponent(200);
+    this.DGa = this.Entity.GetComponent(147);
+    this.o4o = this.Entity.GetComponent(137);
+    this.n$t = this.Entity.GetComponent(212);
+    this.Xte = this.Entity.GetComponent(206);
     this.o4o?.AddStopMoveCallback(this.RGa);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted, this.Rnn);
     return true;
@@ -162,5 +162,5 @@ let SceneItemChessmanComponent = SceneItemChessmanComponent_1 = class SceneItemC
     }
   }
 };
-SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(263)], SceneItemChessmanComponent);
+SceneItemChessmanComponent = SceneItemChessmanComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], SceneItemChessmanComponent);
 exports.SceneItemChessmanComponent = SceneItemChessmanComponent; //# sourceMappingURL=SceneItemChessmanComponent.js.map

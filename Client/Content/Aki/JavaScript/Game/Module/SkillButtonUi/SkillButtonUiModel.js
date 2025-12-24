@@ -18,13 +18,12 @@ const SkillButtonFollowerEntityData_1 = require("./SkillButtonFollowerEntityData
 const SkillButtonFormationData_1 = require("./SkillButtonFormationData");
 const SkillButtonIndexData_1 = require("./SkillButtonIndexData");
 const SkillButtonUiGamepadData_1 = require("./SkillButtonUiGamepadData");
+const SkillButtonUiMotorcycleGamepadData_1 = require("./SkillButtonUiMotorcycleGamepadData");
 const SkillButtonVehicleEntityData_1 = require("./SkillButtonVehicleEntityData");
-const behaviorIconResMap = new Map([[101, ["SP_IconAim", "SP_IconAimPre"]], [102, ["SP_IconLock", "SP_IconLockPre"]], [104, ["SP_IconXboxIcon1"]]]);
 class SkillButtonUiModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
     this.SkillPriorityButtonConfigMap = new Map();
-    this.BehaviorIconPathMap = new Map();
     this._Io = new Map();
     this.uIo = undefined;
     this.SkillButtonFormationData = undefined;
@@ -35,14 +34,14 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
     this.CurSkillButtonIndexData = undefined;
     this.SkillButtonRotationRate = 0;
     this.Feh = undefined;
+    this.GamepadDataMap = new Map();
     this.mIo = undefined;
     this.gU = false;
   }
   get GamepadData() {
     if (!this.Feh) {
       if (this.gU && !Info_1.Info.IsInTouch()) {
-        this.Feh = new SkillButtonUiGamepadData_1.SkillButtonUiGamepadData();
-        this.Feh.Init();
+        this.csf();
       }
     }
     return this.Feh;
@@ -52,25 +51,16 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
     this.SkillButtonFormationData = new SkillButtonFormationData_1.SkillButtonFormationData();
     this.SkillButtonFormationData.Init();
     this.SkillPriorityButtonConfigMap.clear();
-    for (const s of ConfigManager_1.ConfigManager.SkillButtonConfig.GetAllSkillPriorityButtonConfig()) {
-      this.SkillPriorityButtonConfigMap.set(s.ButtonType, s);
-    }
-    this.BehaviorIconPathMap.clear();
-    for (var [t, i] of behaviorIconResMap) {
-      var e = [];
-      for (const a of i) {
-        e.push(ConfigManager_1.ConfigManager.UiResourceConfig.GetResourcePath(a));
-      }
-      this.BehaviorIconPathMap.set(t, e);
+    for (const e of ConfigManager_1.ConfigManager.SkillButtonConfig.GetAllSkillPriorityButtonConfig()) {
+      this.SkillPriorityButtonConfigMap.set(e.ButtonType, e);
     }
     if (!Info_1.Info.IsInTouch()) {
-      this.Feh = new SkillButtonUiGamepadData_1.SkillButtonUiGamepadData();
-      this.Feh.Init();
+      this.csf();
     }
-    var n = Info_1.Info.OperationType === 2;
-    var o = ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillIndexConfig(0);
+    var t = Info_1.Info.OperationType === 2;
+    var i = ConfigManager_1.ConfigManager.SkillButtonConfig.GetSkillIndexConfig(0);
     this.DefaultSkillButtonIndexData = new SkillButtonIndexData_1.SkillButtonIndexData();
-    this.DefaultSkillButtonIndexData.UpdateSkillButtonIndexConfig(o, n);
+    this.DefaultSkillButtonIndexData.UpdateSkillButtonIndexConfig(i, t);
     this.OtherSkillButtonIndexData = new SkillButtonIndexData_1.SkillButtonIndexData();
     this.CurSkillButtonIndexData = this.DefaultSkillButtonIndexData;
     return this.gU = true;
@@ -89,6 +79,19 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
   }
   OnLeaveLevel() {
     return true;
+  }
+  csf() {
+    this.ChangeGamepadData(0, false);
+  }
+  ChangeGamepadData(t, i = 0) {
+    if (this.GamepadDataMap.has(t)) {
+      this.Feh = this.GamepadDataMap.get(t);
+    } else {
+      this.Feh = new (t === 1 ? SkillButtonUiMotorcycleGamepadData_1.SkillButtonUiMotorcycleGamepadData : SkillButtonUiGamepadData_1.SkillButtonUiGamepadData)();
+      this.Feh.Init();
+      this.GamepadDataMap.set(t, this.Feh);
+    }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiGamepadDataChanged);
   }
   GetSkillButtonEntityData(t) {
     return this._Io.get(t);
@@ -161,12 +164,15 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
     this.ClearSkillButtonVehicleEntityData();
     this.m3_ = new SkillButtonVehicleEntityData_1.SkillButtonVehicleEntityData();
     this.m3_.Init(t);
+    this.Feh?.RefreshSkillButtonData(2);
   }
   ClearSkillButtonVehicleEntityData() {
     if (this.m3_) {
       this.m3_.Clear();
       this.m3_ = undefined;
     }
+    this.Feh?.RefreshSkillButtonData(2);
+    this.uIo?.RefreshSkillButtonData(2);
   }
   OnRemoveEntity(t) {
     var i = this._Io.get(t.Id);
@@ -268,9 +274,13 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
     }
   }
   OnAimStateChanged() {
+    this.xet();
     if (this.GamepadData?.RefreshAimState()) {
-      this.uIo?.RefreshSkillButtonData(3);
+      this.uIo?.RefreshSkillButtonData(4);
     }
+  }
+  xet() {
+    this.uIo?.RefreshBehaviorButtonState();
   }
   OnActionKeyChanged(t) {
     this.GamepadData?.OnActionKeyChanged(t);
@@ -347,6 +357,14 @@ class SkillButtonUiModel extends ModelBase_1.ModelBase {
   }
   GetCurSkillButtonFollowerEntityData() {
     return this.Gxa;
+  }
+  RefreshVisibleByBehaviorType(t) {
+    for (const i of this._Io.values()) {
+      i.RefreshVisibleByBehaviorType(t);
+    }
+  }
+  GetGamepadDataByType(t) {
+    return this.GamepadDataMap.get(t);
   }
 }
 exports.SkillButtonUiModel = SkillButtonUiModel;

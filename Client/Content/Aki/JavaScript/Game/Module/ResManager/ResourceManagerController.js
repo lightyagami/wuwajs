@@ -5,12 +5,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.ResourceManagerController = undefined;
-const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
+const MapBlockInfoById_1 = require("../../../Core/Define/ConfigQuery/MapBlockInfoById");
 const MapBlockInfoByMapId_1 = require("../../../Core/Define/ConfigQuery/MapBlockInfoByMapId");
-const QuestRefMapBlockConfigByQuestId_1 = require("../../../Core/Define/ConfigQuery/QuestRefMapBlockConfigByQuestId");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const Http_1 = require("../../../Core/Http/Http");
 const Net_1 = require("../../../Core/Net/Net");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
@@ -20,24 +20,29 @@ const ResourceUpdateManager_1 = require("../../../Launcher/Update/ResourceDiffUp
 const LauncherStorageLib_1 = require("../../../Launcher/Util/LauncherStorageLib");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const UiManager_1 = require("../../Ui/UiManager");
-const SubPackageDefine_1 = require("../SubPackage/SubPackageDefine");
-const ResUpdateFactory_1 = require("./ResUpdateFactory");
-const MapBlockInfoById_1 = require("../../../Core/Define/ConfigQuery/MapBlockInfoById");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
-const ConfigManager_1 = require("../../Manager/ConfigManager");
-const Http_1 = require("../../../Core/Http/Http");
+const ResUpdateFactory_1 = require("./ResUpdateFactory");
+const CUE_BLOCK_PUSH_TIME = 3000;
 class ResourceManagerController extends ControllerBase_1.ControllerBase {
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
     this.InitBlockDownloadState();
+    this.Ore();
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
+    this.kre();
     return true;
+  }
+  static Ore() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
+  }
+  static kre() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
   }
   static IsBlockResourceDownloaded(e, o) {
     if (!ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit() || (e = this.GetMapBlockFromPosition(e, o)) === -1) {
@@ -77,35 +82,35 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
         Log_1.Log.Info("SubPackageDownLoad", 70, `登陆位置${n.P5n.X},${n.P5n.Y} 依赖地块:${t}`);
       }
     }
-    for (const i of e.LoginQuests) {
-      var r = QuestRefMapBlockConfigByQuestId_1.configQuestRefMapBlockConfigByQuestId.GetConfig(i, true)?.MapBlockId;
+    for (const _ of e.LoginQuests) {
+      var r = e.QuestsRefBlocks.get(_);
       if (r !== undefined) {
-        for (const c of r) {
-          o.add(c);
+        for (const i of r) {
+          o.add(i);
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("QuestResource", 70, `任务${i}依赖地块:${c}`);
+            Log_1.Log.Info("QuestResource", 70, `任务${_}依赖地块:${i}`);
           }
         }
       }
     }
     var a = new Set();
-    for (const _ of o) {
-      var s = ModelManager_1.ModelManager.SubPackageDownLoadModel?.GetBlockBelongToBlockGroup(_);
+    for (const c of o) {
+      var s = ModelManager_1.ModelManager.SubPackageDownLoadModel?.GetBlockBelongToBlockGroup(c);
       if (s) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("QuestResource", 70, `地块${_}属于地块组,组内地块:${s}`);
+          Log_1.Log.Info("QuestResource", 70, `地块${c}属于地块组,组内地块:${s}`);
         }
         for (const u of s) {
           a.add(u);
         }
       } else {
-        a.add(_);
+        a.add(c);
       }
     }
     for (const g of ConfigManager_1.ConfigManager.SubPackageConfig.GetDownLoadSubPackageList() ?? []) {
       if (g.BelongKey) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("QuestResource", 70, "配置强制下载地块:" + g.Area);
+          Log_1.Log.Info("QuestResource", 70, "下载条目配置强制进核心包地块:" + g.Area);
         }
         for (const d of g.Area) {
           a.add(d);
@@ -142,19 +147,38 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static async CheckOptResDownload() {
-    var e;
     this.ChangeHttpTickFrequency();
-    await ModelManager_1.ModelManager.SubPackageDownLoadModel.InitSubPackageDownLoadItemUpdater();
     if (this.NeedDownloadResources()) {
-      this.LoginPrepareResCheckPromise = new CustomPromise_1.CustomPromise();
-      (e = new SubPackageDefine_1.SubPackageDownLoadViewOpenData()).IsShowCloseBtn = false;
-      UiManager_1.UiManager.OpenView("SubPackageDownLoadView", e);
-      await this.LoginPrepareResCheckPromise.Promise;
+      var [e, o] = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateLoginPrepareUpdaters();
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("SubPackageDownLoad", 70, "登录时发现有未下载的核心资源, 触发保底开始下载");
+      }
+      this.PushCurBlock(o, "登录时触发保底下载");
+      for (const t of e) {
+        await t.UpdateResourceProcedure();
+      }
     }
+    await ModelManager_1.ModelManager.SubPackageDownLoadModel.InitSubPackageDownLoadItemUpdater();
     this.RestoreHttpTickFrequency();
-    this.UpdateToServerResState();
-    this.UpdateServerQuestState();
-    this.LoginPrepareResCheckPromise = undefined;
+  }
+  static OnTick(e) {
+    this.qVf(e);
+  }
+  static qVf(e) {
+    this.IUf += e;
+    if (this.IUf >= CUE_BLOCK_PUSH_TIME && (this.IUf = 0, e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3)) && (e = this.GetMapBlockFromPosition(ModelManager_1.ModelManager.GameModeModel.MapId, e?.ActorLocationProxy)) >= 0 && e !== this.VGf) {
+      this.VGf = e;
+      this.PushCurBlock([e], "地块改变定时推送");
+    }
+  }
+  static PushCurBlock(e, o) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("QuestResource", 70, `推送当前地块:${e} 原因:${o}`);
+    }
+    o = Protocol_1.Aki.Protocol.MUf.create({
+      EUf: e
+    });
+    Net_1.Net.Send(16548, o);
   }
   static GetMapBlockFromPosition(e, o) {
     var t = MapBlockInfoByMapId_1.configMapBlockInfoByMapId.GetConfigList(e, true);
@@ -165,16 +189,16 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
       return -1;
     }
     let r = -1;
-    for (const i of t) {
-      var a = i.RegionBoxes;
+    for (const _ of t) {
+      var a = _.RegionBoxes;
       if (a.length === 0) {
-        r = i.BlockId;
+        r = _.BlockId;
       }
       for (let e = 0; e < a.length - 1; e += 2) {
         var s = a[e];
         var n = a[e + 1];
         if (o.X >= s.X && o.X <= n.X && o.Y >= s.Y && o.Y <= n.Y) {
-          return i.BlockId;
+          return _.BlockId;
         }
       }
     }
@@ -198,22 +222,21 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     return [true, BigInt(0), BigInt(0)];
   }
   static GetUnneededResourceSize(e) {
-    var o = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-    let t = 0n;
-    var r = [];
-    for (const n of e) {
-      for (const i of ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefPakNames(n, o)) {
-        var a = VideoResUpdate_1.VideoResUpdate.VideoMap.get(i);
-        if (a) {
-          r.push(a);
+    let o = 0n;
+    var t = [];
+    for (const s of e) {
+      for (const n of ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefPakNames(s, 2)) {
+        var r = VideoResUpdate_1.VideoResUpdate.VideoMap.get(n);
+        if (r) {
+          t.push(r);
         }
       }
     }
-    for (const c of r) {
-      var [,,, s] = VideoResUpdate_1.VideoResUpdate.AnalyzeSingle(c);
-      t += s;
+    for (const _ of t) {
+      var [,,, a] = VideoResUpdate_1.VideoResUpdate.AnalyzeSingle(_);
+      o += a;
     }
-    return [t, [], r];
+    return [o, [], t];
   }
   static DeleteUnneededResource(e) {
     var [e, o, t] = this.GetUnneededResourceSize(e);
@@ -230,7 +253,7 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetQuestRefRes(e) {
-    return [QuestRefMapBlockConfigByQuestId_1.configQuestRefMapBlockConfigByQuestId.GetConfig(e, true)?.MapBlockId ?? [], ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefCgIds(e)];
+    return [ModelManager_1.ModelManager.ResourceManagerModel.QuestsRefBlocks.get(e) ?? [], ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefCgIds(e)];
   }
   static GetMp4ResourceDownloadStatus(e) {
     var o = VideoResUpdate_1.VideoResUpdate.GetVideoResPakByVideoIds([e]);
@@ -242,6 +265,18 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     } else {
       [, e, o] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames(o);
       return [e === o, e, o];
+    }
+  }
+  static sKf() {
+    if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
+      var o = ControllerHolder_1.ControllerHolder.KuroSdkController.GetCurrentLoginInfo().Uid ?? "";
+      var t = ModelManager_1.ModelManager.QuestNewModel.GetFinishQuestList();
+      let e = LauncherStorageLib_1.LauncherStorageLib.GetGlobal(LauncherStorageLib_1.ELauncherStorageGlobalKey.UserFinishedQuests);
+      (e = e || new Map()).set(o, new Set(t));
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SubPackageDownLoad", 70, "保存已完成任务列表到本地存储", ["sdkId", o], ["finishedQuests", t]);
+      }
+      LauncherStorageLib_1.LauncherStorageLib.SetGlobal(LauncherStorageLib_1.ELauncherStorageGlobalKey.UserFinishedQuests, e);
     }
   }
   static UpdateToServerResState() {
@@ -268,26 +303,26 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
       Log_1.Log.Info("QuestResource", 38, "登录后上报服务器本地资源状态", ["ResState", s]);
     }
     if (s !== 2) {
-      const i = Protocol_1.Aki.Protocol.Y61.create({
+      const _ = Protocol_1.Aki.Protocol.Y61.create({
         l31: s
       });
-      Net_1.Net.Call(28715, i, e => {
+      Net_1.Net.Call(28715, _, e => {
         if (e && Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("QuestResource", 38, "计算出新状态后通知服务器任务资源状态改变", ["新状态", s]);
         }
       });
     }
-    let n = Protocol_1.Aki.Protocol.QSm.Proto_BStateAll;
+    let n = Protocol_1.Aki.Protocol.fUm.Proto_BStateAll;
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-      n = a ? Protocol_1.Aki.Protocol.QSm.Proto_BStateComplete : Protocol_1.Aki.Protocol.QSm.Proto_BStateSimple;
+      n = a ? Protocol_1.Aki.Protocol.fUm.Proto_BStateComplete : Protocol_1.Aki.Protocol.fUm.Proto_BStateSimple;
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("QuestResource", 38, "登录后上报服务器地块资源状态", ["BlockState", n]);
     }
-    const i = Protocol_1.Aki.Protocol.GSm.create({
-      NSm: n
+    const _ = Protocol_1.Aki.Protocol.aUm.create({
+      lUm: n
     });
-    Net_1.Net.Send(20170, i);
+    Net_1.Net.Send(20170, _);
   }
   static UpdateBlockDownloadState(e, o) {
     var t;
@@ -306,68 +341,102 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
   }
   static UpdateServerQuestState() {
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
-      var e = ModelManager_1.ModelManager.QuestResourceModel;
-      var o = new Set();
-      var t = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
-      var r = new Set();
-      if (t === 0) {
-        for (var [a] of e.FemaleQuestIdToPack) {
-          r.add(a);
-          if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(a)) {
-            if (this.IsQuestResourceDownloaded(a, t)) {
-              o.add(a);
-            }
-          }
-        }
-      } else if (t === 1) {
-        for (var [s] of e.MaleQuestIdToPack) {
-          r.add(s);
+      var e;
+      var o = ModelManager_1.ModelManager.QuestResourceModel;
+      var t = new Set();
+      var r = ModelManager_1.ModelManager.PlayerInfoModel.GetPlayerGender();
+      var a = new Set();
+      if (r === 0) {
+        for (var [s] of o.FemaleQuestIdToPack) {
+          a.add(s);
           if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(s)) {
-            if (this.IsQuestResourceDownloaded(s, t)) {
-              o.add(s);
+            if (this.IsQuestResourceDownloaded(s, r)) {
+              t.add(s);
+            }
+          }
+        }
+      } else if (r === 1) {
+        for (var [n] of o.MaleQuestIdToPack) {
+          a.add(n);
+          if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(n)) {
+            if (this.IsQuestResourceDownloaded(n, r)) {
+              t.add(n);
             }
           }
         }
       }
-      for (const n of ModelManager_1.ModelManager.ResourceManagerModel.RefBlockQuests) {
-        if (!r.has(n) && !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(n)) {
-          if (this.IsQuestResourceDownloaded(n, t)) {
-            o.add(n);
+      for ([e] of ModelManager_1.ModelManager.ResourceManagerModel.QuestsRefBlocks) {
+        if (!a.has(e) && !ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(e)) {
+          if (this.IsQuestResourceDownloaded(e, r)) {
+            t.add(e);
           }
         }
       }
-      e = Protocol_1.Aki.Protocol.uau.create({
-        a2s: [...o]
+      o = Protocol_1.Aki.Protocol.uau.create({
+        a2s: [...t]
       });
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("QuestResource", 38, "通知服务器登录任务下载完成", ["LoginQuests", o]);
+        Log_1.Log.Info("QuestResource", 38, "通知服务器登录任务下载完成", ["LoginQuests", t]);
       }
-      Net_1.Net.Call(18651, e, e => {
+      Net_1.Net.Call(18651, o, e => {
         if (e && e.BEs !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.BEs, 26131);
         }
       });
     }
   }
+  static GetDownloadedQuestListBeforeLogin(e = 2) {
+    var o;
+    var t;
+    var r = [];
+    var a = ModelManager_1.ModelManager.QuestResourceModel;
+    var s = ModelManager_1.ModelManager.ResourceManagerModel;
+    var n = new Set();
+    for ([o] of a.QuestIdToCgIds) {
+      n.add(o);
+    }
+    for ([t] of s.QuestsRefBlocks) {
+      n.add(t);
+    }
+    for (const i of n) {
+      var _ = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(i);
+      if (!!_ && (_.Type === 1 || _.Type === 10)) {
+        if (this.IsQuestResourceDownloaded(i, e)) {
+          r.push(i);
+        }
+      }
+    }
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("QuestResource", 70, "登录前已完成资源下载的任务列表:" + r);
+    }
+    return r;
+  }
   static IsQuestResourceDownloaded(e, o) {
-    var t = QuestRefMapBlockConfigByQuestId_1.configQuestRefMapBlockConfigByQuestId.GetConfig(e, true)?.MapBlockId;
-    if (t !== undefined) {
-      for (const a of t) {
-        var r = ModelManager_1.ModelManager.ResourceManagerModel.MapBlockIdToPackName.get(a);
-        if (r) {
-          r = ResPackageInfo_1.ResPackageInfo.OptionalDownLoadInfo.get(r);
-          if (r && !r.IsCompleteDownload()) {
+    var t = ModelManager_1.ModelManager.ResourceManagerModel;
+    var r = t.QuestsRefBlocks.get(e);
+    if (r !== undefined) {
+      for (const s of r) {
+        var a = t.MapBlockIdToPackName.get(s);
+        if (a) {
+          a = ResPackageInfo_1.ResPackageInfo.OptionalDownLoadInfo.get(a);
+          if (a && !a.IsCompleteDownload()) {
             if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("QuestResource", 70, `任务${e}依赖地块${a}资源未下载完成`);
+              Log_1.Log.Info("QuestResource", 70, `任务${e}依赖地块${s}资源未下载完成`);
             }
             return false;
           }
         }
       }
     }
-    var t = ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefPakNames(e, o);
-    var [, o, t] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames(t);
-    return o === t;
+    var r = ModelManager_1.ModelManager.QuestResourceModel.GetQuestRefPakNames(e, o);
+    var [, o, r] = VideoResUpdate_1.VideoResUpdate.AnalyzeRequireFilesByNames(r);
+    var o = o === r;
+    if (!o) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("QuestResource", 70, `任务${e}依赖视频资源未下载完成`);
+      }
+    }
+    return o;
   }
   static InitBlockDownloadState() {
     var e;
@@ -388,8 +457,8 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
     }
   }
   static async TestDownload() {
-    const e = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.GetOrCreateMapBlockUpdater("testBlock", [1, 2, 3], 1);
-    const o = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.GetOrCreateVideoUpdater("testVideo", 1, 6, [114, 196, 204]);
+    const e = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateMapBlockUpdater("testBlock", [1, 2, 3], 1);
+    const o = await ResUpdateFactory_1.ResourceDiffUpdaterFactory.CreateVideoUpdater("testVideo", 1, 6, [114, 196, 204]);
     let t = 0;
     let r = false;
     var a = TimerSystem_1.GameplayTimerSystem.Forever(() => {
@@ -439,6 +508,18 @@ class ResourceManagerController extends ControllerBase_1.ControllerBase {
 }
 exports.ResourceManagerController = ResourceManagerController;
 (_a = ResourceManagerController).LoginPrepareResCheckPromise = undefined;
+ResourceManagerController.IUf = 0;
+ResourceManagerController.VGf = -1;
 ResourceManagerController.Gro = () => {
-  _a.UpdateToServerResState();
+  if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+    _a.sKf();
+    ModelManager_1.ModelManager.SubPackageDownLoadModel?.UpdaterDownLoadSize();
+    _a.UpdateToServerResState();
+    _a.UpdateServerQuestState();
+  }
+};
+ResourceManagerController.DSe = (e, o) => {
+  if (o === Protocol_1.Aki.Protocol.hTs.a3_ && ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
+    _a.sKf();
+  }
 }; //# sourceMappingURL=ResourceManagerController.js.map

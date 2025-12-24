@@ -54,6 +54,9 @@ class LogicTreeContainer {
   GetCurrentCorrelativeEntities() {
     return this.Tree?.GetCurrentCorrelativeEntities();
   }
+  GetCurrentTrackCustomBoard() {
+    return this.Tree?.GetCurrentNodeCustomTrackBoard();
+  }
   SetTrack(e, t = 0) {
     this.Tree?.SetTrack(e, t);
   }

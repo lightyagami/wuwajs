@@ -25,9 +25,6 @@ class PhonographMusic {
   get Lock() {
     return this.lock();
   }
-  get Duration() {
-    return this.duration();
-  }
   get Desc() {
     return this.desc();
   }
@@ -100,16 +97,8 @@ class PhonographMusic {
     var t = this.J7.__offset(this.z7, 12);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
-  duration() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readFloat32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   desc(t) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 14);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -117,7 +106,7 @@ class PhonographMusic {
     return i;
   }
   title(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 16);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -125,7 +114,7 @@ class PhonographMusic {
     return i;
   }
   unlockconditiontext(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

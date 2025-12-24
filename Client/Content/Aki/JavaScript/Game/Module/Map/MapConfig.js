@@ -31,6 +31,7 @@ const MapMarkRelativeSubTypeByFunctionId_1 = require("../../../Core/Define/Confi
 const MapMarkRelativeSubTypeById_1 = require("../../../Core/Define/ConfigQuery/MapMarkRelativeSubTypeById");
 const MapPeriodicActivityAll_1 = require("../../../Core/Define/ConfigQuery/MapPeriodicActivityAll");
 const MapPeriodicActivityById_1 = require("../../../Core/Define/ConfigQuery/MapPeriodicActivityById");
+const MapRoadWaysByMapId_1 = require("../../../Core/Define/ConfigQuery/MapRoadWaysByMapId");
 const MonsterDetectionAll_1 = require("../../../Core/Define/ConfigQuery/MonsterDetectionAll");
 const MultiMapAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAll");
 const MultiMapAreaConfigAll_1 = require("../../../Core/Define/ConfigQuery/MultiMapAreaConfigAll");
@@ -171,7 +172,8 @@ class MapConfig extends ConfigBase_1.ConfigBase {
         StateId: e.StateId,
         CountryId: e.CountryId,
         MarkId: e.DeliveryMarkId,
-        MarkType: e.DeliveryMarkType
+        MarkType: e.DeliveryMarkType,
+        SortIndex: e.SortIndex
       };
       this.vYa.set(e.AreaId, r);
       let i = this.MYa.get(e.CountryId);
@@ -204,6 +206,17 @@ class MapConfig extends ConfigBase_1.ConfigBase {
         i.StateMap.get(e).AreaNavigateList.push(r);
       }
       i.AreaNavigateList.push(r);
+    });
+    this.MYa.forEach(e => {
+      e.AreaNavigateList.sort((e, r) => {
+        var i = e.SortIndex ?? 0;
+        var t = r.SortIndex ?? 0;
+        if (i !== t) {
+          return i - t;
+        } else {
+          return e.AreaId - r.AreaId;
+        }
+      });
     });
   }
   get WorldMapNavigateAreaMap() {
@@ -453,6 +466,9 @@ class MapConfig extends ConfigBase_1.ConfigBase {
   }
   GetMapPeriodicActivityListConfigs() {
     return MapPeriodicActivityAll_1.configMapPeriodicActivityAll.GetConfigList();
+  }
+  GetMapRoadWaysByMapId(e) {
+    return MapRoadWaysByMapId_1.configMapRoadWaysByMapId.GetConfigList(e);
   }
 }
 (exports.MapConfig = MapConfig).EnableAsyncMiniMap = false;

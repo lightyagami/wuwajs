@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GuideGroup = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
+const IntPair_1 = require("./SubType/IntPair");
 class GuideGroup {
   constructor() {
     this.J7 = null;
@@ -15,6 +16,9 @@ class GuideGroup {
   }
   get Step() {
     return GameUtils_1.GameUtils.ConvertToArray(this.stepLength(), this.step, this);
+  }
+  get MultiPlatformStep() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.multiplatformstepLength(), this.multiplatformstep, this);
   }
   get OpenLimitCondition() {
     return this.openlimitcondition();
@@ -31,6 +35,9 @@ class GuideGroup {
   get DungeonSets() {
     return GameUtils_1.GameUtils.ConvertToArray(this.dungeonsetsLength(), this.dungeonsets, this);
   }
+  get DungeonTypes() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.dungeontypesLength(), this.dungeontypes, this);
+  }
   get ResetInDungeon() {
     return this.resetindungeon();
   }
@@ -39,6 +46,9 @@ class GuideGroup {
   }
   get Priority() {
     return this.priority();
+  }
+  get PriorityBreakExclude() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.prioritybreakexcludeLength(), this.prioritybreakexclude, this);
   }
   __init(t, i) {
     this.z7 = t;
@@ -83,8 +93,35 @@ class GuideGroup {
       return null;
     }
   }
-  openlimitcondition() {
+  GetMultiplatformstepAt(t) {
+    return this.multiplatformstep(t);
+  }
+  multiplatformstep(t) {
+    var i = this.J7.__offset(this.z7, 8);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  multiplatformstepLength() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  multiplatformstepArray() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  openlimitcondition() {
+    var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -92,7 +129,7 @@ class GuideGroup {
     }
   }
   autoopencondition() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -103,7 +140,7 @@ class GuideGroup {
     return this.limitrepeat(t);
   }
   limitrepeat(t) {
-    var i = this.J7.__offset(this.z7, 12);
+    var i = this.J7.__offset(this.z7, 14);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -111,7 +148,7 @@ class GuideGroup {
     }
   }
   limitrepeatLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -119,7 +156,7 @@ class GuideGroup {
     }
   }
   limitrepeatArray() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -130,7 +167,7 @@ class GuideGroup {
     return this.dungeonid(t);
   }
   dungeonid(t) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 16);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -138,7 +175,7 @@ class GuideGroup {
     }
   }
   dungeonidLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -146,7 +183,7 @@ class GuideGroup {
     }
   }
   dungeonidArray() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -157,7 +194,7 @@ class GuideGroup {
     return this.dungeonsets(t);
   }
   dungeonsets(t, i) {
-    var s = this.J7.__offset(this.z7, 16);
+    var s = this.J7.__offset(this.z7, 18);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -165,7 +202,26 @@ class GuideGroup {
     return s;
   }
   dungeonsetsLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetDungeontypesAt(t, i) {
+    return this.dungeontypes(t);
+  }
+  dungeontypes(t, i) {
+    var s = this.J7.__offset(this.z7, 20);
+    if (s) {
+      return (i || new IntPair_1.IntPair()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  dungeontypesLength() {
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -173,11 +229,11 @@ class GuideGroup {
     }
   }
   resetindungeon() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 22);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   onlinemode() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -185,11 +241,38 @@ class GuideGroup {
     }
   }
   priority() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  GetPrioritybreakexcludeAt(t) {
+    return this.prioritybreakexclude(t);
+  }
+  prioritybreakexclude(t) {
+    var i = this.J7.__offset(this.z7, 28);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  prioritybreakexcludeLength() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  prioritybreakexcludeArray() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
     }
   }
 }

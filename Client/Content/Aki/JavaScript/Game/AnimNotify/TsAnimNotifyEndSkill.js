@@ -16,9 +16,9 @@ class TsAnimNotifyEndSkill extends UE.KuroAnimNotify {
       if (!e?.Valid) {
         return false;
       }
-      var t = e.GetComponent(209);
-      var a = e.GetComponent(40);
-      var i = e.GetComponent(178);
+      var t = e.GetComponent(215);
+      var a = e.GetComponent(41);
+      var i = e.GetComponent(183);
       if (!t?.Valid || !a?.Valid || !i?.Valid || a.IsSkillMontageInvalid(r.GetName())) {
         return false;
       }

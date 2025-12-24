@@ -15,8 +15,8 @@ class SkillVehicleButton {
   get Id() {
     return this.id();
   }
-  get PbDataId() {
-    return this.pbdataid();
+  get TemplateId() {
+    return this.templateid();
   }
   get Name() {
     return this.name();
@@ -26,6 +26,9 @@ class SkillVehicleButton {
   }
   get ActionType() {
     return this.actiontype();
+  }
+  get ActionName() {
+    return this.actionname();
   }
   get SkillId() {
     return this.skillid();
@@ -63,6 +66,27 @@ class SkillVehicleButton {
   get IsCdVisible() {
     return this.iscdvisible();
   }
+  get ElementId() {
+    return this.elementid();
+  }
+  get AttributeId() {
+    return this.attributeid();
+  }
+  get MaxAttributeId() {
+    return this.maxattributeid();
+  }
+  get AttributeIdTagMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.attributeidtagmapLength(), this.attributeidtagmapKey, this.attributeidtagmapValue, this);
+  }
+  attributeidtagmapKey(t) {
+    return this.attributeidtagmap(t)?.key();
+  }
+  attributeidtagmapValue(t) {
+    return this.attributeidtagmap(t)?.value();
+  }
+  get AttributeEnableTags() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.attributeenabletagsLength(), this.attributeenabletags, this);
+  }
   get IsLongPressControlCamera() {
     return this.islongpresscontrolcamera();
   }
@@ -97,7 +121,7 @@ class SkillVehicleButton {
       return 0;
     }
   }
-  pbdataid() {
+  templateid() {
     var t = this.J7.__offset(this.z7, 6);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -129,8 +153,16 @@ class SkillVehicleButton {
       return 0;
     }
   }
+  actionname(t) {
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   skillid() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -141,7 +173,7 @@ class SkillVehicleButton {
     return this.skillidtagmap(t);
   }
   skillidtagmap(t, i) {
-    var s = this.J7.__offset(this.z7, 16);
+    var s = this.J7.__offset(this.z7, 18);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -149,7 +181,7 @@ class SkillVehicleButton {
     }
   }
   skillidtagmapLength() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -157,7 +189,7 @@ class SkillVehicleButton {
     }
   }
   skillicon(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -168,7 +200,7 @@ class SkillVehicleButton {
     return this.skillicontags(t);
   }
   skillicontags(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 22);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -176,7 +208,7 @@ class SkillVehicleButton {
     }
   }
   skillicontagsLength() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -184,7 +216,7 @@ class SkillVehicleButton {
     }
   }
   skillicontagsArray() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -195,7 +227,7 @@ class SkillVehicleButton {
     return this.enabletags(t);
   }
   enabletags(t) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 24);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -203,7 +235,7 @@ class SkillVehicleButton {
     }
   }
   enabletagsLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -211,7 +243,7 @@ class SkillVehicleButton {
     }
   }
   enabletagsArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -222,7 +254,7 @@ class SkillVehicleButton {
     return this.disabletags(t);
   }
   disabletags(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -230,7 +262,7 @@ class SkillVehicleButton {
     }
   }
   disabletagsLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -238,7 +270,7 @@ class SkillVehicleButton {
     }
   }
   disabletagsArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -249,7 +281,7 @@ class SkillVehicleButton {
     return this.disableskillidtags(t);
   }
   disableskillidtags(t, i) {
-    var s = this.J7.__offset(this.z7, 26);
+    var s = this.J7.__offset(this.z7, 28);
     if (s) {
       return (i || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -257,7 +289,7 @@ class SkillVehicleButton {
     }
   }
   disableskillidtagsLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -265,15 +297,85 @@ class SkillVehicleButton {
     }
   }
   iscdvisible() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
+  elementid() {
+    var t = this.J7.__offset(this.z7, 32);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  attributeid() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  maxattributeid() {
+    var t = this.J7.__offset(this.z7, 36);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetAttributeidtagmapAt(t, i) {
+    return this.attributeidtagmap(t);
+  }
+  attributeidtagmap(t, i) {
+    var s = this.J7.__offset(this.z7, 38);
+    if (s) {
+      return (i || new DicIntIntArray_1.DicIntIntArray()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  attributeidtagmapLength() {
+    var t = this.J7.__offset(this.z7, 38);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetAttributeenabletagsAt(t) {
+    return this.attributeenabletags(t);
+  }
+  attributeenabletags(t) {
+    var i = this.J7.__offset(this.z7, 40);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  attributeenabletagsLength() {
+    var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  attributeenabletagsArray() {
+    var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
   islongpresscontrolcamera() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 42);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   longpresstime() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -284,7 +386,7 @@ class SkillVehicleButton {
     return this.dynamiceffecttagmap(t);
   }
   dynamiceffecttagmap(t, i) {
-    var s = this.J7.__offset(this.z7, 34);
+    var s = this.J7.__offset(this.z7, 46);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -292,7 +394,7 @@ class SkillVehicleButton {
     }
   }
   dynamiceffecttagmapLength() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -300,7 +402,7 @@ class SkillVehicleButton {
     }
   }
   showlongpress() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 48);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

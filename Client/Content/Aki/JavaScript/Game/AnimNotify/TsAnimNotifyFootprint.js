@@ -13,7 +13,7 @@ class TsAnimNotifyFootprint extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(t, e) {
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(t = t.GetEntityNoBlueprint()?.GetComponent(57)) && (t.TriggerFootprint(this.IsLeftFoot), true);
+    return t instanceof TsBaseCharacter_1.default && !!(t = t.GetEntityNoBlueprint()?.GetComponent(60)) && (t.TriggerFootprint(this.IsLeftFoot), true);
   }
   GetNotifyName() {
     return "脚印特效";

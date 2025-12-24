@@ -180,12 +180,14 @@ class HonamiStoryConfig extends ConfigBase_1.ConfigBase {
     }
   }
   GetHonamiStoryAreaConfig(o) {
-    var i = HonamiStoryAreaById_1.configHonamiStoryAreaById.GetConfig(o);
-    if (i !== undefined) {
-      return i;
-    }
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("HonamiStory", 78, "HonamiStoryArea表无效areaId", ["areaId", o]);
+    if (o !== 0) {
+      var i = HonamiStoryAreaById_1.configHonamiStoryAreaById.GetConfig(o);
+      if (i !== undefined) {
+        return i;
+      }
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("HonamiStory", 78, "HonamiStoryArea表无效areaId", ["areaId", o]);
+      }
     }
   }
   GetHonamiStoryAreaConfigList(o) {

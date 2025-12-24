@@ -7,7 +7,7 @@ const UE = require("ue");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const TsBaseCharacter_1 = require("../../Character/TsBaseCharacter");
 const ModelManager_1 = require("../../Manager/ModelManager");
-const CharacterLockOnComponent_1 = require("../../NewWorld/Character/Common/Component/LockOn/CharacterLockOnComponent");
+const BaseLockOnComponent_1 = require("../../NewWorld/Character/Common/Component/LockOn/BaseLockOnComponent");
 const ActorUtils_1 = require("../../Utils/ActorUtils");
 class CameraNofityStateFocusInput extends UE.KuroAnimNotifyState {
   constructor() {
@@ -24,24 +24,24 @@ class CameraNofityStateFocusInput extends UE.KuroAnimNotifyState {
     e = e?.GetOwner();
     if (e instanceof TsBaseCharacter_1.default && !this.LockOnMap.has(e.EntityId)) {
       var a = ActorUtils_1.ActorUtils.GetEntityByActor(e);
-      var o = e.GetEntityNoBlueprint();
-      if (o?.Valid) {
-        var s = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-        if (!s) {
+      var s = e.GetEntityNoBlueprint();
+      if (s?.Valid) {
+        var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+        if (!o) {
           return false;
         }
-        var o = o.GetComponent(1)?.ActorLocationProxy;
-        var n = s.Entity.GetComponent(1)?.ActorLocationProxy;
-        var o = Vector_1.Vector.Dist(o, n);
-        if (o < this.MinDistance || o > this.MaxDistance) {
+        var s = s.GetComponent(1)?.ActorLocationProxy;
+        var n = o.Entity.GetComponent(1)?.ActorLocationProxy;
+        var s = Vector_1.Vector.Dist(s, n);
+        if (s < this.MinDistance || s > this.MaxDistance) {
           return false;
         }
-        n = s?.Entity?.GetComponent(32);
+        n = o?.Entity?.GetComponent(33);
         if (n) {
-          (o = new CharacterLockOnComponent_1.LockOnInfo()).EntityHandle = a;
-          o.SocketName = this.LockOnPart === "None" ? "" : this.LockOnPart;
-          this.LockOnMap.set(e.EntityId, o);
-          n.ForceLookAt(o, true);
+          (s = new BaseLockOnComponent_1.LockOnInfo()).EntityHandle = a;
+          s.SocketName = this.LockOnPart === "None" ? "" : this.LockOnPart;
+          this.LockOnMap.set(e.EntityId, s);
+          n.ForceLookAt(s, true);
         }
       }
     }
@@ -51,7 +51,7 @@ class CameraNofityStateFocusInput extends UE.KuroAnimNotifyState {
     var r;
     var a;
     var e = e?.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(r = this.LockOnMap.get(e.EntityId)) && !!e?.IsValid() && !!(a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !((a = a.Entity?.GetComponent(32)) && a.ForceLookAt(r, false), this.LockOnMap.delete(e.EntityId), 0);
+    return e instanceof TsBaseCharacter_1.default && !!(r = this.LockOnMap.get(e.EntityId)) && !!e?.IsValid() && !!(a = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity) && !((a = a.Entity?.GetComponent(33)) && a.ForceLookAt(r, false), this.LockOnMap.delete(e.EntityId), 0);
   }
   GetNotifyName() {
     return "强制锁定目标";

@@ -25,6 +25,12 @@ class DataLayerConfig {
   get InitLoad() {
     return this.initload();
   }
+  get OnlyActor() {
+    return this.onlyactor();
+  }
+  get EnableSwitchNavMesh() {
+    return this.enableswitchnavmesh();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -67,6 +73,14 @@ class DataLayerConfig {
   }
   initload() {
     var t = this.J7.__offset(this.z7, 12);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  onlyactor() {
+    var t = this.J7.__offset(this.z7, 14);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  enableswitchnavmesh() {
+    var t = this.J7.__offset(this.z7, 16);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

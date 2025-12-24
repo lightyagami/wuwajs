@@ -336,6 +336,17 @@ class TimeUtil {
       Log_1.Log.Info("TimeUtil", 17, "本地时间和UTC时间的偏移", ["", TimeUtil.GetTimeZoneOffsetString()]);
     }
   }
+  static GetRemainTimeDataFormat7(t) {
+    let e = [0, 0];
+    if (t >= CommonDefine_1.SECOND_PER_DAY) {
+      e = [3, 3];
+    } else if (t >= CommonDefine_1.SECOND_PER_HOUR) {
+      e = [2, 2];
+    } else if (t >= CommonDefine_1.SECOND_PER_MINUTE) {
+      e = [1, 1];
+    }
+    return TimeUtil.Vde(t, 1, e[0], e[1]);
+  }
 }
 (exports.TimeUtil = TimeUtil).OneDayHourCount = 24;
 TimeUtil.Hour = 3600;

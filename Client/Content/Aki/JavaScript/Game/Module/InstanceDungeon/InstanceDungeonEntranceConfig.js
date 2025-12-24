@@ -11,6 +11,7 @@ const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 const InstanceDungeonEntranceFlowAbyss_1 = require("./Define/InstanceDungeonEntranceFlowAbyss");
 const InstanceDungeonEntranceFlowAttached_1 = require("./Define/InstanceDungeonEntranceFlowAttached");
 const InstanceDungeonEntranceFlowFarmGold_1 = require("./Define/InstanceDungeonEntranceFlowFarmGold");
+const InstanceDungeonEntranceFlowLordGym_1 = require("./Define/InstanceDungeonEntranceFlowLordGym");
 const InstanceDungeonEntranceFlowMowingRisk_1 = require("./Define/InstanceDungeonEntranceFlowMowingRisk");
 const InstanceDungeonEntranceFlowNormal_1 = require("./Define/InstanceDungeonEntranceFlowNormal");
 const InstanceDungeonEntranceFlowRoguelike_1 = require("./Define/InstanceDungeonEntranceFlowRoguelike");
@@ -45,6 +46,7 @@ class InstanceDungeonEntranceConfig extends ConfigBase_1.ConfigBase {
     this.hhi.set(12, new InstanceDungeonEntranceFlowMowingRisk_1.InstanceDungeonEntranceFlowMowingRisk());
     this.hhi.set(13, new InstanceDungeonEntranceFlowAbyss_1.InstanceDungeonEntranceFlowAbyss());
     this.hhi.set(15, new InstanceDungeonEntranceFlowTrapDefense_1.InstanceDungeonEntranceFlowTrapDefense());
+    this.hhi.set(16, new InstanceDungeonEntranceFlowLordGym_1.InstanceDungeonEntranceFlowLordGym());
     return true;
   }
   GetConfig(n) {
@@ -106,6 +108,10 @@ class InstanceDungeonEntranceConfig extends ConfigBase_1.ConfigBase {
   CheckInstanceIdIsTowerDefense(n) {
     n = this.SXa.get(n);
     return !!n && n.FlowId === 8;
+  }
+  CheckMarkIdIsWheelTower(n) {
+    n = this.GetEntranceMarkIdMap().get(n);
+    return !!n && this.GetConfig(n)?.FlowId === 17;
   }
   GetEntranceIdByInstanceId(n) {
     var e = this.SXa.get(n);

@@ -33,7 +33,7 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
     return true;
   }
   static GO_() {
-    return !!ModelManager_1.ModelManager.TowerModel.CheckInTower() || !!ModelManager_1.ModelManager.BossRushModel?.CheckInBossRush() || !!ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower();
+    return !!ModelManager_1.ModelManager.TowerModel.CheckInTower() || !!ModelManager_1.ModelManager.BossRushModel?.CheckInBossRush() || !!ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower() || !!ControllerHolder_1.ControllerHolder.LordGymController.IsInLordGymDungeon();
   }
   static OpenRoleMainView(e, o = 0, r = [], t = undefined, n) {
     this.OpenRoleMainViewByParam({
@@ -55,16 +55,16 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
     UiManager_1.UiManager.OpenView("RoleRootView", t, e.FinishCallback);
   }
   static OpenRoleViewByViewModel(e, o) {
-    if (this.pWd(o.RoleId, e)) {
+    if (this.MWd(o.RoleId, e)) {
       UiManager_1.UiManager.OpenView(e, o);
     }
   }
   static CloseAndOpenRoleViewByViewModel(e, o, r) {
-    if (this.pWd(r.RoleId, o)) {
+    if (this.MWd(r.RoleId, o)) {
       UiManager_1.UiManager.CloseAndOpenView(e, o, r);
     }
   }
-  static pWd(e, o) {
+  static MWd(e, o) {
     var r = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(e);
     if (!r) {
       if (Log_1.Log.CheckError()) {
@@ -103,7 +103,7 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
   }
   static CheckCharacterInBattleTag() {
     var e = Global_1.Global.BaseCharacter;
-    return !!e && e.CharacterActorComponent.Entity.CheckGetComponent(209).HasTag(1996802261);
+    return !!e && e.CharacterActorComponent.Entity.CheckGetComponent(215).HasTag(1996802261);
   }
   static CheckCharacterInBattleTagAndShowTips() {
     return !!RoleController.CheckCharacterInBattleTag() && (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("ForbiddenActionInFight"), true);
@@ -222,7 +222,7 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
       if (!!e.X41 && !ModelManager_1.ModelManager.RoleModel.IsInRoleTrial && !ModelManager_1.ModelManager.PlotModel.InSeamlessFormation && !ModelManager_1.ModelManager.PlotModel.InDigitalScreen && !!ModelManager_1.ModelManager.GameModeModel.WorldDone) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleAdd");
       }
-      ControllerHolder_1.ControllerHolder.TeleportController.SetAllowTeleport(e.xb_, 0);
+      ModelManager_1.ModelManager.TeleportModel.SetAllowTeleportByUi(e.xb_, "TrialRole");
       ControllerHolder_1.ControllerHolder.InstanceDungeonController.UpdateTrialRoleDungeonWhiteList(e.Ub_);
       ModelManager_1.ModelManager.RoleModel.RoleTrialIdList.clear();
       for (const o of e.C5n) {
@@ -236,7 +236,7 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
       if (e.X41 && ModelManager_1.ModelManager.RoleModel.IsInRoleTrial && !ModelManager_1.ModelManager.PlotModel.InSeamlessFormation && !ModelManager_1.ModelManager.PlotModel.InDigitalScreen && ModelManager_1.ModelManager.GameModeModel.WorldDone) {
         ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("TrialRoleDetach");
       }
-      ControllerHolder_1.ControllerHolder.TeleportController.SetAllowTeleport(e.xb_, 0);
+      ModelManager_1.ModelManager.TeleportModel.SetAllowTeleportByUi(e.xb_, "TrialRole");
       ControllerHolder_1.ControllerHolder.InstanceDungeonController.UpdateTrialRoleDungeonWhiteList(e.Ub_);
       ModelManager_1.ModelManager.RoleModel.RoleTrialIdList.clear();
       for (const o of e.C5n) {
@@ -298,6 +298,16 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
       }
     });
     Net_1.Net.Register(15119, this.IOd);
+    Net_1.Net.Register(29937, e => {
+      for (const o of e.S2f) {
+        this.kFf(o.Q6n, o.M2f, false);
+      }
+    });
+    Net_1.Net.Register(25775, e => {
+      for (const o of e.S2f) {
+        this.kFf(o.Q6n, o.M2f);
+      }
+    });
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(29254);
@@ -316,6 +326,8 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.UnRegister(18648);
     Net_1.Net.UnRegister(28203);
     Net_1.Net.UnRegister(15119);
+    Net_1.Net.UnRegister(29937);
+    Net_1.Net.UnRegister(25775);
   }
   static IsInRoleTrial() {
     return ModelManager_1.ModelManager.RoleModel.IsInRoleTrial;
@@ -639,6 +651,25 @@ class RoleController extends UiControllerBase_1.UiControllerBase {
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleBackgroundMusicEnabledChanged, o, r);
           t?.();
         }
+      }
+    });
+  }
+  static kFf(e, o, r = true) {
+    ModelManager_1.ModelManager.RoleModel.SetRoleBranch(e, o);
+    if (r) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRoleSkillBranchChanged, e);
+    }
+  }
+  static RequestRoleSkillBranchModify(o, r) {
+    var e = Protocol_1.Aki.Protocol.p2f.create();
+    e.Q6n = o;
+    e.M2f = r;
+    Net_1.Net.Call(17305, e, e => {
+      if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+        ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 17339);
+      } else {
+        this.kFf(o, r, true);
+        ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(ConfigManager_1.ConfigManager.RoleConfig.GetSkillBranchSwitchSuccessKey());
       }
     });
   }

@@ -8,6 +8,8 @@ const UE = require("ue");
 const Log_1 = require("../../../../Core/Common/Log");
 const MathUtils_1 = require("../../../../Core/Utils/MathUtils");
 const UiTickViewBase_1 = require("../../../Ui/Base/UiTickViewBase");
+const TouchUiEditController_1 = require("../TouchUiEditController");
+const TouchUiEditProxy_1 = require("../TouchUiEditProxy");
 const TouchUiEditViewModel_1 = require("../TouchUiEditViewModel");
 class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
   constructor() {
@@ -100,13 +102,32 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     this.ComponentRegisterInfos = [[0, UE.UIItem], [1, UE.UISliderComponent], [2, UE.UISliderComponent], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [5, UE.UIButtonComponent], [6, UE.UIButtonComponent], [7, UE.UIButtonComponent], [8, UE.UIButtonComponent], [9, UE.UIButtonComponent], [10, UE.UIDraggableComponent], [11, UE.UIItem], [12, UE.UIItem]];
     this.BtnBindInfo = [[7, this.Ogt], [8, this.Fgt], [9, this.Vgt]];
   }
+  GetEditProxyFromOpenParam(i) {
+    if (i) {
+      if (i instanceof TouchUiEditProxy_1.TouchUiEditProxy) {
+        return i;
+      } else {
+        [i] = i;
+        if (i) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("TouchUiEdit", 95, "通过Menu打开CommonTouchUiEditView", ["functionId", i.FunctionId]);
+          }
+          return TouchUiEditController_1.TouchUiEditController.CreateProxyForFunction(i.FunctionId);
+        } else {
+          return undefined;
+        }
+      }
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("TouchUiEdit", 74, "打开CommonTouchUiEditView时未指定OpenParam");
+    }
+  }
   async OnBeforeStartAsync() {
-    if (this.OpenParam) {
-      this.q$u = this.OpenParam;
+    var i = this.GetEditProxyFromOpenParam(this.OpenParam);
+    if (i) {
+      this.q$u = i;
       this.q$u.SetView(this);
       await this.q$u.OnBeforeStartAsync();
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("TouchUiEdit", 74, "打开CommonTouchUiEditView时未指定OpenParam");
     }
   }
   OnStart() {
@@ -185,9 +206,9 @@ class CommonTouchUiEditView extends UiTickViewBase_1.UiTickViewBase {
     var o = this.RootItem.GetRenderCanvas().GetOwner().GetUIItem();
     var r = o.Width / 2;
     var o = o.Height / 2;
-    var U = t.Width * s;
+    var d = t.Width * s;
     var t = t.Height * s;
-    i.X = MathUtils_1.MathUtils.Clamp(i.X, U * h - r, r - U * (1 - h));
+    i.X = MathUtils_1.MathUtils.Clamp(i.X, d * h - r, r - d * (1 - h));
     i.Y = MathUtils_1.MathUtils.Clamp(i.Y, t * e - o, o - t * (1 - e));
   }
   IQu(i) {

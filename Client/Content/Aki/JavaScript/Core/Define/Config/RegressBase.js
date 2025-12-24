@@ -40,6 +40,12 @@ class RegressBase {
   get RewardPreview() {
     return this.rewardpreview();
   }
+  get TargetActivityId() {
+    return this.targetactivityid();
+  }
+  get JumpBtnDes() {
+    return this.jumpbtndes();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -146,6 +152,22 @@ class RegressBase {
     } else {
       return 0;
     }
+  }
+  targetactivityid() {
+    var t = this.J7.__offset(this.z7, 24);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  jumpbtndes(t) {
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.RegressBase = RegressBase;

@@ -168,7 +168,7 @@ class TsTriggerVolume extends UE.KuroEffectActor {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Area", 7, "[AreaController.EnterOverlap_TstriggerVolume] 进入区域", ["LeaveArea", this.AreaId]);
       }
-      AreaController_1.AreaController.BeginOverlap(this.AreaId, "AreaController.EnterOverlap_TstriggerVolume");
+      AreaController_1.AreaController.EnterAreaRequest(ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId, this.AreaId, true, "AreaController.EnterOverlap_TstriggerVolume");
     }
   }
   HandleAreaLeave(e, t) {

@@ -7,6 +7,7 @@ exports.CameraModel = exports.CameraSpecificLocLocation = exports.CameraSpecific
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const Time_1 = require("../../Core/Common/Time");
+const DisjointSet_1 = require("../../Core/Container/DisjointSet");
 const PriorityQueue_1 = require("../../Core/Container/PriorityQueue");
 const EntitySystem_1 = require("../../Core/Entity/EntitySystem");
 const ModelBase_1 = require("../../Core/Framework/ModelBase");
@@ -19,6 +20,7 @@ const GameSettingsDefine_1 = require("../GameSettings/GameSettingsDefine");
 const GameSettingsManager_1 = require("../GameSettings/GameSettingsManager");
 const Global_1 = require("../Global");
 const ModelManager_1 = require("../Manager/ModelManager");
+const CameraMovieModeController_1 = require("./CameraSubModeController/CameraMovieModeController");
 const CameraUtility_1 = require("./CameraUtility");
 const FightCamera_1 = require("./FightCamera");
 const FreeCamera_1 = require("./FreeCamera");
@@ -132,6 +134,7 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.Ehe = new Array();
     this.She = new Array();
     this.yhe = new Array();
+    this.CameraMovieModeController = undefined;
     this.Ihe = false;
     this.The = undefined;
     this.Lhe = 1;
@@ -164,9 +167,22 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.Ohe = true;
     this.l6a = new Set();
     this.WWu = 0;
-    this.xQd = new Map();
-    this.BQd = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
+    this.qQd = new Map();
+    this.GQd = new PriorityQueue_1.PriorityQueue(CameraModel.CompareCameraSpecificLockIdPriority);
+    this.DitherEntityGroups = new DisjointSet_1.DisjointSet();
     this.sZc = new Set();
+    this.CHf = new Set();
+    this.OnCameraViewTargetChanged = () => {
+      if (this.LogicHideHeadEnabled) {
+        if (this.CameraMode === 2) {
+          this.SetHideHeadDisabled(true, 0);
+        } else {
+          this.SetHideHeadDisabled(false, 0);
+        }
+        this.FightCamera?.LogicComponent?.ForceTickOutSide();
+        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
+      }
+    };
   }
   get CameraBaseYawSensitivity() {
     return this.Rhe;
@@ -300,7 +316,10 @@ class CameraModel extends ModelBase_1.ModelBase {
   get FightCameraFinalDistance() {
     return this.FightCamera?.LogicComponent?.FinalCameraDistance ?? 0;
   }
-  get HideHeadEnabled() {
+  get ViewHideHeadEnabled() {
+    return this.CHf.size <= 0 && this.sZc.size > 0;
+  }
+  get LogicHideHeadEnabled() {
     return this.sZc.size > 0;
   }
   SetHideHeadEnabled(t, e) {
@@ -311,11 +330,31 @@ class CameraModel extends ModelBase_1.ModelBase {
       } else {
         this.sZc.delete(e);
       }
-      if (this.sZc.size > 0) {
-        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyHeadsOnly();
+      this.pHf();
+    }
+  }
+  SetHideHeadDisabled(t, e) {
+    var i = this.CHf.has(e);
+    if ((!t || !i) && (!!t || !!i)) {
+      if (t) {
+        this.CHf.add(e);
       } else {
-        this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherApplyAll();
+        this.CHf.delete(e);
       }
+      this.pHf();
+    }
+  }
+  pHf() {
+    if (this.ViewHideHeadEnabled) {
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(true);
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherEffect(0, 1);
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
+      this.FightCamera?.LogicComponent?.VehicleActorComponent?.EnterFirstPersonMode();
+    } else {
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherUseHeadMaskHideEffect(false);
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.SetDitherEffect(1, 1);
+      this.FightCamera?.LogicComponent?.Character?.CharRenderingComponent?.UpdateMaterialEffectsOnly();
+      this.FightCamera?.LogicComponent?.VehicleActorComponent?.ExitFirstPersonMode();
     }
   }
   SetCameraShakeModify(t) {
@@ -440,33 +479,61 @@ class CameraModel extends ModelBase_1.ModelBase {
   }
   EnableCameraSpecificLockEntity(t, e) {
     t = new CameraSpecificLockEntity(t, e, ++this.WWu);
-    this.BQd.Push(t);
-    this.xQd.set(t.Id, t);
+    this.GQd.Push(t);
+    this.qQd.set(t.Id, t);
     return t.Id;
   }
   EnableCameraSpecificLockLocation(t, e) {
     t = new CameraSpecificLocLocation(t, e, ++this.WWu);
-    this.BQd.Push(t);
-    this.xQd.set(t.Id, t);
+    this.GQd.Push(t);
+    this.qQd.set(t.Id, t);
     return t.Id;
   }
   DisableCameraSpecificLockTarget(t) {
-    t = this.xQd.get(t);
+    t = this.qQd.get(t);
     if (t) {
       t.MarkDelete = true;
     }
   }
   GetCameraSpecificLockTarget() {
-    while (!this.BQd.Empty) {
-      var t = this.BQd.Top;
+    while (!this.GQd.Empty) {
+      var t = this.GQd.Top;
       if (!t) {
         return;
       }
       if (!t.MarkDelete && t.IsValid()) {
         return t;
       }
-      this.BQd.Pop();
-      this.xQd.delete(t.Id);
+      this.GQd.Pop();
+      this.qQd.delete(t.Id);
+    }
+  }
+  PlaySpecialMovieCamera(t, e = undefined) {
+    if (this.CameraMovieModeController) {
+      this.CameraMovieModeController.PlaySpecialMovieCamera(t, e);
+    }
+  }
+  IsPlayingSpecialMovieCamera(t) {
+    return !!this.CameraMovieModeController && this.CameraMovieModeController.IsPlayingSpecialMovieCamera(t);
+  }
+  PlayMovieCamera(t, e = -1, i = undefined) {
+    if (this.CameraMovieModeController) {
+      this.CameraMovieModeController.PlayMovieCamera(t, e, i);
+    }
+  }
+  PauseMovieCamera() {
+    if (this.CameraMovieModeController) {
+      this.CameraMovieModeController.PauseMovieCamera();
+    }
+  }
+  ResumeMovieCamera() {
+    if (this.CameraMovieModeController) {
+      this.CameraMovieModeController.ResumeMovieCamera();
+    }
+  }
+  StopMovieCamera(t = undefined, e = "外部调用,停止播放") {
+    if (this.CameraMovieModeController) {
+      this.CameraMovieModeController.StopMovieCamera(t, e);
     }
   }
   OnInit() {
@@ -502,6 +569,8 @@ class CameraModel extends ModelBase_1.ModelBase {
     this.vhe.SetTimeDilation(Time_1.Time.TimeDilation);
     Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = Time_1.Time.TimeDilation;
     this.CameraTransform = new UE.TransformDouble();
+    this.CameraMovieModeController = new CameraMovieModeController_1.CameraMovieModeController();
+    this.CameraMovieModeController.Start();
     for (let t = 0; t < 6; ++t) {
       this.Ehe.push(false);
       this.yhe.push(0);
@@ -517,11 +586,13 @@ class CameraModel extends ModelBase_1.ModelBase {
       this.yhe[this.She[t]] = this.She.length - t;
     }
     this.Nhe = undefined;
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraViewTargetChanged, this.OnCameraViewTargetChanged);
     return this.dhe.Valid && this.Che.Valid && this.fhe.Valid && this.phe.Valid && this.vhe.Valid;
   }
   OnClear() {
-    this.BQd.Clear();
-    this.xQd.clear();
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraViewTargetChanged, this.OnCameraViewTargetChanged);
+    this.GQd.Clear();
+    this.qQd.clear();
     Global_1.Global.CharacterCameraManager.CameraModifyCustomTimeDilation = 1;
     var t = EntitySystem_1.EntitySystem.Destroy(this.dhe);
     this.dhe = undefined;
@@ -536,6 +607,9 @@ class CameraModel extends ModelBase_1.ModelBase {
     t &&= this.DestroyFreeCamera();
     this.CameraTransform = undefined;
     this.Nhe = undefined;
+    this.CameraMovieModeController?.End();
+    this.CameraMovieModeController = undefined;
+    this.DitherEntityGroups.Clear();
     return t;
   }
   SaveSeqCamera() {

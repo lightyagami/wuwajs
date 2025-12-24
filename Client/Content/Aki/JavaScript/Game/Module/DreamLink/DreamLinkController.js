@@ -71,7 +71,18 @@ class DreamLinkController extends ActivityControllerBase_1.ActivityControllerBas
       }
     };
   }
-  OnOpenView(e) {}
+  OnOpenView(e) {
+    var r;
+    if (e.IsDreamLinkFunctionUnlock(0)) {
+      if (e.GetActivityConfig()) {
+        UiManager_1.UiManager.OpenView("DreamLinkMainView", 1);
+      }
+    } else {
+      r = e.GetUnFinishPreGuideQuestId();
+      e.SaveQuestRedDotState();
+      UiManager_1.UiManager.OpenView("QuestView", r);
+    }
+  }
   OnGetActivityResource(e) {
     return "UiView_DreamLandActivity";
   }

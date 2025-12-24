@@ -14,6 +14,7 @@ class CommonTouchUiEditDataFacade {
     this.hs = 0;
     this.NQ = new Map();
     this.wZt = undefined;
+    this.n_f = undefined;
     this.MinTouchMoveDifference = 0;
     this.MaxTouchMoveDifference = 0;
     this.MaxTouchMoveValue = 0;
@@ -56,6 +57,10 @@ class CommonTouchUiEditDataFacade {
   SetGroup(e) {
     this.hs = e;
     this.wZt = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetConfigListByEditGroup(this.hs);
+    this.n_f = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetGroupConfigById(this.hs);
+  }
+  GetGroupConfig() {
+    return this.n_f;
   }
   GetResIdList() {
     var e = new Set();

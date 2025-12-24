@@ -18,8 +18,20 @@ class PhantomBattleCard {
   get ActivityId() {
     return this.activityid();
   }
+  get Type() {
+    return this.type();
+  }
   get ItemType() {
     return this.itemtype();
+  }
+  get DealDurabilityEmptyType() {
+    return this.dealdurabilityemptytype();
+  }
+  get CopyLifeRound() {
+    return this.copyliferound();
+  }
+  get SkillDelay() {
+    return this.skilldelay();
   }
   get UnlockConsumeItems() {
     return GameUtils_1.GameUtils.ConvertToArray(this.unlockconsumeitemsLength(), this.unlockconsumeitems, this);
@@ -54,11 +66,35 @@ class PhantomBattleCard {
   get PassiveSkillId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.passiveskillidLength(), this.passiveskillid, this);
   }
+  get CountSkill() {
+    return this.countskill();
+  }
+  get CountConfig() {
+    return this.countconfig();
+  }
   get ActiveSkillTag() {
     return this.activeskilltag();
   }
   get ActiveSkillId() {
     return this.activeskillid();
+  }
+  get DurableSkillId() {
+    return this.durableskillid();
+  }
+  get DurableSkillCd() {
+    return this.durableskillcd();
+  }
+  get FieldConditionDesc() {
+    return this.fieldconditiondesc();
+  }
+  get FieldUnlockConditionDesc() {
+    return this.fieldunlockconditiondesc();
+  }
+  get FieldConditionIcon() {
+    return this.fieldconditionicon();
+  }
+  get FieldTriggerDesc() {
+    return this.fieldtriggerdesc();
   }
   get CardFactorId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.cardfactoridLength(), this.cardfactorid, this);
@@ -86,6 +122,18 @@ class PhantomBattleCard {
   }
   get CardEffectDescriptionParams() {
     return GameUtils_1.GameUtils.ConvertToArray(this.cardeffectdescriptionparamsLength(), this.cardeffectdescriptionparams, this);
+  }
+  get DurableSkillDescription() {
+    return this.durableskilldescription();
+  }
+  get DurableSkillDescriptionParams() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.durableskilldescriptionparamsLength(), this.durableskilldescriptionparams, this);
+  }
+  get CountSkillDescription() {
+    return this.countskilldescription();
+  }
+  get CountSkillDescriptionParams() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.countskilldescriptionparamsLength(), this.countskilldescriptionparams, this);
   }
   get EntryIdList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.entryidlistLength(), this.entryidlist, this);
@@ -159,6 +207,15 @@ class PhantomBattleCard {
   get TaskBg() {
     return this.taskbg();
   }
+  get FieldBg() {
+    return this.fieldbg();
+  }
+  get EffectId() {
+    return this.effectid();
+  }
+  get IsNpcCard() {
+    return this.isnpccard();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -183,8 +240,40 @@ class PhantomBattleCard {
       return 0;
     }
   }
-  itemtype() {
+  type() {
     var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  itemtype() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  dealdurabilityemptytype() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  copyliferound() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  skilldelay() {
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -195,7 +284,7 @@ class PhantomBattleCard {
     return this.unlockconsumeitems(t);
   }
   unlockconsumeitems(t, i) {
-    var s = this.J7.__offset(this.z7, 10);
+    var s = this.J7.__offset(this.z7, 18);
     if (s) {
       return (i || new OneItemConfig_1.OneItemConfig()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -203,7 +292,7 @@ class PhantomBattleCard {
     }
   }
   unlockconsumeitemsLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -214,7 +303,7 @@ class PhantomBattleCard {
     return this.upoutlookconsumeitems(t);
   }
   upoutlookconsumeitems(t, i) {
-    var s = this.J7.__offset(this.z7, 12);
+    var s = this.J7.__offset(this.z7, 20);
     if (s) {
       return (i || new OneItemConfig_1.OneItemConfig()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -222,7 +311,7 @@ class PhantomBattleCard {
     }
   }
   upoutlookconsumeitemsLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -230,7 +319,7 @@ class PhantomBattleCard {
     }
   }
   name(t) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -238,7 +327,7 @@ class PhantomBattleCard {
     return i;
   }
   battlepower() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -246,7 +335,7 @@ class PhantomBattleCard {
     }
   }
   cost() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -254,7 +343,7 @@ class PhantomBattleCard {
     }
   }
   backrecovercost() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -262,7 +351,7 @@ class PhantomBattleCard {
     }
   }
   element() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -270,7 +359,7 @@ class PhantomBattleCard {
     }
   }
   cardgroupnum() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -278,7 +367,7 @@ class PhantomBattleCard {
     }
   }
   slottendency() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -289,7 +378,7 @@ class PhantomBattleCard {
     return this.cardaddtendency(t);
   }
   cardaddtendency(t) {
-    var i = this.J7.__offset(this.z7, 28);
+    var i = this.J7.__offset(this.z7, 36);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -297,7 +386,7 @@ class PhantomBattleCard {
     }
   }
   cardaddtendencyLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -305,7 +394,7 @@ class PhantomBattleCard {
     }
   }
   cardaddtendencyArray() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -316,7 +405,7 @@ class PhantomBattleCard {
     return this.passiveskillid(t);
   }
   passiveskillid(t) {
-    var i = this.J7.__offset(this.z7, 30);
+    var i = this.J7.__offset(this.z7, 38);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -324,7 +413,7 @@ class PhantomBattleCard {
     }
   }
   passiveskillidLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -332,15 +421,31 @@ class PhantomBattleCard {
     }
   }
   passiveskillidArray() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
     }
   }
+  countskill() {
+    var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  countconfig() {
+    var t = this.J7.__offset(this.z7, 42);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   activeskilltag() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -348,18 +453,66 @@ class PhantomBattleCard {
     }
   }
   activeskillid() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
+  durableskillid() {
+    var t = this.J7.__offset(this.z7, 48);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  durableskillcd() {
+    var t = this.J7.__offset(this.z7, 50);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  fieldconditiondesc(t) {
+    var i = this.J7.__offset(this.z7, 52);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  fieldunlockconditiondesc(t) {
+    var i = this.J7.__offset(this.z7, 54);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  fieldconditionicon(t) {
+    var i = this.J7.__offset(this.z7, 56);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  fieldtriggerdesc(t) {
+    var i = this.J7.__offset(this.z7, 58);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   GetCardfactoridAt(t) {
     return this.cardfactorid(t);
   }
   cardfactorid(t) {
-    var i = this.J7.__offset(this.z7, 36);
+    var i = this.J7.__offset(this.z7, 60);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -367,7 +520,7 @@ class PhantomBattleCard {
     }
   }
   cardfactoridLength() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -375,7 +528,7 @@ class PhantomBattleCard {
     }
   }
   cardfactoridArray() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -386,7 +539,7 @@ class PhantomBattleCard {
     return this.initattack(t);
   }
   initattack(t, i) {
-    var s = this.J7.__offset(this.z7, 38);
+    var s = this.J7.__offset(this.z7, 62);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -394,7 +547,7 @@ class PhantomBattleCard {
     }
   }
   initattackLength() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 62);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -402,7 +555,7 @@ class PhantomBattleCard {
     }
   }
   entityconfigid() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 64);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -410,7 +563,7 @@ class PhantomBattleCard {
     }
   }
   attrlevel() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -418,7 +571,7 @@ class PhantomBattleCard {
     }
   }
   baseproid() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -426,7 +579,7 @@ class PhantomBattleCard {
     }
   }
   cardeffectdescription(t) {
-    var i = this.J7.__offset(this.z7, 46);
+    var i = this.J7.__offset(this.z7, 70);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -437,7 +590,7 @@ class PhantomBattleCard {
     return this.cardeffectdescriptionparams(t);
   }
   cardeffectdescriptionparams(t, i) {
-    var s = this.J7.__offset(this.z7, 48);
+    var s = this.J7.__offset(this.z7, 72);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -445,7 +598,61 @@ class PhantomBattleCard {
     return s;
   }
   cardeffectdescriptionparamsLength() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 72);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  durableskilldescription(t) {
+    var i = this.J7.__offset(this.z7, 74);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  GetDurableskilldescriptionparamsAt(t) {
+    return this.durableskilldescriptionparams(t);
+  }
+  durableskilldescriptionparams(t, i) {
+    var s = this.J7.__offset(this.z7, 76);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  durableskilldescriptionparamsLength() {
+    var t = this.J7.__offset(this.z7, 76);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  countskilldescription(t) {
+    var i = this.J7.__offset(this.z7, 78);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  GetCountskilldescriptionparamsAt(t) {
+    return this.countskilldescriptionparams(t);
+  }
+  countskilldescriptionparams(t, i) {
+    var s = this.J7.__offset(this.z7, 80);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  countskilldescriptionparamsLength() {
+    var t = this.J7.__offset(this.z7, 80);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -456,7 +663,7 @@ class PhantomBattleCard {
     return this.entryidlist(t);
   }
   entryidlist(t) {
-    var i = this.J7.__offset(this.z7, 50);
+    var i = this.J7.__offset(this.z7, 82);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -464,7 +671,7 @@ class PhantomBattleCard {
     }
   }
   entryidlistLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 82);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -472,7 +679,7 @@ class PhantomBattleCard {
     }
   }
   entryidlistArray() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 82);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -480,7 +687,7 @@ class PhantomBattleCard {
     }
   }
   cardfacetexture(t) {
-    var i = this.J7.__offset(this.z7, 52);
+    var i = this.J7.__offset(this.z7, 84);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -488,7 +695,7 @@ class PhantomBattleCard {
     return i;
   }
   deckfacetexture(t) {
-    var i = this.J7.__offset(this.z7, 54);
+    var i = this.J7.__offset(this.z7, 86);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -496,7 +703,7 @@ class PhantomBattleCard {
     return i;
   }
   bvbicon(t) {
-    var i = this.J7.__offset(this.z7, 56);
+    var i = this.J7.__offset(this.z7, 88);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -504,7 +711,7 @@ class PhantomBattleCard {
     return i;
   }
   spineatlas(t) {
-    var i = this.J7.__offset(this.z7, 58);
+    var i = this.J7.__offset(this.z7, 90);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -512,7 +719,7 @@ class PhantomBattleCard {
     return i;
   }
   spineskeleton(t) {
-    var i = this.J7.__offset(this.z7, 60);
+    var i = this.J7.__offset(this.z7, 92);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -520,7 +727,7 @@ class PhantomBattleCard {
     return i;
   }
   qualityid() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 94);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -528,7 +735,7 @@ class PhantomBattleCard {
     }
   }
   conditiondesc(t) {
-    var i = this.J7.__offset(this.z7, 64);
+    var i = this.J7.__offset(this.z7, 96);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -536,11 +743,11 @@ class PhantomBattleCard {
     return i;
   }
   enablebuy() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 98);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   typedescription(t) {
-    var i = this.J7.__offset(this.z7, 68);
+    var i = this.J7.__offset(this.z7, 100);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -548,7 +755,7 @@ class PhantomBattleCard {
     return i;
   }
   attributesdescription(t) {
-    var i = this.J7.__offset(this.z7, 70);
+    var i = this.J7.__offset(this.z7, 102);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -556,7 +763,7 @@ class PhantomBattleCard {
     return i;
   }
   bgdescription(t) {
-    var i = this.J7.__offset(this.z7, 72);
+    var i = this.J7.__offset(this.z7, 104);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -564,7 +771,7 @@ class PhantomBattleCard {
     return i;
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 74);
+    var i = this.J7.__offset(this.z7, 106);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -572,7 +779,7 @@ class PhantomBattleCard {
     return i;
   }
   iconmiddle(t) {
-    var i = this.J7.__offset(this.z7, 76);
+    var i = this.J7.__offset(this.z7, 108);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -580,7 +787,7 @@ class PhantomBattleCard {
     return i;
   }
   iconsmall(t) {
-    var i = this.J7.__offset(this.z7, 78);
+    var i = this.J7.__offset(this.z7, 110);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -588,7 +795,7 @@ class PhantomBattleCard {
     return i;
   }
   mesh(t) {
-    var i = this.J7.__offset(this.z7, 80);
+    var i = this.J7.__offset(this.z7, 112);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -596,7 +803,7 @@ class PhantomBattleCard {
     return i;
   }
   obtainedshowdescription(t) {
-    var i = this.J7.__offset(this.z7, 82);
+    var i = this.J7.__offset(this.z7, 114);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -604,14 +811,14 @@ class PhantomBattleCard {
     return i;
   }
   showinbag() {
-    var t = this.J7.__offset(this.z7, 84);
+    var t = this.J7.__offset(this.z7, 116);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   GetItemaccessAt(t) {
     return this.itemaccess(t);
   }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 86);
+    var i = this.J7.__offset(this.z7, 118);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -619,7 +826,7 @@ class PhantomBattleCard {
     }
   }
   itemaccessLength() {
-    var t = this.J7.__offset(this.z7, 86);
+    var t = this.J7.__offset(this.z7, 118);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -627,7 +834,7 @@ class PhantomBattleCard {
     }
   }
   itemaccessArray() {
-    var t = this.J7.__offset(this.z7, 86);
+    var t = this.J7.__offset(this.z7, 118);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -635,7 +842,7 @@ class PhantomBattleCard {
     }
   }
   sortindex() {
-    var t = this.J7.__offset(this.z7, 88);
+    var t = this.J7.__offset(this.z7, 120);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -643,7 +850,7 @@ class PhantomBattleCard {
     }
   }
   reddotdisablerule() {
-    var t = this.J7.__offset(this.z7, 90);
+    var t = this.J7.__offset(this.z7, 122);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -651,7 +858,7 @@ class PhantomBattleCard {
     }
   }
   atmosphereeffect(t) {
-    var i = this.J7.__offset(this.z7, 92);
+    var i = this.J7.__offset(this.z7, 124);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -662,7 +869,7 @@ class PhantomBattleCard {
     return this.settingeffect(t);
   }
   settingeffect(t, i) {
-    var s = this.J7.__offset(this.z7, 94);
+    var s = this.J7.__offset(this.z7, 126);
     var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);
@@ -670,7 +877,7 @@ class PhantomBattleCard {
     return s;
   }
   settingeffectLength() {
-    var t = this.J7.__offset(this.z7, 94);
+    var t = this.J7.__offset(this.z7, 126);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -678,12 +885,32 @@ class PhantomBattleCard {
     }
   }
   taskbg(t) {
-    var i = this.J7.__offset(this.z7, 96);
+    var i = this.J7.__offset(this.z7, 128);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  fieldbg(t) {
+    var i = this.J7.__offset(this.z7, 130);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  effectid() {
+    var t = this.J7.__offset(this.z7, 132);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  isnpccard() {
+    var t = this.J7.__offset(this.z7, 134);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.PhantomBattleCard = PhantomBattleCard;

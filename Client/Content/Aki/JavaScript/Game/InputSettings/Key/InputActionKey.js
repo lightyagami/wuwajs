@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.InputActionKey = undefined;
 const UE = require("ue");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const InputSettings_1 = require("../InputSettings");
 class InputActionKey {
   constructor() {
@@ -14,32 +15,58 @@ class InputActionKey {
     this.IsCtrl = false;
     this.IsShift = false;
     this.KeyName = "";
+    this.UeActionName = undefined;
+    this.UeKeyName = undefined;
+    this.UeKey = undefined;
+    this.UeInputActionKeyMapping = undefined;
   }
-  static New(t, e, i, s, n, r) {
-    var u = new InputActionKey();
-    u.ActionName = t;
-    u.IsShift = e;
-    u.IsCtrl = i;
-    u.IsAlt = s;
-    u.IsCmd = n;
-    u.KeyName = r;
-    return u;
+  CreateUeData() {
+    this.UeActionName = FNameUtil_1.FNameUtil.GetDynamicFName(this.ActionName);
+    this.UeKeyName = FNameUtil_1.FNameUtil.GetDynamicFName(this.KeyName);
+    this.UeKey = new UE.Key(this.UeKeyName);
+    this.UeInputActionKeyMapping = new UE.InputActionKeyMapping(this.UeActionName, this.IsShift, this.IsCtrl, this.IsAlt, this.IsCmd, this.UeKey);
+  }
+  static New(t, i, e, s, h, n) {
+    var r = new InputActionKey();
+    r.ActionName = t;
+    r.IsShift = i;
+    r.IsCtrl = e;
+    r.IsAlt = s;
+    r.IsCmd = h;
+    r.KeyName = n;
+    r.CreateUeData();
+    return r;
   }
   static NewByInputActionKeyMapping(t) {
-    var e = new InputActionKey();
-    e.ActionName = t.ActionName.toString();
-    e.IsShift = t.bShift;
-    e.IsCtrl = t.bCtrl;
-    e.IsAlt = t.bAlt;
-    e.IsCmd = t.bCmd;
-    e.KeyName = t.Key.KeyName.toString();
-    return e;
+    var i = new InputActionKey();
+    i.ActionName = t.ActionName.toString();
+    i.IsShift = t.bShift;
+    i.IsCtrl = t.bCtrl;
+    i.IsAlt = t.bAlt;
+    i.IsCmd = t.bCmd;
+    i.KeyName = t.Key.KeyName.toString();
+    i.CreateUeData();
+    return i;
+  }
+  static Refresh(t, i, e, s, h, n, r) {
+    t.ActionName = i;
+    t.IsShift = e;
+    t.IsCtrl = s;
+    t.IsAlt = h;
+    t.IsCmd = n;
+    t.KeyName = r;
+    t.UeActionName = FNameUtil_1.FNameUtil.GetDynamicFName(i);
+    t.UeKeyName = FNameUtil_1.FNameUtil.GetDynamicFName(r);
+    t.UeKey.KeyName = t.UeKeyName;
+    t.UeInputActionKeyMapping.ActionName = t.UeActionName;
+    t.UeInputActionKeyMapping.bShift = e;
+    t.UeInputActionKeyMapping.bCtrl = s;
+    t.UeInputActionKeyMapping.bAlt = h;
+    t.UeInputActionKeyMapping.bCmd = n;
+    t.UeInputActionKeyMapping.Key = t.UeKey;
   }
   ToUeInputActionKeyMapping() {
-    var t = new UE.FName(this.ActionName);
-    var e = new UE.FName(this.KeyName);
-    var e = new UE.Key(e);
-    return new UE.InputActionKeyMapping(t, this.IsShift, this.IsCtrl, this.IsAlt, this.IsCmd, e);
+    return this.UeInputActionKeyMapping;
   }
   GetKey() {
     return InputSettings_1.InputSettings.GetKey(this.KeyName);

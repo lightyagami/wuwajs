@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RenderModuleController = undefined;
 const UE = require("ue");
+const Log_1 = require("../../../Core/Common/Log");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const TickSystem_1 = require("../../../Core/Tick/TickSystem");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
@@ -15,6 +16,8 @@ const GlobalData_1 = require("../../GlobalData");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RoleTriggerController_1 = require("../../NewWorld/Character/Role/RoleTriggerController");
 const RenderModuleConfig_1 = require("./RenderModuleConfig");
+const hardCodeDataLayerDependencies = new Map([["DataLayerRuntime_DLTask_30FGL03", new Set(["DataLayerRuntime_DLTask_30FGL02"])], ["DataLayerRuntime_DLTask_30FGL04", new Set(["DataLayerRuntime_DLTask_30FGL02"])], ["DataLayerRuntime_DLTask_30FGL05", new Set(["DataLayerRuntime_DLTask_30FGL02"])]]);
+const hardCodeReversedDataLayerDependencies = new Map([["DataLayerRuntime_DLTask_30FGL02", new Set(["DataLayerRuntime_DLTask_30FGL03", "DataLayerRuntime_DLTask_30FGL04", "DataLayerRuntime_DLTask_30FGL05"])]]);
 class RenderModuleController extends ControllerBase_1.ControllerBase {
   static GetKuroCurrentUiSceneTransform() {
     return this.UiSceneOffsetTransform;
@@ -29,11 +32,69 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
     }
     return new UE.VectorDouble(150000, 150000, 150000);
   }
-  static SetWorldPartitionDataLayerState(e, t) {
-    UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldPartitionDataLayerState(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(e), t);
+  static rzf(e) {
+    e = hardCodeDataLayerDependencies.get(e);
+    let a = true;
+    if (e?.size) {
+      for (const t of e) {
+        if (!(a &&= UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldPartitionDataLayerEnable(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(t)))) {
+          break;
+        }
+      }
+    }
+    return a;
+  }
+  static SetWorldPartitionDataLayerState(e, a, t = false) {
+    var r;
+    if (a && !this.rzf(e)) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]激活DataLayer前，发现依赖不满足，停止激活DataLayer，并加进DependenciesNotMatchDataLayerSet中", ["dataLayerName", e]);
+      }
+      ModelManager_1.ModelManager.RenderModuleModel.AddDependenciesNotMatchDataLayer(e);
+    } else {
+      if (ModelManager_1.ModelManager.RenderModuleModel?.IsDependenciesNotMatchDataLayer(e)) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]激活/停用DataLayer时，发现其在DependenciesNotMatchDataLayerSet中，移除", ["dataLayerName", e], ["isEnable", a]);
+        }
+        ModelManager_1.ModelManager.RenderModuleModel.RemoveDependenciesNotMatchDataLayer(e);
+      }
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("World", 39, "[SetWorldPartitionDataLayerState]正式执行激活/停用DataLayer", ["dataLayerName", e], ["isEnable", a]);
+      }
+      r = a ? 2 : t ? 1 : 0;
+      UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldPartitionDataLayerState2(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(e), r);
+      this.ozf(e, a, t);
+    }
+  }
+  static ozf(e, a, t) {
+    var r = a ? 2 : t ? 1 : 0;
+    var t = hardCodeReversedDataLayerDependencies.get(e);
+    if (a) {
+      if (t?.size) {
+        for (const o of t) {
+          if (ModelManager_1.ModelManager.RenderModuleModel?.IsDependenciesNotMatchDataLayer(o) && this.rzf(o)) {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]激活DataLayer后，发现有本该激活的RelatedDataLayer依赖都已满足，激活relatedDataLayer", ["dataLayerName", e], ["relatedDataLayer", o]);
+            }
+            ModelManager_1.ModelManager.RenderModuleModel.RemoveDependenciesNotMatchDataLayer(o);
+            UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldPartitionDataLayerState2(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(o), r);
+          }
+        }
+      }
+    } else if (t?.size) {
+      for (const n of t) {
+        if (UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldPartitionDataLayerEnable(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(n))) {
+          if (Log_1.Log.CheckInfo()) {
+            Log_1.Log.Info("World", 39, "[SetWorldPartitionDataLayerState]停用DataLayer后，发现有已激活的RelatedDataLayer依赖当前DataLayer，停用RelatedDataLayer", ["dataLayerName", e], ["relatedDataLayer", n]);
+          }
+          ModelManager_1.ModelManager.RenderModuleModel?.AddDependenciesNotMatchDataLayer(n);
+          UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldPartitionDataLayerState2(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(n), r);
+        }
+      }
+    }
   }
   static IsWorldPartitionDataLayerEnable(e) {
-    return UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldPartitionDataLayerEnable(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(e));
+    return UE.KuroRenderingRuntimeBPPluginBPLibrary.IsWorldPartitionDataLayerEnable(GlobalData_1.GlobalData.World, FNameUtil_1.FNameUtil.GetDynamicFName(e)) || !!ModelManager_1.ModelManager.RenderModuleModel?.IsDependenciesNotMatchDataLayer(e);
   }
   static AddBattleReference(e) {
     ModelManager_1.ModelManager.RenderModuleModel.AddBattleReference(e);
@@ -47,9 +108,9 @@ class RenderModuleController extends ControllerBase_1.ControllerBase {
   static GetIdleClearAtmosphere(e) {
     return ModelManager_1.ModelManager.RenderModuleModel.GetIdleClearAtmosphere(e);
   }
-  static SetBattleState(e, t, r = false) {
+  static SetBattleState(e, a, t = false) {
     if (ModelManager_1.ModelManager.RenderModuleModel) {
-      ModelManager_1.ModelManager.RenderModuleModel.SetBattleState(e, t, r);
+      ModelManager_1.ModelManager.RenderModuleModel.SetBattleState(e, a, t);
     }
   }
   static GetWuYinQuBattleDebugInfo() {

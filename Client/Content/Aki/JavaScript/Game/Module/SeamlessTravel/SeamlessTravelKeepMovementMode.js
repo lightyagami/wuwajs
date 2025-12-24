@@ -83,13 +83,16 @@ class SeamlessTravelKeepMovementMode {
     }
   }
   Tick(e) {
+    this.CheckAndKeepMoveState();
+  }
+  CheckAndKeepMoveState() {
+    var e;
     var t;
-    var o;
-    if (this.IsInit && this.IsActive && this.TargetMovementMode !== undefined && (o = this.Hte?.MoveComp?.CharacterMovement) && (t = o.MovementMode, o = o.CustomMovementMode, t !== this.TargetMovementMode || this.TargetCustomMode !== undefined && o !== this.TargetCustomMode)) {
+    if (this.IsInit && this.IsActive && this.TargetMovementMode !== undefined && (t = this.Hte?.MoveComp?.CharacterMovement) && (e = t.MovementMode, t = t.CustomMovementMode, e !== this.TargetMovementMode || this.TargetCustomMode !== undefined && t !== this.TargetCustomMode)) {
       this.Hte.Actor.KuroSetMovementMode({
         Mode: this.TargetMovementMode,
         CustomMode: this.TargetCustomMode,
-        Context: "[SeamlessTravelKeepMovementMode.Tick]"
+        Context: "[SeamlessTravelKeepMovementMode.CheckAndKeepMoveState]"
       });
     }
   }

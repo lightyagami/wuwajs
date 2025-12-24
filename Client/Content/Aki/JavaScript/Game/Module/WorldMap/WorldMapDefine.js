@@ -3,8 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.onlinePlayerIconPathList2 = exports.onlinePlayerIconPathList = exports.MarkPriority2HierarchyIndexHelper = exports.HUANG_LONG_COUNTRY_ID = exports.secondaryUiPanelComponentsRegisterInfoB = exports.secondaryUiPanelComponentsRegisterInfoA = exports.ESecondaryPanel = exports.DEBUG_SPHERE_DEFAULT_DURATION = exports.DEBUG_SPHERE_DEFAULT_SEGMENTS = exports.DEBUG_SPHERE_DEFAULT_RADIUS = exports.MARK_CLICK_RANGE = exports.MARK_ITEM_VIEW_PATH = exports.MORALE_FLAG_BOX_ICON_PATH = exports.TEMPORARY_TELEPORT_NORMAL_ICON_PATH = exports.MULTI_MAP_ICON_PATH = exports.SUB_ICON_PATH = exports.BLOCK_MARK_ICON_PATH = exports.MULTI_MAP_SELECT_ICON_PATH = undefined;
+exports.extraUiPanelInfoMap = exports.SCALE_STEP = exports.onlinePlayerIconPathList2 = exports.onlinePlayerIconPathList = exports.MarkPriority2HierarchyIndexHelper = exports.HUANG_LONG_COUNTRY_ID = exports.secondaryUiPanelComponentsRegisterInfoB = exports.secondaryUiPanelComponentsRegisterInfoA = exports.ESecondaryPanel = exports.DEBUG_SPHERE_DEFAULT_DURATION = exports.DEBUG_SPHERE_DEFAULT_SEGMENTS = exports.DEBUG_SPHERE_DEFAULT_RADIUS = exports.MARK_CLICK_RANGE = exports.MARK_ITEM_VIEW_PATH = exports.MORALE_FLAG_BOX_ICON_PATH = exports.TEMPORARY_TELEPORT_NORMAL_ICON_PATH = exports.MULTI_MAP_ICON_PATH = exports.SUB_ICON_PATH = exports.BLOCK_MARK_ICON_PATH = exports.MULTI_MAP_SELECT_ICON_PATH = undefined;
 const UE = require("ue");
+const PhantomArenaMapEntrancePanel_1 = require("../PhantomArena/Prepare/Entrance/PhantomArenaMapEntrancePanel");
 var ESecondaryPanel;
 exports.MULTI_MAP_SELECT_ICON_PATH = "SP_MarkMultiMapSelect";
 exports.BLOCK_MARK_ICON_PATH = "SP_MarkBlock";
@@ -54,9 +55,13 @@ exports.DEBUG_SPHERE_DEFAULT_DURATION = 3;
   e[e.ActivityListPanel = 33] = "ActivityListPanel";
   e[e.HonamiScanItemPanel = 34] = "HonamiScanItemPanel";
   e[e.HonamiScanMachinePanel = 35] = "HonamiScanMachinePanel";
+  e[e.InfrObservatoryPanel = 36] = "InfrObservatoryPanel";
+  e[e.InfrRoadPanel = 37] = "InfrRoadPanel";
+  e[e.PhantomArenaNpcPanel = 38] = "PhantomArenaNpcPanel";
+  e[e.WheelTowerEntrancePanel = 39] = "WheelTowerEntrancePanel";
 })(ESecondaryPanel = exports.ESecondaryPanel ||= {});
-exports.secondaryUiPanelComponentsRegisterInfoA = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UIVerticalLayout], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIVerticalLayout], [17, UE.UIItem], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIText], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UISprite], [24, UE.UISprite], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIButtonComponent], [29, UE.UIButtonComponent], [30, UE.UIText], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UISprite], [35, UE.UIItem], [36, UE.UIText], [37, UE.UIItem], [38, UE.UIText], [39, UE.UIButtonComponent], [40, UE.UIVerticalLayout], [41, UE.UIItem], [42, UE.UIText], [43, UE.UIItem], [44, UE.UIItem], [45, UE.UIItem], [46, UE.UIText]];
-exports.secondaryUiPanelComponentsRegisterInfoB = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UIButtonComponent], [11, UE.UISprite], [12, UE.UIButtonComponent]];
+exports.secondaryUiPanelComponentsRegisterInfoA = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIText], [4, UE.UIText], [5, UE.UIVerticalLayout], [6, UE.UIItem], [7, UE.UIVerticalLayout], [8, UE.UIItem], [9, UE.UIItem], [10, UE.UIText], [11, UE.UIButtonComponent], [12, UE.UIItem], [13, UE.UIText], [14, UE.UIItem], [15, UE.UIButtonComponent], [16, UE.UIVerticalLayout], [17, UE.UIItem], [18, UE.UIButtonComponent], [19, UE.UIItem], [20, UE.UIText], [21, UE.UIItem], [22, UE.UIItem], [23, UE.UISprite], [24, UE.UISprite], [25, UE.UIItem], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIButtonComponent], [29, UE.UIButtonComponent], [30, UE.UIText], [31, UE.UIItem], [32, UE.UIItem], [33, UE.UIItem], [34, UE.UISprite], [35, UE.UIItem], [36, UE.UIText], [37, UE.UIItem], [38, UE.UIText], [39, UE.UIButtonComponent], [40, UE.UIVerticalLayout], [41, UE.UIItem], [42, UE.UIText], [43, UE.UIItem], [44, UE.UIItem], [45, UE.UIItem], [46, UE.UIText], [47, UE.UIItem], [48, UE.UIItem], [49, UE.UIText], [50, UE.UIText]];
+exports.secondaryUiPanelComponentsRegisterInfoB = [[0, UE.UISprite], [1, UE.UIText], [2, UE.UIText], [3, UE.UIText], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UISprite], [10, UE.UIButtonComponent], [11, UE.UISprite], [12, UE.UIButtonComponent], [13, UE.UIItem], [14, UE.UIItem], [15, UE.UIItem]];
 exports.HUANG_LONG_COUNTRY_ID = 1;
 class PriorityHierarchyIndexNode {
   constructor(e) {
@@ -75,27 +80,27 @@ class MarkPriority2HierarchyIndexHelper {
   }
   AddMarkItem(e, r) {
     var a = this.C3o(e, r);
-    var t = this.d3o.length;
-    let o = 0;
-    if (t === 0) {
+    var n = this.d3o.length;
+    let t = 0;
+    if (n === 0) {
       this.d3o.push(new PriorityHierarchyIndexNode(a));
     } else {
       let r = -1;
-      for (let e = 0; e < t; ++e) {
-        var n = this.d3o[e];
-        var s = n.Priority;
-        if (!(s < a)) {
-          if (s === a) {
-            o += n.MaxHierarchyIndex;
-            ++n.MaxHierarchyIndex;
+      for (let e = 0; e < n; ++e) {
+        var o = this.d3o[e];
+        var E = o.Priority;
+        if (!(E < a)) {
+          if (E === a) {
+            t += o.MaxHierarchyIndex;
+            ++o.MaxHierarchyIndex;
             break;
           }
           r = e;
           break;
         }
-        o += n.MaxHierarchyIndex;
-        if (e === t - 1) {
-          r = t;
+        t += o.MaxHierarchyIndex;
+        if (e === n - 1) {
+          r = n;
           break;
         }
       }
@@ -103,7 +108,7 @@ class MarkPriority2HierarchyIndexHelper {
         this.d3o.splice(r, 0, new PriorityHierarchyIndexNode(a));
       }
     }
-    return o;
+    return t;
   }
   RemoveMarkItem(e, r) {
     const a = this.C3o(e, r);
@@ -120,4 +125,8 @@ class MarkPriority2HierarchyIndexHelper {
 }
 exports.MarkPriority2HierarchyIndexHelper = MarkPriority2HierarchyIndexHelper;
 exports.onlinePlayerIconPathList = ["SP_MapFollowing1", "SP_MapFollowing2", "SP_MapFollowing3"];
-exports.onlinePlayerIconPathList2 = ["SP_IconMap_Mark_1P_UI", "SP_IconMap_Mark_2P_UI", "SP_IconMap_Mark_3P_UI"]; //# sourceMappingURL=WorldMapDefine.js.map
+exports.onlinePlayerIconPathList2 = ["SP_IconMap_Mark_1P_UI", "SP_IconMap_Mark_2P_UI", "SP_IconMap_Mark_3P_UI"];
+exports.SCALE_STEP = 0.1;
+exports.extraUiPanelInfoMap = {
+  PhantomArenaMapEntrance: [PhantomArenaMapEntrancePanel_1.PhantomArenaMapEntrancePanel, "UiView_SoundRemnantArenaMap"]
+}; //# sourceMappingURL=WorldMapDefine.js.map

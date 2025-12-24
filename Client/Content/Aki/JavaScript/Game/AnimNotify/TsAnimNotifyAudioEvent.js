@@ -61,7 +61,7 @@ class TsAnimNotifyAudioEvent extends UE.KuroAnimNotify {
     var r = t.GetOwner();
     if (r?.IsValid()) {
       if (r instanceof TsBaseCharacter_1.default) {
-        if (r.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(1654452863)) {
+        if (r.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(1654452863)) {
           return;
         }
       }

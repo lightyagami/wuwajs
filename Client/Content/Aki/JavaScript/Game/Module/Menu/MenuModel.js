@@ -35,9 +35,9 @@ class MenuModel extends ModelBase_1.ModelBase {
     super(...arguments);
     this.YNa = new Map();
     this.zNa = new Map();
-    this.Rom = new Map();
+    this.Yhm = new Map();
     this.ywi = undefined;
-    this.wom = new Map();
+    this.zhm = new Map();
     this.IsEdited = false;
     this.Cac = undefined;
     this.KeySettingInputControllerType = 0;
@@ -169,7 +169,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     for ([e, t] of GameSettingsManager_1.GameSettingsManager.ValidApplyConfigMap) {
       if (this.pac(t)) {
         i = t.MainType;
-        n = this.WKd(t);
+        n = this.YKd(t);
         this.zNa.set(e, n);
         if ((a = this.YNa.get(i)) && a.length > 0) {
           a.push(n);
@@ -194,7 +194,7 @@ class MenuModel extends ModelBase_1.ModelBase {
       this.Rwi(f);
     }
   }
-  WKd(e) {
+  YKd(e) {
     return new (e.FunctionId === GameSettingsDefine_1.EFunction.VersionCheck ? MenuVersionCheckData_1.MenuVersionCheckData : MenuData_1.MenuData)(e);
   }
   pac(e) {
@@ -264,7 +264,7 @@ class MenuModel extends ModelBase_1.ModelBase {
     t = MathUtils_1.MathUtils.Clamp(t, 0, i.length - 1);
     return i[e] - i[t];
   }
-  Jzd(e) {
+  DJd(e) {
     var t = [{
       FunctionId: GameSettingsDefine_1.EFunction.SHADOWQUALITY,
       Key: "ShadowQuality",
@@ -309,6 +309,10 @@ class MenuModel extends ModelBase_1.ModelBase {
       FunctionId: GameSettingsDefine_1.EFunction.NPCDENSITY,
       Key: "NpcDensity",
       ScoreTable: MenuDefine_1.npcDensityScores
+    }, {
+      FunctionId: GameSettingsDefine_1.EFunction.VegetationDensity,
+      Key: "VegetationDensity",
+      ScoreTable: MenuDefine_1.vegetationDensityScores
     }, {
       FunctionId: GameSettingsDefine_1.EFunction.SUPERRESOLUTION,
       Key: "SuperResolution",
@@ -367,16 +371,16 @@ class MenuModel extends ModelBase_1.ModelBase {
     var {
       recommended: i,
       fieldMappings: e
-    } = this.Jzd(e);
+    } = this.DJd(e);
     let n = 0;
-    for (const g of e) {
+    for (const u of e) {
       var a;
       var r;
       var s;
       var o;
-      var _ = g.FunctionId;
-      let e = i[g.Key];
-      let t = this.GetDataCacheOrCurValue(g.FunctionId) ?? 0;
+      var _ = u.FunctionId;
+      let e = i[u.Key];
+      let t = this.GetDataCacheOrCurValue(u.FunctionId) ?? 0;
       if (_ === GameSettingsDefine_1.EFunction.SUPERRESOLUTION && (r = a = _, [a, r, e] = GameSettingsDeviceRender_1.GameSettingsDeviceRender.MapSuperResolutionRecommendValue(a, r, e), s = this.GetDataCacheOrCurValue(a) ?? 0, r = this.GetDataCacheOrCurValue(r) ?? 0, a === GameSettingsDefine_1.EFunction.FSR ? (e = MenuDefine_1.superResolutionScores.length - 2, s === 1 && (t = MenuDefine_1.superResolutionScores.length - 2)) : (e === 99 ? e = 2 : e += 2, t = r === 99 ? 2 : r + 2), s === 0)) {
         t = MenuDefine_1.superResolutionScores.length - 1;
       }
@@ -384,13 +388,13 @@ class MenuModel extends ModelBase_1.ModelBase {
         t = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RayTracing) ?? 0;
         a = 4000 / GameSettingsDeviceRender_1.GameSettingsDeviceRender.DeviceScore;
         r = MathUtils_1.MathUtils.Clamp(a, 0.6, 3);
-        s = this.GId(t, e, g.ScoreTable) * r;
+        s = this.GId(t, e, u.ScoreTable) * r;
         n += s;
-        this.wom?.set(_, s);
+        this.zhm?.set(_, s);
       } else {
-        o = this.GId(t, e, g.ScoreTable);
+        o = this.GId(t, e, u.ScoreTable);
         n += o;
-        this.wom?.set(_, o);
+        this.zhm?.set(_, o);
       }
     }
     var e = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.IMAGEQUALITY) ?? 0;
@@ -416,37 +420,39 @@ class MenuModel extends ModelBase_1.ModelBase {
     var o = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMEFOG) ?? 0;
     var _ = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.VOLUMELIGHT) ?? 0;
     var f = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.MOTIONBLUR) ?? 0;
-    var g = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
-    var u = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
+    var u = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.FSR) ?? 0;
+    var g = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.METALFX) ?? 0;
     var m = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.BLOOM) ?? 0;
     var h = this.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.NPCDENSITY) ?? 0;
     var D = MenuDefine_1.qualityLevelScores[GameSettingsDeviceRender_1.GameSettingsDeviceRender.GameQualitySettingLevel];
     var i = MenuDefine_1.shadowQualityScores[MathUtils_1.MathUtils.Clamp(i, 0, MenuDefine_1.shadowQualityScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.SHADOWQUALITY, i);
+    this.zhm.set(GameSettingsDefine_1.EFunction.SHADOWQUALITY, i);
     var n = MenuDefine_1.niagaraQualityScores[MathUtils_1.MathUtils.Clamp(n, 0, MenuDefine_1.niagaraQualityScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, n);
+    this.zhm.set(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, n);
     var a = MenuDefine_1.imageDetailScores[MathUtils_1.MathUtils.Clamp(a, 0, MenuDefine_1.imageDetailScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.IMAGEDETAIL, a);
+    this.zhm.set(GameSettingsDefine_1.EFunction.IMAGEDETAIL, a);
     var r = MenuDefine_1.sceneAoScores[MathUtils_1.MathUtils.Clamp(r, 0, MenuDefine_1.sceneAoScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.SCENEAO, r);
+    this.zhm.set(GameSettingsDefine_1.EFunction.SCENEAO, r);
     var s = MenuDefine_1.antiAliasingScores[MathUtils_1.MathUtils.Clamp(s, 0, MenuDefine_1.antiAliasingScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.ANTIALISING, s);
+    this.zhm.set(GameSettingsDefine_1.EFunction.ANTIALISING, s);
     var o = MenuDefine_1.volumeFogScores[MathUtils_1.MathUtils.Clamp(o, 0, MenuDefine_1.volumeFogScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.VOLUMEFOG, o);
+    this.zhm.set(GameSettingsDefine_1.EFunction.VOLUMEFOG, o);
     var _ = MenuDefine_1.volumeLightScores[MathUtils_1.MathUtils.Clamp(_, 0, MenuDefine_1.volumeLightScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.VOLUMELIGHT, _);
+    this.zhm.set(GameSettingsDefine_1.EFunction.VOLUMELIGHT, _);
     var f = MenuDefine_1.motionBlurScores[MathUtils_1.MathUtils.Clamp(f, 0, MenuDefine_1.motionBlurScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.MOTIONBLUR, f);
-    var g = MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.amdFsrScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.FSR, g);
-    var u = MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.metalFxScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.METALFX, u);
+    this.zhm.set(GameSettingsDefine_1.EFunction.MOTIONBLUR, f);
+    var u = MenuDefine_1.amdFsrScores[MathUtils_1.MathUtils.Clamp(u, 0, MenuDefine_1.amdFsrScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.FSR, u);
+    var g = MenuDefine_1.metalFxScores[MathUtils_1.MathUtils.Clamp(g, 0, MenuDefine_1.metalFxScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.METALFX, g);
     var m = MenuDefine_1.bloomScores[MathUtils_1.MathUtils.Clamp(m, 0, MenuDefine_1.bloomScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.BLOOM, m);
-    var h = MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.npcDensityScores.length - 1)];
-    this.wom.set(GameSettingsDefine_1.EFunction.NPCDENSITY, h);
-    var D = D + i + n + a + r + s + o + _ + f + g + u + m + h;
-    return D * e * t;
+    this.zhm.set(GameSettingsDefine_1.EFunction.BLOOM, m);
+    var l = MenuDefine_1.npcDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.npcDensityScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.NPCDENSITY, l);
+    var h = MenuDefine_1.vegetationDensityScores[MathUtils_1.MathUtils.Clamp(h, 0, MenuDefine_1.vegetationDensityScores.length - 1)];
+    this.zhm.set(GameSettingsDefine_1.EFunction.VegetationDensity, h);
+    var h = D + i + n + a + r + s + o + _ + f + u + g + m + l;
+    return h * e * t;
   }
   GetLoadPercentage() {
     if (Info_1.Info.IsMobilePlatform()) {
@@ -513,16 +519,16 @@ class MenuModel extends ModelBase_1.ModelBase {
     return 0;
   }
   GetDataCacheOrCurValue(e) {
-    return this.Rom.get(e) ?? GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
+    return this.Yhm.get(e) ?? GameSettingsManager_1.GameSettingsManager.GetCurrentValue(e);
   }
   IsDataCacheContains(e) {
-    return this.Rom.has(e);
+    return this.Yhm.has(e);
   }
   HasDataCache() {
-    return this.Rom.size > 0;
+    return this.Yhm.size > 0;
   }
   AddDataToTempCache(e, t) {
-    this.Rom.set(e, t);
+    this.Yhm.set(e, t);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMenuSetting, e);
   }
   AddDataToTempOrSetValue(e, t) {
@@ -533,14 +539,14 @@ class MenuModel extends ModelBase_1.ModelBase {
     }
   }
   InitDataCache() {
-    this.Rom.clear();
+    this.Yhm.clear();
   }
   async ApplyDataCache() {
     let n = 0;
     let a = 0;
     const r = new CustomPromise_1.CustomPromise();
-    const s = Array.from(this.Rom.entries());
-    this.Rom.clear();
+    const s = Array.from(this.Yhm.entries());
+    this.Yhm.clear();
     const o = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       a++;
       let e = 0;
@@ -567,8 +573,8 @@ class MenuModel extends ModelBase_1.ModelBase {
     }
   }
   GetTopLoadImpactSettings(e = 4) {
-    if (this.wom && this.wom.size !== 0) {
-      return Array.from(this.wom.entries()).sort((e, t) => t[1] - e[1]).slice(0, e).map(([e]) => this.zNa.get(e)?.FunctionName ?? "");
+    if (this.zhm && this.zhm.size !== 0) {
+      return Array.from(this.zhm.entries()).sort((e, t) => t[1] - e[1]).slice(0, e).map(([e]) => this.zNa.get(e)?.FunctionName ?? "");
     } else {
       return [];
     }

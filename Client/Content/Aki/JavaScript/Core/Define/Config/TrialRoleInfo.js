@@ -17,6 +17,9 @@ class TrialRoleInfo {
   get GroupId() {
     return this.groupid();
   }
+  get Type() {
+    return this.type();
+  }
   get WorldLevel() {
     return this.worldlevel();
   }
@@ -44,6 +47,9 @@ class TrialRoleInfo {
   get UnlockSkillNodeList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.unlockskillnodelistLength(), this.unlockskillnodelist, this);
   }
+  get DefaultSkillBranchId() {
+    return this.defaultskillbranchid();
+  }
   get RoleSkin() {
     return this.roleskin();
   }
@@ -52,6 +58,12 @@ class TrialRoleInfo {
   }
   get PhantomEquipList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.phantomequiplistLength(), this.phantomequiplist, this);
+  }
+  get SpinePrefabResource() {
+    return this.spineprefabresource();
+  }
+  get ContentTexturePath() {
+    return this.contenttexturepath();
   }
   __init(t, i) {
     this.z7 = t;
@@ -77,7 +89,7 @@ class TrialRoleInfo {
       return 0;
     }
   }
-  worldlevel() {
+  type() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -85,8 +97,16 @@ class TrialRoleInfo {
       return 1;
     }
   }
-  gender() {
+  worldlevel() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
+    }
+  }
+  gender() {
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -94,22 +114,14 @@ class TrialRoleInfo {
     }
   }
   onlytrial() {
-    var t = this.J7.__offset(this.z7, 12);
-    return !!t && !!this.J7.readInt8(this.z7 + t);
-  }
-  hidetriallabel() {
     var t = this.J7.__offset(this.z7, 14);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  parentid() {
+  hidetriallabel() {
     var t = this.J7.__offset(this.z7, 16);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  level() {
+  parentid() {
     var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -117,7 +129,7 @@ class TrialRoleInfo {
       return 0;
     }
   }
-  resonancelevel() {
+  level() {
     var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -125,8 +137,16 @@ class TrialRoleInfo {
       return 0;
     }
   }
-  unlockskilllevel() {
+  resonancelevel() {
     var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  unlockskilllevel() {
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -137,7 +157,7 @@ class TrialRoleInfo {
     return this.unlockskillnodelist(t);
   }
   unlockskillnodelist(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -145,7 +165,7 @@ class TrialRoleInfo {
     }
   }
   unlockskillnodelistLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -153,15 +173,23 @@ class TrialRoleInfo {
     }
   }
   unlockskillnodelistArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
     }
   }
+  defaultskillbranchid() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   roleskin() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -169,7 +197,7 @@ class TrialRoleInfo {
     }
   }
   trailweapon() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -180,7 +208,7 @@ class TrialRoleInfo {
     return this.phantomequiplist(t);
   }
   phantomequiplist(t, i) {
-    var s = this.J7.__offset(this.z7, 30);
+    var s = this.J7.__offset(this.z7, 34);
     if (s) {
       return (i || new IntPair_1.IntPair()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -188,12 +216,28 @@ class TrialRoleInfo {
     }
   }
   phantomequiplistLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
+  }
+  spineprefabresource(t) {
+    var i = this.J7.__offset(this.z7, 36);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  contenttexturepath(t) {
+    var i = this.J7.__offset(this.z7, 38);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.TrialRoleInfo = TrialRoleInfo;

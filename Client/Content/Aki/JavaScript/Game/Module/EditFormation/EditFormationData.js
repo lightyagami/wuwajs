@@ -4,8 +4,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.EditFormationData = undefined;
+const RoleUtils_1 = require("../RoleUi/RoleUtils");
 class EditFormationRoleData {
-  constructor(t, i, s, e, o) {
+  constructor(t, i, e, s, r) {
     this.Position = 0;
     this.ConfigId = 0;
     this.RoleSkinId = 0;
@@ -13,9 +14,9 @@ class EditFormationRoleData {
     this.Level = 0;
     this.Position = t;
     this.ConfigId = i;
-    this.RoleSkinId = s;
-    this.PlayerId = o;
-    this.Level = e;
+    this.RoleSkinId = e;
+    this.PlayerId = r;
+    this.Level = s;
   }
 }
 class EditFormationData {
@@ -26,20 +27,35 @@ class EditFormationData {
     this.pXe = new Map();
     this.FormationId = t;
   }
-  AddRoleData(t, i, s, e, o = false) {
-    var r = this.Wke.length + 1;
+  AddRoleData(t, i, e, s, r = false) {
+    var o = this.Wke.length + 1;
     this.Wke.push(t);
-    var t = new EditFormationRoleData(r, t, i, s, e);
-    this.pXe.set(r, t);
-    if (o) {
-      this.n5t = r;
+    var t = new EditFormationRoleData(o, t, i, e, s);
+    this.pXe.set(o, t);
+    if (r) {
+      this.n5t = o;
     }
   }
   GetRoleDataByPosition(t) {
     return this.pXe.get(t);
   }
+  GetRoleDataById(t) {
+    for (var [, i] of this.pXe) {
+      if (i.ConfigId === t) {
+        return i;
+      }
+    }
+  }
   get GetRoleIdList() {
     return this.Wke;
+  }
+  GetRoleIdListWithTrial(t) {
+    var i = [...this.GetRoleIdList];
+    if (t) {
+      return i;
+    } else {
+      return i.filter(t => !RoleUtils_1.RoleUtils.IsTrialRole(t));
+    }
   }
   SetCurrentRole(t) {
     for (const i of this.pXe.values()) {
@@ -50,6 +66,20 @@ class EditFormationData {
   }
   GetRoleDataMap() {
     return this.pXe;
+  }
+  GetRoleDataMapWithTrial(t) {
+    if (t) {
+      return this.GetRoleDataMap();
+    }
+    var i;
+    var e;
+    var s = new Map();
+    for ([i, e] of this.GetRoleDataMap()) {
+      if (!RoleUtils_1.RoleUtils.IsTrialRole(e.ConfigId)) {
+        s.set(i, e);
+      }
+    }
+    return s;
   }
   get GetCurrentRoleConfigId() {
     var t = this.n5t - 1;

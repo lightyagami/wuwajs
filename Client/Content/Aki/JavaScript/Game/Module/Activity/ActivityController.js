@@ -35,7 +35,27 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     ActivityManager_1.ActivityManager.Clear();
     this.R6t();
     this.OnRemoveOpenViewCheckFunction();
-    return !(ActivityController.A1h = false);
+    ActivityController.A1h = false;
+    this.DisableRefreshTimer();
+    return true;
+  }
+  static EnableRefreshTimer(t) {
+    if (this.GOe === undefined) {
+      this.GOe = TimerSystem_1.GameplayTimerSystem.Forever(this.o3i, t, undefined, undefined);
+    }
+  }
+  static DisableRefreshTimer() {
+    if (this.GOe !== undefined) {
+      this.Qjf.clear();
+      TimerSystem_1.GameplayTimerSystem.Remove(this.GOe);
+      this.GOe = undefined;
+    }
+  }
+  static RegisterRefreshTimerDelegate(t) {
+    this.Qjf.add(t);
+  }
+  static UnregisterRefreshTimerDelegate(t) {
+    this.Qjf.delete(t);
   }
   static OnAddOpenViewCheckFunction() {
     UiManager_1.UiManager.AddOpenViewCheckFunction("CommonActivityView", ActivityController.CheckCanOpen, "ActivityController.CheckCanOpen");
@@ -47,17 +67,17 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     return !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) && ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities().length !== 0;
   }
   static ShowActivityRefreshAndBackToBattleView() {
-    var e = () => {
+    var t = () => {
       UiManager_1.UiManager.ResetToBattleView();
     };
-    var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115);
-    t.FunctionMap.set(1, e);
-    t.FunctionMap.set(0, e);
-    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
+    var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(115);
+    e.FunctionMap.set(1, t);
+    e.FunctionMap.set(0, t);
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
   static rYa() {
-    var e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(224);
-    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
+    var t = new ConfirmBoxDefine_1.ConfirmBoxDataNew(224);
+    ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(t);
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLoadingNetDataDone, ActivityController.Q5e);
@@ -75,7 +95,7 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnActivityClose, ActivityController.g3e);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, ActivityController._Mo);
   }
-  static InitActivity(e) {}
+  static InitActivity(t) {}
   static OnRegisterNetEvent() {
     Net_1.Net.Register(24139, ActivityController.T4e);
     Net_1.Net.Register(18882, ActivityController.L4e);
@@ -94,35 +114,16 @@ class ActivityController extends ControllerBase_1.ControllerBase {
     this.R6t();
     this.zaa = TimerSystem_1.GameplayTimerSystem.Forever(this.Zaa, CHECKGAP, undefined, undefined, undefined, false);
   }
-  static OpenActivityById(e = 0, t = 4, i = undefined, r) {
+  static OpenActivityById(t = 0, e = 4, i = undefined, r) {
     if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
       if (ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities().length === 0) {
         ControllerHolder_1.ControllerHolder.ActivityController.rYa();
         return false;
       } else {
         if (UiManager_1.UiManager.IsViewOpen("CommonActivityView")) {
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewChange, e);
-        } else {
-          UiManager_1.UiManager.OpenView("CommonActivityView", [t, e, i], r);
-        }
-        return true;
-      }
-    } else {
-      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("FunctionDisable");
-      return false;
-    }
-  }
-  static CloseAndOpenActivityById(e, t = 0, i = 4, r = undefined, o) {
-    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
-      if (ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities().length === 0) {
-        ControllerHolder_1.ControllerHolder.ActivityController.rYa();
-        return false;
-      } else {
-        if (UiManager_1.UiManager.IsViewOpen("CommonActivityView")) {
-          UiManager_1.UiManager.CloseView(e);
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewChange, t);
         } else {
-          UiManager_1.UiManager.CloseAndOpenView(e, "CommonActivityView", [i, t, r], o);
+          UiManager_1.UiManager.OpenView("CommonActivityView", [e, t, i], r);
         }
         return true;
       }
@@ -131,33 +132,52 @@ class ActivityController extends ControllerBase_1.ControllerBase {
       return false;
     }
   }
-  static OpenActivityContentView(e) {
-    ActivityManager_1.ActivityManager.GetActivityController(e.Type).OpenView(e);
-  }
-  static RequestReadActivity(t) {
-    var e;
-    if (t?.GetIfFirstOpen()) {
-      (e = new Protocol_1.Aki.Protocol.M$n()).w6n = t.Id;
-      Net_1.Net.Call(23791, e, e => {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 19522);
+  static CloseAndOpenActivityById(t, e = 0, i = 4, r = undefined, o) {
+    if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10053)) {
+      if (ModelManager_1.ModelManager.ActivityModel.GetCurrentShowingActivities().length === 0) {
+        ControllerHolder_1.ControllerHolder.ActivityController.rYa();
+        return false;
+      } else {
+        if (UiManager_1.UiManager.IsViewOpen("CommonActivityView")) {
+          UiManager_1.UiManager.CloseView(t);
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ActivityViewChange, e);
+        } else {
+          UiManager_1.UiManager.CloseAndOpenView(t, "CommonActivityView", [i, e, r], o);
         }
-        ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(t.Id);
+        return true;
+      }
+    } else {
+      ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("FunctionDisable");
+      return false;
+    }
+  }
+  static OpenActivityContentView(t) {
+    ActivityManager_1.ActivityManager.GetActivityController(t.Type).OpenView(t);
+  }
+  static RequestReadActivity(e) {
+    var t;
+    if (e?.GetIfFirstOpen()) {
+      (t = new Protocol_1.Aki.Protocol.M$n()).w6n = e.Id;
+      Net_1.Net.Call(23791, t, t => {
+        if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 19522);
+        }
+        ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(e.Id);
       });
     }
-    ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(t.Id);
+    ModelManager_1.ModelManager.ActivityModel.OnReceiveActivityRead(e.Id);
   }
-  static RequestPreOpenActivity(t, i) {
-    var e;
-    if (t?.CanPreOpen()) {
-      (e = new Protocol_1.Aki.Protocol.ak_()).w6n = t.Id;
-      Net_1.Net.Call(25220, e, e => {
-        if (e) {
-          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18546);
+  static RequestPreOpenActivity(e, i) {
+    var t;
+    if (e?.CanPreOpen()) {
+      (t = new Protocol_1.Aki.Protocol.ak_()).w6n = e.Id;
+      Net_1.Net.Call(25220, t, t => {
+        if (t) {
+          if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18546);
             i?.(false);
           } else {
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityPreOpen, t.Id);
+            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivityPreOpen, e.Id);
             i?.(true);
           }
         } else {
@@ -166,26 +186,26 @@ class ActivityController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static CreateActivityData(e) {
-    return ActivityManager_1.ActivityManager.GetActivityController(e.h5n).CreateActivityData(e);
+  static CreateActivityData(t) {
+    return ActivityManager_1.ActivityManager.GetActivityController(t.h5n).CreateActivityData(t);
   }
-  static IsOpeningActivityRelativeView(e) {
-    e = ActivityManager_1.ActivityManager.GetActivityController(e);
-    return !!e && e.GetIsOpeningActivityRelativeView();
+  static IsOpeningActivityRelativeView(t) {
+    t = ActivityManager_1.ActivityManager.GetActivityController(t);
+    return !!t && t.GetIsOpeningActivityRelativeView();
   }
-  static OpenActivityConditionView(e) {
-    if (e) {
-      e = new ActivityCommonDefine_1.ActivityConditionGroupData(e);
-      UiManager_1.UiManager.OpenView("ActivityConditionView", e);
+  static OpenActivityConditionView(t) {
+    if (t) {
+      t = new ActivityCommonDefine_1.ActivityConditionGroupData(t);
+      UiManager_1.UiManager.OpenView("ActivityConditionView", t);
     }
   }
-  static CheckIsActivityClose(e, t) {
-    if (t) {
-      if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(t)?.CheckIfClose()) {
+  static CheckIsActivityClose(t, e) {
+    if (e) {
+      if (ModelManager_1.ModelManager.ActivityModel.GetActivityById(e)?.CheckIfClose()) {
         ControllerHolder_1.ControllerHolder.ActivityController.ShowActivityRefreshAndBackToBattleView();
       }
-    } else if (e) {
-      for (const i of ModelManager_1.ModelManager.ActivityModel.GetActivitiesByType(e)) {
+    } else if (t) {
+      for (const i of ModelManager_1.ModelManager.ActivityModel.GetActivitiesByType(t)) {
         if (i.CheckIfClose()) {
           ControllerHolder_1.ControllerHolder.ActivityController.ShowActivityRefreshAndBackToBattleView();
           return;
@@ -197,6 +217,15 @@ class ActivityController extends ControllerBase_1.ControllerBase {
 exports.ActivityController = ActivityController;
 (_a = ActivityController).zaa = undefined;
 ActivityController.A1h = false;
+ActivityController.GOe = undefined;
+ActivityController.Qjf = new Set();
+ActivityController.o3i = t => {
+  if (_a.Qjf.size !== 0) {
+    for (const e of _a.Qjf) {
+      e(t);
+    }
+  }
+};
 ActivityController.y4e = () => {
   ActivityController.OpenActivityById(0, 3);
 };
@@ -211,8 +240,8 @@ ActivityController.CheckCanOpen = () => {
 ActivityController.D4e = () => {
   ModelManager_1.ModelManager.ActivityModel.RefreshShowingActivities();
 };
-ActivityController.AFe = (e, t) => {
-  ActivityController.InitActivity(e);
+ActivityController.AFe = (t, e) => {
+  ActivityController.InitActivity(t);
 };
 ActivityController.I4e = () => {
   ModelManager_1.ModelManager.ActivityModel.InitCache();
@@ -226,18 +255,18 @@ ActivityController.nye = () => {
     _a.RequestActivityData();
   }
 };
-ActivityController.g3e = e => {
-  for (const i of e) {
-    var t = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i);
-    if (t && ActivityController.IsOpeningActivityRelativeView(t.Type)) {
+ActivityController.g3e = t => {
+  for (const i of t) {
+    var e = ModelManager_1.ModelManager.ActivityModel.GetActivityById(i);
+    if (e && ActivityController.IsOpeningActivityRelativeView(e.Type)) {
       _a.ShowActivityRefreshAndBackToBattleView();
       return;
     }
   }
 };
 ActivityController._Mo = () => {
-  _a.RequestActivityData().then(e => {
-    if (e) {
+  _a.RequestActivityData().then(t => {
+    if (t) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Activity", 37, "[CrossDay][Activity] 跨天活动数据刷新完成");
       }
@@ -249,29 +278,29 @@ ActivityController.Zaa = () => {
   _a.RequestActivityData();
 };
 ActivityController.RequestActivityData = async () => {
-  return !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) && new Promise(t => {
-    var e = new Protocol_1.Aki.Protocol.v$n();
-    Net_1.Net.Call(23005, e, e => {
-      if (e) {
-        if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18119);
-          t(false);
+  return !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10053) && new Promise(e => {
+    var t = new Protocol_1.Aki.Protocol.v$n();
+    Net_1.Net.Call(23005, t, t => {
+      if (t) {
+        if (t.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+          ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(t.Q4n, 18119);
+          e(false);
         } else {
-          ModelManager_1.ModelManager.ActivityModel.OnReceiveMessageData(e.Yps);
+          ModelManager_1.ModelManager.ActivityModel.OnReceiveMessageData(t.Yps);
           ModelManager_1.ModelManager.ActivityModel.InitCache();
-          t(true);
+          e(true);
         }
       } else {
-        t(false);
+        e(false);
       }
     });
   });
 };
-ActivityController.T4e = e => {
-  ModelManager_1.ModelManager.ActivityModel.OnActivityUpdate(e.Yps);
+ActivityController.T4e = t => {
+  ModelManager_1.ModelManager.ActivityModel.OnActivityUpdate(t.Yps);
   ActivityController.D4e();
 };
-ActivityController.L4e = e => {
-  ModelManager_1.ModelManager.ActivityModel.OnDisableActivity(e.Jps);
+ActivityController.L4e = t => {
+  ModelManager_1.ModelManager.ActivityModel.OnDisableActivity(t.Jps);
   ActivityController.D4e();
 }; //# sourceMappingURL=ActivityController.js.map

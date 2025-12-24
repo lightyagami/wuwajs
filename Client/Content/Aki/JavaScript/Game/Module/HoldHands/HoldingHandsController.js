@@ -102,8 +102,8 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     var l;
     var s;
     var d;
-    var g = o.Entity?.GetComponent(302);
-    var t = t.Entity?.GetComponent(302);
+    var g = o.Entity?.GetComponent(321);
+    var t = t.Entity?.GetComponent(321);
     if (g) {
       if (t) {
         s = g.GetRelationByHand(r);
@@ -207,7 +207,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     return n;
   }
   static SitOnCharCheckHoldHands(r, n) {
-    r = r.GetComponent(302);
+    r = r.GetComponent(321);
     if (n && r?.ActorComp) {
       var a = r?.OnLeaderSitDown();
       var i = a?.Follower;
@@ -234,7 +234,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
         }
         for (const c of _) {
           ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(c, this.t$u);
-          var H = this.t$u[0]?.Entity?.GetComponent(201);
+          var H = this.t$u[0]?.Entity?.GetComponent(207);
           var C = H?.GetInteractPoint();
           if (C && H?.HasSitDownAction() && H.Entity.Id !== n.Entity.Id && (H = Vector_1.Vector.DistSquared(C, l) + Vector_1.Vector.DistSquared(C, s)) < t) {
             t = H;
@@ -259,14 +259,14 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(o, this.t$u);
     var r = this.t$u[0];
     if (r) {
-      r = r.Entity?.GetComponent(201);
+      r = r.Entity?.GetComponent(207);
       if (r && r.HasSitDownAction()) {
         var r = () => {
           if (!e.IsSitDown()) {
             e.OnLeaderAndFollowerStandUp();
           }
         };
-        var n = t?.Entity.GetComponent(93);
+        var n = t?.Entity.GetComponent(96);
         var a = t?.KeepFollowingConfig?.传送特效buffID;
         var i = [];
         if (a?.Num()) {
@@ -290,10 +290,10 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
     }
   }
   static ForceNoLerpNextUpdate(e) {
-    e.Entity?.GetComponent(302)?.SetBindingsNoLerp();
+    e.Entity?.GetComponent(321)?.SetBindingsNoLerp();
   }
   static GetFollowers(o) {
-    var t = o.Entity?.GetComponent(302);
+    var t = o.Entity?.GetComponent(321);
     if (t) {
       var r = [];
       for (let e = 0; e <= 1; e++) {
@@ -310,7 +310,7 @@ class HoldingHandsController extends ControllerBase_1.ControllerBase {
   var e = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e);
   if (o?.Valid) {
-    if (o = o.Entity?.GetComponent(302)) {
+    if (o = o.Entity?.GetComponent(321)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Character", 82, "[HoldingHandsController.OnStopHoldHandNotify]", ["leader", o.Entity.Id]);
       }

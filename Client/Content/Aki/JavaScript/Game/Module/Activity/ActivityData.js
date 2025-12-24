@@ -142,6 +142,13 @@ class ActivityBaseData {
     }
     return false;
   }
+  GetExternalButtonRedPointName() {}
+  GetExternalButtonRedPointId() {
+    return 0;
+  }
+  GetExternalButtonRedPointState() {
+    return false;
+  }
   get ConditionGroupId() {
     return this.b4e;
   }
@@ -214,12 +221,12 @@ class ActivityBaseData {
     if ((e = t === undefined ? this.TimeType === 1 ? this.LocalConfig.PermanentPreviewDrop : this.LocalConfig.PreviewDrop : e) !== 0) {
       t = ConfigManager_1.ConfigManager.RewardConfig.GetDropPackage(e)?.DropPreview;
       if (t) {
-        for (var [s, r] of t) {
-          s = [{
+        for (var [r, s] of t) {
+          r = [{
             IncId: 0,
-            ItemId: s
-          }, r];
-          i.push(s);
+            ItemId: r
+          }, s];
+          i.push(r);
         }
       } else if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Activity", 27, "找不到奖励配置", ["id", e]);
@@ -276,18 +283,18 @@ class ActivityBaseData {
   GetPreShowGuideQuestName() {
     var i = new StringBuilder_1.StringBuilder();
     var e = new Array();
-    var s = this.B4e;
-    let r = s.length;
-    for (let t = 0; t < r; t++) {
-      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(s[0])) {
-        e.push(s[t]);
+    var r = this.B4e;
+    let s = r.length;
+    for (let t = 0; t < s; t++) {
+      if (!ModelManager_1.ModelManager.QuestNewModel.CheckQuestFinished(r[0])) {
+        e.push(r[t]);
       }
     }
-    r = e.length;
-    for (let t = 0; t < r; t++) {
+    s = e.length;
+    for (let t = 0; t < s; t++) {
       var h = PublicUtil_1.PublicUtil.GetConfigTextByKey(ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e[t]).TidName);
       i.Append(h);
-      if (t !== r - 1) {
+      if (t !== s - 1) {
         i.Append(",");
       }
     }
@@ -295,6 +302,9 @@ class ActivityBaseData {
   }
   GetPreGuideQuestIds() {
     return this.B4e;
+  }
+  SetIfFirstOpen(t) {
+    this.x4e = t;
   }
   GetIfFirstOpen() {
     return this.x4e;

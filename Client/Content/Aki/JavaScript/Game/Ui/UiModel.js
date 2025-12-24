@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.UiModel = undefined;
 const Stack_1 = require("../../Core/Container/Stack");
+const StringUtils_1 = require("../../Core/Utils/StringUtils");
+const ConfigManager_1 = require("../Manager/ConfigManager");
 const UiLayerType_1 = require("./Define/UiLayerType");
 class UiModel {
   static GetTopView(e) {
@@ -58,6 +60,13 @@ class UiModel {
       e.GetRootItem().SetUIActive(i);
     });
   }
+  static GetFloatView(e) {
+    var i = ConfigManager_1.ConfigManager.UiViewConfig.GetUiFloatConfig(e);
+    if (i) {
+      e = StringUtils_1.StringUtils.IsEmpty(i.Area) ? e : i.Area;
+      return this.ShowViewMap.get(e);
+    }
+  }
 }
 (exports.UiModel = UiModel).HudMap = new Map();
 UiModel.NormalStack = new Stack_1.Stack();
@@ -76,4 +85,4 @@ UiModel.IsInMainView = false;
 UiModel.InNormalQueue = false;
 UiModel.SeamlessStackWhileList = new Set(["BattleView"]);
 UiModel.MainViewName = "BattleView";
-UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView", "HonamiStoryTechnologyView"]); //# sourceMappingURL=UiModel.js.map
+UiModel.CanShowPlotViewWhiteList = new Set(["BattleView", "CommonGameMainView", "DangoAbyssWorldView", "PhantomArenaBattleDetailsView", "HonamiStoryTechnologyView", "LaHaiLuoCollectView", "LaHaiLuoCollectView"]); //# sourceMappingURL=UiModel.js.map

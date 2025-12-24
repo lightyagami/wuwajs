@@ -159,6 +159,10 @@ class Quat {
   static FindBetween(t, i, h) {
     this.FindBetweenVectors(t, i, h);
   }
+  static AngularDistance(t, i) {
+    t = t.X * i.X + t.Y * i.Y + t.Z * i.Z + t.W * i.W;
+    return Math.acos(Math.min(Math.abs(t), 1)) * 2;
+  }
   static FindBetweenVectors(t, i, h) {
     var s = Math.sqrt(t.SizeSquared() * i.SizeSquared());
     this.FJ(t, i, s, h);

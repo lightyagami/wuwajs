@@ -300,7 +300,7 @@ class LevelLoadingController extends ControllerBase_1.ControllerBase {
           }
           await this.vpi(o);
           ControllerHolder_1.ControllerHolder.QuestNewController.RequestSetFocusModeDeterCondition(true);
-          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(22);
+          BlackScreenFadeController_1.BlackScreenFadeController.SetNowReason(23);
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Loading", 18, "LevelLoading:相机淡出(完成)");
           }

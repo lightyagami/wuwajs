@@ -260,7 +260,7 @@ class AiPerception {
     if ((this.Uoe || this.Aoe) && (this.Lz.FromUeVector(this.Bte.CharActorComp.ActorRotation.UnrotateVectorDouble(this.Lz.ToUeVector())), this.Uoe && (a = MathUtils_1.MathUtils.RadToDeg * Math.atan2(this.Lz.Y, this.Lz.X)), this.Aoe)) {
       f = MathUtils_1.MathUtils.RadToDeg * Math.asin(this.Lz.Z / Math.sqrt(o));
     }
-    var e = t.GetComponent(104);
+    var e = t.GetComponent(109);
     var _ = e?.Valid ? e.PositionState : CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
     var c = e?.Valid ? e.MoveState : CharacterUnifiedStateTypes_1.ECharMoveState.Other;
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.uoe, h);
@@ -417,14 +417,14 @@ class AiPerception {
       var e = this.Bte.CharActorComp.Actor.Camp;
       for (const r of this.Ioe) {
         if (!!r.Entity?.Active && !this.voe.has(r.Entity.Id) && !!(t = r.Entity.GetComponent(3))?.Valid && e === t.Actor.Camp && !(Vector_1.Vector.DistSquared(s, t.ActorLocationProxy) > this.Ooe) && !(this.voe.add(r.Entity.Id), this.ShareAllyLink.has(r.Entity.Id))) {
-          if ((t = r.Entity.GetComponent(47))?.Valid) {
+          if ((t = r.Entity.GetComponent(48))?.Valid) {
             t.AiController.AiPerception?.Moe.add(this.E0);
           }
         }
       }
       for (const n of this.ShareAllyLink) {
         if (!this.voe.has(n)) {
-          if ((i = EntitySystem_1.EntitySystem.Get(n))?.Valid && (i = i.GetComponent(47))?.Valid) {
+          if ((i = EntitySystem_1.EntitySystem.Get(n))?.Valid && (i = i.GetComponent(48))?.Valid) {
             i.AiController.AiPerception?.Moe.delete(this.E0);
           }
         }
@@ -452,7 +452,7 @@ class AiPerception {
       var t = this.f6.pop();
       var t = EntitySystem_1.EntitySystem.Get(t);
       if (t?.Valid) {
-        t = t.GetComponent(47);
+        t = t.GetComponent(48);
         if (t?.Valid && t.AiController.AiPerception) {
           for (const e of t.AiController.AiPerception.Enemies) {
             this.AllEnemies.add(e);

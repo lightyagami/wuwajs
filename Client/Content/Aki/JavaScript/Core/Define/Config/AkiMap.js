@@ -55,6 +55,9 @@ class AkiMap {
   get IsNeedCustomizedThumbnail() {
     return this.isneedcustomizedthumbnail();
   }
+  get SafeAreaOffset() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.safeareaoffsetLength(), this.safeareaoffset, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -174,6 +177,33 @@ class AkiMap {
   isneedcustomizedthumbnail() {
     var t = this.J7.__offset(this.z7, 32);
     return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  GetSafeareaoffsetAt(t) {
+    return this.safeareaoffset(t);
+  }
+  safeareaoffset(t) {
+    var i = this.J7.__offset(this.z7, 34);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  safeareaoffsetLength() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  safeareaoffsetArray() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.AkiMap = AkiMap;

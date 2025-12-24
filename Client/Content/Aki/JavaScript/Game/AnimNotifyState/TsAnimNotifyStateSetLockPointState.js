@@ -24,7 +24,7 @@ class TsAnimNotifyStateSetLockPointState extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(t, e, i) {
     var s;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t.CharacterActorComponent.LockOnParts.has(this.BoneName) ? (s = t.CharacterActorComponent.LockOnParts.get(this.BoneName), this.OldSoftLockValid = s.SoftLockValid, this.OldHardLockValid = s.HardLockValid, s.SoftLockValid = this.SoftLockValid, s.HardLockValid = this.HardLockValid, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(32)?.RefreshCurrentLockState(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.CharacterActorComponent.Entity), this.BoneName), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, `[TsAnimNotifyStateSetLockPointState.NotifyBegin]: 角色'${t.GetName()}'未找到锁定点'${this.BoneName}'`), false));
+    return t instanceof TsBaseCharacter_1.default && (t.CharacterActorComponent.LockOnParts.has(this.BoneName) ? (s = t.CharacterActorComponent.LockOnParts.get(this.BoneName), this.OldSoftLockValid = s.SoftLockValid, this.OldHardLockValid = s.HardLockValid, s.SoftLockValid = this.SoftLockValid, s.HardLockValid = this.HardLockValid, Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(33)?.RefreshCurrentLockState(ModelManager_1.ModelManager.CharacterModel.GetHandleByEntity(t.CharacterActorComponent.Entity), this.BoneName), true) : (Log_1.Log.CheckError() && Log_1.Log.Error("Character", 57, `[TsAnimNotifyStateSetLockPointState.NotifyBegin]: 角色'${t.GetName()}'未找到锁定点'${this.BoneName}'`), false));
   }
   K2_NotifyEnd(t, e) {
     var i;

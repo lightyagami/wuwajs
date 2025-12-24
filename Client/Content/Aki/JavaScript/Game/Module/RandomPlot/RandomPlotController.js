@@ -32,7 +32,7 @@ class RandomPlotController extends ControllerBase_1.ControllerBase {
   }
   static OnClear() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
-    this.Fzd();
+    this.yJd();
     ModelManager_1.ModelManager.RandomPlotModel.RandomPlotMap.clear();
     ModelManager_1.ModelManager.RandomPlotModel.InstanceTriggerGroupMap.clear();
     return true;
@@ -53,7 +53,7 @@ class RandomPlotController extends ControllerBase_1.ControllerBase {
     }
     o.PlayRandomPlot();
   }
-  static Fzd() {
+  static yJd() {
     var e = ModelManager_1.ModelManager.RandomPlotModel.InstanceConditionMap;
     if (e) {
       for (const o of e.values()) {
@@ -67,7 +67,7 @@ class RandomPlotController extends ControllerBase_1.ControllerBase {
 exports.RandomPlotController = RandomPlotController;
 (_a = RandomPlotController).jUc = (e, o) => {
   if (e !== o) {
-    _a.Fzd();
+    _a.yJd();
     e = ModelManager_1.ModelManager.RandomPlotModel.InstanceTriggerGroupMap.get(o);
     if (e && !(e.length <= 0)) {
       ModelManager_1.ModelManager.RandomPlotModel.InstanceConditionMap = new Map();
@@ -82,7 +82,7 @@ exports.RandomPlotController = RandomPlotController;
             if (!r.has(l)) {
               t = d.TriggerCondition;
               a = d.ResetCondition;
-              a = new LevelConditionRegistry_1.ConditionPassCallback(_a.Nzd, [d.RandomPlotId, a, l]);
+              a = new LevelConditionRegistry_1.ConditionPassCallback(_a.SJd, [d.RandomPlotId, a, l]);
               LevelConditionRegistry_1.LevelConditionRegistry.RegisterConditionGroup(t, a);
               r.set(l, {
                 ConditionGroupId: t,
@@ -95,7 +95,7 @@ exports.RandomPlotController = RandomPlotController;
     }
   }
 };
-RandomPlotController.Nzd = e => {
+RandomPlotController.SJd = e => {
   var o;
   if (e && (o = e[0], _a.PlayRandomPlot(o), e[1]) && (o = ModelManager_1.ModelManager.RandomPlotModel.InstanceConditionMap?.get(e[2]))) {
     e = o.ConditionGroupId;

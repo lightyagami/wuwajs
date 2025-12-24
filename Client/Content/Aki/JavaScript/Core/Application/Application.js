@@ -14,7 +14,7 @@ class Application {
       Application.gU = true;
       UE.KuroApplicationLibrary.AddApplicationLifetimeDelegate((0, puerts_1.toManualReleaseDelegate)(Application.R6));
       UE.KuroApplicationLibrary.AddEditorPreEndPIEDelegate((0, puerts_1.toManualReleaseDelegate)(Application.U6));
-      UE.KuroApplicationLibrary.AddWindowActivationDelegate((0, puerts_1.toManualReleaseDelegate)(Application.krm));
+      UE.KuroApplicationLibrary.AddWindowActivationDelegate((0, puerts_1.toManualReleaseDelegate)(Application.zam));
     }
   }
   static Destroy() {
@@ -24,10 +24,10 @@ class Application {
     if (Application.gU) {
       Application.A6.clear();
       Application.PLn.clear();
-      Application.Zom.clear();
+      Application.Slm.clear();
       (0, puerts_1.releaseManualReleaseDelegate)(Application.R6);
       (0, puerts_1.releaseManualReleaseDelegate)(Application.U6);
-      (0, puerts_1.releaseManualReleaseDelegate)(Application.krm);
+      (0, puerts_1.releaseManualReleaseDelegate)(Application.zam);
       UE.KuroApplicationLibrary.UnBind();
       Application.gU = false;
     }
@@ -50,13 +50,13 @@ class Application {
     Application.PLn.delete(i);
   }
   static AddWindowActivationHandler(i) {
-    Application.Zom.add(i);
+    Application.Slm.add(i);
   }
   static RemoveWindowActivationHandler(i) {
-    Application.Zom.delete(i);
+    Application.Slm.delete(i);
   }
   static GetWindowActivationState() {
-    return Application.qrm;
+    return Application.Jam;
   }
   static IsPublicationApp() {
     return this.GmSimulatePublication || UE.KuroLauncherLibrary.GetAppInternalUseType() === CommonDefine_1.PUBLICATION_TYPE;
@@ -64,9 +64,9 @@ class Application {
 }
 (exports.Application = Application).A6 = new Map();
 Application.PLn = new Set();
-Application.Zom = new Set();
+Application.Slm = new Set();
 Application.gU = false;
-Application.qrm = undefined;
+Application.Jam = undefined;
 Application.R6 = i => {
   var t = i;
   if (Application.A6.has(t) && (Application.A6.get(t).forEach(i => {
@@ -83,8 +83,8 @@ Application.U6 = i => {
     Log_1.Log.Debug("Core", 41, "OnEditorPreEndPIE: " + i);
   }
 };
-Application.krm = t => {
-  if (t !== Application.qrm && (Application.qrm = t, Application.Zom.forEach(i => {
+Application.zam = t => {
+  if (t !== Application.Jam && (Application.Jam = t, Application.Slm.forEach(i => {
     i(t);
   }), Log_1.Log.CheckDebug())) {
     Log_1.Log.Debug("Core", 41, "WindowActivation: " + t);

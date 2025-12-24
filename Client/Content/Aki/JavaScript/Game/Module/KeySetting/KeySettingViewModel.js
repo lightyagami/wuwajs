@@ -76,13 +76,13 @@ class KeySettingViewModel {
     for (const t of this.lxi) {
       t.ResetKey(1);
     }
-    for (const e of this.Vdm) {
+    for (const e of this.Mpm) {
       e.ResetKey(1);
     }
     for (const i of this.bAn) {
       i.ResetKey(2);
     }
-    for (const n of this.jdm) {
+    for (const n of this.Epm) {
       n.ResetKey(2);
     }
   }
@@ -336,7 +336,7 @@ class KeySettingViewModel {
     this.ezu();
     this.dxi = TimerSystem_1.GameplayTimerSystem.Next(() => {
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("InputSettings", 10, "[KeySetting]当等待键盘输入改键时");
+        Log_1.Log.Info("InputSettings", 10, "[KeySetting]当等待键盘输入改键时25");
       }
       this.Vxi();
       this.qxi(true);
@@ -381,12 +381,20 @@ class KeySettingViewModel {
   }
   static Akn(t, e) {
     var i = [];
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("InputSettings", 95, "[KeySetting]设置关联按键", ["id", t.GetKeySettingConfig()?.Id]);
+    }
     for (const a of t.ConnectedKeySettingIdList) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("InputSettings", 95, "[KeySetting]设置关联按键-Connected Id", ["id", a]);
+      }
       let t = undefined;
       var n = KeySettingById_1.configKeySettingById.GetConfig(a);
       if (t = (n && n.OnlyWorkNotShow ? this.wd1 : this.Lkn).get(a)) {
         t.SetKey(e, this.InputControllerType);
         i.push(t);
+      } else if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("InputSettings", 95, "[KeySetting]设置关联按键-Connected Id拿不到", ["id", a]);
       }
     }
     return i;
@@ -409,9 +417,9 @@ KeySettingViewModel.JYu = [];
 KeySettingViewModel.cxi = undefined;
 KeySettingViewModel.fxi = [];
 KeySettingViewModel.bAn = [];
-KeySettingViewModel.jdm = [];
+KeySettingViewModel.Epm = [];
 KeySettingViewModel.lxi = [];
-KeySettingViewModel.Vdm = [];
+KeySettingViewModel.Mpm = [];
 KeySettingViewModel.Lkn = new Map();
 KeySettingViewModel.wd1 = new Map();
 KeySettingViewModel.rEa = 0;
@@ -500,7 +508,7 @@ KeySettingViewModel.rAt = (e, i) => {
                   if (a) {
                     e.set(n, a);
                   }
-                  _a.cxi.SetAxisBindingKeys(e);
+                  _a.cxi.SetAxisBindingKeys(e, _a.cxi.BindingType);
                 }
                 _a.ZYu(_a.cxi, _a.InputControllerType);
                 _a.ZYu(r, _a.InputControllerType);
@@ -516,6 +524,9 @@ KeySettingViewModel.rAt = (e, i) => {
           _a.qxi(false);
           UiManager_1.UiManager.OpenView("RepeatKeyTipsView", e);
         } else if (_a.fxi.length > 0) {
+          if (Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("InputSettings", 95, "[KeySetting]设置关联按键2322");
+          }
           _a.cxi.SetKey(_a.fxi, _a.InputControllerType);
           _a.ZYu(_a.cxi, _a.InputControllerType);
           _a.Dkn(_a.cxi, _a.fxi);

@@ -57,7 +57,7 @@ class AiPatrolController {
     return !!this.$ie && !!this.Zie && this.Xie.length !== 0;
   }
   ResetPatrol(t) {
-    var i = this.Hte.Entity.GetComponent(47);
+    var i = this.Hte.Entity.GetComponent(48);
     var i = ConfigManager_1.ConfigManager.AiConfig.LoadAiPatrolConfig(i.AiController.AiBase, t);
     this.ResetConfig(i);
   }
@@ -67,7 +67,7 @@ class AiPatrolController {
   }
   ResetConfig(t) {
     var i;
-    if (t && t !== this.$ie && (this.$ie = t, this.Yie ||= new AiPatrolConfig_1.AiPatrolConfig(), this.Yie.Init(t), this.Zie = false, t = this.Hte.CreatureData?.GetPbEntityInitData()) && ((t = (0, IComponent_1.getComponent)(t.ComponentsData, "AiComponent")) && (t.Patrol !== undefined ? (t.Patrol.SplineEntityId && (this.Yie.SplineEntityId = t.Patrol.SplineEntityId), t.Patrol.SplineEntityId || (this.Yie.Id = 0), t.Patrol.IsCircle ? (this.Yie.Loop = true, this.Yie.CirclePatrol = true) : this.Yie.CirclePatrol = false, (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId()), Net_1.Net.Call(21531, t, () => {})) : this.Yie.Id = 0), this.Yie.Id !== 0) && (t = this.Hte.Entity.GetComponent(209)) && !t.HasTag(i = 2003306528)) {
+    if (t && t !== this.$ie && (this.$ie = t, this.Yie ||= new AiPatrolConfig_1.AiPatrolConfig(), this.Yie.Init(t), this.Zie = false, t = this.Hte.CreatureData?.GetPbEntityInitData()) && ((t = (0, IComponent_1.getComponent)(t.ComponentsData, "AiComponent")) && (t.Patrol !== undefined ? (t.Patrol.SplineEntityId && (this.Yie.SplineEntityId = t.Patrol.SplineEntityId), t.Patrol.SplineEntityId || (this.Yie.Id = 0), t.Patrol.IsCircle ? (this.Yie.Loop = true, this.Yie.CirclePatrol = true) : this.Yie.CirclePatrol = false, (t = Protocol_1.Aki.Protocol.Xes.create()).F4n = MathUtils_1.MathUtils.NumberToLong(this.Hte.CreatureData.GetCreatureDataId()), Net_1.Net.Call(21531, t, () => {})) : this.Yie.Id = 0), this.Yie.Id !== 0) && (t = this.Hte.Entity.GetComponent(215)) && !t.HasTag(i = 2003306528)) {
       t.AddTag(i);
     }
   }
@@ -242,7 +242,7 @@ class AiPatrolController {
         t = i.MoveState;
       }
       this.ChangeMoveState(r, t);
-      if (i?.IsMain && (this.ChangeMoveSpeed(e, r, i.MoveSpeed), (s = this.Hte).SkeletalMesh?.SetVisibility(!i.IsHide), o = s.Entity.GetComponent(209))) {
+      if (i?.IsMain && (this.ChangeMoveSpeed(e, r, i.MoveSpeed), (s = this.Hte).SkeletalMesh?.SetVisibility(!i.IsHide), o = s.Entity.GetComponent(215))) {
         e = -841499802;
         if (i.IsHide) {
           if (!o.HasTag(e)) {
@@ -297,7 +297,7 @@ class AiPatrolController {
       this.eoe.push(e[t]);
     }
     var t;
-    var i = this.Hte.Entity.GetComponent(209);
+    var i = this.Hte.Entity.GetComponent(215);
     if (i && !i.HasTag(t = -1645015979)) {
       i.AddTag(t);
     }

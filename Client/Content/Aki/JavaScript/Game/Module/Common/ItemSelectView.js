@@ -87,9 +87,13 @@ class ItemSelectView extends UiViewBase_1.UiViewBase {
     if (i || s) {
       if (i) {
         this.Mpt.UpdateData(e, t);
+        n = this.Mpt.GetUniqueIdByGroupId(e);
+        this.vpt.SetSortUniqueId(n);
       }
       if (s) {
         this.vpt.UpdateData(e, t);
+        n = this.vpt.GetUniqueIdByGroupId(e);
+        this.Mpt.SetFilterUniqueId(n);
       }
     } else {
       this.Fvt.UpdateByDataList(t);

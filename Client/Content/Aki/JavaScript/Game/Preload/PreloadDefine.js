@@ -930,24 +930,21 @@ class PlotAssetManager {
     }
   }
   GetAsset(t, s, e) {
-    var i;
     if (this.iI1.has(t)) {
-      i = this.iI1.get(t);
-      if ((i = this.Mfe.EntityAssetMap.Get(i)) && i.Assets.Num() > 0) {
+      var i = this.iI1.get(t);
+      var i = this.Mfe.EntityAssetMap.Get(i);
+      if (i && i.Assets.Num() > 0) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 加载完成的资产", ["path", t]);
         }
         e(i.Assets.Get(0), t);
-      } else {
-        e(undefined, t);
+        return ResourceSystem_1.ResourceSystem.InvalidId;
       }
-      return ResourceSystem_1.ResourceSystem.InvalidId;
-    } else {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 需要加载的资产", ["path", t]);
-      }
-      return ResourceSystem_1.ResourceSystem.LoadAsync(t, s, e);
     }
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Preload", 26, "[预加载][Plot] 需要加载的资产", ["path", t]);
+    }
+    return ResourceSystem_1.ResourceSystem.LoadAsync(t, s, e);
   }
   DebugLog() {}
 }

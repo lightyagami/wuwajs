@@ -25,7 +25,9 @@ class CombinationActionHandle {
         this.jde = t;
         var e = [];
         for (const n of i.values()) {
-          e.push(n);
+          if (n.HasCombinationAction(this.Hde, t)) {
+            e.push(n);
+          }
         }
         this.Qde(e);
       }

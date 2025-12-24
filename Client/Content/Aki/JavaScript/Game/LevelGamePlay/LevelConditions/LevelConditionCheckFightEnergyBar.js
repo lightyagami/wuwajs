@@ -25,8 +25,8 @@ class LevelConditionCheckFightEnergyBar extends LevelGeneralBase_1.LevelConditio
     } else {
       e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
       if (i = this.GetCurrentSpecialEnergyAttributeId(e.Entity)) {
-        o = e.Entity.GetComponent(177)?.GetCurrentValue(i.AttributeId);
-        e = e.Entity.GetComponent(177)?.GetCurrentValue(i.MaxAttributeId);
+        o = e.Entity.GetComponent(182)?.GetCurrentValue(i.AttributeId);
+        e = e.Entity.GetComponent(182)?.GetCurrentValue(i.MaxAttributeId);
         return o === 0 && t === 0 || o > 0 && o < e && t === 2 || e <= o && t === 1;
       } else {
         if (Log_1.Log.CheckError()) {
@@ -37,7 +37,7 @@ class LevelConditionCheckFightEnergyBar extends LevelGeneralBase_1.LevelConditio
     }
   }
   GetCurrentSpecialEnergyAttributeId(e) {
-    var r = e.GetComponent(209);
+    var r = e.GetComponent(215);
     if (r) {
       e = this.GetRoleConfig(e);
       if (e) {

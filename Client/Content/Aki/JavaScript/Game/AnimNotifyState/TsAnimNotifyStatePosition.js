@@ -15,15 +15,15 @@ class TsAnimNotifyStatePosition extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     var r = t.GetOwner();
-    return r instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(45)?.SetAddMoveWithMesh(t, new UE.VectorDouble(this.移动速度), s, this.速度曲线), true);
+    return r instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(46)?.SetAddMoveWithMesh(t, new UE.VectorDouble(this.移动速度), s, this.速度曲线), true);
   }
   K2_NotifyTick(t, e, s) {
     var r;
-    return !!this.是否持续朝向目标 && (r = t.GetOwner()) instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(45)?.SetAddMoveWorldSpeedWithMesh(t, UE.KismetMathLibrary.D_TransformDirection(r.D_GetTransform(), new UE.VectorDouble(this.移动速度))), true);
+    return !!this.是否持续朝向目标 && (r = t.GetOwner()) instanceof TsBaseCharacter_1.default && (r.CharacterActorComponent?.Entity?.GetComponent(46)?.SetAddMoveWorldSpeedWithMesh(t, UE.KismetMathLibrary.D_TransformDirection(r.D_GetTransform(), new UE.VectorDouble(this.移动速度))), true);
   }
   K2_NotifyEnd(t, e) {
     var s = t.GetOwner();
-    return s instanceof TsBaseCharacter_1.default && (s.CharacterActorComponent?.Entity?.GetComponent(45)?.StopAddMoveWithMesh(t), true);
+    return s instanceof TsBaseCharacter_1.default && (s.CharacterActorComponent?.Entity?.GetComponent(46)?.StopAddMoveWithMesh(t), true);
   }
   GetNotifyName() {
     return "位移到坐标点";

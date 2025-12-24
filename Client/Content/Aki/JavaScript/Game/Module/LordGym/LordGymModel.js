@@ -4,14 +4,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LordGymModel = undefined;
+const puerts_1 = require("puerts");
+const UE = require("ue");
 const LordGymEntranceSetById_1 = require("../../../Core/Define/ConfigQuery/LordGymEntranceSetById");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const TimeUtil_1 = require("../../Common/TimeUtil");
+const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const PayShopDefine_1 = require("../PayShop/PayShopDefine");
+const LoadAsyncPromise_1 = require("../UiComponent/LoadAsyncPromise");
+const LordGymDefine_1 = require("./LordGymDefine");
 class LordGymModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -21,9 +28,11 @@ class LordGymModel extends ModelBase_1.ModelBase {
     this.FirstUnLockLordGym = [];
     this.EntranceEntityId = 0;
     this.EntranceSetId = 0;
+    this.EntryChallengeId = 0;
     this.LastChallengeLordEntranceId = 0;
     this.CurrentChallengeLordGymId = 0;
     this.IsDeadInChallenge = false;
+    this.LastChallengeLordId = 0;
     this.LordGymRecord = new Map();
     this.LordGymEntranceInfo = [];
     this.LordGymEntrancesWithNewTag = [];
@@ -32,155 +41,155 @@ class LordGymModel extends ModelBase_1.ModelBase {
     this.CacheLocation = undefined;
     this.CacheRotator = undefined;
     this.CacheScale = undefined;
+    this.iHf = undefined;
+    this.Leg = 0;
   }
   OnInit() {
     this.LordId2EntranceIdMap = new Map();
-    for (const r of ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceAllConfig()) {
-      for (const t of r.LordGymList) {
-        this.LordId2EntranceIdMap.set(t, r.Id);
+    for (const e of ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceAllConfig()) {
+      for (const r of e.LordGymList) {
+        this.LordId2EntranceIdMap.set(r, e.Id);
       }
     }
     return true;
   }
-  GetLordGymIsUnLock(r) {
-    return this.UnLockLordGym.includes(r);
+  GetLordGymIsUnLock(e) {
+    return this.UnLockLordGym.includes(e);
   }
-  GetLordGymHasRead(r) {
-    return this.ReadLoadGymIds.includes(r);
+  GetLordGymHasRead(e) {
+    return this.ReadLoadGymIds.includes(e);
   }
-  ReadLordGym(r) {
-    this.ReadLoadGymIds.push(r);
+  ReadLordGym(e) {
+    this.ReadLoadGymIds.push(e);
   }
-  GetLordGymEntranceList(r) {
-    return ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceLordList(r);
+  GetLordGymEntranceList(e) {
+    return ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceLordList(e);
   }
-  GetLastGymFinish(r) {
-    var t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(r);
-    if (t.Difficulty <= 1) {
+  GetLastGymFinish(e) {
+    var r = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(e);
+    if (r.Difficulty <= 1) {
       return true;
     }
-    for (const e of ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymAllConfigByDifficulty(t.Difficulty - 1)) {
-      if (e.PlayId === t.PlayId) {
-        return this.LordGymRecord.has(e.Id);
+    for (const t of ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymAllConfigByDifficulty(r.Difficulty - 1)) {
+      if (t.PlayId === r.PlayId) {
+        return this.LordGymRecord.has(t.Id);
       }
     }
     return false;
   }
-  GetNextGymId(r) {
-    const t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(r);
-    return ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymAllConfigByDifficulty(t.Difficulty + 1)?.find(r => r.PlayId === t.PlayId)?.Id;
+  GetNextGymId(e) {
+    const r = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(e);
+    return ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymAllConfigByDifficulty(r.Difficulty + 1)?.find(e => e.PlayId === r.PlayId)?.Id;
   }
-  GetLordGymIsFinish(r) {
-    return this.LordGymRecord.has(r);
+  GetLordGymIsFinish(e) {
+    return this.LordGymRecord.has(e);
   }
-  GetMarkIdByLordGymId(r) {
-    r = this.LordId2EntranceIdMap.get(r);
-    return ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r)?.MarkId;
+  GetMarkIdByLordGymId(e) {
+    e = this.LordId2EntranceIdMap.get(e);
+    return ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(e)?.MarkId;
   }
-  GetLordGymEntranceFinish(r) {
-    var t = this.GetGymCanFightMaxLevelWithoutLockCondition(r);
-    return this.GetHasFinishLord(r) + "/" + t;
+  GetLordGymEntranceFinish(e) {
+    var r = this.GetGymCanFightMaxLevelWithoutLockCondition(e);
+    return this.GetHasFinishLord(e) + "/" + r;
   }
-  GetHasFinishLord(r) {
-    r = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r);
-    if (!r) {
+  GetHasFinishLord(e) {
+    e = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(e);
+    if (!e) {
       return 0;
     }
-    let t = 0;
-    for (const e of r.LordGymList) {
-      if (this.GetLordGymIsFinish(e)) {
-        t++;
+    let r = 0;
+    for (const t of e.LordGymList) {
+      if (this.GetLordGymIsFinish(t)) {
+        r++;
       }
     }
-    return t;
+    return r;
   }
-  GetMaxDifficultyLordGymEntrance(t) {
-    t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(t);
-    if (t) {
-      let r = 0;
-      for (const n of t.LordGymList) {
-        var e = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(n);
-        if (this.GetLordGymIsUnLock(n) && e.Difficulty > r) {
-          r = e.Difficulty;
+  GetMaxDifficultyLordGymEntrance(r) {
+    r = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r);
+    if (r) {
+      let e = 0;
+      for (const i of r.LordGymList) {
+        var t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(i);
+        if (this.GetLordGymIsUnLock(i) && t.Difficulty > e) {
+          e = t.Difficulty;
         }
       }
-      return r;
+      return e;
     }
   }
-  GetMaxDifficultyLordGymEntranceCanFight(t) {
-    t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(t);
-    if (t) {
-      let r = 1;
-      for (const n of t.LordGymList) {
-        var e = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(n);
-        if (e.Difficulty > 1 && this.GetLordGymIsUnLock(n) && this.GetLordGymIsFinish(n - 1) && e.Difficulty > r) {
-          r = e.Difficulty;
+  GetMaxDifficultyLordGymEntranceCanFight(r) {
+    r = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r);
+    if (r) {
+      let e = 1;
+      for (const i of r.LordGymList) {
+        var t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(i);
+        if (t.Difficulty > 1 && this.GetLordGymIsUnLock(i) && this.GetLordGymIsFinish(i - 1) && t.Difficulty > e) {
+          e = t.Difficulty;
         }
       }
-      return r;
+      return e;
     }
   }
-  GetCanFightLordGym(r = false) {
+  GetCanFightLordGym(e = 0) {
     for (const o of this.UnLockLordGym) {
-      var t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(o);
-      if (r === t.IsNew) {
-        var e = this.GetLordGymIsUnLock(o);
-        var t = t.Difficulty === 1 || this.GetLordGymIsFinish(o - 1);
-        var n = this.GetLordGymIsFinish(o);
-        if (e && t && !n) {
-          return o;
-        }
+      var r = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(o);
+      var t = this.GetLordGymIsUnLock(o);
+      var r = r.Difficulty === 1 || this.GetLordGymIsFinish(o - 1);
+      var i = this.GetLordGymIsFinish(o);
+      if (t && r && !i) {
+        return o;
       }
     }
     return 0;
   }
-  GetGymEntranceAllFinish(r) {
-    r = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r);
-    if (!r) {
+  GetGymEntranceAllFinish(e) {
+    e = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(e);
+    if (!e) {
       return false;
     }
-    for (const t of r.LordGymList) {
-      if (!this.GetLordGymIsFinish(t)) {
+    for (const r of e.LordGymList) {
+      if (!this.GetLordGymIsFinish(r)) {
         return false;
       }
     }
     return true;
   }
-  GetGymCanFightMaxLevelWithoutLockCondition(t) {
-    t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(t);
-    if (t) {
-      let r = 1;
-      for (const n of t.LordGymList) {
-        var e = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(n);
-        if (e.Difficulty > 1 && this.GetLordGymIsUnLock(n) && e.Difficulty > r) {
-          r = e.Difficulty;
+  GetGymCanFightMaxLevelWithoutLockCondition(r) {
+    r = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymEntranceConfig(r);
+    if (r) {
+      let e = 1;
+      for (const i of r.LordGymList) {
+        var t = ConfigManager_1.ConfigManager.LordGymConfig?.GetLordGymConfig(i);
+        if (t.Difficulty > 1 && this.GetLordGymIsUnLock(i) && t.Difficulty > e) {
+          e = t.Difficulty;
         }
       }
-      return r;
+      return e;
     }
   }
-  GetLordGymCurrencyRewardAndTotalCount(r) {
-    r = LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(r).LordEntranceList;
+  GetLordGymCurrencyRewardAndTotalCount(e) {
+    e = LordGymEntranceSetById_1.configLordGymEntranceSetById.GetConfig(e).LordEntranceList;
+    let r = 0;
     let t = 0;
-    let e = 0;
-    var n = ConfigManager_1.ConfigManager.LordGymConfig;
+    var i = ConfigManager_1.ConfigManager.LordGymConfig;
     var o = ConfigManager_1.ConfigManager.ExchangeRewardConfig;
-    for (const s of r) {
-      for (const h of n.GetLordGymEntranceConfig(s).LordGymList) {
-        var i = n.GetLordGymConfig(h).RewardId;
-        var i = o.GetExchangeRewardPreviewRewardList(i);
+    for (const s of e) {
+      for (const h of i.GetLordGymEntranceConfig(s).LordGymList) {
+        var n = i.GetLordGymConfig(h).RewardId;
+        var n = o.GetExchangeRewardPreviewRewardList(n);
         var a = this.GetLordGymIsFinish(h);
-        for (const f of i) {
-          if (f[0].ItemId === PayShopDefine_1.LORD_GYM_CURRENCY_ID) {
+        for (const d of n) {
+          if (d[0].ItemId === PayShopDefine_1.LORD_GYM_CURRENCY_ID || d[0].ItemId === PayShopDefine_1.LORD_GYM_THIRD_CURRENCY_ID) {
             if (a) {
-              t += f[1];
+              r += d[1];
             }
-            e += f[1];
+            t += d[1];
           }
         }
       }
     }
-    return [t, e];
+    return [r, t];
   }
   IsChallenging() {
     return this.CurrentChallengeLordGymId > 0;
@@ -188,34 +197,84 @@ class LordGymModel extends ModelBase_1.ModelBase {
   InitNewLordGymEntranceIdRecord() {
     this.NewLordGymEntranceIdRecord = LocalStorage_1.LocalStorage.GetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.NewLordGymEntranceIdRecord) ?? new Array();
   }
-  RecordNewLordGymEntrance(r) {
-    if (this.NewLordGymEntranceIdRecord && !this.IsNewLordGymEntranceRecord(r)) {
-      this.NewLordGymEntranceIdRecord.push(r);
+  RecordNewLordGymEntrance(e) {
+    if (this.NewLordGymEntranceIdRecord && !this.IsNewLordGymEntranceRecord(e)) {
+      this.NewLordGymEntranceIdRecord.push(e);
       LocalStorage_1.LocalStorage.SetPlayer(LocalStorageDefine_1.ELocalStoragePlayerKey.NewLordGymEntranceIdRecord, this.NewLordGymEntranceIdRecord);
     }
   }
-  IsNewLordGymEntranceRecord(r) {
-    return this.NewLordGymEntranceIdRecord?.includes(r) ?? false;
+  IsNewLordGymEntranceRecord(e) {
+    return this.NewLordGymEntranceIdRecord?.includes(e) ?? false;
   }
-  PhraseEntranceInfo(r) {
-    if (r) {
+  PhraseEntranceInfo(e) {
+    if (e) {
       this.LordGymEntranceInfo.length = 0;
-      for (const e of r) {
-        var t = new LordGymEntranceInfo();
-        t.Phrase(e);
-        this.LordGymEntranceInfo.push(t);
+      for (const t of e) {
+        var r = new LordGymEntranceInfo();
+        r.Phrase(t);
+        this.LordGymEntranceInfo.push(r);
       }
     }
   }
   GetLordGymEntranceWithNewTag() {
     this.LordGymEntrancesWithNewTag.length = 0;
-    for (const t of this.LordGymEntranceInfo) {
-      var r = TimeUtil_1.TimeUtil.GetServerTime();
-      if (r >= t.EffectBeginTime && r <= t.EffectEndTime) {
-        this.LordGymEntrancesWithNewTag.push(t.Id);
+    for (const r of this.LordGymEntranceInfo) {
+      var e = TimeUtil_1.TimeUtil.GetServerTime();
+      if (e >= r.EffectBeginTime && e <= r.EffectEndTime) {
+        this.LordGymEntrancesWithNewTag.push(r.Id);
       }
     }
     return this.LordGymEntrancesWithNewTag;
+  }
+  GetLordGymThirdBossSequenceActor() {
+    return this.iHf;
+  }
+  DestroyLordGymThirdBossSequenceActor() {
+    if (this.iHf?.IsValid()) {
+      this.iHf.SequencePlayer?.Stop();
+      this.iHf.K2_DestroyActor();
+      this.iHf = undefined;
+    }
+  }
+  PlaybackPosition(e) {
+    var r;
+    var t;
+    if (this.iHf?.IsValid() && (r = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetSubsystem(GlobalData_1.GlobalData.World, UE.KuroSceneInteractionActorSystem.StaticClass()), (t = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("MonsterCase"), 1))?.IsValid() && r.SetSequenceWithTargetLevelActor(this.iHf, this.iHf.GetSequence(), t), UE.KuroSequenceRuntimeFunctionLibrary.SetSequenceInUiScene(this.iHf.GetSequence(), true), this.iHf.bOverrideInstanceData = true, r = this.iHf.DefaultInstanceData, t = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(ControllerHolder_1.ControllerHolder.RenderModuleController.GetKuroCurrentUiSceneTransform()), r.TransformOrigin = t, r = (e ? this.iHf?.SequencePlayer?.GetStartTime() : this.iHf?.SequencePlayer?.GetEndTime()).Time)) {
+      t = new UE.MovieSceneSequencePlaybackParams(r, 0, "", 0, 0);
+      this.iHf?.SequencePlayer?.SetPlaybackPosition(t);
+    }
+  }
+  async weg(e) {
+    this.DestroyLordGymThirdBossSequenceActor();
+    var r;
+    var t = await new LoadAsyncPromise_1.LoadAsyncPromise(LordGymDefine_1.LORD_GYM_THIRD_SEQUENCE_PATH, UE.LevelSequence).Promise;
+    if (t && !this.iHf?.IsValid()) {
+      r = (0, puerts_1.$ref)(undefined);
+      UE.LevelSequencePlayer.CreateLevelSequencePlayer(GlobalData_1.GlobalData.World, t, new UE.MovieSceneSequencePlaybackSettings(), r);
+      this.iHf = (0, puerts_1.$unref)(r);
+      (r = new UE.MovieSceneSequencePlaybackSettings()).bRestoreState = false;
+      r.bPauseAtEnd = true;
+      this.iHf.PlaybackSettings = r;
+      this.iHf.SetTickableWhenPaused(true);
+      this.iHf.SetSequence(t);
+      this.PlaybackPosition(e);
+    }
+  }
+  async EnterLordGymThirdBossScene(e) {
+    this.Leg = UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.Kuro.HideLandscape");
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape 0");
+    await this.weg(e);
+    var e = UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld());
+    if (e && ((e = e.GetKuroGlobalGIActor()).UINeedLerpData = true, e.GlobalUiScenePostProcess && (e.GlobalUiScenePostProcess.bEnabled = false), e.GlobalPostProcessVolume)) {
+      e.GlobalPostProcessVolume.bIsUISceneRendering = true;
+    }
+  }
+  ExitLordGymThirdBossScene() {
+    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.HideLandscape " + this.Leg);
+    var e = UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld());
+    if (e && ((e = e.GetKuroGlobalGIActor()).UINeedLerpData = false, e.GlobalUiScenePostProcess && (e.GlobalUiScenePostProcess.bEnabled = true), e.GlobalPostProcessVolume)) {
+      e.GlobalPostProcessVolume.bIsUISceneRendering = false;
+    }
   }
 }
 exports.LordGymModel = LordGymModel;
@@ -225,10 +284,10 @@ class LordGymEntranceInfo {
     this.EffectBeginTime = 0;
     this.EffectEndTime = 0;
   }
-  Phrase(r) {
-    this.Id = r.s5n;
-    this.EffectBeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(r.xE_)) / 1000;
-    this.EffectEndTime = Number(MathUtils_1.MathUtils.LongToBigInt(r.UE_)) / 1000;
+  Phrase(e) {
+    this.Id = e.s5n;
+    this.EffectBeginTime = Number(MathUtils_1.MathUtils.LongToBigInt(e.xE_)) / 1000;
+    this.EffectEndTime = Number(MathUtils_1.MathUtils.LongToBigInt(e.UE_)) / 1000;
   }
 }
 //# sourceMappingURL=LordGymModel.js.map

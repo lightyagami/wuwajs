@@ -333,15 +333,15 @@ class KuroSimpleCombatController extends ControllerBase_1.ControllerBase {
     this.IsDebug = !this.IsDebug;
   }
   static get KscHeadStateManager() {
-    return this.Qjd;
+    return this.zjd;
   }
   static StartKscHeadStateManager() {
-    this.Qjd ||= UE.KSC_HeadStateManager.CreateInstance(GlobalData_1.GlobalData.World);
+    this.zjd ||= UE.KSC_HeadStateManager.CreateInstance(GlobalData_1.GlobalData.World);
   }
   static StopKscHeadStateManager() {
-    if (this.Qjd) {
+    if (this.zjd) {
       UE.KSC_HeadStateManager.DestroyInstance();
-      this.Qjd = undefined;
+      this.zjd = undefined;
     }
   }
   static GmAddBuff(t, e) {
@@ -457,4 +457,4 @@ KuroSimpleCombatController.wId = t => {
   }
 };
 KuroSimpleCombatController.IsDebug = false;
-KuroSimpleCombatController.Qjd = undefined; //# sourceMappingURL=KscController.js.map
+KuroSimpleCombatController.zjd = undefined; //# sourceMappingURL=KscController.js.map

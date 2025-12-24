@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.giftBagShopSpecialTabList = exports.payShopTagTypeToResourceId = exports.skinTabView = exports.recommendTabView = exports.iosLimitModePayShopViewType = exports.payShopViewTabType = exports.payShopUpdateTypeTextId = exports.GOLD_QUALITY = exports.CARNIVAL_TABID = exports.LORD_GYM_CURRENCY_ID = exports.NEW_LORD_GYM_TAB_INDEX = exports.LORD_GYM_TAB_INDEX = exports.MONTH_CARD_HELP_ID = exports.MONTH_CARD_CONFIG_ID = exports.BATTLE_PASS_PRIMARY_TO_HIGH_ID = exports.BATTLE_PASS_HIGH_ID = exports.BATTLE_PASS_PRIMARY_ID = exports.MONTH_CARD_SHOP_ID = exports.DISCOUNT_PERCENT = undefined;
+exports.giftBagShopSpecialTabList = exports.payShopTagTypeToResourceId = exports.skinTabView = exports.recommendTabView = exports.iosLimitModePayShopViewType = exports.payShopViewTabType = exports.payShopUpdateTypeTextId = exports.GOLD_QUALITY = exports.CARNIVAL_TABID = exports.LORD_GYM_THIRD_CURRENCY_ID = exports.LORD_GYM_CURRENCY_ID = exports.LORD_GYM_THIRD_TAB_INDEX = exports.NEW_LORD_GYM_TAB_INDEX = exports.LORD_GYM_TAB_INDEX = exports.MONTH_CARD_HELP_ID = exports.MONTH_CARD_CONFIG_ID = exports.BATTLE_PASS_PRIMARY_TO_HIGH_ID = exports.BATTLE_PASS_HIGH_ID = exports.BATTLE_PASS_PRIMARY_ID = exports.MONTH_CARD_SHOP_ID = exports.DISCOUNT_PERCENT = undefined;
 exports.DISCOUNT_PERCENT = 100;
 exports.MONTH_CARD_SHOP_ID = 42;
 exports.BATTLE_PASS_PRIMARY_ID = 43;
@@ -13,7 +13,9 @@ exports.MONTH_CARD_CONFIG_ID = 1;
 exports.MONTH_CARD_HELP_ID = 9;
 exports.LORD_GYM_TAB_INDEX = 2;
 exports.NEW_LORD_GYM_TAB_INDEX = 3;
+exports.LORD_GYM_THIRD_TAB_INDEX = 4;
 exports.LORD_GYM_CURRENCY_ID = 34;
+exports.LORD_GYM_THIRD_CURRENCY_ID = 63;
 exports.CARNIVAL_TABID = 5;
 exports.GOLD_QUALITY = 5;
 exports.payShopUpdateTypeTextId = {
@@ -31,7 +33,8 @@ exports.recommendTabView = {
 };
 exports.skinTabView = {
   [1]: "RoleShopSkinTabView",
-  2: "ShopFlySkinTabView"
+  2: "ShopFlySkinTabView",
+  3: "MotorSkinTabView"
 };
 exports.payShopTagTypeToResourceId = {
   [1]: "ShopLabelRes_1",

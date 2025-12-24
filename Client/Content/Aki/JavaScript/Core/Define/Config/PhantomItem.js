@@ -17,6 +17,9 @@ class PhantomItem {
   get MonsterId() {
     return this.monsterid();
   }
+  get ParentMonsterId() {
+    return this.parentmonsterid();
+  }
   get MonsterName() {
     return this.monstername();
   }
@@ -110,9 +113,6 @@ class PhantomItem {
   get PhantomType() {
     return this.phantomtype();
   }
-  get ParentMonsterId() {
-    return this.parentmonsterid();
-  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -137,8 +137,16 @@ class PhantomItem {
       return 0;
     }
   }
+  parentmonsterid() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   monstername(t) {
-    var i = this.J7.__offset(this.z7, 8);
+    var i = this.J7.__offset(this.z7, 10);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -149,7 +157,7 @@ class PhantomItem {
     return this.elementtype(t);
   }
   elementtype(t) {
-    var i = this.J7.__offset(this.z7, 10);
+    var i = this.J7.__offset(this.z7, 12);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -157,7 +165,7 @@ class PhantomItem {
     }
   }
   elementtypeLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -165,7 +173,7 @@ class PhantomItem {
     }
   }
   elementtypeArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -173,7 +181,7 @@ class PhantomItem {
     }
   }
   mainprop(t) {
-    var i = this.J7.__offset(this.z7, 12);
+    var i = this.J7.__offset(this.z7, 14);
     if (i) {
       return (t || new PhantomPropRandom_1.PhantomPropRandom()).__init(this.J7.__indirect(this.z7 + i), this.J7);
     } else {
@@ -181,7 +189,7 @@ class PhantomItem {
     }
   }
   levelupgroupid() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -189,7 +197,7 @@ class PhantomItem {
     }
   }
   skillid() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -200,7 +208,7 @@ class PhantomItem {
     return this.calabashbuffs(t);
   }
   calabashbuffs(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 20);
     if (i) {
       return this.J7.readFloat64(this.J7.__vector(this.z7 + i) + t * 8);
     } else {
@@ -208,7 +216,7 @@ class PhantomItem {
     }
   }
   calabashbuffsLength() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -216,7 +224,7 @@ class PhantomItem {
     }
   }
   calabashbuffsArray() {
-    var t = this.J7.__offset(this.z7, 18);
+    var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -224,7 +232,7 @@ class PhantomItem {
     }
   }
   rarity() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -232,7 +240,7 @@ class PhantomItem {
     }
   }
   meshid() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -243,7 +251,7 @@ class PhantomItem {
     return this.zoom(t);
   }
   zoom(t) {
-    var i = this.J7.__offset(this.z7, 24);
+    var i = this.J7.__offset(this.z7, 26);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -251,7 +259,7 @@ class PhantomItem {
     }
   }
   zoomLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -259,7 +267,7 @@ class PhantomItem {
     }
   }
   zoomArray() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -270,7 +278,7 @@ class PhantomItem {
     return this.location(t);
   }
   location(t) {
-    var i = this.J7.__offset(this.z7, 26);
+    var i = this.J7.__offset(this.z7, 28);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -278,7 +286,7 @@ class PhantomItem {
     }
   }
   locationLength() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -286,7 +294,7 @@ class PhantomItem {
     }
   }
   locationArray() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -297,7 +305,7 @@ class PhantomItem {
     return this.rotator(t);
   }
   rotator(t) {
-    var i = this.J7.__offset(this.z7, 28);
+    var i = this.J7.__offset(this.z7, 30);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -305,7 +313,7 @@ class PhantomItem {
     }
   }
   rotatorLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -313,7 +321,7 @@ class PhantomItem {
     }
   }
   rotatorArray() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -321,14 +329,6 @@ class PhantomItem {
     }
   }
   standanim(t) {
-    var i = this.J7.__offset(this.z7, 30);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  typedescription(t) {
     var i = this.J7.__offset(this.z7, 32);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -336,7 +336,7 @@ class PhantomItem {
     }
     return i;
   }
-  attributesdescription(t) {
+  typedescription(t) {
     var i = this.J7.__offset(this.z7, 34);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -344,7 +344,7 @@ class PhantomItem {
     }
     return i;
   }
-  icon(t) {
+  attributesdescription(t) {
     var i = this.J7.__offset(this.z7, 36);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -352,7 +352,7 @@ class PhantomItem {
     }
     return i;
   }
-  iconmiddle(t) {
+  icon(t) {
     var i = this.J7.__offset(this.z7, 38);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -360,7 +360,7 @@ class PhantomItem {
     }
     return i;
   }
-  iconsmall(t) {
+  iconmiddle(t) {
     var i = this.J7.__offset(this.z7, 40);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -368,7 +368,7 @@ class PhantomItem {
     }
     return i;
   }
-  mesh(t) {
+  iconsmall(t) {
     var i = this.J7.__offset(this.z7, 42);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -376,8 +376,16 @@ class PhantomItem {
     }
     return i;
   }
+  mesh(t) {
+    var i = this.J7.__offset(this.z7, 44);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   qualityid() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -385,7 +393,7 @@ class PhantomItem {
     }
   }
   maxcapcity() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -396,7 +404,7 @@ class PhantomItem {
     return this.itemaccess(t);
   }
   itemaccess(t) {
-    var i = this.J7.__offset(this.z7, 48);
+    var i = this.J7.__offset(this.z7, 50);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -404,7 +412,7 @@ class PhantomItem {
     }
   }
   itemaccessLength() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -412,7 +420,7 @@ class PhantomItem {
     }
   }
   itemaccessArray() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -420,7 +428,7 @@ class PhantomItem {
     }
   }
   obtainedshow() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -428,7 +436,7 @@ class PhantomItem {
     }
   }
   obtainedshowdescription(t) {
-    var i = this.J7.__offset(this.z7, 52);
+    var i = this.J7.__offset(this.z7, 54);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -436,7 +444,7 @@ class PhantomItem {
     return i;
   }
   numlimit() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -444,11 +452,11 @@ class PhantomItem {
     }
   }
   showinbag() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 58);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   sortindex() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 60);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -456,7 +464,7 @@ class PhantomItem {
     }
   }
   skillicon(t) {
-    var i = this.J7.__offset(this.z7, 60);
+    var i = this.J7.__offset(this.z7, 62);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -464,11 +472,11 @@ class PhantomItem {
     return i;
   }
   destructible() {
-    var t = this.J7.__offset(this.z7, 62);
+    var t = this.J7.__offset(this.z7, 64);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   reddotdisablerule() {
-    var t = this.J7.__offset(this.z7, 64);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -479,7 +487,7 @@ class PhantomItem {
     return this.fettergroup(t);
   }
   fettergroup(t) {
-    var i = this.J7.__offset(this.z7, 66);
+    var i = this.J7.__offset(this.z7, 68);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -487,7 +495,7 @@ class PhantomItem {
     }
   }
   fettergroupLength() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -495,7 +503,7 @@ class PhantomItem {
     }
   }
   fettergroupArray() {
-    var t = this.J7.__offset(this.z7, 66);
+    var t = this.J7.__offset(this.z7, 68);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -503,19 +511,11 @@ class PhantomItem {
     }
   }
   phantomtype() {
-    var t = this.J7.__offset(this.z7, 68);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 1;
-    }
-  }
-  parentmonsterid() {
     var t = this.J7.__offset(this.z7, 70);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
-      return 0;
+      return 1;
     }
   }
 }

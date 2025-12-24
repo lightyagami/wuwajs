@@ -390,6 +390,12 @@ class BaseProperty {
   get WeaknessTotalBonus() {
     return this.weaknesstotalbonus();
   }
+  get BreakWeaknessRatio() {
+    return this.breakweaknessratio();
+  }
+  get WeaknessMastery() {
+    return this.weaknessmastery();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -1408,6 +1414,22 @@ class BaseProperty {
   }
   weaknesstotalbonus() {
     var t = this.J7.__offset(this.z7, 256);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  breakweaknessratio() {
+    var t = this.J7.__offset(this.z7, 258);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 10000;
+    }
+  }
+  weaknessmastery() {
+    var t = this.J7.__offset(this.z7, 260);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

@@ -95,7 +95,7 @@ class MainRoleController extends UiControllerBase_1.UiControllerBase {
   }
 }
 (exports.MainRoleController = MainRoleController).iVe = e => {
-  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(209)?.HasTag(1996802261);
+  var r = Global_1.Global.BaseCharacter?.CharacterActorComponent.Entity.GetComponent(215)?.HasTag(1996802261);
   var o = ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance();
   if (r) {
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsByText(ConfigManager_1.ConfigManager.TextConfig.GetTextById("CanNotTransferInFight"));

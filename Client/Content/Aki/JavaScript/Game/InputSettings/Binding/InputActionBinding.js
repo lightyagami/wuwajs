@@ -10,6 +10,8 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const InputSettings_1 = require("../InputSettings");
 const InputSettingsManager_1 = require("../InputSettingsManager");
+const LanguageKeyTransUtils_1 = require("../LanguageKeyTrans/LanguageKeyTransUtils");
+const InputBindingDefine_1 = require("./InputBindingDefine");
 class InputActionBinding {
   constructor() {
     this.ZMe = undefined;
@@ -19,16 +21,27 @@ class InputActionBinding {
     this.tEe = [];
     this.iEe = [];
     this.rEe = [];
-    this.Xih = 0;
-    this.Yih = 0;
+    this.Vhf = new Map();
+    this.Hhf = new Map();
+    this.jhf = new Map();
+    this.$hf = new Map();
+    this.Whf = new Map();
+    this.r5f = 0;
+    this.CurrentBindingType = 0;
   }
   Initialize(t) {
     this.ZMe = t.ActionName;
     this.Lo = t;
     this.Mne = this.Lo.Id;
     this.eEe = this.Lo.ActionType;
-    this.Xih = t.KeyboardVersion;
-    this.Yih = t.GamepadVersion;
+    this.CurrentBindingType = t.ExclusiveType;
+    this.r5f = t.ExclusiveType;
+    for (var [i, e] of t.KeyboardVersionMap) {
+      this.Vhf.set(i, e);
+    }
+    for (var [s, n] of t.GamepadVersionMap) {
+      this.Hhf.set(s, n);
+    }
   }
   Clear() {
     this.ZMe = undefined;
@@ -37,26 +50,24 @@ class InputActionBinding {
     this.tEe.length = 0;
     this.iEe.length = 0;
     this.rEe.length = 0;
-    this.Xih = 0;
-    this.Yih = 0;
+    this.jhf.clear();
+    this.$hf.clear();
+    this.Whf.clear();
   }
   GetActionName() {
     return this.ZMe;
   }
-  SetKeyboardVersion(t) {
-    this.Xih = t;
+  SetKeyboardVersion(t, i) {
+    this.Vhf.set(i, t);
   }
-  GetKeyboardVersion() {
-    return this.Xih;
+  GetKeyboardVersion(t) {
+    return this.Vhf.get(t) ?? 0;
   }
-  SetGamepadVersion(t) {
-    this.Yih = t;
+  SetGamepadVersion(t, i) {
+    this.Hhf.set(i, t);
   }
-  GetGamepadVersion() {
-    return this.Yih;
-  }
-  GetInputActionKeyMap() {
-    return InputSettings_1.InputSettings.GetInputActionKeyMap(this.ZMe);
+  GetGamepadVersion(t) {
+    return this.Hhf.get(t) ?? 0;
   }
   GetCurrentPlatformKeyByIndex(t) {
     if (Info_1.Info.IsInKeyBoard()) {
@@ -78,7 +89,7 @@ class InputActionBinding {
   }
   GetPcKeyByIndex(t) {
     if (this.tEe && !(t >= this.tEe.length)) {
-      return InputSettings_1.InputSettings.GetInputActionKey(this.ZMe, this.tEe[t]);
+      return InputSettings_1.InputSettings.GetInputActionKey(this.ZMe, this.tEe[t], this.CurrentBindingType);
     }
   }
   GetPcKey() {
@@ -87,23 +98,43 @@ class InputActionBinding {
   }
   GetGamepadKeyByIndex(t) {
     if (this.iEe && !(t >= this.iEe.length)) {
-      return InputSettings_1.InputSettings.GetInputActionKey(this.ZMe, this.iEe[t]);
+      return InputSettings_1.InputSettings.GetInputActionKey(this.ZMe, this.iEe[t], this.CurrentBindingType);
     }
   }
   GetGamepadKey() {
     var t = this.iEe[0];
     return InputSettings_1.InputSettings.GetKey(t);
   }
+  GetAllPcKeyNameMap(t) {
+    for (var [i, e] of this.$hf) {
+      t.set(i, e);
+    }
+  }
   GetPcKeyNameList(t) {
-    for (const e of this.tEe) {
+    for (const i of this.tEe) {
+      t.push(i);
+    }
+  }
+  GetPcKeyNameListByBindingType(t, i) {
+    for (const e of this.$hf.get(i) ?? []) {
       t.push(e);
     }
   }
   GetPcKeyNameListReadonly() {
     return this.tEe;
   }
+  GetAllGamepadKeyNameMap(t) {
+    for (var [i, e] of this.Whf) {
+      t.set(i, e);
+    }
+  }
   GetGamepadKeyNameList(t) {
-    for (const e of this.iEe) {
+    for (const i of this.iEe) {
+      t.push(i);
+    }
+  }
+  GetGamepadKeyNameListByBindingType(t, i) {
+    for (const e of this.Whf.get(i) ?? []) {
       t.push(e);
     }
   }
@@ -111,7 +142,12 @@ class InputActionBinding {
     return this.iEe;
   }
   GetKeyNameList(t) {
-    for (const e of this.rEe) {
+    for (const i of this.rEe) {
+      t.push(i);
+    }
+  }
+  GetKeyNameListByBindingType(t, i) {
+    for (const e of this.jhf.get(i) ?? []) {
       t.push(e);
     }
   }
@@ -123,52 +159,114 @@ class InputActionBinding {
     }
   }
   HasKey(t) {
-    return InputSettings_1.InputSettings.GetInputActionKeyMap(this.ZMe).has(t);
+    return InputSettings_1.InputSettings.GetInputActionKeyMapByBindingType(this.ZMe, this.CurrentBindingType).has(t);
   }
   HasAnyKey() {
     return this.rEe.length > 0;
   }
-  SetKeys(t) {
-    InputSettings_1.InputSettings.SetActionMapping(this.ZMe, t);
-    this.rEe = t;
-    this.nEe();
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActionKeyChanged, this.ZMe);
-  }
-  SetKeyboardKeys(t) {
-    t = t.concat(this.iEe);
-    this.SetKeys(t);
-  }
-  SetGamepadKeys(t) {
-    t = this.tEe.concat(t);
-    this.SetKeys(t);
-  }
-  RefreshKeysByActionMappings(e) {
-    this.rEe.length = 0;
-    for (let t = e.Num() - 1; t >= 0; t--) {
-      var i = e.Get(t).Key.KeyName.toString();
-      this.rEe.push(i);
+  SwitchKeysByBindingType(t) {
+    var i = this.$hf.get(t) ?? this.$hf.get(0);
+    var e = this.Whf.get(t) ?? this.Whf.get(0);
+    var s = [];
+    if (i) {
+      for (const n of i) {
+        s.push(n);
+      }
     }
-    this.nEe();
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActionKeyChanged, this.ZMe);
-  }
-  AddKeys(t) {
-    for (const e of t) {
-      InputSettings_1.InputSettings.AddActionMapping(this.ZMe, e);
-      this.rEe.push(e);
+    if (e) {
+      for (const h of e) {
+        s.push(h);
+      }
     }
-    this.nEe();
-  }
-  RemoveKeys(t) {
-    for (const i of t) {
-      InputSettings_1.InputSettings.RemoveActionMapping(this.ZMe, i);
-      var e = this.rEe.indexOf(i);
-      this.rEe.splice(e, 1);
+    if (s.length > 0) {
+      this.CurrentBindingType = t;
+      this.SetKeys(s, t);
+      this.r5f = this.CurrentBindingType;
     }
-    this.nEe();
   }
-  RemoveKeysByCondition(t) {
-    InputSettings_1.InputSettings.RemoveActionMappingByCondition(this.ZMe, t);
-    this.nEe();
+  SetKeys(t, i) {
+    this.jhf.set(i, t);
+    if (this.CurrentBindingType === i) {
+      InputSettings_1.InputSettings.SetActionMapping(this.ZMe, t, this.r5f, i);
+      this.rEe = t;
+      this.nEe();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActionKeyChanged, this.ZMe);
+    } else {
+      InputSettings_1.InputSettings.SetActionMappingApplyInputSettings(this.ZMe, t, i, false, false);
+      this.Qhf(i);
+    }
+  }
+  SetKeyboardKeys(t, i) {
+    var e = this.Whf.get(i) ?? [];
+    var t = t.concat(e);
+    this.SetKeys(t, i);
+  }
+  SetKeyboardKeysWithoutOriginal(t) {
+    for (const i of InputBindingDefine_1.inputBindingTypesArray) {
+      if (i !== 0) {
+        this.SetKeyboardKeys(t, i);
+      }
+    }
+  }
+  SetGamepadKeys(t, i) {
+    t = (this.$hf.get(i) ?? []).concat(t);
+    this.SetKeys(t, i);
+  }
+  SetGamepadKeysWithoutOriginal(t) {
+    for (const i of this.$hf.keys()) {
+      if (i !== 0) {
+        this.SetGamepadKeys(t, i);
+      }
+    }
+  }
+  RefreshKeysByActionMappings(i, t) {
+    var e = this.Khf(t);
+    e.length = 0;
+    for (let t = i.Num() - 1; t >= 0; t--) {
+      var s = i.Get(t).Key.KeyName.toString();
+      e.push(s);
+    }
+    if (this.CurrentBindingType === t) {
+      this.rEe = e;
+      this.nEe();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActionKeyChanged, this.ZMe);
+    } else {
+      this.Qhf(t);
+    }
+  }
+  AddKeys(t, i) {
+    var e = this.Khf(i);
+    for (const s of t) {
+      if (!t.includes(s)) {
+        e.push(s);
+      }
+    }
+    if (this.CurrentBindingType === i) {
+      for (const n of t) {
+        InputSettings_1.InputSettings.AddActionMapping(this.ZMe, n, i, true);
+      }
+      this.rEe = e;
+      this.nEe();
+    } else {
+      this.Qhf(i);
+    }
+  }
+  RemoveKeys(t, i) {
+    var e = this.Khf(i);
+    for (const s of t) {
+      if (e.includes(s)) {
+        e.splice(e.indexOf(s), 1);
+      }
+    }
+    if (this.CurrentBindingType === i) {
+      for (const n of t) {
+        InputSettings_1.InputSettings.RemoveActionMapping(this.ZMe, n, i, true, true);
+      }
+      this.rEe = e;
+      this.nEe();
+    } else {
+      this.Qhf(i);
+    }
   }
   ClearAllKeys() {
     if (this.tEe) {
@@ -191,54 +289,67 @@ class InputActionBinding {
   GetActionMappingType() {
     return this.eEe;
   }
-  nEe() {
-    if (this.tEe) {
-      this.tEe.length = 0;
-    }
-    if (this.iEe) {
-      this.iEe.length = 0;
-    }
-    if (this.rEe) {
-      for (const e of this.rEe) {
-        var t = InputSettings_1.InputSettings.GetKey(e);
-        if (t) {
-          if (t.IsKeyboardKey || t.IsMouseButton) {
-            this.tEe.push(e);
-          } else if (t.IsGamepadKey || t.IsPcPsTouchPadKey) {
-            this.iEe.push(e);
+  Qhf(t) {
+    let i = [];
+    let e = [];
+    var s = this.jhf.get(t) ?? [];
+    if (s) {
+      for (const h of s) {
+        var n = InputSettings_1.InputSettings.GetKey(h);
+        if (n) {
+          if (n.IsKeyboardKey || n.IsMouseButton) {
+            i.push(h);
+          } else if (n.IsGamepadKey || n.IsPcPsTouchPadKey) {
+            e.push(h);
           }
         }
       }
+      if (!this.$hf.has(t) && i.length === 0) {
+        i = this.$hf.get(0) ?? [];
+      }
+      s = this.Whf.has(t);
+      if (!s && e.length === 0) {
+        e = this.Whf.get(0) ?? [];
+      }
+      if (this.CurrentBindingType === t) {
+        this.tEe = i;
+        this.iEe = e;
+      }
+      this.$hf.set(t, i);
+      this.Whf.set(t, e);
     }
+  }
+  nEe() {
+    this.Qhf(this.CurrentBindingType);
   }
   ConvertSort() {
     var t = ConfigManager_1.ConfigManager.InputSettingsConfig.GetActionMappingConfigByActionName(this.ZMe);
     let n = [];
-    n = InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard ? t.FrancePcKeys : t.PcKeys;
-    this.rEe.sort((t, e) => {
-      var i = InputSettings_1.InputSettings.IsKeyboardKey(t) || InputSettings_1.InputSettings.IsMouseButton(t);
-      var s = InputSettings_1.InputSettings.IsKeyboardKey(e) || InputSettings_1.InputSettings.IsMouseButton(e);
-      if (i !== s) {
-        if (i) {
+    n = InputSettingsManager_1.InputSettingsManager.CheckUseFrenchKeyboard ? t.FrancePcKeys : LanguageKeyTransUtils_1.LanguageKeyTransUtils.GetKeyTrans(InputSettingsManager_1.InputSettingsManager.CurrentDeviceLang).GetActionPcKeys(t);
+    this.rEe.sort((t, i) => {
+      var e = InputSettings_1.InputSettings.IsKeyboardKey(t) || InputSettings_1.InputSettings.IsMouseButton(t);
+      var s = InputSettings_1.InputSettings.IsKeyboardKey(i) || InputSettings_1.InputSettings.IsMouseButton(i);
+      if (e !== s) {
+        if (e) {
           return -1;
         } else {
           return 1;
         }
       }
-      if (i === s) {
-        i = n.indexOf(t);
-        s = n.indexOf(e);
-        if (i !== -1 && s !== -1) {
-          if (i < s) {
+      if (e === s) {
+        e = n.indexOf(t);
+        s = n.indexOf(i);
+        if (e !== -1 && s !== -1) {
+          if (e < s) {
             return -1;
           } else {
             return 1;
           }
         }
       }
-      i = InputSettings_1.InputSettings.IsGamepadKey(t);
-      if (i !== InputSettings_1.InputSettings.IsGamepadKey(e)) {
-        if (i) {
+      e = InputSettings_1.InputSettings.IsGamepadKey(t);
+      if (e !== InputSettings_1.InputSettings.IsGamepadKey(i)) {
+        if (e) {
           return -1;
         } else {
           return 1;
@@ -247,7 +358,21 @@ class InputActionBinding {
         return 0;
       }
     });
-    this.SetKeys(this.rEe);
+    this.SetKeys(this.rEe, this.CurrentBindingType);
+  }
+  GetKeyNameListToBindingTypeMap() {
+    return this.jhf;
+  }
+  GetCopyKeyNameListToBindingTypeMap() {
+    return new Map(this.jhf);
+  }
+  Khf(t) {
+    let i = this.jhf.get(t);
+    if (!i) {
+      i = [];
+      this.jhf.set(t, i);
+    }
+    return i;
   }
 }
 exports.InputActionBinding = InputActionBinding;

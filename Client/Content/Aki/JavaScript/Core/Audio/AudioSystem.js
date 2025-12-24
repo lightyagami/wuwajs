@@ -12,25 +12,25 @@ const FNameUtil_1 = require("../Utils/FNameUtil");
 const AudioEventPool_1 = require("./AudioEventPool");
 const ExecutionQueue_1 = require("./ExecutionQueue");
 const INVALID_PLAYING_ID = 0;
-function instanceOf(e, t) {
-  if (e.IsValid() && typeof e.IsA != "function" && Log_1.Log.CheckError()) {
-    Log_1.Log.Error("Audio", 56, "[Core.AudioSystem] 排查 Object.IsA 失效问题", ["object", e]);
+function instanceOf(t, e) {
+  if (t.IsValid() && typeof t.IsA != "function" && Log_1.Log.CheckError()) {
+    Log_1.Log.Error("Audio", 56, "[Core.AudioSystem] 排查 Object.IsA 失效问题", ["object", t]);
   }
-  return e.IsValid() && e.IsA(t.StaticClass()) && e.GetWorld()?.IsValid();
+  return t.IsValid() && t.IsA(e.StaticClass()) && t.GetWorld()?.IsValid();
 }
-function parseAudioEventPathInConfig(e) {
-  var t = /^\/Game\/Aki\/WwiseAudio\/Events\/(?<name>\w+)/.exec(e);
-  if (!t) {
+function parseAudioEventPathInConfig(t) {
+  var e = /^\/Game\/Aki\/WwiseAudio\/Events\/(?<name>\w+)/.exec(t);
+  if (!e) {
     if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] 非法的 AudioEvent 路径", ["path", e], ["reason", "未在 /Game/Aki/WwiseAudio/Events/ 路径下或命名不符合规范"]);
+      Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] 非法的 AudioEvent 路径", ["path", t], ["reason", "未在 /Game/Aki/WwiseAudio/Events/ 路径下或命名不符合规范"]);
     }
   }
-  return t?.groups?.name;
+  return e?.groups?.name;
 }
-function parseAudioEventPath(e) {
-  e = typeof e == "string" ? e : e.ToAssetPathName();
-  if (e) {
-    return e.split(".").at(-1)?.toLowerCase();
+function parseAudioEventPath(t) {
+  t = typeof t == "string" ? t : t.ToAssetPathName();
+  if (t) {
+    return t.split(".").at(-1)?.toLowerCase();
   } else {
     return undefined;
   }
@@ -39,8 +39,8 @@ exports.INVALID_AUDIO_EVENT_VALUE = 0;
 exports.parseAudioEventPathInConfig = parseAudioEventPathInConfig;
 exports.parseAudioEventPath = parseAudioEventPath;
 class AudioSystem {
-  static Tick(e) {
-    this.a8.Tick(e);
+  static Tick(t) {
+    this.a8.Tick(t);
   }
   static PostEvent(o, i, s) {
     if (!o || o.length < 1 || o === "None" || o === "none") {
@@ -54,22 +54,22 @@ class AudioSystem {
       }
       return exports.INVALID_AUDIO_EVENT_VALUE;
     } else {
-      return this.h8.Enqueue(async e => {
-        var t = await this.l8(o, i, s);
-        if (t) {
-          this._8.set(e, t);
-          this.u8.set(t, e);
+      return this.h8.Enqueue(async t => {
+        var e = await this.l8(o, i, s);
+        if (e) {
+          this._8.set(t, e);
+          this.u8.set(e, t);
         }
       });
     }
   }
-  static async l8(t, o, i = {}) {
-    if (!t || t.length < 1) {
+  static async l8(e, o, i = {}) {
+    if (!e || e.length < 1) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Audio", 42, "[Core.AudioSystem] 空的音频事件event参数");
       }
     } else {
-      var s = await this.a8.GetAudioEvent(t);
+      var s = await this.a8.GetAudioEvent(e);
       if (s) {
         var {
           ExternalSourceName: n,
@@ -83,161 +83,186 @@ class AudioSystem {
           CallbackHandler: r
         } = i;
         var n = n | 1;
-        var a = t.toLowerCase();
+        var a = e.toLowerCase();
         var r = this.c8(a, r);
-        let e = undefined;
+        let t = undefined;
         if (o === undefined) {
-          e = s.PostOnActor(undefined, r, n, false);
+          t = s.PostOnActor(undefined, r, n, false);
         } else if (o instanceof UE.TransformDouble) {
           var u = o.GetLocation();
           var d = o.GetRotation().Rotator();
-          e = s.D_PostAtLocation(u, d, r, n, Info_1.Info.World);
+          t = s.D_PostAtLocation(u, d, r, n, Info_1.Info.World);
         } else if (instanceOf(o, UE.Actor)) {
           var {
             StopWhenOwnerDestroyed: u = false
           } = i;
-          e = s.PostOnActor(o, r, n, u);
+          t = s.PostOnActor(o, r, n, u);
         } else {
           if (!instanceOf(o, UE.AkComponent)) {
             if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] PostEvent 执行失败", ["Event", t], ["Args", i], ["Reason", "目标对象无效"]);
+              Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] PostEvent 执行失败", ["Event", e], ["Args", i], ["Reason", "目标对象无效"]);
             }
             return;
           }
           var {
             StopWhenOwnerDestroyed: d = false
           } = i;
-          e = s.PostOnComponent(o, r, n, d);
+          t = s.PostOnComponent(o, r, n, d);
         }
-        if (e !== INVALID_PLAYING_ID) {
+        if (t !== INVALID_PLAYING_ID) {
           if (a === "play_external_vo_subtitle_assist" && Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调注册", ["PlayingId", e], ["Event", t]);
+            Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调注册", ["PlayingId", t], ["Event", e]);
           }
-          return e;
+          return t;
         }
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Audio", 56, "[Core.AudioSystem] PostEvent 执行失败", ["Event", t], ["Target", o === undefined ? "Global" : o instanceof UE.TransformDouble ? o.ToString() : o.GetName()], ["Args", i], ["Reason", "SoundEngine 内部异常"]);
+          Log_1.Log.Error("Audio", 56, "[Core.AudioSystem] PostEvent 执行失败", ["Event", e], ["Target", o === undefined ? "Global" : o instanceof UE.TransformDouble ? o.ToString() : o.GetName()], ["Args", i], ["Reason", "SoundEngine 内部异常"]);
         }
       }
     }
   }
   static c8(o, i) {
-    const s = (e, t) => {
-      i?.(e, t);
-      if (e === 0 && ((0, puerts_1.releaseManualReleaseDelegate)(s), e = t.PlayingID, (t = this.u8.get(e)) && (this.u8.delete(e), this._8.delete(t)), o === "play_external_vo_subtitle_assist") && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调执行", ["PlayingId", e], ["Event", o]);
+    const s = (t, e) => {
+      i?.(t, e);
+      if (t === 0 && ((0, puerts_1.releaseManualReleaseDelegate)(s), t = e.PlayingID, (e = this.u8.get(t)) && (this.u8.delete(t), this._8.delete(e)), o === "play_external_vo_subtitle_assist") && Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Audio", 56, "[Core.AudioSystem] EndOfEvent 回调执行", ["PlayingId", t], ["Event", o]);
       }
     };
     return (0, puerts_1.toManualReleaseDelegate)(s);
   }
-  static ExecuteAction(...e) {
-    if (typeof e[0] == "string") {
-      const [i, s, n = {}] = e;
+  static ExecuteAction(...t) {
+    if (typeof t[0] == "string") {
+      const [i, s, n = {}] = t;
       if (!i || i.length < 1) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Audio", 42, "[Core.AudioSystem] 空的音频事件event参数");
         }
       } else {
+        const r = n.Actor !== undefined;
         this.h8.Enqueue(() => {
-          var {
-            Actor: e,
-            TransitionDuration: t,
-            TransitionFadeCurve: o
-          } = n;
-          UE.KuroAudioStatics.ExecuteActionOnEventName(i, s, e, t, o);
+          var t;
+          var e;
+          var o;
+          if (r && !n.Actor?.IsValid()) {
+            if (Log_1.Log.CheckWarn()) {
+              Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] 绑定的 Actor 已失效，跳过执行");
+            }
+          } else {
+            ({
+              Actor: t,
+              TransitionDuration: e,
+              TransitionFadeCurve: o
+            } = n);
+            UE.KuroAudioStatics.ExecuteActionOnEventName(i, s, t, e, o);
+          }
         });
       }
     } else {
-      const [r, a, u = {}] = e;
-      if (a !== 0 || !this.h8.Cancel(r)) {
+      const [a, u, d = {}] = t;
+      if (u !== 0 || !this.h8.Cancel(a)) {
         this.h8.Enqueue(() => {
-          var e;
           var t;
-          var o = this._8.get(r);
+          var e;
+          var o = this._8.get(a);
           if (o) {
             ({
-              TransitionDuration: e,
-              TransitionFadeCurve: t
-            } = u);
-            UE.KuroAudioStatics.ExecuteActionOnPlayingId(o, a, e, t);
+              TransitionDuration: t,
+              TransitionFadeCurve: e
+            } = d);
+            UE.KuroAudioStatics.ExecuteActionOnPlayingId(o, u, t, e);
           }
         });
       }
     }
   }
-  static SeekOnEvent(t, o, i = {}) {
-    if (!t || t.length < 1) {
+  static SeekOnEvent(e, o, i = {}) {
+    if (!e || e.length < 1) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Audio", 42, "[Core.AudioSystem] 空的音频事件event参数");
       }
     } else {
+      const s = i.Actor !== undefined;
       this.h8.Enqueue(() => {
-        var e;
-        if (i.Handle === undefined) {
-          UE.KuroAudioStatics.SeekOnEventName(t, o, i.Actor, undefined, i.SnapToMarker);
-        } else if (e = this._8.get(i.Handle)) {
-          UE.KuroAudioStatics.SeekOnEventName(t, o, i.Actor, e, i.SnapToMarker);
+        var t;
+        if (s && !i.Actor?.IsValid()) {
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] 绑定的 Actor 已失效，跳过执行");
+          }
+        } else if (i.Handle === undefined) {
+          UE.KuroAudioStatics.SeekOnEventName(e, o, i.Actor, undefined, i.SnapToMarker);
+        } else if (t = this._8.get(i.Handle)) {
+          UE.KuroAudioStatics.SeekOnEventName(e, o, i.Actor, t, i.SnapToMarker);
         }
       });
     }
   }
-  static GetSourcePlayPosition(e) {
-    var e = this._8.get(e);
-    if (!e || (e = UE.KuroAudioStatics.GetSourcePlayPosition(e)) === -1) {
+  static GetSourcePlayPosition(t) {
+    var t = this._8.get(t);
+    if (!t || (t = UE.KuroAudioStatics.GetSourcePlayPosition(t)) === -1) {
       return undefined;
     } else {
-      return e;
+      return t;
     }
   }
-  static SetSwitch(e, t, o) {
+  static SetSwitch(t, e, o) {
     this.h8.Enqueue(() => {
-      UE.KuroAudioStatics.SetSwitch(e, t, o);
+      UE.KuroAudioStatics.SetSwitch(t, e, o);
     });
   }
-  static SetState(e, t) {
+  static SetState(t, e) {
     this.h8.Enqueue(() => {
-      UE.KuroAudioStatics.SetState(e, t);
+      UE.KuroAudioStatics.SetState(t, e);
     });
   }
-  static SetRtpcValue(i, s, n = {}) {
+  static SetRtpcValue(t, e, o = {}) {
+    const {
+      Actor: i,
+      TransitionDuration: s,
+      TransitionFadeCurve: n
+    } = o;
+    const r = i !== undefined;
     this.h8.Enqueue(() => {
-      var {
-        Actor: e,
-        TransitionDuration: t,
-        TransitionFadeCurve: o
-      } = n;
-      UE.KuroAudioStatics.SetRtpcValue(i, s, e, t, o);
+      if (r && !i?.IsValid()) {
+        if (Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Audio", 56, "[Core.AudioSystem] 绑定的 Actor 已失效，跳过执行");
+        }
+      } else {
+        UE.KuroAudioStatics.SetRtpcValue(t, e, i, s, n);
+      }
     });
   }
-  static StopAll(e) {
+  static StopAll(t) {
     this.h8.Enqueue(() => {
-      UE.KuroAudioStatics.StopAll(e);
+      UE.KuroAudioStatics.StopAll(t);
     });
   }
-  static GetAkComponent(e, t = {}) {
+  static GetAkComponent(t, e = {}) {
     var {
-      SocketName: t,
+      SocketName: e,
       OnCreated: o
-    } = t;
+    } = e;
     let i = undefined;
-    i = typeof t == "string" ? FNameUtil_1.FNameUtil.GetDynamicFName(t.length > 0 ? t : "None") : t && t.toString().length > 0 ? t : FNameUtil_1.FNameUtil.GetDynamicFName("None");
-    t = (0, puerts_1.$ref)(false);
+    i = typeof e == "string" ? FNameUtil_1.FNameUtil.GetDynamicFName(e.length > 0 ? e : "None") : e && e.toString().length > 0 ? e : FNameUtil_1.FNameUtil.GetDynamicFName("None");
+    e = (0, puerts_1.$ref)(false);
     let s = undefined;
-    if (instanceOf(e, UE.Actor)) {
-      s = UE.KuroAudioStatics.GetAkComponent(e.RootComponent, i, t);
-    } else if (instanceOf(e, UE.SceneComponent)) {
-      s = UE.KuroAudioStatics.GetAkComponent(e, i, t);
+    if (instanceOf(t, UE.Actor)) {
+      s = UE.KuroAudioStatics.GetAkComponent(t.RootComponent, i, e);
+    } else if (instanceOf(t, UE.SceneComponent)) {
+      s = UE.KuroAudioStatics.GetAkComponent(t, i, e);
     }
-    if ((0, puerts_1.$unref)(t) && (e = s?.GetOwner(), o) && e && s) {
-      o(e, s);
+    if ((0, puerts_1.$unref)(e) && (t = s?.GetOwner(), o) && t && s) {
+      o(t, s);
     }
     return s;
   }
-  static PreloadAudioEvent(e) {
-    this.a8.PreloadAudioEvent(e);
+  static PreloadAudioEvent(t) {
+    this.a8.PreloadAudioEvent(t);
   }
-  static ReleaseAudioEvent(e) {
-    this.a8.ReleaseAudioEvent(e);
+  static ReleaseAudioEvent(t) {
+    this.a8.ReleaseAudioEvent(t);
+  }
+  static async GetAudioEvent(t) {
+    return await this.a8.GetAudioEvent(t);
   }
 }
 (exports.AudioSystem = AudioSystem).a8 = new AudioEventPool_1.AudioEventPool();

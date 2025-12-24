@@ -21,6 +21,12 @@ class RegressBonusReward {
   get Drop() {
     return this.drop();
   }
+  get PayDrop() {
+    return this.paydrop();
+  }
+  get Version() {
+    return this.version();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -55,6 +61,22 @@ class RegressBonusReward {
   }
   drop() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  paydrop() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  version() {
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

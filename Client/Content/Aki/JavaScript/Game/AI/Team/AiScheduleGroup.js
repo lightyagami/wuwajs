@@ -304,7 +304,7 @@ class AiScheduleGroup {
     AiScheduleGroup.Pse.splice(0, AiScheduleGroup.Pse.length);
     for (const _ of this.dse) {
       var t = this.mse.get(_);
-      if (_.CharActorComp.Entity.CheckGetComponent(209).HasTag(-1503953470)) {
+      if (_.CharActorComp.Entity.CheckGetComponent(215).HasTag(-1503953470)) {
         if (t.NextScheduleTimeBeAttack) {
           if (t.NextScheduleTimeBeAttack < Time_1.Time.WorldTime) {
             AiScheduleGroup.Pse.push(_);
@@ -317,12 +317,12 @@ class AiScheduleGroup {
         t.NextScheduleTimeBeAttack = undefined;
       }
       if (t.HasAttack) {
-        if (t.NextScheduleTimeAttack < Time_1.Time.WorldTime && (!_.CharActorComp.Entity.CheckGetComponent(209).HasTag(-1371021686) || t.NextScheduleTimeOut < Time_1.Time.WorldTime)) {
+        if (t.NextScheduleTimeAttack < Time_1.Time.WorldTime && (!_.CharActorComp.Entity.CheckGetComponent(215).HasTag(-1371021686) || t.NextScheduleTimeOut < Time_1.Time.WorldTime)) {
           AiScheduleGroup.Pse.push(_);
         }
       } else if (t.NextScheduleTimeNoAttack < Time_1.Time.WorldTime) {
         AiScheduleGroup.Pse.push(_);
-      } else if (_.CharActorComp.Entity.CheckGetComponent(209).HasTag(-1371021686)) {
+      } else if (_.CharActorComp.Entity.CheckGetComponent(215).HasTag(-1371021686)) {
         t.HasAttack = true;
         ControllerHolder_1.ControllerHolder.BlackboardController.RemoveValueByEntity(_.CharAiDesignComp.Entity.Id, "TeamAttacker");
       }
@@ -335,7 +335,7 @@ class AiScheduleGroup {
         var h = this.cse.AiTeamAttacks[e];
         for (const c of a) {
           var s = this.mse.get(c);
-          if (s && s.InZone && !s.IsAttacker && !c.CharActorComp.Entity.CheckGetComponent(209).HasTag(-1371021686)) {
+          if (s && s.InZone && !s.IsAttacker && !c.CharActorComp.Entity.CheckGetComponent(215).HasTag(-1371021686)) {
             var A = c.CharActorComp.ActorLocationProxy;
             A.Subtraction(r, AiScheduleGroup.Lz);
             let e = GravityUtils_1.GravityUtils.GetYawInInverseQuat(AiScheduleGroup.Lz, this.InverseGravityQuat) - o;
@@ -439,7 +439,7 @@ class AiScheduleGroup {
   }
   Ese() {
     var e = this.Gsn;
-    var t = this.Target.Entity.GetComponent(62);
+    var t = this.Target.Entity.GetComponent(65);
     let i = 0;
     if (t?.Valid && t.CharacterController) {
       AiScheduleGroup.HQ_.DeepCopy(t.CharacterController.GetActorForwardVector());

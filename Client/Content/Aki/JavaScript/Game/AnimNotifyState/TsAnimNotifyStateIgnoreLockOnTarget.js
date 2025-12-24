@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 const UE = require("ue");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const ModelManager_1 = require("../Manager/ModelManager");
-const CharacterLockOnComponent_1 = require("../NewWorld/Character/Common/Component/LockOn/CharacterLockOnComponent");
+const BaseLockOnComponent_1 = require("../NewWorld/Character/Common/Component/LockOn/BaseLockOnComponent");
 const ActorUtils_1 = require("../Utils/ActorUtils");
 class TsAnimNotifyStateIgnoreLockOnTarget extends UE.KuroAnimNotifyState {
   constructor() {
@@ -27,7 +27,7 @@ class TsAnimNotifyStateIgnoreLockOnTarget extends UE.KuroAnimNotifyState {
   }
   ForceIgnore(e, r) {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!t && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e), !!(t = t?.Entity?.GetComponent(32))) && (t.ForceIgnore(new CharacterLockOnComponent_1.LockOnInfo(e, this.IgnoreSocket), r), true);
+    return !!t && (e = ActorUtils_1.ActorUtils.GetEntityByActor(e), !!(t = t?.Entity?.GetComponent(33))) && (t.ForceIgnore(new BaseLockOnComponent_1.LockOnInfo(e, this.IgnoreSocket), r), true);
   }
 }
 exports.default = TsAnimNotifyStateIgnoreLockOnTarget;

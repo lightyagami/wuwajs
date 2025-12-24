@@ -248,6 +248,11 @@ class PayShopModel extends ModelBase_1.ModelBase {
         t.add(h);
       }
     }
+    if (r === 6) {
+      for (const f of ModelManager_1.ModelManager.PayGiftModel.GetSkinTabList()) {
+        t.add(f);
+      }
+    }
     var n = Array.from(t);
     if (e) {
       n.sort((e, t) => {
@@ -295,7 +300,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   aUl(e) {
     return e === 6;
   }
-  NFi(e, t = 1) {
+  GetPayShopGoodsByTabType(e, t = 1) {
     var o = [];
     if (this.GFi(e, t)) {
       for (const r of ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList()) {
@@ -305,7 +310,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
       }
     } else if (this.aUl(e)) {
       for (const n of ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList()) {
-        if (n.GetTabId() === t && (n.GetGetPayGiftData().ShowInSkinShop() || n.GetGetPayGiftData().ShowInFlySkinShop()) && n.GetGetPayGiftData().CanShowInShopTab()) {
+        if (n.GetTabId() === t && (n.GetGetPayGiftData().ShowInSkinShop() || n.GetGetPayGiftData().ShowInFlySkinShop() || n.GetGetPayGiftData().ShowInMotorSkinShop()) && n.GetGetPayGiftData().CanShowInShopTab()) {
           o.push(n);
         }
       }
@@ -338,7 +343,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
       return [];
     }
     var a = [];
-    for (const r of this.NFi(e, t)) {
+    for (const r of this.GetPayShopGoodsByTabType(e, t)) {
       if (r.GetTabId() === t && r.CheckGoodIfShow()) {
         a.push(r);
       }
@@ -409,7 +414,7 @@ class PayShopModel extends ModelBase_1.ModelBase {
   }
   GetNeedCheckGoods(e) {
     var t = [];
-    for (const o of this.NFi(e)) {
+    for (const o of this.GetPayShopGoodsByTabType(e)) {
       if (o.IsShowInShop() && (o.InUpdateTime() || o.InUnPermanentSellTime() || o.WillSell())) {
         t.push(o);
       }
@@ -444,8 +449,18 @@ class PayShopModel extends ModelBase_1.ModelBase {
     if (e === 1) {
       return this.Hzl(e, t);
     }
-    for (const o of this.GetPayShopTabData(e, t, false)) {
-      if (o.GetIfNeedRemind()) {
+    if (e === 6 && t !== 1) {
+      for (const a of ModelManager_1.ModelManager.PayGiftModel.GetPayShopGoodsList()) {
+        if (a.GetTabId() === t) {
+          var o = a.GetGetPayGiftData();
+          if ((o.ShowInSkinShop() || o.ShowInFlySkinShop() || o.ShowInMotorSkinShop()) && o.CanShowInShopTab() && a.GetIfNeedRemind()) {
+            return true;
+          }
+        }
+      }
+    }
+    for (const r of this.GetPayShopTabData(e, t, false)) {
+      if (r.GetIfNeedRemind()) {
         return true;
       }
     }

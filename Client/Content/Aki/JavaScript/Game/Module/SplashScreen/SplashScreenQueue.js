@@ -14,20 +14,20 @@ class SplashScreenQueue {
   }
   EnQueue(s) {
     if (this.IsTaskInQueue(s)) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 任务重复添加", ["TaskSourceModule", s.SourceModule], ["Status", s.Status]);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SplashScreenTask", 71, "[SplashScreenTask] 任务重复添加", ["TaskSourceModule", s.SourceModule], ["Status", s.Status]);
       }
     } else {
       this.TaskQueue.push(s);
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 添加任务", ["TaskSourceModule", s.SourceModule], ["Status", s.Status]);
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SplashScreenTask", 71, "[SplashScreenTask] 添加任务", ["TaskSourceModule", s.SourceModule], ["Status", s.Status]);
       }
     }
   }
   ProcessQueueSingle() {
     if (this.IsSplashScreenTaskRunning()) {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("SplashScreenTask", 71, "有其他开屏任务正在进行中");
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("SplashScreenTask", 71, "有其他开屏任务正在进行中");
       }
     } else if (this.TaskQueue && this.TaskQueue.length !== 0) {
       this.Pk_ = this.TaskQueue.shift();
@@ -40,30 +40,34 @@ class SplashScreenQueue {
         this.XI1 = true;
       }
       if (this.Pk_) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 任务开始执行", ["TaskSourceModule", this.Pk_.SourceModule], ["Status", this.Pk_.Status]);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SplashScreenTask", 71, "[SplashScreenTask] 任务开始执行", ["TaskSourceModule", this.Pk_.SourceModule], ["Status", this.Pk_.Status]);
         }
         this.Pk_.Run();
       }
-    } else if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SplashScreenTask", 71, "开屏任务队列为空");
+    } else if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("SplashScreenTask", 71, "开屏任务队列为空");
     }
   }
   FinishTask(s = 0) {
     if (this.Pk_) {
       if (s !== 0 && s !== this.Pk_.SourceModule) {
-        if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 当前执行任务名称与参数名称不一致，结束任务失败", ["finishTaskSourceModule", s], ["curTaskSourceModule", this.Pk_?.SourceModule]);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SplashScreenTask", 71, "[SplashScreenTask] 当前执行任务名称与参数名称不一致，结束任务失败", ["finishTaskSourceModule", s], ["curTaskSourceModule", this.Pk_?.SourceModule]);
         }
+        return false;
       } else {
         if (this.Pk_) {
           this.Pk_.FinishTask();
           this.Pk_ = undefined;
         }
-        this.ProcessQueueSingle();
+        return true;
       }
-    } else if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 当前没有正在执行的任务", ["finishTaskSourceModule", s]);
+    } else {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("SplashScreenTask", 71, "[SplashScreenTask] 当前没有正在执行的任务", ["finishTaskSourceModule", s]);
+      }
+      return false;
     }
   }
   ProcessQueue() {

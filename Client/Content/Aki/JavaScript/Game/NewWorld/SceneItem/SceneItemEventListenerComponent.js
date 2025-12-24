@@ -89,7 +89,7 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
         }
       }
     }
-    this.Xte = this.Entity.GetComponent(200);
+    this.Xte = this.Entity.GetComponent(206);
     this.n$t = this.Entity.GetComponent(1);
     this.u1t = this.Entity.GetComponent(0);
     e = this.u1t?.ComponentDataMap.get(SERVER_DATA)?.BXc;
@@ -302,5 +302,5 @@ let SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = class 
     ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(e, false);
   }
 };
-SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(305)], SceneItemEventListenerComponent);
+SceneItemEventListenerComponent = SceneItemEventListenerComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(324)], SceneItemEventListenerComponent);
 exports.SceneItemEventListenerComponent = SceneItemEventListenerComponent; //# sourceMappingURL=SceneItemEventListenerComponent.js.map

@@ -8,6 +8,7 @@ const GuaranteeActionBlackScreenFadeOut_1 = require("./GuaranteeActions/Guarante
 const GuaranteeActionDisableKey4Func_1 = require("./GuaranteeActions/GuaranteeActionDisableKey4Func");
 const GuaranteeActionDisableSplineMoveModel_1 = require("./GuaranteeActions/GuaranteeActionDisableSplineMoveModel");
 const GuaranteeActionEnablePlayerMoveControl_1 = require("./GuaranteeActions/GuaranteeActionEnablePlayerMoveControl");
+const GuaranteeActionExitMovieMode_1 = require("./GuaranteeActions/GuaranteeActionExitMovieMode");
 const GuaranteeActionExitOrbitalCamera_1 = require("./GuaranteeActions/GuaranteeActionExitOrbitalCamera");
 const GuaranteeActionPreload_1 = require("./GuaranteeActions/GuaranteeActionPreload");
 const GuaranteeActionRestorePlayerCameraAdjustment_1 = require("./GuaranteeActions/GuaranteeActionRestorePlayerCameraAdjustment");
@@ -25,6 +26,7 @@ class GuaranteeActionCenter {
     e("StopEffect", GuaranteeActionStopEffect_1.GuaranteeActionStopEffect, 2);
     e("Preload", GuaranteeActionPreload_1.GuaranteeActionPreload);
     e("DisableKey4Func", GuaranteeActionDisableKey4Func_1.GuaranteeActionDisableKey4Func);
+    e("ActionExitMovieMode", GuaranteeActionExitMovieMode_1.GuaranteeActionExitMovieMode);
   }
   static GetGuaranteeAction(e) {
     e = GuaranteeActionCenter.iIe.get(e);

@@ -53,6 +53,7 @@ class WorldGlobal {
     if (!ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel || !SeamlessTravelController_1.SeamlessTravelController.StartTravel(o)) {
       if (!ModelManager_1.ModelManager.GameModeModel.ForceClientTravel && ModelManager_1.ModelManager.GameModeModel.IsSameMapTraveling) {
         ModelManager_1.ModelManager.GameModeModel.FlushTempDataLayers();
+        ModelManager_1.ModelManager.RenderModuleModel?.FlushTempDependenciesNotMatchDataLayers();
         WorldGlobal.JEr(o);
         WorldGlobal.zEr(o);
       } else {

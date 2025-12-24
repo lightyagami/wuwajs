@@ -114,6 +114,9 @@ class MediaPlayer {
   BindCallbackOnVideoEnd(i) {
     this.Jja = i;
   }
+  GetVideoAspect(i = 0, e = 0) {
+    return this.MediaPlayer.GetVideoTrackAspectRatio(i, e);
+  }
 }
 exports.MediaPlayer = MediaPlayer;
 //# sourceMappingURL=MediaPlayer.js.map

@@ -88,6 +88,9 @@ const classDefined = {
   BPI_AnimalEcological_C: ["/Game/Aki/Character/NPC/Animal/BPI_AnimalEcological.BPI_AnimalEcological_C", 0],
   SceneEffectStatePostVolume_C: ["/Game/Aki/Render/RuntimeBP/Effect/Scene/SceneEffectStatePostVolume.SceneEffectStatePostVolume_C", 0],
   BP_StartupPlayerController_C: ["/Game/Aki/Core/BP_StartupPlayerController.BP_StartupPlayerController_C", 0],
+  BP_KuroDestructibleActor_Stone_C: ["/Game/Aki/Render/RuntimeBP/Scene/Destructible/3_0/BP_KuroDestructibleActor_Stone.BP_KuroDestructibleActor_Stone_C", 1],
+  BP_KuroTrackTargetWhileRotate_C: ["/Game/Aki/GamePlay/Physics/FauxPhysics/BP_KuroTrackTargetWhileRotate.BP_KuroTrackTargetWhileRotate_C", 1],
+  BP_FollowShooterDeadEyeConfig_C: ["/Game/Aki/Data/Fight/FollowShooter/DeadEye/BP_FollowShooterDeadEyeConfig.BP_FollowShooterDeadEyeConfig_C", 1],
   BP_KuroMasterSeqEvent_C: ["/Game/Aki/Sequence/Manager/BP_KuroMasterSeqEvent.BP_KuroMasterSeqEvent_C", 1],
   BP_SM_ConditionTimer_C: ["/Game/Aki/Character/BaseCharacter/StateMachine/BP_SM_ConditionTimer.BP_SM_ConditionTimer_C", 0],
   TsEffectActor_C: ["/Game/Aki/TypeScript/Game/Effect/TsEffectActor.TsEffectActor_C", 0],
@@ -217,15 +220,25 @@ const classDefined = {
   TsSeqAnimNotifyFootstepAudioEvent_C: ["/Game/Aki/TypeScript/Game/AnimNotify/TsSeqAnimNotifyFootstepAudioEvent.TsSeqAnimNotifyFootstepAudioEvent_C", 0],
   TsSeqAnimNotifyPlayPlot_C: ["/Game/Aki/TypeScript/Game/AnimNotify/TsSeqAnimNotifyPlayPlot.TsSeqAnimNotifyPlayPlot_C", 0],
   TsSeqAnimNotifyStateAudioEvent_C: ["/Game/Aki/TypeScript/Game/AnimNotifyState/TsSeqAnimNotifyStateAudioEvent.TsSeqAnimNotifyStateAudioEvent_C", 0],
+  BP_KuroStreamingSourceProxy_Seq_C: ["/Game/Aki/Sequence/Seq_BP/SeqStreamingSource/BP_KuroStreamingSourceProxy_Seq.BP_KuroStreamingSourceProxy_Seq_C", 0],
   BP_SeqSkeletal_C: ["/Game/Aki/Sequence/Seq_BP/BP_SeqSkeletal.BP_SeqSkeletal_C", 0],
-  BP_SeqCustom_C: ["/Game/Aki/Sequence/Seq_BP/BpSeqCustom/BP_SeqCustom.BP_SeqCustom", 0],
+  BP_SeqCustom_C: ["/Game/Aki/Sequence/Seq_BP/BpSeqCustom/BP_SeqCustom.BP_SeqCustom_C", 0],
   BP_ItemInspectGlobalConfig_C: ["/Game/Aki/Data/Level/ItemInspect/BP_ItemInspectGlobalConfig.BP_ItemInspectGlobalConfig_C", 1],
   BP_FirstPersonConfig_C: ["/Game/Aki/Character/Role/Common/Data/Structure/BP_FirstPersonConfig.BP_FirstPersonConfig_C", 1],
+  BP_MotorAssistInputConfig_C: ["/Game/Aki/Character/Vehicle/Motor/Data/BP_MotorAssistInputConfig.BP_MotorAssistInputConfig_C", 1],
+  BP_SpecialTagConfig_C: ["/Game/Aki/Character/Role/Common/Data/Structure/BP_SpecialTagConfig.BP_SpecialTagConfig_C", 1],
   BP_SplineClimbConfig_C: ["/Game/Aki/Data/Level/SplineClimb/BP_SplineClimbConfig.BP_SplineClimbConfig_C", 0],
   TsUiHomeHelper_C: ["/Game/Aki/TypeScript/Game/Module/UiComponent/UiHomeButton/TsUiHomeHelper.TsUiHomeHelper_C", 0],
   BP_RoleSwingConfig_C: ["/Game/Aki/Data/Level/Swing/BP_RoleSwingConfig.BP_RoleSwingConfig_C", 1],
   BP_CharacterSwingConfig_C: ["/Game/Aki/Data/Level/Swing/BP_CharacterSwingConfig.BP_CharacterSwingConfig_C", 1],
-  BP_PhysicInteractProxy_C: ["/Game/Aki/GamePlay/InteractiveObject/BP_PhysicInteractProxy.BP_PhysicInteractProxy_C", 0]
+  BP_PhysicInteractProxy_C: ["/Game/Aki/GamePlay/InteractiveObject/BP_PhysicInteractProxy.BP_PhysicInteractProxy_C", 0],
+  BP_CrowdAiBoidActorSystemBase_C: ["/Game/Aki/Character/NPC/GPUNPC/BP/CrowdAi/BP_CrowdAiBoidActorSystemBase.BP_CrowdAiBoidActorSystemBase_C", 0],
+  BP_CrowdAiConfig_C: ["/Game/Aki/Character/NPC/GPUNPC/BP/CrowdAi/BP_CrowdAiConfig.BP_CrowdAiConfig_C", 0],
+  BP_RollBlockGameplaySetting_C: ["/Game/Aki/Data/Gameplay/RollBlock/BP_RollBlockGameplaySetting.BP_RollBlockGameplaySetting_C", 0],
+  BP_PilotThrowGameplaySetting_C: ["/Game/Aki/Data/Gameplay/PilotThrow/BP_PilotThrowGameplaySetting.BP_PilotThrowGameplaySetting_C", 1],
+  BP_TsTransitionWorldPartitionTriggerVolumeWrapper_C: ["/Game/Aki/GamePlay/TriggerItems/BP_TsTransitionWorldPartitionTriggerVolumeWrapper_C", 1],
+  BP_SunSpiritConfig_C: ["/Game/Aki/Data/Gameplay/SunSpirit/BP_SunSpiritConfig.BP_SunSpiritConfig_C", 0],
+  BP_Motor_BaseVehicle_C: ["/Game/Aki/Character/Vehicle/Motor/BP_Motor_BaseVehicle.BP_Motor_BaseVehicle_C", 0]
 };
 const structDefined = {
   SModelConfig: ["/Game/Aki/Data/Entity/Struct/SModelConfig.SModelConfig", 0],
@@ -257,7 +270,8 @@ const structDefined = {
   BvbCardItemData: ["/Game/Aki/UI/Module/ActiveDebug/BvbCardItemData.BvbCardItemData", 0],
   BvbEffectItemData: ["/Game/Aki/UI/Module/ActiveDebug/BvbEffectItemData.BvbEffectItemData", 0],
   SEntityTimeDilation: ["/Game/Aki/Data/Entity/Struct/SEntityTimeDilation.SEntityTimeDilation", 0],
-  SGravityHookLockInfo: ["/Game/Aki/Data/Fight/Struct/SGravityHookLockInfo.SGravityHookLockInfo", 0]
+  SGravityHookLockInfo: ["/Game/Aki/Data/Fight/Struct/SGravityHookLockInfo.SGravityHookLockInfo", 0],
+  SMotorRailMoveConfig: ["/Game/Aki/Data/Gameplay/MotorRailMove/SMotorRailMoveConfig.SMotorRailMoveConfig", 0]
 };
 const enumDefined = {};
 function add(e, a, t, i) {

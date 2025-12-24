@@ -45,7 +45,7 @@ class BulletBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
         SkillContextId: i,
         SyncType: a ? 1 : 0,
         InitTargetLocation: o,
-        BattleFlags: t.GetEntityNoBlueprint()?.GetComponent(39)?.GetSkill(Number(l))?.BattleFlags
+        BattleFlags: t.GetEntityNoBlueprint()?.GetComponent(40)?.GetSkill(Number(l))?.BattleFlags
       }, i, 1)) {
         return e.Id;
       } else {
@@ -56,7 +56,7 @@ class BulletBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetBulletActorById(t) {
     t = EntitySystem_1.EntitySystem.Get(t);
     if (t?.Valid) {
-      return t.GetComponent(173).Owner;
+      return t.GetComponent(178).Owner;
     }
   }
   static DestroyBullet(t, e, r = false) {
@@ -113,7 +113,7 @@ class BulletBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return BulletBlueprintFunctionLibrary.GetBulletInfo(t)?.ActorComponent.ActorTransform;
   }
   static GetBulletAttacker(t) {
-    return BulletBlueprintFunctionLibrary.GetBulletInfo(t)?.AttackerActorComp.Actor;
+    return BulletBlueprintFunctionLibrary.GetBulletInfo(t)?.AttackerActorComp.Owner;
   }
   static GetBulletCollision(t) {
     return BulletBlueprintFunctionLibrary.GetBulletInfo(t)?.CollisionInfo.CollisionComponent;

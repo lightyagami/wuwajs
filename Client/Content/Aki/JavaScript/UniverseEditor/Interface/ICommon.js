@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getNpcPerformStatesByType = exports.getNpcPerformStateTypes = exports.npcPerformStateConfig = undefined;
+exports.EEntityLogic = exports.EMotorParkourSystemVarType = exports.getNpcPerformStatesByType = exports.getNpcPerformStateTypes = exports.npcPerformStateConfig = undefined;
 exports.npcPerformStateConfig = {
   幽灵态: ["常态", "幽灵"],
   禁锢态: ["常态", "禁锢"],
@@ -34,5 +34,26 @@ function getNpcPerformStatesByType(e) {
     return [];
   }
 }
+var EMotorParkourSystemVarType;
+var EEntityLogic;
 exports.getNpcPerformStateTypes = getNpcPerformStateTypes;
-exports.getNpcPerformStatesByType = getNpcPerformStatesByType; //# sourceMappingURL=ICommon.js.map
+exports.getNpcPerformStatesByType = getNpcPerformStatesByType;
+(function (e) {
+  e.CurLap = "CurLap";
+  e.TotalTime = "TotalTime";
+  e.ParkourFinished = "ParkourFinished";
+  e.BestTime = "BestTime";
+  e.CurCostTime = "CurCostTime";
+})(EMotorParkourSystemVarType = exports.EMotorParkourSystemVarType ||= {});
+(function (e) {
+  e.Item = "Item";
+  e.Npc = "Npc";
+  e.Monster = "Monster";
+  e.Custom = "Custom";
+  e.ClientOnly = "ClientOnly";
+  e.ServerOnly = "ServerOnly";
+  e.Vision = "Vision";
+  e.Animal = "Animal";
+  e.Vehicle = "Vehicle";
+  e.SimpleCombat = "SimpleCombat";
+})(EEntityLogic = exports.EEntityLogic ||= {}); //# sourceMappingURL=ICommon.js.map

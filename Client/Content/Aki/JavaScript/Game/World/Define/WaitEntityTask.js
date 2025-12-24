@@ -49,7 +49,7 @@ class WaitEntityTask {
       }
     };
   }
-  AddEntities(i, t, s = WAIT_TIME, e = true, a = false) {
+  THf(i, t, s, e, a) {
     if (Array.isArray(i)) {
       for (const o of i) {
         this.Yvr(o);
@@ -158,7 +158,7 @@ class WaitEntityTask {
         (r = new WaitEntityTask()).WaitType = "CreatureDataId";
         r.Reason = t;
         r.BOe = WaitEntityTaskController_1.WaitEntityTaskController.AddTask(r);
-        r.AddEntities(i, s, e, a, o);
+        r.THf(i, s, e, a, o);
         return r;
       }
       if (Log_1.Log.CheckError()) {

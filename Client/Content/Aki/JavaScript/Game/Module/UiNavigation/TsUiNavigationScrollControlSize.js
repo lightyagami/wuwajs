@@ -12,14 +12,14 @@ class TsUiNavigationScrollControlSize extends UE.LGUIBehaviour {
     this.ScrollViewActor = undefined;
     this.ScrollView = undefined;
     this.SizeController = undefined;
-    this.ScrollHeight = 0;
+    this.ScrollValue = 0;
     this.ContentItem = undefined;
     this.UseScroll = false;
   }
   Constructor() {
     this.ScrollView = undefined;
     this.SizeController = undefined;
-    this.ScrollHeight = 0;
+    this.ScrollValue = 0;
     this.ContentItem = undefined;
     this.UseScroll = false;
   }
@@ -27,8 +27,8 @@ class TsUiNavigationScrollControlSize extends UE.LGUIBehaviour {
     this.SizeController = this.GetOwner()?.GetComponentByClass(UE.UISizeControlByOther.StaticClass());
     if (this.SizeController) {
       this.ScrollView = this.ScrollViewActor.GetComponentByClass(UE.UIScrollViewWithScrollbarComponent.StaticClass());
-      this.ContentItem = this.ScrollView.ContentUIItem;
-      this.ScrollHeight = this.ScrollView.RootUIComp.GetHeight();
+      this.ContentItem = this.ScrollView.GetContent()?.GetUIItem();
+      this.ScrollValue = this.ScrollView.Vertical ? this.ScrollView.RootUIComp.GetHeight() : this.ScrollView.RootUIComp.GetWidth();
       this.SizeController.SetTargetActor(this.ScrollViewActor);
       this.UseScroll = true;
     } else if (Log_1.Log.CheckError()) {
@@ -36,11 +36,11 @@ class TsUiNavigationScrollControlSize extends UE.LGUIBehaviour {
     }
   }
   LateUpdateBP(i) {
-    var t = this.ContentItem?.GetHeight() ?? 0;
-    if (t <= this.ScrollHeight && this.UseScroll) {
+    var t = this.ScrollView.Vertical ? this.ContentItem?.GetHeight() ?? 0 : this.ContentItem?.GetWidth() ?? 0;
+    if (t <= this.ScrollValue && this.UseScroll) {
       this.UseScroll = false;
       this.SizeController?.SetTargetActor(this.ScrollView.Content);
-    } else if (t > this.ScrollHeight && !this.UseScroll) {
+    } else if (t > this.ScrollValue && !this.UseScroll) {
       this.UseScroll = true;
       this.SizeController?.SetTargetActor(this.ScrollViewActor);
     }

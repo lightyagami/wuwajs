@@ -14,12 +14,14 @@ class UiRoleUtils {
     var l;
     var o;
     if (e) {
-      l = (e = e.Model).CheckGetComponent(5);
-      o = EffectUtil_1.EffectUtil.GetEffectPath("ChangeRoleMaterialController");
-      if (o = ResourceSystem_1.ResourceSystem.GetLoadedAsset(o, UE.PD_CharacterControllerData_C)) {
-        l?.AddRenderingMaterialByData(o);
+      if (e = e.Model) {
+        l = e.CheckGetComponent(5);
+        o = EffectUtil_1.EffectUtil.GetEffectPath("ChangeRoleMaterialController");
+        if (o = ResourceSystem_1.ResourceSystem.GetLoadedAsset(o, UE.PD_CharacterControllerData_C)) {
+          l?.AddRenderingMaterialByData(o);
+        }
+        UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, "ChangeRoleEffect");
       }
-      UiModelUtil_1.UiModelUtil.PlayEffectOnRoot(e, "ChangeRoleEffect");
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Role", 16, "PlayRoleChangeEffect roleActor is null");
     }

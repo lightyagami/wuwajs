@@ -45,10 +45,14 @@ class ShopController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.UnRegister(23373);
     Net_1.Net.UnRegister(17237);
   }
-  static OpenShop(e, o) {
+  static OpenShop(e, o, t) {
     if (ModelManager_1.ModelManager.ShopModel.IsOpen(e)) {
       if (!UiManager_1.UiManager.IsViewShow("ShopView")) {
-        UiManager_1.UiManager.OpenView("ShopView", e, o);
+        o = {
+          ShopId: e,
+          UiCameraName: o
+        };
+        UiManager_1.UiManager.OpenView("ShopView", o, t);
         return true;
       }
     } else if (GlobalData_1.GlobalData.World && (o = ConfigManager_1.ConfigManager.ShopConfig.GetShopName(ModelManager_1.ModelManager.ShopModel.GetShopConfig(e).ShopName))) {

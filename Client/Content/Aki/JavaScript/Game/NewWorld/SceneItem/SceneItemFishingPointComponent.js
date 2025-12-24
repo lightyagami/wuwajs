@@ -39,7 +39,7 @@ let SceneItemFishingPointComponent = class SceneItemFishingPointComponent extend
   OnStart() {
     var e;
     this.EIe = this.Entity.GetComponent(0);
-    this.FP_ = this.Entity.GetComponent(82);
+    this.FP_ = this.Entity.GetComponent(85);
     if (this.EIe.GetBaseInfo()?.Category?.FishingMechanismType !== "FishingPoint") {
       this.gn_(true);
     } else {
@@ -78,5 +78,5 @@ let SceneItemFishingPointComponent = class SceneItemFishingPointComponent extend
     }
   }
 };
-SceneItemFishingPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(281)], SceneItemFishingPointComponent);
+SceneItemFishingPointComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(300)], SceneItemFishingPointComponent);
 exports.SceneItemFishingPointComponent = SceneItemFishingPointComponent; //# sourceMappingURL=SceneItemFishingPointComponent.js.map

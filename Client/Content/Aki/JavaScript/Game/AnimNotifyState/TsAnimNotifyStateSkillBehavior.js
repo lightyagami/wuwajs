@@ -20,9 +20,9 @@ class TsAnimNotifyStateSkillBehavior extends UE.KuroAnimNotifyState {
       return false;
     }
     var t = t.CharacterActorComponent.Entity;
-    var a = t.GetComponent(40);
-    var o = t.GetComponent(213);
-    var l = t.GetComponent(40)?.CurrentSkill;
+    var a = t.GetComponent(41);
+    var o = t.GetComponent(220);
+    var l = t.GetComponent(41)?.CurrentSkill;
     if (!a || !l || a.IsSkillMontageInvalid(e.GetName())) {
       return false;
     }

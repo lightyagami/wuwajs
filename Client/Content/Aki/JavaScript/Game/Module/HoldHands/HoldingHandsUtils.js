@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.HoldingHandsUtils = exports.IkTarget = exports.HandRuntime = exports.Binding = exports.Invitation = exports.Relation = undefined;
+exports.HoldingHandsUtils = exports.IkTarget = exports.HandRuntime = exports.Binding = exports.Invitation = exports.HoldingHandsRelation = undefined;
 const UE = require("ue");
 const Log_1 = require("../../../Core/Common/Log");
 const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
@@ -15,20 +15,26 @@ const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const GlobalData_1 = require("../../GlobalData");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const NpcRelationDefine_1 = require("../../NewWorld/Character/Npc/Datas/NpcRelationDefine");
 const ColorUtils_1 = require("../../Utils/ColorUtils");
 const GravityUtils_1 = require("../../Utils/GravityUtils");
-class Relation {
+class HoldingHandsRelation extends NpcRelationDefine_1.NpcRelation {
   constructor() {
+    super(...arguments);
+    this.RelationType = 1;
     this.Key = undefined;
     this.Leader = undefined;
     this.LeaderHandType = 1;
     this.Follower = undefined;
     this.FollowerHandType = 0;
   }
+  IsValid() {
+    return !!this.Leader && !!this.Leader.Valid && !!this.Follower && !!this.Follower.Valid;
+  }
 }
-class Invitation extends (exports.Relation = Relation) {}
+class Invitation extends (exports.HoldingHandsRelation = HoldingHandsRelation) {}
 exports.Invitation = Invitation;
-class Binding extends Relation {
+class Binding extends HoldingHandsRelation {
   constructor() {
     super(...arguments);
     this.LeaderRuntime = undefined;
@@ -122,20 +128,29 @@ class IkTarget {
     this.Location = Vector_1.Vector.Create();
     this.Rotation = Quat_1.Quat.Create();
     this.Alpha = 0;
+    this.Wxf = new UE.IKTarget();
     this.Location = t ?? Vector_1.Vector.Create(0, 0, 0);
     this.Rotation = i ?? Quat_1.Quat.Create(0, 0, 0, 1);
     this.Alpha = s ?? 0;
   }
   Equals(t) {
-    return t !== undefined && this.Location.Equals(t.Location) && this.Rotation.Equals(t.Rotation) && this.Alpha === t.Alpha;
+    if (t) {
+      return this.Location.Equals(t.Location) && this.Rotation.Equals(t.Rotation) && this.Alpha === t.Alpha;
+    } else {
+      return this.Alpha === 0;
+    }
   }
   DeepCopy(t) {
-    this.Location.DeepCopy(t.Location);
-    this.Rotation.DeepCopy(t.Rotation);
-    this.Alpha = t.Alpha;
+    if (t) {
+      this.Location.DeepCopy(t.Location);
+      this.Rotation.DeepCopy(t.Rotation);
+      this.Alpha = t.Alpha;
+    } else {
+      this.Alpha = 0;
+    }
   }
   ToUeIkTarget() {
-    var t = new UE.IKTarget();
+    var t = this.Wxf;
     t.Location = this.Location.ToUeVectorOld();
     t.Rotation = this.Rotation.ToUeQuat();
     t.Alpha = this.Alpha;
@@ -316,34 +331,34 @@ class HoldingHandsUtils {
       n = l <= r.AnimBendLength;
       c = !n && l <= r.MaxBendLength;
     }
-    let U = r.AnimBendLength;
-    let d = a.AnimBendLength;
+    let d = r.AnimBendLength;
+    let U = a.AnimBendLength;
     if (n) {
       l = Vector_1.Vector.DotProduct(t.ShoulderDelta, t.Down);
       t = 1 - Math.pow(Math.abs(l / t.ShoulderDelta.Size()), 2);
       t = Math.max(t, 0.2);
       e = o - i;
       if (l > 0) {
-        U = Math.max(r.AnimBendLength * t, r.AnimBendLength - e);
+        d = Math.max(r.AnimBendLength * t, r.AnimBendLength - e);
       } else {
-        d = Math.max(a.AnimBendLength * t, a.AnimBendLength - e);
+        U = Math.max(a.AnimBendLength * t, a.AnimBendLength - e);
       }
     } else if (c) {
       l = i - o;
       if (h) {
-        U = r.AnimBendLength + l;
+        d = r.AnimBendLength + l;
       } else {
         t = a.MaxBendLength - a.AnimBendLength;
         e = r.MaxBendLength - r.AnimBendLength;
-        U = r.AnimBendLength + e / (t + e) * l;
-        d = a.AnimBendLength + t / (t + e) * l;
+        d = r.AnimBendLength + e / (t + e) * l;
+        U = a.AnimBendLength + t / (t + e) * l;
       }
     } else {
-      d = _ * 0.95;
-      U = r.MaxBendLength * 0.95;
+      U = _ * 0.95;
+      d = r.MaxBendLength * 0.95;
     }
-    a.BendLength = d;
-    r.BendLength = U;
+    a.BendLength = U;
+    r.BendLength = d;
   }
   static OX1(t, i, s, e, a, r) {
     return !(s + e < i) && !(e = MathUtils_1.MathUtils.Clamp((s * s + i * i - e * e) / (s * 2 * i), -1, 1), i = Math.sqrt(1 - e * e), Vector_1.Vector.CrossProduct(t, a, this.TempVector), Vector_1.Vector.CrossProduct(t, this.TempVector, this.TempVector), this.TempVector.Normalize(), this.TempVector.Multiply(-i * s, this.TempVector), t.Multiply(e * s, this.TempVector2), this.TempVector2.Addition(this.TempVector, r), 0);

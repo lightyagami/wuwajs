@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.BattleUiChildViewData = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const VisibleStateUtil_1 = require("./VisibleStateUtil");
-const battleUiChildren = [0, 14, 15, 16, 17, 18, 19, 20, 26, 25];
+const battleUiChildren = [0, 14, 15, 16, 17, 18, 19, 20, 26, 25, 37, 38, 39, 40];
 class BattleUiChildViewData {
   constructor() {
     this.EQe = [];
@@ -22,7 +22,7 @@ class BattleUiChildViewData {
     this.SetChildrenVisible(0, battleUiChildren, this.uD1.size > 0);
   }
   Init() {
-    for (let t = this.EQe.length = 0; t < 37; t++) {
+    for (let t = this.EQe.length = 0; t < 41; t++) {
       this.EQe.push(1);
     }
     this.EQe.push(0);
@@ -47,7 +47,7 @@ class BattleUiChildViewData {
     }
   }
   HideBattleView(i, t) {
-    for (let t = 0; t < 37; t++) {
+    for (let t = 0; t < 41; t++) {
       this.SetChildVisible(i, t, false, false);
     }
     if (t) {
@@ -58,7 +58,7 @@ class BattleUiChildViewData {
     this.IQe();
   }
   ShowBattleView(i) {
-    for (let t = 0; t < 37; t++) {
+    for (let t = 0; t < 41; t++) {
       this.SetChildVisible(i, t, true, false);
     }
     this.IQe();
@@ -103,9 +103,9 @@ class BattleUiChildViewData {
     }
   }
   DebugLogAllChildState() {
-    for (let i = 0; i < 38; i++) {
+    for (let i = 0; i < 42; i++) {
       if (this.EQe[i] !== 0) {
-        for (let t = 0; t < 15; t++) {
+        for (let t = 0; t < 17; t++) {
           if (!VisibleStateUtil_1.VisibleStateUtil.GetVisibleByType(this.EQe[i], t)) {
             if (Log_1.Log.CheckDebug()) {
               Log_1.Log.Debug("Battle", 17, "界面被隐藏", ["编号", i], ["原因", t]);

@@ -8,6 +8,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const CharacterAttributeTypes_1 = require("../../NewWorld/Character/Common/Component/Abilities/CharacterAttributeTypes");
+const RoleUtils_1 = require("../RoleUi/RoleUtils");
 const EditFormationData_1 = require("./EditFormationData");
 const EditFormationDefine_1 = require("./EditFormationDefine");
 const HEALTH_ID = 3;
@@ -29,10 +30,10 @@ class EditFormationModel extends ModelBase_1.ModelBase {
     this.s5t.clear();
     let r = 0;
     var o = new Map();
-    for (const M of t) {
-      var e = M.W5n;
+    for (const c of t) {
+      var e = c.W5n;
       var i = e === ModelManager_1.ModelManager.PlayerInfoModel.GetId();
-      for (const h of M.kVn) {
+      for (const h of c.kVn) {
         var a = h.GVn;
         if (i || !(a > 0)) {
           if (i && h.OVn) {
@@ -43,25 +44,25 @@ class EditFormationModel extends ModelBase_1.ModelBase {
             t = new Array();
             o.set(a, t);
           }
-          for (const c of h.dUs) {
-            var n = i && c.Q6n === h.NVn;
-            t.push([c, e, n]);
+          for (const M of h.dUs) {
+            var n = i && M.Q6n === h.NVn;
+            t.push([M, e, n]);
           }
         }
       }
     }
-    for (const g of o) {
-      var s = g[0];
-      var f = new EditFormationData_1.EditFormationData(s);
-      this.s5t.set(s, f);
-      for (const m of g[1]) {
-        var d = m[0];
-        var l = m[1];
-        var u = m[2];
-        f.AddRoleData(d.Q6n, d.eI_, d.F6n, l, u);
+    for (const m of o) {
+      var s = m[0];
+      var l = new EditFormationData_1.EditFormationData(s);
+      this.s5t.set(s, l);
+      for (const g of m[1]) {
+        var f = g[0];
+        var d = g[1];
+        var u = g[2];
+        l.AddRoleData(f.Q6n, f.eI_, f.F6n, d, u);
       }
       if (s === r) {
-        this.a5t = f;
+        this.a5t = l;
       }
     }
   }
@@ -123,9 +124,9 @@ class EditFormationModel extends ModelBase_1.ModelBase {
       }
     }
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti && e) {
-      for (const f of i) {
-        const o = a[f.Position - 1];
-        f.RoleId = o ?? 0;
+      for (const l of i) {
+        const o = a[l.Position - 1];
+        l.RoleId = o ?? 0;
       }
     }
     return true;
@@ -226,7 +227,7 @@ class EditFormationModel extends ModelBase_1.ModelBase {
     let t = 0;
     let r = 0;
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
-      var o = e.Entity?.GetComponent(177);
+      var o = e.Entity?.GetComponent(182);
       if (o) {
         t += o.GetCurrentValue(CharacterAttributeTypes_1.EAttributeId.Proto_Lv);
         r++;
@@ -237,6 +238,40 @@ class EditFormationModel extends ModelBase_1.ModelBase {
     } else {
       return 0;
     }
+  }
+  GetFormationAllSpecialTrialRole() {
+    var t = new Set();
+    for (const r of this.s5t.values()) {
+      for (const o of r.GetRoleIdListWithTrial(true)) {
+        if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(o)) {
+          t.add(o);
+        }
+      }
+    }
+    return Array.from(t);
+  }
+  IsFormationHasSpecialTrialRole() {
+    for (const t of this.s5t.values()) {
+      for (const r of t.GetRoleIdListWithTrial(true)) {
+        if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(r)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  IsEditingFormationHasSpecialTrialRole() {
+    for (const t of this.GetAllEditingFormation().values()) {
+      for (const r of t) {
+        if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(r)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  IsCurFormationHasSpecialTrialRole() {
+    return this.a5t !== undefined && this.a5t.GetRoleIdList.some(t => RoleUtils_1.RoleUtils.IsSpecialTrialRole(t));
   }
 }
 exports.EditFormationModel = EditFormationModel;

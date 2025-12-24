@@ -27,6 +27,7 @@ const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
 const HotPatchKuroSdk_1 = require("../../../Launcher/HotPatchKuroSdk/HotPatchKuroSdk");
+const LauncherSdk_1 = require("../../../Launcher/HotPatchKuroSdk/LauncherSdk");
 const HotPatchLogReport_1 = require("../../../Launcher/HotPatchLogReport");
 const CloudGameManagerLauncher_1 = require("../../../Launcher/Platform/CloudGameManagerLauncher");
 const Platform_1 = require("../../../Launcher/Platform/Platform");
@@ -36,9 +37,11 @@ const PlatformSdkReportData_1 = require("../../../Launcher/Platform/PlatformSdk/
 const PlatformSdkServer_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkServer");
 const PreDownloadManager_1 = require("../../../Launcher/PreDownload/PreDownloadManager");
 const HotFixSceneManager_1 = require("../../../Launcher/Ui/HotFix/HotFixSceneManager");
+const HotFixSubPackageDefine_1 = require("../../../Launcher/Ui/HotFix/HotFixSubPackageDefine");
 const AppUtil_1 = require("../../../Launcher/Update/AppUtil");
 const LanguageUpdateManager_1 = require("../../../Launcher/Update/LanguageUpdateManager");
 const ResourceUpdateManager_1 = require("../../../Launcher/Update/ResourceDiffUpdate/ResourceUpdateManager");
+const LauncherSerialize_1 = require("../../../Launcher/Util/LauncherSerialize");
 const LauncherStorageLib_1 = require("../../../Launcher/Util/LauncherStorageLib");
 const CameraController_1 = require("../../Camera/CameraController");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
@@ -79,6 +82,7 @@ const LoginDefine_1 = require("./Data/LoginDefine");
 const Heartbeat_1 = require("./Heartbeat");
 const HeartbeatDefine_1 = require("./HeartbeatDefine");
 const LoginModel_1 = require("./LoginModel");
+const LoginServerController_1 = require("./LoginServerController");
 const VERIFY_CONFIG_VERSION_INTERVAL = 90000;
 const TRY_BACK_TO_GAME_INTERVAL = 3000;
 const RENWE_ACCESS_TOKEN_INTERVAL = 600000;
@@ -300,7 +304,9 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
         Log_1.Log.Info("Login", 16, "LoginProcedure-OpenLoginView-播放进入登录的镜头(拉远)");
       }
       Stats_1.Stat.CreateInstantStat("LoginProcedure_LoginView_CameraAnim_Zoom_Out:Start");
+      this.iKf();
       LoginController.OpenSdkLoginView();
+      LoginServerController_1.LoginServerController.PingAllRegion();
     });
   }
   static OpenLoginView() {
@@ -415,6 +421,53 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       Log_1.Log.Info("Login", 16, "LoginProcedure-Http-GlobalSDK环境", ["uId", r], ["userName", n], ["token", i], ["userData", o], ["deviceId", a]);
     }
     return `${e}/api/login?loginType=1&userId=${r}&userName=${n}&token=${t}&userData=${o}&deviceId=${a}&loginTraceId=${ModelManager_1.ModelManager.LoginModel.LoginTraceId}`;
+  }
+  static async GetSubPackageHttp() {
+    var e = this.BuildSubPackageHttp();
+    var e = await Http_1.Http.GetAsync(e, undefined, LOGINURL_TIMEOUT);
+    if (Http_1.Http.IsConnectionInvalid(e)) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Login", 5, "Game阶段获取分包Http-连接服务器失败");
+      }
+    } else if (e = LauncherSerialize_1.LauncherJson.Parse(e.Data)) {
+      this.GameSubPackageHttpData = new HotFixSubPackageDefine_1.SubPackageHttpData();
+      this.GameSubPackageHttpData.UserId = e.userId;
+      this.GameSubPackageHttpData.Sex = e.sex;
+      this.GameSubPackageHttpData.NeedConfirmQuestIdSet = e.needConfirmQuestIdSet;
+      this.GameSubPackageHttpData.FinishQuestIdSet = e.finishQuestIdSet;
+      this.GameSubPackageHttpData.CurrentBlockIdSet = e.currentBlockIdSet;
+      this.GameSubPackageHttpData.Positions = e.positions;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 5, "Game阶段获取分包Http-成功", ["GamePackageHttpData", this.GameSubPackageHttpData]);
+      }
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Login", 5, "Game阶段获取分包Http-反序列化失败");
+    }
+  }
+  static BuildSubPackageHttp() {
+    var e = this.IsGlobalSdkLoginMode() ? "5500" : ModelManager_1.ModelManager.LoginModel.TryGetRealServerPort();
+    var o = ModelManager_1.ModelManager.LoginModel.GetLoginUid();
+    if (this.IsSdkLoginMode()) {
+      var r = ModelManager_1.ModelManager.LoginModel.GetLoginToken();
+      var n = UE.KuroStaticLibrary.HashStringWithSHA1(r);
+      var t = UE.KuroSDKManager.GetBasicInfo()?.DeviceId;
+      const a = LoginController.w9c();
+      var i = ModelManager_1.ModelManager.LoginModel.GetLoginUserNameWithUriEncode();
+      const _ = a.startsWith("http") ? a : `http://${a}:${e}`;
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Login", 5, "BuildSubPackageHttp-Game-SDK环境", ["uId", o], ["userName", i], ["token", n], ["deviceId", t]);
+      }
+      return `${_}/api/getResourcePackageInfo?loginType=1&userId=${o}&userName=${i}&token=${r}&deviceId=${t}&loginTraceId=${ModelManager_1.ModelManager.LoginModel.LoginTraceId}`;
+    }
+    n = ModelManager_1.ModelManager.LoginModel.GetAccount();
+    const a = ModelManager_1.ModelManager.LoginModel.GetServerIp();
+    o = encodeURIComponent(n);
+    const _ = a.startsWith("http") ? a : `http://${a}:${e}`;
+    i = `${_}/api/getResourcePackageInfo?loginType=0&userId=${n}&userName=${o}&token=1&loginTraceId=${ModelManager_1.ModelManager.LoginModel.LoginTraceId}`;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Login", 5, "BuildSubPackageHttp-Game-非SDK环境", ["httpString", i]);
+    }
+    return i;
   }
   static w9c() {
     let e = ModelManager_1.ModelManager.LoginServerModel.GetCurrentSelectServerIp();
@@ -562,8 +615,8 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Login", 16, "LoginProcedure-连接网关", ["index", o], ["host", _], ["hasHttp", e]);
         }
-        var l = r === 2 && o === t.length - 1;
-        if (a = await LoginController.PMi(n, _, i, l)) {
+        var g = r === 2 && o === t.length - 1;
+        if (a = await LoginController.PMi(n, _, i, g)) {
           break e;
         }
       }
@@ -726,10 +779,11 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
       r = UE.KuroLauncherLibrary.IsSeparateVideo();
       o.l31 = r ? 2 : 1;
-      o.NSm = Protocol_1.Aki.Protocol.QSm.Proto_BStateSimple;
+      o.lUm = Protocol_1.Aki.Protocol.fUm.Proto_BStateSimple;
+      o.bqf = ControllerHolder_1.ControllerHolder.ResourceManagerController.GetDownloadedQuestListBeforeLogin();
     } else {
       o.l31 = 1;
-      o.NSm = Protocol_1.Aki.Protocol.QSm.Proto_BStateAll;
+      o.lUm = Protocol_1.Aki.Protocol.fUm.Proto_BStateAll;
     }
     let n = false;
     let t = false;
@@ -759,14 +813,14 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     let i = "";
     let a = "";
     let _ = "";
-    let l = 0;
-    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn && (i = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetUserId(), (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkOnlineId([i])) && (a = r.get(i) ?? ""), r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkAccountId([i]), (_ = r ? r.get(i) ?? "" : _) !== "" && (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(_), l = r === 1 ? 1 : 0), ModelManager_1.ModelManager.PlayerInfoModel.InitThirdPartyId(i, a, _), Log_1.Log.CheckInfo())) {
+    let g = 0;
+    if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn && (i = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetUserId(), (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkOnlineId([i])) && (a = r.get(i) ?? ""), r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkAccountId([i]), (_ = r ? r.get(i) ?? "" : _) !== "" && (r = await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestrictedAsync(_), g = r === 1 ? 1 : 0), ModelManager_1.ModelManager.PlayerInfoModel.InitThirdPartyId(i, a, _), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Login", 27, "登录PSN信息", ["psnUserId", i], ["psnOnlineId", a], ["psnAccountId", _]);
     }
     o.Jxa = i;
     o.Qxa = a;
     o.ywa = _;
-    o.$4l = l;
+    o.$4l = g;
     o.z3a = BaseConfigController_1.BaseConfigController.GetPackageClientFightConfig();
     o.L5u = UE.KuroStaticLibrary.IsLowMemoryDevice();
     if (Log_1.Log.CheckInfo()) {
@@ -930,10 +984,26 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     return TimeUtil_1.TimeUtil.GetServerTime() - r >= TimeUtil_1.TimeUtil.OneDaySeconds || !r || (e = TimeUtil_1.TimeUtil.GetServerTime(), o = new Date().setHours(4, 0, 0, 0) / 1000, Log_1.Log.CheckInfo() && Log_1.Log.Info("Login", 27, "当前时间", ["time", e]), Log_1.Log.CheckInfo() && Log_1.Log.Info("Login", 27, "之前时间", ["time", r]), Log_1.Log.CheckInfo() && Log_1.Log.Info("Login", 27, "当天4点时间戳", ["time", o]), o <= e && r < o);
   }
   static FMi(n) {
-    if (this.IsSdkLoginMode() && ((e = ConfigManager_1.ConfigManager.LoginConfig.GetDefaultSingleMapId()) && ModelManager_1.ModelManager.LoginModel.SetSingleMapId(e), Info_1.Info.PlatformType !== 3 && BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip() && ModelManager_1.ModelManager.LoginModel.SetSingleMapId(891), e = ConfigManager_1.ConfigManager.LoginConfig.GetDefaultMultiMapId())) {
-      ModelManager_1.ModelManager.LoginModel.SetMultiMapId(e);
+    if (this.IsSdkLoginMode()) {
+      if (LoginController.wfa()) {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Login", 27, "LoginProcedure-RequestEnterGame-SdkAccountChangeNeedExitFlag");
+        }
+        return;
+      }
+      var e = ConfigManager_1.ConfigManager.LoginConfig.GetDefaultSingleMapId();
+      if (e) {
+        ModelManager_1.ModelManager.LoginModel.SetSingleMapId(e);
+      }
+      if (Info_1.Info.PlatformType !== 3 && BaseConfigController_1.BaseConfigController.GetIosAuditFirstDownloadTipWithSkip()) {
+        ModelManager_1.ModelManager.LoginModel.SetSingleMapId(891);
+      }
+      var e = ConfigManager_1.ConfigManager.LoginConfig.GetDefaultMultiMapId();
+      if (e) {
+        ModelManager_1.ModelManager.LoginModel.SetMultiMapId(e);
+      }
     }
-    var e = new Protocol_1.Aki.Protocol.pss();
+    e = new Protocol_1.Aki.Protocol.pss();
     e.M7n = ModelManager_1.ModelManager.LoginModel.GetSingleMapId();
     e.S7n = ModelManager_1.ModelManager.LoginModel.GetMultiMapId();
     e.E7n = ModelManager_1.ModelManager.LoginModel.BornMode;
@@ -1216,23 +1286,33 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static OpenSdkLoginView() {
+    var e;
     if (!ModelManager_1.ModelManager.LoginModel.HasBackToGameData()) {
-      if (ControllerHolder_1.ControllerHolder.KuroSdkController.CheckIfSdkLogin()) {
-        ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(6);
-      }
-      if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
-        if (UE.KuroLauncherLibrary.IsFirstIntoLauncher()) {
-          Stats_1.Stat.CreateInstantStat("LoginProcedure.SdkLogin:Start");
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-首次登录");
+      if (LauncherSdk_1.LauncherSdk.Get().CacheLoginData !== undefined) {
+        e = LauncherSdk_1.LauncherSdk.Get().CacheLoginData;
+        this.OnSdkLogin(e);
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("Login", 16, "LoginProcedure-OpenSdkLoginView-Launcher登录缓存");
+        }
+        LauncherSdk_1.LauncherSdk.Get().ClearCacheLoginData();
+      } else {
+        if (ControllerHolder_1.ControllerHolder.KuroSdkController.CheckIfSdkLogin()) {
+          ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(6);
+        }
+        if (ControllerHolder_1.ControllerHolder.KuroSdkController.CanUseSdk()) {
+          if (UE.KuroLauncherLibrary.IsFirstIntoLauncher()) {
+            Stats_1.Stat.CreateInstantStat("LoginProcedure.SdkLogin:Start");
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-首次登录");
+            }
+            LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SdkViewOpen);
+            ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(0);
+          } else {
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-非首次登录");
+            }
+            ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(7);
           }
-          LoginController.LogLoginProcessLink(LoginDefine_1.ELoginStatus.SdkViewOpen);
-          ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(0);
-        } else {
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Login", 16, "LoginProcedure-SdkLogin-非首次登录");
-          }
-          ControllerHolder_1.ControllerHolder.KuroSdkController.PostKuroSdkEvent(7);
         }
       }
     }
@@ -1326,6 +1406,19 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       UiManager_1.UiManager.CloseView("LoginView");
     }
   }
+  static iKf() {
+    if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("CloudGame", 58, "云游戏设置LoginTraceId", ["trace", CloudGameManager_1.CloudGameManager.CloudGameTraceId]);
+      }
+      ModelManager_1.ModelManager.LoginModel.LoginTraceId = CloudGameManager_1.CloudGameManager.CloudGameTraceId;
+    } else if (LauncherSdk_1.LauncherSdk.Get().LauncherTraceId !== undefined && LauncherSdk_1.LauncherSdk.Get().LauncherTraceId !== "") {
+      ModelManager_1.ModelManager.LoginModel.LoginTraceId = LauncherSdk_1.LauncherSdk.Get().LauncherTraceId;
+      LauncherSdk_1.LauncherSdk.Get().LauncherTraceId = "";
+    } else {
+      ModelManager_1.ModelManager.LoginModel.LoginTraceId = UE.KismetGuidLibrary.NewGuid().ToString();
+    }
+  }
   static LogLoginProcessLink(e, o = Protocol_1.Aki.Protocol.Q4n.KRs) {
     var r = ModelManager_1.ModelManager.LoginModel.GetSdkLoginConfig();
     var n = new LogReportDefine_1.LoginProcessLink();
@@ -1400,7 +1493,7 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     this.AFd = r + n + "/" + e + "/" + i + "/ManifestLang_base.txt";
     return [this.AFd, o];
   }
-  static YLc(_, e, l, g) {
+  static YLc(_, e, g, l) {
     const L = (e, o, r, n, t) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 30, "Aliyun", ["result", e], ["localErrorCode", o], ["remoteErrorCode", r], ["httpResponseCode", n], ["connectedSuccess", t]);
@@ -1410,18 +1503,18 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       if (o === 0) {
         a = e;
         ModelManager_1.ModelManager.LoginModel.CurrentIdStr = e;
-        if (g) {
-          this.vM1(i + "/" + l);
+        if (l) {
+          this.vM1(i + "/" + g);
         }
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Game", 30, "RptFailed", ["localErrorCode", o], ["remoteErrorCode", r], ["httpResponseCode", n], ["connectedSuccess", t], ["result", e]);
         }
-        if (!g && this.zLc + this.KLc.length < 100) {
+        if (!l && this.zLc + this.KLc.length < 100) {
           if (!UE.BlueprintPathsLibrary.DirectoryExists(i)) {
             UE.KuroLauncherLibrary.MakeDirectory(i);
           }
-          t = i + "/" + l;
+          t = i + "/" + g;
           (e = new RptExtra()).FailedTime = Math.floor(TimeUtil_1.TimeUtil.GetServerTimeStamp()).toString();
           e.LocalError = o.toString();
           e.RemoteError = r.toString();
@@ -1441,8 +1534,8 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static DFd(a, _) {
-    const [l, e] = this.PFd(PublicUtil_1.PublicUtil.GetIfGlobalSdk());
-    const g = (e, o, r, n, t) => {
+    const [g, e] = this.PFd(PublicUtil_1.PublicUtil.GetIfGlobalSdk());
+    const l = (e, o, r, n, t) => {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Game", 30, "Aliyun2", ["localErrorCode", o], ["httpResponseCode", n], ["connectedSuccess", t]);
       }
@@ -1452,17 +1545,17 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
       }
       if (i = n !== 200 ? true : i) {
         TimerSystem_1.GameplayTimerSystem.Delay(() => {
-          UE.KuroHttp.PostRpt2(l, a, _, (0, puerts_1.toManualReleaseDelegate)(g), 10);
+          UE.KuroHttp.PostRpt2(g, a, _, (0, puerts_1.toManualReleaseDelegate)(l), 10);
         }, 1200000, undefined, undefined, false);
       }
-      (0, puerts_1.releaseManualReleaseDelegate)(g);
+      (0, puerts_1.releaseManualReleaseDelegate)(l);
     };
     if (e) {
       TimerSystem_1.GameplayTimerSystem.Delay(() => {
-        UE.KuroHttp.PostRpt2(l, a, _, (0, puerts_1.toManualReleaseDelegate)(g), 10);
+        UE.KuroHttp.PostRpt2(g, a, _, (0, puerts_1.toManualReleaseDelegate)(l), 10);
       }, 1200000, undefined, undefined, false);
     } else {
-      UE.KuroHttp.PostRpt2(l, a, _, (0, puerts_1.toManualReleaseDelegate)(g), 10);
+      UE.KuroHttp.PostRpt2(g, a, _, (0, puerts_1.toManualReleaseDelegate)(l), 10);
     }
   }
   static XLc() {
@@ -1661,13 +1754,14 @@ class LoginController extends UiControllerBase_1.UiControllerBase {
   }
   static wfa() {
     var e;
-    ModelManager_1.ModelManager.LoginModel.CheckLoginToGameServerSdkConfigIfSame();
-    if (ModelManager_1.ModelManager.LoginModel.SdkAccountChangeNeedExitFlag && ModelManager_1.ModelManager.GameModeModel.WorldDoneAndLoadingClosed) {
+    var o = ModelManager_1.ModelManager.LoginModel.CheckLoginToGameServerSdkConfigIfSame();
+    if (o) {
       (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(38)).SetCloseFunction(() => {
         ControllerHolder_1.ControllerHolder.ReConnectController.Logout(ReconnectDefine_1.ELogoutReason.SdkLogoutAccount);
       });
       ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowNetWorkConfirmBoxView(e);
     }
+    return o;
   }
   static Vpc() {
     var e = PreDownloadManager_1.PreDownloadManager.Get();
@@ -1707,6 +1801,8 @@ LoginController.Ta1 = e => {
       Log_1.Log.Info("QuestResource", 38, "添加资源检查");
     }
     ModelManager_1.ModelManager.QuestResourceModel.FillCheckQuests(e.a2s);
+  }
+  if (ResourceUpdateManager_1.ResourceDiffUpdaterManager.IsGrayBoxHit()) {
     ModelManager_1.ModelManager.ResourceManagerModel.FillLoginInfo(e.a2s, e.$Rs);
   }
 };
@@ -1782,14 +1878,7 @@ LoginController.GetHttpAsync = async (e = false, o = true) => {
   Heartbeat_1.Heartbeat.StopHeartBeat(HeartbeatDefine_1.EStopHeartbeat.BeforeGetToken);
   ModelManager_1.ModelManager.LoginModel.SetLoginStatus(LoginDefine_1.ELoginStatus.LoginHttp);
   if (o) {
-    if (CloudGameManager_1.CloudGameManager.IsCloudGame) {
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("CloudGame", 58, "云游戏设置LoginTraceId", ["trace", CloudGameManager_1.CloudGameManager.CloudGameTraceId]);
-      }
-      ModelManager_1.ModelManager.LoginModel.LoginTraceId = CloudGameManager_1.CloudGameManager.CloudGameTraceId;
-    } else {
-      ModelManager_1.ModelManager.LoginModel.LoginTraceId = UE.KismetGuidLibrary.NewGuid().ToString();
-    }
+    _a.iKf();
   }
   let r = "";
   try {
@@ -1836,6 +1925,7 @@ LoginController.GetHttpAsync = async (e = false, o = true) => {
   }
   return true;
 };
+LoginController.GameSubPackageHttpData = undefined;
 LoginController.LMi = () => {
   ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenConfirmBoxByTextId("HttpTimeout");
   ModelManager_1.ModelManager.LoginModel.AddLoginFailCount();
@@ -1920,7 +2010,7 @@ LoginController.zAa = () => {
 LoginController.OnLogoutAccount = () => {
   var e = ModelManager_1.ModelManager.LoginModel.IsSdkLoggedIn();
   ModelManager_1.ModelManager.LoginModel.SetSdkLoginState(0);
-  if (ModelManager_1.ModelManager.LoginModel.GetLoginStatus() >= LoginDefine_1.ELoginStatus.EnterGameRet && e) {
+  if (ModelManager_1.ModelManager.LoginModel.GetLoginStatus() >= LoginDefine_1.ELoginStatus.CreateRet && e) {
     ControllerHolder_1.ControllerHolder.ReConnectController.Logout(ReconnectDefine_1.ELogoutReason.SdkLogoutAccount);
   } else {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkLoginResult);
@@ -2006,6 +2096,9 @@ LoginController.k5a = () => {
     }
     _a.F5a();
     _a.Ibc();
+  }
+  if (ModelManager_1.ModelManager.LoginModel.IsSdkLogout()) {
+    _a.GameSubPackageHttpData = undefined;
   }
 };
 LoginController.bnl = () => {

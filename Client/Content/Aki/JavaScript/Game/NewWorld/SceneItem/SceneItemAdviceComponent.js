@@ -43,15 +43,15 @@ let SceneItemAdviceComponent = class SceneItemAdviceComponent extends EntityComp
     };
   }
   OnActivate() {
-    var t = this.Entity.GetComponent(201);
+    var t = this.Entity.GetComponent(207);
     if (t && t.GetInteractController()) {
       t = this.Entity.GetComponent(0);
       if (t) {
         t = t.GetAdviceInfo();
         if (t) {
-          var i = this.Entity.GetComponent(121);
+          var i = this.Entity.GetComponent(126);
           if (i) {
-            this.Xte = this.Entity.GetComponent(200);
+            this.Xte = this.Entity.GetComponent(206);
             let e = ConfigManager_1.ConfigManager.AdviceConfig.GetAdviceInteractText();
             e = e.replace("{PlayerName}", t.GetPlayerName());
             i.PawnName = e;
@@ -80,5 +80,5 @@ let SceneItemAdviceComponent = class SceneItemAdviceComponent extends EntityComp
     return true;
   }
 };
-SceneItemAdviceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(147)], SceneItemAdviceComponent);
+SceneItemAdviceComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(152)], SceneItemAdviceComponent);
 exports.SceneItemAdviceComponent = SceneItemAdviceComponent; //# sourceMappingURL=SceneItemAdviceComponent.js.map

@@ -19,6 +19,7 @@ const ItemInfoById_1 = require("../../../Core/Define/ConfigQuery/ItemInfoById");
 const ItemMainTypeAll_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeAll");
 const ItemMainTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemMainTypeById");
 const ItemShowTypeById_1 = require("../../../Core/Define/ConfigQuery/ItemShowTypeById");
+const MotorStickerById_1 = require("../../../Core/Define/ConfigQuery/MotorStickerById");
 const PackageCapacityAll_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityAll");
 const PackageCapacityByPackageId_1 = require("../../../Core/Define/ConfigQuery/PackageCapacityByPackageId");
 const PhantomBattleBadgeById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleBadgeById");
@@ -145,6 +146,12 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
         break;
       case 18:
         n = CalabashSkinById_1.configCalabashSkinById.GetConfig(e);
+        break;
+      case 20:
+        n = this.GetItemConfig(e);
+        break;
+      case 21:
+        n = MotorStickerById_1.configMotorStickerById.GetConfig(e);
     }
     if (n) {
       (r = new ItemConfig_1.ItemConfig()).Refresh(n, t);
@@ -195,6 +202,14 @@ class InventoryConfig extends ConfigBase_1.ConfigBase {
       return 19;
     } else if (e >= InventoryDefine_1.calabashSkinIdRange[0] && e < InventoryDefine_1.calabashSkinIdRange[1]) {
       return 18;
+    } else if (e >= InventoryDefine_1.InfrastructureItemRange[0] && e < InventoryDefine_1.InfrastructureItemRange[1]) {
+      return 20;
+    } else if (e >= InventoryDefine_1.MotorStickerItemRange[0] && e < InventoryDefine_1.MotorStickerItemRange[1]) {
+      return 21;
+    } else if (e >= InventoryDefine_1.PhoneChatDialogItemRange[0] && e < InventoryDefine_1.PhoneChatDialogItemRange[1]) {
+      return 22;
+    } else if (e >= InventoryDefine_1.PhoneChatBackGroundItemRange[0] && e < InventoryDefine_1.PhoneChatBackGroundItemRange[1]) {
+      return 23;
     } else {
       return 0;
     }

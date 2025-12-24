@@ -8,6 +8,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const InputSettings_1 = require("../InputSettings");
+const InputBindingDefine_1 = require("./InputBindingDefine");
 class InputAxisBinding {
   constructor() {
     this.sEe = undefined;
@@ -16,40 +17,54 @@ class InputAxisBinding {
     this.tEe = [];
     this.iEe = [];
     this.rEe = [];
-    this.Xih = 0;
-    this.Yih = 0;
+    this.Vhf = new Map();
+    this.Hhf = new Map();
+    this.jhf = new Map();
+    this.$hf = new Map();
+    this.Whf = new Map();
+    this.r5f = 0;
+    this.Xhf = 0;
   }
   Initialize(t) {
     this.sEe = t.AxisName;
     this.Lo = t;
     this.aEe = this.Lo.AxisType;
-    this.Xih = t.KeyboardVersion;
-    this.Yih = t.GamepadVersion;
+    this.Xhf = t.ExclusiveType;
+    this.r5f = t.ExclusiveType;
+    for (var [e, i] of t.KeyboardVersionMap) {
+      this.Vhf.set(e, i);
+    }
+    for (var [s, n] of t.GamepadVersionMap) {
+      this.Hhf.set(s, n);
+    }
   }
   Clear() {
     this.sEe = undefined;
     this.aEe = 0;
     this.Lo = undefined;
-    this.Xih = 0;
-    this.Yih = 0;
+    this.$hf.clear();
+    this.Whf.clear();
   }
   GetAxisName() {
     return this.sEe;
   }
-  SetKeyboardVersion(t) {
-    this.Xih = t;
+  SetKeyboardVersion(t, e) {
+    this.Vhf.set(e, t);
   }
-  GetKeyboardVersion() {
-    return this.Xih;
+  GetKeyboardVersion(t) {
+    return this.Vhf.get(t) ?? 0;
   }
-  SetGamepadVersion(t) {
-    this.Yih = t;
+  SetGamepadVersion(t, e) {
+    this.Hhf.set(e, t);
   }
-  GetGamepadVersion() {
-    return this.Yih;
+  GetGamepadVersion(t) {
+    return this.Hhf.get(t) ?? 0;
   }
-  GetInputAxisKeyMap() {
-    return InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe);
+  GetAllInputAxisKeyMap() {
+    return InputSettings_1.InputSettings.GetInputAxisKeyMapByBindingType(this.sEe);
+  }
+  GetInputAxisKeyMap(t) {
+    return InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe, t);
   }
   GetCurrentPlatformKey() {
     if (Info_1.Info.IsInKeyBoard()) {
@@ -78,22 +93,22 @@ class InputAxisBinding {
   }
   GetPcKeyByIndex(t) {
     if (!(t >= this.tEe.length)) {
-      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, this.tEe[t]);
+      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, this.tEe[t], this.Xhf);
     }
   }
   GetPcKey() {
     for (const t of this.tEe) {
-      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, t);
+      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, t, this.Xhf);
     }
   }
   GetGamepadKeyByIndex(t) {
     if (!(t >= this.iEe.length)) {
-      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, this.iEe[t]);
+      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, this.iEe[t], this.Xhf);
     }
   }
   GetGamepadKey() {
     for (const t of this.iEe) {
-      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, t);
+      return InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, t, this.Xhf);
     }
   }
   GetPcKeyNameList(t) {
@@ -101,28 +116,48 @@ class InputAxisBinding {
       t.push(e);
     }
   }
+  GetPcKeyNameMapByBindingType(t, e) {
+    var i;
+    var s;
+    for ([i, s] of this.$hf.get(e) ?? new Map()) {
+      t.set(i, s);
+    }
+  }
   GetGamepadKeyNameList(t) {
     for (const e of this.iEe) {
       t.push(e);
     }
   }
-  GetPcKeyScaleMap(t) {
-    for (const s of this.tEe) {
-      var e = InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, s);
-      if (e) {
-        e = e.Scale;
-        t.set(s, e);
-      }
+  GetGamepadKeyNameMapByBindingType(t, e) {
+    var i;
+    var s;
+    for ([i, s] of this.Whf.get(e) ?? new Map()) {
+      t.set(i, s);
+    }
+  }
+  GetAllPcKeyScaleMap(t) {
+    for (var [e, i] of this.$hf) {
+      t.set(e, i);
+    }
+  }
+  GetPcKeyScaleMap(t, e) {
+    var i;
+    var s;
+    for ([i, s] of this.$hf.get(e) ?? new Map()) {
+      t.set(i, s);
     }
     return t;
   }
-  GetGamepadKeyScaleMap(t) {
-    for (const s of this.iEe) {
-      var e = InputSettings_1.InputSettings.GetInputAxisKey(this.sEe, s);
-      if (e) {
-        e = e.Scale;
-        t.set(s, e);
-      }
+  GetAllGamepadKeyScaleMap(t) {
+    for (var [e, i] of this.Whf) {
+      t.set(e, i);
+    }
+  }
+  GetGamepadKeyScaleMap(t, e) {
+    var i;
+    var s;
+    for ([i, s] of this.Whf.get(e) ?? new Map()) {
+      t.set(i, s);
     }
     return t;
   }
@@ -131,77 +166,112 @@ class InputAxisBinding {
       t.push(e);
     }
   }
+  GetKeyNameListByBindingType(t, e) {
+    var i;
+    for ([i] of this.jhf.get(e) ?? new Map()) {
+      t.push(i);
+    }
+  }
   HasKey(t) {
-    return InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe).has(t);
+    return InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe, this.Xhf).has(t);
   }
   HasAnyKey() {
     return this.rEe.length > 0;
   }
-  GetKey(t) {
-    var e = [];
-    for (const s of InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe).values()) {
+  GetKey(t, e) {
+    var i = [];
+    for (const s of InputSettings_1.InputSettings.GetInputAxisKeyMap(this.sEe, e).values()) {
       if (s.Scale === t) {
-        e.push(s);
+        i.push(s);
       }
     }
-    return e;
+    return i;
   }
-  SetKeys(t) {
-    InputSettings_1.InputSettings.SetAxisMapping(this.sEe, t);
-    this.rEe.length = 0;
-    for (const e of t.keys()) {
-      this.rEe.push(e);
+  SwitchKeysByBindingType(t) {
+    var e = this.$hf.get(t) ?? this.$hf.get(0);
+    var i = this.Whf.get(t) ?? this.Whf.get(0);
+    var s = new Map();
+    if (e) {
+      for (var [n, r] of e) {
+        s.set(n, r);
+      }
     }
-    this.nEe();
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAxisKeyChanged, this.sEe);
+    if (i) {
+      for (var [h, a] of i) {
+        s.set(h, a);
+      }
+    }
+    if (s) {
+      this.Xhf = t;
+      this.SetKeys(s, t);
+      this.r5f = this.Xhf;
+    }
   }
-  SetKeyboardKeys(t) {
-    var e;
+  SetKeys(t, e) {
+    this.jhf.set(e, t);
+    if (this.Xhf === e) {
+      InputSettings_1.InputSettings.SetAxisMapping(this.sEe, t, this.r5f, e);
+      this.rEe = Array.from(t.keys());
+      this.nEe();
+    } else {
+      InputSettings_1.InputSettings.SetAxisMappingWithoutInputSettings(this.sEe, t, e);
+      this.Qhf(e);
+    }
+  }
+  SetAllKeys(t) {
+    for (const e of this.jhf.keys()) {
+      this.SetKeys(t, e);
+    }
+  }
+  SetKeyboardKeys(t, e) {
+    var i;
     var s;
-    var i = new Map();
-    for ([e, s] of t) {
-      i.set(e, s);
+    var n = new Map();
+    for ([i, s] of t) {
+      n.set(i, s);
     }
-    this.GetGamepadKeyScaleMap(i);
-    this.SetKeys(i);
+    this.GetGamepadKeyScaleMap(n, e);
+    this.SetKeys(n, e);
   }
-  SetGamepadKeys(t) {
-    var e;
+  SetKeyboardKeysWithoutOriginal(t) {
+    for (const e of InputBindingDefine_1.inputBindingTypesArray) {
+      if (e !== 0) {
+        this.SetKeyboardKeys(t, e);
+      }
+    }
+  }
+  SetGamepadKeys(t, e) {
+    var i;
     var s;
-    var i = new Map();
-    for ([e, s] of t) {
-      i.set(e, s);
+    var n = new Map();
+    for ([i, s] of t) {
+      n.set(i, s);
     }
-    this.GetPcKeyScaleMap(i);
-    this.SetKeys(i);
+    this.GetPcKeyScaleMap(n, e);
+    this.SetKeys(n, e);
   }
-  RefreshKeys(e) {
-    this.rEe.length = 0;
+  SetGamepadKeysWithoutOriginal(t) {
+    for (const e of this.$hf.keys()) {
+      if (e !== 0) {
+        this.SetGamepadKeys(t, e);
+      }
+    }
+  }
+  RefreshKeys(e, t) {
+    var i = this.Yhf(t);
+    i.clear();
     for (let t = e.Num() - 1; t >= 0; t--) {
-      var s = e.Get(t).Key.KeyName.toString();
-      this.rEe.push(s);
+      var s = e.Get(t);
+      var n = s.Key.KeyName.toString();
+      i.set(n, s.Scale);
     }
-    this.nEe();
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAxisKeyChanged, this.sEe);
-  }
-  AddKeys(t) {
-    for (var [e, s] of t) {
-      InputSettings_1.InputSettings.AddAxisMapping(this.sEe, e, s);
-      this.rEe.push(e);
+    if (this.Xhf === t) {
+      this.rEe = Array.from(i.keys());
+      this.nEe();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnAxisKeyChanged, this.sEe);
+    } else {
+      this.Qhf(t);
     }
-    this.nEe();
-  }
-  RemoveKeys(t) {
-    for (const s of t) {
-      InputSettings_1.InputSettings.RemoveAxisMapping(this.sEe, s);
-      var e = this.rEe.indexOf(s);
-      this.rEe.splice(e, 1);
-    }
-    this.nEe();
-  }
-  RemoveKeysByCondition(t) {
-    InputSettings_1.InputSettings.RemoveAxisMappingByCondition(this.sEe, t);
-    this.nEe();
   }
   ClearAllKeys() {
     if (this.tEe) {
@@ -221,25 +291,58 @@ class InputAxisBinding {
   GetAxisMappingType() {
     return this.aEe;
   }
-  nEe() {
-    if (this.tEe) {
-      this.tEe.length = 0;
-    }
-    if (this.iEe) {
-      this.iEe.length = 0;
-    }
-    if (this.rEe) {
-      for (const e of this.rEe) {
-        var t = InputSettings_1.InputSettings.GetKey(e);
-        if (t) {
-          if (t.IsKeyboardKey || t.IsMouseButton) {
-            this.tEe.push(t.GetKeyName());
-          } else if (t.IsGamepadKey) {
-            this.iEe.push(e);
+  GetKeyNameListToBindingTypeMap() {
+    return this.jhf;
+  }
+  GetCopyKeyNameListToBindingTypeMap() {
+    return new Map(this.jhf);
+  }
+  Qhf(t) {
+    let e = new Map();
+    let i = new Map();
+    var s = this.jhf.get(t) ?? new Map();
+    if (s) {
+      for (var [n, r] of s) {
+        var h = InputSettings_1.InputSettings.GetKey(n);
+        if (h) {
+          if (h.IsKeyboardKey || h.IsMouseButton) {
+            e.set(n, r);
+          } else if (h.IsGamepadKey || h.IsPcPsTouchPadKey) {
+            i.set(n, r);
           }
         }
       }
+      if (!this.$hf.has(t) && e.size === 0) {
+        e = this.$hf.get(0) ?? new Map();
+      }
+      s = this.Whf.has(t);
+      if (!s && i.size === 0) {
+        i = this.Whf.get(0) ?? new Map();
+      }
+      if (this.Xhf === t) {
+        this.tEe.length = 0;
+        for (var [a] of e) {
+          this.tEe.push(a);
+        }
+        this.iEe.length = 0;
+        for (var [o] of i) {
+          this.iEe.push(o);
+        }
+      }
+      this.$hf.set(t, e);
+      this.Whf.set(t, i);
     }
+  }
+  nEe() {
+    this.Qhf(this.Xhf);
+  }
+  Yhf(t) {
+    let e = this.jhf.get(t);
+    if (!e) {
+      e = new Map();
+      this.jhf.set(t, e);
+    }
+    return e;
   }
 }
 exports.InputAxisBinding = InputAxisBinding;

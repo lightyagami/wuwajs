@@ -53,6 +53,9 @@ class MapNote {
   get QuestIdList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.questidlistLength(), this.questidlist, this);
   }
+  get Disable() {
+    return this.disable();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -205,6 +208,10 @@ class MapNote {
     } else {
       return null;
     }
+  }
+  disable() {
+    var t = this.J7.__offset(this.z7, 28);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.MapNote = MapNote;

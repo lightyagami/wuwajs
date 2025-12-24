@@ -106,6 +106,21 @@ class Activity {
   get PermanentFilterType() {
     return this.permanentfiltertype();
   }
+  get IsTabEffectNotice() {
+    return this.istabeffectnotice();
+  }
+  get TypePicIcon() {
+    return this.typepicicon();
+  }
+  get ShowTabTypeId() {
+    return this.showtabtypeid();
+  }
+  get ShowActTypeIds() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.showacttypeidsLength(), this.showacttypeids, this);
+  }
+  get TimeShowId() {
+    return this.timeshowid();
+  }
   get AreaList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.arealistLength(), this.arealist, this);
   }
@@ -378,11 +393,66 @@ class Activity {
       return 1;
     }
   }
+  istabeffectnotice() {
+    var t = this.J7.__offset(this.z7, 68);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  typepicicon(t) {
+    var i = this.J7.__offset(this.z7, 70);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  showtabtypeid() {
+    var t = this.J7.__offset(this.z7, 72);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 7;
+    }
+  }
+  GetShowacttypeidsAt(t) {
+    return this.showacttypeids(t);
+  }
+  showacttypeids(t) {
+    var i = this.J7.__offset(this.z7, 74);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  showacttypeidsLength() {
+    var t = this.J7.__offset(this.z7, 74);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  showacttypeidsArray() {
+    var t = this.J7.__offset(this.z7, 74);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  timeshowid() {
+    var t = this.J7.__offset(this.z7, 76);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetArealistAt(t) {
     return this.arealist(t);
   }
   arealist(t) {
-    var i = this.J7.__offset(this.z7, 68);
+    var i = this.J7.__offset(this.z7, 78);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -390,7 +460,7 @@ class Activity {
     }
   }
   arealistLength() {
-    var t = this.J7.__offset(this.z7, 68);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -398,7 +468,7 @@ class Activity {
     }
   }
   arealistArray() {
-    var t = this.J7.__offset(this.z7, 68);
+    var t = this.J7.__offset(this.z7, 78);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -406,7 +476,7 @@ class Activity {
     }
   }
   areatips(t) {
-    var i = this.J7.__offset(this.z7, 70);
+    var i = this.J7.__offset(this.z7, 80);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

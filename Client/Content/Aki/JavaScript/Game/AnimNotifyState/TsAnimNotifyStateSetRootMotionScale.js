@@ -20,12 +20,12 @@ class TsAnimNotifyStateSetRootMotionScale extends UE.KuroAnimNotifyState {
     var o;
     var a;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(o = t.CharacterActorComponent)?.Valid && !o.GetSequenceBinding() && !!o.IsAutonomousProxy && !!o.Entity.GetComponent(209)?.HasTag(this.Tag.TagId) && !(this.Tag?.TagId === -451106150 && (a = (a = o.Entity.GetComponent(177)) ? a.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Jump) / CharacterAttributeTypes_1.PER_TEN_THOUSAND : 1, t.SetAnimRootMotionTranslationScale(a), t = o.Entity.GetComponent(182)) && (t.JumpUpRate = MathUtils_1.MathUtils.Clamp(MIN_JUMP_UP_RATE + 1 / a, MIN_JUMP_UP_RATE, MAX_JUMP_UP_RATE)), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(o = t.CharacterActorComponent)?.Valid && !o.GetSequenceBinding() && !!o.IsAutonomousProxy && !!o.Entity.GetComponent(215)?.HasTag(this.Tag.TagId) && !(this.Tag?.TagId === -451106150 && (a = (a = o.Entity.GetComponent(182)) ? a.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.RIm) / CharacterAttributeTypes_1.PER_TEN_THOUSAND : 1, t.SetAnimRootMotionTranslationScale(a), t = o.Entity.GetComponent(187)) && (t.JumpUpRate = MathUtils_1.MathUtils.Clamp(MIN_JUMP_UP_RATE + 1 / a, MIN_JUMP_UP_RATE, MAX_JUMP_UP_RATE)), 0);
   }
   K2_NotifyEnd(t, e) {
     var r;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent)?.Valid && !r.GetSequenceBinding() && !!r.IsAutonomousProxy && !((r = r.Entity.GetComponent(182)) && (r.JumpUpRate = 1), t.SetAnimRootMotionTranslationScale(), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent)?.Valid && !r.GetSequenceBinding() && !!r.IsAutonomousProxy && !((r = r.Entity.GetComponent(187)) && (r.JumpUpRate = 1), t.SetAnimRootMotionTranslationScale(), 0);
   }
   GetNotifyName() {
     return "设置RootMotion缩放比例";

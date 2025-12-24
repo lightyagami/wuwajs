@@ -108,8 +108,10 @@ class GameSettingsManager {
       return [!Info_1.Info.IsIosPlatform() && !Info_1.Info.IsAndroidPlatform(), "isNotMobile"];
     } else if (e === "isMetalSupport") {
       return [GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsMetalFxDevice(), "isMetalSupport"];
-    } else if (e === "isRedMagic") {
-      return [GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagic(), "isRedMagic"];
+    } else if (e === "isRedMagicLow") {
+      return [GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagicLow(), "isRedMagicLow"];
+    } else if (e === "isRedMagicHigh") {
+      return [GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagicHigh(), "isRedMagicHigh"];
     } else if (e === "isNotRedMagic") {
       return [!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagic(), "isNotRedMagic"];
     } else if (e === "isNotGrayscale") {
@@ -119,7 +121,7 @@ class GameSettingsManager {
     } else if (e === "isNot50Series") {
       return [!GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRTX50(), "isNot50Series"];
     } else if (e === "isWindows") {
-      return [Info_1.Info.IsWindowsPlatform(), "isWindows"];
+      return [Info_1.Info.IsWindowsPlatform() && !Platform_1.Platform.IsCloudGame(), "isWindows"];
     } else {
       return [true, "DEFAULT"];
     }
@@ -136,13 +138,14 @@ class GameSettingsManager {
     var _ = UE.KuroFFXFSR3BlueprintLibrary.IsGlobalSwitchOn();
     var m = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3Supported();
     var S = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFFXFISupported();
-    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3FallbackToFsr();
-    var c = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
+    var c = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsFsr3FallbackToFsr();
+    var f = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsShowRayTracingSetting();
     var G = this.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.RayTracing) > 0;
-    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && c && G;
-    var u = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && c && G;
-    var h = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && c && G;
+    var D = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenGISupported() && f && G;
+    var u = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetLumenReflectionsSupported() && f && G;
+    var h = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetRayTracingShadowsSupported() && f && G;
     var d = UE.KismetRenderingLibrary.IsSupportedAFME();
+    var v = GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsIntelGroupGpu();
     switch (e) {
       case GameSettingsDefine_1.EFunction.NVIDIADLSS:
         return [t, "EFunction.NVIDIADLSS"];
@@ -155,7 +158,7 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.NVIDIAREFLEX:
         return [t, "EFunction.NVIDIAREFLEX"];
       case GameSettingsDefine_1.EFunction.FSR:
-        return [i || f, "EFunction.FSR"];
+        return [i || c, "EFunction.FSR"];
       case GameSettingsDefine_1.EFunction.IRX:
         return [n, "EFunction.IRX"];
       case GameSettingsDefine_1.EFunction.METALFX:
@@ -181,7 +184,7 @@ class GameSettingsManager {
       case GameSettingsDefine_1.EFunction.DOLBYATOMS:
         return [UE.KuroAudioStatics.IsDolbyAtmosGameSupported(), "EFunction.DOLBYATOMS"];
       case GameSettingsDefine_1.EFunction.RayTracing:
-        return [c, "EFunction.RayTracing"];
+        return [f, "EFunction.RayTracing"];
       case GameSettingsDefine_1.EFunction.RayTracedGI:
         return [D, "EFunction.RayTracedGI"];
       case GameSettingsDefine_1.EFunction.RayTracedReflection:
@@ -192,6 +195,8 @@ class GameSettingsManager {
         return [d, "EFunction.AdrenoFME"];
       case GameSettingsDefine_1.EFunction.Vulkan:
         return [s, "EFunction.Vulkan"];
+      case GameSettingsDefine_1.EFunction.AutoExposure:
+        return [!v, "EFunction.AutoExposure"];
       default:
         return [true, "DEFAULT"];
     }
@@ -345,6 +350,9 @@ class GameSettingsManager {
       ModelManager_1.ModelManager.RecommendQualityModel.IsNeedApply = false;
     }
   }
+  static wFf() {
+    return false;
+  }
   static Mud() {
     var e;
     var t = this.$sc.get(GameSettingsDefine_1.EFunction.Vulkan);
@@ -481,7 +489,7 @@ class GameSettingsManager {
       this.Hsc(e, 8);
     }
   }
-  static Xzd() {
+  static LJd() {
     if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetDefaultDeviceRenderFeature() !== undefined) {
       this.$sc.get(GameSettingsDefine_1.EFunction.RayTracing)?.CacheValue(0, 7);
     }
@@ -560,7 +568,7 @@ class GameSettingsManager {
     this.iac();
     this.rac();
     this.oac();
-    this.Xzd();
+    this.LJd();
     this.nac();
     this.sac();
     this.aac();
@@ -582,7 +590,7 @@ class GameSettingsManager {
       }
       this.ForceSaveValue(GameSettingsDefine_1.EFunction.Vulkan, 0);
       this._X1(GameSettingsDefine_1.EFunction.Vulkan, 0, 2);
-    } else if (this.IsValid(GameSettingsDefine_1.EFunction.Vulkan) && !LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VulkanChangeFlag)) {
+    } else if (this.IsValid(GameSettingsDefine_1.EFunction.Vulkan) && !LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.VulkanChangeFlag) && this.wFf()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameSettings", 64, "通过灰度测试的设备，强制开启Vulkan");
       }

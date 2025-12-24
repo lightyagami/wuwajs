@@ -18,21 +18,21 @@ class TsAnimNotifyStateWaterfallMove extends UE.KuroAnimNotifyState {
       return false;
     }
     e = r.VehicleActorComponent?.Entity;
-    const i = e?.GetComponent(249);
+    const i = e?.GetComponent(260);
     if (!i?.IsWaterfallMove) {
       return false;
     }
-    var a = e?.GetComponent(245);
+    var a = e?.GetComponent(254);
     a?.RemoveTag(-1782915173);
     a?.AddTag(-360496329);
-    e?.GetComponent(239)?.ConsumeRootMotion();
+    e?.GetComponent(248)?.ConsumeRootMotion();
     i.WaterfallHideVehicleAndPassenger(true, "贡多拉攀瀑入水");
     a = Rotator_1.Rotator.Create();
     i.WaterfallDirect.Rotation(a);
     if (!i.IsWaterfallDynamicGravity) {
-      (e?.GetComponent(238)).SetActorRotation(a.ToUeRotator(), "攀瀑进入二阶段设置旋转", false);
+      (e?.GetComponent(247)).SetActorRotation(a.ToUeRotator(), "攀瀑进入二阶段设置旋转", false);
     }
-    (e?.GetComponent(240)).MoveAlongPath({
+    (e?.GetComponent(249)).MoveAlongPath({
       SplineId: i.WaterfallSplineId,
       SimulateRotation: false,
       NeedSync: false,
@@ -55,7 +55,7 @@ class TsAnimNotifyStateWaterfallMove extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(e, t) {
     var e = e.GetOwner();
-    return !!e && e instanceof TsBaseVehicle_1.default && !!(e = e.VehicleActorComponent?.Entity?.GetComponent(249))?.IsWaterfallMove && (e.EndWaterfallMove(), true);
+    return !!e && e instanceof TsBaseVehicle_1.default && !!(e = e.VehicleActorComponent?.Entity?.GetComponent(260))?.IsWaterfallMove && (e.EndWaterfallMove(), true);
   }
   GetNotifyName() {
     return "贡多拉攀瀑";

@@ -4,29 +4,52 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.NetEventDispatcher = undefined;
+const Log_1 = require("../../Core/Common/Log");
+const Net_1 = require("../../Core/Net/Net");
 const EventCSharpBridge_1 = require("../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../Common/Event/EventDefine");
+const EventSystem_1 = require("../Common/Event/EventSystem");
 class NetEventDispatcher {
-  NotifyCsKcpClient(e) {
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsKcpClient, e);
+  constructor() {
+    this.CsNetCall = (i, e, v, t) => {
+      Net_1.Net.CsCall(i, e, (e, t, n) => {
+        var r;
+        if (n === undefined) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("Net", 63, "[C#]Net.Call失败,返回数据为空:", ["requestMessageId", i], ["status", t], ["csRpcId", v]);
+          }
+        } else {
+          t = n.SeqNo;
+          r = n.MessageId;
+          n = n.MessageBuffer;
+          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveResponse, t, v, r, n);
+        }
+      }, t);
+    };
+  }
+  Init() {
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNetCall, this.CsNetCall);
+  }
+  Clear() {
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNetCall, this.CsNetCall);
   }
   KcpConnectSuccess() {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetKcpConnectSuccess);
   }
-  ReceiveResponse(e, n, t, i) {
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveResponse, e, n, t, i);
-  }
-  ReceiveException(e, n, t, i) {
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveException, e, n, t, i);
+  ReceiveException(e, t, n, r) {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveException, e, t, n, r);
   }
   ReceiveTcpException(e) {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceiveTcpException, e);
   }
-  ReceivePush(e, n, t) {
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceivePush, e, n, t);
+  ReceivePush(e, t, n) {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetReceivePush, e, t, n);
   }
-  OnError(e, n, t, i, r) {
-    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetError, e, n, t, i, r);
+  OnError(e, t, n, r, i) {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsOnNetError, e, t, n, r, i);
+  }
+  CleanNetMessageCaches() {
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.NotifyCsCleanNetMessageCaches);
   }
 }
 exports.NetEventDispatcher = NetEventDispatcher;

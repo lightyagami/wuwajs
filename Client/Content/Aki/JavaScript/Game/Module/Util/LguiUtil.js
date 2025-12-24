@@ -428,7 +428,7 @@ class LguiUtil {
       t = UE.LGUIBPLibrary.GetRootActorMemoryTag(t).toString();
       if (!StringUtils_1.StringUtils.IsBlank(t)) {
         i = t.split(".");
-        r = i.length > 0 && i[i.length - 1] === e ? t : (this.Tsm.Clear(), this.Tsm.Append(t), this.Tsm.Append("."), this.Tsm.Append(e), this.Tsm.ToString());
+        r = i.length > 0 && i[i.length - 1] === e ? t : (this.__m.Clear(), this.__m.Append(t), this.__m.Append("."), this.__m.Append(e), this.__m.ToString());
       }
     }
     return r;
@@ -470,23 +470,23 @@ class LguiUtil {
       e.Y = MathCommon_1.MathCommon.Clamp(e.Y, 0, i);
     }
   }
-  static GetAdaptiveTipsPosition(t, e) {
-    var r = t.GetUIWorldPosition();
-    var i = e.GetUIWorldPosition();
-    var o = e.Width;
+  static GetAdaptiveTipsPosition(t, e, r = 0) {
+    var i = t.GetUIWorldPosition();
+    var o = e.GetUIWorldPosition();
+    var r = r === 0 ? e.Width : r;
     var e = e.Height;
     var a = UE.WidgetLayoutLibrary.GetViewportSize(GlobalData_1.GlobalData.World);
     var _ = UE.WidgetLayoutLibrary.GetViewportScale(GlobalData_1.GlobalData.World);
     var n = a.X / _;
     var a = a.Y / _ / 2;
-    var _ = r.X + t.Width / 2;
-    var g = r.Z;
+    var _ = i.X + t.Width / 2;
+    var g = i.Z;
     let s = 0;
     let l = 0;
-    s = _ + o < n / 2 ? _ + o / 2 : r.X - t.Width / 2 - o / 2;
+    s = _ + r < n / 2 ? _ + r / 2 : i.X - t.Width / 2 - r / 2;
     l = 10 - a < g - e ? g : -a + e;
-    return Vector_1.Vector.Create(s, i.Y, l);
+    return Vector_1.Vector.Create(s, o.Y, l);
   }
 }
-(exports.LguiUtil = LguiUtil).Tsm = new StringBuilder_1.StringBuilder();
+(exports.LguiUtil = LguiUtil).__m = new StringBuilder_1.StringBuilder();
 //# sourceMappingURL=LguiUtil.js.map

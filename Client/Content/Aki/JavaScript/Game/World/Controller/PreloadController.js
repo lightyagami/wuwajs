@@ -1120,7 +1120,7 @@ class PreloadController extends ControllerBase_1.ControllerBase {
       var a = AiStateMachineConfigById_1.configAiStateMachineConfigById.GetConfig(t.StateMachine);
       if (a?.StateMachineJson) {
         var a = JSON.parse(a.StateMachineJson);
-        var r = e.Entity.GetComponent(76);
+        var r = e.Entity.GetComponent(79);
         r.StateMachineName = t.StateMachine;
         for (const i of (r.StateMachineJsonObject = a).Nodes) {
           this.CollectAssetByStateMachineNode(e, i);

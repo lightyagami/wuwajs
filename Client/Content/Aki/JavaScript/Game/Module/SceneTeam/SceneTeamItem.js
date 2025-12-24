@@ -83,7 +83,7 @@ class SceneTeamItem {
     if (this.EntityHandle) {
       if (this.IsDead()) {
         return 4;
-      } else if ((t = this.EntityHandle.Entity.CheckGetComponent(209)).HasTag(-2100129479) && !t.HasTag(781722537)) {
+      } else if ((t = this.EntityHandle.Entity.CheckGetComponent(215)).HasTag(-2100129479) && !t.HasTag(781722537)) {
         return 2;
       } else {
         return 0;

@@ -646,7 +646,7 @@ class KuroEffectSystem {
   }
   static pmc(e) {
     var t;
-    return !!Info_1.Info.IsGameRunning() && !!(e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid && ((t = (e = e.Entity).GetComponent(0)).GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player && !e.GetComponent(3).IsAutonomousProxy || !(t = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t.GetSummonerId()), !(t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0)) || t.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Player || e.GetComponent(3).IsAutonomousProxy));
+    return !!Info_1.Info.IsGameRunning() && !!(e = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid && ((t = (e = e.Entity).GetComponent(0)).GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player && !e.GetComponent(3).IsAutonomousProxy || t.GetEntityType() === Protocol_1.Aki.Protocol.kks.HI_ && !e.GetComponent(247).IsAutonomousProxy || !(t = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t.GetSummonerId()), !(t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0)) || t.GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Player || e.GetComponent(3).IsAutonomousProxy));
   }
   static vmc(e, t) {
     return !Info_1.Info.IsGameRunning() || !!t || !(t = ModelManager_1.ModelManager.CharacterModel?.GetHandle(e))?.Valid || ((t = (e = t.Entity).GetComponent(0)).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_Player || !!e.GetComponent(3).IsAutonomousProxy) && !(t = ModelManager_1.ModelManager.CreatureModel.GetEntityId(t.GetSummonerId()), (t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0)) && t.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Player && !e.GetComponent(3).IsAutonomousProxy);

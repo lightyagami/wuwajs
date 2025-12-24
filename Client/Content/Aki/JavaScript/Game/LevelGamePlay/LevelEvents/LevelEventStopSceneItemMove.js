@@ -42,7 +42,7 @@ class LevelEventStopSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
         var n = Protocol_1.Aki.Protocol.Sta.create();
         var i = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(v);
         if (i?.Valid) {
-          var l = i.Entity.GetComponent(132);
+          var l = i.Entity.GetComponent(137);
           if (l?.Valid) {
             let e = undefined;
             if (r) {
@@ -79,7 +79,7 @@ class LevelEventStopSceneItemMove extends LevelGeneralBase_1.LevelEventBase {
         }
       });
       for (const M of o) {
-        var _ = M.Entity.GetComponent(132);
+        var _ = M.Entity.GetComponent(137);
         _.StopMove();
         var a = Vector_1.Vector.Create(M.Entity.GetComponent(1)?.ActorLocationProxy);
         if (M.Velocity) {

@@ -44,7 +44,7 @@ class InputCallback {
   constructor(t) {
     this.fIo = [];
     this.Wmr = [];
-    this.izd = [];
+    this.kzd = [];
     this.Kmr = false;
     this.Qmr = new InputIdentification(t);
   }
@@ -54,7 +54,7 @@ class InputCallback {
       i(this.Qmr.Name, t, this.Qmr);
     }
     this.Xmr();
-    this.rzd();
+    this.qzd();
     this.Kmr = false;
   }
   Add(t) {
@@ -70,20 +70,20 @@ class InputCallback {
   }
   Remove(t) {
     if (this.Kmr) {
-      this.izd.push(t);
+      this.kzd.push(t);
     } else if (!((t = this.fIo.indexOf(t)) < 0)) {
       this.fIo.splice(t, 1);
     }
   }
-  rzd() {
-    if (!(this.izd.length <= 0)) {
-      for (const i of this.izd) {
+  qzd() {
+    if (!(this.kzd.length <= 0)) {
+      for (const i of this.kzd) {
         var t = this.fIo.indexOf(i);
         if (!(t < 0)) {
           this.fIo.splice(t, 1);
         }
       }
-      this.izd.length = 0;
+      this.kzd.length = 0;
     }
   }
   Clear() {

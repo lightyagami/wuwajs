@@ -14,13 +14,13 @@ class SurvivorsRoguePlayerHpHandle {
     this.gU = false;
     this.zna = 0;
     this.aeu = undefined;
-    this.tZd = 0;
-    this.iZd = 0;
+    this.wem = 0;
+    this.Lem = 0;
     this.IRe = undefined;
     this.r1t = 500;
     this.q7e = () => {
       this.IRe = undefined;
-      this.rZd();
+      this.Pem();
     };
   }
   Init() {
@@ -33,41 +33,41 @@ class SurvivorsRoguePlayerHpHandle {
   OnPlayerHpChange(i) {
     if (!!this.gU && !(i.MaxHp <= 0)) {
       if (i.Hp < this.zna && i.Hp < i.MaxHp) {
-        this.oZd();
+        this.Aem();
       }
       this.zna = i.Hp;
       if (i.Hp / i.MaxHp <= LOW_HP_PERCENT) {
-        this.nZd();
+        this.Dem();
       } else {
-        this.sZd();
+        this.Uem();
       }
     }
   }
-  nZd() {
-    if (!(this.tZd > 0)) {
+  Dem() {
+    if (!(this.wem > 0)) {
       if (this.aeu) {
-        this.tZd = this.aeu.AddCue(LOW_HP_CUE_ID);
+        this.wem = this.aeu.AddCue(LOW_HP_CUE_ID);
       }
     }
   }
-  sZd() {
-    if (!(this.tZd <= 0)) {
-      this.aeu?.RemoveCueByHandle(this.tZd);
-      this.tZd = 0;
+  Uem() {
+    if (!(this.wem <= 0)) {
+      this.aeu?.RemoveCueByHandle(this.wem);
+      this.wem = 0;
     }
   }
-  oZd() {
-    if (!(this.iZd > 0)) {
+  Aem() {
+    if (!(this.Lem > 0)) {
       if (this.aeu) {
-        this.iZd = this.aeu.AddCue(HURT_CUE_ID);
+        this.Lem = this.aeu.AddCue(HURT_CUE_ID);
         this.kot();
       }
     }
   }
-  rZd() {
-    if (!(this.iZd <= 0)) {
-      this.aeu?.RemoveCueByHandle(this.iZd);
-      this.iZd = 0;
+  Pem() {
+    if (!(this.Lem <= 0)) {
+      this.aeu?.RemoveCueByHandle(this.Lem);
+      this.Lem = 0;
     }
   }
   kot() {
@@ -80,8 +80,8 @@ class SurvivorsRoguePlayerHpHandle {
     }
   }
   Clear() {
-    this.sZd();
-    this.rZd();
+    this.Uem();
+    this.Pem();
     this.xHe();
     this.gU = false;
   }

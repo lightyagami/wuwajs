@@ -26,8 +26,8 @@ class TsAnimNotifyStateAttackWindUp extends UE.KuroAnimNotifyState {
       return false;
     }
     var a = s.Entity;
-    var n = a.GetComponent(61);
-    var c = a.GetComponent(213);
+    var n = a.GetComponent(64);
+    var c = a.GetComponent(220);
     if (!n?.Valid) {
       return false;
     }
@@ -64,8 +64,8 @@ class TsAnimNotifyStateAttackWindUp extends UE.KuroAnimNotifyState {
       return false;
     }
     var t = t.Entity;
-    var i = t.GetComponent(61);
-    if (!t.GetComponent(40)?.Valid || !i?.Valid) {
+    var i = t.GetComponent(64);
+    if (!t.GetComponent(41)?.Valid || !i?.Valid) {
       return false;
     }
     i.WindupAttackEnd();

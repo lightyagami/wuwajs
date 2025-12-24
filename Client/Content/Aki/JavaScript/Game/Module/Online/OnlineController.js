@@ -26,6 +26,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
 const UiManager_1 = require("../../Ui/UiManager");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
+const GenericPromptController_1 = require("../GenericPrompt/GenericPromptController");
 const LoginDefine_1 = require("../Login/Data/LoginDefine");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const OnlineHallData_1 = require("./OnlineHallData");
@@ -80,6 +81,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFinishLoadingState, OnlineController.wGi);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetGameModeDataDone, OnlineController.WJa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInputAnyKey, this.rAt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestJoinWorld, OnlineController.lEf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ScenePlayerLeaveScene, OnlineController.y4t);
@@ -88,6 +90,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseLoadingView, OnlineController.jJa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFinishLoadingState, OnlineController.wGi);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetGameModeDataDone, OnlineController.WJa);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestJoinWorld, OnlineController.lEf);
   }
   static OnRegisterNetEvent() {
     Net_1.Net.Register(26238, OnlineController.ApplyJoinWorldNotify);
@@ -108,6 +111,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Register(25543, OnlineController.SyncPlayerLocationNotify);
     Net_1.Net.Register(29341, OnlineController.ClientVersionNoMatchNotify);
     Net_1.Net.Register(15016, OnlineController.PlayerGravityUpdateNotify);
+    Net_1.Net.Register(16889, OnlineController.S3l);
   }
   static OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(26238);
@@ -127,6 +131,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.UnRegister(25543);
     Net_1.Net.UnRegister(29341);
     Net_1.Net.UnRegister(15016);
+    Net_1.Net.UnRegister(16889);
   }
   static CXa() {
     PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestricted(ModelManager_1.ModelManager.PlayerInfoModel.GetThirdPartyAccountId(), e => {
@@ -660,12 +665,12 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
           var e;
           var n;
           if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
-            this.egm();
+            this.aSm();
           } else if (ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamSize() !== 1) {
             this.uTd();
           } else {
             (e = new ConfirmBoxDefine_1.ConfirmBoxDataNew(371)).FunctionMap.set(0, n = () => {
-              this.egm();
+              this.aSm();
             });
             e.FunctionMap.set(1, () => {
               var e = ModelManager_1.ModelManager.PlayerInfoModel.GetId() ?? 0;
@@ -676,7 +681,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
             if (UiManager_1.UiManager.IsViewShow("BattleView")) {
               ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
             } else {
-              this.egm();
+              this.aSm();
             }
             this.uTd();
             this._Td = true;
@@ -685,7 +690,7 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static egm() {
+  static aSm() {
     this.gTd();
     this.dTd = TimerSystem_1.GameplayTimerSystem.Forever(() => {
       this.mTd();
@@ -694,15 +699,15 @@ class OnlineController extends UiControllerBase_1.UiControllerBase {
   static mTd() {
     if (ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       if (ModelManager_1.ModelManager.OnlineModel.GetCurrentTeamSize() !== 1) {
-        this.nmm = 0;
+        this.Hpm = 0;
       } else {
-        this.nmm += ONLINE_SING_TIPS_TIMER_INTERVAL;
-        if (!(this.nmm < ONLINE_SING_TIPS_TIME)) {
+        this.Hpm += ONLINE_SING_TIPS_TIMER_INTERVAL;
+        if (!(this.Hpm < ONLINE_SING_TIPS_TIME)) {
           if (ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
             this.fTd = true;
           } else {
             ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("OnlineSingleTips");
-            this.nmm = 0;
+            this.Hpm = 0;
           }
         }
       }
@@ -982,7 +987,7 @@ OnlineController.PlayerTeleportStateNotify = e => {
             o.TeleportTo(e.ToUeVector(), o.ActorRotationProxy.ToUeRotator(), "队友传送完成(地面修正失败)");
           }
         }
-        n.Entity.GetComponent(68)?.ClearReplaySamples();
+        n.Entity.GetComponent(71)?.ClearReplaySamples();
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("MultiPlayerTeam", 14, "队友传送完成通知缺失位置信息", ["playerId", l]);
@@ -1025,10 +1030,18 @@ OnlineController.PlayerGravityUpdateNotify = e => {
   }
   ModelManager_1.ModelManager.OnlineModel.SetPlayerGravityIsNormal(e.wI_);
 };
+OnlineController.S3l = e => {
+  if (ModelManager_1.ModelManager.PlayerInfoModel?.GetId() !== e.W5n) {
+    GenericPromptController_1.GenericPromptController.ShowPromptByItsType(27, undefined, undefined, undefined, undefined, undefined, undefined, undefined, e.NI_);
+  }
+};
 OnlineController.iVe = e => ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhantomFormationEnterOnlineTip"), false) : (!!ModelManager_1.ModelManager.GameModeModel.IsMulti || !!ModelManager_1.ModelManager.FunctionModel.IsOpen(10021)) && !(!ModelManager_1.ModelManager.GameModeModel.IsMulti && ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("OnlineDisabledByInstance"), 1) : !OnlineController.ShowTipsWhenOnlineDisabled());
 OnlineController.uFa = undefined;
 OnlineController.cTd = undefined;
 OnlineController.dTd = undefined;
 OnlineController.fTd = false;
 OnlineController._Td = false;
-OnlineController.nmm = 0; //# sourceMappingURL=OnlineController.js.map
+OnlineController.Hpm = 0;
+OnlineController.lEf = (e, n) => {
+  _a.ApplyJoinWorldRequest(e, n);
+}; //# sourceMappingURL=OnlineController.js.map

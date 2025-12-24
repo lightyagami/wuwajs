@@ -25,6 +25,9 @@ class PcKey {
   get FrenchKeyName() {
     return this.frenchkeyname();
   }
+  get ThaiKeyName() {
+    return this.thaikeyname();
+  }
   get KeyIconPath() {
     return this.keyiconpath();
   }
@@ -33,6 +36,9 @@ class PcKey {
   }
   get FrenchKeyIconPath() {
     return this.frenchkeyiconpath();
+  }
+  get ThaiKeyIconPath() {
+    return this.thaikeyiconpath();
   }
   __init(t, e) {
     this.z7 = t;
@@ -82,7 +88,7 @@ class PcKey {
     }
     return e;
   }
-  keyiconpath(t) {
+  thaikeyname(t) {
     var e = this.J7.__offset(this.z7, 14);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -90,7 +96,7 @@ class PcKey {
     }
     return e;
   }
-  mackeyiconpath(t) {
+  keyiconpath(t) {
     var e = this.J7.__offset(this.z7, 16);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -98,8 +104,24 @@ class PcKey {
     }
     return e;
   }
-  frenchkeyiconpath(t) {
+  mackeyiconpath(t) {
     var e = this.J7.__offset(this.z7, 18);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  frenchkeyiconpath(t) {
+    var e = this.J7.__offset(this.z7, 20);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  thaikeyiconpath(t) {
+    var e = this.J7.__offset(this.z7, 22);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

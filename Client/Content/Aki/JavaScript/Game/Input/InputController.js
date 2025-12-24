@@ -17,26 +17,33 @@ const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
 const Global_1 = require("../Global");
 const GlobalData_1 = require("../GlobalData");
+const InputSettingsManager_1 = require("../InputSettings/InputSettingsManager");
+const SRInputLayer_1 = require("../KuroSimpleCombat/SR/SRInput/SRInputLayer");
 const TDInputLayer_1 = require("../KuroSimpleCombat/TD/TDInput/TDInputLayer");
 const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const AceAntiCheatInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/AceAntiCheatInputLayer");
 const CharacterInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/CharacterInputLayer");
+const ExtraInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/ExtraInputLayer");
 const FollowShooterInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/FollowShooterInputLayer");
 const HoldingHandsInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/HoldingHandsInputLayer");
 const ManipulateInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/ManipulateInputLayer");
+const PanoramicInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/PanoramicInputLayer");
+const VehicleInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/VehicleInputLayer");
 const VisionInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/VisionInputLayer");
 const InputManager_1 = require("../Ui/Input/InputManager");
+const InputActionLogicFactory_1 = require("./InputActionLogic/InputActionLogicFactory");
+const InputDataTypeCreatorFactory_1 = require("./InputDataTypeCreator/InputDataTypeCreatorFactory");
 const InputEnums_1 = require("./InputEnums");
-const SRInputLayer_1 = require("../KuroSimpleCombat/SR/SRInput/SRInputLayer");
-const ExtraInputLayer_1 = require("../NewWorld/Character/Common/Component/Input/InputLayer/ExtraInputLayer");
 const KEY_RELEASED_TIME = -1;
 class InputController extends ControllerBase_1.ControllerBase {
   static IsAllMoveEnable() {
     return this.GMe && this.NMe && this.OMe && this.kMe;
   }
   static InitializeEnvironment() {
+    InputDataTypeCreatorFactory_1.InputDataTypeCreatorFactory.Initialize();
+    InputActionLogicFactory_1.InputActionLogicFactory.Initialize();
     if (Info_1.Info.UseFastInputCallback) {
       cpp_1.FKuroInputInterface.InitializeEnvironment();
     }
@@ -63,6 +70,7 @@ class InputController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ForceReleaseInput, this.PMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.xMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RefreshInputData, this.nzm);
   }
   static kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCloseLoadingView, this.jJa);
@@ -70,6 +78,7 @@ class InputController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputDistributeTagChanged, this.xMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ForceReleaseInput, this.PMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.jUc);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshInputData, this.nzm);
   }
   static BindInputActions(t) {
     ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(t, this.bMe);
@@ -83,6 +92,46 @@ class InputController extends ControllerBase_1.ControllerBase {
   static UnBindInputMoveAxes(t) {
     ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(t, this.BMe);
   }
+  static szm() {
+    InputController.uzf.Start();
+    var t;
+    var e;
+    var n;
+    var r = InputController.Model.GetCurrentInputData();
+    if (r && (t = r.GetActionNameList(), e = r.GetMoveAxisList(), n = r.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActions(t, this.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(e, this.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(n, this.wMe), InputManager_1.InputManager.RemoveViewHotKeyActionByType(r.Type), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Input", 10, "InstanceChange解除绑定", ["输入数据类型", r.Type], ["actionNameList", t], ["moveAxisNameList", e], ["cameraAxisNameList", n]);
+    }
+    InputController.uzf.Stop();
+  }
+  static Nhf(t) {
+    InputController.czf.Start();
+    InputController.Model.SetCurrentInputDataType(t);
+    var e;
+    var n;
+    var r;
+    var t = InputController.Model.GetCurrentInputData();
+    if (t && (e = t.GetActionNameList(), n = t.GetMoveAxisList(), r = t.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(e, this.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(n, this.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(r, this.wMe), InputController.dzf.Start(), InputManager_1.InputManager.AddViewHotKeyActionByType(t.Type), InputController.dzf.Stop(), InputController.mzf.Start(), InputSettingsManager_1.InputSettingsManager.SwitchKeysByBindingType(t.KeyBindingType), InputController.mzf.Stop(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Input", 10, "InstanceChange绑定输入", ["输入数据类型", t.Type], ["actionNameList", e], ["moveAxisNameList", n], ["cameraAxisNameList", r]);
+    }
+    InputController.czf.Stop();
+  }
+  static azm(t) {
+    InputController.fzf.Start();
+    var t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(t);
+    if (t) {
+      t = InputDataTypeCreatorFactory_1.InputDataTypeCreatorFactory.GetInputDataCreator(t.InstSubType).GetInputDataType();
+      InputController.Nhf(t);
+      InputController.fzf.Stop();
+    }
+  }
+  static hzm(t) {
+    InputController.szm();
+    InputController.azm(t);
+  }
+  static GmSwitchBattleInputData(t) {
+    InputController.szm();
+    InputController.Nhf(t);
+  }
   static AddInputHandler(t) {
     this.Model.AddInputHandler(t);
   }
@@ -91,73 +140,73 @@ class InputController extends ControllerBase_1.ControllerBase {
   }
   static InputAction(t, e) {
     if (InputEnums_1.EInputAction.锁定目标 !== t || ModelManager_1.ModelManager.FunctionModel.IsOpen(10031)) {
-      var r = this.Model.GetPressTimes();
+      var n = this.Model.GetPressTimes();
       switch (e) {
         case 1:
           this.Model.SetHoldTime(t);
-          var n = Time_1.Time.WorldTimeSeconds;
-          r.set(t, n);
-          for (const l of this.Model.GetHandlers()) {
-            var o = l.GetInputFilter();
+          var r = Time_1.Time.WorldTimeSeconds;
+          n.set(t, r);
+          for (const i of this.Model.GetHandlers()) {
+            var o = i.GetInputFilter();
             if (o.BlockAction(t)) {
               break;
             }
             if (o.ListenToAction(t)) {
-              l.HandlePressEvent(t, n);
+              i.HandlePressEvent(t, r);
             }
           }
           break;
         case 2:
-          if (r.get(t) === KEY_RELEASED_TIME) {
+          if (n.get(t) === KEY_RELEASED_TIME) {
             return;
           }
           var a = this.zPu(t);
           this.Model.SetHoldTime(t, KEY_RELEASED_TIME);
-          r.set(t, KEY_RELEASED_TIME);
-          for (const u of this.Model.GetHandlers()) {
-            var i = u.GetInputFilter();
-            if (i.BlockAction(t)) {
+          n.set(t, KEY_RELEASED_TIME);
+          for (const l of this.Model.GetHandlers()) {
+            var u = l.GetInputFilter();
+            if (u.BlockAction(t)) {
               break;
             }
-            if (i.ListenToAction(t)) {
-              u.HandleReleaseEvent(t, a);
+            if (u.ListenToAction(t)) {
+              l.HandleReleaseEvent(t, a);
             }
           }
       }
     }
   }
-  static SetMoveControlEnabled(t, e, r, n) {
+  static SetMoveControlEnabled(t, e, n, r) {
     this.GMe = t;
     this.NMe = e;
-    this.OMe = r;
-    this.kMe = n;
-    if (Info_1.Info.AxisInputOptimize && (this.Model.NextFrameRefreshAxisValues(), !t || !e || !r || !n)) {
+    this.OMe = n;
+    this.kMe = r;
+    if (Info_1.Info.AxisInputOptimize && (this.Model.NextFrameRefreshAxisValues(), !t || !e || !n || !r)) {
       var o = this.Model.GetAxisValues();
       var a = this.Model.GetHandlers();
       if (!t || !e) {
         o.set(InputEnums_1.EInputAxis.MoveForward, 0);
-        for (const i of a) {
-          i.ClearSingleAxisInput(InputEnums_1.EInputAxis.MoveForward, false);
+        for (const u of a) {
+          u.ClearSingleAxisInput(InputEnums_1.EInputAxis.MoveForward, false);
         }
       }
-      if (!n || !r) {
+      if (!r || !n) {
         o.set(InputEnums_1.EInputAxis.MoveRight, 0);
-        for (const l of a) {
-          l.ClearSingleAxisInput(InputEnums_1.EInputAxis.MoveRight, false);
+        for (const i of a) {
+          i.ClearSingleAxisInput(InputEnums_1.EInputAxis.MoveRight, false);
         }
       }
     }
   }
-  static InputAxis(t, e, r = true) {
-    var n = this.Model.GetAxisValues();
+  static InputAxis(t, e, n = true) {
+    var r = this.Model.GetAxisValues();
     if (Info_1.Info.AxisInputOptimize) {
-      if (r) {
+      if (n) {
         this.j$a.add(t);
       }
-      if (n.get(t) === e) {
+      if (r.get(t) === e) {
         return;
       }
-    } else if (e === 0 && n.has(t)) {
+    } else if (e === 0 && r.has(t)) {
       return;
     }
     if (ModelManager_1.ModelManager.InputModel.IsOpenInputAxisLog && t === 3 && Log_1.Log.CheckInfo()) {
@@ -179,38 +228,38 @@ class InputController extends ControllerBase_1.ControllerBase {
         return;
       }
     }
-    n.set(t, e);
+    r.set(t, e);
     if (ModelManager_1.ModelManager.InputModel.IsOpenInputAxisLog && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Input", 10, "[InputLog][InputController]完成接收输入", ["axisSet", n]);
+      Log_1.Log.Info("Input", 10, "[InputLog][InputController]完成接收输入", ["axisSet", r]);
     }
   }
   static PreProcessInput(t, e) {
     if (this.Model) {
-      for (const r of this.Model.GetHandlers()) {
-        r.PreProcessInput(t, e);
+      for (const n of this.Model.GetHandlers()) {
+        n.PreProcessInput(t, e);
       }
     }
   }
   static PostProcessInput(t, e) {
     if (this.Model) {
-      var r;
       var n;
+      var r;
       var o;
       var a;
-      var i = this.Model.GetHandlers();
+      var u = this.Model.GetHandlers();
       InputController.FMe.Start();
-      for ([r, n] of this.Model.GetAxisValues()) {
-        for (const I of i) {
-          var l = I.GetInputFilter();
-          if (l.BlockAxis(r)) {
-            I.ClearSingleAxisInput(r, false);
+      for ([n, r] of this.Model.GetAxisValues()) {
+        for (const I of u) {
+          var i = I.GetInputFilter();
+          if (i.BlockAxis(n)) {
+            I.ClearSingleAxisInput(n, false);
             break;
           }
-          if (l.ListenToAxis(r)) {
-            if (ModelManager_1.ModelManager.InputModel.IsOpenInputAxisLog && r === 3 && Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Input", 10, "[InputLog][InputController]开始处理轴输入", ["axis", r], ["value", n]);
+          if (i.ListenToAxis(n)) {
+            if (ModelManager_1.ModelManager.InputModel.IsOpenInputAxisLog && n === 3 && Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Input", 10, "[InputLog][InputController]开始处理轴输入", ["axis", n], ["value", r]);
             }
-            I.HandleInputAxis(r, n);
+            I.HandleInputAxis(n, r);
           }
         }
       }
@@ -218,16 +267,16 @@ class InputController extends ControllerBase_1.ControllerBase {
       InputController.VMe.Start();
       for ([o, a] of this.Model.GetHoldTimes()) {
         if (a !== undefined && a !== KEY_RELEASED_TIME) {
-          var u = this.JPu(t);
-          var s = a + u;
-          this.Model.SetHoldTime(o, s);
-          for (const _ of i) {
-            var p = _.GetInputFilter();
-            if (p.BlockAction(o)) {
+          var l = this.JPu(t);
+          var p = a + l;
+          this.Model.SetHoldTime(o, p);
+          for (const _ of u) {
+            var s = _.GetInputFilter();
+            if (s.BlockAction(o)) {
               break;
             }
-            if (p.ListenToAction(o)) {
-              _.HandleHoldEvent(o, s);
+            if (s.ListenToAction(o)) {
+              _.HandleHoldEvent(o, p);
             }
           }
         }
@@ -235,7 +284,7 @@ class InputController extends ControllerBase_1.ControllerBase {
       InputController.VMe.Stop();
       InputController.HMe.Start();
       try {
-        for (const C of i) {
+        for (const C of u) {
           C.PostProcessInput(t, e);
         }
       } catch (t) {
@@ -250,12 +299,12 @@ class InputController extends ControllerBase_1.ControllerBase {
         InputController.HMe.Stop();
       }
       if (Info_1.Info.AxisInputOptimize) {
-        for (const E of this.j$a) {
-          if (this.Model.GetAxisValues().has(E)) {
-            this.Model.GetAxisValues().delete(E);
+        for (const c of this.j$a) {
+          if (this.Model.GetAxisValues().has(c)) {
+            this.Model.GetAxisValues().delete(c);
           }
-          for (const c of i) {
-            c.ClearSingleAxisInput(E, true);
+          for (const E of u) {
+            E.ClearSingleAxisInput(c, true);
           }
         }
         this.j$a.clear();
@@ -313,18 +362,22 @@ class InputController extends ControllerBase_1.ControllerBase {
         return new ExtraInputLayer_1.ExtraInputLayer();
       case 3:
         return new VisionInputLayer_1.VisionInputLayer();
-      case 4:
+      case 5:
         return new FollowShooterInputLayer_1.FollowShooterInputLayer();
       case 99:
         return new AceAntiCheatInputLayer_1.AceAntiCheatInputLayer();
-      case 5:
-        return new ManipulateInputLayer_1.ManipulateInputLayer();
       case 6:
-        return new TDInputLayer_1.TowerDefenseInputLayer();
+        return new ManipulateInputLayer_1.ManipulateInputLayer();
       case 7:
-        return new SRInputLayer_1.SurvivorsRogueInputLayer();
+        return new TDInputLayer_1.TowerDefenseInputLayer();
       case 8:
+        return new SRInputLayer_1.SurvivorsRogueInputLayer();
+      case 9:
         return new HoldingHandsInputLayer_1.HoldingHandsInputLayer();
+      case 4:
+        return new VehicleInputLayer_1.VehicleInputLayer();
+      case 10:
+        return new PanoramicInputLayer_1.PanoramicInputLayer();
       default:
         return;
     }
@@ -340,33 +393,47 @@ exports.InputController = InputController;
 (_a = InputController).HMe = Stats_1.Stat.Create("InputController.PostProcessInput");
 InputController.FMe = Stats_1.Stat.Create("InputController.HandleInputAxis");
 InputController.VMe = Stats_1.Stat.Create("InputController.HandleHold");
+InputController.uzf = Stats_1.Stat.Create("InputController.UnBindInputData");
+InputController.czf = Stats_1.Stat.Create("InputController.HandleBindInputData");
+InputController.fzf = Stats_1.Stat.Create("InputController.BindInputData");
+InputController.dzf = Stats_1.Stat.Create("InputController.AddViewHotKeyActionByType");
+InputController.mzf = Stats_1.Stat.Create("InputController.SwitchKeysByBindingType");
 InputController.GMe = true;
 InputController.NMe = true;
 InputController.OMe = true;
 InputController.kMe = true;
-InputController.wMe = (t, e, r) => {
-  var n = InputController.Model.GetCurrentInputData();
-  var r = r.GetInputAxis(n);
-  InputController.InputAxis(r, e, false);
-  var n = Global_1.Global.CharacterController;
-  if (n && e > 0 && r !== InputEnums_1.EInputAxis.Zoom && Info_1.Info.IsInKeyBoard() && !n.bShowMouseCursor) {
+InputController.wMe = (t, e, n) => {
+  var r = InputController.Model.GetCurrentInputData();
+  var n = n.GetInputAxis(r);
+  InputController.InputAxis(n, e, false);
+  var r = Global_1.Global.CharacterController;
+  if (r && e > 0 && n !== InputEnums_1.EInputAxis.Zoom && Info_1.Info.IsInKeyBoard() && !r.bShowMouseCursor) {
     InputManager_1.InputManager.MoveCursorToCenter();
   }
 };
-InputController.BMe = (t, e, r) => {
-  var n = InputController.Model.GetCurrentInputData();
-  var r = r.GetInputAxis(n);
-  InputController.InputAxis(r, e, false);
+InputController.BMe = (t, e, n) => {
+  var r = InputController.Model.GetCurrentInputData();
+  var n = n.GetInputAxis(r);
+  InputController.InputAxis(n, e, false);
 };
-InputController.bMe = (t, e, r) => {
+InputController.bMe = (t, e, n) => {
   var e = e === 0 ? 1 : 2;
-  var n = InputController.Model.GetCurrentInputData();
-  var r = r.GetInputAction(n);
-  InputController.InputAction(r, e);
+  var r = InputController.Model.GetCurrentInputData();
+  var n = n.GetInputAction(r);
+  InputController.InputAction(n, e);
 };
-InputController.AMe = () => {
-  for (var [t] of InputController.Model.GetPressTimes()) {
-    InputController.InputAction(t, 2);
+InputController.AMe = t => {
+  var e;
+  var n = t.PlotLevel === "LevelD" || t.PlotLevel === "Prompt";
+  var r = InputController.Model.GetCurrentInputDataType();
+  for ([e] of InputController.Model.GetPressTimes()) {
+    if (n) {
+      var o = InputActionLogicFactory_1.InputActionLogicFactory.GetInputActionLogic(e);
+      if (o && !o.IsAllowReleaseInput(r)) {
+        continue;
+      }
+    }
+    InputController.InputAction(e, 2);
   }
 };
 InputController.jJa = () => {
@@ -381,51 +448,31 @@ InputController.PMe = t => {
   if (t && Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Input", 7, "强制释放所有按键", ["Reason", t]);
   }
-  for (var [e] of InputController.Model.GetPressTimes()) {
-    InputController.InputAction(e, 2);
+  var e;
+  var n = InputController.Model.GetCurrentInputDataType();
+  for ([e] of InputController.Model.GetPressTimes()) {
+    var r = InputActionLogicFactory_1.InputActionLogicFactory.GetInputActionLogic(e);
+    if (!r || !!r.IsAllowReleaseInput(n)) {
+      InputController.InputAction(e, 2);
+    }
   }
 };
 InputController.jUc = (t, e) => {
-  var r = InputController.Model.GetCurrentInputData();
-  if (r) {
-    n = r.GetActionNameList();
-    a = r.GetMoveAxisList();
-    o = r.GetCameraAxisList();
-    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActions(n, _a.bMe);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(a, _a.BMe);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAxes(o, _a.wMe);
-    if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Input", 10, "InstanceChange解除绑定", ["actionNameList", n], ["moveAxisNameList", a], ["cameraAxisNameList", o]);
-    }
-    InputManager_1.InputManager.RemoveViewHotKeyActionByType(r.Type);
+  InputController.hzm(e);
+};
+InputController.nzm = t => {
+  var e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+  if (Log_1.Log.CheckInfo()) {
+    Log_1.Log.Info("Input", 10, "刷新当前绑定输入", ["原因", t], ["当前副本id", e]);
   }
-  var n = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
-  if (n) {
-    switch (n.InstSubType) {
-      case 37:
-        InputController.Model.SetCurrentInputDataType(1);
-        break;
-      case 41:
-        InputController.Model.SetCurrentInputDataType(2);
-        break;
-      default:
-        InputController.Model.SetCurrentInputDataType(0);
-    }
-  } else {
-    InputController.Model.SetCurrentInputDataType(0);
-  }
-  var o;
-  var a = InputController.Model.GetCurrentInputData();
-  if (a && (o = a.GetActionNameList(), r = a.GetMoveAxisList(), e = a.GetCameraAxisList(), ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(o, _a.bMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(r, _a.BMe), ControllerHolder_1.ControllerHolder.InputDistributeController.BindAxes(e, _a.wMe), InputManager_1.InputManager.AddViewHotKeyActionByType(a.Type), Log_1.Log.CheckInfo())) {
-    Log_1.Log.Info("Input", 10, "InstanceChange绑定输入", ["actionNameList", o], ["moveAxisNameList", r], ["cameraAxisNameList", e]);
-  }
+  InputController.hzm(e);
 };
 InputController.xMe = t => {
   var e;
-  var r = ModelManager_1.ModelManager.InputDistributeModel;
+  var n = ModelManager_1.ModelManager.InputDistributeModel;
   for ([e] of InputController.Model.GetPressTimes()) {
-    var n = r.GetActionInputDistributeTagName(InputEnums_1.EInputAction[e]);
-    if (!!n && !r.IsTagMatchAnyCurrentInputTag(n)) {
+    var r = n.GetActionInputDistributeTagName(InputEnums_1.EInputAction[e]);
+    if (!!r && !n.IsTagMatchAnyCurrentInputTag(r)) {
       InputController.InputAction(e, 2);
     }
   }

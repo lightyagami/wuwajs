@@ -16,11 +16,17 @@ class DirectTrainActivity {
   get SkipQuestId() {
     return this.skipquestid();
   }
+  get IsForceRemind() {
+    return this.isforceremind();
+  }
   get ForceRemindCond() {
     return this.forceremindcond();
   }
   get SkipQuestCondition() {
     return this.skipquestcondition();
+  }
+  get PrefabResource() {
+    return this.prefabresource();
   }
   get RecommendQuestId() {
     return this.recommendquestid();
@@ -30,6 +36,12 @@ class DirectTrainActivity {
   }
   get RecommendQuestLabel() {
     return this.recommendquestlabel();
+  }
+  get SkipTipTitle() {
+    return this.skiptiptitle();
+  }
+  get SkipTipContent() {
+    return this.skiptipcontent();
   }
   __init(t, i) {
     this.z7 = t;
@@ -55,15 +67,11 @@ class DirectTrainActivity {
       return 0;
     }
   }
-  forceremindcond() {
+  isforceremind() {
     var t = this.J7.__offset(this.z7, 8);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  skipquestcondition() {
+  forceremindcond() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -71,8 +79,24 @@ class DirectTrainActivity {
       return 0;
     }
   }
-  recommendquestid() {
+  skipquestcondition() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  prefabresource(t) {
+    var i = this.J7.__offset(this.z7, 14);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  recommendquestid() {
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -83,7 +107,7 @@ class DirectTrainActivity {
     return this.recommendquestlinklist(t);
   }
   recommendquestlinklist(t) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 18);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -91,7 +115,7 @@ class DirectTrainActivity {
     }
   }
   recommendquestlinklistLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -99,7 +123,7 @@ class DirectTrainActivity {
     }
   }
   recommendquestlinklistArray() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -107,7 +131,23 @@ class DirectTrainActivity {
     }
   }
   recommendquestlabel(t) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  skiptiptitle(t) {
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  skiptipcontent(t) {
+    var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

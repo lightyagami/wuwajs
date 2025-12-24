@@ -18,6 +18,7 @@ const ColorUtils_1 = require("../Utils/ColorUtils");
 const CameraUtility_1 = require("./CameraUtility");
 const CAMERA_DIRECTION_LENGTH = 500;
 const CAMERA_DIRECTION_ARROW_SIZE = 2000;
+const vehicleStandbyZone = [-971155539];
 class CameraRotationZone {
   constructor() {
     this.Hh = undefined;
@@ -26,14 +27,28 @@ class CameraRotationZone {
     this.i1h = undefined;
     this.Whl = undefined;
     this.Qhl = undefined;
+    this.Ogm = undefined;
+    this.Ggm = undefined;
+    this.Fgm = undefined;
     this.Khl = 0;
     this.r1h = 0;
     this.$hl = 0;
     this.Xhl = 0;
+    this.OAf = 0;
+    this.GAf = 0;
+    this.FAf = 0;
+    this.NAf = 0;
     this.Yhl = 0;
     this.zhl = 0;
+    this.VAf = 0;
+    this.HAf = 0;
+    this.jAf = 0;
+    this.$Af = 0;
+    this.glm = Vector_1.Vector.Create();
+    this.Lz = Vector_1.Vector.Create();
     this.az = Quat_1.Quat.Create();
     this.Gue = Rotator_1.Rotator.Create();
+    this.KKf = Rotator_1.Rotator.Create();
     this.c1e = new Set();
     this.m6c = false;
   }
@@ -42,28 +57,45 @@ class CameraRotationZone {
   }
   SetCharacter(t) {
     this.e1h = t;
-    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(62), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(59), this.Qhl = this.e1h.Entity.GetComponent(181), Log_1.Log.CheckDebug())) {
-      Log_1.Log.Debug("Camera", 57, "CameraRotationZone init");
+    if (this.e1h?.Valid && (this.t1h = this.e1h.Entity.GetComponent(65), this.i1h = this.e1h.Entity.GetComponent(3), this.Whl = this.e1h.Entity.GetComponent(62), this.Qhl = this.e1h.Entity.GetComponent(186), Log_1.Log.CheckDebug())) {
+      Log_1.Log.Debug("Camera", 57, "CameraRotationZone init Character");
+    }
+  }
+  SetVehicle(t) {
+    this.Ogm = t;
+    if (this.Ogm?.Valid) {
+      this.Ggm = this.Ogm.Entity.GetComponent(247);
+      this.Fgm = this.Ogm.Entity.GetComponent(254);
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Camera", 57, "CameraRotationZone init Vehicle");
+      }
+    } else {
+      this.Ggm = undefined;
+      this.Fgm = undefined;
     }
   }
   UpdateInputState(t) {
     var i;
     var s;
-    var h;
     if (this.Hh.CameraZoneMode !== 0 && !(this.c1e.size > 0)) {
-      i = this.i1h.InputDirectProxy;
-      [s, h] = (this.IsHasPitchMovement() ? this.Yhl += t : this.Yhl = 0, this.t1h.GetCameraInput());
-      if (MathUtils_1.MathUtils.IsNearlyZero(h, MathUtils_1.MathUtils.KindaSmallNumber)) {
+      this.Hh.GetCameraTargetInput(this.glm);
+      if (this.IsHasPitchMovement()) {
+        this.Yhl += t;
+      } else {
+        this.Yhl = 0;
+      }
+      [i, s] = this.t1h.GetCameraInput();
+      if (MathUtils_1.MathUtils.IsNearlyZero(s, MathUtils_1.MathUtils.KindaSmallNumber)) {
         this.zhl += t;
       } else {
         this.zhl = 0;
       }
-      if (MathUtils_1.MathUtils.IsNearlyZero(i.Y, MathUtils_1.MathUtils.KindaSmallNumber)) {
+      if (MathUtils_1.MathUtils.IsNearlyZero(this.glm.Y, MathUtils_1.MathUtils.KindaSmallNumber)) {
         this.$hl = 0;
       } else {
         this.$hl += t;
       }
-      if (MathUtils_1.MathUtils.IsNearlyZero(s, MathUtils_1.MathUtils.KindaSmallNumber)) {
+      if (MathUtils_1.MathUtils.IsNearlyZero(i, MathUtils_1.MathUtils.KindaSmallNumber)) {
         this.Xhl += t;
       } else {
         this.Xhl = 0;
@@ -72,6 +104,7 @@ class CameraRotationZone {
   }
   UpdatePitchZone(i) {
     if (this.o1h() && this.Hh.CameraZoneMode !== 0) {
+      this.WAf();
       let t = this.Hh.PlayerRotatorInGravity.Pitch;
       if (this.Hh.CameraZoneMode === 1) {
         s = this.i1h.ActorVelocityProxy;
@@ -84,6 +117,7 @@ class CameraRotationZone {
         }
         t = this.Gue.Pitch;
       }
+      t += this.Hh.PitchBasis;
       var s = CameraUtility_1.CameraUtility.GetPitchInGravity(this.Hh.DesiredCamera.ArmRotation);
       var h = MathUtils_1.MathUtils.WrapAngle(t - s);
       this.Jhl(h, s);
@@ -91,8 +125,17 @@ class CameraRotationZone {
       CameraUtility_1.CameraUtility.SetPitchInGravity(this.Hh.DesiredCamera.ArmRotation, s, this.Hh.DesiredCamera.ArmRotation);
     }
   }
+  WAf() {
+    this.VAf = this.Hh.PitchSoftZoneMin;
+    this.HAf = this.Hh.PitchSoftZoneMax;
+    this.jAf = this.Hh.PitchDeadZoneMin;
+    this.$Af = this.Hh.PitchDeadZoneMax;
+    if (this.Hh.CameraZoneMode === 3) {
+      this.VAf += Math.max(0, this.Hh.PlayerRotatorInGravity.Pitch);
+    }
+  }
   Jhl(t, i) {
-    if (t >= this.Hh.PitchSoftZoneMin && t <= this.Hh.PitchSoftZoneMax) {
+    if (t >= this.VAf && t <= this.HAf) {
       this.Khl = 2;
     }
     if (this.e1l()) {
@@ -111,36 +154,39 @@ class CameraRotationZone {
     }
   }
   Zhl(t, i, s, h) {
-    if (this.Khl === 0) {
+    if (this.Khl === 0 && this.QAf()) {
       return i;
     }
-    var a = MathUtils_1.MathUtils.Lerp(this.Hh.PitchZoneSpeedMin, this.Hh.PitchZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(s) / this.Hh.PitchSoftZoneMax, 0, 1));
+    var a = MathUtils_1.MathUtils.Lerp(this.Hh.PitchZoneSpeedMin, this.Hh.PitchZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(s) / this.HAf, 0, 1));
     var h = h * a;
     let e = i;
-    if (this.Khl !== 1 && (e = this.pQl(i, t, h, s), (i = MathUtils_1.MathUtils.WrapAngle(t - e)) >= this.Hh.PitchSoftZoneMin) && i <= this.Hh.PitchSoftZoneMax) {
+    if (this.Khl !== 0 && this.Khl !== 1 && (e = this.pQl(i, t, h, s), (i = MathUtils_1.MathUtils.WrapAngle(t - e)) >= this.VAf) && i <= this.HAf) {
       this.Khl = 2;
     }
     if (this.m6c && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Camera", 57, "[PitchZone stage2]", ["State", this.Khl], ["actorPitch", t.toFixed(2)], ["targetPitch", e.toFixed(2)], ["speed", a.toFixed(2)], ["deltaPitch", s.toFixed(2)], ["targetDeltaPitch", h.toFixed(2)]);
     }
-    e = this.vQl(this.Khl === 2, t, e, this.Hh.PitchSoftZoneMin, this.Hh.PitchSoftZoneMax, this.Hh.PitchDeadZoneMin, this.Hh.PitchDeadZoneMax);
-    if (this.m6c && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Camera", 57, "[PitchZone stage3]", ["State", this.Khl], ["targetPitch", e.toFixed(2)]);
-    }
-    return e;
+    return e = this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 2 ? this.vQl(this.Khl === 2, t, e, this.VAf, this.HAf, this.jAf, this.$Af) : this.XKf(this.Khl === 2, t, e, this.VAf, this.HAf, this.jAf, this.$Af);
   }
   UpdateYawZone(t) {
     if (this.o1h() && this.Hh.CameraZoneMode !== 0) {
+      this.KAf();
       this.n1h();
       t = this.s1h(t);
       CameraUtility_1.CameraUtility.SetYawInGravity(this.Hh.DesiredCamera.ArmRotation, t, this.Hh.DesiredCamera.ArmRotation);
     }
   }
+  KAf() {
+    this.OAf = this.Hh.YawSoftZoneMin;
+    this.GAf = this.Hh.YawSoftZoneMax;
+    this.FAf = this.Hh.YawDeadZoneMin;
+    this.NAf = this.Hh.YawDeadZoneMax;
+  }
   n1h() {
     var t = this.Hh.PlayerRotatorInGravity.Yaw;
     var i = CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     var t = MathUtils_1.MathUtils.WrapAngle(t - i);
-    if (t >= this.Hh.YawSoftZoneMin && t <= this.Hh.YawSoftZoneMax) {
+    if (t >= this.OAf && t <= this.GAf) {
       this.r1h = 2;
     }
     if (this.o1l()) {
@@ -158,9 +204,12 @@ class CameraRotationZone {
         this.r1h = 4;
       }
     }
+    if (this.m6c && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Camera", 57, "[YawZone stage1]", ["State", this.r1h], ["targetYaw", i.toFixed(2)]);
+    }
   }
   s1h(t) {
-    if (this.r1h === 0) {
+    if (this.r1h === 0 && this.XAf()) {
       return CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     }
     var i;
@@ -168,27 +217,42 @@ class CameraRotationZone {
     var h = this.Hh.PlayerRotatorInGravity.Yaw;
     var a = CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
     var e = MathUtils_1.MathUtils.WrapAngle(h - a);
-    var t = t * MathUtils_1.MathUtils.Lerp(this.Hh.YawZoneSpeedMin, this.Hh.YawZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(e) / this.Hh.YawDeadZoneMax, 0, 1));
+    var t = t * this.Ngm();
     let r = a;
     if (this.r1h === 2) {
       r = this.u1h(a, t);
     } else if (this.r1h === 3) {
       r = this.c1h(a, t, e, r);
-      i = this.m1h() ? this.Hh.YawSoftZoneMin : this.Hh.YawSoftZoneMax;
+      i = this.m1h() ? this.OAf : this.GAf;
       s = MathUtils_1.MathUtils.WrapAngle(h - r);
       if (e < 0 && i < s || e > 0 && s < i) {
         this.r1h = 2;
       }
     } else if (this.r1h === 4 || this.r1h === 5) {
       r = this.d1h(a, h, t, e);
-      if ((s = MathUtils_1.MathUtils.WrapAngle(h - r)) >= this.Hh.YawSoftZoneMin && s <= this.Hh.YawSoftZoneMax) {
+      if ((s = MathUtils_1.MathUtils.WrapAngle(h - r)) >= this.OAf && s <= this.GAf) {
         this.r1h = 2;
       }
     }
-    return r = this.vQl(this.r1h === 2 || this.r1h === 5, h, r, this.Hh.YawSoftZoneMin, this.Hh.YawSoftZoneMax, this.Hh.YawDeadZoneMin, this.Hh.YawDeadZoneMax);
+    if (this.m6c && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Camera", 57, "[YawZone stage2]", ["State", this.r1h], ["actorYaw", h.toFixed(2)], ["targetYaw", r.toFixed(2)], ["deltaYaw", e.toFixed(2)]);
+    }
+    r = this.vQl(this.r1h === 2 || this.r1h === 5, h, r, this.OAf, this.GAf, this.FAf, this.NAf);
+    if (this.m6c && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Camera", 57, "[YawZone stage3]", ["State", this.r1h], ["targetYaw", r.toFixed(2)]);
+    }
+    return r;
   }
   u1h(t, i) {
-    return MathUtils_1.MathUtils.WrapAngle(t + (this.oQ_() ? this.m1h() ? i : -i : 0));
+    if (this.Hh.CameraZoneMode === 3 && this.oQ_() && !MathUtils_1.MathUtils.IsNearlyZero(this.glm.Y, MathUtils_1.MathUtils.KindaSmallNumber)) {
+      if (this.m1h()) {
+        return MathUtils_1.MathUtils.WrapAngle(t + i * this.Hh.YawSoftZoneSpeedRatio);
+      } else {
+        return MathUtils_1.MathUtils.WrapAngle(t - i * this.Hh.YawSoftZoneSpeedRatio);
+      }
+    } else {
+      return MathUtils_1.MathUtils.WrapAngle(t + (this.oQ_() ? this.m1h() ? i : -i : 0));
+    }
   }
   c1h(t, i, s, h) {
     if (this.g1h(s)) {
@@ -247,48 +311,103 @@ class CameraRotationZone {
       return s;
     }
   }
+  XKf(t, i, s, h, a, e, r) {
+    var o = this.Gue;
+    var _ = this.Lz;
+    CameraUtility_1.CameraUtility.GetRotatorInGravity(this.Hh.DesiredCamera.ArmRotation, this.Gue);
+    o.Pitch = s;
+    o.Vector(_);
+    var s = this.KKf;
+    s.DeepCopy(this.Hh.PlayerRotatorInGravity);
+    s.Roll = 0;
+    s.Quaternion(this.az);
+    this.az.UnRotateVector(_, _);
+    _.Rotation(o);
+    o.Pitch = this.YKf(t, i, o.Pitch, h, a, e, r);
+    o.Vector(_);
+    this.az.RotateVector(_, _);
+    _.Rotation(o);
+    return o.Pitch;
+  }
+  YKf(t, i, s, h, a, e, r) {
+    h = t ? h : e;
+    e = t ? a : r;
+    if (s < -e) {
+      return -e;
+    } else if (-h < s) {
+      return -h;
+    } else {
+      return s;
+    }
+  }
   o1l() {
-    return !(this.c1e.size > 0) && (this.Hh.CameraZoneMode === 1 ? this.Hh.CharacterMoveEnterState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar || this.Qhl.HasKuroRootMotion || this.t1h.IsInCameraDrivenAutoFlightMode() || this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback() : this.Hh.CameraZoneMode === 2 && this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback());
+    return !(this.c1e.size > 0) && (this.Hh.CameraZoneMode === 1 ? this.Hh.CharacterMoveEnterState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar || this.Qhl.HasKuroRootMotion || this.t1h.IsInCameraDrivenAutoFlightMode() || this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback() : this.Hh.CameraZoneMode === 2 ? this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback() : this.Hh.CameraZoneMode === 3 && (this.Fgm.HasAnyTag(vehicleStandbyZone) || this.Ggm.ActorVelocityProxy.Size() <= 5 || this.$hl > 0 && this.Xhl > 0 && !this.IsYawRollback()));
   }
   e1l() {
-    return !(this.c1e.size > 0) && (this.Hh.CameraZoneMode === 1 ? this.Hh.CharacterMoveEnterState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar || this.Qhl.HasKuroRootMotion || this.t1h.IsInCameraDrivenAutoFlightMode() || this.zhl > 0 && !this.IsPitchRollback() : this.Hh.CameraZoneMode === 2 && this.zhl > 0 && !this.IsPitchRollback());
+    return !(this.c1e.size > 0) && (this.Hh.CameraZoneMode === 1 ? this.Hh.CharacterMoveEnterState === CharacterUnifiedStateTypes_1.ECharMoveState.Soar || this.Qhl.HasKuroRootMotion || this.t1h.IsInCameraDrivenAutoFlightMode() || this.zhl > 0 && !this.IsPitchRollback() : this.Hh.CameraZoneMode === 2 ? this.zhl > 0 && !this.IsPitchRollback() : this.Hh.CameraZoneMode === 3 && (this.Fgm.HasAnyTag(vehicleStandbyZone) || this.Ggm.ActorVelocityProxy.Size() <= 5 || this.zhl > 0 && !this.IsPitchRollback()));
   }
   a1h() {
     return this.Hh.CameraZoneMode !== 1 || !this.t1h.IsInCameraDrivenAutoFlightMode();
   }
   h1h() {
-    return this.Hh.CameraZoneMode === 1 && this.IsYawInputEnable() && this.IsYawRollback();
+    return (this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 3) && this.IsYawInputEnable() && this.IsYawRollback();
   }
   t1l() {
-    return this.Hh.CameraZoneMode === 1 && !this.Qhl.HasKuroRootMotion && this.IsPitchInputEnable() && this.IsPitchRollback();
+    if (this.Hh.CameraZoneMode === 1) {
+      return !this.Qhl.HasKuroRootMotion && this.IsPitchInputEnable() && this.IsPitchRollback();
+    } else {
+      return this.Hh.CameraZoneMode === 3 && this.IsPitchInputEnable() && this.IsPitchRollback();
+    }
   }
   oQ_() {
-    return this.Hh.CameraZoneMode === 1;
+    return this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 3;
   }
   m1h() {
-    return this.Hh.CameraZoneMode === 1 && this.i1h.InputDirectProxy.Y < 0;
+    if (this.Hh.CameraZoneMode === 1) {
+      return this.glm.Y < 0;
+    } else {
+      return this.Hh.CameraZoneMode === 3 && this.glm.Y > 0;
+    }
   }
   l1h() {
-    return this.Hh.CameraZoneMode === 1 || (this.Hh.CameraZoneMode, false);
+    return this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 3 || (this.Hh.CameraZoneMode, false);
   }
   g1h(t) {
-    return this.Hh.CameraZoneMode === 1 && this.i1h.InputDirectProxy.Y > 0 && t > 0;
+    return (this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 3) && this.glm.Y > 0 && t > 0;
   }
   p1h(t) {
-    return this.Hh.CameraZoneMode === 1 && this.i1h.InputDirectProxy.Y < 0 && t < 0;
+    return (this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 3) && this.glm.Y < 0 && t < 0;
   }
   n1l() {
-    return (this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 2) && this.IsYawRollback();
+    if (this.Hh.CameraZoneMode === 1 || this.Hh.CameraZoneMode === 2) {
+      return this.IsYawRollback();
+    } else {
+      return this.Hh.CameraZoneMode === 3 && (this.IsYawRollback() || this.r1h === 2 && !MathUtils_1.MathUtils.IsNearlyZero(this.glm.Y, MathUtils_1.MathUtils.KindaSmallNumber));
+    }
   }
   i1l() {
     if (this.Hh.CameraZoneMode === 1) {
       return this.Qhl.HasKuroRootMotion || this.IsPitchRollback();
+    } else if (this.Hh.CameraZoneMode === 2) {
+      return this.IsPitchRollback();
     } else {
-      return this.Hh.CameraZoneMode === 2 && this.IsPitchRollback();
+      return this.Hh.CameraZoneMode === 3 && (this.IsPitchRollback() || this.r1h === 2 && !MathUtils_1.MathUtils.IsNearlyZero(this.glm.X, MathUtils_1.MathUtils.KindaSmallNumber));
     }
   }
+  Ngm() {
+    var t = this.Hh.PlayerRotatorInGravity.Yaw;
+    var i = CameraUtility_1.CameraUtility.GetYawInGravity(this.Hh.DesiredCamera.ArmRotation);
+    var t = MathUtils_1.MathUtils.WrapAngle(t - i);
+    return MathUtils_1.MathUtils.Lerp(this.Hh.YawZoneSpeedMin, this.Hh.YawZoneSpeedMax, MathUtils_1.MathUtils.Clamp(Math.abs(t) / this.NAf, 0, 1));
+  }
+  QAf() {
+    return this.Hh.CameraZoneMode !== 3;
+  }
+  XAf() {
+    return this.Hh.CameraZoneMode !== 3;
+  }
   o1h() {
-    return !!this.e1h?.Valid && !!this.t1h?.Valid && !!this.i1h?.Valid && !!this.Whl?.Valid && !!this.Qhl?.Valid;
+    return !!this.e1h?.Valid && !!this.t1h?.Valid && !!this.i1h?.Valid && !!this.Whl?.Valid && !!this.Qhl?.Valid && (this.Hh.CameraZoneMode !== 3 || !!this.Vgm());
   }
   IsPitchRollback() {
     return this.zhl >= this.Hh.PitchRollbackEnableTime;
@@ -303,19 +422,25 @@ class CameraRotationZone {
     return this.$hl >= this.Hh.YawInputEnableTime;
   }
   IsHasPitchMovement() {
-    return !!this.Whl?.Valid && !!this.i1h?.Valid && (this.Whl.SoarBoostOn || !this.i1h.InputDirectProxy.IsNearlyZero());
+    return !!this.Whl?.Valid && !!this.i1h?.Valid && (this.Whl.SoarBoostOn || !this.glm.IsNearlyZero());
   }
   IsHasPitchUpMovement() {
-    return !!this.Whl?.Valid && this.i1h.InputDirectProxy.X < 0;
+    return !!this.Whl?.Valid && this.glm.X < 0;
   }
   IsHasPitchHorizontalMovement() {
     return !!this.Whl?.Valid && !!this.i1h?.Valid && this.Whl.SoarBalanceOn;
+  }
+  IsHasYawHorizontalMovement() {
+    return (this.Hh.CameraZoneMode !== 3 || !this.Vgm() || !MathUtils_1.MathUtils.IsNearlyZero(this.Ggm.ActorVelocityProxy.Size(), 5)) && !MathUtils_1.MathUtils.IsNearlyZero(this.glm.Y, MathUtils_1.MathUtils.KindaSmallNumber);
   }
   Lock(t) {
     this.c1e.add(t);
   }
   Unlock(t) {
     this.c1e.delete(t);
+  }
+  Vgm() {
+    return !!this.Ogm?.Valid;
   }
   Clear() {
     this.Hh = undefined;

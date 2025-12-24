@@ -1,0 +1,88 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GachaRoleDevelopIns = undefined;
+class GachaRoleDevelopIns {
+  constructor() {
+    this.J7 = null;
+    this.z7 = 0;
+  }
+  get Id() {
+    return this.id();
+  }
+  get RoleId() {
+    return this.roleid();
+  }
+  get AdventureGuide() {
+    return this.adventureguide();
+  }
+  get DungeonDetection() {
+    return this.dungeondetection();
+  }
+  get Type() {
+    return this.type();
+  }
+  get DungeonEntranceId() {
+    return this.dungeonentranceid();
+  }
+  __init(t, e) {
+    this.z7 = t;
+    this.J7 = e;
+    return this;
+  }
+  static getRootAsGachaRoleDevelopIns(t, e) {
+    return (e || new GachaRoleDevelopIns()).__init(t.readInt32(t.position()) + t.position(), t);
+  }
+  id() {
+    var t = this.J7.__offset(this.z7, 4);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  roleid() {
+    var t = this.J7.__offset(this.z7, 6);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  adventureguide() {
+    var t = this.J7.__offset(this.z7, 8);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  dungeondetection() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  type() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  dungeonentranceid() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+}
+exports.GachaRoleDevelopIns = GachaRoleDevelopIns;
+//# sourceMappingURL=GachaRoleDevelopIns.js.map

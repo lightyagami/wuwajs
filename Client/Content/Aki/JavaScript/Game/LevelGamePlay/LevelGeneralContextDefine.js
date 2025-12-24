@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.InteractSecondConfirmContext = exports.CustomContext = exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.DynamicInteractContext = exports.EntityContext = exports.GeneralContext = undefined;
+exports.InteractSecondConfirmContext = exports.CustomContext = exports.CombinationContext = exports.ClientEventContext = exports.GeneralLogicTreeContext = exports.FlowActionContext = exports.PlotContext = exports.GmLevelActionContext = exports.GuaranteeContext = exports.TriggerContext = exports.InstanceDungeonContext = exports.LevelPlayContext = exports.QuestContext = exports.DynamicInteractContext = exports.EntityContext = exports.GeneralContext = undefined;
 class GeneralContext {
   constructor() {
     this.Type = undefined;
@@ -15,13 +15,13 @@ class GeneralContext {
   }
   static GetObj(t, e, n) {
     let s = undefined;
-    let r = GeneralContext.RUe.get(t);
-    if (!r) {
-      r = [];
-      GeneralContext.RUe.set(t, r);
+    let o = GeneralContext.RUe.get(t);
+    if (!o) {
+      o = [];
+      GeneralContext.RUe.set(t, o);
     }
-    if (r.length > 0) {
-      (s = r.pop()).DUe = false;
+    if (o.length > 0) {
+      (s = o.pop()).DUe = false;
     } else {
       s = new n();
     }
@@ -178,12 +178,12 @@ class TriggerContext extends GeneralContext {
     this.IsClientTrigger = false;
     this.Type = 5;
   }
-  static Create(t = 0, e = 0, n, s, r) {
+  static Create(t = 0, e = 0, n, s, o) {
     n = GeneralContext.GetObj(5, n, TriggerContext);
     n.TriggerEntityId = t;
     n.OtherEntityId = e;
     n.TriggerType = s ?? 0;
-    n.IsClientTrigger = r ?? false;
+    n.IsClientTrigger = o ?? false;
     return n;
   }
 }
@@ -222,12 +222,37 @@ class PlotContext extends GeneralContext {
     this.FlowIncId = 0;
   }
   static Create(t, e) {
-    e = GeneralContext.GetObj(8, e, PlotContext);
+    e = GeneralContext.GetObj(9, e, PlotContext);
     e.FlowIncId = t;
     return e;
   }
 }
 exports.PlotContext = PlotContext;
+class FlowActionContext extends GeneralContext {
+  constructor() {
+    super();
+    this.FlowActionId = 0;
+    this.FlowListName = "";
+    this.FlowId = 0;
+    this.StateId = 0;
+    this.Type = 15;
+  }
+  Reset() {
+    this.FlowActionId = 0;
+    this.FlowListName = "";
+    this.FlowId = 0;
+    this.StateId = 0;
+  }
+  static Create(t, e) {
+    e = GeneralContext.GetObj(15, e, FlowActionContext);
+    e.FlowActionId = t.uHn;
+    e.FlowListName = t.v5n;
+    e.FlowId = t.M5n;
+    e.StateId = t.S5n;
+    return e;
+  }
+}
+exports.FlowActionContext = FlowActionContext;
 class GeneralLogicTreeContext extends GeneralContext {
   constructor() {
     super();
@@ -241,13 +266,13 @@ class GeneralLogicTreeContext extends GeneralContext {
     this.TreeIncId = BigInt(0);
     this.NodeId = 0;
   }
-  static Create(t, e = BigInt(0), n = 0, s = 0, r) {
-    r = GeneralContext.GetObj(6, r, GeneralLogicTreeContext);
-    r.BtType = t;
-    r.TreeIncId = e;
-    r.TreeConfigId = n;
-    r.NodeId = s;
-    return r;
+  static Create(t, e = BigInt(0), n = 0, s = 0, o) {
+    o = GeneralContext.GetObj(6, o, GeneralLogicTreeContext);
+    o.BtType = t;
+    o.TreeIncId = e;
+    o.TreeConfigId = n;
+    o.NodeId = s;
+    return o;
   }
 }
 exports.GeneralLogicTreeContext = GeneralLogicTreeContext;

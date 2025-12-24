@@ -47,7 +47,7 @@ class AiTaunt {
       let t = true;
       var i;
       var s = EntitySystem_1.EntitySystem.Get(this.Dre);
-      if (!(t = s?.Active && ((i = s.GetComponent(179))?.Valid && !i.IsInGame && (t = false), (i = s.GetComponent(209))?.Valid || (t = false), !i.HasTag(1008164187)) ? t : false)) {
+      if (!(t = s?.Active && ((i = s.GetComponent(184))?.Valid && !i.IsInGame && (t = false), (i = s.GetComponent(215))?.Valid || (t = false), !i.HasTag(1008164187)) ? t : false)) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("AI", 57, "[AiTaunt]嘲讽施加者目前失效或者死亡，导致嘲讽结束：", ["被嘲讽者", this.Bte.CharAiDesignComp.Entity.Id], ["嘲讽者", this.Dre]);
         }
@@ -74,7 +74,7 @@ class AiTaunt {
     this.Init(t);
   }
   ClearCurrentTauntAndGe() {
-    this.Bte.CharAiDesignComp.Entity.GetComponent(178)?.RemoveBuffByHandle(this.Rre);
+    this.Bte.CharAiDesignComp.Entity.GetComponent(183)?.RemoveBuffByHandle(this.Rre);
     this.Are();
   }
   BindEvent() {

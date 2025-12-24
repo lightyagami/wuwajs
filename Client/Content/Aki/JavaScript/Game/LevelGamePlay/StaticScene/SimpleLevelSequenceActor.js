@@ -3,23 +3,89 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.DefaultLevelSequencePlayParam = exports.FollowTargetSetting = exports.BindTargetSetting = undefined;
+const puerts_1 = require("puerts");
 const UE = require("ue");
 const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
 const Log_1 = require("../../../Core/Common/Log");
+const QueryTypeDefine_1 = require("../../../Core/Define/QueryTypeDefine");
+const TickSystem_1 = require("../../../Core/Tick/TickSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
+const Quat_1 = require("../../../Core/Utils/Math/Quat");
+const Rotator_1 = require("../../../Core/Utils/Math/Rotator");
+const Vector_1 = require("../../../Core/Utils/Math/Vector");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const Global_1 = require("../../Global");
+const GlobalData_1 = require("../../GlobalData");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const TsInteractionUtils_1 = require("../../Module/Interaction/TsInteractionUtils");
+const CharacterNameDefines_1 = require("../../NewWorld/Character/Common/CharacterNameDefines");
 const UiManager_1 = require("../../Ui/UiManager");
 const CAMERA_TAG = new UE.FName("SequenceCamera");
+const PROFILE_KEY = "SimpleLevelSequenceActor_CheckCollision_Camera";
+class BindTargetSetting {
+  constructor(t, i, s, h, e, r, o, a) {
+    this.BindTargetType = t;
+    this.AttachSocketName = i;
+    this.AttachLocationOffset = s;
+    this.AttachRotatorOffset = h;
+    this.SpecificLocationOffset = e;
+    this.SpecificRotatorOffset = r;
+    this.WorldLocation = o;
+    this.WorldRotation = a;
+  }
+  IsBindToTarget() {
+    return this.BindTargetType === 0;
+  }
+  IsBindToTargetAndPutWorld() {
+    return this.BindTargetType === 1;
+  }
+  IsBindToWorld() {
+    return this.BindTargetType === 2;
+  }
+}
+exports.BindTargetSetting = BindTargetSetting;
+class FollowTargetSetting {
+  constructor(t, i, s, h, e, r, o) {
+    this.IsFollowTarget = t;
+    this.IsFollowTargetPitch = i;
+    this.PitchFollowSpeed = s;
+    this.IsFollowTargetYaw = h;
+    this.YawFollowSpeed = e;
+    this.IsFollowTargetAngle = r;
+    this.AngleFollowSpeed = o;
+  }
+}
+exports.FollowTargetSetting = FollowTargetSetting;
+class DefaultLevelSequencePlayParam {
+  constructor(t, i, s, h, e) {
+    this.InTime = t;
+    this.OutTime = i;
+    this.BindSetting = s;
+    this.FollowSetting = h;
+    this.Target = e;
+    this.MaxDelayUpdateFrame = 4;
+    this.InitPlayerRotator = Rotator_1.Rotator.Create();
+    this.InitPlayerFloorLocation = Vector_1.Vector.Create();
+    this.DelayUpdateFrame = 0;
+    this.PlayedTime = 0;
+    this.TimeLength = 0;
+  }
+}
+exports.DefaultLevelSequencePlayParam = DefaultLevelSequencePlayParam;
 class SimpleLevelSequenceActor {
   constructor(t) {
     this.bPe = undefined;
     this.qPe = undefined;
+    this.Oxr = undefined;
+    this.vrf = undefined;
+    this.Tae = undefined;
     this.GPe = UE.NewArray(UE.Actor);
     this.NPe = 0;
     this.OPe = 0;
@@ -41,7 +107,9 @@ class SimpleLevelSequenceActor {
     this.aT1 = 0;
     this.YPe = false;
     this.JPe = false;
-    this.zPe = 0;
+    this.X2n = false;
+    this.ZBf = false;
+    this.zPe = 1;
     this.exe = undefined;
     this.txe = false;
     this.ixe = 0;
@@ -49,8 +117,21 @@ class SimpleLevelSequenceActor {
     this.rxe = false;
     this.nxe = 1;
     this.sxe = false;
+    this.yrf = undefined;
+    this.Srf = TickSystem_1.TickSystem.InvalidId;
+    this.zLf = false;
+    this.Fse = undefined;
+    this.fsf = Rotator_1.Rotator.Create();
+    this.cie = Rotator_1.Rotator.Create();
+    this.e7o = Quat_1.Quat.Create();
+    this.cz = Vector_1.Vector.Create();
+    this.fz = Vector_1.Vector.Create();
+    this.pz = Vector_1.Vector.Create();
+    this.tdc = Vector_1.Vector.Create();
+    this.Mme = new UE.TransformDouble(new UE.Rotator(0, 0, 0), new UE.VectorDouble(0, 0, 0), new UE.VectorDouble(1, 1, 1));
     this.sZu = undefined;
     this.uIn = undefined;
+    this.Otr = undefined;
     this.hT1 = () => {
       if (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.GetComponent(10)?.GetIsInCinematic() || this.sxe) {
         this.PlayLevelSequence();
@@ -85,8 +166,31 @@ class SimpleLevelSequenceActor {
       ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraInputController.Unlock(this);
       this.rxe = false;
       ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8);
+      if (this.Srf !== TickSystem_1.TickSystem.InvalidId) {
+        TickSystem_1.TickSystem.Remove(this.Srf);
+        this.Srf = TickSystem_1.TickSystem.InvalidId;
+      }
+      if (this.yrf && this.yrf.BindSetting.IsBindToTarget()) {
+        this.Oxr?.K2_DetachFromActor(1, 1, 1);
+      }
+      this.yrf = undefined;
       if (!this.JPe && !ModelManager_1.ModelManager.StaticSceneModel.IsForceKeepUi) {
         ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.DisplayComponent.SetUiActive(true);
+      }
+    };
+    this.Mrf = t => {
+      var i;
+      var s;
+      var h;
+      if (!!this.qPe?.IsValid() && (!this.X2n || !!this.ZBf)) {
+        this.ZBf = false;
+        this.qPe.bOverrideInstanceData = true;
+        h = this.qPe.SequencePlayer;
+        this.Tae = Global_1.Global.BaseCharacter;
+        if (h?.IsValid() && this.Tae?.IsValid() && this.yrf && ((s = this.yrf.BindSetting).IsBindToTarget() ? (this.cz.DeepCopy(s.AttachLocationOffset), (i = FNameUtil_1.FNameUtil.IsNothing(s.AttachSocketName) ? CharacterNameDefines_1.CharacterNameDefines.ROOT : s.AttachSocketName).op_Equality(CharacterNameDefines_1.CharacterNameDefines.ROOT) || (i = this.Tae.Mesh.D_GetSocketTransform(i, 2), i = this.Tae.Mesh.D_GetSocketTransform(CharacterNameDefines_1.CharacterNameDefines.ROOT, 2).TransformPosition(i.GetLocation()), this.fz.DeepCopy(i), this.cz.AdditionEqual(this.fz)), i = this.Tae.CharacterActorComponent, this.cie.DeepCopy(i.ActorRotationProxy), this.cie.Roll = 0, this.cie.Quaternion(this.e7o), this.e7o.RotateVector(this.cz, this.cz), this.cz.AdditionEqual(i.FloorLocation), this.cie.AdditionEqual(s.AttachRotatorOffset), this.cie.Quaternion(this.e7o), this.Mme.SetLocation(this.cz.ToUeVector()), this.Mme.SetRotation(this.e7o.ToUeQuat()), this.vrf.TransformOrigin = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(this.Mme)) : s.IsBindToTargetAndPutWorld() ? (this.cie.DeepCopy(this.yrf.InitPlayerRotator), this.cie.Roll = 0, this.cie.Quaternion(this.e7o), this.e7o.RotateVector(s.SpecificLocationOffset, this.cz), this.cz.AdditionEqual(this.yrf.InitPlayerFloorLocation), this.cie.AdditionEqual(s.SpecificRotatorOffset), this.cie.Quaternion(this.e7o), this.vrf.TransformOriginActor = undefined, this.Mme.SetLocation(this.cz.ToUeVector()), this.Mme.SetRotation(this.e7o.ToUeQuat()), this.vrf.TransformOrigin = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(this.Mme)) : s.IsBindToWorld() && (s.WorldRotation.Quaternion(this.e7o), this.Mme.SetLocation(s.WorldLocation.ToUeVector()), this.Mme.SetRotation(this.e7o.ToUeQuat()), this.vrf.TransformOrigin = UE.KismetMathLibrary.Conv_TransformDoubleToTransform(this.Mme)), this.yrf.PlayedTime += t * MathUtils_1.MathUtils.MillisecondToSecond, h.PlayToSeconds(this.yrf.PlayedTime), this.yrf.DelayUpdateFrame === this.yrf.MaxDelayUpdateFrame && this.fsf.DeepCopy(this.exe.Camera.K2_GetActorRotation()), this.yrf.FollowSetting.IsFollowTarget && this.yrf.DelayUpdateFrame >= this.yrf.MaxDelayUpdateFrame && (this.fz.DeepCopy(this.Tae.CharacterActorComponent.FloorLocation), this.pz.DeepCopy(this.exe.Camera.D_K2_GetActorLocation()), this.fz.SubtractionEqual(this.pz), this.fz.Normalize(), this.fz.Rotation(this.cie), this.fsf.Vector(this.tdc), this.yrf.FollowSetting.IsFollowTargetAngle ? (Quat_1.Quat.FindBetween(this.fz, this.tdc, this.e7o), i = Math.acos(Vector_1.Vector.DotProduct(this.fz, this.tdc)) * MathUtils_1.MathUtils.RadToDeg, h = (s = this.yrf.FollowSetting.AngleFollowSpeed * t * MathUtils_1.MathUtils.MillisecondToSecond) > 1 || s < 0 ? i : i * s, s = MathUtils_1.MathUtils.Clamp(h / i, 0, 1), MathUtils_1.MathUtils.SqLerpVector(this.tdc, this.fz, s, this.fz), this.fz.Rotation(this.fsf)) : this.yrf.FollowSetting.IsFollowTargetPitch ? (h = this.cie.Pitch, i = this.fsf.Pitch, s = MathUtils_1.MathUtils.WrapAngle(h - i), s = (h = this.yrf.FollowSetting.PitchFollowSpeed * t * MathUtils_1.MathUtils.MillisecondToSecond) > 1 || h < 0 ? s : s * h, this.fsf.Pitch = MathUtils_1.MathUtils.WrapAngle(i + s)) : this.yrf.FollowSetting.IsFollowTargetYaw && (h = this.cie.Yaw, i = this.fsf.Yaw, s = MathUtils_1.MathUtils.WrapAngle(h - i), t = (h = this.yrf.FollowSetting.YawFollowSpeed * t * MathUtils_1.MathUtils.MillisecondToSecond) > 1 || h < 0 ? s : s * h, this.fsf.Yaw = MathUtils_1.MathUtils.WrapAngle(i + t)), this.exe.Camera.K2_SetActorRotation(this.fsf.ToUeRotator(), true)), this.yrf.DelayUpdateFrame++, this.xJf() && (this.zLf = true, this.StopSequence()), this.yrf.PlayedTime >= this.yrf.TimeLength)) {
+          this.zLf = true;
+          this.StopSequence();
+        }
       }
     };
     if ((this.bPe = t).HasBindingTag(CAMERA_TAG, true)) {
@@ -106,6 +210,12 @@ class SimpleLevelSequenceActor {
   ClearOnStopCallback() {
     this.uIn = undefined;
   }
+  AddOnFinishedCallback(t) {
+    this.Otr = t;
+  }
+  ClearOnFinishedCallback() {
+    this.Otr = undefined;
+  }
   UpdateSettings(t) {
     this.JPe = t ?? false;
   }
@@ -113,7 +223,7 @@ class SimpleLevelSequenceActor {
     return this.qPe?.SequencePlayer;
   }
   IsPlaying() {
-    return this.GetPlayer()?.IsPlaying() ?? false;
+    return !this.X2n && (this.zPe === 0 || (this.GetPlayer()?.IsPlaying() ?? false));
   }
   ForceSwitchSceneCamera(t) {
     if (this.qPe?.IsValid()) {
@@ -161,17 +271,46 @@ class SimpleLevelSequenceActor {
       return false;
     }
   }
-  PlayToMarkOld(t, i, s, e) {
+  SetOriginTransform() {
+    if (this.qPe) {
+      let t = new UE.VectorDouble();
+      var i = (0, puerts_1.$ref)(t);
+      if (this.qPe.GetSequence()?.D_GetCenterOffset(i)) {
+        t = (0, puerts_1.$unref)(i);
+      } else {
+        t.Set(0, 0, 0);
+      }
+      this.qPe.bOverrideInstanceData = true;
+      if (this.qPe.DefaultInstanceData?.IsA(UE.DefaultLevelSequenceInstanceData.StaticClass())) {
+        this.qPe.DefaultInstanceData.TransformOrigin = new UE.Transform(t.op_ToVector());
+      }
+    }
+  }
+  PlaySequence(t) {
+    var i = this.qPe?.SequencePlayer?.GetEndTime();
+    this.NPe = t.InTime;
+    this.OPe = t.OutTime;
+    this.Tae = t.Target;
+    this.yrf = t;
+    this.yrf.DelayUpdateFrame = 0;
+    this.yrf.PlayedTime = 0;
+    this.yrf.TimeLength = i ? (i.Time.FrameNumber.Value + i.Time.SubFrame) * i.Rate.Denominator / i.Rate.Numerator : 0;
+    this.zPe = 0;
+    this.JPe = true;
+    this.ZBf = true;
+    this.gxe();
+  }
+  PlayToMarkOld(t, i, s, h) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       this.NPe = i;
       this.FPe = s;
-      this.XPe = e;
-      this.zPe = 0;
+      this.XPe = h;
+      this.zPe = 1;
       this.gxe();
     }
   }
-  PlayToMark(t, i, s, e, h) {
+  PlayToMark(t, i, s, h, e) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       if (i) {
@@ -208,13 +347,13 @@ class SimpleLevelSequenceActor {
             this.oxe = s.Mask;
         }
       }
-      this.XPe = h;
-      this.sT1 = e;
-      this.zPe = 0;
+      this.XPe = e;
+      this.sT1 = h;
+      this.zPe = 1;
       this.gxe();
     }
   }
-  PlayLoopBetweenMarks(t, i, s, e, h, r) {
+  PlayLoopBetweenMarks(t, i, s, h, e, r) {
     this.qQc = i ? t.RightMark : t.LeftMark;
     this.$Pe = i ? t.LeftMark : t.RightMark;
     if (s) {
@@ -234,29 +373,29 @@ class SimpleLevelSequenceActor {
           this.ixe = s.Mask;
       }
     }
-    if (e) {
-      this.WPe = e.TransitType;
+    if (h) {
+      this.WPe = h.TransitType;
       switch (this.WPe) {
         case 0:
-          this.HPe = e.Duration ?? 0;
+          this.HPe = h.Duration ?? 0;
           this.kPe = 0;
-          this.FPe = e.Duration ?? 0;
-          this.QPe = e.IsValid ?? false;
+          this.FPe = h.Duration ?? 0;
+          this.QPe = h.IsValid ?? false;
           break;
         case 1:
-          this.HPe = e.Duration ?? 0;
-          this.kPe = e.TransitFadeIn ?? 0;
-          this.FPe = e.TransitFadeOut ?? 0;
-          this.QPe = e.IsValid ?? false;
-          this.oxe = e.Mask;
+          this.HPe = h.Duration ?? 0;
+          this.kPe = h.TransitFadeIn ?? 0;
+          this.FPe = h.TransitFadeOut ?? 0;
+          this.QPe = h.IsValid ?? false;
+          this.oxe = h.Mask;
       }
     }
-    this.sT1 = h;
+    this.sT1 = e;
     this.XPe = r;
-    this.zPe = 3;
+    this.zPe = 4;
     this.gxe();
   }
-  PlayLoop(t, i, s, e, h) {
+  PlayLoop(t, i, s, h, e) {
     this.$Pe = "";
     if (s) {
       this.jPe = s.TransitType;
@@ -275,27 +414,27 @@ class SimpleLevelSequenceActor {
           this.ixe = s.Mask;
       }
     }
-    if (e) {
-      this.WPe = e.TransitType;
+    if (h) {
+      this.WPe = h.TransitType;
       switch (this.WPe) {
         case 0:
-          this.HPe = e.Duration ?? 0;
+          this.HPe = h.Duration ?? 0;
           this.kPe = 0;
-          this.FPe = e.Duration ?? 0;
-          this.QPe = e.IsValid ?? false;
+          this.FPe = h.Duration ?? 0;
+          this.QPe = h.IsValid ?? false;
           break;
         case 1:
-          this.HPe = e.Duration ?? 0;
-          this.kPe = e.TransitFadeIn ?? 0;
-          this.FPe = e.TransitFadeOut ?? 0;
-          this.QPe = e.IsValid ?? false;
-          this.oxe = e.Mask;
+          this.HPe = h.Duration ?? 0;
+          this.kPe = h.TransitFadeIn ?? 0;
+          this.FPe = h.TransitFadeOut ?? 0;
+          this.QPe = h.IsValid ?? false;
+          this.oxe = h.Mask;
       }
     }
-    this.sT1 = h;
+    this.sT1 = e;
     this.rT1 = t;
     this.oT1 = i;
-    this.zPe = 2;
+    this.zPe = 3;
     this.gxe();
   }
   gxe() {
@@ -308,14 +447,23 @@ class SimpleLevelSequenceActor {
   PlayLevelSequence() {
     switch (this.zPe) {
       case 0:
+        this.Erf();
+        break;
       case 1:
+      case 2:
         this.lT1(this.$Pe, this.XPe);
         break;
-      case 2:
+      case 3:
         this._T1(this.rT1, this.oT1);
         break;
-      case 3:
+      case 4:
         this.GQc(this.XPe);
+    }
+  }
+  Erf() {
+    var t;
+    if (this.qPe?.IsValid() && (this.qPe.bOverrideInstanceData = true, (t = this.qPe.SequencePlayer)?.IsValid()) && this.Tae?.IsValid() && this.yrf && (this.Oxr || (this.Oxr = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), MathUtils_1.MathUtils.DefaultTransformDouble), this.Oxr.D_AddComponentByClass(UE.SceneComponent.StaticClass(), false, this.Oxr.D_GetTransform(), false)), this.Srf = TickSystem_1.TickSystem.Add(this.Mrf, "SimpleLevelSequenceActor", 4, false).Id, this.yrf.InitPlayerRotator.DeepCopy(this.Tae.CharacterActorComponent.ActorRotationProxy), this.yrf.InitPlayerFloorLocation.DeepCopy(this.Tae.CharacterActorComponent.FloorLocation), t.Play(), t.SetPlayRate(0), t.Pause(), Log_1.Log.CheckInfo())) {
+      Log_1.Log.Info("Interaction", 57, "LevelSequence默认播放", ["levelSequence", this.bPe.GetName()]);
     }
   }
   lT1(t, i) {
@@ -335,7 +483,7 @@ class SimpleLevelSequenceActor {
           s.Pause();
         } else {
           switch (this.zPe) {
-            case 0:
+            case 1:
               s.PlayTo(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0));
               this.nT1 = this.sT1?.PlayRateAbs ?? 1;
               if (this.sT1?.EaseDuration) {
@@ -344,7 +492,7 @@ class SimpleLevelSequenceActor {
                 this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1);
               }
               break;
-            case 1:
+            case 2:
               s.PlayTo_Circle(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, t, 2, 0), true);
               this.nT1 = this.sT1?.PlayRateAbs ?? 1;
               if (this.sT1?.EaseDuration) {
@@ -362,34 +510,34 @@ class SimpleLevelSequenceActor {
   }
   _T1(t, i) {
     var s;
-    if (this.qPe?.IsValid() && (this.qPe.bOverrideInstanceData = true, (s = this.qPe.SequencePlayer)?.IsValid()) && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.zPe === 2 && (t ? s.PlayReverseLooping(i) : s.PlayLooping(i), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1)), Log_1.Log.CheckInfo())) {
+    if (this.qPe?.IsValid() && (this.qPe.bOverrideInstanceData = true, (s = this.qPe.SequencePlayer)?.IsValid()) && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.zPe === 3 && (t ? s.PlayReverseLooping(i) : s.PlayLooping(i), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1)), Log_1.Log.CheckInfo())) {
       Log_1.Log.Info("Interaction", 39, "LevelSequence循环播放", ["levelSequence", this.bPe.GetName()], ["bReverse", t], ["numLoops", i]);
     }
   }
   GQc(t) {
     if (this.qPe?.IsValid()) {
       this.qPe.bOverrideInstanceData = true;
-      const h = this.qPe.SequencePlayer;
+      const e = this.qPe.SequencePlayer;
       var i;
       var s;
-      var e;
-      if (h?.IsValid() && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1), e = this.GetMarkValue(this.qQc), i = this.GetMarkValue(this.$Pe), e !== undefined) && i !== undefined && e !== i) {
+      var h;
+      if (e?.IsValid() && (this.aT1 && (UE.KuroSequenceRuntimeFunctionLibrary.StopEasingPlayRate(this.qPe, this.aT1), this.aT1 = 0), this.nT1 = this.sT1?.PlayRateAbs ?? 1, this.sT1?.EaseDuration ? this.aT1 = UE.KuroSequenceRuntimeFunctionLibrary.EasePlayRateTo(this.qPe, this.nxe * this.nT1, this.sT1.EaseType, this.sT1.EaseDuration, this.sT1.EaseExponent) : this.qPe.SequencePlayer?.SetPlayRate(this.nxe * this.nT1), h = this.GetMarkValue(this.qQc), i = this.GetMarkValue(this.$Pe), h !== undefined) && i !== undefined && h !== i) {
         s = this.GetCurrentFrame();
-        if (this.XPe || e < i && i < s || i < e && s < i) {
+        if (this.XPe || h < i && i < s || i < h && s < i) {
           this.AddOnPauseCallback(() => {
             this.ClearOnPausedCallback();
-            h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
+            e.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
           });
-          e = new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.qQc, 2, 1);
+          h = new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.qQc, 2, 1);
           if (this.XPe) {
-            h.Play();
-            h.SetPlaybackPosition(e);
-            h.Pause();
+            e.Play();
+            e.SetPlaybackPosition(h);
+            e.Pause();
           } else {
-            h.PlayTo(e);
+            e.PlayTo(h);
           }
         } else {
-          h.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
+          e.PlayTo_Loop(new UE.MovieSceneSequencePlaybackParams(new UE.FrameTime(), 0, this.$Pe, 2, 0), this.qQc);
         }
       }
     }
@@ -401,6 +549,7 @@ class SimpleLevelSequenceActor {
     this.qPe = ActorSystem_1.ActorSystem.Get(UE.LevelSequenceActor.StaticClass(), new UE.TransformDouble(), undefined, false);
     this.qPe.PlaybackSettings = t;
     this.qPe.SetSequence(this.bPe);
+    this.vrf = this.qPe.DefaultInstanceData;
     var t = this.qPe.SequencePlayer;
     if (t?.IsValid()) {
       t.OnPause.Add(this.pxe.bind(this));
@@ -410,18 +559,40 @@ class SimpleLevelSequenceActor {
       Log_1.Log.Debug("Level", 45, "SimpleLevelSequenceActor 没找到Player");
     }
   }
+  BJf() {
+    if (!this.Fse?.IsValid()) {
+      this.Fse = UE.NewObject(UE.TraceSphereElement.StaticClass());
+      this.Fse.bIsSingle = false;
+      this.Fse.bTraceComplex = false;
+      this.Fse.bIgnoreSelf = true;
+      this.Fse.WorldContextObject = GlobalData_1.GlobalData.World;
+      this.Fse.Radius = 10;
+      this.Fse.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.Camera);
+    }
+  }
   vxe() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 33, "SimpleLevelSequenceActor OnSequenceStop", ["levelSequence", this.bPe.GetName()]);
     }
-    this.uIn?.();
+    this.uIn?.(this.zLf);
+    if (this.qPe?.IsValid() && !this.XPe) {
+      if (this.WPe !== 1 || this.sxe) {
+        this.Exe();
+      } else {
+        this.lxe(this.oxe, this.HPe, this.kPe, this.FPe, () => {
+          ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.PlayerComponent.ExitSceneSubCamera(this.exe, undefined, this.WPe);
+        }, () => {
+          this.Exe();
+        });
+      }
+    }
   }
   pxe() {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Level", 33, "SimpleLevelSequenceActor OnSequencePause", ["levelSequence", this.bPe.GetName()]);
     }
     this.sZu?.();
-    if (!this.XPe) {
+    if (!this.XPe && this.zPe !== 0) {
       if (this.WPe !== 1 || this.sxe) {
         this.Exe();
       } else {
@@ -437,6 +608,7 @@ class SimpleLevelSequenceActor {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Level", 33, "SimpleLevelSequenceActor OnSequenceFinish", ["levelSequence", this.bPe.GetName()]);
     }
+    this.Otr?.();
     if (!this.XPe) {
       if (this.WPe !== 1 || this.sxe) {
         this.Exe();
@@ -457,19 +629,18 @@ class SimpleLevelSequenceActor {
   }
   Cxe(i) {
     var s = this.bPe.GetMovieScene();
-    let e = false;
+    let h = false;
     if (s) {
       for (let t = 0; t < s.MarkedFrames.Num(); t++) {
         if (s.MarkedFrames.Get(t).Label === i) {
-          e = true;
+          h = true;
           break;
         }
       }
     }
-    return !!e || (Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 33, "mark配置不合法", ["levelSequence", this.bPe.GetName()], ["mark", i]), false);
+    return !!h || (Log_1.Log.CheckError() && Log_1.Log.Error("Interaction", 33, "mark配置不合法", ["levelSequence", this.bPe.GetName()], ["mark", i]), false);
   }
   _xe(t = () => {}) {
-    var i;
     if (this.qPe?.IsValid()) {
       if (ModelManager_1.ModelManager.PlotModel.IsInHighLevelPlot()) {
         if (Log_1.Log.CheckWarn()) {
@@ -477,8 +648,7 @@ class SimpleLevelSequenceActor {
         }
         t();
       } else {
-        i = this.qPe.SequencePlayer.IsPlaying();
-        if (!this.JPe && !ModelManager_1.ModelManager.StaticSceneModel.IsForceKeepUi && !i) {
+        if (!this.JPe && !ModelManager_1.ModelManager.StaticSceneModel.IsForceKeepUi && !this.IsPlaying()) {
           ControllerHolder_1.ControllerHolder.CameraController.SceneCamera.DisplayComponent.SetUiActive(false);
         }
         if (!this.exe?.IsBinding) {
@@ -562,25 +732,25 @@ class SimpleLevelSequenceActor {
       this.B_e();
     }
   }
-  lxe(t, i, s, e, h = () => {}, r = () => {}) {
+  lxe(t, i, s, h, e = () => {}, r = () => {}) {
     ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraInputController.Lock(this);
     this.rxe = true;
     ControllerHolder_1.ControllerHolder.LevelLoadingController.OpenLoading(8, 3, () => {
-      if (h) {
-        h();
+      if (e) {
+        e();
       }
       if (i <= 0) {
         if (r) {
           r();
         }
-        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, e ?? 0);
+        ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, h ?? 0);
       } else {
         TimerSystem_1.TimerSystem.Delay(() => {
           if (r) {
             r();
           }
-          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, e ?? 0);
-        }, (i ?? 0) * 1000);
+          ControllerHolder_1.ControllerHolder.LevelLoadingController.CloseLoading(8, undefined, h ?? 0);
+        }, (i ?? 0) * MathUtils_1.MathUtils.SecondToMillisecond);
       }
     }, s ?? 0, t === 0 ? IAction_1.EFadeInScreenShowType.Black : IAction_1.EFadeInScreenShowType.White);
   }
@@ -615,13 +785,17 @@ class SimpleLevelSequenceActor {
       });
       this.qPe = undefined;
     }
+    if (this.Fse?.IsValid()) {
+      this.Fse.Dispose();
+      this.Fse = undefined;
+    }
     if (this.rxe) {
       ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent.CameraInputController.Unlock(this);
       this.rxe = false;
     }
     this.ClearOnPausedCallback();
   }
-  PlayToMarkByCheckWay(t, i, s, e, h) {
+  PlayToMarkByCheckWay(t, i, s, h, e) {
     if (this.Cxe(t)) {
       this.$Pe = t;
       if (i) {
@@ -658,8 +832,8 @@ class SimpleLevelSequenceActor {
             this.oxe = s.Mask;
         }
       }
-      this.XPe = h;
-      this.sT1 = e;
+      this.XPe = e;
+      this.sT1 = h;
       this.CheckLatestWay();
       this.gxe();
     }
@@ -676,17 +850,17 @@ class SimpleLevelSequenceActor {
     var t;
     var i;
     var s;
-    var e;
+    var h;
     if (this.bPe.GetMovieScene()) {
-      e = this.qPe.SequencePlayer;
+      h = this.qPe.SequencePlayer;
       t = this.GetMarkValue(this.$Pe);
-      i = e.GetStartTime().Time.FrameNumber.Value;
-      s = e.GetEndTime().Time.FrameNumber.Value;
-      e = e.GetCurrentTime().Time.FrameNumber.Value;
-      if (Math.abs(t - e) > Math.abs(s - i - Math.abs(t - e))) {
-        this.zPe = 1;
+      i = h.GetStartTime().Time.FrameNumber.Value;
+      s = h.GetEndTime().Time.FrameNumber.Value;
+      h = h.GetCurrentTime().Time.FrameNumber.Value;
+      if (Math.abs(t - h) > Math.abs(s - i - Math.abs(t - h))) {
+        this.zPe = 2;
       } else {
-        this.zPe = 0;
+        this.zPe = 1;
       }
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Interaction", 45, "检查最短路径，但movieScene为空");
@@ -718,6 +892,25 @@ class SimpleLevelSequenceActor {
   }
   IsReversePlay() {
     return this.rT1;
+  }
+  StopSequence() {
+    if (this.qPe) {
+      this.qPe.SequencePlayer.Stop();
+    }
+  }
+  Pause() {
+    if (this.qPe && (this.X2n = true, this.zPe !== 0)) {
+      this.qPe.SequencePlayer.Pause();
+    }
+  }
+  Resume() {
+    if (this.qPe && (this.X2n = false, this.zPe !== 0)) {
+      this.qPe.SequencePlayer.Play();
+    }
+  }
+  xJf() {
+    var t = Global_1.Global.BaseCharacter;
+    return !!t?.IsValid() && !!t.CharacterActorComponent?.Valid && !!this.exe?.Camera?.IsValid() && (this.BJf(), this.Fse.ActorsToIgnore.Empty(), this.Fse.ActorsToIgnore.Add(t), this.cz.FromUeVector(this.exe.Camera.D_K2_GetActorLocation()), TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Fse, t.CharacterActorComponent.ActorLocationProxy), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.Fse, this.cz), TraceElementCommon_1.TraceElementCommon.SphereTrace(this.Fse, PROFILE_KEY));
   }
 }
 exports.default = SimpleLevelSequenceActor;

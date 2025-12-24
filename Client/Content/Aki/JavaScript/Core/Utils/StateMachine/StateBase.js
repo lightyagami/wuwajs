@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StateBase = undefined;
 class StateBase {
-  constructor(t, e, s) {
-    this.StateMachine = s;
+  constructor(t, e, r) {
     this.Owner = t;
     this.State = e;
+    this.StateMachine = r;
   }
   GetState(t) {
     return this.StateMachine?.GetState(t);
@@ -33,8 +33,6 @@ class StateBase {
   }
   Destroy() {
     this.OnDestroy();
-    this.Owner = undefined;
-    this.State = undefined;
   }
   CanReEnter() {
     return false;

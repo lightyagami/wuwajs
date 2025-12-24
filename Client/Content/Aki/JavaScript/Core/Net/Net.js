@@ -19,6 +19,7 @@ const GameBudgetInterfaceController_1 = require("../GameBudgetAllocator/GameBudg
 const TimerSystem_1 = require("../Timer/TimerSystem");
 const MathUtils_1 = require("../Utils/MathUtils");
 const StringUtils_1 = require("../Utils/StringUtils");
+const CsNetParam_1 = require("./CsNetParam");
 const NetInfo_1 = require("./NetInfo");
 const ENABLE_NET_STAT = true;
 const ENABLE_NET_LOG = true;
@@ -69,7 +70,7 @@ class CallbackQueueItem {
   }
 }
 class SendMessageCache {
-  constructor(e, t, N, o, i) {
+  constructor(e, t, N, o, a, i = false) {
     this.RpcId = 0;
     this.SeqNo = 0;
     this.MessageId = undefined;
@@ -77,13 +78,15 @@ class SendMessageCache {
     this.Handle = undefined;
     this.SendTimeMs = 0;
     this.TimeoutHandle = undefined;
+    this.CallFromCs = false;
     this.RpcId = e;
     this.SeqNo = t;
     this.MessageId = N;
     this.EncodeMessage = o;
-    this.Handle = i;
+    this.Handle = a;
     this.SendTimeMs = Date.now();
     this.TimeoutHandle = undefined;
+    this.CallFromCs = i;
   }
   ClearHandle() {
     this.Handle = undefined;
@@ -208,7 +211,6 @@ class Net {
     e.SetKcpNoDelay(1, 10, 2, 1);
     e.SetKcpStream(true);
     Net.gX = e;
-    Net.NetEventDispatcher?.NotifyCsKcpClient(e);
     t = {
       GroupId: new UE.FName("NetOnceTaskGroup"),
       Priority: 100,
@@ -231,10 +233,10 @@ class Net {
   static ipa() {
     return !!Net.rpa && (Net.rpa.DoCallback() && (Net.rpa = undefined), true);
   }
-  static Connect(e, t, N, o, i) {
+  static Connect(e, t, N, o, a) {
     if (Net.EX()) {
       Net.Moa = N;
-      Net.Soa = i;
+      Net.Soa = a;
       Net.Eoa = 0;
       Net.yoa = e;
       Net.Ioa = t;
@@ -247,11 +249,11 @@ class Net {
       N(3);
     }
   }
-  static async ConnectAsync(e, N, o, i) {
+  static async ConnectAsync(e, N, o, a) {
     return new Promise(t => {
       Net.Connect(e, N, e => {
         t(e);
-      }, o, i);
+      }, o, a);
     });
   }
   static Disconnect(e) {
@@ -293,11 +295,11 @@ class Net {
       t = t.Next;
     }
     var o;
-    var i;
     var a;
+    var i;
     if (N) {
-      [o, i,, a] = Net.gX.GetDebugString(N.EncodeMessage, ";", N.MessageId, N.SeqNo).split(";");
-      return [N.MessageId, Number(o), i, a];
+      [o, a,, i] = Net.gX.GetDebugString(N.EncodeMessage, ";", N.MessageId, N.SeqNo).split(";");
+      return [N.MessageId, Number(o), a, i];
     } else {
       return [0, 0, "", ""];
     }
@@ -315,9 +317,9 @@ class Net {
       let e = Net.RX.GetHeadNextNode();
       let t = false;
       while (e) {
-        var i = e.Element.SeqNo;
-        if (N <= i) {
-          t = i === N;
+        var a = e.Element.SeqNo;
+        if (N <= a) {
+          t = a === N;
           break;
         }
         e = e.Next;
@@ -332,15 +334,15 @@ class Net {
       let N = 0;
       let o = Net.RX.GetHeadNextNode();
       while (o) {
-        var a;
+        var i;
         var r;
         var s = o.Element;
         var n = s.MessageId;
-        if ((NetDefine_1.protoConfig[n] & 3) != 0 && ((r = (a = s.RpcId) !== undefined ? 1 : 4) == 4 || !!s.Handle)) {
+        if ((NetDefine_1.protoConfig[n] & 3) != 0 && ((r = (i = s.RpcId) !== undefined ? 1 : 4) == 4 || !!s.Handle)) {
           e++;
           t = s.SeqNo;
           N = n;
-          Net.UX(r, s.SeqNo, a, n, s.EncodeMessage);
+          Net.UX(r, s.SeqNo, i, n, s.EncodeMessage);
         }
         o = o.Next;
       }
@@ -374,12 +376,12 @@ class Net {
       Net.PX(4, e, t, undefined, undefined);
     }
   }
-  static Call(e, t, N, o = 0) {
+  static Call(e, t, N, o = 0, a = false) {
     var i;
-    if (!Net.xX(e) && Net.AX(e)) {
+    if (!Net.xX(e, a) && Net.AX(e)) {
       Net.wX.Start();
       i = Net.BX();
-      t = Net.PX(1, e, t, i, N);
+      t = Net.PX(1, e, t, i, N, a);
       Net.bX(e, t);
       if (o > 0) {
         Net.qX(o, t.Element);
@@ -394,6 +396,12 @@ class Net {
       N(undefined, undefined);
     }
   }
+  static CsCall(e, t, N, o) {
+    Net.SZm.Start();
+    t = NetDefine_1.messageDefine[e].decode(new Uint8Array(t));
+    Net.SZm.Stop();
+    Net.Call(e, t, N, o, true);
+  }
   static async CallAsync(e, t, o = 0) {
     return new Promise(N => {
       Net.Call(e, t, (e, t) => {
@@ -401,19 +409,19 @@ class Net {
       }, o);
     });
   }
-  static PX(e, t, N, o, i) {
+  static PX(e, t, N, o, a, i = false) {
     Net.NX.Start();
-    var a = Net.OX();
+    var r = Net.OX();
     Net.kX.Start();
-    var r = NetDefine_1.messageDefine[t].encode(N).finish();
+    var s = NetDefine_1.messageDefine[t].encode(N).finish();
     Net.kX.Stop();
-    if (r.length > 30720 && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Net", 30, "消息过大", ["message", t], ["length", r.length]);
+    if (s.length > 30720 && Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Net", 30, "消息过大", ["message", t], ["length", s.length]);
     }
-    var i = new SendMessageCache(o, a, t, r, i);
-    var i = Net.FX(i);
+    var a = new SendMessageCache(o, r, t, s, a, i);
+    var i = Net.FX(a);
     if (!Net.VX(t)) {
-      Net.UX(e, a, o, t, r, N);
+      Net.UX(e, r, o, t, s, N);
     }
     Net.NX.Stop();
     return i;
@@ -456,21 +464,21 @@ class Net {
   }
   static CX(e, t, N) {
     if (Net.uX || Net.cX) {
-      for (const a of e) {
-        var o = a;
-        var i = `${t}.(${o})`;
+      for (const i of e) {
+        var o = i;
+        var a = `${t}.(${o})`;
         if (Net.uX) {
-          Net.jX.set(o, i);
+          Net.jX.set(o, a);
         }
         if (N && Net.cX) {
-          i = Stats_1.Stat.CreateNoFlameGraph(i);
-          Net.HX.set(o, i);
+          a = Stats_1.Stat.CreateNoFlameGraph(a);
+          Net.HX.set(o, a);
         }
       }
     }
   }
-  static xX(e) {
-    return !!Net.WX.has(e) && (Log_1.Log.CheckError() && Log_1.Log.Error("Net", 30, "Request重复发送。", ["message", e]), true);
+  static xX(e, t = false) {
+    return !!(t ? Net.m3f : Net.WX).has(e) && (Log_1.Log.CheckError() && Log_1.Log.Error("Net", 30, "Request重复发送。", ["message", e], ["callFromCs", t]), true);
   }
   static _X(e) {
     if (Net.KX !== e && (Log_1.Log.CheckDebug() && Log_1.Log.Debug("Net", 8, "连接状态变化", ["Before", Net.KX], ["After", e]), (Net.KX = e) === 0) && Net.gX) {
@@ -547,7 +555,7 @@ class Net {
   static bX(e, t) {
     Net.XX.set(t.Element.RpcId, t);
     if ((NetDefine_1.protoConfig[e] & 8) == 8) {
-      Net.WX.add(e);
+      (t.Element.CallFromCs ? Net.m3f : Net.WX).add(e);
     }
   }
   static spa(e) {
@@ -555,7 +563,7 @@ class Net {
     var N = t.MessageId;
     Net.XX.delete(t.RpcId);
     if ((NetDefine_1.protoConfig[N] & 8) == 8) {
-      Net.WX.delete(N);
+      (t.CallFromCs ? Net.m3f : Net.WX).delete(N);
     }
     if (N === 105) {
       Net.gXa();
@@ -579,117 +587,129 @@ class Net {
       UE.KuroVariableFunctionLibrary.SetBoolValue("DisableCrc", true);
     }
   }
-  static JX(t, N, o, i, a = undefined) {
-    var r;
+  static JX(t, a, N, i, r = undefined) {
+    var o;
     var s;
-    var i = new Uint8Array(i);
-    var i = new Uint8Array(i);
-    Net.QX(N);
-    let n = undefined;
+    var n = new Uint8Array(i);
+    var n = new Uint8Array(n);
+    Net.QX(a);
     let _ = undefined;
     let c = undefined;
-    const g = o;
-    let d = undefined;
-    if (g === 3729) {
-      this.ivu(g, i);
+    let g = undefined;
+    const d = N;
+    let l = undefined;
+    let L = false;
+    if (d === 3729) {
+      this.ivu(d, n);
     } else {
       let e = false;
-      const u = Date.now();
-      Net.QK = u;
-      if (a) {
-        if (n = Net.XX.get(a)) {
-          Net.spa(n);
-          r = n.Element;
-          s = u - r.SendTimeMs;
-          d = r.MessageId;
+      const f = Date.now();
+      Net.QK = f;
+      if (r) {
+        if (_ = Net.XX.get(r)) {
+          Net.spa(_);
+          o = _.Element;
+          s = f - o.SendTimeMs;
+          l = o.MessageId;
           NetInfo_1.NetInfo.SetRttMs(s);
           if (s > 300 && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Net", 30, "RTT过高", ["requestId", d], ["rpcId", a], ["seqNo", r.SeqNo], ["serverSeqNo", N], ["rtt", s], ["deltaTime", Time_1.Time.DeltaTime]);
+            Log_1.Log.Warn("Net", 30, "RTT过高", ["requestId", l], ["rpcId", r], ["seqNo", o.SeqNo], ["serverSeqNo", a], ["rtt", s], ["deltaTime", Time_1.Time.DeltaTime], ["callFromCs", o.CallFromCs]);
           }
-          c = r.Handle;
-          if (r.TimeoutHandle) {
-            TimerSystem_1.GameplayTimerSystem.Remove(r.TimeoutHandle);
+          g = o.Handle;
+          L = o.CallFromCs;
+          if (o.TimeoutHandle) {
+            TimerSystem_1.GameplayTimerSystem.Remove(o.TimeoutHandle);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Net", 1, "网络 rpc 响应不存在", ["rpcId", a], ["messageId", o]);
+          Log_1.Log.Error("Net", 1, "网络 rpc 响应不存在", ["rpcId", r], ["messageId", N]);
         }
       } else {
-        if (!(c = Net.sX.get(g))) {
+        if (!(g = Net.sX.get(d))) {
           if (Net.uX && Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("Net", 1, "网络 notify 响应不存在", ["Id", g], ["Name", Net.jX.get(g)]);
+            Log_1.Log.Warn("Net", 1, "网络 notify 响应不存在", ["Id", d], ["Name", Net.jX.get(d)]);
           }
         }
         e = true;
       }
       if (t === 3) {
-        const v = `[异常信息:${StringUtils_1.StringUtils.Uint8ArrayToString(i)}]`;
-        const f = c;
-        c = () => {
-          Net.YK?.(a, o, d, n ? NetDefine_1.messageDefine[d].decode(n.Element.EncodeMessage) : undefined, v);
-          f?.(undefined, undefined);
+        const C = `[异常信息:${StringUtils_1.StringUtils.Uint8ArrayToString(n)}]`;
+        const S = g;
+        g = () => {
+          Net.YK?.(r, N, l, _ ? NetDefine_1.messageDefine[l].decode(_.Element.EncodeMessage) : undefined, C);
+          S?.(undefined, undefined);
         };
-      } else if (!(_ = NetDefine_1.messageDefine[g].decode(i))) {
+      } else if (!L && !(c = NetDefine_1.messageDefine[d].decode(n))) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Net", 1, "协议解析异常", ["messageId", g]);
+          Log_1.Log.Error("Net", 1, "协议解析异常", ["messageId", d]);
         }
       }
-      if (_ && Net.uX) {
-        Net.ZX(g, N, a, _);
+      if (c && Net.uX) {
+        Net.ZX(d, a, r, c);
       }
-      var l = e => {
+      var u = e => {
         let t = undefined;
         var N;
+        var o;
         if (Net.cX) {
-          (t = Net.HX.get(g))?.Start();
+          (t = Net.HX.get(d))?.Start();
         }
-        if (Net.uX && e.CallbackCount === 0 && (N = Date.now() - u) > 67 && Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("Net", 30, "callback exceeds limit", ["delay", N], ["msg", Net.jX.get(g)]);
+        if (Net.uX && e.CallbackCount === 0 && (N = Date.now() - f) > 67 && Log_1.Log.CheckWarn()) {
+          Log_1.Log.Warn("Net", 30, "callback exceeds limit", ["delay", N], ["msg", Net.jX.get(d)]);
         }
         try {
-          if (e.CallbackCount === 0 && d && (NetDefine_1.protoConfig[d] & 4) == 4) {
+          if (e.CallbackCount === 0 && l && (NetDefine_1.protoConfig[l] & 4) == 4) {
             Net.apa.Start();
-            Net.zK?.(a);
+            Net.zK?.(r);
             Net.apa.Stop();
           }
-          c?.(_, e);
+          if (L) {
+            (o = new CsNetParam_1.CsNetParam()).SeqNo = a;
+            o.MessageId = d;
+            o.MessageBuffer = i;
+            g?.(undefined, e, o);
+          } else {
+            g?.(c, e);
+          }
         } catch (e) {
           if (e instanceof Error) {
             if (Log_1.Log.CheckError()) {
-              Log_1.Log.ErrorWithStack("Net", 30, "callback执行异常", e, ["messageId", g], ["error", e.message]);
+              Log_1.Log.ErrorWithStack("Net", 30, "callback执行异常", e, ["messageId", d], ["error", e.message], ["callFromCs", L]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Net", 30, "callback执行异常", ["messageId", g], ["error", e]);
+            Log_1.Log.Error("Net", 30, "callback执行异常", ["messageId", d], ["error", e], ["callFromCs", L]);
           }
         } finally {
           e.IncrementCount();
           t?.Stop();
         }
       };
-      if (Net.UseBudget) {
-        this.fIo.AddTail(new CallbackQueueItem(l, g, e));
+      if (Net.UseBudget && !L) {
+        this.fIo.AddTail(new CallbackQueueItem(u, d, e));
         this._ul += e ? 0 : 1;
       } else {
-        for (var L = new CallbackStatus(g); l(L), !L.IsJobFinished;);
+        for (var v = new CallbackStatus(d); u(v), !v.IsJobFinished;);
       }
     }
     return true;
   }
-  static UX(e, t, N, o, i, a = undefined) {
+  static UX(e, t, N, o, a, i = undefined) {
     if (Net.uX) {
-      a = a || NetDefine_1.messageDefine[o].decode(i);
-      Net.ZX(o, t, N, a);
+      i = i || NetDefine_1.messageDefine[o].decode(a);
+      Net.ZX(o, t, N, i);
     }
-    return Net.gX.SendM(e, t, N, o, i, (NetDefine_1.protoConfig[o] & 32) == 0);
+    return Net.gX.SendM(e, t, N, o, a, (NetDefine_1.protoConfig[o] & 32) == 0);
   }
   static LX() {
     Net.WX.clear();
+    Net.m3f.clear();
     Net.XX.clear();
     Net.RX.RemoveAllNodeWithoutHead();
+    Net.NetEventDispatcher?.CleanNetMessageCaches();
   }
   static ZX(e, t, N, o) {
-    var i;
-    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 15890) && e !== 18891 && e !== 17075 && e !== 29961 && e !== 18553 && e !== 19055 && e !== 22908 && e !== 21575 && e !== 17745 && e !== 18032 && (Net.dX || e !== 15580 && e !== 28129 && e !== 23556 && e !== 23760 && e !== 15593 && e !== 18718 && e !== 28427 && e !== 21308 && e !== 25511) && (i = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", i ? this.tY(o) : ""]);
+    var a;
+    if ((Net.mX || e !== 1650 && e !== 1651 && e !== 15890) && e !== 18891 && e !== 17075 && e !== 29961 && e !== 18553 && e !== 19055 && e !== 22908 && e !== 21575 && e !== 17745 && e !== 18032 && (Net.dX || e !== 15580 && e !== 28129 && e !== 23556 && e !== 23760 && e !== 15593 && e !== 18718 && e !== 28427 && e !== 21308 && e !== 25511) && (a = Object.keys(o).length > 0, Net.uX) && Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Net", 22, Net.jX.get(e), ["SeqNo", t], ["RpcId", N], ["UpStreamSeqNo", Net.hX], ["DownStream", Net.lX], ["msg", a ? this.tY(o) : ""]);
     }
   }
   static tY(e) {
@@ -765,12 +785,14 @@ Net.Eoa = 0;
 Net.Soa = 0;
 Net.sX = new Map();
 Net.WX = new Set();
+Net.m3f = new Set();
 Net.RX = new List_1.default(SendMessageCache.NullMessageCache);
 Net.XX = new Map();
 Net.jX = new Map();
 Net.HX = new Map();
 Net.wX = Stats_1.Stat.Create("Net.Call");
 Net.NX = Stats_1.Stat.Create("Net.SendInternal");
+Net.SZm = Stats_1.Stat.Create("Net.CsCallDecode");
 Net.MX = new Set();
 Net.aX = 0;
 Net.hX = 0;
@@ -831,8 +853,8 @@ Net.Doa = e => {
     Net._X(e === 0 ? 2 : 0);
   }
 };
-Net.nX = (e, t, N, o, i) => {
-  Net.NetEventDispatcher?.OnError(e, t, N, o, i);
+Net.nX = (e, t, N, o, a) => {
+  Net.NetEventDispatcher?.OnError(e, t, N, o, a);
   switch (e) {
     case 1:
       if (Log_1.Log.CheckInfo()) {
@@ -844,7 +866,7 @@ Net.nX = (e, t, N, o, i) => {
       break;
     case 3:
       if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Net", 30, "DecryptError", ["Result", t], ["Type", N], ["RpcId", o], ["MessageId", i]);
+        Log_1.Log.Info("Net", 30, "DecryptError", ["Result", t], ["Type", N], ["RpcId", o], ["MessageId", a]);
       }
       break;
     case 4:
@@ -853,7 +875,6 @@ Net.nX = (e, t, N, o, i) => {
 };
 Net.iX = (e, t, N, o) => {
   Net.JX(2, e, N, o, t);
-  Net.NetEventDispatcher?.ReceiveResponse(e, t, N, o);
 };
 Net.oX = (e, t, N, o) => {
   Net.JX(3, e, N, o, t);

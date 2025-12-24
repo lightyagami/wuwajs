@@ -79,7 +79,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     this.Iic = 0;
     this.BJe = (t, i, s) => {
       var h = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
-      if (t === h?.Id && (t = h.GetComponent(40))?.Valid && t.CurrentSkill?.SkillInfo.IsLockOn) {
+      if (t === h?.Id && (t = h.GetComponent(41))?.Valid && t.CurrentSkill?.SkillInfo.IsLockOn) {
         this.KJa();
       }
     };
@@ -134,16 +134,16 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
   }
   OnEnable() {
     if ((this.RelativeYawHardMin < 0 || this.RelativeYawHardMin > 180 || this.RelativeYawHardMin > this.RelativeYawHardMax) && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头偏角最小值${this.RelativeYawHardMin}不在0-180之间或者大于强锁定-镜头偏角最大值${this.RelativeYawHardMax}`);
+      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头偏角最小值${this.RelativeYawHardMin}不在0-180之间或者大于强锁定-镜头偏角最大值${this.RelativeYawHardMax}`, ["Tag", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     if ((this.RelativeYawHardMax < 0 || this.RelativeYawHardMax > 180 || this.RelativeYawHardMax < this.RelativeYawHardMin) && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头偏角最大值${this.RelativeYawHardMax}不在0-180之间或者小于强锁定-镜头偏角最小值${this.RelativeYawHardMin}`);
+      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头偏角最大值${this.RelativeYawHardMax}不在0-180之间或者小于强锁定-镜头偏角最小值${this.RelativeYawHardMin}`, ["Tag", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     if ((this.RelativePitchHardMin < 0 || this.RelativePitchHardMin > 180 || this.RelativePitchHardMin > this.RelativePitchHardMax) && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头俯仰角最小值${this.RelativePitchHardMin}不在0-180之间或者大于强锁定-镜头俯仰角最大值${this.RelativePitchHardMax}`);
+      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头俯仰角最小值${this.RelativePitchHardMin}不在0-180之间或者大于强锁定-镜头俯仰角最大值${this.RelativePitchHardMax}`, ["Tag", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     if ((this.RelativePitchHardMax < 0 || this.RelativePitchHardMax > 180 || this.RelativePitchHardMax < this.RelativePitchHardMin) && Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头俯仰角最大值${this.RelativePitchHardMax}不在0-180之间或者小于强锁定-镜头俯仰角最小值${this.RelativePitchHardMin}`);
+      Log_1.Log.Error("Controller", 57, `锁定镜头配置错误，强锁定-镜头俯仰角最大值${this.RelativePitchHardMax}不在0-180之间或者小于强锁定-镜头俯仰角最小值${this.RelativePitchHardMin}`, ["Tag", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
     }
     this.Camera.CameraAutoController.EnableForce(this);
     this.Camera.CameraSidestepController.Lock(this);
@@ -159,9 +159,9 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     this.l_e.Reset();
   }
   UpdateCustomEnableCondition() {
-    return this.kQd() && this.Camera.CharacterEntityHandle.IsInit;
+    return this.FQd() && this.Camera.CharacterEntityHandle.IsInit;
   }
-  kQd() {
+  FQd() {
     return !!this.Camera.TargetEntity || this.Camera.IsSpecificLockTarget && this.Camera.SpecificLockTargetType === 1;
   }
   UpdateInternal(t) {
@@ -172,8 +172,8 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
   iza(t) {
     var i;
     var s;
-    if (this.kQd() && this.Camera.IsTargetLocationValid) {
-      [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput();
+    if (this.FQd() && this.Camera.IsTargetLocationValid) {
+      [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
       i *= Info_1.Info.IsInGamepad() ? this.SoftLockInputYawSensitivityGamepad : this.SoftLockInputYawSensitivity;
       s *= Info_1.Info.IsInGamepad() ? this.SoftLockInputPitchSensitivityGamepad : this.SoftLockInputPitchSensitivity;
       if (Math.abs(i) > this.SoftUnlockInputYawMinSpeed || Math.abs(s) > this.SoftUnlockInputPitchMinSpeed) {
@@ -190,9 +190,9 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var h;
     var e;
     var a;
-    if (this.kQd() && this.Camera.IsTargetLocationValid) {
+    if (this.FQd() && this.Camera.IsTargetLocationValid) {
       if (!this.Camera.IsModifiedArmRotationPitch || !this.Camera.IsModifiedArmRotationYaw) {
-        [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput();
+        [i, s] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
         e = !(h = this.Camera.ContainsAnyTag([-1150819426, 1260125908])) && ModelManager_1.ModelManager.CameraModel.IsSoftLockEnable() && !this.ShouldSoftUnlock() && !this.CanMoveCameraInSoftLock();
         a = this.Camera.PlayerLocation;
         this.Camera.TargetLocation.Subtraction(a, this.xzi);
@@ -269,7 +269,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
         }
       } else {
         if (i) {
-          if ((l = this.Camera.CharacterEntityHandle.Entity.GetComponent(32)) && l?.ShowTarget?.Valid) {
+          if ((l = this.Camera.CharacterEntityHandle.Entity.GetComponent(33)) && l?.ShowTarget?.Valid) {
             if (Math.abs(n) < this.RelativeYawSoftMin) {
               this.Ele.Yaw += r * this.RelativeYawSoftMin;
             } else if (Math.abs(n) > this.RelativeYawSoftMax) {
@@ -354,7 +354,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     var i;
     var s;
     var h;
-    if (!this.Camera.ContainsTag(-1150819426) || ([s, h] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput(), s === 0 && h === 0)) {
+    if (!this.Camera.ContainsTag(-1150819426) || ([s, h] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput(), s === 0 && h === 0)) {
       this.l_e.Reset();
       this.dTn = true;
     } else {
@@ -370,7 +370,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
       if ((s = this.l_e.SizeSquared()) > (this.dTn ? FIRST_THRESHOLD_SQUARED : 1)) {
         h = Math.sqrt(s);
         this.l_e.DivisionEqual(h);
-        this.Camera.CharacterEntityHandle.Entity.GetComponent(32).ChangeShowTarget(this.l_e, this.ChangeShowTargetAngleCoefficient, this.ChangeShowTargetDistCoefficient);
+        this.Camera.CharacterEntityHandle.Entity.GetComponent(33).ChangeShowTarget(this.l_e, this.ChangeShowTargetAngleCoefficient, this.ChangeShowTargetDistCoefficient);
         this.l_e.MultiplyEqual(h - (this.dTn ? FIRST_THRESHOLD : 1));
         this.dTn = false;
       }
@@ -389,7 +389,7 @@ class CameraFocusController extends CameraControllerBase_1.CameraControllerBase 
     }
   }
   ShouldSoftUnlock() {
-    var [t, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetCameraInput();
+    var [t, i] = this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetCameraInput();
     t *= Info_1.Info.IsInGamepad() ? this.SoftLockInputYawSensitivityGamepad : this.SoftLockInputYawSensitivity;
     i *= Info_1.Info.IsInGamepad() ? this.SoftLockInputPitchSensitivityGamepad : this.SoftLockInputPitchSensitivity;
     return Math.abs(t) > this.SoftUnlockYawSpeed || Math.abs(i) > this.SoftUnlockPitchSpeed;

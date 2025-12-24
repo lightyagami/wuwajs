@@ -14,7 +14,7 @@ class TsAnimNotifyStateMontageSpeedChange extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(e, t, r) {
     var a = e.GetOwner();
     if (a instanceof TsBaseCharacter_1.default) {
-      a.GetEntityNoBlueprint()?.GetComponent(181)?.MainAnimInstance?.Montage_SetPlayRate(undefined, this.MontagePlayRate);
+      a.GetEntityNoBlueprint()?.GetComponent(186)?.MainAnimInstance?.Montage_SetPlayRate(undefined, this.MontagePlayRate);
     } else {
       e.GetAnimInstance()?.Montage_SetPlayRate(undefined, this.MontagePlayRate);
     }
@@ -23,7 +23,7 @@ class TsAnimNotifyStateMontageSpeedChange extends UE.KuroAnimNotifyState {
   K2_NotifyEnd(e, t) {
     var r = e.GetOwner();
     if (r instanceof TsBaseCharacter_1.default) {
-      r.GetEntityNoBlueprint()?.GetComponent(181)?.MainAnimInstance?.Montage_SetPlayRate(undefined, 1);
+      r.GetEntityNoBlueprint()?.GetComponent(186)?.MainAnimInstance?.Montage_SetPlayRate(undefined, 1);
     } else {
       e.GetAnimInstance()?.Montage_SetPlayRate(undefined, 1);
     }

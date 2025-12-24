@@ -128,7 +128,7 @@ class InventoryController extends UiControllerBase_1.UiControllerBase {
     if (n.SpecialItem) {
       var e = n.Parameters.get(ItemDefines_1.EItemFunctionType.UseExploreSkill);
       if (e) {
-        if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(40)?.IsSkillInCd(e)) {
+        if (ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity.GetComponent(41)?.IsSkillInCd(e)) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Inventory", 17, "特殊道具对应的技能处于CD中", ["skillId", e], ["configId", t]);
           }
@@ -711,7 +711,7 @@ InventoryController.WQc = e => {
 InventoryController.iVe = e => ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhantomFormationEnterInventoryTip"), false) : ModelManager_1.ModelManager.FunctionModel.IsOpen(10002);
 InventoryController.QQc = false;
 InventoryController.Fci = false;
-InventoryController.Vci = [ItemUseLogic_1.ItemUseLogic.TryUseVisionRefineItem, ItemUseLogic_1.ItemUseLogic.TryUseUiPlayItem, ItemUseLogic_1.ItemUseLogic.TryUseBuffItem, ItemUseLogic_1.ItemUseLogic.TryUsePowerItem, ItemUseLogic_1.ItemUseLogic.TryUseGiftItem, ItemUseLogic_1.ItemUseLogic.TryUseMonthCardItem, ItemUseLogic_1.ItemUseLogic.TryUseBattlePassItem, ItemUseLogic_1.ItemUseLogic.TryUseBirthdayItem, ItemUseLogic_1.ItemUseLogic.TryUsePayShopCouponItem, ItemUseLogic_1.ItemUseLogic.TryUseParameterItem, ItemUseLogic_1.ItemUseLogic.TryUseShipTowerItem];
+InventoryController.Vci = [ItemUseLogic_1.ItemUseLogic.TryUseVisionRefineItem, ItemUseLogic_1.ItemUseLogic.TryUseUiPlayItem, ItemUseLogic_1.ItemUseLogic.TryUseBuffItem, ItemUseLogic_1.ItemUseLogic.TryUsePowerItem, ItemUseLogic_1.ItemUseLogic.TryUseGiftItem, ItemUseLogic_1.ItemUseLogic.TryUseMonthCardItem, ItemUseLogic_1.ItemUseLogic.TryUseBattlePassItem, ItemUseLogic_1.ItemUseLogic.TryUseBirthdayItem, ItemUseLogic_1.ItemUseLogic.TryUseBuffEquipItem, ItemUseLogic_1.ItemUseLogic.TryUsePayShopCouponItem, ItemUseLogic_1.ItemUseLogic.TryUseStudentCardItem, ItemUseLogic_1.ItemUseLogic.TryUseParameterItem, ItemUseLogic_1.ItemUseLogic.TryUseShipTowerItem];
 InventoryController.PhantomManageConfigUpdateRequest = async (e, t) => {
   var o = new Protocol_1.Aki.Protocol.Txu();
   o.Pxu = e;

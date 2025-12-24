@@ -9,12 +9,14 @@ const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../Ui/Base/UiTickViewBase");
 const AsyncTask_1 = require("../../World/Task/AsyncTask");
 const TaskSystem_1 = require("../../World/Task/TaskSystem");
 const ConfirmBoxDefine_1 = require("../ConfirmBox/ConfirmBoxDefine");
+const UiCameraAnimationManager_1 = require("../UiCameraAnimation/UiCameraAnimationManager");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
 const ShopController_1 = require("./ShopController");
@@ -31,6 +33,7 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     this.PTt = [];
     this.CMo = undefined;
     this.gMo = undefined;
+    this.gAf = undefined;
     this.Jgt = e => {
       e = e.Data;
       e = this.CMo.indexOf(e);
@@ -120,8 +123,17 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     }
     this.gMo = e;
   }
+  PushCameraHandle(e, t, i) {
+    var s = this.OpenParam;
+    let r = "";
+    r = s.UiCameraName && s.UiCameraName !== "" ? s.UiCameraName : ConfigManager_1.ConfigManager.ShopConfig.GetShopInfoConfig(s.ShopId).UiCamera;
+    this.gAf = UiCameraAnimationManager_1.UiCameraAnimationManager.PushCameraHandleByHandleName(r, true, true);
+  }
+  PopCameraHandle(e, t, i, s) {
+    UiCameraAnimationManager_1.UiCameraAnimationManager.PopCameraHandle(this.gAf);
+  }
   OnBeforeCreate() {
-    var e = "ShopView" + (10000 + this.OpenParam);
+    var e = "ShopView" + (10000 + this.OpenParam.ShopId);
     this.Info.CommonPopBgKey = e;
   }
   OnRegisterComponent() {
@@ -132,7 +144,8 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     await Promise.all([this.dMo.CreateThenShowByActorAsync(this.GetItem(5).GetOwner()), ShopController_1.ShopController.SendShopInfoRequest(ModelManager_1.ModelManager.ShopModel.VersionId)]);
   }
   OnStart() {
-    this.mMo = this.OpenParam;
+    var e = this.OpenParam;
+    this.mMo = e.ShopId;
     this.ShopItemScrollView = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(4), this.GetItem(6).GetOwner(), () => {
       var e = new ShopMediumItemGrid_1.ShopMediumItemGrid();
       e.BindOnExtendToggleStateChanged(this.Jgt);
@@ -150,7 +163,7 @@ class ShopView extends UiTickViewBase_1.UiTickViewBase {
     let t = "";
     var i = EntitySystem_1.EntitySystem.Get(ModelManager_1.ModelManager.ShopModel.InteractTarget);
     if (i) {
-      t = i.GetComponent(121)?.PawnName ?? "";
+      t = i.GetComponent(126)?.PawnName ?? "";
     }
     this.GetText(2).SetText(t);
   }

@@ -30,7 +30,9 @@ exports.entityPlotBindingConfig = {
   Perform_NPC2: "Perform_NPC2",
   Perform_NPC3: "Perform_NPC3",
   Perform_NPC4: "Perform_NPC4",
-  Perform_NPC5: "Perform_NPC5"
+  Perform_NPC5: "Perform_NPC5",
+  SunSpirit: "日灵",
+  Motor: "摩托"
 };
 exports.controlMatchConfig = {
   "关卡.Common.被控物.电池": true,

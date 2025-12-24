@@ -19,6 +19,7 @@ const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const DataTableUtil_1 = require("../../../Core/Utils/DataTableUtil");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const LocalStorage_1 = require("../../Common/LocalStorage");
@@ -444,6 +445,7 @@ class LoginModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Login", 27, "当前选择服务器Id", ["serverId", t]);
     }
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncSetServerId, t);
   }
   GetSingleMapId() {
     var t = LocalStorage_1.LocalStorage.GetGlobal(LocalStorageDefine_1.ELocalStorageGlobalKey.SingleMapId, -1);
@@ -528,6 +530,9 @@ class LoginModel extends ModelBase_1.ModelBase {
   }
   SetSdkLoginState(t) {
     if ((this.hEi = t) === 0) {
+      if (this.rEi) {
+        this.SetSdkLoginConfig("", "", "");
+      }
       this.PlayStationGameAutoLoginId = "-1";
     }
   }
@@ -716,6 +721,7 @@ class LoginModel extends ModelBase_1.ModelBase {
         this.SdkAccountChangeNeedExitFlag = false;
       }
     }
+    return this.SdkAccountChangeNeedExitFlag;
   }
   CacheCurrentSdkLoginConfig() {
     if (this.rEi) {

@@ -274,7 +274,7 @@ MapRogueController.A3c = e => {
     }
     if (!e.iWn) {
       for (const r of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-        r.Entity?.GetComponent(39)?.StopAllSkills("RogueBattleStateUpdate");
+        r.Entity?.GetComponent(40)?.StopAllSkills("RogueBattleStateUpdate");
       }
     }
   }

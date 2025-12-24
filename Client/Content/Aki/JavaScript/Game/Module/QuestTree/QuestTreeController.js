@@ -25,15 +25,15 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
     return (0, puerts_1.$unref)(e);
   }
   static OnInit() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.MCm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ECm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.ICm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.VIm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.jIm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.HIm);
     return true;
   }
   static OnClear() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.MCm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.ECm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.ICm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsTrackQuest, this.VIm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsQuestTreeGotoQuest, this.jIm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestTsHandleQuestTreeNode, this.HIm);
     return true;
   }
   static OpenMainView() {
@@ -210,33 +210,32 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
     }
   }
   static JumpToQuest(e) {
-    const r = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromQuestId(e);
+    var r = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromQuestId(e);
     if (r) {
       if (r.State === 0) {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("QuestTree_NotTreeNode_Unavailable");
       } else if (ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.SelectedData?.ChapterId === r.ChapterId) {
         ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.SelectData(r);
-        ControllerHolder_1.ControllerHolder.QuestTreeController.OpenNodeDetailView(r);
+        this.OpenNodeDetailView(r);
       } else {
-        const t = {
-          ChapterId: r.ChapterId
-        };
-        UiLayer_1.UiLayer.SetShowMaskLayer("QuestNodeGoto", true);
-        UiManager_1.UiManager.CloseView("QuestTreeNodeDetailView", () => {
-          UiManager_1.UiManager.CloseView("QuestTreeChapterView", () => {
-            UiManager_1.UiManager.OpenView("QuestTreeChapterView", t, () => {
-              ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.SelectData(r);
-              ControllerHolder_1.ControllerHolder.QuestTreeController.OpenNodeDetailView(r);
-              UiLayer_1.UiLayer.SetShowMaskLayer("QuestNodeGoto", false);
-            });
-          });
-        });
+        this.zxm(r);
       }
     } else if (!ControllerHolder_1.ControllerHolder.QuestTreeController.GotoNodeByQuestId(e)) {
       UiManager_1.UiManager.OpenView("WorldMapView", undefined, () => {
         ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("QuestTree_NotTreeNode_Unavailable");
       });
       UiManager_1.UiManager.CloseView("QuestTreeNodeDetailView");
+    }
+  }
+  static async zxm(e) {
+    UiLayer_1.UiLayer.SetShowMaskLayer("QuestNodeGoto", true);
+    this.CloseNodeDetailView();
+    var r = ModelManager_1.ModelManager.QuestTreeModel.GetChapterDataById(e.ChapterId);
+    if (r) {
+      await ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.RefreshViewByData(r);
+      ModelManager_1.ModelManager.QuestTreeModel.ViewModelChapter.SelectData(e);
+      UiLayer_1.UiLayer.SetShowMaskLayer("QuestNodeGoto", false);
+      this.OpenNodeDetailView(e);
     }
   }
   static GmSetAllNodeFinish() {
@@ -249,18 +248,18 @@ class QuestTreeController extends ControllerBase_1.ControllerBase {
   }
 }
 exports.QuestTreeController = QuestTreeController;
-(_a = QuestTreeController).MCm = (e, r, t, o) => {
+(_a = QuestTreeController).VIm = (e, r, t, o) => {
   ControllerHolder_1.ControllerHolder.QuestNewController.RequestTrackQuest(e, r, t, o, () => {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsTrackQuestResponse);
   });
 };
-QuestTreeController.ECm = e => {
+QuestTreeController.jIm = e => {
   e = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromNodeId(e);
   if (e) {
     _a.GotoNode(e);
   }
 };
-QuestTreeController.ICm = e => {
+QuestTreeController.HIm = e => {
   e = ModelManager_1.ModelManager.QuestTreeModel.GetNodeDataFromNodeId(e);
   if (e) {
     _a.TrackOrGotoNode(e);

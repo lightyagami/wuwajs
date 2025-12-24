@@ -71,7 +71,7 @@ class LevelEventCheckBattleState extends LevelGeneralBase_1.LevelEventBase {
     var e;
     if (this.sDe?.Valid) {
       e = this.lDe.Type;
-      return this.sDe.Entity.GetComponent(209)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
+      return this.sDe.Entity.GetComponent(215)?.HasTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
     } else {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 33, "目标实体不存在，action视为执行成功", ["EntityId", this.aDe.EntityId]);

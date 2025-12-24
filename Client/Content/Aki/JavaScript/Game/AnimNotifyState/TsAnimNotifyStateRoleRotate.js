@@ -31,15 +31,15 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
         return false;
       }
       if (this.在横板模式中禁用) {
-        if (t.GetComponent(111)?.Active) {
+        if (t.GetComponent(116)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!t.GetComponent(111)?.Active) {
+        if (!t.GetComponent(116)?.Active) {
           return false;
         }
       }
-      t = t.GetComponent(40);
+      t = t.GetComponent(41);
       if (t?.Valid) {
         t.SetSkillRotateToTarget(this.是否自动朝向目标, false, 0);
         return true;
@@ -55,19 +55,19 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
         return false;
       }
       if (this.在横板模式中禁用) {
-        if (r.GetComponent(111)?.Active) {
+        if (r.GetComponent(116)?.Active) {
           return false;
         }
       } else if (this.只在横板模式中生效) {
-        if (!r.GetComponent(111)?.Active) {
+        if (!r.GetComponent(116)?.Active) {
           return false;
         }
       }
-      var s = r?.GetComponent(40);
+      var s = r?.GetComponent(41);
       if (!s?.Valid) {
         return false;
       }
-      if (r?.GetComponent(179)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ride) {
+      if (r?.GetComponent(184)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ride) {
         return false;
       }
       if (this.是否自动朝向目标) {
@@ -88,7 +88,7 @@ class TsAnimNotifyStateRoleRotate extends UE.KuroAnimNotifyState {
   K2_NotifyEnd(t, i) {
     t = t.GetOwner();
     if (t instanceof TsBaseCharacter_1.default) {
-      t = t.CharacterActorComponent?.Entity?.GetComponent(40);
+      t = t.CharacterActorComponent?.Entity?.GetComponent(41);
       if (t?.Valid) {
         t.SetSkillCanRotate(false);
         return true;

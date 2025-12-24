@@ -32,8 +32,11 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Register(21693, e => {
       ModelManager_1.ModelManager.HandBookModel.UpdateHandBookActiveStateMap(e.h5n, e.cws);
       if (e.dws && (this.Aei(e.h5n, e.cws), e.h5n === ModelManager_1.ModelManager.HandBookModel.GetServerHandBookType(2))) {
-        e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n);
-        this.Pei(e);
+        if ((e = ConfigManager_1.ConfigManager.HandBookConfig.GetGeographyHandBookConfig(e.cws.s5n))?.GeographyTabType === 2) {
+          this.ShowPanoramicPointUnlockTips(e);
+        } else {
+          this.Pei(e);
+        }
       }
     });
   }
@@ -202,6 +205,14 @@ class HandBookController extends UiControllerBase_1.UiControllerBase {
     if (e) {
       ModelManager_1.ModelManager.HandBookModel.RefreshRoleHandBookOpenTime(e.zad);
       ModelManager_1.ModelManager.HandBookModel.RefreshWeaponHandBookOpenTime(e.Jad);
+    }
+  }
+  static ShowPanoramicPointUnlockTips(e) {
+    if (e) {
+      e = {
+        ConfigId: e.Id
+      };
+      UiManager_1.UiManager.OpenView("PanoramicPointUnlockTipsView", e);
     }
   }
 }

@@ -35,7 +35,7 @@ class ShowerModel extends ModelBase_1.ModelBase {
   }
   SetShowerSeatConfigIds(e) {
     if (e && !this.IsInShower) {
-      var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(233)?.Seat ?? -1;
+      var t = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(242)?.Seat ?? -1;
       if (t === -1) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Vehicle", 78, "共浴 玩家座位id undefined");

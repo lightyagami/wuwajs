@@ -78,16 +78,14 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
         }
         let o = t.length > 0 ? t[0] : 0;
         if (i) {
-          var l = n.GetCurrentFormationData;
-          var _ = l.GetCurrentRolePosition;
-          o = l.GetCurrentRoleConfigId;
+          var l = n.GetCurrentFormationData.GetCurrentRolePosition;
           if (!t.includes(o)) {
-            o = _ <= t.length ? t[_ - 1] : t[0];
+            o = l <= t.length ? t[l - 1] : t[0];
           }
           if (n.IsRoleDead(o)) {
-            for (const m of t) {
-              if (m !== o && !n.IsRoleDead(m)) {
-                o = m;
+            for (const g of t) {
+              if (g !== o && !n.IsRoleDead(g)) {
+                o = g;
                 break;
               }
             }
@@ -101,14 +99,18 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
         e.push(l);
       }
     }
-    var g = new Protocol_1.Aki.Protocol.Nis();
-    g.kVn = e;
+    var _ = new Protocol_1.Aki.Protocol.Nis();
+    _.kVn = e;
     ModelManager_1.ModelManager.SceneTeamModel.RefreshLastTransform();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 48, "更新单机编队", ["formations", e]);
     }
-    var g = await Net_1.Net.CallAsync(29442, g);
-    return g?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
+    var _ = await Net_1.Net.CallAsync(29442, _);
+    EditFormationController.mJf();
+    if (_?.Q4n === Protocol_1.Aki.Protocol.Q4n.Proto_ErrFormationRoleNotActive && (n.IsFormationHasSpecialTrialRole() || n.IsEditingFormationHasSpecialTrialRole())) {
+      ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId("Error_Trial_Role_Expired");
+    }
+    return _?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
   static async UpdateFormationRequest(o, r, t, e) {
     var n = new Protocol_1.Aki.Protocol.M6s();
@@ -161,6 +163,17 @@ class EditFormationController extends UiControllerBase_1.UiControllerBase {
     r = await Net_1.Net.CallAsync(24981, t);
     return r?.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs;
   }
+  static ctg() {
+    if (ModelManager_1.ModelManager.EditFormationModel.IsFormationHasSpecialTrialRole()) {
+      for (const o of ModelManager_1.ModelManager.EditFormationModel.GetFormationAllSpecialTrialRole()) {
+        ModelManager_1.ModelManager.TrialRoleModel.SetTrialRoleVisibility(o, true);
+      }
+    }
+  }
+  static mJf() {
+    var o = ModelManager_1.ModelManager.EditFormationModel.IsCurFormationHasSpecialTrialRole();
+    ModelManager_1.ModelManager.OnlineModel.DisableOnline(2, o);
+  }
 }
 exports.EditFormationController = EditFormationController;
 (_a = EditFormationController).o5t = "EditBattleTeamForbitState";
@@ -198,21 +211,21 @@ EditFormationController.CanOpenView = o => {
     }
     return false;
   }
-  e = t.Entity.GetComponent(209);
+  e = t.Entity.GetComponent(215);
   if (!e?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 TagComponent 不存在");
     }
     return false;
   }
-  var n = t.Entity.GetComponent(178);
+  var n = t.Entity.GetComponent(183);
   if (!n?.Valid) {
     if (Log_1.Log.CheckWarn()) {
       Log_1.Log.Warn("Formation", 5, "打开编队按钮时，当前实体的 CharacterBuffComponent 不存在");
     }
     return false;
   }
-  if (t.Entity.GetComponent(234)?.IsOnVehicle) {
+  if (t.Entity.GetComponent(243)?.IsOnVehicle) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色在载具上");
     }
@@ -271,7 +284,7 @@ EditFormationController.CanOpenView = o => {
   }
   if (e.HasTag(-2100129479)) {
     var e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(t.Entity, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
-    if (e && e.Entity.GetComponent(209)?.HasTag(40422668)) {
+    if (e && e.Entity.GetComponent(215)?.HasTag(40422668)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Formation", 5, "打开编队按钮时，当前角色为声骸变身状态且处于空中");
       }
@@ -285,14 +298,14 @@ EditFormationController.CanOpenView = o => {
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
-  } else if ((e = t.Entity.GetComponent(79)) && e.WalkOnWaterStage > 0) {
+  } else if ((e = t.Entity.GetComponent(82)) && e.WalkOnWaterStage > 0) {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Formation", 36, "打开编队按钮时，当前角色在水面上行走");
     }
     ScrollingTipsController_1.ScrollingTipsController.ShowTipsById(EditFormationController.o5t);
     return false;
   } else {
-    return r.CurrentGroupType !== 3 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Formation", 48, "打开编队按钮时，在剧情中无法打开"), false);
+    return r.CurrentGroupType === 1 || (Log_1.Log.CheckWarn() && Log_1.Log.Warn("Formation", 48, "打开编队按钮时，在非战斗编队中无法打开"), false);
   }
 };
 EditFormationController.OpenEditFormationView = (o = undefined) => {
@@ -330,5 +343,7 @@ EditFormationController.i5t = o => {
   } else {
     ModelManager_1.ModelManager.EditFormationModel.UpdatePlayerFormations(r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshOnlineTeamList);
+    EditFormationController.mJf();
+    EditFormationController.ctg();
   }
 }; //# sourceMappingURL=EditFormationController.js.map

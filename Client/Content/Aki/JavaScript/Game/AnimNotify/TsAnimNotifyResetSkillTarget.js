@@ -13,7 +13,7 @@ class TsAnimNotifyResetSkillTarget extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, t) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity.GetComponent(40)) && (e.LockOnTargetAndSetShow(this.技能目标配置), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity.GetComponent(41)) && (e.LockOnTargetAndSetShow(this.技能目标配置), true);
   }
   GetNotifyName() {
     return "重置技能目标";

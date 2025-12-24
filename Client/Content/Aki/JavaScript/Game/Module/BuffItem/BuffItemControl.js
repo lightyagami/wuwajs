@@ -130,7 +130,7 @@ class BuffItemControl extends UiControllerBase_1.UiControllerBase {
         var _ = a.GetConfigId;
         var l = ModelManager_1.ModelManager.RoleModel.GetRoleName(_);
         var a = a.EntityHandle;
-        var s = a?.Entity?.GetComponent(177);
+        var s = a?.Entity?.GetComponent(182);
         let e = 0;
         let r = 0;
         let t = 0;

@@ -47,6 +47,9 @@ class LogReportModel extends ModelBase_1.ModelBase {
     }
     this.Hvi = r;
   }
+  SetTimerAssemblyLogData(e, t) {
+    this.Jba.set(e, t);
+  }
   GetTimerAssemblyLogData(e) {
     return this.Jba.get(e);
   }

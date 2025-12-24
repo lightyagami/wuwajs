@@ -42,6 +42,13 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NPCDENSITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NVIDIADLSSQUALITY, 0, false);
     GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.NIAGARAQUALITY, 0, false);
+    if (Info_1.Info.IsWindowsPlatform() && this.KuroRenderQualityLocalIndex >= 80 && this.KuroRenderQualityLocalIndex < 90) {
+      if (UE.KismetSystemLibrary.GetConsoleVariableIntValue("r.RayTracing.Enable") === 0) {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "UBInstancing.Enabled 0");
+      } else {
+        UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "UBInstancing.Enabled 1");
+      }
+    }
   }
   static JGd() {
     this.zGd.OnEnterVolumeBlueprintEvent.Add(() => {
@@ -75,7 +82,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSubLevelAdded, this.XGa);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
-    Application_1.Application.AddWindowActivationHandler(this.enm);
+    Application_1.Application.AddWindowActivationHandler(this.Mlm);
   }
   static kre() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnStartLoadingState, this.hMe);
@@ -83,7 +90,7 @@ class GameSettingsController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ClearWorld, this.uMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSubLevelAdded, this.XGa);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InputControllerMainTypeChange, this.Etl);
-    Application_1.Application.RemoveWindowActivationHandler(this.enm);
+    Application_1.Application.RemoveWindowActivationHandler(this.Mlm);
   }
   static kot() {
     this.IRe = TimerSystem_1.GameplayTimerSystem.Delay(this.q7e, GameSettingsDeviceRenderDefine_1.WHOLE_SHADOW_CACHE_DELAY_TIME);
@@ -256,7 +263,7 @@ GameSettingsController.Etl = (e, a) => {
     GameSettingsUtils_1.GameSettingsUtils.RefreshViewRevertState(a);
   }
 };
-GameSettingsController.enm = e => {
+GameSettingsController.Mlm = e => {
   if (GameSettingsManager_1.GameSettingsManager.GetCurrentValueSafely(GameSettingsDefine_1.EFunction.BackendVolume) === 1) {
     if (e) {
       AudioSystem_1.AudioSystem.SetState("master_bus_by_focus_state", "none");

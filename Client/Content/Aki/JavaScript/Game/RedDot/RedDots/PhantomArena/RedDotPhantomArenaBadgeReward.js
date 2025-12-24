@@ -12,13 +12,13 @@ class RedDotPhantomArenaBadgeReward extends RedDotBase_1.RedDotBase {
     return "RedDotPhantomArenaCollect";
   }
   IsMultiple() {
-    return false;
+    return true;
   }
   OnGetEvents() {
     return [EventDefine_1.EEventName.OnPhantomArenaBadgeRewardUpdate];
   }
   OnCheck(e) {
-    return ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardRedDot();
+    return e !== 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetBadgeRewardRedDot(e);
   }
 }
 exports.RedDotPhantomArenaBadgeReward = RedDotPhantomArenaBadgeReward;

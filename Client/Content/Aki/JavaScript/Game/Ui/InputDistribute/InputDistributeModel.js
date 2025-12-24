@@ -105,6 +105,10 @@ class InputDistributeModel extends ModelBase_1.ModelBase {
     t = this.Mdr(t);
     return !!t && t.GetIsPress();
   }
+  IsAxisInPress(t) {
+    t = this.ydr(t);
+    return !!t && t.GetCacheAxisValue() !== 0;
+  }
   InputAction(i, e) {
     var t = this.Mdr(i);
     if (!t) {

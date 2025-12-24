@@ -56,20 +56,21 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     this.Ycn = undefined;
     this.vtn = undefined;
     this.Hte = undefined;
+    this.sVf = undefined;
     this.JUn = undefined;
     this.V4l = false;
     this.Jcn = false;
     this.nye = () => {
-      this.oZo(this.G2e);
+      this.aVf(this.G2e);
     };
     this.zcn = (t, e) => {
       e = e.Entity;
-      if (this.M_n && e && (e.GetComponent(61) || e.GetComponent(158))) {
+      if (this.M_n && e && (e.GetComponent(64) || e.GetComponent(163))) {
         if (this.Qcn = t) {
-          this.oZo(this.G2e);
+          this.aVf(this.G2e);
         } else {
           for (const i of this.Ycn.keys()) {
-            this.HVo(i);
+            this.hVf(i);
           }
         }
       }
@@ -78,11 +79,11 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
       this.G2e = t;
       if (this.M_n && e) {
         if (this.Qcn || this.Jcn) {
-          this.oZo(this.G2e);
+          this.aVf(this.G2e);
         }
         for (const i of this.Ycn.keys()) {
           if (i !== this.G2e) {
-            this.HVo(i);
+            this.hVf(i);
           }
         }
       }
@@ -103,18 +104,19 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     var i = this.Entity.GetComponent(0)?.ComponentDataMap.get("Kys");
     this.JUn = MathUtils_1.MathUtils.LongToBigInt(i?.Kys?._Vn);
     this.V4l = t.DisableGenerateByRange ?? false;
+    this.sVf = this.Entity.GetComponent(338);
     EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneItemStateChange, this.m1n);
     return true;
   }
   OnStart() {
-    var t = this.Entity.GetComponent(86);
+    var t = this.Entity.GetComponent(89);
     if (!this.V4l && t) {
       this.vtn = t;
       this.vtn.AddOnEntityOverlapCallback(this.zcn);
     } else {
       this.Jcn = true;
     }
-    var e = this.Entity.GetComponent(200);
+    var e = this.Entity.GetComponent(206);
     for (const i of this.Ycn.keys()) {
       if (e.HasTag(i)) {
         this.G2e = i;
@@ -128,71 +130,116 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     this.M_n = true;
     if (Global_1.Global.BaseCharacter?.CharacterActorComponent !== undefined && ModelManager_1.ModelManager.GameModeModel.WorldDone) {
       if (this.Jcn) {
-        this.oZo(this.G2e);
+        this.aVf(this.G2e);
       }
     } else if (this.Jcn) {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
     }
     return true;
   }
-  oZo(t) {
-    if (this.Ycn.has(t) && this.Ycn.get(t).length !== 0) {
-      for (const n of this.Ycn.get(t)) {
-        if (n.BulletEntityId) {
-          return;
-        }
-        this.Zcn(n);
-        var e = n.BulletGroup;
-        var i = n.BulletTransform;
-        let t = undefined;
-        if (e.Range) {
-          this.$cn.Set(e.Range.X, e.Range.Y, e.Range.Z);
-          t = {
-            Size: this.$cn
-          };
-        }
-        var s = BulletController_1.BulletController.GetSceneBulletOwner();
-        if (!s?.IsInit) {
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("SceneItem", 17, "Bullet生成错误, 找不到场景子弹owner", ["EntityID", this.Entity.Id]);
+  OnTick(t) {
+    this.lVf();
+  }
+  lVf() {
+    if (ModelManager_1.ModelManager.GameModeModel.WorldDone && this.Ycn && this.sVf) {
+      var t = this.sVf.GetVehicleTeamMember();
+      if (t) {
+        var e = this.Ycn.get(this.G2e);
+        if (e && e.length) {
+          for (const n of e) {
+            var i;
+            var s = n.BulletGroup?.CustomBulletLogic;
+            if (s && s.Type === "TrafficBullet") {
+              s = t.GetSpeed() >= s.MinSpeed;
+              i = this.sVf.IsInPerceptionRange();
+              if (s && i) {
+                if (!n.BulletEntityId) {
+                  this.oZo(n);
+                }
+              } else {
+                this.HVo(n);
+              }
+            }
           }
-          return;
-        }
-        s = BulletController_1.BulletController.CreateBulletCustomTarget(s.Entity, e.BulletId.toString(), i.ToUeTransform(), t, this.JUn);
-        if (s?.GetComponent(173)?.Owner?.IsValid()) {
-          (i = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(14)).IsParentActor = true;
-          i.Actor = this.Hte.Owner;
-          i.LocationRule = 1;
-          i.RotationRule = 1;
-          i.ScaleRule = 1;
-          i.WeldSimulatedBodies = false;
-          BulletController_1.BulletController.GetActionRunner().AddAction(s.GetBulletInfo(), i);
-        }
-        n.BulletEntityId = s?.Id;
-        if (s) {
-          if (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDone, this.nye)) {
-            EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
-          }
-        } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("SceneItem", 42, "Bullet生成错误", ["BulletID", e.BulletId], ["当前Bullet的EntityState", e.EntityState], ["EntityID", this.Entity.Id]);
         }
       }
     }
   }
-  HVo(t) {
-    if (this.Ycn.has(t) && this.Ycn.get(t).length !== 0) {
-      for (const i of this.Ycn.get(t)) {
-        if (!i.BulletEntityId) {
-          return;
+  aVf(t) {
+    if (this.Ycn) {
+      t = this.Ycn.get(t);
+      if (t && t.length) {
+        for (const i of t) {
+          if (!i.BulletEntityId) {
+            if (i.BulletGroup?.CustomBulletLogic?.Type === "TrafficBullet") {
+              if (!this.sVf) {
+                continue;
+              }
+              var e = this.sVf.GetVehicleTeamMember();
+              if (!e) {
+                continue;
+              }
+              if (e.GetSpeed() < i.BulletGroup.CustomBulletLogic.MinSpeed) {
+                continue;
+              }
+            }
+            if (this.oZo(i) && EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.WorldDone, this.nye)) {
+              EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+            }
+          }
         }
-        var e = EntitySystem_1.EntitySystem.Get(i.BulletEntityId);
-        if (e?.Valid) {
-          e.GetComponent(173).Owner?.K2_DetachFromActor(1, 1, 1);
-        }
-        BulletController_1.BulletController.DestroyBullet(i.BulletEntityId, false);
-        i.BulletEntityId = undefined;
       }
     }
+  }
+  oZo(t) {
+    if (t.BulletEntityId) {
+      return false;
+    }
+    this.Zcn(t);
+    var e = t.BulletGroup;
+    var i = t.BulletTransform;
+    let s = undefined;
+    if (e.Range) {
+      this.$cn.Set(e.Range.X, e.Range.Y, e.Range.Z);
+      s = {
+        Size: this.$cn
+      };
+    }
+    var n = BulletController_1.BulletController.GetSceneBulletOwner();
+    if (n?.IsInit) {
+      if ((n = BulletController_1.BulletController.CreateBulletCustomTarget(n.Entity, e.BulletId.toString(), i.ToUeTransform(), s, this.JUn))?.GetComponent(178)?.Owner?.IsValid()) {
+        (i = BulletController_1.BulletController.GetActionCenter().CreateBulletActionInfo(14)).IsParentActor = true;
+        i.Actor = this.Hte.Owner;
+        i.LocationRule = 1;
+        i.RotationRule = 1;
+        i.ScaleRule = 1;
+        i.WeldSimulatedBodies = false;
+        BulletController_1.BulletController.GetActionRunner().AddAction(n.GetBulletInfo(), i);
+      }
+      t.BulletEntityId = n?.Id;
+      if (!n) {
+        if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("SceneItem", 42, "Bullet生成错误", ["BulletID", e.BulletId], ["当前Bullet的EntityState", e.EntityState], ["EntityID", this.Entity.Id]);
+        }
+      }
+      return n?.Valid;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("SceneItem", 17, "Bullet生成错误, 找不到场景子弹owner", ["EntityID", this.Entity.Id]);
+      }
+      return false;
+    }
+  }
+  hVf(t) {
+    if (this.Ycn.has(t) && this.Ycn.get(t).length !== 0) {
+      for (const e of this.Ycn.get(t)) {
+        this.HVo(e);
+      }
+    }
+  }
+  HVo(t) {
+    var e;
+    return !!t.BulletEntityId && !((e = EntitySystem_1.EntitySystem.Get(t.BulletEntityId))?.Valid && e.GetComponent(178).Owner?.K2_DetachFromActor(1, 1, 1), BulletController_1.BulletController.DestroyBullet(t.BulletEntityId, false), t.BulletEntityId = undefined);
   }
   Zcn(t) {
     t.BulletTransform = Transform_1.Transform.Create();
@@ -209,7 +256,7 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     }
     this.vtn?.RemoveOnEntityOverlapCallback(this.zcn);
     for (const t of this.Ycn.keys()) {
-      this.HVo(t);
+      this.hVf(t);
     }
     this.Ycn.clear();
     this.M_n = false;
@@ -222,5 +269,5 @@ let SceneBulletComponent = SceneBulletComponent_1 = class SceneBulletComponent e
     return true;
   }
 };
-SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(146)], SceneBulletComponent);
+SceneBulletComponent = SceneBulletComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(151)], SceneBulletComponent);
 exports.SceneBulletComponent = SceneBulletComponent; //# sourceMappingURL=SceneBulletComponent.js.map

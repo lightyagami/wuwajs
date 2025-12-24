@@ -15,10 +15,10 @@ class RedDotPhantomArenaGym extends RedDotBase_1.RedDotBase {
     return [EventDefine_1.EEventName.OnPhantomArenaChallengeUpdate];
   }
   IsMultiple() {
-    return false;
+    return true;
   }
   OnCheck(e) {
-    return ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDot();
+    return e !== 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetGymRedDot(e);
   }
 }
 exports.RedDotPhantomArenaGym = RedDotPhantomArenaGym;

@@ -19,32 +19,34 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
     this.DetectionRadius = 500;
   }
   Constructor() {}
-  K2_NotifyBegin(e, t, i) {
-    var r;
+  K2_NotifyBegin(e, t, r) {
+    var i;
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(213)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), r = e.GetComponent(40), !!(e = e.GetComponent(52))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, r?.CurrentSkill?.SkillId ?? 0), true);
+    return e instanceof TsBaseCharacter_1.default && !!(e = e.CharacterActorComponent.Entity) && (t = e.GetComponent(220)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex), i = e.GetComponent(41), !!(e = e.GetComponent(53))) && (this.DetectionRadius > 0 && this.CheckPosition(e), e.SetCaughtBindingAnsInfo(t), e.BeginCaught(this.CaughtIds, i?.CurrentSkill?.SkillId ?? 0), true);
   }
-  CheckPosition(i) {
+  CheckPosition(r) {
     for (let e = 0; e < this.CaughtIds.Num(); e++) {
-      var r = this.CaughtIds.Get(e);
-      var o = i.Entity.GetComponent(3);
-      var r = i.PendingCaughtList.get(r);
-      if (!r) {
+      var i = this.CaughtIds.Get(e);
+      var o = r.Entity.GetComponent(3);
+      var i = r.PendingCaughtList.get(i);
+      if (!i) {
         return;
       }
       TsAnimNotifyStateCaughtBinding.InitTrace();
-      var n = o?.ActorLocationProxy;
-      var a = TsAnimNotifyStateCaughtBinding.SphereTrace;
-      TraceElementCommon_1.TraceElementCommon.SetStartLocation(a, n);
-      TraceElementCommon_1.TraceElementCommon.SetEndLocation(a, n);
-      a.Radius = this.DetectionRadius;
-      var s = TraceElementCommon_1.TraceElementCommon.SphereTrace(a, PROFILE_KEY);
+      var a = o?.ActorLocationProxy;
+      var n = TsAnimNotifyStateCaughtBinding.SphereTrace;
+      TraceElementCommon_1.TraceElementCommon.SetStartLocation(n, a);
+      TraceElementCommon_1.TraceElementCommon.SetEndLocation(n, a);
+      n.Radius = this.DetectionRadius;
+      var s = TraceElementCommon_1.TraceElementCommon.SphereTrace(n, PROFILE_KEY);
       if (!s) {
         return;
       }
       let t = false;
-      for (let e = 0; e < a.HitResult.GetHitCount(); e++) {
-        if (a.HitResult?.Components.Get(e).GetCollisionProfileName()?.toString().includes(AIRWALL_PORFILENAME)) {
+      var c = n.HitResult.ItemArray;
+      for (let e = 0; e < n.HitResult.GetHitCount(); e++) {
+        var u = c.Get(e);
+        if (UE.KuroCollisionLibrary.GetCollisionProfileName(n.HitResult?.Components.Get(e), u)?.toString().includes(AIRWALL_PORFILENAME)) {
           t = true;
           break;
         }
@@ -52,20 +54,20 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
       if (!t) {
         return;
       }
-      var c;
-      var s = r[0].GetComponent(0);
+      var h;
+      var s = i[0].GetComponent(0);
       if (s?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
         s = Vector_1.Vector.Create(s?.GetInitLocation());
-        n = Vector_1.Vector.Create(n);
-        c = Vector_1.Vector.Create();
-        s.Subtraction(n, c);
-        c.Normalize();
-        c.Multiply(this.DetectionRadius, c);
-        s = Vector_1.Vector.Create(o?.ActorLocation).AdditionEqual(c);
+        a = Vector_1.Vector.Create(a);
+        h = Vector_1.Vector.Create();
+        s.Subtraction(a, h);
+        h.Normalize();
+        h.Multiply(this.DetectionRadius, h);
+        s = Vector_1.Vector.Create(o?.ActorLocation).AdditionEqual(h);
         o?.SetActorLocation(s.ToUeVector(), "ExecutionAdjustMove", false);
-        n = r[0].GetComponent(3);
-        o = Vector_1.Vector.Create(n?.ActorLocation).AdditionEqual(c);
-        r[0].GetComponent(3)?.SetActorLocation(o.ToUeVector(), "ExecutionAdjustMove", false);
+        a = i[0].GetComponent(3);
+        o = Vector_1.Vector.Create(a?.ActorLocation).AdditionEqual(h);
+        i[0].GetComponent(3)?.SetActorLocation(o.ToUeVector(), "ExecutionAdjustMove", false);
       }
     }
   }
@@ -80,7 +82,7 @@ class TsAnimNotifyStateCaughtBinding extends UE.KuroAnimNotifyState {
   }
   K2_NotifyEnd(e, t) {
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !!e.CharacterActorComponent && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(52)) && !(e.EndCaught(), 0);
+    return e instanceof TsBaseCharacter_1.default && !!e.CharacterActorComponent && !!(e = e.CharacterActorComponent.Entity) && !!(e = e.GetComponent(53)) && !(e.EndCaught(), 0);
   }
   GetNotifyName() {
     return "抓取绑定";

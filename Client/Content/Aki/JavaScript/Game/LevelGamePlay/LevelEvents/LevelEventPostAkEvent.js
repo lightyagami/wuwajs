@@ -17,13 +17,15 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
   ExecuteNew(e, o) {
     if (e) {
       const i = e;
+      var t;
+      var n;
       if (i.EventConfig.Type === IAction_1.EPostAkEvent.Global) {
         const r = (0, AudioSystem_1.parseAudioEventPath)(i.EventConfig.AkEvent);
         if (ModelManager_1.ModelManager.MapModel.CurrentInWorld || i.PersistWhenExitDungeon) {
           if (i.MusicEventType) {
             AudioSystem_1.AudioSystem.PostEvent(r, undefined, {
               CallbackHandler: (e, o) => {
-                this.Pgd(e, i);
+                this.Pgd(e, o, i);
               },
               CallbackMask: 384
             });
@@ -39,7 +41,7 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
                   Log_1.Log.Debug("Audio", 42, "[PostAkEventAudio] 全局音频事件Handle移除记录", ["Handle", a], ["Event", r]);
                 }
               } else {
-                this.Pgd(e, i);
+                this.Pgd(e, o, i);
               }
             },
             CallbackMask: (i.MusicEventType ? 384 : 0) | 1
@@ -54,47 +56,46 @@ class LevelEventPostAkEvent extends LevelGeneralBase_1.LevelEventBase {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Audio", 56, "[Game.Action] PostEvent", ["Event", r]);
         }
-      } else {
-        var t;
-        var n;
-        if (i.EventConfig.Type === IAction_1.EPostAkEvent.Target) {
-          e = i.EventConfig.EntityId;
-          if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)) {
-            if ((t = t.Entity.GetComponent(1)?.Owner)?.IsValid()) {
-              n = (0, AudioSystem_1.parseAudioEventPath)(i.EventConfig.AkEvent);
-              if (i.MusicEventType) {
-                AudioSystem_1.AudioSystem.PostEvent(n, undefined, {
-                  CallbackHandler: (e, o) => {
-                    this.Pgd(e, i);
-                  },
-                  CallbackMask: 384
-                });
-              } else {
-                AudioSystem_1.AudioSystem.PostEvent(n, t);
-              }
-              if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("Audio", 56, "[Game.Action] PostEvent", ["Event", n], ["Actor", t]);
-              }
-            } else if (Log_1.Log.CheckError()) {
-              Log_1.Log.Error("Event", 33, "未能获取到该实体对应的有效Actor", ["entityId", e]);
+      } else if (i.EventConfig.Type === IAction_1.EPostAkEvent.Target) {
+        e = i.EventConfig.EntityId;
+        if (t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e)) {
+          if ((t = t.Entity.GetComponent(1)?.Owner)?.IsValid()) {
+            n = (0, AudioSystem_1.parseAudioEventPath)(i.EventConfig.AkEvent);
+            if (i.MusicEventType) {
+              AudioSystem_1.AudioSystem.PostEvent(n, undefined, {
+                CallbackHandler: (e, o) => {
+                  this.Pgd(e, o, i);
+                },
+                CallbackMask: 384
+              });
+            } else {
+              AudioSystem_1.AudioSystem.PostEvent(n, t);
+            }
+            if (Log_1.Log.CheckInfo()) {
+              Log_1.Log.Info("Audio", 56, "[Game.Action] PostEvent", ["Event", n], ["Actor", t]);
             }
           } else if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Event", 33, "实体不存在", ["entityId", e]);
+            Log_1.Log.Error("Event", 33, "未能获取到该实体对应的有效Actor", ["entityId", e]);
           }
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Event", 33, "实体不存在", ["entityId", e]);
         }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Event", 33, "参数配置错误");
     }
   }
-  Pgd(e, o) {
-    o = o.MusicEventType;
-    if (o) {
+  Pgd(e, o, t) {
+    t = t.MusicEventType;
+    if (t) {
       if (e === 7) {
-        LevelConditionCenter_1.LevelConditionCenter.StartMusicBeatCounter(o);
+        LevelConditionCenter_1.LevelConditionCenter.StartMusicBeatCounter(t);
       } else if (e === 8) {
-        LevelConditionCenter_1.LevelConditionCenter.AddMusicBeatCounter(o);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CheckMusicBeatsEvent, o, e);
+        if (o && ((o = o.SegmentInfo).CurrentPosition <= 0 && LevelConditionCenter_1.LevelConditionCenter.StartMusicBeatCounter(t), Log_1.Log.CheckInfo())) {
+          Log_1.Log.Info("Audio", 79, "[音乐节拍] 触发MusicSyncBeat事件", ["MusicEventType", t], ["CurrentPosition", o.CurrentPosition], ["BeatCount", LevelConditionCenter_1.LevelConditionCenter.GetMusicBeatCounter(t) + 1]);
+        }
+        LevelConditionCenter_1.LevelConditionCenter.AddMusicBeatCounter(t);
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CheckMusicBeatsEvent, t, e);
       }
     }
   }

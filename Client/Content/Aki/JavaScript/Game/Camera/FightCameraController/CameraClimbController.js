@@ -278,7 +278,7 @@ class CameraClimbController extends CameraControllerBase_1.CameraControllerBase 
     this.SetConfigMap(20, "StartInputDelay");
   }
   OnEnable() {
-    var t = this.Camera.CharacterEntityHandle.Entity.GetComponent(34).GetExitClimbType();
+    var t = this.Camera.CharacterEntityHandle.Entity.GetComponent(35).GetExitClimbType();
     if (this.Tle(t)) {
       this.Lle.Switch(0);
     } else {
@@ -306,14 +306,14 @@ class CameraClimbController extends CameraControllerBase_1.CameraControllerBase 
   }
   UpdateInternal(t) {
     var i;
-    this.Camera.CharacterEntityHandle.Entity.GetComponent(62).GetMoveVector(this.Lz);
+    this.Camera.CharacterEntityHandle.Entity.GetComponent(65).GetMoveVector(this.Lz);
     if (this.Dle(this.Lz)) {
       if (Time_1.Time.Now > this.yle) {
         this.Sle.DeepCopy(this.Lz);
         this.Lz.Set(0, this.Sle.Y, this.Sle.X);
         this.Camera.Character.CharacterActorComponent.ActorQuatProxy.RotateVector(this.Lz, this.MoveDirection);
         this.IsMoving = true;
-        i = this.Camera.CharacterEntityHandle.Entity.GetComponent(182).Speed;
+        i = this.Camera.CharacterEntityHandle.Entity.GetComponent(187).Speed;
         this.ElapseTimeScale = i > this.ReferToMoveSpeed ? i / this.ReferToMoveSpeed : 1;
         this.yle = Time_1.Time.Now + this.LargeAngleTurnDelay * TimeUtil_1.TimeUtil.InverseMillisecond;
       } else if (this.IsMoving && Time_1.Time.Now > this.Ile) {
@@ -321,7 +321,7 @@ class CameraClimbController extends CameraControllerBase_1.CameraControllerBase 
         this.yle = Time_1.Time.Now + this.StartInputDelay * TimeUtil_1.TimeUtil.InverseMillisecond;
       }
     } else if (this.IsMoving) {
-      i = this.Camera.CharacterEntityHandle.Entity.GetComponent(182).Speed;
+      i = this.Camera.CharacterEntityHandle.Entity.GetComponent(187).Speed;
       this.ElapseTimeScale = i > this.ReferToMoveSpeed ? i / this.ReferToMoveSpeed : 1;
     }
     this.Lle.Update(t);
@@ -333,7 +333,7 @@ class CameraClimbController extends CameraControllerBase_1.CameraControllerBase 
         this.Ile = Time_1.Time.Now + this.StopInputDelay * TimeUtil_1.TimeUtil.InverseMillisecond;
         if (this.Sle.X * t.X + this.Sle.Y * t.Y > Math.cos(this.LargeAngleTurnThreshold * MathUtils_1.MathUtils.DegToRad)) {
           this.yle = Time_1.Time.Now + this.LargeAngleTurnDelay * TimeUtil_1.TimeUtil.InverseMillisecond;
-          t = this.Camera.CharacterEntityHandle.Entity.GetComponent(182).Speed;
+          t = this.Camera.CharacterEntityHandle.Entity.GetComponent(187).Speed;
           this.ElapseTimeScale = t > this.ReferToMoveSpeed ? t / this.ReferToMoveSpeed : 1;
           return false;
         }

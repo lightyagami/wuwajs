@@ -13,6 +13,7 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const RoleDefine_1 = require("../RoleUi/RoleDefine");
+const RoleUtils_1 = require("../RoleUi/RoleUtils");
 const SceneTeamDefine_1 = require("../SceneTeam/SceneTeamDefine");
 const EditBattleRoleData_1 = require("./EditBattleRoleData");
 const EditBattleRoleSlotData_1 = require("./EditBattleRoleSlotData");
@@ -28,6 +29,7 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
     this.e4t = new Map();
     this.t4t = undefined;
     this.i4t = true;
+    this.G6f = false;
     this.IsFormTeleportAction = false;
     this.o4t = false;
   }
@@ -42,6 +44,12 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
   }
   set InstanceMultiEnter(e) {
     this.o4t = e;
+  }
+  get CanUseSpecialTrialRole() {
+    return this.G6f;
+  }
+  set CanUseSpecialTrialRole(e) {
+    this.G6f = e;
   }
   SetInstanceDungeonId(e) {
     this.z3t = e;
@@ -139,7 +147,7 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
   GetRoleList() {
     var t = ModelManager_1.ModelManager.RoleModel;
     var r = [];
-    var e = t.GetRoleMap();
+    var e = t.GetRoleDataMap(true);
     if (this.r4t()) {
       for (const l of this.n4t()) {
         var a;
@@ -481,6 +489,17 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
     }
     return false;
   }
+  get HasSpecialTrialRole() {
+    for (const t of this.GetAllRoleSlotData) {
+      if (t.HasRole && t.GetRoleData.IsSelf) {
+        var e = t.GetRoleData;
+        if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(e.ConfigId)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   IsRoleConflict(e, t) {
     for (var [, r] of this.Y3t) {
       if (r && r.GetRoleData?.PlayerId !== e && r.GetRoleConfigId === t) {
@@ -599,14 +618,14 @@ class EditBattleTeamModel extends ModelBase_1.ModelBase {
           var s;
           var f;
           var d;
-          var g = u.ConfigId;
-          var h = u.RoleSkinId;
-          if (!(g <= 0) && r === u.PlayerId && !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,编队位置:{Position},角色Id:{ConfigId},玩家Id:{PlayerId}", ["{Position}", e], ["{ConfigId}", g], ["{PlayerId}", u.PlayerId]), (s = this.GetMaxLimitRoleCount()) > 0 && e > s)) {
+          var h = u.ConfigId;
+          var g = u.RoleSkinId;
+          if (!(h <= 0) && r === u.PlayerId && !(Log_1.Log.CheckInfo() && Log_1.Log.Info("Formation", 48, "[EditBattleTeam]当初始化所有单人战前编队数据时,编队位置:{Position},角色Id:{ConfigId},玩家Id:{PlayerId}", ["{Position}", e], ["{ConfigId}", h], ["{PlayerId}", u.PlayerId]), (s = this.GetMaxLimitRoleCount()) > 0 && e > s)) {
             s = this.GetRoleSlotData(e);
-            if (this.CanAddRoleToEditTeam(g)) {
+            if (this.CanAddRoleToEditTeam(h)) {
               f = new EditBattleRoleData_1.EditBattleRoleData();
-              d = l.GetRoleDataById(g)?.GetLevelData().GetLevel() ?? 0;
-              f.Init(r, g, h, 1, n, d, true, true);
+              d = l.GetRoleDataById(h)?.GetLevelData().GetLevel() ?? 0;
+              f.Init(r, h, g, 1, n, d, true, true);
               s.SetRoleData(f);
               e++;
             }

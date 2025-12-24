@@ -166,5 +166,5 @@ let SceneItemMovementSyncComponent = class SceneItemMovementSyncComponent extend
     }
   }
 };
-SceneItemMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(162)], SceneItemMovementSyncComponent);
+SceneItemMovementSyncComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(167)], SceneItemMovementSyncComponent);
 exports.SceneItemMovementSyncComponent = SceneItemMovementSyncComponent; //# sourceMappingURL=SceneItemMovementSyncComponent.js.map

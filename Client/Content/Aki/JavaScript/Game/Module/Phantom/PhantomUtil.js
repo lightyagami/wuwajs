@@ -7,14 +7,15 @@ exports.PhantomUtil = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const DataTableUtil_1 = require("../../../Core/Utils/DataTableUtil");
+const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const UiManager_1 = require("../../Ui/UiManager");
 const CombatLog_1 = require("../../Utils/CombatLog");
 var ESummonType = Protocol_1.Aki.Protocol.Summon.x3s;
-const UiManager_1 = require("../../Ui/UiManager");
 const PHANTOMSKILLIDSTART = 200000;
 const VISION_MORPH_SKILL_ID = 200001;
 const VISION_MORPH_MULTI_SKILL_ID = 200003;
@@ -24,7 +25,7 @@ class PhantomUtil {
     if (t === VISION_MORPH_SKILL_ID) {
       e = this.GetSummonedEntityByOwnerId(e, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantVision);
       if (e?.Valid) {
-        e = e.Entity.GetComponent(42);
+        e = e.Entity.GetComponent(43);
         if (e?.IsInMultiSkill()) {
           if (e?.CanSummonerStartNextMultiSkill()) {
             if (Log_1.Log.CheckDebug()) {
@@ -80,24 +81,28 @@ class PhantomUtil {
     let n = 0;
     switch (t) {
       case ESummonType.Proto_ESummonTypeConcomitantCustom:
-        var o = r.CustomServerEntityIds;
-        if (o.length === 0) {
+        var a = r.CustomServerEntityIds;
+        if (a.length === 0) {
           return;
         }
-        if (i < 1 || i > o.length) {
-          CombatLog_1.CombatLog.Error("Skill", e, "获取伴生物实体失败，位置参数错误", ["position", i], ["serverEntityIds", o]);
+        if (i < 1 || i > a.length) {
+          CombatLog_1.CombatLog.Error("Skill", e, "获取伴生物实体失败，位置参数错误", ["position", i], ["serverEntityIds", a]);
           return;
         }
-        n = o[i - 1];
+        n = a[i - 1];
         break;
       case ESummonType.Proto_ESummonTypeConcomitantVision:
-        n = r.VisionSkillServerEntityId;
+        a = e.GetComponent(44)?.GetCurrentPosition() ?? 0;
+        n = r.VisionServerEntityIds[a];
         break;
       case ESummonType.Proto_ESummonTypeConcomitantPhantomRole:
         n = r.VisionControlCreatureDataId ?? 0;
         break;
       case ESummonType.Proto_ESummonTypeConcomitantWeakVision:
         n = r.BossRushCreatureDataId;
+        break;
+      case ESummonType.Proto_ESummonTypeConcomitantMotorcycle:
+        n = MathUtils_1.MathUtils.LongToNumber(r.FollowerInfo?.F4n ?? 0);
     }
     return ModelManager_1.ModelManager.CreatureModel.GetEntity(n);
   }
@@ -111,8 +116,9 @@ class PhantomUtil {
     }
   }
   static SetVisionEnable(e, t, i, r = true) {
-    var e = e.GetComponent(0).VisionSkillServerEntityId;
-    if (e > 0 && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(e))) {
+    var n = e.GetComponent(0);
+    var e = e.GetComponent(44);
+    if (n && e && (e = e.GetCurrentPosition(), n = n.VisionServerEntityIds[e]) && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntity(n))) {
       ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(e.Entity, t, i, r);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhantomEnableStateChange, t);
     }

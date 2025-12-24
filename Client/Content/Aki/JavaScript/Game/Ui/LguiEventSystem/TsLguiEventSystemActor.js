@@ -28,6 +28,7 @@ class TsLguiEventSystemActor extends UE.LGUIEventSystemActor {
     this.GamepadClickThreshold = 5;
   }
   Constructor() {
+    this.CurrentInputModule = undefined;
     this.HandleWrapper = undefined;
     this.ShowTypeChange = (t, e) => {};
     this.ControllerConnectChange = (t, e, i) => {};

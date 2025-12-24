@@ -25,6 +25,9 @@ class PhonographAlbum {
   get SortIndex() {
     return this.sortindex();
   }
+  get Cover() {
+    return this.cover();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -72,6 +75,14 @@ class PhonographAlbum {
     } else {
       return 0;
     }
+  }
+  cover(t) {
+    var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.PhonographAlbum = PhonographAlbum;

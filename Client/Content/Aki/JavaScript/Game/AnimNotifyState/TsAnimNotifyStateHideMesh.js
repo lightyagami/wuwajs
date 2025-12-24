@@ -7,9 +7,10 @@ const puerts_1 = require("puerts");
 const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 class HideMeshParams {
-  constructor(t) {
-    this.MeshComp = t;
+  constructor(e) {
+    this.MeshComp = e;
     this.Children = new Array();
     this.HideKey = 0;
   }
@@ -25,23 +26,23 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     this.Hide = true;
   }
   Constructor() {}
-  K2_NotifyBegin(t, e, i) {
-    var s = t.GetOwner();
+  K2_NotifyBegin(e, t, i) {
+    var s = e.GetOwner();
     if (!s) {
       return false;
     }
     let r = undefined;
     if (this.ChildMeshName) {
       var a = s.K2_GetComponentsByClass(UE.MeshComponent.StaticClass());
-      for (let t = a.Num() - 1; t >= 0; --t) {
-        var o = a.Get(t);
+      for (let e = a.Num() - 1; e >= 0; --e) {
+        var o = a.Get(e);
         if (o.GetName() === this.ChildMeshName) {
           r = o;
           break;
         }
       }
     } else {
-      r = t;
+      r = e;
     }
     if (!r) {
       return false;
@@ -54,42 +55,47 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     var n = h.get(this);
     if (n) {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Test", 6, "TsAnimNotifyStateHideMesh Error.", ["Mesh", t?.GetName()], ["Anim", e?.GetName()]);
+        Log_1.Log.Error("Test", 6, "TsAnimNotifyStateHideMesh Error.", ["Mesh", e?.GetName()], ["Anim", t?.GetName()]);
       }
       return false;
     }
     n = new HideMeshParams(r);
     h.set(this, n);
-    if (s instanceof TsBaseCharacter_1.default) {
-      s.CharacterActorComponent?.Entity?.GetComponent(181)?.StartForceDisableAnimOptimization(2, false);
-      t = s.GetEntityNoBlueprint()?.GetComponent(227);
-      if (t) {
-        n.HideKey = t.SetHideMesh(n.MeshComp, !this.Hide, this.HideChildren, this.HideChildrenActors, 0);
+    if (s instanceof TsBaseCharacter_1.default || s instanceof TsBaseVehicle_1.default) {
+      e = s.GetEntityNoBlueprint()?.GetComponent(45);
+      if (e) {
+        e.StartForceDisableAnimOptimization(2, false);
+      } else {
+        s.GetEntityNoBlueprint()?.GetComponent(248)?.StartForceDisableAnimOptimization(2, false);
+      }
+      e = s.GetEntityNoBlueprint()?.GetComponent(235);
+      if (e) {
+        n.HideKey = e.SetHideMesh(n.MeshComp, !this.Hide, this.HideChildren, this.HideChildrenActors, 0);
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Test", 6, "HideMesh Begin", ["Animation", e?.GetName()], ["Hide", this.Hide], ["HideKey", n.HideKey]);
+          Log_1.Log.Debug("Test", 6, "HideMesh Begin", ["Animation", t?.GetName()], ["Hide", this.Hide], ["HideKey", n.HideKey]);
         }
         return true;
       }
     }
     if (Log_1.Log.CheckDebug()) {
-      Log_1.Log.Debug("Test", 6, "HideMesh Begin2", ["Animation", e?.GetName()], ["Hide", this.Hide], ["HideKey", n.HideKey]);
+      Log_1.Log.Debug("Test", 6, "HideMesh Begin2", ["Animation", t?.GetName()], ["Hide", this.Hide], ["HideKey", n.HideKey]);
     }
     r.SetVisibility(!this.Hide, this.HideChildren);
     if (this.HideChildrenActors) {
       if (this.ChildMeshName) {
         var f = r.AttachChildren;
-        for (let t = f.Num() - 1; t >= 0; --t) {
-          var u = f.Get(t).GetOwner();
-          if (!u.bHidden) {
-            n.Children.push(u);
+        for (let e = f.Num() - 1; e >= 0; --e) {
+          var c = f.Get(e).GetOwner();
+          if (!c.bHidden) {
+            n.Children.push(c);
           }
         }
       } else {
-        var t = (0, puerts_1.$ref)(undefined);
-        s.GetAllChildActors(t, true);
-        var c = (0, puerts_1.$unref)(t);
-        for (let t = c.Num() - 1; t >= 0; --t) {
-          var d = c.Get(t);
+        var e = (0, puerts_1.$ref)(undefined);
+        s.GetAllChildActors(e, true);
+        var u = (0, puerts_1.$unref)(e);
+        for (let e = u.Num() - 1; e >= 0; --e) {
+          var d = u.Get(e);
           if (!d.bHidden) {
             n.Children.push(d);
           }
@@ -101,12 +107,12 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     }
     return true;
   }
-  K2_NotifyEnd(t, e) {
-    t = t.GetOwner();
-    if (!t) {
+  K2_NotifyEnd(e, t) {
+    e = e.GetOwner();
+    if (!e) {
       return false;
     }
-    var i = actorAnsMap.get(t);
+    var i = actorAnsMap.get(e);
     if (!i) {
       return false;
     }
@@ -114,11 +120,23 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
     if (!s) {
       return false;
     }
-    if ((i.delete(this), Log_1.Log.CheckDebug() && Log_1.Log.Debug("Test", 6, "HideMesh End", ["Animation", e?.GetName()], ["Hide", this.Hide], ["HideKey", s.HideKey]), t instanceof TsBaseCharacter_1.default) && (t.GetEntityNoBlueprint()?.GetComponent(181)?.CancelForceDisableAnimOptimization(2), s.HideKey)) {
-      e = t.GetEntityNoBlueprint()?.GetComponent(227);
-      if (e) {
-        e.SetHideMesh(s.MeshComp, this.Hide, this.HideChildren, this.HideChildrenActors, s.HideKey);
-        return true;
+    i.delete(this);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Test", 6, "HideMesh End", ["Animation", t?.GetName()], ["Hide", this.Hide], ["HideKey", s.HideKey]);
+    }
+    if (e instanceof TsBaseCharacter_1.default || e instanceof TsBaseVehicle_1.default) {
+      t = e.GetEntityNoBlueprint()?.GetComponent(45);
+      if (t) {
+        t.CancelForceDisableAnimOptimization(2);
+      } else {
+        e.GetEntityNoBlueprint()?.GetComponent(248)?.CancelForceDisableAnimOptimization(2);
+      }
+      if (s.HideKey) {
+        t = e.GetEntityNoBlueprint()?.GetComponent(235);
+        if (t) {
+          t.SetHideMesh(s.MeshComp, this.Hide, this.HideChildren, this.HideChildrenActors, s.HideKey);
+          return true;
+        }
       }
     }
     s.MeshComp.SetVisibility(this.Hide, this.HideChildren);
@@ -128,10 +146,10 @@ class TsAnimNotifyStateHideMesh extends UE.KuroAnimNotifyState {
       }
     }
     if (i.size === 0) {
-      actorAnsMap.delete(t);
+      actorAnsMap.delete(e);
     }
     if (this.EndEffect) {
-      t.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())?.AddMaterialControllerData(this.EndEffect);
+      e.GetComponentByClass(UE.CharRenderingComponent_C.StaticClass())?.AddMaterialControllerData(this.EndEffect);
     }
     return true;
   }

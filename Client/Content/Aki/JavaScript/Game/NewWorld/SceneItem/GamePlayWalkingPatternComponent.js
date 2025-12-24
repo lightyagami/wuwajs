@@ -97,8 +97,8 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     return true;
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(206);
-    this.mBe = this.Entity.GetComponent(137);
+    this.Hte = this.Entity.GetComponent(212);
+    this.mBe = this.Entity.GetComponent(142);
     this.HFl = this.Disable("GamePlayWalkingPatternComponent 默认关闭Tick");
     this.i3l();
     this.r3l();
@@ -341,5 +341,5 @@ let GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = class 
     }
   }
 };
-GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(276)], GamePlayWalkingPatternComponent);
+GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(294)], GamePlayWalkingPatternComponent);
 exports.GamePlayWalkingPatternComponent = GamePlayWalkingPatternComponent; //# sourceMappingURL=GamePlayWalkingPatternComponent.js.map

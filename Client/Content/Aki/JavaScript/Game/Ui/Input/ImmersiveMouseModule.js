@@ -22,38 +22,49 @@ class ImmersiveMouseModule {
     this.XLd = 3000;
     this.YLd = 0;
     this.sKe = TickSystem_1.TickSystem.InvalidId;
-    this.Wvm = [InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击];
+    this._Lm = [InputMappingsDefine_1.actionMappings.Ui左键点击, InputMappingsDefine_1.actionMappings.Ui右键点击];
     this.zLd = [UiLayerType_1.ELayerType.Pop, UiLayerType_1.ELayerType.Loading, UiLayerType_1.ELayerType.Plot, UiLayerType_1.ELayerType.Normal];
     this.JLd = new Set();
     this.kPt = false;
     this.ZLd = undefined;
     this.qua = new Set();
-    this.Qvm = true;
+    this.uLm = true;
+    this.j6f = false;
     this.Tick = e => {
       var i;
       var s;
+      var t;
       if (!!this.KLd && !(this.qua.size > 0)) {
-        s = (0, puerts_1.$ref)(0);
-        i = (0, puerts_1.$ref)(0);
-        Global_1.Global.CharacterController.GetInputMouseDelta(s, i);
-        if ((s = Math.abs((0, puerts_1.$unref)(s)) + Math.abs((0, puerts_1.$unref)(i))) > 0 && Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("Input", 43, "[ImmersiveMouseModule] Mouse Input Delta: ", ["Distance", s]);
-        }
-        i = this.Kvm();
-        s = s > this.Wgu;
-        if (Global_1.Global.CharacterController.bShowMouseCursor) {
-          if (s || i) {
-            this.YLd = 0;
-          } else {
-            this.YLd += e;
-            if (this.YLd >= this.XLd) {
-              InputManager_1.InputManager.SetShowCursor(false);
-              this.YLd = 0;
-            }
+        i = this.j6f;
+        this.j6f = this.$6f();
+        if (this.j6f) {
+          t = (0, puerts_1.$ref)(0);
+          s = (0, puerts_1.$ref)(0);
+          Global_1.Global.CharacterController.GetInputMouseDelta(t, s);
+          if ((t = Math.abs((0, puerts_1.$unref)(t)) + Math.abs((0, puerts_1.$unref)(s))) > 0 && Log_1.Log.CheckDebug()) {
+            Log_1.Log.Debug("Input", 43, "[ImmersiveMouseModule] Mouse Input Delta: ", ["Distance", t]);
           }
-        } else if (s || i) {
-          InputManager_1.InputManager.SetShowCursor(true);
+          s = this.cLm();
+          t = t > this.Wgu;
+          if (Global_1.Global.CharacterController.bShowMouseCursor) {
+            if (t || s) {
+              this.YLd = 0;
+            } else {
+              this.YLd += e;
+              if (this.YLd >= this.XLd) {
+                InputManager_1.InputManager.SetShowCursor(false);
+                this.YLd = 0;
+              }
+            }
+          } else if (t || s) {
+            InputManager_1.InputManager.SetShowCursor(true);
+            this.YLd = 0;
+          }
+        } else {
           this.YLd = 0;
+          if (i && !Global_1.Global.CharacterController.bShowMouseCursor) {
+            InputManager_1.InputManager.SetShowCursor(true);
+          }
         }
       }
     };
@@ -74,12 +85,12 @@ class ImmersiveMouseModule {
     }
   }
   EnableImmersiveMode() {
-    if (!this.KLd && this.Qvm && (this.KLd = true, this.sKe = TickSystem_1.TickSystem.Add(this.Tick, "ImmersiveMouseModule", 0, true, undefined, true).Id, ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(this.Wvm, this.Ndr), Log_1.Log.CheckDebug())) {
+    if (!this.KLd && this.uLm && (this.KLd = true, this.sKe = TickSystem_1.TickSystem.Add(this.Tick, "ImmersiveMouseModule", 0, true, undefined, true).Id, ControllerHolder_1.ControllerHolder.InputDistributeController.BindActions(this._Lm, this.Ndr), this.j6f = this.$6f(), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Input", 43, "[ImmersiveMouseModule] 开启鼠标沉浸模式 ");
     }
   }
   DisableImmersiveMode() {
-    if (this.KLd && (this.KLd = false, this.Reset(), this.sKe !== TickSystem_1.TickSystem.InvalidId && (TickSystem_1.TickSystem.Remove(this.sKe), this.sKe = TickSystem_1.TickSystem.InvalidId), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActions(this.Wvm, this.Ndr), Log_1.Log.CheckDebug())) {
+    if (this.KLd && (this.KLd = false, this.Reset(), this.sKe !== TickSystem_1.TickSystem.InvalidId && (TickSystem_1.TickSystem.Remove(this.sKe), this.sKe = TickSystem_1.TickSystem.InvalidId), ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindActions(this._Lm, this.Ndr), Log_1.Log.CheckDebug())) {
       Log_1.Log.Debug("Input", 43, "[ImmersiveMouseModule] 关闭鼠标沉浸模式 ");
     }
   }
@@ -107,13 +118,18 @@ class ImmersiveMouseModule {
   Reset() {
     this.YLd = 0;
   }
-  Kvm() {
-    for (const e of this.Wvm) {
+  cLm() {
+    for (const e of this._Lm) {
       if (ModelManager_1.ModelManager.InputDistributeModel.IsActionInPress(e)) {
         return true;
       }
     }
     return false;
+  }
+  $6f() {
+    var e = (0, puerts_1.$ref)(0);
+    var i = (0, puerts_1.$ref)(0);
+    return Global_1.Global.CharacterController.GetMousePosition(e, i);
   }
   RefreshMouseImmersiveMode() {
     let e = undefined;
@@ -143,8 +159,8 @@ class ImmersiveMouseModule {
     }
   }
   SetFunctionEnabled(e, i = true, s = true) {
-    this.Qvm = e;
-    if (this.Qvm) {
+    this.uLm = e;
+    if (this.uLm) {
       if (i) {
         this.Reset();
       }
@@ -156,7 +172,7 @@ class ImmersiveMouseModule {
     }
   }
   IsFunctionEnabled() {
-    return this.Qvm;
+    return this.uLm;
   }
 }
 exports.ImmersiveMouseModule = ImmersiveMouseModule;

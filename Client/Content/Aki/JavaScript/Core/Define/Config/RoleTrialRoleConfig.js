@@ -28,6 +28,15 @@ class RoleTrialRoleConfig {
   get Introduction() {
     return this.introduction();
   }
+  get FormationSpineSkeletonData() {
+    return this.formationspineskeletondata();
+  }
+  get FormationSpineAtlas() {
+    return this.formationspineatlas();
+  }
+  get SpineParam() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.spineparamLength(), this.spineparam, this);
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -83,6 +92,49 @@ class RoleTrialRoleConfig {
       GameUtils_1.GameUtils.InternalizedString(i);
     }
     return i;
+  }
+  formationspineskeletondata(t) {
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  formationspineatlas(t) {
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  GetSpineparamAt(t) {
+    return this.spineparam(t);
+  }
+  spineparam(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    if (i) {
+      return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  spineparamLength() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  spineparamArray() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
 }
 exports.RoleTrialRoleConfig = RoleTrialRoleConfig;

@@ -58,31 +58,33 @@ class LevelConditionCheckIsUsingVehicle extends LevelGeneralBase_1.LevelConditio
         }
       }
     }
-    var t = r?.GetComponent(237);
+    var t = r?.GetComponent(246);
     return !!t && (t = t.IsVehicleInUse(e.Seat), e.CheckIsBeingUsed ? t : !t);
   }
   wi_(e, t) {
     var r = Global_1.Global.BaseCharacter?.CharacterActorComponent;
-    return !!r && !!(r = r.Entity.GetComponent(233)) && (r = e.VehicleType === undefined ? r.VehicleType !== undefined : r.VehicleType === e.VehicleType, e.CheckType ? r : !r);
+    return !!r && !!(r = r.Entity.GetComponent(242)) && (r = e.VehicleType === undefined ? r.VehicleType !== undefined : r.VehicleType === e.VehicleType, e.CheckType ? r : !r);
   }
   R6d(e, t) {
-    if (t) {
-      if (t.Type !== 5) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelCondition", 6, "只有Trigger类型才能承载这个检测的信息");
-        }
-        return false;
-      } else if (t = EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 238)) {
-        return t.ActorVelocityProxy.SizeSquared() >= e.Speed;
-      } else {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("LevelCondition", 6, "缺失目标单位");
-        }
-        return false;
-      }
-    } else {
+    if (!t) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 6, "没有context");
+      }
+      return false;
+    }
+    if (t.Type !== 5) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 6, "只有Trigger类型才能承载这个检测的信息");
+      }
+      return false;
+    }
+    let r = undefined;
+    var i = EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 242);
+    if (r = i && i.VehicleEntity ? i.VehicleEntity.CheckGetComponent(247) : EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 247)) {
+      return r.ActorVelocityProxy.Size() >= e.Speed * 100;
+    } else {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("LevelCondition", 6, "缺失目标单位");
       }
       return false;
     }
@@ -100,7 +102,7 @@ class LevelConditionCheckIsUsingVehicle extends LevelGeneralBase_1.LevelConditio
       }
       return false;
     }
-    var r = EntitySystem_1.EntitySystem.GetComponent(t.TriggerEntityId, 86)?.GetRangeActor();
+    var r = EntitySystem_1.EntitySystem.GetComponent(t.TriggerEntityId, 89)?.GetRangeActor();
     if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 6, "缺失TriggerActor");
@@ -108,7 +110,7 @@ class LevelConditionCheckIsUsingVehicle extends LevelGeneralBase_1.LevelConditio
       return false;
     }
     this.az.FromUeQuat(r.K2_GetActorQuaternion());
-    r = EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 238);
+    r = EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 247);
     if (!r) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 6, "缺失目标单位");

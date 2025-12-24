@@ -171,6 +171,7 @@ class Game {
     UiTimeDilation_1.UiTimeDilation.Init();
     NavigationRegisterCenter_1.NavigationRegisterCenter.Init();
     Net_1.Net.NetEventDispatcher = new NetEventDispatcher_1.NetEventDispatcher();
+    Net_1.Net.NetEventDispatcher.Init();
     LauncherLogUpload_1.LauncherLogUpload.SetParams(LogUploadHelper_1.LogUploadHelper.CreateParams());
   }
   static TickerStart() {
@@ -194,6 +195,7 @@ class Game {
     TickProcessSystem_1.TickProcessSystem.Clear();
     ThirdPartySdkManager_1.ThirdPartySdkManager.Clear();
     PakManager_1.PakManager.Clear();
+    Net_1.Net.NetEventDispatcher?.Clear();
     EventCSharpBridge_1.EventCSharpBridge.DestroyEnvironment();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Game", 24, "Game.Shutdown PerformanceManager.Destroy Finished");
@@ -353,7 +355,6 @@ Game.cve = () => {
   Game.UnlockLoad();
 };
 Game.ora = async () => {
-  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsClearSceneBegin);
   if (GlobalData_1.GlobalData.IsSceneClearing) {
     if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("Game", 16, "[Game.ClearSceneAsync]: Duplicate ClearSceneAsync");
@@ -362,6 +363,7 @@ Game.ora = async () => {
   }
   GlobalData_1.GlobalData.ClearSceneDone = new CustomPromise_1.CustomPromise();
   var e = ModelManager_1.ModelManager.SeamlessTravelModel.IsSeamlessTravel;
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsClearSceneBegin, e);
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Game", 16, "[Game.ClearSceneAsync] 场景清理操作开始", ["无缝加载", e]);
   }

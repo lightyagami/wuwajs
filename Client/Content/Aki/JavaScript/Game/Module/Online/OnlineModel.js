@@ -25,7 +25,8 @@ exports.onlineDisabledSourceTipsId = {
   [0]: "OnlineDisabledByNonOnlineQuest",
   1: "OnlineDisabledByNonOnlinePlay",
   2: "OnlineDisabledByTrialRole",
-  3: "OnlineDisabledByGravity"
+  3: "OnlineDisabledByGravity",
+  4: "OnlineDisabledByTrialRole"
 };
 class OnlineModel extends ModelBase_1.ModelBase {
   constructor() {

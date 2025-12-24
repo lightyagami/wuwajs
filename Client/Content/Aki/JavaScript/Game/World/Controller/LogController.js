@@ -196,11 +196,11 @@ class LogController extends ControllerBase_1.ControllerBase {
     LogReportController_1.LogReportController.LogReport(o);
   }
   static SetCurrentUploadLogId(o) {
-    this.qgm = o;
+    this.gMm = o;
   }
   static LogCustomServiceReport(o) {
     var e = new LogReportDefine_1.CustomServiceLogEvent();
-    e.s_trace_id = LogController.qgm;
+    e.s_trace_id = LogController.gMm;
     e.log_status = LauncherNetworkDetectionDefine_1.SendStateToCustomServiceLogMap.get(o) ?? 0;
     LogReportController_1.LogReportController.LogReport(e);
   }
@@ -225,27 +225,27 @@ class LogController extends ControllerBase_1.ControllerBase {
     }
     return o;
   }
-  static OutputDebugInfo() {
-    var o = new DebugInfo(Protocol_1.Aki.Protocol.i4s[ModelManager_1.ModelManager.GameModeModel.InstanceType], ModelManager_1.ModelManager.OnlineModel.GetIsMyTeam(), ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.MapConfigId, Time_1.Time.TimeDilation, ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), [Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.X.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Y.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Z.toFixed(2)], ModelManager_1.ModelManager.GameModeModel.IsMulti, ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer(), FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()).GetComponent(203).GetAllBuffs().map(o => String(o.Id)), CharacterGasDebugComponent_1.CharacterGasDebugComponent.GetFormationAttributeDebugStrings().replace(/\n/g, ",").replace(/\s/g, ""), ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems().map(o => ({
+  static OutputDebugInfo(o = true) {
+    var e = new DebugInfo(Protocol_1.Aki.Protocol.i4s[ModelManager_1.ModelManager.GameModeModel.InstanceType], ModelManager_1.ModelManager.OnlineModel.GetIsMyTeam(), ModelManager_1.ModelManager.GameModeModel.InstanceDungeon.MapConfigId, Time_1.Time.TimeDilation, ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), [Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.X.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Y.toFixed(2), Global_1.Global.BaseCharacter.CharacterActorComponent.ActorLocationProxy.Z.toFixed(2)], ModelManager_1.ModelManager.GameModeModel.IsMulti, ModelManager_1.ModelManager.OnlineModel.GetAllWorldTeamPlayer(), FormationDataController_1.FormationDataController.GetPlayerEntity(ModelManager_1.ModelManager.CreatureModel.GetPlayerId()).GetComponent(209).GetAllBuffs().map(o => String(o.Id)), CharacterGasDebugComponent_1.CharacterGasDebugComponent.GetFormationAttributeDebugStrings().replace(/\n/g, ",").replace(/\s/g, ""), ModelManager_1.ModelManager.SceneTeamModel.GetTeamItems().map(o => ({
       EntityHandleId: o.EntityHandle?.Id,
       ConfigId: o.GetConfigId,
       IsMyRole: o.IsMyRole(),
       IsControl: o.IsControl(),
       IsDead: o.IsDead()
     })), this.GetSkillButtonDebugInfo());
-    let g = Json_1.Json.Stringify(o);
+    let g = Json_1.Json.Stringify(e);
     ModelManager_1.ModelManager.CreatureModel.GetAllEntities().forEach(o => {
       var e;
       var t;
       var r;
       var l = o.Entity;
       var n = l?.GetComponent(3);
-      var a = l?.GetComponent(213);
+      var a = l?.GetComponent(220);
       if (l && n && a) {
         e = l.GetComponent(0);
-        t = l.GetComponent(209);
-        r = l.GetComponent(176);
-        l = l.GetComponent(104);
+        t = l.GetComponent(215);
+        r = l.GetComponent(181);
+        l = l.GetComponent(109);
         g += `
 ***********
 实体信息: EntityHandleId: ${o.Id}, CreatureDataId: ${e?.GetCreatureDataId()}, PbDataId: ${e?.GetPbDataId()}, Type: ${e?.GetEntityType()}, 位置: ${[n?.ActorLocationProxy.X.toFixed(2), n?.ActorLocationProxy.Y.toFixed(2), n?.ActorLocationProxy.Z.toFixed(2)]}, IsInFighting: ${l?.IsInFighting}
@@ -254,7 +254,7 @@ Buff信息: ${a?.GetAllBuffs().map(o => `${o.Id} ${o.Handle} ${o.StackCount}${o.
 Tag信息: ${t?.TagContainer.GetExactTagsDebugString().replace(/\n/g, ",").replace(/\s/g, "")}`;
       }
     });
-    if (Log_1.Log.CheckDebug()) {
+    if (o && Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Battle", 28, `本地打印关键信息快照:
 ${g}`);
     }
@@ -274,7 +274,7 @@ ${g}`);
 LogController.Ofr = new Array();
 LogController.kfr = FRAMING_LOG_NUM;
 LogController.Ffr = Stats_1.Stat.Create("LogOnBattleEnd_Framing");
-LogController.qgm = "";
+LogController.gMm = "";
 LogController.Nfr = () => {
   LogController.Ffr.Start();
   var o = LogController.kfr;

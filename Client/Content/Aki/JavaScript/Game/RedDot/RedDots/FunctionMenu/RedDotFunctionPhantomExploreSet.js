@@ -12,10 +12,12 @@ class RedDotFunctionPhantomExploreSet extends RedDotBase_1.RedDotBase {
     return "BattleViewMenu";
   }
   OnGetEvents() {
-    return [EventDefine_1.EEventName.RouletteRefreshRedDot];
+    return [EventDefine_1.EEventName.RouletteRefreshNew];
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.RouletteModel.CheckHasAnyRedDotItem();
+    var e = ModelManager_1.ModelManager.RouletteModel.CheckHasAnyNewItem();
+    var t = ModelManager_1.ModelManager.PhantomInteractModel.CheckAnyPhantomInteractUnlockRedDot();
+    return e || t;
   }
 }
 exports.RedDotFunctionPhantomExploreSet = RedDotFunctionPhantomExploreSet;

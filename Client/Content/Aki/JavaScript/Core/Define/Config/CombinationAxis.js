@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CombinationAxis = undefined;
 const GameUtils_1 = require("../../../Game/GameUtils");
+const DicIntInt_1 = require("./SubType/DicIntInt");
 const DicStringFloat_1 = require("./SubType/DicStringFloat");
 const DicStringString_1 = require("./SubType/DicStringString");
 class CombinationAxis {
@@ -20,6 +21,9 @@ class CombinationAxis {
   }
   get AxisType() {
     return this.axistype();
+  }
+  get ExclusiveType() {
+    return this.exclusivetype();
   }
   get PcKeyMap() {
     return GameUtils_1.GameUtils.ConvertToMap(this.pckeymapLength(), this.pckeymapKey, this.pckeymapValue, this);
@@ -57,8 +61,26 @@ class CombinationAxis {
   get KeyboardVersion() {
     return this.keyboardversion();
   }
+  get KeyboardVersionMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.keyboardversionmapLength(), this.keyboardversionmapKey, this.keyboardversionmapValue, this);
+  }
+  keyboardversionmapKey(t) {
+    return this.keyboardversionmap(t)?.key();
+  }
+  keyboardversionmapValue(t) {
+    return this.keyboardversionmap(t)?.value();
+  }
   get GamepadVersion() {
     return this.gamepadversion();
+  }
+  get GamepadVersionMap() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.gamepadversionmapLength(), this.gamepadversionmapKey, this.gamepadversionmapValue, this);
+  }
+  gamepadversionmapKey(t) {
+    return this.gamepadversionmap(t)?.key();
+  }
+  gamepadversionmapValue(t) {
+    return this.gamepadversionmap(t)?.value();
   }
   __init(t, i) {
     this.z7 = t;
@@ -92,11 +114,19 @@ class CombinationAxis {
       return 0;
     }
   }
+  exclusivetype() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetPckeymapAt(t, i) {
     return this.pckeymap(t);
   }
   pckeymap(t, i) {
-    var e = this.J7.__offset(this.z7, 10);
+    var e = this.J7.__offset(this.z7, 12);
     if (e) {
       return (i || new DicStringString_1.DicStringString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
@@ -104,7 +134,7 @@ class CombinationAxis {
     }
   }
   pckeymapLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -115,7 +145,7 @@ class CombinationAxis {
     return this.gamepadkeymap(t);
   }
   gamepadkeymap(t, i) {
-    var e = this.J7.__offset(this.z7, 12);
+    var e = this.J7.__offset(this.z7, 14);
     if (e) {
       return (i || new DicStringString_1.DicStringString()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
@@ -123,7 +153,7 @@ class CombinationAxis {
     }
   }
   gamepadkeymapLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -134,7 +164,7 @@ class CombinationAxis {
     return this.secondarykeyscalemap(t);
   }
   secondarykeyscalemap(t, i) {
-    var e = this.J7.__offset(this.z7, 14);
+    var e = this.J7.__offset(this.z7, 16);
     if (e) {
       return (i || new DicStringFloat_1.DicStringFloat()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
@@ -142,7 +172,7 @@ class CombinationAxis {
     }
   }
   secondarykeyscalemapLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -150,14 +180,6 @@ class CombinationAxis {
     }
   }
   mobileiconpath(t) {
-    var i = this.J7.__offset(this.z7, 16);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  displayname(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -165,18 +187,64 @@ class CombinationAxis {
     }
     return i;
   }
+  displayname(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   keyboardversion() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
+  GetKeyboardversionmapAt(t, i) {
+    return this.keyboardversionmap(t);
+  }
+  keyboardversionmap(t, i) {
+    var e = this.J7.__offset(this.z7, 24);
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  keyboardversionmapLength() {
+    var t = this.J7.__offset(this.z7, 24);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   gamepadversion() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  GetGamepadversionmapAt(t, i) {
+    return this.gamepadversionmap(t);
+  }
+  gamepadversionmap(t, i) {
+    var e = this.J7.__offset(this.z7, 28);
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  gamepadversionmapLength() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }

@@ -4,7 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TouchUiEditProxy = undefined;
+const Log_1 = require("../../../Core/Common/Log");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
+const EventSystem_1 = require("../../Common/Event/EventSystem");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ConfirmBoxDefine_1 = require("../../Module/ConfirmBox/ConfirmBoxDefine");
 const InputDistributeController_1 = require("../../Ui/InputDistribute/InputDistributeController");
@@ -28,6 +32,7 @@ class TouchUiEditProxy {
         i.push(e.Data);
       }
       this.N$u.SaveData(i);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnTouchUiEditSave);
     };
     this.Eqt = (i, e) => {
       var e = e.TouchType;
@@ -55,24 +60,30 @@ class TouchUiEditProxy {
     for (const e of this.N$u.GetResIdList()) {
       i.push(e);
     }
-    await this.ERi.LoadPanel(this.Yzt.GetAttachRoot(), i);
+    await this.ERi.LoadPanel(this.Yzt.GetAttachRoot(), i, this.N$u.GetGroupConfig());
   }
   OnStart() {
     TouchUiEditViewModel_1.TouchUiEditViewModel.SetRootItem(this.ERi.GetRootItem());
-    for (const s of this.N$u.GetResIdList()) {
-      var e = this.ERi.GetItemList(s);
-      for (let i = 0; i < e.length; i++) {
-        var t = e[i];
-        var n = this.N$u.GetData(s, i);
-        var t = this.V$u(t, n);
-        t.SetData(n);
-        var n = this.N$u.GetStorageId(s, i);
-        if (n) {
-          this.j$u.set(n, t);
+    var i = this.N$u.GetResIdList();
+    var e = new Set();
+    for (const h of i) {
+      var t;
+      var n = ConfigManager_1.ConfigManager.CommonTouchUiEditConfig.GetConfigListByPanelResId(h);
+      if (n) {
+        for (const p of n) {
+          var s;
+          var r = p.ItemIndex;
+          var o = p.SubPanelIndex;
+          var o = this.ERi.GetItem(h, r, o);
+          if (o && (e.add(o), s = this.N$u.GetData(h, r), (o = this.V$u(o, s)).SetData(s), (s = this.N$u.GetStorageId(h, r)) && this.j$u.set(s, o), this.p5l.push(o), o.Data?.DefaultSelect && TouchUiEditViewModel_1.TouchUiEditViewModel.SetCurrentSelectedItem(o), Log_1.Log.CheckDebug())) {
+            Log_1.Log.Debug("TouchUiEdit", 95, "创建初始改键数据", ["configId", s], ["resId", h], ["itemIndex", r]);
+          }
         }
-        this.p5l.push(t);
-        if (t.Data?.DefaultSelect) {
-          TouchUiEditViewModel_1.TouchUiEditViewModel.SetCurrentSelectedItem(t);
+        for (const u of this.ERi.GetRegistryItemList(h)) {
+          if (!e.has(u)) {
+            t = this.V$u(u, undefined);
+            this.p5l.push(t);
+          }
         }
       }
     }

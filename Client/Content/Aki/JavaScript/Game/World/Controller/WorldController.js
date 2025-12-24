@@ -135,6 +135,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE_IN_LOADING);
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES_IN_LOADING);
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManuallyClearStreamingPool);
   }
   static ManuallyResetStreamingPool() {
     if (Info_1.Info.PlatformType === 1) {
@@ -144,6 +145,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSize " + IOS_STREAMING_POOL_SIZE);
       UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Streaming.PoolSizeForMeshes " + IOS_STREAMING_POOL_SIZE_FOR_MESHES);
     }
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnManuallyResetStreamingPool);
   }
   static k1r() {
     if (!GameBudgetInterfaceController_1.GameBudgetInterfaceController.IsOpen) {
@@ -185,22 +187,22 @@ class WorldController extends ControllerBase_1.ControllerBase {
     }
     if (this.Kr_()) {
       this.$r_ = 0;
-      this.zQd();
-      let e = this.JQd;
+      this.tKd();
+      let e = this.iKd;
       while (e-- > 0) {
         this.Npr();
         this.Opr();
       }
     }
   }
-  static zQd() {
+  static tKd() {
     if ((Info_1.Info.IsLowMemoryDevice ? LOW_MEMORY_PENDING_REMOVE_COUNT : MAX_PENDING_REMOVE_COUNT) < ModelManager_1.ModelManager.CreatureModel.PendingRemoveEntitySize()) {
-      this.JQd++;
+      this.iKd++;
     } else {
-      this.JQd--;
+      this.iKd--;
     }
-    if (this.JQd < 1) {
-      this.JQd = 1;
+    if (this.iKd < 1) {
+      this.iKd = 1;
     }
   }
   static Kr_() {
@@ -283,21 +285,21 @@ class WorldController extends ControllerBase_1.ControllerBase {
   static Fpr(e) {
     var t = e.Entity;
     var r = e.GetEntityType();
-    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(226)) {
+    if (r !== Protocol_1.Aki.Protocol.kks.Proto_Monster && r !== Protocol_1.Aki.Protocol.kks.HI_ || t.GetComponent(234)) {
       e = e.GetPlayerId() === ModelManager_1.ModelManager.CreatureModel.GetPlayerId() || r === Protocol_1.Aki.Protocol.kks.Proto_Npc;
-      r = (r = t.GetComponent(162)) ? r.HasMoveAuthority() : e;
+      r = (r = t.GetComponent(167)) ? r.HasMoveAuthority() : e;
       t.GetComponent(1).SetAutonomous(e, r);
     }
   }
   static SetActorGravityDirection(e, t) {
-    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(45) ?? t?.GetComponent(240))) {
+    if (t && (e = e.GetInitGravityDirection()) && (t = (t = ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity)?.GetComponent(46) ?? t?.GetComponent(249))) {
       t.SetGravityDirect(e);
     }
   }
   static SetActorLocationAndRotation(e, t) {
     var r;
-    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(182)?.CharacterMovement)) {
-      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(182).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
+    if (t && (r = e.GetLocation(), e = e.GetRotation(), t.D_K2_SetActorLocationAndRotation(r, e, false, undefined, true), r = UE.KismetMathLibrary.Conv_VectorDoubleToVector(r), ActorUtils_1.ActorUtils.GetEntityByActor(t)?.Entity?.GetComponent(187)?.CharacterMovement)) {
+      ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(187).CharacterMovement.AddReplayData((0, puerts_1.$ref)(r), (0, puerts_1.$ref)(e), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), (0, puerts_1.$ref)(Vector_1.Vector.ZeroVector), 0, 0);
     }
   }
   static Vpr(e, t) {
@@ -370,20 +372,17 @@ class WorldController extends ControllerBase_1.ControllerBase {
   }
   static EnvironmentInfoUpdate(e, t, r = false) {
     if (ModelManager_1.ModelManager.WorldModel.IsEnableEnvironmentDetecting && t && ModelManager_1.ModelManager.GameModeModel.UseWorldPartition) {
-      t = GlobalData_1.GlobalData.World;
+      var o;
+      var t = GlobalData_1.GlobalData.World;
       if (t?.IsValid()) {
-        var o = (0, puerts_1.$ref)(undefined);
-        if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(t, e, o)) {
-          o = (0, puerts_1.$unref)(o);
-          o = ModelManager_1.ModelManager.WorldModel.HandleEnvironmentUpdate(o);
-          if (r || o) {
-            return this.Nd_(t, e, r);
-          } else {
-            return undefined;
-          }
-        }
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("LevelEvent", 60, "[WorldController]Streaming:获取体素信息失败", ["Location", e]);
+        o = (0, puerts_1.$ref)(undefined);
+        VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(t, e, o);
+        o = (0, puerts_1.$unref)(o);
+        o = ModelManager_1.ModelManager.WorldModel.HandleEnvironmentUpdate(o);
+        if (r || o) {
+          return this.Nd_(t, e, r);
+        } else {
+          return undefined;
         }
       }
     }
@@ -730,7 +729,7 @@ class WorldController extends ControllerBase_1.ControllerBase {
   }
   static Fbl(e) {
     this.p8l++;
-    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(209))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
+    return !(this.p8l < this.CheckRateMax) && !(this.p8l = 0, Math.abs(e.X - this.Gbl.X) < this.OriginNeedChangeMax && Math.abs(e.Y - this.Gbl.Y) < this.OriginNeedChangeMax && Math.abs(e.Z - this.Gbl.Z) < this.OriginNeedChangeMax) && this.mTl !== Time_1.Time.Frame && !ModelManager_1.ModelManager.PlotModel?.IsInPlot && !!UiManager_1.UiManager.IsViewOpen("BattleView") && !FormationDataController_1.FormationDataController.GlobalIsInFight && !(e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), !(e = EntitySystem_1.EntitySystem.Get(e)?.GetComponent(215))) && !e.HasTag(-1371021686) && !e.HasTag(1491611589) && !e.HasTag(504239013);
   }
   static kbl(e, t) {
     if (this.mTl !== Time_1.Time.Frame) {
@@ -740,10 +739,10 @@ class WorldController extends ControllerBase_1.ControllerBase {
     var r = new UE.VectorDouble();
     r.X = Math.trunc(t.X);
     r.Y = Math.trunc(t.Y);
-    r.Z = 0;
+    r.Z = Math.trunc(t.Z);
     this.Gbl.X = r.X;
     this.Gbl.Y = r.Y;
-    this.Gbl.Z = 0;
+    this.Gbl.Z = r.Z;
     if (this.EnableWorldOrigin) {
       UE.KuroRenderingRuntimeBPPluginBPLibrary.SetWorldOrigin(GlobalData_1.GlobalData.World, r);
       if (Log_1.Log.CheckInfo()) {
@@ -777,7 +776,7 @@ WorldController.mea = 0;
 WorldController.AK = false;
 WorldController.Xr_ = 0;
 WorldController.$r_ = 0;
-WorldController.JQd = 1;
+WorldController.iKd = 1;
 WorldController.RBn = e => {
   cpp_1.FuncOpenLibrary.TryOpen(e.KEs);
 };

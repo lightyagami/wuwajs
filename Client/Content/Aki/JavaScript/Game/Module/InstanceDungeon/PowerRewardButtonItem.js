@@ -29,9 +29,11 @@ class PowerRewardButtonItem extends UiPanelBase_1.UiPanelBase {
     this.Refresh();
   }
   Refresh() {
+    var e;
     if (this.Pe) {
       this.GetText(4)?.SetText(this.Pe.PowerNum.toString());
-      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Pe.RewardTextId);
+      e = this.Pe.RewardTextArgs ?? [];
+      LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(1), this.Pe.RewardTextId, ...e);
       this.RefreshPowerState();
     }
   }
@@ -43,6 +45,9 @@ class PowerRewardButtonItem extends UiPanelBase_1.UiPanelBase {
       e = ModelManager_1.ModelManager.PowerModel.IsPowerEnough(e);
       (t = this.GetText(4)).SetChangeColor(!e, t.changeColor);
     }
+  }
+  SetIsEnable(e) {
+    this.GetButton(0)?.SetSelfInteractive(e);
   }
 }
 exports.PowerRewardButtonItem = PowerRewardButtonItem;

@@ -74,7 +74,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
     this.Qtc = CommonParamById_1.configCommonParamById.GetFloatConfig("change_role_cooldown");
     this.ResetChangeRoleCooldown();
     this.Xpo = Stats_1.Stat.Create("SceneTeamModel.OnChangeRoleStat", "", StatDefine_1.BATTLESTAT_GROUP);
-    this.wgm();
+    this.aMm();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGlobalFootstepMaterialChange, this.Mwa);
     return true;
   }
@@ -114,7 +114,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
     this.zpo = undefined;
     this.LoadTeamPromise?.SetResult(false);
     this.LoadTeamPromise = undefined;
-    this.wgm();
+    this.aMm();
   }
   SwitchGroup(t, r, o = false, i = false) {
     var a = this.$po.get(t);
@@ -230,7 +230,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
     this.tvo(o);
   }
   DGl(e = 0, t = 0) {
-    return t === e || SceneTeamDefine_1.innerGroupType.includes(e) || SceneTeamDefine_1.innerGroupType.includes(t);
+    return t === e || SceneTeamDefine_1.needInheritTypeSet.has(e) || SceneTeamDefine_1.needInheritTypeSet.has(t);
   }
   UpdateGroupLivingStates(e, t) {
     var r = this.$po.get(e);
@@ -244,7 +244,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("SceneTeam", 48, "刷新出战编队，开始");
     }
-    this.wgm();
+    this.aMm();
     this.RefreshLastTransform();
     this.aPr.length = 0;
     this.Jpo.clear();
@@ -312,7 +312,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
         var t = this.YBi?.EntityHandle;
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnBeforeUpdateSceneTeam, e, t);
         var r = e?.Entity;
-        if (r?.Valid && r.Active && r.GetComponent(209)?.HasAnyTag([-1384309247, -1388400236])) {
+        if (r?.Valid && r.Active && r.GetComponent(215)?.HasAnyTag([-1384309247, -1388400236])) {
           h = false;
         }
         if (s && s.CanControl()) {
@@ -337,7 +337,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
                 const i = s.EntityHandle?.Entity;
                 if (i) {
                   i.DisableByKey(1, true);
-                  i.GetComponent(96)?.SetTeamTag(2);
+                  i.GetComponent(99)?.SetTeamTag(2);
                 }
               }
               ControllerHolder_1.ControllerHolder.SceneTeamController.RequestChangeRole(o.GetCreatureDataId(), {
@@ -372,7 +372,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
         if (!e) {
           if (!this.GetTeamPlayerData(ModelManager_1.ModelManager.CreatureModel.GetPlayerId())?.IsRoleOnStageWithoutControl(this.YBi.GetCreatureDataId())) {
             t.DisableByKey(1, true);
-            t.GetComponent(96)?.SetTeamTag(2);
+            t.GetComponent(99)?.SetTeamTag(2);
           }
           this.YBi = undefined;
         }
@@ -448,14 +448,14 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
     var r = t.GetComponent(0).GetCreatureDataId();
     this.bhl.delete(r);
     if (e.Id === this.GetCurrentEntity?.Id) {
-      this.LastEntityIsOnGround = t.GetComponent(104).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
+      this.LastEntityIsOnGround = t.GetComponent(109).PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Ground;
       if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
         this.RefreshLastTransform();
       }
-      this.wgm();
+      this.aMm();
     }
   }
-  wgm() {
+  aMm() {
     this.IsTeamReady = false;
     this.LoadTeamPromise ||= new GameModePromise_1.GameModePromise();
   }
@@ -808,7 +808,7 @@ class SceneTeamModel extends ModelBase_1.ModelBase {
           _.RoleId = l;
           f.push(_);
           ControllerHolder_1.ControllerHolder.CreatureController.LoadEntityAsync(d, e => {
-            if (e && (t--, (e = d?.Entity) && (e.CheckGetComponent(96)?.SetTeamTag(2), e.DisableByKey(1, true)), t === 0)) {
+            if (e && (t--, (e = d?.Entity) && (e.CheckGetComponent(99)?.SetTeamTag(2), e.DisableByKey(1, true)), t === 0)) {
               this.UpdateGroupData(m, {
                 GroupType: 1,
                 GroupRoleList: f,

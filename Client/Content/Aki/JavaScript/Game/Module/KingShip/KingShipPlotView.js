@@ -52,7 +52,7 @@ class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIItem], [5, UE.UIItem], [6, UE.UIItem], [7, UE.UIItem], [8, UE.UIScrollViewComponent], [9, UE.UIItem], [10, UE.UILayoutBase], [11, UE.UIItem], [12, UE.UISliderComponent]];
   }
   async OnBeforeStartAsync() {
     this.lLt = new DynamicMaskButton_1.DynamicMaskButton();
@@ -64,6 +64,8 @@ class KingShipPlotItem extends UiPanelBase_1.UiPanelBase {
     i?.SetCanScroll(false);
     i?.SetRayCastTargetForScrollView(false);
     this.geo = new PlotTextLogic_1.PlotTextCommonLogic(this.GetItem(4), this.GetText(0), this.GetText(1), this.GetText(2), this.GetItem(3), i);
+    this.GetSlider(12).GetRootComponent().SetUIActive(false);
+    this.GetItem(9).SetUIActive(false);
   }
   RefreshPlot(i) {
     this.FFu = [];

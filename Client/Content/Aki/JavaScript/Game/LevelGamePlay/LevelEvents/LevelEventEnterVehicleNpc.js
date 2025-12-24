@@ -36,7 +36,7 @@ class LevelEventEnterVehicleNpc extends LevelGeneralBase_1.LevelEventBase {
     var i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity;
     var s = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.Target)?.Entity;
     if (i) {
-      if (s = s?.GetComponent(237)) {
+      if (s = s?.GetComponent(246)) {
         s.TryEnter(i, e.Seat);
         this.FinishExecute(true);
       } else {

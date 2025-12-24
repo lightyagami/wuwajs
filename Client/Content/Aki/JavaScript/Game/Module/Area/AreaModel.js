@@ -11,10 +11,12 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
 const ExploreProgressDefine_1 = require("../ExploreProgress/ExploreProgressDefine");
 const MapUtil_1 = require("../Map/MapUtil");
+const DEFAULT_AREA_ID = 1;
 class AreaModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -27,7 +29,7 @@ class AreaModel extends ModelBase_1.ModelBase {
     this.Dtc = new Set();
   }
   OnInit() {
-    this.SetAreaInfo(1);
+    this.SetAreaInfo(DEFAULT_AREA_ID);
     this.BWe = CommonParamById_1.configCommonParamById.GetIntConfig("AreaTipsShowCd");
     return true;
   }
@@ -67,13 +69,50 @@ class AreaModel extends ModelBase_1.ModelBase {
       return e.AreaId;
     }
     var t = ConfigManager_1.ConfigManager.AreaConfig;
-    let i = e.AreaId;
-    let a = t.GetAreaInfo(i);
-    while (a && a.Level !== r) {
-      i = a.Father;
-      a = t.GetAreaInfo(i);
+    let a = e.AreaId;
+    let i = t.GetAreaInfo(a);
+    while (i && i.Level !== r) {
+      a = i.Father;
+      i = t.GetAreaInfo(a);
     }
-    return i;
+    return a;
+  }
+  GetAllAreaIdInheritable(e) {
+    var r = [];
+    r.push(e.AreaId);
+    var t = ConfigManager_1.ConfigManager.AreaConfig;
+    let a = e.Father;
+    let i = a === 0 ? undefined : t.GetAreaInfo(a);
+    while (a !== 0 && i) {
+      r.push(a);
+      var n = i.Father;
+      if (a === n || n === 0) {
+        break;
+      }
+      a = n;
+      i = t.GetAreaInfo(a);
+    }
+    return r;
+  }
+  GetAllAreaIdInheritableById(t) {
+    var a = [];
+    var i = ConfigManager_1.ConfigManager.AreaConfig;
+    var n = i.GetAreaInfo(t);
+    if (n) {
+      a.push(t);
+      let e = n.Father;
+      let r = e === 0 ? undefined : i.GetAreaInfo(e);
+      while (e !== 0 && r) {
+        a.push(e);
+        var o = r.Father;
+        if (e === o || o === 0) {
+          break;
+        }
+        e = o;
+        r = i.GetAreaInfo(e);
+      }
+    }
+    return a;
   }
   SetAreaInfo(e) {
     if (e !== 0) {
@@ -86,7 +125,7 @@ class AreaModel extends ModelBase_1.ModelBase {
   }
   SetAreaName(e, r = false) {
     var t;
-    var i = this.UWe?.AreaId;
+    var a = this.UWe?.AreaId;
     this.SetAreaInfo(e);
     if (this.UWe.Tips && (this.AWe = this.UWe.Title, (t = this.wWe.get(e)) === undefined || r || Time_1.Time.PlayerTime - t > this.BWe)) {
       if (UiManager_1.UiManager.IsViewOpen("AreaView")) {
@@ -96,7 +135,7 @@ class AreaModel extends ModelBase_1.ModelBase {
       }
       this.wWe.set(e, Time_1.Time.PlayerTime);
     }
-    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, i, e);
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, a, e);
   }
   AddArea(e, r) {
     if (!this.PWe.has(e)) {
@@ -144,8 +183,8 @@ class AreaModel extends ModelBase_1.ModelBase {
         this.xWe.set(t.AreaId, t.IsInitActived);
       }
     }
-    for (const i of r) {
-      this.xWe.set(i.p6n, i.Y4n);
+    for (const a of r) {
+      this.xWe.set(a.p6n, a.Y4n);
     }
   }
   InitArea(e) {
@@ -153,8 +192,7 @@ class AreaModel extends ModelBase_1.ModelBase {
     this.InitAreaStates(r, e);
     var r = ModelManager_1.ModelManager.PlayerInfoModel.GetNumberPropById(6);
     if (r) {
-      this.SetAreaInfo(r);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ChangeArea, undefined, r);
+      ControllerHolder_1.ControllerHolder.AreaController.EnterAreaRequest(DEFAULT_AREA_ID, r, false, "AreaModel.InitArea");
     }
   }
   GetAreaStates() {
@@ -182,13 +220,13 @@ class AreaModel extends ModelBase_1.ModelBase {
     });
     var e = CommonParamById_1.configCommonParamById.GetIntConfig("HighDangerLevelOffset");
     var r = CommonParamById_1.configCommonParamById.GetIntConfig("MidDangerLevelOffset");
-    var i = this.UWe.WorldMonsterLevelMax.get(ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel);
-    if (i) {
-      i = t - i;
-      if (i < r && e <= i) {
+    var a = this.UWe.WorldMonsterLevelMax.get(ModelManager_1.ModelManager.WorldLevelModel.CurWorldLevel);
+    if (a) {
+      a = t - a;
+      if (a < r && e <= a) {
         return 1;
       }
-      if (i < e) {
+      if (a < e) {
         return 0;
       }
     }
@@ -210,6 +248,18 @@ class AreaModel extends ModelBase_1.ModelBase {
   GetCurrentExploreAreaData() {
     var e = MapUtil_1.MapUtil.GetWorldMapLevelOneAreaId();
     return ModelManager_1.ModelManager.ExploreProgressModel.GetExploreAreaData(e);
+  }
+  GetDebugString() {
+    let e = "";
+    let r = this.AreaInfo?.AreaId;
+    for (e = `${e += `当前区域:${r}
+`}	关联区块:${this.AreaInfo?.AreaName}
+`; r = r && ConfigManager_1.ConfigManager.AreaConfig?.GetParentAreaId(r);) {
+      e = `${e += `父级区域:${r}
+`}	关联区块:${ConfigManager_1.ConfigManager.AreaConfig?.GetAreaInfo(r)?.AreaName}
+`;
+    }
+    return e;
   }
 }
 exports.AreaModel = AreaModel;

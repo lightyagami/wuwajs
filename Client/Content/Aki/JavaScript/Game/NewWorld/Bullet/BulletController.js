@@ -127,7 +127,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.SetNiagaraQuality, BulletController.mna);
   }
   static HasAuthority(t) {
-    return (t instanceof Entity_1.Entity ? t.GetComponent(3)?.Actor : t)?.IsAutonomousProxy() ?? false;
+    return (t instanceof Entity_1.Entity ? t.GetComponent(1)?.Owner : t)?.IsAutonomousProxy() ?? false;
   }
   static x7c(t) {
     if (StatDefine_1.BATTLESTAT_ENABLED) {
@@ -172,7 +172,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
         BulletController.$9o.Stop();
         if (v) {
           if (m === 1 && v.Base.DestroyOnSkillEnd) {
-            var y = S.GetComponent(39);
+            var y = S.GetComponent(40);
             if (!y?.Valid) {
               if (Log_1.Log.CheckError()) {
                 Log_1.Log.Error("Bullet", 20, "勾选了技能结束是否销毁子弹, 技能组件不存在", ["bulletRowName", e], ["SkillId", r]);
@@ -223,7 +223,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
   }
   static aNn(t, e, l, r, o) {
     var i = e.Base.BornPositionStandard;
-    if (i === 1) {
+    if (i === 1 || i === 12) {
       return this.z9o(t, l);
     }
     if (i === 5) {
@@ -240,7 +240,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
       return this.Z9o(t, r, l);
     }
     if (i === 4) {
-      o = t.GetComponent(32)?.GetCurrentTarget();
+      o = t.GetComponent(33)?.GetCurrentTarget();
       if (o?.Valid) {
         return o.Id;
       }
@@ -286,7 +286,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
   static Y9o(t, e, l, r, o) {
     var i = e.Move.TrackTarget;
     if (i === 4 || i === 3) {
-      var a = t.GetComponent(32)?.GetCurrentTarget();
+      var a = t.GetComponent(33)?.GetCurrentTarget();
       if (a?.Valid) {
         return a.Id;
       }
@@ -347,7 +347,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
     }
   }
   static hNn() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(32)?.GetCurrentTarget();
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(33)?.GetCurrentTarget();
     if (t?.Valid) {
       return t.Id;
     } else {
@@ -357,7 +357,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
   static J9o(t, e, l, r, o) {
     var i = e.Move.InitVelocityDirStandard;
     if (i === 5) {
-      var a = t.GetComponent(32)?.GetCurrentTarget();
+      var a = t.GetComponent(33)?.GetCurrentTarget();
       if (a?.Valid) {
         return a.Id;
       }
@@ -377,6 +377,9 @@ class BulletController extends ControllerBase_1.ControllerBase {
       }
       if (i === 9) {
         return o;
+      }
+      if (i === 14) {
+        return BulletController.z9o(t, l);
       }
     }
     return 0;
@@ -527,7 +530,7 @@ class BulletController extends ControllerBase_1.ControllerBase {
             this.Mme.SetLocation(s);
           }
           this.Mme.SetScale3D(Vector_1.Vector.OneVectorProxy);
-        } else if (a = l?.CheckGetComponent(3)) {
+        } else if (a = l?.CheckGetComponent(1)) {
           this.Mme.SetLocation(a.ActorLocationProxy);
           this.cie.DeepCopy(a.ActorRotationProxy);
           this.Mme.SetRotation(a.ActorQuatProxy);

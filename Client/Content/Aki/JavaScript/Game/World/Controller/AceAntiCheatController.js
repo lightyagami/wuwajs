@@ -89,7 +89,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
     e.F6n = i?.GetLevel() ?? 0;
     e.U8n = i?.GetExp() ?? 0;
     e.Q6n = t.RoleId;
-    var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.CreatureDataId)?.Entity?.GetComponent(177);
+    var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(t.CreatureDataId)?.Entity?.GetComponent(182);
     if (r) {
       var a = [];
       for (let t = 1; t < CharacterAttributeTypes_1.ATTRIBUTE_ID_MAX; t++) {
@@ -173,7 +173,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
         var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(i.CreatureDataId);
         var o = o?.Entity;
         if (o) {
-          o.GetComponent(176)?.AddGeneralListener(this.qbr);
+          o.GetComponent(181)?.AddGeneralListener(this.qbr);
           if (!EventSystem_1.EventSystem.HasWithTarget(o, EventDefine_1.EEventName.CharDamage, this.Uie)) {
             EventSystem_1.EventSystem.AddWithTarget(o, EventDefine_1.EEventName.CharDamage, this.Uie);
           }
@@ -212,7 +212,7 @@ class AceAntiCheatController extends ControllerBase_1.ControllerBase {
       for (const s of this._La) {
         var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(s.CreatureDataId)?.Entity;
         if (a) {
-          a.GetComponent(176)?.RemoveGeneralListener(this.qbr);
+          a.GetComponent(181)?.RemoveGeneralListener(this.qbr);
           EventSystem_1.EventSystem.RemoveWithTarget(a, EventDefine_1.EEventName.CharDamage, this.Uie);
           this.GTa = false;
         } else if (Log_1.Log.CheckWarn()) {
@@ -408,7 +408,7 @@ AceAntiCheatController.dLa = undefined;
 AceAntiCheatController.qbr = (t, e, o) => {
   if (_a.OTa) {
     for (const r of _a.OTa.keys()) {
-      const o = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(176)?.GetCurrentValue(t) ?? 0;
+      const o = ModelManager_1.ModelManager.CreatureModel.GetEntity(r)?.Entity?.GetComponent(181)?.GetCurrentValue(t) ?? 0;
       var i = _a.OTa.get(r).cLa.JTa[t - 1];
       if (i && i.s5n === t && i.e5n < o) {
         i.e5n = o;

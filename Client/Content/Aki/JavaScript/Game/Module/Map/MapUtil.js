@@ -19,169 +19,169 @@ const GeneralLogicTreeUtil_1 = require("../GeneralLogicTree/GeneralLogicTreeUtil
 const MapDefine_1 = require("./MapDefine");
 const MapLogger_1 = require("./Misc/MapLogger");
 class MapUtil {
-  static WorldPosition2UiPosition(e, r) {
-    r = r ?? Vector_1.Vector.Create();
-    e.Multiply(MapDefine_1.world2UiUnit, r);
-    return r;
+  static WorldPosition2UiPosition(e, t) {
+    t = t ?? Vector_1.Vector.Create();
+    e.Multiply(MapDefine_1.world2UiUnit, t);
+    return t;
   }
-  static WorldPosition2UiPosition2D(e, r) {
-    r = r ?? Vector2D_1.Vector2D.Create();
-    return e.Multiply(MapDefine_1.worldToScreenScale, r);
+  static WorldPosition2UiPosition2D(e, t) {
+    t = t ?? Vector2D_1.Vector2D.Create();
+    return e.Multiply(MapDefine_1.worldToScreenScale, t);
   }
-  static UiPosition2WorldPosition(e, r) {
-    r = r ?? Vector_1.Vector.Create();
-    return e.Division(MapDefine_1.world2UiUnit, r);
+  static UiPosition2WorldPosition(e, t) {
+    t = t ?? Vector_1.Vector.Create();
+    return e.Division(MapDefine_1.world2UiUnit, t);
   }
   static WorldToScreenPosition(e) {
-    var r = Global_1.Global.CharacterController;
-    if (UE.GameplayStatics.D_ProjectWorldToScreen(r, e, this.Swl, false)) {
-      r = (0, puerts_1.$unref)(this.Swl);
-      if (r) {
-        var e = r.X;
-        var t = r.Y;
-        if (!isNaN(e) && !isNaN(t) && isFinite(e) && isFinite(t)) {
-          return r;
+    var t = Global_1.Global.CharacterController;
+    if (UE.GameplayStatics.D_ProjectWorldToScreen(t, e, this.Swl, false)) {
+      t = (0, puerts_1.$unref)(this.Swl);
+      if (t) {
+        var e = t.X;
+        var r = t.Y;
+        if (!isNaN(e) && !isNaN(r) && isFinite(e) && isFinite(r)) {
+          return t;
         }
       }
     }
   }
-  static GetTilePosition(e, r = 0) {
+  static GetTilePosition(e, t = 0) {
     var e = Vector2D_1.Vector2D.Create(e);
     e.DivisionEqual(MapDefine_1.DETAIL_TILE_REALSIZE * 100);
-    var t = Math.ceil(e.X + r);
+    var r = Math.ceil(e.X + t);
     return {
-      X: t,
-      Y: Math.ceil(-e.Y + r)
+      X: r,
+      Y: Math.ceil(-e.Y + t)
     };
   }
   static GetTilePositionByUiPosition(e) {
     var e = Vector2D_1.Vector2D.Create(e);
     e.DivisionEqual(MapDefine_1.DETAIL_TILE_REALSIZE);
-    var r = Math.ceil(e.X);
+    var t = Math.ceil(e.X);
     return {
-      X: r,
+      X: t,
       Y: Math.ceil(e.Y)
     };
   }
   static UiConvertToWorldMapLocalPosition(e) {
-    var r = ModelManager_1.ModelManager.WorldMapModel.MapScale;
+    var t = ModelManager_1.ModelManager.WorldMapModel.MapScale;
     e.UnaryNegation(e);
-    e.MultiplyEqual(r);
+    e.MultiplyEqual(t);
     return e;
   }
-  static GetTrackPositionByTrackTarget(e, r, t, a, i = true) {
-    var [t, n] = this.PDl(e, t);
-    if (!t) {
-      MapUtil.GetEntityPosition(e, r, a, n, i);
+  static GetTrackPositionByTrackTarget(e, t, r, a, i = true) {
+    var [r, n] = this.PDl(e, r);
+    if (!r) {
+      MapUtil.GetEntityPosition(e, t, a, n, i);
     }
     return n;
   }
   static GetTrackDistanceByMarkId(e) {
-    var r = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
-    if (!r) {
+    var t = GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
+    if (!t) {
       return 0;
     }
-    const t = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e);
-    if (!t || !t.TrackSource) {
+    const r = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e);
+    if (!r || !r.TrackSource) {
       return 0;
     }
     let a = 0;
     let i = undefined;
-    var n = ModelManager_1.ModelManager.TrackModel.GetTrackData(t.TrackSource, e);
+    var n = ModelManager_1.ModelManager.TrackModel.GetTrackData(r.TrackSource, e);
     if (n) {
       a = n.TrackInstanceId ?? 0;
       i = n.TrackTarget;
     } else {
-      const t = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e);
-      a = t?.InstanceDungeonId ?? 0;
-      i = t?.TrackTarget;
+      const r = ModelManager_1.ModelManager.MapModel.GetDynamicMarkInfoById(e);
+      a = r?.InstanceDungeonId ?? 0;
+      i = r?.TrackTarget;
     }
     n = MapUtil.GetTrackPositionByTrackTarget(i, true, undefined, a);
     if (n) {
-      return Math.round(Vector_1.Vector.Distance(n, r) * 0.01);
+      return Math.round(Vector_1.Vector.Distance(n, t) * 0.01);
     } else {
       return 0;
     }
   }
-  static GetTrackUiPositionByTrackTargetConfig(e, r) {
-    e = MapUtil.GetTrackPositionByTrackTargetConfig(e, r);
+  static GetTrackUiPositionByTrackTargetConfig(e, t) {
+    e = MapUtil.GetTrackPositionByTrackTargetConfig(e, t);
     return MapUtil.WorldPosition2UiPosition(e);
   }
-  static GetTrackPositionByTrackTargetConfig(e, r, t) {
-    var a = ConfigManager_1.ConfigManager.WorldMapConfig.IsDungeonInWorld(r);
+  static GetTrackPositionByTrackTargetConfig(e, t, r) {
+    var a = ConfigManager_1.ConfigManager.WorldMapConfig.IsDungeonInWorld(t);
     var i = ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId;
     var i = ConfigManager_1.ConfigManager.WorldMapConfig.IsMapInWorld(i);
     if (!a && !i) {
-      const [M, n] = MapUtil.PDl(e, t);
+      const [M, n] = MapUtil.PDl(e, r);
       if (M) {
         return n;
       } else {
-        return MapUtil.GetEntityPositionByConfig(e, r, n);
+        return MapUtil.GetEntityPositionByConfig(e, t, n);
       }
     }
     if (a && i) {
-      const [l, n] = MapUtil.PDl(e, t);
-      if (l) {
+      const [_, n] = MapUtil.PDl(e, r);
+      if (_) {
         return n;
       } else {
-        return MapUtil.GetEntityPosition(e, false, r, n);
+        return MapUtil.GetEntityPosition(e, false, t, n);
       }
     }
-    const n = t ?? Vector_1.Vector.Create();
+    const n = r ?? Vector_1.Vector.Create();
     let o = undefined;
-    if (o = i ? ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(r) : ModelManager_1.ModelManager.MapModel.GetDungeonExitLocation(ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
+    if (o = i ? ModelManager_1.ModelManager.MapModel.GetDungeonLocateWorldMapLocation(t) : ModelManager_1.ModelManager.MapModel.GetDungeonExitLocation(ModelManager_1.ModelManager.CreatureModel.GetInstanceId())) {
       n.FromUeVector(o);
     }
     n.Division(100, n);
     return n;
   }
-  static PDl(e, r) {
+  static PDl(e, t) {
     if (e) {
-      r = r ?? Vector_1.Vector.Create();
+      t = t ?? Vector_1.Vector.Create();
       if (e instanceof Vector_1.Vector) {
-        r.DeepCopy(e);
-        return [true, r];
+        t.DeepCopy(e);
+        return [true, t];
       } else if (e instanceof Vector2D_1.Vector2D) {
-        r.Set(e.X, e.Y, 0);
-        return [true, r];
+        t.Set(e.X, e.Y, 0);
+        return [true, t];
       } else if (e instanceof ue_1.Actor) {
         if (e.IsValid()) {
-          r.FromUeVector(e.D_K2_GetActorLocation());
+          t.FromUeVector(e.D_K2_GetActorLocation());
         }
-        return [true, r];
+        return [true, t];
       } else {
-        return [false, r];
+        return [false, t];
       }
     } else {
       return [true, Vector_1.Vector.ZeroVectorProxy];
     }
   }
-  static GetEntityPosition(r, t, a = 0, i, n = false) {
+  static GetEntityPosition(t, r, a = 0, i, n = false) {
     var o;
     var i = i ?? Vector_1.Vector.Create();
     if (MapUtil.GetDungeonsRelation(a, ModelManager_1.ModelManager.CreatureModel.GetInstanceId()) !== 1) {
-      MapUtil.GetConfigPosition(r, i, a);
+      MapUtil.GetConfigPosition(t, i, a);
     } else {
-      let e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(r);
-      if (!(e = e || ModelManager_1.ModelManager.CreatureModel.GetEntityById(r)) || !e?.IsInit) {
+      let e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t);
+      if (!(e = e || ModelManager_1.ModelManager.CreatureModel.GetEntityById(t)) || !e?.IsInit) {
         o = a === ModelManager_1.ModelManager.CreatureModel.GetInstanceId() ? a : ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapInstanceId;
-        ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestEntityPosition(o, r, i);
+        ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.RequestEntityPosition(o, t, i);
         if (i?.Equality(Vector_1.Vector.ZeroVectorProxy)) {
-          MapUtil.GetConfigPosition(r, i, a);
+          MapUtil.GetConfigPosition(t, i, a);
         }
         if (n && i?.Equality(Vector_1.Vector.ZeroVectorProxy)) {
-          MapLogger_1.MapLogger.ErrorOnce(r, 63, "获取实体位置失败, 可能会导致地图或者主界面追踪追到原点", ["pbDataOrEntityId:", r], ["addHalfCapsule", t], ["传入的参数副本Id:", a], ["最终使用的副本Id:", o], ["当前玩家所处副本Id:", ModelManager_1.ModelManager.CreatureModel.GetInstanceId()], ["CurrentWorldMapConfigId:", ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId]);
+          MapLogger_1.MapLogger.ErrorOnce(t, 63, "获取实体位置失败, 可能会导致地图或者主界面追踪追到原点", ["pbDataOrEntityId:", t], ["addHalfCapsule", r], ["传入的参数副本Id:", a], ["最终使用的副本Id:", o], ["当前玩家所处副本Id:", ModelManager_1.ModelManager.CreatureModel.GetInstanceId()], ["CurrentWorldMapConfigId:", ModelManager_1.ModelManager.WorldMapModel.CurrentWorldMapConfigId]);
         }
         return i ?? Vector_1.Vector.ZeroVectorProxy;
       }
-      ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.GetEntityPos(e, t, i);
+      ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.GetEntityPos(e, r, i);
     }
     return i;
   }
-  static GetEntityPositionByConfig(e, r, t) {
-    t = t ?? Vector_1.Vector.Create();
-    MapUtil.GetConfigPosition(e, t, r);
-    return t ?? Vector_1.Vector.ZeroVectorProxy;
+  static GetEntityPositionByConfig(e, t, r) {
+    r = r ?? Vector_1.Vector.Create();
+    MapUtil.GetConfigPosition(e, r, t);
+    return r ?? Vector_1.Vector.ZeroVectorProxy;
   }
   static GetWorldMapLevelOneAreaId() {
     var e = ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(2);
@@ -193,65 +193,65 @@ class MapUtil {
       return ModelManager_1.ModelManager.AreaModel.GetCurrentAreaId(2);
     }
   }
-  static GetMapNameByInstanceId(e, r) {
-    var t = MapUtil.GetInstanceDungeonBelongWorldId(e) ?? e;
-    var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetAllMapRangeConfigByMapId(t);
+  static GetMapNameByInstanceId(e, t) {
+    var r = MapUtil.GetInstanceDungeonBelongWorldId(e) ?? e;
+    var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetAllMapRangeConfigByMapId(r);
     if (a) {
-      for (const l of a) {
-        if (!(l.AreaRange.length >= 4)) {
-          return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(l.MapName);
+      for (const _ of a) {
+        if (!(_.AreaRange.length >= 4)) {
+          return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(_.MapName);
         }
-        var i = l.AreaRange[0];
-        var n = l.AreaRange[1];
-        var o = l.AreaRange[2];
-        var M = l.AreaRange[3];
-        if (i <= r.X && r.X <= o && n <= r.Y && r.Y <= M) {
-          return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(l.MapName);
+        var i = _.AreaRange[0];
+        var n = _.AreaRange[1];
+        var o = _.AreaRange[2];
+        var M = _.AreaRange[3];
+        if (i <= t.X && t.X <= o && n <= t.Y && t.Y <= M) {
+          return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(_.MapName);
         }
       }
     }
-    a = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(t);
+    a = ConfigManager_1.ConfigManager.WorldMapConfig.GetAkiMapConfig(r);
     if (a) {
       return ConfigManager_1.ConfigManager.MapConfig.GetLocalText(a.MapName);
     } else {
-      MapLogger_1.MapLogger.Error(63, "[地图系统]找不到副本Id对应的地图配置->", ["instanceId", e], ["mapId", t], ["worldPosition", r]);
+      MapLogger_1.MapLogger.Error(63, "[地图系统]找不到副本Id对应的地图配置->", ["instanceId", e], ["mapId", r], ["worldPosition", t]);
       return ConfigManager_1.ConfigManager.MapConfig.GetLocalText("Country_1_Title");
     }
   }
-  static GetConfigPosition(e, r, t) {
-    if (t !== 0 && (t = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(t))) {
-      if (e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, t.MapConfigId)) {
-        r.FromUeVector(e);
+  static GetConfigPosition(e, t, r) {
+    if (r !== 0 && (r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r))) {
+      if (e = ModelManager_1.ModelManager.WorldMapModel.GetEntityPosition(e, r.MapConfigId)) {
+        t.FromUeVector(e);
       }
-      r.Division(100, r);
+      t.Division(100, t);
     }
   }
-  static CrossingTest(r, t) {
+  static CrossingTest(t, r) {
     let a = false;
     var i;
     let n = false;
     var o;
-    let M = r[r.length - 1];
-    let l = r[0];
-    a = M.Y >= t.Y;
+    let M = t[t.length - 1];
+    let _ = t[0];
+    a = M.Y >= r.Y;
     n = false;
-    let _ = 0;
-    var s = r.length;
+    let l = 0;
+    var s = t.length;
     for (let e = 0; e < s; e++) {
-      i = l.Y >= t.Y;
+      i = _.Y >= r.Y;
       if (a !== i) {
-        if ((o = M.X >= t.X) == l.X >= t.X) {
+        if ((o = M.X >= r.X) == _.X >= r.X) {
           if (o) {
             n = !n;
           }
-        } else if (l.X - (l.Y - t.Y) * (M.X - l.X) / (M.Y - l.Y) >= t.X) {
+        } else if (_.X - (_.Y - r.Y) * (M.X - _.X) / (M.Y - _.Y) >= r.X) {
           n = !n;
         }
         a = i;
       }
-      M = l;
-      _ += 1;
-      l = r[_];
+      M = _;
+      l += 1;
+      _ = t[l];
     }
     return n;
   }
@@ -263,79 +263,79 @@ class MapUtil {
     e = e.ComponentsData;
     return (0, IComponent_1.getComponent)(e, "TreasureBoxComponent") !== undefined;
   }
-  static FindMinCircle(r) {
-    if (r.length < 1) {
+  static FindMinCircle(t) {
+    if (t.length < 1) {
       return new MapDefine_1.Circle(0, 0, 0);
     }
-    if (r.length === 1) {
-      return new MapDefine_1.Circle(r[0].X, r[0].Y, 0);
+    if (t.length === 1) {
+      return new MapDefine_1.Circle(t[0].X, t[0].Y, 0);
     }
-    let t = r[0].X;
-    let a = r[0].Y;
-    let i = r[0].X;
-    let n = r[0].Y;
-    for (let e = 1; e < r.length; e++) {
-      var o = r[e];
-      t = Math.min(t, o.X);
+    let r = t[0].X;
+    let a = t[0].Y;
+    let i = t[0].X;
+    let n = t[0].Y;
+    for (let e = 1; e < t.length; e++) {
+      var o = t[e];
+      r = Math.min(r, o.X);
       a = Math.min(a, o.Y);
       i = Math.max(i, o.X);
       n = Math.max(n, o.Y);
     }
-    var e = (t + i) * 0.5;
+    var e = (r + i) * 0.5;
     var M = (a + n) * 0.5;
-    var l = new Vector2D_1.Vector2D(e, M);
-    let _ = 0;
+    var _ = new Vector2D_1.Vector2D(e, M);
+    let l = 0;
     var s = new Vector2D_1.Vector2D(e, M);
-    for (const f of r) {
-      var c = Vector2D_1.Vector2D.DistSquared(f, l);
-      if (c > _) {
-        _ = c;
-        s.X = f.X;
-        s.Y = f.Y;
+    for (const g of t) {
+      var c = Vector2D_1.Vector2D.DistSquared(g, _);
+      if (c > l) {
+        l = c;
+        s.X = g.X;
+        s.Y = g.Y;
       }
     }
-    var g = Math.sqrt(_);
-    return new MapDefine_1.Circle(e, M, g);
+    var f = Math.sqrt(l);
+    return new MapDefine_1.Circle(e, M, f);
   }
-  static IsDungeonDiffWorld(t, a) {
-    if (t !== 0 && a !== 0) {
-      t = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(t);
+  static IsDungeonDiffWorld(r, a) {
+    if (r !== 0 && a !== 0) {
+      r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r);
       a = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(a);
-      if (t !== undefined && a !== undefined) {
-        var i = t.InstSubType;
+      if (r !== undefined && a !== undefined) {
+        var i = r.InstSubType;
         var n = a.InstSubType;
-        let e = t.MapConfigId;
-        let r = a.MapConfigId;
+        let e = r.MapConfigId;
+        let t = a.MapConfigId;
         if (i === 12) {
-          i = MapUtil.slh(t);
+          i = MapUtil.slh(r);
           e = i.MapConfigId;
         }
         if (n === 12) {
-          t = MapUtil.slh(a);
-          r = t.MapConfigId;
+          r = MapUtil.slh(a);
+          t = r.MapConfigId;
         }
-        return e !== r;
+        return e !== t;
       }
     }
   }
-  static GetDungeonsRelation(e, r) {
-    if (!r || !e) {
+  static GetDungeonsRelation(e, t) {
+    if (!t || !e) {
       return 0;
     }
-    if (r === e) {
+    if (t === e) {
       return 1;
     }
-    var t = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);
-    var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r);
-    if (!t || !a) {
+    var r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e);
+    var a = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(t);
+    if (!r || !a) {
       return 0;
     }
-    var i = t.InstSubType;
+    var i = r.InstSubType;
     var n = a.InstSubType;
     let o = e;
-    let M = r;
-    if (i === 12 && t.EntranceEntities?.length) {
-      o = t.EntranceEntities[0].DungeonId;
+    let M = t;
+    if (i === 12 && r.EntranceEntities?.length) {
+      o = r.EntranceEntities[0].DungeonId;
     }
     if (n === 12 && a.EntranceEntities?.length) {
       M = a.EntranceEntities[0].DungeonId;
@@ -347,22 +347,22 @@ class MapUtil {
     }
   }
   static GetInstanceDungeonBelongWorldId(e) {
-    var r;
-    if (e !== 0 && (r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e)) !== undefined && r.InstSubType === 12) {
-      return MapUtil.slh(r).Id;
+    var t;
+    if (e !== 0 && (t = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(e)) !== undefined && t.InstSubType === 12) {
+      return MapUtil.slh(t).Id;
     } else {
       return e;
     }
   }
   static slh(e) {
-    var r;
     var t;
+    var r;
     if (!(e.EntranceEntities.length < 1)) {
-      r = e.EntranceEntities[0].DungeonId;
-      if ((t = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(r)) === undefined) {
-        MapLogger_1.MapLogger.Error(63, "[地图系统]世界副本查找入口实体失败->入口副本配置为空", ["config", e], ["entranceDungeonId", r]);
+      t = e.EntranceEntities[0].DungeonId;
+      if ((r = ConfigManager_1.ConfigManager.WorldMapConfig.GetDungeonConfig(t)) === undefined) {
+        MapLogger_1.MapLogger.Error(63, "[地图系统]世界副本查找入口实体失败->入口副本配置为空", ["config", e], ["entranceDungeonId", t]);
       }
-      return t;
+      return r;
     }
     MapLogger_1.MapLogger.Error(63, "[地图系统]世界副本查找入口实体失败->实体列表为空", ["config", e]);
   }
@@ -380,28 +380,31 @@ class MapUtil {
       return GeneralLogicTreeUtil_1.GeneralLogicTreeUtil.GetPlayerLocation();
     }
   }
-  static GetGamePlayKey(e, r) {
-    return e + "_" + r;
+  static GetGamePlayKey(e, t) {
+    return e + "_" + t;
   }
   static IsStandardGravity(e) {
     return MathUtils_1.MathUtils.IsNearlyEqual(e, -1);
   }
   static ConvertWorldPositionToIndex(e) {
-    var r = Math.floor(Math.round(e.X * MapDefine_1.MARK_WORLD_TO_HASH_SCALE) / MapDefine_1.MARK_SCOPE);
+    var t = Math.floor(Math.round(e.X * MapDefine_1.MARK_WORLD_TO_HASH_SCALE) / MapDefine_1.MARK_SCOPE);
     var e = Math.floor(Math.round(e.Y * MapDefine_1.MARK_WORLD_TO_HASH_SCALE) / MapDefine_1.MARK_SCOPE);
-    return r * MapDefine_1.MARK_HASH_XY_PANDING + e;
+    return t * MapDefine_1.MARK_HASH_XY_PANDING + e;
   }
   static GetAroundIndex(e) {
     return new Set([e, e + MapDefine_1.MARK_HASH_XY_PANDING, e - MapDefine_1.MARK_HASH_XY_PANDING, e + 1, e - 1, e + MapDefine_1.MARK_HASH_XY_PANDING - 1, e + MapDefine_1.MARK_HASH_XY_PANDING + 1, e - MapDefine_1.MARK_HASH_XY_PANDING - 1, e - MapDefine_1.MARK_HASH_XY_PANDING + 1]);
   }
-  static GetQueryNearestIndexSet(e, r) {
+  static GetUpdateAroundIndex(e) {
+    return new Set([...this.GetAroundIndex(e), e - MapDefine_1.MARK_HASH_XY_PANDING * 2 - 2, e - MapDefine_1.MARK_HASH_XY_PANDING * 2 - 1, e - MapDefine_1.MARK_HASH_XY_PANDING * 2, e - MapDefine_1.MARK_HASH_XY_PANDING * 2 + 1, e - MapDefine_1.MARK_HASH_XY_PANDING * 2 + 2, e - MapDefine_1.MARK_HASH_XY_PANDING - 2, e - MapDefine_1.MARK_HASH_XY_PANDING + 2, e - 2, e + 2, e + MapDefine_1.MARK_HASH_XY_PANDING - 2, e + MapDefine_1.MARK_HASH_XY_PANDING + 2, e + MapDefine_1.MARK_HASH_XY_PANDING * 2 - 2, e + MapDefine_1.MARK_HASH_XY_PANDING * 2 - 1, e + MapDefine_1.MARK_HASH_XY_PANDING * 2, e + MapDefine_1.MARK_HASH_XY_PANDING * 2 + 1, e + MapDefine_1.MARK_HASH_XY_PANDING * 2 + 2]);
+  }
+  static GetQueryNearestIndexSet(e, t) {
     var e = MapUtil.ConvertWorldPositionToIndex(e);
-    var t = Math.ceil(Math.round(r * MapDefine_1.MARK_WORLD_TO_HASH_SCALE) / MapDefine_1.MARK_SCOPE);
-    var r = MapUtil.GetAroundIndex(e);
-    let a = Array.from(r.values());
+    var r = Math.ceil(Math.round(t * MapDefine_1.MARK_WORLD_TO_HASH_SCALE) / MapDefine_1.MARK_SCOPE);
+    var t = MapUtil.GetAroundIndex(e);
+    let a = Array.from(t.values());
     var i = new Set();
     i.add(e);
-    for (let e = 0; e <= t; ++e) {
+    for (let e = 0; e <= r; ++e) {
       var n = [];
       for (const o of a) {
         if (!i.has(o)) {

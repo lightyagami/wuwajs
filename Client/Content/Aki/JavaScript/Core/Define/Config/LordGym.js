@@ -16,6 +16,9 @@ class LordGym {
   get Difficulty() {
     return this.difficulty();
   }
+  get Version() {
+    return this.version();
+  }
   get RewardId() {
     return this.rewardid();
   }
@@ -82,15 +85,15 @@ class LordGym {
       return 1;
     }
   }
-  rewardid() {
+  version() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
-      return 0;
+      return 1;
     }
   }
-  playid() {
+  rewardid() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -98,15 +101,15 @@ class LordGym {
       return 0;
     }
   }
-  gymtitle(t) {
-    var i = this.J7.__offset(this.z7, 12);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+  playid() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
-    return i;
   }
-  newgymtitle(t) {
+  gymtitle(t) {
     var i = this.J7.__offset(this.z7, 14);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -114,7 +117,7 @@ class LordGym {
     }
     return i;
   }
-  iconpath(t) {
+  newgymtitle(t) {
     var i = this.J7.__offset(this.z7, 16);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -122,7 +125,7 @@ class LordGym {
     }
     return i;
   }
-  playdescription(t) {
+  iconpath(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -130,8 +133,16 @@ class LordGym {
     }
     return i;
   }
+  playdescription(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   helpid() {
-    var t = this.J7.__offset(this.z7, 20);
+    var t = this.J7.__offset(this.z7, 22);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -142,7 +153,7 @@ class LordGym {
     return this.monsterlist(t);
   }
   monsterlist(t) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 24);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -150,7 +161,7 @@ class LordGym {
     }
   }
   monsterlistLength() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -158,7 +169,7 @@ class LordGym {
     }
   }
   monsterlistArray() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -166,14 +177,6 @@ class LordGym {
     }
   }
   monsterlevel() {
-    var t = this.J7.__offset(this.z7, 24);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  lockcon() {
     var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -181,8 +184,16 @@ class LordGym {
       return 0;
     }
   }
+  lockcon() {
+    var t = this.J7.__offset(this.z7, 28);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   lockdescription(t) {
-    var i = this.J7.__offset(this.z7, 28);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -190,7 +201,7 @@ class LordGym {
     return i;
   }
   filtertype() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -198,11 +209,11 @@ class LordGym {
     }
   }
   isnew() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 34);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   isdebug() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 36);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

@@ -101,19 +101,22 @@ class Area {
   get PhantomFormationMultiSwitch() {
     return this.phantomformationmultiswitch();
   }
+  get SunSpiritAreaCollectMaxNum() {
+    return this.sunspiritareacollectmaxnum();
+  }
   get IsDisableInExplore() {
     return this.isdisableinexplore();
   }
   get IsPlayerPosNeedCheck() {
     return this.isplayerposneedcheck();
   }
-  __init(t, e) {
+  __init(t, i) {
     this.z7 = t;
-    this.J7 = e;
+    this.J7 = i;
     return this;
   }
-  static getRootAsArea(t, e) {
-    return (e || new Area()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsArea(t, i) {
+    return (i || new Area()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   areaid() {
     var t = this.J7.__offset(this.z7, 4);
@@ -148,12 +151,12 @@ class Area {
     }
   }
   areaname(t) {
-    var e = this.J7.__offset(this.z7, 12);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 12);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   mapconfigid() {
     var t = this.J7.__offset(this.z7, 14);
@@ -172,12 +175,12 @@ class Area {
     }
   }
   title(t) {
-    var e = this.J7.__offset(this.z7, 18);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   father() {
     var t = this.J7.__offset(this.z7, 20);
@@ -191,9 +194,9 @@ class Area {
     return this.tag(t);
   }
   tag(t) {
-    var e = this.J7.__offset(this.z7, 22);
-    if (e) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    var i = this.J7.__offset(this.z7, 22);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
       return 0;
     }
@@ -234,13 +237,13 @@ class Area {
     var t = this.J7.__offset(this.z7, 28);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
-  GetWorldmonsterlevelmaxAt(t, e) {
+  GetWorldmonsterlevelmaxAt(t, i) {
     return this.worldmonsterlevelmax(t);
   }
-  worldmonsterlevelmax(t, e) {
-    var i = this.J7.__offset(this.z7, 30);
-    if (i) {
-      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+  worldmonsterlevelmax(t, i) {
+    var e = this.J7.__offset(this.z7, 30);
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -278,12 +281,12 @@ class Area {
     }
   }
   edgewallname(t) {
-    var e = this.J7.__offset(this.z7, 38);
-    var e = e ? this.J7.__string(this.z7 + e, t) : null;
-    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(e);
+    var i = this.J7.__offset(this.z7, 38);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
     }
-    return e;
+    return i;
   }
   deliverymarktype() {
     var t = this.J7.__offset(this.z7, 40);
@@ -301,13 +304,13 @@ class Area {
       return 0;
     }
   }
-  GetEnterareatagsAt(t, e) {
+  GetEnterareatagsAt(t, i) {
     return this.enterareatags(t);
   }
-  enterareatags(t, e) {
-    var i = this.J7.__offset(this.z7, 44);
-    if (i) {
-      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+  enterareatags(t, i) {
+    var e = this.J7.__offset(this.z7, 44);
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -320,13 +323,13 @@ class Area {
       return 0;
     }
   }
-  GetLeaveareatagsAt(t, e) {
+  GetLeaveareatagsAt(t, i) {
     return this.leaveareatags(t);
   }
-  leaveareatags(t, e) {
-    var i = this.J7.__offset(this.z7, 46);
-    if (i) {
-      return (e || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + i) + t * 4), this.J7);
+  leaveareatags(t, i) {
+    var e = this.J7.__offset(this.z7, 46);
+    if (e) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + e) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -351,12 +354,20 @@ class Area {
     var t = this.J7.__offset(this.z7, 50);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
-  isdisableinexplore() {
+  sunspiritareacollectmaxnum() {
     var t = this.J7.__offset(this.z7, 52);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  isdisableinexplore() {
+    var t = this.J7.__offset(this.z7, 54);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   isplayerposneedcheck() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 56);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

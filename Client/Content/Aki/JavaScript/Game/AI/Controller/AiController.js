@@ -128,7 +128,7 @@ class AiController {
     var t;
     var i;
     var o;
-    if (this.CharAiDesignComp?.Valid && (t = this.CharAiDesignComp.Entity, this.CharActorComp = t.GetComponent(3), i = this.CharActorComp.CreatureData, this.fie = this.CharActorComp.CreatureData.GetEntityType(), this.YZa = this.CharActorComp.CreatureData.IsAutoRole(), this.CharSkillComp = t.GetComponent(40), (o = i.ComponentDataMap.get("oI_"))?.oI_?.fI_ && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.oI_?._Vn)), (o = i.ComponentDataMap.get("fys"))?.fys?.Zys && (this.Cie = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.Zys)), o?.fys?.tIs && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.tIs)), i = o?.fys?.eIs ?? 0, this.gie = i, ModelManager_1.ModelManager.AiModel.AddActiveAiController(this), this.AiHateList.RefreshAbilityComp(), this.AiTaunt.Init(this.AiHateList), this.AiPatrol.Init(this.CharActorComp), this.AiAlert.Init(this.CharActorComp), this.AiPerception) && (o = t.GetComponent(125))) {
+    if (this.CharAiDesignComp?.Valid && (t = this.CharAiDesignComp.Entity, this.CharActorComp = t.GetComponent(3), i = this.CharActorComp.CreatureData, this.fie = this.CharActorComp.CreatureData.GetEntityType(), this.YZa = this.CharActorComp.CreatureData.IsAutoRole(), this.CharSkillComp = t.GetComponent(41), (o = i.ComponentDataMap.get("oI_"))?.oI_?.fI_ && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.oI_?._Vn)), (o = i.ComponentDataMap.get("fys"))?.fys?.Zys && (this.Cie = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.Zys)), o?.fys?.tIs && (this.AiCombatMessageId = MathUtils_1.MathUtils.LongToBigInt(o?.fys?.tIs)), i = o?.fys?.eIs ?? 0, this.gie = i, ModelManager_1.ModelManager.AiModel.AddActiveAiController(this), this.AiHateList.RefreshAbilityComp(), this.AiTaunt.Init(this.AiHateList), this.AiPatrol.Init(this.CharActorComp), this.AiAlert.Init(this.CharActorComp), this.AiPerception) && (o = t.GetComponent(130))) {
       o.SetLogicRange(this.AiPerception.MaxSenseRange);
     }
     this.cY = !!this.CharAiDesignComp && this.CharAiDesignComp.Active;
@@ -334,13 +334,13 @@ class AiController {
     }
   }
   static AiInformationNotify(t, i) {
-    var o = t.GetComponent(47)?.AiController;
+    var o = t.GetComponent(48)?.AiController;
     for (const e of i.TSs) {
       o.SetCoolDownTime(e.j4n, MathUtils_1.MathUtils.LongToNumber(e.W4n), false, "远程同步");
     }
   }
   static AiInformationS(t, i) {
-    var o = t.GetComponent(47)?.AiController;
+    var o = t.GetComponent(48)?.AiController;
     if (o) {
       for (var {
         j4n: e,

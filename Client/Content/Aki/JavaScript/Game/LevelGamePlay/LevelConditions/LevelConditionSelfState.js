@@ -16,7 +16,7 @@ class LevelConditionSelfState extends LevelGeneralBase_1.LevelConditionBase {
     if (r) {
       l = ActorUtils_1.ActorUtils.GetEntityByActor(r);
     }
-    return !!(l = t && t.Type === 1 ? ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId) : l)?.Valid && !!(r = l.Entity.GetComponent(200)) && (t = r.ContainsTagByName(e.State), e.Compare === "Eq" ? t : !t);
+    return !!(l = t && t.Type === 1 ? ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId) : l)?.Valid && !!(r = l.Entity.GetComponent(206)) && (t = r.ContainsTagByName(e.State), e.Compare === "Eq" ? t : !t);
   }
 }
 exports.LevelConditionSelfState = LevelConditionSelfState;

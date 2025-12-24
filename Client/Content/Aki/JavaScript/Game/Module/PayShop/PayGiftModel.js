@@ -65,6 +65,15 @@ class PayGiftModel extends ModelBase_1.ModelBase {
     }
     return Array.from(t);
   }
+  GetSkinTabList() {
+    var t = new Set();
+    for (const e of this.GetDataList()) {
+      if ((e.ShowInSkinShop() || e.ShowInFlySkinShop() || e.ShowInMotorSkinShop()) && e.CanShowInShopTab()) {
+        t.add(e.TabId);
+      }
+    }
+    return Array.from(t);
+  }
   GetPayShopGoodsById(t) {
     var e = this.uFi.get(t);
     if (!e) {

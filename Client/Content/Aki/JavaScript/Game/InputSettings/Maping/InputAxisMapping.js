@@ -15,100 +15,78 @@ class InputAxisMapping {
     this.$Ee = new Map();
   }
   Initialize() {
-    var e = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllAxisMappingConfig();
-    if (e) {
-      for (const i of e) {
-        this.NewAxisBinding(i);
+    var i = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllAxisMappingConfig();
+    if (i) {
+      for (const e of i) {
+        this.NewAxisBinding(e);
       }
     }
   }
   Clear() {
-    for (const e of this.XEe.values()) {
-      e.Clear();
+    for (const i of this.XEe.values()) {
+      i.Clear();
     }
     this.XEe.clear();
     this.$Ee.clear();
   }
-  NewAxisBinding(e) {
-    var i = e.AxisName;
-    var t = new InputAxisBinding_1.InputAxisBinding();
-    t.Initialize(e);
-    this.XEe.set(i, t);
-    var e = t.GetAxisMappingType();
-    let n = this.$Ee.get(e);
-    if (!n) {
-      n = new Set();
-      this.$Ee.set(e, n);
+  NewAxisBinding(i) {
+    var e = i.AxisName;
+    var n = new InputAxisBinding_1.InputAxisBinding();
+    n.Initialize(i);
+    this.XEe.set(e, n);
+    var i = n.GetAxisMappingType();
+    let t = this.$Ee.get(i);
+    if (!t) {
+      t = new Set();
+      this.$Ee.set(i, t);
     }
-    n.add(t);
+    t.add(n);
   }
-  RemoveAxisBinding(e) {
-    var i;
-    var t = this.XEe.get(e);
-    if (t) {
-      i = t.GetAxisMappingType();
-      this.$Ee.get(i)?.delete(t);
-      this.XEe.delete(e);
-      t.Clear();
+  RemoveAxisBinding(i) {
+    var e;
+    var n = this.XEe.get(i);
+    if (n) {
+      e = n.GetAxisMappingType();
+      this.$Ee.get(e)?.delete(n);
+      this.XEe.delete(i);
+      n.Clear();
     }
   }
   ClearAllAxisKeys() {
-    for (const e of this.XEe.values()) {
-      e.ClearAllKeys();
+    for (const i of this.XEe.values()) {
+      i.ClearAllKeys();
     }
   }
-  GetAxisBinding(e) {
-    return this.XEe.get(e);
+  GetAxisBinding(i) {
+    return this.XEe.get(i);
   }
   GetAxisBindingMap() {
     return this.XEe;
   }
-  GetAxisBindingByAxisMappingType(e) {
-    return this.$Ee.get(e);
+  GetAxisBindingByAxisMappingType(i) {
+    return this.$Ee.get(i);
   }
-  SetKeys(e, i) {
-    var t = this.XEe.get(e);
+  SetKeys(i, e, n) {
+    var t = this.XEe.get(i);
     if (t) {
-      t.SetKeys(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, e, t);
+      t.SetKeys(e, n);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, i, t);
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "设置Axis按键时，找不到对应Axis", ["AxisName", e]);
+      Log_1.Log.Warn("InputSettings", 10, "设置Axis按键时，找不到对应Axis", ["AxisName", i]);
     }
   }
-  RefreshKeys(e, i) {
-    var t = this.XEe.get(e);
+  RefreshKeys(i, e, n) {
+    var t = this.XEe.get(i);
     if (t) {
-      t.RefreshKeys(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, e, t);
+      t.RefreshKeys(e, n);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, i, t);
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "设置Axis按键时，找不到对应Axis", ["AxisName", e]);
+      Log_1.Log.Warn("InputSettings", 10, "设置Axis按键时，找不到对应Axis", ["AxisName", i]);
     }
   }
-  AddKeys(e, i) {
-    var t = this.XEe.get(e);
-    if (t) {
-      t.AddKeys(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, e, t);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "添加Axis按键时，找不到对应Axis", ["AxisName", e]);
-    }
-  }
-  RemoveKeys(e, i) {
-    var t = this.XEe.get(e);
-    if (t) {
-      t.RemoveKeys(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, e, t);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "删除Axis按键时，找不到对应Axis", ["AxisName", e]);
-    }
-  }
-  RemoveKeysByCondition(e, i) {
-    var t = this.XEe.get(e);
-    if (t) {
-      t.RemoveKeysByCondition(i);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedAxisKeys, e, t);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "删除Axis中符合条件的按键映射，找不到对应Axis", ["AxisName", e]);
+  SwitchKeysByBindingType(i) {
+    for (const e of this.XEe.values()) {
+      e.SwitchKeysByBindingType(i);
     }
   }
 }

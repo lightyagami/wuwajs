@@ -82,9 +82,9 @@ class ParallelPackageController extends ControllerBase_1.ControllerBase {
     var e;
     var a;
     var r;
-    return !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !!(e = this.sxd()) && !(a = e.parentVersion, e = e.childVersion, r = UE.KuroLauncherLibrary.GetAppVersion(), this.cim(a) !== this.cim(r)) && !(a = Number(e), r = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(a)) && !isNaN(r) && r < a;
+    return !!Info_1.Info.IsMobilePlatform() && this.Lo !== undefined && !!(e = this.sxd()) && !(a = e.parentVersion, e = e.childVersion, r = UE.KuroLauncherLibrary.GetAppVersion(), this.Nnm(a) !== this.Nnm(r)) && !(a = Number(e), r = Number(UE.KuroLauncherLibrary.GetAppChangeList()), isNaN(a)) && !isNaN(r) && r < a;
   }
-  static cim(e) {
+  static Nnm(e) {
     var a = e.split(".");
     if (a.length >= 2) {
       return a[0] + "." + a[1];

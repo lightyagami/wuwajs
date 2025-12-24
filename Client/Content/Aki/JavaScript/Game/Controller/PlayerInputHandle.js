@@ -29,8 +29,8 @@ class PlayerInputHandle {
     this.mq1 = new CustomKeyActionData_1.CustomKeyActionData();
     this.ZQa = false;
     this.QJa = false;
-    this.fZt = e => {
-      if (this.ZQa !== e && (this.ZQa = e)) {
+    this.fZt = t => {
+      if (this.ZQa !== t && (this.ZQa = t)) {
         this.QJa = true;
       }
     };
@@ -38,23 +38,23 @@ class PlayerInputHandle {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("MobileInputSwitch", 10, "手柄断开,清理输入缓存");
       }
-      for (const e of this.wDa) {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(e[0], 0);
+      for (const t of this.wDa) {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t[0], 0);
       }
       this.wDa.clear();
-      for (const t of this.JQa) {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t[0], 0);
+      for (const e of this.JQa) {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(e[0], 0);
       }
       this.JQa.clear();
     };
-    this.fq1 = e => {
-      this.mq1.DisableCustomInputData(e);
+    this.fq1 = t => {
+      this.mq1.DisableCustomInputData(t);
     };
-    this.gq1 = e => {
-      this.mq1.EnableCustomInputData(e);
+    this.gq1 = t => {
+      this.mq1.EnableCustomInputData(t);
     };
-    this.N9u = e => {
-      this.IsRecording = e;
+    this.N9u = t => {
+      this.IsRecording = t;
     };
   }
   Initialize() {
@@ -83,13 +83,13 @@ class PlayerInputHandle {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableCacheCustomInputData, this.gq1);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.EnableActionRecord, this.N9u);
   }
-  Tick(e) {
-    this.tCe?.Tick(e);
+  Tick(t) {
+    this.tCe?.Tick(t);
     if (Info_1.Info.AxisInputOptimize) {
       if (this.QJa) {
         this.QJa = false;
-        for (const t of this.wDa) {
-          ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t[0], 0);
+        for (const e of this.wDa) {
+          ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(e[0], 0);
         }
         for (const n of this.JQa) {
           ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(n[0], 0);
@@ -107,164 +107,182 @@ class PlayerInputHandle {
       }
     }
   }
-  InputAction(e, t, n) {
+  InputAction(t, e, n) {
     var o;
-    if (this.mq1.IsActionEnable(e) && (o = n.KeyName.toString(), this.c$a(o)) && this.iCe(o)) {
-      if (this.IsRecording && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharInputAction, e, t, n), Log_1.Log.CheckDebug())) {
-        Log_1.Log.Debug("Test", 89, "Record:" + e + t);
+    if (this.mq1.IsActionEnable(t) && (o = n.KeyName.toString(), this.c$a(o)) && this.iCe(o)) {
+      if (this.IsRecording && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.CharInputAction, t, e, n), Log_1.Log.CheckDebug())) {
+        Log_1.Log.Debug("Test", 89, "Record:" + t + e);
       }
-      if (this.m$a(e)) {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(e, t);
+      if (this.m$a(t)) {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(t, e);
       } else {
-        this.yF_(e, t);
+        this.yF_(t, e);
       }
     }
   }
-  InputAxis(e, t, n = false) {
+  InputAxis(t, e, n = false) {
     if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch()) {
-      if (Info_1.Info.AxisInputOptimize) {
-        if (n) {
-          this.wDa.set(e, t);
+      if (this.tCe.CheckCombinationAxis(t)) {
+        if (Info_1.Info.AxisInputOptimize) {
+          if (n) {
+            this.wDa.set(t, e);
+          } else {
+            this.JQa.set(t, e);
+            ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t, e);
+          }
         } else {
-          this.JQa.set(e, t);
-          ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(e, t);
+          ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t, e);
         }
       } else {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(e, t);
+        this.f5f(t, e, n);
       }
     }
   }
-  TouchBegin(e, t) {
-    var e = Number(e);
+  TouchBegin(t, e) {
+    var t = Number(t);
     var n = {
       TouchType: 0,
-      TouchId: e,
-      TouchPosition: this.oCe(e, t)
+      TouchId: t,
+      TouchPosition: this.oCe(t, e)
     };
-    TouchFingerManager_1.TouchFingerManager.StartTouch(e, t);
-    LguiEventSystemManager_1.LguiEventSystemManager.InputTouchTrigger(true, e, t);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(e, n);
+    TouchFingerManager_1.TouchFingerManager.StartTouch(t, e);
+    LguiEventSystemManager_1.LguiEventSystemManager.InputTouchTrigger(true, t, e);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(t, n);
   }
-  TouchEnd(e, t) {
-    var e = Number(e);
+  TouchEnd(t, e) {
+    var t = Number(t);
     var n = {
       TouchType: 1,
-      TouchId: e,
-      TouchPosition: this.oCe(e, t)
+      TouchId: t,
+      TouchPosition: this.oCe(t, e)
     };
-    TouchFingerManager_1.TouchFingerManager.EndTouch(e);
-    LguiEventSystemManager_1.LguiEventSystemManager.InputTouchTrigger(false, e, t);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(e, n);
+    TouchFingerManager_1.TouchFingerManager.EndTouch(t);
+    LguiEventSystemManager_1.LguiEventSystemManager.InputTouchTrigger(false, t, e);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(t, n);
   }
-  TouchMove(e, t) {
-    var e = Number(e);
+  TouchMove(t, e) {
+    var t = Number(t);
     var n = {
       TouchType: 2,
-      TouchId: e,
-      TouchPosition: this.oCe(e, t)
+      TouchId: t,
+      TouchPosition: this.oCe(t, e)
     };
-    TouchFingerManager_1.TouchFingerManager.MoveTouch(e, t);
-    LguiEventSystemManager_1.LguiEventSystemManager.InputLguiTouchMove(e, t);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(e, n);
+    TouchFingerManager_1.TouchFingerManager.MoveTouch(t, e);
+    LguiEventSystemManager_1.LguiEventSystemManager.InputLguiTouchMove(t, e);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.InputTouch(t, n);
   }
-  PressAnyKey(e) {
-    var t;
-    if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch() || !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(e.KeyName.toString())) {
-      t = e.KeyName.toString();
-      this.eCe.PressAnyKey(t);
-      this.tCe.PressAnyKey(t);
-      this.d$a(t, true);
+  PressAnyKey(t) {
+    var e;
+    if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch() || !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(t.KeyName.toString())) {
+      e = t.KeyName.toString();
+      this.eCe.PressAnyKey(e);
+      this.tCe.PressAnyKey(e);
+      this.d$a(e, true);
       if (this.IsPrintKeyName && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("InputSettings", 10, "按下按键", ["KeyName", t]);
+        Log_1.Log.Info("InputSettings", 10, "按下按键", ["KeyName", e]);
       }
-      ControllerHolder_1.ControllerHolder.InputDistributeController.InputKey(t, true);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInputAnyKey, true, e);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.InputKey(e, true);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInputAnyKey, true, t);
     }
   }
-  ReleaseAnyKey(e) {
-    var t;
-    if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch() || !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(e.KeyName.toString())) {
-      t = e.KeyName.toString();
-      this.eCe.ReleaseAnyKey(t);
-      this.tCe.ReleaseAnyKey(t);
-      this.d$a(t, false);
+  ReleaseAnyKey(t) {
+    var e;
+    if (!Info_1.Info.IsMobileInputModel() || !Info_1.Info.IsInTouch() || !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(t.KeyName.toString())) {
+      e = t.KeyName.toString();
+      this.eCe.ReleaseAnyKey(e);
+      this.tCe.ReleaseAnyKey(e);
+      this.d$a(e, false);
       if (this.IsPrintKeyName && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("InputSettings", 10, "抬起按键", ["KeyName", t]);
+        Log_1.Log.Info("InputSettings", 10, "抬起按键", ["KeyName", e]);
       }
-      ControllerHolder_1.ControllerHolder.InputDistributeController.InputKey(t, false);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInputAnyKey, false, e);
+      ControllerHolder_1.ControllerHolder.InputDistributeController.InputKey(e, false);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnInputAnyKey, false, t);
     }
   }
-  d$a(e, t) {
-    var n = this.mq1.GetCustomActionName(e);
-    if (n && this.c$a(e) && this.iCe(e)) {
+  d$a(t, e) {
+    var n = this.mq1.GetCustomActionName(t);
+    if (n && this.c$a(t) && this.iCe(t)) {
       for (const o of n) {
-        if (!this.m$a(o) && t) {
+        if (!this.m$a(o) && e) {
           return;
         }
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(o, t);
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(o, e);
       }
     }
   }
-  c$a(e) {
+  c$a(t) {
     if (Info_1.Info.IsMobileInputModel()) {
-      if (InputSettings_1.InputSettings.IsKeyboardKey(e) || InputSettings_1.InputSettings.IsMouseButton(e)) {
+      if (InputSettings_1.InputSettings.IsKeyboardKey(t) || InputSettings_1.InputSettings.IsMouseButton(t)) {
         return false;
       }
-      if (Info_1.Info.IsInTouch() && ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(e)) {
+      if (Info_1.Info.IsInTouch() && ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(t)) {
         return false;
       }
-      if (Info_1.Info.IsInGamepad() && !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(e)) {
+      if (Info_1.Info.IsInGamepad() && !ModelManager_1.ModelManager.PlatformModel?.IsKeyFromGamepadKey(t)) {
         return false;
       }
     }
     return true;
   }
-  m$a(e) {
-    return this.eCe.CheckCombinationAction(e);
+  m$a(t) {
+    return this.eCe.CheckCombinationAction(t);
   }
-  yF_(e, t) {
-    if (!t) {
-      if (ModelManager_1.ModelManager.InputDistributeModel.IsActionInPress(e)) {
-        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(e, false);
+  yF_(t, e) {
+    if (!e) {
+      if (ModelManager_1.ModelManager.InputDistributeModel.IsActionInPress(t)) {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAction(t, false);
       }
     }
   }
-  rCe(e) {
-    return this.Zde.get(e);
-  }
-  oCe(e, t) {
-    var n = this.rCe(e);
-    if (n) {
-      n.Set(t.X, t.Y, t.Z);
-      return n;
-    } else {
-      return this.nCe(e, t);
+  f5f(t, e, n) {
+    if (e !== 0 && ModelManager_1.ModelManager.InputDistributeModel.IsAxisInPress(t)) {
+      if (Info_1.Info.AxisInputOptimize) {
+        if (n) {
+          this.wDa.set(t, 0);
+        } else {
+          this.JQa.set(t, 0);
+          ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t, 0);
+        }
+      } else {
+        ControllerHolder_1.ControllerHolder.InputDistributeController.InputAxis(t, 0);
+      }
     }
   }
-  nCe(e, t) {
-    t = Vector_1.Vector.Create(t);
-    this.Zde.set(e, t);
-    return t;
+  rCe(t) {
+    return this.Zde.get(t);
   }
-  iCe(e) {
-    return !!Info_1.Info.IsGmLockGamepad || (!Info_1.Info.IsInGamepad() || !InputSettings_1.InputSettings.IsKeyboardKey(e)) && (!Info_1.Info.IsInKeyBoard() || !InputSettings_1.InputSettings.IsGamepadKey(e));
+  oCe(t, e) {
+    var n = this.rCe(t);
+    if (n) {
+      n.Set(e.X, e.Y, e.Z);
+      return n;
+    } else {
+      return this.nCe(t, e);
+    }
   }
-  SetCustomAction(e, t) {
-    this.mq1.SetCustomAction(e, t);
+  nCe(t, e) {
+    e = Vector_1.Vector.Create(e);
+    this.Zde.set(t, e);
+    return e;
   }
-  ResetAllCustomAction(e) {
-    this.d$a(e, false);
-    this.mq1.ResetAllCustomAction(e);
+  iCe(t) {
+    return !!Info_1.Info.IsGmLockGamepad || (!Info_1.Info.IsInGamepad() || !InputSettings_1.InputSettings.IsKeyboardKey(t)) && (!Info_1.Info.IsInKeyBoard() || !InputSettings_1.InputSettings.IsGamepadKey(t));
   }
-  ResetCustomAction(e, t) {
-    this.mq1.ResetCustomAction(e, t);
+  SetCustomAction(t, e) {
+    this.mq1.SetCustomAction(t, e);
   }
-  GetCurrentPlatformCustomActionKeyNameList(e) {
-    return this.mq1.GetCurrentPlatformCustomActionKeyNameList(e);
+  ResetAllCustomAction(t) {
+    this.d$a(t, false);
+    this.mq1.ResetAllCustomAction(t);
   }
-  SetActionEnable(e, t) {
-    this.mq1.SetActionEnable(e, t);
+  ResetCustomAction(t, e) {
+    this.mq1.ResetCustomAction(t, e);
+  }
+  GetCurrentPlatformCustomActionKeyNameList(t) {
+    return this.mq1.GetCurrentPlatformCustomActionKeyNameList(t);
+  }
+  SetActionEnable(t, e) {
+    this.mq1.SetActionEnable(t, e);
   }
 }
 exports.PlayerInputHandle = PlayerInputHandle;

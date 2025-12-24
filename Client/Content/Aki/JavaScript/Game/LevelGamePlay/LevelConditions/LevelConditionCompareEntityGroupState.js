@@ -18,7 +18,7 @@ class LevelConditionCompareEntityGroupState extends LevelGeneralBase_1.LevelCond
       var r = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e.EntityId);
       let t = true;
       if (e.State !== undefined) {
-        var a = r?.Entity?.GetComponent(200);
+        var a = r?.Entity?.GetComponent(206);
         if (!a) {
           return;
         }
@@ -27,7 +27,7 @@ class LevelConditionCompareEntityGroupState extends LevelGeneralBase_1.LevelCond
       }
       let n = true;
       if (e.IsLocked !== undefined) {
-        a = r?.Entity?.GetComponent(134);
+        a = r?.Entity?.GetComponent(139);
         if (!a) {
           return;
         }

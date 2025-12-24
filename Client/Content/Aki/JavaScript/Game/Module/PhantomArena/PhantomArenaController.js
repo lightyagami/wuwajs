@@ -19,6 +19,7 @@ const ActivityControllerBase_1 = require("../Activity/ActivityControllerBase");
 const LogReportDefine_1 = require("../LogReport/LogReportDefine");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const PhantomArenaActivityData_1 = require("./PhantomArenaActivityData");
+const PhantomArenaDefine_1 = require("./PhantomArenaDefine");
 const PhantomArenaSubView_1 = require("./Prepare/Entrance/PhantomArenaSubView");
 class PhantomArenaController extends ActivityControllerBase_1.ActivityControllerBase {
   constructor() {
@@ -34,11 +35,13 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     this.jau = e => {
       var o;
       var r;
+      var t;
       if (e) {
         o = e.e8n;
         r = e.CMs;
-        e = e.Dtu;
-        ModelManager_1.ModelManager.PhantomArenaModel.UpdateChallengeInfoBySettleResult(o, r, e);
+        t = e.Sg1;
+        e = e.qgf;
+        ModelManager_1.ModelManager.PhantomArenaModel.UpdateChallengeInfoBySettleResult(o, r, t, e);
       }
     };
     this.RA1 = e => {
@@ -68,18 +71,18 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
       }
     };
     this.PA1 = e => {
-      if (e && (ModelManager_1.ModelManager.PhantomArenaModel.AddRoleByNotify(e), !ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance())) {
-        for (const o of e.pg1) {
-          if (!ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(o.xg1).IsTrail) {
-            ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.push(o.xg1);
-            PhantomArenaController.PostUnlockView();
+      if (e) {
+        ModelManager_1.ModelManager.PhantomArenaModel.AddRoleByNotify(e);
+        if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() || PhantomArenaController.CheckInPhantomArenaDungeon()) {
+          for (const o of e.pg1) {
+            if (!ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardRole(o.xg1).IsTrail) {
+              ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.push(o.xg1);
+            }
           }
         }
-      }
-    };
-    this.xA1 = e => {
-      if (e) {
-        ModelManager_1.ModelManager.PhantomArenaModel.UpdateDeckList(e.vg1);
+        if (!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance()) {
+          PhantomArenaController.PostUnlockView();
+        }
       }
     };
     this.yV1 = e => {
@@ -112,7 +115,13 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   OnGetIsOpeningActivityRelativeView() {
     throw new Error("Method not implemented.");
   }
-  OnOpenView(e) {}
+  OnOpenView(e) {
+    if (e.GetPreGuideQuestFinishState()) {
+      ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaMapEntrance();
+    } else {
+      UiManager_1.UiManager.OpenView("QuestView", e.GetUnFinishPreGuideQuestId());
+    }
+  }
   async OnOpenSubView(e) {
     if (e === "PhantomArenaEntranceView") {
       ModelManager_1.ModelManager.PhantomArenaModel.EntranceOpenQueue = true;
@@ -129,41 +138,54 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     return new PhantomArenaSubView_1.PhantomArenaSubView();
   }
   OnCreateActivityData(e) {
-    ModelManager_1.ModelManager.PhantomArenaModel.ActivityId = e.s5n;
     return new PhantomArenaActivityData_1.PhantomArenaActivityData();
   }
   OnRegisterNetEvent() {
-    Net_1.Net.Register(28377, this.TA1);
-    Net_1.Net.Register(26166, this.jau);
-    Net_1.Net.Register(23661, this.RA1);
-    Net_1.Net.Register(25734, this.LA1);
-    Net_1.Net.Register(20518, this.wA1);
-    Net_1.Net.Register(26040, this.AA1);
-    Net_1.Net.Register(18999, this.PA1);
-    Net_1.Net.Register(26005, this.xA1);
-    Net_1.Net.Register(29189, this.yV1);
-    Net_1.Net.Register(19838, this.Pou);
+    if (!PhantomArenaController.Wpf) {
+      Net_1.Net.Register(28377, this.TA1);
+      Net_1.Net.Register(26166, this.jau);
+      Net_1.Net.Register(23661, this.RA1);
+      Net_1.Net.Register(25734, this.LA1);
+      Net_1.Net.Register(20518, this.wA1);
+      Net_1.Net.Register(26040, this.AA1);
+      Net_1.Net.Register(18999, this.PA1);
+      Net_1.Net.Register(29189, this.yV1);
+      Net_1.Net.Register(19838, this.Pou);
+      PhantomArenaController.Wpf = true;
+    }
   }
   OnUnRegisterNetEvent() {
-    Net_1.Net.UnRegister(28377);
-    Net_1.Net.UnRegister(26166);
-    Net_1.Net.UnRegister(23661);
-    Net_1.Net.UnRegister(25734);
-    Net_1.Net.UnRegister(20518);
-    Net_1.Net.UnRegister(26040);
-    Net_1.Net.UnRegister(18999);
-    Net_1.Net.UnRegister(26005);
-    Net_1.Net.UnRegister(29189);
-    Net_1.Net.UnRegister(19838);
+    if (PhantomArenaController.Wpf) {
+      Net_1.Net.UnRegister(28377);
+      Net_1.Net.UnRegister(26166);
+      Net_1.Net.UnRegister(23661);
+      Net_1.Net.UnRegister(25734);
+      Net_1.Net.UnRegister(20518);
+      Net_1.Net.UnRegister(26040);
+      Net_1.Net.UnRegister(18999);
+      Net_1.Net.UnRegister(29189);
+      Net_1.Net.UnRegister(19838);
+      PhantomArenaController.Wpf = false;
+    }
   }
   OnAddEvents() {
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+    if (!PhantomArenaController.bJd) {
+      EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.nye);
+      PhantomArenaController.bJd = true;
+    }
   }
   OnRemoveEvents() {
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+    if (PhantomArenaController.bJd) {
+      EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.nye);
+      PhantomArenaController.bJd = false;
+    }
   }
   OnShowActivityFirstUnlockView(e) {
     ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(34);
+  }
+  static CheckInPhantomArenaDungeon() {
+    var e;
+    return !!ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && (e = ModelManager_1.ModelManager.CreatureModel.GetInstanceId(), ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e)?.InstSubType === 36);
   }
   static TaskRewardRequest(o) {
     var e = new Protocol_1.Aki.Protocol.ff1();
@@ -173,31 +195,47 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28825);
         } else {
-          ModelManager_1.ModelManager.PhantomArenaModel.UpdateTaskById(o);
+          ModelManager_1.ModelManager.PhantomArenaModel.UpdateTaskByIds([o]);
         }
       }
     });
   }
-  static MasterLevelMultiRewardRequest(o) {
+  static TaskAllRewardRequest(e) {
+    e = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetTaskConfigById(e);
+    if (e) {
+      const o = ModelManager_1.ModelManager.PhantomArenaModel.GetAllCanReceiveTaskIdsByTabId(e.ActivityId, e.TaskType);
+      e = new Protocol_1.Aki.Protocol.bYm();
+      e.gps = o;
+      Net_1.Net.Call(22592, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 16125);
+          } else {
+            ModelManager_1.ModelManager.PhantomArenaModel.UpdateTaskByIds(o);
+          }
+        }
+      });
+    }
+  }
+  static MasterLevelMultiRewardRequest(o, r) {
     var e = new Protocol_1.Aki.Protocol.d8u();
     e.Mg1 = o;
-    e.w6n = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
+    e.w6n = r;
     Net_1.Net.Call(15285, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 18480);
         } else {
-          ModelManager_1.ModelManager.PhantomArenaModel.UpdateMasterLevelByConfigIds(o);
+          ModelManager_1.ModelManager.PhantomArenaModel.UpdateMasterLevelByConfigIds(o, r);
         }
       }
     });
   }
-  static BadgeRewardRequest(o) {
-    var e = new Protocol_1.Aki.Protocol.Mf1();
-    var r = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData().Id;
-    e.w6n = r;
-    e.Lg1 = o;
-    Net_1.Net.Call(26707, e, e => {
+  static BadgeRewardRequest(o, e) {
+    var r = new Protocol_1.Aki.Protocol.Mf1();
+    r.w6n = e;
+    r.Lg1 = o;
+    Net_1.Net.Call(26707, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28825);
@@ -223,12 +261,11 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
       }
     });
   }
-  static CardRewardRequest(o) {
-    var e = new Protocol_1.Aki.Protocol.Lf1();
-    var r = ModelManager_1.ModelManager.PhantomArenaModel.GetPhantomArenaActivityData().Id;
-    e.w6n = r;
-    e.I51 = o;
-    Net_1.Net.Call(16429, e, e => {
+  static CardRewardRequest(o, e) {
+    var r = new Protocol_1.Aki.Protocol.Lf1();
+    r.w6n = e;
+    r.I51 = o;
+    Net_1.Net.Call(16429, r, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 28825);
@@ -263,7 +300,7 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (e.OC1) {
             o = e.OC1;
-            ModelManager_1.ModelManager.PhantomArenaModel.AddProtocolDeckInfo(o);
+            ModelManager_1.ModelManager.PhantomArenaModel.AddProtocolDeckInfo(o, r);
             t?.(o.c5n);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("PhantomArena", 43, "创建卡组时服务器返回数据为空");
@@ -274,34 +311,34 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
       }
     });
   }
-  static CardGroupDeleteRequest(o, e, r) {
-    var t = new Protocol_1.Aki.Protocol.$41();
-    t.c5n = o;
-    t.w6n = e;
-    Net_1.Net.Call(26537, t, e => {
+  static CardGroupDeleteRequest(o, r, t) {
+    var e = new Protocol_1.Aki.Protocol.$41();
+    e.c5n = o;
+    e.w6n = r;
+    Net_1.Net.Call(26537, e, e => {
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
-          ModelManager_1.ModelManager.PhantomArenaModel.UpdateDeckList(e.OC1);
-          ModelManager_1.ModelManager.PhantomArenaModel.SetLastUsedCardDeckServerId(e.dK1);
-          r?.(o);
+          ModelManager_1.ModelManager.PhantomArenaModel.UpdateDeckList(e.OC1, r);
+          ModelManager_1.ModelManager.PhantomArenaModel.SetLastUsedCardDeckServerId(e.dK1, r);
+          t?.(o);
         } else {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 15343);
         }
       }
     });
   }
-  static CardGroupUpdateRequest(r, e, t) {
+  static CardGroupUpdateRequest(r, e, t, a) {
     var o = new Protocol_1.Aki.Protocol.kf1();
     o.c5n = r;
     o.Ug1 = e;
-    o.w6n = ModelManager_1.ModelManager.PhantomArenaModel.ActivityId;
+    o.w6n = t;
     Net_1.Net.Call(19541, o, e => {
       var o;
       if (e) {
         if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
           if (o = e.OC1) {
-            ModelManager_1.ModelManager.PhantomArenaModel.UpdateProtocolDeckInfo(o);
-            t?.(r);
+            ModelManager_1.ModelManager.PhantomArenaModel.UpdateProtocolDeckInfo(o, t);
+            a?.(r);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("PhantomArena", 43, "更新卡组时服务器返回数据为空");
           }
@@ -336,11 +373,14 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
     }
   }
   static PostUnlockView() {
-    return !UiManager_1.UiManager.IsViewOpen("PhantomArenaRoleUnlockView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaBadgeUnlockView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaCardRewardView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaCardOutlookRewardView") && !ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaRoleUnlockView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.CardUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaCardRewardView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.CardOutlookUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaCardOutlookRewardView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.BadgeUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaBadgeUnlockView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.EntranceOpenQueue && (UiManager_1.UiManager.OpenView("PhantomArenaEntranceView"), ModelManager_1.ModelManager.PhantomArenaModel.EntranceOpenQueue = false));
+    var e;
+    return !UiManager_1.UiManager.IsViewOpen("PhantomArenaRoleUnlockView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaBadgeUnlockView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaCardsRewardView") && !UiManager_1.UiManager.IsViewOpen("PhantomArenaCardOutlookRewardView") && !ControllerHolder_1.ControllerHolder.GameModeController.IsInInstance() && !(ModelManager_1.ModelManager.PhantomArenaModel.RoleUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaRoleUnlockView"), 0) : (e = ModelManager_1.ModelManager.PhantomArenaModel.CardUnlockQueue).length > 0 ? (ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.PhantomBattleResultShowCards(e, () => {
+      PhantomArenaController.PostUnlockView();
+    }), 0) : ModelManager_1.ModelManager.PhantomArenaModel.CardOutlookUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaCardOutlookRewardView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.BadgeUnlockQueue.length > 0 ? (UiManager_1.UiManager.OpenView("PhantomArenaBadgeUnlockView"), 0) : ModelManager_1.ModelManager.PhantomArenaModel.EntranceOpenQueue && (UiManager_1.UiManager.OpenView("PhantomArenaEntranceView"), ModelManager_1.ModelManager.PhantomArenaModel.EntranceOpenQueue = false));
   }
-  static OpenPhantomArenaConfirmBoxView(e) {
+  static OpenPhantomArenaConfirmBoxView(e, o = false) {
     e.CustomPopType = 10;
-    e.CustomResourceId = "UiItem_SoundRemnantArenaTipsInfo";
+    e.CustomResourceId = o ? "UiItem_SoundRemnantArenaTipsInfo_New" : "UiItem_SoundRemnantArenaTipsInfo";
     ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
   static UpdateCardDetailLockState(e) {
@@ -353,7 +393,8 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
       e.TipText.SetUIActive(false);
       e.LockTipItem.SetUIActive(false);
     } else if ((o = ConfigManager_1.ConfigManager.PhantomArenaConfig.GetPhantomBattleCardConfig(e.CardId)).EnableBuy) {
-      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(10091)) {
+      t = ModelManager_1.ModelManager.PhantomArenaModel.IsNewPhantomArenaActivity(o.ActivityId) ? 10138 : 10091;
+      if (ModelManager_1.ModelManager.FunctionModel.IsOpen(t)) {
         t = o.UnlockConsumeItems[0].ItemId;
         a = (r = o.UnlockConsumeItems[0].Count) <= ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t);
         e.TipText.SetUIActive(true);
@@ -382,45 +423,69 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   static ReportDeckUpdate(e) {
     var o = new LogReportDefine_1.PhantomArenaDeckUpdateEvent();
     var r = e.DeckInfo;
+    o.i_activity_id = e.ActivityId;
     o.i_deck_order = r.GetDeckServerId() + 1;
     o.s_deck_name = r.GetDeckName();
     o.i_operation = e.Operation;
     var t = r.GetCardSlotList();
     var a = new Map();
-    for (const c of t) {
-      var n = c.CardId;
-      var l = c.Cost;
+    for (const M of t) {
+      var n = M.CardId;
+      var l = M.Cost;
       let o = a.get(l);
       if (!o) {
-        o = [];
+        o = new PhantomArenaDefine_1.PhantomArenaReportCardInfo(l);
         a.set(l, o);
       }
-      for (let e = 0; e < c.Count; e++) {
-        o.push(n);
+      for (let e = 0; e < M.Count; e++) {
+        o.CardIdList.push(n);
       }
     }
+    o.o_deck_info = [...a.values()];
+    o.i_build_id = e.LastQuicklyBuildId;
     var _;
     var i;
-    var M = [];
-    for ([_, i] of a) {
-      M.push(_ + ":" + i.join());
-    }
-    o.o_deck_info = M.join();
-    o.i_build_id = e.LastQuicklyBuildId;
-    var d;
-    var g;
-    var s = [];
-    for ([d, g] of e.QuicklyBuildDeckUseTimes) {
-      if (g > 0) {
-        s.push(d + ":" + g);
+    var d = [];
+    for ([_, i] of e.QuicklyBuildDeckUseTimes) {
+      if (i > 0) {
+        d.push(_ + ":" + i);
       }
     }
-    o.o_build_click = s.join();
+    o.o_build_click = d.join();
     o.i_deck_status = r.GetCanUse() ? 1 : 0;
+    t = r.GetFieldCardConditionCurNum();
+    e = r.GetFieldCardConditionTargetNum();
+    o.i_special_effect = e !== 0 && e <= t ? 1 : 0;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("LogReport", 43, "卡组构筑埋点：", ["logData", Json_1.Json.Stringify(o) ?? ""]);
     }
     ControllerHolder_1.ControllerHolder.LogReportController.LogReport(o);
+  }
+  static OpenDeckBuilderCardInfoViewWithoutOutlookTab(e) {
+    e = {
+      CurCardId: e,
+      NeedOutlookTab: false
+    };
+    UiManager_1.UiManager.OpenView("DeckBuilderCardInfoView", e);
+  }
+  static RequestCheckCardSkillUnlock(o, r) {
+    var e;
+    var t;
+    if (o.GetFieldCardSlot()) {
+      e = new Protocol_1.Aki.Protocol.qqm();
+      t = o.GetCardIdList();
+      e.Hqm = t;
+      Net_1.Net.Call(15200, e, e => {
+        if (e) {
+          if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
+            ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 21375);
+          } else {
+            o.SetFieldCardConditionProgress(e.Vqm, e.Nqm);
+            r(e);
+          }
+        }
+      });
+    }
   }
   static CreateTempActivityData() {
     var e = new Protocol_1.Aki.Protocol.fks();
@@ -431,7 +496,9 @@ class PhantomArenaController extends ActivityControllerBase_1.ActivityController
   }
 }
 exports.PhantomArenaController = PhantomArenaController;
-(_a = PhantomArenaController).CardGroupNameRequest = async (e, o, r) => {
+(_a = PhantomArenaController).bJd = false;
+PhantomArenaController.Wpf = false;
+PhantomArenaController.CardGroupNameRequest = async (e, o, r) => {
   var t = new Protocol_1.Aki.Protocol.qf1();
   t.H8n = e;
   t.c5n = o;
@@ -441,7 +508,7 @@ exports.PhantomArenaController = PhantomArenaController;
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
       ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 23945);
     } else if (o = e.OC1) {
-      ModelManager_1.ModelManager.PhantomArenaModel.UpdateProtocolDeckInfo(o);
+      ModelManager_1.ModelManager.PhantomArenaModel.UpdateProtocolDeckInfo(o, r);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("PhantomArena", 43, "卡组重命名时服务器返回数据为空");
     }

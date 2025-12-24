@@ -124,7 +124,7 @@ class AiModel extends ModelBase_1.ModelBase {
       for (const o of e.EntityIds) {
         var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(o)?.Entity;
         if (i?.Valid) {
-          i.GetComponent(47)?.ChangeAiBehaviorTree(t.BtPath);
+          i.GetComponent(48)?.ChangeAiBehaviorTree(t.BtPath);
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发覆盖AI行为树时，没找到实体", ["Key", e.Key], ["PbDataId", o]);
         }
@@ -142,7 +142,7 @@ class AiModel extends ModelBase_1.ModelBase {
       for (const o of t.EntityIds) {
         var i = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(o)?.Entity;
         if (i?.Valid) {
-          i.GetComponent(47)?.ResetAiBehaviorTree();
+          i.GetComponent(48)?.ResetAiBehaviorTree();
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("AI", 42, "[AiBehaviorTree] 触发重置AI行为树时，没找到实体", ["Key", t.Key], ["PbDataId", o]);
         }
@@ -215,14 +215,14 @@ class AiModel extends ModelBase_1.ModelBase {
     var o;
     var r;
     var a;
-    if (t && !this.wud.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(191), r = o?.Entity?.GetComponent(181), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.wud.set(e, r), t.FaceExpressionId) && (a = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
+    if (t && !this.wud.has(e) && e === (o = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId))?.Id && (i = o?.Entity?.GetComponent(197), r = o?.Entity?.GetComponent(186), o?.Valid) && i && r && (t.OverlapMontageId && t.OverlapMontageId && (o = new PlayMontageUtils_1.PlayMontageConfig(t.OverlapMontageConfig?.OverlapMontageRepeatTimes ?? -1, t.OverlapMontageConfig?.OverlapMontageLoopDuration ?? -1), r = PlayMontageUtils_1.PlayMontageUtils.LoadAndPlayMontageByOverlapId(r, t.OverlapMontageId, o)) && this.wud.set(e, r), t.FaceExpressionId) && (a = i?.ExpressionController?.ChangeFaceForExpressionFromAnimNotify(t.FaceExpressionId))) {
       this.Lud.set(e, a);
     }
   }
   Aud(e) {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e);
-    var i = t?.Entity?.GetComponent(191);
-    var o = t?.Entity?.GetComponent(181);
+    var i = t?.Entity?.GetComponent(197);
+    var o = t?.Entity?.GetComponent(186);
     if (t?.Valid && i && o && (this.Lud.has(e) && (t = this.Lud.get(e), i?.ExpressionController?.ResetFaceForExpressionFromAnimNotify(t)), this.wud.has(e))) {
       o = this.wud.get(e);
       PlayMontageUtils_1.PlayMontageUtils.ClearAndEndMontage(o, true);
@@ -234,8 +234,8 @@ class AiModel extends ModelBase_1.ModelBase {
     var r;
     var a;
     if (e.Entity?.Valid) {
-      r = e.Entity.GetComponent(181);
-      a = e.Entity.GetComponent(191);
+      r = e.Entity.GetComponent(186);
+      a = e.Entity.GetComponent(197);
       if (i && t?.Entity && r) {
         if (o) {
           if (Log_1.Log.CheckDebug()) {

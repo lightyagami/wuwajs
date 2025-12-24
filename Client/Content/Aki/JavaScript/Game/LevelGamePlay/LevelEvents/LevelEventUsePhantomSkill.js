@@ -22,7 +22,7 @@ class LevelEventUsePhantomSkill extends LevelGeneralBase_1.LevelEventBase {
         }
         ControllerHolder_1.ControllerHolder.BlackboardController.SetRotatorValueByEntity(r.Entity.Id, e.BlackboardRot.Key, e.BlackboardRot.Value.Y ?? 0, e.BlackboardRot.Value.X ?? 0, e.BlackboardRot.Value.Z ?? 0);
       }
-      r.Entity.GetComponent(209).AddTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.SkillType));
+      r.Entity.GetComponent(215).AddTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e.SkillType));
     }
   }
 }

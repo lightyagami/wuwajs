@@ -57,7 +57,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
     t.SetItemList(s);
     return t;
   }
-  RefreshCommonRewardDataFromConfig(e, t, i, s) {
+  RefreshCommonRewardDataFromConfig(e, t, i, s, r, a, o, h, n = true) {
     e = ConfigManager_1.ConfigManager.ItemRewardConfig.GetCommonRewardViewDisplayConfig(e);
     if (e) {
       t = {
@@ -67,7 +67,12 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
         Title: e.Title,
         ContinueText: e.ContinueText,
         IsItemVisible: e.IsItemVisible,
-        OnCloseCallback: s
+        OnCloseCallback: s,
+        LeftBtnTextId: r,
+        RightBtnTextId: a,
+        LeftAction: o,
+        RightAction: h,
+        TipsCanSkip: n
       };
       if (!this.q0i) {
         this.NewRewardData();
@@ -104,7 +109,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
       return this.q0i;
     }
   }
-  RefreshExploreRewardDataFromConfig(e, t = true, i, s, r, a, o, h, n, l, d, u, w, I, p, m) {
+  RefreshExploreRewardDataFromConfig(e, t = true, i, s, r, a, o, h, n, l, d, I, p, u, w, C) {
     e = ConfigManager_1.ConfigManager.ItemRewardConfig.GetExploreRewardDisplayConfig(e);
     if (e) {
       t = {
@@ -112,7 +117,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
         ViewName: "ExploreRewardView",
         AudioId: e.AudioId,
         IsSuccess: t,
-        Title: m ?? e.Title,
+        Title: C ?? e.Title,
         TitleHexColor: e.TitleHexColor,
         TitleIconPath: e.TitleIconPath,
         TitleIconHexColor: e.TitleIconHexColor,
@@ -125,7 +130,7 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
         OnCloseCallback: n,
         Tip: l,
         IsShowOnlineChallengePlayer: d,
-        IsRewardMultiLine: I
+        IsRewardMultiLine: u
       };
       if (!this.q0i) {
         this.NewRewardData();
@@ -147,14 +152,14 @@ class ItemRewardModel extends ModelBase_1.ModelBase {
       if (h) {
         this.q0i.SetStateToggle(h);
       }
-      if (u) {
-        this.q0i.SetExploreFriendDataList(u);
-      }
-      if (w) {
-        this.q0i.SetScoreReached(w);
+      if (I) {
+        this.q0i.SetExploreFriendDataList(I);
       }
       if (p) {
-        this.q0i.SetAccumulatedScoreData(p);
+        this.q0i.SetScoreReached(p);
+      }
+      if (w) {
+        this.q0i.SetAccumulatedScoreData(w);
       }
       return this.q0i;
     }

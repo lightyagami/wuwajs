@@ -94,14 +94,15 @@ class FormationAttributeController extends ControllerBase_1.ControllerBase {
   static GetRatio(t) {
     return this.GetValue(t) / this.GetMax(t) * CharacterAttributeTypes_1.PER_TEN_THOUSAND;
   }
-  static AddSpeedModifier(t, e, r, i) {
-    let o = this.SpeedModifiers.get(e);
-    if (!o) {
-      this.SpeedModifiers.set(e, o = new Map());
+  static AddSpeedModifier(t, e, r, i, o = 100) {
+    let a = this.SpeedModifiers.get(e);
+    if (!a) {
+      this.SpeedModifiers.set(e, a = new Map());
     }
-    o.set(t, {
+    a.set(t, {
       Type: r,
-      Value: i
+      Value: i,
+      Priority: o
     });
     this.RefreshSpeed(e);
   }
@@ -133,13 +134,13 @@ class FormationAttributeController extends ControllerBase_1.ControllerBase {
     return this.PauseLocks.size > 0;
   }
   static WBe(t) {
-    return t === 1 || t === 8;
+    return t === 1 || t === 8 || t === 14;
   }
   static QBe(r) {
     let t = this.XBe.get(r);
     if (!t) {
       t = () => {
-        var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.CheckGetComponent(209);
+        var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.CheckGetComponent(215);
         var e = this.Model.GetConfig(r);
         if (e && t) {
           if (t.HasAnyTag(e.ForbidIncreaseTags)) {
@@ -179,32 +180,36 @@ class FormationAttributeController extends ControllerBase_1.ControllerBase {
     }
   }
   static RefreshSpeed(t) {
-    var r = this.SpeedModifiers.get(t);
-    let i = this.Model.GetBaseRate(t);
-    let o = i;
+    var i = this.SpeedModifiers.get(t);
+    let o = this.Model.GetBaseRate(t);
+    let a = o;
     var e = this.Model.GetSpeed(t);
     if (FormationAttributeController.IsPaused()) {
-      o = 0;
-    } else if (r) {
+      a = 0;
+    } else if (i) {
       let t = 0;
       let e = 0;
-      for (const a of r.values()) {
-        switch (a.Type) {
+      let r = 0;
+      for (const s of i.values()) {
+        switch (s.Type) {
           case 0:
-            i = a.Value;
+            if (s.Priority >= r) {
+              r = s.Priority;
+              o = s.Value;
+            }
             break;
           case 1:
-            t += a.Value;
+            t += s.Value;
             break;
           case 2:
-            e += a.Value;
+            e += s.Value;
         }
       }
-      r = Math.max(1 + (i > 0 ? t : e) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, 0);
-      o = i * r;
+      i = Math.max(1 + (o > 0 ? t : e) * CharacterAttributeTypes_1.DIVIDED_TEN_THOUSAND, 0);
+      a = o * i;
     }
-    if (o !== e) {
-      this.Model.SetSpeed(t, o);
+    if (a !== e) {
+      this.Model.SetSpeed(t, a);
       this.OnFormationAttrChanged(t);
     }
   }
@@ -365,7 +370,7 @@ FormationAttributeController.xie = (t, e) => {
   if (_a.ConfigList) {
     for (const n of _a.ConfigList.values()) {
       var r = n.Id;
-      var i = t.Entity.CheckGetComponent(209);
+      var i = t.Entity.CheckGetComponent(215);
       if (i) {
         var o = _a.Model.GetConfig(r);
         for (const h of o?.ForbidIncreaseTags) {

@@ -16,10 +16,10 @@ class LevelConditionCheckBuff extends LevelGeneralBase_1.LevelConditionBase {
     var e = Number(UE.KismetStringLibrary.Conv_StringToInt64(e.LimitParams.get("BuffId")));
     if (a) {
       a = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint();
-      const l = EntitySystem_1.EntitySystem.Get(a)?.GetComponent(178);
+      const l = EntitySystem_1.EntitySystem.Get(a)?.GetComponent(183);
       return !!l?.GetBuffTotalStackById(e);
     }
-    const l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(178);
+    const l = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t)?.Entity?.GetComponent(183);
     return !!l?.GetBuffTotalStackById(e);
   }
 }

@@ -7,6 +7,7 @@ exports.GameModeModel = exports.PAUSE_TYPE = undefined;
 const UE = require("ue");
 const ActorSystem_1 = require("../../../Core/Actor/ActorSystem");
 const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
+const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const LogProfiler_1 = require("../../../Core/Common/LogProfiler");
 const InstanceDungeonById_1 = require("../../../Core/Define/ConfigQuery/InstanceDungeonById");
@@ -18,6 +19,7 @@ const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameMode_1 = require("../Define/GameMode");
@@ -44,7 +46,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.XMr = undefined;
     this.$Mr = 0;
     this.YMr = undefined;
-    this.rtm = Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
+    this.Yrm = Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.JMr = false;
     this.zMr = false;
     this.QIo = false;
@@ -136,6 +138,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   set LoadingPhase(e) {
     this.nEr = e;
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.LoadingPhaseChange, e);
   }
   get Loading() {
     return this.nEr > 1;
@@ -241,9 +244,10 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   set InstanceType(e) {
     this.YMr = e;
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncInstanceType, this.YMr);
   }
   get LastInstanceType() {
-    return this.rtm;
+    return this.Yrm;
   }
   get IsMulti() {
     return this.JMr;
@@ -384,11 +388,9 @@ class GameModeModel extends ModelBase_1.ModelBase {
   set SpecialTransitionPb(e) {
     this.aOd = e;
   }
-  CreateShapedStreamingSource(e, t = 100, i = 1) {
-    i = [new UE.StreamingSourceShape(true, i, 0, true, t, undefined, undefined)];
-    t = GameModeModel.nQs(MathUtils_1.MathUtils.DefaultTransformDouble, 128, 0, undefined, i);
-    t.K2_AttachToActor(e, undefined, 2, 2, 2, false);
-    return t;
+  CreateShapedStreamingSource(e = 100, t = 1) {
+    t = [new UE.StreamingSourceShape(true, t, 0, true, e, undefined, undefined)];
+    return GameModeModel.nQs(MathUtils_1.MathUtils.DefaultTransformDouble, 128, 0, undefined, t);
   }
   static nQs(e, t, i, s, o) {
     var r = ActorSystem_1.ActorSystem.Get(UE.Actor.StaticClass(), e);
@@ -413,7 +415,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
   }
   ScaleStreamingSource(e, t) {
     var i;
-    if (!!UE.KuroStaticLibrary.IsLowMemoryDevice() && (!(i = this.S5u.get(e)) || i !== t)) {
+    if ((!!Info_1.Info.IsLowMemoryDevice || e !== 1) && (!(i = this.S5u.get(e)) || i !== t)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "缩放流送源", ["Type", e], ["Scale", t]);
       }
@@ -422,7 +424,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     }
   }
   CleanScaleStreamingSource(e) {
-    if (UE.KuroStaticLibrary.IsLowMemoryDevice() && this.S5u.delete(e)) {
+    if ((Info_1.Info.IsLowMemoryDevice || e !== 1) && this.S5u.delete(e)) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("GameMode", 60, "清理缩放流送源", ["Type", e]);
       }
@@ -495,7 +497,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
       this.x5u(true);
     }
   }
-  dHd() {
+  CHd() {
     let t = 2;
     this.P5u.forEach(e => {
       if (e < t) {
@@ -513,7 +515,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
           var s = t.TargetGrids.Get(e);
           i.add(FNameUtil_1.FNameUtil.GetDynamicFName(s.toString()));
         }
-        e = this.dHd();
+        e = this.CHd();
         if (e > 1) {
           if (Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("GameMode", 60, "重置HLOD流送", ["Level", e]);
@@ -583,10 +585,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     }
   }
   AttachStreamingSourcesToActor(e) {
-    if (!this.pr_ && e && this.KMr?.IsValid() && this.Aoa?.IsValid()) {
-      this.KMr.K2_AttachToActor(e, undefined, 2, 2, 2, false);
-      this.Aoa.K2_AttachToActor(e, undefined, 2, 2, 2, false);
-    }
+    return !this.pr_ && !!e && !!this.KMr?.IsValid() && !!this.Aoa?.IsValid() && !(this.KMr.K2_AttachToActor(e, undefined, 2, 2, 2, false), this.Aoa.K2_AttachToActor(e, undefined, 2, 2, 2, false), 0);
   }
   StartIndependentStreaming(e = undefined) {
     if (this.KMr?.IsValid() && this.Aoa?.IsValid() && (this.pr_ = true, this.KMr?.K2_DetachFromActor(1, 1, 1), this.Aoa?.K2_DetachFromActor(1, 1, 1), e)) {
@@ -791,7 +790,7 @@ class GameModeModel extends ModelBase_1.ModelBase {
     this.jMr = "";
     this.$Mr = 0;
     this.JMr = false;
-    this.rtm = this.YMr ?? Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
+    this.Yrm = this.YMr ?? Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.YMr = Protocol_1.Aki.Protocol.i4s.Proto_NoneInstance;
     this.QMr = undefined;
     this.XMr = undefined;

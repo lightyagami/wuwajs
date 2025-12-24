@@ -43,7 +43,7 @@ class EntityCooldownProbability {
   }
   CheckPlayAudio(t, o, e = true, r = true) {
     if (o.TagProbability && o.TagProbability.Num() > 0) {
-      this.TagComp ||= EntitySystem_1.EntitySystem.GetComponent(this.EntityId, 209);
+      this.TagComp ||= EntitySystem_1.EntitySystem.GetComponent(this.EntityId, 215);
       for (let i = 0; i < o.TagProbability.Num() && this.TagComp; i++) {
         var n;
         var s = o.TagProbability.Get(i);

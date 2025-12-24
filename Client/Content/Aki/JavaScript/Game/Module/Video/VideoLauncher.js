@@ -13,22 +13,25 @@ const EventSystem_1 = require("../../Common/Event/EventSystem");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const UiManager_1 = require("../../Ui/UiManager");
 class VideoLauncher {
-  static ShowVideoCg(e, i, o, r, a = false) {
+  static ShowVideoCg(e, i, o, r, a = false, n, t, s) {
     if (e) {
-      VideoLauncher.ShowVideoCgAsync(e, i, o, r, a);
+      VideoLauncher.ShowVideoCgAsync(e, i, o, r, a, n, t, s);
     } else {
       i();
     }
   }
-  static async ShowVideoCgAsync(e, i, o, r, a) {
+  static async ShowVideoCgAsync(e, i, o, r, a, n, t, s) {
     this.PNo = i;
-    var n = ConfigManager_1.ConfigManager.VideoConfig.GetVideoData(e);
-    if (n) {
+    var d = ConfigManager_1.ConfigManager.VideoConfig.GetVideoData(e);
+    if (d) {
       this.pDe = {
-        VideoDataConf: n,
+        VideoDataConf: d,
         VideoCloseCb: this.Bto,
         BackgroundColor: o,
-        RemainViewWhenEnd: r
+        RemainViewWhenEnd: r,
+        ProgramSpecialConfig: n,
+        Mp4FadeOutTime: t,
+        BlackBorderFadeOutTime: s
       };
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Video", 38, "打开视频播放界面", ["视频配置", e]);
@@ -36,11 +39,11 @@ class VideoLauncher {
       if (UiManager_1.UiManager.IsViewShow("VideoView")) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.PlayVideo, this.pDe);
       } else if (a) {
-        const t = new CustomPromise_1.CustomPromise();
+        const u = new CustomPromise_1.CustomPromise();
         UiManager_1.UiManager.OpenViewByPlot("VideoView", this.pDe, () => {
-          t.SetResult();
+          u.SetResult();
         });
-        await t.Promise;
+        await u.Promise;
       } else {
         await UiManager_1.UiManager.OpenViewAsync("VideoView", this.pDe);
       }
@@ -56,6 +59,7 @@ class VideoLauncher {
 exports.VideoLauncher = VideoLauncher;
 (_a = VideoLauncher).PNo = undefined;
 VideoLauncher.pDe = undefined;
+VideoLauncher.TickFunc = undefined;
 VideoLauncher.Bto = () => {
   var e;
   if (_a.PNo) {

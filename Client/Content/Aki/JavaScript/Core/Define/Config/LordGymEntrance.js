@@ -43,6 +43,12 @@ class LordGymEntrance {
   get LordIdleMaterialController() {
     return this.lordidlematerialcontroller();
   }
+  get IsGroup() {
+    return this.isgroup();
+  }
+  get LordUISceneEffect() {
+    return this.lorduisceneeffect();
+  }
   get StandAnim() {
     return this.standanim();
   }
@@ -221,8 +227,20 @@ class LordGymEntrance {
     }
     return i;
   }
+  isgroup() {
+    var t = this.J7.__offset(this.z7, 26);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
+  lorduisceneeffect(t) {
+    var i = this.J7.__offset(this.z7, 28);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   standanim(t) {
-    var i = this.J7.__offset(this.z7, 26);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -230,7 +248,7 @@ class LordGymEntrance {
     return i;
   }
   isdebug() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 32);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }

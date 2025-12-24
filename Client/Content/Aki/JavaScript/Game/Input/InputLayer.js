@@ -23,6 +23,9 @@ class InputLayer {
   HandleHold(t, e) {}
   DispatchPressEvent(t, e) {}
   DispatchReleaseEvent(t, e) {}
+  CheckBlockDispatchEvent(t) {
+    return false;
+  }
 }
 (exports.InputLayer = InputLayer).IsTestMode = false;
 InputLayer.SwallowCommand = undefined;

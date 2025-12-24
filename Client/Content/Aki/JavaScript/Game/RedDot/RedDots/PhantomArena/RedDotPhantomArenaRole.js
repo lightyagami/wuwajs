@@ -14,8 +14,11 @@ class RedDotPhantomArenaRole extends RedDotBase_1.RedDotBase {
   OnGetEvents() {
     return [EventDefine_1.EEventName.OnPhantomArenaRoleRewardUpdate];
   }
-  OnCheck() {
-    return ModelManager_1.ModelManager.PhantomArenaModel.GetRoleRewardRedDot();
+  IsMultiple() {
+    return true;
+  }
+  OnCheck(e) {
+    return e !== 0 && ModelManager_1.ModelManager.PhantomArenaModel.GetRoleRewardRedDot(e);
   }
 }
 exports.RedDotPhantomArenaRole = RedDotPhantomArenaRole;

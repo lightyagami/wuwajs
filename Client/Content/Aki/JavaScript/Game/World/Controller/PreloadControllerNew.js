@@ -320,7 +320,7 @@ class PreloadControllerNew extends ControllerBase_1.ControllerBase {
       n.Stop();
       return 4;
     }
-    var c = e.Entity.GetComponent(223);
+    var c = e.Entity.GetComponent(230);
     if (c) {
       c.InitPreload(u);
       await c.InitMorph();

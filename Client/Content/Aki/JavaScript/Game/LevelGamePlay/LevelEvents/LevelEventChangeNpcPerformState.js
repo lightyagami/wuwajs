@@ -29,7 +29,7 @@ class LevelEventChangeNpcPerformState extends LevelGeneralBase_1.LevelEventBase 
   ExecuteWhenEntitiesReady() {
     var e = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.E0);
     if (e?.Entity?.IsInit) {
-      e.Entity.GetComponent(191).PerformGroupController.SwitchPerformState(this.ac);
+      e.Entity.GetComponent(197).PerformGroupController.SwitchPerformState(this.ac);
       this.FinishExecute(true);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 18, "执行行为LevelEventChangeNpcPerformState失败，实体没有Activate");

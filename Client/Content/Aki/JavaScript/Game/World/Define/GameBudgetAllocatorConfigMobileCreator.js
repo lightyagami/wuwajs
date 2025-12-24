@@ -291,6 +291,19 @@ class GameBudgetAllocatorConfigMobileCreator {
       Cutscene_NotRendered: undefined
     };
   }
+  CreateSpecialBlueprintActorConfig() {
+    return {
+      Default: new GameBudgetAllocatorConfig_1.TsGameBudgetAllocatorTickIntervalDetailConfig(0, 0, 1, 1, 1),
+      Normal_Render: undefined,
+      Normal_NotRendered: undefined,
+      Normal_Fighting: undefined,
+      Fighting_Rendered: undefined,
+      Fighting_NotRendered: undefined,
+      Fighting_Fighting: undefined,
+      Cutscene_Rendered: undefined,
+      Cutscene_NotRendered: undefined
+    };
+  }
 }
 exports.GameBudgetAllocatorConfigMobileCreator = GameBudgetAllocatorConfigMobileCreator;
 //# sourceMappingURL=GameBudgetAllocatorConfigMobileCreator.js.map

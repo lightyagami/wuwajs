@@ -227,6 +227,9 @@ class NoCircleAttachView extends AutoAttachBaseView_1.AutoAttachBaseView {
   GetIfCircle() {
     return false;
   }
+  SetShowItemNum(t) {
+    this.ShowItemNum = t;
+  }
 }
 exports.NoCircleAttachView = NoCircleAttachView;
 //# sourceMappingURL=NoCircleAttachView.js.map

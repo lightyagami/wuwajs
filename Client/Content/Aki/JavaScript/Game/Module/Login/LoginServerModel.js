@@ -11,6 +11,7 @@ const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const LauncherServer_1 = require("../../../Launcher/Server/LauncherServer");
 const LocalStorage_1 = require("../../Common/LocalStorage");
 const LocalStorageDefine_1 = require("../../Common/LocalStorageDefine");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
@@ -270,7 +271,7 @@ class LoginServerModel extends ModelBase_1.ModelBase {
   SetPlayerLoginInfo(e, r) {
     this.DEi.set(e, r);
   }
-  cRm(r) {
+  _Wm(r) {
     var o = Array.from(this.REi.keys());
     var t = o.length;
     for (let e = 0; e < t; e++) {
@@ -280,17 +281,23 @@ class LoginServerModel extends ModelBase_1.ModelBase {
     }
   }
   InitSuggestData(e, r) {
-    this.CurrentSelectServerData = undefined;
-    var e = this.UEi(e);
-    this.CurrentSelectServerData = this.cRm(e);
-    this.OnBeginSuggestServerData = this.CurrentSelectServerData;
-    if (!this.OnBeginSuggestServerData) {
-      if ((e = this.GetLoginServersByClientRegion()) && e.length > 0) {
-        this.OnBeginSuggestServerData = e[0];
-        this.CurrentSelectServerData = e[0];
+    if (LauncherServer_1.LauncherServer.CacheSuggestLoginServerData?.get(e)) {
+      this.CurrentSelectServerData = LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.get(e);
+      r(LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.get(e));
+      LauncherServer_1.LauncherServer.CacheSuggestLoginServerData.delete(e);
+    } else {
+      this.CurrentSelectServerData = undefined;
+      e = this.UEi(e);
+      this.CurrentSelectServerData = this._Wm(e);
+      this.OnBeginSuggestServerData = this.CurrentSelectServerData;
+      if (!this.OnBeginSuggestServerData) {
+        if ((e = this.GetLoginServersByClientRegion()) && e.length > 0) {
+          this.OnBeginSuggestServerData = e[0];
+          this.CurrentSelectServerData = e[0];
+        }
       }
+      r?.(this.CurrentSelectServerData);
     }
-    r?.(this.CurrentSelectServerData);
   }
   UEi(e) {
     var r = Array.from(this.REi.keys());

@@ -141,7 +141,7 @@ class LevelRangeDebugDrawController extends ControllerBase_1.ControllerBase {
         t.set(o, a);
       }
     } else if (_ === "ActorRefVolume") {
-      o = e.Entity.GetComponent(167)?.GetRefVolumes();
+      o = e.Entity.GetComponent(172)?.GetRefVolumes();
       if (o) {
         for (const l of o) {
           t.set(l, a);

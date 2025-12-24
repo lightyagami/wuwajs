@@ -55,7 +55,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
       this.zOa = true;
       this.A6l = 0;
       this.JOa = t;
-      if (EntitySystem_1.EntitySystem.GetComponent(r.Id, 0)?.GetPbModelConfig()?.EntityType === "Chessboard" && (r = EntitySystem_1.EntitySystem.GetComponent(r.Id, 141))) {
+      if (EntitySystem_1.EntitySystem.GetComponent(r.Id, 0)?.GetPbModelConfig()?.EntityType === "Chessboard" && (r = EntitySystem_1.EntitySystem.GetComponent(r.Id, 146))) {
         this.YOa(r);
       }
       if (UiModel_1.UiModel.IsInMainView) {
@@ -157,7 +157,7 @@ class LevelPickInteractController extends ControllerBase_1.ControllerBase {
           }
           var r = i?.Chair;
           if (r) {
-            const n = r.GetComponent(201);
+            const n = r.GetComponent(207);
             if (n) {
               n.SetInteractionState(false, "ExitPickInteractModel.Close");
               TimerSystem_1.TimerSystem.Delay(() => {

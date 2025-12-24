@@ -42,7 +42,7 @@ class SkillButtonFollowerEntityData {
     this.tyo = new Set();
     this.pdt = new Set();
     this.oyo = false;
-    this.ryo = 4;
+    this.ryo = 5;
     this.GXe = () => {
       this.wXe = undefined;
       for (const t of this.$So) {
@@ -235,9 +235,9 @@ class SkillButtonFollowerEntityData {
     this.IsEnable = i;
     i = t.GetComponent(0);
     this.PbDataId = i.GetPbDataId();
-    this.AttributeComponent = t.GetComponent(177);
-    this.GameplayTagComponent = t.GetComponent(209);
-    this.SkillComponent = t.GetComponent(40);
+    this.AttributeComponent = t.GetComponent(182);
+    this.GameplayTagComponent = t.GetComponent(215);
+    this.SkillComponent = t.GetComponent(41);
     i = ConfigManager_1.ConfigManager.SkillButtonConfig;
     this.SkillButtonConfigList = i.GetAllSkillFollowerButtonConfig(this.PbDataId);
     this.vyo();

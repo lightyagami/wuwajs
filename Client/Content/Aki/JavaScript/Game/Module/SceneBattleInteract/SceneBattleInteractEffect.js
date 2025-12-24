@@ -57,9 +57,12 @@ class SceneBattleInteractEffect {
         var o = this.cz;
         if (a?.bBlockingHit) {
           var r = a.GetHitCount();
+          var n = a.ItemArray;
           for (let t = 0; t < r; t++) {
-            var n = a.Components.Get(t).GetCollisionProfileName();
-            if (RenderConfig_1.RenderConfig.WaterCollisionProfileName.op_Equality(n)) {
+            var c = a.Components.Get(t);
+            var l = n.Get(t);
+            var c = UE.KuroCollisionLibrary.GetCollisionProfileName(c, l);
+            if (RenderConfig_1.RenderConfig.WaterCollisionProfileName.op_Equality(c)) {
               o.X = a.ImpactPointX_Array.Get(t);
               o.Y = a.ImpactPointY_Array.Get(t);
               o.Z = a.ImpactPointZ_Array.Get(t);

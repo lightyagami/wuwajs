@@ -38,10 +38,53 @@ class UiSceneManager {
     UiSceneManager.CurUiSceneName = "";
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetModuleAfterResetToBattleView, UiSceneManager.fWi);
   }
-  static OpenUiScene(e, a) {
-    var r;
-    var n;
-    return UiSceneManager.GetUiSceneLoadingState() !== 1 && !!GlobalData_1.GlobalData.World && (UiSceneManager.CurUiSceneName === e ? a?.() : (UiSceneManager.CurUiSceneName !== "" && UiSceneManager.ForceCloseUiScene(), UiSceneManager.CurUiSceneName = e, RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow ? (r = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld()), n = RenderModuleController_1.RenderModuleController.GetKuroUiSceneLoadOffset(), r.GetUiSceneLoadingState(e) === 0 ? (r.PreloadUiScene(e, n.op_ToVector()), RenderModuleController_1.RenderModuleController.UiSceneOffsetTransform.SetLocation(n), RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset = n, RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering = true) : Log_1.Log.CheckError() && Log_1.Log.Error("UiSceneManager", 10, "进入3d ui 失败"), this.LoadSuccessFunction = a, GlobalData_1.GlobalData.SetUiState(1)) : (UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld()).Start3DUISceneRendering(e) || Log_1.Log.CheckError() && Log_1.Log.Error("UiSceneManager", 10, "进入3d ui 失败"), this.LoadSuccessFunction = a, GlobalData_1.GlobalData.SetUiState(UiSceneManager.GetUiSceneLoadingState())), EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneStartLoad)), true);
+  static OpenUiScene(e, a, r) {
+    if (UiSceneManager.GetUiSceneLoadingState() === 1) {
+      return false;
+    }
+    if (!GlobalData_1.GlobalData.World) {
+      return false;
+    }
+    if (UiSceneManager.CurUiSceneName === e) {
+      r?.();
+    } else {
+      if (UiSceneManager.CurUiSceneName !== "") {
+        UiSceneManager.ForceCloseUiScene();
+      }
+      UiSceneManager.CurUiSceneName = e;
+      UiSceneManager.CurSubUiSceneNameList = a ?? [];
+      if (RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow) {
+        var n = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld());
+        var t = RenderModuleController_1.RenderModuleController.GetKuroUiSceneLoadOffset();
+        if (n.GetUiSceneLoadingState(e) === 0) {
+          n.PreloadUiScene(e, t.op_ToVector());
+          RenderModuleController_1.RenderModuleController.UiSceneOffsetTransform.SetLocation(t);
+          RenderModuleController_1.RenderModuleController.DebugUiSceneLoadOffset = t;
+          RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering = true;
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("UiSceneManager", 10, "进入3d ui 失败");
+        }
+        for (const i of a ?? []) {
+          if (n.GetUiSceneLoadingState(i) === 0) {
+            n.PreloadUiScene(i, t.op_ToVector());
+          } else if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("UiSceneManager", 86, "进入3d ui 失败（子场景）");
+          }
+        }
+        this.LoadSuccessFunction = r;
+        GlobalData_1.GlobalData.SetUiState(1);
+      } else {
+        if (!UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld()).Start3DUISceneRendering(e)) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("UiSceneManager", 10, "进入3d ui 失败");
+          }
+        }
+        this.LoadSuccessFunction = r;
+        GlobalData_1.GlobalData.SetUiState(UiSceneManager.GetUiSceneLoadingState());
+      }
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneStartLoad);
+    }
+    return true;
   }
   static CloseUiScene() {
     UiSceneManager.ForceCloseUiScene();
@@ -53,13 +96,43 @@ class UiSceneManager {
     this.gxo();
   }
   static gxo() {
-    var e;
-    var a;
-    if (!StringUtils_1.StringUtils.IsEmpty(UiSceneManager.CurUiSceneName) && !(UiSceneManager.CurUiSceneName = "", RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow ? GlobalData_1.GlobalData.World && (RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering = false, a = (e = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld())).GetCurrentUiSceneRenderingSceneName(), e.UnloadUiScene(a) || Log_1.Log.CheckError() && Log_1.Log.Error("UiSceneManager", 10, "退出3d ui 失败"), GlobalData_1.GlobalData.SetUiState(0)) : GlobalData_1.GlobalData.World && (UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld()).End3DUISceneRendering() || Log_1.Log.CheckError() && Log_1.Log.Error("UiSceneManager", 10, "退出3d ui 失败"), GlobalData_1.GlobalData.SetUiState(UiSceneManager.GetUiSceneLoadingState())), this.LoadSuccessFunction = undefined, Info_1.Info.IsPcOrGamepadPlatform())) {
-      GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
-      UE.LGUIBPLibrary.FreeUnusedResourcesInRenderTargetPool();
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("UiSceneManager", 16, "退出UI场景时，还原r.ScreenPercentage为初始值，并调用FreeUnusedResourcesInRenderTargetPool清理RT");
+    if (!StringUtils_1.StringUtils.IsEmpty(UiSceneManager.CurUiSceneName)) {
+      UiSceneManager.CurUiSceneName = "";
+      if (RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow) {
+        if (GlobalData_1.GlobalData.World) {
+          RenderModuleController_1.RenderModuleController.DebugInUiSceneRendering = false;
+          var e = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld());
+          for (const r of UiSceneManager.CurSubUiSceneNameList ?? []) {
+            if (!e.UnloadUiScene(r)) {
+              if (Log_1.Log.CheckError()) {
+                Log_1.Log.Error("UiSceneManager", 86, "退出3d ui 失败（子场景）");
+              }
+            }
+          }
+          UiSceneManager.CurSubUiSceneNameList.length = 0;
+          var a = e.GetCurrentUiSceneRenderingSceneName();
+          if (!e.UnloadUiScene(a)) {
+            if (Log_1.Log.CheckError()) {
+              Log_1.Log.Error("UiSceneManager", 10, "退出3d ui 失败");
+            }
+          }
+          GlobalData_1.GlobalData.SetUiState(0);
+        }
+      } else if (GlobalData_1.GlobalData.World) {
+        if (!UE.KuroGISystem.GetKuroGISystem(GlobalData_1.GlobalData.World.GetWorld()).End3DUISceneRendering()) {
+          if (Log_1.Log.CheckError()) {
+            Log_1.Log.Error("UiSceneManager", 10, "退出3d ui 失败");
+          }
+        }
+        GlobalData_1.GlobalData.SetUiState(UiSceneManager.GetUiSceneLoadingState());
+      }
+      this.LoadSuccessFunction = undefined;
+      if (!Info_1.Info.IsPcOrGamepadPlatform()) {
+        GameSettingsManager_1.GameSettingsManager.ReApply(GameSettingsDefine_1.EFunction.MOBILERESOLUTION);
+        UE.LGUIBPLibrary.FreeUnusedResourcesInRenderTargetPool();
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("UiSceneManager", 16, "退出UI场景时，还原r.ScreenPercentage为初始值，并调用FreeUnusedResourcesInRenderTargetPool清理RT");
+        }
       }
     }
   }
@@ -71,47 +144,63 @@ class UiSceneManager {
     }
   }
   static Tick() {
-    var e;
-    var a;
-    var r;
     if (GlobalData_1.GlobalData.IsUiSceneLoading) {
       if (RenderModuleController_1.RenderModuleController.DebugNewUiSceneWorkflow) {
-        e = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld());
-        a = UiSceneManager.CurUiSceneName;
-        if ((r = e.GetUiSceneLoadingState(a)) !== 2 || RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering) {
-          if (r === 3) {
-            GlobalData_1.GlobalData.SetUiState(2);
-            if (this.LoadSuccessFunction) {
-              this.LoadSuccessFunction();
-              if (!Info_1.Info.IsPcOrGamepadPlatform()) {
-                UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.TemporalAA.Sharpness 1.0");
-                if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformLow()) {
-                  UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage 80");
-                } else {
-                  UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage 100");
-                }
-                if (Log_1.Log.CheckDebug()) {
-                  Log_1.Log.Debug("UiSceneManager", 16, "进入UI场景时，将r.ScreenPercentage设置为100");
+        var a = UE.KuroUiSceneSystem.GetKuroUiSceneSystem(GlobalData_1.GlobalData.World.GetWorld());
+        var r = UiSceneManager.CurUiSceneName;
+        let e = true;
+        for (const o of UiSceneManager.CurSubUiSceneNameList) {
+          var n;
+          var t = a.GetUiSceneLoadingState(o);
+          if (t === 2 && (n = a.AllStreamingLevelInfo.Get(o))) {
+            n.SetLevelVisible(true);
+          }
+          if (t !== 3) {
+            e = false;
+            break;
+          }
+        }
+        if (e) {
+          if ((i = a.GetUiSceneLoadingState(r)) !== 2 || RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering) {
+            if (i === 3) {
+              GlobalData_1.GlobalData.SetUiState(2);
+              if (this.LoadSuccessFunction) {
+                this.LoadSuccessFunction();
+                if (!Info_1.Info.IsPcOrGamepadPlatform()) {
+                  UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.TemporalAA.Sharpness 1.0");
+                  if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsAndroidPlatformLow()) {
+                    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage 80");
+                  } else {
+                    UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.ScreenPercentage 100");
+                  }
+                  if (Log_1.Log.CheckDebug()) {
+                    Log_1.Log.Debug("UiSceneManager", 16, "进入UI场景时，将r.ScreenPercentage设置为100");
+                  }
                 }
               }
+              EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLoaded);
+              RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering = false;
+            } else {
+              GlobalData_1.GlobalData.SetUiState(1);
             }
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLoaded);
-            RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering = false;
           } else {
-            GlobalData_1.GlobalData.SetUiState(1);
+            a.StartUiSceneRendering(r);
+            RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering = true;
           }
         } else {
-          e.StartUiSceneRendering(a);
-          RenderModuleController_1.RenderModuleController.DebugStartShowingUiSceneRendering = true;
+          GlobalData_1.GlobalData.SetUiState(1);
         }
-      } else if ((r = UiSceneManager.GetUiSceneLoadingState()) === 2) {
-        GlobalData_1.GlobalData.SetUiState(2);
-        if (this.LoadSuccessFunction) {
-          this.LoadSuccessFunction();
-        }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLoaded);
       } else {
-        GlobalData_1.GlobalData.SetUiState(r);
+        var i = UiSceneManager.GetUiSceneLoadingState();
+        if (i === 2) {
+          GlobalData_1.GlobalData.SetUiState(2);
+          if (this.LoadSuccessFunction) {
+            this.LoadSuccessFunction();
+          }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLoaded);
+        } else {
+          GlobalData_1.GlobalData.SetUiState(i);
+        }
       }
     }
   }
@@ -564,6 +653,30 @@ class UiSceneManager {
       UiSceneManager.Jkc = undefined;
     }
   }
+  static InitMotorSkeletalHandle() {
+    if (UiSceneManager.$jm !== undefined) {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("UiSceneManager", 43, "[MotorSkeletalHandle]重复初始化");
+      }
+    } else {
+      UiSceneManager.$jm = UiSceneManager.fxo(18);
+    }
+  }
+  static GetMotorSkeletalHandle() {
+    var e = UiSceneManager.$jm;
+    if (e) {
+      return e;
+    }
+    if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("UiSceneManager", 43, "[LordSkeletalHandle]未初始化");
+    }
+  }
+  static DestroyMotorSkeletalHandle() {
+    if (UiSceneManager.$jm) {
+      SkeletalObserverManager_1.SkeletalObserverManager.DestroySkeletalObserver(UiSceneManager.$jm);
+      UiSceneManager.$jm = undefined;
+    }
+  }
   static AddUiShowRoomShowActor(e, a) {
     var r = UE.KuroCollectActorComponent.GetActorWithTag(FNameUtil_1.FNameUtil.GetDynamicFName("BP_UIShowRoom"), 1);
     if (r) {
@@ -573,21 +686,21 @@ class UiSceneManager {
       Log_1.Log.Error("UiSceneManager", 10, "当前场景找不到反射地板蓝图类BP_UIShowRoom");
     }
   }
-  static async LoadScene(e, a) {
+  static async LoadScene(e, a, r) {
     await WorldController_1.WorldController.StartWorldOriginInUiMode();
-    const r = new CustomPromise_1.CustomPromise();
-    if (!UiSceneManager.OpenUiScene(e, () => {
+    const n = new CustomPromise_1.CustomPromise();
+    if (!UiSceneManager.OpenUiScene(e, a, () => {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Role", 43, "3D UI场景加载成功！");
       }
       this.Ixo();
-      a();
-      r.SetResult(undefined);
+      r();
+      n.SetResult(undefined);
     })) {
-      a();
-      r.SetResult(undefined);
+      r();
+      n.SetResult(undefined);
     }
-    await r.Promise;
+    await n.Promise;
     this.SetSceneFloorReflection(true, true);
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.EnableKuroTranslucentPrePassStencilClear 1");
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInLoadScene);
@@ -601,7 +714,9 @@ class UiSceneManager {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.UiSceneLastStepInExitScene);
   }
   static SetSceneFloorReflection(e, a) {
-    if (this.Jeh !== e || !!a) {
+    if (GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsQualcommGpu() && Info_1.Info.IsPcPlatform()) {
+      UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.EnablePlanarReflection 0");
+    } else if (this.Jeh !== e || !!a) {
       if (this.Jeh = e) {
         UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.EnablePlanarReflection 1");
       } else {
@@ -667,6 +782,7 @@ class UiSceneManager {
   }
 }
 (exports.UiSceneManager = UiSceneManager).CurUiSceneName = "";
+UiSceneManager.CurSubUiSceneNameList = [];
 UiSceneManager.LoadSuccessFunction = undefined;
 UiSceneManager.fWi = () => {
   UiSceneManager.ForceCloseUiSceneImmediately();
@@ -689,6 +805,7 @@ UiSceneManager.KTc = new UE.Vector();
 UiSceneManager.PBa = Vector_1.Vector.Create();
 UiSceneManager.AYe = new UE.Vector2D();
 UiSceneManager.Jkc = undefined;
+UiSceneManager.$jm = undefined;
 UiSceneManager.Jeh = true;
 UiSceneManager.Txo = 0;
 UiSceneManager.Lxo = 0; //# sourceMappingURL=UiSceneManager.js.map

@@ -25,44 +25,44 @@ class InputCombinationActionMapping {
     this.YEe.set(i, t);
     return t;
   }
-  AddKey(i, n, t) {
-    i.AddKey(n, t);
+  AddKey(i, n, t, o) {
+    i.AddKey(n, t, o);
     let e = this.JEe.get(n);
     if (!e) {
       e = new Map();
       this.JEe.set(n, e);
     }
-    let o = e.get(t);
-    if (!o) {
-      o = new Map();
-      e.set(t, o);
+    let s = e.get(t);
+    if (!s) {
+      s = new Map();
+      e.set(t, s);
     }
-    o.set(i.GetActionName(), i);
+    s.set(i.GetActionName(), i);
     this.zEe.add(n);
   }
-  RemoveKey(i, n, t) {
-    i.RemoveKey(n);
+  RemoveKey(i, n, t, o) {
+    var o = i.RemoveKey(n, o);
     var e = i.GetActionName();
-    var o = this.JEe.get(n);
-    if (o) {
-      var s = o.get(t);
-      if (!s) {
+    var s = this.JEe.get(n);
+    if (s) {
+      var r = s.get(t);
+      if (!r) {
         return;
       }
-      s.delete(e);
-      if (s.size <= 0) {
-        o.delete(t);
+      if (o) {
+        r.delete(e);
       }
-      if (o.size <= 0) {
+      if (r.size <= 0) {
+        s.delete(t);
+      }
+      if (s.size <= 0) {
         this.JEe.delete(n);
         this.zEe.delete(n);
       }
     } else {
       this.zEe.delete(n);
     }
-    s = new Map();
-    i.GetKeyMap(s);
-    if (s.size <= 0) {
+    if (!i.HasAnyKey()) {
       this.YEe.delete(e);
     }
   }
@@ -80,6 +80,11 @@ class InputCombinationActionMapping {
   }
   IsMainKey(i) {
     return this.zEe.has(i);
+  }
+  SwitchKeysByBindingType(i) {
+    for (const n of this.YEe.values()) {
+      n.SwitchKeysByBindingType(i);
+    }
   }
 }
 exports.InputCombinationActionMapping = InputCombinationActionMapping;

@@ -43,7 +43,7 @@ class ShipTogetherView extends UiViewBase_1.UiViewBase {
   }
   OnStart() {
     this.Flo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(0), this.GetItem(1).GetOwner(), this.I2i);
-    ModelManager_1.ModelManager.ShipTogetherModel.CurrentSelectTogetherRoleId = ModelManager_1.ModelManager.ShipTogetherModel.ShipTogetherRoleId;
+    ModelManager_1.ModelManager.ShipTogetherModel.CurrentSelectTogetherRoleId = ModelManager_1.ModelManager.ShipTogetherModel.RiderSharingRoleId;
   }
   OnBeforeShow() {
     var e = ModelManager_1.ModelManager.RoleModel.GetRoleList();

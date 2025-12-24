@@ -56,7 +56,7 @@ class MontageConfig extends SceneItemVehicleFeature {
     t = t.MovePerformConfig?.VehicleMontagePlayConfigs;
     if (t) {
       this.wO_ = new Map();
-      this.Lie = this.ActorComp?.Entity.GetComponent(209);
+      this.Lie = this.ActorComp?.Entity.GetComponent(215);
       for (const i of t) {
         var e = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(i.TargetState);
         if (e) {
@@ -100,7 +100,7 @@ class GameplayCueConfig extends SceneItemVehicleFeature {
   Init(t) {
     t = t.MovePerformConfig?.PlayerSpeedEffectConfigs;
     if (t) {
-      this.ph_ = this.ActorComp?.Entity.GetComponent(242);
+      this.ph_ = this.ActorComp?.Entity.GetComponent(251);
       if (!this.ph_) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("SceneItem", 42, "[SceneItemVehicle] 机关载具没有VehicleSceneItemPerformComponent", ["EntityId", this.ActorComp?.Entity.Id], ["PbDataId", this.ActorComp?.CreatureData?.GetPbDataId()]);
@@ -166,7 +166,7 @@ class GameplayCueConfig extends SceneItemVehicleFeature {
       }
       for (const e of this.ph_.PassengerInfoMap) {
         var t;
-        if (e[1].IsRolePassenger() && (t = e[1].PassengerEntity?.GetComponent(229))) {
+        if (e[1].IsRolePassenger() && (t = e[1].PassengerEntity?.GetComponent(238))) {
           this.AO_.push(t);
         }
       }
@@ -247,7 +247,7 @@ let SceneItemVehicleComponent = class SceneItemVehicleComponent extends EntityCo
   }
   OnStart() {
     this.Ovr = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(212);
     this.aGe();
     return true;
   }
@@ -337,5 +337,5 @@ let SceneItemVehicleComponent = class SceneItemVehicleComponent extends EntityCo
     return this.Hte?.GetReferenceActor(t)?.RootComponent;
   }
 };
-SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(279)], SceneItemVehicleComponent);
+SceneItemVehicleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(298)], SceneItemVehicleComponent);
 exports.SceneItemVehicleComponent = SceneItemVehicleComponent; //# sourceMappingURL=SceneItemVehicleComponent.js.map

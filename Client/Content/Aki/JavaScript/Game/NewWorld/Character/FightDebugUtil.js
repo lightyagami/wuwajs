@@ -32,10 +32,10 @@ class FightDebugUtil {
   }
   static async LoadCharacterFightDtNewPreload(e) {
     var o = e.GetComponent(0);
-    var r = e.GetComponent(40);
-    var t = e.GetComponent(211);
+    var r = e.GetComponent(41);
+    var t = e.GetComponent(218);
     var a = e.GetComponent(1);
-    var i = e.GetComponent(212);
+    var i = e.GetComponent(219);
     var n = ModelManager_1.ModelManager.PreloadModelNew.GetEntityAssetElement(o.GetCreatureDataId());
     if (n) {
       var e = UE.KismetSystemLibrary.Conv_ClassToSoftClassReference(a.Actor.GetClass());

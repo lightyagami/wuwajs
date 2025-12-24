@@ -16,6 +16,7 @@ const UiManager_1 = require("../../Ui/UiManager");
 const FilterSortEntrance_1 = require("../Common/FilterSort/FilterSortEntrance");
 const EditFormationDefine_1 = require("../EditFormation/EditFormationDefine");
 const RoleDefine_1 = require("../RoleUi/RoleDefine");
+const RoleUtils_1 = require("../RoleUi/RoleUtils");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
@@ -27,12 +28,14 @@ class QuickRoleSelectViewData {
     this.RoleList = undefined;
     this.YellowTipText = "";
     this.IsNeedChangeBtnState = false;
+    this.CanUseSpecialTrialRole = false;
     this.CanConfirm = undefined;
     this.OnConfirm = undefined;
     this.OnWaitLoadingConfirm = undefined;
     this.OnBack = undefined;
     this.OnHideFinish = undefined;
     this.OnRoleSelectFull = undefined;
+    this.CanSelectRole = undefined;
     this.UseWay = i;
     this.SelectedRoleList = e;
     this.RoleList = t;
@@ -53,9 +56,9 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
       var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var t = new Array();
       for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
-        var s = e.get(i);
-        if (s) {
-          t.push(s.GetDataId());
+        var r = e.get(i);
+        if (r) {
+          t.push(r.GetDataId());
         }
       }
       var i = this.Data?.CanConfirm;
@@ -98,73 +101,102 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
     };
     this.cHe = () => {
       var i = new TeamRoleGrid_1.TeamRoleGrid();
+      i.IsShowGray = this.IsShowGray;
       i.BindOnExtendToggleStateChanged(this.ToggleFunction);
       i.BindOnCanExecuteChange(this.CanExecuteChange);
       return i;
     };
+    this.IsShowGray = i => !this.Data?.CanUseSpecialTrialRole && RoleUtils_1.RoleUtils.IsSpecialTrialRole(i);
     this.ToggleFunction = i => {
       var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var t = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet;
-      var s = i.Data;
+      var r = i.Data;
       if (i.State === 0) {
-        for (const r of e) {
-          if (r[1] === s) {
-            e.delete(r[0]);
-            t.delete(s.GetDataId());
+        for (const s of e) {
+          if (s[1] === r) {
+            e.delete(s[0]);
+            t.delete(r.GetDataId());
             break;
           }
         }
       } else if (i.State === 1) {
         for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
           if (!e.has(i)) {
-            e.set(i, s);
-            t.add(s.GetDataId());
+            e.set(i, r);
+            t.add(r.GetDataId());
             break;
           }
         }
       }
-      i = this.RoleList.indexOf(s);
+      i = this.RoleList.indexOf(r);
       this.RoleScrollView.RefreshGridProxy(i);
       this.P7e();
     };
     this.CanExecuteChange = (i, e, t) => {
-      return t !== 0 || (t = i.GetRoleId(), ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(t) ? (ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("EditBattleTeamCannotSwitchOtherArea"), false) : ((i = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap.size >= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM) && (this.Data?.OnRoleSelectFull ? this.Data?.OnRoleSelectFull() : ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull")), !i));
+      if (t === 0) {
+        t = i;
+        i = t.GetRoleId();
+        if (ModelManager_1.ModelManager.MowingTowerModel.OtherHalfAreaRoleList?.includes(i)) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("EditBattleTeamCannotSwitchOtherArea");
+          return false;
+        }
+        if (ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap.size >= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM) {
+          if (this.Data?.OnRoleSelectFull) {
+            this.Data?.OnRoleSelectFull();
+          } else {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("EditBattleTeamRoleFull");
+          }
+          return false;
+        }
+        if (!this.Data?.CanUseSpecialTrialRole && RoleUtils_1.RoleUtils.IsSpecialTrialRole(t.GetDataId())) {
+          ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PrefabTextItem_1024721374_Text");
+          return false;
+        }
+        i = this.Data?.CanSelectRole;
+        if (i) {
+          var r = Array.from(ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet);
+          if (!i(t.GetDataId(), r)) {
+            return false;
+          }
+        }
+      }
+      return true;
     };
     this.Hlo = (i, e) => {
       var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
-      var s = new Array();
+      var r = new Array();
       for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
         if (t.has(i)) {
-          s.push(t.get(i));
+          r.push(t.get(i));
         }
       }
       for (const a of i) {
-        if (!s.includes(a)) {
-          s.push(a);
+        if (!r.includes(a)) {
+          r.push(a);
         }
       }
-      var i = s.length > 0;
+      var i = r.length > 0;
       this.GetItem(11).SetUIActive(!i);
       this.GetButton(3).RootUIComp.SetUIActive(i);
-      var r = this.Data.YellowTipText !== "";
-      this.GetItem(16).SetUIActive(r && i);
+      var s = this.Data.YellowTipText !== "";
+      this.GetItem(16).SetUIActive(s && i);
       this.GetLoopScrollViewComponent(1).RootUIComp.SetUIActive(i);
       if (i) {
-        this.RoleScrollView.RefreshByData(s);
+        this.RoleScrollView.RefreshByData(r);
         for (const l of t.values()) {
           var o = this.RoleList.indexOf(l);
-          var h = s.indexOf(l);
+          var h = r.indexOf(l);
           if (this.RoleScrollView.Iei >= 0 && o !== h && o < this.RoleScrollView.GetDisplayGridEndIndex()) {
             ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.delete(l.GetDataId());
             this.RoleScrollView.UnsafeGetGridProxy(o)?.OnDeselected(false);
           }
         }
         for (const _ of t.values()) {
-          var n = s.indexOf(_);
+          var n = r.indexOf(_);
           ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet.add(_.GetDataId());
           this.RoleScrollView.UnsafeGetGridProxy(n)?.OnForceSelected();
         }
-        this.RoleList = s;
+        this.RoleList = r;
       }
     };
   }
@@ -203,12 +235,14 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
     var e = this.Data?.SelectedRoleList;
     ModelManager_1.ModelManager.RoleSelectModel.ClearData();
     var t = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
+    var r = ModelManager_1.ModelManager.RoleSelectModel.SelectedRoleSet;
     if (e) {
       for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM && !(i > e.length); i++) {
         var s = e[i - 1];
-        for (const r of this.RoleList) {
-          if (r.GetDataId() === s) {
-            t.set(i, r);
+        for (const o of this.RoleList) {
+          if (o.GetDataId() === s) {
+            t.set(i, o);
+            r.add(o.GetDataId());
             break;
           }
         }
@@ -250,9 +284,9 @@ class QuickRoleSelectView extends UiViewBase_1.UiViewBase {
       var e = ModelManager_1.ModelManager.RoleSelectModel.RoleIndexMap;
       var t = new Array();
       for (let i = 1; i <= EditFormationDefine_1.EDITE_FORAMTION_MAX_NUM; i++) {
-        var s = e.get(i);
-        if (s) {
-          t.push(s.GetDataId());
+        var r = e.get(i);
+        if (r) {
+          t.push(r.GetDataId());
         }
       }
       this.GetButton(3)?.SetSelfInteractive(this.Data.CanConfirm(t));

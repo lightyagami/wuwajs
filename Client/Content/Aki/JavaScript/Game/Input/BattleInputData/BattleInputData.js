@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.BattleInputData = undefined;
 const InputEnums_1 = require("../InputEnums");
 class BattleInputData {
-  constructor(t) {
+  constructor(t, i = 0) {
     this.Type = undefined;
+    this.KeyBindingType = 0;
     this.Type = t;
+    this.KeyBindingType = i;
   }
   GetAction(t) {
     var i = this.OnGetActionMap();
@@ -32,9 +34,9 @@ class BattleInputData {
   }
   GetActionNameByInputAction(t) {
     var i;
-    var r;
-    for ([i, r] of this.OnGetActionMap()) {
-      if (r === t) {
+    var s;
+    for ([i, s] of this.OnGetActionMap()) {
+      if (s === t) {
         return i;
       }
     }
@@ -42,24 +44,24 @@ class BattleInputData {
   GetMoveAxisList() {
     var t;
     var i;
-    var r = [];
+    var s = [];
     for ([t, i] of this.OnGetAxisMap()) {
       if (i === InputEnums_1.EInputAxis.MoveForward || i === InputEnums_1.EInputAxis.MoveRight) {
-        r.push(t);
+        s.push(t);
       }
     }
-    return r;
+    return s;
   }
   GetCameraAxisList() {
     var t;
     var i;
-    var r = [];
+    var s = [];
     for ([t, i] of this.OnGetAxisMap()) {
       if (i === InputEnums_1.EInputAxis.LookUp || i === InputEnums_1.EInputAxis.Turn || i === InputEnums_1.EInputAxis.Zoom) {
-        r.push(t);
+        s.push(t);
       }
     }
-    return r;
+    return s;
   }
   CheckActionInAllowFightActionNameList(t, i) {
     return this.OnCheckActionInAllowFightActionNameList(t, i);

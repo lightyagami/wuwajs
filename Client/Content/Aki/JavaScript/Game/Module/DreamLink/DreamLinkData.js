@@ -83,6 +83,13 @@ class DreamLinkData extends ActivityData_1.ActivityBaseData {
     }
     return this.CheckHasLimitTimeReward() || this.CheckHasEnergyReward();
   }
+  GetExternalButtonRedPointState() {
+    if (this.IsDreamLinkFunctionUnlock(0)) {
+      return this.RedPointShowState;
+    } else {
+      return this.GetQuestRedDotState();
+    }
+  }
   ucl(e) {
     if (e) {
       this.MaxEnergy = e.oM_;

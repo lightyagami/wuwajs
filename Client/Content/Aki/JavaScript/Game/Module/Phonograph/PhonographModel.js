@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhonographModel = undefined;
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ModelManager_1 = require("../../Manager/ModelManager");
@@ -19,6 +20,14 @@ class PhonographModel extends ModelBase_1.ModelBase {
     this.NewMusicIds = [];
     this.RecordMusicIdMap = new Map();
     this.Gn_ = new Map();
+    this.rVf = new Set();
+  }
+  OnInit() {
+    var e = ConfigManager_1.ConfigManager.PhonographConfig.GetMusicList();
+    if (e) {
+      e.forEach(e => this.rVf.add(e.ItemId));
+    }
+    return true;
   }
   set RecordMusicId(e) {
     this.RecordMusicIdMap.set(this.CurrentPlayActorEntityId, e);
@@ -78,6 +87,24 @@ class PhonographModel extends ModelBase_1.ModelBase {
     this.CurrentPlayActorEntityId = 0;
     this.CurrentPlayMusicTime = 0;
     this.CurrentPlayMusicTotalTime = 0;
+  }
+  async GetMusicDuration(e) {
+    e = ConfigManager_1.ConfigManager.PhonographConfig.GetMusicById(e).MusicEvent;
+    return (await AudioSystem_1.AudioSystem.GetAudioEvent(e))?.MaximumDuration ?? 0;
+  }
+  GetUnlockItemIds() {
+    const t = [];
+    var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemByItemType(60004);
+    if (e) {
+      e.forEach(e => {
+        if (this.rVf.has(e.GetConfigId())) {
+          t.push(e.GetConfigId());
+        }
+      });
+      return t;
+    } else {
+      return [];
+    }
   }
 }
 exports.PhonographModel = PhonographModel;

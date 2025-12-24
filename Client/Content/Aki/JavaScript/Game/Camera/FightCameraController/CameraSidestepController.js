@@ -40,7 +40,7 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
     this.cie = Rotator_1.Rotator.Create();
     this.pme = Rotator_1.Rotator.Create();
     this.cz = Vector_1.Vector.Create();
-    this.ZEm = true;
+    this.Akm = true;
   }
   Name() {
     return "SidestepController";
@@ -62,13 +62,10 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
     this.SetCurveConfigMap(13, "InputRecoverArmLengthCurve");
   }
   UpdateInternal(t) {
-    if (ModelManager_1.ModelManager.CameraModel.IsEnableSidestepCamera && this.Camera.Character) {
-      this.Uce(t);
-      if (!(this.Lce <= 0)) {
-        this.Ace(t);
-        this.Pce(t);
-        this.xce(t);
-      }
+    if (!!ModelManager_1.ModelManager.CameraModel.IsEnableSidestepCamera && !!this.Camera.Character && !ModelManager_1.ModelManager.DeadEyeModeModel.IsInDeadEyeMode && !(this.Uce(t), this.Lce <= 0)) {
+      this.Ace(t);
+      this.Pce(t);
+      this.xce(t);
     }
   }
   Uce(t) {
@@ -102,7 +99,7 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
     var h;
     var s;
     if (!(this.Lce < this.MoveDurationThreshold)) {
-      if ((i = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(181))?.Valid && (s = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(182))?.Valid) {
+      if ((i = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(186))?.Valid && (s = this.Camera.CharacterEntityHandle?.Entity?.GetComponent(187))?.Valid) {
         if (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleAnimationComponent?.Valid) {
           this.y6l.FromUeVector(this.Camera.VehicleMoveComponent.GravityUp);
           this.S6l.FromUeVector(this.Camera.VehicleAnimationComponent.MovementNormal);
@@ -131,10 +128,10 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
   }
   IsCharacterMoving() {
     var t;
-    return !!this.Camera.Character && !this.Camera.ContainsTag(-1371021686) && !this.Camera.ContainsTag(1008164187) && (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleMoveComponent?.Valid ? this.Camera.VehicleMoveComponent.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD : !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(182))?.Valid && t.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD);
+    return !!this.Camera.Character && !this.Camera.ContainsTag(-1371021686) && !this.Camera.ContainsTag(1008164187) && (this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle && this.Camera.VehicleMoveComponent?.Valid ? this.Camera.VehicleMoveComponent.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD : !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(187))?.Valid && t.Speed > FightCameraLogicComponent_1.CLEAN_TARGET_SPEED_THRESHOLD);
   }
   xce(i) {
-    if (this.Camera.Character?.CharacterActorComponent.Entity.GetComponent(182)?.HasMoveInput || !this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle || this.Camera.VehicleMoveComponent?.HasMoveInput) {
+    if (this.Camera.Character?.CharacterActorComponent.Entity.GetComponent(187)?.HasMoveInput || !this.Camera.CharacterDriveVehicleComponent?.IsOnVehicle || this.Camera.VehicleMoveComponent?.HasMoveInput) {
       let t = 0;
       var h;
       var s = this.Camera.GetArmLengthWithSettingAndZoom(this.Camera.CurrentCamera);
@@ -154,7 +151,7 @@ class CameraSidestepController extends CameraControllerBase_1.CameraControllerBa
       var e = s + t;
       var r = s / this.Camera.DesiredCamera.ZoomModifier;
       this.Camera.DesiredCamera.ZoomModifier = e / r;
-      if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.ZEm && (this.ZEm = false, Log_1.Log.CheckInfo())) {
+      if (this.Camera.DesiredCamera.ZoomModifier <= MathUtils_1.MathUtils.SmallNumber && this.Akm && (this.Akm = false, Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Camera", 57, "[DebugZoomModifier RecoverArmLength]", ["DesiredCamera.ZoomModifier", this.Camera.DesiredCamera.ZoomModifier], ["currentArmLength", s], ["delta", t], ["newArmLength", e], ["armLengthBeforeModify", r], ["CameraConfigTags", this.Camera.CameraConfigController.GetCameraConfigTagsContent()]);
       }
     }

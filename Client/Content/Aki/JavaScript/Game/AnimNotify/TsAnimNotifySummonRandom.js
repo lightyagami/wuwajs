@@ -21,7 +21,7 @@ class TsAnimNotifySummonRandom extends UE.KuroAnimNotify {
     var t;
     var o;
     var r = r.GetOwner();
-    return !!r && !!(r instanceof TsBaseCharacter_1.default) && !!r?.CharacterActorComponent?.IsAutonomousProxy && !!(r = r?.CharacterActorComponent?.Entity)?.Valid && !!(o = r.GetComponent(40)) && !!o.CurrentSkill && !!this.Action && !(o = {
+    return !!r && !!(r instanceof TsBaseCharacter_1.default) && !!r?.CharacterActorComponent?.IsAutonomousProxy && !!(r = r?.CharacterActorComponent?.Entity)?.Valid && !!(o = r.GetComponent(41)) && !!o.CurrentSkill && !!this.Action && !(o = {
       Entity: r,
       SkillComponent: o,
       Skill: o.CurrentSkill

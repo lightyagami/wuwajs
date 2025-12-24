@@ -91,9 +91,9 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Fxr = false;
     this.Vxr = 0;
     this.hQa = true;
-    this.xKd = false;
+    this.qKd = false;
     this.Hxr = true;
-    this.dCm = new Set();
+    this.pIm = new Set();
     this.Lz = Vector_1.Vector.Create();
     this.Fse = undefined;
     this.jxr = undefined;
@@ -101,7 +101,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Wse = Vector_1.Vector.Create();
     this.Kxr = Vector_1.Vector.Create();
     this.ZHa = Rotator_1.Rotator.Create();
-    this.mCm = Rotator_1.Rotator.Create();
+    this.vIm = Rotator_1.Rotator.Create();
     this.Qxr = undefined;
     this.Xxr = Vector_1.Vector.Create();
     this.$xr = Vector_1.Vector.Create();
@@ -109,7 +109,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.I7 = Vector_1.Vector.Create();
   }
   get IsDitherEffectEnabled() {
-    return this.dCm.size > 0;
+    return this.pIm.size > 0;
   }
   SetPlayCameraSequenceEnabled(t) {
     this.Hxr = t;
@@ -239,7 +239,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.Lxr = undefined;
     this.Exr = 1;
     this.Sxr = 1;
-    this.xKd = false;
+    this.qKd = false;
     this.Dxr = false;
     if (this.Rxr) {
       ModelManager_1.ModelManager.BattleUiModel.ChildViewData.ShowBattleView(2);
@@ -267,10 +267,10 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       this.iwr();
       this.vxr += t * MathUtils_1.MathUtils.MillisecondToSecond * this.Mxr;
       this.exr.SequencePlayer.PlayToSeconds(this.vxr);
-      this.fCm();
+      this.yIm();
       this.owr();
       this.CheckCollision(false);
-      this.gCm();
+      this.SIm();
       if (this.vxr >= this.uAo) {
         this.Zxr();
       } else if (this.Rxr && this.Uxr > 0 && this.vxr >= this.Uxr) {
@@ -283,12 +283,12 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       }
     } else if (this.yxr) {
       this.yxr = Math.max(0, this.yxr - t * MathUtils_1.MathUtils.MillisecondToSecond);
-      this.fCm();
+      this.yIm();
       this.CheckCollision(true);
     }
   }
   iwr() {
-    this.Mxr = this.Tae?.GetEntityNoBlueprint()?.GetComponent(126)?.CurrentTimeScale ?? 1;
+    this.Mxr = this.Tae?.GetEntityNoBlueprint()?.GetComponent(131)?.CurrentTimeScale ?? 1;
   }
   nwr() {
     return this.sor ?? ControllerHolder_1.ControllerHolder.CameraController.GetCharacter();
@@ -298,7 +298,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     this.hQa = true;
     this.Exr = t.BlendInTime;
     this.Sxr = t.BlendOutTime;
-    this.xKd = t.NeedWaitInPlot;
+    this.qKd = t.NeedWaitInPlot;
     this.nZo = t.CameraSequence;
     if (this.nZo) {
       this.ResetCameraRatioSetting();
@@ -403,7 +403,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     if (!this.exr) {
       return false;
     }
-    var e = t.CharacterActorComponent.Entity.GetComponent(181);
+    var e = t.CharacterActorComponent.Entity.GetComponent(186);
     if (e.Valid) {
       e.StopModelBuffer();
     }
@@ -414,7 +414,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     }
     this.Ixr = i;
     this.Txr = CameraUtility_1.CameraUtility.GetRootTransform(t);
-    this.Lxr = t?.CharacterActorComponent?.Entity?.GetComponent(45);
+    this.Lxr = t?.CharacterActorComponent?.Entity?.GetComponent(46);
     if (e.Valid) {
       i = e.MainAnimInstance;
       if (UE.KuroStaticLibrary.IsObjectClassByName(i, CharacterNameDefines_1.CharacterNameDefines.ANIM_INSTANCE_ROLE)) {
@@ -472,7 +472,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     if (this.Tae?.IsValid()) {
       this.Tae.CharRenderingComponent?.OnFinalizedLevelSequence();
     }
-    this.xKd = false;
+    this.qKd = false;
     this.Ixr = undefined;
     this.rRe = undefined;
     this.Txr = undefined;
@@ -507,20 +507,20 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
       this.ZPr.CineCamera.D_K2_SetActorLocation(t, false, undefined, false);
     }
   }
-  gCm() {
+  SIm() {
     if (this.IsDitherEffectEnabled && this.Tae?.IsValid() && this.Qxr?.IsValid()) {
       var i = ControllerHolder_1.ControllerHolder.CameraController.FightCamera?.LogicComponent;
       if (i) {
         this.Lz.DeepCopy(this.Qxr.GetLocation());
         this.Kxr.DeepCopy(this.ZPr.CineCamera.D_K2_GetActorLocation());
         this.ZHa.DeepCopy(this.ZPr.CineCamera.K2_GetActorRotation());
-        CameraUtility_1.CameraUtility.GetRotatorInGravity(this.ZHa, this.mCm);
+        CameraUtility_1.CameraUtility.GetRotatorInGravity(this.ZHa, this.vIm);
         var s = Vector_1.Vector.DistSquared(this.Lz, this.Kxr);
         let t = 1;
         if (s < i.StartHideDistanceSquared) {
           t = MathUtils_1.MathUtils.RangeClamp(Math.sqrt(s), i.StartHideDistance, i.CompleteHideDistance, i.StartDitherValue, 0.01);
         }
-        s = this.mCm.Pitch;
+        s = this.vIm.Pitch;
         let e = 1;
         if (s > i.StartHidePitch) {
           e = MathUtils_1.MathUtils.RangeClamp(s, i.StartHidePitch, i.CompleteHidePitch, i.StartDitherValue, 0.01);
@@ -549,11 +549,11 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     return new UE.TransformDouble(t.GetRotation(), t.GetTranslation(), t.GetScale3D());
   }
   OnChangeTimeDilation(t) {}
-  fCm() {
+  yIm() {
     var t;
     if (this.Tae?.IsValid()) {
       if (FNameUtil_1.FNameUtil.IsEmpty(this.Nxr)) {
-        t = this.Tae.GetEntityNoBlueprint().GetComponent(181);
+        t = this.Tae.GetEntityNoBlueprint().GetComponent(186);
         this.Qxr = t.GetCameraTransform();
       } else {
         this.Qxr = this.GetBoneTransform(this.Nxr);
@@ -580,16 +580,16 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     }
   }
   CheckSphereCollision() {
-    return this.Vxr !== 0 && (this.jxr.WorldContextObject = GlobalData_1.GlobalData.World, this.Tae.GetEntityNoBlueprint().GetComponent(181).GetCameraPosition(this.Xxr), this.$xr.DeepCopy(this.Tae.CharacterActorComponent.ActorForwardProxy), this.$xr.Multiply(this.kxr.X, this.$xr), this.Yxr.DeepCopy(Vector_1.Vector.OneVectorProxy), this.Yxr.Multiply(this.kxr.Y, this.Yxr), this.I7.DeepCopy(Vector_1.Vector.UpVectorProxy), this.I7.Multiply(this.kxr.Z, this.I7), this.Xxr.Addition(this.$xr, this.Xxr), this.Xxr.Addition(this.Yxr, this.Xxr), this.Xxr.Addition(this.I7, this.Xxr), this._sr.Empty(), this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter()), this.jxr.ActorsToIgnore = this._sr, TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.jxr, this.Xxr), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.jxr, this.Xxr), this.jxr.Radius = this.Vxr, TraceElementCommon_1.TraceElementCommon.SphereTrace(this.jxr, PROFILE_KEY2));
+    return this.Vxr !== 0 && (this.jxr.WorldContextObject = GlobalData_1.GlobalData.World, this.Tae.GetEntityNoBlueprint().GetComponent(186).GetCameraPosition(this.Xxr), this.$xr.DeepCopy(this.Tae.CharacterActorComponent.ActorForwardProxy), this.$xr.Multiply(this.kxr.X, this.$xr), this.Yxr.DeepCopy(Vector_1.Vector.OneVectorProxy), this.Yxr.Multiply(this.kxr.Y, this.Yxr), this.I7.DeepCopy(Vector_1.Vector.UpVectorProxy), this.I7.Multiply(this.kxr.Z, this.I7), this.Xxr.Addition(this.$xr, this.Xxr), this.Xxr.Addition(this.Yxr, this.Xxr), this.Xxr.Addition(this.I7, this.Xxr), this._sr.Empty(), this._sr.Add(ControllerHolder_1.ControllerHolder.CameraController.GetCharacter()), this.jxr.ActorsToIgnore = this._sr, TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.jxr, this.Xxr), TraceElementCommon_1.TraceElementCommon.SetEndLocation(this.jxr, this.Xxr), this.jxr.Radius = this.Vxr, TraceElementCommon_1.TraceElementCommon.SphereTrace(this.jxr, PROFILE_KEY2));
   }
   GetBoneTransform(t) {
     return this.Tae.Mesh.D_GetSocketTransform(t, 0);
   }
   SetDitherEffectEnable(t) {
-    this.dCm.add(t);
+    this.pIm.add(t);
   }
   SetDitherEffectDisable(t) {
-    this.dCm.delete(t);
+    this.pIm.delete(t);
   }
   SetCameraCollisionState(t) {
     this.hQa = t;
@@ -627,7 +627,7 @@ let SequenceCameraPlayerComponent = class SequenceCameraPlayerComponent extends 
     return t;
   }
   GetIfNeedWaitInPlot() {
-    return this.xKd;
+    return this.qKd;
   }
 };
 SequenceCameraPlayerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(10)], SequenceCameraPlayerComponent);

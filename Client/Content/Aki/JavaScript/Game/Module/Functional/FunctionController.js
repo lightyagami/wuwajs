@@ -23,6 +23,7 @@ const UiModel_1 = require("../../Ui/UiModel");
 const ActivityDirectTrainHelper_1 = require("../Activity/ActivityContent/DirectTrain/ActivityDirectTrainHelper");
 const EditFormationController_1 = require("../EditFormation/EditFormationController");
 const HonamiStoryController_1 = require("../HonamiStory/HonamiStoryController");
+const InfrastructureController_1 = require("../Infrastructure/InfrastructureController");
 const MailBindController_1 = require("../MailBind/MailBindController");
 const TutorialController_1 = require("../Tutorial/TutorialController");
 class FunctionController extends UiControllerBase_1.UiControllerBase {
@@ -58,24 +59,29 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
     this.K9t.set(10072, FunctionController.jtl);
     this.K9t.set(10086, FunctionController.D71);
     this.K9t.set(10095, FunctionController.Fvu);
-    this.K9t.set(10102, FunctionController.OMm);
+    this.K9t.set(10102, FunctionController.LBm);
+    this.K9t.set(10130, FunctionController.d$m);
+    this.K9t.set(10132, FunctionController.jrf);
+    this.K9t.set(10098, FunctionController.wCf);
+    this.K9t.set(10131, FunctionController.jvf);
+    this.K9t.set(10133, FunctionController.DTf);
     return true;
   }
   static InitFunctionOpenViewLimit() {
     var o = FunctionOpenViewLimitAll_1.configFunctionOpenViewLimitAll.GetConfigList();
-    var e = o.length;
-    for (let n = 0; n < e; n++) {
-      var t = o[n];
-      this.p7t.add(t.ViewName);
+    var r = o.length;
+    for (let n = 0; n < r; n++) {
+      var e = o[n];
+      this.p7t.add(e.ViewName);
     }
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseView, this.v7t);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.sLm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.Hgf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CloseView, this.v7t);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.sLm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenFunctionRelateView, this.Hgf);
   }
   static async TryOpenFunctionOpenView() {
     if (!this.M7t()) {
@@ -91,25 +97,25 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
   }
   static async ManualOpenFunctionOpenView(...n) {
     var o;
-    var e = [];
-    for (const t of n) {
-      if (ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(t).ShowUIType !== 2) {
+    var r = [];
+    for (const e of n) {
+      if (ConfigManager_1.ConfigManager.FunctionConfig.GetFunctionCondition(e).ShowUIType !== 2) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Functional", 10, "传入的id表格不支持手动开启,详细查功能开启表", ["FunctionId", t]);
+          Log_1.Log.Error("Functional", 10, "传入的id表格不支持手动开启,详细查功能开启表", ["FunctionId", e]);
         }
-      } else if ((o = ModelManager_1.ModelManager.FunctionModel.GetFunctionInstance(t)).GetIsOpen()) {
+      } else if ((o = ModelManager_1.ModelManager.FunctionModel.GetFunctionInstance(e)).GetIsOpen()) {
         if (o.GetHasManualShowUi()) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Functional", 10, "传入的id已经手动开启过了,不允许再次开启", ["FunctionId", t]);
+            Log_1.Log.Info("Functional", 10, "传入的id已经手动开启过了,不允许再次开启", ["FunctionId", e]);
           }
         } else {
-          e.push(t);
+          r.push(e);
         }
       } else if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Functional", 10, "传入的id还未开启", ["FunctionId", t]);
+        Log_1.Log.Info("Functional", 10, "传入的id还未开启", ["FunctionId", e]);
       }
     }
-    return !(e.length <= 0) && this.E7t(e);
+    return !(r.length <= 0) && this.E7t(r);
   }
   static async E7t(n) {
     var o = Protocol_1.Aki.Protocol.Krs.create();
@@ -142,18 +148,18 @@ class FunctionController extends UiControllerBase_1.UiControllerBase {
       ModelManager_1.ModelManager.InputDistributeModel.AddInputDistributeTagChangedListener(InputDistributeDefine_1.inputDistributeTagDefine.UiInputRootTag, this.xMe);
       return false;
     }
-    let e = true;
-    var t = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
-    for (const r of [1733479717, -1791250236]) {
-      if (t?.GameplayTagComponent?.HasTag(r)) {
-        t?.GameplayTagComponent?.AddTagAddOrRemoveListener(r, FunctionController.Uzs);
+    let r = true;
+    var e = ModelManager_1.ModelManager.BattleUiModel.GetCurRoleData();
+    for (const t of [1733479717, -1791250236]) {
+      if (e?.GameplayTagComponent?.HasTag(t)) {
+        e?.GameplayTagComponent?.AddTagAddOrRemoveListener(t, FunctionController.Uzs);
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Functional", 37, "功能开启界面打开时存在Tag限制", ["TagId", r]);
+          Log_1.Log.Info("Functional", 37, "功能开启界面打开时存在Tag限制", ["TagId", t]);
         }
-        e = false;
+        r = false;
       }
     }
-    return !!e;
+    return !!r;
   }
   static S7t(n) {
     if (!this.y7t) {
@@ -247,7 +253,7 @@ FunctionController.Uzs = (n, o) => {
 FunctionController.v7t = n => {
   FunctionController.TryOpenFunctionOpenView();
 };
-FunctionController.sLm = n => {
+FunctionController.Hgf = n => {
   _a.OpenFunctionRelateView(n);
 };
 FunctionController.Q9t = () => {
@@ -340,6 +346,27 @@ FunctionController.a7t = () => {
 FunctionController.l7t = () => {
   ControllerHolder_1.ControllerHolder.BattlePassController.OpenBattlePassView();
 };
-FunctionController.OMm = () => {
+FunctionController.LBm = () => {
   HonamiStoryController_1.HonamiStoryController.OpenHonamiStoryBag();
+};
+FunctionController.d$m = () => {
+  var n = {
+    ShortMessage: undefined,
+    NeedShowTips: false,
+    OpenWay: Number(2),
+    ViewType: Number(1)
+  };
+  UiManager_1.UiManager.OpenView("PhoneMsgPanelViewBig", n);
+};
+FunctionController.jrf = () => {
+  ControllerHolder_1.ControllerHolder.PhantomArenaBattleController.OpenPhantomArenaMapEntrance();
+};
+FunctionController.jvf = () => {
+  InfrastructureController_1.InfrastructureController.OpenInfrastructureMainView();
+};
+FunctionController.wCf = () => {
+  ControllerHolder_1.ControllerHolder.MotorcycleDevelopController.OpenRootView();
+};
+FunctionController.DTf = () => {
+  ControllerHolder_1.ControllerHolder.WeatherController.TryOpenWeatherCentralMainView();
 }; //# sourceMappingURL=FunctionController.js.map

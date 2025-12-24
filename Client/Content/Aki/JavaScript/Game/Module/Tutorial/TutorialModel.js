@@ -129,7 +129,7 @@ class TutorialModel extends ModelBase_1.ModelBase {
         }
       }
     });
-    if (o !== TutorialDefine_1.ETutorialType.All) {
+    if (o !== TutorialDefine_1.ETutorialType.All || e !== 0) {
       return a;
     }
     let n = a.length;
@@ -170,48 +170,48 @@ class TutorialModel extends ModelBase_1.ModelBase {
     }
     return false;
   }
-  MakeSearchList(e, t) {
-    let i = undefined;
-    var r = [];
+  MakeSearchList(e, t, i = 0) {
+    let r = undefined;
+    var o = [];
     try {
-      i = new RegExp(e, "i");
+      r = new RegExp(e, "i");
     } catch {
       return {
-        ItemData: r,
+        ItemData: o,
         HasTutorial: false
       };
     }
-    let o = false;
-    for (const s of Array.from(this.bRo.keys()).sort(e => e === t ? -1 : 1)) {
-      if (s !== TutorialDefine_1.ETutorialType.All) {
-        var a;
-        var n = [];
-        for (const u of this.bRo.get(s).values()) {
-          if (!u.IsExcludedFromWiki && !((a = u.GetTutorialTitle()).search(i) < 0)) {
-            a = {
+    let a = false;
+    for (const u of Array.from(this.bRo.keys()).sort(e => e === t ? -1 : 1)) {
+      if (u !== TutorialDefine_1.ETutorialType.All) {
+        var n;
+        var s = [];
+        for (const l of this.bRo.get(u).values()) {
+          if (!l.IsExcludedFromWiki && l.TutorialData?.ExclusiveType === i && !((n = l.GetTutorialTitle()).search(r) < 0)) {
+            n = {
               IsTypeTitle: false,
-              TextId: u.TutorialData.GroupName,
-              SavedData: u,
-              Text: a.replace(e, TutorialDefine_1.TutorialUtils.AddSearchHighlight(e))
+              TextId: l.TutorialData.GroupName,
+              SavedData: l,
+              Text: n.replace(e, TutorialDefine_1.TutorialUtils.AddSearchHighlight(e))
             };
-            o = true;
-            n.push(a);
+            a = true;
+            s.push(n);
           }
         }
         if (t === TutorialDefine_1.ETutorialType.All) {
-          r.push(...n);
-        } else if (n.length) {
-          r.push({
+          o.push(...s);
+        } else if (s.length) {
+          o.push({
             IsTypeTitle: true,
-            TextId: TutorialDefine_1.TutorialUtils.GetTutorialTypeTxt(s)
+            TextId: TutorialDefine_1.TutorialUtils.GetTutorialTypeTxt(u)
           });
-          r.push(...n);
+          o.push(...s);
         }
       }
     }
     return {
-      ItemData: r,
-      HasTutorial: o
+      ItemData: o,
+      HasTutorial: a
     };
   }
   GetSavedDataById(e) {

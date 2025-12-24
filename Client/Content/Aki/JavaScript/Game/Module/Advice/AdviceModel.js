@@ -225,7 +225,7 @@ class AdviceModel extends ModelBase_1.ModelBase {
         return false;
       } else if (ModelManager_1.ModelManager.CreatureModel.IsMyWorld()) {
         if (AdviceController_1.AdviceController.CheckIfStandAndInValidActor()) {
-          return !(e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209)).HasTag(1996802261) && (!!e.HasTag(248240472) || !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("Advice", 27, "行为状态.动作状态.站立Tag"), 1));
+          return !(e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215)).HasTag(1996802261) && (!!e.HasTag(248240472) || !(Log_1.Log.CheckDebug() && Log_1.Log.Debug("Advice", 27, "行为状态.动作状态.站立Tag"), 1));
         } else {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Advice", 27, "CheckIfStandAndInValidActor");
@@ -271,7 +271,7 @@ class AdviceModel extends ModelBase_1.ModelBase {
     } else if (this.Q9e()) {
       if (ModelManager_1.ModelManager.CreatureModel.IsMyWorld()) {
         if (AdviceController_1.AdviceController.CheckIfStandAndInValidActor()) {
-          if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209)).HasTag(1996802261)) {
+          if ((e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215)).HasTag(1996802261)) {
             return "AdviceCannotOpenOnBattle";
           } else if (e.HasTag(248240472)) {
             return "CurrentStateCannotPutAdvice";

@@ -97,16 +97,16 @@ class UiConfig {
   static GetMemoryTag(e) {
     var i = ConfigManager_1.ConfigManager.UiViewConfig.GetUiShowConfig(e);
     if (i.MemoryModuleTag) {
-      this.Tsm.Clear();
-      this.Tsm.Append(i.MemoryModuleTag);
-      this.Tsm.Append(".");
-      this.Tsm.Append(e);
-      return this.Tsm.ToString();
+      this.__m.Clear();
+      this.__m.Append(i.MemoryModuleTag);
+      this.__m.Append(".");
+      this.__m.Append(e);
+      return this.__m.ToString();
     } else {
       return e;
     }
   }
 }
-(exports.UiConfig = UiConfig).Tsm = new StringBuilder_1.StringBuilder();
+(exports.UiConfig = UiConfig).__m = new StringBuilder_1.StringBuilder();
 UiConfig.Jcr = new Map();
 UiConfig.CanOpenWhileClearSceneViewNameSet = new Set(LoadingDefine_1.loadingViewList); //# sourceMappingURL=UiConfig.js.map

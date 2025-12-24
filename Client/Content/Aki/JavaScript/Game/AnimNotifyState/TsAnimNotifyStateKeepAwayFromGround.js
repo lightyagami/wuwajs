@@ -91,7 +91,7 @@ class TsAnimNotifyStateKeepAwayFromGround extends UE.KuroAnimNotifyState {
     return e;
   }
   MoveToTarget(t, s, e) {
-    var r = e.Entity.GetComponent(182).GetHeightAboveGround(this.TsMaxHeight);
+    var r = e.Entity.GetComponent(187).GetHeightAboveGround(this.TsMaxHeight);
     if (r < this.TsMinHeight) {
       this.TsTmpVector.Set(0, 0, this.TsMinHeight - r);
       s = this.GetRate(t, s);

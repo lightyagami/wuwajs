@@ -3,7 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.keySettingDeviceInfoRecord = undefined;
+exports.keySettingDeviceInfoRecord = exports.menuKeySettingExclusiveTypeList = exports.KeySettingExclusiveTypeData = undefined;
+class KeySettingExclusiveTypeData {
+  constructor() {
+    this.Type = 0;
+    this.NameTextId = undefined;
+    this.IconSpritePath = undefined;
+  }
+}
+exports.KeySettingExclusiveTypeData = KeySettingExclusiveTypeData;
+exports.menuKeySettingExclusiveTypeList = [0, 2];
 exports.keySettingDeviceInfoRecord = {
   [0]: {
     DeviceType: 0,

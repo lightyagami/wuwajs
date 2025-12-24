@@ -21,7 +21,7 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
       case ICondition_1.EPlayerCheckType.AnyRole:
         return this.oLe(ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(), e.AttributeTypes);
       case ICondition_1.EPlayerCheckType.Team:
-        return this.Xtm(e.AttributeTypes);
+        return this.Tnm(e.AttributeTypes);
       default:
         return false;
     }
@@ -46,11 +46,11 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
     }
     return t;
   }
-  Xtm(e) {
+  Tnm(e) {
     let r = true;
     for (const t of e) {
       if (t.Type === ICondition_1.EPlayerAttributeType.StabilityPoint) {
-        r &&= this.Ivm(t);
+        r &&= this.Dwm(t);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelCondition", 93, "检测目标战斗属性 队伍属性检查", ["不支持的属性类型", t.Type]);
@@ -65,25 +65,25 @@ class LevelConditionCheckTargetAttribute extends LevelGeneralBase_1.LevelConditi
   }
   rLe(e, r) {
     var t;
-    var e = e.Entity?.GetComponent(177);
-    return !!e && (t = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life), e = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n), this.ztm(r.Compare, t / e * 100, r.Value));
+    var e = e.Entity?.GetComponent(182);
+    return !!e && (t = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.Proto_Life), e = e.GetCurrentValue(Protocol_1.Aki.Protocol.Vks.l5n), this.Rnm(r.Compare, t / e * 100, r.Value));
   }
-  Ytm(e, r, t) {
+  bnm(e, r, t) {
     r = ControllerHolder_1.ControllerHolder.FormationAttributeController.GetValue(r);
-    return this.ztm(e.Compare, r, t ?? e.Value);
+    return this.Rnm(e.Compare, r, t ?? e.Value);
   }
-  Ivm(e) {
+  Dwm(e) {
     var r = e;
     let t = true;
     if (r.ValueGroup && r.ValueGroup > 0) {
       r = HonamiStoryUtil_1.HonamiStoryUtil.GetSteadyConsumeByCostGroup(r.ValueGroup);
-      t &&= this.Ytm(e, 13, r);
+      t &&= this.bnm(e, 13, r);
     } else {
-      t &&= this.Ytm(e, 13);
+      t &&= this.bnm(e, 13);
     }
     return t;
   }
-  ztm(e, r, t) {
+  Rnm(e, r, t) {
     switch (e) {
       case "Eq":
         return r === t;

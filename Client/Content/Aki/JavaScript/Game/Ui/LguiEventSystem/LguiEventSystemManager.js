@@ -25,9 +25,9 @@ class LguiEventSystemManager {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.LoadLguiEventSystemActor);
     LguiEventSystemManager.Odr.InitializeLguiEventSystemActor();
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.InitializeLguiEventSystemActor);
-    this.ffm();
+    this.Eym();
   }
-  static ffm() {
+  static Eym() {
     EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.OnTsLguiEventSystemInit, LguiEventSystemManager.Odr);
   }
   static Clear() {

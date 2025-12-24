@@ -48,5 +48,16 @@ exports.roleSystemModeUiParam = {
     TeachBtn: false,
     SwitchSkin: false,
     BackgroundMusicSwitch: false
+  },
+  4: {
+    RoleListButton: true,
+    RoleListButtonRedDot: false,
+    RoleList: true,
+    RoleListNeedTrial: true,
+    RoleListRedDot: false,
+    TabRedDot: false,
+    TeachBtn: true,
+    SwitchSkin: false,
+    BackgroundMusicSwitch: false
   }
 }; //# sourceMappingURL=RoleUiDefine.js.map

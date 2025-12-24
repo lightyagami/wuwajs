@@ -27,6 +27,7 @@ const CharacterUnifiedStateTypes_1 = require("../../NewWorld/Character/Common/Co
 const CombatDebugController_1 = require("../../Utils/CombatDebugController");
 const REPARAM_STEPS = 6;
 const END_DISTANCE = 30;
+const DEFAULT_TURN_SPEED = 120;
 const IS_WITH_EDITOR = cpp_1.KuroApplication.IsWithEditor() ? 1 : undefined;
 exports.MONSTER_GROUP_PATROL_KEY = "MonsterGroupPatrol";
 class MonsterGroupPatrolModel extends ModelBase_1.ModelBase {
@@ -106,6 +107,7 @@ class MonsterPatrolInfo {
     this.PbDataId = 0;
     this.EntityId = 0;
     this.IsCaptain = false;
+    this.EntityType = Protocol_1.Aki.Protocol.kks.Proto_Monster;
     this.PauseLocation = Vector_1.Vector.Create();
     this.PauseDirection = Vector_1.Vector.Create();
     this.RelativeLocation = Vector_1.Vector.Create();
@@ -116,8 +118,9 @@ class MonsterPatrolInfo {
     this.Tih = 0;
     this.PbDataId = t;
     this.EntityId = o.Entity.Id;
+    this.EntityType = o.CreatureData.GetEntityType();
     this.ActorComp = o;
-    this.MoveComp = this.ActorComp.Entity.GetComponent(182);
+    this.MoveComp = this.ActorComp.Entity.GetComponent(46);
     this.Group = e;
   }
   get GroupPatrolState() {
@@ -132,13 +135,19 @@ class MonsterPatrolInfo {
       this.Tih = t;
     }
   }
+  IsNpc() {
+    return this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Npc;
+  }
+  IsMonster() {
+    return this.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Monster;
+  }
   ResetRelativeLocation() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityData(this.PbDataId);
     this.RelativeLocation.Set(t?.Transform?.Pos.X ?? 0, t?.Transform?.Pos.Y ?? 0, t?.Transform?.Pos.Z ?? 0);
   }
   SetIsCaptain() {
     this.IsCaptain = true;
-    this.PatrolComp = this.ActorComp.Entity.GetComponent(48);
+    this.PatrolComp = this.ActorComp.Entity.GetComponent(49);
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 更新群组队长", ["PbDataId", this.ActorComp?.CreatureData?.GetPbDataId()], ["EntityId", this.ActorComp?.Entity?.Id]);
     }
@@ -195,7 +204,6 @@ class MonsterGroupInfo {
     this.GroupInfo.clear();
     this.$ie = undefined;
     this.md = undefined;
-    this.$ie = undefined;
   }
   CheckMonsterValid() {
     MonsterGroupInfo.$2l.length = 0;
@@ -203,6 +211,9 @@ class MonsterGroupInfo {
       var t = o[1];
       if (!t.ActorComp?.Valid || !t.MoveComp?.Valid) {
         MonsterGroupInfo.$2l.push(t.EntityId);
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 实体不合法了去掉", ["PbDataId", t.PbDataId]);
+        }
       }
     }
     if (MonsterGroupInfo.$2l.length > 0) {
@@ -264,26 +275,36 @@ class MonsterGroupInfo {
     this.PKl();
   }
   CheckMonsterMoveSpeed() {
-    for (const r of this.GroupInfo) {
-      const i = r[1];
+    for (const i of this.GroupInfo) {
+      const s = i[1];
       var t;
       var o;
       var e;
-      if (i.IsCaptain) {
-        this.FAl(i);
-      } else if (o = i.MoveComp?.MoveController) {
-        t = Math.min(END_DISTANCE, i.ActorComp.Radius * 0.5);
-        if ((e = o.GetMoveToLocationLogic()?.GetCurrentDistance() ?? -1) < 0) {
-          o.NavigateMoveToLocation({
-            Position: this.STl(i),
-            ReferencePosition: () => this.STl(i),
+      var r;
+      if (s.IsCaptain) {
+        this.FAl(s);
+      } else if (o = s.MoveComp?.MoveController) {
+        t = Math.min(END_DISTANCE, s.ActorComp.Radius * 0.5);
+        r = o.GetMoveToLocationLogic()?.GetCurrentDistance() ?? -1;
+        e = (this.$ie?.Option.Type === IComponent_1.ESplineType.Patrol ? this.$ie.Option.TurnSpeed : DEFAULT_TURN_SPEED) ?? DEFAULT_TURN_SPEED;
+        if (r < 0) {
+          e = {
+            Position: this.STl(s),
+            ReferencePosition: () => this.STl(s),
             Distance: END_DISTANCE + t,
             MoveState: CharacterUnifiedStateTypes_1.ECharMoveState.Walk,
-            ReturnTimeoutFailed: 3
-          });
-        } else if ((o = i.ActorComp?.Owner) instanceof UE.Character) {
-          e = MathUtils_1.MathUtils.Clamp(e - 50 - t, -50, 300) * 0.02 * 0.125 + 0.875;
-          o.SetAnimRootMotionTranslationScale(e);
+            ReturnTimeoutFailed: 3,
+            TurnSpeed: e
+          };
+          o.NavigateMoveToLocation(e);
+        } else {
+          o = MathUtils_1.MathUtils.Clamp(r - 50 - t, -50, 300) * 0.02 * 0.125 + 0.875;
+          if (s.IsNpc()) {
+            e = s.Group?.CaptainInfo?.MoveComp?.CharacterMovement?.GetMaxSpeed() ?? 100;
+            s.MoveComp?.SetMaxSpeed(e * o);
+          } else if ((r = s.ActorComp?.Owner) instanceof UE.Character) {
+            r.SetAnimRootMotionTranslationScale(o);
+          }
         }
       }
     }
@@ -294,7 +315,7 @@ class MonsterGroupInfo {
       ModelManager_1.ModelManager.CreatureModel.GetEntitiesWithPbDataId(s, o);
       var e = o[0]?.Entity;
       var r = e?.GetComponent(3);
-      var i = e?.GetComponent(45);
+      var i = e?.GetComponent(46);
       if (e && r) {
         if (i) {
           i = new MonsterPatrolInfo(s, r, this);
@@ -525,7 +546,7 @@ class MonsterGroupInfo {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("AI", 42, "[GroupAi.Patrol] 设置群组AI管理器位置到队长位置", ["EntityId", this._Dt], ["ActorLocation", r.ActorComp.ActorLocation]);
           }
-        } else if (r.MoveComp?.MoveController && ((t = (o = r.ActorComp.Entity.GetComponent(68)).GetCurrentMoveSample()).P5n = r.ActorComp.ActorLocationProxy, o.PendingMoveInfos.push(t), (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.WRs.push(o.CollectPendingMoveInfos()), Net_1.Net.Send(18891, e), Info_1.Info.IsBuildDevelopmentOrDebug && (o = {
+        } else if (r.MoveComp?.MoveController && r.IsMonster() && ((t = (o = r.ActorComp.Entity.GetComponent(71)).GetCurrentMoveSample()).P5n = r.ActorComp.ActorLocationProxy, o.PendingMoveInfos.push(t), (e = Protocol_1.Aki.Protocol.Yus.create()).uhh = ModelManager_1.ModelManager.GameModeModel.IsMulti ? ModelManager_1.ModelManager.OnlineModel.OwnerId : ModelManager_1.ModelManager.CreatureModel.GetPlayerId(), e.WRs.push(o.CollectPendingMoveInfos()), Net_1.Net.Send(18891, e), Info_1.Info.IsBuildDevelopmentOrDebug && (o = {
           scene_id: ModelManager_1.ModelManager.CreatureModel.GetSceneId(),
           instance_id: ModelManager_1.ModelManager.CreatureModel.GetInstanceId(),
           msg_id: 18891,

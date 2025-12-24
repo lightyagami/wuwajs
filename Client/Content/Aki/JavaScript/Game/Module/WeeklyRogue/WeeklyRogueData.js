@@ -21,9 +21,9 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
     this.LastInstInfo = undefined;
     this.AwardsInfoList = undefined;
     this.CycleId = 0;
-    this.CycleBeginTime = 0;
-    this.CycleEndTime = 0;
     this.WorldLevel = 0;
+    this.FreeCount = 0;
+    this.FreeCountMax = 0;
     this.HasNewSettle = false;
   }
   get NeedOpenActivityMainView() {
@@ -72,9 +72,12 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
     return ConfigManager_1.ConfigManager.WeeklyRogueConfig.GetRogueWeeklyCycleConfig(this.CycleId);
   }
   GetCycleRemainTime() {
-    return this.CycleEndTime - Time_1.Time.ServerTimeStamp / CommonDefine_1.MILLIONSECOND_PER_SECOND;
+    return this.EndShowTime - Time_1.Time.ServerTimeStamp / CommonDefine_1.MILLIONSECOND_PER_SECOND;
   }
   GetCycleBlackFlowerCost() {
+    if (this.FreeCount > 0) {
+      return 0;
+    }
     var e = this.GetCycleConfig();
     let i = 999;
     let r = 0;
@@ -131,12 +134,12 @@ class WeeklyRogueData extends ActivityData_1.ActivityBaseData {
       if (e !== t.bN_) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueCycleRefresh);
       }
-      this.CycleBeginTime = t.RN_;
-      this.CycleEndTime = t.AN_;
       this.LastInstInfo = t.LN_;
       this.Score = t.SMs;
       this.AwardsInfoList = t.wN_;
       this.WorldLevel = t.cSs;
+      this.FreeCount = Math.max(0, t.LTf - t.RTf);
+      this.FreeCountMax = t.LTf;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRefreshScoreRedDot);
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.WeeklyRogueRedDotInfoRefresh);
     } else if (Log_1.Log.CheckError()) {

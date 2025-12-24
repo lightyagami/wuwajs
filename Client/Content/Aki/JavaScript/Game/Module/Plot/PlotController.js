@@ -109,13 +109,28 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
   static TogglePlotStreamingSource(e) {
     var t = ModelManager_1.ModelManager.CameraModel.SequenceCamera.DisplayComponent.CineCamera;
     if (!this.O01?.IsValid()) {
-      this.O01 = ModelManager_1.ModelManager.GameModeModel?.CreateShapedStreamingSource(t);
+      this.O01 = ModelManager_1.ModelManager.GameModeModel?.CreateShapedStreamingSource();
+      if (this.O01) {
+        this.O01.K2_AttachToActor(t, undefined, 2, 2, 2, false);
+      }
     }
     var t = this.O01?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
     if (e) {
       t?.EnableStreamingSource();
     } else {
       t?.DisableStreamingSource();
+    }
+  }
+  static TogglePlotIndependentStreaming(e, t = undefined) {
+    if (!this.$qf?.IsValid()) {
+      this.$qf = ModelManager_1.ModelManager.GameModeModel?.CreateShapedStreamingSource(360);
+    }
+    var o = this.$qf?.GetComponentByClass(UE.WorldPartitionStreamingSourceComponent.StaticClass());
+    if (e && t) {
+      this.$qf?.D_K2_SetActorLocation(t.ToUeVector(true), false, undefined, false);
+      o?.EnableStreamingSource();
+    } else {
+      o?.DisableStreamingSource();
     }
   }
   static ChangeFormation() {
@@ -173,7 +188,6 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     ModelManager_1.ModelManager.PlotModel.CurTalkItem = undefined;
     ModelManager_1.ModelManager.PlotModel.CurShowTalk = undefined;
     ModelManager_1.ModelManager.PlotModel.TimeLimitedOptionTag = false;
-    this.RemoveAspectTransformView();
     Global_1.Global.CharacterCameraManager.FadeAmount = 0;
     CameraController_1.CameraController.ExitDialogMode();
     InputDistributeController_1.InputDistributeController.RefreshInputTag();
@@ -314,8 +328,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (t && !this.TYi.has(t.Id)) {
       this.TYi.add(t.Id);
-      e = t?.Entity?.GetComponent(178);
-      if (t = t?.Entity?.GetComponent(209)) {
+      e = t?.Entity?.GetComponent(183);
+      if (t = t?.Entity?.GetComponent(215)) {
         if (!t.HasTag(this.LYi)) {
           t.AddTag(this.LYi);
         }
@@ -337,8 +351,8 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     this.TYi.clear();
   }
   static RYi(e, t) {
-    var o = e?.GetComponent(178);
-    var e = e?.GetComponent(209);
+    var o = e?.GetComponent(183);
+    var e = e?.GetComponent(215);
     if (t) {
       e?.RemoveTag(this.LYi);
       e?.RemoveTag(this.DYi);
@@ -369,7 +383,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
         this.EndInteraction();
         return false;
       }
-      var r = o.Entity.GetComponent(201);
+      var r = o.Entity.GetComponent(207);
       if (!r) {
         this.EndInteraction();
         return false;
@@ -634,7 +648,7 @@ class PlotController extends UiControllerBase_1.UiControllerBase {
     Global_1.Global.CharacterController.GetViewportSize(o, r);
     var o = (0, puerts_1.$unref)(o);
     var o = o / (0, puerts_1.$unref)(r);
-    ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView?.EnableOnce(e);
+    ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView?.EnableAutoBlendOut(e);
     t.bConstrainAspectRatio = false;
     if (t.Filmback.SensorWidth / t.Filmback.SensorHeight < o) {
       t.Filmback.SensorWidth = t.Filmback.SensorHeight * o;
@@ -709,6 +723,7 @@ PlotController.AfterTick = o => {
   }
 };
 PlotController.O01 = undefined;
+PlotController.$qf = undefined;
 PlotController.SYi = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {
     ModelManager_1.ModelManager.PlotModel.PlotResult.ResultCode = 1;

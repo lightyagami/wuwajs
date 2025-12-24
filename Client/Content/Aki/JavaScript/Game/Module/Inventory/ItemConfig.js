@@ -83,13 +83,25 @@ class ItemConfig {
         this.umu(i);
         break;
       case 17:
-        this.IQd(i);
+        this.wQd(i);
         break;
       case 19:
-        this.TQd(i);
+        this.LQd(i);
         break;
       case 18:
         this.IBd(i);
+        break;
+      case 20:
+        this.MVm(i);
+        break;
+      case 21:
+        this.Ikf(i);
+        break;
+      case 22:
+        this.jVf(i);
+        break;
+      case 23:
+        this.$Vf(i);
     }
   }
   Cmi(i) {
@@ -376,7 +388,7 @@ class ItemConfig {
     this.ObtainedShowDescription = "";
     this.AttributesDescription = i.AttributesDescription;
   }
-  IQd(i) {
+  wQd(i) {
     this.ItemDataType = 17;
     this.ItemType = 28;
     this.MainTypeId = 1;
@@ -394,7 +406,7 @@ class ItemConfig {
     this.AttributesDescription = i.AttributesDescription;
     this.Mesh = i.Mesh;
   }
-  TQd(i) {
+  LQd(i) {
     this.ItemDataType = 19;
     this.ItemType = 29;
     this.MainTypeId = 1;
@@ -418,6 +430,74 @@ class ItemConfig {
     this.RedDotDisableRule = i.RedDotDisableRule;
     this.ShowInBag = i.ShowInBag;
     this.ObtainedShowDescription = i.ObtainedShowDescription;
+  }
+  MVm(i) {
+    this.ItemDataType = 20;
+    this.ItemType = 60016;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    var s = i.ShowTypes[0];
+    if (s) {
+      if (s = ConfigManager_1.ConfigManager.InventoryConfig.GetItemShowTypeConfig(s)) {
+        this.TypeDescription = s.Name;
+      }
+    } else {
+      this.TypeDescription = undefined;
+    }
+    this.BgDescription = i.BgDescription;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.Mesh = undefined;
+  }
+  Ikf(i) {
+    this.ItemDataType = 21;
+    this.ItemType = 30;
+    this.MainTypeId = 1;
+    this.Name = i.Title;
+    this.TypeDescription = i.TypeDescription;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.ItemAccess = i.ItemAccess;
+    this.ShowInBag = i.ShowInBag;
+    this.ObtainedShowDescription = i.ObtainedShowDescription;
+    this.Mesh = undefined;
+  }
+  jVf(i) {
+    this.ItemDataType = 22;
+    this.ItemType = 60017;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.TypeDescription = i.TypeDescription;
+    this.AttributesDescription = i.AttributesDescription;
+    this.BgDescription = i.BgDescription;
+    this.ItemAccess = i.ItemAccess;
+    this.Parameters.clear();
+    this.SortIndex = 0;
+    this.RedDotDisableRule = 0;
+    this.ShowInBag = true;
+    this.ObtainedShowDescription = "";
+  }
+  $Vf(i) {
+    this.ItemDataType = 23;
+    this.ItemType = 60018;
+    this.MainTypeId = 1;
+    this.Name = i.Name;
+    this.Icon = i.Icon;
+    this.IconMiddle = i.IconMiddle;
+    this.IconSmall = i.IconSmall;
+    this.TypeDescription = i.TypeDescription;
+    this.AttributesDescription = i.AttributesDescription;
+    this.BgDescription = i.BgDescription;
+    this.ItemAccess = i.ItemAccess;
+    this.Parameters.clear();
+    this.SortIndex = 0;
+    this.RedDotDisableRule = 0;
+    this.ShowInBag = true;
+    this.ObtainedShowDescription = "";
   }
 }
 exports.ItemConfig = ItemConfig;

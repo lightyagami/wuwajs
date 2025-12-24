@@ -167,7 +167,7 @@ Object.defineProperty(exports, "CharacterCombatMessageComponent", {
     return CharacterCombatMessageComponent_1.CharacterCombatMessageComponent;
   }
 });
-var CharacterExploreComponent_1 = require("../NewWorld/Character/Common/Component/CharacterExploreComponent");
+var CharacterExploreComponent_1 = require("../NewWorld/Character/Common/Component/Explore/CharacterExploreComponent");
 Object.defineProperty(exports, "CharacterExploreComponent", {
   enumerable: true,
   get: function () {

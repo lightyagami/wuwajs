@@ -4,11 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TsCharacterController = undefined;
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const Log_1 = require("../../Core/Common/Log");
 const Vector2D_1 = require("../../Core/Utils/Math/Vector2D");
+const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const InputMappingsDefine_1 = require("../Ui/InputDistribute/InputMappingsDefine");
@@ -104,22 +104,14 @@ class TsCharacterController extends TsBasePlayerController_1.TsBasePlayerControl
   }
   BindActionHandle() {
     super.BindActionHandle();
-    var e = (0, puerts_1.$ref)(undefined);
-    UE.InputSettings.GetInputSettings().GetActionNames(e);
-    var r = (0, puerts_1.$unref)(e);
-    for (let e = 0; e < r.Num(); e++) {
-      var t = r.Get(e);
-      this.AddActionHandle(t.toString());
+    for (const e of ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllActionMappingConfig()) {
+      this.AddActionHandle(e.ActionName);
     }
   }
   BindAxisHandle() {
     super.BindAxisHandle();
-    var e = (0, puerts_1.$ref)(undefined);
-    UE.InputSettings.GetInputSettings().GetAxisNames(e);
-    var r = (0, puerts_1.$unref)(e);
-    for (let e = 0; e < r.Num(); e++) {
-      var t = r.Get(e);
-      this.AddAxisHandle(t.toString());
+    for (const e of ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllAxisMappingConfig()) {
+      this.AddAxisHandle(e.AxisName);
     }
   }
   BindKeyHandle() {

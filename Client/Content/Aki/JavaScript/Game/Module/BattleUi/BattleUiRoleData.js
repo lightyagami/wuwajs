@@ -83,7 +83,7 @@ class BattleUiRoleData {
     };
     this.NQ_ = (t, i) => {
       if (i) {
-        ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(5);
+        ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(6);
       }
     };
     this.vJ1 = (t, i) => {
@@ -113,12 +113,12 @@ class BattleUiRoleData {
   Init(t, i) {
     this.EntityHandle = t;
     this.IsCurEntity = i;
-    this.AttributeComponent = t.Entity.GetComponent(177);
-    this.GameplayTagComponent = t.Entity.GetComponent(209);
-    this.RoleElementComponent = t.Entity.GetComponent(94);
-    this.BuffComponent = t.Entity.GetComponent(178);
-    this.ShieldComponent = t.Entity.GetComponent(75);
-    this.RoleQteComponent = t.Entity.GetComponent(101);
+    this.AttributeComponent = t.Entity.GetComponent(182);
+    this.GameplayTagComponent = t.Entity.GetComponent(215);
+    this.RoleElementComponent = t.Entity.GetComponent(97);
+    this.BuffComponent = t.Entity.GetComponent(183);
+    this.ShieldComponent = t.Entity.GetComponent(78);
+    this.RoleQteComponent = t.Entity.GetComponent(104);
     this.CreatureDataComponent = t.Entity.GetComponent(0);
     this.BaseDeathComponent = t.Entity.GetComponent(15);
     this.ActorComp = t.Entity.GetComponent(3);
@@ -138,7 +138,7 @@ class BattleUiRoleData {
       this.HeadIconEnergyBarConfig = ModelManager_1.ModelManager.BattleUiModel?.GetHeadIconEnergyBarConfig(this.RoleConfig.Id);
     }
     if (this.ActorComp?.IsAutonomousProxy && this.CreatureRoleId === 1207) {
-      ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(6);
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryCreateHud(7);
     }
     if (this.CreatureRoleId === 1608) {
       this.CheckEnergyTag = true;
@@ -152,7 +152,7 @@ class BattleUiRoleData {
   Clear() {
     this.m$e();
     if (this.ActorComp?.IsAutonomousProxy && this.CreatureRoleId === 1207) {
-      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(6);
+      ControllerHolder_1.ControllerHolder.HudUnitController.TryDestroyHud(7);
     }
     if (this.IsCurEntity) {
       this.SpecialStateMap.clear();
@@ -271,4 +271,4 @@ class BattleUiRoleData {
   }
 }
 (exports.BattleUiRoleData = BattleUiRoleData).HideElementTagList = [-1623647531, 666997186, -1987078323, -1751370752, 1522720219, 33752370];
-BattleUiRoleData.SpecialStateTagMap = new Map([[-1254507003, 0], [-1602588323, 1]]); //# sourceMappingURL=BattleUiRoleData.js.map
+BattleUiRoleData.SpecialStateTagMap = new Map([[-1254507003, 0], [342806233, 2], [-1602588323, 1], [-1785184580, 3], [-1976301727, 4]]); //# sourceMappingURL=BattleUiRoleData.js.map

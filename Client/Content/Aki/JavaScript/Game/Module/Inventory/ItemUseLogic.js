@@ -40,7 +40,7 @@ class ItemUseLogic {
     if (n.GetConfigId > RoleDefine_1.ROBOT_DATA_MIN_ID) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("NoneRole");
     } else {
-      n = n?.EntityHandle?.Entity?.GetComponent(177);
+      n = n?.EntityHandle?.Entity?.GetComponent(182);
       if (!n) {
         return false;
       }
@@ -144,25 +144,25 @@ ItemUseLogic.TryUseGiftItem = (e, r = 0) => {
     if (a.Type === GiftType_1.GiftType.Fixed || a.Type === GiftType_1.GiftType.Random || a.Type === GiftType_1.GiftType.RandomPhantom || a.Type === GiftType_1.GiftType.CaptureMonster) {
       var l = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(e);
       var _ = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(n.Name);
-      var f = [];
+      var g = [];
       const o = [{
         IncId: 0,
         ItemId: n.Id
       }, l];
-      f.push(o);
+      g.push(o);
       if (l > 1) {
-        const g = new AcquireData_1.AcquireData();
-        g.SetAcquireViewType(0);
-        g.SetAmount(1);
-        g.SetMaxAmount(l);
-        g.SetRemainItemCount(l);
-        g.SetItemData(f);
-        g.SetNameText(_);
-        g.SetConfigId(e);
-        g.SetRightButtonFunction(() => {
-          ItemUseLogic.Tmi(e, g.GetAmount());
+        const f = new AcquireData_1.AcquireData();
+        f.SetAcquireViewType(0);
+        f.SetAmount(1);
+        f.SetMaxAmount(l);
+        f.SetRemainItemCount(l);
+        f.SetItemData(g);
+        f.SetNameText(_);
+        f.SetConfigId(e);
+        f.SetRightButtonFunction(() => {
+          ItemUseLogic.Tmi(e, f.GetAmount());
         });
-        InventoryGiftController_1.InventoryGiftController.ShowAcquireView(g);
+        InventoryGiftController_1.InventoryGiftController.ShowAcquireView(f);
       } else {
         InventoryGiftController_1.InventoryGiftController.SendItemGiftUseRequest(e, 1, undefined);
       }
@@ -180,6 +180,7 @@ ItemUseLogic.TryUseShipTowerItem = e => {
   e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
   return !!e && e.GetType() === 60005 && (EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OpenActivityViewShipTower), true);
 };
+ItemUseLogic.TryUseStudentCardItem = e => e === 70290000 && (UiManager_1.UiManager.OpenView("AdmissionStudentCardView"), true);
 ItemUseLogic.TryUsePayShopCouponItem = e => {
   var e = ModelManager_1.ModelManager.InventoryModel.GetCommonItemData(e);
   return !!e && e.GetType() === 60008 && ((e = new PayShopViewData_1.PayShopViewData()).PayShopId = 6, ControllerHolder_1.ControllerHolder.PayShopController.OpenPayShopView(e), true);
@@ -200,4 +201,34 @@ ItemUseLogic.TryUseVisionRefineItem = e => {
   return !!e && !!e.GetConfig().ShowTypes.includes(54) && (CalabashController_1.CalabashController.JumpToCalabashRootView("VisionRefineTabView", {
     ViewState: 1
   }), true);
+};
+ItemUseLogic.TryUseBuffEquipItem = e => {
+  var r = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(e);
+  if (!r) {
+    return false;
+  }
+  if (r.Parameters.size === 0) {
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Inventory", 37, "使用道具失败,使用参数为空", ["ItemId", e]);
+    }
+    return false;
+  }
+  var r = ConfigManager_1.ConfigManager.BuffItemConfig;
+  var o = ModelManager_1.ModelManager.BuffItemModel;
+  if (r.IsEquipBuffItem(e) && !o.IsEquippedBuffItem(e)) {
+    var r = r.GetBuffEquipItemCategory(e);
+    var o = o.GetEquippedBuffItemId(r);
+    if (o) {
+      (r = new ConfirmBoxDefine_1.ConfirmBoxDataNew(402)).FunctionMap.set(1, () => {});
+      r.FunctionMap.set(2, () => {
+        ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1);
+      });
+      o = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfig(o).Name;
+      r.SetTextArgs(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(o));
+      ControllerHolder_1.ControllerHolder.ConfirmBoxController.ShowConfirmBoxNew(r);
+      return true;
+    }
+  }
+  ControllerHolder_1.ControllerHolder.InventoryController.RequestItemUse(e, 1);
+  return true;
 }; //# sourceMappingURL=ItemUseLogic.js.map

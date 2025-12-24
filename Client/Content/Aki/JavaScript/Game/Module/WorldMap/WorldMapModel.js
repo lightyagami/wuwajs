@@ -39,7 +39,6 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.zNl = true;
     this.JNl = true;
     this.p_d = 1;
-    this.ghl = undefined;
     this.CurrentFocalMarkType = 0;
     this.CurrentFocalMarkId = 0;
     this.WorldMapId = undefined;
@@ -60,6 +59,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.LastWorldMapPointerWorldPosition = undefined;
     this.N61 = undefined;
     this.tMd = [];
+    this.WorldExtraUiCount = 0;
     this.p3o = undefined;
     this.GEr = Info_1.Info.IsPlayInEditor;
     this.iMd = (e, t) => {
@@ -111,12 +111,6 @@ class WorldMapModel extends ModelBase_1.ModelBase {
   get JoystickClickMultiplier() {
     return this.p_d;
   }
-  get WaitToTeleportMarkConfigId() {
-    return this.ghl;
-  }
-  set WaitToTeleportMarkConfigId(e) {
-    this.ghl = e;
-  }
   GetDebugMapPath() {
     this.N61 ||= UE.NewArray(UE.Vector2D);
     return this.N61;
@@ -137,6 +131,7 @@ class WorldMapModel extends ModelBase_1.ModelBase {
     this.WorldMapAxisInteractValidation.Clear();
     this.NDl.clear();
     this.FDl.clear();
+    this.WorldExtraUiCount = 0;
     MapLogger_1.MapLogger.Clear();
     return true;
   }
@@ -428,6 +423,9 @@ class WorldMapModel extends ModelBase_1.ModelBase {
         }
       };
     }
+  }
+  GetIsMarkFocal(e, t) {
+    return this.CurrentFocalMarkType === t && this.CurrentFocalMarkId === e;
   }
 }
 exports.WorldMapModel = WorldMapModel;

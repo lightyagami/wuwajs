@@ -35,9 +35,9 @@ class LordGymConfig extends ConfigBase_1.ConfigBase {
     return LordGymEntranceById_1.configLordGymEntranceById.GetConfig(r)?.EntranceTitle;
   }
   GetAllLordGymFilterTypeConfig() {
-    var r = ConfigCommon_1.ConfigCommon.ToList(LordGymFilterTypeAll_1.configLordGymFilterTypeAll.GetConfigList());
+    let r = ConfigCommon_1.ConfigCommon.ToList(LordGymFilterTypeAll_1.configLordGymFilterTypeAll.GetConfigList());
     if (r) {
-      r.sort((r, e) => r.Id - e.Id);
+      (r = r.filter(r => r.IsEnable)).sort((r, e) => r.Id - e.Id);
     }
     return r;
   }

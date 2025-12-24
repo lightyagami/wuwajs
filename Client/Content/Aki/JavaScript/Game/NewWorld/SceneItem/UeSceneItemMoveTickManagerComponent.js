@@ -41,13 +41,13 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     this.O4u = (e, t) => {
       if (t) {
         this.k4u.add(e);
-      } else if (e?.GetComponent(233)?.VehicleEntity !== this.Entity) {
+      } else if (e?.GetComponent(242)?.VehicleEntity !== this.Entity) {
         this.k4u.delete(e);
       }
     };
   }
   OnStart() {
-    this.Hte = this.Entity.GetComponent(206);
+    this.Hte = this.Entity.GetComponent(212);
     if (this.Entity.GameBudgetConfig.GroupName.op_Equality(FNameUtil_1.FNameUtil.GetDynamicFName("MoveSceneItemEntity"))) {
       this.H7u = true;
     }
@@ -81,5 +81,5 @@ let UeSceneItemMoveTickManagerComponent = class UeSceneItemMoveTickManagerCompon
     }
   }
 };
-UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(303)], UeSceneItemMoveTickManagerComponent);
+UeSceneItemMoveTickManagerComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(322)], UeSceneItemMoveTickManagerComponent);
 exports.UeSceneItemMoveTickManagerComponent = UeSceneItemMoveTickManagerComponent; //# sourceMappingURL=UeSceneItemMoveTickManagerComponent.js.map

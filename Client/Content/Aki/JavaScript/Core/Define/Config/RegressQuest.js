@@ -34,6 +34,9 @@ class RegressQuest {
   get Grade() {
     return this.grade();
   }
+  get Version() {
+    return this.version();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -104,6 +107,14 @@ class RegressQuest {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 1;
+    }
+  }
+  version() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

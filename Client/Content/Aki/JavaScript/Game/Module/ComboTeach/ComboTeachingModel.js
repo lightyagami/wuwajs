@@ -107,8 +107,8 @@ class ComboTeachingModel extends ModelBase_1.ModelBase {
     const o = ConfigManager_1.ConfigManager.ComboTeachingConfig.GetComboTeachingConfig(e);
     e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint();
     e = EntitySystem_1.EntitySystem.Get(e);
-    const t = e?.GetComponent(209);
-    const i = e?.GetComponent(178);
+    const t = e?.GetComponent(215);
+    const i = e?.GetComponent(183);
     this.AddTagList.forEach(e => {
       t?.RemoveTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
     });
@@ -150,12 +150,12 @@ class ComboTeachingModel extends ModelBase_1.ModelBase {
     } else {
       var e = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint();
       var e = EntitySystem_1.EntitySystem.Get(e);
-      const t = e?.GetComponent(209);
+      const t = e?.GetComponent(215);
       this.AddTagList.forEach(e => {
         t?.RemoveTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(e));
       });
       this.AddTagList.length = 0;
-      const o = e?.GetComponent(178);
+      const o = e?.GetComponent(183);
       this.AddBuffList.forEach(e => {
         if (o?.GetBuffTotalStackById(e) && o?.GetBuffTotalStackById(e) > 0) {
           o?.RemoveBuff(e, -1, "ComboTeachingView.OnBeforeDestroy");
@@ -225,7 +225,7 @@ class ComboTeachingModel extends ModelBase_1.ModelBase {
     var i = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint();
     var i = EntitySystem_1.EntitySystem.Get(i);
     if (t.RemoveBuff.length > 0) {
-      var r = i?.GetComponent(178);
+      var r = i?.GetComponent(183);
       for (const n of t.RemoveBuff) {
         if (r?.GetBuffTotalStackById(n) && r?.GetBuffTotalStackById(n) > 0) {
           r?.RemoveBuff(n, -1, "ComboTeachingView.OnNodeStart");
@@ -272,7 +272,7 @@ class ComboTeachingModel extends ModelBase_1.ModelBase {
       var i = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint();
       var i = PhantomUtil_1.PhantomUtil.GetSummonedEntityByOwnerId(i, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, o);
       if (i) {
-        var r = i.Entity?.GetComponent(178);
+        var r = i.Entity?.GetComponent(183);
         if (r) {
           for (const s of t.SummonRemoveBuff) {
             r.RemoveBuff(s, -1, "ComboTeachingView.SummonRemoveBuff");

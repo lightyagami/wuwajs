@@ -30,7 +30,7 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const CombatMessage_1 = require("./CombatMessage");
 class RoleSceneInteractController extends ControllerBase_1.ControllerBase {
   static OnHookMoveNotify(e, o) {
-    var t = e?.GetComponent(102);
+    var t = e?.GetComponent(105);
     if (t) {
       if (o.j6n === "CIl") {
         t.SimulateHookTargetEntity = undefined;

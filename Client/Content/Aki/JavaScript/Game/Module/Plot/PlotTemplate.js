@@ -381,14 +381,14 @@ class PlotTemplate {
           if (o = i.Entity.GetComponent(3)) {
             ModelManager_1.ModelManager.WorldModel.AddIgnore(o.Actor);
             o.ClearInput();
-            if ((s = i.Entity.GetComponent(40))?.Valid) {
+            if ((s = i.Entity.GetComponent(41))?.Valid) {
               s.StopAllSkills("PlotTemplate.ControlActor");
             }
             o.SetActorVelocity(Vector_1.Vector.ZeroVectorProxy);
-            if ((s = i.Entity.GetComponent(181))?.Valid) {
-              this.pvm(a, undefined);
+            if ((s = i.Entity.GetComponent(186))?.Valid) {
+              this.Swm(a, undefined);
             }
-            if ((r = i.Entity.GetComponent(68))?.Valid && (a.OriginMoveSync = r.GetEnableMovementSync(), a.OriginMoveSync)) {
+            if ((r = i.Entity.GetComponent(71))?.Valid && (a.OriginMoveSync = r.GetEnableMovementSync(), a.OriginMoveSync)) {
               r.SetEnableMovementSync(false, "PlotTemplate");
             }
             HoldingHandsController_1.HoldingHandsController.ForceNoLerpNextUpdate(i);
@@ -408,7 +408,7 @@ class PlotTemplate {
             a.Visible = true;
             a.OriginMoveMode = o.Actor.CharacterMovement.MovementMode;
             if (!a.IsPlayer()) {
-              r = i?.Entity?.GetComponent(191);
+              r = i?.Entity?.GetComponent(197);
               a.FaceChangeManager = r?.ExpressionController;
             }
             if (a.TalkerId !== -1) {
@@ -420,30 +420,30 @@ class PlotTemplate {
               Log_1.Log.Warn("Plot", 26, "未配置说话人，口型和自动看向功能不生效", ["演员位", t]);
             }
             if (t === this.dJi) {
-              o.Entity.GetComponent(81).HideWeapon(-1, true, false);
+              o.Entity.GetComponent(84).HideWeapon(-1, true, false);
               if (!this.EJi) {
                 o.Actor.CharRenderingComponent?.SetDisableFightDither(true);
               }
               a.PositionLocked = this.nx.KeepMainRolePose;
             } else {
               NpcPerformController_1.NpcPerformController.ForceSetNpcDitherVisible(true, a.PbDataId, 1);
-              if ((r = i.Entity.GetComponent(191))?.Valid) {
+              if ((r = i.Entity.GetComponent(197))?.Valid) {
                 a.OriginEnableLookAt = r.OpenLookAt;
                 r.SetLookAtPlayerEnabled(false);
                 r.OnNpcInPlot(true);
                 a.PositionLocked = r.GetIsUseFixLocation();
               }
-              if ((r = i.Entity?.GetComponent(47))?.Valid && (a.OriginEnableAi = r.IsAiDriver && r.IsEnabled(), a.OriginEnableAi)) {
+              if ((r = i.Entity?.GetComponent(48))?.Valid && (a.OriginEnableAi = r.IsAiDriver && r.IsEnabled(), a.OriginEnableAi)) {
                 r.DisableAi("Plot Control Ai");
               }
-              if (!a.PositionLocked && !i?.Entity?.GetComponent(233)?.IsOnVehicle) {
+              if (!a.PositionLocked && !i?.Entity?.GetComponent(242)?.IsOnVehicle) {
                 o.Actor.KuroSetMovementMode({
                   Mode: 1,
                   Context: "[PlotTemplate.ControlActor]"
                 });
               }
               s.SetBlendSpaceLookAt(true);
-              if ((r = i?.Entity?.GetComponent(302)) && r.GetIfHanding()) {
+              if ((r = i?.Entity?.GetComponent(321)) && r.GetIfHanding()) {
                 r.OnlyStopAiMove();
                 a.HoldingHands = true;
               }
@@ -485,14 +485,14 @@ class PlotTemplate {
           var _ = EntitySystem_1.EntitySystem.Get(s.EntityId);
           var a = o.InitialState?.InitialLookAt;
           if (a) {
-            r = _.GetComponent(181);
+            r = _.GetComponent(186);
             this.wJi(r, a, s);
           }
           var a = o.InitialState?.InitialEffects;
           if (a) {
             let t = undefined;
             for (const l of t = s.IsPlayer() && ModelManager_1.ModelManager.PlayerInfoModel?.GetPlayerGender() === 1 ? a.EffectIdsMaleVariant ?? a.EffectIds : a.EffectIds) {
-              var h = _.GetComponent(229);
+              var h = _.GetComponent(238);
               if (h) {
                 s.QueHandleIds.push(h.AddCue(l));
               }
@@ -801,7 +801,7 @@ class PlotTemplate {
   WJi() {
     for (const t of this.DJi) {
       if (t.Valid && t.Visible) {
-        EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(181)?.StartForceDisableAnimOptimization(0);
+        EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(186)?.StartForceDisableAnimOptimization(0);
       }
     }
   }
@@ -868,16 +868,16 @@ class PlotTemplate {
             ResourceSystem_1.ResourceSystem.CancelAsyncLoad(o.MouseMontageLoadingId);
             o.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
           }
-          var a = s.GetComponent(181);
+          var a = s.GetComponent(186);
           var _ = a?.MainAnimInstance;
           if (ObjectUtils_1.ObjectUtils.IsValid(_)) {
-            this.pvm(o, undefined);
+            this.Swm(o, undefined);
           }
-          var _ = s.GetComponent(68);
+          var _ = s.GetComponent(71);
           if (_?.Valid && o.OriginMoveSync) {
             _.SetEnableMovementSync(true, "PlotTemplate");
           }
-          const h = s?.GetComponent(229);
+          const h = s?.GetComponent(238);
           if (h) {
             o.QueHandleIds.forEach(t => {
               if (t !== GameplayCueController_1.INVALID_CUE_HANDLE) {
@@ -898,10 +898,10 @@ class PlotTemplate {
             this.eOd(o);
           } else {
             NpcPerformController_1.NpcPerformController.ForceSetNpcDitherVisible(false, o.PbDataId, 1);
-            if ((_ = s?.GetComponent(47))?.Valid && o.OriginEnableAi) {
+            if ((_ = s?.GetComponent(48))?.Valid && o.OriginEnableAi) {
               _.EnableAi("Plot Control Ai");
             }
-            if ((_ = s.GetComponent(191))?.Valid) {
+            if ((_ = s.GetComponent(197))?.Valid) {
               if (o.OriginEnableLookAt) {
                 _.SetLookAtPlayerEnabled(true);
               }
@@ -913,7 +913,7 @@ class PlotTemplate {
               }
               _.OnNpcInPlot(false);
             }
-            if (!s.GetComponent(233)?.IsOnVehicle) {
+            if (!s.GetComponent(242)?.IsOnVehicle) {
               r.Actor.KuroSetMovementMode({
                 Mode: o.OriginMoveMode,
                 Context: "[PlotTemplate.ReleaseActor]"
@@ -925,7 +925,7 @@ class PlotTemplate {
               a = r.SkeletalMesh.SkeletalMesh;
               UE.KuroMeshTextureFunctionLibrary.HandleSkeletalMeshComponentStreaming(a, false);
             }
-            if ((_ = s?.GetComponent(302)) && _.GetIsBeHoldingHands()) {
+            if ((_ = s?.GetComponent(321)) && _.GetIsBeHoldingHands()) {
               _.OnlyStartAiMove();
             }
             o.FaceChangeManager?.ResetFacialExpressionOuter();
@@ -970,7 +970,7 @@ class PlotTemplate {
           if (e.IsPlayer()) {
             o.SetInputRotator(h);
           } else {
-            s = i.GetComponent(46);
+            s = i.GetComponent(47);
             r = Rotator_1.Rotator.Create(h);
             a = Vector_1.Vector.Create();
             r.Vector(a);
@@ -984,7 +984,7 @@ class PlotTemplate {
           o.SetActorRotation(h, "模板演出结束设置位置", false);
           o.SetInputRotator(h);
           o.FixBornLocation("模板演出结束设置位置", true, _, false);
-          if (i?.GetComponent(302)?.GetIfHanding()) {
+          if (i?.GetComponent(321)?.GetIfHanding()) {
             o.MoveComp?.MoveController.PushMoveInfo();
           }
         }
@@ -1181,8 +1181,8 @@ class PlotTemplate {
     });
     for (const h of this.DJi) {
       if (!!h.Valid && !h.Visible && !h.LookLocked) {
-        if (EntitySystem_1.EntitySystem.Get(h.EntityId)?.GetComponent(181)?.Valid) {
-          this.pvm(h, undefined);
+        if (EntitySystem_1.EntitySystem.Get(h.EntityId)?.GetComponent(186)?.Valid) {
+          this.Swm(h, undefined);
         }
       }
     }
@@ -1191,26 +1191,26 @@ class PlotTemplate {
         const l = this.DJi[n.Index];
         var a;
         var _;
-        if (l.Valid && (_ = EntitySystem_1.EntitySystem.Get(l.EntityId)?.GetComponent(181))?.Valid) {
+        if (l.Valid && (_ = EntitySystem_1.EntitySystem.Get(l.EntityId)?.GetComponent(186))?.Valid) {
           a = l.LookLocked;
           if ((!r.has(n.Index) || !this.Iia(_, r.get(n.Index), l, o)) && !a) {
             if (this.cJi === "_CU" && n === this.mJi[this.uJi]) {
-              this.pvm(l, undefined);
+              this.Swm(l, undefined);
             } else if (l.Visible && l.Valid) {
               if (o?.Visible && o?.Valid) {
                 if (l === o) {
                   if (!_.GetSightTargetPoint() && !this.zJi(_.GetSightTargetItem())) {
-                    this.pvm(l, undefined);
+                    this.Swm(l, undefined);
                   }
                 } else {
                   a = ModelManager_1.ModelManager.PlotModel.PlotGlobalConfig.PlotTemplateLookAtDelay;
                   _ = MathUtils_1.MathUtils.GetRandomRange(a[0], a[1]);
                   this.yia.DelayAction(l.EntityId, _, () => {
-                    this.pvm(l, s);
+                    this.Swm(l, s);
                   }, false);
                 }
               } else {
-                this.pvm(l, undefined);
+                this.Swm(l, undefined);
               }
             }
           }
@@ -1240,7 +1240,7 @@ class PlotTemplate {
           const l = Vector_1.Vector.Create(h.Pos.X ?? 0, h.Pos.Y ?? 0, h.Pos.Z ?? 0);
           _ = h.Lock ?? false;
           a = () => {
-            this.pvm(i, l);
+            this.Swm(i, l);
           };
           break;
         }
@@ -1248,10 +1248,10 @@ class PlotTemplate {
         var h = e;
         var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(h.EntityId);
         if (n?.IsInit) {
-          const c = n.Entity.GetComponent(3) ?? n.Entity.GetComponent(206);
+          const c = n.Entity.GetComponent(3) ?? n.Entity.GetComponent(212);
           _ = h.Lock ?? false;
           a = () => {
-            this.pvm(i, c);
+            this.Swm(i, c);
           };
         } else if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 26, "看向的实体不存在", ["pbdataid", h.EntityId]);
@@ -1260,7 +1260,7 @@ class PlotTemplate {
       case 1:
         _ = e.Lock ?? false;
         a = () => {
-          this.pvm(i, undefined);
+          this.Swm(i, undefined);
         };
         break;
       case 4:
@@ -1269,7 +1269,7 @@ class PlotTemplate {
           const m = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(3);
           _ = n.Lock ?? false;
           a = () => {
-            this.pvm(i, m);
+            this.Swm(i, m);
           };
           break;
         }
@@ -1282,7 +1282,7 @@ class PlotTemplate {
           }
           _ = false;
           a = () => {
-            this.pvm(i, t);
+            this.Swm(i, t);
           };
           break;
         }
@@ -1292,7 +1292,7 @@ class PlotTemplate {
           const d = EntitySystem_1.EntitySystem.Get(this.DJi[h.ActorIndex].EntityId)?.GetComponent(1);
           _ = h.Lock ?? false;
           a = () => {
-            this.pvm(i, d);
+            this.Swm(i, d);
           };
         }
     }
@@ -1332,7 +1332,7 @@ class PlotTemplate {
         ResourceSystem_1.ResourceSystem.CancelAsyncLoad(a.MouseMontageLoadingId);
         a.MouseMontageLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
       }
-      EntitySystem_1.EntitySystem.Get(a.EntityId)?.GetComponent(181)?.MainAnimInstance?.StopSlotAnimation(0, SequenceDefine_1.ABP_Mouth_Slot_Name);
+      EntitySystem_1.EntitySystem.Get(a.EntityId)?.GetComponent(186)?.MainAnimInstance?.StopSlotAnimation(0, SequenceDefine_1.ABP_Mouth_Slot_Name);
     }
     var e = new Set();
     if (t) {
@@ -1461,10 +1461,10 @@ class PlotTemplate {
           OnPlayCallback: t => {
             e.BodyMontage = t;
             if (e.IsPlayer()) {
+              this.iOd(e, e.FaceExpressionId);
+            } else {
               e.FaceChangeManager?.ResetFacialExpressionOuter();
               e.FaceChangeManager?.ChangeFaceForExpression(t, e.FaceExpressionId);
-            } else {
-              this.iOd(e, e.FaceExpressionId);
             }
           },
           KeepOtherMontage: true
@@ -1501,17 +1501,17 @@ class PlotTemplate {
   ij_(t, e) {
     var i = EntitySystem_1.EntitySystem.Get(t.EntityId);
     if (t.IsPlayer()) {
-      i.GetComponent(44).MontageManager.PlayMontage(e);
+      i.GetComponent(45).MontageManager.PlayMontage(e);
     } else {
-      i.GetComponent(46).PlayPerformMontage(1, e);
+      i.GetComponent(47).PlayPerformMontage(1, e);
     }
   }
   rj_(t, e) {
     var i = EntitySystem_1.EntitySystem.Get(t.EntityId);
     if (t.IsPlayer()) {
-      i.GetComponent(44).MontageManager.StopMontage(e);
+      i.GetComponent(45).MontageManager.StopMontage(e);
     } else {
-      i.GetComponent(46).StopPerformMontage(1, e);
+      i.GetComponent(47).StopPerformMontage(1, e);
     }
   }
   PJi(t) {
@@ -1556,7 +1556,7 @@ class PlotTemplate {
     }
   }
   tzi(t) {
-    var e = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(181)?.MainAnimInstance;
+    var e = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(186)?.MainAnimInstance;
     if (ObjectUtils_1.ObjectUtils.IsValid(e) && !t.MontageKeeping) {
       if (t.MontageBlendToEnd) {
         if (ObjectUtils_1.ObjectUtils.IsValid(t.BodyMontage)) {
@@ -1578,7 +1578,7 @@ class PlotTemplate {
   }
   izi(t) {
     var e;
-    var i = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(181)?.MainAnimInstance;
+    var i = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(186)?.MainAnimInstance;
     if (ObjectUtils_1.ObjectUtils.IsValid(i)) {
       if (ObjectUtils_1.ObjectUtils.IsValid(t.OverlayMontage) && i.Montage_IsPlaying(t.OverlayMontage)) {
         if (StringUtils_1.StringUtils.IsEmpty(t.OverlayMontagePath)) {
@@ -1598,7 +1598,7 @@ class PlotTemplate {
   }
   rzi(t, e, i = 1) {
     var o;
-    if (ObjectUtils_1.ObjectUtils.IsValid(e) && this.IsInTemplate && (o = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(181)?.MainAnimInstance, ObjectUtils_1.ObjectUtils.IsValid(o))) {
+    if (ObjectUtils_1.ObjectUtils.IsValid(e) && this.IsInTemplate && (o = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(186)?.MainAnimInstance, ObjectUtils_1.ObjectUtils.IsValid(o))) {
       if (this.ZYi.get(t.OverlayMontagePath) !== e) {
         if (Log_1.Log.CheckWarn()) {
           Log_1.Log.Warn("Plot", 26, "异步加载完的蒙太奇过期了");
@@ -1692,7 +1692,7 @@ class PlotTemplate {
         }
       } else {
         ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(t, false, "[PlotTemplate.ShowActor] 隐藏演出的实体");
-        if ((t = t.GetComponent(181))?.Valid) {
+        if ((t = t.GetComponent(186))?.Valid) {
           t.MainAnimInstance.Montage_Stop(0);
         }
         if (e.UseEffect) {
@@ -1714,7 +1714,7 @@ class PlotTemplate {
       if (t.Style?.Type !== "InnerVoice") {
         const o = this.aJi.get(i.WhoId);
         if (o?.Valid && o?.Visible) {
-          const s = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(181)?.MainAnimInstance;
+          const s = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(186)?.MainAnimInstance;
           if (s) {
             if ((t = PlotAudioById_1.configPlotAudioById.GetConfig(i.TidTalk)).GenLipSync) {
               t = PlotAudioModel_1.PlotAudioModel.GetAudioMouthAnimName(t);
@@ -1828,13 +1828,13 @@ class PlotTemplate {
         t.Roll = 0;
         t.Pitch = 0;
         t.Yaw = MathUtils_1.MathUtils.GetAngleByVector2D(i);
-        o.GetComponent(181).MontageManager.StopMontage({
+        o.GetComponent(186).MontageManager.StopMontage({
           Method: 0,
           BlendOutTime: 0.5
         });
         s.SetInputRotator(t);
       } else {
-        o.GetComponent(46).PerformTurn(1, {
+        o.GetComponent(47).PerformTurn(1, {
           TargetLocation: e
         });
       }
@@ -1857,7 +1857,7 @@ class PlotTemplate {
         if (!e.Valid) {
           return;
         }
-        var t = EntitySystem_1.EntitySystem.Get(e.EntityId)?.GetComponent(181)?.MainAnimInstance;
+        var t = EntitySystem_1.EntitySystem.Get(e.EntityId)?.GetComponent(186)?.MainAnimInstance;
         if (!ObjectUtils_1.ObjectUtils.IsValid(t)) {
           return;
         }
@@ -1905,7 +1905,7 @@ class PlotTemplate {
             var e;
             var i;
             o.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
-            if (t?.IsValid() && (i = (e = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(181))?.MainAnimInstance)?.IsValid() && (i.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT), t = i.PlaySlotAnimationAsDynamicMontage(t, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false), i.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t), s)) {
+            if (t?.IsValid() && (i = (e = EntitySystem_1.EntitySystem.Get(o.EntityId)?.GetComponent(186))?.MainAnimInstance)?.IsValid() && (i.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT), t = i.PlaySlotAnimationAsDynamicMontage(t, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT, 0.5, 0.5, 1, 1, -1, 0, false), i.Montage_SetNextSection(CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, CharacterNameDefines_1.CharacterNameDefines.DEFAULT_SECTION_NAME, t), s)) {
               e.DisableBlink = true;
             }
           });
@@ -1918,7 +1918,7 @@ class PlotTemplate {
       ResourceSystem_1.ResourceSystem.CancelAsyncLoad(t.PlayerExpressionLoadingId);
       t.PlayerExpressionLoadingId = ResourceSystem_1.ResourceSystem.InvalidId;
     }
-    var t = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(181);
+    var t = EntitySystem_1.EntitySystem.Get(t.EntityId)?.GetComponent(186);
     var e = t?.MainAnimInstance;
     if (e?.IsValid()) {
       e.StopSlotAnimation(0.5, CharacterNameDefines_1.CharacterNameDefines.FACE_SLOT);
@@ -1958,10 +1958,10 @@ class PlotTemplate {
       this.Z2d.HandleActionProxy();
     }
   }
-  pvm(t, e) {
+  Swm(t, e) {
     var t = EntitySystem_1.EntitySystem.Get(t.EntityId);
-    var i = t?.GetComponent(181);
-    var t = t?.GetComponent(191);
+    var i = t?.GetComponent(186);
+    var t = t?.GetComponent(197);
     if (i) {
       if (t) {
         t.SightTarget(e, 5);

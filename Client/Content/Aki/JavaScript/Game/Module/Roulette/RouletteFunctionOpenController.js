@@ -31,14 +31,14 @@ RouletteFunctionOpenController.Hw1 = () => {
     UiManager_1.UiManager.OpenView("RogueBattleSummary");
   }
 };
-RouletteFunctionOpenController.AKd = () => {
+RouletteFunctionOpenController.BKd = () => {
   if (ControllerHolder_1.ControllerHolder.SurvivorsRogueController.CheckInSurvivorsRogueInstance()) {
     UiManager_1.UiManager.OpenView("SurvivorsTabMainView");
   }
 };
-RouletteFunctionOpenController.Jwm = () => {
+RouletteFunctionOpenController.nmf = () => {
   if (HonamiStoryUtil_1.HonamiStoryUtil.CheckInHonamiStoryAreaDungeon()) {
     UiManager_1.UiManager.OpenView("HonamiStoryQuestView");
   }
 };
-RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.AKd], [20007, _a.Jwm]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map
+RouletteFunctionOpenController.Ucc = new Map([[20001, _a.Dcc], [20002, _a.Hw1], [20004, _a.BKd], [20007, _a.nmf]]); //# sourceMappingURL=RouletteFunctionOpenController.js.map

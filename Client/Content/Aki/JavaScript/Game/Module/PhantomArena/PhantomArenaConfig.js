@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.PhantomArenaConfig = undefined;
+const Info_1 = require("../../../Core/Common/Info");
 const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
@@ -15,7 +16,9 @@ const PhantomBattleBadgeRewardByActivityId_1 = require("../../../Core/Define/Con
 const PhantomBattleBadgeRewardById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleBadgeRewardById");
 const PhantomBattleBuffById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleBuffById");
 const PhantomBattleCardAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardAll");
+const PhantomBattleCardByActivityId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardByActivityId");
 const PhantomBattleCardById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardById");
+const PhantomBattleCardEffectById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardEffectById");
 const PhantomBattleCardElementById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardElementById");
 const PhantomBattleCardFilterAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardFilterAll");
 const PhantomBattleCardFilterById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardFilterById");
@@ -23,18 +26,20 @@ const PhantomBattleCardGroupByGroupId_1 = require("../../../Core/Define/ConfigQu
 const PhantomBattleCardGroupInfoById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardGroupInfoById");
 const PhantomBattleCardRewardByActivityId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardRewardByActivityId");
 const PhantomBattleCardRewardById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardRewardById");
-const PhantomBattleCardRoleAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardRoleAll");
+const PhantomBattleCardRoleByActivityId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardRoleByActivityId");
 const PhantomBattleCardRoleById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardRoleById");
 const PhantomBattleCardSlotSortAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardSlotSortAll");
 const PhantomBattleCardSlotSortById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleCardSlotSortById");
 const PhantomBattleChallengeByActivityGymId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeByActivityGymId");
 const PhantomBattleChallengeById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeById");
+const PhantomBattleChallengeByMarkId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleChallengeByMarkId");
 const PhantomBattleDialogById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleDialogById");
 const PhantomBattleEntryById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleEntryById");
 const PhantomBattleFactorAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleFactorAll");
 const PhantomBattleFactorById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleFactorById");
 const PhantomBattleFourCTaskByCardId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleFourCTaskByCardId");
 const PhantomBattleGymByActivityId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleGymByActivityId");
+const PhantomBattleMapParamByMapId_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMapParamByMapId");
 const PhantomBattleMasterLevelAll_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterLevelAll");
 const PhantomBattleMasterLevelById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterLevelById");
 const PhantomBattleMasterTitleById_1 = require("../../../Core/Define/ConfigQuery/PhantomBattleMasterTitleById");
@@ -56,6 +61,9 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   GetPhantomBattleCardConfig(t) {
     return PhantomBattleCardById_1.configPhantomBattleCardById.GetConfig(t);
   }
+  GetPhantomBattleCardByActivityId(t) {
+    return PhantomBattleCardByActivityId_1.configPhantomBattleCardByActivityId.GetConfigList(t);
+  }
   GetAllPhantomBattleCard() {
     return PhantomBattleCardAll_1.configPhantomBattleCardAll.GetConfigList();
   }
@@ -76,6 +84,9 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   }
   GetPhantomBattleElementConfig(t) {
     return PhantomBattleCardElementById_1.configPhantomBattleCardElementById.GetConfig(t);
+  }
+  GetPhantomBattleEffectConfig(t) {
+    return PhantomBattleCardEffectById_1.configPhantomBattleCardEffectById.GetConfig(t);
   }
   GetAllPhantomBattleCardFilter() {
     return PhantomBattleCardFilterAll_1.configPhantomBattleCardFilterAll.GetConfigList();
@@ -123,8 +134,8 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   GetPhantomBattleCardRole(t) {
     return PhantomBattleCardRoleById_1.configPhantomBattleCardRoleById.GetConfig(t);
   }
-  GetAllPhantomBattleCardRole() {
-    return PhantomBattleCardRoleAll_1.configPhantomBattleCardRoleAll.GetConfigList();
+  GetPhantomBattleCardRoleByActivityId(t) {
+    return PhantomBattleCardRoleByActivityId_1.configPhantomBattleCardRoleByActivityId.GetConfigList(t);
   }
   GetDeckDefaultName() {
     return MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PhantomBattle_1038");
@@ -166,6 +177,16 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
     }
     return e;
   }
+  GetPhantomBattleMasterLevelByLevelAndActivityId(t, e) {
+    for (const a of PhantomBattleMasterLevelAll_1.configPhantomBattleMasterLevelAll.GetConfigList()) {
+      if (a.Level === t && a.ActivityId === e) {
+        return a;
+      }
+    }
+    if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("PhantomArena", 71, "获取召唤师等级配置失败", ["level", t], ["activityId", e]);
+    }
+  }
   GetPhantomBattleMasterLevelConfigByActivityId(t) {
     var e = [];
     for (const a of PhantomBattleMasterLevelAll_1.configPhantomBattleMasterLevelAll.GetConfigList()) {
@@ -188,8 +209,8 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   GetPhantomBattleChallengeIdListByGymId(t, e) {
     var a = PhantomBattleChallengeByActivityGymId_1.configPhantomBattleChallengeByActivityGymId.GetConfigList(t, e);
     if (!a || a.length <= 0) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 75, "获取道馆的挑战列表失败，请检查PhantomBattleChallenge表", ["ActivityId", t], ["GymId", e]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("PhantomArena", 75, "获取道馆的挑战列表失败，请检查PhantomBattleChallenge表", ["ActivityId", t], ["GymId", e]);
       }
       return [];
     }
@@ -234,8 +255,8 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   GetPhantomBattleBadgeRewardIdList(t) {
     var e = PhantomBattleBadgeRewardByActivityId_1.configPhantomBattleBadgeRewardByActivityId.GetConfigList(t);
     if (!e || e.length <= 0) {
-      if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("PhantomArena", 75, "获取卡牌奖励列表失败，请检查PhantomBattleBadgeReward表", ["ActivityId", t]);
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("PhantomArena", 75, "获取卡牌奖励列表失败，请检查PhantomBattleBadgeReward表", ["ActivityId", t]);
       }
       return [];
     }
@@ -250,6 +271,12 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   }
   GetSlotLongPressTime(t) {
     return this.GetPhantomBattleActivityConfig(t).SlotLongPressTime;
+  }
+  GetSlotLongPressStartTime(t) {
+    return this.GetPhantomBattleActivityConfig(t).SlotLongPressStartTime;
+  }
+  GetSlotLongPressEndTime(t) {
+    return this.GetPhantomBattleActivityConfig(t).SlotLongPressEndTime;
   }
   GetPhantomBattleDialog(t) {
     return PhantomBattleDialogById_1.configPhantomBattleDialogById.GetConfig(t);
@@ -277,6 +304,26 @@ class PhantomArenaConfig extends ConfigBase_1.ConfigBase {
   }
   GetTaskTabConfigById(t) {
     return PhantomBattleTaskTabById_1.configPhantomBattleTaskTabById.GetConfig(t);
+  }
+  GetCardSlotItemLongPressOffsetX() {
+    if (Info_1.Info.IsInTouch()) {
+      return CommonParamById_1.configCommonParamById.GetFloatConfig("BvbVisionScrollerOffsetX");
+    } else {
+      return 0;
+    }
+  }
+  GetCardSlotItemLongPressOffsetY() {
+    if (Info_1.Info.IsInTouch()) {
+      return CommonParamById_1.configCommonParamById.GetFloatConfig("BvbVisionScrollerOffsetY");
+    } else {
+      return 0;
+    }
+  }
+  GetPhantomBattleChallengeByMarkId(t) {
+    return PhantomBattleChallengeByMarkId_1.configPhantomBattleChallengeByMarkId.GetConfig(t);
+  }
+  GetPhantomBattleMapParamByMapId(t) {
+    return PhantomBattleMapParamByMapId_1.configPhantomBattleMapParamByMapId.GetConfig(t);
   }
 }
 exports.PhantomArenaConfig = PhantomArenaConfig;

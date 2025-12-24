@@ -1,37 +1,37 @@
 "use strict";
 
-function checkInBox(p, e, o, r) {
-  const T = (e.X ?? 0) + (p.X ?? 0);
-  const t = (e.Y ?? 0) + (p.Y ?? 0);
-  const s = (e.Z ?? 0) + (p.Z ?? 0);
-  var e = r.X ?? 0;
+function checkInBox(p, o, e, r) {
+  const T = (o.X ?? 0) + (p.X ?? 0);
+  const t = (o.Y ?? 0) + (p.Y ?? 0);
+  const s = (o.Z ?? 0) + (p.Z ?? 0);
+  var o = r.X ?? 0;
   var p = r.Y ?? 0;
   var r = r.Z ?? 0;
-  var i = o.X ?? 0;
-  var y = o.Y ?? 0;
-  var o = o.Z ?? 0;
-  return !(T - e > i) && !(T + e < i) && !(t - p > y) && !(t + p < y) && !(s - r > o) && !(s + r < o);
+  var i = e.X ?? 0;
+  var y = e.Y ?? 0;
+  var e = e.Z ?? 0;
+  return !(T - o > i) && !(T + o < i) && !(t - p > y) && !(t + p < y) && !(s - r > e) && !(s + r < e);
 }
-function checkInSphere(p, e, o, r) {
-  const T = (e.X ?? 0) + (p.X ?? 0);
-  const t = (e.Y ?? 0) + (p.Y ?? 0);
-  const s = (e.Z ?? 0) + (p.Z ?? 0);
-  e = (o.X ?? 0) - T;
-  p = (o.Y ?? 0) - t;
-  o = (o.Z ?? 0) - s;
-  return !(r * r < e * e + p * p + o * o);
+function checkInSphere(p, o, e, r) {
+  const T = (o.X ?? 0) + (p.X ?? 0);
+  const t = (o.Y ?? 0) + (p.Y ?? 0);
+  const s = (o.Z ?? 0) + (p.Z ?? 0);
+  o = (e.X ?? 0) - T;
+  p = (e.Y ?? 0) - t;
+  e = (e.Z ?? 0) - s;
+  return !(r * r < o * o + p * p + e * e);
 }
 var ETipsActorType;
 var ETipsActorColorType;
 var ETipsActorTransformType;
 function pickShapeParam(p) {
-  var e = p.Type;
-  var e = exports.shapeStructTemplates[e];
-  var o = {};
-  for (const r of Object.keys(e)) {
-    o[r] = p[r];
+  var o = p.Type;
+  var o = exports.shapeStructTemplates[o];
+  var e = {};
+  for (const r of Object.keys(o)) {
+    e[r] = p[r];
   }
-  return o;
+  return e;
 }
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -52,6 +52,7 @@ exports.checkInSphere = checkInSphere;
   p[p.Spline = 9] = "Spline";
   p[p.SplineEffect = 10] = "SplineEffect";
   p[p.Track = 11] = "Track";
+  p[p.BottomAlignSemiBox = 12] = "BottomAlignSemiBox";
 })(ETipsActorType = exports.ETipsActorType ||= {});
 (function (p) {
   p[p.Inner = 0] = "Inner";
@@ -68,6 +69,13 @@ exports.shapeStructTemplates = {
     Z: 0,
     ColorType: ETipsActorColorType.Inner,
     Type: ETipsActorType.Box
+  },
+  [ETipsActorType.BottomAlignSemiBox]: {
+    X: 0,
+    Y: 0,
+    Z: 0,
+    ColorType: ETipsActorColorType.Inner,
+    Type: ETipsActorType.BottomAlignSemiBox
   },
   [ETipsActorType.Sphere]: {
     Radius: 0,

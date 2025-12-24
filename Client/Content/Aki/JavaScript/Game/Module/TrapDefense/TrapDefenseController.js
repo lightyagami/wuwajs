@@ -429,8 +429,8 @@ TrapDefenseController.c9u = e => {
   ModelManager_1.ModelManager.TrapDefenseModel?.BattleData.SetTechParamMapVar(e.fHc?.C6n);
   ModelManager_1.ModelManager.TrapDefenseModel?.ViewModelBuildingDevelop.InitInBattle(e);
   ModelManager_1.ModelManager.TrapDefenseModel?.BattleInventoryData.UpdateItemData(e.zxs);
-  if (e.mim) {
-    _a.ChangeMap(e.mim);
+  if (e.Psm) {
+    _a.ChangeMap(e.Psm);
   }
   EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TrapDefenseOnSystemInfoNotify);
 };

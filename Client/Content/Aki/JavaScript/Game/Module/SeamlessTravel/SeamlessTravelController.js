@@ -105,10 +105,12 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     for (const i of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities()) {
       this.HMl(i);
       var l = i.Entity.GetComponent(0);
-      var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(l.VisionSkillServerEntityId);
-      if (o) {
-        this.HMl(o);
-      }
+      l.VisionServerEntityIds.forEach(e => {
+        e = ModelManager_1.ModelManager.CreatureModel.GetEntity(e);
+        if (e) {
+          this.HMl(e);
+        }
+      });
       var o = l.CustomServerEntityIds;
       if (o.length > 0) {
         o.forEach(e => {
@@ -151,7 +153,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     s.UseKeepMovementMode = false;
     let _ = undefined;
     let n = undefined;
-    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(102))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
+    if (e.KeepMovementStateFeatures?.KeepKite && (a = r?.GetComponent(105))?.GetIsHooking() && a.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
       s.UseTreadmill = false;
       s.UseKeepKite = true;
       s.UseKeepMovementMode = true;
@@ -172,8 +174,18 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
         s.MeshAssetLoadedPromise?.SetResult(e);
       });
     }
+    if (s.UseKeepMovementMode) {
+      s.SeamlessTravelKeepMovementMode = new SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode();
+      s.SeamlessTravelKeepMovementMode.SetInitDataWithTargetMode(_, n);
+      s.SeamlessTravelKeepMovementMode?.Init(e, e => {
+        if (Log_1.Log.CheckInfo()) {
+          Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:保持运动状态开始]");
+        }
+        s.SeamlessTravelKeepMovementMode?.AppearEffect();
+      });
+    }
     if (s.UseKeepKite) {
-      a = r.GetComponent(102).GetCurrentTargetEntity().Entity;
+      a = r.GetComponent(105).GetCurrentTargetEntity().Entity;
       s.SeamlessTravelKeepKite = new SeamlessTravelKeepKite_1.SeamlessTravelKeepKite();
       s.SeamlessTravelKeepKite.SetInitData(a, r);
       if (Log_1.Log.CheckInfo()) {
@@ -190,30 +202,21 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
         }
         var r;
         var a = s.SeamlessTravelPlayerEntityHandle.Entity;
-        var l = a?.GetComponent(102);
+        var l = a?.GetComponent(105);
         if (l?.GetIsHooking() && l.GetCurrentTarget()?.GetHookInteractType() === "KiteHook") {
           l.GetCurrentTargetEntity().Entity?.Disable("[无缝加载]隐藏风筝声骸");
           l.SetIsHookEndByInterrupt(true);
-          if ((r = (l = a?.GetComponent(40))?.CurrentSkill) && r.MNc && r.SkillId === InputDefine_1.SKILL_ID_XA_KITE) {
-            a?.GetComponent(194)?.SetSeamlessTravelBuffPreMessageId(r.MNc);
+          if ((r = (l = a?.GetComponent(41))?.CurrentSkill) && r.MNc && r.SkillId === InputDefine_1.SKILL_ID_XA_KITE) {
+            a?.GetComponent(200)?.SetSeamlessTravelBuffPreMessageId(r.MNc);
           }
           l?.EndSkill(InputDefine_1.SKILL_ID_XA_KITE, "[无缝加载]停止勾风筝技能");
+          s.SeamlessTravelKeepMovementMode?.CheckAndKeepMoveState();
         }
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:伪风筝显形]");
         }
         s.SeamlessTravelKeepKite?.AppearEffect();
         s.KiteInitPromise?.SetResult(e);
-      });
-    }
-    if (s.UseKeepMovementMode) {
-      s.SeamlessTravelKeepMovementMode = new SeamlessTravelKeepMovementMode_1.SeamlessTravelKeepMovementMode();
-      s.SeamlessTravelKeepMovementMode.SetInitDataWithTargetMode(_, n);
-      s.SeamlessTravelKeepMovementMode?.Init(e, e => {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("SeamlessTravel", 50, "[无缝加载:保持运动状态开始]");
-        }
-        s.SeamlessTravelKeepMovementMode?.AppearEffect();
       });
     }
     if (e?.EffectPath) {
@@ -284,7 +287,7 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
       var r = r?.CreatureData.GetEntityType();
       if (r !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem) {
         if (r === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
-          r = e.Entity.GetComponent(47);
+          r = e.Entity.GetComponent(48);
           a.SeamlessTravelTeamDefaultController.push(r.TsAiController);
           SeamlessTravelController.AddSeamlessTravelActor(r.TsAiController);
         } else {
@@ -534,8 +537,8 @@ class SeamlessTravelController extends ControllerBase_1.ControllerBase {
     return false;
   }
   static SeamlessTravelingRefreshData(e) {
-    e.GetComponent(177)?.SeamlessTravelingRefresh();
-    e.GetComponent(213)?.SeamlessTravelingRefresh();
+    e.GetComponent(182)?.SeamlessTravelingRefresh();
+    e.GetComponent(220)?.SeamlessTravelingRefresh();
   }
 }
 (exports.SeamlessTravelController = SeamlessTravelController).qea = () => {

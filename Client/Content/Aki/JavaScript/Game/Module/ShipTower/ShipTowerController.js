@@ -46,13 +46,13 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CrossDay, this.Vjd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CrossDay, this.Wjd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.Jn_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnAddCommonItemList, this.PG_);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnFunctionOpenUpdate, this.m7_);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this.Vjd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CrossDay, this.Wjd);
   }
   static RequestChallenge(e, o = false, r = false) {
     var t = e.TeamDataList[0];
@@ -157,7 +157,7 @@ class ShipTowerController extends UiControllerBase_1.UiControllerBase {
   ModelManager_1.ModelManager.ShipTowerModel.InitData();
   ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
 };
-ShipTowerController.Vjd = () => {
+ShipTowerController.Wjd = () => {
   ModelManager_1.ModelManager.ShipTowerModel.CheckInitProto();
 };
 ShipTowerController.PG_ = e => {

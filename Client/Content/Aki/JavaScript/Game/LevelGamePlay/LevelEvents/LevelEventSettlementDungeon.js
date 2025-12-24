@@ -39,22 +39,25 @@ class LevelEventSettlementDungeon extends LevelGeneralBase_1.LevelEventBase {
         } else if (ControllerHolder_1.ControllerHolder.ConfirmBoxController.CheckIsConfirmBoxOpen()) {
           this.FinishExecute(true);
         } else if (ModelManager_1.ModelManager.InstanceDungeonEntranceModel.CheckInstanceCanReward(_) && ModelManager_1.ModelManager.ExchangeRewardModel.GetInstanceDungeonIfCanExchange(_)) {
-          t = !!ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(_);
-          g = ModelManager_1.ModelManager.InstanceDungeonModel.CurrentInstanceIsFinish;
-          if (t && !g) {
+          t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(_);
+          g = !!ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetInstanceFirstRewardId(_);
+          o = ModelManager_1.ModelManager.InstanceDungeonModel.CurrentInstanceIsFinish;
+          if (g && !o && t.InstSubType !== 49) {
             this.FinishExecute(true);
           } else {
-            t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(_);
             g = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivity(t.CustomTypes);
-            [_, o, n, l, a] = ModelManager_1.ModelManager.ActivityRegressModel.GetRegressDoubleDropTuple(_);
+            [o, _, n, l, a] = ModelManager_1.ModelManager.ActivityRegressModel.GetRegressDoubleDropTuple(_);
             i = g && g.LeftUpCount > 0;
-            if (!_ && !i && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeInstType")?.includes(t.InstSubType)) {
+            if (!o && ModelManager_1.ModelManager.FunctionModel.IsOpen(10071) && CommonParamById_1.configCommonParamById.GetIntArrayConfig("MultiExchangeInstType")?.includes(t.InstSubType)) {
               t = {
                 SinglePowerCost: M,
                 RewardCallBack: e => {
                   ControllerHolder_1.ControllerHolder.InstanceDungeonController.GetInstExchangeRewardRequest(e);
                 }
               };
+              if (i) {
+                t.Tip = g.GetFullTip();
+              }
               UiManager_1.UiManager.OpenView("PowerMagnificationRewardPopView", t);
               this.FinishExecute(true);
             } else {
@@ -74,9 +77,9 @@ class LevelEventSettlementDungeon extends LevelGeneralBase_1.LevelEventBase {
               if (i) {
                 t.Tip = g.GetFullTip();
               }
-              if (_) {
+              if (o) {
                 i = MultiTextLang_1.configMultiTextLang.GetLocalTextNew(a);
-                g = StringUtils_1.StringUtils.FormatStaticBuilder(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(l), o, n);
+                g = StringUtils_1.StringUtils.FormatStaticBuilder(MultiTextLang_1.configMultiTextLang.GetLocalTextNew(l), _, n);
                 t.Tip = "" + i + g;
               }
               this.FinishExecute(true);

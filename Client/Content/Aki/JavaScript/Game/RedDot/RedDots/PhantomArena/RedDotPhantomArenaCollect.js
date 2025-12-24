@@ -9,6 +9,9 @@ class RedDotPhantomArenaCollect extends RedDotBase_1.RedDotBase {
   OnGetParentName() {
     return "RedDotPhantomArenaActivity";
   }
+  IsMultiple() {
+    return true;
+  }
 }
 exports.RedDotPhantomArenaCollect = RedDotPhantomArenaCollect;
 //# sourceMappingURL=RedDotPhantomArenaCollect.js.map

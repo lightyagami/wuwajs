@@ -21,7 +21,7 @@ class PakManager {
       TimerSystem_1.GameplayTimerSystem.Remove(PakManager.xBe);
       PakManager.xBe = undefined;
     }
-    UE.KuroPakKeyLibrary.BindPakMountedCallback((0, puerts_1.toManualReleaseDelegate)(PakManager.Kdm));
+    UE.KuroPakKeyLibrary.BindPakMountedCallback((0, puerts_1.toManualReleaseDelegate)(PakManager.Upm));
     PakManager.vih();
     PakManager.Mih();
   }
@@ -84,14 +84,14 @@ class PakManager {
       TimerSystem_1.GameplayTimerSystem.Remove(PakManager.Sih);
       PakManager.Sih = undefined;
     }
-    (0, puerts_1.releaseManualReleaseDelegate)(PakManager.Kdm);
+    (0, puerts_1.releaseManualReleaseDelegate)(PakManager.Upm);
     UE.KuroPakKeyLibrary.UnbindPakMountedCallback();
   }
 }
 (exports.PakManager = PakManager).xBe = undefined;
 PakManager.Sih = undefined;
 PakManager.yih = 60000;
-PakManager.Kdm = e => {
+PakManager.Upm = e => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("Event", 21, "Pak挂载", ["Filename", e]);
   }

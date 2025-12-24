@@ -16,14 +16,14 @@ class OpenAndCloseViewHotKey {
   get ActionName() {
     return this.actionname();
   }
-  get EffectiveType() {
-    return this.effectivetype();
-  }
   get InputControllerType() {
     return this.inputcontrollertype();
   }
   get ViewName() {
     return this.viewname();
+  }
+  get EffectiveTypeList() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.effectivetypelistLength(), this.effectivetypelist, this);
   }
   get HandleType() {
     return this.handletype();
@@ -76,7 +76,7 @@ class OpenAndCloseViewHotKey {
     }
     return e;
   }
-  effectivetype() {
+  inputcontrollertype() {
     var t = this.J7.__offset(this.z7, 8);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -84,21 +84,40 @@ class OpenAndCloseViewHotKey {
       return 0;
     }
   }
-  inputcontrollertype() {
-    var t = this.J7.__offset(this.z7, 10);
-    if (t) {
-      return this.J7.readInt32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
   viewname(t) {
-    var e = this.J7.__offset(this.z7, 12);
+    var e = this.J7.__offset(this.z7, 10);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);
     }
     return e;
+  }
+  GetEffectivetypelistAt(t) {
+    return this.effectivetypelist(t);
+  }
+  effectivetypelist(t) {
+    var e = this.J7.__offset(this.z7, 12);
+    if (e) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + e) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  effectivetypelistLength() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  effectivetypelistArray() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
   }
   handletype(t) {
     var e = this.J7.__offset(this.z7, 14);

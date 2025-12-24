@@ -89,7 +89,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
   }
   Vqo(t, e) {
     var i = new Set(e[0]);
-    var t = this.nWd(t);
+    var t = this.lWd(t);
     if (t) {
       e = e[1];
       if (e === t[1]) {
@@ -123,7 +123,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
       }
     }
   }
-  nWd(t) {
+  lWd(t) {
     var e = InputSettingsManager_1.InputSettingsManager.GetCombinationActionBindingByActionName(t);
     if (e) {
       var i = [];
@@ -149,7 +149,7 @@ class UiNavigationModel extends ModelBase_1.ModelBase {
     }
   }
   CheckActionNameListInNavigation(t) {
-    var e = this.nWd(t);
+    var e = this.lWd(t);
     if (e) {
       for (var [i, r] of this.Nqo) {
         if (t !== i) {

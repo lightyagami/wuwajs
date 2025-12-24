@@ -6,15 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LordGymController = undefined;
 const UE = require("ue");
+const AudioSystem_1 = require("../../../Core/Audio/AudioSystem");
+const CustomPromise_1 = require("../../../Core/Common/CustomPromise");
 const Log_1 = require("../../../Core/Common/Log");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
 const Net_1 = require("../../../Core/Net/Net");
+const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
 const ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController");
@@ -23,6 +27,8 @@ const ItemRewardDefine_1 = require("../ItemReward/ItemRewardDefine");
 const RewardItemData_1 = require("../ItemReward/RewardData/RewardItemData");
 const UiSceneManager_1 = require("../UiComponent/UiSceneManager");
 const UiModelUtil_1 = require("../UiModel/UiModelUtil");
+const LordGymDefine_1 = require("./LordGymDefine");
+const TIME_TO_REVIVE = 3000;
 class LordGymController extends ControllerBase_1.ControllerBase {
   static OnInit() {
     this.OnRegisterNetEvent();
@@ -44,9 +50,11 @@ class LordGymController extends ControllerBase_1.ControllerBase {
   }
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDone, this.$5e);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDone, this.$5e);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.WorldDoneAndCloseLoading, this.FWe);
   }
   static async LordGymInfoRequest() {
     var e = Protocol_1.Aki.Protocol.Ass.create({});
@@ -76,10 +84,13 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     ModelManager_1.ModelManager.LordGymModel.EntranceEntityId = r;
     return (await UiManager_1.UiManager.OpenViewAsync("LordGymEntranceView", e)) !== undefined;
   }
-  static async OpenLordGymLordEntranceSelectView(e, r = 0) {
+  static async OpenLordGymLordEntranceSelectView(e, r = 0, o = false) {
     ModelManager_1.ModelManager.LordGymModel.EntranceEntityId = r;
-    ModelManager_1.ModelManager.LordGymModel.EntranceSetId = e;
-    return (await UiManager_1.UiManager.OpenViewAsync("LordGymLordEntranceSelectView", e)) !== undefined;
+    r = {
+      EntranceSetId: ModelManager_1.ModelManager.LordGymModel.EntranceSetId = e,
+      IsPlaySpecialSequence: o
+    };
+    return (await UiManager_1.UiManager.OpenViewAsync("LordGymLordEntranceSelectView", r)) !== undefined;
   }
   static OpenGymUnlockTipView(e) {
     UiManager_1.UiManager.OpenView("LordGymUnlockTipView", e);
@@ -91,95 +102,130 @@ class LordGymController extends ControllerBase_1.ControllerBase {
     r.y7n = e;
     await Net_1.Net.CallAsync(18645, r);
   }
+  static async EnterLordGymDungeon() {
+    var e;
+    var r = ModelManager_1.ModelManager.LordGymModel.EntryChallengeId;
+    return !!r && ((e = await LordGymController.LordGymBeginRequest(r)) && (ModelManager_1.ModelManager.LordGymModel.LastChallengeLordEntranceId = r), e);
+  }
   static IsInEntranceEntity() {
     var e = ModelManager_1.ModelManager.LordGymModel.EntranceEntityId;
-    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(123)?.IsInInteractRange ?? false);
+    return !e || !(e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit || (e.Entity?.GetComponent(128)?.IsInInteractRange ?? false);
   }
-  static CreateLordModelByEntranceId(e) {
-    UiSceneManager_1.UiSceneManager.InitLordSkeletalHandle();
-    var r = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
-    UiModelUtil_1.UiModelUtil.SetTransformByTag(r.Model, "MonsterCase");
-    this.LoadLordModelByEntranceId(e);
+  static CreateLordModelByEntranceId() {
+    var e = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
+    UiModelUtil_1.UiModelUtil.SetTransformByTag(e.Model, "MonsterCase");
   }
-  static LoadLordModelByEntranceId(e) {
+  static async LoadLordModelByEntranceId(i, l = true, d = false) {
     if (UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle()) {
-      const i = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(e);
-      e = i.MeshId;
-      const l = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle().Model;
-      var r = l.CheckGetComponent(0).ModelConfigId;
+      const s = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(i);
+      var e = s.MeshId;
+      const _ = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle().Model;
+      var r = _.CheckGetComponent(0).ModelConfigId;
       if (r !== e) {
-        const d = l.CheckGetComponent(10);
-        const s = l.CheckGetComponent(2);
-        const _ = l.CheckGetComponent(1);
-        const M = i.StandAnim;
-        const c = i.LordChangeMaterialController;
-        const g = i.LordChangeMaterialController;
-        r = [M];
-        if (!StringUtils_1.StringUtils.IsBlank(c)) {
-          r.push(c);
+        const c = _.CheckGetComponent(10);
+        const m = _.CheckGetComponent(2);
+        const M = _.CheckGetComponent(1);
+        const C = s.StandAnim;
+        var r = s.LordChangeMaterialController;
+        var o = s.LordChangeMaterialController;
+        var t = [C];
+        if (!StringUtils_1.StringUtils.IsBlank(r)) {
+          t.push(r);
         }
-        if (!StringUtils_1.StringUtils.IsBlank(g)) {
-          r.push(g);
+        if (!StringUtils_1.StringUtils.IsBlank(o)) {
+          t.push(o);
         }
-        s?.LoadModelByModelId(e, true, () => {
+        const g = new CustomPromise_1.CustomPromise();
+        m?.LoadModelByModelId(e, true, () => {
+          g.SetResult();
           var e = ModelManager_1.ModelManager.LordGymModel;
           let r = e.CacheLocation;
-          let t = e.CacheRotator;
-          let o = e.CacheScale;
-          let a = e.CacheTransform;
-          var n = i.Location;
+          let o = e.CacheRotator;
+          let t = e.CacheScale;
+          let n = e.CacheTransform;
+          var a = s.Location;
           if (r) {
-            r.Set(n[0], n[1], n[2]);
+            r.Set(a[0], a[1], a[2]);
           } else {
-            r = new UE.Vector(n[0], n[1], n[2]);
+            r = new UE.Vector(a[0], a[1], a[2]);
             e.CacheLocation = r;
           }
-          var n = i.Rotator;
-          if (t) {
-            t.Pitch = n[0];
-            t.Yaw = n[1];
-            t.Roll = n[2];
-          } else {
-            t = new UE.Rotator(n[0], n[1], n[2]);
-            e.CacheRotator = t;
-          }
-          var n = i.Zoom;
+          var a = s.Rotator;
           if (o) {
-            o.Set(n[0], n[1], n[2]);
+            o.Pitch = a[0];
+            o.Yaw = a[1];
+            o.Roll = a[2];
           } else {
-            o = new UE.Vector(n[0], n[1], n[2]);
-            e.CacheScale = o;
+            o = new UE.Rotator(a[0], a[1], a[2]);
+            e.CacheRotator = o;
           }
-          if (a) {
-            a.SetLocation(r);
-            a.SetRotation(t.Quaternion());
-            a.SetScale3D(o);
+          var a = s.Zoom;
+          if (t) {
+            t.Set(a[0], a[1], a[2]);
           } else {
-            a = new UE.Transform(t, r, o);
-            e.CacheTransform = a;
+            t = new UE.Vector(a[0], a[1], a[2]);
+            e.CacheScale = t;
           }
-          _.SetAllMeshComponentRelativeTransform(a, false, undefined, false);
-          var n = s?.GetLoadedResource(M);
-          if (!n) {
+          if (n) {
+            n.SetLocation(r);
+            n.SetRotation(o.Quaternion());
+            n.SetScale3D(t);
+          } else {
+            n = new UE.Transform(o, r, t);
+            e.CacheTransform = n;
+          }
+          M.SetAllMeshComponentRelativeTransform(n, false, undefined, false);
+          var a = m?.GetLoadedResource(C);
+          if (!a) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiCommon", 43, "[LordGym] 道馆界面待机动画预加载失败");
             }
           }
-          d.PlayAnimation(n, true);
-          var e = l.CheckGetComponent(5);
-          if (!StringUtils_1.StringUtils.IsBlank(c)) {
-            if (n = s.GetLoadedResource(c)) {
-              e?.AddRenderingMaterialByData(n);
-            }
+          c.PlayAnimation(a, true);
+          if (l) {
+            this.PlayLordModelMaterialAnimationByEntranceId(i, _, m, d);
           }
-          if (!StringUtils_1.StringUtils.IsBlank(g)) {
-            if (n = s.GetLoadedResource(g)) {
-              e?.AddRenderingMaterialByData(n);
-            }
-          }
-        }, r);
+        }, t);
+        await g.Promise;
       }
     }
+  }
+  static PlayLordModelMaterialAnimationByEntranceId(e, r, o, t = true) {
+    var n;
+    var a;
+    if (UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle()) {
+      if (t) {
+        AudioSystem_1.AudioSystem.PostEvent(LordGymDefine_1.LORD_GYM_THIRD_AUDIO_BOSS);
+      }
+      e = (t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymEntranceConfig(e)).LordChangeMaterialController;
+      n = t.LordChangeMaterialController;
+      a = UiSceneManager_1.UiSceneManager.GetLordSkeletalHandle();
+      r = r ?? a.Model;
+      a = o ?? r.CheckGetComponent(2);
+      o = r.CheckGetComponent(5);
+      if (!StringUtils_1.StringUtils.IsBlank(e)) {
+        if (r = a.GetLoadedResource(e)) {
+          if (t.IsGroup) {
+            o?.AddRenderingMaterialGroup(r);
+          } else {
+            o?.AddRenderingMaterialByData(r);
+          }
+        }
+      }
+      if (!StringUtils_1.StringUtils.IsBlank(n)) {
+        if (e = a.GetLoadedResource(n)) {
+          if (t.IsGroup) {
+            o?.AddRenderingMaterialGroup(e);
+          } else {
+            o?.AddRenderingMaterialByData(e);
+          }
+        }
+      }
+    }
+  }
+  static IsInLordGymDungeon() {
+    var e = ModelManager_1.ModelManager.GameModeModel?.InstanceDungeon;
+    return !!e && e.InstSubType === 48;
   }
 }
 exports.LordGymController = LordGymController;
@@ -187,30 +233,35 @@ exports.LordGymController = LordGymController;
   ModelManager_1.ModelManager.LordGymModel?.InitNewLordGymEntranceIdRecord();
   _a.LordGymInfoRequest();
 };
+LordGymController.FWe = () => {
+  if (_a.IsInLordGymDungeon()) {
+    _a.EnterLordGymDungeon();
+  }
+};
 LordGymController.PSi = e => {
   ModelManager_1.ModelManager.LordGymModel.FirstUnLockLordGym = e.jxs;
 };
 LordGymController.xSi = r => {
-  var t = ModelManager_1.ModelManager.LordGymModel;
-  var e = t.IsDeadInChallenge;
-  t.IsDeadInChallenge = false;
-  var o = r.Jxs.y7n;
-  t.LordGymRecord.set(o, r.Jxs);
+  var o = ModelManager_1.ModelManager.LordGymModel;
+  var e = o.IsDeadInChallenge;
+  o.IsDeadInChallenge = false;
+  var t = r.Jxs.y7n;
+  o.LordGymRecord.set(t, r.Jxs);
   if (r.Mws) {
-    var a = [];
+    var n = [];
     for (const d of r.zxs) {
-      var n = new RewardItemData_1.RewardItemData(d.L8n, d.m9n, d.Xxs !== 0 ? d.Xxs : undefined);
-      a.push(n);
+      var a = new RewardItemData_1.RewardItemData(d.L8n, d.m9n, d.Xxs !== 0 ? d.Xxs : undefined);
+      n.push(a);
     }
     let e = undefined;
-    var t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(o);
-    const i = ModelManager_1.ModelManager.LordGymModel.GetNextGymId(o);
-    e = t.IsNew ? (o = {
+    o = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(t);
+    const i = ModelManager_1.ModelManager.LordGymModel.GetNextGymId(t);
+    e = o.Version === 2 ? (t = {
       ButtonTextId: "Text_GymReturnToWorld_Text",
       DescriptionTextId: undefined,
       IsTimeDownCloseView: false,
       IsClickedCloseView: true
-    }, i && ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(i) ? [o, {
+    }, i && ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(i) ? [t, {
       ButtonTextId: "Text_GymContinueChallenge_Text",
       DescriptionTextId: undefined,
       IsTimeDownCloseView: false,
@@ -218,7 +269,7 @@ LordGymController.xSi = r => {
       OnClickedCallback: () => {
         LordGymController.LordGymBeginRequest(i);
       }
-    }] : [o, {
+    }] : [t, {
       ButtonTextId: "Text_GymReturnToLordGym_Text",
       DescriptionTextId: undefined,
       IsTimeDownCloseView: false,
@@ -226,8 +277,37 @@ LordGymController.xSi = r => {
       OnClickedCallback: () => {
         var e = ModelManager_1.ModelManager.LordGymModel.EntranceSetId;
         if (e > 0) {
+          e = {
+            EntranceSetId: e,
+            IsPlaySpecialSequence: false
+          };
           UiManager_1.UiManager.OpenView("LordGymLordEntranceSelectView", e);
         }
+      }
+    }]) : o.Version === 3 ? (t = {
+      ButtonTextId: "ChanllengeBackToCockpit",
+      DescriptionTextId: undefined,
+      IsTimeDownCloseView: false,
+      IsClickedCloseView: true,
+      OnClickedCallback: () => {
+        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.EnterEntrance(LordGymDefine_1.THRID_ENTRANCE_ID);
+      }
+    }, i && ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(i) ? [t, {
+      ButtonTextId: "Text_GymContinueChallenge_Text",
+      DescriptionTextId: undefined,
+      IsTimeDownCloseView: false,
+      IsClickedCloseView: true,
+      OnClickedCallback: () => {
+        ModelManager_1.ModelManager.LordGymModel.EntryChallengeId = i;
+        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.RestartInstanceDungeon();
+      }
+    }] : [t, {
+      ButtonTextId: "Text_GymReturnToWorld_Text",
+      DescriptionTextId: undefined,
+      IsTimeDownCloseView: false,
+      IsClickedCloseView: true,
+      OnClickedCallback: () => {
+        ControllerHolder_1.ControllerHolder.InstanceDungeonEntranceController.LeaveInstanceDungeon();
       }
     }]) : [{
       ButtonTextId: "ConfirmBox_45_ButtonText_1",
@@ -235,17 +315,17 @@ LordGymController.xSi = r => {
       IsTimeDownCloseView: false,
       IsClickedCloseView: true
     }];
-    t = {
+    o = {
       TitleTextId: "LordGym_TimeTitle",
-      Record: TimeUtil_1.TimeUtil.GetTimeString(r.Jxs.Qxs),
+      Record: TimeUtil_1.TimeUtil.GetTimeString(r.Qxs),
       IsNewRecord: r.Yxs
     };
     const l = i && !ModelManager_1.ModelManager.LordGymModel.GetLordGymHasRead(i) && ModelManager_1.ModelManager.LordGymModel.GetLordGymIsUnLock(i);
-    var o = {
+    t = {
       ConfigId: ItemRewardDefine_1.LORD_GYM_RESULT,
       IsSuccess: true,
-      RewardItemDataList: a,
-      ExploreRecordInfo: t,
+      RewardItemDataList: n,
+      ExploreRecordInfo: o,
       ButtonInfoList: e,
       OnCloseCallback: () => {
         if (l) {
@@ -254,14 +334,33 @@ LordGymController.xSi = r => {
       },
       IsBagFull: r.vlc
     };
-    ItemRewardController_1.ItemRewardController.OpenExploreRewardViewNew(o);
+    ItemRewardController_1.ItemRewardController.OpenExploreRewardViewNew(t);
   } else {
-    t = r.E7_;
-    if (ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(t).IsNew && !e) {
-      o = {
-        LordId: t
+    o = r.E7_;
+    t = ConfigManager_1.ConfigManager.LordGymConfig.GetLordGymConfig(o);
+    if (t.Version !== 2 || e) {
+      if (t.Version === 3) {
+        const s = {
+          LordId: o,
+          Version: t.Version
+        };
+        r = () => {
+          if (!UiManager_1.UiManager.IsViewOpen("LordGymThirdBossSelectView") && !UiManager_1.UiManager.IsViewOpen("LordGymThirdDifficultySelectView") && !!_a.IsInLordGymDungeon()) {
+            UiManager_1.UiManager.OpenView("LordGymChallengeFailView", s);
+          }
+        };
+        if (e) {
+          TimerSystem_1.FlowTimeTimerSystem.Delay(r, TIME_TO_REVIVE);
+        } else {
+          r();
+        }
+      }
+    } else {
+      e = {
+        LordId: o,
+        Version: t.Version
       };
-      UiManager_1.UiManager.OpenView("LordGymChallengeFailView", o);
+      UiManager_1.UiManager.OpenView("LordGymChallengeFailView", e);
     }
   }
 }; //# sourceMappingURL=LordGymController.js.map

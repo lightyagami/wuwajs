@@ -3,17 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-const puerts_1 = require("puerts");
 const UE = require("ue");
 const AudioSystem_1 = require("../../Core/Audio/AudioSystem");
 const Log_1 = require("../../Core/Common/Log");
 const QueryTypeDefine_1 = require("../../Core/Define/QueryTypeDefine");
 const Vector_1 = require("../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../Core/Utils/TraceElementCommon");
-const GlobalData_1 = require("../GlobalData");
 const ModelManager_1 = require("../Manager/ModelManager");
 const SequenceUtils_1 = require("../Module/Plot/Sequence/SequenceUtils");
-const VoxelUtils_1 = require("../Utils/VoxelUtils");
+const AudioUtils_1 = require("../Utils/AudioUtils");
 const MATERIAL_ID_WAT = 6;
 const MATERIAL_ID_SHR = 14;
 class TsSeqAnimNotifyFootstepAudioEvent extends UE.KuroAnimNotify {
@@ -87,8 +85,9 @@ class TsSeqAnimNotifyFootstepAudioEvent extends UE.KuroAnimNotify {
     this.FootstepVariantMap.Set(7, "turnback");
     o = e.D_K2_GetActorLocation();
     this.FootTraceElement = UE.NewObject(UE.TraceLineElement.StaticClass());
+    this.FootTraceElement.bIsProfile = true;
     this.FootTraceElement.bIsSingle = true;
-    this.FootTraceElement.bTraceComplex = false;
+    this.FootTraceElement.bTraceComplex = true;
     this.FootTraceElement.bIgnoreSelf = true;
     this.FootTraceElement.WorldContextObject = e;
     this.FootTraceElement.SetTraceTypeQuery(QueryTypeDefine_1.KuroTraceTypeQuery.IkGround);
@@ -118,44 +117,19 @@ class TsSeqAnimNotifyFootstepAudioEvent extends UE.KuroAnimNotify {
       return "DirtSurface";
     }
     let t = false;
-    var i;
-    var o = e.Components.Get(0);
-    var o = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(o);
-    if (t = !!o?.IsValid() && o.GetName() === "WaterLightLand" || t) {
+    var i = e.Components.Get(0);
+    let o = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetComponentPhysicalMaterial(i);
+    if (t = o?.IsValid() && o.GetName() === "WaterLightLand" ? true : t) {
       return this.CheckWaterSurfaceType(e);
-    } else {
-      o = Vector_1.Vector.Create();
-      TraceElementCommon_1.TraceElementCommon.GetHitLocation(e, 0, o);
-      e = o.ToUeVector();
-      o = (0, puerts_1.$ref)(undefined);
-      i = (0, puerts_1.$ref)(undefined);
-      if (GlobalData_1.GlobalData.World) {
-        if (VoxelUtils_1.VoxelUtils.TryGetVoxelInfo(GlobalData_1.GlobalData.World, e, o, -1, i)) {
-          if (o = (0, puerts_1.$unref)(o)) {
-            if (o.MtlID === MATERIAL_ID_WAT || o.MtlID === MATERIAL_ID_SHR) {
-              return "DirtSurface";
-            } else {
-              return UE.KuroVoxelSystem.GetMtlNameByID(o.MtlID);
-            }
-          } else {
-            if (Log_1.Log.CheckWarn()) {
-              Log_1.Log.Warn("LevelEvent", 45, "[WorldController]Streaming:获取voxelInfo信息失败", ["Location", e], ["ErrorCode", (0, puerts_1.$unref)(i)]);
-            }
-            return "DirtSurface";
-          }
-        } else {
-          if (Log_1.Log.CheckWarn()) {
-            Log_1.Log.Warn("LevelEvent", 45, "[WorldController]Streaming:获取体素信息失败", ["Location", e], ["ErrorCode", (0, puerts_1.$unref)(i)]);
-          }
-          return "DirtSurface";
-        }
-      } else {
-        if (Log_1.Log.CheckWarn()) {
-          Log_1.Log.Warn("LevelEvent", 45, "World为空");
-        }
-        return "DirtSurface";
-      }
     }
+    i = Vector_1.Vector.Create();
+    TraceElementCommon_1.TraceElementCommon.GetHitLocation(e, 0, i);
+    let r = undefined;
+    e = AudioUtils_1.AudioUtils.QueryFoliageAudioPhysicalMaterial(i.ToUeVector());
+    if (e.IsHitFoliage && e.PhysicalMaterial) {
+      o = e.PhysicalMaterial;
+    }
+    return r = (r = o?.IsValid() ? o.SurfaceType === MATERIAL_ID_WAT || o.SurfaceType === MATERIAL_ID_SHR ? "DirtSurface" : UE.KuroAudioMaterialSettings.GetFootstepTextureName(o.SurfaceType).toString() : r) || "DirtSurface";
   }
   CheckWaterSurfaceType(t) {
     if (t) {

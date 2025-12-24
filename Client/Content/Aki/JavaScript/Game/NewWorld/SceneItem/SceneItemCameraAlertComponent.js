@@ -114,9 +114,9 @@ let SceneItemCameraAlertComponent = SceneItemCameraAlertComponent_1 = class Scen
   }
   OnStart() {
     var t;
-    this.vtn = this.Entity.GetComponent(86);
-    this.mBe = this.Entity.GetComponent(137);
-    this.Hte = this.Entity.GetComponent(206);
+    this.vtn = this.Entity.GetComponent(89);
+    this.mBe = this.Entity.GetComponent(142);
+    this.Hte = this.Entity.GetComponent(212);
     if (this.vtn && this.Hte) {
       if (t = this.vtn.GetShapeConfig()) {
         if (t.Type !== "Cone") {
@@ -267,5 +267,5 @@ let SceneItemCameraAlertComponent = SceneItemCameraAlertComponent_1 = class Scen
   }
 };
 SceneItemCameraAlertComponent.l2a = Stats_1.Stat.Create("SceneItemCameraAlertComponentStat");
-SceneItemCameraAlertComponent = SceneItemCameraAlertComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(221)], SceneItemCameraAlertComponent);
+SceneItemCameraAlertComponent = SceneItemCameraAlertComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(228)], SceneItemCameraAlertComponent);
 exports.SceneItemCameraAlertComponent = SceneItemCameraAlertComponent; //# sourceMappingURL=SceneItemCameraAlertComponent.js.map

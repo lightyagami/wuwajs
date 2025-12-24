@@ -69,10 +69,10 @@ let FreeCameraInputComponent = class FreeCameraInputComponent extends EntityComp
     };
   }
   static get Dependencies() {
-    return [297];
+    return [316];
   }
   OnStart() {
-    this.SB1 = this.Entity.GetComponent(297);
+    this.SB1 = this.Entity.GetComponent(316);
     return this.SB1 !== undefined;
   }
   gk1() {
@@ -160,5 +160,5 @@ let FreeCameraInputComponent = class FreeCameraInputComponent extends EntityComp
     this.SB1?.ResetToInit();
   }
 };
-FreeCameraInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(298)], FreeCameraInputComponent);
+FreeCameraInputComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(317)], FreeCameraInputComponent);
 exports.FreeCameraInputComponent = FreeCameraInputComponent; //# sourceMappingURL=FreeCameraInputComponent.js.map

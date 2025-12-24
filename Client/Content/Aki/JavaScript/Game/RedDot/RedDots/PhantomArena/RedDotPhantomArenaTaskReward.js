@@ -14,8 +14,11 @@ class RedDotPhantomArenaTaskReward extends RedDotBase_1.RedDotBase {
   OnGetEvents() {
     return [EventDefine_1.EEventName.OnPhantomArenaTaskAwardUpdate];
   }
-  OnCheck() {
-    return ModelManager_1.ModelManager.PhantomArenaModel.CheckTaskRedDot();
+  IsMultiple() {
+    return true;
+  }
+  OnCheck(e) {
+    return ModelManager_1.ModelManager.PhantomArenaModel.CheckTaskRedDot(e);
   }
 }
 exports.RedDotPhantomArenaTaskReward = RedDotPhantomArenaTaskReward;

@@ -4,9 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 const UE = require("ue");
+const TimerSystem_1 = require("../../Core/Timer/TimerSystem");
 const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const CameraUtility_1 = require("../Camera/CameraUtility");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
+const GlobalData_1 = require("../GlobalData");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
@@ -29,18 +31,20 @@ class TsAnimNotifySwitchSequenceCamera extends UE.KuroAnimNotify {
     this.DisableMotionBlur = true;
     this.启用特定功能下的镜头配置 = false;
     this.特定功能下的镜头配置 = undefined;
+    this.ShotBeforePlaying = false;
+    this.ShotDuration = 5;
   }
   Constructor() {}
   K2_Notify(t, e) {
-    t = t.GetOwner();
-    if (!(t instanceof TsBaseCharacter_1.default)) {
+    const i = t.GetOwner();
+    if (!(i instanceof TsBaseCharacter_1.default)) {
       return false;
     }
-    var i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(t.EntityId);
-    if (!i?.Valid) {
+    t = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId);
+    if (!t?.Valid) {
       return false;
     }
-    if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(i)) {
+    if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(t)) {
       return false;
     }
     let r = undefined;
@@ -48,7 +52,11 @@ class TsAnimNotifySwitchSequenceCamera extends UE.KuroAnimNotify {
     if (this.启用特定功能下的镜头配置 && (r = this.GetSpecificConfig())) {
       s = r.OverrideCondition;
     }
-    return !!CameraUtility_1.CameraUtility.CheckCameraSequenceCondition(t, s) && (ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.PlayerComponent.PlayCameraSequence(this.特写镜头配置, this.bResetLockOnCamera, this.AdditiveRotation, t, FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraAttachSocket), FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraDetectSocket), this.ExtraSphereLocation, this.ExtraDetectSphereRadius, this.IsShowExtraSphere, this.IsIgnoreCharacterCollision, this.DisableMovementInput, this.DisableLookAtInput, this.DisableMotionBlur, this.强制播放Sequence, r), true);
+    return !!CameraUtility_1.CameraUtility.CheckCameraSequenceCondition(i, s) && (this.ShotBeforePlaying ? (UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.GetSceneColorShotBeforeTonemapNow 1"), TimerSystem_1.TimerSystem.Next(() => {
+      ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.PlayerComponent.PlayCameraSequence(this.特写镜头配置, this.bResetLockOnCamera, this.AdditiveRotation, i, FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraAttachSocket), FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraDetectSocket), this.ExtraSphereLocation, this.ExtraDetectSphereRadius, this.IsShowExtraSphere, this.IsIgnoreCharacterCollision, this.DisableMovementInput, this.DisableLookAtInput, this.DisableMotionBlur, this.强制播放Sequence, r);
+    }), TimerSystem_1.TimerSystem.Delay(() => {
+      UE.KuroRenderingRuntimeBPPluginBPLibrary.ReleaseGetSceneColorShotBefore();
+    }, this.ShotDuration)) : ControllerHolder_1.ControllerHolder.CameraController.SequenceCamera.PlayerComponent.PlayCameraSequence(this.特写镜头配置, this.bResetLockOnCamera, this.AdditiveRotation, i, FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraAttachSocket), FNameUtil_1.FNameUtil.GetDynamicFName(this.CameraDetectSocket), this.ExtraSphereLocation, this.ExtraDetectSphereRadius, this.IsShowExtraSphere, this.IsIgnoreCharacterCollision, this.DisableMovementInput, this.DisableLookAtInput, this.DisableMotionBlur, this.强制播放Sequence, r), true);
   }
   GetNotifyName() {
     return "特写镜头";

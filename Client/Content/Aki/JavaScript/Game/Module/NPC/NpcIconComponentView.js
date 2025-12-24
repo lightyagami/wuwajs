@@ -39,7 +39,6 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
     this.aGi = undefined;
     this.ymt = 0;
     this.CRi = undefined;
-    this.hGi = false;
     this.lGi = undefined;
     this._Gi = false;
     this.uGi = undefined;
@@ -167,9 +166,12 @@ class NpcIconComponentView extends UiPanelBase_1.UiPanelBase {
           this.Ueu = false;
         }
         this.CRi.PlayLevelSequenceByName("NameStart");
-        if (this.$qi && !this.hGi && this.lGi === 0) {
-          this.fGi();
-          this.hGi = false;
+        if (this.$qi) {
+          if (this.lGi === 0) {
+            this.fGi();
+          } else if (this.lGi === 1) {
+            this.CRi.PlayLevelSequenceByName("IconStart");
+          }
         }
       } else {
         this.CRi.PlayLevelSequenceByName("IconClose");

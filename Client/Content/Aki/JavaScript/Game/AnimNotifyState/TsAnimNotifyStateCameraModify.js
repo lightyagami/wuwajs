@@ -9,6 +9,7 @@ const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 const MODIFY_TIME_LENGTH = 100;
 class TsAnimNotifyStateCameraModify extends UE.KuroAnimNotifyState {
   constructor() {
@@ -29,38 +30,38 @@ class TsAnimNotifyStateCameraModify extends UE.KuroAnimNotifyState {
     this.ModifyInstance = 0;
     this.IsStopByCharacterType = false;
   }
-  K2_NotifyBegin(t, r, e) {
-    var i = t.GetOwner();
-    return i instanceof TsBaseCharacter_1.default && !!ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent?.Valid && !!(i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId))?.Valid && (this.IsStopByCharacterType = !CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(i), !this.IsStopByCharacterType) && this.CheckAndPlayCameraModify(t, r, i);
+  K2_NotifyBegin(e, t, i) {
+    var r = e.GetOwner();
+    return (r instanceof TsBaseCharacter_1.default || r instanceof TsBaseVehicle_1.default) && !!ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent?.Valid && !!(r = ModelManager_1.ModelManager.CreatureModel.GetEntityById(r.EntityId))?.Valid && (this.IsStopByCharacterType = !CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(r), !this.IsStopByCharacterType) && this.CheckAndPlayCameraModify(e, t, r);
   }
-  K2_NotifyTick(t, r, e) {
-    var i;
-    var a;
-    return !this.打断后继续 || (i = t.GetOwner()) instanceof TsBaseCharacter_1.default && !!(a = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (!!a.HasCameraModify() || !!(a = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i.EntityId))?.Valid && !this.IsStopByCharacterType && this.CheckAndPlayCameraModify(t, r, a));
+  K2_NotifyTick(e, t, i) {
+    var r;
+    var s;
+    return !this.打断后继续 || ((r = e.GetOwner()) instanceof TsBaseCharacter_1.default || r instanceof TsBaseVehicle_1.default) && !!(s = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (!!s.HasCameraModify() || !!(s = ModelManager_1.ModelManager.CreatureModel.GetEntityById(r.EntityId))?.Valid && !this.IsStopByCharacterType && this.CheckAndPlayCameraModify(e, t, s));
   }
-  K2_NotifyEnd(t, r) {
-    return t.GetOwner() instanceof TsBaseCharacter_1.default && !!(t = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (t.StopCameraModify(r, this.ModifyInstance), true);
+  K2_NotifyEnd(e, t) {
+    var e = e.GetOwner();
+    return (e instanceof TsBaseCharacter_1.default || e instanceof TsBaseVehicle_1.default) && !!(e = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent)?.Valid && (e.StopCameraModify(t, this.ModifyInstance), true);
   }
   GetNotifyName() {
     return "ModifyANS镜头";
   }
-  CheckAndPlayCameraModify(r, e, t) {
-    r = r.GetOwner();
-    if (!(r instanceof TsBaseCharacter_1.default)) {
+  CheckAndPlayCameraModify(t, i, e) {
+    t = t.GetOwner();
+    if (!(t instanceof TsBaseCharacter_1.default) && !(t instanceof TsBaseVehicle_1.default)) {
       return false;
     }
-    var i = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent;
-    if (!i?.Valid) {
+    var r = ControllerHolder_1.ControllerHolder.CameraController.FightCamera.LogicComponent;
+    if (!r?.Valid) {
       return false;
     }
-    if (CameraUtility_1.CameraUtility.CheckApplyCameraModifyCondition(t, this.相机修改配置, this.生效客户端类型, this.条件)) {
-      let t = undefined;
-      if (this.生效客户端类型 !== 0 && this.生效客户端类型 !== 1 && this.生效客户端类型 !== 6) {
-        t = r;
+    if (CameraUtility_1.CameraUtility.CheckApplyCameraModifyCondition(e, this.相机修改配置, this.生效客户端类型, this.条件)) {
+      let e = undefined;
+      if (this.生效客户端类型 !== 0 && this.生效客户端类型 !== 1 && this.生效客户端类型 !== 6 && this.生效客户端类型 !== 9 && this.生效客户端类型 !== 10 && (e = t, this.生效客户端类型 !== 7) && this.生效客户端类型 !== 8) {
         this.相机修改配置.IsLockInput = true;
         this.相机修改配置.OverrideCameraInput = true;
       }
-      this.ModifyInstance = i.ApplyCameraModify(this.Tag, MODIFY_TIME_LENGTH, this.淡入时间, this.淡出时间, this.相机修改配置, e, this.打断淡出时间, undefined, undefined, t, this.CameraAttachSocket, r);
+      this.ModifyInstance = r.ApplyCameraModify(this.Tag, MODIFY_TIME_LENGTH, this.淡入时间, this.淡出时间, this.相机修改配置, i, this.打断淡出时间, undefined, undefined, e, this.CameraAttachSocket, t);
     }
     return true;
   }

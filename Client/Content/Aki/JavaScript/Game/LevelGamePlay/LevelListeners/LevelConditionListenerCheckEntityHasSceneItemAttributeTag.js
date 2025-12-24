@@ -12,25 +12,25 @@ const LevelListenerBase_1 = require("./LevelListenerBase");
 class LevelConditionListenerCheckEntityHasSceneItemAttributeTag extends LevelListenerBase_1.LevelListenerBase {
   constructor() {
     super(...arguments);
-    this.Dgm = undefined;
+    this.cMm = undefined;
     this.kHa = undefined;
-    this.Ugm = () => {
+    this.dMm = () => {
       this.Callback?.();
     };
   }
   OnListen(t, e, i) {
     this.kHa = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelConditionListenerCheckEntityHasSceneItemAttributeTag", t.EntityId, e => {
       this.kHa = undefined;
-      this.Dgm = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity;
-      this.xgm();
+      this.cMm = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.EntityId)?.Entity;
+      this.mMm();
     }, undefined, false, true);
   }
-  xgm() {
-    if (this.Dgm?.Valid) {
-      var e = this.Dgm.GetComponent(209);
+  mMm() {
+    if (this.cMm?.Valid) {
+      var e = this.cMm.GetComponent(215);
       if (e) {
         for (const t of this.ListeningInfo.Tags) {
-          e.AddTagAddOrRemoveListener(t, this.Ugm);
+          e.AddTagAddOrRemoveListener(t, this.dMm);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("LevelCondition", 39, "实体状态条件监听失败: 实体无Tag组件");
@@ -45,11 +45,11 @@ class LevelConditionListenerCheckEntityHasSceneItemAttributeTag extends LevelLis
       this.kHa.Cancel();
     }
     this.kHa = undefined;
-    if (this.Dgm?.Valid) {
-      var e = this.Dgm.GetComponent(209);
+    if (this.cMm?.Valid) {
+      var e = this.cMm.GetComponent(215);
       if (e) {
         for (const t of this.ListeningInfo.Tags) {
-          e.RemoveTagAddOrRemoveListener(t, this.Ugm);
+          e.RemoveTagAddOrRemoveListener(t, this.dMm);
         }
       }
     }

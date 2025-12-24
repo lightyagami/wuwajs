@@ -232,7 +232,7 @@ class PlotModel extends ModelBase_1.ModelBase {
     this.HasLoadEventType = false;
     this.OnShowCenterTextFinished = () => {
       this.PlayFlow = undefined;
-      if (ModelManager_1.ModelManager.TeleportModel.CgTeleportCompleted && (ModelManager_1.ModelManager.TeleportModel.CgTeleportCompleted.SetResult(true), Log_1.Log.CheckInfo())) {
+      if (ModelManager_1.ModelManager.TeleportModel.TeleportContext?.CgTeleportCompleted && (ModelManager_1.ModelManager.TeleportModel.TeleportContext.CgTeleportCompleted.SetResult(true), Log_1.Log.CheckInfo())) {
         Log_1.Log.Info("Teleport", 45, "ModelManager.TeleportModel!.CgTeleportCompleted!.SetResult(true)");
       }
     };
@@ -451,7 +451,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   HYi() {
     var t;
     var e;
-    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(40), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(302)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
+    if (this.PlotConfig.PlotLevel !== "LevelD" && this.PlotConfig.PlotLevel !== "Prompt" && Global_1.Global.BaseCharacter && (t = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(41), (e = Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity.GetComponent(321)) && (e.CanSkillInterrupt = false), t?.Valid && t.StopAllSkills("PlotModel.StopMainCharacterSkill"), e)) {
       e.CanSkillInterrupt = true;
     }
   }
@@ -519,23 +519,27 @@ class PlotModel extends ModelBase_1.ModelBase {
   IsOptionGray(t, e) {
     return !!this.GrayOptionMap.has(t) && !!this.GrayOptionMap.get(t).has(e);
   }
-  CheckOptionCondition(t, e) {
+  CheckOptionCondition(t, e, i) {
     if (t.HiddenOption) {
       return false;
     }
     if (!t.PreCondition) {
       return true;
     }
-    let i = false;
-    var o = this.CurContext?.Type === 13 ? this.CurContext.FinalContext : this.CurContext;
+    let o = false;
+    var r = this.CurContext?.Type === 13 ? this.CurContext.FinalContext : this.CurContext;
     switch (t.PreCondition.Type) {
       case "PreOption":
-        i = this.YYi(t, e);
+        o = this.YYi(t, i);
         break;
       case "Condition":
-        i = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t.PreCondition.Conditions, undefined, o);
+        o = ControllerHolder_1.ControllerHolder.LevelGeneralController.CheckConditionNew(t.PreCondition.Conditions, undefined, r);
+        break;
+      case "FirstAppear":
+        var s = this.GrayOptionMap.get(i.Id);
+        o = !s || !s.has(e);
     }
-    return i;
+    return o;
   }
   YYi(t, e) {
     let i = true;
@@ -550,7 +554,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   }
   SaveCharacterLockOn() {
     var t;
-    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(209)?.HasTag(-1150819426))) {
+    if (this.JYi() && (t = Global_1.Global.BaseCharacter.GetEntityIdNoBlueprint(), EntitySystem_1.EntitySystem.Get(t)?.GetComponent(215)?.HasTag(-1150819426))) {
       this.GYi = true;
     }
   }
@@ -563,7 +567,7 @@ class PlotModel extends ModelBase_1.ModelBase {
   JYi() {
     var t = Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint();
     if (t) {
-      t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(32);
+      t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(33);
       if (t?.Valid) {
         return t;
       }

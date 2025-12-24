@@ -15,20 +15,16 @@ class LevelConditionItemCheck extends LevelGeneralBase_1.LevelConditionBase {
     if (!e) {
       return false;
     }
-    if (!e.Items?.length) {
-      return true;
-    }
-    let a = false;
-    if (e.Compare === "Eq") {
-      a = true;
-    }
-    for (const t of e.Items) {
-      var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.ItemId);
-      if (t.Count > n) {
-        return !a;
+    var a = e;
+    if (a.Items?.length) {
+      for (const t of a.Items) {
+        var n = ModelManager_1.ModelManager.InventoryModel.GetItemCountByConfigId(t.ItemId);
+        if (!this.CheckCompareValue(a.Compare, n, t.Count)) {
+          return false;
+        }
       }
     }
-    return a;
+    return true;
   }
 }
 exports.LevelConditionItemCheck = LevelConditionItemCheck;

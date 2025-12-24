@@ -55,7 +55,7 @@ class ParkourController extends ControllerBase_1.ControllerBase {
             }
             var l = a.Points[r];
             if (l?.ModifiedTime && t.ParkourContext) {
-              let e = Protocol_1.Aki.Protocol.s3s.Proto_Add;
+              let e = Protocol_1.Aki.Protocol.s3s.TNm;
               if (l.ModifiedTime < 0) {
                 e = Protocol_1.Aki.Protocol.s3s.Proto_Sub;
               }
@@ -66,7 +66,7 @@ class ParkourController extends ControllerBase_1.ControllerBase {
               EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.ParkourFinished, e.toString(), t.TotalScore);
             }
             if (l?.BuffId && (o = Global_1.Global.BaseCharacter)?.IsValid() && (r = o?.CharacterActorComponent.Entity)?.Valid) {
-              if (a = r.GetComponent(178)) {
+              if (a = r.GetComponent(183)) {
                 a.AddBuff(l.BuffId, {
                   InstigatorId: a.CreatureDataId,
                   Reason: "Parkour"

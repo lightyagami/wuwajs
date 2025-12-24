@@ -35,7 +35,7 @@ class SneakController extends ControllerBase_1.ControllerBase {
     }
   }
   static B$t(e) {
-    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(178);
+    var t = Global_1.Global.BaseCharacter.GetEntityNoBlueprint().GetComponent(183);
     if (t?.Valid) {
       if (e) {
         t.AddBuff(CharacterBuffIds_1.buffId.StealthIgnoreHateBuff, {

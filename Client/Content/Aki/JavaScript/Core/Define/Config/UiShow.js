@@ -122,6 +122,9 @@ class UiShow {
   get HomeBtnStyle() {
     return this.homebtnstyle();
   }
+  get AllowAutoMotor() {
+    return this.allowautomotor();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -388,6 +391,10 @@ class UiShow {
     } else {
       return 1;
     }
+  }
+  allowautomotor() {
+    var t = this.J7.__offset(this.z7, 78);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.UiShow = UiShow;

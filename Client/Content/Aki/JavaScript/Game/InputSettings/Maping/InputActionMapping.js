@@ -16,109 +16,87 @@ class InputActionMapping {
     this.QEe = new Map();
   }
   Initialize() {
-    var t = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllActionMappingConfig();
-    if (t) {
-      for (const n of t) {
-        this.NewActionBinding(n);
+    var n = ConfigManager_1.ConfigManager.InputSettingsConfig.GetAllActionMappingConfig();
+    if (n) {
+      for (const t of n) {
+        this.NewActionBinding(t);
       }
     }
   }
   Clear() {
-    for (const t of this.WEe.values()) {
-      t.Clear();
+    for (const n of this.WEe.values()) {
+      n.Clear();
     }
     this.WEe.clear();
     this.KEe.clear();
     this.QEe.clear();
   }
-  NewActionBinding(t) {
-    var n = t.ActionName;
+  NewActionBinding(n) {
+    var t = n.ActionName;
     var i = new InputActionBinding_1.InputActionBinding();
-    i.Initialize(t);
-    var t = i.GetConfigId();
-    this.WEe.set(n, i);
-    this.KEe.set(t, i);
-    var n = i.GetActionMappingType();
-    let e = this.QEe.get(n);
+    i.Initialize(n);
+    var n = i.GetConfigId();
+    this.WEe.set(t, i);
+    this.KEe.set(n, i);
+    var t = i.GetActionMappingType();
+    let e = this.QEe.get(t);
     if (!e) {
       e = new Set();
-      this.QEe.set(n, e);
+      this.QEe.set(t, e);
     }
     e.add(i);
   }
-  RemoveActionBinding(t) {
-    var n;
+  RemoveActionBinding(n) {
+    var t;
     var i;
-    var e = this.WEe.get(t);
+    var e = this.WEe.get(n);
     if (e) {
-      n = e.GetConfigId();
+      t = e.GetConfigId();
       i = e.GetActionMappingType();
       this.QEe.get(i)?.delete(e);
-      this.WEe.delete(t);
-      this.KEe.delete(n);
+      this.WEe.delete(n);
+      this.KEe.delete(t);
       e.Clear();
     }
   }
   ClearAllActionKeys() {
-    for (const t of this.WEe.values()) {
-      t.ClearAllKeys();
+    for (const n of this.WEe.values()) {
+      n.ClearAllKeys();
     }
   }
-  GetActionBinding(t) {
-    return this.WEe.get(t);
+  GetActionBinding(n) {
+    return this.WEe.get(n);
   }
   GetActionBindingMap() {
     return this.WEe;
   }
-  GetActionBindingByConfigId(t) {
-    return this.KEe.get(t);
+  GetActionBindingByConfigId(n) {
+    return this.KEe.get(n);
   }
-  GetActionBindingByActionMappingType(t) {
-    return this.QEe.get(t);
+  GetActionBindingByActionMappingType(n) {
+    return this.QEe.get(n);
   }
-  SetKeys(t, n) {
-    var i = this.WEe.get(t);
-    if (i) {
-      i.SetKeys(n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, t, i);
+  SetKeys(n, t, i) {
+    var e = this.WEe.get(n);
+    if (e) {
+      e.SetKeys(t, i);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, n, e);
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "设置Action按键时，找不到对应Action", ["ActionName", t]);
+      Log_1.Log.Warn("InputSettings", 10, "设置Action按键时，找不到对应Action", ["ActionName", n]);
     }
   }
-  RefreshKeysByActionMappings(t, n) {
-    var i = this.WEe.get(t);
-    if (i) {
-      i.RefreshKeysByActionMappings(n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, t, i);
+  RefreshKeysByActionMappings(n, t, i) {
+    var e = this.WEe.get(n);
+    if (e) {
+      e.RefreshKeysByActionMappings(t, i);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, n, e);
     } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "设置Action按键时，找不到对应Action", ["ActionName", t]);
+      Log_1.Log.Warn("InputSettings", 10, "设置Action按键时，找不到对应Action", ["ActionName", n]);
     }
   }
-  AddKeys(t, n) {
-    var i = this.WEe.get(t);
-    if (i) {
-      i.AddKeys(n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, t, i);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "添加Action按键，找不到对应Action", ["ActionName", t]);
-    }
-  }
-  RemoveKeys(t, n) {
-    var i = this.WEe.get(t);
-    if (i) {
-      i.RemoveKeys(n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, t, i);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "删除Action按键，找不到对应Action", ["ActionName", t]);
-    }
-  }
-  RemoveKeysByCondition(t, n) {
-    var i = this.WEe.get(t);
-    if (i) {
-      i.RemoveKeysByCondition(n);
-      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChangedActionKeys, t, i);
-    } else if (Log_1.Log.CheckWarn()) {
-      Log_1.Log.Warn("InputSettings", 10, "删除Action中符合条件的按键映射，找不到对应Action", ["ActionName", t]);
+  SwitchKeysByBindingType(n) {
+    for (const t of this.WEe.values()) {
+      t.SwitchKeysByBindingType(n);
     }
   }
 }

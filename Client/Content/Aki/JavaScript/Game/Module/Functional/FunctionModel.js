@@ -16,6 +16,7 @@ const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const ActivityDirectTrainHelper_1 = require("../Activity/ActivityContent/DirectTrain/ActivityDirectTrainHelper");
 const ChannelController_1 = require("../Channel/ChannelController");
+const FeatureRestrictionTemplate_1 = require("../Common/FeatureRestrictionTemplate");
 const FunctionInstance_1 = require("./View/FunctionInstance");
 class FunctionModel extends ModelBase_1.ModelBase {
   constructor() {
@@ -28,6 +29,7 @@ class FunctionModel extends ModelBase_1.ModelBase {
     this.U7t = () => ChannelController_1.ChannelController.CheckKuroStreetOpen();
     this.Wtl = () => ModelManager_1.ModelManager.MailBindModel.CheckGlobalMailBindOpen();
     this.Nvu = () => ActivityDirectTrainHelper_1.ActivityDirectTrainHelper.IsProOpen;
+    this.Z2m = () => !FeatureRestrictionTemplate_1.FeatureRestrictionTemplate.TemplateForPioneerClient.Check();
   }
   OnInit() {
     this.L7t.set(10053, this.D7t);
@@ -35,6 +37,7 @@ class FunctionModel extends ModelBase_1.ModelBase {
     this.L7t.set(10058, this.U7t);
     this.L7t.set(10072, this.Wtl);
     this.L7t.set(10095, this.Nvu);
+    this.L7t.set(10086, this.Z2m);
     return true;
   }
   SetFunctionOpenInfo(e) {
@@ -230,9 +233,17 @@ class FunctionModel extends ModelBase_1.ModelBase {
       case 10015:
         return "FunctionMap";
       case 10095:
-        return "ActivityDirectTrainPro";
+        return "ActivityDirectTrainProEntry";
       case 10086:
         return "Introduction";
+      case 10130:
+        return "FunctionPhoneMsg";
+      case 10133:
+        return "FunctionWeatherCentral";
+      case 10098:
+        return "FunctionMotorDevelop";
+      case 10131:
+        return "Infrastructure";
     }
   }
   RedDotFunctionPhantomCondition() {

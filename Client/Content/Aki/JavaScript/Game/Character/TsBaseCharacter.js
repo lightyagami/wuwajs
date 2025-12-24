@@ -42,6 +42,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
     this.PhysicsClothSimulateDisableOneFrame = false;
     this.CachePoseEnableOneFrame = false;
     this.CacheTime = 0.6;
+    this.DtGameplayAbpConfig = undefined;
     this.OnMovementModeChanged = false;
     this.CharacterActorComponent = undefined;
     this.SimpleNpcActorComponent = undefined;
@@ -179,7 +180,7 @@ class TsBaseCharacter extends UE.BaseCharacter {
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRoll, e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_KITE:
-        this.CharacterActorComponent?.Entity.GetComponent(38)?.KiteMove(e);
+        this.CharacterActorComponent?.Entity.GetComponent(39)?.KiteMove(e);
         break;
       case CustomMovementDefine_1.CUSTOM_MOVEMENTMODE_RAIL_SLIDE:
         EventSystem_1.EventSystem.EmitWithTarget(this.CharacterActorComponent.Entity, EventDefine_1.EEventName.CustomMoveRailSlide, e);

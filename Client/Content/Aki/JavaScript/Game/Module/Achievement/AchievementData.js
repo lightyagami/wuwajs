@@ -31,7 +31,7 @@ class AchievementData {
     this.mbe = t.ovs;
     this.dbe = t.nvs.tvs;
     this.Cbe = t.nvs.ivs;
-    this.lYd();
+    this.NYd();
     this.sba();
   }
   sba() {
@@ -43,7 +43,7 @@ class AchievementData {
   GetId() {
     return this.xe;
   }
-  lYd() {
+  NYd() {
     if (this.nba === "-1") {
       this.nba = PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn ? ConfigManager_1.ConfigManager.AchievementConfig.GetThirdPartyTrophyId(this.xe).toString() : ConfigManager_1.ConfigManager.AchievementConfig.GetExternalTrophyId(this.xe);
     }

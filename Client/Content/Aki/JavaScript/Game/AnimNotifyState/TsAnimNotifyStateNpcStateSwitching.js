@@ -9,11 +9,11 @@ class TsAnimNotifyStateNpcStateSwitching extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(e, t, r) {
     e = e.GetOwner();
-    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(190)?.MarkAnimStateSwitching(true), true);
+    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(196)?.MarkAnimStateSwitching(true), true);
   }
   K2_NotifyEnd(e, t) {
     e = e.GetOwner();
-    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(190)?.MarkAnimStateSwitching(false), true);
+    return !!e?.IsA(TsBaseCharacter_1.default.StaticClass()) && (e.CharacterActorComponent?.Entity.GetComponent(196)?.MarkAnimStateSwitching(false), true);
   }
   GetNotifyName() {
     return "NPC切换动画状态过程中";

@@ -31,7 +31,7 @@ class UiViewContainer {
       }
       await i.StartAsync();
       let e = true;
-      if (i.ClosePromise) {
+      if (i.ClosePromise || i.IsDestroy) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiViewContainer", 37, "[OpenViewImplement] 界面打开中断显示,界面已开始关闭流程", ["ViewName", i.Info.Name], ["Id", i.GetViewId()]);
         }

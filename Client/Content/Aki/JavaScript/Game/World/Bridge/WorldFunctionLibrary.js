@@ -13,6 +13,7 @@ const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const Net_1 = require("../../../Core/Net/Net");
 const CollisionUtils_1 = require("../../../Core/Utils/CollisionUtils");
+const FNameUtil_1 = require("../../../Core/Utils/FNameUtil");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const IGlobal_1 = require("../../../UniverseEditor/Interface/IGlobal");
@@ -30,6 +31,8 @@ const RoleDefine_1 = require("../../Module/RoleUi/RoleDefine");
 const TowerDefenseEventController_1 = require("../../Module/TowerDefenseEvent/TowerDefenseEventController");
 const UiCameraAnimationManager_1 = require("../../Module/UiCameraAnimation/UiCameraAnimationManager");
 const CampUtils_1 = require("../../NewWorld/Character/Common/Blueprint/Utils/CampUtils");
+const FollowFunctionLibrary_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/FollowFunctionLibrary");
+const IFollow_1 = require("../../NewWorld/Character/Common/Component/Abilities/Follow/IFollow");
 const BattleSetting_1 = require("../../NewWorld/Setting/BattleSetting");
 const RenderModuleController_1 = require("../../Render/Manager/RenderModuleController");
 const ActorUtils_1 = require("../../Utils/ActorUtils");
@@ -58,7 +61,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return !!t && t.GetPbDataId() === e;
   }
   static ActorHasSceneItemTag(t, e) {
-    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(200).HasTag(e);
+    return ActorUtils_1.ActorUtils.GetEntityByActor(t).Entity.GetComponent(206).HasTag(e);
   }
   static GetControlVisionEntityId(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
@@ -84,6 +87,23 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     }
     return 0;
   }
+  static GetVisionEntityIdList(t) {
+    var t = EntitySystem_1.EntitySystem.Get(t)?.GetComponent(0);
+    var e = [];
+    if (t) {
+      for (const o of t.VisionServerEntityIds) {
+        var r = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
+        if (r) {
+          e.push(r.Id);
+        } else if (Log_1.Log.CheckError()) {
+          Log_1.Log.Error("Battle", 28, "无法找到幻象实体", ["serverId", o]);
+        }
+      }
+    }
+    t = UE.NewArray(UE.BuiltinInt);
+    WorldGlobal_1.WorldGlobal.ToUeInt32Array(e, t);
+    return t;
+  }
   static SetVisionEnable(t, e) {
     var r = EntitySystem_1.EntitySystem.Get(t);
     if (r) {
@@ -96,22 +116,22 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     return ControllerHolder_1.ControllerHolder.WorldController.GetCustomEntityId(t, e);
   }
   static SetCustomEntityEnable(t, e, r, o, a) {
-    var n;
     var l;
+    var n;
     if (o?.IsValid()) {
       o = `[蓝图:${o.GetName()}] ${a}`;
-      if (n = EntitySystem_1.EntitySystem.Get(t)) {
-        if (e > (n = n.GetComponent(0).CustomServerEntityIds).length || e === 0) {
+      if (l = EntitySystem_1.EntitySystem.Get(t)) {
+        if (e > (l = l.GetComponent(0).CustomServerEntityIds).length || e === 0) {
           if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("Battle", 4, "pos不合法！", ["pos", e], ["serverEntityIds", n], ["Reason", o]);
+            Log_1.Log.Error("Battle", 4, "pos不合法！", ["pos", e], ["serverEntityIds", l], ["Reason", o]);
           }
-        } else if (l = ModelManager_1.ModelManager.CreatureModel.GetEntity(n[e - 1])) {
-          ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(l.Entity, r, "WorldFunctionLibrary.SetCustomEntityEnable", true);
+        } else if (n = ModelManager_1.ModelManager.CreatureModel.GetEntity(l[e - 1])) {
+          ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(n.Entity, r, "WorldFunctionLibrary.SetCustomEntityEnable", true);
           if (Log_1.Log.CheckDebug()) {
-            Log_1.Log.Debug("Battle", 4, "设置伴生物状态", ["ownerEntityId", t], ["customServerEntityIds", n], ["customEntity", l.Id], ["enable", r], ["Reason", o]);
+            Log_1.Log.Debug("Battle", 4, "设置伴生物状态", ["ownerEntityId", t], ["customServerEntityIds", l], ["customEntity", n.Id], ["enable", r], ["Reason", o]);
           }
         } else if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Battle", 4, "无法找到伴生物实体", ["ownerEntityId", t], ["pos", e], ["customServerEntityIds", n]);
+          Log_1.Log.Error("Battle", 4, "无法找到伴生物实体", ["ownerEntityId", t], ["pos", e], ["customServerEntityIds", l]);
         }
       } else if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 4, "无法找到幻象拥有者实体", ["ownerEntityId", t]);
@@ -142,6 +162,12 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
       }
       return 0;
     }
+  }
+  static SetVisionPos(t, e) {
+    EntitySystem_1.EntitySystem.Get(t)?.GetComponent(44)?.SetCurrentPosition(e);
+  }
+  static GetVisionPos(t) {
+    return EntitySystem_1.EntitySystem.Get(t)?.GetComponent(44)?.GetCurrentPosition() ?? 0;
   }
   static GetSummonEntityIds(t) {
     var e;
@@ -250,7 +276,7 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static GetEntityDestructible(t) {
     var e = EntitySystem_1.EntitySystem.Get(t);
     if (e) {
-      return e.GetComponent(105) !== undefined;
+      return e.GetComponent(110) !== undefined;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Battle", 39, "无法找到实体", ["entityId", t]);
@@ -418,9 +444,9 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var o = new Array();
     var a = (0, puerts_1.$unref)(r);
     for (let t = 0; t < a.Num(); ++t) {
-      var n = a.Get(t);
-      var n = WorldGlobal_1.WorldGlobal.ToTsVector(n);
-      o.push(n);
+      var l = a.Get(t);
+      var l = WorldGlobal_1.WorldGlobal.ToTsVector(l);
+      o.push(l);
     }
     BlackboardController_1.BlackboardController.SetVectorValuesByEntity(t, e, o);
   }
@@ -450,9 +476,9 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var o = new Array();
     var a = (0, puerts_1.$unref)(r);
     for (let t = 0; t < a.Num(); ++t) {
-      var n = a.Get(t);
-      var n = WorldGlobal_1.WorldGlobal.ToTsRotator(n);
-      o.push(n);
+      var l = a.Get(t);
+      var l = WorldGlobal_1.WorldGlobal.ToTsRotator(l);
+      o.push(l);
     }
     BlackboardController_1.BlackboardController.SetRotatorValuesByEntity(t, e, o);
   }
@@ -580,6 +606,19 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static StartStandalone() {
     WorldModel_1.WorldModel.IsStandalone = true;
   }
+  static GetEntityBindGroup(t) {
+    var e = UE.NewArray(UE.BuiltinInt);
+    var t = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(t);
+    if (ControllerHolder_1.ControllerHolder.CreatureGroupController.HasBindGroup(t)) {
+      t = ControllerHolder_1.ControllerHolder.CreatureGroupController.GetBindGroup(t);
+      if (t && t.length > 0) {
+        for (const r of t) {
+          e.Add(r);
+        }
+      }
+    }
+    return e;
+  }
   static IsOpenWorld() {
     return ModelManager_1.ModelManager.GameModeModel.InstanceType === Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance;
   }
@@ -617,14 +656,14 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     LevelGeneralNetworks_1.LevelGeneralNetworks.RequestChangeEntityState(t, LevelGeneralContextDefine_1.EntityContext.Create(o));
   }
   static TestSpawnTemplateEntityPush(t, e, r, o, a) {
-    var n = Protocol_1.Aki.Protocol.hes.create();
-    n.s5n = MathUtils_1.MathUtils.NumberToLong(Number(t));
-    n.F6n = r;
-    n.v9n = e;
-    n.l8n = WorldGlobal_1.WorldGlobal.ToTsVector(o.GetLocation());
-    n._8n = WorldGlobal_1.WorldGlobal.ToTsRotator(o.GetRotation().Rotator());
-    n.mKn = a;
-    Net_1.Net.Send(15253, n);
+    var l = Protocol_1.Aki.Protocol.hes.create();
+    l.s5n = MathUtils_1.MathUtils.NumberToLong(Number(t));
+    l.F6n = r;
+    l.v9n = e;
+    l.l8n = WorldGlobal_1.WorldGlobal.ToTsVector(o.GetLocation());
+    l._8n = WorldGlobal_1.WorldGlobal.ToTsRotator(o.GetRotation().Rotator());
+    l.mKn = a;
+    Net_1.Net.Send(15253, l);
   }
   static GetTestSpawnTemplateEntityString() {
     var t = UE.NewArray(UE.BuiltinString);
@@ -645,14 +684,14 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
       for (const i of a.Templates) {
         o.set(i.BlueprintType, i.Id);
       }
-      var n;
       var l;
+      var n;
       var a = (0, puerts_1.$ref)("");
       UE.KuroStaticLibrary.LoadFileToString(a, r);
       a = (0, puerts_1.$unref)(a);
       var a = JSON.parse(a);
-      for ([n, l] of Object.entries(a.BlueprintConfig)) {
-        t.Add(l.Name + "|" + o.get(n));
+      for ([l, n] of Object.entries(a.BlueprintConfig)) {
+        t.Add(n.Name + "|" + o.get(l));
       }
     } else {
       for (const s of TemplateConfigAll_1.configTemplateConfigAll.GetConfigList()) {
@@ -667,12 +706,12 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static ChangeSubLevel(t, e, r, o, a) {
     var t = (0, puerts_1.$unref)(t);
     var e = (0, puerts_1.$unref)(e);
-    var n = new Array();
     var l = new Array();
-    WorldGlobal_1.WorldGlobal.ToTsArray(t, n);
-    WorldGlobal_1.WorldGlobal.ToTsArray(e, l);
+    var n = new Array();
+    WorldGlobal_1.WorldGlobal.ToTsArray(t, l);
+    WorldGlobal_1.WorldGlobal.ToTsArray(e, n);
     var t = Vector_1.Vector.Create(o);
-    ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(n, l, r, t, a);
+    ControllerHolder_1.ControllerHolder.SubLevelController.ChangeSubLevel(l, n, r, t, a);
   }
   static GetActorByCreatureDataId(t) {
     t = ModelManager_1.ModelManager.CreatureModel?.GetEntity(Number(t));
@@ -930,20 +969,20 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
     var r = [];
     var o = [];
     ModelManager_1.ModelManager.CreatureModel.GetEntitiesInRange(t, 248, r);
-    for (const n of r) {
-      var a = n.Entity.GetComponent(0).GetEntityCamp();
+    for (const l of r) {
+      var a = l.Entity.GetComponent(0).GetEntityCamp();
       if (CampUtils_1.CampUtils.GetCampRelationship(a, 0) === e) {
-        o.push(n.Entity.Id);
+        o.push(l.Entity.Id);
       }
     }
     t = UE.NewArray(UE.BuiltinInt);
     WorldGlobal_1.WorldGlobal.ToUeInt32Array(o, t);
     return t;
   }
-  static AttachToActor(t, e, r, o, a, n, l, i, s, c, _) {
+  static AttachToActor(t, e, r, o, a, l, n, i, s, c, _) {
     if (t?.IsValid()) {
       t = `[蓝图:${t.GetName()}] ${a}`;
-      return ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(e, r, o, t, n, l, i, s, c, _);
+      return ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToActor(e, r, o, t, l, n, i, s, c, _);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Entity", 3, "callObject无效, AttachToActor失败。", ["Reason", a]);
@@ -951,10 +990,10 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return false;
     }
   }
-  static AttachToComponent(t, e, r, o, a, n, l, i, s, c, _) {
+  static AttachToComponent(t, e, r, o, a, l, n, i, s, c, _) {
     if (t?.IsValid()) {
       t = `[蓝图:${t.GetName()}] ${a}`;
-      return ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToComponent(e, r, o, t, n, l, i, s, c, _);
+      return ControllerHolder_1.ControllerHolder.AttachToActorController.AttachToComponent(e, r, o, t, l, n, i, s, c, _);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Entity", 3, "callObject无效, AttachToActor失败。", ["Reason", a]);
@@ -962,10 +1001,10 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
       return false;
     }
   }
-  static DetachActor(t, e, r, o, a, n, l) {
+  static DetachActor(t, e, r, o, a, l, n) {
     if (t?.IsValid()) {
       t = `[蓝图:${t.GetName()}] ${o}`;
-      return ControllerHolder_1.ControllerHolder.AttachToActorController.DetachActor(e, r, t, a, n, l);
+      return ControllerHolder_1.ControllerHolder.AttachToActorController.DetachActor(e, r, t, a, l, n);
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("Entity", 3, "callObject无效, DetachActor失败。", ["Reason", o]);
@@ -975,19 +1014,58 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   }
   static GetPlayerFollower() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    var t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(228)?.GetFollower()?.Id;
+    var t = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowShooter(t)?.Entity?.Id;
     return t || 0;
   }
   static IsPlayerFollowerEnable() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(228)?.IsFollowerEnable() ?? false;
+    return ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.IsFollowShooterEnable() ?? false;
   }
   static SetPlayerFollowerEnable(t) {
     var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
-    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(228)?.SetFollowerEnable(t);
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.SetFollowShooterEnable(t, "WorldFunctionLibrary.SetPlayerFollowerEnable");
+  }
+  static SetPlayerFollowerCustomEntityId(t, e) {
+    var r = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(r)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.AddFollowShooterCustomEntityId(t, e);
+  }
+  static RemovePlayerFollowerCustomEntityId(t) {
+    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(e)?.GetComponent(237)?.GetOrCreateHandler(IFollow_1.EPlayerFollowerHandlerType.FollowShooter)?.RemoveFollowShooterCustomEntityId(t);
+  }
+  static GetFollowerShooterConfig(t) {
+    return EntitySystem_1.EntitySystem.Get(t)?.CheckGetComponent(234)?.FollowShooterConfig;
+  }
+  static GetPlayerFollowerMotor() {
+    var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    return FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(t, "Motorcycle")?.Entity?.Id ?? 0;
+  }
+  static IsPlayerFollowerMotorEnable() {
+    var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var e = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(t, "Motorcycle");
+    if (e?.Entity) {
+      return e?.Entity?.Active;
+    } else {
+      if (Log_1.Log.CheckWarn()) {
+        Log_1.Log.Warn("Entity", 72, "玩家没有跟随的摩托车 ", ["PlayerId", t]);
+      }
+      return false;
+    }
+  }
+  static SetPlayerFollowerMotorEnable(t) {
+    var e = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var r = FollowFunctionLibrary_1.FollowFunctionLibrary.GetPlayerFollowVehicle(e, "Motorcycle");
+    if (r?.Entity) {
+      ControllerHolder_1.ControllerHolder.CreatureController.SetEntityEnable(r.Entity, t, "WorldFunctionLibrary.SetPlayerFollowerMotorEnable", true);
+    } else if (Log_1.Log.CheckWarn()) {
+      Log_1.Log.Warn("Entity", 72, "玩家没有跟随的摩托车", ["PlayerId", e]);
+    }
   }
   static IsPlayerFollowerNeedInput(t, e) {
     return false;
+  }
+  static GetGameplayTagOriginName(t) {
+    return FNameUtil_1.FNameUtil.GetDynamicFName(t?.OriginalTagName);
   }
   static RegisterToBpActorController(t, e) {
     ControllerHolder_1.ControllerHolder.BpActorController.RegisterBpActor(t, e);
@@ -995,11 +1073,37 @@ class WorldFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static UnregisterToBpActorController(t, e) {
     ControllerHolder_1.ControllerHolder.BpActorController.UnregisterBpActor(t, e);
   }
+  static RegisterDayNightBpToBpActorController(t) {
+    ControllerHolder_1.ControllerHolder.BpActorController?.RegisterDayNightActor(t);
+  }
+  static UnregisterDayNightBpToBpActorController(t) {
+    ControllerHolder_1.ControllerHolder.BpActorController?.UnregisterDayNightActor(t);
+  }
   static GetTrapDefenseUseBpUsing() {
     return TowerDefenseEventController_1.TowerDefenseEventController.TestBpUsing;
   }
   static DisableAllRoleWithoutControl(t) {
     ControllerHolder_1.ControllerHolder.SceneTeamController.DisableAllRoleWithoutControl(undefined, undefined, t);
+  }
+  static PlayerEntityId() {
+    var t = ModelManager_1.ModelManager.CreatureModel.GetPlayerId();
+    var t = ControllerHolder_1.ControllerHolder.FormationDataController.GetPlayerEntity(t);
+    if (t?.Valid) {
+      return t.Id;
+    } else {
+      return 0;
+    }
+  }
+  static CurrentFrontRoleEntityId() {
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
+    if (t?.Valid && t.Entity?.Valid) {
+      return t.Entity.Id;
+    } else {
+      return 0;
+    }
+  }
+  static ShowTipsByTextId(t) {
+    ControllerHolder_1.ControllerHolder.ScrollingTipsController.ShowTipsByTextId(t);
   }
 }
 (exports.WorldFunctionLibrary = WorldFunctionLibrary).IsChangeFootStep = false;

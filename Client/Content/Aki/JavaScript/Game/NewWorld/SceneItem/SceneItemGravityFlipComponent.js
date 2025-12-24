@@ -124,9 +124,9 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
   }
   OnStart() {
     this.EIe = this.Entity.GetComponent(0);
-    this.Hte = this.Entity.GetComponent(206);
-    this.Lie = this.Entity.GetComponent(200);
-    this._un = this.Entity.GetComponent(134);
+    this.Hte = this.Entity.GetComponent(212);
+    this.Lie = this.Entity.GetComponent(206);
+    this._un = this.Entity.GetComponent(139);
     var t = this.EIe?.PbGravityFlipDirection;
     if (!this.SetGravityDirection(t)) {
       if (Log_1.Log.CheckError()) {
@@ -195,7 +195,7 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SceneItem", 31, "[SceneItemGravityFlipComponent] CreateInteractOption", ["PbDataId", t]);
       }
-      if (e = this.Entity.GetComponent(201)) {
+      if (e = this.Entity.GetComponent(207)) {
         if (!(e = e.GetInteractController())) {
           if (Log_1.Log.CheckWarn()) {
             Log_1.Log.Warn("SceneItem", 31, "[SceneItemGravityFlipComponent]CreateInteractOption Failed_1", ["EntityId", t]);
@@ -391,5 +391,5 @@ let SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = class Scen
     this.qZ_ = t;
   }
 };
-SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(289)], SceneItemGravityFlipComponent);
+SceneItemGravityFlipComponent = SceneItemGravityFlipComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(308)], SceneItemGravityFlipComponent);
 exports.SceneItemGravityFlipComponent = SceneItemGravityFlipComponent; //# sourceMappingURL=SceneItemGravityFlipComponent.js.map

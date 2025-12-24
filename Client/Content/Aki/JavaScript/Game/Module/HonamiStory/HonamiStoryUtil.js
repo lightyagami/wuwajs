@@ -81,35 +81,35 @@ class HonamiStoryUtil {
     }
   }
   static GetHonamiStoryItemSwapInfo(e, o) {
-    var r = new Protocol_1.Aki.Protocol.B$d();
+    var r = new Protocol_1.Aki.Protocol.G$d();
     r.Xmd = e.GetIncId();
     r.h5n = 1;
-    r.k$d = new Protocol_1.Aki.Protocol.A$d();
-    r.k$d.l9_ = e.GetPosition();
-    r.k$d.Gmd = e.GetIsCross();
-    r.A$d = new Protocol_1.Aki.Protocol.A$d();
-    r.A$d.l9_ = o;
-    r.A$d.Gmd = e.GetIsDragCross();
+    r.F$d = new Protocol_1.Aki.Protocol.B$d();
+    r.F$d.l9_ = e.GetPosition();
+    r.F$d.Gmd = e.GetIsCross();
+    r.B$d = new Protocol_1.Aki.Protocol.B$d();
+    r.B$d.l9_ = o;
+    r.B$d.Gmd = e.GetIsDragCross();
     e.SetOldCross(e.GetIsCross());
     return r;
   }
   static GetHonamiStoryItemAddInfo(e, o) {
-    var r = new Protocol_1.Aki.Protocol.B$d();
+    var r = new Protocol_1.Aki.Protocol.G$d();
     r.Xmd = e.GetIncId();
     r.h5n = 0;
-    r.A$d = new Protocol_1.Aki.Protocol.A$d();
-    r.A$d.l9_ = o;
-    r.A$d.Gmd = e.GetIsDragCross();
+    r.B$d = new Protocol_1.Aki.Protocol.B$d();
+    r.B$d.l9_ = o;
+    r.B$d.Gmd = e.GetIsDragCross();
     e.SetOldCross(e.GetIsCross());
     return r;
   }
   static GetHonamiStoryItemRemoveInfo(e) {
-    var o = new Protocol_1.Aki.Protocol.B$d();
+    var o = new Protocol_1.Aki.Protocol.G$d();
     o.Xmd = e.GetIncId();
     o.h5n = 2;
-    o.k$d = new Protocol_1.Aki.Protocol.A$d();
-    o.k$d.l9_ = e.GetPosition();
-    o.k$d.Gmd = e.GetIsCross();
+    o.F$d = new Protocol_1.Aki.Protocol.B$d();
+    o.F$d.l9_ = e.GetPosition();
+    o.F$d.Gmd = e.GetIsCross();
     e.SetOldCross(e.GetIsCross());
     return o;
   }
@@ -119,7 +119,7 @@ class HonamiStoryUtil {
     ControllerHolder_1.ControllerHolder.WorldController.GetEntitiesInRange(e, 7, o, true, false);
     var n = new Set();
     for (const i of o) {
-      var t = i.Entity.CheckGetComponent(201);
+      var t = i.Entity.CheckGetComponent(207);
       if (!t || !!t.GetClientCanInteraction() || !ModelManager_1.ModelManager.HonamiStoryModel.PickedEntityId.has(i.Entity.Id)) {
         t = i.Entity.GetComponent(0);
         if (!n.has(t) && t && t.HonamiStoryItemInfo) {

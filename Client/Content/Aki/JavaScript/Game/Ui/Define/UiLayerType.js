@@ -4,7 +4,7 @@ var ELayerType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.MULTIPLE_VIEW_TYPE = exports.BLOCKCLICK_TYPE = exports.UIBLUR_TYPE = exports.IGNORE_MASK_TYPE = exports.NORMAL_PLOT_CONTAINER_TYPE = exports.PLOT_CONTAINER_TYPE = exports.NORMAL_CONTAINER_TYPE = exports.BATTLE_VIEW_UNIT_COUNT = exports.TIP_LAYER_UNIT_COUNT = exports.LayerTypeEnumValues = exports.ELayerType = undefined;
+exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = exports.MULTIPLE_VIEW_TYPE = exports.BLOCKCLICK_TYPE = exports.UIBLUR_TYPE = exports.IGNORE_MASK_TYPE = exports.NORMAL_PLOT_CONTAINER_TYPE = exports.PLOT_CONTAINER_TYPE = exports.NORMAL_CONTAINER_TYPE = exports.BATTLE_VIEW_UNIT_COUNT = exports.TIP_LAYER_UNIT_COUNT = exports.LayerTypeEnumValues = exports.ELayerType = undefined;
 (function (e) {
   e[e.HUD = 1] = "HUD";
   e[e.Normal = 2] = "Normal";
@@ -32,4 +32,5 @@ exports.NORMAL_PLOT_CONTAINER_TYPE = exports.NORMAL_CONTAINER_TYPE | exports.PLO
 exports.IGNORE_MASK_TYPE = ELayerType.Float | ELayerType.Guide;
 exports.UIBLUR_TYPE = ELayerType.Normal | ELayerType.Plot | ELayerType.Pop;
 exports.BLOCKCLICK_TYPE = ELayerType.Normal | ELayerType.Plot | ELayerType.Pop;
-exports.MULTIPLE_VIEW_TYPE = ELayerType.Float; //# sourceMappingURL=UiLayerType.js.map
+exports.MULTIPLE_VIEW_TYPE = ELayerType.Float;
+exports.MOBILE_SWITCH_ALLOW_VIEW_TYPE = ELayerType.NetWork | ELayerType.CG; //# sourceMappingURL=UiLayerType.js.map

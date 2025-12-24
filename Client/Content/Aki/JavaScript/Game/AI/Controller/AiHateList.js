@@ -58,14 +58,27 @@ class AiHateList {
     this.Lie = undefined;
     this.Die = undefined;
     this.Rie = Vector_1.Vector.Create();
-    this.Uie = (t, i, e, s, r) => {
-      var h;
-      if (s.DamageData.CalculateType === 0 && !(s = s.Damage, this.Lie?.Valid && this.Lie.HasTag(-893996770)) && (!(h = t.GetComponent(209))?.Valid || !h.HasTag(-1566015933))) {
-        if ((h = t.CheckGetComponent(3))?.Valid && CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, h.Actor.Camp) === 2) {
-          if (h = this.Aie.get(t.Id)) {
-            h.HatredValue += Math.max(MIN_HATE, h.InDecreasing ? -s * this.vie.IncreaseRateWhenDecreasing : -s);
-          } else {
-            this.Pie(t.Id, Math.max(MIN_HATE, -s), 0, "Damage");
+    this.Uie = (i, t, e, s, r) => {
+      var h = s.DamageData;
+      if (h.CalculateType === 0) {
+        h = s.Damage;
+        if (!this.Lie?.Valid || !this.Lie.HasTag(-893996770)) {
+          var s = i.GetComponent(215);
+          if (!s?.Valid || !s.HasTag(-1566015933)) {
+            let t = i.GetComponent(3);
+            if (!t) {
+              s = i.GetComponent(246);
+              if (!(t = s?.GetCurrentOrLastDriver()?.GetComponent(3))) {
+                return;
+              }
+            }
+            if (CampUtils_1.CampUtils.GetCampRelationship(this.Bte.CharActorComp.Actor.Camp, t.Actor.Camp) === 2) {
+              if (s = this.Aie.get(i.Id)) {
+                s.HatredValue += Math.max(MIN_HATE, s.InDecreasing ? -h * this.vie.IncreaseRateWhenDecreasing : -h);
+              } else {
+                this.Pie(i.Id, Math.max(MIN_HATE, -h), 0, "Damage");
+              }
+            }
           }
         }
       }
@@ -100,7 +113,7 @@ class AiHateList {
   }
   set AiHate(t) {
     if (this.vie !== t) {
-      var i = this.Bte.CharActorComp.Entity.GetComponent(182);
+      var i = this.Bte.CharActorComp.Entity.GetComponent(187);
       if (i) {
         if (s = this.Fie()) {
           ControllerHolder_1.ControllerHolder.BlackboardController.SetVectorValueByEntity(this.Bte.CharActorComp.Entity.Id, "CenterLocation", s.X, s.Y, s.Z);
@@ -142,7 +155,7 @@ class AiHateList {
     }
   }
   RefreshAbilityComp() {
-    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(209);
+    this.Lie = this.Bte.CharAiDesignComp?.Entity?.GetComponent(215);
   }
   GetHatredMap() {
     return this.Aie;
@@ -450,11 +463,11 @@ class AiHateList {
     if (!t?.Active) {
       return 0;
     }
-    var e = t.GetComponent(179);
+    var e = t.GetComponent(184);
     if (e?.Valid && !e.IsInGame) {
       return 0;
     }
-    e = t.GetComponent(209);
+    e = t.GetComponent(215);
     if (e) {
       if (this.Mie && e.HasTag(this.Mie)) {
         return 1;

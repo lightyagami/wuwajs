@@ -40,7 +40,7 @@ class LevelEventEntityTurnTo extends LevelGeneralBase_1.LevelEventBase {
   ExecuteWhenEntitiesReady() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.pDe.EntityId);
     if (t?.IsInit) {
-      var o = t.Entity.GetComponent(46);
+      var o = t.Entity.GetComponent(47);
       if (o) {
         let e = undefined;
         switch (this.pDe.Target.Type) {

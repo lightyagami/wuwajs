@@ -75,15 +75,17 @@ class BirthdayController extends UiControllerBase_1.UiControllerBase {
   }
   static UseBirthdayItem(e) {
     var r;
-    var t = BirthDayByItemId_1.configBirthDayByItemId.GetConfig(e).LimitYear;
-    var a = ModelManager_1.ModelManager.BirthdayModel.GetSelectedRoleId(t);
-    if (a) {
+    var t = BirthDayByItemId_1.configBirthDayByItemId.GetConfig(e);
+    var a = t.LimitYear;
+    var n = ModelManager_1.ModelManager.BirthdayModel.GetSelectedRoleId(a);
+    if (n) {
       (r = new LogReportDefine_1.BirthdayRepeatEnterEvent()).i_item_id = e;
       r.i_trigger_type = 1;
+      r.bird_round_id = t.Id;
       ControllerHolder_1.ControllerHolder.LogReportController.LogReport(r);
-      UiManager_1.UiManager.OpenView("BirthdayLetterView", new BirthdayDefine_1.BirthdayInfo(1, t, a));
+      UiManager_1.UiManager.OpenView("BirthdayLetterView", new BirthdayDefine_1.BirthdayInfo(1, a, n));
     } else {
-      UiManager_1.UiManager.OpenView("BirthdayRoleSelectView", new BirthdayDefine_1.BirthdayInfo(1, t));
+      UiManager_1.UiManager.OpenView("BirthdayRoleSelectView", new BirthdayDefine_1.BirthdayInfo(1, a));
     }
   }
 }

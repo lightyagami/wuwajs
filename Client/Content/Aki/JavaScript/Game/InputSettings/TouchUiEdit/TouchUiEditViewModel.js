@@ -43,9 +43,11 @@ class TouchUiEditViewModel {
     }
   }
   static NotifySelectedItemChange(e) {
-    this.wQu.forEach(t => {
-      t(e);
-    });
+    if (this.UVi === e) {
+      this.wQu.forEach(t => {
+        t(e);
+      });
+    }
   }
 }
 (exports.TouchUiEditViewModel = TouchUiEditViewModel).UVi = undefined;

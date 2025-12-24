@@ -10,9 +10,9 @@ const ConfigManager_1 = require("../../Manager/ConfigManager");
 const LoadAsyncPromise_1 = require("../UiComponent/LoadAsyncPromise");
 class ScrollingNumberTool {
   constructor() {
-    this.YWd = undefined;
-    this.eHd = undefined;
-    this.tHd = undefined;
+    this.eQd = undefined;
+    this.oHd = undefined;
+    this.nHd = undefined;
     this.FHt = 0;
     this.zwr = 0;
     this.qte = 0;
@@ -24,40 +24,40 @@ class ScrollingNumberTool {
         this.H6 += t;
         t = Math.min(this.H6 / this.r1t, 1);
         let i = t;
-        i = this.YWd ? this.YWd.GetFloatValue(t) : this.iHd(t);
+        i = this.eQd ? this.eQd.GetFloatValue(t) : this.sHd(t);
         this.qte = this.FHt + (this.zwr - this.FHt) * i;
-        this.rHd();
+        this.aHd();
         if (t >= 1) {
           this.xHe();
           this.EYa = false;
           this.qte = this.zwr;
-          this.rHd();
+          this.aHd();
         }
       }
     };
   }
   async InitCurve(i = "UiCurve_ScrollingTime") {
-    this.YWd = await this.SAo(i);
+    this.eQd = await this.SAo(i);
   }
   Init(i, t, s, e = 1000) {
     this.xHe();
-    this.tHd = s;
+    this.nHd = s;
     this.FHt = i;
     this.zwr = t;
     this.r1t = e;
     this.qte = i;
-    this.rHd();
+    this.aHd();
   }
   StartScrolling() {
     this.EYa = true;
     this.H6 = 0;
     this.FHt = this.qte;
     this.xHe();
-    this.eHd = TimerSystem_1.GameplayTimerSystem.Forever(this.Cl, TimerSystem_1.MIN_TIME);
+    this.oHd = TimerSystem_1.GameplayTimerSystem.Forever(this.Cl, TimerSystem_1.MIN_TIME);
   }
   Clear() {
-    this.YWd = undefined;
-    this.tHd = undefined;
+    this.eQd = undefined;
+    this.nHd = undefined;
     this.xHe();
   }
   async SAo(i) {
@@ -65,15 +65,15 @@ class ScrollingNumberTool {
     return new LoadAsyncPromise_1.LoadAsyncPromise(i, UE.CurveFloat).Promise;
   }
   xHe() {
-    if (this.eHd && TimerSystem_1.GameplayTimerSystem.Has(this.eHd)) {
-      TimerSystem_1.GameplayTimerSystem.Remove(this.eHd);
+    if (this.oHd && TimerSystem_1.GameplayTimerSystem.Has(this.oHd)) {
+      TimerSystem_1.GameplayTimerSystem.Remove(this.oHd);
     }
-    this.eHd = undefined;
+    this.oHd = undefined;
   }
-  rHd() {
-    this.tHd?.(this.qte);
+  aHd() {
+    this.nHd?.(this.qte);
   }
-  iHd(i) {
+  sHd(i) {
     return i * (2 - i);
   }
   SetTargetNumber(i, t) {

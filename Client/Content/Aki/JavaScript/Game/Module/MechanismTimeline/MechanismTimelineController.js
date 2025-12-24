@@ -60,7 +60,7 @@ class MechanismTimelineController extends ControllerBase_1.ControllerBase {
   if (l) {
     if (l.ContextType === 1) {
       if ((a = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(l.PbDataId))?.IsInit) {
-        if (a = a.Entity?.GetComponent(305)) {
+        if (a = a.Entity?.GetComponent(324)) {
           a.ExecuteEvent(t, e.toString(), o.toString(), r, l);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("LevelPlay", 18, "MechanismTimelineController.OnTriggerMechanismEvent:找不到SceneItemEventListenerComponent组件", ["eventName", o], ["executeType", r], ["sectionId", n], ["pbDataId", l.PbDataId]);

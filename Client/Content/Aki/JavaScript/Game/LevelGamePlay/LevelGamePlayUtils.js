@@ -4,12 +4,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LevelGamePlayUtils = undefined;
+const UE = require("ue");
 const Log_1 = require("../../Core/Common/Log");
 const GamePlayScanCompositeByUid_1 = require("../../Core/Define/ConfigQuery/GamePlayScanCompositeByUid");
+const FNameUtil_1 = require("../../Core/Utils/FNameUtil");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const IVar_1 = require("../../UniverseEditor/Interface/IVar");
 const EventDefine_1 = require("../Common/Event/EventDefine");
 const EventSystem_1 = require("../Common/Event/EventSystem");
+const EffectParameterNiagara_1 = require("../Effect/EffectParameter/EffectParameterNiagara");
+const EffectSystem_1 = require("../Effect/EffectSystem");
 const Global_1 = require("../Global");
 const ConfigManager_1 = require("../Manager/ConfigManager");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
@@ -17,6 +21,7 @@ const ModelManager_1 = require("../Manager/ModelManager");
 const CharacterUnifiedStateTypes_1 = require("../NewWorld/Character/Common/Component/Abilities/CharacterUnifiedStateTypes");
 const ActorUtils_1 = require("../Utils/ActorUtils");
 const OperationRestrictUtils_1 = require("./OperationRestrict/OperationRestrictUtils");
+const vectorArrayName = FNameUtil_1.FNameUtil.GetDynamicFName("VectorArray");
 class LevelGamePlayUtils {
   static HasScanInfo(e) {
     e = e.GetBaseInfo()?.ScanFunction?.ScanId;
@@ -277,7 +282,7 @@ class LevelGamePlayUtils {
       case 1:
       case 5:
         var a = this.GetEntityHandle(undefined, e);
-        var r = a?.Entity?.GetComponent(126);
+        var r = a?.Entity?.GetComponent(131);
         if (a?.Valid && r) {
           t = r.CurrentTimeScale * r.TimeDilation;
         }
@@ -365,12 +370,12 @@ class LevelGamePlayUtils {
   static TogglePlayerControl(e, t) {
     var a = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint();
     if (a?.Valid) {
-      var r = a.GetComponent(179);
-      var i = a.GetComponent(40);
+      var r = a.GetComponent(184);
+      var i = a.GetComponent(41);
       var n = a.GetComponent(3);
-      var o = a.GetComponent(62);
-      var s = a.GetComponent(209);
-      var a = a.GetComponent(182);
+      var o = a.GetComponent(65);
+      var s = a.GetComponent(215);
+      var a = a.GetComponent(187);
       var l = [-1697149502, -541178966, -542518289, -732810197, -1802431900, -1752099043, 581080458, -469423249, -2140742267, -1013832153];
       if (e) {
         a?.StopMove(false);
@@ -392,12 +397,38 @@ class LevelGamePlayUtils {
         n?.ClearInput();
         o?.ClearMoveVectorCache();
         o?.SetActive(false);
-        for (const d of l) {
-          s?.AddTag(d);
+        for (const f of l) {
+          s?.AddTag(f);
         }
       }
       ControllerHolder_1.ControllerHolder.InputDistributeController.RefreshInputTag();
     }
+  }
+  static SetSplinePointEffectParam(e, t, a) {
+    if (EffectSystem_1.EffectSystem.IsValid(e)) {
+      var r = UE.NewArray(UE.Vector);
+      var i = new UE.Vector();
+      for (const n of a) {
+        i.Set(n.Position.X ?? 0, n.Position.Y ?? 0, n.Position.Z ?? 0);
+        r.Add(t.TransformPosition(i));
+      }
+      a = new EffectParameterNiagara_1.EffectParameterNiagara();
+      a.UserParameterArrayVector = [[vectorArrayName, r]];
+      EffectSystem_1.EffectSystem.SetEffectParameterNiagara(e, a);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Level", 72, "[LevelGamePlayUtils.SetSplinePointEffectParam] 特效handle无效", ["effectHandle", e]);
+    }
+  }
+  static GetValueInCurveFloatRange(e, t) {
+    if (e.FromMax - e.FromMin < MathUtils_1.MathUtils.SmallNumber) {
+      return t;
+    }
+    let a = (t - e.FromMin) / (e.FromMax - e.FromMin);
+    if (e.CurveFloat) {
+      a = e.CurveFloat.GetFloatValue(a);
+    }
+    a = MathUtils_1.MathUtils.Clamp(a, 0, 1);
+    return MathUtils_1.MathUtils.Lerp(e.ToMin, e.ToMax, a);
   }
 }
 (exports.LevelGamePlayUtils = LevelGamePlayUtils).SUe = new Map();

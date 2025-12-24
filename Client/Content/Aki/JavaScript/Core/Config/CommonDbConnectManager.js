@@ -335,7 +335,7 @@ class CommonDbConnectManager {
     }
   }
   static GetValueInt(n, o, ...t) {
-    CommonDbConnectManager.rhm.Start();
+    CommonDbConnectManager.$um.Start();
     var n = this.R7d(n);
     if (n) {
       n = n.HandleId;
@@ -345,7 +345,7 @@ class CommonDbConnectManager {
         }
       }
       n = o ? (0, puerts_1.$unref)(dataIntRef) : 0;
-      CommonDbConnectManager.rhm.Stop();
+      CommonDbConnectManager.$um.Stop();
       return [o, n];
     } else {
       if (Log_1.Log.CheckError()) {
@@ -393,7 +393,7 @@ CommonDbConnectManager.W9 = Stats_1.Stat.Create("CommonDbConnectManager.BindBool
 CommonDbConnectManager.K9 = Stats_1.Stat.Create("CommonDbConnectManager.BindString");
 CommonDbConnectManager.mtl = Stats_1.Stat.Create("CommonDbConnectManager.BindFloat64Stat");
 CommonDbConnectManager.Q9 = Stats_1.Stat.Create("CommonDbConnectManager.GetValue");
-CommonDbConnectManager.rhm = Stats_1.Stat.Create("CommonDbConnectManager.GetValueInt");
+CommonDbConnectManager.$um = Stats_1.Stat.Create("CommonDbConnectManager.GetValueInt");
 CommonDbConnectManager.Npd = CommonDbData_1.UNVALID_INCREMENT_ID;
 CommonDbConnectManager.F9 = new Map();
 CommonDbConnectManager.T7d = new Map();

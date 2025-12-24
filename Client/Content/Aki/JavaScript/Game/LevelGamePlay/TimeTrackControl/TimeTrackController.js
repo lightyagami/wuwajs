@@ -55,7 +55,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
   }
   static HandleTimeTrackControlViewClose() {
     this.TimelineTraceExitRequest();
-    var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(ModelManager_1.ModelManager.TimeTrackControlModel.RefEntityId)?.Entity?.GetComponent(167);
+    var e = ModelManager_1.ModelManager.CreatureModel.GetEntity(ModelManager_1.ModelManager.TimeTrackControlModel.RefEntityId)?.Entity?.GetComponent(172);
     if (e) {
       e.ForceExitSeqCamera();
     }
@@ -134,7 +134,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
         var r = MathUtils_1.MathUtils.LongToNumber(t[e]);
         var i = ModelManager_1.ModelManager.CreatureModel.GetEntity(r);
         if (i?.Valid) {
-          i = i.Entity?.GetComponent(167);
+          i = i.Entity?.GetComponent(172);
           if (i && i.ForceEnterSeqCamera()) {
             ModelManager_1.ModelManager.TimeTrackControlModel.RefEntityId = r;
             ModelManager_1.ModelManager.TimeTrackControlModel.RefTrueEntityId = a;
@@ -154,7 +154,7 @@ class TimeTrackController extends UiControllerBase_1.UiControllerBase {
   static Nwe(e, t) {
     var a = ModelManager_1.ModelManager.TimeTrackControlModel.ControllerEntity;
     if (a?.Valid) {
-      a = a.Entity.GetComponent(138);
+      a = a.Entity.GetComponent(143);
       if (!(ModelManager_1.ModelManager.TimeTrackControlModel.GetConfigStatesCounts() < 2)) {
         if (t !== e) {
           a?.PlayActiveSeqForDuration(t < e, -1);

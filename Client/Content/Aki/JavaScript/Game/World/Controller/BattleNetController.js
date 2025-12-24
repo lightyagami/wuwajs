@@ -38,7 +38,7 @@ class BattleNetController {
     }
     this.jku = e;
     var r = new Map();
-    var o = Protocol_1.Aki.Protocol.Fbm.create();
+    var o = Protocol_1.Aki.Protocol.Kxm.create();
     o.r6n = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
     for (const s of t) {
       var a = ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(s);

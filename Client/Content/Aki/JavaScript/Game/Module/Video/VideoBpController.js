@@ -63,11 +63,11 @@ class VideoBpController extends ControllerBase_1.ControllerBase {
     var e;
     if (t) {
       if (e = this.jio.GetFromPreloadMap(t.CgName)) {
-        r.PlayEffect(t.CgFile, new UE.Vector2D(o.ScreenPos.X ?? 0, o.ScreenPos.Y ?? 0), o.Scale ?? 1, o.FadeInTime ?? 1, o.FadeOutTime ?? 1, e);
+        r.PlayEffect(t.CgFile, new UE.Vector2D(o.ScreenPos.X ?? 0, o.ScreenPos.Y ?? 0), o.Scale ?? 1, o.FadeInTime ?? 1, o.FadeOutTime ?? 1, e, o.IsFullScreenMask ?? false);
       } else {
         ResourceSystem_1.ResourceSystem.LoadAsync(t.CgFile, UE.MediaSource, e => {
           if (e) {
-            r.PlayEffect(t.CgFile, new UE.Vector2D(o.ScreenPos.X ?? 0, o.ScreenPos.Y ?? 0), o.Scale ?? 1, o.FadeInTime ?? 1, o.FadeOutTime ?? 1, e);
+            r.PlayEffect(t.CgFile, new UE.Vector2D(o.ScreenPos.X ?? 0, o.ScreenPos.Y ?? 0), o.Scale ?? 1, o.FadeInTime ?? 1, o.FadeOutTime ?? 1, e, o.IsFullScreenMask ?? false);
           } else if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("Video", 45, "VideoBpController mediaSource加载失败", ["配置名称", t.CgName], ["视频路径", t.CgFile]);
           }

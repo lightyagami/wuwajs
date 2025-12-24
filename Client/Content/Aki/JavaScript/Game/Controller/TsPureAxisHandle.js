@@ -50,5 +50,5 @@ class TsPureAxisHandle {
     }
   }
 }
-(exports.TsPureAxisHandle = TsPureAxisHandle).bDa = [InputMappingsDefine_1.axisMappings.LookUp, InputMappingsDefine_1.axisMappings.LookUpRate, InputMappingsDefine_1.axisMappings.MoveForward, InputMappingsDefine_1.axisMappings.MoveRight, InputMappingsDefine_1.axisMappings.Turn, InputMappingsDefine_1.axisMappings.Zoom, InputMappingsDefine_1.axisMappings.MouseMove, InputMappingsDefine_1.axisMappings.WheelAxis, InputMappingsDefine_1.axisMappings.TrapDefenseMoveForward, InputMappingsDefine_1.axisMappings.TrapDefenseMoveRight, InputMappingsDefine_1.axisMappings.TrapDefenseZoom];
+(exports.TsPureAxisHandle = TsPureAxisHandle).bDa = [InputMappingsDefine_1.axisMappings.LookUp, InputMappingsDefine_1.axisMappings.LookUpRate, InputMappingsDefine_1.axisMappings.MoveForward, InputMappingsDefine_1.axisMappings.MoveRight, InputMappingsDefine_1.axisMappings.Turn, InputMappingsDefine_1.axisMappings.Zoom, InputMappingsDefine_1.axisMappings.MouseMove, InputMappingsDefine_1.axisMappings.WheelAxis, InputMappingsDefine_1.axisMappings.TrapDefenseMoveForward, InputMappingsDefine_1.axisMappings.TrapDefenseMoveRight, InputMappingsDefine_1.axisMappings.TrapDefenseZoom, InputMappingsDefine_1.axisMappings.MotorMoveForward, InputMappingsDefine_1.axisMappings.MotorMoveRight];
 //# sourceMappingURL=TsPureAxisHandle.js.map

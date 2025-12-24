@@ -28,7 +28,7 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     this.wXt = 0;
     this.B7 = undefined;
     this.xsa = (e, t) => {
-      if (this.EntityHandle?.Entity?.Valid && t !== CharacterUnifiedStateTypes_1.ECharPositionState.Climb && (t = this.EntityHandle.Entity.GetComponent(45)) && t.IsMovingToLocation()) {
+      if (this.EntityHandle?.Entity?.Valid && t !== CharacterUnifiedStateTypes_1.ECharPositionState.Climb && (t = this.EntityHandle.Entity.GetComponent(46)) && t.IsMovingToLocation()) {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("AI", 42, "MoveWithSpline打断墙上移动");
         }
@@ -48,12 +48,12 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     var t;
     super.OnStartTask();
     if (this.EntityHandle.Entity.GetComponent(0)?.IsNpc() && this.gLe?.NpcFollow) {
-      this.EntityHandle.Entity.GetComponent(191)?.PauseAi("StartMoveWithSpline");
+      this.EntityHandle.Entity.GetComponent(197)?.PauseAi("StartMoveWithSpline");
       EventSystem_1.EventSystem.EmitWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.StartMoveWithSpline, this.gLe, this.RCl, e => {
         this.EndTask(e);
       });
     } else if (this.gLe?.MoveOnWallConfig) {
-      if (e = this.EntityHandle.Entity.GetComponent(307)) {
+      if (e = this.EntityHandle.Entity.GetComponent(326)) {
         (t = Vector_1.Vector.Create()).FromConfigVector(this.gLe?.MoveOnWallConfig.WallDetectDir);
         Rotator_1.Rotator.Create(t.Y, t.Z, t.X).Vector(t);
         e.EnterSplineClimb(this.Spline, t, e => {
@@ -81,22 +81,22 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     }
     s?.ClearInput();
     if (this.gLe?.MoveTarget.Type === "Player") {
-      s = this.EntityHandle.Entity.GetComponent(45);
-      t = this.EntityHandle.Entity.GetComponent(104);
+      s = this.EntityHandle.Entity.GetComponent(46);
+      t = this.EntityHandle.Entity.GetComponent(109);
       if (s) {
         s.StopMove(false);
         i = t?.MoveState;
         s.ResetMaxSpeed(i);
       }
-      if (this.gLe?.CheckClimb && (s = this.EntityHandle.Entity.GetComponent(34)) && t && t.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
+      if (this.gLe?.CheckClimb && (s = this.EntityHandle.Entity.GetComponent(35)) && t && t.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
         s.KickWallExit();
       }
-      (i = this.EntityHandle.Entity.GetComponent(62))?.ClearMoveVectorCache();
+      (i = this.EntityHandle.Entity.GetComponent(65))?.ClearMoveVectorCache();
       i?.SetActive(true);
     }
-    this.EntityHandle.Entity.GetComponent(45).IsSpecialMove = false;
+    this.EntityHandle.Entity.GetComponent(46).IsSpecialMove = false;
     if (this.EntityHandle.Entity.GetComponent(0)?.IsNpc() && this.gLe?.NpcFollow) {
-      this.EntityHandle.Entity.GetComponent(191)?.ResumeAi("StartMoveWithSpline");
+      this.EntityHandle.Entity.GetComponent(197)?.ResumeAi("StartMoveWithSpline");
     }
     this.B7?.(e);
   }
@@ -137,11 +137,11 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
       i = CharacterSplineMoveTask.RTe;
       TraceElementCommon_1.TraceElementCommon.GetImpactPoint(h, 0, i);
       i.AdditionEqual(t);
-      s = (h = this.EntityHandle.Entity.GetComponent(181)).GetMeshTransform();
+      s = (h = this.EntityHandle.Entity.GetComponent(186)).GetMeshTransform();
       r.SetActorLocation(i.ToUeVector(), "MoveWithSplineDetectClimb", true);
       h.SetModelBuffer(s, 10);
       (r = t).UnaryNegation(r);
-      return this.EntityHandle.Entity.GetComponent(104)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb || (this.EntityHandle.Entity.GetComponent(34)?.DetectClimbWithDirect(false, r.ToUeVector(), true) ?? false);
+      return this.EntityHandle.Entity.GetComponent(109)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb || (this.EntityHandle.Entity.GetComponent(35)?.DetectClimbWithDirect(false, r.ToUeVector(), true) ?? false);
     } else {
       if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("AI", 42, "MoveWithSpline上墙失败,射线检测不到墙面", ["loc", e]);
@@ -217,7 +217,7 @@ class CharacterSplineMoveTask extends SplineMoveTaskBase_1.SplineMoveTaskBase {
     if (this.SplineData?.TurnSpeed) {
       t.TurnSpeed = this.SplineData.TurnSpeed;
     }
-    var o = this.EntityHandle.Entity.GetComponent(45);
+    var o = this.EntityHandle.Entity.GetComponent(46);
     if (o.IsMovingToLocation()) {
       o.MoveToLocationEnd(1);
     }

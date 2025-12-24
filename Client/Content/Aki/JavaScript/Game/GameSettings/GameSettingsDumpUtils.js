@@ -85,6 +85,10 @@ GameSettingsDumpUtils.DumpNvidiaDlssQuality = () => {
 };
 GameSettingsDumpUtils.DumpNvidiaDlssSharpness = () => "SetDLSSSharpness: " + UE.DLSSLibrary.GetDLSSSharpness();
 GameSettingsDumpUtils.DumpNvidiaReflex = () => "[DumpNvidiaReflex]can not get setting value in engine";
+GameSettingsDumpUtils.DumpHdr = () => {
+  var e = "";
+  return e += _a.JMc("r.HDR.EnableHDROutput");
+};
 GameSettingsDumpUtils.DumpFsr = () => {
   var e = "";
   return (e += _a.JMc("r.TemporalAASamples")) + _a.JMc("r.FidelityFX.FSR.PrimaryUpscale") + _a.JMc("r.ScreenPercentage") + _a.JMc("r.MipMapLODBias") + _a.JMc("r.TemporalAACurrentFrameWeight") + _a.JMc("r.TemporalAA.ClampTolerant") + _a.JMc("r.TemporalAA.SharpenLimitDepth") + _a.JMc("r.NGX.DLSS.Enable");
@@ -170,4 +174,5 @@ GameSettingsDumpUtils.DumpVulkan = () => {
 };
 GameSettingsDumpUtils.DumpWaterInteract = () => "SceneBattleInteractModel.Open: " + ModelManager_1.ModelManager.SceneBattleInteractModel.Open;
 GameSettingsDumpUtils.DumpVegetationDither = () => "";
+GameSettingsDumpUtils.DumpVegetationDensity = () => "";
 GameSettingsDumpUtils.DumpAutoExposure = () => _a.JMc("r.Kuro.AutoExposurePlayerCustom"); //# sourceMappingURL=GameSettingsDumpUtils.js.map

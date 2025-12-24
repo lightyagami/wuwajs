@@ -40,7 +40,7 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("SceneItem", 39, "[SyncSplineMoveController.RecvSyncSceneItemSplineMoveStatus] 接收同步场景物件样条移动信息", ["CreatureDataId", o.F4n], ["SplineId", o.dTs], ["Status", splineMoveStatusLogString[o.bAc]], ["RuntimeData", o.yAc], ["Config", o.vAc]);
     }
-    var t = e.GetComponent(132);
+    var t = e.GetComponent(137);
     if (t?.Valid) {
       switch (o.bAc) {
         case Protocol_1.Aki.Protocol.bAc.Proto_MoveStatusMoving:
@@ -135,7 +135,7 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
   }
   static SyncVehicleMoveAlongPath(o, t) {
     var e;
-    var n = o.GetComponent(240);
+    var n = o.GetComponent(249);
     if (n) {
       if ((e = n.GetMovingSplineId()) && e !== t) {
         n.StopMove();
@@ -152,7 +152,7 @@ class SyncSplineMoveController extends ControllerBase_1.ControllerBase {
     }
   }
   static SyncVehicleStopMove(e) {
-    e = e.GetComponent(240);
+    e = e.GetComponent(249);
     if (e) {
       e.StopMove();
     }

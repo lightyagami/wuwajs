@@ -28,6 +28,9 @@ class ShopInfo {
   get DialogueText() {
     return this.dialoguetext();
   }
+  get UiCamera() {
+    return this.uicamera();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -97,6 +100,14 @@ class ShopInfo {
   }
   dialoguetext(t) {
     var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  uicamera(t) {
+    var s = this.J7.__offset(this.z7, 16);
     var s = s ? this.J7.__string(this.z7 + s, t) : null;
     if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(s);

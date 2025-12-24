@@ -100,6 +100,9 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.umn();
       this.Entity.ChangeTickInterval(0);
     };
+    this.Rnn = () => {
+      EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompletedNew);
+    };
     this.GMl = (t, e) => {
       var i;
       var n;
@@ -176,6 +179,11 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   GetMainCollisionActor() {
     if (this.u9e !== -1) {
       return SceneInteractionManager_1.SceneInteractionManager.Get().GetMainCollisionActor(this.u9e);
+    }
+  }
+  GetInteractionSkeletalMeshActor() {
+    if (this.u9e !== -1) {
+      return SceneInteractionManager_1.SceneInteractionManager.Get().GetSceneInteractionSkeletalMeshActor(this.u9e);
     }
   }
   HasMesh() {
@@ -352,7 +360,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   }
   OnStart() {
     var t;
-    if ((this.Entity.GetComponent(160) !== undefined || this.Entity.GetComponent(225) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
+    if ((this.Entity.GetComponent(165) !== undefined || this.Entity.GetComponent(232) !== undefined) && (this.OverrideStaticMeshFromSceneInteraction(), this.PhysicsMode = 0, (t = this.GetPrimitiveComponent()).SetCollisionEnabled(3), t = t?.BodyInstance)) {
       t.bLockXRotation = false;
       t.bLockYRotation = false;
       t.bLockZRotation = false;
@@ -396,7 +404,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     this.OnSetActorActive(true);
     var t = this.CreatureData.GetVisible();
     this.ToggleSceneInteractionVisible(t, t ? () => {
-      this.Txe();
+      this.SetupSceneInteractionWhenLoadCompleted();
     } : () => {
       this.b4a();
     }, "SceneItemActorComponent.OnEnable, visible:" + t);
@@ -500,8 +508,8 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.ResetAllCachedTime();
       this.imn = t;
       this.u9e = SceneInteractionManager_1.SceneInteractionManager.Get().CreateSceneInteractionLevel(i.AssetPathName?.toString(), this.imn, this.ActorLocation, this.ActorRotation, () => {
-        this.Txe();
-      }, this.CreatureData.GetVisible(), e, this.CreatureData.GetPbDataId());
+        this.SetupSceneInteractionWhenLoadCompleted();
+      }, this.CreatureData.GetVisible(), e, this.CreatureData.GetPbDataId(), this.Rnn);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Entity", 17, "生成场景交互物", ["initState", t], ["HandleId", this.u9e], ["ModelId", n.ID], ["ActorLocation", this.ActorLocation]);
       }
@@ -509,7 +517,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.SetIsSceneInteractionLoadCompleted();
     }
   }
-  Txe() {
+  SetupSceneInteractionWhenLoadCompleted() {
     if (this.u9e !== -1) {
       this.omn = true;
       if (Log_1.Log.CheckDebug()) {
@@ -552,7 +560,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       this.fmn();
       this.RefreshShowActor();
       this.kMl();
-      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(208)?.CurrentTimeScale ?? 1);
+      e = this.Entity.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1) * (this.Entity.GetComponent(214)?.CurrentTimeScale ?? 1);
       this.UpdateAkFinalTimeScale(e, true);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionLoadCompleted);
       EventSystem_1.EventSystem.EmitWithTarget(this.Entity, EventDefine_1.EEventName.OnSceneInteractionShowCompleted);
@@ -592,7 +600,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     if (this.Entity?.Valid && this.Entity?.GameBudgetManagedToken !== undefined) {
       let t = undefined;
       var e;
-      if (t = (t = this.GetMainCollisionActor()) === undefined ? UE.KuroStaticLibrary.GetLevelPrefabShowActor(this.ActorInternal) : t) {
+      if (t = (t = this.GetMainCollisionActor()) !== undefined && t.GetComponentByClass(UE.MeshComponent.StaticClass()) ? t : UE.KuroStaticLibrary.GetLevelPrefabShowActor(this.ActorInternal)) {
         cpp_1.FKuroGameBudgetAllocatorInterface.UpdatePerformanceActor(this.Entity.GameBudgetConfig.GroupName, this.Entity.GameBudgetManagedToken, t);
         if (this.hmn !== t) {
           this.hmn = t;
@@ -700,6 +708,16 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
   UpdateHitInfo(t, e) {
     if (this.u9e !== -1) {
       SceneInteractionManager_1.SceneInteractionManager.Get().UpdateHitInfo(this.u9e, t, e);
+    }
+  }
+  SetOverrideSeqBindActor(t, e) {
+    if (this.u9e !== -1) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().SetOverrideSeqBindActor(this.u9e, t, e);
+    }
+  }
+  UnsetOverrideSeqBindActor(t, e) {
+    if (this.u9e !== -1) {
+      SceneInteractionManager_1.SceneInteractionManager.Get().UnsetOverrideSeqBindActor(this.u9e, t, e);
     }
   }
   PlaySceneInteractionEndEffect(t) {
@@ -897,7 +915,7 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
     }
   }
   OnChangeTimeDilation(t) {
-    var t = t * (this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1);
+    var t = t * (this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1);
     this.ActorInternal.CustomTimeDilation = t;
     var e = this.GetInteractionMainActor();
     if (e?.IsValid()) {
@@ -973,7 +991,19 @@ let SceneItemActorComponent = SceneItemActorComponent_1 = class SceneItemActorCo
       AudioSystem_1.AudioSystem.PostEvent("time_scale_resume", t);
     }
   }
+  SetActorLocationAndRotationExceptSkeletalMesh(t, e, i, n, s = true) {
+    this.CachedDesiredActorLocation.FromUeVector(e);
+    this.IsChangingLocation = true;
+    t = t.SetActorTransformExceptSkeletalMesh(e, i, s, undefined, true, true);
+    this.IsChangingLocation = false;
+    this.CheckIsForbidSettingLocAndRot(true, true);
+    if (this.DebugMovementComp) {
+      this.DebugMovementComp.MarkDebugRecord(n + ".SetActorLocationAndRotationExceptMesh", 1);
+    }
+    this.ResetTransformCachedTime();
+    return t;
+  }
 };
 SceneItemActorComponent.Zsh = undefined;
-SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(206)], SceneItemActorComponent);
+SceneItemActorComponent = SceneItemActorComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(212)], SceneItemActorComponent);
 exports.SceneItemActorComponent = SceneItemActorComponent; //# sourceMappingURL=SceneItemActorComponent.js.map

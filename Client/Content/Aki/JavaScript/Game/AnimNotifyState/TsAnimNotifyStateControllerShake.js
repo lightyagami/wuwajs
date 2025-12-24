@@ -7,6 +7,7 @@ const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const Global_1 = require("../Global");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
 class TsAnimNotifyStateControllerShake extends UE.KuroAnimNotifyState {
@@ -30,7 +31,7 @@ class TsAnimNotifyStateControllerShake extends UE.KuroAnimNotifyState {
         if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(e)) {
           return false;
         }
-        Global_1.Global.CharacterController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused);
+        ControllerHolder_1.ControllerHolder.GamepadController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused, "TsAnimNotifyStateControllerShake");
       }
     }
     return true;
@@ -38,7 +39,7 @@ class TsAnimNotifyStateControllerShake extends UE.KuroAnimNotifyState {
   K2_NotifyEnd(e, r) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent?.IsAutonomousProxy && Global_1.Global.CharacterController) {
-      Global_1.Global.CharacterController.StopKuroForceFeedback(this.Effect, this.Name);
+      ControllerHolder_1.ControllerHolder.GamepadController.StopKuroForceFeedback(this.Effect, this.Name);
     }
     return true;
   }

@@ -10,6 +10,7 @@ const Net_1 = require("../../../Core/Net/Net");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const UnopenedAreaController_1 = require("../../LevelGamePlay/UnopenedArea/UnopenedAreaController");
+const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
@@ -58,23 +59,24 @@ class AreaController extends UiControllerBase_1.UiControllerBase {
   }
   static RegisterEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.InitArea, this.DWe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
   static UnRegisterEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.InitArea, this.DWe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, this.Ilt);
   }
-  static BeginOverlap(e, r) {
+  static EnterAreaRequest(r, e, o, t) {
     e = Protocol_1.Aki.Protocol.iYn.create({
       s5n: e,
       NKa: 0
     });
-    const o = ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId;
     Net_1.Net.Call(20512, e, e => {
       if (e) {
         if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs && e.Q4n !== Protocol_1.Aki.Protocol.Q4n.Proto_PlayerNotInTheScene) {
           ControllerHolder_1.ControllerHolder.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22966);
-        } else if (ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId !== e.s5n) {
+        } else if (!o || ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId !== e.s5n) {
           if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Area", 7, "[AreaController.BeginOverlap] 进入区域", ["CurArea", o], ["EnterArea", e.s5n], ["reason", r]);
+            Log_1.Log.Info("Area", 72, "[AreaController.EnterAreaRequest]", ["CurArea", r], ["EnterArea", e.s5n], ["reason", t]);
           }
           ModelManager_1.ModelManager.AreaModel.SetAreaName(e.s5n);
         }
@@ -103,7 +105,6 @@ class AreaController extends UiControllerBase_1.UiControllerBase {
       });
     }
   }
-  static RequestChangeAreaState(e, r) {}
 }
 (exports.AreaController = AreaController).IWe = undefined;
 AreaController.TWe = undefined;
@@ -120,4 +121,16 @@ AreaController.LWe = e => {
   }
   ModelManager_1.ModelManager.AreaModel.ToggleAreaState(e.GRs.p6n, e.GRs.Y4n);
   UnopenedAreaController_1.UnopenedAreaController.AreaCheckStatesChange(e);
+};
+AreaController.Ilt = e => {
+  var e = e?.TeleportCfgId;
+  if ((e &&= ConfigManager_1.ConfigManager.WorldMapConfig.GetTeleportEntityConfigId(e)) && (e = ModelManager_1.ModelManager.CreatureModel?.GetEntityData(e)?.AreaId)) {
+    if (ModelManager_1.ModelManager.AreaModel.GetArea(e)) {
+      if (e === ModelManager_1.ModelManager.AreaModel.AreaInfo?.AreaId) {
+        ModelManager_1.ModelManager.AreaModel.SetAreaName(e, true);
+      }
+    } else {
+      ModelManager_1.ModelManager.AreaModel.AddWatchArea(e);
+    }
+  }
 }; //# sourceMappingURL=AreaController.js.map

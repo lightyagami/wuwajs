@@ -33,10 +33,10 @@ class TsAnimNotifyStateCounterAttack extends UE.KuroAnimNotifyState {
       if (!t?.Valid) {
         return false;
       }
-      var s = t.GetComponent(213);
+      var s = t.GetComponent(220);
       this.AnMessageId = s?.CreateAnimNotifyContent(i.GetName(), this.exportIndex);
-      var s = t.GetComponent(40);
-      var i = t.GetComponent(61);
+      var s = t.GetComponent(41);
+      var i = t.GetComponent(64);
       if (!s?.Valid || !i?.Valid) {
         return false;
       }
@@ -87,8 +87,8 @@ class TsAnimNotifyStateCounterAttack extends UE.KuroAnimNotifyState {
         }
         return false;
       }
-      var r = s.GetComponent(40);
-      var s = s.GetComponent(61);
+      var r = s.GetComponent(41);
+      var s = s.GetComponent(64);
       if (!r?.Valid || !s?.Valid) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Battle", 20, "CounterAttack End skillComp or hitComp not valid", ["Owner", e?.GetName()], ["SkillComp", r?.Valid], ["HitComp", s?.Valid]);

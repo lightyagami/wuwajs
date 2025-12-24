@@ -36,6 +36,10 @@ class HandBookEntranceView extends UiViewBase_1.UiViewBase {
       this.bei = e;
       this.xqe ||= new GenericScrollViewNew_1.GenericScrollViewNew(this.GetScrollViewWithScrollbar(2), this.sGe);
       this.xqe.RefreshByData(this.bei);
+      const i = this.OpenParam;
+      if (i && i.SelectedTabType !== undefined && (e = this.bei.findIndex(e => e.Id === i.SelectedTabType), e = this.xqe.GetItemByIndex(e))) {
+        this.xqe?.LateScrollTo(e);
+      }
     };
     this.sGe = () => {
       var e = new HandBookEntranceItem_1.HandBookEntranceItem();

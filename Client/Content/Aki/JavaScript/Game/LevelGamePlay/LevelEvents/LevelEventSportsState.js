@@ -54,7 +54,7 @@ class LevelEventSportsState extends LevelGeneralBase_1.LevelEventBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 50, "进入滑雪模式", ["Type", t.Type], ["ContextSource", a], ["NeedSetBase", o]);
       }
-      r.GetComponent(35)?.EnterSkiMode(e, o);
+      r.GetComponent(36)?.EnterSkiMode(e, o);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 50, "目前仅Role支持触发滑雪模式", ["ContextType", t.Type], ["ContextSource", a]);
     }
@@ -77,14 +77,14 @@ class LevelEventSportsState extends LevelGeneralBase_1.LevelEventBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("LevelEvent", 50, "退出滑雪模式", ["Type", t.Type], ["ContextSource", o]);
       }
-      r.GetComponent(35)?.ExitSkiMode();
+      r.GetComponent(36)?.ExitSkiMode();
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 50, "目前仅Role支持关闭滑雪模式", ["ContextType", t.Type], ["ContextSource", o]);
     }
   }
   jRe(e, t) {
     if (t instanceof LevelGeneralContextDefine_1.TriggerContext) {
-      EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 35)?.SetSkiAccel(e);
+      EntitySystem_1.EntitySystem.GetComponent(t.OtherEntityId, 36)?.SetSkiAccel(e);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 6, "LevelEventSportsState Ski: Triggered类型必须对应TriggerContext", ["ContextType", t.Type]);
     }

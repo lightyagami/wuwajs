@@ -29,7 +29,7 @@ class EffectManagerBusinessProxy {
       this.C1r = Global_1.Global.BaseCharacter?.GetEntityIdNoBlueprint() ?? 0;
     };
     this.BJe = (e, t, s) => {
-      if (this.d1r && e === this.C1r && (e = this.d1r.GetComponent(40)?.GetSkillInfo(t)) && e.SkillGenre === 3) {
+      if (this.d1r && e === this.C1r && (e = this.d1r.GetComponent(41)?.GetSkillInfo(t)) && e.SkillGenre === 3) {
         this.c1r.Start();
         this.m1r.forEach(e => {
           if (EffectSystem_1.EffectSystem.IsValid(e)) {

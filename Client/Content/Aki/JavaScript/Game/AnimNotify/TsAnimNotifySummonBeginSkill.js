@@ -29,7 +29,7 @@ class TsAnimNotifySummonBeginSkill extends UE.KuroAnimNotify {
     var n;
     var l;
     var o = o.GetOwner();
-    return !!o && !!(o instanceof TsBaseCharacter_1.default) && !!this.ActionSetLocation && !!this.ActionSetRotation && !!(o = o?.CharacterActorComponent?.Entity)?.Valid && !!(i = o.GetComponent(40)) && !!i.CurrentSkill && !!(e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(o, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, this.SummonIndex))?.Valid && !!(r = e.Entity.GetComponent(40)) && !(o = {
+    return !!o && !!(o instanceof TsBaseCharacter_1.default) && !!this.ActionSetLocation && !!this.ActionSetRotation && !!(o = o?.CharacterActorComponent?.Entity)?.Valid && !!(i = o.GetComponent(41)) && !!i.CurrentSkill && !!(e = PhantomUtil_1.PhantomUtil.GetSummonedEntity(o, Protocol_1.Aki.Protocol.Summon.x3s.Proto_ESummonTypeConcomitantCustom, this.SummonIndex))?.Valid && !!(r = e.Entity.GetComponent(41)) && !(o = {
       Entity: o,
       SkillComponent: i,
       Skill: i.CurrentSkill

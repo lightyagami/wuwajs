@@ -15,8 +15,9 @@ class LevelEventAddBuffToPlayer extends LevelEventAddBuffClientPrePerformance_1.
         case 2:
           return ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
         case 3:
-          if (Log_1.Log.CheckError()) {
-            Log_1.Log.Error("LevelEvent", 72, `[${this.GetDebugName()}] Plot剧情编队类型角色触发了实体的TriggerComponent，不合理`, ["context", e]);
+        case 4:
+          if (Log_1.Log.CheckWarn()) {
+            Log_1.Log.Warn("LevelEvent", 72, `[${this.GetDebugName()}] 剧情、玩法演出编队类型角色触发了实体的TriggerComponent，不合理`, ["context", e]);
           }
       }
     }

@@ -15,6 +15,7 @@ const GuideTipsByGuideId_1 = require("../../../Core/Define/ConfigQuery/GuideTips
 const GuideTutorialAll_1 = require("../../../Core/Define/ConfigQuery/GuideTutorialAll");
 const GuideTutorialById_1 = require("../../../Core/Define/ConfigQuery/GuideTutorialById");
 const GuideTutorialPageById_1 = require("../../../Core/Define/ConfigQuery/GuideTutorialPageById");
+const MultiPlatformGuideStepById_1 = require("../../../Core/Define/ConfigQuery/MultiPlatformGuideStepById");
 const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
@@ -70,22 +71,37 @@ class GuideConfig extends ConfigBase_1.ConfigBase {
     return GuideGroupById_1.configGuideGroupById.GetConfig(e);
   }
   GetOrderedStepIdsOfGroup(e, r) {
-    const i = [];
+    const u = [];
     e = this.GetGroup(e);
-    const u = exports.inputControllerType2IndexInConfig.get(r);
-    if (u !== undefined) {
+    const i = exports.inputControllerType2IndexInConfig.get(r);
+    if (i !== undefined) {
       e?.Step.forEach(e => {
-        if (this.GetStep(e).Controller[u] === "T") {
-          i.push(e);
+        if (this.GetStep(e).Controller[i] === "T") {
+          u.push(e);
         }
       });
     }
-    return i;
+    return u;
+  }
+  GetMultiPlatformStepIdMapOfStep(e) {
+    var e = MultiPlatformGuideStepById_1.configMultiPlatformGuideStepById.GetConfig(e);
+    var r = new Map();
+    r.set(1, Array.from(e?.KeyboardStepId ?? []));
+    r.set(2, Array.from(e?.GamepadStepId ?? []));
+    r.set(3, Array.from(e?.MobileStepId ?? []));
+    return r;
   }
   GetLimitRepeatStepSetOfGroup(e) {
     const r = new Set();
     this.GetGroup(e)?.LimitRepeat.forEach(e => {
       r.add(e);
+    });
+    return r;
+  }
+  GetMultiPlatformStepIdsOfGroup(e) {
+    const r = [];
+    this.GetGroup(e)?.MultiPlatformStep.forEach(e => {
+      r.push(e);
     });
     return r;
   }

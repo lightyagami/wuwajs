@@ -44,7 +44,7 @@ class UnopenedAreaPullback {
     this.xie = (t, e) => {
       if (this.hBe && (this.CBe(t), this.sBe)) {
         if (e?.Valid) {
-          e.Entity.GetComponent(182).StopMoveToLocation();
+          e.Entity.GetComponent(187).StopMoveToLocation();
           this.gBe(e, false);
         }
         this.gBe(t, true);
@@ -57,9 +57,9 @@ class UnopenedAreaPullback {
     var i;
     if (this.hBe && this.dBe?.Valid) {
       if (ModelManager_1.ModelManager.TeleportModel.IsTeleport || ModelManager_1.ModelManager.PlotModel.IsInPlot) {
-        this.qMm(true);
+        this.wBm(true);
       } else {
-        this.qMm(false);
+        this.wBm(false);
         e = Vector_1.Vector.Dist2D(this._Be, this.Hte.ActorLocationProxy);
         if (this.aBe) {
           i = MathUtils_1.MathUtils.SafeDivide(e, this.rBe);
@@ -110,27 +110,23 @@ class UnopenedAreaPullback {
     return true;
   }
   OnEnterUnopenedArea() {
-    if (!this.hBe && !(this._Be.DeepCopy(ModelManager_1.ModelManager.MapModel.GetLastSafeLocation()), this._Be.IsNearlyZero())) {
-      if (!EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie)) {
-        EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie);
-      }
-      this.hBe = true;
-      this.lBe = undefined;
-      this.CBe();
-      this.LBe(true);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("Map", 42, "--------进入了未开放区域--------", ["EnterLoc", this._Be]);
+    var t;
+    if (!this.hBe) {
+      this._Be.DeepCopy(ModelManager_1.ModelManager.MapModel.GetLastSafeLocation());
+      if (!this._Be.IsNearlyZero() && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie) || EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnChangeRole, this.xie), this.hBe = true, this.lBe = undefined, this.CBe(), this.LBe(true), Log_1.Log.CheckInfo() && Log_1.Log.Info("Map", 42, "--------进入了未开放区域--------", ["EnterLoc", this._Be]), t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint())) {
+        EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnEnterOrExitUnopenedArea, true);
       }
     }
   }
   OnExitUnopenedArea() {
-    if (this.hBe && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie), this.hBe = false, Log_1.Log.CheckInfo() && Log_1.Log.Info("Map", 42, "- - - - 离开了未开放区域- - - - "), this.LBe(false), this.sBe)) {
-      this.EBe();
+    var t;
+    if (this.hBe && (EventSystem_1.EventSystem.Has(EventDefine_1.EEventName.OnChangeRole, this.xie) && EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnChangeRole, this.xie), this.hBe = false, Log_1.Log.CheckInfo() && Log_1.Log.Info("Map", 42, "- - - - 离开了未开放区域- - - - "), this.LBe(false), this.sBe && this.EBe(), t = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint())) {
+      EventSystem_1.EventSystem.EmitWithTarget(t, EventDefine_1.EEventName.OnEnterOrExitUnopenedArea, false);
     }
   }
   fBe(t) {
     this.DBe(t);
-    var t = t.Entity.GetComponent(182);
+    var t = t.Entity.GetComponent(187);
     var e = {
       Index: 0,
       Position: this._Be
@@ -151,8 +147,8 @@ class UnopenedAreaPullback {
     });
   }
   DBe(t) {
-    if (t.Entity?.CheckGetComponent(179)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
-      t.Entity?.GetComponent(34)?.ClimbPress(true);
+    if (t.Entity?.CheckGetComponent(184)?.PositionState === CharacterUnifiedStateTypes_1.ECharPositionState.Climb) {
+      t.Entity?.GetComponent(35)?.ClimbPress(true);
     }
   }
   RBe() {
@@ -174,10 +170,10 @@ class UnopenedAreaPullback {
     });
   }
   TBe(t) {
-    var e = t.Entity.GetComponent(182);
+    var e = t.Entity.GetComponent(187);
     e.StopMove(false);
     e.MoveToLocationEnd(1);
-    var e = t.Entity.GetComponent(62);
+    var e = t.Entity.GetComponent(65);
     e.ClearMoveVectorCache();
     e.SetActive(true);
     this.gBe(t, false);
@@ -195,7 +191,7 @@ class UnopenedAreaPullback {
       this.ABe(0, 0);
     }
     this.Hte.ClearInput();
-    var t = this.dBe.Entity.GetComponent(62);
+    var t = this.dBe.Entity.GetComponent(65);
     t.ClearMoveVectorCache();
     t.SetActive(false);
     this.gBe(this.dBe, true);
@@ -208,11 +204,11 @@ class UnopenedAreaPullback {
       this.dBe = ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId);
     }
     this.Hte = this.dBe.Entity.GetComponent(3);
-    this.cBe = this.dBe.Entity.GetComponent(40);
-    this.mBe = this.dBe.Entity.GetComponent(179);
+    this.cBe = this.dBe.Entity.GetComponent(41);
+    this.mBe = this.dBe.Entity.GetComponent(184);
   }
   ABe(t, e) {
-    var i = this.Hte.Entity.GetComponent(209);
+    var i = this.Hte.Entity.GetComponent(215);
     if (t === 0 || i?.HasTag(-2100129479)) {
       this.Hte.Actor.KuroSetMovementMode({
         Mode: 1,
@@ -245,7 +241,7 @@ class UnopenedAreaPullback {
   SBe(t) {
     if (t) {
       if (!this.lBe) {
-        t = this.dBe?.Entity?.GetComponent(234)?.IsOnVehicle ?? false;
+        t = this.dBe?.Entity?.GetComponent(243)?.IsOnVehicle ?? false;
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Map", 42, "开启定时器传送", ["Time", TELEPORT_DELAY_TIME]);
         }
@@ -264,7 +260,7 @@ class UnopenedAreaPullback {
       this.lBe = undefined;
     }
   }
-  qMm(t) {
+  wBm(t) {
     if (this.lBe && TimerSystem_1.TimerSystem.Has(this.lBe)) {
       if (t) {
         if (!this.lBe.IsPause()) {
@@ -285,12 +281,12 @@ class UnopenedAreaPullback {
     var i;
     if (t && t.Valid) {
       if (e) {
-        (i = t.Entity.GetComponent(209))?.AddTag(-1697149502);
+        (i = t.Entity.GetComponent(215))?.AddTag(-1697149502);
         i?.AddTag(-541178966);
         i?.AddTag(-542518289);
       }
       if (!e) {
-        (i = t.Entity.GetComponent(209))?.RemoveTag(-1697149502);
+        (i = t.Entity.GetComponent(215))?.RemoveTag(-1697149502);
         i?.RemoveTag(-541178966);
         i?.RemoveTag(-542518289);
       }

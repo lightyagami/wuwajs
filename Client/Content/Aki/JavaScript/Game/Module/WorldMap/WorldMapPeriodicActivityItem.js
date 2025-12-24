@@ -18,7 +18,7 @@ class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
     this.YP = () => {
       this.sMd?.();
     };
-    this.Kim = () => {
+    this._am = () => {
       ModelManager_1.ModelManager.WorldMapModel.ActivityListData[0].OnClickCb();
       ModelManager_1.ModelManager.WorldMapModel.UpdateActivityListItemData(false);
       this.RefreshRedPoint();
@@ -39,7 +39,7 @@ class WorldMapPeriodicActivityItem extends UiPanelBase_1.UiPanelBase {
   }
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[7, UE.UISprite], [3, UE.UIButtonComponent], [2, UE.UIButtonComponent], [1, UE.UIText], [9, UE.UIItem]];
-    this.BtnBindInfo = [[3, this.Kim], [2, this.YP]];
+    this.BtnBindInfo = [[3, this._am], [2, this.YP]];
   }
   SetShowState(e) {
     this.aPi = e;

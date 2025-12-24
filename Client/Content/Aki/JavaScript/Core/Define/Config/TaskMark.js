@@ -43,6 +43,21 @@ class TaskMark {
   get FxScale() {
     return this.fxscale();
   }
+  get MarkRingPic() {
+    return this.markringpic();
+  }
+  get MarkIcon() {
+    return this.markicon();
+  }
+  get RingColor() {
+    return this.ringcolor();
+  }
+  get SmallHaloColor() {
+    return this.smallhalocolor();
+  }
+  get LargeHaloColor() {
+    return this.largehalocolor();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -157,6 +172,46 @@ class TaskMark {
     } else {
       return 1;
     }
+  }
+  markringpic(t) {
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  markicon(t) {
+    var s = this.J7.__offset(this.z7, 28);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  ringcolor(t) {
+    var s = this.J7.__offset(this.z7, 30);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  smallhalocolor(t) {
+    var s = this.J7.__offset(this.z7, 32);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
+  }
+  largehalocolor(t) {
+    var s = this.J7.__offset(this.z7, 34);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
+    }
+    return s;
   }
 }
 exports.TaskMark = TaskMark;

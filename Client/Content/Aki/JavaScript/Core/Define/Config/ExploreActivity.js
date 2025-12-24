@@ -43,13 +43,16 @@ class ExploreActivity {
   get SourceList() {
     return GameUtils_1.GameUtils.ConvertToArray(this.sourcelistLength(), this.sourcelist, this);
   }
-  __init(t, i) {
+  get IsNewPrefab() {
+    return this.isnewprefab();
+  }
+  __init(t, s) {
     this.z7 = t;
-    this.J7 = i;
+    this.J7 = s;
     return this;
   }
-  static getRootAsExploreActivity(t, i) {
-    return (i || new ExploreActivity()).__init(t.readInt32(t.position()) + t.position(), t);
+  static getRootAsExploreActivity(t, s) {
+    return (s || new ExploreActivity()).__init(t.readInt32(t.position()) + t.position(), t);
   }
   id() {
     var t = this.J7.__offset(this.z7, 4);
@@ -60,60 +63,60 @@ class ExploreActivity {
     }
   }
   bg(t) {
-    var i = this.J7.__offset(this.z7, 6);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 6);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   exploretitle(t) {
-    var i = this.J7.__offset(this.z7, 8);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 8);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   percentdesc(t) {
-    var i = this.J7.__offset(this.z7, 10);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 10);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   areatitle(t) {
-    var i = this.J7.__offset(this.z7, 12);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 12);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   maintitle(t) {
-    var i = this.J7.__offset(this.z7, 14);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 14);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   desc(t) {
-    var i = this.J7.__offset(this.z7, 16);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 16);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   sumrewarddesc(t) {
-    var i = this.J7.__offset(this.z7, 18);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
+    var s = this.J7.__offset(this.z7, 18);
+    var s = s ? this.J7.__string(this.z7 + s, t) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return i;
+    return s;
   }
   sumrewardnum() {
     var t = this.J7.__offset(this.z7, 20);
@@ -127,9 +130,9 @@ class ExploreActivity {
     return this.recommendarealist(t);
   }
   recommendarealist(t) {
-    var i = this.J7.__offset(this.z7, 22);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    var s = this.J7.__offset(this.z7, 22);
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
       return 0;
     }
@@ -154,9 +157,9 @@ class ExploreActivity {
     return this.sourcelist(t);
   }
   sourcelist(t) {
-    var i = this.J7.__offset(this.z7, 24);
-    if (i) {
-      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    var s = this.J7.__offset(this.z7, 24);
+    if (s) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + s) + t * 4);
     } else {
       return 0;
     }
@@ -175,6 +178,14 @@ class ExploreActivity {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
       return null;
+    }
+  }
+  isnewprefab() {
+    var t = this.J7.__offset(this.z7, 26);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

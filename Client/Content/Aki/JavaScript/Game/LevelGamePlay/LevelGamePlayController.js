@@ -24,7 +24,7 @@ const WaitEntityTask_1 = require("../World/Define/WaitEntityTask");
 const SHOW_FAKE_ERROR_CODE_TIPS_INTERVAL = 1000;
 class LevelGamePlayController extends ControllerBase_1.ControllerBase {
   static HandleScanResponse(e, t = 0) {
-    return !!e && !!UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) && !(e = e, !(e = EntitySystem_1.EntitySystem.Get(e.GetEntityId()))) && !(e.GetComponent(83)?.StartProcess(t), e.GetComponent(70)?.ShowScanEffect(), 0);
+    return !!e && !!UE.KuroStaticLibrary.IsImplementInterface(e.GetClass(), UE.BPI_CreatureInterface_C.StaticClass()) && !(e = e, !(e = EntitySystem_1.EntitySystem.Get(e.GetEntityId()))) && !(e.GetComponent(86)?.StartProcess(t), e.GetComponent(73)?.ShowScanEffect(), 0);
   }
   static HandleClearAllScanEffect() {}
   static MultiplayerLimitTypeCheck(e, t = true) {
@@ -146,17 +146,17 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     var l;
     var n = e instanceof EntityHandle_1.EntityHandle ? e.Entity : e;
     if (e && n) {
-      a = n.GetComponent(206);
-      l = n.GetComponent(162);
-      if (!(o = n.GetComponent(160))) {
+      a = n.GetComponent(212);
+      l = n.GetComponent(167);
+      if (!(o = n.GetComponent(165))) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Character", 31, "[Manipulate] 重置控物对象实体时找不到对应的控物组件");
         }
       }
-      if (a && l && l.HasMoveAuthority() && (o?.ResetItemLocationAndRotation(r, true), a = n.GetComponent(170))) {
+      if (a && l && l.HasMoveAuthority() && (o?.ResetItemLocationAndRotation(r, true), a = n.GetComponent(175))) {
         a.StopTimerOnResetPos();
       }
-      if (o && o.ControlledByLocalPlayer() && (l = t ?? "ResetPositionTip", ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(l), r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity) && (n = r.GetComponent(65)) && e.Id === n.GetHoldingEntity()?.Id) {
+      if (o && o.ControlledByLocalPlayer() && (l = t ?? "ResetPositionTip", ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode(l), r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity) && (n = r.GetComponent(68)) && e.Id === n.GetHoldingEntity()?.Id) {
         n.StopManipulate();
       }
     } else if (Log_1.Log.CheckError()) {
@@ -187,7 +187,7 @@ class LevelGamePlayController extends ControllerBase_1.ControllerBase {
     for (const e of t.PSs) {
       const r = MathUtils_1.MathUtils.LongToNumber(e);
       WaitEntityTask_1.WaitEntityTask.Create("LevelGamePlayController.OnEnableNearbyTrackingNotify", r, e => {
-        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(r)) && (e = e.Entity.GetComponent(164))) {
+        if ((e &&= ModelManager_1.ModelManager.CreatureModel.GetEntity(r)) && (e = e.Entity.GetComponent(169))) {
           e.EnableTracking = t.yIs;
         }
       }, 60000, true, true);
@@ -244,14 +244,14 @@ LevelGamePlayController._Ue = e => {
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
     t.Entity.GetComponent(0).UpdateEntityCommonTags(e.aSs);
-    t.Entity.GetComponent(200).SyncTagsFromServer(e.aSs);
+    t.Entity.GetComponent(206).SyncTagsFromServer(e.aSs);
   }
 };
 LevelGamePlayController.dUe = e => {
   var t = MathUtils_1.MathUtils.LongToNumber(e.F4n);
   var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(t);
   if (t) {
-    var r = t.Entity.GetComponent(143);
+    var r = t.Entity.GetComponent(148);
     if (r) {
       switch (e.Pmu?.h5n) {
         case Protocol_1.Aki.Protocol.Gmu.dm1:

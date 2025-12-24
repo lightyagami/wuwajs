@@ -57,7 +57,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.H6 = 0;
     this.p_e = 0;
     this.FN1 = false;
-    this.q0m = false;
+    this.BEm = false;
     this.v_e = Vector_1.Vector.Create();
     this.Ldc = Vector_1.Vector.Create();
     this.M_e = DEFAULT_VALUE;
@@ -65,9 +65,15 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.S_e = false;
     this.Lz = Vector_1.Vector.Create();
     this.Ctc = true;
+    this.EVm = undefined;
+    this.IVm = true;
+    this.Uzf = false;
   }
   get IsBlending() {
     return this.f_e !== 0;
+  }
+  get ForceUsingCameraGuideParameters() {
+    return this.Uzf;
   }
   Name() {
     return "GuideController";
@@ -107,9 +113,9 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     super.SetConfigs(t, i);
     this.S_e = true;
   }
-  ApplyCameraGuide(t, i, s, h, a, e, r, o = false, _ = false, l = 0, n = false) {
+  ApplyCameraGuide(t, i, s, h, a, e, r, o = false, _ = false, l = 0, n = false, m, C = false) {
     if (this.Ctc && Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("Camera", 57, "[CameraLookAt] ApplyCameraGuide", ["lookAt", t], ["fadeInTime", i], ["stayTime", s], ["fadeOutTime", h], ["lockCameraInput", a], ["endPosition", e], ["fov", r], ["ignoreAdjustYaw", o], ["staticCamera", _], ["disableArmOffset", n]);
+      Log_1.Log.Info("Camera", 57, "[CameraLookAt] ApplyCameraGuide", ["lookAt", t], ["fadeInTime", i], ["stayTime", s], ["fadeOutTime", h], ["lockCameraInput", a], ["endPosition", e], ["fov", r], ["ignoreAdjustYaw", o], ["staticCamera", _], ["disableArmOffset", n], ["forceUsingCameraGuideParameters", C]);
     }
     if (this.IsActivate && this.S_e) {
       this.v_e.FromUeVector(t);
@@ -119,6 +125,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.W1e = h;
       this.m_e = a;
       this.FN1 = _;
+      this.Uzf = C;
       this.I_e(l);
       t = this.Camera.PlayerLocation;
       i = this.Camera.CurrentCamera.ArmRotation;
@@ -159,52 +166,61 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         this.ole = this.Camera.CameraRotationInGravity.Pitch;
         this.rle = a.Pitch;
       } else {
-        i = Rotator_1.Rotator.Create();
-        h.Rotation(i);
+        C = Rotator_1.Rotator.Create();
+        h.Rotation(C);
         this.ole = this.Camera.CameraRotationInGravity.Pitch;
         if (h.Size() > this.NearerRange) {
-          o = i.Pitch + this.CameraPitchOffset;
-          this.rle = MathUtils_1.MathUtils.Clamp(o, this.CameraPitchMin, this.CameraPitchMax);
+          i = C.Pitch + this.CameraPitchOffset;
+          this.rle = MathUtils_1.MathUtils.Clamp(i, this.CameraPitchMin, this.CameraPitchMax);
         } else {
           this.rle = MathUtils_1.MathUtils.RangeClamp(h.Z, this.DefaultPitchInRangeMin, this.DefaultPitchInRangeMax, this.DefaultPitchOutRangeMin, this.DefaultPitchOutRangeMax);
         }
       }
-      s = h.Size2D();
+      o = h.Size2D();
       if (l > 0) {
         this.C_e = 0;
         this.DesiredCameraSpecificArmLength = l;
         this.IsCameraSpecificArmLengthEnabled = true;
       } else {
-        this.C_e = s * this.CameraArmLengthRateHorizontal + Math.abs(h.Z) * this.CameraArmLengthRateVertical;
+        this.C_e = o * this.CameraArmLengthRateHorizontal + Math.abs(h.Z) * this.CameraArmLengthRateVertical;
         this.C_e = MathUtils_1.MathUtils.Clamp(this.C_e, 0, this.CameraArmLengthAdditionMax);
         this.DesiredCameraSpecificArmLength = 0;
         this.IsCameraSpecificArmLengthEnabled = false;
       }
       this.GN1.DeepCopy(t);
-      this.q0m = n;
-      if (this.q0m) {
+      this.BEm = n;
+      if (this.BEm) {
         this.g_e.Reset();
       } else if (e) {
         this.g_e.DeepCopy(e);
         this.g_e.SubtractionEqual(t);
       } else {
-        (_ = Vector_1.Vector.Create()).DeepCopy(this.v_e);
-        _.SubtractionEqual(t);
-        CameraUtility_1.CameraUtility.SetZnInGravity(_, 0, _);
-        if (s * this.CameraArmOffsetHorizontalLengthRate > this.CameraArmOffsetHorizontalLengthMax) {
-          _.Normalize(MathUtils_1.MathUtils.KindaSmallNumber);
-          this.g_e.DeepCopy(_);
+        (s = Vector_1.Vector.Create()).DeepCopy(this.v_e);
+        s.SubtractionEqual(t);
+        CameraUtility_1.CameraUtility.SetZnInGravity(s, 0, s);
+        if (o * this.CameraArmOffsetHorizontalLengthRate > this.CameraArmOffsetHorizontalLengthMax) {
+          s.Normalize(MathUtils_1.MathUtils.KindaSmallNumber);
+          this.g_e.DeepCopy(s);
           this.g_e.MultiplyEqual(this.CameraArmOffsetHorizontalLengthMax);
         } else {
-          this.g_e.DeepCopy(_);
+          this.g_e.DeepCopy(s);
           this.g_e.MultiplyEqual(this.CameraArmOffsetHorizontalLengthRate);
         }
-        a = (this.Ldc.Z - this.Camera.PlayerLocationInGravity.Z) * this.CameraArmOffsetVerticalLengthRate;
-        a = MathUtils_1.MathUtils.Clamp(a, -this.CameraArmOffsetVerticalLengthMax, this.CameraArmOffsetVerticalLengthMax);
-        CameraUtility_1.CameraUtility.SetZnInGravity(this.g_e, a, this.g_e);
+        _ = (this.Ldc.Z - this.Camera.PlayerLocationInGravity.Z) * this.CameraArmOffsetVerticalLengthRate;
+        _ = MathUtils_1.MathUtils.Clamp(_, -this.CameraArmOffsetVerticalLengthMax, this.CameraArmOffsetVerticalLengthMax);
+        CameraUtility_1.CameraUtility.SetZnInGravity(this.g_e, _, this.g_e);
       }
       this.E_e = this.Camera.CurrentCamera.Fov;
       this.M_e = r !== undefined && r > 0 && r !== this.M_e ? r : DEFAULT_VALUE;
+      if (m) {
+        if (this.EVm) {
+          this.EVm();
+        }
+        this.EVm = m;
+        this.IVm = false;
+      } else {
+        this.IVm = true;
+      }
     } else if (this.Ctc) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Camera", 57, "[CameraLookAt] ApplyCameraGuide Fail", ["this.IsActivate", this.IsActivate], ["this.Initialized", this.S_e]);
@@ -232,7 +248,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, this.C_e, t);
     }
     Vector_1.Vector.LerpSin(this.B1e, this.g_e, t, this.CurrentCameraArmOffset);
-    if (this.FN1 && !this.q0m) {
+    if (this.FN1 && !this.BEm) {
       this.Lz.DeepCopy(this.Camera.PlayerLocation);
       this.Lz.SubtractionEqual(this.GN1);
       this.CurrentCameraArmOffset.SubtractionEqual(this.Lz);
@@ -253,7 +269,7 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       this.CurrentCameraArmLengthAddition = MathUtils_1.MathUtils.LerpSin(this.d_e, 0, t);
     }
     this.Lz.DeepCopy(this.B1e);
-    if (this.FN1 && !this.q0m) {
+    if (this.FN1 && !this.BEm) {
       this.Lz.AdditionEqual(this.GN1);
       this.Lz.SubtractionEqual(this.Camera.PlayerLocation);
     }
@@ -279,13 +295,13 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
         }
         break;
       case 2:
-        if (this.FN1 && !this.q0m) {
+        if (this.FN1 && !this.BEm) {
           this.Lz.DeepCopy(this.Camera.PlayerLocation);
           this.Lz.SubtractionEqual(this.GN1);
           this.CurrentCameraArmOffset.DeepCopy(this.g_e);
           this.CurrentCameraArmOffset.SubtractionEqual(this.Lz);
         }
-        if (this.c_e >= 0 && this.H6 > this.j1e + this.c_e) {
+        if (this.c_e >= 0 && this.H6 > this.j1e + this.c_e && (this.EVm && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Camera", 45, "[CameraLookAt] EBlendState.Staying结束时先执行Callback"), this.EVm(), this.EVm = undefined), this.IVm)) {
           if (this.Ctc && Log_1.Log.CheckInfo()) {
             Log_1.Log.Info("Camera", 57, "[CameraLookAt] OnExitGuide EBlendState.Staying");
           }
@@ -355,6 +371,9 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
       }
     }
     this.Camera.CameraRotationZone.Unlock(this);
+    this.IVm = true;
+    this.Uzf = false;
+    this.EVm = undefined;
   }
   nWc() {
     if (this.f_e === 1 || this.f_e === 2) {
@@ -375,13 +394,22 @@ class CameraGuideController extends CameraControllerBase_1.CameraControllerBase 
     this.D_e(1);
     this.f_e = 0;
     this.IsCameraSpecificArmLengthEnabled = false;
+    this.Uzf = false;
+    this.IVm = true;
+    this.EVm = undefined;
   }
   IsLockCameraInput() {
     return this.m_e;
   }
   Hqc() {
     var t;
-    return !!this.Camera.CharacterEntityHandle?.Valid && !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(62))?.Valid && t.HasCameraInput();
+    return !!this.Camera.CharacterEntityHandle?.Valid && !!(t = this.Camera.CharacterEntityHandle.Entity.GetComponent(65))?.Valid && t.HasCameraInput();
+  }
+  CameraGuideFinishStaying() {
+    this.IVm = true;
+  }
+  IsCameraGuideAvailable() {
+    return this.IsActivate && this.S_e;
   }
 }
 exports.CameraGuideController = CameraGuideController;

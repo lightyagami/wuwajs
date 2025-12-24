@@ -82,7 +82,7 @@ class TsAnimNotifyStateDetectSphere extends UE.KuroAnimNotifyState {
           }
           i.SendGameplayEventToActor(this.TagOnHit);
         } else {
-          i = e.Entity.GetComponent(209);
+          i = e.Entity.GetComponent(215);
           if (!i) {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("AnimNotify", 20, "使用DetectSphereANS的角色没有BaseTagComponent", ["Owner", e.Owner?.GetName()], ["蒙太奇路径", UE.KismetSystemLibrary.GetPathName(t)]);
@@ -110,7 +110,7 @@ class TsAnimNotifyStateDetectSphere extends UE.KuroAnimNotifyState {
       i.SphereElement.Dispose();
       detectStateMap.delete(r);
       if (e && !this.SendGamePlayEvent) {
-        i = e.Entity.GetComponent(209);
+        i = e.Entity.GetComponent(215);
         if (!i) {
           if (Log_1.Log.CheckError()) {
             Log_1.Log.Error("AnimNotify", 20, "使用DetectSphereANS的角色没有BaseTagComponent", ["Owner", e.Owner?.GetName()], ["蒙太奇路径", UE.KismetSystemLibrary.GetPathName(t)]);

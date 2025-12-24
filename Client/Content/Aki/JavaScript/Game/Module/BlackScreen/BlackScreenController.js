@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BlackScreenController = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const UiControllerBase_1 = require("../../Ui/Base/UiControllerBase");
@@ -16,9 +17,13 @@ const BlackScreenTransitionView_1 = require("./BlackScreenTransitionView");
 class BlackScreenController extends UiControllerBase_1.UiControllerBase {
   static OnAddEvents() {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiManagerInit, this.i0t);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.ikf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.rkf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiManagerInit, this.i0t);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsAddBlackScreen, this.ikf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsNotifyTsRemoveBlackScreen, this.rkf);
   }
   static AddBlackScreen(e, t) {
     if (Log_1.Log.CheckInfo()) {
@@ -50,8 +55,8 @@ class BlackScreenController extends UiControllerBase_1.UiControllerBase {
     await BlackScreenGlobalData_1.BlackScreenGlobalData.ShowPromise.Promise;
   }
   static RemoveBlackScreen(e, t) {
-    var r;
-    if (this.r0t && (r = this.o0t.get(t)) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("BlackScreen", 10, "触发结束黑屏", ["标签", t]), r === 1 ? this.o0t.delete(t) : this.o0t.set(t, --r), this.o0t.size === 0)) {
+    var n;
+    if (this.r0t && (n = this.o0t.get(t)) && (Log_1.Log.CheckInfo() && Log_1.Log.Info("BlackScreen", 10, "触发结束黑屏", ["标签", t]), n === 1 ? this.o0t.delete(t) : this.o0t.set(t, --n), this.o0t.size === 0)) {
       this.r0t.HideTemp(e);
     }
   }
@@ -65,6 +70,10 @@ class BlackScreenController extends UiControllerBase_1.UiControllerBase {
     }
     return true;
   }
+  static async okf(e, t) {
+    await this.AddBlackScreenAsync(e, t);
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsNotifyCsAddBlackScreenFinish);
+  }
 }
 exports.BlackScreenController = BlackScreenController;
 (_a = BlackScreenController).r0t = undefined;
@@ -74,4 +83,10 @@ BlackScreenController.i0t = () => {
     _a.r0t = new BlackScreenTransitionView_1.BlackScreenTransitionView();
     _a.r0t.CreateByResourceIdAsync("UiView_BlackScreen_Prefab", UiLayer_1.UiLayer.GetLayerRootUiItem(UiLayerType_1.ELayerType.CG), true);
   }
+};
+BlackScreenController.ikf = (e, t) => {
+  _a.okf(e, t);
+};
+BlackScreenController.rkf = (e, t) => {
+  _a.RemoveBlackScreen(e, t);
 }; //# sourceMappingURL=BlackScreenController.js.map

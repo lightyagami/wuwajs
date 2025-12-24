@@ -16,10 +16,10 @@ class LevelEventNpcLeisureInteract extends LevelGeneralBase_1.LevelEventBase {
         case IAction_1.ENpcLeisureInteract.SitDown:
           break;
         case IAction_1.ENpcLeisureInteract.SwingGetUp:
-          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.Option.TargetNpcId)?.Entity?.GetComponent(306)?.ExitLoopSwing();
+          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.Option.TargetNpcId)?.Entity?.GetComponent(325)?.ExitLoopSwing();
           break;
         case IAction_1.ENpcLeisureInteract.Swing:
-          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.Option.TargetNpcId)?.Entity?.GetComponent(306)?.StartSwing(t.Option.SwingDa, t.Option.EntityId, t.Option.SkipSitDown);
+          ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(t.Option.TargetNpcId)?.Entity?.GetComponent(325)?.StartSwing(t.Option.SwingDa, t.Option.EntityId, t.Option.SkipSitDown);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 42, " LevelEventNpcLeisureInteract, 坐下参数为空");

@@ -24,75 +24,75 @@ class GameAudioModel extends ModelBase_1.ModelBase {
     return this.Uq1;
   }
   CheckTimeOutCooldownRecords() {
-    var e = [];
+    var t = [];
     for (const o of this.u_l) {
       if (o[1].CheckTimeOutCooldownRecords()) {
         o[1].Clear();
-        e.push(o[0]);
+        t.push(o[0]);
       }
     }
-    for (const t of e) {
+    for (const e of t) {
       if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[EntityCooldownProbability] 记录的实体上所有AudioEvent都一定时间未使用过，删除该条记录", ["EntityId", t]);
+        Log_1.Log.Debug("Audio", 42, "[EntityCooldownProbability] 记录的实体上所有AudioEvent都一定时间未使用过，删除该条记录", ["EntityId", e]);
       }
-      this.u_l.delete(t);
+      this.u_l.delete(e);
     }
   }
-  CheckAudioProbabilityInfo(e, o, t, i = true, r = true, n = true) {
-    if (!t) {
+  CheckAudioProbabilityInfo(t, o, e, i = true, r = true, n = true) {
+    if (!e) {
       return true;
     }
-    var s = EntitySystem_1.EntitySystem.GetComponent(e, 287)?.GetMorphData()?.ModelId ?? 0;
+    var s = EntitySystem_1.EntitySystem.GetComponent(t, 306)?.GetMorphData()?.ModelId ?? 0;
     if (n && s && !ControllerHolder_1.ControllerHolder.GameAudioController.CheckMorphAudioPlay(s, o)) {
       return false;
     }
-    if (!t.TagProbability || t.TagProbability.Num() === 0) {
-      if (t.DefaultCooldownTime === 0) {
-        return EntityCooldownProbability_1.EntityCooldownProbability.GetProbability(t.DefaultProbability);
+    if (!e.TagProbability || e.TagProbability.Num() === 0) {
+      if (e.DefaultCooldownTime === 0) {
+        return EntityCooldownProbability_1.EntityCooldownProbability.GetProbability(e.DefaultProbability);
       }
-      if (t.DefaultProbability === 0) {
+      if (e.DefaultProbability === 0) {
         return false;
       }
     }
-    n = this.kq1(e, s);
+    n = this.kq1(t, s);
     if (!this.u_l.has(n)) {
       const d = new EntityCooldownProbability_1.EntityCooldownProbability();
-      d.Init(e, s);
-      e = d.CheckPlayAudio(o, t, i, r);
-      if (e) {
+      d.Init(t, s);
+      t = d.CheckPlayAudio(o, e, i, r);
+      if (t) {
         this.u_l.set(n, d);
       }
-      return e;
+      return t;
     }
     const d = this.u_l.get(n);
-    return d.CheckPlayAudio(o, t, i, r);
+    return d.CheckPlayAudio(o, e, i, r);
   }
-  UpdateAudioCooldownRecord(e, o, t, i, r = true) {
-    var n = EntitySystem_1.EntitySystem.GetComponent(e, 287)?.GetMorphData()?.ModelId ?? 0;
-    var e = this.kq1(e, n);
-    this.u_l.get(e).UpdateCooldownRecord(o, t, i, r);
+  UpdateAudioCooldownRecord(t, o, e, i, r = true) {
+    var n = EntitySystem_1.EntitySystem.GetComponent(t, 306)?.GetMorphData()?.ModelId ?? 0;
+    var t = this.kq1(t, n);
+    this.u_l.get(t).UpdateCooldownRecord(o, e, i, r);
   }
-  kq1(e, o) {
-    let t = e;
-    return t = o && ControllerHolder_1.ControllerHolder.GameAudioController.HasMorphAudioConfig(o) ? o : t;
+  kq1(t, o) {
+    let e = t;
+    return e = o && ControllerHolder_1.ControllerHolder.GameAudioController.HasMorphAudioConfig(o) ? o : e;
   }
-  AddAllGondolaMusic(e) {
-    this.Bq1.AddAllGondolaMusic(e);
+  AddAllGondolaMusic(t) {
+    this.Bq1.AddAllGondolaMusic(t);
   }
   StopAllGondolaMusic() {
     this.Bq1.StopAllGondolaMusic();
   }
-  GondolaGetOnAudioEvent(e) {
-    this.Bq1.GondolaGetOnAudioEvent(e);
+  GondolaGetOnAudioEvent(t) {
+    this.Bq1.GondolaGetOnAudioEvent(t);
   }
-  RegisterDriveAudioEvent(e, o) {
-    this.Bq1.RegisterDriveAudioEvent(e, o);
+  RegisterDriveAudioEvent(t, o) {
+    this.Bq1.RegisterDriveAudioEvent(t, o);
   }
   RemoveDriveAudioEvent() {
     this.Bq1.RemoveDriveAudioEvent();
   }
-  PlayRideSharingPlotAudio(e) {
-    return this.Bq1.PlayRideSharingPlotAudio(e);
+  PlayRideSharingPlotAudio(t) {
+    return this.Bq1.PlayRideSharingPlotAudio(t);
   }
   CheckRideSharingState() {
     return this.Bq1.CheckRideSharingState();
@@ -103,8 +103,20 @@ class GameAudioModel extends ModelBase_1.ModelBase {
   RemoveFishingAudioEvent() {
     this.Bq1.RemoveFishingAudioEvent();
   }
-  PlayFishingAudio(e) {
-    return this.Bq1.PlayFishingAudio(e);
+  PlayFishingAudio(t) {
+    return this.Bq1.PlayFishingAudio(t);
+  }
+  RegisterMotorDriveAudioEvent(t, o) {
+    this.Bq1.RegisterMotorDriveAudioEvent(t, o);
+  }
+  RemoveMotorDriveAudioEvent() {
+    this.Bq1.RemoveMotorDriveAudioEvent();
+  }
+  PlayMotorPlotAudio(t) {
+    return this.Bq1.PlayMotorPlotAudioDefault(t);
+  }
+  CheckMotorState() {
+    return this.Bq1.CheckMotorState();
   }
 }
 exports.GameAudioModel = GameAudioModel;

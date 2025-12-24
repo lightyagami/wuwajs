@@ -306,7 +306,7 @@ class ConfigCommon {
     if (ConfigCommon.P7d) {
       return CommonDbConnectManager_1.CommonDbConnectManager.GetValueInt(o, n, ...t);
     }
-    ConfigCommon.rhm.Start();
+    ConfigCommon.$um.Start();
     n = UE.KuroPrepareStatementLib.GetColumnValueInt32(o, n, exports.dataIntRef);
     if (!n) {
       if (Log_1.Log.CheckError()) {
@@ -314,7 +314,7 @@ class ConfigCommon {
       }
     }
     o = n ? (0, puerts_1.$unref)(exports.dataIntRef) : 0;
-    ConfigCommon.rhm.Stop();
+    ConfigCommon.$um.Stop();
     return [n, o];
   }
   static CloseAllConnection() {
@@ -333,6 +333,6 @@ ConfigCommon.W9 = Stats_1.Stat.Create("ConfigCommon.BindBool");
 ConfigCommon.K9 = Stats_1.Stat.Create("ConfigCommon.BindString");
 ConfigCommon.mtl = Stats_1.Stat.Create("ConfigCommon.BindFloat64Stat");
 ConfigCommon.Q9 = Stats_1.Stat.Create("ConfigCommon.GetValue");
-ConfigCommon.rhm = Stats_1.Stat.Create("ConfigCommon.GetValueInt");
+ConfigCommon.$um = Stats_1.Stat.Create("ConfigCommon.GetValueInt");
 ConfigCommon.AllConfigStatementStat = Stats_1.Stat.Create("ConfigCommon.AllConfig");
 ConfigCommon.P7d = true; //# sourceMappingURL=ConfigCommon.js.map

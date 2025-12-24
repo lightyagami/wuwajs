@@ -28,9 +28,6 @@ class AdvertisingTabCharacter {
   get Title() {
     return this.title();
   }
-  get NameText() {
-    return this.nametext();
-  }
   get MainPic() {
     return this.mainpic();
   }
@@ -42,6 +39,21 @@ class AdvertisingTabCharacter {
   }
   get GetWayDescription() {
     return this.getwaydescription();
+  }
+  get NameText() {
+    return this.nametext();
+  }
+  get QualityId() {
+    return this.qualityid();
+  }
+  get ElementIconPath() {
+    return this.elementiconpath();
+  }
+  get ElementBgIconPath() {
+    return this.elementbgiconpath();
+  }
+  get WeaponTypeIconPath() {
+    return this.weapontypeiconpath();
   }
   __init(t, i) {
     this.z7 = t;
@@ -99,7 +111,7 @@ class AdvertisingTabCharacter {
     }
     return i;
   }
-  nametext(t) {
+  mainpic(t) {
     var i = this.J7.__offset(this.z7, 16);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -107,7 +119,7 @@ class AdvertisingTabCharacter {
     }
     return i;
   }
-  mainpic(t) {
+  mainbgpic(t) {
     var i = this.J7.__offset(this.z7, 18);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -115,7 +127,7 @@ class AdvertisingTabCharacter {
     }
     return i;
   }
-  mainbgpic(t) {
+  getwaytitle(t) {
     var i = this.J7.__offset(this.z7, 20);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -123,7 +135,7 @@ class AdvertisingTabCharacter {
     }
     return i;
   }
-  getwaytitle(t) {
+  getwaydescription(t) {
     var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -131,8 +143,40 @@ class AdvertisingTabCharacter {
     }
     return i;
   }
-  getwaydescription(t) {
+  nametext(t) {
     var i = this.J7.__offset(this.z7, 24);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  qualityid() {
+    var t = this.J7.__offset(this.z7, 26);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  elementiconpath(t) {
+    var i = this.J7.__offset(this.z7, 28);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  elementbgiconpath(t) {
+    var i = this.J7.__offset(this.z7, 30);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  weapontypeiconpath(t) {
+    var i = this.J7.__offset(this.z7, 32);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

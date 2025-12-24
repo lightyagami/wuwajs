@@ -72,7 +72,7 @@ class WorldNavigation {
   static TestFindPath(o, a) {
     var e;
     var t;
-    if (WorldNavigation.EnableDebug && (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(45), t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3)?.ActorLocation)) {
+    if (WorldNavigation.EnableDebug && (e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(46), t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(3)?.ActorLocation)) {
       t = {
         SourcePosition: Vector_1.Vector.Create(t.X, t.Y, t.Z),
         DestPosition: o,

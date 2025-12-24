@@ -18,7 +18,7 @@ class TsAnimNotifySummonGongduolaSetLocAndRot extends UE.KuroAnimNotify {
     o = ModelManager_1.ModelManager.GongduolaSummonModel?.SummonGravityDir;
     if (r instanceof TsBaseVehicle_1.default && n && l && o) {
       const m = r.VehicleActorComponent.Entity;
-      var t = m.GetComponent(240);
+      var t = m.GetComponent(249);
       if (!t?.Valid) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("Temp", 31, "[TsAnimNotifySummonGongduolaSetLocAndRot] moveComp is invalid", ["EntityId", m?.Id]);

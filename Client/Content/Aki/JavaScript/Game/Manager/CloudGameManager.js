@@ -93,8 +93,8 @@ class CloudGameManager {
     CloudGameManager.TryRequestGamePadDevice();
   }
   static $u_() {
-    ue_1.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.OverrideMultipleRuntimeGridNames Grid_Near&Grid_Middle&Grid_Middle_Far&Grid_Far&Grid_SuperFar&Grid_SSuperFar&Grid_HLOD_Small&Grid_HLOD_Middle&Grid_HLOD&Grid_HLOD_Volume_Small&Grid_HLOD_Volume_Middle&Grid_HLOD_Volume&GridRuntime_Landscape&GridRuntime_LandscapeHLOD&Grid_Water&Grid_Impostor&Grid_ExtremeFarFoliage&Grid_Foliage_Normal&Grid_ISM_Near&Grid_ISM_Middle&Grid_ISM_Far&Grid_ISM_SuperFar&Grid_Foliage_Near&Grid_Foliage_Grass&Grid_Foliage_Middle&Grid_Foliage_Far&Grid_Foliage_SuperFar&Grid_ReverseMiddle&Grid_ReverseFar&Grid_ReverseSuperFar&Grid_SSuperFarReverse&Grid_EnclosedSpaceNear&Grid_EnclosedSpaceMiddle&Grid_EnclosedSpaceFar&Grid_EnclosedSpaceSuperFar&Grid_EnclosedSpaceSSuperFar&Grid_AudioNear&Grid_AudioMiddle&Grid_AudioFar&Grid_AudioSuperFar&Grid_PcgWater&Grid_Light_Middle&Grid_Light_Far&Grid_HighResLandscape&Grid_MSuperFar&HLOD0_200m_300m&HLOD0_300m_500m&HLOD1_400m_800m&HLOD0_500m_1000m&HLOD0_500m_1500m&HLOD1_600m_1200m&HLOD1_800m_2500m&HLOD1_800m_4000m");
-    ue_1.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.OverrideMultipleRuntimeGridLoadingRangeValues 60&85&200&180&650&2600&100&140&170&100&190&250&440&3500&610&450&1300&274&60&83&100&150&40&80&100&100&196&260&430&860&2600&50&80&130&650&860&40&80&252&86&440&120&156&300&1300&260&430&690&860&1300&1040&2160&3460");
+    ue_1.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.LoadingRangeScale 0.4");
+    ue_1.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "wp.Runtime.OverrideGridLoadingRanges=Grid_StaticMesh_3m=50;Grid_StaticMesh_6m=80");
   }
   static BindFunction(e, a) {
     CloudGameManager.GBn.set(e, a);
@@ -230,9 +230,9 @@ CloudGameManager.qBn = (e, a) => {
   if (Log_1.Log.CheckInfo()) {
     Log_1.Log.Info("CloudGame", 16, "OnReceiveDataWithKey:", ["key", e], ["data", a]);
   }
-  var r = CloudGameManager.GBn.get(e);
-  if (r) {
-    r(a);
+  var o = CloudGameManager.GBn.get(e);
+  if (o) {
+    o(a);
   } else if (Log_1.Log.CheckError()) {
     Log_1.Log.Error("CloudGame", 16, "OnReceiveDataWithKey: 函数未绑定", ["key", e], ["data", a]);
   }
@@ -300,8 +300,8 @@ CloudGameManager.OnUserLoginPreLaunch = e => {
     Log_1.Log.Info("CloudGame", 16, "OnUserLoginPreLaunch 1", ["loginInfoJson", e]);
   }
   if (CloudGameManager.HLc === undefined) {
-    if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("CloudGame", 16, "OnUserLoginPreLaunch error, not waiting");
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("CloudGame", 16, "OnUserLoginPreLaunch error, not waiting");
     }
   } else {
     e = Json_1.Json.Decode(e);

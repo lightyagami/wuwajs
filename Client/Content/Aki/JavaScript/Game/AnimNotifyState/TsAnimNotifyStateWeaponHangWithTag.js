@@ -19,16 +19,16 @@ class TsAnimNotifyStateWeaponHangWithTag extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(t, s, e) {
     var i;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(i = t?.CharacterActorComponent?.Entity?.GetComponent(209)) && !!i.HasTag(this.ActivateTag.TagId) && !(t?.CharacterActorComponent?.Entity?.GetComponent(81)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间), 0);
+    return t instanceof TsBaseCharacter_1.default && !!(i = t?.CharacterActorComponent?.Entity?.GetComponent(215)) && !!i.HasTag(this.ActivateTag.TagId) && !(t?.CharacterActorComponent?.Entity?.GetComponent(84)?.ChangeWeaponHangState(this.Id, this.新的挂载点名, this.挂载相对位置, this.缓冲时间), 0);
   }
   K2_NotifyEnd(t, s) {
     t = t.GetOwner();
     if (t instanceof TsBaseCharacter_1.default) {
-      var e = t?.CharacterActorComponent?.Entity?.GetComponent(209);
+      var e = t?.CharacterActorComponent?.Entity?.GetComponent(215);
       if (!e || !e.HasTag(this.ActivateTag.TagId)) {
         return false;
       }
-      e = t?.CharacterActorComponent?.Entity?.GetComponent(81);
+      e = t?.CharacterActorComponent?.Entity?.GetComponent(84);
       if (!e?.Valid) {
         return false;
       }

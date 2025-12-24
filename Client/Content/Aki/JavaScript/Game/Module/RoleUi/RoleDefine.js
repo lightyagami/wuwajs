@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ROLE_MUTE_NATURE_AUDIO_GROUP = exports.UI_CAMERA_TAG = exports.UI_SKELETAL_OBSERVER_TAG = exports.UI_SCENE_ROLE_TAG = exports.UI_ROLE_CAN_ROTATE_TABVIEW = exports.SkillEffect = exports.OneSkillEffect = exports.ArrayIntInt = exports.ROLE_CHANGEROLE_BLENDNAME = exports.ROLE_CAMERA_SETTING_NAME = exports.UI_ABP_PATH = exports.MUL_RATIO = exports.PROP_RATIO_PER = exports.ROBOT_DATA_MIN_ID = exports.STRENGTH_MAX_ID = exports.RESPONSE_PROFICIENCY_ID = exports.DEF_ATTR_ID = exports.CRIT_ATTR_ID = exports.ATTACK_ATTR_ID = exports.HP_ATTR_ID = undefined;
+exports.trialRoleHexColor = exports.ROLE_MUTE_NATURE_AUDIO_GROUP = exports.UI_CAMERA_TAG = exports.UI_SKELETAL_OBSERVER_TAG = exports.UI_SCENE_ROLE_TAG = exports.UI_ROLE_CAN_ROTATE_TABVIEW = exports.SkillEffect = exports.OneSkillEffect = exports.ArrayIntInt = exports.ROLE_CHANGEROLE_BLENDNAME = exports.ROLE_CAMERA_SETTING_NAME = exports.UI_ABP_PATH = exports.MUL_RATIO = exports.PROP_RATIO_PER = exports.ROBOT_DATA_MIN_ID = exports.STRENGTH_MAX_ID = exports.RESPONSE_PROFICIENCY_ID = exports.DEF_ATTR_ID = exports.CRIT_ATTR_ID = exports.ATTACK_ATTR_ID = exports.HP_ATTR_ID = undefined;
 const UE = require("ue");
 exports.HP_ATTR_ID = 2;
 exports.ATTACK_ATTR_ID = 7;
@@ -42,4 +42,9 @@ exports.UI_ROLE_CAN_ROTATE_TABVIEW = ["RoleAttributeTabView", "RoleFavorTabView"
 exports.UI_SCENE_ROLE_TAG = new UE.FName("TsUiSceneRoleActor");
 exports.UI_SKELETAL_OBSERVER_TAG = new UE.FName("TsSkeletalObserver");
 exports.UI_CAMERA_TAG = new UE.FName("UICineCamera");
-exports.ROLE_MUTE_NATURE_AUDIO_GROUP = "mute_nature_voice"; //# sourceMappingURL=RoleDefine.js.map
+exports.ROLE_MUTE_NATURE_AUDIO_GROUP = "mute_nature_voice";
+exports.trialRoleHexColor = {
+  [1]: "ffffff",
+  2: "fffca0",
+  3: "bcf3ff"
+}; //# sourceMappingURL=RoleDefine.js.map

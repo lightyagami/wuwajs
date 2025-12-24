@@ -131,10 +131,10 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     return true;
   }
   OnStart() {
-    this.vtn = this.Entity.GetComponent(86);
-    this.mBe = this.Entity.GetComponent(137);
-    this.Hte = this.Entity.GetComponent(206);
-    this.Lie = this.Entity.GetComponent(200);
+    this.vtn = this.Entity.GetComponent(89);
+    this.mBe = this.Entity.GetComponent(142);
+    this.Hte = this.Entity.GetComponent(212);
+    this.Lie = this.Entity.GetComponent(206);
     if (this.vtn && this.mBe && this.Hte && this.Lie) {
       this.Tmn = new Set();
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnActorInOutRangeLocal, this.Nmn);
@@ -148,7 +148,7 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
   }
   OnActivate() {
     this.Omn("[BeamCastComp] 初始停止Tick");
-    var t = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+    var t = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
     this.nxe = this.TimeDilation * t;
     if (this.Hte.GetIsSceneInteractionLoadCompleted()) {
       this.Rnn();
@@ -186,7 +186,7 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
   }
   OnChangeTimeDilation(t) {
-    var e = this.Entity.GetComponent(126)?.CurrentTimeScale ?? 1;
+    var e = this.Entity.GetComponent(131)?.CurrentTimeScale ?? 1;
     this.nxe = t * e;
     if (this.qmn && EffectSystem_1.EffectSystem.IsValid(this.qmn)) {
       EffectSystem_1.EffectSystem.SetTimeScale(this.qmn, this.nxe);
@@ -428,5 +428,5 @@ let SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = class SceneItemB
     }
   }
 };
-SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(218)], SceneItemBeamCastComponent);
+SceneItemBeamCastComponent = SceneItemBeamCastComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(225)], SceneItemBeamCastComponent);
 exports.SceneItemBeamCastComponent = SceneItemBeamCastComponent; //# sourceMappingURL=SceneItemBeamCastComponent.js.map

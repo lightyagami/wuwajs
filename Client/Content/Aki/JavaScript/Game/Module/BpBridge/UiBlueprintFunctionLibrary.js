@@ -68,9 +68,6 @@ class UiBlueprintFunctionLibrary extends UE.BlueprintFunctionLibrary {
   static ActivitySequenceEmitEvent(e) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnActivitySequenceEmitEvent, e);
   }
-  static AreaBeginOverlap(e) {
-    AreaController_1.AreaController.BeginOverlap(e, "UiBlueprintFunctionLibrary.AreaBeginOverlap");
-  }
   static AreaEndOverlap(e) {
     AreaController_1.AreaController.EndOverlap(e);
   }

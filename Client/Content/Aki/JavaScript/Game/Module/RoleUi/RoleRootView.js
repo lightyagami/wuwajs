@@ -51,6 +51,7 @@ const RoleBackgroundMusicSwitchItem_1 = require("./Component/RoleBackgroundMusic
 const RoleListComponent_1 = require("./Component/RoleListComponent");
 const RoleDefine_1 = require("./RoleDefine");
 const RoleDevController_1 = require("./RoleDev/RoleDevController");
+const RoleUtils_1 = require("./RoleUtils");
 class OperationParam {
   constructor(e, t) {
     this.OperationType = e;
@@ -299,13 +300,26 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
       this.RoleBackgroundMusicSwitchItem = new RoleBackgroundMusicSwitchItem_1.RoleBackgroundMusicSwitchItem();
       RenderUtil_1.RenderUtil.BeginPSOSyncMode();
       this.RoleListComponent = new RoleListComponent_1.RoleListComponent();
-      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner())]);
+      await Promise.all([this.RoleListComponent.CreateThenShowByActorAsync(this.GetItem(3).GetOwner(), this.d1o), this.RoleBackgroundMusicSwitchItem.CreateByActorAsync(this.GetItem(9).GetOwner()), this.mYf()]);
       this.InitTabComponent();
       this.d1o.RoleViewState = 0;
       this.dmo = UiSceneManager_1.UiSceneManager.InitRoleSystemRoleActor(1);
       AudioController_1.AudioController.SetSwitch("actor_ui_switch", "sys_ui", this.dmo);
       this.rmo = this.d1o.GetCurSelectTabName();
       this.RefreshRoleSystemModeUiParam();
+    }
+  }
+  async mYf() {
+    if (this.d1o.GetRoleSystemMode() === 1) {
+      var e = [];
+      for (const t of this.d1o.GetRoleIdList()) {
+        if (RoleUtils_1.RoleUtils.IsTrialRole(t)) {
+          e.push(t);
+        }
+      }
+      if (e.length > 0) {
+        await ControllerHolder_1.ControllerHolder.RoleController.RobotRolePropRequest(e);
+      }
     }
   }
   ADn() {
@@ -340,9 +354,9 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
     }
   }
   async RefreshRoleListAsync() {
-    await this.vRm(this.d1o.GetCurSelectRoleId());
+    await this.oQm(this.d1o.GetCurSelectRoleId());
   }
-  async vRm(i) {
+  async oQm(i) {
     UiLayer_1.UiLayer.SetShowMaskLayer("RefreshRoleListAsync", true);
     const s = this.d1o.GetRoleIdList();
     await this.RoleListComponent.UpdateComponent(s).finally(() => {
@@ -425,7 +439,7 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   async SelectRoleOutside(e) {
     if (e && e !== this.d1o.GetCurSelectRoleId()) {
-      await this.vRm(e);
+      await this.oQm(e);
     }
   }
   InitTabComponent() {
@@ -437,36 +451,37 @@ class RoleRootView extends UiViewBase_1.UiViewBase {
   }
   Ckd(e) {
     var t;
-    return !(this.TabDataList.length <= 0) && (t = this.d1o.GetCurSelectRoleId(), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t), this.d1o.GetRoleSystemMode() === 0) && t.RoleType === 5 && this.TabDataList[e].ChildViewName !== "RoleAttributeTabView" && this.TabDataList[e].ChildViewName !== "RolePhantomTabView" && this.TabDataList[e].ChildViewName !== "RolePreviewAttributeTabView";
+    var i;
+    return !(this.TabDataList.length <= 0) && !(t = this.d1o.GetCurSelectRoleId(), t = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(t), (i = this.d1o.GetRoleSystemMode()) !== 0 && i !== 4) && t.RoleType === 5 && this.TabDataList[e].ChildViewName !== "RoleAttributeTabView" && this.TabDataList[e].ChildViewName !== "RolePhantomTabView" && this.TabDataList[e].ChildViewName !== "RolePreviewAttributeTabView";
   }
   hTd(e) {
     var t = ModelManager_1.ModelManager.FunctionModel?.IsOpen(10097) ?? false;
     var e = e === "RoleAttributeTabView";
     var i = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId !== 0;
     var s = this.d1o?.GetCurSelectRoleData()?.IsTrialRole() ?? false;
-    this.wnm(e, t, s);
-    this.Lnm(e, t, i, s);
-    this.Pnm(i, s);
+    this.Ylm(e, t, s);
+    this.zlm(e, t, i, s);
+    this.Jlm(i, s);
   }
-  wnm(e, t, i) {
+  Ylm(e, t, i) {
     var s = this.GetButton(10);
     if (s?.RootUIComp) {
       s.RootUIComp.SetUIActive(e && t && !i);
     }
   }
-  Lnm(e, t, i, s) {
+  zlm(e, t, i, s) {
     var n = this.GetButton(11);
     if (n) {
       n.RootUIComp.SetUIActive(false);
     }
   }
-  Pnm(e, t) {
+  Jlm(e, t) {
     var i;
     if (e && !t && (e = ModelManager_1.ModelManager.RoleDevModel?.DevTargetRoleId ?? 0, t = this.GetTexture(12)) && (i = ConfigManager_1.ConfigManager.RoleConfig?.GetRoleConfig(e))) {
-      this.Anm(i.RoleHeadIconCircle, t);
+      this.Zlm(i.RoleHeadIconCircle, t);
     }
   }
-  Anm(e, t) {
+  Zlm(e, t) {
     this.SetTextureShowUntilLoaded(e, t, () => {
       if (t) {
         t.SetUIActive(true);

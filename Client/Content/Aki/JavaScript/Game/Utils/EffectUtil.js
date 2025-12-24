@@ -27,10 +27,10 @@ class EffectUtil {
     if (f) {
       f = DataTableUtil_1.DataTableUtil.GetDataTableAllRowFromTable(f);
       if (f.length) {
-        for (const a of f) {
-          var i = a.NewEffect?.ToAssetPathName();
+        for (const n of f) {
+          var i = n.NewEffect?.ToAssetPathName();
           if (i?.length && i !== "None") {
-            if (a.OldEffect?.ToAssetPathName() === t) {
+            if (n.OldEffect?.ToAssetPathName() === t) {
               if (Log_1.Log.CheckDebug()) {
                 Log_1.Log.Debug("Audio", 4, "[Game.AnimNotify]预览找到替换列表的资源，替换为", ["NewPath", i]);
               }
@@ -48,18 +48,18 @@ class EffectUtil {
     }
   }
   static SetEffectTimeScale(e, t, f, i = 0) {
-    var a = t.FreezeTimeScale;
-    EffectSystem_1.EffectSystem.SetTimeScale(e, a * f, true);
+    var n = t.FreezeTimeScale;
+    EffectSystem_1.EffectSystem.SetTimeScale(e, n * f, true);
     if (i === 0) {
       EffectUtil.RefreshAdditionTimeScale(e, t);
     } else {
-      a = ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1;
-      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, e, a);
+      n = ModelManager_1.ModelManager.CharacterModel?.InverseSelfCenteredTimeDilation ?? 1;
+      EffectSystem_1.EffectSystem.SetAdditionTimeScale(14, e, n);
     }
   }
   static SetAdditionalEffectTimeScaleByEntity(e, t) {
     var f;
-    if (e?.Valid && (f = e.Entity.GetComponent(126))?.Valid) {
+    if (e?.Valid && (f = e.Entity.GetComponent(131))?.Valid) {
       EffectUtil.SetEffectTimeScale(t, f, e.Entity.TimeDilation);
     }
   }
@@ -73,8 +73,7 @@ class EffectUtil {
     EventSystem_1.EventSystem.AddWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f);
     EventSystem_1.EventSystem.AddWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationRemove, f);
     EffectSystem_1.EffectSystem.AddFinishCallback(e, e => {
-      if (i.Valid) {
-        EventSystem_1.EventSystem.RemoveWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f);
+      if (i.Valid && (EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f) && EventSystem_1.EventSystem.RemoveWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationAdd, f), EventSystem_1.EventSystem.HasWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationRemove, f))) {
         EventSystem_1.EventSystem.RemoveWithTarget(i, EventDefine_1.EEventName.OnForeverTimeDilationRemove, f);
       }
     });

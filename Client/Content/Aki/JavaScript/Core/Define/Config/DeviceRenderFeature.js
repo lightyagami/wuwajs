@@ -58,6 +58,9 @@ class DeviceRenderFeature {
   get ScreenPercentage() {
     return this.screenpercentage();
   }
+  get VegetationDensity() {
+    return this.vegetationdensity();
+  }
   get SuperResolution() {
     return this.superresolution();
   }
@@ -209,15 +212,15 @@ class DeviceRenderFeature {
       return 3;
     }
   }
-  superresolution() {
+  vegetationdensity() {
     var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
-      return 2;
+      return 0;
     }
   }
-  npcdensity() {
+  superresolution() {
     var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -225,8 +228,16 @@ class DeviceRenderFeature {
       return 2;
     }
   }
-  bloom() {
+  npcdensity() {
     var t = this.J7.__offset(this.z7, 40);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 2;
+    }
+  }
+  bloom() {
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -234,7 +245,7 @@ class DeviceRenderFeature {
     }
   }
   raytracing() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -242,7 +253,7 @@ class DeviceRenderFeature {
     }
   }
   othercommand(t) {
-    var i = this.J7.__offset(this.z7, 44);
+    var i = this.J7.__offset(this.z7, 46);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

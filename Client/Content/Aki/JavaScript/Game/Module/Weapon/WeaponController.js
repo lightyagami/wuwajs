@@ -46,7 +46,7 @@ class WeaponController extends UiControllerBase_1.UiControllerBase {
     });
     Net_1.Net.Register(23037, e => {
       var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
-      var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(81);
+      var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o).Entity.GetComponent(84);
       if (o) {
         o.OnEquipWeaponForRoleNotify(e);
       }

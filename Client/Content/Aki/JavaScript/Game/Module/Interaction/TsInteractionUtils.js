@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TsInteractionUtils = undefined;
 const Log_1 = require("../../../Core/Common/Log");
+const MultiTextLang_1 = require("../../../Core/Define/ConfigQuery/MultiTextLang");
 const TeleportInterceptByEntityConfigId_1 = require("../../../Core/Define/ConfigQuery/TeleportInterceptByEntityConfigId");
 const EntitySystem_1 = require("../../../Core/Entity/EntitySystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
@@ -55,7 +56,7 @@ class TsInteractionUtils {
     } else {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.DynamicInteractServerResponse, t.Guid);
       if (t.OptionType !== 3) {
-        Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(68)?.CollectSampleAndSend(true);
+        Global_1.Global.BaseCharacter.CharacterActorComponent?.Entity?.GetComponent(71)?.CollectSampleAndSend(true);
       }
       switch (t.DelayRemove ? 3 : t.OptionType) {
         case 0:
@@ -238,7 +239,7 @@ class TsInteractionUtils {
       if (t) {
         t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
         if (t) {
-          t = t.Entity.GetComponent(201);
+          t = t.Entity.GetComponent(207);
           if (t) {
             t = t.GetInteractController();
             if (t) {
@@ -345,6 +346,25 @@ class TsInteractionUtils {
               ModelManager_1.ModelManager.SubPackageDownLoadModel.OpenBlockNeedReLoginConfirm();
               return true;
             }
+          }
+        }
+      }
+    }
+    return false;
+  }
+  static CheckOptionLockType(e, t, n) {
+    let i = undefined;
+    if ((i = e > -1 ? t.GetOptionByInstanceId(e) : t.GetInteractiveOption()) && i.OptionLockTypeList && i.OptionLockTypeList.length > 0) {
+      for (const o of i.OptionLockTypeList) {
+        var r;
+        if (o === "OnMotor") {
+          if (n?.HasExactTag(1325052483)) {
+            r = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("InteractProhibitTips_Motor");
+            ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [r]);
+            if (Log_1.Log.CheckDebug()) {
+              Log_1.Log.Debug("Interaction", 93, "选项被锁定，不允许交互", ["OptionLockType", o], ["optionInstanceId", e]);
+            }
+            return true;
           }
         }
       }

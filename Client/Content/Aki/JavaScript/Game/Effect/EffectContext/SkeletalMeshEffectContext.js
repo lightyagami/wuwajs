@@ -11,12 +11,14 @@ class SkeletalMeshEffectContext extends EffectContext_1.EffectContext {
     super(...arguments);
     this.SkeletalMeshComp = undefined;
     this.IsSyncEffectTimeScale = false;
+    this.IsSyncEventTimeToEffectTime = false;
   }
-  ToKuroEffectContext(e) {
-    super.ToKuroEffectContext(e);
-    if (e instanceof cpp_1.FSkeletalMeshEffectContext) {
-      e.SkeletalMeshComponent = this.SkeletalMeshComp;
-      e.IsSyncTimeDilation = this.IsSyncEffectTimeScale;
+  ToKuroEffectContext(t) {
+    super.ToKuroEffectContext(t);
+    if (t instanceof cpp_1.FSkeletalMeshEffectContext) {
+      t.SkeletalMeshComponent = this.SkeletalMeshComp;
+      t.IsSyncTimeDilation = this.IsSyncEffectTimeScale;
+      t.IsSyncEventTimeToEffectTime = this.IsSyncEventTimeToEffectTime;
     }
   }
 }

@@ -12,13 +12,13 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
     super(...arguments);
     this.wDe = 0;
     this.$Pe = "";
-    this.v0m = false;
+    this.fEm = false;
   }
   ExecuteNew(e, t, n) {
     if (e) {
       this.wDe = e.EntityId;
       this.$Pe = e.Mark;
-      this.v0m = false;
+      this.fEm = false;
       this.CreateWaitEntityTask(e.EntityId);
       if (this.KJc(e.EntityId, e.Mark)) {
         this.FinishExecute(true);
@@ -28,7 +28,7 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
     }
   }
   ExecuteWhenEntitiesReady() {
-    this.v0m = true;
+    this.fEm = true;
   }
   OnTick(e) {
     if (this.KJc(this.wDe, this.$Pe)) {
@@ -37,7 +37,7 @@ class LevelEventWaitSceneRefEntityPlaySequence extends LevelGeneralBase_1.LevelE
   }
   KJc(e, t) {
     var n = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(e);
-    return !n?.Entity?.Valid || !this.v0m || ((n = n.Entity.GetComponent(167)) ? n.IsPlayToMarkFinished(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]), true));
+    return !n?.Entity?.Valid || !this.fEm || ((n = n.Entity.GetComponent(172)) ? n.IsPlayToMarkFinished(t) : (Log_1.Log.CheckError() && Log_1.Log.Error("GeneralLogicTree", 18, "LevelEventWaitSceneRefEntityPlaySequence:找不到实体身上的SceneItemReferenceComponent组件", ["pbDataId", e]), true));
   }
 }
 exports.LevelEventWaitSceneRefEntityPlaySequence = LevelEventWaitSceneRefEntityPlaySequence;

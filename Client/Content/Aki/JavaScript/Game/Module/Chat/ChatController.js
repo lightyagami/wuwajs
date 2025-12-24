@@ -12,6 +12,7 @@ const Net_1 = require("../../../Core/Net/Net");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const MathUtils_1 = require("../../../Core/Utils/MathUtils");
 const PlatformSdkManagerNew_1 = require("../../../Launcher/Platform/PlatformSdk/PlatformSdkManagerNew");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const TimeUtil_1 = require("../../Common/TimeUtil");
@@ -41,6 +42,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGetFriendInitData, this.UEt);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnWorldTeamPlayerInfoChanged, this.AEt);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.zMf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.JMf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestChatOption, this.ZMf);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSelectChatFriend, this.LEt);
@@ -53,6 +57,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.ResetModuleByResetToBattleView, this.REt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGetFriendInitData, this.UEt);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnWorldTeamPlayerInfoChanged, this.AEt);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestAddMutePlayer, this.zMf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestRemoveMutePlayer, this.JMf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestChatOption, this.ZMf);
   }
   static OnRegisterNetEvent() {
     Net_1.Net.Register(15585, this.PEt);
@@ -195,17 +202,17 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     var s;
     var C;
     var h;
-    var g = ModelManager_1.ModelManager.ChatModel;
-    let v = undefined;
+    var v = ModelManager_1.ModelManager.ChatModel;
+    let g = undefined;
     let M = undefined;
-    M = e.b8n === Protocol_1.Aki.Protocol.BFs.Proto_MatchTeam ? (v = g.GetTeamChatRoom(), "TeamMatch") : (v = g.GetWorldChatRoom(), "TeamWorld");
-    if (v) {
+    M = e.b8n === Protocol_1.Aki.Protocol.BFs.Proto_MatchTeam ? (g = v.GetTeamChatRoom(), "TeamMatch") : (g = v.GetWorldChatRoom(), "TeamWorld");
+    if (g) {
       if (e.qLs?.NLs === Protocol_1.Aki.Protocol.GFs.Proto_ClearMessages) {
-        v.Reset();
-        g.DeleteTeamChat();
+        g.Reset();
+        v.DeleteTeamChat();
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, false);
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenChatRoom, v);
-      } else if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetTargetRelation([e.qLs.KI_])).get(e.qLs.KI_) !== 5 && (t = TimeUtil_1.TimeUtil.GetServerTime(), a = (e = e.qLs).GLs, o = e.P8n, r = e.p8n, n = e.NLs, i = v.GetLastTimeStamp(), _ = e.kLs, l = e.OLs, s = e.YI_, C = e.KI_, h = e.w8d, e = e.L8d, g.AddChatContent(v, M, a, o, r, n, true, t, i, _, l, s, C), g.RefreshChatPlayerData(a, l, _, h, e), n !== Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam) && n !== Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
+        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnOpenChatRoom, g);
+      } else if ((await PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetTargetRelation([e.qLs.KI_])).get(e.qLs.KI_) !== 5 && (t = TimeUtil_1.TimeUtil.GetServerTime(), a = (e = e.qLs).GLs, o = e.P8n, r = e.p8n, n = e.NLs, i = g.GetLastTimeStamp(), _ = e.kLs, l = e.OLs, s = e.YI_, C = e.KI_, h = e.w8d, e = e.L8d, v.AddChatContent(g, M, a, o, r, n, true, t, i, _, l, s, C), v.RefreshChatPlayerData(a, l, _, h, e), n !== Protocol_1.Aki.Protocol.GFs.Proto_EnterTeam) && n !== Protocol_1.Aki.Protocol.GFs.Proto_ExitTeam) {
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, false);
       }
     }
@@ -255,23 +262,23 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       var r = h.B8n;
       var o = [];
       let e = false;
-      for (const g of h.ULs) {
-        if (t && t.get(g.KI_)) {
+      for (const v of h.ULs) {
+        if (t && t.get(v.KI_)) {
           e = true;
         } else {
-          o.push(g);
+          o.push(v);
         }
       }
       if (!e) {
         var n = a.TryGetPrivateChatRoom(r);
         n.Reset();
         a.AddPrivateHistoryChatContent(n, o);
-        for (const v of o) {
-          var i = v.N8n;
-          var _ = v.P8n;
-          var l = v.p8n;
-          var s = v.F8n;
-          var C = Number(MathUtils_1.MathUtils.LongToBigInt(v.k8n));
+        for (const g of o) {
+          var i = g.N8n;
+          var _ = g.P8n;
+          var l = g.p8n;
+          var s = g.F8n;
+          var C = Number(MathUtils_1.MathUtils.LongToBigInt(g.k8n));
           if (s && n) {
             a.SetChatRoomRedDot(n, true);
           }
@@ -311,23 +318,23 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       var s;
       var C;
       var h;
-      var g;
       var v;
+      var g;
       var M;
       var e = e.VLs;
       o.AddTeamHistoryChatContent(r, e);
-      for (const c of e) {
-        if (a.get(c.KI_) !== 5) {
-          i = c.GLs;
-          _ = c.P8n;
-          l = c.p8n;
-          s = c.NLs;
-          C = c.kLs;
-          h = c.OLs;
-          g = c.w8d;
-          v = c.L8d;
-          M = Number(MathUtils_1.MathUtils.LongToBigInt(c.FLs));
-          o.RefreshChatPlayerData(i, h, C, g, v);
+      for (const m of e) {
+        if (a.get(m.KI_) !== 5) {
+          i = m.GLs;
+          _ = m.P8n;
+          l = m.p8n;
+          s = m.NLs;
+          C = m.kLs;
+          h = m.OLs;
+          v = m.w8d;
+          g = m.L8d;
+          M = Number(MathUtils_1.MathUtils.LongToBigInt(m.FLs));
+          o.RefreshChatPlayerData(i, h, C, v, g);
           if (s === Protocol_1.Aki.Protocol.GFs.Proto_None) {
             o.AddChatRowData(i, _, l, true, n, M, 0, C, h);
           }
@@ -335,9 +342,9 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       }
       o.SortChatRowData();
       o.ClampChatRowDataListLength();
-      for (const m of o.GetChatRowDataList()) {
+      for (const d of o.GetChatRowDataList()) {
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Chat", 5, "[ChatDebug]ChannelChatHistoryNotify---打印最终聊天数据", ["Content", m.Content], ["TimeStamp", m.TimeStamp], ["IsOfflineMassage", m.IsOfflineMassage]);
+          Log_1.Log.Info("Chat", 5, "[ChatDebug]ChannelChatHistoryNotify---打印最终聊天数据", ["Content", d.Content], ["TimeStamp", d.TimeStamp], ["IsOfflineMassage", d.IsOfflineMassage]);
         }
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnRefreshChatRowData, true);
@@ -353,8 +360,10 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
     Net_1.Net.Call(20527, Protocol_1.Aki.Protocol.Jzn.create(a), this.NEt);
     if (t) {
       ModelManager_1.ModelManager.ChatModel.AddMutePlayer(e);
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncAddMutePlayer, e);
     } else {
       ModelManager_1.ModelManager.ChatModel.RemoveMutePlayer(e);
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncRemoveMutePlayer, e);
     }
   }
   static ChatReportPush(e) {}
@@ -391,6 +400,16 @@ class ChatController extends UiControllerBase_1.UiControllerBase {
       }
     });
   }
+  static RequestChatOption(t) {
+    ControllerHolder_1.ControllerHolder.FriendController.RequestPlayerCurrentDeactivationState(t, e => {
+      if (e) {
+        e = MultiTextLang_1.configMultiTextLang.GetLocalTextNew("PlayerDeleteSelf");
+        ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByItsType(9, undefined, undefined, [e]);
+      } else {
+        UiManager_1.UiManager.OpenView("ChatOption", t);
+      }
+    });
+  }
 }
 exports.ChatController = ChatController;
 (_a = ChatController).IsInRequestHistory = false;
@@ -412,6 +431,7 @@ ChatController.pze = () => {
   if (!ModelManager_1.ModelManager.ChatModel.GetWorldChatRoom()) {
     ModelManager_1.ModelManager.ChatModel.SetWorldChatRoom(ModelManager_1.ModelManager.ChatModel.NewWorldChatRoom());
   }
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncChatEnterOnlineWorld);
 };
 ChatController.Mze = () => {
   var e = ModelManager_1.ModelManager.ChatModel;
@@ -424,10 +444,12 @@ ChatController.Mze = () => {
   if (UiManager_1.UiManager.IsViewShow("ChatView")) {
     UiManager_1.UiManager.CloseView("ChatView");
   }
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncChatLeaveOnlineWorld);
 };
 ChatController.Cze = () => {
   var e = ModelManager_1.ModelManager.ChatModel;
   e.SetTeamChatRoom(e.NewTeamChatRoom());
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncChatEnterTeam);
 };
 ChatController.vze = () => {
   var e = ModelManager_1.ModelManager.ChatModel;
@@ -440,6 +462,7 @@ ChatController.vze = () => {
   if (UiManager_1.UiManager.IsViewShow("ChatView")) {
     UiManager_1.UiManager.CloseView("ChatView");
   }
+  EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncChatLeaveTeam);
 };
 ChatController.DEt = e => {
   ModelManager_1.ModelManager.ChatModel.RemovePrivateChatRoom(e);
@@ -572,4 +595,13 @@ ChatController.AEt = e => {
     }
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnChatPlayerInfoChanged, t);
   }
+};
+ChatController.zMf = e => {
+  ModelManager_1.ModelManager.ChatModel.AddMutePlayer(e);
+};
+ChatController.JMf = e => {
+  ModelManager_1.ModelManager.ChatModel.RemoveMutePlayer(e);
+};
+ChatController.ZMf = e => {
+  ChatController.RequestChatOption(e);
 }; //# sourceMappingURL=ChatController.js.map

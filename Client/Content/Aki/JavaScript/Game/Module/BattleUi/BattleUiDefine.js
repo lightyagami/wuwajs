@@ -33,6 +33,6 @@ exports.AREAL_BOX_WIETH_C = 250;
 exports.elementTypeToElementTag = new Map([[1, -1520065071], [2, 1781618160], [3, -448812252], [4, 237625775], [5, -1939505546], [6, -967538492]]);
 exports.elementTagToElementType = new Map([[-1520065071, 1], [1781618160, 2], [-448812252, 3], [237625775, 4], [-1939505546, 5], [-967538492, 6]]);
 exports.hideInputTagMap = new Map([[4, -1823030825], [6, -1949137153], [7, -2112257652], [9, 1725229954], [5, 1381320300], [1, -571871026], [8, -800147974]]);
-exports.bossStateViewResourceIdMap = new Map([[1, "UiItem_BossState_Prefab"]]);
+exports.bossStateViewResourceIdMap = new Map([[1, "UiItem_BossState_Prefab"], [2, "UiItem_BossStateDouble_Prefab"]]);
 exports.DELAY_REFRESH_ELEMENT_BALL = 3000;
 exports.BUFF_END_REMAINING_TIME = 2; //# sourceMappingURL=BattleUiDefine.js.map

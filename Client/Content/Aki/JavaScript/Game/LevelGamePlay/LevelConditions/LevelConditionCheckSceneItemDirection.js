@@ -38,7 +38,7 @@ class LevelConditionCheckSceneItemDirection extends LevelGeneralBase_1.LevelCond
         }
     }
     if (l?.Valid) {
-      if ((a = l.Entity?.GetComponent(206))?.Valid) {
+      if ((a = l.Entity?.GetComponent(212))?.Valid) {
         if ((i = e.RotatePoint ? a.GetReferenceActor(e.RotatePoint) : a.GetInteractionMainActor())?.IsValid()) {
           r = e.Direction;
           MathUtils_1.MathUtils.CommonTempRotator.Set(r.Y ?? 0, r.Z ?? 0, r.X ?? 0);

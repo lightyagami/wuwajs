@@ -13,19 +13,19 @@ const ConfigManager_1 = require("../Manager/ConfigManager");
 const UiConfig_1 = require("./Define/UiConfig");
 const UiResourceLoadModule_1 = require("./UiResourceLoadModule");
 class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
-  SetSpriteByPathSync(t, i, n, o, e = undefined, s = "js_undefined") {
+  SetSpriteByPathSync(t, i, n, s, e = undefined, o = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
-      if (UiConfig_1.UiConfig.TryGetViewInfo(o)?.LoadAsync) {
+      if (UiConfig_1.UiConfig.TryGetViewInfo(s)?.LoadAsync) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("UiImageSetting", 10, "该界面不允许同步加载,Sprite改为异步加载", ["ViewName", o]);
+          Log_1.Log.Error("UiImageSetting", 10, "该界面不允许同步加载,Sprite改为异步加载", ["ViewName", s]);
         }
-        this.SetSpriteByPathAsync(t, i, n, e, s);
+        this.SetSpriteByPathAsync(t, i, n, e, o);
       } else {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiImageSetting", 10, "同步设置Sprite接口", ["ViewName", o]);
+          Log_1.Log.Debug("UiImageSetting", 10, "同步设置Sprite接口", ["ViewName", s]);
         }
-        let e = this.Ffm(t);
-        if ((e = e || ResourceSystem_1.ResourceSystem.Load(t, UE.LGUISpriteData_BaseObject, s)) && e.IsValid()) {
+        let e = this.Qym(t);
+        if ((e = e || ResourceSystem_1.ResourceSystem.Load(t, UE.LGUISpriteData_BaseObject, o)) && e.IsValid()) {
           i.SetSprite(e, n);
         } else if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("UiImageSetting", 10, "设置Sprite失败，图片加载失败", ["图片路径", t]);
@@ -33,53 +33,53 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  Nfm(e, t, i, n, o = undefined) {
+  Kym(e, t, i, n, s = undefined) {
     if (t.IsValid()) {
       if (e && e.IsValid()) {
         t.SetSprite(e, i);
-        o?.(true);
+        s?.(true);
       } else {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("UiImageSetting", 10, "设置Sprite失败，图片加载失败", ["图片路径", n]);
         }
-        o?.(false);
+        s?.(false);
       }
     }
   }
-  SetSpriteByPathAsync(e, i, n, o = undefined, t = "js_undefined") {
-    var s;
+  SetSpriteByPathAsync(e, i, n, s = undefined, t = "js_undefined") {
+    var o;
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      if (s = this.Ffm(e)) {
-        this.Nfm(s, i, n, e, o);
+      if (o = this.Qym(e)) {
+        this.Kym(o, i, n, e, s);
       } else {
-        s = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
+        o = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
           this.DeleteResourceHandle(i);
-          this.Nfm(e, i, n, t, o);
+          this.Kym(e, i, n, t, s);
         }, 102, t);
-        this.SetResourceId(i, s);
+        this.SetResourceId(i, o);
       }
     }
   }
   async SetSpriteAsync(e, i, n, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      var o = this.Ffm(e);
-      if (o) {
-        this.Nfm(o, i, n, e);
+      var s = this.Qym(e);
+      if (s) {
+        this.Kym(s, i, n, e);
       } else {
-        const s = new CustomPromise_1.CustomPromise();
-        o = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
-          s.SetResult();
+        const o = new CustomPromise_1.CustomPromise();
+        s = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
+          o.SetResult();
           this.DeleteResourceHandle(i);
-          this.Nfm(e, i, n, t);
+          this.Kym(e, i, n, t);
         }, 102, t);
-        this.SetResourceId(i, o);
-        await s.Promise;
+        this.SetResourceId(i, s);
+        await o.Promise;
       }
     }
   }
-  Vfm(e, t, i = 5) {
+  Xym(e, t, i = 5) {
     if (t.IsValid()) {
       if (i === 5) {
         t.SetAllTransitionSprite(e);
@@ -91,22 +91,22 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
   async SetSpriteTransitionByPath(e, i, n = 5, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      var o = this.Ffm(e);
-      if (o) {
-        this.Vfm(o, i, n);
+      var s = this.Qym(e);
+      if (s) {
+        this.Xym(s, i, n);
       } else {
-        const s = new CustomPromise_1.CustomPromise();
-        o = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
-          s.SetResult();
+        const o = new CustomPromise_1.CustomPromise();
+        s = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
+          o.SetResult();
           this.DeleteResourceHandle(i);
-          this.Vfm(e, i, n);
+          this.Xym(e, i, n);
         }, 102, t);
-        this.SetResourceId(i, o);
-        await s.Promise;
+        this.SetResourceId(i, s);
+        await o.Promise;
       }
     }
   }
-  jfm(e, t, i = 9) {
+  Yym(e, t, i = 9) {
     if (t.IsValid()) {
       if (i === 9) {
         t.SetAllStateSprite(e);
@@ -118,28 +118,28 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
   async SetExtendToggleSpriteTransitionByPath(e, i, n = 9, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      var o = this.Ffm(e);
-      if (o) {
-        this.jfm(o, i, n);
+      var s = this.Qym(e);
+      if (s) {
+        this.Yym(s, i, n);
       } else {
-        const s = new CustomPromise_1.CustomPromise();
-        o = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
-          s.SetResult();
+        const o = new CustomPromise_1.CustomPromise();
+        s = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.LGUISpriteData_BaseObject, (e, t) => {
+          o.SetResult();
           this.DeleteResourceHandle(i);
-          this.jfm(e, i, n);
+          this.Yym(e, i, n);
         }, 102, t);
-        this.SetResourceId(i, o);
-        await s.Promise;
+        this.SetResourceId(i, s);
+        await o.Promise;
       }
     }
   }
-  SetItemQualityIconSync(e, t, i, n = "BackgroundSprite", o = undefined, s = "js_undefined") {
+  SetItemQualityIconSync(e, t, i, n = "BackgroundSprite", s = undefined, o = "js_undefined") {
     t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
-    this.SetQualityIconByIdSync(e, t.QualityId, i, n, o, s);
+    this.SetQualityIconByIdSync(e, t.QualityId, i, n, s, o);
   }
-  SetItemQualityIconAsync(e, t, i = "BackgroundSprite", n = undefined, o = "js_undefined") {
+  SetItemQualityIconAsync(e, t, i = "BackgroundSprite", n = undefined, s = "js_undefined") {
     t = ConfigManager_1.ConfigManager.InventoryConfig.GetItemConfigData(t);
-    this.SetQualityIconByIdAsync(e, t.QualityId, i, n, o);
+    this.SetQualityIconByIdAsync(e, t.QualityId, i, n, s);
   }
   lCr(e, t, i) {
     var t = ConfigManager_1.ConfigManager.CommonConfig.GetItemQualityById(t);
@@ -158,26 +158,26 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  SetQualityIconByIdSync(e, t, i, n = "BackgroundSprite", o = undefined, s = "js_undefined") {
+  SetQualityIconByIdSync(e, t, i, n = "BackgroundSprite", s = undefined, o = "js_undefined") {
     t = this.lCr(e, t, n);
-    this.SetSpriteByPathSync(t, e, false, i, o, s);
+    this.SetSpriteByPathSync(t, e, false, i, s, o);
   }
-  SetQualityIconByIdAsync(e, t, i = "BackgroundSprite", n = undefined, o = "js_undefined") {
+  SetQualityIconByIdAsync(e, t, i = "BackgroundSprite", n = undefined, s = "js_undefined") {
     t = this.lCr(e, t, i);
-    this.SetSpriteByPathAsync(t, e, false, n, o);
+    this.SetSpriteByPathAsync(t, e, false, n, s);
   }
-  SetTextureByPathSync(e, t, i, n = undefined, o = "js_undefined") {
+  SetTextureByPathSync(e, t, i, n = undefined, s = "js_undefined") {
     if (GlobalData_1.GlobalData.World && t && t.IsValid()) {
       if (UiConfig_1.UiConfig.TryGetViewInfo(i)?.LoadAsync) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("UiImageSetting", 10, "该界面不允许同步加载,Texture改为异步加载", ["ViewName", i]);
         }
-        this.SetTextureByPathAsync(e, t, n, o);
+        this.SetTextureByPathAsync(e, t, n, s);
       } else {
         if (Log_1.Log.CheckDebug()) {
           Log_1.Log.Debug("UiImageSetting", 10, "同步设置Texture接口", ["ViewName", i]);
         }
-        n = ResourceSystem_1.ResourceSystem.Load(e, UE.Texture, o);
+        n = ResourceSystem_1.ResourceSystem.Load(e, UE.Texture, s);
         t.SetTexture(n);
       }
     }
@@ -224,9 +224,9 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
   async SetTextureTransitionByPath(e, i, n = 5, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      const o = new CustomPromise_1.CustomPromise();
+      const s = new CustomPromise_1.CustomPromise();
       e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, (e, t) => {
-        o.SetResult();
+        s.SetResult();
         this.DeleteResourceHandle(i);
         if (i.IsValid()) {
           if (n === 5) {
@@ -237,15 +237,15 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
         }
       }, 102, t);
       this.SetResourceId(i, e);
-      await o.Promise;
+      await s.Promise;
     }
   }
   async SetExtendToggleTextureTransitionByPath(e, i, n = 9, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
-      const o = new CustomPromise_1.CustomPromise();
+      const s = new CustomPromise_1.CustomPromise();
       e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, (e, t) => {
-        o.SetResult();
+        s.SetResult();
         this.DeleteResourceHandle(i);
         if (i.IsValid()) {
           if (n === 9) {
@@ -256,7 +256,43 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
         }
       }, 102, t);
       this.SetResourceId(i, e);
-      await o.Promise;
+      await s.Promise;
+    }
+  }
+  async SetExtendToggleTextureTransitionGroupByPath(e, i, n, t = "js_undefined") {
+    if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
+      this.CancelResource(i);
+      const s = new CustomPromise_1.CustomPromise();
+      e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, (t, e) => {
+        s.SetResult();
+        this.DeleteResourceHandle(i);
+        if (i.IsValid()) {
+          if (n.includes(9)) {
+            i.SetAllTransitionStateTexture(t);
+          } else {
+            n.forEach(e => {
+              i.SetTargetStateTexture(e, t);
+            });
+          }
+        }
+      }, 102, t);
+      this.SetResourceId(i, e);
+      await s.Promise;
+    }
+  }
+  async SetTextureCustomMaterialAsync(e, t, i = "js_undefined") {
+    if (GlobalData_1.GlobalData.World && t && t.IsValid()) {
+      this.CancelResource(t);
+      const n = new CustomPromise_1.CustomPromise();
+      e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.MaterialInterface, e => {
+        n.SetResult();
+        this.DeleteResourceHandle(t);
+        if (t.IsValid() && e && e.IsValid()) {
+          t.SetCustomUIMaterial(e);
+        }
+      }, 100, i);
+      this.SetResourceId(t, e);
+      await n.Promise;
     }
   }
   _Cr(e, t) {
@@ -277,9 +313,9 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  SetItemIconSync(e, t, i, n = undefined, o = "js_undefined") {
+  SetItemIconSync(e, t, i, n = undefined, s = "js_undefined") {
     t = this._Cr(e, t);
-    this.SetTextureByPathSync(t, e, i, n, o);
+    this.SetTextureByPathSync(t, e, i, n, s);
   }
   SetItemIconAsync(e, t, i = undefined, n = "js_undefined") {
     t = this._Cr(e, t);
@@ -306,9 +342,9 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  SetRoleIconSync(e, t, i, n, o, s = "js_undefined") {
+  SetRoleIconSync(e, t, i, n, s, o = "js_undefined") {
     e = this.uCr(e, t, i);
-    this.SetTextureByPathSync(e, t, n, o, s);
+    this.SetTextureByPathSync(e, t, n, s, o);
   }
   vbl(e, t, i) {
     var t = t.ComponentTags;
@@ -326,17 +362,17 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  SetRoleSkinIconAsync(e, t, i, n, o = "js_undefined") {
+  SetRoleSkinIconAsync(e, t, i, n, s = "js_undefined") {
     e = this.vbl(e, t, i);
-    this.SetTextureByPathAsync(e, t, n, o);
+    this.SetTextureByPathAsync(e, t, n, s);
   }
-  SetRoleSkinIconSync(e, t, i, n, o, s = "js_undefined") {
+  SetRoleSkinIconSync(e, t, i, n, s, o = "js_undefined") {
     e = this.vbl(e, t, i);
-    this.SetTextureByPathSync(e, t, n, o, s);
+    this.SetTextureByPathSync(e, t, n, s, o);
   }
-  SetRoleIconAsync(e, t, i, n, o = "js_undefined") {
+  SetRoleIconAsync(e, t, i, n, s = "js_undefined") {
     e = this.uCr(e, t, i);
-    this.SetTextureByPathAsync(e, t, n, o);
+    this.SetTextureByPathAsync(e, t, n, s);
   }
   cCr(e, t, i) {
     var t = t.ComponentTags;
@@ -355,9 +391,9 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       }
     }
   }
-  SetElementIconSync(e, t, i, n, o = "js_undefined") {
+  SetElementIconSync(e, t, i, n, s = "js_undefined") {
     e = this.cCr(e, t, i);
-    this.SetTextureByPathSync(e, t, n, undefined, o);
+    this.SetTextureByPathSync(e, t, n, undefined, s);
   }
   SetElementIcon(e, t, i, n = "js_undefined") {
     e = this.cCr(e, t, i);
@@ -381,9 +417,9 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       return e;
     }
   }
-  SetMonsterIconSync(e, t, i, n, o = "js_undefined") {
+  SetMonsterIconSync(e, t, i, n, s = "js_undefined") {
     e = this.mCr(e, t, i);
-    this.SetTextureByPathSync(e, t, n, undefined, o);
+    this.SetTextureByPathSync(e, t, n, undefined, s);
   }
   SetMonsterIconAsync(e, t, i, n = "js_undefined") {
     e = this.mCr(e, t, i);
@@ -407,51 +443,51 @@ class UiImageSettingModule extends UiResourceLoadModule_1.UiResourceLoadModule {
       return e;
     }
   }
-  SetDungeonEntranceIconSync(e, t, i, n, o = "js_undefined") {
+  SetDungeonEntranceIconSync(e, t, i, n, s = "js_undefined") {
     e = this.dCr(e, t, i);
-    this.SetTextureByPathSync(e, t, n, undefined, o);
+    this.SetTextureByPathSync(e, t, n, undefined, s);
   }
   SetDungeonEntranceIconAsync(e, t, i, n = "js_undefined") {
     e = this.dCr(e, t, i);
     this.SetTextureByPathAsync(e, t, undefined, n);
   }
-  SetNiagaraTextureAsync(e, i, n, o, s, t = "js_undefined") {
+  SetNiagaraTextureAsync(e, i, n, s, o, t = "js_undefined") {
     if (GlobalData_1.GlobalData.World && i && i.IsValid()) {
       this.CancelResource(i);
       e = ResourceSystem_1.ResourceSystem.LoadAsync(e, UE.Texture, (e, t) => {
         this.DeleteResourceHandle(i);
         if (i.IsValid()) {
           if (e && e.IsValid()) {
-            i.SetNiagaraEmitterCustomTexture(n, o, e);
-            s?.(true);
+            i.SetNiagaraEmitterCustomTexture(n, s, e);
+            o?.(true);
           } else {
             if (Log_1.Log.CheckError()) {
               Log_1.Log.Error("UiImageSetting", 10, "设置Texture失败，图片加载失败", ["图片路径", t]);
             }
-            s?.(false);
+            o?.(false);
           }
         }
       }, 102, t);
       this.SetResourceId(i, e);
     }
   }
-  SetNiagaraTextureSync(e, t, i, n, o, s = undefined, a = "js_undefined") {
+  SetNiagaraTextureSync(e, t, i, n, s, o = undefined, a = "js_undefined") {
     if (GlobalData_1.GlobalData.World && t && t.IsValid()) {
-      if (UiConfig_1.UiConfig.TryGetViewInfo(o)?.LoadAsync) {
+      if (UiConfig_1.UiConfig.TryGetViewInfo(s)?.LoadAsync) {
         if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("UiImageSetting", 10, "该界面不允许同步加载,Texture改为异步加载", ["ViewName", o]);
+          Log_1.Log.Error("UiImageSetting", 10, "该界面不允许同步加载,Texture改为异步加载", ["ViewName", s]);
         }
-        this.SetNiagaraTextureAsync(e, t, i, n, s, a);
+        this.SetNiagaraTextureAsync(e, t, i, n, o, a);
       } else {
         if (Log_1.Log.CheckDebug()) {
-          Log_1.Log.Debug("UiImageSetting", 10, "同步设置Texture接口", ["ViewName", o]);
+          Log_1.Log.Debug("UiImageSetting", 10, "同步设置Texture接口", ["ViewName", s]);
         }
-        s = ResourceSystem_1.ResourceSystem.Load(e, UE.Texture, a);
-        t.SetNiagaraEmitterCustomTexture(i, n, s);
+        o = ResourceSystem_1.ResourceSystem.Load(e, UE.Texture, a);
+        t.SetNiagaraEmitterCustomTexture(i, n, o);
       }
     }
   }
-  Ffm(e) {
+  Qym(e) {
     return UE.LGUIManagerActor.GetDynamicSpriteAtlasMgr(GlobalData_1.GlobalData.World)?.GetSpriteData(e);
   }
 }

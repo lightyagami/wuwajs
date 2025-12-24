@@ -63,7 +63,7 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
         WeatherController_1.WeatherController.StopWeather();
       }
     };
-    this.hYd = e => {
+    this.FYd = e => {
       UiManager_1.UiManager.OpenView("RoguelikeExitTips", {
         IsLastLayer: true,
         CurrentInGameScore: e.fu1,
@@ -140,22 +140,25 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
       }
       o();
     };
-    this.j7_ = o => {
+    this.j7_ = r => {
       var e = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleBlackFlowerCost();
-      let r = false;
+      let t = false;
       e = {
         SinglePowerCost: e,
-        RewardCallBack: e => {
-          r = true;
-          this.BlackFlowerRewardRequest(o.A5n, true, e === 2);
+        RewardCallBack: (e, o) => {
+          t = true;
+          this.BlackFlowerRewardRequest(r.A5n, true, e === 2, o);
         },
         CloseCallBack: () => {
-          if (!r) {
-            this.BlackFlowerRewardRequest(o.A5n, false, false);
+          if (!t) {
+            this.BlackFlowerRewardRequest(r.A5n, false, false, -1);
           }
-        }
+        },
+        AvailableSilentArea: r.PTf,
+        FreeCount: ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.FreeCount,
+        FreeMax: ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.FreeCountMax
       };
-      UiManager_1.UiManager.OpenView("PowerMagnificationRewardPopView", e);
+      UiManager_1.UiManager.OpenView("WeeklyRoguePhantomRewardView", e);
     };
     this.fV_ = e => {
       ModelManager_1.ModelManager.WeeklyRogueModel.UpdateInstInfo(e);
@@ -223,7 +226,7 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
     Net_1.Net.Register(19464, this.j7_);
     Net_1.Net.Register(18685, this.gH_);
     Net_1.Net.Register(17888, this.$_c);
-    Net_1.Net.Register(20761, this.hYd);
+    Net_1.Net.Register(20761, this.FYd);
   }
   OnUnRegisterNetEvent() {
     Net_1.Net.UnRegister(22099);
@@ -304,16 +307,23 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
       }
     }
   }
-  BlackFlowerRewardRequest(e, o, r) {
-    var t = new Protocol_1.Aki.Protocol.U7_();
-    t.A5n = e;
-    t.k7_ = r;
-    t.lUl = o;
-    Net_1.Net.Call(22878, t, e => {
+  BlackFlowerRewardRequest(e, o, r, t) {
+    var a = new Protocol_1.Aki.Protocol.U7_();
+    a.A5n = e;
+    a.k7_ = r;
+    a.lUl = o;
+    a.ATf = t;
+    Net_1.Net.Call(22878, a, e => {
       if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
         ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 22878);
-      } else if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("WeeklyRogue", 34, "黑花奖励领取成功");
+      } else {
+        if (Log_1.Log.CheckDebug()) {
+          Log_1.Log.Debug("WeeklyRogue", 34, "黑花奖励领取成功");
+        }
+        if (o) {
+          ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.FreeCount = e.LTf - e.RTf;
+          ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.FreeCountMax = e.LTf;
+        }
       }
     });
   }
@@ -420,7 +430,7 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
   cJu() {
     if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue()) {
       var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity;
-      var o = e.GetComponent(178);
+      var o = e.GetComponent(183);
       var r = ModelManager_1.ModelManager.WeeklyRogueModel.ActivityData.GetCycleConfig()?.LinkId;
       if (r) {
         r = ConfigManager_1.ConfigManager.BattleLinkConfig?.GetLinkDataConfig(r);
@@ -452,7 +462,7 @@ class WeeklyRogueController extends ActivityControllerBase_1.ActivityControllerB
   yBu() {
     if (this.vBu && this.vBu.length !== 0) {
       if (ModelManager_1.ModelManager.WeeklyRogueModel?.CheckIsInWeeklyRogue()) {
-        var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(178);
+        var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(183);
         if (e) {
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("WeeklyRogue", 17, "周常肉鸽离开Link爆发状态, 移除Buff");

@@ -18,37 +18,42 @@ const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
 exports.INFO_DISPLAY_ITEM_TYPE = 12;
 class InfoDisplayController extends ControllerBase_1.ControllerBase {
-  static OpenInfoDisplay(e, o, r, n = false) {
+  static OpenInfoDisplay(e, o, r, n = false, i) {
     if (UiManager_1.UiManager.IsViewOpen("InfoDisplayTypeOneView") || UiManager_1.UiManager.IsViewOpen("InfoDisplayTypeTwoView") || UiManager_1.UiManager.IsViewOpen("InfoDisplayTypeThreeView") || UiManager_1.UiManager.IsViewOpen("InfoDisplayTypeFourNewView")) {
       return false;
     }
-    var i = CommonParamById_1.configCommonParamById.GetIntConfig("infodisplay_use_item_cd");
-    if (InfoDisplayController.njt !== 0 && Time_1.Time.Now - InfoDisplayController.njt <= i * 1000) {
+    var a = CommonParamById_1.configCommonParamById.GetIntConfig("infodisplay_use_item_cd");
+    if (InfoDisplayController.njt !== 0 && Time_1.Time.Now - InfoDisplayController.njt <= a * 1000) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("InDisplayCd");
       return false;
     }
-    let a = undefined;
+    let t = undefined;
     ModelManager_1.ModelManager.InfoDisplayModel.SetCurrentOpenInformationId(e);
-    i = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayType(e);
-    if (i === 1) {
-      a = "InfoDisplayTypeOneView";
-    } else if (i === 2) {
-      a = "InfoDisplayTypeTwoView";
-    } else if (i === 3) {
-      a = "InfoDisplayTypeThreeView";
-    } else if (i === 4) {
-      a = "InfoDisplayTypeFourNewView";
+    a = ConfigManager_1.ConfigManager.InfoDisplayModuleConfig.GetInfoDisplayType(e);
+    if (a === 1) {
+      t = "InfoDisplayTypeOneView";
+    } else if (a === 2) {
+      t = "InfoDisplayTypeTwoView";
+    } else if (a === 3) {
+      t = "InfoDisplayTypeThreeView";
+    } else if (a === 4) {
+      t = "InfoDisplayTypeFourNewView";
     }
     if (n) {
-      UiManager_1.UiManager.OpenViewByPlot(a, r, o);
+      UiManager_1.UiManager.OpenViewByPlot(t, r, o);
+    } else if (i) {
+      UiManager_1.UiManager.OpenViewWithLayer(t, i, undefined, o);
     } else {
-      UiManager_1.UiManager.OpenView(a, undefined, o);
+      UiManager_1.UiManager.OpenView(t, undefined, o);
     }
     InfoDisplayController.njt = Time_1.Time.Now;
     return true;
   }
   static OpenInfoDisplayImgView() {
     UiManager_1.UiManager.OpenView("InfoDisplayImgView");
+  }
+  static OpenInfoDisplayAttachmentBigImgView() {
+    UiManager_1.UiManager.OpenView("InfoDisplayAttachmentBigImgView");
   }
   static OnInit() {
     this.OnAddEvents();

@@ -120,7 +120,7 @@ class PublicUtil {
     var o = o?.Uid ?? "";
     var l = TimeUtil_1.TimeUtil.GetServerTime();
     var t = `${e};${i};${a = UE.KuroStaticLibrary.Base64Encode(a)};${l};${t}`;
-    return `playerId=${e}&playerName=${r}&serverId=${i}&token=${a}&timestamp=${l}&sign=${UE.KuroStaticLibrary.HashStringWithSHA1(t)}&playerUid=${o}&pkgId=${PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId()}`;
+    return `playerId=${e}&playerName=${r}&serverId=${i}&token=${a}&timestamp=${l}&sign=${UE.KuroStaticLibrary.HashStringWithSHA1(t)}&playerUid=${o}&pkgId=${PublicUtil.OverridePackageId ?? ControllerHolder_1.ControllerHolder.KuroSdkController.GetPackageId()}&channelId=${ControllerHolder_1.ControllerHolder.KuroSdkController.GetChannelId()}`;
   }
   static GetExternalUrl(t, e) {
     if (Log_1.Log.CheckInfo()) {

@@ -38,9 +38,10 @@ class PlotInfo {
     this.PreloadSequenceUiData = new Array();
     this.PromptStyle = undefined;
     this.BlockAudio = undefined;
+    this.Callback = undefined;
     this.tI1 = undefined;
   }
-  Init(t, i, s, o, e, h, r, l, n, d = {}, v = false, c = false, a, I = false) {
+  Init(t, i, s, o, e, h, r, l, d, n = {}, v = false, c = false, a, I = false, P) {
     this.FlowListName = s;
     this.FlowId = o;
     this.StateId = e;
@@ -51,11 +52,12 @@ class PlotInfo {
     this.FlowIncId = i;
     this.IsBackground = c;
     this.IsBreakdown = false;
-    this.IsAsync = n;
-    this.UiParam = d;
+    this.IsAsync = d;
+    this.UiParam = n;
     this.CanBeAbandoned = v;
     this.Pos = a;
     this.CheckPreload = I;
+    this.Callback = P;
     this.Seamless = I;
     PlotInfo.AnalyzeLevel(this, h);
   }
@@ -66,21 +68,21 @@ class PlotInfo {
     let h = false;
     let r = undefined;
     let l = false;
-    var n;
     var d;
-    if (s.length > 0 && (n = s[0]).Name === "SetPlotMode" && (n = n.Params, t = n.Mode, o = n.PromptStyle, e = n.WaitForPlayerMotionEnd ?? false, h = n.NoUiEnterAnimation ?? false, n.FastFadeIn && (r = n.FastFadeIn.ScreenType ?? IAction_1.EFadeInScreenShowType.Black), n.KeepMainRolePose)) {
+    var n;
+    if (s.length > 0 && (d = s[0]).Name === "SetPlotMode" && (d = d.Params, t = d.Mode, o = d.PromptStyle, e = d.WaitForPlayerMotionEnd ?? false, h = d.NoUiEnterAnimation ?? false, d.FastFadeIn && (r = d.FastFadeIn.ScreenType ?? IAction_1.EFadeInScreenShowType.Black), d.KeepMainRolePose)) {
       l = true;
     }
-    if (!r && s.length > 1 && (n = s[1]).Name === "FadeInScreen") {
-      n = n.Params;
-      r = n.ScreenType ?? IAction_1.EFadeInScreenShowType.Black;
+    if (!r && s.length > 1 && (d = s[1]).Name === "FadeInScreen") {
+      d = d.Params;
+      r = d.ScreenType ?? IAction_1.EFadeInScreenShowType.Black;
     }
     if (i.Seamless) {
       let t = "";
       for (const v of s) {
         if (v.Name === "SetPlotMode") {
-          d = v.Params;
-          t = d.Mode;
+          n = v.Params;
+          t = n.Mode;
         } else if (v.Name === "ShowTalk" && (t === "LevelB" || t === "LevelA")) {
           i.EndSeamlessShowTalkId = v.ActionId;
           i.PreloadSequenceUiData.push(v.Params.SequenceDataAsset);
@@ -146,6 +148,8 @@ class PlotInfo {
     this.PreloadSequenceUiData.length = 0;
     this.PromptStyle = undefined;
     this.BlockAudio = undefined;
+    this.tI1 = undefined;
+    this.Callback = undefined;
   }
   static Create() {
     let t = PlotInfo.RUe.Get();

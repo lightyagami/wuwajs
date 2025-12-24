@@ -68,79 +68,93 @@ class SceneItemCaptureUtility {
   static AU() {
     if (!this.IC) {
       this.IC = true;
-      this.pwm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonInteractoinRadius") ?? this.pwm;
-      this.vwm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonActionId") ?? this.vwm;
-      this.ywm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonAbsorbRadius") ?? this.ywm;
-      this.Swm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureSpecialActionId") ?? this.Swm;
-      this.Mwm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureSpecialAbsorbRadius") ?? this.Mwm;
-      this.Ewm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluDistanceMin") ?? this.Ewm;
-      this.Iwm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluDistanceMax") ?? this.Iwm;
-      this.Twm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluAltitude") ?? this.Twm;
-      this.rLm = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluOffsetOnHit") ?? this.rLm;
+      this.Cnf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonInteractoinRadius") ?? this.Cnf;
+      this.pnf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonActionId") ?? this.pnf;
+      this.Vzf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonActionIdForMotor") ?? this.Vzf;
+      this.vnf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureCommonAbsorbRadius") ?? this.vnf;
+      this.ynf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureSpecialActionId") ?? this.ynf;
+      this.Hzf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureSpecialActionIdForMotor") ?? this.Hzf;
+      this.Snf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureSpecialAbsorbRadius") ?? this.Snf;
+      this.Mnf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluDistanceMin") ?? this.Mnf;
+      this.Enf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluDistanceMax") ?? this.Enf;
+      this.Inf = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluAltitude") ?? this.Inf;
+      this.Wff = CommonParamById_1.configCommonParamById.GetIntConfig("VisionCaptureHuluOffsetOnHit") ?? this.Wff;
     }
   }
   static get HuluDistanceMin() {
     this.AU();
-    return this.Ewm;
+    return this.Mnf;
   }
   static get HuluDistanceMax() {
     this.AU();
-    return this.Iwm;
+    return this.Enf;
   }
   static get HuluAltitude() {
     this.AU();
-    return this.Twm;
+    return this.Inf;
   }
   static get HuluOffsetOnHit() {
     this.AU();
-    return this.rLm;
+    return this.Wff;
   }
   static PlayerHasTagId(t) {
     var e;
-    return !!Global_1.Global.BaseCharacter.IsValid() && !!(e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(209)) && e.HasTag(t);
+    return !!Global_1.Global.BaseCharacter.IsValid() && !!(e = Global_1.Global.BaseCharacter.CharacterActorComponent.Entity.GetComponent(215)) && e.HasTag(t);
   }
   static IsUsageSpecialCapture() {
     return !!exports.VISION_CAPTURE_WITH_RANGE && this.PlayerHasTagId(exports.SPECIAL_CAPTURE_CHECK_TAG);
   }
   static GetCaptureInteractionRadius() {
     this.AU();
-    return this.pwm;
+    return this.Cnf;
   }
   static GetAbsorbRadius() {
     this.AU();
     if (this.IsUsageSpecialCapture()) {
-      return this.Mwm;
+      return this.Snf;
     } else {
-      return this.ywm;
+      return this.vnf;
     }
   }
   static GetAbsorbRadiusByBool(t) {
     this.AU();
     if (t) {
-      return this.Mwm;
+      return this.Snf;
     } else {
-      return this.ywm;
+      return this.vnf;
     }
+  }
+  static IsMotorDriving() {
+    return !!Global_1.Global.BaseCharacter && (Global_1.Global.BaseCharacter.GetEntityNoBlueprint()?.GetComponent(215)?.HasAllTag(this.jzf) ?? false);
   }
   static GetActionId() {
     this.AU();
-    if (this.IsUsageSpecialCapture()) {
-      return this.Swm;
+    if (this.IsMotorDriving()) {
+      if (this.IsUsageSpecialCapture()) {
+        return this.Hzf;
+      } else {
+        return this.Vzf;
+      }
+    } else if (this.IsUsageSpecialCapture()) {
+      return this.ynf;
     } else {
-      return this.vwm;
+      return this.pnf;
     }
   }
 }
-(exports.SceneItemCaptureUtility = SceneItemCaptureUtility).pwm = 200;
-SceneItemCaptureUtility.vwm = 220004;
-SceneItemCaptureUtility.ywm = 800;
-SceneItemCaptureUtility.Swm = 220005;
-SceneItemCaptureUtility.Mwm = 5000;
-SceneItemCaptureUtility.Ewm = 350;
-SceneItemCaptureUtility.Iwm = 750;
-SceneItemCaptureUtility.Twm = 300;
-SceneItemCaptureUtility.rLm = 50;
+(exports.SceneItemCaptureUtility = SceneItemCaptureUtility).Cnf = 200;
+SceneItemCaptureUtility.pnf = 220004;
+SceneItemCaptureUtility.Vzf = 220006;
+SceneItemCaptureUtility.vnf = 800;
+SceneItemCaptureUtility.ynf = 220005;
+SceneItemCaptureUtility.Hzf = 220007;
+SceneItemCaptureUtility.Snf = 5000;
+SceneItemCaptureUtility.Mnf = 350;
+SceneItemCaptureUtility.Enf = 750;
+SceneItemCaptureUtility.Inf = 300;
+SceneItemCaptureUtility.Wff = 50;
 SceneItemCaptureUtility.IC = false;
+SceneItemCaptureUtility.jzf = [1325052483, 346080557];
 let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityComponent_1.EntityComponent {
   constructor() {
     super(...arguments);
@@ -189,8 +203,8 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   }
   OnActivate() {
     var t;
-    this.i4o = this.Entity.GetComponent(201);
-    if (this.i4o && (this.vzi = this.i4o.GetInteractController(), this.vzi) && (t = this.Entity.GetComponent(121))) {
+    this.i4o = this.Entity.GetComponent(207);
+    if (this.i4o && (this.vzi = this.i4o.GetInteractController(), this.vzi) && (t = this.Entity.GetComponent(126))) {
       t.SetPawnNameKey(exports.ABSORB_PAWN_NAME_KEY);
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Battle", 4, "开始生成抓取幻象Item", ["EntityId", this.Entity.Id]);
@@ -240,7 +254,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   }
   Cmn() {
     let e = 0;
-    const i = this.Entity.GetComponent(206);
+    const i = this.Entity.GetComponent(212);
     let t = SceneItemCaptureUtility.GetCaptureInteractionRadius();
     var o = i.CreatureData.GetPbEntityInitData();
     if ((0, IComponent_1.getComponent)(o.ComponentsData, "VisionItemComponent")) {
@@ -324,7 +338,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     if (!this.Mao || !this.vao) {
       this.koe();
     }
-    var t = this.Entity.GetComponent(206);
+    var t = this.Entity.GetComponent(212);
     var e = t.ActorLocation;
     TraceElementCommon_1.TraceElementCommon.SetStartLocation(this.Mao, e);
     this.Lz.DeepCopy(e);
@@ -403,7 +417,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
         }
         this.qBu = TimerSystem_1.TimerSystem.Delay(this.OBu, this.GOu * 1000, undefined, "SceneItemCapture Disable Tick");
         if (this.Ad_) {
-          this.Entity.GetComponent(206).SkeletalMesh.SetHiddenInGame(false);
+          this.Entity.GetComponent(212).SkeletalMesh.SetHiddenInGame(false);
           if (Log_1.Log.CheckDebug()) {
             Log_1.Log.Debug("Battle", 4, "生成抓取幻象Item结束", ["EntityId", this.Entity.Id]);
           }
@@ -421,7 +435,7 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   wdn(t) {
     if (this.Entity.Valid) {
       if (t) {
-        const e = this.Entity.GetComponent(206).SkeletalMesh;
+        const e = this.Entity.GetComponent(212).SkeletalMesh;
         e.PlayAnimation(t, false);
         e.SetPosition(0);
         e.SetPlayRate(0);
@@ -441,32 +455,34 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
   ExecuteCapture(t, e) {
     let i = e;
     if (!i) {
-      o = this.Entity.GetComponent(206);
-      i = o.ActorLocationProxy;
+      s = this.Entity.GetComponent(212);
+      i = s.ActorLocationProxy;
     }
-    var o = Global_1.Global.BaseCharacter.CharacterActorComponent;
-    var s = Vector_1.Vector.Create(i);
-    s.SubtractionEqual(o.ActorLocationProxy);
-    MathUtils_1.MathUtils.LookRotationUpFirst(s, o.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.az);
-    this.az.Rotator(this.Gue);
-    o.Entity.GetComponent(45)?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
-    o.SetActorRotation(this.Gue.ToUeRotator(), this.constructor.name, false);
+    var o;
+    var s = Global_1.Global.BaseCharacter.CharacterActorComponent;
+    if (!SceneItemCaptureUtility.IsMotorDriving()) {
+      (o = Vector_1.Vector.Create(i)).SubtractionEqual(s.ActorLocationProxy);
+      MathUtils_1.MathUtils.LookRotationUpFirst(o, s.MoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy, this.az);
+      this.az.Rotator(this.Gue);
+      s.Entity.GetComponent(46)?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
+      s.SetActorRotation(this.Gue.ToUeRotator(), this.constructor.name, false);
+    }
     if (this.Ldn !== SpecialDropEntityConfigId) {
-      if (s = o.Entity.GetComponent(40)) {
-        s.BeginSkillAsync(SceneItemCaptureUtility.GetActionId(), {
+      if (o = s.Entity.GetComponent(41)) {
+        o.BeginSkillAsync(SceneItemCaptureUtility.GetActionId(), {
           Target: this.Entity,
           Reason: "SceneItemCaptureComponent.ExecuteCapture",
           ExtraTargetLocation: e?.ToUeVector()
         });
       }
-      s = o.Entity.Id;
-      BlackboardController_1.BlackboardController.SetVectorValueByEntity(s, "ShoufuLocation", i.X, i.Y, i.Z);
+      o = s.Entity.Id;
+      BlackboardController_1.BlackboardController.SetVectorValueByEntity(o, "ShoufuLocation", i.X, i.Y, i.Z);
     }
     this.AfterCapture();
   }
   AfterCapture() {
     this.Ora = true;
-    var t = this.Entity.GetComponent(122);
+    var t = this.Entity.GetComponent(127);
     if (t) {
       t.CloseInteract("触发收复后关闭交互");
     }
@@ -479,5 +495,5 @@ let SceneItemCaptureComponent = class SceneItemCaptureComponent extends EntityCo
     RenderModuleController_1.RenderModuleController.AddCharRenderShell(this.l9e);
   }
 };
-SceneItemCaptureComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(150)], SceneItemCaptureComponent);
+SceneItemCaptureComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(155)], SceneItemCaptureComponent);
 exports.SceneItemCaptureComponent = SceneItemCaptureComponent; //# sourceMappingURL=SceneItemCaptureComponent.js.map

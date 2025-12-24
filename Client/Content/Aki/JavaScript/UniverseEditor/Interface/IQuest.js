@@ -11,9 +11,10 @@ var EGradingSystemVarType;
 var ETrapDefenseSystemVarType;
 var ESurvivorsRougeSystemVarType;
 var ELogicProgramSpecialProcess;
-var EQuestScheduleType;
 var EQuestScheduleUiType;
+var EQuestScheduleType;
 var EProgressBarLeftType;
+var EBindingProgressType;
 var EStatisticsEventType;
 var EPlayerHitStatisticsType;
 var EPlayerDamageInfoType;
@@ -30,11 +31,14 @@ var ETrapDefenseConditionStep;
 var ECheckTrapDefenseEvent;
 var ESurvivorsRougeConditionStep;
 var ERollBlockInteractType;
+var ERollBlockLaunchMethod;
+var EAtomicProcess;
+var EUseWeatherSwitchCheckType;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.EPhoneMessageProgressType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EProgressBarLeftType = exports.EQuestScheduleUiType = exports.EQuestScheduleType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
-exports.repeatBanList = exports.getSkillTypeFromCnName = undefined;
+exports.questRegionCNMapper = exports.defaultQuestRegion = exports.questTypeToCnName = exports.questCnNameToType = exports.questTypeCNMapper = exports.defaultQuestType = exports.questSubTypeBinding = exports.questSubTypeCnMapper = exports.questFailedConfigs = exports.EUseWeatherSwitchCheckType = exports.EAtomicProcess = exports.ERollBlockLaunchMethod = exports.ERollBlockInteractType = exports.ESurvivorsRougeConditionStep = exports.ECheckTrapDefenseEvent = exports.ETrapDefenseConditionStep = exports.ESpecialProcess = exports.EOperation = exports.EAttributeToTarget = exports.ETargetBattleAttribute = exports.combatStateConfig = exports.EUseSkillCheckType = exports.elementGenreCnMap = exports.skillTypeCnMap = exports.skillGenreCnMap = exports.ESkillCategory = exports.ESkillType = exports.EPhoneMessageProgressType = exports.childQuestsForTest = exports.childQuestConfigs = exports.childQuestForLevelPlay = exports.childQuestForQuest = exports.EChildQuest = exports.EPlayerDamageInfoType = exports.EPlayerHitStatisticsType = exports.EStatisticsEventType = exports.EBindingProgressType = exports.EProgressBarLeftType = exports.EQuestScheduleType = exports.EQuestScheduleUiType = exports.ELogicProgramSpecialProcess = exports.ESurvivorsRougeSystemVarType = exports.ETrapDefenseSystemVarType = exports.EGradingSystemVarType = exports.EEnableSystemType = exports.ESpecialGamePlayConfigType = exports.EInformationBoardType = exports.EInformationViewType = exports.getTipsByNodeType = exports.nodeTips = undefined;
+exports.repeatBanList = exports.getSkillTypeFromCnName = exports.getSkillTypesCn = exports.flatBehaviorTree = exports.questRegionToCnName = exports.questCnNameToRegion = undefined;
 exports.nodeTips = {
   Start: "",
   QuestSucceed: "任务完成，终止行为树",
@@ -65,6 +69,7 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.SurvivorsRouge = "SurvivorsRouge";
   e.GameDifficulty = "GameDifficulty";
   e.LinkSystem = "LinkSystem";
+  e.MotorRacing = "MotorRacing";
 })(EEnableSystemType = exports.EEnableSystemType ||= {});
 (function (e) {
   e.Score = "Score";
@@ -96,6 +101,10 @@ exports.getTipsByNodeType = getTipsByNodeType;
 })(ESurvivorsRougeSystemVarType = exports.ESurvivorsRougeSystemVarType ||= {});
 (ELogicProgramSpecialProcess = exports.ELogicProgramSpecialProcess ||= {}).DisableURO = "DisableURO";
 (function (e) {
+  e.Task = "Task";
+  e.LevelPlay = "LevelPlay";
+})(EQuestScheduleUiType = exports.EQuestScheduleUiType ||= {});
+(function (e) {
   e.None = "None";
   e.ChildQuestCompleted = "ChildQuestCompleted";
   e.EntityHP = "EntityHP";
@@ -110,13 +119,10 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.DistanceValue = "DistanceValue";
 })(EQuestScheduleType = exports.EQuestScheduleType ||= {});
 (function (e) {
-  e.Task = "Task";
-  e.LevelPlay = "LevelPlay";
-})(EQuestScheduleUiType = exports.EQuestScheduleUiType ||= {});
-(function (e) {
   e.UseCount = "UseCount";
   e.UseVar = "UseVar";
 })(EProgressBarLeftType = exports.EProgressBarLeftType ||= {});
+(EBindingProgressType = exports.EBindingProgressType ||= {}).PlayerHavingItemCount = "PlayerHavingItemCount";
 (function (e) {
   e.Collect = "Collect";
   e.UseSkill = "UseSkill";
@@ -185,6 +191,9 @@ exports.getTipsByNodeType = getTipsByNodeType;
   e.TakePicturesWithTimeScale = "TakePicturesWithTimeScale";
   e.FinishRollBlock = "FinishRollBlock";
   e.ReadPhoneMessage = "ReadPhoneMessage";
+  e.ListenToEvent = "ListenToEvent";
+  e.AtomicProcess = "AtomicProcess";
+  e.UseWeatherSwitch = "UseWeatherSwitch";
 })(EChildQuest = exports.EChildQuest ||= {});
 const childQuestAll = Object.values(EChildQuest);
 function createQuestTypeCnNameMap() {
@@ -251,7 +260,10 @@ exports.childQuestConfigs = {
   FinishSurvivorsRouge: {},
   TakePicturesWithTimeScale: {},
   FinishRollBlock: {},
-  ReadPhoneMessage: {}
+  ReadPhoneMessage: {},
+  ListenToEvent: {},
+  AtomicProcess: {},
+  UseWeatherSwitch: {}
 };
 exports.childQuestsForTest = [];
 (EPhoneMessageProgressType = exports.EPhoneMessageProgressType ||= {}).CompleteMessage = "CompleteMessage";
@@ -365,6 +377,15 @@ exports.combatStateConfig = {
   e.Attack = "Attack";
   e.Trigger = "Trigger";
 })(ERollBlockInteractType = exports.ERollBlockInteractType ||= {});
+(function (e) {
+  e.Interact = "Interact";
+  e.Range = "Range";
+})(ERollBlockLaunchMethod = exports.ERollBlockLaunchMethod ||= {});
+(EAtomicProcess = exports.EAtomicProcess ||= {}).StoveCoreFall = "StoveCoreFall";
+(function (e) {
+  e.SpecifiedWeather = "SpecifiedWeather";
+  e.AnyWeather = "AnyWeather";
+})(EUseWeatherSwitchCheckType = exports.EUseWeatherSwitchCheckType ||= {});
 exports.questFailedConfigs = {
   Timer: {},
   TimeRange: {},
@@ -460,7 +481,8 @@ exports.questRegionCNMapper = {
   22: "归墟港市",
   23: "阿维纽林",
   24: "七丘",
-  25: "隐海试验场"
+  25: "隐海试验场",
+  26: "拉海洛"
 };
 const questRegionCnNameMap = createQuestRegionCnNameMap();
 function questCnNameToRegion(e) {
@@ -527,4 +549,4 @@ exports.questRegionToCnName = questRegionToCnName;
 exports.flatBehaviorTree = flatBehaviorTree;
 exports.getSkillTypesCn = getSkillTypesCn;
 exports.getSkillTypeFromCnName = getSkillTypeFromCnName;
-exports.repeatBanList = ["GetItem", "SendNpcMail", "ManualOccupations", "DestroyQuest", "TeleportDungeon", "FinishDungeon", "AddBuffToPlayer", "RemoveBuffFromPlayer"]; //# sourceMappingURL=IQuest.js.map
+exports.repeatBanList = ["GetItem", "SendNpcMail", "ManualOccupations", "DestroyQuest", "TeleportDungeon", "FinishDungeon"]; //# sourceMappingURL=IQuest.js.map

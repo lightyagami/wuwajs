@@ -126,7 +126,7 @@ class NpcIconComponent {
       this.HeadView = new NpcIconComponentView_1.NpcIconComponentView();
       UiModel_1.UiModel.AddNpcIconViewUnit(this.HeadView);
       await this.HeadView.CreateByActorAsync(this.Eqi.Actor);
-      return !this.Kr && (this.HeadView.SetHeadInfoNameState(false), this.HeadView.SetDialogueActive(false), this.RegisterTick(), this.Tick(Time_1.Time.DeltaTime * CommonDefine_1.MILLIONSECOND_PER_SECOND, true), true);
+      return !this.Kr && (this.HeadView.SetHeadInfoNameState(false), this.HeadView.SetDialogueActive(false), this.HeadView.SetDialogWorldScale3D(this.Pe.GetDialogWorldScale3D()), this.RegisterTick(), this.Tick(Time_1.Time.DeltaTime * CommonDefine_1.MILLIONSECOND_PER_SECOND, true), true);
     }
   }
   SetCharacterIconLocation() {
@@ -188,6 +188,9 @@ class NpcIconComponent {
     this.Sqi = -1;
     this.HeadView?.SetDialogueActive(false);
     this.wqi(false);
+  }
+  UpdateDialogWorldScale() {
+    this.HeadView?.SetDialogWorldScale3D(this.Pe.GetDialogWorldScale3D());
   }
   IsDialogueTextActive() {
     return this.HeadView?.GetDialogueActive() ?? false;

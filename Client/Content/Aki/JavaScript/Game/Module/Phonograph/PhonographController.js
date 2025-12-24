@@ -19,28 +19,34 @@ const ErrorCodeController_1 = require("../ErrorCode/ErrorCodeController");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 class PhonographController extends UiControllerBase_1.UiControllerBase {
   static async UnlockMusicRequest(e) {
-    var r = new Protocol_1.Aki.Protocol._p_();
-    r.bMs = e;
-    var e = await Net_1.Net.CallAsync(19309, r);
+    var o = new Protocol_1.Aki.Protocol._p_();
+    o.bMs = e;
+    var e = await Net_1.Net.CallAsync(19309, o);
     if (!e) {
       return false;
     }
     if (e.Q4n !== Protocol_1.Aki.Protocol.Q4n.KRs) {
-      const o = await UiManager_1.UiManager.OpenViewAsync("PhonographNewMusicView", []);
-      return o !== undefined;
+      const r = await UiManager_1.UiManager.OpenViewAsync("PhonographNewMusicView", {
+        UnlockMusicList: [],
+        CloseCallback: this.OpenView
+      });
+      return r !== undefined;
     }
     ModelManager_1.ModelManager.PhonographModel.NewMusicIds = e.eL_;
-    const o = await UiManager_1.UiManager.OpenViewAsync("PhonographNewMusicView", e.eL_);
-    return o !== undefined;
+    const r = await UiManager_1.UiManager.OpenViewAsync("PhonographNewMusicView", {
+      UnlockMusicList: e.eL_,
+      CloseCallback: this.OpenView
+    });
+    return r !== undefined;
   }
-  static SwitchMusicRequest(r, o) {
+  static SwitchMusicRequest(o, r) {
     var e = new Protocol_1.Aki.Protocol.mp_();
-    e.SPl = r;
+    e.SPl = o;
     Net_1.Net.Call(17716, e, e => {
       if (e.Q4n === Protocol_1.Aki.Protocol.Q4n.KRs) {
         ScrollingTipsController_1.ScrollingTipsController.ShowTipsById("PhonographSwitchMusicSuccess");
-        ModelManager_1.ModelManager.PhonographModel.RecordMusicId = r;
-        o();
+        ModelManager_1.ModelManager.PhonographModel.RecordMusicId = o;
+        r();
       }
     });
   }
@@ -53,38 +59,44 @@ class PhonographController extends UiControllerBase_1.UiControllerBase {
     }
     ErrorCodeController_1.ErrorCodeController.OpenErrorCodeTipView(e.Q4n, 26661);
   }
-  static PlayMusic(e, r = true) {
-    var o = ModelManager_1.ModelManager.PhonographModel?.EntityActor;
-    if (PhonographController.PlayMusicTimer && (TimerSystem_1.TimerSystem.Remove(PhonographController.PlayMusicTimer), PhonographController.PlayMusicTimer = undefined, o?.IsValid())) {
-      AudioSystem_1.AudioSystem.StopAll(o);
+  static PlayMusic(o, e = true) {
+    var r = ModelManager_1.ModelManager.PhonographModel?.EntityActor;
+    if (PhonographController.PlayMusicTimer && (TimerSystem_1.TimerSystem.Remove(PhonographController.PlayMusicTimer), PhonographController.PlayMusicTimer = undefined, r?.IsValid())) {
+      AudioSystem_1.AudioSystem.StopAll(r);
     }
-    var n = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(e);
+    var n = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(o);
     if (!n) {
       return 0;
     }
-    if (!o?.IsValid()) {
+    if (!r?.IsValid()) {
       return 0;
     }
     this.StopMusic(false);
-    o = AudioSystem_1.AudioSystem.PostEvent(n.MusicEvent, o);
-    if (r) {
-      ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTotalTime = n.Duration;
-      ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime = 0;
-      ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId = e;
-      PhonographController.PlayMusicTimer = TimerSystem_1.TimerSystem.Forever(() => {
-        ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime += 1;
-        if (ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime >= ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTotalTime) {
-          PhonographController.StopMusic();
+    n = AudioSystem_1.AudioSystem.PostEvent(n.MusicEvent, r);
+    if (e) {
+      ModelManager_1.ModelManager.PhonographModel.GetMusicDuration(o).then(e => {
+        ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTotalTime = e;
+        ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime = 0;
+        ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicId = o;
+        if (PhonographController.PlayMusicTimer) {
+          TimerSystem_1.TimerSystem.Remove(PhonographController.PlayMusicTimer);
+          PhonographController.PlayMusicTimer = undefined;
         }
-        EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographPlayTick);
-      }, CommonDefine_1.MILLIONSECOND_PER_SECOND);
+        PhonographController.PlayMusicTimer = TimerSystem_1.TimerSystem.Forever(() => {
+          ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime += 1;
+          if (ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTime >= ModelManager_1.ModelManager.PhonographModel.CurrentPlayMusicTotalTime) {
+            PhonographController.StopMusic();
+          }
+          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnPhonographPlayTick);
+        }, CommonDefine_1.MILLIONSECOND_PER_SECOND);
+      });
     }
-    return o;
+    return n;
   }
   static StopMusic(e = true) {
-    var r = ModelManager_1.ModelManager.PhonographModel?.EntityActor;
-    if (r?.IsValid()) {
-      AudioSystem_1.AudioSystem.StopAll(r);
+    var o = ModelManager_1.ModelManager.PhonographModel?.EntityActor;
+    if (o?.IsValid()) {
+      AudioSystem_1.AudioSystem.StopAll(o);
     }
     if (PhonographController.PlayMusicTimer) {
       TimerSystem_1.TimerSystem.Remove(PhonographController.PlayMusicTimer);
@@ -105,25 +117,27 @@ class PhonographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static PlayMusicByEntityId(e) {
-    var r;
     var o;
+    var r;
     var n = ModelManager_1.ModelManager.PhonographModel.GetPlayIdRecord(e);
     if (n !== 0) {
       AudioSystem_1.AudioSystem.ExecuteAction(n, 0);
     }
     var n = ModelManager_1.ModelManager.PhonographModel.GetRecordMusicId(e);
-    if (n !== 0 && (n = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(n)) && (o = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e)) && (r = o.Entity?.CheckGetComponent(1))) {
-      o = AudioSystem_1.AudioSystem.PostEvent(n.MusicEvent, r.Owner);
-      ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(e, o);
+    if (n !== 0 && (n = ConfigManager_1.ConfigManager.PhonographConfig?.GetMusicById(n)) && (r = ModelManager_1.ModelManager.CreatureModel?.GetEntityByPbDataId(e)) && (o = r.Entity?.CheckGetComponent(1))) {
+      r = AudioSystem_1.AudioSystem.PostEvent(n.MusicEvent, o.Owner);
+      ModelManager_1.ModelManager.PhonographModel.SetPlayIdRecord(e, r);
     }
   }
   static StopMusicByEntityId(e) {
-    var r = ModelManager_1.ModelManager.PhonographModel.GetPlayIdRecord(e);
-    if (r !== 0) {
-      AudioSystem_1.AudioSystem.ExecuteAction(r, 0);
+    var o = ModelManager_1.ModelManager.PhonographModel.GetPlayIdRecord(e);
+    if (o !== 0) {
+      AudioSystem_1.AudioSystem.ExecuteAction(o, 0);
       ModelManager_1.ModelManager.PhonographModel.RemovePlayIdRecord(e);
     }
   }
 }
 (exports.PhonographController = PhonographController).PlayMusicTimer = undefined;
-//# sourceMappingURL=PhonographController.js.map
+PhonographController.OpenView = () => {
+  UiManager_1.UiManager.OpenView("PhonographView");
+}; //# sourceMappingURL=PhonographController.js.map

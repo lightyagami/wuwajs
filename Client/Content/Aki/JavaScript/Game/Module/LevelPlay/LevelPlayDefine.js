@@ -31,5 +31,6 @@ exports.levelPlayTypeToNumber = {
   MonsterKill: 12,
   EntityManage: 13,
   LogicControl: 14,
-  BlackSwordChallenge: 15
+  BlackSwordChallenge: 15,
+  MonsterSettlement: 16
 }; //# sourceMappingURL=LevelPlayDefine.js.map

@@ -221,8 +221,8 @@ class OperationRestrictUtils {
       i.add(26);
     }
     if (t.AlwaysShowUiSections) {
-      for (const r of t.AlwaysShowUiSections) {
-        if (r === IAction_1.EUiElement.Guide) {
+      for (const s of t.AlwaysShowUiSections) {
+        if (s === IAction_1.EUiElement.Guide) {
           i.delete(26);
           e.add(26);
         }
@@ -242,8 +242,8 @@ class OperationRestrictUtils {
   static get sYc() {
     if (!this.aYc) {
       this.aYc = [];
-      for (let t = 0; t < 37; t++) {
-        if (t !== 12 && t !== 18 && t !== 19 && t !== 9 && t !== 10) {
+      for (let t = 0; t < 41; t++) {
+        if (t !== 12 && t !== 18 && t !== 19 && t !== 9 && t !== 10 && t !== 38 && t !== 39) {
           this.aYc.push(t);
         }
       }
@@ -346,7 +346,7 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(1, true);
     ModelManager_1.ModelManager.ExploreSkillFlagModel.EnableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, true);
-    this.SetBattleUiRestrictByUiChildType([9, 10], undefined);
+    this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
     ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
   }
   static SetSkillDisableAll() {
@@ -354,7 +354,7 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(1, false);
     ModelManager_1.ModelManager.ExploreSkillFlagModel.DisableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, false);
-    this.SetBattleUiRestrictByUiChildType(undefined, [9, 10]);
+    this.SetBattleUiRestrictByUiChildType(undefined, this.ZJf);
     ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
   }
   static SetSkillRestrictByDisableSkillOption(t) {
@@ -363,13 +363,13 @@ class OperationRestrictUtils {
     ModelManager_1.ModelManager.ExploreSkillFlagModel.DisableAllExploreSkillFlag();
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, false);
     if (t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Hide) {
-      this.SetBattleUiRestrictByUiChildType(undefined, [9, 10]);
+      this.SetBattleUiRestrictByUiChildType(undefined, this.ZJf);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
     } else if (t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Ashen) {
-      this.SetBattleUiRestrictByUiChildType([9, 10], undefined);
+      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(false, 0);
     } else if (t.DisplayMode === undefined) {
-      this.SetBattleUiRestrictByUiChildType([9, 10], undefined);
+      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
       ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetSkillRestrictByDisableSkillOption] 配置出错", ["SkillOption", t]);
@@ -387,22 +387,80 @@ class OperationRestrictUtils {
     const n = !!e?.includes(IAction_1.EExploreSkillType.PlaceTemporaryTeleport);
     const a = i ? n : !n;
     ModelManager_1.ModelManager.LevelFuncFlagModel.SetFuncFlagEnable(0, a);
-    let o = undefined;
-    o = t.DisableBattleSkill?.IsDisableCharacterSkill ? [InputEnums_1.EInputAction.跳跃, InputEnums_1.EInputAction.攀爬, InputEnums_1.EInputAction.攻击, InputEnums_1.EInputAction.闪避, InputEnums_1.EInputAction.技能1, InputEnums_1.EInputAction.大招, InputEnums_1.EInputAction.切换角色1, InputEnums_1.EInputAction.切换角色2, InputEnums_1.EInputAction.切换角色3, InputEnums_1.EInputAction.锁定目标, InputEnums_1.EInputAction.瞄准] : [];
+    var o = new Set();
+    if (t.DisableBattleSkill?.IsDisableCharacterSkill) {
+      OperationRestrictUtils.Qwf({
+        DisableJump: true,
+        DisableShowClimb: true,
+        DisableAttack: true,
+        DisableDodge: true,
+        DisableSkill1: true,
+        DisableUltimateSkill: true,
+        DisableSwitchRole1: true,
+        DisableSwitchRole2: true,
+        DisableSwitchRole3: true,
+        DisableLock: true,
+        DisableAim: true
+      }, o);
+    }
     if (t.DisableBattleSkill?.IsDisablePhantomSkill) {
-      o.push(InputEnums_1.EInputAction.幻象2);
+      o.add(InputEnums_1.EInputAction.幻象2);
+    }
+    if (t.DisableBattleSkill?.IsDisableCharacterSectionalSkill) {
+      OperationRestrictUtils.Qwf(t.DisableBattleSkill.IsDisableCharacterSectionalSkill, o);
     }
     if (t.DisplayMode === undefined || t.DisplayMode === IAction_1.EDisplayModeInSkillOp.Disable) {
-      this.SetBattleUiRestrictByUiChildType([9, 10], undefined);
-      if (o.length <= 0) {
+      this.SetBattleUiRestrictByUiChildType(this.ZJf, undefined);
+      if (o.size <= 0) {
         ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnable(true, 0);
       } else {
-        ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnableWithIgnoreList(true, o, 0);
+        ModelManager_1.ModelManager.BattleInputModel.SetAllInputEnableWithIgnoreSet(true, o, 0);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelEvent", 39, "[OperationRestrictUtils.SetSkillRestrictByDisableSectionalSkillOption] 配置出错", ["SkillOption", t]);
     }
   }
+  static Qwf(t, e) {
+    for (const i of this.Kwf) {
+      if (t[i.OptionKey]) {
+        e.add(i.InputAction);
+      }
+    }
+  }
 }
-(exports.OperationRestrictUtils = OperationRestrictUtils).aYc = undefined;
-//# sourceMappingURL=OperationRestrictUtils.js.map
+(exports.OperationRestrictUtils = OperationRestrictUtils).ZJf = [9, 10, 38];
+OperationRestrictUtils.aYc = undefined;
+OperationRestrictUtils.Kwf = [{
+  OptionKey: "DisableJump",
+  InputAction: InputEnums_1.EInputAction.跳跃
+}, {
+  OptionKey: "DisableShowClimb",
+  InputAction: InputEnums_1.EInputAction.攀爬
+}, {
+  OptionKey: "DisableAttack",
+  InputAction: InputEnums_1.EInputAction.攻击
+}, {
+  OptionKey: "DisableDodge",
+  InputAction: InputEnums_1.EInputAction.闪避
+}, {
+  OptionKey: "DisableSkill1",
+  InputAction: InputEnums_1.EInputAction.技能1
+}, {
+  OptionKey: "DisableUltimateSkill",
+  InputAction: InputEnums_1.EInputAction.大招
+}, {
+  OptionKey: "DisableSwitchRole1",
+  InputAction: InputEnums_1.EInputAction.切换角色1
+}, {
+  OptionKey: "DisableSwitchRole2",
+  InputAction: InputEnums_1.EInputAction.切换角色2
+}, {
+  OptionKey: "DisableSwitchRole3",
+  InputAction: InputEnums_1.EInputAction.切换角色3
+}, {
+  OptionKey: "DisableLock",
+  InputAction: InputEnums_1.EInputAction.锁定目标
+}, {
+  OptionKey: "DisableAim",
+  InputAction: InputEnums_1.EInputAction.瞄准
+}]; //# sourceMappingURL=OperationRestrictUtils.js.map

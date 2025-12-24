@@ -50,16 +50,16 @@ class FilterSettingController extends UiControllerBase_1.UiControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.LogOut, this.bBu);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.SHd);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.MHd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.THd);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PlotNetworkEnd, this.bHd);
   }
   static OnRemoveEvents() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CharOnRoleDead, this.Jze);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInLoadScene, this.EBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.UiSceneLastStepInExitScene, this.IBu);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.LogOut, this.bBu);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.SHd);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.MHd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnExecuteAfterSetPlotMode, this.THd);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.PlotNetworkEnd, this.bHd);
     if (this.CameraComponent) {
       this.CameraComponent?.RemoveEntityEvents();
     }
@@ -331,14 +331,14 @@ FilterSettingController.Jze = e => {
     UiManager_1.UiManager.CloseView("FilterSettingView");
   }
 };
-FilterSettingController.SHd = () => {
+FilterSettingController.THd = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInOverLevel("LevelC")) {
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Kuro.KuroEnableScreenFilter 0");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.Tonemapper.BrightnessAndTextureDisable 1");
     UE.KismetSystemLibrary.ExecuteConsoleCommand(GlobalData_1.GlobalData.World, "r.BlueLightFilter.Disable 1");
   }
 };
-FilterSettingController.MHd = () => {
+FilterSettingController.bHd = () => {
   if (ModelManager_1.ModelManager.PlotModel.IsInOverLevel("LevelC")) {
     _a.SwitchFilter(true);
   }

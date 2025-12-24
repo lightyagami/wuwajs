@@ -20,14 +20,14 @@ class TrackController extends ControllerBase_1.ControllerBase {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnEnterNearbyTrackRange, this.gRo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnLeaveNearbyTrackRange, this.fRo);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.RemoveNearbyTrack, this.fRo);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, this.Aom);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnInstanceChange, this.o1m);
     return true;
   }
   static OnClear() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnEnterNearbyTrackRange, this.gRo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnLeaveNearbyTrackRange, this.fRo);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RemoveNearbyTrack, this.fRo);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.Aom);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInstanceChange, this.o1m);
     return true;
   }
   static StartTrack(e, r = true) {
@@ -43,7 +43,7 @@ class TrackController extends ControllerBase_1.ControllerBase {
   static SetInteractSpotOccupied(e, r, t) {
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SetInteractSpotOccupied, e, r, t);
   }
-  static wwm() {
+  static znf() {
     var e;
     var r;
     var t = ModelManager_1.ModelManager.GameModeModel.InstanceDungeon?.Id;
@@ -61,11 +61,11 @@ class TrackController extends ControllerBase_1.ControllerBase {
 exports.TrackController = TrackController;
 (_a = TrackController).gRo = r => {
   if (r) {
-    var t = r.GetComponent(164);
+    var t = r.GetComponent(169);
     if (t?.Valid && t.TrackConfigType !== "Compass") {
       var n = r.GetComponent(1).CreatureData.GetPbEntityInitData();
       var a = (0, IComponent_1.getComponent)(n.ComponentsData, "InteractComponent");
-      var e = r.GetComponent(200);
+      var e = r.GetComponent(206);
       if (!e || !e.HasTag(1196894179)) {
         let e = 3;
         if (a) {
@@ -89,6 +89,6 @@ exports.TrackController = TrackController;
 TrackController.fRo = e => {
   TrackController.EndTrack(3, e.Id);
 };
-TrackController.Aom = () => {
-  _a.wwm();
+TrackController.o1m = () => {
+  _a.znf();
 }; //# sourceMappingURL=TrackController.js.map

@@ -113,7 +113,7 @@ class SkinController extends UiControllerBase_1.UiControllerBase {
     });
   }
   static CheckCanWearSkinAndShowTip() {
-    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209);
+    var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215);
     if (e.HasTag(-1371021686) || e.HasTag(1996802261)) {
       ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("Text_ForbiddenActionInFight_Text");
       return false;

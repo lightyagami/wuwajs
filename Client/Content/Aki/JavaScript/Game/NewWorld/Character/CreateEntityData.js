@@ -203,7 +203,8 @@ class CreateEntityData {
     return !!e && !!t;
   }
   static IsFollowShooter(t) {
-    return !!t.ComponentDataMap.get("tI_");
+    t = t.PbEntityInitData;
+    return !!(0, IComponent_1.getComponent)(t.ComponentsData, "FollowShooterComponent");
   }
   static GetMonsterComponent(t) {
     if (t.PbEntityInitData) {

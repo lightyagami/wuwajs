@@ -124,6 +124,9 @@ exports.getPreChildQuests = getPreChildQuests;
   e.CollectionShopFull = "CollectionShopFull";
   e.TrackMoonPopularity = "TrackMoonPopularity";
   e.InfrastructureStage = "InfrastructureStage";
+  e.RoadBuildState = "RoadBuildState";
+  e.InfrActivityExp = "InfrActivityExp";
+  e.CoopRoleCoopLevel = "CoopRoleCoopLevel";
 })(ECheckSystemStateType = exports.ECheckSystemStateType ||= {});
 (EShopType = exports.EShopType ||= {}).ChengXiaoShan = "ChengXiaoShan";
 (function (e) {

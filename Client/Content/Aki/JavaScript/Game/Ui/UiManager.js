@@ -174,13 +174,13 @@ class UiManager {
       return false;
     }
   }
-  static async CloseViewImplementAsync(e, i = true) {
-    var a = e.Info;
+  static async CloseViewImplementAsync(e, i = true, a = false) {
+    var r = e.Info;
     if (i) {
-      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.CloseViewRedirectToCs, a.Name);
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.CloseViewRedirectToCs, r.Name, e.GetViewId(), a);
     }
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]请求关闭界面", ["界面名称", a.Name], ["ViewId", e.GetViewId()]);
+      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]请求关闭界面", ["界面名称", r.Name], ["ViewId", e.GetViewId()]);
     }
     if (e.OpenPromise) {
       e.OpenPromise.SetResult(true);
@@ -190,7 +190,7 @@ class UiManager {
     await e.ClosePromise?.Promise;
     e.ClosePromise = undefined;
     if (Log_1.Log.CheckInfo()) {
-      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]关闭界面成功", ["界面名称", a.Name], ["ViewId", e.GetViewId()]);
+      Log_1.Log.Info("UiCore", 16, "[CloseViewAsync]关闭界面成功", ["界面名称", r.Name], ["ViewId", e.GetViewId()]);
     }
     if (e.Info?.IsFullScreen === true) {
       cpp_1.FKuroPerfSightHelper.EndExtTag(`UiViewInFullScreen[${e.Info.Name}]`);
@@ -199,8 +199,8 @@ class UiManager {
     }
     return true;
   }
-  static CloseAndOpenView(i, a, e = undefined, r) {
-    UiManager.CloseAndOpenViewAsync(i, a, e).then(() => {
+  static CloseAndOpenView(i, a, e = undefined, r, n = true) {
+    UiManager.CloseAndOpenViewAsync(i, a, e, n).then(() => {
       r?.(true);
     }, e => {
       if (e instanceof Error) {
@@ -213,19 +213,24 @@ class UiManager {
       r?.(false);
     });
   }
-  static async CloseAndOpenViewAsync(e, i, a) {
-    var r;
+  static async CloseAndOpenViewAsync(e, i, a, r = true) {
     var n;
+    var o;
     if (UiConfig_1.UiConfig.TryGetViewInfo(i).Type !== UiLayerType_1.ELayerType.Normal) {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("UiCore", 16, "[CloseAndOpenViewAsync]非栈容器的界面不允许使用该接口");
       }
       return false;
-    } else if (r = UiManager.GCr(e)) {
-      n = !!a && a?.IsMultipleView;
-      if (UiManager.iVe(i, n, a)) {
-        (n = UiManager.BCr(i, a)).OpenParam = a;
-        await UiManager.bCr.get(UiLayerType_1.ELayerType.Normal).CloseAndOpenNewAsync(r, n);
+    } else if (n = UiManager.GCr(e)) {
+      o = !!a && a?.IsMultipleView;
+      if (UiManager.iVe(i, o, a)) {
+        (o = UiManager.BCr(i, a)).OpenParam = a;
+        a = UiManager.bCr.get(UiLayerType_1.ELayerType.Normal);
+        if (r) {
+          r = o.GetViewId() - 1;
+          EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.CloseAndOpenRedirectToCs, e, i, r);
+        }
+        await a.CloseAndOpenNewAsync(n, o);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("UiCore", 16, "[CloseAndOpenView]流程执行成功", ["closeViewName", e], ["openViewName", i]);
         }
@@ -377,15 +382,16 @@ class UiManager {
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OpenViewRedirectToTs, UiManager.CsNotifyOpenTsView);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseViewRedirectToTs, UiManager.CsNotifyCloseTsView);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.HideViewRedirectToTs, UiManager.CsNotifyHideTsView);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToTs, UiManager.u0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsViewOnCreateAsync, UiManager.c0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsBeforeStartAsync, UiManager.d0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeHideAsync, UiManager.m0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingStartSequenceAsync, UiManager.f0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingCloseSequenceAsync, UiManager.g0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeShowAsyncImplementImplement, UiManager.C0m);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsOpenView, this.p0m);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.PreOpenViewAsyncRedirectToTs, UiManager.sEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsViewOnCreateAsync, UiManager.aEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsBeforeStartAsync, UiManager.hEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeHideAsync, UiManager.lEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingStartSequenceAsync, UiManager._Em);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnPlayingCloseSequenceAsync, UiManager.uEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsNotifyTsOnBeforeShowAsyncImplementImplement, UiManager.cEm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestTsOpenView, this.dEm);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.ResetToViewRedirectToTs, this.CsNotifyResetToView);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CloseAndOpenRedirectToTs, this.CloseAndOpenRedirectToTs);
   }
   static ResetToBattleView(e) {
     if (Log_1.Log.CheckInfo()) {
@@ -824,11 +830,19 @@ UiManager.NCr = new Map();
 UiManager.CsNotifyOpenTsView = e => {
   UiManager.pF_(e, undefined, undefined, undefined, false);
 };
-UiManager.u0m = e => {
+UiManager.sEm = e => {
   UiManager.PreOpenViewAsync(e, false);
 };
-UiManager.CsNotifyCloseTsView = e => {
-  UiManager.CloseView(e, undefined, false);
+UiManager.CsNotifyCloseTsView = (e, i, a) => {
+  if (a) {
+    if (a = _a.GetView(i)) {
+      _a.CloseViewImplementAsync(a, false);
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("UiCore", 16, "[CsNotifyCloseTsView]关闭界面失败, 界面不存在", ["viewId", i]);
+    }
+  } else {
+    UiManager.CloseView(e, undefined, false);
+  }
 };
 UiManager.CsNotifyHideTsView = (e, i) => {
   i = _a.GetView(i);
@@ -839,49 +853,52 @@ UiManager.CsNotifyHideTsView = (e, i) => {
 UiManager.CsNotifyResetToView = e => {
   UiManager.NormalResetToView(e, undefined, false);
 };
-UiManager.c0m = (e, i) => {
+UiManager.CloseAndOpenRedirectToTs = (e, i) => {
+  UiManager.CloseAndOpenView(e, i, undefined, undefined, false);
+};
+UiManager.aEm = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnCreateAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnCreateAsyncPromise.SetResult();
   }
 };
-UiManager.d0m = (e, i) => {
+UiManager.hEm = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeStartAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeStartAsyncPromise.SetResult();
   }
 };
-UiManager.m0m = (e, i) => {
+UiManager.lEm = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeHideAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeHideAsyncPromise.SetResult();
   }
 };
-UiManager.f0m = (e, i) => {
+UiManager._Em = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnPlayingStartSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnPlayingStartSequenceAsyncPromise.SetResult();
   }
 };
-UiManager.g0m = (e, i) => {
+UiManager.uEm = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnPlayingCloseSequenceAsyncPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnPlayingCloseSequenceAsyncPromise.SetResult();
   }
 };
-UiManager.C0m = (e, i) => {
+UiManager.cEm = (e, i) => {
   i = _a.GetView(i);
   if (i && i.CsUiLife) {
     i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise ||= new CustomPromise_1.CustomPromise();
     i.CsUiLife.OnBeforeShowAsyncImplementImplementPromise.SetResult();
   }
 };
-UiManager.p0m = (e, i, a) => {
+UiManager.dEm = (e, i, a) => {
   _a.pF_(e, undefined, undefined, undefined, true, i, a);
 };
 UiManager.FCr = () => {

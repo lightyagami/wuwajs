@@ -15,11 +15,11 @@ class TsAnimNotifyStateChangeSlot extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyBegin(t, e, s) {
     t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t.GetEntityNoBlueprint()?.GetComponent(227)?.SetSubMeshAttach(this.ComponentName, this.SwitchToSlotName, this.SlotTransform), true);
+    return t instanceof TsBaseCharacter_1.default && (t.GetEntityNoBlueprint()?.GetComponent(235)?.SetSubMeshAttach(this.ComponentName, this.SwitchToSlotName, this.SlotTransform), true);
   }
   K2_NotifyEnd(t, e) {
     t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && (t.GetEntityNoBlueprint()?.GetComponent(227)?.ResetSubMeshAttach(this.ComponentName), true);
+    return t instanceof TsBaseCharacter_1.default && (t.GetEntityNoBlueprint()?.GetComponent(235)?.ResetSubMeshAttach(this.ComponentName), true);
   }
   GetNotifyName() {
     return "切换组件到指定插槽";

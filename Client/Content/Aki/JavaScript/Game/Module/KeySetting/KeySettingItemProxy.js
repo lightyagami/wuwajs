@@ -123,12 +123,12 @@ class KeySettingItemProxy {
         s = this.uPi.CombinationAxisBinding;
         e = this.uPi.ActionBinding;
         h = this.uPi.AxisBinding;
-        e?.GetKeyNameList(e = []);
-        h?.GetKeyNameList(h = []);
+        e?.GetKeyNameListByBindingType(e = [], this.uPi.BindingType);
+        h?.GetKeyNameListByBindingType(h = [], this.uPi.BindingType);
         n = new Map();
-        r?.GetKeyMap(n);
+        r?.GetKeyMapByBindingType(n, this.uPi.BindingType);
         r = new Map();
-        s?.GetKeyMap(r);
+        s?.GetKeyMap(r, this.uPi.BindingType);
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("InputSettings", 10, "刷新按键设置项时，按键名称为空", ["ActionOrAxisName", this.uPi.GetActionOrAxisName()], ["IsActionOrAxis", this.uPi.IsActionOrAxis], ["ActionBindingKeys", e], ["AxisBindingKeys", h], ["combinationActionBindingKeyMap", n], ["combinationAxisBindingKeyMap", n]);
         }

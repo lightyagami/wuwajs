@@ -78,65 +78,67 @@ class MapExploreToolController extends UiControllerBase_1.UiControllerBase {
   static IAi(e, o) {
     ModelManager_1.ModelManager.MapExploreToolModel.SetCharExploreSkillBusy(false);
     if (!o) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(211)?.ModifyCdTime([e.SkillId], 0, -1);
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId)?.Entity?.GetComponent(218)?.ModifyCdTime([e.SkillId], 0, -1);
     }
   }
   static EAi(e) {
-    var o;
-    var r;
-    var a;
     if (ModelManager_1.ModelManager.MapExploreToolModel.GetCharExploreSkillBusy()) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 使用过快，当前仍在请求使用探索工具中", ["UsingInfo", e]);
       }
       return false;
-    } else if (UiManager_1.UiManager.GetViewByName("WorldMapView") !== undefined) {
+    }
+    if (UiManager_1.UiManager.GetViewByName("WorldMapView") !== undefined) {
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Phantom", 63, "[MapExploreTool] 地图界面中", ["UsingInfo", e]);
       }
       return false;
-    } else if (ControllerHolder_1.ControllerHolder.FormationDataController.GlobalIsInFight) {
+    }
+    if (ControllerHolder_1.ControllerHolder.FormationDataController.GlobalIsInFight) {
       this.RAi(e, "ExploreFighting");
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("Phantom", 63, "[MapExploreTool] 战斗状态中", ["UsingInfo", e]);
       }
       return false;
-    } else {
-      a = (r = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId))?.Entity?.GetComponent(3);
-      o = r?.Entity?.GetComponent(179);
-      if (r && a && o) {
-        if (a.IsAutonomousProxy) {
-          if (o.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
-            this.RAi(e, "ExploreStateError");
-            if (Log_1.Log.CheckInfo()) {
-              Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非贴地使用", ["UsingInfo", e]);
-            }
-            return false;
-          } else {
-            r = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
-            if ((a = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(r))?.InstType !== Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance || a?.InstSubType !== 13) {
-              this.RAi(e, "ExplorePositionError");
-              if (Log_1.Log.CheckInfo()) {
-                Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非大世界使用", ["UsingInfo", e]);
-              }
-              return false;
-            } else {
-              return e.PhantomSkillId !== 1010 || this.UAi(e);
-            }
-          }
-        } else {
-          this.RAi(e, "OnylHostUse");
-          if (Log_1.Log.CheckInfo()) {
-            Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非主控使用", ["UsingInfo", e]);
-          }
-          return false;
-        }
-      } else {
+    }
+    var o = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.CharId);
+    var r = o?.Entity?.GetComponent(3);
+    var a = o?.Entity?.GetComponent(184);
+    if (!o || !r || !a) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 使用者异常", ["UsingInfo", e]);
+      }
+      return false;
+    }
+    if (!r.IsAutonomousProxy) {
+      this.RAi(e, "OnylHostUse");
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非主控使用", ["UsingInfo", e]);
+      }
+      return false;
+    }
+    r = o?.Entity?.GetComponent(242);
+    r = r?.IsOnVehicle && r?.VehicleType === "Motorcycle";
+    if (a.PositionState !== CharacterUnifiedStateTypes_1.ECharPositionState.Ground) {
+      a = o?.Entity?.GetComponent(215);
+      if (!r || !a?.HasTag(-433207812)) {
+        this.RAi(e, "ExploreStateError");
         if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 使用者异常", ["UsingInfo", e]);
+          Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非贴地使用", ["UsingInfo", e]);
         }
         return false;
       }
+    }
+    o = ModelManager_1.ModelManager.CreatureModel.GetInstanceId();
+    r = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(o);
+    if (r?.InstType !== Protocol_1.Aki.Protocol.i4s.Proto_BigWorldInstance || r?.InstSubType !== 13) {
+      this.RAi(e, "ExplorePositionError");
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("Phantom", 39, "[MapExploreTool] 非大世界使用", ["UsingInfo", e]);
+      }
+      return false;
+    } else {
+      return e.PhantomSkillId !== 1010 || this.UAi(e);
     }
   }
   static UAi(e) {

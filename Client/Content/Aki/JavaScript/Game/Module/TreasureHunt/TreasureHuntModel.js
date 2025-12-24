@@ -59,7 +59,7 @@ class TreasureHuntModel extends ModelBase_1.ModelBase {
     this.pHl ||= new Map();
     if (!this.pHl.has(e)) {
       t = (o = EntitySystem_1.EntitySystem.Get(e))?.GetComponent(0)?.GetLocation();
-      o = o?.GetComponent(164);
+      o = o?.GetComponent(169);
       if (t && o) {
         (n = Vector_1.Vector.Create(0, 0, 0)).FromUeVector(t);
         t = o.ShowRange;

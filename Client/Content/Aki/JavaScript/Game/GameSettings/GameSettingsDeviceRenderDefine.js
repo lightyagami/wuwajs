@@ -3,11 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.WHOLE_SHADOW_CACHE_DELAY_TIME = exports.mainPlayerRealShadow = exports.maxDecalShadowDistanceWithGameGraphQualityMobile = exports.maxDecalShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowDistanceWithGameGraphQualityMobile = exports.maxRoleShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowNumWithGameGraphQualityMobile = exports.maxRoleShadowNumWithGameGraphQualityPc = exports.HD_SCREEN_HEIGHT = exports.HD_SCREEN_WIDTH = exports.PERFORMENCELIMIT_SEQ_TAIL = exports.frameRateListAndroidForRedMagic = exports.frameRateListAndroid = exports.frameRateListIos = exports.frameRateListPc = undefined;
+exports.WHOLE_SHADOW_CACHE_DELAY_TIME = exports.mainPlayerRealShadow = exports.maxDecalShadowDistanceWithGameGraphQualityMobile = exports.maxDecalShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowDistanceWithGameGraphQualityMobile = exports.maxRoleShadowDistanceWithGameGraphQualityPc = exports.maxRoleShadowNumWithGameGraphQualityMobile = exports.maxRoleShadowNumWithGameGraphQualityPc = exports.HD_SCREEN_HEIGHT = exports.HD_SCREEN_WIDTH = exports.PERFORMENCELIMIT_SEQ_TAIL = exports.frameRateListAndroidForRedMagicHigh = exports.frameRateListAndroidForRedMagicLow = exports.frameRateListAndroid = exports.frameRateListIos = exports.frameRateListPc = undefined;
 exports.frameRateListPc = [30, 45, 60, 120];
 exports.frameRateListIos = [30, 60, 120];
 exports.frameRateListAndroid = [24, 30, 40, 60];
-exports.frameRateListAndroidForRedMagic = [30, 60, 90];
+exports.frameRateListAndroidForRedMagicLow = [30, 60, 90];
+exports.frameRateListAndroidForRedMagicHigh = [30, 60, 120];
 exports.PERFORMENCELIMIT_SEQ_TAIL = "_Seq";
 exports.HD_SCREEN_WIDTH = 2000;
 exports.HD_SCREEN_HEIGHT = 1100;

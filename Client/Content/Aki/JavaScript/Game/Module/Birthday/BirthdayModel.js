@@ -4,12 +4,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BirthdayModel = undefined;
+const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const BirthDayByYear_1 = require("../../../Core/Define/ConfigQuery/BirthDayByYear");
 const RoleBirthdayAll_1 = require("../../../Core/Define/ConfigQuery/RoleBirthdayAll");
 const ModelBase_1 = require("../../../Core/Framework/ModelBase");
+const EventCSharpBridge_1 = require("../../Common/Event/EventCSharpBridge");
+const EventDefine_1 = require("../../Common/Event/EventDefine");
 const TimeUtil_1 = require("../../Common/TimeUtil");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const BirthdayController_1 = require("./BirthdayController");
+const DEFAULT_YEAR = 2025;
+const TWO_THOUSAND = 2000;
 class BirthdayModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);
@@ -53,6 +58,7 @@ class BirthdayModel extends ModelBase_1.ModelBase {
   }
   UpdateBirthdayInfo(e) {
     this.PI1 = e.WS1;
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncBirthdayResetState, this.PI1);
     if (e.WS1) {
       for (const r of e.fUs) {
         this.xI1.set(r.$S1, r.RUs);
@@ -74,19 +80,19 @@ class BirthdayModel extends ModelBase_1.ModelBase {
       var i;
       var a = e.RoleId;
       var o = t.RoleId;
-      var s = this.IsRoleSelected(a);
+      var n = this.IsRoleSelected(a);
       var h = this.IsRoleSelected(o);
-      if (s || h) {
-        if (s) {
+      if (n || h) {
+        if (n) {
           return 1;
         } else {
           return -1;
         }
       } else {
         h = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(a);
-        s = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(o);
+        n = ModelManager_1.ModelManager.RoleModel.GetRoleInstanceById(o);
         r = !h && e.Priority !== 0;
-        i = !s && t.Priority !== 0;
+        i = !n && t.Priority !== 0;
         if (r && i) {
           return t.Priority - e.Priority;
         } else if (r || i) {
@@ -95,17 +101,17 @@ class BirthdayModel extends ModelBase_1.ModelBase {
           } else {
             return -1;
           }
-        } else if (h && s) {
-          if ((t = h.GetFavorData().GetFavorLevel()) !== (e = s.GetFavorData().GetFavorLevel())) {
+        } else if (h && n) {
+          if ((t = h.GetFavorData().GetFavorLevel()) !== (e = n.GetFavorData().GetFavorLevel())) {
             return e - t;
-          } else if ((r = h.GetFavorData().GetFavorExp()) !== (i = s.GetFavorData().GetFavorExp())) {
+          } else if ((r = h.GetFavorData().GetFavorExp()) !== (i = n.GetFavorData().GetFavorExp())) {
             return i - r;
           } else {
             e = h.GetRoleCreateTime();
-            return s.GetRoleCreateTime() - e;
+            return n.GetRoleCreateTime() - e;
           }
-        } else if (h || s) {
-          if (s) {
+        } else if (h || n) {
+          if (n) {
             return 1;
           } else {
             return -1;
@@ -124,6 +130,7 @@ class BirthdayModel extends ModelBase_1.ModelBase {
   }
   ResetBirthday() {
     this.PI1 = true;
+    EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncBirthdayResetState, this.PI1);
     if (this.IsDuringBirthday()) {
       BirthdayController_1.BirthdayController.TryOpenBirthdayView();
     }
@@ -159,6 +166,36 @@ class BirthdayModel extends ModelBase_1.ModelBase {
   }
   SetSelectedRole(e, t) {
     this.xI1.set(t, e);
+  }
+  GetLetterViewResource(e) {
+    if (e === DEFAULT_YEAR) {
+      return "";
+    } else {
+      return "UiView_BirthdayLetter" + e % TWO_THOUSAND;
+    }
+  }
+  GetRoleSelectViewResource(e) {
+    if (e === DEFAULT_YEAR) {
+      return "";
+    } else {
+      return "UiView_BirthdayRole" + e % TWO_THOUSAND;
+    }
+  }
+  GetSelectConfirmViewResource(e) {
+    if (e === DEFAULT_YEAR) {
+      return "";
+    } else {
+      return "UiView_BirthdayConfirm" + e % TWO_THOUSAND;
+    }
+  }
+  GetLetterViewBgm(e) {
+    return CommonParamById_1.configCommonParamById.GetStringConfig("BirthdayLetterBGM20" + e % TWO_THOUSAND) ?? "";
+  }
+  GetLetterExitConfirmId(e) {
+    return CommonParamById_1.configCommonParamById.GetIntConfig("BirthdayLetterExitConfirmId20" + e % TWO_THOUSAND) ?? 302;
+  }
+  GetPlayTimeOffset() {
+    return CommonParamById_1.configCommonParamById.GetFloatConfig("BirthdayTextPlayTimeOffset") ?? 0;
   }
 }
 exports.BirthdayModel = BirthdayModel;

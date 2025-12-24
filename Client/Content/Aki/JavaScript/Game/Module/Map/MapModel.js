@@ -53,8 +53,9 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcc = [];
     this.Tj1 = new Set();
     this.of1 = new Map();
-    this.ZWd = undefined;
+    this.rQd = undefined;
     this.LastHighLevelAreaInner = undefined;
+    this.ttg = undefined;
     this.yW1 = new Map();
     this.SW1 = new TrimLru_1.TrimLru(3);
   }
@@ -82,7 +83,10 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Qcl = new Map();
     this.UnlockMapBlockIds = [];
     this.of1 = new Map();
-    this.ZWd = new Map();
+    this.rQd = new Map();
+    this.ttg = new Map();
+    this.ttg.set(1, new Set());
+    this.ttg.set(2, new Set());
     this.InitTeleportMarkQueryCache();
     return true;
   }
@@ -105,7 +109,8 @@ class MapModel extends ModelBase_1.ModelBase {
     this.Wcl.clear();
     this.Qcl.clear();
     this.of1.clear();
-    this.ZWd.clear();
+    this.rQd.clear();
+    this.ttg.clear();
     this.EDi = undefined;
     this.LDi = undefined;
     this.Nhl = undefined;
@@ -114,7 +119,8 @@ class MapModel extends ModelBase_1.ModelBase {
     this.SSl = undefined;
     this.Kpc = undefined;
     this.CacheEnrichmentAreaWorldMapCircle = undefined;
-    return !(this.CacheEnrichmentAreaEntityId = 0);
+    this.CacheEnrichmentAreaEntityId = 0;
+    return !(this.ttg = undefined);
   }
   GetUnlockedTeleportMap() {
     return this.LDi;
@@ -286,12 +292,12 @@ class MapModel extends ModelBase_1.ModelBase {
     this.PDi.clear();
     var e = this.EDi.get(12);
     var r = this.EDi.get(7);
-    var t = this.eLm();
+    var t = this.Dff();
     this.EDi?.clear();
     this.TDi?.clear();
     this.Vlh(12, e);
     this.Vlh(7, r);
-    this.tLm(t);
+    this.Uff(t);
   }
   Vlh(e, r) {
     if (r) {
@@ -301,7 +307,7 @@ class MapModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  tLm(e) {
+  Uff(e) {
     for (var [r, t] of e) {
       this.EDi?.set(r, t);
       t.forEach(e => {
@@ -309,7 +315,7 @@ class MapModel extends ModelBase_1.ModelBase {
       });
     }
   }
-  eLm() {
+  Dff() {
     var e = new Map();
     var r = this.EDi?.get(36);
     if (r) {
@@ -1095,23 +1101,40 @@ class MapModel extends ModelBase_1.ModelBase {
     };
   }
   GetEntityIdToMarkType(e) {
-    return this.ZWd?.get(e);
+    return this.rQd?.get(e);
   }
   AddEntityIdToMarkType(e, r) {
-    this.ZWd?.set(e, r);
+    this.rQd?.set(e, r);
   }
   RemoveEntityIdToMarkType(e) {
-    this.ZWd?.delete(e);
+    this.rQd?.delete(e);
   }
   UpdateHonamiScanMarkInfo(e, r) {
     this.HonamiScanMarkInfo.set(e, r);
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnHonamiScanMarkInfoUpdate, e);
   }
   GetHonamiScanMarkInfo(e) {
-    return this.HonamiScanMarkInfo.get(e) ?? Protocol_1.Aki.Protocol.htm.Proto_MarkDisable;
+    return this.HonamiScanMarkInfo.get(e) ?? Protocol_1.Aki.Protocol.Tom.Proto_MarkDisable;
   }
   ClearHonamiScanMarkInfo() {
     this.HonamiScanMarkInfo.clear();
+  }
+  UpdateExtraUiMarkTypeVisible(e, r, t) {
+    if (t) {
+      this.ttg?.get(e)?.add(r);
+    } else {
+      this.ttg?.get(e)?.delete(r);
+    }
+  }
+  HasExtraUiMarkType(e) {
+    e = this.ttg?.get(e);
+    return !!e && e.size > 0;
+  }
+  IsExtraUiMarkTypeVisible(e, r) {
+    return this.ttg?.get(e)?.has(r) ?? false;
+  }
+  ClearExtraUiMarkType(e) {
+    this.ttg?.get(e)?.clear();
   }
 }
 exports.MapModel = MapModel;

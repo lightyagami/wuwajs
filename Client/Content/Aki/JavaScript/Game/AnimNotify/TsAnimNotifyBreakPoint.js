@@ -9,7 +9,7 @@ class TsAnimNotifyBreakPoint extends UE.KuroAnimNotify {
   Constructor() {}
   K2_Notify(e, r) {
     var e = e.GetOwner();
-    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(62))) {
+    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(65))) {
       e.AnimBreakPoint();
     }
     return true;

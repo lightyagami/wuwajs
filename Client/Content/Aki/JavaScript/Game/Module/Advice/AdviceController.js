@@ -149,7 +149,7 @@ class AdviceController extends ControllerBase_1.ControllerBase {
   }
   static s9e() {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (e?.Valid && e.Entity.GetComponent(209).HasTag(1996802261)) {
+    if (e?.Valid && e.Entity.GetComponent(215).HasTag(1996802261)) {
       ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("BattleCannotOpenAdvice");
       return true;
     }
@@ -160,7 +160,7 @@ class AdviceController extends ControllerBase_1.ControllerBase {
     if (r.GetComponent(0).GetAdviceInfo().GetAdviceData().GetAdviceMotionId() > 0) {
       ModelManager_1.ModelManager.AdviceModel.GetAdviceMotionActor(e).PlayMotion(e);
     }
-    r.GetComponent(147)?.DoInteract();
+    r.GetComponent(152)?.DoInteract();
   }
   static RequestCreateAdvice(e, r, t, o) {
     const n = new Protocol_1.Aki.Protocol.NXn();

@@ -41,6 +41,7 @@ class CameraConfig {
     this.IsResetDefaultConfig = false;
     this.IsUniqueFade = false;
     this.CameraArmLocationSocketName = FNameUtil_1.FNameUtil.EMPTY;
+    this.CameraArmLocationSocketOverrideType = 0;
     this.Type = t.Type;
     this.Tag = t.Tag.TagName === "None" ? undefined : t.Tag;
     this.PcValid = t.PC生效;
@@ -79,10 +80,13 @@ class CameraConfig {
     this.CurveClimbConfig = FightCameraLogicComponent_1.FightCameraLogicComponent.TMapToCurveMap(t.攀爬镜头曲线配置);
     this.SidestepConfig = FightCameraLogicComponent_1.FightCameraLogicComponent.TMapToMap(t.移动自动镜头);
     this.CurveSidestepConfig = FightCameraLogicComponent_1.FightCameraLogicComponent.TMapToCurveMap(t.移动自动镜头曲线配置);
+    this.VehicleConfig = FightCameraLogicComponent_1.FightCameraLogicComponent.TMapToMap(t.载具镜头);
+    this.VehicleCurveConfig = FightCameraLogicComponent_1.FightCameraLogicComponent.TMapToCurveMap(t.载具镜头曲线配置);
     this.IsOpenMainLoop = t.是否开启主镜头缓入缓出;
     this.IsResetDefaultConfig = t.是否重置默认配置;
     this.IsUniqueFade = t.是否独立过渡时间;
     this.CameraArmLocationSocketName = t.主控角色骨骼;
+    this.CameraArmLocationSocketOverrideType = t.主控角色骨骼覆盖方式;
   }
 }
 exports.CameraConfig = CameraConfig;
@@ -224,10 +228,10 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
     this.JJs = t => {
       this.SelfCharacterEntity = t;
     };
-    this.mDn = t => {
+    this.CQm = t => {
       this.FloatCharacterEntity = t;
     };
-    this.dDn = () => {
+    this.pQm = () => {
       this.FloatCharacterEntity = undefined;
     };
     this.Kle = false;
@@ -265,7 +269,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         Log_1.Log.Debug("Camera", 57, "CharacterChange", ["old", this.Ole?.Id], ["new", t?.Id]);
       }
       if (this.Ole?.Valid) {
-        var i = this.Ole.Entity.GetComponent(209);
+        var i = this.Ole.Entity.GetComponent(215);
         if (i?.Valid) {
           for (var [, s] of this.Ple) {
             i.RemoveTagAddOrRemoveListener(s.Tag.TagId, this.OXa);
@@ -273,7 +277,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         }
       }
       if (t?.Valid) {
-        var h = t.Entity.GetComponent(209);
+        var h = t.Entity.GetComponent(215);
         if (h?.Valid) {
           for (var [, e] of this.Ple) {
             h.AddTagAddOrRemoveListener(e.Tag.TagId, this.OXa);
@@ -293,7 +297,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         Log_1.Log.Debug("Camera", 57, "FloatCharacterChange", ["old", this.cDn?.Id], ["new", t?.Id]);
       }
       if (this.cDn?.Valid) {
-        var i = this.cDn.Entity.GetComponent(209);
+        var i = this.cDn.Entity.GetComponent(215);
         if (i?.Valid) {
           for (var [, s] of this.Ltc) {
             i.RemoveTagAddOrRemoveListener(s.Tag.TagId, this.Rtc);
@@ -301,7 +305,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         }
       }
       if (t?.Valid) {
-        var h = t.Entity.GetComponent(209);
+        var h = t.Entity.GetComponent(215);
         if (h?.Valid) {
           for (var [, e] of this.Ltc) {
             h.AddTagAddOrRemoveListener(e.Tag.TagId, this.Rtc);
@@ -320,7 +324,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
       }
     } else {
       if (this.Hle?.Valid) {
-        var h = this.Hle.GetComponent(209);
+        var h = this.Hle.GetComponent(215);
         if (h?.Valid) {
           for (var [, e] of this.xle) {
             h.RemoveTagAddOrRemoveListener(e.Tag.TagId, this.Wle);
@@ -328,7 +332,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         }
       }
       if (t?.Valid) {
-        var o = t.GetComponent(209);
+        var o = t.GetComponent(215);
         if (o?.Valid) {
           for (var [, a] of this.xle) {
             o.AddTagAddOrRemoveListener(a.Tag.TagId, this.Wle);
@@ -349,8 +353,8 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
   OnStart() {
     super.OnStart();
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CameraCharacterChanged, this.JJs);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
   }
   UpdateInternal(t) {
     this.UpdateConfig();
@@ -359,7 +363,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
     var s;
     var h = GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t);
     for (const e of ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities(true)) {
-      if (e?.Valid && (s = e.Entity.GetComponent(209))) {
+      if (e?.Valid && (s = e.Entity.GetComponent(215))) {
         if (i !== undefined && !s.HasTag(i)) {
           s.AddTag(i);
         }
@@ -379,7 +383,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
       });
     }
     for (const t of this.AdjustCameraEntityHandleSet) {
-      const s = t?.Entity?.GetComponent(209);
+      const s = t?.Entity?.GetComponent(215);
       if (s) {
         Object.values(IAction_1.EAdjustPlayerCamera).forEach(t => {
           s.RemoveTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t));
@@ -392,7 +396,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
   }
   DisableHookConfigByType(t) {
     for (const s of this.AdjustCameraEntityHandleSet) {
-      var i = s?.Entity?.GetComponent(209);
+      var i = s?.Entity?.GetComponent(215);
       if (i) {
         i.RemoveTag(GameplayTagUtils_1.GameplayTagUtils.GetTagIdByName(t));
         i.RemoveTag(noAimGameplayTag);
@@ -471,7 +475,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         (t = new DtCameraConfig(i)).SetToConfigs(this.Ple, this.xle, this.Ltc, this.e1e);
         this.Gle.set(i, t);
         if (this.Ole?.Valid) {
-          var s = this.Ole.Entity.GetComponent(209);
+          var s = this.Ole.Entity.GetComponent(215);
           if (s?.Valid) {
             for (const n of t.SubValidKeys) {
               s.AddTagAddOrRemoveListener(n, this.OXa);
@@ -479,7 +483,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
           }
         }
         if (this.Hle?.Valid) {
-          var h = this.Hle.GetComponent(209);
+          var h = this.Hle.GetComponent(215);
           if (h?.Valid) {
             for (const g of t.FocusValidKeys) {
               h.AddTagAddOrRemoveListener(g, this.Wle);
@@ -487,7 +491,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
           }
         }
         if (this.FloatCharacterEntity?.Valid) {
-          var e = this.cDn.Entity.GetComponent(209);
+          var e = this.cDn.Entity.GetComponent(215);
           if (e?.Valid) {
             for (const C of t.AccompanyValidKeys) {
               e.AddTagAddOrRemoveListener(C, this.Rtc);
@@ -541,7 +545,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
         --e.ReferenceCount;
         if (e.ReferenceCount === 0) {
           if (this.Ole?.Valid) {
-            var o = this.Ole.Entity.GetComponent(209);
+            var o = this.Ole.Entity.GetComponent(215);
             if (o?.Valid) {
               for (const n of e.SubValidKeys) {
                 o.RemoveTagAddOrRemoveListener(n, this.OXa);
@@ -549,7 +553,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
             }
           }
           if (this.Hle?.Valid) {
-            var a = this.Hle.GetComponent(209);
+            var a = this.Hle.GetComponent(215);
             if (a?.Valid) {
               for (const g of e.FocusValidKeys) {
                 a.RemoveTagAddOrRemoveListener(g, this.Wle);
@@ -557,7 +561,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
             }
           }
           if (this.cDn?.Valid) {
-            var r = this.cDn.Entity.GetComponent(209);
+            var r = this.cDn.Entity.GetComponent(215);
             if (r?.Valid) {
               for (const C of e.AccompanyValidKeys) {
                 r.RemoveTagAddOrRemoveListener(C, this.Rtc);
@@ -778,7 +782,7 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
       this.Camera.CameraDialogueController.ResetDefaultConfig();
       this.Camera.CameraClimbController.ResetDefaultConfig();
     }
-    this.Camera.SetConfigs(t.DefaultConfig, t.DefaultCurveConfig, t.Tag?.TagName ?? "None", t.CameraArmLocationSocketName, false);
+    this.Camera.SetConfigs(t.DefaultConfig, t.DefaultCurveConfig, t.VehicleConfig, t.VehicleCurveConfig, t.Tag?.TagName ?? "None", t.CameraArmLocationSocketName, t.CameraArmLocationSocketOverrideType, false);
     this.Camera.CameraFocusController.SetConfigs(t.FocusConfig, t.CurveFocusConfig);
     this.Camera.CameraInputController.SetConfigs(t.InputConfig, t.CurveInputConfig);
     this.Camera.CameraModifyController.SetConfigs(t.ModifyConfig, t.CurveModifyConfig);
@@ -834,8 +838,8 @@ class CameraConfigController extends CameraControllerBase_1.CameraControllerBase
   OnEnd() {
     super.OnEnd();
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CameraCharacterChanged, this.JJs);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerCreate, this.mDn);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerDestroy, this.dDn);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerPossessed, this.CQm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnPlayerFollowerUnPossessed, this.pQm);
   }
 }
 exports.CameraConfigController = CameraConfigController;

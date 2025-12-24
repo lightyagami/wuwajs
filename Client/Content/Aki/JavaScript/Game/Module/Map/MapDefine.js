@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addMarkFilterInTeamModeSet = exports.serverMarkIgnoreReadConfigSet = exports.Circle = exports.FishingPointMarkCreateInfo = exports.FishingShipMarkCreateInfo = exports.FISHING_SHIP_MARK_ID = exports.PlayerMarkCreateInfo = exports.QuestMarkCreateInfo = exports.DynamicMarkCreateInfo = exports.ConfigMarkCreateInfo = exports.MarkCreateInfo = exports.hasSingleComponentMarkType = exports.HONAMI_MAP_ID = exports.WORLD_MAP_MAX_SCALE = exports.DEFAULT_MAP_BORDER_ID = exports.DETAIL_TILE_SPACE = exports.HHA_BIG_WORLD_MAP_ID = exports.BIG_WORLD_MAP_ID = exports.MARK_WORLD_TO_HASH_SCALE = exports.MARK_HASH_XY_PANDING = exports.MARK_SCOPE = exports.UNIT = exports.MINI_MAP_UPDATE_GAP = exports.MINI_MAP_RADIUS = exports.DETAIL_TILE_REALSIZE = exports.worldToScreenScale = exports.world2UiUnit = exports.FLOAT_0_01 = undefined;
+exports.mapLoadDirectlyConfigMarkSet = exports.addMarkFilterInTeamModeSet = exports.serverMarkIgnoreReadConfigSet = exports.Circle = exports.FishingPointMarkCreateInfo = exports.FishingShipMarkCreateInfo = exports.FISHING_SHIP_MARK_ID = exports.PlayerMarkCreateInfo = exports.QuestMarkCreateInfo = exports.DynamicMarkCreateInfo = exports.ConfigMarkCreateInfo = exports.MarkCreateInfo = exports.canDisableGameplayFinishMarkType = exports.hasSingleComponentMarkType = exports.HONAMI_MAP_ID = exports.WORLD_MAP_MAX_SCALE = exports.DEFAULT_MAP_BORDER_ID = exports.DETAIL_TILE_SPACE = exports.HHA_BIG_WORLD_MAP_ID = exports.BIG_WORLD_MAP_ID = exports.MARK_WORLD_TO_HASH_SCALE = exports.MARK_HASH_XY_PANDING = exports.MARK_SCOPE = exports.UNIT = exports.MINI_MAP_UPDATE_GAP = exports.MINI_MAP_RADIUS = exports.DETAIL_TILE_REALSIZE = exports.worldToScreenScale = exports.world2UiUnit = exports.FLOAT_0_01 = undefined;
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const Vector2D_1 = require("../../../Core/Utils/Math/Vector2D");
@@ -26,6 +26,7 @@ exports.DEFAULT_MAP_BORDER_ID = 1;
 exports.WORLD_MAP_MAX_SCALE = 2.5;
 exports.HONAMI_MAP_ID = 907;
 exports.hasSingleComponentMarkType = new Set([17, 12, 22]);
+exports.canDisableGameplayFinishMarkType = new Set([29]);
 class MarkCreateInfo {
   constructor(t) {
     this.CreateType = t;
@@ -102,7 +103,7 @@ class DynamicMarkCreateInfo extends MarkCreateInfo {
     this.CreateParams.AreaId = t;
   }
   get ServerMarkState() {
-    return this.CreateParams.ServerMarkState ?? Protocol_1.Aki.Protocol.htm.Proto_MarkNormal;
+    return this.CreateParams.ServerMarkState ?? Protocol_1.Aki.Protocol.Tom.Proto_MarkNormal;
   }
   set ServerMarkState(t) {
     this.CreateParams.ServerMarkState = t;
@@ -181,4 +182,5 @@ class Circle {
 }
 exports.Circle = Circle;
 exports.serverMarkIgnoreReadConfigSet = new Set([12, 9, 22, 23]);
-exports.addMarkFilterInTeamModeSet = new Set([Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TreasureBoxPoint, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_SoundBox, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HookLockSoundBox, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_CalmingWindBell]); //# sourceMappingURL=MapDefine.js.map
+exports.addMarkFilterInTeamModeSet = new Set([Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_TreasureBoxPoint, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_SoundBox, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_HookLockSoundBox, Protocol_1.Aki.Protocol.w5s.ENUMS.Proto_CalmingWindBell]);
+exports.mapLoadDirectlyConfigMarkSet = new Set([46]); //# sourceMappingURL=MapDefine.js.map

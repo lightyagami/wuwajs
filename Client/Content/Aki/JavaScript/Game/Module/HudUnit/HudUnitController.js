@@ -77,11 +77,11 @@ HudUnitController.OnInputControllerChange = (e, t) => {
 };
 HudUnitController.OnEnterVehicle = e => {
   if (e.IsRolePassenger(true) && ModelManager_1.ModelManager.TreasureHuntModel?.IsEnableCompassTrack(e.VehicleType)) {
-    _a.TryCreateHud(4);
+    _a.TryCreateHud(5);
   }
 };
 HudUnitController.OnLeaveVehicle = e => {
   if (e.IsRolePassenger(true) && ModelManager_1.ModelManager.TreasureHuntModel?.IsEnableCompassTrack(e.VehicleType)) {
-    _a.TryDestroyHud(4);
+    _a.TryDestroyHud(5);
   }
 }; //# sourceMappingURL=HudUnitController.js.map

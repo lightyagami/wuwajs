@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LevelGeneralModel = undefined;
+exports.LevelGeneralModel = exports.LEVLE_CONDITION_DEBUG_KEY = undefined;
 const ModelBase_1 = require("../../Core/Framework/ModelBase");
 const IUtil_1 = require("../../UniverseEditor/Interface/IUtil");
 const ModelManager_1 = require("../Manager/ModelManager");
@@ -11,6 +11,7 @@ const GuaranteeActionCenter_1 = require("./Guarantee/GuaranteeActionCenter");
 const LevelConditionCenter_1 = require("./LevelConditions/LevelConditionCenter");
 const LevelEventCenter_1 = require("./LevelEvents/LevelEventCenter");
 const LevelListenerCenter_1 = require("./LevelListeners/LevelListenerCenter");
+exports.LEVLE_CONDITION_DEBUG_KEY = "LevelCondition";
 class LevelGeneralModel extends ModelBase_1.ModelBase {
   constructor() {
     super(...arguments);

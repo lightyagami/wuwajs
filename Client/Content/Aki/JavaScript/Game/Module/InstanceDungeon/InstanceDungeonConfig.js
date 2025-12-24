@@ -17,6 +17,7 @@ const TowerDefencePhantomById_1 = require("../../../Core/Define/ConfigQuery/Towe
 const TowerDefenseConfigById_1 = require("../../../Core/Define/ConfigQuery/TowerDefenseConfigById");
 const TowerDefenseSettleById_1 = require("../../../Core/Define/ConfigQuery/TowerDefenseSettleById");
 const ConfigBase_1 = require("../../../Core/Framework/ConfigBase");
+const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiManager_1 = require("../../Ui/UiManager");
 class InstanceDungeonConfig extends ConfigBase_1.ConfigBase {
@@ -27,12 +28,14 @@ class InstanceDungeonConfig extends ConfigBase_1.ConfigBase {
     this.cec = () => {
       if (ModelManager_1.ModelManager.TowerModel.CheckInTower()) {
         return !this.uec();
+      } else if (ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower()) {
+        return !UiManager_1.UiManager.IsViewOpen("ShipTowerDescView");
       } else {
-        return !ModelManager_1.ModelManager.ShipTowerModel?.CheckInBattleShipTower() || !UiManager_1.UiManager.IsViewOpen("ShipTowerDescView");
+        return !ControllerHolder_1.ControllerHolder.LordGymController.IsInLordGymDungeon() || !this.uec();
       }
     };
     this.mec = () => this.cec();
-    this.uec = () => !!UiManager_1.UiManager.IsViewOpen("TeamRoleSelectView") || !!UiManager_1.UiManager.IsViewOpen("MultiTeamRoleSelectView");
+    this.uec = () => !!UiManager_1.UiManager.IsViewOpen("TeamRoleSelectView") || !!UiManager_1.UiManager.IsViewOpen("MultiTeamRoleSelectView") || !!UiManager_1.UiManager.IsViewOpen("QuickRoleSelectView");
   }
   OnInit() {
     this._ec.set("RoleRootView", this.cec);
@@ -152,6 +155,9 @@ class InstanceDungeonConfig extends ConfigBase_1.ConfigBase {
   }
   GetTowerDefensePhantomById(e) {
     return TowerDefencePhantomById_1.configTowerDefencePhantomById.GetConfig(e);
+  }
+  GetInstanceMapConfigId(e) {
+    return this.GetConfig(e)?.MapConfigId;
   }
 }
 exports.InstanceDungeonConfig = InstanceDungeonConfig;

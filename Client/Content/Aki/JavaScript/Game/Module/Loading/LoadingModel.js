@@ -37,7 +37,7 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.LoadingTexturePathOverride = undefined;
     this.Cla = undefined;
     this.gla = undefined;
-    this.svm = [new HonamiStoryLoadingChecker_1.HonamiStoryLoadingChecker()];
+    this.nwm = [new HonamiStoryLoadingChecker_1.HonamiStoryLoadingChecker()];
     this.BGc = undefined;
     this.Fu1 = undefined;
     this.etd = undefined;
@@ -124,12 +124,12 @@ class LoadingModel extends ModelBase_1.ModelBase {
     if (!(e <= 0)) {
       var t = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
       if (t) {
-        return this.xdm(e) || (e = t.InstSubType, (e = LoadingDefine_1.dungeonToLoadingViewMap.get(e)) && (i || !e.IgnoreExitLoading) && (!e.WorldSubType || e.WorldSubType === t.WorldDungeonSubType) ? e.View : undefined);
+        return this.mpm(e) || (e = t.InstSubType, (e = LoadingDefine_1.dungeonToLoadingViewMap.get(e)) && (i || !e.IgnoreExitLoading) && (!e.WorldSubType || e.WorldSubType === t.WorldDungeonSubType) ? e.View : undefined);
       }
     }
   }
-  xdm(e) {
-    for (const i of this.svm) {
+  mpm(e) {
+    for (const i of this.nwm) {
       if (i.CanHandle(e)) {
         return i.GetLoadingViewName(e);
       }
@@ -181,10 +181,10 @@ class LoadingModel extends ModelBase_1.ModelBase {
     this.etd = undefined;
   }
   SetSpecialCustomLoadingInfo(e) {
-    var e = e.ahm;
+    var e = e.Kum;
     if (e) {
       e = {
-        LoadingId: e.hhm
+        LoadingId: e.Xum
       };
       ModelManager_1.ModelManager.HonamiStoryModel.SetMainTaskLoadingData(e);
     }

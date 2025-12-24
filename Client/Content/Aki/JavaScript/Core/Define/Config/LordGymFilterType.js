@@ -16,6 +16,9 @@ class LordGymFilterType {
   get Name() {
     return this.name();
   }
+  get IsEnable() {
+    return this.isenable();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -39,6 +42,10 @@ class LordGymFilterType {
       GameUtils_1.GameUtils.InternalizedString(e);
     }
     return e;
+  }
+  isenable() {
+    var t = this.J7.__offset(this.z7, 8);
+    return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.LordGymFilterType = LordGymFilterType;

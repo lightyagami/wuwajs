@@ -17,25 +17,25 @@ class LevelConditionListenerCheckSceneItemDirection extends LevelListenerBase_1.
     this.Zge = (...e) => {
       this.Callback?.(LevelGeneralContextDefine_1.ClientEventContext.Create(EventDefine_1.EEventName.OnSceneItemRotateStopped, ...e));
     };
-    this.Dgm = undefined;
+    this.cMm = undefined;
     this.kHa = undefined;
   }
   OnListen(e, t, i) {
     if (e.Target.Type === "Target") {
       this.kHa = WaitEntityTask_1.WaitEntityTask.CreateWithPbDataId("LevelConditionListenerCheckSceneItemDirection", e.Target.EntityId, () => {
         this.kHa = undefined;
-        this.Dgm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandleByCheckTargetEntityConfig(e.Target, undefined, i)?.Entity;
-        this.kgm();
+        this.cMm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandleByCheckTargetEntityConfig(e.Target, undefined, i)?.Entity;
+        this.fMm();
       }, undefined, false, true);
     } else {
-      this.Dgm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandleByCheckTargetEntityConfig(e.Target, undefined, i)?.Entity;
-      this.kgm();
+      this.cMm = LevelGamePlayUtils_1.LevelGamePlayUtils.GetEntityHandleByCheckTargetEntityConfig(e.Target, undefined, i)?.Entity;
+      this.fMm();
     }
   }
-  kgm() {
-    if (this.Dgm?.Valid) {
-      if (!EventSystem_1.EventSystem.HasWithTarget(this.Dgm, EventDefine_1.EEventName.OnSceneItemRotateStopped, this.Zge)) {
-        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.Dgm, EventDefine_1.EEventName.OnSceneItemRotateStopped, this.Zge);
+  fMm() {
+    if (this.cMm?.Valid) {
+      if (!EventSystem_1.EventSystem.HasWithTarget(this.cMm, EventDefine_1.EEventName.OnSceneItemRotateStopped, this.Zge)) {
+        EventSystem_1.EventSystem.AddWithTargetUseHoldKey(this, this.cMm, EventDefine_1.EEventName.OnSceneItemRotateStopped, this.Zge);
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("LevelCondition", 39, "实体朝向条件监听失败: 实体无效");

@@ -14,6 +14,7 @@ const CombinationActionAll_1 = require("../../Core/Define/ConfigQuery/Combinatio
 const CombinationActionByActionName_1 = require("../../Core/Define/ConfigQuery/CombinationActionByActionName");
 const CombinationActionByActionType_1 = require("../../Core/Define/ConfigQuery/CombinationActionByActionType");
 const CombinationAxisAll_1 = require("../../Core/Define/ConfigQuery/CombinationAxisAll");
+const CombinationAxisByAxisName_1 = require("../../Core/Define/ConfigQuery/CombinationAxisByAxisName");
 const GamepadKeyById_1 = require("../../Core/Define/ConfigQuery/GamepadKeyById");
 const GamepadKeyByKeyName_1 = require("../../Core/Define/ConfigQuery/GamepadKeyByKeyName");
 const PcKeyAll_1 = require("../../Core/Define/ConfigQuery/PcKeyAll");
@@ -61,6 +62,9 @@ class InputSettingsConfig extends ConfigBase_1.ConfigBase {
   }
   GetAllCombinationAxisConfig() {
     return CombinationAxisAll_1.configCombinationAxisAll.GetConfigList();
+  }
+  GetCombinationAxisConfigByAxisName(e) {
+    return CombinationAxisByAxisName_1.configCombinationAxisByAxisName.GetConfig(e);
   }
   GetPcKeyConfig(e) {
     return PcKeyByKeyName_1.configPcKeyByKeyName.GetConfig(e);

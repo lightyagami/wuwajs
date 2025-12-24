@@ -13,6 +13,7 @@ const Info_1 = require("../../../Core/Common/Info");
 const LanguageSystem_1 = require("../../../Core/Common/LanguageSystem");
 const Log_1 = require("../../../Core/Common/Log");
 const Time_1 = require("../../../Core/Common/Time");
+const CommonDefine_1 = require("../../../Core/Define/CommonDefine");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const ResourceSystem_1 = require("../../../Core/Resource/ResourceSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
@@ -21,12 +22,14 @@ const IAction_1 = require("../../../UniverseEditor/Interface/IAction");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
 const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
+const GameSettingsDeviceRender_1 = require("../../GameSettings/GameSettingsDeviceRender");
 const GameSettingsManager_1 = require("../../GameSettings/GameSettingsManager");
 const GlobalData_1 = require("../../GlobalData");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
 const UiTickViewBase_1 = require("../../Ui/Base/UiTickViewBase");
+const UiTimeDilation_1 = require("../../Ui/Base/UiTimeDilation");
 const UiLayer_1 = require("../../Ui/UiLayer");
 const BlackScreenFadeController_1 = require("../BlackScreen/BlackScreenFadeController");
 const LevelLoadingController_1 = require("../LevelLoading/LevelLoadingController");
@@ -61,6 +64,11 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
     this.zCl = 0;
     this.b3c = IAction_1.EMovieBackgroundType.Black;
     this.fkl = new Set();
+    this.r1t = 0;
+    this.Mp4FadeOutTime = 0;
+    this.BlackBorderFadeOutTime = 0;
+    this.KIf = false;
+    this.XIf = 0;
     this.HNo = () => {
       ControllerHolder_1.ControllerHolder.FlowController.BackgroundFlow("UI点击跳过(VideoView)");
     };
@@ -109,7 +117,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Video", 38, "开始关闭VideoView", ["bRemain", i]);
       }
-      this.ubm(false);
+      this.L7m(false);
       if (this.$ul) {
         if (Log_1.Log.CheckInfo()) {
           Log_1.Log.Info("Video", 38, "MediaPlayer还在倒计时检查状态中,提前移除TimeTimer");
@@ -201,7 +209,7 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
       if (ModelManager_1.ModelManager.GameModeModel.NeedOpenBlackScreenWhenTeleportDungeon) {
         LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, undefined, 1, ModelManager_1.ModelManager.GameModeModel.Mp4FadeOutScreenColor === IAction_1.EMovieBackgroundType.White ? IAction_1.EFadeInScreenShowType.White : IAction_1.EFadeInScreenShowType.Black, false, false, undefined, true);
       }
-      this.ubm(true);
+      this.L7m(true);
       this.hgl = false;
       this.MUe = ResourceSystem_1.ResourceSystem.LoadAsync(t.CgFile, UE.MediaSource, i => {
         if (i) {
@@ -296,6 +304,8 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
         }
       }
       this.YNo();
+      this.r1t = UE.KismetMathLibrary.GetTotalMilliseconds(this.wNo.GetDuration());
+      this.XIf = this.xNo.GetWidth() / this.xNo.GetHeight();
     };
     this.YNo = () => {
       var i;
@@ -343,50 +353,71 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
   OnRegisterComponent() {
     this.ComponentRegisterInfos = [[0, UE.UIButtonComponent], [1, UE.UIButtonComponent], [2, UE.UIText], [3, UE.UIItem], [4, UE.UIButtonComponent]];
   }
+  async OnBeforeStartAsync() {
+    this.xNo = this.GetButton(0).GetOwner().GetComponentByClass(UE.UITexture.StaticClass());
+    if (this.xNo) {
+      var i = this.OpenParam;
+      this.Mp4FadeOutTime = (i?.Mp4FadeOutTime ?? 0) * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+      this.BlackBorderFadeOutTime = (i?.BlackBorderFadeOutTime ?? 0) * CommonDefine_1.MILLIONSECOND_PER_SECOND;
+      const e = new CustomPromise_1.CustomPromise();
+      if (i.ProgramSpecialConfig?.Type === IAction_1.EPlayMovieProgramSpecialConfigType.Mp4UiReplaceMaterial) {
+        ResourceSystem_1.ResourceSystem.LoadAsync(i.ProgramSpecialConfig.Mp4UiReplaceMaterial, UE.MaterialInterface, i => {
+          if (i) {
+            this.xNo.SetCustomUIMaterial(i);
+          }
+          e.SetResult();
+        }, 102, this.MemoryTag);
+      } else {
+        e.SetResult();
+      }
+      if (this.Mp4FadeOutTime > 0 || this.BlackBorderFadeOutTime > 0) {
+        await ControllerHolder_1.ControllerHolder.PlotController.CreateAspectTransformView();
+      }
+      await e.Promise;
+    } else if (Log_1.Log.CheckError()) {
+      Log_1.Log.Error("Video", 38, "获取CgTexture异常！！");
+    }
+  }
   OnStart() {
     this.GetButton(1).RootUIComp.SetUIActive(false);
     this.deo = new PlotSkipComponent_1.PlotSkipComponent(this.GetButton(1), this.HNo, undefined, this);
     this.deo.AddEventListener();
     this.deo.EnableSkipButton(false);
-    this.xNo = this.GetButton(0).GetOwner().GetComponentByClass(UE.UITexture.StaticClass());
-    if (this.xNo) {
-      var e = this.xNo.GetTexture();
-      this.wNo = e?.GetMediaPlayer();
-      if (!this.wNo) {
-        if (Log_1.Log.CheckError()) {
-          Log_1.Log.Error("Video", 38, "获取MediaPlayer异常！！");
-        }
+    var i = this.xNo.GetTexture();
+    this.wNo = i?.GetMediaPlayer();
+    if (!this.wNo) {
+      if (Log_1.Log.CheckError()) {
+        Log_1.Log.Error("Video", 38, "获取MediaPlayer异常！！");
       }
-      this.wNo.OnEndReached.Add(this.KNo);
-      this.wNo.OnMediaOpened.Add(this.UVu);
-      this.wNo.OnMediaOpenFailed.Add(this.QNo);
-      this.GetText(2).SetUIActive(false);
-      this.b3c = undefined;
-      if (ModelManager_1.ModelManager.GameModeModel.Mp4FadeInScreenColor) {
-        this.b3c = ModelManager_1.ModelManager.GameModeModel.Mp4FadeInScreenColor;
-      } else {
-        this.b3c = this.OpenParam?.BackgroundColor?.FadeInBackgroundType ?? IAction_1.EMovieBackgroundType.Black;
-      }
-      let i = undefined;
-      i = this.b3c === IAction_1.EMovieBackgroundType.White ? new UE.LinearColor(1, 1, 1, 1) : (IAction_1.EMovieBackgroundType.Black, new UE.LinearColor(0, 0, 0, 1));
-      e.ClearColor = i;
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Video", 26, "改变CG界面底色", ["color", this.b3c]);
-      }
-      e = UiLayer_1.UiLayer.UiRootItem.GetWidth() / UiLayer_1.UiLayer.UiRootItem.GetHeight();
-      if (ModelManager_1.ModelManager.PlotModel.LastPlotAspect !== PlotModel_1.INVALID_NUM && e > 1) {
-        this.zCl = ModelManager_1.ModelManager.PlotModel.LastPlotAspect;
-        if (this.zCl < 2.3) {
-          this.zCl = e;
-        }
-        this.ZCl(this.zCl);
-      }
-      this.sgl = CommonParamById_1.configCommonParamById.GetIntConfig("VideoViewLerpFullTime") ?? 4000;
-      this.agl = CommonParamById_1.configCommonParamById.GetIntConfig("VideoViewLerpWaitTime") ?? 1000;
-      this.fkl.clear();
-    } else if (Log_1.Log.CheckError()) {
-      Log_1.Log.Error("Video", 38, "获取CgTexture异常！！");
     }
+    this.wNo.OnEndReached.Add(this.KNo);
+    this.wNo.OnMediaOpened.Add(this.UVu);
+    this.wNo.OnMediaOpenFailed.Add(this.QNo);
+    this.GetText(2).SetUIActive(false);
+    this.b3c = undefined;
+    if (ModelManager_1.ModelManager.GameModeModel.Mp4FadeInScreenColor) {
+      this.b3c = ModelManager_1.ModelManager.GameModeModel.Mp4FadeInScreenColor;
+    } else {
+      this.b3c = this.OpenParam?.BackgroundColor?.FadeInBackgroundType ?? IAction_1.EMovieBackgroundType.Black;
+    }
+    let e = undefined;
+    e = this.b3c === IAction_1.EMovieBackgroundType.White ? new UE.LinearColor(1, 1, 1, 1) : (IAction_1.EMovieBackgroundType.Black, new UE.LinearColor(0, 0, 0, 1));
+    i.ClearColor = e;
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Video", 26, "改变CG界面底色", ["color", this.b3c]);
+    }
+    i = UiLayer_1.UiLayer.UiRootItem.GetWidth() / UiLayer_1.UiLayer.UiRootItem.GetHeight();
+    if (ModelManager_1.ModelManager.PlotModel.LastPlotAspect !== PlotModel_1.INVALID_NUM && i > 1) {
+      this.zCl = ModelManager_1.ModelManager.PlotModel.LastPlotAspect;
+      if (this.zCl < 2.3) {
+        this.zCl = i;
+      }
+      this.ZCl(this.zCl);
+    }
+    this.sgl = CommonParamById_1.configCommonParamById.GetIntConfig("VideoViewLerpFullTime") ?? 4000;
+    this.agl = CommonParamById_1.configCommonParamById.GetIntConfig("VideoViewLerpWaitTime") ?? 1000;
+    this.fkl.clear();
+    this.KIf = false;
   }
   ZCl(i) {
     var e;
@@ -464,12 +495,26 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
   }
   OnBeforeDestroy() {
     if (!this.Pbn) {
-      this.ubm(false);
+      this.L7m(false);
     }
     this.bra();
     (0, this.OpenParam?.VideoCloseCb)?.();
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Video", 16, "VideoView callback done");
+    }
+  }
+  async OnPlayingCloseSequenceAsync() {
+    if (!(this.BlackBorderFadeOutTime <= 0) && this.KIf) {
+      const i = new CustomPromise_1.CustomPromise();
+      ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView.ManualBlendOut(this.BlackBorderFadeOutTime, this.XIf, () => {
+        i.SetResult();
+      });
+      await i.Promise;
+    }
+  }
+  OnAfterDestroy() {
+    if (this.KIf) {
+      UiTimeDilation_1.UiTimeDilation.DeleteWaitSetTimeDilationTag("VideoView.TriggerBlendOut");
     }
   }
   OnAddEventListener() {
@@ -574,11 +619,31 @@ class VideoView extends UiTickViewBase_1.UiTickViewBase {
     }
     if (this.hgl && (this.lgl += i, this.lgl > this.agl)) {
       e = MathUtils_1.MathUtils.GetRangePct(0, this.sgl - this.agl, this.lgl - this.agl);
-      i = this.zCl + (this.YCl - this.zCl) * e;
-      this.ZCl(i);
+      e = this.zCl + (this.YCl - this.zCl) * e;
+      this.ZCl(e);
+    }
+    VideoLauncher_1.VideoLauncher.TickFunc?.(i);
+    if (this.r1t > 0 && this.Mp4FadeOutTime > 0 && (this.r1t -= i, this.r1t <= this.Mp4FadeOutTime)) {
+      this.YIf();
+      this.GetRootItem().SetAlpha(MathUtils_1.MathUtils.GetRangePct(0, this.Mp4FadeOutTime, this.r1t));
     }
   }
-  ubm(i) {
+  YIf() {
+    if (!this.KIf) {
+      if (Log_1.Log.CheckDebug()) {
+        Log_1.Log.Debug("Video", 26, "VideoView TriggerBlendOut");
+      }
+      this.KIf = true;
+      ModelManager_1.ModelManager.PlotModel.PlotAspectTransformView.SetAspectRatio(this.XIf);
+      GameSettingsDeviceRender_1.GameSettingsDeviceRender.CancelAllPerformanceLimit();
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.VideoTriggerBlendOut, this.ONo);
+      this.L7m(false);
+      LevelLoadingController_1.LevelLoadingController.CloseLoading(0, () => {
+        UiTimeDilation_1.UiTimeDilation.AddWaitSetTimeDilationTag("VideoView.TriggerBlendOut");
+      }, 0);
+    }
+  }
+  L7m(i) {
     var e = !!GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.RayTracing) > 0;
     if (i) {
       if (e) {

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.MenuBaseConfig = undefined;
 const Log_1 = require("../../../Core/Common/Log");
 const AxisRevertByRevertType_1 = require("../../../Core/Define/ConfigQuery/AxisRevertByRevertType");
+const KeyExclusiveTypeById_1 = require("../../../Core/Define/ConfigQuery/KeyExclusiveTypeById");
 const KeySettingByTypeIdAndInputControllerType_1 = require("../../../Core/Define/ConfigQuery/KeySettingByTypeIdAndInputControllerType");
 const KeySettingByTypeIdAndInputControllerTypeExclusive_1 = require("../../../Core/Define/ConfigQuery/KeySettingByTypeIdAndInputControllerTypeExclusive");
 const KeyTypeAll_1 = require("../../../Core/Define/ConfigQuery/KeyTypeAll");
@@ -57,6 +58,9 @@ class MenuBaseConfig extends ConfigBase_1.ConfigBase {
   }
   GetExclusiveKeySettingConfigByTypeIdAndInputControllerType(e, n, r) {
     return KeySettingByTypeIdAndInputControllerTypeExclusive_1.configKeySettingByTypeIdAndInputControllerTypeExclusive.GetConfigList(e, n, r);
+  }
+  GetExclusiveTypeConfigById(e) {
+    return KeyExclusiveTypeById_1.configKeyExclusiveTypeById.GetConfig(e);
   }
 }
 exports.MenuBaseConfig = MenuBaseConfig;

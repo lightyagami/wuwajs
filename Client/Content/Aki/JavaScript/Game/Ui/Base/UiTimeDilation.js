@@ -231,32 +231,26 @@ class UiTimeDilation {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("UiTimeDilation", 10, "添加等待设置时停的tag", ["Tag", i]);
       }
-      if (UiTimeDilation.ajs) {
-        if (Log_1.Log.CheckInfo()) {
-          Log_1.Log.Info("UiTimeDilation", 10, "目前存在界面正在时停中,缓存并且临时恢复", ["Tag", i]);
-        }
-        UiTimeDilation.cjs(UiTimeDilation.ajs);
-        UiTimeDilation.mjs({
-          ViewId: UiTimeDilation.ajs.ViewId,
-          TimeDilation: 1,
-          DebugName: UiTimeDilation.ajs.DebugName,
-          Reason: UiTimeDilation.ajs.Reason
-        });
+    }
+    if (UiTimeDilation.ajs) {
+      if (Log_1.Log.CheckInfo()) {
+        Log_1.Log.Info("UiTimeDilation", 10, "目前存在界面正在时停中,缓存并且临时恢复", ["Tag", i]);
       }
+      UiTimeDilation.cjs(UiTimeDilation.ajs);
+      UiTimeDilation.mjs({
+        ViewId: UiTimeDilation.ajs.ViewId,
+        TimeDilation: 1,
+        DebugName: UiTimeDilation.ajs.DebugName,
+        Reason: UiTimeDilation.ajs.Reason
+      });
     }
   }
   static DeleteWaitSetTimeDilationTag(i) {
-    if (UiTimeDilation.mF_) {
-      UiTimeDilation.mF_.WaitSetTimeDilationTagSet.delete(i);
-      if (Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiTimeDilation", 10, "指定Plot层级,删除等待设置时停的tag", ["Tag", i]);
-      }
-    } else {
-      if (UiTimeDilation.vur.delete(i) && Log_1.Log.CheckInfo()) {
-        Log_1.Log.Info("UiTimeDilation", 10, "删除等待设置时停的tag", ["Tag", i]);
-      }
-      UiTimeDilation.Our();
+    let e = false;
+    if ((e = (UiTimeDilation.mF_ ? UiTimeDilation.mF_.WaitSetTimeDilationTagSet : UiTimeDilation.vur).delete(i)) && Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("UiTimeDilation", 10, "删除等待设置时停的tag", ["Tag", i]);
     }
+    UiTimeDilation.Our();
   }
   static Gur() {
     return UiTimeDilation.vur.size > 0;

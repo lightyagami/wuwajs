@@ -19,6 +19,9 @@ class CommonTouchUiEdit {
   get PanelResId() {
     return this.panelresid();
   }
+  get SubPanelIndex() {
+    return this.subpanelindex();
+  }
   get ItemIndex() {
     return this.itemindex();
   }
@@ -81,8 +84,16 @@ class CommonTouchUiEdit {
     }
     return e;
   }
-  itemindex() {
+  subpanelindex() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return -1;
+    }
+  }
+  itemindex() {
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -90,7 +101,7 @@ class CommonTouchUiEdit {
     }
   }
   name(t) {
-    var e = this.J7.__offset(this.z7, 12);
+    var e = this.J7.__offset(this.z7, 14);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);
@@ -98,14 +109,6 @@ class CommonTouchUiEdit {
     return e;
   }
   sourcesize() {
-    var t = this.J7.__offset(this.z7, 14);
-    if (t) {
-      return this.J7.readFloat32(this.z7 + t);
-    } else {
-      return 0;
-    }
-  }
-  sourcealpha() {
     var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.readFloat32(this.z7 + t);
@@ -113,7 +116,7 @@ class CommonTouchUiEdit {
       return 0;
     }
   }
-  sourceoffsetx() {
+  sourcealpha() {
     var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.readFloat32(this.z7 + t);
@@ -121,7 +124,7 @@ class CommonTouchUiEdit {
       return 0;
     }
   }
-  sourceoffsety() {
+  sourceoffsetx() {
     var t = this.J7.__offset(this.z7, 20);
     if (t) {
       return this.J7.readFloat32(this.z7 + t);
@@ -129,8 +132,16 @@ class CommonTouchUiEdit {
       return 0;
     }
   }
-  sourcehierarchyindex() {
+  sourceoffsety() {
     var t = this.J7.__offset(this.z7, 22);
+    if (t) {
+      return this.J7.readFloat32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  sourcehierarchyindex() {
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -138,15 +149,15 @@ class CommonTouchUiEdit {
     }
   }
   ischeckoverlap() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
   isdefaultselected() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 28);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   editable() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }

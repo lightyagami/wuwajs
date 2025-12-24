@@ -19,6 +19,12 @@ class Shield {
   get RefrenceAttribute() {
     return this.refrenceattribute();
   }
+  get AttributeType() {
+    return this.attributetype();
+  }
+  get FormationPropValueType() {
+    return this.formationpropvaluetype();
+  }
   get RefrenceTarget() {
     return this.refrencetarget();
   }
@@ -60,8 +66,24 @@ class Shield {
       return 0;
     }
   }
-  refrencetarget() {
+  attributetype() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  formationpropvaluetype() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  refrencetarget() {
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -72,7 +94,7 @@ class Shield {
     return this.attributerate(t);
   }
   attributerate(t) {
-    var i = this.J7.__offset(this.z7, 12);
+    var i = this.J7.__offset(this.z7, 16);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -80,7 +102,7 @@ class Shield {
     }
   }
   attributerateLength() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -88,7 +110,7 @@ class Shield {
     }
   }
   attributerateArray() {
-    var t = this.J7.__offset(this.z7, 12);
+    var t = this.J7.__offset(this.z7, 16);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -99,7 +121,7 @@ class Shield {
     return this.value(t);
   }
   value(t) {
-    var i = this.J7.__offset(this.z7, 14);
+    var i = this.J7.__offset(this.z7, 18);
     if (i) {
       return this.J7.readFloat32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -107,7 +129,7 @@ class Shield {
     }
   }
   valueLength() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -115,7 +137,7 @@ class Shield {
     }
   }
   valueArray() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 18);
     if (t) {
       return new Float32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {

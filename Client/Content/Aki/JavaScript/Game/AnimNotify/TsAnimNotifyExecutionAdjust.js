@@ -22,37 +22,39 @@ class TsAnimNotifyExecutionAdjust extends UE.KuroAnimNotify {
   K2_Notify(e, t) {
     e = e.GetOwner();
     if (e instanceof TsBaseCharacter_1.default) {
-      var o = e.CharacterActorComponent.Entity.GetComponent(52);
+      var o = e.CharacterActorComponent.Entity.GetComponent(53);
       if (o) {
         o = o.PendingCaughtList.get(this.CaughtId);
         if (o) {
           TsAnimNotifyExecutionAdjust.InitTrace();
-          var i;
           var r = e.CharacterActorComponent?.ActorLocationProxy;
-          var s = TsAnimNotifyExecutionAdjust.SphereTrace;
-          TraceElementCommon_1.TraceElementCommon.SetStartLocation(s, r);
-          TraceElementCommon_1.TraceElementCommon.SetEndLocation(s, r);
-          s.Radius = this.DetectionRadius;
-          var n = TraceElementCommon_1.TraceElementCommon.SphereTrace(s, PROFILE_KEY);
-          if (n) {
+          var i = TsAnimNotifyExecutionAdjust.SphereTrace;
+          TraceElementCommon_1.TraceElementCommon.SetStartLocation(i, r);
+          TraceElementCommon_1.TraceElementCommon.SetEndLocation(i, r);
+          i.Radius = this.DetectionRadius;
+          var s = TraceElementCommon_1.TraceElementCommon.SphereTrace(i, PROFILE_KEY);
+          if (s) {
             let t = false;
-            for (let e = 0; e < s.HitResult.GetHitCount(); e++) {
-              if (s.HitResult?.Components.Get(e).GetCollisionProfileName()?.toString().includes(AIRWALL_PORFILENAME)) {
+            var n;
+            var a = i.HitResult.ItemArray;
+            for (let e = 0; e < i.HitResult.GetHitCount(); e++) {
+              var c = a.Get(e);
+              if (UE.KuroCollisionLibrary.GetCollisionProfileName(i.HitResult?.Components.Get(e), c)?.toString().includes(AIRWALL_PORFILENAME)) {
                 t = true;
                 break;
               }
             }
-            if (t && (n = o[0].GetComponent(0))?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
-              n = Vector_1.Vector.Create(n?.GetInitLocation());
+            if (t && (s = o[0].GetComponent(0))?.GetEntityType() === Protocol_1.Aki.Protocol.kks.Proto_Monster) {
+              s = Vector_1.Vector.Create(s?.GetInitLocation());
               r = Vector_1.Vector.Create(r);
-              i = Vector_1.Vector.Create();
-              n.Subtraction(r, i);
-              i.Normalize();
-              i.Multiply(this.DetectionRadius, i);
-              n = Vector_1.Vector.Create(e.CharacterActorComponent?.ActorLocation).AdditionEqual(i);
-              e.CharacterActorComponent?.SetActorLocation(n.ToUeVector(), "ExecutionAdjustMove", false);
+              n = Vector_1.Vector.Create();
+              s.Subtraction(r, n);
+              n.Normalize();
+              n.Multiply(this.DetectionRadius, n);
+              s = Vector_1.Vector.Create(e.CharacterActorComponent?.ActorLocation).AdditionEqual(n);
+              e.CharacterActorComponent?.SetActorLocation(s.ToUeVector(), "ExecutionAdjustMove", false);
               r = o[0].GetComponent(3);
-              e = Vector_1.Vector.Create(r?.ActorLocation).AdditionEqual(i);
+              e = Vector_1.Vector.Create(r?.ActorLocation).AdditionEqual(n);
               o[0].GetComponent(3)?.SetActorLocation(e.ToUeVector(), "ExecutionAdjustMove", false);
             }
           }

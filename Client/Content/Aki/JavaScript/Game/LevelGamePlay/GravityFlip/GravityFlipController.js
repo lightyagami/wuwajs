@@ -26,7 +26,7 @@ class GravityFlipController extends UiControllerBase_1.UiControllerBase {
 }
 exports.GravityFlipController = GravityFlipController;
 (_a = GravityFlipController).PY_ = undefined;
-GravityFlipController.Ilt = e => {
+GravityFlipController.Ilt = () => {
   EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.TeleportComplete, _a.Ilt);
   _a.PY_?.(3);
 }; //# sourceMappingURL=GravityFlipController.js.map

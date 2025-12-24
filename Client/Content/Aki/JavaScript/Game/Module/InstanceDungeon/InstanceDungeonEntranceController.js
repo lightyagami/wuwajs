@@ -35,7 +35,6 @@ const ItemRewardController_1 = require("../ItemReward/ItemRewardController");
 const RewardItemData_1 = require("../ItemReward/RewardData/RewardItemData");
 const OnlineController_1 = require("../Online/OnlineController");
 const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
-const TeleportController_1 = require("../Teleport/TeleportController");
 const TowerDefenceController_1 = require("../TowerDefence/TowerDefenceController");
 const TowerController_1 = require("../TowerDetailUi/TowerController");
 const InstanceDungeonController_1 = require("./InstanceDungeonController");
@@ -306,12 +305,12 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
   static RestoreDungeonEntranceEntity() {
     var e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.EntranceEntityId;
     if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e))?.IsInit) {
-      e.Entity.GetComponent(84)?.Restore();
+      e.Entity.GetComponent(87)?.Restore();
     }
   }
   static RegisterDungeonEntranceRestoreCb(e) {
     var n = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.EntranceEntityId;
-    if (n && (n = ModelManager_1.ModelManager.CreatureModel.GetEntityById(n))?.IsInit && (n = n.Entity.GetComponent(84))) {
+    if (n && (n = ModelManager_1.ModelManager.CreatureModel.GetEntityById(n))?.IsInit && (n = n.Entity.GetComponent(87))) {
       n.RegisterRestoreCb(e);
     } else {
       e();
@@ -445,6 +444,9 @@ class InstanceDungeonEntranceController extends UiControllerBase_1.UiControllerB
       return false;
     }
     if (ModelManager_1.ModelManager.RoguelikeModel?.CheckInRoguelike()) {
+      return false;
+    }
+    if (ControllerHolder_1.ControllerHolder.LordGymController.IsInLordGymDungeon()) {
       return false;
     }
     var e = InstanceDungeonEntranceController.Ahi(false);
@@ -913,7 +915,7 @@ InstanceDungeonEntranceController.Ihi = o => {
               if (_) {
                 var i = Number(E);
                 for (const D of _) {
-                  var c = new RewardItemData_1.RewardItemData(D.L8n, D.m9n, undefined, i);
+                  var c = new RewardItemData_1.RewardItemData(D.L8n, D.m9n, D.b9n, i);
                   a.push(c);
                 }
               }
@@ -931,11 +933,11 @@ InstanceDungeonEntranceController.Ihi = o => {
             }
             let n = undefined;
             if (o.B9n > 1) {
-              switch (o.dsm) {
-                case Protocol_1.Aki.Protocol.msm.Proto_DoubleActivity:
+              switch (o.J1m) {
+                case Protocol_1.Aki.Protocol.Z1m.Proto_DoubleActivity:
                   n = ActivityDoubleRewardController_1.ActivityDoubleRewardController.GetDungeonUpActivityFullTip([1, 2]);
                   break;
-                case Protocol_1.Aki.Protocol.msm.Proto_FromRegress:
+                case Protocol_1.Aki.Protocol.Z1m.Proto_FromRegress:
                   if (u && ([d, g, s, M, C] = ModelManager_1.ModelManager.ActivityRegressModel.GetRegressDoubleDropTuple(u), d)) {
                     d = ConfigManager_1.ConfigManager.TextConfig.GetMultiText(C);
                     C = ConfigManager_1.ConfigManager.TextConfig.GetMultiText(M, g, s);
@@ -978,7 +980,7 @@ InstanceDungeonEntranceController.yhi = n => {
       default:
         e = -421801185;
     }
-    n = o.Entity.GetComponent(107);
+    n = o.Entity.GetComponent(112);
     if (n) {
       n.ChangeLockTag(e);
     }
@@ -1048,6 +1050,7 @@ InstanceDungeonEntranceController.OpenEditBattleView = () => {
   const e = ModelManager_1.ModelManager.InstanceDungeonEntranceModel.GetMatchingId();
   var n;
   var o;
+  var t;
   if (ModelManager_1.ModelManager.LoadingModel.IsLoading) {
     _a.HandleExitMatch = true;
   } else {
@@ -1056,7 +1059,15 @@ InstanceDungeonEntranceController.OpenEditBattleView = () => {
     if (n && o) {
       n = Vector_1.Vector.Create(n);
       o = Rotator_1.Rotator.Create(o);
-      (ControllerHolder_1.ControllerHolder.TeleportController.UseNewTeleport ? ControllerHolder_1.ControllerHolder.TeleportControllerNew.TeleportPlayer("InstanceDungeonEntranceController.OpenEditBattleView", n.ToUeVector(), o.ToUeRotator(), undefined, 0) : TeleportController_1.TeleportController.TeleportToPosition(n.ToUeVector(), o.ToUeRotator(), undefined, "InstanceDungeonEntranceController.OpenEditBattleView")).finally(() => {
+      if ((t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity?.Entity?.GetComponent(242)) && t.VehicleEntity?.Valid) {
+        t.VehicleEntity.GetComponent(246)?.TryLeaveAtOnce(t.Entity, 1, "InstanceDungeonEntranceController.OpenEditBattleView");
+      }
+      ControllerHolder_1.ControllerHolder.TeleportController.TeleportPlayer({
+        ClientReason: "InstanceDungeonEntranceController.OpenEditBattleView",
+        TargetPosition: n.ToUeVector(),
+        TargetRotation: o.ToUeRotator(),
+        TeleportMode: 0
+      }).finally(() => {
         ModelManager_1.ModelManager.EditBattleTeamModel.InstanceMultiEnter = true;
         EditBattleTeamController_1.EditBattleTeamController.PlayerOpenEditBattleTeamView(e, true);
         EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnEnterTeam);

@@ -36,6 +36,9 @@ class SkillTree {
   get SkillId() {
     return this.skillid();
   }
+  get SkillBranchIds() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.skillbranchidsLength(), this.skillbranchids, this);
+  }
   get PropertyNodeTitle() {
     return this.propertynodetitle();
   }
@@ -173,8 +176,35 @@ class SkillTree {
       return 0;
     }
   }
-  propertynodetitle(t) {
+  GetSkillbranchidsAt(t) {
+    return this.skillbranchids(t);
+  }
+  skillbranchids(t) {
     var i = this.J7.__offset(this.z7, 20);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  skillbranchidsLength() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  skillbranchidsArray() {
+    var t = this.J7.__offset(this.z7, 20);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  propertynodetitle(t) {
+    var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -182,7 +212,7 @@ class SkillTree {
     return i;
   }
   propertynodedescribe(t) {
-    var i = this.J7.__offset(this.z7, 22);
+    var i = this.J7.__offset(this.z7, 24);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -193,15 +223,15 @@ class SkillTree {
     return this.propertynodeparam(t);
   }
   propertynodeparam(t, i) {
-    var r = this.J7.__offset(this.z7, 24);
-    var r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + t * 4, i) : null;
-    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(r);
+    var s = this.J7.__offset(this.z7, 26);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return r;
+    return s;
   }
   propertynodeparamLength() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 26);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -209,7 +239,7 @@ class SkillTree {
     }
   }
   propertynodeicon(t) {
-    var i = this.J7.__offset(this.z7, 26);
+    var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -220,15 +250,15 @@ class SkillTree {
     return this.property(t);
   }
   property(t, i) {
-    var r = this.J7.__offset(this.z7, 28);
-    if (r) {
-      return (i || new ConfigPropValue_1.ConfigPropValue()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    var s = this.J7.__offset(this.z7, 30);
+    if (s) {
+      return (i || new ConfigPropValue_1.ConfigPropValue()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
       return null;
     }
   }
   propertyLength() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -239,15 +269,15 @@ class SkillTree {
     return this.consume(t);
   }
   consume(t, i) {
-    var r = this.J7.__offset(this.z7, 30);
-    if (r) {
-      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    var s = this.J7.__offset(this.z7, 32);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
       return null;
     }
   }
   consumeLength() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -255,7 +285,7 @@ class SkillTree {
     }
   }
   unlockcondition() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 34);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

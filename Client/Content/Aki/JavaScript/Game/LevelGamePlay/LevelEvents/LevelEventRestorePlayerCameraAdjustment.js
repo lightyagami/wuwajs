@@ -22,7 +22,7 @@ class LevelEventRestorePlayerCameraAdjustment extends LevelGeneralBase_1.LevelEv
     if (n && e?.ResetFocus) {
       t = e.ResetFocus.FadeInTime;
       o = ConfigCurveUtils_1.ConfigCurveUtils.CreateCurveByBaseCurve(e.ResetFocus.FadeInCurve);
-      n.GetEntityNoBlueprint().GetComponent(32).ResetPitch(t, o);
+      n.GetEntityNoBlueprint().GetComponent(33).ResetPitch(t, o);
     }
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Event", 38, "离开相机调整");

@@ -42,9 +42,9 @@ class KscEnv {
         this.KscWorld?.SetWorldAttr(1, this.P0d);
         this.P0d = undefined;
       }
-      if (this.NXd) {
-        this.KscWorld?.SetObstacleSegments(this.NXd);
-        this.NXd = undefined;
+      if (this.vYd) {
+        this.KscWorld?.SetObstacleSegments(this.vYd);
+        this.vYd = undefined;
       }
     }
   }
@@ -100,12 +100,12 @@ class KscEnv {
     KscEnv.P0d = s;
   }
   static CacheObstacleSegments(s) {
-    KscEnv.NXd = s;
+    KscEnv.vYd = s;
   }
 }
 (exports.KscEnv = KscEnv).Started = false;
 KscEnv.P0d = undefined;
-KscEnv.NXd = undefined;
+KscEnv.vYd = undefined;
 KscEnv.OAd = undefined;
 KscEnv.ljd = 0;
 KscEnv.BatchRemove = s => {

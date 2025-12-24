@@ -31,10 +31,11 @@ class ViewHotKeyHandle {
     this.Xya = undefined;
     this.Smr = undefined;
     this.gJa = undefined;
+    this.ULm = undefined;
     this.Yya = undefined;
     this.Jya = 0;
     this.OnInputAction = (i, t) => {
-      if (this.zya()) {
+      if (!!this.zya() && !this.ULm?.(i, t)) {
         if (t === 0) {
           this.Press();
         } else if (t === 1) {
@@ -62,6 +63,7 @@ class ViewHotKeyHandle {
     this.Xya = i.CloseViewCallback;
     this.Smr = i.IsAllowOpenViewByShortcutKey;
     this.gJa = i.IsAllowCloseViewByShortcutKey;
+    this.ULm = i.IsLockShortcutKey;
   }
   get ViewName() {
     return this.DefaultViewName;

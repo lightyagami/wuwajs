@@ -31,6 +31,24 @@ class PhantomBattleCardElement {
   get QuicklyBuildFilterIcon() {
     return this.quicklybuildfiltericon();
   }
+  get FieldActivateUi() {
+    return this.fieldactivateui();
+  }
+  get FieldActivateMaterial() {
+    return this.fieldactivatematerial();
+  }
+  get FieldElementNiagara() {
+    return this.fieldelementniagara();
+  }
+  get FieldActivateElementNiagara() {
+    return this.fieldactivateelementniagara();
+  }
+  get FieldCardElementInDeck() {
+    return this.fieldcardelementindeck();
+  }
+  get FieldAudio() {
+    return this.fieldaudio();
+  }
   __init(t, e) {
     this.z7 = t;
     this.J7 = e;
@@ -89,6 +107,54 @@ class PhantomBattleCardElement {
   }
   quicklybuildfiltericon(t) {
     var e = this.J7.__offset(this.z7, 16);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldactivateui(t) {
+    var e = this.J7.__offset(this.z7, 18);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldactivatematerial(t) {
+    var e = this.J7.__offset(this.z7, 20);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldelementniagara(t) {
+    var e = this.J7.__offset(this.z7, 22);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldactivateelementniagara(t) {
+    var e = this.J7.__offset(this.z7, 24);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldcardelementindeck(t) {
+    var e = this.J7.__offset(this.z7, 26);
+    var e = e ? this.J7.__string(this.z7 + e, t) : null;
+    if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(e);
+    }
+    return e;
+  }
+  fieldaudio(t) {
+    var e = this.J7.__offset(this.z7, 28);
     var e = e ? this.J7.__string(this.z7 + e, t) : null;
     if (typeof e == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(e);

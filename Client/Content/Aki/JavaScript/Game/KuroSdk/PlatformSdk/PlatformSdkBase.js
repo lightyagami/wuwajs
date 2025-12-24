@@ -15,6 +15,7 @@ const Time_1 = require("../../../Core/Common/Time");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const StringUtils_1 = require("../../../Core/Utils/StringUtils");
 const BaseConfigController_1 = require("../../../Launcher/BaseConfig/BaseConfigController");
+const LauncherSdk_1 = require("../../../Launcher/HotPatchKuroSdk/LauncherSdk");
 const Platform_1 = require("../../../Launcher/Platform/Platform");
 const EventDefine_1 = require("../../Common/Event/EventDefine");
 const EventSystem_1 = require("../../Common/Event/EventSystem");
@@ -99,7 +100,7 @@ class PlatformSdkBase {
       }, TIMEGAP);
     } else {
       ue_1.KuroSDKManager.Get().LogoutDelegate.Clear();
-      if (!ModelManager_1.ModelManager.LoginModel.HasBackToGameData()) {
+      if (!LauncherSdk_1.LauncherSdk.Get().CacheLoginData && !ModelManager_1.ModelManager.LoginModel.HasBackToGameData()) {
         this.SdkLogout();
       }
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkInitDone);
@@ -498,12 +499,14 @@ class PlatformSdkBase {
     ue_1.KuroSDKManager.Get().KickDelegate.Clear();
     ue_1.KuroSDKManager.Get().KickDelegate.Add(() => {
       this.SdkLogout();
+      LauncherSdk_1.LauncherSdk.Get().ClearCacheLoginData();
     });
   }
   KuroSdkLogoutBindFunction(e) {
     ue_1.KuroSDKManager.Get().LogoutDelegate.Clear();
     ue_1.KuroSDKManager.Get().LogoutDelegate.Add(() => {
       e();
+      LauncherSdk_1.LauncherSdk.Get().ClearCacheLoginData();
     });
   }
   BindSpecialEvent() {}

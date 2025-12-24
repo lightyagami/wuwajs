@@ -22,7 +22,7 @@ class TurningParams {
   }
   CalcTurningRate(t, e, i) {
     var r;
-    var n = t.Entity.GetComponent(181);
+    var n = t.Entity.GetComponent(186);
     this.EndAngle = n.MainAnimInstance.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_LOOK, this.TotalTime);
     this.StartAngle = n.MainAnimInstance.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_LOOK, 0);
     if (Log_1.Log.CheckInfo()) {
@@ -61,7 +61,7 @@ class TsAnimNotifyStateTurnAdd extends UE.KuroAnimNotifyState {
     TsAnimNotifyStateTurnAdd.Initialize();
     i = new TurningParams(i);
     TsAnimNotifyStateTurnAdd.CachedMap.set(t, i);
-    t = r.Entity.GetComponent(185);
+    t = r.Entity.GetComponent(190);
     if (t) {
       t.IsTurning = true;
     }
@@ -71,8 +71,9 @@ class TsAnimNotifyStateTurnAdd extends UE.KuroAnimNotifyState {
     var r;
     var n;
     var s;
+    var a;
     var t = t.GetOwner();
-    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent)?.Valid && !r.GetSequenceBinding() && !!r.IsMoveAutonomousProxy && !!(n = r.Entity.GetComponent(181))?.Valid && !!(t = TsAnimNotifyStateTurnAdd.CachedMap.get(t)) && !(t.IsInit || t.CalcTurningRate(r, this.CurrentTimeLength, i), !t.NeedTurn) && !(i = t.AddRate, n = n.MainAnimInstance.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_LOOK, 0), s = t.PreFrameAngle, TsAnimNotifyStateTurnAdd.TmpRotator.Yaw = i * (n - s), r.AddActorLocalRotation(TsAnimNotifyStateTurnAdd.TmpRotator, "TsAnimNotifyStateTurnAdd", false), t.PreFrameAngle = n, 0);
+    return t instanceof TsBaseCharacter_1.default && !!(r = t.CharacterActorComponent)?.Valid && !r.GetSequenceBinding() && !!r.IsMoveAutonomousProxy && !!(n = r.Entity.GetComponent(186))?.Valid && !!(t = TsAnimNotifyStateTurnAdd.CachedMap.get(t)) && !(t.IsInit || t.CalcTurningRate(r, this.CurrentTimeLength, i), !t.NeedTurn) && !(i = t.AddRate, n = n.MainAnimInstance.GetMainAnimsCurveValueWithDelta(CharacterNameDefines_1.CharacterNameDefines.ROOT_LOOK, 0), s = t.PreFrameAngle, (a = !!r.Entity.GetComponent(242)?.IsOnVehicle) && r.SetForbidSettingLocAndRot(false, 0), TsAnimNotifyStateTurnAdd.TmpRotator.Yaw = i * (n - s), r.AddActorLocalRotation(TsAnimNotifyStateTurnAdd.TmpRotator, "TsAnimNotifyStateTurnAdd", false), t.PreFrameAngle = n, a && r.SetForbidSettingLocAndRot(true, 0), 0);
   }
   K2_NotifyEnd(t, e) {
     t = t.GetOwner();
@@ -90,7 +91,7 @@ class TsAnimNotifyStateTurnAdd extends UE.KuroAnimNotifyState {
       return false;
     }
     TsAnimNotifyStateTurnAdd.CachedMap?.delete(t);
-    t = i.Entity.GetComponent(185);
+    t = i.Entity.GetComponent(190);
     if (t) {
       t.IsTurning = false;
     }

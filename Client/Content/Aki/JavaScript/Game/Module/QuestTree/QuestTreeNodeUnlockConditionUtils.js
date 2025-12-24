@@ -9,6 +9,9 @@ const PublicUtil_1 = require("../../Common/PublicUtil");
 const ConfigManager_1 = require("../../Manager/ConfigManager");
 const ControllerHolder_1 = require("../../Manager/ControllerHolder");
 const ModelManager_1 = require("../../Manager/ModelManager");
+const SkipTaskManager_1 = require("../SkipInterface/SkipTaskManager");
+const JUMP_TYPE_HELP = "HelpWindow";
+const JUMP_TYPE_GOTO = "OpenBoard";
 class QuestTreeNodeUnlockConditionFactory {
   constructor() {
     this.BDd = new Map();
@@ -20,10 +23,10 @@ class QuestTreeNodeUnlockConditionFactory {
     }
     return this.cj;
   }
-  Create(e) {
-    var t = this.BDd.get(e.Type);
-    if (t) {
-      return new t(e);
+  Create(e, t) {
+    var n = this.BDd.get(e.Type);
+    if (n) {
+      return new n(e, t);
     }
   }
   AU() {
@@ -40,12 +43,25 @@ class QuestTreeNodeUnlockConditionFactory {
 }
 (exports.QuestTreeNodeUnlockConditionFactory = QuestTreeNodeUnlockConditionFactory).cj = undefined;
 class QuestTreeNodeUnlockConditionBase {
-  constructor(e) {
+  constructor(e, t) {
     this.Condition = e;
-    this.HasGoto = false;
+    this.QuestId = t;
+    this.HasGotoByDefault = false;
     this.Type = undefined;
+    this.CustomConfig = undefined;
     this.DefaultGoto = () => {};
+    this.Goto = () => {
+      if (this.CustomConfig && this.CustomConfig.JumpType === JUMP_TYPE_GOTO) {
+        SkipTaskManager_1.SkipTaskManager.RunByConfigId(this.CustomConfig.ParamsId);
+      } else {
+        this.DefaultGoto();
+      }
+    };
     this.Type = e.Type;
+    this.CustomConfig = ConfigManager_1.ConfigManager.QuestTreeConfig.GetCustomGotoConfigByQuestIdAndType(t, this.Type);
+  }
+  get HasGoto() {
+    return this.CustomConfig?.JumpType === JUMP_TYPE_GOTO || this.HasGotoByDefault;
   }
   get DefaultText() {
     var e = ConfigManager_1.ConfigManager.QuestTreeConfig.GetNodeUnlockConditionDefaultConfigByType(this.Type);
@@ -55,7 +71,7 @@ class QuestTreeNodeUnlockConditionBase {
       return "";
     }
   }
-  get DefaultHelp() {
+  get DefaultHelpId() {
     var e = ConfigManager_1.ConfigManager.QuestTreeConfig.GetNodeUnlockConditionDefaultConfigByType(this.Type);
     if (e) {
       return e.HelpId;
@@ -63,7 +79,21 @@ class QuestTreeNodeUnlockConditionBase {
       return 0;
     }
   }
-  get DefaultTextParam() {
+  get Text() {
+    if (this.CustomConfig) {
+      return this.CustomConfig.CustomTextKey;
+    } else {
+      return this.DefaultText;
+    }
+  }
+  get HelpId() {
+    if (this.CustomConfig && this.CustomConfig.JumpType === JUMP_TYPE_HELP) {
+      return this.CustomConfig.ParamsId;
+    } else {
+      return this.DefaultHelpId;
+    }
+  }
+  get TextParam() {
     return [];
   }
 }
@@ -76,14 +106,14 @@ class QuestTreeNodeUnlockConditionExploreLevel extends QuestTreeNodeUnlockCondit
     var e = this.Condition;
     return ModelManager_1.ModelManager.FunctionModel.GetPlayerLevel() >= e.ExploreLevel;
   }
-  get DefaultTextParam() {
+  get TextParam() {
     return [this.Condition.ExploreLevel];
   }
 }
 class QuestTreeNodeUnlockConditionPreQuest extends QuestTreeNodeUnlockConditionBase {
   constructor() {
     super(...arguments);
-    this.HasGoto = true;
+    this.HasGotoByDefault = true;
     this.DefaultGoto = () => {
       var e = this.Condition.PreQuest;
       ControllerHolder_1.ControllerHolder.QuestTreeController.JumpToQuest(e);
@@ -93,7 +123,7 @@ class QuestTreeNodeUnlockConditionPreQuest extends QuestTreeNodeUnlockConditionB
     var e = this.Condition.PreQuest;
     return ModelManager_1.ModelManager.QuestNewModel.GetQuestState(e) === 3;
   }
-  get DefaultTextParam() {
+  get TextParam() {
     var e = this.Condition.PreQuest;
     var e = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(e);
     return [PublicUtil_1.PublicUtil.GetConfigTextByKey(e?.TidName ?? "")];
@@ -102,7 +132,7 @@ class QuestTreeNodeUnlockConditionPreQuest extends QuestTreeNodeUnlockConditionB
 class QuestTreeNodeUnlockConditionPreChildQuest extends QuestTreeNodeUnlockConditionBase {
   constructor() {
     super(...arguments);
-    this.HasGoto = true;
+    this.HasGotoByDefault = true;
     this.DefaultGoto = () => {
       var e = this.Condition.PreQuest;
       ControllerHolder_1.ControllerHolder.QuestTreeController.JumpToQuest(e);
@@ -114,14 +144,16 @@ class QuestTreeNodeUnlockConditionPreChildQuest extends QuestTreeNodeUnlockCondi
     var n = ModelManager_1.ModelManager.QuestNewModel.GetQuestState(t);
     return n === 3 || n === 2 && !!(n = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t)) && !!(t = n.Tree?.GetNode(e.PreChildQuest.ChildQuestId)) && t.IsSuccess;
   }
-  get DefaultTextParam() {
+  get TextParam() {
     var e = this.Condition;
     var t = e.PreChildQuest.QuestId;
+    var n = ModelManager_1.ModelManager.QuestNewModel.GetQuestConfig(t);
+    var n = PublicUtil_1.PublicUtil.GetConfigTextByKey(n?.TidName ?? "");
     var t = ModelManager_1.ModelManager.QuestNewModel.GetQuest(t);
-    if (t && (e = t.Tree?.GetNode(e.PreChildQuest.ChildQuestId))) {
-      return [ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.GetNodeTrackText(t.TreeId, e.NodeId)];
+    if (t && (e = t.Tree?.GetNode(e.PreChildQuest.ChildQuestId)) && (t = ControllerHolder_1.ControllerHolder.GeneralLogicTreeController.GetNodeTrackText(t.TreeId, e.NodeId))) {
+      return [t];
     } else {
-      return [];
+      return [n];
     }
   }
 }
@@ -142,7 +174,7 @@ class QuestTreeNodeUnlockConditionPreLevelPlay extends QuestTreeNodeUnlockCondit
     var e = this.Condition.PreLevelPlay;
     return ModelManager_1.ModelManager.LevelPlayModel.CheckLevelPlayState(e, ICondition_1.ELevelPlayState.Complete, "Eq");
   }
-  get DefaultTextParam() {
+  get TextParam() {
     var e = this.Condition.PreLevelPlay;
     var e = ModelManager_1.ModelManager.LevelPlayModel.GetLevelPlayInfo(e);
     if (e) {
@@ -167,7 +199,7 @@ class QuestTreeNodeUnlockConditionPreDungeon extends QuestTreeNodeUnlockConditio
     var e = this.Condition.Dungeon.DungeonId;
     return ModelManager_1.ModelManager.ExchangeRewardModel.IsFinishInstance(e);
   }
-  get DefaultTextParam() {
+  get TextParam() {
     var e = this.Condition.Dungeon.DungeonId;
     var e = ConfigManager_1.ConfigManager.InstanceDungeonConfig.GetConfig(e);
     if (e) {

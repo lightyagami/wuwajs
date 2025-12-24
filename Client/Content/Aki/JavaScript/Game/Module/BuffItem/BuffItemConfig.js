@@ -96,6 +96,14 @@ class BuffItemConfig extends ConfigBase_1.ConfigBase {
   GetBuffEquipItemByItemId(e) {
     return BuffEquipItemByItemId_1.configBuffEquipItemByItemId.GetConfigList(e) ?? [];
   }
+  GetBuffEquipItemCategory(e) {
+    e = this.GetBuffEquipItemByItemId(e);
+    if (e.length > 0) {
+      return e[0].WearPos;
+    } else {
+      return 0;
+    }
+  }
 }
 exports.BuffItemConfig = BuffItemConfig;
 //# sourceMappingURL=BuffItemConfig.js.map

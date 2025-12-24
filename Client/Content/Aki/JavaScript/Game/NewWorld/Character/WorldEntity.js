@@ -42,8 +42,12 @@ class WorldEntity extends Entity_1.Entity {
       if (n.IsLowFrequencyUpdateStrategy()) {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsStabilizeLowEntityGroupConfig;
       }
-      var i = t.GetComponent(132);
-      var l = t.GetComponent(279);
+      var i = t.GetComponent(137);
+      var l = t.GetComponent(298);
+      if (i && l) {
+        return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
+      }
+      l = t.GetComponent(338);
       if (i && l) {
         return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsMoveSceneItemEntityConfig;
       }
@@ -73,7 +77,7 @@ class WorldEntity extends Entity_1.Entity {
               return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
             }
           }
-          if (t.GetComponent(226)) {
+          if (t.GetComponent(234)) {
             return GameBudgetAllocatorConfigCreator_1.GameBudgetAllocatorConfigCreator.TsPlayerAlwaysTickConfig;
           }
         }
@@ -103,7 +107,7 @@ class WorldEntity extends Entity_1.Entity {
     var t = t.Components;
     var r = WorldEntityHelper_1.WorldEntityHelper.ComponentPriority;
     for (const a of t) {
-      if (WorldEntity.clm.has(a)) {
+      if (WorldEntity.Sdm.has(a)) {
         this.AddComponent(a, undefined);
       } else {
         let o = r.get(a);
@@ -121,7 +125,7 @@ class WorldEntity extends Entity_1.Entity {
           }
         }
         if (o === undefined) {
-          WorldEntity.clm.add(a);
+          WorldEntity.Sdm.add(a);
         }
         this.AddComponent(a, o);
       }
@@ -146,5 +150,5 @@ class WorldEntity extends Entity_1.Entity {
     return true;
   }
 }
-(exports.WorldEntity = WorldEntity).clm = new Set();
+(exports.WorldEntity = WorldEntity).Sdm = new Set();
 //# sourceMappingURL=WorldEntity.js.map

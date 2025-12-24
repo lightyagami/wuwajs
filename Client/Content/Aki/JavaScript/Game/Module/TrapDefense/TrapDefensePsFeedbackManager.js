@@ -38,7 +38,7 @@ class TrapDefensePsFeedbackManager {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnInputDistributeTagChanged, TrapDefensePsFeedbackManager.xMe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnCommonKeySettingKeyChange, this.n1d);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.RefreshTrapDefensePsFeedback, this.WLd);
-    ControllerHolder_1.ControllerHolder.InputDistributeController.BindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
+    ControllerHolder_1.ControllerHolder.InputDistributeController.UnBindAction(InputMappingsDefine_1.actionMappings.组合主键, this.RZe);
   }
   static s1d() {
     return ModelManager_1.ModelManager.InputDistributeModel.IsTagMatchAnyCurrentInputTag(InputDistributeDefine_1.inputDistributeTagDefine.FightInputRootTag);

@@ -273,14 +273,14 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     return !!this.$ha(t) && (t === 3 ? this.mEd(t) : this.c7t(t), true);
   }
   static async TryOpenTogetherPhotograph(t) {
-    return !!this.$ha(2) && (this.PhotoTargets = t.PhotographConfig?.PhotoTargets, this.thm = t.FadeInScreenWhenClose ?? false, ModelManager_1.ModelManager.PhotographModel.PlayerActionSortId = t.PhotographConfig?.PlayerPerform?.MontageId, this.ihm = t.PhotographConfig?.CameraParams?.CameraTransform, this.TogetherCameraFov = t.PhotographConfig?.CameraParams?.Fov, await this.c7t(2), true);
+    return !!this.$ha(2) && (this.PhotoTargets = t.PhotographConfig?.PhotoTargets, this.p_m = t.FadeInScreenWhenClose ?? false, ModelManager_1.ModelManager.PhotographModel.PlayerActionSortId = t.PhotographConfig?.PlayerPerform?.MontageId, this.v_m = t.PhotographConfig?.CameraParams?.CameraTransform, this.TogetherCameraFov = t.PhotographConfig?.CameraParams?.Fov, await this.c7t(2), true);
   }
   static $ha(t) {
     var e = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    return !!e?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在剧情中"), 1) : t !== 3 && !this.mKa() || (t !== 1 || UiManager_1.UiManager.IsViewOpen(UiModel_1.UiModel.MainViewName) ? UiManager_1.UiManager.IsViewOpen("PhotographView") ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:已经在拍照界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在声骸编队"), 1) : !e.Entity.GetComponent(181)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:实体状态机找不到"), 1) : (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:不在BattleView中"), 1)));
+    return !!e?.Valid && !(ModelManager_1.ModelManager.PlotModel.IsInPlot ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在剧情中"), 1) : t !== 3 && !this.mKa() || (t !== 1 || UiManager_1.UiManager.IsViewOpen(UiModel_1.UiModel.MainViewName) ? UiManager_1.UiManager.IsViewOpen("PhotographView") ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:已经在拍照界面"), 1) : ModelManager_1.ModelManager.SceneTeamModel.IsPhantomTeam ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在声骸编队"), 1) : !e.Entity.GetComponent(186)?.MainAnimInstance && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:实体状态机找不到"), 1) : (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:不在BattleView中"), 1)));
   }
   static mKa() {
-    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(209);
+    var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity.Entity.GetComponent(215);
     return !!t && !(t.HasTag(40422668) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在空中"), 1) : t.HasTag(855966206) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在水中"), 1) : t.HasTag(504239013) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在攀爬"), 1) : t.HasTag(1996802261) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在战斗中"), 1) : t.HasTag(-1371021686) ? (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在技能中"), 1) : t.HasTag(525255941) && (ControllerHolder_1.ControllerHolder.GenericPromptController.ShowPromptByCode("NotAllowOpenPhotograph"), Log_1.Log.CheckInfo() && Log_1.Log.Info("Photo", 45, "无法拍照:在驾驶载具"), 1));
   }
   static BMa(t, e, o) {
@@ -317,10 +317,10 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       var s = this.IWi.D_GetTransform();
       let t = undefined;
       if (this.CheckIfInTogetherCamera()) {
-        if (this.ihm) {
-          e = new UE.VectorDouble(this.ihm.CameraPos?.X ?? r.X, this.ihm.CameraPos?.Y ?? r.Y, this.ihm.CameraPos?.Z ?? r.Z);
-          (t = a.SpawnPhotographerStructure(e, new UE.Rotator(this.ihm.CameraRot?.Y ?? 0, this.ihm.CameraRot?.Z ?? 0, this.ihm.CameraRot?.X ?? 0).Quaternion(), s.GetScale3D(), s.GetLocation()))?.SetPlayerSourceLocation(e);
-          t?.SetCameraInitializeTransform(new UE.TransformDouble(new UE.Rotator(this.ihm.CameraRot?.Y ?? 0, this.ihm.CameraRot?.Z ?? 0, this.ihm.CameraRot?.X ?? 0).Quaternion(), new UE.VectorDouble(this.ihm.CameraPos?.X ?? r.X, this.ihm.CameraPos?.Y ?? r.Y, this.ihm.CameraPos?.Z ?? r.Z), s.GetScale3D()));
+        if (this.v_m) {
+          e = new UE.VectorDouble(this.v_m.CameraPos?.X ?? r.X, this.v_m.CameraPos?.Y ?? r.Y, this.v_m.CameraPos?.Z ?? r.Z);
+          (t = a.SpawnPhotographerStructure(e, new UE.Rotator(this.v_m.CameraRot?.Y ?? 0, this.v_m.CameraRot?.Z ?? 0, this.v_m.CameraRot?.X ?? 0).Quaternion(), s.GetScale3D(), s.GetLocation()))?.SetPlayerSourceLocation(e);
+          t?.SetCameraInitializeTransform(new UE.TransformDouble(new UE.Rotator(this.v_m.CameraRot?.Y ?? 0, this.v_m.CameraRot?.Z ?? 0, this.v_m.CameraRot?.X ?? 0).Quaternion(), new UE.VectorDouble(this.v_m.CameraPos?.X ?? r.X, this.v_m.CameraPos?.Y ?? r.Y, this.v_m.CameraPos?.Z ?? r.Z), s.GetScale3D()));
         } else {
           (t = a.SpawnPhotographerStructure(r, s.GetRotation(), s.GetScale3D(), s.GetLocation()))?.SetCameraInitializeTransform(s);
         }
@@ -338,7 +338,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       }
       if (this.CheckIfInFightPhotographCamera()) {
         this.DPd = false;
-        this.IMm = false;
+        this.mBm = false;
         t.SetCameraInitializeFov(i.Fov);
         this.SetTargetActorAndSkeletalMesh();
         this.InitFightPhotoTask();
@@ -395,7 +395,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   }
   static js1() {
     if (Global_1.Global.BaseCharacter) {
-      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(62)?.InterruptAutoMoving("打开拍照界面");
+      ModelManager_1.ModelManager.CreatureModel.GetEntityById(Global_1.Global.BaseCharacter.EntityId)?.Entity?.GetComponent(65)?.InterruptAutoMoving("打开拍照界面");
     }
   }
   static async OMa() {
@@ -512,16 +512,16 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       if (ModelManager_1.ModelManager.PlotModel.IsInPlot) {
         UiManager_1.UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName);
         this.CloseBlackScreen();
-        this.thm = false;
+        this.p_m = false;
       } else if (UiManager_1.UiManager.GetViewByName("ReviveView")) {
         this.CloseBlackScreen();
-        this.thm = false;
+        this.p_m = false;
       } else {
         UiManager_1.UiManager.NormalResetToView(UiModel_1.UiModel.MainViewName, () => {
-          if (this.thm) {
+          if (this.p_m) {
             LevelLoadingController_1.LevelLoadingController.OpenLoading(0, 3, undefined, 0);
             LevelLoadingController_1.LevelLoadingController.CloseLoading(11);
-            this.thm = false;
+            this.p_m = false;
             this.XTn = true;
           } else {
             this.CloseBlackScreen();
@@ -555,7 +555,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     this.SetIsLineTraceBlock(false);
     this.PhotoTargets = undefined;
     this.TogetherCameraFov = undefined;
-    this.ihm = undefined;
+    this.v_m = undefined;
   }
   static Dh1(t) {
     this.uWi?.Remove(t);
@@ -643,7 +643,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   static RWi(t, e) {
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
     if (o?.Valid && o.Entity?.Valid) {
-      o = o.Entity.GetComponent(209).ListenForTagAddOrRemove(t, e);
+      o = o.Entity.GetComponent(215).ListenForTagAddOrRemove(t, e);
       this.AWi.push(o);
     }
   }
@@ -743,7 +743,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
             t.PreLeaveSitDownAction();
             this.RWi(-2104691392, (t, e) => {
               if (!e) {
-                e = i.GetComponent(181).MainAnimInstance;
+                e = i.GetComponent(186).MainAnimInstance;
                 if (r) {
                   e.OnMontageEnded.Add(this.Kue);
                 }
@@ -751,7 +751,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
               }
             });
           } else {
-            t = i.GetComponent(181).MainAnimInstance;
+            t = i.GetComponent(186).MainAnimInstance;
             if (r) {
               t.OnMontageEnded.Add(this.Kue);
             }
@@ -763,7 +763,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   }
   static PWi(t) {
     if (ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure() && t?.Valid) {
-      t.Entity.GetComponent(181).MainAnimInstance?.Montage_Stop(0);
+      t.Entity.GetComponent(186).MainAnimInstance?.Montage_Stop(0);
       ModelManager_1.ModelManager.PhotographModel.MontageId = 0;
     }
   }
@@ -774,7 +774,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     t.PlayerActionSortId = undefined;
     var t = ModelManager_1.ModelManager.SceneTeamModel?.GetCurrentEntity?.Id;
     if (t && (t = EntitySystem_1.EntitySystem.Get(t))?.Valid && this.GetRoleMainAnimInstanceType() === 0) {
-      t.GetComponent(181).MainAnimInstance.设置头部转向状态(1);
+      t.GetComponent(186).MainAnimInstance.设置头部转向状态(1);
     }
   }
   static InitializeDefaultPhotographOption() {
@@ -845,7 +845,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         if (this.GetRoleMainAnimInstanceType() !== 0) {
           return;
         }
-        r.GetComponent(181).MainAnimInstance.设置头部转向状态(1);
+        r.GetComponent(186).MainAnimInstance.设置头部转向状态(1);
     }
   }
   static IsPlayerLookAtCamera() {
@@ -855,7 +855,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     if (this.PhotoTargets && !(this.PhotoTargets.length <= 0)) {
       for (const o of this.PhotoTargets) {
         var e = o;
-        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(e), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (e = e.GetComponent(191))) {
+        if (e && (e = ModelManager_1.ModelManager.CreatureModel.GetEntityIdByPbDataId(e), (e = EntitySystem_1.EntitySystem.Get(e))?.Valid) && (e = e.GetComponent(197))) {
           e.SightTarget(t ? CameraController_1.CameraController.WidgetCamera.DisplayComponent.CineCamera : undefined, 6);
         }
       }
@@ -1322,7 +1322,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
   }
   static GetRoleMainAnimInstanceType() {
     var t = ModelManager_1.ModelManager.SceneTeamModel.GetCurrentEntity;
-    if (t?.Valid && (t = t.Entity.GetComponent(181)?.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
+    if (t?.Valid && (t = t.Entity.GetComponent(186)?.MainAnimInstance, UE.KuroStaticLibrary.IsObjectClassByName(t, CharacterNameDefines_1.CharacterNameDefines.ABP_BASEROLE))) {
       return 0;
     } else {
       return 1;
@@ -1399,8 +1399,8 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static CloseFightPhotographMode() {
-    if (!this.IMm) {
-      this.IMm = true;
+    if (!this.mBm) {
+      this.mBm = true;
       this.ResetCamera();
       ModelManager_1.ModelManager.PhotographModel.SelectedFightPhotoOptionId = 0;
       this.DPd = false;
@@ -1413,7 +1413,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
         }
         UiManager_1.UiManager.CloseView("FightPhotographView", () => {
           ControllerHolder_1.ControllerHolder.SeamlessTravelController.EndSeamlessTravel();
-          this.IMm = false;
+          this.mBm = false;
         });
       }, 200);
     }
@@ -1440,7 +1440,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TrySaveFightPhotoFromBuffer(t, e, o, i) {
-    if (this.hbm()) {
+    if (this.R3m()) {
       if (t = ScreenShotManager_1.ScreenShotManager.CreateTextureFromBuffer(t, e, o, i)) {
         this.xPd.push(t);
         if (Log_1.Log.CheckInfo()) {
@@ -1454,7 +1454,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
     }
   }
   static TrySaveFightPhoto(t, e, o) {
-    if (this.hbm()) {
+    if (this.R3m()) {
       if (t = UE.LGUIBPLibrary.CreateTexture2DFromColors(t, e, o)) {
         this.xPd.push(t);
         if (Log_1.Log.CheckInfo()) {
@@ -1467,7 +1467,7 @@ class PhotographController extends UiControllerBase_1.UiControllerBase {
       }
     }
   }
-  static hbm() {
+  static R3m() {
     return !!this.CheckIfInFightPhotographCamera() && !this.DPd && !!this.IsSatisfyAllConditions();
   }
   static IsSatisfyAllConditions() {
@@ -1538,8 +1538,8 @@ PhotographController.tdu = false;
 PhotographController.WFa = false;
 PhotographController.NWi = new UE.FName("EntityPhotoIgnore");
 PhotographController.PhotoTargets = undefined;
-PhotographController.thm = false;
-PhotographController.ihm = undefined;
+PhotographController.p_m = false;
+PhotographController.v_m = undefined;
 PhotographController.TogetherCameraFov = undefined;
 PhotographController.$Ct = () => {
   _a.V01();
@@ -1567,7 +1567,7 @@ PhotographController.Jze = t => {
 };
 PhotographController.vWi = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !UiManager_1.UiManager.IsViewShow("PhotographSetupView") && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     if (_a.CameraCaptureType === 1) {
       o.AddCameraArmPitchInput(e);
     } else {
@@ -1577,7 +1577,7 @@ PhotographController.vWi = (t, e) => {
 };
 PhotographController.MWi = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !UiManager_1.UiManager.IsViewShow("PhotographSetupView") && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     if (_a.CameraCaptureType === 1) {
       o.AddCameraArmYawInput(e);
     } else {
@@ -1587,13 +1587,13 @@ PhotographController.MWi = (t, e) => {
 };
 PhotographController.q8i = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && !UiManager_1.UiManager.IsViewShow("PhotographSetupView") && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     o.AddCameraArmPitchInput(-e);
   }
 };
 PhotographController.G8i = (t, e) => {
   var o;
-  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && (_a.CameraCaptureType !== 0 || !UiManager_1.UiManager.IsViewShow("PhotographSetupView")) && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
+  if (e !== 0 && !!(o = ModelManager_1.ModelManager.PhotographModel.GetPhotographerStructure()) && !!Info_1.Info.IsInGamepad() && !UiManager_1.UiManager.IsViewShow("PhotographSetupView") && !UiManager_1.UiManager.IsViewShow("PhotoSaveView") && !UiManager_1.UiManager.IsViewShow("FightPhotoSaveView") && (_a.CameraCaptureType !== 1 || !UiManager_1.UiManager.IsViewShow("PhotoSaveView"))) {
     o.AddCameraArmYawInput(e);
   }
 };
@@ -1618,13 +1618,13 @@ PhotographController.Woh = () => {
 PhotographController.Kue = (t, e) => {
   if (!e) {
     if ((e = ModelManager_1.ModelManager.PhotographModel.PlayMontageEntity)?.Valid) {
-      e.Entity.GetComponent(181).MainAnimInstance.Montage_Play(t);
+      e.Entity.GetComponent(186).MainAnimInstance.Montage_Play(t);
     }
   }
 };
 PhotographController.FPo = undefined;
 PhotographController.VPo = undefined;
-PhotographController.IMm = false;
+PhotographController.mBm = false;
 PhotographController.xPd = [];
 PhotographController.DPd = false;
 PhotographController.CurrentBtNode = undefined;

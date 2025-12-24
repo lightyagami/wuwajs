@@ -9,10 +9,11 @@ const Log_1 = require("../../Core/Common/Log");
 const MathUtils_1 = require("../../Core/Utils/MathUtils");
 const RecorderBlueprintFunctionLibrary_1 = require("./RecorderBlueprintFunctionLibrary");
 class GameplayCueRecorderObject {
-  constructor(e, t, r) {
+  constructor(e, t, r, i) {
     this.Actor = e;
     this.OutSeq = t;
     this.StartTime = r;
+    this.RecordInterval = i;
     this.Recorder = undefined;
   }
   Start() {
@@ -20,7 +21,7 @@ class GameplayCueRecorderObject {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("Test", 6, "Start GameplayCue Recorder", ["Actor", this.Actor.GetName()], ["Time", this.StartTime]);
       }
-      this.Recorder.SetRecordActor(this.Actor, RecorderBlueprintFunctionLibrary_1.RECORD_INTERVAL, RecorderBlueprintFunctionLibrary_1.RECORDER_MAX_SPEED);
+      this.Recorder.SetRecordActor(this.Actor, this.RecordInterval, RecorderBlueprintFunctionLibrary_1.RECORDER_MAX_SPEED);
       this.Recorder.StartRecorder(this.OutSeq, this.StartTime - RecorderBlueprintFunctionLibrary_1.EFFECT_CREATE_ADVANCE);
       this.Recorder.TickRecorder(RecorderBlueprintFunctionLibrary_1.EFFECT_CREATE_ADVANCE);
       this.Recorder.PlayCommand();
@@ -38,8 +39,8 @@ class GameplayCueRecorderObject {
   }
 }
 class GameplayCueRecorderHook extends (exports.GameplayCueRecorderObject = GameplayCueRecorderObject) {
-  constructor(e, t, r, i) {
-    super(e, r, i);
+  constructor(e, t, r, i, s) {
+    super(e, r, i, s);
     this.gar = new UE.VectorDouble();
     this.n8 = "";
     if (!e.RootComponent) {
@@ -59,8 +60,8 @@ class GameplayCueRecorderHook extends (exports.GameplayCueRecorderObject = Gamep
 }
 exports.GameplayCueRecorderHook = GameplayCueRecorderHook;
 class GameplayCueRecorderBeam extends GameplayCueRecorderObject {
-  constructor(e, t, r, i) {
-    super(e, r, i);
+  constructor(e, t, r, i, s) {
+    super(e, r, i, s);
     this.n8 = "";
     this.Idc = undefined;
     this.v$o = undefined;

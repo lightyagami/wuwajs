@@ -160,7 +160,7 @@ class TimeOfDayModel extends ModelBase_1.ModelBase {
       this.PTo = this.ATo;
       this.ATo = e;
       if (t) {
-        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestSetTimeScale, e);
+        EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsRequestSetTimeScale, e.toString());
       }
     }
   }
@@ -216,10 +216,13 @@ class TimeOfDayModel extends ModelBase_1.ModelBase {
   GetCurrentDay() {
     return this.wTo;
   }
-  SetUseClientLockState(e) {
+  SetUseClientLockState(e, t = true) {
     this.Z41 = e;
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("TimeOfDay", 26, "使用客户端时间锁定状态", ["enable", e]);
+    }
+    if (t) {
+      EventCSharpBridge_1.EventCSharpBridge.Emit(EventDefine_1.EEventName.TsSyncUseClientLockState, e);
     }
   }
 }

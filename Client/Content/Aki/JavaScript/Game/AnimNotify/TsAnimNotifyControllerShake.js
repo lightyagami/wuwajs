@@ -7,6 +7,7 @@ const UE = require("ue");
 const Info_1 = require("../../Core/Common/Info");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const Global_1 = require("../Global");
+const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
 const CharacterUtils_1 = require("../NewWorld/Character/CharacterUtils");
 class TsAnimNotifyControllerShake extends UE.KuroAnimNotify {
@@ -19,18 +20,18 @@ class TsAnimNotifyControllerShake extends UE.KuroAnimNotify {
     this.IsPlayWhilePaused = false;
   }
   Constructor() {}
-  K2_Notify(e, r) {
+  K2_Notify(r, e) {
     if (Info_1.Info.IsInGamepad()) {
-      e = e.GetOwner();
-      if (e instanceof TsBaseCharacter_1.default && e.CharacterActorComponent?.IsAutonomousProxy && Global_1.Global.CharacterController) {
-        e = ModelManager_1.ModelManager.CreatureModel.GetEntityById(e.GetEntityIdNoBlueprint());
-        if (!e?.Valid) {
+      r = r.GetOwner();
+      if (r instanceof TsBaseCharacter_1.default && r.CharacterActorComponent?.IsAutonomousProxy && Global_1.Global.CharacterController) {
+        r = ModelManager_1.ModelManager.CreatureModel.GetEntityById(r.GetEntityIdNoBlueprint());
+        if (!r?.Valid) {
           return false;
         }
-        if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(e)) {
+        if (!CharacterUtils_1.CharacterUtils.CanCharacterMonsterOrSummonedDisplayEffect(r)) {
           return false;
         }
-        Global_1.Global.CharacterController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused);
+        ControllerHolder_1.ControllerHolder.GamepadController.PlayKuroForceFeedback(this.Effect, this.Name, this.IsLooping, this.IsIgnoreTimeDilation, this.IsPlayWhilePaused, "TsAnimNotifyControllerShake");
       }
     }
     return true;

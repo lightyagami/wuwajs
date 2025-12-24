@@ -147,5 +147,5 @@ let LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = clas
     Net_1.Net.Call(24624, t, e => {});
   }
 };
-LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(168)], LevelSequenceFrameEventComponent);
+LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(173)], LevelSequenceFrameEventComponent);
 exports.LevelSequenceFrameEventComponent = LevelSequenceFrameEventComponent; //# sourceMappingURL=LevelSequenceFrameEventComponent.js.map

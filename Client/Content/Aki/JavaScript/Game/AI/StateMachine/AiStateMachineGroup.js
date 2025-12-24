@@ -7,6 +7,8 @@ exports.AiStateMachineGroup = undefined;
 const Time_1 = require("../../../Core/Common/Time");
 const AiBaseById_1 = require("../../../Core/Define/ConfigQuery/AiBaseById");
 const AiStateMachineConfigById_1 = require("../../../Core/Define/ConfigQuery/AiStateMachineConfigById");
+const RoleBeHitMapAll_1 = require("../../../Core/Define/ConfigQuery/RoleBeHitMapAll");
+const RoleBeHitMapById_1 = require("../../../Core/Define/ConfigQuery/RoleBeHitMapById");
 const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const Net_1 = require("../../../Core/Net/Net");
 const StringBuilder_1 = require("../../../Core/Utils/StringBuilder");
@@ -47,8 +49,8 @@ class AiStateMachineGroup {
     this.Inited = false;
     this.StateMachinesActivated = false;
     this.AnyChange = false;
-    this.bjd = 0;
-    this.Rjd = false;
+    this.Rjd = 0;
+    this.wjd = false;
     this.zre = undefined;
     this.ErrorMessage = undefined;
     this.OnDeath = () => {
@@ -91,14 +93,13 @@ class AiStateMachineGroup {
         }
       }
     };
-    this.wjd = (t, i) => {
-      CombatLog_1.CombatLog.Info("StateMachineNew", this.Entity, "ConditionDrivenSmTickLock", ["isLock", t], ["count", this.bjd], ["needTick", this.Rjd], ["reason", i]);
+    this.Ljd = (t, i) => {
       if (t) {
-        this.bjd = this.bjd + 1;
+        this.Rjd = this.Rjd + 1;
       } else {
-        this.bjd = this.bjd - 1;
-        if (this.bjd <= 0 && this.Rjd) {
-          this.Rjd = false;
+        this.Rjd = this.Rjd - 1;
+        if (this.Rjd <= 0 && this.wjd) {
+          this.wjd = false;
           this.TickStateMachine(true, "SMTickUnlock");
         }
       }
@@ -117,7 +118,7 @@ class AiStateMachineGroup {
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.Zre);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.OnTeleport);
       EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle, this.OnBeforeAttachVehicle);
-      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.wjd);
+      EventSystem_1.EventSystem.AddWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.Ljd);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnRoleGoDown, this.OnRoleGoDown);
     }
   }
@@ -185,11 +186,21 @@ class AiStateMachineGroup {
       i = e?.StateMachine;
     } else if (t?.EntityType === Protocol_1.Aki.Protocol.kks.Proto_Player) {
       i = COMMON_ROLE_STATE_MACHINE;
+      var s = this.Entity?.GetComponent(0)?.GetRoleId();
+      var e = RoleBeHitMapAll_1.configRoleBeHitMapAll.GetConfigList();
+      if (s && s > 0 && e) {
+        for (const o of e) {
+          if (o.Id === s) {
+            i = RoleBeHitMapById_1.configRoleBeHitMapById.GetConfig(s).StateMachineName;
+            break;
+          }
+        }
+      }
     }
-    if (i && (e = AiStateMachineConfigById_1.configAiStateMachineConfigById.GetConfig(i))?.StateMachineJson) {
-      t = JSON.parse(e.StateMachineJson);
-      (e = this.Entity.GetComponent(76)).StateMachineName = i;
-      e.StateMachineJsonObject = t;
+    if (i && (t = AiStateMachineConfigById_1.configAiStateMachineConfigById.GetConfig(i))?.StateMachineJson) {
+      e = JSON.parse(t.StateMachineJson);
+      (t = this.Entity.GetComponent(79)).StateMachineName = i;
+      t.StateMachineJsonObject = e;
     }
     return true;
   }
@@ -323,7 +334,7 @@ class AiStateMachineGroup {
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.CharUseSkill, this.Zre);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.TeleportStartEntity, this.OnTeleport);
     EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.OnBeforeAttachVehicle, this.OnBeforeAttachVehicle);
-    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.wjd);
+    EventSystem_1.EventSystem.RemoveWithTarget(this.Entity, EventDefine_1.EEventName.ConditionDrivenSMTickLock, this.Ljd);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnRoleGoDown, this.OnRoleGoDown);
     this.SwitchStateFrequencyMonitor = undefined;
     this.StateMachinesActivated = false;
@@ -363,8 +374,8 @@ class AiStateMachineGroup {
   }
   TickStateMachine(t, i = "", e = "") {
     if (CharacterStateMachineNewComponent_1.CharacterStateMachineNewComponent.EventDrivenOn) {
-      if (this.bjd > 0) {
-        this.Rjd = true;
+      if (this.Rjd > 0) {
+        this.wjd = true;
       } else {
         CombatLog_1.CombatLog.Info("StateMachineNew", this.Entity, "AiStateMachineGroup TickStateMachine", ["entity", this.Entity], ["signal result", t], ["from condition", i], ["from node", e]);
         if (t) {

@@ -47,7 +47,7 @@ class CombatMessageBuffer {
     var o;
     var a;
     if (t) {
-      if (r = t?.GetComponent(53)) {
+      if (r = t?.GetComponent(54)) {
         if (e) {
           if (o = s.J8n) {
             a = t?.GetComponent(0);

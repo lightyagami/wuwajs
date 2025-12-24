@@ -33,6 +33,7 @@ const BattleUiFloatTipsData_1 = require("./BattleUiFloatTipsData");
 const BattleUiFormationData_1 = require("./BattleUiFormationData");
 const BattleUiFormationPanelData_1 = require("./BattleUiFormationPanelData");
 const BattleUiMergeHeadStateData_1 = require("./BattleUiMergeHeadStateData");
+const BattleUiMotorcycleData_1 = require("./BattleUiMotorcycleData");
 const BattleUiPureModeData_1 = require("./BattleUiPureModeData");
 const BattleUiRoleData_1 = require("./BattleUiRoleData");
 const BattleUiSpecialEnergyBarData_1 = require("./BattleUiSpecialEnergyBarData");
@@ -55,6 +56,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.EnvironmentKeyData = undefined;
     this.FormationPanelData = undefined;
     this.PureModeData = undefined;
+    this.MotorcycleData = undefined;
     this.MXe = [];
     this.EXe = [];
     this.SXe = true;
@@ -100,14 +102,15 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.n2d = undefined;
     this.CurrentTimeDilationSkillState = 0;
     this.Hn1 = new Map();
+    this.BossStateAreaList = [];
     this.wXe = undefined;
-    this.vMm = false;
+    this.lxm = false;
     this.BXe = false;
     this.bXe = undefined;
     this.qXe = undefined;
     this.GXe = () => {
-      if (this.vMm) {
-        this.vMm = false;
+      if (this.lxm) {
+        this.lxm = false;
         this.wXe = TimerSystem_1.TimerSystem.Next(this.GXe, BattleUiModel.jXe);
       } else {
         this.wXe = undefined;
@@ -149,8 +152,13 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         }
       }
     };
-    this.Idm = new MissionViewRuleConfig_1.DefaultTrackingRule();
-    this.Tdm = new MissionViewRuleConfig_1.DefaultTrackingRule();
+    this.vKf = (t, e) => {
+      if (t === 0) {
+        this.MotorcycleData?.SetNeedCacheUi(e);
+      }
+    };
+    this.opm = new MissionViewRuleConfig_1.DefaultTrackingRule();
+    this.npm = new MissionViewRuleConfig_1.DefaultTrackingRule();
     this.GuestId = 0;
     this.GuestEffect = false;
     this.gH1 = undefined;
@@ -200,12 +208,15 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.FormationPanelData.Init();
     this.PureModeData = new BattleUiPureModeData_1.BattleUiPureModeData();
     this.PureModeData.Init();
+    this.MotorcycleData = new BattleUiMotorcycleData_1.BattleUiMotorcycleData();
+    this.MotorcycleData.Init();
     this.IsShowingMissionViewItems = new Map();
     this._$1 = new Map();
     this.CurrentTimeDilationSkillState = 0;
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.vKf);
     return true;
   }
   async Preload() {
@@ -262,6 +273,8 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.FormationPanelData = undefined;
     this.PureModeData.Clear();
     this.PureModeData = undefined;
+    this.MotorcycleData.Clear();
+    this.MotorcycleData = undefined;
     this.IsShowingMissionViewItems?.clear();
     this.ClearMissionViewData();
     this.TrackDatas?.clear();
@@ -270,6 +283,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeEndShowTrackText, this.JZe);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.GeneralLogicTreeStartShowTrackText, this.eet);
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnGeneralLogicTreeRemove, this.HQe);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetBattleUiChildCacheStateNotify, this.vKf);
     return true;
   }
   OnWorldDone() {
@@ -386,7 +400,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     this.bXe = t?.Id;
     this.qXe = e?.Id;
     EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiCurRoleDataChanged, this.bXe, this.qXe ?? 0);
-    this.vMm = true;
+    this.lxm = true;
     this.VXe();
     this.RefreshAllRoleSpecialState();
   }
@@ -457,7 +471,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
         TimerSystem_1.TimerSystem.Remove(this.wXe);
       }
       this.wXe = undefined;
-      this.vMm = false;
+      this.lxm = false;
       this.BXe = false;
       this.bXe = undefined;
       this.qXe = undefined;
@@ -530,6 +544,7 @@ class BattleUiModel extends ModelBase_1.ModelBase {
   }
   ShowTypeChange(t, e) {
     this.PureModeData?.ShowTypeChange(t, e);
+    this.MotorcycleData?.ShowTypeChange(t, e);
   }
   GetAllMissionViewData() {
     return this._$1;
@@ -564,22 +579,22 @@ class BattleUiModel extends ModelBase_1.ModelBase {
       Log_1.Log.Error("BattleUiSet", 18, "BattleUiModel.SetMissionViewData 失败, MissionViewData还未初始化", ["viewType", t], ["showData", e]);
     }
   }
-  bdm(t) {
+  spm(t) {
     var e;
     if (t === undefined) {
-      this.Idm = this.Rdm();
+      this.opm = this.apm();
     } else if (e = this.GetRuleById(t)) {
-      this.Idm = e;
+      this.opm = e;
     } else {
       if (Log_1.Log.CheckError()) {
         Log_1.Log.Error("BattleUiSet", 78, "设置追踪显示规则失败，规则id不存在", ["ruleId", t]);
       }
-      this.Idm = this.Rdm();
+      this.opm = this.apm();
     }
   }
-  Rdm() {
-    let t = this.Tdm;
-    let e = this.Tdm.Priority;
+  apm() {
+    let t = this.npm;
+    let e = this.npm.Priority;
     for (const i of MissionViewRuleConfig_1.specialDungeonRules) {
       if (i.Enabled && i.Priority > e) {
         e = i.Priority;
@@ -601,31 +616,31 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     }
   }
   GetAllRule() {
-    return [this.Tdm, ...MissionViewRuleConfig_1.specialDungeonRules];
+    return [this.npm, ...MissionViewRuleConfig_1.specialDungeonRules];
   }
   CheckAndUpdateRule() {
-    this.Idm = this.Rdm();
+    this.opm = this.apm();
   }
   SafeSwitchMissionRule(t, e = false) {
     var i;
-    var s = t ? this.GetRuleById(t) : this.Rdm();
+    var s = t ? this.GetRuleById(t) : this.apm();
     if (s) {
-      if (s.Id === this.Idm.Id) {
+      if (s.Id === this.opm.Id) {
         if (Log_1.Log.CheckError()) {
           Log_1.Log.Error("BattleUiSet", 78, "追踪显示规则相同，无需更新", ["ruleId", t]);
         }
       } else {
         i = this.GetAllMissionViewData();
-        this.bdm(s.Id);
+        this.spm(s.Id);
         if (e) {
-          this.wdm(i);
+          this.hpm(i);
         }
       }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("BattleUiSet", 78, "追踪显示规则不存在", ["ruleId", t]);
     }
   }
-  wdm(t) {
+  hpm(t) {
     if (t && t.size !== 0) {
       var e;
       var i;
@@ -649,10 +664,10 @@ class BattleUiModel extends ModelBase_1.ModelBase {
     }
   }
   CheckMissionViewItem(t, e) {
-    return this.Idm.CustomTypeCheck(t, e);
+    return this.opm.CustomTypeCheck(t, e);
   }
   SortMissionViewItem(t) {
-    this.Idm.SortShowData(t);
+    this.opm.SortShowData(t);
   }
   AddGuest(t) {
     this.GuestId = t;
@@ -709,8 +724,19 @@ class BattleUiModel extends ModelBase_1.ModelBase {
             UiManager_1.UiManager.CloseView("RailSlideView");
           }
           break;
+        case 2:
+          if (e) {
+            UiManager_1.UiManager.OpenView("MotorcycleRailMoveView");
+          } else {
+            UiManager_1.UiManager.CloseView("MotorcycleRailMoveView");
+          }
+          break;
         case 1:
+        case 4:
           EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiRoleSpecialStateChanged, t, e);
+          break;
+        case 3:
+          this.MotorcycleData.IsShowBulletJumpLeftClick = !e;
       }
     }
   }
@@ -767,6 +793,20 @@ class BattleUiModel extends ModelBase_1.ModelBase {
   Test() {
     this.ChildViewData = new BattleUiChildViewData_1.BattleUiChildViewData();
     this.ChildViewData.Init();
+  }
+  UpdateBossStateArea(t, e) {
+    var i;
+    if (this.BossStateAreaList[t] !== e && (i = this.GetBossStateAreaType(), this.BossStateAreaList[t] = e, i !== (t = this.GetBossStateAreaType()))) {
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.BattleUiBossStateAreaChanged, i, t);
+    }
+  }
+  GetBossStateAreaType() {
+    for (let t = 0; t < 3; t++) {
+      if (this.BossStateAreaList[t]) {
+        return t;
+      }
+    }
+    return 3;
   }
 }
 (exports.BattleUiModel = BattleUiModel).jXe = Stats_1.Stat.Create("BattleUiModelNextTick");

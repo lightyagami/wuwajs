@@ -86,7 +86,7 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
     var a;
     var o = ModelManager_1.ModelManager.SceneTeamModel.GetTeamEntities();
     for (const n of o) {
-      if (n.Valid && (e = n.Entity.GetComponent(178))) {
+      if (n.Valid && (e = n.Entity.GetComponent(183))) {
         e.AddBuff(CharacterBuffIds_1.buffId.Invisible, {
           InstigatorId: e.CreatureDataId,
           Reason: "HandleRoleBuffChangeInLoading"
@@ -95,7 +95,7 @@ class LoadingController extends UiControllerBase_1.UiControllerBase {
     }
     await NormalLoadingViewGlobalData_1.NormalLoadingViewGlobalData.FinishPromise?.Promise;
     for (const i of o) {
-      if (i.Valid && (a = i.Entity.GetComponent(178))) {
+      if (i.Valid && (a = i.Entity.GetComponent(183))) {
         a.RemoveBuff(CharacterBuffIds_1.buffId.Invisible, -1, "HandleRoleBuffChangeInLoading");
       }
     }

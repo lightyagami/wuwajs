@@ -147,8 +147,15 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
       EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
     }
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenSdkExternalUrl, this.Dpm);
-    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenSdkUrlWnd, this.Upm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenSdkExternalUrl, this.Ibm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestOpenSdkUrlWnd, this.Tbm);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSdkBlockingUserData, this.Ijf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSdkTargetRelationData, this.Tjf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestCommunicationRestricted, this.bjf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestCommunicationRestrictedSync, this.Rjf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSdkPlayOnlyState, this.Ljf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSdkFriendOnlyState, this.wjf);
+    EventSystem_1.EventSystem.Add(EventDefine_1.EEventName.CsRequestSaveSdkFriendOnlyState, this.Pjf);
   }
   static dSe() {
     EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnSetLoginServerId, this.CSe);
@@ -161,8 +168,15 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestStateChange, this.DSe);
       EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.OnQuestFinishListNotify, this.Gro);
     }
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenSdkExternalUrl, this.Dpm);
-    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenSdkUrlWnd, this.Upm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenSdkExternalUrl, this.Ibm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestOpenSdkUrlWnd, this.Tbm);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSdkBlockingUserData, this.Ijf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSdkTargetRelationData, this.Tjf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestCommunicationRestricted, this.bjf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestCommunicationRestrictedSync, this.Rjf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSdkPlayOnlyState, this.Ljf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSdkFriendOnlyState, this.wjf);
+    EventSystem_1.EventSystem.Remove(EventDefine_1.EEventName.CsRequestSaveSdkFriendOnlyState, this.Pjf);
   }
   static Gpi() {
     Net_1.Net.Register(15668, KuroSdkController._ja);
@@ -250,9 +264,9 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
     }
   }
   static CheckIfSdkLogin() {
-    return !!KuroSdkController.CanUseSdk() && this.pSe().Uid !== "0";
+    return !!KuroSdkController.CanUseSdk() && this.GetCurrentLoginInfo().Uid !== "0";
   }
-  static pSe() {
+  static GetCurrentLoginInfo() {
     return UE.KuroSDKManager.GetCurrentLoginInfo();
   }
   static _Se() {
@@ -369,18 +383,18 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
   static SdkPay(...r) {
     if (KuroSdkController.CanUseSdk()) {
       let e = undefined;
-      e = r.length > 1 ? (n = r[0], t = r[1], o = r[2], a = r[3], l = r[4], KuroSdkData_1.KuroSdkControllerTool.GetSdkPayProduct(n, t, o, a, l)) : r[0];
+      e = r.length > 1 ? (l = r[0], t = r[1], o = r[2], a = r[3], n = r[4], KuroSdkData_1.KuroSdkControllerTool.GetSdkPayProduct(l, t, o, a, n)) : r[0];
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("KuroSdk", 27, "SdkPay", ["SdkPay", e]);
       }
       var t;
       var o;
       var a;
-      var l;
-      var n = new LogReportDefine_1.StartSdkPayEvent();
-      n.s_sdk_pay_order = e.cpOrderId;
-      n.s_sdk_callback_url = e.callbackUrl ?? "";
-      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(n);
+      var n;
+      var l = new LogReportDefine_1.StartSdkPayEvent();
+      l.s_sdk_pay_order = e.cpOrderId;
+      l.s_sdk_callback_url = e.callbackUrl ?? "";
+      ControllerHolder_1.ControllerHolder.LogReportController.LogReport(l);
       ModelManager_1.ModelManager.KuroSdkModel.CurrentPayingOrderId = e.cpOrderId;
       this.cSe?.SdkPay(e);
       ModelManager_1.ModelManager.KuroSdkModel.CurrentPayItemName = e.goodsName;
@@ -418,11 +432,11 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
   static ESe() {
     return "";
   }
-  static OpenWebView(e, r, t, o, a = true, l = "Default") {
+  static OpenWebView(e, r, t, o, a = true, n = "Default") {
     if (PlatformSdkManagerNew_1.PlatformSdkManagerNew.IsSdkOn) {
       PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().OpenWebView(r);
     } else {
-      KuroSdkController.cSe?.OpenWebView(e, r, t, o, a, l);
+      KuroSdkController.cSe?.OpenWebView(e, r, t, o, a, n);
     }
   }
   static KuroSdkLoginBindFunction(e) {
@@ -704,17 +718,17 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static Nrd(a, l, n = 0) {
+  static Nrd(a, n, l = 0) {
     Http_1.Http.Get(a, undefined, (e, r, t) => {
       let o = false;
       if (o = e && r === 200 ? o : true) {
-        if ((e = n + 1) < 3) {
-          this.Nrd(a, l, e);
+        if ((e = l + 1) < 3) {
+          this.Nrd(a, n, e);
         } else {
-          l(false, r, t);
+          n(false, r, t);
         }
       } else {
-        l(true, r, t);
+        n(true, r, t);
       }
     });
   }
@@ -761,28 +775,17 @@ class KuroSdkController extends ControllerBase_1.ControllerBase {
       });
     }
   }
-  static j3l(o) {
-    var e = ModelManager_1.ModelManager.KuroSdkModel.GetQueryNoticeReadStateUrl();
-    Http_1.Http.Get(e, undefined, (e, r, t) => {
-      if (e) {
-        e = Json_1.Json.Parse(t);
-        o(e.data);
-      } else {
-        o([]);
-      }
-    });
-  }
-  static H3l(o, a = 0) {
+  static oHm(o, a = 0) {
     var e;
-    if (!ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData() || a >= ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData().contentUrl.length) {
+    if (!ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData() || a >= ModelManager_1.ModelManager.KuroSdkModel.GetEntryPointData().apiUrls.length) {
       o(false, 0, "");
     } else {
-      e = ModelManager_1.ModelManager.KuroSdkModel.GetNoticeContentUrl(a);
+      e = ModelManager_1.ModelManager.KuroSdkModel.GetQueryNoticeRedDotStateUrl(a);
       Http_1.Http.Get(e, undefined, (e, r, t) => {
         if (e && r === 200) {
           o(e, r, t);
         } else {
-          this.H3l(o, a + 1);
+          this.oHm(o, a + 1);
         }
       });
     }
@@ -845,11 +848,42 @@ KuroSdkController.h3d = e => {
 KuroSdkController.Gro = () => {
   ModelManager_1.ModelManager.KuroSdkModel?.UpdateActivityProgress();
 };
-KuroSdkController.Dpm = e => {
+KuroSdkController.Ibm = e => {
   _a.OpenExternalUrl(e);
 };
-KuroSdkController.Upm = (e, r, t, o, a) => {
+KuroSdkController.Tbm = (e, r, t, o, a) => {
   _a.OpenWebView(e, r, t, o, a);
+};
+KuroSdkController.Ijf = r => {
+  PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetSdkBlockingUser().then(e => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseSdkBlockingUserData, r, e);
+  });
+};
+KuroSdkController.Tjf = (r, e) => {
+  PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetTargetRelation(e).then(e => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseSdkTargetRelationData, r, e);
+  });
+};
+KuroSdkController.bjf = (r, e) => {
+  PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk()?.GetCommunicationRestrictedAsync(e).then(e => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseCommunicationRestricted, r, e);
+  });
+};
+KuroSdkController.Rjf = e => {
+  PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetCommunicationRestricted(e, e => {
+    EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseCommunicationRestrictedSync, e);
+  });
+};
+KuroSdkController.Ljf = () => {
+  var e = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().PlayOnly();
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseSdkPlayOnlyState, e);
+};
+KuroSdkController.wjf = () => {
+  var e = PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().GetSdkFriendOnlyState();
+  EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.TsResponseSdkFriendOnlyState, e);
+};
+KuroSdkController.Pjf = e => {
+  PlatformSdkManagerNew_1.PlatformSdkManagerNew.GetPlatformSdk().SaveSdkFriendOnlyState(e);
 };
 KuroSdkController.DSe = (e, r, t) => {
   if (Platform_1.Platform.IsPs5Platform()) {
@@ -904,29 +938,14 @@ KuroSdkController.Vrd = false;
 KuroSdkController.V3l = false;
 KuroSdkController.q3l = e => {
   if (ModelManager_1.ModelManager.GameModeModel?.LoadingPhase === 1 && ModelManager_1.ModelManager.KuroSdkModel.NoticeSign !== "") {
-    var r = ModelManager_1.ModelManager.PlayerInfoModel;
-    const a = r.GetId() === undefined ? "0" : r.GetId().toString();
-    _a.H3l((e, r, t) => {
+    _a.oHm((e, r, t) => {
       if (e) {
         e = Json_1.Json.Parse(t);
-        const o = ModelManager_1.ModelManager.KuroSdkModel.FilterCurrentNeedShowNoticeContent(e, a);
-        if (o.length > 0) {
-          _a.j3l(e => {
-            let r = false;
-            for (const t of o) {
-              if (t.red === 1 && !e.includes(t.id)) {
-                r = true;
-                break;
-              }
-            }
-            ModelManager_1.ModelManager.KuroSdkModel.NoticeRedDotState = r;
-            EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkPostWebViewRedPointRefresh);
-          });
-        } else {
-          ModelManager_1.ModelManager.KuroSdkModel.NoticeRedDotState = false;
-          EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkPostWebViewRedPointRefresh);
-        }
+        ModelManager_1.ModelManager.KuroSdkModel.NoticeRedDotState = e.data;
+      } else {
+        ModelManager_1.ModelManager.KuroSdkModel.NoticeRedDotState = false;
       }
-    }, 0);
+      EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SdkPostWebViewRedPointRefresh);
+    });
   }
 }; //# sourceMappingURL=KuroSdkController.js.map

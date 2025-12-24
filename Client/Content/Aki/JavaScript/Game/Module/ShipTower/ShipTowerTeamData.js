@@ -72,10 +72,11 @@ class ShipTowerTeamData {
       this.pA_(e, t);
     });
   }
-  UpdateRoleListByFormationData(i) {
+  UpdateRoleListByFormationData(e) {
     ModelManager_1.ModelManager.RoleSelectModel.ClearData();
+    const i = e.GetRoleIdListWithTrial(false);
     this.RoleList.forEach((e, t) => {
-      t = i.GetRoleIdList[t] ?? 0;
+      t = i[t] ?? 0;
       this.pA_(e, t);
       this.yA_(e);
     });

@@ -24,7 +24,7 @@ class TsAnimNotifyRemoveSummonedEntity extends UE.KuroAnimNotify {
     let r = this.技能ID;
     let o = this.召唤者实体ID;
     let s = [];
-    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent?.Entity)?.Valid && (this.是否把当前播放动画的角色实体作为召唤者 && (o = e.Id), this.是否用当前Montage对应的技能ID) && (e = e.CheckGetComponent(40))) {
+    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent?.Entity)?.Valid && (this.是否把当前播放动画的角色实体作为召唤者 && (o = e.Id), this.是否用当前Montage对应的技能ID) && (e = e.CheckGetComponent(41))) {
       r = e.GetCurrentMontageCorrespondingSkillId();
     }
     if (!ModelManager_1.ModelManager.CreatureModel.GetServerEntityId(o)) {

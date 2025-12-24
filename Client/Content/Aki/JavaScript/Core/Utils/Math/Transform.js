@@ -147,6 +147,14 @@ class Transform {
     this.nz.Multiply(t.nz, s.nz);
     t.mC.Multiply(this.mC, s.mC);
   }
+  UnComposeTransform(t, s) {
+    t.mC.Inverse(s.mC);
+    s.mC.Multiply(this.mC, s.mC);
+    this.nz.Division(t.nz, s.nz);
+    this.rz.Subtraction(t.rz, s.rz);
+    t.mC.UnRotateVector(s.rz, s.rz);
+    s.rz.DivisionEqual(t.nz);
+  }
   Reset() {
     this.rz.Reset();
     this.nz.Reset();

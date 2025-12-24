@@ -8,6 +8,7 @@ const Log_1 = require("../../../Core/Common/Log");
 const CommonParamById_1 = require("../../../Core/Define/ConfigCommon/CommonParamById");
 const CalabashDevelopConditionById_1 = require("../../../Core/Define/ConfigQuery/CalabashDevelopConditionById");
 const CalabashDevelopRewardAll_1 = require("../../../Core/Define/ConfigQuery/CalabashDevelopRewardAll");
+const CalabashDevelopRewardByInteractAreaId_1 = require("../../../Core/Define/ConfigQuery/CalabashDevelopRewardByInteractAreaId");
 const CalabashDevelopRewardByMonsterId_1 = require("../../../Core/Define/ConfigQuery/CalabashDevelopRewardByMonsterId");
 const CalabashLevelAll_1 = require("../../../Core/Define/ConfigQuery/CalabashLevelAll");
 const CalabashLevelByLevel_1 = require("../../../Core/Define/ConfigQuery/CalabashLevelByLevel");
@@ -87,11 +88,11 @@ class CalabashConfig extends ConfigBase_1.ConfigBase {
   get DelayTime() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("VisionUnlockDelayTime");
   }
-  GetIntensifyCaptureGuarantee() {
-    return CommonParamById_1.configCommonParamById.GetIntConfig("IntensifyCaptureGuarantee");
-  }
   GetVisionBatchRecoveryMaxCount() {
     return CommonParamById_1.configCommonParamById.GetIntConfig("PhantomRefiningMaxCount");
+  }
+  GetCalabashRewardListByAreaId(e) {
+    return CalabashDevelopRewardByInteractAreaId_1.configCalabashDevelopRewardByInteractAreaId.GetConfigList(e);
   }
 }
 exports.CalabashConfig = CalabashConfig;

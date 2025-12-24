@@ -19,6 +19,9 @@ class BuffEquipItem {
   get RoleId() {
     return this.roleid();
   }
+  get WearPos() {
+    return this.wearpos();
+  }
   get Buffs() {
     return GameUtils_1.GameUtils.ConvertToArray(this.buffsLength(), this.buffs, this);
   }
@@ -63,11 +66,19 @@ class BuffEquipItem {
       return 0;
     }
   }
+  wearpos() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   GetBuffsAt(t) {
     return this.buffs(t);
   }
   buffs(t) {
-    var i = this.J7.__offset(this.z7, 10);
+    var i = this.J7.__offset(this.z7, 12);
     if (i) {
       return this.J7.readFloat64(this.J7.__vector(this.z7 + i) + t * 8);
     } else {
@@ -75,7 +86,7 @@ class BuffEquipItem {
     }
   }
   buffsLength() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -83,7 +94,7 @@ class BuffEquipItem {
     }
   }
   buffsArray() {
-    var t = this.J7.__offset(this.z7, 10);
+    var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return new Float64Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -91,14 +102,6 @@ class BuffEquipItem {
     }
   }
   equiptips(t) {
-    var i = this.J7.__offset(this.z7, 12);
-    var i = i ? this.J7.__string(this.z7 + i, t) : null;
-    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(i);
-    }
-    return i;
-  }
-  unequiptips(t) {
     var i = this.J7.__offset(this.z7, 14);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
@@ -106,8 +109,16 @@ class BuffEquipItem {
     }
     return i;
   }
+  unequiptips(t) {
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
   enableinui() {
-    var t = this.J7.__offset(this.z7, 16);
+    var t = this.J7.__offset(this.z7, 18);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
 }

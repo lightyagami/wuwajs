@@ -82,7 +82,7 @@ class PlayerInfoController extends UiControllerBase_1.UiControllerBase {
       } else if (PerfSight_1.PerfSight.IsEnable) {
         PerfSight_1.PerfSight.PostEvent(500, "1");
       }
-      ModelManager_1.ModelManager.PayShopModel.BusinessCompliance = e.uzd;
+      ModelManager_1.ModelManager.PayShopModel.BusinessCompliance = e.$zd;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.OnGetPlayerBasicInfo);
     }
   }

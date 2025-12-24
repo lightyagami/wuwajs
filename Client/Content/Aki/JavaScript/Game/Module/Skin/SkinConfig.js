@@ -10,6 +10,8 @@ const CalabashSkinById_1 = require("../../../Core/Define/ConfigQuery/CalabashSki
 const CalabashTransformById_1 = require("../../../Core/Define/ConfigQuery/CalabashTransformById");
 const FlySkinConfigById_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigById");
 const FlySkinConfigByType_1 = require("../../../Core/Define/ConfigQuery/FlySkinConfigByType");
+const MotorGiftQualityByQualityId_1 = require("../../../Core/Define/ConfigQuery/MotorGiftQualityByQualityId");
+const MotorSkinShowById_1 = require("../../../Core/Define/ConfigQuery/MotorSkinShowById");
 const RoleSkinById_1 = require("../../../Core/Define/ConfigQuery/RoleSkinById");
 const RoleSkinByRoleId_1 = require("../../../Core/Define/ConfigQuery/RoleSkinByRoleId");
 const WeaponSkinById_1 = require("../../../Core/Define/ConfigQuery/WeaponSkinById");
@@ -121,15 +123,15 @@ class SkinConfig extends ConfigBase_1.ConfigBase {
       return "";
     }
   }
-  GetFlySkinEquipBtnTextId(n, a) {
+  GetFlySkinEquipBtnTextId(n, i) {
     if (n === 1) {
-      if (a) {
+      if (i) {
         return "GliderSkin_EquipmentStatus_Equip";
       } else {
         return "GliderSkin_EquipmentStatus_IsEquipped";
       }
     } else if (n === 0) {
-      if (a) {
+      if (i) {
         return "SoarWingSkin_EquipmentStatus_Equip";
       } else {
         return "SoarWingSkin_EquipmentStatus_IsEquipped";
@@ -197,6 +199,12 @@ class SkinConfig extends ConfigBase_1.ConfigBase {
   }
   GetCalabashSkinNeedStopRotate() {
     return CommonParamById_1.configCommonParamById.GetBoolConfig("CalabashSkinNeedStopRotate");
+  }
+  GetMotorSkinShowConfig(n) {
+    return MotorSkinShowById_1.configMotorSkinShowById.GetConfig(n);
+  }
+  GetMotorSkinGiftQualityConfig(n) {
+    return MotorGiftQualityByQualityId_1.configMotorGiftQualityByQualityId.GetConfig(n);
   }
 }
 exports.SkinConfig = SkinConfig;

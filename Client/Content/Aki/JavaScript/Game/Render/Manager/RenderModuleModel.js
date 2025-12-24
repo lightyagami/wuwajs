@@ -95,6 +95,8 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
         }, 500);
       }
     };
+    this.peg = new Set();
+    this.nzf = new Set();
   }
   GetCurrentKeyState(e) {
     if (e === this.j1r) {
@@ -410,6 +412,11 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
     return true;
   }
   OnLeaveLevel() {
+    this.peg.clear();
+    for (const e of this.nzf) {
+      this.peg.add(e);
+    }
+    this.nzf.clear();
     this.J1r();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("RenderBattle", 11, "BOSS战渲染模块离开关卡");
@@ -444,6 +451,26 @@ class RenderModuleModel extends ModelBase_1.ModelBase {
   }
   UpdateItemMaterialParameterCollection(e) {
     ItemMaterialParameterCollectionController_1.ItemMaterialParameterCollectionController.UpdateMaterialParameterCollection(e, RenderDataManager_1.RenderDataManager.Get().GetSceneInteractionMaterialParameterCollection());
+  }
+  AddDependenciesNotMatchDataLayer(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 39, "DependenciesNotMatchDataLayerSet添加DataLayer", ["path", e]);
+    }
+    this.nzf.add(e);
+  }
+  IsDependenciesNotMatchDataLayer(e) {
+    return this.nzf.has(e);
+  }
+  RemoveDependenciesNotMatchDataLayer(e) {
+    if (Log_1.Log.CheckInfo()) {
+      Log_1.Log.Info("World", 39, "DependenciesNotMatchDataLayerSet移除DataLayer", ["path", e]);
+    }
+    this.nzf.delete(e);
+  }
+  FlushTempDependenciesNotMatchDataLayers() {
+    for (const e of this.nzf) {
+      this.nzf.add(e);
+    }
   }
 }
 exports.RenderModuleModel = RenderModuleModel;

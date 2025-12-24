@@ -39,7 +39,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     return !!super.OnInit() && (this.EIe = this.Entity.GetComponent(0), true);
   }
   OnStart() {
-    return !!super.OnStart() && (this.TimeScaleList.Empty && this.SetTimeScaleTicking(false, "[SceneItemTimeScaleComponent] OnStart, 初始关闭时间缩放"), this.Xte = this.Entity.GetComponent(200), true);
+    return !!super.OnStart() && (this.TimeScaleList.Empty && this.SetTimeScaleTicking(false, "[SceneItemTimeScaleComponent] OnStart, 初始关闭时间缩放"), this.Xte = this.Entity.GetComponent(206), true);
   }
   SetTimeScaleTicking(e, t) {
     if (e && this.DisableHandle !== undefined) {
@@ -84,7 +84,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
       this.Entity.SetTimeDilation(this.TimeDilation);
     }
     i *= this.TimeDilation * (ModelManager_1.ModelManager.CharacterModel?.SelfCenteredTimeDilation ?? 1);
-    this.Entity.GetComponent(206)?.UpdateAkFinalTimeScale(i);
+    this.Entity.GetComponent(212)?.UpdateAkFinalTimeScale(i);
     if (this.TimeScaleList.Empty) {
       this.SetTimeScaleTicking(false, "[PawnTimeScaleComponent] 时间缩放结束");
     }
@@ -120,7 +120,7 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     super.OnChangeTimeDilation(t);
     if (this.EIe && LevelGeneralNetworks_1.LevelGeneralNetworks.CheckEntityCanPushTimeDilation(this.EIe.GetEntityTimeScaleModifyStrategy())) {
       let e = this.CurrentTimeScale * t;
-      t = this.Entity.GetComponent(292);
+      t = this.Entity.GetComponent(311);
       if (t && t?.ExtraTimeDilationInSelfCenteredMode !== 0) {
         e /= t.ExtraTimeDilationInSelfCenteredMode;
       }
@@ -128,5 +128,5 @@ let SceneItemTimeScaleComponent = class SceneItemTimeScaleComponent extends Pawn
     }
   }
 };
-SceneItemTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(208)], SceneItemTimeScaleComponent);
+SceneItemTimeScaleComponent = __decorate([(0, RegisterComponent_1.RegisterComponent)(214)], SceneItemTimeScaleComponent);
 exports.SceneItemTimeScaleComponent = SceneItemTimeScaleComponent; //# sourceMappingURL=SceneItemTimeScaleComponent.js.map

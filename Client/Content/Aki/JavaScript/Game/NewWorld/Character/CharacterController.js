@@ -163,8 +163,8 @@ class CharacterController extends ControllerBase_1.ControllerBase {
     }
   }
   static GetActorComponent(t) {
-    let e = t.Entity.GetComponent(206);
-    return e = (e = e || t.Entity.GetComponent(2)) || t.Entity.GetComponent(238);
+    let e = t.Entity.GetComponent(212);
+    return e = (e = e || t.Entity.GetComponent(2)) || t.Entity.GetComponent(247);
   }
   static GetTsBaseCharacterByEntity(t) {
     return t.Entity.GetComponent(3)?.Actor;
@@ -220,7 +220,7 @@ class CharacterController extends ControllerBase_1.ControllerBase {
   static OnChangeMode() {
     if (!ModelManager_1.ModelManager.GameModeModel.IsMulti) {
       for (const t of ModelManager_1.ModelManager.CreatureModel.GetAllEntities()) {
-        t.Entity.GetComponent(47)?.SwitchControl(true);
+        t.Entity.GetComponent(48)?.SwitchControl(true);
       }
     }
     return true;

@@ -63,7 +63,7 @@ class UiAsyncTask {
   Cancel() {
     if (this.h0i === 0 || this.h0i === 1) {
       this.wk_ = true;
-      this.Lk_?.();
+      this.Lk_?.(this.h0i);
       if (this.h0i === 0 && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("UiAsyncTask", 43, "[UiAsyncTask] 任务在执行之前被取消", ["TaskName", this.Name]);
       }

@@ -24,13 +24,13 @@ class GameProcedure {
       Log_1.Log.Info("Game", 63, "c#环境启动:", ["csEnvStartup", r]);
     }
     if (r) {
-      this.ggm();
+      this.YSm();
     } else {
-      this.Cgm = new UE.KuroTickManager(e, "GameProcedure");
-      this.Cgm.AddTick(0, (0, puerts_1.toManualReleaseDelegate)(this.pgm));
+      this.zSm = new UE.KuroTickManager(e, "GameProcedure");
+      this.zSm.AddTick(0, (0, puerts_1.toManualReleaseDelegate)(this.JSm));
     }
   }
-  static ggm() {
+  static YSm() {
     var a = UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleGreyBoxHit();
     if (Log_1.Log.CheckInfo()) {
       Log_1.Log.Info("Game", 63, "c#环境是否灰度命中:", ["hasSharpherealModuleGreyBoxHit", a]);
@@ -57,12 +57,12 @@ class GameProcedure {
         Log_1.Log.Info("Game", 63, "c#环境是否初始化成功:", ["hasCSharpEnvironmentInitialized", e], ["hasCsEnvInited", r]);
       }
       UE.CSharpBlueprintFunctionLibrary.CallCSharpFunction("CSharpScript.dll", "CSharpScript.Launcher", "Startup", "Main", 1, this.USr);
-      this.vgm(this.USr);
+      this.ZSm(this.USr);
     } else {
-      this.vgm(this.USr);
+      this.ZSm(this.USr);
     }
   }
-  static vgm(e) {
+  static ZSm(e) {
     Info_1.Info.Initialize(e);
     var r = BaseConfigController_1.BaseConfigController.GetPackageConfigOrDefault("JSDebugId");
     Log_1.Log.SetJsDebugId(r);
@@ -230,12 +230,12 @@ exports.GameProcedure = GameProcedure;
 GameProcedure.g2a = 200;
 GameProcedure.Vgr = undefined;
 GameProcedure.USr = undefined;
-GameProcedure.Cgm = undefined;
-GameProcedure.pgm = () => {
+GameProcedure.zSm = undefined;
+GameProcedure.JSm = () => {
   if (UE.CSharpBlueprintFunctionLibrary.HasSharpherealModuleStartup()) {
-    (0, puerts_1.releaseManualReleaseDelegate)(_a.pgm);
-    _a.Cgm.ClearTick();
-    _a.Cgm = undefined;
-    _a.ggm();
+    (0, puerts_1.releaseManualReleaseDelegate)(_a.JSm);
+    _a.zSm.ClearTick();
+    _a.zSm = undefined;
+    _a.YSm();
   }
 }; //# sourceMappingURL=GameProcedure.js.map

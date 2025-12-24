@@ -16,6 +16,7 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     this.F0t = new Map();
     this.lnt = new Map();
     this.K4l = new Map();
+    this.J2m = new Map();
     this.V0t = 0;
     this.H0t = undefined;
     this.j0t = undefined;
@@ -64,8 +65,8 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     this.F0t.clear();
     this.lnt.clear();
   }
-  NewUseBuffItemRoleData(e, t, i, s, r, f, a, u) {
-    e = new UseBuffItemRoleData_1.UseBuffItemRoleData(e, t, i, s, r, f, a, u);
+  NewUseBuffItemRoleData(e, t, i, r, s, f, u, a) {
+    e = new UseBuffItemRoleData_1.UseBuffItemRoleData(e, t, i, r, s, f, u, a);
     this.F0t.set(t, e);
   }
   SetCurrentUseBuffItemId(e) {
@@ -107,10 +108,10 @@ class BuffItemModel extends ModelBase_1.ModelBase {
     }
   }
   SetBuffItemCdTimeStamp(e, t, i) {
-    var s = this.GetBuffItemData(e);
-    if (s) {
-      s.SetEndCdTimeStamp(t);
-      s.SetTotalCdTime(i);
+    var r = this.GetBuffItemData(e);
+    if (r) {
+      r.SetEndCdTimeStamp(t);
+      r.SetTotalCdTime(i);
     } else {
       this.NewBuffItemData(e, t, i);
     }
@@ -132,15 +133,29 @@ class BuffItemModel extends ModelBase_1.ModelBase {
   }
   SetBuffEquipItem(e, t) {
     this.K4l.set(e, t);
+    var i = ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemCategory(e);
+    if (i !== 0) {
+      if (t) {
+        this.J2m.set(i, e);
+      } else {
+        this.J2m.delete(i);
+      }
+    }
+  }
+  IsEquippedBuffCategory(e) {
+    return this.J2m.has(e);
+  }
+  GetEquippedBuffItemId(e) {
+    return this.J2m.get(e);
   }
   IsEquippedBuffItem(e) {
     return !!this.K4l.get(e);
   }
   GetEquippedBuffsByRoleId(e, t = false) {
     var i = new Array();
-    for (const s of ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemByRoleId(e)) {
-      if (!!this.IsEquippedBuffItem(s.ItemId) && (!t || !!s.EnableInUI)) {
-        i.push(...s.Buffs);
+    for (const r of ConfigManager_1.ConfigManager.BuffItemConfig.GetBuffEquipItemByRoleId(e)) {
+      if (!!this.IsEquippedBuffItem(r.ItemId) && (!t || !!r.EnableInUI)) {
+        i.push(...r.Buffs);
       }
     }
     return i;

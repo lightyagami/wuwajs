@@ -50,6 +50,12 @@ class PhantomBattleActivity {
   get FourCostCardCount() {
     return this.fourcostcardcount();
   }
+  get AreaCardCount() {
+    return this.areacardcount();
+  }
+  get ItemCardMaxCount() {
+    return this.itemcardmaxcount();
+  }
   get NormalCardCount() {
     return this.normalcardcount();
   }
@@ -119,8 +125,26 @@ class PhantomBattleActivity {
   mainrolesexchangeValue(t) {
     return this.mainrolesexchange(t)?.value();
   }
+  get CopyUidPlayer() {
+    return this.copyuidplayer();
+  }
+  get CopyUidNpc() {
+    return this.copyuidnpc();
+  }
+  get CopyUidDifference() {
+    return this.copyuiddifference();
+  }
   get SlotLongPressTime() {
     return this.slotlongpresstime();
+  }
+  get SlotLongPressStartTime() {
+    return this.slotlongpressstarttime();
+  }
+  get SlotLongPressEndTime() {
+    return this.slotlongpressendtime();
+  }
+  get RewardItemId() {
+    return this.rewarditemid();
   }
   get RecommendQuestId() {
     return this.recommendquestid();
@@ -240,7 +264,7 @@ class PhantomBattleActivity {
       return 0;
     }
   }
-  normalcardcount() {
+  areacardcount() {
     var t = this.J7.__offset(this.z7, 30);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -248,8 +272,24 @@ class PhantomBattleActivity {
       return 0;
     }
   }
-  decklimit() {
+  itemcardmaxcount() {
     var t = this.J7.__offset(this.z7, 32);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  normalcardcount() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  decklimit() {
+    var t = this.J7.__offset(this.z7, 36);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -260,7 +300,7 @@ class PhantomBattleActivity {
     return this.cardminrequired(t);
   }
   cardminrequired(t, i) {
-    var s = this.J7.__offset(this.z7, 34);
+    var s = this.J7.__offset(this.z7, 38);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -268,7 +308,7 @@ class PhantomBattleActivity {
     }
   }
   cardminrequiredLength() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 38);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -279,7 +319,7 @@ class PhantomBattleActivity {
     return this.cardmaxlimit(t);
   }
   cardmaxlimit(t, i) {
-    var s = this.J7.__offset(this.z7, 36);
+    var s = this.J7.__offset(this.z7, 40);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -287,7 +327,7 @@ class PhantomBattleActivity {
     }
   }
   cardmaxlimitLength() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -298,7 +338,7 @@ class PhantomBattleActivity {
     return this.groupnamelimit(t);
   }
   groupnamelimit(t) {
-    var i = this.J7.__offset(this.z7, 38);
+    var i = this.J7.__offset(this.z7, 42);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -306,7 +346,7 @@ class PhantomBattleActivity {
     }
   }
   groupnamelimitLength() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -314,7 +354,7 @@ class PhantomBattleActivity {
     }
   }
   groupnamelimitArray() {
-    var t = this.J7.__offset(this.z7, 38);
+    var t = this.J7.__offset(this.z7, 42);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -322,7 +362,7 @@ class PhantomBattleActivity {
     }
   }
   elementmax() {
-    var t = this.J7.__offset(this.z7, 40);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -330,7 +370,7 @@ class PhantomBattleActivity {
     }
   }
   weeklyexplimit() {
-    var t = this.J7.__offset(this.z7, 42);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -341,7 +381,7 @@ class PhantomBattleActivity {
     return this.maxitemlimit(t);
   }
   maxitemlimit(t, i) {
-    var s = this.J7.__offset(this.z7, 44);
+    var s = this.J7.__offset(this.z7, 48);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -349,7 +389,7 @@ class PhantomBattleActivity {
     }
   }
   maxitemlimitLength() {
-    var t = this.J7.__offset(this.z7, 44);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -360,7 +400,7 @@ class PhantomBattleActivity {
     return this.quicklybuild(t);
   }
   quicklybuild(t) {
-    var i = this.J7.__offset(this.z7, 46);
+    var i = this.J7.__offset(this.z7, 50);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -368,7 +408,7 @@ class PhantomBattleActivity {
     }
   }
   quicklybuildLength() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -376,7 +416,7 @@ class PhantomBattleActivity {
     }
   }
   quicklybuildArray() {
-    var t = this.J7.__offset(this.z7, 46);
+    var t = this.J7.__offset(this.z7, 50);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -387,7 +427,7 @@ class PhantomBattleActivity {
     return this.badgegroupeffects(t);
   }
   badgegroupeffects(t) {
-    var i = this.J7.__offset(this.z7, 48);
+    var i = this.J7.__offset(this.z7, 52);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -395,7 +435,7 @@ class PhantomBattleActivity {
     }
   }
   badgegroupeffectsLength() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -403,7 +443,7 @@ class PhantomBattleActivity {
     }
   }
   badgegroupeffectsArray() {
-    var t = this.J7.__offset(this.z7, 48);
+    var t = this.J7.__offset(this.z7, 52);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -414,7 +454,7 @@ class PhantomBattleActivity {
     return this.funcopenchallenge(t);
   }
   funcopenchallenge(t, i) {
-    var s = this.J7.__offset(this.z7, 50);
+    var s = this.J7.__offset(this.z7, 54);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -422,7 +462,7 @@ class PhantomBattleActivity {
     }
   }
   funcopenchallengeLength() {
-    var t = this.J7.__offset(this.z7, 50);
+    var t = this.J7.__offset(this.z7, 54);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -433,7 +473,7 @@ class PhantomBattleActivity {
     return this.mainrolelist(t);
   }
   mainrolelist(t) {
-    var i = this.J7.__offset(this.z7, 52);
+    var i = this.J7.__offset(this.z7, 56);
     if (i) {
       return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
     } else {
@@ -441,7 +481,7 @@ class PhantomBattleActivity {
     }
   }
   mainrolelistLength() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -449,7 +489,7 @@ class PhantomBattleActivity {
     }
   }
   mainrolelistArray() {
-    var t = this.J7.__offset(this.z7, 52);
+    var t = this.J7.__offset(this.z7, 56);
     if (t) {
       return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
     } else {
@@ -460,7 +500,7 @@ class PhantomBattleActivity {
     return this.mainrolesexchange(t);
   }
   mainrolesexchange(t, i) {
-    var s = this.J7.__offset(this.z7, 54);
+    var s = this.J7.__offset(this.z7, 58);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -468,23 +508,71 @@ class PhantomBattleActivity {
     }
   }
   mainrolesexchangeLength() {
-    var t = this.J7.__offset(this.z7, 54);
+    var t = this.J7.__offset(this.z7, 58);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
     }
   }
+  copyuidplayer() {
+    var t = this.J7.__offset(this.z7, 60);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  copyuidnpc() {
+    var t = this.J7.__offset(this.z7, 62);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  copyuiddifference() {
+    var t = this.J7.__offset(this.z7, 64);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   slotlongpresstime() {
-    var t = this.J7.__offset(this.z7, 56);
+    var t = this.J7.__offset(this.z7, 66);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 1000;
     }
   }
+  slotlongpressstarttime() {
+    var t = this.J7.__offset(this.z7, 68);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 250;
+    }
+  }
+  slotlongpressendtime() {
+    var t = this.J7.__offset(this.z7, 70);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 750;
+    }
+  }
+  rewarditemid() {
+    var t = this.J7.__offset(this.z7, 72);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   recommendquestid() {
-    var t = this.J7.__offset(this.z7, 58);
+    var t = this.J7.__offset(this.z7, 74);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -492,7 +580,7 @@ class PhantomBattleActivity {
     }
   }
   recommendquesttips(t) {
-    var i = this.J7.__offset(this.z7, 60);
+    var i = this.J7.__offset(this.z7, 76);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);

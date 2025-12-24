@@ -68,7 +68,7 @@ class TreasureHuntController extends ControllerBase_1.ControllerBase {
   static SetNearbyTrack(e) {
     this.ClearNearbyTrack();
     var t = ModelManager_1.ModelManager.CreatureModel?.GetEntityById(e)?.Entity;
-    var r = t?.GetComponent(164);
+    var r = t?.GetComponent(169);
     if (t && r) {
       t = {
         TrackSource: 3,
@@ -103,13 +103,13 @@ exports.TreasureHuntController = TreasureHuntController;
 TreasureHuntController.fHl = 0;
 TreasureHuntController.JD_ = e => {
   var t;
-  if (e && e.Valid && (t = e.GetComponent(164))?.Valid && t.TrackConfigType === "Compass") {
+  if (e && e.Valid && (t = e.GetComponent(169))?.Valid && t.TrackConfigType === "Compass") {
     _a.AddCompassTrack(e.Id);
   }
 };
 TreasureHuntController.ZD_ = e => {
   var t;
-  if (e && e.Valid && (t = e.GetComponent(164))?.Valid && t.TrackConfigType === "Compass") {
+  if (e && e.Valid && (t = e.GetComponent(169))?.Valid && t.TrackConfigType === "Compass") {
     _a.RemoveCompassTrack(e.Id);
   }
 };

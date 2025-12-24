@@ -65,7 +65,7 @@ class LevelEventCaptureRequest extends LevelGeneralBase_1.LevelEventBase {
               i(h);
             }
           }
-          var o = EntitySystem_1.EntitySystem.Get(this.E0).GetComponent(206).ActorLocationProxy;
+          var o = EntitySystem_1.EntitySystem.Get(this.E0).GetComponent(212).ActorLocationProxy;
           var s = Vector_1.Vector.Distance(o, l);
           var s = MathUtils_1.MathUtils.Clamp(s, e, p);
           let n = MathUtils_1.MathUtils.GetNextPointWithDistance(l, o, s);
@@ -98,7 +98,7 @@ class LevelEventCaptureRequest extends LevelGeneralBase_1.LevelEventBase {
               let e = true;
               for (const o of t) {
                 var r = EntitySystem_1.EntitySystem.Get(o);
-                if (r?.Valid && (this.kLe(a, o), r = r.GetComponent(150))) {
+                if (r?.Valid && (this.kLe(a, o), r = r.GetComponent(155))) {
                   if (e) {
                     e = false;
                     r.ExecuteCapture(this.NLe, n);
@@ -139,7 +139,7 @@ class LevelEventCaptureRequest extends LevelGeneralBase_1.LevelEventBase {
   }
   OLe(e) {
     var e = EntitySystem_1.EntitySystem.Get(e);
-    if (e &&= e.GetComponent(150)) {
+    if (e &&= e.GetComponent(155)) {
       e.ExecuteCapture(this.NLe);
     }
   }

@@ -27,13 +27,15 @@ const HonamiStoryRoleInfoPanel_1 = require("../HonamiStory/View/Items/HonamiStor
 const RoleController_1 = require("../RoleUi/RoleController");
 const RoleDefine_1 = require("../RoleUi/RoleDefine");
 const RoleTagMediumIconItem_1 = require("../RoleUi/RoleTag/RoleTagMediumIconItem");
+const RoleUtils_1 = require("../RoleUi/RoleUtils");
+const RoleTrialLabelItem_1 = require("../RoleUi/View/RoleTrialLabelItem");
 const SceneTeamDefine_1 = require("../SceneTeam/SceneTeamDefine");
+const ScrollingTipsController_1 = require("../ScrollingTips/ScrollingTipsController");
 const GenericLayout_1 = require("../Util/Layout/GenericLayout");
 const LguiUtil_1 = require("../Util/LguiUtil");
 const LoopScrollView_1 = require("../Util/ScrollView/LoopScrollView");
 const TeamRoleGrid_1 = require("./TeamRoleGrid");
 const TeamRoleSkillItem_1 = require("./TeamRoleSkillItem");
-const displaySkillTypes = [11, 2, 3, 6];
 class TeamRoleSelectViewData extends UiPopViewData_1.UiPopViewData {
   constructor(i, t, e, s, h, o, r) {
     super();
@@ -44,6 +46,7 @@ class TeamRoleSelectViewData extends UiPopViewData_1.UiPopViewData {
     this.Position = 0;
     this.ForFunction = 0;
     this.FormationRoleList = undefined;
+    this.CanUseSpecialTrialRole = false;
     this.ConfirmCallBack = undefined;
     this.OnHideFinishCallBack = undefined;
     this.BackCallBack = undefined;
@@ -97,8 +100,9 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     this.SPe = undefined;
     this.Dcl = 0;
     this.IsNeedRefreshTeamList = false;
-    this.wYd = undefined;
+    this.szd = undefined;
     this.wVl = undefined;
+    this.ZDf = undefined;
     this.Hlo = (i, t, e) => {
       this.Vlo = i;
       i = this.Vlo.length > 0;
@@ -145,11 +149,13 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     this.cHe = () => {
       var i = new TeamRoleGrid_1.TeamRoleGrid();
       i.IsHighlightIndex = this.IsHighlightIndex;
+      i.IsShowGray = this.IsShowGray;
       i.BindOnExtendToggleStateChanged(this.ToggleFunction);
       i.BindOnCanExecuteChange(this.CanExecuteChangeFunction);
       return i;
     };
     this.IsHighlightIndex = i => i === this.Pe?.Position;
+    this.IsShowGray = i => !this.Pe?.CanUseSpecialTrialRole && RoleUtils_1.RoleUtils.IsSpecialTrialRole(i);
     this.ToggleFunction = i => {
       var t;
       if (i.State === 1) {
@@ -169,6 +175,15 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       }
     };
     this.CanExecuteChangeFunction = (i, t, e) => {
+      if (!this.Pe?.CanUseSpecialTrialRole) {
+        var s = i.GetDataId();
+        if (RoleUtils_1.RoleUtils.IsSpecialTrialRole(s)) {
+          if ((this.Pe?.FormationRoleList ?? []).indexOf(s) < 0) {
+            ScrollingTipsController_1.ScrollingTipsController.ShowTipsByTextId("PrefabTextItem_1024721374_Text");
+            return false;
+          }
+        }
+      }
       return e !== 1 || this.CurSelectRole !== i;
     };
     this.t1o = () => {
@@ -263,7 +278,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIInteractionGroup], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [1, UE.UILoopScrollViewComponent], [2, UE.UIText], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIText], [13, UE.UIHorizontalLayout], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIMultiTemplateLayout], [17, UE.UIItem], [18, UE.UIText], [22, UE.UIExtendToggle], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIText], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem]];
+    this.ComponentRegisterInfos = [[0, UE.UIInteractionGroup], [3, UE.UIButtonComponent], [4, UE.UIButtonComponent], [1, UE.UILoopScrollViewComponent], [2, UE.UIText], [19, UE.UIItem], [20, UE.UIItem], [21, UE.UIItem], [5, UE.UIItem], [6, UE.UIText], [7, UE.UIItem], [8, UE.UIItem], [9, UE.UIButtonComponent], [10, UE.UIItem], [11, UE.UIText], [12, UE.UIText], [13, UE.UIHorizontalLayout], [14, UE.UIItem], [15, UE.UIText], [16, UE.UIMultiTemplateLayout], [17, UE.UIItem], [18, UE.UIText], [22, UE.UIExtendToggle], [23, UE.UIItem], [24, UE.UIItem], [25, UE.UIText], [26, UE.UIItem], [27, UE.UIItem], [28, UE.UIItem], [29, UE.UIItem], [30, UE.UIItem]];
     this.BtnBindInfo = [[3, this.qAt], [4, this.W7t], [9, this.$lo], [22, this.Acl]];
   }
   async OnBeforeStartAsync() {
@@ -279,13 +294,14 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     }
     var t = this.Pe.ForFunction === 1;
     if (t) {
-      await this.jnm();
+      await this.d1m();
     }
     this.wVl = new ActivityFunctionalTypeA_1.FunctionalPanelConditionLock();
     await this.wVl.CreateThenShowByActorAsync(this.GetItem(29).GetOwner());
     this.GetItem(26).SetUIActive(t);
     this.GetItem(27).SetUIActive(!t);
     this.GetItem(28).SetUIActive(t);
+    await this.eUf();
   }
   OnStart() {
     this.Flo = new LoopScrollView_1.LoopScrollView(this.GetLoopScrollViewComponent(1), this.GetItem(7).GetOwner(), this.cHe);
@@ -344,9 +360,9 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(25), "SkillBriefDescription_text");
     }
   }
-  async jnm() {
-    this.wYd = new HonamiStoryRoleInfoPanel_1.HonamiStoryRoleInfoPanel();
-    await this.wYd.CreateThenShowByResourceIdAsync("PnlHonamiStorySVInfo", this.GetItem(28));
+  async d1m() {
+    this.szd = new HonamiStoryRoleInfoPanel_1.HonamiStoryRoleInfoPanel();
+    await this.szd.CreateThenShowByResourceIdAsync("PnlHonamiStorySVInfo", this.GetItem(28));
     await LguiUtil_1.LguiUtil.LoadPrefabByResourceIdAsync("UiItem_HonamiStoryBg1", this.GetItem(26));
   }
   OnBeforeDestroy() {
@@ -430,7 +446,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.GetText(2).ShowTextNew(i);
     }
   }
-  $Mm() {
+  OBm() {
     var i;
     var t;
     if (this.Pe?.ForFunction === 1) {
@@ -441,14 +457,14 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.GetButton(3).RootUIComp.SetUIActive(true);
     }
   }
-  ZIm() {
+  iGm() {
     if (this.Pe?.ForFunction === 1) {
       this.GetButton(9).RootUIComp.SetUIActive(false);
     } else {
       this.GetButton(9).RootUIComp.SetUIActive(true);
     }
   }
-  Wwm() {
+  juf() {
     var i = this.Pe?.ShowLockPanel?.(this.CurSelectRole.GetDataId()) ?? false;
     this.wVl.SetActive(i);
     if (i) {
@@ -473,7 +489,13 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     var e = ConfigManager_1.ConfigManager.RoleConfig.GetRoleConfig(i);
     if (e) {
       if (this.Pe?.ForFunction === 1) {
-        this.wYd?.SetData(e.Id);
+        this.szd?.SetData(e.Id);
+      }
+      if (this.CurSelectRole && this.CurSelectRole.IsTrialRole()) {
+        s = this.CurSelectRole?.GetTrialRoleId();
+        this.tUf(s);
+      } else {
+        this.ZDf?.SetUiActive(false);
       }
       var s = ConfigManager_1.ConfigManager.RoleSkillConfig.GetSkillList(e.SkillId);
       if (s) {
@@ -497,7 +519,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
         if (this.Pe?.GetCustomSkillShowData) {
           r.push(...this.Pe.GetCustomSkillShowData(this.CurSelectRole.GetRoleId()));
         } else {
-          for (const n of displaySkillTypes) {
+          for (const n of CommonParamById_1.configCommonParamById.GetIntArrayConfig("DisplaySkillTypes")) {
             for (const a of t) {
               if (a.SkillType === n) {
                 var o = new TeamRoleSkillItem_1.TeamRoleSkillData();
@@ -529,9 +551,9 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
           if (s) {
             this.Klo?.RefreshByData(i);
           }
-          this.$Mm();
-          this.ZIm();
-          this.Wwm();
+          this.OBm();
+          this.iGm();
+          this.juf();
         }
       }
     }
@@ -550,7 +572,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     }
     var h = this.Pe?.ForFunction === 1;
     if (h) {
-      this.wYd?.RefreshSkillInfo(i.SkillName, t, s, e);
+      this.szd?.RefreshSkillInfo(i.SkillName, t, s, e);
     } else {
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(15), i.SkillName);
       LguiUtil_1.LguiUtil.SetLocalTextNew(this.GetText(18), t, ...e);
@@ -561,7 +583,7 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     var i;
     var t;
     var e = this.GetText(6);
-    if (!ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation() && (i = this.CurSelectRole.GetDataId(), t = this.Vlo.indexOf(this.CurSelectRole), this.Flo.RefreshGridProxy(t), this.Pe?.IsNeedRevive?.(i))) {
+    if (!ModelManager_1.ModelManager.TowerModel.IsOpenFloorFormation() && !ControllerHolder_1.ControllerHolder.LordGymController.IsInLordGymDungeon() && (i = this.CurSelectRole.GetDataId(), t = this.Vlo.indexOf(this.CurSelectRole), this.Flo.RefreshGridProxy(t), this.Pe?.IsNeedRevive?.(i))) {
       e.SetUIActive(true);
       LguiUtil_1.LguiUtil.SetLocalText(e, "EditBattleTeamNeedRevive");
     } else {
@@ -569,16 +591,30 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
     }
   }
   GetGuideUiItemAndUiItemForShowEx(i) {
-    if (i[0] === "Dream") {
-      if (this.jlo === undefined || this.Wlo === undefined || (t = this.jlo.GetItemByIndex(this.Wlo.length - 1)) === undefined) {
+    var t = i[0];
+    if (t === "Dream") {
+      if (this.jlo === undefined || this.Wlo === undefined || (e = this.jlo.GetItemByIndex(this.Wlo.length - 1)) === undefined) {
         return undefined;
       } else {
-        return [t, t];
+        return [e, e];
       }
     }
-    var t = Number(i[0]);
-    if (t !== 0) {
-      t = this.r1o(t);
+    if (t === "Trial") {
+      const s = Number(i[1]);
+      var e = this.Vlo?.findIndex(i => {
+        return !!i.IsTrialRole() && ConfigManager_1.ConfigManager.TrialRoleConfig?.GetTrialRoleConfig(i.GetRoleId())?.GroupId === s;
+      });
+      if (e !== undefined && e >= 0) {
+        if (t = this.Flo?.GetGrid(e)) {
+          return [t, t];
+        } else {
+          return undefined;
+        }
+      }
+    }
+    e = Number(i[0]);
+    if (e !== 0) {
+      t = this.r1o(e);
       if (t) {
         return [t, t];
       }
@@ -595,6 +631,18 @@ class TeamRoleSelectView extends UiViewBase_1.UiViewBase {
       this.Flo.ScrollToGridIndex(e, false);
     });
     return s;
+  }
+  async eUf() {
+    this.ZDf = new RoleTrialLabelItem_1.RoleTrialLabelItem();
+    await this.ZDf.CreateThenShowByActorAsync(this.GetItem(30).GetOwner());
+  }
+  tUf(i) {
+    if (!RoleUtils_1.RoleUtils.IsTrialRole(i) || RoleUtils_1.RoleUtils.GetTrialRoleType(i) === 0) {
+      this.ZDf?.SetUiActive(false);
+    } else {
+      this.ZDf?.SetUiActive(true);
+      this.ZDf?.Refresh(i);
+    }
   }
 }
 exports.TeamRoleSelectView = TeamRoleSelectView;

@@ -48,13 +48,13 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static PreUseSkillNotify(e, o) {
-    e = e?.GetComponent(55);
+    e = e?.GetComponent(58);
     return !e || !!e.PreSwitchRemoteFightState(o.dVn.mVn);
   }
   static UseSkillNotify(e, o, t) {
     var l;
     if (e && o && o.dVn && o.dVn.r5n) {
-      if (o.dVn.s5n && (t = MathUtils_1.MathUtils.LongToBigInt(t.$8n), e = e.GetComponent(39), l = MathUtils_1.MathUtils.LongToNumber(o.dVn.CVn), e?.SimulatedBeginSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n), l, o.dVn.gVn, o.dVn.n5n * 0.001, t))) {
+      if (o.dVn.s5n && (t = MathUtils_1.MathUtils.LongToBigInt(t.$8n), e = e.GetComponent(40), l = MathUtils_1.MathUtils.LongToNumber(o.dVn.CVn), e?.SimulatedBeginSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n), l, o.dVn.gVn, o.dVn.n5n * 0.001, t))) {
         SkillMessageController.UIt.add(t);
       }
     } else if (Log_1.Log.CheckError()) {
@@ -63,7 +63,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
   }
   static SkillNotify(e, o, t) {
     var l;
-    var r = e?.GetComponent(39);
+    var r = e?.GetComponent(40);
     if (r) {
       l = MathUtils_1.MathUtils.LongToBigInt(t.X8n);
       if (SkillMessageController.UIt.has(l)) {
@@ -82,13 +82,13 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
     if (o.dVn && o.dVn.s5n) {
       t = MathUtils_1.MathUtils.LongToBigInt(t.X8n);
       SkillMessageController.UIt.delete(t);
-      e?.GetComponent(39)?.SimulateEndSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n));
+      e?.GetComponent(40)?.SimulateEndSkill(MathUtils_1.MathUtils.LongToNumber(o.dVn.r5n));
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("World", 3, "[CreatureController.EndSkillNotify] 服务器返回参数有误。");
     }
   }
   static UseSkillRequest(o, e, t) {
-    const l = o.GetComponent(39);
+    const l = o.GetComponent(40);
     var r = e.SkillId;
     var a = e.SkillInfo.AutonomouslyBySimulate;
     var s = e.SkillInfo.MoveControllerTime;
@@ -200,7 +200,7 @@ class SkillMessageController extends ControllerBase_1.ControllerBase {
   }
 }
 (_a = SkillMessageController).CloseMonsterServerLogic = false;
-SkillMessageController.ClosePrintDebugFightErrInfo = false;
+SkillMessageController.ClosePrintDebugFightErrInfo = true;
 SkillMessageController.UIt = new Set();
 SkillMessageController.sCc = e => {
   switch (e.Q4n) {

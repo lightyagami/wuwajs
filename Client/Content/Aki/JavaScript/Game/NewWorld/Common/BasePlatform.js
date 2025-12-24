@@ -88,7 +88,7 @@ class SceneItemBasePlatform extends BasePlatform {
     this.Z2u = [];
     this.W$o = false;
     this.IsDeltaBaseSpeedNeedZ = true;
-    var t = this.EntityHandle?.Entity.GetComponent(206);
+    var t = this.EntityHandle?.Entity.GetComponent(212);
     var e = t?.GetInteractionMainActor();
     if (e) {
       var r = e.GetAttachParentActor();
@@ -125,8 +125,8 @@ class SceneItemBasePlatform extends BasePlatform {
   CheckLeave(e, r) {
     if (this.EntityHandle?.Valid) {
       var s;
-      var i = this.EntityHandle.Entity.GetComponent(206);
-      var o = e?.GetComponent(182)?.CharacterMovement;
+      var i = this.EntityHandle.Entity.GetComponent(212);
+      var o = e?.GetComponent(187)?.CharacterMovement;
       let t = false;
       if (this.W$o) {
         if ((h = i?.GetMainCollisionActor()) && o) {
@@ -148,7 +148,7 @@ class SceneItemBasePlatform extends BasePlatform {
       }
       var a;
       var h;
-      var n = e?.GetComponent(209);
+      var n = e?.GetComponent(215);
       if (this.Z2u.length > 0) {
         for (const f of this.Z2u) {
           n?.RemoveTag(f);
@@ -156,11 +156,11 @@ class SceneItemBasePlatform extends BasePlatform {
         this.RequestEnterOrLeave(false);
       }
       if (this.W$o) {
-        if (a = e?.GetComponent(233)) {
+        if (a = e?.GetComponent(242)) {
           a.IsAttachToMoveSceneItem = false;
         }
         if (!a?.IsOnVehicle) {
-          if (h = e?.GetComponent(45)) {
+          if (h = e?.GetComponent(46)) {
             h.NeedRootMotionWhenAttached = false;
           }
           e?.GetComponent(3)?.Owner?.K2_DetachFromActor(1, 1, 1);
@@ -170,6 +170,10 @@ class SceneItemBasePlatform extends BasePlatform {
         }
         EventSystem_1.EventSystem.EmitWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, e, false);
       }
+      i = this.EntityHandle.Entity?.GetComponent(338);
+      if (i) {
+        i.OnCharacterLeave(e.Id);
+      }
     }
     return true;
   }
@@ -178,26 +182,29 @@ class SceneItemBasePlatform extends BasePlatform {
   }
   OnCharacterEnter(t, e) {
     if (this.EntityHandle.Valid) {
-      var r;
-      var s = this.EntityHandle.Entity.GetComponent(206);
-      var i = e?.GetOwner()?.GetEntityNoBlueprint();
-      var o = i?.GetComponent(209);
+      var r = this.EntityHandle.Entity.GetComponent(212);
+      var s = e?.GetOwner()?.GetEntityNoBlueprint();
+      var i = s?.GetComponent(215);
       if (this.Z2u.length > 0) {
         for (const a of this.Z2u) {
-          o?.AddTag(a);
+          i?.AddTag(a);
         }
         this.RequestEnterOrLeave(true);
       }
       if (this.W$o) {
-        if (r = i?.GetComponent(45)) {
-          r.NeedRootMotionWhenAttached = true;
+        if (o = s?.GetComponent(46)) {
+          o.NeedRootMotionWhenAttached = true;
         }
-        if (r = i?.GetComponent(233)) {
-          r.IsAttachToMoveSceneItem = true;
+        if (o = s?.GetComponent(242)) {
+          o.IsAttachToMoveSceneItem = true;
         }
-        i?.GetComponent(3)?.Owner?.K2_AttachToActor(s?.Owner, undefined, 1, 1, 1, true);
+        s?.GetComponent(3)?.Owner?.K2_AttachToActor(r?.Owner, undefined, 1, 1, 1, true);
         e.bKuroStopUpdateBasedMovement = true;
         EventSystem_1.EventSystem.EmitWithTarget(this.EntityHandle.Entity, EventDefine_1.EEventName.OnChangeBasedPlatform, t, true);
+      }
+      var o = this.EntityHandle?.Entity?.GetComponent(338);
+      if (o) {
+        o.OnCharacterStandOn(t.Id);
       }
     }
   }
@@ -211,7 +218,7 @@ class VehicleBasePlatform extends BasePlatform {
     this.CacheLocation = Vector_1.Vector.Create();
     this.Z2u = [];
     this.IsDeltaBaseSpeedNeedZ = true;
-    var t = this.EntityHandle?.Entity.GetComponent(206);
+    var t = this.EntityHandle?.Entity.GetComponent(212);
     var e = t?.GetInteractionMainActor();
     if (e) {
       var r = e.GetAttachParentActor();
@@ -242,10 +249,10 @@ class VehicleBasePlatform extends BasePlatform {
     }
   }
   TransformFromRelativeSpace(t, e, r, s) {
-    (this.EntityHandle?.Entity.GetComponent(238)).SkeletalMesh.D_TransformFromBoneSpace(this.BoneName, t, e, r, s);
+    (this.EntityHandle?.Entity.GetComponent(247)).SkeletalMesh.D_TransformFromBoneSpace(this.BoneName, t, e, r, s);
   }
   TransformToRelativeSpace(t, e, r, s) {
-    (this.EntityHandle?.Entity.GetComponent(238)).SkeletalMesh.D_TransformToBoneSpace(this.BoneName, t, e, r, s);
+    (this.EntityHandle?.Entity.GetComponent(247)).SkeletalMesh.D_TransformToBoneSpace(this.BoneName, t, e, r, s);
   }
   GetTransform() {
     return this.EntityHandle?.Entity.GetComponent(1).ActorTransform;
@@ -254,11 +261,11 @@ class VehicleBasePlatform extends BasePlatform {
     if (!this.EntityHandle?.Valid) {
       return true;
     }
-    var r = this.EntityHandle.Entity.GetComponent(238);
+    var r = this.EntityHandle.Entity.GetComponent(247);
     this.CacheLocation.DeepCopy(r.ActorLocationProxy);
     var r = Vector_1.Vector.DistSquared(e, this.CacheLocation);
     if (r > this.LeaveSphereRadiusSq) {
-      var s = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(209);
+      var s = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
       if (this.Z2u.length > 0) {
         for (const i of this.Z2u) {
           s?.RemoveTag(i);
@@ -271,8 +278,8 @@ class VehicleBasePlatform extends BasePlatform {
   }
   OnCharacterEnter(t, e) {
     if (this.EntityHandle.Valid) {
-      this.EntityHandle.Entity.GetComponent(118)?.SetTakeOverTick(true);
-      var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(209);
+      this.EntityHandle.Entity.GetComponent(123)?.SetTakeOverTick(true);
+      var r = Global_1.Global.BaseCharacter?.GetEntityNoBlueprint()?.GetComponent(215);
       if (this.Z2u.length > 0) {
         for (const s of this.Z2u) {
           r?.AddTag(s);
@@ -298,11 +305,11 @@ class BasePlatformController {
         return r.OwnedBasePlatform;
       }
       let t = undefined;
-      if (e.Entity.GetComponent(206)) {
+      if (e.Entity.GetComponent(212)) {
         t = new SceneItemBasePlatform(e);
       } else if (e.Entity.GetComponent(3)) {
         t = new CharacterBasePlatform(e);
-      } else if (e.Entity.GetComponent(238)) {
+      } else if (e.Entity.GetComponent(247)) {
         t = new VehicleBasePlatform(e);
       }
       return r.OwnedBasePlatform = t;

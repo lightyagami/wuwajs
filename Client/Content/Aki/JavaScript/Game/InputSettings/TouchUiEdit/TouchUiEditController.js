@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TouchUiEditController = undefined;
 const ControllerBase_1 = require("../../../Core/Framework/ControllerBase");
+const GameSettingsDefine_1 = require("../../GameSettings/GameSettingsDefine");
 const UiManager_1 = require("../../Ui/UiManager");
 const CommonTouchUiEditContainer_1 = require("./Common/CommonTouchUiEditContainer");
 const CommonTouchUiEditDataFacade_1 = require("./Common/CommonTouchUiEditDataFacade");
@@ -26,19 +27,32 @@ class TouchUiEditController extends ControllerBase_1.ControllerBase {
     return true;
   }
   static G$u(o) {
-    var i = new o();
-    this.F$u.set(o.name, i);
+    var t = new o();
+    this.F$u.set(o.name, t);
   }
   static GetDataFacade(o) {
     return this.F$u.get(o.name);
   }
   static OpenCommonTouchUiEditView(o) {
-    var i = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
-    var t = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
-    if (t) {
-      t.SetGroup(o);
-      o = new TouchUiEditProxy_1.TouchUiEditProxy(i, t, (o, i) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(o, i));
+    var t = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
+    var e = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
+    if (e) {
+      e.SetGroup(o);
+      o = new TouchUiEditProxy_1.TouchUiEditProxy(t, e, (o, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(o, t));
       UiManager_1.UiManager.OpenView("CommonTouchUiEditView", o);
+    }
+  }
+  static CreateProxyForFunction(o) {
+    if (o === GameSettingsDefine_1.EFunction.MotorMobileButtonCustom) {
+      return this.s_f(2);
+    }
+  }
+  static s_f(o) {
+    var t = new CommonTouchUiEditContainer_1.CommonTouchUiEditContainer();
+    var e = this.GetDataFacade(CommonTouchUiEditDataFacade_1.CommonTouchUiEditDataFacade);
+    if (e) {
+      e.SetGroup(o);
+      return new TouchUiEditProxy_1.TouchUiEditProxy(t, e, (o, t) => new CommonTouchUiEditItem_1.CommonTouchUiEditItem(o, t));
     }
   }
 }

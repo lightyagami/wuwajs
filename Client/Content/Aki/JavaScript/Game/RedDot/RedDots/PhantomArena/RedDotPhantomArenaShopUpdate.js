@@ -14,8 +14,11 @@ class RedDotPhantomArenaShopUpdate extends RedDotBase_1.RedDotBase {
   OnGetEvents() {
     return [EventDefine_1.EEventName.OnPhantomArenaShopOpen, EventDefine_1.EEventName.RefreshGoodsList];
   }
-  OnCheck() {
-    return ModelManager_1.ModelManager.PhantomArenaModel.CheckShopRedDot();
+  IsMultiple() {
+    return true;
+  }
+  OnCheck(e) {
+    return ModelManager_1.ModelManager.PhantomArenaModel.CheckShopRedDot(e);
   }
 }
 exports.RedDotPhantomArenaShopUpdate = RedDotPhantomArenaShopUpdate;

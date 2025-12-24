@@ -24,6 +24,9 @@ class RegressSignReward {
   get SignReward() {
     return this.signreward();
   }
+  get Version() {
+    return this.version();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -66,6 +69,14 @@ class RegressSignReward {
   }
   signreward() {
     var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  version() {
+    var t = this.J7.__offset(this.z7, 14);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

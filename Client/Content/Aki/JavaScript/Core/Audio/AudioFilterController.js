@@ -8,11 +8,13 @@ const Log_1 = require("../Common/Log");
 const PriorityQueue_1 = require("../Container/PriorityQueue");
 const AudioSystem_1 = require("./AudioSystem");
 class AudioFilterState {
-  constructor(t, e) {
+  constructor(t, e, i) {
     this.State = "none";
     this.Priority = 0;
-    this.State = t;
-    this.Priority = e ?? 0;
+    this.Uid = 0;
+    this.Uid = t;
+    this.State = e;
+    this.Priority = i ?? 0;
   }
 }
 AudioFilterState.Compare = (t, e) => {
@@ -23,10 +25,6 @@ AudioFilterState.Compare = (t, e) => {
   return i;
 };
 class AudioFilterController {
-  static get S$_() {
-    this.M$_ ||= new Map([["none", this.E$_], ["ui_default", new AudioFilterState("ui_default")]]);
-    return this.M$_;
-  }
   static set zyi(t) {
     if (this.I$_ !== t) {
       if (this.I$_.State !== t.State) {
@@ -59,23 +57,15 @@ class AudioFilterController {
     }
   }
   static PushFilterState(t, e, i = "", r = 0) {
-    var o;
-    if (e.Empty || this.zyi.State !== t || e.Top !== this.zyi) {
-      r = AudioFilterController.CreateFilterState(t, r);
-      o = this._A++;
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[FilterState] [Push]", ["uid", o], ["State", r], ["Context", i]);
-      }
-      e.Push(r);
-      this.w$_.set(o, r);
-      this.T$_();
-      return o;
-    } else {
-      if (Log_1.Log.CheckDebug()) {
-        Log_1.Log.Debug("Audio", 42, "[FilterState] [Push] 当前状态和需要入栈状态一致，跳过push", ["State", t], ["Context", i]);
-      }
-      return 0;
+    var o = ++this._A;
+    var t = AudioFilterController.CreateFilterState(o, t, r);
+    if (Log_1.Log.CheckDebug()) {
+      Log_1.Log.Debug("Audio", 42, "[FilterState] [Push]", ["uid", o], ["State", t], ["Context", i]);
     }
+    e.Push(t);
+    this.w$_.set(o, t);
+    this.T$_();
+    return o;
   }
   static RemoveFilterState(t, e, i) {
     var r;
@@ -107,18 +97,14 @@ class AudioFilterController {
     return this.PushFilterState(t, this.L$_, "[Scene]" + e, i);
   }
   static RemoveSceneFilterState(t, e) {
-    this.RemoveFilterState(t, this.b$_, "[Scene] " + e);
+    this.RemoveFilterState(t, this.L$_, "[Scene] " + e);
   }
-  static CreateFilterState(t, e) {
-    if (t) {
-      if (!e && this.S$_.has(t)) {
-        return this.S$_.get(t);
-      } else {
-        return new AudioFilterState(t, e);
-      }
+  static CreateFilterState(t, e, i) {
+    if (e) {
+      return new AudioFilterState(t, e, i);
     } else {
       if (Log_1.Log.CheckError()) {
-        Log_1.Log.Error("Audio", 42, "[FilterState] [Create] 传入异常的State", ["State", t], ["priority", e]);
+        Log_1.Log.Error("Audio", 42, "[FilterState] [Create] 传入异常的State", ["State", e], ["priority", i]);
       }
       return this.E$_;
     }
@@ -128,6 +114,5 @@ class AudioFilterController {
 AudioFilterController.w$_ = new Map();
 AudioFilterController.b$_ = new PriorityQueue_1.PriorityQueue(AudioFilterState.Compare);
 AudioFilterController.L$_ = new PriorityQueue_1.PriorityQueue(AudioFilterState.Compare);
-AudioFilterController.E$_ = new AudioFilterState("none");
-AudioFilterController.M$_ = undefined;
+AudioFilterController.E$_ = new AudioFilterState(0, "none");
 AudioFilterController.I$_ = AudioFilterController.E$_; //# sourceMappingURL=AudioFilterController.js.map

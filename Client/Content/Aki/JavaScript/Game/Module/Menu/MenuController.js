@@ -95,7 +95,7 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     }
     ModelManager_1.ModelManager.MenuModel.IsEdited = true;
   }
-  static csm(e) {
+  static Y1m(e) {
     if (GameSettingsManager_1.GameSettingsManager.IsValid(GameSettingsDefine_1.EFunction.RayTracedGI)) {
       ModelManager_1.ModelManager.MenuModel.AddDataToTempOrSetValue(GameSettingsDefine_1.EFunction.RayTracedGI, e > 0 ? 1 : 0);
     } else {
@@ -141,7 +141,7 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.RefreshMenuSetting, GameSettingsDefine_1.EFunction.IMAGEQUALITY);
     }
     if (n === GameSettingsDefine_1.EFunction.RayTracing && (i = t.GetDataCacheOrCurValue(GameSettingsDefine_1.EFunction.RayTracing)) !== undefined && ModelManager_1.ModelManager.MenuModel.NeedRayTracingSubChange) {
-      this.csm(i);
+      this.Y1m(i);
     }
     if (n === GameSettingsDefine_1.EFunction.NVIDIADLSS && (i = t.GetDataCacheOrCurValue(n)) !== undefined && i === 0) {
       ModelManager_1.ModelManager.MenuModel.AddDataToTempCache(GameSettingsDefine_1.EFunction.NVIDIADLSSFG, 0);
@@ -318,10 +318,10 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     this.OpenViewFuncMap.set("CdKeyInputView", this.twi);
     this.OpenViewFuncMap.set("MobileSwitchInputView", this._Wa);
     this.OpenViewFuncMap.set("SubPackageDownLoadView", this.UF1);
-    this.OpenViewFuncMap.set("SubPackageDownLoadClearTipsView", this.eTm);
+    this.OpenViewFuncMap.set("SubPackageDownLoadClearTipsView", this.CGm);
     this.OpenViewFuncMap.set("FilterSettingView", this.OpenFilterSettingView);
     this.OpenViewFuncMap.set("EyeProtectView", this.OpenEyeProtectView);
-    this.OpenViewFuncMap.set("VersionCheckView", this.$Kd);
+    this.OpenViewFuncMap.set("VersionCheckView", this.XKd);
   }
   static IsInputControllerTypeIncludeKey(e, t) {
     switch (e) {
@@ -422,7 +422,7 @@ class MenuController extends UiControllerBase_1.UiControllerBase {
     ConfirmBoxController_1.ConfirmBoxController.ShowConfirmBoxNew(e);
   }
   static NeedRedMagicFpsConfirmBox(e) {
-    return GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagic() && GameSettingsDeviceRender_1.GameSettingsDeviceRender.GetFrameIndexByList(90) === e && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.Vulkan) === 0;
+    return GameSettingsDeviceRender_1.GameSettingsDeviceRender.IsRedMagic() && e === 2 && GameSettingsManager_1.GameSettingsManager.GetCurrentValue(GameSettingsDefine_1.EFunction.Vulkan) === 0;
   }
 }
 exports.MenuController = MenuController;
@@ -455,7 +455,7 @@ MenuController.ewi = () => {
 MenuController.twi = () => {
   CommonInputViewController_1.CommonInputViewController.OpenCdKeyInputView();
 };
-MenuController.$Kd = () => {
+MenuController.XKd = () => {
   PackageUpdateController_1.PackageUpdateController.TryOpenParallelPackageUpdateUrl();
 };
 MenuController._Wa = () => {
@@ -464,7 +464,7 @@ MenuController._Wa = () => {
 MenuController.UF1 = () => {
   UiManager_1.UiManager.OpenView("SubPackageDownLoadView");
 };
-MenuController.eTm = () => {
+MenuController.CGm = () => {
   UiManager_1.UiManager.OpenView("SubPackageDownLoadClearTipsView");
 };
 MenuController.ita = e => {

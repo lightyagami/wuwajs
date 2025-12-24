@@ -36,7 +36,7 @@ class PowerMagnificationRewardPopView extends UiViewBase_1.UiViewBase {
     };
   }
   OnRegisterComponent() {
-    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent]];
+    this.ComponentRegisterInfos = [[0, UE.UIText], [1, UE.UIText], [2, UE.UIItem], [3, UE.UIItem], [4, UE.UIButtonComponent], [5, UE.UIItem], [6, UE.UIText]];
     this.BtnBindInfo = [[4, this.OnHelpButtonClick]];
   }
   async OnBeforeStartAsync() {
@@ -64,6 +64,12 @@ class PowerMagnificationRewardPopView extends UiViewBase_1.UiViewBase {
           this.val(2);
         }
       });
+      if (this.Pe.Tip) {
+        this.GetItem(5).SetUIActive(true);
+        this.GetText(6).SetText(this.Pe.Tip);
+      } else {
+        this.GetItem(5).SetUIActive(false);
+      }
     } else if (Log_1.Log.CheckError()) {
       Log_1.Log.Error("InstanceDungeon", 43, "PowerMagnificationRewardPopView传入参数为空");
     }

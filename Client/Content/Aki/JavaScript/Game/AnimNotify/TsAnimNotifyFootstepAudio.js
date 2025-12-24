@@ -14,7 +14,7 @@ class TsAnimNotifyFootstepAudio extends UE.KuroAnimNotify {
   K2_Notify(e, t) {
     var r;
     var e = e.GetOwner();
-    return e instanceof TsBaseCharacter_1.default && !e.GetEntityNoBlueprint()?.GetComponent(209)?.HasTag(1654452863) && !(r = e.GetEntityNoBlueprint()?.GetComponent(193), e = e.GetEntityNoBlueprint()?.GetComponent(57), !r) && !!e && !(r.ChangeFootstepVariant(this.Variant), e.PostFootstepVoice(), 0);
+    return e instanceof TsBaseCharacter_1.default && !e.GetEntityNoBlueprint()?.GetComponent(215)?.HasTag(1654452863) && !(r = e.GetEntityNoBlueprint()?.GetComponent(199), e = e.GetEntityNoBlueprint()?.GetComponent(60), !r) && !!e && !(r.ChangeFootstepVariant(this.Variant), e.PostFootstepVoice(), 0);
   }
   GetNotifyName() {
     return "脚步音效";

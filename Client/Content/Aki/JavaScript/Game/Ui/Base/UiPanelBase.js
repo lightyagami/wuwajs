@@ -79,6 +79,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   OnStart() {}
   OnBeforeShow() {}
   OnAfterShow() {}
+  OnAfterShowFinish() {}
   async OnBeforeHideAsync() {}
   OnBeforeHide() {}
   OnAfterHide() {}
@@ -143,6 +144,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
     await Promise.all([this.OnShowAsyncImplementImplement(), ...this.k_r.map(async t => t.ShowAsync()), ...this.u9.map(async t => t.ShowAsync())]);
     this.OnAfterShowImplement();
     this.OnAfterShow();
+    this.OnAfterShowFinish();
   }
   OnShowAsyncImplementImplementCompatible() {}
   OnShowImplementCompatible() {
@@ -294,7 +296,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
             Log_1.Log.Error("UiCore", 10, "当前Actor创建完成,界面已经处于销毁状态", ["path", i]);
           }
           this.oL(t);
-          this.bsm();
+          this.u_m();
         }
       }
     }
@@ -319,7 +321,7 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       return false;
     }
   }
-  bsm() {
+  u_m() {
     if (this.bxo?.IsValid()) {
       this.MemoryTag = LguiUtil_1.LguiUtil.GetRootActorMemoryTag(this.bxo);
     }
@@ -691,6 +693,12 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
       return t[1];
     }
   }
+  GetUiLineRaw(t) {
+    t = this.F_r.get(t);
+    if (t && t[0] === UE.UI2DLineRaw) {
+      return t[1];
+    }
+  }
   $_r() {
     this.V_r = this.GetRootActor()?.GetComponentByClass(UE.GuideHookRegistry.StaticClass());
   }
@@ -754,6 +762,12 @@ class UiPanelBase extends ComponentAction_1.ComponentAction {
   }
   async SetExtendToggleTextureTransitionByPath(t, i, e = 9) {
     await this.j_r.SetExtendToggleTextureTransitionByPath(t, i, e, this.MemoryTag);
+  }
+  async SetExtendToggleTextureTransitionGroupByPath(t, i, e) {
+    await this.j_r.SetExtendToggleTextureTransitionGroupByPath(t, i, e, this.MemoryTag);
+  }
+  async SetTextureCustomMaterialAsync(t, i) {
+    await this.j_r.SetTextureCustomMaterialAsync(t, i, this.MemoryTag);
   }
   async SetExtendToggleSpriteTransitionByPath(t, i, e = 9) {
     await this.j_r.SetExtendToggleSpriteTransitionByPath(t, i, e, this.MemoryTag);

@@ -20,8 +20,23 @@ class ExploreTools {
   get SkillType() {
     return this.skilltype();
   }
+  get RouletteType() {
+    return GameUtils_1.GameUtils.ConvertToArray(this.roulettetypeLength(), this.roulettetype, this);
+  }
   get CanEquip() {
     return this.canequip();
+  }
+  get AssemblyEquipButton() {
+    return this.assemblyequipbutton();
+  }
+  get CanAssemblyShow() {
+    return this.canassemblyshow();
+  }
+  get UseType() {
+    return this.usetype();
+  }
+  get InputLogReport() {
+    return this.inputlogreport();
   }
   get CurrentSkillInfo() {
     return this.currentskillinfo();
@@ -40,6 +55,15 @@ class ExploreTools {
   }
   get SortId() {
     return this.sortid();
+  }
+  get Sort() {
+    return GameUtils_1.GameUtils.ConvertToMap(this.sortLength(), this.sortKey, this.sortValue, this);
+  }
+  sortKey(t) {
+    return this.sort(t)?.key();
+  }
+  sortValue(t) {
+    return this.sort(t)?.value();
   }
   get AutoFill() {
     return this.autofill();
@@ -106,12 +130,59 @@ class ExploreTools {
       return 0;
     }
   }
-  canequip() {
+  GetRoulettetypeAt(t) {
+    return this.roulettetype(t);
+  }
+  roulettetype(t) {
+    var i = this.J7.__offset(this.z7, 10);
+    if (i) {
+      return this.J7.readInt32(this.J7.__vector(this.z7 + i) + t * 4);
+    } else {
+      return 0;
+    }
+  }
+  roulettetypeLength() {
     var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  roulettetypeArray() {
+    var t = this.J7.__offset(this.z7, 10);
+    if (t) {
+      return new Int32Array(this.J7.bytes().buffer, this.J7.bytes().byteOffset + this.J7.__vector(this.z7 + t), this.J7.__vector_len(this.z7 + t));
+    } else {
+      return null;
+    }
+  }
+  canequip() {
+    var t = this.J7.__offset(this.z7, 12);
     return !t || !!this.J7.readInt8(this.z7 + t);
   }
+  assemblyequipbutton() {
+    var t = this.J7.__offset(this.z7, 14);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  canassemblyshow() {
+    var t = this.J7.__offset(this.z7, 16);
+    return !t || !!this.J7.readInt8(this.z7 + t);
+  }
+  usetype() {
+    var t = this.J7.__offset(this.z7, 18);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  inputlogreport() {
+    var t = this.J7.__offset(this.z7, 20);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
+  }
   currentskillinfo(t) {
-    var i = this.J7.__offset(this.z7, 12);
+    var i = this.J7.__offset(this.z7, 22);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -119,7 +190,7 @@ class ExploreTools {
     return i;
   }
   helpid() {
-    var t = this.J7.__offset(this.z7, 14);
+    var t = this.J7.__offset(this.z7, 24);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -127,7 +198,7 @@ class ExploreTools {
     }
   }
   icon(t) {
-    var i = this.J7.__offset(this.z7, 16);
+    var i = this.J7.__offset(this.z7, 26);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -135,7 +206,7 @@ class ExploreTools {
     return i;
   }
   background(t) {
-    var i = this.J7.__offset(this.z7, 18);
+    var i = this.J7.__offset(this.z7, 28);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -143,7 +214,7 @@ class ExploreTools {
     return i;
   }
   battleviewicon(t) {
-    var i = this.J7.__offset(this.z7, 20);
+    var i = this.J7.__offset(this.z7, 30);
     var i = i ? this.J7.__string(this.z7 + i, t) : null;
     if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
       GameUtils_1.GameUtils.InternalizedString(i);
@@ -151,23 +222,42 @@ class ExploreTools {
     return i;
   }
   sortid() {
-    var t = this.J7.__offset(this.z7, 22);
+    var t = this.J7.__offset(this.z7, 32);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
   }
+  GetSortAt(t, i) {
+    return this.sort(t);
+  }
+  sort(t, i) {
+    var s = this.J7.__offset(this.z7, 34);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
+    } else {
+      return null;
+    }
+  }
+  sortLength() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
   autofill() {
-    var t = this.J7.__offset(this.z7, 24);
+    var t = this.J7.__offset(this.z7, 36);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   showunlock() {
-    var t = this.J7.__offset(this.z7, 26);
+    var t = this.J7.__offset(this.z7, 38);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   skillgroupid() {
-    var t = this.J7.__offset(this.z7, 28);
+    var t = this.J7.__offset(this.z7, 40);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
@@ -175,14 +265,14 @@ class ExploreTools {
     }
   }
   isuseinphantomteam() {
-    var t = this.J7.__offset(this.z7, 30);
+    var t = this.J7.__offset(this.z7, 42);
     return !!t && !!this.J7.readInt8(this.z7 + t);
   }
   GetCostAt(t, i) {
     return this.cost(t);
   }
   cost(t, i) {
-    var s = this.J7.__offset(this.z7, 32);
+    var s = this.J7.__offset(this.z7, 44);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -190,7 +280,7 @@ class ExploreTools {
     }
   }
   costLength() {
-    var t = this.J7.__offset(this.z7, 32);
+    var t = this.J7.__offset(this.z7, 44);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -201,7 +291,7 @@ class ExploreTools {
     return this.authorization(t);
   }
   authorization(t, i) {
-    var s = this.J7.__offset(this.z7, 34);
+    var s = this.J7.__offset(this.z7, 46);
     if (s) {
       return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
@@ -209,7 +299,7 @@ class ExploreTools {
     }
   }
   authorizationLength() {
-    var t = this.J7.__offset(this.z7, 34);
+    var t = this.J7.__offset(this.z7, 46);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
     } else {
@@ -217,7 +307,7 @@ class ExploreTools {
     }
   }
   summonconfigid() {
-    var t = this.J7.__offset(this.z7, 36);
+    var t = this.J7.__offset(this.z7, 48);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {

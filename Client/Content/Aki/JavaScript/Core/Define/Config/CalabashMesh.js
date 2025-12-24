@@ -22,6 +22,9 @@ class CalabashMesh {
   get NewEffects() {
     return GameUtils_1.GameUtils.ConvertToArray(this.neweffectsLength(), this.neweffects, this);
   }
+  get HideParaglider() {
+    return this.hideparaglider();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -82,6 +85,14 @@ class CalabashMesh {
       return this.J7.__vector_len(this.z7 + t);
     } else {
       return 0;
+    }
+  }
+  hideparaglider() {
+    var t = this.J7.__offset(this.z7, 12);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 1;
     }
   }
 }

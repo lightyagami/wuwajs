@@ -33,7 +33,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     this.dZr = undefined;
     this.cBe = undefined;
     this.EYc = new SurvivorsRogueEntityRedirectFilter_1.SurvivorsRogueEntityRedirectFilter();
-    this.aZd = new SurvivorsRoguePlayerHpHandle_1.SurvivorsRoguePlayerHpHandle();
+    this.xem = new SurvivorsRoguePlayerHpHandle_1.SurvivorsRoguePlayerHpHandle();
     this.jUd = (e, r) => {
       r = MathUtils_1.MathUtils.LongToNumber(r.oTs);
       if (this.GetModel().GoldNum !== r) {
@@ -90,15 +90,15 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       e = o.Entity.GetComponent(3).ActorLocation;
       r?.EnableFlatGroundByAbovePoint(e);
       this.gAd = o;
-      this.dZr = o.Entity.GetComponent(211);
-      this.cBe = o.Entity.GetComponent(40);
+      this.dZr = o.Entity.GetComponent(218);
+      this.cBe = o.Entity.GetComponent(41);
     } else {
       KscLog_1.KscLog.Warn("Common", 17, KscEnv_1.KscEnv.KscWorld, "Ksc找不到玩家角色,未设置地面坐标");
     }
-    this.aZd.Init();
+    this.xem.Init();
     var r = this.GetModel().KscPlayerHeadStateData;
     if (r) {
-      this.aZd.OnPlayerHpChange(r);
+      this.xem.OnPlayerHpChange(r);
     }
   }
   OnWorldReset() {
@@ -109,7 +109,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     this.gAd = undefined;
     this.dZr = undefined;
     this.mFd();
-    this.aZd.Clear();
+    this.xem.Clear();
   }
   OnEntityRemoved(e, r) {
     var o = this.Model.GetLogicProxy(e.CreatureDataId);
@@ -137,7 +137,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
           if (i.EntityType === 2) {
             l = Protocol_1.Aki.Protocol.XNd.create();
             s.KNd = l;
-            this.Mtm();
+            this.Fom();
           } else {
             (l = Protocol_1.Aki.Protocol.e2d.create()).F4n = e.KillerId;
             s.Xkd = l;
@@ -156,7 +156,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
       r[e.CreatureDataId] = s;
     }
   }
-  Mtm() {
+  Fom() {
     TimerSystem_1.TimerSystem.Next(() => {
       var e = [];
       this.GetModel().GetAllEntities(e);
@@ -181,7 +181,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
     if (this.BMd()) {
       this.RemoveInputLayer();
     }
-    if (e = InputController_1.InputController.CreateInputLayer(7)) {
+    if (e = InputController_1.InputController.CreateInputLayer(8)) {
       if (r = this.GetPossessedPlayerEntity()) {
         InputController_1.InputController.AddInputLayer(r.Id, e);
       } else {
@@ -207,7 +207,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
   BMd() {
     var e = this.GetPossessedPlayerEntity();
     if (e) {
-      return InputController_1.InputController.GetInputLayer(e.Id, 7);
+      return InputController_1.InputController.GetInputLayer(e.Id, 8);
     }
   }
   AddKscPlayerEntity() {
@@ -335,7 +335,7 @@ class SurvivorsRogueSubController extends KscSubControllerBase_1.KscSubControlle
   }
   OnHandlePlayerHeadHpInfo(e, r) {
     super.OnHandlePlayerHeadHpInfo(e, r);
-    this.aZd.OnPlayerHpChange(e);
+    this.xem.OnPlayerHpChange(e);
   }
   GmPrintInfo() {
     var e = this.GetModel();

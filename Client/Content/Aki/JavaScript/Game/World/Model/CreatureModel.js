@@ -105,11 +105,11 @@ class CreatureModel extends ModelBase_1.ModelBase {
           var e;
           if ((!Global_1.Global.BaseCharacter?.IsValid() || Global_1.Global.BaseCharacter.EntityId !== i.Id) && i.Entity.GetComponent(0).GetEntityType() !== Protocol_1.Aki.Protocol.kks.Proto_SceneItem && !this.dMr.has(i.Id) && !this.NCa.has(i.Id)) {
             if (i.IsInit) {
-              if (e = i.Entity.GetComponent(115)) {
+              if (e = i.Entity.GetComponent(120)) {
                 e = e.DisableTickWithLog("CreatureModel.OnTeleportStart");
                 this.NCa.set(i.Id, e);
               }
-              if (e = i.Entity.GetComponent(117)) {
+              if (e = i.Entity.GetComponent(122)) {
                 e.TeleportLock = true;
               }
             } else {
@@ -131,7 +131,7 @@ class CreatureModel extends ModelBase_1.ModelBase {
         }
         for (var [i, r] of this.NCa) {
           i = ModelManager_1.ModelManager.CreatureModel.GetEntityById(i);
-          if (i?.Valid && (i.Entity.GetComponent(115).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(117))) {
+          if (i?.Valid && (i.Entity.GetComponent(120).EnableTickWithLog(r, "CreatureModel.OnTeleportComplete"), r = i.Entity.GetComponent(122))) {
             r.OnEntityBudgetTickEnableChange(true);
             r.TeleportLock = false;
           }

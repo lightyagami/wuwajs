@@ -2,19 +2,19 @@
 
 var InteractionSpotComponent_1;
 var __decorate = this && this.__decorate || function (t, e, i, n) {
-  var s;
-  var o = arguments.length;
-  var r = o < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
+  var o;
+  var s = arguments.length;
+  var r = s < 3 ? e : n === null ? n = Object.getOwnPropertyDescriptor(e, i) : n;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") {
     r = Reflect.decorate(t, e, i, n);
   } else {
     for (var h = t.length - 1; h >= 0; h--) {
-      if (s = t[h]) {
-        r = (o < 3 ? s(r) : o > 3 ? s(e, i, r) : s(e, i)) || r;
+      if (o = t[h]) {
+        r = (s < 3 ? o(r) : s > 3 ? o(e, i, r) : o(e, i)) || r;
       }
     }
   }
-  if (o > 3 && r) {
+  if (s > 3 && r) {
     Object.defineProperty(e, i, r);
   }
   return r;
@@ -31,7 +31,6 @@ const Protocol_1 = require("../../../Core/Define/Net/Protocol");
 const QueryTypeDefine_1 = require("../../../Core/Define/QueryTypeDefine");
 const EntityComponent_1 = require("../../../Core/Entity/EntityComponent");
 const RegisterComponent_1 = require("../../../Core/Entity/RegisterComponent");
-const TickSystem_1 = require("../../../Core/Tick/TickSystem");
 const TimerSystem_1 = require("../../../Core/Timer/TimerSystem");
 const Vector_1 = require("../../../Core/Utils/Math/Vector");
 const TraceElementCommon_1 = require("../../../Core/Utils/TraceElementCommon");
@@ -67,15 +66,6 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
     this.Kr = false;
     this.e21 = true;
     this.yB = undefined;
-    this.sKe = 0;
-    this.M91 = t => {
-      if (this.SpotView) {
-        if (this.e21) {
-          this.Imu();
-        }
-        this.SpotView.Update();
-      }
-    };
     this.t21 = t => {
       t = ModelManager_1.ModelManager.InteractionModel?.GetInteractEntityByIndex(t);
       this.SpotView?.SetIsSelect(t === this.Entity.Id);
@@ -93,7 +83,6 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
       if (t === -1278190765) {
         this.DZs();
         this.Yfe();
-        TickSystem_1.TickSystem.Remove(this.sKe);
       }
     };
     this.r21 = (t = false) => {
@@ -125,8 +114,8 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
   OnStart() {
     this.Hte = this.Entity.GetComponent(1);
-    this.xJr = this.Entity.GetComponent(121);
-    this.BJr = this.Entity.GetComponent(201);
+    this.xJr = this.Entity.GetComponent(126);
+    this.BJr = this.Entity.GetComponent(207);
     var t;
     var e;
     var i = this.Hte?.CreatureData?.GetPbEntityInitData();
@@ -134,12 +123,19 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
       this.s21();
     }, () => {
       this.a21();
-    }, this.DestroyShowSpotEvent), t) && cpp_1.FKuroPerceptionInterface.MarkElementDisable(t, !this.Entity.Active), (e = i?.PointIconConfig?.Offset) !== undefined && (this.yB = Vector_1.Vector.Create(), this.yB.FromConfigVector(e)), this.LZs(), this.sKe = TickSystem_1.TickSystem.Add(this.M91, "InteractionSpotComponent", 5, true, undefined, true).Id, true);
+    }, this.DestroyShowSpotEvent), t) && cpp_1.FKuroPerceptionInterface.MarkElementDisable(t, !this.Entity.Active), (e = i?.PointIconConfig?.Offset) !== undefined && (this.yB = Vector_1.Vector.Create(), this.yB.FromConfigVector(e)), this.LZs(), true);
+  }
+  OnTick(t) {
+    if (this.SpotView) {
+      if (this.e21) {
+        this.Imu();
+      }
+      this.SpotView.Update();
+    }
   }
   OnEnd() {
     this.DZs();
     this.Yfe();
-    TickSystem_1.TickSystem.Remove(this.sKe);
     return true;
   }
   LZs() {
@@ -243,7 +239,7 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
           UiActorPool_1.UiActorPool.RecycleAsync(this.Eqi, this.n8);
           this.Eqi = undefined;
         }
-        if (this.e21 && this.FNl) {
+        if (this.FNl) {
           ControllerHolder_1.ControllerHolder.TrackController.SetInteractSpotOccupied(this.FNl.TrackSource, this.FNl.Id, false);
         }
         this.SpotView = undefined;
@@ -328,5 +324,5 @@ let InteractionSpotComponent = InteractionSpotComponent_1 = class InteractionSpo
   }
 };
 InteractionSpotComponent.uoe = undefined;
-InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(301)], InteractionSpotComponent);
+InteractionSpotComponent = InteractionSpotComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(320)], InteractionSpotComponent);
 exports.InteractionSpotComponent = InteractionSpotComponent; //# sourceMappingURL=InteractionSpotComponent.js.map

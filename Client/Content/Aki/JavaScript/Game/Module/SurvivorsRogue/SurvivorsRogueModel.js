@@ -29,7 +29,7 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     this.WaveTypeArray = [];
     this.ComboTimerFreezeTimeCfg = [0, 0, 0, 0];
     this.ComboDurationAdditionCfg = [0, 0, 0, 0];
-    this.kem = 0;
+    this.grm = 0;
     this.HasNewSettle = false;
     this.XSd = 0;
     this.SelectLevelInfo = undefined;
@@ -78,7 +78,7 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     } else {
       for (let e = 0; e < exports.COMBO_LEVEL_CONFIG_LENGTH; e++) {
         this.ComboTimerFreezeTimeCfg[e] = t[e].Zps;
-        this.ComboDurationAdditionCfg[e] = t[e].vZd;
+        this.ComboDurationAdditionCfg[e] = t[e].Xtm;
       }
       if (Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("SurvivorsRogue", 79, "InitComboEnhanceCfg", ["ComboTimerFreezeTimeCfg", this.ComboTimerFreezeTimeCfg], ["ComboDurationAdditionCfg", this.ComboDurationAdditionCfg]);
@@ -86,17 +86,17 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     }
   }
   set WaveTipsState(e) {
-    if (this.kem === e) {
+    if (this.grm === e) {
       if (Log_1.Log.CheckInfo()) {
         Log_1.Log.Info("SurvivorsRogue", 79, "重复设置WaveTipsState, 直接跳过", ["State", e]);
       }
     } else {
-      this.kem = e;
+      this.grm = e;
       EventSystem_1.EventSystem.Emit(EventDefine_1.EEventName.SurvivorsRogueSwitchWaveTipsState, e);
     }
   }
   get WaveTipsState() {
-    return this.kem;
+    return this.grm;
   }
   get NeedOpenActivityMainView() {
     var e = this.HasNewSettle;
@@ -132,7 +132,7 @@ class SurvivorsRogueModel extends ModelBase_1.ModelBase {
     this.yxd = 0;
     this.MaxWaveNum = 0;
     this.WaveTypeArray = [];
-    this.kem = 0;
+    this.grm = 0;
     this.NotTipsShopPurchaseAvailable = false;
     for (let e = 0; e < exports.COMBO_LEVEL_CONFIG_LENGTH; e++) {
       this.ComboTimerFreezeTimeCfg[e] = 0;

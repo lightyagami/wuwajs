@@ -382,14 +382,14 @@ class AsyncAiPerception {
       var e = this.Bte.CharActorComp.Actor.Camp;
       for (const r of this.Ioe) {
         if (!!r.Entity?.Active && !this.voe.has(r.Entity.Id) && !!(t = r.Entity.GetComponent(3))?.Valid && e === t.Actor.Camp && !(Vector_1.Vector.DistSquared(s, t.ActorLocationProxy) > this.Ooe) && !(this.voe.add(r.Entity.Id), this.ShareAllyLink.has(r.Entity.Id))) {
-          if ((t = r.Entity.GetComponent(47))?.Valid) {
+          if ((t = r.Entity.GetComponent(48))?.Valid) {
             t.AiController.AiPerception?.Moe.add(this.E0);
           }
         }
       }
       for (const n of this.ShareAllyLink) {
         if (!this.voe.has(n)) {
-          if ((i = EntitySystem_1.EntitySystem.Get(n))?.Valid && (i = i.GetComponent(47))?.Valid) {
+          if ((i = EntitySystem_1.EntitySystem.Get(n))?.Valid && (i = i.GetComponent(48))?.Valid) {
             i.AiController.AiPerception?.Moe.delete(this.E0);
           }
         }
@@ -417,7 +417,7 @@ class AsyncAiPerception {
       var t = this.f6.pop();
       var t = EntitySystem_1.EntitySystem.Get(t);
       if (t?.Valid) {
-        t = t.GetComponent(47);
+        t = t.GetComponent(48);
         if (t?.Valid && t.AiController.AiPerception) {
           for (const e of t.AiController.AiPerception.Enemies) {
             this.AllEnemies.add(e);

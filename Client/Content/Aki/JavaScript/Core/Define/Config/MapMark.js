@@ -138,6 +138,9 @@ class MapMark {
   get AreaShowText() {
     return GameUtils_1.GameUtils.ConvertToArray(this.areashowtextLength(), this.areashowtext, this);
   }
+  get IsDisableGameplayFinishIcon() {
+    return this.isdisablegameplayfinishicon();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -468,9 +471,9 @@ class MapMark {
     return this.deliveryprop(t);
   }
   deliveryprop(t, i) {
-    var r = this.J7.__offset(this.z7, 74);
-    if (r) {
-      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + r) + t * 4), this.J7);
+    var s = this.J7.__offset(this.z7, 74);
+    if (s) {
+      return (i || new DicIntInt_1.DicIntInt()).__init(this.J7.__indirect(this.J7.__vector(this.z7 + s) + t * 4), this.J7);
     } else {
       return null;
     }
@@ -530,12 +533,12 @@ class MapMark {
     return this.areashowtext(t);
   }
   areashowtext(t, i) {
-    var r = this.J7.__offset(this.z7, 82);
-    var r = r ? this.J7.__string(this.J7.__vector(this.z7 + r) + t * 4, i) : null;
-    if (typeof r == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
-      GameUtils_1.GameUtils.InternalizedString(r);
+    var s = this.J7.__offset(this.z7, 82);
+    var s = s ? this.J7.__string(this.J7.__vector(this.z7 + s) + t * 4, i) : null;
+    if (typeof s == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(s);
     }
-    return r;
+    return s;
   }
   areashowtextLength() {
     var t = this.J7.__offset(this.z7, 82);
@@ -544,6 +547,10 @@ class MapMark {
     } else {
       return 0;
     }
+  }
+  isdisablegameplayfinishicon() {
+    var t = this.J7.__offset(this.z7, 84);
+    return !!t && !!this.J7.readInt8(this.z7 + t);
   }
 }
 exports.MapMark = MapMark;

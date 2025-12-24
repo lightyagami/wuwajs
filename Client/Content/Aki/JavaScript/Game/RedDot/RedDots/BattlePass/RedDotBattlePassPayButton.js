@@ -12,7 +12,7 @@ class RedDotBattlePassPayButton extends RedDotBase_1.RedDotBase {
     return "BattlePass";
   }
   OnCheck() {
-    return ModelManager_1.ModelManager.BattlePassModel.PayButtonRedDotState || !ModelManager_1.ModelManager.BattlePassModel.HadEnter;
+    return (ModelManager_1.ModelManager.BattlePassModel.PayButtonRedDotState || !ModelManager_1.ModelManager.BattlePassModel.HadEnter) && ModelManager_1.ModelManager.BattlePassModel.GetInTimeRange();
   }
   OnGetEvents() {
     return [EventDefine_1.EEventName.BattlePassHadEnterUpdate];

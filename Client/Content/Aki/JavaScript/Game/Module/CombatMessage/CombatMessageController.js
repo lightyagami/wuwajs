@@ -60,6 +60,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     Net_1.Net.Register(17271, CombatMessageController.Zyt);
     Net_1.Net.Register(17075, CombatMessageController.eIt);
     Net_1.Net.Register(18553, CombatMessageController.tIt);
+    Net_1.Net.Register(28747, CombatMessageController.oWf);
     Net_1.Net.Register(18298, CombatMessageController.sMa);
     Net_1.Net.Register(15408, CombatMessageController.oIt);
     Net_1.Net.Register(22664, CombatMessageController.PreAiControlSwitchNotify);
@@ -225,7 +226,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         for (const m of this.WC1) {
           if (m.IsInit) {
             if (!e) {
-              l = m.Entity.GetComponent(179);
+              l = m.Entity.GetComponent(184);
               e = l?.IsInFightState();
             }
             var a;
@@ -233,7 +234,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
             var s = Protocol_1.Aki.Protocol.Ai.Te_.create();
             var l = ModelManager_1.ModelManager.GameModeModel.IsMulti || this.Model.AnyHateChange;
             if (l) {
-              for ([a, r] of m.Entity.GetComponent(47).AiController.AiHateList.GetHatredMap()) {
+              for ([a, r] of m.Entity.GetComponent(48).AiController.AiHateList.GetHatredMap()) {
                 var n = Protocol_1.Aki.Protocol.Ai.eNs.create();
                 n.F4n = MathUtils_1.MathUtils.NumberToLong(ModelManager_1.ModelManager.CreatureModel.GetCreatureDataId(a));
                 n.Z8n = r.HatredValue;
@@ -359,12 +360,12 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
         a = WorldGlobal_1.WorldGlobal.ToUeRotator(o.g8n);
         l.SetActorRotation(a, "ResetLocationForZRangeNotify");
       }
-      a = e.Entity.GetComponent(182);
-      t = e.Entity.GetComponent(240);
+      a = e.Entity.GetComponent(187);
+      t = e.Entity.GetComponent(249);
       a?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
       t?.SetForceSpeed(Vector_1.Vector.ZeroVectorProxy);
-      e.Entity.GetComponent(67)?.ClearReplaySamples();
-      e.Entity.GetComponent(160)?.ResetManipulatableState();
+      e.Entity.GetComponent(70)?.ClearReplaySamples();
+      e.Entity.GetComponent(165)?.ResetManipulatableState();
     } else {
       s.SetLocation(r);
       if (o.PDs) {
@@ -401,7 +402,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
             CombatMessageController.Model.SetEntityMap(t.Id, a);
             s.RecordMessageTime(r, l.GetPbDataId(), true);
           }
-          const n = t.Entity.GetComponent(67);
+          const n = t.Entity.GetComponent(70);
           if (n) {
             n.ReceiveMoveInfos(e.iVn, Number(a), r);
           } else {
@@ -411,9 +412,9 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
           if (!t.IsInit) {
             return;
           }
-          const n = t.Entity.GetComponent(67);
+          const n = t.Entity.GetComponent(70);
           var l;
-          var s = t.Entity.GetComponent(233);
+          var s = t.Entity.GetComponent(242);
           if (!s || !(s.Seat >= 0)) {
             l = e.iVn[e.iVn.length - 1];
             CombatMessageController.fIt(l.P5n, CombatMessageController.pIt);
@@ -423,6 +424,13 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
           n?.ClearReplaySamples();
         }
       }
+    }
+  }
+  static nWf(e) {
+    var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
+    var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
+    if (t && (e.j$f.length <= 0 && Log_1.Log.CheckError() && Log_1.Log.Error("MultiplayerCombat", 35, "[CombatMessageController.MotorAnimInfoHandle], Proto_MotorAnimInfos 是空的", ["creatureDataId", o]), o = t.Entity.GetComponent(272))) {
+      o.ReceiveMotorAnimSample(e.j$f);
     }
   }
   static EntityIsVisibleNotify(e, o) {
@@ -446,7 +454,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     var o = MathUtils_1.MathUtils.LongToNumber(e.F4n);
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
     if (t) {
-      if (t = t.Entity.GetComponent(47)) {
+      if (t = t.Entity.GetComponent(48)) {
         t.OnSyncAiInformation(e);
       } else {
         CombatLog_1.CombatLog.Warn("Ai", o, "OnSyncAiInformation 不存在CharacterAiComponent");
@@ -461,7 +469,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
       var a = MathUtils_1.MathUtils.LongToNumber(r);
       var a = ModelManager_1.ModelManager.CreatureModel.GetEntity(a);
       if (a) {
-        a.Entity.GetComponent(47)?.SetLoadCompletePlayer(t);
+        a.Entity.GetComponent(48)?.SetLoadCompletePlayer(t);
       }
     }
   }
@@ -469,7 +477,7 @@ class CombatMessageController extends ControllerBase_1.ControllerBase {
     o = MathUtils_1.MathUtils.LongToNumber(o.NDs);
     o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
     if (o) {
-      o.Entity.GetComponent(68).ClearReplaySamples();
+      o.Entity.GetComponent(71).ClearReplaySamples();
     }
   }
   static MaterialNotify(e, o) {
@@ -616,10 +624,15 @@ CombatMessageController.tIt = e => {
     _a.gIt(o);
   }
 };
+CombatMessageController.oWf = e => {
+  for (const o of e.$$f) {
+    _a.nWf(o);
+  }
+};
 CombatMessageController.sMa = e => {
   var o = MathUtils_1.MathUtils.LongToNumber(e.M0a.F4n);
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
-  if (o &&= o.Entity.GetComponent(132)) {
+  if (o &&= o.Entity.GetComponent(137)) {
     o.HandleMoveToTarget(e);
   }
 };
@@ -633,7 +646,7 @@ CombatMessageController.PreAiControlSwitchNotify = e => {
     var o = MathUtils_1.MathUtils.LongToNumber(a);
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntity(o);
     if (t) {
-      if (t = t.Entity.GetComponent(47)) {
+      if (t = t.Entity.GetComponent(48)) {
         t.AiController.PreSwitchControl();
       }
     } else {
@@ -644,7 +657,7 @@ CombatMessageController.PreAiControlSwitchNotify = e => {
 CombatMessageController.Ei_ = e => {
   var o = ModelManager_1.ModelManager.CreatureModel.GetEntity(MathUtils_1.MathUtils.LongToNumber(e.F4n));
   if (o?.IsInit) {
-    if (o = o.Entity.GetComponent(247)) {
+    if (o = o.Entity.GetComponent(256)) {
       o.HandleSplineMoveNotify(e.Ii_, e.Ti_);
     }
   } else {

@@ -172,7 +172,7 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
   }
   OnActivate() {
     this.Hte = this.Entity.GetComponent(1);
-    this.Lie = this.Entity.GetComponent(200);
+    this.Lie = this.Entity.GetComponent(206);
     this.sxr = this.Disable("[SceneItemGuidePathComponent.OnActivate] 默认Disable");
     if (!Info_1.Info.EnableForceTick) {
       this.tfn = this.Hte.Owner.GetComponentByClass(UE.KuroSceneItemGuidePathComponent.StaticClass());
@@ -359,5 +359,5 @@ let SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = class SceneIte
     return this.Lo.ColorChangeOption !== undefined;
   }
 };
-SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(157)], SceneItemGuidePathComponent);
+SceneItemGuidePathComponent = SceneItemGuidePathComponent_1 = __decorate([(0, RegisterComponent_1.RegisterComponent)(162)], SceneItemGuidePathComponent);
 exports.SceneItemGuidePathComponent = SceneItemGuidePathComponent; //# sourceMappingURL=SceneItemGuidePathComponent.js.map

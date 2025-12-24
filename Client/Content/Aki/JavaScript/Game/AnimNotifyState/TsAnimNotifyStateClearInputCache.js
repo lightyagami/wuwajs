@@ -14,7 +14,7 @@ class TsAnimNotifyStateClearInputCache extends UE.KuroAnimNotifyState {
   Constructor() {}
   K2_NotifyEnd(e, t) {
     var e = e.GetOwner();
-    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(62))) {
+    if (e instanceof TsBaseCharacter_1.default && (e = e.CharacterActorComponent.Entity.GetComponent(65))) {
       e.ClearInputCache(this.InputAction, this.InputState);
     }
     return true;

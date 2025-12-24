@@ -223,7 +223,7 @@ class SeamlessTravelKeepKite {
         this.f41?.SetActorHiddenInGame(false);
         this.g41?.SetActorHiddenInGame(false);
         i = this.Hte.SkeletalMesh;
-        s = this.Hte.Entity.GetComponent(81)?.Hulu;
+        s = this.Hte.Entity.GetComponent(84)?.Hulu;
         e = this.u41.SkeletalMeshComponent;
         if (i?.IsValid()) {
           this.PWu = i.bCastHiddenShadow;
@@ -255,7 +255,7 @@ class SeamlessTravelKeepKite {
     var s;
     var e;
     if (this.IsInit) {
-      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(81)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.PWu !== undefined && (i.bCastHiddenShadow = this.PWu), s?.IsValid() && this.xWu !== undefined && (s.bCastHiddenShadow = this.xWu), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.AWu?.IsValid())) {
+      if (this.IsActive && (Log_1.Log.CheckInfo() && Log_1.Log.Info("Teleport", 39, "[无缝传送KeepKite] 隐藏效果"), this.mQo = false, this.u41?.SetActorHiddenInGame(true), this.f41?.SetActorHiddenInGame(true), this.g41?.SetActorHiddenInGame(true), i = this.Hte?.SkeletalMesh, s = this.Hte?.Entity.GetComponent(84)?.Hulu, e = this.u41?.SkeletalMeshComponent, i?.IsValid() && this.PWu !== undefined && (i.bCastHiddenShadow = this.PWu), s?.IsValid() && this.xWu !== undefined && (s.bCastHiddenShadow = this.xWu), e?.IsValid() && (e.bCastHiddenShadow = false), this.C41?.IsValid() && (this.C41.bCastHiddenShadow = false), this.AWu?.IsValid())) {
         this.AWu.bCastHiddenShadow = false;
       }
       t?.(true);
@@ -264,7 +264,7 @@ class SeamlessTravelKeepKite {
     }
   }
   SetInitData(t, i) {
-    var t = t.GetComponent(206);
+    var t = t.GetComponent(212);
     var s = t.GetActorInSceneInteraction(KITE_ACTOR_REF_NAME);
     var t = t.Owner?.D_GetTransform() ?? t.ActorTransform;
     var e = s?.D_GetTransform() ?? t;

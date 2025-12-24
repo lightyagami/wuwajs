@@ -9,15 +9,16 @@ var ERollBlockGridType;
 var ERollBlockBlockType;
 var ERollBlockItemType;
 var ERollBlockLayType;
-var ERollBlockType;
 var ERollBlockHintStepType;
+var EFindSunSpiritGridType;
+var EFindSunSpiritGridState;
 function isRollBlockWalkableGrid(e) {
-  return [ERollBlockGridType.Floor, ERollBlockGridType.Goal, ERollBlockGridType.LinkGoal, ERollBlockGridType.JumpFloor, ERollBlockGridType.FallFloor, ERollBlockGridType.BreakTrigger].includes(e);
+  return [ERollBlockGridType.Floor, ERollBlockGridType.Goal, ERollBlockGridType.LinkGoal, ERollBlockGridType.JumpFloor, ERollBlockGridType.FallFloor, ERollBlockGridType.BreakTrigger, ERollBlockGridType.Quantum].includes(e);
 }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ERollBlockHintStepType = exports.ERollBlockType = exports.ERollBlockLayType = exports.ERollBlockItemType = exports.ERollBlockBlockType = exports.isRollBlockWalkableGrid = exports.ERollBlockGridType = exports.EMonsterSourceType = exports.ETrapDefenseSpawnMonsterCondition = exports.ELevelPlayInfoMappingType = exports.decisionBtTypeNameMap = exports.levelPlayTypeNameMap = exports.ELevelPlayInteractResetTime = exports.ELevelPlayExploratoryCheckTiming = undefined;
+exports.EFindSunSpiritGridState = exports.EFindSunSpiritGridType = exports.ERollBlockHintStepType = exports.ERollBlockLayType = exports.ERollBlockItemType = exports.ERollBlockBlockType = exports.isRollBlockWalkableGrid = exports.ERollBlockGridType = exports.EMonsterSourceType = exports.ETrapDefenseSpawnMonsterCondition = exports.ELevelPlayInfoMappingType = exports.decisionBtTypeNameMap = exports.levelPlayTypeNameMap = exports.ELevelPlayInteractResetTime = exports.ELevelPlayExploratoryCheckTiming = undefined;
 (function (e) {
   e[e.OnCompletion = 0] = "OnCompletion";
 })(ELevelPlayExploratoryCheckTiming = exports.ELevelPlayExploratoryCheckTiming ||= {});
@@ -34,15 +35,16 @@ exports.levelPlayTypeNameMap = {
   Quest: "任务玩法",
   Challenge: "战斗挑战",
   HighSpeedMovement: "高速移动挑战",
+  BlackSwordChallenge: "黑剑挑战",
   EntityManage: "实体管理",
   LogicControl: "逻辑控制",
   SilentArea: "无音区",
   NightmareSpawnPoint: "梦魇刷怪点",
+  MonsterSettlement: "怪物聚落",
   LordGym: "全息战略",
   RebornBoss: "大世界复刷领主",
   Dungeon: "副本主控",
-  DecisionBt: "副本决策行为树",
-  BlackSwordChallenge: "黑剑挑战"
+  DecisionBt: "副本决策行为树"
 };
 exports.decisionBtTypeNameMap = {
   Bvb: "声骸竞技场"
@@ -66,6 +68,8 @@ exports.decisionBtTypeNameMap = {
   e.JumpFloor = "JumpFloor";
   e.FallFloor = "FallFloor";
   e.BreakTrigger = "BreakTrigger";
+  e.Quantum = "Quantum";
+  e.Laser = "Laser";
 })(ERollBlockGridType = exports.ERollBlockGridType ||= {});
 exports.isRollBlockWalkableGrid = isRollBlockWalkableGrid;
 (function (e) {
@@ -75,6 +79,7 @@ exports.isRollBlockWalkableGrid = isRollBlockWalkableGrid;
 (function (e) {
   e.BreakableObstacle = "BreakableObstacle";
   e.QuantumObstacle = "QuantumObstacle";
+  e.LaserEmitter = "LaserEmitter";
 })(ERollBlockItemType = exports.ERollBlockItemType ||= {});
 (function (e) {
   e.Left = "Left";
@@ -83,17 +88,18 @@ exports.isRollBlockWalkableGrid = isRollBlockWalkableGrid;
   e.Backward = "Backward";
 })(ERollBlockLayType = exports.ERollBlockLayType ||= {});
 (function (e) {
-  e.Empty = "Empty";
-  e.Floor = "Floor";
-  e.Goal = "Goal";
-  e.Block1 = "Block1";
-  e.Block2 = "Block2";
-  e.Block2Left = "Block2Left";
-  e.Block2Right = "Block2Right";
-  e.Block2Up = "Block2Up";
-  e.Block2Down = "Block2Down";
-})(ERollBlockType = exports.ERollBlockType ||= {});
-(function (e) {
   e.Roll = "Roll";
+  e.Jump = "Jump";
   e.Operation = "Operation";
-})(ERollBlockHintStepType = exports.ERollBlockHintStepType ||= {}); //# sourceMappingURL=ILevelPlay.js.map
+})(ERollBlockHintStepType = exports.ERollBlockHintStepType ||= {});
+(function (e) {
+  e[e.Empty = 0] = "Empty";
+  e[e.NormalFloor = 1] = "NormalFloor";
+  e[e.MutableFloor = 2] = "MutableFloor";
+  e[e.BeginFloor = 3] = "BeginFloor";
+  e[e.EndFloor = 4] = "EndFloor";
+})(EFindSunSpiritGridType = exports.EFindSunSpiritGridType ||= {});
+(function (e) {
+  e[e.Virtual = 0] = "Virtual";
+  e[e.Physical = 1] = "Physical";
+})(EFindSunSpiritGridState = exports.EFindSunSpiritGridState ||= {}); //# sourceMappingURL=ILevelPlay.js.map

@@ -31,7 +31,7 @@ class LevelEventPlayRegisteredMontage extends LevelGeneralBase_1.LevelEventBase 
       if (EventSystem_1.EventSystem.HasWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe)) {
         EventSystem_1.EventSystem.RemoveWithTarget(this.sDe, EventDefine_1.EEventName.RemoveEntity, this.zpe);
       }
-      this.sDe?.Entity?.GetComponent(191)?.ResumeAi(KEY);
+      this.sDe?.Entity?.GetComponent(197)?.ResumeAi(KEY);
       this.FinishExecute(true);
     };
   }
@@ -45,7 +45,7 @@ class LevelEventPlayRegisteredMontage extends LevelGeneralBase_1.LevelEventBase 
   ExecuteWhenEntitiesReady() {
     var t = ModelManager_1.ModelManager.CreatureModel.GetEntityByPbDataId(this.gLe.EntityId);
     if (t) {
-      if ((this.sDe = t).Entity.GetComponent(47)?.IsAiDriver && Log_1.Log.CheckDebug()) {
+      if ((this.sDe = t).Entity.GetComponent(48)?.IsAiDriver && Log_1.Log.CheckDebug()) {
         Log_1.Log.Debug("LevelEvent", 26, "NpcAi与行为并行，将停止Ai，注意表现", ["PbDataId", t.PbDataId]);
       }
       let e = undefined;
@@ -53,13 +53,13 @@ class LevelEventPlayRegisteredMontage extends LevelGeneralBase_1.LevelEventBase 
       if (StringUtils_1.StringUtils.IsEmpty(i)) {
         this.FinishExecute(true);
       } else {
-        var s = t.Entity?.GetComponent(46);
+        var s = t.Entity?.GetComponent(47);
         if (s) {
           var n = {
             InitStateName: e?.InitState,
             EndStateName: e?.EndState
           };
-          const v = t.Entity?.GetComponent(191);
+          const v = t.Entity?.GetComponent(197);
           v?.PauseAi(KEY);
           if (this.IsAsync) {
             s.VolatileMontagePlayByLoad(2, i, n, undefined, () => {

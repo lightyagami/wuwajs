@@ -68,6 +68,9 @@ class ExploreProgress {
   get LockTrackType() {
     return this.locktracktype();
   }
+  get AccessPathId() {
+    return this.accesspathid();
+  }
   __init(t, s) {
     this.z7 = t;
     this.J7 = s;
@@ -204,6 +207,14 @@ class ExploreProgress {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 1;
+    }
+  }
+  accesspathid() {
+    var t = this.J7.__offset(this.z7, 34);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
     }
   }
 }

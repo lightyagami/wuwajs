@@ -26,6 +26,9 @@ class RoleDevProsList {
   get SpecialGachaId() {
     return GameUtils_1.GameUtils.ConvertToArray(this.specialgachaidLength(), this.specialgachaid, this);
   }
+  get SortId() {
+    return this.sortid();
+  }
   __init(t, i) {
     this.z7 = t;
     this.J7 = i;
@@ -81,6 +84,14 @@ class RoleDevProsList {
     var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.__vector_len(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  sortid() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }

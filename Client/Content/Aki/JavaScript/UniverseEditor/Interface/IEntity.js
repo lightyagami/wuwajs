@@ -619,18 +619,18 @@ exports.entityDetailsAki = {
     EntityType: "采集物带监听(CollectWithListener)",
     Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent", "ConditionListenerComponent"]
   },
-  CollectHookFetch: {
+  CollectWithHook: {
     Category: "场景交互物类",
     Owner: 16,
     Status: "可使用",
     Description: `
-该类型的实体视为可采集物，可通过钩锁拉取后采集，也可直接通过交互采集。
+该类型的实体视为可采集物，可在钩锁组件中配置钩锁拉取采集，也可直接通过交互采集。
 - 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互。
 - 通过[RewardComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-OrAed7lhXoG53ZxTRxFcNgeonPe)组件设置采集后获得的道具ID。
 - 通过[RefreshComponent](https://kurogame.feishu.cn/wiki/GSYbwSgJOiu02GkZag2cRT0XnRc#part-QD1BdiIyoo5hcIxROsScAkipnqg)组件设置采集后的再生规则。`,
     EntityLogic: "Item",
-    EntityType: "钩锁获取采集物(CollectHookFetch)",
-    Components: ["BaseInfoComponent", "ModelComponent", "CollectComponent", "InteractComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent", "HookFetchComponent"]
+    EntityType: "采集物带钩锁(CollectWithHook)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "AdsorbComponent", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "InteractAudioComponent", "HookLockPoint", "SceneItemMovementComponent"]
   },
   TreasureBox: {
     Category: "场景交互物类",
@@ -645,6 +645,15 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     EntityType: "物资箱(TreasureBox)",
     Components: ["BaseInfoComponent", "ModelComponent", "RewardComponent", "TreasureBoxComponent", "InteractComponent", "EntityStateComponent", "NearbyTrackingComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+  },
+  HookTreasureBox: {
+    Category: "场景交互物类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "带钩锁组件的宝箱",
+    EntityLogic: "Item",
+    EntityType: "带钩锁物资箱(HookTreasureBox)",
+    Components: ["BaseInfoComponent", "ModelComponent", "RewardComponent", "TreasureBoxComponent", "InteractComponent", "EntityStateComponent", "HookLockPoint", "TargetGearComponent", "NearbyTrackingComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
   },
   VisionTreasureBox: {
     Category: "幻象宝箱专用",
@@ -745,7 +754,8 @@ exports.entityDetailsAki = {
     Description: "带范围组件的钩锁点，支持钩锁配置其他范围",
     EntityType: "带范围组件钩锁(HookWithRange)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "HookLockPoint", "SceneItemLifeCycleComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "HookLockPoint", "SceneItemLifeCycleComponent", "ProceduralVisualComponent", "AttachTargetComponent"],
+    DefaultDisabledComponents: ["ProceduralVisualComponent"]
   },
   TimeScaledHook: {
     Category: "场景交互物类",
@@ -766,17 +776,17 @@ exports.entityDetailsAki = {
 - 通过HookLockPointComponent组件设置钩锁点的触发范围等数据。`,
     EntityLogic: "Item",
     EntityType: "索道钩锁(CableWayHook)",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HookLockPoint", "ProceduralVisualComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "HookLockPoint", "ProceduralVisualComponent", "RangeComponent", "TriggerComponent"]
   },
-  HookFetchSoundBox: {
+  HookPullSoundBox: {
     Category: "场景交互物类",
     Owner: 16,
     Status: "可使用",
     Description: `
 该声匣可使用钩锁接近，也可以使用摩托钩锁拖拽过来拾取`,
     EntityLogic: "Item",
-    EntityType: "钩锁获取声匣(HookFetchSoundBox)",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemMovementComponent", "CollectComponent", "HookLockPoint", "HookFetchComponent", "InteractComponent", "RewardComponent", "SceneItemLifeCycleComponent"]
+    EntityType: "钩锁拉取声匣(HookPullSoundBox)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemMovementComponent", "CollectComponent", "HookLockPoint", "InteractComponent", "RewardComponent", "SceneItemLifeCycleComponent"]
   },
   ItemFoundation: {
     Category: "机关玩法类",
@@ -947,7 +957,7 @@ exports.entityDetailsAki = {
   TargetGearExploreInteractor: {
     Category: "场景交互物类",
     Owner: 12,
-    Status: "开发中",
+    Status: "可使用",
     Description: "可以通过攻击改变其状态的探索交互物",
     EntityType: "可打击的探索交互物(TargetGearExploreInteractor)",
     EntityLogic: "Item",
@@ -1039,6 +1049,15 @@ exports.entityDetailsAki = {
     EntityType: "传送点(Teleporter)",
     EntityLogic: "Item",
     Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "TeleportComponent", "NearbyTrackingComponent"]
+  },
+  TriggerTeleporter: {
+    Category: "场景交互物类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "带触发器的传送点",
+    EntityType: "带触发器的传送点(TriggerTeleporter)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "EntityStateComponent", "TeleportComponent", "NearbyTrackingComponent"]
   },
   DungeonTeleporter: {
     Category: "场景交互物类",
@@ -1145,6 +1164,25 @@ exports.entityDetailsAki = {
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "SceneItemMovementComponent", "RotatorComponent2", "AttachTargetComponent", "VarComponent", "SceneItemEventListenerComponent", "SceneItemAttributeComponent"],
     DefaultDisabledComponents: ["SceneItemEventListenerComponent"]
   },
+  InteractGearCanHit: {
+    Category: "机关玩法类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "既可直接交互也可通过打击交互的交互机关",
+    EntityType: "可打击交互机关(InteractGearCanHit)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "SceneItemLifeCycleComponent", "InteractGearComponent", "TargetGearComponent", "SceneItemMovementComponent", "RotatorComponent2", "AttachTargetComponent", "VarComponent", "SceneItemEventListenerComponent", "SceneItemAttributeComponent"],
+    DefaultDisabledComponents: ["SceneItemEventListenerComponent"]
+  },
+  InteractGearTrigger: {
+    Category: "场景交互物类",
+    Owner: 16,
+    Status: "开发中",
+    Description: "带触发器和场景物件属性的交互机关",
+    EntityLogic: "Item",
+    EntityType: "交互机关带触发器(InteractGearTrigger)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "InteractGearComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent", "SceneItemEventListenerComponent", "RangeComponent", "TriggerComponent", "SceneItemAttributeComponent", "SceneItemLifeCycleComponent"]
+  },
   Lift: {
     Category: "机关玩法类",
     Owner: 2,
@@ -1155,7 +1193,8 @@ exports.entityDetailsAki = {
 - 通过[InteractComponent](https://kurogame.feishu.cn/wiki/MAmbwtWWWis2ihkchLZcH9SanHe)组件设置交互，可通过交互使电梯在停靠点之间移动。`,
     EntityType: "电梯(Lift)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LiftComponent", "TriggerComponent", "RangeComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "LiftComponent", "TriggerComponent", "RangeComponent", "ExtraRangeComponent"],
+    DefaultDisabledComponents: ["ExtraRangeComponent"]
   },
   Lift2: {
     Category: "机关玩法类",
@@ -1225,7 +1264,7 @@ exports.entityDetailsAki = {
     Description: "在打击机关的基础上新增变量控制 VarComponent",
     EntityType: "带变量控制的打击机关(TargetGearWithVariable)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "VarComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "FightInteractComponent", "SceneItemLifeCycleComponent", "SceneItemMovementComponent", "AttachTargetComponent", "ConditionListenerComponent", "VarComponent"]
   },
   TargetGearWithLevelPrefabPerform: {
     Category: "机关玩法类",
@@ -1439,7 +1478,25 @@ exports.entityDetailsAki = {
 带有冒泡组件和状态组件的场景实体。`,
     EntityType: "能冒泡的场景实体(BubbleSceneItem)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "BubbleComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "BubbleComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "ProceduralVisualComponent", "SceneItemAttributeComponent"]
+  },
+  PilotThrowTitan: {
+    Category: "机关玩法类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "带钩锁和冒泡的场景组件",
+    EntityType: "铁驭投掷泰坦(PilotThrowTitan)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "HookLockPoint", "BubbleComponent", "SceneItemLifeCycleComponent", "AttachTargetComponent", "ProceduralVisualComponent", "TeleportComponent", "SceneItemAttributeComponent"]
+  },
+  DeadeyeHookTrigger: {
+    Category: "机关玩法类",
+    Owner: 4,
+    Status: "可使用",
+    Description: "死眼钩锁",
+    EntityType: "死眼钩锁触发器(DeadeyeHookTrigger)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "HookLockPoint", "ClientTriggerComponent", "ProceduralVisualComponent", "SceneItemLifeCycleComponent"]
   },
   SoundBox: {
     Category: "场景交互物类",
@@ -1860,7 +1917,7 @@ exports.entityDetailsAki = {
 被拉取物，通过T键交互拉取，自身可以跟随拉取运动`,
     EntityType: "被拉取物(PullingObject)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ExploreSkillInteractComponent", "AttachTargetComponent", "SceneItemMovementComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ExploreSkillInteractComponent", "AttachTargetComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent", "SceneItemAttributeComponent"]
   },
   SpawnPasserbyNpc: {
     Category: "机关玩法类",
@@ -2391,7 +2448,8 @@ exports.entityDetailsAki = {
     Description: "带有多个客户端组件的音乐机关",
     EntityType: "音乐触发监听机关(MusicTriggerListener)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "VarComponent", "SceneItemAttributeComponent", "RangeComponent", "ClientTriggerComponent", "ConditionListenerComponent", "ClientConditionListenerComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "VarComponent", "SceneItemAttributeComponent", "RangeComponent", "ClientTriggerComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "ExtraRangeComponent"],
+    DefaultDisabledComponents: ["ExtraRangeComponent"]
   },
   ClientTriggerGear: {
     Category: "机关玩法类",
@@ -2400,7 +2458,8 @@ exports.entityDetailsAki = {
     Description: "客户端触发器机关",
     EntityType: "客户端触发器机关(ClientTriggerGear)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ClientTriggerComponent", "SceneItemLifeCycleComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ClientTriggerComponent", "SceneItemLifeCycleComponent", "ConditionListenerComponent", "AttachTargetComponent"],
+    DefaultDisabledComponents: ["ClientConditionListenerComponent", "AttachTargetComponent"]
   },
   RollBlock: {
     Category: "机关玩法类",
@@ -2409,7 +2468,8 @@ exports.entityDetailsAki = {
     Description: "滚方块玩法中的方块实体类型，含有一个滚方块组件",
     EntityType: "滚方块实体(RollBlock)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RollBlockComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SceneItemLifeCycleComponent", "RollBlockComponent", "RangeComponent", "TriggerComponent"],
+    DefaultDisabledComponents: ["RangeComponent", "TriggerComponent"]
   },
   RollBlockFloor: {
     Category: "机关玩法类",
@@ -2435,8 +2495,9 @@ exports.entityDetailsAki = {
     Status: "开发中",
     Description: "日灵采集单元",
     EntityType: "日灵采集单元(SunSpiritCollectUnit)",
-    EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "InteractComponent", "EntityStateComponent", "SunSpiritCollectComponent"]
+    EntityLogic: "Npc",
+    Components: ["BaseInfoComponent", "ModelComponent", "NpcPerformComponent", "EntityVisibleComponent", "InteractComponent", "LevelAiComponent", "BubbleComponent", "SunSpiritCollectComponent", "VarComponent"],
+    DefaultDisabledComponents: ["EntityVisibleComponent"]
   },
   SunSpiritGearLauncher: {
     Category: "日灵玩法类",
@@ -2463,7 +2524,8 @@ exports.entityDetailsAki = {
     Description: "日灵机关平台",
     EntityType: "日灵机关平台(SunSpiritPlatform)",
     EntityLogic: "Item",
-    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SunSpiritGearComponent", "LiftComponent"]
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SunSpiritGearComponent", "LiftComponent", "ExtraRangeComponent"],
+    DefaultDisabledComponents: ["ExtraRangeComponent"]
   },
   SunSpiritCombiner: {
     Category: "日灵玩法类",
@@ -2500,6 +2562,97 @@ exports.entityDetailsAki = {
     EntityLogic: "Item",
     EntityType: "特效样条(SplineFX)",
     Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "GuideLineCreatorComponent", "SplineComponent"]
+  },
+  TrafficSceneItem: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "具备路网导航功能的场景物件",
+    EntityType: "车流(TrafficSceneItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "TargetGearComponent", "SceneItemMovementComponent", "InteractComponent", "HookLockPoint", "DynamicEntityRewardComponent", "RoadNetworkNavigationComponent", "BubbleComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "EntityCustomAudioComponent", "InteractAudioComponent", "SceneItemLifeCycleComponent", "SceneBulletComponent"]
+  },
+  QuantumPolluted: {
+    Category: "量子污染模块",
+    Owner: 12,
+    Status: "可使用",
+    Description: "量子污染模块",
+    EntityType: "量子污染模块(QuantumPolluted)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "ExploreSkillInteractComponent", "SceneItemMovementComponent", "TargetGearComponent", "SceneBulletComponent", "SceneItemLifeCycleComponent"]
+  },
+  FurnitureSlot: {
+    Category: "家具",
+    Owner: 7,
+    Status: "开发中",
+    Description: "家具槽位",
+    EntityType: "家具槽位(FurnitureSlot)",
+    EntityLogic: "ClientOnly",
+    Components: ["BaseInfoComponent", "FurnitureSlotComponent"]
+  },
+  Furniture: {
+    Category: "家具",
+    Owner: 7,
+    Status: "开发中",
+    Description: "家具",
+    EntityType: "家具(Furniture)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "FurnitureSlotComponent"]
+  },
+  VisionDisplayItem: {
+    Category: "机关玩法类",
+    Owner: 15,
+    Status: "开发中",
+    Description: "声骸显像识别实体",
+    EntityType: "声骸显像识别实体(VisionDisplayItem)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "VisionDisplayComponent", "TargetGearComponent", "DestructibleItem", "RefreshComponent", "RewardComponent", "AttachTargetComponent", "SceneItemMovementComponent", "SceneItemLifeCycleComponent"]
+  },
+  AirWallEffectTrigger: {
+    Category: "触发器类",
+    Owner: 4,
+    Status: "可使用",
+    Description: "使用空气墙效果作为范围的触发器",
+    EntityLogic: "Item",
+    EntityType: "空气墙效果范围触发器(AirWallEffectTrigger)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "SceneActorRefComponent", "SplineComponent"],
+    DefaultDisabledComponents: ["ClientTriggerComponent", "ClientConditionListenerComponent", "SceneActorRefComponent", "SplineComponent"]
+  },
+  HitTargetMonster: {
+    Category: "怪物&生物&NPC类",
+    Owner: 4,
+    Status: "开发中",
+    Description: "受击点怪物",
+    EntityType: "受击点怪物(HitTargetMonster)",
+    EntityLogic: "Monster",
+    Components: ["BaseInfoComponent", "ModelComponent", "AttributeComponent", "MonsterComponent", "AttachTargetComponent"]
+  },
+  SystemModuleVarSynchronizer: {
+    Category: "机关玩法类",
+    Owner: 4,
+    Status: "开发中",
+    Description: "系统模块变量同步器",
+    EntityType: "系统模块变量同步器(SystemModuleVarSynchronizer)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "SystemModuleDataSyncComponent", "VarComponent", "LevelPrefabPerformComponent"]
+  },
+  Paver: {
+    Category: "机关玩法类",
+    Owner: 11,
+    Status: "开发中",
+    Description: "3.0铺路机",
+    EntityType: "铺路机(Paver)",
+    EntityLogic: "Item",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "InteractComponent", "VarComponent", "ConditionListenerComponent", "ClientConditionListenerComponent", "NearbyTrackingComponent"]
+  },
+  DestructibleWithHook: {
+    Category: "场景交互类",
+    Owner: 16,
+    Status: "可使用",
+    Description: "支持通过按钮或碰撞交互后发放奖励",
+    EntityLogic: "Item",
+    EntityType: "可破坏物带钩锁(DestructibleWithHook)",
+    Components: ["BaseInfoComponent", "ModelComponent", "EntityStateComponent", "CollectComponent", "InteractComponent", "RangeComponent", "TriggerComponent", "ClientTriggerComponent", "HookLockPoint", "RefreshComponent", "RewardComponent", "SceneItemLifeCycleComponent", "InteractAudioComponent", "NearbyTrackingComponent", "DestructibleItem", "FightInteractComponent"]
   }
 };
 exports.entityDetails = {
@@ -2519,7 +2672,7 @@ exports.entityDescriptionConfig = Object.fromEntries(Object.entries(exports.enti
   Status: e.Status,
   Description: e.Description
 }]));
-const collectRewardEntityTypes = ["Collect", "CollectWithListener", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox", "CollectHookFetch"];
+const collectRewardEntityTypes = ["Collect", "CollectWithListener", "Animal", "Animal2", "CombatAnimal", "CombatAnimal2", "CollectAnimal", "CollectAnimalPart", "TreasureBox", "HookTreasureBox", "CollectWithHook"];
 function getRewardTypeConfig(t) {
   if (collectRewardEntityTypes.includes(t)) {
     return IComponent_1.rewardTypeCollectConfig;
@@ -2556,6 +2709,7 @@ function decompressEntityData(t, e) {
       WeakReference: t.WeakReference,
       AreaId: t.AreaId,
       EdBundleMainEntityId: t.EdBundleMainEntityId,
+      EdBundleDiffData: t.EdBundleDiffData,
       EdTextRef: t.EdTextRef
     };
   }

@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.BirthDay = undefined;
+const GameUtils_1 = require("../../../Game/GameUtils");
 class BirthDay {
   constructor() {
     this.J7 = null;
@@ -18,11 +19,26 @@ class BirthDay {
   get BirthDayCardItemId() {
     return this.birthdaycarditemid();
   }
+  get SendShortMessage() {
+    return this.sendshortmessage();
+  }
   get BirthDayReward() {
     return this.birthdayreward();
   }
   get ValidDay() {
     return this.validday();
+  }
+  get CakePic() {
+    return this.cakepic();
+  }
+  get PhoneMsgCakeIcon() {
+    return this.phonemsgcakeicon();
+  }
+  get PhoneMsgCakeBg() {
+    return this.phonemsgcakebg();
+  }
+  get PhoneMsgHighLightCakeBg() {
+    return this.phonemsghighlightcakebg();
   }
   __init(t, i) {
     this.z7 = t;
@@ -56,7 +72,7 @@ class BirthDay {
       return 0;
     }
   }
-  birthdayreward() {
+  sendshortmessage() {
     var t = this.J7.__offset(this.z7, 10);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
@@ -64,13 +80,53 @@ class BirthDay {
       return 0;
     }
   }
-  validday() {
+  birthdayreward() {
     var t = this.J7.__offset(this.z7, 12);
     if (t) {
       return this.J7.readInt32(this.z7 + t);
     } else {
       return 0;
     }
+  }
+  validday() {
+    var t = this.J7.__offset(this.z7, 14);
+    if (t) {
+      return this.J7.readInt32(this.z7 + t);
+    } else {
+      return 0;
+    }
+  }
+  cakepic(t) {
+    var i = this.J7.__offset(this.z7, 16);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  phonemsgcakeicon(t) {
+    var i = this.J7.__offset(this.z7, 18);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  phonemsgcakebg(t) {
+    var i = this.J7.__offset(this.z7, 20);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
+  }
+  phonemsghighlightcakebg(t) {
+    var i = this.J7.__offset(this.z7, 22);
+    var i = i ? this.J7.__string(this.z7 + i, t) : null;
+    if (typeof i == "string" && GameUtils_1.GameUtils.IsOptimizeDbString) {
+      GameUtils_1.GameUtils.InternalizedString(i);
+    }
+    return i;
   }
 }
 exports.BirthDay = BirthDay;

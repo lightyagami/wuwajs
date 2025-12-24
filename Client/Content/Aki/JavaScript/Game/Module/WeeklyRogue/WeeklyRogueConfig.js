@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.WeeklyRogueConfig = undefined;
+const RogueWeeklyBFAll_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBFAll");
+const RogueWeeklyBFById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBFById");
 const RogueWeeklyBuffPoolById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBuffPoolById");
 const RogueWeeklyBuffPoolByRelatedArtifactId_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyBuffPoolByRelatedArtifactId");
 const RogueWeeklyCycleById_1 = require("../../../Core/Define/ConfigQuery/RogueWeeklyCycleById");
@@ -44,6 +46,12 @@ class WeeklyRogueConfig extends ConfigBase_1.ConfigBase {
   }
   GetRogueWeekTagConfig(e) {
     return RogueWeekTagById_1.configRogueWeekTagById.GetConfig(e);
+  }
+  GetBlackFlowerConfig(e) {
+    return RogueWeeklyBFById_1.configRogueWeeklyBFById.GetConfig(e);
+  }
+  GetBlackFlowerConfigAll() {
+    return RogueWeeklyBFAll_1.configRogueWeeklyBFAll.GetConfigList() ?? [];
   }
 }
 exports.WeeklyRogueConfig = WeeklyRogueConfig;

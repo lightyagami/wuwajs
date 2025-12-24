@@ -10,6 +10,7 @@ const ResourceSystem_1 = require("../../Core/Resource/ResourceSystem");
 const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const BulletUtil_1 = require("../NewWorld/Bullet/BulletUtil");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
   constructor() {
     super(...arguments);
@@ -27,47 +28,47 @@ class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
     this.ArrayPreviewActor = undefined;
     this.PreviewActor = undefined;
   }
-  K2_NotifyBegin(s, t, e) {
+  K2_NotifyBegin(s, e, t) {
     this.Initialize();
     const r = s.GetOwner();
-    if (r instanceof TsBaseCharacter_1.default) {
-      var i = r.CharacterActorComponent?.Entity;
-      if (i?.Valid) {
-        var o = i.GetComponent(213)?.CreateAnimNotifyContent(t.GetName(), this.exportIndex);
-        var t = i.GetComponent(40);
-        var h = t ? t.GetCurrentMontageCorrespondingSkillId() : 0;
-        var a = this.BulletIds.Num();
-        var l = this.LocationOffsets.Num();
+    if (r instanceof TsBaseCharacter_1.default || r instanceof TsBaseVehicle_1.default) {
+      var o = r.GetEntityNoBlueprint();
+      if (o?.Valid) {
+        var h = o.GetComponent(220)?.CreateAnimNotifyContent(e.GetName(), this.exportIndex);
+        var e = o.GetComponent(40);
+        var a = e ? e.GetCurrentMontageCorrespondingSkillId() : 0;
+        var l = this.BulletIds.Num();
+        var n = this.LocationOffsets.Num();
         var u = [];
-        for (let i = 0; i < a; i++) {
-          let t = undefined;
-          if (l > i) {
-            t = this.LocationOffsets.Get(i);
-          }
+        for (let i = 0; i < l; i++) {
           let e = undefined;
-          if (l > i) {
-            e = this.RotatorOffsets.Get(i);
+          if (n > i) {
+            e = this.LocationOffsets.Get(i);
           }
-          u.push(BulletUtil_1.BulletUtil.CreateBulletFromAN(r, this.BulletIds.Get(i), this.UeTransform, h, false, o, undefined, t, e));
+          let t = undefined;
+          if (n > i) {
+            t = this.RotatorOffsets.Get(i);
+          }
+          u.push(BulletUtil_1.BulletUtil.CreateBulletFromAN(o, this.BulletIds.Get(i), this.UeTransform, a, false, h, undefined, e, t));
         }
         this.BulletEntityIdsMap.set(s, u);
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Bullet", 57, "No Entity for TsBaseCharacter", ["Name", r.GetName()], ["location", r.D_K2_GetActorLocation()]);
       }
     }
-    const n = this.BulletIds;
-    const c = n.Num();
-    if (!(c <= 0)) {
-      if ((i = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(r.GetWorld())) === 2 || i === 4) {
+    const c = this.BulletIds;
+    const _ = c.Num();
+    if (!(_ <= 0)) {
+      if ((e = UE.KuroRenderingRuntimeBPPluginBPLibrary.GetWorldType(r.GetWorld())) === 2 || e === 4) {
         ResourceSystem_1.ResourceSystem.LoadTypeAsync("BPL_BulletPreview_C", () => {
-          var t = UE.KismetSystemLibrary.GetOuterObject(this);
-          var e = UE.KismetSystemLibrary.GetPathName(t);
-          this.ArrayPreviewActor = new Array(c);
+          var e = UE.KismetSystemLibrary.GetOuterObject(this);
+          var t = UE.KismetSystemLibrary.GetPathName(e);
+          this.ArrayPreviewActor = new Array(_);
           var i = (0, puerts_1.$ref)(this.PreviewActor);
-          for (let t = 0; t < c; t++) {
-            UE.BPL_BulletPreview_C.ShowBulletPreview(e, new UE.FName(n.Get(t)), r, s, r.GetWorld(), i);
+          for (let e = 0; e < _; e++) {
+            UE.BPL_BulletPreview_C.ShowBulletPreview(t, new UE.FName(c.Get(e)), r, s, r.GetWorld(), i);
             this.PreviewActor = (0, puerts_1.$unref)(i);
-            this.ArrayPreviewActor[t] = this.PreviewActor;
+            this.ArrayPreviewActor[e] = this.PreviewActor;
             this.PreviewActor = undefined;
           }
         });
@@ -75,14 +76,14 @@ class TsAnimNotifyStateBulletDuration extends UE.KuroAnimNotifyState {
     }
     return false;
   }
-  K2_NotifyEnd(t, e) {
-    var i = t.GetOwner();
-    if (i instanceof TsBaseCharacter_1.default) {
-      if (i.CharacterActorComponent?.Entity?.Valid) {
-        (this.BulletEntityIdsMap.get(t) ?? []).forEach(t => {
-          ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(t, false, 0, this.DestroyEffectImmediately);
+  K2_NotifyEnd(e, t) {
+    var i = e.GetOwner();
+    if (i instanceof TsBaseCharacter_1.default || i instanceof TsBaseVehicle_1.default) {
+      if (i.GetEntityNoBlueprint()?.Valid) {
+        (this.BulletEntityIdsMap.get(e) ?? []).forEach(e => {
+          ControllerHolder_1.ControllerHolder.BulletController.DestroyBullet(e, false, 0, this.DestroyEffectImmediately);
         });
-        this.BulletEntityIdsMap.delete(t);
+        this.BulletEntityIdsMap.delete(e);
       } else if (Log_1.Log.CheckWarn()) {
         Log_1.Log.Warn("Test", 6, "No Entity for TsBaseCharacter", ["Name", i.GetName()], ["location", i.D_K2_GetActorLocation()]);
       }

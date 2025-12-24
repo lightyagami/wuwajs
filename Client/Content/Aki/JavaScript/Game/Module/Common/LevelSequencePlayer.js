@@ -165,6 +165,16 @@ class LevelSequencePlayer {
     }
     return false;
   }
+  CheckSeqActorIsUnStopped(e) {
+    e = this.Zxt(e);
+    if (e?.IsValid()) {
+      e = e.SequencePlayer;
+      if (e?.IsValid() && !e.IsStopped()) {
+        return true;
+      }
+    }
+    return false;
+  }
   PlayOrReplaySequenceByName(e, t = false, i = undefined) {
     if (this.CheckSeqActorIsSeqPlaying(e)) {
       this.ReplaySequenceByKey(e);
@@ -172,15 +182,15 @@ class LevelSequencePlayer {
       this.PlaySequencePurely(e, t, undefined, undefined, i);
     }
   }
-  PlayLevelSequenceByName(e, t = false, i = undefined) {
-    this.PlaySequencePurely(e, t, undefined, undefined, i);
+  PlayLevelSequenceByName(e, t = false, i = undefined, s = false) {
+    this.PlaySequencePurely(e, t, undefined, undefined, i, s);
   }
-  async PlaySequenceAsync(e, t, i = false, s = false, h = undefined) {
-    this.PlaySequencePurely(e, i, s, t, h);
+  async PlaySequenceAsync(e, t, i = false, s = false, r = undefined, h = false) {
+    this.PlaySequencePurely(e, i, s, t, r, h);
     await t?.Promise;
   }
-  PlaySequencePurely(e, t = false, i = false, s = undefined, h = undefined) {
-    var r = this.GetSequencePlayContext(e);
+  PlaySequencePurely(e, t = false, i = false, s = undefined, r = undefined, h = false) {
+    var n = this.GetSequencePlayContext(e);
     var o = this.Xxt.displayName;
     if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("UiCore", 10, "播放的关卡序列", ["播放节点", o], ["关卡序列", e]);
@@ -192,12 +202,13 @@ class LevelSequencePlayer {
     if (LevelSequencePlayer.iwt) {
       this.owt(e);
       this.vxe(e);
-    } else if (r) {
-      r.bReverse = i;
-      if (h !== undefined) {
-        r.PlayInfo.PlaySetting.PlayRate = h;
+    } else if (n) {
+      n.bReverse = i;
+      if (r !== undefined) {
+        n.PlayInfo.PlaySetting.PlayRate = r;
       }
-      r.ExecutePlay();
+      n.bJumpToLastFrame = h;
+      n.ExecutePlay();
       this.owt(e);
     } else {
       if (Log_1.Log.CheckDebug()) {

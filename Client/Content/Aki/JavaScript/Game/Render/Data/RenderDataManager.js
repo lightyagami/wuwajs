@@ -266,7 +266,7 @@ class RenderDataManager {
         this.CurrentCharacterPosition.FromUeVector(r);
         this.CurrentCharacterPositionWithOffset.FromUeVector(s);
         this.CurrentCharacterForward.FromUeVector(o);
-        i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(179);
+        i = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(184);
         this.CurrentPlayerMoveState = i?.MoveState;
         h = this.CurrentPlayerMoveState && this.CurrentPlayerMoveState < CharacterUnifiedStateTypes_1.ECharMoveState.NormalClimb;
         UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalCharacterOnGround, h ? 1 : 0);
@@ -286,7 +286,7 @@ class RenderDataManager {
           UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeHour, a);
           UE.KismetMaterialLibrary.SetScalarParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GlobalTimeMinutes, this.SceneTime - a * this.Xlr);
         }
-        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(45);
+        r = Global_1.Global.BaseCharacter?.CharacterActorComponent?.Entity?.GetComponent(46);
         if (r && !(s = r.GravityDirect).Equals(this.CachedGravityDirect)) {
           this.Jlr(s);
           UE.KismetMaterialLibrary.SetVectorParameterValue(e, this.GlobalShaderParameters, RenderConfig_1.RenderConfig.GravityDirection, this.TempColor);

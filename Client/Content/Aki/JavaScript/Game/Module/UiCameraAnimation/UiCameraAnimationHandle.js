@@ -196,6 +196,9 @@ class UiCameraAnimationHandle {
           UiCameraAnimationManager_1.UiCameraAnimationManager.ResetFightCameraRotation();
         }
         UiCameraAnimationManager_1.UiCameraAnimationManager.UiCamera.Exit(e, t, o);
+        if (n) {
+          ModelManager_1.ModelManager.CameraModel?.FightCamera?.LogicComponent?.ForceTickOutSide();
+        }
         this.zAo = true;
         if (a && UE.KismetSystemLibrary.IsValidSoftObjectReference(r)) {
           this.rPo(r, m, s).then(() => {

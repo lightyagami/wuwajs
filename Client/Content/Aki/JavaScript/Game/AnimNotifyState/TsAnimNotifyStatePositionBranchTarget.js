@@ -15,13 +15,14 @@ const TsBaseCharacter_1 = require("../Character/TsBaseCharacter");
 const GlobalData_1 = require("../GlobalData");
 const ControllerHolder_1 = require("../Manager/ControllerHolder");
 const ModelManager_1 = require("../Manager/ModelManager");
+const TsBaseVehicle_1 = require("../NewWorld/Vehicle/TsBaseVehicle");
 const GravityUtils_1 = require("../Utils/GravityUtils");
 const INVALID_LAST_LOCATION_THRESHOLD_SQUARED = 4000000;
 class PositionBranchTargetParams {
   constructor() {
-    this.CharActorComp = undefined;
-    this.CharUnifiedComp = undefined;
-    this.CharSkillComp = undefined;
+    this.BaseActorComp = undefined;
+    this.BaseUnifiedComp = undefined;
+    this.BaseSkillComp = undefined;
     this.TargetBaseActorComp = undefined;
     this.TargetCharActorComp = undefined;
     this.TargetPos = undefined;
@@ -39,8 +40,8 @@ class PositionBranchTargetParams {
       switch (t) {
         case 0:
           {
-            let t = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(this.CharActorComp.Entity.Id, i);
-            if (!t && !(t = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(this.CharActorComp.Entity.Id, i))) {
+            let t = ControllerHolder_1.ControllerHolder.BlackboardController.GetEntityIdByEntity(this.BaseActorComp.Entity.Id, i);
+            if (!t && !(t = ControllerHolder_1.ControllerHolder.BlackboardController.GetIntValueByEntity(this.BaseActorComp.Entity.Id, i))) {
               return false;
             }
             var h = EntitySystem_1.EntitySystem.Get(t);
@@ -56,7 +57,7 @@ class PositionBranchTargetParams {
             break;
           }
         case 1:
-          h = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(this.CharActorComp.Entity.Id, i);
+          h = ControllerHolder_1.ControllerHolder.BlackboardController.GetVectorValueByEntity(this.BaseActorComp.Entity.Id, i);
           if (!h) {
             return false;
           }
@@ -66,7 +67,7 @@ class PositionBranchTargetParams {
           return false;
       }
     } else {
-      t = this.CharSkillComp?.GetSkillTargetForAns();
+      t = this.BaseSkillComp?.GetSkillTargetForAns();
       if (!t?.Valid) {
         return false;
       }
@@ -75,15 +76,15 @@ class PositionBranchTargetParams {
       }
       this.TargetBaseActorComp = t.Entity.GetComponent(1);
       this.TargetCharActorComp = t.Entity.GetComponent(3);
-      this.SocketName = this.CharSkillComp.SkillTargetSocket;
+      this.SocketName = this.BaseSkillComp.SkillTargetSocket;
     }
-    this.LastLocation.DeepCopy(this.CharActorComp.LastActorLocation);
+    this.LastLocation.DeepCopy(this.BaseActorComp.LastActorLocation);
     return true;
   }
   Clear() {
-    this.CharActorComp = undefined;
-    this.CharUnifiedComp = undefined;
-    this.CharSkillComp = undefined;
+    this.BaseActorComp = undefined;
+    this.BaseUnifiedComp = undefined;
+    this.BaseSkillComp = undefined;
     this.TargetBaseActorComp = undefined;
     this.TargetCharActorComp = undefined;
     this.TargetPos = undefined;
@@ -194,37 +195,37 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
   K2_NotifyBegin(t, i, s) {
     this.Initialize();
     t = t.GetOwner();
-    if (!(t instanceof TsBaseCharacter_1.default)) {
+    if (!(t instanceof TsBaseCharacter_1.default) && !(t instanceof TsBaseVehicle_1.default)) {
       return false;
     }
-    t = t.CharacterActorComponent;
-    if (!t) {
+    var h = t.GetEntityNoBlueprint()?.GetComponent(1);
+    if (!h) {
       return false;
     }
-    var h;
-    var r = t.Entity.GetComponent(40);
-    let e = undefined;
-    if (!(e = this.TsIsShareTarget && (h = t.Entity.GetComponent(0), h = ModelManager_1.ModelManager.CreatureModel.GetEntity(h.GetSummonerId())?.Entity, e = h?.GetComponent(40)) || r)) {
+    var r;
+    var e = h.Entity.GetComponent(40);
+    let a = undefined;
+    if (!(a = this.TsIsShareTarget && (r = h.Entity.GetComponent(0), r = ModelManager_1.ModelManager.CreatureModel.GetEntity(r.GetSummonerId())?.Entity, a = r?.GetComponent(40)) || e)) {
       if (Log_1.Log.CheckWarn()) {
-        Log_1.Log.Warn("Test", 6, "No SkillComponent", ["Actor", t.Actor.GetName()]);
+        Log_1.Log.Warn("Test", 6, "No SkillComponent", ["Actor", h.Owner?.GetName()]);
       }
       return false;
     }
-    let a = paramMap.get(t.Entity.Id);
-    (a = a || (paramPool.length ? paramPool.pop() : new PositionBranchTargetParams())).CharActorComp = t;
-    a.CharUnifiedComp = t.Entity.GetComponent(179);
-    a.CharSkillComp = e;
-    a.NowTime = 0;
-    a.TotalTime = s;
-    if (a.RefreshTarget(this.TsBlackboardKey, this.TsBlackboardType, this.TsBlackboardSocket)) {
-      paramMap.set(t.Entity.Id, a);
+    let o = paramMap.get(h.Entity.Id);
+    (o = o || (paramPool.length ? paramPool.pop() : new PositionBranchTargetParams())).BaseActorComp = h;
+    o.BaseUnifiedComp = h.Entity.GetComponent(109);
+    o.BaseSkillComp = a;
+    o.NowTime = 0;
+    o.TotalTime = s;
+    if (o.RefreshTarget(this.TsBlackboardKey, this.TsBlackboardType, this.TsBlackboardSocket)) {
+      paramMap.set(t.GetEntityIdNoBlueprint(), o);
     } else if (Log_1.Log.CheckDebug()) {
       Log_1.Log.Debug("Movement", 6, "BranchTarget No Target");
     }
     return true;
   }
   K2_NotifyTick(t, i, s) {
-    return !(s < MathUtils_1.MathUtils.KindaSmallNumber) && (t = t.GetOwner()) instanceof TsBaseCharacter_1.default && (t = t.CharacterActorComponent, !!(t = paramMap.get(t.Entity.Id))) && (t.RefreshTarget(this.TsBlackboardKey, this.TsBlackboardType, this.TsBlackboardSocket) && (this.MoveToTarget(s, t), t.LastLocation.DeepCopy(t.CharActorComp.ActorLocationProxy)), t.NowTime += s, true);
+    return !(s < MathUtils_1.MathUtils.KindaSmallNumber) && (!!((t = t.GetOwner()) instanceof TsBaseCharacter_1.default) || !!(t instanceof TsBaseVehicle_1.default)) && !!(t = paramMap.get(t.GetEntityIdNoBlueprint())) && !(t.RefreshTarget(this.TsBlackboardKey, this.TsBlackboardType, this.TsBlackboardSocket) && (this.MoveToTarget(s, t), t.LastLocation.DeepCopy(t.BaseActorComp.ActorLocationProxy)), t.NowTime += s, 0);
   }
   K2_NotifyEnd(t, i) {
     var s;
@@ -251,12 +252,12 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
   }
   GetTowardVector(t, i) {
     this.GetTargetPos(t, this.TargetPos);
-    this.TargetPos.Subtraction(t.CharActorComp.ActorLocationProxy, this.TmpVector);
+    this.TargetPos.Subtraction(t.BaseActorComp.ActorLocationProxy, this.TmpVector);
     this.TargetPos.Subtraction(t.LastLocation, this.TmpVector2);
     var s = this.TmpVector.DotProduct(this.TmpVector2);
     i.DeepCopy(this.TmpVector);
     if (this.TsIgnoreZ) {
-      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(t.CharActorComp, i);
+      GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(t.BaseActorComp, i);
       if (s < 0) {
         return -1;
       } else {
@@ -265,7 +266,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     } else if (s < 0) {
       return -1;
     } else {
-      return Math.sqrt(GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(t.CharActorComp, i));
+      return Math.sqrt(GravityUtils_1.GravityUtils.GetPlanarSizeSquared2dForActor(t.BaseActorComp, i));
     }
   }
   GetRate(t, i) {
@@ -295,7 +296,7 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
     if ((!(this.TsMinDistance > 0) || !(h < this.TsMinDistance)) && (!(this.TsMaxDistance > 0) || !(h > this.TsMaxDistance))) {
       let t = this.TsDistance;
       if (!this.TsIgnoreRadius) {
-        t += s.CharActorComp.ScaledRadius;
+        t += s.BaseActorComp.ScaledRadius;
         if (s.TargetCharActorComp && !s.SocketName) {
           t += s.TargetCharActorComp.ScaledRadius;
         }
@@ -312,26 +313,39 @@ class TsAnimNotifyStatePositionBranchTarget extends UE.KuroAnimNotifyState {
         var h = MathUtils_1.MathUtils.Clamp((r - t) * h, -this.TsMaxSpeed * i, this.TsMaxSpeed * i);
         this.TmpVector.MultiplyEqual(h / r);
       } else {
-        s.LastLocation.Subtraction(s.CharActorComp.ActorLocationProxy, this.TmpVector);
+        s.LastLocation.Subtraction(s.BaseActorComp.ActorLocationProxy, this.TmpVector);
         if (this.TsAlwaysMoveZ && !this.TsIgnoreZ) {
           h = this.GetRate(i, s);
-          this.TargetPos.Subtraction(s.CharActorComp.ActorLocationProxy, this.TmpVector2);
-          r = MathUtils_1.MathUtils.Clamp(GravityUtils_1.GravityUtils.GetZnInGravityForActor(s.CharActorComp, this.TmpVector2) * h, -this.TsMaxSpeed * i, this.TsMaxSpeed * i);
-          GravityUtils_1.GravityUtils.SetZnInGravityForActor(s.CharActorComp, this.TmpVector, r);
+          this.TargetPos.Subtraction(s.BaseActorComp.ActorLocationProxy, this.TmpVector2);
+          r = MathUtils_1.MathUtils.Clamp(GravityUtils_1.GravityUtils.GetZnInGravityForActor(s.BaseActorComp, this.TmpVector2) * h, -this.TsMaxSpeed * i, this.TsMaxSpeed * i);
+          GravityUtils_1.GravityUtils.SetZnInGravityForActor(s.BaseActorComp, this.TmpVector, r);
         } else {
-          GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(s.CharActorComp, this.TmpVector);
+          GravityUtils_1.GravityUtils.ConvertToPlanarVectorForActor(s.BaseActorComp, this.TmpVector);
         }
         if (this.TmpVector.SizeSquared() > INVALID_LAST_LOCATION_THRESHOLD_SQUARED && (this.TmpVector.Reset(), Log_1.Log.CheckWarn())) {
-          Log_1.Log.Warn("Movement", 6, "LastLocation太远，很危险，无视掉", ["Actor", s.CharActorComp?.Actor.GetName()], ["Last", s.LastLocation], ["ActorLast", s.CharActorComp?.LastActorLocation], ["Now", s.CharActorComp?.ActorLocationProxy]);
+          Log_1.Log.Warn("Movement", 6, "LastLocation太远，很危险，无视掉", ["Actor", s.BaseActorComp?.Owner?.GetName()], ["Last", s.LastLocation], ["ActorLast", s.BaseActorComp?.LastActorLocation], ["Now", s.BaseActorComp?.ActorLocationProxy]);
         }
       }
-      s.CharActorComp.MoveComp.MoveCharacter(this.TmpVector, i, "TsAnimNotifyStatePositionBranchTarget");
-      if (this.TsLookAtTarget) {
-        this.TargetPos.Subtraction(s.CharActorComp.ActorLocationProxy, this.TmpVector);
-        h = s.CharActorComp.MoveComp ? s.CharActorComp.MoveComp.GravityUp : Vector_1.Vector.UpVectorProxy;
-        MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, h, this.TmpQuat);
-        this.TmpQuat.Rotator(this.TmpRotator);
-        s.CharActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "TsAnimNotifyStatePositionBranchTarget", false);
+      h = s.BaseActorComp?.MoveComp;
+      if (h) {
+        h.MoveCharacter(this.TmpVector, i, "TsAnimNotifyStatePositionBranchTarget");
+        if (this.TsLookAtTarget) {
+          this.TargetPos.Subtraction(s.BaseActorComp.ActorLocationProxy, this.TmpVector);
+          r = h.GravityUp;
+          MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, r, this.TmpQuat);
+          this.TmpQuat.Rotator(this.TmpRotator);
+          s.BaseActorComp.SetActorRotation(this.TmpRotator.ToUeRotator(), "TsAnimNotifyStatePositionBranchTarget", false);
+        }
+      } else {
+        this.TmpVector.AdditionEqual(s.BaseActorComp.ActorLocationProxy);
+        if (this.TsLookAtTarget) {
+          i = s.BaseActorComp?.VehicleMoveComp?.GravityUp ?? Vector_1.Vector.UpVectorProxy;
+          MathUtils_1.MathUtils.LookRotationUpFirst(this.TmpVector, i, this.TmpQuat);
+          this.TmpQuat.Rotator(this.TmpRotator);
+          s.BaseActorComp?.SetActorLocationAndRotation(this.TmpVector.ToUeVector(), this.TmpRotator.ToUeRotator(), "TsAnimNotifyStatePositionBranchTarget", true);
+        } else {
+          s.BaseActorComp?.SetActorLocation(this.TmpVector.ToUeVector(), "TsAnimNotifyStatePositionBranchTarget", true);
+        }
       }
     }
   }
